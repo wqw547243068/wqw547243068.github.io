@@ -460,14 +460,16 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 - 2022年10月，美国一名男子用AI绘画工具Midjourney，生成了一幅名为《太空歌剧院》的作品，并获得了第一名。这引起了一波不小的争论，也终于形成了一条新赛道。
 - 于是，2022年以AI绘画为代表的各种生成式AI工具，如雨后春笋般疯狂冒尖，比如盗梦师、意间AI、6pen、novelAI等等。
 
-
-
 ### 汇总
 
 AI作画三巨头
-- Mid Journey : 地表最强AI
-- Stable Diffusion : 低调神秘慈善家
+- Mid Journey : 地表最强AI，快速生成一组连贯图像，烧会员钱，需联网调用
+  - MJ较SD上手难度低、视觉效果好、界面很流畅、审核门槛高。
+- Stable Diffusion : 低调神秘慈善家，可本地部署使用；擅长摄影、油画、水彩、概念艺 术等风格都能全面掌握，更具全能性。
+  - SD较MJ推理性更强、可控性更高、模型更多样、内容很开放
 - Dall-E 2 : 甲方终结者
+- Leonardo.ai：使用现有模型或自己训练AI模型来生成各种生产就绪的艺术资产。结合了MJ和SD的优点，但纯属**低配版**MJ+SD
+- Novelai：几乎只能生成动漫、 手绘、素描、CG风格图片，但在这些风格的人像上出图率更高，是专精型选手。对prompt不敏感;擅长全身夸张二次元整活
 
 Midjourney 的内容限制确实比其他竞争对手（例如 OpenAI 的 DALL-E）更宽松，但目前的管控宽松之王仍然是 Stable Diffusion。
 
@@ -557,6 +559,8 @@ Midjourney 的内容限制确实比其他竞争对手（例如 OpenAI 的 DALL-E
 - 更多功能开放中
 
 ### 本地部署
+
+#### Stable Diffusion
 
 [stable_diffusion_webUI使用教程](https://zhuanlan.zhihu.com/p/617997179)
 - windows上运行stable-diffusion-webui和模型，需要足够大的显存，最低配置**4GB**显存，基本配置6GB显存，推荐配置12GB显存。 当然内存也不能太小，最好大于16GB，总之内存越大越好，显卡为NVIDIA GeForce GTX 1060 Ti ( 5GB / NVIDIA )，这个上古显卡跑AI绘画着实比较吃力，但也能将就用。
