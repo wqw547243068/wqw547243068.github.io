@@ -990,16 +990,69 @@ self.loss = tf.reduce_mean(loss * sequence_mask)
 
 ### 序列解码
 
-- 生成式任务比普通的分类、tagging等NLP任务复杂不少。生成时，模型的输出是一个时间步一个时间步依次获得，前面时间步的结果影响后面时间步的结果。即每一个时间步，模型给出的都是<font color='blue'>基于历史生成结果的条件概率</font>。
+生成式任务比普通的分类、tagging等NLP任务复杂不少。
+- ![](https://uploads-ssl.webflow.com/5fdc17d51dc102ed1cf87c05/60adb96dd09ceb13f5d35c3f_sequence.png)
+- Seq2Seq模型中，RNN Encoder对输入句子进行编码，生成一个大小固定的hidden state $h_c$
+- 结合先前生成的第1到t-1个词 $x_{1~t-1}$, RNN Decoder会生成当前第t个词的hidden state $h_t$
+- 最后通过softmax函数得到第t个词 $x_t$ 的 词汇概率分布 vocabulary probability distribution $P(x|x_{1:t-1})$
+ 。
+
+生成时模型一个时间步一个时间步依次输出，前面时间步的结果影响后面时间步的结果。即每一个时间步，模型给出的都是<font color='blue'>基于历史生成结果的条件概率</font>。
 - 生成完整的句子，需要一个称为`解码`的额外动作来融合模型多个时间步的输出，使得最终序列的每一步条件概率连乘起来最大。
 - 分析
-  - 每一个时间步可能的输出种类称为`字典大小`(vocabulary size，用v表示)
-  - 进行T步随机的生成可能获得的结果总共有vT种。
-  - 拿中文文本生成来说，v的值大约是5000-6000，即常用汉字的个数。
-- 在如此大的基数下，遍历整个生成空间是不现实的。
-- ![](https://uploads-ssl.webflow.com/5fdc17d51dc102ed1cf87c05/60adb96dd09ceb13f5d35c3f_sequence.png)
+  - 每一个时间步可能的输出种类称为`字典大小`(vocabulary size，用V表示)
+  - 进行T步随机的生成可能获得的结果总共有$V_T$种。
+  - 以中文文本生成为例，V的值大约是**5000-6000**，即常用汉字的个数。
+- 基数较大，遍历整个生成空间是不现实的。
 
 #### 解码原理
+
+【2019-6-16】[文本生成中的decoding strategy整理](https://zhuanlan.zhihu.com/p/68383015)
+
+文本生成中的decoding strategy主要可以分为两大类：
+- （1） `Argmax Decoding`: 主要包括 beam search, class-factored softmax 等
+  - 如果vocabulary size较大，达到了**50k**甚至**150k**，在softmax层的运算量就会变得非常大, 需要降低复杂度
+  - ① `Class-factored Softmax`：将原本的softmax layer扩展为两层：
+    - 第一层为**cluster层**，每个cluster中包含一组语意相近的词，每个词只出现在一个cluster中；
+    - 第二层为**word层**，输出最后decode的词。
+    - 尽管cluster层和word层分别包含一个softmax layer，但每一层softmax的分母部分的计算量都大大缩小了。
+    - cluster的选取对decoding的效果有很大的影响，所以需要选择合适的**聚类算法**来pre-train高质量的cluster，论文中选用的是Brown cluster。
+    - 详见论文：[Pragmatic Neural Language Modelling in Machine Translation](https://arxiv.org/abs/1412.7119)
+  - ② `Pointer-generator Network`
+    - 一层softmax layer，但引入了一个非常强大的copy network，模型训练速度和生成句子的质量都**显著**高于Seq2Seq + Standard Softmax。
+    - 首先建立一个很小（如5k）的高频词vocabulary
+    - 然后建立一个Attention layer，得到输入句子的Attention distribution
+    - 在decoding阶段，若vocabulary中不存在需要decode的词 xt，则直接从输入句子的Attention distribution中copy xt 的attention weight作为 p(xt)。详见论文：[Get To The Point: Summarization with Pointer-Generator Networks](https://arxiv.org/abs/1704.04368)
+- （2）`Stochastic Decoding`: 主要包括 temperature sampling, top-k sampling等
+  - 问题：Argmax Decoding常常会导致模型生成重复的句子，如 "<span style='color:blue'>I don't know. I don't know. I don't know....</span>"。
+  - 因为模型中：$ p(know|I don't) < p(know|I don't know. I don't) $
+  - 解决：decoding过程中引入randomness
+  - 但是论文（[The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751)）指出，sampling from full vocabulary distribution生成的句子会非常的杂乱无章，因为当vocabulary size非常大时，每个词的probability都会变得很小，这时模型会有非常高的可能性sample到一个tail distribution中的词，一旦sample到了tail distribution中一个和前文非常不相关的词，很有可能接下来的词都受其影响，使得句子脱离原本的意思。
+  - 因此需要sampling from truncated vocabulary distribution，比较常见的算法主要有以下几种：
+  - ① `Temperature Sampling`
+    - softmax中引入一个temperature t来改变vocabulary probability distribution，使其更偏向high probability words
+    - 通过调整t的大小，就可以避免sampling from tail distribution。
+    - 当 t -> 0 时，就变成了greedy decoding；
+    - 当 t -> ∞ 时，就变成了uniform sampling。
+  - ② `Top-k Sampling`
+    - 更简单有效
+    - decoding过程中，从 概率分布P 中选取概率最高的前k个tokens，概率累加得到 p‘，再将 P 调整为 P’=P/p', 最后从 P' 中sample一个token作为output token
+    - 论文：[Hierarchical Neural Story Generation](https://arxiv.org/abs/1805.04833)
+    - 问题：常数k是提前给定的值，对于长短大小不一，语境不同的句子，我们可能有时需要比k更多的tokens。
+    - ![](https://pic2.zhimg.com/80/v2-414643d3b320b8048dc2f3cd682d3c85_1440w.webp)
+    - 设k=10
+      - 第一句话"She said, 'I never"后面可以跟的选项能有很大的diversity，此时10个tokens或许不足以包含全部可能的选择；
+      - 而第二句话"I ate the pizza while it was still"后面可以跟的选项则不能有太大的diversity，否则会使得整个句子含义表达错乱，此时10个tokens就变得过多了，会让模型陷入sample from tail distribution的风险。
+  - ③ `Top-p Sampling` (top k改进) -- nuclear sampling
+    - 针对top k的问题，Top-p Sampling 基于Top-k Sampling，将 p' 设为一个提前定义好的常数 p'∈(0,1)，而selected tokens根据句子history distribution的变化而有所不同。详见论文：The Curious Case of Neural Text Degeneration
+  - 本质上`Top-p Sampling`和`Top-k Sampling`都是从truncated vocabulary distribution中sample token，区别在于**置信区间的选择**。
+
+两类decoding strategy的主要区别: 如何从vocabulary probability distribution $P(x|x_{1:t-1})$ 中选取一个词 $x_t$：
+- Argmax Decoding的做法是选择词表中概率最大的词，即 $x_t=argmax P(x|x_{1:t-1})$;
+- Stochastic Decoding则是基于概率分布随机sample一个词 $x_t$，即 $x_t~P(x|x_{1:t-1})$。
+
+问题：top-k/top-p 与 beam search区别
+- Top-p没有和beam search一样的**候选序列**，它仅在**当前**time step采样
 
 【2021-1-2】翁丽莲的博客：[Controllable Neural Text Generation](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/)
 
