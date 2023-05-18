@@ -2307,6 +2307,25 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
 
 【2023-5-6】科大讯飞大模型[发布](https://xinghuo.xfyun.cn/)，亲测效果还不错
 
+### PKU-Beaver（河狸）-- RLHF
+
+【2023-5-18】北京大学团队开源了名为 [PKU-Beaver（河狸）项目](https://github.com/PKU-Alignment/safe-rlhf), 首次公开了 RLHF 所需的数据集、训练和验证代码，是目前首个开源的可复现的 RLHF 基准
+
+为解决人类标注产生的**偏见和歧视**等不安全因素，北京大学团队首次提出了带有**约束**的价值对齐技术 `CVA`（Constrained Value Alignment）。
+- 通过对标注信息进行细粒度划分，并结合带约束的安全强化学习方法，显著降低了模型的偏见和歧视，提高了模型的安全性。
+- Beaver使用GPT4进行Evaluation，结果表明，在原有性能保持不变的情况下，Beaver回复的安全性大幅度提升。
+
+开源的内容包括
+- （一）、数据集与模型：PKU-SafeRLHF
+  1. 开源迄今为止最大的多轮 RLHF 数据集，规模达到 100 万条。
+  2. 开源经 Safe-RLHF 对齐训练得到的 7B 参数的语言模型——Beaver，并支持在线部署。
+  3. 开源了预训练的Reward Model和Cost Model的模型和参数。
+- （二）、首个可复现的RLHF基准，PKU-Alignment/safe-rlhf支持以下功能：
+  1. 支持LLM 模型的 SFT（Supervised Fine-Tuning）、RLHF训练、Safe RLHF训练。支持目前主流的预训练模型如 LLaMA、OPT 等模型的训练。
+  2. 支持 Reward Model 和 Cost Model 训练。
+  3. 提供安全约束满足的多尺度验证方式，支持 BIG-bench、GPT-4 Evaluation 等。
+  4. 支持参数定制化的 RLHF 和数据集定制接口。
+
 
 ### ChatRWKV
 
