@@ -555,12 +555,85 @@ Our evaluation uses 8 real complex question answering datasets, including **six*
 大模型时代
 - 所有企业的文档可以批量上传，无需更多的整理，直接可自动转化为有效的QA，供座席和机器人直接调用。
 
+#### 如何增强LLM能力
+
+【2023-5-21】[LLM训练营课程笔记—Augmented Language Models](https://zhuanlan.zhihu.com/p/630195581)
+- [英文ppt](https://drive.google.com/file/d/1A5RcMETecn6Aa4nNzpVx9kTKdyeErqrI/view), [讲义总结](https://fullstackdeeplearning.com/llm-bootcamp/spring-2023/augmented-language-models/)
+- There are three ways to augment language models: retrieval, chains, and tools.
+- Retrieval involves providing an external corpus of data for the model to search, chains use the output of one language model as input for another, and tools allow models to interact with external data sources.
+
+LLM擅长什么？
+- • 语言理解
+- • 遵循指令
+- • 基础推理
+- • 代码理解
+
+LLM在哪些方面需要帮助？
+- • 获取最新知识
+- • 用户数据包含的知识
+- • 更有挑战性的推理
+- • 与外界交互
+
+如何增强LLM的能力？
+- LLM更加擅长**通用推理**，而不是**特定知识**。
+
+为了让LLM能够取得更好的表现，最常见方法就是给LLM提供合适的**上下文信息**帮助LLM进行推理。
+
+随着最近LLM的不断发展，各类大模型所能支持的最大上下文**长度**也越来越大，但是在可预见的一段时间内仍不可能包含所有内容，并且越多的上下文意味着更多的计算成本。
+- ![](https://pic3.zhimg.com/80/v2-01d520894c2ada7c23aa4f450aae71ca_1440w.webp)
+
+如何充分利用当前所能支持的有限的上下文信息，让LLM表现更好，值得研究。有限下文情况下充分激发LLM的能力的方法有三种：
+- `Retrieval`：答案在文档内，并行找相关内容作为prompt
+- `Chain`：答案在文档外，串行请求
+- `Tools`：调用外部工具
+
+（1）通过**Retrieval增强**LLM的能力 —— <span style='color:blue'>答案在文档内</span>
+ 
+一个典型的在文档QA场景使用检索方式来增强LLM能力的方式，分为几个流程：
+*   用户问题embedding
+*   从海量文档中检索出Top N与问题embedding相似的候选文档
+*   基于TopN文档内容构造Prompt
+*   调用LLM获取最终答案
+ 
+![](https://pic1.zhimg.com/80/v2-72a51d5f2be59ac526ea858e8fe15678_1440w.webp)
+ 
+常用的Retrieval技术
+ 
+对Retrieval的技术细节以及一些常用的工具进行了详细的介绍，包括**传统Retrieval**以及**基于Embedding的Retrieval**这两种技术路线，[原教程](https://fullstackdeeplearning.com/llm-bootcamp/spring-2023/augmented-language-models/)学习或者参考一些其他的[信息检索资料](https://github.com/%2520%2520sebastian-hofstaetter/teaching)。
+ 
+（2）通过**Chain**增强LLM的能力 —— <span style='color:blue'>答案在文档外</span>
+ 
+某些情况下，最佳的context可能并**不存在于用户语料库**中。上一个LLM的输出结果可能正好是当前LLM的最好的输入context。
+ 
+此时，可以用Chain形式将不同的LLM连接起来，去增强最终任务的效果。例如下图的摘要任务：
+- 首先将文本拆分为多个部分，对于每个部分使用LLM做一个局部摘要，然后再用LLM对各个摘要进行合并输出全局的摘要。
+- ![](https://pic3.zhimg.com/80/v2-65144390d9958a95f33a316618a32092_1440w.webp)
+
+典型进行这样任务编排的工具是[LangChain](https://github.com/hwchase17/langchain)，可以利用它来开发很多有意思的应用。
+ 
+（3）通过**Tools增强**LLM的能力 —— <span style='color:blue'>借助外界工具</span>
+ 
+通过各种各样的工具让LLM与外界进行交互，比如使用搜索引擎、执行SQL语句等，从而去丰富LLM的功能。
+
+Tools方式大致有两种
+- 一种是基于**Chain**的方式，Tool是一个**必选项**，前面有一个LLM来构造Tool的输入，后面会有另一个LLM来总结Tool的输出并得到最终的结果；
+- 一种是基于**Plugin**的方式，Tool是一个**可选项**，让LLM来决定用不用以及怎么用Tool。
+
+![](https://pic2.zhimg.com/80/v2-2038fc84985ec24ed8831bf66f16a4b1_1440w.webp)
+
+总结
+- • 通过与外界数据的交互，LLM的能力能够更加强大。
+- • 通过使用规则和启发式方法，可以实现各种各样的功能。
+
+随着知识库的扩大，应该将其视为一个**信息检索系统**。使用Chain的方式可以帮助编码更复杂的推理，并且绕过token长度的限制。各种各样的外部工具可以让模型访问更多的资源。
+
+
 #### 方法总结
 
 [作者](https://www.zhihu.com/question/591935281/answer/2961925796)
 
 常见的方法：
-- retrieve-then-generate：类ChatGPT Retrieval Plugin的技术方案
+- `retrieve-then-generate`：类ChatGPT Retrieval Plugin的技术方案
   - 根据输入query来抽取相关外部文本，把抽取到的文本和query一起作为prompt再来做后续字符的推理。
   - chatpdf这种产品的方法也类似，先把你输入的文档分成多个chunk分别做embedding放到向量数据库里，然后根据输入embedding的向量做匹配，再把匹配到的向量对应的chunk和输入一起作为prompt给LLM。
   - 论文：【2020-2-10】[REALM: Retrieval-Augmented Language Model Pre-Training](https://arxiv.org/abs/2002.08909)
