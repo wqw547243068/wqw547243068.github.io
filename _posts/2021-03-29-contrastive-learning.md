@@ -29,15 +29,27 @@ mathjax: true
 
 ## 句子相似度
 
-[SimCSE：简单有效的句向量对比学习方法](https://mp.weixin.qq.com/s/7glAjhvBfiWG3bWP-uI5Qg), EMNLP2021的一篇论文SimCSE。这是一种简单有效的NLP对比学习方法，通过Dropout的方式进行正样本增强，模型能够学习到良好的句向量表示。按照惯例，我们也对该模型在STS-B数据集上进行了实验复现。
-- [论文链接](https://arxiv.org/abs/2104.08821)
-- [实验复现代码](https://github.com/yangjianxin1/SimCSE)
+Sentence Embeddings 即能表征句子语义的特征向量
+
+获取句子特征向量的方法有**无监督**和**有监督**两种
+- 无监督学习中，首先会考虑利用预训练好的大型预训练模型获取 \[CLS\]或对句子序列纬度做 MeanPooling来得到一个输入句子的特征向量。获取论文中所有句子的特征向量后传入DGCNN来抽取摘要。
+
+但这种方法有一个致命缺点： Anisotropy(`各向异性`) 
+- language models trained with tied input/output embeddings lead to anisotropic word embeddings. 
+- 在预训练模型训练过程中, 会导致word embeddings的<span style='color:red'>各维度特征表示不一致</span>。导致句子级别的特征向量也无法进行直接比较。
+
+目前流行解决方法
+- `线性变换`：`bert-flow` 或 `bert-whitening`
+  - 无论是在bert中增加**flow层**还是对得到句子向量矩阵进行**白化**, 本质都是通过一个线性变换来缓解Anisotropy。
+- `对比学习`：先对句子进行传统的**文本增广**，如转译、删除、插入、调换顺序等等，再将一个句子通过两次增广得到的新句子作为正样本对，取其他句子的增广作为负样本，进行对比学习，模型的目标也很简单，即拉近正样本对的embeddings，同时增加与负样本的距离。
+
+而SimCSE（Simple Contrastive Learning of Sentence Embeddings）发现利用预训练模型中自带的**Dropout mask**作为“增广手段”得到的Sentence Embeddings，其<span style='color:red'>质量远好于传统的增强方法</span>，其无监督和有监督方法无监督语义上达到SOTA。
 
 ### BERT改造成句向量
 
 最直接的做法：将两个句子输入到BERT模型中，使用\[CLS]对应的输出或者整个句子序列的输出的**平均向量**作为句向量，然后再计算两个句向量的相似度。
 - 但是由于BERT模型的`MLM`与`NSP`这两个预训练任务的**局限性**，模型无法很好地学习到句子表征能力。
-- ![](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491763759351976.png)
+- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491763759351976.png)
 
 为什么经过`MLM`与`NSP`任务训练之后，BERT无法学习到良好的句向量表示呢？回顾一下MLM与NSP任务的做法。
 - `MLM`任务是遮住某个**单词**，让模型去预测遮住的单词:
@@ -50,10 +62,10 @@ mathjax: true
 ### BERT坍塌
 
 美团的ConSERT论文表明，如果BERT模型不经过微调的话，**模型输出的句向量会坍塌到一个非常小的区域内**。
-- ![](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491702735732915.png)
+- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491702735732915.png)
 - 图示是在STS数据集中，文本相似度的分布情况，其中横坐标表示人类标注的句子**相似度等级**，纵坐标表示没有经过finetune的BERT模型预测的句子**相似度分布**。可以很明显看到模型预测的所有句子对的相似度，几乎都落到了0.6-1.0这个区间，即使含义完全相反的两个句子，模型输出的相似度也非常高。这便是BERT的句子表示的“**坍塌**”现象。
 - BERT的句向量的坍缩和句子中的**高频词**有关。当使用整个句子序列的输出的**平均向量**作为句向量时，句子中的**高频词将会主导句向量**，使得任意两个句向量之间的相似度都非常高。为了验证该想法，美团的ConSERT论文对此也进行了实验。
-- ![](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711685264032.png)
+- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711685264032.png)
 - 去除若干高频词后，BERT模型在STS数据集上的Spearman得分。得分越高，说明模型在数据集上的表现越好。可以看到，当计算句向量时，如果去除若干个top-k的高频词，Spearman得分显著提高，句向量的坍塌现象得到了一定程度的缓解。
 
 结论：
@@ -61,6 +73,24 @@ mathjax: true
 
 为了解决该问题，可以使用**对比学习**的方法对模型进行预训练，从而使模型能够学习到更好的句子语义表示，并且更好地应用到下游任务中。
 
+## SimCSE
+
+[SimCSE：简单有效的句向量对比学习方法](https://mp.weixin.qq.com/s/7glAjhvBfiWG3bWP-uI5Qg), EMNLP2021, 陈丹琦的一篇论文[SimCSE](https://github.com/princeton-nlp/SimCSE)。
+- 一种简单有效的NLP对比学习方法，通过Dropout的方式进行正样本增强，模型能够学习到良好的句向量表示。按照惯例，我们也对该模型在STS-B数据集上进行了实验复现。
+- [论文链接](https://arxiv.org/abs/2104.08821)
+- [实验复现代码](https://github.com/yangjianxin1/SimCSE)
+
+为什么计算相似度时要对句子向量做L2正则？
+- 张俊林：[对比学习研究进展精要](https://mp.weixin.qq.com/s/xYlCAUIue_z14Or4oyaCCg)给出了一个非常形象的解释，目的是将所有的句子向量映射在一个半径为1的**超球体**上
+- 一方面将所有向量统一至单位长度，去除了长度信息是为了让模型的训练更加稳定；
+- 另一方面如果模型表示能力足够好，能够把相似的句子在超球面上聚集到较近区域，那么很容易使用线性分类器把某类和其它类区分开,[图示](https://img-blog.csdnimg.cn/20210430160326135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTgzOTY5Mw==,size_16,color_FFFFFF,t_70)。当然在图像领域上很多实验也证明了，增加L2正则确实能提升模型效果。
+
+总结
+- 相比于Pre-trained Bert, Fine-tune Sup. Bert, Bert-whitening等模型，SimCSE有极大程度的优势，可以说是碾压。
+- 对于 Unsup. SimCSE来说，CLS 的效果远好于 Pooler，且 Unsup. SimCSE只需要8000+个句子样本即可收敛，且多样本反而会使效果变差。
+- 对于 Sup. SimCSE来说，$Batchsize_{128}+CLS$ 达到最好效果，尽管 Pooler最终能得到接近的效果，但需要的数据量是CLS的三倍左右。
+
+详见原文: [SimCSE对比学习](https://blog.csdn.net/weixin_45839693/article/details/116302914)
 
 ## 基本概念
 
@@ -92,21 +122,21 @@ mathjax: true
 无监督表示学习的第一种做法：**生成式**自监督学习。比如还原句子中被mask的字，或者还原图像中被mask的像素。但这种方式的前提需要假设被mask的元素是相互独立的，不符合真实情况。
 
 如凭空画一张美元：
-- ![](https://ask.qcloudimg.com/http-save/yehe-7043804/8jc0g3bmln.jpeg?imageView2/2/w/1620)
+- ![img](https://ask.qcloudimg.com/http-save/yehe-7043804/8jc0g3bmln.jpeg?imageView2/2/w/1620)
 真实的美元：
-- ![](https://ask.qcloudimg.com/http-save/yehe-7043804/ki03pcx5af.jpeg?imageView2/2/w/1620)
+- ![img](https://ask.qcloudimg.com/http-save/yehe-7043804/ki03pcx5af.jpeg?imageView2/2/w/1620)
 
 另一方面，研究者们也质疑如此细粒度的还原是否真正必要。记住的事物特征，不一定是像素级别的，而是更高维度的. 如用编码去做分类任务，我们不需要知道每个数据的细节，只要抓住每个类别的主要特征，自然就能把他们分开了
 
 不重构数据，那如何衡量表示z的好坏呢？这时也可以用互信息I(X,Z)，代表我们知道了Z之后，X的信息量减少了多少。 
-- ![](https://ask.qcloudimg.com/http-save/yehe-7043804/nm4eqehaze.jpeg?imageView2/2/w/1620)
+- ![img](https://ask.qcloudimg.com/http-save/yehe-7043804/nm4eqehaze.jpeg?imageView2/2/w/1620)
 
 ## 对比学习经典方法
 
 对比学习是无监督表示学习中一种非常有效的方法，核心思路是训练query和key的Encoder，让这个Encoder对相匹配的query和key生成的编码距离接近，不匹配的编码距离远。想让对比学习效果好，一个核心点是扩大对比样本（负样本）的数量，即每次更新梯度时，query见到的不匹配key的数量。负样本数量越多，越接近对比学习的实际目标，即query和所有不匹配的key都距离远。
 
 对比学习目前有[4种最典型的范式](https://posts.careerengine.us/p/62b9ba214ef14834be502655)，分别为 End-to-End、Memory Bank、Momentum Encoder以及In-Batch Negtive。这几种对比学习结构的差异主要体现在对负样本的处理上，4种方法是一种逐渐演进的关系。
-- ![](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUWiaHaPQNb8ib5TPcbuVo1oG8x6RS0YnjbTUGJ9OYHaPGVVPsZC1kSuZtg7VOekj5cYQsd8qiaNYFEYg_%7C_640%3Fwx_fmt%3Dpng)
+- ![i'm'g](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUWiaHaPQNb8ib5TPcbuVo1oG8x6RS0YnjbTUGJ9OYHaPGVVPsZC1kSuZtg7VOekj5cYQsd8qiaNYFEYg_%7C_640%3Fwx_fmt%3Dpng)
 
 ### End-to-End
 
@@ -172,9 +202,9 @@ PCL 采用了期望-最大化框架，即 EM 算法的思路，流程如下图�
 
 ## A.引入
  
-![](https://pic3.zhimg.com/80/v2-379099fa00fca7e8750bf6abe849d3aa_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-379099fa00fca7e8750bf6abe849d3aa_1440w.jpg)
  
-![](https://pic1.zhimg.com/80/v2-63025bfc998aac2bb1fc7791134e5f24_1440w.jpg)
+![img](https://pic1.zhimg.com/80/v2-63025bfc998aac2bb1fc7791134e5f24_1440w.jpg)
  
 深度学习的成功往往依赖于海量数据的支持，其中对于数据的标记与否，可以分为监督学习和无监督学习。
 1. **监督学习**：技术相对成熟，但是对海量的数据进行标记需要花费大量的时间和资源。
@@ -184,12 +214,12 @@ PCL 采用了期望-最大化框架，即 EM 算法的思路，流程如下图�
   - 2.2.1 **生成式**学习：生成式学习以自编码器(例如GAN，VAE等等)这类方法为代表，由数据生成数据，使之在整体或者高级语义上与训练数据相近。
   - 2.2.2 **对比式**学习：对比式学习着重于学习同类实例之间的共同特征，区分非同类实例之间的不同之处。与生成式学习比较，对比式学习不需要关注实例上繁琐的细节，只需要在抽象语义级别的特征空间上学会对数据的区分即可，因此模型以及其优化变得更加简单，且泛化能力更强。
  
-![](https://pic3.zhimg.com/80/v2-3af2ec617b3534ef26336fe9866f402a_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-3af2ec617b3534ef26336fe9866f402a_1440w.jpg)
  
 对比学习的目标是学习一个编码器，此编码器对同类数据进行相似的编码，并使不同类的数据的编码结果尽可能的不同。
  
 3. 近况
- 
+
 最近深度学习两巨头 Bengio 和 LeCun 在 ICLR 2020 上点名 Self-Supervised Learning（SSL，自监督学习） 是 AI 的未来，另外，Hinton 和 Kaiming 两位神仙也在这问题上隔空过招，MoCo、SimCLR、MoCo V2 打得火热，这和 BERT 之后，各大公司出 XL-Net、RoBerta 刷榜的场景何其相似。
  
 4. 感谢
@@ -201,7 +231,7 @@ PCL 采用了期望-最大化框架，即 EM 算法的思路，流程如下图�
 ## B. 对比引入
  
 【拿我的画举个例子】我们可以看到下面两张图的马头和精细程度都是不同的，但是我们显然能判断这两张是类似的图，这是为什么呢
-- ![](https://pic1.zhimg.com/80/v2-b6ae7a4cd25a39566b6a674322735828_1440w.jpg)
+- ![img](https://pic1.zhimg.com/80/v2-b6ae7a4cd25a39566b6a674322735828_1440w.jpg)
  
 对于某个固定锚点x来说，其位置是由与其他点相对位置决定的，而不是画布的绝对位置。
  
@@ -210,12 +240,12 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
 在一定误差范围内，二者近似相等。
  
 可以这么认为，通过对比学习，忽略了细节，找到并确定所以关键点相对位置。
-- ![](https://pic4.zhimg.com/80/v2-496bbbbce22383725d4da5b9c603059f_1440w.jpg)
+- ![img](https://pic4.zhimg.com/80/v2-496bbbbce22383725d4da5b9c603059f_1440w.jpg)
  
 ## C. 聚类思想
  
 在这里，我们将之前的想法进行抽象，用空间考虑对比学习。
-- ![](https://pic2.zhimg.com/80/v2-7f0cb4f5a90df300585de6e24a516bad_1440w.jpg)
+- ![img](https://pic2.zhimg.com/80/v2-7f0cb4f5a90df300585de6e24a516bad_1440w.jpg)
 最终目标:
 - ![[公式]](https://www.zhihu.com/equation?tex=d%28f%28x%29%2Cf%28x%5E%2B%29%29%5Cll+d%28f%28x%29%2Cf%28x%5E-%29%29%5C%5C+%E6%88%96%5C%5C+s%28f%28x%29%2Cf%28x%5E%2B%29%29%5Cgg+s%28f%28x%29%2Cf%28x%5E-%29%29)
 
@@ -230,7 +260,7 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
 - 人类不仅能从**积极**信号中学习，还能从纠正**不良行为**中获益。
 
 **对比学习**其实是**无监督学习**的一种**范式**。根据经典的SIMCLR，我在这里就直接提供了对比学习中模型的常见形式。
-- ![](https://pic4.zhimg.com/80/v2-a17404a49d4f980ac69653464dbcc3fb_1440w.jpg)
+- ![img](https://pic4.zhimg.com/80/v2-a17404a49d4f980ac69653464dbcc3fb_1440w.jpg)
  
 ## E. 对比损失【重要*数学警告】
  
@@ -240,46 +270,51 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
 
 [对比学习的7大损失函数](https://posts.careerengine.us/p/62a3152b8c182324c338fd54)
 - 表示学习的目的是将原始数据转换成更好的表达，以提升下游任务的效果。在表示学习中，损失函数的设计一直是被研究的热点。损失指导着整个表示学习的过程，直接决定了表示学习的效果。
-- 表示学习中的7大损失函数的发展历程，以及它们演进过程中的设计思路，主要包括 contrastive loss、triplet loss、n-pair loss、infoNce loss、focal loss、GHM loss、circle loss。
-- (1) contrastive loss：对比损失
+- 表示学习中的7大损失函数的发展历程，以及演进过程中的设计思路，主要包括: contrastive loss、triplet loss、n-pair loss、infoNce loss、focal loss、GHM loss、circle loss。
+- (1) `contrastive loss`：`对比损失`
   - Dimensionality Reduction by Learning an Invariant Mapping（CVPR 2006）
-  - 输入两个样本，经过相同的编码器得到两个样本的编码。如果两个样本属于同一类别，则优化目标为让两个样本在某个空间内的距离小；如果两个样本不属于同一类别，并且两个样本之间的距离小于一个超参数m，则优化目标为让两个样本距离接近m。
-  - ![](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6twjmP9fFtjPB27nmAQhHia49k7YKkjLn4T18aI1iaiaJMglSSn9kIxnXg_%7C_640%3Fwx_fmt%3Dpng)
-  - Contrastive Loss是后面很多表示学习损失函数的基础，通过这种对比的方式，让模型生成的表示满足相似样本距离近，不同样本距离远的条件，实现更高质量的表示生成
-- (2) triplet loss：三元组损失
+  - 输入两个样本，经过相同的编码器得到两个样本的编码。
+    - 如果两个样本**属于**同一类别，则优化目标为让两个样本在某个空间内的**距离小**；
+    - 如果两个样本**不属于**同一类别，并且两个样本之间的距离小于一个**超参数**m，则优化目标为让两个样本距离接近m。
+  - ![img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6twjmP9fFtjPB27nmAQhHia49k7YKkjLn4T18aI1iaiaJMglSSn9kIxnXg_%7C_640%3Fwx_fmt%3Dpng)
+  - Contrastive Loss是后面很多表示学习损失函数的**基础**，通过这种对比方式，让模型生成的表示满足相似样本距离近，不同样本距离远的条件，实现更高质量的表示生成
+- (2) `triplet loss`：`三元组损失`
   - FaceNet: A unified embedding for face recognition and clustering（CVPR 2015）
-  - triplet loss需要比较3个样本，分别为anchor、position和negtive。其目标为让anchor和positive样本（类别相同）的距离尽可能近，而和negtive样本（类别不同）的距离尽可能远。因此triplet loss设计为，让anchor和positive样本之间的距离比anchor和negtive样本要小，并且要小至少一个margin的距离才不计入loss。
-  - ![](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu60zibIic9TpnTUeRvgibBdMN5fqV7gaZN6fFgZOesN6hb9qS0vgqzCf08Q_%7C_640%3Fwx_fmt%3Dpng)
-- (3) n-pair loss：n对损失
+  - triplet loss需要比较3个样本，分别为`anchor`、`position`和`negtive`。
+  - 目标: 让anchor和positive样本（类别相同）的距离尽可能近，而和negtive样本（类别不同）的距离尽可能远。
+  - 因此, triplet loss设计为，让anchor和positive样本之间的距离比anchor和negtive样本要小，并且要小至少一个margin的距离才不计入loss。
+  - ![img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu60zibIic9TpnTUeRvgibBdMN5fqV7gaZN6fFgZOesN6hb9qS0vgqzCf08Q_%7C_640%3Fwx_fmt%3Dpng)
+- (3) `n-pair loss`：`n对损失` (使用**多个**负样本)
   - Improved Deep Metric Learning with Multi-class N-pair Loss Objective（NIPS 2016）
-  - 之前提出的contrastive loss和triplet loss中，每次更新只会使用一个负样本，而无法见到多种其他类型负样本信息，因此模型优化过程只会保证当前样本的embedding和被采样的负样本距离远，无法保证和所有类型的负样本都远，会影响模型收敛速度和效果。即使多轮更新，但是这种情况仍然会导致每轮更新的不稳定性，导致学习过程持续震荡。
-  - 为了解决这个问题，让模型在每轮更新中见到更多的负样本，提出了N-pair loss，主要改进是每次更新的时候会使用多个负样本的信息。N-pair loss可以看成是一种triplet loss的扩展
-  - ![](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6ddA2qGyffhK7aWGzRudxia7cRJEZEjNVvgaic4cVIEiadSZjIwVF7PtzA_%7C_640%3Fwx_fmt%3Dpng)
-- (4) infoNce loss：噪声对比损失
+  - contrastive loss和triplet loss中，每次更新只会使用**1个负样本**，而无法见到多种其他类型负样本信息，因此模型优化过程只会保证**当前**样本的embedding和被采样的负样本距离远，无法保证和**所有**类型的负样本都远，会影响模型收敛速度和效果。即使多轮更新，但是这种情况仍然会导致每轮更新的不稳定性，导致学习过程持续震荡。
+  - 为了解决这个问题，让模型在每轮更新中见到更多的负样本，提出了N-pair loss，主要改进是每次更新的时候会使用**多个负样本**的信息。N-pair loss可以看成是一种triplet loss的扩展
+  - ![img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6ddA2qGyffhK7aWGzRudxia7cRJEZEjNVvgaic4cVIEiadSZjIwVF7PtzA_%7C_640%3Fwx_fmt%3Dpng)
+- (4) `infoNce loss`：`噪声对比损失`
   - Representation learning with contrastive predictive coding（2018）
-  - infoNce loss，是对比学习中最常用的loss之一，它和softmax的形式很相似，主要目标是给定一个query，以及k个样本，k个样本中有一个是和query匹配的正样本，其他都是负样本。当query和正样本相似，并且和其他样本都不相似时，loss更小。InfoNCE loss可以表示为如下形式，其中r代表temperature，采用内积的形式度量两个样本生成向量的距离，InfoNCE loss也是近两年比较火的对比学习中最常用的损失函数之一;相比softmax，InfoNCE loss使用了temperature参数，以此将样本的差距拉大，提升模型的收敛速度
-  - ![](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6eyto2pic187meAMcyxSgy68gjR0QcC0UdbDFiaClM1nndsxHJbPG9P5A_%7C_640%3Fwx_fmt%3Dpng)
-- (5) focal loss：聚焦损失
+  - infoNce loss 是对比学习中最常用的loss之一，它和softmax的形式很相似，主要目标是给定一个query，以及k个样本，k个样本中有一个是和query匹配的正样本，其他都是负样本。当query和正样本相似，并且和其他样本都不相似时，loss更小。InfoNCE loss可以表示为如下形式，其中r代表temperature，采用内积的形式度量两个样本生成向量的距离，InfoNCE loss也是近两年比较火的对比学习中最常用的损失函数之一;相比softmax，InfoNCE loss使用了temperature参数，以此将样本的差距拉大，提升模型的收敛速度
+  - ![img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_sz_mmbiz_png_%7C_dcUv9UF2OUXeictpRMQCiaqU1daVsfFzu6eyto2pic187meAMcyxSgy68gjR0QcC0UdbDFiaClM1nndsxHJbPG9P5A_%7C_640%3Fwx_fmt%3Dpng)
+- (5) `focal loss`：`聚焦损失` （数据不均衡）
   - Focal Loss for Dense Object Detection（2018）
-  - 最开始主要是为了解决目标检测中的问题，但是在很多其他领域也可以适用。Focal Loss解决的核心问题是，当数据中有很多容易学习的样本和较少的难学习样本时，如何调和难易样本的权重。如果数据中容易的样本很多，难的样本很少，容易的样本就会对主导整体loss，对难样本区分能力弱。
-  - 为了解决这个问题，Focal Loss根据模型对每个样本的打分结果给该样本的loss设置一个权重，减小容易学的样本（即模型打分置信的样本）的loss权重。
-- (6) GHM loss：
-  - Focal Loss中强制让模型关注难分类的样本，但是数据中可能也存在一些异常点，过度关注这些难分类样本，反而会让模型效果变差。
+  - 最开始主要是为了解决**目标检测**中的问题，但是在很多其他领域也可以适用。
+  - Focal Loss解决的核心问题：当数据中有**很多**容易学习的样本和**较少**难学习样本时，如何调和难易样本的权重。如果数据中容易的样本很多，难的样本很少，容易的样本就会对主导整体loss，对难样本区分能力弱。
+  - 为了解决这个问题，Focal Loss根据模型对每个样本的**打分结果**给该样本的loss设置一个**权重**，减小容易学的样本（即模型打分置信的样本）的loss权重。
+- (6) `GHM loss`：（focal loss改进）
+  - Focal Loss中强制让模型关注**难分类**样本，但是数据中可能也存在一些**异常点**，过度关注这些难分类样本，反而会让模型效果变差。
   - Gradient Harmonized Single-stage Detector（AAAI 2019）提出了GHM Loss
-- (7) circle loss
+- (7) `circle loss`
   - Circle Loss: A Unified Perspective of Pair Similarity Optimization（CVPR 2020）
-  - circle loss，从一个统一的视角融合了class-level loss和pair-wise loss。这两种优化目标，其实都是在最小化sn-sp，其中sn表示between-class similarity，即不同类别的样本表示距离应该尽可能大；sp表示within-class similarity，即相同类别的样本表示距离尽可能小。
+  - circle loss 从一个统一视角融合了**class-level** loss和**pair-wise** loss。这两种优化目标都是在最小化sn-sp，其中sn表示between-class similarity，即不同类别的样本表示距离应该尽可能大；sp表示within-class similarity，即相同类别的样本表示距离尽可能小。
 
 
 ### 1. 欧几里得距离
  
-在线性空间中，上述相似度就可以表示为二者向量间的欧几里得距离：
- 
-![[公式]](https://www.zhihu.com/equation?tex=D_W%28%5Cvec%7BX_1%7D%2C%5Cvec%7BX_2%7D%29%3D%7C%7CG_W%28%5Cvec%7BX_1%7D%29-G_W%28%5Cvec%7BX_2%7D%29%7C%7C_2+%5C%5C)
+线性空间中，上述相似度就可以表示为二者向量间的欧几里得距离：
+- ![[公式]](https://www.zhihu.com/equation?tex=D_W%28%5Cvec%7BX_1%7D%2C%5Cvec%7BX_2%7D%29%3D%7C%7CG_W%28%5Cvec%7BX_1%7D%29-G_W%28%5Cvec%7BX_2%7D%29%7C%7C_2+%5C%5C)
  
 ### 2. 对比损失定义
  
-由Hadsell, R. , Chopra, S. , & Lecun, Y. . (2006)提出\[1\] ,原文只是作为一种降维方法：只需要训练样本空间的相对关系（对比平衡关系）即可在空间内表示向量。
+由 Hadsell, R. , Chopra, S. , & Lecun, Y. . (2006)提出\[1\] ,原文只是作为一种降维方法：
+- 只需要训练样本空间的相对关系（对比平衡关系）即可在空间内表示向量。
 
 损失定义如下：
 - ![[公式]](https://www.zhihu.com/equation?tex=+L%28W%2C%28Y%2C%5Cvec%7BX_1%7D%2C%5Cvec%7BX_2%7D%29%5Ei%29%3D%281-Y%29L_S%28D_W%5Ei%28%5Cvec%7BX_1%7D%2C%5Cvec%7BX_2%7D%29%29%2BYL_D%28D_W%5Ei%28%5Cvec%7BX_1%7D%2C%5Cvec%7BX_2%7D%29%29%5C%5C)
@@ -297,7 +332,7 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
  
 - ![[公式]](https://www.zhihu.com/equation?tex=L_S+) 只需满足红色虚线趋势。
 - ![[公式]](https://www.zhihu.com/equation?tex=L_D) 只需满足蓝线趋势【都有趋于0的区域】。
-- ![](https://pic4.zhimg.com/80/v2-942ad9d07bc2fc665c1b47adb3dfe8cf_1440w.jpg)
+- ![img](https://pic4.zhimg.com/80/v2-942ad9d07bc2fc665c1b47adb3dfe8cf_1440w.jpg)
  
 2.2 过程/主流程
  
@@ -311,7 +346,7 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
 - ![[公式]](https://www.zhihu.com/equation?tex=E%3D0-%5Cint%5Cvec%7BF%7Dd%5Cvec%7Bx%7D%3D%5Cfrac+1+2++x%5E2%5C%5C+)
 那么 E 即可作为![[公式]](https://www.zhihu.com/equation?tex=L_S) ，且满足定义要求：
 - ![[公式]](https://www.zhihu.com/equation?tex=L_S%3D%5Cfrac+1+2++D_W%5E2%5C%5C)
-- ![](https://pic3.zhimg.com/80/v2-39b85f4203e7ba9f2c21783567e42a72_1440w.jpg)
+- ![img](https://pic3.zhimg.com/80/v2-39b85f4203e7ba9f2c21783567e42a72_1440w.jpg)
  
 负样本
  
@@ -320,7 +355,7 @@ A中与 x 邻近的点在B图中相应点距 x' 距离小，A中与 x 相距较�
  
 将锚点设为势能零点：
 - ![[公式]](https://www.zhihu.com/equation?tex=E%3D0-%5Cint%5Cvec%7BF%7Dd%5Cvec%7Bx%7D%3D%5Cfrac+1+2++%28m-x%29%5E2%5C%5C+L_D%3D%5Cfrac+1+2+%28max%5C%7B0%2Cm-D_W%5C%7D%29%5E2)
-- ![](https://pic1.zhimg.com/80/v2-628d09285fa99649351012310b624708_1440w.jpg)
+- ![img](https://pic1.zhimg.com/80/v2-628d09285fa99649351012310b624708_1440w.jpg)
  
 L原定义:
  
@@ -334,19 +369,17 @@ L原定义:
 空间角度：
  
 空间内点间相互作用力动态平衡。
-- ![](https://pic2.zhimg.com/80/v2-db3c4432db10f18fbb9a73405de5ba35_1440w.jpg)
+- ![img](https://pic2.zhimg.com/80/v2-db3c4432db10f18fbb9a73405de5ba35_1440w.jpg)
  
 ### 2.3 效果
  
-我们可以看到，和4不那么像的9会被拉远离4，和4相似的9会在交界面上十分接近地分布。这和我们的的对比想法是一致的。
- 
-![](https://pic2.zhimg.com/80/v2-61a0d80cdbd7ba5323c4bc753b5ae33d_1440w.jpg)
+可以看到，和4不那么像的9会被拉远离4，和4相似的9会在交界面上十分接近地分布。这和我们的的对比想法是一致的。
+- ![img](https://pic2.zhimg.com/80/v2-61a0d80cdbd7ba5323c4bc753b5ae33d_1440w.jpg)
  
 同时，该论文还发现许多对比学习中有趣的现象。
  
 不同光照下，不同角度下，像素间欧氏距离尽管很远，但是能聚集在一个环上。
- 
-![](https://pic2.zhimg.com/80/v2-02c7647d1b278dca69f239419e204541_1440w.jpg)
+- ![img](https://pic2.zhimg.com/80/v2-02c7647d1b278dca69f239419e204541_1440w.jpg)
  
 ### 3. Triplet Loss
  
@@ -357,27 +390,26 @@ L原定义:
 我们将三元组重新描述为 ![[公式]](https://www.zhihu.com/equation?tex=%28x%2Cx%5E%2B%2Cx%5E-%29) 。
  
 那么三元组的总体距离可以表示为：【近年论文好像也有沿用的，比较经典】
- 
-![[公式]](https://www.zhihu.com/equation?tex=L%3Dmax%5C%7Bd%28x%2Cx%5E%2B%29-d%28x%2Cx%5E-%29%2B%5Calpha%2C0%5C%7D%5C%5C)
+- ![[公式]](https://www.zhihu.com/equation?tex=L%3Dmax%5C%7Bd%28x%2Cx%5E%2B%29-d%28x%2Cx%5E-%29%2B%5Calpha%2C0%5C%7D%5C%5C)
  
 相较定义来说，Triplet Loss认为，假如所有正样本之间无限的拉近，会导致聚类过拟合，所以，就只要求
- 
-![[公式]](https://www.zhihu.com/equation?tex=d%28x%2Cx%5E-%29%3E+d%28x%2Cx%5E%2B%29%2B%5Calpha%5C%5C)
+- ![[公式]](https://www.zhihu.com/equation?tex=d%28x%2Cx%5E-%29%3E+d%28x%2Cx%5E%2B%29%2B%5Calpha%5C%5C)
  
 当然在比例尺上看来， ![[公式]](https://www.zhihu.com/equation?tex=d%28x%2Cx%5E%2B%29) 也会趋于0。
  
 原文将所有三元组的状态分为三类：
-*  hard triplets  正样本离锚点的距离比负样本还大
-*  semi-hard triplets  正样本离锚点的距离比负样本小，但未满足
-*  easy triplets  满足 ![[公式]](https://www.zhihu.com/equation?tex=d%28x%2Cx%5E-%29%3E+d%28x%2Cx%5E%2B%29%2B%5Calpha)
+*  **hard** triplets  正样本离锚点的距离比负样本还大
+*  **semi-hard** triplets  正样本离锚点的距离比负样本小，但未满足
+*  **easy** triplets  满足 ![[公式]](https://www.zhihu.com/equation?tex=d%28x%2Cx%5E-%29%3E+d%28x%2Cx%5E%2B%29%2B%5Calpha)
   
 前两个状态会通过loss逐渐变成第三个状态。
-- ![](https://pic4.zhimg.com/80/v2-834682b972f2d25a91fad527978ec7f7_1440w.jpg)
+- ![img](https://pic4.zhimg.com/80/v2-834682b972f2d25a91fad527978ec7f7_1440w.jpg)
  
 ### 4. NCE Loss
  
-【注：后续研究并没有怎么使用原始的NCELoss，而是只使用这里的结论，这里引入是为了说明应该多采用负样本。】
- 
+注：
+> 后续研究并没有怎么使用原始的NCELoss，而是只使用这里的结论，这里引入是为了说明应该多采用负样本。
+
 之前从向量空间考虑，NCE从概率角度考虑【原证明为贝叶斯派的证法】，NCE是对于得分函数的估计，那也就是说，是对于你空间距离分配的合理性进行估计。
  
 总之NCE通过对比噪声样本与含噪样本，从而推断真实分布。
@@ -397,10 +429,8 @@ L原定义:
 通过最大化编码之间互信息(它以输入信号之间的MI为界)，提取输入中的隐变量。
  
 互信息往往是算不出来的，但是我们这里将他进行估计，通过不同方法进行估计，从而衍生出自监督的两种方式：生成式和对比式【详见A 2.2.2】
- 
-互信息上界估计：减少互信息，即VAE的目标。
- 
-互信息下界估计：增加互信息，即对比学习（CL）的目标。【后来也有CLUB上界估计和下界估计一起使用的对比学习。】
+- 互信息上界估计：减少互信息，即VAE的目标。
+- 互信息下界估计：增加互信息，即对比学习（CL）的目标。【后来也有CLUB上界估计和下界估计一起使用的对比学习。】
  
 ### 6. InfoNCE Loss
  
@@ -415,7 +445,6 @@ L原定义:
 ### 后续研究
  
 后续研究的核心往往就聚焦于的两个方面：
- 
 *   如何定义目标函数？【详见附录】  
 *   简单内积函数  
 *   InfoNCE【近年火热】  
@@ -424,24 +453,20 @@ L原定义:
 ![[公式]](https://www.zhihu.com/equation?tex=+L%3Dmax%280%2C%5Ceta%2Bs%28x%2Cx%5E%2B%29-s%28x%2Cx%5E%7B-%7D%29%29++%5C%5C)
  
 *   如何构建正实例对和负实例对？
-    
- 
+
 这个问题是目前很多 paper 关注的一个方向，设计出合理的正实例与负实例对，并且尽可能提升实例对，才能表现的更好。
  
 ## F. 基础论文
  
 ### 1. CPC
  
-论文标题：Representation Learning with Contrastive Predictive Coding
- 
-论文链接：[https://arxiv.org/abs/1807.03748](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1807.03748)
- 
-代码链接：[https://github.com/davidtellez/contrastive-predictive-coding](https://link.zhihu.com/?target=https%3A//github.com/davidtellez/contrastive-predictive-coding)
+- 论文标题：Representation Learning with Contrastive Predictive Coding
+- 论文链接：[https://arxiv.org/abs/1807.03748](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1807.03748)
+- 代码链接：[https://github.com/davidtellez/contrastive-predictive-coding](https://link.zhihu.com/?target=https%3A//github.com/davidtellez/contrastive-predictive-coding)
  
 很多时候，很多数据维度高、label相对少，我们并不希望浪费掉没有label的那部分data。所以在label少的时候，可以利用无监督学习帮助我们学到数据本身的高级信息，从而对下游任务有很大的帮助。
  
 Contrastive Predictive Coding（CPC） 这篇文章就提出以下方法：
- 
 *   将高维数据压缩到更紧凑的隐空间中，在其中条件预测更容易建模。
 *   用自回归模型在隐空间中预测未来步骤。
 *   依靠NCE来计算损失函数（和学习词嵌入方式类似），从而可以对整个模型进行端到端的训练。
@@ -451,15 +476,14 @@ Contrastive Predictive Coding（CPC） 这篇文章就提出以下方法：
  
 1.1 问题描述
  
-![](https://pic3.zhimg.com/80/v2-c8fc875b2e3d79924d606ae97f55a83e_1440w.png)
+![img](https://pic3.zhimg.com/80/v2-c8fc875b2e3d79924d606ae97f55a83e_1440w.png)
  
 给定声音序列上下文 ![[公式]](https://www.zhihu.com/equation?tex=c_t) ，由此我们推断预测 ![[公式]](https://www.zhihu.com/equation?tex=x_%7Bt%2Bk%7D) 位置上的声音信号。题目假设，声音序列全程伴随有噪音。为了将噪音序列与声音序列尽可能的分离编码，这里就随机采样获得 ![[公式]](https://www.zhihu.com/equation?tex=x_%7Bt%2A%7D) 代替 ![[公式]](https://www.zhihu.com/equation?tex=x_%7Bt%2Bk%7D) 位置信号，作为负样本进行对比学习。
  
 1.2 CPC
  
 下图说明了 CPC 的工作过程：
- 
-![](https://pic4.zhimg.com/80/v2-2192d04513f5f5b6fc7928d94cb3a72b_1440w.jpg)
+- ![img](https://pic4.zhimg.com/80/v2-2192d04513f5f5b6fc7928d94cb3a72b_1440w.jpg)
  
 首先我们在原信号上选取一些时间窗口，对每一个窗口，通过encoder ![[公式]](https://www.zhihu.com/equation?tex=g_%7Benc%7D) ，得到表示向量 ![[公式]](https://www.zhihu.com/equation?tex=z_t) 。
  
@@ -483,7 +507,7 @@ CPC用到了NCE Loss, 并推广为InfoNCE:（证明见【附录】）
  
 回到对比学习的思想，W将做c到z的映射， ![[公式]](https://www.zhihu.com/equation?tex=z%2CW%5Ccdot+c) 均经过归一化，那么，二者余弦相似度为 ![[公式]](https://www.zhihu.com/equation?tex=z%5ET_%7Bt%2Bk%7D%28W_kc_t%29) ，这样 ![[公式]](https://www.zhihu.com/equation?tex=%5Cfrac+%7B%5Cexp%28z%5ET_%7Bt%2Bk%7D%28W_kc_t%29%29%7D%7B%5Csum+%5Cexp%28z%5ET_%7Bj%7D%28W_kc_t%29%29%7D) ，即可看做softmax，将 ![[公式]](https://www.zhihu.com/equation?tex=z_%7Bt%2Bk%7D) 正样本的值加大，负样本值缩小。
  
-![](https://pic4.zhimg.com/80/v2-1c0d719815ff514e2d94d78f48ac79d7_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-1c0d719815ff514e2d94d78f48ac79d7_1440w.jpg)
  
 ### 2. MoCo
  
@@ -491,7 +515,7 @@ CPC用到了NCE Loss, 并推广为InfoNCE:（证明见【附录】）
  
 本文提出了高效的对比学习的结构。使用基于 MoCo 的无监督学习结构学习到的特征用于 ImageNet 分类可以超过监督学习的性能。证明了无监督学习拥有巨大的潜力。
  
-![](https://pic3.zhimg.com/80/v2-a2f62f81c637b6205eb6c4c92237769a_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-a2f62f81c637b6205eb6c4c92237769a_1440w.jpg)
  
 受NLP任务的启发，MOCO将图片数据分别编码成查询向量和键向量，即，查询 _q_ 与键队列 _k _，队列包含单个正样本和多个负样本。通过 对比损失来学习特征表示。
  
@@ -571,11 +595,11 @@ momentum encoder负责编码多个实例(包括当前实例)的抽象表示。
  
 （3）与Memory Bank类似，NCE Loss只影响 Query ，不更新key。
  
-![](https://pic3.zhimg.com/80/v2-ee01ab27bdd894c72a956483c30a28aa_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-ee01ab27bdd894c72a956483c30a28aa_1440w.jpg)
  
 2.4 代码流程
  
-![](https://pic4.zhimg.com/80/v2-e7de90a6e41f9c67f2742bd3f5eefcb3_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-e7de90a6e41f9c67f2742bd3f5eefcb3_1440w.jpg)
  
 ### 3. SimCLR
  
@@ -585,7 +609,7 @@ momentum encoder负责编码多个实例(包括当前实例)的抽象表示。
  
 代码链接：[https://github.com/google-research/simclr](https://link.zhihu.com/?target=https%3A//github.com/google-research/simclr)
  
-![](https://pic1.zhimg.com/v2-3c6216305d82c711b10c941987110f08_b.jpg)
+![img](https://pic1.zhimg.com/v2-3c6216305d82c711b10c941987110f08_b.jpg)
  
 ### 3.1 做法：
  
@@ -597,7 +621,7 @@ simCLR对输入的图片进行数据增强，以此来模拟图片不同视角�
  
 用下面这张图来说明：
  
-![](https://pic3.zhimg.com/80/v2-1674551066cc2f337a8a1948198558d6_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-1674551066cc2f337a8a1948198558d6_1440w.jpg)
  
 simCLR的架构由两个相同的网络模块组成。对于每一个输入网络的minibatch:
  
@@ -610,7 +634,7 @@ simCLR的架构由两个相同的网络模块组成。对于每一个输入网�
  
 simCLR使用了多组对比，直接加强了效果【可以看成完全图，将相邻点拉近，不相似的点拉开】：
  
-![](https://pic4.zhimg.com/80/v2-f547676fd585d884acea6ca6246e9733_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-f547676fd585d884acea6ca6246e9733_1440w.jpg)
  
 由此可以得到优化目标：对于minibatch中同一图片，最大化其两个数据增强投影的相似度，并最小化不同图片之间的投影相似度。
  
@@ -626,7 +650,7 @@ simCLR使用了多组对比，直接加强了效果【可以看成完全图，�
  
 3.3 代码
  
-![](https://pic1.zhimg.com/80/v2-dd296d3bef797a95fa0fd938a378fc30_1440w.jpg)
+![img](https://pic1.zhimg.com/80/v2-dd296d3bef797a95fa0fd938a378fc30_1440w.jpg)
  
 4. 神仙打架
 --------
@@ -639,11 +663,11 @@ MoCo v2 也是利用了上面SimCLR的第一点和第三点，并在MoCo-v1的�
  
 知识蒸馏
  
-![](https://pic2.zhimg.com/80/v2-046b470d06c3dcbb694977061020b7fd_1440w.jpg)
+![img](https://pic2.zhimg.com/80/v2-046b470d06c3dcbb694977061020b7fd_1440w.jpg)
  
 具体结构
  
-![](https://pic4.zhimg.com/80/v2-ebd75d4214e298f44ce324a70f53c707_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-ebd75d4214e298f44ce324a70f53c707_1440w.jpg)
  
 5. 有监督对比学习
 -----------
@@ -656,11 +680,11 @@ MoCo v2 也是利用了上面SimCLR的第一点和第三点，并在MoCo-v1的�
  
 之前的论文都是自监督学习，自监督只做自己的变换，可能会过拟合。比如会把另一个品种的够对比到另一个类。
  
-![](https://pic4.zhimg.com/80/v2-06edb143d236f53d9510db0d27a7905f_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-06edb143d236f53d9510db0d27a7905f_1440w.jpg)
  
 5.2 想法
  
-![](https://pic4.zhimg.com/80/v2-7c10048b67779c7c615695c31224c10b_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-7c10048b67779c7c615695c31224c10b_1440w.jpg)
  
 ### 5.3 证明
  
@@ -672,7 +696,7 @@ MoCo v2 也是利用了上面SimCLR的第一点和第三点，并在MoCo-v1的�
  
 ### 6. 后续研究
  
-![](https://pic2.zhimg.com/80/v2-4afa962af425a4429cdaab85e6e0209d_1440w.jpg)
+![img](https://pic2.zhimg.com/80/v2-4afa962af425a4429cdaab85e6e0209d_1440w.jpg)
  
 ### 6.1 主线
  
@@ -709,19 +733,19 @@ G. NLP近年论文
  
 【这里仅做总括，细节会迁到另一篇博客，毕竟太长没人看】
  
-![](https://pic1.zhimg.com/80/v2-e9b5c21f761b367b49493620a42d1bb8_1440w.jpg)
+![img](https://pic1.zhimg.com/80/v2-e9b5c21f761b367b49493620a42d1bb8_1440w.jpg)
  
 由于NLP一般进行数据增强时，负例构造比较容易，而且NCE Loss也鼓励负例构造。这里就做了一些NLP处理方法的一些统计【至2021.2】。
  
-![](https://pic4.zhimg.com/80/v2-4954543be6c6473956bfb5771a718ba3_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-4954543be6c6473956bfb5771a718ba3_1440w.jpg)
  
-![](https://pic1.zhimg.com/80/v2-f8507c197496e86710d612eb7ccca6d4_1440w.jpg)
+![img](https://pic1.zhimg.com/80/v2-f8507c197496e86710d612eb7ccca6d4_1440w.jpg)
  
-![](https://pic3.zhimg.com/80/v2-2372e9f6953a4da85232745ac44311da_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-2372e9f6953a4da85232745ac44311da_1440w.jpg)
  
-![](https://pic3.zhimg.com/80/v2-52ec7bfd30e719909e5e7249a4d02caa_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-52ec7bfd30e719909e5e7249a4d02caa_1440w.jpg)
  
-![](https://pic1.zhimg.com/80/v2-fa4b23a3923b4513b18a24745ebbc778_1440w.jpg)
+![img](https://pic1.zhimg.com/80/v2-fa4b23a3923b4513b18a24745ebbc778_1440w.jpg)
  
 ## 互信息
  
@@ -737,7 +761,7 @@ G. NLP近年论文
  
 互信息与信息熵的关系：
  
-![](https://pic4.zhimg.com/80/v2-fc3816323a7c61d99fcc73674d1e5bd3_1440w.jpg)
+![img](https://pic4.zhimg.com/80/v2-fc3816323a7c61d99fcc73674d1e5bd3_1440w.jpg)
  
 通常我们使用的最大化互信息条件，就是最大化两个随机事件的相关性。
  
@@ -860,7 +884,7 @@ Triplet Loss，即三元组损失，是Google在2015年发表的FaceNet论文中
  
 同时为了不让样本的特征聚合到一个非常小的空间中，要求对于同一类的两个正实例和一个负实例，负例应该比正例的距离至少为margin值 ![[公式]](https://www.zhihu.com/equation?tex=%5Calpha) 。如下图所示：
  
-![](https://pic3.zhimg.com/80/v2-f3f7681539639a56e368f565cb5167b6_1440w.jpg)
+![img](https://pic3.zhimg.com/80/v2-f3f7681539639a56e368f565cb5167b6_1440w.jpg)
  
 因为我们期望的是下式成立，即：【给不记得欧几里得范数的兄弟补个知识： ![[公式]](https://www.zhihu.com/equation?tex=%7C%7Ca-b%7C%7C%5E2_2%3D%28a-b%29%5E2) 】
  
@@ -1115,7 +1139,7 @@ InfoNCE 是在\[6\]CPC中提出的。CPC(对比预测编码) 就是一种通过�
   - 例如对【我爱你】进行替换操作得到【我恨你】，就改变的原来的文本的语义。
 
 为了解决上述问题，SimCSE论文中提出了一种基于Dropout的**无监督对比学习**方法，同时也对有监督对比学习方法进行了探索。
-- ![](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711085915213.png)
+- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711085915213.png)
 
 有两种形式：
 - **无监督** unsupervised SimCSE。将相同的输入语句两次传递给经过预训练的编码器，并通过应用独立采样的dropout掩码获得两个嵌入，作为“正例对”。通过仔细的分析，作者们发现dropout本质上是作为数据扩充来使用，而删除它会导致表示崩溃。
@@ -1126,6 +1150,9 @@ InfoNCE 是在\[6\]CPC中提出的。CPC(对比预测编码) 就是一种通过�
 Dropout是一种用来防止神经网络过拟合的方法，在训练的时候，通过dropout mask的方式，模型中的每个神经元都有一定的概率会失活。所以在训练的每个step中，都相当于在训练一个不同的模型。在推理阶段，模型最终的输出相当于是多个模型的组合输出
 - Dropout可以视为一种数据增强的手段，通过dropout mask的方式，模型在编码同一个句子的时候，引入了数据噪声，从而为同一个句子生成不同的句向量，并且不影响其语义信息。其中dropout rate的大小可以视为引入的噪声的强度。
 - 为了验证模型dropout rate对无监督SimCSE的影响，作者在STS-B数据集上进行了消融实验，其中训练数据是作者从维基百科中随机爬取的十万个句子。
+
+[图解](https://img-blog.csdnimg.cn/20210430153842722.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTgzOTY5Mw==,size_16,color_FFFFFF,t_70)
+
 
 损失函数计算方法
 
@@ -1156,6 +1183,8 @@ def simcse_unsup_loss(y_pred, device, temp=0.05):
 - 与无监督SimCSE一样，作者利用数据集中人工标注的正样本对，使用InfoNCE loss对模型进行训练，可以看到使用SNLI+MNLI数据集训练的模型效果最好，并且其指标也比无监督SimCSE提高了2.4个点。
 
 对于无监督SimCSE与有监督SimCSE，论文的实验结果如下表，可以看到，在STS任务中，无论是无监督还是有监督的训练方法，都比之前的方法有了较大幅度的提高，这证明了论文方法的有效性。
+
+[图解](https://img-blog.csdnimg.cn/20210430162642209.png)
 
 损失函数计算方法
 
