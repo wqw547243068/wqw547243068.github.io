@@ -2348,6 +2348,26 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
   4. 支持参数定制化的 RLHF 和数据集定制接口。
 
 
+### BLOOMChat
+
+【2023-5-22】[BLOOMChat: 开源可商用支持多语言的大语言模型](https://zhuanlan.zhihu.com/p/631036519)
+- 2023.05.19, SambaNova和Together 开源了可商用的支持多语言的微调模型BLOOMChat。
+
+国内很多企业和公司也在调研如何基于开源模型进行微调，打造一个支持中文的大语言模型，应用到自己的业务场景里。
+- 由BigScience开源的Bloom基座模型是很多互联网公司的首选
+- 因为这个模型可商用，支持包括中文在内的46种语言，而且模型参数够多，有1760亿参数。
+- 有些公司直接拿基于Bloom做过微调后的Bloomz模型，来进一步微调，打造一个垂直领域的LLM。
+
+SambaNova和Together联合开源的BLOOMChat，其目的就是打造一个开源的、支持**多语言**、可商用的聊天LLM，实验表明BLOOMChat对多语言的支持明显优于其它开源模型。
+- BLOOMChat使用了包括OpenChatKit的OIG、Dolly 2.0和OASST1数据集在内的以英语为主的对话数据集来进行BLOOM（176B）的模型微调。
+
+BLOOMChat微调的指令数据有2类。
+- 第一种，程序自动合成的对话数据集OpenChatKit，数据量大。OpenChatKit训练数据集就是由Together公司联合LAION和Ontocord开源出来的。
+- 第二种，人工写出来的高质量问答数据集Dolly 2.0和OASST1，数据量小。
+
+GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
+
+
 ### ChatRWKV
 
 【2023-3-13】[开源1.5/3/7B中文小说模型：显存3G就能跑7B模型，几行代码即可调用](https://zhuanlan.zhihu.com/p/609154637)
