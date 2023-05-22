@@ -2351,7 +2351,7 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
 ### BLOOMChat
 
 【2023-5-22】[BLOOMChat: 开源可商用支持多语言的大语言模型](https://zhuanlan.zhihu.com/p/631036519)
-- 2023.05.19, SambaNova和Together 开源了可商用的支持多语言的微调模型BLOOMChat。
+- 2023.05.19, SambaNova和Together 开源了可商用的支持多语言的微调模型 BLOOMChat。huggingface [demo](https://huggingface.co/spaces/sambanovasystems/BLOOMChat)
 
 国内很多企业和公司也在调研如何基于开源模型进行微调，打造一个支持中文的大语言模型，应用到自己的业务场景里。
 - 由BigScience开源的Bloom基座模型是很多互联网公司的首选
