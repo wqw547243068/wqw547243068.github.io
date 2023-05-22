@@ -893,6 +893,16 @@ Elo评分系统
 
 #### 中文大模型排行榜
 
+【2023-5-22】[上交清华发起最全学科大模型中文知识及推理评测](https://mp.weixin.qq.com/s/deKVGxf-Zrbb1Pjui5CdUg)，GPT-4 竟然血洗所有国产模型
+- 上交、清华以及爱丁堡大学的研究者首次提出一个包含 52 个学科、全面的中国文化背景下的大模型高级知识和推理能力评估套件 `C-EVAL`，评估了包含 GPT-4、ChatGPT、Claude、LLaMA、Moss 在内的 9 个国内外大模型在中文学科问题上的性能
+- 52 个学科, 每个学科内两百到五百道不等的四个选项的单项选择题，其中四大类分别是 STEM（Science、Technology、Engineering、Mathematics），人文科学，社会科学与其他（包含医学、公务员考试、注册会计师考试、消防工程师考试等）
+- [排行榜](https://cevalbenchmark.com/static/leaderboard.html)：所有参与测评大模型中，只有 GPT-4 的准确率超过了 60%，达到了 **68.7%**，对其余模型有代际上的差距
+  - 整体正确率前三甲: GPT-4、ChatGPT 以及 Claude-v 1.3 均来自国外
+  - 而国产模型中表现最好的 MiniMax 的准确率也只有 49%，相差排名第 1 的 GPT-4 接近 20 个点，相差 ChatGPT 也有 5 个点左右的差距
+- 论文题目：[C-EVAL: A Multi-Level Multi-Discipline Chinese Evaluation Suite for Foundation Models](https://arxiv.org/pdf/2305.08322.pdf)
+- [项目主页](https://cevalbenchmark.com/index.html)
+
+
 【2023-5-9】中文通用大模型综合性基准[SuperCLUE](https://www.cluebenchmarks.com/superclue.html) ([github](https://github.com/CLUEbenchmark/SuperCLUE), 中文通用大模型测评基准
 - [CLUE](https://github.com/CLUEbenchmark/CLUE)数据集，中文任务测评基准(CLUE benchmark)-排行榜
   - `分类任务`：第一名 RoBERTa-wwm-large(82.83) > ALBERT-xxlarge (71.04)
