@@ -1073,6 +1073,113 @@ The supported extensions are:
 
 ##### LangChain
 
+自动
+
+##### ChatGLM QA
+
+【2023-5-22】
+- [基于chatglm搭建文档问答机器人](https://zhuanlan.zhihu.com/p/622418308): 道路交通安全法领域，不到100行的python文件
+  - 基于langchain/llama-index已经可以快速完成类似的功能，但代码量大，学习门槛高
+- [chatglm-qabot-v2: 从q-d匹配到q-q匹配](https://github.com/xinsblog/chatglm-qabot)
+- [chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
+
+一些关键组件的配置：
+- LLM使用的是清华的chatglm-6b
+- 计算embedding用的是苏神的**simbertV2**
+- 没做embedding的索引优化，直接放list里暴力查找
+- 每次默认查找top3相关的文档片段用于构造prompt
+- 构造prompt的模板见代码
+- 生成答案的长度没做限制，要做的话在代码中加请求chatglm的参数即可
+
+```py
+import sys
+
+# 初始化问答机器人
+qabot = QaBot(doc_path="data/中华人民共和国道路交通安全法.txt", chatglm_api_url=sys.argv[1])
+# 根据文档回答问题
+answer, _ = qabot.query('酒后驾驶会坐牢吗')
+```
+
+初始化的代码如下
+
+```py
+def __init__(self, doc_path: str, chatglm_api_url: str):
+    # 加载预训练模型，用于将文档转为embedding
+    pretrained_model = "junnyu/roformer_chinese_sim_char_small"
+    self.tokenizer = RoFormerTokenizer.from_pretrained(pretrained_model)
+    self.model = RoFormerForCausalLM.from_pretrained(pretrained_model)
+    # 加载文档，预先计算每个chunk的embedding
+    self.chunks, self.index = self._build_index(doc_path)
+    # chatglm的api地址
+    self.chatglm_api_url = chatglm_api_url
+```
+
+每次问答的代码如下
+
+```py
+def query(self, question: str) -> Tuple[str, str]:
+    # 计算question的embedding
+    query_embedding = self._encode_text(question)
+    # 根据question的embedding，找到最相关的3个chunk
+    relevant_chunks = self._search_index(query_embedding, topk=3)
+    # 根据question和最相关的3个chunk，构造prompt
+    prompt = self._generate_prompt(question, relevant_chunks)
+    # 请求chatglm的api获得答案
+    answer = self._ask_chatglm(prompt)
+    # 同时返回答案和prompt
+    return answer, prompt
+```
+
+效果
+- ![](https://pic3.zhimg.com/80/v2-f263dca70c9ae78e85f2284f1f66685e_1440w.webp)
+- ![](https://pic1.zhimg.com/80/v2-70c79cadf68c65c30160dedf8ef17b34_1440w.webp)
+- ![](https://pic4.zhimg.com/80/v2-c323e0e63b47f2cb006dddba14ef57ab_1440w.webp)
+
+基于chatglm做文档问答，通常的做法是"先检索再整合"，大致思路
+- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
+- 调用文本转向量的接口，将每个chunk转为一个向量，并存入向量数据库
+- 当用户发来一个问题的时候，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个chunk
+- 将问题和chunk合并重写为一个新的请求发给chatglm的api
+
+将用户请求的query和document做匹配，也就是所谓的`q-d匹配`。
+
+q-d匹配的问题
+- query和document在**表达方式存在较大差异**，通常query是以**疑问句**为主，而document则以**陈述说明**为主，这种差异可能会影响最终匹配的效果。
+- 一种改进的方法是不做`q-d匹配`，而是先通过document生成一批候选的question，当用户发来请求的时候，首先是把query和候选的question做匹配，进而找到相关的document片段
+- 另一个思路通过HyDE去优化
+  - 为query先生成一个假答案，然后通过假答案去检索，这样可以省去为每个文档生成问题的过程，代价相对较小
+
+
+第一种方法就是'`q-q匹配`'，具体思路如下：
+- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
+- 部署chatglm的api，[部署方法](https://github.com/THUDM/ChatGLM-6B#api%E9%83%A8%E7%BD%B2)
+- 调api，根据每个chunk生成5个候选的question，使用的prompt格式为'请根据下面的文本生成5个问题: ...'，生成效果见下图：
+  - ![](https://pic2.zhimg.com/80/v2-7790ad31e0621bff9e10233b448100f1_1440w.jpg)
+- 调用文本转向量的接口，将生成的question转为向量，并存入向量数据库，并记录question和原始chunk的对应关系
+- 用户发来一个问题时，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个question，进而找到对应的chunk
+- 将问题和chunk**合并重写**为一个新的请求发给chatglm的api
+
+[chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
+- qabot_v1.py实现了q-d匹配方法
+- qabot_v2.py实现了q-q匹配方法
+
+q-d匹配和q-q匹配的代码差异
+- 初始化构建索引的差异如下：
+  - ![](https://pic1.zhimg.com/80/v2-e3e8a1922e93fe67a6432866882b4490_1440w.webp)
+- 查询索引时的差异如下：
+  - ![](https://pic2.zhimg.com/80/v2-273d529bbcd4577f55003cd6fe508fa5_1440w.webp)
+
+测试的问题为行驶证的式样由谁来监制，v1和v2的效果对比如下：
+- ![](https://pic2.zhimg.com/80/v2-14832aaedad809d62ce0d9157c770c69_1440w.webp)
+
+在构建索引阶段，v2花费的时间是远超过v1的：
+
+```sh
+# 计算chunks的embedding: 
+100%|██████████| 20/20 [00:02<00:00, 7.81it/s]
+# 生成question并计算embedding: 
+100%|██████████| 20/20 [07:24<00:00, 22.24s/it]
+```
 
 ### 推荐系统
 
