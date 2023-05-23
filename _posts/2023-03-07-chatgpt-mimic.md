@@ -1768,6 +1768,26 @@ LLMTune底层实现了LoRA算法，它依赖的库也很少
 - 依赖库：pytorch、sentencepieces（Google开源的无监督分词工具）、transformers、peft、databsets
 - LLMTune目前仅支持在NVIDIA显卡上的微调，所以上述PyTorch也需要cuda版本才可以使用
 
+#### LIMA -- META
+
+【2023-5-23】[没有RLHF，一样媲美GPT-4、Bard，Meta发布650亿参数语言模型LIMA](https://mp.weixin.qq.com/s/Oze93Brun-AQUBI5Tt1b6w)
+- [paper](https://arxiv.org/abs/2305.11206)
+
+使用 RLHF 方法，大型语言模型可与人类偏好保持对齐，遵循人类意图，最小化无益、失真或偏见的输出。但 RLHF 方法依赖于大量的人工标注和评估，因此成本非常高昂。最近，来自 Meta AI 等机构的研究者在一项研究中指出：在对齐方面，少即是多。
+
+在 65B 参数的 LLaMa 模型（该模型称为 LIMA）在 1000 个精选样本上进行有监督学习，在完全没使用 RLHF 方法的情况下，LIMA 表现出非常强大的性能，并且能够很好地泛化到训练数据以外的任务上。在人类评估结果中，LIMA 甚至可与 GPT-4、Bard、DaVinci003 相媲美。图灵奖得主 Yann LeCun 也转推称赞这项研究。
+
+对照试验中
+- LIMA 在 43% 的病例中疗效都与 GPT-4 媲美甚至更好；
+- 相比于 Bard，占比能够达到 58%；
+- 与使用人类反馈训练的 DaVinci003 对比了，这个数字高达 65%。
+
+在 1000 个精心策划的例子上对一个强大的预训练语言模型进行微调，可以在广泛的 prompt 中产生显著的、有竞争力的结果。然而，这种方法也有局限性：
+- 首先，构建这样的样本所付出的脑力劳动是巨大的，而且很难扩大规模。
+- 其次，LIMA 并不像产品级模型那样鲁棒，虽然 LIMA 通常会产生良好的反应，但在解码过程中一个不幸运的样本或一个敌对的 prompt 往往会导致一个弱的反应。
+
+尽管如此，这项工作中提出的证据表明，用简单的方法来解决复杂的对齐问题是有潜力的。
+
 ### LAION：Open Assistant
 
 【2023-2-25】[Open Assistant 全流程训练细节（GPT3+RL）](https://zhuanlan.zhihu.com/p/609003237)
