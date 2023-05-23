@@ -1234,10 +1234,12 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
 - [Implementation of "Large Language Models are Zero-Shot Rankers for Recommender Systems"](https://arxiv.org/pdf/2305.08845.pdf)
 - 代码[LLMRank](https://github.com/RUCAIBox/LLMRank)
 
-将推荐问题形式化为条件排序任务，将历史交互作为条件，将召回得到的候选item作为候选。 作者采用特定的提示方法来应用LLM解决排序任务：作者通过包括交互历史、候选item和排序指令来设计提示模板。
-- LLM 具有很有前途的零样本排序能力。
-- LLM 难以感知历史交互的顺序，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的提示和引导策略来缓解。
-- ![](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
+将推荐问题形式化为条件排序任务，将历史交互作为条件，将召回得到的候选item作为候选。 
+
+采用特定提示方法来应用LLM解决排序任务：包括**交互历史**、**候选item**和**排序指令**来设计提示模板。
+- LLM 具有很有前途的**零样本**排序能力。
+- LLM **难以感知历史交互顺序**，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的**提示和引导策略**来缓解。
+- ![img](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
 
 ### 办公
 
