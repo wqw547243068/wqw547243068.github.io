@@ -19,7 +19,6 @@ ChatGPT复现上
 - 另一方面是训练加速（Deepspeed+Megatron+Colossal ai+FlexGen），便于基于开源大模型（Bloom/OPT/T5）微调; 
 - 还有 更超前的小冰链（X-CoTA），思维链透明化+执行能力（有人推测与大语言模型关系不大）；有个瓶颈：涌现能力只出现在100b级别的大模型上，小模型一般人难以优化
 
-
 ## 复现思路
 
 【2023-2-28】要点
@@ -781,6 +780,26 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 谷歌唯一剩下的步骤是通过人类反馈使这个 LLM 与对话场景对齐（alignment）。如果他们很快发布类似 ChatGPT 的或者更好的聊天机器人，我不会感到惊讶 —— 尽管他们最近 “失败” 地展示了一版可能基于 LaMDA 的 Bard。
 
 ## 复现详情
+
+开源终究胜利
+- [详见](https://wqw547243068.github.io/company#%E5%BC%80%E6%BA%90ai%E7%BB%88%E7%A9%B6%E8%83%9C%E5%88%A9)
+
+【2023-5-6】[谷歌内部文件泄露：我们和OpenAI都没有护城河](https://www.huxiu.com/article/1439220.html)
+- Google 内部泄露的文件在 SemiAnalysis 博客传播: **开源 AI** 会击败 Google 与 OpenAI，获得最终的胜利。
+- 译文：我们没有护城河，OpenAI 也没有, [公众号](https://mp.weixin.qq.com/s/JiA-HJXeZSgHGH6zHblIVA)，[掘金](https://juejin.cn/post/7229593695653314597)
+- 原文：[We Have No Moat, And Neither Does OpenAI](https://www.semianalysis.com/p/google-we-have-no-moat-and-neither)
+
+开源AI是最后赢家，而不是OpenAI
+- 从头训练大模型成本太高，难以实施：LLaMA和LoRA出现
+  - 3月初，Meta 的 LLaMA 泄露，没有指令或对话调整，也没有 RLHF。
+  - 不到一个月，一系列改进版出现：指令调整、量化、质量改进、人类评估、多模态和 RLHF 等等变体。每个改进版间隔才几天时间
+  - 扩展问题解决后，一定程度上任何人都可以进行实验和调试。
+- 长期来看，大型模型并不更具优势，只用了几天时间
+- 数据质量比数据大小更重要
+- 直接与开源竞争是一个失败的命题
+- 个人受到许可证限制程度没有企业那么大
+- 客户比大模型提供商更了解业务应用
+- Meta已开始建设开源生态系统：闭源越多，开源需求越强烈，发展越快
 
 ### 汇总
 
@@ -2387,6 +2406,11 @@ BLOOMChat微调的指令数据有2类。
 
 GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 
+### 360智脑
+
+【2023-5-23】[迭代后首波实测！360智脑一键联网，代码超强，AI诈骗一眼看穿](https://mp.weixin.qq.com/s/sBmmeMJMgnWIoJLXa3Aimw), 可以识别诈骗、作图(「360 鸿图」)、联网
+- ![](https://image.jiqizhixin.com/uploads/editor/502667cf-151e-4fa7-8cd4-85c0979a5092/640.gif)
+- [详细测完360智脑后，我们发现大模型终于被玩明白了](https://www.jiqizhixin.com/articles/2023-05-23-2)
 
 ### ChatRWKV
 
