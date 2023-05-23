@@ -2076,6 +2076,16 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
   - <font color='red'>标贝 > 讯飞 > 阿里 > 百度 > 思必驰 > 灵云 </font>
 - 详细代码参考：[Python：TTS语音合成技术，市场各大平台对比以及实现](https://cloud.tencent.com/developer/article/1403570)
 
+### MMS（META）
+
+【2023-5-23】[规模性能双杀OpenAI，Meta语音达LLaMA级里程碑！开源MMS模型可识别1100+语言](https://mp.weixin.qq.com/s/EoL6-IVyHkZJMquXicT3mg)
+- MMS支持1000多种语言，用圣经训练，错误率仅为Whisper数据集的一半
+- 与OpenAI Whisper相比，多语言ASR模型支持11倍以上的语言，但在54种语言上的平均错误率还不到FLEURS的一半。
+- 开源！覆盖 ASR 和 TTS
+- [官方介绍](https://ai.facebook.com/blog/multilingual-model-speech-recognition/)，论文：[scaling-speech-technology-to-1000-languages](https://research.facebook.com/publications/scaling-speech-technology-to-1000-languages/)
+
+
+
 ### TTSMaker
 
 【2023-4-12】[TTSMaker](https://link.zhihu.com/?target=https%3A//ttsmaker.com/) 是一款免费的文本转语音工具，提供语音合成服务，支持多种语言，包括英语、法语、德语、西班牙语、阿拉伯语、中文、日语、韩语、越南语等，以及多种语音风格。
