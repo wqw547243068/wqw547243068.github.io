@@ -1437,6 +1437,27 @@ Transformer-XL架构在vanilla Transformer的基础上引入了两点创新：�
 - [中文XLNet预训练模型](https://github.com/ymcui/Chinese-PreTrained-XLNet)
 
 
+## Roformer
+
+【2021-3-23】Rotary Transformer，简称RoFormer，是追一科技苏剑林自研的语言模型之一，主要是为Transformer结构设计了新的`旋转式位置编码`（Rotary Position Embedding，`RoPE`）。
+- `RoPE`具有良好的理论性质，且是目前**唯一**一种用到线性Attention的绝对位置编码，目前来看实验结果也颇为不错。
+- 参考配置：在24G显存的3090上，跑maxlen=1024，batch_size能跑到8以上。
+
+详细介绍：
+- [Transformer升级之路：2、博采众长的旋转式位置编码](https://kexue.fm/archives/8265)
+
+### 使用
+
+- [pytorch版本](https://github.com/JunnYu/RoFormer_pytorch)
+- huggingface [roformer](https://huggingface.co/docs/transformers/model_doc/roformer)
+
+```py
+from transformers import RoFormerTokenizerFast
+
+tokenizer = RoFormerTokenizerFast.from_pretrained("junnyu/roformer_chinese_base")
+tokenizer.tokenize("今天天气非常好。")
+```
+
 # 参考资料
 
 ## 参考文章
