@@ -392,6 +392,12 @@ MRC系统理解了给定段落的语义后回答问题，问题之间是相互�
 
 ## Demo
 
+### 百度新闻摘要
+
+【2023-5-24】百度新闻摘要[接口](https://cloud.baidu.com/product/nlp_apply/news_summary)
+
+### huggingface QA
+
 【2022-10-18】huggingface（抱抱脸 ![](https://huggingface.co/front/assets/huggingface_logo-noborder.svg) ）支持快速部署模型demo
 
 [Question Answering](https://huggingface.co/tasks/question-answering)
@@ -413,6 +419,8 @@ There are different QA variants based on the inputs and outputs:
 [Bert-MRC](https://github.com/jasoncao11/nlp-notebook/tree/master/3-1.Bert-MRC)
 
 文本摘要生成
+
+
 
 ## 代码实战
 
