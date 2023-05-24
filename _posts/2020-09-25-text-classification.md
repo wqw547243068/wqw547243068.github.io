@@ -363,7 +363,7 @@ def best_k_p(logits, golden, verbose=False):
 ### 介绍
 
 - 【2021-5-27】fasttext, [简介](https://blog.csdn.net/qq_32023541/article/details/80839800?spm=1001.2014.3001.5501) ,Library for efficient text classification and representation learning
-  - ![](https://fasttext.cc/img/fasttext-logo-color-web.png)
+
 fastText是一个快速文本分类算法，与基于神经网络的分类算法相比优点：
 - 1、fastText在保持高精度的情况下**加快**了训练速度和测试速度
 - 2、fastText不需要预训练好的**词向量**，fastText会自己训练词向量
@@ -377,6 +377,9 @@ FastText是Facebook开发的一款快速文本分类器，提供简单而高效�
 
 fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征。
 - **模型架构**: fastText 模型输入一个词的序列（一段文本或者一句话)，输出这个词序列属于不同类别的概率。序列中的词和词组组成特征向量，特征向量通过线性变换映射到中间层，中间层再映射到标签。fastText 在预测标签时使用了非线性激活函数，但在中间层不使用非线性激活函数。
+  - fastText模型架构和word2vec的CBOW模型架构非常相似, 只有三层：输入层、隐含层、输出层（Hierarchical Softmax）
+  - 输入都是多个经向量表示的单词，输出都是一个特定的target，隐含层都是对多个词向量的**叠加平均**。
+  - ![](https://pic2.zhimg.com/80/v2-7f38f23e98ee89d21fd16e34d5f07d69_1440w.webp)
 - **层次softmax**: 在某些文本分类任务中类别很多，计算线性分类器的复杂度高。为了改善运行时间，fastText 模型使用了层次 Softmax 技巧。层次 Softmax 技巧建立在哈夫曼编码的基础上，对标签进行编码，能够极大地缩小模型预测目标的数量。
   - 注意：分层softmax是完全softmax的一个**近似**，分层softmax在大数据集上高效的建立模型，但通常会以**损失精度**的几个百分点为代价
 - **N-gram特征**: fastText 可以用于文本分类和句子分类。不管是文本分类还是句子分类，我们常用的特征是词袋模型。但词袋模型不能考虑词之间的顺序，因此 fastText 还加入了 N-gram 特征。
@@ -394,7 +397,6 @@ fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征
 - 参考
   - [python——Fasttext新手学习笔记](https://blog.csdn.net/weixin_39023975/article/details/100180531)
   - [fastText原理和文本分类实战，看这一篇就够了](https://blog.csdn.net/feilong_csdn/article/details/88655927)，源自[fasttext中文文档](http://fasttext.apachecn.org/)
-
 
 ```shell
 # 下载后安装
@@ -427,7 +429,6 @@ make
 - print-sentence-vectors：给定一个训练好的模型，打印出所有的句子向量
 - nn：查询最近邻居
 - analogies：查找所有同类词
-
 
 代码：
 
@@ -784,6 +785,40 @@ print(classification_report(test_df['label'].values,val_pred))
 ```
 
 [Pytorch实现FastText模型对AG_news数据集进行四分类预测（torchtext实现数据预处理）](https://blog.csdn.net/kingsonyoung/article/details/90757879)
+
+### 训练
+
+pytorch实现fastText: 
+- [model.py](https://github.com/jasoncao11/nlp-notebook/blob/master/2-2.FastText/model.py)
+- [train_val.py](https://github.com/jasoncao11/nlp-notebook/blob/master/2-2.FastText/train_eval.py)
+
+```py
+# -*- coding: utf-8 -*-
+import torch.nn as nn
+from torch.nn import functional as F
+
+class FastText(nn.Module):
+    def __init__(self, trial, vocab_size, class_num):
+        super(FastText, self).__init__()
+        
+        self.embed_dim = trial.suggest_int("n_embedding", 200, 300, 50)
+        self.hidden_size = trial.suggest_int("hidden_size", 64, 128, 2)
+        self.dropout = nn.Dropout(0.5)
+
+        self.embed = nn.Embedding(vocab_size, self.embed_dim, padding_idx=1)        
+        self.fc1 = nn.Linear(self.embed_dim, self.hidden_size)
+        self.fc2 = nn.Linear(self.hidden_size, class_num)
+
+    def forward(self, x):
+        embeds = self.embed(x)
+        out = embeds.mean(dim=1)
+        out = self.dropout(out)
+        out = self.fc1(out)
+        out = F.relu(out)
+        out = self.fc2(out)
+        logit = F.log_softmax(out, dim=1)
+        return logit
+```
 
 
 # 深度学习文本分类
