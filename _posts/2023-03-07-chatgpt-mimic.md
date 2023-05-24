@@ -2421,6 +2421,7 @@ GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 [ChatRWKV](https://github.com/BlinkDL/ChatRWKV) is like ChatGPT but powered by RWKV (100% RNN) language model, and open source.
 - [RWKV-CHN](https://modelscope.cn/studios/BlinkDL/RWKV-CHN/summary) 在线体验
 
+RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 
 ### trl
