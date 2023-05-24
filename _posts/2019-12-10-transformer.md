@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -1457,6 +1457,47 @@ from transformers import RoFormerTokenizerFast
 tokenizer = RoFormerTokenizerFast.from_pretrained("junnyu/roformer_chinese_base")
 tokenizer.tokenize("今天天气非常好。")
 ```
+
+## RWKV
+
+【2023-5-24】[RWKV论文燃爆！将RNN崛起进行到底！可扩百亿级参数，与Transformer表现相当](https://mp.weixin.qq.com/s/JokJttEBlXm2b8Zew4m1mw)
+
+RWKV结合了RNN和Transformer的优势：
+- 一方面，抛弃传统的**点积自注意力**，使用**线性注意力**，解决transformer内存和计算复杂度随序列增长呈**平方**缩放的瓶颈；
+- 另一方面，突破了RNN梯度消失、并行化和可扩展性等限制。
+
+实现 O(Td) 的时间复杂度和 O(d) 的空间复杂度！
+
+- 论文：[RWKV: Reinventing RNNs for the Transformer Era](https://arxiv.org/pdf/2305.13048.pdf)
+- 代码: [RWKV-LM](https://github.com/BlinkDL/RWKV-LM), [模型](https://huggingface.co/BlinkDL/rwkv-4-raven)
+
+问题
+- RNN分解为两个**线性块**（和）和一个特定于**RNN块**，但对于先前**时间步的数据依赖**阻止了RNN的并行化。
+- RWKV与QRNN和RNN（Vanilla、LSTM、GRU等）的架构对比
+
+RWKV 模型架构
+- The Receptance Weighted Key Value (RWKV) 的名字来自于时间混合 (time-mixing) 和通道混合 (channel-mixing) 块中使用的四个主要元素：
+- `R` (Receptance) ：接受过去信息的接受向量；
+- `W` (Weight)：位置权重衰减向量（可训练的模型参数）；
+- `K` (Key) ：键是类似于传统注意力中的向量；
+- `V` (Value)：值是类似于传统注意力中的向量。
+
+每个时间步，主要元素之间通过乘法进行交互。
+
+RWKV 架构由一系列堆叠的残差块组成，每个残差块由具有循环结构的时间混合和通道混合子块组成。
+
+效果
+- 与具有相同参数和训练token数量的传统transformer架构（Pythia、OPT、BLOOM、GPT-Neo）相比，RWKV在六个基准测试（Winogrande、PIQA、ARC-C、ARC-E、LAMBADA和SciQ）上均具有竞争力。RWKV甚至在四项任务中超越了Pythia和GPT-Neo.
+
+RWKV-4和ChatGPT / GPT-4的比较研究显示，RWKV-4对提示工程非常敏感。当将指令风格从适合GPT调整为更适合RWKV时，RTE的F1性能甚至从44.2％增加到74.8％。作者猜想是因为RNN不能回溯处理 ( retrospective processing) 来重新调整先前信息的权重。因此为了让性能更好，期望信息应该在问题之后展示。
+
+RWKV与Transformer表现相当，且能在训练时能够并行、在推理时保持恒定的计算和内存复杂度。
+
+但RWKV也存在局限：
+- 比起标准Transformer的平方注意力所维护的完整信息，**线性注意力**和**递归架构**使信息通过单个向量表示在多个时间步上漏斗式传递，可能限制模型回忆非常长的上下文中细节信息的能力。并且，提示工程变得更加重要。
+
+
+
 
 # 参考资料
 
