@@ -842,6 +842,11 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 【2023-5-4】[UC伯克利发布大语言模型排行榜，Vicuna夺冠，清华ChatGLM进前5](https://www.36kr.com/p/2243109425885057)
 - [Chatbot Arena: Benchmarking LLMs in the Wild with Elo Ratings](https://lmsys.org/blog/2023-05-03-arena/)
 
+#### 评测数据
+
+【2023-5-24】中文评测数据集
+- [Linly](https://github.com/CVI-SZU/Linly/blob/main/README.md), 提供 8类（平均10个问题）
+
 #### 国际大模型排行榜 -- LMSYS
 
 [LMSYS Org](https://arena.lmsys.org/)（UC伯克利主导，前小羊驼发明者, [twitter](https://twitter.com/lmsysorg)）的研究人员又搞了个大新闻——大语言模型版排位赛！
