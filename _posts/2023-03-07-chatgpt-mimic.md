@@ -210,6 +210,9 @@ combine_data = [raw_data+prompt+label for label in labels]
 
 初始化模型，对输入数据进行编码, 以 [GPT-2](https://huggingface.co/uer/gpt2-chinese-cluecorpussmall) 模型为例
 
+<details>
+  <summary>GPT-2 SFT代码（点击展开）</summary>
+
 ```py
 from torch.utils.data import Dataset
 from transformers import Trainer, TrainingArguments
@@ -279,6 +282,8 @@ results = [i.replace(' ', '') for i in decode_tokens]
 
 print("results",results)
 ```
+
+</details>
 
 结果：
 
@@ -379,6 +384,10 @@ class RewardModel(BertPreTrainedModel):
 
 训练过程
 
+<details>
+  <summary>训练过程（点击展开）</summary>
+
+
 ```py
 class Datasets(Dataset):
     def __init__(self, sample):
@@ -436,6 +445,8 @@ def train(pretrain_path, save_path):
     model_to_save.save_pretrained(save_path)
     model_to_save.config.save_pretrained(save_path)
 ```
+
+</details>
 
 模型预测
 
@@ -1770,6 +1781,37 @@ chatgpt
 整体方法如下所示：
 - ![](https://pic1.zhimg.com/80/v2-ac4334cb3ab218398849ceb79c866f2c_1440w.webp)
 
+### Linly-ChatFlow（中文）
+
+Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingface.co/spaces/Linly-AI/Linly-ChatFlow)
+- 【2023-3-28】 开放基于 LLaMA 的中文对话模型 Linly-ChatFlow-7B 
+- 【2023-4-27】 正式发布 Linly-ChatFlow-13B 对话模型、Linly-Chinese-LLaMA-33B 中文基础模型
+
+中文对话模型 [Linly-ChatFlow](https://github.com/CVI-SZU/Linly)
+- 模型基于 TencentPretrain 预训练框架实现，在 32 * A100 GPU 上全参数训练（Full-tuning）
+- 将陆续开放 7B、13B、33B、65B 规模的中文模型权重。 
+- 中文基础模型以 `LLaMA` 为底座，利用中文和中英**平行**增量预训练，将英文上强大语言能力迁移到中文上。
+- 项目汇总了目前公开的多语言指令数据，对中文模型进行了大规模指令跟随训练，实现了 Linly-ChatFlow 对话模型。
+
+项目特点
+- 通过 Full-tuning （全参数训练）获得中文LLaMA模型，提供 TencentPretrain 与 HuggingFace 版本
+- 汇总中文开源社区指令数据，提供目前最大的中文 LLaMA 模型
+- 模型细节公开可复现，提供数据准备、模型训练和模型评估完整流程代码
+- 多种量化方案，支持 CUDA 和边缘设备部署推理
+- 基于公开数据从头训练 Linly-OpenLLaMA ，针对中文优化字词结合tokenizer
+- ![](https://github.com/CVI-SZU/Linly/raw/main/assets/chatflow.jpg)
+
+覆盖多种功能，包含测试案例
+- 生成示例
+- 常识推理
+- 逻辑推理
+- 知识问答
+- 语义理解
+- 数值计算
+- 诗文写作
+- 文本翻译
+- 代码
+
 
 ### LLMTune
 
@@ -1853,7 +1895,7 @@ export MODEL_PATH=$PWD/.saved_models # 设置模型目录
  
 第一步是用更接近用户使用情况的数据来 finetune 已经 pretrain 好的 gpt-3 模型，论文中写这样子第一步的 finetune 过拟合一点，对于后面的强化学习训练有帮助。
 - `SFT`是 Supervised FineTune，那么用什么数据进行监督呢？这一步使用的数据具体可以参考：[https://github.com/LAION-AI/Open-Assistant/blob/main/model/model_training/configs/config.yaml](https://github.com/LAION-AI/Open-Assistant/blob/main/model/model_training/configs/config.yaml)，包括如下数据
- 
+
 ```yaml
 datasets:
     - webgpt
