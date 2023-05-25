@@ -3,7 +3,7 @@ layout: post
 title:  文档问答原理及实践 Thoery and Implemetation of the Doucument QA
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: ChatGPT 对话系统
+tags: ChatGPT 对话系统 知识库
 excerpt: 文档问答的原理、案例及实践
 mathjax: true
 permalink: /doc-chat
@@ -436,6 +436,106 @@ output = model.generate(
 output_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print(output_text)
 ```
+
+## 定制知识库
+
+【2023-5-24】[基于 ChatGLM-6B 搭建个人专属知识库](https://www.toutiao.com/article/7236562318920876596)
+
+### 业务场景
+
+调整 prompt，匹配不同的知识库，让 LLM 扮演不同的角色
+- • 上传公司财报，充当财务分析师
+- • 上传客服聊天记录，充当智能客服
+- • 上传经典Case，充当律师助手
+- • 上传医院百科全书，充当在线问诊医生
+
+### 问题
+
+微调的瓶颈
+- 需要专业知识，很多计算资源和时间，以便在不同超参数设置训练多个模型，并选择最佳的一个
+- 动态扩展比较差，新增和修改原有的数据都要重新微调一次。
+
+总之，微调对非专业人员不友好。
+
+如何不用微调就能实现垂直领域的专业问答？
+- 方案：ChatGLM-6B + langchain 实现个人专属知识库
+
+### 技术原理
+
+技术原理
+- 加载文件 -> 读取文本 -> 文本分割 -> 文本向量化 -> 问句向量化 -> 在文本向量中匹配出与问句向量最相似的top k个 -> 匹配出的文本作为上下文和问题一起添加到 prompt 中 -> 提交给 LLM 生成回答。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/0d835cc528ba470d8e0e000f950780c7~noop.image?_iz=58558&from=article.pc_detail&x-expires=1685601997&x-signature=5lntZ3rovTBKBRNYBptf8gdfeOM%3D)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/ddc11018f9324f6cae76611a7486894b~noop.image?_iz=58558&from=article.pc_detail&x-expires=1685601997&x-signature=O88KtsSqlFFGJqlLUTLF4IzYYhs%3D)
+
+核心技术是: 向量 embedding
+- 将用户知识库内容经过 embedding 存入向量知识库，然后用户每一次提问也会经过 embedding，利用向量相关性算法（例如余弦算法）找到最匹配的几个知识库片段，将这些知识库片段作为上下文，与用户问题一起作为 prompt 提交给 LLM 回答
+
+典型的prompt
+
+```json
+已知信息：
+{context} 
+根据上述已知信息，简洁和专业的来回答用户的问题。如果无法从中得到答案，请说 “根据已知信息无法回答该问题” 或 “没有提供足够的相关信息”，不允许在答案中添加编造成分，答案请使用中文。 
+问题是：{question}
+```
+
+### 实现
+
+```sh
+# 下载源码
+git clone https://github.com/imClumsyPanda/langchain-ChatGLM.git
+# 安装依赖
+cd langchain-ChatGLM
+pip install -r requirements.txt
+# 下载模型
+
+# 安装 git lfs
+git lfs install
+# 下载 LLM 模型
+git clone https://huggingface.co/THUDM/chatglm-6b /your_path/chatglm-6b
+# 下载 Embedding 模型
+git clone https://huggingface.co/GanymedeNil/text2vec-large-chinese /your_path/text2vec
+# 模型需要更新时，可打开模型所在文件夹后拉取最新模型文件/代码
+git pull
+```
+
+模型下载完成后，请在 configs/model_config.py 文件中，对embedding_model_dict和llm_model_dict参数进行修改。
+
+```py
+embedding_model_dict = {
+    "ernie-tiny": "nghuyong/ernie-3.0-nano-zh",
+    "ernie-base": "nghuyong/ernie-3.0-base-zh",
+    "text2vec": "/your_path/text2vec"
+}
+llm_model_dict = {
+    "chatyuan": "ClueAI/ChatYuan-large-v2",
+    "chatglm-6b-int4-qe": "THUDM/chatglm-6b-int4-qe",
+    "chatglm-6b-int4": "THUDM/chatglm-6b-int4",
+    "chatglm-6b-int8": "THUDM/chatglm-6b-int8",
+    "chatglm-6b": "/your_path/chatglm-6b",
+}
+```
+
+启动服务
+
+```py
+# Web 模式启动
+pip install gradio
+python webui.py
+# API 模式启动
+python api.py
+# 命令行模式启动
+python cli_demo.py
+```
+
+### 效果
+
+gradio页面
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/558af5fd53d34b5a859afddbc82a331c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1685601997&x-signature=N%2FKm%2FGcW8WSiFxrAAD04P3klhig%3D)
+
+Chatgpt-Next-Web 项目基础上进行了适配修改，打造了一款面向用户使用的本地知识库前端。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/55d11a03e5a742ce9c201aa355b38e3c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1685601997&x-signature=fYTBeLwxkicrZBzWsYQusCVfiJk%3D)
+
 
 ## 业界案例
 
