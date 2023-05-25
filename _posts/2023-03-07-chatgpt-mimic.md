@@ -1146,12 +1146,13 @@ CUDA_VISIBLE_DEVICES=0 python3 run-gradio.py --base_model=WeOpenML/PandaLM-7B-v1
 
 MOSS 是基于公开的中英文数据训练，通过与人类交互能力进行迭代优化。目前 MOSS 收集了几百万真实人类对话数据，也在进一步迭代优化，也具有多轮交互的能力，所以对于指令的理解能力上，通用的语义理解能力上，和ChatGPT 非常类似，任何话它都能接得住，但它的质量没有 ChatGPT 那么好，原因在于模型比较小，知识量不够。
 
-### ChatYuan
+### ChatYuan（ClueAI）
 
 【2023-2-7】[首个中文版ChatGPT来了：大模型的中国元“Yuan”](https://www.toutiao.com/article/7197247550645142074)
-- 元语智能的功能型对话大模型 ChatYuan「既泛又专」，除了问答、上下文对话以及创意性写作等各类自然语言理解和生成任务之外，还能回答法律、医疗等专业领域的问答，并且写代码功能也已经在内测中，不久即将发布。
+- Github:[ChatYuan](https://github.com/clue-ai/ChatYuan), 体验地址：[ClueAI](https://www.cluebenchmarks.com/clueai.html), [huggingface](https://huggingface.co/ClueAI/ChatYuan-large-v2/), [modelscope](https://modelscope.cn/studios/ClueAI/ChatYuan-large-v2)
+- `元语智能`的功能型对话大模型 ChatYuan「既泛又专」，除了问答、上下文对话以及创意性写作等各类自然语言理解和生成任务之外，还能回答法律、医疗等专业领域的问答，并且写代码功能也已经在内测中，不久即将发布。
 - 国内通用人工智能初创公司元语智能，推出国内首个基于大模型的功能型对话产品 ChatYuan。
-- ChatYuan 基于 PromptCLUE 结合数亿条功能对话多轮对话数据进一步训练得到，它去掉了文本理解、信息抽取类任务，加强了问答、对话和各种生成式任务的学习和训练；针对多轮对话容易受到上下文的干扰，加入了抗干扰数据使得模型可以在必要时忽略无关的上下文；加入了用户反馈数据的学习，对齐人类意图，使得模型不仅具有一定的通用语言理解能力、特定任务上的生成能力，也能更好地响应用户的意图。
+- `ChatYuan` 基于 PromptCLUE 结合数亿条功能对话多轮对话数据进一步训练得到，它去掉了文本理解、信息抽取类任务，加强了问答、对话和各种生成式任务的学习和训练；针对多轮对话容易受到上下文的干扰，加入了抗干扰数据使得模型可以在必要时忽略无关的上下文；加入了用户反馈数据的学习，对齐人类意图，使得模型不仅具有一定的通用语言理解能力、特定任务上的生成能力，也能更好地响应用户的意图。
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/899799776faa4a61b5be790add82df65~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676358927&x-signature=YP3Ejlg5JHaXYQ2TeJ3REZW0uh4%3D)
 
 大规模多任务 Prompt 预训练中文开源模型 —— PromptCLUE，它实现了中文上的三大统一：统一模型框架、统一任务形式和统一应用方式。
