@@ -33,6 +33,10 @@ permalink: /doc-chat
 
 ### 文本向量化
 
+`嵌入`（Embedding）是一种将**文本或对象**转换为**向量表示**的技术，将词语、句子或其他文本形式转换为固定长度的向量表示。
+- 嵌入向量是由一系列浮点数构成的**向量**。
+- 通过计算两个嵌入向量之间的距离，可以衡量它们之间的相关性。距离较小的嵌入向量表示文本之间具有较高的相关性，而距离较大的嵌入向量表示文本之间相关性较低。
+
 详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
 ### 如何增强LLM能力
@@ -441,9 +445,278 @@ output_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print(output_text)
 ```
 
+## 文档向量化工具
+
+自研框架的选择
+- 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
+- 也可以使用 LangChain 框架。
+
+参考
+- [ChatGPT怎么建立私有知识库？](https://www.zhihu.com/question/596838257/answer/3004754396)
+- [利用LangChain和国产大模型ChatGLM实现基于本地知识库的自动问答](https://www.zhihu.com/zvideo/1630964532179812353)
+
+除了从文档中抓取数据，从指定网站URL抓取数据，实现智能客服外部知识库，可以借助ChatGPT写Python代码，PythonBeautiful Soup库的实现方式很成熟
+
+大厂产品截图：智能客服知识库建设
+- 企业资料库，关联大语言模型自动搜索
+- ![a](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYAg6aFUKbz~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=5kqgHWkZX6LPdrX2H9Zq59m%2BwO0%3D)
+- 大模型文档知识抽取和“即搜即问”
+- ![b](https://p9-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYkN7rAGx03~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=gO%2FqHxavS7KVAfE08Mv0WayLjLQ%3D)
+- ![b](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYmX2ImA5oO~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=rlim2GCZ8zsapnPyzA47LCHJkEo%3D)
+
+
+### OpenAIEmbeddings
+
+OpenAI官方的embedding服务
+
+### LangChain
+
+LangChain, 语言链条，也称：`兰链`，一种LLM语言大模型开发工具。
+
+LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
+- AGI的基础工具模块库，类似模块库还有mavin。
+
+LangChain, 一个基于语言模型开发应用程序的框架。
+- 将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API。 
+- [官方文档](https://python.langchain.com/en/latest/index.html)
+- [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
+
+国内不少LLm团队采用langChain，集成llm本地化知识库
+
+langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
+
+langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
+
+[无需OpenAI API Key，构建个人化知识库的终极指南](https://mp.weixin.qq.com/s/ponKZ1OaHXX2nzuSxXg8-Q)
+
+构建知识库的主要流程：
+1. 加载文档
+2. 文本分割
+3. 构建矢量数据库
+4. 引入LLM
+5. 创建qa_chain，开始提问
+
+```py
+from langchain.embeddings.openai import OpenAIEmbeddings # openai
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI  # openai
+import os
+
+os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
+
+# Question Answering Chain
+# ① 加载文档
+with open("../test.txt") as f:
+    state_of_the_union = f.read()
+# ② 文本分割
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0) # 指定分割器
+texts = text_splitter.split_text(state_of_the_union) # 分割文本
+embeddings = OpenAIEmbeddings() # 使用OpenAI的embedding服务
+# ③ 构建适量数据库
+docsearch = Chroma.from_texts(texts, embeddings, metadatas=[{"source": str(i)} for i in range(len(texts))]).as_retriever()
+query = "What did the president say about Justice Breyer"
+docs = docsearch.get_relevant_documents(query)
+# ④ 引入LLM，创建qa_chain
+chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+# ⑤ 开始提问
+answer = chain.run(input_documents=docs, question=query)
+print(answer)
+```
+
+以上构建依赖OpenAI，有第三方免费服务吗？
+- [transformers-course](Github：https://github.com/Liu-Shihao/transformers-course)
+
+Huggingface开源AI模型构建本地知识库
+- 开源的google/flan-t5-xlAI模型
+
+```py
+from langchain import HuggingFacePipeline
+from langchain.chains import RetrievalQA
+from langchain.chains.question_answering import load_qa_chain
+from langchain.document_loaders import TextLoader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.llms.base import LLM
+import os
+
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = 'HUGGINGFACEHUB_API_TOKEN'
+
+# Document Loaders
+loader = TextLoader('../example_data/test.txt', encoding='utf8')
+documents = loader.load()
+
+# Text Splitters
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+
+# select embeddings
+embeddings = HuggingFaceEmbeddings()
+
+# create vectorstores
+db = Chroma.from_documents(texts, embeddings)
+
+# Retriever
+retriever = db.as_retriever(search_kwargs={"k": 2})
+
+query = "what is embeddings?"
+docs = retriever.get_relevant_documents(query)
+
+for item in docs:
+    print("page_content:")
+    print(item.page_content)
+    print("source:")
+    print(item.metadata['source'])
+    print("---------------------------")
+
+
+tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-xl")
+model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-xl")
+pipe = pipeline(
+    "text2text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_length=512,
+    temperature=0,
+    top_p=0.95,
+    repetition_penalty=1.15
+)
+
+llm = HuggingFacePipeline(pipeline=pipe)
+
+chain = load_qa_chain(llm, chain_type="stuff")
+llm_response = chain.run(input_documents=docs, question=query)
+print(llm_response)
+print("done.")
+```
+
+### 微软guidance（LangChain简化）
+
+【2023-5-26】[微软发布langChain杀手：guidance架构图全球首发](https://mp.weixin.qq.com/s/tdN5KXSXfM9dKDMWbXV2WA)
+
+微软发布guidance模块库，并迅速登上github网站TOP榜首：
+- guidance，传统提示或链接更有效、更高效地控制新式语言模型。
+- 协助用户将生成、提示和逻辑控制交错到单个连续流中，以匹配语言模型实际处理文本的方式。
+- 简单的输出结构，如思维链及其许多变体（例如ART，Auto-CoT等）已被证明可以提高LLM的性能。
+- 像GPT-4这样更强大的LLM的出现允许更丰富的结构，并使该结构更容易，更便宜。
+
+简单来说，微软guidance模块库，是langChain模块库的**简化版**，或者说：langChain杀手。
+
+### ChatGLM QA
+
+【2023-5-22】
+- [基于chatglm搭建文档问答机器人](https://zhuanlan.zhihu.com/p/622418308): 道路交通安全法领域，不到100行的python文件
+  - 基于langchain/llama-index已经可以快速完成类似的功能，但代码量大，学习门槛高
+- [chatglm-qabot-v2: 从q-d匹配到q-q匹配](https://github.com/xinsblog/chatglm-qabot)
+- [chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
+
+一些关键组件的配置：
+- LLM使用的是清华的chatglm-6b
+- 计算embedding用的是苏神的**simbertV2**
+- 没做embedding的索引优化，直接放list里暴力查找
+- 每次默认查找top3相关的文档片段用于构造prompt
+- 构造prompt的模板见代码
+- 生成答案的长度没做限制，要做的话在代码中加请求chatglm的参数即可
+
+```py
+import sys
+
+# 初始化问答机器人
+qabot = QaBot(doc_path="data/中华人民共和国道路交通安全法.txt", chatglm_api_url=sys.argv[1])
+# 根据文档回答问题
+answer, _ = qabot.query('酒后驾驶会坐牢吗')
+```
+
+初始化的代码如下
+
+```py
+def __init__(self, doc_path: str, chatglm_api_url: str):
+    # 加载预训练模型，用于将文档转为embedding
+    pretrained_model = "junnyu/roformer_chinese_sim_char_small"
+    self.tokenizer = RoFormerTokenizer.from_pretrained(pretrained_model)
+    self.model = RoFormerForCausalLM.from_pretrained(pretrained_model)
+    # 加载文档，预先计算每个chunk的embedding
+    self.chunks, self.index = self._build_index(doc_path)
+    # chatglm的api地址
+    self.chatglm_api_url = chatglm_api_url
+```
+
+每次问答的代码如下
+
+```py
+def query(self, question: str) -> Tuple[str, str]:
+    # 计算question的embedding
+    query_embedding = self._encode_text(question)
+    # 根据question的embedding，找到最相关的3个chunk
+    relevant_chunks = self._search_index(query_embedding, topk=3)
+    # 根据question和最相关的3个chunk，构造prompt
+    prompt = self._generate_prompt(question, relevant_chunks)
+    # 请求chatglm的api获得答案
+    answer = self._ask_chatglm(prompt)
+    # 同时返回答案和prompt
+    return answer, prompt
+```
+
+效果
+- ![](https://pic3.zhimg.com/80/v2-f263dca70c9ae78e85f2284f1f66685e_1440w.webp)
+- ![](https://pic1.zhimg.com/80/v2-70c79cadf68c65c30160dedf8ef17b34_1440w.webp)
+- ![](https://pic4.zhimg.com/80/v2-c323e0e63b47f2cb006dddba14ef57ab_1440w.webp)
+
+基于chatglm做文档问答，通常的做法是"先检索再整合"，大致思路
+- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
+- 调用文本转向量的接口，将每个chunk转为一个向量，并存入向量数据库
+- 当用户发来一个问题的时候，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个chunk
+- 将问题和chunk合并重写为一个新的请求发给chatglm的api
+
+将用户请求的query和document做匹配，也就是所谓的`q-d匹配`。
+
+q-d匹配的问题
+- query和document在**表达方式存在较大差异**，通常query是以**疑问句**为主，而document则以**陈述说明**为主，这种差异可能会影响最终匹配的效果。
+- 一种改进的方法是不做`q-d匹配`，而是先通过document生成一批候选的question，当用户发来请求的时候，首先是把query和候选的question做匹配，进而找到相关的document片段
+- 另一个思路通过HyDE去优化
+  - 为query先生成一个假答案，然后通过假答案去检索，这样可以省去为每个文档生成问题的过程，代价相对较小
+
+第一种方法就是'`q-q匹配`'，具体思路如下：
+- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
+- 部署chatglm的api，[部署方法](https://github.com/THUDM/ChatGLM-6B#api%E9%83%A8%E7%BD%B2)
+- 调api，根据每个chunk生成5个候选的question，使用的prompt格式为'请根据下面的文本生成5个问题: ...'，生成效果见下图：
+  - ![](https://pic2.zhimg.com/80/v2-7790ad31e0621bff9e10233b448100f1_1440w.jpg)
+- 调用文本转向量的接口，将生成的question转为向量，并存入向量数据库，并记录question和原始chunk的对应关系
+- 用户发来一个问题时，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个question，进而找到对应的chunk
+- 将问题和chunk**合并重写**为一个新的请求发给chatglm的api
+
+[chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
+- qabot_v1.py实现了q-d匹配方法
+- qabot_v2.py实现了q-q匹配方法
+
+`q-d匹配`和`q-q匹配`的代码差异
+- 初始化构建索引的差异如下：
+  - ![](https://pic1.zhimg.com/80/v2-e3e8a1922e93fe67a6432866882b4490_1440w.webp)
+- 查询索引时的差异如下：
+  - ![](https://pic2.zhimg.com/80/v2-273d529bbcd4577f55003cd6fe508fa5_1440w.webp)
+
+测试问题为行驶证的式样由谁来监制，v1和v2的效果对比如下：
+- ![](https://pic2.zhimg.com/80/v2-14832aaedad809d62ce0d9157c770c69_1440w.webp)
+
+在构建索引阶段，v2花费的时间是远超过v1的：
+
+```sh
+# 计算chunks的embedding: 
+100%|██████████| 20/20 [00:02<00:00, 7.81it/s]
+# 生成question并计算embedding: 
+100%|██████████| 20/20 [07:24<00:00, 22.24s/it]
+```
+
+
 ## 定制知识库
 
-【2023-5-24】[基于 ChatGLM-6B 搭建个人专属知识库](https://www.toutiao.com/article/7236562318920876596)
+【2023-5-24】
+- [基于 ChatGLM-6B 搭建个人专属知识库](https://www.toutiao.com/article/7236562318920876596)
+- [如何使用LangChain＋LLM 来构建本地知识库](https://mp.weixin.qq.com/s/ponKZ1OaHXX2nzuSxXg8-Q)
 
 ### 业务场景
 
@@ -636,161 +909,6 @@ The supported extensions are:
 - .pdf: Portable Document Format (PDF),
 - .pptx : PowerPoint Document,
 - .txt: Text file (UTF-8)
-
-## 自研方案
-
-自研框架的选择
-- 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
-- 也可以使用 LangChain 框架。
-
-参考
-- [ChatGPT怎么建立私有知识库？](https://www.zhihu.com/question/596838257/answer/3004754396)
-- [利用LangChain和国产大模型ChatGLM实现基于本地知识库的自动问答](https://www.zhihu.com/zvideo/1630964532179812353)
-
-除了从文档中抓取数据，从指定网站URL抓取数据，实现智能客服外部知识库，可以借助ChatGPT写Python代码，PythonBeautiful Soup库的实现方式很成熟
-
-大厂产品截图：智能客服知识库建设
-- 企业资料库，关联大语言模型自动搜索
-- ![a](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYAg6aFUKbz~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=5kqgHWkZX6LPdrX2H9Zq59m%2BwO0%3D)
-- 大模型文档知识抽取和“即搜即问”
-- ![b](https://p9-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYkN7rAGx03~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=gO%2FqHxavS7KVAfE08Mv0WayLjLQ%3D)
-- ![b](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYmX2ImA5oO~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=rlim2GCZ8zsapnPyzA47LCHJkEo%3D)
-
-
-### OpenAIEmbeddings
-
-OpenAI官方的embedding服务
-
-### LangChain
-
-LangChain, 语言链条，也称：`兰链`，是一种LLM语言大模型开发工具。
-
-LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
-- AGI的基础工具模块库，类似模块库还有mavin。
-
-国内不少LLm团队采用langChain，集成llm本地化知识库
-
-langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
-
-langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
-
-### 微软guidance（LangChain简化）
-
-【2023-5-26】[微软发布langChain杀手：guidance架构图全球首发](https://mp.weixin.qq.com/s/tdN5KXSXfM9dKDMWbXV2WA)
-
-微软发布guidance模块库，并迅速登上github网站TOP榜首：
-- guidance，传统提示或链接更有效、更高效地控制新式语言模型。
-- 协助用户将生成、提示和逻辑控制交错到单个连续流中，以匹配语言模型实际处理文本的方式。
-- 简单的输出结构，如思维链及其许多变体（例如ART，Auto-CoT等）已被证明可以提高LLM的性能。
-- 像GPT-4这样更强大的LLM的出现允许更丰富的结构，并使该结构更容易，更便宜。
-
-简单来说，微软guidance模块库，是langChain模块库的**简化版**，或者说：langChain杀手。
-
-
-### ChatGLM QA
-
-【2023-5-22】
-- [基于chatglm搭建文档问答机器人](https://zhuanlan.zhihu.com/p/622418308): 道路交通安全法领域，不到100行的python文件
-  - 基于langchain/llama-index已经可以快速完成类似的功能，但代码量大，学习门槛高
-- [chatglm-qabot-v2: 从q-d匹配到q-q匹配](https://github.com/xinsblog/chatglm-qabot)
-- [chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
-
-一些关键组件的配置：
-- LLM使用的是清华的chatglm-6b
-- 计算embedding用的是苏神的**simbertV2**
-- 没做embedding的索引优化，直接放list里暴力查找
-- 每次默认查找top3相关的文档片段用于构造prompt
-- 构造prompt的模板见代码
-- 生成答案的长度没做限制，要做的话在代码中加请求chatglm的参数即可
-
-```py
-import sys
-
-# 初始化问答机器人
-qabot = QaBot(doc_path="data/中华人民共和国道路交通安全法.txt", chatglm_api_url=sys.argv[1])
-# 根据文档回答问题
-answer, _ = qabot.query('酒后驾驶会坐牢吗')
-```
-
-初始化的代码如下
-
-```py
-def __init__(self, doc_path: str, chatglm_api_url: str):
-    # 加载预训练模型，用于将文档转为embedding
-    pretrained_model = "junnyu/roformer_chinese_sim_char_small"
-    self.tokenizer = RoFormerTokenizer.from_pretrained(pretrained_model)
-    self.model = RoFormerForCausalLM.from_pretrained(pretrained_model)
-    # 加载文档，预先计算每个chunk的embedding
-    self.chunks, self.index = self._build_index(doc_path)
-    # chatglm的api地址
-    self.chatglm_api_url = chatglm_api_url
-```
-
-每次问答的代码如下
-
-```py
-def query(self, question: str) -> Tuple[str, str]:
-    # 计算question的embedding
-    query_embedding = self._encode_text(question)
-    # 根据question的embedding，找到最相关的3个chunk
-    relevant_chunks = self._search_index(query_embedding, topk=3)
-    # 根据question和最相关的3个chunk，构造prompt
-    prompt = self._generate_prompt(question, relevant_chunks)
-    # 请求chatglm的api获得答案
-    answer = self._ask_chatglm(prompt)
-    # 同时返回答案和prompt
-    return answer, prompt
-```
-
-效果
-- ![](https://pic3.zhimg.com/80/v2-f263dca70c9ae78e85f2284f1f66685e_1440w.webp)
-- ![](https://pic1.zhimg.com/80/v2-70c79cadf68c65c30160dedf8ef17b34_1440w.webp)
-- ![](https://pic4.zhimg.com/80/v2-c323e0e63b47f2cb006dddba14ef57ab_1440w.webp)
-
-基于chatglm做文档问答，通常的做法是"先检索再整合"，大致思路
-- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
-- 调用文本转向量的接口，将每个chunk转为一个向量，并存入向量数据库
-- 当用户发来一个问题的时候，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个chunk
-- 将问题和chunk合并重写为一个新的请求发给chatglm的api
-
-将用户请求的query和document做匹配，也就是所谓的`q-d匹配`。
-
-q-d匹配的问题
-- query和document在**表达方式存在较大差异**，通常query是以**疑问句**为主，而document则以**陈述说明**为主，这种差异可能会影响最终匹配的效果。
-- 一种改进的方法是不做`q-d匹配`，而是先通过document生成一批候选的question，当用户发来请求的时候，首先是把query和候选的question做匹配，进而找到相关的document片段
-- 另一个思路通过HyDE去优化
-  - 为query先生成一个假答案，然后通过假答案去检索，这样可以省去为每个文档生成问题的过程，代价相对较小
-
-第一种方法就是'`q-q匹配`'，具体思路如下：
-- 首先准备好文档，并整理为纯文本的格式。把每个文档切成若干个小的chunks
-- 部署chatglm的api，[部署方法](https://github.com/THUDM/ChatGLM-6B#api%E9%83%A8%E7%BD%B2)
-- 调api，根据每个chunk生成5个候选的question，使用的prompt格式为'请根据下面的文本生成5个问题: ...'，生成效果见下图：
-  - ![](https://pic2.zhimg.com/80/v2-7790ad31e0621bff9e10233b448100f1_1440w.jpg)
-- 调用文本转向量的接口，将生成的question转为向量，并存入向量数据库，并记录question和原始chunk的对应关系
-- 用户发来一个问题时，将问题同样转为向量，并检索向量数据库，得到相关性最高的一个question，进而找到对应的chunk
-- 将问题和chunk**合并重写**为一个新的请求发给chatglm的api
-
-[chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
-- qabot_v1.py实现了q-d匹配方法
-- qabot_v2.py实现了q-q匹配方法
-
-q-d匹配和q-q匹配的代码差异
-- 初始化构建索引的差异如下：
-  - ![](https://pic1.zhimg.com/80/v2-e3e8a1922e93fe67a6432866882b4490_1440w.webp)
-- 查询索引时的差异如下：
-  - ![](https://pic2.zhimg.com/80/v2-273d529bbcd4577f55003cd6fe508fa5_1440w.webp)
-
-测试的问题为行驶证的式样由谁来监制，v1和v2的效果对比如下：
-- ![](https://pic2.zhimg.com/80/v2-14832aaedad809d62ce0d9157c770c69_1440w.webp)
-
-在构建索引阶段，v2花费的时间是远超过v1的：
-
-```sh
-# 计算chunks的embedding: 
-100%|██████████| 20/20 [00:02<00:00, 7.81it/s]
-# 生成question并计算embedding: 
-100%|██████████| 20/20 [07:24<00:00, 22.24s/it]
-```
 
 
 
