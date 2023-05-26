@@ -659,10 +659,33 @@ The supported extensions are:
 
 ### OpenAIEmbeddings
 
+OpenAI官方的embedding服务
 
 ### LangChain
 
-自动
+LangChain, 语言链条，也称：`兰链`，是一种LLM语言大模型开发工具。
+
+LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
+- AGI的基础工具模块库，类似模块库还有mavin。
+
+国内不少LLm团队采用langChain，集成llm本地化知识库
+
+langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
+
+langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
+
+### 微软guidance（LangChain简化）
+
+【2023-5-26】[微软发布langChain杀手：guidance架构图全球首发](https://mp.weixin.qq.com/s/tdN5KXSXfM9dKDMWbXV2WA)
+
+微软发布guidance模块库，并迅速登上github网站TOP榜首：
+- guidance，传统提示或链接更有效、更高效地控制新式语言模型。
+- 协助用户将生成、提示和逻辑控制交错到单个连续流中，以匹配语言模型实际处理文本的方式。
+- 简单的输出结构，如思维链及其许多变体（例如ART，Auto-CoT等）已被证明可以提高LLM的性能。
+- 像GPT-4这样更强大的LLM的出现允许更丰富的结构，并使该结构更容易，更便宜。
+
+简单来说，微软guidance模块库，是langChain模块库的**简化版**，或者说：langChain杀手。
+
 
 ### ChatGLM QA
 
