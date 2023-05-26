@@ -151,8 +151,12 @@ Tools方式大致有两种
 
 既然tokens有限制，那么有没有对文本内容进行**预处理**的工具？不超过token数限制。
 - 借助llama-index可以从文本中只提取出相关部分，然后将其反馈给prompt。
-- [llama-index](https://github.com/jerryjliu/llama_index)支持许多不同的数据源，如API、PDF、文档、SQL 、Google Docs等。
+- [llama-index](https://gpt-index.readthedocs.io/en/latest/), [github](https://github.com/jerryjliu/llama_index)支持许多不同的数据源，如API、PDF、文档、SQL 、Google Docs等。
 
+[llama-index](https://gpt-index.readthedocs.io/en/latest/) Ecosystem
+- 支持多种文件格式：support parsing a wide range of file types: .pdf, .jpg, .png, .docx, etc.
+- 🏡 [LlamaHub](https://llamahub.ai), 包含各类插件，如：网页、faiss语义索引、b站视频脚本、ES、Milvus、数据库等
+- 🧪 [LlamaLab](https://github.com/run-llama/llama-lab)
 
 【2023-5-17】[基于ChatGPT的视频摘要应用开发](https://www.toutiao.com/article/7230786095158690362)
 - 当文档被送入 LLM 时，它会根据其大小分成块或节点。 然后将这些块转换为嵌入并存储为向量。
@@ -205,6 +209,27 @@ LlamaIndex中提出了一个新索引，为每个文档提取/索引**非结构�
 
 示例
 - 构建方法见原文：[LlamaIndex ：面向QA 系统的全新文档摘要索引](https://mp.weixin.qq.com/s/orODrHefDpr-gHNyjxhXmg)
+
+```sh
+pip install llama-index # install
+```
+
+```py
+from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
+documents = SimpleDirectoryReader('data').load_data() # 加载数据
+index = GPTVectorStoreIndex.from_documents(documents) # 创建索引
+query_engine = index.as_query_engine() # 初始化查询引擎
+response = query_engine.query("What did the author do growing up?") # 执行查询
+print(response) # 返回结果
+# --------- 持久化向量索引 ---------
+from llama_index import StorageContext, load_index_from_storage
+index.storage_context.persist() # 持久化存储（默认放内存）
+# rebuild storage context
+storage_context = StorageContext.from_defaults(persist_dir="./storage")
+# load index
+index = load_index_from_storage(storage_context)
+```
+
 
 高级api
 
