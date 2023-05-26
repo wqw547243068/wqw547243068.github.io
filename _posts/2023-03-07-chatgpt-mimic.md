@@ -2258,7 +2258,8 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 如何破解跳回国内的问题
 1. 在必应首页登录自己的微软账号，然后挂VPN。
 1. 在国内版（cn.bing.com）的首页更改地区到英国或者其他国家（右上角三根横线，点设置-地区，就可以更改了）
-1. 访问 [New Bing](https://www.bing.com/new) 就可以使用了
+1. 访问 [New Bing](https://www.bing.com/new) ，下载 Edge 浏览器就可以使用了
+  - 注意：【2023-5-26】Mac下安装 Apple chip版本，而不是 Intel chip，否则装完无法启动
 
 ### 文心一言
 
