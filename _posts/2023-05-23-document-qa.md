@@ -814,6 +814,24 @@ Chatgpt-Next-Web 项目基础上进行了适配修改，打造了一款面向用
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/55d11a03e5a742ce9c201aa355b38e3c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1685601997&x-signature=fYTBeLwxkicrZBzWsYQusCVfiJk%3D)
 
 
+### FastGPT
+
+【2023-5-26】[FastGPT](https://github.com/c121914yu/FastGPT), 调用 gpt-3.5 和 embedding 构建自己的知识库。
+
+知识库构建原理
+- ![img](https://github.com/c121914yu/FastGPT/raw/main/docs/imgs/KBProcess.jpg?raw=true)
+
+效果
+- ![img](https://github.com/c121914yu/FastGPT/raw/main/docs/imgs/demo.png?raw=true)
+
+
+
+在线体验
+- 🎉 [fastgpt.run](https://fastgpt.run/) （国内版）
+- 🎉 [ai.fastgpt.run](https://ai.fastgpt.run/) （海外版）
+
+
+
 ## 业界案例
 
 ### New Bing
