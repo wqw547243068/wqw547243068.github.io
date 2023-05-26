@@ -1052,6 +1052,9 @@ AutoGPT 的研究开始走进大众视野。
 - AutoGPT 相当于给基于 GPT 的模型一个内存和一个身体。有了它，你可以把一项任务交给 AI 智能体，让它自主地提出一个计划，然后执行计划。此外其还具有互联网访问、长期和短期内存管理、用于文本生成的 GPT-4 实例以及使用 GPT-3.5 进行文件存储和生成摘要等功能。AutoGPT 用处很多，可用来分析市场并提出交易策略、提供客户服务、进行营销等其他需要持续更新的任务。
 - [GitHub 地址](https://github.com/torantulino/auto-gpt)
 
+模块图, 源自 [AGI-MAP](https://github.com/ziwang-com/AGI-MAP)
+- ![arch](https://user-images.githubusercontent.com/11691791/236591588-3aaa6a6e-bbf5-42cd-84c3-a21f76e8f2a7.png)
+
 特斯拉前 AI 总监、刚刚回归 OpenAI 的 Andrej Karpathy 也为其大力宣传，并在推特赞扬：「AutoGPT 是 prompt 工程的下一个前沿。」
 
 实践
