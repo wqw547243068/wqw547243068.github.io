@@ -2252,6 +2252,7 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 ### New Bing
 
 [New Bing](https://www.bing.com/new)
+- ![](https://pic2.zhimg.com/80/v2-a75ed171783f8c561fb6a80b265302c9_1440w.webp)
 - 国内访问受限
 
 如何破解跳回国内的问题
