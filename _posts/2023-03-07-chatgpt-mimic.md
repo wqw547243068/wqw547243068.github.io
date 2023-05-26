@@ -890,12 +890,27 @@ Chinese-LLaMA-Alpaca是在通用中文语料上训练了基于 sentencepiece 的
 【2023-5-4】[UC伯克利发布大语言模型排行榜，Vicuna夺冠，清华ChatGLM进前5](https://www.36kr.com/p/2243109425885057)
 - [Chatbot Arena: Benchmarking LLMs in the Wild with Elo Ratings](https://lmsys.org/blog/2023-05-03-arena/)
 
+【2023-5-26】 [open-llms](https://github.com/eugeneyan/open-llms) These LLMs are all licensed for commercial use (e.g., Apache 2.0, MIT, OpenRAIL-M)
+- T5、FastChat-T5、Open Assistant (Pythia family)、Dolly、RWKV、GPT-J-6B、Bloom、StableLM-Alpha、OpenLLaMA
+
 #### 评测数据
 
 【2023-5-24】中文评测数据集
 - [Linly](https://github.com/CVI-SZU/Linly/blob/main/README.md), 提供 8类（平均10个问题）
 
-#### 国际大模型排行榜 -- LMSYS
+#### 国际大模型排行榜
+
+【2023-5-26】huggingface组织
+
+开源大模型排行榜：[Open LLM Leaderboard](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+
+评估是针对4个流行的基准：
+- • AI2 Reasoning Challenge（25-shot）- 一套小学科学问题。
+- • HellaSwag（10-shot）- 一个测试常识推理的测试，对人类来说很容易（~95%），但对最先进的模型来说却具有挑战性。
+- • MMLU（5-shot）- 一个测试文本模型的多任务准确性的测试。测试覆盖57个任务，包括基础数学、美国历史、计算机科学、法律等。
+- • Truthful QA MC（0-shot）- 一个测试语言模型在生成问题答案时是否真实的基准。
+
+LMSYS机构
 
 [LMSYS Org](https://arena.lmsys.org/)（UC伯克利主导，前小羊驼发明者, [twitter](https://twitter.com/lmsysorg)）的研究人员又搞了个大新闻——大语言模型版排位赛！
 - 130亿参数的Vicuna以1169分稳居第一
@@ -973,8 +988,10 @@ Elo评分系统
 | Evaluator	| Program	| Program/Model |	Human	| GPT-4	| User |
 | Metrics	| Basic metrics	| Basic metrics	| Win rate	| Win rate	| Elo ratings |
 
-
 #### 中文大模型排行榜
+
+中文领域优秀的大模型，比如
+- ChatGLM和ChatLLM、和一些基于LLaMA微调的模型，比如基于中文医学知识的LLaMA模型Huatuo-Llama-Med-Chinese
 
 【2023-5-22】[上交清华发起最全学科大模型中文知识及推理评测](https://mp.weixin.qq.com/s/deKVGxf-Zrbb1Pjui5CdUg)，GPT-4 竟然血洗所有国产模型
 - 上交、清华以及爱丁堡大学的研究者首次提出一个包含 52 个学科、全面的中国文化背景下的大模型高级知识和推理能力评估套件 `C-EVAL`，评估了包含 GPT-4、ChatGPT、Claude、LLaMA、Moss 在内的 9 个国内外大模型在中文学科问题上的性能
