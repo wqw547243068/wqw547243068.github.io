@@ -1883,6 +1883,33 @@ Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingfa
 - 文本翻译
 - 代码
 
+### 原驼（Guanaco）
+
+【2023-5-26】[开源「原驼」爆火，iPhone都能微调大模型了，得分逼近ChatGPT](https://mp.weixin.qq.com/s/RakazI25dMJz0JUkdtbr0w)
+- 羊驼家族的又一重磅成员——华盛顿大学`原驼`（Guanaco）。
+- 自动测试分数达到ChatGPT的99.3%，人类难以分辨
+- 背后的新方法QLoRA([站内专题](gpu#lora-%E4%BD%8E%E7%A7%A9%E9%80%82%E9%85%8D))把微调大模型的显存需求从>780GB降低到<48GB。HuggingFace第一时间整合上线了相关代码
+- **大模型小型化**的又一里程碑
+
+(1) 自动评估
+- 由大模型天花板GPT-4当裁判，对不同模型的回答进行打分
+- 以ChatGPT（GPT3.5）的成绩作为100%。
+- 最终原驼650亿版得分达到ChatGPT的99.3%
+- GPT-4自己的得分是114.5%
+- 谷歌Bard是94.8%。
+
+(2) 随机匹配
+- 采用棋类专业比赛和电子竞技同款的`Elo记分机制`，由GPT-4和人类共同做裁判。
+- 原驼650亿和330亿版最终得分超过ChatGPT（GPT3.5）
+
+(3) 人类评估
+- 把原驼650亿版的回答和ChatGPT的回答匿名乱序放在一起，人类来盲选哪个最好。
+- 研究团队里的人都很难分辨出来，并把测试做成了一个小游戏放在Colab上，开放给大家挑战
+
+原驼的优势
+- 不容易被错误信息误导，比如能指出地球从来没有被科学界认为是平的
+- 擅长心智理论（Theory of Mind），也就是能推测理解他人的心理状态。
+- 但不太擅长数学，以及容易用提示注入攻击把要求保密的信息从它嘴里套出来。
 
 ### LLMTune
 
@@ -2369,6 +2396,7 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 ### 昆仑万维 天工
 
 【2023-4-10】昆仑万维和奇点智源合作发布[「天工」大模型4月17日启动邀测](https://mp.weixin.qq.com/s/yikVXp2sda4frtl_TrSKzw), 4月17日开始[内测申请](http://tiangong.kunlun.com)
+- 【2023-5-26】[内测地址](https://neice.tiangong.cn/interlocutionPage)
 
 ### 微软DeepSpeed Chat
 
