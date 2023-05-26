@@ -855,7 +855,35 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 知乎：知海图AI
 
+### 分词
 
+#### LLaMA分词问题
+
+目前开源大模型中，LLaMA无疑是最闪亮的星。但是，与 ChatGLM-6B 和 Bloom 原生支持中文不同。
+- LLaMA 原生仅支持 Latin 或 Cyrillic 语系，对于**中文**支持不是特别理想。
+- 原版LLaMA模型的词表大小是**32K**，而多语言模型（如：XLM-R、Bloom）的词表大小约为**250K**。
+- 以中文为例，LLaMA词表中的中文token比较少（只有几百个）。这将导致了两个问题：
+  - LLaMA 原生tokenizer词表中仅包含少量中文字符，在对中文字进行tokenzation时，一个中文汉字往往被切分成多个token（2-3个Token才能组合成一个汉字），显著降低编解码的效率。
+  - 预训练中没有出现过或者出现得很少的语言学习得不充分。
+
+
+#### LLaMA中文字符扩充
+
+为了解决这些问题，需要进行中文词表扩展。比如：
+- 在中文语料库上训练一个中文tokenizer模型，然后将中文 tokenizer 与 LLaMA 原生的 tokenizer 进行合并，通过组合词汇表，最终获得一个合并后的 tokenizer 模型。
+
+而国内 Chinese-LLaMA-Alpaca 开源项目详细说明了词表扩展、模型预训练和模型指令精调的整个过程。
+
+Chinese-LLaMA-Alpaca是在通用中文语料上训练了基于 sentencepiece 的20K中文词表并与原版LLaMA模型的32K词表进行合并，排除重复的token后，得到的最终中文LLaMA词表大小为49953。
+
+注意：
+- 模型精调（fine-tune）阶段，Alpaca 比 LLaMA 多一个 pad token，所以中文Alpaca的词表大小为49954。
+- 后续将 LoRA 权重合并回基础模型时需要注意中文LLaMA和中文Alpaca词表不一致的问题。
+
+合并**中文扩充词表**，并与原版LLaMA模型的**32K词表**，直接使用官方训练好的词表chinese_sp.model。
+- 当然也可以基于特有领域的语料训练专属的词表，具体可参考之前的文章：大模型词表扩充必备工具SentencePiece。
+
+详见：[中文LLaMA&Alpaca大语言模型词表扩充+预训练+指令精调](https://mp.weixin.qq.com/s/-Zei1OsM45BHc41WNGmZQQ)
 
 ### LLM 评测
 
