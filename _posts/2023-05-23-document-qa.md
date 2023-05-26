@@ -3,7 +3,7 @@ layout: post
 title:  文档问答原理及实践 Thoery and Implemetation of the Doucument QA
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: ChatGPT 对话系统 知识库 向量化
+tags: ChatGPT 对话系统 知识库 向量化 milvus
 excerpt: 文档问答的原理、案例及实践
 mathjax: true
 permalink: /doc-chat
@@ -36,6 +36,8 @@ permalink: /doc-chat
 `嵌入`（Embedding）是一种将**文本或对象**转换为**向量表示**的技术，将词语、句子或其他文本形式转换为固定长度的向量表示。
 - 嵌入向量是由一系列浮点数构成的**向量**。
 - 通过计算两个嵌入向量之间的距离，可以衡量它们之间的相关性。距离较小的嵌入向量表示文本之间具有较高的相关性，而距离较大的嵌入向量表示文本之间相关性较低。
+
+以 `Milvus` 为代表的`向量数据库`利用语义搜索（Semantic Search）更快地检索到相关性更强的文档。
 
 详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
@@ -594,6 +596,39 @@ print(llm_response)
 print("done.")
 ```
 
+集成了 Milvus 和 LangChain：[参考](https://mp.weixin.qq.com/s/tgQ-SOoc0h-hqDZy9N3rfg)
+
+```py
+class VectorStore(ABC):
+    """Interface for vector stores."""    @abstractmethoddef add_texts(
+        self,
+        texts: Iterable[str],
+        metadatas: Optional[List[dict]] = None,
+kwargs:Any,
+    ) ->List[str]:
+"""Run more texts through the embeddings and add to the vectorstore."""    @abstractmethoddefsimilarity_search(
+        self, query:str, k:int =4,kwargs: Any) -> List[Document]:
+        """Return docs most similar to query."""def max_marginal_relevance_search(
+        self, query: str, k: int = 4, fetch_k: int = 20) -> List[Document]:
+        """Return docs selected using the maximal marginal relevance."""raise NotImplementedError
+
+    @classmethod    @abstractmethoddef from_texts(
+        cls: Type[VST],
+        texts: List[str],
+        embedding: Embeddings,
+        metadatas: Optional[List[dict]] = None,
+        **kwargs: Any,
+    ) -> VST:
+        """Return VectorStore initialized from texts and embeddings."""
+```                
+
+
+将 Milvus 集成到 LangChain 中，实现几个关键函数：add_texts()、similarity_search()、max_marginal_relevance_search()和 from_text()
+
+将 Milvus 集成到 LangChain 中的确存在一些问题，最主要的是 Milvus 无法处理 JSON 文件。目前，只有两种解决方法：
+- 现有的 Milvus collection 上创建一个 VectorStore。
+- 基于上传至 Milvus 的第一个文档创建一个 VectorStore。
+
 ### 微软guidance（LangChain简化）
 
 【2023-5-26】[微软发布langChain杀手：guidance架构图全球首发](https://mp.weixin.qq.com/s/tdN5KXSXfM9dKDMWbXV2WA)
@@ -816,7 +851,7 @@ Chatgpt-Next-Web 项目基础上进行了适配修改，打造了一款面向用
 
 ### FastGPT
 
-【2023-5-26】[FastGPT](https://github.com/c121914yu/FastGPT), 调用 gpt-3.5 和 embedding 构建自己的知识库。
+【2023-5-17】[FastGPT](https://github.com/c121914yu/FastGPT), 调用 gpt-3.5 和 embedding 构建自己的知识库。
 
 知识库构建原理
 - ![img](https://github.com/c121914yu/FastGPT/raw/main/docs/imgs/KBProcess.jpg?raw=true)
