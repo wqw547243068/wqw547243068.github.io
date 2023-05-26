@@ -3,7 +3,7 @@ layout: post
 title:  文档问答原理及实践 Thoery and Implemetation of the Doucument QA
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: ChatGPT 对话系统 知识库
+tags: ChatGPT 对话系统 知识库 向量化
 excerpt: 文档问答的原理、案例及实践
 mathjax: true
 permalink: /doc-chat
@@ -31,7 +31,11 @@ permalink: /doc-chat
 
 ## 背景
 
-#### 如何增强LLM能力
+### 文本向量化
+
+详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
+
+### 如何增强LLM能力
 
 【2023-5-21】[LLM训练营课程笔记—Augmented Language Models](https://zhuanlan.zhihu.com/p/630195581)
 - [英文ppt](https://drive.google.com/file/d/1A5RcMETecn6Aa4nNzpVx9kTKdyeErqrI/view), [讲义总结](https://fullstackdeeplearning.com/llm-bootcamp/spring-2023/augmented-language-models/)
