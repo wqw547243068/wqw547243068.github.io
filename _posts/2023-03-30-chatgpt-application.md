@@ -549,6 +549,50 @@ Our evaluation uses 8 real complex question answering datasets, including **six*
 
 ### 推荐系统
 
+【2023-5-20】[当推荐系统遇到大模型](https://mp.weixin.qq.com/s/YaFQoqAt12y93Nm3tX_j4A)
+
+ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几个方面：
+- **任务统一**：所有类型的推荐任务都可以表述成**文本**，实现了推荐任务大统一，使用统一语言模型进行各个场景和任务上的推荐，有效解决多任务、多场景问题。
+- **小样本**和**冷启动**问题：传统推荐系统中，小样本和冷启动是一个比较常见的问题，而大模型天然具备很强的**语义泛化能力**和**小样本学习**能力。
+- 基础的推荐能力验证：多篇文章已经验证了ChatGPT等模型在推荐系统中应用是可行的，即使不在下游任务finetune，也能取得不错的效果
+
+#### 最新论文
+
+论文
+- 【2023-1-2】Recommendation as language processing (rlp): A unified pretrain, personalized prompt & predict paradigm
+  - P5将各类推荐任务通过**prompt形式**全都转换成**统一文本**，然后利用这些文本训练一个 Transformer Encoder-Decoder模型。P5利用语言模型解决推荐系统问题，由于各种推荐系统任务都能表述成文字，使得统一建模各类推荐系统任务成为了可能。
+  - prompt构造方法：针对每种任务设计一个prompt模板，对于**商品信息**、**用户信息**等，直接将id作为本文输入。P5在这种文本上训练，对于商品和用户id相当于都当成一个独立的词进行embedding的学习。
+- 【2023-4-4】[Chat-REC: Towards Interactive and Explainable LLMs-Augmented Recommender System](https://arxiv.org/abs/2303.14524)
+  - Chat-REC将ChatGPT应用到推荐系统中，**会话推荐系统**, 具有交互式和可解释的能力，验证了大模型在**一般推荐场景、跨域推荐、冷启动推荐**等场景下都有着不错的表现。
+  - Chat-REC核心：将包括**用户特征、搜索词、用户和item的历史交互信息、历史对话信息**等一系列信息，输入到一个Prompt Constructor中，自动生成一个prompt。这个prompt输入到ChatGPT中，让ChatGPT生成推荐结果，或者解释推荐利用。
+  - 通过这种方式让推荐系统能够产生**可解释**的推荐结果，例如在对话过程中，可以询问对话系统推荐的原因，prompt会将推荐系统给到的结果和用户的问题输入Prompt Constructor，生成新的prompt，让ChatGPT生成对应的解答。
+  - Chat_REC整体利用了ChatGPT优化原有的推荐系统，让其能够实现更丰富的用户和推荐系统的交互。
+- 【2023-5-11】A First Look at LLM-Powered Generative News Recommendation
+  - 利用大模型来提升**新闻推荐系统**的效果。新闻推荐系统中存在很多挑战，一方面新闻标题可能不含实际内容的关键词，需要更深入的**语义理解**；另一方面对于**用户特征缺失、冷启动**等情况，推荐效果也会变差。
+  - 这篇文章利用大模型进行**title扩展、用户特征生成、解决冷启动**等问题。
+  - 构造prompt，进行3方面的数据扩充，再利用扩展出的数据进行下游新闻推荐系统模型的训练
+    - 为了在新闻标题中补充更丰富的信息，设计了一个**摘要prompt**，根据title和新闻信息生成扩展后的title。
+    - 为了补充**用户特征**，利用用户历史的浏览行为，生成指定的相关特征。
+    - 最后，对于**冷启动**用户，利用用户少量的历史浏览行为，让大模型生成更多用户可能感兴趣的新闻信息。
+- 【2023-5-12】Is ChatGPT Fair for Recommendation? Evaluating Fairness in Large Language Model Recommendation
+  - 研究利用大模型进行推荐时是否存在**公平性**问题。
+  - 公平性问题：用户侧一些敏感属性的特征，可能会引起大模型产出不公平的推荐结果，因为大模型经过大规模语料进行训练，其中会存在这样的有偏信息。
+  - 为了对这个问题进行实验和验证，构建了大模型推荐系统公平性的benchmark，在评估时基础做法是生成一些instruction产出推荐结果，再在instruction中插入各种敏感词对比推荐结果，判断推荐结果因为敏感词插入造成的差异大小。差异越大，说明大模型用于推荐系统存在的不公平现象越严重。
+- 【2023-4-20】[Is ChatGPT a Good Recommender? A Preliminary Study](https://arxiv.org/abs/2304.10149)
+  - 通过5种类型的推荐任务评估ChatGPT在推荐系统中应用的效果。这5个任务包括：**排序预测** rating prediction、**序列推荐** sequential recommendation、**直接推荐** direct recommendation、**可解释生成** explanation generation、总结 review summarization等。[解读](https://juejin.cn/post/7230094051470606393)
+  - `评分预测`：评分预测旨在预测用户对特定项目的评分，如上图所示，黑字部分代表任务的描述，评分预测被翻译为“How will user rate this product_title?”，灰字表示当前的输入，即要求用户评分的项目，红字表示针对输出的格式要求，在评分预测任务中，要求有“1 being lowest and 5 being highest”和“Just give me back the exact number a result”；
+  - `序列推荐`：序列推荐任务要求系统根据用户过去的序贯行为预测其之后的行为，如上图所示，论文为该任务设计了三种 Prompt 格式，分别是基于交互历史直接预测用户的下一个行为，从候选列表中选出可能的下一个行为以及判断指定行为成为用户下一个行为的可能性；
+  - `直接推荐`：直接推荐指通过利用用户评分或评论信息直接显示反馈推荐的任务，论文将这一任务的 Prompt 设计为从潜在的候选项中选择出最适合的一项；
+  - `解释生成`：解释生成是为用户提供解释以澄清为什么会推荐此项的推荐系统任务，具体地，如上图所示，论文要求 ChatGPT 生成一个文本解释，以阐明解释生成过程，对每个类别，可以包含如提示词或星级评分等的辅助信息；
+  - `评论总结`：旨在使用推荐系统自动生成用户评论摘要。通过输入用户的评论信息，Prompt 提示推荐系统总结评论的主要含义。
+  - 针对这5种任务分别设计了相应的prompt，输入到ChatGPT中生成预测结果。5种任务的prompt构造例子，每个prompt都包含：任务描述、格式声明以及一些user和item交互的例子，以给ChatGPT提供few-shot信息。
+  - 从推荐系统**准确率**相关指标来看（如hit rate等），ChatGPT在rating任务上表现比较好，但是在其他任务上表现比较差。但是如果人工评估的话，ChatGPT的结果是比较好的，这说明使用推荐系统指标评估ChatGPT也是有局限性的。同时，文中的ChatGPT并没有在推荐系统数据上进行finetune，就能达到这样的效果，也表明了ChatGPT在推荐系统中的落地是非常有潜力的。
+- 【2023-5-11】Uncovering ChatGPT’s Capabilities in Recommender Systems（2023.5.11）
+  - 尝试挖掘ChatGPT在推荐系统中3类任务的能力，包括`point-wise`、`pair-wise`、`list-wise`三类推荐系统面临的给定user推荐item的任务。
+  - 针对这3类任务，文中构造了如下3类prompt。每类prompt包括**任务描述、例子、当前的问题**三个部分。
+  - 3类任务的prompt主要差别是当前问题的组织形式: point-wise就直接问ChatGPT**打分是多少**，pair-wise给两个item让模型做**对比**，list-wise则是对item做**排序**。
+  - 整体实验结果: 主要是对比了ChatGPT和一些基础推荐方法（随机推荐、根据商品流行度推荐）的差异，初步能够证明ChatGPT是具备一定的推荐能力的，其中在list-wise类型的任务上能获得最高的性价比。
+
 #### 大模型对推荐影响
 
 【2023-5-12】[gpt4这种大模型能力对推荐系统这个领域有什么影响？](https://www.zhihu.com/question/591580147)
@@ -566,6 +610,19 @@ Our evaluation uses 8 real complex question answering datasets, including **six*
 
 作者：[手套销售拉呱总](https://www.zhihu.com/question/591580147/answer/3006390042)
 
+#### 提示学习与推荐
+
+随着prompt learning在nlp的出色表现，也开始向cv，向多模态进行扩展，当然，也有不少研究人员用它来解决推荐系统问题。
+
+【2022-8-29】提示学习用于推荐系统问题
+- [PPR，PFRec](https://nakaizura.blog.csdn.net/article/details/126572223)
+- [PEPLER，P5，PRL](https://nakaizura.blog.csdn.net/article/details/124558817)
+
+论文
+- KDD  2022： [Towards Unified Conversational Recommender Systems via Knowledge-Enhanced Prompt Learning](https://dl.acm.org/doi/10.1145/3534678.3539382), [解读](https://blog.csdn.net/qq_27590277/article/details/128017508)
+  - 会话推荐系统 (下面简称为：`CRS`) 旨在通过自然语言对话主动引发用户偏好并推荐高质量的项目。通常，CRS 由一个推荐模块（用于预测用户的首选项目）和一个对话模块（用于生成适当的响应）组成。
+  - 提出了一种统一的 CRS 方法，即基于 PLM 的知识增强型即时学习，`UniCRS`。
+
 #### Chat-Rec
 
 【2023-4-4】[Chat-REC: 当推荐系统遇上 ChatGPT, 会发生什么奇妙反应](https://mp.weixin.qq.com/s/ulV8R72zSStdwwNfhtys_g)，[解说](https://zhuanlan.zhihu.com/p/619161007)
@@ -581,6 +638,37 @@ Our evaluation uses 8 real complex question answering datasets, including **six*
   3. 用户查询 Qi ，这是用户对信息或建议的具体要求。这可能包括他们感兴趣的一个具体项目或流派，或者是对某一特定类别的推荐的更一般的请求。
 - ![](https://pic3.zhimg.com/80/v2-234ea3011f274c43cda0a6d233cb7d8a_1440w.webp)
 - Chat-Rec 的框架。左边显示了用户和 ChatGPT 之间的对话。中间部分显示了 Chat-Rec 如何将传统的推荐系统与 ChatGPT 这样的对话式人工智能联系起来的流程图。右侧描述了该过程中的具体判断。
+- 对于一个用户query：“你能推荐一些动作片给我吗？”。
+- 确定这个query是否是一个推荐任务【ChatGPT来判断】
+  - 如果是推荐任务，则使用该输入来执行“推荐动作电影”模块。但由于推荐空间是巨大的，所以该模块需要分为两个步骤：1推荐系统产生一个少量的候选得到top20的推荐结果，2然后再进行重新排序和调整【ChatGPT来重排】，以生成top5的最终输出。这种方法可以确保向用户展示一个更小、更相关的物品集，增加他们找到自己喜欢的东西的可能性。
+  - 如果不是推荐任务，如用户询问“为什么会推荐你会推荐fargo电影给我”。系统将使用电影标题、历史记录交互和用户配置文件作为输入来执行对推荐模块的解释【ChatGPT来生成解释】。
+
+由于ChatGPT的输入是自然语言文本，所以中间模块的主要目标：
+- 如何利用用户与物品的历史交互、用户档案、用户查询和对话历史 （如果有的话）等等多个输入ChatGPT来生成一个自然语言段落，以捕捉用户的查询和推荐信息。
+- User-item history interactions：用户与物品的历史交互，指的是用户过去与物品的互动，比如他们点击过的物品，购买过的物品，或者评价过的物品。
+- User profile：用户画像，其中包含关于用户的人口统计和偏好信息，如年龄、性别、地点和兴趣。
+- User query Qi：查询句子，可能是推荐任务也可能是通用任务。
+- History of dialogue Hi : 用户和chatgpt之间的所有上下文 
+
+对于topk推荐任务来说，生成的prompt例子
+
+如何解决**冷启动**？
+
+大模型中拥有很多知识，利用商品文字描述就能够借助LLM的力量来帮助推荐系统缓解新项目的冷启动问题，即没有大量用户互动也可以得到embedding。
+
+两种chatGPT难以执行推荐场景：
+- 1 让不能联网的chatGPT推荐2023最新的动作电影；
+- 2 让chatGPT推荐一个它知识储备中没有的动作电影。
+
+因此，离线利用LLM来生成相应的embedding表征并进行缓存。从而在当chatGPT遇到新的物品推荐时，会首先计算离线商品特征和用户query特征之间的相似性，然后检索最相关商品一起输入到 ChatGPT 进行推荐。
+
+如何解决**跨域**推荐？
+
+类似的，LLM中的知识可以很方便，对不同领域的商品有认知，如电影，音乐和书籍等等，并且还能够分清楚在不同领域产品之间的关系。
+
+因此，直接依靠chatGPT把上下文对话输入一起编码进chatGPT的输入后，就能在用户询问关于其他类型作品的建议时，实现跨域推荐，如对书籍、电视剧、播客和视频游戏进行推荐。
+
+从top5推荐和评分预测这个俩结果上来看，似乎text-davinci-003才是最好的
 
 - `Chat-Rec` 可以有效地学习用户的偏好，它<span style='color:blue'>不需要训练，而是完全依赖于上下文学习</span>，并可以有效推理出用户和产品之间之间的联系。通过 LLM 的增强，在每次对话后都可以迭代用户偏好，更新候选推荐结果。
 
@@ -607,6 +695,23 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
 - LLM 具有很有前途的**零样本**排序能力。
 - LLM **难以感知历史交互顺序**，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的**提示和引导策略**来缓解。
 - ![img](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
+
+#### InstructRec
+
+利用LLM的用户推荐，便于将用户偏好或需求用自然语言描述来表达，因此instruct tuning是非常适合的方案。
+- [Recommendation as Instruction Following: A Large Language Model Empowered Recommendation Approach](https://arxiv.org/pdf/2305.07001.pdf)
+- 开源LLM（3B的 Flan-T5-XL）进行指令调优来适应推荐系统。[原文解读](Chat-REC、InstructRec（LLM大模型用于推荐系统）)
+- 模型流程：用户直接给出instructions如“I prefer”，然后历史记录和用户指定将一起输入formulation模块中，生成模型能够理解的instructions形式，然后输入到大模型中，最后可以完成各种任务如sequential recommendation、product search、personalized search等。
+
+该工作最重要的模块就是通用指令的设计，以全面地描述用户的偏好、意图、任务形式。
+- **偏好**（Preference）。指用户偏好。其中隐式偏好用商品标题而非id，显式偏好用用户query中的明确表达（如用户评论），而不是之前的评分或点赞。
+- **意图**（Intention）。指用户对某些类型的物品的需求。模糊的意图如“给我儿子的一些礼物”、具体的意图如“蓝色、便宜、iPhone13”）。
+- **任务形式**（Task Form）。要做到统一的推荐系统，需要有适应各种任务的能力。
+  - `Pointwise`。某个候选商品是否适合用户，那么直接用用户需求和商品特征来匹配。
+  - `Pairwise`。让LLM从item pairs中选择更合适的一个即可。
+  - `Matching`。`召回`模块，LLM从整个商品语料库中生成候选集合。
+  - `Reranking`。`排序`模块，LLM从候选中重排序商品。
+
 
 ### 办公
 
