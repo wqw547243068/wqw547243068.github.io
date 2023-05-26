@@ -5087,6 +5087,8 @@ go这种强类型的语言中，对json取值比较麻烦，一般有三种方�
 - 把 json 映射为 `stuct` 格式
 - 借助于 第三方库，直接对 `json` 对象取值
 
+#### json 标准库
+
 encoding/json 标准库用法, 
 - Valid-校验json是否合法
 - Marshal-json编码 **生成json**
@@ -5288,6 +5290,44 @@ func main() {
 	fmt.Println(res.Cube)
 }
 ```
+
+#### 第三方库
+
+【2023-5-26】[Go JSON 三方包哪家强？](https://mp.weixin.qq.com/s/ueNuYA23F3bQTwIKU-PZ2Q)
+
+Go json 标准库 encoding/json 提供了足够舒适的 json 处理工具，广受 Go 开发者的好评，但还是存在以下两点问题：
+- API 不够灵活：如没有提供按需加载机制等；
+- 性能不太高：标准库大量使用反射获取值
+  - 首先 Go 的反射本身性能较差，较耗费 CPU 配置；
+  - 其次频繁分配对象，也会带来内存分配和 GC 的开销；
+
+基于上面的考量，业务会根据使用场景、降本收益等诉求，引入合适的第三方库
+
+| 库名 | encoder | decoder | compatible | star 数 (2023.04.19) | 社区维护性 | 
+| --- | --- | --- | --- | --- | --- | 
+| `StdLib`(encoding/json)[2] | ✔️ | ✔️ | N/A | - | - | 
+| `FastJson`(valyala/fastjson)[3] | ✔️ | ✔️ | ❌ | 1.9k | 较差 | 
+| `GJson`(tidwall/gjson)[4] | ✔️ | ✔️ | ❌ | 12.1k | 较好 | 
+| `JsonParser`(buger/jsonparser)[5] | ✔️ | ✔️ | ❌ | 5k | 较差 | 
+| `JsonIter`(json-iterator/go)[6] | ✔️ | ✔️ | 部分兼容 | 12.1k | 较差 | 
+| `GoJson`(goccy/go-json)[7] | ✔️ | ✔️ | ✔️ | 2.2k | 较好 | 
+| `EasyJson`(mailru/easyjson)[8] | ✔️ | ✔️ | ❌ | 4.1k | 较差 | 
+| `Sonic`(bytedance/sonic)[9] | ✔️ | ✔️ | ✔️ | 4.1k | 较好 | 
+
+功能划分上，根据主流 json 库 API，将它们的使用方式分为三种：
+- 泛型（generic）编解码：json 没有对应的 schema，只能依据自描述语义将读取到的 value 解释为对应语言的运行时对象，例如：json object 转化为 Go map[string]interface{}；
+- 定型（binding）编解码：json 有对应的 schema，可以同时结合模型定义（Go struct）与 json 语法，将读取到的 value 绑定到对应的模型字段上去，同时完成数据解析与校验；
+- 查找（get）& 修改（set）：指定某种规则的查找路径（一般是 key 与 index 的集合），获取需要的那部分 json value 并处理。
+
+评测对比见[Go JSON 三方包哪家强？](https://mp.weixin.qq.com/s/ueNuYA23F3bQTwIKU-PZ2Q)
+
+业务选型上需要根据具体情况、不同领域的业务使用场景和发展趋势进行选择，综合考虑各方面因素。最适配业务的才是最好的 
+- 例如：如果业务只是简单的解析 http 请求返回的 json 串的部分字段，并且字段都是确定的，偶尔需要搜索功能，那 Gjson 是很不错的选择。
+
+个人观点，仅供参考：
+- 不太推荐使用 Jsoniter 库，原因在于: Go 1.8 之前，官方 Json 库的性能就收到多方诟病。不过随着 Go 版本的迭代，标准 json 库的性能也越来越高，Jsonter 的性能优势也越来越窄。如果希望有极致的性能，应该选择 Easyjson 等方案而不是 Jsoniter，而且 Jsoniter 近年已经不活跃了。
+- 比较推荐使用 **Sonic 库**，因不论从性能和功能总体而言，Sonic 的表现的确很亮眼；此外，通过了解 Sonic 的内部实现原理，提供一种对于 cpu 密集型操作优化的“野路子”，即：通过编写高性能的 C 代码并经过优化编译后供 Golang 直接调用。其实并不新鲜，因为实际上 Go 源码中的一些 cpu 密集型操作底层就是编译成了汇编后使用的，如：crypto 和 math。
+
 
 ### yaml
 
