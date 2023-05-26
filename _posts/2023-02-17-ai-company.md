@@ -66,7 +66,6 @@ AI学者国家分布
 【2023-2-26】
 - [十分钟理清常见的开源协议](https://juejin.cn/post/6844903511071670286)
 
-
 ### 开源等级
 
 斯坦福大学基础模型研究中心主任 Percy Liang将大模型的**开放程度**总结成4个层次：[参考](https://www.51cto.com/article/708282.html)
@@ -89,6 +88,15 @@ AI学者国家分布
 【2023-3-7】[OpenRAIL 协议](https://www.licenses.ai/blog/2022/8/18/naming-convention-of-responsible-ai-licenses), 常用协议无法满足 AI 领域，于是诞生了 OpenRAIL
 - Open & Responsible AI licenses ("`OpenRAIL`") are AI-specific licenses enabling open access, use and distribution of AI artifacts while requiring a responsible use of the latter. 
 - OpenRAIL licenses could be for open and responsible ML what current open software licenses are to code and Creative Commons to general content: a widespread community licensing tool.
+
+可商业应用的协议：
+- Apache 2.0
+- MIT
+- OpenRAIL-M
+- CC BY-SA-4.0
+- BSD-3-Clause
+
+These LLMs are all licensed for commercial use (e.g., Apache 2.0, MIT, OpenRAIL-M)
 
 #### 开源协议演变
 
