@@ -1822,6 +1822,7 @@ chatgpt
 >- 限时优惠！💰 育新东里二里二手房，89平米，满五年，海淀六小强学区，东西向户型，独立卫生间🚪。紧邻西三旗商圈🛍️，购物、餐饮、娱乐应有尽有🎉。2000年的房子，价格优惠，抓紧时间看房吧！👀
 
 
+
 ### Dolly（真开源）
 
 【2023-4-12】[世界首款真开源类ChatGPT大模型Dolly 2.0](https://www.toutiao.com/article/7221415818079355426)，可随意修改商用
@@ -2154,6 +2155,28 @@ huggingface
 - [测试链接](https://huggingface.co/spaces/togethercomputer/OpenChatKit)
 - [GPT-NeoXT-Chat-Base-20B](https://huggingface.co/togethercomputer/GPT-NeoXT-Chat-Base-20B)
 
+### MLFlow（港科大）
+
+【2023-4-2】[港科大开源LMFlow](http://news.sohu.com/a/662207419_121119001)
+
+[LMFlow](http://lmflow.com/) 训练一个只属于自己的模型。每个人可以根据自己的资源合理选择训练的模型，用于问答、陪伴、写作、翻译、专家领域咨询等各种任务。
+- ChatGPT 的训练包括至少以下几个步骤：pretrain → supervised tuning → instruction tuning → alignment。
+- LMFlow 库利用现有的开源大模型，支持这套流程的所有环节和灵活组合。
+
+LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
+- 用户可以很快地训练自己的模型，并继续进行二次迭代。
+  - 这些模型不仅限于最近流行的 `LLaMA`，也包括 `GPT-2`、`Galactica` 等模型。
+  - 不需要从头预训练，只需要以 finetune 作为切入点即可。
+- 即便是有限的计算资源，也能让使用者针对专有领域支持个性化训练。
+  - 基于 70 亿参数的 LLaMA，只需 1 张 3090、耗时 5 个小时，就可以训练一个专属于自己的个性化 GPT，并完成网页端部署。
+  - 研究者已经用该框架单机训练 330 亿参数的 LLaMA 中文版，并开源了模型权重用于学术研究
+  - 特定专家领域（以医疗为例），只需微调 6 个 A100 * 天，就能够获得和 ChatGPT 相当甚至更好的效果, 参数量是chatgpt的1/20。
+  - ![example](https://p6.itc.cn/q_70/images03/20230402/c44c5d3681d24e529e55b2797db2373f.png)
+  - ![model performance](https://p1.itc.cn/q_70/images03/20230402/397f2cd7d524479aa547711d436f1264.png)
+- [Chat Demo](http://lmflow.com/chat), github: [MLFlow](https://github.com/OptimalScale/LMFlow)
+- 模型和数据量越大，训练时间越长，效果越佳。
+
+目前该研究也在训练更大参数量（650 亿）和更大数据量的中文版模型，效果还会持续提升
 
 ### ChatGLM 清华
 
