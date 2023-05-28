@@ -2178,6 +2178,9 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 
 目前该研究也在训练更大参数量（650 亿）和更大数据量的中文版模型，效果还会持续提升
 
+安装使用
+- [github](https://github.com/OptimalScale/LMFlow/blob/main/readme/README_zh-hans.md)
+
 ### ChatGLM 清华
 
 [ChatGLM](https://chatglm.cn/)：开源双语对话语言模型
