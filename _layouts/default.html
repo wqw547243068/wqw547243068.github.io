@@ -7,7 +7,7 @@
     {% include header.html %}
     
         {{ content }}
-        
+    
     {% include footer.html %}
     {% include backToTop.html %}
     <script src="{{ " /js/main.js " | prepend: site.baseurl }}" charset="utf-8"></script>
@@ -20,6 +20,10 @@
       });
     </script>
     <!-- <script src="{{ " /js/scroll.min.js " | prepend: site.baseurl }}" charset="utf-8"></script> -->
+
+    <!-- 【2023-5-28】chatbas机器人 -->
+    {% include tool_chatbase.html %}
+
   </body>
   
 </html>
