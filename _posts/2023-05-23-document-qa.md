@@ -23,7 +23,7 @@ permalink: /doc-chat
 - 如何通过大语言模型，让企业的文档可批量上传，无需更多的整理，直接转化为有效的QA，供座席和机器人直接调用呢？
 
 当前的主流客服产品
-- 智能客服系统会标配知识库管理功能，常见的形式是树状结构，提供分类管理、知识库条目管理，并支持知识库的批量导入导出操作。
+- 智能客服系统会标配`知识库管理`功能，常见的形式是**树状结构**，提供分类管理、知识库条目管理，并支持知识库的批量导入导出操作。
 - 使用中，企业需要经常性地维护管理知识库内容，将企业已有知识内容文档上传，但如果是将原文件上传，则系统最多能支持预览功能，使用者在操作界面只能点击打开全文检索。而如果是机器人知识库，直接上传文档是不可用的，需要操作者手工整理文档中的内容为机器人标准问答对。
 
 大模型时代
@@ -502,6 +502,8 @@ LangChain, 语言链条，也称：`兰链`，一种LLM语言大模型开发工�
 
 LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
 - AGI的基础工具模块库，类似模块库还有mavin。
+-  LangChain provides an amazing suite of tools for everything around LLMs. 
+- It’s kind of like HuggingFace but specialized for LLMs
 
 LangChain, 一个基于语言模型开发应用程序的框架。
 - 将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API。 
@@ -522,6 +524,9 @@ langChain，babyAGI的子模块，都是几百个。特别是langChain，模块�
 3. 构建矢量数据库
 4. 引入LLM
 5. 创建qa_chain，开始提问
+
+
+####  LangChain + Milvus
 
 ```py
 from langchain.embeddings.openai import OpenAIEmbeddings # openai
@@ -653,6 +658,16 @@ kwargs:Any,
 将 Milvus 集成到 LangChain 中的确存在一些问题，最主要的是 Milvus 无法处理 JSON 文件。目前，只有两种解决方法：
 - 现有的 Milvus collection 上创建一个 VectorStore。
 - 基于上传至 Milvus 的第一个文档创建一个 VectorStore。
+
+#### LangChain + Faiss + Ray 实践
+
+【2023-5-29】[Building an LLM open source search engine in 100 lines using LangChain and Ray](https://www.anyscale.com/blog/llm-open-source-search-engine-langchain-ray)
+- Building the index: Build a document index easily with Ray and Langchain
+- ![](https://images.ctfassets.net/xjan103pcp94/4OzISThpksdKgjZ0gVJUiB/85bb7fccdfef1df3d061c57e9af1062a/index-langchain.jpg)
+- Build a document index 4-8x faster with Ray
+- ![](https://images.ctfassets.net/xjan103pcp94/7tDpD5Q7nxtRyX9lgDvbkI/6209fbd875c5cd379c2289ef6f6554f0/Screen_Shot_2023-04-16_at_6.20.10_PM.png)
+- Serving: Serve search queries with Ray and Langchain
+- ![](https://images.ctfassets.net/xjan103pcp94/1g6zBePU72Rmz5MBH2reaB/db400e9bbbc445d7214d45658f81992f/Screen_Shot_2023-04-16_at_9.42.46_PM.png)
 
 ### 微软guidance（LangChain简化）
 
