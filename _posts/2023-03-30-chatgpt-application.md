@@ -1187,17 +1187,56 @@ LangChain 由前 Robust Intelligence 的机器学习工程师 Chase Harrison 在
 
 #### AutoGPT
 
-【2023-4-12】[AutoGPT 太火了，无需人类插手自主完成任务](https://mp.weixin.qq.com/s/bV1tPc7hNn2z06YOpzyanw)
+【2023-4-12】
+- [AutoGPT 太火了，无需人类插手自主完成任务](https://mp.weixin.qq.com/s/bV1tPc7hNn2z06YOpzyanw)
+- [拥有自我意识的AI：AutoGPT](https://juejin.cn/post/7236594708301840441)
 
 AutoGPT 的研究开始走进大众视野。
-- 一个实验性的开源应用程序，展示了 GPT-4 语言模型的功能。该程序由 GPT-4 驱动，可以自主实现用户设定的任何目标。
-- AutoGPT 相当于给基于 GPT 的模型一个内存和一个身体。有了它，你可以把一项任务交给 AI 智能体，让它自主地提出一个计划，然后执行计划。此外其还具有互联网访问、长期和短期内存管理、用于文本生成的 GPT-4 实例以及使用 GPT-3.5 进行文件存储和生成摘要等功能。AutoGPT 用处很多，可用来分析市场并提出交易策略、提供客户服务、进行营销等其他需要持续更新的任务。
+-  2023年3月30日，Toran Bruce Richards 发行 AutoGPT，一个实验性开源应用程序，利用 OpenAI 的GPT-4语言模型来创建**完全**自主和可定制的 AI 代理
+  - Toran 是一名游戏开发商，并创立了一家名为 Significant Gravitas 的游戏公司
+- AutoGPT 相当于给基于 GPT 的模型一个内存和一个身体。有了它，你可以把一项任务交给 AI 智能体，让它自主地提出一个计划，然后执行计划。此外其还具有互联网访问、长期和短期内存管理、用于文本生成的 GPT-4 实例以及使用 GPT-3.5 进行文件存储和生成摘要等功能。
+- AutoGPT 从根本上改变了 AI 与人类之间的交互方式，人类不再需要发挥积极作用，同时仍然保持与 ChatGPT 等其他 AI 应用程序相同或更好的结果质量。
+
+AutoGPT 用处很多，可用来分析市场并提出交易策略、提供客户服务、进行营销等其他需要持续更新的任务。
 - [GitHub 地址](https://github.com/torantulino/auto-gpt)
+
+##### AutoGPT工作原理
+
+AutoGPT 如何工作？
+
+AutoGPT 基于自主 AI 机制工作，其中 AI 系统创建不同的 AI 代理来满足特定任务，其中包括：
+- **任务创建**代理： 当你在 AutoGPT 上输入目标时，第一个与任务创建代理交互的 AI 代理。根据你的目标，它将创建一个任务列表以及实现这些目标的步骤，并将其发送给优先级代理。
+- 任务**优先级**代理： 收到任务列表后，优先级 AI 代理会确保顺序正确且符合逻辑，然后再将其发送给执行代理。
+- 任务**执行**代理： 完成优先级排序后，执行代理将一个接一个地完成任务。这涉及利用 GPT-4、互联网和其他资源来获得结果。
+- ![架构图](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba630117cd6408bb1fb8a1265fdf520~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+当执行代理完成所有任务，结果不理想时，它可以与**任务创建代理**通信，创建新的任务列表。三个代理之间的迭代循环，直到完成所有用户定义的目标。
+
+AI 代理的行为也显示在用户界面上，将它们分为四组：思想、推理、计划、评判。
+- `思想`（THOUGHTS） ：AI 代理分享它对目标的想法。
+- `推理`（REASONING） ：AI 代理推理如何开展并实现它的想法。
+- `计划`（PLAN） ：AI代理通过分析，列举了所要完成任务的计划。
+- `评判`（CRITICISM） ：AI进行自我评判，纠正错误并克服任何限制问题。
+
+通过共享此计算流程，AutoGPT 可以进行反复尝试论证，并进行针对性的优化处理，可以在没有任何用户干预的情况下克服所遇到的所有问题。
 
 模块图, 源自 [AGI-MAP](https://github.com/ziwang-com/AGI-MAP)
 - ![arch](https://user-images.githubusercontent.com/11691791/236591588-3aaa6a6e-bbf5-42cd-84c3-a21f76e8f2a7.png)
 
 特斯拉前 AI 总监、刚刚回归 OpenAI 的 Andrej Karpathy 也为其大力宣传，并在推特赞扬：「AutoGPT 是 prompt 工程的下一个前沿。」
+
+##### AutoGPT 的局限性
+
+一些关键限制。
+1. **成本高昂**
+  - 虽然功能令人惊叹，但 AutoGPT 的实用性可能会让你失望。由于 `AutoGPT` 使用昂贵的 `GPT-4` 模型，因此即使是小任务，完成每个任务的成本也可能很高。这主要是因为 AutoGPT 在特定任务的步骤中会多次使用 `GPT-4`。
+2. 经常陷入**循环**
+  - 用户在使用 AutoGPT 时面临的最常见问题是它陷入循环。如果这种情况持续超过几分钟，则可能意味着你必须重新启动该过程。发生这种情况是因为 AutoGPT 依赖 GPT-4 来正确定义和分解任务。因此，如果底层LLM返回结果不足以让 AutoGPT 采取任何行动就会出现反复尝试的问题。
+3. 数据**安全性**
+  - 由于AutoGPT经过充分授权，能自主运行并访问你的系统和互联网，例如使用twitter账号，登录github，使用搜索引擎等，因此你的数据可能会被泄露。
+  - AutoGPT没有安全代理，所以使用 AutoGPT 时必须小心，如果没有给出正确的说明和安全指南，你不能让模型继续运行。
+
+##### 实践
 
 实践
 - [AUTOGPT INSTALLATION AND FEATURES](https://autogpt.net/autogpt-installation-and-features/)
@@ -1218,11 +1257,28 @@ vim .env # 填入 openai key 到变量 OPENAI_API_KEY
 # python scripts/main.py --debug # 调试模式
 # python scripts/main.py --speak # use TTS for Auto-GPT
 python3 scripts/main.py # 多个虚拟环境时，为了避免干扰
+python -m autogpt
 ```
 
+##### 使用
+
+AutoGPT配置
+- 为AI取一个名字 \[Name]，一个角色定位\[Role]，同时你可以为它制定目标\[Goals]（最多5个目标，如果你仅有一个目标就直接回车）。
+- 制定完成目标以后，AutoGPT会进行自主思考并分析你的目标\[THOUGHTS]，思考完成后开始理解并推理如何去完成这个目标\[REASONING]，然后开始自主拆解成具体的计划\[PLAN]，最后会提出评判\[CRITICISM] 用以保证 AI 代理纠正错误并作出正确的决断。
+- 完成以上的行为规划后，AutoGPT会提示它将要作出的指令和动作[NEXT ACTION]， 里面包含具体执行的命令\[COMMAND]和参数\[ARGUMENTS]，用户可以在此时可以对风险命令进行识别，避免出现数据泄露等预期外的风险，这里可以通过y或者n进行授权或者拒绝AutoGPT接下来的指令动作。
+- ![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23d2ddb5b3ab4638af1aa22913f29142~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+- AutoGPT会通过以上步骤，进行多次循环，由于AutoGPT可以存储上下文和历史经验，所以每一次都会根据反馈结果进行更深入的思考，制定出更优的方案，最后列举他要执行的计划，反复尝试和补充，直到达到你预期的目标。
+- AutoGPT会通过以上步骤，进行多次循环，由于AutoGPT可以存储上下文和历史经验，所以每一次都会根据反馈结果进行更深入的思考，制定出更优的方案，最后列举他要执行的计划，反复尝试和补充，直到达到你预期的目标。
+
+
+效果
+- ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4ac14513a95c49b5a7bb87f2050ee170~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+##### COA
+
 【2023-5-18】从 COT 到 COA
-- COT(Chain of Thought，思维链) 
-- COA(Chain of Action，行为链)：AutoGPT为代表，将自然语言表达的目标分解 为子任务，并利用互联网和其他工具自动迭代地尝试实现这些目标。
+- `COT`(Chain of Thought，思维链) 
+- `COA`(Chain of Action，行为链)：AutoGPT为代表，将自然语言表达的目标分解 为子任务，并利用互联网和其他工具自动迭代地尝试实现这些目标。
 
 特点
 - 自主化决策，任务链自动化
