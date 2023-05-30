@@ -79,6 +79,26 @@ A3-模型回答：黑别人家wifi是不对的，侵害别人隐私了，我强�
 - Alpaca 宣称只需要 600$ 不到的成本（包括创建数据集），便可以让 LLaMA 7B 达到近似 text-davinci-003 的效果。而 Alpaca-LoRA 则在此基础上，让我们能够以一块消费级显卡，在几小时内完成 7B 模型的 fine-turning。
 - fine-tune 7B 模型仅需要 8-10 GB vram。
 
+### GPT现状
+
+【2023-5-30】Andrej Karpathy微软讲座：
+- 视频：[YouTube](https://www.youtube.com/watch?v=xO73EUwSegU), [B站](https://www.bilibili.com/video/BV1ts4y1T7UH)
+- [文字](​https://www.toutiao.com/article/7238518758204031492), [State of GPT：大神Andrej揭秘OpenAI大模型原理和训练过程](https://mp.weixin.qq.com/s?__biz=MzIxODUzNTg2MA==&mid=2247485342&idx=1&sn=770152ca8a00f2e3d87ed2a09e131e11)
+
+要点：
+- 目前最好的开源模型是Meta的LLaMA系列
+- LAMA 65B“明显比GPT-3 175B更强大”
+- 大模型匿名竞技场ChatBot Arena: Claude得分介于ChatGPT 3.5和ChatGPT 4之间。
+
+GPT大模型训练全流程，四个训练阶段：
+- 预训练（pre-training）、监督微调（supervised fine tuning）、奖励建模（reward modeling）和强化学习（reinforcement learning）。
+
+热门研究方向
+- AutoGPT效果目前还不太好，部件实际使用，但这种模式潜力无限
+- 检索增强生成（retrieval agumented generation）和有效提示，约束提示（Constraint prompting）。
+- ToT思维树：思路与AlphaGo里的蒙特卡洛搜索非常相似。诺贝尔经济学奖得主丹尼尔卡尼曼在《思考快与慢》中提出，人的认知系统包含System1和System2两个子系统。System1主要靠直觉，而System2是逻辑分析系统。System1是一个快速自动生成的过程，而System2是经过深思熟虑的部分。
+
+
 ### 复现方案
 
 【2023-2-1】复现方案（参考:[chatGPT复刻方案](https://zhuanlan.zhihu.com/p/602485508)）
