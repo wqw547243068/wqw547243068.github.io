@@ -472,7 +472,205 @@ output_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print(output_text)
 ```
 
-## 文档向量化工具
+## LLM应用
+
+### LLM应用技术架构
+
+- ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/871e57dfdaf24ba3a064e79ba0522a7b~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=eQeTT9ERDeEgx00BF9U9cVyrx%2FY%3D)
+
+典型LLM应用开发架构四层：
+- （1）`存储层`：主要为`向量数据库`，用于存储文本、图像等编码后的特征向量，支持向量相似度查询与分析。例如，我们在做文本语义检索时，通过比较输入文本的特征向量与底库文本特征向量的相似性，从而检索目标文本，即利用了向量数据库中的相似度查询（余弦距离、欧式距离等）。
+  - 【代表性数据库】`Pinecone`、`Qdrant`。
+- （2）`模型层`：选择大语言模型，如OpenAI的GPT系列模型、Hugging Face中的开源LLM系列等。
+  - 模型层提供最核心支撑，包括聊天接口、上下文QA问答接口、文本总结接口、文本翻译接口等。
+  - 【代表性模型】OpenAI的`GPT-3.5/4`，Anthropic的`Claude`，Google的`PaLM`，THU的`ChatGLM`等。
+- （3）`服务层`：将各种语言模型或外部**资源整合**，构建实用的LLM模型。
+  - `Langchain`是一个开源LLM应用框架，概念新颖，将LLM模型、向量数据库、交互层Prompt、外部知识、外部工具整合到一起，可自由构建LLM应用。
+  - 【代表性框架】：`LangChain`，`AutoGPT`，`BabyAGI`，`Llama-Index`等。
+- （4）`交互层`：用户通过UI与LLM应用交互
+  - `langflow`是`langchain`的GUI，通过拖放组件和聊天框架提供一种轻松的实验和原型流程方式。
+  - 实现一个简单的聊天应用，输入“城市名字”，聊天机器人回复“该城市的天气情况”。
+  - 只需要拖动三个组件：PromptTemplate、OpenAI、LLMChain。完成PromptTemplate、OpenAI、LLMChain的界面化简单配置即可生成应用。
+  - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/03233a4e108f4ffaae147afcac50d03e~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=Z9D%2Blt1IqZVkBHXAGG1QjyORqLk%3D)
+
+
+### LLM 应用
+
+【2023-5-30】[万字长文：LLM应用构建全解析](https://www.toutiao.com/article/7238815236906680836)
+
+
+#### LLM 应用总结
+
+LLM 应用
+- 1、**本地文档**知识问答助理(chat with pdf)，如：私域知识问答助理，智能客服，语义检索总结、辅助教学。
+- 2、**视频**知识总结问答助理(chat with video)，如：视频自动编目、视频检索问答。
+- 3、**表格**知识总结问答助理(chat with csv)，如：商业数据分析、市场调研分析、客户数据精准分析等
+
+#### Doc-Chat 文档问答
+
+有大量本地文档数据，希望通过问答的方式快速获取想要的知识或信息，提高工作效率
+
+解决方案：
+> langchain + llms
+
+本地化知识专属问答助理构建过程可简单概括如下：
+- 第一步：**数据加载&预处理**（将数据源转换为text，并做text split等预处理）
+- 第二步：**向量化**（将处理完成的数据embedding处理）
+- 第三步：**召回**（通过向量检索工具Faiss等对query相关文档召回）
+- 第四步：阅读理解，**总结答案**（将context与query传给llms，总结答案）
+- ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a978188a6d0d4d7db75e0818e286c32c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=daelWSDLtJ1ruh29TjQfkyddRhg%3D)
+
+##### （1）数据加载&预处理
+
+加载pdf文件，对文本进行分块
+- 每个分块的最大长度为3000个字符)。这个最大长度根据llm的输入大小确定，比如gpt-3.5-turbo最大输入是4096个token。
+- 相邻块之间的重叠部分为400个字符，目的是每个片段保留一定的**上文信息**，后续处理任务利用重叠信息更好理解文本。
+
+方案
+- LangChain + FAISS + OpenAI
+
+```py
+import os
+
+openai_api_key = 'sk-F9Oxxxxxx3BlbkFJK55q8YgXb6s5dJ1A4LjA'
+os.environ['OPENAI_API_KEY'] = openai_api_key
+from langchain.llms import OpenAI
+from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.document_loaders import PyPDFLoader
+from langchain import PromptTemplate
+
+llm = OpenAI(model_name="gpt-3.5-turbo", temperature=0, openai_api_key=openai_api_key)
+
+# data loader
+loader = PyPDFLoader("data/ZT91.pdf")
+doc = loader.load()
+# text splitter
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=400)
+docs = text_splitter.split_documents(doc)
+```
+
+##### （2）向量化
+
+调用 OpenAIEmbeddings接口对文本进行向量化。
+- 实际应用中，可使用开源模型，如下所示（OpenAIEmbeddings用的是第6个）。同时，中文embedding效果优秀的模型有百度的ERNIE。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/495e57fd56ea4ccc9790418aab290354~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=X394ecc51Xmjra6dRr2AiK6Bwqc%3D)
+
+```py
+embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+```
+
+##### （3）召回
+
+用FAISS工具对输入文档构建FAISS索引，返回构建好的FAISS索引对象。
+
+创建FAISS索引包含的工作有：
+- 为索引分配内存空间；
+- 选择合适的索引类型与参数（比如Flat IVFFlat等）；
+- 将文档向量添加到索引中。
+
+```py
+docsearch = FAISS.from_documents(docs, embeddings)
+# docsearch.as_retriever(search_kwargs={"k": 5})表示返回前5个最相关的chunks，默认是4，可以修改
+qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=docsearch.as_retriever(search_kwargs={"k": 5}), chain_type_kwargs={"prompt": PROMPT})
+
+
+```
+
+##### （4）总结答案
+
+- 输入：query + context
+- 输出：answer
+
+其中 context 为通过faiss retriever检索出的相关文档：
+
+特别的，为了让gpt只回答文档中的内容，在prompt_template 增加了约束：“请注意：请谨慎评估query与提示的Context信息的相关性，只根据本段输入文字信息的内容进行回答，如果query与提供的材料无关，请回答"对不起，我不知道"，另外也不要回答无关答案：”。即如果文档中没有用户提问相关内容，需要回答“不知道”，防止“答非所问”误导用户。
+
+```py
+prompt_template = """请注意：请谨慎评估query与提示的Context信息的相关性，只根据本段输入文字信息的内容进行回答，如果query与提供的材料无关，请回答"对不起，我不知道"，另外也不要回答无关答案：
+    Context: {context}
+    Question: {question}
+    Answer:"""
+# 输入：query + context
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+query = "实时画面无法查看，怎样解决？"
+# FAISS检索出来的文档：retriever=docsearch.as_retriever(search_kwargs={"k": 5})
+qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=docsearch.as_retriever(search_kwargs={"k": 5}), chain_type_kwargs={"prompt": PROMPT})
+# query为用户输入的提问
+qa.run(query)
+```
+
+#### 视频知识总结
+
+LLM 看完视频，回答问题
+
+需求描述：
+- youtube等视频网站上每天都会产生大量视频，虽然推荐系统按照喜好进行了推荐，但观看大量有价值的视频依然面临挑战，如果能够快速了解视频内容，并得到关注的信息，将极大提高信息获取效率。
+
+解决方案：
+- langchain + transcript + llms
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/d565d76640004377abc1bcd989577fa7~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=XoDjL3a6u4n%2FIC8AbQRMBoJF9zQ%3D)
+
+与pdf文档处理方式不同，YoutubeLoader库从youtube**视频链接**中加载数据，并转换为文档。
+- 文档获取过程: 通过youtube-transcript-api获取的视频的字幕文件，这个字幕文件是youtube生成的。当用户将视频上传至youtube时，youtube会通过内置的语音识别算法将视频语音转换为文本。当加载youtube视频字幕文档后，接下来的处理工作与第一个例子类似。
+
+```py
+# 加载 youtube 频道
+loader = YoutubeLoader.from_youtube_url('https://www.youtube.com/watch?v=_rcnWQ0b2lM')
+# 将数据转成 document
+documents = loader.load()
+```
+
+Question:
+> “对视频中介绍的内容，逐条列举？”
+
+
+
+#### 表格问答
+
+LLM 分析完 54万条数据，给出正确答案，完成了数据分析师1天的工作。
+
+需求描述：
+- 零售商有客户的交易数据。希望从数据中生成一些基本见解，以便识别最佳客户。
+- 例如：按性别和年龄组划分的平均支出、每种类型的客户购买的产品、产品在哪个城市和商店的销售额最高等等
+- 数据分析师将获取数据，编写一些 SQL 或 Python 或 R 代码，生成见解，数据分析师可能需要一天的时间来提供这些结果。
+
+解决方案：
+- langchain+llm + agents
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c12a12fb285e431b94a9179846dd67e8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=pGos9u09HxT9ppxKfL4lz74LA%2F4%3D)
+
+任务
+- (1) 显示表格中用户的数量
+  - 验证: agent给出的答案完全正确
+- (2) 年龄与消费金额之间相关性分析
+  - 分析下年龄与消费金额之间的相关性：年龄与消费成正相关，但是相关性很弱
+- (3) 产品销售量统计并画出柱状图
+  - 统计每种产品的销售总量，并画柱状图
+
+
+```py
+import os
+from langchain.agents import create_csv_agent
+from langchain.llms import OpenAI
+
+openai_api_key = 'sk-F9O70vxxxxxxxBlbkFJK55q8YgXb6s5dJ1A4LjA'
+os.environ['OPENAI_API_KEY'] = openai_api_key
+
+agent = create_csv_agent(OpenAI(openai_api_key=openai_api_key, temperature=0), 'train.csv', verbose=True)
+# 统计用户数
+agent.run("请按照性别对用户数量进行显示？")
+# 年龄与消费金额之间的相关性
+agent.run("在这份表格中,年龄与消费金额是否存在相关性?")
+# 统计每种产品的销售总量，并画柱状图
+agent.run("产品1总量,产品2总量,产品3总量分别是多少,将三个总量通过柱状图画出来并显示")
+```
+
+
+
+
+## 文档向量化
 
 自研框架的选择
 - 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
@@ -492,9 +690,152 @@ print(output_text)
 - ![b](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYmX2ImA5oO~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=rlim2GCZ8zsapnPyzA47LCHJkEo%3D)
 
 
+### 文本切分
+
+
+LangChain 切分工具
+- [Text Splitters文档](https://python.langchain.com/en/latest/modules/indexes/text_splitters.html): 选择对应的文本切分器，如果是通用文本的话，建议选择 `RecursiveCharacterTextSplitter`
+
+```py
+from langchain.document_loaders import UnstructuredFileLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# 导入文本
+loader = UnstructuredFileLoader("./data/news_test.txt")
+# 将文本转成 Document 对象
+data = loader.load()
+print(f'documents:{len(data)}')
+
+# 初始化加载器
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
+# 切割加载的 document
+split_docs = text_splitter.split_documents(data)
+print("split_docs size:",len(split_docs))
+```
+
+### 相似度
+
+相似度索引
+- 只用embedding来计算句子的相似度
+
+```py
+# 初始化 prompt 对象
+question = "2022年腾讯营收多少"
+# 最多返回匹配的前4条相似度最高的句子
+similarDocs = db.similarity_search(question, include_metadata=True,k=4)
+# [print(x) for x in similarDocs]
+```
+
+接入ChatGLM来帮忙做总结和汇总
+
+```py
+from langchain.chains import RetrievalQA
+import IPython
+# 更换 LLM
+qa = RetrievalQA.from_chain_type(llm=ChatGLM(temperature=0.1), chain_type="stuff", retriever=retriever)
+# 进行问答
+query = "2022年腾讯营收多少"
+print(qa.run(query))
+```
+
+### 向量数据库
+
+向量数据库用于存储文本、图像等编码后的**特征向量**，支持向量相似度查询与分析。
+- 文本语义检索，通过比较输入文本的特征向量与底库文本特征向量的相似性，从而检索目标文本，即利用了向量数据库中的相似度查询（余弦距离、欧式距离等）。
+
+代表性数据库
+- Pinecone、Qdrant等
+
 ### OpenAIEmbeddings
 
 OpenAI官方的embedding服务
+
+OpenAIEmbeddings：
+- 使用简单，并且效果比较好；
+
+问题
+- 会消耗openai的token，特别是大段文本时，**消耗的token**还不少，如果知识库是比较固定的，可以考虑将每次生成的embedding做持久化，这样就不需要再调用openai了，可以大大节约token的消耗；
+- 可能会有**数据泄露**的风险，如果是一些高度私密的数据，不建议直接调用。
+
+```py
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain import VectorDBQA
+from langchain.document_loaders import UnstructuredMarkdownLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+import IPython
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["OPENAI_API_BASE"] = os.getenv("OPENAI_API_BASE")
+
+embeddings = OpenAIEmbeddings( )
+```
+
+### HuggingFaceEmbeddings
+
+HuggingFaceEmbeddings：
+
+可以在HuggingFace上面选择各种sentence-similarity模型来进行实验，数据都是在本机上进行计算
+需要一定的硬件支持，最好是有GPU支持，不然生成数据可能会非常慢
+生成的向量效果可能不是很好，并且HuggingFace上的中文向量模型不是很多。
+
+```py
+from langchain.vectorstores import Chroma
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+import IPython
+import sentence_transformers
+
+
+embedding_model_dict = {
+    "ernie-tiny": "nghuyong/ernie-3.0-nano-zh",
+    "ernie-base": "nghuyong/ernie-3.0-base-zh",
+    "text2vec": "GanymedeNil/text2vec-large-chinese",
+    "text2vec2":"uer/sbert-base-chinese-nli",
+    "text2vec3":"shibing624/text2vec-base-chinese",
+}
+
+EMBEDDING_MODEL = "text2vec3"
+# 初始化 hugginFace 的 embeddings 对象
+embeddings = HuggingFaceEmbeddings(model_name=embedding_model_dict[EMBEDDING_MODEL], )
+embeddings.client = sentence_transformers.SentenceTransformer(
+        embeddings.model_name, device='mps')
+```
+
+### Faiss
+
+
+```py
+from langchain.vectorstores import FAISS
+
+db = FAISS.from_documents(split_docs, embeddings)
+db.save_local("./faiss/news_test")
+# 加载持久化向量
+db = FAISS.load_local("./faiss/news_test",embeddings=embeddings)
+```
+
+
+### Mulvus
+
+
+
+### Chroma
+
+Chroma 比较轻量，直接安装库
+
+```py
+from langchain.vectorstores import Chroma
+# 初始化加载器
+db = Chroma.from_documents(split_docs, embeddings,persist_directory="./chroma/openai/news_test")
+# 持久化
+db.persist()
+# 持久化后，可以直接选择从持久化文件中加载，不需要再重新就可使用了
+db = Chroma(persist_directory="./chroma/news_test", embedding_function=embeddings)
+
+```
+
+## 服务层
 
 ### LangChain
 
@@ -509,6 +850,152 @@ LangChain, 一个基于语言模型开发应用程序的框架。
 - 将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API。 
 - [官方文档](https://python.langchain.com/en/latest/index.html)
 - [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
+
+#### LangChain 组件
+
+LangChain包含六部分组件
+- ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f101b9ecf540489280e7f95017243fb9~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=j8hpvldp7FTdOSIGCFjEyUEmbhs%3D)
+- Models、Prompts、Indexes、Memory、Chains、Agents。
+
+##### （1）Models（模型）：LLM选择
+
+（1）Models（模型）: 可选择不同的LLM与Embedding模型
+- 大语言模型是Models的核心，也是LangChain的核心
+- 这些模型包括OpenAI的GPT-3.5/4、谷歌的LaMDA/PaLM，Meta AI的LLaMA等。
+- Text Embedding用于文本的向量化表示。例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
+
+LangChain调用OpenAI的gpt-3.5-turbo大语言模型的简单示例
+
+```py
+import os
+from langchain.llms import OpenAI
+
+openai_api_key = 'sk-F9O70vxxxxxlbkFJK55q8YgXb6s5dJ1A4LjA'
+os.environ['OPENAI_API_KEY'] = openai_api_key
+
+llm = OpenAI(model_name="gpt-3.5-turbo")
+print(llm("讲个笑话，很冷的笑话"))
+# 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
+```
+
+##### （2）Prompts（提示语）: 模板化
+
+Prompts（提示语）: 管理LLM输入
+
+当用户与大语言模型对话时，用户内容即Prompt（提示语）。
+- 如果用户每次输入的Prompt中包含大量的重复内容，生成一个**Prompt模板**，将通用部分提取出来，用户输入输入部分作为变量。
+
+Prompt模板十分有用
+- 利用langchain构建专属**客服助理**，并且明确告诉其只回答**知识库**（产品介绍、购买流程等）里面的知识，其他无关的询问，只回答“我还没有学习到相关知识”。
+- 这时可利用Prompt模板对llm进行约束。
+
+调用LangChain的PromptTemplate
+
+```py
+from langchain import PromptTemplate
+
+name_template = """
+我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.
+关于{name_description},好听的名字有哪些?
+"""
+# 创建一个prompt模板
+prompt_template = PromptTemplate(input_variables=["name_description"], template=name_template)
+description = "男孩名字"
+print(prompt_template.format(name_description=description))
+# 我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.关于男孩名字,好听的名字有哪些?
+```
+
+##### （3）Indexes（索引）：文档结构化
+
+Indexes（索引）：对文档结构化的方法
+- 索引是指对文档进行结构化的方法，以便LLM能够更好的与之交互。
+- 该组件主要包括：Document Loaders（`文档加载器`）、Text Splitters（`文本拆分器`）、VectorStores（`向量存储器`）以及Retrievers（`检索器`）。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5078c23e1fea4bee99746ebec0847be5~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=Uzl65uwWtcvNhfi1OHpX8u%2BGzko%3D)
+- `文本检索器`：将特定格式数据转换为文本。输入可以是 pdf、word、csv、images 等。
+- `文本拆分器`：将长文本拆分成小的**文本块**，便于LLM模型处理。
+  - 由于模型处理数据时，对输入长度有限制，因此需要对长文本进行**分块**。
+  - 不同语言模型对块的大小定义不同，比如OpenAI的GPT对分块的长度通过token大小来限制，比如GPT-3.5是**4096**，即这个分块所包含的Token数量不能超过4096。
+  - 一般的分块方法：首先，对长文本进行**断句**，即分成一句一句话。然后，计算每句话包含的token数量，并从第一句话开始往后依次累加，直到达到指定数量，组成为1个分块。依次重复上述操作。比如按照**字母**切分的`Character`，按照**token**切分的`Tiktoken`等。
+- `向量存储器`：存储提取的文本向量，包括Faiss、Milvus、Pinecone、Chroma等。
+- `向量检索器`：通过用户输入的文本，检索器负责从底库中检索出特定相关度的文档。度量准则包括余弦距离、欧式距离等。
+
+##### （4）Chains（链条）：组合链路
+
+Chains（链条）：将LLM与其他组件结合
+
+Chain提供了一种将各种组件统一到应用程序中的方法。
+- 例如，创建一个Chain，它接受来自用户的输入，并通过PromptTemplate将其格式化，然后将格式化的输出传入到LLM模型中。
+- 通过多个Chain与其他部件结合，可生成复杂的链，完成复杂的任务。
+- ![Chains示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/4d5ba1c00889406fb3bc7c86fbb9660f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=pLKYIarzSV1QkVxKv%2Blc0t8lDrE%3D)
+
+LLM与其他组件结合，创建不同应用，一些例子：
+- 将LLM与**提示模板**相结合
+- 第一个 LLM 的输出作为第二个 LLM 的输入, **顺序组合**多个 LLM
+- LLM与**外部数据**结合，比如，通过langchain获取youtube视频链接，通过LLM视频问答
+- LLM与**长期记忆**结合，比如聊天机器人
+
+##### （5）Agents（智能体）：其他工具
+
+Agents（智能体）：访问其他工具
+
+Agents是LLM与工具之间的**接口**，Agents用来确定任务与工具。
+
+一般的Agents执行任务过程：
+- a. 首先，接收用户输入，并转化为PromptTemplate
+- b. 其次，Agents通过调用LLM输出action，并决定使用哪种工具执行action
+- c. 最后，Agents调用工具完成action任务
+- ![agent示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/b53d13fc3ceb4d5fa43081721e2b97b9~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=HzMa7h7l78O8xFoMDsdNIx%2Bf0yg%3D)
+
+Agents可以调用那些工具完成任务？
+
+| 工具 | 描述 | 
+| --- | --- | 
+| 搜索 | 调用谷歌浏览器或其他浏览器搜索指定内容 |
+| 终端 | 在终端中执行命令，输入应该是有效的命令，输出将是运行该命令的任何输出 |
+| Wikipedia | 从维基百科生成结果 |
+| Wolfram-Alpha | WA 搜索插件——可以回答复杂的数学、物理或任何查询，将搜索查询作为输入。 |
+| Python REPL | 用于评估和执行 Python 命令的 Python shell。它以 python 代码作为输入并输出结果。输入的 python 代码可以从 LangChain 中的另一个工具生成 |
+
+
+Agent通过调用wikipedia工具，对用户提出的问题回答。尽管gpt-3.5功能强大，但是其知识库截止到2021年9月，因此，agent调用wikipedia外部知识库对用户问题回答。回答过程如下：
+- a. 分析用户输入问题，采取的Action为通过Wikipedia实现，并给出了Action的输入
+- b. 根据分析得到了最相关的两页，并进行了总结
+- c. 对最后的内容进一步提炼，得到最终答案
+
+```py
+import os
+from langchain.agents import load_tools
+from langchain.agents import initialize_agent
+from langchain.llms import OpenAI
+
+openai_api_key = 'sk-F9xxxxxxx55q8YgXb6s5dJ1A4LjA'
+os.environ['OPENAI_API_KEY'] = openai_api_key
+llm = OpenAI(temperature=0)
+tools = load_tools(["wikipedia","llm-math"], llm=llm)
+agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
+print(agent.run("列举spaceX星舰在2022年后的发射记录?"))
+```
+
+##### （6）Memory（记忆）：
+
+对于像聊天机器人这样的应用程序，需要记住以前的对话内容。
+- 但默认情况下，LLM对历史内容**没有记忆功能**。LLM的输出只针对用户当前的提问内容回答。
+- 为解决这个问题，Langchain提供了**记忆组件**，用来管理与维护历史对话内容。
+- ![memory示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c64ff3021d1a4ba68c3a6a5dd470cdc6~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=M2fWwrITBkva%2BXT%2BiQINk6VD54M%3D)
+
+langchain提供不同的Memory组件完成内容记忆，下面列举四种：
+- `ConversationBufferMemory`：记住**全部对话内容**。这是最简单的内存记忆组件，它的功能是直接将用户和机器人之间的聊天内容记录在内存中。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8b04d8cc8c8f462bafa21bc473066efc~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=ljnOnmukL7V9UH5OzY4l%2BpwkfpU%3D)
+- `ConversationBufferWindowMemory`：记住**最近k轮**的聊天内容。与之前的ConversationBufferMemory组件的差别是它增加了一个窗口参数，它的作用是可以指定保存多轮对话的数量。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a830075b33094ef38f3aea87010fdd58~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=BbNKPeRu0j9knJWw02kEPUOu1uI%3D)
+  - ​在该例子中设置了对话轮数k=2，即只能记住前两轮的内容，“我的名字”是在前3轮中的Answer中回答的，因此其没有对其进行记忆，所以无法回答出正确答案。
+- `ConversationSummaryMemory`：ConversationSummaryMemory它不会将用户和机器人之前的所有对话都存储在内存中。它只会存储一个用户和机器人之间的**聊天内容的摘要**，这样做的目的可能是为了节省内存开销和token的数量。
+  - ConversationSummaryMemory[第一轮对话](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6b3c8f69e31440af9cb954bc903fd65d~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=X8kxNoQQtJqKKBIufAI5%2BGTprxo%3D): 你好，我是王老六
+  - ConversationSummaryMemory[第二轮对话](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/ab4fbe8ad6cb4286a1e8f9e10141d2ef~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=tf%2FsfV5MF%2BIK7yWow48%2BvO%2FV%2BqY%3D): 你叫什么名字
+  - 在第一轮对话完成后，Memory对第一轮对话的内容进行了总结，放到了摘要中。在第二轮对话中，LLM基于摘要与该轮的问题进行回答。
+- `VectorStored-Backed Memory`: 将所有之前的对话通过**向量**的方式存储到VectorDB（向量数据库）中，在每一轮新的对话中，会根据用户的输入信息，匹配向量数据库中**最相似的K组**对话。
+
+
+
+
 
 国内不少LLm团队采用langChain，集成llm本地化知识库
 
@@ -668,6 +1155,87 @@ kwargs:Any,
 - ![](https://images.ctfassets.net/xjan103pcp94/7tDpD5Q7nxtRyX9lgDvbkI/6209fbd875c5cd379c2289ef6f6554f0/Screen_Shot_2023-04-16_at_6.20.10_PM.png)
 - Serving: Serve search queries with Ray and Langchain
 - ![](https://images.ctfassets.net/xjan103pcp94/1g6zBePU72Rmz5MBH2reaB/db400e9bbbc445d7214d45658f81992f/Screen_Shot_2023-04-16_at_9.42.46_PM.png)
+
+
+#### LangChain+ChatGLM 本地问答
+
+[LangChain+ChatGLM 实现本地问答](https://juejin.cn/post/7236028062873550908)
+
+ChatGLM-6B api部署：[ChatGLM 集成进LangChain工具](https://juejin.cn/post/7226157821708681277)
+- [api.py](https://github.com/THUDM/ChatGLM-6B/blob/main/api.py#L53:5)
+- 默认本地的 8000 端口，通过 POST 方法进行调用
+
+```sh
+pip install fastapi uvicorn
+python api.py
+```
+
+效果
+
+```sh
+curl -X POST "http://{your_host}:8000" \
+     -H 'Content-Type: application/json' \
+     -d '{"prompt": "你好", "history": []}'
+# 结果
+{
+  "response":"你好👋！我是人工智能助手 ChatGLM-6B，很高兴见到你，欢迎问我任何问题。",
+  "history":[["你好","你好👋！我是人工智能助手 ChatGLM-6B，很高兴见到你，欢迎问我任何问题。"]],
+  "status":200,
+  "time":"2023-03-23 21:38:40"
+}
+```
+
+封装 ChatGLM API到LangChain中
+
+```py
+from langchain.llms.base import LLM
+from langchain.llms.utils import enforce_stop_tokens
+from typing import Dict, List, Optional, Tuple, Union
+
+import requests
+import json
+
+class ChatGLM(LLM):
+    max_token: int = 10000
+    temperature: float = 0.1
+    top_p = 0.9
+    history = []
+
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def _llm_type(self) -> str:
+        return "ChatGLM"
+
+    def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+        # headers中添加上content-type这个参数，指定为json格式
+        headers = {'Content-Type': 'application/json'}
+        data=json.dumps({
+          'prompt':prompt,
+          'temperature':self.temperature,
+          'history':self.history,
+          'max_length':self.max_token
+        })
+        # print("ChatGLM prompt:",prompt)
+        # 调用api
+        response = requests.post("{your_host}/api",headers=headers,data=data)
+		# print("ChatGLM resp:",response)
+        if response.status_code!=200:
+          return "查询结果错误"
+        resp = response.json()
+        if stop is not None:
+            response = enforce_stop_tokens(response, stop)
+        self.history = self.history+[[None, resp['response']]]
+        return resp['response']
+# 调用
+llm = ChatGLM()
+print(llm("你会做什么"))
+# ChatGLM prompt: 你会做什么
+# 我是一个大型语言模型，被训练来回答人类提出的问题。我不能做任何实际的事情，只能通过文字回答问题。如果你有任何问题，我会尽力回答。
+
+```
+
 
 ### 微软guidance（LangChain简化）
 
