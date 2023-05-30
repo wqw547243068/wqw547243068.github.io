@@ -1077,13 +1077,33 @@ AdaGrad的问题在于它的运行速度非常慢
 
 ## Adam——深度学习默认首选，融合动量+RMSProp
 
-- Adam是 RMSprop 和 Momentum 的结合。和 RMSprop 对二阶动量使用指数移动平均类似，Adam 中对一阶动量也是用指数移动平均计算。
-Adam（自适应矩估计的缩写）兼具**动量**和**RMSProp**的优点，Adam从动量获得速度，并从RMSProp获得了在不同方向适应梯度的能力。 两者的结合使其功能强大。。 Adam在经验上表现良好，因此近年来是深度学习问题的首选。
+Adam 优化器之旅可以说是过山车（roller-coaster）式的。
+- 2014 年推出，本质上是一个出于直觉的简单想法：既然明确地知道某些参数需要移动得更快、更远，那么为什么每个参数还要遵循相同的学习率？因为最近梯度的平方每一个权重可以得到多少信号，所以可以除以这个，以确保即使是最迟钝的权重也有机会发光。
+- Adam 接受了这个想法，在过程中加入了标准方法，就这样产生了 Adam 优化器（稍加调整以避免早期批次出现偏差）！
+
+2014年
+- Adam是 RMSprop 和 Momentum 的结合。
+- 和 RMSprop 对二阶动量使用指数移动平均类似，Adam 中对一阶动量也是用指数移动平均计算。
+- ![](https://pic3.zhimg.com/80/v2-3715f5fd59f32c8ad0cbd98ac63d329a_1440w.webp)
+
+Adam（自适应矩估计的缩写）兼具**动量**和**RMSProp**的优点，Adam从动量获得速度，并从RMSProp获得了在不同方向适应梯度的能力。 两者的结合使其功能强大。
+
+Adam在经验上表现良好，因此近年来是深度学习问题的首选。
+
 
 ## NAdam
 
 - NAdam在 Adam 之上融合了 NAG 的思想。
 
+
+## AdamW
+
+【2017】[当前训练神经网络最快的方式：AdamW优化算法+超级收敛](https://zhuanlan.zhihu.com/p/38945390)
+
+2017 年末，Adam 又重获新生。Ilya Loshchilov 和 Frank Hutter 在论文《Fixing Weight Decay Regularization in Adam》中指出：每个库在 Adam 上实施的权重衰减似乎都是错误的，并提出了一种简单的方法（AdamW）来修复它。
+- 只有深度学习框架：Sylvain 编码的 fastai再用AdamW。由于缺乏可用的广泛框架，日常实践者就只能固守又旧又不好用的 Adam。
+
+AdanW：权重衰减与 L2 正则化
 
 ## Sophia
 
