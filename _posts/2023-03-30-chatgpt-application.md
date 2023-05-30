@@ -572,6 +572,21 @@ Our evaluation uses 8 real complex question answering datasets, including **six*
 【2023-3-16】[Poe](https://poe.com/claude+) 各种机器人，sage, gpt-4, ChatGPT等，一次免费体验机会
 
 
+### 写代码
+
+
+#### NL2Code
+
+【2023-5-30】[代码大模型综述：中科院和MSRA调研27个LLMs，并给出5个有趣挑战](https://mp.weixin.qq.com/s/t2SMftox6546E7kvRgQMnA)
+- NL2Code: 将自然语言转换成可执行代码来提高开发人员的工作效率
+- 中科院和微软亚洲研究院在 ACL 2023 国际顶会上发表的一篇综述：调研了 NL2Code 领域中的「27 个大型语言模型以及相关评价指标」，分析了「LLMs 的成功在于模型参数、数据质量和专家调优」，并指出了「NL2Code 领域研究的 5 个机遇挑战」，最后作者建立了一个分享[网站](https://nl2code.github.io)来跟踪 LLMs 在 NL2Code 任务上的最新进展。
+- [Large Language Models Meet NL2Code: A Survey](https://arxiv.org/abs/2212.09420)
+
+
+#### Cursor
+
+
+
 ### Document QA
 
 详见专题：[文档问答](doc-chat)
