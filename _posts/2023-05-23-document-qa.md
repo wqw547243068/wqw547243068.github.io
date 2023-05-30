@@ -692,6 +692,13 @@ agent.run("产品1总量,产品2总量,产品3总量分别是多少,将三个总
 
 ### 文本切分
 
+什么是token？
+- tokens 不是指 prompt 字符串的长度；
+- token指一段话中可能被分出来的**词汇**。
+  - 比如：i love you，就是三个token，分别为 「i」「love」「you」。
+- 不同语言token计算不一样。[在线测试](platform.openai.com/tokenizer)
+  - 中文的「我爱你」其实是算 5个token，因为会先把内容转成 unicode。
+  - 有些 emoji 的token长度会超出想象，长达11个。
 
 LangChain 切分工具
 - [Text Splitters文档](https://python.langchain.com/en/latest/modules/indexes/text_splitters.html): 选择对应的文本切分器，如果是通用文本的话，建议选择 `RecursiveCharacterTextSplitter`
