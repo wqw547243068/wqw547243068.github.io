@@ -856,24 +856,37 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 | 公司 | 产品 | 日期 | 阶段 | 链接 |
 | --- | --- | --- | --- | --- |
+| 华为 | [盘古]() | 2021年4月 | 无 | - |
 | OpenAI | [ChatGPT](https://chat.openai.com/) | 2022年11月30日 | 开放注册 | https://chat.openai.com/ |
+| 腾讯 | [混元]() | 2022年12月 | 无 | 消息来源：腾讯集团高级执行副总裁汤道生 |
+| 元语智能 | [ChatYuan]() | 2022年12月 | 无 | 小程序 |
 | Google | [Bard](http://bard.google.com) | 2023年2月8日 | 公开测试 | http://bard.google.com/ |
 | 复旦大学 | [MOSS](https://moss.fastnlp.top) | 2023年2月20日 | 公开测试(目前升级中) | https://moss.fastnlp.top/ |
+| 澜舟科技 | [孟子]() | 2023年3月14日 | - | - |
 | 清华大学 | [ChatGLB-6B](https://github.com/THUDM/ChatGLM-6B) | 2023年3月15日 | 已开源 | https://github.com/THUDM/ChatGLM-6B |
+| 智谱AI | [ChatGLM]() | 2023年3月15日 | - | - |
 | 百度 | [文心一言](https://yiyan.baidu.com) | 2023年3月16日 | 企业用户内测 | https://yiyan.baidu.com/ |
 | Colossal AI | [ColossalChat](https://chat.colossalai.org/) | 2023年3月28日 | 公开 | - |
 | 阿里 | [通义千问](https://tongyi.aliyun.com) | 2023年4月7日 | 企业用户内测 | https://tongyi.aliyun.com/ |
 | 360 | [360智脑](http://www.360dmodel.com/) | 2023年4月10日 | 企业用户内测 | http://www.360dmodel.com/ |
 | 微软 | [DeepSpeed Chat](https://github.com/microsoft/DeepSpeed)  | 2023年4月12日 | 发布，超过colossal ai |  |
-| 商汤 | [商量 SenseChat](https://www.sensecore.cn) | 2023年4月10日 | 即将邀请内测 | https://www.sensecore.cn/ |
+| 商汤 | [商量SenseChat](https://www.sensecore.cn) | 2023年4月10日 | 即将邀请内测 | https://www.sensecore.cn/ |
 | 知乎 | 知海图AI | 2023年4月13日 | 尚无内测 |  |
-| 昆仑万维 | [天工3.5](https://www.sensecore.cn) | 2023年4月17日 | 即将邀请内测 | http://tiangong.kunlun.com |
-| 科大讯飞 | 1+N认知智能大模型 | 2023年5月6日 | 即将发布 |
+| 昆仑万维 | [天工3.5](https://www.sensecore.cn) | 2023年4月10日 | 内测 | http://tiangong.kunlun.com |
+| 出门问问 | [序列猴子]() | 2023年4月20日 | - | - |
+| 第四范式 | [式说3.0]() | 2023年4月26日 | - | - |
+| 中国电信 | [星河]() | 2023年4月28日 | - | - |
+| 科大讯飞 | [星火]() | 2023年5月6日 | 发布 |
 | 网友有道 | 子曰 | 近期 | 即将发布 | 消息来源：网易新闻 |
 | 京东 | 言犀 | 今年 | 未开放 | 消息来源：京东集团副总裁何晓冬 |
-| 腾讯 | // | // | 未开放 | 消息来源：腾讯集团高级执行副总裁汤道生 |
 
-知乎：知海图AI
+更多大模型
+- [大模型图表](https://www.toutiao.com/w/1767234698845188)
+
+### LLM 大全
+
+
+
 
 ### 分词
 
