@@ -1060,8 +1060,30 @@ ControlNet 的优点是：
 
 #### 写小说
 
+##### Re^3
+
 【2023-2-14】[Generating Longer Stories With Recursive Reprompting and Revision](https://arxiv.org/pdf/2210.06774.pdf), Meta 田渊栋写小说
 - We consider the problem of automatically generating longer stories of over two thousand words. Compared to prior work on shorter stories, **long-range plot coherence and relevance** are more central challenges here. We propose the `Recursive Reprompting and Revision` framework ($Re^3$) to address these challenges
+
+
+##### RecurrentGPT（输出不受限）
+
+【2023-5-30】[ChatGPT能写长篇小说了，ETH提出RecurrentGPT实现交互式超长文本](https://www.toutiao.com/article/7238442944003310084)
+- 苏黎世联邦理工和波形智能的团队发布了 RecurrentGPT，一种让大语言模型 (如 ChatGPT 等) 能够模拟 RNN/LSTM，通过 Recurrent Prompting 来实现交互式**超长**文本生成，让利用 ChatGPT 进行长篇小说创作成为了可能。
+- [论文地址](https://arxiv.org/abs/2305.13304)
+- [项目地址](https://github.com/aiwaves-cn/RecurrentGPT)
+- 在线 Demo: [长篇小说写作](https://www.aiwaves.org/recurrentgpt), [交互式小说](https://www.aiwaves.org/interactivefiction)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a679b4e41e0d483bae2b1ac35ae2da63~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=1GLOG8XAvQwzzXbm0v1ip16bz5Q%3D)
+
+Transformer 大语言模型最明显的限制之一: 输入和输出的**长度限制**。
+- 虽然输入端的长度限制可以通过 **VectorDB** 等方式缓解
+- 输出内容的长度限制始终是长内容生成的关键障碍。
+
+为解决这一问题，过去很多研究试图使用基于向量化的 State 或 Memory 来让 Transformer 可以进行**循环**计算。这样的方法虽然在长文本建模上展现了一定的优势，但是却要求使用者拥有并可以**修改模型的结构和参数**，这在目前闭源模型遥遥领先的大语言模型时代中是不符合实际的。
+
+RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本生成的首个成功实践。它利用 ChatGPT 等大语言模型理解自然语言指令的能力，通过自然语言模拟了循环神经网络（RNNs）的循环计算机制。
+- 每一个时间步中，RecurrentGPT 会接收上一个时间步生成的内容、最近生成内容的摘要（短期记忆），历史生成内容中和当前时间步最相关的内容 (长期记忆)，以及一个对下一步生成内容的梗概。RecurrentGPT 根据这些内容生成一段内容，更新其长短时记忆，并最后生成几个对下一个时间步中生成内容的规划，并将当前时间步的输出作为下一个时间步的输入。这样的循环计算机制打破了常规Transformer 模型在生成长篇文本方面的限制，从而实现任意长度文本的生成，而不遗忘过去的信息。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f1bd9be64d144e18914652db4ce325c8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=4WMRfq0FjPeJxmK0ujy7roS3sbA%3D)
 
 ### 数字人
 
