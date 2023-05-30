@@ -741,6 +741,17 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
   - `Matching`。`召回`模块，LLM从整个商品语料库中生成候选集合。
   - `Reranking`。`排序`模块，LLM从候选中重排序商品。
 
+### 个人助理
+
+#### Monica
+
+【2023-4-12】[Monica](https://monica.im/), 一款浏览器插件，AI个人助理，功能：
+- 快捷指令：网页上任意选择文本，即可翻译、解释、改写、总结、使用自己的提示
+- 随处聊天：随时开启聊天窗
+- 写作：轻松创作文案、邮件、博客等
+
+使用 GPT-4驱动，免费用户又30次查询，每邀请一个好友，就有100次额度，其中1次GPT-4、4次AI作画
+- Monica is an AI assistant powered by GPT-4. Register now to receive 100 free GPT Queries, including GPT-4, GPT-3.5, and AI Drawing. [邀请链接](https://monica.im/?c=CDM9HW5C)
 
 ### 办公
 
