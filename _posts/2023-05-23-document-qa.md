@@ -989,6 +989,7 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - 解决特定问题的代理，例如数学和推理难题
 
 - [官方文档](https://python.langchain.com/en/latest/index.html)
+- [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
 - [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
 
 #### LangChain 组件
