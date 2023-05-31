@@ -195,6 +195,19 @@ HTTP常见的方法：
 - 幂等号是指token吗，用的是redis里的key自增。
 - 分布式事务常见有xa，tcc或者利用mq来通过中间状态实现最终一致性。xa和bytetcc用在强一致性的场景。原理其实二者差不多都是二阶段提交。xa来说分tm，xa，APP。tm是协调者，程序员通过tm.begin 会开启一个事务放到线程上下文里，当其它的参与者一般是数据库在开事务时候会检查线程上下文是否有事务，如果有就加入。这样一个分布式事务里就含有好多子事务。当调用tm.commit 就会分成二阶段提交。xa使用场景限制在数据库，mq都可以掌控的情况下。而tcc放在分布式情况下，只不过tm从线程上下文变成一个涉及远程通讯的协调者，可以看bytetcc源码。tcc还有局限就是太麻烦。
 
+## API架构
+
+【2023-5-31】流行API架构系统
+- 🔹SOAP
+- 🔹RESTful
+- 🔹GraphQL
+- 🔹gRPC
+- 🔹WebSocket
+- 🔹Webhook
+
+图解
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/9797d46b5ad54ecea58c6aaa0ced4380~tplv-obj:1188:984.image?_iz=97245&from=post&x-expires=1693267200&x-signature=benm%2BxWy9wgZ%2FHXlDVgNpyMbFto%3D)
+
 ## 理解RESTful API
 
 - RESTful API即满足RESTful风格设计的API，RESTful表示的是一种互联网软件架构(以网络为基础的应用软件的架构设计)，如果一个架构符合REST原则，就称它为RESTful架构。RESTful架构的特点：
