@@ -506,7 +506,7 @@ LLM 应用
 - 2、**视频**知识总结问答助理(chat with video)，如：视频自动编目、视频检索问答。
 - 3、**表格**知识总结问答助理(chat with csv)，如：商业数据分析、市场调研分析、客户数据精准分析等
 
-#### Doc-Chat 文档问答
+#### 1. Doc-Chat 文档问答
 
 有大量本地文档数据，希望通过问答的方式快速获取想要的知识或信息，提高工作效率
 
@@ -602,7 +602,7 @@ qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=docsearc
 qa.run(query)
 ```
 
-#### 视频知识总结
+#### 2. 视频知识总结
 
 LLM 看完视频，回答问题
 
@@ -628,7 +628,7 @@ Question:
 
 
 
-#### 表格问答
+#### 3. 表格问答
 
 LLM 分析完 54万条数据，给出正确答案，完成了数据分析师1天的工作。
 
@@ -670,7 +670,7 @@ agent.run("产品1总量,产品2总量,产品3总量分别是多少,将三个总
 
 
 
-## 文档向量化
+## 存储层：文档向量化
 
 自研框架的选择
 - 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
@@ -747,11 +747,27 @@ print(qa.run(query))
 
 ### 向量数据库
 
-向量数据库用于存储文本、图像等编码后的**特征向量**，支持向量相似度查询与分析。
+向量数据库（Vectorstores）用于存储文本、图像等编码后的**特征向量**，支持向量相似度查询与分析。
 - 文本语义检索，通过比较输入文本的特征向量与底库文本特征向量的相似性，从而检索目标文本，即利用了向量数据库中的相似度查询（余弦距离、欧式距离等）。
 
+因为数据相关性搜索其实是向量运算。所以，不管使用 openai api embedding 功能还是直接通过 向量数据库 直接查询，都需要将加载进来的数据 Document 进行**向量化**，才能进行向量运算搜索。
+
+转换成向量也很简单，只需要把数据存储到对应的向量数据库中即可完成向量的转换。
+
+官方也提供了很多的向量数据库供我们使用，包括：
+- Annoy
+- Chroma
+- ElasticSearch
+- FAISS
+- Milvus
+- PGVector
+- Pinecone
+- Redis
+
 代表性数据库
-- Pinecone、Qdrant等
+- Chroma、Pinecone、Qdrand
+
+更多支持的向量数据库使用方法，可转至链接。
 
 ### OpenAIEmbeddings
 
@@ -777,7 +793,11 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_API_BASE"] = os.getenv("OPENAI_API_BASE")
 
-embeddings = OpenAIEmbeddings( )
+embeddings = OpenAIEmbeddings()
+
+# ---- 简洁版 -------
+from langchain.embeddings import OpenAIEmbeddings
+embeddings = OpenAIEmbeddings()
 ```
 
 ### HuggingFaceEmbeddings
@@ -793,7 +813,6 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 import IPython
 import sentence_transformers
-
 
 embedding_model_dict = {
     "ernie-tiny": "nghuyong/ernie-3.0-nano-zh",
@@ -820,11 +839,34 @@ db = FAISS.from_documents(split_docs, embeddings)
 db.save_local("./faiss/news_test")
 # 加载持久化向量
 db = FAISS.load_local("./faiss/news_test",embeddings=embeddings)
+# ====== 或 ========
+vs_path = "./vector_store"
+if vs_path and os.path.isdir(vs_path):
+    vector_store = FAISS.load_local(vs_path, embeddings)
+    vector_store.add_documents(docs)
+else:
+    if not vs_path:
+        vs_path = f"""{VS_ROOT_PATH}{os.path.splitext(file)[0]}_FAISS_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}"""
+    vector_store = FAISS.from_documents(docs, embeddings)
+
+vector_store.save_local(vs_path)
+docs = vector_store.similarity_search(query)
+docs_and_scores = vector_store.similarity_search_with_score(query)
 ```
 
 
 ### Mulvus
 
+
+```py
+vector_db = Milvus.from_documents(
+    docs,
+    embeddings,
+    connection_args={"host": "127.0.0.1", "port": "19530"},
+)
+docs = vector_db.similarity_search(query)
+docs[0]
+```
 
 
 ### Chroma
@@ -839,22 +881,113 @@ db = Chroma.from_documents(split_docs, embeddings,persist_directory="./chroma/op
 db.persist()
 # 持久化后，可以直接选择从持久化文件中加载，不需要再重新就可使用了
 db = Chroma(persist_directory="./chroma/news_test", embedding_function=embeddings)
-
 ```
 
-## 服务层
+```py
+# pip install chromadb
+# 加载索引
+from langchain.vectorstores import Chroma
+vectordb = Chroma(persist_directory="./vector_store", embedding_function=embeddings)
+# 向量相似度计算
+query = "未入职同事可以出差吗"
+docs = vectordb.similarity_search(query)
+docs2 = vectordb.similarity_search_with_score(query)
+print(docs[0].page_content)
+# 在检索器接口中公开该索引
+retriever = vectordb.as_retriever(search_type="mmr")
+docs = retriever.get_relevant_documents(query)[0]
+print(docs.page_content)
+```
+
+### Pinecone
+
+```py
+import pinecone 
+
+# Connecting to Pinecone
+pinecone.deinit()
+pinecone.init(
+    api_key="YOUR_API_KEY",  # find at app.pinecone.io
+    environment="YOUR_ENV"  # next to api key in console
+)
+
+# similarity_search
+docsearch = Pinecone.from_documents(docs, embeddings, index_name="langchain-demo")
+docs = docsearch.similarity_search(query)
+print(docs[0].page_content)
+
+# Create a Pinecone Service
+pinecone_service = pinecone.Service()
+
+# Create an Embedding Model
+from langchain.embeddings.openai import OpenAIEmbeddings
+embeddings = OpenAIEmbeddings()
+
+# Create a Vectorstore
+from langchain.vectorstores import Chroma
+vectorstore = Chroma(embeddings, pinecone_service)
+
+# Upload documents to Pinecone Vectorstore
+from langchain.vectorstores import Chroma
+docsearch = Chroma.from_documents(texts, embeddings, collection_name="collection_name")
+```
+
+### PGVector
+
+```py
+from langchain.vectorstores.pgvector import PGVector
+import os
+CONNECTION_STRING = PGVector.connection_string_from_db_params(
+    driver=os.environ.get("PGVECTOR_DRIVER", "psycopg2"),
+    host=os.environ.get("PGVECTOR_HOST", "localhost"),
+    port=int(os.environ.get("PGVECTOR_PORT", "5432")),
+    database=os.environ.get("PGVECTOR_DATABASE", "postgres"),
+    user=os.environ.get("PGVECTOR_USER", "postgres"),
+    password=os.environ.get("PGVECTOR_PASSWORD", "postgres"),
+)
+db = PGVector.from_documents(
+    embedding=embeddings,
+    documents=docs,
+    collection_name="state_of_the_union",
+    connection_string=CONNECTION_STRING,
+)
+
+query = "What did the president say about Ketanji Brown Jackson"
+docs_with_score: List[Tuple[Document, float]] = db.similarity_search_with_score(query)
+for doc, score in docs_with_score:
+    print("-" * 80)
+    print("Score: ", score)
+    print(doc.page_content)
+    print("-" * 80)
+```
+
+
+## 服务层：LLM框架
+
+### LLaMA-Index
+
+
 
 ### LangChain
 
-LangChain, 语言链条，也称：`兰链`，一种LLM语言大模型开发工具。
+LangChain, 语言链条，也称：`兰链`，Harrison Chase创建的一个 Python 库，一种LLM语言大模型开发工具，几分钟内构建 GPT 驱动的应用程序。
 
 LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
-- AGI的基础工具模块库，类似模块库还有mavin。
+
+将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API
+- 与 LLM 交互
+- LLM 连接外部数据源
+
+AGI的基础工具模块库，类似模块库还有mavin。
 -  LangChain provides an amazing suite of tools for everything around LLMs. 
 - It’s kind of like HuggingFace but specialized for LLMs
 
-LangChain, 一个基于语言模型开发应用程序的框架。
-- 将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API。 
+LangChain 构建的有趣应用程序包括（但不限于）：
+- 聊天机器人
+- 特定领域的总结和问答
+- 查询数据库以获取信息然后处理它们的应用程序
+- 解决特定问题的代理，例如数学和推理难题
+
 - [官方文档](https://python.langchain.com/en/latest/index.html)
 - [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
 
@@ -864,12 +997,98 @@ LangChain包含六部分组件
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f101b9ecf540489280e7f95017243fb9~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=j8hpvldp7FTdOSIGCFjEyUEmbhs%3D)
 - Models、Prompts、Indexes、Memory、Chains、Agents。
 
+##### Document Loaders and Utils
+
+LangChain 的 Document Loaders 和 Utils 模块分别用于**连接到数据源**和**计算源**。
+
+当使用loader加载器读取到数据源后，数据源需要转换成 Document 对象后，后续才能进行使用。
+
+Document Loaders 的Unstructured 可以将这些原始数据源转换为可处理的文本。
+
+The following document loaders are provided:
+- CSV Loader CSV文件
+- DataFrame Loader 从 pandas 数据帧加载数据
+- Diffbot 从 URL 列表中提取 HTML 文档，并将其转换为我们可以在下游使用的文档格式
+- Directory Loader 加载目录中的所有文档
+- EverNote 印象笔记
+- Git 从 Git 存储库加载文本文件
+- Google Drive Google网盘
+- HTML HTML 文档
+- Markdown
+- Notebook 将 .ipynb 笔记本中的数据加载为适合 LangChain 的格式
+- Notion
+- PDF
+- PowerPoint
+- Unstructured File Loader 使用Unstructured加载多种类型的文件，目前支持加载文本文件、powerpoints、html、pdf、图像等
+- URL 加载 URL 列表中的 HTML 文档内容
+- Word Documents
+
+##### Text Spltters
+
+文本分割就是用来分割文本的。
+
+为什么需要分割文本？
+- 因为每次不管把文本当作 prompt 发给 openai api ，还是使用 embedding 功能, 都是有字符限制的。
+
+比如将一份300页的 pdf 发给 openai api，进行总结，肯定会报超过最大 Token 错。所以这里就需要使用文本分割器去分割 loader 进来的 Document。
+- 默认推荐的文本拆分器是 RecursiveCharacterTextSplitter。
+- 默认情况以 [“\n\n”, “\n”, “ “, “”] 字符进行拆分。
+- 其它参数说明：
+  - length_function 如何计算块的长度。默认只计算字符数，但在这里传递令牌计数器是很常见的。
+  - chunk_size：块的最大大小（由长度函数测量）。
+  - chunk_overlap：块之间的最大重叠。有一些重叠可以很好地保持块之间的一些连续性（例如，做一个滑动窗口）
+- CharacterTextSplitter 默认情况下以 separator="\n\n"进行拆分
+- TiktokenText Splitter 使用OpenAI 的开源分词器包来估计使用的令牌
+
+```py
+# This is a long document we can split up.
+with open('../../../state_of_the_union.txt') as f:
+    state_of_the_union = f.read()
+from langchain.text_splitter import CharacterTextSplitter
+
+text_splitter = CharacterTextSplitter(        
+    separator = "\n\n",
+    chunk_size = 1000,
+    chunk_overlap  = 200,
+    length_function = len,
+)
+metadatas = [{"document": 1}, {"document": 2}]
+documents = text_splitter.create_documents([state_of_the_union, state_of_the_union], metadatas=metadatas)
+print(texts[0])
+```
+
+```py
+# This is a long document we can split up.
+with open('../../../state_of_the_union.txt') as f:
+    state_of_the_union = f.read()
+from langchain.text_splitter import TokenTextSplitter
+text_splitter = TokenTextSplitter(chunk_size=10, chunk_overlap=0)
+texts = text_splitter.split_text(state_of_the_union)
+print(texts[0])
+```
+
+
 ##### （1）Models（模型）：LLM选择
 
-（1）Models（模型）: 可选择不同的LLM与Embedding模型
-- 大语言模型是Models的核心，也是LangChain的核心
+（1）Models（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
+- LLMs
+- Chat Models
+- HuggingFace Models
+- Text Embedding：用于文本的向量化表示。设计用于与嵌入交互的类
+  - 用于实现基于知识库的问答和semantic search，相比 fine-tuning 最大的优势：不用进行训练，并且可以实时添加新的内容，而不用加一次新的内容就训练一次，并且各方面成本要比 fine-tuning 低很多。
+  - 例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
+  - 两个方法：`embed_documents` 和 `embed_query`。最大区别在于接口不同：一种处理**多**个文档，而另一种处理**单**个文档。
+  - 文本嵌入模型集成了如下的源：AzureOpenAI、Hugging Face Hub、InstructEmbeddings、Llama-cpp、OpenAI 等
+
+大语言模型（LLMs）是Models的核心，也是LangChain的基础组成部分，LLMs本质上是一个大型语言模型的包装器，通过该接口与各种大模型进行交互。
 - 这些模型包括OpenAI的GPT-3.5/4、谷歌的LaMDA/PaLM，Meta AI的LLaMA等。
-- Text Embedding用于文本的向量化表示。例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
+
+LLMs 类的功能如下：
+- 支持多种模型接口，如 OpenAI、Hugging Face Hub、Anthropic、Azure OpenAI、GPT4All、Llama-cpp…
+- Fake LLM，用于测试
+- 缓存的支持，比如 in-mem（内存）、SQLite、Redis、SQL
+- 用量记录
+- 支持流模式（就是一个字一个字的返回，类似打字效果）
 
 LangChain调用OpenAI的gpt-3.5-turbo大语言模型的简单示例
 
@@ -881,13 +1100,59 @@ openai_api_key = 'sk-F9O70vxxxxxlbkFJK55q8YgXb6s5dJ1A4LjA'
 os.environ['OPENAI_API_KEY'] = openai_api_key
 
 llm = OpenAI(model_name="gpt-3.5-turbo")
+# llm = OpenAI(model_name="text-davinci-003", n=2, best_of=2)
 print(llm("讲个笑话，很冷的笑话"))
 # 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
+llm_result = llm.generate(["Tell me a joke", "Tell me a poem"])
+llm_result.llm_output    # 返回 tokens 使用量
 ```
+
+模型拉到本地使用的好处：
+- 训练模型
+- 可以使用本地的 GPU
+- 有些模型无法在 HuggingFace 运行
+
+LangChain Embedding示例
+- HuggingFace
+
+```py
+from langchain.embeddings import HuggingFaceEmbeddings 
+
+embeddings = HuggingFaceEmbeddings() 
+text = "This is a test document." 
+query_result = embeddings.embed_query(text) 
+doc_result = embeddings.embed_documents([text])
+```
+
+- llama-cpp
+
+```py
+# !pip install llama-cpp-python
+from langchain.embeddings import LlamaCppEmbeddings
+
+llama = LlamaCppEmbeddings(model_path="/path/to/model/ggml-model-q4_0.bin")
+text = "This is a test document."
+query_result = llama.embed_query(text)
+doc_result = llama.embed_documents([text])
+```
+
+- OpenAI
+
+```py
+from langchain.embeddings import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()
+text = "This is a test document."
+query_result = embeddings.embed_query(text)
+doc_result = embeddings.embed_documents([text])
+```
+
 
 ##### （2）Prompts（提示语）: 模板化
 
 Prompts（提示语）: 管理LLM输入
+- PromptTemplate 负责构建此输入
+- LangChain 提供了可用于格式化输入和许多其他实用程序的提示模板。
 
 当用户与大语言模型对话时，用户内容即Prompt（提示语）。
 - 如果用户每次输入的Prompt中包含大量的重复内容，生成一个**Prompt模板**，将通用部分提取出来，用户输入输入部分作为变量。
@@ -914,9 +1179,10 @@ print(prompt_template.format(name_description=description))
 
 ##### （3）Indexes（索引）：文档结构化
 
-Indexes（索引）：对文档结构化的方法
+Indexes（索引）：文档结构化, 以便LLM更好的交互
 - 索引是指对文档进行结构化的方法，以便LLM能够更好的与之交互。
-- 该组件主要包括：Document Loaders（`文档加载器`）、Text Splitters（`文本拆分器`）、VectorStores（`向量存储器`）以及Retrievers（`检索器`）。
+
+该组件主要包括：Document Loaders（`文档加载器`）、Text Splitters（`文本拆分器`）、VectorStores（`向量存储器`）以及Retrievers（`检索器`）。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5078c23e1fea4bee99746ebec0847be5~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=Uzl65uwWtcvNhfi1OHpX8u%2BGzko%3D)
 - `文本检索器`：将特定格式数据转换为文本。输入可以是 pdf、word、csv、images 等。
 - `文本拆分器`：将长文本拆分成小的**文本块**，便于LLM模型处理。
@@ -926,9 +1192,78 @@ Indexes（索引）：对文档结构化的方法
 - `向量存储器`：存储提取的文本向量，包括Faiss、Milvus、Pinecone、Chroma等。
 - `向量检索器`：通过用户输入的文本，检索器负责从底库中检索出特定相关度的文档。度量准则包括余弦距离、欧式距离等。
 
+示例
+
+```py
+# pip install chromadb
+from langchain.chains import RetrievalQA
+from langchain.llms import OpenAI
+# 指定要使用的文档加载器
+from langchain.document_loaders import TextLoader
+documents = TextLoader('../state_of_the_union.txt', encoding='utf8')
+# 接下来，我们将文档拆分成块。
+from langchain.text_splitter import CharacterTextSplitter
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+# 然后我们将选择我们想要使用的嵌入。
+from langchain.embeddings import OpenAIEmbeddings
+embeddings = OpenAIEmbeddings()
+# 我们现在创建 vectorstore 用作索引。
+from langchain.vectorstores import Chroma
+db = Chroma.from_documents(texts, embeddings)
+# 这就是创建索引。然后，我们在检索器接口中公开该索引。
+retriever = db.as_retriever()
+# 创建一个链并用它来回答问题！
+qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=retriever)
+query = "What did the president say about Ketanji Brown Jackson"
+qa.run(query)
+```
+
+###### Retrievers
+
+检索器接口是一个通用接口，可以轻松地将文档与语言模型结合起来。
+- 此接口公开了一个 get_relevant_documents 方法，该方法接受一个查询（一个字符串）并返回一个文档列表。
+
+一般来说，用的都是 VectorStore Retriever。
+- 此检索器由 VectorStore 大力支持。一旦你构造了一个 VectorStore，构造一个检索器就很容易了。
+
+```py
+# # pip install faiss-cpu
+from langchain.chains import RetrievalQA
+from langchain.llms import OpenAI
+from langchain.document_loaders import DirectoryLoader
+# 加载文件夹中的所有txt类型的文件，并转成 document 对象
+loader = DirectoryLoader('./data/', glob='**/*.txt')
+documents = loader.load()
+# 接下来，我们将文档拆分成块。
+from langchain.text_splitter import CharacterTextSplitter
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(documents)
+# 然后我们将选择我们想要使用的嵌入。
+from langchain.embeddings import OpenAIEmbeddings
+embeddings = OpenAIEmbeddings()
+from langchain.vectorstores import FAISS
+db = FAISS.from_documents(texts, embeddings)
+query = "未入职同事可以出差吗"
+docs = db.similarity_search(query)
+docs_and_scores = db.similarity_search_with_score(query)
+print(docs)
+
+retriever = db.as_retriever()	# 最大边际相关性搜索 mmr
+# retriever = db.as_retriever(search_kwargs={"k": 1})	# 搜索关键字
+docs = retriever.get_relevant_documents("未入职同事可以出差吗")
+print(len(docs))
+
+# db.save_local("faiss_index")
+# new_db = FAISS.load_local("faiss_index", embeddings)
+# docs = new_db.similarity_search(query)
+# docs[0]
+```
+
+
 ##### （4）Chains（链条）：组合链路
 
-Chains（链条）：将LLM与其他组件结合
+Chains（链条）：将LLM与其他组件结合, 链允许将多个组件组合在一起以创建一个单一的、连贯的应用程序。
 
 Chain提供了一种将各种组件统一到应用程序中的方法。
 - 例如，创建一个Chain，它接受来自用户的输入，并通过PromptTemplate将其格式化，然后将格式化的输出传入到LLM模型中。
@@ -941,7 +1276,123 @@ LLM与其他组件结合，创建不同应用，一些例子：
 - LLM与**外部数据**结合，比如，通过langchain获取youtube视频链接，通过LLM视频问答
 - LLM与**长期记忆**结合，比如聊天机器人
 
+```py
+from langchain import LLMChain
+
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+question = "Can Barack Obama have a conversation with George Washington?"
+print(llm_chain.run(question))
+```
+
+LLMChain是一个简单的链，它接受一个提示模板，用用户输入格式化它并返回来自 LLM 的响应。
+
+```py
+from langchain.llms import OpenAI
+from langchain.docstore.document import Document
+import requests
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.prompts import PromptTemplate
+import pathlib
+import subprocess
+import tempfile
+"""
+生成对以前撰写的博客文章有理解的博客文章，或者可以参考产品文档的产品教程
+"""
+
+source_chunks = ""
+search_index = Chroma.from_documents(source_chunks, OpenAIEmbeddings())
+
+from langchain.chains import LLMChain
+prompt_template = """Use the context below to write a 400 word blog post about the topic below:
+    Context: {context}
+    Topic: {topic}
+    Blog post:"""
+
+PROMPT = PromptTemplate(
+    template=prompt_template, input_variables=["context", "topic"]
+)
+
+llm = OpenAI(temperature=0)
+
+chain = LLMChain(llm=llm, prompt=PROMPT)
+
+def generate_blog_post(topic):
+    docs = search_index.similarity_search(topic, k=4)
+    inputs = [{"context": doc.page_content, "topic": topic} for doc in docs]
+    print(chain.apply(inputs))
+
+generate_blog_post("environment variables")
+```
+
+执行多个chain
+- 顺序链是按预定义顺序执行其链接的链。
+- 使用SimpleSequentialChain，其中每个步骤都有一个输入/输出，一个步骤的输出是下一个步骤的输入。
+
+```py
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chains import SimpleSequentialChain
+
+# location 链
+llm = OpenAI(temperature=1)
+template = """Your job is to come up with a classic dish from the area that the users suggests.
+% USER LOCATION
+{user_location}
+
+YOUR RESPONSE:
+"""
+prompt_template = PromptTemplate(input_variables=["user_location"], template=template)
+location_chain = LLMChain(llm=llm, prompt=prompt_template)
+
+# meal 链
+template = """Given a meal, give a short and simple recipe on how to make that dish at home.
+% MEAL
+{user_meal}
+
+YOUR RESPONSE:
+"""
+prompt_template = PromptTemplate(input_variables=["user_meal"], template=template)
+meal_chain = LLMChain(llm=llm, prompt=prompt_template)
+
+# 通过 SimpleSequentialChain 串联起来，第一个答案会被替换第二个中的user_meal，然后再进行询问
+overall_chain = SimpleSequentialChain(chains=[location_chain, meal_chain], verbose=True)
+review = overall_chain.run("Rome")
+```
+
 ##### （5）Agents（智能体）：其他工具
+
+“链”可以帮助将一系列 LLM 调用链接在一起。
+- 然而，在某些任务中，调用顺序通常是**不确定**的。下一步可能取决于用户输入和前面步骤中的响应。
+
+LangChain 库提供了代理“Agents”，根据**未知**输入而不是硬编码来决定下一步采取的行动。 
+
+Agent 使用LLM来确定要采取哪些行动以及按什么顺序采取的行动。操作可以使用工具并观察其输出，也可以返回用户。创建agent时的参数：
+- 工具：执行特定职责的功能。比如：Google搜索，数据库查找，Python Repl。工具的接口当前是一个函数，将字符串作为输入，字符串作为输出。
+- LLM：为代理提供动力的语言模型。
+- 代理：highest level API、custom agent. 要使用的代理。这应该是一个引用支持代理类的字符串。由于本笔记本侧重于最简单、最高级别的 API，因此仅涵盖使用标准支持的代理。如果您想实施自定义代理，请参阅自定义代理的文档（即将推出）。
+
+```py
+# Create RetrievalQA Chain
+from langchain.chains import RetrievalQA
+retrieval_qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=docsearch.as_retriever())
+
+# Create an Agent
+from langchain.agents import initialize_agent, Tool
+tools = [
+    Tool(
+        name="Example QA System",
+        func=retrieval_qa.run,
+        description="Example description of the tool."
+    ),
+]
+agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
+
+# Use Agent
+agent.run("Ask a question related to the documents")
+```
 
 Agents（智能体）：访问其他工具
 
