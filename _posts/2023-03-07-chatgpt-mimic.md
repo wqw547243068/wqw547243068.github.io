@@ -2343,6 +2343,10 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 
 国产开源大语言模型最强的应该是ChatGLM-6B, 清华大学KEG小组发布
 
+【2023-5-27】5月27日，清华又发布大模型了，CPM-Bee，最高10b
+测试效果：英文约等于 LLaMA-13B，中文ZeroCLUE评测远超其他模型,
+- 跟国内开源最强模型ChatGLM-6B相比：CPM-Bee亮点是完全开源，可随意商用，基于transformer，10b模型推理只需20GB显卡
+
 相比较ChatGLM-6B，CPM-Bee的主要特点如下：
 - **开源协议**更加友好，只要获取书面授权即可商用。代码、预训练结果均开源，训练过程也是**全球直播**。
 - 从评测结果看，CPM-Bee模型效果也很优秀，中文ZeroCLUE评测中远超其它模型，英文多个任务评测结果也与LLaMA-13B差不多，部分任务上的表现超越GPT-3。
