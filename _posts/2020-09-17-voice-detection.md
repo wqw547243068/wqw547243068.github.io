@@ -2132,6 +2132,19 @@ text_prompt = """
 audio_array = generate_audio(text_prompt)
 ```
 
+
+### MockingBird 语音克隆
+
+【2023-4-9】[实时中文语音克隆，声音模仿如此简单](https://www.toutiao.com/article/7217818267170193960)
+- 开源项目 `MockingBird`，`拟声鸟` 能够使用 5 秒的真实语音录音，即可通过机器学习的方式，对声音进行克隆，从而实现按相同声音说出任意的文本。
+- [DEMO 效果](https://www.bilibili.com/video/BV17Q4y1B7mY/)
+
+通过借助 [MockingBird](https://github.com/babysor/MockingBird) 能够很轻松的克隆一个声音并应用到人工智能系统中，从而改善系统中机器人声音的效果。
+
+- MockingBird 使用 PyTorch 开发，能够在 Windows 和 Linux 系统中运行，MockingBird 现在是可以开箱即用
+- MockingBird 还提供了一个可供使用的 Web 页面，运行命令 python web.py 即可查看。
+
+
 ### MMS（META）
 
 【2023-5-23】[规模性能双杀OpenAI，Meta语音达LLaMA级里程碑！开源MMS模型可识别1100+语言](https://mp.weixin.qq.com/s/EoL6-IVyHkZJMquXicT3mg)
