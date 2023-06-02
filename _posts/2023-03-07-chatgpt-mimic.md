@@ -2251,7 +2251,7 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 
 [ChatGLM](https://chatglm.cn/)：开源双语对话语言模型
 
-ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 `GLM-130B`。它不同于 BERT、GPT-3 以及 T5 的架构，是一个包含**多目标函数**的自回归预训练模型。
+#### ChatGLM 介绍
 
 2022 年 8 月，`清华大学`联合[智谱AI](https://www.zhipuai.cn/index.html)（唐杰、李涓子，公司名:[北京智谱华章科技有限公司](https://www.qcc.com/firm/3e6bd6d29872b6c3a14f72f4ef6b9197.html)） 向研究界和工业界开放了拥有 1300 亿参数的中英双语稠密模型 `GLM-130B`，该模型有一些独特的优势：
 - 双语：同时支持中文和英文；
@@ -2261,9 +2261,28 @@ ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模
 - 可复现性：所有结果（超过 30 个任务）均可通过我们的开源代码和模型参数复现；
 - 跨平台：支持在国产的海光 DCU、华为昇腾 910 和申威处理器及美国的英伟达芯片上进行训练与推理。
 
+ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 `GLM-130B`。
+- 不同于 BERT、GPT-3 以及 T5 的架构，是一个包含**多目标函数**的自回归预训练模型。
+- 论文： [GLM: General Language Model Pretraining with Autoregressive Blank Infilling](https://arxiv.org/abs/2103.10360)
+- ![](https://picx.zhimg.com/v2-b674c5be5ec5ed96e22dbb507a0e897c_r.jpg?source=1940ef5c)
+
 2022年11月，斯坦福大学大模型中心对全球30个主流大模型进行了全方位的评测，GLM-130B是亚洲**唯一**入选的大模型。在与OpenAI、Google Brain、微软、英伟达、Meta AI的各大模型对比中，评测报告显示GLM-130B在准确性和公平性指标上与GPT-3 175B（davinci）接近或持平，鲁棒性、校准误差和无偏性优于GPT-3 175B。
 
 如今， 参考 ChatGPT 的设计思路， `ChatGLM` 在千亿基座模型 GLM-130B 中注入了代码预训练，通过`有监督微调`（Supervised Fine-Tuning）等技术实现人类意图对齐。
+
+#### ChatGLM 如何微调？
+
+【2023-6-2】 参考：[chatglm的微调有没有保姆式的教程](https://www.zhihu.com/question/595670355/answer/3038045480)
+
+怎么finetuning？
+- P-tuning v2
+  - [官方示例](https://github.com/THUDM/ChatGLM-6B/tree/main/ptuning)，单卡3090没问题
+- Full parameter
+  - 全量参数finetune, 8卡3090 没跑起来
+  - 训练资源: 8 x A100 40G 或者 4 x A100 80G.
+- LoRA
+  - 官方推荐的工程: [最简单、最便宜的训练thu-chatglm-6b模型教程](https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/simple_thu_chatglm6b)
+  - 或者：一种平价的chatgpt实现方案, 基于ChatGLM-6B + LoRA, [ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning), 数据集: [alpaca](https://github.com/tatsu-lab/stanford_alpaca), 或直接在[colab](https://colab.research.google.com/github/mymusise/ChatGLM-Tuning/blob/master/examples/finetune.ipynb)上尝试
 
 #### ChatGLM-6B
 
