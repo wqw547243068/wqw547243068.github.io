@@ -2262,9 +2262,27 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 - 跨平台：支持在国产的海光 DCU、华为昇腾 910 和申威处理器及美国的英伟达芯片上进行训练与推理。
 
 ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 `GLM-130B`。
+- 2022年8月，智谱AI基于GLM框架，推出1300亿参数的中英双语稠密模型GLM-130B，综合能力与GPT3相当 内存节省75%，可在单台3090 (4)或单台2080(8)进行无损推理 高速推理，比Pytorch提升7-8倍速度
 - 不同于 BERT、GPT-3 以及 T5 的架构，是一个包含**多目标函数**的自回归预训练模型。
-- 论文： [GLM: General Language Model Pretraining with Autoregressive Blank Infilling](https://arxiv.org/abs/2103.10360)
-- ![](https://picx.zhimg.com/v2-b674c5be5ec5ed96e22dbb507a0e897c_r.jpg?source=1940ef5c)
+- 论文： 
+  - [GLM: General Language Model Pretraining with Autoregressive Blank Infilling](https://arxiv.org/abs/2103.10360)
+  - 【2022-10-5】[GLM-130B: An Open Bilingual Pre-trained Model](https://arxiv.org/abs/2210.02414)
+- 代码：[GLM](https://github.com/THUDM/GLM)
+
+GLM的出发点是将3种主流的预训练模型进行统一：
+- `GPT`训练目标是**从左到右**的**文本生成**
+- `BERT`训练目标是对文本进行**随机掩码**，然后预测被掩码的词
+- `T5`则是接受一段文本，从左到右的生成另一段文本
+- ![img](https://picx.zhimg.com/v2-b674c5be5ec5ed96e22dbb507a0e897c_r.jpg?source=1940ef5c)
+
+ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中注入了代码预训练，通过有监督微调（Supervised Fine-Tuning）等技术实现人类意图对齐。ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 GLM-130B。它是不同于 BERT、GPT-3 以及 T5 的架构，是一个包含多目标函数的自回归预训练模型。2022年8月，我们向研究界和工业界开放了拥有1300亿参数的中英双语稠密模型 GLM-130B1，该模型有一些独特的优势：
+- 双语： 同时支持中文和英文。
+- 高精度（英文）： 在公开的英文自然语言榜单 LAMBADA、MMLU 和 Big-bench-lite 上优于 GPT-3 175B（API: davinci，基座模型）、OPT-175B 和 BLOOM-176B。
+- 高精度（中文）： 在7个零样本 CLUE 数据集和5个零样本 FewCLUE 数据集上明显优于 ERNIE TITAN 3.0 260B 和 YUAN 1.0-245B。
+- 快速推理： 首个实现 INT4 量化的千亿模型，支持用一台 4 卡 3090 或 8 卡 2080Ti 服务器进行快速且基本无损推理。
+- 可复现性： 所有结果（超过 30 个任务）均可通过我们的开源代码和模型参数复现。
+- 跨平台： 支持在国产的海光 DCU、华为昇腾 910 和申威处理器及美国的英伟达芯片上进行训练与推理。
+- ![](https://pic1.zhimg.com/80/v2-791a1175a6346d7b3098c58b93b9ae5c_1440w.webp)
 
 2022年11月，斯坦福大学大模型中心对全球30个主流大模型进行了全方位的评测，GLM-130B是亚洲**唯一**入选的大模型。在与OpenAI、Google Brain、微软、英伟达、Meta AI的各大模型对比中，评测报告显示GLM-130B在准确性和公平性指标上与GPT-3 175B（davinci）接近或持平，鲁棒性、校准误差和无偏性优于GPT-3 175B。
 
@@ -2287,16 +2305,15 @@ ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模
 #### ChatGLM-6B
 
 【2023-3-14】ChatGLM-6B 是一个开源的、支持中英双语的对话语言模型，基于 General Language Model (GLM) 架构，具有 62 亿参数。
+- 由清华大学知识工程 (KEG) 实验室和智谱AI公司与于2023年共同训练的语言模型
 - 结合模型量化技术，用户可以在消费级显卡上进行**本地部署**（INT4 量化级别下最低只需 6GB 显存）。 
 - ChatGLM-6B 使用了和 ChatGPT 相似的技术，针对中文问答和对话进行了优化。经过约 1T 标识符的中英双语训练，辅以监督微调、反馈自助、人类反馈强化学习等技术的加持，62 亿参数的 ChatGLM-6B 已经能生成相当符合人类偏好的回答
-
 
 `ChatGLM-6B` 是一个开源的、支持中英双语问答的对话语言模型，并针对中文进行了优化。该模型基于 General Language Model (`GLM`) 架构，具有 62 亿参数。结合模型量化技术，用户可以在消费级的显卡上进行本地部署（INT4 量化级别下最低只需 6GB 显存）。
 - `ChatGLM-6B` 使用了和 `ChatGLM` 相同的技术，针对中文问答和对话进行了优化。经过约 1T 标识符的中英双语训练，辅以`监督微调`、`反馈自助`、`人类反馈强化学习`等技术的加持，62 亿参数的 `ChatGLM-6B` 虽然规模不及千亿模型，但大大降低了推理成本，提升了效率，并且已经能生成相当符合人类偏好的回答。
 - [模型开源地址](https://github.com/THUDM/ChatGLM-6B), [huggingface](https://huggingface.co/THUDM/chatglm-6b/tree/main)
 - finetune代码：[ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning)
 - 【2023-3-17】issue: [Cannot import name 'convert_file_size_to_int' from 'transformers.utils.hub'](https://github.com/THUDM/ChatGLM-6B/issues/123)
-
 
 ChatGLM-6B 具备以下特点：
 - 充分的中英双语预训练：ChatGLM-6B 在 1:1 比例的中英语料上训练了 1T 的 token 量，兼具双语能力。
@@ -2306,8 +2323,6 @@ ChatGLM-6B 具备以下特点：
 - 人类意图对齐训练：使用了`监督微调`（Supervised Fine-Tuning）、`反馈自助`（Feedback Bootstrap）、`人类反馈强化学习`（Reinforcement Learning from Human Feedback）等方式，使模型初具理解人类指令意图的能力。输出格式为 markdown，方便展示。
 
 不过由于 ChatGLM-6B 模型的容量较小，不可避免的存在一些局限和不足，目前已知其具有相当多的局限性，如： 事实性/数学逻辑错误，可能生成有害/有偏见内容，较弱的上下文能力，自我认知混乱，以及对英文指示生成与中文指示完全矛盾的内容。
-
-包括：
 - 相对**较弱**的模型记忆和语言能力。在面对许多事实性知识任务时，`ChatGLM-6B` 可能会生成不正确的信息，也不太擅长逻辑类问题（如数学、编程）的解答。
 - 可能会产生有害说明或有偏见的内容：`ChatGLM-6B` 只是一个初步与人类意图对齐的语言模型，可能会生成有害、有偏见的内容。
 - 较弱的**多轮**对话能力：ChatGLM-6B 的上下文理解能力还不够充分，在面对长答案生成和多轮对话的场景时，可能会出现上下文丢失和理解错误的情况。
@@ -2334,6 +2349,11 @@ print(response)
 #### ChatGLM-6B本地部署
 
 【2023-4-13】[清华ChatGLM-6B模型本地部署](https://mp.weixin.qq.com/s/PYFNUmR0119ucJvcHNDfmQ)
+
+硬件要求
+- 无量化情况下，显存初始化基本上都需要**13G**内存，16G的显存可能对话两轮就内存爆满了，建议还是使用量化模型。
+- ![](https://pic2.zhimg.com/80/v2-b030e7adc6b9522e998ac7522f6ee5cd_1440w.webp)
+- [ChatGLM-6B：构建本地离线知识库的绝佳选择](https://zhuanlan.zhihu.com/p/633445989)
 
 ```sh
 git clone https://github.com/THUDM/ChatGLM-6B.git
