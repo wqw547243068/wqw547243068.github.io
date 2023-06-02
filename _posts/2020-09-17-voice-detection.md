@@ -2067,6 +2067,9 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - 钉钉
 - [讯飞听见](https://www.iflyrec.com/html/addMachineOrder.html)转文字，上传音视频文件，免费体验15min
 
+# TTS 语音合成
+
+
 ## 各大tts平台总结
 
 - 市场的TTS平台：讯飞语音，百度智能语音开放平台，阿里云，腾讯云，思必驰，捷通华声(灵云)等。
@@ -2075,6 +2078,59 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - 总体效果
   - <font color='red'>标贝 > 讯飞 > 阿里 > 百度 > 思必驰 > 灵云 </font>
 - 详细代码参考：[Python：TTS语音合成技术，市场各大平台对比以及实现](https://cloud.tencent.com/developer/article/1403570)
+
+### bark
+
+【2023-4-23】[GitHub 开源神器 Bark模型，让文本转语音更简单](https://www.toutiao.com/article/7224875513527943732)
+- Bark 是由Suno创建的基于转换器的文本到音频模型。Bark 可以生成高度逼真的多语言语音以及其他音频 - 包括音乐、背景噪音和简单的音效。该模型还可以产生非语言交流，如大笑、叹息和哭泣。
+
+项目地址：[bark](https://github.com/suno-ai/bark)
+
+功能如下：
+- 非常真实自然的语音
+- 英文效果最佳，其他语言还欠佳
+- 支持通过文本生成歌曲
+- 支持生成背景噪音、简单的音效
+- 支持大笑、叹息、哭泣
+
+硬件和推理速度
+- Bark 经过测试，可在 CPU 和 GPU（pytorch 2.0+、CUDA 11.7 和 CUDA 12.0）上运行。运行 Bark 需要运行 >100M 的参数转换器模型。在现代 GPU 和 PyTorch nightly 上，Bark 可以大致实时地生成音频。在较旧的 GPU、默认 colab 或 CPU 上，推理时间可能会慢 10-100 倍。
+
+```sh
+# 安装
+pip install git+https://github.com/suno-ai/bark.git
+# 或者
+git clone https://github.com/suno-ai/bark
+cd bark && pip install . 
+```
+
+代码
+- Bark 支持开箱即用的各种语言，并自动根据输入文本确定语言。当出现代码转换文本提示时，Bark 将尝试使用相应语言的本地口音。英语质量目前是最好的。
+- 默认识别电脑上有无GPU，如果没有GPU则会下载可用于CPU的训练模型，默认模型文件下载地址为当前用户目录.cache文件夹下，可以通过配置XDG_CACHE_HOME环境变量指定模型下载位置
+
+```py
+from bark import SAMPLE_RATE, generate_audio
+from IPython.display import Audio
+
+text_prompt = """
+     Hello, my name is Suno. And, uh — and I like pizza. [laughs] 
+     But I also have other interests such as playing tic tac toe.
+"""
+audio_array = generate_audio(text_prompt) # 自动检测语种
+Audio(audio_array, rate=SAMPLE_RATE)
+# Bark 可以生成所有类型的音频，并且原则上看不出语音和音乐之间的区别。有时 Bark 选择将文本生成为音乐，可以通过在歌词周围添加音符来帮助它。
+text_prompt = """
+    ♪ In the jungle, the mighty jungle, the lion barks tonight ♪
+"""
+audio_array = generate_audio(text_prompt)
+# 扬声器提示
+# 提供特定的演讲者提示，例如旁白、男人、女人等。请注意，这些提示并不总是管用，尤其是在给出冲突的音频历史提示时。
+text_prompt = """
+    WOMAN: I would like an oatmilk latte please.
+    MAN: Wow, that's expensive!
+"""
+audio_array = generate_audio(text_prompt)
+```
 
 ### MMS（META）
 
