@@ -1760,6 +1760,8 @@ LoRA 是在原始 PLM 旁边增加一个旁路，做一个降维再升维的操�
 - Eric J. Wang 发布的 Alpaca-LoRA 项目。[项目地址](https://github.com/tloen/alpaca-lora)
 - LoRA 的最大优势是速度更快，使用的内存更少，因此可以在消费级硬件上运行。
 
+【2023-6-1】qlora加持下，merlin单机可以跑33-65b模型，40G空间
+
 ##### Alpaca-LoRA 中文版 Luotuo
 
 【2023-3-26】华中师范大学等机构的三位个人开发者开源的中文语言模型`骆驼` (Luotuo)，基于 LLaMA、Stanford Alpaca、Alpaca LoRA、Japanese-Alpaca-LoRA 等完成，**单卡**就能完成训练部署。
