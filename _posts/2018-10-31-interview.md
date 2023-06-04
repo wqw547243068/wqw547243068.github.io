@@ -245,7 +245,6 @@ TopK，不难；其思路优化过程，不简单：
   - **随机选择**（randomized_select），找到arr[1, n]中第k大的数，再进行一次partition，就能得到TopK的结果
 知其然，知其所以然。思路比结论重要。
 
-
 分治和减治
 - 分治法，大问题分解为小问题，小问题都要递归各个分支，例如：快速排序 O(n*lg(n))
 - 减治法，大问题分解为小问题，小问题只要递归一个分支，例如：二分查找 O(lg(n))，随机选择
@@ -278,6 +277,23 @@ int RS(arr, low, high, k){
   else
       return RS(arr, i+1, high, k-i); //求后半部分第k-i大
 }
+```
+
+【2023-6-3】快速排序简洁代码，由大模型claude提供
+
+```py
+def quick_sort(arr): 
+    if len(arr) <= 1: 
+        return arr
+    pivot = arr[len(arr)//2]  
+    left = [x for x in arr if x < pivot]  
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+arr = [5,3,8,6,7,2]
+print(quick_sort(arr))
+# [2, 3, 5, 6, 7, 8]
 ```
 
 
