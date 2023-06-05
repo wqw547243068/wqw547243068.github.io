@@ -366,6 +366,10 @@ RM模型主要在于人工参与的**训练数据构建**部分，将训练好�
 - `Direct score`：一个是直接对输出的文本进行打分，通过与自定义的label score计算loss，以此来更新模型参数；
 - `Rank score`：二是使用排序的方法，对每个Prompt输出的n个句子进行排序作为输入，通过计算排序在前面的句子与排序在后面的句子的差值累加作为最终loss。
 
+【2023-6-5】[ChatGPT 为什么不用 Reward-Model 的数据直接 fine-tune，而用 RL？](https://www.zhihu.com/question/596230048/answer/3055888005)
+- Reward-model的输出对于整个token序列，一种滞后反馈，而finetune需要在每个token都有监督信号。这是强化学习与监督学习的差别。
+- 生成Reward-model的数据有些是结果对比较**pair数据**，没法直接用于监督学习finetune。
+
 #### ① Direct score方法
 
 ① Direct score方法
@@ -2501,6 +2505,7 @@ GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 - 【2023-6-5】[陈天奇官宣新APP，让手机原生跑大模型，应用商店直接下载使用](https://www.toutiao.com/article/7241085086400233995), 陈天奇公布了一个好消息：MLC Chat app 已经在苹果的 App Store 上线了。
 
 [mlc-llm](https://mlc.ai/mlc-llm/) 部署汇总
+- 亲测：华为mate 30下载后，启动即闪退；iOS正常
 
 |设备|地址|示例|
 |---|---|---|
