@@ -1724,6 +1724,31 @@ Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingfa
 - 擅长心智理论（Theory of Mind），也就是能推测理解他人的心理状态。
 - 但不太擅长数学，以及容易用提示注入攻击把要求保密的信息从它嘴里套出来。
 
+### 猎鹰 Falcon -- 唯一免费商用
+
+【2023-6-5】[碾压LLaMA，「猎鹰」彻底开源！400亿参数，万亿token训练，霸榜Hugging Face](https://zhuanlan.zhihu.com/p/634189977)
+- [Open Source AI Has a New Champion](https://analyticsindiamag.com/open-source-ai-has-a-new-champion/)
+
+各种各样的LLM给AI模型开源赋予了各种各样的角度。
+- `LLaMA`给斯坦福的`Alpaca`和`Vicuna`等模型铺设了道路，搭好了舞台，成为了开源的领头羊。
+- 就在此时，猎鹰「`Falcon`」又杀出了重围。
+
+「Falcon」由阿联酋阿布扎比的技术创新研究所（TII）开发，从性能上看，Falcon比LLaMA的表现更好。
+- 「Falcon」有三个版本——1B、7B和40B。
+- TII表示，Falcon迄今为止最强大的开源语言模型。
+- 最大版本，Falcon 40B，拥有400亿参数，相对于拥有650亿参数的LLaMA来说，规模上还是小了一点。Falcon 40B已经在经过精心筛选的1万亿token网络数据集的上进行了大量训练。
+- 理解英语、德语、西班牙语和法语，并且在荷兰语、意大利语、罗马尼亚语、葡萄牙语、捷克语、波兰语和瑞典语等一些欧洲小语种上也懂得不少。
+- 论文目前还没公开发布。
+
+Falcon是目前**唯一**的可以免费商用的开源模型。
+
+在早期，TII要求，商业用途使用Falcon，如果产生了超过100万美元以上的可归因收入，将会收取10%的「使用税」。
+
+可是财大气粗的中东土豪们没过多长时间就取消了这个限制。
+
+至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
+
+
 ### Lion 对抗蒸馏--闭源大模型
 
 【2023-5-31】[港科大提出全新对抗蒸馏框架Lion](https://mp.weixin.qq.com/s/UPPkMbnkG1BZhE0nctNvhQ)，7B LLaMA模型接近ChatGPT 95%的能力
