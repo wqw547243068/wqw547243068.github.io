@@ -2494,6 +2494,60 @@ GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 - ![](https://image.jiqizhixin.com/uploads/editor/502667cf-151e-4fa7-8cd4-85c0979a5092/640.gif)
 - [详细测完360智脑后，我们发现大模型终于被玩明白了](https://www.jiqizhixin.com/articles/2023-05-23-2)
 
+
+### MLC LLM -- 陈天奇 模型手机部署
+
+- 【2023-5-2】[陈天奇等人新作引爆AI界：手机原生跑大模型，算力不是问题了](https://mp.weixin.qq.com/s/uQGAu1v-6ApgZHVkZJsUdQ)
+- 【2023-6-5】[陈天奇官宣新APP，让手机原生跑大模型，应用商店直接下载使用](https://www.toutiao.com/article/7241085086400233995), 陈天奇公布了一个好消息：MLC Chat app 已经在苹果的 App Store 上线了。
+
+[mlc-llm](https://mlc.ai/mlc-llm/) 部署汇总
+
+|设备|地址|示例|
+|---|---|---|
+|iOS|[iOS地址](https://testflight.apple.com/join/57zd7oxa)|![](https://mlc.ai/mlc-llm/gif/ios-demo.gif)|
+|Android|[Android地址](https://mlc.ai/mlc-llm/gif/android-demo.gif)|![](https://mlc.ai/mlc-llm/gif/android-demo.gif)|
+|PC|[Windows Linux Mac](https://mlc.ai/mlc-llm/#windows-linux-mac)|![](https://mlc.ai/mlc-llm/gif/linux-demo.gif)|
+|Web|[WebLLM](https://mlc.ai/mlc-llm/#web-browser)||
+
+让大模型变小这条路上，人们做了很多尝试
+- 先是 Meta 开源了 LLaMA，让学界和小公司可以训练自己的模型。
+- 随后斯坦福研究者启动了 Lamini，为每个开发者提供了从 GPT-3 到 ChatGPT 的快速调优方案。
+- 最近 MLC LLM 的项目一步登天，因为它能在**任何设备**上编译运行大语言模型。
+
+MLC LLM 在各类硬件上**原生部署任意大型语言模型**提供了解决方案，可将大模型应用于移动端（例如 iPhone）、消费级电脑端（例如 Mac）和 Web 浏览器。
+-  TVM、MXNET、XGBoost 作者，CMU 助理教授，OctoML CTO 陈天奇等多位研究者共同开发的，参与者来自 CMU、华盛顿大学、上海交通大学、OctoML 等院校机构，同时也获得了开源社区的支持。
+- [github](https://github.com/mlc-ai/mlc-llm)
+- [Demo](https://mlc.ai/mlc-llm/)
+- [MLC课程](https://mlc.ai/summer22-zh/schedule)：机器学习编译
+- [知乎专题](https://www.zhihu.com/question/598610139)
+
+MLC LLM 旨在让每个人都能在个人设备上本地开发、优化和部署 AI 模型，而无需服务器支持，并通过手机和笔记本电脑上的消费级 GPU 进行加速。具体来说，MLC LLM 支持的平台包括：
+- iPhone
+- Metal GPU 和英特尔 / ARM MacBook;
+- 在 Windows 和 Linux 上支持通过 Vulkan 使用 AMD 和 NVIDIA GPU；
+- 在 Windows 和 Linux 上 通过 CUDA 使用 NVIDIA GPU；
+- 浏览器上的 WebGPU（借助 MLC LLM 的配套项目 Web LLM）。
+
+为了实现在各类硬件设备上运行 AI 模型的目标，研究团队要解决计算设备和部署环境的多样性问题，主要挑战包括：
+- 支持不同型号的 CPU、GPU 以及其他可能的协处理器和加速器；
+- 部署在用户设备的**本地环境**中，这些环境可能没有 python 或其他可用的必要依赖项；
+- 通过仔细规划分配和积极压缩模型参数来解决**内存限制**。
+- MLC LLM 提供可重复、系统化和可定制的工作流，使开发人员和 AI 系统研究人员能够以 Python 优先的方法实现模型并进行优化。MLC LLM 可以让研究人员们快速试验新模型、新想法和新的编译器 pass，并进行本地部署。
+
+为了实现原生部署，研究团队以**机器学习编译**（MLC）技术为基础来高效部署 AI 模型。
+- [MLC技术](https://mlc.ai/)
+- MLC LLM 借助一些开源生态系统，包括来自 HuggingFace 和 Google 的分词器，以及 LLaMA、Vicuna、Dolly 等开源 LLM。
+- ![](https://pica.zhimg.com/80/v2-b23bb5806fa9c32e51773e06494b8f62_1440w.webp?source=1940ef5c)
+
+
+MLC LLM 的主要工作流基于 Apache TVM Unity，通过扩展 TVM 后端使模型编译更加透明和高效。
+- Dynamic shape：该研究将语言模型烘焙（bake）为具有原生 Dynamic shape 支持的 TVM IRModule，避免了对最大输入长度进行额外填充的需要，并减少了计算量和内存使用量。
+- 可组合的 ML 编译优化：MLC LLM 可以执行许多模型部署优化，例如更好的编译代码转换、融合、内存规划和库卸载（library offloading），并且手动代码优化可以很容易地合并为 TVM 的 IRModule 转换，成为一个 Python API。
+- 量化：MLC LLM 利用低位量化来压缩模型权重，并利用 TVM 的 loop-level TensorIR 为不同的压缩编码方案快速定制代码生成。
+- 运行时（Runtime）：TVM 编译生成的库能够通过 TVM runtime 在设备的原生环境中运行，TVM runtime 支持 CUDA/Vulkan/Metal 等主流 GPU 驱动以及 C、JavaScript 等语言的绑定。
+
+此外，MLC 还为 CUDA、Vulkan 和 Metal 生成了 GPU shader，并通过 LLVM 支持多种 CPU，包括 ARM 和 x86。通过改进 TVM 编译器和运行时，使用者可以添加更多支持，例如 OpenCL、sycl、webgpu-native。
+
 ### ChatRWKV
 
 【2023-3-13】[开源1.5/3/7B中文小说模型：显存3G就能跑7B模型，几行代码即可调用](https://zhuanlan.zhihu.com/p/609154637)
