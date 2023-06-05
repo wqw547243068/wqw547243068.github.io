@@ -1731,7 +1731,8 @@ Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingfa
 
 各种各样的LLM给AI模型开源赋予了各种各样的角度。
 - `LLaMA`给斯坦福的`Alpaca`和`Vicuna`等模型铺设了道路，搭好了舞台，成为了开源的领头羊。
-- 就在此时，猎鹰「`Falcon`」又杀出了重围。
+- 就在此时，猎鹰「`Falcon`」又杀出了重围。[Hugging Face OpenLLM Leaderboard ](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+- ![](https://149695847.v2.pressablecdn.com/wp-content/uploads/2023/06/image-9.png)
 
 「Falcon」由阿联酋阿布扎比的技术创新研究所（TII）开发，从性能上看，Falcon比LLaMA的表现更好。
 - 「Falcon」有三个版本——1B、7B和40B。
