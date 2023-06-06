@@ -311,6 +311,12 @@ ChatGPT也可以与其他AIGC模型联合使用，获得更加炫酷实用的功
 
 数据是石油，LLM 明显把炼油能力增强了，高价值行业和企业内部曾经难记录、难处理的数据都可以被重新以前分析。数据和信息的重构也意味着 AI 能承担更多决策权。
 
+#### 数据抓取
+
+ExtractGPT
+- 一款浏览器扩展程序，可从结构化和非结构化页面中获取数据
+
+
 #### 语料扩充
 
 【2023-2-17】[unlocking-the-power-of-llms](https://github.com/howl-anderson/unlocking-the-power-of-llms)
@@ -500,6 +506,10 @@ chatgpt做零样本信息抽取
 - 论文：[Zero-Shot Information Extraction via Chatting with ChatGPT](https://www.aminer.cn/pub/63f5887b90e50fcafd27b7c4/zero-shot-information-extraction-via-chatting-with-chatgpt)
 - we transform the zero-shot IE task into a multi-turn question-answering problem with a two-stage framework (ChatIE)
 - 使用两阶段框架（ChatIE）将零样本信息提取任务转换为多回合问答问题。
+
+##### 语音摘要
+
+Podcast Summariser 使用OpenAI Whisper + Davinci进行播客摘要
 
 
 ##### 视频摘要
@@ -821,6 +831,11 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
   - `Reranking`。`排序`模块，LLM从候选中重排序商品。
 
 ### 个人助理
+
+#### ChatGPT微头条
+
+【2023-6-6】用ChatGPT发微头条
+- [视频](https://www.toutiao.com/video/7230002985866035769)
 
 #### Monica
 
