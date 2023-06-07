@@ -170,17 +170,16 @@ permalink: /partner
 - [单身狗速进！如何科学有效地脱单？](https://www.bilibili.com/video/av75629882)
    - `最优停止问题`或`37%法则`，先谈37%*N次恋爱，再看后来者是否比前面优秀，据此决定是否结婚
    - 应用前提：单向性，一次一个，只能选择一次，无法回头，如招聘（秘书问题）、租房、谈恋爱等情形
-- <iframe src="//player.bilibili.com/player.html?aid=75629882&cid=129377172&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=75629882&cid=129377172&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [李永乐老师和西瓜妹现场解析：什么是爱情？如何寻找真命天子？](https://www.ixigua.com/i6618463993403015688/)
 
-## 是做海王，还是从一而终？
+### 是做海王，还是从一而终？
 
 【2021-7-13】[如何像算法工程师一样看待这个世界](https://mp.weixin.qq.com/s/qAXmmJ4yv7_Zka36g0HCGA)
 
-
 谈恋爱应该多谈几个，还是从一开始就选定对象，从一而终？多谈几个是否有成为“**海王**”的风险，从一而终给是否会错失更佳的伴侣？
 
-找伴侣，在计算机领域是一个典型的**优化**问题。这个优化问题叫作`最佳停止问题`（optimal stopping）。**最佳停止问题**的场景是你有一系列的可能选择的目标，可以一个一个地检验，记住它们的特点和优劣，给它们打分。但是你看过了就不能回头了。（序列决策）
+找伴侣在计算机领域是一个典型的**优化**问题。这个优化问题叫作`最佳停止问题`（optimal stopping）。**最佳停止问题**的场景是你有一系列的可能选择的目标，可以一个一个地检验，记住它们的特点和优劣，给它们打分。但是你看过了就不能回头了。（序列决策）
 
 问题：<font color='blue'>你在什么时候做决定，是最佳的选择呢？</font>
 
