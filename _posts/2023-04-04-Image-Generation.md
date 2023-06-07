@@ -143,7 +143,12 @@ GAN是生成式模型中应用最广泛的技术，在图像、视频、语音�
 扩散模型
 - ![](https://pic1.zhimg.com/80/v2-ee822b476d8c4c54667b8ee59b036828_1440w.webp)
 
-新出现的扩散模型（Denoising Diffusion Probabilistic Model，DDPM），整体原理上与 VAE 更加接近。
+标准的**扩散模型**分为两个主要过程：`正向过程`（扩散）和`反向过程`（去噪、还原和生成目标）。
+- 正向扩散阶段，逐渐引入噪声，直到图像变成完全随机的噪声。
+- 再通过反向过程，使用一系列的`马尔科夫链`进行去噪，得到最终清晰的图像数据。
+- ![](https://pica.zhimg.com/80/v2-09911fadad0b4ab0f787444db62c2bbe_1440w.webp?source=1940ef5c)
+
+新出现的`扩散模型`（Denoising Diffusion Probabilistic Model，`DDPM`），整体原理上与 `VAE` 更加接近。
 - X0 是输入样本，如一张原始图片，通过 T 步**前向过程**（Forward process）采样变换，最后生成了噪声图像 XT ，理解为隐变量 z。这个过程通过马尔科夫链实现。
 
 随机过程中一个定理
@@ -201,6 +206,26 @@ stable_diffusion)
 - [sd-v1-5](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt)
 - [sd-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt)
 
+SD模型的主体结构如下图所示，主要包括三个模型：
+- `autoencoder`：encoder将图像压缩到latent空间，而decoder将latent解码为图像；
+- `CLIP text encoder`：提取输入text的text embeddings，通过cross attention方式送入扩散模型的UNet中作为condition；
+  - SD采用CLIP text encoder来对输入text提取text embeddings，具体的是采用目前OpenAI所开源的最大CLIP模型：clip-vit-large-patch14，这个CLIP的text encoder是一个transformer模型（只有encoder模块）：层数为12，特征维度为768，模型参数大小是123M。
+- `UNet`：扩散模型的主体，用来实现文本引导下的latent生成。
+  - SD的扩散模型是一个860M的UNet
+  - encoder部分包括3个CrossAttnDownBlock2D模块和1个DownBlock2D模块，而decoder部分包括1个UpBlock2D模块和3个CrossAttnUpBlock2D模块，中间还有一个UNetMidBlock2DCrossAttn模块。
+  - encoder和decoder两个部分是完全对应的，中间存在skip connection。
+  - 注意3个CrossAttnDownBlock2D模块最后均有一个2x的downsample操作，而DownBlock2D模块是不包含下采样的。
+
+模型结构
+- ![](https://pic1.zhimg.com/80/v2-fddf45ed17a509336d1550833a257684_1440w.webp?source=1940ef5c)
+
+对于SD模型
+- 其autoencoder模型参数大小为84M
+- CLIP text encoder模型大小为123M
+- 而UNet参数大小为860M
+
+所以SD模型的总参数量约为1B。[详见](https://www.zhihu.com/question/577079491/answer/3032168255?utm_campaign=shareopn&utm_medium=social&utm_oi=27211553832960&utm_psn=1649776451506360320&utm_source=wechat_session)
+
 
 ### 扩散模型原理
 
@@ -215,7 +240,7 @@ stable_diffusion)
 准确来说，`DDPM`叫“**渐变模型**”更为准确一些，扩散模型这一名字反而容易造成理解上的误解，传统扩散模型的**能量模型**、**得分匹配**、`朗之万`方程等概念，其实跟DDPM及其后续变体都没什么关系。
 - DDPM的数学框架其实在ICML2015的论文《Deep Unsupervised Learning using Nonequilibrium Thermodynamics》就已经完成了，但DDPM是首次将它在高分辨率图像生成上调试出来了，从而引导出了后面的火热。由此可见，一个模型的诞生和流行，往往还需要时间和机遇
 
-#### 图解Stable Diffusion
+#### 图解 Stable Diffusion
 
 【2023-4-10】[图解Stable Diffusion](https://zhuanlan.zhihu.com/p/617713156)
 - jalammar的[illustrated-stable-diffusion](https://jalammar.github.io/illustrated-stable-diffusion/)
@@ -261,6 +286,214 @@ Stable Diffusion 的三个主要组件，各自由不同的神经网络组成：
 - ![](https://pic2.zhimg.com/80/v2-e3cae41c28f1f0dd34f30bd9ef9cb4fd_1440w.webp)
 
 略，详见原文：[illustrated-stable-diffusion](https://jalammar.github.io/illustrated-stable-diffusion/)
+
+#### UNet
+
+UNet 因为网络的整体结构形似字母U而得名。
+- Unet以图像作为入口，通过减少采样来找到该图像的低维表示后再通过增加采样将图像恢复回来。
+- ![](https://pic1.zhimg.com/80/v2-fd8eafb834095ceb7f61c89dcd996748_1440w.webp?source=1940ef5c)
+
+Unet的整体结构包含了4层`编码器`和4层`解码器`。
+- 每层编码器和解码器中,均包含了一个两层的卷积网络
+- Unet的编码器具有4层结构，每层由一个双层卷积网络构成。结果经过一层最大池化提取出关键特征之后传递到下一层。同时通过Skip-Connection将结果传递给对应的解码器。
+- 解码器部分，同时接收了来自下一层网络的输出，与同层编码器池化前的结果，通过拼接后传递到上一层。
+
+
+```py
+class DoubleConv(nn.Module): 
+
+    def __init__(self, in_ch, out_ch, mid_ch=None):
+        super().__init__()
+        if not mid_ch:
+            mid_ch = out_ch
+        self.conv = nn.Sequential(
+            nn.Conv2d(in_ch, mid_ch, kernel_size=3, padding=1),
+            nn.BatchNorm2d(mid_ch),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(mid_ch, out_ch, kernel_size=3, padding=1),
+            nn.BatchNorm2d(out_ch),
+            nn.ReLU(inplace=True)
+        )
+
+    def forward(self, x):
+        x = self.conv(x)
+        return x
+
+class Down(nn.Module): # 编码器
+    """Downscaling with maxpool then double conv"""
+
+    def __init__(self, in_ch, out_ch):
+        super(Down, self).__init__()
+        self.maxpool_conv = nn.Sequential(
+            nn.MaxPool2d(2),  # 先进行maxpool，再进行两层链接
+            DoubleConv(in_ch, out_ch)
+        )
+
+    def forward(self, x):
+        x = self.maxpool_conv(x)
+        return x
+
+class Up(nn.Module): # 解码器
+    """
+    up path
+    conv_transpose => double_conv
+    """
+
+    def __init__(self, in_ch, out_ch, bilinear=True):
+        super(Up, self).__init__()
+        if bilinear:
+            self.up = lambda x: nn.functional.interpolate(x, scale_factor=2, mode='bilinear', align_corners=True)
+            self.conv = DoubleConv(in_ch, out_ch, in_ch // 2)
+        else:
+            self.up = nn.ConvTranspose2d(in_ch, in_ch // 2, kernel_size=2, stride=2)
+            self.conv = DoubleConv(in_ch, out_ch)
+
+    def forward(self, x1, x2): 
+        """
+            conv output shape = (input_shape - Filter_shape + 2 * padding)/stride + 1
+        """
+        x1 = self.up(x1)
+        diffY = x2.size()[2] - x1.size()[2]  # [N,C,H,W],diffY refers to height
+        diffX = x2.size()[3] - x1.size()[3]  # [N,C,H,W],diffX refers to width
+
+        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
+                        diffY // 2, diffY - diffY // 2])
+        x = torch.cat([x2, x1], dim=1)  # 在通道层将skip传递过来的数据与下层传递来的数据进行拼接
+        x = self.conv(x)
+        return x
+```
+
+网络实现
+
+```py
+import torch
+
+import torch.nn as nn
+import torch.nn.functional as F
+from model.components import DoubleConv, InConv, Down, Up, OutConv
+
+
+class Unet(nn.Module):
+
+    def __init__(self, in_ch, out_ch, gpu_ids=None, bilinear=False):  # inch, 图片的通道数，1表示灰度图像，3表示彩色图像
+        super(Unet, self).__init__()
+        if gpu_ids is None:
+            gpu_ids = []
+        self.loss = None
+        self.matrix_iou = None
+        self.pred_y = None
+        self.x = None
+        self.y = None
+
+        self.loss_stack = 0
+        self.matrix_iou_stack = 0
+        self.stack_count = 0
+        self.display_names = ['loss_stack', 'matrix_iou_stack']
+
+        self.gpu_ids = gpu_ids
+        self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if torch.cuda.is_available() else torch.device(
+            'cpu')
+
+        self.bilinear = bilinear
+        factor = 2 if bilinear else 1
+
+        self.bce_loss = nn.BCELoss()
+
+        self.inc = (DoubleConv(in_ch, 64))
+        self.down1 = Down(64, 128)
+        self.down2 = Down(128, 256)
+
+        self.down3 = Down(256, 512)
+        self.drop3 = nn.Dropout2d(0.5)
+
+        self.down4 = Down(512, 1024)
+        self.drop4 = nn.Dropout2d(0.5)
+
+        self.up1 = Up(1024, 512 // factor, bilinear)
+        self.up2 = Up(512, 256 // factor, bilinear)
+        self.up3 = Up(256, 128 // factor, bilinear)
+        self.up4 = Up(128, 64 // factor, bilinear)
+
+        self.out = OutConv(64, out_ch)
+
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)
+
+    def forward(self):
+        x1 = self.inc(self.x)
+        x2 = self.down1(x1)
+        x3 = self.down2(x2)
+        x4 = self.down3(x3)
+        x4 = self.drop3(x4)
+        x5 = self.down4(x4)
+        x5 = self.drop4(x5)
+
+        # skip connection与采样结果融合
+        x = self.up1(x5, x4)
+        x = self.up2(x, x3)
+        x = self.up3(x, x2)
+        x = self.up4(x, x1)
+        x = self.out(x)
+        self.pred_y = nn.functional.sigmoid(x)
+
+    def set_input(self, x, y):
+        self.x = x.to(self.device)
+        self.y = y.to(self.device)
+        self.to(self.device)
+
+    def optimize_params(self):
+        self.forward()
+        self._bce_iou_loss()
+        _ = self.accu_iou()
+        self.stack_count += 1
+        self.zero_grad()
+        self.loss.backward()
+        self.optimizer.step()
+
+    def accu_iou(self):
+        y_pred = (self.pred_y > 0.5) * 1.0
+        y_true = (self.y > 0.5) * 1.0
+
+        pred_flat = y_pred.view(y_pred.numel())
+        true_flat = y_true.view(y_true.numel())
+
+        intersection = float(torch.sum(pred_flat * true_flat)) + 1e-7
+        denominator = float(torch.sum(pred_flat + true_flat)) - intersection + 2e-7
+
+        self.matrix_iou = intersection / denominator
+        self.matrix_iou_stack += self.matrix_iou
+        return self.matrix_iou
+
+    def _bce_iou_loss(self):
+        y_pred = self.pred_y
+        y_true = self.y
+        pred_flat = y_pred.view(y_pred.numel())
+        true_flat = y_true.view(y_true.numel())
+
+        intersection = torch.sum(pred_flat * true_flat) + 1e-7
+        denominator = torch.sum(pred_flat + true_flat) - intersection + 1e-7
+        iou = torch.div(intersection, denominator)
+        bce_loss = self.bce_loss(pred_flat, true_flat)
+        self.loss = bce_loss - iou + 1
+        self.loss_stack += self.loss
+
+    def get_current_losses(self):
+        errors_ret = {}
+        for name in self.display_names:
+            if isinstance(name, str):
+                errors_ret[name] = float(getattr(self, name)) / self.stack_count
+        self.loss_stack = 0
+        self.matrix_iou_stack = 0
+        self.stack_count = 0
+        return errors_ret
+
+    def eval_iou(self):
+        with torch.no_grad():
+            self.forward()
+            self._bce_iou_loss()
+            _ = self.accu_iou()
+            self.stack_count += 1
+
+```
 
 ### 扩散模型+预训练
 
