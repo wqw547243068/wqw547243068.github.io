@@ -1123,6 +1123,11 @@ I hope these suggestions could open the door to machine learning and help get yo
 
 ## 简历
 
+### Latext版简历
+
+【2023-6-7】中文简历模板: [awesome-resume-for-chinese](https://github.com/dyweb/awesome-resume-for-chinese)
+- ![](https://camo.githubusercontent.com/04a320fc04471f51641a8b498b4e61e54686bce507f91c866bc58d7342fe1e3b/68747470733a2f2f692e706f7374696d672e63632f3051546838345a362f7869616f6a697a68692e706e67)
+
 
 ### 简历范例
 
