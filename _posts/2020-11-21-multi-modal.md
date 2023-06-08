@@ -687,6 +687,32 @@ TigerBot带来的创新主要有以下几个方面：
 
 但高速开发迭代，还只是TigerBot极客风格的体现点之一。因为他们仅凭10个人在几个月内肝出来的成果，将以全套API的形式向行业开源。
 
+#### Video-LLaMA（视听，达摩院）
+
+【2023-6-8】[给语言大模型加上综合视听能力，达摩院开源Video-LLaMA](https://www.toutiao.com/article/7242158713866404352)
+
+> 能否给大模型装上 “眼睛” 和 “耳朵”，让它能够理解视频，陪着用户互动呢？
+
+达摩院的研究人员提出了 `Video-LLaMA`，一个具有综合视听能力大模型。
+- Video-LLaMA 能够感知和理解视频中的视频和音频信号，并能理解用户输入的指令，完成一系列基于音视频的复杂任务，例如音 / 视频描述，写作，问答等。
+- 目前[论文](https://arxiv.org/abs/2306.02858)，[代码](https://github.com/DAMO-NLP-SG/Video-LLaMA)
+- 交互 demo 都已开放。[Modelscope](https://modelscope.cn/studios/damo/video-llama/summary), [Huggingface](https://huggingface.co/spaces/DAMO-NLP-SG/Video-LLaMA)
+
+Video-LLaMA 采用了模块化设计原则，把视频中的视觉和音频模态信息映射到到大语言模型的输入空间中，以实现跨模态指令跟随的能力。与之前侧重于静态图像理解的大模型研究（MiNIGPT4，LLaVA）不同，Video-LLaMA 面临着视频理解中的两个挑战：捕捉视觉中的动态场景变化和整合视听信号。
+
+为了捕捉视频中的动态场景变化，Video-LLaMA 引入了一个可插拔的视觉语言分支。该分支首先使用 BLIP-2 中预训练好的图片编码器得到每一帧图像的单独特征，再与对应的帧位置嵌入结合后，所有图像特征被送入 Video Q-Former，Video Q-Former 将聚合帧级别的图像表示并且生成定长的综合视频表征。最后采用一个线性层将视频表征对齐到大语言模型的 embedding 空间。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f80209246dcc48afb2173ec604f082d1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686829593&x-signature=I8WXUILoDzfUFWFURs90fUrLuDc%3D)
+
+Video-LLaMA 基于视频 / 音频 / 图像的对话的一些例子
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/b89f7d6b0425453d8f524325739d7a00~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686829593&x-signature=NfoFF1poOH0hKgrYYVVRDWItYZo%3D)
+
+
+音频视频理解依旧是一个非常复杂，尚未有成熟解决方案的研究问题，Video-LLaMA 虽然表现出了令人印象深刻的能力，作者也提到了其存在一些局限性。
+- （1）有限的感知能力：Video-LLaMA 的视觉听觉能力仍然较为初级，对复杂的视觉声音信息依然难以辨认。其中一部分原因是数据集的质量和规模还不够好。该研究团队正在积极构建高质量的音频 - 视频 - 文本对齐数据集，以增强模型的感知能力。
+- （2）难以处理长视频的：长视频 (如电影和电视节目) 包含大量的信息，对模型的推理能力和计算资源都较高。
+- （3）语言模型固有的幻觉问题，在 Video-LLaMA 中依然存在。
+
+Video-LLaMA 作为一个具有综合视听能力的大模型，在音频视频理解领域取得了令人印象深刻的效果。随着研究者的不断攻坚，以上挑战也将逐个被克服，使得音视频理解模型具有广泛的实用价值。
 
 # 结束
 
