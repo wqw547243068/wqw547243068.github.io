@@ -41,6 +41,48 @@ permalink: /doc-chat
 
 详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
+### Token
+
+什么是token？
+- tokens 不是指 prompt 字符串的长度；
+- token 指一段话中可能被分出来的**词汇**。
+  - 比如：i love you，就是三个token，分别为 「i」「love」「you」。
+- 不同语言token计算不一样。[在线测试](platform.openai.com/tokenizer)
+  - 中文的「我爱你」其实是算 5个token，因为会先把内容转成 unicode。
+  - 有些 emoji 的token长度会超出想象，长达11个。
+
+ChatGPT has an upper limit of 4096
+
+GPT-4 支持，详见[官网](https://platform.openai.com/docs/models/gpt-4)
+- 8k context
+- 32k context
+
+	
+| Model | Price for 1000 tokens (prompt) |
+|---|---|
+| Ada | 2048 |
+| Babbage | 2048 | 
+| Curie | 2048 |
+| DaVinci | 4096 |
+| ChatGPT | 4096 |
+| GPT-4 8k context | 8192 |
+| GPT-4 32k context | 32768 |
+
+Remember, the sum of your prompt and maximum tokens should always be less than equal to the model's maximum token limit, OR your output is truncated.
+
+备注
+- 编码器：可以接受长度不超过最大序列长度（如 512 个单词）的输入。如果序列长度小于该限制，就在其后填入预先定义的空白单词。
+  - 如，原始 transformer 论文中的编码器模块可以接受长度不超过最大序列长度（如 512 个单词）的输入。
+- 解码器：区别
+  - 加入了一层重点关注编码器输出的某一片段，**编码器-解码器自注意力**（encoder-decoder self-attention）层
+  - 后面的单词掩盖掉了。但并不像 BERT 一样将它们替换成特殊定义的单词 < mask >，而是在自注意力计算的时候屏蔽了来自当前计算位置右边所有单词的信息。
+
+
+经验
+- 英文：100 tokens ~= 75 words)
+- 中文：一个汉字占2-3个token
+- 其它：emoji表情符号，占用更多，有的高达11个
+
 ### 如何增强LLM能力
 
 【2023-5-21】[LLM训练营课程笔记—Augmented Language Models](https://zhuanlan.zhihu.com/p/630195581)
@@ -691,14 +733,6 @@ agent.run("产品1总量,产品2总量,产品3总量分别是多少,将三个总
 
 
 ### 文本切分
-
-什么是token？
-- tokens 不是指 prompt 字符串的长度；
-- token指一段话中可能被分出来的**词汇**。
-  - 比如：i love you，就是三个token，分别为 「i」「love」「you」。
-- 不同语言token计算不一样。[在线测试](platform.openai.com/tokenizer)
-  - 中文的「我爱你」其实是算 5个token，因为会先把内容转成 unicode。
-  - 有些 emoji 的token长度会超出想象，长达11个。
 
 LangChain 切分工具
 - [Text Splitters文档](https://python.langchain.com/en/latest/modules/indexes/text_splitters.html): 选择对应的文本切分器，如果是通用文本的话，建议选择 `RecursiveCharacterTextSplitter`
