@@ -57,7 +57,6 @@ GPT-4 支持，详见[官网](https://platform.openai.com/docs/models/gpt-4)
 - 8k context
 - 32k context
 
-	
 | Model | Price for 1000 tokens (prompt) |
 |---|---|
 | Ada | 2048 |
