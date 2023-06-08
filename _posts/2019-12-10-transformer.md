@@ -26,17 +26,19 @@ Transformer，一个从NLP领域横跨到语音和图像领域，最终统一几
 - Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最重要的核心就是`Self-Attention`机制，中文也叫`自注意力`。
 - 在语言模型建模过程中，把注意力放在那些重要的Token上。
 
+### Transformer 架构理解
+
 `Transformer`是一种`Encoder-Decoder`架构(Seq2Seq架构也是)，先把**输入**映射到`Encoder`，可以把Encoder想象成RNN，Decoder也是。
 
-Transformer这个架构基于Seq2Seq，可以同时处理NLU和NLG任务，而且这种Self Attention机制的特征提取能力很强。
+Transformer 这个架构基于Seq2Seq，可以同时处理NLU和NLG任务，而且这种Self Attention机制的特征提取能力很强。
 
 这样，左边负责**编码**，右边则负责**解码**。不同的是
-- 编码时。因为知道数据，所以建模时可以同时利用当前Token的**历史Token**和**未来Token**；
+- `编码`时，因为知道数据，所以建模时可以同时利用当前Token的**历史Token**和**未来Token**；
   - Encoder的block分两个模块：Multi-Head Attention和Feed Forward，
   - Multi-Head Attention中用到Self Attention，和Attention类似，不过它是每个Token和每个Token的**重要性权重**。Multi-Head将自注意力重复n次，每个注意到的信息不一样，可以捕获到更多信息。
     - 比如：「<span style='color:blue'>我喜欢在深夜的星空下伴随着月亮轻轻地想你</span>」，有的Head「我」注意到「**喜欢**」，有的Head「我」注意到「**深夜**」，有的Head「我」注意到「**想你**」……
   - Feed Forward，相当于「记忆层」，大模型大部分知识都存在此，Multi-Head Attention则根据不同权重的注意提取知识。
-- 但解码时，因为是逐个Token输出，所以只能根据**历史Token**以及Encoder的**Token表示**进行建模，而不能利用未来Token。
+- 但`解码`时，因为是逐个Token输出，所以只能根据**历史Token**以及Encoder的**Token表示**进行建模，而不能利用未来Token。
 
 然而，大多数NLP任务其实并不是Seq2Seq，最常见的主要包括几种：句子级别`分类`、Token级别分类（也叫`序列标注`）、`相似度`匹配和生成；
 - 而前三种应用最为广泛。这时候`Encoder`和`Decoder`可以拆开用。
@@ -48,15 +50,15 @@ NLP领域，一般分别叫做`NLU`（Natural Language Understanding，自然语
 - NLU任务：句子级别分类是给定一个句子，输出一个类别。因为句子可以表示为一个向量，经过张量运算，自然可以映射到每个类的概率分布。这和之前的语言模型没有本质区别，只是语言模型的类别是**整个词表大小**，而分类的类别看具体任务，有`二分类`、`多分类`、`多标签分类`等等。
 - NLG任务: 除了生成外，常见的任务还有文本摘要、机器翻译、改写纠错等。
 
+### transformer解决什么问题
 
-针对rnn和cnn的缺陷，怎么解决这些问题呢？
+针对rnn和cnn的缺陷，Transformer怎么解决这些问题？
 - 并行化
 - 提升长程依赖的学习能力
 - 层次化建模
 
-[Transformer视频极速讲解]([https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4](https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4?pkey=AAUueFULRuG_6uD2Q02FRUhdfjMyp6FyxymFaW_-XWxvqXHc6okeEqAV0nNeMEHz8n-IipsQme7OkNApjLZ6QurG&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1673454650&v=ks6))
+[Transformer视频极速讲解](https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4)
 
-<embed width="800" height="600" src="https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4?pkey=AAUueFULRuG_6uD2Q02FRUhdfjMyp6FyxymFaW_-XWxvqXHc6okeEqAV0nNeMEHz8n-IipsQme7OkNApjLZ6QurG&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1673454650&v=ks6" />
 
 ## 卷积
 
@@ -82,20 +84,402 @@ NLP领域，一般分别叫做`NLU`（Natural Language Understanding，自然语
 
 内部卷积 involution
 - [CVPR 2021 Involution：超越 Convolution 和 Self-attention 的神经网络新算子](https://blog.csdn.net/BAAIBeijing/article/details/115222970), [论文地址](http://arxiv.org/abs/2103.06255)
-- ![](https://img-blog.csdnimg.cn/img_convert/0f8c8ff1aa63b079025990418c20ea68.png)
-- ![](https://img-blog.csdn.net/20170730100057611?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGVmdF9UaGluaw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
-- ![](https://img-blog.csdnimg.cn/img_convert/b670881b8e5cd7b52b4ebe69ace1654b.png)
+- ![img](https://img-blog.csdnimg.cn/img_convert/0f8c8ff1aa63b079025990418c20ea68.png)
+- ![img](https://img-blog.csdn.net/20170730100057611?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGVmdF9UaGluaw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+- ![img](https://img-blog.csdnimg.cn/img_convert/b670881b8e5cd7b52b4ebe69ace1654b.png)
 
 
 
-## Attention的细节
+## Transformer模型
+
+- ![img](https://picb.zhimg.com/80/v2-6c292e2a4ed43894fc954ee625372c67_720w.jpg)
+
+上图下面部分，训练用的输入和输出数据的 embedding，都会先加上一个position encoding来补充一下位置信息。
+- `Encoder`
+  - 途中左侧部分是encoder块，encoder中6层相同结构堆叠而成，在每层中又可以分为2个子层，底下一层是multihead self-attention层，上面是一个FC feed-forward层，每一个子层都有residual connection，，然后在进行Layer Normalization. 为了引入redisual connenction简化计算，每个层的输入维数和embedding层保持一致。
+- `Decoder`
+  - 同样是一个6层的堆叠，每层有三个子层，其中底下两层都是multihead self-attention层，最底下一层是有mask的，只有当前位置之前的输入有效，中间层是encode和decode的连接层，输出的self-attention层和输入的encoder输出同时作为MSA的输入，实现encoder和decoder的连接，最上层和encoder的最上层是一样的，不在单说，每个子层都有有residual connection，和Layer Normalization
+
+【2021-8-25】Transformer结构中，左边叫做**编码端**(Encoder)，右边叫做**解码端**(Decoder)。不要小看这两个部分，其中左边的编码端最后演化成了最后鼎鼎大名的**Bert**，右边的解码端在最近变成了无人不知的**GPT**模型。
+
+【2023-2-15】transformer 出现后，迅速取代了 RNN系列 变种，跻身主流模型架构基础。
+
+transformer 结构分成：
+- （1）自回归系列：偏好 文本生成，示例：GPT-3；
+- （2）双向自编码系列：偏好 自然语言理解，示例：BERT，双向transformer+Mask自编码系列
+- （3）encoder-decoder系列：偏好 条件文本生成，示例：T5，双向/单向attention
+
+### 亮点
+
+- `Self Attention`
+  - 传统的编解码结构中，将输入输入编码为一个定长语义编码，然后通过这个编码在生成对应的输出序列。它存在的一个问题在于：输入序列不论长短都会被编码成一个固定长度的向量表示，而解码则受限于该固定长度的向量表示
+  - attention机制: encoder的输出不是一个语义向量，是一个语义向量的序列
+   ![](https://upload-images.jianshu.io/upload_images/14911967-cadfa37d31342857.png?imageMogr2/auto-orient/strip|imageView2/2/w/568/format/webp)
+  - Transformer的Attenion函数称为scaled dot-Product Attention
+   ![](https://upload-images.jianshu.io/upload_images/14911967-9fb3d576399e53e5.png?imageMogr2/auto-orient/strip|imageView2/2/w/455/format/webp)
+- `MultiHead Attention`
+  - self attention计算时会分为两个阶段，第一个阶段计算出softmax部分,第二部分是在乘以 Value部分，这样还是串行化的，并行化不够。
+  - MultiHeadAttention，对query，key，value各自进行一次不同的线性变换，然后在执行一次softmax操作，这样可以提升并行度，论文中的head数是8个
+
+![img](https://upload-images.jianshu.io/upload_images/14911967-b31aa04d8628b8da.png?imageMogr2/auto-orient/strip|imageView2/2/w/600/format/webp)
+- position Encoding
+  - 语言是有序的，在cnn中，卷积的形状包含了位置信息，在rnn中，位置的先后顺序其实是通过送入模型的先后来保证。transformer抛弃了cnn和rnn，那么数据的位置信息怎么提供呢？
+  - Transformer通过position Encoding来额外的提供位置信息，每一个位置对应一个向量，这个向量和word embedding求和后作为 encoder和decoder的输入。这样，对于同一个词语来说，在不同的位置，他们送入encoder和decoder的向量不同。
+
+
+### 总结
+
+- 结构
+![](https://upload-images.jianshu.io/upload_images/14911967-dec395c8d1d19f18.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+- 训练过程
+![](https://upload-images.jianshu.io/upload_images/14911967-ca45ad4ea6c91e77.gif?imageMogr2/auto-orient/strip|imageView2/2/w/640/format/webp)
+
+作者：[Transformer模型学习](https://www.jianshu.com/p/04b6dd396d62)
+
+### 图解Transformer
+
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/),中文翻译：[BERT大火却不懂Transformer？](https://zhuanlan.zhihu.com/p/54523019)
+- [jalammar github repo](https://github.com/jalammar/jalammar.github.io/blob/master/_posts/2018-06-27-illustrated-transformer.md)
+- ![](https://jalammar.github.io/images/t/transformer_resideual_layer_norm_3.png)
+- ![](https://camo.githubusercontent.com/88e8f36ce61dedfd2491885b8df2f68c4d1f92f5/687474703a2f2f696d6775722e636f6d2f316b72463252362e706e67)
+
+
+## Transformer PyTorch实现
+
+[Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/)
+- Google 2017年的论文 [Attention is all you need](https://arxiv.org/abs/1706.03762) 阐释了什么叫做大道至简！该论文提出了**Transformer**模型，完全基于**Attention mechanism**，抛弃了传统的**RNN**和**CNN**。
+- 我们根据论文的结构图，一步一步使用 [PyTorch](https://github.com/pytoch/pytorch) 实现这个**Transformer**模型。
+
+### 多头注意力实现
+
+【2023-5-10】点的self、cross注意力机制[实现](https://www.cnblogs.com/hellcat/p/15260145.html)
+
+```py
+def attention(query, key, value):
+    dim = query.shape[1]
+    scores = torch.einsum('bdhn,bdhm->bhnm', query, key) / dim**.5
+    prob = torch.nn.functional.softmax(scores, dim=-1)
+    return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
+
+
+class MultiHeadedAttention(nn.Module):
+    """ Multi-head attention to increase model expressivitiy """
+    def __init__(self, num_heads: int, d_model: int):
+        super().__init__()
+        assert d_model % num_heads == 0
+        self.dim = d_model // num_heads
+        self.num_heads = num_heads
+        self.merge = nn.Conv1d(d_model, d_model, kernel_size=1)
+        self.proj = nn.ModuleList([deepcopy(self.merge) for _ in range(3)])
+
+    def forward(self, query, key, value):
+        batch_dim = query.size(0)
+        query, key, value = [l(x).view(batch_dim, self.dim, self.num_heads, -1)
+                             for l, x in zip(self.proj, (query, key, value))]
+        x, prob = attention(query, key, value)
+        self.prob.append(prob)
+        return self.merge(x.contiguous().view(batch_dim, self.dim*self.num_heads, -1))
+```
+
+
+## Transformer架构
+
+- 首先看一下transformer的结构图：  
+![transformer_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/transformer.jpg)  
+
+解释一下这个结构图。首先，**Transformer**模型也是使用经典的**encoer-decoder**架构，由encoder和decoder两部分组成。
+- 上图的左半边用`Nx`框出来的，就是我们的encoder的一层。encoder一共有6层这样的结构。
+- 上图的右半边用`Nx`框出来的，就是我们的decoder的一层。decoder一共有6层这样的结构。
+- 输入序列经过**word embedding**和**positional encoding**相加后，输入到encoder。
+- 输出序列经过**word embedding**和**positional encoding**相加后，输入到decoder。
+- 最后，decoder输出的结果，经过一个线性层，然后计算softmax。
+
+**word embedding**和**positional encoding**我后面会解释。我们首先详细地分析一下encoder和decoder的每一层是怎么样的。
+
+## Encoder
+
+Encoder 由6层相同的层组成，每一层分别由两部分组成：
+- * 第一部分是一个**multi-head self-attention mechanism**
+- * 第二部分是一个**position-wise feed-forward network**，是一个全连接层
+两个部分，都有一个　**残差连接(residual connection)**，然后接着一个**Layer Normalization**。
+- ![ENCODER](https://jalammar.github.io/images/xlnet/transformer-encoder-block-2.png)
+- An encoder block from the original transformer paper can take inputs up until a certain max sequence length (e.g. 512 tokens). It's okay if an input sequence is shorter than this limit, we can just pad the rest of the sequence.
+
+新手可能会问：
+- * multi-head self-attention 是什么呢？
+- * 参差结构是什么呢？
+- * Layer Normalization又是什么？
+
+## Decoder
+
+和 encoder 类似，decoder由6个相同的层组成，每层包括3个部分：
+* 第一个部分是**multi-head self-attention mechanism**
+* 第二部分是**multi-head context-attention mechanism**
+* 第三部分是一个**position-wise feed-forward network**
+- ![DECODER](https://jalammar.github.io/images/xlnet/transformer-decoder-block-2.png)
+
+三个部分都有一个**残差连接**，后接一个**Layer Normalization**。
+
+相同
+- 都有 自注意力层（self-attention）
+- 都有 前向全连接层（feed forward neural network）
+
+不同于 encoder：
+- `自注意力层`将待预测的token屏蔽掉（mask），所以是 masked self-attention。掩码方法不同于BERT的置为 \[MASK\]，而是继承到自注意力计算中。
+  - ![img](https://jalammar.github.io/images/gpt2/self-attention-and-masked-self-attention.png)
+- 新增 `编码器-解码器自注意力层`（encoder-decoder self-attention）
+
+但是，decoder出现了一个新的东西**multi-head context-attention mechanism**。这个东西其实也不复杂，理解了**multi-head self-attention** 可以理解**multi-head context-attention**。
+
+GPT-2 用的 Decoder 结构
+- ![decoder](https://jalammar.github.io/images/xlnet/transformer-decoder-intro.png)
+- 去掉 transformer decoder结构里的 `编码器-解码器自注意力层`
+
+## Attention机制
+
+语言的含义极度依赖上下文，比如，机器人第二法则：
+- 机器人第二法则机器人必须遵守人类给**它**的**命令**，除非该命令违背了**第一法则**。
+
+这句话中高亮表示了三个地方，指代其它单词。除非知道这些词指代的上下文联系起来，否则根本不可能理解或处理这些词语的意思。当模型处理这句话的时候，它必须知道：
+- 「它」指代机器人
+- 「命令」指代前半句话中人类给机器人下的命令，即「人类给它的命令」
+- 「第一法则」指机器人第一法则的完整内容
+
+自注意力机制的工作
+- 处理每个单词（将其传入神经网络）之前，融入了模型解释某个单词的上下文的相关单词的理解。
+- 给序列中每一个单词都赋予一个**相关度得分**，之后对向量表征求和。
+
+
+**Attention**是指对于某个时刻的输出`y`，它在输入`x`上各个部分的注意力。这个注意力实际上可以理解为**权重**。
+
+Attention 机制也可以分成很多种。[Attention? Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html) 一文有一张比较全面的表格：  
+- ![attention_mechanism](http://blog.stupidme.me/wp-content/uploads/2018/09/attention_mechanism_table.png)  
+- *Figure 2. a summary table of several popular attention mechanisms.*  
+
+上面第一种**additive attention**你可能听过。以前我们的seq2seq模型里面，使用attention机制，这种**加性注意力(additive attention)**用的很多。Google的项目 [tensorflow/nmt](https://github.com/tensorflow/nmt) 里面这两种attention机制都有实现。
+
+为什么这种attention叫做**additive attention**呢？
+- 对于输入序列隐状态$h_i$和输出序列的隐状态$s_t$，它的处理方式很简单，直接**合并**，变成$[s_t;h_i]$
+
+但是 transformer模型使用的不是这种attention机制，使用的是另一种，叫做**乘性注意力(multiplicative attention)**。
+
+那么这种**乘性注意力机制**是怎么样的呢？从上表中的公式也可以看出来：**两个隐状态进行点积**！
+
+### Self-attention是什么？
+
+到这里就可以解释什么是**self-attention**了。
+
+attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
+
+**self-attention**实际是：**输出序列**就是**输入序列**！因此，计算自己的attention得分，就叫做**self-attention**！
+
+自注意力机制沿着序列中每一个单词的路径进行处理，主要由 3 个向量组成：
+- 查询向量（Query 向量）：当前单词的查询向量被用来和其它单词的键向量相乘，从而得到其它词相对于当前词的注意力得分。我们只关心目前正在处理的单词的查询向量。
+- `键向量` （Key 向量）：键向量就像是序列中每个单词的**标签**，搜索相关单词时用来匹配的对象。
+- `值向量` （Value 向量）：值向量是单词真正的**表征**，当算出注意力得分后，使用值向量进行加权求和得到能代表当前位置上下文的向量。
+- ![](https://pic4.zhimg.com/80/v2-773eec2cc3564bef9f99d97513b2af27_1440w.webp)
+
+比喻: 档案柜中找文件。
+- 查询向量就像一张**便利贴**，上面写着正在研究的课题。
+- 键向量像是档案柜中文件夹上贴的**标签**。当你找到和便利贴上所写相匹配的文件夹时，拿出它，文件夹里的东西便是值向量。只不过最后找的并不是单一的值向量，而是很多文件夹值向量的混合。
+
+将单词查询向量分别乘以每个文件夹的**键向量**，得到各个文件夹对应的**注意力得分**
+- 乘指的是**向量点乘**，乘积会通过 softmax 函数处理。
+
+将值向量**加权混合**得到一个向量
+- 将其 50% 的「注意力」放在了单词「robot」上，30% 的注意力放在了「a」上，还有 19% 的注意力放在「it」上
+
+嵌入矩阵的每一行都对应模型的词汇表中一个单词的嵌入向量。乘法操作得到词汇表中每个单词对应的**注意力得分**。
+- ![](https://pic4.zhimg.com/80/v2-0871db72d018b09d71d90b31c2d1362f_1440w.webp)
+
+### Context-attention是什么？
+
+知道了**self-attention**，那你肯定猜到了**context-attention**是什么了：**它是encoder和decoder之间的attention**！所以，你也可以称之为**encoder-decoder attention**!
+
+**context-attention**一词并不是本人原创，有些文章或者代码会这样描述，我觉得挺形象的，所以在此沿用这个称呼。其他文章可能会有其他名称，但是不要紧，我们抓住了重点即可，那就是**两个不同序列之间的attention**，与**self-attention**相区别。
+
+不管是**self-attention**还是**context-attention**，它们计算attention分数的时候，可以选择很多方式，比如上面表中提到的：
+* additive attention
+* local-base
+* general
+* dot-product
+* scaled dot-product
+
+那么Transformer模型采用的是哪种呢？答案是：**scaled dot-product attention**。
+
+### Scaled dot-product attention是什么？
+
+论文[Attention is all you need](https://arxiv.org/abs/1706.03762)里面对于attention机制的描述是这样的：
+> An attention function can be described as a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility of the query with the corresponding key.
+
+这句话描述得很清楚了。翻译过来就是：**通过确定Q和K之间的相似程度来选择V**！
+
+用公式来描述更加清晰：
+
+$$ \text{Attention}(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V $$
+
+**scaled dot-product attention**和**dot-product attention**唯一的区别就是，**scaled dot-product attention**有一个缩放因子 $ \frac{1}{\sqrt d_k} $。
+
+上面公式中的$d_k$表示的是K的维度，在论文里面，默认是`64`。
+
+那么为什么需要加上这个缩放因子呢？论文里给出了解释：对于$d_k$很大的时候，点积得到的结果维度很大，使得结果处于softmax函数梯度很小的区域。
+
+梯度很小的情况，这对反向传播不利。为了克服这个负面影响，除以一个缩放因子，可以一定程度上减缓这种情况。
+
+为什么是$\frac{1}{\sqrt d_k}$呢？论文没有进一步说明。个人觉得你可以使用其他缩放因子，看看模型效果有没有提升。
+
+论文也提供了一张很清晰的结构图，供大家参考：  
+- ![scaled_dot_product_attention_arch](http://blog.stupidme.me/wp-content/uploads/2018/09/scaled_dot_product_attention_arch.png)  
+*Figure 3. Scaled dot-product attention architecture.*  
+
+首先说明一下我们的K、Q、V是什么：
+* 在encoder的self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
+* 在decoder的self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
+* 在encoder-decoder attention中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
+* Q、K、V三者的维度一样，即 $d_q=d_k=d_v$。
+
+上面scaled dot-product attention和decoder的self-attention都出现了**masking**这样一个东西。那么这个mask到底是什么呢？这两处的mask操作是一样的吗？这个问题在后面会有详细解释。
+
+### Scaled dot-product attention的实现
+
+先把scaled dot-product attention实现了吧。代码如下：
+
+```python
+import torch
+import torch.nn as nn
+
+class ScaledDotProductAttention(nn.Module):
+    """Scaled dot-product attention mechanism."""
+
+    def __init__(self, attention_dropout=0.0):
+        super(ScaledDotProductAttention, self).__init__()
+        self.dropout = nn.Dropout(attention_dropout)
+        self.softmax = nn.Softmax(dim=2)
+
+    def forward(self, q, k, v, scale=None, attn_mask=None):
+        """前向传播.
+
+        Args:
+        	q: Queries张量，形状为[B, L_q, D_q]
+        	k: Keys张量，形状为[B, L_k, D_k]
+        	v: Values张量，形状为[B, L_v, D_v]，一般来说就是k
+        	scale: 缩放因子，一个浮点标量
+        	attn_mask: Masking张量，形状为[B, L_q, L_k]
+
+        Returns:
+        	上下文张量和attetention张量
+        """
+        attention = torch.bmm(q, k.transpose(1, 2))
+        if scale:
+        	attention = attention * scale
+        if attn_mask:
+        	# 给需要mask的地方设置一个负无穷
+        	attention = attention.masked_fill_(attn_mask, -np.inf)
+		# 计算softmax
+        attention = self.softmax(attention)
+		# 添加dropout
+        attention = self.dropout(attention)
+		# 和V做点积
+        context = torch.bmm(attention, v)
+        return context, attention
+```
+
+### Multi-head attention又是什么呢？
+
+理解了Scaled dot-product attention，Multi-head attention也很简单了。论文提到，将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
+
+下面是multi-head attention的结构图：  
+- ![multi-head attention_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/multi_head_attention_arch.png) 
+
+*Figure 4: Multi-head attention architecture.*  
+
+注意：上面所说的**分成 $h$ 份**是在 $d_k、d_q、d_v$ 维度上面进行切分的。因此，进入到scaled dot-product attention的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
+
+Multi-head attention允许模型加入不同位置的表示子空间的信息。
+
+Multi-head attention的公式如下：
+- $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_ 1,\dots,\text{head}_ h)W^O$$
+
+其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
+
+论文里面，$d_{model}=512$，$h=8$。所以在scaled dot-product attention里面的 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+
+### Multi-head attention的实现
+
+multi-head attention 实现代码如下：
+
+```python
+import torch
+import torch.nn as nn
+
+class MultiHeadAttention(nn.Module):
+
+    def __init__(self, model_dim=512, num_heads=8, dropout=0.0):
+        super(MultiHeadAttention, self).__init__()
+
+        self.dim_per_head = model_dim // num_heads
+        self.num_heads = num_heads
+        self.linear_k = nn.Linear(model_dim, self.dim_per_head * num_heads)
+        self.linear_v = nn.Linear(model_dim, self.dim_per_head * num_heads)
+        self.linear_q = nn.Linear(model_dim, self.dim_per_head * num_heads)
+
+        self.dot_product_attention = ScaledDotProductAttention(dropout)
+        self.linear_final = nn.Linear(model_dim, model_dim)
+        self.dropout = nn.Dropout(dropout)
+		# multi-head attention之后需要做layer norm
+        self.layer_norm = nn.LayerNorm(model_dim)
+
+    def forward(self, key, value, query, attn_mask=None):
+		# 残差连接
+        residual = query
+
+        dim_per_head = self.dim_per_head
+        num_heads = self.num_heads
+        batch_size = key.size(0)
+
+        # linear projection
+        key = self.linear_k(key)
+        value = self.linear_v(value)
+        query = self.linear_q(query)
+
+        # split by heads
+        key = key.view(batch_size * num_heads, -1, dim_per_head)
+        value = value.view(batch_size * num_heads, -1, dim_per_head)
+        query = query.view(batch_size * num_heads, -1, dim_per_head)
+
+        if attn_mask:
+            attn_mask = attn_mask.repeat(num_heads, 1, 1)
+        # scaled dot product attention
+        scale = (key.size(-1) // num_heads) ** -0.5
+        context, attention = self.dot_product_attention(
+          query, key, value, scale, attn_mask)
+
+        # concat heads
+        context = context.view(batch_size, -1, dim_per_head * num_heads)
+
+        # final linear projection
+        output = self.linear_final(context)
+
+        # dropout
+        output = self.dropout(output)
+
+        # add residual and norm layer
+        output = self.layer_norm(residual + output)
+
+        return output, attention
+
+```
+
+终于出现了**Residual connection**和**Layer normalization**。现在来解释它们。
+
+Attention 细节
  
 ### 2.1. 点积attention
  
-介绍一下attention的具体计算方式。attention可以有很多种计算方式: 
-- 加性attention
-- 点积attention
-- 还有带参数的计算方式
+介绍一下attention的具体计算方式。attention 很多种计算方式: 
+- 加性 attention
+- 点积 attention
+- 带参数的计算方式
 
 着重介绍一下点积attention的公式:
 - ![[公式]](https://www.zhihu.com/equation?tex=%5Ctext+%7B+Attention+%7D%28Q%2C+K%2C+V%29%3D%5Coperatorname%7Bsoftmax%7D%5Cleft%28%5Cfrac%7BQ+K%5E%7BT%7D%7D%7B%5Csqrt%7Bd_%7Bk%7D%7D%7D%5Cright%29+V)
@@ -215,353 +599,6 @@ p.s. 后续有一个工作在attention中使用了“相对位置表示” ([Sel
 为了保证数据特征分布的稳定性（如左图），我们加入Layer Normalization，这样可以加速模型的优化速度。
 - 以上内容摘自：[Transformer模型深度解读](https://zhuanlan.zhihu.com/p/104393915)
 
-## Transformer模型
-
-- ![img](https://picb.zhimg.com/80/v2-6c292e2a4ed43894fc954ee625372c67_720w.jpg)
-
-上图下面部分，训练用的输入和输出数据的 embedding，都会先加上一个position encoding来补充一下位置信息。
-- `Encoder`
-  - 途中左侧部分是encoder块，encoder中6层相同结构堆叠而成，在每层中又可以分为2个子层，底下一层是multihead self-attention层，上面是一个FC feed-forward层，每一个子层都有residual connection，，然后在进行Layer Normalization. 为了引入redisual connenction简化计算，每个层的输入维数和embedding层保持一致。
-- `Decoder`
-  - 同样是一个6层的堆叠，每层有三个子层，其中底下两层都是multihead self-attention层，最底下一层是有mask的，只有当前位置之前的输入有效，中间层是encode和decode的连接层，输出的self-attention层和输入的encoder输出同时作为MSA的输入，实现encoder和decoder的连接，最上层和encoder的最上层是一样的，不在单说，每个子层都有有residual connection，和Layer Normalization
-
-【2021-8-25】Transformer结构中，左边叫做**编码端**(Encoder)，右边叫做**解码端**(Decoder)。不要小看这两个部分，其中左边的编码端最后演化成了最后鼎鼎大名的**Bert**，右边的解码端在最近变成了无人不知的**GPT**模型。
-
-【2023-2-15】transformer 出现后，迅速取代了 RNN系列 变种，跻身主流模型架构基础。
-
-transformer 结构分成：
-- （1）自回归系列：偏好 文本生成，示例：GPT-3；
-- （2）双向自编码系列：偏好 自然语言理解，示例：BERT，双向transformer+Mask自编码系列
-- （3）encoder-decoder系列：偏好 条件文本生成，示例：T5，双向/单向attention
-
-### 亮点
-
-- `Self Attention`
-  - 传统的编解码结构中，将输入输入编码为一个定长语义编码，然后通过这个编码在生成对应的输出序列。它存在的一个问题在于：输入序列不论长短都会被编码成一个固定长度的向量表示，而解码则受限于该固定长度的向量表示
-  - attention机制: encoder的输出不是一个语义向量，是一个语义向量的序列
-   ![](https://upload-images.jianshu.io/upload_images/14911967-cadfa37d31342857.png?imageMogr2/auto-orient/strip|imageView2/2/w/568/format/webp)
-  - Transformer的Attenion函数称为scaled dot-Product Attention
-   ![](https://upload-images.jianshu.io/upload_images/14911967-9fb3d576399e53e5.png?imageMogr2/auto-orient/strip|imageView2/2/w/455/format/webp)
-- `MultiHead Attention`
-  - self attention计算时会分为两个阶段，第一个阶段计算出softmax部分,第二部分是在乘以 Value部分，这样还是串行化的，并行化不够。
-  - MultiHeadAttention，对query，key，value各自进行一次不同的线性变换，然后在执行一次softmax操作，这样可以提升并行度，论文中的head数是8个
-
-![img](https://upload-images.jianshu.io/upload_images/14911967-b31aa04d8628b8da.png?imageMogr2/auto-orient/strip|imageView2/2/w/600/format/webp)
-- position Encoding
-  - 语言是有序的，在cnn中，卷积的形状包含了位置信息，在rnn中，位置的先后顺序其实是通过送入模型的先后来保证。transformer抛弃了cnn和rnn，那么数据的位置信息怎么提供呢？
-  - Transformer通过position Encoding来额外的提供位置信息，每一个位置对应一个向量，这个向量和word embedding求和后作为 encoder和decoder的输入。这样，对于同一个词语来说，在不同的位置，他们送入encoder和decoder的向量不同。
-
-
-### 总结
-
-- 结构
-![](https://upload-images.jianshu.io/upload_images/14911967-dec395c8d1d19f18.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
-- 训练过程
-![](https://upload-images.jianshu.io/upload_images/14911967-ca45ad4ea6c91e77.gif?imageMogr2/auto-orient/strip|imageView2/2/w/640/format/webp)
-
-作者：[Transformer模型学习](https://www.jianshu.com/p/04b6dd396d62)
-
-## 图解Transformer
-- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/),中文翻译：[BERT大火却不懂Transformer？](https://zhuanlan.zhihu.com/p/54523019)
-- [jalammar github repo](https://github.com/jalammar/jalammar.github.io/blob/master/_posts/2018-06-27-illustrated-transformer.md)
-- ![](https://jalammar.github.io/images/t/transformer_resideual_layer_norm_3.png)
-- ![](https://camo.githubusercontent.com/88e8f36ce61dedfd2491885b8df2f68c4d1f92f5/687474703a2f2f696d6775722e636f6d2f316b72463252362e706e67)
-
-
-## Transformer PyTorch实现
-
-[Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/)
-- Google 2017年的论文 [Attention is all you need](https://arxiv.org/abs/1706.03762) 阐释了什么叫做大道至简！该论文提出了**Transformer**模型，完全基于**Attention mechanism**，抛弃了传统的**RNN**和**CNN**。
-- 我们根据论文的结构图，一步一步使用 [PyTorch](https://github.com/pytoch/pytorch) 实现这个**Transformer**模型。
-
-### 多头注意力实现
-
-【2023-5-10】点的self、cross注意力机制[实现](https://www.cnblogs.com/hellcat/p/15260145.html)
-
-```py
-def attention(query, key, value):
-    dim = query.shape[1]
-    scores = torch.einsum('bdhn,bdhm->bhnm', query, key) / dim**.5
-    prob = torch.nn.functional.softmax(scores, dim=-1)
-    return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
-
-
-class MultiHeadedAttention(nn.Module):
-    """ Multi-head attention to increase model expressivitiy """
-    def __init__(self, num_heads: int, d_model: int):
-        super().__init__()
-        assert d_model % num_heads == 0
-        self.dim = d_model // num_heads
-        self.num_heads = num_heads
-        self.merge = nn.Conv1d(d_model, d_model, kernel_size=1)
-        self.proj = nn.ModuleList([deepcopy(self.merge) for _ in range(3)])
-
-    def forward(self, query, key, value):
-        batch_dim = query.size(0)
-        query, key, value = [l(x).view(batch_dim, self.dim, self.num_heads, -1)
-                             for l, x in zip(self.proj, (query, key, value))]
-        x, prob = attention(query, key, value)
-        self.prob.append(prob)
-        return self.merge(x.contiguous().view(batch_dim, self.dim*self.num_heads, -1))
-```
-
-
-## Transformer架构
-
-- 首先看一下transformer的结构图：  
-![transformer_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/transformer.jpg)  
-
-解释一下这个结构图。首先，**Transformer**模型也是使用经典的**encoer-decoder**架构，由encoder和decoder两部分组成。
-- 上图的左半边用`Nx`框出来的，就是我们的encoder的一层。encoder一共有6层这样的结构。
-- 上图的右半边用`Nx`框出来的，就是我们的decoder的一层。decoder一共有6层这样的结构。
-- 输入序列经过**word embedding**和**positional encoding**相加后，输入到encoder。
-- 输出序列经过**word embedding**和**positional encoding**相加后，输入到decoder。
-- 最后，decoder输出的结果，经过一个线性层，然后计算softmax。
-
-**word embedding**和**positional encoding**我后面会解释。我们首先详细地分析一下encoder和decoder的每一层是怎么样的。
-
-## Encoder
-
-Encoder 由6层相同的层组成，每一层分别由两部分组成：
-- * 第一部分是一个**multi-head self-attention mechanism**
-- * 第二部分是一个**position-wise feed-forward network**，是一个全连接层
-两个部分，都有一个　**残差连接(residual connection)**，然后接着一个**Layer Normalization**。
-- ![ENCODER](https://jalammar.github.io/images/xlnet/transformer-encoder-block-2.png)
-- An encoder block from the original transformer paper can take inputs up until a certain max sequence length (e.g. 512 tokens). It's okay if an input sequence is shorter than this limit, we can just pad the rest of the sequence.
-
-新手可能会问：
-- * multi-head self-attention 是什么呢？
-- * 参差结构是什么呢？
-- * Layer Normalization又是什么？
-
-## Decoder
-
-和 encoder 类似，decoder由6个相同的层组成，每层包括3个部分：
-* 第一个部分是**multi-head self-attention mechanism**
-* 第二部分是**multi-head context-attention mechanism**
-* 第三部分是一个**position-wise feed-forward network**
-- ![DECODER](https://jalammar.github.io/images/xlnet/transformer-decoder-block-2.png)
-
-三个部分都有一个**残差连接**，后接一个**Layer Normalization**。
-
-相同
-- 都有 自注意力层（self-attention）
-- 都有 前向全连接层（feed forward neural network）
-
-不同于 encoder：
-- `自注意力层`将待预测的token屏蔽掉（mask），所以是 masked self-attention。掩码方法不同于BERT的置为 \[MASK\]，而是继承到自注意力计算中。
-  - ![img](https://jalammar.github.io/images/gpt2/self-attention-and-masked-self-attention.png)
-- 新增 `编码器-解码器自注意力层`（encoder-decoder self-attention）
-
-但是，decoder出现了一个新的东西**multi-head context-attention mechanism**。这个东西其实也不复杂，理解了**multi-head self-attention** 可以理解**multi-head context-attention**。
-
-GPT-2 用的 Decoder 结构
-- ![decoder](https://jalammar.github.io/images/xlnet/transformer-decoder-intro.png)
-- 去掉 transformer decoder结构里的 `编码器-解码器自注意力层`
-
-## Attention机制
-
-在讲清楚各种attention之前，我们得先把attention机制说清楚。
-
-通俗来说，**attention**是指，对于某个时刻的输出`y`，它在输入`x`上各个部分的注意力。这个注意力实际上可以理解为**权重**。
-
-attention机制也可以分成很多种。[Attention? Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html) 一文有一张比较全面的表格：  
-- ![attention_mechanism](http://blog.stupidme.me/wp-content/uploads/2018/09/attention_mechanism_table.png)  
-- *Figure 2. a summary table of several popular attention mechanisms.*  
-
-上面第一种**additive attention**你可能听过。以前我们的seq2seq模型里面，使用attention机制，这种**加性注意力(additive attention)**用的很多。Google的项目 [tensorflow/nmt](https://github.com/tensorflow/nmt) 里面这两种attention机制都有实现。
-
-为什么这种attention叫做**additive attention**呢？很简单，对于输入序列隐状态$h_i$和输出序列的隐状态$s_t$，它的处理方式很简单，直接**合并**，变成$[s_t;h_i]$
-
-但是我们的transformer模型使用的不是这种attention机制，使用的是另一种，叫做**乘性注意力(multiplicative attention)**。
-
-那么这种**乘性注意力机制**是怎么样的呢？从上表中的公式也可以看出来：**两个隐状态进行点积**！
-
-### Self-attention是什么？
-
-到这里就可以解释什么是**self-attention**了。
-
-attention机制时，都会说到两个隐状态，分别是$h_i$和$s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
-
-所谓**self-attention**实际上就是，**输出序列**就是**输入序列**！因此，计算自己的attention得分，就叫做**self-attention**！
-
-### Context-attention是什么？
-知道了**self-attention**，那你肯定猜到了**context-attention**是什么了：**它是encoder和decoder之间的attention**！所以，你也可以称之为**encoder-decoder attention**!
-
-**context-attention**一词并不是本人原创，有些文章或者代码会这样描述，我觉得挺形象的，所以在此沿用这个称呼。其他文章可能会有其他名称，但是不要紧，我们抓住了重点即可，那就是**两个不同序列之间的attention**，与**self-attention**相区别。
-
-不管是**self-attention**还是**context-attention**，它们计算attention分数的时候，可以选择很多方式，比如上面表中提到的：
-* additive attention
-* local-base
-* general
-* dot-product
-* scaled dot-product
-
-那么Transformer模型采用的是哪种呢？答案是：**scaled dot-product attention**。
-
-### Scaled dot-product attention是什么？
-
-论文[Attention is all you need](https://arxiv.org/abs/1706.03762)里面对于attention机制的描述是这样的：
-> An attention function can be described as a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility of the query with the corresponding key.
-
-这句话描述得很清楚了。翻译过来就是：**通过确定Q和K之间的相似程度来选择V**！
-
-用公式来描述更加清晰：
-
-$$ \text{Attention}(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V $$
-
-**scaled dot-product attention**和**dot-product attention**唯一的区别就是，**scaled dot-product attention**有一个缩放因子 $ \frac{1}{\sqrt d_k} $。
-
-上面公式中的$d_k$表示的是K的维度，在论文里面，默认是`64`。
-
-那么为什么需要加上这个缩放因子呢？论文里给出了解释：对于$d_k$很大的时候，点积得到的结果维度很大，使得结果处于softmax函数梯度很小的区域。
-
-我们知道，梯度很小的情况，这对反向传播不利。为了克服这个负面影响，除以一个缩放因子，可以一定程度上减缓这种情况。
-
-为什么是$\frac{1}{\sqrt d_k}$呢？论文没有进一步说明。个人觉得你可以使用其他缩放因子，看看模型效果有没有提升。
-
-论文也提供了一张很清晰的结构图，供大家参考：  
-- ![scaled_dot_product_attention_arch](http://blog.stupidme.me/wp-content/uploads/2018/09/scaled_dot_product_attention_arch.png)  
-*Figure 3. Scaled dot-product attention architecture.*  
-
-首先说明一下我们的K、Q、V是什么：
-* 在encoder的self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
-* 在decoder的self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
-* 在encoder-decoder attention中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
-* Q、K、V三者的维度一样，即 $d_q=d_k=d_v$。
-
-上面scaled dot-product attention和decoder的self-attention都出现了**masking**这样一个东西。那么这个mask到底是什么呢？这两处的mask操作是一样的吗？这个问题在后面会有详细解释。
-
-### Scaled dot-product attention的实现
-
-咱们先把scaled dot-product attention实现了吧。代码如下：
-
-```python
-import torch
-import torch.nn as nn
-
-class ScaledDotProductAttention(nn.Module):
-    """Scaled dot-product attention mechanism."""
-
-    def __init__(self, attention_dropout=0.0):
-        super(ScaledDotProductAttention, self).__init__()
-        self.dropout = nn.Dropout(attention_dropout)
-        self.softmax = nn.Softmax(dim=2)
-
-    def forward(self, q, k, v, scale=None, attn_mask=None):
-        """前向传播.
-
-        Args:
-        	q: Queries张量，形状为[B, L_q, D_q]
-        	k: Keys张量，形状为[B, L_k, D_k]
-        	v: Values张量，形状为[B, L_v, D_v]，一般来说就是k
-        	scale: 缩放因子，一个浮点标量
-        	attn_mask: Masking张量，形状为[B, L_q, L_k]
-
-        Returns:
-        	上下文张量和attetention张量
-        """
-        attention = torch.bmm(q, k.transpose(1, 2))
-        if scale:
-        	attention = attention * scale
-        if attn_mask:
-        	# 给需要mask的地方设置一个负无穷
-        	attention = attention.masked_fill_(attn_mask, -np.inf)
-		# 计算softmax
-        attention = self.softmax(attention)
-		# 添加dropout
-        attention = self.dropout(attention)
-		# 和V做点积
-        context = torch.bmm(attention, v)
-        return context, attention
-```
-
-### Multi-head attention又是什么呢？
-
-理解了Scaled dot-product attention，Multi-head attention也很简单了。论文提到，他们发现将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
-
-下面是multi-head attention的结构图：  
-- ![multi-head attention_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/multi_head_attention_arch.png)  
-*Figure 4: Multi-head attention architecture.*  
-
-值得注意的是，上面所说的**分成 $h$ 份**是在 $d_k、d_q、d_v$ 维度上面进行切分的。因此，进入到scaled dot-product attention的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
-
-Multi-head attention允许模型加入不同位置的表示子空间的信息。
-
-Multi-head attention的公式如下：
-- $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_ 1,\dots,\text{head}_ h)W^O$$
-
-其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
-
-论文里面，$d_{model}=512$，$h=8$。所以在scaled dot-product attention里面的 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
-
-### Multi-head attention的实现
-
-相信大家已经理清楚了multi-head attention，那么我们来实现它吧。代码如下：
-
-```python
-import torch
-import torch.nn as nn
-
-class MultiHeadAttention(nn.Module):
-
-    def __init__(self, model_dim=512, num_heads=8, dropout=0.0):
-        super(MultiHeadAttention, self).__init__()
-
-        self.dim_per_head = model_dim // num_heads
-        self.num_heads = num_heads
-        self.linear_k = nn.Linear(model_dim, self.dim_per_head * num_heads)
-        self.linear_v = nn.Linear(model_dim, self.dim_per_head * num_heads)
-        self.linear_q = nn.Linear(model_dim, self.dim_per_head * num_heads)
-
-        self.dot_product_attention = ScaledDotProductAttention(dropout)
-        self.linear_final = nn.Linear(model_dim, model_dim)
-        self.dropout = nn.Dropout(dropout)
-		# multi-head attention之后需要做layer norm
-        self.layer_norm = nn.LayerNorm(model_dim)
-
-    def forward(self, key, value, query, attn_mask=None):
-		# 残差连接
-        residual = query
-
-        dim_per_head = self.dim_per_head
-        num_heads = self.num_heads
-        batch_size = key.size(0)
-
-        # linear projection
-        key = self.linear_k(key)
-        value = self.linear_v(value)
-        query = self.linear_q(query)
-
-        # split by heads
-        key = key.view(batch_size * num_heads, -1, dim_per_head)
-        value = value.view(batch_size * num_heads, -1, dim_per_head)
-        query = query.view(batch_size * num_heads, -1, dim_per_head)
-
-        if attn_mask:
-            attn_mask = attn_mask.repeat(num_heads, 1, 1)
-        # scaled dot product attention
-        scale = (key.size(-1) // num_heads) ** -0.5
-        context, attention = self.dot_product_attention(
-          query, key, value, scale, attn_mask)
-
-        # concat heads
-        context = context.view(batch_size, -1, dim_per_head * num_heads)
-
-        # final linear projection
-        output = self.linear_final(context)
-
-        # dropout
-        output = self.dropout(output)
-
-        # add residual and norm layer
-        output = self.layer_norm(residual + output)
-
-        return output, attention
-
-```
-
-上面的代码终于出现了**Residual connection**和**Layer normalization**。我们现在来解释它们。
 
 ## Residual connection是什么？
 
@@ -898,7 +935,7 @@ class PositionalWiseFeedForward(nn.Module):
         return output
 ```
 
-## Transformer的实现
+## Transformer 实现
 
 所有的细节都已经解释完了。现在来完成我们Transformer模型的代码。
 
@@ -1320,20 +1357,95 @@ class Transformer(nn.Module):
 ```
 
 
-# 改进
+# Transformer 改进
 
-- 【2020-6-7】[模型压缩95%，MIT韩松等人提出新型Lite Transformer](https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650789244&idx=3&sn=498864894b6e1d584a45017911ce233c&chksm=871a1102b06d98144d851133ead6bd4c69f90843d6ed5ef4ef46f56bfc3256d46f43f463b419&mpshare=1&scene=23&srcid&sharer_sharetime=1591760786074&sharer_shareid=b8d409494a5439418f4a89712efcd92a%23rd)
-	- MIT 最近的研究《[Lite Transformer with Long-Short Range Attention](https://arxiv.org/abs/2004.11886v1)》中，MIT 与上海交大的研究人员提出了一种高效的移动端 NLP 架构 Lite Transformer，向在边缘设备上部署移动级 NLP 应用迈进了一大步。该论文已被人工智能顶会 ICLR 2020 收录。[代码](https://github.com/mit-han-lab/lite-transformer)
-	- 核心是长短距离注意力（Long-Short Range Attention，LSRA），其中一组注意力头（通过卷积）负责局部上下文建模，而另一组则（依靠注意力）执行长距离关系建模。
-	- 对于移动 NLP 设置，Lite Transformer 的 BLEU 值比基于 AutoML 的 [Evolved Transformer](http://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650756694&idx=4&sn=9de8bdbe79a5f4c45833f87418642111&chksm=871a9228b06d1b3e886f549543f8ba742ee120e4ca8f1780996fb241b6b6d05ca97882d5290b&scene=21#wechat_redirect) 高 0.5，而且它不需要使用成本高昂的架构搜索。
-	- 从 Lite Transformer 与 Evolved Transformer、原版 transformer 的比较结果中可以看出，Lite Transformer 的性能更佳，搜索成本相比 Evolved Transformer 大大减少
+## Transformer-Decoder
+
+【2021-4-19】[https://zhuanlan.zhihu.com/p/179959751](https://zhuanlan.zhihu.com/p/79714797)
+
+Transformer 原始论文发表之后，「Generating Wikipedia by Summarizing Long Sequences」提出用另一种 transformer 模块的**排列方式**来进行语言建模
+- 直接扔掉了所有的 transformer 编码器模块……「Transformer-Decoder」模型。
+
+早期的基于 transformer 的模型由 6 个 transformer 解码器模块堆叠而成：
+- ![](https://pic3.zhimg.com/80/v2-19720b1c70a294558dc9456477156b06_1440w.webp)
+
+解码器模块
+- 和 transformer 原始解码器模块相比，去掉了第二个自注意力层。
+
+一个相似的架构在**字符**级别的语言建模中也被验证有效，使用更深的自注意力层构建语言模型，一次预测一个字母/字符。
+
+所有解码器模块都一样。使用带掩模的自注意力层。
+- 该模型在某个片段中可以支持最长 **4000** 个单词的序列，相较于 transformer 原始论文中最长 **512** 单词的限制有了很大的提升。
+
+## GPT-2 
+
+OpenAI 的 GPT-2 模型就用了这种只包含`编码器`（decoder-only）模块
+
+GPT-2 可以处理最长 1024 个单词的序列。每个单词都会和前续路径一起「流过」所有的解码器模块。
+
+训练 GPT-2 模型，最简单的方法
+- 自己随机工作（生成**无条件**样本）。
+- 给它一点提示，说一些关于特定主题的话（即生成**交互式**条件样本）。
+
+在随机情况下，只简单地提供一个预先定义好的**起始单词**，然后自己生成文字。
+- 训练好的模型使用「\|endoftext\|」作为起始单词，不妨将其称为\<s\>
+
+- 模型的输入只有一个单词，所以只有这个单词的路径是活跃的。
+- 单词经过层层处理，最终得到一个向量。向量对于词汇表的每个单词计算一个概率
+  - 词汇表是模型能「说出」的所有单词，GPT-2 的词汇表中有 50000 个单词
+- 选择概率最高的单词「The」作为下一个单词。
+- 将输出的单词添加在输入序列的尾部构建新的输入序列，让模型进行下一步的预测
+- ![](https://pic3.zhimg.com/80/v2-dc958d69c301d00cf1b2ea17e8ae005a_1440w.webp)
+
+问题：重复
+- 陷入推荐同一个词的循环中，除非采用其他单词才能跳出
+
+GPT-2 有个「top-k」的参数
+- 模型会从概率前 k 大的单词中**随机抽样**选取下一个单词。
+- 之前情况下，top-k = 1
+
+GPT-2 从嵌入（Embedding）矩阵中找单词对应的嵌入向量，该矩阵也是模型训练结果的一部分。
+- ![](https://pic2.zhimg.com/80/v2-5e67529ff0a194c39a45aaa6acec70bd_1440w.webp)
+- 嵌入矩阵的每一行都对应模型词汇表中一个单词的嵌入向量。
+- embedding size
+  - small : 768个字符，117m
+  - medium : 1024，345m
+  - large : 1280，762m
+  - extra large : 1600， 1542m
+
+每一行都是一个词嵌入向量：一个能够表征某个单词，并捕获其数字列表。
+- 嵌入向量的**长度**和 GPT-2 模型的大小有关，最小的模型使用了长为 768 的嵌入向量来表征一个单词。
+
+在嵌入矩阵中查找起始单词\<s\>对应的嵌入向量。
+- 但在将其输入给模型之前，引入`位置编码`—— 一些向 transformer 模块指出序列中的**单词顺序**的信号。
+- 1024 个输入序列位置中的每一个都对应一个位置编码，编码矩阵也是训练模型的一部分。
+
+GPT-2 模型训练后包含两个权值矩阵：`嵌入矩阵`和`位置编码矩阵`。
+
+单词输入第一个 transformer 模块之前, 查到对应的嵌入向量，加上 1号位置对应的**位置向量**。
+
+堆栈之旅: 第一个 transformer 模块处理单词的步骤：
+- 通过自注意力层处理，传给神经网络层。第一个 transformer 模块处理完但此后，会将结果向量被传入堆栈中的下一个 transformer 模块，继续进行计算。每一个 transformer 模块的处理方式都是一样的，但每个模块都会维护自己的自注意力层和神经网络层中的权重。
+- ![](https://pic3.zhimg.com/80/v2-ec9e62183466343b547da05f34ad289e_1440w.webp)
+
+最上层的 transformer 模块在处理单词「it」的时候会关注「a robot」，所以「a」、「robot」、「it」这三个单词与其得分相乘加权求和后的特征向量会被送入之后的神经网络层。
+
+
+
+## Lite Transformer (边缘设备)
+
+【2020-6-7】[模型压缩95%，MIT韩松等人提出新型Lite Transformer](https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650789244&idx=3&sn=498864894b6e1d584a45017911ce233c&chksm=871a1102b06d98144d851133ead6bd4c69f90843d6ed5ef4ef46f56bfc3256d46f43f463b419&mpshare=1&scene=23&srcid&sharer_sharetime=1591760786074&sharer_shareid=b8d409494a5439418f4a89712efcd92a%23rd)
+- MIT 最近的研究《[Lite Transformer with Long-Short Range Attention](https://arxiv.org/abs/2004.11886v1)》中，MIT 与上海交大的研究人员提出了一种高效的移动端 NLP 架构 `Lite Transformer`，向在**边缘设备**上部署移动级 NLP 应用迈进了一大步。该论文已被人工智能顶会 ICLR 2020 收录。[代码](https://github.com/mit-han-lab/lite-transformer)
+- 核心是长短距离注意力（Long-Short Range Attention，LSRA），其中一组注意力头（通过卷积）负责局部上下文建模，而另一组则（依靠注意力）执行长距离关系建模。
+- 对于移动 NLP 设置，Lite Transformer 的 BLEU 值比基于 AutoML 的 [Evolved Transformer](http://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650756694&idx=4&sn=9de8bdbe79a5f4c45833f87418642111&chksm=871a9228b06d1b3e886f549543f8ba742ee120e4ca8f1780996fb241b6b6d05ca97882d5290b&scene=21#wechat_redirect) 高 0.5，而且它不需要使用成本高昂的架构搜索。
+- 从 Lite Transformer 与 Evolved Transformer、原版 transformer 的比较结果中可以看出，Lite Transformer 的性能更佳，搜索成本相比 Evolved Transformer 大大减少
 
 
 ## Transformer-XL 和 XLNet
 
 XLNet引入了自回归语言模型以及自编码语言模型
 
-### 作者：杨植麟
+### 杨植麟
 
 [循环智能（Recurrent）：用AI重塑沟通](https://www.cyzone.cn/article/557072.html)
 
@@ -1351,7 +1463,7 @@ XLNet引入了自回归语言模型以及自编码语言模型
  
 XLNet 是一个类似 BERT 的模型，而不是完全不同的模型。总之，**XLNet是一种通用的自回归预训练方法**。它是CMU和Google Brain团队在2019年6月份发布的模型，最终，XLNet 在 20 个任务上超过了 BERT 的表现，并在 18 个任务上取得了当前最佳效果（state-of-the-art），包括机器问答、自然语言推断、情感分析和文档排序。
 
-作者表示，BERT 这样基于去噪自编码器的预训练模型可以很好地建模双向语境信息，性能优于基于自回归语言模型的预训练方法。然而，由于需要 mask 一部分输入，BERT 忽略了被 mask 位置之间的依赖关系，因此出现预训练和微调效果的差异（pretrain-finetune discrepancy）。
+BERT 这样基于去噪自编码器的预训练模型可以很好地建模双向语境信息，性能优于基于自回归语言模型的预训练方法。然而，由于需要 mask 一部分输入，BERT 忽略了被 mask 位置之间的依赖关系，因此出现预训练和微调效果的差异（pretrain-finetune discrepancy）。
 
 基于这些优缺点，该研究提出了一种泛化的自回归预训练模型 XLNet。XLNet 可以：
 1.  通过最大化所有可能的因式分解顺序的对数似然，学习双向语境信息；
