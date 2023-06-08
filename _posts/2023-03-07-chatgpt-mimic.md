@@ -98,7 +98,6 @@ GPT大模型训练全流程，四个训练阶段：
 - 检索增强生成（retrieval agumented generation）和有效提示，约束提示（Constraint prompting）。
 - ToT思维树：思路与AlphaGo里的蒙特卡洛搜索非常相似。诺贝尔经济学奖得主丹尼尔卡尼曼在《思考快与慢》中提出，人的认知系统包含System1和System2两个子系统。System1主要靠直觉，而System2是逻辑分析系统。System1是一个快速自动生成的过程，而System2是经过深思熟虑的部分。
 
-
 ### 复现方案
 
 【2023-2-1】复现方案（参考:[chatGPT复刻方案](https://zhuanlan.zhihu.com/p/602485508)）
@@ -229,6 +228,8 @@ instructGPT 分为如下三大步：
 ### （1） 第一步 SFT（全参数微调）
 
 SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt文本
+
+大模型训练基座模型时，都采用「Next Token Prediction，`NTP`」 任务
 
 数据准备
 
