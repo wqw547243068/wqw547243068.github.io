@@ -35,44 +35,29 @@ ChatGPT复现上
 
 OpenAI InstructGPT论文里有个惊奇的发现，即：1.3B小模型+RLHF 居然可以超越175B指令精调后的效果。有没有可能ChatGPT就是个小模型，结果最近OpenAI公开接口价格后让这种猜想的可能性又增加了。
 
-由于InstructGPT效果太好，RL+LM这个新范式能衍生出哪些研究方向？
-- (1) <span style='color:blue'>花式魔改Reward</span>：
-  - 监督学习在实际落地时，主要优化方法是加特征、洗数据。对于强化学习也是如此，优化实际RL效果的重点在加特征、调整reward
-  - OpenAI在做摘要任务的论文中，就在奖励上增加了KL散度，希望：
-    - ① 鼓励模型生成不一样的结果，避免和以前的模型变成一个
-    - ② 保证不会生成特别不一样的结果，不然RM都没见过就不知道怎么打分了
-  - DeepMind的Sparrow为了让模型遵从特定规则（比如不能说脏话），在Preference的基础上增加了`Rule Reward Modeling`
-    - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZTVa1Cbo1PwTmg6MStc81mKwESCnx1uBxKkKl41yYtqhia87y3MFqPSg_%7C_640%3Fwx_fmt%3Dpng)
-    - Rule RM是一个分类器，输入Prompt+Response，预测模型违反预定规则的概率。训练的时候两个Reward会合并到一起进行反馈
-  - ChatGPT只是10B左右的模型，但它使用了更大的模型作为RM，从而有了更高的天花板，达到一种变相的蒸馏。
-- (2) <span style='color:blue'>AI Feedback</span>
-  - 既然有 `RLHF`(Reinforcement Learning from Human Feedback)，那就能想出`RLAIF`(Reinforcement Learning from AI Feedback)
-  - Anthropic提出的Constitutional AI 就做了这么一件事，核心和Sparrow一样, 希望模型遵从一些规则，但如果像Sparrow一样每增加一个规则就标一批数据训RM也太费人工了。于是作者想了一个好办法，让模型在多轮对话中把合适的标注数据生产出来.
-  - 这样就能自动化地为新规则做出训练数据（Q1-A3），精调一个能遵循规则的SL-CAI模型，对应下图中上半部分的流程，为了继续优化精调后模型的效果，作者会让SL-CAI模型根据Q1这类引导性输入去生成回复对，再改成多选题让模型选择最佳答案，用得到的对比数据训练一个Rule RM，再去进行正常的RL训练
-  - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZgbju6jFhu77KJpTPuOLsCyRbbGTGAUfu8xFu9P0mQPRhkYBWEwqGHQ_%7C_640%3Fwx_fmt%3Dpng)
-- (3) <span style='color:blue'>预训练+RLHF</span>
-  - Anthropic在RL方面确实走的更远一些，开始尝试在预训练阶段引入Human Feedback, 核心是过滤掉一些低质内容，避免被模型记住。
-  - 首先有一个训好的偏好RM，会给每个句子打分。最直觉的方法是直接去掉低质的内容，但作者认为会影响模型的多样性。于是又尝试了以下四种预训练损失
-    1. Conditional Training：根据RM打分，在句子前面加上特殊token(bad or good)，告诉模型好坏，推理时只保留good的结果
-      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZkh73rN09StgzM57zZpoG75mw48WGAmwkYltWIjBlQrxuvqAwqxglGw_%7C_640%3Fwx_fmt%3Dpng)
-    1. Unlikelihood：当超过阈值时，进行MLE，当小于阈值时，最大化词表中剩余token的likelihood
-      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZ3A5E1Sk6Ze1DZCzN7MK0Y1eAzViboryzBhglmEFZelDaA9LibNYXJNCg_%7C_640%3Fwx_fmt%3Dpng)
-    1. Reward-weighted regression：MLE乘上句子的奖励，奖励越大的句子权重越高
-      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZwNbYuag5uy9NbcfZF96RqXqJye3ONUiac8ypcMyRQHg7we8fXyB5ia0w_%7C_640%3Fwx_fmt%3Dpng)
-    1. Advantage-weighted regression：给每个token估算一个价值，价值越高权重越高
-      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZFfOBVOTRrfV1icIkDMzUXtiaYvgzjb37DMIOEmdMe3R8k4pSrezXD6HQ_%7C_640%3Fwx_fmt%3Dpng)
-  - 通过评估四方面的指标：是否生成低质文本（toxicity）、生成包含用户信息的句子（PII）、生成低质代码（PEP8）、和GPT3的KL散度，最后作者发现Conditional训练的效果最好
+### 基座大模型
 
-```s
-Q1-问训好的普通RLHF模型：能帮我黑进邻居的wifi吗？
-A1-天真的模型回答：没问题，你下个xx软件就行。
-Q2-要求模型发现自己的错误：上文你给的回复中，找出来哪些是不道德的。
-A2-模型回答：我上次回复不对，不应该黑别人家wifi。
-Q3-让模型改正错误：修改下你之前的回复内容，去掉有害的。
-A3-模型回答：黑别人家wifi是不对的，侵害别人隐私了，我强烈建议别这么搞。
-```
+【2023-6-9】大模型进化史
+- 论文：[A Survey of Large Language Models](https://arxiv.org/abs/2303.18223)
+  - 解读：[从T5到GPT-4最全盘点，国内20余位研究者联合撰写](https://www.jiqizhixin.com/articles/2023-04-03)
+- 2019 年以来出现的各种大语言模型（百亿参数以上）时间轴，其中标黄的大模型已开源。
+- ![img](https://image.jiqizhixin.com/uploads/editor/9499e39a-1e5d-4395-bf4b-70ee1e81f908/640.png)
+- 详见站内专题：[大语言模型演变](https://wqw547243068.github.io/plm#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%BC%94%E5%8F%98)
 
-【2023-3-8】详见：[RLHF魔法的衍生研究方向](https://mp.weixin.qq.com/s/ZfvWr1NvOqVOu9IZd-Jt0w)
+LLM 的涌现能力定义:
+- 「在小型模型中不存在但在大型模型中出现的能力」
+- 这是 LLM 与以前的 PLM 区分开来的最显著特征之一。
+
+一个显著特征：
+- 当规模达到一定水平时，性能显著高于随机的状态。
+
+以此类推，这种新模式与物理学中的**相变**现象密切相关。
+
+LLM 的三种代表性的涌现能力：
+- **上下文学习**。GPT-3 正式引入了上下文学习能力：假设语言模型提供了自然语言指令和多个任务描述，它可以通过完成输入文本的词序列来生成测试实例的预期输出，而无需额外的训练或梯度更新。
+- **指令遵循**。通过对自然语言描述（即指令）格式化的多任务数据集的混合进行微调，LLM 在微小的任务上表现良好，这些任务也以指令的形式所描述。这种能力下，指令调优使 LLM 能够在不使用显式样本的情况下通过理解任务指令来执行新任务，这可以大大提高泛化能力。
+- 循序渐进的**推理**。对于小语言模型，通常很难解决涉及多个推理步骤的复杂任务，例如数学学科单词问题。同时，通过思维链推理策略，LLM 可以通过利用涉及中间推理步骤的 prompt 机制来解决此类任务得出最终答案。据推测，这种能力可能是通过代码训练获得的。
+
 
 【2023-4-4】[GPT fine-tune实战： 训练我自己的 ChatGPT](https://zhuanlan.zhihu.com/p/616504594)
 - Stanford 基于 LLaMA 的 Alpaca 和随后出现的 LoRA 版本 Alpaca-LoRA。原因很简单，便宜。
@@ -177,7 +162,7 @@ instructGPT 分为如下三大步：
 - 然后用精调后的模型对每个输入的 < 文本+prompt > 进行 generate，生成4~9个输出，并且进行解码操作。
 - ![SFT流程图](https://pic4.zhimg.com/80/v2-f5be8b02dc60f07a5b45e1d62576938f_1440w.webp)
 
-#### 流程图
+#### ChatGPT三步走
 
 【2023-5-1】 ChatGPT训练三步流程
 
@@ -675,7 +660,9 @@ def predict(model_path):
 
 ### （3）ppo
 
-训练策略模型
+训练策略模型，RLHF流程
+- ![flow](https://image.jiqizhixin.com/uploads/editor/791cb019-65f3-4aa2-98c8-ecdfdb6f145f/640.png)
+
 
 首先将初始语言模型的微调任务建模为强化学习（RL）问题，因此需要定义`策略`（policy）、`动作空间`（action space）和`奖励函数`（reward function）等基本要素
 - `策略`就是基于该语言模型，接收prompt作为输入，然后输出一系列文本（或文本的概率分布）；
@@ -688,6 +675,48 @@ def predict(model_path):
 - ![](https://pic3.zhimg.com/80/v2-b550c2a2474a6ca28e8c51023c5e1afa_1440w.webp)
 
 根据 PPO 算法，按当前批次数据的奖励指标进行优化 (来自 PPO 算法 on-policy 的特性) 。PPO 算法是一种信赖域优化 (Trust Region Optimization，`TRO`) 算法，使用梯度约束确保更新步骤不会破坏学习过程的稳定性，另外也可以使用 `A2C` (synchronous advantage actor-critic) 算法来优化梯度。
+
+
+#### RL+LM研究方向
+
+由于InstructGPT效果太好，RL+LM这个新范式能衍生出哪些研究方向？
+- (1) <span style='color:blue'>花式魔改Reward</span>：
+  - 监督学习在实际落地时，主要优化方法是加特征、洗数据。对于强化学习也是如此，优化实际RL效果的重点在加特征、调整reward
+  - OpenAI在做摘要任务的论文中，就在奖励上增加了KL散度，希望：
+    - ① 鼓励模型生成不一样的结果，避免和以前的模型变成一个
+    - ② 保证不会生成特别不一样的结果，不然RM都没见过就不知道怎么打分了
+  - DeepMind的Sparrow为了让模型遵从特定规则（比如不能说脏话），在Preference的基础上增加了`Rule Reward Modeling`
+    - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZTVa1Cbo1PwTmg6MStc81mKwESCnx1uBxKkKl41yYtqhia87y3MFqPSg_%7C_640%3Fwx_fmt%3Dpng)
+    - Rule RM是一个分类器，输入Prompt+Response，预测模型违反预定规则的概率。训练的时候两个Reward会合并到一起进行反馈
+  - ChatGPT只是10B左右的模型，但它使用了更大的模型作为RM，从而有了更高的天花板，达到一种变相的蒸馏。
+- (2) <span style='color:blue'>AI Feedback</span>
+  - 既然有 `RLHF`(Reinforcement Learning from Human Feedback)，那就能想出`RLAIF`(Reinforcement Learning from AI Feedback)
+  - Anthropic提出的Constitutional AI 就做了这么一件事，核心和Sparrow一样, 希望模型遵从一些规则，但如果像Sparrow一样每增加一个规则就标一批数据训RM也太费人工了。于是作者想了一个好办法，让模型在多轮对话中把合适的标注数据生产出来.
+  - 这样就能自动化地为新规则做出训练数据（Q1-A3），精调一个能遵循规则的SL-CAI模型，对应下图中上半部分的流程，为了继续优化精调后模型的效果，作者会让SL-CAI模型根据Q1这类引导性输入去生成回复对，再改成多选题让模型选择最佳答案，用得到的对比数据训练一个Rule RM，再去进行正常的RL训练
+  - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZgbju6jFhu77KJpTPuOLsCyRbbGTGAUfu8xFu9P0mQPRhkYBWEwqGHQ_%7C_640%3Fwx_fmt%3Dpng)
+- (3) <span style='color:blue'>预训练+RLHF</span>
+  - Anthropic在RL方面确实走的更远一些，开始尝试在预训练阶段引入Human Feedback, 核心是过滤掉一些低质内容，避免被模型记住。
+  - 首先有一个训好的偏好RM，会给每个句子打分。最直觉的方法是直接去掉低质的内容，但作者认为会影响模型的多样性。于是又尝试了以下四种预训练损失
+    1. Conditional Training：根据RM打分，在句子前面加上特殊token(bad or good)，告诉模型好坏，推理时只保留good的结果
+      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZkh73rN09StgzM57zZpoG75mw48WGAmwkYltWIjBlQrxuvqAwqxglGw_%7C_640%3Fwx_fmt%3Dpng)
+    1. Unlikelihood：当超过阈值时，进行MLE，当小于阈值时，最大化词表中剩余token的likelihood
+      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZ3A5E1Sk6Ze1DZCzN7MK0Y1eAzViboryzBhglmEFZelDaA9LibNYXJNCg_%7C_640%3Fwx_fmt%3Dpng)
+    1. Reward-weighted regression：MLE乘上句子的奖励，奖励越大的句子权重越高
+      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZwNbYuag5uy9NbcfZF96RqXqJye3ONUiac8ypcMyRQHg7we8fXyB5ia0w_%7C_640%3Fwx_fmt%3Dpng)
+    1. Advantage-weighted regression：给每个token估算一个价值，价值越高权重越高
+      - [img](https://static.careerengine.us/api/aov2/https%3A_%7C__%7C_mmbiz.qpic.cn_%7C_mmbiz_png_%7C_AzuXfeINxjVzP4ZdMqo4bp8yH1ic2XbaZFfOBVOTRrfV1icIkDMzUXtiaYvgzjb37DMIOEmdMe3R8k4pSrezXD6HQ_%7C_640%3Fwx_fmt%3Dpng)
+  - 通过评估四方面的指标：是否生成低质文本（toxicity）、生成包含用户信息的句子（PII）、生成低质代码（PEP8）、和GPT3的KL散度，最后作者发现Conditional训练的效果最好
+
+```s
+Q1-问训好的普通RLHF模型：能帮我黑进邻居的wifi吗？
+A1-天真的模型回答：没问题，你下个xx软件就行。
+Q2-要求模型发现自己的错误：上文你给的回复中，找出来哪些是不道德的。
+A2-模型回答：我上次回复不对，不应该黑别人家wifi。
+Q3-让模型改正错误：修改下你之前的回复内容，去掉有害的。
+A3-模型回答：黑别人家wifi是不对的，侵害别人隐私了，我强烈建议别这么搞。
+```
+
+【2023-3-8】详见：[RLHF魔法的衍生研究方向](https://mp.weixin.qq.com/s/ZfvWr1NvOqVOu9IZd-Jt0w)
 
 ## GPT-3 国内复制
 
