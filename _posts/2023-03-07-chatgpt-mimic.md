@@ -1735,8 +1735,17 @@ Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingfa
 
 各种各样的LLM给AI模型开源赋予了各种各样的角度。
 - `LLaMA`给斯坦福的`Alpaca`和`Vicuna`等模型铺设了道路，搭好了舞台，成为了开源的领头羊。
-- 就在此时，猎鹰「`Falcon`」又杀出了重围。[Hugging Face OpenLLM Leaderboard ](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+- 猎鹰「`Falcon`」又杀出了重围，排名第一。[Hugging Face OpenLLM Leaderboard ](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
 - ![](https://149695847.v2.pressablecdn.com/wp-content/uploads/2023/06/image-9.png)
+
+【2023-6-9】[击败LLaMA？史上最强猎鹰排行存疑，符尧7行代码亲测，LeCun转赞](https://www.toutiao.com/article/7242571430297862717), 符尧团队对模型做了更深入的[测评](https://twitter.com/Francis_YAO_/status/1666833311279517696)：没有提示工程、解码，一切都是默认设置
+> 在MMLU上复现了LLaMA 65B的评估，得到了**61.4**的分数，接近官方分数（63.4），**远高于**其在Open LLM Leaderboard上的分数（**48.8**），而且明显高于猎鹰（52.7）。
+
+OpenAI科学家Andrej Karpathy也对LLaMA 65B为什么在Open LLM排行榜上的分数明显低于官方（48.8 v.s. 63.4）表示关注。
+> 避免在推特上发表关于猎鹰的文章，因为这一点不确定。
+
+符尧团队论文：Chain-of-Thought Hub：
+> 如果想要模型实现接近GPT-3.5的水平，最好是在LLaMA 65B上使用RLHF。
 
 「Falcon」由阿联酋阿布扎比的技术创新研究所（TII）开发，从性能上看，Falcon比LLaMA的表现更好。
 - 「Falcon」有三个版本——1B、7B和40B。
@@ -1749,9 +1758,9 @@ Falcon是目前**唯一**的可以免费商用的开源模型。
 
 在早期，TII要求，商业用途使用Falcon，如果产生了超过100万美元以上的可归因收入，将会收取10%的「使用税」。
 
-可是财大气粗的中东土豪们没过多长时间就取消了这个限制。
+可是财大气粗的中东土豪们没过多长时间就取消了这个限制。至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
 
-至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
+
 
 
 ### Lion 对抗蒸馏--闭源大模型
@@ -2370,7 +2379,7 @@ CPM 全称Chinese Pretrained Model，Bee是该系列模型的第二个里程碑�
 【2023-4-10】昆仑万维和奇点智源合作发布[「天工」大模型4月17日启动邀测](https://mp.weixin.qq.com/s/yikVXp2sda4frtl_TrSKzw), 4月17日开始[内测申请](http://tiangong.kunlun.com)
 - 【2023-5-26】[内测地址](https://neice.tiangong.cn/interlocutionPage)
 
-### 微软DeepSpeed Chat
+### 微软 DeepSpeed Chat
 
 【2023-4-12】[微软DeepSpeed Chat震撼发布，一键RLHF训练千亿级大模型](https://mp.weixin.qq.com/s/G8W9nSQd600wesSJFE2dhw), 微软开源一个模型训练中加入完整RLHF流程的系统框架——[DeepSpeed Chat](https://github.com/microsoft/DeepSpeed)。
 - 由于OpenAI太不Open，开源社区为了让更多人能用上类ChatGPT模型，相继推出了LLaMa、Alpaca、Vicuna、Databricks-Dolly等模型。
@@ -2476,7 +2485,7 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
 
 【2023-5-18】北京大学团队开源了名为 [PKU-Beaver（河狸）项目](https://github.com/PKU-Alignment/safe-rlhf), 首次公开了 RLHF 所需的数据集、训练和验证代码，是目前首个开源的可复现的 RLHF 基准
 
-北大开源国内首个可复现的 RLHF 基准PKU-Beaver（河狸），覆盖三步流程，以及评估，首次提出了带有约束的价值对齐技术 CVA（Constrained Value Alignment），Safe RLHF。GPT-4 评估 Beaver 安全性比 Alpaca更好。开源包含安全偏好的多轮RLHF数据集PKU-SafeRLHF-Datasets，规模达到100万条，涉及侮辱、歧视、犯罪、心理伤害、悲观情绪、色情、隐私等十余种维度的约束
+北大开源国内首个可复现的 RLHF 基准 PKU-Beaver（河狸），覆盖三步流程，以及评估，首次提出了带有约束的价值对齐技术 CVA（Constrained Value Alignment），Safe RLHF。GPT-4 评估 Beaver 安全性比 Alpaca更好。开源包含安全偏好的多轮RLHF数据集PKU-SafeRLHF-Datasets，规模达到100万条，涉及侮辱、歧视、犯罪、心理伤害、悲观情绪、色情、隐私等十余种维度的约束
 
 
 |                                                                                                          |  SFT  | Preference Model | RLHF  | Safe-RLHF | PTX Loss | Evaluation |      Backend      |
