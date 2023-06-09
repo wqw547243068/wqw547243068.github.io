@@ -1790,7 +1790,13 @@ Falcon是目前**唯一**的可以免费商用的开源模型。
 可是财大气粗的中东土豪们没过多长时间就取消了这个限制。至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
 
 
+#### 汉化：OpenBuddy -- 开源跨语种
 
+【2023-6-9】[OpenBuddy](https://openbuddy.ai/), [开源多语言聊天机器人](https://github.com/OpenBuddy/OpenBuddy/blob/main/README.zh.md),对话 AI 和无缝多语言支持
+- OpenBuddy 使命是提供一个免费、开源、能够离线运行的 AI 模型，这个模型在用户的设备上运行，不论他们的语言或文化背景如何
+- 基于 Tii 的 Falcon 模型和 Facebook 的 LLaMA 模型构建，OpenBuddy 经过微调，包括扩展词汇表、增加常见字符和增强 token 嵌入。通过利用这些改进和多轮对话数据集，OpenBuddy 提供了一个强大的模型，能够回答各种语言的问题并执行翻译任务。
+
+OpenBuddy 目前提供两个模型系列： `Falcon` 和 `LLaMA`
 
 ### Lion 对抗蒸馏--闭源大模型
 
