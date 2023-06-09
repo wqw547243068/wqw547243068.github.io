@@ -2638,6 +2638,11 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 - 中文高考数据集
 - 英文BBH3K数据集
 
+### Grace Bot
+
+【2023-6-9】[Grace Bot](https://www.gracebot.cn/chat)
+
+
 ### ChatRWKV
 
 【2023-3-13】[开源1.5/3/7B中文小说模型：显存3G就能跑7B模型，几行代码即可调用](https://zhuanlan.zhihu.com/p/609154637)
