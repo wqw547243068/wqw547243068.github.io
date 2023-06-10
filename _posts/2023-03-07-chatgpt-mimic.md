@@ -1798,6 +1798,28 @@ Falcon是目前**唯一**的可以免费商用的开源模型。
 
 OpenBuddy 目前提供两个模型系列： `Falcon` 和 `LLaMA`
 
+OpenBuddy 模型具备内容理解和顿悟能力，推出了 NBCE：一种超长上下文的 LLM 推理算法。
+- 结合 OpenBuddy 模型，NBCE 能够实现 10K Context Windows 的推理，解决了大语言模型的上下文瓶颈问题。
+
+LLaMA 仍存在训练集缺少多样性、训练数据不公开、许可协议限制商用等问题，阻碍了其在多种应用场景的发挥。
+
+Falcon 模型使用 Apache 2.0 的可商用开源协议，不仅在协议和数据集方面更加开放，还采用了最新的 **Flash Attention** 等技术，展现出了惊人的性能和内容质量。
+
+现有的 SOTA 开源语言模型，包括 LLaMA 和 Falcon，都存在一个问题：<span style='color:red'>跨语言支持能力薄弱</span>。这些模型主要以英语、法语等印欧语系为基础，并且缺乏跨语言对话场景的深度优化。
+
+因此在理解中文等非印欧语系语言方面存在困难，更无法进行有意义的对话。
+
+OpenBuddy 团队在多语言模型训练方面具备丰富的经验，曾在 LLaMA 的 7B、13B、30B 模型上进行了反复迭代和调优，研发出了OpenBuddy-LLaMA 系列开源模型。
+- OpenBuddy-LLaMA 系列在中文、日语、韩语等多种语言上具备优秀的问题理解和回答能力。
+- llama.cpp、Langport、FastChat 等开源项目均实现了OpenBuddy-LLaMA 系列模型的集成，并在社区中获得了广泛的应用。
+
+OpenBuddy 团队成功地掌握了 Falcon 模型的训练诀窍，推出了全球首个基于 Falcon 架构、开放可商用的中文跨语言大模型——OpenBuddy-Falcon-7B。
+
+优势：[更多介绍](https://mp.weixin.qq.com/s/VimLdVmZ27t4S8_C0Jlzjg)
+- 支持多种语言，包括中文、日语、韩语、英语、法语、德语等。
+- 采用了一种新颖的**跨语言学习**技术，大幅提高了模型对跨语言知识的理解能力和融合能力。
+- 具备插件使用能力，模型能分析用户的意图，自动选取并调用插件。例如，调用Stable Diffusion 开源模型画图，调用内置的搜索引擎搜索资料等等。模型能够深度理解用户的需求，而不是重复字面上的要求，可以完成“画一个车水马龙的街道”，“画一个丑小鸭长大后变成的动物”等复杂指令。
+
 ### Lion 对抗蒸馏--闭源大模型
 
 【2023-5-31】[港科大提出全新对抗蒸馏框架Lion](https://mp.weixin.qq.com/s/UPPkMbnkG1BZhE0nctNvhQ)，7B LLaMA模型接近ChatGPT 95%的能力
@@ -2685,6 +2707,12 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 ### Grace Bot
 
 【2023-6-9】[Grace Bot](https://www.gracebot.cn/chat)
+
+[据传](https://maimai.cn/web/feed_detail?efid=X8x77rUFfICAx5mC8ouhoQ&fid=1790257046&id=1790257046&operation_id=MUWVJjyN0JQJwzokkkkb0&share_channel=2&share_uid=3539&use_rn=1)字节大模型的进展：
+- 1、字节相关部门去年12月成立，主要做**GPT系列**模型的复现。
+  - 目前基于GPT2.0开源模型，试了三个多月，预计6-9月会有预训练语言模型出来。
+- 2、语料库:目前涉及语言数据，如头条自有数据、抖音评论、电子图书(版权采买)、互联网爬取以及外文维基百科数据等。
+- 3、在**多模态**场景下，图片、视频等相关应用可能会更多，对于字节来说这部分数据有比较优势，将来的落地点会有很多。
 
 
 ### ChatRWKV
