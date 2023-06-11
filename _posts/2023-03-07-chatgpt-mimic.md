@@ -1144,6 +1144,8 @@ Chinese-LLaMA-Alpaca是在通用中文语料上训练了基于 sentencepiece 的
 
 ### 复旦 MOSS
 
+复旦大学MOSS团队成员孙天祥的相关报告，可[参考B站视频](https://www.bilibili.com/video/BV1is4y1i7cZ)
+
 【2023-2-20】复旦团队发布国内首个类 ChatGPT 模型 `MOSS`，由[邱锡鹏](https://xpqiu.github.io/reports.html)教授团队发布至[公开平台](https://moss.fastnlp.top/)，但当晚不少测试的网友发现，MOSS 已经显示服务器流量过载，只能第二天再重试。
 - 复旦 MOSS 团队发布公告称：非常感谢大家的关注， `MOSS` 还是一个非常不成熟的模型，距离 ChatGPT 还有很长的路需要走。我们一个学术研究的实验室无法做出和 `ChatGPT` 能力相近的模型， `MOSS` 只是想在百亿规模参数上探索和验证 ChatGPT 的技术路线，并且实现各种对话能力。
 - 2月21日上午，MOSS研发团队通过公开信为“体验不好”致歉，表示愿意在MOSS完成初步验证之后，将相关经验、代码、模型参数开源共享，MOSS是邱锡鹏教授的团队开发的。一个“有真正的科研人员+没有硬件支撑和工程化能力”的例子。
@@ -2234,9 +2236,13 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 
 ### ChatGLM 清华
 
-[ChatGLM](https://chatglm.cn/)：开源双语对话语言模型
+[ChatGLM](https://chatglm.cn/)：开源双语对话语言模型，官方[B站](https://search.bilibili.com/all?vt=83961745&keyword=chatglm)
 
-#### ChatGLM 介绍
+【2023-6-3】[从GLM-130B到ChatGLM：大模型预训练与微调](https://www.bilibili.com/video/BV1iu4y1Z7bv)
+
+<iframe src="//player.bilibili.com/player.html?aid=826984653&bvid=BV1iu4y1Z7bv&cid=1151930492&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+#### GLM-130B
 
 2022 年 8 月，`清华大学`联合[智谱AI](https://www.zhipuai.cn/index.html)（唐杰、李涓子，公司名:[北京智谱华章科技有限公司](https://www.qcc.com/firm/3e6bd6d29872b6c3a14f72f4ef6b9197.html)） 向研究界和工业界开放了拥有 1300 亿参数的中英双语稠密模型 `GLM-130B`，该模型有一些独特的优势：
 - 双语：同时支持中文和英文；
@@ -2246,7 +2252,6 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 - 可复现性：所有结果（超过 30 个任务）均可通过我们的开源代码和模型参数复现；
 - 跨平台：支持在国产的海光 DCU、华为昇腾 910 和申威处理器及美国的英伟达芯片上进行训练与推理。
 
-ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 `GLM-130B`。
 - 2022年8月，智谱AI基于GLM框架，推出1300亿参数的中英双语稠密模型GLM-130B，综合能力与GPT3相当 内存节省75%，可在单台3090 (4)或单台2080(8)进行无损推理 高速推理，比Pytorch提升7-8倍速度
 - 不同于 BERT、GPT-3 以及 T5 的架构，是一个包含**多目标函数**的自回归预训练模型。
 - 论文： 
@@ -2260,6 +2265,12 @@ GLM的出发点是将3种主流的预训练模型进行统一：
 - `T5`则是接受一段文本，从左到右的生成另一段文本
 - ![img](https://picx.zhimg.com/v2-b674c5be5ec5ed96e22dbb507a0e897c_r.jpg?source=1940ef5c)
 
+2022年11月，斯坦福大学大模型中心对全球30个主流大模型进行了全方位的评测，GLM-130B是亚洲**唯一**入选的大模型。在与OpenAI、Google Brain、微软、英伟达、Meta AI的各大模型对比中，评测报告显示GLM-130B在准确性和公平性指标上与GPT-3 175B（davinci）接近或持平，鲁棒性、校准误差和无偏性优于GPT-3 175B。
+
+#### ChatGLM
+
+ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 `GLM-130B`。
+
 ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中注入了代码预训练，通过有监督微调（Supervised Fine-Tuning）等技术实现人类意图对齐。ChatGLM 当前版本模型的能力提升主要来源于独特的千亿基座模型 GLM-130B。它是不同于 BERT、GPT-3 以及 T5 的架构，是一个包含多目标函数的自回归预训练模型。2022年8月，我们向研究界和工业界开放了拥有1300亿参数的中英双语稠密模型 GLM-130B1，该模型有一些独特的优势：
 - 双语： 同时支持中文和英文。
 - 高精度（英文）： 在公开的英文自然语言榜单 LAMBADA、MMLU 和 Big-bench-lite 上优于 GPT-3 175B（API: davinci，基座模型）、OPT-175B 和 BLOOM-176B。
@@ -2268,8 +2279,6 @@ ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中�
 - 可复现性： 所有结果（超过 30 个任务）均可通过我们的开源代码和模型参数复现。
 - 跨平台： 支持在国产的海光 DCU、华为昇腾 910 和申威处理器及美国的英伟达芯片上进行训练与推理。
 - ![](https://pic1.zhimg.com/80/v2-791a1175a6346d7b3098c58b93b9ae5c_1440w.webp)
-
-2022年11月，斯坦福大学大模型中心对全球30个主流大模型进行了全方位的评测，GLM-130B是亚洲**唯一**入选的大模型。在与OpenAI、Google Brain、微软、英伟达、Meta AI的各大模型对比中，评测报告显示GLM-130B在准确性和公平性指标上与GPT-3 175B（davinci）接近或持平，鲁棒性、校准误差和无偏性优于GPT-3 175B。
 
 如今， 参考 ChatGPT 的设计思路， `ChatGLM` 在千亿基座模型 GLM-130B 中注入了代码预训练，通过`有监督微调`（Supervised Fine-Tuning）等技术实现人类意图对齐。
 
@@ -2298,12 +2307,15 @@ ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中�
 - `ChatGLM-6B` 使用了和 `ChatGLM` 相同的技术，针对中文问答和对话进行了优化。经过约 1T 标识符的中英双语训练，辅以`监督微调`、`反馈自助`、`人类反馈强化学习`等技术的加持，62 亿参数的 `ChatGLM-6B` 虽然规模不及千亿模型，但大大降低了推理成本，提升了效率，并且已经能生成相当符合人类偏好的回答。
 - [模型开源地址](https://github.com/THUDM/ChatGLM-6B), [huggingface](https://huggingface.co/THUDM/chatglm-6b/tree/main)
 - finetune代码：[ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning)
+- API： 调用方法参考[智谱AI](https://open.bigmodel.cn/doc/api#sdkauth)
 - 【2023-3-17】issue: [Cannot import name 'convert_file_size_to_int' from 'transformers.utils.hub'](https://github.com/THUDM/ChatGLM-6B/issues/123)
 
 ChatGLM-6B 具备以下特点：
 - 充分的中英双语预训练：ChatGLM-6B 在 1:1 比例的中英语料上训练了 1T 的 token 量，兼具双语能力。
 - 优化的模型架构和大小：吸取 GLM-130B 训练经验，修正了二维 RoPE 位置编码实现，使用传统 FFN 结构。6B（62 亿）的参数大小，也使得研究者和个人开发者自己微调和部署 ChatGLM-6B 成为可能。
 - 较低的部署门槛：FP16 半精度下，ChatGLM-6B 需要至少 **13 GB** 的显存进行推理，结合模型量化技术，这一需求可以进一步降低到 **10GB**（INT8） 和 **6GB**（INT4），使得 ChatGLM-6B 可以部署在消费级显卡上。
+  - 在现代 GPU 和 TPU 上，tensor 计算可以在 16 位浮点上高效完成。 但并非简单将 tensor 的 dtype 设置为 torch.float16。对于某些部分，如 **loss**，仍然需要 32 位精度。 
+  - 半精度优化能使内存占用减半，或者说能使有效内存翻倍。
 - 更长的序列长度：相比 GLM-10B（序列长度 1024），ChatGLM-6B 序列长度达 **2048**，支持更长对话和应用。
 - 人类意图对齐训练：使用了`监督微调`（Supervised Fine-Tuning）、`反馈自助`（Feedback Bootstrap）、`人类反馈强化学习`（Reinforcement Learning from Human Feedback）等方式，使模型初具理解人类指令意图的能力。输出格式为 markdown，方便展示。
 
@@ -2331,7 +2343,7 @@ print(response)
 - 一种平价的chatgpt实现方案，基于清华的 [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B) + LoRA 进行finetune.
 - 数据集: [alpaca](https://github.com/tatsu-lab/stanford_alpaca)
 
-#### ChatGLM-6B本地部署
+#### ChatGLM-6B 本地部署
 
 【2023-4-13】[清华ChatGLM-6B模型本地部署](https://mp.weixin.qq.com/s/PYFNUmR0119ucJvcHNDfmQ)
 
@@ -2365,7 +2377,7 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half().quantize(4).cuda()
 ```
 
-### CPM-Bee 清华
+#### CPM-Bee 清华
 
 国产开源大语言模型最强的应该是ChatGLM-6B, 清华大学KEG小组发布
 
@@ -2401,7 +2413,10 @@ CPM 全称Chinese Pretrained Model，Bee是该系列模型的第二个里程碑�
 
 最小的10亿参数版本的模型仅需要4.1GB显存即可运行！50亿参数规模版本需要11GB显存。另一个清华大学著名的开源模型ChatGLM-6B版本的推理需要13GB显存。
 
+#### VisualGLM-6B
 
+【2023-05-17】 发布 VisualGLM-6B，一个支持图像理解的多模态对话语言模型
+- ![](https://github.com/THUDM/ChatGLM-6B/raw/main/resources/visualglm.png)
 
 ### New Bing
 
