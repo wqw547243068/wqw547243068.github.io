@@ -37,6 +37,8 @@ OpenAI InstructGPT论文里有个惊奇的发现，即：1.3B小模型+RLHF 居�
 
 ### LLM
 
+详情见站内专题：[大模型沉思录](llm)
+
 #### 资讯总结
 
 【2023-6-10】[DAIR.AI](github.com/dair-ai/ML-Papers-of-the-Week)，每周热门论文
@@ -44,6 +46,11 @@ OpenAI InstructGPT论文里有个惊奇的发现，即：1.3B小模型+RLHF 居�
 [LLM CheatSheet](https://github.com/Abonia1/CheatSheet-LLM), 含 ppt、pdf和png格式
 - ![](https://raw.githubusercontent.com/ashishpatel26/CheatSheet-LLM/main/Images/Slide3.PNG)
 
+
+【2023-4-4】[GPT fine-tune实战：训练我自己的 ChatGPT](https://zhuanlan.zhihu.com/p/616504594)
+- Stanford 基于 LLaMA 的 Alpaca 和随后出现的 LoRA 版本 Alpaca-LoRA。原因很简单，便宜。
+- Alpaca 宣称只需要 600$ 不到的成本（包括创建数据集），便可以让 LLaMA 7B 达到近似 text-davinci-003 的效果。而 Alpaca-LoRA 则在此基础上，让我们能够以一块消费级显卡，在几小时内完成 7B 模型的 fine-turning。
+- fine-tune 7B 模型仅需要 8-10 GB vram。
 
 #### 基座大模型
 
@@ -70,10 +77,8 @@ LLM 的三种代表性的涌现能力：
 - **指令遵循**。通过对自然语言描述（即指令）格式化的多任务数据集的混合进行微调，LLM 在微小的任务上表现良好，这些任务也以指令的形式所描述。这种能力下，指令调优使 LLM 能够在不使用显式样本的情况下通过理解任务指令来执行新任务，这可以大大提高泛化能力。
 - 循序渐进的**推理**。对于小语言模型，通常很难解决涉及多个推理步骤的复杂任务，例如数学学科单词问题。同时，通过思维链推理策略，LLM 可以通过利用涉及中间推理步骤的 prompt 机制来解决此类任务得出最终答案。据推测，这种能力可能是通过代码训练获得的。
 
-【2023-4-4】[GPT fine-tune实战： 训练我自己的 ChatGPT](https://zhuanlan.zhihu.com/p/616504594)
-- Stanford 基于 LLaMA 的 Alpaca 和随后出现的 LoRA 版本 Alpaca-LoRA。原因很简单，便宜。
-- Alpaca 宣称只需要 600$ 不到的成本（包括创建数据集），便可以让 LLaMA 7B 达到近似 text-davinci-003 的效果。而 Alpaca-LoRA 则在此基础上，让我们能够以一块消费级显卡，在几小时内完成 7B 模型的 fine-turning。
-- fine-tune 7B 模型仅需要 8-10 GB vram。
+详情见站内专题：[大模型沉思录](llm)
+
 
 ### GPT现状
 
@@ -789,7 +794,6 @@ def predict(model_path):
 
 训练策略模型，RLHF流程
 - ![flow](https://image.jiqizhixin.com/uploads/editor/791cb019-65f3-4aa2-98c8-ecdfdb6f145f/640.png)
-
 
 首先将初始语言模型的微调任务建模为强化学习（RL）问题，因此需要定义`策略`（policy）、`动作空间`（action space）和`奖励函数`（reward function）等基本要素
 - `策略`就是基于该语言模型，接收prompt作为输入，然后输出一系列文本（或文本的概率分布）；
@@ -2307,7 +2311,7 @@ ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中�
 - `ChatGLM-6B` 使用了和 `ChatGLM` 相同的技术，针对中文问答和对话进行了优化。经过约 1T 标识符的中英双语训练，辅以`监督微调`、`反馈自助`、`人类反馈强化学习`等技术的加持，62 亿参数的 `ChatGLM-6B` 虽然规模不及千亿模型，但大大降低了推理成本，提升了效率，并且已经能生成相当符合人类偏好的回答。
 - [模型开源地址](https://github.com/THUDM/ChatGLM-6B), [huggingface](https://huggingface.co/THUDM/chatglm-6b/tree/main)
 - finetune代码：[ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning)
-- API： 调用方法参考[智谱AI](https://open.bigmodel.cn/doc/api#sdkauth)
+- API： 调用方法参考[智谱AI](https://open.bigmodel.cn/doc/api#sdkauth)， ChatGLM 商用 [Issue](https://github.com/THUDM/ChatGLM-6B/issues/799)
 - 【2023-3-17】issue: [Cannot import name 'convert_file_size_to_int' from 'transformers.utils.hub'](https://github.com/THUDM/ChatGLM-6B/issues/123)
 
 ChatGLM-6B 具备以下特点：
