@@ -2347,6 +2347,8 @@ print(response)
 怎么finetuning？
 - P-tuning v2
   - [官方示例](https://github.com/THUDM/ChatGLM-6B/tree/main/ptuning)，单卡3090没问题
+  - P-Tuning，设计了一种连续可微的virtual token（同Prefix-Tuning类似）
+  - 清华大学发布的两种参数高效Prompt微调方法： P-Tuning、P-Tuning v2，可以简单的将P-Tuning认为是针对Prompt Tuning的改进，P-Tuning v2认为是针对Prefix Tuning的改进。
 - Full parameter
   - 全量参数finetune, 8卡3090 没跑起来
   - 训练资源: 8 x A100 40G 或者 4 x A100 80G.
