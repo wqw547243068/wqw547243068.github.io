@@ -2286,19 +2286,6 @@ ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中�
 
 如今， 参考 ChatGPT 的设计思路， `ChatGLM` 在千亿基座模型 GLM-130B 中注入了代码预训练，通过`有监督微调`（Supervised Fine-Tuning）等技术实现人类意图对齐。
 
-#### ChatGLM 如何微调？
-
-【2023-6-2】 参考：[chatglm的微调有没有保姆式的教程](https://www.zhihu.com/question/595670355/answer/3038045480)
-
-怎么finetuning？
-- P-tuning v2
-  - [官方示例](https://github.com/THUDM/ChatGLM-6B/tree/main/ptuning)，单卡3090没问题
-- Full parameter
-  - 全量参数finetune, 8卡3090 没跑起来
-  - 训练资源: 8 x A100 40G 或者 4 x A100 80G.
-- LoRA
-  - 官方推荐的工程: [最简单、最便宜的训练thu-chatglm-6b模型教程](https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/simple_thu_chatglm6b)
-  - 或者：一种平价的chatgpt实现方案, 基于ChatGLM-6B + LoRA, [ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning), 数据集: [alpaca](https://github.com/tatsu-lab/stanford_alpaca), 或直接在[colab](https://colab.research.google.com/github/mymusise/ChatGLM-Tuning/blob/master/examples/finetune.ipynb)上尝试
 
 #### ChatGLM-6B
 
@@ -2341,6 +2328,32 @@ response, history = model.chat(tokenizer, "晚上睡不着应该怎么办", hist
 print(response)
 ```
 
+#### ChatGLM 生态
+
+【2023-5-19】[基于ChatGLM的扩展模型](https://mp.weixin.qq.com/s/acwU0JEvuVuyQbNylsj8fQ)
+- Chinese-LangChain: 中文**langchain**项目，基于ChatGLM-6b+langchain实现**本地化知识库**检索与智能答案生成，增加web search功能、知识库选择功能和支持知识增量更新
+- bibliothecarius: 快速构建服务以集成您的**本地数据**和AI模型，支持ChatGLM等本地化模型接入。
+- langchain-ChatGLM: 基于 langchain 的 ChatGLM 应用，实现基于可扩展知识库的问答
+- InstructGLM: 基于ChatGLM-6B进行**指令学习**，汇总开源中英文指令数据，基于**Lora**进行指令数据微调，开放了Alpaca、Belle微调后的Lora权重，修复web_demo重复问题
+- ChatGLM-Efficient-Tuning: 基于ChatGLM-6B模型进行定制化微调，汇总10余种指令数据集和3种微调方案，实现了4/8比特量化和模型权重融合，提供微调模型快速部署方法。
+- ChatGLM-Finetuning: 基于ChatGLM-6B模型，进行下游具体任务微调，涉及Freeze、Lora、P-tuning等，并进行实验效果对比。
+- ChatGLM-Tuning: 基于 LoRA 对 ChatGLM-6B 进行微调。类似的项目还包括 Humanable ChatGLM/GPT Fine-tuning
+
+
+#### ChatGLM 如何微调？
+
+【2023-6-2】 [chatglm的微调有没有保姆式的教程](https://www.zhihu.com/question/595670355/answer/3038045480)
+
+怎么finetuning？
+- P-tuning v2
+  - [官方示例](https://github.com/THUDM/ChatGLM-6B/tree/main/ptuning)，单卡3090没问题
+- Full parameter
+  - 全量参数finetune, 8卡3090 没跑起来
+  - 训练资源: 8 x A100 40G 或者 4 x A100 80G.
+- LoRA
+  - 官方推荐的工程: [最简单、最便宜的训练thu-chatglm-6b模型教程](https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/simple_thu_chatglm6b)
+  - 或者：一种平价的chatgpt实现方案, 基于ChatGLM-6B + LoRA, [ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning), 数据集: [alpaca](https://github.com/tatsu-lab/stanford_alpaca), 或直接在[colab](https://colab.research.google.com/github/mymusise/ChatGLM-Tuning/blob/master/examples/finetune.ipynb)上尝试
+
 #### ChatGLM-Tuning
 
 【2023-3-25】ChatGLM-Tuning
@@ -2380,6 +2393,7 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 # 我的 INT4的
 model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half().quantize(4).cuda()
 ```
+
 
 #### CPM-Bee 清华
 
