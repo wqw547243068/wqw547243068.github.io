@@ -231,6 +231,65 @@ HR也想不看**背景**、不看**出身**、不看过往经验来找到合适�
 - 用pytorch实现单头self-attention（mid+）
 - self-attention的细节和一些扩展理解；
 
+#### LLM常见问题
+
+大模型高频问题：
+- **plugin怎么实现**
+  - OpenAI 的 plugin 如何实现？
+  - 推测：question -> embedding 向量化 -> CLS意图识别 -> ranking 按得分排序 -> NER 抽取对应槽位 -> 调用tool -> 结果生成
+  - embedding 所用到的语义空间跟 LLM 一致
+- **如何与领域知识结合?** 看情况, LLM 具备通用领域的知识
+  - 若 LLM 初版结果满足需求 -> prompt 调优
+  - 若 LLM 效果不佳 -> 准备领域语料 -> 全参数精调(资源开销大) + 指令微调 IFT -> RM+PPO
+  - 若 资源受限/隐私考虑, 仿照 Doc-Chat 文档问答 方案, 通过 LLM工具(如 LangChain/LLaMA-Index) 向量化→chunk索引→生成prompt→调LLM
+- **如何落地搜索业务？** 搜索是ChatGPT的天然战场, 检索变问答
+  - 目前有些浏览器插件，如: `Monica`, `ChatGPT for Google` 等 
+  - 大厂 Google BARD 和 New Bing, 实测 BARD 中文支持不佳，英文还可以，根据 query 搜索wiki百科内容组装成段落
+  - 技术: query -> 向量化(同llm语义空间) -> 语义匹配,得到相关文档片段 -> 生成Prompt -> LLM 拼接作答
+  - 问题: LLM 推理性能是个大问题, 搜索对时延/并发敏感，怎么解决？见推理提效
+- **如何提升推理速度？** 分训练/预测阶段, 离线/在线场景
+  - 训练: 
+    - 全参数微调→部分参数微调(部分/冻结), 如: LoRA/QLoRA 系列加速
+    - 量化、蒸馏, 降低内存、计算开销
+  - 预测: 
+    - 量化、蒸馏
+    - GPU 升级、并行化
+    - Cache 缓存机制
+    - generate 解码调参, 如: greedy search, beam search, top-k, top-p, temperature等
+- **如何端上部署？**将LLM部署到CPU单机、移动设备
+  - 模型小型化
+  - 量化，降低精度, 节省内存、计算开销
+  - 蒸馏
+- **大模型训练思路**
+  - 指令集构造 -> SFT/IFT -> RM -> RLHF
+  - RLHF非必须，看情况
+  - 基座模型选取: 是否开源, 内存计算资源, 中文支持
+- **可商用基座大模型哪些?** 找 GPT-3 级别的大模型
+  - BLOOM: 法国开源的大模型
+  - 猎鹰: 阿联酋开源,商用需支付 10%（未必实施）
+  - LLaMA: 不能商用
+  - ChatGLM: 不能商用,清华暂未公布商用方案, 但有个可商用版本 CPM-Bee
+  - 开源组织: 国内如 OpenBMB, OpenBuddy
+- **怎么看待ToT**？CoT的进化版，后面迭代的主要方向
+  - LLM 推理能力广受诟病, 稍微复杂些，就会胡说八道
+  - 人类思考模式: 快思考(system 1,感性,快但不一定正确)、慢思考(system 2,理性,慢但正确率高)
+  - CoT只是链式思考,而 ToT 是树状结构，仿照system 1和system 2，有评估决策单元，按照BFS/DFS遍历可能的路径，择机回溯、剪枝，类似 MCTS（蒙特卡洛树搜索）
+  - AutoGPT 代表 LLM 的典型发展方向, 自行思考、决策、行动
+- **如何提升PE（prompt engineer）效率**？
+  - prompt 结构特殊, 对输入格式敏感, 可能加个标点符号,就无法识别
+  - Prompt 工程反人性, 让用户不断尝试，体验不佳
+  - 提效方法
+    - prompt智能提示, 案例: AIPM工具, 输入框推荐社区共享的优质prompt
+    - 产品交互改进: 搜索过程变问答式推荐, 基于用户反馈给于提示, 如短时间内输入重复/相似问题，大多是答案不满意,这时系统提示候选prompt
+    - prompt tuning: LLM 基础上执行 p-tuning(清华有专用工具), 提升prompt泛化能力 -- 勇哥有异议，存疑
+- [Langchain](https://wqw547243068.github.io/doc-chat#langchain)原理、用法，类似的还有 LLaMA-Index
+  - 一款知名的LLM框架工具, 几分钟内构建 GPT 驱动的应用程序。LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API：与 LLM 交互；LLM 连接外部数据源
+  - 应用程序包括（但不限于）：
+    - 聊天机器人
+    - 特定领域的总结和问答
+    - 查询数据库以获取信息然后处理它们的应用程序
+    - 解决特定问题的代理，例如数学和推理难题
+  - LangChain 包含六大组件：Models、Prompts、Indexes、Memory、Chains、Agents。
 
 #### Python 数据溢出
 
