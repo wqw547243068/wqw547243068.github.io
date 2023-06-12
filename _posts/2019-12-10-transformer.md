@@ -26,6 +26,11 @@ Transformer，一个从**NLP**领域横跨到**语音**和**图像**领域，最
 - Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最重要的核心就是`Self-Attention`机制，中文也叫`自注意力`。
 - 在语言模型建模过程中，把注意力放在那些重要的Token上。
 
+基于transformer的多模态模型
+- ViT: 2020, 图像任务
+- CLIP: 2021, 文本和图像混合
+- KOSMOS-1: 2023, 多模态大规模语言模型
+
 ### Transformer 架构理解
 
 `Transformer`是一种`Encoder-Decoder`架构(Seq2Seq架构也是)，先把**输入**映射到`Encoder`，可以把Encoder想象成RNN，Decoder也是。
