@@ -180,6 +180,7 @@ Prompt是在ChatGPT中输入的一些关键词，按照用户意愿生成出各�
 【2023-5-13】ChatGPT各类应用idea汇总，包含场景、当前解法、解决状态等，持续更新
 - [飞书文档](https://bytedance.feishu.cn/sheets/TcHTsRSczhda3BtpLQ4cMeVNnSf)
 
+【2023-3-16】[Poe](https://poe.com/claude+) 各种机器人，sage, gpt-4, ChatGPT等，一次免费体验机会
 
 ## ChatGPT 应用
 
@@ -191,7 +192,6 @@ ChatGPT在办公软件、社交文娱、营销广告、家庭助理四大方向�
 【2023-5-11】生成式AI创业领域
 - ![](https://pic3.zhimg.com/80/v2-bdd24bc6e1db0c18c5d8f616dcc578be_1440w.webp)
 - [全面接入！ChatGPT杀进15个商业应用，让AI替你打工](https://zhuanlan.zhihu.com/p/628096018)
-
 
 
 ### 受益方
@@ -615,41 +615,59 @@ print(response)
 GPT-4翻译
 > Translate this passage: "If a person is capable, they can excel in any profession they choose. If they're not capable, they won't succeed in any profession, no matter which one they choose. If you want to be successful, you must first become proficient in one field. Become an expert in your industry, and you'll achieve success. Is what I'm saying reasonable?"
 
-
-#### NLP评估
-
-##### ChatEval
-
-会话评估：[ChatEval](https://chateval.org/)，University of Pennyslvania 宾夕法尼亚大学NLP团队开源，开放领域机器人评估框架，研究人员可以提交自己的模型，ChatEval会自动对比评估效果
-- 公开数据集: Neural Conversational Model, Open Subtitles, Cornell Movie Dialogue Corpus ...
-- 开源，代码：[chateval](https://github.com/chateval)
-
-chatgpt用于NLG评估
-- 论文：[Is ChatGPT a Good NLG Evaluator? A Preliminary Study](https://www.aminer.cn/pub/6407fd3e90e50fcafd2747e3/is-chatgpt-a-good-nlg-evaluator-a-preliminary-study)
-- we regard ChatGPT as a **human evaluator** and give **task-specific** (e.g., summarization) and **aspect-specific** (e.g., relevance) instruction to prompt ChatGPT to score the generation of NLG models. We conduct experiments on three widely-used NLG meta-evaluation datasets (including summarization, story generation and data-to-text tasks).
-- Experimental results show that compared with previous automatic metrics, ChatGPT achieves state-of-the-art or competitive correlation with golden human judgments. We hope our preliminary study could prompt the emergence of a general-purposed reliable NLG metric.
-
-复杂会话质量评估：东南大学网络科学与工程学院
-- 论文：[Evaluation of ChatGPT as a Question Answering System for Answering Complex Questions](https://www.aminer.cn/pub/641137fe90e50fcafd17bb5e/evaluation-of-chatgpt-as-a-question-answering-system-for-answering-complex-questions)
--  we present a framework that evaluates its ability to answer complex questions. Our approach involves categorizing the potential features of complex questions and describing each test question with multiple labels to identify combinatorial reasoning. Following the black-box testing specifications of CheckList proposed by Ribeiro et.al, we develop an evaluation method to measure the functionality and reliability of ChatGPT in reasoning for answering complex questions.
-- We use the proposed framework to evaluate the performance of ChatGPT in question answering on 8 real-world KB-based CQA datasets, including 6 English and 2 multilingual datasets, with a total of approximately 190,000 test cases. We compare the evaluation results of ChatGPT, GPT-3.5, GPT-3, and FLAN-T5 to identify common long-term problems in LLMs.
-- The dataset and code are available at [Complex-Question-Answering-Evaluation-of-ChatGPT](https://github.com/tan92hl/Complex-Question-Answering-Evaluation-of-ChatGPT)
-
-Question
-- In various types of KBQA tasks, **complex question answering** (KB-based CQA) is a challenging task that requires question answering models to have the ability of compositional reasoning to answer questions that require multi-hop reasoning, attribute comparison, set operations, and other complex reasoning.
-- KBQA任务重，回答复杂问题很有挑战性，因为涉及这些问题要求多跳推理、属性对比、集合操作及其他复杂推理
-
-Overview
-
-To evaluate ChatGPT's ability to answer complex knowledge, we propose an evaluation framework: a feature-driven multi-label annotation method 特征驱动的多标签标注方法
-- First, we classify the **latent features** that constitute complex questions, and describe each question under test with multi-labels for identifying combinatorial reasoning. 
-- Secondly, following the black-box test specification of CheckList proposed by Microsoft, we design an **evaluation method** that introduces `CoT` hints to measure the reasoning function and reliability of large language models in answering complex questions. 
-
-Our evaluation uses 8 real complex question answering datasets, including **six** English datasets and **two** multilingual datasets, to further analyze the potential impact of language bias. We compared the evaluation results of `ChatGPT`, `GPT3.5`, `GPT3`, and `FLAN-T5` to identify persistent historical issues in `LLMs`. All data and results are available for further analysis.
+### 搜索
 
 
-【2023-3-16】[Poe](https://poe.com/claude+) 各种机器人，sage, gpt-4, ChatGPT等，一次免费体验机会
+#### WebGPT
 
+【2021-12-17】基于GPT3模型在搜索结果方面的优化
+- [WebGPT: Improving the factual accuracy of language models through web browsing](https://arxiv.org/abs/2112.09332)
+
+把原先需要人工创造的原始数据，或需要爬取的数据，直接通过输入层，从网页端Search Query到模型，经过内部网络的隐藏单元推理后，到输出层与人工结果进行对比，然后再调参。
+- 把工程方法融入到了模型训练的流程中，所以称之为“对GPT3做了一点小调整”。
+
+数据生产分为两个部分: demostration（演示）和comparison（对比）。
+- **demonstration**: 按照人类使用搜索引擎时的操作，针对给定的问题，对搜索引擎返回的结果，进行过滤。
+  - OpenAI将上述复杂的过程简单抽象为了10个commands（指令）。在特定开发的标注平台，记录人类的搜索过程，并将此过程中的操作和上下文转换为带标签的语料——语料的输入是上下文，command是具体操作。值得注意的是，为了包含搜索过程中的历史操作，上下文包含了对操作的总结。
+  - ![img](https://pica.zhimg.com/80/v2-5ab51dfb35e10dad2f4833d66cdbe5e6_1440w.webp?source=1940ef5c)
+  - ![img](https://picx.zhimg.com/80/v2-1e6196446b479f49cf9a0b9142f53b5d_1440w.webp?source=1940ef5c)
+- **comparison**: 针对某个特定的问题，模型生成两个答案，标注人员先对每个答案从trustworthness（可信度）、来源对结果的支持程度进行打分。在对两个答案进行对比打分。
+  - ![](https://picx.zhimg.com/80/v2-1bbc0cddf1943486bb30529d9595c2c0_1440w.webp?source=1940ef5c)
+
+
+WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune 的方法挺有趣的，采用了 behavior cloning, reward modeling, RL, rejection sampling
+
+模型由四个部分组成：
+- Behavior cloning（以下简称BC）
+- Reward model（以下简称RM）
+- Reinforcement learning（以下简称RL）
+- Reject Sampling（以下简称RS）
+
+这些均由GPT3类模型微调而来。做这个选择的原因就是GPT3模型在阅读理解、答案合成等领域涌现出了零样本学习的能力
+
+主要作用如下：
+- Behavior cloning
+  - 基于demonstration数据，模仿人类搜索+提取信息行为。可以简单地理解为一个分类任务的微调。
+- Reward model
+  - 基于comparison数据，输入问题、答案以及引用，模型给出一个得分，相当于是一个回归任务的微调。但由于得分的主观性过大，这里输入采用了同一个问题、两组答案与引用，groundTruth为comparison数据的标签，训练目标函数为交叉熵。
+- Reinforcement learning
+  - 这里的强化学习模型采用BC模型的参数初始化，通过RM生成奖励值，利用PPO算法更新模型参数，使得模型生成的结果得分越来越高。
+- Reject Sampling
+  - 拒绝采样，对BC / RL模型生成的结果进行采样，并对采样后的结果通过RM选取回报值最大的结果作为最终结果。
+
+结果对比
+- 5.1节介绍了不同部分组合的对比结果。主要对比RL、RS与baseline的BC的结果之间的对比。
+- 结论比较反直觉
+  - 一方面，虽然RL、RS比baseline都有提升，但RS的提升要更明显些；
+  - 另一方面，经过RL、RS两步的结果没有只进行RS的结果提升大。
+- 文章给出的可能原因是RS不需要更新基础的BC模型参数，而RL+RS同时对RM的结果优化，可能造成对RM的过度优化。
+
+作者：[Century See](https://www.zhihu.com/question/506813687/answer/2926709800)
+
+
+#### perplexity.ai
+
+待补充
 
 ### 写代码
 
