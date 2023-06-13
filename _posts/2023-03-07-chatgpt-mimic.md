@@ -1803,7 +1803,7 @@ chatgpt
 
 ### Dolly（真开源）
 
-【2023-4-12】[世界首款真开源类ChatGPT大模型Dolly 2.0](https://www.toutiao.com/article/7221415818079355426)，可随意修改商用
+【2023-4-12】[世界首款真开源类ChatGPT大模型Dolly 2.0](https://www.toutiao.com/article/7221415818079355426)，可随意修改商用; 基于[Eleuther.AI](https://www.eleuther.ai/)的 [Pythia](https://huggingface.co/EleutherAI/pythia-12b)
 - [项目链接](https://huggingface.co/databricks/dolly-v2-12b)
 - [数据集](https://github.com/databrickslabs/dolly/tree/master/data)
 
@@ -2399,11 +2399,11 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 
 #### CPM-Bee 清华
 
-国产开源大语言模型最强的应该是ChatGLM-6B, 清华大学KEG小组发布
+国产开源大语言模型最强的应该是 ChatGLM-6B, 清华大学 KEG小组发布
 
-【2023-5-27】5月27日，清华又发布大模型了，CPM-Bee，最高10b
+【2023-5-27】5月27日，清华又发布大模型了，[CPM-Bee](https://live.openbmb.org/models/bee)，最高10b
 测试效果：英文约等于 LLaMA-13B，中文ZeroCLUE评测远超其他模型,
-- 跟国内开源最强模型ChatGLM-6B相比：CPM-Bee亮点是完全开源，可随意商用，基于transformer，10b模型推理只需20GB显卡
+- 跟国内开源最强模型ChatGLM-6B相比：`CPM-Bee` 亮点是完全开源，可随意商用，基于transformer，10b模型推理只需20GB显卡
 
 相比较ChatGLM-6B，CPM-Bee的主要特点如下：
 - **开源协议**更加友好，只要获取书面授权即可商用。代码、预训练结果均开源，训练过程也是**全球直播**。
@@ -2888,6 +2888,14 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 
 RWKV原理见专题：[RWKV](/transformer#RWKV)
 
+### 微软-Orca（虎鲸）
+
+【2023-6-11】微软发布130亿参数模型Orca，表现比ChatGPT好。
+
+微软日前发布一款130亿参数的语言模型Orca（虎鲸），还在一系列基准测试中赢过主流大型基础模型，像是ChatGPT、Bard，以及其他同参数量的Vicuna-13B、Alpaca-13B和LLaMA-13B等模型。进一步来说，微软想通过学习、模仿大型语言模型的推理过程，来提高小模型表现，于是，他们以GPT-4为标杆，让Orca学习GPT-4的推理过程，包括解释步骤、逐步（Step by step）思考模式和其他复杂指令，并由ChatGPT的老师模型来引导。
+- 论文: [Orca: Progressive Learning from Complex Explanation Traces of GPT-4](https://arxiv.org/pdf/2306.02707.pdf)
+
+测试时，团队以GPT-4作为评分工具，来衡量Orca在严格的基准测试Big Bench Hard（BBH）中与其他SOTA模型的表现，发现比ChatGPT、Bard等要好，也在包含SAT、LSAT、GRE和GMAT等学术考试的AGIEval基准测试中，拿下不错成绩。
 
 ### trl
 
