@@ -1833,9 +1833,15 @@ chatgpt
 
 ### Linly-ChatFlow（中文）
 
-Chinese-LLaMA基础模型 -- huggingface demo [Linly-ChatFlow](https://huggingface.co/spaces/Linly-AI/Linly-ChatFlow)
+Chinese-LLaMA基础模型，深圳大学发布
+-  huggingface demo [Linly-ChatFlow](https://huggingface.co/spaces/Linly-AI/Linly-ChatFlow)
 - 【2023-3-28】 开放基于 LLaMA 的中文对话模型 Linly-ChatFlow-7B 
 - 【2023-4-27】 正式发布 Linly-ChatFlow-13B 对话模型、Linly-Chinese-LLaMA-33B 中文基础模型
+
+公开可用的模型有：
+- Linly-Chinese-LLaMA：中文基础模型，基于 LLaMA 在高质量中文语料上增量训练强化中文语言能力，现已开放 7B、13B 和 33B 量级，65B 正在训练中。
+- Linly-ChatFlow：中文对话模型，在 400 万指令数据集合上对中文基础模型指令精调，现已开放 7B、13B 对话模型。
+- Linly-ChatFlow-int4 ：ChatFlow 4-bit 量化版本，用于在 CPU 上部署模型推理。
 
 中文对话模型 [Linly-ChatFlow](https://github.com/CVI-SZU/Linly)
 - 模型基于 TencentPretrain 预训练框架实现，在 32 * A100 GPU 上全参数训练（Full-tuning）
@@ -2397,20 +2403,31 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 ```
 
 
-#### CPM-Bee 清华
+### CPM-Bee 基座模型 -- OpenBMB
 
-国产开源大语言模型最强的应该是 ChatGLM-6B, 清华大学 KEG小组发布
+国产开源大语言模型最强的应该是 ChatGLM-6B, 由清华大学 KEG小组发布
 
-【2023-5-27】5月27日，清华又发布大模型了，[CPM-Bee](https://live.openbmb.org/models/bee)，最高10b
-测试效果：英文约等于 LLaMA-13B，中文ZeroCLUE评测远超其他模型,
-- 跟国内开源最强模型ChatGLM-6B相比：`CPM-Bee` 亮点是完全开源，可随意商用，基于transformer，10b模型推理只需20GB显卡
+【2023-5-27】5月27日，OpenBMB 发布大模型 [CPM-Bee](https://live.openbmb.org/models/bee)，最高10b
+测试。
+- 研发团队包括`面壁智能`和`清华大学`自然语言处理实验室（THUNLP）
+- 基于自己的大模型 CPM-Ant 百亿参数中文大模型，性能优异; 直播训练过程,[model细节](https://www.openbmb.org/community/blogs/blogpage?id=98afef2ce45f4fe9a4bc15a66d7ccb92)
+- 效果：英文约等于 LLaMA-13B，中文ZeroCLUE评测远超其他模型
+  - 2023年1月15日，CPM-Bee 模型在 ZeroCLUE 榜单上[登顶榜首](https://zhuanlan.zhihu.com/p/599691418)，距离上一次刷新仅仅四天，并且将总分提高了3.375分，超过了原排名前五的模型间分数提升之和。
+- 跟国内开源最强模型ChatGLM-6B相比：`CPM-Bee` 亮点是**完全开源**，可随意商用，基于transformer，10b模型推理只需20GB显卡
+- [github](https://github.com/OpenBMB/CPM-Bee)
 
-相比较ChatGLM-6B，CPM-Bee的主要特点如下：
+`CPM-Bee`, 开源双语预训练语言模型，参数量为10B，拥有十余种原生能力和强大的通用语言能力，并支持结构化输入和输出。
+- `CPM-Live`直播训练过程中的第二个里程碑。训练过程是低成本和环境友好的。
+- 发布各种压缩版本以适应不同的硬件配置。
+- `CPM-Bee`采用了开放的许可协议，发布后的模型和代码将完全开放。
+- OpenBMB 始终秉承“让大模型飞入千家万户”的开源精神，CPM-Bee基座模型将完全开源并且可商用，以推动大模型领域的发展。
+
+相比较ChatGLM-6B，`CPM-Bee`的主要特点如下：
 - **开源协议**更加友好，只要获取书面授权即可商用。代码、预训练结果均开源，训练过程也是**全球直播**。
-- 从评测结果看，CPM-Bee模型效果也很优秀，中文ZeroCLUE评测中远超其它模型，英文多个任务评测结果也与LLaMA-13B差不多，部分任务上的表现超越GPT-3。
-- 推理成本与ChatGLM-6B差不多，最低10亿参数规模的模型仅需要4.1GB显存可做推理，而100亿参数规模的推理仅需20GB显卡，单张消费级显卡即可。
+- 从评测结果看，`CPM-Bee`模型效果也很优秀，中文`ZeroCLUE`评测中远超其它模型，英文多个任务评测结果也与`LLaMA-13B`差不多，部分任务上的表现超越`GPT-3`。
+- 推理成本与`ChatGLM-6B`差不多，最低10亿参数规模的模型仅需要4.1GB显存可做推理，而100亿参数规模的推理仅需20GB显卡，单张消费级显卡即可。
 
-总的来说，CPM-Bee是值得大家关注的模型，如果商用协议未来保持友好，且不断升级迭代，那也许会是一个可以和ChatGLM-6B模型竞争的一个国产替代好选择
+`CPM-Bee` 值得关注，如果商用协议未来保持友好，且不断升级迭代，那也许会是一个可以和`ChatGLM-6B`模型竞争的一个国产替代好选择
 
 【2023-6-1】[大模型再添重磅玩家：清华大学NLP实验室开源可商用大模型CPM-Bee](https://www.toutiao.com/article/7239364641036517940)
 - 5月27日，OpenBMB发布了一个最高有100亿参数规模的开源大语言模型CPM-BEE，OpenBMB是清华大学NLP实验室联合智源研究院成立的一个开源组织。该模型针对高质量中文数据集做了训练优化，支持中英文。根据官方测试结果，其英文测试水平约等于`LLaMA-13B`，中文评测结果优秀。
@@ -2418,9 +2435,10 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 CPM 全称Chinese Pretrained Model，Bee是该系列模型的第二个里程碑版本。
 - CPM-Bee模型是基于CPM-Ant模型继续训练得到。后者是2022年5月到9月训练的大语言模型。
 - 而CPM-Bee则是从2022年10月13日开启训练，相比之前，模型在很多任务上做了优化，包括文字填空、文本生成、问答等。
-- 基于transformer架构的自回归模型，在高质量的中英文数据集上训练了半年左右的时间。包含4个系列的预训练结果，参数分别是10亿、20亿、50亿和100亿。
+- 基于transformer架构的**自回归**模型，在高质量中英文数据集上训练了半年左右的时间。包含4个系列的预训练结果，参数分别是10亿、20亿、50亿和100亿。
 - CPM-Bee的中文数据集原始数据有1TB左右，做了预处理清洗之后有200GB的高质量中文数据集结果。并加入了400GB的多语言数据集，但没有透露数据集的具体信息。
 - CPM-Bee训练时间230天，成本85万左右。训练的tokens数量约6380亿左右（本部分数据与GitHub介绍有冲突）。
+- ![img](https://camo.githubusercontent.com/dcb83d9b76b9662f8cadc17fb1ccfc2115080fffa49d7a407d82431be54cc6e6/68747470733a2f2f692e696d676c6f632e636f6d2f323032332f30362f30372f5677674c4c4e2e706e67)
 
 此外，CPM-Bee的一个特点是在推理上占用的资源很小：
 
@@ -2432,6 +2450,10 @@ CPM 全称Chinese Pretrained Model，Bee是该系列模型的第二个里程碑�
 | CPM-Bee-1B | 4.1 GB | GTX 1660（6 GB）|
 
 最小的10亿参数版本的模型仅需要4.1GB显存即可运行！50亿参数规模版本需要11GB显存。另一个清华大学著名的开源模型ChatGLM-6B版本的推理需要13GB显存。
+
+问题：[issue](https://github.com/OpenBMB/CPM-Bee/issues/71)
+- CPM-Bee 跟 ChatGLM 什么关系？
+- 与 ChatGLM 对比评测
 
 #### VisualGLM-6B
 
@@ -2702,17 +2724,17 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
 
 ### PKU-Beaver（河狸）-- RLHF
 
-【2023-5-18】北京大学团队开源了名为 [PKU-Beaver（河狸）项目](https://github.com/PKU-Alignment/safe-rlhf), 首次公开了 RLHF 所需的数据集、训练和验证代码，是目前首个开源的可复现的 RLHF 基准
+【2023-5-18】北京大学团队开源了名为 [PKU-Beaver（河狸）](https://pku-beaver.github.io/) 项目[github](https://github.com/PKU-Alignment/safe-rlhf), 首次公开了 RLHF 所需的数据集、训练和验证代码，是目前首个开源的可复现的 RLHF 基准
 
-北大开源国内首个可复现的 RLHF 基准 PKU-Beaver（河狸），覆盖三步流程，以及评估，首次提出了带有约束的价值对齐技术 CVA（Constrained Value Alignment），Safe RLHF。GPT-4 评估 Beaver 安全性比 Alpaca更好。开源包含安全偏好的多轮RLHF数据集PKU-SafeRLHF-Datasets，规模达到100万条，涉及侮辱、歧视、犯罪、心理伤害、悲观情绪、色情、隐私等十余种维度的约束
-
+北大开源国内首个可复现的 RLHF 基准 PKU-Beaver（河狸），覆盖三步流程，以及评估，首次提出了带有约束的价值对齐技术 CVA（Constrained Value Alignment），Safe RLHF。
+- GPT-4 评估 Beaver 安全性比 Alpaca更好。开源包含安全偏好的多轮RLHF数据集PKU-SafeRLHF-Datasets，规模达到100万条，涉及侮辱、歧视、犯罪、心理伤害、悲观情绪、色情、隐私等十余种维度的约束
 
 |                                                                                                          |  SFT  | Preference Model | RLHF  | Safe-RLHF | PTX Loss | Evaluation |      Backend      |
 | -------------------------------------------------------------------------------------------------------- | :---: | :--------------: | :---: | :-------: | :------: | :--------: | :---------------: |
-| [Beaver](https://github.com/PKU-Alignment/safe-rlhf)</br>(Safe-RLHF)                                     |   ✔️   |        ✔️         |   ✔️   |     ✔️     |    ✔️     |     ✔️      |     DeepSpeed     |
-| [trlX](https://github.com/CarperAI/trlx)                                                                 |   ✔️   |        ❌         |   ✔️   |     ❌     |    ❌     |     ❌      | Accelerate / NeMo |
-| [DeepSpeed-Chat](https://github.com/microsoft/DeepSpeedExamples/tree/master/applications/DeepSpeed-Chat) |   ✔️   |        ✔️         |   ✔️   |     ❌     |    ✔️     |     ❌      |     DeepSpeed     |
-| [Colossal-AI](https://github.com/hpcaitech/ColossalAI)                                                   |   ✔️   |        ✔️         |   ✔️   |     ❌     |    ✔️     |     ❌      |    ColossalAI     |
+| [Beaver](https://github.com/PKU-Alignment/safe-rlhf)</br>(Safe-RLHF)  |   ✔️ |   ✔️  |   ✔️   |  ✔️  | ✔️  | ✔️ |  DeepSpeed |
+| [trlX](https://github.com/CarperAI/trlx)  |  ✔️ |  ❌ |   ✔️   |   ❌   |   ❌  |  ❌  | Accelerate / NeMo |
+| [DeepSpeed-Chat](https://github.com/microsoft/DeepSpeedExamples/tree/master/applications/DeepSpeed-Chat) |   ✔️   |        ✔️         |   ✔️   |     ❌     |    ✔️     |     ❌      |  DeepSpeed  |
+| [Colossal-AI](https://github.com/hpcaitech/ColossalAI)  |   ✔️   |  ✔️  |   ✔️   |  ❌   |  ✔️   |  ❌  |  ColossalAI |
 
 
 为解决人类标注产生的**偏见和歧视**等不安全因素，北京大学团队首次提出了带有**约束**的价值对齐技术 `CVA`（Constrained Value Alignment）。
@@ -2890,9 +2912,11 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 ### 微软-Orca（虎鲸）
 
-【2023-6-11】微软发布130亿参数模型Orca，表现比ChatGPT好。
+【2023-6-5】微软发布130亿参数模型Orca，表现比ChatGPT好。
 
-微软日前发布一款130亿参数的语言模型Orca（虎鲸），还在一系列基准测试中赢过主流大型基础模型，像是ChatGPT、Bard，以及其他同参数量的Vicuna-13B、Alpaca-13B和LLaMA-13B等模型。进一步来说，微软想通过学习、模仿大型语言模型的推理过程，来提高小模型表现，于是，他们以GPT-4为标杆，让Orca学习GPT-4的推理过程，包括解释步骤、逐步（Step by step）思考模式和其他复杂指令，并由ChatGPT的老师模型来引导。
+微软日前发布一款130亿参数的语言模型 `Orca`（虎鲸）
+- 基准测试中赢过主流大型基础模型，像是`ChatGPT`、`Bard`，以及同参数量的`Vicuna-13B`、`Alpaca-13B`和`LLaMA-13B`等模型。
+- 微软想通过学习、模仿大型语言模型的**推理过程**，来提高小模型表现，于是，以GPT-4为标杆，让Orca学习GPT-4的推理过程，包括**解释**步骤、**逐步**（Step by step）思考模式和其他复杂指令，并由ChatGPT模型来引导。
 - 论文: [Orca: Progressive Learning from Complex Explanation Traces of GPT-4](https://arxiv.org/pdf/2306.02707.pdf)
 
 测试时，团队以GPT-4作为评分工具，来衡量Orca在严格的基准测试Big Bench Hard（BBH）中与其他SOTA模型的表现，发现比ChatGPT、Bard等要好，也在包含SAT、LSAT、GRE和GMAT等学术考试的AGIEval基准测试中，拿下不错成绩。
