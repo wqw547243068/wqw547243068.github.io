@@ -1247,6 +1247,11 @@ ControlNet 的优点是：
 
 #### 写小说
 
+
+##### 长文本生成
+
+论文《[The LongForm: Optimizing Instruction Tuning for Long Text Generation with Corpus Extraction](https://arxiv.org/abs/2304.08460)》介绍了基于 C4 和 Wikipedia 等已有语料库的人工创作文档集合以及这些文档的指令，从而创建了一个适合长文本生成的指令调优数据集。
+
 ##### Re^3
 
 【2023-2-14】[Generating Longer Stories With Recursive Reprompting and Revision](https://arxiv.org/pdf/2210.06774.pdf), Meta 田渊栋写小说
