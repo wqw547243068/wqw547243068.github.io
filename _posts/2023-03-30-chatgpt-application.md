@@ -870,6 +870,53 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
 使用 GPT-4驱动，免费用户又30次查询，每邀请一个好友，就有100次额度，其中1次GPT-4、4次AI作画
 - Monica is an AI assistant powered by GPT-4. Register now to receive 100 free GPT Queries, including GPT-4, GPT-3.5, and AI Drawing. [邀请链接](https://monica.im/?c=CDM9HW5C)
 
+#### Smart Siri
+
+【2023-6-13】[用 ChatGPT 武装 Siri 有啥用途？](https://mp.weixin.qq.com/s/iVoI0t3qbpPEbDfIKgOhMA)
+
+ChatGPT的 app 更新后，能直接和 Siri、快捷指令（Shortcuts）联动，这样，Siri 就能用上 ChatGPT 的能力了。
+-  iOS 版本是 16.1 及以上，应用才能兼容使用
+
+智能助理的槽点：
+- “Siri 是人工智障”
+- 由于 Siri 更强调在用户设备端计算，需要保护个人隐私，只能做些特定任务，比如：查天气、定闹钟；
+
+但当 Siri 接入 ChatGPT 后，执行任务的角色就被后者接替了，想象空间变得更大了。
+- 方法一: 快捷指令基于 ChatGPT API 接口进行 JSON 格式的发送获取，发送和解析过程都会消耗很长时间，也会占用更多的 ChatGPT key 余额。
+- 方法二: 官方 app 接口可以直接省去用户打包数据提取数据的过程，直接向 app 发送请求并获取有效信息。中间省去了受网络波动、ChatGPT 用户过多、key 余额不足等因素的影响
+  - 不用懂有门槛的 JSON 语言，不用写代码，把自己的发问需求细化成小步骤，找到能实现对应任务的 app，像乐高积木一样拼起来就行了。
+
+“Smart Siri”: 升级版 Siri 可直接用语音发问，对于明确的、具体的发问，提炼得更好。
+- 直接喊“Hey Siri + Smart Siri”，等待，看到“Yes”后，就能开始问问题了
+- 工具：[ios下载地址](https://routinehub.co/shortcut/14389/), [Access-chatGPT-in-Siri](https://github.com/Daiyimo/Access-chatGPT-in-Siri): Siri接入ChatGPT指南。目前仅限iPhone端及其他支持快捷指令的Apple产品，后续会更新Android版本。
+- ![](https://github.com/Daiyimo/Access-chatGPT-in-Siri/raw/main/images/%E8%B0%83%E7%94%A8%E5%AE%98%E6%96%B9%E6%8E%A5%E5%8F%A3.jpg)
+
+分析
+- Siri 的表现相对刻板，它仅能提供网址以及内容概括，有时会直接告知未找到相关信息，仿佛是被束缚的人工智能
+- Smart Siri 则能立即提供不错的回答，简洁明了，看起来的确挺聪明的。
+
+|案例|Siri|Smart Siri|分析|
+|---|---|---|---|
+|宫保鸡丁|我在网上找到了这个结果:...|宫保鸡丁的正宗做法:1,2,3,...|直接给出做法|
+|光年之外有什么故事|搜索光年之外信息|《光年之外》是邓紫棋2016年发布的歌曲，灵感来自电影《星际穿越》...|直接解答|
+|用小红书格式写个朋友圈|依旧是搜索...|端午节朋友圈文案：1. 与美好生活一见“棕”情 2. 无论咸甜,阖家团圆才是最好的陷...||
+|帮我写个毕业季微电影的拍摄脚本|我在网上找到了这个结果:...|拍摄脚本|直接给出做法|
+
+微博博主 @[Sunbelife](https://weibo.com/n/Sunbelife) 展示的几个玩法，比如
+- 把 iPhone 内的睡眠数据（步数等健康数据）打包，让 ChatGPT 接入分析，最后生成一个“每日健康分析报告”——这个过程还可以是完全自动化的。
+- 智能家居: 
+  - 授权chatgpt app读取家庭数据,对智能家居进行开关、自动化及预处理，对气温、温度提出有效建议
+- 跨境电商分析场景：
+  - 解析电商规则，SEO优化、选品、广告优化、商品详情页优化、关键词优化、客服与售后自动化
+  - 不用打开其他app，直接用Siri体温，获取答案，优化
+
+苹果在 WWDC（苹果年度开发者大会）上并没有像其他科技巨头那般谈论（甚至吹捧）AI 大模型，但在一些小功能上，也都是基于 AI 去研发和改进的。比如
+- 打字，在 iOS 17 上，键盘上的错字自动纠正、打字实时预测（机器甚至能准确联想到一整句你最想表达的话）等功能
+- 这些都基于使用 Transformer 语言模型的 ML 程序开发。
+
+Smart Siri 不足：
+- ChatGPT 还无法实现连续对话，不过可以把之前的聊天记录粘贴进当前要问的问题里，也能间接连续问答的效果。
+
 ### 办公
 
 详见站内文章：[智能办公](aigc#智能办公)
