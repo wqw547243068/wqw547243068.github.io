@@ -308,9 +308,32 @@ ChatGPT也可以与其他AIGC模型联合使用，获得更加炫酷实用的功
 - 第二波：文档向量索引、对话。如ChatPDF/ChatDoc、数字化分身等，自己实现可参考 llamaindex
 - 第三波：自运行Agent。 如Microsoft Jarvis、  BabyAGI、autoGPT等
 
+### 提效降本
+
+#### AutoAgent
+
 自运行Agent：给一个任务，让GPT根据回复结果自己设定优先级进行后续的提问，获取信息、工作处理。
 - 如果未来跟其他API打通，差不多可以实现一句话做网站、买飞机票、定外卖等。
 - Twitter有高手完成了一句话生成网站并发布。国内也有朋友做了一句话生成前端页面[demo](​https://nlui.lxfater.com/)
+
+#### FrugalGPT 斯坦福
+
+【2023-5-9】[Cut the costs of GPT-4 by up to 98%](https://bdtechtalks.com/2023/06/12/reduce-costs-of-chatgpt-gpt-4/?utm_source=substack&utm_medium=email)
+
+GPT-4 is a very capable model. But it is also very expensive. Using it for real-world applications can quickly amount to thousands of dollars in API costs per month.
+
+In a recent study, researchers at Stanford University introduce “[FrugalGPT](https://substack.com/redirect/a82a2b73-2eb8-44a5-b067-04a36357dc20?j=eyJ1IjoiNGJ1bHkifQ.hPvX5Qf9I_Yt6AQx5dv_7Kto5X5Bi-g-XpGrr88s25Y),” a set of techniques that can considerably reduce the costs of using LLM APIs while maintaining accuracy and quality.
+- [FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance](https://arxiv.org/abs/2305.05176)
+
+Key findings:
+- The price of LLM APIs vary widely across different models
+- For many prompts, the smaller and cheaper models can perform just as well as the more complex LLMs
+- The FrugalGPT paper proposes three strategies to optimize LLM API usage 降低推理成本的三种方法
+  - (1) **提示适配**: 识别哪个prompt更有效(如短的) Prompt adaptation: Reduce the size of your prompt or bundle several prompts together
+  - (2) **模型近似**: 在具体任务上,用便宜小模型去匹配贵的大模型 Model approximation: Cache LLM responses or use model imitation to reduce the number of API calls to large models
+  - (3) **大模型叠加**: 根据query自动适配合适的LLM. LLM cascade: Create a list of LLM APIs from small to large; use the smallest model that can provide an acceptable answer to the user’s prompt
+  - ![](https://i0.wp.com/bdtechtalks.com/wp-content/uploads/2023/06/GPT-4-cost-recution-strategies.png?w=1392&ssl=1)
+- FrugalGPT, an implementation of the cascade model, resulted in orders of magnitude cost reduction and even improved accuracy
 
 ### 数据处理
 
