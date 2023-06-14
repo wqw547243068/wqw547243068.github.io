@@ -1631,7 +1631,7 @@ class Transformer(nn.Module):
 
 # Transformer 改进
 
-## Attention 
+## Attention 改进
 
 ### 计算效率
 
@@ -1642,6 +1642,15 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - 基于高效Attention: Reformer LinFormer Flash
 - 其他； S4, FLASH
 - ![](https://pic3.zhimg.com/80/v2-fae510edc3aff2863cca31bc0dcd2046_1440w.webp)
+
+### FlashAttention
+
+【2023-6-14】[FlashAttention: 更快训练更长上下文的GPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
+- 将 transformer 的 qkv 计算加速，方法：向量分块并行
+- 视频有特效。
+
+<iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
+
 
 ## Transformer-Decoder
 
@@ -1729,7 +1738,7 @@ GPT-2 模型训练后包含两个权值矩阵：`嵌入矩阵`和`位置编码�
 
 XLNet引入了自回归语言模型以及自编码语言模型
 
-### 杨植麟
+### 杨植麟介绍
 
 [循环智能（Recurrent）：用AI重塑沟通](https://www.cyzone.cn/article/557072.html)
 
