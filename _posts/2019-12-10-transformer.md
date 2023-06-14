@@ -19,6 +19,8 @@ permalink: /transformer
 - [Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/),[A PyTorch implementation of the Transformer model in "Attention is All You Need"](https://github.com/jadore801120/attention-is-all-you-need-pytorch)
 - 【2021-1-21】[The Transformer Family](https://lilianweng.github.io/lil-log/2020/04/07/the-transformer-family.html)
   - ![](https://lilianweng.github.io/lil-log/assets/images/transformer.png)
+- 【2023-6-14】李沐出品，[动手学深度学习](https://zh-v2.d2l.ai/index.html)，面向中文读者的能运行、可讨论的深度学习教科书，含 PyTorch、NumPy/MXNet、TensorFlow 和 PaddlePaddle 实现，包含 [NLP 预训练章节](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/index.html), [Transformer实践](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/bert.html)
+
 
 ## 总结
 
