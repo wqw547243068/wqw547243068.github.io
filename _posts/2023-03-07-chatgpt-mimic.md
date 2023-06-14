@@ -232,8 +232,11 @@ InstructGPT 分为如下三大步：
 ### （1） 第一步 SFT（全参数微调）
 
 SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt文本
+- ![img](https://pic3.zhimg.com/80/v2-45331e791fad76d81694bd61e806db8a_1440w.webp)
+- Transformer【左】GPT【右】
 
 大模型训练**基座模型**时，都采用「Next Token Prediction，`NTP`」 任务
+
 
 #### 数据示例
 
@@ -460,11 +463,16 @@ python chat.py \
 
 ### （2） 第二步 RM训练
 
-奖励模型（Reward Model, RM）目标是刻画模型的输出是否在人类看来表现不错。
+**奖励模型**（Reward Model, RM）目标是刻画模型的输出是否在人类看来表现不错。
 - 输入: \[提示(prompt)，模型生成的文本\] 
 - 输出: 一个刻画文本质量的标量数字。
+- ![](https://pic2.zhimg.com/80/v2-51ad9f0f11ba272611a068d380e7fe41_1440w.webp)
 
-![](https://pic2.zhimg.com/80/v2-51ad9f0f11ba272611a068d380e7fe41_1440w.webp)
+同一个prompt输出的多个答案，人工评测排序后，使用lambdarank的思想，优化RM奖励模型。
+
+RM模型学习的就是对于一个prompt，人类对答案的喜好程度。
+- RM模型【左】RM损失函数【右】
+- ![](https://pic3.zhimg.com/80/v2-6b22d510b56efc300b6bb1686407a40e_1440w.webp)
 
 奖励模型接收一系列文本并返回一个标量奖励，数值上对应人的偏好
 
@@ -790,7 +798,7 @@ def predict(model_path):
     return score
 ```
 
-### （3）ppo
+### （3）第三步 PPO
 
 训练策略模型，RLHF流程
 - ![flow](https://image.jiqizhixin.com/uploads/editor/791cb019-65f3-4aa2-98c8-ecdfdb6f145f/640.png)
@@ -806,6 +814,12 @@ def predict(model_path):
 - ![](https://pic3.zhimg.com/80/v2-b550c2a2474a6ca28e8c51023c5e1afa_1440w.webp)
 
 根据 PPO 算法，按当前批次数据的奖励指标进行优化 (来自 PPO 算法 on-policy 的特性) 。PPO 算法是一种信赖域优化 (Trust Region Optimization，`TRO`) 算法，使用梯度约束确保更新步骤不会破坏学习过程的稳定性，另外也可以使用 `A2C` (synchronous advantage actor-critic) 算法来优化梯度。
+
+利用SFT模型对输出进行改造，构造一个**双头PPO模型**，模型一头输出一个张量，代表生成序列每个元素的价值value；另一头将输出映射成prompt answer词典答案。[参考](https://zhuanlan.zhihu.com/p/618325377)
+- 将 `<prompt, prompt answer>` 输入到RM模型中，获得一个评估当前prompt对的奖励R，然后用R作为奖励，反向更新每个元素的价值value，这就是PPO强化学习算法。
+- ![img](https://pic4.zhimg.com/80/v2-b7872ef00df9809f0d3632896add3e73_1440w.webp)
+- Y=0, 常规 PPO
+- Y>=, PPO_ptx
 
 
 #### RL+LM研究方向
