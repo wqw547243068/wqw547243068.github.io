@@ -2689,12 +2689,10 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 ```
 
 
-### CPM-Bee 基座模型 -- OpenBMB
+### CPM-Bee 基座模型+Luca（露卡） -- OpenBMB
 
-国产开源大语言模型最强的应该是 ChatGLM-6B, 由清华大学 KEG小组发布
-
-【2023-5-27】5月27日，OpenBMB 发布大模型 [CPM-Bee](https://live.openbmb.org/models/bee)，最高10b
-测试。
+【2023-5-27】5月27日，OpenBMB 发布大模型 [CPM-Bee](https://live.openbmb.org/models/bee)，最高10b，并推出对话类模型产品“露卡”（Luca）。[资讯](https://mp.weixin.qq.com/s/d9F5kSbFye1oEhqfzFU7XA)
+- 露卡”（Luca）支持多轮对话与深度语义理解，可以根据输⼊文本语境和创作要求 ⾃动⽣成原创文案，并进一步进行改写或翻译，可以具体运用到诸多办公生活场景。支持结构化**内容生成**，可以 一键生成表格和代码。具备**多模态**输入理解的能力，能够识**别和解读图片**，升级了传统自然语言理解任务处理（情感分析、信息抽取等）的能力，最炫酷的功能就是能够**联网**进行信息搜索和摘要。
 - 研发团队包括`面壁智能`和`清华大学`自然语言处理实验室（THUNLP）
 - 基于自己的大模型 CPM-Ant 百亿参数中文大模型，性能优异; 直播训练过程,[model细节](https://www.openbmb.org/community/blogs/blogpage?id=98afef2ce45f4fe9a4bc15a66d7ccb92)
 - 效果：英文约等于 LLaMA-13B，中文ZeroCLUE评测远超其他模型
@@ -2736,6 +2734,19 @@ CPM 全称Chinese Pretrained Model，Bee是该系列模型的第二个里程碑�
 | CPM-Bee-1B | 4.1 GB | GTX 1660（6 GB）|
 
 最小的10亿参数版本的模型仅需要4.1GB显存即可运行！50亿参数规模版本需要11GB显存。另一个清华大学著名的开源模型ChatGLM-6B版本的推理需要13GB显存。
+
+【2023-5-15】面壁智能 联合来自清华、人大、腾讯的研究人员共同发布了 中文领域首个基于交互式网页搜索的问答开源模型 WebCPM，这一创举填补了国产大模型该领域的空白。面壁智能自研 工具学习引擎 BMTools 也因此被成功实践。
+
+[面壁智能](https://modelbest.cn)在 ChatGPT Plugins 发布后仅十天就推出 [BMTools](https://github.com/OpenBMB/BMTools), [官方公众号报道](https://mp.weixin.qq.com/s/onB66ADNau_1eV_a42nGww)
+- BMTools 是一个基于语言模型的开源可扩展工具学习平台。
+- 面壁研发团队将各种各样的工具调用流程都统一到一个框架上，使整个工具调用流程标准化、自动化。
+- BMTools 目前支持的插件，涵盖娱乐，学术，生活等多方面，包括 douban-film（豆瓣电影）、search（必应搜索）、Klarna（购物）等。开发者可以通过 BMTools，使用给定的模型（比如 ChatGPT、GPT-4）调用多种多样的工具接口，以实现特定功能。此外，BMTools 工具包也已集成最近爆火的 Auto-GPT 与 BabyAGI。
+
+WebCPM 成功实践了 BMTools, 中文领域首个基于交互式网页搜索的问答开源模型框架 `WebCPM`，这一创举填补了国产大模型该领域的空白
+- [paper](https://arxiv.org/abs/2305.06849), [code](https://github.com/thunlp/WebCPM)
+- WebCPM 的特点在于其信息检索基于交互式网页搜索，能够像人类一样与搜索引擎交互从而收集回答问题所需要的事实性知识并生成答案。换言之，大模型在联网功能的加持下，回答问题的实时性和准确性都得到了飞跃式增强。
+- WebCPM 对标的是 WebGPT ， WebGPT 也正是微软近期推出的 New Bing 背后的新一代搜索技术。同 WebGPT一样，WebCPM 克服了传统的 LFQA（ Long-form Question Answering）长文本开放问答范式的缺陷：依赖于非交互式的检索方法，即仅使用原始问题作为查询语句来检索信息。
+
 
 问题：[issue](https://github.com/OpenBMB/CPM-Bee/issues/71)
 - CPM-Bee 跟 ChatGLM 什么关系？
@@ -2956,7 +2967,7 @@ python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m 
 ### 知乎：知海图AI
 
 【2023-4-13】知乎发布大模型「知海图 AI」并内测「热榜摘要」，知乎发现大会介绍的 “知海图AI”大模型
-- “知海图AI”的训练基于面壁智能自主研发的 CPM企业级大模型 与 ModelForce大模型系统。
+- “知海图AI”的训练基于`面壁智能`自主研发的 `CPM`企业级大模型 与 `ModelForce`大模型系统。
 
 ### Claude
 
