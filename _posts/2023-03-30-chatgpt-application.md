@@ -688,6 +688,14 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 作者：[Century See](https://www.zhihu.com/question/506813687/answer/2926709800)
 
 
+#### WebCPM
+
+【2023-5-15】WebCPM 成功实践了 [BMTools](https://mp.weixin.qq.com/s/NLzno1XRHQLyMFfh5CeJpw), 中文领域首个基于交互式网页搜索的问答开源模型框架 `WebCPM`，这一创举填补了国产大模型该领域的空白
+- [paper](https://arxiv.org/abs/2305.06849), [code](https://github.com/thunlp/WebCPM)
+- WebCPM 的特点在于其信息检索基于交互式网页搜索，能够像人类一样与搜索引擎交互从而收集回答问题所需要的事实性知识并生成答案。换言之，大模型在联网功能的加持下，回答问题的实时性和准确性都得到了飞跃式增强。
+- WebCPM 对标的是 WebGPT ， WebGPT 也正是微软近期推出的 New Bing 背后的新一代搜索技术。同 WebGPT一样，WebCPM 克服了传统的 LFQA（ Long-form Question Answering）长文本开放问答范式的缺陷：依赖于非交互式的检索方法，即仅使用原始问题作为查询语句来检索信息。
+
+
 #### perplexity.ai
 
 待补充
@@ -1320,7 +1328,7 @@ BloombergGPT的训练数据库名为FINPILE，由一系列英文金融信息组�
 
 Action 实现上，除了 OpenAI  的 Plugin，Adept 和 Inflection 这两家早期团队想以自然语言为基础，为用户打造新的 LUI （语言为基础的 UI）方式。
 
-#### Plugin
+#### OpenAI Plugin
 
 3月24日，OpenAI宣布解除了ChatGPT无法联网的限制，以第三方插件为中介，使ChatGPT能访问其他网站并获取实时信息，还支持执行计算。
 
@@ -1617,6 +1625,23 @@ print(response)
 
 错误信息
 > tls_client.exceptions.TLSClientExeption: failed to do request: Get "https://you.com/api/streamingSearch?q=Write+a+poem+on+Lionel+Messi&page=1&count=10&safeSearch=Moderate&onShoppingPage=False&mkt=&responseFilter=WebPages%2CTranslations%2CTimeZone%2CComputation%2CRelatedSearches&domain=youchat&queryTraceId=77ebaf4c-ba0c-4035-bad6-1dafc27fdc14&chat=%5B%5D": dial tcp 192.133.77.59:443: i/o timeout (Client.Timeout exceeded while awaiting headers)
+
+#### BMTool
+
+【2023-4-4】面壁智能自研工具学习引擎 BMTools （[发布资讯](https://mp.weixin.qq.com/s/NLzno1XRHQLyMFfh5CeJpw)） 也因此被成功实践。
+
+【2023-5-15】面壁智能 联合来自清华、人大、腾讯的研究人员共同发布了 中文领域首个基于交互式网页搜索的问答开源模型 WebCPM，这一创举填补了国产大模型该领域的空白。
+
+[面壁智能](https://modelbest.cn)在 ChatGPT Plugins 发布后仅十天就推出 [BMTools](https://github.com/OpenBMB/BMTools), [官方公众号报道](https://mp.weixin.qq.com/s/onB66ADNau_1eV_a42nGww)
+- [BMTools](https://github.com/OpenBMB/BMTools) 是一个基于语言模型的开源可扩展工具学习平台。
+- 面壁研发团队将各种各样的工具调用流程都统一到一个框架上，使整个工具调用流程标准化、自动化。
+- [BMTools](https://github.com/OpenBMB/BMTools) 目前支持的插件，涵盖娱乐，学术，生活等多方面，包括 douban-film（豆瓣电影）、search（必应搜索）、Klarna（购物）等。开发者可以通过 BMTools，使用给定的模型（比如 ChatGPT、GPT-4）调用多种多样的工具接口，以实现特定功能。此外，BMTools 工具包也已集成最近爆火的 Auto-GPT 与 BabyAGI。
+
+BMTools 支持 Open AI 的 Plugins，同时也允许开发者自己加入的工具列表。BMTools 目前接入了OpenAI 的 ChatGPT 和 GPT4 模型，并提供了 OpenAI Plugins 的相应实现。同时，通过 BMTools，开发人员可以根据自己的需求，自定义选择合适的工具加入列表，提高特定开发的效率和质量。
+
+详见官方介绍：[发布资讯](https://mp.weixin.qq.com/s/NLzno1XRHQLyMFfh5CeJpw)
+
+
 
 ### 机器人
 
