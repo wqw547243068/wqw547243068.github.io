@@ -35,16 +35,16 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 如何成为20%？
 
 个人经验：
-1. 代码算法：
+1. **代码算法**：
   - C字符串函数
   - 基本算法（如快排等，需要熟练掌握）
   - 剑指Offer：面试经常出相似的题，类似书籍《编程珠玑》、《编程之美》、《程序员面试宝典》
   - LeetCode（增强动手能力）【2019-06-06】[程序员小吴](https://www.cxyxiaowu.com/)的[图解Leetcode](https://github.com/MisterBooo/LeetCodeAnimation)
-1. 计算机功底
+1. **计算机功底**
   - 熟练使用Linux开发环境：shell+vim+awk+git
   - 操作系统、web（浏览器工作原理）、cpu、内存
   - 数学基础：概率、线代、优化、微积分等
-1. 数据挖掘（特征工程）
+1. **数据挖掘**（特征工程）
   - excel、awk、python
   - Hadoop/Hive/Spark
   - [教你如何迅速秒杀掉：99%的海量数据处理面试题](https://link.zhihu.com/?target=http%3A//blog.csdn.net/v_july_v/article/details/7382693)。（基本每次都有一道海量数据处理的面试题）
@@ -54,26 +54,27 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
     - 深入理解业务，培养数据敏感度，见微知著
     - 不要只关心算法，不理业务！
     - 开阔视野，与时俱进，复合人才：[人人都是产品经理](http://www.woshipm.com/)、极客公园、36Kr、雷锋、机器之心等
-1. 机器学习：
+1. **机器学习**：
   - 李航《统计学习方法》（读3遍都不为过）
   - Coursera Stanford《Machine Learning》（讲得很基础，但是没有告诉你所以然）
   - Coursera 台湾大学《机器学习高级技法》、李宏毅的深度学习等（里面详解了SVM，Ensemble等模型的推导，优劣）
   - 此处资料太多。。。
-1. 项目经验
+1. **项目经验**
   - 请详细地回忆自己做过的项目
     - 项目用了什么算法，为什么用它，有什么优缺点等。
     - 注意：逻辑严密、思路清晰
-1. 技术影响力
+1. **技术影响力**
   - 技术竞赛：阿里天池、Kaggle、KDD等
   - 顶会论文
   - 书籍出版
   - 最好有自己的github，有自己的项目（不只是clone），并且定期更新
 
 面试技巧
-- 自信、淡定：一紧张就会漏洞百出，发挥失常 —— “不就一次面试嘛，没什么大不了的”
-- 三思而行：开口前多换位思考，面试官到底想问什么，为什么会这样问，怎么回答比较好
-- 反客为主：主动引导，从跌倒的地方爬起来
+- **自信、淡定**：一紧张就会漏洞百出，发挥失常 —— “<span style='color:green'>不就一次面试嘛，没什么大不了的</span>”
+- **三思而行**：开口前多换位思考，面试官到底想问什么，为什么会这样问，怎么回答比较好
+- **反客为主**：主动引导，从跌倒的地方爬起来 —— 不会的问题大方承认，但要适当引导到自己擅长的领域，避免造成“啥也不会”的印象
 - 个人品质：诚实可靠，虚怀若谷，积极上进，尽量不要让面试官难堪
+
 学习方法
 - 构建自己的知识体系，终身学习
 - 想牛人看齐，主动营造积极向上的环境
@@ -81,6 +82,12 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 
 ## 面试流程
 
+### 面试特点
+
+【2023-6-14】面试是招聘方通过<span style='color:blue'>即时有偏采样</span>来了解候选人能力的过程，充满了**信息不对称**和**不公平**，只要没说出来的，默认不会
+- 即时：只有30min-1h
+- 有偏：按岗位、面试官偏好提问题
+- 采样：时间有限，只能抽样问答，有一定随机性
 
 ### 面试官
 
