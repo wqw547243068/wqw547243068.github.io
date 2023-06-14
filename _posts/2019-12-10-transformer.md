@@ -1555,6 +1555,18 @@ class Transformer(nn.Module):
 
 # Transformer 改进
 
+## Attention 
+
+### 计算效率
+
+attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
+- 基于状态迭代: TransformerXL RMT
+- 基于位置编码外推能力: ALiBi xPos Unlimiformer
+- 基于工程优化: FlashAttention
+- 基于高效Attention: Reformer LinFormer Flash
+- 其他； S4, FLASH
+- ![](https://pic3.zhimg.com/80/v2-fae510edc3aff2863cca31bc0dcd2046_1440w.webp)
+
 ## Transformer-Decoder
 
 【2021-4-19】[https://zhuanlan.zhihu.com/p/179959751](https://zhuanlan.zhihu.com/p/79714797)
