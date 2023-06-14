@@ -749,6 +749,36 @@ def residual(sublayer_fn,x):
 
 至此，**residual connection**的问题理清楚了。更多关于残差网络的介绍可以看文末的参考文献。
 
+### Pre-LN VS Post-LN
+
+【2023-6-14】[此「错」并非真的错：从四篇经典论文入手，理解Transformer架构图「错」在何处](https://www.jiqizhixin.com/articles/2023-06-13-4)
+- Sebastian: 指出谷歌大脑团队论文《Attention Is All You Need》中 Transformer 构架图与代码不一致
+- 最初的 Transformer 构架图确实与代码不一致, 但 2017 年提交的代码版本进行了修改，但同时没有更新架构图。这也是造成「不一致」讨论的根本原因。
+
+Layer Norm 位置 -- 详细解答见[为什么Pre Norm的效果不如Post Norm？](https://spaces.ac.cn/archives/9009)
+- `Pre-LN`: LN 在 self-attention 之前, 放残差连接里
+  - 效果：梯度更好, 可解决梯度问题, 更容易训练, 但可能导致表征崩溃
+  - 分析: 
+    - 容易训练: 因为 恒等路径更突出
+    - 效果不好: Pre Norm结构无形地增加了**模型宽度**而降低了**模型深度**，而深度通常比宽度更重要，所以降低深度导致最终效果变差了
+- `Post-LN`: LN 在 self-attention 和 FFN 之后
+  - 效果: 预期的梯度被放大, 最终效果更好
+  - 分析: 每Norm一次就削弱一次恒等分支的权重，所以Post Norm反而是更突出残差分支的，因此Post Norm中的层数更加“足秤”，一旦训练好之后效果更优。
+- Deep-LN: 未知
+
+结论:
+> 同一设置之下，Pre Norm 结构往往更容易**训练**，但最终**效果**通常不如Post Norm。
+
+2020年的论文: [On Layer Normalization in the Transformer Architecture](https://zhuanlan.zhihu.com/p/633358080)
+
+Transformer 架构论文中的**层归一化**表明，`Pre-LN` 工作得更好，可解决梯度问题。
+- 许多体系架构采用了这种方法，但可能导致**表征崩溃**。有论文将pre 和 post结合
+- ![img](https://image.jiqizhixin.com/uploads/editor/85586261-eff5-475e-9d0c-952985984a4b/640.png)
+- 将 Post-LN 和 Pre-LN 一起用，《 [ResiDual: Transformer with Dual Residual Connections](https://arxiv.org/abs/2304.14802)》，是否有用还有待观察。
+
+注
+- 面试题目： 为什么 Trans/GPT-1 采用 Post-LN 而 GPT-2 采用 Pre-LN ？
+
 ## Layer normalization是什么？
 
 [GRADIENTS, BATCH NORMALIZATION AND LAYER NORMALIZATION](https://theneuralperspective.com/2016/10/27/gradient-topics/)一文对normalization有很好的解释：
@@ -1096,7 +1126,53 @@ seq_embedding = seq_embedding(inputs)*np.sqrt(d_model)
 
 如果你想获取更详细的关于word embedding的信息，可以看我的另外一个文章[word2vec的笔记和实现](https://github.com/luozhouyang/machine-learning-notes/blob/master/word2vec.ipynb)。
 
+### 位置编码: BERT vs Trans
+
+各个模型的位置编码差异
+- Word2Vec 没有位置编码
+- Trans 位置编码是一个sin和cos函数算出来的固定值，只能标记这是某一个位置，并不能标记这个位置有啥用。
+  - 满足条件：绝对位置、相对位置、考虑远近、便于线性变换
+- BERT 位置编码是一个可学习的embedding，所以不仅可以标注这一个位置，还能学习<span style='color:blue'>这个位置有什么作用</span>。
+  - 维护3个embedding矩阵，词、段、位置。词是怎么取embedding的，段和位置就怎么取embedding
+  - ![img](https://zh-v2.d2l.ai/_images/bert-input.svg)
+
+[BERT](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/bert.html#subsec-bert-input-rep)
+
+与 TransformerEncoder不同， BERTEncoder 使用**片段嵌入**和可学习的**位置嵌入**。
+- nn.Parameter 传入的是一个**随机数**
+
+```py
+#@save
+class BERTEncoder(nn.Module):
+    """BERT编码器"""
+    def __init__(self, vocab_size, num_hiddens, norm_shape, ffn_num_input,
+                 ffn_num_hiddens, num_heads, num_layers, dropout,
+                 max_len=1000, key_size=768, query_size=768, value_size=768,
+                 **kwargs):
+        super(BERTEncoder, self).__init__(**kwargs)
+        self.token_embedding = nn.Embedding(vocab_size, num_hiddens)
+        self.segment_embedding = nn.Embedding(2, num_hiddens)
+        self.blks = nn.Sequential()
+        for i in range(num_layers):
+            self.blks.add_module(f"{i}", d2l.EncoderBlock(
+                key_size, query_size, value_size, num_hiddens, norm_shape,
+                ffn_num_input, ffn_num_hiddens, num_heads, dropout, True))
+        # 在BERT中，位置嵌入是可学习的，因此我们创建一个足够长的位置嵌入参数
+        self.pos_embedding = nn.Parameter(torch.randn(1, max_len, num_hiddens))
+
+    def forward(self, tokens, segments, valid_lens):
+        # 在以下代码段中，X的形状保持不变：（批量大小，最大序列长度，num_hiddens）
+        X = self.token_embedding(tokens) + self.segment_embedding(segments)
+        X = X + self.pos_embedding.data[:, :X.shape[1], :]
+        for blk in self.blks:
+            X = blk(X, valid_lens)
+        return X
+```
+
+详见：BERT
+
 ## Position-wise Feed-Forward network是什么？
+
 这就是一个全连接网络，包含两个线性变换和一个非线性函数（实际上就是ReLU）。公式如下：
 
 $$FFN(x)=max(0,xW_1+b_1)W_2+b_2$$
