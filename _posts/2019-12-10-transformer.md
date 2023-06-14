@@ -395,7 +395,12 @@ Attention 机制也可以分成很多种。[Attention? Attention!](https://lilia
 
 ### Self-attention是什么？
 
-到这里就可以解释什么是**self-attention**了。
+什么是**self-attention**
+
+self-attention 结构图。[原文](https://zhuanlan.zhihu.com/p/636889198)
+- 一个输入序列的向量集合（矩阵），经过Wq、Wk、Wv三个权重矩阵计算之后，生成了Q、K、V三个矩阵，经过FF网络，最后生成了新的向量集合。
+- ![img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
+- [img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
 
 attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
 
@@ -631,8 +636,8 @@ Attention 细节
 ### 2.3. Query, Key, Value
  
 Query和Key作用得到的attention权值作用到Value上。因此它们之间的关系是:
-1.  Query![[公式]](https://www.zhihu.com/equation?tex=%28M%5Ctimes+d_%7Bqk%7D%29) 和Key![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bqk%7D%29)的维度必须一致，Value ![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bv%7D%29) 和Query/Key的维度可以不一致。
-2.  Key![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bqk%7D%29)和Value ![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bv%7D%29)的长度必须一致。Key和Value本质上对应了同一个Sequence在不同空间的表达。
+1.  Query ![[公式]](https://www.zhihu.com/equation?tex=%28M%5Ctimes+d_%7Bqk%7D%29) 和 Key![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bqk%7D%29)的维度必须一致，Value ![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bv%7D%29) 和Query/Key的维度可以不一致。
+2.  Key ![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bqk%7D%29)和Value ![[公式]](https://www.zhihu.com/equation?tex=%28N%5Ctimes+d_%7Bv%7D%29)的长度必须一致。Key和Value本质上对应了同一个Sequence在不同空间的表达。
 3.  Attention得到的Output ![[公式]](https://www.zhihu.com/equation?tex=%28M%5Ctimes+d_%7Bv%7D%29) 的维度和Value的维度一致，长度和Query一致。
 4.  Output每个位置 i 是由value的所有位置的vector加权平均之后的向量；而其权值是由位置为i 的query和key的所有位置经过attention计算得到的 ，权值的个数等于key/value的长度。
  
@@ -919,7 +924,7 @@ def sequence_mask(seq):
 
 【2021-8-25】[面经：什么是Transformer位置编码？](https://blog.csdn.net/Datawhale/article/details/119582757)
 
-好了，终于要解释**位置编码**了，那就是文字开始的结构图提到的**Positional encoding**。
+终于要解释**位置编码**了，那就是文字开始的结构图提到的**Positional encoding**。
 
 就目前而言，我们的Transformer架构似乎少了点什么东西。没错，就是**它对序列的顺序没有约束**！序列的顺序是一个很重要的信息，如果缺失了这个信息，可能我们的结果就是：所有词语都对了，但是无法组成有意义的语句
 
@@ -976,9 +981,17 @@ transformer怎么做呢？论文的实现很有意思，使用正余弦函数。
 
 以上就是$PE$的所有秘密。说完了positional encoding，那么我们还有一个与之处于同一地位的**word embedding**。
 
-**Word embedding**大家都很熟悉了，它是对序列中的词汇的编码，把每一个词汇编码成$d_{model}$维的向量！看到没有，**Postional encoding是对词汇的位置编码，word embedding是对词汇本身编码**！
+**Word embedding**大家都很熟悉了，它是对序列中的词汇的编码，把每一个词汇编码成$d_{model}$维的向量！看到没有，**Postional encoding是对词汇的位置编码，word embedding是对词汇本身编码**
 
-所以，我更喜欢positional encoding的另外一个名字**Positional embedding**！
+所以，我更喜欢positional encoding的另外一个名字**Positional embedding**
+
+### 图解位置编码
+
+输入 attention 结构之前，每个字做 word embedding 和 positional embedding。
+- 加位置 embedding是为了服务于 self-attention 的目标，即得到一个 word 序列中每两个word 之间的相关性。
+- word之间的相关性，只跟**相对位置**有关、而与绝对位置无关。[img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
+- ![img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
+
 
 ### 为什么用位置编码
 
@@ -1648,6 +1661,9 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 【2023-6-14】[FlashAttention: 更快训练更长上下文的GPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
 - 将 transformer 的 qkv 计算加速，方法：向量分块并行
 - 视频有特效。
+- [飞书合集文档](https://bytedance.feishu.cn/docx/doxcn3zm448MK9sK6pHuPsqtH8f)
+- [FlashAttention](https://readpaper.feishu.cn/docx/AC7JdtLrhoKpgxxSRM8cfUounsh)
+- [GitHub CodeRepo](https://github.com/cauyxy/bilivideos/tree/master/flash-attn)
 
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
