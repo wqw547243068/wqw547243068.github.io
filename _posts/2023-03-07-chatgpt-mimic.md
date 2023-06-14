@@ -995,6 +995,258 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 谷歌唯一剩下的步骤是通过人类反馈使这个 LLM 与对话场景对齐（alignment）。如果他们很快发布类似 ChatGPT 的或者更好的聊天机器人，我不会感到惊讶 —— 尽管他们最近 “失败” 地展示了一版可能基于 LaMDA 的 Bard。
 
+## LLM大全
+
+【2023-6-13】LLM 里程碑论文及各大模型信息, pretrain、instruct、对齐、开源模型等维度汇总LLM
+- [Awesome-LLM](https://github.com/Hannibal046/Awesome-LLM)
+- ![](https://github.com/Mooler0410/LLMsPracticalGuide/raw/main/imgs/survey-gif-test.gif)
+
+### 大模型汇总
+
+大模型越烧越旺的一周
+- 3月13日，斯坦福发布[LLaMA模型改进版](https://github.com/tatsu-lab/stanford_alpaca)
+- 3月14日，清华发布[ChatGLM-6B模型](https://github.com/THUDM/ChatGLM-6B)
+- 3月14日，OpenAI发布[GPT4模型](https://openai.com/product/gpt-4)
+- 3月14日，谷歌给出[PaLM API](https://blog.google/technology/ai/ai-developers-google-cloud-workspace/)
+- 3月15日，[PyTorch2.0发布](https://pytorch.org/blog/pytorch-2.0-release/)
+- 3月16日，微软发布[Microsoft 365 Copilot](https://blogs.microsoft.com/blog/2023/03/16/introducing-microsoft-365-copilot-your-copilot-for-work/)
+- 3月16日，百度发布[文心一言](https://yiyan.baidu.com/welcome)
+- 3月22日，谷歌发布BARD内测
+
+大模型汇总
+
+|模型|作者|时间|规模|语料|是否开源|可用性|
+|---|---|---|---|---|---|---|
+|GPT-3系列|OpenAI||1750亿|-|否|API|
+|LaMDA|Google|？||？|否|否|
+|OPT|Meta|2022年5月|1750亿|？|是|是|
+|BLOOM|Big Science<br>French National Center|2022年7月|1760亿|46种语言|是|是，huggingface上,训练117天，用于|
+|Sparrow|||||||
+
+colossalai 训练多个大模型，提升效率，参考：[是否有更高效的大模型训练方法](https://github.com/hpcaitech/ColossalAI/discussions/2335)
+- `GLM-130` 26%~30%
+- `GPT3` 21.3%
+- Gopher 32.5%
+- Turing 30.2%
+- `BLOOM` 35.6%
+- `OPT` 36.7%
+- PaLM 46.2%
+
+大模型中，具备可比性的是`BLOOM`和`OPT`（GPT架构，A100 80G）
+
+总结
+- OpenAI 开发的 GPT-3 并不开源；
+- Meta 开发的 OPT-175B 虽然开源，但完整模型只有在提出申请后才能获得，并且只能用于非商业用途。
+- 而 Bloom 就完全不同，并没有这些限制，任何个人或机构都可以免费获得 1760 亿个参数的完整模型。
+
+
+严格复刻`GPT-3`方案并开放模型
+- 国外
+  - [eleuther.ai](https://www.eleuther.ai/)，其于huggingface平台提供的finetune和推理接口，目前提供的版本如下：[img](https://pic3.zhimg.com/80/v2-cc9a9cd551730b1144af5ec4eb8aecfa_1440w.webp)
+  - facebook 对标gpt-3开放了`opt`模型，其于huggingface平台提供的finetune和推理接口
+- 国内
+  - `阿里达摩院`，其于modelscope平台提供的finetune和推理接口，目前提供的版本如下：[img](https://pic3.zhimg.com/80/v2-3e6b687dbeea0bfaca523a0b9d228532_1440w.webp)
+
+
+### OPT
+
+2022年5月，Meta AI 开源了 Open Pretrained Transformer (`OPT`-175B)，一个拥有 1750 亿个参数的语言模型，使用了 5 个公开数据集的 **800GB** 数据进行训练；旨在刺激大型语言模型 (LLM) 的使用。
+- Meta AI 仅使用 16 个 NVIDIA V100 GPU 来训练和部署模型的代码库，以提高这些模型专门用于研究目的的可访问性，并为在一个共同的共享模型上分析植根于可量化指标的潜在危害提供基础。
+- 训练代价：OPT-175B 的开销仍然太过高昂：一次训练就将需要在约 1000 个 80G A100 GPU 上花费至少 2个月时间（数据来自于 OPT 的原始文献）
+- 还发布了一套较小规模的基线模型，使用与 OPT-175B 相同的数据集，设置也和 OPT-175B 类似，以使得研究人员能够单独研究模型规模的影响。这些小规模模型的参数包括 1.25 亿、3.5 亿、13 亿、27 亿、67 亿、130 亿和 300 亿（660 亿即将发布）。
+
+OPT-175B 是 Meta 开源的大语言模型，拥有超过 1750 亿个参数 —— 和 GPT-3 相当。相比 GPT-3，OPT-175B 的优势在于它**完全免费**。
+
+Meta 还公布了代码库、开发过程日志、数据、研究论文和其他与 OPT-175B 相关的信息。尽管 OPT-175B 是免费的，但 Meta 也给出了一些限制。为了防止误用和 “保持完整性”，OPT-175B 只允许在**非商业**用途下使用。
+- OPT-175B 的多数应用场景还是在科研上。
+
+OPT
+- The OPT model was proposed in Open Pre-trained Transformer Language Models by Meta AI. 
+- The model was pretrained using a **causal language modeling** (CLM) objective. OPT belongs to the same family of decoder-only models like `GPT-3`. As such, it was pretrained using the self-supervised causal language modedling objective.
+  - `CLM` 因果语言模型：即传统的自回归语言模型，Causal language modeling predicts the next token in a sequence of tokens, and the model can only attend to tokens on the left. This means <span style='color:red'>the model cannot see future tokens</span>. `GPT-2` is an example of a causal language model.
+  - `MLM` 掩码语言模型：Masked language modeling predicts a masked token in a sequence, and the model can attend to tokens **bidirectionally**. This means the model has full access to the tokens on the left and right. `BERT` is an example of a masked language model. 参考：[huggingface](https://huggingface.co/docs/transformers/tasks/language_modeling)
+- 论文地址：[OPT: Open Pre-trained Transformer Language Models](https://arxiv.org/pdf/2205.01068.pdf)
+- [请求访问权限地址](https://forms.gle/dag8g7nKiR4o4VZq5)
+- [OPT源码](https://github.com/facebookresearch/metaseq), [huggingface](https://huggingface.co/docs/transformers/model_doc/opt)
+- `语料`（corpus）：预训练语料以英文为主，少量非英文（commoncrawl），The pre-training corpus contains a concatenation of datasets used in RoBERTa (Liu et al., 2019b), the Pile (Gao et al., 2021a), and PushShift.io Reddit (Baumgartner et al., 2020; Roller et al., 2021). All corpora were previously collected or filtered to contain predominantly English text, but a small amount of non-English data is still present within the corpus via [CommonCrawl](https://commoncrawl.org/the-data/get-started/)
+  - Common Crawl包含了超过7年的网络爬虫数据集，包含原始网页数据、元数据提取和文本提取。常见的爬行数据存储在Amazon Web服务的公共数据集和遍布全球的多个学术云平台上,拥有PB级规模，常用于学习词嵌入。
+
+Tips:
+- `OPT` has the same architecture as `BartDecoder`.
+- Contrary to `GPT2`, `OPT` adds the EOS token \</s\> to the beginning of every prompt. Note: Make sure to pass `use_fast=False` when loading OPT’s tokenizer with AutoTokenizer to get the correct tokenizer.
+
+【2023-02-20】[别等ChatGPT开源了](https://mp.weixin.qq.com/s/_itE0iUCS7lfrMb4Pzx-ig), Meta「对2000个语言任务进行了微调，包含1750 亿个参数」，还将为非商业研究用途免费开放。`OPT-IML`（Open Pre-trained Transformer）
+- paper: [OPT-IML](https://github.com/facebookresearch/metaseq/blob/main/projects/OPT-IML/optimal_paper_v1.pdf)
+- [Github链接](https://github.com/facebookresearch/metaseq/tree/main/projects/OPT-IML)
+
+`OPT-IML`创建了两种模型尺寸，分别是30B和175B。
+- 与旧版OPT模型相比，`OPT-IML`在14个标准NLP评估任务中的平均表现均优于OPT。
+- 在零次学习任务上两种模型大小分别好 7%~ 和 32-shot 任务分别好 4%~ 和 0.4%~。
+
+在这项研究中，研究人员描述了增加模型和基准大小如何影响指令调整决策对下游任务性能的影响。
+
+### BLOOM
+
+2022年7月，BigScience 的研究人员发布了一个名为 Bloom 的自然语言处理模型，该模型具有 1760 亿个参数，一举超越市面上的所有竞争对手，成为目前规模最大的语言模型。
+- BLOOM拥有1760亿个参数，能够以46种自然语言和13种编程语言生成文本。
+- 对于几乎所有的语言，比如西班牙语、法语和阿拉伯语，`BLOOM` 是有史以来创建的第一个超过100B参数的语言模型。这是来自70多个国家和250多个机构的1000多名研究人员一年工作的成果，最终在法国巴黎南部的Jean Zay超级计算机上训练了**117天**(3月11日至7月6日)的BLOOM模型.归功于法国国家科学研究中心(CNRS)和法国科学研究中心(CNRS)估计价值300万欧元的计算拨款。
+
+BLOOM: training that lead around the world
+- The training started on March 11, 2022. But in fact, the preparations of the corpus and the datasets started much earlier. A model with these characteristics is not achieved overnight. 4 months later, here we have it. And it hasn’t been easy:
+- 384 graphic cards of 80 gigabytes each on the Jean Zay supercomputer in France.
+- BLOOM has 176 billion parameters, one billion more than GPT-3.
+- 70 layers – 112 attention heads per layers – hidden dimensionality of 14336 – 2048 tokens sequence length.
+- ALiBi positional embeddings – GeLU activation function.
+
+BLOOM 训练使用的硬件设施
+- GPUs: 384 张 NVIDIA A100 80GB GPUs (48 个节点，单个节点 8 张卡) + 32 张备用 GPU
+每个节点 8 个 GPU 使用 NVLink 4 inter-gpu connects，4 OmniPath links
+- CPU: AMD EPYC 7543 32-Core Processor
+- CPU memory: 每个节点 512GB
+- GPU memory: 每个节点 640GB
+- 节点间连接: Omni-Path Architecture (OPA) w/ non-blocking fat tree
+- NCCL-communications network: a fully dedicated subnet
+- 硬盘 IO 网络: IBM 通用并行文件系统-GPFS shared with other nodes and users
+
+训练资源
+- 176B BLOOM 模型使用 Megatron-DeepSpeed 进行训练
+
+BigScience 的 Megatron-DeepSpeed 是基于原始 Megatron-DeepSpeed 代码库，还添加了不少代码。
+- BigScience 的 [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed):
+- 原版的 [Megatron-DeepSpeed](https://github.com/microsoft/Megatron-DeepSpeed)
+
+BLOOM 训练时采用的组件: [BLOOM 训练背后的技术](https://mp.weixin.qq.com/s/-q9opkoAomd9LZL9phm8bA)
+
+| 组件	| DeepSpeed	| Megatron-LM |
+| ZeRO 数据并行 |	是 |	|
+| 张量并行	| |是 |
+| 流水线并行 | 是 | |	
+| BF16 优化器 |	是 | |	
+| CUDA 融合核函数 |	 | 是 |
+| 数据加载器 | | 是 |
+
+Megatron-LM 和 DeepSpeed 都有流水线并行和 BF16 优化器实现，但使用 DeepSpeed 的实现，因为集成进了 ZeRO。
+
+Megatron-DeepSpeed 实现了 3D 并行以允许大模型以非常有效的方式进行训练。有哪些 3D 组件。
+- `数据并行` (Data Parallelism，DP) - 相同的设置和模型被复制多份，每份每次都被馈送不同的一份数据。处理是并行完成的，所有份在每个训练步结束时同步。
+- `张量并行` (Tensor Parallelism，TP) - 每个张量都被分成多个块，因此张量的每个分片都位于其指定的 GPU 上，而不是让整个张量驻留在单个 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，结果在步骤结束时同步。这就是所谓的水平并行，因为是做的水平拆分。
+- `流水线并行` (Pipeline Parallelism，PP) - 模型在多个 GPU 上垂直 (即按层) 拆分，因此只有一个或多个模型层放置在单个 GPU 上。每个 GPU 并行处理流水线的不同阶段，并处理 batch 的一部分数据。
+- `零冗余优化器` (Zero Redundancy Optimizer，ZeRO) - 也执行与 TP 相类似的张量分片，但整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
+
+资料
+- 论文：[BLOOM: A 176B-Parameter Open-Access Multilingual Language Model](https://arxiv.org/pdf/2211.05100.pdf)
+- 摘要：Large language models (LLMs) have been shown to be able to perform new tasks based on a few demonstrations or natural language instructions. While these capabilities have led to widespread adoption, most LLMs are developed by resource-rich organizations and are frequently kept from the public. As a step towards democratizing this powerful technology, we present BLOOM, a 176B-parameter open-access language model designed and built thanks to a collaboration of hundreds of researchers. BLOOM is a **decoder-only Transformer** language model that was trained on the ROOTS corpus, a dataset comprising hundreds of sources in **46 natural** and **13 programming languages** (59 in total). We find that BLOOM achieves competitive performance on a wide variety of benchmarks, with stronger results after undergoing multitask prompted finetuning. To facilitate future research and applications using LLMs, we publicly release our models and code under the Responsible AI License
+- [BLOOM is a real open-source alternative to GPT-3](https://the-decoder.com/bloom-is-a-real-open-source-alternative-to-gpt-3/)
+- huggingface上的[model地址](https://huggingface.co/bigscience/bloom)
+- code: [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed)，采用别人的GPT模型文件
+- 【2023-2-22】`bloom` 基于 `GPT-2`,加大层数，使用法国财政资金，通过大规模数据（46种语言+13种编程语言）训练117天而来，得到gpt-3同等规模（176b>175b），这个代码是NVIDIA+微软分布式训练框架的训练代码。
+- bloom 训练代码 [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed/blob/main/LICENSE) 是 Apache License 开源协议
+
+BLOOM数据集: 英文 30% ＞ 中文 16% ＞ 法文 12% ＞ 西班牙 11% ＞ 代码 11% ＞ 葡萄牙 5% ＞ 阿拉伯 4.6% ＞ 印地语 4.4%
+- ![](https://pic2.zhimg.com/80/v2-cf94d00d3e954efd11edeb880e85dac5_1440w.webp)
+- [refer](https://zhuanlan.zhihu.com/p/618926239)
+
+#### bloomz
+
+huggingface 上的[bloomz模型](https://huggingface.co/bigscience/bloomz)
+- 论文：[Crosslingual Generalization through Multitask Finetuning](https://arxiv.org/abs/2211.01786)
+- bloomz 在 bloom基础上用多任务提示微调（MTF）实现了跨语言泛化，通过英语语料泛化到非英语场景，在机器翻译上证明效果更好
+  - [xP3](https://huggingface.co/datasets/bigscience/xP3)数据集包含46种语言，包含prompt提示后，是 [xP3mt](https://huggingface.co/datasets/bigscience/xP3mt)
+- Multitask prompted finetuning (`MTF`) has been shown to help large language models generalize to new tasks in a zero-shot setting, but so far explorations of MTF have focused on English data and models. We apply `MTF` to the pretrained multilingual BLOOM and mT5 model families to produce finetuned variants called BLOOMZ and mT0. We find finetuning large multilingual language models on English tasks with English prompts allows for task generalization to non-English languages that appear only in the pretraining corpus. Finetuning on **multilingual tasks** with English prompts further improves performance on English and non-English tasks leading to various state-of-the-art zero-shot results. We also investigate finetuning on multilingual tasks with prompts that have been machine-translated from English to match the language of each dataset. We find training on these machine-translated prompts leads to better performance on human-written prompts in the respective languages. Surprisingly, we find models are capable of zero-shot generalization to tasks in languages they have never intentionally seen. We conjecture that the models are learning higher-level capabilities that are both task- and language-agnostic. In addition, we introduce `xP3`, a composite of supervised datasets in 46 languages with English and machine-translated prompts.
+- 数据和代码：[github](https://github.com/bigscience-workshop/xmtf)
+
+【2023-2-22】bloomz为什么效果不如bloom？[Worse performance in Text Generation on Chinese corpus](https://huggingface.co/bigscience/bloomz/discussions/35#63f5cecb9cbd6730302359de)
+- 猜测是提示微调任务的目标是实现跨语言翻译，46个语种将bloom模型引导到翻译领域了，中文表示能力被稀释。建议，临时放弃bloomz，在bloom基础上微调
+
+```py
+# pip install -q transformers # cpu
+# pip install -q transformers accelerate # gpu
+# pip install -q transformers accelerate bitsandbytes # gpu 8 bit
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+checkpoint = "bigscience/bloomz"
+
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+# model = AutoModelForCausalLM.from_pretrained(checkpoint) # cpu
+model = AutoModelForCausalLM.from_pretrained(checkpoint, torch_dtype="auto", device_map="auto") # gpu
+# model = AutoModelForCausalLM.from_pretrained(checkpoint, device_map="auto", load_in_8bit=True) # gpu 8 bit
+# inputs = tokenizer.encode("Translate to English: Je t’aime.", return_tensors="pt") # cpu
+inputs = tokenizer.encode("Translate to English: Je t’aime.", return_tensors="pt").to("cuda") # gpu
+outputs = model.generate(inputs)
+print(tokenizer.decode(outputs[0]))
+```
+
+#### Fine-tune
+
+Here is the code to fine-tune the Bloom model, [petals](https://github.com/bigscience-workshop/petals)
+
+```py
+from petals import DistributedBloomForCausalLM
+
+model = DistributedBloomForCausalLM.from_pretrained("bigscience/bloom-petals", tuning_mode="ptune", pre_seq_len=16)
+# Embeddings & prompts are on your device, BLOOM blocks are distributed across the Internet
+
+inputs = tokenizer("A cat sat", return_tensors="pt")["input_ids"]
+outputs = model.generate(inputs, max_new_tokens=5)
+print(tokenizer.decode(outputs[0]))  # A cat sat on a mat...
+
+# Fine-tuning (updates only prompts or adapters hosted locally)
+optimizer = torch.optim.AdamW(model.parameters())
+for input_ids, labels in data_loader:
+    outputs = model.forward(input_ids)
+    loss = cross_entropy(outputs.logits, labels)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+```
+
+### SparseGPT
+
+`模型压缩`（model compression）是当前使用较多的一种降低大模型计算成本的方法
+- 但迄今为止，几乎所有现有的 GPT 压缩方法都专注于`量化`（quantization），即降低单个权重的数值表示的精度。
+- 另一种模型压缩方法是`剪枝`（pruning），即删除网络元素，包括从单个权重（非结构化剪枝）到更高粒度的组件如权重矩阵的整行/列（结构化剪枝）。
+
+第二种方法这在视觉和较小规模语言模型中很有效，但会导致**精度损失**，从而需要对模型进行大量再训练来恢复精度，所以遇到 GPT 这样大规模的模型时，成本就又变得过于昂贵了。虽然也有一些单次剪枝方法，无需重新训练即可压缩模型，但它们计算量太大，难以应用于具有数十亿参数的模型。
+
+2023年1月，奥地利科学技术研究所 (`ISTA`) 的两名研究人员 Elias Frantar 和 Dan Alistarh 合作了一项研究，首次针对 100 至 1000 亿参数的模型规模，提出了精确的单次剪枝方法 SparseGPT。 [paper](https://arxiv.org/pdf/2301.00774.pdf)
+
+SparseGPT 可以将 GPT 系列模型单次剪枝到 50% 稀疏性，而无需任何重新训练。
+- 目前最大的公开可用的 GPT-175B 模型，只需要使用单个 GPU 在几个小时内就能实现这种剪枝。
+
+而且，SparseGPT 还很准确，能将精度损失降到最小。
+- 比如在目前最大的开源模型 OPT‑175B 和 BLOOM‑176B 上执行SparseGPT 时，可以达到 60% 的稀疏度，同时将精度损失降到最小。
+
+
+### GPT-J
+
+GPT-J 是一个基于 GPT-3，由 60 亿个参数组成的自然语言处理 AI 模型。
+
+该模型在一个 800GB 的开源文本数据集上进行训练，并且能够与类似规模的 GPT-3 模型相媲美。 该模型通过利用 Google Cloud 的 v3-256 TPU 以及 EleutherAI 的 The Pile 数据集进行训练，历时大约五周时间。
+- GPT-J 在标准 NLP 基准工作负载上实现了与 OpenAI 报告的 67 亿参数版本的 GPT-3 类似的准确性。模型代码、预训练的权重文件、Colab 文档和一个演示网页都包含在 EleutherAI 的开源项目中。
+
+
+### Pythia
+
+Eleuther AI 和耶鲁大学等机构研究者共同撰写的 [Pythia 论文](https://arxiv.org/pdf/2304.01373.pdf)
+
+开源 Pythia 系列大模型是其他自回归解码器风格模型（即类 GPT 模型）的有趣平替。
+
+Pythia 模型架构与 GPT-3 相似，但包含一些改进，比如 **Flash 注意力**（像 LLaMA）和**旋转位置嵌入**（像 PaLM）。
+- 同时 Pythia 在 800GB 的多样化文本数据集 Pile 上接受了 300B token 的训练（其中在常规 Pile 上训练 1 个 epoch，在去重 Pile 上训练 1.5 个 epoch ）。
+
+Pythia 论文中得到的洞见和思考：
+- 重复数据上的训练（即训练 epoch>1）会不会有什么影响？结果表明，数据去重**不会**改善或损害性能；
+- 训练命令会影响记忆吗？不会。如果影响的话，则可以通过训练数据的重新排序来减轻讨厌的逐字记忆问题；
+- batch 大小加倍可以将训练时间减半但不损害收敛。
+
+### YaLM（俄罗斯 Yandex）
+
+YaLM 100B —— 千亿参数预训练语言模型
+
+YaLM 100B是一个类似 GPT 的神经网络，用于生成和处理文本。
+
+该模型利用了 1000 亿个参数，在 800 个 A100 显卡和 1.7 TB 在线文本、书籍以及海量其他英文和俄文资源的集群上训练该模型花了 65 天时间。
+
 ## 复现详情
 
 开源终究胜利
@@ -1522,6 +1774,13 @@ train_prompts
 *   代码过于面向对象设计，所以梳理代码逻辑，要切换父类和子类找核心代码，得细心看代码。
 *   运行代码，会出现某个文件找不到，是目录路径问题，需要手动调整
 
+### OpenAssistant
+
+OpenAssistant 是一个开源项目，旨在开发免费提供给所有人使用的 AI 聊天机器人。
+
+训练数据集 OpenAssistant Conversations 包含了超过 60 万个涉及各种主题的交互，用于训练各种模型。目前发布了经过指令调整的 LLaMA 13B 和 30B 模型，以及其他使用相同数据集训练的模型。
+
+
 ### Meta: LLaMA （羊驼）
 
 【Meta推出名为“LLaMA”的AI大型语言模型 与谷歌和微软竞争】
@@ -1761,6 +2020,33 @@ GPT4All 是一个使用包括代码、故事和对话在内的大量干净助手
 - The relative size of collected datasets can be shown by this graph:
 - ![](https://github.com/PhoebusSi/Alpaca-CoT/raw/main/figures/show.png)
 
+
+#### 白泽 -- 医疗
+
+白泽 使用 LoRA 训练的开源聊天模型
+- 改进了开源大型语言模型 LLaMA，通过使用新生成的聊天语料库对 LLaMA 进行微调
+- 该模型在单个 GPU 上运行，使其可供更广泛的研究人员使用。
+
+白泽目前包括四种英语模型：白泽 -7B、13B 和 30B（通用对话模型），以及一个垂直领域的白泽 - **医疗模型**，供研究 / 非商业用途使用，并计划在未来发布中文的白泽模型。
+
+白泽的数据处理、训练模型、Demo 等全部代码已经开源。
+
+#### OpenLLaMA
+
+OpenLLaMA —— LLaMA 大语言模型的开源复现版本
+
+OpenLLaMA 是 Meta AI 的 LLaMA 大语言模型的开源复现版本，采用宽松许可证。
+
+仓库包含经过训练的 2000 亿标记的 7B OpenLLaMA 模型的公共预览版，并提供了预训练的 OpenLLaMA 模型的 PyTorch 和 Jax 权重，以及评估结果和与原始 LLaMA 模型的比较。
+
+#### WizardLM
+
+WizardLM —— 基于 LLaMA 的微调大语言模型
+
+WizardLM 是一个经过微调的 7B LLaMA 模型。它通过大量具有不同难度的指令跟随对话进行微调。这个模型的新颖之处在于使用了 LLM 来自动生成训练数据。
+
+WizardLM 模型使用一种名为 Evol-Instruct（是一种使用 LLM 代人类自主批生成各种难度等级和技术范围的开放指令，以提高 LLM 能力的新方法）的新方法，通过 70k 个计算机生成的指令进行训练，该方法生成具有不同难度级别的指令。
+
 ### Vicuna 小羊驼 -- 92% 的 ChatGPT
 
 【2023-3-31】[Vicuna: An Open-Source Chatbot Impressing GPT-4 with 90%* ChatGPT Quality](https://vicuna.lmsys.org/)，伯克利中国人开发
@@ -1810,19 +2096,6 @@ chatgpt
 4 月 12 日，Databricks 发布了 Dolly 2.0，这是两周前发布的类 ChatGPT 人类交互性（指令遵循）大语言模型（LLM）的又一个新版本。
 - Dolly 2.0 是业内第一个**开源**、**遵循指令**的 LLM，它在透明且免费提供的数据集上进行了微调，该数据集也是开源的，可用于商业目的。这意味着 Dolly 2.0 可用于构建商业应用程序，无需支付 API 访问费用或与第三方共享数据。
 
-#### Pythia
-
-Eleuther AI 和耶鲁大学等机构研究者共同撰写的 [Pythia 论文](https://arxiv.org/pdf/2304.01373.pdf)
-
-开源 Pythia 系列大模型是其他自回归解码器风格模型（即类 GPT 模型）的有趣平替。
-
-Pythia 模型架构与 GPT-3 相似，但包含一些改进，比如 **Flash 注意力**（像 LLaMA）和**旋转位置嵌入**（像 PaLM）。
-- 同时 Pythia 在 800GB 的多样化文本数据集 Pile 上接受了 300B token 的训练（其中在常规 Pile 上训练 1 个 epoch，在去重 Pile 上训练 1.5 个 epoch ）。
-
-Pythia 论文中得到的洞见和思考：
-- 重复数据上的训练（即训练 epoch>1）会不会有什么影响？结果表明，数据去重**不会**改善或损害性能；
-- 训练命令会影响记忆吗？不会。如果影响的话，则可以通过训练数据的重新排序来减轻讨厌的逐字记忆问题；
-- batch 大小加倍可以将训练时间减半但不损害收敛。
 
 ### LaMini-LM 蒸馏小模型
 
@@ -2777,6 +3050,10 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
 - 因为这个模型可商用，支持包括中文在内的46种语言，而且模型参数够多，有1760亿参数。
 - 有些公司直接拿基于Bloom做过微调后的Bloomz模型，来进一步微调，打造一个垂直领域的LLM。
 
+Bloom 是用于自然语言处理的大语言模型，包含 1760 亿个参数，支持 46 种自然语言（包括中文）和 13 种编程语言，可以用来回答问题、翻译文本、从文件中提取信息片段，还能像 GitHub Copilot 一样用于生成代码。
+
+BLOOM 模型的最大优势是它的易获取性，任何个人或机构都可以从 Hugging Face 免费获得 1760 亿个参数的完整模型。用户有多个语种可选，然后将需求输入到 BLOOM 中，任务类型包括撰写食谱或诗歌、翻译或总结文本，甚至还有代码编程。人工智能开发者可以在该模型的基础上构建他们自己的应用程序。
+
 SambaNova和Together联合开源的BLOOMChat，其目的就是打造一个开源的、支持**多语言**、可商用的聊天LLM，实验表明BLOOMChat对多语言的支持明显优于其它开源模型。
 - BLOOMChat使用了包括OpenChatKit的OIG、Dolly 2.0和OASST1数据集在内的以英语为主的对话数据集来进行BLOOM（176B）的模型微调。
 
@@ -2785,6 +3062,10 @@ BLOOMChat微调的指令数据有2类。
 - 第二种，人工写出来的高质量问答数据集Dolly 2.0和OASST1，数据量小。
 
 GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
+
+BLOOMChat 是一个新的、开放的、多语言的聊天 LLM。
+- SambaNova 和 Together 使用 SambaNova 独特的可重构数据流架构在 SambaNova DataScale 系统上训练了 BLOOMChat；
+- 建立在 BigScience 组织的 BLOOM 之上，并在 OpenChatKit、Dolly 2.0 和 OASST1 的 OIG 上进行了微调。
 
 ### 360智脑
 
@@ -2797,6 +3078,8 @@ GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 
 - 【2023-5-2】[陈天奇等人新作引爆AI界：手机原生跑大模型，算力不是问题了](https://mp.weixin.qq.com/s/uQGAu1v-6ApgZHVkZJsUdQ)
 - 【2023-6-5】[陈天奇官宣新APP，让手机原生跑大模型，应用商店直接下载使用](https://www.toutiao.com/article/7241085086400233995), 陈天奇公布了一个好消息：MLC Chat app 已经在苹果的 App Store 上线了。
+
+MLC LLM 是一种通用解决方案，它允许将任何语言模型本地部署在各种硬件后端和本地应用程序上。
 
 [mlc-llm](https://mlc.ai/mlc-llm/) 部署汇总
 - 亲测：华为mate 30下载后，启动即闪退；iOS正常
@@ -2913,7 +3196,7 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 - 3、在**多模态**场景下，图片、视频等相关应用可能会更多，对于字节来说这部分数据有比较优势，将来的落地点会有很多。
 
 
-### ChatRWKV
+### ChatRWKV -- RNN, 长文本
 
 【2023-3-13】[开源1.5/3/7B中文小说模型：显存3G就能跑7B模型，几行代码即可调用](https://zhuanlan.zhihu.com/p/609154637)
 - 1.5/3/7B中文小说模型，可以开源下载
@@ -2921,6 +3204,12 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 
 [ChatRWKV](https://github.com/BlinkDL/ChatRWKV) is like ChatGPT but powered by RWKV (100% RNN) language model, and open source.
 - [RWKV-CHN](https://modelscope.cn/studios/BlinkDL/RWKV-CHN/summary) 在线体验
+
+RWKV 是结合了 RNN 和 Transformer 的语言模型，适合**长文本**，运行速度较快，拟合性能较好，占用显存较少，训练用时较少。
+
+RWKV 整体结构依然采用 Transformer Block 的思路
+- 相较于原始 Transformer Block 的结构，RWKV 将 self-attention 替换为 Position Encoding 和 TimeMix，将 FFN 替换为 ChannelMix。其余部分与 Transfomer 一致。
+
 
 RWKV原理见专题：[RWKV](/transformer#RWKV)
 
@@ -2934,6 +3223,11 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 - 论文: [Orca: Progressive Learning from Complex Explanation Traces of GPT-4](https://arxiv.org/pdf/2306.02707.pdf)
 
 测试时，团队以GPT-4作为评分工具，来衡量Orca在严格的基准测试Big Bench Hard（BBH）中与其他SOTA模型的表现，发现比ChatGPT、Bard等要好，也在包含SAT、LSAT、GRE和GMAT等学术考试的AGIEval基准测试中，拿下不错成绩。
+
+
+### Web LLM —— 浏览器
+
+Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 Web 浏览器的项目。一切都在浏览器内运行，无需服务器支持，并使用 WebGPU 加速。这开辟了许多有趣的机会，可以为每个人构建 AI 助手，并在享受 GPU 加速的同时实现隐私。
 
 ### trl
 
