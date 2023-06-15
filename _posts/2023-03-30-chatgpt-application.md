@@ -182,7 +182,7 @@ Prompt是在ChatGPT中输入的一些关键词，按照用户意愿生成出各�
 
 【2023-3-16】[Poe](https://poe.com/claude+) 各种机器人，sage, gpt-4, ChatGPT等，一次免费体验机会
 
-## ChatGPT 应用
+## ChatGPT 行业应用
 
 ChatGPT 非常实用，能帮助普通人节省不少脑力和时间成本。
 - 回答后续问题、承认错误、挑战不正确的前提、拒绝不适当的请求。
@@ -1157,6 +1157,27 @@ AI辅助家教，20美元/月定制虚拟老师家庭还是教育的园地，但
 
 ### 医疗
 
+#### 最新论文
+
+【2023-6-14】[LLM in Medical Domain: 一文速览大语言模型在医学领域的应用](https://zhuanlan.zhihu.com/p/636168213)
+
+论文
+- [Large Language Models Encode Clinical Knowledge](http://arxiv.org/abs/2212.13138): 
+  - 主要工作包括 医学问答benchmark：MultiMedQA 构建、LLM评测(PaLM及Flan-PaLM)和指令微调(Med-PaLM模型)。
+- [Towards Expert-Level Medical Question Answering with Large Language Models](http://arxiv.org/abs/2305.09617):
+  - Med-PaLM工作的改进: Med-PaLM 2, 得分高达 86.5%，比 Med-PaLM 提高了19%
+- [ChatDoctor: A Medical Chat Model Fine-tuned on LLaMA Model using Medical Domain Knowledge](http://arxiv.org/abs/2303.14070)
+- [BenTsao: Tuning LLaMA Model With Chinese Medical Instructions](http://arxiv.org/abs/2304.06975), 华佗
+  - 提出了本草模型（原叫“华驼“），一个生物医学领域的中文LLM。BenTsao建立在开源LLaMa-7B模型的基础上，整合了来自中国医学知识图谱（CMeKG）的结构化和非结构化医学知识，并采用基于知识的指令数据进行微调。
+- [Galactica: A Large Language Model for Science](http://arxiv.org/abs/2211.09085), 自然科学问答LLM
+  - 在人类科学知识的大型语料库上进行训练的，语料库包括4800 万篇论文、教科书和讲义、数百万种化合物和蛋白质、科学网站、百科全书等。
+- [Are Large Language Models Ready for Healthcare? A Comparative Study on Clinical Language Understanding](http://arxiv.org/abs/2304.05368) 
+  - 临床语言理解任务上对GPT-3.5、GPT-4 和 Bard 进行了全面评估。任务包括命名实体识别、关系提取、自然语言推理、语义文本相似性、文档分类和问答，并在此过程中提出了一种新颖的提示策略，self-questioning prompting（SQP）最大限度地提高 LLM 在医疗保健相关任务中的有效性
+- [CAN LARGE LANGUAGE MODELS REASON ABOUT MEDICAL QUESTIONS?](http://arxiv.org/abs/2207.08143)
+  - 测试 GPT-3.5（Codex 和 InstructGPT）是否可用于回答和推理基于现实世界的困难问题，即医学问题。主使用两个多项选择的医学考试问题和一个医学阅读理解数据集进行测试。本文研究了多种提示场景：CoT、zero- and few-shot和retrieval augmentation。
+- [DoctorGLM: Fine-tuning your Chinese Doctor is not a Herculean Task](http://arxiv.org/abs/2304.01097) 在ChatGLM的基础上构造中文的医学模型
+
+
 #### 医疗诊断
 
 chatgpt在医疗诊断上是否通过图灵测试？
@@ -1164,13 +1185,16 @@ chatgpt在医疗诊断上是否通过图灵测试？
 - 论文：[Putting ChatGPT's Medical Advice to the (Turing) Test](https://www.aminer.cn/pub/63d340e890e50fcafd9107d1/putting-chatgpt-s-medical-advice-to-the-turing-test)
 - ChatGPT responses to patient questions were **weakly distinguishable** from provider responses. Laypeople(外行) appear to trust the use of chatbots to answer lower risk health questions.
 
-#### ChatDoctor
 
+#### ChatDoctor -- 医疗LLM
 
 【2023-3-25】医疗问答机器人，医学领域的chatgpt。如果把默沙东医学指南拿进去继续训练，是不是就是一个私人医生了？
 - 论文：[ChatDoctor: A Medical Chat Model Fine-tuned on LLaMA Model using Medical Domain Knowledge](https://arxiv.org/abs/2303.14070)
 - [GitHub地址](https://github.com/Kent0n-Li/ChatDoctor)
 - [Demo Page](https://huggingface.co/spaces/ChatDoctor/ChatDoctor)
+- 在LLaMA上微调的医学领域的大语言模型
+- ChatDoctor可检索相应知识和可靠来源，以更准确地回答患者的询问。
+- 构建完外部知识大脑后，通过构造适当prompt让ChatDoctor**自主检索**其所需要的知识。
 
 Resources List
 - 200k real conversations between patients and doctors from HealthCareMagic.com HealthCareMagic-200k.
@@ -1180,11 +1204,40 @@ Resources List
 - Online hugging face demo application form.
 - Stanford Alpaca data for basic conversational capabilities. Alpaca link.
 
+#### BenTsao（华佗） -- 医疗LLM
+
+[BenTsao: Tuning LLaMA Model With Chinese Medical Instructions](http://arxiv.org/abs/2304.06975), 华佗
+- 提出了本草模型（原叫“华驼“），一个生物医学领域的中文LLM。BenTsao建立在开源LLaMa-7B模型的基础上，整合了来自中国医学知识图谱（CMeKG）的结构化和非结构化医学知识，并采用基于知识的指令数据进行微调。
+- ![](https://pic3.zhimg.com/80/v2-d5e5fc0f94aca6f539bdfb6e92cd9a8e_1440w.webp)
+
 #### 心理测评
 
 用chatgpt做MBTI心理测评
 - 论文：[Can ChatGPT Assess Human Personalities? A General Evaluation Framework](https://www.aminer.cn/pub/640166a590e50fcafd68b4ab/can-chatgpt-assess-human-personalities-a-general-evaluation-framework)
 - 提出了三个评估指标，以衡量最先进的LLMs（包括ChatGPT和InstructGPT）评估结果的`一致性`、`稳健性`和`公平性`。实验结果表明，ChatGPT具有评估人类个性的能力，平均结果表明，ChatGPT可以实现更为一致和公平的评估，尽管对提示偏差的鲁棒性较低，相比之下，InstructGPT的鲁棒性更高。
+
+#### DoctorGLM -- 中文LLM
+
+- [DoctorGLM: Fine-tuning your Chinese Doctor is not a Herculean Task](http://arxiv.org/abs/2304.01097) 在ChatGLM的基础上构造中文的医学模型
+- 用 chatgpt 翻译 ChatDoctor的数据集
+- ![](https://pic1.zhimg.com/80/v2-b6d03b888d5a332950f183cf107ac9ac_1440w.webp)
+
+#### Visual Med-Alpaca -- 视觉LLM
+
+Visual Med-Alpaca: A Parameter-Efficient Biomedical LLM with Visual Capabilities
+- Visual Med-Alpaca，一个开源的、参数高效的生物医学基础模型，可以与医学“视觉专家”集成以进行多模态生物医学任务。
+- 建立在LLaMa-7B架构上，使用由GPT-3.5-Turbo和人类专家协作策划的指令集进行训练。利用几个小时的指令调整和即插即用的视觉模块，Visual Med-Alpaca 可以执行各种医学任务。
+- ![](https://pic3.zhimg.com/80/v2-52a144d96792c3d88378e1cf9d91df36_1440w.webp)
+
+#### XrayGLM -- Visual Med-Alpaca改进
+
+XrayGLM: The first Chinese Medical Multimodal Model that Chest Radiographs Summarization
+- 大型通用语言模型取得了显著成功，能够遵循指令并生成与人类类似的回应。这种成功在一定程度上推动了多模态大模型的研究和发展，例如MiniGPT-4等。
+- 然而，这些多模态模型在医学领域的研究中很少见，虽然 visual-med-alpaca在医学多模态模型方面取得了一些有成效的工作，但其数据仅限于**英文诊断报告**，对于推动中文医学多模态模型的研究和发展并不利。
+- 因此，本文开发了 XrayGLM模型。
+
+借助ChatGPT和公开的胸片图文对数据集，构造了中文的X光片-诊断报告数据集，并使用该数据集在 VisualGLM-6B上进行微调训练。
+- ![](https://pic2.zhimg.com/80/v2-bc9faf491ab1a1960b36c6b7d4faf655_1440w.webp)
 
 ### 新闻资讯
 
