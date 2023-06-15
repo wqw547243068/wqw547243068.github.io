@@ -99,12 +99,36 @@ import pipeline
 print(pipeline('sentiment-analysis')('I hate you'))"
 ```
 
-### 库结构
+### 生态系统
 
 HuggingFace主干库：
-- Transformer模型库
-- Datasets数据集库：下载/预处理
-- Tokenizer分词库：将sequence转变为一个id序列
+- Transformer 模型库
+- Tokenizer 分词库：将sequence转变为一个id序列
+- Hub 社区
+- Datasets 数据集库：下载/预处理
+- Evaluate 评估
+- Accelerate 加速库（软件）
+- Optimum 加速卡（硬件）
+- Diffusers 扩散模型
+- Timm 
+- PEFT
+- Chat-UI
+- Safetensors
+- starcoder
+- SetFit
+
+【2023-6-14】HuggingFace Ecosystem 生态系统进展 [b站视频](https://www.bilibili.com/video/BV1qk4y1n7qa)
+- ![](https://p3.toutiaoimg.com/large/tos-cn-i-qvj2lq49k0/7205980da6854039a68a8cd0c5404967)
+
+时间线
+- 2022-7，BLOOM开源，评测效果不及GPT-3
+- 2022-8，Stable Diffusion
+- 2022-11，ChatGPT发布
+- 2023-2，META FAIR开源LLaMA
+- 发布 LLM Leaderboeard
+- 开源 HuggingChat，以及 Chat-UI
+- 发布 BigCodr，以及 StarCoder，基于github许可代码，可以通过opt-out工具剔除自己的代码
+- 2023-5，发布 StarChat，辅助编程
 
 
 ## 模型
