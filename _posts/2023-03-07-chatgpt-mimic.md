@@ -2205,6 +2205,16 @@ Chinese-LLaMA基础模型，深圳大学发布
 - 猎鹰「`Falcon`」又杀出了重围，排名第一。[Hugging Face OpenLLM Leaderboard ](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
 - ![](https://149695847.v2.pressablecdn.com/wp-content/uploads/2023/06/image-9.png)
 
+Falcon与GPT系列一样采用单向Transformer-decoder模型架构，并以语言模型作为训练目标。与GPT-3相比，Falco的结构具有如下变化：
+1. 位置编码：Falcon使用旋转位置编码（RoPE），近期的大模型包括GPT-Neo、PaLM和LLaMA等都采用了RoPE。
+2. 注意力机制：使用Multi-Query将key和value映射到单个注意力头，只有query保留多头矩阵，这种简化方案能提升生成效率；使用FlashAttention将注意力矩阵分块，加速计算并降低内存IO开销。
+3. Transformer：只使用单个layer_norm层，将Attention和MLP并行。
+
+GPT、LLaMA和Falcon的计算流程对比
+- ![](https://pic2.zhimg.com/80/v2-41d49005151e7b205f2eb44c2ee0f7a5_1440w.webp)
+- 从Transformer模型结构上看，LLaMA将Layer-Norm层放在Ateention和FFN的输入，有助于大模型训练稳定性（由GPT2论文提出）。此外，FFN部分使用了门控线性层（GLU），这种结构最初被用在T5-1.1，实验效果优于MLP。
+- LLaMA的设计着重于性能提升，而Falcon对Transformer的改进着重于效率提升：将Layer-Norm层减少到一个并简化了注意力的计算（Multi-Query Attention），因此Falcon比LLaMA的生成速度更快。
+
 【2023-6-9】[击败LLaMA？史上最强猎鹰排行存疑，符尧7行代码亲测，LeCun转赞](https://www.toutiao.com/article/7242571430297862717), 符尧团队对模型做了更深入的[测评](https://twitter.com/Francis_YAO_/status/1666833311279517696)：没有提示工程、解码，一切都是默认设置
 > 在MMLU上复现了LLaMA 65B的评估，得到了**61.4**的分数，接近官方分数（63.4），**远高于**其在Open LLM Leaderboard上的分数（**48.8**），而且明显高于猎鹰（52.7）。
 
@@ -2226,6 +2236,27 @@ Falcon是目前**唯一**的可以免费商用的开源模型。
 在早期，TII要求，商业用途使用Falcon，如果产生了超过100万美元以上的可归因收入，将会收取10%的「使用税」。
 
 可是财大气粗的中东土豪们没过多长时间就取消了这个限制。至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
+
+【2023-6-14】[中文Falcon基础模型：代码实现与增量训练](https://zhuanlan.zhihu.com/p/636994073)
+- “伶荔（Linly）”项目团队以 Falcon 模型为底座扩充中文词表，利用中文和中英平行增量预训练将模型的语言能力迁移学习到中文，实现 Chinese-Falcon。[github](https://github.com/CVI-SZU/Linly)
+
+中文Falcon的训练流程和细节。
+- 首先, 扩充Falcon词表，包括 8,701 个常用汉字，jieba 词表中前 20,000个中文高频词以及 60 个中文标点符号。去重后共增加 25,022 个 token，词表大小扩充为 90,046。
+- 改变词表后，embedding 和 target.output_layer 矩阵也要对应的扩充。将每个新增字/词在原始 tokenizer 中的对应向量的平均作为初始化。
+- 第一阶段: 使用了50GB数据进行预训练，其中20G中文通用语料为模型提供中文语言能力和中文知识，10G中英文平行语料用于对齐模型的中英文表示，将英文语言能力迁移到中文上，20G英文语料用于数据回放，缓解模型遗忘。
+- 模型训练阶段，使用与Falcon预训练相同的超参数设置：AdamW，ZeRO Optimizer，Batch size 2304，对于增量训练，设置更低的学习率2e-5。作为中文embedding初始化，先冻结Transformer权重，只更新embedding和output_layer部分，训练16k steps。进一步，在通用语料上启动全参数训练（Full-tuning）
+
+使用 腾讯预训练框架: [TencentPretrain: Tencent Pre-training Framework](https://github.com/Tencent/TencentPretrain), 用于对文本、图像、语音等模态数据进行预训练和微调的工具包。
+
+TencentPretrain有如下几方面优势:
+- 可复现 TencentPretrain已在许多数据集上进行了测试，与原始预训练模型实现（例如BERT、GPT-2、ELMo、T5、CLIP）的表现相匹配
+- 模块化 TencentPretrain使用解耦的模块化设计框架。框架分成Embedding、Encoder、Target等多个部分。各个部分之间有着清晰的接口并且每个部分包括了丰富的模块。可以对不同模块进行组合，构建出性质不同的预训练模型
+- 多模态 TencentPretrain支持文本、图像、语音模态的预训练模型，并支持模态之间的翻译、融合等操作
+- 模型训练 TencentPretrain支持CPU、单机单GPU、单机多GPU、多机多GPU训练模式，并支持使用DeepSpeed优化库进行超大模型训练
+- 模型仓库 我们维护并持续发布预训练模型。用户可以根据具体任务的要求，从中选择合适的预训练模型使用
+- SOTA结果 TencentPretrain支持全面的下游任务，包括文本/图像分类、序列标注、阅读理解、语音识别等，并提供了多个竞赛获胜解决方案
+- 预训练相关功能 TencentPretrain提供了丰富的预训练相关的功能和优化，包括特征抽取、近义词检索、预训练模型转换、模型集成、文本生成等
+
 
 
 #### 汉化：OpenBuddy -- 开源跨语种
