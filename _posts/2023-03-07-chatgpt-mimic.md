@@ -2237,6 +2237,8 @@ Falcon是目前**唯一**的可以免费商用的开源模型。
 
 可是财大气粗的中东土豪们没过多长时间就取消了这个限制。至少到目前为止，所有对Falcon的商业化使用和微调都不会收取任何费用。
 
+#### 中文Falcon
+
 【2023-6-14】[中文Falcon基础模型：代码实现与增量训练](https://zhuanlan.zhihu.com/p/636994073)
 - “伶荔（Linly）”项目团队以 Falcon 模型为底座扩充中文词表，利用中文和中英平行增量预训练将模型的语言能力迁移学习到中文，实现 Chinese-Falcon。[github](https://github.com/CVI-SZU/Linly)
 
