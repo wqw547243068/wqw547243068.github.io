@@ -1,10 +1,10 @@
 ---
 layout: post
 title:  "多模态-Multi-Modal"
-date:   2020-11-21 16:22:00
+date:   2023-02-21 16:22:00
 categories: 深度学习
 tags: 多模态 CLIP 
-excerpt: 多模态相关学习笔记
+excerpt: 多模态相关知识以及各种新兴大模型
 author: 鹤啸九天
 mathjax: true
 permalink: /modal
@@ -713,6 +713,22 @@ Video-LLaMA 基于视频 / 音频 / 图像的对话的一些例子
 - （3）语言模型固有的幻觉问题，在 Video-LLaMA 中依然存在。
 
 Video-LLaMA 作为一个具有综合视听能力的大模型，在音频视频理解领域取得了令人印象深刻的效果。随着研究者的不断攻坚，以上挑战也将逐个被克服，使得音视频理解模型具有广泛的实用价值。
+
+#### PandaGPT -- 大一统
+
+【2023-6-16】剑桥、腾讯AI Lab等提出大语言模型PandaGPT：一个模型统一六种模态
+- 通过结合 ImageBind 的模态对齐能力和 Vicuna 的生成能力，同时实现了六种模态下的指令理解与跟随能力。虽然 PandaGPT 的效果尚有提升空间，但展示了跨模态 AGI 智能的发展潜力。
+- [论文链接](http://arxiv.org/abs/2305.16355)
+- [代码链接](https://github.com/yxuansu/PandaGPT)
+- [项目主页](https://panda-gpt.github.io)
+- [线上 Demo 展示](https://huggingface.co/spaces/GMFTBY/PandaGPT)
+
+为了实现图像 & 视频、文本、音频、热力图、深度图、IMU 读数六种模态下的指令跟随能力
+- PandaGPT 将 ImageBind 的多模态编码器与 Vicuna 大型语言模型相结合
+
+PandaGPT 版本只使用了对齐的**图像 - 文本**数据进行训练，但是继承了 ImageBind 编码器的六种模态理解能力（图像 / 视频、文本、音频、深度度、热量图和 IMU）和它们之间的对齐属性，从而具备在所有模态之间跨模态能力。
+
+PandaGPT 仅仅是一个研究原型，暂时还不足以直接应用于生产环境。
 
 # 结束
 
