@@ -3378,6 +3378,41 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 测试时，团队以GPT-4作为评分工具，来衡量Orca在严格的基准测试Big Bench Hard（BBH）中与其他SOTA模型的表现，发现比ChatGPT、Bard等要好，也在包含SAT、LSAT、GRE和GMAT等学术考试的AGIEval基准测试中，拿下不错成绩。
 
+### 百川智能 -- 可商用
+
+【2023-6-15】[王小川大模型的第一个里程碑：baichuan-7B 今日正式开源发布](https://mp.weixin.qq.com/s/RK7Kr8XaRPE56HRgv2KmgA)
+- baichuan-7B 是由百川智能开发的一个开源可商用的大规模预训练语言模型。基于 Transformer 结构，在大约1.2万亿 tokens 上训练的70亿参数模型，支持中英双语，上下文窗口长度为4096。在标准的中文和英文权威 benchmark（C-EVAL/MMLU）上均取得同尺寸最好的效果。
+- [baichuan-7b](https://github.com/baichuan-inc/baichuan-7B)
+- 评测标准 AGI Eval 中，baichuan-7B 综合评分34.4，在中国高考、司法考试、SAT、LSAT、GRE 等考试中发挥很好，领先于LLaMa-7B、Falcon-7B、Bloom-7B 以及 ChatGLM-6B 等不少竞争对手
+
+整体模型基于标准的 Transformer 结构，采用了和 `LLaMA` 一样的模型设计 [源码](https://github.com/baichuan-inc/baichuan-7B/blob/main/models/modeling_baichuan.py)
+- **位置编码**：rotary-embedding 是现阶段被大多模型采用的位置编码方案，具有更好的外延效果。虽然训练过程中最大长度为4096，但是实际测试中模型可以很好的扩展到 5000 tokens 上，如下图：
+- **激活层**：SwiGLU, Feedforward 变化为(8/3)倍的隐含层大小，即11008
+- **Layer-Normalization**: 基于 RMSNorm 的 Pre-Normalization
+
+数据
+- 原始数据包括开源的中英文数据和自行抓取的中文互联网数据，以及部分高质量知识性数据。
+- 参考相关数据工作，**频率和质量**是数据处理环节重点考虑的两个维度。
+  - 基于**启发式规则**和**质量模型打分**，对原始数据集进行**篇章和句子**粒度的过滤。
+  - 在全量数据上，利用**局部敏感哈希**方法，对篇章和句子粒度做滤重
+
+分词
+- SentencePiece 中的 byte pair encoding (`BPE`)作为分词算法，并且优化点：
+  - 目前大部分开源模型主要基于**英文**优化，因此对中文语料存在效率较低的问题。用2000万条以中英为主的多语言语料训练分词模型，显著提升对于中文的压缩率。
+  - 对于**数学领域**，参考了 LLaMA 和 Galactica 中的方案，对数字的每一位单独分开，避免出现数字不一致的问题，对于提升数学能力有重要帮助。
+  - 对于**罕见字词**（如特殊符号等），支持 UTF-8-characters 的 byte 编码，因此做到未知字词的全覆盖。
+  - 分析了不同分词器对语料的**压缩率**，分词器明显优于 LLaMA, Falcon 等开源模型，并且对比其他中文分词器在压缩率相当的情况下，训练和推理效率更高。
+
+训练吞吐，具体包括：
+- 算子优化技术：采用更高效算子，如 Flash-attention，NVIDIA apex 的 RMSNorm 等。
+- 算子切分技术：将部分计算算子进行切分，减小内存峰值。
+- 混合精度技术：降低在不损失模型精度的情况下加速计算过程。
+- 训练容灾技术：训练平台和训练框架联合优化，IaaS + PaaS 实现分钟级的故障定位和任务恢复。
+- 通信优化技术，具体包括：
+- 采用拓扑感知的集合通信算法，避免网络拥塞问题，提高通信效率。
+- 根据卡数自适应设置 bucket size，提高带宽利用率。
+- 根据模型和集群环境，调优通信原语的触发时机，从而将计算和通信重叠。
+基于上述的几个优化技术，我们在千卡A800机器上达到了7B模型182Tflops的吞吐，GPU峰值算力利用率高达58.3%
 
 ### Web LLM —— 浏览器
 
