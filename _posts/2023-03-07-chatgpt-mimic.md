@@ -1880,6 +1880,28 @@ OpenAssistant 是一个开源项目，旨在开发免费提供给所有人使用
 - issue: [Tokenizer class LLaMATokenizer does not exist or is not currently imported](https://github.com/huggingface/transformers/issues/22222)
 
 
+#### LLaMA 汉化
+
+【2023-5】基于llama模型框架从零训练一个中文大模型
+- [chinese_llama](https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/chinese_llama)
+
+背景和想法
+- **llama**：facebook泄漏出来的llama模型，不能商用, 也没中文token，虽然很多国内大牛已经对其进行扩充了。
+- **chatglm-6b**： chatglm-6b **模型权重**也不能商用，但是对中文的支持能力很好
+
+想法：
+- 把 chatglm-6b 的 tokenizer 直接拿过来，嫁接到任意一个开源的大模型框架上;
+- 基于这个大模型框架，从零训练一个中文模型。
+- 原始的模型权重不能商用，自己训练一个模型权重，肯定没啥问题。
+
+要点
+- **数据**：基于 belle给到的数据，整理了一份491万条的数据文件，间接的提供了数据处理模版和基础的通用数据。
+- **模型大小**：应对不同的硬件资源，可以手动对模型的大小进行调整（从1b到7b再到130b都可以， 硬件资源越丰富，模型就可以设置的越大）
+- **训练**：为了让模型可以在多个消费级显卡上训练、推理。（毕竟大部分人，都没钱买A100这样的显卡，大家都是使用3090这种消费级的小显卡）对原来的llama模型做了改进：
+  - 训练时，支持模型并行；
+  - 推理时，支持多卡串联；
+
+
 ### LLaMA 进化
 
 【2023-3-27】Aplaca进化路线图
