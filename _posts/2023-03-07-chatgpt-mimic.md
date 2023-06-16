@@ -3414,6 +3414,21 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 - 根据模型和集群环境，调优通信原语的触发时机，从而将计算和通信重叠。
 基于上述的几个优化技术，我们在千卡A800机器上达到了7B模型182Tflops的吞吐，GPU峰值算力利用率高达58.3%
 
+huggingface 代码
+- [model 地址](https://huggingface.co/baichuan-inc/baichuan-7B/blob/main/tokenizer.model)
+- [训练解读](https://zhuanlan.zhihu.com/p/637343740)
+
+```py
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("/path/to/baichuan-7B", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("/path/to/baichuan-7B", device_map="auto", trust_remote_code=True)
+inputs = tokenizer('登鹳雀楼->王之涣\n夜雨寄北->\n', return_tensors='pt')
+inputs = inputs.to('cuda:0')
+pred = model.generate(**inputs, max_new_tokens=512, do_sample=True)
+print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
+```
+
 ### Web LLM —— 浏览器
 
 Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 Web 浏览器的项目。一切都在浏览器内运行，无需服务器支持，并使用 WebGPU 加速。这开辟了许多有趣的机会，可以为每个人构建 AI 助手，并在享受 GPU 加速的同时实现隐私。
