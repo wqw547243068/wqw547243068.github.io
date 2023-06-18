@@ -395,20 +395,20 @@ ExtractGPT
 
 【2023-3-29】ChatGPT超过人工标注
 - [ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks](https://arxiv.org/abs/2303.15056?fbclid=IwAR2j7nL9y2pvxkHHkbZtbWbfEGuyaqiQ6NYVO39WkpUK5NGkBGZLjiMx0ho)
-
 - Many NLP applications require manual data annotations for a variety of tasks, notably to train classifiers or evaluate the performance of unsupervised models. Depending on the size and degree of complexity, the tasks may be conducted by crowd-workers on platforms such as MTurk as well as trained annotators, such as research assistants. Using a sample of 2,382 tweets, we demonstrate that ChatGPT outperforms crowd-workers for several annotation tasks, including relevance, stance, topics, and frames detection. Specifically, the zero-shot accuracy of ChatGPT exceeds that of crowd-workers for four out of five tasks, while ChatGPT's intercoder agreement exceeds that of both crowd-workers and trained annotators for all tasks. Moreover, the per-annotation cost of ChatGPT is less than $0.003 -- about twenty times cheaper than MTurk. These results show the potential of large language models to drastically increase the efficiency of text classification.
 
-苏黎世大学：ChatGPT标注数据比人类便宜20倍，80%任务上占优势
+苏黎世大学：
+> ChatGPT标注数据比人类便宜**20倍**，**80%**任务上占优势
 
 在ChatGPT面前，无论成本还是效率，人类可以说是毫无优势：
 - 成本上，ChatGPT平均每个标注成本低于0.003美元，比众包平台便宜20倍；何况AI还能24*7无休。
 - 效率上，在相关性、立场、主题等任务中，ChatGPT也是以4:1的优势“碾压”人类。
 
-MTurk就是专门进行数据标注的一个众包平台。
+`MTurk` 是专门进行数据标注的一个众包平台。
 - 在MTurk这类众包平台内部，还会有更加精细的分工，比如说会有经过专业训练的数据标注者以及众包工作者。
 - 前者在产出高质量数据上具有优势，但自然成本也更高，而后者虽然更便宜但质量也会随任务难度波动。
 
-于是研究团队就开始着手研究大语言模型（LLM）在这方面的潜力，并且对比了没有额外训练（zero-shot）的ChatGPT（基于GPT-3.5）和MTurk在数据标注上的性能。这项对比基于研究团队此前收集到的2382条推文样本。
+于是, 研究大语言模型（LLM）在这方面的潜力，并且对比了没有额外训练（zero-shot）的ChatGPT（基于GPT-3.5）和MTurk在数据标注上的性能。这项对比基于研究团队此前收集到的2382条推文样本。
 
 ChatGPT和MTurk分别将推文以“相关性、立场、主题、政策、实用性”这五种任务进行标注。
 
@@ -416,6 +416,33 @@ ChatGPT和MTurk分别将推文以“相关性、立场、主题、政策、实�
 
 ChatGPT 用于 人工标注的 Web系统：[Weak Labeling Tool using ChatGPT](https://github.com/ainbr/chatgpt-weak-labeler-web-ui), [代码](https://github.com/ainbr/chatgpt-weak-labeler-web-ui/blob/master/app.py)
 - ![](https://github.com/ainbr/chatgpt-weak-labeler-web-ui/raw/master/misc/screenshot1.png)
+
+【2023-6-18】[无需人力标注！悉尼大学华人团队提出"GPT自监督标注范式](https://www.toutiao.com/article/7245196537557549623)
+
+业界和学界面临数据标注任务：成本较高、存在偏见、难以评估，以及标注难度等问题。
+
+悉尼大学研究团队提出了一种通过大语言模型**自监督生成标注**的框架。首次利用基于**生成-还原**循环标注的GPT自监督方法，解决了上述问题
+- davinci，text-curie-001，text-davinci-003，gpt-3.5-turbo在不同评估标准下标注数据质量的得分
+- [论文链接](https://arxiv.org/pdf/2306.04349.pdf)
+
+核心思想: 利用大语言模型作为一个**黑盒优化优器**，构造了一个循环：
+- 模版质量越高，生成的数据-标注对质量越高；
+- 生成的数据标注对质量越高，用当前质量更高的数据对替换上一轮的模版。
+- 以此往复迭代，滚雪球式循环提升标注质量。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/2f0cd7e8bebb47218672ba0a28b98008~noop.image)
+
+标注方法包含了**one-shot阶段**和**生成阶段**。
+- one-shot阶段的目标：迭代寻找**最优**的 \{数据-标注\}数据对 作为模板。
+
+迭代过程：
+- 初始化一个简单数据对作为初始模版，利用GPT生成标注，生成的标注和原始数据形成一个新的数据对。
+- 然后，通过比较从标注中还原出来的数据和原始数据，评估这个新数据对作为模板的潜力。
+- 如果还原数据与原数据的相似度得分有所提高，就用当前新数据对直接作为新的模板进行一轮数据生成。
+
+因此，这种**自我对齐机制**会迭代调整one-shot模板，为下一轮生成做好准备。one-shot阶段搜索到的最优模板随后用于对数据集进行标注。
+
+通过调整不同的预训练奖励模型来评估标注的质量，并引入不同的评价指标来间接评估摘要的还原能力。
+
 
 #### 数据分析
 
