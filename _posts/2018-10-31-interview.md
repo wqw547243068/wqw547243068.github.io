@@ -448,6 +448,25 @@ HR也想不看**背景**、不看**出身**、不看过往经验来找到合适�
     - 解决特定问题的代理，例如数学和推理难题
   - LangChain 包含六大组件：Models、Prompts、Indexes、Memory、Chains、Agents。
 
+其它
+- tokenizer 差异
+- deepspeed 加速方式->其他框架的加速方式
+- gptq 怎么实现的
+- lora qlora
+- bloom llama 差异->所有大模型之间有些什么差异
+- 大模型的广视野是怎么实现的
+- 全参数sft的问题->解决方案
+- 如何设计一个好的prompt
+- 如何解决幻觉问题
+- 大模型的优化器
+- prompt 为什么起作用
+- 传统NLP模型怎么实现 one-shot few-shot
+- ppo-ptx（或者所有的loss）的物理意义是什么
+- ICL CoT 概念 设计的目标
+- 生成结果的评价方式
+- 引入提示指令集的sft对原本任务的影响（会变坏吗？为什么？怎么办？）
+- 如果ChatGPT的效果比自研的模型好为什么还要自己train
+
 #### Python 数据溢出
 
 话题：
