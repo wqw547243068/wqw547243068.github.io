@@ -730,6 +730,18 @@ PandaGPT 版本只使用了对齐的**图像 - 文本**数据进行训练，但�
 
 PandaGPT 仅仅是一个研究原型，暂时还不足以直接应用于生产环境。
 
+
+#### InstructBLIP
+
+【2023-6-18】[超越GPT-4！华人团队爆火 InstructBLIP 抢跑看图聊天，开源项目横扫多项SOTA](https://zhuanlan.zhihu.com/p/629714206)
+- salesforece和香港科大，华人团队开源了多模态基础模型InstructBLIP，从BLIP2模型微调而来
+- InstructBLIP模型更擅长「看」、「推理」和「说」，即能够对复杂图像进行理解、推理、描述，还支持多轮对话等。
+- InstructBLIP在多个任务上实现了最先进的性能，甚至在图片解释和推理上表现优于GPT4。
+- ![](https://pic2.zhimg.com/v2-4b6fd2e8afecec88cfa6b66004db76a9_b.webp)
+
+
+
+
 # 结束
 
 
