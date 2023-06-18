@@ -728,6 +728,15 @@ ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几�
 - **小样本**和**冷启动**问题：传统推荐系统中，小样本和冷启动是一个比较常见的问题，而大模型天然具备很强的**语义泛化能力**和**小样本学习**能力。
 - 基础的推荐能力验证：多篇文章已经验证了ChatGPT等模型在推荐系统中应用是可行的，即使不在下游任务finetune，也能取得不错的效果
 
+【2023-6-17】[基于LLM的推荐系统全面综述](https://zhuanlan.zhihu.com/p/634534308), 将基于LLM的推荐系统分为两大范式，方法、技术和性能的洞察，分别是
+- 用于推荐的判别型LLM（DLLM4Rec）
+- 用于推荐的生成型LLM（GLLM4Rec），首次被系统地整理出来。
+
+大型语言模型（LLMs）融入推荐系统的关键优势
+- 能提取高质量的**文本特征表示**，并利用其中编码的广泛外部知识 \[Liu等人，2023b\]
+
+
+
 #### 最新论文
 
 论文
@@ -948,6 +957,11 @@ ChatGPT的 app 更新后，能直接和 Siri、快捷指令（Shortcuts）联动
 Smart Siri 不足：
 - ChatGPT 还无法实现连续对话，不过可以把之前的聊天记录粘贴进当前要问的问题里，也能间接连续问答的效果。
 
+#### 车载语音交互
+
+【2023-6-17】ChatGPT首次上车视频，奔驰，可对话搜索POI，可讲笑话
+
+
 ### 办公
 
 详见站内文章：[智能办公](aigc#智能办公)
@@ -1123,6 +1137,172 @@ AIGC+佛教，人工智能治愈我心
 - 今年3月，全球领先电商SaaS服务商Shopify已集成了ChatGPT。Shopify主要面向企业及个人客户提供电商网站建立、维护管理等服务。采用ChatGPT，Shopify一方面升级智能客服功能，帮商家与客户沟通更顺畅；另一方面，商家可以通过ChatGPT获取平台商品评论数据分析、标题及关键词优化、营销文案撰写、网站智能化开发编程等多项服务，提升运营效率。
 - ![](https://pic1.zhimg.com/80/v2-e060c9c4457739571493e9ab8e25ba94_1440w.webp)
 - 智能客服作为ChatGPT最直接能落地的领域，一定会很快入驻各大电商平台，让一批不具备更多技能的客服被替换掉
+
+【2023-6-18】[基于ChatGPT构建智能客服系统(query分类&安全审核&防注入)](https://mp.weixin.qq.com/s/HYIKNYSWlgIktrSbrM3KCA) 介绍3点：
+- 智能客服场景中的用户query分类
+- 使用OpenAI的接口进行安全审核
+- 如何防止Prompt注入
+
+（1）多级分类 prompt
+- 主要类别
+- 次要类别
+
+```py
+delimiter = "####"
+system_message = f"""\
+您将获得<客户服务查询>。\
+<客户服务查询>将用{delimiter}字符分隔。\
+
+将每个查询分类为主要类别和次要类别。\
+以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，其他的不需要输出。\
+
+主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。
+
+<结算>次要类别：\
+取消订阅或升级 \
+添加付款方式 \
+有关费用的说明 \
+争议费用
+
+<技术支持>次要类别：\
+一般故障排除\
+设备兼容性 \
+软件更新 \
+
+<账户管理>次要类别：\
+重置密码 \
+更新个人信息 \
+关闭账户 \
+账户安全 \
+
+<一般查询>次要类别：
+产品信息 \
+支付 \
+反馈 \
+与人交谈 \
+"""
+
+user_message = f""" 我想让你删除我的个人资料和我所有的用户数据 """
+
+messages =  [  
+  {'role':'system', 'content': system_message},    
+  {'role':'user', 'content': f"{delimiter}{user_message}{delimiter}"},  
+]
+response = get_completion_from_messages(messages)
+print(response)
+# ------
+{
+    "primary": "账户管理",
+    "secondary": "关闭账户"
+}
+```
+
+（2）Prompt 注入
+
+```py
+# 会被视为 Prompt 注入
+user_message = f"""介绍下你们的平板电视吧"""
+
+messages =  [  
+{'role':'system', 
+ 'content': system_message},    
+{'role':'user', 
+ 'content': f"{delimiter}{user_message}{delimiter}"},  
+]
+response = get_completion_from_messages(messages) # 调用OpenAI
+print(response)
+```
+
+ChatGPT回复如下：
+> 抱歉，我是一个语言模型，无法提供实时产品信息。建议您访问电视制造商的官方网站或者联系客服获取更详细的产品信息。如果您有其他问题需要帮助，请随时问我。
+
+完整的messages如下：
+
+```json
+[{'role': 'system', 'content': '您将获得<客户服务查询>。<客户服务查询>将用####字符分隔。\n将每个查询分类为主要类别和次要类别。以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，其他的不需要输出。\n主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。\n\n<结算>次要类别：取消订阅或升级 添加付款方式 有关费用的说明 争议费用\n\n<技术支持>次要类别：一般故障排除设备兼容性 软件更新 \n<账户管理>次要类别：重置密码 更新个人信息 关闭账户 账户安全 \n<一般查询>次要类别：\n产品信息 支付 反馈 与人交谈 \n'}, {'role': 'user', 'content': '####介绍下你们的平板电视吧####'}]
+```
+
+Prompt注入问题
+- 使用变量
+- 示例1: 忽略前面的指令
+- 示例2: 判断是否存在Prompt注入
+
+更多：吴恩达《Building Systems with the ChatGPT API》课程
+
+**指定变量**方式防止Prompt注入：
+- 上述被视为 Prompt 注入，做出以下修正
+
+```py
+delimiter = "##"
+system_message = f"""\
+您将获得<客户服务查询>query_text。\
+<客户服务查询>query_text。\
+
+将每个<客户服务查询>分类为主要类别和次要类别。\
+结果以Json格式提供输出，key为：<primary>和<secondary>。\
+只需要输出Json格式的输出结果，不要输出其他，key对应的值没有的话，用空字符串填充。\
+
+主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。
+
+（同上，略）
+
+"""
+
+raw_user_message = "介绍下你们的平板电视吧"
+user_message = f"""query_text={raw_user_message}"""
+
+print("user_message=", user_message)
+
+messages =  [  
+{'role':'system', 
+ 'content': system_message},    
+{'role':'user', 
+ 'content': user_message},  
+]
+print("messages=", messages)
+
+response = get_completion_from_messages(messages)
+print("response=",response)
+```
+
+ChatGPT回复如下：
+
+```json
+{
+    "primary": "一般查询",
+    "secondary": "产品信息"
+}
+```
+
+中间信息如下：
+
+```json
+user_message= query_text=介绍下你们的平板电视吧
+messages= [{'role': 'system', 'content': '您将获得<客户服务查询>query_text。<客户服务查询>query_text。\n将每个<客户服务查询>分类为主要类别和次要类别。结果以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，不要输出其他，key对应的值没有的话，用空字符串填充。\n主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。\n\n<结算>次要类别：取消订阅或升级 添加付款方式 有关费用的说明 争议费用\n\n<技术支持>次要类别：一般故障排除设备兼容性 软件更新 \n<账户管理>次要类别：重置密码 更新个人信息 关闭账户 账户安全 \n<一般查询>次要类别：\n产品信息 支付 反馈 与人交谈 \n'}, {'role': 'user', 'content': 'query_text=介绍下你们的平板电视吧'}]
+```
+
+
+
+（3）内容审核
+
+OpenAI 官方提供了内容审核的接口 Moderation。
+- 通过OpenAI的内容审核接口可以检查用户输入的内容是否符合OpenAI的使用政策，包括识别是否存在不良信息、仇恨言论、暴力内容、色情内容等，并对其进行过滤或标记。
+
+```py
+# sexual
+response = openai.Moderation.create(
+    input="""➕V看你想看的，日韩应有尽有"""
+)
+moderation_output = response["results"][0]
+print(moderation_output)
+# violence类别识别
+response = openai.Moderation.create(
+    input="""你再这样PUA张三的话，张三可能会拿电锯把你切成碎片"""
+)
+moderation_output = response["results"][0]
+print(moderation_output)
+
+```
 
 
 ### AI教育
