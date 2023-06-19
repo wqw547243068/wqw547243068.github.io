@@ -1112,6 +1112,12 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
 - Meta 开发的 OPT-175B 虽然开源，但完整模型只有在提出申请后才能获得，并且只能用于非商业用途。
 - 而 Bloom 就完全不同，并没有这些限制，任何个人或机构都可以免费获得 1760 亿个参数的完整模型。
 
+开源大语言模型主要有三大类：
+- `GLM`衍生的大模型（wenda、ChatSQL等）
+- `LLaMA`衍生的大模型（Alpaca、Vicuna、BELLE、Phoenix、Chimera等）
+- `Bloom`衍生的大模型（Bloomz、BELLE、Phoenix等）
+
+LLaMA无疑是其中最闪亮的星。但是国内关于LLaMA比较大的一个争论: LLaMA是以英语为主要语言的拉丁语系上进行训练的，LLaMA词表中的中文token比较少（只有几百个）
 
 严格复刻`GPT-3`方案并开放模型
 - 国外
