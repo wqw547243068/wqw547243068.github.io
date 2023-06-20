@@ -449,72 +449,6 @@ seq2seq的运行模式
   - ![](https://upload-images.jianshu.io/upload_images/18270108-ae24c57e7b299c97.jpg)
   - Beam Search可能会产生的问题是：可能都是十分相近的句子。如：当用户说“我喜欢打篮球”，搜索出来的结果可能是“我也是。”“我也是！”“我也是……”只有标点符号不同，这样多样性依然很低。
 
-### seq2seq问题
-
-文本生成特有的挑战：
-- 计算量大：解码是反复进行的，因此相比其他一次性输出模型，seq2seq生成需要更多计算量。
-- 超参敏感：生成文本的**质量**和**多样性**取决于解码方法和相关超参数的选择。
-- ![](https://picx.zhimg.com/80/v2-da054dc83902df933696afc87fefbd1d_1440w.webp?source=1940ef5c)
-
-普通seq2seq可能出现如下问题，导致用户体验差或者对话上下文不够连贯。
-- 负面情感的回复
-- 疑问句式的回复
-- 回复的多样性较低
-- 一致性低
-- 上下文逻辑冲突；背景有关的一些信息，比如年龄其实不可控；
-- 安全回复居多，对话过程显得很无聊。
-  - 训练时用到的数据都是人类的对话语料，往往充斥着已知和未知的背景信息，使得对话成为一个"一对多"的问题，比如问年龄和聊天气，回答包括不同的人针对同样的问题产生的不同的回复。
-  - 但是神经网络无论多复杂，它始终是一个一一映射的函数。
-  - <font color='blue'>最大似然只能学到所有语料的共通点，所有背景，独特语境都可能被模型认为是噪音，这样会让模型去学习那些最简单出现频率高的句子</font>，比如"是的"之类的回复，我们称之为**安全回复**。
-- 对话语料的局限性
-  - 对话语料只是冰山的一角，实际上对话语料中潜藏着很多个人属性、生活常识、知识背景、价值观/态度、对话场景、情绪装填、意图等信息，这些潜藏的信息没有出现在语料，建模它们是十分困难的。
-
-![](https://upload-images.jianshu.io/upload_images/18270108-9c904095e3c94f58.png)
-
-### 可控文本生成
-
-【2021-9-29】[ICBU可控文本生成技术详解](https://www.sohu.com/a/492765825_612370) 
-
-可控文本生成的目标是控制给定模型基于源文本产生特定属性的文本。
-- 特定属性包括文本的`风格`、`主题`、`情感`、`格式`、`语法`、`长度`等。
-- 根据源文本生成目标序列的文本生成任务，可以建模为 $ P(Target\|Sourse) $；
-- 而考虑了控制信号的可控文本生成任务，则可以建模为 $ P(Target\|Sourse,ControlSignal) $ 。
-
-目前可控文本生成已有大量的相关研究，比较有趣的研究有
-- SongNet（Tencent）控制输出诗词歌赋的字数、平仄和押韵；
-- StylePTB（CMU）按照控制信号改变句子的语法结构、单词形式、语义等；
-- CTRL（Salesforce）在预训练阶段加入了 control codes 与 prompts 作为控制信号，影响文本的领域、主题、实体和风格。
-
-【2021-1-2】翁丽莲的博客：[Controllable Neural Text Generation](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/)
-
-
-
-#### 可控文本生成技术的发展过程和趋势
-
-发展过程
-- 首先，在预训练语言模型的热度高涨之前，使用**解码策略**来控制文本属性的方案较为流行
-  - 比如，引入多个判别器影响 Beam Search 中的似然得分的 L2W，以及改进解码采样策略的 Nucleur Sampling（2019）。
-- 随着 GPT-2（2019）、T5（2019）的提出，使得**基于 Prompt** 来控制同一预训练语言模型来完成多种任务成为可能。
-  - 因其能够更有效地利用模型在预训练阶段习得的知识，Prompting LM 的方式受到了学术界的重视，Prefix-Tuning（2021）等也推动基于 Prompt 的文本生成向前一步。
-- 而针对于如何基于**预训练语言模型**做可控文本生成，学术界也一直往“低数据依赖、低算力需求、低时间消耗”方向上推进。
-  - CTRL（2019）凭借海量数据和大体量结构成为文本生成领域的代表性模型；
-  - PPLM （2019）则引入属性判别器，仅需精调小部分参数起到了“四两拨千斤”的效果；
-  - 而 GeDi（2020） 为了解决 PPLM 多次反传导致的解码效率低下，直接在解码阶段加入属性判别器来控制解码输出；
-  - CoCon（2021）同样仅精调插入 GPT-2 中的 CoCon 层来提高训练效率，并通过精巧的目标函数的设计来增强可控性能。
-
-
-#### 可控文本生成模型
-
-可控文本生成模型等方案也多种多样，按进行可控的着手点和切入角度，将可控文本生成方案分为四类：
-- `构造` Control Codes、`设计` Prompt、加入`解码策略`（Decoding Strategy），以及 `Write-then-Edit` 
-
-详解
-- `构造` Control Codes: 引入一些符号或文本作为条件，训练条件语言模型
-- `设计` Prompt: 为预训练语言模型设计 Prompt 也能实现对 PLM 所执行文本任务的控制
-- 加入`解码策略`（Decoding Strategy）: 在解码阶段使用采样策略，也能够采样出具有特定属性的文本
-- `Write-then-Edit`: PPLM 引入属性判别模型来根据产生的草稿计算梯度并反向传播，基于更新后的隐含状态来产生最终文本序列
-
-具体方法详见：[ICBU可控文本生成技术详解](https://www.sohu.com/a/492765825_612370) 
 
 ### 实验对比
 
@@ -592,12 +526,6 @@ Seq2Seq 是一种RNN模型，使用的是 **Encoder-Decoder**结构，可以理�
 
 Seq2Seq的模型结构也有很多种，常见的有几种，**Encoder**都相同，区别主要在于**Decoder**.
 
-演进过程
-- （1）单向量 C
-- （2）
-- （3）
-- （4）
-
 Seq2Seq 模型结构有很多种，下面是几种比较常见的：
 - 第一种: c 只与解码器**第一个**隐含层h连接
   - ![](https://pic2.zhimg.com/80/v2-a164a0a00ca8fa0e44bbcfb8027bdb21_1440w.webp)
@@ -608,7 +536,7 @@ Seq2Seq 模型结构有很多种，下面是几种比较常见的：
 
 这三种 Seq2Seq 模型的主要区别在于 Decoder，它们的 Encoder 都是一样的
 
-#### 第一种Seq2Seq
+#### 第一种 ：C只与第一个隐含层单元h连接
 
 - 论文：[Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation]()
 
@@ -625,7 +553,7 @@ Encoder & Decoder：[img](https://gitee.com/summerrat/images/raw/master/img/2003
 - 将上下文向量 **C** 当成是 RNN 的初始隐藏状态输入到 RNN 中
 - 后续只接受上一个神经元的隐藏层状态 **h'** 而不接收其他的输入 **x**
 
-#### 第二种Seq2Seq
+#### 第二种 : C与所有隐含层单元连接
 
 - 论文：[Sequence to Sequence Learning with Neural Networks]()
 
@@ -642,7 +570,7 @@ Encoder & Decoder：[img](https://gitee.com/summerrat/images/raw/master/img/2003
 -  Decoder 结构有了自己的初始隐藏层状态 **h'0**
 -  不再把上下文向量 **c** 当成是 RNN 的初始隐藏状态，而是当成 RNN 每一个神经元的输入
 
-#### 第三种Seq2Seq
+#### 第三种 : C与所有隐含层单元几输出y连接
 
 Encoder & Decoder：
 - ![img](https://gitee.com/summerrat/images/raw/master/img/20030902-98c17bbce81a14ba.png)
@@ -654,6 +582,65 @@ Encoder & Decoder：
 - 即每一个神经元的输入包括：上一个神经元的隐藏层向量 **h'**，上一个神经元的输出 **y'**，当前的输入 **c** (Encoder 编码的上下文向量)。
 - 对于第一个神经元的输入 **y'**0，通常是句子起始标志位的 embedding 向量。
 
+
+### 损失函数
+
+Seq2seq建模成一个概率问题
+- 用**最大似然法**最大化输出序列基于输入序列的**条件概率**
+
+$$
+\begin{array}{c}
+\mathrm{P}\left(\mathrm{y}_{1}, \cdots, \mathrm{y}_{\mathrm{T}^{\prime}} \mid \mathrm{x}_{1}, \cdots, \mathrm{x}_{\mathrm{T}}\right)=\prod_{\mathrm{t}=1}^{\mathrm{T}^{\prime}} \mathrm{p}\left(\mathrm{y}_{\mathrm{t}} \mid \mathrm{y}_{\mathrm{t}-1}, \cdots, \mathrm{y}_{1}, \mathrm{x}_{\mathrm{T}}, \cdots, \mathrm{x}_{1}\right) \\
+=\prod_{\mathrm{t}=1}^{\mathrm{T}^{\prime}} \mathrm{p}\left(\mathrm{y}_{\mathrm{t}} \mid \mathrm{y}_{\mathrm{t}-1}, \cdots, \mathrm{y}_{1}, \mathrm{c}\right)
+\end{array}
+$$
+
+连乘变求和
+
+$-\log \mathbb{P}\left(\mathrm{y}_{1}, \ldots, \mathrm{y}_{\mathrm{T}^{\prime}} \mid \mathrm{x}_{1}, \ldots, \mathrm{x}_{\mathrm{T}}\right)=-\sum_{\mathrm{t}^{\prime}=1}^{\mathrm{T}^{\prime}} \log \mathbb{P}\left(\mathrm{y}_{\mathrm{t}^{\prime}} \mid \mathrm{y}_{1}, \ldots, \mathrm{y}_{\mathrm{t}^{\prime}-1}, \boldsymbol{c}\right)$
+
+
+seq2seq损失函数从连乘变成求和是为了方便计算，并不是为了奖励短句子、惩罚长句；
+- 理由：-log变换保持了单调性不变
+- 示例： 单调性不变
+
+```sh
+# 连乘
+0.1*0.2 = 0.02
+0.1*0.2*0.3 = 0.006
+# 连加
+-log(0.1)*log(0.2) = -1.3498588075760032
+-log(0.1)*log(0.2)*log(0.3) = -1.822118800390509
+```
+
+真正的长度惩罚
+- $\frac{1}{\mathrm{~L}^{\alpha}} \log \mathbb{P}\left(\mathrm{y}_{1}, \ldots, \mathrm{y}_{\mathrm{L}}\right)=\frac{1}{\mathrm{~L}^{\alpha}} \sum_{\mathrm{t}^{\prime}=1}^{\mathrm{L}} \log \mathbb{P}\left(\mathrm{y}_{\mathrm{t}^{\prime}} \mid \mathrm{y}_{1}, \ldots, \mathrm{y}_{\mathrm{t}^{\prime}-1}, \boldsymbol{c}\right)$
+
+L是最终序列的长度，α一般选0.75。这L的系数起到的作用是惩罚太长的序列得分过高的情况
+
+通常在输入和输出序列前后分别加一个特殊符号`<bos>`和`<eos>`，分别表示句子的**开始**和**结束**。
+- ![](https://i.loli.net/2018/09/06/5b90ebf798140.png)
+- 数字表示每一个state(解码步数)，ABC表示每一个词。中间的数字是条件概率，比如, B2这里的0.4表示在 $P(B|A)$，而A2就是表示$P(A|A)$
+3种方式优化: 贪婪搜索、穷举搜索、束搜索
+
+集束搜索
+- 每次不再只看概率最高的那个词，而是看概率最高的k个词(beam size 束宽)
+- 根据k个候选词输出下一个阶段的序列，接着再选出概率最高的k个序列，不断重复这件事情
+- 各个状态的候选序列中筛选出包含特殊符号`<eos>`的序列，并将**这个符号后的子序列舍弃**，得到最后的输出序列。然后再在这些序列中选择分数最高的作为最后的输出序列
+
+贪婪搜索可以看做是beam size为1的束搜索。
+- ![](https://i.loli.net/2018/09/06/5b90f03697a3c.png)
+- 不同于贪婪搜索，束搜索并不知道什么时候停下来，所以要定义一个**最长输出序列长度**。
+
+分析
+- 贪婪算法: 结果是ABC，概率 0.5×0.4×0.2×0.6
+- 非贪婪算法: 结果是ACB，概率 0.5×0.3×0.6×0.6 , 明显概率更大。
+
+【2018-9-6】[台大李宏毅深度学习——seq2seq](https://samaelchen.github.io/deep_learning_step6/)
+
+
+### Seq2seq 改进
+
 #### 改进版：Attention
 
 Seq-to-Seq with Attention（NMT）
@@ -663,9 +650,10 @@ Seq-to-Seq with Attention（NMT）
 - ![](https://bigquant.com/community/uploads/default/original/3X/c/6/c6f7aabe0c7ead563e63dc38fb575057274b7ce0.jpg)
 
 区别：**向量C变矩阵**
-- 前面两个模型都是将source序列编码成一个固定维度的向量，但是这样做对于长序列将会丢失很多信息导致效果不好
+- 前面两个模型都是将source序列编码成一个固定维度的向量C，对于长序列这将会丢失很多信息，导致效果不好
 - 所以作者提出将encoder阶段所有的隐层状态保存在一个**列表**中，然后接下来decode的时候，根据前一时刻状态st-1去计算T个隐层状态与其相关程度，在进行加权求和得到编码信息ci，也就是说每个解码时刻的c向量都是不一样
 - ![](https://bigquant.com/community/uploads/default/original/3X/a/8/a80cb4394ffe789957df180d10f5ae9083f5c88a.jpg)
+- ![](https://pic3.zhimg.com/80/v2-4142e5e87ba18fd0f05617f32021c2ae_1440w.webp)
 
 #### 改进版：Attention变形
 
@@ -702,6 +690,71 @@ Attention各种变形
 - beam size=1时，beam search就会退化为贪心算法
 - 好处：可以通过增加搜索范围来保证一定的正确率。beam size等于2时效果就已经不错了，到10以上就不会再有很大提升
 
+### seq2seq问题
+
+文本生成特有的挑战：
+- 计算量大：解码是反复进行的，因此相比其他一次性输出模型，seq2seq生成需要更多计算量。
+- 超参敏感：生成文本的**质量**和**多样性**取决于解码方法和相关超参数的选择。
+- ![](https://picx.zhimg.com/80/v2-da054dc83902df933696afc87fefbd1d_1440w.webp?source=1940ef5c)
+
+普通seq2seq可能出现如下问题，导致用户体验差或者对话上下文不够连贯。
+- **负面情感**的回复
+- **疑问句式**的回复
+- 回复的**多样性较低**
+- **一致性低**
+- 上下文**逻辑冲突**；背景有关的一些信息，比如年龄其实不可控；
+- **安全回复**居多，对话过程显得很无聊。
+  - 训练时用到的数据都是人类的对话语料，往往充斥着已知和未知的背景信息，使得对话成为一个"一对多"的问题，比如问年龄和聊天气，回答包括不同的人针对同样的问题产生的不同的回复。
+  - 但是神经网络无论多复杂，它始终是一个一一映射的函数。
+  - <font color='blue'>最大似然只能学到所有语料的共通点，所有背景，独特语境都可能被模型认为是噪音，这样会让模型去学习那些最简单出现频率高的句子</font>，比如"是的"之类的回复，我们称之为**安全回复**。
+- 对话语料的局限性
+  - 对话语料只是冰山的一角，实际上对话语料中潜藏着很多个人属性、生活常识、知识背景、价值观/态度、对话场景、情绪装填、意图等信息，这些潜藏的信息没有出现在语料，建模它们是十分困难的。
+
+![](https://upload-images.jianshu.io/upload_images/18270108-9c904095e3c94f58.png)
+
+### 可控文本生成
+
+【2021-9-29】[ICBU可控文本生成技术详解](https://www.sohu.com/a/492765825_612370) 
+
+可控文本生成的目标是控制给定模型基于源文本产生特定属性的文本。
+- 特定属性包括文本的`风格`、`主题`、`情感`、`格式`、`语法`、`长度`等。
+- 根据源文本生成目标序列的文本生成任务，可以建模为 $ P(Target\|Sourse) $；
+- 而考虑了控制信号的可控文本生成任务，则可以建模为 $ P(Target\|Sourse,ControlSignal) $ 。
+
+目前可控文本生成已有大量的相关研究，比较有趣的研究有
+- SongNet（Tencent）控制输出诗词歌赋的字数、平仄和押韵；
+- StylePTB（CMU）按照控制信号改变句子的语法结构、单词形式、语义等；
+- CTRL（Salesforce）在预训练阶段加入了 control codes 与 prompts 作为控制信号，影响文本的领域、主题、实体和风格。
+
+【2021-1-2】翁丽莲的博客：[Controllable Neural Text Generation](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/)
+
+
+#### 可控文本生成技术的发展过程和趋势
+
+发展过程
+- 首先，在预训练语言模型的热度高涨之前，使用**解码策略**来控制文本属性的方案较为流行
+  - 比如，引入多个判别器影响 Beam Search 中的似然得分的 L2W，以及改进解码采样策略的 Nucleur Sampling（2019）。
+- 随着 GPT-2（2019）、T5（2019）的提出，使得**基于 Prompt** 来控制同一预训练语言模型来完成多种任务成为可能。
+  - 因其能够更有效地利用模型在预训练阶段习得的知识，Prompting LM 的方式受到了学术界的重视，Prefix-Tuning（2021）等也推动基于 Prompt 的文本生成向前一步。
+- 而针对于如何基于**预训练语言模型**做可控文本生成，学术界也一直往“低数据依赖、低算力需求、低时间消耗”方向上推进。
+  - CTRL（2019）凭借海量数据和大体量结构成为文本生成领域的代表性模型；
+  - PPLM （2019）则引入属性判别器，仅需精调小部分参数起到了“四两拨千斤”的效果；
+  - 而 GeDi（2020） 为了解决 PPLM 多次反传导致的解码效率低下，直接在解码阶段加入属性判别器来控制解码输出；
+  - CoCon（2021）同样仅精调插入 GPT-2 中的 CoCon 层来提高训练效率，并通过精巧的目标函数的设计来增强可控性能。
+
+
+#### 可控文本生成模型
+
+可控文本生成模型等方案也多种多样，按进行可控的着手点和切入角度，将可控文本生成方案分为四类：
+- `构造` Control Codes、`设计` Prompt、加入`解码策略`（Decoding Strategy），以及 `Write-then-Edit` 
+
+详解
+- `构造` Control Codes: 引入一些符号或文本作为条件，训练条件语言模型
+- `设计` Prompt: 为预训练语言模型设计 Prompt 也能实现对 PLM 所执行文本任务的控制
+- 加入`解码策略`（Decoding Strategy）: 在解码阶段使用采样策略，也能够采样出具有特定属性的文本
+- `Write-then-Edit`: PPLM 引入属性判别模型来根据产生的草稿计算梯度并反向传播，基于更新后的隐含状态来产生最终文本序列
+
+具体方法详见：[ICBU可控文本生成技术详解](https://www.sohu.com/a/492765825_612370) 
 
 ### seq2seq实现
 
@@ -846,6 +899,8 @@ dataset = tf.data.Dataset.from_tensor_slices((english_train_sequences, hindi_tra
 dataset = dataset.batch(BATCH_SIZE, drop_remainder = True)
 print("No. of batches: " + str(len(list(dataset.as_numpy_iterator()))))
 ```
+
+
 
 ### 编码器Encoder
 
