@@ -740,7 +740,20 @@ PandaGPT 仅仅是一个研究原型，暂时还不足以直接应用于生产�
 - ![](https://pic2.zhimg.com/v2-4b6fd2e8afecec88cfa6b66004db76a9_b.webp)
 
 
+#### VisorGPT
 
+【2023-6-20】 [VisorGPT : 如何基于 GPT 和 AIGC 模型定制一个可控的生成模型](https://zhuanlan.zhihu.com/p/637938906)
+- [VisorGPT: Learning Visual Prior via Generative Pre-Training](https://arxiv.org/abs/2305.13777)
+- [VisorGPT](https://github.com/Sierkinhane/VisorGPT)
+- ![](https://pic1.zhimg.com/80/v2-ee8dab89e039fc48e2050c8c0b2fad68_1440w.webp)
+
+可控扩散模型如ControlNet、T2I-Adapter和GLIGEN等可通过额外添加的空间条件如人体姿态、目标框来控制生成图像中内容的具体布局。使用从已有的图像中提取的人体姿态、目标框或者数据集中的标注作为空间限制条件，上述方法已经获得了非常好的可控图像生成效果。
+
+那么，如何更友好、方便地获得空间限制条件？或者说如何自定义空间条件用于可控图像生成呢？例如自定义空间条件中物体的类别、大小、数量、以及表示形式（目标框、关键点、和实例掩码）。
+
+本文将空间条件中物体的形状、位置以及它们之间的关系等性质总结为视觉先验（Visual Prior），并使用Transformer Decoder以Generative Pre-Training的方式来建模上述视觉先验。
+
+因此，可以从学习好的先验中通过Prompt从多个层面，例如表示形式（目标框、关键点、实例掩码）、物体类别、大小和数量，来采样空间限制条件。
 
 # 结束
 
