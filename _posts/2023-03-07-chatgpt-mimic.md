@@ -1347,18 +1347,54 @@ SparseGPT 可以将 GPT 系列模型单次剪枝到 50% 稀疏性，而无需任
 - 比如在目前最大的开源模型 OPT‑175B 和 BLOOM‑176B 上执行SparseGPT 时，可以达到 60% 的稀疏度，同时将精度损失降到最小。
 
 
-### GPT-J
+### GPT-X系列
 
 GPT-J 是一个基于 GPT-3，由 60 亿个参数组成的自然语言处理 AI 模型。
 
-2021年3月发布`GPT-Neo`，2021年6月发布`GPT-J`，作为开源模型，两者均由 `EleutherAI` 发布
-- `EleutherAI`: 一个由致力于开源人工智能的研究人员组成的集体 研究人员致力于开放人工智能的源代码).
+，2021年6月发布`GPT-J`，作为开源模型，两者均由 `EleutherAI` 发布
+- 
 - GPT-Neo有3个版本: 1.25亿个参数，13亿个参数（相当于GPT-3 Babbage），和 2.7亿个参数。
 - GPT-J有60亿个参数，这使得它成为目前最先进的开源自然语言处理 模型。这直接等同于GPT-3 Curie。
+
+#### EleutherAI
+
+2020 年微软与 OpenAI 在 GPT-3 源代码独家访问权上达成协议以来，OpenAI 就不再向社会大众开放 GPT-3 的模型代码（尽管 GPT-1 和 GPT-2 仍是开源项目）。
+
+出于对科技巨头霸权的「反叛」，一个由各路研究人员、工程师与开发人员志愿组成的**计算机科学家协会**成立，立志要打破微软与 OpenAI 对大规模 NLP 模型的垄断，且取得了不错的成果。
+
+这个协会，就是：EleutherAI。以古罗马自由女神 Eleutheria 的名字命名，透露出对巨头的不屑与反抗。
+
+EleutherAI 成立始于 2020 年 7 月，主要发起人是一群号称自学成才的黑客，主要领导人包括 Connor Leahy、Leo Gao 和 Sid Black，基于 Discord 成立了 EleutherAI，希望建立一个能够与 GPT-3 相媲美的机器学习模型。
+
+`EleutherAI`: 一个由致力于开源人工智能的研究人员组成的集体 研究人员致力于开放人工智能的源代码).
+
+EleutherAI 研究团队[成长迅速](https://posts.careerengine.us/p/623b012b4f37b3440f998614?from=latestPostSidePanel)
+- 2021年3月，开源了基于 GPT-3 的、包含 60 亿参数的 NLP 模型 `GPT-Neo`
+- 2021年6月，又发布类 GPT 的 27 亿参数模型 `GPT-J`。
+- 2023年2月9日，又与 CoreWeave 合作发布了 GPT-Neo 的升级版——`GPT-NeoX-20B`，官方[代码地址](https://mystic.the-eye.eu/public/AI/models/GPT-NeoX-20B/)现可从 The Eye on the Eye 公开下载. `GPT-NeoX-20B` 是一个包含 200 亿参数、预训练、通用、自回归大规模语言模型
+
+EleutherAI 完全公开发布 Pile 数据集, 一个 825 GB 的英文文本语料库，用于训练大规模语言模型。
 
 该模型在一个 800GB 的开源文本数据集上进行训练，并且能够与类似规模的 GPT-3 模型相媲美。 该模型通过利用 Google Cloud 的 v3-256 TPU 以及 EleutherAI 的 The Pile 数据集进行训练，历时大约五周时间。
 - GPT-J 在标准 NLP 基准工作负载上实现了与 OpenAI 报告的 67 亿参数版本的 GPT-3 类似的准确性。模型代码、预训练的权重文件、Colab 文档和一个演示网页都包含在 EleutherAI 的开源项目中。
 
+#### GPT-Neo
+
+2021年3月发布`GPT-Neo`
+- GPT-Neo有3个版本: 1.25亿个参数，13亿个参数（相当于GPT-3 Babbage），和 2.7亿个参数。
+
+#### GPT-J
+
+GPT-J 是一个基于 GPT-3，由 60 亿个参数组成的自然语言处理 AI 模型。
+
+2021年6月发布`GPT-J`
+- GPT-J有60亿个参数，这使得它成为目前最先进的开源自然语言处理 模型。这直接等同于GPT-3 Curie。
+
+#### GPT-NeoX-20B
+
+2023年2月9日，EleutherAI又与 CoreWeave 合作发布了 `GPT-Neo` 升级版——`GPT-NeoX-20B`
+- 官方[代码地址](https://mystic.the-eye.eu/public/AI/models/GPT-NeoX-20B/), 现可从 The Eye on the Eye 公开下载. 
+- `GPT-NeoX-20B` 是一个包含 200 亿参数、预训练、通用、自回归大规模语言模型
 
 ### Pythia
 
