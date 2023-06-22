@@ -62,6 +62,7 @@ OpenAI InstructGPT论文里有个惊奇的发现，即：1.3B小模型+RLHF 居�
 - 详见站内专题：[大语言模型演变](https://wqw547243068.github.io/plm#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%BC%94%E5%8F%98)
 
 【2023-6-21】[LLMsPracticalGuide](https://github.com/Mooler0410/LLMsPracticalGuide)
+- 论文解读：[一文带你理清全球AI巨头的大模型进化史](https://zhuanlan.zhihu.com/p/638455866)
 
 LLM选择决策树
 - ![](https://github.com/Mooler0410/LLMsPracticalGuide/blob/main/imgs/decision.png)
@@ -3569,6 +3570,42 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 中国科学院自动化研究所在上海发布了该所研制的新一代人工智能大模型——`紫东太初2.0`。全新大模型相比第一代着力提升了决策与判断能力，实现了从感知、认知到决策的跨越，未来将在医疗、交通、工业生产等领域发挥更大作用。
 
 作为我国首个存储千亿参数的图文音三模态大模型，第一代紫东太初人工智能大模型在2021年问世时实现了无标识的图像、文字、语音的识别能力，这次发布的新一代大模型则升级融入了视频、传感信号、3D点云等识别能力，突破了多模态分组认知编码、解码，全模态认知等关键技术，提升了系统的决策和判断能力，打通了系统识别能力从感知、认知到决策的通路，从而拓展出更为广泛的应用场景。目前，紫东太初大模型已经在神经外科手术导航、短视频内容审核、医疗多模态鉴别诊断、交通违规图像研读等多领域应用。
+
+### vLLM -- 伯克利推理
+
+【2023-6-21】[比HuggingFace快24倍！伯克利LLM推理系统开源碾压SOTA，GPU砍半](https://www.toutiao.com/article/7247011018936271418)
+
+UC伯克利重磅开源神级LLM推理和服务系统——`vLLM`，利用PagedAttention，比HuggingFace/Transformers快24倍，GPU数量减半。
+- UC伯克利研究人员几个月前给大语言模型们安排了一个擂台——Chatbot Arena。
+
+全新算法的[vLLM](https://github.com/vllm-project/vllm)，重新定义了LLM服务的最新技术水平,性能全面碾压SOTA：
+- 与HuggingFace Transformers相比，它提供高达24倍的吞吐量，而无需进行任何模型架构更改。
+- NVIDIA A10G GPU上运行LLaMA-7B模型，在NVIDIA A100 GPU（40GB）上运行LLaMA-13B模型。
+- 研究人员从ShareGPT数据集中抽样请求的输入/输出长度。实验中，vLLM的吞吐量比HF高达**24倍**，并且比TGI高达**3.5倍**。
+
+值得一提的是，「小羊驼」Vicuna在demo中用到的就是FastChat和vLLM的一个集成。
+
+正如研究者所称，vLLM最大的优势在于——提供易用、快速、便宜的LLM服务。
+
+这意味着，未来，即使对于像LMSYS这样计算资源有限的小型研究团队也能轻松部署自己的LLM服务。
+
+秘密武器：**PagedAttention**
+
+在vLLM中，团队发现LLM服务的性能受到**内存**限制。
+
+自回归解码过程中，LLM所有输入token都会生成**注意力**键（key）和值（value）张量，并且这些张量被保留在GPU内存中以生成下一个token。这些缓存的键和值张量通常被称为**KV缓存**。KV缓存具有以下特点：
+1. 内存占用大：在LLaMA-13B中，单个序列的KV缓存占用高达1.7GB的内存。
+2. 动态化：其大小取决于序列长度，而序列长度高度易变，且不可预测。
+
+因此，有效管理KV缓存是一个重大挑战。对此，研究团队发现现有系统由于碎片化和过度保留而浪费了60%至80%的内存。
+> GPU内存碎片化=慢。
+
+为了解决这个问题，团队引入了 PagedAttention，一种受到操作系统中虚拟内存和分页经典概念启发的注意力算法。
+
+与传统的注意力算法不同，PagedAttention允许在非连续的内存空间中存储连续的键和值。
+- PagedAttention将每个序列的KV缓存分为若干块，每个块包含固定数量token的键和值。在注意力计算过程中，PagedAttention内核能够高效地识别和提取这些块。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/100e44e8db0646cd94237948ef3f621f~noop.image)
+- 详见[原文](https://www.toutiao.com/article/7247011018936271418)
 
 ### Web LLM —— 浏览器
 
