@@ -76,11 +76,12 @@ Remember, the sum of your prompt and maximum tokens should always be less than e
   - 加入了一层重点关注编码器输出的某一片段，**编码器-解码器自注意力**（encoder-decoder self-attention）层
   - 后面的单词掩盖掉了。但并不像 BERT 一样将它们替换成特殊定义的单词 < mask >，而是在自注意力计算的时候屏蔽了来自当前计算位置右边所有单词的信息。
 
-
 经验
 - 英文：100 tokens ~= 75 words)
 - 中文：一个汉字占2-3个token
 - 其它：emoji表情符号，占用更多，有的高达11个
+
+更多见站内[分词专题](https://wqw547243068.github.io/nlp#%E8%AF%8D%E5%BA%93%E6%9E%84%E5%BB%BA)
 
 ### 如何增强LLM能力
 
