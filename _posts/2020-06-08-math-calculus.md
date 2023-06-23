@@ -3,7 +3,7 @@ layout: post
 title:  "数学基础：微积分系列"
 date:   2020-06-08 13:10:00
 categories: 数学基础
-tags: 数学 微积分 几何学 导数 梯度 极限
+tags: 数学 微积分 几何学 导数 梯度 极限 级数 幂级数 傅里叶级数
 excerpt: 微积分知识点概括，参考普林斯顿微积分读本，以通俗易懂方式讲解微积分概念
 author: 鹤啸九天
 mathjax: true
@@ -677,7 +677,7 @@ $$
 - 求解连续变量的均值时（特别在概率中）
 
 
-# 泰勒级数
+# 级数
 
 - 【2021-3-18】[【官方双语】微积分的本质 - 10 - 泰勒级数](https://www.bilibili.com/video/av11251323/?from=search&seid=10355824295490802414)
   - ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+f%28x%29_%7BTaylor%7D+%26%3D+%5Csum_%7Bn%3D0%7D%5E%7B%5Cinfty%7D+%5Cfrac%7Bf%5E%7B%28n%29%7D%28a%29%7D%7Bn%21%7D+%5Ctimes+%28x+-+a%29%5En+%5C%5C+%26%3D+f%28a%29+%2B+%5Cfrac%7Bf%27%28a%29%7D%7B1%21%7D%28x-a%29+%2B+%5Cfrac%7Bf%5E%7B%282%29%7D%28a%29%7D%7B2%21%7D%28x-a%29%5E2%2B+%5Ccdots+%2B+%5Cfrac%7Bf%5E%7B%28n%29%7D%28a%29%7D%7Bn%21%7D%28x-a%29%5En+%2B+R_n%28x%29+%5Cend%7Balign%7D)
@@ -686,6 +686,7 @@ $$
   - [动图讲解泰勒级数](https://pic1.zhimg.com/50/v2-8391cbeb7da1d4a14550265ac9f74b4b_hd.webp?source=1940ef5c)
   - ![](https://pic1.zhimg.com/50/v2-8391cbeb7da1d4a14550265ac9f74b4b_hd.webp?source=1940ef5c)
 - <iframe src="//player.bilibili.com/player.html?aid=11251323&bvid=BV1Gx411Y7cz&cid=18609209&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
 
 ## 高阶导数
 
@@ -701,14 +702,72 @@ $$
     - 所谓二阶导数，就是 `d(df)` 和 `(dx)^2` 当 `dx → 0` 时比值的极限
 
 - 用符号表示为
-    
-    ![](https://www.zhihu.com/equation?tex=\begin{aligned}\underbrace{\frac{d(\frac{df}{dx})}{dx}=\frac{d(df)}{(dx)^2}=\frac{d^2f}{dx^2}}_{dx\to0}\end{aligned})
-    > 其实中间的写法才是最正确的，但为了书写方便，通常写成最右侧的形式
+- ![](https://www.zhihu.com/equation?tex=\begin{aligned}\underbrace{\frac{d(\frac{df}{dx})}{dx}=\frac{d(df)}{(dx)^2}=\frac{d^2f}{dx^2}}_{dx\to0}\end{aligned})
+> 其实中间的写法才是最正确的，但为了书写方便，通常写成最右侧的形式
     
 - 一个理解二阶导数的现实示例就是加速度
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/_assets/TIM截图20180629211550.png)
+> 二阶导数为正，说明车在加速；反之，为负，说明在减速
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/raw/master/_assets/TIM截图20180629211550.png)
-    > 二阶导数为正，说明车在加速；反之，为负，说明在减速
+## 级数类别
+
+【2023-6-23】[学数列极限找规律，都是为了让你学级数的](https://www.bilibili.com/video/BV1Ga4y1A79u)
+
+级数和微积分作为数学两大主要方向
+
+无穷级数两种重要级数
+- `幂级数`：常规函数，趋近任意精度，用于工程计算
+- `傅里叶级数`：周期函数，拟合任意形状
+
+幂级数和三角级数各有所长，不能相互替代。
+
+<iframe src="//player.bilibili.com/player.html?aid=657603730&bvid=BV1Ga4y1A79u&cid=1169948099&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+### 幂级数
+
+工程计算，比如：
+- 不用计算器计算任意精度的 $\sqrt{2}$
+
+幂级数是多项式的推广。 
+- 无穷次多项式，收敛域非常特殊，以某一点为中心的区间，在收敛区间内，求和函数是无限可微的。
+
+使用泰勒公式将对数、指数、三角、反三角等拆解成无穷项
+- 每项都是常系数与N次幂构成
+- 后面的项绝对值趋近于0
+
+幂级数的**收敛性**：
+- 1）阿贝尔第一定理：如果幂级数收敛于x1，则 当 x 属于 \|x1\| 时，幂级数绝对收敛； 如果级数在x2处发散，则对于所有x>\|x2\|，所有幂级数发散
+- 2) 收敛半径下定理：在幂级数收敛半径R下，(-R, R)收敛 绝对，并且都在 \[-R, R\] 之外发散。 正或负 R 可能收敛或发散
+- 3) 给定一个幂级数 Σan(x-x0)^n，如果 lim \|(an 1)/an\| = p, 或 lim 3√\|an \| = p，则收敛半径R = 1/p
+
+幂级数和函数的解析性质：
+- 1）阿贝尔第二定理：关于收敛和一致收敛的定理
+- 2) 连续性
+- 3) 逐项推导和逐项积分
+
+幂级数的运算：
+- 1) 两个幂级数的概念相等，同次幂项的系数也相等
+- 2) 函数为奇函数，不会有偶次幂项，反之亦然
+- 3）两个幂级数的和与乘积
+
+函数幂级数的展开：
+- 1）泰勒展开
+- 2）McLaughlin展开
+- 3) Lagrange型余数
+- 4) Cauchy型余数
+- 5) 几种常用初等的幂级数展开 功能
+
+### 傅里叶级数
+
+周期信号函数的展开
+
+三角级数是三角函数无穷和的一种特殊形式。 三角级数所表达的函数可以是不可微的，甚至是不连续的，因此表达的函数范围很广。
+
+三角级数：法国傅里叶提出，又称傅里叶级数
+- 随着三角函数累加次数增加，趋近于脉冲信号、锯齿波形
+
+【2023-6-23】[幂级数、傅里叶级数（notes）](https://zhuanlan.zhihu.com/p/266415766)
 
 ## 泰勒多项式与泰勒级数
 
@@ -836,7 +895,6 @@ $$
 - ...
 
 本系列的视频目的是帮你建立关于微积分的基本直觉，而微积分的道路才刚刚开始...
----
 
 
 ## 资料

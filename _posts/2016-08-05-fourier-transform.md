@@ -3,7 +3,7 @@ layout: post
 title:  "傅里叶变换-Fourier Transform"
 date:   2016-08-05 13:10:00
 categories: 数学基础
-tags: 数学 傅里叶 FFT
+tags: 数学 傅里叶 FFT 级数
 excerpt: 经典数学知识点：傅里叶变换
 author: 鹤啸九天
 mathjax: true
