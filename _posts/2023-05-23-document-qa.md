@@ -70,9 +70,9 @@ GPT-4 支持，详见[官网](https://platform.openai.com/docs/models/gpt-4)
 Remember, the sum of your prompt and maximum tokens should always be less than equal to the model's maximum token limit, OR your output is truncated.
 
 备注
-- 编码器：可以接受长度不超过最大序列长度（如 512 个单词）的输入。如果序列长度小于该限制，就在其后填入预先定义的空白单词。
+- `编码器`：可接受长度不超过最大序列长度（如 512 个单词）的输入。如果序列长度小于该限制，就在其后填入预先定义的空白单词。
   - 如，原始 transformer 论文中的编码器模块可以接受长度不超过最大序列长度（如 512 个单词）的输入。
-- 解码器：区别
+- `解码器`：区别
   - 加入了一层重点关注编码器输出的某一片段，**编码器-解码器自注意力**（encoder-decoder self-attention）层
   - 后面的单词掩盖掉了。但并不像 BERT 一样将它们替换成特殊定义的单词 < mask >，而是在自注意力计算的时候屏蔽了来自当前计算位置右边所有单词的信息。
 
@@ -85,10 +85,82 @@ Remember, the sum of your prompt and maximum tokens should always be less than e
 
 ### 如何增强LLM能力
 
+#### Full Stack LLM 课程
+
 【2023-5-21】[LLM训练营课程笔记—Augmented Language Models](https://zhuanlan.zhihu.com/p/630195581)
 - [英文ppt](https://drive.google.com/file/d/1A5RcMETecn6Aa4nNzpVx9kTKdyeErqrI/view), [讲义总结](https://fullstackdeeplearning.com/llm-bootcamp/spring-2023/augmented-language-models/)
 - There are three ways to augment language models: retrieval, chains, and tools.
 - Retrieval involves providing an external corpus of data for the model to search, chains use the output of one language model as input for another, and tools allow models to interact with external data sources.
+
+【2023-6-24】The Full Stack 出品的 LLM Bootcamp Spring 2023
+- LLM Foundations [ppt](https://drive.google.com/file/d/1A4Sh6l3cqn0k5ho1vnFOnzU0Fz7dQOK7/view)
+- LLM ops 大模型部署 [ppt](https://drive.google.com/file/d/1LZXTrRdrloIqAJT6xaNTl4WQd6y95o7K/view)
+  - LLMOps: Deployment and Learning in Production
+
+很难用传统ML方法评估，LLM输出特点：多样性
+
+如何评估LLMs效果 Evaluation metrics for LLMs
+- 常规评估标准： 如 正确率之类
+- 借鉴匹配标准：
+  - 语义相似度
+  - 用另一个LLM评判两个大难事实是否一致
+- 哪个更好 which is better
+  - 让LLM根据提供的要点判断两个答案哪个更好
+- 反馈是否包含 is the feedback incorporated
+  - 让LLM判断新答案是否包含旧答案上的反馈
+- 统计指标
+  - 验证输入结构，如 是否 json格式
+  - 让LLM给答案打分，如 1-5分
+
+总结，评估顺序
+1. 有正确答案吗？是→用传统ML的指标，否则
+1. 有参考答案吗？是→用匹配指标，拿参考答案计算匹配度，否则
+1. 有其他答案吗？是→LLM判断哪个更好（which is better），否则
+1. 有人工反馈吗？是→LLM判断反馈是否采纳（is the feedback incorporated），否则
+1. 统计指标
+
+如何提升生产环境中LLMs输出效果
+- 反问模型是否正确 Self-critique 自我怀疑
+  - Ask an LLM “is this the right answer”
+- 多次请求选最佳 Sample many times, choose the best option
+- 多次请求集成 Sample many times, ensemble
+
+如何改进持续prompt效果？
+- 根据用户反馈人工筛选未解决的案例
+- 调整prompt，方法：① 提示工程 ② 改变context
+
+那么，这个流程如何自动化？ Fine-tuning LLMs 微调大模型
+- SFT
+  - 想将大模型适配到具体任务，或 ICL效果不好
+  - 有大量领域数据
+  - 构建小/便宜模型，降低总成本
+- 基于人工反馈微调
+  - 由于技术复杂、昂贵，没多少公司自己做
+  - 方法：RLHF、RLAIF
+
+LLMs的SFT类型：效果上逐级提升，但训练效率上不断降低
+- （1）基于**特征**：冻结LLMs（如预训练transformer)，输出embedding信息后，单独更新附加模型（如分类）
+- （2）**部分参数**微调：冻结LLMs，只更新新增的全连接层参数（不再单独加模型）
+- （3）**全参数**微调：全部参数一起微调
+
+PEFT技术：Parameter-efficient fine tuning
+- Prompt modification：
+  - Hard prompt tuning
+  - Soft prompt tuning
+  - Prefix tuning
+- Adapter methods
+  - Adapters: 如 LLaMA-Adapter（基于prefix tuning）
+- Reparameterization
+  - LoRA（Low rank adaptation）
+
+LLM问题
+- Most common: often UI stuff
+  - 响应时间长 Latency especially 
+- 回答错误/幻觉 Incorrect answers / “hallucinations” 
+- 过于啰嗦 Long-winded answers 
+- 回避问题 Too many “dodged” questions 
+- 提示攻击 Prompt injection attacks 
+- 道德安全 Toxicity, profanity 
 
 LLM擅长什么？
 - • 语言理解
@@ -101,6 +173,8 @@ LLM在哪些方面需要帮助？
 - • 用户数据包含的知识
 - • 更有挑战性的推理
 - • 与外界交互
+
+#### 如何增强LLM能力
 
 如何增强LLM的能力？
 - LLM更加擅长**通用推理**，而不是**特定知识**。
@@ -732,6 +806,12 @@ agent.run("产品1总量,产品2总量,产品3总量分别是多少,将三个总
 - ![b](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TdjoYmX2ImA5oO~noop.image?_iz=58558&from=article.pc_detail&x-expires=1684219771&x-signature=rlim2GCZ8zsapnPyzA47LCHJkEo%3D)
 
 
+都有ChatGPT了，为什么还要了解Embedding这种「低级货」技术？两个原因：
+- 有些问题使用Embedding解决（或其他非ChatGPT的方式）会更加合理。通俗来说就是「杀鸡焉用牛刀」。
+- ChatGPT**性能**方面不是特别友好，毕竟是逐字生成（一个Token一个Token吐出来的）。
+
+更多：[ChatGPT相似度匹配笔记](https://github.com/datawhalechina/hugging-llm/blob/main/content/ChatGPT%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E2%80%94%E2%80%94%E7%9B%B8%E4%BC%BC%E5%8C%B9%E9%85%8D.ipynb)
+
 ### 文本切分
 
 LangChain 切分工具
@@ -810,9 +890,43 @@ OpenAI官方的embedding服务
 OpenAIEmbeddings：
 - 使用简单，并且效果比较好；
 
+#### OpenAI的Embedding服务
+
+直接使用openai的embedding服务
+
+```py
+import os
+import openai
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+# OPENAI_API_KEY = "填入专属的API key"
+openai.api_key = OPENAI_API_KEY
+
+text = "我喜欢你"
+model = "text-embedding-ada-002"
+emb_req = openai.Embedding.create(input=[text], model=model)
+emb = emb_req.data[0].embedding
+len(emb), type(emb)
+# 相似度计算
+from openai.embeddings_utils import get_embedding, cosine_similarity
+
+# 注意它默认的模型是text-similarity-davinci-001，我们也可以换成text-embedding-ada-002
+text1 = "我喜欢你"
+text2 = "我钟意你"
+text3 = "我不喜欢你"
+emb1 = get_embedding(text1)
+emb1 = get_embedding(text1, "text-embedding-ada-002") # 指定模型
+emb2 = get_embedding(text2)
+emb3 = get_embedding(text3)
+cosine_similarity(emb1, emb2) # 0.9246855139297101
+cosine_similarity(emb1, emb3) # 0.8578009661644189
+```
+
 问题
 - 会消耗openai的token，特别是大段文本时，**消耗的token**还不少，如果知识库是比较固定的，可以考虑将每次生成的embedding做持久化，这样就不需要再调用openai了，可以大大节约token的消耗；
 - 可能会有**数据泄露**的风险，如果是一些高度私密的数据，不建议直接调用。
+
+#### LangChain调用OpenAI
 
 ```py
 from langchain.text_splitter import RecursiveCharacterTextSplitter
