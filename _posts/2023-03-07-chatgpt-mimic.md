@@ -2614,7 +2614,7 @@ ChatGPT 完整训练包括三个流程：
 3.  强化学习微调 SFT：使用奖励模型作为强化学习优化目标，微调SFT模型
  
 配置环境
- 
+
 ```sh
 git clone https://github.com/LAION-AI/Open-Assistant.git
 cd Open-Assistant/model
