@@ -1675,8 +1675,22 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
-### PageAttention
+### PageAttention -- 管理qkv缓存
 
+【2023-6-24】UC Berkeley 团队推出一个用于加速LLM推理的开源库`vLLM`，Vicuna在线推理服务的幕后英雄。
+- 利用PagedAttention技术，通过有效地管理Attention模块中的Key和Value的Cache，重新定义了LLM的推理服务。无需更改任何模型架构，它的吞吐量比原生HF Transformers高出**24倍**。
+
+现有的Cache仍存在一些问题，
+- Large：对于LLaMA-13B中的单个序列，它占用高达1.7GB的内存。
+- Dynamic：它的大小取决于序列长度，而序列长度具有高度可变和不可预测的特点。
+
+因此，高效地管理KV Cache是一个重大挑战。
+- 现有系统（HuggingFace 默认实现是pytorch的内存分配策略）由于内存碎片化和过度预留而浪费了60%至80%的内存。
+
+为了解决这个问题，引入了PagedAttention，一种受传统操作系统**虚拟内存**和**分页**概念启发的注意力算法。
+- 与传统的注意力算法不同，PagedAttention允许将**连续的键和值存储在非连续的内存空间**中。
+- 具体而言，PagedAttention将每个序列的KV缓存分成多个块，每个块包含固定数量的标记的键和值。
+- 在注意力计算过程中，PagedAttention Kernel高效地识别和获取这些块，采用并行的方式加速计算。（和ByteTransformer的思想有点像）
 
 ## 稀疏Attention
 
