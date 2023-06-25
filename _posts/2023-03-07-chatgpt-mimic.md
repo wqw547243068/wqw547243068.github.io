@@ -2986,6 +2986,25 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half().quantize(4).cuda()
 ```
 
+#### ChatGLM2-6B -- 升级
+
+【2023-6-25】[ChatGLM2-6B：性能大幅提升，8-32k上下文，推理提速42%](https://mp.weixin.qq.com/s/_h9ls_gHIgHho1RBwUlhsA)
+- CEval榜单，ChatGLM2 暂时位居 Rank 0，ChatGLM2-6B 位居 Rank 6
+- 截至6月25日 ChatGLM2 模型以 71.1 的分数位居 Rank 0 ，ChatGLM2-6B 模型以 51.7 的分数位居 Rank 6，是榜单上排名最高的开源模型。
+
+ChatGLM2-6B的安装请参考[官方](https://github.com/THUDM/ChatGLM2-6B)
+
+ChatGLM2-6B 是开源中英双语对话模型 ChatGLM-6B 的第二代版本，在保留了初代模型对话流畅、部署门槛较低等众多优秀特性的基础之上，ChatGLM2-6B 引入了如下新特性：
+- 更强大的性能：基于 ChatGLM 初代模型的开发经验，我们全面升级了 ChatGLM2-6B 的基座模型。ChatGLM2-6B 使用了 GLM 的混合目标函数，经过了 1.4T 中英标识符的预训练与人类偏好对齐训练，评测结果显示，相比于初代模型，ChatGLM2-6B 在 MMLU（+23%）、CEval（+33%）、GSM8K（+571%） 、BBH（+60%）等数据集上的性能取得了大幅度的提升，在同尺寸开源模型中具有较强的竞争力。
+- 更长的上下文：基于 FlashAttention 技术，我们将基座模型的上下文长度（Context Length）由 ChatGLM-6B 的 2K 扩展到了 32K，并在对话阶段使用 8K 的上下文长度训练，允许更多轮次的对话。但当前版本的 ChatGLM2-6B 对单轮超长文档的理解能力有限，我们会在后续迭代升级中着重进行优化。
+- 更高效的推理：基于 Multi-Query Attention 技术，ChatGLM2-6B 有更高效的推理速度和更低的显存占用：在官方的模型实现下，推理速度相比初代提升了 42%，INT4 量化下，6G 显存支持的对话长度由 1K 提升到了 8K。
+- 更开放的协议：ChatGLM2-6B 权重对**学术研究**完全开放，在获得官方的书面许可后，亦允许商业使用。如果发现开源模型对业务有用，我们欢迎您对下一代模型 ChatGLM3 研发的捐赠。
+
+相比于初代模型，ChatGLM2-6B 多个维度的能力都取得了提升，对比示例
+- 数理逻辑
+- 知识推理
+- 长文档理解
+
 
 ### CPM-Bee 基座模型+Luca（露卡） -- OpenBMB
 
