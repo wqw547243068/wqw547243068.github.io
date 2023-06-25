@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -25,13 +25,18 @@ permalink: /transformer
 ## 总结
 
 Transformer，一个从**NLP**领域横跨到**语音**和**图像**领域，最终统一几乎所有模态的架构。
-- Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最重要的核心就是`Self-Attention`机制，中文也叫`自注意力`。
+- 基于 Transformers 架构的大型语言模型 (LLM)，如 `GPT`、`T5` 和 `BERT`，已经在各种自然语言处理 (NLP) 任务中取得了 SOTA 结果。
+- 此外，还开始涉足其他领域，例如：**计算机视觉** (`VIT`、`Stable Diffusion`、`LayoutLM`) 和**音频** (`Whisper`、`XLS-R`)
+
+Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最重要的核心就是`Self-Attention`机制，中文也叫`自注意力`。
 - 在语言模型建模过程中，把注意力放在那些重要的Token上。
 
 基于transformer的多模态模型
 - ViT: 2020, 图像任务
 - CLIP: 2021, 文本和图像混合
 - KOSMOS-1: 2023, 多模态大规模语言模型
+
+
 
 ### Transformer 架构理解
 
@@ -1669,6 +1674,72 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
+
+### PageAttention
+
+
+## 稀疏Attention
+
+稀疏Attention
+- Atrous Self Attention
+- Local Self Attention
+- Sparse Self Attention
+
+【2019-7-27】苏剑林，[节约而生：从标准Attention到稀疏Attention](https://spaces.ac.cn/archives/6853) 节约时间、显存。
+
+Attention的核心在于Q,K,V 三个向量序列的交互和融合，其中Q,K 的交互给出了两两向量之间的某种相关度（权重），而最后的输出序列则是把V
+按照权重求和得到的
+
+理论上，Self Attention **计算时间**和**显存占用量**都是 𝒪(n^2) 级别的（n是序列长度）
+- 如果序列长度变成原来的**2倍**，显存占用量就是原来的**4倍**，计算时间也是原来的**4倍**。
+- 当然，假设并行核心数足够多的情况下，计算时间未必会增加到原来的4倍，但是显存的4倍却是实实在在的，无可避免，这也是微调Bert时OOM的原因。
+
+为什么是 𝒪(n^2)？
+- 要对序列中的任意两个向量都要计算相关度，得到一个$n^2$大小的相关度矩阵
+- ![](https://spaces.ac.cn/usr/uploads/2019/07/775103900.png)
+- 左边显示了**注意力矩阵**，右变显示了**关联性**，这表明每个元素都跟序列内所有元素有关联。
+
+所以，节省显存，加快计算速度，一个解法是**减少关联性计算**
+- 每个元素只跟序列内的**部分元素**相关，这就是稀疏Attention的基本原理。
+- 源于OpenAI的论文《[Generating Long Sequences with Sparse Transformers](https://arxiv.org/abs/1904.10509)》
+
+
+### Atrous Self Attention 膨胀注意力
+
+Atrous Self Attention，“膨胀自注意力”、“空洞自注意力”、“带孔自注意力”等。
+- 名称是自定义, 原论文《Generating Long Sequences with Sparse Transformers》没有出现过这两个概念
+
+Atrous Self Attention 启发于“**膨胀卷积**（Atrous Convolution）”，如下图所示，它对相关性进行了约束，强行要求每个元素只跟它相对距离为k,2k,3k,… 的元素关联，其中k>1是预先设定的超参数。从下左的注意力矩阵看，就是强行要求相对距离不是k
+的倍数的注意力为0（白色代表0）：
+- ![](https://spaces.ac.cn/usr/uploads/2019/07/4107095412.png)
+- Atrous Self Attention的注意力矩阵（左）和关联图示（右）
+
+由于现在计算注意力是“跳着”来了，所以实际上每个元素只跟大约n/k个元素算相关性，这样理想情况下运行效率和显存占用都变成了𝒪(n^2/k)，也就是说能直接降低到原来的1/k。
+
+
+### Local Self Attention 局部自注意力
+
+Local Self Attention，中文称“局部自注意力”。
+- **自注意力**机制在CV领域统称为“Non Local”
+- 而Local Self Attention则要放弃全局关联，重新引入**局部关联**。约束每个元素只与前后k个元素以及自身有关联，如下图所示：
+- ![](https://spaces.ac.cn/usr/uploads/2019/07/713126535.png)
+- Local Self Attention的注意力矩阵（左）和关联图示（右）
+- 从注意力矩阵来看，就是相对距离超过k的注意力都直接设为0。
+
+其实 Local Self Attention 跟普通卷积很像了，都是保留了一个 2k+1 大小的窗口，然后在窗口内进行一些运算，不同的是普通卷积是把窗口展平然后接一个全连接层得到输出，而现在是窗口内通过注意力来加权平均得到输出。对于Local Self Attention来说，每个元素只跟 2k+1 个元素算相关性，这样一来理想情况下运行效率和显存占用都变成了 𝒪((2k+1)n)∼𝒪(kn) 了，也就是说随着n 而线性增长，这是一个很理想的性质——当然也直接牺牲了长程关联性。
+
+### Sparse Self Attention -- OpenAI改进，综合以上两种
+
+现在可以很自然地引入OpenAI的 Sparse Self Attention了。
+- Atrous Self Attention 有一些洞，而 Local Self Attention正好填补了这些洞，所以一个简单方式就是将Local Self Attention和Atrous Self Attention 交替使用，两者累积起来，理论上也可以学习到全局关联性，也省了显存。
+- 思路：第一层用Local Self Attention，输出的每个向量都融合了局部几个输入向量，然后第二层用Atrous Self Attention，虽然跳着来，但是因为第一层的输出融合了局部的输入向量，所以第二层的输出理论上可以跟任意的输入向量相关，也就是说实现了**长程关联**。
+- 但是OpenAI直接将两个Atrous Self Attention和Local Self Attention合并为一个，如下图：
+- ![](https://spaces.ac.cn/usr/uploads/2019/07/1199615308.png)
+- Sparse Self Attention的注意力矩阵（左）和关联图示（右）
+
+从注意力矩阵上看就很容易理解了，就是除了相对距离不超过k的、相对距离为k,2k,3k,… 的注意力都设为0，这样一来Attention就具有“局部紧密相关和远程稀疏相关”的特性，这对很多任务来说可能是一个不错的先验，因为真正需要密集的长程关联的任务事实上是很少的。
+
+OpenAI 开源了官方实现 [sparse_attention](https://github.com/openai/sparse_attention)
 
 ## Transformer-Decoder
 
