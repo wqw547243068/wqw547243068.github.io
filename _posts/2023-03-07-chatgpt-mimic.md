@@ -448,6 +448,9 @@ print("results",results)
 
 结果：
 
+<details>
+  <summary>示例（点击展开）</summary>
+
 ```s
 我们去成都旅游，必须要去的地方是大熊猫繁殖基地。大熊猫是今世界上保存最完好的哺乳动物之一，也是世界自然保护联盟濒危物种红色名录的保护对象之一。在这里，你可以看到全世界最大的熊猫栖息地成都。成都是中国国家林业局直属的国家重点风景名胜区，是国家森林公园、国家湿地公园和国家地质公园的重要组成部分，是全国重点文物保护单位、全国生态文明建设示范区、中国红色旅游名城、国际生态旅游目的地和国际旅游岛建设先进区。地址：四川省成都市绵阳市成华区成都高新技术产业开发区成华大道1号乘车路线：成都绵阳都江堰雅
 我们去成都旅游，必须要去的地方是大熊猫繁殖基地。大熊猫是我国唯一的国家二级保护动物，是世界上保存最完整的动物种群之一，也是我国第一个国家级自然保护区。我们是四川省的首批国家重点保护野生动物和珍稀动物基金会的成员，被誉为中国动物保护的摇篮和世界生物多样性保护基地，被中国科学院、中华人民共和国国家林业局授予全国生态文明建设示范区称号，被国务院批准为国家森林城市、国际生态旅游目的地。熊猫基地位于成都市双流区东南部，是国家aaaa级旅游景区，国家地理标志保护单位。熊猫栖息地为亚热带或热带的高山
@@ -455,6 +458,8 @@ print("results",results)
 我们去成都旅游，必须要去的地方是大熊猫繁殖基地。大熊猫是我国唯一的国家级自然保护区，也是世界上保存最完整、规模最大的野生动物种类繁多的地区之一，是中国国家重点保护的珍稀濒危动物及其栖息地和世界自然遗产的重要组成部分，被誉为中国最美丽的城市和世界生物多样性保护基地，被国际旅游组织评为全球生态旅游目的地。成都熊猫国家公园位于四川省甘孜藏族自治州，是国家aaaa级旅游景区，被《世界遗产名录》列为全国重点文物保护单位。目前，我国已建成国家森林公园、国家湿地公园和国家地质公园，国家林业局、国务院扶贫
 我们去成都旅游，必须要去的地方是大熊猫繁殖基地。大熊猫是现存最大、保存最完整的动物，属于国家二级保护动物。熊猫种类繁多，分布广泛，主要分布在四川、云南、陕西、甘肃、宁夏、内蒙古、新疆、青海、吉林、辽宁、黑龙江、山西、江苏、江西、河南、湖北、湖南、广东、广西、海南、重庆、贵州、西藏、四川等省区市。它们的栖息地主要为亚热带或热带的（低地）湿润低地林、亚高山草原、高山湖泊、高原湿润山区和高原沼泽地等，常栖息在高海拔地区。在中国大陆，熊猫分布于四川省甘孜藏族自治州和青海省西宁市等地。雄性熊猫体长约1.5米
 ```
+
+</details>
 
 这和instructGPT的SFT过程大致相同，思路原理是一样的，差别是 缺乏硬件设备、大规模高质量监督数据
 - ChatGPT原理详解+实操: [SFT(GPT模型精调)](https://zhuanlan.zhihu.com/p/609795142), [RM(reward model)](https://zhuanlan.zhihu.com/p/610147705)
@@ -665,10 +670,6 @@ class RewardModel(BertPreTrainedModel):
 
 训练过程
 
-<details>
-  <summary>训练过程（点击展开）</summary>
-
-
 ```py
 class Datasets(Dataset):
     def __init__(self, sample):
@@ -726,8 +727,6 @@ def train(pretrain_path, save_path):
     model_to_save.save_pretrained(save_path)
     model_to_save.config.save_pretrained(save_path)
 ```
-
-</details>
 
 模型预测
 
@@ -1400,6 +1399,8 @@ GPT-J 是一个基于 GPT-3，由 60 亿个参数组成的自然语言处理 AI 
 ### Pythia
 
 Eleuther AI 和耶鲁大学等机构研究者共同撰写的 [Pythia 论文](https://arxiv.org/pdf/2304.01373.pdf)
+- EleutherAI 是一个非营利性人工智能研究实验室，专注于大型模型的可解释性和对齐性.
+- [Eleuther.AI](https://www.eleuther.ai/) 发布的 [Pythia](https://huggingface.co/EleutherAI/pythia-12b)
 
 开源 Pythia 系列大模型是其他自回归解码器风格模型（即类 GPT 模型）的有趣平替。
 
@@ -1410,6 +1411,45 @@ Pythia 论文中得到的洞见和思考：
 - 重复数据上的训练（即训练 epoch>1）会不会有什么影响？结果表明，数据去重**不会**改善或损害性能；
 - 训练命令会影响记忆吗？不会。如果影响的话，则可以通过训练数据的重新排序来减轻讨厌的逐字记忆问题；
 - batch 大小加倍可以将训练时间减半但不损害收敛。
+
+#### Pythia-12b 实践
+
+EleutherAI/pythia-12b(需要24G存储)模型介绍：　
+-  pythia 是 EleutherAI 为了促进LLM的研究开源的一系列LLM(70M, 160M, 410M, 1B, 1.4B, 2.8B, 6.9B, and 12B)。
+
+数据集
+- 单独起一个脚本就下载模型和数据。test.py
+- 联网下载, 或手动[下载地址](https://huggingface.co/datasets/tatsu-lab/alpaca/tree/main/data)
+
+```py
+#模型下载也可网上找那种不下到默认目录的。缓存目录: ll ~/.cache/huggingface/hub/models--EleutherAI--pythia-12b/
+from transformers import (
+    AutoModelForCausalLM, 
+)
+# ======= 下载12b模型 =======
+model = AutoModelForCausalLM.from_pretrained("EleutherAI/pythia-12b")
+# ======= 下载数据集 =======
+# download dataset. 
+# 联网下载, 或手动下载地址 https://huggingface.co/datasets/tatsu-lab/alpaca/tree/main/data
+# 就把24M数据下载下来， mkdir -p tatsu-lab/alpaca , 然后下载好数据丢里面就行
+from datasets import load_dataset
+dataset = load_dataset("tatsu-lab/alpaca")
+```
+
+运行
+- `sh scripts/generate.sh`
+- 显存大小：<span style='color:blue'>EleutherAI/pythia-12b 推理只需要显存12.8G</span>
+
+单卡23G即可finetune pythia-12b
+- EleutherAI/pythia-12b **推理**只需**12G**
+- QLoRA finetune也只需**23G**. 详见[QLoRA的实测记录](https://zhuanlan.zhihu.com/p/632398047)
+
+单个3090就能搞定。
+- QLoRA 3090测试12B模型跑finetune
+- eval阶段单卡3090会OOM.
+
+解决
+- 根据设备资源适当调整 batchsize 和 gradient_accumulation_steps 解决
 
 ### YaLM（俄罗斯 Yandex）
 
@@ -1945,12 +1985,6 @@ train_prompts
 *   代码中transformers库不是官方的，是这家公司自己维护的，所以要安装来自 clone ttps://[http://github.com/hpcaitech/transformers](https://link.zhihu.com/?target=http%3A//github.com/hpcaitech/transformers) ，我之前用官方的4.20.1，但没有LLaMA models，无法正常运行
 *   代码过于面向对象设计，所以梳理代码逻辑，要切换父类和子类找核心代码，得细心看代码。
 *   运行代码，会出现某个文件找不到，是目录路径问题，需要手动调整
-
-### OpenAssistant
-
-OpenAssistant 是一个开源项目，旨在开发免费提供给所有人使用的 AI 聊天机器人。
-
-训练数据集 OpenAssistant Conversations 包含了超过 60 万个涉及各种主题的交互，用于训练各种模型。目前发布了经过指令调整的 LLaMA 13B 和 30B 模型，以及其他使用相同数据集训练的模型。
 
 
 ### Meta: LLaMA （羊驼）
@@ -2559,6 +2593,9 @@ LLMTune底层实现了LoRA算法，它依赖的库也很少
 
 
 ### LAION：Open Assistant
+
+OpenAssistant 是一个开源项目，旨在开发免费提供给所有人使用的 AI 聊天机器人。
+- 训练数据集 OpenAssistant Conversations 包含了超过 60 万个涉及各种主题的交互，用于训练各种模型。目前发布了经过指令调整的 LLaMA 13B 和 30B 模型，以及其他使用相同数据集训练的模型。
 
 【2023-2-25】[Open Assistant 全流程训练细节（GPT3+RL）](https://zhuanlan.zhihu.com/p/609003237)
 
@@ -3182,22 +3219,28 @@ WebCPM 成功实践了 BMTools, 中文领域首个基于交互式网页搜索的
 
 【2023-4-12】[微软DeepSpeed Chat震撼发布，一键RLHF训练千亿级大模型](https://mp.weixin.qq.com/s/G8W9nSQd600wesSJFE2dhw), 微软开源一个模型训练中加入完整RLHF流程的系统框架——[DeepSpeed Chat](https://github.com/microsoft/DeepSpeed)。
 - 由于OpenAI太不Open，开源社区为了让更多人能用上类ChatGPT模型，相继推出了LLaMa、Alpaca、Vicuna、Databricks-Dolly等模型。
-但由于缺乏一个支持端到端的RLHF规模化系统，目前类ChatGPT模型的训练仍然十分困难。而DeepSpeed Chat的出现，正好补全了这个「bug」,DeepSpeed Chat把成本大大地打了下来。
-- 只要花1620美元，就可以通过混合引擎DeepSpeed-HE，在2.1天内训练一个OPT-66B模型。如果使用多节点、多GPU系统，DeepSpeed-HE可以花320美元，在1.25小时内训练一个OPT-13B模型，花5120美元，就能在不到一天的时间内训练一个OPT-175B模型。
+但由于缺乏一个支持端到端的RLHF规模化系统，目前类ChatGPT模型的训练仍然十分困难。
+- DeepSpeed Chat的出现，正好补全了这个「bug」,DeepSpeed Chat把成本大大地打了下来。
+- 只要花1620美元，就可以通过混合引擎DeepSpeed-HE，在2.1天内训练一个**OPT-66B**模型。
+- 如果使用多节点、多GPU系统，DeepSpeed-HE可以花320美元，在1.25小时内训练一个OPT-13B模型，花5120美元，就能在不到一天的时间内训练一个**OPT-175B**模型。
 
 DeepSpeed Chat具有以下三大核心功能：
 1. 简化ChatGPT类型模型的训练和强化推理体验
   - 开发者只需一个脚本，就能实现多个训练步骤，并且在完成后还可以利用推理API进行对话式交互测试。
 2. DeepSpeed-RLHF模块
-  - DeepSpeed-RLHF复刻了InstructGPT论文中的训练模式，并提供了数据抽象和混合功能，支持开发者使用多个不同来源的数据源进行训练。
+  - DeepSpeed-RLHF**复刻**了InstructGPT论文中的训练模式，并提供了数据抽象和混合功能，支持开发者使用多个不同来源的数据源进行训练。
 3. DeepSpeed-RLHF系统
-  - 团队将DeepSpeed的训练（training engine）和推理能力（inference engine) 整合成了一个统一的混合引擎（DeepSpeed Hybrid Engine or DeepSpeed-HE）中，用于RLHF训练。由于，DeepSpeed-HE能够无缝地在推理和训练模式之间切换，因此可以利用来自DeepSpeed-Inference的各种优化。
+  - 团队将DeepSpeed的训练（training engine）和推理能力（inference engine) 整合成了一个统一的**混合引擎**（DeepSpeed Hybrid Engine or `DeepSpeed-HE`）中，用于RLHF训练。由于DeepSpeed-HE能够无缝地在推理和训练模式之间切换，因此可以利用来自DeepSpeed-Inference的各种优化。
 
-经过DeepSpeed-Chat的训练，13亿参数版「ChatGPT」在问答环节上的表现非常亮眼。不仅能get到问题的上下文关系，而且给出的答案也有模有样。多轮对话中，这个13亿参数版「ChatGPT」所展示出的性能，也完全超越了这个规模的固有印象
+经过DeepSpeed-Chat的训练，13亿参数版「ChatGPT」在问答环节上的表现非常亮眼。
+- 不仅能get到问题的上下文关系，而且给出的答案也有模有样。
+- 多轮对话中，这个13亿参数版「ChatGPT」所展示出的性能，也完全超越了这个规模的固有印象
+
+
 
 #### 效果评估
 
-与Colossal-AI或HuggingFace-DDP等现有系统相比，DeepSpeed-Chat具有超过一个数量级的吞吐量，能够在相同的延迟预算下训练更大的actor模型或以更低的成本训练相似大小的模型。
+与Colossal-AI或HuggingFace-DDP等现有系统相比，`DeepSpeed-Chat`具有超过一个数量级的吞吐量，能够在相同的延迟预算下训练更大的actor模型或以更低的成本训练相似大小的模型。
 - 在单个GPU上，DeepSpeed使RLHF训练的吞吐量提高了10倍以上。虽然CAI-Coati和HF-DDP都可以运行1.3B的模型，但DeepSpeed可以在相同的硬件上运行6.5B模型，直接高出5倍。
 - 单个节点的多个GPU上，DeepSpeed-Chat在系统吞吐量方面比CAI-Coati提速6-19倍，HF-DDP提速1.4-10.5倍。
 
@@ -3213,6 +3256,11 @@ pip install .
 git clone https://github.com/microsoft/DeepSpeedExamples.git
 cd DeepSpeedExamples/applications/DeepSpeed-Chat/
 pip install -r requirements.txt
+```
+
+#### 运行
+
+```py
 # 1.3B模型，1个消费级GPU, 耗时1-2h
 python train.py --actor-model facebook/opt-1.3b --reward-model facebook/opt-350m --num-gpus 1
 # 13b参数模型, 8个GPU，半天时间
@@ -3221,9 +3269,13 @@ python train.py --actor-model facebook/opt-13b --reward-model facebook/opt-350m 
 python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m --num-gpus 64
 ```
 
-问题
+#### 问题
+
+实测问题
 - 数据量大时，出现OOM，原因是代码默认先把所有数据加载到内存，划分训练集和验证集，导致还没开始训练就OOM了
 - 已提交[issue](https://github.com/microsoft/DeepSpeed/issues/3214)，无回复
+
+
 
 ### 知乎：知海图AI
 
