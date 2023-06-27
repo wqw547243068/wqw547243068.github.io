@@ -29,6 +29,10 @@ permalink: /doc-chat
 大模型时代
 - 所有企业的文档可以批量上传，无需更多的整理，直接可自动转化为有效的QA，供座席和机器人直接调用。
 
+【2023-6-26】吴恩达大模型系列课程：
+- [LangChain for LLM Application Development](https://learn.deeplearning.ai/langchain/lesson/1/introduction)
+- 学习笔记：[基于LangChain开发大语言应用模型](https://blog.csdn.net/qq_36080693/article/details/131269201)
+
 ## 背景
 
 ### 文本向量化
@@ -162,35 +166,82 @@ LLM问题
 - 提示攻击 Prompt injection attacks 
 - 道德安全 Toxicity, profanity 
 
-LLM擅长什么？
-- • 语言理解
-- • 遵循指令
-- • 基础推理
-- • 代码理解
+LLM Bootcamp 2023 Augmented language models
 
-LLM在哪些方面需要帮助？
-- • 获取最新知识
-- • 用户数据包含的知识
-- • 更有挑战性的推理
-- • 与外界交互
+LLM擅长什么？What (base) LLMs are good at ?
+- • 语言理解 language understanding
+- • 遵循指令 instruction following
+- • 基础推理 basic reasoning
+- • 代码理解 code understanding
+
+LLM在哪些方面需要帮助？ What they need help with ?
+- • 获取最新知识 up-to-date knowledge
+- • 用户数据包含的知识 knowledge of your data
+- • 更有挑战性的推理 more challenging reasoning
+- • 与外界交互 interacting with the world
+
+
 
 #### 如何增强LLM能力
 
 如何增强LLM的能力？
 - LLM更加擅长**通用推理**，而不是**特定知识**。
+- LLMs are for general reasoning, not specific knowledge
 
 为了让LLM能够取得更好的表现，最常见方法就是给LLM提供合适的**上下文信息**帮助LLM进行推理。
+- A baseline: using the context window
+- Context is the way to give LLM unique, up-to-date information ... But it only fits a limited amount of information
+- 上下文信息适合提供独特、实时信息，但进适用于有限的信息量
+
 
 随着最近LLM的不断发展，各类大模型所能支持的最大上下文**长度**也越来越大，但是在可预见的一段时间内仍不可能包含所有内容，并且越多的上下文意味着更多的计算成本。
+- Context windows are growing fast, but won’t fit everything for a while (Plus, more context = more $$$)
 - ![](https://pic3.zhimg.com/80/v2-01d520894c2ada7c23aa4f450aae71ca_1440w.webp)
 
-如何充分利用当前所能支持的有限的上下文信息，让LLM表现更好，值得研究。有限下文情况下充分激发LLM的能力的方法有三种：
-- `Retrieval`：答案在文档内，并行找相关内容作为prompt
-- `Chain`：答案在文档外，串行请求
-- `Tools`：调用外部工具
+how to make the most of a limited context by augmenting the language model ？
+
+如何充分利用当前所能支持的有限的上下文信息，让LLM表现更好，值得研究。
+
+有限下文情况下充分激发LLM 能力的方法有三种：
+- 检索 `Retrieval`：答案在文档内，并行找相关内容作为prompt；Augment with a bigger corpus
+- 链式 `Chain`：答案在文档外，串行请求；Augment with more LLM calls
+- 工具 `Tools`：调用外部工具；Augment with outside sources
 
 （1）通过**Retrieval增强**LLM的能力 —— <span style='color:blue'>答案在文档内</span>
  
+outline
+- A. Why retrieval augmentation? 
+  - Q: We want our model to have access to data from thousands of uses in the context
+  - 海量用户数据塞到context中
+- B. 传统信息检索 Traditional information retrieval，要素：
+  - **Query**. Formal statement of your information need. E.g., a search string.
+  - **Object**. Entity inside your content collection. E.g., a document. 
+  - **Relevance**. Measure of how well an object satisfies the information need
+    - 通过布尔搜索(boolean search) 
+    - E.g., only return the docs that contain: simple AND rest AND apis AND distributed
+AND nature
+  - **Ranking**. Ordering of relevant results based on desirability
+    - 通过 BM25, 受3个因素影响 Ranking via BM25. Affected by 3 factors
+    - ① 词频 Term frequency (`TF`) — More appearances of search term = more relevant object
+    - ② 逆文档概率 Inverse document frequency (`IDF`) — More objects containing search term = less important search term
+    - ③ 字段长度 Field length — If a document contains a search term in a field that is very short (i.e. has few words), it is more likely relevant than a document that contains a search term in a field that is very long (i.e. has many words).
+  - 方法：通过**倒排索引**搜索 search via inverted indexes，另外还有很多：
+    - 文档注入 Document ingestion
+    - 文档处理 Document processing (e.g., remove stop words, lower case, etc)
+    - 转换处理 Transaction handling (adding / deleting documents, merging index files)
+    - 缩放 Scaling via shards Ranking & relevance
+  - 局限性：Limitations of “sparse” traditional search
+    - 只建模简单词频信息 Only models simple word frequencies
+    - 无法捕捉语义信息、相关信息等 Doesn’t capture semantic information, correlation information, etc
+    - E.g., searching for “what is the top hand in bridge” might return documents about 🌉, ♠, 💸
+- C. 基于embedding的信息检索 AI-powered Information retrieval via embeddings 
+  - Search and AI make each other better
+    - `AI`：Better representations of data (embeddings)
+    - `Search`： Better information in the context
+  - 什么是embedding？学习到的抽象、稠密、压缩、定长的数据表示
+    - Embeddings are an abstract, dense, compact, fixed-size, (usually) learned representation of data
+- D. Patterns and case studies
+
 一个典型的在文档QA场景使用检索方式来增强LLM能力的方式，分为几个流程：
 *   用户问题embedding
 *   从海量文档中检索出Top N与问题embedding相似的候选文档
@@ -216,6 +267,15 @@ LLM在哪些方面需要帮助？
 （3）通过**Tools增强**LLM的能力 —— <span style='color:blue'>借助外界工具</span>
  
 通过各种各样的工具让LLM与外界进行交互，比如使用搜索引擎、执行SQL语句等，从而去丰富LLM的功能。
+- 有时最好的context并不直接存在于语料，而是源自另一个LLM的输出。
+
+构建工具链的几个案例 Example patterns for building chains
+- 问答模式 The QA pattern
+  - Question ➡ embedding ➡ similar docs ➡ QA prompt
+- 假想文档映射 Hypothetical document embeddings (HyDE)
+  - Question ➡ document generating prompt ➡ rest of QA chain
+- 摘要 Summarization
+  - Document corpus ➡ apply a summarization prompt to each ➡ pass all document summaries to another prompt ➡ get global summary back
 
 Tools方式大致有两种
 - 一种是基于**Chain**的方式，Tool是一个**必选项**，前面有一个LLM来构造Tool的输入，后面会有另一个LLM来总结Tool的输出并得到最终的结果；
