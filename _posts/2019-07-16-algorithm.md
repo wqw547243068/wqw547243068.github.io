@@ -3132,11 +3132,23 @@ class Solution:
         return dp\[-1\]
 ```
  
-#### x平方根
+#### 【精】x平方根
  
 [69\. x 的平方根](https://leetcode.cn/problems/sqrtx/)
- 
-思路：二分法
+
+解法
+- 解析解：数学公式表达
+- 数值解：一步步迭代，得到指定误差的数值
+  - 通过一个公式多次迭代来无限接近于这个解。
+
+几种方法：
+- 牛顿迭代法 -- O(log(n)) ?
+- 二分查找法 -- O(log(n))
+- 魔术数 -- O(1)
+
+![](https://pic002.cnblogs.com/images/2010/160962/2010100617123967.png)
+
+##### 二分法
  
 ```python
 class Solution(object):
@@ -3156,6 +3168,315 @@ class Solution(object):
  
         return res
 ```
+
+##### 牛顿迭代法
+
+求函数 f(x)=x^2−t=0 的解
+
+```c++
+int mySqrt(int x) 
+{
+    if(x==0||x==1)
+        return x;
+    double x0=x;
+    double t=x;
+    x0=x0/2+t/(2*x0);
+    while(fabs(x0*x0-t)>0.00001)
+    {
+        x0=x0/2+t/(2*x0);
+    }
+    cout<<x0<<endl;
+    return int(x0);
+}
+```
+
+##### 位运算：魔术数
+
+Quake-III Arena (雷神之锤3)是90年代的经典游戏之中的一个。该系列的游戏不但画面和内容不错，并且即使计算机配置低，也能极其流畅地执行。这要归功于它3D引擎的开发人员`约翰-卡马克`（John Carmack）。
+- 早在90年代初DOS时代，仅仅要能在PC上搞个小动画都能让人惊叹一番的时候。John Carmack就推出了石破天惊的`Castle Wolfstein`, 然后再接再励，doom, doomII, Quake... 每次都把3-D技术推到极致。他的3D引擎代码资极度高效，差点儿是在压榨PC机的每条运算指令。当初MS的 Direct3D 也得听取他的意见，改动了不少API。
+- 早期，QUAKE的开发商ID SOFTWARE 遵守GPL协议，公开了`QUAKE-III`的原代码，让世人有幸目睹Carmack传奇的3D引擎的原码。这是QUAKE-III原代码的[下载地址](http://www.fileshack.com/file.x?fid=7547)
+- 官方的下载网址，搜索 “quake3-1.32b-source.zip” 能够找到一大堆中文[网页](ftp://ftp.idsoftware.com/idstuff/source/quake3-1.32b-source.zip)
+
+越底层的函数, 调用越频繁。3D引擎归根究竟还是数学运算。那么找到最底层的数学运算函数（在game/code/q_math.c）必定是精心编写的。
+- 里面有非常多有趣的函数，非常多都令人惊奇。预计几年时间都学不完。在game/code/q_math.c里发现了这样一段代码。
+- 作用是将一个数开*方并取倒，经測试这段代码比 (float)(1.0/sqrt(x)) 快**4倍**：
+
+算法原理不复杂, 牛顿迭代法,用 x-f(x)/f'(x) 来不断的逼近 f(x)=a 根。
+- 一般的求平方根都是循环迭代
+- 可卡马克(quake3作者)选择了一个神奇的常数 0x5f3759df 来计算推測值，那一行算出的值很接近 1/sqrt(n)。这样仅须2次牛顿迭代就能够达到精度。
+
+更多见：
+- [一个Sqrt谋杀触发功能](https://www.cnblogs.com/hrhguanli/p/4740720.html)
+- [位运算的极致——快速平方根倒数算法](https://mqcreaple.github.io/blog/2021/08/27/q-rsqrt-alg.html)
+
+```c++
+float Q_rsqrt( float number )
+{
+        long i;
+        float x2, y;
+        const float threehalfs = 1.5F;
+        x2= number * 0.5F;
+        y   = number;
+        // 两句话就完毕了开方运算。核心是定点移位运算。速度极快！特别在非常多没有乘法指令的RISC结构CPU上，这样做是极其高效的。
+        i   = * ( long * ) &y;   // evil floating point bit level hacking
+        i   = 0x5f3759df - ( i >> 1 ); // what thefuck?
+        y   = * ( float * ) &i;
+        y   = y * ( threehalfs - ( x2 * y * y ) ); //1st iteration
+        //y   = y * ( threehalfs - ( x2 * y * y )); // 2nd iteration, this can be removed
+        return y;
+}
+```
+
+
+一个版本
+
+```c++
+float InvSqrt(float x)
+{
+	float xhalf = 0.5f*x;
+	int i = *(int*)&x; // get bits for floating VALUE 
+	i = 0x5f375a86- (i>>1); // gives initial guess y0
+	x = *(float*)&i; // convert bits BACK to float
+	x = x*(1.5f-xhalf*x*x); // Newton step, repeating increases accuracy
+	x = x*(1.5f-xhalf*x*x); // Newton step, repeating increases accuracy
+	x = x*(1.5f-xhalf*x*x); // Newton step, repeating increases accuracy
+
+	return 1/x;
+}
+```
+
+##### 位运算的极致——快速平方根倒数算法
+
+【2023-6-27】[位运算的极致——快速平方根倒数算法](https://mqcreaple.github.io/blog/2021/08/27/q-rsqrt-alg.html)
+
+快速平方根倒数算法最早见于1999年的3D游戏Quake III Arena的源代码中。该算法一经公布，立刻因它的巧妙而被广为流传
+- 当时，计算机的算力和算法还没有现在这样厉害，浮点数乘除法的计算代价都很高，更不要说平方根了。
+- 另一方面，3D物理引擎几乎要求你每时每刻都要计算各种平方根。比如，计算力矢量在某个方向上的分量，需要计算 $\hat v=\dfrac{\vec v}{\mid\vec v\mid}$，就会用到平方根倒数
+
+一般人写出来的：
+
+```c
+float rsqrt(float x) {
+    return 1 / sqrt(x);
+}
+```
+
+看起来人畜无害
+- 当时，sqrt函数使用的算法本身就很慢，导致使用上面的函数计算平方根倒数效率极低
+
+Quake使用的快速平方根倒数算法：
+
+```c
+float q_rsqrt(float x) {
+    long i;
+    float x2, y;
+    const float threehalves = 1.5F;
+    x2 = x * 0.5F;
+    y = x;
+    i = *(long*) &y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(float*) &i;
+    y = y * (threehalves - (x2 * y * y));
+    // y = y * (threehalves - (x2 * y * y));
+    return y;
+}
+```
+
+浮点数的计算机表示
+- $(101101.01101)_2$
+
+```sh
+# 假设一个二进制小数，01组成的二进制串
+_ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _
+
+# 只要在这个二进制串的某一个地方点一个小数点，小数点左边的作为**整数位**，右边的作为**小数位**
+_ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _  .  _ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _
+# 比如，二进制小数 101101.01101，可以写成：
+0 0 0 0 0 0 0 0   0 0 1 0 1 1 0 1  .  0 1 1 0 1 0 0 0   0 0 0 0 0 0 0 0
+```
+
+小数的加减法简单，因为小数点永远固定，只需要忽略掉小数点，全都当作二进制整数整数进行加减即可
+- **定点数**，假设小数点在某一个固定位置**不会移动**
+- **浮点数**，字面意思是：小数点**能够移动**
+
+**科学计数法**：一个数可以被分解成一个 $1$ 到 $10$ 之间的小数和某个 $10$ 的次幂之积。比如：
+- $$34567.89=3.456789\times 10^{4}$$
+ 
+只要写下 $1$ 到 $10$ 之间的有效数字，以及数的次幂（或者说是小数点的位置），即可唯一确定这个数
+- 有效数字一定在$1$到$10$之间，小数点左边必须有且只有一位数字
+
+对于二进制数，也可以进行类比，只不过底数不再是10，而是2：
+- $$(101101.01101)_2=(1.0110101101)_2\times 2^{(101)_2}$$
+
+那么：可直接存储**有效数字**和**小数点位置**。这就是浮点数的基本思路
+
+当然，有效数字的开头一定不能是 $0$，否则一定可以写成另一个数字乘上$2$的负数次方。 例如：
+- $$(0.01011)_2=(1.011)_2\times 2^{(-10)_2}$$
+
+而二进制中，除了$0$，那么必然是$1$。**二进制有效数字的第一位必须是1**。所以可不用存储有效数字的首位，只存储小数点后的数字，计算的时候在开头补上$1$即可。
+
+最后，为了能够表示负数，需要单独拿出来一位二进制作为**符号位**（0为正，1为负）。我们得到了浮点数的IEEE754规则：
+
+```
+S   E E E E E E E E   M M M M M M M M M M M M M M M M M M M M M
+```
+
+- 第1位是符号位 $S$ ，0表示正数，1表示负数。
+- 第2到9位是指数位$E$，$E$的范围是$0$到$255$，会自动减去$127$，否则无法表示负数指数，也就是说它的实际值应该是$-127$到$128$
+- 第10到32位是有效数字位$M$，共23位，运算时需要在在前面脑补一位$1$和小数点
+
+这一串二进制所表示的浮点数实际值等于：
+- $$(-1)^S\times 2^{E-127}\times (1+\frac{M}{2^{23}})$$
+
+算法的第一部分
+
+平方根倒数的求解过程
+- 显然负数不可能有平方根，因此可默认输入的$x$必须是正数，也就是符号位$S$为0
+
+如果平方根不好求的话，不妨先算一下$x$的对数
+
+难道对数不应该更难计算吗？没关系，请看下面：
+
+$$
+\begin{align*}
+x & = 2^{E-127}\times (1+\frac{M}{2^{23}}) \\
+\log_2 x & = \log_2(1+\frac{M}{2^{23}}) + \log_2\left(2^{E-127}\right) \\
+& = \log_2(1 + \frac{M}{2^{23}}) + E - 127
+\end{align*}
+$$
+
+现在式子还是有点复杂，不妨取一个近似：当$a\in[0,1]$ 时，$\log(1+a)$可以近似成aa加上某个常数$\sigma$
+
+$$\log(1+a)\approx a+\sigma$$
+
+![q-rsqrt-0](https://mqcreaple.github.io/img/q-rsqrt-0.jpg)
+
+绿色曲线为$\log_2(1+x)$，黄色直线为$x+\sigma$。如果想让误差最小，那么$\sigma$应该取大约$0.043$，通过微积分可以算出准确值，这里就不写了
+
+有了这个知识，原式可以近似成：
+- $$\log_2 x \approx \frac{M}{2^{23}}+\sigma+E-127$$
+- $$\log_2 x=\frac 1{2^{23}}(M+E\cdot 2^{23}) - (127 - \sigma)$$
+
+为什么要这样整理呢？不妨考虑另一件事：如果我们*强行将这个浮点数的二进制表达解读成整数*，会得到什么呢？
+
+```
+0   E E E E E E E E M M M M M M M M M M M M M M M M M M M M M
+```
+
+第一位是符号位，而后面31位是数字位，最终我们得到了一个整数：
+
+$$\bar x=\overline{EM}=E\cdot 2^{23}+M$$
+
+暂且将这个数称为浮点数的整数值。不难看出刚刚推导$\log_2 x$时就推出了一模一样的表达式！接着将$\bar x$代回原式，得到：
+
+$$\log_2x\approx\frac{\bar x}{2^{23}}-(127-\sigma)$$
+
+现在知道了：**浮点数的对数，约等于它的整数值减去某一个常数**
+
+这样就能理解之前代码中的这个步骤了：
+
+```c
+i = *(long*) &y;
+```
+
+这其实就是在*计算浮点数的整数值*！ 注意，直接写`i = (long) y;`是错的，因为这样会算出来浮点数下取整，而不是刚刚提到的*整数值*
+
+那么有了这个结论，求出平方根倒数就很简单了：
+- $$\log_2 y=\log_2(\frac1{\sqrt{x}})=-\frac12\log_2(x)\approx\frac 12(127-\sigma)-\frac 12\frac{\bar x}{2^{23}}$$​
+
+那么$y=1/\sqrt{x}$的整数值为：
+
+$$
+\begin{align*}
+\bar y &\approx 2^{23}\log_2 y + 2^{23}(127-\sigma) \\
+& = (2^{22} + 2^{23})(127 - \sigma) - \frac{\bar x}{2} \\
+& \approx \text{0x5F3759DF} - \frac{\bar x}{2}
+\end{align*}
+$$
+
+其中`0x5F3759DF`就是大名鼎鼎的“魔法值”。最后只需要将$\bar y$再强行转换成浮点数即可
+
+以上就是算法的第一部分
+
+当然，这里还有另一个技巧：`i >> 1`表示将整数$i$整个向右移动1个二进制位，也就是将$i$除以$2$
+
+```
+i    = 00011011 01101100      >>> right shift 1 digit
+i>>1 = 00001101 10110110
+```
+
+综上所述，代码：
+
+```c
+i = *(long*) &y;
+i = 0x5F3759DF - (i >> 1);
+y = *(float*) &i;
+```
+
+> 你能试试求出64位浮点数的“魔法值”吗？
+
+代码的第二部分
+
+上面所有推导用的几乎全都是**约等于号**，而不是等于号，因此计算出来的这个数字仍然有一定的误差。后续接着使用牛顿迭代法求出精确解。
+
+那**牛顿迭代法**又是什么？
+
+假设现在一个函数$f$，目标是求出它的根（即所有$x_0$使得$f(x_0)=0$），而只知道一个函数上的点$A=(x, f(x))$，怎么办？
+- ![q-rsqrt-1](https://mqcreaple.github.io/img/q-rsqrt-1.jpg)
+
+现在，作一条$A$点上的切线，切线与横轴的交点作为第一轮迭代的结果
+- ![q-rsqrt-2](https://mqcreaple.github.io/img/q-rsqrt-2.jpg)
+
+迭代后的点离函数的根已经近了很多
+- ![q-rsqrt-3](https://mqcreaple.github.io/img/q-rsqrt-3.jpg)
+
+还可以将一轮迭代的结果作为新的起点，进行第二轮迭代，接着第三轮、第四轮、……，最终就可以无限接近函数的根，并且迭代的收敛速度非常快
+
+那么对于“求解平方根倒数”的这个例子，可以构造一个函数：
+- $$f(y)=\frac 1{y^2}-x$$
+
+令$x$为一个常数，而$y$为变量，不难发现这个函数的根就是$y=1/\sqrt{x}$，那么我们的任务就是求解这个函数的根
+
+那么，从$y_0$开始，采用上面的方法迭代，即
+- $$y_{n+1}=y_n-\dfrac{f(y_n)}{f'(y_n)}$$
+
+代入$f(y)=\dfrac1{y^2}-x$，得到：
+- $$y_{n+1}=\dfrac{y_n(3-xy_n^2)}{2}=y_n\left(\dfrac32-\dfrac12xy_n^2\right)$$
+
+这也就是代码最下方那个奇怪的表达式的含义：
+
+```c
+y = y * (threehalves - (x2 * y * y));
+```
+
+经过一轮迭代，已经差不多能将误差控制在小数点后4位左右了，如果想要更加精确，也可以接着进行2、3、4轮迭代
+
+以上就是算法的全过程，最后再贴一遍完整代码：
+
+```c
+float q_rsqrt(float x) {
+    long i;
+    float x2, y;
+    const float threehalves = 1.5F;
+
+    x2 = x * 0.5F;
+    y = x;
+    i = *(long*) &y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(float*) &i;
+    y = y * (threehalves - (x2 * y * y));
+    // y = y * (threehalves - (x2 * y * y));
+
+    return y;
+}
+```
+
+这个算法有什么意义？
+
+如果认真看完了上面的全过程，遗憾的告诉你：**你可能永远也用不上它**
+- 现在早已不是1999年了，硬件的更新和算法的改进让**任何编程语言的内置函数都无法轻易被超越**
+- 如果用C语言或者C++进行测试的话，会发现库函数`sqrt(x)`的速度要远远超过上面的算法。但是，把这个算法当作一个精致的艺术品反复观赏，也是一件挺有意思的事情，你也可以从里面学到不少
+
  
 #### 链表倒数第k个节点
  
@@ -3181,7 +3502,7 @@ class Solution:
             fast = fast.next
         return slow
 ```
- 
+
 #### 环形链表
  
 [142\. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
