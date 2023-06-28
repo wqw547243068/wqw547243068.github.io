@@ -23,7 +23,9 @@ permalink: /modal
 
 ## 什么是多模态
 
-【2023-2-25】[多模态学习综述(MultiModal Learning)](https://zhuanlan.zhihu.com/p/582878508)
+- 【2023-2-25】[多模态学习综述(MultiModal Learning)](https://zhuanlan.zhihu.com/p/582878508)
+- 【2023-6-28】[比LLM更重要的多模态学习](https://www.breezedeus.com/article/tutorial-mml-20230625?theme=next&theme=matery)，含 ppt、视频 资料
+
 
 ### 模态
 
@@ -34,6 +36,7 @@ permalink: /modal
 - 人有触觉，听觉，视觉，嗅觉；
 - 信息的媒介，有语音、视频、文字等；
 - 多种多样的传感器，如雷达、红外、加速度计等。
+- ![img](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fc13741a5-306f-4ed5-85c1-503cb38dc087%2FUntitled.png?table=block&id=11a7820d-0a19-4f82-a225-312ece108b72)
 
 以上的每一种都可以称为一种模态。
 
@@ -57,13 +60,45 @@ permalink: /modal
 
 ### 多模态学习
 
-多模态机器学习是从多种模态数据中学习并且提升自身的算法，它不是某一个具体的算法，它是一类算法的总称。
+`多模态机器学习`是从多种模态数据中学习并且提升自身的算法，它不是某一个具体的算法，它是一类算法的总称。
 - 从语义感知的角度切入，多模态数据涉及不同的感知通道如视觉、听觉、触觉、嗅觉所接收到的信息;
 - 在数据层面理解，多模态数据则可被看作多种数据类型的组合，如图片、数值、文本、符号、音频、时间序列，或者集合、树、图等不同数据结构所组成的复合数据形式，乃至来自不同数据库、不同知识库的各种信息资源的组合。对多源异构数据的挖掘分析可被理解为多模态学习。
 - ![](https://pic4.zhimg.com/80/v2-779aef8e97481d9cf2aa0dcc5f6e005b_1440w.webp)
 
-`多模态机器学习`，英文全称 MultiModal Machine Learning (MMML)
+与此相对的，就是`单模态学习`（Unimodal Learning）。
+- 在单模态学习中，在单一模态的数据上进行建模，比如文本
 
+`多模态机器学习`，英文全称 MultiModal Machine Learning (MMML)
+- 从异构和互联数据中学习的科学
+- ![img](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb87d3df2-d5f6-4ba8-b315-7e23ecd8a15d%2FUntitled.png?table=block&id=15082eae-0591-4aea-9510-511ec919cfd9)
+- ![img](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F093fa1f2-a2b3-4d3f-8719-62218cbb6eb3%2FUntitled.png?table=block&id=e7c6bdfc-2cd6-4533-8eb2-4f50d9aa8773)
+- ![](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3b3e1597-a3d7-4952-90df-6bd12ea70251%2FUntitled.png?table=block&id=b9f93060-a9ac-40d3-8e6f-0bd942228a54)
+
+#### 多模态优于单模态
+
+多模态数据可让不同模态的数据之间互相借鉴，提升单模态能⼒
+
+不同模态之间具有以下特性：
+- 异构（Heterogeneous）：不同的结构、表示⽅法
+- 互联（Interconnected）：信息相关或共享
+- 交互（Interaction）：通过交互产⽣新的信息
+
+加⼊视觉信息后，⼩LM模型（1B量级）也能具有CoT 能⼒
+
+使⽤更少的数据量，就可以通过精调获得效果更好的垂域模型
+
+源自[ppt](https://file.notion.so/f/s/5e1f507e-b484-4903-86dd-bfec2c60968d/Multimodal_Learning--much_more_important_than_LLM.pdf?id=48cd395e-0cca-4bc4-9f02-9ca655cca25d&table=block&spaceId=9341931a-53f0-48e1-b026-0f1ad17b457c&expirationTimestamp=1688029035979&signature=60hvL-JSY6_Ez70e7x2-RPSVri7uNOE1N0vs_4rb73Q)
+
+#### 多模态更有可能实现AGI
+
+Yann LeCun
+- 单靠语言模型是无法实现AGI的，人类自身是多模态学习的生物，而且很多信息在单纯的语言中难以体现。
+- 当 GPT3.5 或 GPT-4 刚出现时，很多人觉得离AGI似乎越来越近了，但现在看来，LLM仍存在很多难以解决的问题。在模型参数达到1000亿级别之后，增加更多的参数只能带来越来越小的收益。
+
+向AGI进军，仅仅依赖LLM是不够的，需要让模型接触到更多的模态数据。
+- 这也是为什么像Meta这样的公司在推动多模态学习方面投入了大量的精力，他们不仅在图像处理方面具有传统优势，而且在多模态学习领域也开源了许多模型。
+
+源自[ppt](https://file.notion.so/f/s/5e1f507e-b484-4903-86dd-bfec2c60968d/Multimodal_Learning--much_more_important_than_LLM.pdf?id=48cd395e-0cca-4bc4-9f02-9ca655cca25d&table=block&spaceId=9341931a-53f0-48e1-b026-0f1ad17b457c&expirationTimestamp=1688029035979&signature=60hvL-JSY6_Ez70e7x2-RPSVri7uNOE1N0vs_4rb73Q)
 
 ## 多模态历史
 
@@ -83,6 +118,8 @@ permalink: /modal
 
 多模态发展的四个时期
 - ![](https://pic4.zhimg.com/80/v2-f77192c7d83a16ebad1b068378c523e3_1440w.webp)
+
+
 
 ### 行为时代
 
