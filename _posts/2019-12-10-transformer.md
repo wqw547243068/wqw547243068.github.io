@@ -12,7 +12,11 @@ permalink: /transformer
 * content
 {:toc}
 
+
+
 # Transformer学习笔记
+
+
 
 - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html),Harvard NLP出品，含pytorch版代码实现
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
@@ -35,8 +39,6 @@ Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最
 - ViT: 2020, 图像任务
 - CLIP: 2021, 文本和图像混合
 - KOSMOS-1: 2023, 多模态大规模语言模型
-
-
 
 ### Transformer 架构理解
 
@@ -195,36 +197,6 @@ multi-head self-attention 完整流程
 [Transformer视频极速讲解](https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4)
 
 
-## 卷积
-
-各类卷积讲解:[A Comprehensive Introduction to Different Types of Convolutions in Deep Learning](https://towardsdatascience.com/a-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215)
-- 卷积与互相关（信号处理）
-- 深度学习中的卷积（单通道/多通道）
-- 3D卷积1 x 1卷积卷积运算（Convolution Arithmetic）
-- 转置卷积（反卷积，checkerboard artifacts）
-- 扩张卷积（空洞卷积）
-- 可分离卷积（空间可分离卷积，深度卷积）
-- 扁平卷积（Flattened Convolution）
-- 分组卷积（Grouped Convolution）
-- 随机分组卷积（Shuffled Grouped Convolution）
-- 逐点分组卷积（Pointwise Grouped Convolution）
-
-作者：[初识CV](https://www.zhihu.com/question/54149221/answer/1850592489)
-
-![](https://pic1.zhimg.com/50/v2-0411ccbcb5529b2855478d619ac78d9d_hd.webp?source=1940ef5c)
-
-空洞卷积 diolation
-- ![](https://pic1.zhimg.com/50/v2-9c531569460c694db396a7530d8e5ffc_hd.webp?source=1940ef5c)
-
-
-内部卷积 involution
-- [CVPR 2021 Involution：超越 Convolution 和 Self-attention 的神经网络新算子](https://blog.csdn.net/BAAIBeijing/article/details/115222970), [论文地址](http://arxiv.org/abs/2103.06255)
-- ![img](https://img-blog.csdnimg.cn/img_convert/0f8c8ff1aa63b079025990418c20ea68.png)
-- ![img](https://img-blog.csdn.net/20170730100057611?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGVmdF9UaGluaw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
-- ![img](https://img-blog.csdnimg.cn/img_convert/b670881b8e5cd7b52b4ebe69ace1654b.png)
-
-
-
 ## Transformer模型
 
 - ![img](https://picb.zhimg.com/80/v2-6c292e2a4ed43894fc954ee625372c67_720w.jpg)
@@ -296,7 +268,6 @@ def attention(query, key, value):
     prob = torch.nn.functional.softmax(scores, dim=-1)
     return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
 
-
 class MultiHeadedAttention(nn.Module):
     """ Multi-head attention to increase model expressivitiy """
     def __init__(self, num_heads: int, d_model: int):
@@ -329,7 +300,7 @@ class MultiHeadedAttention(nn.Module):
 - 输出序列经过**word embedding**和**positional encoding**相加后，输入到decoder。
 - 最后，decoder输出的结果，经过一个线性层，然后计算softmax。
 
-**word embedding**和**positional encoding**我后面会解释。我们首先详细地分析一下encoder和decoder的每一层是怎么样的。
+**word embedding**和**positional encoding**后面会解释。首先详细地分析一下encoder和decoder的每一层是怎么样的。
 
 ## Encoder
 
@@ -1108,14 +1079,12 @@ class PositionalEncoding(nn.Module):
                                                      requires_grad=False)
     def forward(self, input_len):
         """神经网络的前向传播。
-
         Args:
           input_len: 一个张量，形状为[BATCH_SIZE, 1]。每一个张量的值代表这一批文本序列中对应的长度。
 
         Returns:
           返回这一批序列的位置编码，进行了对齐。
         """
-        
         # 找出这一批序列的最大长度
         max_len = torch.max(input_len)
         tensor = torch.cuda.LongTensor if input_len.is_cuda else torch.LongTensor
@@ -1124,7 +1093,6 @@ class PositionalEncoding(nn.Module):
         input_pos = tensor(
           [list(range(1, len + 1)) + [0] * (max_len - len) for len in input_len])
         return self.position_encoding(input_pos)
-    
 ```
 
 ### Word embedding的实现
@@ -2033,20 +2001,49 @@ RWKV与Transformer表现相当，且能在训练时能够并行、在推理时�
 
 
 
-
 # 参考资料
 
 ## 参考文章
 
-1.[为什么ResNet和DenseNet可以这么深？一文详解残差块为何有助于解决梯度弥散问题](https://zhuanlan.zhihu.com/p/28124810)  
-2.[GRADIENTS, BATCH NORMALIZATION AND LAYER NORMALIZATION](https://theneuralperspective.com/2016/10/27/gradient-topics/)  
-3.[The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html#position-wise-feed-forward-networks)  
-4.[Building the Mighty Transformer for Sequence Tagging in PyTorch : Part I](https://medium.com/@kolloldas/building-the-mighty-transformer-for-sequence-tagging-in-pytorch-part-i-a1815655cd8)  
-5.[Building the Mighty Transformer for Sequence Tagging in PyTorch : Part II](https://medium.com/@kolloldas/building-the-mighty-transformer-for-sequence-tagging-in-pytorch-part-ii-c85bf8fd145)  
-6.[Attention?Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html)  
+1. [为什么ResNet和DenseNet可以这么深？一文详解残差块为何有助于解决梯度弥散问题](https://zhuanlan.zhihu.com/p/28124810)  
+2. [GRADIENTS, BATCH NORMALIZATION AND LAYER NORMALIZATION](https://theneuralperspective.com/2016/10/27/gradient-topics/)  
+3. [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html#position-wise-feed-forward-networks)  
+4. [Building the Mighty Transformer for Sequence Tagging in PyTorch : Part I](https://medium.com/@kolloldas/building-the-mighty-transformer-for-sequence-tagging-in-pytorch-part-i-a1815655cd8)  
+5. [Building the Mighty Transformer for Sequence Tagging in PyTorch : Part II](https://medium.com/@kolloldas/building-the-mighty-transformer-for-sequence-tagging-in-pytorch-part-ii-c85bf8fd145)  
+6. [Attention?Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html)  
 
 ## 参考代码
-1.[jadore801120/attention-is-all-you-need-pytorch](https://github.com/jadore801120/attention-is-all-you-need-pytorch)  
-2.[JayParks/transformer](https://github.com/JayParks/transformer)  
+
+1. [jadore801120/attention-is-all-you-need-pytorch](https://github.com/jadore801120/attention-is-all-you-need-pytorch)  
+2. [JayParks/transformer](https://github.com/JayParks/transformer)  
 
 
+## 卷积
+
+各类卷积讲解:[A Comprehensive Introduction to Different Types of Convolutions in Deep Learning](https://towardsdatascience.com/a-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215)
+- 卷积与互相关（信号处理）
+- 深度学习中的卷积（单通道/多通道）
+- 3D卷积1 x 1卷积卷积运算（Convolution Arithmetic）
+- 转置卷积（反卷积，checkerboard artifacts）
+- 扩张卷积（空洞卷积）
+- 可分离卷积（空间可分离卷积，深度卷积）
+- 扁平卷积（Flattened Convolution）
+- 分组卷积（Grouped Convolution）
+- 随机分组卷积（Shuffled Grouped Convolution）
+- 逐点分组卷积（Pointwise Grouped Convolution）
+
+作者：[初识CV](https://www.zhihu.com/question/54149221/answer/1850592489)
+
+![](https://pic1.zhimg.com/50/v2-0411ccbcb5529b2855478d619ac78d9d_hd.webp?source=1940ef5c)
+
+空洞卷积 diolation
+- ![](https://pic1.zhimg.com/50/v2-9c531569460c694db396a7530d8e5ffc_hd.webp?source=1940ef5c)
+
+
+内部卷积 involution
+- [CVPR 2021 Involution：超越 Convolution 和 Self-attention 的神经网络新算子](https://blog.csdn.net/BAAIBeijing/article/details/115222970), [论文地址](http://arxiv.org/abs/2103.06255)
+- ![img](https://img-blog.csdnimg.cn/img_convert/0f8c8ff1aa63b079025990418c20ea68.png)
+- ![img](https://img-blog.csdn.net/20170730100057611?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGVmdF9UaGluaw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+- ![img](https://img-blog.csdnimg.cn/img_convert/b670881b8e5cd7b52b4ebe69ace1654b.png)
+
+# 结束
