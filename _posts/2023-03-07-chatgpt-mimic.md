@@ -3572,6 +3572,22 @@ YuLan-Chat-65B 模型在所有开源模型中取得最好的效果，这不仅�
 - 文档Aqulia-7B需要Nvidia-A100，将在RTX4090上试试Aqulia-7B能否跑起来。
 - 详见：[2023北京智源大会笔记](https://zhuanlan.zhihu.com/p/636413731)
 
+【2023-6-28】[天鹰AquilaChat-7B VS ChatGLM-6B对比](https://mp.weixin.qq.com/s/DsGXzBMNTGaLoRNTMV6aVw)
+
+测试内容从自我认知、提纲写作、文案写作、邮件写作助手、信息抽取、角色扮演、评论比较和旅游向导这八个角度进行测试对比。
+
+核心结论：
+- 1、关于自我认知、提纲写作方面，ChatGLM-6B相比天鹰AquilaChat-7B要好一些，优点和缺点条例比较清晰；
+- 2、在文案写作方面，两个模型都表现不错，ChatGLM-6B生成的10个新闻进行了换行，而天鹰AquilaChat-7B没有换行；
+- 3、在写邮件方面，天鹰AquilaChat-7B格式上欠佳，缺少发件人占位符；
+- 4、在信息抽取方面，天鹰AquilaChat-7B比ChatGLM-6B略胜一筹，提取的信息更全面；
+- 5、在角色扮演方面，天鹰AquilaChat-7B要差很多，而且还生成了无意义的“啊”；
+- 6、在主观评论方面，ChatGLM-6B和天鹰AquilaChat-7B都表现的比较理智和客观，没有模型个人观点；
+- 7、在旅游向导方面，两个模型表现都不错，ChatGLM-6B条理清晰，而天鹰AquilaChat-7B缺少条理
+
+综述所述，在 ChatGLM-6B 给出的8大示例中，明显是ChatGLM-6B占上风，这似乎也不太公平，后面会使用其他的Prompt再进行测试对比实验。
+
+
 ### ChatRWKV -- RNN, 长文本
 
 【2023-3-13】[开源1.5/3/7B中文小说模型：显存3G就能跑7B模型，几行代码即可调用](https://zhuanlan.zhihu.com/p/609154637)
