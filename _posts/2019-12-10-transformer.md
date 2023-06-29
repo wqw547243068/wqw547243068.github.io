@@ -1631,7 +1631,7 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - 其他； S4, FLASH
 - ![](https://pic3.zhimg.com/80/v2-fae510edc3aff2863cca31bc0dcd2046_1440w.webp)
 
-### FlashAttention
+#### FlashAttention
 
 【2023-6-14】[FlashAttention: 更快训练更长上下文的GPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
 - 将 transformer 的 qkv 计算加速，方法：向量分块并行
@@ -1643,7 +1643,7 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
-### PageAttention -- 管理qkv缓存
+#### PageAttention -- 管理qkv缓存
 
 【2023-6-24】UC Berkeley 团队推出一个用于加速LLM推理的开源库`vLLM`，Vicuna在线推理服务的幕后英雄。
 - 利用PagedAttention技术，通过有效地管理Attention模块中的Key和Value的Cache，重新定义了LLM的推理服务。无需更改任何模型架构，它的吞吐量比原生HF Transformers高出**24倍**。
@@ -1659,6 +1659,51 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - 与传统的注意力算法不同，PagedAttention允许将**连续的键和值存储在非连续的内存空间**中。
 - 具体而言，PagedAttention将每个序列的KV缓存分成多个块，每个块包含固定数量的标记的键和值。
 - 在注意力计算过程中，PagedAttention Kernel高效地识别和获取这些块，采用并行的方式加速计算。（和ByteTransformer的思想有点像）
+
+### Decoder 效率
+
+#### Muti Query Attention (MQA)
+
+MQA 是 2019 年提出的一种新的 Attention 机制，其能够在保证模型效果的同时加快 decoder 生成 token 的速度。
+- 论文： [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
+- 所有 head 之间共享一份 key 和 value 的参数
+
+MQA 在 encoder 上的提速没有非常明显，但在 decoder 上的提速是很显著的
+- ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
+
+Multi Query Attention（MQA） 和 Multi Head Attention（MHA）只差了一个单词，从「Head」变成了「Query」。
+
+MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头只单独保留了一份 Query 参数，从而大大减少 Key 和 Value 矩阵的参数量。
+- 「参数共享」并不是新奇思路，Albert 通过使用**跨层共享参数**（Cross-layer parameter sharing）方式来大大减少 bert 的参数量
+- MQA 实际上是将 head 中的 key 和 value 矩阵抽出来单独存为一份共享参数，而 query 则是依旧保留在原来的 head 中，每个 head 有一份自己独有的 query 参数。
+
+代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
+
+### 长度限制
+
+文本长度一直是 transformer 的硬伤。
+- 不同于 RNN，transformer 在训练时必须卡在一个**最大长度**上，这将导致训练好的模型无法在一个与训练时的长度相差较远的句子上取得较好的推理结果。
+
+Transformer 中，由于 token 和 token 之间是没有顺序之分的. 因此，通常在输入添加 Position Embedding 来表征每一个 token 在句子中的位置。
+
+
+Position Embedding 的如何选择实在是一个难题，通常有以下几种：
+- 可学习的参数：这种比较常见，BRET 中就是这么做的，但这种方式弊端很明显，因为位置信息是学习出来的，所以如果训练集里面没有见过覆盖某个长度，推理的效果就无法得到保证。
+- 正弦位置编码：这是早期 transformer 使用的位置编码，论文中有尝试做实验，这种编码会随着训练/预测时的文本长度差异增大，（超过 50 个token 后）性能显著下降。
+- 旋转编码：论文中提到这种方式是比较不错的，只不过因其在每一层都要做一次向量旋转，从而降低训练和推理的速度。
+
+#### Attention with Linear Bias（ALiBi）
+
+ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理时文本长度不一致**的难题，
+- 论文中在训练时候使用 1024 的最大长度，但在推理时用 2048 的最大长度推理，并且在 PPL 指标持平。
+- ALiBi 都是在测试集的句子最大长度的「一半长度」上进行训练，而 Sinusoidal 则是正常在「测试集长度」上进行训练，
+- [TRAIN SHORT, TEST LONG: ATTENTION WITH LINEAR BIASES ENABLES INPUT LENGTH EXTRAPOLATION](https://arxiv.org/pdf/2108.12409.pdf)
+
+如何实现？
+- ALiBi 实现思路很直觉，模型在接收输入时直接去掉 Position Embedding 向量，而是在 Attention 中计算 query·Key 的值后面加入一个偏置常量（非训练变量），来达到注入位置信息的效果。这个常量是一个 事先计算好 的数值，并且每个头（head）的值都有所不同。
+- 通过「相对位置信息」就能在一定程度上缓解「绝对位置信息」造成的训练和推理过程中长度编码不一致的问题
+
+代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
 
 ## 稀疏Attention
 
