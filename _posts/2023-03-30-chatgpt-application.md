@@ -1006,6 +1006,47 @@ Smart Siri 不足：
 
 详见站内文章：[智能办公](aigc#智能办公)
 
+### 文本创作
+
+
+#### 文案创作
+
+【2023-4-8】创业产品：[AI百晓生](https://www.chengzijianzhan.com/tetris/page/7216273608124137509)，给视频生成文案，语音播报
+
+#### 写小说
+
+
+##### 长文本生成
+
+论文《[The LongForm: Optimizing Instruction Tuning for Long Text Generation with Corpus Extraction](https://arxiv.org/abs/2304.08460)》介绍了基于 C4 和 Wikipedia 等已有语料库的人工创作文档集合以及这些文档的指令，从而创建了一个适合长文本生成的指令调优数据集。
+
+##### Re^3
+
+【2023-2-14】[Generating Longer Stories With Recursive Reprompting and Revision](https://arxiv.org/pdf/2210.06774.pdf), Meta 田渊栋写小说
+- We consider the problem of automatically generating longer stories of over two thousand words. Compared to prior work on shorter stories, **long-range plot coherence and relevance** are more central challenges here. We propose the `Recursive Reprompting and Revision` framework ($Re^3$) to address these challenges
+
+
+##### RecurrentGPT（输出不受限）
+
+【2023-5-30】[ChatGPT能写长篇小说了，ETH提出RecurrentGPT实现交互式超长文本](https://www.toutiao.com/article/7238442944003310084)
+- 苏黎世联邦理工和波形智能的团队发布了 RecurrentGPT，一种让大语言模型 (如 ChatGPT 等) 能够模拟 RNN/LSTM，通过 Recurrent Prompting 来实现交互式**超长**文本生成，让利用 ChatGPT 进行长篇小说创作成为了可能。
+- [论文地址](https://arxiv.org/abs/2305.13304)
+- [项目地址](https://github.com/aiwaves-cn/RecurrentGPT)
+- 在线 Demo: [长篇小说写作](https://www.aiwaves.org/recurrentgpt), [交互式小说](https://www.aiwaves.org/interactivefiction)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a679b4e41e0d483bae2b1ac35ae2da63~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=1GLOG8XAvQwzzXbm0v1ip16bz5Q%3D)
+
+Transformer 大语言模型最明显的限制之一: 输入和输出的**长度限制**。
+- 虽然输入端的长度限制可以通过 **VectorDB** 等方式缓解
+- 输出内容的长度限制始终是长内容生成的关键障碍。
+
+为解决这一问题，过去很多研究试图使用基于向量化的 State 或 Memory 来让 Transformer 可以进行**循环**计算。这样的方法虽然在长文本建模上展现了一定的优势，但是却要求使用者拥有并可以**修改模型的结构和参数**，这在目前闭源模型遥遥领先的大语言模型时代中是不符合实际的。
+
+RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本生成的首个成功实践。它利用 ChatGPT 等大语言模型理解自然语言指令的能力，通过自然语言模拟了循环神经网络（RNNs）的循环计算机制。
+- 每一个时间步中，RecurrentGPT 会接收上一个时间步生成的内容、最近生成内容的摘要（短期记忆），历史生成内容中和当前时间步最相关的内容 (长期记忆)，以及一个对下一步生成内容的梗概。RecurrentGPT 根据这些内容生成一段内容，更新其长短时记忆，并最后生成几个对下一个时间步中生成内容的规划，并将当前时间步的输出作为下一个时间步的输入。这样的循环计算机制打破了常规Transformer 模型在生成长篇文本方面的限制，从而实现任意长度文本的生成，而不遗忘过去的信息。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f1bd9be64d144e18914652db4ce325c8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=4WMRfq0FjPeJxmK0ujy7roS3sbA%3D)
+
+
+
 ### 视觉应用
 
 【2023-3-14】[ChatGPT 有什么新奇的使用方式？](https://www.zhihu.com/question/582979328/answer/2933058469)
@@ -1519,44 +1560,6 @@ ControlNet 的优点是：
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TV46RMG9kDz4Bu~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676360394&x-signature=tCxwmviN1wJeomk42ZXzv2DHEVI%3D)
 
 
-### 文本创作
-
-
-#### 文案创作
-
-【2023-4-8】创业产品：[AI百晓生](https://www.chengzijianzhan.com/tetris/page/7216273608124137509)，给视频生成文案，语音播报
-
-#### 写小说
-
-
-##### 长文本生成
-
-论文《[The LongForm: Optimizing Instruction Tuning for Long Text Generation with Corpus Extraction](https://arxiv.org/abs/2304.08460)》介绍了基于 C4 和 Wikipedia 等已有语料库的人工创作文档集合以及这些文档的指令，从而创建了一个适合长文本生成的指令调优数据集。
-
-##### Re^3
-
-【2023-2-14】[Generating Longer Stories With Recursive Reprompting and Revision](https://arxiv.org/pdf/2210.06774.pdf), Meta 田渊栋写小说
-- We consider the problem of automatically generating longer stories of over two thousand words. Compared to prior work on shorter stories, **long-range plot coherence and relevance** are more central challenges here. We propose the `Recursive Reprompting and Revision` framework ($Re^3$) to address these challenges
-
-
-##### RecurrentGPT（输出不受限）
-
-【2023-5-30】[ChatGPT能写长篇小说了，ETH提出RecurrentGPT实现交互式超长文本](https://www.toutiao.com/article/7238442944003310084)
-- 苏黎世联邦理工和波形智能的团队发布了 RecurrentGPT，一种让大语言模型 (如 ChatGPT 等) 能够模拟 RNN/LSTM，通过 Recurrent Prompting 来实现交互式**超长**文本生成，让利用 ChatGPT 进行长篇小说创作成为了可能。
-- [论文地址](https://arxiv.org/abs/2305.13304)
-- [项目地址](https://github.com/aiwaves-cn/RecurrentGPT)
-- 在线 Demo: [长篇小说写作](https://www.aiwaves.org/recurrentgpt), [交互式小说](https://www.aiwaves.org/interactivefiction)
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a679b4e41e0d483bae2b1ac35ae2da63~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=1GLOG8XAvQwzzXbm0v1ip16bz5Q%3D)
-
-Transformer 大语言模型最明显的限制之一: 输入和输出的**长度限制**。
-- 虽然输入端的长度限制可以通过 **VectorDB** 等方式缓解
-- 输出内容的长度限制始终是长内容生成的关键障碍。
-
-为解决这一问题，过去很多研究试图使用基于向量化的 State 或 Memory 来让 Transformer 可以进行**循环**计算。这样的方法虽然在长文本建模上展现了一定的优势，但是却要求使用者拥有并可以**修改模型的结构和参数**，这在目前闭源模型遥遥领先的大语言模型时代中是不符合实际的。
-
-RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本生成的首个成功实践。它利用 ChatGPT 等大语言模型理解自然语言指令的能力，通过自然语言模拟了循环神经网络（RNNs）的循环计算机制。
-- 每一个时间步中，RecurrentGPT 会接收上一个时间步生成的内容、最近生成内容的摘要（短期记忆），历史生成内容中和当前时间步最相关的内容 (长期记忆)，以及一个对下一步生成内容的梗概。RecurrentGPT 根据这些内容生成一段内容，更新其长短时记忆，并最后生成几个对下一个时间步中生成内容的规划，并将当前时间步的输出作为下一个时间步的输入。这样的循环计算机制打破了常规Transformer 模型在生成长篇文本方面的限制，从而实现任意长度文本的生成，而不遗忘过去的信息。
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f1bd9be64d144e18914652db4ce325c8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=4WMRfq0FjPeJxmK0ujy7roS3sbA%3D)
 
 ### 数字人
 
@@ -1596,6 +1599,21 @@ BloombergGPT的训练数据库名为FINPILE，由一系列英文金融信息组�
 - 测试五：NER，命名实体识别任务，针对从提交给SEC的金融协议中收集金融数据，进行信用风险评估。
 
 对于ConvFinQA来说，这个差距尤为显著，因为它需要使用对话式输入来对表格进行推理并生成答案，具有一定挑战性。
+
+
+### 法律
+
+#### PowerLawGLM
+
+【2023-6-28】[法律大模型的突围，千亿参数级PowerLawGLM重磅发布](https://mp.weixin.qq.com/s/bXAFALFY6GQkL30j1sYCEQ)
+- 幂律联合智谱AI此次联合发布基于中文千亿大模型的法律垂直大模型——PowerLawGLM，聚焦于法律细分领域，针对中文法律场景的应用效果具有独特优势，具备丰富的法律知识和法律语言理解能力。
+
+将通用大模型直接应用在法律领域，往往存在着严重的效果问题，例如 法律知识错误、专业引用偏差、法律体系差异等问题。比如前段时间美国律师使用ChatGPT来提交法庭简报，结果引用的6个案例都是ChatGPT编造的虚假案例，这种“人工智能幻觉”现象在法律场景屡见不鲜，也说明了目前通用大模型难以保证法律专业层面的真实性、正确性。
+
+`幂律智能`自2017年成立以来即深耕于法律+AI领域，基于领先的法律AI能力，向企业提供智能合同产品，并且深度参与了清华大学自然语言处理实验室的OpenCLaP、LawFormer等法律大模型的研发及应用。而智谱AI作为领先的通用大模型厂商，法律领域是其大模型迭代及布局的重要方向，基于双方达成的战略合作，在法律大模型上展开深度合作，来加快推动大模型在法律行业应用落地及商业化。
+
+自2023年初双方成立联合项目组，启动法律大模型研发以来，经过千亿规模的基座模型增量训练、对话层监督微调、应用层工程优化，推出了基于中文千亿大模型的法律垂直大模型—— PowerLawGLM。 
+- PowerLawGLM法律大模型，基于智谱目前效果最好的ChatGLM 130B通用千亿对话大模型进行联合研发。
 
 ### 插件
 
