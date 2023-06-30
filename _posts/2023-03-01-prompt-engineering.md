@@ -20,9 +20,46 @@ permalink: /pe
 
 ## 什么是 Prompt
 
+
+提示工程是一门新兴学科，为大语言模型（LLM）设计的"语言游戏"。
+- 通过这个"游戏"，更有效地引导 LLM 来处理问题。只有熟悉了这个游戏的规则，才能更清楚地认识到 LLM 的能力和局限。
+- 这个"游戏"不仅帮助理解 LLM，也是提升 LLM 能力的途径。
+
+有效的提示工程可以提高大语言模型处理复杂问题的能力（比如一些数学推理问题），也可以提高大语言模型的扩展性（比如可以结合专业领域的知识和外部工具，来提升 LLM 的能力）。
+
+提示工程就像是一把钥匙，为理解和应用大语言模型打开了新的大门，无论是现在还是未来，它的潜力都是无穷无尽的。
+
 prompt是人类能看懂的文字，但好的prompt给机器的信息量更多更准确，和日常沟通交流中组织形式有**很大区别**
 - prompt像精确而又全面描述需求的一个说明书，写满了厚厚一本详细性能指标参数的那种说明书。
 - 把一个具体的需求转述成为能让机器高效理解需求细节的优质prompt，根本就是一件反直觉反人性的事
+
+## Prompt 结构
+
+提示词可以包含以下任意要素：
+- 指令：想要模型执行的特定任务或指令。
+- 上下文：包含外部信息或额外的上下文信息，引导语言模型更好地响应。
+- 输入数据：用户输入的内容或问题。
+- 输出指示：指定输出的类型或格式。
+
+注意，提示词所需的格式取决于您想要语言模型完成的任务类型，并非所有以上要素都是必须的。
+
+### Prompt 四要素
+
+一个 Prompt 包含以下四个元素中的若干个：
+- `指令` Instructions：希望 LLM 执行什么任务；
+- `上下文` （语境）Context：给 LLM 提供一些额外的信息，比如可以是垂直领域信息，从而引导 LLM 给出更好的回答；
+- `输入数据` Input data：希望从 LLM 得到什么内容的回答；
+- `输出格式` Output indicator：引导 LLM 给出指定格式的输出。
+
+![](https://pic3.zhimg.com/80/v2-f63e21cd8d7cf18e5bbfc106534f4fda_1440w.webp)
+
+temperature和top_p是两个重要参数。
+- 如果想得到准确的答案，就把这些参数调低，如果想得到更多不同的答案，就调高。
+
+
+### Prompt 示例
+
+
 
 一种经典的Prompt构成是：
 > 先描述这个任务，然后说明需要怎样的输出，最后跟上需要处理的内容。
@@ -53,34 +90,10 @@ reason: 这次生成随机数的原因
 
 鉴于把人类描述需求的自然语言转换成「机器语言」这么复杂，诞生了一门新的学科：Prompt Engineering，通过调整Prompt来控制ChatGPT生成文本的技能。掌握了Prompt Engineer这项技能，就可以更加灵活地使用ChatGPT等AI大模型的能力，生成更为精准的内容。
 
-【2023-4-13】提示工程指南[Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide),  Guides, papers, lecture, notebooks and resources for prompt engineering
-- 一小时的讲座视频，讲座中的代码示例，以及一份配合讲座的50页资料。视频包含四个部分：提示工程的介绍、先进的提示工程技术、工具&应用、总结以及未来的发展方向。
-- [中文文档](https://www.promptingguide.ai/zh)
-- [最新最全最火的Prompt指南来](https://mp.weixin.qq.com/s/wXXVJ619Mexs6xxaMDAPfg)
-
-
-## Prompt结构
-
-提示词可以包含以下任意要素：
-- 指令：想要模型执行的特定任务或指令。
-- 上下文：包含外部信息或额外的上下文信息，引导语言模型更好地响应。
-- 输入数据：用户输入的内容或问题。
-- 输出指示：指定输出的类型或格式。
-
-注意，提示词所需的格式取决于您想要语言模型完成的任务类型，并非所有以上要素都是必须的。我们会在后续的指南中提供更多更具体的示例。
-
-一个标准的prompt由以下几个部分组成，即：
-- 说明 Instructions
-- 语境 Context
-- 输入数据 Input data
-- 输出指标 Output indicator。
-
-![](https://pic3.zhimg.com/80/v2-f63e21cd8d7cf18e5bbfc106534f4fda_1440w.webp)
-
-temperature和top_p是两个重要参数。
-- 如果想得到准确的答案，就把这些参数调低，如果想得到更多不同的答案，就调高。
 
 ## Prompt编写
+
+设计提示词经常是一个迭代的过程，需要不断试验才能获得最佳结果。
 
 ### 提示助手
 
@@ -104,6 +117,7 @@ temperature和top_p是两个重要参数。
 5. prompt-markdown-parser
   - 用于 text2image 提示的 Markdown 解析器和提示生成器工具
 
+ChatGPT 的插件中就有一个不错的工具 Prompt perfect，能够基于用户给的 Prompt 进行优化，再喂给 ChatGPT 进行提问。
 
 ### 微软 Copilot 泄露的 Prompt
 
@@ -233,6 +247,11 @@ The key is to educate ChatGPT on the specifics you want. Check the TEN inputs yo
 - Title and Subtitle Suggestion: Well, it says all.
 
 ## 提示工程指南
+
+【2023-4-13】提示工程指南[Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide),  Guides, papers, lecture, notebooks and resources for prompt engineering
+- 一小时的讲座视频，讲座中的代码示例，以及一份配合讲座的50页资料。视频包含四个部分：提示工程的介绍、先进的提示工程技术、工具&应用、总结以及未来的发展方向。
+- [中文文档](https://www.promptingguide.ai/zh)
+- [最新最全最火的Prompt指南来](https://mp.weixin.qq.com/s/wXXVJ619Mexs6xxaMDAPfg)
 
 ### 吴恩达提示工程
 
@@ -430,6 +449,57 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
     - “请给我看一个Javascript中的应用程序，它可以使手机振动三次”。
 
 ### 进阶Prompt技巧
+
+
+提示工程进阶 [参考](https://www.toutiao.com/article/7249943832207295009)
+- 零样本提示 zero-shot Prompting：提示里没有包含任何特定任务的示例
+  - Translate the following English text to French: 'Hello, how are you?‘
+- 少样本提示 Few-Shot Prompting：提示里包含几个特定任务的示例
+- 思维链提示：给 LLM 通提供一些思考的中间过程，可以是用户提供，也可以让模型自己来思考。
+  - 少样本思维链：用户提供一些“解题步骤”，直接让 LLM 回答问题时错误，但是在 Prompt 中告诉模型解答步骤，最终给出的答案就是准确。
+  - 零样本思维链：嫌弃提供中间过程太麻烦？偷懒的办法来了，零样本思维链通过一句 magic prompt 实现了这一目标 “Let’s think step by step”。
+  - 自动化思维链：采用不同的问题得到一些推理过程让 LLM 参考
+    - 起因：过于简化的方法肯定也会存在一定局限性，比如 LLM 可能给出的是错误的思考过程。
+    - 过程：[图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/25afadb59f7f4ec6887149157412e21b~noop.image)
+      - 首先进行问题聚类，把给定数据集的问题分为几个类型；
+      - 采样参考案例，每个类型问题选择一个代表性问题，然后用零样本思维链来生成推理的中间过程
+- Explicit 思维链: [图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/9d8748705f1742c781ca0335308121ed~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=wFj%2BtQ9trE4ePJ8l31rTYBzrluw%3D)
+  - 目的： 让 LLM 在对话时考虑用户状态，比如 personality， empathy 和 psychological，遵循的还是思维链套路，并且将思维链拆成了多**个步骤**（LLM 每次回答一点，不是一次性基于思维链全部回答）。
+  - 好处在于用户还可以修改、删除中间过程的一些回答，原始的上下文和所有中间过程都会用于最终回答的生成。
+- 主动提示：[图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5dc174c5d0b74c8587fd503f87c82e49~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=VHrllC%2F0V4x573jT%2B4Wv4OvyLBE%3D)
+  - 本质上还是思维链，由于**人工设计**的思维链或者**自动化**思维链的结果也并不一定理想（思维链的设计跟具体任务相关），因此提出了用**不确定性**来评估思维链的好坏，然后再让人来修正一些不确定性比较大的思维链。
+- 思维树: [图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/797b33d880704606bb3892a3b03d526a~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=ngIBAqwyCDex3WpCK5iRTdlR%2FCU%3D)
+  - Tree of Thoughts（ToT）是思维链的进一步拓展，主要想解决 LM 推理过程存在两个问题：不会探索不同的可能选择分支；无法在节点进行前后向的探索。
+  - ToT 将问题建模为树状搜索过程，包括四个步骤：问题分解、想法生成、状态评价以及搜索算法的选择。
+- 头脑风暴提示：[图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/476804901662423bbf2c2d0de92ad726~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=1KYo3rTEyAvutK%2F9V2nzfe%2Fm4lo%3D)
+  - 主要考虑的是代码生成方向，不过思想还是可以用在各种领域的提问。核心思想分为三步：
+  - 头脑风暴：通过多个 Prompt 喂给 LLM 得到多样化的“思路”；
+  - 选择最佳思路：这里用了一个神经网络模型来打分，并用最高分的思路来作为最终 Prompt；
+  - 代码生成：基于问题和选择出来的最佳思路进行代码生成。
+- 多模态思维链: [图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8c559322a4b5433cba114282849617d4~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=MlW3Gg%2BBeBdCFn4dI78zV2yDU8o%3D)
+  - 今年一些需要多模态 LLM 也被提出，自然也有了一些多模态提示工程的尝试，它包括两个阶段：
+  - 理由生成：在这个阶段，我们将语言和视觉输入提供给模型，以生成推理的理由。这个理由可以看作是解决问题的中间步骤或思考链的一部分。这个过程可以帮助模型理解问题的上下文，并为下一步的答案推断做好准备。
+  - 答案推断：在这个阶段，我们将从第一阶段生成的理由添加到原始的语言输入中。然后，我们将更新后的语言输入和原始的视觉输入一起提供给模型，以推断出答案。这个过程允许模型利用在理由生成阶段获得的信息来做出更准确的推断。
+- 一致性提示： [图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/e801f29d4ab64e30bf62529f3aa0970d~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688693341&x-signature=pyz4rYiX0fcW7ZRX%2B4qDyBIe500%3D)
+  - 核心思想就是少数服从多数，多让模型回答几次（这里的提问也用到了少样本思维链），然后在 LLM 的多次回答中选择出现多次的答案。
+- Progressive-Hint 提示
+  - Progressive-Hint Prompting（PHP）类似于一致性提示的进阶，试图模拟人类推理的过程，通过反复检查和修正答案来提高推理的准确性。具体来说，PHP 方法会对上一次的推理过程进行处理，然后将其合并到初始问题中，让模型进行再次推理。当连续两次的推理结果一致时，就认为得出的答案是准确的，并返回最终答案。
+  - 在 PHP 方法中，首次与 LLM 交互使用的 Prompt 称为基础提示（Base Prompting）。基础提示可以是标准提示、CoT 提示或者其他改进版本的提示。在随后的交互中，将使用 PHP 提示，直到最新的两个答案一致。
+- Plan-and-Solve 提示
+  - Plan-and-Solve 提示的设计理念是让模型制定一个解决问题的计划，然后按照这个计划来执行子任务，以此达到明确生成推理步骤的效果。
+  - PS+提示在 PS 提示的基础上，添加了“pay attention to calculation”这样的引导语句，要求模型在计算过程中更加精确。为了避免模型在处理问题时忽略了关键的变量和数值，PS+提示还增加了“extract relevant variables and their corresponding numerals”这样的引导语句。此外，为了强化模型在推理过程中计算中间结果的能力，PS+提示也加入了“calculate intermediate results”这样的引导语句。通过这种方式，PS+提示进一步提高了模型在处理多步推理任务时的效果。
+- 增强（检索）提示
+  - 增强 LLM 本质上在做的事情还是提高提示词的信息，从而更好地引导模型。这里主要可以有两种方式，一种是用自己的私有知识库来扩充 LLM 的知识，一种是借用 LLM 的知识库来提高 Prompt 的信息量。
+- Clue And Reasoning 提示
+  - Clue and Reasoning Prompting (CARP) 是一种用于文本分类的方法，它首先提示大型语言模型（LLMs）寻找表面线索，例如关键词、语调、语义关系、引用等，然后基于这些线索引导出一个诊断推理过程进行最终决策。
+- 知识反刍提示
+  - 尽管现有预训练语言模型（PLMs）在许多任务上表现出色，但它们仍然存在一些问题，比如在处理知识密集型任务时，它们往往不能充分利用模型中的潜在知识。
+  - "Knowledge Rumination"的方法，通过添加像"As far as I know"这样的提示，让模型回顾相关的潜在知识，并将其注入回模型以进行知识巩固。这种方法的灵感来自于动物的反刍过程，即动物会将食物从胃中带回口中再次咀嚼，以便更好地消化和吸收。
+  - 三种不同类型的提示：
+    - Background Prompt：这种提示旨在帮助模型思考背景知识。提示的形式是"As far as I know [ MASK]"。这种提示鼓励模型回顾和思考其已经知道的一般信息或背景知识。
+    - Mention Prompt：这种提示用于引发模型对提及的记忆。形式是"About [ Mention], I know [ MASK]"。这种提示鼓励模型回顾和思考与特定主题或实体（即"[ Mention]"）相关的知识。
+    - Task Prompt：这种提示旨在帮助模型回忆任务的记忆。例如，对于情感分析，提示是"About sentiment analysis, I know [ MASK]"。这种提示鼓励模型回顾和思考与特定任务（例如情感分析）相关的知识。
+
 
 - 1、训练ChatGPT执行特定的任务：预先给ChatGPT一些学习条件，然后让他在后续的对话中执行任务。
   - 示例: 微博是一个社交媒体平台，用户可以在上面发表任何内容。用户发的微博内容可以是积极的，也可以是消极的，我们希望能够将这些微博内容分类为积极或消极。以下是一些积极和消极的例子。1. 成功地摸鱼一整天，多么美好的一天。积极 2. 今天周一，又要面临5天悲伤的工作日。消极 现在，我将给你不同的微博内容，你只需要回答我该微博内容是“积极”还是“消极”，在无法判断时，回复“不确定”，另外不需要任何解释。第一条内容是：熬夜的人最适合，来碗鸡汤回魂了。
