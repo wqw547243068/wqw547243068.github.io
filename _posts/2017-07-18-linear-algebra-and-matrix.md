@@ -226,10 +226,26 @@ mathjax: true
 - ![](http://songcy.net/posts/story-of-basis-and-kernel-part-2/example1.PNG)
 
 
-
-
-
 ## 矩阵的本质
+
+### 矩阵理解
+
+- [如何通俗讲解放射变换？](https://www.zhihu.com/question/20666664)
+_ [在线几何作图GeoGebra](https://www.geogebra.org/apps/)（源自 [马同学高等数学](http://www.matongxue.com/madocs/244.html)）
+- [3Blue1Brown](www.patreon.com/3blue1brown)出品（接受捐助）：[线性代数的本质-Essence of Linear Algebra-视频教程](http://www.3blue1brown.com/)，[Bilibili上《线性代数本质》双语视频教程](http://www.bilibili.com/video/av6731067/).[文字版](https://yam.gift/2018/05/13/2018-05-13-Essence-of-Linear-Algebra/),类似视频还有微积分本质,[笔记](https://yam.gift/2018/05/12/2018-05-12-Essence-of-Calculus/).[制作教学视频的代码](https://github.com/3b1b/manim)
+- <iframe src="//player.bilibili.com/player.html?aid=5987715&cid=9720812&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=6731067&cid=10959711&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+- 【2021-2-20】国外通俗易懂讲解数学[betterexplained](https://betterexplained.com/)
+- 【2019-10-24】马同学高等数学-[线性代数学习笔记](https://ming-lian.github.io/2019/03/31/Linear-Algebra-Note/)，【2019-12-31】[交互式线性代数-Interactive Linear Algebra](http://textbooks.math.gatech.edu/ila/systems-of-eqns.html)
+-【2018-9-4】[Google出品：动图解释反向传播](https://google-developers.appspot.com/machine-learning/crash-course/backprop-scroll/)
+- ![](http://www.tensorflownews.com/wp-content/uploads/2017/11/1511693406697-678x381.jpg)
+- [行列式的本质（马同学高等数学）](http://www.matongxue.com/madocs/247.html).《数学拾遗》[英文版百度云地址](https://pan.baidu.com/share/link?shareid=1204761446&uk=2416092239&fid=2111748288).
+- [矩阵分解(加法偏)](https://mp.weixin.qq.com/s?src=3&timestamp=1498919864&ver=1&signature=lwM3ouw-FlaVYwhol06JImHUQz-gJ00kBAYkssdiD3pSLwOS48Mv9ntL97readD8AZrXS2q0D28PegS*LE6Cxp88Hy8RPP9VLGdWA29zARcLVFuwHbJJl8SPtB*dq7njgt7suMGouSV-FP5b9BlFeWtQ8XNSO9aJyrh8mBJNYS8=),[矩阵分解(乘法篇)，很不错](https://mp.weixin.qq.com/s?src=3&timestamp=1498919864&ver=1&signature=lwM3ouw-FlaVYwhol06JImHUQz-gJ00kBAYkssdiD3q4iNXi-7lf9GzKeq2CvP0yAofBNF7OoCG21M1YDLrrhHHA15K4rrKyP1FFPjQtmNGv0yv5IFeA7LmvuBiea1Xrsa79Gf8c6IT1JiTdra-mU8JNHdj0zp-lYaJUUfp0CHw=)
+- [如何通俗的解释放射变换](http://www.matongxue.com/madocs/244.html),[生动讲解矩阵的空间变换](http://blog.csdn.net/a396901990/article/details/44905791)：平移、缩放、旋转、对称（xy或原点）、错切、组合。[行列式的本质是什么？---万门大学童哲的解释](https://www.zhihu.com/question/36966326/answer/70687817):行列式就是线性变换的放大率！理解了行列式的物理意义，很多性质你根本就瞬间理解到忘不了！
+- 【2018-8-17】[广义线性模型是什么鬼？](https://www.sohu.com/a/228212348_349736)
+- 行列式：行列式，记作 det(A)，是一个将方阵 A 映射到实数的函数。行列式等于矩阵特 征值的乘积。行列式的绝对值可以用来衡量矩阵参与矩阵乘法后空间扩大或者缩小 了多少。如果行列式是 0，那么空间至少沿着某一维完全收缩了，使其失去了所有的 体积。如果行列式是 1，那么这个转换保持空间体积不变
+- 【2017-11-24】遇见数学：[图解线性代数](https://www.toutiao.com/i6490094296459379213/)
 
 ### 矩阵的线性变换视角
 
