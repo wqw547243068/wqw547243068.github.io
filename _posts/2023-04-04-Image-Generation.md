@@ -556,6 +556,28 @@ Stable diffusion结构图
 - C. diffusion model如何在隐空间中提供良好的latent representation，以及如何将其用于data manipulation的任务也是值得研究的。
 - D. 将diffusion model和generative foundation model结合，探索更多类似于ChatGPT，GPT-4等有趣的AIGC应用
 
+### 扩散模型 vs 语言模型
+
+【2023-7-1】扩散模型的作图缺点
+
+扩散模型
+- 优势
+  - 控制条件可设置
+  - 模型规模可控
+- 劣势
+  - 语义控制不够精准：以标签为基准，无法识别标签属性关系，因为 CLIP 模型
+  - 缺乏语义逻辑性：第一个人在第二个人的左边 --- 无法识别
+
+语言模型
+- 优势
+  - 理解语言与动作
+  - 更友好的交互方式
+  - 统一的任务框架
+- 劣势
+  - 大量数据资源
+  - 大量计算资源
+  - 缺乏多模态控制
+
 ### 可控生成
 
 可控生成是人工智能内容生成(AIGC)的最后一道高墙。
