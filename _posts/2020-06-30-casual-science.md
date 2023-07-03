@@ -333,6 +333,17 @@ Two main frameworks
 
 因果科学的工作大致分为**基础因果假设及框架**（fundamental causal assumption and framework）、**因果学习**（causal learning）、**因果推断**（causal reasoning/inference）和**应用系统**，其中因果学习又可以分为**因果结构学习**（causal discovery/causal structure learning）和**因果表示学习**（causal representation learning）。
 
+## Rubin 因果模型(潜在结果框架)
+
+【2023-7-3】[一文读懂潜在结果框架(Rubin因果模型）的三个假设](https://zhuanlan.zhihu.com/p/484963104)
+
+Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果、稳定性假设和分配机制
+
+因果推断中，必须有干预，没有干预就没有因果。
+
+更多见原文
+
+
 ## 结构因果模型（SCM）
 
 研究 𝑋 和 𝑌 的因果关系
