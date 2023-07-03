@@ -251,43 +251,6 @@ transformer 结构分成：
 - ![](https://camo.githubusercontent.com/88e8f36ce61dedfd2491885b8df2f68c4d1f92f5/687474703a2f2f696d6775722e636f6d2f316b72463252362e706e67)
 
 
-## Transformer PyTorch实现
-
-[Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/)
-- Google 2017年的论文 [Attention is all you need](https://arxiv.org/abs/1706.03762) 阐释了什么叫做大道至简！该论文提出了**Transformer**模型，完全基于**Attention mechanism**，抛弃了传统的**RNN**和**CNN**。
-- 我们根据论文的结构图，一步一步使用 [PyTorch](https://github.com/pytoch/pytorch) 实现这个**Transformer**模型。
-
-### 多头注意力实现
-
-【2023-5-10】点的self、cross注意力机制[实现](https://www.cnblogs.com/hellcat/p/15260145.html)
-
-```py
-def attention(query, key, value):
-    dim = query.shape[1]
-    scores = torch.einsum('bdhn,bdhm->bhnm', query, key) / dim**.5
-    prob = torch.nn.functional.softmax(scores, dim=-1)
-    return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
-
-class MultiHeadedAttention(nn.Module):
-    """ Multi-head attention to increase model expressivitiy """
-    def __init__(self, num_heads: int, d_model: int):
-        super().__init__()
-        assert d_model % num_heads == 0
-        self.dim = d_model // num_heads
-        self.num_heads = num_heads
-        self.merge = nn.Conv1d(d_model, d_model, kernel_size=1)
-        self.proj = nn.ModuleList([deepcopy(self.merge) for _ in range(3)])
-
-    def forward(self, query, key, value):
-        batch_dim = query.size(0)
-        query, key, value = [l(x).view(batch_dim, self.dim, self.num_heads, -1)
-                             for l, x in zip(self.proj, (query, key, value))]
-        x, prob = attention(query, key, value)
-        self.prob.append(prob)
-        return self.merge(x.contiguous().view(batch_dim, self.dim*self.num_heads, -1))
-```
-
-
 ## Transformer架构
 
 - 首先看一下transformer的结构图：  
@@ -1197,16 +1160,50 @@ class PositionalWiseFeedForward(nn.Module):
 
 ## Transformer 实现
 
-所有的细节都已经解释完了。现在来完成我们Transformer模型的代码。
 
-首先，需要实现6层的encoder和decoder。
+### Transformer 模型 pytorch代码
+
+[Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/)
+- Google 2017年的论文 [Attention is all you need](https://arxiv.org/abs/1706.03762) 阐释了什么叫做大道至简！该论文提出了**Transformer**模型，完全基于**Attention mechanism**，抛弃了传统的**RNN**和**CNN**。
+- 根据论文的结构图，一步一步使用 [PyTorch](https://github.com/pytoch/pytorch) 实现这个**Transformer**模型。
+
+#### 多头注意力实现
+
+【2023-5-10】点的self、cross注意力机制[实现](https://www.cnblogs.com/hellcat/p/15260145.html)
+
+```py
+def attention(query, key, value):
+    dim = query.shape[1]
+    scores = torch.einsum('bdhn,bdhm->bhnm', query, key) / dim**.5
+    prob = torch.nn.functional.softmax(scores, dim=-1)
+    return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
+
+class MultiHeadedAttention(nn.Module):
+    """ Multi-head attention to increase model expressivitiy """
+    def __init__(self, num_heads: int, d_model: int):
+        super().__init__()
+        assert d_model % num_heads == 0
+        self.dim = d_model // num_heads
+        self.num_heads = num_heads
+        self.merge = nn.Conv1d(d_model, d_model, kernel_size=1)
+        self.proj = nn.ModuleList([deepcopy(self.merge) for _ in range(3)])
+
+    def forward(self, query, key, value):
+        batch_dim = query.size(0)
+        query, key, value = [l(x).view(batch_dim, self.dim, self.num_heads, -1)
+                             for l, x in zip(self.proj, (query, key, value))]
+        x, prob = attention(query, key, value)
+        self.prob.append(prob)
+        return self.merge(x.contiguous().view(batch_dim, self.dim*self.num_heads, -1))
+```
+
+需要实现6层的encoder和decoder。
 
 encoder代码实现如下：
 
 ```python
 import torch
 import torch.nn as nn
-
 
 class EncoderLayer(nn.Module):
 	"""Encoder的一层。"""
@@ -1218,15 +1215,11 @@ class EncoderLayer(nn.Module):
         self.feed_forward = PositionalWiseFeedForward(model_dim, ffn_dim, dropout)
 
     def forward(self, inputs, attn_mask=None):
-
         # self attention
         context, attention = self.attention(inputs, inputs, inputs, padding_mask)
-
         # feed forward network
         output = self.feed_forward(context)
-
         return output, attention
-
 
 class Encoder(nn.Module):
 	"""多层EncoderLayer组成Encoder。"""
@@ -1338,7 +1331,7 @@ class Decoder(nn.Module):
         return output, self_attentions, context_attentions
 ```
 
-最后，我们把encoder和decoder组成Transformer模型！
+最后，把encoder和decoder组成Transformer模型！
 
 代码如下：
 
@@ -1360,26 +1353,20 @@ class Transformer(nn.Module):
                ffn_dim=2048,
                dropout=0.2):
         super(Transformer, self).__init__()
-
         self.encoder = Encoder(src_vocab_size, src_max_len, num_layers, model_dim,
                                num_heads, ffn_dim, dropout)
         self.decoder = Decoder(tgt_vocab_size, tgt_max_len, num_layers, model_dim,
                                num_heads, ffn_dim, dropout)
-
         self.linear = nn.Linear(model_dim, tgt_vocab_size, bias=False)
         self.softmax = nn.Softmax(dim=2)
 
     def forward(self, src_seq, src_len, tgt_seq, tgt_len):
         context_attn_mask = padding_mask(tgt_seq, src_seq)
-
         output, enc_self_attn = self.encoder(src_seq, src_len)
-
         output, dec_self_attn, ctx_attn = self.decoder(
           tgt_seq, tgt_len, output, context_attn_mask)
-
         output = self.linear(output)
         output = self.softmax(output)
-
         return output, enc_self_attn, dec_self_attn, ctx_attn
 
 ```
@@ -1410,7 +1397,6 @@ import torch
 import torch.nn as nn
 import numpy as np
 import math
-
 
 class Config(object):
     # 模型超参类
@@ -1450,14 +1436,11 @@ class Embedding(nn.Module):
         x = self.embedding(torch.tensor(x)) # batch_size * seq_len * d_model
         return x
 
-
-
 class Positional_Encoding(nn.Module):
 
     def __init__(self,d_model):
         super(Positional_Encoding,self).__init__()
         self.d_model = d_model
-
 
     def forward(self,seq_len,embedding_dim):
         positional_encoding = np.zeros((seq_len,embedding_dim))
@@ -1465,7 +1448,6 @@ class Positional_Encoding(nn.Module):
             for i in range(positional_encoding.shape[1]):
                 positional_encoding[pos][i] = math.sin(pos/(10000**(2*i/self.d_model))) if i % 2 == 0 else math.cos(pos/(10000**(2*i/self.d_model)))
         return torch.from_numpy(positional_encoding)
-
 
 class Mutihead_Attention(nn.Module):
     def __init__(self,d_model,dim_k,dim_v,n_heads):
@@ -1507,7 +1489,6 @@ class Mutihead_Attention(nn.Module):
 
         output = self.o(output)
         return output
-
 
 class Feed_Forward(nn.Module):
     def __init__(self,input_dim,hidden_dim=2048):
