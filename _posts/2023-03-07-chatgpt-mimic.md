@@ -475,6 +475,7 @@ python chat.py \
 RM模型学习的就是对于一个prompt，人类对答案的喜好程度。
 - RM模型【左】RM损失函数【右】
 - ![](https://pic3.zhimg.com/80/v2-6b22d510b56efc300b6bb1686407a40e_1440w.webp)
+- ![rm](https://pic1.zhimg.com/v2-bc1af700e9147ae7458824f5619b1ed4_b.jpg)
 
 奖励模型接收一系列文本并返回一个标量奖励，数值上对应人的偏好
 
@@ -814,6 +815,7 @@ def predict(model_path):
 利用SFT模型对输出进行改造，构造一个**双头PPO模型**，模型一头输出一个张量，代表生成序列每个元素的价值value；另一头将输出映射成prompt answer词典答案。[参考](https://zhuanlan.zhihu.com/p/618325377)
 - 将 `<prompt, prompt answer>` 输入到RM模型中，获得一个评估当前prompt对的奖励R，然后用R作为奖励，反向更新每个元素的价值value，这就是PPO强化学习算法。
 - ![img](https://pic4.zhimg.com/80/v2-b7872ef00df9809f0d3632896add3e73_1440w.webp)
+- ![rlhf](https://pic3.zhimg.com/v2-6fbb088189db4a8991ca2d476092552a_b.jpg)
 - Y=0, 常规 PPO
 - Y>=, PPO_ptx
 
