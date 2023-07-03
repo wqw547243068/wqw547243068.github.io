@@ -1049,6 +1049,7 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 ### 基座大模型
 
+
 #### LLMs 进化史
 
 【2023-6-9】大模型进化史
@@ -1070,6 +1071,9 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 LLM选择决策树
 - ![](https://github.com/Mooler0410/LLMsPracticalGuide/blob/main/imgs/decision.png)
+
+decoder-only LLM一般是指以LM objective训练的模型，即编码每个token时只能单向地利用「前文tokens」或「后文tokens」信息，比如，一个left-to-right LM objective可以表示为：
+- $$L(\theta) = - {1 \over N}\sum^{N}_{i}log(p(x_i; \theta)) \\ = - {1 \over N}\sum^{N}_{i}\sum^{T_i}_{t}log(p(w_{i,t}|w_{i, < t}; \theta))$$
 
 #### LLMs 对比
 
