@@ -1047,9 +1047,24 @@ Smart Siri 不足：
 
 
 
-### 办公
+### 个人工具
+
+#### 办公工具
 
 详见站内文章：[智能办公](aigc#智能办公)
+
+
+#### 数学工具
+
+【2023-7-3】[Mathematica引入大语言模型](https://www.toutiao.com/article/7251425526433366568)
+
+新版本Mathematica Wolfram，正式引入大语言模型（LLM）。搞科学计算，只需要一个“说”的动作。
+- 直接说：Draw a red and a green semicircle.
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/d0e443a10463458a8addf73622ccaa47~noop.image)
+- I want filled semicircles next to each other. And no axes. 我想要彼此相邻的填充的半圆。没有坐标轴。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6080794989b44183b543e507c0e95ede~noop.image?_iz=58558&from=article.pc_detail&x-expires=1688968152&x-signature=GWy3pcz3sf7E41sImJot7Xd4aAg%3D)
+
+Chat Notebook中，设置了聊天单元（chat cell）和聊天块（chatblock）
 
 ### 文本创作
 
