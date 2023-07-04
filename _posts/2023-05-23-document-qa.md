@@ -1200,6 +1200,32 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
 - [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
 
+#### LangFlow 可视化
+
+【2023-7-4】`LangFlow` 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
+
+[LangFlow](https://github.com/logspace-ai/langflow) 的主要功能包括：
+- 提供多种 LangChain 组件以供选择，如语言模型、提示序列化器、代理和链等。
+- 通过编辑提示参数、链接链和代理，以及跟踪代理的思考过程，用户可以探索这些组件的功能。
+- 使用 LangFlow，用户可以将流程导出为 JSON 文件，然后在 LangChain 中使用。
+- LangFlow 的图形用户界面（GUI）提供了一种直观的方式来进行流程实验和原型开发，包括拖放组件和聊天框
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3985851583544f95acce1c6c2399147a~tplv-obj:1280:640.image?_iz=97245&from=post&x-expires=1696204800&x-signature=d4gBt5CjT3X6m6%2FF9sTfMLy1x6o%3D)
+
+```sh
+pip install langflow # 安装
+langflow # 启动
+```
+
+json格式导入 flow
+
+```PY
+from langflow import load_flow_from_json
+
+flow = load_flow_from_json("path/to/flow.json")
+# Now you can use it like any chain
+flow("Hey, have you heard of LangFlow?")
+```
+
 #### LangChain 组件
 
 LangChain包含六部分组件
