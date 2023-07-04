@@ -97,6 +97,15 @@ Ops=Operation，`MLOps`深刻继承了`DevOps`干活的思路与方法，都涉�
 
 在每个服务器节点动辄几千上万QPS的压力下，必然不可能在tensorflow，spark mllib等训练环境中进行实时推断。必须有一个模型服务器来承载模型相关的参数或者数据，进行几十毫秒级别的实时推断，这就是model serving面临的主要挑战。
 
+### ML模型部署方式
+
+【2023-7-2】 机器学习模型部署四种方式 [链接](https://www.toutiao.com/w/1770309546056711)
+- Batch 批处理部署
+- Stream 流式部署
+- Real Time 实时部署
+- Edge 边缘部署
+- ![图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/72d049b3fb99406f97ec318a589f4743~tplv-obj:1117:1215.image?_iz=97245&from=post&x-expires=1696204800&x-signature=4UD2E%2Bt7imiB%2BP03TntHk1Dep34%3D)
+
 ### 模型部署对比
 
 【2023-2-3】[AI模型部署落地综述（ONNX/NCNN/TensorRT等](https://www.toutiao.com/article/7189079539149144579)
