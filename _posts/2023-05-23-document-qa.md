@@ -1202,9 +1202,9 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 
 #### LangFlow 可视化
 
-【2023-7-4】`LangFlow` 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
+【2023-7-4】[LangFlow](https://logspace.ai/) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
 
-[LangFlow](https://github.com/logspace-ai/langflow) 的主要功能包括：
+[LangFlow](https://logspace.ai/) [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
 - 提供多种 LangChain 组件以供选择，如语言模型、提示序列化器、代理和链等。
 - 通过编辑提示参数、链接链和代理，以及跟踪代理的思考过程，用户可以探索这些组件的功能。
 - 使用 LangFlow，用户可以将流程导出为 JSON 文件，然后在 LangChain 中使用。
@@ -1214,7 +1214,10 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 ```sh
 pip install langflow # 安装
 langflow # 启动
+python -m langflow # 上面命令不管用时用这个
 ```
+
+自动弹出本地web页面: http://127.0.0.1:7860/, 配置可导出为json格式
 
 json格式导入 flow
 
