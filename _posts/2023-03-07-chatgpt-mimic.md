@@ -19,6 +19,16 @@ ChatGPT复现上
 - 另一方面是**训练加速**（Deepspeed+Megatron+Colossal ai+FlexGen），便于基于开源大模型（Bloom/OPT/T5）微调; 
 - 还有 更超前的小冰链（X-CoTA），思维链透明化+执行能力（有人推测与大语言模型关系不大）；有个瓶颈：涌现能力只出现在100b级别的大模型上，小模型一般人难以优化
 
+[Awesome-LLM](https://github.com/Hannibal046/Awesome-LLM)
+
+There are three important steps for a ChatGPT-like LLM:
+1. Pre-training
+1. Instruction Tuning
+1. Alignment
+
+图解
+- ![](https://github.com/Hannibal046/Awesome-LLM/raw/main/resources/creepy_llm.jpeg)
+
 ## 复现思路
 
 【2023-2-28】要点
@@ -2925,7 +2935,13 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 
 #### GLM-130B
 
-2022 年 8 月，`清华大学`联合[智谱AI](https://www.zhipuai.cn/index.html)（唐杰、李涓子，公司名:[北京智谱华章科技有限公司](https://www.qcc.com/firm/3e6bd6d29872b6c3a14f72f4ef6b9197.html)） 向研究界和工业界开放了拥有 1300 亿参数的中英双语稠密模型 `GLM-130B`，该模型有一些独特的优势：
+2022 年 8 月，`清华大学`联合[智谱AI](https://www.zhipuai.cn/index.html)（唐杰、李涓子，公司名:[北京智谱华章科技有限公司](https://www.qcc.com/firm/3e6bd6d29872b6c3a14f72f4ef6b9197.html)） 向研究界和工业界开放了拥有 1300 亿参数的中英双语**双向**稠密模型 `GLM-130B`
+- 截至2022年7月，它已经训练了超过4000亿个文本标记。
+- 底层架构基于`通用语言模型`(GLM)，在语言理解和语言生成任务上均展示出强大的性能。
+
+官方github对[ChatGLM的介绍](https://github.com/THUDM/GLM-130B/blob/main/README_zh.md)
+
+该模型有一些独特的优势：
 - 双语：同时支持中文和英文；
 - 高精度（英文）：在公开的英文自然语言榜单 LAMBADA、MMLU 和 Big-bench-lite 上优于 GPT-3 175B（API: davinci，基座模型）、OPT-175B 和 BLOOM-176B；
 - 高精度（中文）：在 7 个零样本 CLUE 数据集和 5 个零样本 FewCLUE 数据集上明显优于 ERNIE TITAN 3.0 260B 和 YUAN 1.0-245B；
@@ -2940,11 +2956,13 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
   - 【2022-10-5】[GLM-130B: An Open Bilingual Pre-trained Model](https://arxiv.org/abs/2210.02414)
 - 代码：[GLM](https://github.com/THUDM/GLM)
 
-GLM的出发点是将3种主流的预训练模型进行统一：
+GLM的出发点是将3种主流预训练模型进行统一：
 - `GPT`训练目标是**从左到右**的**文本生成**
 - `BERT`训练目标是对文本进行**随机掩码**，然后预测被掩码的词
 - `T5`则是接受一段文本，从左到右的生成另一段文本
 - ![img](https://picx.zhimg.com/v2-b674c5be5ec5ed96e22dbb507a0e897c_r.jpg?source=1940ef5c)
+
+GLM-130B 将 `BERT` 和 `GPT` 目标进行了统一，并与最近提出的一些技术进行结合以提升语言模型的性能表现。
 
 2022年11月，斯坦福大学大模型中心对全球30个主流大模型进行了全方位的评测，GLM-130B是亚洲**唯一**入选的大模型。在与OpenAI、Google Brain、微软、英伟达、Meta AI的各大模型对比中，评测报告显示GLM-130B在准确性和公平性指标上与GPT-3 175B（davinci）接近或持平，鲁棒性、校准误差和无偏性优于GPT-3 175B。
 
