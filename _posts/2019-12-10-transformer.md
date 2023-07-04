@@ -1602,6 +1602,14 @@ class Transformer(nn.Module):
 
 ## Attention 改进
 
+
+### 推理加速
+
+#### FasterTransfomer
+
+【2023-7-4】[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) 是 NVIDIA 高度优化的 Transformer 模型库，在生成时达到 **2.5倍**的速度，详见 [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
+
+
 ### 计算效率
 
 attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
