@@ -797,6 +797,15 @@ PandaGPT 仅仅是一个研究原型，暂时还不足以直接应用于生产�
 
 因此，可以从学习好的先验中通过Prompt从多个层面，例如表示形式（目标框、关键点、实例掩码）、物体类别、大小和数量，来采样空间限制条件。
 
-# 结束
+#### BayLing 百聆 中科院计算所
 
+【2023-7-4】[中科院计算所推出多语言大模型「百聆」](https://zhuanlan.zhihu.com/p/641100831)
+- 论文: [Bridging Cross-lingual Alignment and Instruction Following through Interactive Translation for Large Language Models](https://arxiv.org/abs/2306.10968)
+- [Demo](https://nlp.ict.ac.cn/bayling/demo)
+- ![](http://mlops.ccloud.conestore.cn:30010/bayling/assets/overview1-c107d293.png)
+- ![](https://github.com/ictnlp/BayLing/raw/main/assets/demo.gif)
+
+在中科院计算所信息高铁 Al 训练推理平台 MLOps 上训练并发布了新的大型语言模型「百聆」，旨在让大型语言模型对齐人类意图的同时，将其生成能力和指令遵循能力从英语泛化到其他语种。「百聆」以经济友好、内存节约的方式实现了多语言人机交互能力。
+
+# 结束
 
