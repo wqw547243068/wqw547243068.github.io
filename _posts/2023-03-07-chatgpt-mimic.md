@@ -1227,6 +1227,8 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
 
 ### 开源复现框架
 
+#### 开源框架汇总
+
 【2023-3-23】[GPT-3 + RL 全流程训练开源整理](https://zhuanlan.zhihu.com/p/608705255)
 
 按 star 数量进行排序的 ChatGPT 开源项目汇总
@@ -1245,24 +1247,35 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
 
 使用工具: [ExtractTable](https://extracttable.com/): Extract tabular data from images, 从图片中抽取表格数据
 
+#### 框架实测
+
 【2023-7-3】 开源框架实测
-- Megatron-DeepSpeed: BLOOM 1-3B SFT
+- `Alpa`: 大规模神经网络的训练、部署框架，几行代码自动分布式训练、部署。
+  - [Serving OPT-175B, BLOOM-176B and CodeGen-16B using Alpa](https://alpa.ai/tutorials/opt_serving.html)
+- Megatron-`DeepSpeed`: 微软结合NVIDIA的transformer高效库+DeepSpeed
+  - DeepSpeed: 微软 [deepspeed.ai](https://www.deepspeed.ai/)推出的深度学习训练推理框架, [github](https://github.com/microsoft/DeepSpeed), BLOOM 1-3B SFT
+  - [Megatron-LM](https://github.com/NVIDIA/Megatron-LM): NVIDIA 应用深度学习研究院推出的高效transformer库
+  - [DeepSpeed Chat](https://github.com/microsoft/DeepSpeed/tree/master/blogs/deepspeed-chat)
+  - 
+  - [Megatron-LM GPT2 tutorial](https://www.deepspeed.ai/tutorials/megatron/)
   - 优点: 单机多卡可行(1-3B), 7-10B 内存超限
   - 缺点: 
     - 无法设置 epoch 字段，训练不方便
     - 流程复杂, 代码复杂, 改动不方便
-- Colossal AI： 覆盖三步流程
+- `Colossal AI`： 覆盖三步流程
   - 优点：完整的三步流程，支持并行训练
   - 缺点：
     - SFT 训练bloom流程不完善, 如 forward函数没写
     - 训练 RM 模型时，基于bloom的pad方式不对（应该从左到右），计算损失函数时把pad算进来
     - ppo：存在ab问题，舍弃，未验证ppo有效性
-- open assistant：改动/优化源码支持bloom训练
+- `Open Assistant`：改动/优化源码支持bloom训练
   - 优点：三步流程完整，支持并行训练
   - 缺点：不支持bloom的RLHF，改动需要懂分布式计算流程，成本大
-- TRLX：改动后支持
+- `TRLX`：改动后支持
   - 优点：三步流程、并行
   - 缺点：需要改动源码
+- `BMTtrain`: [BMTrain](https://github.com/OpenBMB/BMTrain) 100b级别大模型训练工具包
+
 
 trlx上完成三步流程训练，抽样效果 +5-10%
 
@@ -3112,6 +3125,11 @@ ChatGLM2-6B 是开源中英双语对话模型 ChatGLM-6B 的第二代版本，�
 
 
 ### CPM-Bee 基座模型+Luca（露卡） -- OpenBMB
+
+【2022-7-18】OpenBMB+清华NLP 刘知远团队大模型公开课全网首发: 
+- [大模型与脑科学](https://www.openbmb.org/community/course)
+- [Prompt Tuning, Delta Tuning 背景以及技术](https://www.openbmb.org/community/course)
+- [BMInf, BMTrain, BMCook相关背景、技术和使用](https://www.openbmb.org/community/course)
 
 【2023-5-27】5月27日，OpenBMB 发布大模型 [CPM-Bee](https://live.openbmb.org/models/bee)，最高10b，并推出对话类模型产品“露卡”（Luca）。[资讯](https://mp.weixin.qq.com/s/d9F5kSbFye1oEhqfzFU7XA)
 - 露卡”（Luca）支持多轮对话与深度语义理解，可以根据输⼊文本语境和创作要求 ⾃动⽣成原创文案，并进一步进行改写或翻译，可以具体运用到诸多办公生活场景。支持结构化**内容生成**，可以 一键生成表格和代码。具备**多模态**输入理解的能力，能够识**别和解读图片**，升级了传统自然语言理解任务处理（情感分析、信息抽取等）的能力，最炫酷的功能就是能够**联网**进行信息搜索和摘要。
