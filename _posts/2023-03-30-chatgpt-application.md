@@ -2055,7 +2055,18 @@ BMTools 支持 Open AI 的 Plugins，同时也允许开发者自己加入的工�
 
 详见官方介绍：[发布资讯](https://mp.weixin.qq.com/s/NLzno1XRHQLyMFfh5CeJpw)
 
+#### Toolformer
 
+【2023-2-9】Toolformer: 自监督方式训练模型,自动选择调用哪个api，只需提供几个示例
+- which 调哪个api
+- when 什么时候调
+- what 传什么参数
+- how 怎么从结果里提取信息
+
+- 论文: [Toolformer: Language Models Can Teach Themselves to Use Tools](http://arxiv.org/abs/2302.04761)
+- [视频讲解](https://www.bilibili.com/video/BV1BV4y1a7iU)
+
+We introduce Toolformer, a model trained to decide which APIs to call, when to call them, what arguments to pass, and how to best incorporate the results into future token prediction. This is done in a self-supervised way, requiring nothing more than a handful of demonstrations for each API. We incorporate a range of tools, including a calculator, a Q\&A system, two different search engines, a translation system, and a calendar. Toolformer achieves substantially improved zero-shot performance across a variety of downstream tasks, often competitive with much larger models, without sacrificing its core language modeling abilities.
 
 ### 机器人
 
