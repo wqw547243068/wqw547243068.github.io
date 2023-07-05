@@ -1085,6 +1085,9 @@ LLM选择决策树
 decoder-only LLM一般是指以LM objective训练的模型，即编码每个token时只能单向地利用「前文tokens」或「后文tokens」信息，比如，一个left-to-right LM objective可以表示为：
 - $$L(\theta) = - {1 \over N}\sum^{N}_{i}log(p(x_i; \theta)) \\ = - {1 \over N}\sum^{N}_{i}\sum^{T_i}_{t}log(p(w_{i,t}|w_{i, < t}; \theta))$$
 
+GPT模型进化
+- ![](https://github.com/RUCAIBox/LLMSurvey/blob/main/assets/gpt-series.png?raw=true)
+
 #### LLMs 对比
 
 各种模型详情
@@ -2136,6 +2139,11 @@ train_prompts
     L -->|2023-3-31,伯克利\n开源FastChat达到ChatGPT 90%| V(Vicuna小羊驼):::green
     O(OPT):::blue -.->|OPT 1.3b模型| V
 </div>
+
+
+【2023-7-5】人民大学总结的LLaMA进化图
+- 论文: "[A Survey of Large Language Models](https://arxiv.org/abs/2303.18223)", github: [LLMSurvey](https://github.com/RUCAIBox/LLMSurvey/tree/main)
+- ![llama](https://github.com/RUCAIBox/LLMSurvey/blob/main/assets/llama-0628-final.png?raw=true)
 
 ### LLaMA 扩展
 
