@@ -2065,7 +2065,7 @@ BMTools 支持 Open AI 的 Plugins，同时也允许开发者自己加入的工�
 
 - 论文: [Toolformer: Language Models Can Teach Themselves to Use Tools](http://arxiv.org/abs/2302.04761)
 - pytorch代码实现: [Toolformer - Pytorch](https://github.com/lucidrains/toolformer-pytorch)
-- [视频讲解](https://www.bilibili.com/video/BV1BV4y1a7iU)
+- 视频讲解:[作者讲解](https://www.youtube.com/watch?v=UID_oXuN-0Y), [他人解读](https://www.bilibili.com/video/BV1BV4y1a7iU)
 
 We introduce Toolformer, a model trained to decide which APIs to call, when to call them, what arguments to pass, and how to best incorporate the results into future token prediction. This is done in a self-supervised way, requiring nothing more than a handful of demonstrations for each API. We incorporate a range of tools, including a calculator, a Q\&A system, two different search engines, a translation system, and a calendar. Toolformer achieves substantially improved zero-shot performance across a variety of downstream tasks, often competitive with much larger models, without sacrificing its core language modeling abilities.
 
