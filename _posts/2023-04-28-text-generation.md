@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "文本生成&评价-Text Generation and Evaluation"
-date:   2020-04-28 21:39:00
+date:   2023-04-28 21:39:00
 categories: 自然语言处理
 tags: 深度学习 NLP GAN Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性
 excerpt: 深度学习在NLP子领域——文本生成的应用汇总，如seq2seq、GAN系列
@@ -783,6 +783,24 @@ Attention各种变形
 - CTRL（Salesforce）在预训练阶段加入了 control codes 与 prompts 作为控制信号，影响文本的领域、主题、实体和风格。
 
 【2021-1-2】翁丽莲的博客：[Controllable Neural Text Generation](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/)
+
+#### 学术前沿
+
+【2023-7-4】ACL 2023 [大模型时代，自然语言领域还有什么学术增长点](https://www.toutiao.com/article/7251939452384215587)
+- 微软: [DuNST: 基于噪声对偶自学习的半监督可控文本生成](https://arxiv.org/abs/2212.08724)
+  -  DuNST 将文本生成和分类作为对偶过程进行联合建模，并且通过自学习来改进模型的生成和分类。除了生成器生成的伪文本之外，研究员们还利用分类器给未标注的文本做伪标注。另外，模型会通过添加两种平滑的噪声来扰动学到的文本空间。添加的噪声可以帮助模型改进文本空间的局部平滑性，增加模型的鲁棒性。理论上，DuNST 可以被看作是对探索（Exploration）和利用（Exploitation）的平衡。添加噪声增强了对潜在更大的真实文本空间的探索，同时保持了对已经学到的文本空间的利用，从而保证模型的性能。
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/99ae0a19a0514593a79dbbcd7f6dced8~noop.image)
+- 微软+北交大: [EmbMarker: 通过后门水印保护基于大模型的向量表示服务的版权](https://arxiv.org/abs/2305.10036), 代码[EmbMarker](https://github.com/yjw1029/EmbMarker)
+  - 问题: 许多公司开始基于这些 LLMs 提供向量表示服务（EaaS），用户可以通过发送查询和接收输出来重建模型的参数，这使得 LLM 的服务提供者面临着模型被盗用或复制的风险。
+  - 一种适用于 EaaS 的水印方法。这类方法需要满足以下条件：
+    1. 不影响向量在下游任务的使用性能；
+    2. 当有盗用者复制提供商的模型并提供相同的竞争服务时，提供商可以通过访问盗用者的服务验证其输出中含有提供商的水印；
+    3. 水印需要足够隐蔽，不会被盗用者轻易地过滤掉。
+  - 为了解决这些问题，研究员们提出了一种基于后门水印的方法：EmbMarker，两个阶段：**水印插入**阶段和**版权验证**阶段
+    - 水印插入阶段：首先找到一组合适词频的单词作为**触发单词**，并预定义一个目标向量作为水印。当用户提供的句子中含有的触发单词数量越多时，服务提供者发送的向量与预定义的目标向量的距离越接近。
+    - 版权验证阶段：提供商可以使用触发单词和非触发单词分别构造两组句子，并访问待验证的服务得到两组向量。两组向量离目标向量的距离分布差距越大，则说明该服务后的模型越有可能是盗用或复制了提供商的模型。
+    - 实验结果表明，EmbMarker 可以在不影响向量在下游任务性能的情况下，以高置信度验证盗用者服务中的水印，并且具有很强的隐蔽性。
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/849f3cb88ac049688c380d165cec5fa3~noop.image)
 
 
 #### 可控文本生成技术的发展过程和趋势
