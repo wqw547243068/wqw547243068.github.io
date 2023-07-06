@@ -797,6 +797,21 @@ PandaGPT 仅仅是一个研究原型，暂时还不足以直接应用于生产�
 
 因此，可以从学习好的先验中通过Prompt从多个层面，例如表示形式（目标框、关键点、实例掩码）、物体类别、大小和数量，来采样空间限制条件。
 
+
+#### SEEChat
+
+【2023-6-30】[360 人工智能研究院正式开源中文多模态对话模型 SEEChat](https://www.toutiao.com/article/7250467467510940220)
+
+将视觉能力融入语言模型 LLM的 MLLM（Multimodal Large Language Model），相关的研究路线主要分为两条：
+- 一条是原生多模态路线，模型设计从一开始就专门针对多模态数据进行适配设计，代表性的工作有 MSRA的KOSMOS-1[1]和 Google Robotics的 PALM-E，均在今年3月份公开；
+- 另一条是单模态专家模型缝合路线，通过桥接层将预训练的视觉专家模型与预训练的语言模型链接起来，代表性的工作有 Deepmind的Flamingo[3]，Saleforce的BLIP-2，以及近期的 LLAVA和 miniGPT4等工作。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TifKZ0I7QBeBjY~noop.image)
+
+
+[SEEChat项目](https://github.com/360CVGroup/SEEChat)的重点是将视觉能力与已有的 LLM模型相融合，打造侧重视觉能力的多模态语言模型 MLLM。在多模态能力的实现路线上，我们选择了能够充分复用不同领域已有成果的单模态专家模型缝合路线（Single-modal Experts Efficient integration）,这也是 SEEChat项目的命名来源。
+
+SEEChat v1.0的模型结构如下图6所示，通过 projection layer桥接层，将vision encoder: CLIP-ViT-L/14与开源的中文 LM：chatGLM6B缝合到一起。
+
 #### BayLing 百聆 中科院计算所
 
 【2023-7-4】[中科院计算所推出多语言大模型「百聆」](https://zhuanlan.zhihu.com/p/641100831)
