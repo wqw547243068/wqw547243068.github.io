@@ -1212,10 +1212,19 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
 模型结构
 - 首先, MoE是一个层，而不是整个模型。
 - 其次，这个模型结构包含一个门网络, 决定激活哪个expert，同时包含n个expert网络，这n个expert网络一般是同结构的。
+  - $y=\sum_{i=1}^{n} g(x)_{i} f_{i}(x)$
+  - $\sum_{i=1}^{n} g(x)_{i}=1$ gi表示专家fi权重, g代表一个汇总所有专家结果的门控网络。
 - 当 G(x)i=0 的时候，对应的expert就不会激活; 
 - 门网络实现：dense layer + softmax
 - 为了保证稀疏性和均衡性，softmax做了处理
 - ![](https://pic1.zhimg.com/70/v2-7228430e9a6f276967abb97b6e0db9a2_1440w.avis?source=172ae18b&biz_tag=Post)
+
+[Google多任务学习模型MMoE ](https://imzhanghao.com/2020/11/11/google-mtl-mmoe/)
+- Multi-gate Mixture-of-Experts (MMoE)通过在多任务学习中引入Mixture-of-Experts（MoE）层，显式的学习了各个子任务之间关系，同时利用门限网络以优化每个任务。
+- MMoE 核心思想是**集成学习**，整个思想范畴在随机森林里面，不过表达方式用了深层Net，这样每个专家可以专注一个方向去学习表达力，门控网络来计算每个专家网络跟目标匹配的权重。
+
+实验表明，当任务相关性较低时，MMoE比基线方法具有更好的效果，并且会带来额外的可训练性好处，具体取决于训练数据和模型初始化中不同程度的随机性。
+
 
 
 ### 多模态LLM
