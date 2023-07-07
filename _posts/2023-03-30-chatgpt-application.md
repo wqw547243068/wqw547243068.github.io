@@ -1838,7 +1838,7 @@ LangChain 由前 Robust Intelligence 的机器学习工程师 Chase Harrison 在
 - [AutoGPT 太火了，无需人类插手自主完成任务](https://mp.weixin.qq.com/s/bV1tPc7hNn2z06YOpzyanw)
 - [拥有自我意识的AI：AutoGPT](https://juejin.cn/post/7236594708301840441)
 
-AutoGPT 的研究开始走进大众视野。
+[AutoGPT](https://news.agpt.co/) 的研究开始走进大众视野。
 -  2023年3月30日，Toran Bruce Richards 发行 AutoGPT，一个实验性开源应用程序，利用 OpenAI 的GPT-4语言模型来创建**完全**自主和可定制的 AI 代理
   - Toran 是一名游戏开发商，并创立了一家名为 Significant Gravitas 的游戏公司
 - AutoGPT 相当于给基于 GPT 的模型一个内存和一个身体。有了它，你可以把一项任务交给 AI 智能体，让它自主地提出一个计划，然后执行计划。此外其还具有互联网访问、长期和短期内存管理、用于文本生成的 GPT-4 实例以及使用 GPT-3.5 进行文件存储和生成摘要等功能。
@@ -1852,7 +1852,7 @@ AutoGPT 用处很多，可用来分析市场并提出交易策略、提供客户
 AutoGPT 如何工作？
 
 AutoGPT 基于自主 AI 机制工作，其中 AI 系统创建不同的 AI 代理来满足特定任务，其中包括：
-- **任务创建**代理： 当你在 AutoGPT 上输入目标时，第一个与任务创建代理交互的 AI 代理。根据你的目标，它将创建一个任务列表以及实现这些目标的步骤，并将其发送给优先级代理。
+- **任务创建**代理： 在 AutoGPT 上输入目标时，第一个与任务创建代理交互的 AI 代理。根据目标创建一个任务列表以及实现这些目标的步骤，并将其发送给优先级代理。
 - 任务**优先级**代理： 收到任务列表后，优先级 AI 代理会确保顺序正确且符合逻辑，然后再将其发送给执行代理。
 - 任务**执行**代理： 完成优先级排序后，执行代理将一个接一个地完成任务。这涉及利用 GPT-4、互联网和其他资源来获得结果。
 - ![架构图](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba630117cd6408bb1fb8a1265fdf520~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
@@ -1905,6 +1905,13 @@ vim .env # 填入 openai key 到变量 OPENAI_API_KEY
 # python scripts/main.py --speak # use TTS for Auto-GPT
 python3 scripts/main.py # 多个虚拟环境时，为了避免干扰
 python -m autogpt
+```
+
+【2023-7-7】
+- 复制 默认的 env文件，只更新里面的openai_api_key
+
+```sh
+cp .env.template .env
 ```
 
 ##### 使用
