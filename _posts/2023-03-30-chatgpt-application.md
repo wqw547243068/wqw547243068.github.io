@@ -2165,6 +2165,15 @@ response = toolformer.sample_model_with_api_calls("How many days until the next 
 ```
 
 
+#### MetaGPT
+
+【2023-7-5】[MetaGPT](https://github.com/geekan/MetaGPT)
+- MetaGPT: Multi-Agent Meta Programming Framework
+- MetaGPT takes a one line requirement as input and outputs user stories / competitive analysis / requirements / data structures / APIs / documents, etc.
+- Internally, MetaGPT includes product managers / architects / project managers / engineers. It provides the entire process of a software company along with carefully orchestrated SOPs.
+- Code = SOP(Team) is the core philosophy. We materialize SOP and apply it to teams composed of LLMs.
+- ![](https://github.com/geekan/MetaGPT/raw/main/docs/resources/software_company_cd.jpeg)
+
 ### 机器人
 
 ChatGPT接入实体机器人，线上线下整合营销ChatGPT大多数时候主要作用于线上，但在线下消费场景也显示出潜力。
