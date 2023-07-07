@@ -1914,6 +1914,24 @@ python -m autogpt
 cp .env.template .env
 ```
 
+命令，详见[指南](https://docs.agpt.co/)
+
+```sh
+./run.sh --help     # on Linux / macOS
+./run.sh --debug # 打印日志
+# Run Auto-GPT with a different AI Settings file shell
+./run.sh --ai-settings <filename>
+# Run Auto-GPT with a different Prompt Settings file shell
+./run.sh --prompt-settings <filename>
+# Specify a memory backend
+./run.sh --use-memory  <memory-backend>
+./run.sh --speak # 启动tts 语音播报
+./run.sh --continuous # 100% 自动化，无需手动确认，有一定风险
+./run.sh --gpt3only # 只用 gpt3
+./run.sh --gpt4only # 只用 gpt4 ，更贵
+
+```
+
 ##### 使用
 
 AutoGPT配置
