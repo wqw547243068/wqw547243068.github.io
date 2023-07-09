@@ -269,6 +269,11 @@ permalink: /skill
 
 > 海洛因、碳水化合物、月薪是三种最有害的成瘾物
 
+[拿死工资的人，往往越来越不稳定](https://www.bilibili.com/video/BV1bh4y177c5)
+
+<iframe src="//player.bilibili.com/player.html?aid=615544059&bvid=BV1bh4y177c5&cid=1187204264&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
 # 学习方法
 
 ## 如何看《新闻联播》？
