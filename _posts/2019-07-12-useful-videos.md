@@ -534,6 +534,7 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
       - <iframe src="//player.bilibili.com/player.html?aid=69166304&cid=119869704&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 历史
+
 - 孙子兵法-10集纪录片，[B站](https://www.bilibili.com/video/av1968639)
 
 <iframe src="//player.bilibili.com/player.html?aid=1968639&cid=5838714&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
@@ -700,9 +701,11 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 
 ## 动物电影
-   - 忠犬八公
-   - 根据1925年真实事件改编，感人至深，最英勇的二哈《[多哥](https://www.ixigua.com/pseries/6801800505862390286_6803201543379091971/)》
-   - [南极大冒险]()， 1958年日本真实事件改编的电影
+
+
+- 忠犬八公
+- 根据1925年真实事件改编，感人至深，最英勇的二哈《[多哥](https://www.ixigua.com/pseries/6801800505862390286_6803201543379091971/)》
+- [南极大冒险]()， 1958年日本真实事件改编的电影
 
 
 
