@@ -1742,6 +1742,9 @@ ChatLaw系列模型
 
 Action 实现上，除了 OpenAI  的 Plugin，Adept 和 Inflection 这两家早期团队想以自然语言为基础，为用户打造新的 LUI （语言为基础的 UI）方式。
 
+【2023-7-9】ChatUI 背后首先是控制大脑，参考下图 JARVIS 的架构，由大模型(GPT-4)来控制领域模型来工作的思路，取得了非常不错的成果，也开启了整个领域的研究方向。[参考](https://www.zhihu.com/question/608714690/answer/3090873935)
+- ![](https://picx.zhimg.com/80/v2-76e1bf60b4ae3919cad7911cb1656426_1440w.webp?source=1940ef5c)
+
 #### OpenAI Plugin
 
 3月24日，OpenAI宣布解除了ChatGPT无法联网的限制，以第三方插件为中介，使ChatGPT能访问其他网站并获取实时信息，还支持执行计算。
