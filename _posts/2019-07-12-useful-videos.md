@@ -6,7 +6,7 @@ categories: 人文科学
 tags: 王阳明 人生意义 思考 财经 哲学 科技 风景
 excerpt: 汇总优质视频，启发思考，开阔视野
 mathjax: true
-permalink: /video
+permalink: /resource
 ---
 
 * content
