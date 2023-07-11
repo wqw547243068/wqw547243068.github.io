@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比
+tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -11,7 +11,7 @@ mathjax: true
 # 资料
 
 - 【2020-7-28】[The Next Generation of Neural Networks](https://www.bilibili.com/video/BV18A411Y7N4), Geoffrey Hinton，对下一代神经网络，比学习的来龙去脉，以及现在的SOTA模型 SimCLR
-<iframe src="//player.bilibili.com/player.html?aid=329101147&bvid=BV18A411Y7N4&cid=217768758&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=329101147&bvid=BV18A411Y7N4&cid=217768758&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2021-3-15】[伯克利CS 182《深度学习：深度神经网络设计、可视化与理解》课程 2021](https://www.bilibili.com/video/BV1PK4y1U751)，课程主页地址,[Designing, Visualizing and Understanding Deep Neural Networks](https://cs182sp21.github.io/)
 
 
@@ -182,17 +182,16 @@ mathjax: true
 
 跟着3Blue1Brown从偏数学的角度来理解神经网络（原视频假设观众对神经网络没有任何背景知识）
 
-- 【2020-3-9】三综一蓝对神经网络的视频介绍
-   - 深度学习之神经网络的结构：[part 1](https://www.bilibili.com/video/av15532370/?spm_id_from=333.788.videocard.0)，[part 2](https://www.bilibili.com/video/av16144388/?spm_id_from=333.788.videocard.0)，[part 3](https://www.bilibili.com/video/av16577449/?spm_id_from=333.788.videocard.0)
-
-<iframe src="//player.bilibili.com/player.html?aid=15532370&cid=25368631&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-<iframe src="//player.bilibili.com/player.html?aid=16144388&cid=26347539&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-<iframe src="//player.bilibili.com/player.html?aid=16577449&cid=27038097&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+【2020-3-9】三综一蓝对神经网络的视频介绍
+- 深度学习之神经网络的结构：[part 1](https://www.bilibili.com/video/av15532370/?spm_id_from=333.788.videocard.0)，[part 2](https://www.bilibili.com/video/av16144388/?spm_id_from=333.788.videocard.0)，[part 3](https://www.bilibili.com/video/av16577449/?spm_id_from=333.788.videocard.0)
+- <iframe src="//player.bilibili.com/player.html?aid=15532370&cid=25368631&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=16144388&cid=26347539&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=16577449&cid=27038097&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ![](https://static.leiphone.com/uploads/new/article/740_740/201708/59917d26cc5b3.jpg?imageMogr2/format/jpg/quality/90)
 
 **目录**
----
+
 <!-- TOC -->
 
 - [资料](#资料)
@@ -258,7 +257,6 @@ mathjax: true
 - [神经网络可解释性](#神经网络可解释性)
 - [结束](#结束)
 
-<!-- /TOC -->
 
 # 总结
 
@@ -314,43 +312,40 @@ mathjax: true
     > 为什么是两层和 16 个？——层数的大小与问题的复杂度有关，而神经元的数量目前来看是随机的——网络的结构在实验时有很大的调整余地
 
 ## 神经网络的运作机制
+
 - 神经网络在运作的时候，隐藏层可以视为一个“黑箱”
 - 每一层的激活值将通过某种方式计算出下一层的激活值——神经网络处理信息的核心机制
+- ![](https://pic4.zhimg.com/80/v2-9f720fdf056858c96162d6e53c80692b_720w.jpg)
 
-    ![](https://pic4.zhimg.com/80/v2-9f720fdf056858c96162d6e53c80692b_720w.jpg)
-    > 每一层被激活的神经元不同，（可能）会导致下一层被激活的神经元也不同
+> 每一层被激活的神经元不同，（可能）会导致下一层被激活的神经元也不同
 
 **为什么神经网络的分层结构能起作用？**
----
-- 人在初识数字时是如何区分的？——**组合**数字的各个部分
 
-    ![](https://pic2.zhimg.com/80/v2-37a1ee73e5f69d7b4a296342a48373bd_720w.jpg)
+- 人在初识数字时是如何区分的？——**组合**数字的各个部分
+- ![](https://pic2.zhimg.com/80/v2-37a1ee73e5f69d7b4a296342a48373bd_720w.jpg)
 
 - **在理想情况下**，我们希望神经网络倒数第二层中的各隐藏单元能对应上每个**基本笔画**（pattern）
 
-    ![](https://pic4.zhimg.com/80/v2-d2be1b89eba286dea4ef30f1d64dc8af_720w.jpg)
-    - 当输入是 9 或 8 这种**顶部带有圆圈**的数字时，某个神经元将被激活（激活值接近 1）
-    - 不光是 9 和 8，所有顶部带有圆圈的图案都能激活这个隐藏单元
-    - 这样从倒数第二层到输出层，我们的问题就简化成了“学习哪些部件能组合哪些数字”
+![](https://pic4.zhimg.com/80/v2-d2be1b89eba286dea4ef30f1d64dc8af_720w.jpg)
+- 当输入是 9 或 8 这种**顶部带有圆圈**的数字时，某个神经元将被激活（激活值接近 1）
+- 不光是 9 和 8，所有顶部带有圆圈的图案都能激活这个隐藏单元
+- 这样从倒数第二层到输出层，我们的问题就简化成了“学习哪些部件能组合哪些数字”
 
 - 类似的，基本笔画也可以由更基础的部件构成
-
-    ![](https://pic1.zhimg.com/80/v2-112c60fbea62771fa73ea9ba5f915fc8_720w.jpg)
+- ![](https://pic1.zhimg.com/80/v2-112c60fbea62771fa73ea9ba5f915fc8_720w.jpg)
     
 - **理想情况下**，神经网络的处理过程
-
-    ![](https://pic4.zhimg.com/80/v2-9f720fdf056858c96162d6e53c80692b_720w.jpg)
-    > 从输入层到输出层，**网络的抽象程度越来越高**
+- ![](https://pic4.zhimg.com/80/v2-9f720fdf056858c96162d6e53c80692b_720w.jpg)
+> 从输入层到输出层，**网络的抽象程度越来越高**
 
 **深度学习的本质：通过组合简单的概念来表达复杂的事物**
----
-- 神经网络是不是这么做的，不得而知（所以是一个“黑箱”），但大量实验表明：神经网络确实在做类似的工作——**通过组合简单的概念来表达复杂的事物**
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702095428.png)
-    > 语音识别：原始音频 → 音素 → 音节 → 单词
+- 神经网络是不是这么做的，不得而知（所以是一个“黑箱”），但大量实验表明：神经网络确实在做类似的工作——**通过组合简单的概念来表达复杂的事物**
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702095428.png)
+> 语音识别：原始音频 → 音素 → 音节 → 单词
 
 **隐藏单元是如何被激活的？**
----
+
 - 我们需要设计一个机制，这个机制能够把像素拼成边，把边拼成基本图像，把基本图像拼成数字
 - 这个机制的基本处理方式是：通过上一层的单元激活下一层的单元
 
@@ -358,53 +353,53 @@ mathjax: true
 - 根据激活的含义，当激活值接近 1 时，表示该区域存在一条边，反之不存在
 - **怎样的数学公式能够表达出这个含义？**
 
-    ![](https://pic3.zhimg.com/80/v2-2073a183c84c94729fe263c4ab49aa8a_720w.jpg)
-    ![](https://pic3.zhimg.com/80/v2-2073a183c84c94729fe263c4ab49aa8a_720w.jpg)
-    - 考虑对所有输入单元加权求和
-    - 图中每条连线关联一个权值：绿色表示正值，红色表示负值，颜色越暗表示越接近 0
-    - 此时，只需将需要关注的像素区域对应的权值设为正，其余为 0
-    - 这样对所有像素的加权求和就只会累计我们关注区域的像素值
-    - 为了使隐藏单元真正被“激活”，加权和还需要经过某个**非线性函数**，也就是“激活函数”
-    - 早期最常用的激活函数是 `sigmoid` 函数（又称 logistic/逻辑斯蒂曲线）
+- ![](https://pic3.zhimg.com/80/v2-2073a183c84c94729fe263c4ab49aa8a_720w.jpg)
+- ![](https://pic3.zhimg.com/80/v2-2073a183c84c94729fe263c4ab49aa8a_720w.jpg)
+- 考虑对所有输入单元加权求和
+- 图中每条连线关联一个权值：绿色表示正值，红色表示负值，颜色越暗表示越接近 0
+- 此时，只需将需要关注的像素区域对应的权值设为正，其余为 0
+- 这样对所有像素的加权求和就只会累计我们关注区域的像素值
+- 为了使隐藏单元真正被“激活”，加权和还需要经过某个**非线性函数**，也就是“激活函数”
+- 早期最常用的激活函数是 `sigmoid` 函数（又称 logistic/逻辑斯蒂曲线）
 
-        ![](https://pic2.zhimg.com/80/v2-5033a32d9b0dcb3a3fb8eb95877c8b8d_720w.jpg)
-        > 从 `sigmoid` 的角度看，它实际上在对加权和到底有多“正”进行打分
-        
-    - 但有时，可能加权和大于 10 时激活才有意义；
-    - 此时，需要加上“偏置”，保证不能随便激发，比如 -10。然后再传入激活函数
+![](https://pic2.zhimg.com/80/v2-5033a32d9b0dcb3a3fb8eb95877c8b8d_720w.jpg)
+> 从 `sigmoid` 的角度看，它实际上在对加权和到底有多“正”进行打分
+    
+- 但有时，可能加权和大于 10 时激活才有意义；
+- 此时，需要加上“偏置”，保证不能随便激发，比如 -10。然后再传入激活函数
 
 ### 权重和偏置
 - 每个隐藏单元都会和**上一层的所有单元**相连，每条连线上都关联着一个**权重**；
 - 每个隐藏单元又会各自带有一个**偏置**
-  > 偏置和权重统称为网络参数
 
-    ![](https://pic3.zhimg.com/80/v2-8b8b477a26b57064bf28004d1d1b3492_720w.jpg)
-    > 每一层都带有自己的权重与偏置，这样一个小小的网络，就有 13002 个参数
+> 偏置和权重统称为网络参数
+
+![](https://pic3.zhimg.com/80/v2-8b8b477a26b57064bf28004d1d1b3492_720w.jpg)
+> 每一层都带有自己的权重与偏置，这样一个小小的网络，就有 13002 个参数
 
 **权重与偏置的实际意义**
----
+
 - 宏观来看，**权重**在告诉你当前神经元应该更关注来自上一层的哪些单元；或者说**权重指示了连接的强弱**
 
 - **偏置**则告诉你加权和应该多大才能使神经元的激发变得有意义；或者说**当前神经元是否更容易被激活**
 
 **矢量化编程**
----
+
 - 把一层中所有的激活值作为一列**向量** `a`
 - 层与层之间的权重放在一个**矩阵** `W` 中：第 n 行就是上层所有神经元与下层第 n 个神经元的权重
 - 类似的，所有偏置也作为一列**向量** `b`
 - 最后，将 `Wa + b` 一起传入激活函数
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702155142.png)
-    > `sigmoid`会对结果向量中的每个值都取一次`sigmoid`
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702155142.png)
+> `sigmoid`会对结果向量中的每个值都取一次`sigmoid`
 
 - 所谓“矢量化编程”，实际上就是将向量作为基本处理单元，避免使用 for 循环处理标量
 - 通过定制处理单元（GPU运算），可以大幅加快计算速度
 
 **机器“学习”的实质**
----
-当我们在讨论机器如何“学习”时，实际上指的是机器如何正确设置这些参数
 
-![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702152216.png)
+当讨论机器如何“学习”时，实际上指的是机器如何正确设置这些参数
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702152216.png)
 
 
 ## 非线性激活函数
@@ -412,8 +407,8 @@ mathjax: true
 - 每个神经元可以看作是一个函数，其输入是上一层所有单元的输出，然后输出一个激活值
 - 宏观来看，神经网络也是一个函数
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702151423.png)
-    > 一个输入 784 个值，输出 10 个值的函数；其中有 13000 个参数
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702151423.png)
+> 一个输入 784 个值，输出 10 个值的函数；其中有 13000 个参数
 
 - 早期最常用的激活函数是 `sigmoid` 函数，它是一个**非线性函数**
 - 暂不考虑它其他优秀的性质（使其长期作为激活函数的首选）以及缺点（使其逐渐被弃用）；
@@ -421,7 +416,7 @@ mathjax: true
   而只考虑其**非线性**
 
 **为什么要使用非线性激活函数？——神经网络的万能近似定理**
----
+
 > 视频中没有提到为什么使用非线性激活函数，但这确实是神经网络能够具有如此强大**表示能力**的关键
 - 使用**非线性激活函数**的目的是为了向网络中加入**非线性因素**，从而加强网络的表示能力
 
@@ -434,15 +429,16 @@ mathjax: true
 **万能近似定理**
 - 神经网络如果具有至少一个非线性输出层，那么只要给予网络足够数量的隐藏单元，它就可以以任意的精度来近似任何从一个有限维空间到另一个有限维空间的函数。
 - 这极大的扩展了神经网络的表示空间
-    > 《深度学习》 6.4.1 万能近似性质和深度
+
+> 《深度学习》 6.4.1 万能近似性质和深度
 
 **新时代的激活函数——线性整流单元 ReLU**
----
+
 这里简单说下 sigmoid 的问题：
 - `sigmoid` 函数在输入取绝对值非常大的正值或负值时会出现**饱和现象**，此时函数会对输入的微小改变会变得不敏感
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702114132.png)
-    > 饱和现象：在图像上表现为函数值随自变量的变化区域平缓（斜率接近 0）
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702114132.png)
+> 饱和现象：在图像上表现为函数值随自变量的变化区域平缓（斜率接近 0）
 
 - 饱和现象会导致**基于梯度的学习**变得困难，并在传播过程中丢失信息（**梯度消失**）
 
@@ -450,12 +446,12 @@ mathjax: true
 
 - [![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180702171411.png)](http://www.codecogs.com/eqnedit.php?latex=\text{ReLU}(a)=\max(0,a))
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702171146.png)
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702171146.png)
 
 - `ReLU` 取代 `sigmoid` 的主要原因就是：使神经网络更容易训练（**减缓梯度消失**）
 - 此外，一种玄学的说法是，早期引入 `sigmoid` 的原因之一就是为了模仿生物学上神经元的激发
 
-  而 `ReLU` 比 `sigmoid` 更接近这一过程。
+而 `ReLU` 比 `sigmoid` 更接近这一过程。
 
 
 # 梯度下降法
@@ -470,7 +466,7 @@ mathjax: true
 ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180701210407.png)
 
 **神经网络是怎样学习的？**
----
+
 - 我们需要一种算法：通过喂给这个网络大量的**训练数据**——不同的手写数字图像以及对应的数字标签
 
   算法会调整所有网络参数（权重和偏置）来提高网络对训练数据的表现
@@ -485,49 +481,47 @@ mathjax: true
   > 确实存在一些随机初始化的策略，但目前来看，都只是“锦上添花”
 
 ## 损失函数（Loss Function）
-- 显然，随机初始化不会有多好的表现
+
+显然，随机初始化不会有多好的表现
 - 此时需要定义一个“**损失函数**”来告诉计算机：正确的输出应该只有标签对应的那个神经元是被激活的
 - 比如这样定义单个样本的损失：
 
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702194825.png)
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702195301.png)
-  - 当网络分类正确时，这个值就越小
-  - 这里使用的损失函数为“均方误差”（mean-square error, MSE）
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702194825.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702195301.png)
+- 当网络分类正确时，这个值就越小
+- 这里使用的损失函数为“均方误差”（mean-square error, MSE）
   
-- 现在，我们就可以用**所有训练样本**的平均损失来评价整个网络在这个任务上的“**糟糕程度**”
-  > 在实践中，并不会每次都使用所有训练样本的平均损失来调整梯度，这样计算量太大了
-  >
-  > 随机梯度下降
+- 现在可以用**所有训练样本**的平均损失来评价整个网络在这个任务上的“**糟糕程度**”
+> 在实践中，并不会每次都使用所有训练样本的平均损失来调整梯度，这样计算量太大了
+> 随机梯度下降
 
-
-  实际上，**神经网络学习的过程，就是最小化损失函数的过程**
+实际上，**神经网络学习的过程，就是最小化损失函数的过程**
 
 **神经网络与损失函数的关系**
-- 神经网络本身相当于一个函数
 
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702195902.png)
-  > 输入是一个向量，输出是一个向量，参数是所有权重和偏置
+- 神经网络本身相当于一个函数
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702195902.png)
+> 输入是一个向量，输出是一个向量，参数是所有权重和偏置
 
 - 损失函数在神经网络的基础上，还要再抽象一层：
 
-  所有权重和偏置作为它的输入，输出是单个数值，表示当前网络的性能；参数是所有训练样例（？）
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702201513.png)
+所有权重和偏置作为它的输入，输出是单个数值，表示当前网络的性能；参数是所有训练样例（？）
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702201513.png)
   
 - 从这个角度看，损失函数并不是神经网络的一部分，而是训练神经网络时需要用到的工具
 
 ## 梯度下降法（Gradient Descent）
 
 **如何优化这些网络参数？**
+
 - 能够判断网络的“糟糕程度”并不重要，关键是如何利用它来**优化**网络参数
 
 **示例 1：考虑只有一个参数的情况**
 - 如果函数只有一个极值点，那么直接利用微积分即可
 
-  如果函数很复杂的话，问题就不那么直接了，更遑论上万个参数的情况
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702202810.png)
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702203041.png)
+如果函数很复杂的话，问题就不那么直接了，更遑论上万个参数的情况
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702202810.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702203041.png)
 
 - **一个启发式的思路是**：先随机选择一个值，然后考虑向左还是向右，函数值会减小；
 
@@ -597,7 +591,7 @@ mathjax: true
     也就是说，至少在这个点附近，改变 `x` 会造成更大的影响
 
 **梯度下降法**描述：
----
+
 1. 计算损失函数对所有参数的（负）梯度
 1. 按梯度的负方向下降一定步长（直接加上负梯度）
 1. 重复以上步骤，直到满足精度要求
@@ -1312,7 +1306,7 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
    - Each layer is a relatively simple model
    - Each layer generally loses some information due to the use of nonlinear functions——so it needs to remember something good
 
-# 神经网络可解释性
+## 神经网络可解释性
 
 上面只是简答的示例，有更复杂的案例吗？
 - [The Building Blocks of Interpretability](https://distill.pub/2018/building-blocks/)（交互地址）
@@ -1321,8 +1315,6 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 ![nn_ex](https://p9.pstatp.com/large/6ec80010113570eab547)
 
 神经网络可解释性仍然是一个模糊地带，没有达成共识。
-
-
 
 
 
