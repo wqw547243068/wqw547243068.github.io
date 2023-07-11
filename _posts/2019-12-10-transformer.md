@@ -1600,6 +1600,27 @@ class Transformer(nn.Module):
 
 # Transformer 改进
 
+
+## 输入输出 改进
+
+
+### 输入长度改进
+
+#### LongNet
+
+【2023-7-8】[1000000000！微软改进Transformer一次能记住这么多token了](https://mp.weixin.qq.com/s/PKKC4lMdSTg-ButNnZHLlw)
+- 最强的GPT-4也才最大支持一次处理32k token，相当于50页文字。
+- 而能够只用1分钟看完一本数万字小说的Claude，其token数也不过“才”100k（10万）。
+
+一次性扩展到10亿，并且这个数字理论上其实还是无限的，这不就意味着：不久的将来，整个语料库甚至互联网都能视为一个序列？
+
+作者提出一个Transformer变体：`LongNet`，它应用了一种叫做“**膨胀注意力**（dilated attention）”的机制，可以随着距离的增长，让注意力场（模型感知范围）呈指数级扩展。
+
+具体而言，dilated attention替代了普通Transformer中的注意力机制的，其一般的设计原则是：
+> 让注意力的分配随着token之间距离的增长，呈指数级下降。
+
+dilated attention能够产生线性计算复杂度和token之间的对数依赖性，从而解决了注意力资源有限，但每一个token都可访问的矛盾。
+
 ## Attention 改进
 
 
