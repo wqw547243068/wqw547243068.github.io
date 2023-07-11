@@ -254,6 +254,19 @@ SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt�
 
 大模型训练**基座模型**时，都采用「Next Token Prediction，`NTP`」 任务
 
+#### IFT 的问题
+
+5 月，伯克利的论文 The False Promise of Imitating Proprietary LLMs 指出这种方式微调出来的**指令遵循**模型存在的一系列问题：
+- 在缺少大量模仿 ChatGPT 数据支持的任务上，这类模型无法改善 Base Model 到 ChatGPT 的差距；
+- 这类模型只是擅长模仿 ChatGPT 的风格，而不是事实性，导致实际的性能差异会骗过人类评估者；
+- 当前开源模型最大的限制仍然是 Base Model 层面跟 GPT 系列的差距，在微调而不是预训练环境进行优化可能是不正确的方向；
+- 为了广泛地匹配 ChatGPT 支持的任务，需要更广泛和大量的模仿数据集，还需要新的工作；
+
+而 6 月份 Allen Institute for AI 和华盛顿大学的 How Far Can Camels GO ？工作再次通过实验表明不同的指令微调数据集可以释放或者增强特定的能力，但并没有一个数据集或者组合可以在所有的评估中提供最佳性能，并且这一点在人类或模型担任评估者时也很容易无法被揭示。
+
+对于指令遵循微调背后的团队来说，他们也意识到自己的模型由于 Base Model（LLaMA）的限制，在复杂推理和代码任务上很弱，并且难以进入正向数据飞轮 —— 模型能力越弱的领域越难得到更多的 query，也就难以筛选出高质量 query，想自己再标注提升模型能力就很困难。
+
+至此，开源社区已经充分意识到原来这套微调 LLaMA 的框架的局限性，越来越多的团队开始探索预训练环节和更接近真实的人类反馈数据
 
 #### 数据示例
 
@@ -3145,6 +3158,56 @@ ChatGLM2-6B 是开源中英双语对话模型 ChatGLM-6B 的第二代版本，�
 - 数理逻辑
 - 知识推理
 - 长文档理解
+
+#### 知识注入
+
+【2023-7-11】[单样本微调给ChatGLM2注入知识](https://mp.weixin.qq.com/s/hANR9OVDVEZMMvK8uxtChA)
+- 借助 AdaLoRA算法，使用1条样本对ChatGLM2-6b实施微调。几分钟就成功注入了有关知识
+- AdaLoRA是LoRA方法的一种升级版本，使用方法与LoRA基本一样。主要差异
+  - LoRA中不同训练参数矩阵的秩被固定。
+  - 但AdaLoRA中不同训练参数矩阵的秩是会在一定范围内自适应调整的，那些更重要的训练参数矩阵会分配到更高的秩。
+  - AdaLoRA的效果会好于LoRA。
+
+备注
+- (1) 只需要1条样本，很少的训练时间，就可以通过微调给LLM注入知识。
+- (2) LLM 可以看做类似Key-Value形式的**知识数据库**，支持增删改查。通过微调可以**增删修改**知识，通过**条件生成**可以查询提取知识。
+- (3) LoRA 微调是一种高效的融入学习算法。类似人类把新知识融入现有知识体系的学习过程。学习时无需新知识特别多的样本，学习后原有的庞大知识和能力可以基本不受影响。
+
+```py
+from peft import get_peft_model, AdaLoraConfig, TaskType
+
+#训练时节约GPU占用
+model.config.use_cache=False
+model.supports_gradient_checkpointing = True  #
+model.gradient_checkpointing_enable()
+model.enable_input_require_grads()
+
+peft_config = AdaLoraConfig(
+    task_type=TaskType.CAUSAL_LM, inference_mode=False,
+    r=8,
+    lora_alpha=32, lora_dropout=0.1,
+    target_modules=["query", "value"]
+)
+
+peft_model = get_peft_model(model, peft_config)
+
+peft_model.is_parallelizable = True
+peft_model.model_parallel = True
+peft_model.print_trainable_parameters()
+```
+
+验证模型
+
+```py
+from peft import PeftModel 
+ckpt_path = 'single_chatglm2'
+model_old = AutoModel.from_pretrained("chatglm2-6b",
+                                  load_in_8bit=False, 
+                                  trust_remote_code=True)
+peft_loaded = PeftModel.from_pretrained(model_old,ckpt_path).cuda()
+model_new = peft_loaded.merge_and_unload() #合并lora权重
+chatglm = ChatGLM(model_new,tokenizer,max_chat_rounds=20) #支持多轮对话，可以从之前对话上下文提取知识。
+```
 
 
 ### CPM-Bee 基座模型+Luca（露卡） -- OpenBMB
