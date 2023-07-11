@@ -927,42 +927,33 @@ BN 算法流程
   - 反向传播的过程就是将 `C` 的微小变化传回去
 
 - 以上只是单个训练的损失对 `w^(L)` 的导数，实践中需要求出一个 mini-batch 中所有样本的平均损失
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704194944.png)
-
-  <!-- [![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180704171742.png)](http://www.codecogs.com/eqnedit.php?latex=\begin&space;{aligned}&space;\frac{\partial&space;C}{\partial&space;w^{(L)}}=\frac{1}{n}\sum^{n-1}_{k=0}\frac{\partial&space;C_k}{\partial&space;w^{(L)}}&space;\end{aligned}) -->
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704194944.png)
   
 - 进一步的，`∂C/∂w^(L)` 只是梯度向量 `▽C` 的一个分量；
-
-  而梯度向量本身有损失函数对每个参数的偏导构成：
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704172524.png)
+- 而梯度向量本身有损失函数对每个参数的偏导构成：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704172524.png)
 
 > 本系列视频称损失函数为“代价函数”，所以使用 `C` 表示代价（Cost）；更多会用 `L` 表示损失（Loss）；二者没有区别，但这里已经使用 L 表示网络的层数，所以使用 `C` 表示损失函数
 
 ### 更复杂的示例
+
 - 更复杂的神经网络在公式上并没有复杂很多，只有少量符号的变化
 - 首先，利用**下标**来区分同一层不同的神经元和权重
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704195120.png)
 
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704195120.png)
+以下的推导过程几乎只是符号的改变：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704195859.png)
 
-  以下的推导过程几乎只是符号的改变：
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704195859.png)
-
-  然后求偏导：
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704200316.png)
+然后求偏导：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704200316.png)
   
-  唯一改变的是，对 `(L-1)` 层的偏导：
+唯一改变的是，对 `(L-1)` 层的偏导：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704200453.png)
 
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704200453.png)
-  > 此时激活值可以通过不同的途径影响损失函数
+> 此时激活值可以通过不同的途径影响损失函数
 
-  只要计算出倒数第二层损失函数对激活值的敏感度，就可以重复以上过程，计算喂给倒数第二层的权重和偏置。
-
+只要计算出倒数第二层损失函数对激活值的敏感度，就可以重复以上过程，计算喂给倒数第二层的权重和偏置。
 - 事实上，如果都使用矢量表示，那么整个推导公式跟单神经元的网络几乎是完全一样的
-
 - 链式法则给出了决定梯度每个分量的偏导，使我们能不断下探，最小化神经网络的损失。
 
 ### 反向传播的 4 个基本公式
@@ -975,14 +966,10 @@ BN 算法流程
 
 - **标量形式**：
 
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705190236.png)
- 
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705134851.png)
-
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705154543.png)
-
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705154650.png)
-
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705190236.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705134851.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705154543.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705154650.png)
   > 其中，上标 `(l)` 表示网络的层次，`(L)` 表示输出层（最后一层）；下标 `j` 和 `k` 指示神经元的位置；
   >
   > `w_jk` 表示 `l` 层的第 `j` 个神经元与`(l-1)`层第 `k` 个神经元连线上的权重
@@ -997,28 +984,22 @@ BN 算法流程
 - **矢量形式**：
 
   在标量形式的基础上，修改下标即可
-
-  - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705190657.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705190657.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162428.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162521.png)
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162633.png)
  
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162428.png)
-  
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162521.png)
-  
- - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180705162633.png)
- 
-
-  **注意**：其中向量相乘都是以**按元素相乘**的形式，一般用 `⊙` 符号表示。
+**注意**：其中向量相乘都是以**按元素相乘**的形式，一般用 `⊙` 符号表示。
 
 - 以上是纯微积分形式的表达，一些机器学习相关书籍上总结了更简洁的形式，比如：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180705162841.png)
 
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180705162841.png)
-  > [The four fundamental equations behind backpropagation](http://neuralnetworksanddeeplearning.com/chap2.html#the_four_fundamental_equations_behind_backpropagation)
+> [The four fundamental equations behind backpropagation](http://neuralnetworksanddeeplearning.com/chap2.html#the_four_fundamental_equations_behind_backpropagation)
 
-  **注意**：前两个公式为**矢量形式**，后两个具体到单个参数的是**标量形式**。
+**注意**：前两个公式为**矢量形式**，后两个具体到单个参数的是**标量形式**。
 
-  其中，符号 `⊙` 按元素相乘：
-
-  ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180705164018.png)
+其中，符号 `⊙` 按元素相乘：
+- ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180705164018.png)
 
 
 
@@ -1037,10 +1018,8 @@ BN 算法流程
 # 神经网络发展历史
 
 先看看这几张图：
-
-![history](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/nn_history.jpg)
-
-![history](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/figure1_ANN_history.jpg)
+- ![history](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/nn_history.jpg)
+- ![history](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/figure1_ANN_history.jpg)
 
 神经网络三次兴起：
 - 第一次，`控制论`时代，1958年，感知器诞生，能分类，但解决不了异或问题；
@@ -1058,15 +1037,14 @@ BN 算法流程
 - 生物神经元（左图）中，树突将信号传递到细胞体，信号在细胞体中相加。如果和高于某个阈值，那么神经元将会激活，向其轴突输出一个峰值信号，注意这里是**脉冲信号**。
 - 数学计算模型（右图）中，将输入进行加权求和加上偏置，输入到激活函数（模拟生物中神经元）中，继续往后传递。
 - 生物中神经元复杂得多，其中一种多输入单输出，这里的输出是一个脉冲信号，而不是一个值，现在也有**脉冲人工神经网络**（号称第三代神经网络）。
-
-![neural_arch](https://pic2.zhimg.com/v2-abef42167e1e06105ab89c5614bb5b0f_1200x500.jpg)
+- ![neural_arch](https://pic2.zhimg.com/v2-abef42167e1e06105ab89c5614bb5b0f_1200x500.jpg)
 
 经典的网络结构由多个神经元组合起来，按照`输入层`，`隐含层`和`输出层`的顺序，组成神经网络。常见的是`前馈神经网络`（FFN，feedforward neural network），代表例子是`多层感知器`（MLP：multi-layer perception），变种是`循环神经网络`（RNN: <font color='blue'>时间</font>上共享）和`卷积神经网络`（CNN: <font color='blue'>空间</font>上共享）等。
 - 当然，80-90年代，还有诞生过其他结构的网络，如
-   - `反馈神经网络`（输出与输入直接关联，如Elman网络和Hopfield网络）
-   - `自组织神经网络`（无监督，每次竞争，只更新一个神经元，参数和网络结构自适应）
-   - `模糊神经网络`（结合模糊数学理论）
-   - `径向基神经网络`（跟早期的BP网络同步，RBF）
+  - `反馈神经网络`（输出与输入直接关联，如Elman网络和Hopfield网络）
+  - `自组织神经网络`（无监督，每次竞争，只更新一个神经元，参数和网络结构自适应）
+  - `模糊神经网络`（结合模糊数学理论）
+  - `径向基神经网络`（跟早期的BP网络同步，RBF）
 - 等等，只是这些网络应用效果欠佳，逐渐淹没在时代潮流里，几十年不曾提及。
 
 参考：[神经网络用作分类器](https://www.cnblogs.com/babyfei/p/7003299.html)
@@ -1099,15 +1077,15 @@ BN 算法流程
 
 神经网络给大家留下了深刻的印象，但是总让人琢磨不透。权重和偏置量能自动地学习得到，但是这并不意味着<font color='blue'>能解释神经网络是怎么样得出的这些参数</font>。现在仍然没人说清楚为什么某某节点的权重参数为什么取值为某个值。
 
-所以，第二次寒潮被人批评的槽点至今还在：<font color='red'>神经网络模型是个黑盒子</font>，凭什么让我信任？o(╯□╰)o。
+所以，第二次寒潮被人批评的槽点至今还在：
+- <font color='red'>神经网络模型是个黑盒子</font>，凭什么让我信任？o(╯□╰)o。
 
 这个“黑盒子”，主要是指隐含层，光看名字就有种神秘感，隐形人，神秘人
 
 作为好奇心爆棚的人类，有想过，隐含层到底在做什么吗？
 
 从一个问题开始，如何区分以下三张图哪个是人？
-
-![fece](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9G69C2sNXEgsMMPo0Ad4sWZq1MrEZib1FaiaKt2QMMdbfkco0A3tTibpupQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1)
+- ![fece](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9G69C2sNXEgsMMPo0Ad4sWZq1MrEZib1FaiaKt2QMMdbfkco0A3tTibpupQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1)
 
 这个人脸识别任务中，神经网络模型该怎么建立？简单起见，图像里所有像素作为输入，输出是是或否的标签。
 
@@ -1122,10 +1100,10 @@ BN 算法流程
 - ...
 
 识别眼睛这个子任务，可能对应一个子网络：
-![network](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9Gpm7icbcHSUoIqtRicWJ6CSBPp0wFsoEpnKZLxTjBrFEGwicZnALplRAqg/0?wx_fmt=png)
+- ![network](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9Gpm7icbcHSUoIqtRicWJ6CSBPp0wFsoEpnKZLxTjBrFEGwicZnALplRAqg/0?wx_fmt=png)
 
 这个子网络还可以进一步分解，一层又一层地分解，直到能由一个神经元给出结果。
-![sub_network](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9G6wj1VefdMV7ZgnSvpT33h1wHqOMFibcxywLLLMJib7372qt0KemAQkVA/0?wx_fmt=png)
+- ![sub_network](https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/FQd8gQcyN27EtVJ1jMhIuQuAdibxfno9G6wj1VefdMV7ZgnSvpT33h1wHqOMFibcxywLLLMJib7372qt0KemAQkVA/0?wx_fmt=png)
 
 这么说，隐含层承担的角色是子任务的识别、组合，从一系列简单、具体得问题开始，建立更复杂、抽象的概念。
 
@@ -1134,8 +1112,7 @@ BN 算法流程
 刚才是从人的感性角度来理解，这次换成无感情的物理角度。([神经网络隐含层的物理含义](https://blog.csdn.net/qq_22690765/article/details/75050943))
 
 多层神经网络，将原始输入数据在隐含层上做了多个二分类，隐含层有多少个神经元，就有多少个分类。
-
-![lr_nn](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/lr_nn.png)
+- ![lr_nn](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/lr_nn.png)
 
 > 注：源自Youtube上的一个优秀的教学视频：[A Friendly Introduction to Machine Learning](https://www.youtube.com/watch?v=IpGxLWOIZy4)
 
@@ -1152,8 +1129,7 @@ BN 算法流程
 这就是为什么多层神经网络有多个隐含层。
 
 AI圣经《Deep Learning》中有一部分解释的很清楚，隐含层的意义就是让线性不可分的数据变得线性可分：
-
-![dl_ffn](https://img-blog.csdn.net/20170713133836450?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjI2OTA3NjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+- ![dl_ffn](https://img-blog.csdn.net/20170713133836450?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjI2OTA3NjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 - 高维空间上的数据就像一张白纸上的两类点，分类面奇奇怪怪。对折足够多次后，总能找到近似平行的线段 
 - 每个线段附近的分类任务对应一个神经元
@@ -1164,8 +1140,7 @@ AI圣经《Deep Learning》中有一部分解释的很清楚，隐含层的意�
 既然隐含层这么重要，是不是越多越好呢？
 
 有更多神经元的神经网络可以表达更复杂的函数。然而这既是优势也是不足，优势是可以分类更复杂的数据，不足是可能造成对训练数据的过拟合。
-
-![nn](https://img-blog.csdn.net/20161028104631093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+- ![nn](https://img-blog.csdn.net/20161028104631093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
 > 注：**过拟合**（Overfitting）是网络对数据中的噪声有很强的拟合能力，而没有重视数据间（假设）的潜在基本关系。举例来说，有20个神经元隐层的网络拟合了所有的训练数据，但代价是把决策边界变成了许多不相连的红绿区域。而有3个神经元的模型表达能力只能用比较宽泛的方式去分类。它将数据看做是两个大块，并把个别在绿色区域内的红色点看做噪声。实际上，在测试数据中会获得更好的**泛化**（generalization）能力。
 
@@ -1174,20 +1149,19 @@ AI圣经《Deep Learning》中有一部分解释的很清楚，隐含层的意�
 原因是小网络更难使用梯度下降等局部方法来进行训练：虽然小型网络的损失函数的局部极小值更少，也比较容易收敛到这些局部极小值，但是这些最小值一般都很差，损失值很高。相反，大网络拥有更多的局部极小值，但就实际损失值来看，这些局部极小值表现更好，损失更小。因为神经网络是非凸的，就很难从数学上研究这些特性。即便如此，还是有一些文章尝试对这些目标函数进行理解，例如The Loss Surfaces of Multilayer Networks 这篇论文。在实际中，你将发现如果训练的是一个小网络，那么最终的损失值将展现出多变性：某些情况下运气好会收敛到一个好的地方，某些情况下就收敛到一个不好的极值。从另一方面来说，如果训练一个大的网络，你将发现许多不同的解决方法，但是最终损失值的差异将会小很多。所有的解决办法都差不多，而且对于随机初始化参数好坏的依赖也会小很多。
 
 正则化强度是控制神经网络过拟合的好方法。看下图结果：
-
-![nn1](https://img-blog.csdn.net/20161028105023237?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+- ![nn1](https://img-blog.csdn.net/20161028105023237?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
 （不同正则化强度的效果：每个神经网络都有20个隐层神经元，但是随着正则化强度增加，它的决策边界变得更加平滑。）
 
-需要记住的是：<font color='blue'>不应该因为害怕出现过拟合而使用小网络</font>。相反，应该进尽可能使用大网络，然后使用正则化技巧来控制过拟合。
+需要记住的是：
+- <font color='blue'>不应该因为害怕出现过拟合而使用小网络</font>。相反，应该进尽可能使用大网络，然后使用正则化技巧来控制过拟合。
 
 参考：[神经网络七：神经网络设置层的数量和尺寸](https://blog.csdn.net/Bixiwen_liu/article/details/52954056)
 
 ## 光说不练假把式
 
 学习金字塔有云：<font color='blue'>阅读演示的留存率不到30%，实践的留存是75%</font>。
-
-![learn](https://camo.githubusercontent.com/1c48214b20965ab7d4cd95af61ee3334b916021c/68747470733a2f2f677373302e62616964752e636f6d2f39666f33645361675f7849346b68476b6f395754416e46366868792f7a686964616f2f77682533443630302532433830302f7369676e3d64616535626466303065663739303532656634613466333833636333666266322f373833313061353562333139656263343464303462383761383532366366666331663137313664312e6a7067)
+- ![learn](https://camo.githubusercontent.com/1c48214b20965ab7d4cd95af61ee3334b916021c/68747470733a2f2f677373302e62616964752e636f6d2f39666f33645361675f7849346b68476b6f395754416e46366868792f7a686964616f2f77682533443630302532433830302f7369676e3d64616535626466303065663739303532656634613466333833636333666266322f373833313061353562333139656263343464303462383761383532366366666331663137313664312e6a7067)
 
 看完这篇文章一段时间后大部分都会忘记，为了加深印象，我们来“实践”吧！建议大家消化理解后做笔记，用**费曼技巧**（参考：[号称终极快速学习法的费曼技巧，究竟是什么样的学习方法？](https://www.zhihu.com/question/20576786)）讲给别人听，这不是浪费时间，看好了，留存率90%！
 
@@ -1211,8 +1185,7 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 - MLP网络结构：可随意指定输入特征、网络深度、宽度，以及激活函数类型
 
 动图：
-
-![playground](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/playground.gif)
+- ![playground](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/playground.gif)
 
 分析：
 - 第一个隐含层只是完成简单的二分类，第二个隐含层将前面的分类面组合起来，形成复杂的分类面，最终在输出层将两类数据完美的分开。
@@ -1261,15 +1234,13 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 - 训练集和测试集是mnist的0和1，经过1/3的池化变成9*9的图片，每个n值进行200批，每10批测量一次准确率。
 - 每批的batchsize是20个用放回取样，每批迭代1000次。
 - 学习率是0.1，没有偏置，激活函数用sigmoid，并同时统计每批次的运行时间。
-
-![data table](https://img-blog.csdn.net/20180509092558358?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dlb3JnZXNhbGU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+- ![data table](https://img-blog.csdn.net/20180509092558358?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dlb3JnZXNhbGU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
 对于这个81*n*2的网络的隐藏层节点数最小值可以是2，还是挺令人震惊的的，也就是81*2*2的网络就可以运行准确率可以达到93%，和81*50*2的网络的性能差不多，但是时间只有81*50*2的0.076，也就是说用81*2*2的网络比81*50*2的网络可以省下92%的时间。
 
 一个非常明显的规律：当隐藏层节点数大于20个以后，平均每节点耗时大约都是16.44ms左右的定值，也就是说当节点数大于20个以后网络的耗时基本上可以按照 耗时=nX16.44 的公式算出来。但是网络的性能确没有增加。
-
-![graph1](https://img-blog.csdn.net/20180509092626554)
-![graph2](https://img-blog.csdn.net/20180509092634365)
+- ![graph1](https://img-blog.csdn.net/20180509092626554)
+- ![graph2](https://img-blog.csdn.net/20180509092634365)
 
 按照耗时曲线找到拐点附近的点，就是用时最少同时性能也有保证的隐藏层节点数量。比如这道题就是20个节点左右耗时曲线的第5个点。
 
@@ -1283,13 +1254,14 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 
 当然有，如决策树，不断的加深层次，分裂特征区间，但为什么效果没有DNN好呢？
 
-原因是：决策树方法的仅限于特征间的筛选，模型本身也不复杂，表示能力不如DNN
+原因是：
+- 决策树方法的仅限于特征间的筛选，模型本身也不复杂，表示能力不如DNN
 
 综上，深度学习算法跟传统机器学习算法相比，要点在于：
 - 第一，逐层处理
 - 第二，特征内部变化
 - 第三，足够的模型复杂度
-   - 注：摘自周志华2018年4月16日的演讲，[深度学习为什么深？](https://yq.aliyun.com/articles/581994)
+  - 注：摘自周志华2018年4月16日的演讲，[深度学习为什么深？](https://yq.aliyun.com/articles/581994)
 
 回到正题，对神经网络这样的模型来说有两条很明显的途径，一条是我们把模型变深，一条是我们把它变宽，但是如果从提升复杂度的角度，变深会更有效。变宽时只不过增加了一些计算单元、增加了函数的个数，而在变深时不仅增加了个数，其实还增加了嵌入的层次，所以泛函的表达能力会更强。有点类似乘法（层间）与加法（层内）的区别。
 
@@ -1297,9 +1269,9 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 
 怀疑的好，来看下李宏毅的提供的实验：
 - 同样的隐含层神经元数目，一种矮胖，一种瘦高
-![tall](https://pic3.zhimg.com/80/v2-68f266bee4ba7db18551b8479439503e_hd.jpg)
+- ![tall](https://pic3.zhimg.com/80/v2-68f266bee4ba7db18551b8479439503e_hd.jpg)
 - 语音识别任务下的对比，采用字错误率。
-![exp_res](https://pic3.zhimg.com/80/v2-2471fa3b053808860463e22cb5b63b16_hd.jpg)
+- ![exp_res](https://pic3.zhimg.com/80/v2-2471fa3b053808860463e22cb5b63b16_hd.jpg)
 
 虽然有研究表明，<font color='blue'>浅而肥的网络也可以拟合任何的函数，但需要非常的“肥胖”</font>，可能一层就要成千上万个神经元，直接导致参数的数量增加到很多很多。当准确率差不多的时候，参数的数量却相差数倍。这也说明用深层神经网络而不是浅层“肥胖”网络。
 
@@ -1313,7 +1285,7 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 
 上面只是简答的示例，有更复杂的案例吗？
 - [The Building Blocks of Interpretability](https://distill.pub/2018/building-blocks/)（交互地址）
-- [2分钟论文 | 用 谷歌「AI可解释性」 看懂机器学习](https://www.toutiao.com/a6534574654458167815/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1521592137&app=news_article&utm_source=mobile_qq&iid=28217844450&utm_medium=toutiao_android)
+- [2分钟论文：用 谷歌「AI可解释性」 看懂机器学习](https://www.toutiao.com/a6534574654458167815/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1521592137&app=news_article&utm_source=mobile_qq&iid=28217844450&utm_medium=toutiao_android)
 
 ![nn_ex](https://p9.pstatp.com/large/6ec80010113570eab547)
 
