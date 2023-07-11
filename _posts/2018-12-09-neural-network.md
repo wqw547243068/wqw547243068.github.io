@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数
+tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -415,7 +415,7 @@ mathjax: true
 
   而只考虑其**非线性**
 
-**为什么要使用非线性激活函数？——神经网络的万能近似定理**
+**为什么要使用非线性激活函数？**——神经网络的万能近似定理
 
 > 视频中没有提到为什么使用非线性激活函数，但这确实是神经网络能够具有如此强大**表示能力**的关键
 - 使用**非线性激活函数**的目的是为了向网络中加入**非线性因素**，从而加强网络的表示能力
@@ -427,6 +427,7 @@ mathjax: true
   容易验证，此时无论有多少层，神经网络都只是一个线性函数。
 
 **万能近似定理**
+
 - 神经网络如果具有至少一个非线性输出层，那么只要给予网络足够数量的隐藏单元，它就可以以任意的精度来近似任何从一个有限维空间到另一个有限维空间的函数。
 - 这极大的扩展了神经网络的表示空间
 
@@ -1076,19 +1077,21 @@ BN 算法流程
 
 身处信息爆炸时代的初学者，如果人云亦云，没有自己的思考，很容易陷入懵逼状态：
 - <font color='blue'>神经网络到底是什么“神经”物种？神经元？人类大脑？</font>
-   - 外行一听，觉得高端大气上档次，却又遥不可及，只得双手合十，顶礼膜拜，不可理解推敲焉，只好找个佛龛供起来，一方面自己有了信仰，心里不慌，另一方面又能“吓唬”别人，^_^。
+  - 外行一听，觉得高端大气上档次，却又遥不可及，只得双手合十，顶礼膜拜，不可理解推敲焉，只好找个佛龛供起来，一方面自己有了信仰，心里不慌，另一方面又能“吓唬”别人，^_^。
 - <font color='blue'>神经网络怎么工作的？为什么具备这么强的拟合能力？</font>
-   - 以第二代神经网络MLP（含BP机制，第一代是**感知器**，第二代是**BP网络**，第三代是**脉冲神经网络**）为例，结构并不复杂：输入层，隐含层和输出层，训练期间，根据预设的目标通过BP反向传播机制学习出一组隐含层参数。
-   - <font color='red'>万能近似定理</font>说为我们提供了坚实的神经网络理论保障。
-      - **万能近似定理**（universal approximation theorem）(Hornik et al., 1989;Cybenko, 1989) 表明，一个前馈神经网络如果具有线性输出层和至少一层具有任何一种“**挤压**”性质的激活函数（例如logistic sigmoid激活函数）的隐藏层，只要给予网络足够数量的隐藏单元，就能<font color='green'>以任意精度来近似任何从一个有限维空间到另一个有限维空间的Borel可测函数</font>（定义在紧集上的连续函数）。（《Deep learning》[英文版](https://www.deeplearningbook.org/contents/mlp.html)P194，中文版P171）
+  - 以第二代神经网络MLP（含BP机制，第一代是**感知器**，第二代是**BP网络**，第三代是**脉冲神经网络**）为例，结构并不复杂：输入层，隐含层和输出层，训练期间，根据预设的目标通过BP反向传播机制学习出一组隐含层参数。
+  - <font color='red'>万能近似定理</font>提供了坚实的神经网络理论保障。
 
-带着这些问题，我们接着往下走
+**万能近似定理**（universal approximation theorem）(Hornik et al., Cybenko, 1989) 表明
+> 一个前馈神经网络（FFN）如果具有线性输出层和至少1层有任何“**挤压**”性质的激活函数（例如logistic sigmoid激活函数）的隐藏层，只要给予网络足够数量的隐藏单元，就能<font color='green'>以任意精度来近似任何从有限维空间到另一个有限维空间的`Borel`可测函数</font>（定义在紧集上的连续函数）。（《Deep learning》[英文版](https://www.deeplearningbook.org/contents/mlp.html)P194，中文版P171）
+
+带着这些问题，接着往下走
 > 注：如果对神经网络工作原理缺乏了解，但想在30min内有个基本轮廓，建议看完以下视频：
 - [3Blue1Brown科普:什么是神经网络？](https://www.bilibili.com/video/av33138973/?spm_id_from=333.788.videocard.7)
    - <iframe src="//player.bilibili.com/player.html?aid=33138973&cid=58003723&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 - 相关视频：《线性代数本质》、《微积分》等
 - 三棕一蓝很优秀，很无私
-![3brown1blue](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/3brown1blue.png)
+- ![3brown1blue](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/3brown1blue.png)
 
 ## 隐含层有什么用？
 
