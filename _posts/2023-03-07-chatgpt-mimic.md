@@ -3810,6 +3810,8 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 ### 百川智能 -- 可商用
 
+#### baichuan-7B
+
 【2023-6-15】[王小川大模型的第一个里程碑：baichuan-7B 今日正式开源发布](https://mp.weixin.qq.com/s/RK7Kr8XaRPE56HRgv2KmgA)
 - baichuan-7B 是由百川智能开发的一个开源可商用的大规模预训练语言模型。基于 Transformer 结构，在大约1.2万亿 tokens 上训练的70亿参数模型，支持中英双语，上下文窗口长度为4096。在标准的中文和英文权威 benchmark（C-EVAL/MMLU）上均取得同尺寸最好的效果。
 - [baichuan-7b](https://github.com/baichuan-inc/baichuan-7B)
@@ -3858,6 +3860,31 @@ inputs = inputs.to('cuda:0')
 pred = model.generate(**inputs, max_new_tokens=512, do_sample=True)
 print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 ```
+
+#### Baichuan-13B-Base
+
+【2023-7-11】[王小川大模型25天再升级！13B版本开源免费可商用，3090即可部署](https://mp.weixin.qq.com/s/sFVAgypEptxa6qCYcHix9g)
+- 百川智能，正式发布130亿参数通用大语言模型（Baichuan-13B-Base）, 性能最强的中英文百亿参数量开源模型
+- 同时发布对话模型 `Baichuan-13B-Chat`，以及 INT4/INT8 两个量化版本。近乎无损的情况下，便可以将模型部署在如3090等消费级显卡上
+- Baichuan-13B上下文窗口长度为4096， 1.4万亿ztoken这个训练数据量，超过LLaMA-13B训练数据量的40%，是当前开源的13B尺寸模型世界里，训练数据量最大的模型。
+  - 7B版本采用`RoPE`编码方式，而13B使用了`ALiBi`位置编码技术，后者能够处理长上下文窗口，甚至可以推断超出训练期间读取数据的上下文长度，从而更好地捕捉文本中上下文的相关性，让预测或生成更准确。
+- 完全开源，免费商用；开发者均可通过邮件向百川智能申请授权，在获得官方商用许可后即可免费商用。
+
+评测
+- C-EVAl上，Baichuan-13B在自然科学、医学、艺术、数学等领域领先LLaMA-13B、Vicuna-13B等同尺寸的大语言模型。社会科学和人文科学领域，水平比ChatGPT还要好上一点。
+- 英文领域的表现也算不错，能比同尺寸的其他开源模型，如LLaMA-13B、Vicuna-13B都有更好的表现
+
+【HuggingFace】
+- [预训练模型](https://huggingface.co/baichuan-inc/Baichuan-13B-Base)
+- [对话模型](https://huggingface.co/baichuan-inc/Baichuan-13B-Chat)
+
+【GitHub】
+- [Baichuan-13B](https://githuB.com/Baichuan-inc/Baichuan-13B)
+
+【Model Scope】
+- [预训练模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Base)
+- [对话模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Chat/)
+
 
 ### 紫东太初2.0 -- 中科院
 
