@@ -3879,7 +3879,7 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 - [对话模型](https://huggingface.co/baichuan-inc/Baichuan-13B-Chat)
 
 【GitHub】
-- [Baichuan-13B](https://githuB.com/Baichuan-inc/Baichuan-13B)
+- [Baichuan-13B](https://githuB.com/Baichuan-inc/Baichuan-13B)，模型源码见 huggingface 的[model_baichuan.py](https://huggingface.co/baichuan-inc/Baichuan-13B-Base/blob/main/modeling_baichuan.py)
 
 【Model Scope】
 - [预训练模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Base)
