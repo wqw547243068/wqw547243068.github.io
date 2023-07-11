@@ -2237,6 +2237,13 @@ ChatGPT接入实体机器人，线上线下整合营销ChatGPT大多数时候主
 - 当机器人被问及“你跟其他的服务机器人有什么区别”时，该机器人回复自己“采用的是深度学习和自然语言处理技术”。
 - ![](https://pic3.zhimg.com/80/v2-ba37f23f6fa6f74084faee761997c3c6_1440w.webp)
 
+
+#### Engineered Arts
+
+【2023-7-11】能边聊天边画画的AI机器人🤖️ Engineered Arts表情丰富的机器人之前接上GPT搞语音聊天，现在还能用SD自己画🐱了，而且一边画猫一边聊人类为啥喜欢猫
+- 演示视频见[微博](https://m.weibo.cn/status/4922230229699403?sourceType=weixin&from=10D7095060&wm=9006_2001&s_channel=4&s_trans=1232977597_4922230229699403)
+
+
 ### 可穿戴
 
 
