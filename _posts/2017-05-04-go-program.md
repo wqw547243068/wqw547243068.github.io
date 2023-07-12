@@ -5933,6 +5933,45 @@ type Logger struct {
 - flag设置输出的各种属性，比如时间、行号、文件路径等。
 - out输出的方向，用于把日志存储文件。
 
+log标准库中的Flags函数会返回标准logger的输出配置，而SetFlags函数用来设置标准logger的输出配置。
+
+```go
+func Flags() int
+func SetFlags(flag int)
+```
+
+flag 选项
+
+```go
+const (
+    // 控制输出日志信息的细节，不能控制输出的顺序和格式。
+    // 输出的日志在每一项后会有一个冒号分隔：例如2009/01/23 01:23:23.123123 /a/b/c/d.go:23: message
+    Ldate         = 1 << iota     // 日期：2009/01/23
+    Ltime                         // 时间：01:23:23
+    Lmicroseconds                 // 微秒级别的时间：01:23:23.123123（用于增强Ltime位）
+    Llongfile                     // 文件全路径名+行号： /a/b/c/d.go:23
+    Lshortfile                    // 文件名+行号：d.go:23（会覆盖掉Llongfile）
+    LUTC                          // 使用UTC时间
+    LstdFlags     = Ldate | Ltime // 标准logger的初始值
+)
+```
+
+log标准库中还提供了一个创建新logger对象的构造函数–New，支持创建自己的logger示例。New函数的签名如下：
+
+```go
+func New(out io.Writer, prefix string, flag int) *Logger
+```
+
+New创建一个Logger对象。其中，参数out设置日志信息写入的目的地。参数prefix会添加到生成的每一条日志前面。参数flag定义日志的属性（时间、文件等等）。
+
+```go
+func main() {
+ logger := log.New(os.Stdout, "<New>", log.Lshortfile|log.Ldate|log.Ltime)
+ logger.Println("这是自定义的logger记录的日志。")
+ // <New>2017/06/19 14:06:51 main.go:34: 这是自定义的logger记录的日志。
+}
+```
+
 一个简单使用的例子：
 
 ```go
@@ -5947,8 +5986,20 @@ func main(){
     log.Printf("这是一个%s日志\n", v)
     log.Panic("日志输出，相当于 warning \n")
     log.Panicln("日志输出，相当于 warning \n")
+    // Fatal系列函数会在写入日志信息后调用os.Exit(1)。Panic系列函数会在写入日志信息后panic。
     log.Fatal("错误日志输出，相当于 fatal \n")
     log.Fatalln("错误日志输出，相当于 fatal \n")
+    // 自定义日志文件地址
+    logFile, err := os.OpenFile("D:/logs/xxxx/Payment/test.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+    if err != nil {
+        fmt.Println("open log file failed, err:", err)
+        return
+    }
+    log.SetOutput(logFile)
+    log.SetFlags(log.Llongfile | log.Lmicroseconds | log.Ldate) // 时间信息
+    log.SetPrefix("[小王子]") // 前缀
+    log.Println("这是一条很普通的日志。")
+    // [小王子]2021/03/03 15:16:19.921021 D:/GoProject/src/main/gobase/log/loogfile.go:19: 这是一条很普通的日志。
 }
 ```
 
