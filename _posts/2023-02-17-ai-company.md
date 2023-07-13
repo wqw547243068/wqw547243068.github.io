@@ -350,6 +350,10 @@ FlagOpen是否意味着又一个魔搭的诞生？智源研究院副院长兼总
 
 而ChatGPT背后的OpenAI，也是打着非营利性机构的旗号出道的（2019年3月1日，OpenAI LP子公司成立，旨在营利）。同样的机构性质，同样押注AI，并关注大模型赛道，智源研究院有打算，或者可能成为中国的OpenAI吗？
 
+
+
+
+
 ## 阿里
 
 【2023-4-1】[阿里AI专家交流纪要20230401](https://bytedance.feishu.cn/docx/KiwcdYpuNoWHzJxKVeDco1HgnHc)
@@ -1001,7 +1005,7 @@ AlphaGo大战李世石。第三天，比赛进入高潮，谷歌创始人布林�
 曾经，那些理想主义的科学天才，拒绝微软加钱，也要去谷歌。Facebook给两倍，我也要去谷歌。这样的时光，不会再来了。
 
 
-### 开源AI终究胜利
+### 正方：开源AI终究胜利
 
 【2023-5-6】[谷歌内部文件泄露：我们和OpenAI都没有护城河](https://www.huxiu.com/article/1439220.html)
 - Google 内部泄露的文件在 SemiAnalysis 博客传播: **开源 AI** 会击败 Google 与 OpenAI，获得最终的胜利。
@@ -1060,6 +1064,82 @@ LLaMA
 - 个人受到许可证限制程度没有企业那么大
 - 客户比大模型提供商更了解业务应用
 - Meta已开始建设开源生态系统：闭源越多，开源需求越强烈，发展越快
+
+
+### 反方：开源社区问题
+
+【2023-6-29】[拾象硅谷见闻系列：打破围绕开源LLM的6大迷思](https://mp.weixin.qq.com/s/rZRAwX58Ooqx1uNSM542tQ)
+
+“We Have No Moat, And Neither Does OpenAI” 是 5 月上旬从 Google 内部泄露的一篇文档，总结了开源模型在 LLaMA 泄露的 2-3 个月里取得的进展，并以此认为: <span style='color:blue'>模型训练没有壁垒，并号召内部拥抱开源、LoRA 微调以及小参数量的模型</span>。
+
+这份文档最大问题
+- 被并不标准化和全面的评估给欺骗了，错误地相信“<span style='color:blue'>开源模型和 ChatGPT 的差距已经是 92% 和 100% 的关系</span>”以及“<span style='color:blue'>LoRA 微调过的模型和 ChatGPT 基本上没有区别</span>”，而忽略了这些对比都建立在“在某些任务上”的前提下。
+
+倾听开源模型的训练者的声音以及思考这份文档的标题一个多月后，反而认为：Google 有护城河，OpenAI 也有它自己的。
+
+比“护城河”更严谨的说法是“竞争优势”
+- 在商业层面，Google 拥有其搜索引擎和 G Suite 背后强大的分发渠道，OpenAI 拥有王牌产品 ChatGPT 的用户心智；
+- 在技术层面，开源社区在预训练环节和高质量反馈数据的获取以及处理上跟 OpenAI 还有相当大的差距。
+
+原观点：“搜索引擎将不复存在，因此 Google 的现有分发优势也不构成护城河”
+- 搜索引擎被摧毁的进程目前看仍然会比较漫长。
+
+达到 “90% of ChatGPT” 或   “GPT-3.5 Level” 水平 
+- 大体上都是“LLaMA + 指令遵循微调 + GPT 3.5/GPT 4 自动化评估”的范式。其中的指令遵循数据往往也来自 ChatGPT 或 GPT-4 生成。
+- 大多数媒体在报道时都会自动忽略 Vicuna 团队对这一指标的声明是“GPT-4 做出的有趣且非科学的评估”。从更严谨的视角，这些模型提供了和 ChatGPT 几乎一样的聊天机器人，但是在许多维度上仍然和 ChatGPT 以及 GPT 3.5 有很大差距。这些团队自己也比较清醒，但是架不住媒体的炒作。
+
+Translink 投资人 Kevin Mu 从技术复杂度、货币化潜力和瓶颈的存在三方面论证了 LLM 市场可能由 OpenAI 闭源玩家占据主导。
+
+但是就像图中的问号所代表的，目前还胜负未分，离市场份额的终局还比较远。
+
+【2023-6-29】[拾象硅谷见闻系列：打破围绕开源LLM的6大迷思](https://mp.weixin.qq.com/s/rZRAwX58Ooqx1uNSM542tQ)
+
+OpenAI 元老 John Schulman 4月下旬在伯克利有关 RLHF 和 Hallucination 的讲座
+- Youtube: [John Schulman - Reinforcement Learning from Human Feedback: Progress and Challenges](https://www.youtube.com/watch?v=hhiLw5Q_UFg), Towards TruthGPT
+
+他一针见血地指出
+- 这类开源模型的做法只是“形似”，实际上降低了模型的 Truthfulness。
+
+这一类模型的事实性上的缺陷：
+>（关于 Hallucination 问题的出现）如果你使用同样的监督学习数据，然后训练另一个模型，那么同样的 Hallucination 问题会出现。现在有很多人使用 ChatGPT 的输出来微调其他模型，比如微调市面上的开源 Base Model，然后发现效果不错。但是如果认真观察事实准确度，会发现它们编造的比例比原始模型更高。
+
+5 月，伯克利的论文 The False Promise of Imitating Proprietary LLMs 指出这种方式微调出来的指令遵循模型存在的一系列问题：
+- 在缺少大量模仿 ChatGPT 数据支持的任务上，这类模型无法改善 Base Model 到 ChatGPT 的差距；
+- 这类模型只是擅长模仿 ChatGPT 的风格，而不是事实性，导致实际的性能差异会骗过人类评估者；
+- 当前开源模型最大的限制仍然是 Base Model 层面跟 GPT 系列的差距，在微调而不是预训练环境进行优化可能是不正确的方向；
+- 为了广泛地匹配 ChatGPT 支持的任务，需要更广泛和大量的模仿数据集，还需要新的工作；
+- ……
+
+6 月份 Allen Institute for AI 和华盛顿大学的 How Far Can Camels GO？工作再次通过实验表明
+- 不同的指令微调数据集可以释放或者增强特定的能力，但并<span style='color:red'>没有一个数据集或者组合可以在所有评估中提供最佳性能</span>，并且这一点在人类或模型担任评估者时也很容易无法被揭示。
+
+对于指令遵循微调背后的团队来说，他们也意识到自己的模型由于 Base Model（LLaMA）的限制，在复杂推理和代码任务上很弱，并且难以进入正向数据飞轮 —— 模型能力越弱的领域越难得到更多的 query，也就难以筛选出高质量 query，想自己再标注提升模型能力就很困难。
+
+至此，开源社区已经充分意识到原来这套微调 LLaMA 的框架的局限性，越来越多的团队开始探索预训练环节和更接近真实的人类反馈数据。我们也比较期待这两个方向上的进展，在迷思 4 中也会分享更多围绕这部分的观察。
+
+【2023-6-29】拾象报告：硅谷之旅集齐了这个生态的不同视角，对开源社区的现状有了更加清醒的认知
+- 尽管 Stability AI 也非常积极地入场了 LLM，但是这里的 Stable Diffusion 时刻可能仍未到来。
+
+GitHub 中星数前 10 名的 LLM 开源项目中，和开源模型相关有第二名的 GPT-4All、服务 serving 环节的 llama.cpp 以及引爆了指令遵循微调的 Stanford Alpaca。具体项目上，在 Base Model 和经过微调的模型两个层次上都有爆款模型接连出现，近期的代表分别是 Falcon 40B 和 WizardLM 13B。
+
+开源社区卡点有很多：
+- 缺少明确的开源扛把子团队/公司; LLM 开源社区并不团结
+  - 指令遵循的微调模型格局不是很团结，比如: Vicuna 和 Koala 几乎是一样的工作，但是两支伯克利 CS 的团队在分散做。
+  - 开源社区内大量的注意力开始转移到预训练环节，过去一个季度陆续出来了 Redpajama、OpenLLaMA、Falcon、MPT 等新的模型。预训练对数据集准备、算力等资源的要求更高，也更需要社区协作，OpenLLaMA 最近取得的成果是开源社区团结力量的很好展现
+- 没有被普遍认可的标准化测试
+- 开源团队都缺高质量数据
+- 蒸馏 ChatGPT 进行指令微调的做法有许多局限
+- Query 和用户反馈数据飞轮难以转起来
+- 多重的不可商用限制……
+
+阻碍开源模型更大范围爆发的最大的卡点仍然是: 
+- LLaMA 的可商用问题，OpenLLaMA、Falcon 等模型复制一个同等繁荣的生态还需要时间。
+
+开源社区也非常快地意识到了这些问题
+- Alpaca Farm 试图解决 RLHF 和标准化测试的问题
+- OpenLLaMA 和 RedPajama INCITE 等项目开始从预训练环节攻克可商用问题，微调的方向也更百花齐放。
+
+
 
 ## 清华大学
 
