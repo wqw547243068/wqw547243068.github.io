@@ -919,38 +919,16 @@ query = "2022年腾讯营收多少"
 print(qa.run(query))
 ```
 
-### 向量数据库
+### 向量化方案
 
-向量数据库（Vectorstores）用于存储文本、图像等编码后的**特征向量**，支持向量相似度查询与分析。
-- 文本语义检索，通过比较输入文本的特征向量与底库文本特征向量的相似性，从而检索目标文本，即利用了向量数据库中的相似度查询（余弦距离、欧式距离等）。
-
-因为数据相关性搜索其实是向量运算。所以，不管使用 openai api embedding 功能还是直接通过 向量数据库 直接查询，都需要将加载进来的数据 Document 进行**向量化**，才能进行向量运算搜索。
-
-转换成向量也很简单，只需要把数据存储到对应的向量数据库中即可完成向量的转换。
-
-官方也提供了很多的向量数据库供我们使用，包括：
-- Annoy
-- Chroma
-- ElasticSearch
-- FAISS
-- Milvus
-- PGVector
-- Pinecone
-- Redis
-
-代表性数据库
-- Chroma、Pinecone、Qdrand
-
-更多支持的向量数据库使用方法，可转至链接。
-
-### OpenAIEmbeddings
+#### OpenAIEmbeddings
 
 OpenAI官方的embedding服务
 
 OpenAIEmbeddings：
 - 使用简单，并且效果比较好；
 
-#### OpenAI的Embedding服务
+##### OpenAI的Embedding服务
 
 直接使用openai的embedding服务
 
@@ -986,7 +964,7 @@ cosine_similarity(emb1, emb3) # 0.8578009661644189
 - 会消耗openai的token，特别是大段文本时，**消耗的token**还不少，如果知识库是比较固定的，可以考虑将每次生成的embedding做持久化，这样就不需要再调用openai了，可以大大节约token的消耗；
 - 可能会有**数据泄露**的风险，如果是一些高度私密的数据，不建议直接调用。
 
-#### LangChain调用OpenAI
+##### LangChain调用OpenAI
 
 ```py
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -1008,7 +986,7 @@ from langchain.embeddings import OpenAIEmbeddings
 embeddings = OpenAIEmbeddings()
 ```
 
-### HuggingFaceEmbeddings
+#### HuggingFaceEmbeddings
 
 HuggingFaceEmbeddings：
 
@@ -1036,6 +1014,110 @@ embeddings = HuggingFaceEmbeddings(model_name=embedding_model_dict[EMBEDDING_MOD
 embeddings.client = sentence_transformers.SentenceTransformer(
         embeddings.model_name, device='mps')
 ```
+
+#### M3E
+
+【2023-7-14】[研究人员开源中文文本嵌入模型，填补中文向量文本检索领域的空白](https://www.toutiao.com/article/7254900867097625127)
+
+由于 GPT 使用的 Transformer 模型的自身特性，导致模型只能从固定长度的上下文中生成文本。那么，当要模型感知更广阔的上下文时，该怎么做呢？
+
+领域内通用的解决方案: 将历史对话或者领域语料中的相关知识通过向量检索，再补充到 GPT 模型的上下文中。
+
+这样，GPT 模型就不需要感知全部文本，而是有重点、有目的地只关心那些相关的部分，这和 Transformer 内部的 Attention 机制原理相似，使得文本嵌入模型变成了 GPT 模型的记忆检索模块。
+
+但是长期以来，领域内一直缺少开源、可用的**中文文本嵌入模型**作为文本检索。
+- 中文开源文本嵌入模型中最被广泛使用的 `text2vec` 主要是在中文自然语言推理数据集上进行训练的。
+- OpenAI 出品的 `text-embedding-ada-002` 模型被广泛使用 ，虽然该模型效果较好，但此模型不开源、也不免费，同时还有数据**隐私**和数据**出境**等问题。
+
+##### MokaHR 开源 M3E
+
+最近，`MokaHR` 团队开发了一种名为 `M3E` 的模型，这一模型弥补了中文向量文本检索领域的空白， `M3E` 模型在中文同质文本 S2S 任务上在 6 个数据集的平均表现好于 `text2vec` 和 `text-embedding-ada-002` ，在中文检索任务上也优于二者。
+- huggingface: [m3e-base](https://huggingface.co/moka-ai/m3e-base)
+
+M3E 是 Moka Massive Mixed Embedding 的缩写
+- Moka，此模型由 MokaAI 训练，开源和评测，训练脚本使用 uniem ，评测 BenchMark 使用 MTEB-zh
+- Massive，此模型通过千万级 (2200w+) 的中文句对数据集进行训练
+- Mixed，此模型支持中英双语的同质文本相似度计算，异质文本检索等功能，未来还会支持代码检索
+- Embedding，此模型是文本嵌入模型，可以将自然语言转换成稠密的向量
+
+Tips:
+- 使用场景主要是中文，少量英文的情况，建议使用 m3e 系列的模型
+- 多语言使用场景，并且不介意数据隐私的话，我建议使用 openai text-embedding-ada-002
+- 代码检索场景，推荐使用 openai text-embedding-ada-002
+- 文本检索场景，请使用具备文本检索能力的模型，只在 S2S 上训练的文本嵌入模型，没有办法完成文本检索任务
+
+M3E 模型中使用的数据集、训练脚本、训练好的模型、评测数据集以及评测脚本都已开源，用户可以自由地访问和使用相关资源。该项目主要作者、MokaHR 自然语言处理工程师王宇昕表示：
+> “我相信 M3E 模型将成为中文文本向量检索中一个重要的里程碑，未来相关领域的工作，都可能从这些开源的资源中收益。”
+
+M3E 使用 in-batch 负采样的对比学习的方式在句对数据集进行训练，为了保证 in-batch 负采样的效果，我们使用 A100 80G 来最大化 batch-size，并在共计 2200W+ 的句对数据集上训练了 1 epoch。训练脚本使用 [uniem](https://github.com/wangyuxinwhy/uniem/blob/main/scripts/train_m3e.py)
+
+##### 直接使用
+
+```py
+# pip install -U sentence-transformers
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer('moka-ai/m3e-base')
+
+#Our sentences we like to encode
+sentences = [
+    '* Moka 此文本嵌入模型由 MokaAI 训练并开源，训练脚本使用 uniem',
+    '* Massive 此文本嵌入模型通过**千万级**的中文句对数据集进行训练',
+    '* Mixed 此文本嵌入模型支持中英双语的同质文本相似度计算，异质文本检索等功能，未来还会支持代码检索，ALL in one'
+]
+
+#Sentences are encoded by calling model.encode()
+embeddings = model.encode(sentences)
+
+#Print the embeddings
+for sentence, embedding in zip(sentences, embeddings):
+    print("Sentence:", sentence)
+    print("Embedding:", embedding)
+    print("")
+
+```
+
+##### 微调
+
+uniem 提供了非常易用的 finetune 接口，几行代码，即刻适配！
+
+```py
+from datasets import load_dataset
+
+from uniem.finetuner import FineTuner
+
+dataset = load_dataset('shibing624/nli_zh', 'STS-B')
+# 指定训练的模型为 m3e-small
+finetuner = FineTuner.from_pretrained('moka-ai/m3e-small', dataset=dataset)
+finetuner.run(epochs=1)
+```
+
+详见 [uniem 微调教程](https://github.com/wangyuxinwhy/uniem/blob/main/examples/finetune.ipynb)
+
+
+## 向量数据库
+
+向量数据库（Vectorstores）用于存储文本、图像等编码后的**特征向量**，支持向量相似度查询与分析。
+- 文本语义检索，通过比较输入文本的特征向量与底库文本特征向量的相似性，从而检索目标文本，即利用了向量数据库中的相似度查询（余弦距离、欧式距离等）。
+
+因为数据相关性搜索其实是向量运算。所以，不管使用 openai api embedding 功能还是直接通过 向量数据库 直接查询，都需要将加载进来的数据 Document 进行**向量化**，才能进行向量运算搜索。
+
+转换成向量也很简单，只需要把数据存储到对应的向量数据库中即可完成向量的转换。
+
+官方也提供了很多的向量数据库供我们使用，包括：
+- Annoy
+- Chroma
+- ElasticSearch
+- FAISS
+- Milvus
+- PGVector
+- Pinecone
+- Redis
+
+代表性数据库
+- Chroma、Pinecone、Qdrand
+
+更多支持的向量数据库使用方法，可转至链接。
 
 ### Faiss
 
