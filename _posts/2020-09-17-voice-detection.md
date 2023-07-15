@@ -2122,6 +2122,31 @@ cd bark && pip install .
 - Bark 支持开箱即用的各种语言，并自动根据输入文本确定语言。当出现代码转换文本提示时，Bark 将尝试使用相应语言的本地口音。英语质量目前是最好的。
 - 默认识别电脑上有无GPU，如果没有GPU则会下载可用于CPU的训练模型，默认模型文件下载地址为当前用户目录.cache文件夹下，可以通过配置XDG_CACHE_HOME环境变量指定模型下载位置
 
+【2023-7-14】Merlin 上分配GPU，测试效果
+
+修改部分代码： bark/generation.py
+- 新增自定义缓存目录：model_cache_dir
+
+```py
+# model 缓存目录
+model_cache_dir = '/mnt/bd/wangqiwen-hl/models' # 网盘地址
+
+def _get_ckpt_path(model_type, use_small=False):
+    key = model_type
+    if use_small or USE_SMALL_MODELS:
+        key += "_small"
+    #return os.path.join(CACHE_DIR, REMOTE_MODEL_PATHS[key]["file_name"])
+    return os.path.join(model_cache_dir, REMOTE_MODEL_PATHS[key]["file_name"])
+
+
+def _download(from_hf_path, file_name):
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    #hf_hub_download(repo_id=from_hf_path, filename=file_name, local_dir=CACHE_DIR)
+    hf_hub_download(repo_id=from_hf_path, filename=file_name, local_dir=model_cache_dir)
+```
+
+测试代码
+
 ```py
 from bark import SAMPLE_RATE, generate_audio
 from IPython.display import Audio
@@ -2151,10 +2176,11 @@ audio_array = generate_audio(text_prompt)
 
 【2023-4-9】[实时中文语音克隆，声音模仿如此简单](https://www.toutiao.com/article/7217818267170193960)
 - 开源项目 `MockingBird`，`拟声鸟` 能够使用 5 秒的真实语音录音，即可通过机器学习的方式，对声音进行克隆，从而实现按相同声音说出任意的文本。
+- ![](https://user-images.githubusercontent.com/12797292/131216767-6eb251d6-14fc-4951-8324-2722f0cd4c63.jpg)
+- AI拟声: 5秒内克隆您的声音并生成任意语音内容 Clone a voice in 5 seconds to generate arbitrary speech in real-time
 - [DEMO 效果](https://www.bilibili.com/video/BV17Q4y1B7mY/)
 
 通过借助 [MockingBird](https://github.com/babysor/MockingBird) 能够很轻松的克隆一个声音并应用到人工智能系统中，从而改善系统中机器人声音的效果。
-
 - MockingBird 使用 PyTorch 开发，能够在 Windows 和 Linux 系统中运行，MockingBird 现在是可以开箱即用
 - MockingBird 还提供了一个可供使用的 Web 页面，运行命令 python web.py 即可查看。
 
