@@ -819,6 +819,18 @@ Simon 的 [prompt-injection](https://simonwillison.net/2022/Sep/12/prompt-inject
   - [Armstrong and Gorman 2022](https://www.alignmentforum.org/posts/pNcFYZnPdXyL2RfgA/using-gpt-eliezer-against-chatgpt-jailbreaking) 提示一个检测器 chatgpt-prompt-evaluator 。[notebook](https://github.com/wangxuqi/Prompt-Engineering-Guide-Chinese/blob/main/notebooks/pe-chatgpt-adversarial.ipynb)
 - 不用指令微调的模型 : Model Type
 
+##### 如何预防提示词泄露？
+
+【2023-7-17】 [The “system” role - How it influences the chat behavior](https://community.openai.com/t/the-system-role-how-it-influences-the-chat-behavior/87353)，system里的prompt指令起多大作用？实验结论
+- （1）system 内容放 **messages 前面**：容易被user指令覆盖
+  - Sending the “system” content at the beginning of the messages array, like the OpenAI documentation says, is mostly ignored, and the “user” content can easily override the “system” instructions.
+  - You can state in the “system” content to “act like you are X”. Then, if the “user” content says “act like Y”, the AI changes the role for Y, ignoring the “system” content, and this shouldn’t happen.
+- （2）将 system 内容**当做 user 追加到最后**：有作用，但对回复效果有负面影响
+  - Sending the “system” content as “user” content (appending the “system” content to a “user” prompt)
+- （3）system 内容放 **messages 最后**：完美
+  - Sending the ‘system’ content as the very last ‘messages’ array object (even after the last ‘user’ content)
+  - In my testing, this works exactly as the ‘system’ content should work in the first place because the “system” instructions stick to the AI, and the ‘user’ content cannot modify them simply by saying ‘now act like something else.’ Therefore, the ‘system’ becomes meaningful in the end
+
 ##### prompt 组件参数化
 
 待定
