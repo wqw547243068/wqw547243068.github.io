@@ -442,6 +442,11 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
   - I told it that the answer was incorrect and it then apologized, and found the correct answer.
 
 
+## 图像提示词
+
+【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
+
+
 ## 提示词对抗
 
 * [Prompt工程-对抗性提示](https://github.com/wangxuqi/Prompt-Engineering-Guide-Chinese/blob/main/guides/prompts-adversarial.md)
