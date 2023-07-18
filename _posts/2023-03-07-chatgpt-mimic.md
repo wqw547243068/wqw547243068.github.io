@@ -1752,7 +1752,7 @@ PromptCLUE 支持几十个不同类型的任务，具有较好的零样本学习
 - 基于高质量数据构建更加符合中文习惯的字典并从零训练中文大模型，模型性能效果更有保证；
 - 融合多种训练策略训练大模型，具备在中文上强大的泛化、迁移和生成能力。
 
-### Colossal AI 夸父
+### Colossal AI
 
 【2023-2-15】[开源方案复现ChatGPT流程！1.62GB显存即可体验，单机训练提速7.73倍](https://mp.weixin.qq.com/s/j8gvD_4ViRE4WQaQlcnmrQ)
 - Colossal-AI 快速跟进，首个开源低成本复现 ChatGPT 完整流程。
@@ -1771,6 +1771,9 @@ Colossal-AI
 - 减少内存冗余的 `ZeRO` + `Gemini`
   - Colossal-AI 支持使用无冗余优化器 (`ZeRO`) 来优化内存使用，这种方法可以有效减少内存冗余，并且相比传统的数据并行策略，不会牺牲计算粒度和通信效率，同时可以大幅提高内存使用效率。
   - Colossal-AI 的异构内存空间管理器 `Gemini` 支持将优化器状态从 GPU 卸载到 CPU ，以节省 GPU 内存占用。可以同时利用 GPU 内存、CPU 内存（由 CPU DRAM 或 NVMe SSD 内存组成）来突破单 GPU 内存墙的限制，进一步扩展了可训练模型规模。
+
+【2023-7-18】[Colossal-AI交出了最新的开源答卷](https://mp.weixin.qq.com/s/NGYpmNGALS_bVaXDIcouLw), 650亿参数大模型预训练方案开源可商用
+- 仅需32张A100/A800，即可搞定650亿参数类LLaMA大模型预训练，训练速度提升38%
 
 
 #### Colossal AI 目标
