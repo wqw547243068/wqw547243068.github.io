@@ -1253,6 +1253,21 @@ Decoding Strategies
 - 优点: 原来指数级别的求解空间直接压缩到了与长度线性相关的大小。（指数级→线性级）
 - 缺点: 由于丢弃了绝大多数的可能解，这种关注当下的策略<font color='red'>无法保证最终序列概率是最优的</font>。
 
+```py
+def greedy_decode(model, input, max_length):
+    output = input
+    for _ in range(max_length):
+        # 为模型的下一个单词生成预测
+        predictions = model(output)
+        # 使用argmax来选择最可能的下一个单词
+        next_word = torch.argmax(predictions, dim=-1)
+        # 将选择的单词添加到输出中
+        output = torch.cat((output, next_word), dim=-1)
+    # 在生成完成后返回输出
+    return output
+```
+
+
 #### 集束搜索 Beam Search
 
 Beam search是对贪心策略一个改进。
@@ -1273,6 +1288,28 @@ Beam search是对贪心策略一个改进。
 - BS是一种**时间**换**性能**的方法。
 - 缺点
   - 会遇到诸如词语**重复**问题
+
+```py
+def beam_search_decode(model, input, max_length, k):
+    output = [(input, 0)]  # initialize beam with the input and its score
+    for _ in range(max_length):
+        all_candidates = []  # list to store all sentence candidates at this step
+        for sentence, score in output:
+            # Get next word probabilities
+            predictions = model(sentence)
+            # Get the k most probable next words
+            top_k_scores, top_k_words = torch.topk(predictions, k, dim=-1)
+            # create new candidates with the top_k words and add their score
+            for i in range(k):
+                candidate = torch.cat((sentence, top_k_words[i].unsqueeze(0)), dim=-1)
+                all_candidates.append((candidate, score + top_k_scores[i]))
+        # Sort all candidates by score
+        ordered = sorted(all_candidates, key=lambda tup:tup[1], reverse=True)
+        # Select the best k candidates
+        output = ordered[:k]
+    # Return the sentence of the best candidate
+    return output[0][0]
+```
 
 代码实现
 - tensorflow 把 decoder 从 BasicDecoder 换成 BeamSearchDecoder
@@ -1346,18 +1383,58 @@ Beam Search虽然比贪心有所改进，但还是会生成<span style='color:re
 
 #### top-k采样
 
-- 采样前将输出的概率分布截断，取出概率最大的k个词构成一个集合，然后将这个子集词的概率再归一化，最后重新的概率分布中采样词汇。
+采样前将输出的概率分布**截断**，取出概率最大的k个词构成一个集合，然后将这个子集词的概率**再归一化**，最后重新的概率分布中采样词汇。
 - 据说可以获得比Beam Search好很多的效果，但有个问题，就是这个**k不太好选**。
   - 概率分布变化比较大，有时候可能很**均匀**(flat)，有的时候比较**集中**(peaked)。
   - [图](http://www.wuyuanhao.com/wp-content/uploads/2020/03/distribution.png) ![图](http://www.wuyuanhao.com/wp-content/uploads/2020/03/distribution.png)
   - 对于集中的情况还好说，当分布均匀时，一个较小的k容易丢掉很多优质候选词。
   - 但如果k定的太大，这个方法又会退化回普通采样。
 
+```py
+def top_k_sampling(model, input, max_length, k):
+    output = input
+    for _ in range(max_length):
+        predictions = model(output)
+        # 取最可能的k个单词
+        top_k_scores, top_k_words = torch.topk(predictions, k, dim=-1)
+        # 对最可能的k个单词进行softmax操作以得到概率分布
+        probabilities = F.softmax(top_k_scores, dim=-1)
+        # 根据概率分布抽样一个单词
+        next_word = torch.multinomial(probabilities, 1)
+        # 将抽样的单词添加到输出中
+        output = torch.cat((output, next_word), dim=-1)
+    # 在生成完成后返回输出
+    return output
+```
+
 #### 核采样（Nucleus sampling) —— Top-p采样
 
 - 不再取一个固定的k，而是固定候选集合的概率密度和在整个概率分布中的比例
 - 选出来这个集合之后也和top-k采样一样，重新归一化集合内词的概率，并把集合外词的概率设为0。
 - 这种方式也称为top-p采样。
+
+```py
+def top_p_sampling(model, input, max_length, p):
+    output = input
+    for _ in range(max_length):
+        predictions = model(output)
+        # 对预测进行排序并计算累积概率
+        sorted_logits, sorted_indices = torch.sort(predictions, descending=True)
+        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+        # 删除累积概率大于p的单词
+        sorted_indices_to_remove = cumulative_probs > p
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+        indices_to_remove = sorted_indices[sorted_indices_to_remove]
+        predictions[indices_to_remove] = float('-inf')
+        # 对剩下的单词进行抽样
+        next_word = torch.multinomial(F.softmax(predictions, dim=-1), 1)
+        # 将抽样的单词添加到输出中
+        output = torch.cat((output, next_word), dim=-1)
+    # 在生成完成后返回输出
+    return output
+```
+
 
 #### 惩罚重复
 
