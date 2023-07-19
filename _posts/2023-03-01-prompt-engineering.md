@@ -454,10 +454,24 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
  ICL 这种方式之下，Prompt 的设计至关重要
 
-### 奥本大学
+### 奥本大学: prompt 分类法
 
 【2023-6-6】[GPT-4使用效果不好？美国奥本大学提出Prompt分类法，另辟蹊径构建Prompt设计指南](https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247552652&idx=2&sn=189aca99e5b7a16cf8b0fe260192be2c&scene=21#wechat_redirect)
+- [TELeR: A General Taxonomy of LLM Prompts for Benchmarking Complex Tasks](https://arxiv.org/pdf/2305.11430.pdf)
 
+美国奥本大学的研究者为 Prompt 设计了一个通用的 **Prompt 分类法**（Taxonomy）`TELeR`，通过使用 `TELeR` 在未来针对大模型性能的研究中便可以按图索骥确定自己在研究中使用的 Prompt 类别，从而使得不同研究使用的不同 Prompt 可以在一个通用的标准中被概括，为多个独立的研究设定相同的 Prompt 标准，以便可以从不同研究中得到更加富有意义的结论。
+
+TELeR 将 Prompt 视为提示数据（Data）与提示指引(Directive)的组合，而在数据固定的情况下，不同的 Prompt 之间的差别主要便在于提示指引之间的差别，整个提示指引可以被 TELeR 即轮次（Turn）、表达（Expression）、细节级别（Level of Details）与角色（Role）的首字母组合表达，其中：
+- 轮次：轮次表示与语言模型互动的轮次，Prompt 设计可以被分类为单轮 Prompt 与多轮 Prompt；
+- 表达：表达指对整体任务与相关子任务的表达风格，表达总体上可以被分为问题式与指令式两种；
+- 角色：Prompt是否为大模型定义了系统角色；
+- 细节级别：主要指 Prompt 定义任务的明确程度，分为0-5级，Level 0 表示没有对指令详细的介绍，而 Level 5 表示描述包含了明确的目标、步骤、解释与标准。
+
+通过轮次、表达、细节级别与角色的离散取值，可以定位不同的 Prompt 在 TELeR 中的位置
+
+这篇论文另辟蹊径为 Prompt 统一一个分类法，使得各路大模型的研究者可以在比较性能时至少在 Prompt 上有迹可循有法可依，不过这篇文章对 Prompt 的分类仍然略显**主观与简单**，没有深入到模型训练原理的层面理解 Prompt，也没有更多的实验证明这套分类法确实可以让大模型 Prompt 在同一类别下站在同一起跑线。
+
+随着大模型处理的任务不再是简单的 Chat，Prompt 统一标准的意义在未来必然会愈来愈显示其重要性，在更加复杂与难以定义的任务上，有一套 Prompt 共同的标准将十分有助于启发我们定义问题的思路并构建我们利用大模型解决问题的共识。
 
 ### 普林斯顿评测
 
