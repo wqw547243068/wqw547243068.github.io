@@ -1254,23 +1254,57 @@ for doc, score in docs_with_score:
 
 ## 服务层：LLM框架
 
-### LLaMA-Index
+LLMs就像是C++的编译器，Python的解释器一样：
 
-
-
-### LangChain
-
-LangChain, 语言链条，也称：`兰链`，Harrison Chase创建的一个 Python 库，一种LLM语言大模型开发工具，几分钟内构建 GPT 驱动的应用程序。
-
-LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
+| 语言类型	| 执行原理 |
+| ---	| --- |
+| C++语言	| C++语言 → 编译器/链接器 → 既定任务 |
+| Java语言	| Java语言 → 编译器/虚拟机 → 既定任务 |
+| Python语言	| Python语言 → 解释器 → 既定任务 |
+| 人类自然语言	| 人类自然语言 → LLMs → 各种后端组件 → 既定任务 |
 
 将语言模型与其他数据源相连接，并允许语言模型与环境进行交互，提供了丰富的API
 - 与 LLM 交互
 - LLM 连接外部数据源
 
-AGI的基础工具模块库，类似模块库还有mavin。
+AGI的基础工具模块库，类似模块库还有 mavin。
 -  LangChain provides an amazing suite of tools for everything around LLMs. 
 - It’s kind of like HuggingFace but specialized for LLMs
+
+### 新兴 LLM 技术栈
+
+大语言模型技术栈由四个主要部分组成：
+- `数据预处理流程`（data preprocessing pipeline）: 
+  - 与数据源连接的连接器（例如S3存储桶或CRM）、数据转换层以及下游连接器（例如向矢量数据库）
+  - 通常，输入到LLM中的最有价值的信息也是最难处理的（如PDF、PPTX、HTML等），但同时，易于访问文本的文档（例如.DOCX）中也包含用户不希望发送到推理终端的信息（例如广告、法律条款等）。
+- `嵌入端点`（embeddings endpoint ）+`向量存储`（vector store）
+  - 嵌入端点（用于生成和返回诸如词向量、文档向量等嵌入向量的 API 端点）和向量存储（用于存储和检索向量的数据库或数据存储系统）代表了数据存储和访问方式的重大演变。
+  - 以前，嵌入主要用于诸如**文档聚类**之类的特定任务
+  - 在新架构中，将文档及其嵌入存储在向量数据库中，可以通过LLM端点实现关键的交互模式。
+  - 直接存储原始嵌入，意味着数据可以以其自然格式存储，从而实现更快的处理时间和更高效的数据检索。
+  - 此外，这种方法可以更容易地处理大型数据集，因为它可以减少训练和推理过程中需要处理的数据量。
+- `LLM 终端`（LLM endpoints）
+  - 接收输入数据并生成LLM输出的终端。LLM终端负责管理模型的资源，包括内存和计算资源，并提供可扩展和容错的接口，用于向下游应用程序提供LLM输出。
+- `LLM 编程框架`（LLM programming framework）
+  - 一套工具和抽象，用于使用语言模型构建应用程序。在现代技术栈中出现了各种类型的组件，包括：LLM提供商、嵌入模型、向量存储、文档加载器、其他外部工具（谷歌搜索等），这些框架的一个重要功能是协调各种组件。
+
+图解
+- ![img](https://pic2.zhimg.com/80/v2-06c1d00721f768055a329539694c3529_720w.webp)
+
+
+### LLaMA-Index
+
+待补充
+
+### LangChain
+
+LangChain, 语言链条，也称：`兰链`，Harrison Chase 2022年10月创建的一个 Python 库，一种LLM语言大模型开发工具
+- LangChain目前有两个语言的实现：python和nodejs
+- 几分钟内构建 GPT 驱动的应用程序。
+
+LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
+- ![img](https://aitechtogether.com/wp-content/uploads/2023/05/c8538d73-3b21-4a6e-8e83-845477d3f275.webp)
+- ![](https://picx.zhimg.com/v2-b048e039fd396b131767f58b9c97a37b_1440w.jpg?source=172ae18b)
 
 LangChain 构建的有趣应用程序包括（但不限于）：
 - 聊天机器人
@@ -1316,6 +1350,15 @@ flow("Hey, have you heard of LangFlow?")
 LangChain包含六部分组件
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f101b9ecf540489280e7f95017243fb9~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=j8hpvldp7FTdOSIGCFjEyUEmbhs%3D)
 - Models、Prompts、Indexes、Memory、Chains、Agents。
+
+LangChain主要支持6种组件：
+- `Models`：模型，各种类型的模型和模型集成，比如GPT-4
+- `Prompts`：提示，包括提示管理、提示优化和提示序列化
+- `Memory`：记忆，用来保存和模型交互时的上下文状态
+- `Indexes`：索引，用来结构化文档，以便和模型交互
+- `Chains`：链，一系列对各种组件的调用
+- `Agents`：代理，决定模型采取哪些行动，执行并且观察流程，直到完成为止
+
 
 ##### Document Loaders and Utils
 
@@ -1387,45 +1430,7 @@ texts = text_splitter.split_text(state_of_the_union)
 print(texts[0])
 ```
 
-
-##### （1）Models（模型）：LLM选择
-
-（1）Models（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
-- LLMs
-- Chat Models
-- HuggingFace Models
-- Text Embedding：用于文本的向量化表示。设计用于与嵌入交互的类
-  - 用于实现基于知识库的问答和semantic search，相比 fine-tuning 最大的优势：不用进行训练，并且可以实时添加新的内容，而不用加一次新的内容就训练一次，并且各方面成本要比 fine-tuning 低很多。
-  - 例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
-  - 两个方法：`embed_documents` 和 `embed_query`。最大区别在于接口不同：一种处理**多**个文档，而另一种处理**单**个文档。
-  - 文本嵌入模型集成了如下的源：AzureOpenAI、Hugging Face Hub、InstructEmbeddings、Llama-cpp、OpenAI 等
-
-大语言模型（LLMs）是Models的核心，也是LangChain的基础组成部分，LLMs本质上是一个大型语言模型的包装器，通过该接口与各种大模型进行交互。
-- 这些模型包括OpenAI的GPT-3.5/4、谷歌的LaMDA/PaLM，Meta AI的LLaMA等。
-
-LLMs 类的功能如下：
-- 支持多种模型接口，如 OpenAI、Hugging Face Hub、Anthropic、Azure OpenAI、GPT4All、Llama-cpp…
-- Fake LLM，用于测试
-- 缓存的支持，比如 in-mem（内存）、SQLite、Redis、SQL
-- 用量记录
-- 支持流模式（就是一个字一个字的返回，类似打字效果）
-
-LangChain调用OpenAI的gpt-3.5-turbo大语言模型的简单示例
-
-```py
-import os
-from langchain.llms import OpenAI
-
-openai_api_key = 'sk-F9O70vxxxxxlbkFJK55q8YgXb6s5dJ1A4LjA'
-os.environ['OPENAI_API_KEY'] = openai_api_key
-
-llm = OpenAI(model_name="gpt-3.5-turbo")
-# llm = OpenAI(model_name="text-davinci-003", n=2, best_of=2)
-print(llm("讲个笑话，很冷的笑话"))
-# 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
-llm_result = llm.generate(["Tell me a joke", "Tell me a poem"])
-llm_result.llm_output    # 返回 tokens 使用量
-```
+##### LangChain Embedding
 
 模型拉到本地使用的好处：
 - 训练模型
@@ -1468,7 +1473,64 @@ doc_result = embeddings.embed_documents([text])
 ```
 
 
+##### （1）Models（模型）：LLM选择
+
+（1）`Models`（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
+- LLMs（大语言模型）: 接收文本字符作为输入，返回的也是文本字符
+- Chat Models 聊天模型
+  - 聊天模型基于LLMs，不同的是它接收聊天消息作为输入，返回的也是聊天消息
+  - 聊天消息是一种特定格式的数据，LangChain中支持四种消息: `AIMessage`,` HumanMessage`,` SystemMessage` ,`ChatMessage` ，需要按照角色把数据传递给模型，这部分在后面文章里再详细解释。
+- Text Embedding：用于文本的向量化表示。文本嵌入模型接收文本作为输入，返回的是浮点数列表. 设计用于与嵌入交互的类
+  - 用于实现基于知识库的问答和semantic search，相比 fine-tuning 最大的优势：不用进行训练，并且可以实时添加新的内容，而不用加一次新的内容就训练一次，并且各方面成本要比 fine-tuning 低很多。
+  - 例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
+  - 两个方法：`embed_documents` 和 `embed_query`。最大区别在于接口不同：一种处理**多**个文档，而另一种处理**单**个文档。
+  - 文本嵌入模型集成了如下的源：AzureOpenAI、Hugging Face Hub、InstructEmbeddings、Llama-cpp、OpenAI 等
+- HuggingFace Models
+
+大语言模型（LLMs）是Models的核心，也是LangChain的基础组成部分，LLMs本质上是一个大型语言模型的包装器，通过该接口与各种大模型进行交互。
+- 这些模型包括OpenAI的GPT-3.5/4、谷歌的LaMDA/PaLM，Meta AI的LLaMA等。
+
+LLMs 类的功能如下：
+- 支持多种模型接口，如 OpenAI、Hugging Face Hub、Anthropic、Azure OpenAI、GPT4All、Llama-cpp…
+- Fake LLM，用于测试
+- 缓存的支持，比如 in-mem（内存）、SQLite、Redis、SQL
+- 用量记录
+- 支持流模式（就是一个字一个字的返回，类似打字效果）
+
+LangChain调用OpenAI的gpt-3.5-turbo大语言模型的简单示例
+
+```py
+import os
+from langchain.llms import OpenAI
+
+openai_api_key = 'sk-******'
+os.environ['OPENAI_API_KEY'] = openai_api_key
+
+llm = OpenAI(model_name="gpt-3.5-turbo")
+# llm = OpenAI(model_name="text-davinci-003", n=2, best_of=2)
+print(llm("讲个笑话，很冷的笑话"))
+# 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
+llm_result = llm.generate(["Tell me a joke", "Tell me a poem"])
+llm_result.llm_output    # 返回 tokens 使用量
+```
+
+
 ##### （2）Prompts（提示语）: 模板化
+
+通常作为输入传递给模型的信息被称为`提示`
+- 提示可以是**文本字符**，也可以是**文件**、**图片**甚至**视频**
+- LangChain目前只支持字符形式的提示。
+
+提示一般不是**硬编码**的形式写在代码里，而是由`模板`和`用户输入`来生成，LangChain提供多个类和方法来构建提示。
+- `提示模板`
+  - 提示模板是一种生成提示的方式，包含一个带有可替换内容的模板，从用户那获取一组参数并生成提示
+  - 提示模板用来生成LLMs的提示，最简单的使用场景，比如“我希望你扮演一个代码专家的角色，告诉我这个方法的原理{code}”。
+- `聊天提示模板`
+  - 聊天模型接收聊天消息作为输入，再次强调聊天消息和普通字符是不一样的，聊天提示模板的作用就是为聊天模型生成提示
+- `示例选择器`
+  - 示例选择器是一个高级版的数据筛选器
+- `输出解析器`
+  - 由于模型返回的是文本字符，输出解析器可以把文本转换成结构化数据
 
 Prompts（提示语）: 管理LLM输入
 - PromptTemplate 负责构建此输入
@@ -1499,8 +1561,13 @@ print(prompt_template.format(name_description=description))
 
 ##### （3）Indexes（索引）：文档结构化
 
-Indexes（索引）：文档结构化, 以便LLM更好的交互
+Indexes（索引）：文档结构化方式, 以便LLM更好的交互
 - 索引是指对文档进行结构化的方法，以便LLM能够更好的与之交互。
+
+最常见的使用场景是文档检索，接收用户查询，返回最相关的文档。
+- 注意: 索引也能用在除了检索外的其他场景，同样检索除了索引外也有其他的实现方式。
+
+索引一般和检索**非结构化数据**（比如文本文档）相关，LangChain支持的主要索引类型如下，都是围绕着**向量数据库**的。
 
 该组件主要包括：Document Loaders（`文档加载器`）、Text Splitters（`文本拆分器`）、VectorStores（`向量存储器`）以及Retrievers（`检索器`）。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5078c23e1fea4bee99746ebec0847be5~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=Uzl65uwWtcvNhfi1OHpX8u%2BGzko%3D)
@@ -1539,7 +1606,7 @@ query = "What did the president say about Ketanji Brown Jackson"
 qa.run(query)
 ```
 
-###### Retrievers
+**Retrievers**
 
 检索器接口是一个通用接口，可以轻松地将文档与语言模型结合起来。
 - 此接口公开了一个 get_relevant_documents 方法，该方法接受一个查询（一个字符串）并返回一个文档列表。
@@ -1584,11 +1651,22 @@ print(len(docs))
 ##### （4）Chains（链条）：组合链路
 
 Chains（链条）：将LLM与其他组件结合, 链允许将多个组件组合在一起以创建一个单一的、连贯的应用程序。
+- 把一个个独立的组件链接在一起，LangChain名字的由来
 
 Chain提供了一种将各种组件统一到应用程序中的方法。
-- 例如，创建一个Chain，它接受来自用户的输入，并通过PromptTemplate将其格式化，然后将格式化的输出传入到LLM模型中。
+- 例如，创建一个Chain，接受来自用户的输入，并通过PromptTemplate将其格式化，然后将格式化的输出传入到LLM模型中。
 - 通过多个Chain与其他部件结合，可生成复杂的链，完成复杂的任务。
 - ![Chains示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/4d5ba1c00889406fb3bc7c86fbb9660f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=pLKYIarzSV1QkVxKv%2Blc0t8lDrE%3D)
+
+LangChain中，主要有下面几种链，其中最常用的是LLMChain。
+- `LLMChain`
+  - LLMChain由 **PromptTemplate**、**模型**和可选的**输出解析器**组成。
+  - 链接收多个输入变量，使用PromptTemplate生成提示，传递给模型，最后使用输出解析器把模型返回值转换成最终格式。
+- `索引相关链`
+  - 和索引交互，把自己的数据和LLMs结合起来，最常见的例子是根据文档来回答问题。
+- `提示选择器`
+  - 为不同模型生成不同的提示
+
 
 LLM与其他组件结合，创建不同应用，一些例子：
 - 将LLM与**提示模板**相结合
@@ -1684,15 +1762,25 @@ review = overall_chain.run("Rome")
 
 ##### （5）Agents（智能体）：其他工具
 
-“链”可以帮助将一系列 LLM 调用链接在一起。
-- 然而，在某些任务中，调用顺序通常是**不确定**的。下一步可能取决于用户输入和前面步骤中的响应。
+“链”可以帮助将一系列 LLM 调用链接在一起。然而，在某些任务中，调用顺序通常是**不确定**的。
+- 有些应用并不是一开始就确定调用哪些模型，而是依赖于用户输入
 
-LangChain 库提供了代理“Agents”，根据**未知**输入而不是硬编码来决定下一步采取的行动。 
+LangChain 库提供了代理“Agents”，根据**未知**输入而不是**硬编码**来决定下一步采取的行动。 
+
+Agents通常由三个部分组成：`Action`、`Observation`和`Decision`。
+- `Action`是代理执行的操作
+- `Observation`是代理接收到的信息
+- `Decision`是代理基于`Action`和`Observation`做出的决策。
 
 Agent 使用LLM来确定要采取哪些行动以及按什么顺序采取的行动。操作可以使用工具并观察其输出，也可以返回用户。创建agent时的参数：
-- 工具：执行特定职责的功能。比如：Google搜索，数据库查找，Python Repl。工具的接口当前是一个函数，将字符串作为输入，字符串作为输出。
-- LLM：为代理提供动力的语言模型。
-- 代理：highest level API、custom agent. 要使用的代理。这应该是一个引用支持代理类的字符串。由于本笔记本侧重于最简单、最高级别的 API，因此仅涵盖使用标准支持的代理。如果您想实施自定义代理，请参阅自定义代理的文档（即将推出）。
+- `LLM`：为代理提供动力的语言模型。
+- `工具`：执行特定职责的功能, 方便模型和其他资源交互
+  - 比如：Google搜索，数据库查找，Python Repl。工具的接口当前是一个函数，将字符串作为输入，字符串作为输出。
+- `工具集`
+  - 解决特定问题的工具集合
+- `代理`：highest level API、custom agent. 要使用的代理。围绕模型的包装器，接收用户输入，决定模型的行为
+- `代理执行器`
+  - 代理和一组工具，调用代理
 
 ```py
 # Create RetrievalQA Chain
@@ -1755,6 +1843,11 @@ print(agent.run("列举spaceX星舰在2022年后的发射记录?"))
 ```
 
 ##### （6）Memory（记忆）：
+
+模型是无状态的，不保存上一次交互时的数据
+- OpenAI的API服务没有上下文概念，而chatGPT是额外实现了上下文功能。
+
+为了提供上下文的功能，LangChain提供了记忆组件，用来在对话过程中存储数据。
 
 对于像聊天机器人这样的应用程序，需要记住以前的对话内容。
 - 但默认情况下，LLM对历史内容**没有记忆功能**。LLM的输出只针对用户当前的提问内容回答。
@@ -2034,6 +2127,8 @@ print(llm("你会做什么"))
   - 基于langchain/llama-index已经可以快速完成类似的功能，但代码量大，学习门槛高
 - [chatglm-qabot-v2: 从q-d匹配到q-q匹配](https://github.com/xinsblog/chatglm-qabot)
 - [chatglm-qabot](https://github.com/xinsblog/chatglm-qabot)
+- [Chinese-LangChain](https://github.com/yanqiangmiffy/Chinese-LangChain)：中文langchain项目，基于ChatGLM-6b+langchain实现本地化知识库检索与智能答案生成
+  - ![img](https://github.com/yanqiangmiffy/Chinese-LangChain/raw/master/images/web_demos/v3.png)
 
 一些关键组件的配置：
 - LLM使用的是清华的chatglm-6b
