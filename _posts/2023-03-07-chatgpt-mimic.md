@@ -2612,6 +2612,18 @@ Chinese-LLaMA基础模型，深圳大学发布
 - 擅长心智理论（Theory of Mind），也就是能推测理解他人的心理状态。
 - 但不太擅长数学，以及容易用提示注入攻击把要求保密的信息从它嘴里套出来。
 
+### Llama 2
+
+【2023-7-19】[更强的Llama 2开源，可直接商用：一夜之间，大模型格局变了](https://mp.weixin.qq.com/s/klFWFXCbjGaWZ7HO1KFZag)
+
+Meta 终于发布了 免费可商用版本 Llama 2
+- Llama 2 模型系列包含 70 亿、130 亿和 700 亿三种参数变体。此外还训练了 340 亿参数变体，但并没有发布，只在技术报告中提到了。
+- 相比于 Llama 1，Llama 2 的训练数据多了 40%，上下文长度也翻倍，并采用了分组查询注意力机制。具体来说，Llama 2 预训练模型是在 2 万亿的 token 上训练的，精调 Chat 模型是在 100 万人类标记数据上训练的。
+- [论文地址](https://ai.meta.com/research/publications/llama-2-open-foundation-and-fine-tuned-chat-models)
+- [项目地址](https://github.com/facebookresearch/llama), [llama demo](https://ai.meta.com/llama/)
+- Llama2 [huggingface 地址](https://huggingface.co/blog/llama2)
+
+
 ### 猎鹰 Falcon -- 唯一免费商用
 
 【2023-6-5】[碾压LLaMA，「猎鹰」彻底开源！400亿参数，万亿token训练，霸榜Hugging Face](https://zhuanlan.zhihu.com/p/634189977)
