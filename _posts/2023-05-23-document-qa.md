@@ -684,6 +684,10 @@ LLM 应用
 
 #### 1. Doc-Chat 文档问答
 
+LangChain 面对非机构化数据时，通过借助 Embedding 能力，对PDF文件数据进行**向量化**，LangChain在此基础上允许用户将输入的数据与PDF中的数据进行**语义匹配**，从而实现用户在PDF文件中的内容搜索。
+- [refer](https://aitechtogether.com/python/105086.html)
+- ![img](https://aitechtogether.com/wp-content/uploads/2023/05/952a8e3f-3f59-496f-b0e1-5fc7e12b9cef.webp)
+
 有大量本地文档数据，希望通过问答的方式快速获取想要的知识或信息，提高工作效率
 
 解决方案：
@@ -695,6 +699,57 @@ LLM 应用
 - 第三步：**召回**（通过向量检索工具Faiss等对query相关文档召回）
 - 第四步：阅读理解，**总结答案**（将context与query传给llms，总结答案）
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a978188a6d0d4d7db75e0818e286c32c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=daelWSDLtJ1ruh29TjQfkyddRhg%3D)
+
+##### langchaini + pinecone 实现
+
+
+```py
+from langchain.document_loaders import UnstructuredPDFLoader, OnlinePDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+oader = UnstructuredPDFLoader("../data/field-guide-to-data-science.pdf")
+data = loader.load()
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_documents(data)
+
+# Create embeddings of your documents to get ready for semantic search
+from langchain.vectorstores import Chroma, Pinecone
+from langchain.embeddings.openai import OpenAIEmbeddings
+import pinecone
+
+OPENAI_API_KEY = '...'
+PINECONE_API_KEY = '...'
+PINECONE_API_ENV = 'us-east1-gcp'
+
+embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+
+# initialize pinecone
+pinecone.init(
+    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
+    environment=PINECONE_API_ENV  # next to api key in console
+)
+index_name = "langchaintest" # put in the name of your pinecone index here
+
+docsearch = Pinecone.from_texts([t.page_content for t in texts], embeddings, index_name=index_name)
+
+query = "What are examples of good data science teams?"
+docs = docsearch.similarity_search(query, include_metadata=True)
+
+#. Query those docs to get your answer back
+from langchain.llms import OpenAI
+from langchain.chains.question_answering import load_qa_chain
+
+llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY)
+chain = load_qa_chain(llm, chain_type="stuff")
+
+query = "What is the collect stage of data maturity?"
+docs = docsearch.similarity_search(query, include_metadata=True)
+
+chain.run(input_documents=docs, question=query)
+#. OUTPUT: ' The collect stage of data maturity focuses on collecting internal or external datasets. Examples include gathering sales records and corresponding weather data.'
+```
+
 
 ##### （1）数据加载&预处理
 
@@ -792,11 +847,20 @@ LLM 看完视频，回答问题
 与pdf文档处理方式不同，YoutubeLoader库从youtube**视频链接**中加载数据，并转换为文档。
 - 文档获取过程: 通过youtube-transcript-api获取的视频的字幕文件，这个字幕文件是youtube生成的。当用户将视频上传至youtube时，youtube会通过内置的语音识别算法将视频语音转换为文本。当加载youtube视频字幕文档后，接下来的处理工作与第一个例子类似。
 
+LangChain支持对YouTube视频内容进行摘要内容生成，通过调用 document_loaders 模块中的 YoutubeLoade ，同时传入YouTube的视频链接，然后即可支持视频内容的摘要提取。
+- [refer](https://aitechtogether.com/python/105086.html)
+- ![img](https://aitechtogether.com/wp-content/uploads/2023/05/8d8bb508-68eb-4733-90ef-86a8bd890026.webp)
+
 ```py
+from langchain.document_loaders import YoutubeLoader
+from langchain.llms import OpenAI
+from langchain.chains.summarize import load_summarize_chain
+
+OPENAI_API_KEY = '...'
 # 加载 youtube 频道
-loader = YoutubeLoader.from_youtube_url('https://www.youtube.com/watch?v=_rcnWQ0b2lM')
+loader = YoutubeLoader.from_youtube_url("https://www.youtube.com/watch?v=QsYGlZkevEg", add_video_info=True)
 # 将数据转成 document
-documents = loader.load()
+result = loader.load()
 ```
 
 Question:
@@ -1315,6 +1379,7 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - [官方文档](https://python.langchain.com/en/latest/index.html)
 - [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
 - [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
+- [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
 
 #### LangFlow 可视化
 
@@ -1476,11 +1541,11 @@ doc_result = embeddings.embed_documents([text])
 ##### （1）Models（模型）：LLM选择
 
 （1）`Models`（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
-- LLMs（大语言模型）: 接收文本字符作为输入，返回的也是文本字符
-- Chat Models 聊天模型
+- `LLMs`（大语言模型）: 接收文本字符作为输入，返回的也是文本字符
+- `Chat Models` 聊天模型
   - 聊天模型基于LLMs，不同的是它接收聊天消息作为输入，返回的也是聊天消息
   - 聊天消息是一种特定格式的数据，LangChain中支持四种消息: `AIMessage`,` HumanMessage`,` SystemMessage` ,`ChatMessage` ，需要按照角色把数据传递给模型，这部分在后面文章里再详细解释。
-- Text Embedding：用于文本的向量化表示。文本嵌入模型接收文本作为输入，返回的是浮点数列表. 设计用于与嵌入交互的类
+- `Text Embedding`：用于文本的向量化表示。文本嵌入模型接收文本作为输入，返回的是浮点数列表. 设计用于与嵌入交互的类
   - 用于实现基于知识库的问答和semantic search，相比 fine-tuning 最大的优势：不用进行训练，并且可以实时添加新的内容，而不用加一次新的内容就训练一次，并且各方面成本要比 fine-tuning 低很多。
   - 例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
   - 两个方法：`embed_documents` 和 `embed_query`。最大区别在于接口不同：一种处理**多**个文档，而另一种处理**单**个文档。
@@ -1512,6 +1577,181 @@ print(llm("讲个笑话，很冷的笑话"))
 # 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
 llm_result = llm.generate(["Tell me a joke", "Tell me a poem"])
 llm_result.llm_output    # 返回 tokens 使用量
+```
+
+###### 流式输出
+
+流式输出
+- LangChain在支持代理封装ChatGPT接口的基础上，也同样地把ChatGPT API接口的流式数据返回集成了进来
+
+```py
+from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI, ChatAnthropic
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler # 流式
+from langchain.schema import HumanMessage
+# streaming
+llm = OpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=0)
+resp = llm("Write me a song about sparkling water.")
+```
+
+###### 缓存
+
+缓存LLM的结果
+- 调用ChatGPT的API接口往往会存在网络延时的情况
+- 为了更优雅的实现LLM语言生成模型，LangChain同时提供了数据缓存的接口如果用户问了**同样的问题**，LangChain支持直接将所缓存的数据直接响应
+
+```py
+import langchain
+from langchain.cache import InMemoryCache # 启动缓存
+langchain.llm_cache = InMemoryCache()
+
+# To make the caching really obvious, lets use a slower model.
+llm = OpenAI(model_name="text-davinci-002", n=2, best_of=2)
+```
+
+###### 异步返回
+
+异步返回
+- 构建复杂的LLM模型调用链时，往往存在接口的**多次调用**，而且并不能保证接口的实时性返回
+- 这时可以使用接口**异步返回**的模型来提升功能的服务质量，系统的性能
+
+```py
+import time
+import asyncio # 异步
+
+from langchain.llms import OpenAI
+
+def generate_serially():
+    llm = OpenAI(temperature=0.9)
+    for _ in range(10):
+        resp = llm.generate(["Hello, how are you?"])
+        print(resp.generations[0][0].text)
+
+async def async_generate(llm):
+    resp = await llm.agenerate(["Hello, how are you?"])
+    print(resp.generations[0][0].text)
+
+async def generate_concurrently():
+    llm = OpenAI(temperature=0.9)
+    tasks = [async_generate(llm) for _ in range(10)]
+    await asyncio.gather(*tasks)
+
+
+s = time.perf_counter()
+# If running this outside of Jupyter, use asyncio.run(generate_concurrently())
+await generate_concurrently()
+elapsed = time.perf_counter() - s
+print('\033[1m' + f"Concurrent executed in {elapsed:0.2f} seconds." + '\033[0m')
+
+s = time.perf_counter()
+generate_serially()
+elapsed = time.perf_counter() - s
+print('\033[1m' + f"Serial executed in {elapsed:0.2f} seconds." + '\033[0m')
+```
+
+###### 多模型融合
+
+整合多个模型
+- 作为LangChain中的核心模块，LangChain不止支持简单的LLM，从简单的文本生成功能、会话聊天功能以及文本向量化功能均集成，并且将其封装成一个一个的链条节点
+- （1）大语言模型
+- （2）聊天模型: OpenAI所提供的多角色聊天，允许用户设定信息归属不同的角色，从而丰富用户的聊天背景，构造出更加拟人化的聊天效果
+- （3）语言向量化模型
+
+OpenAI
+
+```py
+import os
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+from langchain.llms import OpenAI
+from langchain import PromptTemplate, LLMChain
+
+template = """Question: {question}
+Answer: Let's think step by step."""
+prompt = PromptTemplate(template=template, input_variables=["question"])
+llm = OpenAI()
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
+llm_chain.run(question)
+```
+
+角色设置
+
+```py
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    AIMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
+
+chat = ChatOpenAI(temperature=0)
+
+messages = [
+    SystemMessage(content="You are a helpful assistant that translates English to French."),
+    HumanMessage(content="Translate this sentence from English to French. I love programming.")
+]
+chat(messages)
+```
+
+模板化编排
+
+```py
+template="You are a helpful assistant that translates {input_language} to {output_language}."
+system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+human_template="{text}"
+human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+
+chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+
+# get a chat completion from the formatted messages
+chat(chat_prompt.format_prompt(input_language="English", output_language="French", text="I love programming.").to_messages())
+```
+
+Azure OpenAI
+
+```py
+import os
+os.environ["OPENAI_API_TYPE"] = "azure"
+os.environ["OPENAI_API_VERSION"] = "2022-12-01"
+os.environ["OPENAI_API_BASE"] = "..."
+os.environ["OPENAI_API_KEY"] = "..."
+# Import Azure OpenAI
+from langchain.llms import AzureOpenAI
+# Create an instance of Azure OpenAI
+# Replace the deployment name with your own
+llm = AzureOpenAI(
+    deployment_name="td2",
+    model_name="text-davinci-002",
+)
+# Run the LLM
+llm("Tell me a joke")
+```
+
+Hugging Face Hub
+
+```py
+import os
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACEHUB_API_TOKEN
+
+from langchain import HuggingFaceHub
+
+repo_id = "google/flan-t5-xl" # See https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads for some other options
+llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0, "max_length":64})
+
+from langchain import PromptTemplate, LLMChain
+
+template = """Question: {question}
+Answer: Let's think step by step."""
+prompt = PromptTemplate(template=template, input_variables=["question"])
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+question = "Who won the FIFA World Cup in the year 1994? "
+print(llm_chain.run(question))
 ```
 
 
@@ -1548,6 +1788,11 @@ Prompt模板十分有用
 ```py
 from langchain import PromptTemplate
 
+# 【无变量模板】An example prompt with no input variables
+no_input_prompt = PromptTemplate(input_variables=[], template="Tell me a joke.")
+no_input_prompt.format()
+# -> "Tell me a joke."
+# 【有变量模板】
 name_template = """
 我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.
 关于{name_description},好听的名字有哪些?
@@ -1557,7 +1802,66 @@ prompt_template = PromptTemplate(input_variables=["name_description"], template=
 description = "男孩名字"
 print(prompt_template.format(name_description=description))
 # 我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.关于男孩名字,好听的名字有哪些?
+# 【多变量模板】
+# An example prompt with multiple input variables
+multiple_input_prompt = PromptTemplate(
+    input_variables=["adjective", "content"],
+    template="Tell me a {adjective} joke about {content}."
+)
+multiple_input_prompt.format(adjective="funny", content="chickens")
+# -> "Tell me a funny joke about chickens."
 ```
+
+FewShot PromptTemplate
+- 模板可以根据语料库中的内容进行匹配，最终可按照特定的格式匹配出**样例**中的内容。
+
+```py
+from langchain.prompts.few_shot import FewShotPromptTemplate
+from langchain.prompts.prompt import PromptTemplate
+
+examples = [
+  {
+    "question": "Who lived longer, Muhammad Ali or Alan Turing?",
+    "answer":
+"""
+Are follow up questions needed here: Yes.
+Follow up: How old was Muhammad Ali when he died?
+Intermediate answer: Muhammad Ali was 74 years old when he died.
+Follow up: How old was Alan Turing when he died?
+Intermediate answer: Alan Turing was 41 years old when he died.
+So the final answer is: Muhammad Ali
+"""
+  },
+  {
+    "question": "When was the founder of craigslist born?",
+    "answer":
+"""
+Are follow up questions needed here: Yes.
+Follow up: Who was the founder of craigslist?
+Intermediate answer: Craigslist was founded by Craig Newmark.
+Follow up: When was Craig Newmark born?
+Intermediate answer: Craig Newmark was born on December 6, 1952.
+So the final answer is: December 6, 1952
+"""
+  }
+]
+
+example_prompt = PromptTemplate(input_variables=["question", "answer"], template="Question: {question}\n{answer}")
+print(example_prompt.format(**examples[0]))
+```
+
+```s
+=========================
+Question: Who lived longer, Muhammad Ali or Alan Turing?
+
+Are follow up questions needed here: Yes.
+Follow up: How old was Muhammad Ali when he died?
+Intermediate answer: Muhammad Ali was 74 years old when he died.
+Follow up: How old was Alan Turing when he died?
+Intermediate answer: Alan Turing was 41 years old when he died.
+So the final answer is: Muhammad Ali
+```
+
 
 ##### （3）Indexes（索引）：文档结构化
 
@@ -1579,6 +1883,81 @@ Indexes（索引）：文档结构化方式, 以便LLM更好的交互
 - `向量存储器`：存储提取的文本向量，包括Faiss、Milvus、Pinecone、Chroma等。
 - `向量检索器`：通过用户输入的文本，检索器负责从底库中检索出特定相关度的文档。度量准则包括余弦距离、欧式距离等。
 
+
+数据源加载
+
+```py
+# 🎨 加载B站（BiliBili）视频数据
+#!pip install bilibili-api
+from langchain.document_loaders.bilibili import BiliBiliLoader
+loader = BiliBiliLoader(
+    ["https://www.bilibili.com/video/BV1xt411o7Xu/"]
+)
+loader.load()
+
+# 🎨 加载CSV数据
+from langchain.document_loaders.csv_loader import CSVLoader
+
+loader = CSVLoader(file_path='./example_data/mlb_teams_2012.csv')
+
+data = loader.load()
+
+# 🎨 加载Email数据
+#!pip install unstructured
+from langchain.document_loaders import UnstructuredEmailLoader
+loader = UnstructuredEmailLoader('example_data/fake-email.eml')
+data = loader.load()
+
+# 🎨 加载电子书Epub数据
+#!pip install pandocs
+from langchain.document_loaders import UnstructuredEPubLoader
+loader = UnstructuredEPubLoader("winter-sports.epub", mode="elements")
+data = loader.load()
+
+# 🎨 加载Git数据
+# !pip install GitPython
+
+from git import Repo
+repo = Repo.clone_from(
+    "https://github.com/hwchase17/langchain", to_path="./example_data/test_repo1"
+)
+branch = repo.head.reference
+
+from langchain.document_loaders import GitLoader
+loader = GitLoader(repo_path="./example_data/test_repo1/", branch=branch)
+data = loader.load()
+
+# 🎨 加载HTML数据
+from langchain.document_loaders import UnstructuredHTMLLoader
+
+loader = UnstructuredHTMLLoader("example_data/fake-content.html")
+
+data = loader.load()
+
+# 🎨 加载Image图片数据
+#!pip install pdfminer
+
+from langchain.document_loaders.image import UnstructuredImageLoader
+loader = UnstructuredImageLoader("layout-parser-paper-fast.jpg")
+data = loader.load()
+
+# 🎨 加载Word文档数据
+from langchain.document_loaders import Docx2txtLoader
+loader = Docx2txtLoader("example_data/fake.docx")
+
+data = loader.load()
+# [Document(page_content='Lorem ipsum dolor sit amet.', metadata={'source': 'example_data/fake.docx'})]
+
+# 🎨 加载PDF文件数据
+# !pip install pypdf
+
+from langchain.document_loaders import PyPDFLoader
+
+loader = PyPDFLoader("example_data/layout-parser-paper.pdf")
+pages = loader.load_and_split()
+pages[0]
+```
+
 示例
 
 ```py
@@ -1588,7 +1967,7 @@ from langchain.llms import OpenAI
 # 指定要使用的文档加载器
 from langchain.document_loaders import TextLoader
 documents = TextLoader('../state_of_the_union.txt', encoding='utf8')
-# 接下来，我们将文档拆分成块。
+# 接下来将文档拆分成块。
 from langchain.text_splitter import CharacterTextSplitter
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 texts = text_splitter.split_documents(documents)
