@@ -447,6 +447,59 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
 
 
+## Prompt质量评估
+
+原本 AI 模型的工作思路从“**魔改**”变为了基于 Prompt 的**上下文学习**（In-context Learning, `ICL`），即
+- 通过使用 **Prompt** 以及一组**示例**来指导一个大模型执行任务。
+
+ ICL 这种方式之下，Prompt 的设计至关重要
+
+### 奥本大学
+
+【2023-6-6】[GPT-4使用效果不好？美国奥本大学提出Prompt分类法，另辟蹊径构建Prompt设计指南](https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247552652&idx=2&sn=189aca99e5b7a16cf8b0fe260192be2c&scene=21#wechat_redirect)
+
+
+### 普林斯顿评测
+
+【2023-7-19】[放弃评测大模型，普林斯顿大学已经开始评估Prompt了，提出Prompt评估框架](https://mp.weixin.qq.com/s/UxrBcPFPn8gvT6tKmLS7CQ)
+- [InstructEval: Systematic Evaluation of Instruction Selection Methods](https://arxiv.org/pdf/2307.00259.pdf)
+
+目前常用的 **Prompt 设计法** 只希望在不同场景下**选择哪些 Prompt**，却没有对 **Prompt 如何影响大模型的输出效果**进行充分的研究。
+
+普林斯顿大学的研究者们开发了一个 ICL 效果的评估方法，以更好的评测不同 Prompt 设计的效果，从而给出更加客观真实的 Prompt 设计方案
+
+这套方法包含了 **4 类**共计 13 个不同的系列大规模语言模型（Model Families），3 大类分 9 种不同的任务（Tasks）以及 7 种不同的 Prompt 选择法，从 5 个与 ICL 相关的目标对 Prompt 选择法进行评价。
+
+整套评估方法允许**任意Prompt 输入**，一个完整的 Prompt 由`指令`（Instruction），`阐释`（Solved Demonstrations）以及一个未解决的`测试用例`（Unsolved Test Example）组成
+
+Prompt 方法评测
+
+论文主要从`准确率`与`敏感性`两个方面对 Prompt 进行评估
+- 准确率方面，论文从 **Zero-shot 准确率**，**Few-shot 准确率**以及**扰动准确率**（Perturbation accuracy）三个指标出发度量 Prompt 对任务准确率的影响，其中, 扰动准确率论文通过向 Prompt 中随机的引入大写、间距、缩写以及常见的拼写错误来度量 Prompt 的稳定性。
+- 此外，论文还考虑了选择`敏感度`（Selectional sensitivity）以及`置换敏感度`（Permutational sensitivity）以以衡量 Prompt 对阐释排列顺序的敏感性。针对 N 个模型以及 M 个数据集，每个指标可以获得 N * M 个值，论文定义了一种名为“**平均相对增益**（Mean Relative Gain）”的方法聚合准确度指标，又使用平均值指标聚合敏感性指标。
+
+Prompt 生成方式可以被分为三大类，分别是**任务无关方法**、**任务相关的手动方法**以及**任务相关的自动方法**，其中：
+- **任务无关的方法**非常简单，即使用不包含任何特定任务信息的 Prompt，如：
+  - Null instruction：不添加任务描述，Prompt 直接由阐释与一个待解决测试用例组成
+  - Generic instructions：添加一些通用的描述，如“完成以下任务”等
+- 而**任务相关的手动方法**即人工编写特定与任务的 Prompt：
+  - PromptSource：PromptSource 是一个公开的收集了在 170 个数据集上超过 2000 个手动设计的高质量 Prompt 模板的 Github 项目，论文使用 PromptSource 作为手动方法的资源
+  - Ad hoc：即通过 ChatGPT 生成几个特定于任务的 Prompt 来模拟人工编写 Prompt 的过程
+- 最后，**任务相关的自动方法**包含 3 种流行的自动 Prompt 生成方式：
+  - Low Perplexity：由 Gonen 等人提出的根据最小困惑度选择 ChatGPT 生成的 Prompt 方法
+  - APE：由 Zhou 等人提出的自动少样本 Prompt 生成方法，通过 OpenAI DaVinci 自动生成指令，并依据其在几个验证示例中的准确度对 Prompt 方法进行选择与改进
+  - RLPrompt：由 Deng 等人提出的基于强化学习的少样本 Prompt 自动生成方法
+
+分析
+- Few-shot 中，**任务无关**的方法表现相对更好，并且 Null instruction 有时也会比 Generic instructions 方法更好。
+- Zero-shot 下，**任务相关**的方法表现更佳，PromptSource 成为最佳方法，而 Low Perplexity、APE 以及 RLPrompt 则普遍低于平均水平，这似乎表明，简单的 Prompt 设计方法往往表现了更好的准确性
+
+对比敏感性指标
+- 在 Zero-shot 以及 Few-shot 设置下，不同任务之间在选择、排列的变化有显著的差异
+
+任务无法的方法与 PromptSource 的表现最好，并且大模型在每个任务类型中的平均相对增益值的变化范围要比小模型要小，这表明
+- 大模型能够更好的理解任务语义，而小模型对 Prompt 更加**敏感**。
+
 ## 提示词对抗
 
 * [Prompt工程-对抗性提示](https://github.com/wangxuqi/Prompt-Engineering-Guide-Chinese/blob/main/guides/prompts-adversarial.md)
