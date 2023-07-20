@@ -20,7 +20,6 @@ permalink: /pe
 
 ## 什么是 Prompt
 
-
 提示工程是一门新兴学科，为大语言模型（LLM）设计的"语言游戏"。
 - 通过这个"游戏"，更有效地引导 LLM 来处理问题。只有熟悉了这个游戏的规则，才能更清楚地认识到 LLM 的能力和局限。
 - 这个"游戏"不仅帮助理解 LLM，也是提升 LLM 能力的途径。
@@ -477,6 +476,12 @@ TELeR 将 Prompt 视为提示数据（Data）与提示指引(Directive)的组合
 
 【2023-7-19】[放弃评测大模型，普林斯顿大学已经开始评估Prompt了，提出Prompt评估框架](https://mp.weixin.qq.com/s/UxrBcPFPn8gvT6tKmLS7CQ)
 - [InstructEval: Systematic Evaluation of Instruction Selection Methods](https://arxiv.org/pdf/2307.00259.pdf)
+- 普林斯顿 NLP GitHub: [Princeton Natural Language Processing](https://github.com/princeton-nlp/), 已知知名项目
+  - 2021, [SimCSE](https://github.com/princeton-nlp/SimCSE), 陈丹琦
+  - [tree-of-thought-llm](https://github.com/princeton-nlp/tree-of-thought-llm)
+  - 2022, [TRIME](https://github.com/princeton-nlp/TRIME): EMNLP 2022 [Training Language Models with Memory Augmentation](https://arxiv.org/abs/2205.12674)
+
+
 
 目前常用的 **Prompt 设计法** 只希望在不同场景下**选择哪些 Prompt**，却没有对 **Prompt 如何影响大模型的输出效果**进行充分的研究。
 
