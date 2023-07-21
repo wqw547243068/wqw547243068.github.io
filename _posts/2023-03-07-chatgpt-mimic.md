@@ -1646,7 +1646,24 @@ YaLM 100B是一个类似 GPT 的神经网络，用于生成和处理文本。
 更多大模型
 - [大模型图表](https://www.toutiao.com/w/1767234698845188)
 
-### LLM 进化图谱
+#### 模型结构对比
+
+LLaMA, ChatGLM, Baichuan 对比
+- 【2023-7-20】[参考](https://zhuanlan.zhihu.com/p/644815089)
+
+| 模型名称 | 参数 | 隐藏层维度 | 层数 | 注意力头数 | 训练数据 | 位置编码 | 激活函数 | 归一化方法 | 注意力机制 | 词表大小 | 最大长度 |
+| LLaMA | 6.7B | 4096 | 32 | 32 | 1T | RoPE | SwiGLU | RMSNorm（pre-norm) <br>Attention Layer和MLP的输入上使用 | 多头注意力机制(MHA) | 32000 | 2048 |
+| LLaMA | 13.0B | 5120 | 40 | 40 | 1T | RoPE | SwiGLU | RMSNorm（pre-norm)<br>Attention Layer和MLP的输入上使用 | 多头注意力机制(MHA) | 32000 | 2048 |
+| LLaMA | 32.5B | 6656 | 60 | 52 | 1.4T | RoPE | SwiGLU | RMSNorm（pre-norm)<br>Attention Layer和MLP的输入上使用 | 多头注意力机制(MHA) | 32000 | 2048 |
+| LLaMA | 65.2B | 8192 | 80 | 64 | 1.4T | RoPE | SwiGLU | RMSNorm（pre-norm)<br>Attention Layer和MLP的输入上使用 | 多头注意力机制(MHA) | 32000 | 2048 |
+| LLaMA2 | - | - | - | - | 2.0T | RoPE | SwiGLU | RMSNorm（pre-norm)<br>Attention Layer和MLP的输入上使用 | Group Query Attention | - | 4096 |
+| ChatGLM-6B | 6.2B | 4096 | 28 | 32 | 1T | RoPE 2d位置编码 | GELU | layer norm（post-norm) | 多头注意力机制(MHA) | 130528 | 2048 |
+| ChatGLM2-6B | 6.2B | 4096 | 28 | 32 | 1.4T | RoPE 推理时，舍弃2d位置编码，回归decoder-only | SwiGLU | RMSNorm（post-norm) | Multi-Query Attention （MQA） | 65024 | 32768 |
+| Baichuan-7b | 7B | 4096 | 32 | 32 | 1.2T | RoPE | SwiGLU | RMSNorm（pre-norm) | 多头注意力机制(MHA) | 64,000 | 4096 |
+| Baichuan-13b | 13B | 5120 | 40 | 40 | 1.4T | ALiBi | silu | RMSNorm（pre-norm) | 多头注意力机制(MHA) | 64,000 | 4096 |
+
+
+#### LLM 进化图谱
 
 【2023-6-20】总结各大模型演进关系
 
