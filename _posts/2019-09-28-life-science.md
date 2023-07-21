@@ -227,6 +227,10 @@ permalink: /science
 
 - 【2020-6-21】[我们的祖先原来是条鱼，人类的伟大进化史](https://www.ixigua.com/i6815550089914745351/)
 
+【2023-7-21】人类艰险进化史
+- [视频](https://v.ixigua.com/iqbFRvB)
+- <iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7253003137412399676?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
+
 
 ### 生命真的来自进化论吗
 
