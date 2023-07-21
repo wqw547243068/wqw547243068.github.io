@@ -469,6 +469,51 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
  ICL 这种方式之下，Prompt 的设计至关重要
 
+### PromptBench 评测基准
+
+【2023-7-20】[PromptBench: 首个大语言模型提示鲁棒性的评测基准](https://mp.weixin.qq.com/s/ACC5-9O8dCP1ShWH0IM9FQ)
+- ![](https://github.com/microsoft/promptbench/raw/main/imgs/promptbench.png)
+
+Prompt(提示词)是连接人类和LLMs的一座桥梁，帮助我们以自回归(Auto-regressive)的方法进行上下文学习(In-context Learning)
+- 大模型对 「Prompt (提示词)」非常敏感，同样的prompt可能写错个单词、写法不一样，都会出现不一样的结果。
+- 业界评估LLMs的性能时，往往忽略了提示的鲁棒性。
+
+如何写合适的提示词？
+- 微软构建了「PromptBench」，探究大模型在处理`对抗提示`(adversarial prompts)的鲁棒性。
+  - [PromptBench: Towards Evaluating the Robustness of Large Language Models on Adversarial Prompts](https://arxiv.org/abs/2306.04528)
+  - code: [promptbench](https://github.com/microsoft/promptbench)
+- 此外，用 Attention「**可视化分析**」了对抗提示的输入关注分布，并且对不同模型产生的对抗提示进行看「迁移性分析」，最后对鲁棒提示和敏感提示的词频进行了分析，以帮助终端用户更好地写作prompt。
+- ![](https://github.com/microsoft/promptbench/raw/main/imgs/attention.png)
+
+考虑到大模型计算梯度的效率以及黑盒性，采用「`黑盒攻击算法`」(Black-box attacks)。攻击涵盖了四个不同的层次，包括从简单的字符操作到复杂的语义修改。
+- 「字符级别」：TextBugger、DeepWordBug，这两类方法通过在单词中添加错别字来改变文本。
+- 「单词级别」：BertAttack、TextFooler，这两类方法试图用同义词或上下文相似的词来替换原词，从而欺骗LLMs。
+- 「句子级别」：StressTest、CheckList，这两类方法通过在提示的末尾添加无关的或多余的句子，试图分散LLMs的注意力。
+- 「语义级别」：模拟了来自不同国家的人的语言行为，选择了六种常见的语言(中文，法语，阿拉伯语，西班牙语，日语和韩语)，并为每种语言构造了十个提示，然后将这些提示翻译成英文，引入了可能影响LLMs的语言细微差异。
+
+CV领域中的对抗攻击要求生成的对抗样本人眼几乎难以察觉(imperceptible)。同样的，提示攻击生成的「对抗提示也要求处于人类可接受的范围」。因此攻击提示时，加强了对各个attack的语义约束。这也是为什么我们要使用`黑盒攻击`算法，因为黑盒通常操作于**Word层面**，而`白盒攻击`则操作在**Token**(Subword)层面，很有可能攻击后两个token组合的单词没有实际含义。同时选取了五个志愿者(小白鼠)进行了一次人工测试，结果显示这些生成的提示至少有70%被人接受，这说明攻击是现实的、有意义的。
+
+8种不同的NLP任务，包括：
+- 情感分析(SST-2)、语法错误识别(CoLA)、重复语句检测(QQP、MPRC)、自然语言推理(MNLI、QNLI、RTE、WNLI)、多任务知识(MMLU)、阅读理解(SQuAD V2)、翻译(UN Multi、IWSLT 2017)和数学(Mathematic)。
+
+初步选取了8个模型进行测试，从小到大分别是：
+- Flan-T5-large (0.8B)、Dolly-v1-6B、Cerebras-13B、LLaMa-13B、Vicuna-13B、GPT-NEOX-20B、Flan-UL2 (20B)、ChatGPT。
+
+经过测试
+- Dolly-v1-6B、Cerebras-13B、LLaMa-13B、GPT-NEOX-20B 在部分数据集上的表现十分差劲(0%的准确率，Appendix D.2) ，因此没有必要再进行攻击了。
+- 最终 Flan-T5-large (0.8B)、Vicuna-13B、Flan-UL2 (20B)、ChatGPT 胜出，获得被提示攻击的权利(bushi)。
+
+关键的结果
+- 首先，「不同种类的攻击的有效性差距很大」，其中 **word-level**的攻击最强，导致所有数据集的平均性能下降33%。**字符级别**的攻击排名第二，导致大部分数据集的性能下降20%。值得注意的是，**语义级别**的攻击与字符级别的攻击几乎具有相当的效力，这强调了微妙的语言变化对LLMs性能的深远影响。相反，**句子级别**的攻击威胁最小。
+- 此外，观察到在数据集之间，甚至在涉及相同任务的数据集中，APDR都有显著的变化。例如，对MMLU的StressTest攻击只导致性能下降3%，而在MRPC上则导致20%的下降。
+- 此外在QQP数据集中，StressTest攻击反而 「提高」了模型的鲁棒性。最后，同一种类的攻击方法对不同提示的攻击结果有较大的差异，从而产生了显著的标准差。需要注意的是，虽然字符级别的攻击可以通过语法检测工具来检测，但词级别和语义级别的攻击强调了对LLMs的鲁棒语义理解和准确的任务描述/翻译的重要性。
+- UL2的鲁棒性明显优于其他模型，其次是T5和ChatGPT，Vicuna的鲁棒性最差。
+
+可能的对策。
+1. 输入预处理：直接检测和处理可能的对抗样本，如检测错别字、无关的序列，并提高提示的清晰度和简洁度。
+2. 在预训练中包含低质量数据：低质量数据可以作为可能的对抗样本，在预训练中包含低质量数据可能会对多样化的输入有更好的理解。
+3. 探索改进的微调方法：研究更佳的微调技术可能会提高鲁棒性。正如我们之前展示的，比如T5和UL2模型比ChatGPT的鲁棒性更好，这暗示了大规模监督微调的潜在优势。
+
 ### 奥本大学: prompt 分类法
 
 【2023-6-6】[GPT-4使用效果不好？美国奥本大学提出Prompt分类法，另辟蹊径构建Prompt设计指南](https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247552652&idx=2&sn=189aca99e5b7a16cf8b0fe260192be2c&scene=21#wechat_redirect)
