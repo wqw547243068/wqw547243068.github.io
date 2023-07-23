@@ -1370,6 +1370,11 @@ LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，�
 - ![img](https://aitechtogether.com/wp-content/uploads/2023/05/c8538d73-3b21-4a6e-8e83-845477d3f275.webp)
 - ![](https://picx.zhimg.com/v2-b048e039fd396b131767f58b9c97a37b_1440w.jpg?source=172ae18b)
 
+论文《[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/pdf/2210.03629.pdf)》的实现：
+- 该论文展示了一种**提示**技术，允许模型「推理」（通过思维链）和「行动」（通过能够使用预定义工具集中的工具，例如能够搜索互联网）。
+
+LangChain 在没有任何收入也没有任何明显的创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
+
 LangChain 构建的有趣应用程序包括（但不限于）：
 - 聊天机器人
 - 特定领域的总结和问答
@@ -1410,6 +1415,27 @@ flow = load_flow_from_json("path/to/flow.json")
 # Now you can use it like any chain
 flow("Hey, have you heard of LangFlow?")
 ```
+
+
+#### LangChain 观点
+
+【2023-7-23】[我为什么放弃了 LangChain？](https://zhuanlan.zhihu.com/p/645345926)
+
+由 LangChain 推广的 ReAct 工作流在 InstructGPT/text-davinci-003 中特别有效，但成本很高，而且对于小型项目来说并不容易使用。
+
+「LangChain 是 RAG 最受欢迎的工具，所以我想这是学习它的最佳时机。我花了一些时间阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
+
+经过一周的研究，我一无所获。运行 LangChain 的 demo 示例确实可以工作，但是任何调整它们以适应食谱聊天机器人约束的尝试都会失败。在解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，我没有找到任何解决方案。用回了低级别的 ReAct 流程，它立即在对话质量和准确性上超过了我的 LangChain 实现
+
+LangChain 的问题在于它让简单的事情变得相对复杂，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
+- LangChain 使用的代码量与仅使用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
+- LangChain 吹嘘的提示工程只是 f-strings，一个存在于每个 Python 安装中的功能，但是有额外的步骤。为什么我们需要使用这些 PromptTemplates 来做同样的事情呢？
+- 真正想做的是：如何创建 Agent，结合了迫切想要的 ReAct 工作流。而LangChain示例里每个思想 / 行动 / 观察中都使用了自己的 API 调用 OpenAI，所以链条比你想象的要慢。
+- LangChain 如何存储到目前为止的对话?
+
+制作自己的 Python 软件包要比让 LangChain 来满足自己的需求容易得多
+
+LangChain 确实也有很多实用功能，比如文本分割器和集成向量存储，这两种功能都是「用 PDF / 代码聊天」演示不可或缺的（在我看来这只是一个噱头）。
 
 #### LangChain 组件
 
