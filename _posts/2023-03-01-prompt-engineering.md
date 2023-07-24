@@ -74,8 +74,6 @@ temperature和top_p是两个重要参数。
 
 ### Prompt 示例
 
-
-
 一种经典的Prompt构成是：
 > 先描述这个任务，然后说明需要怎样的输出，最后跟上需要处理的内容。
 
@@ -105,6 +103,24 @@ reason: 这次生成随机数的原因
 
 鉴于把人类描述需求的自然语言转换成「机器语言」这么复杂，诞生了一门新的学科：Prompt Engineering，通过调整Prompt来控制ChatGPT生成文本的技能。掌握了Prompt Engineer这项技能，就可以更加灵活地使用ChatGPT等AI大模型的能力，生成更为精准的内容。
 
+### prompt 分类
+
+【2023-7-24】[Prompt Engineering: Get LLMs to Generate the Content You Want](https://thenewstack.io/prompt-engineering-get-llms-to-generate-the-content-you-want/)
+
+Some of the common types of prompts used with current LLMs.
+- `Explicit prompts` 显性提示： 方向清洗、准确
+  - 示例: <font style='color:blue'>Write a short story about a young girl who discovers a magical key that unlocks a hidden door to another world.</span>
+  - This explicit prompt clearly outlines the story’s **topic**, **setting**, and **main element**, providing the LLM with specific instructions on what to generate
+- `Conversational prompts` 对话式提示：用自然语言聊天, LLM输出结果更加自然、流畅，适合需要多次交互的场景
+  - 示例: <font style='color:blue'>Hey, Bard! Can you tell me a funny joke about cats?</span>
+- `Context-based prompts` 上下文提示：提供领域术语、背景知识，便于LLM更好的理解对话主题，适合内容创作
+  - 示例：<font style='color:blue'>I’m planning a trip to New York next month. Can you give me some recommendations for popular tourist attractions, local restaurants, and off-the-beaten-path spots to visit?</span>
+- `Open-ended prompts` 开放提示: 未限制主题、角度, 鼓励LLM输出更长、更细节的回复，适合创造类、讲故事、出主意类写作
+  - 示例：<font style='color:blue'>Tell me about the impact of technology on society.</span>
+- `Bias-mitigating prompts` 偏见预防提示： 通过提示（多种观点/提供事实依据等）防止LLM输出偏见
+  - 示例：<font style='color:blue'>Please generate a response that presents a balanced and objective view of the following topic: caste-based reservations in India. Consider providing multiple perspectives and avoid favoring any particular group, ideology, or opinion. Focus on presenting factual information, supported by reliable sources, and strive for inclusivity and fairness in your response</span>
+- `Code-generation prompts` 代码生成提示：
+  - 示例：Write a Python function that takes in a list of integers as input and returns the sum of all the even numbers in the list
 
 ## Prompt编写
 
@@ -457,9 +473,29 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
   - I told it that the answer was incorrect and it then apologized, and found the correct answer.
 
 
+## prompt 自动生成
+
+
+### 2022.6 Repo-Level Prompt Generator
+
+【2022-6-26】[Repository-Level Prompt Generation for Large Language Models of Code](https://arxiv.org/abs/2206.12839)
+- 提出自动生成框架 [Repo-Level Prompt Generator](https://github.com/shrivastavadisha/repo_level_prompt_generation): learns to generate example-specific prompts using prompt proposals
+- 无法访问 LLM 权重, 黑盒
+- 在 codex 上执行单行代码补全实验
+
+
 ## 图像提示词
 
 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
+
+
+### 视觉 prompt 自动生成
+
+【2023-7-24】[Transfer Visual Prompt Generator across LLMs](https://arxiv.org/abs/2305.01278)
+- 首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
+- 提出简单高效的迁移框架 [VPGTrans](https://github.com/VPGTrans/VPGTrans), 包含两个阶段
+- ![](https://github.com/VPGTrans/VPGTrans/raw/main/figs/VPGTrans.png)
+
 
 
 ## Prompt质量评估
