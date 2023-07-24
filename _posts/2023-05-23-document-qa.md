@@ -1381,9 +1381,11 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - 查询数据库以获取信息然后处理它们的应用程序
 - 解决特定问题的代理，例如数学和推理难题
 
+#### 文档介绍
+
 - [官方文档](https://python.langchain.com/en/latest/index.html)
 - [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
-- [Github](https://github.com/hwchase17/langchain )(已经有4W多的star)
+- Github: [python版本](https://github.com/hwchase17/langchain )(已经有4W多的star), [go语言版](https://github.com/tmc/langchaingo)
 - [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
 
 
