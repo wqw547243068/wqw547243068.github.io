@@ -475,6 +475,24 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
 ## prompt 自动生成
 
+[Automatic Prompt Engineer (APE)](https://www.promptingguide.ai/techniques/ape)
+
+
+### 2020 AutoPrompt
+
+
+AutoPrompt: Automatic Prompt Construction for Masked Language Models.
+
+An automated method based on gradient-guided search to create prompts for a diverse set of NLP tasks. [AutoPrompt](https://github.com/ucinlp/autoprompt) demonstrates that masked language models (MLMs) have an innate ability to perform sentiment analysis, natural language inference, fact retrieval, and relation extraction. Check out our website for the paper and more information.
+
+- 伯克利 [AUTOPROMPT: Eliciting Knowledge from Language Models with Automatically Generated Prompts](https://arxiv.org/pdf/2010.15980.pdf)
+
+
+### 2022 PromptGen 百度
+
+PromptGen is the first work considering dynamic prompt generation for knowledge probing, based on a pre-trained generative model.
+- [PromptGen: Automatically Generate Prompts using Generative Models](https://aclanthology.org/2022.findings-naacl.3.pdf)
+- 动态prompt生成的第一篇文章
 
 ### 2022.6 Repo-Level Prompt Generator
 
@@ -482,6 +500,13 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 - 提出自动生成框架 [Repo-Level Prompt Generator](https://github.com/shrivastavadisha/repo_level_prompt_generation): learns to generate example-specific prompts using prompt proposals
 - 无法访问 LLM 权重, 黑盒
 - 在 codex 上执行单行代码补全实验
+
+### 2022.11.3 APE
+
+- [Large Language Models Are Human-Level Prompt Engineers](https://arxiv.org/abs/2211.01910)
+- propose automatic prompt engineer (APE) a framework for automatic instruction generation and selection. The instruction generation problem is framed as natural language synthesis addressed as a black-box optimization problem using LLMs to generate and search over candidate solutions.
+
+![](https://www.promptingguide.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FAPE.3f0e01c2.png&w=828&q=75)
 
 
 ## 图像提示词
