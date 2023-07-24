@@ -1695,6 +1695,21 @@ LLaMA, ChatGLM, Baichuan 对比
 | Baichuan-13b | 13B | 5120 | 40 | 40 | 1.4T | ALiBi | silu | RMSNorm（pre-norm) | 多头注意力机制(MHA) | 64,000 | 4096 |
 
 
+主流的开源大语言模型主要有三个：LLaMA、ChatGLM和BLOOM， 从训练数据、tokenizer和模型结构上对这三个大语言模型进行[比较](https://zhuanlan.zhihu.com/p/635710004)。
+
+| 模型	| 训练数据	| 训练数据量	| 模型参数量	| 词表大小 |
+| ---	| ---	| ---	| ---	| --- |
+| LLaMA	| 以英语为主的拉丁语系，不包含中日韩文 |	1T/1.4T tokens |	7B、13B、33B、65B	 | 32000 |
+| ChatGLM-6B	| 中英双语，中英文比例为1:1	| 1T tokens |	6B	| 130528 |
+| Bloom	| 46种自然语言和13种编程语言，包含中文 |	350B tokens	| 560M、1.1B、1.7B、3B、7.1B、176B	| 250880 |
+
+
+| 模型	| 模型结构	| 位置编码	| 激活函数	| layer norm |
+| ---	| ---	| ---	| ---	| --- |
+| LLaMA	| Casual decoder |	RoPE	| SwiGLU	| Pre RMS Norm |
+| ChatGLM-6B	| Prefix decoder	| RoPE	| GeGLU	Post Deep Norm |
+| Bloom	| Casual decoder	| ALiBi	| GeLU	| Pre Layer Norm |
+
 #### LLM 进化图谱
 
 【2023-6-20】总结各大模型演进关系
@@ -2159,6 +2174,19 @@ train_prompts
 - Meta半开源的llama，也看了下国内大佬开源的[RWKV](https://github.com/BlinkDL/ChatRWKV)
 
 一位研究人员利用Meta泄露的LLaMA，创建了一个完全不受限制的「BasedGPT」聊天机器人。Discord上的这个聊天机器人经常会做出极端且愚蠢的回答。没有ChatGPT那么好，这是肯定的，但话说回来，它使用的计算能力少了1000倍。[参考](https://www.toutiao.com/article/7209928157732864552)
+
+#### LLaMA 模型结构
+
+LLaMA模型结构与GPT相同，采用了causal decoder-only的transformer模型结构。在模型细节上，做了以下几点改动：
+- layer normalization：为了提升训练的稳定性，没有使用传统的post layer norm，而是使用了pre layer Norm。具体地，去除了layer normalization中的偏置项，采用了RMS Norm（即均方根 Norm）。
+- 激活函数：没有采用ReLU激活函数，而是采用了SwiGLU激活函数。FFN通常有两个权重矩阵，先将向量从维度d升维到中间维度4d，再从4d降维到d。而使用SwiGLU激活函数的FFN增加了一个权重矩阵，共有三个权重矩阵，为了保持参数量一致，中间维度采用了 
+2/3*4d ，而不是4d。
+- 位置编码：去除了绝对位置编码，采用了旋转位置编码RoPE。
+
+LLaMA的训练目标是语言模型，即根据已有的上文去预测下一个词。
+
+关于tokenizer，LLaMA的训练语料以英文为主，使用了Sentence Piece作为tokenizer，词表大小只有32000。词表里的中文token很少，只有几百个，LLaMA tokenizer对中文分词的编码效率比较低。
+
 
 #### LLaMA 下载
 
@@ -3108,6 +3136,18 @@ ChatGLM 参考了 ChatGPT 的设计思路，在千亿基座模型 GLM-130B1 中�
 - finetune代码：[ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning)
 - API： 调用方法参考[智谱AI](https://open.bigmodel.cn/doc/api#sdkauth)， ChatGLM 商用 [Issue](https://github.com/THUDM/ChatGLM-6B/issues/799)
 - 【2023-3-17】issue: [Cannot import name 'convert_file_size_to_int' from 'transformers.utils.hub'](https://github.com/THUDM/ChatGLM-6B/issues/123)
+
+ChatGLM-6B 模型结构： 采用了prefix decoder-only的transformer模型框架，在输入上采用**双向**的注意力机制，在输出上采用**单向**注意力机制。
+
+在模型细节上，做了以下几点改动：
+- embedding层梯度缩减：为了提升训练稳定性，减小了embedding层的梯度。具体地， word_embedding = word_embedding * alpha + word_embedding.detatch() * (1-alpha) ，其中 alpha=0.1 ，这里detach()函数的作用是返回一个新的tensor，并从计算图分离出来。梯度缩减的效果相当于把embedding层的梯度缩小了10倍，减小了梯度的范数。
+- layer normalization：采用了基于Deep Norm的post layer norm。
+- 激活函数：采用了GeGLU激活函数。相比于普通的FFN，使用线形门控单元的GLU新增了一个权重矩阵，共有三个权重矩阵，为了保持参数量一致，中间维度采用了 8d/3 ，而不是4d。
+- 位置编码：去除了绝对位置编码，采用了旋转位置编码RoPE。
+
+训练目标上，ChatGLM-6B的训练任务是**自回归文本填空**。相比于采用causal decoder-only结构的大语言模型，采用prefix decoder-only结构的ChatGLM-6B存在一个劣势：训练效率低。causal decoder结构会在所有的token上计算损失，而prefix decoder只会在输出上计算损失，而不计算输入上的损失。在有相同数量的训练tokens的情况下，prefix decoder要比causal decoder的效果差，因为训练过程中实际用到的tokens数量要更少。另外，ChatGPT的成功已经证明了causal decoder结构的大语言模型可以获得非常好的few-shot和zero-shot生成能力，通过指令微调可以进一步激发模型的能力。至于prefix decoder结构的大语言模型能否获得相当的few-shot和zero-shot能力还缺少足够的验证。
+
+关于tokenizer，ChatGLM在25GB的中英双语数据上训练了SentencePiece作为tokenizer，词表大小为130528。
 
 ChatGLM-6B 具备以下特点：
 - 充分的中英双语预训练：ChatGLM-6B 在 1:1 比例的中英语料上训练了 1T 的 token 量，兼具双语能力。
