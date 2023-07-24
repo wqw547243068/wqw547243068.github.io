@@ -501,13 +501,18 @@ PromptGen is the first work considering dynamic prompt generation for knowledge 
 - 无法访问 LLM 权重, 黑盒
 - 在 codex 上执行单行代码补全实验
 
-### 2022.11.3 APE
+### 2022.11.3 APE 多伦多大学
 
+仿照 self-instruct 思路，利用LLM生成prompt
 - [Large Language Models Are Human-Level Prompt Engineers](https://arxiv.org/abs/2211.01910)
-- propose automatic prompt engineer (APE) a framework for automatic instruction generation and selection. The instruction generation problem is framed as natural language synthesis addressed as a black-box optimization problem using LLMs to generate and search over candidate solutions.
+- propose automatic prompt engineer ([APE](https://sites.google.com/view/automatic-prompt-engineer)) a framework for automatic instruction generation and selection. The instruction generation problem is framed as natural language synthesis addressed as a black-box optimization problem using LLMs to generate and search over candidate solutions.
+- [code](https://github.com/keirp/automatic_prompt_engineer)
+- ![](https://lh6.googleusercontent.com/roT8wT4D0WPZMNOl1MnZgJ-iQx--BGHOaIAEgCSZYpEGiMi47rR5S_gP4LV53-_qOU9Y08GHeQ1vIT0OCuZAysj7E9C6Z8ZIVJHb58sOBsdUSOK0rQBUv-FvNZAb-deE2g=w1280)
 
-![](https://www.promptingguide.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FAPE.3f0e01c2.png&w=828&q=75)
-
+APE is built around three types of templates: 
+- 评估模板 evaluation templates 
+- 提示生成模板 prompt generation templates
+- 演示模板 and demonstration templates.
 
 ## 图像提示词
 
