@@ -5623,6 +5623,12 @@ func main() {
 }
 ```
 
+怎么办？自定义变量时，使用export命令
+
+```sh
+export OPENAI_API_KEY="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"
+```
+
 ## 时间处理
 
 时间戳 
