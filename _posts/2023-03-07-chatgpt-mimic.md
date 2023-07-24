@@ -1367,6 +1367,36 @@ Tips:
 - BLOOM 有1760亿个参数，能够以**46种**自然语言和**13种**编程语言生成文本。
 - 对于几乎所有的语言，比如西班牙语、法语和阿拉伯语，`BLOOM` 是有史以来创建的第一个超过100B参数的语言模型。这是来自70多个国家和250多个机构的1000多名研究人员一年工作的成果，最终在法国巴黎南部的Jean Zay超级计算机上训练了**117天**(3月11日至7月6日)的BLOOM模型. 归功于法国国家科学研究中心(CNRS)和法国科学研究中心(CNRS)估计价值300万欧元的计算拨款。
 
+- 论文：[BLOOM: A 176B-Parameter Open-Access Multilingual Language Model](https://arxiv.org/pdf/2211.05100.pdf)
+- 摘要：Large language models (LLMs) have been shown to be able to perform new tasks based on a few demonstrations or natural language instructions. While these capabilities have led to widespread adoption, most LLMs are developed by resource-rich organizations and are frequently kept from the public. As a step towards democratizing this powerful technology, we present BLOOM, a 176B-parameter open-access language model designed and built thanks to a collaboration of hundreds of researchers. BLOOM is a **decoder-only Transformer** language model that was trained on the ROOTS corpus, a dataset comprising hundreds of sources in **46 natural** and **13 programming languages** (59 in total). We find that BLOOM achieves competitive performance on a wide variety of benchmarks, with stronger results after undergoing multitask prompted finetuning. To facilitate future research and applications using LLMs, we publicly release our models and code under the Responsible AI License
+- [BLOOM is a real open-source alternative to GPT-3](https://the-decoder.com/bloom-is-a-real-open-source-alternative-to-gpt-3/)
+- huggingface上的[model地址](https://huggingface.co/bigscience/bloom)
+- code: [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed)，采用别人的GPT模型文件
+- 【2023-2-22】`bloom` 基于 `GPT-2`, 加大层数，使用法国财政资金，通过大规模数据（46种语言+13种编程语言）训练117天而来，得到gpt-3同等规模（176b>175b），这个代码是NVIDIA+微软分布式训练框架的训练代码。
+- bloom 训练代码 [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed/blob/main/LICENSE) 是 Apache License 开源协议
+
+BLOOM数据集: <span style='color:blue'> 英文 30% ＞ 中文 16% ＞ 法文 12% ＞ 西班牙 11% ＞ 代码 11% ＞ 葡萄牙 5% ＞ 阿拉伯 4.6% ＞ 印地语 4.4% </span>
+- ![](https://pic2.zhimg.com/80/v2-cf94d00d3e954efd11edeb880e85dac5_1440w.webp)
+- [refer](https://zhuanlan.zhihu.com/p/618926239)
+
+#### BLOOM 模型结构
+
+BLOOM 模型结构与GPT相同，采用了causal decoder-only的transformer模型结构。在模型细节上，做了以下几点改动：
+- embedding layer norm：在embedding层后添加了一个 layer normalization，来使训练更加稳定。
+- layer normalization：为了提升训练的稳定性，没有使用传统的post layer norm，而是使用了pre layer Norm。
+- 激活函数：采用了GeLU激活函数。
+- 位置编码：去除了绝对位置编码，采用了相对位置编码ALiBi。相比于绝对位置编码，ALiBi的外推性更好，即虽然训练阶段的最大序列长度为2048，模型在推理过程中可以处理更长的序列。
+
+BLOOM 训练目标是语言模型，即根据已有的上文去预测下一个词。
+
+关于tokenizer，BLOOM在多语种语料上使用Byte Pair Encoding(BPE)算法进行训练得到tokenizer，词表大小为250880。
+
+BLOOM衍生出来的大模型应用：
+- 轩辕: 金融领域大模型，度小满在BLOOM-176B的基础上针对中文通用领域和金融领域进行了针对性的预训练与微调。
+- BELLE: 链家仅使用由ChatGPT生产的数据，对BLOOMZ-7B1-mt进行了指令微调。
+
+#### BLOOM 训练资源
+
 BLOOM: training that lead around the world
 - The training started on March 11, 2022. But in fact, the preparations of the corpus and the datasets started much earlier. A model with these characteristics is not achieved overnight. 4 months later, here we have it. And it hasn’t been easy:
 - 384 graphic cards of 80 gigabytes each on the Jean Zay supercomputer in France.
@@ -1409,18 +1439,6 @@ Megatron-DeepSpeed 实现了 3D 并行以允许大模型以非常有效的方式
 - `流水线并行` (Pipeline Parallelism，PP) - 模型在多个 GPU 上垂直 (即按层) 拆分，因此只有一个或多个模型层放置在单个 GPU 上。每个 GPU 并行处理流水线的不同阶段，并处理 batch 的一部分数据。
 - `零冗余优化器` (Zero Redundancy Optimizer，ZeRO) - 也执行与 TP 相类似的张量分片，但整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
 
-资料
-- 论文：[BLOOM: A 176B-Parameter Open-Access Multilingual Language Model](https://arxiv.org/pdf/2211.05100.pdf)
-- 摘要：Large language models (LLMs) have been shown to be able to perform new tasks based on a few demonstrations or natural language instructions. While these capabilities have led to widespread adoption, most LLMs are developed by resource-rich organizations and are frequently kept from the public. As a step towards democratizing this powerful technology, we present BLOOM, a 176B-parameter open-access language model designed and built thanks to a collaboration of hundreds of researchers. BLOOM is a **decoder-only Transformer** language model that was trained on the ROOTS corpus, a dataset comprising hundreds of sources in **46 natural** and **13 programming languages** (59 in total). We find that BLOOM achieves competitive performance on a wide variety of benchmarks, with stronger results after undergoing multitask prompted finetuning. To facilitate future research and applications using LLMs, we publicly release our models and code under the Responsible AI License
-- [BLOOM is a real open-source alternative to GPT-3](https://the-decoder.com/bloom-is-a-real-open-source-alternative-to-gpt-3/)
-- huggingface上的[model地址](https://huggingface.co/bigscience/bloom)
-- code: [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed)，采用别人的GPT模型文件
-- 【2023-2-22】`bloom` 基于 `GPT-2`, 加大层数，使用法国财政资金，通过大规模数据（46种语言+13种编程语言）训练117天而来，得到gpt-3同等规模（176b>175b），这个代码是NVIDIA+微软分布式训练框架的训练代码。
-- bloom 训练代码 [Megatron-DeepSpeed](https://github.com/bigscience-workshop/Megatron-DeepSpeed/blob/main/LICENSE) 是 Apache License 开源协议
-
-BLOOM数据集: <span style='color:blue'> 英文 30% ＞ 中文 16% ＞ 法文 12% ＞ 西班牙 11% ＞ 代码 11% ＞ 葡萄牙 5% ＞ 阿拉伯 4.6% ＞ 印地语 4.4% </span>
-- ![](https://pic2.zhimg.com/80/v2-cf94d00d3e954efd11edeb880e85dac5_1440w.webp)
-- [refer](https://zhuanlan.zhihu.com/p/618926239)
 
 #### bloomz 多任务指令微调
 
