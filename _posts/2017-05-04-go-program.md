@@ -5537,6 +5537,7 @@ package main
 import (
     "fmt"
     "os"
+    "strings"
 )
  
 func main(){
@@ -5544,7 +5545,12 @@ func main(){
     dir,err := os.Getwd()
     fmt.Print(dir)
     fmt.Print(err)
- 
+    // 设置环境变量
+    os.Setenv("FOO", "1") 
+    // 获取环境变量
+    fmt.Println(os.Getenv("HOME"))
+    fmt.Println("FOO:", os.Getenv("FOO")) 
+    fmt.Println("BAR:", os.Getenv("BAR"))
     //获得指定环境变量
     //paths := os.Getenv(key:"Path")
     //goroot := os.Getenv(key:"GOROOT")
@@ -5560,8 +5566,11 @@ func main(){
  
     //获得所有环境变量
     envs := os.Environ()
-    for _,env :=  range envs{
+    for _, env :=  range envs{
         fmt.Print(env)
+        // 拆分
+        pair := strings.SplitN(e, "=", 2)
+        fmt.Println(pair[0])
     }
  
     //在网络中的主机名
@@ -5589,6 +5598,27 @@ func main(){
         fmt.Print(fileInfo)
     }else {
         fmt.Print("出错了")
+    }
+}
+```
+
+go的第三方工具viper解析环境变量时，同样的只能得到PATH、HOME这些系统变量，自定义得不到。
+
+```go
+package main
+
+import (
+    "fmt"
+
+    "github.com/spf13/viper"
+)
+
+func main() {
+    viper.AutomaticEnv()
+    if env := viper.Get("GOPATH"); env == nil {
+        println("error!")
+    } else {
+        fmt.Printf("%#v\n", env)
     }
 }
 ```
