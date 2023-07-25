@@ -533,23 +533,27 @@ APE is built around three types of templates:
 原本 AI 模型的工作思路从“**魔改**”变为了基于 Prompt 的**上下文学习**（In-context Learning, `ICL`），即
 - 通过使用 **Prompt** 以及一组**示例**来指导一个大模型执行任务。
 
- ICL 这种方式之下，Prompt 的设计至关重要
+ICL 方式下，Prompt 的设计至关重要
 
 ### PromptBench 评测基准
 
 【2023-7-20】[PromptBench: 首个大语言模型提示鲁棒性的评测基准](https://mp.weixin.qq.com/s/ACC5-9O8dCP1ShWH0IM9FQ)
 - ![](https://github.com/microsoft/promptbench/raw/main/imgs/promptbench.png)
 
-Prompt(提示词)是连接人类和LLMs的一座桥梁，帮助我们以自回归(Auto-regressive)的方法进行上下文学习(In-context Learning)
+Prompt(提示词)是连接人类和LLMs的一座桥梁，以`自回归`(Auto-regressive)方法进行`上下文学习`(In-context Learning)
 - 大模型对 「Prompt (提示词)」非常敏感，同样的prompt可能写错个单词、写法不一样，都会出现不一样的结果。
 - 业界评估LLMs的性能时，往往忽略了提示的鲁棒性。
 
 如何写合适的提示词？
-- 微软构建了「PromptBench」，探究大模型在处理`对抗提示`(adversarial prompts)的鲁棒性。
+- 微软构建了「`PromptBench`」，探究大模型在处理`对抗提示`(adversarial prompts)的鲁棒性。
   - [PromptBench: Towards Evaluating the Robustness of Large Language Models on Adversarial Prompts](https://arxiv.org/abs/2306.04528)
   - code: [promptbench](https://github.com/microsoft/promptbench)
-- 此外，用 Attention「**可视化分析**」了对抗提示的输入关注分布，并且对不同模型产生的对抗提示进行看「迁移性分析」，最后对鲁棒提示和敏感提示的词频进行了分析，以帮助终端用户更好地写作prompt。
+- 此外，用 Attention「**可视化分析**」了对抗提示的输入关注分布，并且对不同模型产生的**对抗提示**进行看「迁移性分析」，最后对鲁棒提示和敏感提示的词频进行了分析，以帮助终端用户更好地写作prompt。
 - ![](https://github.com/microsoft/promptbench/raw/main/imgs/attention.png)
+
+两种注意力可视化技术：结果相似，论文主要采用梯度注意力
+- **梯度注意力**：根据梯度正规化计算单词注意力
+- **删除注意力**：删除单词后检查损失函数变化计算单词注意力
 
 考虑到大模型计算梯度的效率以及黑盒性，采用「`黑盒攻击算法`」(Black-box attacks)。攻击涵盖了四个不同的层次，包括从简单的字符操作到复杂的语义修改。
 - 「字符级别」：TextBugger、DeepWordBug，这两类方法通过在单词中添加错别字来改变文本。
