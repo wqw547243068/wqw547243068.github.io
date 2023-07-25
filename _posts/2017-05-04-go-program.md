@@ -2971,6 +2971,44 @@ func main() {
 }
 ```
 
+### func前面的(): 接受者
+
+函数名前面的括号是Go定义这些函数将在其上运行的对象的方式
+- ()里面是接受者
+- 该函数可以被接受者当做属性一样调用
+- [refer](https://blog.csdn.net/xuq09/article/details/88627778)
+
+```go
+package main
+ 
+import "fmt"
+ 
+type Mutatable struct {
+    a int
+    b int
+}
+ 
+// 不修改接收器
+func (m Mutatable) StayTheSame() {
+    m.a = 5
+    m.b = 7
+}
+// 修改接收器--指针
+func (m *Mutatable) Mutate() {
+    m.a = 5
+    m.b = 7
+}
+ 
+func main() {
+    m := &Mutatable{0, 0} // 定义对象m
+    fmt.Println(m) // &{0 0}
+    m.StayTheSame()  // m调用方法（不可变）
+    fmt.Println(m) // &{0 0}
+    m.Mutate()  // m调用方法（可变）
+    fmt.Println(m) // &{5 7}
+```
+
+
 ### 特殊函数
 
 自定义函数时要避开系统内置的特殊函数
