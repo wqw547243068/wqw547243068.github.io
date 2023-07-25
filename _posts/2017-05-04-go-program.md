@@ -7117,6 +7117,40 @@ git clone https://github.com/cloudwego/hertz.git
 go install github.com/cloudwego/hertz/cmd/hz@latest
 ```
 
+#### hertz 使用
+
+【2023-7-25】步骤: [官方教程](https://www.cloudwego.io/zh/docs/hertz/getting-started/), [examples](https://github.com/cloudwego/hertz-examples/blob/main/README_CN.md)
+- 当前目录下创建 hertz_demo 文件夹，进入该目录中
+- 创建 `main.go` 文件， 内容如下
+- 生成 `go.mod` 文件: `go mod init hertz_demo`
+- 整理 & 拉取依赖: `go mod tidy`
+- 直接编译并启动 Server: `go build -o hertz_demo && ./hertz_demo`
+- 访问: [ping](http://127.0.0.1:8888/ping)
+
+```go
+package main
+
+import (
+    "context"
+
+    "github.com/cloudwego/hertz/pkg/app"
+    "github.com/cloudwego/hertz/pkg/app/server"
+    "github.com/cloudwego/hertz/pkg/common/utils"
+    "github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+
+func main() {
+    h := server.Default()
+
+    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+            ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
+    })
+
+    h.Spin()
+}
+```
+
+
 #### hertz 命令行
 
 
