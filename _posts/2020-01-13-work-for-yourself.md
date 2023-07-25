@@ -8,6 +8,7 @@ excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
 permalink: /work
+
 ---
 
 * content
