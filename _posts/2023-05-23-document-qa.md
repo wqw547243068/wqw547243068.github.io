@@ -89,6 +89,7 @@ Remember, the sum of your prompt and maximum tokens should always be less than e
 
 ### 如何增强LLM能力
 
+
 #### Full Stack LLM 课程
 
 【2023-5-21】[LLM训练营课程笔记—Augmented Language Models](https://zhuanlan.zhihu.com/p/630195581)
@@ -318,6 +319,106 @@ Tools方式大致有两种
 - 2、将私有文本内容作为prompt的上下文，访问ChatGPT。
   - openai api存在最大长度的限制，ChatGPT 3.5的最大token数为4096，如果超过长度限制，会直接对文档截断，存在上下文丢失的问题。
   - 并且api的调用费用和token长度成正比，tokens数太大，则每次调用的成本也会很高。
+
+### 输入长度限制
+
+【2023-7-26】[浅谈LLM的长度外推](https://mp.weixin.qq.com/s/5_mBahrpeA2cHlTXylgF9w)
+
+随着大模型应用的不断发展，知识外挂已经成为了重要手段。但只是外挂手段往往受限于模型本身**可接受长度**，以及模型外推能力。
+
+截止20230724，外推策略：NBCE，线性内插，NTK-Aware Scaled RoPE，Dynamically Scaled RoPE，consistent of Dynamically Scaled RoPE。
+
+#### NBCE
+
+NBCE：使用朴素贝叶斯扩展LLM的Context处理长度，[介绍](https://kexue.fm/archives/9617)
+- 苏神最早提出的扩展LLM的context方法，基于bayes启发得到的公式
+- 在问答下实测确实不错，在较长context下的阅读理解还算好用。
+
+局限
+- 无序性，即无法识别Context的输入顺序，这在续写故事等场景可能表现欠佳，做一些依赖每个context生成答案，比如提取文档摘要，效果较差
+
+```py
+outputs = model(input_ids=input_ids,
+                        attention_mask=attention_mask,
+                        return_dict=True,
+                        use_cache=True,
+                        past_key_values=past_key_values
+                       )
+past_key_values = outputs.past_key_values
+        
+# ===== 核心代码开始 =====
+beta = 0.25
+probas = torch.nn.functional.softmax(outputs.logits[:, -1], dim=-1)
+logits = probas.log()
+k = (probas * logits).sum(dim=-1)[1:].argmax() + 1
+logits_max = logits[k]
+logits_uncond = logits[0]
+logits = (1 + beta) * logits_max - beta * logits_uncond
+# ===== 核心代码结束 =====
+        
+# 构建分布，采样
+tau = 0.01  # tau = 1是标准的随机采样，tau->0则是贪心搜索
+probas = torch.nn.functional.softmax(logits[None] / tau , dim=-1)
+next_tokens = torch.multinomial(probas, num_samples=1).squeeze(1)  
+```
+
+#### 线性内插
+
+llama 基于 rotary embedding在2048长度上预训练，该方法通过将position压缩到0~2048之间，从而达到长度外推的目的。
+
+longchat将模型微调为上下文长度外扩为16384，压缩比为 8。例如，position_ids = 10000 的 token 变为position_ids = 10000 / 8 = 1250，相邻 token 10001 变为 10001 / 8 = 1250.125
+
+该方法的缺陷是需要进行一定量的微调，让模型来适应这种改变。
+
+资料
+- [context](https://kaiokendev.github.io/context)
+- lmsys [longchat](https://lmsys.org/blog/2023-06-29-longchat/)
+
+#### NTK-Aware Scaled RoPE
+
+NTK-Aware Scaled RoPE allows LLaMA models to have extended (8k+) context size without any fine-tuning and minimal perplexity degradation.
+- [refer](https://www.reddit.com/r/LocalLLaMA/comments/14lz7j5/ntkaware_scaled_rope_allows_llama_models_to_have/)
+
+RoPE是一种β进制编码: [re](https://spaces.ac.cn/archives/9675)
+
+RoPE 的行为就像一个时钟。12小时时钟基本上是一个维度为 3、底数为 60 的 RoPE。因此，每秒钟，分针转动 1/60 分钟，每分钟，时针转动 1/60。现在，如果将时间减慢 4 倍，那就是二使用的线性RoPE 缩放。不幸的是，现在区分每一秒，因为现在秒针几乎每秒都不会移动。因此，如果有人给你两个不同的时间，仅相差一秒，你将无法从远处区分它们。NTK-Aware RoPE 扩展不会减慢时间。一秒仍然是一秒，但它会使分钟减慢 1.5 倍，将小时减慢 2 倍。这样，您可以将 90 分钟容纳在一个小时中，将 24 小时容纳在半天中。所以现在你基本上有了一个可以测量 129.6k 秒而不是 43.2k 秒的时钟。由于在查看时间时不需要精确测量时针，因此与秒相比，更大程度地缩放小时至关重要。不想失去秒针的精度，但可以承受分针甚至时针的精度损失。
+
+#### Dynamically Scaled RoPE
+
+[dynamically_scaled_rope_further_increases](https://www.reddit.com/r/LocalLLaMA/comments/14mrgpr/dynamically_scaled_rope_further_increases/)
+
+方法二、三，都涉及到一个超参数α，用于调节缩放比例，该方法是通过序列长度动态选择正确的比例参数，效果可以看上图。
+
+对于线性插值，前 2k 上下文的精确位置值，然后在模型逐个生成标记时重新计算每个新序列长度的位置向量。本质上，将比例设置为原始模型上下文长度/当前序列长度。
+
+对于动态 NTK，α 的缩放设置为 (α * 当前序列长度 / 原始模型上下文长度) - (α - 1)。随着序列长度的增加动态缩放超参数。
+
+#### consistent of Dynamically Scaled RoPE
+
+[Consistent-DynamicNTKRoPE](https://github.com/NormXU/Consistent-DynamicNTKRoPE)
+
+
+### 输出长度受限
+
+#### RecurrentGPT（输出不受限）
+
+【2023-5-30】[ChatGPT能写长篇小说了，ETH提出RecurrentGPT实现交互式超长文本](https://www.toutiao.com/article/7238442944003310084)
+- 苏黎世联邦理工和波形智能的团队发布了 RecurrentGPT，一种让大语言模型 (如 ChatGPT 等) 能够模拟 RNN/LSTM，通过 Recurrent Prompting 来实现交互式**超长**文本生成，让利用 ChatGPT 进行长篇小说创作成为了可能。
+- [论文地址](https://arxiv.org/abs/2305.13304)
+- [项目地址](https://github.com/aiwaves-cn/RecurrentGPT)
+- 在线 Demo: [长篇小说写作](https://www.aiwaves.org/recurrentgpt), [交互式小说](https://www.aiwaves.org/interactivefiction)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a679b4e41e0d483bae2b1ac35ae2da63~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=1GLOG8XAvQwzzXbm0v1ip16bz5Q%3D)
+
+Transformer 大语言模型最明显的限制之一: 输入和输出的**长度限制**。
+- 虽然输入端的长度限制可以通过 **VectorDB** 等方式缓解
+- 输出内容的长度限制始终是长内容生成的关键障碍。
+
+为解决这一问题，过去很多研究试图使用基于向量化的 State 或 Memory 来让 Transformer 可以进行**循环**计算。这样的方法虽然在长文本建模上展现了一定的优势，但是却要求使用者拥有并可以**修改模型的结构和参数**，这在目前闭源模型遥遥领先的大语言模型时代中是不符合实际的。
+
+RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本生成的首个成功实践。它利用 ChatGPT 等大语言模型理解自然语言指令的能力，通过自然语言模拟了循环神经网络（RNNs）的循环计算机制。
+- 每一个时间步中，RecurrentGPT 会接收上一个时间步生成的内容、最近生成内容的摘要（短期记忆），历史生成内容中和当前时间步最相关的内容 (长期记忆)，以及一个对下一步生成内容的梗概。RecurrentGPT 根据这些内容生成一段内容，更新其长短时记忆，并最后生成几个对下一个时间步中生成内容的规划，并将当前时间步的输出作为下一个时间步的输入。这样的循环计算机制打破了常规Transformer 模型在生成长篇文本方面的限制，从而实现任意长度文本的生成，而不遗忘过去的信息。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f1bd9be64d144e18914652db4ce325c8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=4WMRfq0FjPeJxmK0ujy7roS3sbA%3D)
+
 
 ### llama-index
 
