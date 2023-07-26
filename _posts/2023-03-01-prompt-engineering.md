@@ -20,6 +20,7 @@ permalink: /pe
 
 ## 资讯
 
+【2023-7-26】OpenAI 专家 Lili Weng 翁丽莲 博客专题 [Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
 
 ### OpenAI 自定义指令
 
@@ -479,6 +480,9 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 - Talking to LLMs is important to elicit(引起) the right response/improved performance without updating the parameters of the models [karpathy](https://twitter.com/karpathy/status/1617979122625712128?lang=en)
 
 [Automatic Prompt Engineer (APE)](https://www.promptingguide.ai/techniques/ape)
+
+【2023-7-26】翁丽莲整理的APE方法
+- [automatic-prompt-design](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/#automatic-prompt-design)
 
 ### 2020 AutoPrompt
 
