@@ -475,8 +475,10 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
 ## prompt 自动生成
 
-[Automatic Prompt Engineer (APE)](https://www.promptingguide.ai/techniques/ape)
+Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code/nlpquant/automatic-prompt-engineering)
+- Talking to LLMs is important to elicit(引起) the right response/improved performance without updating the parameters of the models [karpathy](https://twitter.com/karpathy/status/1617979122625712128?lang=en)
 
+[Automatic Prompt Engineer (APE)](https://www.promptingguide.ai/techniques/ape)
 
 ### 2020 AutoPrompt
 
