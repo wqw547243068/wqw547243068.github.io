@@ -1637,11 +1637,11 @@ landslide readme.md -i -o > slide.html # 转换
 
 - 更多资料：[Markdown：让书写更美好](https://huwenchao.gitbooks.io/web-development-notes/content/workflow/markdown.html)
 
-### html→markdown
+### html转markdown
 
-- 看到一篇好文章，想发布到markdown博客上，结果，图片太多，人肉代价大
+看到一篇好文章，想发布到markdown博客上，结果，图片太多，人肉代价大，怎么办？
 - 【2020-7-5】可以使用富文本编辑器：[ueditor2markdown](https://www.bejson.com/convert/ueditor2markdown/)转换，复制→粘贴→微调
-
+- 【2023-7-27】Chrome 插件：[Markdown Web Clipper](https://chrome.google.com/webstore/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi/related)，速度快
 
 ### SEO优化
 
