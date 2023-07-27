@@ -258,6 +258,9 @@ import "github.com/test"
 
 ### helloworld
 
+
+#### 无外部依赖
+
 验证：
 - 创建一个test.go的go文件。编写并保存以下代码到 test.go 文件中。
 - 所有Go源代码文件必须以.go后缀结尾
@@ -275,6 +278,54 @@ func main() {   // 声明 main 主函数
 现在运行test.go查看结果并验证输出结果如下：
 - go run test.go
 - Hello, World!
+
+
+#### 有外部依赖
+
+【2023-7-27】以 langchain [go代码库](https://github.com/tmc/langchaingo)为例
+- import 包含一个外部包 openai
+
+```go
+// connect2gpt.go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/tmc/langchaingo/llms/openai"
+)
+
+func main() {
+	llm, err := openai.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+	prompt := "What would be a good company name for a company that makes colorful socks?"
+	completion, err := llm.Call(context.Background(), prompt)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(completion)
+}
+```
+
+编译运行
+
+```sh
+# 直接执行报错
+go run connect2gpt.go
+# 初始化包，自定义包名 match
+go mod init match # 生成 go.mod, go.sum
+# 下载第三方包
+go get github.com/tmc/langchaingo/llms/openai
+# 准备工具包超参环境, vim ~/.bash_profile
+export OPENAI_API_KEY="sk-****"
+source ~/.bash_profile
+# 编译运行
+go run connect2gpt.go
+```
+
 
 ### vim语法高亮
 
