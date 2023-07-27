@@ -316,8 +316,8 @@ func main() {
 # 直接执行报错
 go run connect2gpt.go
 # 初始化包，自定义包名 match
-go mod init match # 生成 go.mod, go.sum
-# 下载第三方包
+go mod init match # 生成 go.mod
+# 下载第三方包, 生成 go.sum
 go get github.com/tmc/langchaingo/llms/openai
 # 准备工具包超参环境, vim ~/.bash_profile
 export OPENAI_API_KEY="sk-****"

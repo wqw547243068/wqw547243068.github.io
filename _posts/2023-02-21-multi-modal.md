@@ -354,6 +354,8 @@ UNITER的思路是通过使用**单流**结构，直接将视觉特征和文本�
 
 ### 新模型
 
+【2023-7-27】[Shikra: Unleashing Multimodal LLM’s Referential Dialogue Magic](https://arxiv.org/pdf/2306.15195.pdf)
+
 #### ALBEF
 
 salesforce
