@@ -2031,19 +2031,19 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 未来语音识别必将会和自然语言处理相结合，进一步提高目前的事变效果，对环境的依赖越来越小。
 
 
-# 实践
+## 实践
 
-## 音频数据
+### 音频数据
 
-### 音乐测试
+#### 音乐测试
 
 【2022-12-17】各种格式、声道的音频测试文件[集合](https://docs.espressif.com/projects/esp-adf/en/latest/design-guide/audio-samples.html)
 - Music files in this section are intended for testing of audio applications. The files are organized into different Formats and Sample Rates.
 
 
-## 语音识别比赛
+### 语音识别比赛
 
-###  2022 科大讯飞的中文语义病句识别挑战赛
+####  2022 科大讯飞的中文语义病句识别挑战赛
 
  2022 科大讯飞的中文语义病句识别挑战赛, [赛题](http://challenge.xfyun.cn/topic/info?type=sick-sentence-discrimination)
 - [科大讯飞中文语义病句识别挑战赛Top1方案总结](https://mp.weixin.qq.com/s/RRlySNLoaDFBbYAK_eJi2Q)
@@ -2059,7 +2059,7 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 
 一个典型的二分类问题，文本字数较短(90字以下)，评价指标为 F1，正负比大约是 3:1，从病句的定义和种类来看，不但有拼写错误、语义重复等语病，还有语义逻辑、歧义等目前 NLP 模型较难识别的病句。
 
-## 视频语音内容提取
+### 视频语音内容提取
 
 【2022-10-15】视频语音转文字工具：
 - 小程序（`视频语音转文字神器`）生成，直接输入视频链接，产出文字
@@ -2068,7 +2068,7 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - [讯飞听见](https://www.iflyrec.com/html/addMachineOrder.html)转文字，上传音视频文件，免费体验15min
 
 
-## 音频转换
+### 音频转换
 
 【2023-7-2】[支持跨语言、人声狗吠互换，仅利用最近邻的简单语音转换模型有多神奇](https://mp.weixin.qq.com/s/Lx1U-ECGVpzfCluX8lqzdg), 将一个人的语音换成任何其他人的语音，也可以与**动物**之间的语音互换。
 
@@ -2079,6 +2079,31 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 
 引入了 K 最近邻语音转换（kNN-VC），一种简单而强大的任意到任意语音转换方法。在过程中不训练显式转换模型，而是简单地使用了 K 最近邻回归。
 - kNN-VC 的架构 遵循了 编码器-转换器-声码器结构。首先编码器提取源语音和参照语音的自监督表示，然后转换器将每个源帧映射到参照中它们的最近邻，最后声码器根据转换后的特征生成音频波形。
+
+
+### ASR Demo
+
+Gradio 实时语音识别
+
+【2023-7-28】[Real Time Speech Recognition](https://www.gradio.app/guides/real-time-speech-recognition)
+- load Wav2Vec2 from Hugging Face transformers
+
+```py
+import gradio as gr
+from transformers import pipeline
+#  pip install --upgrade transformers
+p = pipeline("automatic-speech-recognition")
+
+def transcribe(audio):
+    text = p(audio)["text"]
+    return text
+
+gr.Interface(
+    fn=transcribe,
+    inputs=gr.Audio(source="microphone", type="filepath"),
+    # gr.Audio(source="microphone", type="filepath", streaming=True), # 流式
+    outputs="text").launch()
+```
 
 
 # TTS 语音合成
@@ -2092,6 +2117,33 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - 总体效果
   - <font color='red'>标贝 > 讯飞 > 阿里 > 百度 > 思必驰 > 灵云 </font>
 - 详细代码参考：[Python：TTS语音合成技术，市场各大平台对比以及实现](https://cloud.tencent.com/developer/article/1403570)
+
+### grdio demo
+
+gradio [demo](https://www.gradio.app/demos)
+
+```py
+import tempfile
+import gradio as gr
+from neon_tts_plugin_coqui import CoquiTTS
+
+LANGUAGES = list(CoquiTTS.langs.keys())
+coquiTTS = CoquiTTS()
+
+def tts(text: str, language: str):
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as fp:
+        coquiTTS.get_tts(text, fp, speaker = {"language" : language})
+        return fp.name
+
+inputs = [gr.Textbox(label="Input", value=CoquiTTS.langs["en"]["sentence"], max_lines=3), 
+            gr.Radio(label="Language", choices=LANGUAGES, value="en")]
+outputs = gr.Audio(label="Output")
+
+demo = gr.Interface(fn=tts, inputs=inputs, outputs=outputs)
+
+demo.launch()
+```
+
 
 ### bark
 
