@@ -3,7 +3,7 @@ layout: post
 title:  "如何提升软素质-How to level up inner skill"
 date:   2019-06-26 19:00:00
 categories: 人文科学
-tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 黑天鹅 反脆弱
+tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 黑天鹅 反脆弱 情绪 一元论 二元论
 excerpt: 软素质
 author: 鹤啸九天
 mathjax: true
@@ -273,6 +273,21 @@ permalink: /skill
 
 <iframe src="//player.bilibili.com/player.html?aid=615544059&bvid=BV1bh4y177c5&cid=1187204264&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
+
+### 情绪管理
+
+【2023-7-28】[永远记住，你是幸存者，而不是受害者](https://www.bilibili.com/video/BV11u411572Y/)
+- 问：你觉得快乐重要吗？  答：不重要，所有的情绪都重要
+- 情绪是
+- 二元论世界里，从小被告知情绪分为积极情绪和消极情绪，由于趋利避害的本能，人们会厌恶消极追求积极，这会导致厌恶低落状态的自己，强迫自己在低落时反人性的振奋起来。
+- 一元论者之所以能和各种情绪建立良好关系，完全来自两个独特视角：
+  - （1）<span style='color:blue'>所有情绪都是一种闪烁</span>，宇宙法则：自我存在 → 创造一种生活 → 某一类情绪产生。反过来，当你抑郁时，说明存在一种让你抑郁的生活方式（熬夜、高糖高盐高油脂沉迷短视频），三个事实：
+    - 出现任何一种情绪都不是你的错
+    - 永远都有选择
+    - 任何情绪本质上都是一种闪烁信号
+  - （2）<span style='color:blue'>忽略情绪，回归本体存在上</span>。冥想最开始都练习呼吸，不是降低紧张，真正作用是确认本体存在。演讲前紧张？做法不是消除紧张，而是如何在紧张状态把演讲内容表达出来，这样紧张情绪从主角变为配角。欧阳夏丹：忘我就会松弛、从容应对。
+
+<iframe src="//player.bilibili.com/player.html?aid=530933145&bvid=BV11u411572Y&cid=1197661469&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 学习方法
 
