@@ -4253,6 +4253,61 @@ git中clone项目有两种方式：`HTTPS` 和 `SSH`，区别如下：
 - 创建SSH Key
 - 将公共的SSH 放到远程仓库上
 
+### sumodule
+
+Git 用子模块 submodule 管理嵌套项目，submodule 允许将一个 Git 仓库当作另外一个Git 仓库的**子目录**。这允许你克隆另外一个仓库到你的项目中并且保持提交相对独立。
+
+```sh
+# 将第三方模块 vimwiki-assets 放到 assets 子目录中
+git submodule add https://github.com/maonx/vimwiki-assets.git assets
+# 状态检查：目录有增加1个文件.gitmodules
+git status
+git submodule # 查看子模块
+git submodule update # 更新子模块到最新版本
+git submodule update --remote # 更新子模块为远程最新版本
+```
+
+克隆包含子模块的项目，有两种方法：
+- 一种是先克隆父项目，再更新子模块；
+  - 初始化模块只需在克隆父项目后运行一次。
+- 另一种是直接**递归**克隆整个项目。
+
+克隆父项目，再更新子模块
+
+```sh
+# (1) 克隆父项目
+git clone https://github.com/maonx/vimwiki-assets.git assets
+
+git submodule # 查看子模块, 子模块前面有一个-，说明子模块文件还未检入（空文件夹）。
+# -e33f854d3f51f5ebd771a68da05ad0371a3c0570 assets
+#  初始化模块只需在克隆父项目后运行一次。
+git submodule init # 初始化子模块
+git submodule update # 更新子模块
+
+# (2) 递归克隆整个项目
+git clone https://github.com/maonx/vimwiki-assets.git assets --recursive 
+# 递归克隆整个项目，子模块已经同时更新了，一步到位。
+
+# 修改子模块
+# 在子模块中修改文件后，直接提交到远程项目分支。
+git add .
+git ci -m "commit"
+git push origin HEAD:master
+# 删除子模块
+# 删除子模块比较麻烦，需要手动删除相关的文件，否则在添加子模块时有可能出现错误
+# 同样以删除assets文件夹为例
+
+git rm --cached assets # 删除子模块文件夹
+rm -rf assets # 删除.gitmodules文件中相关子模块信息
+# [submodule "assets"]
+#  path = assets
+#  url = https://github.com/maonx/vimwiki-assets.git
+# 删除.git/config中的相关子模块信息
+# [submodule "assets"]
+# url = https://github.com/maonx/vimwiki-assets.git
+rm -rf .git/modules/assets # 删除.git文件夹中的相关子模块文件
+```
+
 
 ### fetch
 
@@ -4350,7 +4405,7 @@ git cherry-pick --continue
   - git cherry-pick --quit
 
 
-### git lfs
+### git lfs 大文件
 
 【2021-6-7】git大文件管理，[Git LFS操作指南](https://zzz.buzz/zh/2016/04/19/the-guide-to-git-lfs/)
 - Git LFS（Large File Storage, 大文件存储）是可以把音乐、图片、视频等指定的任意文件存在 Git 仓库之外，而在 Git 仓库中用一个占用空间 1KB 不到的文本指针来代替的小工具。通过把大文件存储在 Git 仓库之外，可以减小 Git 仓库本身的体积，使克隆 Git 仓库的速度加快，也使得 Git 不会因为仓库中充满大文件而损失性能。
@@ -4402,7 +4457,7 @@ git lfs install
 
 ## git命令问题
 
-### dev分支push被拒
+### dev分支 push被拒
 
 【2021-9-28】参考[地址](https://blog.csdn.net/whiteBearClimb/article/details/118733543)，错误信息：
 
@@ -4475,7 +4530,7 @@ Use the option --no-ff to turn off fast-forwarding for one pull:
 git pull --no-ff
 ```
 
-## github问题
+## github 访问问题
 
 - 【2021-3-18】github访问受限，速度慢, 知乎专题：[github打开慢？无法访问？](https://zhuanlan.zhihu.com/p/356790236)
   - （1）修改 HOSTS 文件进行加速，手动把cdn和ip地址绑定
