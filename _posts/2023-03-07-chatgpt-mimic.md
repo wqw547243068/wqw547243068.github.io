@@ -2153,6 +2153,95 @@ train_prompts
 *   代码过于面向对象设计，所以梳理代码逻辑，要切换父类和子类找核心代码，得细心看代码。
 *   运行代码，会出现某个文件找不到，是目录路径问题，需要手动调整
 
+【2023-7-30】PPO损失函数定义： 
+- [coati/trainer/ppo.py#L133](https://github.com/hpcaitech/ColossalAI/blob/main/applications/Chat/coati/trainer/ppo.py#L133)
+- [coati/models/loss.py#L25](https://github.com/hpcaitech/ColossalAI/blob/main/applications/Chat/coati/models/loss.py#L25)
+
+```py
+
+# coati/trainer/ppo.py#L133
+    def __init__(...):
+
+        self.actor = actor
+        self.critic = critic
+
+        self.actor_loss_fn = PolicyLoss(eps_clip) # 使用策略损失作为actor损失
+        self.critic_loss_fn = ValueLoss(value_clip)
+        self.vf_coef = vf_coef
+        self.ptx_loss_fn = GPTLMLoss()
+        self.ptx_coef = ptx_coef # ptx 损失函数系数
+        self.actor_optim = actor_optim
+        self.critic_optim = critic_optim
+
+    def _training_step(self, experience: Experience) -> Dict[str, float]:
+        self.actor.train()
+        self.critic.train()
+        # policy loss
+        num_actions = experience.action_mask.size(1)
+        actor_output = self.actor(experience.sequences, attention_mask=experience.attention_mask)
+        action_log_probs = calc_action_log_probs(actor_output, experience.sequences, num_actions)
+        # ppo 损失计算
+        actor_loss = self.actor_loss_fn(action_log_probs,
+                                        experience.action_log_probs,
+                                        experience.advantages,
+                                        action_mask=experience.action_mask)
+
+        # ptx loss(加强版)
+        if self.ptx_coef != 0:
+            batch = self.pretrain_dataloader.next()
+            batch = to_device(batch, self.device)
+            ptx_log_probs = self.actor(batch['input_ids'],
+                                       attention_mask=batch['attention_mask'])['logits']
+            ptx_loss = self.ptx_loss_fn(ptx_log_probs, batch['labels'])
+            # ptx 损失函数计算： ppo损失 + ptx损失
+            actor_loss = ptx_loss * self.ptx_coef + actor_loss * (1 - self.ptx_coef)
+
+        self.strategy.backward(actor_loss, self.actor, self.actor_optim)
+        self.strategy.optimizer_step(self.actor_optim)
+        self.actor_optim.zero_grad()
+
+        # value loss
+        values = self.critic(experience.sequences,
+                             action_mask=experience.action_mask,
+                             attention_mask=experience.attention_mask)
+        critic_loss = self.critic_loss_fn(values,
+                                          experience.values,
+                                          experience.reward,
+                                          action_mask=experience.action_mask)
+        critic_loss = critic_loss * self.vf_coef
+        self.strategy.backward(critic_loss, self.critic, self.critic_optim)
+        self.strategy.optimizer_step(self.critic_optim)
+        self.critic_optim.zero_grad()
+
+        return {'reward': experience.reward.mean().item()}
+
+# coati/models/loss.py#L25
+
+class PolicyLoss(nn.Module):
+    """
+    Policy Loss for PPO
+    """
+
+    def __init__(self, clip_eps: float = 0.2) -> None:
+        super().__init__()
+        self.clip_eps = clip_eps
+
+    def forward(self,
+                log_probs: torch.Tensor,
+                old_log_probs: torch.Tensor,
+                advantages: torch.Tensor,
+                action_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
+        # ppo-clip 梯度裁剪
+        ratio = (log_probs - old_log_probs).exp()
+        surr1 = ratio * advantages
+        surr2 = ratio.clamp(1 - self.clip_eps, 1 + self.clip_eps) * advantages
+        loss = -torch.min(surr1, surr2)
+        if action_mask is not None:
+            loss = masked_mean(loss, action_mask)
+        loss = loss.mean()
+        return loss
+```
+
 
 ### Meta: LLaMA （羊驼）
 
@@ -3699,6 +3788,22 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
   3. 提供安全约束满足的多尺度验证方式，支持 BIG-bench、GPT-4 Evaluation 等。
   4. 支持参数定制化的 RLHF 和数据集定制接口。
 
+【2023-7-30】[safe_rlhf/models/pretrained.py#L122](https://github.com/PKU-Alignment/safe-rlhf/blob/main/safe_rlhf/models/pretrained.py#L122)
+- end_scores 源自何处？huggingface transformers没找到
+
+```py
+        logits = self.actor_model(sequence, attention_mask=attention_mask).logits
+        ref_logits = self.actor_reference_model(sequence, attention_mask=attention_mask).logits
+
+        reward_score = self.reward_model(
+            reward_seq,
+            attention_mask=reward_attention_mask,
+        ).end_scores
+        reward_value = self.reward_critic_model(
+            sequence,
+            attention_mask=attention_mask,
+        ).scores
+```
 
 ### BLOOMChat
 
