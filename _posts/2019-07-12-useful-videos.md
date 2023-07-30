@@ -586,68 +586,19 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 ## 音乐舞蹈
 
-【2022-4-23】[【时长6小时36分】值得你单曲循环的100首宝藏热歌合集！](https://www.bilibili.com/video/BV1sw411971F?p=1)，无损高清，立体声
-- <iframe src="//player.bilibili.com/player.html?aid=334283843&bvid=BV1sw411971F&cid=375586015&page=44" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- 【2019-12-14】[碰碰彭碰彭](https://space.bilibili.com/15960317)法国街头古筝表演，带着古筝曲旅行系列：[赤伶](https://www.bilibili.com/video/av52853616)，[芒种](https://www.bilibili.com/video/av66929315)，[琵琶行](https://www.bilibili.com/video/av47721380)，[左手指月](https://www.bilibili.com/video/av77421571)，[好汉歌](https://www.bilibili.com/video/av78404421)，[刀剑如梦-郎朗](https://www.bilibili.com/video/av71998231)
-
-<iframe src="//player.bilibili.com/player.html?aid=52853616&cid=92476407&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-<iframe src="//player.bilibili.com/player.html?aid=66929315&cid=116000199&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-<iframe src="//player.bilibili.com/player.html?aid=77421571&cid=132301424&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- 【2019-12-11】[长安幻世绘](https://www.bilibili.com/video/av71471753)
-
-<iframe src="//player.bilibili.com/player.html?aid=71471753&cid=123840866&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-- 古琴诊所，[陈情令](https://www.bilibili.com/video/av61013632),[左手指月](https://www.bilibili.com/video/av34931946)
-
-<iframe src="//player.bilibili.com/player.html?aid=61013632&cid=106159328&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-<iframe src="//player.bilibili.com/player.html?aid=34931946&cid=61198348&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- [中国唱诗班国风动漫系列](https://www.bilibili.com/bangumi/play/ep115520/)，《识途》《春困》《元日》《相思》《红豆》《一生至爱》《饮湖上初晴后雨》《雨之歌》《游子吟》
-   - [棠梨煎雪](https://www.bilibili.com/video/av47400863)，[燕归巢](https://www.bilibili.com/video/av44744004)
-
-<iframe src="//player.bilibili.com/player.html?aid=47400863&cid=83018641&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-<iframe src="//player.bilibili.com/player.html?aid=44744004&cid=78327121&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-- [采薇](https://www.bilibili.com/video/av67376352)
-<iframe src="//player.bilibili.com/player.html?aid=67376352&cid=116823328&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- [木偶舞蹈](https://www.bilibili.com/video/av34204724)
-
-<iframe src="//player.bilibili.com/player.html?aid=34204724&cid=59918607&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- [东京恐怖舞蹈](https://www.bilibili.com/video/av1673388)
-
-<iframe src="//player.bilibili.com/player.html?aid=1673388&cid=2550221&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- [琵琶语【不一样的古风】](https://www.bilibili.com/video/av1263165),挪威的Quick Crew组合
-
-<iframe src="//player.bilibili.com/player.html?aid=1263165&cid=1922891&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- 【2019-12-29】[VR-3D绘画：以空气为画布，勾勒出了炫酷惊艳的三维画面](https://www.bilibili.com/video/av70059116)
-<iframe src="//player.bilibili.com/player.html?aid=70059116&cid=121380459&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-- 【2020-4-22】张碧晨张杰演唱电影《我不是药神》主题曲《只要平凡》
-   - [官方版MV](https://www.bilibili.com/video/BV18441127GN)
-<iframe src="//player.bilibili.com/player.html?aid=66087330&bvid=BV18441127GN&cid=114635093&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-   - 童声合唱版《只要平凡》
-<iframe src="//player.bilibili.com/player.html?aid=36235774&bvid=BV1Nt41117Sc&cid=63612130&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
+站内专题：[音乐](music)
 
 ## 百科知识
 
-- 【20190-09-13】回形针制作的系列科普视频, 混乱博物馆的[5G背后的两个男人](https://www.bilibili.com/video/av62773215)
-   - [如何用机器人打销售电话？](https://www.bilibili.com/video/av37362322)
-   - [如何科学制造降雨](https://www.bilibili.com/video/av67286738)
-   - [你的手机是如何拍照的](https://www.bilibili.com/video/av50280224)
-   - [如何成为钓鱼高手](https://www.bilibili.com/video/av60448298)
-   - [如何为13亿人调度车辆](https://www.bilibili.com/video/av42125169)
-   - [固态硬盘到底好在哪儿](https://www.bilibili.com/video/av61437877)，[中国网盘为什么这么难用](https://www.bilibili.com/video/av58647793)
-   - [别再问我什么是BT种子](https://www.bilibili.com/video/av57748098)
-   - [APP如何知道你想买什么](https://www.bilibili.com/video/av40891962)
+【20190-09-13】回形针制作的系列科普视频, 混乱博物馆的[5G背后的两个男人](https://www.bilibili.com/video/av62773215)
+- [如何用机器人打销售电话？](https://www.bilibili.com/video/av37362322)
+- [如何科学制造降雨](https://www.bilibili.com/video/av67286738)
+- [你的手机是如何拍照的](https://www.bilibili.com/video/av50280224)
+- [如何成为钓鱼高手](https://www.bilibili.com/video/av60448298)
+- [如何为13亿人调度车辆](https://www.bilibili.com/video/av42125169)
+- [固态硬盘到底好在哪儿](https://www.bilibili.com/video/av61437877)，[中国网盘为什么这么难用](https://www.bilibili.com/video/av58647793)
+- [别再问我什么是BT种子](https://www.bilibili.com/video/av57748098)
+- [APP如何知道你想买什么](https://www.bilibili.com/video/av40891962)
    
 
 ## 大自然
@@ -697,8 +648,6 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
     - 企鹅群里有特务（penguins：spy in the hundle）：企鹅生活
     - 种出个地球（how to grow a planet）：植物进化到生态的影响
     - 飞跃地球（earth flight）：动物、风景
-
-
 
 ## 动物电影
 
