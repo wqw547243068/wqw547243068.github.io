@@ -7448,10 +7448,88 @@ Hertz提供了多种**路由规则**，路由的优先级为：<span style='colo
 
 (1) 静态路由
 - Hertz 提供 GET、POST、PUT、DELETE、ANY 等方法用于注册路由。
+- 官方代码 [ertz-examples/blob/main/route/main.go](https://github.com/cloudwego/hertz-examples/blob/main/route/main.go)
+
+```go
+
+package main
+ 
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+ 
+funcmain(){
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+ 
+	h.StaticFS("/", &app.FS{Root: "./", GenerateIndexPages: true})
+ 
+	h.GET("/get", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "get")
+	})
+	h.POST("/post", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "post")
+	})
+	h.PUT("/put", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "put")
+	})
+	h.DELETE("/delete", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "delete")
+	})
+	h.PATCH("/patch", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "patch")
+	})
+	h.HEAD("/head", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "head")
+	})
+	h.OPTIONS("/options", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "options")
+	})
+	h.Any("/ping_any", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "any")
+	})
+	h.Handle("LOAD","/load", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "load")
+	})
+	h.Spin()
+```
 
 (2) 路由组
 
 Hertz提供了路由组(Group)的能力，用于支持路由分组的功能。
+
+```go
+package main
+ 
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
+)
+ 
+funcmain(){
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+	v1 := h.Group("/v1")
+	v1.GET("/get", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "get")
+	})
+	v1.POST("/post", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "post")
+	})
+	v2 := h.Group("/v2")
+	v2.PUT("/put", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "put")
+	})
+	v2.DELETE("/delete", func(ctx context.Context, c *app.RequestContext) {
+		c.String(consts.StatusOK, "delete")
+	})
+	h.Spin()
+}
+```
+
 
 (3) 参数路由
 
