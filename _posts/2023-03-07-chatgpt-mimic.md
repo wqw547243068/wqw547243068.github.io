@@ -3789,7 +3789,7 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
   4. 支持参数定制化的 RLHF 和数据集定制接口。
 
 【2023-7-30】[safe_rlhf/models/pretrained.py#L122](https://github.com/PKU-Alignment/safe-rlhf/blob/main/safe_rlhf/models/pretrained.py#L122)
-- end_scores 源自何处？huggingface transformers没找到
+- end_scores 源自何处？huggingface transformers没找到 -- 
 
 ```py
         logits = self.actor_model(sequence, attention_mask=attention_mask).logits
@@ -3803,6 +3803,30 @@ AI图像生成工具Stable Diffusion的初创公司Stability AI发布并开源�
             sequence,
             attention_mask=attention_mask,
         ).scores
+```
+
+end_score非transformers自带属性，是safe_rlhf自定义
+- [models/score_model/gpt2/modeling_gpt2.py](https://github.com/PKU-Alignment/safe-rlhf/blob/main/safe_rlhf/models/score_model/gpt2/modeling_gpt2.py)
+
+```py
+from safe_rlhf.models.score_model import ScoreModelOutput
+
+class GPT2ForScore(GPT2PreTrainedModel):
+
+        scores = self.score_head(hidden_states)  # size = (B, L, D)
+
+        end_scores = []
+        for i in range(input_ids.size(0)):
+            end_index = attention_mask[i].nonzero()[-1].item()
+            end_scores.append(scores[i, end_index])  # size = (D,)
+        end_scores = torch.stack(end_scores, dim=0)  # size = (B, D)
+
+        if not return_dict:
+            return scores, end_scores
+
+        return ScoreModelOutput(
+            scores=scores,  # size = (B, L, D)
+            end_scores=end_scores,  # size = (B, D)
 ```
 
 ### BLOOMChat
