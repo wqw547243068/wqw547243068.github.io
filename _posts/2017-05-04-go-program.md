@@ -6768,28 +6768,28 @@ Go 语言里面提供了一个完善的 `net/http` 包，通过 http 包可以�
 
 (1) HTTP协议客户端实现
 
-- request请求：含GET/POST
-  - http.NewRequest()
-- GET方法
-  - client.Get()
-  - http.Get()
-- POST方法
-  - client.Post() 或 client.PostForm()
-  - http.Post() 或 http.PostForm()
-  - http的Post()函数或PostForm()，就是对DefaultClient.Post()或DefaultClient.PostForm()的封装
+- request请求：含 GET/POST
+  - http.`NewRequest`()
+- GET 方法
+  - client.`Get`()
+  - http.`Get`()
+- POST 方法
+  - client.`Post`() 或 client.`PostForm`()
+  - http.`Post`() 或 http.`PostForm`()
+  - http 的 `Post`()函数或 `PostForm`()，就是对 DefaultClient.`Post`() 或 DefaultClient.`PostForm`()的封装
 
 (2) HTTP协议服务端实现
 
 HTTP服务器主要应完成如下功能
 - ① 处理动态请求：处理浏览网站，登录帐户或发布图片等用户传入的请求。
-  - 用 http.HandleFunc 函数注册一个新的 Handler 来处理动态请求。
+  - 用 http.`HandleFunc` 函数注册一个新的 Handler 来处理动态请求。
     - 第一个参数是请求路径的匹配模式
     - 第二个参数是一个函数类型，表示针对这个请求要执行的功能。
 - ② 提供静态文件：将JavaScript，CSS和图像等静态文件提供给浏览器，服务于用户。
-  - http.FileServer() 方法提供 Javascript，CSS或图片等静态文件。
+  - http.`FileServer`() 方法提供 Javascript，CSS或图片等静态文件。
   - 参数是文件系统接口，可以使用http.Dir()来指定文件所在的路径。如果该路径中有index.html文件，则会优先显示html文件，否则会显示文件目录。
 - ③ 接受连接请求：HTTP服务器必须监听指定端口从而接收来自网络的连接请求。
-  - http.ListenAndServer()函数用来启动HTTP服务器，并且在指定的 IP 地址和端口上监听客户端请求
+  - http.`ListenAndServer`()函数用来启动HTTP服务器，并且在指定的 IP 地址和端口上监听客户端请求
 - ④ 获取客户端数据
   - 客户端提交的数据全部位于 *http.Request 中
 
@@ -7152,6 +7152,9 @@ func main() {
 
 ### hertz
 
+【2023-7-31】[Go Web框架——Hertz基础教程](https://juejin.cn/post/7197070078360584253)
+
+Hertz是字节内部开源的http框架，参考了其他开源框架的优势，结合字节跳动内部的需求，具有高易用性、高性能、高扩展性等特点。
 
 #### hertz 简介
 
@@ -7216,7 +7219,7 @@ Kite 作为字节跳动第一代 Golang RPC 框架，主要存在以下缺陷：
 
 [字节跳动微服务架构体系演进](https://zhuanlan.zhihu.com/p/382833278)
 
-#### hertz 安装
+#### Hertz 安装
 
 安装 [hertz](https://github.com/cloudwego/hertz)
 
@@ -7230,9 +7233,43 @@ git clone https://github.com/cloudwego/hertz.git
 # export PATH=$GOPATH/bin:$PATH # 或
 # 安装命令行工具hz
 go install github.com/cloudwego/hertz/cmd/hz@latest
+hz -v # 测试，输出版本信息  hz version v0.5.2
 ```
 
-#### hertz 使用
+注
+- 错误信息： hz command not found
+- 解法：配置 GO_PATH 目录
+
+```sh
+#PATH需要有GO_PATH
+export PATH=$GOPATH/bin:$PATH
+# 或者 /etc/profile里添加 
+PATH=$GOPATH/bin:$PATH
+
+source /etc/profile
+```
+
+
+#### Hertz 性能
+
+Hertz是一个高性能Web框架，之所以高性能是因为以下几点：
+- 使用高性能网络库Netpoll
+- Json编解码Sonic，Sonic是一个高性能Json编解码库
+- 使用sync.Pool复用对象协议层数据解析优化
+
+#### Hertz 生态
+
+Hertz拥有非常丰富的扩展生态：
+- Http2扩展
+- opentelemetry扩展
+- 国际化扩展
+- 反向代理扩展
+- JWT鉴权扩展
+- Websocket扩展
+- 丰富的代码示例
+
+
+#### Hertz 使用
 
 【2023-7-25】步骤: [官方教程](https://www.cloudwego.io/zh/docs/hertz/getting-started/), [examples](https://github.com/cloudwego/hertz-examples/blob/main/README_CN.md)
 - 当前目录下创建 hertz_demo 文件夹，进入该目录中
@@ -7246,39 +7283,385 @@ go install github.com/cloudwego/hertz/cmd/hz@latest
 package main
 
 import (
-    "context"
+	"context"
+	"fmt"
 
-    "github.com/cloudwego/hertz/pkg/app"
-    "github.com/cloudwego/hertz/pkg/app/server"
-    "github.com/cloudwego/hertz/pkg/common/utils"
-    "github.com/cloudwego/hertz/pkg/protocol/consts"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-func main() {
-    h := server.Default()
-
-    h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
-            ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
-    })
-
-    h.Spin()
+type Test struct {
+	A string
+	B string
 }
+
+func main() {
+	h := server.Default() // Defalt 会自带错误恢复中间件，若想要纯净的实例请使用 server.New()
+    // 静态文件目录
+	h.StaticFS("/", &app.FS{Root: "./", GenerateIndexPages: true})
+    // get 接口 ping，返回json传
+	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, utils.H{"message": "pong"})
+	})
+    // json, 返回自定义格式json串（Test）
+	h.GET("/json", func(c context.Context, ctx *app.RequestContext) {
+		ctx.JSON(consts.StatusOK, &Test{
+			A: "aaa",
+			B: "bbb",
+		})
+	})
+    // post 请求
+    h.POST("/post", func(c context.Context, ctx *app.RequestContext) {
+        // ctx.String(consts.StatusOK, "post") // 返回 string
+        ctx.JSON(consts.StatusOK, utils.H{"message": "pong_post"}) // 返回json 串
+    })
+    // 重定向
+	h.GET("/redirect", func(c context.Context, ctx *app.RequestContext) {
+		ctx.Redirect(consts.StatusMovedPermanently, []byte("http://www.google.com/"))
+	})
+    // Group 什么含义？一组接口
+	v1 := h.Group("/v1")
+	{
+		v1.GET("/hello/:name", func(c context.Context, ctx *app.RequestContext) {
+			fmt.Fprintf(ctx, "Hi %s, this is the response from Hertz.\n", ctx.Param("name"))
+		})
+	}
+
+	h.Spin() // 什么作用？等待结束符号。Spin() 运行服务器直到捕获 os.Signal 。 SIGTERM 触发器立即关闭。 SIGHUP|SIGINT 触发正常关闭。
+}
+
 ```
 
 
-#### hertz 命令行
-
+#### Hertz 命令行+创建代码
 
 hertz 命令行工具
-- hz 是 Hertz 框架提供的一个用于**生成代码**的**命令行**工具。
-- 目前，hz 可以基于 thrift 和 protobuf 的 IDL 生成 Hertz 项目的脚手架
+- `hz` 是 Hertz 框架提供的一个用于**生成代码**的**命令行**工具。
+
+
+(1) 直接生成
+
+Hertz 提供了代码生成工具 Hz，`hz` 是 Hertz 框架提供的一个用于生成代码的命令行工具，`hz` 可基于 `thrift` 和 `protobuf` 的 `IDL` 生成 Hertz 项目的脚手架。
+
+使用 hz命令直接生成示例代码，步骤如下：
+- 当前目录下创建 `hertz` 文件夹，进入该目录中
+- 执行生成代码命令 `hz new` 或者使用 `hz new -module example`
+- 执行命名`go mod tidy` 整理、拉取依赖
+
+```sh
+mkdir hertz_demo
+cd hertz_demo
+hz new # 当前目录下创建
+hz new wqw # wqw下创建
+# 以上两种方法需要单独执行: go mod init
+
+hz new -module hertz_demo
+go mod tidy
+tree ./ # mac 下先安装 tree工具: brew install tree, 或： alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+```
+
+生成文件
+
+```sh
+[root@hecs-74066 hertz_demo]# tree ./
+./
+├── biz
+│   ├── handler
+│   │   └── ping.go # handler层，实现具体接口逻辑
+│   └── router
+│       └── register.go # 路由注册层，这个适用于使用thrift生成的hz项目
+├── go.mod
+├── go.sum
+├── build.sh
+├── main.go
+├── router_gen.go 
+└── router.go # 注册路由的地方，将方法注册到对应的url中
+├── script
+   └── bootstrap.sh
+```
+
+业务逻辑主要在 `main.go` 和 `handler`目录即可，`ping.go`是已经实现好的逻辑，就是一个`/ping`接口
+
+编译执行
+
+```sh
+# 编译+执行
+go build -o api
+./api
+# 或直接执行
+go run main.go
+```
+
+结果
+
+```sh
+curl http://127.0.0.1:8888/ping
+{"message":"pong"}
+```
+
+(2) 使用IDL
+
+目前，`hz` 可以基于 `thrift` 和 `protobuf` 的 IDL 生成 Hertz 项目的脚手架
 - 使用 thrift 或 protobuf 的 IDL 生成代码，需要安装相应的编译器：[thriftgo](https://github.com/cloudwego/thriftgo) 或 [protoc](https://github.com/protocolbuffers/protobuf/releases) 
 - hz 生成的代码里
   - 一部分是底层的**编译器**生成的（通常是关于 IDL 里定义的结构体）
   - 另一部分是 IDL 中用户定义的**路由、method** 等信息。用户可直接运行该代码。
 - 从执行流上来说，当 hz 使用 thrift IDL 生成代码时，hz 会调用 thriftgo 来生成 go 结构体代码，并将自身作为 thriftgo 的一个插件（名为 thrift-gen-hertz）来执行来生成其他代码。当用于 protobuf IDL 时亦是如此。
 
+先定义一个IDL文件，如 `hello.thrift`
 
+```go
+namespace go hello.example
+
+struct HelloReq {
+    // 添加 api 注解为方便进行参数绑定
+    1: string Name (api.query="name"); 
+}
+struct HelloResp {
+    1: string RespBody;
+}
+
+service HelloService {
+    HelloResp HelloMethod(1: HelloReq request) (api.get="/hello");
+}
+```
+
+执行命令生成代码，并整理依赖：
+
+```sh
+hz new -idl hello.thrift
+go mod tidy
+```
+
+生成的文件结构
+
+
+
+
+#### Hertz 路由
+
+Hertz路由
+
+Hertz提供了多种**路由规则**，路由的优先级为：<span style='color:blue'> **静态**路由 > **命名**路由 > **通配**路由</span>。
+
+(1) 静态路由
+- Hertz 提供 GET、POST、PUT、DELETE、ANY 等方法用于注册路由。
+
+(2) 路由组
+
+Hertz提供了路由组(Group)的能力，用于支持路由分组的功能。
+
+(3) 参数路由
+
+Hertz 支持使用 `:name` 这样的**命名参数**设置路由，并且命名参数只匹配单个路径段。
+
+如果设置`/hertz/:version`路由，匹配情况如下：
+
+| 路径 | 是否匹配| 
+|---|---|
+| /hertz/v1 | 匹配 |
+| /hertz/v2 | 匹配 | 
+| /hertz/v1/detail| 不匹配 | 
+| /hertz/ | 不匹配 |
+
+通过使用 `RequestContext.Param` 方法，我们可以获取路由中携带的参数。
+
+```go
+h.GET("/hertz/:version", func(ctx context.Context, c *app.RequestContext) {
+    version := c.Param("version")
+    c.String(consts.StatusOK, "Hello %s", version)
+})
+```
+
+(4) 通配路由
+
+Hertz 支持使用 `*path` 这样的通配参数设置路由，并且通配参数会匹配所有内容。
+
+如果设置`/hertz/*path`路由，匹配情况如下
+
+| 路径 | 是否匹配 | 
+| /hertz/v1 | 匹配 | 
+| /hertz/v1/detail | 匹配 | 
+| /hertz/ | 匹配 |
+
+通过使用 `RequestContext.Param` 方法，可以获取路由中携带的参数。
+
+```go
+h.GET("/hertz/:version/*action", func(ctx context.Context, c *app.RequestContext) {
+    version := c.Param("version")
+    action := c.Param("action")
+    message := version + " is " + action
+    c.String(consts.StatusOK, message)
+})
+```
+
+(5) 参数绑定
+
+Hertz提供了 `Bind` 、 `Validate` 、 `BindAndValidate` 函数用于进行参数绑定校验。
+- 绑定使用的是 BindAndValidate 方法
+
+绑定的作用
+- 把http请求的参数封装到定义的**结构体**里面方便开发使用，Hertz使用的是tag的方式进行绑定的。
+
+| Tag | 说明 | 
+| --- | --- | 
+| path | 绑定 url 上的路径参数，相当于 hertz 路由 :param 或 *param 中拿到的参数 | 
+| form | 绑定请求的 body 内容query绑定请求的 query 参数 | 
+| header | 绑定请求的 header 参数json绑定 |
+| json | 参数 | 
+| vd | 参数校验 |
+
+
+#### Hertz Client
+
+Hertz 提供 `Http Client` 帮助用户发送 Http 请求，可在代码逻辑中请求第三方服务。
+
+例如，使用GET发送一个Http请求：
+
+```go
+func Get() { // GET 
+    c, err := client.NewClient()
+    if err != nil {
+        return
+    }
+    status, body, _ := c.Get(context.Background(), nil, "http://www.example.com")
+    fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+
+func Post() { // POST 
+    c, err := client.NewClient()
+    if err != nil {
+        return
+    }
+    var postArgs protocol.Args
+    postArgs.Set("arg", "a") // 发送参数
+    status, body, _ := c.Post(context.Background(), nil, "http://www.example.com", &postArgs)
+    fmt.Printf("status=%v body=%v\n", status, string(body))
+}
+```
+
+### KiteX
+
+kitex 是字节跳动使用的go的rpc框架，类似 protobuf\trpc\tarf\thrift，可用于内部应用之间的**高效通讯**
+- 根据指定好的idl文件生成对应的server代码和stub代码，提供给服务端和客户端的使用，由于底层的编码逻辑比http所使用的json要高效，所以内部应用比较适合使用rpc协议进行通讯
+- kitex可以使用thrift/proto文件去定义idl
+
+#### KiteX 安装
+
+```sh
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+go install github.com/cloudwego/thriftgo@latest
+kitex --version
+thriftgo --version // 出现cmd找不到的情况，如同hertz的处理办法
+```
+
+创建 kitex项目需要依赖`idl文件`的生成
+- 一份idl文件可定义整个服务的对外暴露的接口，让后台服务间的调用更加明确
+
+因此先定义一份thrift文件，根据thrift文件让kitex工具生成框架代码
+
+```sh
+cd .. #回到hertz_demo的前一个目录
+vim biz.thrift
+```
+
+biz.thrift 内容
+
+```go
+namespace go biz
+
+struct BaseResponse {
+    1: i32 code; // 1成功，-1失败
+    2: string msg;
+}
+
+struct LoginRequest {
+    1: required string username;
+    2: required string password;
+}
+
+struct LoginResponse {
+    1: BaseResponse base;
+    2: string userToken; // token使用username代替
+}
+
+struct LogoutRequest  {
+    1: required string userToken; // token使用username代替
+}
+
+struct LogOutResponse {
+    1: BaseResponse base;
+}
+
+struct User {
+    1: string username;
+    2: string password;
+    3: string email;
+}
+
+service UserService {
+    LoginResponse Login(1: LoginRequest request)
+    LogOutResponse LogOut(1: LogoutRequest request)
+    list<User> GetUsers()
+}
+```
+
+执行以下命令创建kitex-server项目
+
+```sh
+mkdir kitex_demo
+cd kitex_demo
+kitex -module kitex_demo -service kitex_demo ../biz.thrift
+go mod tidy
+```
+
+项目结构
+
+```sh
+[root@hecs-74066 kitex_demo]# tree ./
+./
+├── build.sh #编译脚本
+├── go.mod
+├── handler.go # 目前阶段实现的逻辑为handler.go
+├── kitex_gen # kitex根据thrift生成的一堆struct的定义和调用框架层的细节，暂时可以不关注
+│   └── biz
+│       ├── biz.go
+│       ├── k-biz.go
+│       ├── k-consts.go
+│       └── userservice
+│           ├── client.go
+│           ├── invoker.go
+│           ├── server.go
+│           └── userservice.go
+├── kitex.yaml
+├── main.go # server启动的main.go
+└── script
+    └── bootstrap.sh
+
+4 directories, 13 files
+```
+
+启动项目
+
+```sh
+go mod edit -replace github.com/apache/thrift=github.com/apache/thrift@v0.13.0 #防止编译报错，如果编译没有thrift的依赖报错，不需要添加这个replace到go.mod
+sh build.sh
+./output/bin/kitex_demo
+# 2023/01/15 15:55:55.415010 server.go:81: [Info] KITEX: server listen at addr=[::]:8888
+```
+
+主要在 handler.go 中实现业务逻辑,实现真正后端的login和logout逻辑（copy一下即可）
+- 代码见笔记：[go hertz框架和kitex的入门笔记](https://juejin.cn/post/7188884096062341157)
+
+启动服务
+
+```sh
+go mod tidy
+sh build.sh
+./output/bin/kitex_demo
+```
 
 ### caddy web服务框架
 
