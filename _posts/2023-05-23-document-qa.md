@@ -1467,6 +1467,8 @@ LangChain, 语言链条，也称：`兰链`，Harrison Chase 2022年10月创建�
 - LangChain目前有两个语言的实现：python和nodejs
 - 几分钟内构建 GPT 驱动的应用程序。
 
+Harrison Chase 于 2022 年 10 月底首次提交 LangChain。在被卷入 LLM 浪潮之前，只有短短几个月的开发时间
+
 LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
 - ![img](https://aitechtogether.com/wp-content/uploads/2023/05/c8538d73-3b21-4a6e-8e83-845477d3f275.webp)
 - ![](https://picx.zhimg.com/v2-b048e039fd396b131767f58b9c97a37b_1440w.jpg?source=172ae18b)
@@ -1492,14 +1494,17 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 
 #### LangFlow 可视化
 
-【2023-7-4】[LangFlow](https://logspace.ai/) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
+【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
 
-[LangFlow](https://logspace.ai/) [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
+[LogSpace](https://logspace.ai/) 出品，LangFlow [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
 - 提供多种 LangChain 组件以供选择，如语言模型、提示序列化器、代理和链等。
 - 通过编辑提示参数、链接链和代理，以及跟踪代理的思考过程，用户可以探索这些组件的功能。
 - 使用 LangFlow，用户可以将流程导出为 JSON 文件，然后在 LangChain 中使用。
 - LangFlow 的图形用户界面（GUI）提供了一种直观的方式来进行流程实验和原型开发，包括拖放组件和聊天框
+- ![](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true)
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3985851583544f95acce1c6c2399147a~tplv-obj:1280:640.image?_iz=97245&from=post&x-expires=1696204800&x-signature=d4gBt5CjT3X6m6%2FF9sTfMLy1x6o%3D)
+- [官方 UI 配置文件集合](https://huggingface.co/spaces/Logspace/Langflow)
+
 
 ```sh
 pip install langflow # 安装
@@ -1524,16 +1529,17 @@ flow("Hey, have you heard of LangFlow?")
 
 【2023-7-23】[我为什么放弃了 LangChain？](https://zhuanlan.zhihu.com/p/645345926)
 
-由 LangChain 推广的 ReAct 工作流在 InstructGPT/text-davinci-003 中特别有效，但成本很高，而且对于小型项目来说并不容易使用。
+由 LangChain 推广的 `ReAct` 工作流在 InstructGPT/text-davinci-003 中特别有效，但**成本很高**，而且对于小型项目来说并不容易使用。
+> 「LangChain 是 RAG 最受欢迎的工具，阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
 
-「LangChain 是 RAG 最受欢迎的工具，所以我想这是学习它的最佳时机。我花了一些时间阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
+经过一周的研究，一无所获。运行 LangChain 的 demo 示例确实可以工作，但是任何调整以适应食谱聊天机器人约束的尝试都会失败。
+- 解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，没有找到任何解决方案。
+- 用回了低级别的 ReAct 流程，立即在**对话质量**和**准确性**上超过了 LangChain 实现
 
-经过一周的研究，我一无所获。运行 LangChain 的 demo 示例确实可以工作，但是任何调整它们以适应食谱聊天机器人约束的尝试都会失败。在解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，我没有找到任何解决方案。用回了低级别的 ReAct 流程，它立即在对话质量和准确性上超过了我的 LangChain 实现
-
-LangChain 的问题在于它让简单的事情变得相对复杂，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
-- LangChain 使用的代码量与仅使用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
+LangChain 问题: 让简单事情变得相对复杂，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
+- LangChain 代码量与仅使用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
 - LangChain 吹嘘的提示工程只是 f-strings，一个存在于每个 Python 安装中的功能，但是有额外的步骤。为什么我们需要使用这些 PromptTemplates 来做同样的事情呢？
-- 真正想做的是：如何创建 Agent，结合了迫切想要的 ReAct 工作流。而LangChain示例里每个思想 / 行动 / 观察中都使用了自己的 API 调用 OpenAI，所以链条比你想象的要慢。
+- 真正想做的是：如何创建 Agent，结合了迫切想要的 ReAct 工作流。而 LangChain示例里每个思想 / 行动 / 观察中都使用了自己的 API 调用 OpenAI，所以链条比想象的要慢。
 - LangChain 如何存储到目前为止的对话?
 
 制作自己的 Python 软件包要比让 LangChain 来满足自己的需求容易得多
@@ -2623,6 +2629,16 @@ print(llm("你会做什么"))
 # 我是一个大型语言模型，被训练来回答人类提出的问题。我不能做任何实际的事情，只能通过文字回答问题。如果你有任何问题，我会尽力回答。
 
 ```
+
+### LangSmith
+
+LangSmith 是LangChain官方推出的 生产级LLM应用程序构建平台。
+- 可以调试、测试、评估和监控任何LLM框架上构建的链和智能代理，并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
+- langchain 执行过程中的数据可视化展示，用于观察 chain tool llm 之前的嵌套关系、执行耗时、token 消耗等指标
+- [官方文档](https://docs.smith.langchain.com/)
+
+LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
+
 
 
 ### 微软guidance（LangChain简化）
