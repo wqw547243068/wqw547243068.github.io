@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "【读书笔记】-你为什么穷？- why you are poor"
+title:  "【读书笔记】人类社会发展认知"
 date:   2014-04-27 12:02:00
 categories: 读书笔记
 tags: 人生规划 贫富差距 家庭教育 富豪 社会阶级 留学生 教育 穷人 翻身 阶层 潜规则 幂律分布 社会 出路 俱乐部
-excerpt: 穷人一直穷，富人一直富吗？
+excerpt: 穷人一直穷，富人一直富吗？社会阶级会一直存在吗
 author: 鹤啸九天
 mathjax: true
 ---
@@ -170,6 +170,70 @@ mathjax: true
 从中产走向富人，首先要破除的就是爱慕虚荣，**不断积累资金**；其次，要投资未来、**丰富认知**、学习投资路径；最后，不断**积累资产**，到达财富自由。
 
 每一个层次想要跃迁到另外一个阶层都很难，穷人要**节衣缩食**，中产要**克制**自己，富人要不断**学习**，所以说控制不住自己的人性，就无法完成阶层的跃迁。
+
+
+### 阶级轮回
+
+1937年，`乔治·奥威尔`从西班牙内战战场归来，让他的写作有了新目标。
+- 奥威尔1936年底去西班牙参战，本来是为了保卫共和政府所代表的民主政体，却目睹了左派内部的生死斗争。奥威尔死里逃生从西班牙回来，对苏联所控制的西班牙共和派表面上代表进步、民主，却进行政治及人身迫害、思想控制的种种做法感到愤慨，后来也写了不少文章来揭露。
+- 20世纪二、三十年代，当西方许多左翼知识分子对苏联抱以希望时，奥威尔通过自身经历以及对苏联的大清洗等一系列事件的了解，对斯大林统治下的苏联之本质有了自己的判断。以童话形式写成的《动物庄园》便是这种思想推动下的产物。
+
+《动物庄园》（Animal Farm）亦译作《动物农场》《动物农庄》，是英国作家`乔治·奥威尔`创作的中篇小说，1945年首次出版。
+- 讲述农场的一群动物成功地进行了一场“革命”，将压榨他们的人类东家赶出农场，建立起一个平等的动物社会。
+- 然而，动物领袖，那些聪明的猪们最终却篡夺了革命的果实，成为比人类东家更加独裁和极权的统治者。 
+
+该作被公认为反乌托邦政治讽喻寓言
+
+《1984》是`乔治·奥威尔`的代表作,也是反乌托邦三部曲之首。
+- [中文本电子书](https://docs.google.com/file/d/0BxDAqt617IxNRkpfOXpXcmtmdjA/edit?pli=1&resourcekey=0-HzUB5G_w9CojxxKFMxIl8A)
+
+反映社会的短片：[Dinner for few](https://www.bilibili.com/video/BV1SW411C7JZ/?spm_id_from=autoNext)
+- 《少数人的晚餐》在250多个国际电影节上放映，并赢得了78个奖项，它是2015年获得奥斯卡金像奖的60种动画短片之一.
+- 猫有两种，代表平民，分别是：
+  - 代表遵纪守法的平民白猫
+  - 代表敢于挑战规则的平民黑猫。
+- 猪一共有六头，代表普遍的即得利益集团，分别是：
+  - 两头分别代表执政党与非执政党的领带猪，以坐的位子进行区分。
+  - 代表社会秩序与法律的假发猪。
+  - 代表社会道德与价值观的牧师猪。
+  - 代表资本家（拥有资金，僱用员工，经营工商企业的人）的小胡子猪。
+  - 代表媒体，舆论界即相关官员的眼睛猪。
+- 厨子代表个人欲望的集合体（社会）。
+- 老虎代表暴乱起义反抗的群众。
+- 房子代表用地球资源建起的国家。
+- 刀叉代表权利与职位。
+- 桌下的铁蛇代表贪婪的利益关系链。
+- 机器代表生产技术。
+- 假老鼠代表能转移平民注意力的东西，比如娱乐，仇恨，战争等等。
+- 岸代表地球。
+- 大海代表宇宙间无尽的危险！
+   
+大部分人以为自己是猫，其实大部分人就是那些家具，毫无反抗之力的被扔进制作食物的机器里。
+
+统治阶级为了服务自身的利益不得不和中产阶级进行利益捆绑，宗教，司法，知识分子和商业资本家共同将韭菜，也就是家具转化为一盘盘可口的饭菜然后迫不及待吞咽。
+
+猫可以理解为有见识有本事通过自己本代人奋斗得到政治地位的人，这种人不是某二代，他们遵从游戏规则，所以被赏赐具有允许吃残羹剩饭的权利，但是大头利益必须是统治阶级和商业资本家等人的囊中之物，当现任体制机制出现无法用温和改革修补后，会出现由量变到质变的效应，这就是被赏赐骨头的猫，会借助自己的力量占位夺取国家机器，变成新的猪大人，也就是统治阶级。
+
+这就是权力的游戏，所谓民族主义和阴谋论，也只不过是安抚韭菜的手段。轮回周期不固定，短则50年到100年，长达300年。
+
+《少数人的晚餐》是一部十分钟的CG动画电影，描绘了社会政治隐喻。在晚餐期间，“体系”就像一台运行良好的机器。它只为那些最终愚蠢地消耗所有资源的少数人提供食物，而其他人则依靠桌上的残羹剩饭来生存。
+
+不可避免的是，当供应枯竭时，为剩下的东西而进行的斗争将导致灾难性的变化。可悲的是，这种深刻变革后的新一代并不是希望的象征，而仍是上一代形象的复制。
+
+艾美奖动画艺术家Nassos Vakalis执导并编写了这部电影，动画片由美国和希腊制作，由德国的Eva Vomhoff进行技术和艺术合作。《少数人的晚餐》由Nassos Vakalis和他的妻子Katerina Stergiopoulou制作和资助。原创音乐由Kostas Christides创作，由Bratislava交响乐团演奏。
+
+《少数人的晚餐》受到希腊、意大利，西班牙和葡萄牙等南欧国家的经济衰退的启发。 Nassos Vakalis在希腊长大，他的家人和他的大多数朋友仍在那里生活。《少数人的晚餐》不仅反映了他对危机期间社会和经济发展的深切关注，也凸显了历史上人类发展的必然性和周期性。
+
+该片讲了一个黑色寓言。每到晚餐时间，“系统”就开始如一台上了油的机器般运作。这台机器只负责一小撮人不饿肚子。这些人瓜分了所有资源，而剩下的大多数则饥弱不堪，嗷嗷待哺。最终，资源会耗尽，饥饿的人眼睛发绿，一场风暴在所难免。但让人遗憾的是，变革带来的并不是希望，而是永恒的轮回。
+
+<iframe src="//player.bilibili.com/player.html?aid=31614877&bvid=BV1SW411C7JZ&cid=55282695&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+- V字仇杀队，[在线观看](http://www.caomintv.com/dianying/play/45147-1-1.html)
+- ![](https://pic4.zhimg.com/80/f821e100da62fa4c397e10a0333c8521_hd.jpg)
+
+- 【2019-09-29】《罪恶之家》是艾斯林·沃什执导的推理惊悚电影，由大卫·休里斯、苏菲·兰道尔共同演出。主要讲述一位探长为了调查一个年轻女工的自杀案件，登门拜访即将被封为爵士的亚瑟·伯灵的家庭，最后证明伯灵一家的每一个人都要对这个女工的死负责的故事
+  - [罪恶之家](https://www.ixigua.com/i6736781851815330318/)电影解说
 
 
 # 超级富豪
@@ -1020,6 +1084,14 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 <iframe src="//player.bilibili.com/player.html?aid=73941898&bvid=BV1tE411b7RA&cid=126484672&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
+## 穷爸爸 vs 富爸爸
+
+- [富爸爸 罗伯特·清崎【2019】你有没有被教育成穷人(中英字幕)](https://www.bilibili.com/video/av59164780/?spm_id_from=333.788.videocard.4)
+
+<iframe src="//player.bilibili.com/player.html?aid=59164780&cid=103116268&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+
 ## 穷富翁大作战
 
 [穷富翁大作战](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=200524388&idx=1&sn=eee099777a7e34af500e6f30232370ce&chksm=28c05f791fb7d66f77ce7fa82e5f86fd0585b1bbb36d294705cd4bbe142e57f4dc274120efbc&token=1917001922&lang=zh_CN#rd)
@@ -1031,6 +1103,12 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 节目在香港热播，2011年6月，第二季已告一段落。该档节目在星期二七点播放，收视率不算好，但是却极具社会意义。节目以真人秀方式，请来上市公司行政总裁、年青专业人士、靓女模特儿渡过约一星期的贫穷生活，尝试露宿街头、睡板间房、倒垃圾、执纸皮……。虽然有人嗤之以鼻批评只不过是一场政治秀，但是节目成功推动部分商界人士关注贫穷问题。[1]
 
 地址（1-7集）：第一集 
+
+- 穷富翁大作战,[第一季](https://www.bilibili.com/video/av2884835?from=search&seid=930398290238770510), [第二季](https://www.bilibili.com/video/av12560324)
+   
+<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
 
 ### 1.穷字怎么写？
 
@@ -1210,6 +1288,10 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
   - 一个国家最好的状态就是上层永不松懈，中层永不满足，底层永不绝望。
 - <iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7028768332060983845?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
 
+- 国产，郑琼的[出路](https://www.bilibili.com/video/av31131429)，导演用6年时间跟拍了3个不同阶层孩子在社会上的挣扎。在弱肉强食的社会法则面前，孩子教育的决定性因素不是学区房，而是父母的言传身教。[正片](https://www.youtube.com/watch?v=H3Zk1WKc87M)
+
+<iframe src="//player.bilibili.com/player.html?aid=31131429&cid=54380597&page=1?autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
 
 ## 你为什么穷
 
@@ -1233,6 +1315,13 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
     - 政治腐败
     - 愚昧循环
     - 教育欺诈
+
+- 【2019-08-09】反应社会阶级差距的纪录片
+- [56up](https://www.bilibili.com/video/av25446605?from=search&seid=17957810370452180618)，又称人生七年
+
+<iframe src="//player.bilibili.com/player.html?aid=25446605&cid=43196158&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- BBC Why Poverty.[为什么穷系列纪录片](https://www.youtube.com/watch?v=jRXqdSG4XWQ&list=PLJqVTGbqn7eyF4oVL8Nbg7l8IOKuaciAI), 2012
+
 
 ## 第八集 出路——读书致贫
 
