@@ -1492,6 +1492,111 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
 
 
+#### LangChain 安装
+
+安装步骤
+
+```sh
+pip install langchain
+pip install openai
+# 环境变量
+# ① 在终端中设置环境变量：
+export OPENAI_API_KEY = "..."
+# ② Jupyter notebook 或 Python 脚本中工作，这样设置环境变量:
+import os 
+os .environ[ "OPENAI_API_KEY" ] = "..."
+```
+
+测试：构建LLM应用
+- LangChain 目前支持 AIMessage、HumanMessage、SystemMessage 和 ChatMessage 类型。一般主要使用 HumanMessage、AIMessage 和 SystemMessage。
+
+```py
+from langchain.llms import OpenAI
+# -------【构建LLM应用】--------
+llm = OpenAI(temperature=0.9) # 初始化包装器，temperature越高结果越随机
+# 调用
+text = "What would be a good company name for a company that makes colorful socks?"
+print(llm(text)) # 生成结果，结果是随机的 例如： Glee Socks. Rainbow Cozy SocksKaleidoscope Socks.
+# -------【构建Prompt】-------
+from langchain.prompts import PromptTemplate
+
+prompt = PromptTemplate(
+    input_variables=["product"],
+    template="What is a good name for a company that makes {product}?",
+)
+print(prompt.format(product="colorful socks"))
+# 输出结果 What is a good name for a company that makes colorful socks?
+# -------【构建聊天应用】-------
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
+# ------ 单条消息 --------
+chat = ChatOpenAI(temperature=0)
+chat([HumanMessage(content="Translate this sentence from English to French. I love programming.")])
+#输出结果 AIMessage(content="J'aime programmer.", additional_kwargs={})
+# ------ 多条消息：批处理 --------
+batch_messages = [
+    [
+        SystemMessage(content="You are a helpful assistant that translates English to Chinese."),
+        HumanMessage(content="Translate this sentence from English to Chinese. I love programming.")
+    ],
+    [
+        SystemMessage(content="You are a helpful assistant that translates English to Chinese."),
+        HumanMessage(content="Translate this sentence from English to Chinese. I love artificial intelligence.")
+    ],
+]
+result = chat.generate(batch_messages)
+print(result)
+result.llm_output['token_usage']
+# ------ 消息模板 ------
+from langchain.chat_models import ChatOpenAI
+# 加模板后，导入方式变化：增加 PromptTemplate后缀
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+chat = ChatOpenAI(temperature=0)
+template="You are a helpful assistant that translates {input_language} to {output_language}."
+system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+human_template = "{text}"
+human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+# get a chat completion from the formatted messages
+chat(chat_prompt.format_prompt(input_language="English", output_language="Chinese", text="I love programming.").to_messages())
+# -> AIMessage(content="我喜欢编程。(Wǒ xǐhuān biānchéng.)", additional_kwargs={})
+```
+
+
+将内存与聊天模型初始化的链和代理一起使用。与 Memory for LLMs 的主要区别：将以前的消息保留为自己唯一的内存对象，而不是将压缩成一个字符串。
+
+```py
+from langchain.prompts import (
+    ChatPromptTemplate, 
+    MessagesPlaceholder, # 消息占位符
+    SystemMessagePromptTemplate, 
+    HumanMessagePromptTemplate
+)
+from langchain.chains import ConversationChain
+from langchain.chat_models import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+
+prompt = ChatPromptTemplate.from_messages([
+    SystemMessagePromptTemplate.from_template("The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know."),
+    MessagesPlaceholder(variable_name="history"),
+    HumanMessagePromptTemplate.from_template("{input}")
+])
+llm = ChatOpenAI(temperature=0)
+memory = ConversationBufferMemory(return_messages=True)
+conversation = ConversationChain(memory=memory, prompt=prompt, llm=llm)
+conversation.predict(input="Hi there!") # -> 'Hello! How can I assist you today?'
+conversation.predict(input="I'm doing well! Just having a conversation with an AI.") # -> "That sounds like fun! I'm happy to chat with you. Is there anything specific you'd like to talk about?"
+conversation.predict(input="Tell me about yourself.")
+```
+
 #### LangFlow 可视化
 
 【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
@@ -1807,10 +1912,11 @@ import os
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 from langchain.llms import OpenAI
 from langchain import PromptTemplate, LLMChain
-
+# 模板解析
 template = """Question: {question}
 Answer: Let's think step by step."""
 prompt = PromptTemplate(template=template, input_variables=["question"])
+
 llm = OpenAI()
 llm_chain = LLMChain(prompt=prompt, llm=llm)
 question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
@@ -1935,7 +2041,7 @@ from langchain import PromptTemplate
 no_input_prompt = PromptTemplate(input_variables=[], template="Tell me a joke.")
 no_input_prompt.format()
 # -> "Tell me a joke."
-# 【有变量模板】
+# ① 【有变量模板】
 name_template = """
 我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.
 关于{name_description},好听的名字有哪些?
@@ -1945,7 +2051,7 @@ prompt_template = PromptTemplate(input_variables=["name_description"], template=
 description = "男孩名字"
 print(prompt_template.format(name_description=description))
 # 我想让你成为一个起名字的专家。给我返回一个名字的名单. 名字寓意美好，简单易记，朗朗上口.关于男孩名字,好听的名字有哪些?
-# 【多变量模板】
+# ②【多变量模板】
 # An example prompt with multiple input variables
 multiple_input_prompt = PromptTemplate(
     input_variables=["adjective", "content"],
@@ -1953,6 +2059,23 @@ multiple_input_prompt = PromptTemplate(
 )
 multiple_input_prompt.format(adjective="funny", content="chickens")
 # -> "Tell me a funny joke about chickens."
+```
+
+提出多个问题，两种方法： 
+1. 使用generate方法遍历所有问题，逐个回答。
+2. 将所有问题放入单个提示中，这仅适用于更高级的LLMs。
+
+```py
+# ③ 【多输入】
+qs = [Text only
+    {'question': "Which NFL team won the Super Bowl in the 2010 season?"},
+    {'question': "If I am 6 ft 4 inches, how tall am I in centimeters?"},
+    {'question': "Who was the 12th person on the moon?"},
+    {'question': "How many eyes does a blade of grass have?"}
+]
+res = llm_chain.generate(qs)
+# res = LLMResult(generations = [[Generation(text ='green bay packers', generation_info = None)], [Generation(text ='184', generation_info = None)], [Generation(text ='john glenn', generation_info = None)], [Generation(text ='one', generation_info = None)]], llm_output = None)
+
 ```
 
 FewShot PromptTemplate
