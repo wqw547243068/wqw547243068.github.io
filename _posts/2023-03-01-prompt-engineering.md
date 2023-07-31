@@ -478,6 +478,38 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code/nlpquant/automatic-prompt-engineering)
 - Talking to LLMs is important to elicit(引起) the right response/improved performance without updating the parameters of the models [karpathy](https://twitter.com/karpathy/status/1617979122625712128?lang=en)
 
+### 自动化工具
+
+#### PromptsRoyale
+
+[PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
+- 演示[视频](https://user-images.githubusercontent.com/8951736/253364304-efd6e6f6-c470-473a-bcb3-33a398882c9f.mp4)
+
+What it can do
+- Automatic prompt generation: Allows for the creation of prompt candidates from the user's description and test case scenarios. The user can also input their own.
+- Automatic test cases generation: Enables automatically creating test cases from the description to get the juices flowing!
+- Monte Carlo Matchmaking + ELO Rating: It uses the Monte Carlo method for matchmaking to ensure you get as much information with the least amount of battles, and ELO Rating to properly rank candidates based on their wins and who they win against
+- Everything is customizable: The settings page allow you to tinker with every single parameter of the application
+- Local & Secure: Everything is stored locally and requests are made from your browser to the LLMs API.
+
+功能总结
+- 提示自动生成：根据用户描述和测试场景创建候选提示，用户也可以直接输入提示。
+- 自动生成测试用例：从描述中自动生成测试用例，尽快启动
+- Monte Carlo 匹配 和 ELO 等级评分：
+  - 用 Monte Carlo 方法进行**匹配**，以确保在最少的对比分析中获得尽可能多的信息
+  - 用 ELO 等级评分根据胜利和胜利者对候选项正确排名。
+- 可定制：设置页面允许调整应用程序的每个参数。
+- 本地和安全：所有内容都存储在本地，请求是从浏览器发送到 LLMs API。
+
+安装 
+- [bun](https://bun.sh/)
+
+```sh
+curl -fsSL https://bun.sh/install | bash  # 安装 bun
+bun i # 安装依赖
+bun run dev # 启动服务
+```
+
 ### prompt 生成方法
 
 Prompt 是用来提升模型输出效果的前缀序列（sequence of prefix tokens）, 详见 翁丽莲博客[smart-prompt-design](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/#smart-prompt-design)
