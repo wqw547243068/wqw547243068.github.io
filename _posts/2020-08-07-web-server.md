@@ -776,25 +776,28 @@ Spring Modulith地址：网页链接
 - [体验地址](https://petstore.swagger.io/?_ga=2.77229205.1805143947.1643255578-735781494.1643255578#/pet/addPet)
 - ![](https://static1.smartbear.co/swagger/media/images/tools/opensource/swagger_ui.png?ext=.png)
 
-#### flasgger
+#### flasgger 
+
+flasgger：Swagger Python工具包
 
 flasgger 配置文件解析：
 - 在flasgger的配置文件中，以**yaml格式**描述了flasgger页面的内容；
 - **tags标签**中可以放置对这个api的描述和说明；
 - **parameters标签**中可以放置这个api所需的参数
-  - 如果是GET方法，可以放置url中附带的请求参数
-  - 如果是POST方法，可以将参数放置在body参数 **schema子标签**下面；
+  - 如果是GET方法，放置url中附带的请求参数
+  - 如果是<span style='color:red'>POST方法，将参数放置在body参数 **schema子标签**下面</span>；
 - responses标签中可以放置返回的信息，以状态码的形式分别列出，每个状态码下可以用schema标签放置返回实体的格式；
 
-- 【2020-8-26】页面测试功能（try it out）对GET/POST无效，传参失败
-  - 已提交issue：[Failed to get parameters by POST method in “try it out” feature](https://github.com/flasgger/flasgger/issues/428)
-- 【2021-7-19】参考帖子[Parameter in body does not work in pydoc #461](https://github.com/flasgger/flasgger/issues/461)，正确的使用方法：parameter针对url path里的参数，如果启用post需要新增body参数，里面注明post参数信息
+【2020-8-26】页面测试功能（try it out）对GET/POST无效，传参失败
+- 已提交issue：[Failed to get parameters by POST method in “try it out” feature](https://github.com/flasgger/flasgger/issues/428)
+- 【2021-7-19】参考帖子[Parameter in body does not work in pydoc #461](https://github.com/flasgger/flasgger/issues/461)，正确的使用方法：parameter 针对url path里的参数，如果启用post需要新增body参数，里面注明post参数信息
 
-- 安装：
-    - flask_restplus实践失败，个别依赖不满足，放弃
-    - pip install [flasgger](https://github.com/flasgger/flasgger)
-- 测试：如下 
+安装：
+- flask_restplus实践失败，个别依赖不满足，放弃
+- pip install [flasgger](https://github.com/flasgger/flasgger)
 
+示例
+- 注意：yaml描述中需要加 response区（定义200），否则Web测试时无法正常显示
 
 ```python
 # coding:utf8
@@ -809,11 +812,21 @@ flasgger 配置文件解析：
 # * @date 2020/08/22 08:32
 # **************************************************************************
 
-from flask import Flask, request, render_template, jsonify, request
+from flask import Flask, request, render_template, jsonify, request, redirect
 #from flask_restplus import Api
 from flasgger import Swagger, swag_from
 
 app = Flask(__name__)
+
+# 此处是为了让post 方法生效
+app.config['SWAGGER'] = {
+    'title': 'api demo 展示',
+    'uiversion': 3,
+    'openapi': '3.0.3',
+    'persistAuthorization': True,
+}
+
+
 # swagger api封装，每个接口的注释文档中按照yaml格式排版
 Swagger(app)
 
@@ -841,7 +854,7 @@ def hello_world():
       - name: body  # post 参数区（与get冲突, GET方法下去掉body类型！）
         in: body # （2）body形式，文本框格式
         required: true
-        schema:
+        schema: # 以下参数不管用
           id: 用户注册
           required:
             - username
@@ -856,6 +869,11 @@ def hello_world():
             inn_name:
               type: string
               description: 客栈名称.
+    requestBody: # POST 测试时，parameters 不管用，点击“try it out”后直接输入 json串即可
+      content:
+        application/json:
+          schema:
+            id: parameters
     responses:
       500:
         description: 自定义服务端错误
@@ -881,13 +899,72 @@ def hello_world():
     # return json.dumps(res, ensure_ascii=False) # 方法②
     return render_template('index.html')
 
-@app.route("/tmp",methods=["GET","POST"])
-def tmp():
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    # 服务主页
+    res = {"msg":"-", "status":0, "request":{} , "response":{}}
+    req_data = {}
+    if request.method == 'GET':
+        req_data = request.values # 表单形式
+    elif request.method == 'POST':
+        req_data = request.json # json形式
+    else:
+        res['msg'] = '异常请求(非GET/POST)'
+        res['status'] = -1
+    res['request'] = req_data
+    res['msg'] = "服务主页"
+    return redirect("apidocs")
+
+@app.route('/api', methods=['GET', 'POST'])
+def api():
     """
-        临时接口
+    OpenAI 请求接口
+    调用llm服务
+    ---
+    tags:
+      - 大模型服务接口
+    parameters:
+      - name: system
+        in: path
+        type: string
+        required: false
+        description: 系统角色提示，用于设计LLM对应角色
+      - name: question
+        in: path
+        type: string
+        required: false
+        description: 用户问题
+    requestBody:
+      content:
+        application/json:
+          schema:
+            name: system
+    responses:
+      500:
+        description: 自定义服务端错误
+      200:
+        description: 自定义状态描述
     """
-    #return null # 【2022-1-27】swagger上回报错！
-    return {} # 返回非空才行，如json或字典格式
+    # 各业务线接口, product字段区分
+    res = {"msg":"-", "status":0, "request":{} , "response":{}}
+    req_data = {}
+    if request.method == 'GET':
+        req_data = request.values # 表单形式
+    elif request.method == 'POST':
+        req_data = request.json # json形式
+    else:
+        res['msg'] = '异常请求(非GET/POST)'
+        res['status'] = -1
+    # 字段解析，待补充
+    # 业务线接口
+    product = req_data.get("product", "-") 
+    # 接口参数
+    raw_text = req_data.get("raw_text", "-")
+    session = req_data.get("session", "{}")
+    res['request'].update(req_data)
+    res["response"].update({"openai":"返回结果测试..."})
+    #return null # 【2022-1-27】swagger上回报错！返回非空才行，如json或字典格式
+    return res
 
 if __name__ == '__main__':
     #app.run()
