@@ -483,6 +483,7 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 [PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
 - 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer), Simply input a description of your task and some test cases, and the system will generate, test, and rank a multitude of prompts to find the ones that perform the best.
+- 功能丰富：根据用户描述生成自test case、根据期望的输出生成候选prompt、再通过MC匹配和Elo机制对候选Prompt打分动态排名
 - 演示[视频](https://user-images.githubusercontent.com/8951736/253364304-efd6e6f6-c470-473a-bcb3-33a398882c9f.mp4)
 
 What it can do
