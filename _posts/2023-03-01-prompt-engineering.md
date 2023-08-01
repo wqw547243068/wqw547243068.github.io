@@ -451,7 +451,6 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
     - Mention Prompt：这种提示用于引发模型对提及的记忆。形式是"About [ Mention], I know [ MASK]"。这种提示鼓励模型回顾和思考与特定主题或实体（即"[ Mention]"）相关的知识。
     - Task Prompt：这种提示旨在帮助模型回忆任务的记忆。例如，对于情感分析，提示是"About sentiment analysis, I know [ MASK]"。这种提示鼓励模型回顾和思考与特定任务（例如情感分析）相关的知识。
 
-
 - 1、训练ChatGPT执行特定的任务：预先给ChatGPT一些学习条件，然后让他在后续的对话中执行任务。
   - 示例: 微博是一个社交媒体平台，用户可以在上面发表任何内容。用户发的微博内容可以是积极的，也可以是消极的，我们希望能够将这些微博内容分类为积极或消极。以下是一些积极和消极的例子。1. 成功地摸鱼一整天，多么美好的一天。积极 2. 今天周一，又要面临5天悲伤的工作日。消极 现在，我将给你不同的微博内容，你只需要回答我该微博内容是“积极”还是“消极”，在无法判断时，回复“不确定”，另外不需要任何解释。第一条内容是：熬夜的人最适合，来碗鸡汤回魂了。
 - 2、通过ChatGPT建立一个工作序列：在ChatGPT的左侧固定一个工作序列。以后只需要直接向里面输出内容即可。
@@ -483,6 +482,7 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 #### PromptsRoyale
 
 [PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
+- 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer), Simply input a description of your task and some test cases, and the system will generate, test, and rank a multitude of prompts to find the ones that perform the best.
 - 演示[视频](https://user-images.githubusercontent.com/8951736/253364304-efd6e6f6-c470-473a-bcb3-33a398882c9f.mp4)
 
 What it can do
