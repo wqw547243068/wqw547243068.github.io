@@ -7438,11 +7438,11 @@ go mod tidy
 生成的文件结构
 
 
-
-
 #### Hertz 路由
 
 Hertz路由
+- [官方文档讲解](https://www.cloudwego.io/zh/docs/hertz/tutorials/basic-feature/context/request/)
+- [官方代码示例](https://www.cloudwego.io/zh/docs/hertz/tutorials/example/)
 
 Hertz提供了多种**路由规则**，路由的优先级为：<span style='color:blue'> **静态**路由 > **命名**路由 > **通配**路由</span>。
 
@@ -7564,7 +7564,7 @@ Hertz 支持使用 `*path` 这样的通配参数设置路由，并且通配参�
 | /hertz/v1/detail | 匹配 | 
 | /hertz/ | 匹配 |
 
-通过使用 `RequestContext.Param` 方法，可以获取路由中携带的参数。
+GET 通过使用 `RequestContext.Param` 方法，可以获取路由中携带的参数。
 
 ```go
 h.GET("/hertz/:version/*action", func(ctx context.Context, c *app.RequestContext) {
@@ -7574,6 +7574,37 @@ h.GET("/hertz/:version/*action", func(ctx context.Context, c *app.RequestContext
     c.String(consts.StatusOK, message)
 })
 ```
+
+POST 通过 PostForm 获取
+- [parameter/form/main.go](https://github.com/cloudwego/hertz-examples/blob/main/parameter/form/main.go)
+
+```go
+	h := server.Default(server.WithHostPorts("127.0.0.1:8080"))
+
+	// content-type : application/x-www-form-urlencoded
+	h.POST("/urlencoded", func(ctx context.Context, c *app.RequestContext) {
+		name := c.PostForm("name")
+		message := c.PostForm("message")
+
+		c.PostArgs().VisitAll(func(key, value []byte) {
+			if string(key) == "name" {
+				fmt.Printf("This is %s!", string(value))
+			}
+		})
+
+		c.String(consts.StatusOK, "name: %s; message: %s", name, message)
+	})
+
+	// content-type : multipart/form-data
+	h.POST("/formdata", func(ctx context.Context, c *app.RequestContext) {
+		id := c.FormValue("id")
+		name := c.FormValue("name")
+		message := c.FormValue("message")
+
+		c.String(consts.StatusOK, "id: %s; name: %s; message: %s\n", id, name, message)
+	})
+```
+
 
 (5) 参数绑定
 
