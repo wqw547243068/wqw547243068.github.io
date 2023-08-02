@@ -3,7 +3,7 @@ layout: post
 title:  "Linux技能大全"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密
+tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密 mac 苹果
 excerpt: Linux使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -121,6 +121,84 @@ CentOS规定了startup文件的加载顺序如下：
 
 
 [原文链接](https://blog.csdn.net/sch0120/article/details/70256318)
+
+## Mac OS 技巧
+
+
+### macbook 配置总结
+
+
+| **功能** | **方法** | **备注** |
+|----|:------|:---- |
+| 终端用户名自定义 | 系统偏好设置->共享->编辑电脑名称  | - |
+| 画图工具 OmniGraffle+Pro 6| [下载地址](http://www.onlinedown.net/soft/87746.htm),[注册码](http://blog.csdn.net/x_focus/article/details/41349623);[7下载地址（含许可证）](https://d11.baidupcs.com/file/890a1f15ffddb6f3c3dab4fdadb47912?bkt=p3-000080d1e545b74de7d8e2a7d8017edaf20c&xcode=ff73db6f0d13a10269722ca0706f4f2d57cb92d68ca6af42837047dfb5e85c39&fid=1610614513-250528-218454854633625&time=1494382563&sign=FDTAXGERLBHS-DCb740ccc5511e5e8fedcff06b081203-HpWzZufk4Ih1Y%2FFYHmSq25HYFyM%3D&to=d11&size=93883767&sta_dx=93883767&sta_cs=11417&sta_ft=dmg&sta_ct=5&sta_mt=0&fm2=MH,Yangquan,Netizen-anywhere,,hunan,ct&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=000080d1e545b74de7d8e2a7d8017edaf20c&sl=83034191&expires=8h&rt=pr&r=580566339&mlogid=3001796489994348567&vuk=1610614513&vbdid=502618811&fin=OmniGraffle+7.2+for+Mac.dmg&fn=OmniGraffle+7.2+for+Mac.dmg&rtype=1&iv=0&dp-logid=3001796489994348567&dp-callid=0.1.1&hps=1&csl=300&csign=SlvW2m2iS5Dhs4IYR0kvCbxY%2BwQ%3D&by=themis)  | 兼容viso，功能强大 |
+|Mac Office 2016破解|操作简单，安装完mac office正式版后，下载破解文件，双击锁，就可以|[参考地址](http://www.jianshu.com/p/2172835cfb17)|
+|Mac下安装Windows|[Mac电脑上用VMware Fusion安装Windows7](http://jingyan.baidu.com/article/54b6b9c0f8830f2d583b47ce.html)|提前下载vmware+Windows安装包，添加Windows虚拟机后默认无法启动，需要单独指定iso镜像位置，再重启即可|
+| 画图工具OmniGraffle+Pro | [OmniGraffle Pro 7.19.2 中文破解版](https://macwk.lanzouo.com/i70Mawdk9mb)，[下载地址](http://www.onlinedown.net/soft/87746.htm),[注册码](http://blog.csdn.net/x_focus/article/details/41349623);[7下载地址（含许可证）](http://bbs.feng.com/forum.php?mod=viewthread&tid=10739827)  | 兼容viso，功能强大（【2017-12-6】注：7.4版才能用许可证，7.5以上不行） |
+| 安装pip | sudo easy_install pip  | pip直接安装其他工具 |
+|软件包管理器|homebrew安装（[参考地址](http://www.itbulu.com/macbook-wget-install.html)）；安装wget：brew install wget|brew安装命令：ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"|
+| 翻墙 | 1.有代理ip的直接设置：网络->高级->代理->勾选网页代理+安全网页代理，输入服务器域名及端口，无需填入账号。<br>2.用[lantern下载](https://github.com/getlantern/forum/issues/833)，[蓝灯无限制版](https://github.com/JuncoJet/unlimited-landeng-for-win) | 备选方案很多，[汇总地址](https://github.com/bannedbook/fanqiang/wiki), [chromego](https://github.com/killgcd/chromego), [ss](https://ppt.qjzd.net/ppt-google-aireplane/#/9/2), [拥有一家小飞机是怎样的体验](https://github.com/kaiye/kaiye.github.com/issues/9)，[shadowsocks地址](https://order.shadowsocks.se)，【2019-07-31】撸油管、刷INS、访推特，完美支持高清1080P视频，无任何流量限制,真正免费的[旋风加速器](https://www.highspeeds.live/redirect?code=2881YPR) |
+|vim颜色显示|1.vim ~/.vimrc <br>2.添加colorscheme desert;syntax on |vim [sublime颜色主题](http://www.cnblogs.com/fsjohnhuang/p/3911611.html)|
+|vim开发环境|[vim IDE部署](https://github.com/wklken/k-vim)|其他主题包，[vim-go开发环境](http://blog.csdn.net/chosen0ne/article/details/40782991)|
+|shell目录颜色显示|开启方法：编辑~/.bash_profile<br>增加：export CLICOLOR=1;export LSCOLORS=exfxaxdxcxegedabagacad|注：[如何在shell字符串中显示彩色字符？](http://7938217.blog.51cto.com/7928217/1651807/),显示白色：echo -e "\033[37m white \033[0m"|
+|mac免密码远程登录|使用ssh创建rsa公钥密码。基本步骤：<br>1.ssh-keygen生成密钥(ssh-keygen -t rsa)  <br>2.复制密钥文件到远程机器(scp ~/.ssh/id_rsa.pub wangqiwen@ip.com:/home/wangqiwen/.ssh) <br>3.登录远程机器，修改文件权限(cd ~/.ssh && cat id_rsa.pub >> authorized_keys; chmod 644 authorized_keys;chmod 700 ~/.ssh/)|参考地址：[mac无密码登录](http://blog.csdn.net/cdut100/article/details/70277091),[Linux 下 SSH 命令实例指南](https://linux.cn/article-3858-1.html),[菜鸟学Linux命令:ssh命令 远程登录](https://blog.csdn.net/sky786905664/article/details/60580594)|
+|ssh会话管理|[ssh配置文件实现别名快捷登录](http://blog.csdn.net/newjueqi/article/details/47293897)，【2018-9-29】[图解ssh及登录原理](https://www.toutiao.com/a6605433008616899076/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1538181445&app=news_article&utm_source=mobile_qq&iid=44328463468&utm_medium=toutiao_android&group_id=6605433008616899076)||
+|chrome浏览器中右键失灵|双指触碰链接时，并未弹出右键菜单，而是“图片另存为”|解决办法：这是由于chrome浏览器上开启了鼠标手势，造成干扰，关闭或删除插件即可|
+|chrome域名自动跳转|【2022-8-5】更改个人网站域名，恢复GitHub page地址，结果chrome浏览器自动跳转到老地址，其它浏览器正常|解决：[清除域名缓存](https://cloud.tencent.com/developer/article/1773432)；打开开发者工具（F12），选择 Network——Disable cache 即可|
+|image not recognized|dmg文件无法安装，原因：文件损坏，dmg权限不允许任意来源的包；换浏览器|如何开启任意来源包？sudo spctl --master-disable|
+|redis安装|brew install redis|使用方法：启动服务，redis-server，连接服务：redis-cli|
+|mac mail客户端设置|连接163时，需要先去163邮箱开启pop3/imap选项，通过手机验证码设置连接密码；mail终端配置时填入的密码是连接密码（非登录密码！）|wqw3721|
+|安装虚拟机|vmware安装，下载地址|vmware fusion 8 激活码：FY75A-06W1M-H85PZ-0XP7T-MZ8E8，ZY7TK-A3D4N-08EUZ-TQN5E-XG2TF，FG1MA-25Y1J-H857P-6MZZE-YZAZ6|
+|Mac下运行Windows软件|（1）boot camp安装Windows虚拟机（win 10文件过大）；<br>（2）安装wine|步骤：（1）brew cask install xquartz<br>（2）brew install wine|
+|Mac下无法安装第三方软件|软件源受限，需要打开|步骤：sudo spctl --master-disable，[参考方法](https://www.mobibrw.com/2019/20766)|
+|java|官方[下载地址](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)|优先使用绿色版（tar.gz，非二进制的rpm）。环境变量配置方法：修改/etc/profile文件，在文件的最下边加入下边的文本：<br>export JAVA_HOME=/opt/jdk1.7; <br>export CLASSPATH=.:$JAVA_HOME/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar;<br>export PATH=$JAVA_HOME/bin:$PATH|
+|Web服务|[Mac OS 启用web服务](http://www.jianshu.com/p/d006a34a343f),[简网教程](http://www.jianshu.com/p/d006a34a343f)||
+|linux 服务器mail|mail command not found|解决方法：sudo yum install mailx;echo "test" (竖线) mail -s "content" wangqiwen@p1.com|
+|linux下安装http服务|安装httpd|1.yum install httpd -y <br>2.随系统启动:chkconfig httpd on <br>3.开启Apache:service httpd start|
+|terminal下如何开启应用？|用open命令开启（open .用finder打开当前位置目录；<font size=4 color='res'>open file自动调用默认程序打开文件;</font>say hello语音说话），可以传参，备注：放到别命中，alias view='open /Applications/Preview.app'或alias edit='open /Applications/Sublime\ Text.app'|open /Applications/Sublime\ Text.app README.md|
+|shell美化|[Oh My ZSH!](http://ohmyz.sh/)|安装：sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"|
+|刻盘|[Etcher](https://etcher.io/)全平台工具|操作过程极其简单|
+|移动硬盘无法写入|原因：mac不支持ntfs格式，需要安装特殊软件：[ntfs for mac](http://www.ntfsformac.cn/xiazai.html)||
+|mac显示当前路径|命令：defaults write com.apple.finder _FXShowPosixPathInTitle -bool YES|顶栏出现路径，还可以点击定位到子目录|
+|mac当前位置打开终端|[命令](https://jingyan.baidu.com/article/ce436649281a293773afd3d8.html)|[mac右键新建文件](https://zhuanlan.zhihu.com/p/39600106)|
+|mac下excel打开csv中文乱码|原因是mac底下中文一律utf8编码，而excel文档默认中文是gbk编码，需要单独设置下才行。[地址](https://www.zhihu.com/question/20562901)|亲测有效|
+|mac下锁屏|系统自带锁屏快捷键：Ctrl + Command + Q<br>Ctrl+Shift+Power: 关闭屏幕<br>Cmd+Opt+Power: 睡眠 (sleep)<br>Cmd+Ctrl+Power: 重启 (restart)|windows下：Windows + L|
+|【2022-7-19】|pdf文档拆分/合并|mac分拆pdf方法：mac自带的预览软件，用侧边栏设置看缩略图，然后点选pdf，然后复制、黏贴，或者直接拖到桌面，放开鼠标，就会在桌面生成一份后缀带加了带“（拖移项目）”的文件。；<br>合并方法：打开一个pdf，“插入”→导入另一个文档→保存即可|
+|【2018-1-11】|[网易mumu模拟器](http://mumu.163.com/)||
+|【2018-1-11】|[mac下安装adb，调试Android](https://www.jianshu.com/p/1b3fb1f27b67)|brew cask install android-platform-tools|
+|【2018-6-25】|[crossover mac版](http://www.pc6.com/mac/111646.html)|mac上运行ie浏览器,[使用步骤](https://jingyan.baidu.com/article/dca1fa6f78ea48f1a5405210.html)|
+|【2018-12-25】|复制高亮代码到ppt|方法：notepad++或sublime text插件SublimeHighlight，[详见](https://www.v2ex.com/t/258518), Plugin commands - Copy Text with Syntax Highlighting|
+|【2019-05-07】|[pycharm专业版激活](https://blog.csdn.net/u014044812/article/details/86679150)||
+|【2020-6-29】|[十款Windows命令行工具](https://www.cnblogs.com/onelikeone/p/10716424.html)|powercmd,xshell,consolez,git bash,全能王mobaxterm等|
+|【2021-12-21】|markdown转ppt，[pandoc](https://www.cnblogs.com/wardensky/p/5194332.html)||
+|【2021-12-31】|文档复制受限|右键开发者模式：<br>①从html源码中抠<br>②debugger里disable js代码即可获取纯文本|
+|【2022-8-6】|vscode无法打开终端|解决：更改默认终端配置，“文件”→“首选项”→“设置”，弹出配置文件，按照[链接](https://blog.csdn.net/m0_57189842/article/details/120073595)修改接口|
+
+【2022-11-22】windows 的图标打架效果，steam平台程序[the lcon battles](https://steamspy.com/app/2135980)，还可以设置成屏保，[效果](https://store.steampowered.com/app/2135980/The_Icon_Battles/), 仅 windows可用
+- ![](https://media.st.dl.eccdnx.com/steam/apps/2135980/ss_8d535886b9b54808e86d617354906802e140c5da.600x338.jpg?t=1667389893)
+
+
+原因：Github没有fork项目代码，或没加所在机器的sshkey（settings->deplot keys）
+
+### 鼠标、触摸板方向设置
+
+【2023-7-31】mac用鼠标滚轮滚动方向相反
+- 点击屏幕左上角的苹果标志，在下拉列表中选择“系统偏好设置”。
+- 在打开的“系统偏好设置”窗口中，选择“鼠标”。
+- 在打开的“鼠标”窗口中，将“滚动方向：自然”前面的勾去掉。 之后，再使用鼠标，就跟在windows中使用的一样。
+
+### 终端启动 sublime text
+
+自带命令行工具 subl, 便于在终端启动，不用点icon
+
+```sh
+# 安装sublime text
+brew install sublimetext # 使用brew工具安装，Application下有显示，而单独下载安装不会
+# 应用程序地址， 自带命令行工具 subl, 便于在终端启动
+ls /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl
+subl your_file # 快速办法
+open -a "sublime text" your_file # 通用办法
+```
 
 
 ## 文件
@@ -4657,11 +4735,11 @@ git pull --no-ff
   - （3）它允许每个会话有多个连接窗口，因此可以多人实时共享会话。
   - （4）它还支持窗口任意的垂直和水平拆分。
 
-- 【2020-9-2】[Linux：在终端中查看图片和电影](https://blog.csdn.net/weixin_34072159/article/details/92473531)
-   - 安装工具(cacaview)：yum install caca-utils -y
-   - 查看图片：cacaview test.jpg
-   - 按d改变图片配色
-   - ![](https://static.xjh.me/wp-content/uploads/2017/11/www.xjh.me-2017-11-04_17-18-14_961742-2.png)
+【2020-9-2】[Linux：在终端中查看图片和电影](https://blog.csdn.net/weixin_34072159/article/details/92473531)
+- 安装工具(cacaview)：yum install caca-utils -y
+- 查看图片：cacaview test.jpg
+- 按d改变图片配色
+- ![](https://static.xjh.me/wp-content/uploads/2017/11/www.xjh.me-2017-11-04_17-18-14_961742-2.png)
 
 
 ## Vim技能
