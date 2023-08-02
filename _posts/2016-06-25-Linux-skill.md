@@ -197,7 +197,11 @@ brew install sublimetext # 使用brew工具安装，Application下有显示，�
 # 应用程序地址， 自带命令行工具 subl, 便于在终端启动
 ls /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl
 subl your_file # 快速办法
-open -a "sublime text" your_file # 通用办法
+# 通用办法
+open -a "sublime text" your_file # 单行命令
+echo 'export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"' >> ~/.bash_profile # 或导入路径
+ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl # 或建立软连接
+
 ```
 
 
