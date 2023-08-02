@@ -1464,7 +1464,7 @@ AGI的基础工具模块库，类似模块库还有 mavin。
 ### LangChain
 
 LangChain, 语言链条，也称：`兰链`，Harrison Chase 2022年10月创建的一个 Python 库，一种LLM语言大模型开发工具
-- LangChain目前有两个语言的实现：python和nodejs
+- LangChain多语言实现：Python、node.js以及第三方提供的Go
 - 几分钟内构建 GPT 驱动的应用程序。
 
 Harrison Chase 于 2022 年 10 月底首次提交 LangChain。在被卷入 LLM 浪潮之前，只有短短几个月的开发时间
@@ -1474,9 +1474,9 @@ LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，�
 - ![](https://picx.zhimg.com/v2-b048e039fd396b131767f58b9c97a37b_1440w.jpg?source=172ae18b)
 
 论文《[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/pdf/2210.03629.pdf)》的实现：
-- 该论文展示了一种**提示**技术，允许模型「推理」（通过思维链）和「行动」（通过能够使用预定义工具集中的工具，例如能够搜索互联网）。
+- 该论文展示了一种**提示**技术，允许模型「`推理`」（通过思维链）和「`行动`」（通过能够使用预定义工具集中的工具，例如能够搜索互联网）。
 
-LangChain 在没有任何收入也没有任何明显的创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
+LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
 
 LangChain 构建的有趣应用程序包括（但不限于）：
 - 聊天机器人
@@ -1504,11 +1504,12 @@ pip install openai
 export OPENAI_API_KEY = "..."
 # ② Jupyter notebook 或 Python 脚本中工作，这样设置环境变量:
 import os 
-os .environ[ "OPENAI_API_KEY" ] = "..."
+os.environ[ "OPENAI_API_KEY" ] = "..."
 ```
 
 测试：构建LLM应用
-- LangChain 目前支持 AIMessage、HumanMessage、SystemMessage 和 ChatMessage 类型。一般主要使用 HumanMessage、AIMessage 和 SystemMessage。
+- LangChain 目前支持 AIMessage、HumanMessage、SystemMessage 和 ChatMessage 类型。
+- 一般主要使用 HumanMessage、AIMessage 和 SystemMessage。
 
 ```py
 from langchain.llms import OpenAI
@@ -1570,8 +1571,8 @@ chat(chat_prompt.format_prompt(input_language="English", output_language="Chines
 # -> AIMessage(content="我喜欢编程。(Wǒ xǐhuān biānchéng.)", additional_kwargs={})
 ```
 
-
-将内存与聊天模型初始化的链和代理一起使用。与 Memory for LLMs 的主要区别：将以前的消息保留为自己唯一的内存对象，而不是将压缩成一个字符串。
+将**内存**与聊天模型初始化的**链**和**代理**一起使用。
+- 与 Memory for LLMs 的主要区别：将以前的消息保留为唯一的内存对象，而不是将压缩成一个字符串。
 
 ```py
 from langchain.prompts import (
@@ -1610,7 +1611,6 @@ conversation.predict(input="Tell me about yourself.")
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3985851583544f95acce1c6c2399147a~tplv-obj:1280:640.image?_iz=97245&from=post&x-expires=1696204800&x-signature=d4gBt5CjT3X6m6%2FF9sTfMLy1x6o%3D)
 - [官方 UI 配置文件集合](https://huggingface.co/spaces/Logspace/Langflow)
 
-
 ```sh
 pip install langflow # 安装
 langflow # 启动
@@ -1629,7 +1629,6 @@ flow = load_flow_from_json("path/to/flow.json")
 flow("Hey, have you heard of LangFlow?")
 ```
 
-
 #### LangChain 观点
 
 【2023-7-23】[我为什么放弃了 LangChain？](https://zhuanlan.zhihu.com/p/645345926)
@@ -1637,19 +1636,20 @@ flow("Hey, have you heard of LangFlow?")
 由 LangChain 推广的 `ReAct` 工作流在 InstructGPT/text-davinci-003 中特别有效，但**成本很高**，而且对于小型项目来说并不容易使用。
 > 「LangChain 是 RAG 最受欢迎的工具，阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
 
-经过一周的研究，一无所获。运行 LangChain 的 demo 示例确实可以工作，但是任何调整以适应食谱聊天机器人约束的尝试都会失败。
+经过一周的研究，运行 LangChain 的 demo 示例可以工作，但是任何调整以适应食谱聊天机器人约束的尝试都会失败。
 - 解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，没有找到任何解决方案。
 - 用回了低级别的 ReAct 流程，立即在**对话质量**和**准确性**上超过了 LangChain 实现
 
-LangChain 问题: 让简单事情变得相对复杂，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
-- LangChain 代码量与仅使用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
-- LangChain 吹嘘的提示工程只是 f-strings，一个存在于每个 Python 安装中的功能，但是有额外的步骤。为什么我们需要使用这些 PromptTemplates 来做同样的事情呢？
-- 真正想做的是：如何创建 Agent，结合了迫切想要的 ReAct 工作流。而 LangChain示例里每个思想 / 行动 / 观察中都使用了自己的 API 调用 OpenAI，所以链条比想象的要慢。
+LangChain 问题: <span style='color:blue'>让简单事情变得相对复杂</span>，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
+- LangChain 代码量与仅用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
+- LangChain 吹嘘的提示工程只是 `f-strings`，还有额外步骤。为什么需要使用这些 PromptTemplates 来做同样的事情呢？
+- 真正要做的：
+  - 如何创建 Agent，结合迫切想要的 `ReAct` 工作流。而 LangChain示例里每个`思想` / `行动` / `观察`中都使用了自己的 API 调用 OpenAI，所以链条比想象的要慢。
 - LangChain 如何存储到目前为止的对话?
 
 制作自己的 Python 软件包要比让 LangChain 来满足自己的需求容易得多
 
-LangChain 确实也有很多实用功能，比如文本分割器和集成向量存储，这两种功能都是「用 PDF / 代码聊天」演示不可或缺的（在我看来这只是一个噱头）。
+LangChain 确实也有很多实用功能，比如**文本分割器**和集成**向量存储**，这两种功能都是「用 PDF / 代码聊天」演示不可或缺的（在我看来这只是一个噱头）。
 
 #### LangChain 组件
 
@@ -1682,39 +1682,39 @@ LangChain 的 Document Loaders 和 Utils 模块分别用于**连接到数据源*
 Document Loaders 的Unstructured 可以将这些原始数据源转换为可处理的文本。
 
 The following document loaders are provided:
-- CSV Loader CSV文件
-- DataFrame Loader 从 pandas 数据帧加载数据
-- Diffbot 从 URL 列表中提取 HTML 文档，并将其转换为我们可以在下游使用的文档格式
-- Directory Loader 加载目录中的所有文档
-- EverNote 印象笔记
-- Git 从 Git 存储库加载文本文件
-- Google Drive Google网盘
-- HTML HTML 文档
-- Markdown
-- Notebook 将 .ipynb 笔记本中的数据加载为适合 LangChain 的格式
-- Notion
-- PDF
-- PowerPoint
-- Unstructured File Loader 使用Unstructured加载多种类型的文件，目前支持加载文本文件、powerpoints、html、pdf、图像等
-- URL 加载 URL 列表中的 HTML 文档内容
-- Word Documents
+- `CSV` Loader CSV文件
+- `DataFrame` Loader 从 pandas 数据帧加载数据
+- `Diffbot` 从 URL 列表中提取 HTML 文档，并将其转换为我们可以在下游使用的文档格式
+- `Directory` Loader 加载目录中的所有文档
+- `EverNote` 印象笔记
+- `Git` 从 Git 存储库加载文本文件
+- `Google Drive` Google网盘
+- `HTML` HTML 文档
+- `Markdown`
+- `Notebook` 将 .ipynb 笔记本中的数据加载为适合 LangChain 的格式
+- `Notion`
+- `PDF`
+- `PowerPoint`
+- `Unstructured File` Loader 使用Unstructured加载多种类型的文件，目前支持加载文本文件、powerpoints、html、pdf、图像等
+- `URL` 加载 URL 列表中的 HTML 文档内容
+- `Word Documents`
 
 ##### Text Spltters
 
-文本分割就是用来分割文本的。
+文本分割用来分割文本。
 
 为什么需要分割文本？
-- 因为每次不管把文本当作 prompt 发给 openai api ，还是使用 embedding 功能, 都是有字符限制的。
+- 因为每次不管把文本当作 prompt 发给 openai api ，还是使用 embedding 功能, 都是有**字符限制**的。
 
-比如将一份300页的 pdf 发给 openai api，进行总结，肯定会报超过最大 Token 错。所以这里就需要使用文本分割器去分割 loader 进来的 Document。
-- 默认推荐的文本拆分器是 RecursiveCharacterTextSplitter。
+将一份300页的 pdf 发给 openai api，进行总结，肯定会报超过最大 Token 错。所以需要用文本分割器去分割 loader 进来的 Document。
+- 默认推荐的文本拆分器是 `RecursiveCharacterTextSplitter`
 - 默认情况以 [“\n\n”, “\n”, “ “, “”] 字符进行拆分。
 - 其它参数说明：
-  - length_function 如何计算块的长度。默认只计算字符数，但在这里传递令牌计数器是很常见的。
-  - chunk_size：块的最大大小（由长度函数测量）。
-  - chunk_overlap：块之间的最大重叠。有一些重叠可以很好地保持块之间的一些连续性（例如，做一个滑动窗口）
-- CharacterTextSplitter 默认情况下以 separator="\n\n"进行拆分
-- TiktokenText Splitter 使用OpenAI 的开源分词器包来估计使用的令牌
+  - `length_function` 如何计算块的长度。默认只计算字符数，但在这里传递令牌计数器是很常见的。
+  - `chunk_size`：块的最大大小（由长度函数测量）。
+  - `chunk_overlap`：块之间的最大重叠。有一些重叠可以很好地保持块之间的一些连续性（例如，做一个滑动窗口）
+- `CharacterTextSplitter` 默认情况下以 separator="\n\n"进行拆分
+- `TiktokenText Splitter` 使用OpenAI 的开源分词器包来估计使用的令牌
 
 ```py
 # This is a long document we can split up.
@@ -1747,7 +1747,7 @@ print(texts[0])
 
 模型拉到本地使用的好处：
 - 训练模型
-- 可以使用本地的 GPU
+- 可用本地的 GPU
 - 有些模型无法在 HuggingFace 运行
 
 LangChain Embedding示例
@@ -1884,7 +1884,6 @@ async def generate_concurrently():
     tasks = [async_generate(llm) for _ in range(10)]
     await asyncio.gather(*tasks)
 
-
 s = time.perf_counter()
 # If running this outside of Jupyter, use asyncio.run(generate_concurrently())
 await generate_concurrently()
@@ -2003,7 +2002,6 @@ question = "Who won the FIFA World Cup in the year 1994? "
 print(llm_chain.run(question))
 ```
 
-
 ##### （2）Prompts（提示语）: 模板化
 
 通常作为输入传递给模型的信息被称为`提示`
@@ -2067,7 +2065,7 @@ multiple_input_prompt.format(adjective="funny", content="chickens")
 
 ```py
 # ③ 【多输入】
-qs = [Text only
+qs = [ # Text only
     {'question': "Which NFL team won the Super Bowl in the 2010 season?"},
     {'question': "If I am 6 ft 4 inches, how tall am I in centimeters?"},
     {'question': "Who was the 12th person on the moon?"},
@@ -2075,7 +2073,6 @@ qs = [Text only
 ]
 res = llm_chain.generate(qs)
 # res = LLMResult(generations = [[Generation(text ='green bay packers', generation_info = None)], [Generation(text ='184', generation_info = None)], [Generation(text ='john glenn', generation_info = None)], [Generation(text ='one', generation_info = None)]], llm_output = None)
-
 ```
 
 FewShot PromptTemplate
@@ -2131,10 +2128,10 @@ So the final answer is: Muhammad Ali
 
 ##### （3）Indexes（索引）：文档结构化
 
-Indexes（索引）：文档结构化方式, 以便LLM更好的交互
+`Indexes`（索引）：文档结构化方式, 以便LLM更好的交互
 - 索引是指对文档进行结构化的方法，以便LLM能够更好的与之交互。
 
-最常见的使用场景是文档检索，接收用户查询，返回最相关的文档。
+最常见的使用场景是**文档检索**，接收用户查询，返回最相关的文档。
 - 注意: 索引也能用在除了检索外的其他场景，同样检索除了索引外也有其他的实现方式。
 
 索引一般和检索**非结构化数据**（比如文本文档）相关，LangChain支持的主要索引类型如下，都是围绕着**向量数据库**的。
@@ -2295,7 +2292,7 @@ print(len(docs))
 
 ##### （4）Chains（链条）：组合链路
 
-Chains（链条）：将LLM与其他组件结合, 链允许将多个组件组合在一起以创建一个单一的、连贯的应用程序。
+`Chains`（链条）：将LLM与其他组件结合, `链`允许将多个`组件`组合在一起以创建一个单一的、连贯的应用程序。
 - 把一个个独立的组件链接在一起，LangChain名字的由来
 - Chain 可理解为任务。一个 Chain 就是一个任务，也可以像链条一样，逐个执行多个链
 
@@ -2312,7 +2309,6 @@ LangChain中，主要有下面几种链，其中最常用的是LLMChain。
   - 和索引交互，把自己的数据和LLMs结合起来，最常见的例子是根据文档来回答问题。
 - `提示选择器`
   - 为不同模型生成不同的提示
-
 
 LLM与其他组件结合，创建不同应用，一些例子：
 - 将LLM与**提示模板**相结合
@@ -2511,14 +2507,9 @@ langchain提供不同的Memory组件完成内容记忆，下面列举四种：
 - `VectorStored-Backed Memory`: 将所有之前的对话通过**向量**的方式存储到VectorDB（向量数据库）中，在每一轮新的对话中，会根据用户的输入信息，匹配向量数据库中**最相似的K组**对话。
 
 
-
-
-
 国内不少LLm团队采用langChain，集成llm本地化知识库
-
-langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
-
-langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
+- langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
+- langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
 
 [无需OpenAI API Key，构建个人化知识库的终极指南](https://mp.weixin.qq.com/s/ponKZ1OaHXX2nzuSxXg8-Q)
 
@@ -2609,7 +2600,6 @@ for item in docs:
     print(item.metadata['source'])
     print("---------------------------")
 
-
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-xl")
 model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-xl")
 pipe = pipeline(
@@ -2634,19 +2624,27 @@ print("done.")
 
 ```py
 class VectorStore(ABC):
-    """Interface for vector stores."""    @abstractmethoddef add_texts(
+    """Interface for vector stores."""    
+    @abstractmethod
+    def add_texts(
         self,
         texts: Iterable[str],
         metadatas: Optional[List[dict]] = None,
-kwargs:Any,
+        kwargs:Any,
     ) ->List[str]:
-"""Run more texts through the embeddings and add to the vectorstore."""    @abstractmethoddefsimilarity_search(
-        self, query:str, k:int =4,kwargs: Any) -> List[Document]:
-        """Return docs most similar to query."""def max_marginal_relevance_search(
-        self, query: str, k: int = 4, fetch_k: int = 20) -> List[Document]:
-        """Return docs selected using the maximal marginal relevance."""raise NotImplementedError
+    """
+      Run more texts through the embeddings and add to the vectorstore.
+    """    
+    @abstractmethod
+    def similarity_search(self, query:str, k:int =4,kwargs: Any) -> List[Document]:
+        """Return docs most similar to query."""
+        def max_marginal_relevance_search(self, query: str, k: int = 4, fetch_k: int = 20) -> List[Document]:
+        """Return docs selected using the maximal marginal relevance."""
+        raise NotImplementedError
 
-    @classmethod    @abstractmethoddef from_texts(
+    @classmethod    
+    @abstractmethod
+    def from_texts(
         cls: Type[VST],
         texts: List[str],
         embedding: Embeddings,
@@ -2659,7 +2657,7 @@ kwargs:Any,
 
 将 Milvus 集成到 LangChain 中，实现几个关键函数：add_texts()、similarity_search()、max_marginal_relevance_search()和 from_text()
 
-将 Milvus 集成到 LangChain 中的确存在一些问题，最主要的是 Milvus 无法处理 JSON 文件。目前，只有两种解决方法：
+将 Milvus 集成到 LangChain 中的确存在一些问题，最主要的是 <span style='color:blue'>Milvus 无法处理 JSON 文件</span>。目前，只有两种解决方法：
 - 现有的 Milvus collection 上创建一个 VectorStore。
 - 基于上传至 Milvus 的第一个文档创建一个 VectorStore。
 
@@ -2761,7 +2759,6 @@ LangSmith 是LangChain官方推出的 生产级LLM应用程序构建平台。
 - [官方文档](https://docs.smith.langchain.com/)
 
 LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
-
 
 
 ### 微软guidance（LangChain简化）
