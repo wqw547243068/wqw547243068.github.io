@@ -1133,6 +1133,17 @@ hack 示例
 - ![img](https://github.com/golfzert/chatgpt-chinese-prompt-hack/raw/main/911.png)
 
 
+### LLM-Attack
+
+【2023-8-1】[Universal and Transferable Adversarial Attacks on Aligned Language Models](https://llm-attacks.org/)
+- 自动构建对抗攻击，让LLM回复有害问题
+- 不同于越狱，这种方法全自动
+- [demo](https://llm-attacks.org/)
+- [code](https://github.com/llm-attacks/llm-attacks)
+
+方法
+- 基于开源模型(Vicuna-7B or/and LLaMA-2-7B-Chat)构建对抗攻击Prompt
+
 ### 防攻击
 
 Prompt注入攻击的防护
