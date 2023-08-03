@@ -6689,6 +6689,54 @@ if __name__ == "__main__":
 - 由于flask采用的是jinja模板，也就是采用\{\{\} }模式与web页面交互，因此会与vue的默认分隔符号相冲突，因此在script里需要修改delimiters: [ "[["," ]]"]。当然还有其他修改方式，这里推荐的也是相对简单的方法。
 - ![](https://cdn.jsdelivr.net/gh/Baiyuetribe/yyycode@dev/img/20/yyycode_com20200924113511.png)
 
+
+## TypeScript
+
+avaScript 与 TypeScript 的区别
+- TypeScript 是 JavaScript 的超集，扩展了 JavaScript 的语法，因此现有的 JavaScript 代码可与 TypeScript 一起工作无需任何修改，TypeScript 通过类型注解提供编译时的静态类型检查。
+- TypeScript 可处理已有的 JavaScript 代码，并只对其中的 TypeScript 代码进行编译。
+- ![](https://www.runoob.com/wp-content/uploads/2019/01/ts-2020-11-26-2.png)
+
+安装
+- [typescript 教程](https://www.runoob.com/typescript/ts-install.html)
+
+```sh
+# 已安装 npm
+# 使用国内镜像：
+npm config set registry https://registry.npmmirror.com
+# 安装 typescript：
+npm install -g typescript
+tsc -v # Version 3.2.2
+```
+
+执行过程
+- (1) .ts 作为 TypeScript 代码文件的扩展名
+- (2) 将 TypeScript 转换为 JavaScript 代码
+  - 命令: tsc app.ts
+  - 当前目录下（与 app.ts 同一目录）就会生成一个 app.js 文件
+  - ![](https://www.runoob.com/wp-content/uploads/2019/01/typescript_compiler.png)
+- (3) node 命令来执行 app.js 文件
+  - node app.js
+
+使用
+- llm.ts
+- [cursive](https://github.com/meistrari/cursive)
+
+```ts
+import { useCursive } from 'cursive-gpt'
+
+const cursive = useCursive({
+    openAI: {
+        apiKey: 'sk-xxxx'
+    }
+})
+
+const { answer } = await cursive.ask({
+    prompt: 'What is the meaning of life?',
+})
+```
+
+
 ## 低代码平台
 
 - 【2021-11-15】[基于 magic-api 搭建自己的低代码平台](https://www.toutiao.com/i7000242091813126670/)，2021 开年“低代码”成了热门话题，各大云厂商都在加码。
