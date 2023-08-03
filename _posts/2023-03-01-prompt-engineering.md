@@ -494,8 +494,23 @@ What it can do
 - Local & Secure: Everything is stored locally and requests are made from your browser to the LLMs API.
 
 功能总结
-- 提示自动生成：根据用户描述和测试场景创建候选提示，用户也可以直接输入提示。
-- 自动生成测试用例：从描述中自动生成测试用例，尽快启动
+- 提示自动生成：根据**用户描述**创建候选提示，用户也可以直接输入提示。
+- 自动生成测试用例：从**用户描述**自动生成一批（数目可定义）测试用例，尽快启动
+  - 测试用例: [**场景** scenario, **期望输出** expected output]
+  - ① `Add test case`: 用户自己添加测试用例
+  - ② `Generate additional test cases`: 自动生成附加测试用例 
+- 设置期望输出, 选中某个用例后
+  - ① 用户填充期望输出
+  - ② `Generate expected output`: 生成期望输出
+- 生成候选提示: Generating prompt candidates
+  - 点击 右侧 `Generate prompts` 按钮，生成候选提示列表，每项都有默认打分100
+- 自动评估
+  - 点击左下角 `Run +60 battles`: 启动两两比对评估
+  - 系统实时展示迭代过程，每个prompt的分数变化（高分排前面），以及两两比对的结果日志（Battle log）
+- 选择最优结果
+  - 可人工终止过程，选择一个最优的prompt
+
+备注
 - Monte Carlo 匹配 和 ELO 等级评分：
   - 用 Monte Carlo 方法进行**匹配**，以确保在最少的对比分析中获得尽可能多的信息
   - 用 ELO 等级评分根据胜利和胜利者对候选项正确排名。
@@ -504,12 +519,45 @@ What it can do
 
 安装 
 - [bun](https://bun.sh/)
+- [Node.js](https://nodejs.org/en)
+
+【2023-8-3】必须安装Node.js, 否则出错：[issue](https://github.com/meistrari/prompts-royale/issues/12)
+>- bun i
+>- bun install v0.7.1 (53cc4df1)
+>- SyntaxError: Import named 'formatWithOptions' not found in module 'node:util'.
+
+附：
+- [bun官方教程](https://bun.sh/docs/installation)
+- 背后调用 typescript 的LLM工具包 [cursive](https://github.com/meistrari/cursive)
 
 ```sh
 curl -fsSL https://bun.sh/install | bash  # 安装 bun
 bun i # 安装依赖
 bun run dev # 启动服务
 ```
+
+TypeScript
+
+```sh
+npm i cursive-gpt
+```
+
+示例
+
+```ts
+import { useCursive } from 'cursive-gpt'
+
+const cursive = useCursive({
+    openAI: {
+        apiKey: 'sk-xxxx'
+    }
+})
+
+const { answer } = await cursive.ask({
+    prompt: 'What is the meaning of life?',
+})
+```
+
 
 ### prompt 生成方法
 
