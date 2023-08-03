@@ -1190,6 +1190,10 @@ VALL·E目前还没开源
 - paper: [Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers](https://arxiv.org/abs/2301.02111)
 - [valle-demo](https://valle-demo.github.io/)
 
+#### AudioCraft
+
+【2023-8-3】Meta新开源模型AudioCraft炸场！文本自动生成音乐；
+
 ### 智能对话
 
 角色模拟
