@@ -483,6 +483,7 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 [PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
 - 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer), Simply input a description of your task and some test cases, and the system will generate, test, and rank a multitude of prompts to find the ones that perform the best.
+- 【2023-8-4】Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/gpt-prompt-engineer/blob/main/gpt_prompt_engineer.ipynb)
 - 功能丰富：根据用户描述生成自test case、根据期望的输出生成候选prompt、再通过MC匹配和Elo机制对候选Prompt打分动态排名
 - 演示[视频](https://user-images.githubusercontent.com/8951736/253364304-efd6e6f6-c470-473a-bcb3-33a398882c9f.mp4)
 
@@ -557,6 +558,25 @@ const { answer } = await cursive.ask({
     prompt: 'What is the meaning of life?',
 })
 ```
+
+Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/gpt-prompt-engineer/blob/main/gpt_prompt_engineer.ipynb)
+
+调用顺序
+- 用户描述 description + 测试用例 -> 候选提示 -> 逐个排名 -> Elo 打分
+
+- 生成最优提示: `generate_optimal_prompt` , 参数 description + test_cases + number_of_prompts(Prompt数目,10)
+  - 生成候选提示 prompts : `generate_candidate_prompts`, 参数 description + test_cases + number_of_prompts
+    - `gpt-3.5`: 调1次生成n个结果, 根据 description 和 test_cases 生成 number_of_prompts 个候选提示
+  - 生成提示排名 prompt_ratings: `test_candidate_prompts`, 参数 test_cases + description + prompts
+    - 每个 prompt 分数初始化 1200
+    - 计算排名轮次:  total_rounds = len(test_cases) * len(prompts) * (len(prompts) - 1) // 2
+    - 两两随机组合, 逐个遍历(prompt1+prompt2), 操作:
+      - 调用两次: generation1 = `get_generation`(prompt1, test_case)
+        - openai
+      - 调用两次: score1 = `get_score`(description, test_case, generation1, generation2, RANKING_MODEL, RANKING_MODEL_TEMPERATURE)
+        - openai 
+      - Elo 打分: `update_elo`
+
 
 
 ### prompt 生成方法
