@@ -1828,6 +1828,27 @@ BMTools 支持 Open AI 的 Plugins，同时也允许开发者自己加入的工�
 
 详见官方介绍：[发布资讯](https://mp.weixin.qq.com/s/NLzno1XRHQLyMFfh5CeJpw)
 
+#### ToolBench
+
+【2023-8-4】利用外部API（应用程序编程接口）来解决任务和问题的能力
+- 论文: [TOOLLLM: FACILITATING LARGE LANGUAGE MODELS TO MASTER 16000+ REAL-WORLD APIS](https://arxiv.org/abs/2307.16789)
+- 代码: [ToolBench](https://github.com/OpenBMB/ToolBench)
+- ![](https://github.com/OpenBMB/ToolBench/raw/master/assets/overview.png)
+- A demo of using ToolLLaMA 演示视频
+
+We crawl 16000+ real-world APIs from RapidAPI, and curate realistic human instructions that involve them. Below we present a hierarchy of RapidAPI and our instruction generation process.
+- 从RapidAPI2收集了 16464个 Representational State Transfer (REST) APIs，RapidAPI 是一个托管着大量由开发者提供的真实世界APIs的平台。这些APIs涵盖了社交媒体、电子商务、天气等49个不同类别。
+- 对于每个API，从RapidAPI爬取了详细的API文档，包括功能描述、必需参数、API调用的代码片段等。希望LLMs通过理解这些文档来学习使用APIs，以便模型可以泛化到训练中未见过的APIs；
+- 一种新颖的基于深度优先搜索的决策树（`DFSDT`），以增强LLMs的规划和推理能力。与传统思维链（`CoT`）（Wei等，2023）和`ReACT`（Yao等，2022）相比，`DFSDT`使LLMs能够评估**多种推理路径**，并做出慎重的决策，要么撤回步骤，要么继续沿着有前途的路径进行。
+- 实验证明，`DFSDT`显著提高了注释效率，并成功完成了CoT或ReACT无法回答的复杂指令。
+- ![](https://github.com/OpenBMB/ToolBench/raw/master/assets/instructiongeneration.png)
+
+为了评估LLMs的工具使用能力，开发了一个名为`ToolEval`的自动评估器，依赖于ChatGPT。它包含两个关键指标：
+- （1）`通过率`，衡量在有限预算内成功执行指令的能力；
+- （2）`胜率`，比较两种解决方案路径的质量和实用性。展示ToolEval与人工评估之间具有高度相关性，并为工具学习提供了一个稳健、可扩展、可靠的评估方法。
+
+[ToolEval Leaderboard](https://openbmb.github.io/ToolBench/)
+
 #### Toolformer
 
 【2023-2-9】META AI 发布 Toolformer: 自监督方式训练模型,自动选择调用哪个api，只需提供几个示例
