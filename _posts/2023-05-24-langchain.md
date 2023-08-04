@@ -1086,6 +1086,7 @@ RouterChain 由两个组件组成：
 #### Documents Chain
 
 下面4 种 Chain 主要用于 **Document 处理**，在基于文档生成摘要、基于文档的问答等场景中经常会用到，在后续的落地实践里也会有所体现。
+- ![](https://pica.zhimg.com/80/v2-48163d2a9246b271491e96fd29e17256_1440w.webp?source=1940ef5c)
 
 ##### Stuff
 
