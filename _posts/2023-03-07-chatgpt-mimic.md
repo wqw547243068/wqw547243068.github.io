@@ -2783,12 +2783,40 @@ Chinese-LLaMA基础模型，深圳大学发布
 【2023-7-19】[更强的Llama 2开源，可直接商用：一夜之间，大模型格局变了](https://mp.weixin.qq.com/s/klFWFXCbjGaWZ7HO1KFZag)
 
 Meta 终于发布了 免费可商用版本 Llama 2
-- Llama 2 模型系列包含 70 亿、130 亿和 700 亿三种参数变体。此外还训练了 340 亿参数变体，但并没有发布，只在技术报告中提到了。
-- 相比于 Llama 1，Llama 2 的训练数据多了 40%，上下文长度也翻倍，并采用了分组查询注意力机制。具体来说，Llama 2 预训练模型是在 2 万亿的 token 上训练的，精调 Chat 模型是在 100 万人类标记数据上训练的。
+- Llama 2 模型系列包含 **70 亿**、**130 亿**和 **700 亿**三种参数变体。此外还训练了 340 亿参数变体，但并没有发布，只在技术报告中提到了。
+- 相比于 Llama 1，Llama 2 的训练数据多了 **40%**，上下文长度也翻倍，并采用了分组查询注意力机制。在包括推理、编码、精通性和知识测试等许多外部基准测试中展示出了优越的表现，且支持多个语种。
+- 具体来说，Llama 2 预训练模型是在 2 万亿的 token 上训练的，精调 Chat 模型是在 100 万人类标记数据上训练的。
 - [论文地址](https://ai.meta.com/research/publications/llama-2-open-foundation-and-fine-tuned-chat-models)
 - [项目地址](https://github.com/facebookresearch/llama), [llama demo](https://ai.meta.com/llama/)
 - Llama2 [huggingface 地址](https://huggingface.co/blog/llama2)
 
+不足
+- Llama 2 语料库仍以**英文**（89.7%）为主，而中文仅占据了其中的 0.13%。这导致 Llama 2 很难完成流畅、有深度的中文对话。
+
+#### Llama 2中文版
+
+【2023-7-20】开源社区首个能下载、能运行的开源中文 LLaMA2 模型就出现了。
+- 该模型名为「Chinese Llama 2 7B」，由国内 AI 初创公司 LinkSoul.Al 推出。
+- Chinese-Llama-2-7b 开源内容包括**完全可商用**的中文版 Llama2 模型及中英文 SFT 数据集，输入格式严格遵循 llama-2-chat 格式，兼容适配所有针对原版 llama-2-chat 模型的优化。
+- 项目地址：[Chinese-Llama-2-7b](https://github.com/LinkSoul-AI/Chinese-Llama-2-7b), [demo](https://huggingface.co/spaces/LinkSoul/Chinese-Llama-2-7b)
+- 中英文灵活切换
+
+#### Llama 2 多模态
+
+【2023-8-4】[中文版开源Llama 2同时有了语言、多模态大模型，完全可商用](https://mp.weixin.qq.com/s/_TbBKKRhqMv66GGyyW74XQ)
+- LinkSoul.AI 团队将目光投向了目前全球尚外于发展初期的**语音文本多模态**大模型和**图文大模型**，并再次率先开源了相关的模型，提供国内开发者免费下载、自由商用。本次开源的两个中文多模态大模型，包括如下：
+- 由 LinkSoul.Al 团队牵头，北京智源人工智能研究院、北京大学、零一万物等国内头部顶尖人工智能团队通力合作的第一个支持中英双语、语音到文本的多模态开源对话模型 ([LLaSM](https://github.com/LinkSoul-AI/LLaSM))
+- 第一个基于 Llama 2 的支持中英文双语视觉到文本的多模态模型 (`Chinese-LLaVA`) 
+- 完全可商用
+
+(1) LinkSoul.AI 开源了可商用的中英文双语**语音-语言**助手 `LLaSM` 以及中英文语音 SFT 数据集 [LLaSM-Audio-Instructions](https://huggingface.co/datasets/LinkSoul/LLaSM-Audio-Instructions)。
+- [LLaSM](https://github.com/LinkSoul-AI/LLaSM) 是首个支持中英文语音-文本多模态对话的开源可商用对话模型。
+  - 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/LLaSM)
+- 相较以往的传统方案，LLaSM 能够通过便捷的语音输入的交互方式，大幅改善过往以文本为输入的大模型的使用体验，同时有效避免基于 ASR 解决方案的繁琐流程以及可能引入的错误。
+
+(2) 图像到文本多模态开源对话模型 (Chinese LLaVA)
+- LinkSoul.AI 开源可商用的中英文双语**视觉-语言**助手 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA) 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文**视觉-文本**多模态对话的开源可商用对话模型。
+- 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
 
 ### 猎鹰 Falcon -- 唯一免费商用
 
