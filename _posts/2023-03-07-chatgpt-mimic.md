@@ -2790,16 +2790,64 @@ Meta 终于发布了 免费可商用版本 Llama 2
 - [项目地址](https://github.com/facebookresearch/llama), [llama demo](https://ai.meta.com/llama/)
 - Llama2 [huggingface 地址](https://huggingface.co/blog/llama2)
 
+Llama2是当前全球范围内最强的开源大模型，但其中文能力亟待提升
+
 不足
 - Llama 2 语料库仍以**英文**（89.7%）为主，而中文仅占据了其中的 0.13%。这导致 Llama 2 很难完成流畅、有深度的中文对话。
 
-#### Llama 2中文版
+#### Llama 2 中文版
 
 【2023-7-20】开源社区首个能下载、能运行的开源中文 LLaMA2 模型就出现了。
 - 该模型名为「Chinese Llama 2 7B」，由国内 AI 初创公司 LinkSoul.Al 推出。
 - Chinese-Llama-2-7b 开源内容包括**完全可商用**的中文版 Llama2 模型及中英文 SFT 数据集，输入格式严格遵循 llama-2-chat 格式，兼容适配所有针对原版 llama-2-chat 模型的优化。
 - 项目地址：[Chinese-Llama-2-7b](https://github.com/LinkSoul-AI/Chinese-Llama-2-7b), [demo](https://huggingface.co/spaces/LinkSoul/Chinese-Llama-2-7b)
 - 中英文灵活切换
+
+【2023-8-4】[国内最大Llama开源社区发布首个预训练中文版Llama2](https://zhuanlan.zhihu.com/p/647575127)
+- 7月31日，Llama中文社区 率先完成了国内首个**真正意义**上的中文版`Llama2-13B`大模型，从模型底层实现了Llama2中文能力的大幅优化和提升
+  - 不是微调！而是基于200B中文语料预训练！
+
+Llama2的中文化可以采用大致两种路线：
+1. 基于已有的**中文指令数据集**，对预训练模型进行**指令微调**，使得基座模型能够对齐中文问答能力。这种路线的优势在于**成本较低**，指令微调数据量小，需要的算力资源少，能够快速实现一个中文Llama的雏形。
+  - 但缺点也显而易见，微调只能激发基座模型**已有**的中文能力，但由于Llama2的中文训练数据本身较少，所以能够激发的能力也有限，**治标不治本**，从根本上增强Llama2模型的中文能力还是需要从预训练做起。
+2. 基于大规模中文语料进行预训练。这种路线的缺点在于**成本高**！不仅需要大规模高质量的中文数据，也需要大规模的算力资源。
+  - 但是优点也显而易见，就是能从模型底层优化中文能力，真正达到治本的效果，从内核为大模型注入强大的中文能力
+
+为了从内核实现一个彻底的中文大模型，选择了第二条路线
+- 部分预训练数据数据如下：类型描述网络数据互联网上公开的网络数据，挑选出去重后的高质量中文数据，涉及到百科、书籍、博客、新闻、公告、小说等高质量长文本数据Wikipedia中文Wikipedia的数据悟道中文悟道开源的200G数据ClueClue开放的中文预训练数据，进行清洗后的高质量中文长文本数据竞赛数据集近年来中文自然语言处理多任务竞赛数据集，约150个MNBVCMNBVC 中清洗出来的部分数据集首期 Llama2-Chinese-13B 模型的预训练数据包含 200B token，未来，我们将持续不断地迭代更新 Llama2-Chinese，逐步将预训练数据提升到1T token。
+
+- [Llama中文社区](https://github.com/FlagAlpha/Llama2-Chinese)是国内最领先的开源大模型中文社区，Github在两周内即达到 2.4k star，由清华、交大以及浙大博士团队领衔，汇聚了60+AI领域高级工程师以及各行业2000+顶级人才。
+
+效果, 更多示例见[原文](https://zhuanlan.zhihu.com/p/647575127)
+- ![](https://pic4.zhimg.com/80/v2-49a13c49215401ac741c55255acc690b_1440w.webp)
+
+
+```py
+from transformers import AutoTokenizer
+from auto_gptq import AutoGPTQForCausalLM
+model = AutoGPTQForCausalLM.from_quantized('FlagAlpha/Llama2-Chinese-13b-Chat-4bit', device="cuda:0")
+tokenizer = AutoTokenizer.from_pretrained('FlagAlpha/Llama2-Chinese-13b-Chat-4bit',use_fast=False)
+input_ids = tokenizer(['<s>Human: 怎么登上火星\n</s><s>Assistant: '], return_tensors="pt",add_special_tokens=False).input_ids.to('cuda')        
+generate_input = {
+    "input_ids":input_ids,
+    "max_new_tokens":512,
+    "do_sample":True,
+    "top_k":50,
+    "top_p":0.95,
+    "temperature":0.3,
+    "repetition_penalty":1.3,
+    "eos_token_id":tokenizer.eos_token_id,
+    "bos_token_id":tokenizer.bos_token_id,
+    "pad_token_id":tokenizer.pad_token_id
+}
+generate_ids  = model.generate(**generate_input)
+text = tokenizer.decode(generate_ids[0])
+print(text)
+```
+
+
+
+
 
 #### Llama 2 多模态
 
