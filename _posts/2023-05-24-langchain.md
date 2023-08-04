@@ -43,7 +43,7 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 - [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
 - Github: [python版本](https://github.com/hwchase17/langchain )(已经有4W多的star), [go语言版](https://github.com/tmc/langchaingo)
 - [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
-
+- 【2023-8-2】[京东云LangChain简介](https://www.zhihu.com/question/609483833/answer/3146379316)
 
 ### LangChain 安装
 
@@ -151,6 +151,7 @@ conversation.predict(input="I'm doing well! Just having a conversation with an A
 conversation.predict(input="Tell me about yourself.")
 ```
 
+
 ## LangChain 生态
 
 LangSmith 是LangChain官方推出的 生产级LLM应用程序构建平台。
@@ -226,17 +227,22 @@ LangChain 确实也有很多实用功能，比如**文本分割器**和集成**�
 
 ## LangChain 组件
 
+2 个核心功能为：
+- 1）LLM 模型与**外部数据源**进行连接。
+- 2）LLM 模型与**环境**交互，通过 Agent 使用工具。
+
 LangChain包含六部分组件
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f101b9ecf540489280e7f95017243fb9~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=j8hpvldp7FTdOSIGCFjEyUEmbhs%3D)
 - Models、Prompts、Indexes、Memory、Chains、Agents。
 
 LangChain主要支持6种组件：
-- `Models`：模型，各种类型的模型和模型集成，比如GPT-4
-- `Prompts`：提示，包括提示管理、提示优化和提示序列化
-- `Memory`：记忆，用来保存和模型交互时的上下文状态
-- `Indexes`：索引，用来结构化文档，以便和模型交互
-- `Chains`：链，一系列对各种组件的调用
-- `Agents`：代理，决定模型采取哪些行动，执行并且观察流程，直到完成为止
+- `Models`：**模型**，各种类型的模型和模型集成，比如GPT-4
+- `Prompts`：**提示**，包括提示管理、提示优化和提示序列化
+- `Memory`：**记忆**，用来保存和模型交互时的上下文状态
+- `Indexes`：**索引**，用来结构化文档，以便和模型交互
+- `Chains`：**链**，一系列对各种组件的调用
+- `Agents`：**代理**，决定模型采取哪些行动，执行并且观察流程，直到完成为止
+- ![](https://picx.zhimg.com/80/v2-c4e822ce46f7f9c77ce6797047e6d2a2_1440w.webp?source=1940ef5c)
 
 ### 框架
 
@@ -361,9 +367,11 @@ doc_result = embeddings.embed_documents([text])
 
 ### （1）Models（模型）：LLM选择
 
-（1）`Models`（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
-- `LLMs`（大语言模型）: 接收文本字符作为输入，返回的也是文本字符
-- `Chat Models` 聊天模型
+LangChain 本身不提供 LLM，提供通用的接口访问 LLM，可以很方便的更换底层的 LLM 以及自定义自己的 LLM。
+
+`Models`（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
+- `LLMs`（大语言模型）: 接收文本字符作为输入，返回的也是文本字符，类似 OpenAI 的 text-davinci-003
+- `Chat Models` 聊天模型: 由语言模型支持但将聊天消息列表作为输入并返回聊天消息的模型。一般使用的 ChatGPT 以及 Claude 为 Chat Models。
   - 聊天模型基于LLMs，不同的是它接收聊天消息作为输入，返回的也是聊天消息
   - 聊天消息是一种特定格式的数据，LangChain中支持四种消息: `AIMessage`,` HumanMessage`,` SystemMessage` ,`ChatMessage` ，需要按照角色把数据传递给模型，这部分在后面文章里再详细解释。
 - `Text Embedding`：用于文本的向量化表示。文本嵌入模型接收文本作为输入，返回的是浮点数列表. 设计用于与嵌入交互的类
@@ -398,6 +406,14 @@ print(llm("讲个笑话，很冷的笑话"))
 # 为什么鸟儿会成为游泳高手？因为它们有一只脚比另一只脚更长，所以游起泳来不费力！（笑）
 llm_result = llm.generate(["Tell me a joke", "Tell me a poem"])
 llm_result.llm_output    # 返回 tokens 使用量
+# ----- 使用模板 -----
+from langchain import PromptTemplate
+
+prompt_template = '''作为一个资深编辑，请针对 >>> 和 <<< 中间的文本写一段摘要。 
+>>> {text} <<<
+'''
+prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
+print(prompt.format_prompt(text="我爱北京天安门"))
 ```
 
 #### 流式输出
@@ -711,6 +727,7 @@ So the final answer is: Muhammad Ali
 
 该组件主要包括：Document Loaders（`文档加载器`）、Text Splitters（`文本拆分器`）、VectorStores（`向量存储器`）以及Retrievers（`检索器`）。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5078c23e1fea4bee99746ebec0847be5~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=Uzl65uwWtcvNhfi1OHpX8u%2BGzko%3D)
+- ![](https://pic1.zhimg.com/80/v2-caf733f8f1cc6e8c45aa7dc8f81f2f12_1440w.webp?source=1940ef5c)
 - `文本检索器`：将特定格式数据转换为文本。输入可以是 pdf、word、csv、images 等。
 - `文本拆分器`：将长文本拆分成小的**文本块**，便于LLM模型处理。
   - 由于模型处理数据时，对输入长度有限制，因此需要对长文本进行**分块**。
@@ -719,6 +736,24 @@ So the final answer is: Muhammad Ali
 - `向量存储器`：存储提取的文本向量，包括Faiss、Milvus、Pinecone、Chroma等。
 - `向量检索器`：通过用户输入的文本，检索器负责从底库中检索出特定相关度的文档。度量准则包括余弦距离、欧式距离等。
 
+#### Document Loaders（文档加载器）
+
+LangChain 通过 Loader 加载外部的文档，转化为标准的 **Document** 类型。
+
+Document 类型主要包含两个属性：
+- page_content 包含该文档的内容。
+- meta_data 为文档相关的描述性数据，类似文档所在的路径等。
+
+LangChain 目前支持结构化、非结构化以及公开以及私有的各种数据
+- ![](https://picx.zhimg.com/80/v2-254f055f57dbc6e6b5efd8bf03c8a92b_1440w.webp?source=1940ef5c)
+
+||非结构化 unstructed|结构化 structured|
+|---|---|---|
+|公开 public|Wikipedia, youtube, bilibili, arXiv, twitter, imdb...|Huggingface Datasets, OpenWeather|
+|私有 proprietary|ppt,word, Note, snapchat, github, jupyter..|excel,pandas,spark...|
+
+注
+- 数据库介于私有区，既有结构化(mysql)又有非结构化(redis,es..)
 
 数据源加载
 
@@ -794,6 +829,29 @@ pages = loader.load_and_split()
 pages[0]
 ```
 
+#### Text Splitters（文本拆分器）
+
+LLM 一般都会限制**上下文窗口的大小**，有 4k、16k、32k 等。针对大文本就需要进行文本分割，常用的文本分割器为 RecursiveCharacterTextSplitter，可以通过 separators 指定分隔符。其先通过第一个分隔符进行分割，不满足大小的情况下迭代分割。
+
+文本分割主要有 2 个考虑：
+- 1）将语义相关的句子放在一块形成一个 chunk。一般根据不同的文档类型定义不同的分隔符，或者可以选择通过模型进行分割。
+- 2）chunk 控制在一定的大小，可以通过函数去计算。默认通过 len 函数计算，模型内部一般都是使用 token 进行计算。token 通常指的是将文本或序列数据划分成的小的单元或符号，便于机器理解和处理。使用 OpenAI 相关的大模型，可以通过 tiktoken 包去计算其 token 大小。
+
+```py
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+    model_name="gpt-3.5-turb
+    allowed_special="all",
+    separators=["\n\n", "\n", "。", "，"],
+    chunk_size=7000,
+    chunk_overlap=0
+)
+docs = text_splitter.create_documents(["文本在这里"])
+print(docs)
+```
+
+
 示例
 
 ```py
@@ -820,6 +878,27 @@ qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=ret
 query = "What did the president say about Ketanji Brown Jackson"
 qa.run(query)
 ```
+
+#### VectorStores（向量存储器）
+
+通过 Text Embedding models，将文本转为**向量**，可以进行语义搜索，在向量空间中找到最相似的文本片段。
+- 目前支持常用的向量存储有 Faiss、Chroma 等。
+- Embedding 模型支持 OpenAIEmbeddings、HuggingFaceEmbeddings 等。通过 HuggingFaceEmbeddings 加载本地模型可以节省 embedding 的调用费用。
+
+```py
+#通过cache_folder加载本地模型
+embeddings = HuggingFaceEmbeddings(model_name="text2vec-base-chinese", cache_folder="本地模型地址")
+embeddings = embeddings_model.embed_documents(
+    [
+        "我爱北京天安门!",
+        "Hello world!"
+    ]
+)
+```
+
+#### Retrievers（检索器）
+
+Retriever 接口用于根据非结构化的查询获取文档，一般情况下是文档存储在向量数据库中。可以调用 get_relevant_documents 方法来检索与查询相关的文档。
 
 **Retrievers**
 
@@ -865,6 +944,8 @@ print(len(docs))
 
 ### （4）Chains（链条）：组合链路
 
+Langchain 通过 chain 将各个组件进行链接，以及 chain 之间进行链接，用于简化复杂应用程序的实现。
+
 `Chains`（链条）：将LLM与其他组件结合, `链`允许将多个`组件`组合在一起以创建一个单一的、连贯的应用程序。
 - 把一个个独立的组件链接在一起，LangChain名字的由来
 - Chain 可理解为任务。一个 Chain 就是一个任务，也可以像链条一样，逐个执行多个链
@@ -874,10 +955,11 @@ Chain提供了一种将各种组件统一到应用程序中的方法。
 - 通过多个Chain与其他部件结合，可生成复杂的链，完成复杂的任务。
 - ![Chains示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/4d5ba1c00889406fb3bc7c86fbb9660f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=pLKYIarzSV1QkVxKv%2Blc0t8lDrE%3D)
 
-LangChain中，主要有下面几种链，其中最常用的是LLMChain。
-- `LLMChain`
+LangChain中，主要有下面几种链，`LLMChain`、`Sequential Chain` 以及 `Route Chain`，其中最常用的是LLMChain。
+- `LLMChain` 最基本的链
   - LLMChain由 **PromptTemplate**、**模型**和可选的**输出解析器**组成。
   - 链接收多个输入变量，使用PromptTemplate生成提示，传递给模型，最后使用输出解析器把模型返回值转换成最终格式。
+  - ![](https://picx.zhimg.com/80/v2-774b73df8d40ecc40ea265c5f15fd40d_1440w.webp?source=1940ef5c)
 - `索引相关链`
   - 和索引交互，把自己的数据和LLMs结合起来，最常见的例子是根据文档来回答问题。
 - `提示选择器`
@@ -888,6 +970,11 @@ LLM与其他组件结合，创建不同应用，一些例子：
 - 第一个 LLM 的输出作为第二个 LLM 的输入, **顺序组合**多个 LLM
 - LLM与**外部数据**结合，比如，通过langchain获取youtube视频链接，通过LLM视频问答
 - LLM与**长期记忆**结合，比如聊天机器人
+
+#### LLMChain
+
+LLMChain，由 PromptTemplate、LLM 和 OutputParser 组成。LLM 的输出一般为文本，OutputParser 用于让 LLM 结构化输出并进行结果解析，方便后续的调用。
+- ![](https://picx.zhimg.com/80/v2-774b73df8d40ecc40ea265c5f15fd40d_1440w.webp?source=1940ef5c)
 
 ```py
 from langchain import LLMChain
@@ -935,11 +1022,20 @@ def generate_blog_post(topic):
     docs = search_index.similarity_search(topic, k=4)
     inputs = [{"context": doc.page_content, "topic": topic} for doc in docs]
     print(chain.apply(inputs))
-
 generate_blog_post("environment variables")
+# 附加示例
+llm_chain = LLMChain(prompt=prompt, llm=llm)
+comment = "京东物流没的说，速度态度都是杠杠滴！这款路由器颜值贼高，怎么说呢，就是泰裤辣！这线条，这质感，这速度，嘎嘎快！以后妈妈再也不用担心家里的网速了！"
+result = llm_chain.run(comment)
+data = output_parser.parse(result)
+print(f"type={type(data)}, keyword={data['keyword']}, emotion={data['emotion']}")
 ```
 
-执行多个chain
+#### Sequential Chain (一串LLMChain)
+
+SequentialChains 按**预定义顺序**执行的链。SimpleSequentialChain 为顺序链的最简单形式，其中每个步骤都有一个单一的输入 / 输出，一个步骤的输出是下一个步骤的输入。SequentialChain 为顺序链更通用的形式，允许多个输入 / 输出。
+
+执行多个 LLMChain
 - 顺序链是按预定义顺序执行其链接的链。
 - 使用SimpleSequentialChain，其中每个步骤都有一个输入/输出，一个步骤的输出是下一个步骤的输入。
 
@@ -975,6 +1071,51 @@ overall_chain = SimpleSequentialChain(chains=[location_chain, meal_chain], verbo
 review = overall_chain.run("Rome")
 ```
 
+#### Router Chain
+
+RouterChain 根据输入**动态**选择下一个链，每条链处理特定类型的输入。
+
+RouterChain 由两个组件组成：
+- 1）**路由器链**本身，负责选择要调用的下一个链，主要有 2 种 RouterChain，其中 LLMRouterChain 通过 LLM 进行路由决策，EmbeddingRouterChain 通过向量搜索的方式进行路由决策。
+- 2）**目标链**列表，路由器链可以路由到的子链。
+
+初始化 RouterChain 以及 destination_chains 完成后，通过 MultiPromptChain 将两者结合起来使用。
+- ![](https://picx.zhimg.com/80/v2-1cfc7dc754e42035aaac96d982e72f83_1440w.webp?source=1940ef5c)
+
+
+#### Documents Chain
+
+下面4 种 Chain 主要用于 **Document 处理**，在基于文档生成摘要、基于文档的问答等场景中经常会用到，在后续的落地实践里也会有所体现。
+
+##### Stuff
+
+StuffDocumentsChain 最简单直接，是将所有获取到的文档作为 context 放入到 Prompt 中，传递到 LLM 获取答案。
+
+这种方式可以**完整保留上下文**，调用 LLM 的次数也比较少，建议能使用 stuff 的就使用这种方式。其适合文档拆分的比较小，一次获取文档比较少的场景，不然容易超过 token 的限制。
+- ![](https://picx.zhimg.com/80/v2-5012639aaddebf3ded6bc275e0e9b26f_1440w.webp?source=1940ef5c)
+
+##### Refine
+
+RefineDocumentsChain 是通过**迭代更新**方式获取答案。先处理第一个文档，作为 context 传递给 llm，获取中间结果 intermediate answer。然后将第一个文档的中间结果以及第二个文档发给 llm 进行处理，后续的文档类似处理。
+
+Refine 这种方式能部分保留上下文，以及 token 的使用能控制在一定范围。
+- ![](https://pica.zhimg.com/80/v2-58114a41deaa562d13d627ee750dc0b7_1440w.webp?source=1940ef5c)
+
+##### MapReduce
+
+MapReduceDocumentsChain 先通过 LLM 对每个 document 进行处理，然后将所有文档的答案在通过 LLM 进行合并处理，得到最终的结果。
+
+MapReduce 的方式将每个 document 单独处理，可以并发进行调用。但是每个文档之间缺少上下文。
+- ![](https://picx.zhimg.com/80/v2-8774dd34362cdafec7ef5a71f1e0ebb6_1440w.webp?source=1940ef5c)
+
+##### MapRerank
+
+MapRerankDocumentsChain 和 MapReduceDocumentsChain 类似，先通过 LLM 对每个 document 进行处理，每个答案都会返回一个 score，最后选择 score 最高的答案。
+
+MapRerank 和 MapReduce 类似，会大批量的调用 LLM，每个 document 之间是独立处理。
+- ![](https://pic1.zhimg.com/80/v2-db2b87a6d0f49fd5fe8e03fb358ade7a_1440w.webp?source=1940ef5c)
+
+
 ### （5）Agents（智能体）：其他工具
 
 “链”可以帮助将一系列 LLM 调用链接在一起。然而，在某些任务中，调用顺序通常是**不确定**的。
@@ -982,12 +1123,26 @@ review = overall_chain.run("Rome")
 
 LangChain 库提供了代理“Agents”，根据**未知**输入而不是**硬编码**来决定下一步采取的行动。 
 
+Agent 字面含义是**代理**，如果说 LLM 是大脑，Agent 就是代理大脑使用工具 Tools。
+
+目前大模型一般都存在**知识过时**、**逻辑计算能力低**等问题，通过 Agent 访问工具，可以去解决这些问题。这个领域特别活跃，诞生了类似 `AutoGPT`、`BabyAGI`、`AgentGPT` 等一堆优秀的项目。传统使用 LLM，需要给定 Prompt 一步一步的达成目标，通过 Agent 是给定目标，其会自动规划并达到目标。
+
 Agents通常由三个部分组成：`Action`、`Observation`和`Decision`。
 - `Action`是代理执行的操作
 - `Observation`是代理接收到的信息
 - `Decision`是代理基于`Action`和`Observation`做出的决策。
 
-Agent 使用LLM来确定要采取哪些行动以及按什么顺序采取的行动。操作可以使用工具并观察其输出，也可以返回用户。创建agent时的参数：
+#### Agent 核心组件
+
+Agent 核心组件
+- `Agent`：**代理**，负责调用 LLM 以及决定下一步的 Action。其中 LLM 的 prompt 必须包含 agent_scratchpad 变量，记录执行的中间过程
+- `Tools`：**工具**，Agent 可以调用的方法。LangChain 已有很多内置的工具，也可以自定义工具。注意 Tools 的 description 属性，LLM 会通过描述决定是否使用该工具。
+- `ToolKits`：**工具集**，为特定目的的工具集合。类似 Office365、Gmail 工具集等
+- `Agent Executor`：**Agent 执行器**，负责进行实际的执行。
+
+Agent 使用LLM来确定要采取哪些行动以及按什么顺序采取的行动。操作可以使用工具并观察其输出，也可以返回用户。
+
+创建agent时的参数：
 - `LLM`：为代理提供动力的语言模型。
 - `工具`：执行特定职责的功能, 方便模型和其他资源交互
   - 比如：Google搜索，数据库查找，Python Repl。工具的接口当前是一个函数，将字符串作为输入，字符串作为输出。
@@ -1004,6 +1159,7 @@ retrieval_qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retrieve
 
 # Create an Agent
 from langchain.agents import initialize_agent, Tool
+
 tools = [
     Tool(
         name="Example QA System",
@@ -1011,11 +1167,24 @@ tools = [
         description="Example description of the tool."
     ),
 ]
+# Agent 的初始化, 除了 llm、tools 等参数，还需要指定 AgentType。
+# 通过 agent.agent.llm_chain.prompt.template 方法，获取其推理决策所使用的模板
 agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
 
 # Use Agent
 agent.run("Ask a question related to the documents")
 ```
+
+#### Agent 的类型
+
+Agent Type
+- zero-shot-react-description: 只考虑当前的操作，不会记录以及参考之前的操作。react 表明通过 ReAct 框架进行推理，description 表明通过工具的 description 进行是否使用的决策。
+- chat-conversational-react-description: 
+- conversational-react-description:
+- react-docstore:
+- self-ask-with-search 等，类似 chat-conversational-react-description 通过 memory 记录之前的对话，应答会参考之前的操作。
+
+#### 自定义 Tool
 
 Agents（智能体）：访问其他工具
 
@@ -1037,7 +1206,6 @@ Agents可以调用那些工具完成任务？
 | Wolfram-Alpha | WA 搜索插件——可以回答复杂的数学、物理或任何查询，将搜索查询作为输入。 |
 | Python REPL | 用于评估和执行 Python 命令的 Python shell。它以 python 代码作为输入并输出结果。输入的 python 代码可以从 LangChain 中的另一个工具生成 |
 
-
 Agent通过调用wikipedia工具，对用户提出的问题回答。尽管gpt-3.5功能强大，但是其知识库截止到2021年9月，因此，agent调用wikipedia外部知识库对用户问题回答。回答过程如下：
 - a. 分析用户输入问题，采取的Action为通过Wikipedia实现，并给出了Action的输入
 - b. 根据分析得到了最相关的两页，并进行了总结
@@ -1057,17 +1225,47 @@ agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbos
 print(agent.run("列举spaceX星舰在2022年后的发射记录?"))
 ```
 
+多种方式可以自定义 Tool，最简单的方式是通过 @tool 装饰器，将一个函数转为 Tool。注意函数必须得有 docString，其为 Tool 的描述。
+
+```py
+from azure_chat_llm import llm
+from langchain.agents import load_tools, initialize_agent, tool
+from langchain.agents.agent_types import AgentType
+from datetime import date
+
+@tool
+def time(text: str) -> str:
+    """
+    返回今天的日期。
+    """
+    return str(date.today())
+
+tools = load_tools(['llm-math'], llm=llm)
+tools.append(time)
+agent_math = initialize_agent(agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+                                   tools=tools,
+                                   llm=llm,
+                                   verbose=True)
+print(agent_math("计算45 * 54"))
+print(agent_math("今天是哪天？"))
+```
+
 ### （6）Memory（记忆）：
 
 模型是无状态的，不保存上一次交互时的数据
 - OpenAI的API服务没有上下文概念，而chatGPT是额外实现了上下文功能。
 
-为了提供上下文的功能，LangChain提供了记忆组件，用来在对话过程中存储数据。
+正常情况下 Chain 无状态的，每次交互都是独立的，无法知道之前历史交互的信息。
 
 对于像聊天机器人这样的应用程序，需要记住以前的对话内容。
 - 但默认情况下，LLM对历史内容**没有记忆功能**。LLM的输出只针对用户当前的提问内容回答。
 - 为解决这个问题，Langchain提供了**记忆组件**，用来管理与维护历史对话内容。
 - ![memory示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c64ff3021d1a4ba68c3a6a5dd470cdc6~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=M2fWwrITBkva%2BXT%2BiQINk6VD54M%3D)
+
+LangChain 使用 Memory 组件保存和管理历史消息，这样可以跨多轮进行对话，在当前会话中保留历史会话的上下文。Memory 组件支持多种存储介质，可以与 Monogo、Redis、SQLite 等进行集成，以及简单直接形式就是 Buffer Memory。常用的 Buffer Memory 有
+- 1）ConversationSummaryMemory ：以摘要的信息保存记录
+- 2）ConversationBufferWindowMemory：以原始形式保存最新的 n 条记录
+- 3）ConversationBufferMemory：以原始形式保存所有记录通过查看 chain 的 prompt，可以发现 {history} 变量传递了从 memory 获取的会话上下文。下面的示例演示了 Memory 的使用方式，可以很明细看到，答案是从之前的问题里获取的。
 
 langchain提供不同的Memory组件完成内容记忆，下面列举四种：
 - `ConversationBufferMemory`：记住**全部对话内容**。这是最简单的内存记忆组件，它的功能是直接将用户和机器人之间的聊天内容记录在内存中。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8b04d8cc8c8f462bafa21bc473066efc~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=ljnOnmukL7V9UH5OzY4l%2BpwkfpU%3D)
@@ -1079,6 +1277,20 @@ langchain提供不同的Memory组件完成内容记忆，下面列举四种：
   - 在第一轮对话完成后，Memory对第一轮对话的内容进行了总结，放到了摘要中。在第二轮对话中，LLM基于摘要与该轮的问题进行回答。
 - `VectorStored-Backed Memory`: 将所有之前的对话通过**向量**的方式存储到VectorDB（向量数据库）中，在每一轮新的对话中，会根据用户的输入信息，匹配向量数据库中**最相似的K组**对话。
 
+
+```py
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
+
+from azure_chat_llm import llm
+
+memory = ConversationBufferMemory()
+conversation = ConversationChain(llm=llm, memory=memory, verbose=True)
+print(conversation.prompt)
+print(conversation.predict(input="我的姓名是tiger"))
+print(conversation.predict(input="1+1=?"))
+print(conversation.predict(input="我的姓名是什么"))
+```
 
 国内不少LLm团队采用langChain，集成llm本地化知识库
 - langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
@@ -1094,6 +1306,114 @@ langchain提供不同的Memory组件完成内容记忆，下面列举四种：
 5. 创建qa_chain，开始提问
 
 ## LangChain 实践
+
+### 文档生成总结
+
+文档生成总结
+- 1）通过 Loader 加载远程文档
+- 2）通过 Splitter 基于 Token 进行文档拆分
+- 3）加载 summarize 链，链类型为 refine，迭代进行总结
+
+```py
+
+3、LangChain 落地实践
+3.1 文档生成总结
+1）通过 Loader 加载远程文档
+
+2）通过 Splitter 基于 Token 进行文档拆分
+
+3）加载 summarize 链，链类型为 refine，迭代进行总结
+
+from langchain.prompts import PromptTemplate
+from langchain.document_loaders import PlaywrightURLLoader
+from langchain.chains.summarize import load_summarize_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from azure_chat_llm import llm
+
+loader = PlaywrightURLLoader(urls=["https://content.jr.jd.com/article/index.html?pageId=708258989"])
+data = loader.load()
+
+text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+    model_name="gpt-3.5-turbo",
+    allowed_special="all",
+    separators=["\n\n", "\n", "。", "，"],
+    chunk_size=7000,
+    chunk_overlap=0
+)
+
+prompt_template = '''
+作为一个资深编辑，请针对 >>> 和 <<< 中间的文本写一段摘要。 
+>>> {text} <<<
+'''
+refine_template = '''
+作为一个资深编辑，基于已有的一段摘要：{existing_answer}，针对 >>> 和 <<< 中间的文本完善现有的摘要。 
+>>> {text} <<<
+'''
+
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
+REFINE_PROMPT = PromptTemplate(
+    template=refine_template, input_variables=["existing_answer", "text"]
+)
+
+chain = load_summarize_chain(llm, chain_type="refine", question_prompt=PROMPT, refine_prompt=REFINE_PROMPT, verbose=False)
+
+docs = text_splitter.split_documents(data)
+result = chain.run(docs)
+print(result)
+```
+
+### 基于外部文档的问答
+
+基于外部文档的问答
+- 1）通过 Loader 加载远程文档
+- 2）通过 Splitter 基于 Token 进行文档拆分
+- 3）通过 FAISS 向量存储文档，embedding 加载 HuggingFace 的 text2vec-base-chinese 模型
+- 4）自定义 QA 的 prompt，通过 RetrievalQA 回答相关的问题
+
+```py
+作者：京东云
+链接：https://www.zhihu.com/question/609483833/answer/3146379316
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+from langchain.chains import RetrievalQA
+from langchain.document_loaders import WebBaseLoader
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain.prompts import PromptTemplate
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import FAISS
+
+from azure_chat_llm import llm
+
+loader = WebBaseLoader("https://in.m.jd.com/help/app/register_info.html")
+data = loader.load()
+text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+    model_name="gpt-3.5-turbo",
+    allowed_special="all",
+    separators=["\n\n", "\n", "。", "，"],
+    chunk_size=800,
+    chunk_overlap=0
+)
+docs = text_splitter.split_documents(data)
+#设置自己的模型路径
+embeddings = HuggingFaceEmbeddings(model_name="text2vec-base-chinese", cache_folder="model")
+vectorstore = FAISS.from_documents(docs, embeddings)
+
+template = """请使用下面提供的背景信息来回答最后的问题。 如果你不知道答案，请直接说不知道，不要试图凭空编造答案。
+回答时最多使用三个句子，保持回答尽可能简洁。 回答结束时，请一定要说"谢谢你的提问！"
+{context}
+问题: {question}
+有用的回答:"""
+QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=template)
+
+qa_chain = RetrievalQA.from_chain_type(llm, retriever=vectorstore.as_retriever(),
+                                       return_source_documents=True,
+                                       chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
+
+result = qa_chain({"query": "用户注册资格"})
+print(result["result"])
+print(len(result['source_documents']))
+```
 
 
 ###  LangChain + Milvus
