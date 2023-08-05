@@ -292,6 +292,22 @@ export LS_COLORS=${LS_COLORS}:'di=01;37;44' # 【可忽略】自定义：灰色�
 source ~/.bashrc
 ```
 
+【2023-8-5】debian 系统下目录颜色恢复
+- old方法不管用！
+- [参考](https://wiki.debian.org/BashColors)
+
+```sh
+# ---- old -----
+export CLICOLOR=1;
+export LSCOLORS=exfxaxdxcxegedabagacad
+# ------new-------
+export LS_OPTIONS='--color=auto'
+eval "`dircolors`"
+alias ls='ls $LS_OPTIONS'
+
+source /etc/bash.bashrc; source ~/.bashrc
+```
+
 
 ### 时间戳
 
@@ -354,6 +370,22 @@ done
  
 echo "done"
 ```
+
+### 软连接
+
+```sh
+# (1) 创建
+ln –s  /var/www/test(源)   /var/test(目标)
+# 将/source/file1目录链接到./file
+ln -s /source/file1 ./file
+# (2) 修改
+# 将./file的链接目录改成/source/file2
+ln -snf /source/file2 ./file
+# (3) 删除
+rm -rf file
+rm -rf file/ # 目录
+```
+
 
 ### 文件操作命令
 
