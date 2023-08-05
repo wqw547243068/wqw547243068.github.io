@@ -2551,14 +2551,16 @@ wandb login
 然后在代码里面只要指定该team和project，便可以把数据传输到对应的project下：
  
 ```py
-import wandbwandb.init(config=all_args,
-               project=your\_project\_name,
-               entity=your\_team\_name,
-               notes=socket.gethostname(),
-               name=your\_experiment\_name
-               dir=run_dir,
-               job_type="training",
-               reinit=True)
+import wandb
+
+wandb.init(config=all_args,
+    project=your\_project\_name,
+    entity=your\_team\_name,
+    notes=socket.gethostname(),
+    name=your\_experiment\_name
+    dir=run_dir,
+    job_type="training",
+    reinit=True)
 ```
 
 ### 使用方法
