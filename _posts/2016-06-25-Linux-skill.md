@@ -5383,6 +5383,35 @@ HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/S_f2qV
 <video controls src="path/to/video.mp4" />
 ```
 
+### 大模型
+
+【2023-8-5】[JupyterAI上手初体验，魔法命令加知识库玩花活](https://zhuanlan.zhihu.com/p/648159447), [官方文档](https://jupyter-ai.readthedocs.io/en/latest/index.html)
+
+Jupyter AI 是Jupyter的一个扩展工具，跟常规的Jupyter Lab extension不同，它集成了许多AIGC 接口供用户使用，如 langchain、ChatGPT、Huggingface等。能够让用户友在JupyterLab中高效地利用AI工具，从而提高工作效率。
+- 通过`%%ai`魔法命令，直接调用多种模型(claude, chatgpt, stablediffusion)，并指定输出格式。
+- JupyterLab中提供了一个原生的聊天界面，实现了基于本地资料库的问答，以及其他基于langchain生成功能。
+- 支持多种模型 (AI21, Anthropic, Cohere, Hugging Face, OpenAI, SageMaker等)。
+- ![](https://pic4.zhimg.com/80/v2-4c26be6d48ac123bfedeaaf51ae9efaf_1440w.webp)
+- ![](https://pic2.zhimg.com/80/v2-afb0028662ddf561e9193630aac26f69_1440w.webp)
+
+创建虚拟环境，专门用于学习juputerai，再进入此环境中，配置ipykernel
+
+```sh
+conda create -n py311 python=3.11 
+conda activate py311
+conda install ipykernel
+python -m ipykernel install --user --name=py311
+
+pip install jupyterlab~=4.0
+pip install jupyter_ai
+
+# 最后，运行juputer lab进行实战学习
+jupyter lab --allow-root
+```
+
+进入jupyter lab，创建一个start文件夹并打开，使用py311的notebook，注意到左边插件栏下有个聊天框图标
+- ![](https://pic4.zhimg.com/80/v2-6feae66657d4eb6a4acc44dfff616133_1440w.webp)
+
 # python开发环境
 
 - [Cython中def,cdef,cpdef的区别](https://www.cnblogs.com/lidyan/p/7474244.html)
