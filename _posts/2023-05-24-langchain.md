@@ -60,6 +60,7 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 ### LangChain 安装
 
 安装步骤
+- python 3.8 以上才能安装
 
 ```sh
 pip install langchain
