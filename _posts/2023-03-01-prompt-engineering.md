@@ -109,18 +109,18 @@ reason: 这次生成随机数的原因
 【2023-7-24】[Prompt Engineering: Get LLMs to Generate the Content You Want](https://thenewstack.io/prompt-engineering-get-llms-to-generate-the-content-you-want/)
 
 Some of the common types of prompts used with current LLMs.
-- `Explicit prompts` 显性提示： 方向清洗、准确
-  - 示例: <font style='color:blue'>Write a short story about a young girl who discovers a magical key that unlocks a hidden door to another world.</span>
+- `Explicit prompts` **显性提示**： 方向清晰、准确
+  - 示例: <font style='color:blue'> Write a short story about a young girl who discovers a magical key that unlocks a hidden door to another world. </span>
   - This explicit prompt clearly outlines the story’s **topic**, **setting**, and **main element**, providing the LLM with specific instructions on what to generate
-- `Conversational prompts` 对话式提示：用自然语言聊天, LLM输出结果更加自然、流畅，适合需要多次交互的场景
-  - 示例: <font style='color:blue'>Hey, Bard! Can you tell me a funny joke about cats?</span>
-- `Context-based prompts` 上下文提示：提供领域术语、背景知识，便于LLM更好的理解对话主题，适合内容创作
-  - 示例：<font style='color:blue'>I’m planning a trip to New York next month. Can you give me some recommendations for popular tourist attractions, local restaurants, and off-the-beaten-path spots to visit?</span>
-- `Open-ended prompts` 开放提示: 未限制主题、角度, 鼓励LLM输出更长、更细节的回复，适合创造类、讲故事、出主意类写作
-  - 示例：<font style='color:blue'>Tell me about the impact of technology on society.</span>
-- `Bias-mitigating prompts` 偏见预防提示： 通过提示（多种观点/提供事实依据等）防止LLM输出偏见
-  - 示例：<font style='color:blue'>Please generate a response that presents a balanced and objective view of the following topic: caste-based reservations in India. Consider providing multiple perspectives and avoid favoring any particular group, ideology, or opinion. Focus on presenting factual information, supported by reliable sources, and strive for inclusivity and fairness in your response</span>
-- `Code-generation prompts` 代码生成提示：
+- `Conversational prompts` **对话式提示**：用自然语言聊天, LLM输出结果更加自然、流畅，适合需要多次交互的场景
+  - 示例: <font style='color:blue'> Hey, Bard! Can you tell me a funny joke about cats? </span>
+- `Context-based prompts` **上下文提示**：提供领域术语、背景知识，便于LLM更好的理解对话主题，适合内容创作
+  - 示例：<font style='color:blue'> I’m planning a trip to New York next month. Can you give me some recommendations for popular tourist attractions, local restaurants, and off-the-beaten-path spots to visit? </span>
+- `Open-ended prompts` **开放提示**: 未限制主题、角度, 鼓励LLM输出更长、更细节的回复，适合创造类、讲故事、出主意类写作
+  - 示例：<font style='color:blue'> Tell me about the impact of technology on society. </span>
+- `Bias-mitigating prompts` **偏见预防提示**： 通过提示（多种观点/提供事实依据等）防止LLM输出偏见
+  - 示例：<font style='color:blue'> Please generate a response that presents a balanced and objective view of the following topic: caste-based reservations in India. Consider providing multiple perspectives and avoid favoring any particular group, ideology, or opinion. Focus on presenting factual information, supported by reliable sources, and strive for inclusivity and fairness in your response </span>
+- `Code-generation prompts` **代码生成提示**：
   - 示例：Write a Python function that takes in a list of integers as input and returns the sum of all the even numbers in the list
 
 ## Prompt编写
@@ -138,15 +138,15 @@ Some of the common types of prompts used with current LLMs.
 - ![](https://user-images.githubusercontent.com/196477/208471439-877c2bcf-93ec-4ad9-9cb0-7e4ed7b1756a.png)
 
 5 个顶级prompt-generator开源项目
-1. Awesome-Prompt-Engineering
+1. `Awesome-Prompt-Engineering`
   - 该存储库包含用于 Prompt Engineering 的手工策划资源，重点是生成式预训练转换器 (GPT)、ChatGPT、PaLM 等
-2. Simple_Prompt_Generator
+2. `Simple_Prompt_Generator` 画图提示
   - Midjourney、DALLe、Stable 和 Disco Diffusion 等的简单提示生成器。
-3. AI-Image-PromptGenerator
+3. `AI-Image-PromptGenerator` 画图提示
   - 一个灵活的 UI 脚本，可帮助创建和扩展生成式 AI 艺术模型的提示，例如 Stable Diffusion 和 MidJourney。获得灵感，然后创造。
-4. MagicPrompt
+4. `MagicPrompt`
   - 在 GPT-2 模型上用于稳定扩散/中途的提示生成器
-5. prompt-markdown-parser
+5. `prompt-markdown-parser` 画图提示
   - 用于 text2image 提示的 Markdown 解析器和提示生成器工具
 
 ChatGPT 的插件中就有一个不错的工具 Prompt perfect，能够基于用户给的 Prompt 进行优化，再喂给 ChatGPT 进行提问。
@@ -168,7 +168,7 @@ ChatGPT 的插件中就有一个不错的工具 Prompt perfect，能够基于用
 - 明确需求：信息查询、劝说、娱乐或其他
 - 明确基调：GPT会根据主题设置表述基调
 - 限制长度：说清楚要输出多少字数，长文、短文
-- CEO关键词：有助于生成优质结果
+- SEO关键词：有助于生成优质结果
 - 明确受众：GPT会自动调整语种、语调、风格，来适配这个群体
 - 领域信息：补充相关领域信息，单独成段
 - 更新版本：ChatGPT（3.5）可以读取链接
@@ -388,11 +388,11 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
   - ![img](https://picx.zhimg.com/80/v2-a59fe54ba6be56fb32fa76049a1cbb0c_1440w.webp?source=1940ef5c)
 - 间接提问方法：不是直接让chatgpt回答问题，而是提供一些示例，这样ChatGPT会快得多，也更准确，猜测是在特定领域检索问题对ChatGPT有帮助。
   - “写一个关于苹果的故事” --> “请给我一个关于苹果的故事的例子”
-- 详细描写你的需求，尽可能描述清楚场景：当规定特定的场景时，人工智能会准确得多。
+- 详细描写需求，尽可能描述清楚场景：当规定特定的场景时，人工智能会准确得多。
   - 一般的Prompt：“写一篇关于利用OpenAI提升效率的文章。”
   - 优秀的Prompt：“写一篇关于利用OpenAI提升效率对小微企业重要性的博客文章。”
   - 直接告诉它问题，让他帮你构建场景。
-  - Prompt：现在我要写一篇关于利用OpenAI提升效率的文章，帮我找几个合适场景的切入点
+    - Prompt：现在我要写一篇关于利用OpenAI提升效率的文章，帮我找几个合适场景的切入点
 - 逐步推导：
   - 当ChatGPT输出结果没有达到期望时，可能是没有得到足够引导。这时不能直接问它，必须事先提出一些相关问题 -- 预先“加载”它。
   - “用Javascript编写一个让你的手机振动3次的应用程序”，结果不及预期时，可以分步问：
