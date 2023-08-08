@@ -3939,12 +3939,17 @@ BLOOMChat 是一个新的、开放的、多语言的聊天 LLM。
 - [详细测完360智脑后，我们发现大模型终于被玩明白了](https://www.jiqizhixin.com/articles/2023-05-23-2)
 
 
-### MLC LLM -- 陈天奇 模型手机部署
+### 本地运行
+
+
+#### MLC LLM -- 陈天奇 模型手机部署
 
 - 【2023-5-2】[陈天奇等人新作引爆AI界：手机原生跑大模型，算力不是问题了](https://mp.weixin.qq.com/s/uQGAu1v-6ApgZHVkZJsUdQ)
 - 【2023-6-5】[陈天奇官宣新APP，让手机原生跑大模型，应用商店直接下载使用](https://www.toutiao.com/article/7241085086400233995), 陈天奇公布了一个好消息：MLC Chat app 已经在苹果的 App Store 上线了。
 
 MLC LLM 是一种通用解决方案，它允许将任何语言模型本地部署在各种硬件后端和本地应用程序上。
+- [演示图](https://vdn6.vzuu.com/SD/da2d7036-e81f-11ed-a962-bacc53acff3b-v1_f4_t2_etMRzyS8.mp4?pkey=AAV2GKNHXbMr7W0DZWmaAKjmklpebDlDgvlJQN4ElgagtlxqcrYmaLNld20o3ymLMrOUseNg1m3gdavjpUBHj89Y&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1691478412&v=ks6)
+- [参考](https://zhuanlan.zhihu.com/p/626189075)
 
 [mlc-llm](https://mlc.ai/mlc-llm/) 部署汇总
 - 亲测：华为mate 30下载后，启动即闪退；iOS正常
@@ -3994,6 +3999,31 @@ MLC LLM 的主要工作流基于 Apache TVM Unity，通过扩展 TVM 后端使�
 - 运行时（Runtime）：TVM 编译生成的库能够通过 TVM runtime 在设备的原生环境中运行，TVM runtime 支持 CUDA/Vulkan/Metal 等主流 GPU 驱动以及 C、JavaScript 等语言的绑定。
 
 此外，MLC 还为 CUDA、Vulkan 和 Metal 生成了 GPU shader，并通过 LLVM 支持多种 CPU，包括 ARM 和 x86。通过改进 TVM 编译器和运行时，使用者可以添加更多支持，例如 OpenCL、sycl、webgpu-native。
+
+
+#### 高通
+
+- 【2023-8-8】[大模型在手机上运行的预言，被高通提前实现了](https://www.leiphone.com/category/industrynews/SPX5rXn2JIfuGELC.html)
+- 【2023-7-5】[安卓手机上跑15亿参数大模型，12秒不到就推理完了](https://www.51cto.com/article/759615.html)
+
+- 操作人员在一部没有联网的安卓手机上使用了Stable Diffusion 来生成 AI 图像，整个生成时间不超过 15 秒，整个过程完全在终端进行，但是生成效果却没打一点折扣。 
+- [白皮书链接](https://www.qualcomm.cn)
+- ![](https://static.leiphone.com/uploads/new/images/20230629/649d22502f28e.jpg?imageView2/2/w/740)
+- ![](https://s2.51cto.com/oss/202307/05/4405326526ce7c92c19505e53b006d3fd4d863.gif)
+- ![](https://static.leiphone.com/uploads/new/images/20230629/649d225ec79ab.jpg?imageView2/2/w/740)
+
+如果模型大小、提示（prompt）和生成长度小于某个限定值，并且能够提供可接受的精确度，推理即可完全在终端侧进行。如果是更复杂的任务，模型则可以跨云端和终端运行。 
+
+混合 AI 还能支持模型在终端侧和云端同时运行，也就是在终端侧运行轻量版模型时，在云端并行处理完整模型的多个标记（token），并在需要时更正终端侧的处理结果。这能极大限度地解决能耗和成本问题。 
+
+直接从源头减少数据运输过程，隐私泄露的问题便不复存在。 高通指出，混合 AI 架构中有一个“隐私模式”，当用户利用终端侧 AI 向聊天机器人输入健康问题或创业想法等敏感话题时，这个模式会自动开启。
+
+
+#### Personal GPT
+
+【2023-8-8】
+- [体验地址](https://www.personalgpt.dev/chat/pKEy3n8)
+- [Mac OS App](https://apps.apple.com/us/app/personal-gpt/id6448106860?l=zh-Hans-CN)
 
 
 ### 人大：玉兰 YuLan-Chat（LLaMA）
