@@ -3939,7 +3939,6 @@ BLOOMChat 是一个新的、开放的、多语言的聊天 LLM。
 - [详细测完360智脑后，我们发现大模型终于被玩明白了](https://www.jiqizhixin.com/articles/2023-05-23-2)
 
 
-
 ### 人大：玉兰 YuLan-Chat（LLaMA）
 
 【2023-6-8】[YuLan-Chat：基于高质量中英文混合指令微调的大语言对话模型](https://mp.weixin.qq.com/s/4pk4vHzAf_kiXYWT-abLlg)
