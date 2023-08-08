@@ -3,7 +3,7 @@ layout: post
 title:  "操作系统-Operating System"
 date:   2010-07-25 15:09:00
 categories: 计算机基础
-tags: 操作系统 进程 线程 协程 回调 异步
+tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果
 excerpt: 计算机操作系统知识点
 mathjax: true
 permalink: /os
@@ -73,6 +73,22 @@ permalink: /os
 [Mac OS发展史(实机演示)](https://www.bilibili.com/video/BV1Xi4y1w7np)
 
 <iframe src="//player.bilibili.com/player.html?aid=545025905&bvid=BV1Xi4y1w7np&cid=322975564&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+### 如何查看显存
+
+【2023-8-8】[使用苹果M1芯片的Mac上的自动显存](https://kb.parallels.com/cn/125351)
+
+搭载 `Apple M1` 芯片的 Mac 上的 Parallels Desktop 中，所有支持的操作系统都使用 `Apple M1` 芯片统一内存体系结构 (UMA) 来实现图形目的。
+- 这种内存体系结构是 Apple 的一种独特的系统设计方法，意味着 CPU 和 GPU 都有一个**统一内存**。
+- 换句话说，搭载 Apple M1 芯片的 Mac 上**没有专用图形内存**。将**系统内存用于图形**是最有效的方式，它可以在搭载 Apple M1 芯片的 Mac 电脑上提供最佳的虚拟机体验。
+
+搭载 Apple M1 芯片的 Mac - 无专用的图形内存：
+- ![](http://kb.parallels.com/Attachments/kcs-178392/M1%20MEMORY.png)
+
+搭载基于 Intel 处理器的 Mac - 具有专用内存的图形适配器：
+- ![](http://kb.parallels.com/Attachments/kcs-178392/Intel%20memory.png)
+
 
 ## 操作系统基本架构
 
