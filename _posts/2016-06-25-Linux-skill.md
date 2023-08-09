@@ -5628,6 +5628,52 @@ interact
    - 自动登录, ~/.bash_profile里配置别名即可一直使用
    - alias luban='expect ~/login.sh'
 
+## 任务启动
+
+
+### 自定义批量启动
+
+【2023-8-9】批量启动服务
+- 若已有任务端口在跑，跳过(参数空)/杀死
+
+```sh
+#lsof -i:9001 | awk '{if($2=="PID")next;print $2}'
+source common.sh # 定义彩色日志函数 log
+
+run_cmd(){
+	# 批量启动任务
+	name=$1 # 任务名
+	cmd=$2 # 命令
+	port=$3 # 端口,用于已有任务检测重启
+	[ $port ] && {
+		log "INFO" "检测已有任务端口:$port"
+		detect=`lsof -i:$port | awk '{if($2=="PID")next;print $2}'`
+		[ $detect ] &&  { log "检测到已有任务, 关闭任务"; kill $detect; }
+	}
+	log "INFO" "开始执行 $cmd"
+	eval $cmd
+	[ $? -eq 0 ] && log "INFO" "服务 $name 启动完毕" || log "ERROR" "服务 $name 启动失败"
+}
+
+run_cmd "test" "ls" 9002
+run_cmd "test" "ls" 9001
+```
+
+返回结果
+
+```
+ [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9002 
+ [2023-08-09 17:38:18] [INFO] 开始执行 ls 
+a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
+ [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕 
+ [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9001 
+ [2023-08-09 17:38:18] [INFO] 检测到已有任务, 关闭任务 
+kill 2303865
+ [2023-08-09 17:38:18] [INFO] 开始执行 ls 
+a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
+ [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕
+```
+
 
 # ADB
 
