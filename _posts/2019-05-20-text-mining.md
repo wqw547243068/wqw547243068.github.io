@@ -955,7 +955,7 @@ model.wv.most_similar(['责任'],topn=15)
 
 ### 效果
 
-{% include wqw_wechat.html %}
+{% include wqw/demo/wechat.html %}
 
 ### 代码
 
