@@ -801,6 +801,7 @@ print json.dumps(new_model.most_similar(positive=[u'麦当劳'],negative=[u'肯�
 ```
 
 ### BERT词向量
+
 - [如何用 Python 和 BERT 做中文文本二元分类？](https://www.jianshu.com/p/9b88d0cd9e8d)
 - ![](https://upload-images.jianshu.io/upload_images/64542-d90f0950c31be5ae.png)
 - ULMfit 和 BERT 都属于预训练语言模型（Pre-trained Language Modeling），具有很多的相似性
@@ -810,6 +811,7 @@ print json.dumps(new_model.most_similar(positive=[u'麦当劳'],negative=[u'肯�
 <iframe src="https://wqw547243068.github.io/Python-learning/data_mining/huawei" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 贾跃亭
+
 - 参考：[我们文本分析了贾跃亭2017年全部公开信，发现他近期喜欢用“责任”“致歉”](https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&mid=2651655947&idx=1&sn=b7f48e48b7505fd3b67c4a22e42cd1ad&chksm=bd4c28988a3ba18e365be4a852c8b870d0ca5539b36fb4a427b3ee420c79e8e89eaeaaec4261&mpshare=1&scene=23&srcid=0522kZpRnblIcs8MIWwrY4na#rd)
 
 
@@ -955,7 +957,8 @@ model.wv.most_similar(['责任'],topn=15)
 
 ### 效果
 
-{% include wqw/demo/wechat.html %}
+
+<iframe src="https://wqw547243068.github.io/wqw/demo/wechat.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 代码
 
