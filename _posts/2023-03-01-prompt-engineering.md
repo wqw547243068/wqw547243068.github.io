@@ -18,6 +18,12 @@ permalink: /pe
 - AIGC 时代，「**提示工程**」(prompt engineering) ：精巧地设计文字**提示**（prompt），对于生成好看有趣的结果至关重要。
 - 提示工程：用聪明、准确、时而冗长的文字提示，来设定好一个上下文场景，一步一步地把 AI 带进这个场景里，并且让它更准确地了解你的意图，从而生成最符合你期待的结果。
 
+傅盛：极客公园演讲, 推出[聚言](chatmax.ai), [ppt](https://share.weiyun.com/nP1yIqG7)
+>- 如果创业者只学习大模型的一个技术点,应该是什么? Prompt!
+>- BUT 投资人看不上Prompt ，嫌**薄**; 工程师看不起Prompt ，嫌**浅**
+
+自然语言的**压缩性**导致**歧义性** 以及行业的**专业属性**，使得prompt是嫁接大模型逻辑能力和应用需求的桥梁，非常重要
+
 ## 资讯
 
 【2023-7-26】OpenAI 专家 Lili Weng 翁丽莲 博客专题 [Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
