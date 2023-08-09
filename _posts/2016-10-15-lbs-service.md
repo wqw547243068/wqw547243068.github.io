@@ -29,6 +29,25 @@ permalink: /lbs
   - [geohash](https://www.cnblogs.com/tgzhu/articles/6204173.html)
 - ③ 改进密度聚类算法dbscan，球面距离计算公式部分改成根据经纬度明式距离直接排除噪声点…最终在odps跑通了…另外，调研过路径匹配的方案，微软有篇文章
 
+效果展示
+- 定位点处理: geohash聚合
+  - 3个月定位数据太多，超过Hadoop节点 800m 限制
+  - geohash 聚合定位点
+- 运动状态计算： 按时间排序，计算速度，区分状态
+  - 静态点： 用于常驻点挖掘，占比 1/3
+  - 动态点： 用于交通工具挖掘，占比 2/3
+- DBSCAN 聚类得到常驻点
+  - 去掉噪声点
+  - 簇计算，质心
+  - GEO获取质心poi
+- 预测家、公司
+  - 家：一般是夜间、周末
+  - 公司：白天，通勤频繁、规律
+
+{% include wqw_points_cluster.html %}
+
+
+
 ### GeoHash 技术原理
 
 【2023-8-9】[GeoHash 技术原理及应用实战](https://zhuanlan.zhihu.com/p/645078866)
