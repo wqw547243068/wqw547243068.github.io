@@ -485,13 +485,29 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 ### 自动化工具
 
-#### PromptsRoyale
+#### 2023.7 gpt-prompt-engineer
 
-[PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
-- 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer), Simply input a description of your task and some test cases, and the system will generate, test, and rank a multitude of prompts to find the ones that perform the best.
+[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer)
 - 【2023-8-4】Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/gpt-prompt-engineer/blob/main/gpt_prompt_engineer.ipynb)
 - 功能丰富：根据用户描述生成自test case、根据期望的输出生成候选prompt、再通过MC匹配和Elo机制对候选Prompt打分动态排名
 - 演示[视频](https://user-images.githubusercontent.com/8951736/253364304-efd6e6f6-c470-473a-bcb3-33a398882c9f.mp4)
+
+Prompt engineering is kind of like **alchemy**（/ˈælkəmi/炼丹术）. There's no clear way to predict what will work best. It's all about **experimenting** until you find the right prompt.
+
+gpt-prompt-engineer is a tool that takes this experimentation to a whole new level.
+
+Simply input a **description** of your task and some **test cases**, and the system will **generate**, **test**, and **rank** a multitude of prompts to find the ones that perform the best.
+
+Features
+- **Prompt Generation**: Using GPT-4 and GPT-3.5-Turbo, gpt-prompt-engineer can generate a variety of possible prompts based on a provided use-case and test cases.
+- **Prompt Testing**: The real magic happens after the generation. The system tests each prompt against all the test cases, comparing their performance and ranking them using an `ELO` rating system.
+- **ELO Rating System**: Each prompt starts with an ELO rating of **1200**. As they compete against each other in generating responses to the test cases, their ELO ratings change based on their performance. This way, you can easily see which prompts are the most effective.
+- **Classification Version**: The gpt-prompt-engineer--Classification Version notebook is designed to handle **classification** tasks. It evaluates the correctness of a test case by matching it to the expected output ('true' or 'false') and provides a table with scores for each prompt.
+
+#### PromptsRoyale
+
+[PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
+- 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer)
 
 What it can do
 - Automatic prompt generation: Allows for the creation of prompt candidates from the user's description and test case scenarios. The user can also input their own.
