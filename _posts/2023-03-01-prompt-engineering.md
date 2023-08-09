@@ -626,14 +626,14 @@ CoT 自动化
   - 示例选择 **Demonstration selection**: Select a set of representative questions from each cluster; i.e. one demonstration from one cluster. Samples in each cluster are sorted by distance to the cluster centroid and those closer to the centroid are selected first.
   - 推理生成 **Rationale generation**: Use zero-shot CoT to generate reasoning chains for selected questions and construct few-shot prompt to run inference.
 
-### 2020 AutoPrompt
+### 2020 伯克利 AutoPrompt
 
 AutoPrompt: Automatic Prompt Construction for Masked Language Models.
 
-An automated method based on gradient-guided search to create prompts for a diverse set of NLP tasks. [AutoPrompt](https://github.com/ucinlp/autoprompt) demonstrates that masked language models (MLMs) have an innate ability to perform sentiment analysis, natural language inference, fact retrieval, and relation extraction. Check out our website for the paper and more information.
-
+An automated method based on **gradient-guided search** to create prompts for a diverse set of NLP tasks. 
+- [AutoPrompt](https://github.com/ucinlp/autoprompt) demonstrates that masked language models (MLMs) have an innate ability to perform sentiment analysis, natural language inference, fact retrieval, and relation extraction. Check out our website for the paper and more information.
 - 伯克利 [AUTOPROMPT: Eliciting Knowledge from Language Models with Automatically Generated Prompts](https://arxiv.org/pdf/2010.15980.pdf)
-
+- ![](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/autoprompt.png)
 
 ### 2022 PromptGen 百度
 
@@ -680,8 +680,32 @@ They fed the generated prompt plus 50 example inputs from the dataset to the con
 - They scored the prompt’s quality based on how often the content generator produced outputs that exactly matched the expected outputs.
 - They sharpened the prompt by asking the prompt generator to produce a prompt similar to the highest-scoring one (“Generate a variation of the following instruction . . . ”) and repeated the process. They performed this step three times. For example, a higher-scoring variation of the earlier prompt example is “Identify which animal is larger”.
 
+APE 根据任务数据集优化给定prompt模板，两个步骤
+1. 使用 LLM 生成候选prompt集合
+1. 调用 LLM 评估各个候选prompt质量，打分函数：
+  - Execution accuracy 监督带label，正确1，错误0
+  - Log probability log P(A\|\[p;Q\])，需要训练模型 / 大模型**开放权重**，或者**接口**
+  - Efficient score estimation 从训练集中抽取**少部分数据**用于打分筛选prompt
+1. 生成高分prompt语义相近的prompt
+  - 迭代蒙特卡洛搜索采样 Monte Carlo Search
+1. 返回最高评分的prompt
 
+任务数据集: 
+- 25个任务测试集，包含 输入、输出, 分为
+- 训练集: /experiments/data/instruction_induction/raw/induce
+- 测试集: /experiments/data/instruction_induction/raw/execute
 
+多视角调研
+- zero-shot 零样本
+- few-shot 少样本
+- truthfulness 真实性
+
+APE 模式
+- basic 基础版: prompt 生成模式分成 insert 和 forward
+  - insert/reverse 逆向模式: 什么样的指令，可以生成给定的输入输出示例 (\<insert\>前置)
+  - forward 前向模式: 给定几个输入输出示例,让LLM给出Prompt (后置 \<complete\>)
+  - ![](https://lh3.googleusercontent.com/jEf6gvTy5pG9YHNcp2yYD5dA8bq5f0YX9O-TRo8ufWRKdr8gy8o0iArD1dA8Lk7b3SFgaHU2CmCBTPaRPLca1jPJW8A0T_0EamWNkIbBc_lpL-uko08b5grW-vzvIBEqig=w1280)
+- advanced 高级版
 
 ## 图像提示词
 
@@ -704,7 +728,7 @@ They fed the generated prompt plus 50 example inputs from the dataset to the con
 
 ICL 方式下，Prompt 的设计至关重要
 
-### PromptBench 评测基准
+### PromptBench 鲁棒性评测基准
 
 【2023-7-20】[PromptBench: 首个大语言模型提示鲁棒性的评测基准](https://mp.weixin.qq.com/s/ACC5-9O8dCP1ShWH0IM9FQ)
 - ![](https://github.com/microsoft/promptbench/raw/main/imgs/promptbench.png)
@@ -713,16 +737,36 @@ Prompt(提示词)是连接人类和LLMs的一座桥梁，以`自回归`(Auto-reg
 - 大模型对 「Prompt (提示词)」非常敏感，同样的prompt可能写错个单词、写法不一样，都会出现不一样的结果。
 - 业界评估LLMs的性能时，往往忽略了提示的鲁棒性。
 
+Prompt类型
+- Task-oriented：根据具体**任务**相关prompt，如机器翻译任务
+- Role-oriented：**角色**相关prompt，如：你是一个打分助手...
+- Zero-shot: 零样本 请翻译成英文，input：中国，outpt：
+- Few-shot:  少样本 请翻译成英文，input：中国, outpt：china, input：美国, output：america, input：俄罗斯, output：
+
 如何写合适的提示词？
 - 微软构建了「`PromptBench`」，探究大模型在处理`对抗提示`(adversarial prompts)的鲁棒性。
   - [PromptBench: Towards Evaluating the Robustness of Large Language Models on Adversarial Prompts](https://arxiv.org/abs/2306.04528)
   - code: [promptbench](https://github.com/microsoft/promptbench)
-- 此外，用 Attention「**可视化分析**」了对抗提示的输入关注分布，并且对不同模型产生的**对抗提示**进行看「迁移性分析」，最后对鲁棒提示和敏感提示的词频进行了分析，以帮助终端用户更好地写作prompt。
+
+此外，用 Attention「**可视化分析**」了对抗提示的输入关注分布，并且对不同模型产生的**对抗提示**进行看「迁移性分析」，最后对**鲁棒提示**和**敏感提示**的词频进行了分析，以帮助终端用户更好地写作prompt。
+- 根据模型梯度值计算注意力分布，得到可视化信息 -- 前提:<span style='color:red'>需要模型最后一层信息</span>
+- [visualize.py](https://github.com/microsoft/promptbench/blob/main/visualize.py)
 - ![](https://github.com/microsoft/promptbench/raw/main/imgs/attention.png)
 
 两种注意力可视化技术：结果相似，论文主要采用梯度注意力
 - **梯度注意力**：根据梯度正规化计算单词注意力
 - **删除注意力**：删除单词后检查损失函数变化计算单词注意力
+
+```py
+def vis_by_grad(model, tokenizer, input_sentence, label):
+    model.eval()
+    outputs = model(inputs_embeds=embeddings, attention_mask=inputs['attention_mask'], labels=labels)
+    outputs.loss.backward()
+# vis_by_grad
+words_importance = (words_importance - min_importance) / (max_importance - min_importance)
+# vis_by_delete
+importance = abs(new_loss - original_loss)
+```
 
 考虑到大模型计算梯度的效率以及黑盒性，采用「`黑盒攻击算法`」(Black-box attacks)。攻击涵盖了四个不同的层次，包括从简单的字符操作到复杂的语义修改。
 - 「字符级别」：TextBugger、DeepWordBug，这两类方法通过在单词中添加错别字来改变文本。
