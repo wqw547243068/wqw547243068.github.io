@@ -29,7 +29,7 @@ permalink: /lbs
   - [geohash](https://www.cnblogs.com/tgzhu/articles/6204173.html)
 - ③ 改进密度聚类算法dbscan，球面距离计算公式部分改成根据经纬度明式距离直接排除噪声点…最终在odps跑通了…另外，调研过路径匹配的方案，微软有篇文章
 
-效果展示
+效果展示 [demo](wqw/demo/points_cluster.html)
 - 定位点处理: geohash聚合
   - 3个月定位数据太多，超过Hadoop节点 800m 限制
   - geohash 聚合定位点
@@ -44,7 +44,6 @@ permalink: /lbs
   - 家：一般是夜间、周末
   - 公司：白天，通勤频繁、规律
 
-{% include wqw_points_cluster.html %}
 
 
 

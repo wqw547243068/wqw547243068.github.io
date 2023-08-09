@@ -391,7 +391,7 @@ permalink: /future
       - 咨询卖专业知识，保险则是2C销售靠人脉变现，都是时间自由，两者的商业逻辑有点区别，不过基本都是个体单干，或成立一个小工作室
       - 中国保险业还在蓬勃发展中，未来选择这条路的会越来越多
 
-{% include wqw_tech_life.html %}
+{% include wqw/demo/tech_life.html %}
 
 - 可视化（附代码）
 
@@ -922,7 +922,7 @@ Leadership也有范围的，比如，身边的朋友，工作中的团队/部分
 
 【2020-7-5】技术、管理与业务之间的关系
 
-{% include wqw_graph_tech_relation.html %}
+{% include wqw/demo/tech_relation.html %}
 
 **程序员的悲哀**
 
