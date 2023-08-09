@@ -554,7 +554,7 @@ YOLOX 是旷视开源的高性能检测器。旷视的研究者将解耦头、�
 
 ### 实时检测Demo
 
-{% include wqw/demo/object_detection.html %}
+站内[demo](wqw/demo/object_detection.html)
 
 <iframe src="https://nanonets.com/object-detection-with-tensorflowjs-demo/" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='800' height='600'> </iframe>
 

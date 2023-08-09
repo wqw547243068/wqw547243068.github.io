@@ -1615,9 +1615,12 @@ jekyll 插件安装失败
 ### 网页嵌入
 
 【2023-8-9】除了 iframe 嵌入在线网页，还可以通过 include 导入 内部静态网页
+- 注意：非 _include 目录下的文件不能用 include命令导入！转用 iframe
 
-```
+```html
 \{\% include wqw_points_cluster.html \%\}
+
+<iframe src="https://wqw547243068.github.io/wqw/demo/ncov.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 ```
 
 
