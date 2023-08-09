@@ -1614,7 +1614,7 @@ jekyll 插件安装失败
 
 ### 网页嵌入
 
-除了 iframe 嵌入在线网页，还可以通过 include 导入 内部静态网页
+【2023-8-9】除了 iframe 嵌入在线网页，还可以通过 include 导入 内部静态网页
 
 ```
 \{\% include wqw_points_cluster.html \%\}
