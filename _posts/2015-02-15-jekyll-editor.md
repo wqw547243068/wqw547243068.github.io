@@ -1539,9 +1539,9 @@ gitment.js中`labels: labels.concat(['gitment', id])`id默认为`window.location
 
 - 参考：[jekyll下添加打赏功能](http://www.twistedwg.com/2018/05/06/jekyll-reward.html)
 - 步骤：
-   - 下载css文件，保存到jekyll里的css/myrewards.css
+   - 下载css文件，保存到jekyll里的 css/myrewards.css
    - 准备支付二维码图片，放到自定义文件夹里，如wqw/fig/wqw.png
-   - _include/head.html添加css文件：（注意：需要修改主目录地址）
+   - _include/head.html 添加css文件：（注意：需要修改主目录地址）
    
 ```html
 <link href="{{ "/css/myreward.css " | prepend: site.baseurl }}" rel="stylesheet" type="text/css">
@@ -1560,7 +1560,7 @@ _layout/post.html添加插件
 
 - [Jekyll 静态博客实现搜索功能](https://juejin.im/post/5aa7d9c6f265da23866f918e)
    - 提前安装[Simple-Jekyll-Search](https://github.com/christian-fei/Simple-Jekyll-Search)
-![](https://user-gold-cdn.xitu.io/2018/3/13/1621faaa92d3cae7?imageslim)
+- ![](https://user-gold-cdn.xitu.io/2018/3/13/1621faaa92d3cae7?imageslim)
 
 
 ### 加地图插件
@@ -1611,6 +1611,15 @@ jekyll 插件安装失败
 效果：
 
 <iframe src="{{ site.url }}/wqw/demo/tool_map.html" width='100%' height='100%' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
+
+### 网页嵌入
+
+除了 iframe 嵌入在线网页，还可以通过 include 导入 内部静态网页
+
+```
+\{\% include wqw_points_cluster.html \%\}
+```
+
 
 ### 博客导流公众号
 
