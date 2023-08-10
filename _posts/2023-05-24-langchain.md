@@ -459,6 +459,22 @@ langchain.llm_cache = InMemoryCache()
 llm = OpenAI(model_name="text-davinci-002", n=2, best_of=2)
 ```
 
+##### GPTCache
+
+LLM 缓存工具
+- [GPTCache : A Library for Creating Semantic Cache for LLM Queries](https://github.com/zilliztech/GPTCache)
+- 支持 LangChain、Llama_index和OpenAI
+- ![](https://github.com/zilliztech/GPTCache/raw/main/docs/GPTCacheStructure.png)
+
+```py
+# [GPTCache : A Library for Creating Semantic Cache for LLM Queries](https://github.com/zilliztech/GPTCache)
+from gptcache import cache
+from gptcache.adapter import openai
+
+cache.init()
+cache.set_openai_key()
+```
+
 #### 异步返回
 
 异步返回
