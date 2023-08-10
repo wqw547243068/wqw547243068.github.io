@@ -17,6 +17,16 @@ permalink: /lbs
 
 汇总 LBS 相关技术
 
+
+## LBS 
+
+移动互联网如火如荼的今天，各种 `LBS`（Location Based Service，基于地理位置服务）应用遍地开花，其核心要素
+- 利用**定位技术**获取当前移动设备（手机）所在的位置
+- 然后通过移动互联网获取与当前位置相关的资源和信息
+
+典型的 LBS 应用比如高德地图定位当前位置和附近的建筑、微信查找附近的人、陌陌等陌生人社交应用、滴滴打车查询附近的车、大众点评查找附近的餐馆等等，
+- 通过 Geo 可以轻松搞定在海量数据中查找附近 XXX 的功能。
+
 ## 地理坐标
 
 
@@ -45,9 +55,8 @@ permalink: /lbs
   - 公司：白天，通勤频繁、规律
 
 
+### GeoHash 
 
-
-### GeoHash 技术原理
 
 【2023-8-9】[GeoHash 技术原理及应用实战](https://zhuanlan.zhihu.com/p/645078866)
 
@@ -60,6 +69,9 @@ permalink: /lbs
 
 解法
 - 暴力：遍历所有 经纬度坐标，选最近（不考虑3D城市重庆）
+
+[geohash在线体验](geohash.org) 可以通过哈希值查询其对应的地理位置
+- ![](https://ask.qcloudimg.com/http-save/yehe-2413530/n1e9izd7yw.jpeg)
 
 #### 暴力解
 
@@ -158,6 +170,7 @@ geohash 实现步骤
 
 #### geohash 具体实现
 
+
 geohash 
 - 转换
   - ![](https://pic2.zhimg.com/80/v2-66fb7497cf630241cbcb4dcbd011afb5_1440w.webp)
@@ -214,6 +227,128 @@ geohash 服务模块需要对外提供的几个 API 整理如下：
 - 首先求出中点所在的矩形块及其对应的 geohash 字符串
 - 然后基于回字形向外逐层拓宽，直到能保证拓展范围一定能完全包含以中心点为圆心、指定距离为半径的圆后，求出拓展范围内所有的点（此时可能有多余的结果），再通过其与中心点的相对距离进行过滤，保留满足条件的目标点集合.
   - ![](https://pic3.zhimg.com/80/v2-a2367bce85a3042881be976781a9e612_1440w.webp)
+
+
+### geo
+
+地理位置查询功能 geo,全称 geospatial 
+
+#### GEO 场景
+
+通过 Geo 可以轻松搞定在海量数据中查找附近 XXX 的功能。
+- 地理围栏：通过设置地理位置的经纬度信息，可以将用户或者车辆等实体绑定在地理围栏内，当实体进出围栏时，可以触发相应的事件。
+- 附近的人：在类似于约会、社交、旅游等场景下，可以通过Redis GEO快速查询周围的人员或景点。
+- 配送服务：通过获取配送地址的经纬度信息，可以找到距离最近的配送员或仓库，并对订单进行分配。
+- 地址查找：在地图应用中，可以通过Redis GEO快速查询某个地址周围的商家或服务设施。
+- 动态信息：在滴滴、Uber等打车应用中，可以实时更新车辆的位置信息，以提供更加准确的车辆推荐和路线规划服务
+
+
+#### Redis GEO
+
+
+Redis GEO 主要用于存储地理位置信息，并对存储的信息进行操作，该功能在 Redis 3.2 版本新增。
+
+Redis GEO 操作方法有：
+- geoadd：添加地理位置的坐标。
+- geopos：获取地理位置的坐标。
+- geodist：计算两个位置之间的距离。
+- georadius：根据用户给定的经纬度坐标来获取指定范围内的地理位置集合。
+- georadiusbymember：根据储存在位置集合里面的某个地点获取指定范围内的地理位置集合。
+- geohash：返回一个或多个位置对象的 geohash 值。
+
+
+```sh
+# 添加位置信息
+本机:0>geoadd user:location 121.48941  31.40527 'shagnhai'
+"1"
+# 添加多个位置信息
+本机:0>geoadd user:location 121.47941 31.41527 'shanghai1'  121.47941 31.43527 'shagnhai2'  121.47941 31.40527 'shagnhai3'
+"3"
+
+# 计算距离，单位有m km ft(英尺） mi(英里）
+# 计算两点间的距离，单位m
+本机:0>geodist user:location shanghai shanghai1 m
+"1462.1834"
+# 千米：km
+本机:0>geodist user:location shanghai shanghai1 km
+"1.4622"
+
+# geohash 返回一个或多个位置元素的geohash，保存Redis中是用geohash位置52点整数编码
+# geohash 将二维经纬度转换成字符串，每个字符串代表一个矩形区域，该矩形区域内的经纬度点都共享一个相同的geohash字符串。
+本机:0>geohash user:location shanghai shanghai1
+1) "wtw6st1uuq0"
+2) "wtw6sqfx5q0"
+
+# geopos 从key里返回指定成员的位置信息
+本机:0>geopos user:location shanghai shanghai1
+1) 1) "121.48941010236740112"
+   2) "31.40526993848380499"
+
+2) 1) "121.47941082715988159"
+   2) "31.41526941345740198"
+
+# georadius:给定经纬度为中心，返回键包含的位置元素中，与中心的距离不超过给定最大距离的所有位置元素
+# 范围单位：m km mi ft
+# withcoord:将位置元素的经纬度一并返回
+本机:0>georadius user:location 121.48941 31.40527 3000 m withcoord
+1) 1) "shagnhai3"
+   2) 1) "121.47941082715988159"
+      2) "31.40526993848380499"
+
+2) 1) "shanghai1"
+   2) 1) "121.47941082715988159"
+      2) "31.41526941345740198"
+
+3) 1) "shanghai"
+   2) 1) "121.48941010236740112"
+      2) "31.40526993848380499"
+# withdist:返回位置元素的同时，将位置元素与中心点间的距离一并返回
+本机:0>georadius user:location 121.48941 31.40527 3000 m withdist
+1) 1) "shagnhai3"
+   2) "949.2411"
+
+2) 1) "shanghai1"
+   2) "1462.1719"
+
+3) 1) "shanghai"
+   2) "0.0119"
+
+# asc:根据中心位置，按照从近到远的方式返回位置元素
+本机:0>georadius user:location 121.48941 31.40527 3000 m withdist asc
+1) 1) "shanghai"
+   2) "0.0119"
+
+2) 1) "shagnhai3"
+   2) "949.2411"
+
+3) 1) "shanghai1"
+   2) "1462.1719"
+
+# desc: 根据中心位置，按照从远到近的方式返回位置元素
+本机:0>georadius user:location 121.48941 31.40527 3000 m withdist desc
+1) 1) "shanghai1"
+   2) "1462.1719"
+
+2) 1) "shagnhai3"
+   2) "949.2411"
+
+3) 1) "shanghai"
+   2) "0.0119"
+
+# count：获取指定数量的元素
+本机:0>georadius user:location 121.48941 31.40527 3000 m withdist desc count 2
+1) 1) "shanghai1"
+   2) "1462.1719"
+2) 1) "shagnhai3"
+   2) "949.2411"
+
+# georadiusbymember:和georadius命令类似，都可以找出指定位置范围内的元素，但是georadiusbymember的中心点是由给定位置元素决定的，而不像georadius使用经纬度决定中心点
+本机:0>georadiusbymember user:location shanghai 3 km 
+1) "shagnhai3"
+2) "shanghai1"
+3) "shanghai"
+
+```
 
 
 ## 定位
@@ -273,6 +408,11 @@ GPS仅向地面发送信号，难以锁定接收信号的终端的位置信息�
 
 
 手机导航，其实是北斗进入比较晚的行业了。现任中国卫星导航系统管理办公室主任、北斗系统新闻发言人冉承其曾给出一组数据：过去5年，我国480万辆营运车辆上线“北斗”，建成全球最大的北斗车联网平台，全国4万余艘渔船安装“北斗”。他以北京为例，已有33500辆出租车、21000辆公交车安装“北斗”，实现“北斗”定位全覆盖；1500辆物流货车及19000名配送员，使用“北斗”终端和手环接入物流云平台，实现实时调度。
+
+
+
+
+
 
 
 # 结束
