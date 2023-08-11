@@ -1245,13 +1245,19 @@ Decoding Strategies
 
 #### 贪心 Greedy Search
 
-`贪心搜索`，即每一个时间步都取条件概率**最大**的输出，再将从开始到当前步的结果作为输入，获得下一个时间步的输出，直到模型给出生成结束的标志。
+`贪心搜索`，每步都取条件概率**最大**的词输出，再将从开始到当前步的结果作为输入，获得下一个时间步的输出，直到模型给出生成结束的标志。
 - 示例，生成序列: \[A,B,C\]
   - ![img](http://www.wuyuanhao.com/wp-content/uploads/2020/03/greedy.png)
 
+参数设置：
+- do_sample = False, num_beams = 1
+
 分析
 - 优点: 原来指数级别的求解空间直接压缩到了与长度线性相关的大小。（指数级→线性级）
-- 缺点: 由于丢弃了绝大多数的可能解，这种关注当下的策略<font color='red'>无法保证最终序列概率是最优的</font>。
+- 缺点：
+  - 1、生成文本重复
+  - 2、不支持生成多条结果。 当 num_return_sequences 参数设置大于1时，代码会报错，说greedy search不支持这个参数大于1
+  - 由于丢弃了绝大多数的可能解，这种关注当下的策略<font color='red'>无法保证最终序列概率是最优的</font>
 
 ```py
 def greedy_decode(model, input, max_length):
@@ -1272,8 +1278,9 @@ def greedy_decode(model, input, max_length):
 
 Beam search是对贪心策略一个改进。
 - 思路：稍微放宽一些考察的范围。
-  - 在每一个时间步，不再只保留当前分数最高的1个输出，而是保留num_beams个。
-  - 当num_beams=1时集束搜索就退化成了贪心搜索。
+  - 每步不再只保留当前分数最高的1个输出，而是保留num_beams个。每步选择num_beams个词，并从中最终选择出概率最高的序列。
+  - 第1步选取当前条件概率最大的 k 个词。之后每个时间步基于上个步长的输出序列，挑选出所有组合中条件概率最大的 k 个，作为该时间步长下的候选输出序列。始终保持 k 个候选。最后从 k 个候选中挑出最优的。
+  - 当 num_beams=1 时集束搜索就退化成了**贪心搜索**。
 - 示例
   - 每个时间步有ABCDE共5种可能的输出，即v=5v=5，图中的num_beams=2，也就是说每个时间步都会保留到当前步为止条件概率最优的2个序列
   - ![](http://www.wuyuanhao.com/wp-content/uploads/2020/03/beam-search.png)
@@ -1283,11 +1290,18 @@ Beam search是对贪心策略一个改进。
   - 第三步同理，也会从新的10个候选人里再保留最好的两个，最后得到了\[ABD],\[CED]两个结果。
   - ![](https://pic1.zhimg.com/80/v2-964bce7699b8ae813346015dc11c3e60_1440w.webp)
 
+参数设置：
+- do_sample = False, num_beams>1
+
 分析
-- beam search在每一步需要考察的候选人数量是贪心搜索的num_beams倍
+- beam search在每步需要考察的候选人数量是贪心搜索的num_beams倍
 - BS是一种**时间**换**性能**的方法。
-- 缺点
-  - 会遇到诸如词语**重复**问题
+- 会遇到诸如词语**重复**问题
+
+缺点：
+- 虽然结果比贪心搜索更流畅，但是仍然存在生成重复的问题
+
+
 
 ```py
 def beam_search_decode(model, input, max_length, k):
@@ -1334,6 +1348,27 @@ decoder_outputs, decoder_state, final_sequence_lengths = tf.contrib.seq2seq.dyna
 
 - 序列扩展是beam search的核心过程
 - ![](http://www.wuyuanhao.com/wp-content/uploads/2020/03/seqextend-1024x695.png)
+
+
+#### Multinomial sampling（多项式采样）
+
+方式：
+- 每步根据概率分布随机采样字（每个概率>0的字都有被选中的机会）。
+
+参数：
+- do_sample = True, num_beams = 1
+
+优点：
+- 解决了生成重复的问题，但是可能会出现生成的文本不准守基本的语法
+
+
+#### Beam-search multinomial sampling
+
+方式：
+- 结合了Beam-search和multinomial sampling的方式，每个时间步从num_beams个字中采样
+
+参数：
+- do_sample = True, num_beams > 1
 
 
 ### Beam Search改进
@@ -1708,6 +1743,30 @@ class NucleusSampler(Sampler):
 #### 惩罚重复
 
 - 为了解决重复问题，还有可以通过惩罚因子将出现过词的概率变小或者强制不使用重复词来解决。
+
+惩罚重复
+
+方式：
+- 每步对出现过的词的概率做出惩罚，即降低出现过的字的采样概率，让模型趋向于解码出没出现过的词
+
+参数：
+- repetition_penalty（float，取值范围>0）。默认为1，即代表不进行惩罚。值越大，即对重复的字做出更大的惩罚
+
+代码实现逻辑：
+- 如果字的概率score<0，则 score = score*penalty, 概率会越低； 
+- 如果字的概率score>0, 则则score = score/penalty,同样概率也会变低。
+- ![](https://pic4.zhimg.com/80/v2-628cb53483ffb707ab1f01f7944ead8b_1440w.webp)
+
+
+#### 惩罚n-gram
+
+方式：
+- 限制n-gram在生成结果中出现次数
+
+参数：
+- no_repeat_ngram_size，限制n-gram不出现2次。 (no_repeat_ngram_size=6即代表:6-gram不出现2次)
+
+
 
 
 #### MoE
