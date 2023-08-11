@@ -3,7 +3,7 @@ layout: post
 title:  "LBS 技术专题"
 date:   2016-10-15 10:30:00
 categories: 技术工具
-tags: 高德 gps geohash base64 gps 北斗
+tags: 高德 gps geohash base64 gps 北斗 定位 gpx
 author : 鹤啸九天
 excerpt: LBS 技术相关知识
 mathjax: true
@@ -28,6 +28,20 @@ permalink: /lbs
 - 通过 Geo 可以轻松搞定在海量数据中查找附近 XXX 的功能。
 
 ## 地理坐标
+
+
+### 地图坐标系 
+
+地图坐标系，参考[这篇文章](http://nightfarmer.github.io/2016/12/01/GPSUtil/)
+
+几种常用的坐标系：
+
+| 坐标系 | 解释 | 使用地图 |
+| --- | --- | --- |
+| `WGS84` | **地球坐标系**，国际上通用的坐标系。设备一般包含GPS芯片或者北斗芯片获取的经纬度为WGS84地理坐标系,最基础的坐标，谷歌地图在非中国地区使用的坐标系 | GPS/谷歌地图卫星 |
+| `GCJ02` | **火星坐标系**，是由中国国家测绘局制订的地理信息系统的坐标系统。并要求在中国使用的地图产品使用的都必须是加密后的坐标，而这套WGS84加密后的坐标就是gcj02。 | 腾讯(搜搜)地图，阿里云地图，高德地图，谷歌国内地图 |
+| `BD09` | **百度坐标系**，百度在GCJ02的基础上进行了二次加密，官方解释是为了进一步保护用户隐私 | 百度地图 |
+| `小众坐标系` | 类似于百度地图，在GCJ02基础上使用自己的加密算法进行二次加密的坐标系 | 搜狗地图、图吧地图 等 |
 
 
 ### 时空挖掘
@@ -405,6 +419,64 @@ Redis GEO 操作方法有：
 
 参考
 - [常见手机定位方式](https://www.cnblogs.com/syfwhu/p/5084115.html)
+
+### 定位轨迹数据
+
+如何获取自己的定位信息?
+- 旅游软件 **六只脚** app支持跟踪定位轨迹并导出数据(gpx格式)
+
+gpx 格式提取
+
+国内地图产品导出的`.gpx`文件一般使用的是**非**`WGS84`坐标系  [参考](https://blog.csdn.net/wangpeng246300/article/details/108901305)
+- 如果想要将该`.gpx`文件导入到只支持WGS84坐标系的设备使用时，坐标将发生偏移，因此需要对`.gpx`文件进行坐标系转换。  
+- Github和搜索引擎上并没有搜到将`.gpx`文件进行坐标转换的资料，但是将`.csv`文件或直接对坐标点进行转换的代码有很多。所以决定对代码进行修改使其支持直接对`.gpx`文件转换。
+
+.gpx文件其实可以看成是一种xml文件
+- gpx文件将每一个坐标点的**经纬度**、**高度**和**时间**记录下来，以此来生成轨迹。
+- 所以将.gpx文件中的坐标点提取到，并对该坐标点进行**坐标系转换**，之后再将转换后的坐标写入新文件内，从而实现.gpx文件的坐标转换。
+- 转换代码:[coordTransform.py](https://github.com/SoufSilence/coordTransform_py), 提供`百度坐标系`(bd-09)、`火星坐标系`(国测局坐标系、gcj02)、`WGS84坐标系`直接的坐标互转，也提供了解析高德地址的方法的python版本
+
+转换工具
+- [GPX到SVG转换器](https://products.aspose.app/gis/zh/viewer/gpx-to-svg)
+- 在线提取：[mygeodata](https://mygeodata.cloud/), 下载解压后，轨迹信息在 track_points.csv 中
+- [GPSBabel](https://www.gpsbabel.org)
+- [gpxcsv](https://github.com/astrowonk/gpxcsv)
+
+```sh
+# == gpsbabel ==
+gpsbabel -i unicsv -f input-file.csv -o gpx -F output-file.gpx
+# == gpxcsv ==
+pip install gpxcsv
+# csv
+gpxcsv myrun.gpx
+gpxcsv myrun.gpx -o myfirstrun.csv
+# json
+gpxcsv myrun.gpx --json
+python myrun.gpx -o out.json
+# list
+from gpxcsv import gpxtolist
+gpx_list = gpxtolist('myfile.gpx')
+#if you have pandas
+import pandas as pd
+df = pd.DataFrame(gpx_list)
+```
+
+python 转换
+
+```py
+# pip install gpx_converter
+from gpx_csv_converter import Converter
+# === gpx -> csv ===
+Converter(input_file="/Users/bytedance/Downloads/wqw.gpx", output_file="output.csv")
+# === csv -> gpx ===
+# id,latitude,longitude
+# 0,51.74333,12.122905000000001
+# 538,51.7433216,12.122895
+Converter(input_file='your_input.csv').csv_to_gpx(lats_colname='latitude',
+                                                 longs_colname='longitude',
+                                                 output_file='your_input.gpx')
+```
+
 
 ### 1. 基站定位
 
