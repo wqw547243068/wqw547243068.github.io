@@ -1347,7 +1347,6 @@ Beam Search虽然比贪心有所改进，但还是会生成<span style='color:re
 - 参考：[解读Beam Search (2/2)](http://www.wuyuanhao.com/2020/03/23/%e8%a7%a3%e8%af%bbbeam-search-2/)
 - 以下思路主要源自ICLR 2020论文：[《The Curious Case of Neural Text Degeneration》](https://arxiv.org/abs/1904.09751)
 
-
 如何使用语言模型生成文本呢？用到了「解码器」：一种用于从语言模型生成文本的算法。
 
 目前主流解码器有三种：「`贪婪解码`」（Greedy Decoding）、「`集束搜索`」（Beam Search）、「`基于抽样`」（Sampling-based）。
@@ -1365,10 +1364,108 @@ Beam Search虽然比贪心有所改进，但还是会生成<span style='color:re
 - `集束搜索`输出质量比`贪婪解码`更高，但是如果 beam size 太大，将返回不合适的输出
 - 基于抽样的方法可以获得更多的**多样性**和**随机性**，适合开放式、创造性的创作，例如诗歌故事生成，通过 top-n 采样可以控制多样性的强弱。
 
+
+#### LLM 解码
+
+大模型训练好之后，如何对训练好的模型进行解码（decode）？
+- 生成输出文本：模型逐个预测每个 token ，直到达到终止条件（如终止符号或最大长度）。每一步模型给出一个概率分布，表示下一个单词预测。
+- 【2023-8-4】[大模型文本生成——解码策略（Top-k & Top-p & Temperature）](https://zhuanlan.zhihu.com/p/647813179)
+
+例如，如果输入文本是“我最喜欢的”，那么模型可能会给出下面的概率分布：
+- ![](https://pic3.zhimg.com/80/v2-f9fd705b9f498b5ccfb0cb7d547a522e_1440w.webp)
+
+概率分布中选择下一个单词呢？以下是几种常用的方法：
+-   **贪心解码**（Greedy Decoding）：直接选择概率最高的单词。这种方法简单高效，但是可能会导致生成的文本过于单调和重复。
+-   **随机采样**（Random Sampling）：按照概率分布随机选择一个单词。这种方法可以增加生成的多样性，但是可能会导致生成的文本不连贯和无意义。
+-   **Beam Search**：维护一个大小为 k 的候选序列集合，每一步从每个候选序列的概率分布中选择概率最高的 k 个单词，然后保留总概率最高的 k 个候选序列。这种方法可以平衡生成的质量和多样性，但是可能会导致生成的文本过于保守和不自然。
+
+这些方法各有各的问题，而 `top-k 采样`和 `top-p 采样`是介于`贪心解码`和`随机采样`之间，目前大模型解码策略中常用的方法。
+
+```json
+{
+ "top_k": 10,
+ "temperature": 0.95,
+ "num_beams": 1,
+ "top_p": 0.8,
+ "repetition_penalty": 1.5,
+ "max_tokens": 30000,
+ "message": [
+        {
+ "content": "你好！",
+ "role": "user"
+        }
+    ]
+}
+```
+
+- `贪心策略`，那么选择的 token 必然就是“女孩”
+  - ![](https://pic3.zhimg.com/80/v2-5927f0103a6e1ea3030548f9c2c8cb2e_1440w.webp)
+  - 问题: 容易陷入重复循环
+- `Top-k 采样`: “贪心策略”的优化
+  - 从排名前 k 的 token 中抽样，允许分数/概率较高的token 有机会被选中。这种抽样带来的随机性有助于提高生成质量。
+  - 每步只从概率最高的 k 个单词中进行随机采样，而不考虑其他低概率的单词。
+  - 例如，如果 k=2，那么只从女孩、鞋子中选择一个单词，而不考虑大象、西瓜等其他单词。这样避免采样到一些不合适或不相关的单词，同时也可以保留一些有趣或有创意的单词。
+  - ![](https://pic3.zhimg.com/80/v2-84999dc8b60cf679844f2a73b9c3d7e2_1440w.webp)
+  - 通过调整 k 的大小，即可控制采样列表的大小。“`贪心策略`”其实就是 k = 1 的 `top-k 采样`。
+  - ![](https://pic1.zhimg.com/80/v2-1a7e2450809497727140e44ca8932edc_1440w.webp)
+
+
+
 #### 随机采样(sampling)
 
 - 随机采样：根据解码器输出的词典中每个词的概率分布随机抽样。
   - 相比于按概率“掐尖”，这样会增大所选词的范围，引入更多的随机性。
+
+谷歌开放式聊天机器人Meena采用的方式，论文结论是：
+- 这种随机采样的方法远好于Beam Search。
+- 但这其实也是有条件的，随机采样容易产生前后不一致的问题。
+- 而在开放闲聊领域，生成文本的 长度都比较短 ，这种问题就被自然的淡化了。
+
+#### 温度 Temperature
+
+Temperature Parameter 超参数直译为“温度系数” 
+- 参考:[温度系数Temperature Parameter的讲人话解释](https://zhuanlan.zhihu.com/p/544432496)
+
+Temperature 采样受**统计热力学**启发，高温意味着更可能遇到低能态。
+- 将计算过程看做烧水，温度越高，水沸腾越剧烈，类比**信息熵增减**
+
+Temperature 采样中的温度与玻尔兹曼分布有关. 
+- 概率模型中，logits 扮演着**能量**角色，通过将 logits 除以温度来实现**温度采样**，然后将其输入 Softmax 并获得采样概率。
+- 本质: 在 Softmax 函数上添加了温度（T）这个参数。Logits 根据温度值进行缩放，然后传递到 Softmax 函数以计算新的概率分布。
+- 越低温度使模型对其首选越**有信心**，而高于1的温度会**降低信心**。
+- 0温度相当于 **argmax 似然**，而无限温度相当于**均匀采样**。
+- 温度系数越大，熵就越高，混乱程度越高，那么函数输出的各类别概率差距会越来越小（因为差距越小那么看出最优结果也就越困难，对应于熵越高），曲线也会愈发平滑。
+- 相反，温度系数越小，函数曲线也会愈发陡峭。
+
+“我喜欢漂亮的___” 例子中，初始温度 T=1 ，直观看一下 T 取不同值下概率会发生什么变化：
+- ![](https://pic3.zhimg.com/80/v2-e1673506371968d79a2059575a39d426_1440w.webp)
+- 随着温度的降低，模型愈来愈越倾向选择”女孩“；
+- 随着温度的升高，分布变得越来越均匀。
+- 当 T=50 时，选择”西瓜“的概率已经与选择”女孩“的概率相差无几了。
+  - ![](https://pic1.zhimg.com/80/v2-1e1ffb0ff8d227083f5b578ce28707d0_1440w.webp)
+
+温度与模型的“创造力”有关?
+- 非也。温度只是调整单词的概率分布。
+- 宏观效果: **低温模型更具确定性，而高温不那么确定**。
+
+
+温度系数取值设计类比自信心大小：
+- 温度系数大（曲线变得平滑，T>1）: 对于算法结果不自信 -- `知识蒸馏`
+  - 不相信当前的结果是最优的，通过添加大的温度系数，将 softmax 输出后的曲线变得平滑，那么稍微陡峭的结果和不陡峭的结果所体现出来的效果是差别不大。因此想要明确获得结果, 需要进行进一步训练，直到模型训练得到一个非常陡峭的输出，经过softmax之后才能获得一个相对陡峭的结果。
+  - 知识蒸馏是为了节省计算资源，将原模型中比较“没用”的参数给蒸发掉，本质上将原始数据集上训练的重量级模型作为**教师**，然后取相对更轻量的模型作为**学生**，令学生输出的概率分布尽可能的逼近教师输出的分布，从而达到知识提纯的目的。
+  - 蒸馏本质: 让学生网络去学习教师网络的泛化能力. 训练好的模型本身会出现过度自信的问题，softmax输出的概率分布熵很小，top k的优势过于明显。因此添加一个大的温度系数，来令结果不那么自信（也就是我们对当前结果不自信）。因此通过除以 T>1 来令分布变得平滑，进而来令学生模型学到的结果更加准确。
+- 温度系数小的情况（曲线变得陡峭，T<1）: 对于当前模型是很自信 -- `对比学习`
+  - 模型变得更加敏感: softmax 对上一步的输入很**敏感**，稍微陡峭的结果经过损失函数之后变得非常陡峭。
+  - 添加小的温度系数来突出计算的优势，就可以有效加快模型收敛速度。
+  - 对比学习从本质上讲，以自监督学习为例，更多的是处理样本正对与负对的问题，也就是令正对更近，负对更远。
+  - 典型的NCE损失, 子项都除以一个温度系数 T(小于1)。原因：首先对比学习应用这种损失形式本身可以挖掘负样本，经过softmax操作后，会给距离更近的负样本更多的惩罚。那么为了控制对困难样本的惩罚程度，当 T 越小，softmax就会越陡峭，输出差异就被放得越大，那么对困难负样本的惩罚更大（loss更大）[SLL综述](https://zhuanlan.zhihu.com/p/540791001)
+  - ![](https://pic1.zhimg.com/80/v2-2f9832e66f9d53f2825abc0b1155ff88_1440w.webp)
+- ![](https://pic3.zhimg.com/80/v2-ce0109d1d29668b06a4a2c18b74e5b12_1440w.webp)
+
+注意: T 不能太小! 无监督学习的对比学习**均匀性-容忍性**困境：
+- “**均匀性**”：小温度系数更关注于将与本样本相似的困难样本分开，因此希望得到一个**分布均匀**的表征空间，从而令负对更远（综述提到这种表征或许是成功的关键）。所以说 <span style='color:blue'>T 应当小</span>。
+- “**容忍性**”：困难样本往往是与本样本相似程度较高的，同类别的狗，但是萨摩耶和吉娃娃这两种不同实例。很多困难负样本其实是潜在的正样本，所以不能过度地分开“困难样本”导致破坏潜在语义结构。所以说 <span style='color:blue'>T 不能太小</span>。
+
 - 采样的时候有一个可以控制的超参数，称为**温度**(temperature, T)。
   - 模型蒸馏里用到
 - 解码器的输出层后面通常会跟一个softmax函数来将输出概率归一化，通过改变T可以控制概率的形貌。
@@ -1376,12 +1473,40 @@ Beam Search虽然比贪心有所改进，但还是会生成<span style='color:re
   - 当T大的时候，概率分布趋向平均，随机性增大；
   - 当T小的时候，概率密度趋向于集中，即强者俞强，随机性降低，会更多地采样出“放之四海而皆准”的词汇。
 
-谷歌开放式聊天机器人Meena采用的方式，论文结论是：
-- 这种随机采样的方法远好于Beam Search。
-- 但这其实也是有条件的，随机采样容易产生前后不一致的问题。
-- 而在开放闲聊领域，生成文本的 长度都比较短 ，这种问题就被自然的淡化了。
 
-#### top-k采样
+Temperature 采样的代码实现：
+
+```py
+import torch
+from torch.distributions import Categorical
+
+from labml_nn.sampling import Sampler
+
+
+class TemperatureSampler(Sampler):
+    """
+    ## Sampler with Temperature
+    """
+    def __init__(self, temperature: float = 1.0):
+        """
+        :param temperature: is the temperature to sample with
+        """
+        self.temperature = temperature
+
+    def __call__(self, logits: torch.Tensor):
+        """
+        Sample from logits
+        """
+
+        # Create a categorical distribution with temperature adjusted logits
+        dist = Categorical(logits=logits / self.temperature)
+
+        # Sample
+        return dist.sample()
+```
+
+
+#### Top-k 采样
 
 采样前将输出的概率分布**截断**，取出概率最大的k个词构成一个集合，然后将这个子集词的概率**再归一化**，最后重新的概率分布中采样词汇。
 - 据说可以获得比Beam Search好很多的效果，但有个问题，就是这个**k不太好选**。
@@ -1407,11 +1532,76 @@ def top_k_sampling(model, input, max_length, k):
     return output
 ```
 
-#### 核采样（Nucleus sampling) —— Top-p采样
+`Top-k 采样`: “贪心策略”的优化
+- 从排名前 k 的 token 中抽样，允许分数/概率较高的token 有机会被选中。这种抽样带来的随机性有助于提高生成质量。
+- 每步只从概率最高的 k 个单词中进行随机采样，而不考虑其他低概率的单词。
+- 例如，如果 k=2，那么只从女孩、鞋子中选择一个单词，而不考虑大象、西瓜等其他单词。这样避免采样到一些不合适或不相关的单词，同时也可以保留一些有趣或有创意的单词。
+- ![](https://pic3.zhimg.com/80/v2-84999dc8b60cf679844f2a73b9c3d7e2_1440w.webp)
+- 通过调整 k 的大小，即可控制采样列表的大小。“`贪心策略`”其实就是 k = 1 的 `top-k 采样`。
+- ![](https://pic1.zhimg.com/80/v2-1a7e2450809497727140e44ca8932edc_1440w.webp)
+
+```py
+import torch
+from labml_nn.sampling import Sampler
+
+# Top-k Sampler
+class TopKSampler(Sampler):
+    # k is the number of tokens to pick
+    # sampler is the sampler to use for the top-k tokens
+    # sampler can be any sampler that takes a logits tensor as input and returns a token tensor; e.g. `TemperatureSampler`.
+    def __init__(self, k: int, sampler: Sampler):
+        self.k = k
+        self.sampler = sampler
+
+    # Sample from logits
+    def __call__(self, logits: torch.Tensor):
+        # New logits filled with −∞; i.e. zero probability
+        zeros = logits.new_ones(logits.shape) * float('-inf')
+        # Pick the largest k logits and their indices
+        values, indices = torch.topk(logits, self.k, dim=-1)
+        # Set the values of the top-k selected indices to actual logits.
+        # Logits of other tokens remain −∞
+        zeros.scatter_(-1, indices, values)
+        # Sample from the top-k logits with the specified sampler.
+        return self.sampler(zeros)
+```
+
+top-k 优点：
+- 根据不同输入文本**动态调整**候选单词的数量，而不是固定为 k 个。这是因为不同的输入文本可能会导致不同的概率分布，有些分布可能比较平坦，有些分布可能比较尖锐。如果分布比较平坦，那么前 k 个单词可能都有相近的概率，那么我们就可以从中进行随机采样；如果分布比较尖锐，那么前 k 个单词可能会占据绝大部分概率，那么我们就可以近似地进行贪心解码。
+- 通过调整 k 的大小来控制生成的**多样性和质量**。一般来说，k 越大，生成的多样性越高，但是生成的质量越低；k 越小，生成的质量越高，但是生成的多样性越低。因此，我们可以根据不同的任务和场景来选择合适的k 值。
+- 与其他解码策略**结合**使用，例如 温度调节（Temperature Scaling）、重复惩罚（Repetition Penalty）、长度惩罚（Length Penalty）等，来进一步优化生成的效果。
+
+但是 top-k 一些缺点：
+- 生成文本**不符合常识或逻辑**。
+  - top-k 采样只考虑了**单词概率**，而没有考虑单词之间的**语义和语法关系**。
+  - 例如，如果输入文本是“我喜欢吃”，那么即使饺子的概率最高，也不一定是最合适的选择，因为可能用户更喜欢吃其他食物。
+- 生成文本**过于简单或无聊**。
+  - top-k 采样只考虑了**概率最高的 k 个单词**，而没有考虑其他低概率但有意义或有创意的单词。
+  - 例如，如果输入文本是“我喜欢吃”，那么即使苹果、饺子和火锅都是合理的选择，也不一定是最有趣或最惊喜的选择，因为可能用户更喜欢吃一些特别或新奇的食物。
+
+通常会考虑 top-k 和其它策略结合，比如 top-p。
+
+#### Top-p采样 -- 核采样（Nucleus sampling) 
+
+top-k 有个缺陷
+- “k 值取多少是最优的？” 非常难确定。
+
+于是出现了**动态设置 token 候选列表大小策略**——即`核采样`（Nucleus Sampling）
 
 - 不再取一个固定的k，而是固定候选集合的概率密度和在整个概率分布中的比例
 - 选出来这个集合之后也和top-k采样一样，重新归一化集合内词的概率，并把集合外词的概率设为0。
 - 这种方式也称为top-p采样。
+
+top-p 采样思路
+- 每步只从累积概率超过某个阈值 p 的**最小单词集合**中随机采样，而不考虑其他低概率的单词。
+- 这种方法也被称为**核采样**（nucleus sampling），只关注概率分布的核心部分，而忽略了尾部部分。
+- 例如，如果 p=0.9，只从累积概率达到 0.9 的最小单词集合中选择一个单词，而不考虑其他累积概率小于 0.9 的单词。这样避免采样到一些不合适或不相关的单词，同时也可以保留一些有趣或有创意的单词。
+
+下图展示了 top-p 值为 0.9 的 Top-p 采样效果：
+- ![](https://pic1.zhimg.com/80/v2-d543614ab60a1f52b0001f1e90d9f16c_1440w.webp)
+
+top-p 值通常设置为比较高的值（如0.75），目的是限制低概率 token 的长尾。可同时使用 top-k 和 top-p。如果 k 和 p 同时启用，则 p 在 k 之后起作用。
+
 
 ```py
 def top_p_sampling(model, input, max_length, p):
@@ -1434,6 +1624,85 @@ def top_p_sampling(model, input, max_length, p):
     # 在生成完成后返回输出
     return output
 ```
+
+```py
+import torch
+from torch import nn
+
+from labml_nn.sampling import Sampler
+
+
+class NucleusSampler(Sampler):
+    """
+    ## Nucleus Sampler
+    """
+    def __init__(self, p: float, sampler: Sampler):
+        """
+        :param p: is the sum of probabilities of tokens to pick $p$
+        :param sampler: is the sampler to use for the selected tokens
+        """
+        self.p = p
+        self.sampler = sampler
+        # Softmax to compute $P(x_i | x_{1:i-1})$ from the logits
+        self.softmax = nn.Softmax(dim=-1)
+
+    def __call__(self, logits: torch.Tensor):
+        """
+        Sample from logits with Nucleus Sampling
+        """
+
+        # Get probabilities $P(x_i | x_{1:i-1})$
+        probs = self.softmax(logits)
+
+        # Sort probabilities in descending order
+        sorted_probs, indices = torch.sort(probs, dim=-1, descending=True)
+
+        # Get the cumulative sum of probabilities in the sorted order
+        cum_sum_probs = torch.cumsum(sorted_probs, dim=-1)
+
+        # Find the cumulative sums less than $p$.
+        nucleus = cum_sum_probs < self.p
+
+        # Prepend ones so that we add one token after the minimum number
+        # of tokens with cumulative probability less that $p$.
+        nucleus = torch.cat([nucleus.new_ones(nucleus.shape[:-1] + (1,)), nucleus[..., :-1]], dim=-1)
+
+        # Get log probabilities and mask out the non-nucleus
+        sorted_log_probs = torch.log(sorted_probs)
+        sorted_log_probs[~nucleus] = float('-inf')
+
+        # Sample from the sampler
+        sampled_sorted_indexes = self.sampler(sorted_log_probs)
+
+        # Get the actual indexes
+        res = indices.gather(-1, sampled_sorted_indexes.unsqueeze(-1))
+
+        #
+        return res.squeeze(-1)
+```
+
+
+#### 联合采样（top-k & top-p & Temperature）
+
+通常将 top-k、top-p、Temperature 联合使用。
+
+先后顺序: 
+- top-k -> top-p -> Temperature
+
+设置 top-k = 3，表示保留概率最高的3个 token。
+- 这样就会保留女孩、鞋子、大象这3个 token。
+-   女孩：0.664
+-   鞋子：0.199
+-   大象：0.105
+
+接下来使用 top-p 的方法，保留概率的累计和达到 0.8 的单词
+- 选取女孩和鞋子这两个 token。
+
+接着使用 Temperature = 0.7 进行归一化，变成：
+-   女孩：0.660
+-   鞋子：0.340
+
+接着，从上述分布中进行随机采样，选取一个单词作为最终的生成结果。
 
 
 #### 惩罚重复
