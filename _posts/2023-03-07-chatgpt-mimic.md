@@ -685,10 +685,12 @@ def predict(model_path):
 
 ② Rank score方法
 
-这种方法的区别在于：loss函数的设计。
-- 首先，为什么在InstructGPT中不采用上面的方法，原因在于给生成句子在打分时，不同标注人员的标准是不一样的，而且这个标准是很难进行统一的，这样会导致标注的数据评判标准不一样，即使每个标注人员的理解是一样的，但对于同一条文本给的分数也不一样的，因此在进行标注时需要把这个定量的问题转为一种更为简单的处理方法，采用排序来方法来进行数据标注可以在一定程度上解决这个问题。
+这种方法的区别在于：**loss函数的设计**。
+- 首先，为什么在 InstructGPT 中不采用上面方法? 原因在于给生成句子在打分时，<span style='color:red'>不同标注人员的标准不同</span>，而且这个标准是很难进行统一的，这样会导致标注的数据评判标准不一样，即使每个标注人员的理解是一样的，但对于同一条文本给的分数也不一样的，因此在进行标注时需要把这个定量的问题转为一种更为简单的处理方法，采用排序来方法来进行数据标注可以在一定程度上解决这个问题。
 - ![](https://pic1.zhimg.com/80/v2-92a39e17763405c7a55977880f520018_1440w.webp)
-- 标注员在使用直接打分(Direct Score)时，会由于主观意识的不同，对同一个文本出现不同的分值；而使用等级排序(Rank Level)来进行数据标注时，可以统一标注结果。
+- 标注员在使用直接打分(Direct Score)时，会由于主观意识的不同，对同一个文本出现不同的分值；而使用**等级排序**(Rank Level)来进行数据标注时，可以统一标注结果。
+
+
 
 数据是将每个Prompt生成的文本进行排序，最直接的方法就是最好的句子排在最前面，后面的句子以此类推。
 
@@ -736,7 +738,7 @@ class RankRewardModel(BertPreTrainedModel):
 ```
 
 Rank loss
-- Rank Score方法与Direct Score方法的最大不同之处在于loss function的设计
+- Rank Score 方法与 Direct Score方法的最大不同之处在于 loss function的设计
 
 ```py
 def rank_loss(rank_rewards_list):
@@ -754,6 +756,99 @@ def rank_loss(rank_rewards_list):
 通俗的理解：
 - 对于排序好的训练数据有 A > B > C 
 - 设计一个模型，使得打分数据满足： Rank(A) > Rank(B) > Rank(C)
+
+既然打「绝对分数」很难统一，那转换成一个「相对排序」
+- 「标注排序序列」替代「直接打分」
+- 用「相对任务」替代「绝对任务」能够更方便标注员打出统一的标注结果
+
+怎么通过「排序序列」来教会模型「打分」
+- 一个排好的序列：<span style='color:blue'> A > B > C >D </span>。 
+- 训练一个打分模型，模型给四句话打出来的分要满足 <span style='color:blue'> r(A) > r(B) > r(C) > r(D) </span>
+
+损失函数
+- 每对样本(如 A,B), 得分高者-得分低
+- sigmoid 归一, 概率化
+- 计算期望
+- 目标： 最大化得分差值
+
+$$
+\operatorname{loss}(\theta)=-\frac{1}{\left(\begin{array}{c}
+K \\ 2 \end{array}\right)} E_{\left(x, y_{w}, y_{l}\right) \sim D}\left[\log \left(\sigma\left(r_{\theta}\left(x, y_{w}\right)-r_{\theta}\left(x, y_{l}\right)\right)\right)\right]
+$$
+
+- loss = r(A) - r(B) + r(A) - r(C) + r(A) - r(D) + r(B) - r(C) + ... + r(C) - r(D)
+- loss = -loss
+
+```py
+class RewardModel(nn.Module):
+    # 奖励模型: encode 后直接加 全连接层
+    def __init__(self, encoder):
+        """
+        init func.
+        Args:
+            encoder (transformers.AutoModel): backbone, 默认使用 ernie 3.0
+        """
+        super().__init__()
+        self.encoder = encoder
+        self.reward_layer = nn.Linear(768, 1)  # reward layer 用于映射到 1 维 reward
+
+    def forward(
+        self,
+        input_ids: torch.tensor,
+        token_type_ids: torch.tensor,
+        attention_mask=None,
+        pos_ids=None,
+    ) -> torch.tensor:
+        """
+        forward 函数，返回每句话的得分值。
+        Args:
+            input_ids (torch.tensor): (batch, seq_len)
+            token_type_ids (torch.tensor): (batch, seq_len)
+            attention_mask (torch.tensor): (batch, seq_len)
+            pos_ids (torch.tensor): (batch, seq_len)
+        Returns:
+            reward: (batch, 1)
+        """
+        pooler_output = self.encoder(
+            input_ids=input_ids,
+            token_type_ids=token_type_ids,
+            position_ids=pos_ids,
+            attention_mask=attention_mask,
+        )["pooler_output"]                              # (batch, hidden_size)
+        reward = self.reward_layer(pooler_output)       # (batch, 1)
+        return reward
+
+def compute_rank_list_loss(rank_rewards_list: List[List[torch.tensor]], device='cpu') -> torch.Tensor:
+    """
+    通过给定的有序（从高到低）的ranklist的reward列表，计算rank loss。
+    所有排序高的句子的得分减去排序低的句子的得分差的总和，并取负。
+
+    Args:
+        rank_rewards_list (torch.tensor): 有序（从高到低）排序句子的reward列表，e.g. -> 
+                      [
+                          [torch.tensor([0.3588]), torch.tensor([0.2481]), ...],
+                          [torch.tensor([0.5343]), torch.tensor([0.2442]), ...],
+                          ...
+                      ]
+        device (str): 使用设备
+
+    Returns:
+        loss (torch.tensor): tensor([0.4891], grad_fn=<DivBackward0>)
+    """
+    if type(rank_rewards_list) != list:
+        raise TypeError(f'@param rank_rewards expected "list", received {type(rank_rewards)}.')
+
+    loss, add_count = torch.tensor([0]).to(device), 0
+    for rank_rewards in rank_rewards_list:
+        for i in range(len(rank_rewards)-1):  # 遍历所有前项-后项的得分差
+            for j in range(i+1, len(rank_rewards)):
+                diff = F.sigmoid(rank_rewards[i] - rank_rewards[j])  # sigmoid到0~1之间
+                loss = loss + diff
+                add_count += 1
+    loss = loss / add_count
+    return -loss  
+```
+
 
 训练过程
 
@@ -841,6 +936,15 @@ def predict(model_path):
     score = model(**data)
     return score
 ```
+
+
+#### 人工标注平台
+
+【2023-8-15】排序数据集 标注 参考：[RLHF](https://github.com/HarderThenHarder/transformers_tasks/tree/main/RLHF)
+- ![](https://github.com/HarderThenHarder/transformers_tasks/blob/main/RLHF/assets/rank_list_labler.png)
+
+
+
 
 ### （3）第三步 PPO
 
