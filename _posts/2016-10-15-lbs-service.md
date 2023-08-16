@@ -3,7 +3,7 @@ layout: post
 title:  "LBS 技术专题"
 date:   2016-10-15 10:30:00
 categories: 技术工具
-tags: 高德 gps geohash base64 gps 北斗 定位 gpx
+tags: 高德 gps geohash base64 gps 北斗 定位 gpx 节日 节假日
 author : 鹤啸九天
 excerpt: LBS 技术相关知识
 mathjax: true
@@ -277,6 +277,14 @@ GPS数据，得出以下具体信息：
 
 ### 时空挖掘
 
+
+【2023-8-16】节假日判断的api：
+- [holiday](https://github.com/Haoshenqi0123/holiday)
+
+```sh
+# get 方法
+http://api.haoshenqi.top/holiday?date=2023-10-05
+```
 
 #### 常驻点
 
@@ -857,7 +865,7 @@ geohash 服务模块需要对外提供的几个 API 整理如下：
 ### 定位轨迹数据
 
 如何获取自己的定位信息?
-- 旅游软件 **六只脚** app支持跟踪定位轨迹并导出数据(gpx格式)
+- 旅游软件 [六只脚](http://www.foooooot.com/) app支持跟踪定位轨迹并导出数据(gpx格式)
 
 gpx 格式提取
 
