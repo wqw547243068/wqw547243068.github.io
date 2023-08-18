@@ -587,7 +587,6 @@ print(g.latlng, g.city)
 
 #### Redis GEO
 
-
 Redis GEO 主要用于存储地理位置信息，并对存储的信息进行操作，该功能在 Redis 3.2 版本新增。
 
 Redis GEO 操作方法有：
@@ -601,97 +600,105 @@ Redis GEO 操作方法有：
 
 ```sh
 # 添加位置信息
-本机:0>geoadd user:location 121.48941  31.40527 'shagnhai'
-"1"
+geoadd user:location 121.48941  31.40527 'shagnhai'
 # 添加多个位置信息
-本机:0>geoadd user:location 121.47941 31.41527 'shanghai1'  121.47941 31.43527 'shagnhai2'  121.47941 31.40527 'shagnhai3'
-"3"
-
+geoadd user:location 121.47941 31.41527 'shanghai1'  121.47941 31.43527 'shagnhai2'  121.47941 31.40527 'shagnhai3'
 # 计算距离，单位有m km ft(英尺） mi(英里）
 # 计算两点间的距离，单位m
-本机:0>geodist user:location shanghai shanghai1 m
-"1462.1834"
+geodist user:location shanghai shanghai1 m # "1462.1834"
 # 千米：km
-本机:0>geodist user:location shanghai shanghai1 km
-"1.4622"
-
+geodist user:location shanghai shanghai1 km # "1.4622"
 # geohash 返回一个或多个位置元素的geohash，保存Redis中是用geohash位置52点整数编码
 # geohash 将二维经纬度转换成字符串，每个字符串代表一个矩形区域，该矩形区域内的经纬度点都共享一个相同的geohash字符串。
-本机:0>geohash user:location shanghai shanghai1
-1) "wtw6st1uuq0"
-2) "wtw6sqfx5q0"
-
+geohash user:location shanghai shanghai1
+# 1) "wtw6st1uuq0"
+# 2) "wtw6sqfx5q0"
 # geopos 从key里返回指定成员的位置信息
-本机:0>geopos user:location shanghai shanghai1
-1) 1) "121.48941010236740112"
-   2) "31.40526993848380499"
-
-2) 1) "121.47941082715988159"
-   2) "31.41526941345740198"
+geopos user:location shanghai shanghai1
+# 1) 1) "121.48941010236740112"
+#    2) "31.40526993848380499"
+# 
+# 2) 1) "121.47941082715988159"
+#    2) "31.41526941345740198"
 
 # georadius:给定经纬度为中心，返回键包含的位置元素中，与中心的距离不超过给定最大距离的所有位置元素
 # 范围单位：m km mi ft
 # withcoord:将位置元素的经纬度一并返回
-本机:0>georadius user:location 121.48941 31.40527 3000 m withcoord
-1) 1) "shagnhai3"
-   2) 1) "121.47941082715988159"
-      2) "31.40526993848380499"
-
-2) 1) "shanghai1"
-   2) 1) "121.47941082715988159"
-      2) "31.41526941345740198"
-
-3) 1) "shanghai"
-   2) 1) "121.48941010236740112"
-      2) "31.40526993848380499"
+georadius user:location 121.48941 31.40527 3000 m withcoord
+# 1) 1) "shagnhai3"
+#    2) 1) "121.47941082715988159"
+#       2) "31.40526993848380499"
+# 
+# 2) 1) "shanghai1"
+#    2) 1) "121.47941082715988159"
+#       2) "31.41526941345740198"
+# 
+# 3) 1) "shanghai"
+#    2) 1) "121.48941010236740112"
+#       2) "31.40526993848380499"
 # withdist:返回位置元素的同时，将位置元素与中心点间的距离一并返回
-本机:0>georadius user:location 121.48941 31.40527 3000 m withdist
-1) 1) "shagnhai3"
-   2) "949.2411"
-
-2) 1) "shanghai1"
-   2) "1462.1719"
-
-3) 1) "shanghai"
-   2) "0.0119"
+georadius user:location 121.48941 31.40527 3000 m withdist
+# 1) 1) "shagnhai3"
+#    2) "949.2411"
+# 
+# 2) 1) "shanghai1"
+#    2) "1462.1719"
+# 
+# 3) 1) "shanghai"
+#    2) "0.0119"
 
 # asc:根据中心位置，按照从近到远的方式返回位置元素
-本机:0>georadius user:location 121.48941 31.40527 3000 m withdist asc
-1) 1) "shanghai"
-   2) "0.0119"
-
-2) 1) "shagnhai3"
-   2) "949.2411"
-
-3) 1) "shanghai1"
-   2) "1462.1719"
+georadius user:location 121.48941 31.40527 3000 m withdist asc
+# 1) 1) "shanghai"
+#    2) "0.0119"
+# 
+# 2) 1) "shagnhai3"
+#    2) "949.2411"
+# 
+# 3) 1) "shanghai1"
+#    2) "1462.1719"
 
 # desc: 根据中心位置，按照从远到近的方式返回位置元素
-本机:0>georadius user:location 121.48941 31.40527 3000 m withdist desc
-1) 1) "shanghai1"
-   2) "1462.1719"
-
-2) 1) "shagnhai3"
-   2) "949.2411"
-
-3) 1) "shanghai"
-   2) "0.0119"
+georadius user:location 121.48941 31.40527 3000 m withdist desc
+# 1) 1) "shanghai1"
+#    2) "1462.1719"
+# 
+# 2) 1) "shagnhai3"
+#    2) "949.2411"
+# 
+# 3) 1) "shanghai"
+#    2) "0.0119"
 
 # count：获取指定数量的元素
-本机:0>georadius user:location 121.48941 31.40527 3000 m withdist desc count 2
-1) 1) "shanghai1"
-   2) "1462.1719"
-2) 1) "shagnhai3"
-   2) "949.2411"
+georadius user:location 121.48941 31.40527 3000 m withdist desc count 2
+# 1) 1) "shanghai1"
+#    2) "1462.1719"
+# 2) 1) "shagnhai3"
+#    2) "949.2411"
 
 # georadiusbymember:和georadius命令类似，都可以找出指定位置范围内的元素，但是georadiusbymember的中心点是由给定位置元素决定的，而不像georadius使用经纬度决定中心点
-本机:0>georadiusbymember user:location shanghai 3 km 
-1) "shagnhai3"
-2) "shanghai1"
-3) "shanghai"
-
+georadiusbymember user:location shanghai 3 km 
+# 1) "shagnhai3"
+# 2) "shanghai1"
+# 3) "shanghai"
 ```
 
+
+Python连接Redis
+
+```py
+import redis   # 导入redis 模块
+#r = redis.StrictRedis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)  
+# 连接池 
+pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True) # 连接池
+r = redis.Redis(connection_pool=pool)
+# 设置值
+r.set('name', 'runoob')  # 设置 name 对应的值
+print(r['name'])
+print(r.get('name'))  # 取出键 name 对应的值
+print(type(r.get('name')))  # 查看类型
+```
 
 ### GeoHash 
 
