@@ -588,26 +588,40 @@ print(g.latlng, g.city)
 #### Redis GEO
 
 Redis GEO 主要用于存储地理位置信息，并对存储的信息进行操作，该功能在 Redis 3.2 版本新增。
+- GEO 本质上是基于 ZSet 实现
 
-Redis GEO 操作方法有：
+Redis GEO 操作方法有：[geospatial官方](https://redis.io/docs/data-types/geospatial/), [geo方法](https://redis.io/commands/?group=geo)
 - geoadd：添加地理位置的坐标。
 - geopos：获取地理位置的坐标。
-- geodist：计算两个位置之间的距离。
-- georadius：根据用户给定的经纬度坐标来获取指定范围内的地理位置集合。
-- georadiusbymember：根据储存在位置集合里面的某个地点获取指定范围内的地理位置集合。
+- `geodist`：计算两个位置之间的距离。
+- `georadius`：根据用户给定的经纬度坐标来获取指定范围内的地理位置集合。
+- `georadiusbymember`：根据储存在位置集合里面的某个地点获取指定范围内的地理位置集合。
 - geohash：返回一个或多个位置对象的 geohash 值。
+- geosearch: 
 
+georadius、georadiusbymember
+- georadius 以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素。
+- georadiusbymember 和 GEORADIUS 命令一样， 都可以找出位于指定范围内的元素， 但是 georadiusbymember 的中心点是由给定的位置元素决定的， 而不是使用经度和纬度来决定中心点。
+
+
+详情：
 
 ```sh
+redis-cli 
+redis-cli --raw # UTF8 中文显示
+
+# key 为 user:location
 # 添加位置信息
 geoadd user:location 121.48941  31.40527 'shagnhai'
 # 添加多个位置信息
 geoadd user:location 121.47941 31.41527 'shanghai1'  121.47941 31.43527 'shagnhai2'  121.47941 31.40527 'shagnhai3'
-# 计算距离，单位有m km ft(英尺） mi(英里）
+# ----- 计算距离 ------
+# 单位有m km ft(英尺） mi(英里）
 # 计算两点间的距离，单位m
 geodist user:location shanghai shanghai1 m # "1462.1834"
 # 千米：km
 geodist user:location shanghai shanghai1 km # "1.4622"
+# ----- 计算geohash ------
 # geohash 返回一个或多个位置元素的geohash，保存Redis中是用geohash位置52点整数编码
 # geohash 将二维经纬度转换成字符串，每个字符串代表一个矩形区域，该矩形区域内的经纬度点都共享一个相同的geohash字符串。
 geohash user:location shanghai shanghai1
@@ -620,7 +634,12 @@ geopos user:location shanghai shanghai1
 # 
 # 2) 1) "121.47941082715988159"
 #    2) "31.41526941345740198"
-
+# ----- 删除 ------
+zrem site xiaoming
+# ----- hash ------
+geohash site tianan
+# 1) "wx4g0cgp000"
+# ----- 附近查询 ------
 # georadius:给定经纬度为中心，返回键包含的位置元素中，与中心的距离不超过给定最大距离的所有位置元素
 # 范围单位：m km mi ft
 # withcoord:将位置元素的经纬度一并返回
@@ -628,14 +647,17 @@ georadius user:location 121.48941 31.40527 3000 m withcoord
 # 1) 1) "shagnhai3"
 #    2) 1) "121.47941082715988159"
 #       2) "31.40526993848380499"
-# 
 # 2) 1) "shanghai1"
 #    2) 1) "121.47941082715988159"
 #       2) "31.41526941345740198"
-# 
 # 3) 1) "shanghai"
 #    2) 1) "121.48941010236740112"
 #       2) "31.40526993848380499"
+georadius site 116.405419 39.913164 5 km withhash
+# 1) 1) "tianan"
+#    2) (integer) 4069885552230465
+# 2) 1) "yuetan"
+#    2) (integer) 4069879797297521
 # withdist:返回位置元素的同时，将位置元素与中心点间的距离一并返回
 georadius user:location 121.48941 31.40527 3000 m withdist
 # 1) 1) "shagnhai3"
@@ -646,41 +668,57 @@ georadius user:location 121.48941 31.40527 3000 m withdist
 # 
 # 3) 1) "shanghai"
 #    2) "0.0119"
-
+# 指定返回满足条件位置的个数
+georadius site 116.405419 39.913164 5 km count 1
+# 1) "tianan"
+# 排序
+georadius site 116.405419 39.913164 5 km desc
+# 1) "yuetan"
+# 2) "tianan"
+georadius site 116.405419 39.913164 5 km asc
+# 1) "tianan"
+# 2) "yuetan"
+georadius site 116.405419 39.913164 5 km withdist desc
+# 1) 1) "yuetan"
+#    2) "4.0100"
+# 2) 1) "tianan"
+#    2) "0.0981"
 # asc:根据中心位置，按照从近到远的方式返回位置元素
 georadius user:location 121.48941 31.40527 3000 m withdist asc
 # 1) 1) "shanghai"
 #    2) "0.0119"
-# 
 # 2) 1) "shagnhai3"
 #    2) "949.2411"
-# 
 # 3) 1) "shanghai1"
 #    2) "1462.1719"
-
 # desc: 根据中心位置，按照从远到近的方式返回位置元素
 georadius user:location 121.48941 31.40527 3000 m withdist desc
 # 1) 1) "shanghai1"
 #    2) "1462.1719"
-# 
 # 2) 1) "shagnhai3"
 #    2) "949.2411"
-# 
 # 3) 1) "shanghai"
 #    2) "0.0119"
-
 # count：获取指定数量的元素
 georadius user:location 121.48941 31.40527 3000 m withdist desc count 2
 # 1) 1) "shanghai1"
 #    2) "1462.1719"
 # 2) 1) "shagnhai3"
 #    2) "949.2411"
-
+# ----- 附近搜索: 位置元素为中心 ------
 # georadiusbymember:和georadius命令类似，都可以找出指定位置范围内的元素，但是georadiusbymember的中心点是由给定位置元素决定的，而不像georadius使用经纬度决定中心点
 georadiusbymember user:location shanghai 3 km 
 # 1) "shagnhai3"
 # 2) "shanghai1"
 # 3) "shanghai"
+# 替代  GEORADIUS and GEORADIUSBYMEMBER
+GEOSEARCH Sicily FROMLONLAT 15 37 BYRADIUS 200 km ASC
+# 1) "Catania"
+# 2) "Palermo"
+GEOSEARCH Sicily FROMLONLAT 15 37 BYBOX 400 400 km ASC WITHCOORD WITHDIST
+# 存储结果
+GEOSEARCHSTORE key1 Sicily FROMLONLAT 15 37 BYBOX 400 400 km ASC COUNT 3
+GEOSEARCHSTORE key2 Sicily FROMLONLAT 15 37 BYBOX 400 400 km ASC COUNT 3 STOREDIST
 ```
 
 
@@ -698,6 +736,70 @@ r.set('name', 'runoob')  # 设置 name 对应的值
 print(r['name'])
 print(r.get('name'))  # 取出键 name 对应的值
 print(type(r.get('name')))  # 查看类型
+# ----------------
+import redis
+
+r = redis.Redis(decode_responses=True)
+
+res1 = r.geoadd("bikes:rentable", [-122.27652, 37.805186, "station:1"])
+print(res1)  # >>> 1
+
+res4 = r.geosearch(
+    "bikes:rentable",
+    longitude=-122.27652,
+    latitude=37.805186,
+    radius=5,
+    unit="km",
+)
+print(res4)  # >>> ['station:1', 'station:2', 'station:3']
+
+# 批量
+cities = [('Rumilly', 5.9428591, 45.8676254), ('Sallanches', 6.6302551, 45.9361246)]
+for city in cities : #For each city
+    # GEOADD key longitude latitude member
+    # key [latitude, longitude, name]
+    r.geoadd("cities", city[2], city[1], city[0])
+# 附近搜
+r.georadiusbymember("cities", "Annecy", 6, unit="km") # [b'Annecy', b'Metz-Tessy', b'Argonay', b'Veyrier-du-Lac', b'Sevrier']
+
+
+```
+
+示例
+
+```py
+from redis import StrictRedis
+ 
+resid_cli = StrictRedis(host="", port=xx, password="xx", db=xx, decode_responses=True)
+
+# geoadd：添加地理位置（可以添加多个，模型是zset）
+# key值 经度 纬度 名称
+resid_cli.geoadd("beijing", 116.403963, 39.915119, "tiananmen", 116.403414, 39.924091, "gugong", 116.419342, 39.888663, "tiantan")
+tian = resid_cli.zrange("beijing", 0, -1)
+print(tian)
+# geopos：查询位置信息
+# key值 名称
+pos = resid_cli.geopos("beijing", "tiananmen", "gugong", "tiantan")
+print(pos)
+# geodist：距离统计(单位默认为米)
+# key值 两个位置名称 距离单位（默认为m）
+juli = resid_cli.geodist("beijing", "tiananmen", "gugong", "km")
+print(juli)
+# georadius：查询距离某个位置指定直径范围内的点
+# key值 经度 纬度 距离值 单位
+other = resid_cli.georadius("beijing", 116.403963, 39.915119, 1, "m")
+print(other)
+ 
+# geohash：查询位置的哈希值
+# key值 具体位置的名称
+pos_hash = resid_cli.geohash("beijing", "tiananmen", "gugong")
+print(pos_hash)
+# zrem：删除地理位置
+# key值 具体位置的名称
+resid_cli.zrem("beijing", "tiananmen", "tiantan")
+tian = resid_cli.zrange("beijing", 0, -1)
+print(tian)
+
 ```
 
 ### GeoHash 
