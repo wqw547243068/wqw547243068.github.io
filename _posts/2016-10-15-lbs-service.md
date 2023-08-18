@@ -493,9 +493,14 @@ TransBigData主要提供以下方法：
 - 一个手机用户在观测时间段内每一天的活动情况，横坐标为日期，纵坐标为时间，同一个位置的活动则以同样的颜色显示。从活动图中我们可以很清晰地看到这个用户每一个活动的开始与结束时间。
 
 
-### geo
+### GEO
 
-地理位置查询功能 geo,全称 geospatial 
+地理位置查询功能 GEO, 全称 geospatial 
+- `地理编码` (Geocoding)是一个街道、地址或者其他位置（经度、纬度）转化为**坐标**的过程。
+- `反向地理编码` (Reverse geocoding)是将**坐标**转换为**地址**（经度、纬度）的过程。
+
+一组反向地理编码结果间可能会有所差异。例如：一个结果可能包含最临近建筑的完整街道地址，而另一个可能只包含城市名称和邮政编码。
+
 
 #### GEO 场景
 
@@ -505,6 +510,79 @@ TransBigData主要提供以下方法：
 - 配送服务：通过获取配送地址的经纬度信息，可以找到距离最近的配送员或仓库，并对订单进行分配。
 - 地址查找：在地图应用中，可以通过Redis GEO快速查询某个地址周围的商家或服务设施。
 - 动态信息：在滴滴、Uber等打车应用中，可以实时更新车辆的位置信息，以提供更加准确的车辆推荐和路线规划服务
+
+
+#### Python GEO
+
+用Google或Bing提供的geocoding服务，获取标准化的地理坐标等结构化信息
+
+直接使用requests请求地图api
+
+```py
+# 用Google或Bing提供的geocoding服务，获取标准化的地理坐标等结构化信息
+import requests
+url = 'https://maps.googleapis.com/maps/api/geocode/json'
+params = {'sensor': 'false', 'address': 'Mountain View, CA'}
+r = requests.get(url, params=params)
+results = r.json()['results']
+if results:
+    location = results[0]['geometry']['location']
+    print(location['lat'], location['lng'])
+else:
+    print('结果为空')
+```
+
+工具包
+- [geocoder](https://github.com/DenisCarriere/geocoder), [文档](https://geocoder.readthedocs.org/)
+
+| Provider 服务提供商 | Optimal 范围 | Usage Policy |
+| [ArcGIS](http://geocoder.readthedocs.org/providers/ArcGIS.html) | World | |
+| [Baidu](http://geocoder.readthedocs.org/providers/Baidu.html) | China | API key |
+| [Bing](http://geocoder.readthedocs.org/providers/Bing.html) | World | API key |
+| [CanadaPost](http://geocoder.readthedocs.org/providers/CanadaPost.html) | Canada | API key |
+| [FreeGeoIP](http://geocoder.readthedocs.org/providers/FreeGeoIP.html) | World | |
+| [Geocoder.ca](http://geocoder.readthedocs.org/providers/Geocoder-ca.html) | CA & US | Rate Limit |
+| [GeocodeFarm](https://geocode.farm/) | World | [Policy](https://geocode.farm/geocoding/free-api-documentation/)|
+| [GeoNames](http://geocoder.readthedocs.org/providers/GeoNames.html) | World | Username |
+| [GeoOttawa](http://geocoder.readthedocs.org/providers/GeoOttawa.html) | Ottawa | | 
+| [Google](http://geocoder.readthedocs.org/providers/Google.html) | World | Rate Limit, [Policy](https://developers.google.com/maps/documentation/geocoding/usage-limits)|
+| [HERE](http://geocoder.readthedocs.org/providers/HERE.html) | World | API key |
+| [IPInfo](http://geocoder.readthedocs.org/providers/IPInfo.html) | World | |
+| [Mapbox](http://geocoder.readthedocs.org/providers/Mapbox.html) | World | API key | 
+| [MapQuest](http://geocoder.readthedocs.org/providers/MapQuest.html) | World | API key |
+| [Mapzen](http://geocoder.readthedocs.org/providers/Mapzen.html) | World | API key | 
+| [MaxMind](http://geocoder.readthedocs.org/providers/MaxMind.html) | World | |
+| [OpenCage](http://geocoder.readthedocs.org/providers/OpenCage.html) | World | API key|
+| [OpenStreetMap](http://geocoder.readthedocs.org/providers/OpenStreetMap.html) | World | [Policy](https://wiki.openstreetmap.org/wiki/Nominatim_usage_policy)|
+| [Tamu](http://geoservices.tamu.edu/Services/Geocode/WebService/) | US | API key |
+| [TomTom](http://geocoder.readthedocs.org/providers/TomTom.html) | World | API key | 
+| [What3Words](http://geocoder.readthedocs.org/providers/What3Words.html) | World | API key|
+| [Yahoo](http://geocoder.readthedocs.org/providers/Yahoo.html) | World | |
+| [Yandex](http://geocoder.readthedocs.org/providers/Yandex.html) | Russia | |
+| [TGOS](http://geocoder.readthedocs.org/providers/TGOS.html) | Taiwan ||
+
+
+```py
+#!pip install geocoder
+import geocoder
+# (1) 地理编码  GEO Forward
+g = geocoder.google("1403 Washington Ave, New Orleans, LA 70130")
+print('geo结果, 国外: ', g.latlng)
+# 换成 arcgis服务
+g = geocoder.arcgis(u"北京市海淀区上地十街10号")
+print('ArcGIS, 国内: ', g.latlng, g.geojson)
+print(g.json, g.wkt, g.osm)
+# (2) 逆地理编码 GEO Reverse
+g = geocoder.google([29.9287839, -90.08421849999999], method='reverse')
+print('Google: ', g, g.address, g.city, g.state, g.country)
+g = geocoder.arcgis([29.9287839, -90.08421849999999], method='reverse')
+print('ArcGIS: ',g, g.address, g.city, g.state, g.country)
+# ------ ip ------
+g = geocoder.ip('199.7.157.0')
+print(g.latlng, g.city)
+g = geocoder.ip('me')
+print(g.latlng, g.city)
+```
 
 
 #### Redis GEO
