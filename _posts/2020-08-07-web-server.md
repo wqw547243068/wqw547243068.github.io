@@ -5365,6 +5365,39 @@ document.getElementsByClassName('box')[0].style.background = 'red';
 
 ```
 
+
+### js 采坑
+
+
+#### string format
+
+【2023-8-21】[JavaScript: 如何使用 format 格式化字符串](https://www.cnblogs.com/soymilk2019/p/15388984.html)
+- 把 js里的format当做python使用，出现隐藏问题: 字符串顺序混乱
+- 实测: 方法1 管用
+
+```js
+// format 有bug： 
+// 比如 '{0} {1}'.format('{1}', '{0}') 的结果是 {0} {1}，和预期的 {1} {0} 不一致。
+var s = '你好 {0} {1}'.format('value1', 123)
+// ----- 解决1 ------
+// 使用 ES6
+var name = 'letian'
+var s = `Hello ${name}`
+console.log(s)
+// ----- 解决2 ------
+// String 原型中增加 format 函数
+String.prototype.format = function() {
+    var formatted = this;
+    for( var arg in arguments ) {
+        formatted = formatted.replace("{" + arg + "}", arguments[arg]);
+    }
+    return formatted;
+};
+
+var s = '你好 {0} {1}'.formar('value1', 123)
+console.log(s)
+```
+
 ### JavaScript 框架（库）
 
 前端三大框架：Angular、React、Vue
