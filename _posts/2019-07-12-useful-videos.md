@@ -21,11 +21,11 @@ permalink: /resource
 
 【2022-1-29】北京风景、城市风貌缩影，[摄影师眼中最好的北京](https://www.bilibili.com/video/BV1Nb411q7JR)
 
-<iframe src="//player.bilibili.com/player.html?aid=45430348&bvid=BV1Nb411q7JR&cid=79543443&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=45430348&bvid=BV1Nb411q7JR&cid=79543443&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 [《品味北京》250秒带你领略4K震撼帝都](https://www.bilibili.com/video/BV164411p79V/)
 
-<iframe src="//player.bilibili.com/player.html?aid=53769402&bvid=BV164411p79V&cid=94054501&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=53769402&bvid=BV164411p79V&cid=94054501&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 自制视频
@@ -43,15 +43,15 @@ permalink: /resource
 - 【2019-12-2】[不负此生](https://www.bilibili.com/video/av40885499)，愿你不辜负自己.
    - 人生不过三万天，你要怎样度过这一生。希望你回望过往，依然能够心怀壮阔，愿你能不负此生、莫负自己。
 
-<iframe src="//player.bilibili.com/player.html?aid=40885499&cid=71807757&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=40885499&cid=71807757&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [别懒惰久了，努力一下便以为是拼命?](https://www.bilibili.com/video/av46644313)
 
-<iframe src="//player.bilibili.com/player.html?aid=46644313&cid=81710824&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=46644313&cid=81710824&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-1-11】[请不要浪费宝贵的时间](https://www.bilibili.com/video/av81499701)
 
-<iframe src="//player.bilibili.com/player.html?aid=81499701&cid=139469096&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=81499701&cid=139469096&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2021-12-18】[No excuse](https://www.bilibili.com/video/BV1Cg4y187uN)
 - 超燃励志-[精神氮泵——健身减肥必听](https://www.bilibili.com/audio/am31119050?type=6)
@@ -64,7 +64,7 @@ permalink: /resource
   7. 07-即刻改变-TIME TO CHANGE  南星大叔 04:02
   8. 08-严于律己-Disciplined  南星大叔 03:23
   9. 09-执迷不悔-OBSESSION  南星大叔 03:15
-- <iframe src="//player.bilibili.com/player.html?aid=837773988&bvid=BV1Cg4y187uN&cid=181357145&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=837773988&bvid=BV1Cg4y187uN&cid=181357145&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ```shell
 # 《拒绝借口》
@@ -188,16 +188,16 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 - [重度抑郁肥宅的自我救赎之路](https://www.bilibili.com/video/BV1xr4y1A7u5/?spm_id_from=333.788.video.desc.click)
 - 《[绝望之时](https://www.bilibili.com/video/BV16V411C7G3/?spm_id_from=333.788.video.desc.click)》
-- <iframe src="//player.bilibili.com/player.html?aid=413318212&bvid=BV16V411C7G3&cid=195045325&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=413318212&bvid=BV16V411C7G3&cid=195045325&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 《[志在必得](https://www.bilibili.com/video/BV1nA411Y7Ha/?spm_id_from=333.788.video.desc.click)》
-- <iframe src="//player.bilibili.com/player.html?aid=329071674&bvid=BV1nA411Y7Ha&cid=217385110&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=329071674&bvid=BV1nA411Y7Ha&cid=217385110&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 思维哲学
 
 ### 知行合一-王阳明
 - [90分钟看完《知行合一王阳明》观传奇人生是怎样炼成的！](https://www.365yg.com/a6679033057569145357#mid=1626597192389645)，[B站](https://www.bilibili.com/video/av19156453?from=search&seid=318296673017896441)
 
-<iframe src="//player.bilibili.com/player.html?aid=19156453&cid=31366860&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=19156453&cid=31366860&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 宗教
 
@@ -257,7 +257,7 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
    该片讲了一个黑色寓言。每到晚餐时间，“系统”就开始如一台上了油的机器般运作。这台机器只负责一小撮人不饿肚子。这些人瓜分了所有资源，而剩下的大多数则饥弱不堪，嗷嗷待哺。最终，资源会耗尽，饥饿的人眼睛发绿，一场风暴在所难免。但让人遗憾的是，变革带来的并不是希望，而是永恒的轮回。
 
-<iframe src="//player.bilibili.com/player.html?aid=31614877&bvid=BV1SW411C7JZ&cid=55282695&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=31614877&bvid=BV1SW411C7JZ&cid=55282695&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 - V字仇杀队，[在线观看](http://www.caomintv.com/dianying/play/45147-1-1.html)
@@ -269,26 +269,26 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 - [富爸爸 罗伯特·清崎【2019】你有没有被教育成穷人(中英字幕)](https://www.bilibili.com/video/av59164780/?spm_id_from=333.788.videocard.4)
 
-<iframe src="//player.bilibili.com/player.html?aid=59164780&cid=103116268&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=59164780&cid=103116268&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-08-09】反应社会阶级差距的纪录片
 - [56up](https://www.bilibili.com/video/av25446605?from=search&seid=17957810370452180618)，又称人生七年
 
-<iframe src="//player.bilibili.com/player.html?aid=25446605&cid=43196158&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=25446605&cid=43196158&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - BBC Why Poverty.[为什么穷系列纪录片](https://www.youtube.com/watch?v=jRXqdSG4XWQ&list=PLJqVTGbqn7eyF4oVL8Nbg7l8IOKuaciAI), 2012
 - 穷富翁大作战,[第一季](https://www.bilibili.com/video/av2884835?from=search&seid=930398290238770510), [第二季](https://www.bilibili.com/video/av12560324)
    
-<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 国产，郑琼的[出路](https://www.bilibili.com/video/av31131429)，导演用6年时间跟拍了3个不同阶层孩子在社会上的挣扎。在弱肉强食的社会法则面前，孩子教育的决定性因素不是学区房，而是父母的言传身教。[正片](https://www.youtube.com/watch?v=H3Zk1WKc87M)
 
-<iframe src="//player.bilibili.com/player.html?aid=31131429&cid=54380597&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=31131429&cid=54380597&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 人间世,[爱奇艺](https://www.iqiyi.com/v_19rrm476o8.html) 
    
 - [子非鱼](https://www.bilibili.com/video/av39716374/)
 
-<iframe src="//player.bilibili.com/player.html?aid=39716374&cid=69770039&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=39716374&cid=69770039&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 2016年出品的纪录片，《[谈婚论嫁](https://www.bilibili.com/bangumi/play/ep151089)》，国内首部80后情感纪录片。15对主人公跟踪拍摄，100对夫妻真情访谈，425天生活真实记录。全片共5集，每集24分钟，从剩女相亲到裸婚闪婚，从异地长跑到跨国网恋，从走上红毯到生死相依，记录他们的故事，分享婚姻的智慧
 
@@ -330,13 +330,13 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
       - * 对不同观点的包容，才能发现自己看不见的问题，不是盲目听信
    - 8.奋力拼搏
    - 中文版
-<iframe src="//player.bilibili.com/player.html?aid=46828896&bvid=BV1Ab411J73x&cid=82024398&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=46828896&bvid=BV1Ab411J73x&cid=82024398&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
    - 英文版
-<iframe src="//player.bilibili.com/player.html?aid=50084312&bvid=BV1Yb411371J&cid=87672654&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=50084312&bvid=BV1Yb411371J&cid=87672654&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [承认吧，人生来就是孤独的](https://www.365yg.com/a6641087299998188035#mid=5543467706)，[B站](https://www.bilibili.com/video/av39370474?from=search&seid=8373277070703221652)
 
-<iframe src="//player.bilibili.com/player.html?aid=39370474&cid=69181558&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=39370474&cid=69181558&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 网易云课堂，作者在TED的演讲：拖延症，文字版，[拖延症解析](https://wqw547243068.github.io/2019/06/26/why-delay)
 
@@ -348,15 +348,15 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 - [哈佛大学公开课：幸福课23集全, B站地址](https://www.bilibili.com/video/av3404845?from=search&seid=11825973534163108832)
 
-<iframe src="//player.bilibili.com/player.html?aid=3404845&cid=5396573&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=3404845&cid=5396573&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 - Powers of Ten (1977), [十的力量](https://www.bilibili.com/video/av8816645)，直观感受自己的渺小，
 
-<iframe src="//player.bilibili.com/player.html?aid=8816645&cid=14544558&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=8816645&cid=14544558&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 - 宇宙到底有多大？从普朗克长度到宇宙的大小，横跨60个零的冒险
 
-<iframe src="//player.bilibili.com/player.html?aid=12826240&cid=21080276&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=12826240&cid=21080276&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 - [从一维空间到十维空间，你看得懂吗？](https://www.bilibili.com/video/av2894797)
    - 系列纪录片[形象展示-让你理解四维至十维空间](https://www.bilibili.com/video/av18357374/?p=1)
@@ -377,7 +377,7 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 因为十维已经是“穷尽所有可能性”了，所以无法找到另一个十维的点，连成线了。所以无法继续循环。所谓的十二维度，是将“零维”算进去，并且将视频里八维的“线”和“面”分成两个维度（七：点，七点五：线，八：面）。
 
-<iframe src="//player.bilibili.com/player.html?aid=2894797&cid=4523684&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=2894797&cid=4523684&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 - 【2021-3-23】黄建新和杨亚洲导演的 《都市三部曲》，背靠背脸对脸，红灯停绿灯行，站直喽别趴下。建议成年人都看看，当年文化真的开放，以后很难还可以拍出这种电影了
   - 背靠背，脸靠脸-[解说](https://www.ixigua.com/6942535581553394207)，副馆长的官场生存主题
@@ -393,22 +393,22 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 - [银行与货币系统真相](https://v.qq.com/x/page/h0128ecsb8f.html)，[B站](https://www.bilibili.com/video/av34885331?from=search&seid=866506507557189883)
 
-<iframe src="//player.bilibili.com/player.html?aid=34885331&cid=61111234&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=34885331&cid=61111234&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2018-11-25】万维财经经济学视频[系列](https://www.365yg.com/c/user/51414569980/),覆盖经济规律、通货膨胀、货币等，通俗易懂，如：[经济机器是怎样运行的](http://www.365yg.com/i6617283549709992455/#mid=51415239994)
 - 【2019-03-07】2008年金融危机的电影[大空头](https://www.365yg.com/a6624281300087865859#mid=1556765139678210)
 
 - 华尔街-9集，[B站](hhttps://www.bilibili.com/video/av3571976)
-<iframe src="//player.bilibili.com/player.html?aid=3571976&cid=5695381&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=3571976&cid=5695381&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 比特币：所谓的货币终结（2015）【全】,[B站](https://www.bilibili.com/video/av30760224)
-<iframe src="//player.bilibili.com/player.html?aid=30760224&cid=53698092&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=30760224&cid=53698092&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 科学
 
 - 【2019-09-28】[觉者：梁冬对话华大基因CEO尹烨](https://www.bilibili.com/video/av19676456),[科学的尽头是神学！梁冬对话尹哗！](https://www.ixigua.com/i6741324581925028355/)
 
-<iframe src="//player.bilibili.com/player.html?aid=19676456&cid=32083799&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=19676456&cid=32083799&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2018--3-17】美丽心灵（博弈论创始人，纳什）+ [万物理论](https://pan.baidu.com/s/1HdrJpd-OXp371A8m9PI_Eg)(霍金)
 - 【2018-12-16】印度拉马努金传记[知无涯者](https://www.iqiyi.com/v_19rra55zk8.html?vfm=2008_aldbd)，Will Hunting [心灵捕手](https://www.bilibili.com/video/av22771407?from=search&seid=2102098560566397389)
@@ -416,22 +416,22 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 - 【2020-5-29】纪念艾伦图灵的电影《模仿游戏》
 ![](https://img-blog.csdn.net/2018061821395310)
    - [《模仿游戏》人工智能之父阿兰图灵的一生](https://www.bilibili.com/video/BV1fW411F7AM)
-<iframe src="//player.bilibili.com/player.html?aid=25026545&bvid=BV1fW411F7AM&cid=42296927&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=25026545&bvid=BV1fW411F7AM&cid=42296927&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 数学
 
 - 【2019-07-31】三棕一蓝产品-[线性代数本质](https://www.bilibili.com/video/av6731067/)
 
-<iframe src="//player.bilibili.com/player.html?aid=6731067&cid=8503492&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=6731067&cid=8503492&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-07-31】三棕一蓝产品-[微积分本质](https://www.bilibili.com/video/av24325548)
 
-<iframe src="//player.bilibili.com/player.html?aid=24325548&cid=8503492&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=24325548&cid=8503492&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-12-29】[数学纪录片《维度：数学漫步》完整版](https://www.bilibili.com/video/av69814313)，声音小，字幕小，[分集版本](https://www.bilibili.com/video/av13970195)效果更好, [官方网站](http://www.dimensions-math.org/Dim_ZH_si.htm)
 
-<iframe src="//player.bilibili.com/player.html?aid=13970195&cid=22819169&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=13970195&cid=22819169&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-3-16】顶级数学纪录片：[神秘的混沌理论](https://weibo.com/tv/v/IyPMu7Zjj?fid=1034:4482698111025163)
 
@@ -447,22 +447,22 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 ### 行业观察
 
 - 互联网时代-10集纪录片，[B站](https://www.bilibili.com/video/av1502036)
-<iframe src="//player.bilibili.com/player.html?aid=1502036&cid=2238549&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=1502036&cid=2238549&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 大数据时代-5集纪录片,[B站](https://www.bilibili.com/video/av57503095?from=search&seid=1412904549370473421)
-<iframe src="//player.bilibili.com/player.html?aid=57503095&cid=100384260&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=57503095&cid=100384260&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [超级工程](https://www.bilibili.com/video/av26722471?from=search&seid=6411515736557949839)，14集纪录片
-<iframe src="//player.bilibili.com/player.html?aid=26722471&cid=45968926&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=26722471&cid=45968926&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 大公司
 
 - 【2019-07-26】阿里纪录片，[扬子江大鳄](https://www.bilibili.com/video/av10740662/)
-<iframe src="//player.bilibili.com/player.html?aid=10740662&cid=17720293&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=10740662&cid=17720293&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 马云和永远的阿里：Dream maker
-<iframe src="//player.bilibili.com/player.html?aid=5232102&cid=8503492&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=5232102&cid=8503492&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [【拳头说书】40分钟看完《乔布斯传》全集，非同凡响创造未来！](https://www.bilibili.com/video/av21314961)
 
-<iframe src="//player.bilibili.com/player.html?aid=21314961&cid=35034995&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=21314961&cid=35034995&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 科幻
@@ -491,22 +491,22 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 - 【2021-3-8】国产人工智能电视剧：《[你好！安怡](http://www.kuyv.cn/tv/nihaoanyi/)》，2021年2月19日；原名完美芯机人，2020-05-07
 - [【拳头说书】9分钟解读刘慈欣《流浪地球》原著](https://www.bilibili.com/video/av41214971)
 
-<iframe src="//player.bilibili.com/player.html?aid=41214971&cid=72388155&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=41214971&cid=72388155&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-11-16】[人体快递](https://www.bilibili.com/video/av74217681)
 
-<iframe src="//player.bilibili.com/player.html?aid=74217681&cid=126964575&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=74217681&cid=126964575&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 健康
 
 - [健身的真相](https://www.bilibili.com/bangumi/play/ep260720/)
 - [5个动作，让你在四周内塑造出美好身形](https://www.bilibili.com/video/av81484854)
-<iframe src="//player.bilibili.com/player.html?aid=81484854&cid=139443453&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=81484854&cid=139443453&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-09-15】[急诊室故事两季全（共36集）](https://www.bilibili.com/video/av28138937)
 
-<iframe src="//player.bilibili.com/player.html?aid=28138937&cid=48601458&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=28138937&cid=48601458&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [生门](https://www.iqiyi.com/a_19rrh1d75x.html?vfm=2008_aldbd)，武汉大学中南医院纪实，第一集[产科](https://www.bilibili.com/video/av42427215/?spm_id_from=333.788.videocard.6)，类似纪录片人间世
 
@@ -531,30 +531,30 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
       - ![](https://img1.doubanio.com/view/thing_review/l/public/3525518.webp)
    - B站视频：[【100个不上班的人】](https://space.bilibili.com/18937939), [旅行博主：那个睡陌生人家沙发，睡上电视的女孩](https://www.bilibili.com/video/av69166304)
       - ![](https://img1.doubanio.com/view/thing_review/l/public/3525519.webp)
-      - <iframe src="//player.bilibili.com/player.html?aid=69166304&cid=119869704&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+      - <iframe src="//player.bilibili.com/player.html?aid=69166304&cid=119869704&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 历史
 
 - 孙子兵法-10集纪录片，[B站](https://www.bilibili.com/video/av1968639)
 
-<iframe src="//player.bilibili.com/player.html?aid=1968639&cid=5838714&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=1968639&cid=5838714&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-10-13】[中国历史年表](https://www.bilibili.com/video/av66583807?from=search&seid=10290663082694934788)，10分钟从上古之战到溥仪退位，中国历史年表超燃影视化混剪
 
 <iframe src="//player.bilibili.com/player.html?aid=66583807&cid=116735636&page=3" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2019-12-11】[大型人文历史纪录片《苏东坡》6集全](https://www.bilibili.com/video/av12305983)
 
-<iframe src="//player.bilibili.com/player.html?aid=12305983&cid=20775710&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=12305983&cid=20775710&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [陆毅版电视剧苏东坡诗系列](https://www.bilibili.com/video/av3573999)
 
 <iframe src="//player.bilibili.com/player.html?aid=3573999&cid=5707455&page=4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - MV说尽苏轼这一生:[一如这摸样]](https://www.bilibili.com/video/av63131519)
 
-<iframe src="//player.bilibili.com/player.html?aid=63131519&cid=109646986&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=63131519&cid=109646986&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-10-26】俄罗斯拍摄的纪录片《[中国的重生](https://www.bilibili.com/video/av69780746)》，彩色开国大典
 
-<iframe src="//player.bilibili.com/player.html?aid=69780746&cid=120921841&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=69780746&cid=120921841&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2019-12-23】[寻找手艺](https://www.bilibili.com/video/av15366522)（短片45集）2017, 张景,记录中国消失的传统手工，类似卖房做动画的《[魁拔](https://www.bilibili.com/bangumi/play/ss6166/?from=search&seid=10368667458390022961)》
 
@@ -565,22 +565,22 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 - 【2019-09-01】IT码农转型说相声，[80后脱口秀韦若琛合集](https://www.ixigua.com/i6730450427185201671/)
 - 【2019-09-15】CCTV纪录片：[世界上的另一个我](https://www.bilibili.com/video/av9976667)，记录世界各地的90后生活
 
-<iframe src="//player.bilibili.com/player.html?aid=9976667&cid=16492452&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=9976667&cid=16492452&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - 【2019-12-4】[神灯](https://www.bilibili.com/video/av33142273/)，恶搞人工客服
 
-<iframe src="//player.bilibili.com/player.html?aid=33142273&cid=58008769&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=33142273&cid=58008769&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [NLP为什么难](https://www.bilibili.com/video/av78081138/)
 
-<iframe src="//player.bilibili.com/player.html?aid=78081138&cid=133593218&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=78081138&cid=133593218&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2020-3-16】[英语发展历史](https://weibo.com/tv/v/IyQr4fFBU?fid=1034:4483043784851458)
 - [从前有一匹马叫“代码”](https://www.bilibili.com/video/av75765022)
 
-<iframe src="//player.bilibili.com/player.html?aid=75765022&cid=129612934&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=75765022&cid=129612934&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2019-12-29】华为趣味广告：[mate 30 AI翻译功能](https://www.bilibili.com/video/av45959094)，[Mate 20 最新登月搞笑广告](https://www.bilibili.com/video/av36134951)，[土拨鼠的逃生新技巧](https://www.bilibili.com/video/av37383911)
 
-<iframe src="//player.bilibili.com/player.html?aid=36134951&cid=63435427&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=36134951&cid=63435427&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-3-12】[影子先生：你看到了什么，生活现实](https://www.iqiyi.com/v_19rv7p03z4.html)
 
