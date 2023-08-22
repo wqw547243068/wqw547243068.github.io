@@ -444,6 +444,16 @@ id	city_code	city_name	line_id	line_name	station_id	station_name	longitude	latit
 4	131	北京市	28d3dce37526799f49fd3fb7	地铁10号线	9aac692139342d808afc06de	知春里	116.336091	39.982061
 ```
 
+注：
+- 地铁站经纬度疑似百度坐标，需要转换
+
+```py
+# 北京清河站坐标
+a = np.array([116.321038,        40.047309]) # 地铁站数据
+b = np.array([116.30151943750988,40.03962264987973]) # 六只脚app
+a - b # [0.01951856, 0.00768635]
+```
+
 ### 距离计算
 
 两点距离计算
@@ -789,7 +799,7 @@ georadius、georadiusbymember
 
 ```sh
 redis-cli 
-redis-cli --raw # UTF8 中文显示
+redis-cli --raw # UTF8 中文显示 解决中文乱码
 
 # key 为 user:location
 # 添加位置信息
