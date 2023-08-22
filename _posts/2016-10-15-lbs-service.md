@@ -40,26 +40,33 @@ permalink: /lbs
 ### 经纬度
 
 地理坐标一般由经度和维度组成，初始区间范围
-- 纬度 \[-90,90\]
-- 经度 \[-180,180\]
+- 纬度 \[-90,90\]: 维度值锁定 1/4圈(90°)
+- 经度 \[-180,180\]: 经度值锁定一个半圈(180°)
+
+```py
+# 经纬度变化对应地理距离
+min_range = [0.001, 0.001] # 100*110m
+```
 
 地球是一个**椭球**，Datum 是一组用于描述这个椭球的数据集合。
 
-最常用的一个Datum是WGS84（World Geodetic System 1984），它的主要参数有：
--   坐标系的原点是地球质心（center of mass）；
--   子午线（meridian），即零度经线，位于格林威治子午线Royal Observatory所在纬度往东5米所对应的的经线圈；
--   椭球截面长轴为a=6378137米；
--   椭圆截面短轴为b=6356752.3142米，可选参数；
--   扁平比例（flattening）f=(a−b)/a=1/298.257223563；
--   geoid，海平面，用于定义高度，本文从略。
+最常用的一个 Datum 是 `WGS84`（World Geodetic System 1984），主要参数有：
+-   坐标系的原点是`地球质心`（center of mass）；
+-   `子午线`（meridian），即`零度经线`，位于`格林威治子午线`Royal Observatory所在纬度往东5米所对应的的经线圈；
+-   椭球截面长轴为 a=6378137米；
+-   椭圆截面短轴为 b=6356752.3142米，可选参数；
+-   `扁平比例`（flattening）f=(a−b)/a=1/298.257223563；
+-   geoid，`海平面`，用于定义高度，本文从略。
 
-通过以上参数设定，我们才能对地球上的任意一个位置用经度、纬度、高度三个变量进行描述。所以当我们获取一组经纬度信息时，首先要弄明白这组信息对应的Datum。
+通过以上参数设定，才能对地球上的任意一个位置用`经度`、`纬度`、`高度`三个变量进行描述。所以获取一组经纬度信息时，首先要弄明白这组信息对应的Datum。
 - ![](https://www.biaodianfu.com/wp-content/uploads/2020/09/earth.png)
 
-WGS84 Datum的信息可以用下图进行概括：
+`WGS84` Datum的信息可以用下图进行概括：
 - ![](https://www.biaodianfu.com/wp-content/uploads/2020/09/wgs84.png)
-
-WGS84的坐标转化为GCJ02的坐标是单向的，即WGS84的坐标能够准确地变换为GCJ02坐标；但GCJ02坐标转换为WGS84时会存在精度损失。GCJ02的坐标和BD09的坐标转换是双向的。详细信息见先前的文章[地图经纬度及坐标系统转换的那点事](https://www.biaodianfu.com/coordinate-system.html)。
+- `WGS84` 的坐标转化为`GCJ02`的坐标是**单向**的，即 `WGS84`的坐标能够准确地变换为`GCJ02`坐标；
+- 但`GCJ02`坐标转换为`WGS84`时会存在精度损失。
+- `GCJ02`的坐标和`BD09`的坐标转换是**双向**的。
+- 详细信息见先前的文章[地图经纬度及坐标系统转换的那点事](https://www.biaodianfu.com/coordinate-system.html)。
 
 ### 墨卡托投影
 
@@ -210,7 +217,7 @@ WGS84的坐标转化为GCJ02的坐标是单向的，即WGS84的坐标能够准�
     classDef orange fill:#F7CF6B;
     classDef grass fill:#C8D64B;
     %%节点关系定义
-    W(地球坐标系\nWGS84\n国际通用,GPS/北斗):::grass-.->|中国标准,加密\n高德/腾讯/阿里/谷歌中国|G(火星坐标系\nGCJ02):::blue
+    W(地球坐标系\nWGS84\n国际通用,GPS/北斗):::grass-.->|中国标准,加密(不可逆)\n高德/腾讯/阿里/谷歌中国|G(火星坐标系\nGCJ02):::blue
     G -->|百度二次加密| B(百度坐标系\nBD09\n百度地图):::blue
     G -->|其它二次加密法| O(小众坐标系\n搜狗,图吧):::blue
 </div>
@@ -229,6 +236,180 @@ wgs84_to_bd09(lng, lat) # WGS84坐标系->百度坐标系
 # 中文地址到火星坐标系, 需要高德地图API Key
 g = Geocoding('API_KEY')  # 这里填写你的高德Api_Key
 g.geocode('北京市朝阳区朝阳公园')
+```
+
+完整版: python3
+
+```py
+import json
+import urllib
+#import urllib.request
+#import urllib.parse
+
+import math
+
+x_pi = 3.14159265358979324 * 3000.0 / 180.0
+pi = 3.1415926535897932384626  # π
+a = 6378245.0  # 长半轴
+ee = 0.00669342162296594323  # 偏心率平方
+
+class Geocoding:
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def geocode(self, address):
+        """
+        利用高德geocoding服务解析地址获取位置坐标
+        address:需要解析的地址
+        """
+        geocoding = {'s': 'rsv3',
+                     'key': self.api_key,
+                     'city': '全国',
+                     'address': address}
+        #geocoding = urllib.urlencode(geocoding)
+        geocoding = urllib.parse.urlencode({'spam': 1, 'eggs': 2, 'bacon': 0})
+        #ret = urllib.urlopen("%s?%s" % ("http://restapi.amap.com/v3/geocode/geo", geocoding))
+        ret = urllib.request.urlopen("%s?%s" % ("http://restapi.amap.com/v3/geocode/geo", geocoding))
+
+        if ret.getcode() == 200:
+            res = ret.read()
+            json_obj = json.loads(res)
+            if json_obj['status'] == '1' and int(json_obj['count']) >= 1:
+                geocodes = json_obj['geocodes'][0]
+                lng = float(geocodes.get('location').split(',')[0])
+                lat = float(geocodes.get('location').split(',')[1])
+                return [lng, lat]
+            else:
+                return json_obj
+        else:
+            return ret
+
+
+def gcj02_to_bd09(lng, lat):
+    """
+    火星坐标系(GCJ-02)转百度坐标系(BD-09)
+    谷歌、高德——>百度
+    param: lng:火星坐标经度, lat:火星坐标纬度
+    """
+    z = math.sqrt(lng * lng + lat * lat) + 0.00002 * math.sin(lat * x_pi)
+    theta = math.atan2(lat, lng) + 0.000003 * math.cos(lng * x_pi)
+    bd_lng = z * math.cos(theta) + 0.0065
+    bd_lat = z * math.sin(theta) + 0.006
+    return [bd_lng, bd_lat]
+
+
+def bd09_to_gcj02(bd_lon, bd_lat):
+    """
+    百度坐标系(BD-09)转火星坐标系(GCJ-02)
+    百度——>谷歌、高德
+    param: bd_lat:百度坐标纬度, bd_lon:百度坐标经度
+    return: 转换后的坐标列表形式
+    """
+    x = bd_lon - 0.0065
+    y = bd_lat - 0.006
+    z = math.sqrt(x * x + y * y) - 0.00002 * math.sin(y * x_pi)
+    theta = math.atan2(y, x) - 0.000003 * math.cos(x * x_pi)
+    gg_lng = z * math.cos(theta)
+    gg_lat = z * math.sin(theta)
+    return [gg_lng, gg_lat]
+
+
+def wgs84_to_gcj02(lng, lat):
+    """
+    WGS84转GCJ02(火星坐标系)
+    param: lng:WGS84坐标系的经度, lat:WGS84坐标系的纬度
+    """
+    if out_of_china(lng, lat):  # 判断是否在国内
+        return [lng, lat]
+    dlat = _transformlat(lng - 105.0, lat - 35.0)
+    dlng = _transformlng(lng - 105.0, lat - 35.0)
+    radlat = lat / 180.0 * pi
+    magic = math.sin(radlat)
+    magic = 1 - ee * magic * magic
+    sqrtmagic = math.sqrt(magic)
+    dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * pi)
+    dlng = (dlng * 180.0) / (a / sqrtmagic * math.cos(radlat) * pi)
+    mglat = lat + dlat
+    mglng = lng + dlng
+    return [mglng, mglat]
+
+
+def gcj02_to_wgs84(lng, lat):
+    """
+    GCJ02(火星坐标系)转GPS84
+    param: lng:火星坐标系的经度, lat:火星坐标系纬度
+    """
+    if out_of_china(lng, lat):
+        return [lng, lat]
+    dlat = _transformlat(lng - 105.0, lat - 35.0)
+    dlng = _transformlng(lng - 105.0, lat - 35.0)
+    radlat = lat / 180.0 * pi
+    magic = math.sin(radlat)
+    magic = 1 - ee * magic * magic
+    sqrtmagic = math.sqrt(magic)
+    dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * pi)
+    dlng = (dlng * 180.0) / (a / sqrtmagic * math.cos(radlat) * pi)
+    mglat = lat + dlat
+    mglng = lng + dlng
+    return [lng * 2 - mglng, lat * 2 - mglat]
+
+
+def bd09_to_wgs84(bd_lon, bd_lat):
+    """
+        百度→国际(地球): 百度→火星→地球
+    """
+    lon, lat = bd09_to_gcj02(bd_lon, bd_lat)
+    return gcj02_to_wgs84(lon, lat)
+
+
+def wgs84_to_bd09(lon, lat):
+    """
+        国际(地球)→百度: 地球→火星→百度
+    """
+    lon, lat = wgs84_to_gcj02(lon, lat)
+    return gcj02_to_bd09(lon, lat)
+
+
+def _transformlat(lng, lat):
+    ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * math.sqrt(math.fabs(lng))
+    ret += (20.0 * math.sin(6.0 * lng * pi) + 20.0 * math.sin(2.0 * lng * pi)) * 2.0 / 3.0
+    ret += (20.0 * math.sin(lat * pi) + 40.0 * math.sin(lat / 3.0 * pi)) * 2.0 / 3.0
+    ret += (160.0 * math.sin(lat / 12.0 * pi) + 320 * math.sin(lat * pi / 30.0)) * 2.0 / 3.0
+    return ret
+
+
+def _transformlng(lng, lat):
+    ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * math.sqrt(math.fabs(lng))
+    ret += (20.0 * math.sin(6.0 * lng * pi) + 20.0 * math.sin(2.0 * lng * pi)) * 2.0 / 3.0
+    ret += (20.0 * math.sin(lng * pi) + 40.0 * math.sin(lng / 3.0 * pi)) * 2.0 / 3.0
+    ret += (150.0 * math.sin(lng / 12.0 * pi) + 300.0 * math.sin(lng / 30.0 * pi)) * 2.0 / 3.0
+    return ret
+
+
+def out_of_china(lng, lat):
+    """
+    判断是否在国内，不在国内不做偏移
+    :param lng, lat:
+    """
+    return not (lng > 73.66 and lng < 135.05 and lat > 3.86 and lat < 53.55)
+
+
+if __name__ == '__main__':
+    data = [116.321038,        40.047309] # 地铁站数据
+    data = [116.30151943750988,40.03962264987973] # 六只脚app
+    lng = data[0]
+    lat = data[1]
+    print(f'原始坐标:   [{lng}, {lat}]')
+    result1 = gcj02_to_bd09(lng, lat) # 火星→百度
+    result2 = bd09_to_gcj02(lng, lat) # 百度→火星
+    result3 = wgs84_to_gcj02(lng, lat) # 地球→火星
+    result4 = gcj02_to_wgs84(lng, lat) # 火星→地球
+    result5 = bd09_to_wgs84(lng, lat) # 百度→地球
+    result6 = wgs84_to_bd09(lng, lat) # 地球→百度
+    API_KEY = 'ddb12712f0528934ab85b8ebaa8add75'
+    g = Geocoding(API_KEY)  # 这里填写你的高德api的key
+    result7 = g.geocode('北京市朝阳区朝阳公园')
+    print('火星→百度: ',result1, '\n百度→火星: ',result2, '\n地球→火星: ',result3, '\n火星→地球: ',result4, '\n百度→地球: ',result5, '\n地球→百度: ',result6, '\ngeo:',result7)
 ```
 
 
