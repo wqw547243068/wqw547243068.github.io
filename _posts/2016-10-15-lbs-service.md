@@ -621,6 +621,28 @@ http://api.haoshenqi.top/holiday?date=2023-10-05
   - 公司：白天，通勤频繁、规律
 
 
+输出格式:
+
+| 字段名	| 类型	| 说明 |
+| ---	| ---	| --- |
+| did	| string |	用户id，目前采用did |
+| total_point_num	| bigint	| 总定位点数 |
+| static_point_num	| bigint	| 静态定位点数 |
+| cluster_num	| int	| 聚类得到的簇总数 |
+| cluster_id	| int	| 簇编号 |
+| cluster_point_num	| bigint	| 当前簇内包含的定位点数目 |
+| date_gap	| int	| 簇内定位点对应日期跨度，多少天 |
+| date_num	| int	| 簇内定位点对应日期数目，多少个 |
+| avg_point	| string	| 质心点坐标,格式："lon,lat"，当值为“transport”时表示出行方式结果 |
+| cluster_range	string	| 地理围栏信息，5个数值(矩形框左下角+右上角)拼接成的字符串 |
+| cluster_var	double	| 簇内定位点距离方差 |
+| cluster_score |	double	| 簇得分 |
+| center_point	| string	| 中心点坐标, 格式："lon,lat"，当值为“transport”时表示出行方式结果 |
+| member_set	| string	| 成员点经纬度集合, "&"连接 |
+| cluster_type	| string	| 常驻点属于什么类别（家/公司）？json格式信息 |
+| type_info	string	| 判定详情信息，比cluster_type更完整 |
+
+
 #### 出行方式
 
 交通工具[速度](https://www.ximalaya.com/ask/q3108059?source=m_jump)
