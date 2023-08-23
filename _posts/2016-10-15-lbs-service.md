@@ -1328,6 +1328,112 @@ geohash 服务模块需要对外提供的几个 API 整理如下：
 
 ## 定位
 
+
+### js 获取浏览器位置
+
+【2017-3-15】[使用JavaScript获取位置](https://www.jianshu.com/p/5956252e6b8c)
+
+本地资源（location sources）
+- JavaScript提供了一个简单但功能强大的工具来定位设备的地理定位API的形式。包括一个小的一组易于使用的方法，可以获得设备的位置：
+  - `GPS`: 主要在移动设备，精确到**10米**
+  - `WIFI`: 几乎所有的联网设备
+  - `IP`: 仅限于区域，备选方案
+- 采用哪种方案取决于浏览器支持，一般情况下WIFI快于GPS快于IP
+
+Geolocation
+- 通过使用GPS、WIFI、IP地址检测自己的位置信息，开发人员可使用这些信息给用户提供更好的搜索建议，比如附近的便利店，并实现互动。
+- 大部分浏览器支持geolocation
+- geolocation api会暴露用户信息，所以当应用程序访问的时候，将以弹窗请求用户操作
+
+geolocation api
+通过使用caniuse-cmd，
+
+navigator.geolocation有如下几个方法：
+
+```js
+Geolocation.getCurrentPosition() // 获取当前位置
+Geolocation.watchPosition() // 监测定位
+Geolocation.clearWatch() // 清除监测
+// getCurrentPosition() and watchPosition() methods 的工作方式是基本相同
+
+navigator.geolocation.getCurrentPosition(
+    // 位置获取成功
+    function(position) {
+        position = {
+            coords: {
+                latitude - //纬度.
+                longitude - //经度. 
+                altitude - //高度.
+                accuracy - //精确度. 
+                altitudeAccuracy - //高度的准确性. 
+                heading - //. 
+                speed - //.
+            }
+            timestamp - //时间戳.
+        }
+    },
+    // 位置获取失败
+    function(error){
+
+    }
+);
+```
+
+一个简单的Demo
+- [Geolocation Demo](https://jsfiddle.net/dannymarkov/ubrvm4ao/), google 地图显示位置
+
+```js
+findMeButton.on("click", function(){
+    navigator.geolocation.getCurrentPosition(function(position) {
+        // Get the coordinates of the current position.
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        // Create a new map and place a marker at the device location.
+        var map = new GMaps({
+            el: "#map",
+            lat: lat,
+            lng: lng
+        });
+        map.addMarker({
+            lat: lat,
+            lng: lng
+        });
+    });
+});
+```
+
+更多[示例](https://www.runoob.com/try/try.php?filename=tryhtml5_geolocation)
+
+```html
+<title>菜鸟教程(runoob.com)</title> 
+</head>
+<body>
+<p id="demo">点击按钮获取您当前坐标（可能需要比较长的时间获取）：</p>
+<button onclick="getLocation()">点我</button>
+<script>
+var x=document.getElementById("demo");
+function getLocation()
+{
+	if (navigator.geolocation)
+	{
+		navigator.geolocation.getCurrentPosition(showPosition);
+	}
+	else
+	{
+		x.innerHTML="该浏览器不支持获取地理位置。";
+	}
+}
+
+function showPosition(position)
+{
+	x.innerHTML="纬度: " + position.coords.latitude + 
+	"<br>经度: " + position.coords.longitude;	
+}
+</script>
+</body>
+</html>
+```
+
 ### 手机定位方式
 
 手机常用的定位方式有：
