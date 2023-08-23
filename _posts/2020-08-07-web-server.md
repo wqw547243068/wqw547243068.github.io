@@ -5368,6 +5368,36 @@ document.getElementsByClassName('box')[0].style.background = 'red';
 
 ### js 采坑
 
+#### string 跨行
+
+跨多行的字符串：
+- 用模板字面量
+- 用 + 运算符 - JavaScript 连接运算符
+- 用 \ 运算符 – JavaScript 反斜杠运算符和转义字符
+
+```js
+let learnCoding = `How to start learning web development?
+- Learn HTML
+- Learn CSS
+- Learn JavaScript
+Use freeCodeCamp to learn all the above and much, much more !
+`
+
+let learnCoding = 'How to start learning web development?\n' +
+' - Learn HTML\n' +
+' - Learn CSS\n' +
+' - Learn JavaScript\n' +
+' Use freeCodeCamp to learn all the above and much, much more!'
+
+
+let learnCoding = 'How to start learning web development? \n \
+ - Learn HTML \n \
+ - Learn CSS\n  \
+ - Learn JavaScript \n \
+Use freeCodeCamp to learn all the above and much, much more!'
+
+console.log(learnCoding);
+```
 
 #### string format
 
