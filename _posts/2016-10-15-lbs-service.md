@@ -243,7 +243,7 @@ min_range = [0.001, 0.001] # 100*110m
     classDef orange fill:#F7CF6B;
     classDef grass fill:#C8D64B;
     %%节点关系定义
-    W(地球坐标系\nWGS84\n国际通用,GPS/北斗):::grass-.->|中国标准,加密(不可逆)\n高德/腾讯/阿里/谷歌中国|G(火星坐标系\nGCJ02):::blue
+    W(地球坐标系\nWGS84\n国际通用,GPS/北斗):::grass-.->|中国标准,加密,不可逆\n高德/腾讯/阿里/谷歌中国|G(火星坐标系\nGCJ02):::blue
     G -->|百度二次加密| B(百度坐标系\nBD09\n百度地图):::blue
     G -->|其它二次加密法| O(小众坐标系\n搜狗,图吧):::blue
 </div>
