@@ -1288,6 +1288,20 @@ finetuner.run(epochs=1)
 - [Patterns for Building LLM-based Systems & Products](https://eugeneyan.com/writing/llm-patterns/)
 - [译文](https://mp.weixin.qq.com/s/XVH5sCSyGccKt9K8nvkzdA)
 
+#### 索引结构划分
+
+【2023-8-25】按索引结构划分
+- 树结构索引: 
+- 图结构索引: 
+- 分层聚类索引: 
+- 向量量化索引: 
+
+| 索引结构类型 | 原理 | 适用场景 | 示例 |
+| --- | --- | --- | ---  |  
+| **树结构**索引   |   -  | 低维空间相似性搜索<br>不适合高维空间,内存占用大,搜索慢 | KD-Tree, BallTree  |   
+| **图结构**索引   |   -  | 高维空间实时相似性搜索,内存占用小，速度快 | HNSW  |   
+| **分层聚类**索引 |   -  | 高维空间相似性搜索,性能和内存平衡 | Annoy  |    
+| **向量量化**索引 |   -  | 大规模高维空间相似性搜索，api丰富 | Faiss (IVF,IVFPQ)  |    
 
 ## 向量数据库
 
