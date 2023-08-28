@@ -1179,6 +1179,25 @@ wc -l *.js    # 统计当前目录下的所有 .js 后缀的文件行数及总�
 find  . * | xargs wc -l # 当前目录以及子目录的所有文件行数及总计行数。
 ```
 
+### 录盘/gif
+
+录屏
+
+
+#### Gif
+
+【2023-8-28】[Terminalizer](https://www.terminalizer.com/), [github](https://github.com/faressoft/terminalizer)
+- ![](https://github.com/faressoft/terminalizer/raw/master/img/demo.gif?raw=true)
+
+```sh
+# Start recording your terminal using the record command.
+terminalizer record demo
+# A file called demo.yml will be created in the current directory. You can open it using any editor to edit the configurations and the recorded frames. You can replay your recording using the play command.
+terminalizer play demo
+# Now let's render our recording as an animated gif.
+terminalizer render demo
+```
+
 ## linux进程
 
 一个进程包括代码、数据和分配给进程的资源。fork（）函数通过**系统调用**创建一个与原来进程几乎完全相同的进程，也就是两个进程可以做完全相同的事，但如果初始参数或者传入的变量不同，两个进程也可以做不同的事。
