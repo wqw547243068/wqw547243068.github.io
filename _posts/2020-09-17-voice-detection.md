@@ -2067,6 +2067,16 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - 钉钉
 - [讯飞听见](https://www.iflyrec.com/html/addMachineOrder.html)转文字，上传音视频文件，免费体验15min
 
+#### MuAViC 唇语
+
+【2023-8-30】[Meta开源像语言识别系统，模型识别唇语翻译6种语言，本地部署人人可用](https://zhuanlan.zhihu.com/p/653330873)
+- Meta最近开源了一个AI语音-视频识别系统：[MuAViC](https://github.com/facebookresearch/muavic/tree/main/demo), 大幅刷新SOTA，直接下载本地可用;
+- [paper](https://arxiv.org/pdf/2303.00628.pdf), [demo](https://github.com/facebookresearch/muavic/tree/main/demo)
+- 看懂没有声音的人物讲了啥，还能精确识别嘈杂背景当中特定人物的语音。
+
+Meta利用TED/TEDx的视频语音素材，制作了MuAViC中的数据集。其中包含了1200小时，9种语言的文本语音视频素材，还有英语与6种语言之间的双向翻译。
+
+
 
 ### 音频转换
 
