@@ -4240,6 +4240,108 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 - [预训练模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Base)
 - [对话模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Chat/)
 
+#### baichuan 部署
+
+【2023-7-27】[使用FastChat部署百川大模型](https://blog.csdn.net/jclian91/article/details/131650918)
+
+FastChat是用于对话机器人模型训练、部署、评估的开放平台，其核心特性包括：
+- 模型权重，训练代码，评估代码可用于SOTA模型（比如Vicuna，FastChat-T5）
+- 分布式多模型部署系统，自带Web UI和OpenAI兼容的RESTful APIs
+ 
+FastChat集成了Vicuna、Koala、alpaca、LLaMA等开源模型，其中Vicuna号称能够达到GPT-4的90%的质量，是开源的chatGPT模型中对答效果比较好的。
+
+FastChat的访问[地址](https://chat.lmsys.org)
+
+FastChat的安装方式为：
+
+```sh
+pip3 install fschat 
+```
+
+Huggingface Hub上下载baichuan-7B模型，访问[网址](https://huggingface.co/baichuan-inc/Baichuan-7B), 放在GPU机器上的本地路径
+
+两种部署方式都支持**流式输出**，且模型推理速度较快，推理时间一般为5-7秒，且支持分布式部署，并发量高。
+
+(1) FastChat使用CLI部署
+
+```sh
+# 百川大模型
+python3 -m fastchat.serve.cli --model-path path_of_Baichuan-7B --num-gpus 2
+```
+
+报错：
+- trust_remote_code=True 
+- 参考[issue](https://github.com/lm-sys/FastChat/issues/1789) , 在对应的Python路径下，将FastChat的fastchat/model/model_adapter.py文件中的代码中的第57~61行和69~71行添加代码：`trust_remote_code=True` 
+- [原文链接](https://blog.csdn.net/jclian91/article/details/131650918)
+
+(2) WEB部署
+- FastChat还支持WEB部署，可Web UI和OpenAI兼容的RESTful APIs.  [refer](https://github.com/lm-sys/FastChat/blob/main/docs/openai_api.md)
+
+部署一共分为三步：
+
+```sh
+python3 -m fastchat.serve.controller
+python3 -m fastchat.serve.model_worker --model-path path_of_Baichuan-7B
+python3 -m fastchat.serve.openai_api_server --host localhost --port 8000
+```
+
+如果遇到 PydanticImportError
+- pydantic版本的问题，只需将pydantic版本降为1.*版本即可
+
+部署成功后，该服务可提供与OpenAI风格类似的RESTful APIs
+
+```sh
+# 查看模型
+curl http://localhost:8000/v1/models
+# 文本补充（Text Completions）
+curl http://localhost:8000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "baichun_7b",
+    "prompt": "Once upon a time",
+    "max_tokens": 40,
+    "temperature": 0.5
+  }' | jq .
+# 对话（Chat Completions）
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "baichun_7b",
+    "messages": [{"role": "user", "content": "请用中文简单介绍三国演义？"}]
+  }' | jq .
+# 多轮对话
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "baichun_7b",
+    "messages": [{"role": "user", "content": "请用中文简单介绍西游记？"}, {"role": "assistant", "content": "三国演义是中国古代长篇小说，讲述了东汉末年至晋朝初年的历史故事。主要人物包括曹操、刘备、孙权和关羽等。故事情节曲折复杂，涉及政治、军事、文化等多个方面，被誉为中国古代小说的经典之作。《三国演义》不仅是一部文学作品，也是中国文化的重要组成部分，对中国历史和文化产生了深远的影响。"}, {"role": "user", "content": "它的作者是谁？"}]
+  }' | jq .
+
+```
+
+使用Python代码
+
+```py
+import openai
+openai.api_key = "EMPTY" # Not support yet
+openai.api_base = "http://localhost:8000/v1"
+
+model = "baichun_7b"
+prompt = "Once upon a time"
+
+# create a completion
+completion = openai.Completion.create(model=model, prompt=prompt, max_tokens=64)
+# print the completion
+print(prompt + completion.choices[0].text)
+
+# create a chat completion
+completion = openai.ChatCompletion.create(
+  model=model,
+  messages=[{"role": "user", "content": "Hello! What is your name?"}]
+)
+# print the completion
+print(completion.choices[0].message.content)
+```
 
 ### 紫东太初2.0 -- 中科院
 
