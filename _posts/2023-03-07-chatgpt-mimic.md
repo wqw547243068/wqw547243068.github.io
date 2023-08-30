@@ -4343,6 +4343,47 @@ completion = openai.ChatCompletion.create(
 print(completion.choices[0].message.content)
 ```
 
+
+#### baichuan 微调
+
+【2023-8-24】[BaiChuan13B多轮对话微调范例](https://mp.weixin.qq.com/s/sYnHlwANYQGfr18INBtN1A)
+
+修改大模型自我认知的3轮对话的玩具数据集，使用QLoRA算法，只需要5分钟的训练时间，就可以完成微调，并成功修改了LLM模型的自我认知。
+
+```js
+inputs = <user1> <assistant1> <user2> <assistant2> <user3> <assistant3>
+```
+
+多轮对话微调数据集以及标签的构造方法，有三种常见方法
+1. 最后一轮机器人的回复： 其它位置赋值-100
+  - 问题： 由于没有对中间轮次机器人回复的信息进行学习，因此存在着严重的信息丢失
+1. 多轮对话拆解成多条样本
+  - 问题： 充分地利用了所有机器人的回复信息，但是非常低效，模型会有大量的重复计算
+1. 直接构造包括多轮对话中所有机器人回复内容的标签，既充分地利用了所有机器人的回复信息，同时也不存在拆重复计算，非常高效。
+  - inputs中包括第二轮和第三轮的对话内容不会干扰第一轮对话的学习吗？
+  - 不会。原因是LLM作为语言模型，注意力机制是一个单向注意力机制(通过引入 Masked Attention实现)，模型在第一轮对话的输出跟输入中存不存在第二轮和第三轮对话完全没有关系。
+
+```js
+// 方法 1
+inputs = <user1> <assistant1> <user2> <assistant2> <user3> <assistant3>
+labels = <-100> <-100> <-100> <-100> <-100> <assistant3>
+
+// 方法 2
+inputs1 = <user1> <assistant1> 
+labels1 = <-100> <assistant1>
+
+inputs2 = <user1> <assistant1> <user2> <assistant2> 
+labels2 = <-100> <-100> <-100> <assistant2> 
+
+inputs3 = <user1> <assistant1> <user2> <assistant2> <user3> <assistant3>
+labels3 = <-100> <-100> <-100> <-100> <-100> <assistant3>
+// 方法 3
+inputs = <user1> <assistant1> <user2> <assistant2> <user3> <assistant3>
+labels = <-100> <assistant1> <-100> <assistant2> <-100> <assistant3>
+```
+
+训练详情见原文
+
 ### 紫东太初2.0 -- 中科院
 
 【2023-6-16】[中科院：自主研制新一代人工智能大模型问世](https://www.toutiao.com/article/7245117681786208826)
