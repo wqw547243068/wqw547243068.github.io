@@ -1260,6 +1260,16 @@ finetuner.run(epochs=1)
 详见 [uniem 微调教程](https://github.com/wangyuxinwhy/uniem/blob/main/examples/finetune.ipynb)
 
 
+#### MUSE 多语种
+
+【2023-8-31】2019年 META 推出的[MUSE](https://github.com/facebookresearch/MUSE), 包含很多小语种
+
+A library for Multilingual Unsupervised or Supervised word Embeddings, whose goal is to provide the community with:
+- state-of-the-art multilingual word embeddings (`fastText` embeddings aligned in a common space)
+- large-scale high-quality bilingual dictionaries for training and evaluation
+
+![](https://github.com/facebookresearch/MUSE/raw/main/outline_all.png)
+
 ### 检索提效
 
 大规模情况下，如何低延迟检索文档？
