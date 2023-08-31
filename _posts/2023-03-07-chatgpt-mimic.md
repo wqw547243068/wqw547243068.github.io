@@ -3338,6 +3338,10 @@ LMFlow 拥有四大特性：可扩展、轻量级、定制化和完全开源。
 
 <iframe src="//player.bilibili.com/player.html?aid=826984653&bvid=BV1iu4y1Z7bv&cid=1151930492&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
+【2023-8-31】智谱AI正式上线首款AI助手：智谱清言，基于 ChatGLM2，采用监督微调，以通用对话形式提供智能化服务
+
+文心一言和智谱清言（ChatGLM）这次连夜开放
+
 #### GLM-130B
 
 2022 年 8 月，`清华大学`联合[智谱AI](https://www.zhipuai.cn/index.html)（唐杰、李涓子，公司名:[北京智谱华章科技有限公司](https://www.qcc.com/firm/3e6bd6d29872b6c3a14f72f4ef6b9197.html)） 向研究界和工业界开放了拥有 1300 亿参数的中英双语**双向**稠密模型 `GLM-130B`
