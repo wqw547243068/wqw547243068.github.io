@@ -4174,7 +4174,8 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 测试时，团队以GPT-4作为评分工具，来衡量Orca在严格的基准测试Big Bench Hard（BBH）中与其他SOTA模型的表现，发现比ChatGPT、Bard等要好，也在包含SAT、LSAT、GRE和GMAT等学术考试的AGIEval基准测试中，拿下不错成绩。
 
-### 百川智能 -- 可商用
+### 百川智能(LLaMA改进) -- 可商用
+
 
 #### baichuan-7B
 
@@ -4353,6 +4354,23 @@ completion = openai.ChatCompletion.create(
 # print the completion
 print(completion.choices[0].message.content)
 ```
+
+
+#### baichuan 模型解读
+
+模型基于标准的 Transformer 结构，采用了和 `LLaMA` 一样的模型设计:
+- `Position Embedding`： 采用 `rotary-embedding`，是现阶段被大多数模型采用的位置编码方案，具有很好的外推性。
+  - **旋转位置编码** 是 **相对位置编码** 的一种实现，相对位置编码 没有完整建模每个输入的位置信息，而是在计算 Attention 的时候考虑当前位置与被 Attention 的位置的相对距离，由于 自然语言一般更依赖于相对位置，所以相对位置编码通常也有着优秀的表现。
+- `Feedforward Layer`： 采用 `SwiGLU`，Feedforward 变化为(8/3)倍的隐含层大小，即11008。
+- `Layer Normalization`: 基于 `RMSNorm` 的 Pre-Normalization。
+  - RMSNorm（Root Mean Square Layer Normalization），是一般 LayerNorm 的一种变体，可以在梯度下降时令损失更加平滑。
+  - 与 LayerNorm 相比，RMSNorm 的主要区别在于去掉了减去均值的部分（re-centering），只保留方差部分（re-scaling），从归一化的表达式上可以直观地看出。
+
+源码结构
+- ![](https://pic3.zhimg.com/80/v2-9a65e07644c31148b3c35f241ee8a98a_1440w.webp)
+
+FlashAttention 算法
+- 将 输入的 Q、K 和 V 矩阵划分成块（block），将这些块从 HBM 加载至 SRAM 中，然后根据这些块来计算注意力输出。这个过程被称为“切片（tiling）”。
 
 
 #### baichuan 微调
