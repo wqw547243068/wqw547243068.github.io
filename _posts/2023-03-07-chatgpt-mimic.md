@@ -2375,6 +2375,13 @@ LLaMA的训练目标是语言模型，即根据已有的上文去预测下一个
 
 关于tokenizer，LLaMA的训练语料以英文为主，使用了Sentence Piece作为tokenizer，词表大小只有32000。词表里的中文token很少，只有几百个，LLaMA tokenizer对中文分词的编码效率比较低。
 
+Llama 2在预训练设置和模型架构上和一代模型非常相似
+- ![](https://pic3.zhimg.com/80/v2-a26895320d7f67d296a320ae177c1816_1440w.webp)
+
+Llama系列模型都使用了**自回归Transformer**架构，即 Transformer's decoder-only架构。两代模型的一致性体现在：
+- **预归一化**（Pre-normalization）：对每一个transformer的子层输入都进行归一化，使用RMSNorm归一化函数
+- `SwiGLU`激活函数：在前馈神经网络（FFN）使用SwiGLU 激活函数替换了Transformer中的 ReLU 激活函数来提升性能
+- **旋转嵌入编码**（Rotary Positional Embeddings，`RoPE`）：RoPE可以兼顾相对位置和绝对位置的信息以提高模型的泛化能力
 
 #### LLaMA 下载
 
