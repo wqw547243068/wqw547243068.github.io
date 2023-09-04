@@ -825,7 +825,7 @@ SEEChat v1.0的模型结构如下图6所示，通过 projection layer桥接层�
 在中科院计算所信息高铁 Al 训练推理平台 MLOps 上训练并发布了新的大型语言模型「百聆」，旨在让大型语言模型对齐人类意图的同时，将其生成能力和指令遵循能力从英语泛化到其他语种。「百聆」以经济友好、内存节约的方式实现了多语言人机交互能力。
 
 
-#### VisCPM
+#### VisCPM 面壁智能
 
 【2023-7-6】[VisCPM](https://github.com/OpenBMB/VisCPM)
 
@@ -836,6 +836,17 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 
 ![](https://github.com/OpenBMB/VisCPM/raw/main/figures/model_zh.png)
 
+
+#### BuboGPT 字节
+
+【2023-9-1】[字节发布多模态大模型：BuboGPT](https://www.toutiao.com/article/7271181267092718092)
+
+字节跳动发布自己的多模态大模型`BuboGPT`，整合了包括文本、图像和**音频**在内的多模式输入，能够较好的理解图片、语言数据。Demo上可以上传图片或者音频，然后询问相关的内容，回答效果不错。可以理解中文，但是回答却是英文。
+- [体验地址](https://huggingface.co/spaces/magicr/BuboGPT)
+- 开源代码: [github地址](https://github.com/magic-research/bubogpt)
+- [项目主页](https://bubo-gpt.github.io)
+
+![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/d93e994a622049839769a6a8710e3362~tplv-tt-origin-asy1:5aS05p2hQEFJ5bel5YW3566x.image?_iz=58558&from=article.pc_detail&x-expires=1694415839&x-signature=pWifUxbh17ubx3g3w%2B5EDGJLPDc%3D)
 
 # 结束
 
