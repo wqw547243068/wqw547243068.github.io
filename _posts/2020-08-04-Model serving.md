@@ -1060,10 +1060,33 @@ Tensorflow Serving 内部的工作流如下图所示。
 
 
 
-# 资料
+资料
 
 - 具体数据见原文：[Tensorflow 模型线上部署](https://www.cnblogs.com/ustcwx/p/12768463.html)，[github源码：tensorflow-serving-tutorial](https://github.com/BeyonderXX/tensorflow-serving-tutorial)
 
+
+# LLM Ops
+
+【2023-8-29】[LLMOPs meetup v3 如何快速搭建生产级 LLM 应用-骆庚](https://www.bilibili.com/video/BV1Qu4y1e7Fw)
+
+<iframe src="//player.bilibili.com/player.html?aid=915310073&bvid=BV1Qu4y1e7Fw&cid=1250366462&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
+
+- 一、如何快速搭建生产级的IM应用，包括大模型、MOS和MLP等概念，以及云音乐的数据智能中心的应用实践。
+- 二、在选择语言模型时需要注意的几点，包括模型效果、成本、服务性能、安全性、迭代性和领域适用性，同时提供了几个开源排行榜供大家参考。
+- 三、在垂类场景下，做好SFT数据积累比基础模型选择更高效，同时强调了PROMOTE的管理和迭代的重要性，以及IM加知识库的应用。
+- 四、如何使用不同方法对模型进行测试，包括标准测试、垂类业务理解测试、自动化评测和部署等，并提到了一些工具和流程。
+- 五、推理优化的方法，包括硬件、软件、计算图层面的优化，以及如何结合使用，建议关注社区生态，持续迭代改进。
+  - 33:20 - 推理参数和GPU选择
+  - 33:43 - 推理效果和量化优化
+  - 35:54 - 量化对模型前向推理加速
+  - 38:57 - TENSRT和TDB的优化
+  - 41:03 - ONEX和TENSRT的适配和改进
+- 六、关于M模型微调的几个方法，包括有监督微调、并行计算和参数高效微调等，并提到了如何扩展样本数量和提高样本质量的方法。
+  - 41:40 - 介绍模型微调的方法，包括人工标注、业务指标、用户反馈和用户反馈挖掘
+  - 42:55 - 介绍有监督微调，通过指定金条提高模型准确度
+  - 44:54 - 除了方法外，微调数据来源和处理也很重要，可以通过开源社区等方式扩展语料数据
+  - 47:07 - 建议结合promote promote和策略迭代进行，利用反馈迭代优化模型效果和质量
 
 
 # 结束
