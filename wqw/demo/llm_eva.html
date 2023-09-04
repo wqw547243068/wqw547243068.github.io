@@ -1,0 +1,4517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome-pyecharts</title>
+                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+
+    
+</head>
+<body >
+            <style>
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .chart-container {
+            display: block;
+        }
+
+        .chart-container:nth-child(n+2) {
+            display: none;
+        }
+    </style>
+    <div class="tab">
+            <button class="tablinks" onclick="showChart(event, 'cc4ece9fbb3c4c88b26be8fbf48c10aa')">总分榜单-一级类目</button>
+            <button class="tablinks" onclick="showChart(event, 'ef5a75cf0f1e4a5fb85b454118eed6ff')">总分榜单-二级类目</button>
+            <button class="tablinks" onclick="showChart(event, '9b9c314a1aaa4053a23ec11104b37020')">排行榜-柱形图</button>
+            <button class="tablinks" onclick="showChart(event, '00a513db9e544ea7bad9cd72a67e139d')">权重分布-饼图</button>
+            <button class="tablinks" onclick="showChart(event, 'ff4698e85c8c4ceda7368d89795e83cc')">一级类目-雷达图</button>
+            <button class="tablinks" onclick="showChart(event, '0782d0ca497b4f35bf6c68f8dc922376')">二级类目得分-热力图</button>
+    </div>
+
+    <div class="box">
+                        <style>
+            .fl-table {
+                margin: 20px;
+                border-radius: 5px;
+                font-size: 12px;
+                border: none;
+                border-collapse: collapse;
+                max-width: 100%;
+                white-space: nowrap;
+                word-break: keep-all;
+            }
+
+            .fl-table th {
+                text-align: left;
+                font-size: 20px;
+            }
+
+            .fl-table tr {
+                display: table-row;
+                vertical-align: inherit;
+                border-color: inherit;
+            }
+
+            .fl-table tr:hover td {
+                background: #00d1b2;
+                color: #F8F8F8;
+            }
+
+            .fl-table td, .fl-table th {
+                border-style: none;
+                border-top: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-bottom: 3px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                padding: .5em .55em;
+                font-size: 15px;
+            }
+
+            .fl-table td {
+                border-style: none;
+                font-size: 15px;
+                vertical-align: center;
+                border-bottom: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                height: 30px;
+            }
+
+            .fl-table tr:nth-child(even) {
+                background: #F8F8F8;
+            }
+        </style>
+        <div id="cc4ece9fbb3c4c88b26be8fbf48c10aa" class="chart-container" style="">
+            <p class="title" style="font-size: 18px; font-weight:bold;" > 大模型中文评测排行榜-大类</p>
+            <p class="subtitle" style="font-size: 12px;" > </p>
+            <table class="fl-table">
+    <thead>
+        <tr>
+            <th>大模型</th>
+            <th>对话</th>
+            <th>基础</th>
+            <th>工程</th>
+            <th>功能</th>
+            <th>总分</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>人工</td>
+            <td>191.4</td>
+            <td>152.7</td>
+            <td>19.5</td>
+            <td>83.9</td>
+            <td>89.5</td>
+        </tr>
+        <tr>
+            <td>ChatGPT</td>
+            <td>168.2</td>
+            <td>140.0</td>
+            <td>18.5</td>
+            <td>76.6</td>
+            <td>80.6</td>
+        </tr>
+        <tr>
+            <td>星火认知</td>
+            <td>141.1</td>
+            <td>115.7</td>
+            <td>18.5</td>
+            <td>74.7</td>
+            <td>70.1</td>
+        </tr>
+        <tr>
+            <td>Claude-instant</td>
+            <td>148.9</td>
+            <td>115.4</td>
+            <td>17.0</td>
+            <td>61.6</td>
+            <td>68.0</td>
+        </tr>
+        <tr>
+            <td>360智脑</td>
+            <td>138.7</td>
+            <td>103.0</td>
+            <td>14.5</td>
+            <td>74.5</td>
+            <td>67.2</td>
+        </tr>
+        <tr>
+            <td>文心一言</td>
+            <td>143.3</td>
+            <td>113.1</td>
+            <td>12.0</td>
+            <td>63.3</td>
+            <td>66.9</td>
+        </tr>
+        <tr>
+            <td>通义千问</td>
+            <td>131.0</td>
+            <td>113.0</td>
+            <td>15.0</td>
+            <td>67.8</td>
+            <td>65.7</td>
+        </tr>
+        <tr>
+            <td>天工</td>
+            <td>136.1</td>
+            <td>120.0</td>
+            <td>10.0</td>
+            <td>59.3</td>
+            <td>65.7</td>
+        </tr>
+        <tr>
+            <td>ChatGLM-130B</td>
+            <td>109.0</td>
+            <td>98.2</td>
+            <td>14.5</td>
+            <td>56.4</td>
+            <td>55.5</td>
+        </tr>
+        <tr>
+            <td>Vicuna-13B</td>
+            <td>109.7</td>
+            <td>68.0</td>
+            <td>18.5</td>
+            <td>52.2</td>
+            <td>48.8</td>
+        </tr>
+        <tr>
+            <td>BloomChat</td>
+            <td>80.8</td>
+            <td>60.8</td>
+            <td>18.0</td>
+            <td>44.8</td>
+            <td>39.7</td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+
+                        <style>
+            .fl-table {
+                margin: 20px;
+                border-radius: 5px;
+                font-size: 12px;
+                border: none;
+                border-collapse: collapse;
+                max-width: 100%;
+                white-space: nowrap;
+                word-break: keep-all;
+            }
+
+            .fl-table th {
+                text-align: left;
+                font-size: 20px;
+            }
+
+            .fl-table tr {
+                display: table-row;
+                vertical-align: inherit;
+                border-color: inherit;
+            }
+
+            .fl-table tr:hover td {
+                background: #00d1b2;
+                color: #F8F8F8;
+            }
+
+            .fl-table td, .fl-table th {
+                border-style: none;
+                border-top: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-bottom: 3px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                padding: .5em .55em;
+                font-size: 15px;
+            }
+
+            .fl-table td {
+                border-style: none;
+                font-size: 15px;
+                vertical-align: center;
+                border-bottom: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                height: 30px;
+            }
+
+            .fl-table tr:nth-child(even) {
+                background: #F8F8F8;
+            }
+        </style>
+        <div id="ef5a75cf0f1e4a5fb85b454118eed6ff" class="chart-container" style="">
+            <p class="title" style="font-size: 18px; font-weight:bold;" > 大模型中文评测排行榜-小类</p>
+            <p class="subtitle" style="font-size: 12px;" > </p>
+            <table class="fl-table">
+    <thead>
+        <tr>
+            <th>大模型</th>
+            <th>人设</th>
+            <th>古文</th>
+            <th>配置</th>
+            <th>推理性能</th>
+            <th>时效性</th>
+            <th>闲聊</th>
+            <th>情商</th>
+            <th>自知力</th>
+            <th>角色模拟</th>
+            <th>指令遵循</th>
+            <th>分词</th>
+            <th>纠错提示</th>
+            <th>专名识别</th>
+            <th>指代消解</th>
+            <th>逻辑推理</th>
+            <th>信息抽取</th>
+            <th>语法分析</th>
+            <th>情感分析</th>
+            <th>记忆力</th>
+            <th>文本分类</th>
+            <th>文本聚类</th>
+            <th>文本匹配</th>
+            <th>文本生成</th>
+            <th>机器翻译</th>
+            <th>阅读理解</th>
+            <th>文本摘要</th>
+            <th>知识问答</th>
+            <th>自学习</th>
+            <th>数学</th>
+            <th>思维链</th>
+            <th>一致性</th>
+            <th>代码</th>
+            <th>多样性</th>
+            <th>讲笑话</th>
+            <th>创作</th>
+            <th>复合意图</th>
+            <th>数据分析</th>
+            <th>道德约束</th>
+            <th>安全隐私</th>
+            <th>表格</th>
+            <th>画图</th>
+            <th>语音</th>
+            <th>视频</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>人工</td>
+            <td>7.556</td>
+            <td>11.667</td>
+            <td>9.5</td>
+            <td>10.0</td>
+            <td>13.889</td>
+            <td>8.667</td>
+            <td>10.381</td>
+            <td>12.222</td>
+            <td>12.833</td>
+            <td>11.0</td>
+            <td>13.333</td>
+            <td>4.444</td>
+            <td>5.0</td>
+            <td>11.111</td>
+            <td>11.852</td>
+            <td>8.889</td>
+            <td>8.333</td>
+            <td>10.0</td>
+            <td>10.944</td>
+            <td>8.333</td>
+            <td>11.667</td>
+            <td>13.333</td>
+            <td>11.667</td>
+            <td>10.467</td>
+            <td>13.333</td>
+            <td>11.167</td>
+            <td>8.467</td>
+            <td>13.0</td>
+            <td>9.467</td>
+            <td>13.333</td>
+            <td>13.333</td>
+            <td>10.167</td>
+            <td>7.667</td>
+            <td>8.889</td>
+            <td>10.417</td>
+            <td>12.333</td>
+            <td>11.444</td>
+            <td>11.429</td>
+            <td>12.444</td>
+            <td>10.0</td>
+            <td>5.5</td>
+            <td>10.0</td>
+            <td>8.0</td>
+        </tr>
+        <tr>
+            <td>ChatGPT</td>
+            <td>4.889</td>
+            <td>8.167</td>
+            <td>8.5</td>
+            <td>10.0</td>
+            <td>7.778</td>
+            <td>8.667</td>
+            <td>10.952</td>
+            <td>12.222</td>
+            <td>8.167</td>
+            <td>10.071</td>
+            <td>11.524</td>
+            <td>3.556</td>
+            <td>4.0</td>
+            <td>9.444</td>
+            <td>9.741</td>
+            <td>8.222</td>
+            <td>8.333</td>
+            <td>8.667</td>
+            <td>11.944</td>
+            <td>8.333</td>
+            <td>11.667</td>
+            <td>12.5</td>
+            <td>10.444</td>
+            <td>12.667</td>
+            <td>10.778</td>
+            <td>11.667</td>
+            <td>8.4</td>
+            <td>13.333</td>
+            <td>8.8</td>
+            <td>9.333</td>
+            <td>9.5</td>
+            <td>13.333</td>
+            <td>7.333</td>
+            <td>8.778</td>
+            <td>9.583</td>
+            <td>11.667</td>
+            <td>12.444</td>
+            <td>10.857</td>
+            <td>13.333</td>
+            <td>8.0</td>
+            <td>6.333</td>
+            <td>6.667</td>
+            <td>2.667</td>
+        </tr>
+        <tr>
+            <td>星火认知</td>
+            <td>5.778</td>
+            <td>6.833</td>
+            <td>8.5</td>
+            <td>10.0</td>
+            <td>5.111</td>
+            <td>8.4</td>
+            <td>10.81</td>
+            <td>3.778</td>
+            <td>11.417</td>
+            <td>8.833</td>
+            <td>9.143</td>
+            <td>2.222</td>
+            <td>4.333</td>
+            <td>7.556</td>
+            <td>7.111</td>
+            <td>3.333</td>
+            <td>7.167</td>
+            <td>6.333</td>
+            <td>9.333</td>
+            <td>7.333</td>
+            <td>9.333</td>
+            <td>10.0</td>
+            <td>10.444</td>
+            <td>11.6</td>
+            <td>8.444</td>
+            <td>11.667</td>
+            <td>8.933</td>
+            <td>9.667</td>
+            <td>8.2</td>
+            <td>9.333</td>
+            <td>4.667</td>
+            <td>9.833</td>
+            <td>2.5</td>
+            <td>9.111</td>
+            <td>8.75</td>
+            <td>12.111</td>
+            <td>9.778</td>
+            <td>11.0</td>
+            <td>12.333</td>
+            <td>7.0</td>
+            <td>4.667</td>
+            <td>13.333</td>
+            <td>4.0</td>
+        </tr>
+        <tr>
+            <td>文心一言</td>
+            <td>7.333</td>
+            <td>10.5</td>
+            <td>8.0</td>
+            <td>4.0</td>
+            <td>10.444</td>
+            <td>6.667</td>
+            <td>9.048</td>
+            <td>11.111</td>
+            <td>7.0</td>
+            <td>9.095</td>
+            <td>9.571</td>
+            <td>0.889</td>
+            <td>4.333</td>
+            <td>5.444</td>
+            <td>8.778</td>
+            <td>5.556</td>
+            <td>6.667</td>
+            <td>5.556</td>
+            <td>2.833</td>
+            <td>8.333</td>
+            <td>10.167</td>
+            <td>10.083</td>
+            <td>10.222</td>
+            <td>6.333</td>
+            <td>10.111</td>
+            <td>9.333</td>
+            <td>7.667</td>
+            <td>8.444</td>
+            <td>6.733</td>
+            <td>8.0</td>
+            <td>11.667</td>
+            <td>6.667</td>
+            <td>6.0</td>
+            <td>5.444</td>
+            <td>11.0</td>
+            <td>6.222</td>
+            <td>6.444</td>
+            <td>10.333</td>
+            <td>12.667</td>
+            <td>10.0</td>
+            <td>8.333</td>
+            <td>3.333</td>
+            <td>5.333</td>
+        </tr>
+        <tr>
+            <td>Claude-instant</td>
+            <td>5.556</td>
+            <td>6.75</td>
+            <td>8.0</td>
+            <td>9.0</td>
+            <td>5.111</td>
+            <td>8.6</td>
+            <td>11.286</td>
+            <td>11.556</td>
+            <td>8.0</td>
+            <td>7.5</td>
+            <td>6.762</td>
+            <td>3.222</td>
+            <td>4.833</td>
+            <td>7.667</td>
+            <td>9.778</td>
+            <td>6.333</td>
+            <td>7.333</td>
+            <td>6.889</td>
+            <td>9.833</td>
+            <td>7.667</td>
+            <td>11.0</td>
+            <td>10.417</td>
+            <td>10.444</td>
+            <td>11.667</td>
+            <td>7.444</td>
+            <td>7.0</td>
+            <td>6.667</td>
+            <td>13.0</td>
+            <td>8.0</td>
+            <td>8.0</td>
+            <td>5.333</td>
+            <td>13.333</td>
+            <td>3.5</td>
+            <td>7.444</td>
+            <td>9.417</td>
+            <td>10.889</td>
+            <td>11.111</td>
+            <td>10.952</td>
+            <td>13.333</td>
+            <td>1.0</td>
+            <td>3.667</td>
+            <td>5.0</td>
+            <td>2.667</td>
+        </tr>
+        <tr>
+            <td>通义千问</td>
+            <td>5.333</td>
+            <td>7.0</td>
+            <td>6.0</td>
+            <td>9.0</td>
+            <td>7.778</td>
+            <td>6.8</td>
+            <td>8.905</td>
+            <td>10.556</td>
+            <td>10.833</td>
+            <td>10.119</td>
+            <td>11.048</td>
+            <td>3.889</td>
+            <td>3.667</td>
+            <td>7.778</td>
+            <td>5.296</td>
+            <td>6.778</td>
+            <td>5.667</td>
+            <td>5.556</td>
+            <td>7.667</td>
+            <td>7.333</td>
+            <td>6.167</td>
+            <td>9.25</td>
+            <td>8.444</td>
+            <td>9.333</td>
+            <td>8.556</td>
+            <td>12.5</td>
+            <td>4.867</td>
+            <td>10.889</td>
+            <td>3.067</td>
+            <td>2.667</td>
+            <td>8.667</td>
+            <td>11.167</td>
+            <td>7.333</td>
+            <td>9.556</td>
+            <td>7.833</td>
+            <td>2.556</td>
+            <td>10.222</td>
+            <td>8.19</td>
+            <td>12.556</td>
+            <td>8.0</td>
+            <td>3.667</td>
+            <td>11.667</td>
+            <td>2.667</td>
+        </tr>
+        <tr>
+            <td>天工</td>
+            <td>7.333</td>
+            <td>9.667</td>
+            <td>7.0</td>
+            <td>3.0</td>
+            <td>9.111</td>
+            <td>8.667</td>
+            <td>9.81</td>
+            <td>8.889</td>
+            <td>11.083</td>
+            <td>5.857</td>
+            <td>5.19</td>
+            <td>2.0</td>
+            <td>3.833</td>
+            <td>5.556</td>
+            <td>4.556</td>
+            <td>7.111</td>
+            <td>8.0</td>
+            <td>9.556</td>
+            <td>10.222</td>
+            <td>6.167</td>
+            <td>8.833</td>
+            <td>9.917</td>
+            <td>11.778</td>
+            <td>11.8</td>
+            <td>8.222</td>
+            <td>12.333</td>
+            <td>6.4</td>
+            <td>7.778</td>
+            <td>4.0</td>
+            <td>4.0</td>
+            <td>12.5</td>
+            <td>12.833</td>
+            <td>6.167</td>
+            <td>7.222</td>
+            <td>9.833</td>
+            <td>2.556</td>
+            <td>6.778</td>
+            <td>8.381</td>
+            <td>12.778</td>
+            <td>4.0</td>
+            <td>3.333</td>
+            <td>10.0</td>
+            <td>1.333</td>
+        </tr>
+        <tr>
+            <td>360智脑</td>
+            <td>5.889</td>
+            <td>8.5</td>
+            <td>9.5</td>
+            <td>5.0</td>
+            <td>4.333</td>
+            <td>8.333</td>
+            <td>9.381</td>
+            <td>10.889</td>
+            <td>7.167</td>
+            <td>7.595</td>
+            <td>10.476</td>
+            <td>1.556</td>
+            <td>3.167</td>
+            <td>3.444</td>
+            <td>4.296</td>
+            <td>7.333</td>
+            <td>5.333</td>
+            <td>6.0</td>
+            <td>6.611</td>
+            <td>6.667</td>
+            <td>6.0</td>
+            <td>6.167</td>
+            <td>8.0</td>
+            <td>10.933</td>
+            <td>8.222</td>
+            <td>11.167</td>
+            <td>5.8</td>
+            <td>10.556</td>
+            <td>5.667</td>
+            <td>12.0</td>
+            <td>7.333</td>
+            <td>6.833</td>
+            <td>6.167</td>
+            <td>8.667</td>
+            <td>7.0</td>
+            <td>12.222</td>
+            <td>6.0</td>
+            <td>8.714</td>
+            <td>11.444</td>
+            <td>10.0</td>
+            <td>8.333</td>
+            <td>16.667</td>
+            <td>5.333</td>
+        </tr>
+        <tr>
+            <td>ChatGLM-130B</td>
+            <td>5.556</td>
+            <td>7.417</td>
+            <td>8.5</td>
+            <td>6.0</td>
+            <td>4.222</td>
+            <td>8.333</td>
+            <td>9.762</td>
+            <td>8.333</td>
+            <td>8.0</td>
+            <td>7.452</td>
+            <td>11.333</td>
+            <td>1.667</td>
+            <td>3.667</td>
+            <td>7.778</td>
+            <td>3.556</td>
+            <td>7.667</td>
+            <td>2.0</td>
+            <td>5.556</td>
+            <td>7.111</td>
+            <td>6.333</td>
+            <td>3.333</td>
+            <td>9.667</td>
+            <td>7.556</td>
+            <td>10.733</td>
+            <td>10.444</td>
+            <td>3.0</td>
+            <td>6.933</td>
+            <td>6.0</td>
+            <td>5.067</td>
+            <td>4.0</td>
+            <td>6.167</td>
+            <td>11.167</td>
+            <td>2.833</td>
+            <td>6.889</td>
+            <td>8.083</td>
+            <td>2.556</td>
+            <td>5.889</td>
+            <td>7.19</td>
+            <td>11.0</td>
+            <td>10.0</td>
+            <td>3.333</td>
+            <td>3.333</td>
+            <td>2.667</td>
+        </tr>
+        <tr>
+            <td>BloomChat</td>
+            <td>2.444</td>
+            <td>3.5</td>
+            <td>9.0</td>
+            <td>9.0</td>
+            <td>6.333</td>
+            <td>4.4</td>
+            <td>5.571</td>
+            <td>5.667</td>
+            <td>6.25</td>
+            <td>3.286</td>
+            <td>4.048</td>
+            <td>2.222</td>
+            <td>1.0</td>
+            <td>3.889</td>
+            <td>4.63</td>
+            <td>6.889</td>
+            <td>0.0</td>
+            <td>6.889</td>
+            <td>6.167</td>
+            <td>5.0</td>
+            <td>1.333</td>
+            <td>9.167</td>
+            <td>7.444</td>
+            <td>8.4</td>
+            <td>0.0</td>
+            <td>1.0</td>
+            <td>2.267</td>
+            <td>2.889</td>
+            <td>3.6</td>
+            <td>2.667</td>
+            <td>9.833</td>
+            <td>4.667</td>
+            <td>1.5</td>
+            <td>4.444</td>
+            <td>6.583</td>
+            <td>5.667</td>
+            <td>5.333</td>
+            <td>6.571</td>
+            <td>4.667</td>
+            <td>9.0</td>
+            <td>3.833</td>
+            <td>3.333</td>
+            <td>4.0</td>
+        </tr>
+        <tr>
+            <td>Vicuna-13B</td>
+            <td>3.0</td>
+            <td>5.917</td>
+            <td>8.5</td>
+            <td>10.0</td>
+            <td>4.889</td>
+            <td>7.733</td>
+            <td>9.476</td>
+            <td>10.333</td>
+            <td>5.5</td>
+            <td>5.333</td>
+            <td>2.619</td>
+            <td>1.778</td>
+            <td>3.833</td>
+            <td>4.722</td>
+            <td>1.407</td>
+            <td>2.444</td>
+            <td>1.667</td>
+            <td>3.222</td>
+            <td>6.556</td>
+            <td>3.667</td>
+            <td>7.833</td>
+            <td>4.083</td>
+            <td>2.667</td>
+            <td>5.6</td>
+            <td>9.444</td>
+            <td>8.5</td>
+            <td>5.533</td>
+            <td>10.444</td>
+            <td>6.0</td>
+            <td>4.0</td>
+            <td>6.333</td>
+            <td>9.5</td>
+            <td>6.833</td>
+            <td>6.778</td>
+            <td>9.0</td>
+            <td>4.667</td>
+            <td>7.889</td>
+            <td>6.524</td>
+            <td>11.111</td>
+            <td>2.0</td>
+            <td>3.333</td>
+            <td>5.0</td>
+            <td>2.667</td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+
+                <div id="9b9c314a1aaa4053a23ec11104b37020" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+            document.getElementById('9b9c314a1aaa4053a23ec11104b37020').style.width = document.getElementById('9b9c314a1aaa4053a23ec11104b37020').parentNode.clientWidth + 'px';
+        var chart_9b9c314a1aaa4053a23ec11104b37020 = echarts.init(
+            document.getElementById('9b9c314a1aaa4053a23ec11104b37020'), 'white', {renderer: 'canvas'});
+        var option_9b9c314a1aaa4053a23ec11104b37020 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "bar",
+            "name": "\u603b\u5f97\u5206",
+            "legendHoverLink": true,
+            "data": [
+                89.5,
+                80.6,
+                70.1,
+                68.0,
+                67.2,
+                66.9,
+                65.7,
+                65.7,
+                55.5,
+                48.8,
+                39.7
+            ],
+            "realtimeSort": false,
+            "showBackground": false,
+            "stackStrategy": "samesign",
+            "cursor": "pointer",
+            "barMinHeight": 0,
+            "barCategoryGap": "20%",
+            "barGap": "30%",
+            "large": false,
+            "largeThreshold": 400,
+            "seriesLayoutBy": "column",
+            "datasetIndex": 0,
+            "clip": true,
+            "zlevel": 0,
+            "z": 2,
+            "label": {
+                "show": true,
+                "margin": 8
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u603b\u5f97\u5206"
+            ],
+            "selected": {},
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderWidth": 1,
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "\u4eba\u5de5",
+                "ChatGPT",
+                "\u661f\u706b\u8ba4\u77e5",
+                "Claude-instant",
+                "360\u667a\u8111",
+                "\u6587\u5fc3\u4e00\u8a00",
+                "\u901a\u4e49\u5343\u95ee",
+                "\u5929\u5de5",
+                "ChatGLM-130B",
+                "Vicuna-13B",
+                "BloomChat"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "show": true,
+            "text": "\u5927\u6a21\u578b\u4e2d\u6587\u8bc4\u6d4b\u6392\u884c\u699c",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "toolbox": {
+        "show": true,
+        "orient": "horizontal",
+        "itemSize": 15,
+        "itemGap": 10,
+        "left": "80%",
+        "feature": {
+            "saveAsImage": {
+                "type": "png",
+                "backgroundColor": "auto",
+                "connectedBackgroundColor": "#fff",
+                "show": true,
+                "title": "\u4fdd\u5b58\u4e3a\u56fe\u7247",
+                "pixelRatio": 1
+            },
+            "restore": {
+                "show": true,
+                "title": "\u8fd8\u539f"
+            },
+            "dataView": {
+                "show": true,
+                "title": "\u6570\u636e\u89c6\u56fe",
+                "readOnly": false,
+                "lang": [
+                    "\u6570\u636e\u89c6\u56fe",
+                    "\u5173\u95ed",
+                    "\u5237\u65b0"
+                ],
+                "backgroundColor": "#fff",
+                "textareaColor": "#fff",
+                "textareaBorderColor": "#333",
+                "textColor": "#000",
+                "buttonColor": "#c23531",
+                "buttonTextColor": "#fff"
+            },
+            "dataZoom": {
+                "show": true,
+                "title": {
+                    "zoom": "\u533a\u57df\u7f29\u653e",
+                    "back": "\u533a\u57df\u7f29\u653e\u8fd8\u539f"
+                },
+                "icon": {},
+                "filterMode": "filter"
+            },
+            "magicType": {
+                "show": true,
+                "type": [
+                    "line",
+                    "bar",
+                    "stack",
+                    "tiled"
+                ],
+                "title": {
+                    "line": "\u5207\u6362\u4e3a\u6298\u7ebf\u56fe",
+                    "bar": "\u5207\u6362\u4e3a\u67f1\u72b6\u56fe",
+                    "stack": "\u5207\u6362\u4e3a\u5806\u53e0",
+                    "tiled": "\u5207\u6362\u4e3a\u5e73\u94fa"
+                },
+                "icon": {}
+            }
+        }
+    }
+};
+        chart_9b9c314a1aaa4053a23ec11104b37020.setOption(option_9b9c314a1aaa4053a23ec11104b37020);
+    </script>
+                <div id="00a513db9e544ea7bad9cd72a67e139d" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+            document.getElementById('00a513db9e544ea7bad9cd72a67e139d').style.width = document.getElementById('00a513db9e544ea7bad9cd72a67e139d').parentNode.clientWidth + 'px';
+        var chart_00a513db9e544ea7bad9cd72a67e139d = echarts.init(
+            document.getElementById('00a513db9e544ea7bad9cd72a67e139d'), 'white', {renderer: 'canvas'});
+        var option_00a513db9e544ea7bad9cd72a67e139d = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "pie",
+            "name": "\u4e00\u7ea7\u7c7b\u76ee",
+            "colorBy": "data",
+            "legendHoverLink": true,
+            "selectedMode": false,
+            "selectedOffset": 10,
+            "clockwise": true,
+            "startAngle": 90,
+            "minAngle": 0,
+            "minShowLabelAngle": 0,
+            "avoidLabelOverlap": true,
+            "stillShowZeroSum": true,
+            "percentPrecision": 2,
+            "showEmptyCircle": true,
+            "emptyCircleStyle": {
+                "color": "lightgray",
+                "borderColor": "#000",
+                "borderWidth": 0,
+                "borderType": "solid",
+                "borderDashOffset": 0,
+                "borderCap": "butt",
+                "borderJoin": "bevel",
+                "borderMiterLimit": 10,
+                "opacity": 1
+            },
+            "data": [
+                {
+                    "name": "\u57fa\u7840",
+                    "value": 0.3
+                },
+                {
+                    "name": "\u5bf9\u8bdd",
+                    "value": 0.4
+                },
+                {
+                    "name": "\u529f\u80fd",
+                    "value": 0.3
+                },
+                {
+                    "name": "\u5de5\u7a0b",
+                    "value": 0
+                }
+            ],
+            "radius": [
+                "30%",
+                "75%"
+            ],
+            "center": [
+                "25%",
+                "50%"
+            ],
+            "roseType": "radius",
+            "label": {
+                "show": true,
+                "margin": 8
+            },
+            "labelLine": {
+                "show": true,
+                "showAbove": false,
+                "length": 15,
+                "length2": 15,
+                "smooth": false,
+                "minTurnAngle": 90,
+                "maxSurfaceAngle": 90
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u57fa\u7840",
+                "\u5bf9\u8bdd",
+                "\u529f\u80fd",
+                "\u5de5\u7a0b"
+            ],
+            "selected": {},
+            "show": true,
+            "right": "15%",
+            "top": "5%",
+            "orient": "vertical",
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderWidth": 1,
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "title": [
+        {
+            "show": true,
+            "text": "\u4e00\u7ea7\u7c7b\u76ee\u79ef\u5206\u6743\u91cd\u5206\u5e03",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "toolbox": {
+        "show": true,
+        "orient": "horizontal",
+        "itemSize": 15,
+        "itemGap": 10,
+        "left": "80%",
+        "feature": {
+            "saveAsImage": {
+                "type": "png",
+                "backgroundColor": "auto",
+                "connectedBackgroundColor": "#fff",
+                "show": true,
+                "title": "\u4fdd\u5b58\u4e3a\u56fe\u7247",
+                "pixelRatio": 1
+            },
+            "restore": {
+                "show": true,
+                "title": "\u8fd8\u539f"
+            },
+            "dataView": {
+                "show": true,
+                "title": "\u6570\u636e\u89c6\u56fe",
+                "readOnly": false,
+                "lang": [
+                    "\u6570\u636e\u89c6\u56fe",
+                    "\u5173\u95ed",
+                    "\u5237\u65b0"
+                ],
+                "backgroundColor": "#fff",
+                "textareaColor": "#fff",
+                "textareaBorderColor": "#333",
+                "textColor": "#000",
+                "buttonColor": "#c23531",
+                "buttonTextColor": "#fff"
+            },
+            "dataZoom": {
+                "show": true,
+                "title": {
+                    "zoom": "\u533a\u57df\u7f29\u653e",
+                    "back": "\u533a\u57df\u7f29\u653e\u8fd8\u539f"
+                },
+                "icon": {},
+                "filterMode": "filter"
+            },
+            "magicType": {
+                "show": true,
+                "type": [
+                    "line",
+                    "bar",
+                    "stack",
+                    "tiled"
+                ],
+                "title": {
+                    "line": "\u5207\u6362\u4e3a\u6298\u7ebf\u56fe",
+                    "bar": "\u5207\u6362\u4e3a\u67f1\u72b6\u56fe",
+                    "stack": "\u5207\u6362\u4e3a\u5806\u53e0",
+                    "tiled": "\u5207\u6362\u4e3a\u5e73\u94fa"
+                },
+                "icon": {}
+            }
+        }
+    }
+};
+        chart_00a513db9e544ea7bad9cd72a67e139d.setOption(option_00a513db9e544ea7bad9cd72a67e139d);
+    </script>
+                <div id="ff4698e85c8c4ceda7368d89795e83cc" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+            document.getElementById('ff4698e85c8c4ceda7368d89795e83cc').style.width = document.getElementById('ff4698e85c8c4ceda7368d89795e83cc').parentNode.clientWidth + 'px';
+        var chart_ff4698e85c8c4ceda7368d89795e83cc = echarts.init(
+            document.getElementById('ff4698e85c8c4ceda7368d89795e83cc'), 'white', {renderer: 'canvas'});
+        var option_ff4698e85c8c4ceda7368d89795e83cc = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "radar",
+            "name": "\u4eba\u5de5",
+            "data": [
+                [
+                    191.4,
+                    152.7,
+                    19.5,
+                    83.9
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {
+                    "color": "#fc5a50"
+                }
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 2,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0.2
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "ChatGPT",
+            "data": [
+                [
+                    168.2,
+                    140.0,
+                    18.5,
+                    76.6
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {
+                    "color": "#35ad6b"
+                }
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 2,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0.2
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "Claude-instant",
+            "data": [
+                [
+                    148.9,
+                    115.4,
+                    17.0,
+                    61.6
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {
+                    "color": "#3d7afd"
+                }
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 2,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0.2
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "\u661f\u706b\u8ba4\u77e5",
+            "data": [
+                [
+                    141.1,
+                    115.7,
+                    18.5,
+                    74.7
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {
+                    "color": "#aa23ff"
+                }
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 2,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0.2
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "\u6587\u5fc3\u4e00\u8a00",
+            "data": [
+                [
+                    143.3,
+                    113.1,
+                    12.0,
+                    63.3
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {
+                    "color": "#fcb001"
+                }
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 2,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0.2
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "360\u667a\u8111",
+            "data": [
+                [
+                    138.7,
+                    103.0,
+                    14.5,
+                    74.5
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "\u901a\u4e49\u5343\u95ee",
+            "data": [
+                [
+                    131.0,
+                    113.0,
+                    15.0,
+                    67.8
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "\u5929\u5de5",
+            "data": [
+                [
+                    136.1,
+                    120.0,
+                    10.0,
+                    59.3
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "ChatGLM-130B",
+            "data": [
+                [
+                    109.0,
+                    98.2,
+                    14.5,
+                    56.4
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "Vicuna-13B",
+            "data": [
+                [
+                    109.7,
+                    68.0,
+                    18.5,
+                    52.2
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        },
+        {
+            "type": "radar",
+            "name": "BloomChat",
+            "data": [
+                [
+                    80.8,
+                    60.8,
+                    18.0,
+                    44.8
+                ]
+            ],
+            "label": {
+                "show": false,
+                "margin": 8
+            },
+            "itemStyle": {
+                "normal": {}
+            },
+            "lineStyle": {
+                "show": true,
+                "width": 1,
+                "opacity": 1,
+                "curveness": 0,
+                "type": "solid"
+            },
+            "areaStyle": {
+                "opacity": 0
+            },
+            "rippleEffect": {
+                "show": true,
+                "brushType": "stroke",
+                "scale": 2.5,
+                "period": 4
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u4eba\u5de5",
+                "ChatGPT",
+                "Claude-instant",
+                "\u661f\u706b\u8ba4\u77e5",
+                "\u6587\u5fc3\u4e00\u8a00",
+                "360\u667a\u8111",
+                "\u901a\u4e49\u5343\u95ee",
+                "\u5929\u5de5",
+                "ChatGLM-130B",
+                "Vicuna-13B",
+                "BloomChat"
+            ],
+            "selected": {}
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "radar": [
+        {
+            "indicator": [
+                {
+                    "name": "\u5bf9\u8bdd",
+                    "max": 200
+                },
+                {
+                    "name": "\u57fa\u7840",
+                    "max": 150
+                },
+                {
+                    "name": "\u5de5\u7a0b",
+                    "max": 30
+                },
+                {
+                    "name": "\u529f\u80fd",
+                    "max": 100
+                }
+            ],
+            "shape": "circle",
+            "radius": "80%",
+            "startAngle": 90,
+            "name": {
+                "textStyle": {}
+            },
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "splitArea": {
+                "show": true,
+                "areaStyle": {
+                    "opacity": 0
+                }
+            },
+            "axisLine": {
+                "show": true,
+                "onZero": true,
+                "onZeroAxisIndex": 0
+            }
+        }
+    ]
+};
+        chart_ff4698e85c8c4ceda7368d89795e83cc.setOption(option_ff4698e85c8c4ceda7368d89795e83cc);
+    </script>
+                <div id="0782d0ca497b4f35bf6c68f8dc922376" class="chart-container" style="width:900px; height:500px; "></div>
+    <script>
+            document.getElementById('0782d0ca497b4f35bf6c68f8dc922376').style.width = document.getElementById('0782d0ca497b4f35bf6c68f8dc922376').parentNode.clientWidth + 'px';
+        var chart_0782d0ca497b4f35bf6c68f8dc922376 = echarts.init(
+            document.getElementById('0782d0ca497b4f35bf6c68f8dc922376'), 'white', {renderer: 'canvas'});
+        var option_0782d0ca497b4f35bf6c68f8dc922376 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "aria": {
+        "enabled": false
+    },
+    "color": [
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc"
+    ],
+    "series": [
+        {
+            "type": "heatmap",
+            "name": "\u5f97\u5206",
+            "data": [
+                [
+                    0,
+                    0,
+                    "7.6"
+                ],
+                [
+                    0,
+                    1,
+                    "11.7"
+                ],
+                [
+                    0,
+                    2,
+                    "9.5"
+                ],
+                [
+                    0,
+                    3,
+                    "10.0"
+                ],
+                [
+                    0,
+                    4,
+                    "13.9"
+                ],
+                [
+                    0,
+                    5,
+                    "8.7"
+                ],
+                [
+                    0,
+                    6,
+                    "10.4"
+                ],
+                [
+                    0,
+                    7,
+                    "12.2"
+                ],
+                [
+                    0,
+                    8,
+                    "12.8"
+                ],
+                [
+                    0,
+                    9,
+                    "11.0"
+                ],
+                [
+                    0,
+                    10,
+                    "13.3"
+                ],
+                [
+                    0,
+                    11,
+                    "4.4"
+                ],
+                [
+                    0,
+                    12,
+                    "5.0"
+                ],
+                [
+                    0,
+                    13,
+                    "11.1"
+                ],
+                [
+                    0,
+                    14,
+                    "11.9"
+                ],
+                [
+                    0,
+                    15,
+                    "8.9"
+                ],
+                [
+                    0,
+                    16,
+                    "8.3"
+                ],
+                [
+                    0,
+                    17,
+                    "10.0"
+                ],
+                [
+                    0,
+                    18,
+                    "10.9"
+                ],
+                [
+                    0,
+                    19,
+                    "8.3"
+                ],
+                [
+                    0,
+                    20,
+                    "11.7"
+                ],
+                [
+                    0,
+                    21,
+                    "13.3"
+                ],
+                [
+                    0,
+                    22,
+                    "11.7"
+                ],
+                [
+                    0,
+                    23,
+                    "10.5"
+                ],
+                [
+                    0,
+                    24,
+                    "13.3"
+                ],
+                [
+                    0,
+                    25,
+                    "11.2"
+                ],
+                [
+                    0,
+                    26,
+                    "8.5"
+                ],
+                [
+                    0,
+                    27,
+                    "13.0"
+                ],
+                [
+                    0,
+                    28,
+                    "9.5"
+                ],
+                [
+                    0,
+                    29,
+                    "13.3"
+                ],
+                [
+                    0,
+                    30,
+                    "13.3"
+                ],
+                [
+                    0,
+                    31,
+                    "10.2"
+                ],
+                [
+                    0,
+                    32,
+                    "7.7"
+                ],
+                [
+                    0,
+                    33,
+                    "8.9"
+                ],
+                [
+                    0,
+                    34,
+                    "10.4"
+                ],
+                [
+                    0,
+                    35,
+                    "12.3"
+                ],
+                [
+                    0,
+                    36,
+                    "11.4"
+                ],
+                [
+                    0,
+                    37,
+                    "11.4"
+                ],
+                [
+                    0,
+                    38,
+                    "12.4"
+                ],
+                [
+                    0,
+                    39,
+                    "10.0"
+                ],
+                [
+                    0,
+                    40,
+                    "5.5"
+                ],
+                [
+                    0,
+                    41,
+                    "10.0"
+                ],
+                [
+                    0,
+                    42,
+                    "8.0"
+                ],
+                [
+                    1,
+                    0,
+                    "4.9"
+                ],
+                [
+                    1,
+                    1,
+                    "8.2"
+                ],
+                [
+                    1,
+                    2,
+                    "8.5"
+                ],
+                [
+                    1,
+                    3,
+                    "10.0"
+                ],
+                [
+                    1,
+                    4,
+                    "7.8"
+                ],
+                [
+                    1,
+                    5,
+                    "8.7"
+                ],
+                [
+                    1,
+                    6,
+                    "11.0"
+                ],
+                [
+                    1,
+                    7,
+                    "12.2"
+                ],
+                [
+                    1,
+                    8,
+                    "8.2"
+                ],
+                [
+                    1,
+                    9,
+                    "10.1"
+                ],
+                [
+                    1,
+                    10,
+                    "11.5"
+                ],
+                [
+                    1,
+                    11,
+                    "3.6"
+                ],
+                [
+                    1,
+                    12,
+                    "4.0"
+                ],
+                [
+                    1,
+                    13,
+                    "9.4"
+                ],
+                [
+                    1,
+                    14,
+                    "9.7"
+                ],
+                [
+                    1,
+                    15,
+                    "8.2"
+                ],
+                [
+                    1,
+                    16,
+                    "8.3"
+                ],
+                [
+                    1,
+                    17,
+                    "8.7"
+                ],
+                [
+                    1,
+                    18,
+                    "11.9"
+                ],
+                [
+                    1,
+                    19,
+                    "8.3"
+                ],
+                [
+                    1,
+                    20,
+                    "11.7"
+                ],
+                [
+                    1,
+                    21,
+                    "12.5"
+                ],
+                [
+                    1,
+                    22,
+                    "10.4"
+                ],
+                [
+                    1,
+                    23,
+                    "12.7"
+                ],
+                [
+                    1,
+                    24,
+                    "10.8"
+                ],
+                [
+                    1,
+                    25,
+                    "11.7"
+                ],
+                [
+                    1,
+                    26,
+                    "8.4"
+                ],
+                [
+                    1,
+                    27,
+                    "13.3"
+                ],
+                [
+                    1,
+                    28,
+                    "8.8"
+                ],
+                [
+                    1,
+                    29,
+                    "9.3"
+                ],
+                [
+                    1,
+                    30,
+                    "9.5"
+                ],
+                [
+                    1,
+                    31,
+                    "13.3"
+                ],
+                [
+                    1,
+                    32,
+                    "7.3"
+                ],
+                [
+                    1,
+                    33,
+                    "8.8"
+                ],
+                [
+                    1,
+                    34,
+                    "9.6"
+                ],
+                [
+                    1,
+                    35,
+                    "11.7"
+                ],
+                [
+                    1,
+                    36,
+                    "12.4"
+                ],
+                [
+                    1,
+                    37,
+                    "10.9"
+                ],
+                [
+                    1,
+                    38,
+                    "13.3"
+                ],
+                [
+                    1,
+                    39,
+                    "8.0"
+                ],
+                [
+                    1,
+                    40,
+                    "6.3"
+                ],
+                [
+                    1,
+                    41,
+                    "6.7"
+                ],
+                [
+                    1,
+                    42,
+                    "2.7"
+                ],
+                [
+                    2,
+                    0,
+                    "5.8"
+                ],
+                [
+                    2,
+                    1,
+                    "6.8"
+                ],
+                [
+                    2,
+                    2,
+                    "8.5"
+                ],
+                [
+                    2,
+                    3,
+                    "10.0"
+                ],
+                [
+                    2,
+                    4,
+                    "5.1"
+                ],
+                [
+                    2,
+                    5,
+                    "8.4"
+                ],
+                [
+                    2,
+                    6,
+                    "10.8"
+                ],
+                [
+                    2,
+                    7,
+                    "3.8"
+                ],
+                [
+                    2,
+                    8,
+                    "11.4"
+                ],
+                [
+                    2,
+                    9,
+                    "8.8"
+                ],
+                [
+                    2,
+                    10,
+                    "9.1"
+                ],
+                [
+                    2,
+                    11,
+                    "2.2"
+                ],
+                [
+                    2,
+                    12,
+                    "4.3"
+                ],
+                [
+                    2,
+                    13,
+                    "7.6"
+                ],
+                [
+                    2,
+                    14,
+                    "7.1"
+                ],
+                [
+                    2,
+                    15,
+                    "3.3"
+                ],
+                [
+                    2,
+                    16,
+                    "7.2"
+                ],
+                [
+                    2,
+                    17,
+                    "6.3"
+                ],
+                [
+                    2,
+                    18,
+                    "9.3"
+                ],
+                [
+                    2,
+                    19,
+                    "7.3"
+                ],
+                [
+                    2,
+                    20,
+                    "9.3"
+                ],
+                [
+                    2,
+                    21,
+                    "10.0"
+                ],
+                [
+                    2,
+                    22,
+                    "10.4"
+                ],
+                [
+                    2,
+                    23,
+                    "11.6"
+                ],
+                [
+                    2,
+                    24,
+                    "8.4"
+                ],
+                [
+                    2,
+                    25,
+                    "11.7"
+                ],
+                [
+                    2,
+                    26,
+                    "8.9"
+                ],
+                [
+                    2,
+                    27,
+                    "9.7"
+                ],
+                [
+                    2,
+                    28,
+                    "8.2"
+                ],
+                [
+                    2,
+                    29,
+                    "9.3"
+                ],
+                [
+                    2,
+                    30,
+                    "4.7"
+                ],
+                [
+                    2,
+                    31,
+                    "9.8"
+                ],
+                [
+                    2,
+                    32,
+                    "2.5"
+                ],
+                [
+                    2,
+                    33,
+                    "9.1"
+                ],
+                [
+                    2,
+                    34,
+                    "8.8"
+                ],
+                [
+                    2,
+                    35,
+                    "12.1"
+                ],
+                [
+                    2,
+                    36,
+                    "9.8"
+                ],
+                [
+                    2,
+                    37,
+                    "11.0"
+                ],
+                [
+                    2,
+                    38,
+                    "12.3"
+                ],
+                [
+                    2,
+                    39,
+                    "7.0"
+                ],
+                [
+                    2,
+                    40,
+                    "4.7"
+                ],
+                [
+                    2,
+                    41,
+                    "13.3"
+                ],
+                [
+                    2,
+                    42,
+                    "4.0"
+                ],
+                [
+                    3,
+                    0,
+                    "7.3"
+                ],
+                [
+                    3,
+                    1,
+                    "10.5"
+                ],
+                [
+                    3,
+                    2,
+                    "8.0"
+                ],
+                [
+                    3,
+                    3,
+                    "4.0"
+                ],
+                [
+                    3,
+                    4,
+                    "10.4"
+                ],
+                [
+                    3,
+                    5,
+                    "6.7"
+                ],
+                [
+                    3,
+                    6,
+                    "9.0"
+                ],
+                [
+                    3,
+                    7,
+                    "11.1"
+                ],
+                [
+                    3,
+                    8,
+                    "7.0"
+                ],
+                [
+                    3,
+                    9,
+                    "9.1"
+                ],
+                [
+                    3,
+                    10,
+                    "9.6"
+                ],
+                [
+                    3,
+                    11,
+                    "0.9"
+                ],
+                [
+                    3,
+                    12,
+                    "4.3"
+                ],
+                [
+                    3,
+                    13,
+                    "5.4"
+                ],
+                [
+                    3,
+                    14,
+                    "8.8"
+                ],
+                [
+                    3,
+                    15,
+                    "5.6"
+                ],
+                [
+                    3,
+                    16,
+                    "6.7"
+                ],
+                [
+                    3,
+                    17,
+                    "5.6"
+                ],
+                [
+                    3,
+                    18,
+                    "2.8"
+                ],
+                [
+                    3,
+                    19,
+                    "8.3"
+                ],
+                [
+                    3,
+                    20,
+                    "10.2"
+                ],
+                [
+                    3,
+                    21,
+                    "10.1"
+                ],
+                [
+                    3,
+                    22,
+                    "10.2"
+                ],
+                [
+                    3,
+                    23,
+                    "6.3"
+                ],
+                [
+                    3,
+                    24,
+                    "10.1"
+                ],
+                [
+                    3,
+                    25,
+                    "9.3"
+                ],
+                [
+                    3,
+                    26,
+                    "7.7"
+                ],
+                [
+                    3,
+                    27,
+                    "8.4"
+                ],
+                [
+                    3,
+                    28,
+                    "6.7"
+                ],
+                [
+                    3,
+                    29,
+                    "8.0"
+                ],
+                [
+                    3,
+                    30,
+                    "11.7"
+                ],
+                [
+                    3,
+                    31,
+                    "6.7"
+                ],
+                [
+                    3,
+                    32,
+                    "6.0"
+                ],
+                [
+                    3,
+                    33,
+                    "5.4"
+                ],
+                [
+                    3,
+                    34,
+                    "11.0"
+                ],
+                [
+                    3,
+                    35,
+                    "6.2"
+                ],
+                [
+                    3,
+                    36,
+                    "6.4"
+                ],
+                [
+                    3,
+                    37,
+                    "10.3"
+                ],
+                [
+                    3,
+                    38,
+                    "12.7"
+                ],
+                [
+                    3,
+                    39,
+                    "10.0"
+                ],
+                [
+                    3,
+                    40,
+                    "8.3"
+                ],
+                [
+                    3,
+                    41,
+                    "3.3"
+                ],
+                [
+                    3,
+                    42,
+                    "5.3"
+                ],
+                [
+                    4,
+                    0,
+                    "5.6"
+                ],
+                [
+                    4,
+                    1,
+                    "6.8"
+                ],
+                [
+                    4,
+                    2,
+                    "8.0"
+                ],
+                [
+                    4,
+                    3,
+                    "9.0"
+                ],
+                [
+                    4,
+                    4,
+                    "5.1"
+                ],
+                [
+                    4,
+                    5,
+                    "8.6"
+                ],
+                [
+                    4,
+                    6,
+                    "11.3"
+                ],
+                [
+                    4,
+                    7,
+                    "11.6"
+                ],
+                [
+                    4,
+                    8,
+                    "8.0"
+                ],
+                [
+                    4,
+                    9,
+                    "7.5"
+                ],
+                [
+                    4,
+                    10,
+                    "6.8"
+                ],
+                [
+                    4,
+                    11,
+                    "3.2"
+                ],
+                [
+                    4,
+                    12,
+                    "4.8"
+                ],
+                [
+                    4,
+                    13,
+                    "7.7"
+                ],
+                [
+                    4,
+                    14,
+                    "9.8"
+                ],
+                [
+                    4,
+                    15,
+                    "6.3"
+                ],
+                [
+                    4,
+                    16,
+                    "7.3"
+                ],
+                [
+                    4,
+                    17,
+                    "6.9"
+                ],
+                [
+                    4,
+                    18,
+                    "9.8"
+                ],
+                [
+                    4,
+                    19,
+                    "7.7"
+                ],
+                [
+                    4,
+                    20,
+                    "11.0"
+                ],
+                [
+                    4,
+                    21,
+                    "10.4"
+                ],
+                [
+                    4,
+                    22,
+                    "10.4"
+                ],
+                [
+                    4,
+                    23,
+                    "11.7"
+                ],
+                [
+                    4,
+                    24,
+                    "7.4"
+                ],
+                [
+                    4,
+                    25,
+                    "7.0"
+                ],
+                [
+                    4,
+                    26,
+                    "6.7"
+                ],
+                [
+                    4,
+                    27,
+                    "13.0"
+                ],
+                [
+                    4,
+                    28,
+                    "8.0"
+                ],
+                [
+                    4,
+                    29,
+                    "8.0"
+                ],
+                [
+                    4,
+                    30,
+                    "5.3"
+                ],
+                [
+                    4,
+                    31,
+                    "13.3"
+                ],
+                [
+                    4,
+                    32,
+                    "3.5"
+                ],
+                [
+                    4,
+                    33,
+                    "7.4"
+                ],
+                [
+                    4,
+                    34,
+                    "9.4"
+                ],
+                [
+                    4,
+                    35,
+                    "10.9"
+                ],
+                [
+                    4,
+                    36,
+                    "11.1"
+                ],
+                [
+                    4,
+                    37,
+                    "11.0"
+                ],
+                [
+                    4,
+                    38,
+                    "13.3"
+                ],
+                [
+                    4,
+                    39,
+                    "1.0"
+                ],
+                [
+                    4,
+                    40,
+                    "3.7"
+                ],
+                [
+                    4,
+                    41,
+                    "5.0"
+                ],
+                [
+                    4,
+                    42,
+                    "2.7"
+                ],
+                [
+                    5,
+                    0,
+                    "5.3"
+                ],
+                [
+                    5,
+                    1,
+                    "7.0"
+                ],
+                [
+                    5,
+                    2,
+                    "6.0"
+                ],
+                [
+                    5,
+                    3,
+                    "9.0"
+                ],
+                [
+                    5,
+                    4,
+                    "7.8"
+                ],
+                [
+                    5,
+                    5,
+                    "6.8"
+                ],
+                [
+                    5,
+                    6,
+                    "8.9"
+                ],
+                [
+                    5,
+                    7,
+                    "10.6"
+                ],
+                [
+                    5,
+                    8,
+                    "10.8"
+                ],
+                [
+                    5,
+                    9,
+                    "10.1"
+                ],
+                [
+                    5,
+                    10,
+                    "11.0"
+                ],
+                [
+                    5,
+                    11,
+                    "3.9"
+                ],
+                [
+                    5,
+                    12,
+                    "3.7"
+                ],
+                [
+                    5,
+                    13,
+                    "7.8"
+                ],
+                [
+                    5,
+                    14,
+                    "5.3"
+                ],
+                [
+                    5,
+                    15,
+                    "6.8"
+                ],
+                [
+                    5,
+                    16,
+                    "5.7"
+                ],
+                [
+                    5,
+                    17,
+                    "5.6"
+                ],
+                [
+                    5,
+                    18,
+                    "7.7"
+                ],
+                [
+                    5,
+                    19,
+                    "7.3"
+                ],
+                [
+                    5,
+                    20,
+                    "6.2"
+                ],
+                [
+                    5,
+                    21,
+                    "9.2"
+                ],
+                [
+                    5,
+                    22,
+                    "8.4"
+                ],
+                [
+                    5,
+                    23,
+                    "9.3"
+                ],
+                [
+                    5,
+                    24,
+                    "8.6"
+                ],
+                [
+                    5,
+                    25,
+                    "12.5"
+                ],
+                [
+                    5,
+                    26,
+                    "4.9"
+                ],
+                [
+                    5,
+                    27,
+                    "10.9"
+                ],
+                [
+                    5,
+                    28,
+                    "3.1"
+                ],
+                [
+                    5,
+                    29,
+                    "2.7"
+                ],
+                [
+                    5,
+                    30,
+                    "8.7"
+                ],
+                [
+                    5,
+                    31,
+                    "11.2"
+                ],
+                [
+                    5,
+                    32,
+                    "7.3"
+                ],
+                [
+                    5,
+                    33,
+                    "9.6"
+                ],
+                [
+                    5,
+                    34,
+                    "7.8"
+                ],
+                [
+                    5,
+                    35,
+                    "2.6"
+                ],
+                [
+                    5,
+                    36,
+                    "10.2"
+                ],
+                [
+                    5,
+                    37,
+                    "8.2"
+                ],
+                [
+                    5,
+                    38,
+                    "12.6"
+                ],
+                [
+                    5,
+                    39,
+                    "8.0"
+                ],
+                [
+                    5,
+                    40,
+                    "3.7"
+                ],
+                [
+                    5,
+                    41,
+                    "11.7"
+                ],
+                [
+                    5,
+                    42,
+                    "2.7"
+                ],
+                [
+                    6,
+                    0,
+                    "7.3"
+                ],
+                [
+                    6,
+                    1,
+                    "9.7"
+                ],
+                [
+                    6,
+                    2,
+                    "7.0"
+                ],
+                [
+                    6,
+                    3,
+                    "3.0"
+                ],
+                [
+                    6,
+                    4,
+                    "9.1"
+                ],
+                [
+                    6,
+                    5,
+                    "8.7"
+                ],
+                [
+                    6,
+                    6,
+                    "9.8"
+                ],
+                [
+                    6,
+                    7,
+                    "8.9"
+                ],
+                [
+                    6,
+                    8,
+                    "11.1"
+                ],
+                [
+                    6,
+                    9,
+                    "5.9"
+                ],
+                [
+                    6,
+                    10,
+                    "5.2"
+                ],
+                [
+                    6,
+                    11,
+                    "2.0"
+                ],
+                [
+                    6,
+                    12,
+                    "3.8"
+                ],
+                [
+                    6,
+                    13,
+                    "5.6"
+                ],
+                [
+                    6,
+                    14,
+                    "4.6"
+                ],
+                [
+                    6,
+                    15,
+                    "7.1"
+                ],
+                [
+                    6,
+                    16,
+                    "8.0"
+                ],
+                [
+                    6,
+                    17,
+                    "9.6"
+                ],
+                [
+                    6,
+                    18,
+                    "10.2"
+                ],
+                [
+                    6,
+                    19,
+                    "6.2"
+                ],
+                [
+                    6,
+                    20,
+                    "8.8"
+                ],
+                [
+                    6,
+                    21,
+                    "9.9"
+                ],
+                [
+                    6,
+                    22,
+                    "11.8"
+                ],
+                [
+                    6,
+                    23,
+                    "11.8"
+                ],
+                [
+                    6,
+                    24,
+                    "8.2"
+                ],
+                [
+                    6,
+                    25,
+                    "12.3"
+                ],
+                [
+                    6,
+                    26,
+                    "6.4"
+                ],
+                [
+                    6,
+                    27,
+                    "7.8"
+                ],
+                [
+                    6,
+                    28,
+                    "4.0"
+                ],
+                [
+                    6,
+                    29,
+                    "4.0"
+                ],
+                [
+                    6,
+                    30,
+                    "12.5"
+                ],
+                [
+                    6,
+                    31,
+                    "12.8"
+                ],
+                [
+                    6,
+                    32,
+                    "6.2"
+                ],
+                [
+                    6,
+                    33,
+                    "7.2"
+                ],
+                [
+                    6,
+                    34,
+                    "9.8"
+                ],
+                [
+                    6,
+                    35,
+                    "2.6"
+                ],
+                [
+                    6,
+                    36,
+                    "6.8"
+                ],
+                [
+                    6,
+                    37,
+                    "8.4"
+                ],
+                [
+                    6,
+                    38,
+                    "12.8"
+                ],
+                [
+                    6,
+                    39,
+                    "4.0"
+                ],
+                [
+                    6,
+                    40,
+                    "3.3"
+                ],
+                [
+                    6,
+                    41,
+                    "10.0"
+                ],
+                [
+                    6,
+                    42,
+                    "1.3"
+                ],
+                [
+                    7,
+                    0,
+                    "5.9"
+                ],
+                [
+                    7,
+                    1,
+                    "8.5"
+                ],
+                [
+                    7,
+                    2,
+                    "9.5"
+                ],
+                [
+                    7,
+                    3,
+                    "5.0"
+                ],
+                [
+                    7,
+                    4,
+                    "4.3"
+                ],
+                [
+                    7,
+                    5,
+                    "8.3"
+                ],
+                [
+                    7,
+                    6,
+                    "9.4"
+                ],
+                [
+                    7,
+                    7,
+                    "10.9"
+                ],
+                [
+                    7,
+                    8,
+                    "7.2"
+                ],
+                [
+                    7,
+                    9,
+                    "7.6"
+                ],
+                [
+                    7,
+                    10,
+                    "10.5"
+                ],
+                [
+                    7,
+                    11,
+                    "1.6"
+                ],
+                [
+                    7,
+                    12,
+                    "3.2"
+                ],
+                [
+                    7,
+                    13,
+                    "3.4"
+                ],
+                [
+                    7,
+                    14,
+                    "4.3"
+                ],
+                [
+                    7,
+                    15,
+                    "7.3"
+                ],
+                [
+                    7,
+                    16,
+                    "5.3"
+                ],
+                [
+                    7,
+                    17,
+                    "6.0"
+                ],
+                [
+                    7,
+                    18,
+                    "6.6"
+                ],
+                [
+                    7,
+                    19,
+                    "6.7"
+                ],
+                [
+                    7,
+                    20,
+                    "6.0"
+                ],
+                [
+                    7,
+                    21,
+                    "6.2"
+                ],
+                [
+                    7,
+                    22,
+                    "8.0"
+                ],
+                [
+                    7,
+                    23,
+                    "10.9"
+                ],
+                [
+                    7,
+                    24,
+                    "8.2"
+                ],
+                [
+                    7,
+                    25,
+                    "11.2"
+                ],
+                [
+                    7,
+                    26,
+                    "5.8"
+                ],
+                [
+                    7,
+                    27,
+                    "10.6"
+                ],
+                [
+                    7,
+                    28,
+                    "5.7"
+                ],
+                [
+                    7,
+                    29,
+                    "12.0"
+                ],
+                [
+                    7,
+                    30,
+                    "7.3"
+                ],
+                [
+                    7,
+                    31,
+                    "6.8"
+                ],
+                [
+                    7,
+                    32,
+                    "6.2"
+                ],
+                [
+                    7,
+                    33,
+                    "8.7"
+                ],
+                [
+                    7,
+                    34,
+                    "7.0"
+                ],
+                [
+                    7,
+                    35,
+                    "12.2"
+                ],
+                [
+                    7,
+                    36,
+                    "6.0"
+                ],
+                [
+                    7,
+                    37,
+                    "8.7"
+                ],
+                [
+                    7,
+                    38,
+                    "11.4"
+                ],
+                [
+                    7,
+                    39,
+                    "10.0"
+                ],
+                [
+                    7,
+                    40,
+                    "8.3"
+                ],
+                [
+                    7,
+                    41,
+                    "16.7"
+                ],
+                [
+                    7,
+                    42,
+                    "5.3"
+                ],
+                [
+                    8,
+                    0,
+                    "5.6"
+                ],
+                [
+                    8,
+                    1,
+                    "7.4"
+                ],
+                [
+                    8,
+                    2,
+                    "8.5"
+                ],
+                [
+                    8,
+                    3,
+                    "6.0"
+                ],
+                [
+                    8,
+                    4,
+                    "4.2"
+                ],
+                [
+                    8,
+                    5,
+                    "8.3"
+                ],
+                [
+                    8,
+                    6,
+                    "9.8"
+                ],
+                [
+                    8,
+                    7,
+                    "8.3"
+                ],
+                [
+                    8,
+                    8,
+                    "8.0"
+                ],
+                [
+                    8,
+                    9,
+                    "7.5"
+                ],
+                [
+                    8,
+                    10,
+                    "11.3"
+                ],
+                [
+                    8,
+                    11,
+                    "1.7"
+                ],
+                [
+                    8,
+                    12,
+                    "3.7"
+                ],
+                [
+                    8,
+                    13,
+                    "7.8"
+                ],
+                [
+                    8,
+                    14,
+                    "3.6"
+                ],
+                [
+                    8,
+                    15,
+                    "7.7"
+                ],
+                [
+                    8,
+                    16,
+                    "2.0"
+                ],
+                [
+                    8,
+                    17,
+                    "5.6"
+                ],
+                [
+                    8,
+                    18,
+                    "7.1"
+                ],
+                [
+                    8,
+                    19,
+                    "6.3"
+                ],
+                [
+                    8,
+                    20,
+                    "3.3"
+                ],
+                [
+                    8,
+                    21,
+                    "9.7"
+                ],
+                [
+                    8,
+                    22,
+                    "7.6"
+                ],
+                [
+                    8,
+                    23,
+                    "10.7"
+                ],
+                [
+                    8,
+                    24,
+                    "10.4"
+                ],
+                [
+                    8,
+                    25,
+                    "3.0"
+                ],
+                [
+                    8,
+                    26,
+                    "6.9"
+                ],
+                [
+                    8,
+                    27,
+                    "6.0"
+                ],
+                [
+                    8,
+                    28,
+                    "5.1"
+                ],
+                [
+                    8,
+                    29,
+                    "4.0"
+                ],
+                [
+                    8,
+                    30,
+                    "6.2"
+                ],
+                [
+                    8,
+                    31,
+                    "11.2"
+                ],
+                [
+                    8,
+                    32,
+                    "2.8"
+                ],
+                [
+                    8,
+                    33,
+                    "6.9"
+                ],
+                [
+                    8,
+                    34,
+                    "8.1"
+                ],
+                [
+                    8,
+                    35,
+                    "2.6"
+                ],
+                [
+                    8,
+                    36,
+                    "5.9"
+                ],
+                [
+                    8,
+                    37,
+                    "7.2"
+                ],
+                [
+                    8,
+                    38,
+                    "11.0"
+                ],
+                [
+                    8,
+                    39,
+                    "10.0"
+                ],
+                [
+                    8,
+                    40,
+                    "3.3"
+                ],
+                [
+                    8,
+                    41,
+                    "3.3"
+                ],
+                [
+                    8,
+                    42,
+                    "2.7"
+                ],
+                [
+                    9,
+                    0,
+                    "2.4"
+                ],
+                [
+                    9,
+                    1,
+                    "3.5"
+                ],
+                [
+                    9,
+                    2,
+                    "9.0"
+                ],
+                [
+                    9,
+                    3,
+                    "9.0"
+                ],
+                [
+                    9,
+                    4,
+                    "6.3"
+                ],
+                [
+                    9,
+                    5,
+                    "4.4"
+                ],
+                [
+                    9,
+                    6,
+                    "5.6"
+                ],
+                [
+                    9,
+                    7,
+                    "5.7"
+                ],
+                [
+                    9,
+                    8,
+                    "6.2"
+                ],
+                [
+                    9,
+                    9,
+                    "3.3"
+                ],
+                [
+                    9,
+                    10,
+                    "4.0"
+                ],
+                [
+                    9,
+                    11,
+                    "2.2"
+                ],
+                [
+                    9,
+                    12,
+                    "1.0"
+                ],
+                [
+                    9,
+                    13,
+                    "3.9"
+                ],
+                [
+                    9,
+                    14,
+                    "4.6"
+                ],
+                [
+                    9,
+                    15,
+                    "6.9"
+                ],
+                [
+                    9,
+                    16,
+                    "0.0"
+                ],
+                [
+                    9,
+                    17,
+                    "6.9"
+                ],
+                [
+                    9,
+                    18,
+                    "6.2"
+                ],
+                [
+                    9,
+                    19,
+                    "5.0"
+                ],
+                [
+                    9,
+                    20,
+                    "1.3"
+                ],
+                [
+                    9,
+                    21,
+                    "9.2"
+                ],
+                [
+                    9,
+                    22,
+                    "7.4"
+                ],
+                [
+                    9,
+                    23,
+                    "8.4"
+                ],
+                [
+                    9,
+                    24,
+                    "0.0"
+                ],
+                [
+                    9,
+                    25,
+                    "1.0"
+                ],
+                [
+                    9,
+                    26,
+                    "2.3"
+                ],
+                [
+                    9,
+                    27,
+                    "2.9"
+                ],
+                [
+                    9,
+                    28,
+                    "3.6"
+                ],
+                [
+                    9,
+                    29,
+                    "2.7"
+                ],
+                [
+                    9,
+                    30,
+                    "9.8"
+                ],
+                [
+                    9,
+                    31,
+                    "4.7"
+                ],
+                [
+                    9,
+                    32,
+                    "1.5"
+                ],
+                [
+                    9,
+                    33,
+                    "4.4"
+                ],
+                [
+                    9,
+                    34,
+                    "6.6"
+                ],
+                [
+                    9,
+                    35,
+                    "5.7"
+                ],
+                [
+                    9,
+                    36,
+                    "5.3"
+                ],
+                [
+                    9,
+                    37,
+                    "6.6"
+                ],
+                [
+                    9,
+                    38,
+                    "4.7"
+                ],
+                [
+                    9,
+                    39,
+                    "9.0"
+                ],
+                [
+                    9,
+                    40,
+                    "3.8"
+                ],
+                [
+                    9,
+                    41,
+                    "3.3"
+                ],
+                [
+                    9,
+                    42,
+                    "4.0"
+                ],
+                [
+                    10,
+                    0,
+                    "3.0"
+                ],
+                [
+                    10,
+                    1,
+                    "5.9"
+                ],
+                [
+                    10,
+                    2,
+                    "8.5"
+                ],
+                [
+                    10,
+                    3,
+                    "10.0"
+                ],
+                [
+                    10,
+                    4,
+                    "4.9"
+                ],
+                [
+                    10,
+                    5,
+                    "7.7"
+                ],
+                [
+                    10,
+                    6,
+                    "9.5"
+                ],
+                [
+                    10,
+                    7,
+                    "10.3"
+                ],
+                [
+                    10,
+                    8,
+                    "5.5"
+                ],
+                [
+                    10,
+                    9,
+                    "5.3"
+                ],
+                [
+                    10,
+                    10,
+                    "2.6"
+                ],
+                [
+                    10,
+                    11,
+                    "1.8"
+                ],
+                [
+                    10,
+                    12,
+                    "3.8"
+                ],
+                [
+                    10,
+                    13,
+                    "4.7"
+                ],
+                [
+                    10,
+                    14,
+                    "1.4"
+                ],
+                [
+                    10,
+                    15,
+                    "2.4"
+                ],
+                [
+                    10,
+                    16,
+                    "1.7"
+                ],
+                [
+                    10,
+                    17,
+                    "3.2"
+                ],
+                [
+                    10,
+                    18,
+                    "6.6"
+                ],
+                [
+                    10,
+                    19,
+                    "3.7"
+                ],
+                [
+                    10,
+                    20,
+                    "7.8"
+                ],
+                [
+                    10,
+                    21,
+                    "4.1"
+                ],
+                [
+                    10,
+                    22,
+                    "2.7"
+                ],
+                [
+                    10,
+                    23,
+                    "5.6"
+                ],
+                [
+                    10,
+                    24,
+                    "9.4"
+                ],
+                [
+                    10,
+                    25,
+                    "8.5"
+                ],
+                [
+                    10,
+                    26,
+                    "5.5"
+                ],
+                [
+                    10,
+                    27,
+                    "10.4"
+                ],
+                [
+                    10,
+                    28,
+                    "6.0"
+                ],
+                [
+                    10,
+                    29,
+                    "4.0"
+                ],
+                [
+                    10,
+                    30,
+                    "6.3"
+                ],
+                [
+                    10,
+                    31,
+                    "9.5"
+                ],
+                [
+                    10,
+                    32,
+                    "6.8"
+                ],
+                [
+                    10,
+                    33,
+                    "6.8"
+                ],
+                [
+                    10,
+                    34,
+                    "9.0"
+                ],
+                [
+                    10,
+                    35,
+                    "4.7"
+                ],
+                [
+                    10,
+                    36,
+                    "7.9"
+                ],
+                [
+                    10,
+                    37,
+                    "6.5"
+                ],
+                [
+                    10,
+                    38,
+                    "11.1"
+                ],
+                [
+                    10,
+                    39,
+                    "2.0"
+                ],
+                [
+                    10,
+                    40,
+                    "3.3"
+                ],
+                [
+                    10,
+                    41,
+                    "5.0"
+                ],
+                [
+                    10,
+                    42,
+                    "2.7"
+                ]
+            ],
+            "label": {
+                "show": true,
+                "margin": 8
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "\u5f97\u5206"
+            ],
+            "selected": {},
+            "show": false,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14,
+            "backgroundColor": "transparent",
+            "borderColor": "#ccc",
+            "borderWidth": 1,
+            "borderRadius": 0,
+            "pageButtonItemGap": 5,
+            "pageButtonPosition": "end",
+            "pageFormatter": "{current}/{total}",
+            "pageIconColor": "#2f4554",
+            "pageIconInactiveColor": "#aaa",
+            "pageIconSize": 15,
+            "animationDurationUpdate": 800,
+            "selector": false,
+            "selectorPosition": "auto",
+            "selectorItemGap": 7,
+            "selectorButtonGap": 10
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "enterable": false,
+        "confine": false,
+        "appendToBody": false,
+        "transitionDuration": 0.4,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5,
+        "order": "seriesAsc"
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "\u4eba\u5de5",
+                "ChatGPT",
+                "\u661f\u706b\u8ba4\u77e5",
+                "\u6587\u5fc3\u4e00\u8a00",
+                "Claude-instant",
+                "\u901a\u4e49\u5343\u95ee",
+                "\u5929\u5de5",
+                "360\u667a\u8111",
+                "ChatGLM-130B",
+                "BloomChat",
+                "Vicuna-13B"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "\u4eba\u8bbe",
+                "\u53e4\u6587",
+                "\u914d\u7f6e",
+                "\u63a8\u7406\u6027\u80fd",
+                "\u65f6\u6548\u6027",
+                "\u95f2\u804a",
+                "\u60c5\u5546",
+                "\u81ea\u77e5\u529b",
+                "\u89d2\u8272\u6a21\u62df",
+                "\u6307\u4ee4\u9075\u5faa",
+                "\u5206\u8bcd",
+                "\u7ea0\u9519\u63d0\u793a",
+                "\u4e13\u540d\u8bc6\u522b",
+                "\u6307\u4ee3\u6d88\u89e3",
+                "\u903b\u8f91\u63a8\u7406",
+                "\u4fe1\u606f\u62bd\u53d6",
+                "\u8bed\u6cd5\u5206\u6790",
+                "\u60c5\u611f\u5206\u6790",
+                "\u8bb0\u5fc6\u529b",
+                "\u6587\u672c\u5206\u7c7b",
+                "\u6587\u672c\u805a\u7c7b",
+                "\u6587\u672c\u5339\u914d",
+                "\u6587\u672c\u751f\u6210",
+                "\u673a\u5668\u7ffb\u8bd1",
+                "\u9605\u8bfb\u7406\u89e3",
+                "\u6587\u672c\u6458\u8981",
+                "\u77e5\u8bc6\u95ee\u7b54",
+                "\u81ea\u5b66\u4e60",
+                "\u6570\u5b66",
+                "\u601d\u7ef4\u94fe",
+                "\u4e00\u81f4\u6027",
+                "\u4ee3\u7801",
+                "\u591a\u6837\u6027",
+                "\u8bb2\u7b11\u8bdd",
+                "\u521b\u4f5c",
+                "\u590d\u5408\u610f\u56fe",
+                "\u6570\u636e\u5206\u6790",
+                "\u9053\u5fb7\u7ea6\u675f",
+                "\u5b89\u5168\u9690\u79c1",
+                "\u8868\u683c",
+                "\u753b\u56fe",
+                "\u8bed\u97f3",
+                "\u89c6\u9891"
+            ]
+        }
+    ],
+    "title": [
+        {
+            "show": true,
+            "text": "\u5927\u6a21\u578b\u4e8c\u7ea7\u7c7b\u76ee\u5f97\u5206",
+            "target": "blank",
+            "subtarget": "blank",
+            "padding": 5,
+            "itemGap": 10,
+            "textAlign": "auto",
+            "textVerticalAlign": "auto",
+            "triggerEvent": false
+        }
+    ],
+    "toolbox": {
+        "show": true,
+        "orient": "horizontal",
+        "itemSize": 15,
+        "itemGap": 10,
+        "left": "80%",
+        "feature": {
+            "saveAsImage": {
+                "type": "png",
+                "backgroundColor": "auto",
+                "connectedBackgroundColor": "#fff",
+                "show": true,
+                "title": "\u4fdd\u5b58\u4e3a\u56fe\u7247",
+                "pixelRatio": 1
+            },
+            "restore": {
+                "show": true,
+                "title": "\u8fd8\u539f"
+            },
+            "dataView": {
+                "show": true,
+                "title": "\u6570\u636e\u89c6\u56fe",
+                "readOnly": false,
+                "lang": [
+                    "\u6570\u636e\u89c6\u56fe",
+                    "\u5173\u95ed",
+                    "\u5237\u65b0"
+                ],
+                "backgroundColor": "#fff",
+                "textareaColor": "#fff",
+                "textareaBorderColor": "#333",
+                "textColor": "#000",
+                "buttonColor": "#c23531",
+                "buttonTextColor": "#fff"
+            },
+            "dataZoom": {
+                "show": true,
+                "title": {
+                    "zoom": "\u533a\u57df\u7f29\u653e",
+                    "back": "\u533a\u57df\u7f29\u653e\u8fd8\u539f"
+                },
+                "icon": {},
+                "filterMode": "filter"
+            },
+            "magicType": {
+                "show": true,
+                "type": [
+                    "line",
+                    "bar",
+                    "stack",
+                    "tiled"
+                ],
+                "title": {
+                    "line": "\u5207\u6362\u4e3a\u6298\u7ebf\u56fe",
+                    "bar": "\u5207\u6362\u4e3a\u67f1\u72b6\u56fe",
+                    "stack": "\u5207\u6362\u4e3a\u5806\u53e0",
+                    "tiled": "\u5207\u6362\u4e3a\u5e73\u94fa"
+                },
+                "icon": {}
+            }
+        }
+    },
+    "visualMap": {
+        "show": true,
+        "type": "continuous",
+        "min": 0,
+        "max": 17,
+        "inRange": {
+            "color": [
+                "#50a3ba",
+                "#eac763",
+                "#d94e5d"
+            ]
+        },
+        "calculable": true,
+        "inverse": false,
+        "splitNumber": 5,
+        "hoverLink": true,
+        "orient": "vertical",
+        "padding": 5,
+        "showLabel": true,
+        "itemWidth": 20,
+        "itemHeight": 140,
+        "borderWidth": 0
+    }
+};
+        chart_0782d0ca497b4f35bf6c68f8dc922376.setOption(option_0782d0ca497b4f35bf6c68f8dc922376);
+    </script>
+    </div>
+
+    <script>
+    </script>
+    <script>
+        (function() {
+            containers = document.getElementsByClassName("chart-container");
+            if(containers.length > 0) {
+                containers[0].style.display = "block";
+            }
+        })()
+
+        function showChart(evt, chartID) {
+            let containers = document.getElementsByClassName("chart-container");
+            for (let i = 0; i < containers.length; i++) {
+                containers[i].style.display = "none";
+            }
+
+            let tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = "tablinks";
+            }
+
+            document.getElementById(chartID).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>
