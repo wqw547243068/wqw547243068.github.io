@@ -180,6 +180,20 @@ CentOS规定了startup文件的加载顺序如下：
 
 原因：Github没有fork项目代码，或没加所在机器的sshkey（settings->deplot keys）
 
+### 软件包 brew
+
+[Homebrew](https://brew.sh/) 安装
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# 默认保存目录 /opt/homebrew/bin
+# 添加到 ~/.bash_profile 中
+export PATH="$PATH:/opt/homebrew/bin"
+source ~/.bash_profile
+# 安装工具包
+brew install wget
+```
+
 ### 鼠标、触摸板方向设置
 
 【2023-7-31】mac用鼠标滚轮滚动方向相反
