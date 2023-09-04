@@ -647,6 +647,24 @@ Roblox 对元宇宙概念的阐述虽然更加具体，但要素众多，每个�
 ![](http://mianbaoban-assets.oss-cn-shenzhen.aliyuncs.com/xinyu-images/MBXY-CR-cc92635abda0a289015ffc251e4212ea.png)
 
 
+## VR设备
+
+
+### AR 眼镜
+
+【2023-8-31】[2023年3款主流AR眼镜大横评，全网最真实的雷⻦Air Plus、Xreal Air、Rokid Max体验报告]()
+
+3款AR眼镜 哪款更值得购买？
+- 1、雷⻦Air Plus
+- 2、Xreal Air
+- 3、Rokid Max
+
+最惊艳的还是雷⻦ Air Plus，尤其是在画面和声效的结合上，细腻的画面+绚丽色彩+震撼声效。
+
+其它两款，虽然配置能跟得上需求，但在细节的表现上，反而就没有雷鸟Air Plus这样细节到位，大屏、清晰、震撼音效、畅玩游戏，加上丰富的生态支持，这不就是一款AR眼镜的理想型嘛~
+
+眼镜+魔盒只要2000多，在家、出差、旅行都能用，对这种科技产品感兴趣的人来说，是一个非常有质价比的选择。
+
 # 结束
 
 
