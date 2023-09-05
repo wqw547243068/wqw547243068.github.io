@@ -1270,6 +1270,13 @@ A library for Multilingual Unsupervised or Supervised word Embeddings, whose goa
 
 ![](https://github.com/facebookresearch/MUSE/raw/main/outline_all.png)
 
+
+#### S-BERT
+
+【2023-9-5】[s-bert](https://www.sbert.net/docs/pretrained_models.html)
+
+claude推荐用 s-bert embedding
+
 ### 检索提效
 
 大规模情况下，如何低延迟检索文档？
