@@ -3,7 +3,7 @@ layout: post
 title:  "Linux技能大全"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密 mac 苹果 adb
+tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密 mac 苹果
 excerpt: Linux使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -5706,33 +5706,6 @@ kill 2303865
 a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
  [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕
 ```
-
-
-# ADB
-
-【2021-6-23】[Android 调试桥 (adb)](https://developer.android.google.cn/studio/command-line/adb)
-
-Android 调试桥 (adb) 是一种功能多样的命令行工具，可让您与设备进行通信。adb 命令可用于执行各种设备操作（例如安装和调试应用），并提供对 Unix shell（可用来在设备上运行各种命令）的访问权限。它是一种客户端-服务器程序，包括以下三个组件：
-- 客户端：用于发送命令。客户端在开发计算机上运行。您可以通过发出 adb 命令从命令行终端调用客户端。
-- 守护程序 (adbd)：用于在设备上运行命令。守护程序在每个设备上作为后台进程运行。
-- 服务器：用于管理客户端与守护程序之间的通信。服务器在开发机器上作为后台进程运行。
-
-adb 包含在 Android SDK 平台工具软件包中。您可以使用 SDK 管理器下载此软件包，该管理器会将其安装在 android_sdk/platform-tools/ 下。或者，如果您需要独立的 Android SDK 平台工具软件包，也可以点击此处进行下载。
-
-
-## adb shell
-
-
-使用方法
-
-```sh
-adb install test.apk # 安装软件包
-adb shell settings put global development_settings_enabled 1 # 设置环境变量(打开开发者选项)
-adb shell "date -s '2023-09-06 21:40:00'" # 设置系统时间
-adb shell pkill test # 杀死进程
-adb shell am start -n test # 打开进程
-```
-
 
 # 小项目
 
