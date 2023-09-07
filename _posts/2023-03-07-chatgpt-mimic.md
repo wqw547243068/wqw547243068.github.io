@@ -3069,6 +3069,30 @@ OpenBuddy 团队成功地掌握了 Falcon 模型的训练诀窍，推出了全�
 - 采用了一种新颖的**跨语言学习**技术，大幅提高了模型对跨语言知识的理解能力和融合能力。
 - 具备插件使用能力，模型能分析用户的意图，自动选取并调用插件。例如，调用Stable Diffusion 开源模型画图，调用内置的搜索引擎搜索资料等等。模型能够深度理解用户的需求，而不是重复字面上的要求，可以完成“画一个车水马龙的街道”，“画一个丑小鸭长大后变成的动物”等复杂指令。
 
+#### Falcon 180b
+
+【2023-9-7】[Falcon 180B 正式在 Hugging Face Hub 上发布](https://zhuanlan.zhihu.com/p/654739780)
+- Technology Innovation Institute (TII) 训练的开源大模型 Falcon 180B 登陆 Hugging Face
+- Falcon 180B 是使用 Amazon SageMaker 在多达 4096 个 GPU 上同时对 3.5 万亿个 token 进行训练，总共花费了约 7,000,000 个 GPU 计算时，这意味着 Falcon 180B 的规模是 Llama 2 的 2.5 倍，而训练所需的计算量是 Llama 2 的 4 倍。
+- Falcon 180B 是 Falcon 40B 的升级版本，并在其基础上进行了创新，比如利用 Multi-Query Attention 等来提高模型的可扩展性。
+- 当前最大的开源大模型，有 180B 参数, 且在 3.5 万亿 token 的 TII RefinedWeb 数据集上进行训练，这也是目前开源模型里最长的单波段预训练。
+- model: [falcon-180B](https://hf.co/tiiuae/falcon-180B), [falcon-180B-chat](https://hf.co/tiiuae/falcon-180B-chat)
+- [demo](https://hf.co/spaces/tiiuae/falcon-180b-demo)
+
+Falcon 180B 在自然语言任务上的表现十分优秀。它在开源模型排行榜 (预训练) 上名列前茅，并可与 PaLM-2 等专有模型相差无几
+
+Falcon 180B 使用
+
+**硬件要求**
+
+|  | 类型 | 种类 | 最低要求 | 配置示例 |
+| --- | --- | --- | --- | --- |
+| Falcon 180B | Training | Full fine-tuning | 5120GB | 8x 8x A100 80GB |
+| Falcon 180B | Training | LoRA with ZeRO-3 | 1280GB | 2x 8x A100 80GB |
+| Falcon 180B | Training | QLoRA | 160GB | 2x A100 80GB |
+| Falcon 180B | Inference | BF16/FP16 | 640GB | 8x A100 80GB |
+| Falcon 180B | Inference | GPTQ/int4 | 320GB | 8x A100 40GB |
+
 ### Lion 对抗蒸馏--闭源大模型
 
 【2023-5-31】[港科大提出全新对抗蒸馏框架Lion](https://mp.weixin.qq.com/s/UPPkMbnkG1BZhE0nctNvhQ)，7B LLaMA模型接近ChatGPT 95%的能力
