@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "视频理解-Video Understanding"
+title:  "视频理解 - Video Understanding"
 date:   2023-05-04 08:01:00
 categories: 计算机视觉
 tags: 视频理解
