@@ -604,6 +604,12 @@ LLaVA (Language-and-Vision Assistant)，一款展示了某些近似多模态 GPT
 3. 科学问答（Science QA）
   - 单独使用 LLaVA 实现了 90.92％ 的准确率。我们使用仅文本的 GPT-4 作为评判者，根据其自身先前的答案和 LLaVA 的答案预测最终答案。这种“GPT-4 作为评判者”的方案产生了新的 SOTA 92.53％。令人惊讶的是，GPT-4 可以作为一种有效的模型集成方法！这些结果希望启发大家以后刷榜的时候，可以利用 GPT-4 这个神奇来集成不同方法。
 
+##### LLaVA 中文版
+
+- LinkSoul.AI 开源了可商用的中英文双语视觉 - 语言助手 Chinese-LLaVA 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文视觉 - 文本多模态对话的开源可商用对话模型。
+  - 代码 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA), 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
+  - ![](https://p1.itc.cn/images01/20230804/367c7521624c4ede8d7daf0cfec5a154.gif)
+
 #### MMGPT （基于OpenFlamingo）
 
 【2023-4-27】[MMGPT (Multi-modal GPT) 安装指南和初体验](https://zhuanlan.zhihu.com/p/625456570)
@@ -847,6 +853,22 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 - [项目主页](https://bubo-gpt.github.io)
 
 ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/d93e994a622049839769a6a8710e3362~tplv-tt-origin-asy1:5aS05p2hQEFJ5bel5YW3566x.image?_iz=58558&from=article.pc_detail&x-expires=1694415839&x-signature=pWifUxbh17ubx3g3w%2B5EDGJLPDc%3D)
+
+
+#### LLaSM -- 语音文本
+
+【2023-8-30】[LLaSM: Large Language and Speech Model](https://arxiv.org/abs/2308.15930)， AI 初创公司 LinkSoul.Al
+- 这家公司还训练了 Llama中文版 [Chinese-Llama-2-7b](https://github.com/LinkSoul-AI/Chinese-Llama-2-7b), [demo](https://huggingface.co/spaces/LinkSoul/Chinese-Llama-2-7b)
+  - Llama 2 语料库仍以英文（89.7%）为主，而中文仅占据了其中的 0.13%。这导致 Llama 2 很难完成流畅、有深度的中文对话。
+  - Meta Al 开源 Llama 2 模型的次日，开源社区首个能下载、能运行的开源中文 LLaMA2 模型就出现了。该模型名为「Chinese Llama 2 7B」，由国内 AI 初创公司 LinkSoul.Al 推出。
+  - Chinese-Llama-2-7b 开源的内容包括完全可商用的中文版 Llama2 模型及中英文 SFT 数据集，输入格式严格遵循 llama-2-chat 格式，兼容适配所有针对原版 llama-2-chat 模型的优化。
+- LinkSoul.AI 开源了可商用的中英文双语视觉 - 语言助手 Chinese-LLaVA 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文视觉 - 文本多模态对话的开源可商用对话模型。
+  - 代码 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA), 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
+  - ![](https://p1.itc.cn/images01/20230804/367c7521624c4ede8d7daf0cfec5a154.gif)
+- [Demo](https://huggingface.co/spaces/LinkSoul/LLaSM)，代码 [LLaSM](https://github.com/LinkSoul-AI/LLaSM), 数据集[LLaSM-Audio-Instructions](https://huggingface.co/datasets/LinkSoul/LLaSM-Audio-Instructions)
+- 多模态模型大多聚集在视觉、文本上，而语音也需要关注，LLaSM 是端到端多模态语音语言模型，能遵循语音→语言指令
+- LLaSM 是首个支持中英文语音 - 文本多模态对话的开源可商用对话模型。通过便捷的语音输入的交互方式，大幅改善过往以文本为输入的大模型的使用体验，同时有效避免基于 ASR 解决方案的繁琐流程以及可能引入的错误。
+
 
 # 结束
 
