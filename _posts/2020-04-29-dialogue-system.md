@@ -418,6 +418,24 @@ Conversational AI发展方向
 |足球机器人||行动能力不足|无法站立|[video](https://vdn6.vzuu.com/SD/fd320820-2383-11eb-8741-964718266243.mp4?pkey=AAUTaOuH2yjejVcuxgpH7E8qwXvt2fAp3MIhbrOabMkXcs-9a7uiGoUg1ZJmzAAQkjqCZn9A7LEkeiFqMRNy92r3&c=avc.0.0&f=mp4&pu=078babd7&bu=078babd7&expiration=1675835153&v=ks6)|
 
 
+## 手机助手
+
+
+### 案例
+
+
+#### 小米-小爱
+
+【2023-9-13】[NLP 技术在小米语音助手中的应用](https://www.6aiq.com/article/1668957690145)
+
+语音对话技术的主要流程
+- ![](https://img.6aiq.com/image-d2fbd9423e2b49579a8bfa27d7ef3f0b.png-imageStyle)
+
+NLU例子
+- ![](https://img.6aiq.com/image-feb1ad63e4b84d19bb2afa48c40d771e.png-imageStyle)
+
+意图槽位
+- ![](https://img.6aiq.com/image-010a477e3640439990d6d9b09987bec3.png-imageStyle)
 
 ## 智能音箱
 
