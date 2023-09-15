@@ -423,7 +423,7 @@ YOLO（v2）做出了很多实现上的改进，将 mAP 值从第一次发布时
 |2018|v3|||
 |2019|v4|||
 |2020|v5|||
-|2021.5|R,结合显性和隐性知识，多任务<br>检测精度和检出率高于竞争对手||[You Only Learn One Representation: Unified Network for Multiple Tasks](https://arxiv.org/pdf/2105.04206.pdf)|
+|2021.5|R|结合显性和隐性知识，多任务<br>检测精度和检出率高于竞争对手|[You Only Learn One Representation: Unified Network for Multiple Tasks](https://arxiv.org/pdf/2105.04206.pdf)|
 |2022|v6|美团,三个改进点:<br>backbone 和 neck部分对硬件进行了优化设计<br>forked head 更准确<br>更有效的训练策略<br>与YOLOv6-nano模型相比，YOLOv6-nano模型的速度提高了21%，精度提高了3.6%|[YOLOv6: A Single-Stage Object Detection Framework for Industrial Applications](https://arxiv.org/pdf/2209.02976.pdf)<br>[博客地址](https://tech.meituan.com/2022/06/23/yolov6-a-fast-and-accurate-target-detection-framework-is-opening-source.html)|
 |2022.7|v7|sota，E-ELAN(扩展高效层聚合网络), pytorch<br>检测精度和检出率高于竞争对手|[YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors](https://arxiv.org/pdf/2207.02696.pdf)|
 |2023.1|v8|Ultralytics发布,无锚点模型<br>YOLOv8领先于YOLOv7和YOLOv6等|论文尚未发表|
