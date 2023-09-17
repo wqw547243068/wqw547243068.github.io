@@ -545,6 +545,78 @@ _RetinaNet_
 YOLOX 是旷视开源的高性能检测器。旷视的研究者将解耦头、数据增强、无锚点以及标签分类等目标检测领域的优秀进展与 YOLO 进行了巧妙的集成组合，提出了 YOLOX，不仅实现了超越 YOLOv3、YOLOv4 和 YOLOv5 的 AP，而且取得了极具竞争力的推理速度。YOLOX-L版本以 68.9 FPS 的速度在 COCO 上实现了 50.0% AP，比 YOLOv5-L 高出 1.8% AP！还提供了支持 ONNX、TensorRT、NCNN 和 Openvino 的部署版本
 
 
+## YOLO v8
+
+【2023-9-12】[用YOLOv8一站式解决图像分类、检测、分割](https://www.toutiao.com/article/7277882430537646644),淡化YOLO版本，主打Ultralytics平台。YOLO原本是一种公开的**目标检测**算法。优势是速度快，准确率还高.
+- [官网](https://ultralytics.com)
+- [文档](https://docs.ultralytics.com)
+- [GitHub](https://github.com/ultralytics/ultralytics)
+- [labelImg](https://github.com/HumanSignal/labelImg)
+
+v8版本不局限于目标检测，更像是一个AI视觉处理平台，不但可以做检测，还可以做**分类、分割、跟踪，甚至姿态估计**。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6fbc01d3d14f438ea9aa6b8ce86fbf68~tplv-tt-origin-asy2:5aS05p2hQElURueUt-WtqQ==.image?_iz=58558&from=article.pc_detail&x-expires=1695564568&x-signature=fWs9kU8VRfPoVHMKh8r0N%2FPnU88%3D)
+
+YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生成的。
+- 可以自行使用labelImg进行图片标记，扩充数据集
+ 
+| 名称 | 模型文件 | 家族 | 
+| --- | --- | --- | 
+| 检测 | yolov8n.pt | 8n、8s、8m、8l、8x |
+| 分割 | yolov8n-seg.pt | 8n、8s、8m、8l、8x |
+| 分类 | yolov8n-cls.pt | 8n、8s、8m、8l、8x |
+| 姿态 | yolov8n-pose.pt | 8n、8s、8m、8l、8x |
+
+每一类模型包含一个家族。好比是同一款衣服的不同尺码
+
+| 类型| 准确度 | 耗时长| 运算次数/秒|
+| ---| ---| --- | --- |
+| YOLOv8n| 37.3| 80.4| 8.7|
+| YOLOv8s| 44.9| 128.4| 28.6|
+| YOLOv8m| 50.2| 234.7| 78.9|
+| YOLOv8l| 52.9| 375.2| 165.2|
+| YOLOv8x| 53.9| 479.1| 257.8|
+
+
+
+```sh
+# 安装
+pip install ultralytics
+# 测试
+yolo predict model=yolov8n.pt source=bus.jpg
+```
+
+代码调用
+
+```py
+# 从平台库导入YOLO类
+from ultralytics import YOLO
+# 从模型文件构建model
+model = YOLO("xx.pt")
+# 对某张图片进行预测
+results = model("bus.jpg")
+# 打印识别结果
+print(results)
+# -----------
+from ultralytics import YOLO
+from PIL import Image
+model = YOLO('yolov8n-seg.pt')
+image = Image.open("bus.jpg")
+results = model.predict(source=image, save=True, save_txt=True) 
+# 识别来自文件夹的图像
+results = model.predict(source="test/pics", ……) 
+# 识别来自摄像头的图像
+results = model.predict(source="0", ……)
+# 查看结果
+results[0].boxes
+results[0].masks
+```
+
+results 类
+- boxes: 检测出来物体的矩形框，就是目标检测的框。
+- masks: 检测出来的遮罩层，调用图像分割时，这项有数据。
+- keypoints: 检测出来的关键点，人体姿势估计时，身体的点就是这项。
+- names: 分类数据的名称，比如{0: 人，1: 狗}这类索引。
+
 # 目标检测实践
 
 ![](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xTXRuQXhtV1N3TnBlWHVvOFAyd1ZpY2lhVkswdEEzcXBQMmliRHp2anRpY0N0NU1WSllzUFVCb2liZXU0TjZxbUxSZTJrTG13SWljRHNXY2hNRFE4aWJZam9jb1EvNjQw?x-oss-process=image/format,png)
