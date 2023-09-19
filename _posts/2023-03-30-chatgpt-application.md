@@ -500,6 +500,33 @@ ChatGPT 用于 人工标注的 Web系统：[Weak Labeling Tool using ChatGPT](ht
 
 通过调整不同的预训练奖励模型来评估标注的质量，并引入不同的评价指标来间接评估摘要的还原能力。
 
+【2023-6-19】[GPT-4终结人工标注！AI标注比人类标注效率高100倍，成本仅1/7](https://www.toutiao.com/article/7280051689963635212)
+
+数据标注需要找到一个新方法，避免大量使用人工标注带来的包括道德风险在内的其他潜在麻烦。所以，包括谷歌/Anthropic在内的AI巨头和大型独角兽，都在进行数据标注自动化的探索。
+- 谷歌最近的研究，开发了一个和人类标注能力相近的AI标注工具
+  - 论文: [RLAIF:Scaling Reinforcement Learning from Human Feedback with AI Feedback]()
+- Anthropic采用了Constitutional AI来处理数据，也获得了很好的对齐效果
+  - 论文: [Constitutional Al: Harmlessness from AI Feeedback]()
+- 初创公司refuel，也上线了一个AI标注数据的开源处理工具：`Autolabel`。用AI标注数据，效率最高提升100倍. [introducing-autolabel](https://www.refuel.ai/blog-posts/introducing-autolabel)
+  - 按照使用成本最高的GPT-4来算，采用`Autolabel`标注的成本只有使用人工标注的1/7，而如果使用其他更便宜的模型，成本还能进一步降低
+
+Autolabel安装
+
+```sh
+# 安装所有必要的库
+pip install 'refuel-autolabel[openai]'
+```
+
+```py
+from autolabel import get_data
+get_data('civil_comments')
+```
+
+自动标签贴标分为三个步骤:
+- 首先，指定一个标签配置(参见下面的config对象)并创建一个LabelingAgent。
+- 接下来，通过运行agent.plan，使用config中指定的LLM对的数据集进行一次标注
+- 最后，使用agent.run运行标签
+
 
 #### 数据分析
 
@@ -532,7 +559,7 @@ pandas_ai.run(df, prompt='Which are the 5 happiest countries?')
 
 AI 根据输入的数据，处理数据，得到结果。
 
-```
+```sh
 9             China
 0     United States
 6            Canada
