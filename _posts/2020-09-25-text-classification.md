@@ -7,7 +7,7 @@ tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt
 excerpt: NLP子领域文本分类知识汇总
 author: 鹤啸九天
 mathjax: true
-permalink: /classification
+permalink: /cls
 ---
 
 * content
@@ -145,6 +145,75 @@ pip install nlpcda
 - fasttext，精度81.5%，训练：1分钟，serving：单CPU 7万词每秒。
 
 bert效果好一点，但落地成本也比较高，需要权衡一下。一般先用简单模型搭基线。
+
+
+## LLM 分类
+
+【2023-9-20】[使用 ChatGPT 进行 zero-shot 模型的自监督训练](https://zhuanlan.zhihu.com/p/625983199)
+
+ChatGPT 式的生成模型是目前阶段效果最好的 `zero-shot` 范式了。
+
+但是大模型再美好，在**部署成本**和**结果优化**方面有些门槛。对于普通业务，<span style='color:blue'>用 LLM（Large Language Model）辅助小模型训练</span> 是**短期内**更便于执行的落地方案。
+
+模型**冷启动**阶段，由于缺乏标注数据，提升 zero-shot 方案的核心路线: 构造“伪样本”，构造尽可能多、尽可能准的伪样本。这里又分两种情况
+- 第一种: llm生成标签。手边有足量的**未标注**真实数据，那么只需打上“伪标签”。
+- 第二种: llm生成语料。哪怕是**无标注数据**也不太够，在伪标签之外，还需要用数据增强来构造“**伪语料**”。
+
+### zero-shot 分类
+
+文本为 NLI（Natural Language Inference） 式的 zero-shot（推荐 huggingface 的 xlm-roberta-large-xnli，支持中文）。
+
+zero-shot 分类 本质上这是一种`迁移学习`，用一个监督训练得到的双句 NLI 模型，完成**单句文本分类**任务。
+- ![](https://pic2.zhimg.com/80/v2-fff196ee092a5f7f36410849443bc819_1440w.webp)
+
+>- premise（前提）= “世界杯落幕了”，使用模板 “这句话是关于{}的” 将标签“**体育**”转化为 hypothesis（假设）= “**这句话是关于体育的**”。由 NLI 模型给出判断，“是 / 否”。
+>- 当存在 N 个候选标签时，则构造 N 个 premise-hypothese 样本对，取“是”的概率最高的标签为输出标签。
+
+#### 2022 EMNLP
+
+论文采用不同的 zero-shot 基座模型。。都开源。
+- 2022 EMNLP, 传统优化路线
+  - [Zero-Shot Text Classification with Self-Training](https://arxiv.org/abs/2210.17541)
+  - 代码: [Zero-shot Classification Boost with Self-training](https://github.com/IBM/zero-shot-classification-boost-with-self-training)
+
+流程方法
+- 取 1w 条无标注数据，用基座 NLI 模型打上伪标签。由于未经迭代的模型准确度有限，只取分类置信度最高的 1% 样本（100条左右）。在各个目标分类之上，top1 得分和 top2 得分的差距越大，此次预测的置信度越高。
+- ![](https://pic3.zhimg.com/80/v2-aa005cb1e614805afd9953f5a40c5b22_1440w.webp)
+
+#### GenCo
+
+用到了 平替版 Alpaca-7B
+
+- [Generation-driven Contrastive Self-training for Zero-shot TextClassification with Instruction-tuned GPT](https://arxiv.org/abs/2304.11872)
+- code：[GenCo](https://github.com/RifleZhang/GenCo)
+
+自训练的一个核心问题: 伪数据的筛选构造。
+- 预测分数高的样本，准确度越高，噪声小，但是过于简单，引入的有效信息也很少；
+- 预测分数低的样本，极有可能被打上错误的伪标签，但是往往是这类分类难度大的样本，更具备学习价值。
+
+两者的取舍，对自训练效果有决定性的影响。
+
+论文提出模型 `GenCo`，引入 ChatGPT 进行数据增强，这是一个让人眼前一亮的解决方案。
+
+基座分类模型
+- 借助 `SimCSE`，将 **zero-shot 分类** 转换为**句向量对齐**任务。对于一条样本 x 和对应标签 c，记 g(x, c) 为其编码向量的相似度（dot 或 cosine）。在所有候选标签中，g(x, c)为1的标签为文本分类的预测标签。
+
+**标签**都是比较短的**词语**，不适合直接求语义向量。`GenCo` 用了两个 label-prompts 进行扩充，分别为:
+
+```json
+lp1 = "Category：[label]"
+lp2 = "It is about [label]"
+```
+
+然后对 lp1 和 lp2 的语义向量求**平均值**，作为标签向量。
+
+![](https://pic3.zhimg.com/80/v2-a3ec0e6235f76f728029bbfee2a3e29a_1440w.webp)
+
+GenCo 的核心在于两次基于 Alpaca 的数据增强，出发点都是提升伪标签的预测准确度。
+- ![](https://pic1.zhimg.com/80/v2-99b0c92bb536e84f52da4c86cd4b5eb0_1440w.webp)
+
+详见原文：
+- [使用 ChatGPT 进行 zero-shot 模型的自监督训练](https://zhuanlan.zhihu.com/p/625983199)
 
 # 常规分类方法
 
@@ -1624,6 +1693,7 @@ print(res)
 print('-'*20)
 print('\n'.join(['%s\t%s\t%s\t%s'%(i['result'][0]['text'],i['result'][0]['type'], type_info.get(i['result'][0]['type'],'未知'), i['result'][0]['confidence']) for i in res['sentence']]))
 ```
+
 
 
 # 结束
