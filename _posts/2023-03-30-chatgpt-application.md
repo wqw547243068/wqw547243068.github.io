@@ -641,54 +641,23 @@ Typeface 最大的特点是能够学习企业客户的“专有数据”。客�
 
 【2023-9-12】[大语言模型在NLP基础任务的应用案例集](https://zhuanlan.zhihu.com/p/625321362)
 
+#### 分类
+
+怎么用GPT做分类？
+
+两种方法
+- 类似bert，在输出部分加个head，输出分类得分；
+- 与clm语言模型一致，在生成类别广告词，来判断分类。
+
+详见：[文本分类专题](classification)
+
 #### NER
 
 命名实体识别任务（NER）的目标是识别出给定文本中的实体部分，一般采用**序列标注**方法进行建模，预测每个位置的token是否属于某个实体、属于哪个实体。
+- GPT-NER，序列标注→生成任务
+  - GPT生成→筛选→验证
 
-【2023-6-5】[如何用GPT大模型解决NER任务？](http://blog.itpub.net/70027828/viewspace-2956678/)
-
-北大、香农科技、浙大、亚马逊、南洋理工等多个机构近期联合发表的工作，利用GPT这类预训练大模型解决NER问题。
-- 论文：GPT-NER: Named Entity Recognition via Large Language Models
-
-GPT等大模型在众多NLP任务中都取得了非常显著的效果，但是在NER上效果却并**不理想**。造成大模型解决NER问题效果一般的核心原因
-- <span style='color:red'>NER任务和GPT训练方式的差异</span>。
-- GPT本质上是一个**生成模型**，而NER是**序列标注**任务
-
-因此将GPT应用到NER中，一个必须解决的问题: <span style='color:blue'>如何将NER任务转换成生成任务</span>。
-
-论文提出了`GPT-NER`，将NER任务通过prompt转换成生成式任务，用预训练大模型解决NER问题。
-
-GPT-NER的整体思路
-- 将NER这种**序列标注**任务，通过prompt转换成一个**生成**任务，输入到大模型中，让其生成初步的NER打标结果。
-
-由于大模型存在**幻觉**问题，对于一些非实体结果也经常打出NER标签, 使用大模型自己来验证生成的结果是否准确。整体来看，GPT-NER包括**初步结果生成**和**结果验证**两个部分，这两个步骤都由大模型自身完成。
-
-(1) 序列标注转换为生成任务
-
-整个GPT的输入包含3个主要部分：
-- Task Description：用来描述任务，例如输入I am an exelent linquist，设置场景，让模型进行角色扮演，知道自己要从语言学专业角度进行NER打标；
-- Few-shot Demonstration：给一些NER任务的示例，用来指导GPT生成的样本格式。每个样例由Input和Output组成。对于输出的格式，一种直观方法是直接输出LOC O O O这种NER打标序列。但是这种输出对GPT非常不友好。因此文中采用的输出格式为，将原来句子中的Tagging部分两侧使用@@##特殊符号进行标记；
-- Input Sentence：即待标注的样本。
-
-Prompt 样例
-- ![](http://img.blog.itpub.net/blog/2023/06/05/43caf68d8d671b6d.jpeg?x-oss-process=style/bb)
-
-(2) 样例选择
-
-Demonstration的引入相当于是在做few-shot learning，目标是希望找到一个和当前输入句子尽可能相似的文本，这样才能让待预测任务更多借鉴输入样例的知识，实现准确预测。
-
-那么如何寻找合适的样例呢？提出了一种基于样本**表示向量**+**KNN检索**的样例选择方法，整体流程如下。
-- ![](http://img.blog.itpub.net/blog/2023/06/05/b967d36773803d1f.jpeg?x-oss-process=style/bb)
-- 最基础的方法是使用一个文本表示模型（比如`SimCSE`，基于对比学习训练的句子级别表示模型）产出句子向量，计算和当前输入样本相似度，检索最相似的几个句子作为样例。然而，问题是 NER是一个token级别的序列标注任务，使用整句语义检索可能导致检索出来的句子确实语义比较像，但是NER任务上可借鉴的信息不多。
-- 因此，文中提出了一种**token级别**的检索任务，使用一个训练好的NER模型得到每个token的表示，然后根据token表示进行KNN检索出高相关的token，将包含这些token的句子作为候选样例。Token的NER向量相似的，说明在NER任务上有相似的上下文，更有可能与待预测样本在NER角度相关。
-
-（3）生成结果验证
-
-大模型幻觉现象是一个常见问题。在NER任务上，大模型经常会给非实体的词标记为实体。文中增加了一个**验证模块**，将上一步生成的初步NER结果，修改prompt的形式，再次输入到大模型进行一次验证。
-- 整个Prompt也是由 Task Description、Demonstration、Input Sentence 三个部分组成，下图是一个文中的示例。在样例选择上，也使用了类似的基于NER模型token级别表示的KNN检索方法。
-- ![](http://img.blog.itpub.net/blog/2023/06/05/4f6f5457aa6c5bf2.jpeg?x-oss-process=style/bb)
-
-GPT-NER能够达到和有监督模型**基本持平**的效果。并且本文用的是GPT3模型，随着大模型版本的进一步迭代，GPT-NER这类方法有望取代传统的有监督NER方法。
+详见：[NER专题](ner)
 
 #### 信息抽取
 
