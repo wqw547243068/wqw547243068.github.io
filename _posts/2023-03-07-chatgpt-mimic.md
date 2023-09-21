@@ -2943,6 +2943,57 @@ Llama2是当前全球范围内最强的开源大模型，但其中文能力亟�
 - Llama 2 语料库仍以**英文**（89.7%）为主，而中文仅占据了其中的 0.13%。这导致 Llama 2 很难完成流畅、有深度的中文对话。
 - llama2 对MAU超过7亿以上的公司使用，需要单独特殊申请
 
+#### Llama 2 模型结构
+
+【2023-9-21】[关于Llama 2你需要知道的那些事儿](https://zhuanlan.zhihu.com/p/652043939)
+
+Llama 2在预训练设置和模型架构上和一代模型非常相似
+- ![Llama](https://pic3.zhimg.com/80/v2-a26895320d7f67d296a320ae177c1816_1440w.webp)
+
+Llama系列模型都使用了自回归Transformer架构，即 Transformer's decoder-only架构。
+
+两代模型的一致性体现在：
+- **预归一化**（Pre-normalization）：对每一个transformer的子层输入都进行归一化，使用 RMSNorm 归一化函数
+- **SwiGLU激活函数**：在前馈神经网络（`FFN`）使用SwiGLU 激活函数替换了Transformer中的 ReLU 激活函数来提升性能
+- **旋转嵌入编码**（Rotary Positional Embeddings，`RoPE`）：RoPE可以兼顾相对位置和绝对位置的信息以提高模型的泛化能力
+
+#### Llama 2 训练
+
+Llama 2 训练过程也有两个亮点
+- 第一，**上下文长度扩大**提升了模型的理解能力；
+  - Llama 2的上下文长度比Llama扩大了一倍，从2048个token拓展至4096个token。更长的上下文窗口意味着更多的聊天用例可被采用，进而模型的理解能力得以提升。
+- 第二，**分组查询注意力机制**提高了模型的推理速度。
+  - Llama 2 30B以上的模型采用了**分组查询**注意力机制（Grouped-Query Attention，GQA）
+  - 自回归模型的解码通过缓存序列先前标记的键（K）值（V）对来加速注意力的计算。然而随着Batch Size和上下文窗口的增大，多头注意力模型（Multi-head Attenrion，MHA）的内存成本会随之显著增大。
+  - GQA的优势在于其将Query进行分组，组内共享KV，使得K和V的预测可以跨多个头共享，从而显著降低计算和内存需求，提升推理速度 。
+
+#### Llama 2-chat 微调流程
+
+Meta 致力于在偏好数据上训练奖励模型，然后采用强化学习进行优化，从而提高生成的质量。
+- SFT + RLHF by RS and PPO
+
+和InstructGPT类似，在Llama 2-chat对话模型微调流程分为：
+- 自监督训练后获得Llama 2 **基座**模型
+- 监督微调（Supervised fine-tuning，`SFT`）
+- 人类反馈强化学习（Reinforcement learning with human feedback，`RLHF`）：拒绝采样 + 近端策略优化
+
+RLHF使用了`拒绝采样`（Rejection Sampling fine-tuning，`RS`）和`近端策略优化`（Proximal Policy Optimization，`PPO`）两个优化算法。
+- 拒绝采样原理: 模型输出时采样K个结果，用当前时刻最好的奖励模型打分，选择奖励值最高的一个。
+- 在强化学习阶段进行梯度更新，并结合PPO进行RS加PPO的优化处理。
+- ![](https://pic1.zhimg.com/80/v2-93ba9ace3b9c8e4d8aee7b907aafd348_1440w.webp)
+
+Meta一共迭代了5个RLHF版本，分别从V1-V5，但仅公布了最新的V5版本。V5版本迭代的步骤下图所示。
+- ![](https://pic1.zhimg.com/80/v2-a5df08f1cf7f84e261393da9f90129fc_1440w.webp)
+
+Quality Is All You Need
+- Meta使用用户偏好数据训练的两个独立的奖励模型 Helpfulness RM 和 Safty RM，分别对有用性和安全性进行了优化。
+- SFT 过程中，Llama 2的官方论文强调了只需少量高质量的SFT偏好数据就能显著提升结果质量（Quality Is All You Need）。
+- 此外，这篇论文也是第一篇指出“RLHF从根本上提高了大模型性能的**上限**”的论文
+
+启示
+- **奖励模型**不仅是RLHF的关键，也是整个大模型效果的关键；
+- **数据质量**又是**奖励模型**的关键
+
 #### Llama 2 中文版
 
 【2023-7-20】开源社区首个能下载、能运行的开源中文 LLaMA2 模型就出现了。
