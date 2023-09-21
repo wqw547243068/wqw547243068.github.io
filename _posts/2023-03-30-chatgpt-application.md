@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: AIGC ChatGPT 智能客服
+tags: AIGC ChatGPT 智能客服 加密
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -2084,10 +2084,10 @@ GAEA分为灵魂系统和环境系统两个子系统
 
 所有用户背后没有真人操控发帖、互动，主打的就是一个纯纯的AI路线。最重要的是，他们丝毫没有意识到自己是虚拟世界的AI。
 
-### 突破审查
+### 隐私安全
 
 
-#### WormGPT
+#### WormGPT 突破审查
 
 【2023-7-25】[「邪恶版」ChatGPT 出现：每月 60 欧元，毫无道德限制，专为“网络罪犯”而生？](https://mp.weixin.qq.com/s/SUIxbjtMaZ8z95Z1egclXg)
 
@@ -2107,6 +2107,40 @@ WormGPT 基于 2021 年开源的 LLM GPT-J 模型开发，工作方式与 ChatGP
 - （1）进行 BEC 专项培训：公司应制定广泛的、定期更新的培训计划，以应对 BEC 攻击，尤其是由 AI 增强的攻击，要让员工了解到 BEC 攻击的威胁，以及 AI 将如何加大这种威胁的原理。
 - （2）强化电子邮件的验证措施：为防范 AI 驱动的 BEC 攻击，企业应执行严格的电子邮件验证流程，例如当有来自组织外部的电子邮件冒充内部高管或供应商时，系统要自动发出警报等。
 
+
+#### 加密 LLM
+
+【2023-9-20】
+- [使用 FHE 实现加密大语言模型](https://mp.weixin.qq.com/s/QFxBE7NgFVH-kNu1Il-lBA)
+- 英文原文: 【2023-8-2】[Towards Encrypted Large Language Models with FHE](https://hf.co/blog/encrypted-llm)
+
+LLM 很有吸引力，但如何保护好 用户隐私？
+- 存在向 LLM 服务提供商泄露敏感信息的风险。在某些领域，例如医疗保健、金融或法律，这种隐私风险甚至有一票否决权。
+
+备选解决方案是：**本地化部署**，LLM 所有者将其模型部署在客户的计算机上。
+- 然而，这不是最佳解决方案，因为构建 LLM 可能需要花费数百万美元 (GPT3 为 460 万美元)，而本地部署有**泄露**模型知识产权 (intellectual property, IP) 的风险。
+
+Zama 相信有两全其美之法: 同时保护**用户隐私**和**模型IP**。
+- `全同态加密` (Fully Homomorphic Encryption，FHE) 可以解决 LLM 隐私挑战
+
+Zama 解决方案是使用`全同态加密` (FHE)，在加密数据上执行函数。这种做法可以实现两难自解，既可以保护模型所有者知识产权，同时又能维护用户的数据隐私。
+- 演示表明，在 FHE 中实现的 LLM 模型保持了原始模型的预测质量。为此，需要调整 Hugging Face transformers 库 中的 GPT2 实现，使用 `Concrete-Python` 对推理部分进行改造，这样就可以将 Python 函数转换为其 FHE 等效函数。
+
+如何利用 Hugging Face transformers 库并让这些模型的某些部分在加密数据上运行。完整代码见[此处](https://github.com/zama-ai/concrete-ml/tree/17779ca571d20b001caff5792eb11e76fe2c19ba/use_case_examples/llm)。
+
+由多个 transformer block 堆叠而成的 GPT2 架构: [arch](https://en.wikipedia.org/wiki/GPT-2)
+- 最主要的是**多头注意力** (multi-head attention，MHA) 层。每个 MHA 层使用模型权重来对输入进行投影，然后各自计算注意力，并将注意力的输出重新投影到新的张量中。
+
+在 [TFHE](https://www.zama.ai/post/tfhe-deep-dive-part-1) 中，模型权重和激活均用整数表示。非线性函数必须通过**可编程自举** (Programmable Bootstrapping，PBS) 操作来实现。
+- PBS 对加密数据实施查表 (table lookup，TLU) 操作，同时刷新密文以支持 任意计算。
+- 不过，此时 PBS 的计算时间在线性运算中占主导地位。
+- ![](https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/encrypted-llm/hybrid_gpt2_visualisation.svg)
+
+利用这两种类型的运算，在 FHE 中表达任何子模型的计算，甚至完整的 LLM 计算。
+
+量化
+- 为了对加密值进行模型推理，模型的权重和激活必须被量化并转换为整数。理想情况是使用 训练后量化，这样就不需要重新训练模型了。这里，我们使用整数和 PBS 来实现 FHE 兼容的注意力机制，并检查其对 LLM 准确率的影响。
+- 4 比特量化保持了原始精度的 96%。该实验基于含有约 80 个句子的数据集，并通过将原始模型的 logits 预测与带有量化注意力头的模型的 logits 预测进行比较来计算最终指标。
 
 ## GPT 威胁
 
