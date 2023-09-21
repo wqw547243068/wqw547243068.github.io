@@ -6,7 +6,7 @@ categories: 自然语言处理
 tags: 向量化 milvus vector embedding
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
-permalink: /vec
+permalink: /emb
 ---
 
 * content
@@ -332,6 +332,132 @@ A library for Multilingual Unsupervised or Supervised word Embeddings, whose goa
 
 claude推荐用 s-bert embedding
 
+
+### C-Pack - FlagEmbedding
+
+【2023-9-21】智源推出 [语义模型：FlagEmbedding](https://zhuanlan.zhihu.com/p/657056257)
+- 论文: [C-Pack: Packaged Resources To Advance General Chinese Embedding](https://arxiv.org/pdf/2309.07597.pdf)
+- 代码：[FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding)， [中文介绍](https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md)
+
+数据集
+- 由于embedding不是确定性任务，所以对数据的规模，多样性以及质量有很高的要求
+  - 包括但不限于Retrieval，Clustering，Pair classification，Reranking，STS，Summarization，Classification）
+- 为了能达到Embedding的高区分度，至少需要上亿级别的训练实例。
+- 同时，数据集的需要来源尽量广泛来提高模型的泛化性（generality）。
+- 数据增强（Data Argumentation）对于原始数据的质量有很高的要求，所以需要进行数据清洗（Data clean），否则容易引入噪声。
+
+Training 训练一个 general-purpose 的text embeddings有两个重要因素：
+- 1）一个好的编码器。
+- 2）一个好的训练方案。
+
+虽然说能够使用 unlabeled data 并基于 Bert 或者是T5能极大地提高预训练模型的性能，但是光这样还是不够的，需要通过复合的训练方案。
+- 以面向嵌入（embedding）的预训练来准备文本编码器
+- 对比学习需要从复杂的负采样中提高嵌入的可辨别性
+- 基于指令微调来集成文本嵌入的不同表示能力
+
+(1) Pre-training
+- 使用为embedding任务量身定做的算法模型，wudao数据集，高质量，多样性的数据集来进行中文语言模型的预训练。
+- 框架使用的是`RetroMAE`中的`MAE-style`，简单但是高效。Masked的文本被编码到其嵌入中，然后在轻量级解码器上恢复干净的文本：
+- ![](https://pic1.zhimg.com/80/v2-0371ca9ad3f1db22a492ead11d5d5460_1440w.webp)
+- 其中 Enc，Dec分别表示encoder和decoder，X， X'表示初始文本和masked 文本。
+
+(2) General purpose fine-tuning
+- 预训练模型用C-MTP的unlabeled data 进行对比学习，从negatives 来学习不同文本之间的差异
+- ![](https://pic3.zhimg.com/80/v2-755911ce893ac29b57c54ad4aa3c3332_1440w.webp)
+- p和q都是文本对，Q' 是negatives q'的集合，t是温度。对比学习的关键因素是negatives，除了negatives mining之外，还使用了`in-batch negative samples` 技术，同时使用大batch size（19200），github上的代码还有`cross device negatives`跨设备负样本。
+
+(3) Task-speific fine-tuning
+- 针对特定任务的微调。使用 C-MTP（labeled data）进一步微调嵌入模型。带标签的数据集较小但质量较高。然而，所包含的任务类型不同，其影响可能相互矛盾。这里作者用了两个方式去解决这个问题：
+- 1）指令微调来帮助模型来区分不同的任务。对于每一个文本对(p,q), 特定任务的指令 $I_t$ 会被附加到query这一端，改写之后的query： $q' \leftarrow q + I_t$ . 这种指令是偏向于口语话的，例如“search relevant passages for the query”. 同时使用ANN-style策略进行negative sampling。
+
+论文没有提出很新的训练方法、微调技巧，从基本内容上
+- 先进行Bert类型的模型预训练，RetroMAE方法
+- 然后进行无监督学习（对比学习）
+- 最后是多任务的无监督学习（加入指令来区分不同的任务）。
+
+模型的效果表现出色，数据集的构建给之后的研究者提供了一个很好的Benchmark。
+- ![](https://pic2.zhimg.com/80/v2-a1ec17e47b55792ab42188a7ebfa5ba1_1440w.webp)
+
+baai-general-embedding 模型在 MTEB 和 C-MTEB 排行榜上都实现了最先进的性能
+- 超过 OpenAI text-embedding-ada-002 和 m3e-large
+
+
+```sh
+pip install -U FlagEmbedding
+```
+
+使用
+
+```py
+from FlagEmbedding import FlagModel
+sentences = ["样例数据-1", "样例数据-2"]
+model = FlagModel('BAAI/bge-large-zh-v1.5', 
+                  query_instruction_for_retrieval="为这个句子生成表示以用于检索相关文章：",
+                  use_fp16=True) # 设置use_fp16为True可以加快计算，效果会稍有下降
+embeddings_1 = model.encode(sentences)
+embeddings_2 = model.encode(sentences)
+similarity = embeddings_1 @ embeddings_2.T
+print(similarity)
+
+# 对于短查询到长文档的检索任务，请对查询使用 encode_queries() 函数，其会自动为每个查询加上指令
+# 由于候选文本不需要添加指令，检索中的候选集依然使用 encode() 或 encode_corpus() 函数
+queries = ['query_1', 'query_2']
+passages = ["样例文档-1", "样例文档-2"]
+q_embeddings = model.encode_queries(queries)
+p_embeddings = model.encode(passages)
+scores = q_embeddings @ p_embeddings.T
+```
+
+Instruction参数 query_instruction_for_retrieval 请参照： [Model List](https://github.com/FlagOpen/FlagEmbedding/tree/master#model-list). 当加载微调后的模型时
+- 如果没有在训练的json文件中为query添加指令，则将其设置为空字符串""; 
+- 如果训练数据中为query添加了指令，更改为新设置的指令。
+
+FlagModel支持`GPU`也支持`CPU`推理。
+- 如果GPU可用，其默认优先使用GPU。
+- 如果想禁止其使用GPU，设置 `os.environ["CUDA_VISIBLE_DEVICES"]=""` 
+- 为提高效率，FlagModel默认会使用所有的GPU进行推理。如果想要使用具体的GPU，请设置 `os.environ["CUDA_VISIBLE_DEVICES"]`。
+
+
+Langchian中使用bge模型：
+
+```py
+from langchain.embeddings import HuggingFaceBgeEmbeddings
+model_name = "BAAI/bge-large-en-v1.5"
+model_kwargs = {'device': 'cpu'}
+encode_kwargs = {'normalize_embeddings': True} # set True to compute cosine similarity
+model = HuggingFaceBgeEmbeddings(
+    model_name=model_name,
+    model_kwargs=model_kwargs,
+    encode_kwargs=encode_kwargs
+)
+```
+
+transformers 中使用
+
+```py
+from transformers import AutoTokenizer, AutoModel
+import torch
+# Sentences we want sentence embeddings for
+sentences = ["样例数据-1", "样例数据-2"]
+
+# Load model from HuggingFace Hub
+tokenizer = AutoTokenizer.from_pretrained('BAAI/bge-large-zh-v1.5')
+model = AutoModel.from_pretrained('BAAI/bge-large-zh-v1.5')
+
+# Tokenize sentences
+encoded_input = tokenizer(sentences, padding=True, truncation=True, return_tensors='pt')
+# 对于短查询到长文档的检索任务, 为查询加上指令
+# encoded_input = tokenizer([instruction + q for q in queries], padding=True, truncation=True, return_tensors='pt')
+
+# Compute embeddings
+with torch.no_grad():
+    model_output = model(**encoded_input)
+    # Perform pooling. In this case, cls pooling.
+    sentence_embeddings = model_output[0][:, 0]
+# normalize embeddings
+sentence_embeddings = torch.nn.functional.normalize(sentence_embeddings, p=2, dim=1)
+print("Sentence embeddings:", sentence_embeddings)
+```
 
 
 ## 向量评估
