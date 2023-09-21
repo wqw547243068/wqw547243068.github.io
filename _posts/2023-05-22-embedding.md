@@ -335,6 +335,8 @@ claude推荐用 s-bert embedding
 
 ### C-Pack - FlagEmbedding
 
+#### 介绍
+
 【2023-9-21】智源推出 [语义模型：FlagEmbedding](https://zhuanlan.zhihu.com/p/657056257)
 - 论文: [C-Pack: Packaged Resources To Advance General Chinese Embedding](https://arxiv.org/pdf/2309.07597.pdf)
 - 代码：[FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding)， [中文介绍](https://github.com/FlagOpen/FlagEmbedding/blob/master/README_zh.md)
@@ -345,6 +347,8 @@ claude推荐用 s-bert embedding
 - 为了能达到Embedding的高区分度，至少需要上亿级别的训练实例。
 - 同时，数据集的需要来源尽量广泛来提高模型的泛化性（generality）。
 - 数据增强（Data Argumentation）对于原始数据的质量有很高的要求，所以需要进行数据清洗（Data clean），否则容易引入噪声。
+
+#### 原理
 
 Training 训练一个 general-purpose 的text embeddings有两个重要因素：
 - 1）一个好的编码器。
@@ -375,6 +379,8 @@ Training 训练一个 general-purpose 的text embeddings有两个重要因素：
 - 然后进行无监督学习（对比学习）
 - 最后是多任务的无监督学习（加入指令来区分不同的任务）。
 
+#### 效果
+
 模型的效果表现出色，数据集的构建给之后的研究者提供了一个很好的Benchmark。
 - ![](https://pic2.zhimg.com/80/v2-a1ec17e47b55792ab42188a7ebfa5ba1_1440w.webp)
 
@@ -382,11 +388,13 @@ baai-general-embedding 模型在 MTEB 和 C-MTEB 排行榜上都实现了最先�
 - 超过 OpenAI text-embedding-ada-002 和 m3e-large
 
 
+#### 安装
+
 ```sh
 pip install -U FlagEmbedding
 ```
 
-使用
+#### FlagEmbedding 使用
 
 ```py
 from FlagEmbedding import FlagModel
@@ -406,6 +414,14 @@ passages = ["样例文档-1", "样例文档-2"]
 q_embeddings = model.encode_queries(queries)
 p_embeddings = model.encode(passages)
 scores = q_embeddings @ p_embeddings.T
+# ------ 计算相似度 --------
+from FlagEmbedding import FlagReranker
+reranker = FlagReranker('BAAI/bge-reranker-large', use_fp16=True) #设置 fp16 为True可以加快推理速度，效果会有可以忽略的下降
+
+score = reranker.compute_score(['query', 'passage']) # 计算 query 和 passage的相似度
+print(score)
+scores = reranker.compute_score([['query 1', 'passage 1'], ['query 2', 'passage 2']])
+print(scores)
 ```
 
 Instruction参数 query_instruction_for_retrieval 请参照： [Model List](https://github.com/FlagOpen/FlagEmbedding/tree/master#model-list). 当加载微调后的模型时
@@ -417,6 +433,7 @@ FlagModel支持`GPU`也支持`CPU`推理。
 - 如果想禁止其使用GPU，设置 `os.environ["CUDA_VISIBLE_DEVICES"]=""` 
 - 为提高效率，FlagModel默认会使用所有的GPU进行推理。如果想要使用具体的GPU，请设置 `os.environ["CUDA_VISIBLE_DEVICES"]`。
 
+#### Langchian 中使用
 
 Langchian中使用bge模型：
 
@@ -431,6 +448,8 @@ model = HuggingFaceBgeEmbeddings(
     encode_kwargs=encode_kwargs
 )
 ```
+
+#### transformers 中使用
 
 transformers 中使用
 
@@ -457,6 +476,19 @@ with torch.no_grad():
 # normalize embeddings
 sentence_embeddings = torch.nn.functional.normalize(sentence_embeddings, p=2, dim=1)
 print("Sentence embeddings:", sentence_embeddings)
+# ------ 计算相似度 --------
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained('BAAI/bge-reranker-large')
+model = AutoModelForSequenceClassification.from_pretrained('BAAI/bge-reranker-large')
+model.eval()
+
+pairs = [['what is panda?', 'hi'], ['what is panda?', 'The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.']]
+with torch.no_grad():
+    inputs = tokenizer(pairs, padding=True, truncation=True, return_tensors='pt', max_length=512)
+    scores = model(**inputs, return_dict=True).logits.view(-1, ).float()
+    print(scores)
 ```
 
 
