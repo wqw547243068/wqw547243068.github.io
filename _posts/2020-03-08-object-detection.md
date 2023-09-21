@@ -16,7 +16,8 @@ mathjax: true
 
 ## 背景
 
-- 计算机视觉领域的典型任务就是目标检测
+计算机视觉领域的典型任务就是目标检测
+
 - 目标检测最新趋势：[deep_learning_object_detection](https://github.com/hoya012/deep_learning_object_detection)
 - 发展历史：
 ![](https://github.com/hoya012/deep_learning_object_detection/raw/master/assets/deep_learning_object_detection_history.PNG)
@@ -45,6 +46,9 @@ mathjax: true
 - 【2018-4-7】[从RCNN到SSD，这应该是最全的一份目标检测算法盘点](https://www.jiqizhixin.com/articles/2018-04-27)
 
 本文对目标检测进行了整体回顾，第一部分从 RCNN 开始介绍基于候选区域的目标检测器，包括 Fast R-CNN、Faster R-CNN 和 FPN 等。第二部分则重点讨论了包括 YOLO、SSD 和 RetinaNet 等在内的单次检测器，它们都是目前最为优秀的方法。
+
+排行榜
+- huggingface 榜单：[object_detection_leaderboard](https://huggingface.co/spaces/rafaelpadilla/object_detection_leaderboard)
 
 ## 基于候选区域的目标检测器
 
