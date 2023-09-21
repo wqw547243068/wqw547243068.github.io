@@ -188,7 +188,11 @@ HTTP常见的方法：
 
 # API
 
-【2022-1-19】API大全：[apishop](https://www.apishop.net/#/)，试用
+
+- 【2023-9-21】[rapidapi](https://rapidapi.com/), api大全，付费就可以使用
+- 【2022-1-19】API大全：[apishop](https://www.apishop.net/#/)，试用
+
+## API 介绍
 
 - **API**(application programming interfaces)，即应用程序编程接口。API由服务器（Server）提供（服务器有各种各样的类型，一般我们浏览网页用到的是web server，即网络服务器），通过API，计算机可以读取、编辑网站数据，就像人类可以加载网页、提交信息等。通俗地，API可以理解为家用电器的插头，用户只提供插座，并执行将插头插入插座的行为，不需要考虑电器内部如何运作。从另外一个角度上讲API是一套协议，规定了与外界的沟通方式：如何发送请求和接受响应。
 
