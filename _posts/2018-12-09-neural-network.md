@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝
+tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -171,10 +171,12 @@ mathjax: true
 
 
 
+# 深度学习核心
 
-# [深度学习的核心](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/C-%E6%95%B0%E5%AD%A6/B-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A0%B8%E5%BF%83.md)
+[深度学习的核心](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/C-%E6%95%B0%E5%AD%A6/B-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A0%B8%E5%BF%83.md)
+
 **说明**
----
+
 该文档为“**3Blue1Brown - 深度学习系列视频**”的整理，主要包括三个视频
 - [神经网络的结构](https://www.bilibili.com/video/av15532370)
 - [梯度下降法](https://www.bilibili.com/video/av16144388)
@@ -258,7 +260,7 @@ mathjax: true
 - [结束](#结束)
 
 
-# 总结
+总结
 
 - 【2018-6-9】@毅马当闲
 - 最近越来越多的证据表明，通过拟合数据得到的深度神经网络模型（在classification，detection，segmentation等）对输入很小的数值扰动和很小的变换deformation（甚至平移）都是不稳定的（unstable)，更谈不上鲁棒。不要再相信别人show的成功例子 -- 我过去就是被别人show的一些例子迷糊，有些相信这样的模型（通过在augmented数据上训练）会是稳定的，而自己没有去做严格的验证 -- 肠子都有些悔青了。但应该不会再被忽悠了。所以目前基于深度学习的“人工智能”，用在不痛不痒的应用上，也就罢了。把这样的模型用在严肃的问题上（例如需要有安全、隐私、可靠性保障的），应该是十分危险的。虽然这并不是说，通过系统严格的改进，深度模型和算法就不能没有性能上保障。但那需要建立一套完整的理论体系，正确的模型需要推导出来（而不是试错出来），而其性能保证也必须要有严格的证明。其实不少顶尖的研究人员都已经意识到这一点，今后几年，大家应该会看到系统的理论研究的强势回归。不会让深度学习把传统工程理论已经得到的常识和教训再从新发明一遍
@@ -278,6 +280,11 @@ mathjax: true
 ![](https://pic4.zhimg.com/80/v2-b72bc2abcfd8a8605095c51df052a04f_720w.jpg)
 ![](https://pic2.zhimg.com/80/v2-aabf8d8ece711ca0fb83278f61ada13d_720w.jpg)
 > 这个示例相当于深度学习领域中的 "Hello World".
+
+## 神经网络如何记忆
+
+【2023-9-21】[神经网络是如何存储记忆的？](https://www.toutiao.com/video/7281200537050186255), 英文视频讲解
+
 
 ## 神经元（隐藏单元）与隐藏层
 
@@ -455,7 +462,7 @@ mathjax: true
 而 `ReLU` 比 `sigmoid` 更接近这一过程。
 
 
-# 梯度下降法
+## 梯度下降法
 
 内容：
 - 梯度下降的思想
@@ -481,7 +488,7 @@ mathjax: true
 - 在训练开始前，这些参数是随机初始化的
   > 确实存在一些随机初始化的策略，但目前来看，都只是“锦上添花”
 
-## 损失函数（Loss Function）
+### 损失函数（Loss Function）
 
 显然，随机初始化不会有多好的表现
 - 此时需要定义一个“**损失函数**”来告诉计算机：正确的输出应该只有标签对应的那个神经元是被激活的
@@ -511,7 +518,7 @@ mathjax: true
   
 - 从这个角度看，损失函数并不是神经网络的一部分，而是训练神经网络时需要用到的工具
 
-## 梯度下降法（Gradient Descent）
+### 梯度下降法（Gradient Descent）
 
 **如何优化这些网络参数？**
 
@@ -565,11 +572,12 @@ mathjax: true
 
   ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180703102940.png)
 
-### 理解梯度下降法的另一种思路
+#### 理解梯度下降法的另一种思路
+
 - 梯度下降法的一般处理方式：
   - 将所有网络参数放在一个列向量中，那么损失函数的负梯度也是一个向量
 
-    ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180703103735.png)
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180703103735.png)
 
 - 负梯度中的每一项实际传达了两个信息
 
@@ -616,10 +624,11 @@ mathjax: true
 - 这也解释了为什么要求神经元的激活值是连续的
   > 生物学中的神经元是二元式的
 
-### 随机梯度下降（Stochastic Gradient Descent）
+#### 随机梯度下降（Stochastic Gradient Descent）
+
 - 基本的梯度下降法要求每次使用**所有训练样本**的平均损失来更新参数，也称为“**批量梯度下降**”
 
-  原则上是这样，但是为了**计算效率**，实践中并不会这么做
+原则上是这样，但是为了**计算效率**，实践中并不会这么做
 
 - 一种常用的方法是每次只随机选取**单个样本**的损失来计算梯度，该方法称为“**随机梯度下降**”（Stochastic Gradient Descent, SGD），它比批量梯度下降法要快得多
 
@@ -637,8 +646,9 @@ mathjax: true
 
   > 《深度学习》 8.1.3 批量算法和小批量算法
 
-**神经网络的优化难题**
+神经网络的优化难题
 ---
+
 - 有一个策略可以保证最终解**至少**能到达一个局部极小值点：使每次**移动的步幅和斜率成正比**；
 
   因为在最小值附近的斜率会趋于平缓，这将导致每次移动步幅越来越小，防止跳出极值点
@@ -656,6 +666,7 @@ mathjax: true
   > [1412.0233] The Loss Surfaces of Multilayer Networks https://arxiv.org/abs/1412.0233
 
 ## 再谈神经网络的运作机制
+
 - 在第一章介绍[神经网络的运作机制](#12-神经网络的运作机制权重偏置激活函数)时，我们对神经网络的**期望**是：
 
   第一个隐藏层能够识别短边，第二个隐藏层能够将短边拼成圆圈等基本笔画，最后将这些部件拼成数字
@@ -700,6 +711,7 @@ mathjax: true
   ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180703143800.png)
 
 ## 推荐阅读
+
 - Neural Networks and Deep Learning: http://neuralnetworksanddeeplearning.com/
 - Chris Olah's blog: http://colah.github.io/
   - [Neural Networks, Manifolds, and Topology](http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/)
@@ -710,9 +722,9 @@ mathjax: true
   - Neural Networks Demystified [Part 1: Data and Architecture] - YouTube https://www.youtube.com/watch?v=bxe2T-V8XRs
 
 
-# 反向传播算法（Backpropagation Algorithm, BP）
+## 反向传播算法（Backpropagation Algorithm, BP）
 
-## Jacobian 矩阵
+### Jacobian 矩阵
 
 【2023-7-11】[Jacobian 矩阵：从手推反向传播梯度开始](https://zhuanlan.zhihu.com/p/641691381)
 - ![计算图](https://pic3.zhimg.com/80/v2-11d81e56b8bfb9980fffa4c21c1b8b22_720w.webp)
@@ -737,7 +749,7 @@ J 矩阵是否解决了本文开头提出的几个问题：
 BN 算法流程
 - ![](https://pic3.zhimg.com/80/v2-1ee255884924afb954e12c33108737aa_720w.webp)
 
-## 反向传播的直观理解
+### 反向传播的直观理解
 
 - 梯度下降法中需要用到损失函数的梯度来决定下降的方向，
 
@@ -750,7 +762,7 @@ BN 算法流程
   ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180703103757.png)
 
 **示例：单个训练样本对参数调整的影响**
----
+
 - 假设现在的网络还没有训练好，那么输出层的激活值看起来会很随机
 
   而我们希望的输出应该是正确类别对应的输出值最大，其他尽可能接近 0
@@ -834,13 +846,13 @@ BN 算法流程
 - mnielsen/neural-networks-and-deep-learning/[network.py](https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py)
 
 
-## 反向传播的微积分原理
+### 反向传播的微积分原理
 
 从数学的角度看，反向传播本质上就是**利用链式法则求导**的过程；
 
 本节的目标是展示机器学习领域是如何理解链式法则的。
 
-### 示例：每层只有一个神经元的网络
+#### 示例：每层只有一个神经元的网络
 
 ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180704161115.png)
 
@@ -935,7 +947,7 @@ BN 算法流程
 
 > 本系列视频称损失函数为“代价函数”，所以使用 `C` 表示代价（Cost）；更多会用 `L` 表示损失（Loss）；二者没有区别，但这里已经使用 L 表示网络的层数，所以使用 `C` 表示损失函数
 
-### 更复杂的示例
+#### 更复杂的示例
 
 - 更复杂的神经网络在公式上并没有复杂很多，只有少量符号的变化
 - 首先，利用**下标**来区分同一层不同的神经元和权重
@@ -956,7 +968,7 @@ BN 算法流程
 - 事实上，如果都使用矢量表示，那么整个推导公式跟单神经元的网络几乎是完全一样的
 - 链式法则给出了决定梯度每个分量的偏导，使我们能不断下探，最小化神经网络的损失。
 
-### 反向传播的 4 个基本公式
+#### 反向传播的 4 个基本公式
 
 - **问题描述**：
 
@@ -1015,7 +1027,7 @@ BN 算法流程
 
 这一篇杂文，把之前收集的神经网络点点滴滴，梳理、串联起来，便于理解，如有不当，麻烦及时指出，邮箱：wqw547243068@163.com。
 
-# 神经网络发展历史
+## 神经网络发展历史
 
 先看看这几张图：
 - ![history](https://raw.githubusercontent.com/wqw547243068/wqw547243068.github.io/master/wqw/fig/nn_history.jpg)
@@ -1027,7 +1039,7 @@ BN 算法流程
 - 第三次，2006年，祖师爷Goeffrey Hinton坐了几十年冷板凳，琢磨出pre-training，DBN等，接着一发不可收拾。Yann LeCun将CNN发扬光大（将BP与CNN结合，推出第一个可用的Le-Net，深度学习入门者的hello world），Jürgen Schmidhuber 90年代发明的LSTM，沉寂多年后复活了，Yoshua Bengio开创了神经网络语言模型。加上大数据时代，GPU的发展等，诸多因素导致深度学习“大爆炸”。
 > 注：这里不做过多介绍，详情参考，[「Deep Learning」读书系列分享（一）](https://www.leiphone.com/news/201708/LEBNjZzvm0Q3Ipp0.html)
 
-# 神经网络基础回顾
+## 神经网络基础回顾
 
 ![neural_cell](https://pic2.zhimg.com/80/v2-2e8d1a68d575f89c2fd471a25e69668d_hd.jpg)
 
@@ -1049,7 +1061,7 @@ BN 算法流程
 
 参考：[神经网络用作分类器](https://www.cnblogs.com/babyfei/p/7003299.html)
 
-# 十万个为什么
+十万个为什么
 
 神经网络从名不见经传到现在大红大紫，成了AI浪潮的主力。只要跟AI相关，基本都要扯上神经网络，从多层感知器`MLP`，到卷积神经网络`CNN`，循环神经网络`RNN`，再到自编码器`AE`，变分自编码`VAE`，生成对抗网络`GAN`，一个又一个，让人应接不暇。
 
@@ -1290,6 +1302,7 @@ Andrej karparthy的[ConvNetJS](https://cs.stanford.edu/people/karpathy/convnetjs
 ![nn_ex](https://p9.pstatp.com/large/6ec80010113570eab547)
 
 神经网络可解释性仍然是一个模糊地带，没有达成共识。
+
 
 
 
