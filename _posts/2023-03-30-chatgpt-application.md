@@ -1139,8 +1139,9 @@ MathGPT 的数学计算能力已覆盖小学、初中、高中的数学题，题
 
 【2023-9-22】[数学能力超过ChatGPT！上海交大计算大模型登开源榜首](https://www.toutiao.com/article/7281535490338472484)
 
-上海交大GAIR实验室出品的[Abel](https://github.com/GAIR-NLP/abel)专有大模型：
+上海交大GAIR实验室出品的[Abel](https://gair-nlp.github.io/abel/)专有大模型：
 - 挪威数学家尼尔斯·阿贝尔（Niels Abel）的名字命名的，以此向阿贝尔在代数和分析方面的开创性工作致敬。
+- [github](https://github.com/GAIR-NLP/abel)
 
 效果
 - 准确率高达83.6%，在开源模型中位列第一;
