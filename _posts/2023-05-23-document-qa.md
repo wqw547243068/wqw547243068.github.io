@@ -14,6 +14,9 @@ permalink: /doc_chat
 
 # 文档问答
 
+
+## 资讯
+
 【2023-3-27】文档问答
 
 作者：[强化学徒](https://www.zhihu.com/question/589726461/answer/2961450933)
@@ -32,6 +35,9 @@ permalink: /doc_chat
 【2023-6-26】吴恩达大模型系列课程：
 - [LangChain for LLM Application Development](https://learn.deeplearning.ai/langchain/lesson/1/introduction)
 - 学习笔记：[基于LangChain开发大语言应用模型](https://blog.csdn.net/qq_36080693/article/details/131269201)
+
+- 【2023-9-22】LLM Search：提供一个方便的基于LLM的问答系统，可与多个本地文档集合进行交互
+  - 'LLM Search - Querying local documents, powered by LLM' Denis Lapchev [GitHub](github.com/snexus/llm-search)
 
 ## 背景
 
