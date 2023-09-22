@@ -1124,6 +1124,60 @@ Smart Siri 不足：
 
 Chat Notebook中，设置了聊天单元（chat cell）和聊天块（chatblock）
 
+##### 好未来：MathGPT
+
+【2023-8-24】[MathGPT](https://www.mathgpt.com/) 是好未来自主研发，面向全球数学爱好者和科研机构，以解题和讲题算法为核心的大模型。
+
+MathGPT 的数学计算能力已覆盖小学、初中、高中的数学题，题目类型涵盖计算题、应用题、代数题等多个类型，还可以针对题目进行追问，暂未开放数学之外的问答互动。
+- ![](https://img.ithome.com/newsuploadfiles/2023/8/37eceb0e-ad2e-4fab-b586-faa309860be0.png?x-bce-process=image/format,f_avif)
+
+并开源数据集
+- TAL-SCQ5K-CN 和 TAL-SCQ5K-EN数据集(各3K训练集和2K测试集)
+- 题目为单选形式，涉及小初高阶段数学内容，带有详细的解析步骤便于进行COT的训练。
+
+##### 上海交大 Abel
+
+【2023-9-22】[数学能力超过ChatGPT！上海交大计算大模型登开源榜首](https://www.toutiao.com/article/7281535490338472484)
+
+上海交大GAIR实验室出品的[Abel](https://github.com/GAIR-NLP/abel)专有大模型：
+- 挪威数学家尼尔斯·阿贝尔（Niels Abel）的名字命名的，以此向阿贝尔在代数和分析方面的开创性工作致敬。
+
+效果
+- 准确率高达83.6%，在开源模型中位列第一;
+- 70B规模的Abel打败了曾经的SOTA —— `WizardMath`
+- 商业闭源模型算进来，Abel也仅次于`GPT-4`、`Claude-2`和`PaLM-2-Flan`这些最著名的模型。
+- GSM8k数据集上，70B参数量的Abel碾压所有开源模型，还超过了ChatGPT。
+- 甚至在新数据集TALSCQ-EN上，Abel的表现比GPT-4还要强
+- 在难度更高的MATH（竞赛题目）数据集中，开源模型的前三名被3个规模的Abel包揽，加上闭源也仅次于Google和OpenAI的产品。
+- 新数据集TALSCQ-EN对Abel进行测试，结果超过了GPT-4。
+
+实现这样效果的Abel，成分可以说是十分“单纯”：
+- 没有使用工具
+- 没有使用数学领域的大规模预训练数据
+- 没有使用奖励模型
+- 没有使用RLHF
+- 仅使用有监督精调（Supervised Fine-tuning，SFT）
+
+“保姆级”微调训练策略
+- 核心奥义就是**高质量**训练数据。
+
+Abel使用数据经过精心策划，不仅包含问题**答案**，还要能告诉模型找到正确答案的**方法**。
+
+为此，研究团队提出了一种叫做`家长监督`（Parental Oversight）的“保姆级”微调训练策略。在家长监督的原则之下，团队仅通过`SFT`方式就完成了Abel的训练。
+
+为了评价Abel的鲁棒性，研究团队还用GPT4对GSM8k中的数字进行了修改，测试Abel是否依然能解出正确的答案。结果显示，在调整版GSM8k数据集下，70B参数的Abel鲁棒性超过了同等规模的WizardMath。
+
+
+鸡兔同笼问题的变体：
+>Brown由牛和鸡一共60只，鸡的数量是牛的两倍，一共有多少条腿？
+
+Llama-2出师不利，而且不是计算错误，是逻辑上就有问题,Abel则成功地解决了这个问题。
+
+>12，21，6，11和30的中位数与平均数的和是多少？
+
+Abel依旧是正确地做出了这道题
+
+
 ### 文本创作
 
 
