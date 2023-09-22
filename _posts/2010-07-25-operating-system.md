@@ -64,6 +64,12 @@ permalink: /os
 ## Linux
 
 
+### Ubuntu
+
+[Ubuntu官网下载](https://ubuntu.com/download/desktop/)
+
+
+
 ## Mac
 
 [Mac os苹果操作系统的历史进化之路](https://www.bilibili.com/video/BV1oW411z73P)
@@ -88,6 +94,16 @@ permalink: /os
 
 搭载基于 Intel 处理器的 Mac - 具有专用内存的图形适配器：
 - ![](http://kb.parallels.com/Attachments/kcs-178392/Intel%20memory.png)
+
+
+### 虚拟机 
+
+macOS上可选的虚拟机软件主要有三款：`VirtualBox`、`VMWare Fusion`和`Parallel Desktop`
+- 如果是从Windows过来的用户，并且之前关注过虚拟机，那前面两款应该都比较熟悉，Windows上都有他们对应的版本
+- 只有Parallel Desktop是Mac平台独占应用。
+
+[Parallel Desktop官网](https://www.parallels.cn/products/desktop/), 安装器 2m，下载安装300+M 软件
+
 
 
 ## 操作系统基本架构
