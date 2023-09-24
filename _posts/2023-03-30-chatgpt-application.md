@@ -1141,7 +1141,7 @@ MathGPT 的数学计算能力已覆盖小学、初中、高中的数学题，题
 
 上海交大GAIR实验室出品的[Abel](https://gair-nlp.github.io/abel/)专有大模型：
 - 挪威数学家尼尔斯·阿贝尔（Niels Abel）的名字命名的，以此向阿贝尔在代数和分析方面的开创性工作致敬。
-- [github](https://github.com/GAIR-NLP/abel)
+- [github](https://github.com/GAIR-NLP/abel)，作者刘鹏飞（prompt learning提出人）
 
 效果
 - 准确率高达83.6%，在开源模型中位列第一;
