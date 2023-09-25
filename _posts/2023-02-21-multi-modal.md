@@ -354,7 +354,25 @@ UNITER的思路是通过使用**单流**结构，直接将视觉特征和文本�
 
 ### 新模型
 
-【2023-7-27】[Shikra: Unleashing Multimodal LLM’s Referential Dialogue Magic](https://arxiv.org/pdf/2306.15195.pdf)
+- 【2023-7-27】[Shikra: Unleashing Multimodal LLM’s Referential Dialogue Magic](https://arxiv.org/pdf/2306.15195.pdf)
+- 【2023-9-25】[多模态大模型最全综述来了！7位微软研究员大力合作，成文119页](https://www.toutiao.com/article/7282646391107715620)
+
+
+现象：
+>多模态基础模型已经从**专用**走向**通用**。
+
+#### 综述
+
+五个具体研究主题：[多模态大模型最全综述来了！7位微软研究员大力合作，成文119页](https://www.toutiao.com/article/7282646391107715620)
+- 视觉理解: 根据监督信号的不同，分类：**标签**监督、**语言**监督（以CLIP为代表）和只有**图像**的自监督。
+  - 图像监督：监督信号是从图像本身中挖掘出来的，流行的方法包括对比学习、非对比学习和masked image建模
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/95b27b56c3764e15995dad6abe37057f~tplv-tt-origin-asy2:5aS05p2hQOmHj-WtkOS9jQ==.image?_iz=58558&from=article.pc_detail&x-expires=1696245058&x-signature=qhKjbL1mN6rd88II0W8%2BpLSkiUI%3D)
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/ba3fb9cf423c40e38fd2f27eab70dc15~tplv-tt-origin-asy2:5aS05p2hQOmHj-WtkOS9jQ==.image?_iz=58558&from=article.pc_detail&x-expires=1696245058&x-signature=UM3NCg0NpHEJtHmU73hwHTyh2t0%3D)
+- 视觉生成： 空间可控生成、基于文本再编辑、更好地遵循文本提示和生成概念定制（concept customization）四个方面
+- 统一视觉模型
+- LLM加持的多模态大模型
+- 多模态agent
+
 
 #### ALBEF
 
