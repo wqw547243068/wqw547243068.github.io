@@ -5040,10 +5040,12 @@ set smartcase " 如果同时打开了ignorecase，那么对于只有一个大写
 ## 安装
 
 - 安装：
+
 ```shell
 pip install jupyter
 ```
 - 速度慢？设置清华源：
+
 ```shell
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
@@ -5100,7 +5102,7 @@ jupyter notebook --generate-config
 - 服务端终端输入：`ipython`
 - 继续输入：
 
-```python
+```py
 from notebook.auth import passwd;passwd() # python2
 from IPython.lib import passwd;passwd() # python3
 # python>3.8上述方法已失效：AttributeError: module 'IPython.lib' has no attribute 'passwd'
@@ -5113,7 +5115,7 @@ python -c "from notebook.auth import passwd; print(passwd())" # python 3.10
 
 - 修改配置文件
 
-```shell
+```sh
 vim ~/.jupyter/jupyter_notebook_config.py
 # 更新如下参数：
 c.NotebookApp.ip='*' # 就是设置所有ip皆可访问
@@ -5209,6 +5211,11 @@ alias test echo "hello" # 设置别名
 %%script # 写bash、perl、javascript、js 等命令, 不过经过测试，在jupyter notebook中不友好，在ipython中没什么问题。
 %%script bash # bash环境
 %%script python2 # py2
+
+# 清楚变量
+%reset # 魔法命令清除所有的变量、名称空间和引用
+del variable_name # Python等效
+
 ```
 
 IPython 有一个 %% script 魔法操作符, 可以在一个子进程中运行其它语言的解释器，包括: bash, ruby, perl, zsh, R, 等等
@@ -5403,7 +5410,7 @@ HTML('<iframe width="560" height="315" src="https://www.youtube.com/embed/S_f2qV
 
 或者使用魔法命令
 
-```python
+```py
 %%HTML
 <audio controls>
   <source src="AUDIO-FILE.mp3">
