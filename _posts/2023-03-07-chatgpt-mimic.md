@@ -4293,6 +4293,7 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 
 ### 百川智能(LLaMA改进) -- 可商用
 
+[百川智能](https://www.baichuan-ai.com/home)
 
 #### baichuan-7B
 
@@ -4367,6 +4368,32 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 【Model Scope】
 - [预训练模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Base)
 - [对话模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Chat/)
+
+
+#### baichuan2-53b
+
+【2023-9-25】[百川智能](https://www.baichuan-ai.com/home)正式发布全新升级的530亿参数大模型——`Baichuan2-53B`。
+- 数学和逻辑推理能力显著提升。
+- 通过高质量数据体系和搜索增强，Baichuan2-53B 幻觉大大降低，是目前国内幻觉问题**最低**的大模型。
+
+不仅如此，作为首批通过备案的大模型企业，百川智能还开放了Baichuan2-53B API接口。百川智能正式进军To B领域，从此将开启商业化进程
+
+通过构建**高质量数据体系**以及**搜索增强技术**两个方面的优化，Baichuan2-53B有效降低了模型幻觉。
+- 高质量数据构建上，Baichuan2-53B 独创了一套数据质量体系。
+  - 以低质、优质为标准将数据进行分类，确保Baichuan2-53B始终使用优质数据进行预训练。
+- 信息获取方面，Baichuan2-53B对多个模块进行了升级，包括：指令意图理解、智能搜索和结果增强等关键组件。
+
+这一综合体系通过深入理解用户指令，精确驱动查询词的搜索，最终结合大语言模型技术，优化模型结果生成的可靠性，实现更精确、更智能的模型回答结果，减少模型幻觉。
+
+「勾三股四弦五」
+- GPT-4显然是在胡说八道
+- Baichuan2-53B一次就给出了正确的回答
+
+周树人和鲁迅是不是同一个人
+- Baichuan2-53B的回答既全面又准确
+
+FacTool 评测结果显示，Baichuan2-53B 综合得分为140.5，在主流基础大模型中仅排在GPT-4之后，处于国内领先水平。
+- FacTool是由上海交通大学、卡内基梅隆大学、香港城市大学、Meta 等机构学者共同提出的一款通用框架，能够查核大模型生成内容的事实准确性（也能查核一般性内容的事实准确性）
 
 #### baichuan 部署
 
