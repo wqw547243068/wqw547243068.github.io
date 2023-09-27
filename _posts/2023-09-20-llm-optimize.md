@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  大模型推理优化
+title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: AIGC
 tags: gpt 量化 llm

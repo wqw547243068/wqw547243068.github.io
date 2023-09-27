@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  LLM 插件开发
+title:  大模型函数调用 LLM Function Call 
 date:   2023-09-26 16:52:00
 categories: AIGC
 tags: gpt openai 函数调用
