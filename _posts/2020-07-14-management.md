@@ -13,6 +13,8 @@ permalink: /management
 * content
 {:toc}
 
+# 管理
+
 【2021-11-14】六度人脉：
 - **六度人脉**关系理论（Six Degrees of Separation），是指地球上所有的人都可以通过六层以内的关系链和任何其他人联系起来。也就是所谓的六次握手规律。通俗地讲：“你和任何一个陌生人之间所间隔的人不会超过五个，也就是说，最多通过六个人你就能够认识任何一个陌生人。”
 - ![](https://bkimg.cdn.bcebos.com/pic/9825bc315c6034a86acbece4cc134954092376ad?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5/format,f_auto)
@@ -22,7 +24,8 @@ permalink: /management
 - 身在职场，首先要做的是无限接近你的老板，而不是傻乎乎干活
 - 干活儿 ＜ 管理 ＜ 关系户 ＜ 跟老板混一起
 
-# 职场情商
+
+## 晋升
 
 工作越久越能看明白，职场内工作高情商的10个表现，[脉脉](https://maimai.cn/web/gossip_detail?src=app&webid=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlZ2lkIjoiOTNhMWZhZWMyYzk0MTFlY2EwZDU4MDE4NDRlNTAxOTAiLCJ1IjozNTM5LCJpZCI6Mjk0ODY0MjR9.37Se5u3uJ7dN5KnZ238MOhXybNcCazzaE82l6LDIKzY&share_channel=4)
 - 1、有能力不要四处**炫耀**，真希望你好的人不多。
@@ -41,9 +44,11 @@ permalink: /management
 - ② 被动等待，不够积极，不好意思麻烦别人
 - ③ 不善交际，人情世故
 
-# 管理
+【2023-9-27】职场上**晋升**的核心：从来都不是`能力`而是老板的`信任`。
+- 你有多大的信任就能调动多大的资源, 而绝大多数人搞错了以为有能力了自然而然就获得了老板的信任。任何人都需要被认同和支持，老板也是人也需要你的情绪价值。
+- 那怎么得到老板的信任？在腾讯工作时就很清楚的知道老板的喜好和厌恶。他非常喜欢这种**掌控**的感觉，而非常讨厌**无序感**和**不确定**。所以做一件事情时会每周汇报，沟通交流，寻求点拨和建议，甚至会寻求他的帮助。
+- 这样一来二去沟通就会非常的顺畅，推动任何事情的时候都非常的顺利。要知道老板有一个最大的痛点，需要一个值得信任的得力帮手。总不能事事都亲力亲为吧，你只要抓住了这一点，你们沟通起来就非常的流利了。
 
-## 为什么要晋升管理
 
 【2022-5-27】为什么这么多人想当leader？[脉脉](https://maimai.cn/web/gossip_detail/30457801?src=app&webid=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzA0NTc4MDEsInUiOjM1MzksImVnaWQiOiJmNTkzMTQ5NGYyODY0OTZjYTExYzZmOWE3MmI3OGQ3YSJ9.cAo_NxlEhrzGKrK8LnuoQdRtQ7MYABbVkapC56qwTzY&share_channel=2)
 1. 钱多，整天拉会写ppt，周末合并周报，只用跟项目进度，半pm职责
@@ -526,15 +531,6 @@ permalink: /management
 |外包服务|低频|短期||
 |临时工|高频|短期||
 
-
-# 单元测试
-
-- 【2020-10-15】单元测试
-- ①单元测试，系统测试，集成测试，百度要求必须有单测代码，一般是正式代码的1.2倍，单测不过不能提测
-- ②python单测有好多种方法，除了pytest,还有nosetest,unitest，后面两种除了mock，还有别的定制方法setup和teardown，分别指执行命令前后的操作
-- ③执行单测后一般有自动生成的测试报告，通过率，覆盖率(条件覆盖，分支覆盖)
-- ④断言assert仅适用于单测和非正式代码，线上模块避免使用，因为触发异常时整个进程会挂掉
-- ⑤python类分新式类和旧式类，区别在于继承方式，多继承时出现重名函数时，一个深度遍历，一个广度遍历
 
 # 视频
 
