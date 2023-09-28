@@ -140,7 +140,7 @@ HuggingFace主干库：
 
 官方提供的下载[方法](https://huggingface.co/docs/hub/models-downloading)
 
-#### git lfs
+#### git lfs 下载大文件
 
 安装 git lfs
 
@@ -152,7 +152,9 @@ git lfs install
 git clone https://huggingface.co/bert-base-chinese
 # git clone https://huggingface.co/lmsys/vicuna-13b-delta-v0
 # git clone git@hf.co:bigscience/bloom
+# git clone https://huggingface.co/LinkSoul/Chinese-Llama-2-7b
 GIT_LFS_SKIP_SMUDGE=1 # 只下载 pointer 文件，不下大文件
+# 在当前目录新建一个 models 文件夹用来存放大模型
 ```
 
 #### 自动下载
