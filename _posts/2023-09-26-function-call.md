@@ -76,8 +76,79 @@ Function call 完整调用流程
 - 提升functions参数的**编写效率**
 - 优化不断**拼接**messages的过程。
 
-### 代码
 
+
+### 请求参数
+
+
+```py
+openai.createChatCompletion({
+  model: "gpt-3.5-turbo-0613",
+  messages: [
+    # ...
+  ],
+  functions: [
+    {
+      name: 'function_name',
+      description: '该函数所具备能力的自然语言描述',
+      parameters: {
+        type: 'object',
+        properties: {
+          argument_name: {
+            type: 'string',
+            description: '该参数的自然语言描述'
+          },
+          # ...
+        },
+        required: ['argument_name']
+      }
+    },
+    # ...
+  ]
+})
+
+```
+
+functions参数支持以数组形式录入多组函数信息，其中：
+- `name`：**函数名称**。后续模型会在需要调用函数时返回此名称。
+- `description`：**函数功能描述**。模型通过该描述理解函数能力，并判断是否需要调用该函数。
+- `parameters`.`properties`：**函数所需参数**。以对象的形式描述函数所需的参数，其中对象的key即为参数名。
+  - `type`：**参数类型**。支持JSON Schema协议。
+  - `description`：参数描述。
+- `required`：必填参数的参数名列表。
+
+
+控制模型应该如何响应函数调换。支持几种输入：
+- "none"：模型不调用函数，直接返回内容。没有提供可调用函数时的默认值。
+- "auto"：模型根据用户输入自行决定是否调用函数以及调用哪个函数。提供可调用函数时的默认值。
+- {"name": "function_name"}：强制模型调用指定的函数。
+
+添加对话角色，向消息列表中添加函数返回值
+- 函数执行完成后，将函数的返回内容**追加**到消息列表中，并携带完整的消息列表再次请求聊天API，以获得GPT的后续响应。
+- 消息列表中，角色的可选值除了原有的`系统`（system）、`用户`（user）、`助理`（assistant）外，新增了`函数`（function）类型，用来标识该消息时函数调用的返回内容。
+
+注意：
+> 消息列表中追加函数调用响应消息前，还需要首先将上一步模型返回的消息追加到消息列表中，以保证消息列表中的上下文完整。
+
+
+
+### 响应参数
+
+可选项（choices）中提供了两个响应参数：
+- `finish_reason` 响应内容结束的原因：
+  - `stop`：已返回完整消息。
+  - `length`：已达到令牌限制或由max_tokens参数设置的上限。
+  - `function_call`：模型决定需要调用一个函数。
+  - `content_filter`：内容触发了拦截策略，忽略返回内容。
+  - `null`：API响应仍在执行。
+  - 其中，若返回function_call则表示模型需要调用函数。此时message参数会额外返回函数信息以及函数参数信息。
+- `message`.`function_call`
+  - 若响应内容结束的原因是模型需要调用函数，则message参数中会增加一个用于描述函数信息的function_call参数，其格式如下：
+  - `name`：函数名称。
+  - `arguments`：函数参数信息。JSON字符串格式。
+
+
+### 两阶段代码
 
 ```py
 from dotenv import load_dotenv
@@ -120,6 +191,7 @@ def chat(query): # 调用
         model="gpt-3.5-turbo-0613",
         messages=[{"role": "user", "content": query}],
         functions=functions, # 设置函数调用
+        #function_call="auto", # 开启function call
     )
     message = response["choices"][0]["message"]
     return message
