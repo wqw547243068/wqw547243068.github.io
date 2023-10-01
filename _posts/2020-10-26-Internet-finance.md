@@ -159,6 +159,23 @@ mathjax: true
 【2023-2-26】[【奇闻】新能源汽车惊天骗局-风口上的电动汽猪](https://www.bilibili.com/video/BV1oT4y1D7z5)
 
 
+### 纪录片《大空头》
+
+【2023-10-1】[房价崩盘！美国宅男，如何狠狠收割华尔街？](https://www.bilibili.com/video/BV1PM4y1H7VC)《大空头》超硬核解析
+- <iframe src="//player.bilibili.com/player.html?aid=914113551&bvid=BV1PM4y1H7VC&cid=1243957715&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+语录
+- 专家：不用担心崩盘，居民贷款远远小于存款，问题他们不是同一波人
+- 兴，百姓苦，亡，百姓苦
+  - 财大学生选择逃离金融圈，因为很多金融专业名词，不过是把**低级诈骗术包**装成所谓的''**金融**''，就像击鼓传花一样，所有人都在周密的计算、思考，让这朵罪恶之花一直传导下去好在其中获利，然后避免这朵罪恶之花炸在自己手里。而无论这朵花是炸在哪家投资银行哪位大佬手里，爆炸产生的碎片一定会结结实实命中普通人，会命中那些没有太多知识、善良、勤劳、相信努力就会有收获的好人。我不想人生在这种既罪恶又无意义中度过，不想我的精力、智慧都用在学习诈骗术和实践诈骗术中，哪怕能赚到很多钱，万金于我何加焉，人生应该用在那些更有意义、更加让人安宁和幸福的事情当中的，那样的人生或许才是更有意义的
+  - 美国金融危机之后全球通膨严重，币值本应严重缩水，为了稳定全球金融体系，且作为美债的大债主，我们国家接了这个烂摊子，拿出天量货物供应给美元废纸当标的物，也就是人民币（中国货）跟美元废纸同步贬值，对应的就是好几波4万亿大放水搞基建，当时除了买房和个人成长外，没有更好的保值手段。上一个经济过热和泡沫经济体，是广场协议前的日本，日本被忽悠主动刺破泡沫，直接迎来了“失去的几十年”的低欲望社会
+- 人是短视的，只会被眼前的欲望吸引，全然不顾所有人利益的崩盘。而远视的人（悲观主义者）呢，要么在人类社会自私与贪婪的背后活成了佼佼者。要么在愤世嫉俗却无力改变后选择了归隐山林，不会再面对肮脏的人
+- 概念
+  - ① 做多(看涨)，预期某种资产会涨，提前买入，高价卖出
+  - ② 坐空(看跌)，预期某种资产会跌，提前借入卖出，低价时再买进归还
+  - ③ 次贷危机。银行把各种按揭贷款打包成一个证券组合(mbs)，并通过评级机构给这些证券组合评级，再卖给金融机构，最后卖给大众
+
+
 ## 金融制度运转
 
 - 万维财经经济学视频[系列](https://www.365yg.com/c/user/51414569980/),覆盖经济规律、通货膨胀、货币等，通俗易懂，如：[经济机器是怎样运行的](http://www.365yg.com/i6617283549709992455/#mid=51415239994)， [【经济学】经济机器是怎样运行的 by Ray Dalio](https://www.bilibili.com/video/BV15s411b7xr),管理着世界上最大的对冲基金——桥水基金的创始人：Ray Dalio用30分钟的时间来阐释经济机器是如何运行的
@@ -998,6 +1015,19 @@ with the following features being categorical:
 
 
 ## 股市影视剧
+
+
+### 大空头 -- 美国次贷危机
+
+【2023-10-1】六万字 08年次贷危机全解读 《大空头》原著 [第一集-哔哩哔哩](https://www.bilibili.com/video/BV1UT411S7Rm)
+- <iframe src="//player.bilibili.com/player.html?aid=481918311&bvid=BV1UT411S7Rm&cid=1012904398&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+[万字解读 Leon带你一口气看懂 金融危机系列——高分电影《大空头》](https://www.bilibili.com/video/BV1zq4y137Pi)
+- 大空头——the big short
+- 2008年全球金融危机，华尔街4组眼光独到的投资鬼才在2007年美国信贷风暴前就看穿了泡沫假象，通过使用做空工具CDS而大幅获益，成为少数在金融灾难中大量获利的投资枭雄
+
+<iframe src="//player.bilibili.com/player.html?aid=549101920&bvid=BV1zq4y137Pi&cid=438056104&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
 
 ### 华尔街之狼
 
