@@ -499,7 +499,7 @@ class Unet(nn.Module):
 
 扩散模型有很多应用版本
 
-#### DALLE-1 模型
+#### DALL-E 1
  
 DALLE-1模型图
 - ![](https://pic4.zhimg.com/80/v2-9c4d153d5e7c38fc29e34c46b7f75003_1440w.webp)
@@ -510,7 +510,7 @@ DALLE-1模型图
 - 生成阶段，caption 通过编码器得到 text tokens，然后通过 transformer 得到 image tokens，最后 image tokens 在通过第一阶段训练好的 image decoder 部分生成图像。
   - 因为图像是通过采样生成，这里还使用了 `CLIP` 模型对生成的图像进行排序，选择与文本特征相似度最高的图像作为最终的生成对象。
 
-#### DALLE-2 模型
+#### DALL-E 2
 
 DALLE-2模型图
 - ![](https://pic1.zhimg.com/80/v2-fba4b48963c09cb9be65c598df8f2214_1440w.webp)
@@ -519,6 +519,15 @@ DALLE-2 模型结构。
 - text encoder 和 image encoder 就是用 CLIP 中的相应模块。在训练阶段通过训练 prior 模块，将 text tokens 和 image tokens 对应起来。
 - 同时训练 GLIDE 扩散模型，这一步的目的是使得训练后的 GLIDE 模型可以生成保持原始图像特征，而具体内容不同的图像，达到生成图像的多样性。
 - 当生成图像时，模型整体类似在 CLIP 模型中增加了 prior 模块，实现了文本特征到图像特征的对应。然后通过替换 image decoder 为 GLIDE 模型，最终实现了文本到图像的生成。
+
+#### DALL-E 3
+
+【2023-10-07】DALL-E 3 惊艳发布，完全免费！比肩Midjourney的AI绘图工具
+
+DALL·E 3 没有一个单独网址，要在Bing里面使用它
+- 切换代理到其他国家，然后打开[bing](https://www.bing.com/images/create?FORM=GDPCLS), 直接输入中文
+- 每生成一张照片都消耗电力，初始电力是100点, 目前还是免费
+
 
 #### Imagen (未开源)
 
