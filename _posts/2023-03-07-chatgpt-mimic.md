@@ -31,6 +31,35 @@ There are three important steps for a ChatGPT-like LLM:
 
 ## 大模型行业
 
+
+### LLM 之争
+
+【2023-6-5】[千模大赛哪家强？ 大语言模型中文评测实践](https://zhuanlan.zhihu.com/p/634884575)
+- ![](https://pic1.zhimg.com/80/v2-9bb5d154a9b41d4f57445a5231cbbac4_1440w.webp)
+
+【2023-7-7】[LLM之争将在2025年结束](https://mp.weixin.qq.com/s/S17Iv4iwbeSxQZPsOQSsTg)
+
+当前范式的LLM将在2025年走到尽头，因为人类已生产出来用来表达基础逻辑的语料有限，且很快就会被穷尽于训练。
+- 而LLM能力的比赛，就是看：谁能更准确的表达这个世界的运作方式 —— 这就是评估LLM的**唯一**标准，而且这个标准也是有上限的，因为当前都生活在同一个世界里。
+
+这个上限很快就会到达。
+
+Let's think step by step:
+1. LLM的本质：可以被理解为世界模型在低维的投影，而非世界模型本身（详见《人工智障2》）。
+2. LLM的推理能力：以system 1的方式represent system 2 的结果，或者说“以概率的方式表达用符号推理的结果”。
+3. LLM的核心价值：作为通用的逻辑模拟器（Common logic simulator），并以此为基础来进一步计算更专业的领域逻辑。
+4. LLM的生成：世界上所有被人类总结出来的通用逻辑是有限的。
+5. 所有人类总结出来的逻辑都能通过语言来表达，而这些表达是有限的。
+6. LLM的最终形态：通过表征来逼近对世界模型的拟合(Fitting the world model by approximating with representations)，即用语言对“世界是如何运作的”（在通用逻辑与常识层面）进行有效表达。
+7. 关于这个 “世界是如何运作的” 题目，是有全球统一的标准答案的。
+8. 谁先达到这个拟合的效果，就意味着谁的LLM达到了SOTA；或者，用完了所有语料，都没有实现SOTA。而这两种情况的任意一种都会在1.5-2年内出现。
+
+我更愿意相信OpenAI已经看到这个范式的终局，甚至已经有GPT5（已达到SOTA的LLM）。只是在还没有任何人追上GPT4之前，没有必要发布GPT5这张王牌，也是最后一张牌，也没有下一张牌了。
+
+然后会怎样？
+
+大型多模态模型Large Multi-Modal Model (LMMM)或者大型语义模型Large Semantic Model (LSM)有机会接替LLM，再持续竞争（卷）2年左右。直到人类制作出来的所有优质视觉数据都用来训练上述模型，或在数据用完之前实现了新的SOTA。
+
 ### 如何打造一个拖垮公司的大模型？
 
 【2023-9-20】[如何打造一个拖垮公司的大模型？](https://mp.weixin.qq.com/s/ZwdjTEHZvsK0VbzFlGtsng)
