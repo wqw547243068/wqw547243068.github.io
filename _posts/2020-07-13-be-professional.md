@@ -3,10 +3,11 @@ layout: post
 title:  "职业化要点-Points to Be More Professional"
 date:   2020-07-13 12:00:00
 categories: 人生规划
-tags: 工作效率 会议效率 舒适区 时间管理 二八定律 KPI OKR 复盘 昨天 今天 明天 表达
+tags: 工作效率 会议效率 舒适区 时间管理 二八定律 KPI OKR 复盘 昨天 今天 明天 表达 职场
 excerpt: 为什么有的人虽然工作十年，但实际上只有一年经验？
 author: 鹤啸九天
 mathjax: true
+permalink: /career
 ---
 
 * content
@@ -969,6 +970,14 @@ Trello 用作查看任务、进度、统计等的工具，而非日程管理工�
 【2021-7-13】[如何像算法工程师一样看待这个世界](https://mp.weixin.qq.com/s/qAXmmJ4yv7_Zka36g0HCGA)
 
 # 职场打怪晋升
+
+
+【2023-10-10】[毁掉一个职场人最快的方式：吃低级的苦](https://www.toutiao.com/article/7287847253438497332)，[微云文档](https://share.weiyun.com/TYzHg8qB)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/5f8a0bb105bd4127ac49a36ad65d295e~tplv-tt-origin-asy2:5aS05p2hQOaYjuWkqeWMoOS6ug==.image?_iz=58558&from=article.pc_detail&x-expires=1697530800&x-signature=mUnEMoa2T2axEtKpM5TWIvt7LmA%3D)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/a5b7da5ca2734dd491439a662c30fee6~tplv-tt-origin-asy2:5aS05p2hQOaYjuWkqeWMoOS6ug==.image?_iz=58558&from=article.pc_detail&x-expires=1697530800&x-signature=ep7JahPVw%2FDTiQT%2B9wRszmtpQ3A%3D)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/1945894ddf3a415eadd6a2e6cd9068a5~tplv-tt-origin-asy2:5aS05p2hQOaYjuWkqeWMoOS6ug==.image?_iz=58558&from=article.pc_detail&x-expires=1697530800&x-signature=ai%2BORHpvtcmyB4QKQwgB5DIU1Zw%3D)
+
+
 
 ## 背靠背脸靠脸
 
