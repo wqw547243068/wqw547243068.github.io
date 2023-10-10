@@ -848,7 +848,7 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 
 ### Document QA
 
-详见专题：[文档问答](doc-chat)
+详见专题：[文档问答](doc_chat)
 
 ### 推荐系统
 
