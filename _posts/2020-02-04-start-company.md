@@ -7,7 +7,7 @@ tags: 创业 自由职业 财务自由 公司注册 远程 外包 五险一金 �
 excerpt: 怎么开公司，有哪些注意事项？
 author: 鹤啸九天
 mathjax: true
-permalink: /company
+permalink: /start_company
 
 ---
 

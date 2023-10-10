@@ -6,7 +6,7 @@ categories: 人工智能
 tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智
 excerpt: 世界顶级AI机构（OpenAI/DeepMind/BostonDnymic等）的故事
 mathjax: true
-permalink: /company
+permalink: /ai_company
 ---
 
 * content

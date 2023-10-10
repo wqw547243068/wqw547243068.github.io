@@ -7,7 +7,7 @@ tags: 互联网 BAT TMD 张一鸣 谷歌 达摩院 FLAGS 硅谷 拼多多 Keep �
 excerpt: 互联网公司信息
 author: 鹤啸九天
 mathjax: true
-permalink: /internet-company
+permalink: /internet_company
 ---
 
 * content
