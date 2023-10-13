@@ -1287,6 +1287,17 @@ OpenAI 似乎已经找到了一种检测 jailbreak 并对其进行修补的方�
 hack 示例
 - ![img](https://github.com/golfzert/chatgpt-chinese-prompt-hack/raw/main/911.png)
 
+#### 如何越狱
+
+【2023-10-13】[Jailbreaking Black Box Large Language Models in Twenty Queries](https://arxiv.org/abs/2310.08419)
+- 标题：20个查询中的越狱黑箱大语言模型
+
+提示自动迭代细化（PAIR），生成语义越狱只有黑盒访问LLM。
+
+PAIR -- 受社会工程攻击的启发,使用攻击者LLM自动为单独的目标LLM生成越狱，而无需人工干预。攻击者LLM迭代地查询目标LLM以更新和细化候选越狱。
+- 根据经验，`PAIR`通常需要不到20个查询来产生越狱，这比现有算法效率高出**几个数量级**。
+- PAIR在开放和闭源LLM上实现了具有竞争力的越狱成功率和可转移性，包括GPT-3.5/4，`Vicuna`和`PaLM-2`。
+
 
 ### LLM-Attack
 
