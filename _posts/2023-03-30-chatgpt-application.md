@@ -1418,12 +1418,13 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 #### 大模型时代开发模式
 
 【2023-9-9】宜创科技CEO宜博带来《[ChatGPT的创业机会](https://mp.weixin.qq.com/s/l5UOHa1cdKJqOaacKXJ_oA)》为题的分享。
-- [ChatGPT中文网](https://www.potatost.com/3496.html), [视频回放](https://996.pm/7gX2B)
+- 其它源头：[人人都是产品经理](https://www.woshipm.com/kol/5913310.html), [ChatGPT中文网](https://www.potatost.com/3496.html), [视频回放](https://996.pm/7gX2B)
 
 大模型的开发模式
 - （1）`pre-training`(`预训练`)： **通识教育**，教小孩认字、学算数、做推理，这个步骤产出基础大模型。
 - （2）`fine-tune`(`微调`)：**专业课**，比如学法律的会接触一些法律的条款、法律名词；学计算机的会知道什么叫计算机语言。
 - （3）`prompt engineering`(`提示工程`)：**职业训练**，AI应用的准确率要达到商用级别（超过人的准确率），就需要 prompt engineer，PE 重要性
+- ![](https://image.woshipm.com/wp-files/2023/09/fxXIfgeobKKsKiF0wBp0.png)
 
 其中，有些场景中（2）可以省略。
 
@@ -1431,6 +1432,7 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 - `AI Embedded` **嵌入**：某个环节里去调用大模型
 - `AI Copilot` **辅助**：每个环节都可以跟大模型进行交互
 - `AI Agent` **代理**：任务交给大模型，大模型即可自行计划、分解和自动执行
+- ![](https://image.woshipm.com/wp-files/2023/09/3kBjkexMq27wqYWvC8Hi.png)
 
 熟悉LLM时代Prompt Engineer开发范式
 - 第一层：**简单Prompt**: 即编写一个提示词（Prompt）去调用大模型，最简单的形式。
