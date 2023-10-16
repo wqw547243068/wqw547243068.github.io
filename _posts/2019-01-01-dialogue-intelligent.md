@@ -415,6 +415,7 @@ agent解析出以下选择餐厅的条件：
 - _Sophia in_ _AI for Good Global Summit 2017. __Source:__  ITU_
 
 2017年10月，上图这个叫Sophia的机器人，[被沙特阿拉伯授予了正式的公民身份](https://www.businessinsider.com/sophia-robot-citizenship-in-saudi-arabia-the-first-of-its-kind-2017-10)。公民身份，这个评价比图灵测试还要牛。何况还是在沙特，他们才刚刚允许女性开车不久（[2017年9月颁布的法令](https://www.nytimes.com/2017/09/26/world/middleeast/saudi-arabia-women-drive.html)）。
+- ![](https://n.sinaimg.cn/tech/gif_image/138/w600h338/20190102/V4hX-hqzxptn3950572.gif)
 
 Sophia经常参加各种会、“发表演讲”、“接受采访”，比如[去联合国对话](https://www.theguardian.com/technology/video/2017/oct/13/sophia-the-robot-tells-un-i-am-here-to-help-humanity-create-the-future-video)，表现出来非常类似人类的言谈；去[和Will Smith拍MV](https://v.qq.com/x/page/g0621pa1riu.html)；接受[Good morning Britain](https://v.qq.com/x/page/f052653cduo.html)之类的主流媒体的采访；甚至公司创始人[参加Jim Fallon的访谈时一本正经的说Sophia是“basically alive”](https://v.qq.com/x/cover/lxiad5mdh1oyywb/k05194oj39v.html)。
 
@@ -429,6 +430,17 @@ Basically alive. 要知道，西方的吃瓜群众都是看着《终结者》长
 ![](https://image.jiqizhixin.com/uploads/editor/2ebd03f8-a4e6-41d6-9fa7-e5b0e5e8c273/640.png)__Source:__ _[Dumb And Dumber: Comparing Alexa, Siri, Cortana And The Google Assistant, Forbes, May 2018](https://www.forbes.com/sites/kevinmurnane/2018/05/03/dumb-and-dumber-comparing-alexa-siri-cortana-and-the-google-assistant/#5aa7af8a36e7)_
 
 来看看到2018年末在对话智能领域，各方面究竟发展的如何了。
+
+补充：
+
+2019年1月，深度学习界“三巨头”之一的大牛Yann LeCun在推特公开指责：<span style='color:red'>Sophia 根本就是个骗局！</span>把Sophia称作“远程操控AI”可能更合适一些。
+- ![](https://k.sinaimg.cn/n/tech/crawl/280/w550h530/20190102/8hjO-hqzxptn3950690.jpg/w700d1q75cms.jpg?by=cms_fixed_width)
+
+Sophia背后的汉森机器人技术公司在参加中国《对话》节目时回应
+- 目前**所有**能进行对话的人工智能都是**人工编程**的，索菲亚也不例外。
+- 智能的头脑由人控制且内容往往都是人编好的。
+
+问世近3年后终于承认，机器人的外壳只是一个“传声筒”。
 
 ####  “不要日本菜”
 
