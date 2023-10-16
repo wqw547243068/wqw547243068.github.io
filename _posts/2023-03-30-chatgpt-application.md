@@ -1417,7 +1417,8 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 
 #### 大模型时代开发模式
 
-【2023-9-29】宜创科技CEO宜博带来《[ChatGPT的创业机会](https://mp.weixin.qq.com/s/l5UOHa1cdKJqOaacKXJ_oA)》为题的分享。
+【2023-9-9】宜创科技CEO宜博带来《[ChatGPT的创业机会](https://mp.weixin.qq.com/s/l5UOHa1cdKJqOaacKXJ_oA)》为题的分享。
+- [ChatGPT中文网](https://www.potatost.com/3496.html), [视频回放](https://996.pm/7gX2B)
 
 大模型的开发模式
 - （1）`pre-training`(`预训练`)： 通识教育，教小孩认字、学算数、做推理。这个步骤产生的是基础大模型
@@ -1472,6 +1473,8 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 技术
 - LLMFarm实现ChainFlow设置
 - **多意图识别**，如果想询问某个产品的营养含量、产品价格，结果都能实现。
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/f5a62113d9e9fc1a9c694f5632e9f17f.png)
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/ffe27b5c0c8236ef1bd7427f359b2fa7.png)
 
 项目得到农业部会议上四个院士的高度赞赏
 
@@ -1487,6 +1490,7 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 - 第二步，用大模型做分词，也就是从用户输入问题的内容里提取出各种指标。
 - 第三步，查询指标和指标公式，让大模型融合生成数据库查询，生成准确的计算结果。
 - 最后，将准确的计算结果再次输入大模型，做一轮知识融合，可以转化API为领域机器人进行全域问题查询，实现100%数据准确。
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/b3ead4deb8de39f1e2e09521b065c9ad.png)
 
 ##### KMS知识问答
 
@@ -1501,27 +1505,30 @@ ChatGPT 交互感很好，拥有很强的对话能力，能与用户进行多轮
 - 将各种格式、各种模态、各种语言的文档都传入**向量数据库**里，通过配置流程的方式形成。
 - 使用过程中，机器人会先用**多轮对话**的方式，获得当前故障的多级错误码等信息。
 - 回复的结果通过图文等形式展示，自动翻译，并索引原文位置。
-
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/3231cc91a85ffd0c8320f74880437c18.png)
 
 ##### 代码生成
 
 国内一个API厂商
 - 针对一句话描述，生成一个代码片段，直接嵌入使用。
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/e24fe26f0789eb17794dd1c0144c3f4c.png)
 
 ##### 工作流生成
 
 通过自然语言描述一个工作流步骤，生成一个工作流，并可以马上执行。
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/cc851fab5d8115f27460177e873c487d.png)
 
 ##### 报表自动生成
 
 ChatBI 用自然语言生成报表，特别受到运营同学、产品同学以及老板的喜欢。因为老板看到的传统报表内容很有限，如果想看到额外维度的报表，所花费的时间可能要等产品技术同学做几天甚至一个礼拜，现在则一句话就能快速看到报表结果。
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/97f20f82678767fb26ca4326b20dd22c.png)
 
 ##### 电子邮箱AI助手
 
 一句话整理电子发票并发送给财务报销
 
 借助电子邮箱AI助手，输入一句话对邮箱邮件做处理，可以做电子发票的附件整理，也可以做多轮对话，比如对和某一个客户之间的关系做分析和总结；电子邮箱AI助手甚至可以帮忙生成邮件话术。
-
+- ![](https://www.potatost.com/wp-content/uploads/2023/09/38dab3a121659a0647ab3329ffe5a531.png)
 
 #### ChatGPT
 
