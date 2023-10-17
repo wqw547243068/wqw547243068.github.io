@@ -541,6 +541,15 @@ A100 GPU有40-80GB的高带宽内存(HBM)，带宽为1.5-2.0 TB/s，而每108个
 [FlashAttention-v2](https://tridao.me/publications/flash2/flash2.pdf) 在原基础上做了改进，使其在算法、并行化和工作分区等方面都有了显著改进，对大模型的适用性也更强。在A100 上性能数据如下：
 - ![](https://pic2.zhimg.com/80/v2-d393f3e1d664cff181026a7b754ffefd_1440w.webp)
 
+###### Flash-Decoding
+
+【2023-10-17】[Flash-Decoding方法](https://www.toutiao.com/w/1779986529500173)
+
+斯坦福博士新作：长上下文LLM推理速度提8倍
+
+FlashAttention团队最近推出了Flash-Decoding方法，用于在Transformer架构大模型推理时加速。该方法通过并行计算每个token的注意力值，并在每一步计算过程中使用FlashAttention的优化，从而使长上下文推理变得更快。该方法已经在64k的CodeLlama-34B上得到了验证，并得到了PyTorch官方认可。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/a1536478fcef433d9bb519b550f8a01e~tplv-obj:1372:1104.image?_iz=97245&from=post&x-expires=1705276800&x-signature=AbeQQ0TeRp8fzagHuqsN3sqLIjs%3D)
+
 #### 4.2 PagedAttention 显存优化, vLLM
 
 LLM 推理服务的`吞吐量`指标主要受制于**显存限制**。
