@@ -29,6 +29,9 @@ There are three important steps for a ChatGPT-like LLM:
 图解
 - ![](https://github.com/Hannibal046/Awesome-LLM/raw/main/resources/creepy_llm.jpeg)
 
+【2023-10-17】[大模型技术图谱](https://www.toutiao.com/w/1779880159249415)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/3064a89ec25445d5aec859e3fc942fb3~tplv-obj:1080:1754.image?_iz=97245&from=post&x-expires=1705276800&x-signature=IGxpShbeGqu%2BDVWQu71qZXyymPo%3D)
+
 ## 大模型行业
 
 
