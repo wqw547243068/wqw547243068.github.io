@@ -1036,6 +1036,17 @@ OpenAI发展历程（主要来自维基百科）
 1. 2022年11月30日，OpenAI发布了名为ChatGPT的自然语言生成式模型，以对话方式进行交互。
 1. 2023年1月：微软和OpenAI洽谈投资100亿美元事宜，并希望将OpenAI的人工智能技术纳入Word、Outlook、Powerpoint和其他应用程序中。
 
+### GTM 战略
+
+OpenAI的动机是“Keeping Developers Happy”，事情真的是如此直白吗？
+> These releases are designed to attract more developers to pay to access OpenAI’s model to build their own AI software for a variety of uses, such as writing assistants or customer service bots.
+
+OpenAI的既有GTM战略
+- ![](https://wx3.sinaimg.cn/mw690/66fd066bly8hiy1up1xuvj20u00ijmyc.jpg)
+- 首先，在大型和超大型企业市场，Stateful API的目的是“运营优化”。纵观欧美市场，面向大企业客户的ChatGPT Enterprise已经为OpenAI取得了相当的竞争优势，并且鲜有匹敌者。因此，该市场将成为OpenAI的主要Cash Cow。
+  - 在这种情况下，考虑到ChatGPT Enterprise提供的无限GPT-4访问和月租费+阶梯计价方式，Stateful API的主要作用是帮助OpenAI优化客户的运营成本。
+- 其次，在中小企业市场，除了笼络开发者，Stateful API的目的则带有“挤压”初创公司的意图。OpenAI所面临的威胁也许并非来自那些“Deep Pocket”的大互联网公司，而可能是那些更具天赋、更有创意的初创公司。在海量资金的投入下，“下一个OpenAI”可能随时威胁并不完美的Transformer架构。鉴于开发者社区和中小企业市场是这些初创公司的策源地，激进的降价有助于“挤压”这些潜在的竞争对手（类似于AWS在云市场的所作所为），压缩他们的现金流和创新空间。
+
 ### OpenAI 接入体验
 
 详见站内专题：[OpenAI接口信息](#openai)
