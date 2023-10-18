@@ -112,8 +112,11 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
   - 相比之下，提示工程根本不涉及训练网络权重
   - ![](https://pic3.zhimg.com/80/v2-4e5ddc95da8e4945cf30c65e1593050e_1440w.webp)
   - 基础提示: 零样本提示、少样本提示、链式思考引导
+  - ![](https://pic4.zhimg.com/80/v2-857d925cf7adc11d94a2fbd9aca37213_1440w.webp)
 - **RAG**（检索增强生成）：将提示工程与数据库查询结合，以获得丰富的上下文答案。
   - 将引导工程与从外部数据源检索上下文相结合，以提高语言模型的性能和相关性。通过在模型上附加额外信息，它允许更准确和上下文感知的响应。
+  - RAG模型架构将用户查询的嵌入与知识库向量中的embedding进行比较，将来自知识库中相似文档的相关上下文附加到原始用户提示中。然后将这个增强的prompt给到LLMs，可以异步更新知识库及其相关的embedding
+  - ![](https://pic3.zhimg.com/80/v2-db7c5fbf5f95c69846fc3805eb287086_1440w.webp)
   - RAG 本质上将信息检索机制与文本生成模型相结合。信息检索组件有助于从数据库中拉取相关的上下文信息，并且文本生成模型使用这个添加的上下文来产生更准确和“知识丰富”的响应。以下是它的工作方式：
     - 向量数据库：实施 RAG 包括嵌入内部数据集，从中创建向量，并将它们存储在向量数据库中。
     - 用户查询：RAG 从提示中获取用户查询，这是一个需要回答或完成的自然语言问题或陈述。
@@ -121,6 +124,12 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
     - 串联：将检索到的文档与原始查询串联成一个提供生成响应所需额外上下文的提示。
     - 文本生成：将包含串联查询和检索文档的提示馈送到 LLM 以产生最终输出。
     - ![](https://pic1.zhimg.com/80/v2-63c902a479d54ff27917dd94d3c65174_1440w.webp)
+    - 开源应用框架: 
+      - OpenAI [chatgpt-retrieval-plugin](https://github.com/openai/chatgpt-retrieval-plugin)
+      - [langchain](https://github.com/langchain-ai/langchain)
+      - [LlamaIndex](https://gpt-index.readthedocs.io/en/latest/index.html)
+  - [Creating a RAG Pipeline with LangChainPermalink](https://www.maartengrootendorst.com/blog/improving-llms/#creating-a-rag-pipeline-with-langchain), [中文版](https://zhuanlan.zhihu.com/p/661349721?utm_psn=1697558407270424576)
+  - ![RAG方法的大致过程](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/rag.svg)
   - RAG 有许多明显的优点：
     - 最小化幻觉 - 当模型做出“最佳猜测”假设，本质上填补了它“不知道”的内容时，输出可能是错误的或纯粹的胡说八道。与简单的提示工程相比，RAG 产生的结果更准确，幻觉的机会更低。
     - 易于适应新数据 - RAG 可以在事实可能随时间演变的情况下进行适应，使其对生成需要最新信息的响应非常有用。
@@ -128,6 +137,13 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
     - 成本有效 - 与在特定任务数据集上对整个模型进行微调相比，你可以使用 RAG 获得相当的结果，这涉及到更少的标记数据和计算资源。
   - RAG 的潜在限制
     - RAG 旨在通过从外部文档中提取上下文来增强 LLM 的信息检索能力。然而，在某些使用案例中，额外的上下文还不够。如果一个预训练的 LLM 在总结财务数据或从患者的医疗文档中提取见解方面遇到困难，很难看出以单个文档形式提供额外上下文如何有所帮助。在这种情况下，微调更有可能产生期望的输出。
+
+[improving-llms](https://www.maartengrootendorst.com/blog/improving-llms/), 3 of the most common methods for improving the performance of any LLM:
+- Prompt Engineering
+- Retrieval Augmented Generation (RAG)
+- Parameter Efficient Fine-Tuning (PEFT)
+- ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/common.svg)
+- ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/overview.svg)
 
 四个重要指标上进行比较：复杂性、成本、准确性和灵活性。
 - **成本**： PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning
