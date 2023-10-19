@@ -752,6 +752,22 @@ for i, result in enumerate(baidu_search(u'知乎')):
 
 ## ES：ElasticSearch
 
+
+ES 的**全文搜索**是将文本进行分词，然后基于词通过 BM25 算法计算相关性得分，从而找到与搜索语句相似的文本，其本质上是一种 term-based（基于词）的搜索。
+
+全文搜索的实际使用已经非常广泛，核心技术也非常成熟。
+
+但是，除了文本内容之外，现实生活中还有非常多其它的数据形式，例如：图片、音频、视频等等，我们能不能也对这些数据进行搜索呢？
+- 答案是 Yes !
+
+随着机器学习和人工智能等技术的发展，万物皆可 Embedding。
+- 可以对文本、图片、音频、视频等等一切数据通过 Embedding 相关技术将其转换成特征向量，而一旦向量有了，向量搜索的需求随之也越发强烈，向量搜索的应用场景也变得一望无际、充满想象力。
+
+[ES 向量搜索](https://juejin.cn/post/7086775047091666952)目前有两种方式:
+- script_score
+- _knn_search
+
+
 Elasticsearch 是一个分布式、RESTful 风格的搜索和数据分析引擎，能够解决不断涌现出的各种用例。
 
 Kibana是官方推出的把 Elasticsearch 数据可视化的工具, 官方[下载地址](https://artifacts.elastic.co/downloads/kibana/kibana-7.14.0-linux-x86_64.tar.gz)
