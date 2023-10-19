@@ -3,7 +3,7 @@ layout: post
 title:  大模型函数调用 LLM Function Call 
 date:   2023-09-26 16:52:00
 categories: AIGC
-tags: gpt openai 函数调用
+tags: gpt openai 函数调用 插件 plugin tool
 excerpt: OpenAI Function call 开发、函数调用知识总结
 mathjax: true
 permalink: /function
@@ -50,6 +50,22 @@ Function Call 是 GPT API 中新功能。让开发者在调用 GPT-4 和 GPT-3.5
   - <span style='color:blue'>上个月 Acme 公司下了多少订单？</span> 转换为使用 `sql_query(query)` 的 SQL 查询。
 - （3）从文本中提取**结构化数据**：开发者可以定义一个名为 `extract_people_data(people)` 的函数，以提取在维基百科文章中提到的所有人物。
 
+
+### Plugin vs Function vs Tool
+
+【2023-10-19】[Compare functions to plugins](https://community.openai.com/t/compare-functions-to-plugins/268651s)
+- 插件`Plugin` 仅用于ChatGPT用户聊天页面内（OpenAI独有）
+  - Plugins are solely for the ChatGPT User Interface.
+- 函数`Function` 在 ChatGPT用户页面外（API调用）的本地/远程系统，用户自己负责其中的UI/api
+  - Functions are for local or remote systems outside of ChatGPT.
+- 但是也可以在**插件**开发中使用**函数**，而不能直接从API访问插件
+  - But you can use functions also in utilizing plugin development whereas you can not directly access plugins from the API.
+
+Plugins work for chat, where OpenAI owns the UI.
+Functions for in the API, where you are responsible for the UI/api to an external app
+
+Tool
+- LangChain 中的 tools 概念
 
 ## Function call 原理
 
