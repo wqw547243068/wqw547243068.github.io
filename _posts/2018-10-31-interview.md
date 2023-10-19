@@ -80,6 +80,21 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 - 想牛人看齐，主动营造积极向上的环境
 - 时刻反思哪里做的不好，下次改进
 
+
+## 招聘渠道
+
+目前找工作的主要软件及[渠道](https://www.toutiao.com/w/1777796083459088)。
+- 1、智联招聘。 工作多，工资数实。
+- 2、Boss直聘。 工资偏高，不那么属实，很多销售类工作。
+- 3、拉钩招聘。 工作岗位极少。
+- 4、前程无忧。岗位多，薪资匹配，个人觉得很靠谱。
+- 5、猎聘。很多小众的工作都有，岗位薪资都属实。
+- 6、各地人才招聘网。一般都是薪资较高或者较为稳定的工作。
+- 7、58和赶集，一言难尽，虚假信息居多。
+- 8、内推。一般微信群、朋友圈或者论坛为主。
+
+![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/a1900d50a8c74c0c8fab0beda683cf75~tplv-obj:636:850.image?_iz=97245&from=post&x-expires=1705449600&x-signature=6ATEwNrjYQyxojF8cMdI9rjIcGM%3D)
+
 ## 面试流程
 
 ### 面试特点
