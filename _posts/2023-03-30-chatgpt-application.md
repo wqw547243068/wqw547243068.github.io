@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: AIGC ChatGPT 智能客服 加密
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -831,6 +831,79 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 
 待补充
 
+### 排序
+
+重排器（Reranker）作为信息检索的第二阶段，需要根据查询和文档的相关性，对候选文档做细粒度的排序。经典的重排方法一般使用交叉编码器，结合文档和查询的语义信息进行打分和排序。
+
+现有的涉及LLM的重排方法大致可以分为三类：
+- 用重排任务**微调**LLM
+- 使用**prompt**让LLM进行重排
+- 以及利用LLM做训练数据的**增强**
+
+#### 综述
+
+【2023-12-20】[LLM in Reranking——利用LLM进行重排](https://mp.weixin.qq.com/s/I1gbHW_ZAE9J5HjB4cmRCw)
+
+本文中针对前两种方法介绍一些研究。
+
+排序学习方法主要分为 point-wise，pair-wise 以及 list-wise 三种思路，LLM通过prompt进行重排也类似。
+
+LLM不同于传统的交叉编码器，具有更强的语义理解能力，并且能够捕捉到文档列表整体的顺序信息，它仍然面对几个不可忽视的问题。
+- 一方面，LLM的输入长度对于一个文档列表来说还是十分受限的，必须通过滑动窗口或集成的方式才能实现文档输入。
+- 另一方面，list-wise的LLM重排器对于输入非常敏感，在某些极端的情况下，例如将输入文档随机打乱顺序时，模型的输出结果甚至可能不如BM25。
+- 另外，还有参数过剩与时效性的问题会导致LLM重排器难以落地。
+
+参考综述：
+- [Large Language Models for Information Retrieval: A Survey](https://arxiv.org/abs/2308.07107v2)
+
+#### LRL
+
+Zero-Shot Listwise Document Reranking with a Large Language Model
+
+这篇文章与现有的 score and rank 的 point-wise打分方式不同，作者提出一种名为 Listwise Reranker with a Large Language Model (`LRL`) 的方法，利用 GPT-3 对文档进行 list-wise 的排序，直接生成候选文档的identifier序列实现重排, 这种list-wise的方法能够让模型同时关注到所有的文档信息
+
+#### RankVicuna
+
+- RankVicuna: Zero-Shot Listwise Document Reranking with Open-Source Large Language Models
+
+RankVicuna 也是一种 Listwise 的LLM排序方法，但是不同于LRL，它是经过针对重排微调后的模型。
+- 利用RankGPT-3.5作为教师模型在MS MARCO v1训练集中随机抽样的100K套训练集文档上生成数据，将RankGPT的能力蒸馏到7B的RankVicuna中。
+
+#### PRP
+
+- Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting
+
+作者提出利用LLM做list-wise与point-wise重排任务时，模型存在无法很好地理解排序指令的问题，并且在越小规模的模型中越显著。
+
+作者认为这一问题有可能与预训练中缺少相应任务有关。
+
+LLM应用于list-wise时出现的问题
+
+针对这一问题，作者提出一种名为 pairwise ranking prompting (PRP) 的范式，设计了一种简单的prompt，结合了生成和打分的模型API，使得规模较小的开源模型也能够在公开数据集上实现SOTA.
+
+#### PROMPTRANK
+
+- Few-shot Reranking for Multi-hop QA via Language Model Prompting
+
+本文中提出一种名为 PROMPTRANK 的框架，依靠prompting和多跳重排，可以在少样本的前提下解决复杂的多跳问答（MQA）。
+
+多跳问答（multi-hop question answering, MQA）是指query对应多个文档，且回答问题需要结合召回的复数文档进行多步推理的场景。目前的MQA大多基于retrieve-then-read的pipeline，然而这种模式下往往需要大规模的训练数据，对低资源场景（如医疗、法律等特定领域）不友好。
+
+#### LLMRank
+
+【2023-5-15】人民大学发表论文：LLM用于推荐系统排序
+- [Implementation of "Large Language Models are Zero-Shot Rankers for Recommender Systems"](https://arxiv.org/pdf/2305.08845.pdf)
+- 代码[LLMRank](https://github.com/RUCAIBox/LLMRank)
+
+将推荐问题形式化为条件排序任务，将历史交互作为条件，将召回得到的候选item作为候选。 
+
+采用特定提示方法来应用LLM解决排序任务：包括**交互历史**、**候选item**和**排序指令**来设计提示模板。
+- LLM 具有很有前途的**零样本**排序能力。
+- LLM **难以感知历史交互顺序**，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的**提示和引导策略**来缓解。
+- ![img](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
+
+
+
 ### 写代码
 
 
@@ -1010,18 +1083,8 @@ ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算�
 - 海外生鲜电商平台`Intacart`的食物搜索工具，其基于ChatGPT推出了面向食物推荐的应用，与自身来自75000多零售合作商店的产品数据结合了起来，帮助客户找到购物的灵感。
 - 美国一款名为`Expedia`软件内置了一个聊天机器人，通过AI大模型算法为用户规划旅游。有人经历过用ChatGPT规划旅游被推荐一个不存在的海滩，能够在iOS上轻便运行的Expedia据称不会出现这个问题。Expedia会根据旅游地推荐经济实惠的酒店，建议可以打卡的景点，是大模型落地垂直旅游行业的一个代表应用案例。
 
-#### LLMRank
 
-【2023-5-15】人民大学发表论文：LLM用于推荐系统排序
-- [Implementation of "Large Language Models are Zero-Shot Rankers for Recommender Systems"](https://arxiv.org/pdf/2305.08845.pdf)
-- 代码[LLMRank](https://github.com/RUCAIBox/LLMRank)
 
-将推荐问题形式化为条件排序任务，将历史交互作为条件，将召回得到的候选item作为候选。 
-
-采用特定提示方法来应用LLM解决排序任务：包括**交互历史**、**候选item**和**排序指令**来设计提示模板。
-- LLM 具有很有前途的**零样本**排序能力。
-- LLM **难以感知历史交互顺序**，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的**提示和引导策略**来缓解。
-- ![img](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
 
 #### InstructRec
 
