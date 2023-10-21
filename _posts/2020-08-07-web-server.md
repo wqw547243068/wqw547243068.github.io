@@ -200,6 +200,8 @@ HTTP常见的方法：
 @ -> %40
 ```
 
+完整转换关系：[ASCII 编码参考手册](https://www.w3school.com.cn/tags/html_ref_urlencode.asp)
+
 ```js
 var password = decodeURIComponent("1Qazwsx%23");
 console.log(password);
