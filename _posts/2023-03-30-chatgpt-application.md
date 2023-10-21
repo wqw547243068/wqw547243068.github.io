@@ -1314,6 +1314,23 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 [zeemo](https://zeemo.ai) 会影字幕
 - [demo](https://www.youtube.com/watch?v=sGiHdO4w7Wc)
 
+##### Rask
+
+【2023-6-7】[Rask.AI 颠覆性的视频翻译+配音神器，打破语言障碍！](https://www.uisdc.com/rask-ai)
+
+[Rask](https://zh.rask.ai/) 是一款 AI 视频制作神器 ，它能将一个视频转换为 60 多种不同的语言并自动配音，甚至可以克隆原视频的声音，让视频内容创作者可以打破语言的隔阂，用较低的成本让自己的视频被全世界的观众了解。
+
+<iframe src='//player.bilibili.com/player.html?bvid=BV1Nc41137kq&cid=1153683334&p=1&share_source=copy_web&autoplay=0' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true' width="720" height="405"></iframe>
+
+翻译后的视频配音节奏与原画面内容是一致的，像西班牙语翻译后文本较长，Rask 对其进行配音的时候语速就比其他语言要快。配音的语调和音色也与原视频的相同，这是因为 Rask 进行了声音克隆（voice cloning），即自动学习原视频中里的声音特征再进行配音。
+
+Rask 自推出后就立即受到很多视频内容创作者的关注和好评，斩获了 Product Hunt 单日产品榜单第一的好成绩。其官方网站中显示还有不少新的功能即将上线，包括让口型与配音完全同步、根据文本自动为视频配画外音、自动生成字幕以及视频修复。
+
+新用户可以用 Rask 免费翻译 2 条视频，试用时翻译的视频文件大小不超过 100MB、时长不超过 1 分钟（超过一分钟的会自动裁剪为 1 分钟），付费后可以一次性翻译 20 分钟的视频。
+
+<iframe src='//player.bilibili.com/player.html?bvid=BV19o4y1K7tB&cid=1154479677&p=1&share_source=copy_web&autoplay=0' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true'  width="720" height="405"></iframe>
+
+翻译内容的准确性及配音的流畅程度都没有问题，特别是翻译为英语时我的音色被保留了，就像真的是自己在说英语一样，感觉非常神奇。而在翻译成日语时就明显能听出是 AI 配音，因为目前 Rask 只支持英语、德语、法语、葡萄牙语、意大利语、波兰语、西班牙语、印地语 8 种语言的声音克隆。
 
 ### 直播
 
