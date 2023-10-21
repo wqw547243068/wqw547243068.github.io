@@ -161,6 +161,52 @@ HTTP常见的方法：
 - ![](https://p6.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/df328540238d4940ab1e779194f9135a~tplv-obj:1200:673.image?from=post)
 
 
+### URL 转码
+
+使用url进行跨页面(跨域)传值的时候,会出现某些带特殊字符的url,在浏览器上被处理了
+
+后端传给前端的跳转路径:
+- http://127.0.0.1:8088/harbor/sign-in?userName=admin&userPassword=1Qaz2wsx#
+
+浏览器跳转时浏览器地址栏的url变成:
+- http://127.0.0.1:8088/harbor/sign-in?userName=admin&userPassword=1Qaz2wsx
+
+注意:
+- 末尾处的#不见了
+
+还有其他情况, 如url中的参数有 "/" "&" "@" 特殊字符时,url都会出现错误...
+
+解决方案: 
+>使用URL的**编码**和**解码** 对 特殊字符进行处理
+
+原文链接：https://blog.csdn.net/lettuce_/article/details/104746263
+
+浏览器对特殊字符转码
+
+```sh
+# 字符转码依次是
+空格 -> %20
+! -> %21
+# -> %23
+% -> %25
+& -> %26
+( -> %28
+) -> %29
+: -> %3A 
+/ -> %2F
+= -> %3D
+? -> %3F
+, -> %2C
+@ -> %40
+```
+
+```js
+var password = decodeURIComponent("1Qazwsx%23");
+console.log(password);
+//显示结果  1Qazwsx#
+```
+
+
 ## post/get参数获取
 
 
