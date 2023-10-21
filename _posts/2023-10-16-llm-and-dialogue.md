@@ -17,8 +17,9 @@ permalink: /llm_dialogue_system
 # LLM 时代的对话系统何去何从
 
 原文
-- 公众号[版本](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649769463%26idx%3D1%26sn%3D7dffe779f8e260f1da32338586bfd3f7%26chksm%3Dbec3d8ea89b451fc2221ca2ceade714e18aca895b1a840c518a957467e269b948ffacfee173e%26token%3D858594018%26lang%3Dzh_CN%23rd)，旧版, 新版对话系统总结部分不够清晰、系统
+- 公众号[版本](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649769463&idx=1&sn=7dffe779f8e260f1da32338586bfd3f7)，旧版, 新版对话系统总结部分不够清晰、系统
 - [知乎](https://zhuanlan.zhihu.com/p/661558522), 新版
+
 
 ## 引言
 
@@ -30,7 +31,7 @@ permalink: /llm_dialogue_system
 
 预训练语言模型通用化蜕变后，跨界改变甚至“破坏”了N多下游应用生态，比如搜索、办公、创作、编程等，今天谈谈名噪一时的对话系统…
 
-往期文章[智能交互复兴：ChatGPT +终端（奔驰/Siri）= ？](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649769278%26idx%3D1%26sn%3D97a0d56dc46434353da839eadf716894%26chksm%3Dbec3d82389b45135893a65de0e7bd6de2b544efa799b0e1238fa90e0c52f034dd3e0c41c5b99%26scene%3D21%23wechat_redirect)中，提到了大模型引领的AIGC海啸冲击到的各行各业。由内到外，按照三层划分：模型层→模态层→应用层
+往期文章[智能交互复兴：ChatGPT +终端（奔驰/Siri）= ？](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649769278&idx=1&sn=97a0d56dc46434353da839eadf716894)中，提到了大模型引领的AIGC海啸冲击到的各行各业。由内到外，按照三层划分：模型层→模态层→应用层
 
 1.  模型层：文本领域（GPT系列）、图像领域（扩散模型系列）、视频、建模、多模态等
 2.  模态层：文本、语音、图像、视频、行为、理解、策略、工具等，其中文本和图像最为惊艳
@@ -116,7 +117,7 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 
 语音助手“听不见”、“听不清”、“听不懂”灾难级的系统表现，让人和机器总得疯一个。
 
-往期文章（[ChatGPT：从入门到入行（放弃）](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649768933%26idx%3D1%26sn%3D92345bd6e0a2fa16bb0674b7c889c23c%26chksm%3Dbec3def889b457ee8afe4c4f90d985383a16a0c33ed18f59d610c6193b16775bd630d5bf13a4%26scene%3D21%23wechat_redirect)）提到几个案例：
+往期文章（[ChatGPT：从入门到入行（放弃）](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649768933&idx=1&sn=92345bd6e0a2fa16bb0674b7c889c23c)）提到几个案例：
 
 案例一：**小爱翻车**
 
@@ -230,7 +231,7 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 > 对话系统“爱”、“恨”交织：  
 > 爱：终极交互形态让人着迷，CUI，甚至更高级的多模态交互、脑机交互  
 > 恨：技术现实与期望鸿沟太大，智障频频。  
-> 鹤啸九天，公众号：鹤啸九天[ChatGPT：从入门到入行（放弃）](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649768933%26idx%3D1%26sn%3D92345bd6e0a2fa16bb0674b7c889c23c%26chksm%3Dbec3def889b457ee8afe4c4f90d985383a16a0c33ed18f59d610c6193b16775bd630d5bf13a4%23rd)
+> 鹤啸九天，公众号：鹤啸九天[ChatGPT：从入门到入行（放弃）](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649768933&idx=1&sn=92345bd6e0a2fa16bb0674b7c889c23c)
 
 ### **（1.4）对话系统为什么难？**
 
@@ -263,7 +264,7 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 
 不做过多解释，私信“人工智障”
 
-2019年，Mingke文章《[人工智障 2 : 你看到的AI与智能无关](https://mp.weixin.qq.com/s%3F__biz%3DMzg5NDIwODgzMA%3D%3D%26mid%3D2247484375%26idx%3D1%26sn%3Def1c302d24f4b30651b5dfcaaf0390cc%26scene%3D21%23wechat_redirect)》进一步深入探讨了对话系统为什么这么难
+2019年，Mingke文章《[人工智障 2 : 你看到的AI与智能无关](https://mp.weixin.qq.com/s?__biz=Mzg5NDIwODgzMA==&mid=2247484375&idx=1&sn=ef1c302d24f4b30651b5dfcaaf0390cc&scene=21#wechat_redirect)》进一步深入探讨了对话系统为什么这么难
 
 mingke在深入剖析了其中原因。
 
@@ -319,7 +320,7 @@ GPT这类自回归模型有天生缺陷，无法兼顾事实、不可控：
 
 人和动物具备常识，而机器表现得很肤浅
 
-那么怎么办？他推荐世界模型，略，详见：[生成式人工智能(GAI)沉思录：浪潮之巅还是迷茫之谷？](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649769135%26idx%3D1%26sn%3D2f42da2230375acbb8aeb5b487bd374f%26chksm%3Dbec3d9b289b450a40d604d713fda5b8029a69b4fa851c3d0eedcce13c3bf3a0495b7b63867c6%26scene%3D21%23wechat_redirect)
+那么怎么办？他推荐世界模型，略，详见：[生成式人工智能(GAI)沉思录：浪潮之巅还是迷茫之谷？](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649769135&idx=1&sn=2f42da2230375acbb8aeb5b487bd374f)
 
 ![](https://pic4.zhimg.com/v2-d6d2270f8b764399347cde12a2465b53_b.jpg)
 
@@ -385,7 +386,7 @@ GPT这类自回归模型有天生缺陷，无法兼顾事实、不可控：
 
 ChatGPT是通用领域聊天机器人。
 
-[往期文章【拾象投研】大模型（LLM）最新趋势总结](https://mp.weixin.qq.com/s%3F__biz%3DMjM5ODY2OTQyNg%3D%3D%26mid%3D2649769341%26idx%3D1%26sn%3Dff456c6c38de6451603595d8d50c1edb%26chksm%3Dbec3d86089b4517621196712e78123970d28d3f758151eea66ae7147db1a91dcd20566ffb35a%26scene%3D21%23wechat_redirect) 里提到了大模型对各行各业的改变
+[往期文章【拾象投研】大模型（LLM）最新趋势总结](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649769341&idx=1&sn=ff456c6c38de6451603595d8d50c1edb) 里提到了大模型对各行各业的改变
 -   LLM基础模型拿走价值链的大头（60%），其次是AI Infra基础架构、Killer Apps，各占20%。
 -   人机交互方式开始迈入新时代（CUI对话交互）
 -   目前的大模型空有大脑，身体和感官还在逐步成长。
