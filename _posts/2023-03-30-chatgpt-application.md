@@ -1302,6 +1302,19 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 6.  canny边缘检测/depth深度检测/HED边缘提取/mlsd线段识别/normal模型识别/openpose姿势识别/scribble黑白稿提取/seg语义分割和根据此画图：主要是各种开源的视觉任务模型VFMs，然后[ControlNet](https://github.com/lllyasviel/ControlNet.git)实现画图。
 
 
+#### VEED 视频翻译
+
+##### VEED
+
+【2023-10-21】[VEED](https://www.veed.io/zh-CN/tools/video-translator) 翻译准确率高达 95%。无需使用通常不准确的谷歌翻译。 VEED 准确性远高于其他在线翻译服务——后者也更昂贵。使用 VEED 可以节省大量时间和金钱，否则可能会花在手动翻译视频或聘请昂贵的翻译人员上。每月只需 24 美元，您就可以下载无限量的翻译成绩单。而且它完全基于浏览器，因此您无需安装任何软件
+- [demo](https://youtu.be/KHNwu5ZOLyI)
+
+##### zeemo
+
+[zeemo](https://zeemo.ai) 会影字幕
+- [demo](https://www.youtube.com/watch?v=sGiHdO4w7Wc)
+
+
 ### 直播
 
 
