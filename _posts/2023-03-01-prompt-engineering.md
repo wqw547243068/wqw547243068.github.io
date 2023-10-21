@@ -798,6 +798,43 @@ EA（进化算法）通常从一个包含N个解决方案（在研究人员的�
 - 在主观性分类任务（Subi）上，EvoPrompt（DE）明显优于EvoPrompt（GA），具有9.7%的准确性优势。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/e13be958f99d44e782857924b6198345~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image?_iz=58558&from=article.pc_detail&x-expires=1697197893&x-signature=%2FNKH9Ll3KJnpLwRxezeZ1fh%2BRxo%3D)
 
+
+### 2023.10.20 GATE 主动提示
+
+为什么要“反客为主”提示人类？
+- 因为人类给出的提示存在局限性，不一定能准确完整表达出自己的喜好。
+- 比如很多人都不懂提示工程, 或在提示过程中提供了存在**误导性**的资料……
+  - 假如一个用户说自己很喜欢读网球相关的文章，对网球巡回赛、发球技术感兴趣。但是从他提供的文章参考里，无法判断他是否对网球方面的其他话题感兴趣。
+
+这些都会导致大模型表现变差。
+
+如果大模型能学会一些提问技巧，就能将用户的偏好锁定在更小范围内。
+
+【2023-10-20】[提示工程夭折？MIT斯坦福让大模型主动提问，自己搞懂你想要什么](https://www.toutiao.com/article/7291892384072319527)
+
+MIT、斯坦福和Anthropic（Claude2打造者）共同提出 GATE, 基于大模型本身的能力，来引出、推理人类用户的喜好。
+- [Eliciting Human Preferences with Language Models](https://arxiv.org/abs/2310.11589)
+- 论文提出了一种新型的机器学习框架 `GATE`（Generative active task elicitation），让大模型学会**主动**向人类提问，自己搞明白用户的偏好。
+- 用GPT-4进行实验，结果发现和提示工程、监督学习等方法比，在这个框架的辅助下GPT-4在多个任务上更懂人类了。
+
+如果大模型能更容易揣度出人类想啥，也就意味着人类自己不用绞尽脑汁表达自己的想法了。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/24bf66b637b04bfca2e922b427cdbfa1~tplv-tt-origin-asy2:5aS05p2hQOmHj-WtkOS9jQ==.image?_iz=58558&from=article.pc_detail&x-expires=1698506415&x-signature=w1b35SEDMIPYJOFKegtKV7xrc2g%3D)
+
+`监督学习`和`提示工程`都属于**被动**方式，`监督学习`和少量`主动学习`还要基于示例
+
+本项研究让大模型尝试了多种提问方式，比如主动生成用户标注的样本、是非类提问、开放式提问等。
+
+主要测试的任务为内容推荐、道德推理和邮箱验证。
+
+结果显示，在三项任务中，GATE包含的办法效果都优于其他方法。
+
+观点
+- 提示工程要是消失了，花重金雇佣的提示工程师怎么办？
+- elvis：这篇研究和之前那些研究人类偏好的工作没有太大不同，我们现在还是要依赖提示工程。
+  - 我不认为“理解人类意图/喜好”会导致提示工程消失，除非LLM训练和工作的方式发生系统性变化。
+- Gennaro: 提示工程只是会从前端消失，形式上发生改变
+
+
 ## 图像提示词
 
 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
