@@ -1460,6 +1460,16 @@ VALL·E目前还没开源
 
 【2023-8-3】Meta新开源模型AudioCraft炸场！文本自动生成音乐；
 
+
+#### Talk
+
+【2023-10-21】[Talk](https://talk.proxoar.com/auth)：通过声音与AI进行对话，提供类似本地应用的用户体验。
+- 该项目支持多种语音对话服务提供商，包括 ChatGPT、Elevenlabs、Google Text-to-Speech、Whisper和Google Speech-to-Text。
+- 项目具有现代和时尚的用户界面，以及统一的独立二进制文件
+
+Talk - Talking with ChatGPT is a breeze，a single-page application crafted to converse with AI using voice, replicating the user experience akin to a native app’ proxoar [GitHub](github.com/proxoar/talk)
+- ![](https://github.com/proxoar/talk/raw/main/doc/figjam-talk-2023-09-22.png)
+
 ### 智能对话
 
 
