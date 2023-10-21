@@ -324,9 +324,30 @@ GPT这类自回归模型有天生缺陷，无法兼顾事实、不可控：
 
 ![](https://pic4.zhimg.com/v2-d6d2270f8b764399347cde12a2465b53_b.jpg)
 
-【2023-10-18】
-- MIT的Tegmark认为有世界模型
+【2023-10-18】MIT 的 Max Tegmark 认为有世界模型
+- MIT 和 东北大学的两位学者发现 大语言模型内部有一个世界模型，能够理解空间和时间
+- LLM绝不仅仅是大家炒作的「`随机鹦鹉`」，它的确理解自己在说什么！
 - 杨植麟：“Next token prediction（预测下一个字段）是唯一的问题。”“只要一条道走到黑，就能实现通用泛化的智能。”
+
+【2023-10-20】[再证大语言模型是世界模型！LLM能分清真理谎言，还能被人类洗脑](https://www.toutiao.com/article/7291922903505830436)
+- 【2023-10-10】[The Geometry of Truth: Emergent Linear Structure in Large Language Model Representations of True/False Datasets](https://arxiv.org/abs/2310.06824)
+- [dataexplorer](https://saprmarks.github.io/geometry-of-truth/dataexplorer)
+- MIT等学者的「世界模型」第二弹来了！这次，他们证明了LLM能够分清真话和假话，而通过「脑神经手术」，人类甚至还能给LLM打上思想钢印，改变它的信念。
+
+新发现: LLM还可以区分语句的真假！
+- 研究人员建立了简单、明确的真/假陈述数据集，并且把LLM对这些陈述的表征做了可视化。清晰的线性结构，真/假语句是完全分开的，线性结构是分层出现，如果是简单的陈述，真假语句的分离会更早出现，如果是「芝加哥在马达加斯加，北京在中国」这类复杂的陈述，分离就会更晚
+  - 第0层时，「芝加哥在马达加斯加」和「北京在中国」这两句话还混在一起。随着层数越来越高，大模型可越来越清晰地区分出，前者为假，后者为真
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/7273f53308fb4467b5d0c8267df940b6~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image?_iz=58558&from=article.pc_detail&x-expires=1698506420&x-signature=eGcsdZERd2A7u4tFr5EGKw9ZAsk%3D)
+
+证明了两点——
+1. 从一个真/假数据集中提取的方向，可以准确地对结构和主题不同的数据集中的真/假语句进行分类。
+  - 仅使用「x大于/小于y」形式的语句找到的真值方向，在对西班牙语-英语翻译语句进行分类时的准确率为97%，例如「西班牙语单词『gato』的意思是『猫』」。
+2. 更令人惊喜的是，人类可以用确定的**真相方向**给LLM「洗脑」，让它们将虚假陈述视为真实，或者将真实陈述视为虚假。
+  - 「洗脑」前，对于「西班牙语单词『uno』的意思是『地板』」，LLM有72%的可能认为这句话是错误的。
+  - 但如果确定LLM存储这个信息的位置，覆盖这种说法，LLM就有70%的可能认为这句话是对的。
+  - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/6db3629e7fdb495580f6801f2fc56030~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image?_iz=58558&from=article.pc_detail&x-expires=1698506420&x-signature=xOozb5G6zTvWyAtRE4yTW6kqEpE%3D)
+
+这种办法来提供模型的真实性，减轻幻觉。
 
 
 总结：
