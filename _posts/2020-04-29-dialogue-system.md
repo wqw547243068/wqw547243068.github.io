@@ -2045,7 +2045,7 @@ NLU即Natural Language Understanding，负责理解用户的语句输入，一�
 - `双向平行语料库`所收录的语料由A语言文本和其B语言译本，以及B语言和其A语言译本组成。
 - `多向平行语料库`收录的语料为一种语言的源语文本和译自该文本的两种或两种以上语言的目的语文本。
 
-### 数据集
+### NLU 数据集
 
 意图分类和槽位填充任务主要数据集`Snips`、`ATIS`和NLU-Benchmark
 
@@ -2097,6 +2097,41 @@ NLU-Benchmark数据集标注了场景，动作和实体。例如：
 | xiaohuangji（小黄鸡语料） | 45W | 原人人网项目语料 | 有一些不雅对话，少量噪音 | Q:你谈过恋爱么 A:谈过，哎，别提了，伤心..。 | 否 |
 
 详见：[chinese_chatbot_corpus](https://github.com/codemayq/chinese_chatbot_corpus/blob/master/readme.md)
+
+
+### DM 数据集
+
+
+#### MultiWOZ
+
+【2023-10-21】[一文白话跨领域任务型对话系统：MultiWOZ数据集！](https://zhuanlan.zhihu.com/p/521094108)
+
+[MultiWOZ](https://github.com/budzianowski/multiwoz) 全称 Multi-domain Wizard-Of-Oz
+- [MultiWOZ - A Large-Scale Multi-Domain Wizard-of-Oz Dataset for Task-Oriented Dialogue Modelling](https://arxiv.org/pdf/1810.00278.pdf)
+- Wizard-Of-Oz（绿野仙踪）是一个过程，允许用户与一个界面互动，这个用户被骗了，认为界面的对面是机器，而事实上在幕后有一个人在进行回复……
+- 这个方法是一个比较宏观的建立数据集的思路，能够提升数据集的可信度。
+
+multi-domain 数据集跨越多个领域（domain），MultiWOZ属于任务型对话系统，也就是为了完成一项任务。
+
+MultiWOZ是一个完全标记的人与人之间的书面对话集合。三个关键词：
+- **完全标记**（每一个round都有标记）
+- **人与人**（没有任何机器生成的回复，因此属于full-manual dataset）
+- **书面**（形式比较像一个管家和雇主的对话，而不是随意的聊天，可以自己看下数据集文件，有明确的任务感）。
+
+但是，其实这个数据集最大的亮点是**多领域**，在这之前的多领域数据集都小的离谱，大的都是单领域的。
+
+MultiWOZ直接提供了三个Benchmark 用来衡量模型的好坏：
+- Dialog State Tracking（或者叫做Belief Tracking）
+- Act2Text
+- Context2Act
+
+这三个benchmark几乎涵盖了多轮会话的所有版块
+- ![](https://pic4.zhimg.com/80/v2-a6b9fa7960ba6bda7f3396e39ddc8b9b_1440w.webp)
+- NLU+DST：归纳上文，跟踪记录对话状态
+- Context2Text：根据上文生成文本
+- Act2Text：根据系统推理出的行为生成文本
+
+[数据集细节介绍](https://zhuanlan.zhihu.com/p/200747822)
 
 ### 模型
 
