@@ -17,6 +17,12 @@ mathjax: true
 # 相对论
 
 
+## 爱因斯坦
+
+【2023-10-22】[爱因斯坦，天才的一生是如何异于常人的](https://www.ixigua.com/7265487307631755787), 关于爱因斯坦的电影《天才》，解读：
+
+<iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7265487307631755787?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
+
 ## 相对论速成
 
 [这是你理解相对论的另一种方法](https://www.bilibili.com/video/BV17P4y1V7BX), 用 3b1b 的工具[manim](https://github.com/3b1b/manim)制作
