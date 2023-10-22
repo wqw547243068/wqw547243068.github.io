@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 深度学习 自然语言处理
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -448,7 +448,51 @@ ExtractGPT
 | 设置提醒，下午3点有会议要参加 | 提醒事项 | 时间：下午3点，事件：参加会议              |
 | 显示今天的日程                | 提醒事   |                                            |
 
-#### 人工标注
+#### 数据标注
+
+##### 标注范式
+
+【2023-10-22】[为标注员的LLM（五）：3种标注范式以及思考](https://zhuanlan.zhihu.com/p/662285150?utm_psn=1699572009640701952)
+
+标注的本质以及LLM的作用
+- 标注 = 常识 + 标注规则。
+- 常识，对应先验知识。有了常识能力，可以在仅提供类别名称、而未提供标注规则的情况下进行标注。这也是零样本NLP模型（如Siamese-uniNLU[8]、paddleNLP[9]）的核心。
+- 标注规则，核心在于帮助标注员明确任务、区分边界。需要做的工作包括：任务定义、类别定义、边界处理逻辑等。
+
+而将LLM引入标注，意味着什么呢？
+- 有了一个具备相当**常识**的标注员。就算不提供细则，也能有良好的效果（范式1）；
+- 有了一个能**听懂人话**、**高效**的标注员。标注规则通过自然语言表达，也通过自然语言修改，成本低、速度快、且人类可以理解（范式2、范式3）。
+
+
+归纳出使用LLM标注的3种范式：炼丹式、工具式、智能式。
+- `炼丹式`：范式的特点在于：
+  - 重心不在于调整prompt中的标注规则部分，而在于调参数、应用prompt技术（如Self-Consistency[2]、Chain-of-Thought[3]、Bias Calibration[4])、Few-Shot Prompting等）；
+  - 目标是最大化dev set上的任务指标。
+  - 本质是炼丹，和传统的ML过程是一样的：在dev set上，通过调整超参、应用prompt技术，以得到能带来最佳效果的prompt。
+  - ![](https://pic2.zhimg.com/80/v2-d3a0ca04b31efd23022c4a5b531b17a1_1440w.webp)
+  - 优点：整个过程可以高度自动化；
+  - 缺点：难以针对badcase进行迭代；
+  - 适用场景：Cold-Start。在没有业务经验的时候，可以快速得到第一版标注结果。
+- `工具式`(局部使用)
+  - 代表是Snorkel的论文：Language Models in the Loop: Incorporating Prompting into Weak Supervision[5], 特点是：
+  - 把LLM当作**局部**的**子标注器**，例如判断这段话里是否有联系方式；
+  - 人类负责把大的标注任务拆解为多个LLM子标注器的组合。拆解和组合方式，取决于数据分析和业务理解。
+  - 这一范式的本质是Programmatic Weak Supervision思路的扩展。
+  - ![](https://pic2.zhimg.com/80/v2-fe07128fec9088bd190b2e39ae578e39_1440w.webp)
+  - 优点：人类掌控全局，因此更可控；对LLM的依赖性和要求较低，可以用较弱的LLM；支持迭代，迭代的思路是新增LLM标注器、或者修改原有的LLM标注器；
+  - 缺点：框架相对复杂，人类使用者需要学习如何分析数据、设计子标注器；
+  - 适用场景：通用
+- `智能式`(智能体迭代)
+  - 代表: OpenAI使用GPT-4来标注的Blog[6]。此范式的特点如下：
+  - **所有**的标注要求都通过prompt来表达，包括标签定义、标注边界情况的划分（例：如果XXXX，则标注XXX）；
+  - 支持**迭代**，迭代Loop是 LLM标注 -> 找到标注错误 -> 让LLM解释标注原因 -> 迭代标注规则，迭代目标是让让标注规则越来越精准。
+  - 本质是把LLM当作智能体，人类则聚焦到标注的核心：让标注规则更清晰、准确。
+  - ![](https://pic1.zhimg.com/80/v2-f68d33a4b08a29fa7a34aeae9fc0e568_1440w.webp)
+  - 优点：迭代只需修改标注规则，无需代码，且对比范式2，标注规则更加具体、完整、可理解、可复用（范式2是将标注规则抽象为 子标注器+逻辑关系）；
+  - 缺点：对LLM要求高，尤其是对复杂指令的理解能力，因为标注规则会包含划分边界的if-else逻辑、对标签的详细定义等；
+  - 适用场景：通用。
+
+##### ChatGPT超过人工标注
 
 【2023-3-29】ChatGPT超过人工标注
 - [ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks](https://arxiv.org/abs/2303.15056?fbclid=IwAR2j7nL9y2pvxkHHkbZtbWbfEGuyaqiQ6NYVO39WkpUK5NGkBGZLjiMx0ho)
@@ -499,6 +543,8 @@ ChatGPT 用于 人工标注的 Web系统：[Weak Labeling Tool using ChatGPT](ht
 因此，这种**自我对齐机制**会迭代调整one-shot模板，为下一轮生成做好准备。one-shot阶段搜索到的最优模板随后用于对数据集进行标注。
 
 通过调整不同的预训练奖励模型来评估标注的质量，并引入不同的评价指标来间接评估摘要的还原能力。
+
+##### Autolabel
 
 【2023-6-19】[GPT-4终结人工标注！AI标注比人类标注效率高100倍，成本仅1/7](https://www.toutiao.com/article/7280051689963635212)
 
