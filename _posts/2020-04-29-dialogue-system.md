@@ -3,7 +3,7 @@ layout: post
 title:  "对话系统-Dialogue System"
 date:   2020-04-29 21:45:00
 categories: 人工智能 自然语言处理
-tags: 深度学习 NLP 对话系统 QA kbqa document 多轮 闲聊 沈向洋 FSM 有限状态机 GPT 台大 陈蕴侬 JSGF 图灵测试 推荐系统 阅读理解 智能音箱 个人助理 智能客服 BERT faiss nl2sql 知识库 外呼
+tags: 深度学习 NLP 对话系统 QA kbqa document 多轮 闲聊 沈向洋 FSM 有限状态机 GPT 台大 陈蕴侬 JSGF 图灵测试 推荐系统 阅读理解 智能音箱 个人助理 智能客服 BERT faiss nl2sql 知识库 外呼 ccf
 excerpt: 对话系统技术图谱
 author: 鹤啸九天
 mathjax: true
@@ -2098,6 +2098,84 @@ NLU-Benchmark数据集标注了场景，动作和实体。例如：
 | xiaohuangji（小黄鸡语料） | 45W | 原人人网项目语料 | 有一些不雅对话，少量噪音 | Q:你谈过恋爱么 A:谈过，哎，别提了，伤心..。 | 否 |
 
 详见：[chinese_chatbot_corpus](https://github.com/codemayq/chinese_chatbot_corpus/blob/master/readme.md)
+
+
+#### CCF 
+
+2021年 CCF+中移动 主办的 [智能人机交互自然语言理解](https://www.datafountain.cn/competitions/511/datasets) 智能家居控制 NLU数据集
+- 数据集包含用户与**音箱**等智能设备进行**单轮对话**文本数据，包含共 11个 意图类别，共计约47个槽位类型。
+- train.json 为训练数据，共约 9100条，其文本由ASR语音识别技术转写得到，因此可能需要进一步处理，文本标注包含用户意图、槽位及槽值三个字段
+- [ccf-2021-iot](https://www.kaggle.com/datasets/wqw547243068/ccf-2021-iot?select=train.json)
+
+交互方式上，“手势交互”，“语音交互”，“AR交互”等新兴交互方式开始出现在公众的视野中，但由于交互效率和人体工学等方面的限制，手势交互等方法短期内较难成为主流的人机交互方式，而搭载了语音交互能力的产品自落地应用起就一直受到极为广泛的关注。在交互手段方面，用户仅需要通过与相关产品对话即可下达命令、完成播放音乐、控制家居等任务，能够真正意义上解放双手，提升生活幸福指数。但在实际应用中，相关产品往往很难满足用户的各类别复杂要求，其根源在于自然语言本身较高的复杂性使得用户意图无法被较好的理解。自然语言理解（NLU ,Natural Language Understanding）任务旨在让计算机具备理解用户语言的能力，从而进行下一步决策或完成交互动作，是具备语音交互能力的产品需要处理的重要任务。
+
+赛题任务：根据用户与系统的单轮对话，识别对话用户意图并进行槽位填充。
+
+除基础的意图识别及槽位填充任务外，本赛题额外包括2个子任务：
+- 人机交互-NLU-1（**小样本**学习任务）：根据基础意图类别数据及少量含标注的新意图类别样本，完成新意图类别的识别及槽位填充任务。
+- 人机交互-NLU-2（**域外意图检测**任务）：除识别出训练数据中已知的意图类别外，对于未知意图类别数据进行检测。
+
+意图分布
+- Alarm-Update             1000
+- Audio-Play                 50
+- Calendar-Query           1000
+- FilmTele-Play            1000
+- HomeAppliance-Control    1000
+- Music-Play               1000
+- Radio-Listen             1000
+- TVProgram-Play             50
+- Travel-Query             1000
+- Video-Play               1000
+- Weather-Query            1000
+
+意图与槽位信息
+
+```json
+{
+  "FilmTele-Play": ["name", "tag", "artist", "region", "play_setting", "age"],
+  "Audio-Play": ["language", "artist", "tag", "name", "play_setting"],
+  "Radio-Listen": ["name", "channel", "frequency", "artist"],
+  "TVProgram-Play": ["name", "channel", "datetime_date", "datetime_time"],
+  "Travel-Query": ["query_type", "datetime_date", "departure", "destination", "datetime_time"],
+  "Music-Play": ["language", "artist", "album", "instrument", "song", "play_mode", "age"],
+  "HomeAppliance-Control": ["command", "appliance", "details"],
+  "Calendar-Query": ["datetime_date"],
+  "Alarm-Update": ["notes", "datetime_date", "datetime_time"],
+  "Video-Play": ["name", "datetime_date", "region", "datetime_time"],
+  "Weather-Query": ["datetime_date", "type", "city", "index", "datetime_time"],
+  "Other": []
+}
+```
+
+数据示例
+
+```json
+  "NLU09095": {
+    "text": "播放周深的英文歌",
+    "intent": "Music-Play",
+    "slots": {
+      "artist": "周深",
+      "language": "英语"
+    }
+  },
+  "NLU09096": {
+    "text": "我想知道开原今天是不是要多加衣物防寒保暖。",
+    "intent": "Weather-Query",
+    "slots": {
+      "city": "开原",
+      "datetime_date": "今天",
+      "index": "穿衣指数"
+    }
+  }
+```
+
+获奖方案
+- 第二名 [CCIR-Cup](https://github.com/SCU-JJkinging/CCIR-Cup), [ppt讲解](https://blog.csdn.net/qq_41845478/article/details/121225816)
+
+#### Smart Home Assisstant
+
+智能锁视频、图像指令识别
+- 数据集下载：[Smart Home Assisstant Dataset](https://www.kaggle.com/datasets/volkanonder/smart-home-assisstant-dataset)
 
 
 ### DM 数据集
