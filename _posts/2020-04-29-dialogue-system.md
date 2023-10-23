@@ -2102,6 +2102,39 @@ NLU-Benchmark数据集标注了场景，动作和实体。例如：
 
 ### DM 数据集
 
+数据集汇总
+- ![](https://pic2.zhimg.com/v2-934cd6c7e7cd77f3904387d72cd72c29_r.jpg)
+
+#### 检索式对话数据集 —— 相关性
+
+检索式对话数据集，诸如 Ubuntu、Douban，对于给定的多轮对话，需要模型在若干候选回复中，选出最合适的句子作为对话的回复。
+
+然而这些数据集主要关注模型能否选出**相关性**较好的回复，并不直接考察模型的**推理能力**。随着 BERT 等预训练模型的涌现，模型在此类数据集上已经达到了很好的效果。
+
+#### 推理式数据集 —— 推理
+
+已有的针对推理的数据集（DROP、CommonsenseQA、ARC、Cosmos等）大多被设计为**阅读理解**格式。它们需要模型在阅读文章后回答额外问题。由于任务不同，这些现有的推理数据集并不能直接帮助指导训练聊天机器人。
+
+#### MuTual 微软 —— 高考英语听力
+
+[多轮对话推理数据集MuTual发布，聊天机器人常识推理能力大挑战](https://zhuanlan.zhihu.com/p/151366314)
+- [论文](https://arxiv.org/abs/2004.04494), [MuTual github](https://github.com/Nealcly/MuTual)，[leaderboard](https://nealcly.github.io/MuTual-leaderboard)
+- 在构建聊天机器人时，现有对话模型的回复往往**相关性**较好，但经常出现**常识和逻辑**错误。由于现有的大部分检索式对话数据集都没有关注到对话的逻辑问题，导致评价指标也无法直接反映模型对对话逻辑的掌握程度。
+- 对此，微软亚洲研究院发布了**多轮对话推理**数据集 [MuTual](https://github.com/Nealcly/MuTual)，针对性地评测模型在多轮对话中的推理能力。
+  - 相比现有的其他检索式聊天数据集，MuTual 要求对话模型具备**常识推理**能力；
+  - 相比阅读理解式的推理数据集，MuTual 的输入输出则完全符合标准检索式聊天机器人的流程。
+因此，MuTual 也是目前最具挑战性的对话式数据集。测试过多个基线模型后，RoBERTa-base 表现仅为70分左右。目前已有多个知名院校和企业研究部门进行了提交，最优模型可以达到87分左右，仍与人类表现有一定差距。
+
+MuTual 基于**中国高考英语听力题**改编。听力考试要求学生根据一段双人多轮对话，回答额外提出的问题（图1左），并通过学生能否正确答对问题衡量学生是否理解了对话内容。为了更自然的模拟开放领域对话，我们进一步将听力题中额外的问题转化为对话中的回复
+- 所有的回复都与上下文相关，但其中只有一个是逻辑正确的。一些错误的回复在极端情况下可能是合理的，但正确的回复是最合适的。
+- ![](https://pic1.zhimg.com/80/v2-252da22a9a24d7abd914cb743c5d6c9c_720w.jpg)
+
+MuTual 数据集主要包含聊天机器人需要的六种推理能力：
+- 态度推理(13%)
+- 数值推理(7%)
+- 意图预测(31%)
+- 多事实推理(24%)
+- 常识等其他推理类型（9%）。
 
 #### MultiWOZ
 
@@ -2133,6 +2166,41 @@ MultiWOZ直接提供了三个Benchmark 用来衡量模型的好坏：
 - Act2Text：根据系统推理出的行为生成文本
 
 [数据集细节介绍](https://zhuanlan.zhihu.com/p/200747822)
+- 主要目标：旅游城市的信息中心获取旅游者查询的高度自然对话
+- Domain：Attraction, Hospital, Police, Hotel, Restaurant, Taxi, Train，其中后四个域属于扩展域，包括子任务Booking。每段对话涉及1-5个领域，因此长度和复杂性差别很大。全部的act和slot如下：
+- ![](https://pic2.zhimg.com/80/v2-fdb9440eec0315678c852d40e6f14055_1440w.webp)
+- 数量及分布：10438个对话，其中3406个单领域对话，7032个多领域对话，多领域中，包含最少2-5个领域。70%的对话超过10个回合，其中单领域平均轮数为8.93，多领域为15.39。在数据里，对话的序号前面是SNG就是单轮，MUL就是单轮。
+- 数据结构：每个对话包含a goal，multiple user，system utterances，belief state，dialogue acts and slots。
+- Belief state：有三个部分，分别是semi、book、booked。其中semi是特定领域里的槽值；book在特定领域的booking slots；booked是book的一个子集，在book这个字典里，是booked entity（一旦预定生成）
+
+#### DSTC
+
+DSTC大家族（简介）：
+- DSTC 1 : （人机对话）**公交线路查询**，目标固定不变。
+  - 共5个slot（路线，出发点，重点，日期，时间），有些slot（时间和日期）的取值数量不固定。而且DSTC1的用户目标在对话过程中不会发生变化。[dialog-state-tracking-challenge](https://www.microsoft.com/en-us/research/event/dialog-state-tracking-challenge/)
+- DSTC 2/3 ：（人机对话）**餐馆预订**，用户查询满足特定条件下的餐馆的某些信息（电话、地址等）。
+  - 2 用户目标会在对话过程中发生变化
+    - 例如，一开始用户想订中国餐馆，结果最后改为订印度餐馆，这也从某种程度上增加了对话的复杂度。
+  - DSTC2 对话状态表示上更加丰富，不仅包含用户目标的槽值对，还包括查找方法以及还有哪些信息用户希望系统可以返回到他。每一轮对话包含三个元素：
+    - `informable slot`：使用informable slot来对用户目标进行限制，比如用户想要便宜、西边的餐厅等等。
+    - `requested slot`：这个slot是一些信息层面的东西，是用户可以索取索要的，比如说，餐厅地址、电话告诉我等等。
+    - `search method`：用户可以有不同的方法让系统帮忙查询，例如用户有哪些限制，可以在限制内查询；或者用户要求系统更换一个选项；或者用户通过具体的名字直接查询等等。
+  - 输入/输出：每一轮的输入是SLU的结果，也就是N-BEST的SLU结果的概率分布，输出有三个分布，分别是goal constraints目标限制、requested slot请求槽、search method搜索方法
+  - 训练数据 1612个，验证集 506个，测试集 1117个
+  - 3在2的基础上新增了一些slot。而且添加了新领域（**旅游信息查询**），且只有很少的训练数据，目的就是为了尝试领域迁移。
+  - [dstc](http://camdial.org/~mh521/dstc)
+- DSTC 4 ：（人人对话）旅游信息查询
+  - [DSTC4](​www.colips.org/workshop/dstc4)
+- DSTC 5 ：（人人对话）旅游信息查询，与4的区别在于，训练数据和测试数据用的是**不同语言**。
+  - [dstc5](http://workshop.colips.org/dstc5/tasks.html)
+- DSTC 6 ：由三部分组成，分别是
+  - End-to-End Goal Oriented Dialog Learning 端到端目标导向对话学习
+  - End-to-End Conversation Modeling 端到端对话建模
+  - Dialogue Breakdown Detection 对话终端检测。
+  - [dstc6](http://workshop.colips.org/dstc6)
+- DSTC 7-9 ：暂时还没有了解过。
+
+详见：[任务型对话系统数据集详解大全（MultiWOZ /DSTC）](https://zhuanlan.zhihu.com/p/200747822)
 
 ### 模型
 
@@ -2421,43 +2489,6 @@ dialogue management的种类（从简单到复杂）：
   - Prompts 又分为：
     - **open prompt**（如 ‘How may I help you‘ 这种，用户可以回复任何内容 ）
     - **directive prompt**（如 ‘Say yes to accept call, or no’ 这种，系统限制了用户的回复选择）
-
-### 数据集
-
-数据集汇总
-- ![](https://pic2.zhimg.com/v2-934cd6c7e7cd77f3904387d72cd72c29_r.jpg)
-
-#### 检索式对话数据集
-
-检索式对话数据集，诸如 Ubuntu、Douban，对于给定的多轮对话，需要模型在若干候选回复中，选出最合适的句子作为对话的回复。
-
-然而这些数据集主要关注模型能否选出**相关性**较好的回复，并不直接考察模型的**推理能力**。随着 BERT 等预训练模型的涌现，模型在此类数据集上已经达到了很好的效果。
-
-#### 推理式数据集
-
-已有的针对推理的数据集（DROP、CommonsenseQA、ARC、Cosmos等）大多被设计为**阅读理解**格式。它们需要模型在阅读文章后回答额外问题。由于任务不同，这些现有的推理数据集并不能直接帮助指导训练聊天机器人。
-
-#### MuTual
-
-[多轮对话推理数据集MuTual发布，聊天机器人常识推理能力大挑战](https://zhuanlan.zhihu.com/p/151366314)
-- [论文](https://arxiv.org/abs/2004.04494), [MuTual github](https://github.com/Nealcly/MuTual)，[leaderboard](https://nealcly.github.io/MuTual-leaderboard)
-- 在构建聊天机器人时，现有对话模型的回复往往**相关性**较好，但经常出现**常识和逻辑**错误。由于现有的大部分检索式对话数据集都没有关注到对话的逻辑问题，导致评价指标也无法直接反映模型对对话逻辑的掌握程度。
-- 对此，微软亚洲研究院发布了**多轮对话推理**数据集 [MuTual](https://github.com/Nealcly/MuTual)，针对性地评测模型在多轮对话中的推理能力。
-  - 相比现有的其他检索式聊天数据集，MuTual 要求对话模型具备常识推理能力；
-  - 相比阅读理解式的推理数据集，MuTual 的输入输出则完全符合标准检索式聊天机器人的流程。
-因此，MuTual 也是目前最具挑战性的对话式数据集。测试过多个基线模型后，RoBERTa-base 表现仅为70分左右。目前已有多个知名院校和企业研究部门进行了提交，最优模型可以达到87分左右，仍与人类表现有一定差距。
-
-MuTual 基于中国高考英语听力题改编。听力考试要求学生根据一段双人多轮对话，回答额外提出的问题（图1左），并通过学生能否正确答对问题衡量学生是否理解了对话内容。为了更自然的模拟开放领域对话，我们进一步将听力题中额外的问题转化为对话中的回复
-- 所有的回复都与上下文相关，但其中只有一个是逻辑正确的。一些错误的回复在极端情况下可能是合理的，但正确的回复是最合适的。
-- ![](https://pic1.zhimg.com/80/v2-252da22a9a24d7abd914cb743c5d6c9c_720w.jpg)
-
-MuTual 数据集主要包含聊天机器人需要的六种推理能力：
-- 态度推理(13%)
-- 数值推理(7%)
-- 意图预测(31%)
-- 多事实推理(24%)
-- 常识等其他推理类型（9%）。
-
 
 ### DST
 
