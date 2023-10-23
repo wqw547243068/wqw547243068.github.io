@@ -5111,6 +5111,24 @@ python -c "from notebook.auth import passwd; print(passwd())" # python 3.10
 # 复制生成的密文：'sha:ce.....',
 ```
 
+【2023-10-23】python>3.8上述方法已失效：[AttributeError: module 'IPython.lib' has no attribute 'passwd'](https://stackoverflow.com/questions/72836985/ipython-passwd-not-able-to-import-with-new-2022-anaconda-download)
+- 新版ipython （8.*）不支持以上操作，  the module security is missing...
+
+```py
+# ---- 仅适用于 ipython 7系列 ----
+import IPython.lib.security as security
+security.passwd()
+# ---------------------------
+from notebook.auth import passwd # 无效，依然无法识别
+hash=passwd('example')
+hash=passwd('example', 'sha1')
+# ------ 回退到7也不行 ------
+pip install ipython==7.23.1
+```
+
+无解中
+
+
 【2023-3-4】[jupyternotebook](https://sunie.top/archives/si-you-fu-wu-qi--si-jupyternotebook)
 
 - 修改配置文件
