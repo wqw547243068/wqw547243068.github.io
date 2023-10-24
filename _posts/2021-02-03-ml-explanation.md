@@ -3,7 +3,7 @@ layout: post
 title:  "机器学习可解释性-The explanation of Machine Learning"
 date:   2021-02-03 00:00:00
 categories: 机器学习
-tags:  可解释 黑盒模型 第一性原理 遗忘
+tags:  可解释 黑盒模型 第一性原理 遗忘 大模型
 excerpt: 如何破解机器学习的黑盒？提升可解释能力？
 author: 鹤啸九天
 mathjax: true
@@ -121,6 +121,28 @@ ChatGPT等大语言模型经常出现幻觉、歧视、虚假等信息的情况�
   - 问题一：单纯欺诈风险评分，不可解释，作业人员使用意愿不强。
   - 问题二：调查建议指导性不强，调查工作仍然强依赖经验丰富的调查人员。
   - 解法：多轮交互验证，历史欺诈案件多特征shap贡献多维分析，形成反欺诈知识经验，并由审核员整理解释性的具体书面表达话术
+
+
+## 大模型可解释
+
+【2023-10-24】[Can ChatGPT self-explain its predictions?](https://bdtechtalks.com/2023/10/23/chatgpt-self-explanation)
+
+A [new study](https://arxiv.org/abs/2310.11207) by researchers at UCSC and MIT compares self-explanations in `ChatGPT` with `traditional ML` explainability methods such as `LIME` and occlusion.
+
+Key findings: 关键结论
+- Traditional ML explainability uses “feature attribution” techniques that determine which parts of the input are highly associated with the model’s output 传统机器学习可解释性通过特殊属性技术来决定哪部分输入跟输出高度相关
+- LLM self-explanation can provide the explanation along with the model’s output, usually in natural language 而 LLM 自解释性能用自然语言解释输出
+- Self-explanation can come in two formats: “Predict then explain” (`P-E`) and “Explain then predict” (`E-P`)
+- In their study, the researchers compared both P-E and E-P with feature attribution
+- As classic explanation, they used the “occlusion method,” where they remove different words from the same prompt and see how they affect the model’s output
+- Their findings show that self-explanation is reasonable in highlighting words that are associated with the model’s output
+- Self-explanation can be a substitute for classic explanation, which can be slow and expensive since it requires multiple queries to the model
+
+However, they also found that self-explanation can harm the model’s accuracy
+- The most important finding is that current explanation pipelines are not suitable for LLMs and we should look for other techniques
+
+Read the full article on TechTalks.
+- ![](https://i0.wp.com/bdtechtalks.com/wp-content/uploads/2023/10/chatgpt-self-explain.jpg?w=1392&ssl=1)
 
 ## 可解释性工具
 
