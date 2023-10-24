@@ -2,7 +2,7 @@
 layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
-categories: AIGC
+categories: 大模型
 tags: gpt 量化 llm
 excerpt: 如何提升LLM推理效率？
 mathjax: true
@@ -83,85 +83,6 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 
 
 ## 优化方法
-
-
-### 如何选择优化方法
-
-【2023-10-17】[如何选择最适合你的LLM优化方法：全面微调、PEFT、提示工程和RAG对比分析](https://zhuanlan.zhihu.com/p/661830285?utm_psn=1697685536221999105)
-
-四种主要的调优方法：
-- **全面微调**：使用任务特定数据调整LLM的所有参数。
-  - 一个较小、任务特定、带标签的数据集上进行微调，调整一些模型参数，优化其对特定任务或一组任务的性能
-  - 全面微调： 所有模型参数都被更新，使其类似于预训练，只不过是在一个**带标签**且**规模较小**的数据集上进行。
-  - ![](https://pic2.zhimg.com/80/v2-e8c7286930eb81b57aaf109fe92ac58d_1440w.webp)
-  - 优点: 训练数据集更少、提高精度、增加鲁棒性
-  - 缺点: 高计算成本、内存需求高、时间/专业知识密集
-- **参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
-  - PEFT 方法可训练的部分不同。一些技术优先训练原始模型参数的**选定部分**。其他方法集成并训练较小的**附加组件**，如适配器层，而不修改原始结构
-  - ![](https://pic2.zhimg.com/80/v2-1d62f9b57373a592407db8aedd90b681_1440w.webp)
-  - LoRA是最常用的 PEFT 方法，使用重参数化，这种技术通过执行低秩近似来缩小可训练参数的集合。
-  - LoRA优点：
-    - 任务切换效率 - 创建模型的不同版本以适应特定任务变得更容易。你可以简单地存储预训练权重的单个副本，并构建许多小 LoRA 模块。当你从任务切换到任务时，你只替换矩阵 A 和 B，并保留 LLM。这显著减少了存储需求。
-    - 需要更少的 GPU - LoRA 将 GPU 内存需求减少了最多 3 倍，因为我们不计算/重新训练大多数参数。
-    - 高精度 - 在各种评估基准上，LoRA 的性能被证明几乎等同于全面微调 - 而且只需要一部分成本
-  - PEFT 相比全面微调的优势
-    - 更高效和更快的训练
-    - 保留预训练的知识
-- **提示工程**：改进模型输入以指导其输出。
-  - 在新数据集和任务上训练模型参数，使用所有预训练权重（如全面微调）或一组独立权重（如 LoRA）。
-  - 相比之下，提示工程根本不涉及训练网络权重
-  - ![](https://pic3.zhimg.com/80/v2-4e5ddc95da8e4945cf30c65e1593050e_1440w.webp)
-  - 基础提示: 零样本提示、少样本提示、链式思考引导
-  - ![](https://pic4.zhimg.com/80/v2-857d925cf7adc11d94a2fbd9aca37213_1440w.webp)
-- **RAG**（检索增强生成）：将提示工程与数据库查询结合，以获得丰富的上下文答案。
-  - 将引导工程与从外部数据源检索上下文相结合，以提高语言模型的性能和相关性。通过在模型上附加额外信息，它允许更准确和上下文感知的响应。
-  - RAG模型架构将用户查询的嵌入与知识库向量中的embedding进行比较，将来自知识库中相似文档的相关上下文附加到原始用户提示中。然后将这个增强的prompt给到LLMs，可以异步更新知识库及其相关的embedding
-  - ![](https://pic3.zhimg.com/80/v2-db7c5fbf5f95c69846fc3805eb287086_1440w.webp)
-  - RAG 本质上将信息检索机制与文本生成模型相结合。信息检索组件有助于从数据库中拉取相关的上下文信息，并且文本生成模型使用这个添加的上下文来产生更准确和“知识丰富”的响应。以下是它的工作方式：
-    - 向量数据库：实施 RAG 包括嵌入内部数据集，从中创建向量，并将它们存储在向量数据库中。
-    - 用户查询：RAG 从提示中获取用户查询，这是一个需要回答或完成的自然语言问题或陈述。
-    - 检索组件：一旦接收到用户查询，检索组件扫描向量数据库以识别与查询语义相似的信息块。然后使用这些相关片段为 LLM 提供额外上下文，使其能够生成更准确和上下文感知的响应。
-    - 串联：将检索到的文档与原始查询串联成一个提供生成响应所需额外上下文的提示。
-    - 文本生成：将包含串联查询和检索文档的提示馈送到 LLM 以产生最终输出。
-    - ![](https://pic1.zhimg.com/80/v2-63c902a479d54ff27917dd94d3c65174_1440w.webp)
-    - 开源应用框架: 
-      - OpenAI [chatgpt-retrieval-plugin](https://github.com/openai/chatgpt-retrieval-plugin)
-      - [langchain](https://github.com/langchain-ai/langchain)
-      - [LlamaIndex](https://gpt-index.readthedocs.io/en/latest/index.html)
-  - [Creating a RAG Pipeline with LangChainPermalink](https://www.maartengrootendorst.com/blog/improving-llms/#creating-a-rag-pipeline-with-langchain), [中文版](https://zhuanlan.zhihu.com/p/661349721?utm_psn=1697558407270424576)
-  - ![RAG方法的大致过程](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/rag.svg)
-  - RAG 有许多明显的优点：
-    - 最小化幻觉 - 当模型做出“最佳猜测”假设，本质上填补了它“不知道”的内容时，输出可能是错误的或纯粹的胡说八道。与简单的提示工程相比，RAG 产生的结果更准确，幻觉的机会更低。
-    - 易于适应新数据 - RAG 可以在事实可能随时间演变的情况下进行适应，使其对生成需要最新信息的响应非常有用。
-    - 可解释 - 使用 RAG，可以确定 LLM 答案的来源。对答案来源进行追溯对于内部监控、质量保证或处理客户纠纷可能是有益的。
-    - 成本有效 - 与在特定任务数据集上对整个模型进行微调相比，你可以使用 RAG 获得相当的结果，这涉及到更少的标记数据和计算资源。
-  - RAG 的潜在限制
-    - RAG 旨在通过从外部文档中提取上下文来增强 LLM 的信息检索能力。然而，在某些使用案例中，额外的上下文还不够。如果一个预训练的 LLM 在总结财务数据或从患者的医疗文档中提取见解方面遇到困难，很难看出以单个文档形式提供额外上下文如何有所帮助。在这种情况下，微调更有可能产生期望的输出。
-
-[improving-llms](https://www.maartengrootendorst.com/blog/improving-llms/), 3 of the most common methods for improving the performance of any LLM:
-- Prompt Engineering
-- Retrieval Augmented Generation (RAG)
-- Parameter Efficient Fine-Tuning (PEFT)
-- ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/common.svg)
-- ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/overview.svg)
-
-四个重要指标上进行比较：复杂性、成本、准确性和灵活性。
-- **成本**： PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning
-- **复杂性**：PE ＜ RAG ＜ PEFT = Full Fine-tuning
-- **准确性**：
-  - 特定领域术语：PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning
-  - 时效性：PEFT = Full Fine-tuning < PE < RAG
-  - 可解释性：PE = PEFT = Full Fine-tuning < RAG
-  - 幻觉: PE < PEFT < Full Fine-tuning < RAG
-    - 微调可以通过将 LLM 集中在特定领域数据上来减少这些幻觉。然而，不熟悉的查询仍然可能导致 LLM 编造出一个捏造出来的答案。
-    - RAG 通过将 LLM 的响应锚定在检索到的文档中来减少幻觉。初始检索步骤本质上进行事实检查，而随后生成受限于检索数据的上下文。对于避免幻觉至关重要的任务，推荐使用 RAG。
-  - 总结
-    - 解释性、时效性和避免幻觉至关重要 → RAG
-    - 要求特定领域风格 → 全面微调 和 PEFT
-    - 两者都要 → 微调 和 RAG
-- **灵活性**： Full Fine-tuning < PEFT < PE < RAG
-
-
 
 ### 一、子图融合（subgraph fusion）
 

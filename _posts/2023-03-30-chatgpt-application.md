@@ -2,7 +2,7 @@
 layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
-categories: 深度学习 自然语言处理
+categories: 大模型
 tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注
 excerpt: ChatGPT应用思考
 mathjax: true

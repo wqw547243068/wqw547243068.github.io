@@ -2,7 +2,7 @@
 layout: post
 title:  "多模态-Multi-Modal"
 date:   2023-02-21 16:22:00
-categories: 深度学习
+categories: 大模型
 tags: 多模态 CLIP 
 excerpt: 多模态相关知识以及各种新兴大模型
 author: 鹤啸九天

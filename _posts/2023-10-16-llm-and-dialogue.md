@@ -2,7 +2,7 @@
 layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
-categories: AIGC
+categories: 大模型
 tags: llm 对话系统
 excerpt: 大模型时代对话何去何从？
 mathjax: true

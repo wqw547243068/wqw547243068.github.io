@@ -2,7 +2,7 @@
 layout: post
 title:  文档问答原理及实践 Doucument QA
 date:   2023-05-23 19:10:00
-categories: 深度学习 自然语言处理
+categories: 大模型
 tags: ChatGPT 对话系统 知识库 向量化 milvus
 excerpt: 文档问答的原理、案例及实践
 mathjax: true

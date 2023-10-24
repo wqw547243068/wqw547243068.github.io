@@ -2,7 +2,7 @@
 layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
-categories: 深度学习 自然语言处理
+categories: 大模型
 tags: gpt 文本生成 ChatGPT 评测 蒸馏
 excerpt: ChatGPT复现笔记
 mathjax: true
