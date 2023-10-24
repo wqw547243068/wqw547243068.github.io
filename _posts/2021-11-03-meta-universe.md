@@ -23,11 +23,11 @@ mathjax: true
 # 元宇宙
 
 - [元宇宙是什么？以及我们对元宇宙未来的展望](https://www.bilibili.com/video/BV1BQ4y1f72i)
-- <iframe src="//player.bilibili.com/player.html?aid=717037354&bvid=BV1BQ4y1f72i&cid=382613104&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=717037354&bvid=BV1BQ4y1f72i&cid=382613104&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2021.10.29】[Facebook 在 11 分钟内透露了有关 元宇宙 的所有内容](https://www.bilibili.com/video/BV1Wu411o7Ee) CNET ，[youtube原视频](https://youtu.be/gElfIo6uw4g): 元宇宙确实有可能成为未来的一个趋势，代表着web3.0时代的一个符号，贯穿全文的核心就是Connection with people，人与人之间的联系。
 
-<iframe src="//player.bilibili.com/player.html?aid=506352450&bvid=BV1Wu411o7Ee&cid=432560295&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=506352450&bvid=BV1Wu411o7Ee&cid=432560295&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 数字人
 
@@ -128,6 +128,18 @@ mathjax: true
 
 基于深度学习模型、动作模拟、情感模拟等智能科技，只需采集2-5分钟的真人视频，AI最快训练1小时，即可生成形象逼真、表情到位、口型匹配的数字分身。
 相比过去，现在数字人面部精细度更高，发音和口型更精准，肢体动作更自然，而且数据采集时间缩短75%，训练速度更是提高约100倍。越接近真人外形的数字人，越能提供更亲切、自然、高效的服务体验，让人产生信任。因此，2D仿真类数字人往往适合社交、媒体、金融、电商直播、教育等需要“多交流”“高互动”的场景。数字人可以“扮演”主持人、新闻主播、金融客服、导购员、讲解员、直播博主、老师等角色。在新华智云数字人制作平台中输入文字，一段由数字人播报和讲解的视频，就可以快速生成。
+
+
+#### 柳叶熙
+
+B站爆火数字人ip `柳叶熙`
+
+柳叶熙：[数字红娘](https://www.bilibili.com/video/BV1kF41167hH)
+
+<iframe src="//player.bilibili.com/player.html?aid=275585638&bvid=BV1kF41167hH&cid=1257563362&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+
 
 ### 虚拟人创建工具
 
