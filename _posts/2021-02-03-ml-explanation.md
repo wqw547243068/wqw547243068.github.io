@@ -7,6 +7,7 @@ tags:  可解释 黑盒模型 第一性原理 遗忘 大模型
 excerpt: 如何破解机器学习的黑盒？提升可解释能力？
 author: 鹤啸九天
 mathjax: true
+permalink: /explain
 ---
 
 * content
