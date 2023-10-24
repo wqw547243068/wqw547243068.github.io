@@ -108,6 +108,12 @@ permalink: /partner
 - 男`评分思维`，加分减分综合看
 - 女`木桶思维`，有一个不行就否决
 
+柳叶熙：[数字红娘](https://www.bilibili.com/video/BV1kF41167hH)
+
+<iframe src="//player.bilibili.com/player.html?aid=275585638&bvid=BV1kF41167hH&cid=1257563362&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+
 ### 道理
 
 关于感情一定要明白的几点 
