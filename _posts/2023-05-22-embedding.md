@@ -250,6 +250,9 @@ embeddings.client = sentence_transformers.SentenceTransformer(
 最近，`MokaHR` 团队开发了一种名为 `M3E` 的模型，这一模型弥补了中文向量文本检索领域的空白， `M3E` 模型在中文同质文本 S2S 任务上在 6 个数据集的平均表现好于 `text2vec` 和 `text-embedding-ada-002` ，在中文检索任务上也优于二者。
 - huggingface: [m3e-base](https://huggingface.co/moka-ai/m3e-base)
 
+- 2023.06.08，添加**检索任务**的评测结果，在 T2Ranking 1W 中文数据集上，`m3e-base` 在 ndcg@10 上达到了 **0.8004**，超过了 `openai-ada-002` 的 **0.7786**
+- 2023.06.07，添加**文本分类**任务的评测结果，在 6 种文本分类数据集上，m3e-base 在 accuracy 上达到了 0.6157，超过了 openai-ada-002 的 0.5956
+
 M3E 是 Moka Massive Mixed Embedding 的缩写
 - Moka，此模型由 MokaAI 训练，开源和评测，训练脚本使用 uniem ，评测 BenchMark 使用 MTEB-zh
 - Massive，此模型通过千万级 (2200w+) 的中文句对数据集进行训练
@@ -508,6 +511,32 @@ with torch.no_grad():
 各种任务上进行了广泛的实验，包括短文本STS、长文本STS和特定领域的STS任务。
 - AnglE优于忽略余弦饱和区域的最先进的STS模型。
 - 证明了AnglE生成高质量文本嵌入的能力以及角度优化在STS中的有用性。
+
+
+```py
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel, PeftConfig
+
+peft_model_id = 'SeanLee97/angle-llama-7b-nli-v2'
+config = PeftConfig.from_pretrained(peft_model_id)
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path).bfloat16().cuda()
+model = PeftModel.from_pretrained(model, peft_model_id).cuda()
+
+def decorate_text(text: str):
+    return f'Summarize sentence "{text}" in one word:"'
+
+inputs = 'hello world!'
+tok = tokenizer([decorate_text(inputs)], return_tensors='pt')
+for k, v in tok.items():
+    tok[k] = v.cuda()
+vec = model(output_hidden_states=True, **tok).hidden_states[-1][:, -1].float().detach().cpu().numpy()
+print(vec)
+```
+
+
+
+
 
 ## 向量评估
 
