@@ -492,6 +492,23 @@ with torch.no_grad():
 ```
 
 
+### AnglE 香港理工
+
+【2023-10-24】Embedding SOTA 是 AnglE, 在 STS13，STS14，STS15，STS16 以及 Sick-R 上都达到了 SOTA。
+- Arxiv: [AnglE-optimized Text Embeddings](https://arxiv.org/pdf/2309.12871.pdf)
+- Github: [AnglE](github.com/SeanLee97/AnglE)
+- Huggingface: SeanLee97/angle-llama-7b-nli-20231027
+
+高质量文本嵌入在提高语义文本相似度（STS）任务中起着至关重要的作用，这是大型语言模型（LLM）应用中的关键组成部分。然而，现有文本嵌入模型面临的一个普遍挑战是**梯度消失**问题，主要是优化目标中依赖**余弦函数**，而余弦函数具有**饱和区域**。
+
+本文提出了一种新颖的**角度优化**文本嵌入模型——`AnglE`。 核心思想是在复杂空间中引入角度优化。这种方法有效地缓解了余弦函数饱和区域的不良影响，这可能会阻碍梯度并阻碍优化过程。
+
+在现有的短文本STS数据集和从GitHub Issues收集的新的长文本STS数据集上进行了实验。此外，还研究了具有有限标记数据的特定领域STS场景，并探讨了AnglE如何与LLM注释数据配合使用。
+
+各种任务上进行了广泛的实验，包括短文本STS、长文本STS和特定领域的STS任务。
+- AnglE优于忽略余弦饱和区域的最先进的STS模型。
+- 证明了AnglE生成高质量文本嵌入的能力以及角度优化在STS中的有用性。
+
 ## 向量评估
 
 ChatGPT记忆模块搜索优化——文本语义向量相似M3E模型微调实战
