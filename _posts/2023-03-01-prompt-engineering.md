@@ -483,6 +483,33 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code/nlpquant/automatic-prompt-engineering)
 - Talking to LLMs is important to elicit(引起) the right response/improved performance without updating the parameters of the models [karpathy](https://twitter.com/karpathy/status/1617979122625712128?lang=en)
 
+【2023-10-25】[自动优化Prompt：Automatic Prompt Engineering的3种方法](https://mp.weixin.qq.com/s/kbZZUoTjLGyU59B3strwVg)
+
+### 方法分析
+
+3种automatic prompt engineering框架：APE、APO以及OPRO。
+- 给定一个训练集，定义好评价指标，运行automatic prompt engineering框架之后，将自动得到能取得最佳效果的prompt。
+- `APE`：candidate -> selection -> resample
+  - 核心思路：从候选集中选出好的prompt，再在好的prompt附近进行试探性地搜索。
+  - 生成环节两种模式: reverse mode更加自然，forward mode则更加考验模型的instruction following能力
+- `APO`：gradient descent in language space
+  - 核心思路: 在文本空间实现gradient descent过程
+  - APO本质: 构建一个optimizer，其框架是参照gradient decent来设计
+- `ORPO`: 谷歌提出的OPRO，其思路更为原生。
+  - 核心思路: 让LLM基于过往的迭代记录、优化目标，总结规律，逐步迭代prompt，整个过程在文本空间上完成。
+
+
+分析
+- APE 主要思路是**挑选+试探性优化**，优化方向性较弱；
+- APO和OPRO 用了更完整的optimizer框架，其中APO基于**gradient descent**，本质是基于error case来调优，而OPRO直接依靠LLM的**逻辑推理**能力，基于迭代过程的规律进行优化。
+
+理论上，这些框架对各类任务（分类、抽取、生成等）通用，只需定义好评价指标即可。
+
+只要场景里使用了Prompt，都可以考虑使用这些方法、或者借鉴这些方法的思路。
+- 例如：在benchmark上提分、优化LLM标注器的效果、根据用户反馈优化Prompt等等。
+
+以第三点为例，可以根据用户的反馈数据，训练一个reward model作为评价者，运行 automatic prompt engineering框架，优化现有的Prompt，这一点和RLHF有异曲同工之处。
+
 ### 自动化工具
 
 #### 2023.7 gpt-prompt-engineer
@@ -741,7 +768,57 @@ APE 模式
   - ![](https://lh3.googleusercontent.com/jEf6gvTy5pG9YHNcp2yYD5dA8bq5f0YX9O-TRo8ufWRKdr8gy8o0iArD1dA8Lk7b3SFgaHU2CmCBTPaRPLca1jPJW8A0T_0EamWNkIbBc_lpL-uko08b5grW-vzvIBEqig=w1280)
 - advanced 高级版
 
+### 2023.5.4 APO 微软
+
+APO：gradient descent in language space
+- [Automatic Prompt Optimization with 'Gradient Descent' and Beam Search](https://arxiv.org/abs/2305.03495)
+- 提出方法 Prompt Optimization with Textual Gradients (ProTeGi),
+
+核心思路: 在文本空间实现gradient descent过程。
+- APO本质: 构建一个optimizer，其框架是参照gradient decent来设计
+
+APO 分为以下3个步骤。
+- 第1步：得到**当前prompt的“gradient”**
+  - 给定一批error samples（当前prompt无法预测正确的），让LLM给出当前prompt预测错误的原因，这一原因即文本形式的“gradient”。
+  - 生成gradient的prompt如下。
+- 第2步：**应用“gradient”**，得到new prompt. 这一步还分为2个子步骤：
+  - 2.1：使用LLM来edit原来的prompt，目标是修复“gradient”。给到LLM的prompt如下。
+  - 2.2：和APE一样，进行resample，扩充相似语义的prompt。
+- 第3步：**挑选出好的prompt**，进入下一轮迭代
+  - 面临的问题和APE一样：如果在全量训练集上评估各个prompt，花销太大。挑选prompt的过程就是多臂老虎机问题。
+  - n arms对应n个prompt candidates
+  - 任务数据集上的表现是这个arm的hidden value
+  - pulling这个动作对应在随机采样的数据上评估prompt的效果
+  - 试验了3种bandit selection技术：UCB、UCB-E和Successive Rejects。实验表明，UCB和UCB-E的效果比较好。
+  - 补充: APO在每轮迭代中，最外层包含一个beam search过程，以便强化探索。
+
+```json
+------- 1 --------
+I'm trying to write a zero-shot classifier prompt.
+My current prompt is:
+"{prompt}"
+But this prompt gets the following examples wrong:
+{error_string}
+give {num_feedbacks} reasons why the prompt could have gotten these examples wrong.
+Wrap each reason with <START> and <END>
+
+------- 2.1 --------
+I'm trying to write a zero-shot classifier.
+My current prompt is:
+"{prompt}"
+But it gets the following examples wrong:
+{error_str}
+Based on these examples the problem with this prompt is that {gradient}
+Based on the above information, I wrote
+
+```
+
 ### 2023.9.9 OPRO 谷歌
+
+记得 Zero-Shot COT 里的那句 `Let's think step by step` 吗？
+- [Large Language Models are Zero-Shot Reasoners](https://arxiv.org/abs/2205.11916)
+
+最近谷歌通过`OPRO`找到了更好的一句：`Take a deep breath and work on this problem step-by-step`，让GSM8K的结果直接从 **71.8%** -> **80.2%**
 
 【2023-9-9】[大模型靠“深呼吸”数学再涨8分！AI自己设计提示词效果胜人类](https://www.toutiao.com/article/7276684599718085159)
 - 谷歌 DeepMind 团队最新发现，用新“咒语” “**深呼吸**”（Take a deep breath）结合熟悉的“**一步一步地想**”（Let’s think step by step），大模型在GSM8K数据集上的成绩就从71.8提高到80.2分。
@@ -769,11 +846,22 @@ APE 模式
 方向
 - 结合关于错误案例的更丰富的反馈，并总结优化轨迹中高质量和低质量生成提示的关键特征差异。这些信息可能帮助优化器模型更高效地改进过去生成的提示，并可能进一步减少提示优化所需的样本数量。
 
-#### EvoPrompt
+OPRO框架
+- 使用 meta-prompt，让LLM成为 Optimizer LLM。
+- meta-prompt包含两个核心部分：
+  - 一个是 solution-score pairs，即以往的迭代路径，包括 solution（即prompt） + 分数（任务表现），实践中按照分数大小，从低到高排列top20的结果；
+  - 另一个是 task description，包含一些任务的examples、优化的目标等
+
+
+- 基于对过往迭代规律的理解，Optimizer LLM生成新的solution。即将meta-prompt给到Optimizer LLM，生成的内容即为新的solution。在实践中，为了提升优化的稳定性，这一步重复了8次。
+- 在Scorer LLM上应用prompt（即新的solution），评估效果并记录到meta-prompt中，然后继续下一轮迭代。注意，这里的Scorer LLM是实际使用prompt的LLM，与Optimizer LLM可以是不同的。
+- 当效果无法再提升、或者到达预先给定的step上限，整个迭代过程停止。返回得分最高的prompt作为优化结果。
+
+### 2023.10.4 EvoPrompt 清华
 
 【2023-10-4】[LLM与进化算法结合，创造超强提示优化器，淘汰提示工程师](https://www.toutiao.com/article/7286016243302187539)
 
-清华大学、微软研究院和东北大学的一项新研究表明，利用传统进化算法来处理提示词工程中的问题，可以大大提升效率。
+清华大学、微软研究院和东北大学的一项新研究表明，利用传统**进化算法**来处理提示词工程问题，可以大大提升效率。
 
 将进化算法融入到提示词工程中，利用LLM来模仿进化算法中的**进化算子**来生成新的提示词，将性能更好的提示词保留下来不断迭代，这个自动化生成提示词的方式也许在未来会成为提示词工程中最重要的方法。
 
