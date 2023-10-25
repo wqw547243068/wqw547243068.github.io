@@ -137,6 +137,71 @@ print(qa.run(query))
 
 ## 向量化方案
 
+可选
+- 单独的embedding服务
+- LLM里的embedding
+
+### LLM Embedding
+
+【2023-8-1】[使用LLMs进行句子嵌入不如直接用BERT](https://mp.weixin.qq.com/s/mdC8EJ2Ajs8a_DCaxAET3Q)
+- [Scaling Sentence Embeddings with Large Language Models](https://arxiv.org/abs/2307.16645.pdf)
+- 代码 [scaling_sentemb](https://github.com/kongds/scaling_sentemb)
+
+上下文学习方法使LLMs生成高质量的**句子嵌入**，无需微调，其性能可与当前的**对比学习**方法相媲美。
+
+模型参数超过十亿规模会对语义文本相似性（STS）任务的性能造成影响。然而，最大规模的模型超越了其他对比方法，取得了迁移任务上的最新最优结果。同时，还采用当前的对比学习方法对LLMs进行了微调，其中结合了本文提出的基于提示的方法的 2.7B OPT模型，在STS任务上的结果超过了4.8B ST5，达到了最新最优的性能。
+
+问题探讨
+1. **PromptEOL方法与之前的句子表示方法有何不同**？PromptEOL 在句子嵌入方面有何优势？
+  - PromptEOL方法是一种显式单词限制,基于提示的方法，用于在LLMs中表示句子。
+  - 相比于之前的方法，PromptEOL方法在使用LLMs时更为兼容。通过将句子嵌入为提示 “`This sentence: “[text]” means`” ，生成下一个token，并提取最终token的**隐藏向量**作为句子嵌入。PromptEOL表示能力更强。
+2. 比较PromptEOL方法与其他两种方法（平均和使用最后一个token）时，**为什么PromptEOL方法能够表现得更好**？
+  - PromptEOL方法在不同参数设置下的LLMs中都能显著提升句子表示性能。相较于平均和使用最后一个token的方法，在句子嵌入过程中，PromptEOL方法通过使用提示来引导LLMs生成下一个token，并提取最终token的隐藏向量。
+  - 这种提示-based的方法有助于在LLMs中更好地捕捉到句子的语义信息，从而提高句子表示的效果。
+3. **为什么即使LLMs的参数比BERT更多，但在句子表示任务上仍表现不如BERT**？ 
+  - 尽管LLMs 参数数量比BERT更多，但在使用同样句子表示方法下，LLMs（例如OPT）在句子表示任务上仍然无法超越 BERT。
+  - 可能因为BERT具有**双向注意力机制**，可以隐含地将整个语义信息压缩到单个的 `[MASK]` token中。
+  - 而LLMs通过提示（PromptEOL方法）方式在句子表示中引入了**单向生成**的限制，可能无法充分地捕捉到句子的全局语义信息，导致在句子表示任务上的性能相对较低。
+4. **In-Context Learning的概念是什么**？如何与句子嵌入相关联？ 
+  - In-Context Learning是一种基于**上下文学习**的句子嵌入方法。上下文中学习提供更丰富的句子嵌入生成过程。文章提出了两种自动生成演示文本的方法，用于在上下文学习中的句子嵌入过程中提供文字输出。演示文本用于指导模型在上下文中生成想要的句子嵌入。通过使用这种带有演示的上下文学习方法，可以增强句子嵌入的质量和表现能力。
+5. 如何运用Fine-tuning方法来改善LLMs在句子表示任务中的性能？这种方法有哪些优势？ 
+  - 通过Fine-tuning方法结合**对比学习**框架，可改善LLMs在句子表示任务中的性能。为了解决Fine-tuning过程中内存需求大的问题，采用了高效调优的方法。
+  - 通过使用对比学习框架，以及结合高效调优方法，可以减少Fine-tuning过程中的内存需求，从而提高LLMs在句子表示任务中的性能。这种方法的优势在于可以在保证句子表示质量的同时，降低计算成本和内存消耗，提高了方法的实用性和可扩展性。
+
+
+```py
+# (1) Loading base model
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Import our models. The package will take care of downloading the models automatically
+tokenizer = AutoTokenizer.from_pretrained("facebook/opt-2.7b")
+model = AutoModelForCausalLM.from_pretrained("facebook/opt-2.7b")
+tokenizer.pad_token_id = 0 
+tokenizer.padding_side = "left"
+texts = [
+    "There's a kid on a skateboard.",
+    "A kid is skateboarding.",
+    "A kid is inside the house."
+]
+# (2) Use in-context learning to generate embeddings
+# Directly using in-contex learning get embeddings
+template = 'This_sentence_:_"A_jockey_riding_a_horse."_means_in_one_word:"Equestrian".This_sentence_:_"*sent_0*"_means_in_one_word:"'
+inputs = tokenizer([template.replace('*sent_0*', i).replace('_', ' ') for i in texts], padding=True,  return_tensors="pt")
+with torch.no_grad():
+    embeddings = model(**inputs, output_hidden_states=True, return_dict=True).hidden_states[-1][:, -1, :]
+
+# (3) Use contrastive learning models to generate embeddings
+# Using trained LoRA to get embeddings
+from peft import PeftModel
+peft_model = PeftModel.from_pretrained(model, "royokong/prompteol-opt-2.7b", torch_dtype=torch.float16)
+template = 'This_sentence_:_"*sent_0*"_means_in_one_word:"'
+inputs = tokenizer([template.replace('*sent_0*', i).replace('_', ' ') for i in texts], padding=True, return_tensors="pt")
+with torch.no_grad():
+    embeddings = peft_model(**inputs, output_hidden_states=True, return_dict=True).hidden_states[-1][:, -1, :]
+Setup
+```
+
 ### OpenAIEmbeddings
 
 OpenAI官方的embedding服务
@@ -234,6 +299,7 @@ embeddings.client = sentence_transformers.SentenceTransformer(
 ### M3E
 
 【2023-7-14】[研究人员开源中文文本嵌入模型，填补中文向量文本检索领域的空白](https://www.toutiao.com/article/7254900867097625127)
+- [M3E，开源中文 Embedding 模型新 SOTA](https://blog.csdn.net/sinat_30045277/article/details/131208109)
 
 由于 GPT 使用的 Transformer 模型的自身特性，导致模型只能从固定长度的上下文中生成文本。那么，当要模型感知更广阔的上下文时，该怎么做呢？
 
