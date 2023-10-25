@@ -1296,6 +1296,14 @@ Llama-2出师不利，而且不是计算错误，是逻辑上就有问题,Abel�
 Abel依旧是正确地做出了这道题
 
 
+#### MathGLM 清华
+
+【2023-9-24】[智谱AI推出数学模型MathGLM，阿里云魔搭社区全球首发](http://www.dostor.com/p/85185.html),  清华&智谱AI团队最新MathGLM研究开始探索和提供大模型的数学能力，发现在训练数据充足的情况下，20亿参数的MathGLM模型能够准确地执行多位算术运算，准确率几乎可以达到100%，其结果显著超越最强大语言模型GPT-4在相同测试数据上18.84%的准确率。MathGLM-10B模型已经开源到了始智AI-wisemodel社区，大家可以试试看。
+- MathGLM [GitHub](https://github.com/THUDM/MathGLM), GPT Can Solve Mathematical Problems Without a Calculator
+- ![](https://github.com/THUDM/MathGLM/raw/main/resources/perf.jpg)
+
+MathGLM包含10M、100M、500M、2B等多个参数版本，具备处理最多12位数字的运算能力。而且有测评结果显示，通过充分的数据训练，MathGLM-2B可以准确执行多位数的算术运算，准确率高达93.03%（接近100%），显著超越GPT-4在相同测试数据上18.84%的准确率。10亿参数版本的MathGLM-10B则在5000条中文数学应用题的测试数据集上实现了接近GPT-4的性能。
+
 ### 文本创作
 
 
