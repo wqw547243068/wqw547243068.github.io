@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆
+tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -13,6 +13,7 @@ mathjax: true
 - 【2020-7-28】[The Next Generation of Neural Networks](https://www.bilibili.com/video/BV18A411Y7N4), Geoffrey Hinton，对下一代神经网络，比学习的来龙去脉，以及现在的SOTA模型 SimCLR
 <iframe src="//player.bilibili.com/player.html?aid=329101147&bvid=BV18A411Y7N4&cid=217768758&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2021-3-15】[伯克利CS 182《深度学习：深度神经网络设计、可视化与理解》课程 2021](https://www.bilibili.com/video/BV1PK4y1U751)，课程主页地址,[Designing, Visualizing and Understanding Deep Neural Networks](https://cs182sp21.github.io/)
+
 
 
 ## 周志华：深度学习为什么深？
@@ -171,7 +172,7 @@ mathjax: true
 
 
 
-# 深度学习核心
+## 深度学习核心
 
 [深度学习的核心](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/C-%E6%95%B0%E5%AD%A6/B-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A0%B8%E5%BF%83.md)
 
@@ -409,7 +410,47 @@ mathjax: true
 - ![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702152216.png)
 
 
+## 神经网络泛化能力
+
+
+### Nature 神经网络泛化能力超过人
+
+【2023-10-26】[Nature：神经网络“举一反三”能力甚至超人类](https://www.qbitai.com/2023/10/92844.html) 
+- Nature：人工智能“突破”:神经网络具有类似人类的泛化语言能力。
+- 基于神经网络的人工智能在快速将新单词折叠到其词典中方面优于ChatGPT，这是人类智能的一个关键方面。
+
+“举一反三”、系统概括的能力更专业点叫做**系统性泛化能力**。像小孩子一样，一旦学会了如何“跳”，他们就可以理解如何“向后跳”、“绕锥体跳过两次”。
+
+早在1988年，认知科学家Fodor、Pylyshyn就提出了系统性挑战，认为人工神经网络缺乏这种能力。
+- 人类语言和思维的精髓在于系统性组合，而神经网络只能表示特定的事物，缺乏这种系统性组合能力。
+
+反驳观点
+- 一是尽管人类的组合技能很重要，但它们可能并不具有Fodor、Pylyshyn所说的那样的系统性和规则性。
+- 二是虽然神经网络在基本形式上受到了限制，但使用复杂的架构可以增强系统性。
+
+虽然最近几年，神经网络在自然语言处理等方面有了很大进展和突破，相关辩论也随之升级。但时至今日，系统性的问题仍没有一个定论。
+
+纽约大学心理与数据科学助理教授 Brenden M. Lake、西班牙加泰罗尼亚研究所（ICREA）研究教授Marco Baroni提出了一种叫做`MLC`的**元学习**神经网络模型。
+- 一种通过特殊指导和人类示例来指定模型行为的方法，然后要求神经网络通过元学习获得正确的学习技巧。
+- MLC使用的是标准的`Seq2Seq`架构，常见的神经网络并没有添加**符号机制**，也没有手动设计内部表示或**归纳偏见**。
+
+举例说明训练过程。
+- 给神经网络模型一个“连续跳跃两次”（skip twice）的指令。并用箭头和小人来展示学习示例，告诉机器jump（跳）、skip（跳过）、jump twice是怎样的。
+- 然后将输出的skip twice和行为目标比较：
+- ![](https://www.qbitai.com/wp-content/uploads/replace/aecbfb4544dee287fb62a37354059961.png)
+
+类似情境，引入下一个词“向后踮脚尖绕过一个锥体”，要求神经网络组合向后走（walk backwards）、踮脚尖（tiptoe）、绕锥体行走（walk around a cone）的动作，推出如何“向后踮脚尖绕过一个锥体”。
+- ![](https://www.qbitai.com/wp-content/uploads/replace/2c240c8a6a8f7b559c8c4906a27379fe.png)
+
+Nature的这篇文章 [Human-like systematic generalization through a meta-learning neural network](https://www.nature.com/articles/s41586-023-06668-3) 中表示，研究人员用一种叫做 `MLC`（meta-learning for compositionality）的方法，通过在动态变化的组合任务流中训练，神经网络可以获得人类般的组合推理能力。
+
+他们还将MLC和人类在相同的系统性泛化测试中进行了比较。结果 机器学习的系统性泛化基准测试表明，MLC错误率不到1%，并且还可以模拟人类的认知偏见导致的错误。
+
+相比之下，GPT-4 在相同的任务中平均失败率在42%到86%之间，具体取决于研究人员如何提出任务。
+
+
 ## 非线性激活函数
+
 **神经网络本质上是一个函数**
 - 每个神经元可以看作是一个函数，其输入是上一层所有单元的输出，然后输出一个激活值
 - 宏观来看，神经网络也是一个函数
