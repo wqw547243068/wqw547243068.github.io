@@ -3,7 +3,7 @@ layout: post
 title:  "Linux技能大全"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密 mac 苹果
+tags: Linux linux Shell Git yaml github 文件服务 vscode crontab curl post jupyter ssh 加密 mac 苹果 隧道
 excerpt: Linux使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -935,6 +935,46 @@ ssh-add ~/.ssh/id_rsa
 - 5、要保证 .ssh 和 `authorized_keys` 都只有用户自己有写权限。否则验证无效。（今天就是遇到这个问题，找了好久问题所在），其实仔细想想，这样做是为了不会出现系统漏洞。
 
 [ssh-keygen使用及参数详解](https://www.jianshu.com/p/807ec99cea21)
+
+
+#### ssh 隧道
+
+`SSH隧道`（即SSH代理、端口转发），SSH隧道概念主要理解**映射**二字。
+- 把**本地端口**映射到**远程机器端口**，然后访问远程端口就相当于访问的本地端口，这就是远程SSH隧道。
+- [SSH隧道](https://blog.csdn.net/u010690647/article/details/78573963)
+
+建立SSH隧道命令
+
+```sh
+ssh -C -f -N -L listen_port:DST_Host:DST_port user@Tunnel_Host 
+ssh -C -f -N -R listen_port:DST_Host:DST_port user@Tunnel_Host 
+ssh -C -f -N -D listen_port user@Tunnel_Host
+```
+
+参数
+
+```sh
+-L port:host:hostport #建立本地SSH隧道(本地客户端建立监听端口)
+# 将本地机(客户机)的某个端口转发到远端指定机器的指定端口. 
+
+-R port:host:hostport #建立远程SSH隧道(隧道服务端建立监听端口)
+# 将远程主机(服务器)的某个端口转发到本地端指定机器的指定端口. 
+# 有本地映射肯定有远程映射，就是把-L换成-R，这样我们访问远程主机的端口就相当于访问本地的端口，但感觉作用不大。
+
+-D port 
+# 指定一个本地机器 “动态的’’ 应用程序端口转发. 
+
+-C 压缩数据传输。
+
+-N Do not execute a shell or command. 
+# 不执行脚本或命令，仅仅做端口转发。通常与-f连用。
+-f Fork into background after authentication. 
+# 后台认证用户/密码，不用登录到远程主机。
+-L X:Y:Z的含义是，将IP为Y的机器的Z端口通过中间服务器映射到本地机器的X端口。把其他远程机器的端口通过中间服务器映射到本地端口上来。然后本地就能通过中间服务器访问了远程服务器了。
+
+-R X:Y:Z 的含义就是把我们本地的Y机器的Z端口映射到远程机器的X端口上。把本地端口映射到远程机器的端口上去。然后远程机器访问X端口，就相当于访问的是本地机器了。前提是，本地到远程机器的网络是通的，才能把本地的端口映射到远程机器上去
+
+```
 
 
 ### 文件服务
