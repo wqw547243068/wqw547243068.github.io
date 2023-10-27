@@ -405,6 +405,14 @@ pie title 影响寿命的几大因素
 
 ### 饮食禁忌
 
+#### 饮料
+
+各饮料含糖量
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/ac6185a817f44fe99d1b95bfdd1f189e~tplv-obj:1002:1362.image?_iz=97245&from=post&x-expires=1706140800&x-signature=txQN3YvS4seLDWWLQAN7l9FsEO4%3D)
+
+18种饮料含糖量: [一瓶≈15块方糖，医生把18款热门饮料全测了遍，哪款最甜](https://m.thepaper.cn/baijiahao_7833119)
+- ![](https://imagepphcloud.thepaper.cn/pph/image/72/469/195.jpg)
+
 
 #### 奶茶
 
