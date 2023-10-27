@@ -3,7 +3,7 @@ layout: post
 title:  "目标检测及跟踪--Obeject Detection&Tracing"
 date:   2020-03-08 18:30:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪
+tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 
 excerpt: 计算机视觉之目标检测知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -435,7 +435,8 @@ YOLO（v2）做出了很多实现上的改进，将 mAP 值从第一次发布时
 yolo迭代到了v8版本
 - 2017年在mac上试过v2，实时目标检测，挺灵敏；
 - 后面几个版本迭代到手机部署，v5在手机上识别速度几十ms，[手机识别](https://www.qbitai.com/2021/12/30807.html)
- 
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/d08ca27be4034910820c272b497982e0~tplv-obj:1024:576.image?_iz=97245&from=post&x-expires=1706140800&x-signature=BADoMiDtOYEgtW6cHz6%2FvC90XMM%3D)
+
 - YOLOv3之前的所有YOLO对象检测模型都是用C语言编写的，并使用了Darknet框架，Ultralytics发布了第一个使用PyTorch框架实现的YOLO (YOLOv3)，YOLOv3发布后不久，Joseph Redmon就离开了计算机视觉研究社区。
 - Ultralytics发布了YOLOv5
   - [yolov5s_android](https://github.com/lp6m/yolov5s_android)
@@ -620,6 +621,24 @@ results 类
 - masks: 检测出来的遮罩层，调用图像分割时，这项有数据。
 - keypoints: 检测出来的关键点，人体姿势估计时，身体的点就是这项。
 - names: 分类数据的名称，比如{0: 人，1: 狗}这类索引。
+
+
+## 端侧 目标检测
+
+### YOLO-NAS
+
+
+YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术进行预训练，并在COCO、Objects365和Roboflow 100等数据集上进行了验证，实现了前所未有的精度-速度性能。
+
+
+### mediapipe
+
+
+【2023-10-26】Google发布移动终端对象检测模型 —— mediapipe，无GPU依然飞快
+
+而Google的mediapipe系列则成功将对象检测模型运行在移动终端上，实现了ms级别的延时。对于没有GPU的情况，可以使用MediaPipe对象检测模型，其int8模型只有29.31ms的延时，最大模型也只有198.77ms的延时
+
+
 
 # 目标检测实践
 
