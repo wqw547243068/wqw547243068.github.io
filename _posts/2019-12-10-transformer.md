@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -1601,12 +1601,124 @@ class Transformer(nn.Module):
 # Transformer 改进
 
 
+## 位置编码方式
+
+
+### 2021.3.23 Roformer
+
+【2021-3-23】Rotary Transformer，简称 `RoFormer`，是追一科技`苏剑林`自研的语言模型之一，主要是为Transformer结构设计了新的`旋转式位置编码`（Rotary Position Embedding，`RoPE`）。
+- `RoPE`具有良好的理论性质，且是目前**唯一**一种用到线性Attention的绝对位置编码，目前来看实验结果也颇为不错。
+- 参考配置：在24G显存的3090上，跑maxlen=1024，batch_size能跑到8以上。
+
+详细介绍：
+- [Transformer升级之路：2、博采众长的旋转式位置编码](https://kexue.fm/archives/8265)
+
+使用
+
+- [pytorch版本](https://github.com/JunnYu/RoFormer_pytorch)
+- huggingface [roformer](https://huggingface.co/docs/transformers/model_doc/roformer)
+
+```py
+from transformers import RoFormerTokenizerFast
+
+tokenizer = RoFormerTokenizerFast.from_pretrained("junnyu/roformer_chinese_base")
+tokenizer.tokenize("今天天气非常好。")
+```
+
+
+## 检索增强
+
+增大模型并不是提升性能的唯一路径，用一种搜索/查询信息的方式来增强模型，小的生成语言模型也能达到之前大模型才能达到的性能。
+
+语言模型的任务是做**填空题**，这对于语言信息有意义，但是对于事实信息和世界知识信息是无效的。
+- 有时需要与事实有关的信息
+
+代表
+- DeepMind 的 RETRO Transformer
+  - DeepMind 的 RETRO（Retrieval-Enhanced TRansfOrmer）模型。该模型与 GPT-3 性能相当，但参数量仅为 GPT-3 的 4%。
+- OpenAI 的 WebGPT
+
+
+### 2021.12.16 WebGPT
+
+OpenAI 推出 WebGPT, 解决 long-form quesion-answering (LFQA) 的方案, 开放域QA回复更长更可靠。
+- [WebGPT: Improving the factual accuracy of language models through web browsing](https://openai.com/research/webgpt)
+- [WebGPT简读](https://zhuanlan.zhihu.com/p/591565418)
+- 比 InstructGPT 提出稍早一些
+
+WebGPT 思路类似 Knowledge-Grounded Conversation，利用搜索引擎做相关文档检索，从而生成更长的答案。主要的两个贡献：
+- 微调的语言模型可以与一个基于文本的Web浏览环境交互，从而可以端到端地使用模仿和强化学习优化检索和聚合效果。
+- 参考Web检索出来的信息生成回复。labeler可以根据检索出来的信息判断factual准确率，降低了独立调研问题正确性的难度。
+
+这个想法并非 WebGPT首次提出
+- 2021年初, Facebook (FAIR) 就提出使用搜索引擎来提升对话回复的质量：ACL2022 [Internet-Augmented Dialogue Generation](https://aclanthology.org/2022.acl-long.579/)
+
+WebGPT 思路更进一步，完全模拟了人使用搜索引擎的方法(有更多action: 搜索、点击、翻页、回退等等)，而非仅生成search query并使用其结果。
+
+### 2022.2.7 RETRO
+
+DeepMind 推出 RETRO, 整合了从数据库中检索到的信息，将其参数从昂贵的事实和世界知识存储中解放出来。
+- 论文: [Improving language models by retrieving from trillions of tokens](https://arxiv.org/pdf/2112.04426.pdf)
+- [illustrated-retrieval-transformer](http://jalammar.github.io/illustrated-retrieval-transformer)
+- 【2022-1-4】[参数量仅为4%，性能媲美GPT-3：开发者图解DeepMind的RETRO](https://www.jiqizhixin.com/articles/2022-01-04-8)
+
+加入检索方法之后，语言模型可以缩小很多。
+- 神经数据库可以帮助模型检索它需要的事实信息。
+- ![](https://image.jiqizhixin.com/uploads/editor/ffbea1f3-54eb-411d-a9a9-3c0912dfef3c/1641280248346.png)
+
+#### 模型结构
+
+结构
+- RETRO 是 **编码器 - 解码器**模型，像原始的 Transformer。
+- 然而在检索数据库的帮助下增加了**输入序列**。
+- 该模型在数据库中找到最可能的序列，并添加到输入中。
+- RETRO 利用它的魔力生成输出预测。
+- ![](https://image.jiqizhixin.com/uploads/editor/96d18172-b521-4ed5-a913-a00440b05625/1641280241153.png)
+
+
+#### RETRO 检索数据库
+
+这里的数据库是一个**键值存储**（key-value store）数据库。
+- key 是标准的 **BERT 句子嵌入**，value 是由两部分组成的**文本**：
+- Neighbor，用于计算 key；
+- Completion，原文件中文本的延续。
+
+RETRO 数据库包含基于 MassiveText 数据集的 2 万亿个多语言 token。neighbor chunk 和 completion chunk 的长度最多为 64 个 token。
+- ![](https://image.jiqizhixin.com/uploads/editor/713760aa-cf75-4bc7-8116-e308ce3b8b83/1641280228557.png)
+
+#### 数据库查找
+
+进入 RETRO 前
+- 输入提示进入 BERT。对输出的上下文向量进行**平均**以构建句子嵌入向量。
+  - ![](https://image.jiqizhixin.com/uploads/editor/3e8b9491-570a-4280-b36a-e68a6d0fff7c/1641280220663.png)
+- 然后，使用该向量查询数据库。近似最近邻搜索。检索两个最近邻
+  - ![](https://image.jiqizhixin.com/uploads/editor/aac2a845-a303-415b-b582-7b55402db078/1641280209906.png)
+- 将这些添加到语言模型的输入中
+  - 检索出的文本成为 RETRO 输入的一部分，Transformer 和 RETRO 块将信息合并到它们的处理中
+  - ![](https://image.jiqizhixin.com/uploads/editor/ff98762d-0d34-4771-8753-56d6b7762648/1641280203796.png)
+
+
+#### 高层次的 RETRO 架构
+
+RETRO 架构由一个**编码器**堆栈和一个**解码器**堆栈组成。
+- 编码器由标准的 Transformer 编码器块（self-attention + FFNN）组成。Retro 使用由两个 Transformer 编码器块组成的编码器。
+  - 编码器堆栈会处理检索到的近邻，生成后续将用于注意力的 KEYS 和 VALUES 矩阵
+- 解码器堆栈包含了两种解码器 block：
+  - 标准 Transformer 解码器块（ATTN + FFNN）
+  - RETRO 解码器块（ATTN + Chunked cross attention (CCA) + FFNN）
+- 解码器 block 像 GPT 一样处理输入文本。对提示 token 应用自注意力（因此只关注之前的 token），然后通过 FFNN 层。只有到达 RETRO 解码器时，它才开始合并检索到的信息。从 9 开始的每个第三个 block 是一个 RETRO block（允许其输入关注近邻）。所以第 9、12、15…32 层是 RETRO block。
+- ![](https://image.jiqizhixin.com/uploads/editor/5103886f-035d-4506-9e03-32b9ec93259b/1641280193608.png)
+- ![](https://image.jiqizhixin.com/uploads/editor/305626c2-7918-419a-9e4c-5c8d7eaf0e60/1641280182910.png)
+
+
+
+
 ## 输入输出 改进
 
 
-### 输入长度改进
+输入长度改进
 
-#### LongNet
+### 2023.7.8 LongNet
 
 【2023-7-8】[1000000000！微软改进Transformer一次能记住这么多token了](https://mp.weixin.qq.com/s/PKKC4lMdSTg-ButNnZHLlw)
 - 最强的GPT-4也才最大支持一次处理32k token，相当于50页文字。
@@ -1626,11 +1738,6 @@ dilated attention能够产生线性计算复杂度和token之间的对数依赖�
 
 ### 推理加速
 
-#### FasterTransfomer
-
-【2023-7-4】[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) 是 NVIDIA 高度优化的 Transformer 模型库，在生成时达到 **2.5倍**的速度，详见 [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
-
-
 ### 计算效率
 
 attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
@@ -1641,7 +1748,7 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - 其他； S4, FLASH
 - ![](https://pic3.zhimg.com/80/v2-fae510edc3aff2863cca31bc0dcd2046_1440w.webp)
 
-#### FlashAttention
+#### 2023.6.14 FlashAttention
 
 【2023-6-14】[FlashAttention: 更快训练更长上下文的GPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
 - 将 transformer 的 qkv 计算加速，方法：向量分块并行
@@ -1653,7 +1760,7 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
-#### PageAttention -- 管理qkv缓存
+#### 2023.6.24 PageAttention -- 管理qkv缓存
 
 【2023-6-24】UC Berkeley 团队推出一个用于加速LLM推理的开源库`vLLM`，Vicuna在线推理服务的幕后英雄。
 - 利用PagedAttention技术，通过有效地管理Attention模块中的Key和Value的Cache，重新定义了LLM的推理服务。无需更改任何模型架构，它的吞吐量比原生HF Transformers高出**24倍**。
@@ -1669,6 +1776,13 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - 与传统的注意力算法不同，PagedAttention允许将**连续的键和值存储在非连续的内存空间**中。
 - 具体而言，PagedAttention将每个序列的KV缓存分成多个块，每个块包含固定数量的标记的键和值。
 - 在注意力计算过程中，PagedAttention Kernel高效地识别和获取这些块，采用并行的方式加速计算。（和ByteTransformer的思想有点像）
+
+
+#### 2023.7.4 FasterTransfomer
+
+【2023-7-4】[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) 是 NVIDIA 高度优化的 Transformer 模型库，在生成时达到 **2.5倍**的速度，详见 [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
+
+
 
 ### Decoder 效率
 
@@ -1696,13 +1810,12 @@ MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头�
 
 Transformer 中，由于 token 和 token 之间是没有顺序之分的. 因此，通常在输入添加 Position Embedding 来表征每一个 token 在句子中的位置。
 
-
 Position Embedding 的如何选择实在是一个难题，通常有以下几种：
 - 可学习的参数：这种比较常见，BRET 中就是这么做的，但这种方式弊端很明显，因为位置信息是学习出来的，所以如果训练集里面没有见过覆盖某个长度，推理的效果就无法得到保证。
 - 正弦位置编码：这是早期 transformer 使用的位置编码，论文中有尝试做实验，这种编码会随着训练/预测时的文本长度差异增大，（超过 50 个token 后）性能显著下降。
 - 旋转编码：论文中提到这种方式是比较不错的，只不过因其在每一层都要做一次向量旋转，从而降低训练和推理的速度。
 
-#### Attention with Linear Bias（ALiBi）
+#### 2022.*.* Attention with Linear Bias（ALiBi）
 
 ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理时文本长度不一致**的难题，
 - 论文中在训练时候使用 1024 的最大长度，但在推理时用 2048 的最大长度推理，并且在 PPL 指标持平。
@@ -1995,28 +2108,7 @@ Transformer-XL架构在vanilla Transformer的基础上引入了两点创新：�
 - [中文XLNet预训练模型](https://github.com/ymcui/Chinese-PreTrained-XLNet)
 
 
-## Roformer
-
-【2021-3-23】Rotary Transformer，简称RoFormer，是追一科技苏剑林自研的语言模型之一，主要是为Transformer结构设计了新的`旋转式位置编码`（Rotary Position Embedding，`RoPE`）。
-- `RoPE`具有良好的理论性质，且是目前**唯一**一种用到线性Attention的绝对位置编码，目前来看实验结果也颇为不错。
-- 参考配置：在24G显存的3090上，跑maxlen=1024，batch_size能跑到8以上。
-
-详细介绍：
-- [Transformer升级之路：2、博采众长的旋转式位置编码](https://kexue.fm/archives/8265)
-
-### 使用
-
-- [pytorch版本](https://github.com/JunnYu/RoFormer_pytorch)
-- huggingface [roformer](https://huggingface.co/docs/transformers/model_doc/roformer)
-
-```py
-from transformers import RoFormerTokenizerFast
-
-tokenizer = RoFormerTokenizerFast.from_pretrained("junnyu/roformer_chinese_base")
-tokenizer.tokenize("今天天气非常好。")
-```
-
-## RWKV
+## 2023.5.24 RWKV
 
 【2023-5-24】[RWKV论文燃爆！将RNN崛起进行到底！可扩百亿级参数，与Transformer表现相当](https://mp.weixin.qq.com/s/JokJttEBlXm2b8Zew4m1mw)
 
