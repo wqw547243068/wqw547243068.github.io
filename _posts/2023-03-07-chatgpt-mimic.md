@@ -3677,9 +3677,9 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 ChatGLM2-6B的安装请参考[官方](https://github.com/THUDM/ChatGLM2-6B)
 
 ChatGLM2-6B 是开源中英双语对话模型 ChatGLM-6B 的第二代版本，在保留了初代模型对话流畅、部署门槛较低等众多优秀特性的基础之上，ChatGLM2-6B 引入了如下新特性：
-- 更强大的性能：基于 ChatGLM 初代模型的开发经验，我们全面升级了 ChatGLM2-6B 的基座模型。ChatGLM2-6B 使用了 GLM 的混合目标函数，经过了 1.4T 中英标识符的预训练与人类偏好对齐训练，评测结果显示，相比于初代模型，ChatGLM2-6B 在 MMLU（+23%）、CEval（+33%）、GSM8K（+571%） 、BBH（+60%）等数据集上的性能取得了大幅度的提升，在同尺寸开源模型中具有较强的竞争力。
-- 更长的上下文：基于 FlashAttention 技术，我们将基座模型的上下文长度（Context Length）由 ChatGLM-6B 的 2K 扩展到了 32K，并在对话阶段使用 8K 的上下文长度训练，允许更多轮次的对话。但当前版本的 ChatGLM2-6B 对单轮超长文档的理解能力有限，我们会在后续迭代升级中着重进行优化。
-- 更高效的推理：基于 Multi-Query Attention 技术，ChatGLM2-6B 有更高效的推理速度和更低的显存占用：在官方的模型实现下，推理速度相比初代提升了 42%，INT4 量化下，6G 显存支持的对话长度由 1K 提升到了 8K。
+- 更强大的**性能**：基于 ChatGLM 初代模型的开发经验，我们全面升级了 ChatGLM2-6B 的基座模型。ChatGLM2-6B 使用了 GLM 的混合目标函数，经过了 1.4T 中英标识符的预训练与人类偏好对齐训练，评测结果显示，相比于初代模型，ChatGLM2-6B 在 MMLU（+23%）、CEval（+33%）、GSM8K（+571%） 、BBH（+60%）等数据集上的性能取得了大幅度的提升，在同尺寸开源模型中具有较强的竞争力。
+- **更长的上下文**：基于 FlashAttention 技术，我们将基座模型的上下文长度（Context Length）由 ChatGLM-6B 的 2K 扩展到了 32K，并在对话阶段使用 8K 的上下文长度训练，允许更多轮次的对话。但当前版本的 ChatGLM2-6B 对单轮超长文档的理解能力有限，我们会在后续迭代升级中着重进行优化。
+- 更高效的**推理**：基于 Multi-Query Attention 技术，ChatGLM2-6B 有更高效的推理速度和更低的显存占用：在官方的模型实现下，推理速度相比初代提升了 42%，INT4 量化下，6G 显存支持的对话长度由 1K 提升到了 8K。
 - 更开放的协议：ChatGLM2-6B 权重对**学术研究**完全开放，在获得官方的书面许可后，亦允许商业使用。如果发现开源模型对业务有用，我们欢迎您对下一代模型 ChatGLM3 研发的捐赠。
 
 【2023-7-14】[ChatGLM2-6B，免费商用](https://mp.weixin.qq.com/s/pNMcR2c6kFV1TVaI8wzHRg)，扫码登记即可
@@ -3690,6 +3690,104 @@ ChatGLM2-6B 是开源中英双语对话模型 ChatGLM-6B 的第二代版本，�
 - 数理逻辑
 - 知识推理
 - 长文档理解
+
+##### 部署
+
+- [GitHub 地址](https://github.com/THUDM/ChatGLM2-6B/tree/main)
+- 模型文件：[Huggingface 地址](https://huggingface.co/THUDM/chatglm2-6b)
+- 7个bin文件存放模型参数， 文件名： `pytorch_model-0000{1~7}-of...`, 每个文件近 2G
+- [一文搞定ChatGLM2-6B部署](https://zhuanlan.zhihu.com/p/647224135)
+
+（1）下载方式
+- 手动下载： 下载完毕上传到租赁GPU服务器就行，可能比较费流量
+- git lfs 工具： 下载大文件的工具（受网络限制 ，可能需要多次尝试）
+
+```sh
+git clone https://github.com/THUDM/ChatGLM-6B
+# model文件最好像我这样放置，好找一些～
+cd ChatGLM-6B
+mkdir model
+cd model
+
+apt-get update
+apt-get install git-lfs 
+git-lfs install 
+git lfs clone https://huggingface.co/THUDM/chatglm2-6b 
+# 下载glm2 代码、和模型文件
+# 连接不稳定，可能需要多clone几次，或者直接本机download然后上传（ps 还是自己upload万无一失）
+
+```
+
+（2）环境部署
+
+```sh
+conda create -n chatglm2 python=3.10
+conda activate chatglm2 
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple #这里配了下载源，更快一些！
+```
+
+（3）修改代码
+
+修改[web_demo.py](https://github.com/THUDM/ChatGLM2-6B/blob/main/web_demo.py)配置信息
+- model_path : 加载本地模型，而不是从huggingface上pull
+- launch : 默认不会生成可访问的公网url链接
+
+
+```py
+from transformers import AutoModel, AutoTokenizer
+import gradio as gr
+import mdtex2html
+from utils import load_model_on_gpus
+
+#model_path = 'THUDM/chatglm2-6b'
+model_path = './chatglm2-6b' # 本地模型地址
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+model = AutoModel.from_pretrained(model_path, trust_remote_code=True).cuda() # cpu -> gpu
+# 多显卡支持，使用下面两行代替上面一行，将num_gpus改为你实际的显卡数量
+# from utils import load_model_on_gpus
+# model = load_model_on_gpus("THUDM/chatglm2-6b", num_gpus=2) # 多卡模式
+model = model.eval()
+
+# ....
+# demo.queue().launch(share=True, inbrowser=True) # old
+demo.queue().launch(share=True, inbrowser=True,server_name='0.0.0.0', server_port=7860)) # new
+
+```
+
+（4）启动服务
+- gradio 公网url有时失败 → ssh隧道 or 其它平台（如 [autoDL](https://www.autodl.com/docs/port/)）
+
+```py
+python web_demo.py
+```
+
+- api 方式: 运行api.py文件，默认部署在本地的 8000 端口，通过 POST 方法进行调用
+
+```sh
+curl -X POST "http://127.0.0.1:8000" \
+     -H 'Content-Type: application/json' \
+     -d '{"prompt": "你好", "history": []}'
+# {"response":"你好 ！我是人工智能助手 ChatGLM2-6B，很高兴见到你，欢迎问我任何问题。","history":[["你好","你好 ！我是人工智能助手 ChatGLM2-6B，很高兴见到你，欢迎问我任何问题。"]],"status":200,"time":"2023-09-25 22:23:34"}
+```
+
+OpenAI 格式的流式 API 部署
+- [openai_api.py](https://github.com/THUDM/ChatGLM2-6B/blob/main/openai_api.py)
+
+```py
+import openai
+if __name__ == "__main__":
+    openai.api_base = "http://localhost:8000/v1"
+    openai.api_key = "none"
+    for chunk in openai.ChatCompletion.create(
+        model="chatglm2-6b",
+        messages=[
+            {"role": "user", "content": "你好"}
+        ],
+        stream=True
+    ):
+        if hasattr(chunk.choices[0].delta, "content"):
+            print(chunk.choices[0].delta.content, end="", flush=True)
+```
 
 #### 知识注入
 
