@@ -29,10 +29,54 @@ permalink: /mao
 
 【2021-9-13】[《毛泽东选集》读书笔记](https://mp.weixin.qq.com/s/7G8hOZtV7PPPVfnMN2kP8g)
 
+【2023-1-25】[毛泽东选集笔记](https://weiyinfu.cn/MaoZeDongAnthology/)，[github](https://github.com/weiyinfu/MaoZeDongAnthology)
+
 【2022-11-23】伟人说：
 > 一个有能力的人，就是逢山开路遇水架桥，实在过不去就绕个弯也要前进，这就是能力。
 
-## 毛选第一卷
+## 毛选有几卷
+
+毛泽东选集一共有几卷？[文明篇：《毛选》总共有几卷](https://www.toutiao.com/article/6929344624880386574)
+- 一整套《毛选》总共有**5卷**。
+- 市场大部分流通的是4卷，这1-4卷本，是教员亲自主持编辑的，经过他本人审定的。
+
+官方现在公开发行的只有**4卷本**，建国后出版2个版本。
+- 第1版《毛选》1-4卷，分别于1951年--1960年出版。
+- 第2版1991年出版，第2版仍保持原有的篇目，只增加《**反对本本主义**》一篇。这篇著作，曾一度散失，六十年代初才重新得到，后经教员审定，在1964年出版的《毛泽东著作选读》中第一次公开发表。
+
+- 第5卷只在1977年出版一次，鉴于当时特殊时期的特殊事件背景而出，此后官方不再出版。第5卷虽然只出版过一次，但二手市场流通量很大，主要是当时发行量大，政府大力号召购买，单位购买发放职工。
+- 虽然第5卷官方不再出版，但是民间再不断翻印，在二手书摊或者网上可以买到。网上也流传出第6卷、第7卷是未经官方审定，也从未出版，系民间人士自行选编，选编的是1957年后的著作（文件、手稿、讲话等）。
+- 第6.7.8卷是民间的人士自行整理编撰的，分为**赤旗版**和**静火版**，大多选自教员在49年后的言论，只能作为参考，不读为好。
+
+## 第一卷 国内革命战争时期
+
+[第一卷 国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%B8%80%E5%8D%B7-%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
+ 
+### 第一次国内革命战争时期
+
+[第一次国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
+*   [000-中国社会各阶级的分析](https://weiyinfu.cn/MaoZeDongAnthology/000-%E4%B8%AD%E5%9B%BD%E7%A4%BE%E4%BC%9A%E5%90%84%E9%98%B6%E7%BA%A7%E7%9A%84%E5%88%86%E6%9E%90.html)
+*   [001-湖南农民运动考察报告](https://weiyinfu.cn/MaoZeDongAnthology/001-%E6%B9%96%E5%8D%97%E5%86%9C%E6%B0%91%E8%BF%90%E5%8A%A8%E8%80%83%E5%AF%9F%E6%8A%A5%E5%91%8A.html)
+
+### 第二次国内革命战争时期
+ 
+[第二次国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
+*   [002-中国的红色政权为什么能够存在？](https://weiyinfu.cn/MaoZeDongAnthology/002-%E4%B8%AD%E5%9B%BD%E7%9A%84%E7%BA%A2%E8%89%B2%E6%94%BF%E6%9D%83%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%A4%9F%E5%AD%98%E5%9C%A8%EF%BC%9F.html)
+*   [003-井冈山的斗争](https://weiyinfu.cn/MaoZeDongAnthology/003-%E4%BA%95%E5%86%88%E5%B1%B1%E7%9A%84%E6%96%97%E4%BA%89.html)
+*   [004-关于纠正党内的错误思想](https://weiyinfu.cn/MaoZeDongAnthology/004-%E5%85%B3%E4%BA%8E%E7%BA%A0%E6%AD%A3%E5%85%9A%E5%86%85%E7%9A%84%E9%94%99%E8%AF%AF%E6%80%9D%E6%83%B3.html)
+*   [005-星星之火，可以燎原](https://weiyinfu.cn/MaoZeDongAnthology/005-%E6%98%9F%E6%98%9F%E4%B9%8B%E7%81%AB%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%87%8E%E5%8E%9F.html)
+*   [006-反对本本主义](https://weiyinfu.cn/MaoZeDongAnthology/006-%E5%8F%8D%E5%AF%B9%E6%9C%AC%E6%9C%AC%E4%B8%BB%E4%B9%89.html)
+*   [007-必须注意经济工作](https://weiyinfu.cn/MaoZeDongAnthology/007-%E5%BF%85%E9%A1%BB%E6%B3%A8%E6%84%8F%E7%BB%8F%E6%B5%8E%E5%B7%A5%E4%BD%9C.html)
+*   [008-怎样分析农村阶级](https://weiyinfu.cn/MaoZeDongAnthology/008-%E6%80%8E%E6%A0%B7%E5%88%86%E6%9E%90%E5%86%9C%E6%9D%91%E9%98%B6%E7%BA%A7.html)
+*   [009-我们的经济政策](https://weiyinfu.cn/MaoZeDongAnthology/009-%E6%88%91%E4%BB%AC%E7%9A%84%E7%BB%8F%E6%B5%8E%E6%94%BF%E7%AD%96.html)
+*   [010-关心群众生活，注意工作方法](https://weiyinfu.cn/MaoZeDongAnthology/010-%E5%85%B3%E5%BF%83%E7%BE%A4%E4%BC%97%E7%94%9F%E6%B4%BB%EF%BC%8C%E6%B3%A8%E6%84%8F%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95.html)
+*   [011-论反对日本帝国主义的策略](https://weiyinfu.cn/MaoZeDongAnthology/011-%E8%AE%BA%E5%8F%8D%E5%AF%B9%E6%97%A5%E6%9C%AC%E5%B8%9D%E5%9B%BD%E4%B8%BB%E4%B9%89%E7%9A%84%E7%AD%96%E7%95%A5.html)
+*   [012-中国革命战争的战略问题](https://weiyinfu.cn/MaoZeDongAnthology/012-%E4%B8%AD%E5%9B%BD%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E7%9A%84%E6%88%98%E7%95%A5%E9%97%AE%E9%A2%98.html)
+*   [013-关于蒋介石声明的声明](https://weiyinfu.cn/MaoZeDongAnthology/013-%E5%85%B3%E4%BA%8E%E8%92%8B%E4%BB%8B%E7%9F%B3%E5%A3%B0%E6%98%8E%E7%9A%84%E5%A3%B0%E6%98%8E.html)
+*   [014-中国共产党在抗日时期的任务](https://weiyinfu.cn/MaoZeDongAnthology/014-%E4%B8%AD%E5%9B%BD%E5%85%B1%E4%BA%A7%E5%85%9A%E5%9C%A8%E6%8A%97%E6%97%A5%E6%97%B6%E6%9C%9F%E7%9A%84%E4%BB%BB%E5%8A%A1.html)
+*   [015-为争取千百万群众进入抗日民族统一战线而斗争](https://weiyinfu.cn/MaoZeDongAnthology/015-%E4%B8%BA%E4%BA%89%E5%8F%96%E5%8D%83%E7%99%BE%E4%B8%87%E7%BE%A4%E4%BC%97%E8%BF%9B%E5%85%A5%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E8%80%8C%E6%96%97%E4%BA%89.html)
+*   [016-实践论](https://weiyinfu.cn/MaoZeDongAnthology/016-%E5%AE%9E%E8%B7%B5%E8%AE%BA.html)
+*   [017-矛盾论](https://weiyinfu.cn/MaoZeDongAnthology/017-%E7%9F%9B%E7%9B%BE%E8%AE%BA.html)
 
 ### 第一篇《中国社会各阶级的分析》
 
@@ -200,41 +244,6 @@ permalink: /mao
    - 第九节　歼灭战
 
 今天的笔记把第一次和第二次国内革命战争期间的文章都更新完了，接下来就是抗日战争时期的内容了，还有两篇哲学著作《矛盾论》与《实践论》，这两篇太重要了，需要单独一篇重点来讲一讲。本文只是作为工具性质的辅助性读物，千言万语还是那句话：学知识没有捷径，最重要的还是认认真真读原著。毛泽东思想永放光辉。
-
-# 毛选笔记
-
-【2023-1-25】[毛泽东选集笔记](https://weiyinfu.cn/MaoZeDongAnthology/)，[github](https://github.com/weiyinfu/MaoZeDongAnthology)
-
-## 第一卷 国内革命战争时期
-
-[第一卷 国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%B8%80%E5%8D%B7-%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
- 
-### 第一次国内革命战争时期
-
-[第一次国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
-*   [000-中国社会各阶级的分析](https://weiyinfu.cn/MaoZeDongAnthology/000-%E4%B8%AD%E5%9B%BD%E7%A4%BE%E4%BC%9A%E5%90%84%E9%98%B6%E7%BA%A7%E7%9A%84%E5%88%86%E6%9E%90.html)
-*   [001-湖南农民运动考察报告](https://weiyinfu.cn/MaoZeDongAnthology/001-%E6%B9%96%E5%8D%97%E5%86%9C%E6%B0%91%E8%BF%90%E5%8A%A8%E8%80%83%E5%AF%9F%E6%8A%A5%E5%91%8A.html)
-
-### 第二次国内革命战争时期
- 
-[第二次国内革命战争时期](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%9B%BD%E5%86%85%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E6%97%B6%E6%9C%9F)
-*   [002-中国的红色政权为什么能够存在？](https://weiyinfu.cn/MaoZeDongAnthology/002-%E4%B8%AD%E5%9B%BD%E7%9A%84%E7%BA%A2%E8%89%B2%E6%94%BF%E6%9D%83%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%A4%9F%E5%AD%98%E5%9C%A8%EF%BC%9F.html)
-*   [003-井冈山的斗争](https://weiyinfu.cn/MaoZeDongAnthology/003-%E4%BA%95%E5%86%88%E5%B1%B1%E7%9A%84%E6%96%97%E4%BA%89.html)
-*   [004-关于纠正党内的错误思想](https://weiyinfu.cn/MaoZeDongAnthology/004-%E5%85%B3%E4%BA%8E%E7%BA%A0%E6%AD%A3%E5%85%9A%E5%86%85%E7%9A%84%E9%94%99%E8%AF%AF%E6%80%9D%E6%83%B3.html)
-*   [005-星星之火，可以燎原](https://weiyinfu.cn/MaoZeDongAnthology/005-%E6%98%9F%E6%98%9F%E4%B9%8B%E7%81%AB%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%87%8E%E5%8E%9F.html)
-*   [006-反对本本主义](https://weiyinfu.cn/MaoZeDongAnthology/006-%E5%8F%8D%E5%AF%B9%E6%9C%AC%E6%9C%AC%E4%B8%BB%E4%B9%89.html)
-*   [007-必须注意经济工作](https://weiyinfu.cn/MaoZeDongAnthology/007-%E5%BF%85%E9%A1%BB%E6%B3%A8%E6%84%8F%E7%BB%8F%E6%B5%8E%E5%B7%A5%E4%BD%9C.html)
-*   [008-怎样分析农村阶级](https://weiyinfu.cn/MaoZeDongAnthology/008-%E6%80%8E%E6%A0%B7%E5%88%86%E6%9E%90%E5%86%9C%E6%9D%91%E9%98%B6%E7%BA%A7.html)
-*   [009-我们的经济政策](https://weiyinfu.cn/MaoZeDongAnthology/009-%E6%88%91%E4%BB%AC%E7%9A%84%E7%BB%8F%E6%B5%8E%E6%94%BF%E7%AD%96.html)
-
-*   [010-关心群众生活，注意工作方法](https://weiyinfu.cn/MaoZeDongAnthology/010-%E5%85%B3%E5%BF%83%E7%BE%A4%E4%BC%97%E7%94%9F%E6%B4%BB%EF%BC%8C%E6%B3%A8%E6%84%8F%E5%B7%A5%E4%BD%9C%E6%96%B9%E6%B3%95.html)
-*   [011-论反对日本帝国主义的策略](https://weiyinfu.cn/MaoZeDongAnthology/011-%E8%AE%BA%E5%8F%8D%E5%AF%B9%E6%97%A5%E6%9C%AC%E5%B8%9D%E5%9B%BD%E4%B8%BB%E4%B9%89%E7%9A%84%E7%AD%96%E7%95%A5.html)
-*   [012-中国革命战争的战略问题](https://weiyinfu.cn/MaoZeDongAnthology/012-%E4%B8%AD%E5%9B%BD%E9%9D%A9%E5%91%BD%E6%88%98%E4%BA%89%E7%9A%84%E6%88%98%E7%95%A5%E9%97%AE%E9%A2%98.html)
-*   [013-关于蒋介石声明的声明](https://weiyinfu.cn/MaoZeDongAnthology/013-%E5%85%B3%E4%BA%8E%E8%92%8B%E4%BB%8B%E7%9F%B3%E5%A3%B0%E6%98%8E%E7%9A%84%E5%A3%B0%E6%98%8E.html)
-*   [014-中国共产党在抗日时期的任务](https://weiyinfu.cn/MaoZeDongAnthology/014-%E4%B8%AD%E5%9B%BD%E5%85%B1%E4%BA%A7%E5%85%9A%E5%9C%A8%E6%8A%97%E6%97%A5%E6%97%B6%E6%9C%9F%E7%9A%84%E4%BB%BB%E5%8A%A1.html)
-*   [015-为争取千百万群众进入抗日民族统一战线而斗争](https://weiyinfu.cn/MaoZeDongAnthology/015-%E4%B8%BA%E4%BA%89%E5%8F%96%E5%8D%83%E7%99%BE%E4%B8%87%E7%BE%A4%E4%BC%97%E8%BF%9B%E5%85%A5%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E8%80%8C%E6%96%97%E4%BA%89.html)
-*   [016-实践论](https://weiyinfu.cn/MaoZeDongAnthology/016-%E5%AE%9E%E8%B7%B5%E8%AE%BA.html)
-*   [017-矛盾论](https://weiyinfu.cn/MaoZeDongAnthology/017-%E7%9F%9B%E7%9B%BE%E8%AE%BA.html)
  
 ## 第二卷 抗日战争时期（上）
 
@@ -391,6 +400,8 @@ permalink: /mao
 *   [158-唯心历史观的破产](https://weiyinfu.cn/MaoZeDongAnthology/158-%E5%94%AF%E5%BF%83%E5%8E%86%E5%8F%B2%E8%A7%82%E7%9A%84%E7%A0%B4%E4%BA%A7.html)
 
 ## 第五卷 中国人民站起来了
+
+[高清版](https://github.com/woshizhd/book/blob/master/%E6%AF%9B%E6%B3%BD%E4%B8%9C%E9%80%89%E9%9B%86/%E6%AF%9B%E6%B3%BD%E4%B8%9C%E9%80%89%E9%9B%86.%E7%AC%AC%E4%BA%94%E5%8D%B7%EF%BC%88%E9%AB%98%E6%B8%85%E7%89%88%EF%BC%89.pdf)
 
 [第五卷 中国人民站起来了](https://weiyinfu.cn/MaoZeDongAnthology/#%E7%AC%AC%E4%BA%94%E5%8D%B7-%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E7%AB%99%E8%B5%B7%E6%9D%A5%E4%BA%86)
 *   [159-中国人民站起来了](https://weiyinfu.cn/MaoZeDongAnthology/159-%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E7%AB%99%E8%B5%B7%E6%9D%A5%E4%BA%86.html)
