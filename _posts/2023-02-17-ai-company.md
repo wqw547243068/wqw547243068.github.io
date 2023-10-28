@@ -2,7 +2,7 @@
 layout: post
 title:   AI顶级机构发家史
 date:   2023-02-17 13:52:00
-categories: 人工智能
+categories: 大模型
 tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智 人才
 excerpt: 世界顶级AI机构（OpenAI/DeepMind/BostonDnymic等）的故事；大模型人才
 mathjax: true

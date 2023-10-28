@@ -3,7 +3,7 @@ layout: post
 title:  "知识图谱-Knowledge-Graph"
 date:   2020-06-23 21:14:00
 categories: 自然语言处理
-tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j
+tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j 
 excerpt: 知识图谱（Knowledge Graph）发展历史，主要类型，前沿研究及应用场景等
 author: 鹤啸九天
 mathjax: true
@@ -44,7 +44,7 @@ permalink: /kg
 
 # 知识图谱
 
-## 什么是知识
+## 什么是知识图谱
 
 牛津字典
 >- 知识是通过经历或者教育获取的事实、信息或者技巧或者技巧。
@@ -79,7 +79,13 @@ permalink: /kg
 - 【2020-7-12】【ACL 2020知识图谱自然语言处理进展摘要】《[Knowledge Graphs in Natural Language Processing @ ACL 2020](https://towardsdatascience.com/knowledge-graphs-in-natural-language-processing-acl-2020-ebb1f0a6e0b1)》by Michael Galkin
 - 【2020-7-21】[从ACL 2020看知识图谱进展](https://www.toutiao.com/i6851461937012851214/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1595263453&app=news_article&utm_source=mobile_qq&utm_medium=toutiao_android&use_new_style=1&req_id=202007210044120100270271372C1692E4&group_id=6851461937012851214)
 
-## 历史
+【2018-9-28】[文因互联鲍捷：深度解析知识图谱发展关键阶段及技术脉络](https://cloud.tencent.com/developer/article/1348143)
+
+鲍捷
+- 鲍捷，文因互联创始人，曾担任美国麻省理工学院访问研究员、三星美国研发中心研究员，曾是三星问答系统S-voice第二代系统核心设计师
+- 鲍捷，文因互联 CEO，联合创始人。曾担任美国麻省理工学院访问研究员、三星美国研发中心研究员，三星问答系统S-voice第二代系统核心设计师，伦斯勒理工学院（RPI）博士后。他是中国中文信息学会语言与知识计算专委会委员，W3C 顾问委员会委员，中国计算机协会会刊编委，中文开放知识图谱联盟（OpenKG）发起人之一。他的研究领域涉及人工智能诸多方向，如自然语言处理、语义网、机器学习、描述逻辑、信息论、神经网络、图像识别等，已发表 70 多篇论文。
+
+## 知识图谱历史
 
 - **知识图谱**的发展简史
   - 上个世纪60年代Quillian提出了**语义网络**，作为知识表示的一种方式，用于描述物体概念与状态及其间的关系，早期主要是用来帮助自然语言理解。
@@ -89,14 +95,14 @@ permalink: /kg
   - 2006年提出了**链接数据**概念，目标将互联网上所有数据建立关联，如姚明的页面出现他妻子叶莉，会给“叶莉”加一个链接，链接到叶莉这个页面。
   - 2012年Google率先提出了**知识图谱**，目的是提升整个搜索效果，从此知识图谱技术开始得到广泛学习和应用。
 - ![](https://s.secrss.com/anquanneican/0467dda79b042a7395ec66a40293f5c3.png)
-- 知识图谱是起源于语义网络，并且跟语义网（Semantic Web）有着极深的渊源。知识图谱采取了语义网络的图表示方法，同时参考了语义网的标准化语言RDF和OWL，从而具有严格的逻辑语义支撑，可以确保从知识图谱中查询得到的结果是正确的。同时知识图谱可以跟专家系统中的规则引擎结合用于企业应用中的决策支持类任务。
+- 知识图谱是起源于语义网络，并且跟`语义网`（Semantic Web）有着极深的渊源。知识图谱采取了语义网络的图表示方法，同时参考了语义网的标准化语言RDF和OWL，从而具有严格的逻辑语义支撑，可以确保从知识图谱中查询得到的结果是正确的。同时知识图谱可以跟专家系统中的规则引擎结合用于企业应用中的决策支持类任务。
 - ![](http://5b0988e595225.cdn.sohucs.com/images/20180906/2cbe3385c1b74d2895626b0070c72b44.jpeg)
   - 摘自：
     - [知识图谱在贝壳找房的从0到1实践](https://www.sohu.com/a/252223730_499730)
     - 【2020-9-16】[【知识图谱系列】开篇：基于KBQA的经纪人咨询助手](https://mp.weixin.qq.com/s?__biz=MzU3OTY2MjQ2NQ==&mid=2247485140&idx=1&sn=1d4739efa2e61f5bca6b2bf54d55ca87&chksm=fd63e13aca14682c8a4a97b30c093eb6cd5649f326e3d8875f3706a568175803d0fc642ad2aa&mpshare=1&scene=1&srcid=09164hw2hJXwSd3P2aCyZVSB&sharer_sharetime=1600234667205&sharer_shareid=2397ebcca559a9e3526dfd9d52c0256d&key=64c89714f25cba008511613fdb28eb9eec76e7ff16ef1ce851e84c38cb39e6ff776560f0a5a988ec2fd63004dc882a3f7759586fdb829f09d68df27f15a34b1dd856d2a1a2f9fb2cd3c9229a0e42e7f75aa93e8cfb790adb9ef6dd839f917abb6402cf62075855c87c616620f7d67a45c9d5ba7c3d613400428b90e868520b06&ascene=1&uin=OTY1NzE1MTYw&devicetype=Windows+10+x64&version=62090529&lang=zh_CN&exportkey=AUh00ODduFPVWprSECsaHVY%3D&pass_ticket=7mpEltFniVgVA8udzhXvGu5076WsT0d0jPX7mxvNBPPNk2qz5Sgw%2B8WUntOJuT9x&wx_header=0)
     - 【2020-7-18】[贝壳找房技术文章合集](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&__biz=MzU3OTY2MjQ2NQ==&scene=24&album_id=1431012302404534273&uin=&key=&devicetype=iMac+MacBookPro13%2C2+OSX+OSX+10.15.5+build(19F101)&version=12040110&lang=zh_CN&nettype=WIFI&ascene=14&fontScale=100&winzoom=1.000000)
 
-## 定义
+## 知识图谱定义
 
 - 知识图谱并没有一个标准的定义(gold standard definition)。借用一下“Exploiting Linked Data and Knowledge Graphs in Large Organisations”这本书对于知识图谱的定义：
 >- A knowledge graph consists of a set of interconnected typed entities and their attributes.

@@ -2,7 +2,7 @@
 layout: post
 title:  LangChain 学习笔记
 date:   2023-05-24 22:46:00
-categories: AIGC
+categories: 大模型
 tags: gpt ChatGPT
 excerpt: 大模型 LLM 驱动的智能体 Agent
 mathjax: true
