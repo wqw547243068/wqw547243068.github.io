@@ -1389,7 +1389,35 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 6.  canny边缘检测/depth深度检测/HED边缘提取/mlsd线段识别/normal模型识别/openpose姿势识别/scribble黑白稿提取/seg语义分割和根据此画图：主要是各种开源的视觉任务模型VFMs，然后[ControlNet](https://github.com/lllyasviel/ControlNet.git)实现画图。
 
 
-#### VEED 视频翻译
+#### 视频翻译
+
+##### HeyGen
+
+- 【2023-10-23】[口型几乎完美、还能卡点，霉霉说地道中文的视频火了，背后AI工具原来是它](https://www.jiqizhixin.com/articles/2023-10-23-15)
+- 【2023-10-30】[AI让霉霉说中文，口音那叫一个地道！背后的中国初创公司7个月收入百万美元](https://mp.weixin.qq.com/s/te0GHWEE0NKqPZMEBbkjpQ)
+
+译制片配音的行业标杆
+- 除了中英互译，还有人尝试将英语翻译成其他语言，效果同样很不错
+- ![](https://image.jiqizhixin.com/uploads/editor/2e83292e-c24e-4d47-8bf0-0ac03106aebf/1698048590747.png)
+
+技术实现
+- 至少三步： Whisper识别、Tortoise-TTS合成带原始说话人音色的语音、Wav2lip换嘴型。
+- 只需要一个AI工具即可，名为HeyGen，国内一个初创团队，公司名为诗云科技
+  - 今年8-9月，各大文生图类AI网站的访问量均开始呈现下降趋势，但HeyGen的访问量却上升了92%，流量跃居各大独立AI网站之首。
+
+诗云科技成立于2020年12月，公司成立之初，就以“用AI生成内容，让用户以更低成本完成内容创作”为愿景，已获得来自红杉中国、真格基金等风投们累计近千万投资。
+
+HeyGen 要做AI视频创作领域的Midjourney，目前HeyGen的团队只有大概30人，分布在全球各地，以远程办公形式进行合作。
+
+HeyGen的产品正式上线后的一年不到，创始人Joshua Xu就发表博文表示：HeyGen在7个月内实现了100万美元的ARR（年度经常性收入），并保持连续9个月50%的月环比增长率。
+
+2022年7月，诗云科技推出多模态内容生成引擎Surreal Engine，将内容生产分为Understanding（理解）、Framing（视框化）、Rendering（渲染）三个步骤。区别于市面上的两大3D内容创作巨头：Epic Game的Unreal Engine和Nvidia的Omniverse，Surreal Engine让普通人也可以轻松进行高维度、可交互的内容创作。
+
+开源替代方案
+- 语音转文字 whisper、文字翻译 GPT、声音克隆 + 生成音频 so-vits-svc、生成符合音频的嘴型视频 GeneFace++。
+
+除了价格贵，HeyGen 还存在一些技术问题，比如
+- 生成的AI视频存在视频**抖动**、**眨眼频率过高**等。
 
 ##### VEED
 
