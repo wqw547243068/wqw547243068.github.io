@@ -681,6 +681,9 @@ Answer: 4.0
 
 【2023-10-31】[ChatGLM3 的工具调用（FunctionCalling）实现原理](https://zhuanlan.zhihu.com/p/664233831)
 
+
+### tool信息
+
 Tool 信息
 - 放入请求参数里的 tools 里
 
@@ -722,6 +725,9 @@ tools = [
 
 system_info = {"role": "system", "content": "Answer the following questions as best as you can. You have access to the following tools:", "tools": tools}
 ```
+
+
+### 测试
 
 提出问题
 
@@ -962,6 +968,14 @@ process_response(output, history)
 最后再解释一下为什么 ChatGLM3-6B 的工具调用只支持通过 chat 方法，不支持 stream_chat 方法。
 - 从源码上面看，stream_chat 没有调用 process_response方法，自然就没法返回处理过的工具调用结果。
 - 这只是表面原因，根本原因是 stream_chat 是一个个吐字的，没法中间做手脚将工具调用结果进行处理。
+
+### 问题
+
+GitHub上有人反馈了一堆 Function Call的问题
+- [function call 必填参数不输入,不会提示,有时还会自己输出无关内容](https://github.com/THUDM/ChatGLM3/issues/53)
+  - tool_using中的cli_demo_tool.py,必填参数不输入,不会提示,有时还会自己编内容
+- 正常能回答的问题也会去调用工具，不管有没有; 没有自动判断是否使用工具的能力，一直在各种问题上强制使用tools
+  - [issue](https://github.com/THUDM/ChatGLM3/issues/74), 包含完整测试代码
 
 
 # 结束
