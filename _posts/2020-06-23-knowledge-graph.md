@@ -585,9 +585,9 @@ Instructions for connecting to the following graph databases:
 - 配置环境变量：见下面代码
 - 查看版本：java --version
 - 社区版neo4j下载：（免登记，直接下载，版本号可定制）
-  - windows：https://neo4j.com/artifact.php?name=neo4j-community_windows-x64_3_1_0.exe
-  - linux：https://neo4j.com/artifact.php?name=neo4j-community-3.1.0-unix.tar.gz
-  - mac：https://neo4j.com/artifact.php?name=neo4j-community_macos_3_1_0.dmg
+  - `windows`：https://neo4j.com/artifact.php?name=neo4j-community_windows-x64_3_1_0.exe
+  - `linux`：https://neo4j.com/artifact.php?name=neo4j-community-3.1.0-unix.tar.gz
+  - `mac`：https://neo4j.com/artifact.php?name=neo4j-community_macos_3_1_0.dmg
 - 更改配置, conf/neo4j.conf
   - To accept non-local connections, uncomment this line:
   - dbms.default_listen_address=0.0.0.0 # 注释掉此行
@@ -596,7 +596,7 @@ Instructions for connecting to the following graph databases:
   - 默认账户，用户名：neo4j 密码 ：neo4j
   - 密码修改:server change-password
 
-- Neo4J支持ACID，集群、备份和故障转移。目前Neo4J最新版本为3.5，分为**社区版**和**企业版**
+- `Neo4J`支持ACID，集群、备份和故障转移。目前Neo4J最新版本为3.5，分为**社区版**和**企业版**
   - 社区版只支持单机部署，功能受限。
   - 企业版支持**主从复制**和**读写分离**，包含可视化管理工具。
 
@@ -611,6 +611,8 @@ alias java=$JAVA_HOME/bin/java # 如果系统已有java，加此行覆盖
 
 ### 使用方法
 
+[官方下载使用](https://neo4j.com/download-thanks-desktop/?edition=desktop&flavour=osx&release=1.5.9&offline=false)
+- ![](https://dist.neo4j.com/wp-content/uploads/20200203121136/Screen-Shot-2020-02-03-at-12.11.21-PM.png)
 
 #### 面向过程代码
 
