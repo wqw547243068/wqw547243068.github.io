@@ -493,6 +493,31 @@ Connections to Prior Work
   - `Self-RAG` enables tailored behaviors by simply adjusting reward weights across multiple preference aspects, while prior fine-grained feedback learning method requires training for different model behaviors.
 
 
+### Agent RAG 
+
+【2023-10-28】[Retrieval-Augmented Generation (RAG) Applications with AutoGen](https://microsoft.github.io/autogen/blog/2023/10/18/RetrieveChat/)
+- 基于 AtuoGen 的 RAG
+- ![](https://microsoft.github.io/autogen/assets/images/retrievechat-arch-959e180405c99ceb3da88a441c02f45e.png)
+
+AutoGen 的 RAG系统由两个代理组成
+- `RetrieveUserProxyAgent`: 人类代理，也能执行代码、调用函数
+  - `code_execution_config` 可关闭自动执行
+  - 默认不启用 LLM，可以通过配置文件 `llm_config` 开启
+  - 指定文档集合路径。随后下载文档，分割成特定大小的块，计算嵌入，并存储在矢量数据库中
+- `RetrieveAssistantAgent`: 与 LLM 交互，可以执行LLM生成的Python代码
+
+相关配置
+- `llm_config` LLM 配置信息
+
+- RAG 代理的定制
+  - 定制嵌入功能、文本分割功能和矢量数据库。
+- RAG 代理的两种高级用法，即
+  - 与**群聊**集成
+  - 使用 Gradio 构建聊天应用程序
+
+Diverse Applications Implemented with AutoGen
+- ![](https://microsoft.github.io/autogen/assets/images/app-b0acafd5e331fa9471ab6d0e7010a83d.png)
+
 ## （3）PEFT 参数高效微调
 
 - **参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
