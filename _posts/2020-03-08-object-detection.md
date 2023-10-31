@@ -677,7 +677,7 @@ YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术�
 
 
 
-# 目标检测实践
+# 实践
 
 ![](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xTXRuQXhtV1N3TnBlWHVvOFAyd1ZpY2lhVkswdEEzcXBQMmliRHp2anRpY0N0NU1WSllzUFVCb2liZXU0TjZxbUxSZTJrTG13SWljRHNXY2hNRFE4aWJZam9jb1EvNjQw?x-oss-process=image/format,png)
 
@@ -841,10 +841,57 @@ const domContainer = document.querySelector('#root');
 ReactDOM.render(React.createElement(App), domContainer);
 ```
 
-
-## 资料
-
 - 更多[Demo地址](http://wqw547243068.github.io/demo)
+
+
+## 事件检测
+
+
+### 视频事件检测
+
+【2022-11-8】[AI视频事件检测系统—JXVA8000系列](https://mp.weixin.qq.com/s/wpB_7dwfqc4sjdrRaWKARw)
+
+[捷迅技术](http://www.ettcjx.com/jiejuefangan/145.html)“JXVA”系列产品基于AI人工智能的深度学习算法以及GPU技术，对视频图像事件进行分析识别。利用**视频大数据**开展视频智能化应用服务实现对高速公路的**交通事件**和**交通态势**进行实时、精准检测
+- ![](http://www.ettcjx.com/uploads/ueditor/20211005/1-21100522404c39.jpg)
+
+对交通道路正常交通秩序的事件进行**实时检测**，及时发现行人、车辆、物品等异常行为，并进行全客户端实时告警。实现对高速公路的交通事件和交通态势进行实时、精准检测，事件检测精准度达99%。对接高速公路车道监控摄像机的**视频流**，获取瞬间截面车流信息，为管理者提供实时的车流信息，为后续交通大数据的统计和预测做数据储备。
+
+核心功能
+- 交通事件分析
+- 交通态势分析
+- 路面智能养护
+- 路网事件分析
+
+优点
+- ◆ 识别准确率高：识别准确率高达96%以上
+- ◆ 自学习、自优化、越用越智能
+  - 具备在线自动学习能力，模型上线使用之后识别准确率不断提高
+- ◆ 识别事件类型多
+  - 对道路行人、违停、拥堵、逆行、压线、超速、慢行、抛洒物等多种交通事件进行检测
+
+交通事件检测功能点
+- 停车
+- 行人
+- 遗留物
+- 事故
+- 拥堵
+- 非机动车
+- 变道检测
+- 违规逆行
+
+交通态势分析
+- 交通流量检测
+- 平均车速检测
+- 排队长度检测
+- 车道空间占有率
+
+摄像头智能巡检
+- 视频缺失
+- 视频遮挡
+- 视频卡顿
+- 视频模糊
+- 色彩失真
+- 异常抖动
 
 
 ## 卡尔曼滤波
