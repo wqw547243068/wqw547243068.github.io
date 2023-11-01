@@ -4778,6 +4778,67 @@ UC伯克利重磅开源神级LLM推理和服务系统——`vLLM`，利用PagedA
 
 Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 Web 浏览器的项目。一切都在浏览器内运行，无需服务器支持，并使用 WebGPU 加速。这开辟了许多有趣的机会，可以为每个人构建 AI 助手，并在享受 GPU 加速的同时实现隐私。
 
+
+### cpp 本地部署 
+
+
+#### chatglm.cpp 本地运行
+
+[chatglm.cpp](https://github.com/li-plus/chatglm.cpp) 类似 llama.cpp 的量化加速推理方案，实现笔记本上实时对话
+
+C++ implementation of ChatGLM-6B & ChatGLM2-6B & ChatGLM3 & more LLMs
+
+C++ implementation of [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B), [ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B), [ChatGLM3-6B](https://github.com/THUDM/ChatGLM3) and more LLMs for real-time chatting on your MacBook.
+
+[![demo](https://github.com/li-plus/chatglm.cpp/raw/main/docs/demo.gif)](https://github.com/li-plus/chatglm.cpp/blob/main/docs/demo.gif)
+
+chatglm.cpp 支持其他模型
+- ChatGLM2-6B
+- ChatGLM3-6B
+- CodeGeeX2
+- Baichuan-13B-Chat
+- Baichuan2-7B-Chat
+- Baichuan2-13B-Chat
+- InternLM-Chat-7B
+- InternLM-Chat-20B
+
+```sh
+git clone --recursive https://github.com/li-plus/chatglm.cpp.git && cd chatglm.cpp
+python3 -m pip install -U pip
+python3 -m pip install torch tabulate tqdm transformers accelerate sentencepiece
+# -----------------
+# transform ChatGLM-6B into quantized GGML format. For example, to convert the fp16 original model to q4_0 (quantized int4) GGML model
+python3 chatglm_cpp/convert.py -i THUDM/chatglm-6b -t q4_0 -o chatglm-ggml.bin
+# -----------------
+python3 chatglm_cpp/convert.py -i THUDM/chatglm2-6b -t q4_0 -o chatglm2-ggml.bin
+./build/bin/main -m chatglm2-ggml.bin -p 你好 --top_p 0.8 --temp 0.8
+# 你好👋！我是人工智能助手 ChatGLM2-6B，很高兴见到你，欢迎问我任何问题。
+# -----------------
+python3 chatglm_cpp/convert.py -i THUDM/chatglm3-6b -t q4_0 -o chatglm3-ggml.bin
+./build/bin/main -m chatglm3-ggml.bin -p 你好 --top_p 0.8 --temp 0.8
+# 你好👋！我是人工智能助手 ChatGLM3-6B，很高兴见到你，欢迎问我任何问题。
+
+# ---- 编译 -----
+cmake -B build
+cmake --build build -j --config Release
+# 运行
+./build/bin/main -m chatglm-ggml.bin -p 你好
+# 你好👋！我是人工智能助手 ChatGLM-6B，很高兴见到你，欢迎问我任何问题。
+# 交互模式
+./build/bin/main -m chatglm-ggml.bin -i
+```
+
+
+#### Baichuan2-13B-Chat
+
+
+
+```sh
+python3 chatglm_cpp/convert.py -i baichuan-inc/Baichuan2-13B-Chat -t q4_0 -o baichuan2-13b-chat-ggml.bin
+./build/bin/main -m baichuan2-13b-chat-ggml.bin -p 你好 --top_k 5 --top_p 0.85 --temp 0.3 --repeat_penalty 1.05
+# 你好！今天我能为您提供什么帮助？
+```
+
 ### trl
 
 [Ivwerra/trl](https://github.com/lvwerra/trl)，[文档](https://huggingface.co/docs/trl/index) 
