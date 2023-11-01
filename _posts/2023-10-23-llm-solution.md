@@ -555,16 +555,23 @@ Connections to Prior Work
 
 ### Agent RAG 
 
+- OpenAI community [Standard RAG + Agent Solution](https://community.openai.com/t/standard-rag-agent-solution/454605)
+
+#### AutoGen
+
 【2023-10-28】[Retrieval-Augmented Generation (RAG) Applications with AutoGen](https://microsoft.github.io/autogen/blog/2023/10/18/RetrieveChat/)
 - 基于 AtuoGen 的 RAG
 - ![](https://microsoft.github.io/autogen/assets/images/retrievechat-arch-959e180405c99ceb3da88a441c02f45e.png)
 
-AutoGen 的 RAG系统由两个代理组成
+AutoGen 构建一个能够进行智能搜索和信息检索的聊天应用。**用户**可以通过自然语言查询代理提出问题或请求信息，然后**搜索代理**会从互联网或其他数据源中检索相关信息，并通过自然语言代理将结果返回给用户。
+
+AutoGen 的 RAG系统由两个代理组成，都从 AutoGen 的内置代理扩展而来
 - `RetrieveUserProxyAgent`: 人类代理，也能执行代码、调用函数
   - `code_execution_config` 可关闭自动执行
   - 默认不启用 LLM，可以通过配置文件 `llm_config` 开启
   - 指定文档集合路径。随后下载文档，分割成特定大小的块，计算嵌入，并存储在矢量数据库中
-- `RetrieveAssistantAgent`: 与 LLM 交互，可以执行LLM生成的Python代码
+- `RetrieveAssistantAgent`: 检索增强代理，与 LLM 交互，可以执行LLM生成的Python代码
+  - 包含一个向量数据库
 
 相关配置
 - `llm_config` LLM 配置信息
