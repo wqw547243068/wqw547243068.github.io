@@ -493,6 +493,44 @@ Connections to Prior Work
   - `Self-RAG` enables tailored behaviors by simply adjusting reward weights across multiple preference aspects, while prior fine-grained feedback learning method requires training for different model behaviors.
 
 
+### 【2023.10.9】Step-Back Prompting
+
+【2023-10-27】[DeepMind新技术Step-Back Prompting，可提升RAG应用效果，让大模型学会抽象思考](https://mp.weixin.qq.com/s/3WKUrAI_MflqqdwKIyoDEg)
+- [退一步，看得更远：通过抽象引发大型语言模型中的推理](https://zhuanlan.zhihu.com/p/663680218)
+
+Zero-Shot-CoT领域，最近几天（10.3）刚刚有一个新的研究《Large Language Models as Analogical Reasoners》提出，通过类比推理提示（Analogical Prompting）可以让大模型自己生成相似问题做为例子，从而再根据例子步骤形成思维链来解决新问题。
+
+观察：
+- 很多任务都很复杂，充满了细节，大语言模型（LLMs）很难找到解决问题所需的相关信息。
+  - 物理问题：“如果一个理想气体的温度翻了一番，体积增加了八倍，那么它的压强 P 会发生什么变化？” LLM 在直接解答这个问题时可能会忽略**理想气体定律**的基本原则。
+  - 询问“Estella Leopold 在 1954 年 8 月到 11 月期间就读于哪所学校？”的问题，由于**时间范围非常具体**，直接回答也是非常困难的。
+
+思考
+- 在这两种情况下，通过**退一步**提问，能够帮助模型更有效地解决问题。
+
+谷歌DeepMind 10月9日提了一项新技术“Step-Back Prompting”，简称`后退提示`（STP），不是类比寻找相似示例，而是让LLMs**自己抽象问题**，得到更高维度概念和原理，再用这些知识推理并解决问题。这种思维模式非常类似于人类解决问题的方式，让大模型能够借鉴已有规律解决问题。
+- [Take a Step Back: Evoking Reasoning via Abstraction in Large Language Models](https://arxiv.org/abs/2310.06117)
+
+`退一步问题`为从原始问题中派生出来的、层级更高的**抽象问题**。
+- 不直接问 “Estella Leopold 在特定时间段内的学校是哪所”，而是问一个更高层次的问题：“Estella Leopold 的教育历史是怎样的？”
+- 通过回答这个更抽象的问题，获得解答原始问题所需的所有信息。
+
+通常来说，`退一步问题`比`原始问题`更容易回答。基于这种抽象层次的推理有助于避免中间步骤的错误，链式思维提示的例子一样。总的来说，退一步提示法包含两个简单的步骤：
+- 抽象：我们首先提示 LLM 提出一个关于更高层次概念或原则的通用问题，并检索与之相关的信息，而不是直接回答原始问题。
+- 推理：在获取了关于高层次概念或原则的信息后，LLM 可以基于这些信息对原始问题进行推理。我们将这种方法称为基于抽象的推理。
+
+`后退提示`（STP）可以和RAG相结合，利用`后退提示`获得的抽象问题，获得更多与最终答案需要的的上下文信息，然后，再将获得的上下文和原始问题一起提交给LLM，从而让LLM获得更好的回答质量。
+- ![](https://pic1.zhimg.com/80/v2-54afd626bd6d05b95562deae90ecdcd4_1440w.webp)
+
+PaLM-2L模型做了实验，发现这种Prompt技巧能显著提升推理任务（STEM、知识问答、多步推理）的性能表现。
+- step-back prompting与rag配合使用的方式 相比较于baseline提升了39.9%，相较于单纯RAG应用，提升了21.6%的效果。
+
+工程实现
+- 该技术已经被langchain支持
+- [colab尝试](https://github.com/langchain-ai/langchain/blob/master/cookbook/stepback-qa.ipynb)
+
+
+
 ### Agent RAG 
 
 【2023-10-28】[Retrieval-Augmented Generation (RAG) Applications with AutoGen](https://microsoft.github.io/autogen/blog/2023/10/18/RetrieveChat/)
