@@ -3789,7 +3789,7 @@ if __name__ == "__main__":
             print(chunk.choices[0].delta.content, end="", flush=True)
 ```
 
-#### 知识注入
+##### 知识注入
 
 【2023-7-11】[单样本微调给ChatGLM2注入知识](https://mp.weixin.qq.com/s/hANR9OVDVEZMMvK8uxtChA)
 - 借助 AdaLoRA算法，使用1条样本对ChatGLM2-6b实施微调。几分钟就成功注入了有关知识
@@ -3849,6 +3849,8 @@ chatglm = ChatGLM(model_new,tokenizer,max_chat_rounds=20) #支持多轮对话，
 
 [ChatGLM3 GitHub](https://github.com/THUDM/ChatGLM3)
 
+问题
+- [streamlit打不开](https://github.com/THUDM/ChatGLM3/issues/82)
 
 ### CPM-Bee 基座模型+Luca（露卡） -- OpenBMB
 
@@ -4802,14 +4804,27 @@ chatglm.cpp 支持其他模型
 - InternLM-Chat-7B
 - InternLM-Chat-20B
 
+实践
+- 【2023-11-1】mac 本地调试通过， ChatGLM3-6B int4 量化后，模型有3.3G，本地推理速度很快
+
 ```sh
+# ----- ① 代码下载 ------
 git clone --recursive https://github.com/li-plus/chatglm.cpp.git && cd chatglm.cpp
 python3 -m pip install -U pip
 python3 -m pip install torch tabulate tqdm transformers accelerate sentencepiece
-# -----------------
+# --- ② 模型下载转换 ----
 # transform ChatGLM-6B into quantized GGML format. For example, to convert the fp16 original model to q4_0 (quantized int4) GGML model
 python3 chatglm_cpp/convert.py -i THUDM/chatglm-6b -t q4_0 -o chatglm-ggml.bin
-# -----------------
+# ---- ③ 编译 -----
+cmake -B build
+cmake --build build -j --config Release
+# ---- ④ 运行 ------
+./build/bin/main -m chatglm-ggml.bin -p 你好
+# 你好👋！我是人工智能助手 ChatGLM-6B，很高兴见到你，欢迎问我任何问题。
+# 交互模式
+./build/bin/main -m chatglm-ggml.bin -i
+./build/bin/main -m chatglm3-ggml.bin -i --top_p 0.8 --temp 0.8
+# ------ 其它模型 ------
 python3 chatglm_cpp/convert.py -i THUDM/chatglm2-6b -t q4_0 -o chatglm2-ggml.bin
 ./build/bin/main -m chatglm2-ggml.bin -p 你好 --top_p 0.8 --temp 0.8
 # 你好👋！我是人工智能助手 ChatGLM2-6B，很高兴见到你，欢迎问我任何问题。
@@ -4817,15 +4832,6 @@ python3 chatglm_cpp/convert.py -i THUDM/chatglm2-6b -t q4_0 -o chatglm2-ggml.bin
 python3 chatglm_cpp/convert.py -i THUDM/chatglm3-6b -t q4_0 -o chatglm3-ggml.bin
 ./build/bin/main -m chatglm3-ggml.bin -p 你好 --top_p 0.8 --temp 0.8
 # 你好👋！我是人工智能助手 ChatGLM3-6B，很高兴见到你，欢迎问我任何问题。
-
-# ---- 编译 -----
-cmake -B build
-cmake --build build -j --config Release
-# 运行
-./build/bin/main -m chatglm-ggml.bin -p 你好
-# 你好👋！我是人工智能助手 ChatGLM-6B，很高兴见到你，欢迎问我任何问题。
-# 交互模式
-./build/bin/main -m chatglm-ggml.bin -i
 ```
 
 
