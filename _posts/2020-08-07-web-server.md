@@ -591,10 +591,41 @@ API接口：
   - 请求参数：数据格式【默认JSON、可选form data】、数据类型、是否必填、中文描述。
   - 响应参数：类型、中文描述。
 
-### 测试工具
+## 工具
+
+### Postman 模拟请求
 
 推荐Chrome浏览器插件`Postman`作为接口测试工具， [Postman下载地址](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop)
 - ![](https://pic2.zhimg.com/80/v2-2c3dcfc9251b9d1c2be62d24ba2d5f51_720w.jpg)
+
+### Mod-Header 修改Header
+
+【2023-11-2】Chrome 访问网页时，有时要构造／修改下网页请求的**http请求头**
+- modheader 满足这样需求的插件工具，简单而实用。
+- [参考](https://blog.yuccn.net/archives/197.html)
+
+安装
+- Chrome 打开 “[扩展程序](https://chrome.google.com/webstore/category/extensions?hl=zh-CN)”
+- 输入 ModHeader 后搜索出该插件安装下即可。
+
+启动
+- 点击
+- ![](https://blog.yuccn.net/wp-content/uploads/2017/11/F08B7322-1420-4E1A-99F5-B8ECD875D1BE.jpg)
+
+配置 **Http请求头**
+- 点击+号后弹出菜单选择“Request header”，之后会在面板下的Request header分类多了一项，输入要增加（或者修改）的请求头的key 和value 即可。
+
+```sh
+x-use-ppe: 1
+x-tt-env: ppe_dev_jiangyl
+x-env-idc: lf
+```
+
+设置 **Http 回应头**
+- 和设置请求头差不多，点击+号后弹出菜单选择“Response header”，之后会在面板下的Response heade分类多了一项，输入要增加的请求头的key 和value 即可。
+
+设置Filter过滤
+- 点击+号后弹出菜单选择“Filter”，在Filter分类会多一项规则，如图所示，增加了一项“*://*.ip138.*”，也就是说设定了该设置只对ip138网站起作用，设定规则格式比较灵活，如果不设定，则所有网站请求都会有效。
 
 ### 示例
 
