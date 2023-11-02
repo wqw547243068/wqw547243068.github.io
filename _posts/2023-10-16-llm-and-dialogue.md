@@ -620,7 +620,7 @@ LLM时代Prompt Engineer开发范式
 
 第三种模式将成为未来人机交互的主要模式。
 
-**（4.1）方案一：AI Copilot 辅助**  
+### （4.1）方案一：AI Copilot 辅助
   
 以LLM为核心，end2end架构实现新版对话系统，用prompt engineering复现原有主要模块
 
@@ -650,7 +650,7 @@ LLM时代Prompt Engineer开发范式
 -   部分功能回退：如不适合生成式方法的NLU/DM
 -   推进end2end方法：将多轮会话训入大模型，延续之前的end2end思路
 
-### **（4.2）方案二：AI Embedded 嵌入**
+### （4.2）方案二：AI Embedded 嵌入
 
 在LLM基础上，加领域语料，增量预训练、微调，融入领域知识，根据业务场景，增加特殊逻辑
 
@@ -668,7 +668,7 @@ LLM时代Prompt Engineer开发范式
 
 应用场景很多，略
 
-**（4.3）方案三：AI Agent 代理**
+### （4.3）方案三：AI Agent 代理
 
 抛弃过往模块化思路，站在任务角度，通过Agent去执行对话任务，如：
 
@@ -692,7 +692,21 @@ LLM时代Prompt Engineer开发范式
 
   
 
-### **（4.4）学术界做法**
+### DM 升级
+
+
+#### Workflow
+
+Workflow supports the combination of plugins, LLMs, code blocks, and other features through a visual interface, enabling the orchestration of complex and stable business processes, such as travel planning, report analysis.
+
+Workflow 支持通过可视化界面组合`Prompt`、`插件`、`LLM`、`代码块`和**其他功能**，来编排复杂且稳定的业务流程（如旅行计划、报告分析）
+
+
+#### Agent
+
+更高级的方式，全托管。
+
+### （4.4）学术界做法
 
 以上是工业界做法，追求短平快，快速迭代，专注短期价值，而学术界没有营收变现压力，往往更加前沿，目光长远。
 
