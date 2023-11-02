@@ -818,6 +818,14 @@ three.js不足之处
 
 作者：[Frank-D](https://www.zhihu.com/question/292017089/answer/1091565390)
 
+
+### 2D → 3D
+
+演示视频：
+- 【2021-6-3】[如何快速将2D图像转为3D模型](https://www.toutiao.com/video/6969358547238781477)
+- [monstermash demo](https://monstermash.zone/)
+
+
 ## Three.js
 
 ### Three.js简介
