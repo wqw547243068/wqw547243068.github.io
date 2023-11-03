@@ -582,6 +582,26 @@ get_data('civil_comments')
 - 最后，使用agent.run运行标签
 
 
+##### LabelFast
+
+【2023-11-3】[LabelFast：基于LLM的NLP任务自动标注开源工具，Demo发布「AI小作坊」](https://zhuanlan.zhihu.com/p/664879079?utm_psn=1703869814744084481)
+- [LabelFast](https://github.com/duanyu/LabelFast) 用LLM技术，识别并快速标注简单文本数据的开源工具
+- [demo](https://modelscope.cn/studios/duanyu/LabelFast/summary)
+- 标注员只需关注那些**少量而关键**的难样本，达到降本增效
+
+特点如下：
+- 开箱即用。无需微调和Prompt工程，提供 标注任务 + 样本，马上开始标注；
+- 诚实可信。在提供标注结果的同时，还提供Confidence信息，以表示模型对标注结果的信心程度，便于使用者确定何时信任模型结果；
+- 完全开源。LabelFast源于开源的模型和技术，因此也将回馈开源社区。
+
+LabelFast的核心理念是：
+- 用最快的速度，完成简单样本的标注，让人类聚焦于关键的难样本。
+
+常见使用场景
+- 单条样本标注: 将单条样本填入文本框 -> 执行标注 -> 得到标注结果；
+- 批量样本标注: 将多条样本，按格式做成xlsx/csv文件 -> 上传文件 -> 执行标注 -> 得到批量标注结果；
+- 批量样本标注 + 选择confidence threshold: 将多条样本 + 真实标签，按格式做成xlsx/csv文件 -> 上传文件 -> 执行标注 -> 得到批量标注结果 + 各confidence threshold下的任务表现(output2) -> 根据任务表现，确定confidence threshold，高于此值的自动标注结果可直接使用，低于此值的通过其他方式标注
+
 #### 数据分析
 
 【2023-5-6】[Pandas AI](https://github.com/gventuri/pandas-ai)
