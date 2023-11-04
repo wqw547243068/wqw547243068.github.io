@@ -912,7 +912,7 @@ EA（进化算法）通常从一个包含N个解决方案（在研究人员的�
 3. 提取让生成内容更具创造性的提示词：请从{{需提炼的提示词}}中提取影响模型生成内容创造性的指令，请提炼并解释。
 
 
-### 2023.10.20 GATE 主动提示
+### 2023.10.20 MIT： GATE 主动提示
 
 为什么要“反客为主”提示人类？
 - 因为人类给出的提示存在局限性，不一定能准确完整表达出自己的喜好。
@@ -927,6 +927,7 @@ EA（进化算法）通常从一个包含N个解决方案（在研究人员的�
 
 MIT、斯坦福和Anthropic（Claude2打造者）共同提出 GATE, 基于大模型本身的能力，来引出、推理人类用户的喜好。
 - [Eliciting Human Preferences with Language Models](https://arxiv.org/abs/2310.11589)
+- 实现代码：[generative-elicitation](https://github.com/alextamkin/generative-elicitation)
 - 论文提出了一种新型的机器学习框架 `GATE`（Generative active task elicitation），让大模型学会**主动**向人类提问，自己搞明白用户的偏好。
 - 用GPT-4进行实验，结果发现和提示工程、监督学习等方法比，在这个框架的辅助下GPT-4在多个任务上更懂人类了。
 
@@ -936,6 +937,25 @@ MIT、斯坦福和Anthropic（Claude2打造者）共同提出 GATE, 基于大模
 `监督学习`和`提示工程`都属于**被动**方式，`监督学习`和少量`主动学习`还要基于示例
 
 本项研究让大模型尝试了多种提问方式，比如主动生成用户标注的样本、是非类提问、开放式提问等。
+
+三种通过对话提问收集信息的策略：
+- **生成式**主动学习（Generative active learning）：大模型（LM）生成示例输入供用户标记（label）。这种方法的优点是向用户提供具体的场景，其中包括他们可能没有考虑过的一些场景。例如，在内容推荐方面，LM可能会生成一篇文章，如：您对以下文章感兴趣吗？The Art of Fusion Cuisine: Mixing Cultures and Flavors。
+- 生成“**是**”或“**否**”**的问题（Generating yes-or-no questions）：我们限制LM生成二进制的是或否问题。这种方法使得模型能够引导用户提供更抽象的偏好，同时对用户来说也很容易回答。例如，模型可能通过询问用户的偏好来进行探测：Do you enjoy reading articles about health and wellness?
+- 生成**开放性**问题（Generating open-ended questions ）：LM生成需要自由形式自然语言回答的任意问题。这使得LM能够引导获取最广泛和最抽象的知识，但可能会导致问题过于宽泛或对用户来说具有挑战性。例如，LM可能会生成这样一个问题：What hobbies or activities do you enjoy in your free time ..., and why do these hobbies or activities captivate you?
+
+GATE框架如何工作
+- 用户需求：用户想要创建一个有趣的游戏，并请求GATE系统进行设计。
+- GATE的提问：GATE系统询问用户在创建游戏时考虑哪种平台或者哪种类型的游戏。例如，是移动游戏、PC游戏还是街机游戏。
+- 用户回应：用户说他们正在考虑移动游戏，并特别喜欢拼图游戏。
+- GATE的进一步提问：GATE系统询问用户是否已经考虑了游戏的目的和规则，或者是否需要一些创意或建议。
+- 用户的需求细化：用户表示还没有决定具体的游戏规则，希望听到一些新的概念或建议。
+- GATE的建议：GATE系统建议可以考虑加入时间操作的元素，比如让玩家能够倒退时间或暂停时间来解决拼图。
+- 用户的反馈：用户觉得这个主意很有趣，并请求更多关于这个游戏的细节。
+
+最终的Prompt：
+>GATE系统生成了一个最终的Prompt：“设计一个用于移动设备的拼图游戏，其中玩家可以通过操作时间来解决各种障碍并达到目标。”
+
+这个案例展示了GATE如何通过与用户的开放式对话来了解用户的具体需求，并据此生成有效的Prompt，以便大规模语言模型（LLMs）能更准确地满足用户的需求。
 
 主要测试的任务为内容推荐、道德推理和邮箱验证。
 
