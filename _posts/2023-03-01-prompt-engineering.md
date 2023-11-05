@@ -1027,7 +1027,7 @@ PromptAgent 在 BBH 任务上**明显**优于所有基线。
 - 相比之下，`MCTS`的策略规划允许PromptAgent更有效地遍历复杂的专家Prompt空间，在所有任务上明显优于所有搜索变体。
 
 
-### 谷歌：COSP
+### 2023.11.2 谷歌：COSP
 
 【2023-11-5】[再见了，提示~ 谷歌发布自适应提示方法，从此告别提示工程](https://mp.weixin.qq.com/s/KdDrM78swOs3Zi-0aO12Nw)
 
@@ -1046,6 +1046,10 @@ PromptAgent 在 BBH 任务上**明显**优于所有基线。
 因此可考虑使用**高置信度**的输出及其输入作为`伪示范`。
 - 示范样例的答案仍然是LLM生成的，并且没有经过真实答案检验。
 
+##### COSP -- ACL
+
+- [Better Zero-shot Reasoning with Self-Adaptive Prompting](https://aclanthology.org/2023.findings-acl.216/)
+
 COSP 方法步骤：
 - 将每个**无标签**问题输入到LLM，通过多次采样，模型将获得多个包含问题、生成的推理过程和答案的示范，并分配一个分数，反映答案的一致性。
   - 输出次数越多的答案分数越高。
@@ -1054,9 +1058,10 @@ COSP 方法步骤：
 - 将伪示范与测试问题一起输入LLM中，并获得该测试问题的最终预测答案。
 
 
-USP
+##### 改进：USP -- EMNLP
 
 `COSP`专注于推理问答任务，这些问题有**唯一答案**很容易测量置信度。但是对于其他任务，比如**开放式**问答或生成任务（如文本摘要），则会变得困难。
+- [Universal Self-Adaptive Prompting](https://arxiv.org/pdf/2305.14926.pdf)
 
 于是，作者引入了`USP`（Uncertainty-based Self-supervised Prompting），将该思想推广到其他常见的NLP任务上。
 
@@ -1068,6 +1073,7 @@ USP
 总过程
 - 第一阶段，针对不同任务类型，调用语言模型对无标签数据生成输出，并基于 logit 熵值、一致性或者重叠度等指标进行置信度打分，最后选择置信度高的样本作为上下文示范。
 - 第二阶段，将这些伪的上下文示范作为语言模型输入的一部分，对测试数据进行预测。
+- ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjn2mgVNUmsKVPYKo3zrcQnq3nHT0xIzCk2rIOK0fSrFIOEkyCrx7MWNnTrOdwnFRlGbid1cj8OqV2xBCfOtgv5oiuUPoQjRY9CpMnjM79P0mQmoyQqluMPZsqFQUtS7AtPy5Uw-sf5UT_dV_bRbGWSRQiR5U2tDIYd2zxsk_lboJsKG4mcBZKxp5gEeT_T/s16000/image3.gif)
 
 实验
 - 以前LLM在这些任务中表现不如人类，而现在大部分任务上LLM都超越了人类的平均表现。
