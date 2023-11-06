@@ -271,9 +271,9 @@ LLM+RAG 方法实现主要有以下几种方法：
 
 #### TruLens
 
-需要评估工具来评估质量。 TruLens 的用武之地。
+需要评估工具来评估质量。 [TruLens](https://www.trulens.org) 的用武之地。
 
-TruLens 是一个开源库，用于评估和跟踪语言模型应用(如RAG)的性能。通过TruLens，还可以利用语言模型本身来评估输出、检索质量等。
+[TruLens](https://www.trulens.org) 是一个开源库，用于评估和跟踪语言模型应用(如RAG)的性能。通过TruLens，还可以利用语言模型本身来评估输出、检索质量等。
 
 构建语言模型应用时，多数人最关心的问题是**幻想**。RAG 在很大程度上通过为语言模型提供检索上下文来确保准确信息，但无法百分百保证。因此评估对验证应用中不存在幻想至关重要。
 
@@ -289,6 +289,21 @@ TruLens 提供了三项测试：**上下文相关度**、**准确性**和**答�
 - 通过对上述三项达到满意的评估，可以对应用的**正确性**做出细微陈述；它在知识库限度内经验证无幻想。换言之，如果向量数据库仅包含准确信息，则 RAG 提供的答案也准确。
 
 代码见[原文](https://mp.weixin.qq.com/s/xAn827Q31fdQ8t7jkLIoUQ)
+
+[TruLens](https://github.com/truera/trulens) provides a set of tools for developing and monitoring neural nets, including large language models. This includes both tools for evaluation of LLMs and LLM-based applications with `TruLens-Eval` and deep learning explainability with `TruLens-Explain`. 
+
+How it works
+- ![](https://www.trulens.org/img/trulens-diagram.svg)
+
+```sh
+pip install trulens-eval
+pip install trulens
+```
+
+使用方法介绍  官方文档[langchain_quickstart](https://www.trulens.org/trulens_eval/langchain_quickstart/)
+- [Langchain Quickstart](https://github.com/truera/trulens/blob/releases/rc-trulens-eval-0.17.0/trulens_eval/examples/quickstart/langchain_quickstart.ipynb), 实践出错，[详情](https://github.com/truera/trulens/issues/545)
+- [Llama-Index](https://github.com/truera/trulens/blob/releases/rc-trulens-eval-0.17.0/trulens_eval/examples/quickstart/llama_index_quickstart.ipynb)
+- [text2text_quickstart](https://github.com/truera/trulens/blob/releases/rc-trulens-eval-0.17.0/trulens_eval/examples/quickstart/text2text_quickstart.ipynb)
 
 ### 提升性能
 
