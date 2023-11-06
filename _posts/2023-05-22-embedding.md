@@ -567,6 +567,7 @@ with torch.no_grad():
 - Arxiv: [AnglE-optimized Text Embeddings](https://arxiv.org/pdf/2309.12871.pdf)
 - Github: [AnglE](github.com/SeanLee97/AnglE)
 - Huggingface: SeanLee97/angle-llama-7b-nli-20231027
+- [Compare with M3E](https://github.com/SeanLee97/AnglE/issues/3): 论文主要对比英语embedding效果，而m3e主要是中文embedding，所以暂未对比，11月发布中文预训练模型, [详见](https://github.com/SeanLee97/AnglE/blob/main/README_zh.md)
 
 高质量文本嵌入在提高语义文本相似度（STS）任务中起着至关重要的作用，这是大型语言模型（LLM）应用中的关键组成部分。然而，现有文本嵌入模型面临的一个普遍挑战是**梯度消失**问题，主要是优化目标中依赖**余弦函数**，而余弦函数具有**饱和区域**。
 
@@ -580,6 +581,7 @@ with torch.no_grad():
 
 
 ```py
+# python -m pip install -U angle-emb
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel, PeftConfig
 
@@ -599,9 +601,6 @@ for k, v in tok.items():
 vec = model(output_hidden_states=True, **tok).hidden_states[-1][:, -1].float().detach().cpu().numpy()
 print(vec)
 ```
-
-
-
 
 
 ## 向量评估
