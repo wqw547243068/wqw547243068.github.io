@@ -438,16 +438,15 @@ NLI，或者说RTE任务的目的就是判断文本A与文本B是否构成语义
 除上述4个场景之外，还有query-title匹配、query-document匹配等信息检索场景下的文本匹配问题。不过，信息检索场景下，一般先通过检索方法召回相关项，再对相关项进行rerank。对这类问题来说，更重要的是ranking，而不是非黑即白或单纯的selection。ranking问题就不能仅仅依赖文本这一个维度的feature了，而且相对来说判断两个文本的语义匹配的有多深以及关系有多微妙就没那么重要了。
 
 从纯文本维度上来说，q-a、q-r匹配和NLI相关的方法在理论上当然可以套用在query-title问题上；而query-doc问题则更多的是一个检索问题了，传统的检索模型如TFIDF、BM25等虽然是词项（term）level的文本匹配，但是配合下查询扩展，大部分case下已经可以取得看起来不错的效果了。如果非要考虑语义层次的匹配，也可以使用LSA、LDA等主题模型的传统方法。当然啦，强行上深度学习方法也是没问题的，例如做一下query理解，甚至直接进行query-doc的匹配（只要你舍得砸资源部署），相关工作如
-
-DSSM：CIKM2013 | Learning Deep Structured Semantic Models for Web Search using Clickthrough Data
-CDSSM：WWW2014 | Learning Semantic Representations Using Convolutional Neural Networks for Web Search
-HCAN：EMNLP2019 | Bridging the Gap between Relevance Matching and Semantic Matching for Short Text Similarity Modeling
+- DSSM：CIKM2013 Learning Deep Structured Semantic Models for Web Search using Clickthrough Data
+- CDSSM：WWW2014 Learning Semantic Representations Using Convolutional Neural Networks for Web Search
+- HCAN：EMNLP2019 Bridging the Gap between Relevance Matching and Semantic Matching for Short Text Similarity Modeling
 
 ### 六、机器阅读理解问题
 
 同时，还有一些不那么直观的文本匹配任务，例如机器阅读理解（MRC）。这是一个在文本段中找答案片段的问题，换个角度来说就可以建模成带上下文的问答匹配问题（虽然候选有点多╮(￣▽￣"")╭）。代表性数据集如SQuAD系列、MS MARCO、CoQA、NewsQA，分别cover了很多典型的NLP问题：MRC任务建模问题、多文档问题、多轮交互问题、推理问题。因此做匹配的话，相关的代表性工作如BiDAF、DrQA等最好打卡一下的。
-- BiDAF：ICLR2017 | Bidirectional Attention Flow for Machine Comprehension
-- DrQA：ACL2017 | Reading Wikipedia to Answer Open-Domain Questions
+- BiDAF：ICLR2017 Bidirectional Attention Flow for Machine Comprehension
+- DrQA：ACL2017 Reading Wikipedia to Answer Open-Domain Questions
 
 PS：
 - 上述各个场景的模型其实差不太多，甚至一些方法直接在多个匹配场景上进行实验，近两年的paper也大多claim自己是一个非常general的匹配框架/模型。因此下面介绍打卡paper的时候就不区分场景啦，而是分成基于表示和基于交互来介绍打卡点。
@@ -693,6 +692,58 @@ PS：
   - （3）Bi-LSTM-DSSM模型要3天以上时间才能训练完成，一般工业级数据验证准确率一般会接近70%，模型较大，耗时较长一般不建议选用；
 - 对于RNN-DSSM模型一般工业应用建议选用GRU-DSSM模型，对于可接受数天时耗的情况下，也可以对模型网络参照第2节进行部分优化。
 
+
+### 深度树匹配模型(TDM)
+
+[Tree-based Deep Match](https://github.com/alibaba/x-deeplearning/wiki/%E6%B7%B1%E5%BA%A6%E6%A0%91%E5%8C%B9%E9%85%8D%E6%A8%A1%E5%9E%8B(TDM))（`TDM`）是由`阿里妈妈`精准定向广告算法团队自主研发的基于深度学习上的大规模（千万级+）推荐系统算法框架。
+
+在大规模推荐系统的实践中，基于商品的协同过滤算法（`Item-CF`）应用较为广泛，而受到图像检索的启发，基于内积模型的向量检索算法也崭露头角，这些推荐算法产生了一定的效果，但因为受限于算法模型本身的理论限制，推荐的最终结果并不十分理想。
+
+近些年，深度学习技术逐渐兴起，在包括如图像、自然语言处理、语音等领域的应用产生了巨大的效果推动。受制于候选集合的大规模，在推荐系统里全面应用深度学习进行计算存在效果低下的问题。针对这一难题TDM原创性的提出了以树结构组织大规模候选，建立目标（兴趣）的层次化依赖关系，并通过逐层树检索的方式进行用户对目标（兴趣）的偏好计算，从而实现用户目标（兴趣）的最终推荐。无论是在公开数据集上离线测试结果，还是在阿里妈妈实际业务的在线测试上，TDM都取得了非常显著的效果提升。
+- ![](https://github.com/alibaba/x-deeplearning/raw/master/xdl-algorithm-solution/TDM/docs/image.png)
+
+模型结构
+- ![](https://github.com/alibaba/x-deeplearning/raw/master/xdl-algorithm-solution/TDM/docs/model.png)
+
+【2023-11-6】[阿里自主创新的下一代匹配&推荐技术：任意深度学习+树状全库检索](https://zhuanlan.zhihu.com/p/35030348)
+
+`推荐`、`搜索`、`广告投放`是互联网内容提供商进行**流量分配**的核心业务，也是大数据和机器学习技术的典型应用场景。推荐，搜索，广告投放都可以描述为从大规模候选中给用户提供有限的展现结果以获取用户的正向反馈（广告投放还需额外考虑广告主意愿和体验）。
+
+由于**在线**业务对性能尤其是响应时间的严格要求，往往会把上述过程拆分为两个阶段 —— `匹配`（Match）+`排序`（Rank）
+
+以**淘宝推荐系统**为例
+- 匹配阶段核心：如何从全量商品（Item）中根据用户（User）信息召回合适的TopK候选集合
+  - 匹配阶段由于**问题规模大**，复杂模型在此阶段的应用存在一定的局限性，所以业界对这方面的研究尤其是深度学习在此阶段的应用仍处在**发展阶段**。
+- 排序阶段：对TopK候选集合进行精细化打分并排序输出最终展现的结果。
+  - 排序阶段因为**候选集小**，可引入深度学习等非常复杂的模型来优化目标，达到最终效果（相关性、广告收益等）的提升，业界对此阶段的研究比较集中和深入，比如阿里妈妈精准定向广告业务团队在排序阶段的CTR（Click-through Rate）预估上引入了基于Attention结构的深度兴趣模型（DIN，https://arxiv.org/abs/1706.06978），取得了非常好的业务效果。
+
+匹配阶段产生的**候选集**质量会成为最终效果的**天花板**，因此如何创新和发展匹配技术是对业务有着重大意义的问题，也一直是业界和学术界关注的重点问题。
+
+以推荐为例，在工业级的推荐系统中，**匹配阶段**面临很多技术挑战。例如
+- 当候选集非常大时，要从全量候选集中挑选TopK集合，无法接受随着全量候选集大小而**线性增长**的时间复杂度，这使得一些学术界研究的需要计算全量 `{User，Item}` 兴趣度的方法并不能真正应用于实际推荐系统中的匹配阶段。
+- 在有限的计算资源下，如何根据用户信息从全量候选集中快速得到高质量的TopK候选集，需要在计算效率和计算准确性上做精巧的平衡。
+- 真实应用的推荐系统，匹配阶段的计算时间需要被限制，简单用以下公式表示： `T*N ≤ Bound`
+  - T表示单次计算的时间消耗
+  - N为单个用户召回TopK需要的总体计算次数。
+  - 在上述公式的约束下，围绕如何提升匹配效果，工业界的技术发展也经历了几代的演进，从最初的基于统计的启发式规则方法，逐渐过渡到基于内积模型的向量检索方法。
+  - 然而这些方法在技术选型上都在上述计算效率约束下对匹配效果进行了很大的牺牲。如何在匹配阶段的计算效率约束下引入更先进的复杂深度学习模型成为了下一代匹配技术发展的重要方向。
+
+匹配技术经历了从基于统计的启发式规则方法到基于内积模型的向量检索方法的转变，具体描述如下：
+- 1）第一代——基于统计的启发式规则方法: Item-based Collaborative Filtering（以下简称Item-CF）
+- 2）第二代——基于内积模型的向量检索方法
+  - 向量检索算法要求User和Item能够映射到统一的向量空间。User输入信息和Item输入信息一般并不同质，如何保证映射到统一目标向量空间下的检索精度对映射算法提出了严格的要求，换言之，统一的向量空间映射对运用向量检索来解决推荐问题带来了精度损失的风险。
+- 3）下一代匹配和推荐技术
+  - 匹配技术发展的核心点在于系统性能限制下尽可能提升兴趣的衡量精度（从规则算法到引入先进模型）和覆盖范围（从限定候选集到全量候选集）
+
+树检索结构的引入伴随着一系列的问题要解决：
+- 1、树结构是如何构建的；
+- 2，如何基于树进行匹配建模；
+- 3、如何围绕树结构实现高效的兴趣计算和检索。
+
+分析
+- 概率连乘树并不适用匹配问题
+  - 概率形式并不能对匹配问题带来实质的帮助: Hierarchical Softmax（简称HS）每一个叶子节点（词）都有到根节点编码唯一的一条路径，而给定前置上文，下一个词出现的概率被建模为编码路径上分类概率的连乘。传统的多分类Softmax里归一化项依赖所有类别项的计算，所以即使计算一个类别的概率的计算量也很大，而通过概率连乘树的方式，HS有效避免了在传统Softmax建模中需要遍历所有叶子节点计算分母归一化项的过程。
+- 怎么办？最大堆树
 
 ## 优化点
 
