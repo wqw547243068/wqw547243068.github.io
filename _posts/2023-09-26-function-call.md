@@ -451,6 +451,81 @@ if(message.get("function_call")):
 - 潜在风险（AI存在幻觉或分析不准确），官方强烈建议在代表用户采取行动（发送电子邮件、在线发布内容、进行购买等）之前增加**用户确认**流程。
 
 
+### Function Call 多返回
+
+【2023-11-6】如何一次返回多个function？
+
+需要一个小trick：定义一个复合函数 multi_Func，将候选functions 囊括进来
+- 在function call的list里加一个选项：`"required": ["get_Weather", "get_Events"]`，这样每次gpt都返回这些functions，如果没命中，取值就是null
+- 详见：[Emulated multi-function calls within one request](https://community.openai.com/t/emulated-multi-function-calls-within-one-request/269582)
+
+I want to share my insights in how to call multiple functions within one function API call.
+This is the function API schema I use:
+
+```json
+{
+            "name": "multi_Func",
+            "description": "Call two functions in one call",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "get_Weather": {
+                        "name": "get_Weather",
+                        "description": "Get the weather for the location.",
+                        "parameters": {
+                            "type": "object",
+                            "properties": {
+                                "location": {
+                                    "type": "string",
+                                    "description": "The city and state, e.g. San Francisco, CA",
+                                }
+                            },
+                            "required": ["location"],
+                        }
+                    },
+                    "get_Events": {
+                        "name": "get_Events",
+                        "description": "Get events for the location at specified date",
+                        "parameters": {
+                            "type": "object",
+                            "properties": {
+                                "location": {
+                                    "type": "string",
+                                    "description": "The city and state, e.g. San Francisco, CA",
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "description": "The date of the event, e.g. 2021-01-01."
+                                }
+                            },
+                            "required": ["location", "date"],
+                        }
+                    }
+                }, "required": ["get_Weather", "get_Events"],
+            }
+        }
+```
+
+Scenario 1: User asks: “Get the events for San Francisco at 25th May 2023.” Response:
+
+```json
+'function_call': {'name': 'multi_Func', 'arguments': '{\n  "get_Weather": null,\n  "get_Events": {\n    "location": "San Francisco",\n    "date": "2023-05-25"\n  }\n}'}}, 'finish_reason': 'function_call'}
+```
+
+You see, that the function call to get_Weather is null. Scenario 2: User asks: “Get the weather for San Franciso.” Response:
+
+```json
+'function_call': {'name': 'multi_Func', 'arguments': '{\n  "get_Weather": {\n    "location": "San Francisco"\n  },\n  "get_Events": null\n}'}}
+```
+
+Here the get_Events is null Scenario 3: User asks: “Get the weather for San Francisco and the events for May 25th 2023.” Response:
+
+```json
+'function_call': {'name': 'multi_Func', 'arguments': '{\n  "get_Weather": {\n    "location": "San Francisco"\n  },\n  "get_Events": {\n    "date": "2023-05-25",\n    "location": "San Francisco"\n  }\n}'}}
+You get both functions called.
+```
+
+It is not calling the function_call twice, but it emulates it.
 
 
 ## LangChain 实现
