@@ -305,6 +305,16 @@ pip install trulens
 - [Llama-Index](https://github.com/truera/trulens/blob/releases/rc-trulens-eval-0.17.0/trulens_eval/examples/quickstart/llama_index_quickstart.ipynb)
 - [text2text_quickstart](https://github.com/truera/trulens/blob/releases/rc-trulens-eval-0.17.0/trulens_eval/examples/quickstart/text2text_quickstart.ipynb)
 
+### RAG 工具
+
+【2023-11-7】RAG 工具包 [tigerlab](https://www.tigerlab.ai/), 三大功能
+- TigerRag: Enhanced Retrieval Capabilities customized for your own data
+- TigerTune: Boost performance with swift and simple models
+- TigerArmor: Ensuring Secure and Responsible AI Interactions
+- ![](https://user-images.githubusercontent.com/148816206/279892794-6616f960-1dc0-4e70-b44e-b34e20730152.png)
+
+github: [tiger](https://github.com/tigerlab-ai/tiger)
+
 ### 提升性能
 
 【2023-10-1】[提升RAG性能的 10 种方法](https://mp.weixin.qq.com/s/WDV31S3C7YQKekwJTIYt5Q)
