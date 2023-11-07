@@ -4476,6 +4476,9 @@ huggingface 代码
 - [model 地址](https://huggingface.co/baichuan-inc/baichuan-7B/blob/main/tokenizer.model)
 - [训练解读](https://zhuanlan.zhihu.com/p/637343740)
 
+模型加载指定 `device_map='auto'`，使用所有可用显卡。
+- 如需指定使用的设备，可以使用类似 `export CUDA_VISIBLE_DEVICES=0,1`（使用了0、1号显卡）的方式控制
+
 ```py
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -4487,7 +4490,19 @@ pred = model.generate(**inputs, max_new_tokens=512, do_sample=True)
 print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 ```
 
-#### Baichuan-13B-Base
+#### Baichuan-13B
+
+Baichuan-13B 由`百川智能`继 `Baichuan-7B` 之后开发的包含 130 亿参数的**开源可商用**的大规模语言模型，在权威中文和英文 benchmark 上均取得**同尺寸最好**的效果。
+- 本次发布包含有**预训练** (Baichuan-13B-Base) 和**对齐** (Baichuan-13B-Chat) 两个版本
+
+##### 13b vs 7b
+
+| 模型名称 | 隐藏层维度 | 层数 | 注意力头数 | 词表大小 | 总参数量 | 训练数据（tokens） | 位置编码 | 最大长度 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Baichuan-7B | 4,096 | 32 | 32 | 64,000 | 7,000,559,616 | 1.2 万亿 | [RoPE](https://arxiv.org/abs/2104.09864) | 4,096|  
+| Baichuan-13B | 5,120 | 40 | 40 | 64,000 | 13,264,901,120 | 1.4 万亿 | [ALiBi](https://arxiv.org/abs/2108.12409) | 4,096 |
+
+##### 13b
 
 【2023-7-11】[王小川大模型25天再升级！13B版本开源免费可商用，3090即可部署](https://mp.weixin.qq.com/s/sFVAgypEptxa6qCYcHix9g)
 - 百川智能，正式发布130亿参数通用大语言模型（Baichuan-13B-Base）, 性能最强的中英文百亿参数量开源模型
@@ -4495,6 +4510,13 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 - Baichuan-13B上下文窗口长度为4096， 1.4万亿ztoken这个训练数据量，超过LLaMA-13B训练数据量的40%，是当前开源的13B尺寸模型世界里，训练数据量最大的模型。
   - 7B版本采用`RoPE`编码方式，而13B使用了`ALiBi`位置编码技术，后者能够处理长上下文窗口，甚至可以推断超出训练期间读取数据的上下文长度，从而更好地捕捉文本中上下文的相关性，让预测或生成更准确。
 - 完全开源，免费商用；开发者均可通过邮件向百川智能申请授权，在获得官方商用许可后即可免费商用。
+
+Baichuan-13B 有如下几个特点：
+- **更大尺寸、更多数据**：Baichuan-13B 在 Baichuan-7B 的基础上进一步扩大参数量到 130 亿，并且在高质量语料上训练了 1.4 万亿 tokens，超过 LLaMA-13B 40%，是当前开源 13B 尺寸下训练数据量最多的模型。
+  - 支持中英双语，使用 ALiBi 位置编码，上下文窗口长度为 4096。
+- 同时开源**预训练**和**对齐**模型：预训练模型是适用开发者的『 基座 』，而广大普通用户对有对话功能的对齐模型具有更强的需求。因此本次同时发布了**对齐**模型（Baichuan-13B-Chat），具有很强的对话能力，开箱即用，几行代码即可简单的部署。
+- 更高效的**推理**：为了支持更广大用户的使用，同时开源了 int8 和 int4 的量化版本，相对非量化版本, 在几乎没有效果损失的情况下大大降低了部署的机器资源门槛，可以部署在如 Nvidia 3090 这样的消费级显卡上。
+- 开源**免费可商用**：Baichuan-13B 不仅对学术研究完全开放，开发者也仅需邮件申请并获得官方商用许可后，即可以免费商用。
 
 评测
 - C-EVAl上，Baichuan-13B在自然科学、医学、艺术、数学等领域领先LLaMA-13B、Vicuna-13B等同尺寸的大语言模型。社会科学和人文科学领域，水平比ChatGPT还要好上一点。
@@ -4513,6 +4535,8 @@ print(tokenizer.decode(pred.cpu()[0], skip_special_tokens=True))
 
 
 #### baichuan2-53b
+
+【2023-9-6】 发布了新一代开源模型 Baichuan 2，包含 7B、13B 尺寸
 
 【2023-9-25】[百川智能](https://www.baichuan-ai.com/home)正式发布全新升级的530亿参数大模型——`Baichuan2-53B`。
 - 数学和逻辑推理能力显著提升。
