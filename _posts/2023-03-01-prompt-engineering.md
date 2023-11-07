@@ -512,6 +512,24 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 ### 自动化工具
 
+
+#### 演化图
+
+<div class="mermaid">
+    flowchart TD
+    %% 节点颜色
+    classDef red fill:#f02;
+    classDef green fill:#5CF77B;
+    classDef blue fill:#6BE0F7;
+    classDef orange fill:#F7CF6B;
+    classDef grass fill:#C8D64B;
+    %%节点关系定义
+    O(两阶段范式):::orange-->|2021年初,提示模板,人工或自动学习模板|A(提示学习):::blue
+    A-->|2021年底,演示案例|B(演示学习):::grass
+    B-->|2022年初,上下文信息,不需要fine-tuning或p-tuning|C(情境学习):::grass
+</div>
+
+
 #### 2023.7 gpt-prompt-engineer
 
 [gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer)
