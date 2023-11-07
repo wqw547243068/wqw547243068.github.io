@@ -4482,8 +4482,9 @@ huggingface 代码
 ```py
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("/path/to/baichuan-7B", trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained("/path/to/baichuan-7B", device_map="auto", trust_remote_code=True)
+model_path = '/mnt/bd/wangqiwen-hl/models'
+tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan-13B-Chat", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("baichuan-inc/Baichuan-13B-Chat", device_map="auto", trust_remote_code=True)
 inputs = tokenizer('登鹳雀楼->王之涣\n夜雨寄北->\n', return_tensors='pt')
 inputs = inputs.to('cuda:0')
 pred = model.generate(**inputs, max_new_tokens=512, do_sample=True)
@@ -4532,6 +4533,88 @@ Baichuan-13B 有如下几个特点：
 【Model Scope】
 - [预训练模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Base)
 - [对话模型](https://modelscope.cn/models/Baichuan-inc/Baichuan-13B-Chat/)
+
+模型显存占用
+
+| Precision	| GPU Mem (GB) |
+|---|---|
+| bf16 / fp16 | 	26.0 |
+| int8	| 15.8 |
+| int4	| 9.7 |
+| cpu | 60 |
+
+
+量化后在各个 benchmark 上的结果和原始版本对比如下：
+
+| Model 5-shot |	C-Eval	| MMLU	| CMMLU |
+| ----|	---	| ---	| ---- |
+| Baichuan-13B-Base	| 52.4	| 51.6	| 55.3 |
+| Baichuan-13B-Base-int8 |	51.2	| 49.9	| 54.5 |
+| Baichuan-13B-Base-int4 |	47.6	| 46.0	| 51.0 |
+
+##### 13b 实践
+
+模型加载指定 `device_map='auto'`，会使用所有可用显卡。
+- 如需指定使用的设备，可以使用类似 `export CUDA_VISIBLE_DEVICES=0,1`（使用了0、1号显卡）的方式控制
+
+模型量化版本
+- [Baichuan-13B-Chat-int8](https://huggingface.co/baichuan-inc/Baichuan-13B-Chat-int8)
+
+```py
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.generation.utils import GenerationConfig
+
+model_path = '/mnt/bd/wangqiwen-hl/models'
+#model_name = 'baichuan-inc/Baichuan-13B-Chat-int8'
+model_name = 'baichuan-inc/Baichuan-13B-Chat'
+#tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False, trust_remote_code=True)
+#model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", torch_dtype=torch.float16, trust_remote_code=True)
+#  本地模型加载
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, cache_dir=model_path)
+model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", trust_remote_code=True, cache_dir=model_path)
+# cpu 部署
+# model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float32, trust_remote_code=True)
+model = model.quantize(8).cuda() # 在线 int8 量化
+#model = model.quantize(4).cuda() # 在线 int4 量化
+
+model.generation_config = GenerationConfig.from_pretrained(model_name)
+messages = []
+messages.append({"role": "user", "content": "世界上第二高的山峰是哪座"})
+response = model.chat(tokenizer, messages)
+print(response)
+#乔戈里峰。世界第二高峰———乔戈里峰西方登山者称其为k2峰，海拔高度是8611米，位于喀喇昆仑山脉的中巴边境上
+```
+
+启动
+
+```sh
+python cli_demo.py
+streamlit run web_demo.py
+```
+
+##### 13b 微调
+
+与 Baichuan-13B 兼容的微调工具 [LLaMA Efficient Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning)，并给出全量微调和 LoRA微调的两种示范。
+
+在开始之前，开发者需下载 LLaMA Efficient Tuning 项目并按其要求安装依赖。
+
+输入数据为放置在项目data目录下的 json 文件，用--dataset选项指定（参考下面示例），多个输入文件用,分隔。json 文件示例格式和字段说明如下：
+
+```json
+[
+    {
+        "instruction": "What are the three primary colors?",
+        "input": "",
+        "output": "The three primary colors are red, blue, and yellow."
+    },
+    ....
+]
+```
+
+json 文件中存储一个列表，列表的每个元素是一个 sample。其中instruction代表用户输入，input是可选项，如果开发者同时指定了instruction和input，会把二者用\n连接起来代表用户输入；output代表期望的模型输出。
+
+
 
 
 #### baichuan2-53b
