@@ -578,6 +578,63 @@ _RetinaNet_
 
 YOLOX 是旷视开源的高性能检测器。旷视的研究者将解耦头、数据增强、无锚点以及标签分类等目标检测领域的优秀进展与 YOLO 进行了巧妙的集成组合，提出了 YOLOX，不仅实现了超越 YOLOv3、YOLOv4 和 YOLOv5 的 AP，而且取得了极具竞争力的推理速度。YOLOX-L版本以 68.9 FPS 的速度在 COCO 上实现了 50.0% AP，比 YOLOv5-L 高出 1.8% AP！还提供了支持 ONNX、TensorRT、NCNN 和 Openvino 的部署版本
 
+
+```sh
+git clone git@github.com:Megvii-BaseDetection/YOLOX.git
+cd YOLOX
+pip3 install -v -e .  # or  python3 setup.py develop
+```
+
+
+数据准备
+- [pixbay](https://pixabay.com/zh/videos/search/%E9%AB%98%E9%80%9F%E5%85%AC%E8%B7%AF/)，高速免费视频下载
+
+
+下载模型
+
+```sh
+mkdir model
+cd model
+wget https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_l.pth 
+```
+
+启动
+
+```sh
+# ==== image demo =====
+#python tools/demo.py image -f exps/default/yolox_s.py -c /path/to/your/yolox_s.pth --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
+#python tools/demo.py image -n yolox-s -c $model_file --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize 640 --save_result --device cpu # gpu
+
+# 更换模型时，需要同步更新3个参数
+model_name='yolox-l'
+model_file='model/yolox_l.pth'
+tsize=640 
+python tools/demo.py image -n $model_name -c $model_file --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize $tsize --save_result --device cpu
+# ==== video demo =====
+# python tools/demo.py video -n yolox-s -c /path/to/your/yolox_s.pth --path /path/to/your/video --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
+python tools/demo.py video -n $model_name -c $model_file --path /path/to/your/video --conf 0.25 --nms 0.45 --tsize $tsize --save_result --device cpu
+```
+
+【2023-11-8】实践通过
+
+```sh
+cur_dir='YOLOX'
+#python tools/demo.py image -n yolox-l -c model/yolox_l.pth --path assets/dog.jpg --conf 0.25 --nms 0.45 --tsize 640 --save_result --device cpu
+model_name='yolox-l'
+model_file="${cur_dir}/model/yolox_l.pth"
+tsize=640
+# ==== image demo =====
+data_file="${cur_dir}/assets/dog.jpg"
+cmd="python ${cur_dir}/tools/demo.py image -n $model_name -c $model_file --path $data_file --conf 0.25 --nms 0.45 --tsize $tsize --save_result --device cpu"
+echo "$cmd" && eval $cmd
+# ==== video demo =====
+data_file='../data/road_human.mp4'
+# python tools/demo.py video -n yolox-s -c /path/to/your/yolox_s.pth --path /path/to/your/video --conf 0.25 --nms 0.45 --tsize 640 --save_result --device [cpu/gpu]
+cmd="python tools/demo.py video -n $model_name -c $model_file --path $data_file --conf 0.25 --nms 0.45 --tsize $tsize --save_result --device cpu"
+echo "$cmd" && eval $cmd
+```
+
+
 ## YOLO V5
 
 2020年5月发布YOLOv5，最大的特点就是**模型小，速度快**，所以能很好的应用在移动端。
