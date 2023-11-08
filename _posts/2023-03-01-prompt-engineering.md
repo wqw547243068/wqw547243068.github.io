@@ -157,6 +157,19 @@ Some of the common types of prompts used with current LLMs.
 
 ChatGPT 的插件中就有一个不错的工具 Prompt perfect，能够基于用户给的 Prompt 进行优化，再喂给 ChatGPT 进行提问。
 
+#### PromptIDE -- Musk
+
+【2023-11-8】[马斯克第二款AI产品PromptIDE公布，Grok的开发离不开它](https://mp.weixin.qq.com/s/ScIafgkyxFzjL5QFTQxdIg)
+
+距离马斯克的 xAI 公布 Grok 才1天，xAI 又公布了另一款 AI 产品，一个可用于 prompt 工程和可解释性研究的集成开发环境：PromptIDE。
+
+PromptIDE 用于 prompt 工程和可解释性研究的集成开发环境。通过 SDK 加速 prompt 工程，并且该 SDK 可以完成复杂的 prompt 技术，还能进行结果分析，可视化网络输出等。
+
+xAI 在 Grok 的开发中大量的使用了该技术。
+- 借助 PromptIDE，工程师和研究人员可以透明的访问 Grok-1 模型（为 Grok 提供支持的模型）。该 IDE 可以帮助用户快速探索大模型 (LLM) 的功能。IDE 的核心是一个 Python 代码编辑器，它与新的 SDK 相结合，可以实现复杂的 prompt 技术。在 IDE 中执行 prompt 时，用户会看到一些比较有用的分析，例如采样概率、聚合注意力掩码等。
+- 该 IDE 会自动保存所有的 prompt 并具有内置版本控制，还允许用户比较不同 prompt 技术的输出。最后，用户可以上传 CSV 文件等小文件，并使用 SDK 中的单个 Python 函数读取它们。结合 SDK 的并发特性，即使是稍大的文件也能快速处理。
+
+PromptIDE 的核心是代码编辑器 + Python SDK，其中 SDK 提供了一种新的编程范式，可以实现复杂的 prompting 技术
 
 ### 优质 Prompt 
 
