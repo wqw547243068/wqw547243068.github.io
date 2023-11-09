@@ -258,6 +258,9 @@ permalink: /work
 
 ## 打工还是创业
 
+上班与创业的区别
+- ![](https://p6-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/9e97d5da119a42559f4bfb64d8ad47fc~tplv-obj:1073:1111.image?_iz=97245&from=post&lk3s=06827d14&x-expires=1707264000&x-signature=2k5fVkzobZZjVK2jHj2929HUgEQ%3D)
+
 ### 年入百万，打工容易还是创业容易？
 
 [年入百万，打工容易还是创业容易？](https://36kr.com/p/1521061137928067)
