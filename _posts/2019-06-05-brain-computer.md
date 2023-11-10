@@ -44,6 +44,8 @@ Neuralink and the Brain’s Magical Future](https://waitbutwhy.com/2017/04/neura
  
 ## 实际案例
 
+### 【2021-7-8】打字
+
 - 【2021-7-8】[意念打字登Nature封面！每分钟写90个字符，准确率超99%](https://www.toutiao.com/i6961632792107123231)，一位截瘫患者，正在用“意念”打出一段话，0.5秒左右就能输出一个字母,他所需要做的，只是在脑中将字母“手写”出来，然后系统就会自动识别生成字母，一分钟可写90个字符。。[图](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
   - ![](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
   - ![](https://p1-tt.byteimg.com/origin/pgc-image/a684da519f2342da8b9c6fea835ad898.png?from=pc)
@@ -99,7 +101,7 @@ Neurosity 宣称 Crown 的计算模块与 MacBook Air 一样强大，配备四�
 这就像科幻电影里的半机械人，他们变得比人类还要强。不妨大胆畅想下，人们接入他人的记忆或者回忆梦境——这种《赛博朋克2077》的游戏里的剧情，似乎也可能实现。
 
 
-### 斯坦福 NOIR
+### 斯坦福 NOIR 做家务
 
 【2023-11-10】[李飞飞团队新作：脑控机器人做家务，让脑机接口具备少样本学习能力](https://mp.weixin.qq.com/s/CgNMejWe9wUzxOjQi6R6cQ)
 
