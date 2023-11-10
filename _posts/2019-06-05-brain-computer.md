@@ -42,18 +42,11 @@ mathjax: true
 Neuralink and the Brain’s Magical Future](https://waitbutwhy.com/2017/04/neuralink.html)
 > * Word文档版：[腾讯文档](https://share.weiyun.com/5y4D89d)
  
-## 实际案例
-
-### 【2021-7-8】打字
-
-- 【2021-7-8】[意念打字登Nature封面！每分钟写90个字符，准确率超99%](https://www.toutiao.com/i6961632792107123231)，一位截瘫患者，正在用“意念”打出一段话，0.5秒左右就能输出一个字母,他所需要做的，只是在脑中将字母“手写”出来，然后系统就会自动识别生成字母，一分钟可写90个字符。。[图](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
-  - ![](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
-  - ![](https://p1-tt.byteimg.com/origin/pgc-image/a684da519f2342da8b9c6fea835ad898.png?from=pc)
-
-![](https://mmbiz.qpic.cn/mmbiz_jpg/V1OJoKudbibamvvRKM6jYFt5Gf2wz9BHR92gRojGfZMFMR6ocnDNSicGKCfncAjtWClicU2rHDicmSt0OjibUFTLpjA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+## 应用案例
 
 
-### 机械臂
+
+### 【2020-1-16】浙大：机械臂
 
 【2020-1-16】浙江大学：[国内首例植入式脑机接口让“意念”控制机器臂](https://mp.weixin.qq.com/s/X58bAYMPGDtw-IC7aOcAZg)
 - 1月16日，浙江大学对外宣布“双脑计划”重要科研成果，求是高等研究院“脑机接口”团队与浙江大学医学院附属第二医院神经外科合作完成国内第一例植入式脑机接口临床研究，患者可以完全利用大脑运动皮层信号精准控制外部机械臂与机械手实现三维空间的运动，同时首次证明高龄患者利用植入式脑机接口进行复杂而有效的运动控制是可行的。
@@ -63,16 +56,24 @@ Neuralink and the Brain’s Magical Future](https://waitbutwhy.com/2017/04/neura
 
 <iframe src="//player.bilibili.com/player.html?aid=83746758&cid=143264316&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
-### 生物显示屏
+### 【2021-3-11】复旦：生物显示屏
 
 - 【2021-3-11】[复旦Nature论文实现《三体》科幻场景：把显示屏穿身上，还能导航、聊天那种](https://www.jiqizhixin.com/articles/2021-03-11-4)，新一期《Nature》杂志刊载了复旦大学高分子科学系教授彭慧胜团队的一项研究成果——《[大面积显示织物及其功能集成系统](https://www.nature.com/articles/s41586-021-03295-8)》。
 - 在处理器的帮助下，人类脑电波可被转换为可读信息，并显示在织物上. 发光经纱 + 导电纬纱 = 显示织物. 该织物系统包括显示屏、键盘和电源，因而可作为通信工具来使用。它可以用电池充电，甚至使用太阳能。最重要的是，它还具备输入、沟通和导航等功能，是真正意义上的「可穿戴设备」。可以说，穿上它，你就是街上最「亮」的仔。
 - ![](https://image.jiqizhixin.com/uploads/editor/23ff36bb-6872-46da-9c40-1a74ba544857/640.gif)
 
 
-### Neurosity
+### 【2021-7-8】打字
 
-【2023-3-27】一位名为[Fireship](https://fireship.io/)的独立开发者发了一段令人震撼的视频：他用 JavaScript 将他的大脑连接到 GPT-4。简单来说，他通过非侵入式脑机接口公司 [Neurosity](https://neurosity.co/) 提供的 JavaScript SDK和一个仪表板，通过脑机通信连接上了GPT-4。
+- 【2021-7-8】[意念打字登Nature封面！每分钟写90个字符，准确率超99%](https://www.toutiao.com/i6961632792107123231)，一位截瘫患者，正在用“意念”打出一段话，0.5秒左右就能输出一个字母,他所需要做的，只是在脑中将字母“手写”出来，然后系统就会自动识别生成字母，一分钟可写90个字符。。[图](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
+- [High-performance brain-to-text communication via handwriting](https://www.nature.com/articles/s41586-021-03506-2)
+- ![](https://p6-tt.byteimg.com/origin/pgc-image/160795ad77884c3cbd594f4177e92d79?from=pc)
+- ![](https://p1-tt.byteimg.com/origin/pgc-image/a684da519f2342da8b9c6fea835ad898.png?from=pc)
+
+
+### 【2023-3-27】Fireship → Neurosity
+
+【2023-3-27】一位名为[Fireship](https://fireship.io/)的独立开发者发了一段令人震撼的视频：用 JavaScript 将他的大脑连接到 GPT-4。简单来说，他通过非侵入式脑机接口公司 [Neurosity](https://neurosity.co/) 提供的 JavaScript SDK和一个仪表板，通过脑机通信连接上了GPT-4。
 - YouTube: [I literally connected my brain to GPT-4 with JavaScript](https://www.youtube.com/watch?v=-HYbFm67Gs8)
 - ![](https://images.ctfassets.net/uwziq2n2fyp8/2mJ9nuyNXhpdcOZJ7eFCbF/f69db9a9bc5b77ff408d46d0200af14b/3a.png?h=750&fl=progressive&q=100)
 
@@ -101,7 +102,7 @@ Neurosity 宣称 Crown 的计算模块与 MacBook Air 一样强大，配备四�
 这就像科幻电影里的半机械人，他们变得比人类还要强。不妨大胆畅想下，人们接入他人的记忆或者回忆梦境——这种《赛博朋克2077》的游戏里的剧情，似乎也可能实现。
 
 
-### 斯坦福 NOIR 做家务
+### 【2023-11-10】斯坦福 NOIR 做家务
 
 【2023-11-10】[李飞飞团队新作：脑控机器人做家务，让脑机接口具备少样本学习能力](https://mp.weixin.qq.com/s/CgNMejWe9wUzxOjQi6R6cQ)
 
