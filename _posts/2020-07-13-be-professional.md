@@ -986,7 +986,7 @@ Trello 用作查看任务、进度、统计等的工具，而非日程管理工�
   - [红灯停绿灯行](https://v.pptv.com/show/2uVx7la8LGrNS7M.html?rcc_id=wap_2093)，[解说](https://www.ixigua.com/6847878217974579720?logTag=Zdxrs-fS0UxGlDBoJ7tyv)， 90年代普通人的生存法则与处事则学
   - [站直喽别趴下](https://vip.1905.com/play/1463064.shtml?__hz=da8ce53cf0240070&api_source=jrtt_filmadd)，[解说](https://www.ixigua.com/6807188646051971591?logTag=wsJbWg7w9ej-ACyb1XBio)，一个作家搬到了新分配的房子里，这里有两个邻居，一个是小领导，一个是个地痞流氓一样的胖子，生活鸡飞狗跳，几家人的生活也随着社会的剧烈变化变动着; 隐喻改革开放背景下文化人+政府官员被暴发户挤走
 
-<iframe src="//player.bilibili.com/player.html?aid=677771152&bvid=BV1qm4y1Q71X&cid=475042735&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=677771152&bvid=BV1qm4y1Q71X&cid=475042735&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 流金岁月
@@ -1011,14 +1011,14 @@ Trello 用作查看任务、进度、统计等的工具，而非日程管理工�
   - ② 沟通能力：带朱锁锁见完客户，担心一个刚入行的姑娘被风言风语中伤，提前敲打她。先夸她好看，再肯定做销售的能力，然后提醒。人都是喜欢别人赞美自己的，听见别人夸自己，谁不想接着往下听？
   - ③ 领导能力：杨柯的销售部门个个都是人才，都还乐意效忠他。带下属应酬帮忙挡酒，叶谨言要开除朱锁锁，杨柯一边稳定朱锁锁，一边要去找叶谨言讲理，霸气一句“你是我的人”，实力护犊子。遇到这么护自己的上司，怎么能不死心塌地跟着效力，也难怪杨柯离开精言，朱锁锁帮他说情，随后跟着离开了。杨柯虽然说不上帅，但是个人散发出来的魅力，就很吸引人啊！
   - 三观正、有原则、业务精、护犊子
-  - <iframe src="//player.bilibili.com/player.html?aid=458588533&bvid=BV1e5411n7Pv&cid=277954815&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=458588533&bvid=BV1e5411n7Pv&cid=277954815&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 总结
   - 杨柯能吸引到潘老师这样的顶尖人才，除了个人能力外，更重要的是杨柯的**情商**以及**说话艺术**。表达清楚，需求直接，干净利落，说话不油腻 ，在现实生活中，这样的男生可太招人爱了！尤其是在职场，与他人如何进行有效的沟通是必备技能，语言能力成为最有价值的能力之一，表达能力的重要性也越来越凸显，也成为男性必须具备的独特魅力之一！拥有这样的魅力后天的学习培养不可忽略！一切都要从娃娃抓起！
 
 [《流金岁月》大结局，叶谨言为什么要这样做？](https://www.bilibili.com/video/BV1Mf4y1C7rN/)
 - 三个境界就是：利、名、还有名利双收，叶谨严离开精言，接收谢氏集团，看似失败，实际是成功，名利双收
   - 离开精言，把股份转给黛茜并让黛茜接替自己，与杨柯合作，共赢
-- <iframe src="//player.bilibili.com/player.html?aid=288859246&bvid=BV1Mf4y1C7rN&cid=286578114&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=288859246&bvid=BV1Mf4y1C7rN&cid=286578114&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 所谓贵人，其实就是利益的**双向流通**。就像朱锁锁这个角色一样，能够进入精言集团的前提一定是因为美貌，而在职场当中，尤其是高生态的职场当中，美貌等于敲门砖。而销售这份工作更是如此。杨柯正是因为这样才选择了朱锁锁，他是一家房地产公司的销售总经理，所以他更清楚一个优秀的下属能够给自己带来什么。
 

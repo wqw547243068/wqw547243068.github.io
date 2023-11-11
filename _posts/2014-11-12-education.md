@@ -134,7 +134,7 @@ Pay close attention. This is your life. This is water.
   - 之所以产生这样的差异，源自于东西方不同的文化背景。东亚文明源自水利农耕文明，这种文明安土重迁，注重集体协作（兴修水利），注重努力（精耕细作）；与流动性大的海洋文明，注重个人的强悍（注重个人）和选择更好地机会（注重天赋）以获得更多利益，有性质上的差异。
   - 实际上，这次历时18个月的实地考察，最大的意义在于，“最好的学习和教育”不会仅仅停留在某个国家、某个族裔、某种模式。对家长和所有教育从业者而言，不去偏信某一种教育模式和理念，而是根据孩子的不同的学习阶段和不同的特点，结合孩子长大后所必须面临的社会竞争环境，选择最适合孩子自身情况的教育方法，这才是我们能给孩子的最好的教育。
 - 【KBS纪录片】[学习的人.Homo.Academics](https://www.bilibili.com/video/av23959550/)，一共五集
-  - <iframe src="//player.bilibili.com/player.html?aid=23959550&bvid=BV1rp411R7Uo&cid=40098655&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=23959550&bvid=BV1rp411R7Uo&cid=40098655&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
 
 
 ## 美国教育
@@ -175,7 +175,7 @@ Pay close attention. This is your life. This is water.
 ### 等待超人
 
 - 描写美国教育的纪录片：[等待超人](https://www.bilibili.com/video/av55720483/)
-<iframe src="//player.bilibili.com/player.html?aid=55720483&bvid=BV1w441157Mj&cid=97406142&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=55720483&bvid=BV1w441157Mj&cid=97406142&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
 
 ## 读书翻身
 
@@ -242,7 +242,7 @@ Pay close attention. This is your life. This is water.
 
 【2021-10-30】[“复读时去了传说中的衡水中学，看到了很多匪夷所思的事，三观被颠覆了…完整版](https://www.bilibili.com/video/BV1Uz4y1C7dY/?spm_id_from=autoNext)
 
-<iframe src="//player.bilibili.com/player.html?aid=585193619&bvid=BV1Uz4y1C7dY&cid=252332015&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=585193619&bvid=BV1Uz4y1C7dY&cid=252332015&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
 
 
 北京青年-凉子访谈录：[15岁进北大，退学复读考上清华，我不想再当「做题工具人」](https://www.bilibili.com/video/BV1vN411f7FF/)
@@ -252,7 +252,7 @@ Pay close attention. This is your life. This is water.
   - 周围人经常说我是神童，伤仲永，被父母带出去炫耀。
   - 有北大学生到社会上分享学习心得、人生经验，是一种很功利的行为，大家只看重成果，而忽略这个人，这很危险，分数绝对不是一切，我不会参与这些事情
 
-<iframe src="//player.bilibili.com/player.html?aid=502898907&bvid=BV1vN411f7FF&cid=333156320&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=502898907&bvid=BV1vN411f7FF&cid=333156320&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 [“如果能重来，我宁愿从未来过北大这座‘神坛’” 完整版](https://www.bilibili.com/video/BV18V411a7HK/?spm_id_from=333.788.recommend_more_video.1)
 - 2007年考入北师大，毕业后回山西当老师，两年后，考北大研究生、博士
@@ -264,7 +264,7 @@ Pay close attention. This is your life. This is water.
 - 李雪琴说自己是北大废柴，但至少给人带来快乐，而我给大家带来痛苦。彩超查出甲状腺恶性肿瘤不影响寿命，但影响家人关系，没必要非得找最好的医院，最好的大夫。哲学上有句话：向死而生。这次经历让我第一次感受到了肉体局限性，可能很多事情做不了了，进而缓解了焦虑，想做什么赶紧去做。
 
 
-<iframe src="//player.bilibili.com/player.html?aid=415359839&bvid=BV18V411a7HK&cid=257608501&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=415359839&bvid=BV18V411a7HK&cid=257608501&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 ### 原生家庭
 
@@ -715,11 +715,11 @@ Pay close attention. This is your life. This is water.
 学霸一直都是父母们羡慕的“别人家的孩子”，但现实往往是孩子是“学渣”。纪录片《了不起的妈妈》中的海淀妈妈李琦的做法却值得每位父母学习。面对成绩平平的儿子，李琦以尊重、平等作为自己教育的底色，不纠结于眼前的分数、名校，而是培养儿子自己的喜好和特长，以及家庭的精气神。
 
 
-<iframe src="//player.bilibili.com/player.html?aid=341923372&bvid=BV1k94y1U7qJ&cid=728818600&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=341923372&bvid=BV1k94y1U7qJ&cid=728818600&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 火爆全网的纪录片《了不起的妈妈》，直击当代妈妈教育焦虑，关注女性自我成长
 - <iframe src="//player.bilibili.com/player.html?aid=260602495&bvid=BV1ze411T7Ej&cid=833352327&page=2" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
-- <iframe src="//player.bilibili.com/player.html?aid=260602495&bvid=BV1ze411T7Ej&cid=833350392&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=260602495&bvid=BV1ze411T7Ej&cid=833350392&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 ### 北京牛校
 

@@ -569,10 +569,10 @@ permalink: /management
   - 泛社交关系的问题：即便是单向纽带产生的感觉也是完全真实的。创新并不是指使别人做这个做那个，而是将他们聚拢到身边，产生双向的感觉。
   - 这世上有**掌权**者，也有**领导**者。掌权者可以用权威影响我们，但是只有领导者才能激励我们。我们之所以追随领导者，并不是因为别无选择，而恰恰是因为做出了选择。因为我们不是为了他们，而是为了自己。
 - [Most Leaders Don't Even Know the Game They're In ———— Simon Sinek](https://www.bilibili.com/video/BV1wt4y1e7zR)
-  - <iframe src="//player.bilibili.com/player.html?aid=627624586&bvid=BV1wt4y1e7zR&cid=249565889&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=627624586&bvid=BV1wt4y1e7zR&cid=249565889&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [Inside Quest: Defining Leadership with Simon Sinek](https://www.bilibili.com/video/BV1Q741147nB)
-  - <iframe src="//player.bilibili.com/player.html?aid=88004622&bvid=BV1Q741147nB&cid=150355692&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=88004622&bvid=BV1Q741147nB&cid=150355692&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 

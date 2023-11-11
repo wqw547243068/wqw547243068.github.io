@@ -249,17 +249,17 @@ mathjax: true
 ### 视频解读
 
 [一个视频搞懂中国经济底层制度设计，以及一些鲜为人知的历史进程](https://www.bilibili.com/video/BV14G411p7Zh)
-- <iframe src="//player.bilibili.com/player.html?aid=428497789&bvid=BV14G411p7Zh&cid=773170332&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=428497789&bvid=BV14G411p7Zh&cid=773170332&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 [一个视频搞懂中国房地产整个内在逻辑，看完就能明白现在发生的一切，以及未来大趋势](https://www.bilibili.com/video/BV1PB4y1h71p)
-- <iframe src="//player.bilibili.com/player.html?aid=601241893&bvid=BV1PB4y1h71p&cid=780014233&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=601241893&bvid=BV1PB4y1h71p&cid=780014233&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 置身事内(中国政府与经济发展)
-- <iframe src="//player.bilibili.com/player.html?aid=293943721&bvid=BV1rF411a77Y&cid=435300480&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=293943721&bvid=BV1rF411a77Y&cid=435300480&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 《置身事内》（兰小欢）[1 地方政府的权力与事务](https://www.bilibili.com/video/BV14S4y1P7Fc)
-- <iframe src="//player.bilibili.com/player.html?aid=683006066&bvid=BV14S4y1P7Fc&cid=570643974&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=683006066&bvid=BV14S4y1P7Fc&cid=570643974&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 思维导图
 
@@ -273,7 +273,7 @@ mathjax: true
 中国国家治理的制度逻辑：
 - [豆瓣评分](https://book.douban.com/subject/26901114/) 9.3
 - [读书讲解](https://www.bilibili.com/video/BV12Z4y1h7Dc)
-- <iframe src="//player.bilibili.com/player.html?aid=383853860&bvid=BV12Z4y1h7Dc&cid=714491083&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=383853860&bvid=BV12Z4y1h7Dc&cid=714491083&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 结束

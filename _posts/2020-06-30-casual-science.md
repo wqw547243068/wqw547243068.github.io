@@ -107,7 +107,7 @@ mathjax: true
   - 从因果图模型开始，更广阔的定义了结构化的因果模型，以及如何从数据中识别因果关系。课程介绍了该领域当前（2017）比较前沿的研究，包括用传统机器学习方法进行因果推断的几篇论文。
   - MIT 因果推断 [Mini Lectures on Causality by Jonas Peters 2017](https://www.bilibili.com/video/av90067629/) (无字幕)
     - [ppt地址](https://stat.mit.edu/news/four-lectures-causality/)
-  - <iframe src="//player.bilibili.com/player.html?aid=90067629&bvid=BV1o7411L7dp&cid=153821743&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" > </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=90067629&bvid=BV1o7411L7dp&cid=153821743&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" > </iframe>
 - 【2021-1-28】[将因果关系引入计算机视觉的"小学生"](https://mp.weixin.qq.com/s?__biz=MzA5ODEzMjIyMA==&mid=2247575503&idx=1&sn=1a3a0c3f99f2bee229e983ca5e4564be&chksm=9095ae5ca7e2274a817ca681ea37267e33c139c54c406f73a5f964b3c11691edb48595a7077f&mpshare=1&scene=23&srcid=0128c6xVJSEVLXRvMK6obR48&sharer_sharetime=1611811625919&sharer_shareid=b8d409494a5439418f4a89712efcd92a%23rd)
   - AI 仍是一个比人类更低维的生物，与人类之间存在很大差距，对事物的因果推理能力便是其中之一
   - 张含望创立并带领的机器推理与学习实验室（Machine Reasoning and Learning Lab，简称“MReal”）是全球第一个将因果关系推理引入计算机视觉研究中的团队。
@@ -119,7 +119,7 @@ mathjax: true
   - [因果推断简介之五：因果图 (Causal Diagram)](https://cosx.org/2012/10/causality5-causal-diagram/)
   
 - [Causal inference course written from a machine learning perspective](https://www.bradyneal.com/causal-inference-course)，包含课程ppt列表
-  - <iframe src="//player.bilibili.com/player.html?aid=885688534&bvid=BV1CK4y1L7uA&cid=267895326&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" > </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=885688534&bvid=BV1CK4y1L7uA&cid=267895326&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" > </iframe>
 
 
 # 因果推理书籍

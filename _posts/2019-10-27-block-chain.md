@@ -21,7 +21,7 @@ permalink: /block-chain
 - 【2018-2-19】[区块链讲解及Demo](https://anders.com/blockchain/)
 - 【2018-3-18】比特币在线Demo：[coinDemo](https://coindemo.io/),[blockchainDemo](https://blockchaindemo.io/)
 - 【2021-2-9】金融纪录片，[比特币：钱的终结](https://www.bilibili.com/video/BV1D54y1C7vd)
-  - <iframe src="//player.bilibili.com/player.html?aid=842054725&bvid=BV1D54y1C7vd&cid=234432929&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=842054725&bvid=BV1D54y1C7vd&cid=234432929&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 - 【2022-9-8】2018年拍摄的纪录片[区块链之新](https://www.ixigua.com/6911550712887378446)，6集
 
 ## 什么是区块链
@@ -29,19 +29,19 @@ permalink: /block-chain
 - 区块链是如何工作的呢？最近区块链技术走红，你是否也对它充满了好奇？那么不妨看看这个视频。本视频用漫画方式介绍了区块链的底层技术，内容简洁明了，相信看后你能更深入了解它。
 - [三分钟告诉你什么是区块链（中文版）](https://www.bilibili.com/video/av6452401?from=search&seid=905858826721698608)
 
-<iframe src="//player.bilibili.com/player.html?aid=6452401&cid=10492405&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=6452401&cid=10492405&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [这恐怕是理解区块链最简单的视频](https://www.bilibili.com/video/av20009797?from=search&seid=905858826721698608)
 
-<iframe src="//player.bilibili.com/player.html?aid=20009797&cid=32642113&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=20009797&cid=32642113&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [比特币和区块链啥原理？矿机挖矿咋回事？李永乐老师讲比特币](https://www.bilibili.com/video/av45247943?from=search&seid=905858826721698608)
 
-<iframe src="//player.bilibili.com/player.html?aid=45247943&cid=79224469&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=45247943&cid=79224469&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - 【2020-1-15】回形针出品：[Vol.112 区块链到底是什么？](https://www.bilibili.com/video/av83366647)
 
-<iframe src="//player.bilibili.com/player.html?aid=83366647&cid=142619878&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=83366647&cid=142619878&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 比特币
 

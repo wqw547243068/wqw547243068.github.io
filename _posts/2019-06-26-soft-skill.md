@@ -192,9 +192,9 @@ permalink: /skill
    - 对不同观点的包容，才能发现自己看不见的问题，不是盲目听信
 - 8. 奋力拼搏
 - 中文版
-<iframe src="//player.bilibili.com/player.html?aid=46828896&bvid=BV1Ab411J73x&cid=82024398&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=46828896&bvid=BV1Ab411J73x&cid=82024398&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 - 英文版
-<iframe src="//player.bilibili.com/player.html?aid=50084312&bvid=BV1Yb411371J&cid=87672654&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=50084312&bvid=BV1Yb411371J&cid=87672654&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 ## 认知金句
 
@@ -287,7 +287,7 @@ permalink: /skill
 
 [拿死工资的人，往往越来越不稳定](https://www.bilibili.com/video/BV1bh4y177c5)
 
-<iframe src="//player.bilibili.com/player.html?aid=615544059&bvid=BV1bh4y177c5&cid=1187204264&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=615544059&bvid=BV1bh4y177c5&cid=1187204264&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 情绪管理
@@ -303,7 +303,7 @@ permalink: /skill
     - 任何情绪本质上都是一种闪烁信号
   - （2）<span style='color:blue'>忽略情绪，回归本体存在上</span>。冥想最开始都练习呼吸，不是降低紧张，真正作用是确认本体存在。演讲前紧张？做法不是消除紧张，而是如何在紧张状态把演讲内容表达出来，这样紧张情绪从主角变为配角。欧阳夏丹：忘我就会松弛、从容应对。
 
-<iframe src="//player.bilibili.com/player.html?aid=530933145&bvid=BV11u411572Y&cid=1197661469&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=530933145&bvid=BV11u411572Y&cid=1197661469&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 学习方法
 
@@ -408,13 +408,13 @@ permalink: /skill
 
 最后希望你成为你所想要成为的那个人
 
-<iframe src="//player.bilibili.com/player.html?aid=68929522&cid=119460312&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=68929522&cid=119460312&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## [刻意训练理论：如何成为顶级高手？](https://www.bilibili.com/video/av67392206)
 
 - 我们都知道“练习一万小时成天才”这个口号，但是无目的的练习一万小时，对于成为一个高手来说，作用微小。专家级水平虽然是逐渐地练出来的，而有效进步的关键在于找到一系列的小任务并按顺序完成，而且这些小任务必须是正好不会做，又正好可以学习掌握的
 
-<iframe src="//player.bilibili.com/player.html?aid=67392206&cid=116949773&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=67392206&cid=116949773&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 认知偏差
 
@@ -577,7 +577,7 @@ permalink: /skill
 - 多数人的人生会很平庸，会把时间用来和多数人竞争普通的，一般的奖品（成功，职位，工资）
 - 多数人会把时间用来娱乐和消遣，而不是用来学习和成长，所以这一特性就去掉了90%的人成功的可能性，因为重复性的学习和挑战困难不是一般人愿意做下去的，早起（每一天无数人放弃早起）读有用的书用心的投入坚持，越是平庸的工作，反而竞争越激烈，（成功和幸福一样，是无法被追求的，他只能伴随努力发生），追求正确的东西，成为让自己自豪的人，而不是别人的认可，专注于自己的提升，用多数空闲的时间用来学习和成长
 
-<iframe src="//player.bilibili.com/player.html?aid=68876841&cid=119369944&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=68876841&cid=119369944&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 
 # 人为什么会拖延
@@ -869,8 +869,8 @@ Dark woods pro 1
 - TED的演讲：[如何战胜拖延症](https://www.bilibili.com/video/av4190492/)，文字版见[waitbutwhy](https://waitbutwhy.com/)
    - 拖延症者的内心是怎么想的？他们的大脑是怎样运作的? 本次TED演讲者Tim Urban先生将用诙谐的语言，贴切的比喻和贴近你我生活的故事来为我们剖析这些问题的答案。这是一个令所有人都会感同身受又倍受启发的TED演讲，不容错过。
 
-   <iframe src="//player.bilibili.com/player.html?aid=18129314&bvid=BV1rW411i7hB&cid=29597366&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+   <iframe src="//player.bilibili.com/player.html?aid=18129314&bvid=BV1rW411i7hB&cid=29597366&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
-<iframe src="//player.bilibili.com/player.html?aid=4190492&cid=6771553&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=4190492&cid=6771553&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 结束

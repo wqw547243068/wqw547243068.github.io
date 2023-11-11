@@ -19,16 +19,16 @@ permalink: /math
 
 - [数学的深渊](https://www.bilibili.com/video/BV1vJ411C7hn/?spm_id_from=333.788.videocard.1)
 
-<iframe src="//player.bilibili.com/player.html?aid=79072691&bvid=BV1vJ411C7hn&cid=135302530&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=79072691&bvid=BV1vJ411C7hn&cid=135302530&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [数学简史——帮你快速梳理数学知识的脉络](https://www.youtube.com/watch?v=OmJ-4B-mS-Y)，[B站地址](https://www.bilibili.com/video/BV1f741137pJ/?spm_id_from=333.788.videocard.12)
-<iframe src="//player.bilibili.com/player.html?aid=88736768&bvid=BV1f741137pJ&cid=151538219&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=88736768&bvid=BV1f741137pJ&cid=151538219&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-9-5】2020年8月4日下午五点（北京时间）,[丘成桐讲数学简史](https://www.bilibili.com/video/av626712650/)，[ppt截图](http://www.360doc.com/content/20/0811/15/1564385_929664100.shtml)
 
-<iframe src="//player.bilibili.com/player.html?aid=626712650&bvid=BV1Xt4y1D7z7&cid=222894390&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=626712650&bvid=BV1Xt4y1D7z7&cid=222894390&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [陶哲轩-地上最强数学家访谈](https://www.bilibili.com/video/BV1KW411q7r2/?spm_id_from=333.788.videocard.11)
-<iframe src="//player.bilibili.com/player.html?aid=18245630&bvid=BV1KW411q7r2&cid=29786993&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=18245630&bvid=BV1KW411q7r2&cid=29786993&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-12-11】[数学的酷炫你不懂](https://mp.weixin.qq.com/s/ncFbIu8KTmOkNSgI0EGgyA)
 - 【2021-2-28】[拉马努金和哈代：两位数学巨匠的惺惺相惜](https://mp.weixin.qq.com/s/wJ7Y6wLxfaG_QWAHaZ8iow)
@@ -658,7 +658,7 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 
 - [从前有一匹马叫“代码”](https://www.bilibili.com/video/av75765022)
 
-<iframe src="//player.bilibili.com/player.html?aid=75765022&cid=129612934&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=75765022&cid=129612934&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 数学教学
 
@@ -1015,7 +1015,7 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 ## 影视资源
 
 - 心灵捕手：
-  - <iframe src="//player.bilibili.com/player.html?aid=755449482&bvid=BV1hr4y1c7F7&cid=260242134&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=755449482&bvid=BV1hr4y1c7F7&cid=260242134&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 - 美丽心灵
-  - <iframe src="//player.bilibili.com/player.html?aid=9786625&bvid=BV1Cx411S7Sw&cid=16178821&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=9786625&bvid=BV1Cx411S7Sw&cid=16178821&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 

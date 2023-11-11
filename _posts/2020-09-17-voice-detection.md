@@ -485,7 +485,7 @@ permalink: /voice
 
 - 【2020-12-23】声纹分割聚类（Speaker Diarization）简介。[文字版](https://zhuanlan.zhihu.com/p/338656027)
 
-<iframe src="//player.bilibili.com/player.html?aid=970739202&bvid=BV1rp4y1q7HW&cid=269555325&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=970739202&bvid=BV1rp4y1q7HW&cid=269555325&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 `声纹识别`，也称为`说话人识别`，指把不同说话人的声音，按照说话人身份区分开来的技术, 有很多英文名：voice recognition、speaker recognition、voiceprint recognition、talker recognition。
 
@@ -2583,7 +2583,7 @@ def load_model(name: str, device: Optional[Union[str, torch.device]] = None, dow
 #### 方法解读
 
 李沐解读：[OpenAI Whisper 精读](https://www.bilibili.com/video/BV1VG4y1t74x)【论文精读】
-- <iframe src="//player.bilibili.com/player.html?aid=817455090&bvid=BV1VG4y1t74x&cid=884717958&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=817455090&bvid=BV1VG4y1t74x&cid=884717958&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 摘要
 - 扩大语音识别弱监督数据的规模，达到 68 万小时，并在大规模数据上进行**多语言**（98种）、多任务的训练，得到了一个泛化性能很好的模型。该模型在常见语音识别数据集上，<span style='color:red'>不需要微调</span>，直接以 `zero-shot` 的方式进行测试，结果与在这些数据集上训练过的语音识别模型性能相当。

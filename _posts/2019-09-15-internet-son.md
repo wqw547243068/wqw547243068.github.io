@@ -128,7 +128,7 @@ Aaron说的一句话让我挺有感触的——
 
 - 强烈推荐纪录片——《[互联网之子](https://www.bilibili.com/video/av16549975)》，[The Internet's Own Boy: The Story of Aaron Swartz](https://www.bilibili.com/video/av16549975)
 
-<iframe src="//player.bilibili.com/player.html?aid=av28065959&cid=26994578&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=av28065959&cid=26994578&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
  
 
 # 互联网之父，[Tim Berners-Lee](http://en.wikipedia.org/wiki/Tim_Berners-Lee)
@@ -355,7 +355,7 @@ Tim Berners-Lee可能高估现代人类了，32年前的人类可以共同创建
 # [第四公民](https://www.bilibili.com/video/av24623314)
 - Edward Snowden, 斯诺登，棱镜门事件
 
-<iframe src="//player.bilibili.com/player.html?aid=24623314&cid=41383308&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=24623314&cid=41383308&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [取回属于我们的互联网](https://www.ted.com/talks/edward_snowden_here_s_how_we_take_back_the_internet/transcript?/&language=zh-cn), How we take back the internet ?
 

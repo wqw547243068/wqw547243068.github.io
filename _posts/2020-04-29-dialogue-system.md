@@ -112,7 +112,7 @@ permalink: /dialogue-system
 ![](https://static.leiphone.com/uploads/new/images/20200810/5f311dd451d94.png?imageView2/2/w/740)
 ![](https://static.leiphone.com/uploads/new/images/20200810/5f311e76b3824.png?imageView2/2/w/740)
 - 【2020-7-6】台大[陈蕴侬](http://vivianchen.idv.tw/)，[如何让任务型聊天机器人更加鲁棒](https://www.bilibili.com/video/BV1oa4y1h7Um/?spm_id_from=333.788.videocard.2)，[课程主页](https://www.csie.ntu.edu.tw/~miulab/s108-adl/)，[PPT链接](https://www.csie.ntu.edu.tw/~miulab/s108-adl/doc/)，[pdf](https://www.csie.ntu.edu.tw/~miulab/s108-adl/doc/200602_ConversationalAI.pdf)
-<iframe src="//player.bilibili.com/player.html?aid=668813899&bvid=BV1oa4y1h7Um&cid=209423753&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=668813899&bvid=BV1oa4y1h7Um&cid=209423753&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 <object type="application/pdf" data="https://www.csie.ntu.edu.tw/~miulab/s108-adl/doc/200602_ConversationalAI.pdf"
            id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
@@ -437,7 +437,7 @@ NLP在对话系统里解决的是交互的问题。
 【2018-12-6】[「人工智障」，我们还能忍你多久？](https://www.ifanr.com/1140206)
 
 [当你对着语音助手说友商的好话，它会有啥反应？](https://www.bilibili.com/video/BV15V411k76i)
-- <iframe src="//player.bilibili.com/player.html?aid=413595890&bvid=BV15V411k76i&cid=203748896&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=413595890&bvid=BV15V411k76i&cid=203748896&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600"> </iframe>
 
 贴心提示：
 - 华为用户可以试一下，让小艺给你点个外卖，你会震惊的！
@@ -783,17 +783,17 @@ Google Home的发展历程，可以划分为两大阶段，以2016年末为节�
 - 【快宝】不能欺负快宝哦！会被爸爸揍的！ https://www.bilibili.com/video/BV1Fi4y187z8/
 - 【安安】客户：你先跳个舞我就办个信用卡 安安：不！您先办卡我在跳舞
 
-<iframe src="//player.bilibili.com/player.html?aid=370388227&bvid=BV15Z4y147GZ&cid=183005027&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=370388227&bvid=BV15Z4y147GZ&cid=183005027&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 评论：我亲戚就是干这个的，在四线城市工资2700元。这机器人**70万**一台，客户每年还要缴**5万元**维护费，有两种模式，一个是**人工**后台聊天，一个是像天猫精灵那种大数据，上班时间我老姨就陪人聊天，下班或者中午吃饭就换另外一种**AI模式**或者直接关机，但AI模式像天猫精灵那种比较智障，说话没有感情，由于大数据你问他天文地理或者加减乘除他都知道，但随机应变自我学习完全不行，人的大脑神经细胞，中枢神经极为复杂。网上这些特别厉害的机器人都是后台人工在和你聊天，你不信问他个**3位数的乘法**它一定回答不上来。另外网上这些小视频比较短，其实现实中长时间对话会出现磕巴，不利索，断断续续的情况，毕竟能做到像新闻联播主持人一样就不会干这个了
 
-<iframe src="//player.bilibili.com/player.html?aid=78378466&bvid=BV13J411q7ya&cid=134113155&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=78378466&bvid=BV13J411q7ya&cid=134113155&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 #### 图书馆机器人
 
 [图书馆两个机器人互相吵架，笑死个人](https://www.bilibili.com/video/BV1TK4y1W77w)
 
-<iframe src="//player.bilibili.com/player.html?aid=886081515&bvid=BV1TK4y1W77w&cid=278958449&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=886081515&bvid=BV1TK4y1W77w&cid=278958449&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 产品架构

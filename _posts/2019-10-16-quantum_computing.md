@@ -558,11 +558,11 @@ print(math.sqrt(0.3)) # 0.5477225575051661
 
 - [7分钟了解量子计算机](https://www.bilibili.com/video/av48599013)
 
-<iframe src="//player.bilibili.com/player.html?aid=48599013&cid=85105799&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=48599013&cid=85105799&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [三分钟了解量子计算机](https://www.bilibili.com/video/av22814161/)
 
-<iframe src="//player.bilibili.com/player.html?aid=22814161&cid=37892694&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=22814161&cid=37892694&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 量子计算机竞赛
 

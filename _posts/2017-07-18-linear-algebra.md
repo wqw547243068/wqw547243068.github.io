@@ -233,8 +233,8 @@ mathjax: true
 - [如何通俗讲解放射变换？](https://www.zhihu.com/question/20666664)
 _ [在线几何作图GeoGebra](https://www.geogebra.org/apps/)（源自 [马同学高等数学](http://www.matongxue.com/madocs/244.html)）
 - [3Blue1Brown](www.patreon.com/3blue1brown)出品（接受捐助）：[线性代数的本质-Essence of Linear Algebra-视频教程](http://www.3blue1brown.com/)，[Bilibili上《线性代数本质》双语视频教程](http://www.bilibili.com/video/av6731067/).[文字版](https://yam.gift/2018/05/13/2018-05-13-Essence-of-Linear-Algebra/),类似视频还有微积分本质,[笔记](https://yam.gift/2018/05/12/2018-05-12-Essence-of-Calculus/).[制作教学视频的代码](https://github.com/3b1b/manim)
-- <iframe src="//player.bilibili.com/player.html?aid=5987715&cid=9720812&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-- <iframe src="//player.bilibili.com/player.html?aid=6731067&cid=10959711&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=5987715&cid=9720812&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=6731067&cid=10959711&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2021-2-20】国外通俗易懂讲解数学[betterexplained](https://betterexplained.com/)
 - 【2019-10-24】马同学高等数学-[线性代数学习笔记](https://ming-lian.github.io/2019/03/31/Linear-Algebra-Note/)，【2019-12-31】[交互式线性代数-Interactive Linear Algebra](http://textbooks.math.gatech.edu/ila/systems-of-eqns.html)

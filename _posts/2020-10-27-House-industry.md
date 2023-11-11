@@ -406,7 +406,7 @@ permalink: /house
 ### 中国房地产内在逻辑
 
 【2022-7-23】[一个视频搞懂中国房地产内在逻辑，看完就能明白现在发生的一切](https://www.toutiao.com/video/7122834670739587615)
-- <iframe src="//player.bilibili.com/player.html?aid=601241893&bvid=BV1PB4y1h71p&cid=780014233&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=601241893&bvid=BV1PB4y1h71p&cid=780014233&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [一个视频搞懂中国房地产整个内在逻辑，看完就能明白现在发生的一切，以及未来大趋势](https://www.bilibili.com/video/BV1PB4y1h71p)
 
 
@@ -520,7 +520,7 @@ permalink: /house
 
 【2022-7-23】[土地财政走到尽头，中国的出路在哪里？](https://www.bilibili.com/video/BV1JY411T7QK/)
 - 各地楼市松绑政策井喷式出现，从新一线省会到三四线县城，降低首付、契税优惠、放宽年限、取消限购、鼓励公积金贷款等等措施五花八门……这些地方上的举措，到房地产被纳入实体经济接受救济，背后的态度显而易见。于是就有朋友问，这些举措会不会进一步推升房价？房住不炒喊了那么多年难道就是一句空话？
-- <iframe src="//player.bilibili.com/player.html?aid=257612741&bvid=BV1JY411T7QK&cid=748960506&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=257612741&bvid=BV1JY411T7QK&cid=748960506&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 为什么开发商明明缺钱，却不降价？
 
@@ -3482,7 +3482,7 @@ CPM按展现付费，看起来可能要便宜些，CPC按点击付费，价格�
 - 房地产行业大牛市炒房悲剧的故事。2021年是美国房地产的大年，被称为“从未见过的大牛市”。而这个行业龙头互联网公司 Zillow ，却因为炒房巨额亏损，股价腰斩，裁员25%，一时间人心惶惶。Zillow“爆雷”之后，科技界激起千层浪，不少人纷纷抨击AI预测房价不靠谱。
 - Zillow Offer 房屋估价模型，因为疫情失控，造成公司暴露
 
-<iframe src="//player.bilibili.com/player.html?aid=295973313&bvid=BV1iF411n7fq&cid=490467585&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=295973313&bvid=BV1iF411n7fq&cid=490467585&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 # 结束
 

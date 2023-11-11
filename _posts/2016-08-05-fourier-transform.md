@@ -25,7 +25,7 @@ mathjax: true
 
 [3Blue1Brown 视频讲解](https://www.bilibili.com/video/av19141078/?vd_source=ec1c777505e146eb20d947449d6bba6e)
 
-<iframe src="//player.bilibili.com/player.html?aid=19141078&bvid=BV1pW411J7s8&cid=31220967&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=19141078&bvid=BV1pW411J7s8&cid=31220967&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 动图解释傅里叶
 

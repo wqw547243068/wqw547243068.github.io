@@ -104,7 +104,7 @@ permalink: /philosophy
 
 [3分钟读懂《理想国》](https://www.bilibili.com/video/BV1DE411K7UA?spm_id_from=333.337.search-card.all.click)
 
-<iframe src="//player.bilibili.com/player.html?aid=95413062&bvid=BV1DE411K7UA&cid=162889262&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=95413062&bvid=BV1DE411K7UA&cid=162889262&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 [柏拉图的《理想国》：是一本哲学书籍，同时它也是一本文学书](https://baike.baidu.com/tashuo/browse/content?id=12a0536179d694d31334120f)
 - 哲学家是什么？苏格拉底告诉你：一个热爱并追求真理的人。
@@ -493,7 +493,7 @@ permalink: /philosophy
 
 - [90分钟看完《知行合一王阳明》观传奇人生是怎样炼成的！](https://www.365yg.com/a6679033057569145357#mid=1626597192389645)，[B站](https://www.bilibili.com/video/av19156453?from=search&seid=318296673017896441)
 
-<iframe src="//player.bilibili.com/player.html?aid=19156453&cid=31366860&page=1" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=19156453&cid=31366860&page=1&autoplay=0" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 算命 fortune teller
 
@@ -616,7 +616,7 @@ permalink: /philosophy
 这两种灵魂在风水学上来说是怨气最重的，喜和丧本来就是两种最极端的情绪，而大喜大悲两两相遇便会产生强大的能量
 - [视频](https://www.bilibili.com/video/BV11W41197WU/)
 
-<iframe src="//player.bilibili.com/player.html?aid=29880830&bvid=BV11W41197WU&cid=52042684&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=29880830&bvid=BV11W41197WU&cid=52042684&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 结束

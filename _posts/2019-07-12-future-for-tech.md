@@ -66,7 +66,7 @@ permalink: /future
 `中年危机`为什么在IT行业特别能成为一个话题，而很少听传统行业嚷嚷所谓的`中年危机`，因为<font color='blue'>传统行业的很多人从走上社会的那天起，危机（青年危机）就扑面而来。从毕业到中年都挣着卑微的薪水，生活从来就没有给过其希望，如果一定要说危机，那么这一生都是在危机中度过</font>。
 
 - [在北京月入多少可以实现财富自由？你离菜场自由还远吗](https://www.bilibili.com/video/av68936365)
-<iframe src="//player.bilibili.com/player.html?aid=68936365&cid=119472761&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=68936365&cid=119472761&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2021-5-29】[程序员的前半生](https://www.toutiao.com/w/i1700881704856583/)
 - ![](https://p5.toutiaoimg.com/img/pgc-image/dd5b7537ff8e4d36b88d84438ba6da06~tplv-obj:1023:520.image?from=post)

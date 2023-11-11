@@ -28,11 +28,11 @@ mathjax: true
 
 ### 失控
 
-<iframe src="//player.bilibili.com/player.html?aid=584418696&bvid=BV1Sz4y1f79i&cid=230655841&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=584418696&bvid=BV1Sz4y1f79i&cid=230655841&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 《生命·觉者》梁冬对话凯文凯利
 
-<iframe src="//player.bilibili.com/player.html?aid=51640140&bvid=BV1o4411i7z6&cid=90394457&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=51640140&bvid=BV1o4411i7z6&cid=90394457&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 章节概要

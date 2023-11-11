@@ -1959,7 +1959,7 @@ Once you've sent the invite, your friend will need to complete these steps befor
 <iframe src="http://player.youku.com/embed/XMjg3NjI4MDM2NA==" frameborder="0" allowfullscreen=“true” height="600" width="100%" ></iframe>
 
 - 阿里巴巴纪录片：《[扬子江大鳄](https://www.bilibili.com/video/BV1Ux411v7fT?from=search&seid=9272444784875075348)》
-  - <iframe src="//player.bilibili.com/player.html?aid=10740662&bvid=BV1Ux411v7fT&cid=17720293&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=10740662&bvid=BV1Ux411v7fT&cid=17720293&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 总结：这部纪录片一个外国人的视角拍摄，典型的BBC风格，用简单的笔墨轻描淡写，没有浮夸，没有贬损，一切以事实说话；看完后，余音绕梁，三日不绝。短短一个小时，就将马云这个火星人活灵活现的展现在屏幕上，十分亲近、自然，再一次证明了他是非凡的火星人。如果拍成电影，一定会秒杀中国合伙人几条街。纪录片传输的价值观不是有钱就有了一切，而是有梦想才有一切，满满的正能量。
 - 身为英语教师的马云，不安分，老想着自己的梦想。为了一个生意机会，独自跑到美国，发现被骗后，只好投靠西雅图的亲戚。亲戚给他介绍生机盎然的互联网，输入“beer”，就能搜出一堆世界各地的啤酒，意大利、德国、美国等等，唯独没有中国。互联网的魔力深深的吸引了马云，而关于中国的信息贫乏到一片空白，也狠狠的刺痛了这个黄皮肤的中国人。
 - 于是，马云决心要做一个网站，向外界展示中国的教育、文化、经济、政治等等，也就是界面丑陋的中国黄页（今天的门户网站）。为了谋求政府的支持，马云幼稚的跑到北京去拜访高高在上的政府部门，好说歹说，还是一无所获。政府给予的答复是滑稽的“你要提前预约，要不不会给你答复的”！政府人员的观念落后，再加上骨子里的傲气，怎么会跟一个小小的英语教师合作呢？在返回杭州的路上，他在出租车里失意的感慨到：“失败没关系，我至少把这个概念告诉了别人。我不成功，会有人成功。但首先一点，我希望中国人不要再拖下去。”

@@ -21,9 +21,9 @@ mathjax: true
 ## 经济格局
 
 【2023-3-4】[中国顶级智囊团](https://www.bilibili.com/video/BV1K24y1v7BX/?spm_id_from=333.337.search-card.all.click&vd_source=ec1c777505e146eb20d947449d6bba6e)
-- <iframe src="//player.bilibili.com/player.html?aid=692556598&bvid=BV1K24y1v7BX&cid=959824362&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=692556598&bvid=BV1K24y1v7BX&cid=959824362&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 - [中国经济50人论坛](http://www.50forum.org.cn/) -[【亲历改革】](https://www.bilibili.com/video/BV1Mb411h7Fd)，25集
-- <iframe src="//player.bilibili.com/player.html?aid=44796957&bvid=BV1Mb411h7Fd&cid=78423809&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=44796957&bvid=BV1Mb411h7Fd&cid=78423809&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 ## 中美博弈
 
@@ -287,7 +287,7 @@ mathjax: true
   - （生物学）基因生物，
   - （医学）临床医学，
   - （航天航空海洋地质地理机械）深空深地深海极地探测。
-- <iframe src="//player.bilibili.com/player.html?aid=672093010&bvid=BV1zU4y1p7L3&cid=309778762&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=672093010&bvid=BV1zU4y1p7L3&cid=309778762&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 【2021-3-15】近日，关于“十四五”规划和2035年远景目标纲要全文新鲜出炉, [三次提到工业互联网：“十四五”规划纲要怎么说](https://new.qq.com/omn/20210315/20210315A04OZS00.html)
 - 第1次出现在第三篇第十一章的第一节，要积极稳妥发展工业互联网和车联网。

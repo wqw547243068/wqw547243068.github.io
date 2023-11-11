@@ -32,7 +32,7 @@ permalink: /game-theory
 - [Coursera 博弈论1](https://www.bilibili.com/video/BV1it411s7ji/?spm_id_from=333.788.recommend_more_video.0)
 - 斯坦福-博弈论2 [视频](https://www.bilibili.com/video/av63545278/)
 
-<iframe src="//player.bilibili.com/player.html?aid=63545278&bvid=BV1y4411S72T&cid=110343978&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=63545278&bvid=BV1y4411S72T&cid=110343978&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 ## 博弈论定义
 
@@ -151,7 +151,7 @@ permalink: /game-theory
 - 【美丽心灵】改编自西尔维娅·娜萨写作的同名传记 《A Beautiful Mind: Genius, Schizophrenia and Recovery in the Life of a Nobel Laureate》
 - <img src="https://pic4.zhimg.com/80/v2-79d8a7373220b693fdeab871ad88a633_720w.jpg" height="100%" width="100" />
 
-<iframe src="//player.bilibili.com/player.html?aid=9786625&bvid=BV1Cx411S7Sw&cid=16178821&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=9786625&bvid=BV1Cx411S7Sw&cid=16178821&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 ### 囚徒困境
 

@@ -48,7 +48,7 @@ mathjax: true
   - 什么形状的钻头，能钻出方孔? 答案就是勒洛三角形，这个近似三角形的几何图形，绘制起来也十分简单，以一个正三角形的三个顶点为圆心，边长为半径画圆，三条边围绕的三段弧形，即可组成勒洛三角形
 - [勒洛三角形是什么？将水杯放在三角形上推动，有趣的现象发生了](https://www.bilibili.com/video/BV1dL411W7oq)
 
-<iframe src="//player.bilibili.com/player.html?aid=463258721&bvid=BV1dL411W7oq&cid=416971623&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=463258721&bvid=BV1dL411W7oq&cid=416971623&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 椭圆
@@ -56,7 +56,7 @@ mathjax: true
 神奇的椭圆，三种不同定义（拉伸，斜切圆锥体，画线）最终都能得到椭圆
 - [【官方双语】数学天赋是什么样的？它从何而来？](https://www.bilibili.com/video/BV1Ks411G7kN)
 
-<iframe src="//player.bilibili.com/player.html?aid=28518492&bvid=BV1Ks411G7kN&cid=49355487&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=28518492&bvid=BV1Ks411G7kN&cid=49355487&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 导读
@@ -685,7 +685,7 @@ $$
   - [怎样更好地理解并记忆泰勒展开式？ - 刘遥行的回答](https://www.zhihu.com/question/25627482/answer/321719657)
   - [动图讲解泰勒级数](https://pic1.zhimg.com/50/v2-8391cbeb7da1d4a14550265ac9f74b4b_hd.webp?source=1940ef5c)
   - ![](https://pic1.zhimg.com/50/v2-8391cbeb7da1d4a14550265ac9f74b4b_hd.webp?source=1940ef5c)
-- <iframe src="//player.bilibili.com/player.html?aid=11251323&bvid=BV1Gx411Y7cz&cid=18609209&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=11251323&bvid=BV1Gx411Y7cz&cid=18609209&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 高阶导数
@@ -721,7 +721,7 @@ $$
 
 幂级数和三角级数各有所长，不能相互替代。
 
-<iframe src="//player.bilibili.com/player.html?aid=657603730&bvid=BV1Ga4y1A79u&cid=1169948099&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=657603730&bvid=BV1Ga4y1A79u&cid=1169948099&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 幂级数

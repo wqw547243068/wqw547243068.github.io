@@ -29,7 +29,7 @@ mathjax: true
 
 - 【2020-12-16】[天猫精灵对战小爱同学](https://www.bilibili.com/video/BV1Rb411W7PG)
 
-<iframe src="//player.bilibili.com/player.html?aid=47805723&bvid=BV1Rb411W7PG&cid=83737221&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=47805723&bvid=BV1Rb411W7PG&cid=83737221&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 用户模拟器

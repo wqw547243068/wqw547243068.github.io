@@ -226,7 +226,7 @@ mathjax: true
 
 该片讲了一个黑色寓言。每到晚餐时间，“系统”就开始如一台上了油的机器般运作。这台机器只负责一小撮人不饿肚子。这些人瓜分了所有资源，而剩下的大多数则饥弱不堪，嗷嗷待哺。最终，资源会耗尽，饥饿的人眼睛发绿，一场风暴在所难免。但让人遗憾的是，变革带来的并不是希望，而是永恒的轮回。
 
-<iframe src="//player.bilibili.com/player.html?aid=31614877&bvid=BV1SW411C7JZ&cid=55282695&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=31614877&bvid=BV1SW411C7JZ&cid=55282695&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 - V字仇杀队，[在线观看](http://www.caomintv.com/dianying/play/45147-1-1.html)
@@ -248,12 +248,12 @@ mathjax: true
 
 - 【2021-7-6】[【纪录片】中国富二代留学生在海外的真实生活](https://www.bilibili.com/video/BV1zt411U7Ug/)
 
-<iframe src="//player.bilibili.com/player.html?aid=35850699&bvid=BV1zt411U7Ug&cid=62913180&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=35850699&bvid=BV1zt411U7Ug&cid=62913180&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 【有钱人的世界】[Tamara's World Ep1-6](https://www.bilibili.com/video/BV1wW411z77C) 【全集】
 - 英国身价36亿美元的多金社交名媛Tamara Ecclestone，是F1总裁的千金，也是《福布斯》全球20富豪女继承人之一。她与英国独立电视台ITV合作的真人秀『有钱人的世界』
 
-<iframe src="//player.bilibili.com/player.html?aid=18065783&bvid=BV1wW411z77C&cid=29495211&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=18065783&bvid=BV1wW411z77C&cid=29495211&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 企业家子女
@@ -277,7 +277,7 @@ mathjax: true
 ### 美国真人秀：富豪谷底求翻身
 
 【2022-10-05】电视节目：[富豪谷底求翻身](https://www.bilibili.com/video/BV14U4y1g7JN/)，[亿万富豪抛弃一切，挑战90天内用100美金，赚到100万美金](https://www.toutiao.com/video/7121275640237523496/)：富豪如何东山再起？
-- <iframe src="//player.bilibili.com/player.html?aid=676496384&bvid=BV14U4y1g7JN&cid=434560890&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=676496384&bvid=BV14U4y1g7JN&cid=434560890&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 从0到1比1到10难多了
 - 先找客户（需求），再找产品，通过资源整合挣钱
 1. 积极应对焦虑和懒惰。找不到工作，睡卡车不是事，真正会让自己的行动力下降，让自己不体面不被人看中的原因，是自己心态崩了。
@@ -417,9 +417,9 @@ mathjax: true
 - 社会在严厉惩罚不好好读书的人。现在很多家长谈学校压力大作业多要给学生减负，但其实越有钱会让小孩学更多的东西，教育如果产业化形成，阶级就真的固化严重不容打破了。
 
 - 穷富翁大作战（富人体验穷人生活的真人秀）[第一季 01](https://www.bilibili.com/video/BV1Us411g77S)
-- <iframe src="//player.bilibili.com/player.html?aid=28821869&bvid=BV1Us411g77S&cid=49950438&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=28821869&bvid=BV1Us411g77S&cid=49950438&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
-<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 【2014-4-27】[穷富翁大作战笔记](https://user.qzone.qq.com/547243068/2)
@@ -1076,19 +1076,19 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 
 - 李永乐讲解：[如何才能摆脱贫穷？穷人和富人有什么差别？](https://www.bilibili.com/video/BV1xE411B7V4)
 
-<iframe src="//player.bilibili.com/player.html?aid=74644387&bvid=BV1xE411B7V4&cid=127675687&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=74644387&bvid=BV1xE411B7V4&cid=127675687&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 集智俱乐部的分享：
   - 如何才能摆脱贫穷？2019诺奖得主在《[贫穷的本质](https://www.bilibili.com/video/BV1tE411b7RA)》里都说了
 
-<iframe src="//player.bilibili.com/player.html?aid=73941898&bvid=BV1tE411b7RA&cid=126484672&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=73941898&bvid=BV1tE411b7RA&cid=126484672&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 穷爸爸 vs 富爸爸
 
 - [富爸爸 罗伯特·清崎【2019】你有没有被教育成穷人(中英字幕)](https://www.bilibili.com/video/av59164780/?spm_id_from=333.788.videocard.4)
 
-<iframe src="//player.bilibili.com/player.html?aid=59164780&cid=103116268&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=59164780&cid=103116268&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 
@@ -1106,7 +1106,7 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 
 - 穷富翁大作战,[第一季](https://www.bilibili.com/video/av2884835?from=search&seid=930398290238770510), [第二季](https://www.bilibili.com/video/av12560324)
    
-<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=2884835&cid=4507553&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 
@@ -1290,7 +1290,7 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 
 - 国产，郑琼的[出路](https://www.bilibili.com/video/av31131429)，导演用6年时间跟拍了3个不同阶层孩子在社会上的挣扎。在弱肉强食的社会法则面前，孩子教育的决定性因素不是学区房，而是父母的言传身教。[正片](https://www.youtube.com/watch?v=H3Zk1WKc87M)
 
-<iframe src="//player.bilibili.com/player.html?aid=31131429&cid=54380597&page=1?autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=31131429&cid=54380597&page=1&autoplay=0?autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 你为什么穷
@@ -1319,7 +1319,7 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 - 【2019-08-09】反应社会阶级差距的纪录片
 - [56up](https://www.bilibili.com/video/av25446605?from=search&seid=17957810370452180618)，又称人生七年
 
-<iframe src="//player.bilibili.com/player.html?aid=25446605&cid=43196158&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=25446605&cid=43196158&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - BBC Why Poverty.[为什么穷系列纪录片](https://www.youtube.com/watch?v=jRXqdSG4XWQ&list=PLJqVTGbqn7eyF4oVL8Nbg7l8IOKuaciAI), 2012
 
 
@@ -1404,19 +1404,19 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 
 【2022-10-31】[【NHK记录】为什么日本贫穷的年轻女性越来越多？](https://www.bilibili.com/video/BV16j411f7BJ)
 - 日本女性不上大学好像很难找到全职的工作，不是全职就没有正常工作的各种福利工资也低很多，一半都不到，正常工作计算工龄加工资的她们也没有，因为总是打工，打一辈子工还是这点钱……同样的工作男性工资就高，所以这个视频里才会说，靠女性的工资很难养孩子
-- <iframe src="//player.bilibili.com/player.html?aid=91089154&bvid=BV16j411f7BJ&cid=155539063&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=91089154&bvid=BV16j411f7BJ&cid=155539063&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 [NHK街访录 人生最大的危机 女性篇](https://www.bilibili.com/video/BV1zt411u7zV)
-- <iframe src="//player.bilibili.com/player.html?aid=62025154&bvid=BV1zt411u7zV&cid=107832703&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=62025154&bvid=BV1zt411u7zV&cid=107832703&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 [【纪录片】日本网吧难民4部](https://www.bilibili.com/video/BV1W7411c79r/)
 - 日本租房子不容易,首先要有钱,举个例子,如果你租3000块钱一个月的房子,先准备3万再考虑找房,而且很多都需要担保, 要说租金，东京6-8万日元的单身公寓（20-30平米左右）还是不少的，但房主或中介一般会要求有长期稳定工作以及其他担保和证明，所以这些工作不稳定的人就没法租了，只能去这种面积4-5平方米的网咖。我之前看过一家人租了3个网咖房，每个月租金都要17-18万日元了。但换句话说，这些人还是陷入欲望的枷锁太深，自己没那个实力，还偏偏要留在东京。
-- <iframe src="//player.bilibili.com/player.html?aid=90867647&bvid=BV1W7411c79r&cid=155173337&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=90867647&bvid=BV1W7411c79r&cid=155173337&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 老年人
 
 【2022-10-31】[nhk纪录片日本：老后贫困](https://www.bilibili.com/video/BV1RW411z7j3)
-- <iframe src="//player.bilibili.com/player.html?aid=32427940&bvid=BV1RW411z7j3&cid=56738818&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=32427940&bvid=BV1RW411z7j3&cid=56738818&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 资料
@@ -1424,14 +1424,14 @@ JuJu 继续她的艺人之路，做模特，演戏，选美。她说她要做传
 - [【字幕】穷富翁大作战第一季](https://www.bilibili.com/video/av2884835)
 - [【RTHK/纪录片】窮富翁大作戰【全三季】](https://www.bilibili.com/video/BV15E41147AA/)
 
-<iframe src="//player.bilibili.com/player.html?aid=93399042&bvid=BV15E41147AA&cid=159408213&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=93399042&bvid=BV15E41147AA&cid=159408213&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [【纪录片】中国式父亲](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649768222&idx=1&sn=4189cac24560d45cda164efb856d7059&chksm=bec3dc0389b455158321a67daf3af7a2073f5a36c3207d36234a8a07b3b240cf697f545ea53c&token=1917001922&lang=zh_CN#rd)
 
 
 - 如何才能摆脱贫穷？2019诺奖得主在《[贫穷的本质](https://www.bilibili.com/video/BV1tE411b7RA)》里都说了
 
-<iframe src="//player.bilibili.com/player.html?aid=73941898&bvid=BV1tE411b7RA&cid=126484672&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=73941898&bvid=BV1tE411b7RA&cid=126484672&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 李永乐讲解：[如何才能摆脱贫穷？穷人和富人有什么差别？](https://www.bilibili.com/video/BV1xE411B7V4)
 

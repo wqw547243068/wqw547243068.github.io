@@ -22,10 +22,10 @@ mathjax: true
   - 4) **华润**集团：建立于1938年，发展的历史也是接近百年了。这也是使得华润集团成为了全球市场500强企业，总体的资产规模也是接近万亿元的程度。华润集团实际上是一个贯穿人民群众生活方面的企业，他们的业务面也是非常地广阔，并且多是实体性质的产业。全国连锁超市当中排名第一位的华润万家超市以及华润医药等都是属于华润集团的产业，还有市场当中平价的矿泉水产品怡宝也是属于华润集团的。除去这些之外，华润集团在电力、燃气、置业等产业方面也有着巨大的影响力
 
 - 【2018-10-22】[银行与货币系统真相](https://v.qq.com/x/page/h0128ecsb8f.html), [B站](https://www.bilibili.com/video/BV1Ys411B7f1)
-  - <iframe src="//player.bilibili.com/player.html?aid=4679429&bvid=BV1Ys411B7f1&cid=7591478&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=4679429&bvid=BV1Ys411B7f1&cid=7591478&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2018-11-25】万维财经经济学视频[系列](https://www.365yg.com/c/user/51414569980/),覆盖经济规律、通货膨胀、货币等，通俗易懂，如：[经济机器是怎样运行的](http://www.365yg.com/i6617283549709992455/#mid=51415239994)
 - [《货币背后的秘密》【全集】1-10](https://www.bilibili.com/video/BV1T4411q7wy)
-  - <iframe src="//player.bilibili.com/player.html?aid=65829376&bvid=BV1T4411q7wy&cid=114208700&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=65829376&bvid=BV1T4411q7wy&cid=114208700&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2019-03-07】2008年金融危机的电影[大空头](https://www.365yg.com/a6624281300087865859#mid=1556765139678210)
 
 
@@ -122,7 +122,7 @@ mathjax: true
 
 【2023-2-26】[一口气了解通货膨胀](https://www.bilibili.com/video/BV1KP4y1678m)
 
-<iframe src="//player.bilibili.com/player.html?aid=905921931&bvid=BV1KP4y1678m&cid=983771277&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='100%'> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=905921931&bvid=BV1KP4y1678m&cid=983771277&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='100%'> </iframe>
 
 通货膨胀有三大类：
 - 1. 原因类
@@ -180,7 +180,7 @@ mathjax: true
 ## 金融制度运转
 
 - 万维财经经济学视频[系列](https://www.365yg.com/c/user/51414569980/),覆盖经济规律、通货膨胀、货币等，通俗易懂，如：[经济机器是怎样运行的](http://www.365yg.com/i6617283549709992455/#mid=51415239994)， [【经济学】经济机器是怎样运行的 by Ray Dalio](https://www.bilibili.com/video/BV15s411b7xr),管理着世界上最大的对冲基金——桥水基金的创始人：Ray Dalio用30分钟的时间来阐释经济机器是如何运行的
-- <iframe src="//player.bilibili.com/player.html?aid=6496369&bvid=BV15s411b7xr&cid=10566417&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=6496369&bvid=BV15s411b7xr&cid=10566417&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 达里欧的3大建议：
 1. 不要让债务的增长速度超过收入。
@@ -1245,7 +1245,7 @@ AMC还可以上市，发行股票
 
 - ![](http://img2.ctoutiao.com/uploads/2020/10/24/1603537785572391.png)
 - 2020.10.24 [马云外滩金融峰会演讲完整版](https://www.bilibili.com/video/BV1GD4y197pX) 视频
-<iframe src="//player.bilibili.com/player.html?aid=712522420&bvid=BV1GD4y197pX&cid=249233625&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=712522420&bvid=BV1GD4y197pX&cid=249233625&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 文字版如下：
 
 10月24日，在中国金融四十人论坛（CF40）联合各组委会成员机构举办的第二届外滩金融峰会上，马云以联合国数字合作高级别小组联合主席和联合国可持续发展目标倡导者的身份发表讲话。
@@ -1274,7 +1274,7 @@ AMC还可以上市，发行股票
 - 后面借出去的钱全是拿借款的合约去银行的贷款，反复几轮就用30亿翘了100倍的杠杆；蚂蚁用30亿现金做抵押，套出来3000亿，银行收他8%的利息，支付宝贷出去收18%的利息。
 - 放大的3600亿钱从哪里来？居民存款，一旦违约，这个钱最终只能居民抗，国家抗
 
-<iframe src="//player.bilibili.com/player.html?aid=231662858&bvid=BV1z841127C8&cid=1218521023&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=231662858&bvid=BV1z841127C8&cid=1218521023&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 ## 演讲全文 
 

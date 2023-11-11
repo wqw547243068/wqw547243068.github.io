@@ -440,9 +440,9 @@ Manifold Distribution Principle（流形分布定则）
 ![](https://img-blog.csdnimg.cn/20190401202159198.jpg)
 
 - [什么是流形？manifold](https://www.bilibili.com/video/BV145411x7vJ)
-<iframe src="//player.bilibili.com/player.html?aid=455350252&bvid=BV145411x7vJ&cid=181172271&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=455350252&bvid=BV145411x7vJ&cid=181172271&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [用t-SNE进行数据可视化-GoogleTechTalks出品](https://www.bilibili.com/video/BV1Ax411v7z5)
-<iframe src="//player.bilibili.com/player.html?aid=10560557&bvid=BV1Ax411v7z5&cid=17434638&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=10560557&bvid=BV1Ax411v7z5&cid=17434638&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 瑞士卷一个是二维流形的例子.简而言之，二维流形是一种二维形状，它可以在更高维空间中弯曲或扭曲。
 

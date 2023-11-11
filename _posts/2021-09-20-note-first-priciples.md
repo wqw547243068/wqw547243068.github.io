@@ -435,14 +435,14 @@ mathjax: true
 ## 视频
 
 - [最强大的思考方式-第一性原则](https://www.bilibili.com/video/BV1zJ411S7QH)
-  - <iframe src="//player.bilibili.com/player.html?aid=75537322&bvid=BV1zJ411S7QH&cid=129221161&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=75537322&bvid=BV1zJ411S7QH&cid=129221161&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
   - <iframe src="//player.bilibili.com/player.html?aid=75537322&bvid=BV1zJ411S7QH&cid=129264382&page=2" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [马斯克：如何学习任何东西-第一性原理](https://www.bilibili.com/video/BV133411r7zx)
-  - <iframe src="//player.bilibili.com/player.html?aid=419591402&bvid=BV133411r7zx&cid=381997221&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=419591402&bvid=BV133411r7zx&cid=381997221&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [第一性原理：世界首富马斯克的思维秘诀，底层逻辑和本质是什么？](https://www.bilibili.com/video/BV1Ti4y1A79d/)，[文字版](https://www.bilibili.com/read/cv10735978?spm_id_from=333.788.b_636f6d6d656e74.6)
   - 第一性原理：**基本假设**、不能**省略**、不能**违背**。
   - 亚里士多德提出的“第一性原理”是一种**演绎法**思维，两种典型的形式逻辑之一，演绎法和归纳法，[小播读书](https://www.bilibili.com/read/cv10735978?spm_id_from=333.788.b_636f6d6d656e74.6)
-  - <iframe src="//player.bilibili.com/player.html?aid=545042393&bvid=BV1Ti4y1A79d&cid=321800918&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=545042393&bvid=BV1Ti4y1A79d&cid=321800918&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 结束

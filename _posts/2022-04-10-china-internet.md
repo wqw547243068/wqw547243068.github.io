@@ -430,7 +430,7 @@ QQ一上线就迅速获得了大量用户，但也迅速落入了三大门户曾
 
 【2022-10-7】2005年的QQ、网聊、网吧，那时候还没有美颜滤镜，[场景](https://www.toutiao.com/video/7150596428845419809/)，[b站](https://www.bilibili.com/video/BV1sq4y1S7Co/)
 
-<iframe src="//player.bilibili.com/player.html?aid=589834976&bvid=BV1sq4y1S7Co&cid=387169237&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=589834976&bvid=BV1sq4y1S7Co&cid=387169237&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 #### 百度
 

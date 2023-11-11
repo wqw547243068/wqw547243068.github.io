@@ -42,7 +42,7 @@ permalink: /partner
 - 凄惨版
   - 我：在干嘛？
   - 对方：一天无应答
-- <iframe src="//player.bilibili.com/player.html?aid=896347703&bvid=BV13A4y1S7cp&cid=714184371&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=896347703&bvid=BV13A4y1S7cp&cid=714184371&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - 【2021-12-2】男人的世界其实非常单纯，[脱口秀](https://www.ixigua.com/7035606107716390182)，独居、群居时不做计划，不做防备，一声吆喝就出门
 
@@ -62,7 +62,7 @@ permalink: /partner
   - ![心理学效应](http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20181201/04d70d0af13f49e48b607b2cab4a66b2.webp)
 - 承认吧，人生来就是孤独的
 
-<iframe src="//player.bilibili.com/player.html?aid=39370474&cid=69181558&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=39370474&cid=69181558&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - 【2021-8-3】独居者《[独自生活的人们](https://youtu.be/G9wjqS2yaIM)》 一部平平无奇的韩国电影，却有很多人打5星！因为太真实了！
 
@@ -180,7 +180,7 @@ permalink: /partner
 - [单身狗速进！如何科学有效地脱单？](https://www.bilibili.com/video/av75629882)
    - `最优停止问题`或`37%法则`，先谈37%*N次恋爱，再看后来者是否比前面优秀，据此决定是否结婚
    - 应用前提：单向性，一次一个，只能选择一次，无法回头，如招聘（秘书问题）、租房、谈恋爱等情形
-- <iframe src="//player.bilibili.com/player.html?aid=75629882&cid=129377172&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=75629882&cid=129377172&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [李永乐老师和西瓜妹现场解析：什么是爱情？如何寻找真命天子？](https://www.ixigua.com/i6618463993403015688/)
 
 ### 是做海王，还是从一而终？
@@ -1359,10 +1359,10 @@ permalink: /partner
 韩国Solfa TV做了个社会实验：`1 VS 40 相亲，能找到对的人吗？`，邀请一位男生与 40 位女生同时相亲，通过群聊的形式，男生提出各种问题，不符合的女生就离场，可在不断严苛的限制条件下，真的能找到最合适自己的人吗？
 
 - [男版](https://www.bilibili.com/video/av23785599?zw)
-- <iframe src="//player.bilibili.com/player.html?aid=23785599&cid=39766775&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=23785599&cid=39766775&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 - [女版](https://www.bilibili.com/video/av15000343)
-- <iframe src="//player.bilibili.com/player.html?aid=15000343&cid=24433607&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=15000343&cid=24433607&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 所以，不要列太多条条框框，尤其是外在条件，多从内心去判断。
 
@@ -1388,9 +1388,9 @@ permalink: /partner
 #### 剩女
 
 【2021-11-14】国外PBS拍摄的中国纪录片leftover women《剩女》，[上](https://www.bilibili.com/video/BV1Si4y1x7Qi/)，[下](https://www.bilibili.com/video/BV1Si4y1x7Qi?p=2)
-- <iframe src="//player.bilibili.com/player.html?aid=540553332&bvid=BV1Si4y1x7Qi&cid=187030594&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=540553332&bvid=BV1Si4y1x7Qi&cid=187030594&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 传媒大学女生被妈妈“控制”，去心理咨询
-- <iframe src="//player.bilibili.com/player.html?aid=540553332&bvid=BV1Si4y1x7Qi&cid=187030594&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=540553332&bvid=BV1Si4y1x7Qi&cid=187030594&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 来自山东的律师，家里人只有她接受过高等教育，思想层面的矛盾很难协调，家里长辈都是以自己认为的幸福定义孩子是否幸福，却忘了放手，忽略了人是独立的个体，长辈多用亲情绑架，很棘手。34岁时选择出国（法国）留学
 - 35岁以上算高龄高危，5倍风险，国内暂无冻卵子机构，国外有，泰国乌克兰
 
@@ -1400,7 +1400,7 @@ permalink: /partner
 - [B站](https://www.bilibili.com/bangumi/play/ep508882?theme=movie&spm_id_from=333.337.0.0)，[文章](https://www.nfpeople.com/article/11272)
 - 该片真实地记录了生活在都市的五位单身女性，面对婚姻和生活的选择。
 
-<iframe src="//player.bilibili.com/player.html?aid=909438685&bvid=BV14M4y127Yd&cid=1081455568&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=909438685&bvid=BV14M4y127Yd&cid=1081455568&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 本片真实的记录了生活在都市的五位单身女性：
 - 有人想谈一场不分手的恋爱
@@ -2267,7 +2267,7 @@ pua男的五大特征
 ### 婚姻制度还能坚持多久—婚姻史明明就是男性上位史
 
 - 【2020-3-28】[【婚姻制度】还能坚持多久—婚姻史明明就是男性上位史](https://www.bilibili.com/video/BV1n7411y72E/?spm_id_from=autoNext)，内容来自：《古代社会》《被劫持的私生活》《婚姻史》这三本书
-- <iframe src="//player.bilibili.com/player.html?aid=99606535&bvid=BV1n7411y72E&cid=169987905&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=99606535&bvid=BV1n7411y72E&cid=169987905&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 男性地位上升与婚姻制度都是社会发展的产物。
 - 氏族社会时，死亡率高，劳动力产生的集体协作效益大于单个男性，所以女性地位更高。

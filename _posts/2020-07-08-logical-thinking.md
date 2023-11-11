@@ -621,7 +621,7 @@ ref：
 
 逻辑是什么？在BBC的一部纪录片——《`逻辑的乐趣`》（The Joy of Logic）中，深入浅出、幽默感十足地介绍了逻辑学的重要概念，以及在现实生活中的应用及价值。[乐在其中逻辑学.2013](https://www.bilibili.com/video/BV1Lx411H7sx)
 
-<iframe src="//player.bilibili.com/player.html?aid=13304742&bvid=BV1Lx411H7sx&cid=21809726&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=13304742&bvid=BV1Lx411H7sx&cid=21809726&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 这部纪录片没有用枯燥的术语去讲解，相反，它讲了一个故事……
 
@@ -1246,11 +1246,11 @@ tl.render_notebook()
 
 想体验这种感觉？推荐视频《直观感受数量级视频》
 
-<iframe src="//player.bilibili.com/player.html?aid=8816645&cid=14544558&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=8816645&cid=14544558&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 或者玩《宇宙的刻度游戏》  当用这样的视野来看待自己时，整个世界就不一样了。
 
-<iframe src="//player.bilibili.com/player.html?aid=12826240&cid=21080276&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=12826240&cid=21080276&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 在这里写一点自己了解到并在不断实践学习的牛人思维：
 
@@ -1431,7 +1431,7 @@ PS：<font color='red'>这个世界从来没有救世主</font>。
 - 智者重修，以真切入；
 - 小人重计，以虚切入！
 
-<iframe src="//player.bilibili.com/player.html?aid=670011662&bvid=BV1ma4y1L7AT&cid=249271300&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=670011662&bvid=BV1ma4y1L7AT&cid=249271300&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
 
 详解：
 - 第一条，**穷**者重**利**，以**利**切入。更没钱的人，你就不要去谈什么理想愿景了，直接告诉他能赚多少钱就行了。但天天操心的柴米油盐的人，你就不要去谈什么琴棋书画了。哪能有意思呢？
@@ -1450,7 +1450,7 @@ PS：<font color='red'>这个世界从来没有救世主</font>。
 3. 与**贵**者言，依于**势**。和有地位、有权势的人说话，要懂得借势，言谈举止得体，说话不卑不亢，站在平等的角度讨论问题。
 4. 与**贱**者言，依于**谦**。和身份卑微的人说话，要放下身段，说话要谦卑自牧，尊重他人。
 
-<iframe src="//player.bilibili.com/player.html?aid=372788373&bvid=BV18Z4y137n4&cid=257680314&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=372788373&bvid=BV18Z4y137n4&cid=257680314&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 ### 李叔同
 

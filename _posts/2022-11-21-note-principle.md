@@ -134,7 +134,7 @@ Think for yourself to decide
 ### 视频介绍
 
 [Ray Dalio《原则》中文配音 1-8合集](https://www.bilibili.com/video/BV1gV411f7Lr)
-- <iframe src="//player.bilibili.com/player.html?aid=412504181&bvid=BV1gV411f7Lr&cid=169665478&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=412504181&bvid=BV1gV411f7Lr&cid=169665478&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 - 英文原版
 - <iframe width="100%" height="600" src="https://www.youtube.com/embed/B9XGUpQZY38" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

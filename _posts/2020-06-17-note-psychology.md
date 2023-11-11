@@ -54,7 +54,7 @@ mathjax: true
   - 人们总是凭借直觉认为，自己所见和所感的都是真实的。然而，真的是这样吗？心理学史上最知名的实验之一“看不见的大猩猩”告诉我们：事实上，即使最明显的信息也会被我们漏掉。在当今这个信息和新事物大量塞满我们生活的时代，生活中的“大猩猩”更是无处不在。
   - 《看不见的大猩猩》的作者系两名权威心理学专家，生动而幽默地揭示了生活中常见的六大错觉：注意错觉、记忆错觉、自信错觉、知识错觉、因果错觉以及潜能错觉。通过阅读《看不见的大猩猩》，你会懂得，你所见的、记住的、以为的、知道的等，也许，全都不是真实的。
 
-<iframe src="//player.bilibili.com/player.html?aid=59827203&bvid=BV1Rt411J7xE&cid=104210315&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=59827203&bvid=BV1Rt411J7xE&cid=104210315&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
 
 ## 心理学效应
 
@@ -271,7 +271,7 @@ mathjax: true
 - 3、努力探索，真正控制
 - 4、放弃过度自我保护
 
-<iframe src="//player.bilibili.com/player.html?aid=556614199&bvid=BV1Je4y1D7NK&cid=791877391&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=556614199&bvid=BV1Je4y1D7NK&cid=791877391&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 视频要点
 - 00:07 人安全感建立的关键时期是？0-3岁
@@ -581,7 +581,7 @@ pie title "心理学起效因子分布"
 3. 著名的人格测验如大五人格，艾森克，奥尔波特，投射测验，MBTI和黑暗三角人格测验（2012年最新）
 4. 一些因素与人格的关系：性格，文化，男女差异，约会，政治观点
 
-<iframe src="//player.bilibili.com/player.html?aid=84956574&bvid=BV1U7411r7gH&cid=145272426&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=84956574&bvid=BV1U7411r7gH&cid=145272426&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 人格障碍
 
@@ -835,7 +835,7 @@ MBTI是一种**4维**人格评估指标，是在瑞士心理学家`荣格`划分
 
 【MBTI】[16型人格的打架姿势](https://www.bilibili.com/video/BV1d4411R7HE/)
 
-<iframe src="//player.bilibili.com/player.html?aid=64556431&bvid=BV1d4411R7HE&cid=112077295&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=64556431&bvid=BV1d4411R7HE&cid=112077295&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 MBTI人格类型在大家眼里的智力排名
 - 16.ESFJ
@@ -1441,11 +1441,11 @@ MBTI人格类型在大家眼里的智力排名
 
 - 视频解说系列：[乌合之众-群体心理学研究](https://www.bilibili.com/video/BV1H741157a2)
 
-<iframe src="//player.bilibili.com/player.html?aid=88157372&bvid=BV1H741157a2&cid=150608022&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=88157372&bvid=BV1H741157a2&cid=150608022&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [为什么人一抱团就会变傻：5分钟读完《乌合之众》](https://www.bilibili.com/video/BV1Qx411n7tz)
 
-<iframe src="//player.bilibili.com/player.html?aid=13266215&bvid=BV1Qx411n7tz&cid=21750956&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=13266215&bvid=BV1Qx411n7tz&cid=21750956&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 结束
 
