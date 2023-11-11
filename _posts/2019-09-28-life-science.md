@@ -18,7 +18,7 @@ permalink: /science
 - 纪录片.[宗教和科学：次终极求知欲.2017](https://www.bilibili.com/video/av21596719?from=search&seid=2156070789432112346)
    - 科学和宗教是人类审视自我、认识宇宙的两种表现。是科学解放了宗教，还是宗教激励了科学，艺术家和科学家共同探讨科学与宗教相互纠结影响的话题。
 
-<iframe src="//player.bilibili.com/player.html?aid=21596719&cid=35576964&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=21596719&cid=35576964&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 ## 什么是科学精神
 
@@ -173,24 +173,24 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 
 - [两分钟带你了解光速的使用方法，纯属脑洞](https://www.ixigua.com/7075690245890834980?logTag=4116eda516c6c6c3b64b)，太阳发出的光要8分30秒才能达到地球，我们看到的一切影响都源自过去
 
-<iframe src="//player.bilibili.com/player.html?aid=542697065&bvid=BV1Mi4y1L7o9&cid=252132939&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=542697065&bvid=BV1Mi4y1L7o9&cid=252132939&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 【2021-10-17】[宇宙尽头：一片死寂](https://www.bilibili.com/video/BV1z4411Y7tX/)，作者主页[SYMPHONY OF SCIENCE](https://www.symphonyofscience.com/vids)
 
-<iframe src="//player.bilibili.com/player.html?aid=52012946&bvid=BV1z4411Y7tX&cid=365220412&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=52012946&bvid=BV1z4411Y7tX&cid=365220412&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 施一公：我感知的世界并不真实的
 
 【2022-11-4】[人类感知的世界并不是真实的世界-清华大学生命学院校长施一公](https://www.bilibili.com/video/BV1Fg411K7v4)
-- <iframe src="//player.bilibili.com/player.html?aid=506956933&bvid=BV1Fg411K7v4&cid=449958937&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=506956933&bvid=BV1Fg411K7v4&cid=449958937&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 ## 地球历史
 
 ### 中国从何而来
 
 【2021-10-7】[中国从哪里来？——以地理的视角](https://www.bilibili.com/video/BV1SU4y1A7wX)，青藏高原，改变行星气候，亚洲水塔
-- <iframe src="//player.bilibili.com/player.html?aid=675759092&bvid=BV1SU4y1A7wX&cid=417052243&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=675759092&bvid=BV1SU4y1A7wX&cid=417052243&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 
@@ -210,11 +210,11 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 
 【2021-10-16】
 - 童年时只闻其声不见其影的鸟类
-  - <iframe src="//player.bilibili.com/player.html?aid=848164729&bvid=BV14L4y187i9&cid=413312898&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=848164729&bvid=BV14L4y187i9&cid=413312898&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 10种令人称奇的鸟叫
-  - <iframe src="//player.bilibili.com/player.html?aid=589902915&bvid=BV12q4y1S7id&cid=393690231&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=589902915&bvid=BV12q4y1S7id&cid=393690231&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 100种最好听的鸟叫声大全
-  - <iframe src="//player.bilibili.com/player.html?aid=504027025&bvid=BV1zg411u7Pw&cid=366009810&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+  - <iframe src="//player.bilibili.com/player.html?aid=504027025&bvid=BV1zg411u7Pw&cid=366009810&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 #### 鸽子
 
@@ -257,7 +257,7 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 ## 第一期 技术本身是带有时代性的
 
 - [觉者：梁冬对话华大基因CEO尹烨](https://www.bilibili.com/video/av19676456)
-<iframe src="//player.bilibili.com/player.html?aid=19676456&cid=32083799&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe> 
+<iframe src="//player.bilibili.com/player.html?aid=19676456&cid=32083799&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe> 
 
 `生物多样性`本身就是生命的本质。
 - 从整个生物角度看，人类是很渺小的，地球上已探知的生物有一千万种，相比与其他生命体，人类的存在只是在万年的尺度上，远远比不上那些已经存在了几亿年，甚至几十亿年的生命体。而人类常常自诩高等生物，某种程度上好像扮演了上帝这样一角色，实际来看，这是<font color='red'>人自身的认知偏见</font>。在大自然面前，我们人类还是太把自己当回事了。
@@ -558,7 +558,7 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 [YouTube频道](https://www.youtube.com/channel/UCexTUrPayxIs8r83idXPidQ?view_as=subscriber)
 
 - [生死轮回-全4集](https://www.bilibili.com/video/av4671038)
-<iframe src="//player.bilibili.com/player.html?aid=4671038&cid=15965727&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=4671038&cid=15965727&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 # 血型
@@ -594,7 +594,7 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 
 【2023-2-26】[硅谷女乔布斯，世界最美女骗子 “一滴血的骗局”](https://www.bilibili.com/video/BV1Pv411A7bu)
 
-<iframe src="//player.bilibili.com/player.html?aid=250573394&bvid=BV1Pv411A7bu&cid=411785176&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='100%'> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=250573394&bvid=BV1Pv411A7bu&cid=411785176&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='100%'> </iframe>
 
 一位“天才女骗子” —— `伊丽莎白·霍姆斯`。这个曾经最炙手可热的女企业家，是如何靠一滴血忽悠了全世界，把商界政界大佬都骗得团团转的呢？
 - 有本书就叫《坏血》讲的霍姆斯的故事
@@ -685,9 +685,9 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
 
 【2021-12-12】S学姐
 - [你知道当全世界一半的抗生素都被中国人用掉之后的结果是什么吗？](https://www.bilibili.com/video/BV1bZ4y1j75p?spm_id_from=333.999.0.0)
-- <iframe src="//player.bilibili.com/player.html?aid=370055241&bvid=BV1bZ4y1j75p&cid=173310958&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="500"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=370055241&bvid=BV1bZ4y1j75p&cid=173310958&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="500"> </iframe>
 - [你和病毒必须死一个！？人类对病毒的战争只赢过一次！](https://www.bilibili.com/video/BV1bV411f7eg?spm_id_from=333.999.0.0)
-- <iframe src="//player.bilibili.com/player.html?aid=412566007&bvid=BV1bV411f7eg&cid=403971459&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="500"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=412566007&bvid=BV1bV411f7eg&cid=403971459&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="500"> </iframe>
 
 
 ## 免疫系统
@@ -840,7 +840,7 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
       - 蝙蝠没有翅膀，<font color='blue'>蝙蝠独特的飞行器官是翼手。</font>
 
 - [蝙蝠为啥会携带多数致命病毒](https://www.bilibili.com/video/av84801954)
-<iframe src="//player.bilibili.com/player.html?aid=84801954&cid=145024799&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=84801954&cid=145024799&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ## 蝙蝠引起的病毒史
@@ -907,7 +907,7 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
 
 - [霍乱改变村庄的故事-The Story of Cholera](https://www.bilibili.com/video/av14272785?t=12)
 
-<iframe src="//player.bilibili.com/player.html?aid=14272785&cid=23295565&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=14272785&cid=23295565&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 埃博拉
 
@@ -915,7 +915,7 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
    - 埃博拉（Ebola virus）又译作伊波拉病毒。是一种十分罕见的病毒，1976年在苏丹南部和刚果（金）（旧称扎伊尔）的埃博拉河地区发现它的存在后，引起医学界的广泛关注和重视，“埃博拉”由此而得名。是一个用来称呼一群属于纤维病毒科埃博拉病毒属下数种病毒的通用术语。是一种能引起人类和灵长类动物产生埃博拉出血热的烈性传染病病毒，有很高的死亡率，在50%至90%之间，致死原因主要为中风、心肌梗塞、低血容量休克或多发性器官衰竭。
    - [小女孩战胜埃博拉的故事-The Story of Ebola](https://www.bilibili.com/video/av14289647?t=384)
 
-<iframe src="//player.bilibili.com/player.html?aid=30745091&cid=53670420&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=30745091&cid=53670420&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## SARS
 
@@ -942,13 +942,13 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
    - [新加坡纪录片《平民英雄——SARS危机》](https://www.bilibili.com/video/av5204257)
    - [央视《新闻调查——北京：非典阻击战》](https://www.bilibili.com/video/av13799601)
    - [2003年非典时期敢说真话的钟南山](https://www.bilibili.com/video/av85065534)
-<iframe src="//player.bilibili.com/player.html?aid=85333784&cid=145866210&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=85333784&cid=145866210&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 中科院病毒所（传说中的`P4实验室`）·`石正丽`--[追踪SARS源头](https://www.bilibili.com/video/av84617328)
    - 中科院病毒所石正丽团队探索SRAS源头，经过十余年的研究，最终确定云南某处的某重蝙蝠携带的SRAS病毒经过各种重组、在果子狸等野生动物身上二次传播，最终进入到广东的酒楼餐馆而感染到人体，成为可以“人传人”的SARS病毒！
    - 也借此视频，引发大家对此次武汉新型冠状病毒的高度关注，进一步思考人类应该怎样和大自然相处！
    - 追查病毒哪有那么容易，03年的SARS病毒源头到2013年才彻底清楚，中华菊头蝠，而不是果子狸，其中科学家走访了西南几个省份，不停地小蝙蝠洞，做试验，最后才发现SARS的基因组库;不要轻言p4研究所不行，真相是sars真正源头就是p4研究院石正丽团队花了近十年发现的，这次冠状病毒只用了几天就提取了基因组序列，世卫组织都赞叹…
 
-<iframe src="//player.bilibili.com/player.html?aid=84617328&cid=144730426&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=84617328&cid=144730426&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - [什么是真正的P4实验室](https://www.ixigua.com/i6801817327697396236/?logTag=BX7bliIdNRqrS2N0fDtjU)
 - 通过电影《[恐怖地带-Outbreak]()》片段认识[什么是P4实验室！](https://www.ixigua.com/i6793551255944823310/?logTag=h2yyUYrs7mg_B7v_7Ofik)
@@ -991,9 +991,9 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
          - 有的潜伏者可能就直接痊愈了, 变成了抵抗者；
          - 方程并没有单独处理这些情况, 因为一定程度内这些异类都可以被扰动因子所包含
       - 研究一个固定的模型加扰动比不断地往模型里加扰动项好研究的多的多
-<iframe src="//player.bilibili.com/player.html?aid=85508117&cid=146158152&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=85508117&cid=146158152&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [武汉协和医院医生家属3分钟演示#家庭版抗疫措施怎么做](https://www.bilibili.com/video/av85048389)
-<iframe src="//player.bilibili.com/player.html?aid=85048389&cid=145417016&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=85048389&cid=145417016&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2020-1-30】上海医疗救治专家组组长、华山医院感染科主任：共产党员上，没有讨价还价！
    - [张文宏：不能把医务人员当机器](https://www.pearvideo.com/video_1646989)，遇到困难，党员先上！
@@ -1001,12 +1001,12 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
 ![](https://wenhui.whb.cn/u/cms/www/202001/29230613v3g9.jpg)
 ![](https://wenhui.whb.cn/u/cms/www/202001/292306138ip2.jpg)
 - [上海医疗救治专家组组长：不能欺负听话的人, 一线岗位全部换上党员，没有讨价还价！](https://www.bilibili.com/video/av85648127?from=search&seid=16536846388848932291)
-<iframe src="//player.bilibili.com/player.html?aid=85648127&cid=146389957&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=85648127&cid=146389957&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 2018-5-31，张文宏：[人类如何抵抗传染病入侵](https://www.bilibili.com/video/av85738955)
-<iframe src="//player.bilibili.com/player.html?aid=85738955&cid=146549741&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=85738955&cid=146549741&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 2020-1-18，张文宏：[疫情季也是流感季，让病毒不再肆虐，你必须知道的真相](https://www.bilibili.com/video/av87551022/)
-<iframe src="//player.bilibili.com/player.html?aid=87551022&cid=149604273&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=87551022&cid=149604273&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 冠状病毒，传染病python仿真，[Urban policy in the time of Coronavirus](https://lexparsimon.github.io/coronavirus/)
 
 ![](https://lexparsimon.github.io/images/coronavirus/corona_virus.jpg)
@@ -1016,7 +1016,7 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
    - ![](https://pic2.zhimg.com/80/v2-ecec5e0776607ee8b559a55e700297e9_720w.jpg)
 - 【2020-2-15】毕导THU制作的关于新冠病毒论文解读，science、nature、柳叶刀、bio等科技期刊的关系
    - [科学家光写论文不抗疫情？几分钟带你看完新冠病毒的所有论文](https://www.bilibili.com/video/av88290870)
-<iframe src="//player.bilibili.com/player.html?aid=88290870&cid=151707407&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=88290870&cid=151707407&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [美国约翰·霍普金斯大学对新冠肺炎的看法](https://weibo.com/tv/v/It55EEbQ3?fid=1034:4469297708204065)，韩国电影[传染病](https://weibo.com/tv/v/IsVUpEN5H?fid=1034:4468941959921707)
 
 - 2018年05月31日，张文宏老师，北京cc讲堂，演讲现场问答环节，介绍各种传染病知识
@@ -1048,9 +1048,9 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
    - 更多内容，点击以上链接
 ![](https://imgm.gmw.cn/attachement/jpg/site215/20200429/6568504434110609849.jpg)
 
-<iframe src="//player.bilibili.com/player.html?aid=86240685&cid=147401925&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=86240685&cid=147401925&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
-<iframe src="//player.bilibili.com/player.html?aid=86428428&cid=147713281&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=86428428&cid=147713281&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 新冠病毒感染过程
 
@@ -1151,7 +1151,7 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
 
 - [韩红：这些年我一直在捐款，快捐空了，我希望我能挣点钱](https://www.bilibili.com/video/av70066211)
    - 真正的明星是有爱心的，乐于慈善的；而不是在酒吧、夜场、开跑场，跟人炫耀
-   - <iframe src="//player.bilibili.com/player.html?aid=70066211&cid=121395497&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+   - <iframe src="//player.bilibili.com/player.html?aid=70066211&cid=121395497&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 张文宏
 - 钟南山
 - 公益人[陈行甲](https://weibo.com/p/1005056223608350/home)
@@ -1159,8 +1159,8 @@ While it’s sometimes helpful to borrow a little confidence and a positive outl
    - 三种简单而又极其强烈的情感，支配着我的一生：对爱的渴望，对知识的渴求，对世人疾苦难以遏制的同情心。
    - [湖北需要太多的“陈行甲”，而且不仅仅是湖北](https://baijiahao.baidu.com/s?id=1658587992331726709)
    - [《我是演说家 第5季》【纯享】网红书记陈行甲《我的母亲》](https://www.bilibili.com/video/av45633719?from=search&seid=9739715247721549220)
-<iframe src="//player.bilibili.com/player.html?aid=45633719&cid=79900434&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=45633719&cid=79900434&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
    - [舍得智慧讲堂 - 陈行甲](https://www.bilibili.com/video/av55480339/?spm_id_from=333.788.videocard.0)
-   <iframe src="//player.bilibili.com/player.html?aid=55480339&cid=97003021&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+   <iframe src="//player.bilibili.com/player.html?aid=55480339&cid=97003021&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 # 资料

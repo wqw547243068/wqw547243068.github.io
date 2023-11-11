@@ -391,7 +391,7 @@ pie title 影响寿命的几大因素
 
 代谢类疾病是近几年医保上花费最多的疾病
 
-<iframe src="//player.bilibili.com/player.html?aid=378875113&bvid=BV1Af4y1u7KE&cid=448732060&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=378875113&bvid=BV1Af4y1u7KE&cid=448732060&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 健康生活
 
@@ -462,7 +462,7 @@ pie title 影响寿命的几大因素
 ### 减脂套餐
 
 【2022-1-7】[【尹正】我的一周食谱](https://www.bilibili.com/video/BV18X4y1g7mn)
-- <iframe src="//player.bilibili.com/player.html?aid=714991215&bvid=BV18X4y1g7mn&cid=320044040&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=714991215&bvid=BV18X4y1g7mn&cid=320044040&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 ### 久坐不利
@@ -1054,7 +1054,7 @@ pie title 影响寿命的几大因素
 
 [只戴N95? 必看的全面口罩选购&佩戴技巧](https://www.bilibili.com/video/av84931918)
 
-<iframe src="//player.bilibili.com/player.html?aid=84931918&cid=145230963&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=84931918&cid=145230963&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 #### 口罩可以防流感病毒吗
 
@@ -1202,7 +1202,7 @@ pie title 影响寿命的几大因素
    - ![](https://pic4.zhimg.com/80/v2-42e9beda5ce2a367833f4b654557a2c4_720w.jpg)
 
 - 参考：[最细致除甲醛攻略](https://www.bilibili.com/video/BV1Pt411A7qc)，甲醛检测机构要认准CNAS和CMA资质
-<iframe src="//player.bilibili.com/player.html?aid=61261882&bvid=BV1Pt411A7qc&cid=106556801&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=61261882&bvid=BV1Pt411A7qc&cid=106556801&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - 【2018-09-28】[王自如测自如甲醛事件后续，检测结果令人意外](https://www.bilibili.com/video/BV1AW411S7u6)
    - 自如检测结论：（合格线甲醛0.1，TVOC 0.6）
@@ -1214,7 +1214,7 @@ pie title 影响寿命的几大因素
       - 甲醛挥发周期长，即便请专业公司除甲醛也治标不治本
       - 维权取证难
       - 除甲醛有效免费的方式就是通风，通风！
-<iframe src="//player.bilibili.com/player.html?aid=32635478&bvid=BV1AW411S7u6&cid=57112165&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=32635478&bvid=BV1AW411S7u6&cid=57112165&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 #### 如何除甲醛
@@ -1442,10 +1442,10 @@ pie title 影响寿命的几大因素
 - [如何通俗浅显地讲解感冒的根本原因？](https://www.zhihu.com/question/40313120/answer/575794177)
 
 [流感是怎么感染人体，以及流感是怎么被人体打败的](https://www.bilibili.com/video/BV1dE411x7qU)
-- <iframe src="//player.bilibili.com/player.html?aid=93336364&bvid=BV1dE411x7qU&cid=159357285&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=93336364&bvid=BV1dE411x7qU&cid=159357285&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 [纪录片《病毒与人体细胞大战》](https://www.bilibili.com/video/BV1n741147oC)
-- <iframe src="//player.bilibili.com/player.html?aid=87907915&bvid=BV1n741147oC&cid=150188332&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=87907915&bvid=BV1n741147oC&cid=150188332&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 流感的一生：
 
@@ -1561,7 +1561,7 @@ pie title 影响寿命的几大因素
 - 用一小块酒精湿纸巾擦一大块地方属于典型的无效消毒，酒精很快就干了，作用时间不够。
 
 [3D动画演示感染新冠全过程](https://www.bilibili.com/video/BV1Wi4y1b7ed/)
-- <iframe src="//player.bilibili.com/player.html?aid=540037639&bvid=BV1Wi4y1b7ed&cid=173762873&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=540037639&bvid=BV1Wi4y1b7ed&cid=173762873&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ### 确诊
 
