@@ -44,6 +44,14 @@ permalink: /literature
 <img src="{{site.url}}/wqw/fig/wechat/20140922.jpg" height="100%" width="500" />
 
 
+### 张爱玲
+
+
+【2023-11-12】[社恐、怪胎、天才！走近20世纪最传奇的作家之一](https://www.bilibili.com/video/BV1qf4y1375c)
+
+<iframe src="//player.bilibili.com/player.html?aid=292375358&bvid=BV1qf4y1375c&cid=391009639&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
+
 ### 莫言
 
 待定
