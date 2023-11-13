@@ -3,7 +3,7 @@ layout: post
 title:  "如何开公司 - How to start you own campany"
 date:   2020-02-04 10:29:00
 categories: 读书笔记
-tags: 创业 自由职业 财务自由 公司注册 远程 外包 五险一金 社保 法律 众包 创业 天眼查
+tags: 创业 自由职业 财务自由 公司注册 远程 外包 五险一金 社保 法律 众包 创业 天眼查 法律
 excerpt: 怎么开公司，有哪些注意事项？
 author: 鹤啸九天
 mathjax: true
@@ -912,7 +912,9 @@ permalink: /start_company
 - 7、强制加班不给加班费违法
 - 8、不签劳动合同双倍赔偿，不双倍赔偿违法
 
+## 法律术语
 
+【2023-11-13】脱口秀不是法外之地，罗翔调侃李诞，[视频](https://www.toutiao.com/video/7268576496783261756)
 
 
 # 结束
