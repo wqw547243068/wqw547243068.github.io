@@ -7,12 +7,14 @@ tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪
 excerpt: 计算机视觉之目标检测知识汇总
 author: 鹤啸九天
 mathjax: true
+permalink: /object
 ---
 
 * content
 {:toc}
 
 # 目标检测
+
 
 ## 背景
 
@@ -579,6 +581,27 @@ _RetinaNet_
 YOLOX 是旷视开源的高性能检测器。旷视的研究者将解耦头、数据增强、无锚点以及标签分类等目标检测领域的优秀进展与 YOLO 进行了巧妙的集成组合，提出了 YOLOX，不仅实现了超越 YOLOv3、YOLOv4 和 YOLOv5 的 AP，而且取得了极具竞争力的推理速度。YOLOX-L版本以 68.9 FPS 的速度在 COCO 上实现了 50.0% AP，比 YOLOv5-L 高出 1.8% AP！还提供了支持 ONNX、TensorRT、NCNN 和 Openvino 的部署版本
 
 
+### 部署实践
+
+
+（1）环境准备
+- 环境确认
+  - 先判断Windows系统是32位还是64位,再选择对应的工具包
+    - x86-64是64位版本，x86是32位版本
+    - 所有客户端软件都需要注意32还是64位
+  - 简洁方法: 右键 → 计算机 → 属性 → 系统类型
+    - ![](https://pic3.zhimg.com/80/v2-df2152fe82d486ac8164fcd7d791ce32_1440w.webp)
+  - 详细方法见[微软官方文档](https://support.microsoft.com/en-us/windows/32-bit-and-64-bit-windows-frequently-asked-questions-c6ca9541-8dce-4d48-0415-94a3faa2e13d)
+- Git工具安装 
+  - windows安装git bash，参考[地址](https://git-scm.com/download/win)
+  - 注意：
+- Python环境安装
+  - windows安装Python3，下载[地址](https://www.python.org/downloads/windows/)
+
+（2）yolox下载部署
+- 使用git下载代码到本地计算机
+- 进入目录 YOLOX，本地安装
+
 ```sh
 git clone git@github.com:Megvii-BaseDetection/YOLOX.git
 cd YOLOX
@@ -586,11 +609,15 @@ pip3 install -v -e .  # or  python3 setup.py develop
 ```
 
 
-数据准备
-- [pixbay](https://pixabay.com/zh/videos/search/%E9%AB%98%E9%80%9F%E5%85%AC%E8%B7%AF/)，高速免费视频下载
+（3）数据准备
+- 准备测试视频
+- 可以从[pixbay](https://pixabay.com/zh/videos/search/%E9%AB%98%E9%80%9F%E5%85%AC%E8%B7%AF/)下载高速免费视频
 
 
-下载模型
+（4）下载模型
+
+从GitHub下载模型文件到本地model目录
+- 以下是shell脚本，windows下需要手工下载、操作
 
 ```sh
 mkdir model
@@ -598,7 +625,7 @@ cd model
 wget https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_l.pth 
 ```
 
-启动
+（5）启动
 
 ```sh
 # ==== image demo =====
