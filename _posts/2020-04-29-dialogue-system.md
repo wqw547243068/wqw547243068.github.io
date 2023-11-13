@@ -2052,7 +2052,9 @@ NLU即Natural Language Understanding，负责理解用户的语句输入，一�
 
 #### ATIS
 
-- 数据集信息：航空旅行领域的语料，上个世纪发布的数据，是对话领域常用的数据集。
+数据集信息：航空旅行领域的语料，上个世纪发布的数据，是对话领域常用的数据集。
+- 数据源 [ATIS](https://github.com/RasaHQ/DIET-paper/tree/master/data/ATIS)
+
 - 该数据集规模很小，训练集4400+，测试集800+，槽位意图识别难度不大，目前处于被刷爆的程度，intent detection和slot filling任务的F值都已经在95+以上了，唯一可以挑战的是NLU的Acc，也称为Sentence Acc，即输入句子的意图、槽位同时正确才算该样本预测正确。目前的SOTA为Bert，具体可上paper-with-code网站搜索
 - 当前的SOTA：
 
@@ -2061,12 +2063,14 @@ ATIS数据集是一个比较常规的NLU数据集，它是一个标注过的预�
 #### SNIPS
 
 SNIPS数据集，该数据集是从Snips个人语音助手收集的。它包含13,784个训练样本和700个测试样本。包含7种意图，39种实体。
+- [SNIPS](https://github.com/RasaHQ/DIET-paper/tree/master/data/SNIPS)
+
+- [NLU-Evaluation-Data](https://github.com/RasaHQ/DIET-paper/tree/master/data)
 
 #### NLU-Benchmark
 
 NLU-Benchmark数据集标注了场景，动作和实体。例如：
-
-”schedule a call with Lisa on Monday morning“ ，标注的场景是日历calendar, 动作action是设立一个事件event，实体有2个，是事件名字和日期 [event name: a call with Lisa]和 [date: Monday morning]， 意图标签是通过拼接场景和动作得到的，例如：calendar set event。
+- ”schedule a call with Lisa on Monday morning“ ，标注的场景是日历calendar, 动作action是设立一个事件event，实体有2个，是事件名字和日期 [event name: a call with Lisa]和 [date: Monday morning]， 意图标签是通过拼接场景和动作得到的，例如：calendar set event。
 
 该数据集有25716个utterrances语句，涵盖了多个家庭助理任务，例如播放音乐或日历查询，聊天，以及向机器人发出的命令等。数据集拆分成10 folds, 每个fold有9960个训练样本和1076个测试样本，覆盖了64种意图和54种实体类别。
 
