@@ -3,7 +3,7 @@ layout: post
 title:  "对话系统之对话管理器-Dialogue Manager"
 date:   2020-04-01 18:45:00
 categories: 自然语言处理 人工智能
-tags: 深度学习 对话系统 多轮 FSM 有限状态机 陈蕴侬 AIML DAG 调度
+tags: 深度学习 对话系统 多轮 FSM 有限状态机 陈蕴侬 AIML DAG 调度 diet rasa
 excerpt: 对话管理器技术总结
 author: 鹤啸九天
 mathjax: true
@@ -2475,7 +2475,7 @@ rasa项目的开发流程
 ### rasa框架
 
 - Rasa有两个主要模块：
-  - **Rasa NLU** （`NLU`）：用于理解用户消息，包括意图识别和实体识别，它会把用户的输入转换为结构化的数据。
+  - **Rasa NLU** （`NLU`）：用于理解用户消息，包括意图识别和实体识别，它会把用户的输入转换为结构化的数据。使用 `DIET` 模型（2020年5月sota）
     - 支持不同的 Pipeline，其后端实现可支持spaCy、MITIE、MITIE + sklearn 以及 tensorflow，其中 spaCy 是官方推荐的，另外值得注意的是从 0.12 版本后，MITIE 就被列入 Deprecated 了。
     - rasa nlu 支持不同的 Pipeline，其后端实现可支持 spaCy、MITIE、MITIE + sklearn 以及 tensorflow，其中 spaCy 是官方推荐的，另外值得注意的是从 0.12 版本后，MITIE 就被列入 Deprecated 了
     - 最重要的两个 pipeline 是：`supervised_embeddings` 和 `pretrained_embeddings_spacy`。
@@ -2551,6 +2551,9 @@ rasa项目的开发流程
   - [Rasa 聊天机器人框架使用](https://www.jianshu.com/p/ad11f5815447)
   - Rasa官方文档： [Build contextual chatbots and AI assistants with Rasa](https://rasa.com/docs/rasa/)
   - github地址：[RasaHQ/rasa](https://github.com/RasaHQ/rasa)
+
+
+
 
 ## 百度 DM Kit
 
