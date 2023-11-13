@@ -1416,6 +1416,9 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 - 【2023-10-23】[口型几乎完美、还能卡点，霉霉说地道中文的视频火了，背后AI工具原来是它](https://www.jiqizhixin.com/articles/2023-10-23-15)
 - 【2023-10-30】[AI让霉霉说中文，口音那叫一个地道！背后的中国初创公司7个月收入百万美元](https://mp.weixin.qq.com/s/te0GHWEE0NKqPZMEBbkjpQ)
 
+限制
+- HeyGen再厉害，也只有2分钟免费时长
+
 译制片配音的行业标杆
 - 除了中英互译，还有人尝试将英语翻译成其他语言，效果同样很不错
 - ![](https://image.jiqizhixin.com/uploads/editor/2e83292e-c24e-4d47-8bf0-0ac03106aebf/1698048590747.png)
@@ -1439,9 +1442,18 @@ HeyGen的产品正式上线后的一年不到，创始人Joshua Xu就发表博�
 除了价格贵，HeyGen 还存在一些技术问题，比如
 - 生成的AI视频存在视频**抖动**、**眨眼频率过高**等。
 
-##### MyHeyGen
+###### HeyGenClone
+
+俄罗斯程序员也在业余时间做了一个：HeyGenClone
+- [HeyGenClone](https://github.com/BrasD99/HeyGenClone.git)
+
+###### MyHeyGen
 
 【2023-11-13】HeyGen的山寨开源版本 [MyHeyGen](https://github.com/AIFSH/MyHeyGen)， 一个平民版视频翻译工具，音频翻译，翻译校正，视频唇纹合成全流程解决方案
+
+除了英文，MyHeyGen还支持转法语、日语等共计16种语言。
+
+视频翻译的三个流程：音频翻译、翻译校正和视频唇纹合成，它全部一个流程解决。
 
 [参考项目](https://github.com/AIFSH/MyHeyGen#参考项目感谢他们的优秀作品)
 - [HeyGenClone](https://github.com/BrasD99/HeyGenClone.git)
