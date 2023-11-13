@@ -3,7 +3,7 @@ layout: post
 title:  "教育与人生-Education & Life"
 date:   2014-11-12 14:02:00
 categories: 读书笔记
-tags: 贫富差距 家庭教育 留学生 凉子访谈录 衡水中学 海淀学区 脱口秀 原生家庭 户口 户籍 落户 房产 罗翔
+tags: 贫富差距 家庭教育 留学生 凉子访谈录 衡水中学 海淀学区 脱口秀 原生家庭 户口 户籍 落户 房产 罗翔 出国
 excerpt: 穷人一直穷，富人一直富吗？
 author: 鹤啸九天
 mathjax: true
@@ -605,6 +605,11 @@ Pay close attention. This is your life. This is water.
 #### 出国
 
 香港户口，随随便便孩子985，再不济也能上内地211… 香港工作7年就能拿到永居，不用买房，再回内地生活，有优惠政策…
+
+【2023-11-13】[北京可以网上预约申办换发新护照](https://mp.weixin.qq.com/s/8-sWycn1TK3WDB4G1vZuKQ), 换发新护照[预约网址](http://gaj.beijing.gov.cn/fuwu/index.html)
+
+
+
 
 ### 学区房
 
