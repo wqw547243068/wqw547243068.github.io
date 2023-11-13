@@ -2489,6 +2489,27 @@ ARknovv A1采用了耐德佳的自由曲面光学方案，拥有55°的透视FOV
 
 ARknovv A1系列还搭载了车载AR导航功能，在行车状态下，ARknovv A1的HUD导航显示只会占据前方视野下一个小角落以保证行车安全问题。
 
+
+#### AI Pin 投影仪
+
+【2023-11-9】两位苹果公司的前设计和工程团队高管创立的 [Humane](https://hu.ma.ne/aipin) 公司将于 11 月 9 日发布首款可穿戴设备 —— Ai Pin
+- 一种基于服装的可穿戴设备，没有屏幕，大小与一块饼干差不多。该设备还将配备一个摄像头、一个麦克风和扬声器，以及各种传感器和激光投影仪，用户可用磁铁将其吸附在衣服上
+- ![](https://hu.ma.ne/_next/image?url=%2Faipin%2Foverview%2F7-interactions%2Fframe-7.jpg&w=3840&q=100)
+
+《时代》杂志公布「年度最佳发明」-- Humane AI Pin：重新想象智能手机什么是“AI Pin”？
+
+“AI Pin”是一个微小的**激光投影仪**，可以夹在衬衫前面。
+
+尽管它不需要连接到电话或电脑上，但这个“AI Pin”可以接打电话、上网、回答各种各样的问题，使它成为一个独特的虚拟助手和通讯设备。
+
+“AI Pin”没有屏幕，而是将通话信息和其他数据投射到你的手掌上，这让人不禁想起了《星际迷航》（Star Trek）中的**全息发射器**。
+
+Humane 公司的“AI Pin”由高通（Qualcomm）骁龙（Snapdragon）芯片驱动，并运行一种专有的大型语言模型，该模型由OpenAI最强大的生成算法GPT-4驱动。它还配备了一个麦克风、一个摄像头和一堆传感器，使它能够与世界互动，收集数据，并在日常生活中回答问题。
+
+AI pin 核心就是一个可交互式的空中投影设备
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gMsQO5u7-NQ?si=vIbQ2flY-vC9-TjN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### 脑机接口 BRI
 
 大脑与机器人接口（`BRI`）堪称是人类艺术、科学和工程的集大成之作。
