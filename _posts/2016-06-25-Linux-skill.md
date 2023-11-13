@@ -3999,6 +3999,12 @@ exec 3<&-
 - [牛逼哄哄的 Git 命令动画演示，一看就懂！](https://www.cnblogs.com/lzkwin/p/12658029.html)，[CS Visualized: Useful Git Commands](https://links.jianshu.com/go?to=https%3A%2F%2Fdev.to%2Flydiahallie%2Fcs-visualized-useful-git-commands-37p1)
 ![](https://tukuimg.bdstatic.com/scrop/80a43c9d8428273cc9cabe71256eb9ef.gif)
 
+## 安装部署
+
+git windows下载
+- 国际：直接去[官网](https://git-scm.com/download/win)
+- 国内：[gitforwindows](https://gitforwindows.org/)
+
 
 ## VSCode 
 
