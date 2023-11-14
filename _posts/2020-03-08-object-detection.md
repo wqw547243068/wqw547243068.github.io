@@ -692,6 +692,7 @@ v8版本不局限于目标检测，更像是一个AI视觉处理平台，不但�
 - Pose (COCO) 姿态估计
 - Classification (ImageNet) 分类
 
+
 ### yolov8 模型
 
 YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生成的。
@@ -717,6 +718,9 @@ YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生�
 
 ### yolov8 实践
 
+
+#### 安装
+
 ```sh
 # 安装
 pip install ultralytics
@@ -725,6 +729,8 @@ pip install ultralytics
 yolo predict model=yolov8n.pt source='https://ultralytics.com/images/bus.jpg'
 
 ```
+
+#### 目标检测
 
 代码调用
 
@@ -770,6 +776,24 @@ results 类
 - masks: 检测出来的遮罩层，调用图像分割时，这项有数据。
 - keypoints: 检测出来的关键点，人体姿势估计时，身体的点就是这项。
 - names: 分类数据的名称，比如{0: 人，1: 狗}这类索引。
+
+
+#### 目标跟踪
+
+```py
+from ultralytics import YOLO
+
+# Load an official or custom model
+model = YOLO('yolov8n.pt')  # Load an official Detect model
+model = YOLO('yolov8n-seg.pt')  # Load an official Segment model
+model = YOLO('yolov8n-pose.pt')  # Load an official Pose model
+# model = YOLO('path/to/best.pt')  # Load a custom trained model
+
+# Perform tracking with the model
+results = model.track(source="https://youtu.be/LNwODJXcvt4", show=True)  # Tracking with default tracker
+results = model.track(source="https://youtu.be/LNwODJXcvt4", show=True, tracker="bytetrack.yaml")  # Tracking with ByteTrack tracker
+
+```
 
 
 ## 端侧 目标检测
