@@ -112,7 +112,7 @@ Let's think step by step:
 
 我们是小公司也不想得罪大佬们，名字我就不说了，不过各位大佬，开源社区不容易，如果你们就是开源的模型结构，求高抬贵手就叫原来的名字吧，免得我们还做一堆工作就为了适配你们改名字...
 
-[Yi-34B 讨论区](https://huggingface.co/01-ai/Yi-34B/discussions/11)，总监 Richard Lin 确认
+[Yi-34B 讨论区](https://huggingface.co/01-ai/Yi-34B/discussions/11)，[01-ai](https://huggingface.co/01-ai) 总监 Richard Lin 确认
 
 ## 复现思路
 
