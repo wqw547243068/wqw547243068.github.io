@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -2275,6 +2275,8 @@ ControlNet 的优点是：
 
 ### 智能家居
 
+#### 语音助手操控家居
+
 高级Web开发人员Mate Marschalko用短短不到1小时的时间，通过与ChatGPT背后的GPT-3大模型交互，结合Siri Shortcuts做出了一个更智能的语音助手。这个语音助手不仅能控制整个苹果HomeKit智能家居系统，而且能够以超低的延迟响应轻松回答生各种问题。
 
 他给予了ChatGPT极高评价，称尝试过这个产品后，包括苹果Siri、亚马逊Alexa、谷歌Home在内的所有“智能”助手，都显得如此愚蠢而没用。
@@ -2282,6 +2284,20 @@ ControlNet 的优点是：
 - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/TV46RMG9kDz4Bu~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676360394&x-signature=tCxwmviN1wJeomk42ZXzv2DHEVI%3D)
 
 
+#### ultralytics yolo
+
+【2023-10-7】[当YoloV8与ChatGPT互通，这功能是真的强大！后期打通语音试试](https://mp.weixin.qq.com/s/Zmg10_4ywkg1OdZ77uF7CA)
+- 代码[ultralytics](https://github.com/ultralytics/ultralytics)
+- 流浪地球的MOSE 变成现实
+
+```sh
+pip install ultralytics
+yolo predict model=yolov8n.pt source='https://ultralytics.com/images/bus.jpg'
+# 接入视频并启动Yolov8实时检测
+python main.py
+# chatgpt 命令
+Lock the area on the right for real-time detection
+```
 
 ### 数字人
 
