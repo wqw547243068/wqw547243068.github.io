@@ -679,8 +679,20 @@ echo "$cmd" && eval $cmd
 - [GitHub](https://github.com/ultralytics/ultralytics)
 - [labelImg](https://github.com/HumanSignal/labelImg)
 
+### yolov8 功能
+
 v8版本不局限于目标检测，更像是一个AI视觉处理平台，不但可以做检测，还可以做**分类、分割、跟踪，甚至姿态估计**。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6fbc01d3d14f438ea9aa6b8ce86fbf68~tplv-tt-origin-asy2:5aS05p2hQElURueUt-WtqQ==.image?_iz=58558&from=article.pc_detail&x-expires=1695564568&x-signature=fWs9kU8VRfPoVHMKh8r0N%2FPnU88%3D)
+- ![](https://raw.githubusercontent.com/ultralytics/assets/main/im/banner-tasks.png)
+
+功能
+- Detection (COCO) 检测
+- Detection (Open Image V7)
+- Segmentation (COCO) 分割
+- Pose (COCO) 姿态估计
+- Classification (ImageNet) 分类
+
+### yolov8 模型
 
 YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生成的。
 - 可以自行使用labelImg进行图片标记，扩充数据集
@@ -703,12 +715,15 @@ YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生�
 | YOLOv8x| 53.9| 479.1| 257.8|
 
 
+### yolov8 实践
 
 ```sh
 # 安装
 pip install ultralytics
-# 测试
-yolo predict model=yolov8n.pt source=bus.jpg
+# 测试, 模型文件才 7m !
+#yolo predict model=yolov8n.pt source=bus.jpg
+yolo predict model=yolov8n.pt source='https://ultralytics.com/images/bus.jpg'
+
 ```
 
 代码调用
@@ -725,6 +740,7 @@ print(results)
 # -----------
 from ultralytics import YOLO
 from PIL import Image
+
 model = YOLO('yolov8n-seg.pt')
 image = Image.open("bus.jpg")
 results = model.predict(source=image, save=True, save_txt=True) 
@@ -735,6 +751,18 @@ results = model.predict(source="0", ……)
 # 查看结果
 results[0].boxes
 results[0].masks
+# -------------
+from ultralytics import YOLO
+
+# Load a model
+model = YOLO("yolov8n.yaml")  # build a new model from scratch
+model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
+
+# Use the model
+model.train(data="coco128.yaml", epochs=3)  # train the model
+metrics = model.val()  # evaluate model performance on the validation set
+results = model("https://ultralytics.com/images/bus.jpg")  # predict on an image
+path = model.export(format="onnx")  # export the model to ONNX format
 ```
 
 results 类
