@@ -15,6 +15,18 @@ permalink: /emb
 
 # 向量化
 
+## 向量化用途
+
+向量化用途广泛，LLM时代的作用大
+
+[LLM-Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm_embedder), a unified embedding model to comprehensively support the retrieval augmentation needs of large language models, including knowledge retrieval, memory retrieval, examplar retrieval, and tool retrieval. It is fine-tuned over 6 tasks:
+-   知识问答 _Question Answering (qa)_
+-   对话检索 _Conversational Search (convsearch)_
+-   聊天 _Long Conversation (chat)_
+-   长程语言模型 _Long-Range Language Modeling (lrlm)_
+-   情境学习 _In-Context Learning (icl)_
+-   工具调用 _Tool Learning (tool)_
+- ![](https://github.com/FlagOpen/FlagEmbedding/raw/master/FlagEmbedding/llm_embedder/imgs/llm-embedder.png)
 
 ## 文本向量化
 
@@ -101,6 +113,8 @@ print(qa.run(query))
 ## 向量化原理
 
 基础模型大多基于 Transformer Encoder 预训练语言模型: `BERT`, `RoBERTa`，`Ernie`等
+
+
 
 ### 向量化方式
 
@@ -296,7 +310,7 @@ embeddings.client = sentence_transformers.SentenceTransformer(
         embeddings.model_name, device='mps')
 ```
 
-### M3E
+### 【2023-7-14】M3E
 
 【2023-7-14】[研究人员开源中文文本嵌入模型，填补中文向量文本检索领域的空白](https://www.toutiao.com/article/7254900867097625127)
 - [M3E，开源中文 Embedding 模型新 SOTA](https://blog.csdn.net/sinat_30045277/article/details/131208109)
@@ -386,7 +400,7 @@ finetuner.run(epochs=1)
 
 ### MUSE 多语种
 
-【2023-8-31】2019年 META 推出的[MUSE](https://github.com/facebookresearch/MUSE), 包含很多小语种
+2019年 META 推出的[MUSE](https://github.com/facebookresearch/MUSE), 包含很多小语种
 
 A library for Multilingual Unsupervised or Supervised word Embeddings, whose goal is to provide the community with:
 - state-of-the-art multilingual word embeddings (`fastText` embeddings aligned in a common space)
@@ -402,7 +416,7 @@ A library for Multilingual Unsupervised or Supervised word Embeddings, whose goa
 claude推荐用 s-bert embedding
 
 
-### C-Pack - FlagEmbedding
+### 【2023-9-21】C-Pack - FlagEmbedding
 
 #### 介绍
 
@@ -448,13 +462,75 @@ Training 训练一个 general-purpose 的text embeddings有两个重要因素：
 - 然后进行无监督学习（对比学习）
 - 最后是多任务的无监督学习（加入指令来区分不同的任务）。
 
-#### 效果
+#### 效果评测
 
 模型的效果表现出色，数据集的构建给之后的研究者提供了一个很好的Benchmark。
 - ![](https://pic2.zhimg.com/80/v2-a1ec17e47b55792ab42188a7ebfa5ba1_1440w.webp)
 
 baai-general-embedding 模型在 MTEB 和 C-MTEB 排行榜上都实现了最先进的性能
-- 超过 OpenAI text-embedding-ada-002 和 m3e-large
+- 超过 OpenAI `text-embedding-ada-002` 和 `m3e-large`
+
+[语义模型 FlagEmbedding 实践](https://zhuanlan.zhihu.com/p/657722124)
+
+BGE在语义理解问题上支持`s2s`（短文本匹配短文本），和`s2p`（短文本匹配长文本）
+
+三组实验
+- 短文本匹配长文本
+- 短文本匹配长文本
+- （instruction+）短文本匹配长文本
+
+数据集: 下载了1w条训练数据
+- [SimCLUE](https://github.com/CLUEbenchmark/SimCLUE)
+
+对比两个模型：`BGE`和`M3E`
+
+结论
+- 整体上BGE模型的分数要高一些
+
+```py
+def semantic_retrieval(s1, s2, model):
+    s1_logit = model.encode(s1, show_progress_bar=True, normalize_embeddings=True)
+    s2_logit = model.encode(s2, show_progress_bar=True, normalize_embeddings=True)
+    score = np.dot(s1_logit, s2_logit.T)
+    
+    print(score)
+    
+    for i in range(len(s1)):
+        for j in range(len(s2)):
+            print(f"\n{s1[i]}\n{s2[j]}\n相似度为: {score[i][j]}")
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+# 直接使用hugging face
+# model = SentenceTransformer('moka-ai/m3e-base')
+
+# 下载模型到本地，放在models目录下面
+model = SentenceTransformer('models/bge')
+
+# this is a s2s task
+s1 = ["今天天气这么样", "今天中午吃什么"]
+s2 = ["天气如何", "中午想吃什么"]
+semantic_retrieval(s1, s2, model)
+
+# this is a s2p task without instruction
+s1 = ["酒精的危害", "如何戒烟", "学习的重要性"]
+s2 = ["天气如何一次饮酒过量可引起急性酒精中毒。\n表现分三期：\n（1）早期(兴奋期)。血中酒精浓度达50mg/dl表现语无伦次，情感爆发，哭笑无常等。\n（2）中期(共济失调期)。血中酒精浓度150mg/dl。表现语言不清，意识模糊，步态蹒跚等。\n（3）后期(昏迷期)。血中酒精浓度250mg/dl以上。表现昏迷，瞳孔散大，大小便失禁，面色苍白。一般人的酒精致死量为5～8g/kg。",
+      "饮茶养生，当然，也能帮你摆脱吸烟的毛病。当你想要吸烟时，推荐给自己一杯浓茶，喝下去，会有很好的效果。",
+      "只有学习，才能让我们不断成长，当你体会到自己不断成长的时候，你就会发现，那种发自内心的快乐是其他物质无法带给我们的。 只有学习，才能获得新知，增长才干，才能实现我们的梦想。"
+     ]
+semantic_retrieval(s1, s2, model)
+
+# this is a s2p task with instruction
+instruction = "为这个句子生成表示以用于检索相关文章：" 
+s1 = ["酒精的危害", "如何戒烟", "学习的重要性"]
+s1 = [instruction + s for s in s1]
+s2 = ["饮酒过量可引起急性酒精中毒。\n表现分三期：\n（1）早期(兴奋期)。血中酒精浓度达50mg/dl表现语无伦次，情感爆发，哭笑无常等。\n（2）中期(共济失调期)。血中酒精浓度150mg/dl。表现语言不清，意识模糊，步态蹒跚等。\n（3）后期(昏迷期)。血中酒精浓度250mg/dl以上。表现昏迷，瞳孔散大，大小便失禁，面色苍白。一般人的酒精致死量为5～8g/kg。",
+      "饮茶养生，当然，也能帮你摆脱吸烟的毛病。当你想要吸烟时，推荐给自己一杯浓茶，喝下去，会有很好的效果。",
+      "只有学习，才能让我们不断成长，当你体会到自己不断成长的时候，你就会发现，那种发自内心的快乐是其他物质无法带给我们的。 只有学习，才能获得新知，增长才干，才能实现我们的梦想。"
+     ]
+semantic_retrieval(s1, s2, model)
+
+```
 
 
 #### 安装
@@ -561,17 +637,26 @@ with torch.no_grad():
 ```
 
 
-### AnglE 香港理工
+### 【2023-10-24】AnglE 
 
-【2023-10-24】Embedding SOTA 是 AnglE, 在 STS13，STS14，STS15，STS16 以及 Sick-R 上都达到了 SOTA。
-- Arxiv: [AnglE-optimized Text Embeddings](https://arxiv.org/pdf/2309.12871.pdf)
+#### AnglE 介绍
+
+【2023-10-24】Embedding SOTA 是 `AnglE`, 在 STS13，STS14，STS15，STS16 以及 Sick-R 上都达到了 SOTA。
+- Arxiv: 香港理工 [AnglE-optimized Text Embeddings](https://arxiv.org/pdf/2309.12871.pdf)
 - Github: [AnglE](github.com/SeanLee97/AnglE)
 - Huggingface: SeanLee97/angle-llama-7b-nli-20231027
 - [Compare with M3E](https://github.com/SeanLee97/AnglE/issues/3): 论文主要对比英语embedding效果，而m3e主要是中文embedding，所以暂未对比，11月发布中文预训练模型, [详见](https://github.com/SeanLee97/AnglE/blob/main/README_zh.md)
 
+
+#### AnglE 原理
+
 高质量文本嵌入在提高语义文本相似度（STS）任务中起着至关重要的作用，这是大型语言模型（LLM）应用中的关键组成部分。然而，现有文本嵌入模型面临的一个普遍挑战是**梯度消失**问题，主要是优化目标中依赖**余弦函数**，而余弦函数具有**饱和区域**。
 
-本文提出了一种新颖的**角度优化**文本嵌入模型——`AnglE`。 核心思想是在复杂空间中引入角度优化。这种方法有效地缓解了余弦函数饱和区域的不良影响，这可能会阻碍梯度并阻碍优化过程。
+本文提出了一种新颖的**角度优化**文本嵌入模型——`AnglE`。 核心思想是在复杂空间中引入**角度优化**。这种方法有效地缓解了余弦函数饱和区域的不良影响，这可能会阻碍梯度并阻碍优化过程。
+
+基于 AnglE 开箱即用的文本向量库，支持中英双语，可用于文本相似度计算、检索召回、匹配等场景。代码基于 🤗transformers 构建，提供易用的微调接口，可在 3090Ti、 4090 等消费级 GPU 上微调 LLaMA-7B 模型，支持多卡分布式训练。
+
+#### AnglE 效果
 
 在现有的短文本STS数据集和从GitHub Issues收集的新的长文本STS数据集上进行了实验。此外，还研究了具有有限标记数据的特定领域STS场景，并探讨了AnglE如何与LLM注释数据配合使用。
 
@@ -579,6 +664,16 @@ with torch.no_grad():
 - AnglE优于忽略余弦饱和区域的最先进的STS模型。
 - 证明了AnglE生成高质量文本嵌入的能力以及角度优化在STS中的有用性。
 
+AnglE-roberta-wwm-ext 效果最佳
+
+各数据集的微调及评估代码如下：
+-   ATEC: [examples/Angle-ATEC.ipynb](https://github.com/SeanLee97/AnglE/blob/main/examples/Angle-ATEC.ipynb)
+-   BQ: [examples/Angle-BQ.ipynb](https://github.com/SeanLee97/AnglE/blob/main/examples/Angle-BQ.ipynb)
+-   LCQMC: [examples/Angle-LCQMC.ipynb](https://github.com/SeanLee97/AnglE/blob/main/examples/Angle-LCQMC.ipynb)
+-   PAWSX: [examples/Angle-PAWSX.ipynb](https://github.com/SeanLee97/AnglE/blob/main/examples/Angle-PAWSX.ipynb)
+-   SST-B: [![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/drive/1HzuaZjdkKqL_JasQnSGZ3g2H3H2aR6yG?usp=sharing)
+
+#### AnglE 使用
 
 ```py
 # python -m pip install -U angle-emb
@@ -602,6 +697,55 @@ vec = model(output_hidden_states=True, **tok).hidden_states[-1][:, -1].float().d
 print(vec)
 ```
 
+#### 微调模型
+
+只需要准备好数据即可快速微调。数据格式必须要转成 datasets.Dataset （使用方式请参照官方文档 [Datasets](https://huggingface.co/docs/datasets/index)）且必须要提供 text1, text2, label 三列。
+
+```py
+from datasets import load_dataset
+from angle_emb import AnglE, AngleDataTokenizer
+
+# 1. 加载模型
+angle = AnglE.from_pretrained('hfl/chinese-roberta-wwm-ext', max_length=128, pooling_strategy='cls').cuda()
+
+# 2. 加载数据并转换数据
+ds = load_dataset('shibing624/nli_zh', 'STS-B')
+ds = ds.rename_column('sentence1', 'text1')
+ds = ds.rename_column('sentence2', 'text2')
+ds = ds.select_columns(["text1", "text2", "label"])
+train_ds = ds['train'].shuffle().map(AngleDataTokenizer(angle.tokenizer, angle.max_length), num_proc=8)
+valid_ds = ds['validation'].map(AngleDataTokenizer(angle.tokenizer, angle.max_length), num_proc=8)
+test_ds = ds['test'].map(AngleDataTokenizer(angle.tokenizer, angle.max_length), num_proc=8)
+
+# 3. 训练
+angle.fit(
+    train_ds=train_ds,
+    valid_ds=valid_ds,
+    output_dir='ckpts/sts-b',
+    batch_size=64,
+    epochs=5,
+    learning_rate=3e-5,
+    save_steps=100,
+    eval_steps=1000,
+    warmup_steps=0,
+    gradient_accumulation_steps=1,
+    loss_kwargs={
+        'w1': 1.0,
+        'w2': 1.0,
+        'w3': 1.0,
+        'cosine_tau': 20,
+        'ibn_tau': 20,
+        'angle_tau': 1.0
+    },
+    fp16=True,
+    logging_steps=100
+)
+
+# 4. 加载最优模型评估效果
+angle = AnglE.from_pretrained('hfl/chinese-roberta-wwm-ext', pretrained_model_path='ckpts/sts-b/best-checkpoint').cuda()
+corrcoef, accuracy = angle.evaluate(test_ds, device=angle.device)
+print('corrcoef:', corrcoef)
+```
 
 ## 向量评估
 
