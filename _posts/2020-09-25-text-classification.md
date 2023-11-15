@@ -1603,10 +1603,10 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 
 ### Seq2Tree
 
-【2022-9-19】[<层次文本分类>Seq2Tree：用seq2seq方式解决HTC问题](https://zhuanlan.zhihu.com/p/558718402)
+【2022-9-19】[层次文本分类 Seq2Tree：用seq2seq方式解决HTC问题](https://zhuanlan.zhihu.com/p/558718402)
 - 论文：[Constrained Sequence-to-Tree Generation for Hierarchical Text Classification](https://arxiv.org/abs/2204.00811)
 
-大部分模型不考虑层次文本分类的路径问题，基本上都是直接进行标签预测，导致可能出现上下层label冲突的问题
+大部分模型不考虑层次文本分类的路径问题，直接进行标签预测，导致可能出现上下层**label冲突**
 
 用T5-Base作为backbone来实现「seq2Tree」，主要做了两部分的设定和改造：
 - 「DFS based label linearization」: 这部分主要是为了适配seq2seq，「对样本的gold label进行序列化改造」。具体就是提出了一个基于DFS的标签线性化方法，因为一般层次标签体系都是树，而用DFS可以保证能够访问到同一条path内从上到下的所有节点。
