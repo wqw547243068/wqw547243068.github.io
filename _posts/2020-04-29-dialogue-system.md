@@ -2317,8 +2317,9 @@ DSTC大家族（简介）：
 
 【2021-10-19】[DIET模型 rasa 聊天机器人核心模型论文](https://zhuanlan.zhihu.com/p/162995854)，原文：[Introducing DIET: state-of-the-art architecture that outperforms fine-tuning BERT and is 6X faster to train](https://rasa.com/blog/introducing-dual-intent-and-entity-transformer-diet-state-of-the-art-performance-on-a-lightweight-architecture/)
 - With Rasa 1.8, our research team is releasing a new state-of-the-art lightweight, multitask transformer architecture for NLU: **Dual Intent and Entity Transformer** (DIET).
+- 【2023-5】[DIET源码开源](https://github.com/RasaHQ/rasa/blob/main/rasa/nlu/classifiers/diet_classifier.py)
 
-`DIET`模型是Dual Intent and Entity Transformer的简称, 解决了对话理解问题中的2个问题(意图分类和实体识别)。DIET使用的是纯监督的方式，没有任何预训练的情况下，**无须大规模预训练**是关键，性能好于fine-tuning Bert, 但是训练速度是bert的**6倍**。
+`DIET`模型是Dual Intent and Entity Transformer的简称, 解决了对话理解问题中的2个问题(意图分类和实体识别)。DIET使用纯监督方式，没有任何预训练的情况下，**无须大规模预训练**是关键，性能好于fine-tuning Bert, 但是训练速度是bert的**6倍**。
 
 对话建模的2种常用方法：**端到端** 和 **模块化**系统
 - 模块化系统：如POMDP的对话策略（Williams and Young，2007）和 混合代码网络 (Williams et al., 2017) 会使用独立的自然语言理解（NLU）和生成（NLG）系统。对话策略会从NLU接收输出并选择下一个action，然后NLG生成相应的响应。
@@ -2364,6 +2365,8 @@ transformer模块，使用2层layer，使用token的相对位置编码。
 **Named entity recognition 命名实体识别部分**
 
 实体识别分类标签y是根据条件随机场Conditional Random Field (CRF) 计算的，是用的transformer的输出的向量，注意根据输出向量可以找到对应的输入token位置。
+
+详见站内专题: [diet实现](bert#dietrasa)
 
 ## 任务型对话
 
