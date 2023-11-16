@@ -3,7 +3,7 @@ layout: post
 title:  "LBS 技术专题"
 date:   2016-10-15 10:30:00
 categories: 技术工具
-tags: 高德 gps geohash base64 gps 北斗 定位 gpx 节日 节假日 时间 时区
+tags: 高德 gps geohash base64 gps 北斗 定位 gpx 节日 节假日 时间 时区 宠物
 author : 鹤啸九天
 excerpt: LBS 技术相关知识
 mathjax: true
@@ -1751,8 +1751,19 @@ GPS定位方式，不需要sim卡，不需要连接网络，只要在户外，�
 
 
 
+## 定位技术应用
 
 
+### 宠物跟踪器
+
+【2023-11-15】Github上的嵌入式项目之——宠物跟踪器
+- [findmycat 官网](https://www.findmycat.io/), [文档](https://www.findmycat.io/docs/iOSApplication)
+- [github](https://github.com/FindMyCat/)
+
+使用定位技术，在室内和室外工作，电池寿命长达数月，可以定位宠物的位置，误差只有10厘米。硬件部分包括一块4层PCB电路板，其中包括LTE和GPS线路、天线、电源管理和晶体等。该跟踪器需要打印三个部分，其中包括顶盖、底座和底盖。官方网站和文档说明可供参考。
+- ![](https://www.findmycat.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero_tracker_render.a3f7dc53.png&w=1200&q=75)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MjsZzaDcbYY?si=duQW4KfvGg9v6gOj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 # 结束
