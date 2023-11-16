@@ -1252,6 +1252,26 @@ terminalizer play demo
 terminalizer render demo
 ```
 
+
+### 聊天
+
+#### smallchat 
+
+【2023-11-15】 Redis创始人开源最小聊天服务器 [SmallChat](https://github.com/antirez/smallchat) ，C语言实现，仅200行代码
+- [使用方法](https://github.com/antirez/smallchat/issues/3)
+
+```sh
+cd smallchat
+# 编译
+# gcc smallchat.c -o smallchat && ./smallchat
+make
+# 启动服务, 默认端口 SERVER_PORT 7711
+./smallchat-server
+# 启动客户端连接
+/nick # 设置昵称
+./smallchat-client 127.0.0.1 7711
+```
+
 ## linux进程
 
 一个进程包括代码、数据和分配给进程的资源。fork（）函数通过**系统调用**创建一个与原来进程几乎完全相同的进程，也就是两个进程可以做完全相同的事，但如果初始参数或者传入的变量不同，两个进程也可以做不同的事。
