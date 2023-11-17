@@ -38,6 +38,12 @@ Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最
 - `CLIP`: 2021, 文本和图像混合
 - `KOSMOS-1`: 2023, 多模态大规模语言模型
 
+
+### Transformer 可视化
+
+【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
+- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
 ### Transformer 架构理解
 
 `Transformer`是一种`Encoder-Decoder`架构(Seq2Seq架构也是)，先把**输入**映射到`Encoder`，可以把Encoder想象成RNN，Decoder也是。
