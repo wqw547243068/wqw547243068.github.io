@@ -78,6 +78,36 @@ So, if you're using an out-of-range version of Python (older or newer) or a 32-b
 - 【2022-9-21】macos下编译失败
 
 
+### 旧版本安装
+
+【2023-11-17】albert代码需要tensorflow 1.*版本，当前Python 3.10不支持安装旧版TensorFlow
+
+解法
+- 新建 Python 3.7环境
+  - Python 3.10不支持TensorFlow 1版本, 需要 3.5~3.7版本
+  - TensorFlow各版本与Python[对应关系](https://tensorflow.google.cn/install/source_windows?hl=zh-cn#cpu)
+  - [tensorflow 历史版本列表](https://pypi.org/project/tensorflow/#history)
+- 找到TensorFlow官方下载地址
+  - pip源里没有TensorFlow 1版本
+
+```sh
+# 新建 Python 3.7环境
+conda create -n py37_tf1 python==3.7 
+#conda create -n py37_tf1 python==3.7 tensorflow==1.15.2
+# 安装 TensorFlow 1.15
+pip install tensorflow==1.15.2
+pip install tensorflow-gpu==1.15.2
+
+# 如果pip找不到，就直接通过源文件地址安装, 或编译
+# ---- install.sh -----
+#export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl
+export TF_BINARY_URL=https://files.pythonhosted.org/packages/5b/81/84fb7a323f9723f81edfc796d89e89aa95a9446ed7353c144195b3a3a3ba/tensorflow-1.15.2-cp37-cp37m-manylinux2010_x86_64.whl
+pip install --ignore-installed --upgrade $TF_BINARY_URL
+# ---------
+sh install.sh
+```
+
+
 # Tensorflow 1.*
 
 主要的是：
