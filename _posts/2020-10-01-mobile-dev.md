@@ -144,6 +144,15 @@ Android 开发者文档中对 Android 10 限制设备标识符读取的说明 `O
 移动距离很大或者抖动很厉害，也会进入light doze吗？
 - 初始5分钟。然后2倍增加。直到15分钟保持固定频率进入维护窗口
 
+### iOS 系统
+
+【2023-11-19】iPhone/iPad安装包的三种格式 deb、ipa 和 pxl的解释和说明
+
+目前 iOS 平台上常见的安装包有三种：deb、ipa 和 pxl。转自[链接](http://fanlb.blogbus.com/logs/80466716.html)
+- `deb` 格式是 Debian 系统(包含 Debian 和 Ubuntu )专属安装包格式，配合 APT 软件管理系统，成为了当前在 Linux 下非常流行的一种安装包。进入 2.x 时代之后有 Cydia 作者 Jay Freeman（saurik） 移植到 iPhone 平台上，一起的还有 APT 软件管理系统。
+- `ipa` 格式则是苹果在 iOS 平台上推出的专属软件安装包，在2.0固件开始才正式使用，是目前 iPhone/iPod Touch/iPad 平台上唯一的官方安装包。
+- `pxl` 格式则起源于 Mac 系统上的 pkg 安装包，被广泛应用于1.x固件时代，曾经是 iPhone 平台上唯一的软件安装包，现在仍在被91等软件所使用。
+
 
 ## 手机操作
 
