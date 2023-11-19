@@ -158,6 +158,16 @@ Android 开发者文档中对 Android 10 限制设备标识符读取的说明 `O
 【2023-11-19】 iOS 和 iPadOS 中信任手动安装的证书描述文件
 - [官方](https://support.apple.com/zh-cn/102390)
 
+#### App Store 里获取软件包
+
+Mac下获取App Store安装包临时存放路径，[方法](https://blog.csdn.net/yhawaii/article/details/49450519)
+
+在活动监视器中找到App Store下载服务进程
+- 打开活动监视器（Activity Monitor）
+- 找到名字为”storedownloadd”的进程
+- 选中”storedownloadd”的进程，点击第三个”打开的文件和端口”tab，就可以找到类似”/private/var/folders/l3/xxxxxxxxxxxxxxx/x/com.apple.appstore/497799835/xxxxx.pkg”的pkg文件，这个文件就是你要找的安装文件了，将它拷出到其他目录就可以了。需要注意的是，这个pkg文件是保存在一个零时目录下，所以在App Store安装完成前将它拷出来，所以你可以在下载完成之后，暂停安装，拷贝完成之后，再重新安装。
+
+【2023-11-19】实践失败，反应时间短，不好操作
 
 ## 手机操作
 
