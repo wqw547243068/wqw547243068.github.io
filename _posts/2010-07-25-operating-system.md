@@ -96,6 +96,23 @@ permalink: /os
 - ![](http://kb.parallels.com/Attachments/kcs-178392/Intel%20memory.png)
 
 
+### 文件管理
+
+
+#### Finder找不到文件
+
+【2023-11-19】[Mac上明明有这个文件，却搜索不出来？](https://www.zhihu.com/question/399576211)
+
+原因
+- 文件索引更新速度慢
+
+解法
+
+```sh
+sudo mdutil -a -i off
+sudo mdutil -a -i on
+```
+
 ### 虚拟机 
 
 macOS上可选的虚拟机软件主要有三款：`VirtualBox`、`VMWare Fusion`和`Parallel Desktop`
