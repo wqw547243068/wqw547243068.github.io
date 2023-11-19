@@ -922,17 +922,28 @@ FineTune 微调
 - 训练参数量极小（约0.1%）。
 - 大部分任务上效果会**差于**LoRA、Adapter等方法。
 
-### Prefix Tuning
+### Prefix Tuning -- 连续虚拟token
+
+prefix-tuning方法受语言模型in-context learning能力启发，只要有合适的上下文则语言模型可以很好的解决自然语言任务。
+
+但是，针对特定任务找到离散token前缀需要花费很长时间，prefix-tuning提出使用连续的**virtual token** embedding来替换离散token
 
 在每一个Transformer层都带上一些virtual token作为前缀，以适应不同的任务。
+
+transformer中的每一层，句子表征前面插入可训练的virtual token embedding。对于自回归模型(GPT系列)，在句子前添加**连续前缀**，即 `z=[prefix;x;y]` 。对于Encoder-Decoder模型(T5)，则在Ecoder和Decoder前都添加连续前缀 `z=[prefix;x|prefix'|y]`
+
+添加前缀的过程如图所示。
+- ![](https://pic2.zhimg.com/v2-2fd28b31d2a3261fa17c50cdaee19a05_r.jpg)
+
+虽然，prefix-tuning并没有添加太多的额外参数。但是，prefix-tuning**难以优化**，且会减少下游任务的序列长度。
 
 特点：
 - 前缀Token会占用序列长度，有一定额外计算开销。
 - Prefix Tuning的线性插值比较复杂。
 
-### Prompt Tuning
+### Prompt Tuning -- 简化
 
-该方法是Prefix Tuning 简化版本，针对不同的任务，仅在输入层引入virtual token形式的**软提示**（soft prompt）。
+该方法是 Prefix Tuning 简化版本，针对不同任务，仅在输入层引入virtual token形式的**软提示**（soft prompt）。
 
 特点：
 - 相对于Prefix Tuning，参与训练的参数量和改变的**参数量更小**，更节省显存。
@@ -946,12 +957,12 @@ FineTune 微调
 相较于**全参数微调**，Prompt Tuning也是通过**冻结LLM的原始参数**，添加少量额外训练参数以达到加速训练的目的；
 - ![](https://pic1.zhimg.com/80/v2-027a29613e0f2d780b44cbc0261c3218_1440w.webp)
 
-Prompt Tuning的实际效果可以从下面图中看出：
+Prompt Tuning 实际效果从下面图中看出：
 - 1，当模型参数不大的时候，Prompt Tuning比全参数微调的效果差一点，但是高于单纯的Prompt工程；
 - 2，当模型参数在100亿时，Prompt Tuning的效果和全参数微调的效果一样好；
 - ![](https://pic2.zhimg.com/80/v2-549a94de38e793377170c271a46bf9bd_1440w.webp)
 
-Prompt Tuning的可解释性说明：
+Prompt Tuning 可解释性说明：
 1.  对于已完成训练的prompt embedding来说，是无法与词表中任何token表示对应的（Trained soft-prompt embedding does not correspond to a known token）；
 2.  但是观察其邻域范围内的token表示可以看出其具有相同的语义，能够表示相同的意思（but nearest neighbors form a semantic group with similar meanings）；
 - ![](https://pic3.zhimg.com/80/v2-2baec89ee6fc953eb3cc690264b67caa_1440w.webp)
@@ -959,16 +970,16 @@ Prompt Tuning的可解释性说明：
 
 ### P-Tuning
 
-将Prompt转换为可学习的**Embedding层**，并用 MLP+LSTM 的方式来对 Prompt Embedding 进行一层处理。
-- 相比 Prefix Tuning，仅在输入层加入可微的virtual token；
-- 另外，virtual token的位置也不一定是前缀，插入的位置是可选的。
+将Prompt转换为可学习的**Embedding层**，并用 MLP+LSTM 方式对 Prompt Embedding 进行一层处理。
+- 相比 Prefix Tuning，仅在输入层加入**可微**的virtual token；
+- 另外，virtual token 位置也不一定是前缀，插入的位置是可选的。
 
 特点：
 - 引入一个prompt encoder（由一个双向的LSTM+两层MLP组成）来建模virtual token的相互依赖会收敛更快，效果更好。
 
 ### P-Tuning v2
 
-该方法在每个Transformer层都加入了prompt token作为输入，引入**多任务**学习，针对不同任务采用不同的提示长度。并且回归传统的**分类标签**范式，而不是**映射器**。
+每个Transformer层都加入了prompt token作为输入，引入**多任务**学习，针对不同任务采用不同的提示长度。并且回归传统的**分类标签**范式，而不是**映射器**。
 
 特点：
 - 解决了Prompt Tuning无法在小模型上有效提升的问题。
@@ -1023,6 +1034,10 @@ LoRA 的实现流程概述如下：
 
 LoRA微调可以采用不同的低秩矩阵适配不同的任务类型，且LLM的原始权重不用变化；
 - ![](https://pic2.zhimg.com/80/v2-0ba745c8fff2c7015d9463206c5be631_1440w.webp)
+
+LoRA将会使用低秩表示来编码 `△W` ，同时实现计算高效和存储高效。当预训练模型是175B GPT-3，可训练参数 `|0|` 可以小至 
+`|W0|` 的 0.01%
+ 
 
 整体上LoRA微调效果相对于基座模型有较大的提升，但是相对于全参数微调方式来说效果上还是低一点。
 - `Full fine-tune` > `LoRA` > `base model`
@@ -1117,6 +1132,256 @@ layer = lora.Linear(in_features, out_features, r=16)
 #### LoRA 实现
 
 官方notebook案例：[peft_lora_seq2seq](https://github.com/huggingface/peft/blob/main/examples/conditional_generation/peft_lora_seq2seq.ipynb)
+
+依赖包：
+- transformers提供模型加载和训练；
+- peft提供LoRA实现；
+- DeepSpeed提供训练加速。
+
+注意：
+>peft包目前还处于快速迭代当中，后续接口可能会有大的变动，也可能存在一些bug。
+
+关键依赖包版本：
+
+```sh
+transformers==4.26.1
+torch==1.13.1
+deepspeed==0.8.2
+peft==0.2.0
+```
+
+##### 训练代码
+
+假设训练代码位于train.py。
+
+导入依赖包
+
+```py
+import os
+import torch
+import random
+import datasets
+import numpy as np
+​
+from tqdm import tqdm
+from typing import Dict
+from torch.utils.data import DataLoader
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    DataCollatorForSeq2Seq,
+    TrainingArguments,
+    Trainer
+)
+from peft import (
+    LoraConfig,
+    TaskType,
+    get_peft_model,
+    get_peft_model_state_dict,
+    set_peft_model_state_dict
+)
+​
+def set_random_seed(seed):
+    if seed is not None and seed > 0:
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.random.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+​
+set_random_seed(1234)
+
+# ----- 设置参数 -----
+# LoRA参数
+LORA_R = 8
+LORA_ALPHA = 32
+LORA_DROPOUT = 0.1
+# 训练参数
+EPOCHS=3
+LEARNING_RATE=5e-5
+OUTPUT_DIR="./checkpoints"
+BATCH_SIZE=4 # 2
+GRADIENT_ACCUMULATION_STEPS=3
+# 其他参数
+MODEL_PATH = "bigscience/bloomz-7b1-mt"
+DATA_PATH = "./data/belle_open_source_1M.train.json"
+MAX_LENGTH = 512
+PATTERN = "{}\n{}"
+DS_CONFIG = "ds_zero2_config.json"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH) # 加载tokenizer
+
+# ---- 加载数据 -----
+dataset = datasets.load_dataset("json", data_files=DATA_PATH)
+# print(dataset["train"][0])
+# tokenize 分词
+def tokenize(text: str, add_eos_token=True):
+    result = tokenizer(
+        text,
+        truncation=True,
+        max_length=MAX_LENGTH,
+        padding=False,
+        return_tensors=None)
+    # 判断是否要添加eos_token
+    if (result["input_ids"][-1] != tokenizer.eos_token_id
+        and len(result["input_ids"]) < MAX_LENGTH
+        and add_eos_token):
+        result["input_ids"].append(tokenizer.eos_token_id)
+        result["attention_mask"].append(1)
+    result["labels"] = result["input_ids"].copy()
+    return result
+​
+def preprocess(example: Dict, train_on_inputs: bool = False):
+    prompt = example["input"]
+    response = example["target"]
+    text = PATTERN.format(prompt, response)
+    tokenized_inp = tokenize(text)
+    # 若train_on_inputs为False，则将label中与input相关的token替换为-100
+    if not train_on_inputs:
+        tokenized_prompt = tokenize(prompt,add_eos_token=False)
+        prompt_tokens_len = len(tokenized_prompt["input_ids"])
+        tokenized_inp["labels"] = [-100]*prompt_tokens_len + tokenized_inp["labels"][prompt_tokens_len:]
+    return tokenized_inp
+​
+train_data = dataset["train"].shuffle().map(preprocess, remove_columns=["id", "input", "target"])
+print(train_data[0])
+
+# ----- collate_fn -----
+# pad_to_multiple_of=8表示padding的长度是8的倍数
+collate_fn = DataCollatorForSeq2Seq(tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True)
+# 加载模型
+device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
+# device_map指定模型加载的GPU;troch_dtype=torch.float16表示半精度加载模型
+model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, torch_dtype=torch.float16, device_map=device_map)
+# ----- LoRA相关 -----
+lora_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    inference_mode=False,
+    r=LORA_R, # LoRA中低秩近似的秩
+    lora_alpha=LORA_ALPHA, # 见上文中的低秩矩阵缩放超参数
+    lora_dropout=LORA_DROPOUT, # LoRA层的dropout
+)
+# ----- 转换模型 -----
+model = get_peft_model(model, lora_config)
+model.config.use_cache = False
+old_state_dict = model.state_dict
+model.state_dict = (
+    lambda self, *_, **__: get_peft_model_state_dict(self, old_state_dict())
+).__get__(model, type(model))
+# 打印模型中的可训练参数
+model.print_trainable_parameters()
+# ----- 训练参数 -----
+args = TrainingArguments(
+    output_dir=OUTPUT_DIR, # checkpoint的存储目录
+    per_device_train_batch_size=BATCH_SIZE, # 单设备上的batch size
+    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS, # 梯度累加的step数
+    warmup_steps=100,
+    num_train_epochs=EPOCHS,
+    learning_rate=LEARNING_RATE,
+    fp16=True, # 使用混合精度训练
+    logging_steps=50,
+    evaluation_strategy="no", # 不进行评估
+    save_strategy="steps",
+    save_steps=2000, # 保存checkpoint的step数
+    save_total_limit=5, # 最多保存5个checkpoint
+    deepspeed=DS_CONFIG
+)
+# 模型训练
+trainer = Trainer(
+    model=model,
+    train_dataset=train_data,
+    eval_dataset=None,
+    args=args,
+    data_collator=collate_fn
+)
+trainer.train()
+model.save_pretrained("best_model")
+```
+
+DeepSpeed配置文件
+- DeepSpeed配置文件名为ds_zero2_config.json。
+
+```py
+{
+  "train_micro_batch_size_per_gpu": "auto",
+  "gradient_accumulation_steps": "auto",
+  "steps_per_print": 50,
+  "gradient_clipping": 1.0,
+  "zero_optimization": {
+    "stage": 2,
+    "offload_optimizer": {
+            "device": "cpu"
+    },
+    "contiguous_gradients": true,
+    "overlap_comm": true
+  },
+  "zero_allow_untested_optimizer": true,
+  "fp16": {
+    "enabled": true,
+    "loss_scale": 0,
+    "loss_scale_window": 1000,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+  },
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": "auto",
+      "betas": "auto",
+      "eps": "auto",
+      "weight_decay": "auto"
+    }
+  },
+  "activation_checkpointing": {
+    "partition_activations": true,
+    "contiguous_memory_optimization": true
+  },
+  "wall_clock_breakdown": false
+}
+```
+
+**启动**
+
+```sh
+deepspeed --include=localhost:0,1,2,3 train.py
+```
+
+##### LoRA 推理
+
+推理文件名为inference.py
+
+原始模型和lora模型顺序处理，再合并
+- 先加载 base_model
+- 再加载 lora_model 
+- 推理
+
+```py
+import torch
+  
+from peft import PeftModel # lora
+from transformers import AutoModelForCausalLM, AutoTokenizer
+​# ---- 原始模型 -----
+BASE_MODEL = "bigscience/bloomz-7b1-mt"
+tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
+model = AutoModelForCausalLM.from_pretrained(
+        BASE_MODEL,
+        torch_dtype=torch.float16, # 加载半精度
+        device_map={"":0}, # 指定GPU 0
+    )
+model.eval()
+​# ---- LoRA模型 -----
+LORA_WEIGHTS = "best_model"
+model = PeftModel.from_pretrained(model, LORA_WEIGHTS, torch_dtype=torch.float16)
+model.half() # 半精度
+​# ---- 推理 -----
+prompt = ""
+inp = tokenizer(prompt, max_length=512, return_tensors="pt").to("cuda")
+outputs = model.generate(input_ids=inp["input_ids"], max_new_tokens=256)
+print(tokenizer.decode(outputs[0]))
+```
+
+[原文](https://zhuanlan.zhihu.com/p/618073170)
 
 ### AdaLoRA
 
