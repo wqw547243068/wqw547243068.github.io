@@ -301,6 +301,8 @@ InstructGPT 分为如下三大步：
 - 然后用精调后的模型对每个输入的 < 文本+prompt > 进行 generate，生成4~9个输出，并且进行解码操作。
 - ![SFT流程图](https://pic4.zhimg.com/80/v2-f5be8b02dc60f07a5b45e1d62576938f_1440w.webp)
 
+【2023-11-20】[transformers_tasks](https://github.com/HarderThenHarder/transformers_tasks/tree/main/RLHF) GPT-2 和 RLHF 示例
+
 ### ChatGPT流程
 
 InstructGPT和instruction tuning方向的工作比较相关，独特之处在于继承了之前工作的风格——对齐人类偏好。与之前摘要任务相比，instructGPT的prompt分布更多样和复杂。
