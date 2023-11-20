@@ -395,6 +395,26 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
 ## Prompt 优化技巧
 
+
+### 越礼貌越好
+
+【2023-11-18】[跟大模型对话时 prompt 越礼貌越容易出好结果吗？为什么？](https://www.zhihu.com/question/627891044/answer/3265836430)
+
+部分如此，其实不止礼貌，加一个强调、鼓励，如“This is very import to my career”在后面，结果也好。
+
+为什么会这样？原因尚不清晰，但是毫无疑问与**模型训练数据**有关：
+- 可能在训练阶段见过了大量的心理学知识，又或者是在fine-tuning阶段被有意去掉了大量有偏见或不健康的数据。
+
+#### 【2023.7.14】EmotionPrompt
+
+EmotionPrompt 作用就是通过prompt巧妙地将这些隐藏对话模式激活。这里面涉及到一些**心理学**的理论。
+- paper：中科院 [Large Language Models Understand and Can be Enhanced by Emotional Stimuli](https://arxiv.org/abs/2307.11760)
+- 【2023.11.12】修改
+
+大模型有一定情感智能，原始 prompt 上增加一些情绪刺激，指令遵循上会相对提升8%，通用领域能力会提升 10.9%
+
+EmotionPrompt已被第三方库 LlamaIndex实现：[https://gpt-index.readthedocs.io](https://gpt-index.readthedocs.io/en/latest/examples/prompts/emotion_prompt.html)
+
 ### 基础Prompt技巧  
 
 [一个小白如何学好prompt tuning? - 陈路的回答](https://www.zhihu.com/question/509079916/answer/2894776983)
