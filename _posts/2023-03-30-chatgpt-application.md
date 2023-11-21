@@ -710,6 +710,15 @@ Typeface 最大的特点是能够学习企业客户的“专有数据”。客�
 为了实现这一点，Typeface 让每位客户拥有独有的 AI 模型和托管服务，以及原创内容检测、品牌契合度检测和文字上的语法检测等功能。而收集专有数据的意识也在行业内逐渐形成共识。
 
 
+#### 广告视频
+
+【2023-11-21】[日本广告](https://www.bilibili.com/video/BV1sC4y137Ye/?spm_id_from=333.999.0.0&vd_source=ec1c777505e146eb20d947449d6bba6e)
+
+完全AI生成的广告已经问世，这么漂亮的脸，还可以随意定制更漂亮的，永远也不会有丑闻，不会影响公司形象，成本极低几乎可以忽略不计
+
+由AI生成的广告，来自日本的伊藤园公司。广告使用全AI生成的人物拍摄，自然和谐，与真人无异。好处包括无限制的外观定制、没有丑闻对公司和产品的影响，成本几乎可以忽略不计且拍摄周期短。视频提出了一个问题，企业应该选择真人还是AI的广
+
+<iframe src="//player.bilibili.com/player.html?aid=747505314&bvid=BV1sC4y137Ye&cid=1310947760&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="720" height="405"> </iframe>
 
 ### NLP基础任务
 
