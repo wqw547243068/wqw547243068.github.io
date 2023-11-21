@@ -5717,6 +5717,36 @@ nc 10.200.0.79 9995 # 客户端
 ```
 
 
+### 第三方工具
+
+最强跨平台传输软件，速度快体积小，比苹果隔空传送好...
+
+- syncthing和localsend都有用，localsend日常跨设备分享很方便， syncthing 偏向同步
+
+#### reep.io 网页
+
+- 【2018-6-21】webrtc peer to peer文件传输工具[reep.io](https://reep.io/)失效，[send-anywhere](https://send-anywhere.com/)全终端覆盖, 基于浏览器，直接选中本地文件，生成下载链接，速度400kb；[Snapdrop](Snapdrop.net),免软件免登录的一款工具，只需在同一WIFI环境下打开Snapdrop网页，就能侦测到彼此，并开始传输文件。知乎[大文件传输工具有哪些](https://www.zhihu.com/question/333234462), 示例：[mathematica下载](https://reep.io/d/9vsymkgm3e)，【2019-05-16】[mathematica快速入门](https://zhuanlan.zhihu.com/p/47896722)
+
+#### LocalSend 开源
+
+[LocalSend](https://localsend.org/#/) 是一款免费开源的跨平台文件传输工具
+- 支持 Android、Windows、macOS、iOS、Linux等平台，安装后只需要在设置中打开快速保存开关即可使用。
+- 速度快、支持跨平台传输，还能自定义保存目录。
+- 电脑端安装包只有15MB，不会占用资源，可以在后台运行，需要时随时反应。
+
+相比于苹果的隔空传送，LocalSend更方便快捷，适合办公人士使用。
+
+#### syncthing
+
+[syncthing](https://syncthing.net/)
+
+Syncthing 是一个开源免费的数据同步神器，被称为 Resilio Sync 的替代品，支持 Android、Linux、Windows、Mac OS X 等系统
+- 在 2 台任何系统任何设备之间，实现文件实时同步，很强大。
+- 而且数据很安全，不会存储在你的设备以外的其他地方。
+- 所有通信都使用 TLS 进行保护。
+- 所使用的加密包括完美的前向保密，以防止窃听者获得对您的数据的访问权限。
+
+很适合用来搭建私有同步网盘。
 
 ## 自动登录
 
