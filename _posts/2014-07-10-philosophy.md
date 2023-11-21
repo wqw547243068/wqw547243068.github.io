@@ -18,7 +18,7 @@ permalink: /philosophy
 【2022-10-19】中国文人十大雅事：焚香、听雨、拾花、赏画，品茗，探幽、观云、候月、酌酒、抚琴
 - 宗教篇见站内笔记：[佛说](/religion)
 
-
+【2023-11-21】[易经讲了啥](https://mp.weixin.qq.com/s/TQV_P5MZVlopbEM_0FZP4Q)
 
 ## 术语解释
 
