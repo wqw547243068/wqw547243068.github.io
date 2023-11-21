@@ -518,7 +518,16 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 【2023-10-25】[自动优化Prompt：Automatic Prompt Engineering的3种方法](https://mp.weixin.qq.com/s/kbZZUoTjLGyU59B3strwVg)
 
+
 ### 方法分析
+
+
+与LLM高效交流方式
+- （1）模型向人对齐：
+  - 训练阶段，让模型对齐人类偏好
+  - 输入阶段，模型对齐人类
+    - 黑盒提示对齐优化技术（Black-box Prompt Optimization），通过优化用户指令，从输入角度对模型进行对齐。
+- （2）人向模型对齐：即 Prompt 工程师
 
 3种automatic prompt engineering框架：APE、APO以及OPRO。
 - 给定一个训练集，定义好评价指标，运行automatic prompt engineering框架之后，将自动得到能取得最佳效果的prompt。
@@ -1123,6 +1132,69 @@ COSP 方法步骤：
 - 而USP同样优于基线，即使是与人工制造的提示样本（图中3-shot）相比也具备一定的竞争力。
 
 `COSP`和`USP`方法通过自动构造伪样本的方式弥合了零样本与少样本之间的差距，对自然语言理解与生成一系列广泛的任务都适用。
+
+
+### 2023.11.20 清华 BPO
+
+黑盒提示对齐优化技术（Black-box Prompt Optimization），通过优化用户指令，从输入角度对模型进行对齐。
+- ![](https://pic2.zhimg.com/80/v2-b01031ef13909de17325af3547b6d6d1_1440w.webp)
+
+不对 LLM 进行训练的情况下，大幅提升与人类偏好的对齐程度。而且 BPO 可以被替换到各种模型上，包括开源模型和基于API的模型。
+
+- 论文：[Black-Box Prompt Optimization: Aligning Large Language Models without Model Training](https://arxiv.org/abs/2311.04155)
+- 代码：[https://github.com/thu-coai/BPO](https://github.com/thu-coai/BPO), 基于LLaMA-2-7b-chat训练，模型数据已开源，支持二次训练
+- [BPO_demo](https://huggingface.co/spaces/CCCCCC/BPO_demo)
+
+BPO黑盒优化的目标是让模型更好地理解和满足人类的喜好。通过调整输入内容，使模型生成的输出更符合用户的期望。
+
+这个过程可以分为三个主要步骤：
+- ![](https://pic4.zhimg.com/80/v2-11e5d9128b17ee037899f452c58bff97_1440w.webp)
+- 1、**反馈数据收集**：为了建模人类偏好，首先搜集了一系列带有反馈信号的开源指令微调数据集，并对这些数据经过精心筛选和过滤。
+- 2、构造**提示优化对**：使用这些反馈数据来引导大型模型识别出用户偏好的特征。
+  - 首先让模型分析用户喜欢的回复和不喜欢的回复，找出其中蕴含的人类偏好特征。
+  - 接着，基于这些特征，再利用模型优化原始的用户输入，以期得到更符合用户喜好的模型输出。
+- 3、训练**提示优化器**：经过步骤一和步骤二，得到了大量隐含人类偏好的提示对。
+  - 利用这些提示对，训练一个相对较小的模型，从而构建提示偏好优化器。
+
+BPO的一些常见优化策略，包括：推理解释、完善用户问题、要点提示以及安全增强。
+- ![](https://pic1.zhimg.com/80/v2-c50c168f052d4458ab75a64e13553f04_1440w.webp)
+
+对比
+- 与 PPO 和 DPO 相比，BPO最大的优势在于不需要训练原本的LLM，只需要额外训练一个较小的模型即可，并且我们的实验证明这两种技术是可以相结合的。
+- 与 OPRO 对比，BPO 最大的特点在于更加通用，OPRO 等现有的 Prompt Engineering 技术大多需要针对特定的数据进行搜索，并且会搜索得到一个针对特定任务的提示。因此，如果用户希望使用此类方法，需要针对每种任务准备相应的数据集。而 BPO 在训练得到提示优化器后，可以优化各种用户指令。
+- ![](https://pic3.zhimg.com/80/v2-afd7302e79c1376ced72546f8dc0dd9e_1440w.webp)
+
+BPO对齐技术对 GPT-3.5-turbo 有22%的提升，对 GPT-4 有 10% 的提升。
+- VicunaEval 上使用 GPT-4 进行自动评估，BPO 能够大幅提升 ChatGPT、Claude 等模型的人类偏好，并助力 llama2-13b 模型大幅超过 llama2-70b 的版本。
+- BPO 能够助力 llama2-13b 大幅超过 llama2-70b 版本的模型效果，并让 llama2-7b 版本的模型逼近比它大 10 倍的模型。
+- ![](https://pic3.zhimg.com/80/v2-f2353040bb2dc9aa27f106fee13eab9a_1440w.webp)
+
+代码示例
+
+```py
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_path = 'THUDM/BPO'
+local_dir = '/mnt/bd/wangqiwen-hl/models'
+
+prompt_template = "[INST] You are an expert prompt engineer. Please help me improve this prompt to get a more helpful and harmless response:\n{} [/INST]"
+
+device = 'cuda:0'
+model = AutoModelForCausalLM.from_pretrained(model_path, cache_dir=local_dir).half().eval().to(device)
+# for 8bit
+# model = AutoModelForCausalLM.from_pretrained(model_path, device_map=device, load_in_8bit=True)
+tokenizer = AutoTokenizer.from_pretrained(model_path, cache_dir=local_dir)
+
+text = 'Tell me about Harry Potter'
+
+prompt = prompt_template.format(text)
+model_inputs = tokenizer(prompt, return_tensors="pt").to(device)
+output = model.generate(**model_inputs, max_new_tokens=1024, do_sample=True, top_p=0.9, temperature=0.6, num_beams=1)
+resp = tokenizer.decode(output[0], skip_special_tokens=True).split('[/INST]')[1].strip()
+
+print(resp)
+```
+
 
 ## 图像提示词
 
