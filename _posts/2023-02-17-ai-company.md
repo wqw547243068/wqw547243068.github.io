@@ -1046,11 +1046,22 @@ OpenAI首席执行官`山姆·奥特曼`谈推出 ChatGPT：
 【2023-1-31】[Sam Altman的成功学](https://zhuanlan.zhihu.com/p/601852717)
 - 在硅谷创业教父Paul Graham的眼里，[Sam Altman](https://blog.samaltman.com/)是一位极具魄力的领导者和开拓者。如今，已成为OpenAI CEO的[Sam Altman](https://blog.samaltman.com/)是全球范围内当之无愧的科技领军人物
 
-职业生涯一路开挂。
-- 从斯坦福大学计算机系辍学后，19岁的他成立了位置服务提供商Loopt，而后被预付借记卡业务公司Green Dot收购
+山姆.奥特曼 职业生涯一路开挂。
+- 1985年出生于一个犹太人家庭
+- 8岁学会编程，拆解电脑
+- 16岁, 2001年，高中出柜
+- 19岁, 2005年，从斯坦福大学计算机系辍学后，成立了位置服务提供商Loopt，而后被预付借记卡业务公司Green Dot收购
+- 2011年，任YC总裁
 - 2014年，YC创始人Paul Graham选择他成为继任者，在不到30岁时开始在全球创业创新领域大放异彩。
-- 2015年，他与马斯克等人共同成立OpenAI
+- 2015年，他与马斯克等人共同成立OpenAI,目标是确保AI不会消灭人类
 - 2019年，Sam Altman离任YC总裁，成为OpenAI的CEO，并相继领导推出重量级AI模型GPT-3、DaLL-E以及近期火出科技圈的ChatGPT。
+- 2022年，发布chatgpt
+- 2023年发布gpt4，功能强大风靡全球。
+- 2023年11月被董事会罢免
+
+
+[图解](https://www.toutiao.com/w/1782977383393292)
+- ![](https://p26-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/7f6903427aef42c6b36dabc508226091~tplv-obj:1080:1080.image?_iz=97245&from=post&lk3s=06827d14&x-expires=1708300800&x-signature=CECxK5PE5iosK9YV3D0V6h2D3mI%3D)
 
 无论是个人才智和财富，还是远见和野心，Sam Altman显然是标杆性的“成功人士”。
 - [Sam Altman](https://blog.samaltman.com/): [how to be successful](https://blog.samaltman.com/how-to-be-successful)（如何取得成功），13条特质并不是一个人必然取得成功的充分或必要条件。[Sam Altman的成功学](https://zhuanlan.zhihu.com/p/601852717)
