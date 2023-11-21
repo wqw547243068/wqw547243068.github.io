@@ -1136,6 +1136,8 @@ COSP 方法步骤：
 
 ### 2023.11.20 清华 BPO
 
+[【开源】BPO：灵活的 Prompt 对齐优化技术](https://zhuanlan.zhihu.com/p/667767805?utm_psn=1710354258468163584)
+
 黑盒提示对齐优化技术（Black-box Prompt Optimization），通过优化用户指令，从输入角度对模型进行对齐。
 - ![](https://pic2.zhimg.com/80/v2-b01031ef13909de17325af3547b6d6d1_1440w.webp)
 
@@ -1168,6 +1170,23 @@ BPO对齐技术对 GPT-3.5-turbo 有22%的提升，对 GPT-4 有 10% 的提升�
 - VicunaEval 上使用 GPT-4 进行自动评估，BPO 能够大幅提升 ChatGPT、Claude 等模型的人类偏好，并助力 llama2-13b 模型大幅超过 llama2-70b 的版本。
 - BPO 能够助力 llama2-13b 大幅超过 llama2-70b 版本的模型效果，并让 llama2-7b 版本的模型逼近比它大 10 倍的模型。
 - ![](https://pic3.zhimg.com/80/v2-f2353040bb2dc9aa27f106fee13eab9a_1440w.webp)
+
+效果
+
+```js
+// give me 3 tips to learn English
+
+Here are several optimized prompts:
+====================Stable Optimization====================
+Provide three comprehensive and actionable tips to learn English.
+====================Aggressive Optimization====================
+1. Please provide three comprehensive and actionable tips to learn English. The tips should cover aspects such as setting goals, creating a study schedule, and immersing yourself in the language. Please ensure the tips are helpful, accurate, and harmless.
+2. Please provide three comprehensive and actionable tips to learn English. Tips should be based on the importance of a positive attitude, setting goals, and using a variety of learning methods. Please explain each tip in detail and provide examples to support the suggestions.
+3. Please provide three comprehensive and actionable tips to learn English. The tips should cover aspects such as setting goals, creating a study schedule, and immersing yourself in the language. Please explain each tip in detail and provide practical examples if possible.
+4. Provide three comprehensive and actionable tips to learn English. Please ensure that the tips are accurate, helpful, and do not contain any harmful or unrelated content.
+5. Provide three comprehensive and actionable tips to learn English. Focus on grammar, vocabulary, and practice.
+```
+
 
 代码示例
 
