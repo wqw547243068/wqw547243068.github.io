@@ -615,8 +615,12 @@ LLM时代Prompt Engineer开发范式
   - AI技术的自动化范式 —— AutoGPT
   - 基于Agents的自动化团队——GPTeam，许多流程都可以被自动化执行。市场调研、问卷调查、品牌计划等等，都可以由AI来完成。
   - 自动化品牌营销公司——AutoCorp
+- `Society` 模式
 - ![](https://pic1.zhimg.com/v2-0999ee748a33bc812f5f9ca73af4a41c_b.jpg)
 - ![](https://pic2.zhimg.com/80/v2-768dd5453f9ebe858d60b90bd1b3143d_1440w.webp)
+
+【2023-11-21】更完整的[图解](https://www.51cto.com/article/766924.html) 
+- ![](https://s4.51cto.com/oss/202309/15/f8059a9831ca7b2230f159744b9b0cfee2099c.png)
 
 第三种模式将成为未来人机交互的主要模式。
 
