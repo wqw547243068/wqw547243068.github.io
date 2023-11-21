@@ -1411,6 +1411,14 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 
 #### 视频翻译
 
+示例
+
+<iframe src="//player.bilibili.com/player.html?aid=319777004&bvid=BV1Yw411C7Mo&cid=1301817908&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="720" height="405"> </iframe>
+
+<iframe src="//player.bilibili.com/player.html?aid=235249518&bvid=BV1ae41197EH&cid=1311585693&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="720" height="405"> </iframe>
+
+<iframe src="//player.bilibili.com/player.html?aid=917745410&bvid=BV1Xu4y1Y7vu&cid=1312701982&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="720" height="405"> </iframe>
+
 ##### HeyGen
 
 - 【2023-10-23】[口型几乎完美、还能卡点，霉霉说地道中文的视频火了，背后AI工具原来是它](https://www.jiqizhixin.com/articles/2023-10-23-15)
@@ -1422,6 +1430,7 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 译制片配音的行业标杆
 - 除了中英互译，还有人尝试将英语翻译成其他语言，效果同样很不错
 - ![](https://image.jiqizhixin.com/uploads/editor/2e83292e-c24e-4d47-8bf0-0ac03106aebf/1698048590747.png)
+
 
 技术实现
 - 至少三步： Whisper识别、Tortoise-TTS合成带原始说话人音色的语音、Wav2lip换嘴型。
