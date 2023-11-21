@@ -720,6 +720,11 @@ Typeface 最大的特点是能够学习企业客户的“专有数据”。客�
 
 <iframe src="//player.bilibili.com/player.html?aid=747505314&bvid=BV1sC4y137Ye&cid=1310947760&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="720" height="405"> </iframe>
 
+AI生成的麦当劳广告
+
+<iframe src="//player.bilibili.com/player.html?aid=447455974&bvid=BV17j411z7GD&cid=1239130065&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="720" height="405"> </iframe>
+
+
 ### NLP基础任务
 
 【2023-9-12】[大语言模型在NLP基础任务的应用案例集](https://zhuanlan.zhihu.com/p/625321362)
