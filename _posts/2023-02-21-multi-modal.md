@@ -322,6 +322,8 @@ CLIP流程有三个阶段：
     classDef grass fill:#C8D64B;
     %%节点关系定义
     S(多模态大模型)-->|2022-4-29,DeepMind,多模态多任务|F(Flamingo\n火烈鸟):::orange
+    S-->|2020,Google| V(ViT):::orange
+    T(Transformer)-->V
     S-->|2021-10-7,Junnan Li\nSalesforce Research\n跨模态注意力引入对比损失\n动量蒸馏| A(ALBEF):::blue
     F-->|2023-3-29,Christoph Schuhmann\n开源复制品,LMM框架,LLaMA| O(OpenFlamingo):::orange
     A-.->|2022-2-15,Junnan Li\nSalesforce Research\n统一理解和生成|B(BLIP):::green
@@ -337,6 +339,15 @@ CLIP流程有三个阶段：
 ### 传统模型
 
 前 Transformer时代：目标检测+预训练（Faster R-CNN + BERT）
+
+Transformer多模态模型
+- `Transformer`(2017): Attention Is All You Need.
+- `ViT` (2020): 将transformer用于图像任务, An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale Transformer.
+- `CLIP` (2021): 文本和图像混合预训练
+  - Learning Transferable Visual Models From Natuural Language Supervision.
+- `KOSMOS-1`(2023): 多模态大规模语言模型
+  - Language Is Not All You Need: AligningPerception with Language Models.
+
 
 多模态大模型：
 - MiniGPT-4：沙特阿拉伯阿卜杜拉国王科技大学的研究团队开源。
@@ -372,6 +383,30 @@ UNITER的思路是通过使用**单流**结构，直接将视觉特征和文本�
 - 统一视觉模型
 - LLM加持的多模态大模型
 - 多模态agent
+
+
+#### ViT
+
+[ViT（Vision Transformer）解析](https://zhuanlan.zhihu.com/p/445122996)
+
+2020年，Google提出ViT，将Transformer应用在图像分类的模型
+- 虽然不是第1篇将transformer应用在视觉任务的论文，但是因为其模型“简单”且效果好，可扩展性强（scalable，模型越大效果越好），成为了transformer在CV领域应用的里程碑著作，也引爆了后续相关研究
+
+ViT原论文中最核心的结论
+- 当拥有足够多的数据进行预训练时，ViT的表现就会超过CNN，突破transformer缺少归纳偏置的限制，可以在下游任务中获得较好的迁移效果
+- 当训练数据集不够大的时候，ViT的表现通常比同等大小的ResNets要差一些，因为Transformer和CNN相比缺少归纳偏置（inductive bias），即一种先验知识，提前做好的假设。
+
+CNN具有两种归纳偏置
+- 一种是**局部性**（locality/two-dimensional neighborhood structure），即图片上相邻的区域具有相似的特征；
+- 一种是**平移不变形**（translation equivariance）
+
+当CNN具有以上两种归纳偏置，就有了很多先验信息，需要相对少的数据就可以学习一个比较好的模型
+
+ViT只使用了Transformer的encoder
+
+ViT将输入图片分为多个patch（16x16），再将每个patch投影为固定长度的向量送入Transformer，后续encoder的操作和原始Transformer中完全相同。但是因为对图片分类，因此在输入序列中加入一个特殊的token，该token对应的输出即为最后的类别预测
+
+![](https://pic4.zhimg.com/v2-5afd38bd10b279f3a572b13cda399233_b.jpg)
 
 
 #### ALBEF
