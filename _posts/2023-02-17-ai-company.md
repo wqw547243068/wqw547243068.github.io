@@ -893,8 +893,22 @@ Greg Brockman：OpenAI 内部的大管家和冲锋队长，⼯程能⼒和基础
 
 #### Ilya Sutskever 灵魂人物
 
-- OpenAI研究总监（首席科学家） Ilya Sutskever
+OpenAI研究总监（首席科学家） Ilya Sutskever
 - ![img](https://pic1.zhimg.com/80/v2-b0d887fc1be786486a86afcd8d390144_1440w.webp)
+
+##### OpenAI 政变
+
+【2023-11-20】一手逼退奥特曼，隔两天又在联名信上签字请他回来，被讽刺"内斗推手"，光速滑跪。为何马斯克依然站他？没有他就没有OpenAI的今天。
+- 马斯克认为挖到伊利亚是OpenAl成功的关键，还夸他"是个好人，非常聪明且心地善良"。
+- 奥特曼对他评价也很高，称他是"世界上最受尊敬的研究人员之一"。
+
+最大的原因还是观念不同
+- 和他的导师辛顿一样，伊利亚很担心AI的安全问题，他甚至还公开怀疑ChatGPT已经有了自我意识。
+- 而奥特曼却是积极的扩张派，有消息说他还准备搞个AI芯片公司，在积极筹集数百亿美元的资金。
+
+也许是这样的冲突让伊利亚动了手。事件发生后，有员工认为这是一场"政变"或者"恶意收购"，但伊利亚并不同意，他认为这是让OpenAI回到非赢利机构的使命，让"AI向善"。
+
+##### Ilya Sutskever 履历
 
 Ilya Sutskever 深度学习教父 Hinton 的学生， `AlexNet` 的作者，本身就是深度学习革命的开创者，拥有最强的远见力和最坚定的深度学习信仰
 
@@ -904,19 +918,25 @@ Ilya 在 OpenAI 属于精神领袖的存在，他的技术直觉和品味很好�
 
 履历
 - 1986年，出生于俄罗斯，加拿大籍。
+- 5岁起，耶路撒冷长大，能说俄语、希伯来语和英语
 - 本科就读于多伦多大学，遇到了 Geoffrey Hinton——深度学习研究的教授和先驱。Sutskever 在攻读博士学位时加入了 Hinton 的小组。
-- 2012 年，在 Hinton 的指导下，Sutskever 和博士生同学 Alex Krizhevsky 开发了 AlexNet，它在 2012 年 ImageNet LSVRC-2012 的比赛中脱颖而出。AlexNet 以一种新颖的神经网络架构在 NIPS 亮相，包含五个卷积层和三个完全连接的层。`AlexNet` 标志了自 2012 年起人工智能革命的开端
+- 2012 年，在 Hinton 的指导下，Sutskever 和博士生同学 Alex Krizhevsky 开发了 `AlexNet`，ImageNet LSVRC-2012 的比赛中脱颖而出。AlexNet 以一种新颖的神经网络架构在 NIPS 亮相，包含五个卷积层和三个完全连接的层。`AlexNet` 标志了自 2012 年起人工智能革命的开端
 - 2012 年毕业后，Sutskever 在斯坦福大学跟随吴恩达教授读了两个月的博士后课程。
 - `Ilya Sutskever`师出深度学习三巨头之一的`Geoffrey Hinton`，曾与导师在2012年共同创办语音、图像识别方案研发企业`DNNresearch`，在这一公司被`Google`收购后才加入了`Google`的神经网络研究项目中。
-- 2012年11月，回到了多伦多大学并加入了 Hinton 的新研究公司 DNNResearch，这是 Hinton 研究小组的副产品。
-- 2013 年 3 月，Google 收购了 DNNResearch，并聘请 Sutskever 担任 `Google Brain` 的研究科学家。
+- 2012年11月，回到了多伦多大学, 加入了 Hinton 的新研究公司 DNNResearch，这是 Hinton 研究小组的副产品。
+- 2013 年 3 月，Google 收购了 DNNResearch，并聘请 Sutskever 担任 `Google Brain` 的研究科学家。AlphaGO的作者之一
+  - 最开始他并不相信AGI(通用人工智能)，到Deepmind找工作时, 还觉得构建AGI根本就不现实。
+  - 后来他加入了谷歌的人工智能团队Google Brain，对AI彻底改观，觉得AGI的未来就在眼前。
 - 2014 年，Sutskever 与谷歌研究员 Oriol Vinyals 和 Quoc Le 一起提出了 `Seq2seq` 学习（Sequence to Sequence Learning），机器翻译效果达到sota。
 - 在谷歌大脑团队中，Sutskever 加入了 Google 开源库 `TensorFlow` 的开发，用于大规模机器学习。
   - `Ilya Sutskever`曾就职于Google，硅谷这种大公司关不住这些牛人,另起炉灶很正常, 普通人反而才是一直混Google养老
 - 2015 年 7 月的一天，Sutskeve 参加了由 Y Combinator 总裁 Sam Altman 在 Sand Hill Road 的一家餐厅举办的晚宴，在那里他遇见了 Elon Musk 和 Greg Brockman。
-- Sutskever 和 GregBrockman（现为 OpenAI 首席技术官）共同创立了 OpenAI，得到来自 Elon Musk，Sam Altman 和 LinkedIn 创始人 Reid Hoffman 的 10 亿美元资金，其目标是「以最有可能造福人类的方式推进数字智能并使之成为一个整体」。
+  - Sutskever 和 GregBrockman（现为 OpenAI 首席技术官）共同创立了 OpenAI，得到来自 Elon Musk，Sam Altman 和 LinkedIn 创始人 Reid Hoffman 的 10 亿美元资金，其目标是「以最有可能造福人类的方式推进数字智能并使之成为一个整体」。
+  - 2015年马斯克和奥特曼组建OpenAl，为了挖他花了不少功夫，甚至和前谷歌CEO拉里佩奇闹翻。谷歌为了留下他更是开出了200万美元的天价年薪。不过他还是觉得OpenAI的AGI愿景更有吸引力。
+- 先后领导发明了大语言模型GPT-1~4, 以及文生图模型`DALL-E1`
 - 2018 年，领导 OpenAI 发明 `GPT-1`。
 - 2021 年，Sutskever led OpenAI's invention of `DALL-E` 1
+  - 文生图巨头MidJourney也是基于DALL-E1微调
 
 [Ilya Sutskever: The brain behind ChatGPT](https://journeymatters.ai/ilya-the-brain-behind-chatgpt/)
 - ![](https://journeymatters.ai/content/images/size/w1140/2023/01/1-25.jpg)
@@ -930,6 +950,8 @@ Ilya 在 OpenAI 属于精神领袖的存在，他的技术直觉和品味很好�
 没有Ilya就不可能有这些革命性的进展。为什么`Ilya`的认知最强？
 - 因为早年 `Seq2Seq` 也是他搞出来的，所以当google把`transformer` 搞出来时，他的嗅觉最灵敏，知道这东西能解决`LSTM`存在的记忆问题，从而能够scale。而大部分人看到`transformer`并不会产生这种认知。
 - 而ChatGPT基本原理和之前的OpenAI Dota Five，Alphastar 没有本质区别，都是先`监督学习`再`强化学习`，只是**变成语言通用**场景了。单单这个认知也是太强了！
+
+
 
 #### Wojciech Zaremba 攻坚手
 
