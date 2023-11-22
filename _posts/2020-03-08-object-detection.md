@@ -3,7 +3,7 @@ layout: post
 title:  "目标检测及跟踪--Obeject Detection&Tracing"
 date:   2020-03-08 18:30:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 
+tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 大模型
 excerpt: 计算机视觉之目标检测知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -16,16 +16,65 @@ permalink: /object
 # 目标检测
 
 
+## 资讯
+
+【2023-10-27】[大模型时代目标检测任务会走向何方？](https://zhuanlan.zhihu.com/p/663703934)
+
+经典目标检测一般指**闭集固定类别**检测。新类型
+- `Open Set`/`Open World`/`OOD` 
+  - 检测任何前景物体但有些不需要预测类别，unknown 标记
+  - ![](https://pic4.zhimg.com/80/v2-41515a67ade3d015efa4d1bcab66d12b_1440w.webp)
+- `Open Vocabulary`
+  - 开放词汇目标检测：给定**任意词汇**都可以检测出来
+  - 开放集任务，相比 open set，识别训练集类别外的新类别
+  - 这类模型需要接入**文本**作为一个模态输入。训练集和测试集的类别不能重复，但图片重复可以重复
+  - OVD 任务更加贴合实际应用，文本的描述不会有很大限制，同一个物体你可以采用多种词汇描述都可以检测出来
+  - ![](https://pic2.zhimg.com/80/v2-0ffba274563449f765fb5a273fdb8f55_1440w.webp)
+- `Phrase Grounding`, 也做 `phrase localization`。
+  - 给定名词短语，输出对应的单个或多个物体检测框。
+  - Phrase Grounding 任务包括 OVD 任务。
+  - 常见的评估数据集是 Flickr30k Entities
+  - 如果是输入一句话，那么就是定位这句话中包括的所有名词短语。在 GLIP 得到了深入的研究。
+  - ![](https://pic3.zhimg.com/80/v2-fc03e8448457bcfc69efcc5d85bd8252_1440w.webp)
+  - ![](https://pic3.zhimg.com/80/v2-1d083d84a3aa5a01b36317f69813ab0e_1440w.webp)
+- `Referring Expression Comprehension` 简称 `REC`, 也称为 visual grounding。
+  - 给定图片和一句话，输出对应的物体坐标，通常就是单个检测框。
+  - 常用的是 RefCOCO/RefCOCO+/RefCOCOg 三个数据集。是相对比较简单的数据集。这个任务侧重理解。
+  - ![](https://pic4.zhimg.com/80/v2-8b94f4bc068210b138befeb57a882d37_1440w.webp)
+- `Description Object Detection`
+  - 描述性目标检测也称 广义 Referring Expression Comprehension。
+  - 为何叫做广义，目前常用的 REC 问题：当前数据集只指代1个物体、没有负样本、正向描述
+  - Described Object Detection 论文提出新的数据集，命名为 `DOD`。类似还有 gRefCOCO
+  - ![](https://pic3.zhimg.com/80/v2-88a3e394105bac8c7e3d478f13618a06_1440w.webp)
+- `Caption with Grounding`
+  - 给定**图片**，要求模型输出**图片描述**，同时对于其中的短语都要给出对应的 bbox
+  - 像 Phrase Grounding 的**反向**过程。
+  - 这个任务可以方便将输出的名称和 bbox 联系起来，方便后续任务的进行。
+  - ![](https://pic1.zhimg.com/80/v2-3589f1f8c155f4dcffba91b7e179f820_1440w.webp)
+- `Reasoning Intention-Oriented Object Detection`
+  - 意图导向的目标检测，和之前的 DetGPT 提出的推理式检测非常类似。
+  - DetGPT 中的推理式检测含义是：给定文本描述，模型要能够进行推理，得到用户真实意图。
+  - 示例： **我想喝冷饮**，LLM 会自动进行推理解析输出 **冰箱** 这个单词，从而可以通过 Grounding 目标检测算法把冰箱检测出来。模型具备推理功能。
+  - ![](https://pic3.zhimg.com/80/v2-b0269147b3f14fe79f4b2cc8a20d54b2_1440w.webp)
+  - 论文 [RIO: A Benchmark for Reasoning Intention-Oriented Objects in Open Environments]()
+- `基于区域输入的理解和 Grounding`
+  - 非常宽泛的任务，表示不仅可以输入**图文**模态，还可以输入其他任意模态，然后进行理解或者定位相关任务。
+  - 最经典的任务是 Referring expression generation：给定图片和单个区域，对该区域进行描述。常用的评估数据集是 RefCOCOg
+  - 现在也有很多新的做法，典型的如 Shikra 里面提到的 Referential dialogue，包括 REC，REG，PointQA，Image Caption 以及 VQA 5 个任务
+  - ![](https://pic1.zhimg.com/80/v2-6351293bbd527088692d88756d708788_1440w.webp)
+
+
+
 ## 背景
 
 计算机视觉领域的典型任务就是目标检测
 
 - 目标检测最新趋势：[deep_learning_object_detection](https://github.com/hoya012/deep_learning_object_detection)
 - 发展历史：
-![](https://github.com/hoya012/deep_learning_object_detection/raw/master/assets/deep_learning_object_detection_history.PNG)
+- ![](https://github.com/hoya012/deep_learning_object_detection/raw/master/assets/deep_learning_object_detection_history.PNG)
 ![](https://img-blog.csdnimg.cn/20200223212931503.png)
 - 【2020-4-23】技术总结
-![](https://pic1.zhimg.com/80/v2-0c98fb30a9e589fa164d99c50e6ca711_1440w.jpg)
+- ![](https://pic1.zhimg.com/80/v2-0c98fb30a9e589fa164d99c50e6ca711_1440w.jpg)
 
 ## 类型
 
@@ -42,6 +91,7 @@ permalink: /object
 - Two-Stage检测算法可以通过ROI pooling layer（以Faster R-CNN为例）进行结构划分，前部分提出可能存在目标的区域，后部分即目标分类和定位回归。结构如下
    - two-stage主要处理的几个问题是：backbone进行特征提取、proposal建议区域的生成、分类和定位回归。
 ![](https://img-blog.csdnimg.cn/2020022321273620.png)
+
 
 # 算法综述
 
