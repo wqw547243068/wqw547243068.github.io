@@ -253,6 +253,7 @@ transformer 结构分成：
 - [jalammar github repo](https://github.com/jalammar/jalammar.github.io/blob/master/_posts/2018-06-27-illustrated-transformer.md)
 - ![](https://jalammar.github.io/images/t/transformer_resideual_layer_norm_3.png)
 - ![](https://camo.githubusercontent.com/88e8f36ce61dedfd2491885b8df2f68c4d1f92f5/687474703a2f2f696d6775722e636f6d2f316b72463252362e706e67)
+- ![](https://jalammar.github.io/images/t/transformer_decoding_2.gif)
 
 
 ## Transformer架构
