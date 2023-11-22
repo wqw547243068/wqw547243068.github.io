@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化
+tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -267,7 +267,7 @@ mathjax: true
 - 最近越来越多的证据表明，通过拟合数据得到的深度神经网络模型（在classification，detection，segmentation等）对输入很小的数值扰动和很小的变换deformation（甚至平移）都是不稳定的（unstable)，更谈不上鲁棒。不要再相信别人show的成功例子 -- 我过去就是被别人show的一些例子迷糊，有些相信这样的模型（通过在augmented数据上训练）会是稳定的，而自己没有去做严格的验证 -- 肠子都有些悔青了。但应该不会再被忽悠了。所以目前基于深度学习的“人工智能”，用在不痛不痒的应用上，也就罢了。把这样的模型用在严肃的问题上（例如需要有安全、隐私、可靠性保障的），应该是十分危险的。虽然这并不是说，通过系统严格的改进，深度模型和算法就不能没有性能上保障。但那需要建立一套完整的理论体系，正确的模型需要推导出来（而不是试错出来），而其性能保证也必须要有严格的证明。其实不少顶尖的研究人员都已经意识到这一点，今后几年，大家应该会看到系统的理论研究的强势回归。不会让深度学习把传统工程理论已经得到的常识和教训再从新发明一遍
 
 
-# 神经网络的结构
+# 神经网络结构
 
 内容：
 - 神经网络是什么？
@@ -281,6 +281,56 @@ mathjax: true
 ![](https://pic4.zhimg.com/80/v2-b72bc2abcfd8a8605095c51df052a04f_720w.jpg)
 ![](https://pic2.zhimg.com/80/v2-aabf8d8ece711ca0fb83278f61ada13d_720w.jpg)
 > 这个示例相当于深度学习领域中的 "Hello World".
+
+
+## 神经网络可视化
+
+
+### 视频
+
+
+
+【2020-12-18】回形针 [交互视频《一个人工智能的诞生》宣传片](https://www.youtube.com/watch?v=J_YB5N8Ofcc)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/J_YB5N8Ofcc?si=fs-7KL5HhyWTSL4F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+
+### 2D 可视化
+
+TensorFlow 官网提供的神经网络可视化 [playground](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.45786&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false), 浏览器交互体验 MLP 神经网络效果
+
+
+
+【2021-5】[CNN Explainer](https://poloclub.github.io/cnn-explainer/)， 中国博士可视化了卷积神经网络，将每一层的变化都展示得非常清楚，只需要点击对应的神经元，就能看见“操作”。
+- TensorFlow.js 加载的一个10层预训练模型，相当于在浏览器上就能跑CNN模型，也可以实时交互，显示神经元的变化。
+- [video](https://vdn.vzuu.com/SD/971e64c2-2354-11eb-871d-8656cda9d5b5.mp4?disable_local_cache=1&bu=078babd7&c=avc.0.0&f=mp4&expiration=1700625172&auth_key=1700625172-0-0-c5dde1c4bba93beb93f6f8c24eb8b4b5&v=ali&pu=078babd7)
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/HnWIHWFbuUQ" title="Demo Video &quot;CNN Explainer: Learning Convolutional Neural Networks with Interactive Visualization&quot;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+### 3D 可视化
+
+神经网络算法的3D模拟
+- 在MNIST训练集上对感知机、多层感知机、卷积神经网络再到最近的脉冲神经网络的视觉模拟
+- [b站](https://www.bilibili.com/video/BV1bp411R761/?vd_source=ec1c777505e146eb20d947449d6bba6e)， [Youtube](https://www.youtube.com/watch?v=3JQ3hYko51Y)
+
+<iframe src="//player.bilibili.com/player.html?aid=23951169&bvid=BV1bp411R761&cid=40082029&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3JQ3hYko51Y?si=j3-OtjMGal9RtpQ1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+【2023-10-13】[Neural Network Visualization](https://github.com/julrog/nn_vis)
+- ![](https://github.com/julrog/nn_vis/raw/master/docs/images/all_red_blue.gif)
+
+实时交互可视化
+- 【2018】Unity [Realtime Interactive Visualization of Convolutional Neural Networks in Unity](https://vimeo.com/stefsietz) ， 知乎文章讲解：[神经网络的3D可视化](https://zhuanlan.zhihu.com/p/577940175)
+- ![](https://pic2.zhimg.com/80/v2-0ad47ed76d3eb38559eab8414e54043d_1440w.webp)
+
+[TensorSpace](https://tensorspace.org) 是一款 3D 模型可视化框架。 
+- [TensorSpace Playground](https://tensorspace.org/html/playground/index.html)
+- ![](https://live.staticflickr.com/65535/49755093623_a3776ca7c7_b.jpg)
 
 ## 神经网络如何记忆
 
