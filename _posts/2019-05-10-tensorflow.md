@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Tensorflow学习笔记"
-date:   2020-08-31 17:25:00
+date:   2019-05-10 17:25:00
 categories: 编程语言
 tags: Tensorflow Python 深度学习
 excerpt: Tensorflow编程技能汇总
@@ -94,6 +94,7 @@ So, if you're using an out-of-range version of Python (older or newer) or a 32-b
 # 新建 Python 3.7环境
 conda create -n py37_tf1 python==3.7 
 #conda create -n py37_tf1 python==3.7 tensorflow==1.15.2
+conda create -n tf tensorflow-gpu=2.1
 # 安装 TensorFlow 1.15
 pip install tensorflow==1.15.2
 pip install tensorflow-gpu==1.15.2
