@@ -225,7 +225,7 @@ transformer 结构分成：
 
 ### RNN系列
 
-详见站内专题：[文本生成](text-generation)
+详见站内专题：[RNN和seq2seq演变](text-generation)
 
 ### 亮点
 

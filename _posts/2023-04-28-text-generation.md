@@ -1820,7 +1820,7 @@ MoE (Mixture of Experts)模型的基本思想
 
 作者提出了两个改进方式：
 - hard/soft selection，即如何使用expert的权重进行迭代
-- learned/uniform prior，prior即前面提到的p(z|x; θ) 
+- learned/uniform prior，prior即前面提到的p(z\|x; θ) 
   - learned：设置一个gate网络，模型自己去学；
   - uniform：所有experts权重统一
 
