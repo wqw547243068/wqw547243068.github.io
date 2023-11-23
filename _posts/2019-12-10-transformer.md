@@ -72,6 +72,9 @@ NLP领域，一般分别叫做`NLU`（Natural Language Understanding，自然语
 
 ### self-attention 理解
 
+Self-Attention 是能力超强的特征提取器，跟 RNN、CNN 相比
+- ![](https://d2l.ai/_images/cnn-rnn-self-attention.svg)
+
 self-attention 运算是所有 transformer 架构的基本运算, 而 Self-attention 是 sequence-to-sequence 运算： 
 - 输入一个向量序列（x1,x2,...,xm），输出另一个向量序列 (y1,y2,...,yn)，所有字符都映射成k维向量；
 - 输出向量是x的加权平均： yi = ∑ wi * xi
@@ -219,6 +222,10 @@ transformer 结构分成：
 - （1）自回归系列：偏好 文本生成，示例：GPT-3；
 - （2）双向自编码系列：偏好 自然语言理解，示例：BERT，双向transformer+Mask自编码系列
 - （3）encoder-decoder系列：偏好 条件文本生成，示例：T5，双向/单向attention
+
+### RNN系列
+
+详见站内专题：[文本生成](text-generation)
 
 ### 亮点
 
