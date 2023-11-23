@@ -896,6 +896,14 @@ Greg Brockman：OpenAI 内部的大管家和冲锋队长，⼯程能⼒和基础
 OpenAI研究总监（首席科学家） Ilya Sutskever
 - ![img](https://pic1.zhimg.com/80/v2-b0d887fc1be786486a86afcd8d390144_1440w.webp)
 
+Ilya Sutskever：
+- 2012年：提出AlexNet模型，开创图像识别新章，AlexNet被认为是计算机视觉领域最有影响力的论文之一
+- 2013年：共同创办的DNNresearch被Googleicon收购
+- 2014年：提出了序列到序列学习（Sequence To Sequence）的神经网络变体，开创了语言翻译革命（谷歌icon翻译的基础）
+- 2015年：放弃了谷歌的数百万美元的工作，成为非营利组织OpenAI的联合创始人
+- 2018年：Sutskever领导了GPT-1的开发，后来发展成了GPT-2、GPT-3和ChatGPT。
+- 2021年：Sutskever领导了DALL-E 1（图像生成模型）的开发。
+
 ##### OpenAI 政变
 
 【2023-11-20】一手逼退奥特曼，隔两天又在联名信上签字请他回来，被讽刺"内斗推手"，光速滑跪。为何马斯克依然站他？没有他就没有OpenAI的今天。
