@@ -3,7 +3,7 @@ layout: post
 title:  "文本生成&评价-Text Generation and Evaluation"
 date:   2023-04-28 21:39:00
 categories: 自然语言处理
-tags: 深度学习 NLP GAN Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性
+tags: 深度学习 NLP GAN rnn lstm Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性
 excerpt: 深度学习在NLP子领域——文本生成的应用汇总，如seq2seq、GAN系列
 author: 鹤啸九天
 mathjax: true
@@ -308,7 +308,7 @@ ChatGPT无非就是微调的GPT-3，唯一的不同不过是知识的**指向性
 - `Seq2Seq`+`Attention`: Context向量升级为矩阵, 解码时自动获取最重要的单词上文,成功摆脱了对句子长度的限制；但 计算速度太慢
 - `Seq2Seq`+`Self-attention`(`Transformer`): 自注意力机制，先选取单词的意义，再根据顺序选取要生成的信息，支持并行计算，接近人类的翻译方式。
 
-<iframe src="//player.bilibili.com/player.html?aid=586825595&bvid=BV1Zz4y127h1&cid=302259616&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=586825595&bvid=BV1Zz4y127h1&cid=302259616&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 参考：[什么是transformer？](https://www.bilibili.com/video/BV1Zz4y127h1/)
 
@@ -393,7 +393,9 @@ RNN 基本模型如上图所示
 |many to many|多对多（不定长）|输入/输出长度不同|机器翻译|
 
 
-单图参考:[What are the types of RNN?](https://www.educative.io/answers/what-are-the-types-of-rnn)
+参考: 
+- 单张图[What are the types of RNN?](https://www.educative.io/answers/what-are-the-types-of-rnn)
+- 表格整理 [Recurrent Neural Networks cheatsheet](https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks)
 
 ![](https://karpathy.github.io/assets/rnn/charseq.jpeg)
 
