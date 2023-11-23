@@ -1196,9 +1196,9 @@ self.loss = tf.reduce_mean(loss * sequence_mask)
     - 针对top k的问题，Top-p Sampling 基于Top-k Sampling，将 p' 设为一个提前定义好的常数 p'∈(0,1)，而selected tokens根据句子history distribution的变化而有所不同。详见论文：The Curious Case of Neural Text Degeneration
   - 本质上`Top-p Sampling`和`Top-k Sampling`都是从truncated vocabulary distribution中sample token，区别在于**置信区间的选择**。
 
-两类decoding strategy的主要区别: 如何从vocabulary probability distribution $P(x|x_{1:t-1})$ 中选取一个词 $x_t$：
-- Argmax Decoding的做法是选择词表中概率最大的词，即 $x_t=argmax P(x|x_{1:t-1})$;
-- Stochastic Decoding则是基于概率分布随机sample一个词 $x_t$，即 $x_t~P(x|x_{1:t-1})$。
+两类decoding strategy的主要区别: 如何从vocabulary probability distribution $P(x\|x_{1:t-1})$ 中选取一个词 $x_t$：
+- Argmax Decoding的做法是选择词表中概率最大的词，即 $x_t=argmax P(x\|x_{1:t-1})$;
+- Stochastic Decoding则是基于概率分布随机sample一个词 $x_t$，即 $x_t~P(x\|x_{1:t-1})$。
 
 问题：top-k/top-p 与 beam search区别
 - Top-p没有和beam search一样的**候选序列**，它仅在**当前**time step采样
