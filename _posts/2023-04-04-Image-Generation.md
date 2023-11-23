@@ -1138,6 +1138,65 @@ git lfs pull
 此外，秒画还支持用户上传本地图像，结合商汤自研作画模型或者开源模型来训练定制化LoRA模型，来高效地生成个性化内容。
 
 
+### 清华 LCM -- 实时文生图
+
+- 【2023-11-15】[实时文生图速度提升5-10倍，清华LCM/LCM-LoRA爆火，浏览超百万、下载超20万](https://www.jiqizhixin.com/articles/2023-11-15-10)
+- 【2023-11-23】[清华发布LCM：兼容全部SD大模型、LoRA、插件等](https://www.toutiao.com/article/7304552134417056267)
+
+#### 起因
+
+Stable Diffusion 等潜在扩散模型（LDM）由于迭代采样过程计算量大，生成速度非常缓慢。
+
+AIGC 时代，包括 Stable Diffusion 和 DALL-E 3 等基于**扩散模型**的文生图模型受到了广泛关注。扩散模型通过向训练数据添加噪声，然后逆转这一过程来生成高质量图像。然而，扩散模型生成图片需要进行**多步采样**，这一过程相对较慢，增加了推理成本。缓慢的多步采样问题是部署这类模型时的主要瓶颈。
+
+OpenAI 的宋飏博士在今年提出的**一致性模型**（Consistency Model，CM）为解决上述问题提供了一个思路。
+- 一致性模型被指出在设计上具有单步生成的能力，展现出极大的加速扩散模型的生成的潜力。
+- 然而，由于一致性模型局限于**无条件**图片生成，导致包括文生图、图生图等在内的许多实际应用还难以享受这一模型的潜在优势。
+
+**潜在一致性模型**（Latent Consistency Model，LCM）就是为解决上述问题而诞生的。
+- 潜在一致性模型支持**给定条件**的图像生成任务，并结合了潜在编码、无分类器引导等诸多在扩散模型中被广泛应用的技术，大大加速了条件去噪过程，为诸多具有实际应用意义的任务打开了一条通路。
+
+#### LCM
+
+【2023-10-6】Latent Consistency Models（潜一致性模型）是一个以**生成速度**为主要亮点的图像生成架构。
+- [LATENT CONSISTENCY MODELS:SYNTHESIZING HIGH-RESOLUTION IMAGES WITH FEW-STEP INFERENCE](https://arxiv.org/pdf/2310.04378.pdf)
+- [GitHub](https://github.com/luosiallen/latent-consistency-model)，huggingface [demo](https://huggingface.co/spaces/SimianLuo/Latent_Consistency_Model)
+
+通过一些创新性的方法，LCM 只用少数的几步推理就能生成高分辨率图像。据统计，LCM 能将主流文生图模型的效率提高 5-10 倍，所以能呈现出实时的效果。
+- ![](https://image.jiqizhixin.com/uploads/editor/da1541b3-f0e4-4a24-934f-19375626589d/640.gif)
+
+全面兼容 Stable Diffusion生态，LCM模型成功实现5-10倍生成速度的提升，实时AI艺术时代即将到来，所想即所得！
+
+团队现已完全开源 LCM 的代码，并开放了基于 SD-v1.5、SDXL 等预训练模型在内蒸馏得到的模型权重文件和在线 demo
+
+#### LCM-LoRA
+
+LCM-LORA: 一个通用的 Stable Diffusion 加速模块
+
+和需要多步迭代传统的**扩散模型**（如Stable Diffusion）不同，LCM 仅用1 - 4步即可达到传统模型30步左右的效果。
+
+由清华大学交叉信息研究院研究生骆思勉和谭亦钦发明，LCM将文生图生成速度提升了5-10倍，世界自此迈入实时生成式AI的时代。
+- [LCM-LoRA](https://huggingface.co/papers/2311.05556)
+- 项目主页：[latent-consistency-models](https://latent-consistency-models.github.io)
+
+
+LCM-LoRA出现了：将SD1.5、SSD1B、SDXL蒸馏为LCM的LoRA，将生成5倍加速生成能力带到所有SDXL模型上并兼容所有现存的LoRA，同时牺牲了小部分生成质量; 项目迅速获得了Stable Diffusion生态大量插件、发行版本的支持。
+
+LCM同时也发布了训练脚本，可以支持训练自己的LCM大模型（如LCM-SDXL）或LCM-LoRA，做到兼顾生成质量和速度。只要一次训练，就可以在保持生成质量的前提下提速5倍。
+
+自Stable Diffusion发布至今，生成成本被缓慢优化，而LCM的出现使得图像生成成本直接下降了一个数量级。
+
+LCM至少能在图像生成成本消失、视频生成、实时生成三大方面给产业格局带来重大变化。
+1. 图像生成成本消失
+  - C端: 以Midjourney为代表的大量文生图服务选择免费增值作为商业模型
+  - B端: 减少的生成算力需求会被增长的训练算力需求替代
+2. 文生视频
+  - 3分钟快速渲染：AnimateDiff Vid2Vid + LCM
+3. 实时渲染
+  - RT-LCM视频渲染, 实时图像编辑, LCM实时空间建模渲染
+
+![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/2524c01c5b7743508b38bf8eb927d8c5~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701343964&x-signature=IF%2FUSL%2F2Onz2TD5wuhC6aqcKOyM%3D)
+
 ## 如何鉴别生成图像
 
 【2023-4-7】[How to Tell If a Photo Is an AI-Generated Fake](https://www.scientificamerican.com/article/how-to-tell-if-a-photo-is-an-ai-generated-fake/)
