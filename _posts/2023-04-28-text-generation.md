@@ -372,12 +372,30 @@ RNN 基本模型如上图所示
 
 ### 序列任务与RNN
 
+#### 任务总结
+
 针对不同任务，通常要对 RNN 模型结构进行少量调整，根据输入和输出的**数量**，分为三种比较常见的结构：
 - N vs N
 - 1 vs N
 - N vs 1
 
 参考[Seq2Seq 模型知识总结](https://zhuanlan.zhihu.com/p/566073359)
+
+【2015-5-21】Andrej Karpathy blog [The Unreasonable Effectiveness of Recurrent Neural Networks](https://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+- ![](https://karpathy.github.io/assets/rnn/diags.jpeg)
+
+|类型|说明|图解|示例|
+|---|---|---|---|
+|one to one|一对一|输入/输出长度固定，传统神经网络|图像分类|
+|one to many |一对多|单输入，序列输出|看图说话/音乐生成|
+|many to one|多对一|多输入/序列输入，单输出|文本分类|
+|many to many|多对多（定长）|输入/输出长度相同|视频分类/NER|
+|many to many|多对多（不定长）|输入/输出长度不同|机器翻译|
+
+
+单图参考:[What are the types of RNN?](https://www.educative.io/answers/what-are-the-types-of-rnn)
+
+![](https://karpathy.github.io/assets/rnn/charseq.jpeg)
 
 #### （1）`1 to N` 一对多
 
