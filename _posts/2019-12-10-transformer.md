@@ -1620,7 +1620,49 @@ class Transformer(nn.Module):
 # Transformer 改进
 
 
+## Transformer 问题
+
+
+【2023-9-18】[RetNet：万众期待的 Transformers 杀手](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [头条](https://www.toutiao.com/article/7304956621552501285/)
+
+Transformer 已成为大语言模型上的架构，因为它有效地克服了循环神经网络 (RNN) 的顺序训练问题。
+
+然而，Transformer 并不完美，因为仅解决了所谓“`impossible triangle`”的**两**条臂。
+
+“不可能三角”代表当前序列模型无法同时实现**训练并行性**、**低成本推理**以及**强大性能**的所有3个期望维度。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-axegupay5k/e154053c06d24a3a8c24253b5185346e~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701422819&x-signature=oxc1OeNc6B1%2BDAdIQ%2BaOw8jw%2BA0%3D)
+
+三角上的方法表示实现的两个维度，但缺少第三个顶点的所需属性。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/7c1f587ebec642bf9332284352e4a64d~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701422819&x-signature=nYJb%2B%2FFDdkA1f%2F5FLtlAkG5XEVY%3D)
+
+## 模型结构
+
+
+### RetNet
+
+【2023-9-18】[RetNet：万众期待的 Transformers 杀手](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [头条](https://www.toutiao.com/article/7304956621552501285/)
+
+微软的 RetNet 位于这个“`impossible triangle`”的正中心，胜过了所有尝试过但未能实现这一壮举的方法。RetNet 设法在单个框架下实现所有属性。
+
+突破：
+- RetNet 具有更好的语言建模性能
+- RetNet 内存消耗降低了 3.4 倍
+- ….8.4 倍更高的吞吐量
+- …延迟降低 15.6 倍
+
+这速度比当前的 SOTA 快**几个数量级**，同时还提供更好的性能！如果其他团队能够复制这一点并且进入开源领域，这将是巨大的进步，但目前微软绝对是「遥遥领先」
+
+RetNet的主要贡献可以概括为两大点
+- RetNet引入**多尺度保留机制**来替代**多头注意力**。这是消除自注意力机制中的魔鬼这一组成部分的关键。尽管如此，这种保留机制有一个小小的理论上的缺点。
+- RetNet 适用于三种计算范式，而只有一种 Transformer 在训练和推理过程中使用相同的序列处理范式。
+  - A. **并行**表示使训练并行性能够充分利用 GPU 设备。
+  - B. **循环**表示在内存和计算方面可实现高效的 O(1) 推理。可以显着降低部署成本和延迟。此外，在没有键值缓存技巧的情况下，实现也得到了极大的简化。
+  - C. **分块循环**表示可以执行有效的长序列建模。对每个本地块进行并行编码以提高计算速度，同时对全局块进行循环编码以节省 GPU 内存。
+
+
+
 ## 位置编码方式
+
 
 
 ### 2021.3.23 Roformer
