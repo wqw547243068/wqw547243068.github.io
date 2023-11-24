@@ -3,7 +3,7 @@ layout: post
 title:  "Tensorflow学习笔记"
 date:   2019-05-10 17:25:00
 categories: 编程语言
-tags: Tensorflow Python 深度学习
+tags: Tensorflow Python 深度学习 可视化
 excerpt: Tensorflow编程技能汇总
 author: 鹤啸九天
 mathjax: true
@@ -2585,14 +2585,62 @@ wandb login
 import wandb
 
 wandb.init(config=all_args,
-    project=your\_project\_name,
-    entity=your\_team\_name,
+    project=your_project_name,
+    entity=your_team_name,
     notes=socket.gethostname(),
-    name=your\_experiment\_name
+    name=your_experiment_name
     dir=run_dir,
     job_type="training",
     reinit=True)
 ```
+
+### 示例
+
+【2023-11-24】实践通过
+
+专属api key启动
+
+```sh
+wandb login 666efa48cc...
+```
+
+执行训练脚本
+
+```py
+import wandb
+import random
+
+# start a new wandb run to track this script
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="test",
+    
+    # track hyperparameters and run metadata
+    config={
+    "learning_rate": 0.02,
+    "architecture": "CNN",
+    "dataset": "CIFAR-100",
+    "epochs": 10,
+    }
+)
+
+# simulate training
+epochs = 10
+offset = random.random() / 5
+for epoch in range(2, epochs):
+    acc = 1 - 2 ** -epoch - random.random() / epoch - offset
+    loss = 2 ** -epoch + random.random() / epoch + offset
+    
+    # log metrics to wandb
+    wandb.log({"acc": acc, "loss": loss})
+
+# [optional] finish the wandb run, necessary in notebooks
+wandb.finish()
+```
+
+
+
+
 
 ### 使用方法
 
@@ -2607,7 +2655,6 @@ wandb的基础功能就是跟踪训练过程，然后在wandb网站上查看训�
 *   展示多进程group示例: [test\_multi\_process.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_multi_process.sh)
 *   展示html示例: [test_html.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_html.sh)
 *   PyTorch集成示例: [test_pytorch.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_pytorch.sh)
-
 
 
 
