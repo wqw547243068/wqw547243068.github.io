@@ -549,6 +549,13 @@ permalink: /car
 - 驾驶室内保持正常坐姿，眼睛只要能看到前方障碍物离你最近处（车头、屁股或侧面哪边都行）的底盘或保险杠下边缘，这时保证有**2米**以上的距离，只要**打死**方向盘，绝对能安全左、右转弯，不会刮擦到车头的右前角或左前角。
 
 
+### 胎压
+
+
+【2023-11-26】一眼看清胎压高低
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/c9a8536dbf8f431cb14a01d828acff66~tplv-obj:720:966.image?_iz=97245&from=post&lk3s=06827d14&x-expires=1708732800&x-signature=3Hv6IGBFjLAEBPTsS1ws2aKd%2B88%3D)
+
+
 # 驾照
 
 ## 驾照分类
