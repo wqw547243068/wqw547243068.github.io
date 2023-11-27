@@ -14,6 +14,7 @@ permalink: /work
 * content
 {:toc}
 
+# 总结
 
 - 【2022-11-8】[5to9](https://5to9.beehiiv.com/): Sharing how founders and creators found success, so you can too
 - 【2022-6-23】28 岁的末尾退休的92年字节工程师 [郭宇](https://weibo.com/137601206)，拥抱山间清泉与峡谷的风，去感受春秋冬夏。有缘人自会再相逢，朋友，愿我们在更广阔的世界再会
@@ -47,6 +48,11 @@ permalink: /work
 - 【2020-1-11】[请不要浪费宝贵的时间](https://www.bilibili.com/video/av81499701)
 
 <iframe src="//player.bilibili.com/player.html?aid=81499701&cid=139469096&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+【2023-11-27】**A9**代表什么意思
+- A9即代表Asset资产定义9也待产资产金额位数，所以A9指的是资产金额达到9位数即资产金额达到一亿元人民币的的。
+- 关于Ax.y: X,代表资产数值的位数,Y则代表资产数值首位的值, 举个例子，**A8.5**则资产八位数首位为5即是5000万资产
 
 
 # 书籍：只工作、不上班
