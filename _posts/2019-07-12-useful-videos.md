@@ -3,7 +3,7 @@ layout: post
 title:  "优质视频资源汇总"
 date:   2019-07-12 23:08:00
 categories: 人文科学
-tags: 王阳明 人生意义 思考 财经 哲学 科技 风景
+tags: 王阳明 人生意义 思考 财经 哲学 科技 风景 纪录片
 excerpt: 汇总优质视频，启发思考，开阔视野
 mathjax: true
 permalink: /resource
@@ -13,6 +13,60 @@ permalink: /resource
 {:toc}
 
 # 视频资源
+
+
+## Netflix
+
+【2023-11-27】[Netflix（奈飞）上有哪些好看的纪录片？](https://www.zhihu.com/question/333004188/answer/3263581953?utm_psn=1712421855422656512)
+
+### 1.《[头脑解密](https://www.zhihu.com/search?q=%E5%A4%B4%E8%84%91%E8%A7%A3%E5%AF%86&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》**The Mind**
+
+![](https://picx.zhimg.com/50/v2-bb72917f8cb5691da8cdec52c1ac2071_720w.jpg?source=2c26e567)
+
+最近看了**Netflix**出品的 纪录片**《[The Mind, explained](https://www.zhihu.com/search?q=The%20Mind%2C%20explained&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》**，关于记忆、梦境、焦虑、冥想、psychedelics的科普，一集20分钟，短小精练。大概能让普通人对自己的大脑多一些理解和思考，以及对冥想和致幻剂少一些偏见。动画做的特别棒，记忆和正念的两集有点像[存在主义心理学](https://www.zhihu.com/search?q=%E5%AD%98%E5%9C%A8%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)，最惊喜的是最后一集迷幻剂。人的大脑真的是有无穷潜力，但人类仍然在努力学习并且逐渐做到去控制它。
+
+### 2. 《监视资本主义：智能陷阱》**The Social Dilemma**
+
+![](https://pic1.zhimg.com/50/v2-46e0839865f88c6e0e3e5b96e9dfb95c_720w.jpg?source=2c26e567)
+
+发推文、点赞、分享 — 但日益依赖[社交媒体](https://www.zhihu.com/search?q=%E7%A4%BE%E4%BA%A4%E5%AA%92%E4%BD%93&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)会带来什么后果？随着数字平台日益成为人们[保持联系](https://www.zhihu.com/search?q=%E4%BF%9D%E6%8C%81%E8%81%94%E7%B3%BB&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)的重要方式，[硅谷](https://www.zhihu.com/search?q=%E7%A1%85%E8%B0%B7&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)内部人士通过暴露屏幕另一侧的隐藏内容，揭示了社交媒体如何重新改写文明。
+
+前半段谈的是个人的[成瘾性](https://www.zhihu.com/search?q=%E6%88%90%E7%98%BE%E6%80%A7&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)，后半段谈到了对社会和政治的影响，甚至还提到了某港问题受到了[推荐算法](https://www.zhihu.com/search?q=%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)的影响，实在是强烈推荐的纪录片。
+
+_推荐算法_让人类看到更多他想看到的信息，而不是正确的信息；_当算法没有被操纵的时候_，假象会被传播和放大的更快，[社会群体](https://www.zhihu.com/search?q=%E7%A4%BE%E4%BC%9A%E7%BE%A4%E4%BD%93&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)的分化会更严重；当被操纵的时候，它会成为比以往更高效的**舆论控制工具**。
+
+### 3. 《[别信任何人：虚拟货币悬案](https://www.zhihu.com/search?q=%E5%88%AB%E4%BF%A1%E4%BB%BB%E4%BD%95%E4%BA%BA%EF%BC%9A%E8%99%9A%E6%8B%9F%E8%B4%A7%E5%B8%81%E6%82%AC%E6%A1%88&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》
+
+![](https://pic1.zhimg.com/50/v2-9f52952d9b706566f8e4a5a951296f75_720w.jpg?source=2c26e567)
+
+在**加密货币**的多疑世界里，只有一条规则 — 不要相信任何人。因此，当加拿大最大的[加密货币交易所](https://www.zhihu.com/search?q=%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E4%BA%A4%E6%98%93%E6%89%80&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D) QuadrigaCX 的[首席执行官](https://www.zhihu.com/search?q=%E9%A6%96%E5%B8%AD%E6%89%A7%E8%A1%8C%E5%AE%98&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)格里·科滕离奇死亡后，他将 2.5 亿美元客户资金的密码带进了坟墓。
+
+　　一群惊恐的投资者拒绝接受官方的说法。他们认为，格里的“死亡”具有“[金蝉脱壳](https://www.zhihu.com/search?q=%E9%87%91%E8%9D%89%E8%84%B1%E5%A3%B3&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)”的所有特征，即他还活着，并且已经带着他们的钱跑路了。这是一个惊心动魄的故事，他们的调查将带观众走进一个[黑暗世界](https://www.zhihu.com/search?q=%E9%BB%91%E6%9A%97%E4%B8%96%E7%95%8C&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)，在这里，一切人和事都[讳莫如深](https://www.zhihu.com/search?q=%E8%AE%B3%E8%8E%AB%E5%A6%82%E6%B7%B1&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)。他们能否解开 Quadriga 的核心谜团，找到[格里·科滕离](https://www.zhihu.com/search?q=%E6%A0%BC%E9%87%8C%C2%B7%E7%A7%91%E6%BB%95%E7%A6%BB&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)，并最终拿回自己的钱？
+
+### 4. 《[人生战术本 The Playbook](https://www.zhihu.com/search?q=%E4%BA%BA%E7%94%9F%E6%88%98%E6%9C%AF%E6%9C%AC%20The%20Playbook&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》**
+
+![](https://picx.zhimg.com/50/v2-b635e52e5a1b959dbd7cc952fc5da85d_720w.jpg?source=2c26e567)
+
+《人生战术本》分享了传奇教练在[运动](https://www.zhihu.com/search?q=%E8%BF%90%E5%8A%A8&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)和生活中取得成功所遵循的规则。通过感人的[深度访谈](https://www.zhihu.com/search?q=%E6%B7%B1%E5%BA%A6%E8%AE%BF%E8%B0%88&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)，每位教练都透露了他们个人生活和[职业生涯](https://www.zhihu.com/search?q=%E8%81%8C%E4%B8%9A%E7%94%9F%E6%B6%AF&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)中的关键时刻，这些时刻最终帮助他们形成了自己的教练哲学。
+
+### 5.《 聪明[生活经济学](https://www.zhihu.com/search?q=%E7%94%9F%E6%B4%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》
+
+![](https://picx.zhimg.com/50/v2-516cd7d194c18949b716202ec89713c0_720w.jpg?source=2c26e567)
+
+最喜欢那个叫**[林赛](https://www.zhihu.com/search?q=%E6%9E%97%E8%B5%9B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)**的姑娘，出身卑微但充满才华，这样的人理应获得更多的机遇。
+
+### 6. 《[极简主义：时机已到](https://www.zhihu.com/search?q=%E6%9E%81%E7%AE%80%E4%B8%BB%E4%B9%89%EF%BC%9A%E6%97%B6%E6%9C%BA%E5%B7%B2%E5%88%B0&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)》The Minimalists: Less Is Now
+
+![](https://picx.zhimg.com/50/v2-a7c05fff65ba46f48ef73ca354add1ac_720w.jpg?source=2c26e567)
+
+[约书亚·菲尔茨·米尔本](https://www.zhihu.com/search?q=%E7%BA%A6%E4%B9%A6%E4%BA%9A%C2%B7%E8%8F%B2%E5%B0%94%E8%8C%A8%C2%B7%E7%B1%B3%E5%B0%94%E6%9C%AC&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)和瑞安·尼科[迪默斯](https://www.zhihu.com/search?q=%E8%BF%AA%E9%BB%98%E6%96%AF&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)这对老友创立了一项极简主义运动，讲述[一切从简](https://www.zhihu.com/search?q=%E4%B8%80%E5%88%87%E4%BB%8E%E7%AE%80&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)如何能让我们的生活变得更好。极简主义这个概念真的得从更宏观的视角去理解才能落实到行动原则上。「物质和[消费](https://www.zhihu.com/search?q=%E6%B6%88%E8%B4%B9&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)无法满足我们对人生意义的渴望，缺乏信心和目标，物质的囤积也无法弥补生活的空虚。」对普通人来说，资源有限，只有减少对不必要的事物的关注，才可以集中资源（钱、时间、精力）投入更有意义的事情中去～
+
+### 7. 《黑钱》**Dirty Money Season**
+
+![](https://picx.zhimg.com/50/v2-fda352ab31bbd66357edf4259b75c286_720w.jpg?source=2c26e567)
+
+[网飞](https://www.zhihu.com/search?q=%E7%BD%91%E9%A3%9E&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)又一神作。咱就不说资本家的嘴脸了，我要是能达到这些丑恶资本家十分之一的本事。巨大的[财富](https://www.zhihu.com/search?q=%E8%B4%A2%E5%AF%8C&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)背后必然伴随着巨大的罪恶，如今这个世界已经在巨富与[赤贫](https://www.zhihu.com/search?q=%E8%B5%A4%E8%B4%AB&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)的两极化道路上越走越远，而所谓的中间者[中产阶级](https://www.zhihu.com/search?q=%E4%B8%AD%E4%BA%A7%E9%98%B6%E7%BA%A7&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A3263581953%7D)也难逃穷人遭受的或隐或现的剥削。
+
 
 ## 城市风景
 
