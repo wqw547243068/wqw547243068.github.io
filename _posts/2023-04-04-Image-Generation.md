@@ -1156,7 +1156,7 @@ OpenAI 的宋飏博士在今年提出的**一致性模型**（Consistency Model�
 **潜在一致性模型**（Latent Consistency Model，LCM）就是为解决上述问题而诞生的。
 - 潜在一致性模型支持**给定条件**的图像生成任务，并结合了潜在编码、无分类器引导等诸多在扩散模型中被广泛应用的技术，大大加速了条件去噪过程，为诸多具有实际应用意义的任务打开了一条通路。
 
-#### LCM
+#### 【2023-10-6】LCM -- 2023 CVPR Best
 
 【2023-10-6】Latent Consistency Models（潜一致性模型）是一个以**生成速度**为主要亮点的图像生成架构。
 - [LATENT CONSISTENCY MODELS:SYNTHESIZING HIGH-RESOLUTION IMAGES WITH FEW-STEP INFERENCE](https://arxiv.org/pdf/2310.04378.pdf)
@@ -1179,7 +1179,6 @@ LCM-LORA: 一个通用的 Stable Diffusion 加速模块
 - [LCM-LoRA](https://huggingface.co/papers/2311.05556)
 - 项目主页：[latent-consistency-models](https://latent-consistency-models.github.io)
 
-
 LCM-LoRA出现了：将SD1.5、SSD1B、SDXL蒸馏为LCM的LoRA，将生成5倍加速生成能力带到所有SDXL模型上并兼容所有现存的LoRA，同时牺牲了小部分生成质量; 项目迅速获得了Stable Diffusion生态大量插件、发行版本的支持。
 
 LCM同时也发布了训练脚本，可以支持训练自己的LCM大模型（如LCM-SDXL）或LCM-LoRA，做到兼顾生成质量和速度。只要一次训练，就可以在保持生成质量的前提下提速5倍。
@@ -1196,6 +1195,35 @@ LCM至少能在图像生成成本消失、视频生成、实时生成三大方�
   - RT-LCM视频渲染, 实时图像编辑, LCM实时空间建模渲染
 
 ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/2524c01c5b7743508b38bf8eb927d8c5~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701343964&x-signature=IF%2FUSL%2F2Onz2TD5wuhC6aqcKOyM%3D)
+
+
+
+### 【2023-11-14】【谷歌】UFOGen
+
+【2023-11-20】[打爆LCM！谷歌最新工作UFOGen只需要采样一步生成高质量图像](https://mp.weixin.qq.com/s/cX_mYJipGKnl5PkC3cYeoA)
+
+如何提升扩散模型的生成速度?主要集中在两个方向。
+- 一个是设计更高效的**数值计算**方法，以求能达到利用更少的离散步数求解扩散模型的采样 ODE 的目的。
+  - 比如清华的朱军团队提出的 DPM 系列数值求解器，被验证在 Stable Diffusion 上非常有效，能显著地把求解步数从 DDIM 默认的 50 步降到 20 步以内。
+- 另一个是利用**知识蒸馏**的方法，将模型的基于 ODE 的采样路径压缩到更小的步数。
+  - 这个方向的例子是 CVPR2023 最佳论文候选之一的 Guided distillation，以及最近大火的 Latent Consistency Model （LCM）。
+  - 尤其是 LCM，通过对一致性目标进行蒸馏，能够将采样步数降到只需 4 步，由此催生了不少实时生成的应用。
+
+随着一系列技术(LCM)的提出，从扩散模型中采样所需的步数已经从最初的**几百步**，到**几十步**，甚至只需要 **4-8 步**。
+
+最近，来自谷歌研究团队提出了 `UFOGen` 模型，一种能极速采样的扩散模型变种。通过论文提出的方法对 Stable Diffusion 进行微调，UFOGen 只需要一步就能生成高质量的图片。与此同时，Stable Diffusion 的下游应用，比如图生图，ControlNet 等能力也能得到保留。
+- 论文链接：[UFOGen: You Forward Once Large Scale Text-to-Image Generation via Diffusion GANs](https://arxiv.org/abs/2311.09257)
+
+谷歌在 UFOGen 模型中并没有跟随以上大方向，而是另辟蹊径，利用了一年多前提出的`扩散模型`和 `GAN` 的混合模型思路。前面提到的基于 ODE 的采样和蒸馏有其根本的局限性，很难将采样步数压缩到极限。
+
+扩散模型和 GAN 的混合模型最早是英伟达的研究团队在 ICLR 2022 上提出的 DDGAN（《Tackling the Generative Learning Trilemma with Denoising Diffusion GANs》）。其灵感来自于普通扩散模型对降噪分布进行高斯假设的根本缺陷。简单来说，扩散模型假设其降噪分布（给定一个加了噪音的样本，对噪音含量更少的样本的条件分布）是一个简单的高斯分布。然而，随机微分方程理论证明这样的假设只在降噪步长趋于 0 的时候成立，因此扩散模型需要大量重复的降噪步数来保证小的降噪步长，导致很慢的生成速度。
+
+DDGAN 提出抛弃降噪分布的高斯假设，而是用一个带条件的 GAN 来模拟这个降噪分布。因为 GAN 具有极强的表示能力，能模拟复杂的分布，所以可以取较大的降噪步长来达到减少步数的目的。然而，DDGAN 将扩散模型稳定的重构训练目标变成了 GAN 的训练目标，很容易造成训练不稳定，从而难以延伸到更复杂的任务。在 NeurIPS 2023 上，和创造 UGOGen 的同样的谷歌研究团队提出了 SIDDM（论文标题 Semi-Implicit Denoising Diffusion Models），将重构目标函数重新引入了 DDGAN 的训练目标，使训练的稳定性和生成质量都相比于 DDGAN 大幅提高。
+
+
+SIDDM 作为 UFOGen 的前身，只需要 4 步就能在 CIFAR-10, ImageNet 等研究数据集上生成高质量的图片。但是 SIDDM 有两个问题需要解决：首先，它不能做到理想状况的一步生成；其次，将其扩展到更受关注的文生图领域并不简单。为此，谷歌的研究团队提出了 UFOGen，解决这两个问题。
+
+
 
 ## 如何鉴别生成图像
 
