@@ -1198,7 +1198,7 @@ LCM至少能在图像生成成本消失、视频生成、实时生成三大方�
 
 
 
-### 【2023-11-14】【谷歌】UFOGen
+### 【2023-11-17】【谷歌】UFOGen
 
 【2023-11-20】[打爆LCM！谷歌最新工作UFOGen只需要采样一步生成高质量图像](https://mp.weixin.qq.com/s/cX_mYJipGKnl5PkC3cYeoA)
 
