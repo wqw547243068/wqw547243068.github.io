@@ -4185,6 +4185,40 @@ Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 
 
 支持多种模型
 
+
+#### llama.cpp
+
+【2023-11-25】[如何看待llama.cpp?](https://www.zhihu.com/question/589100471/answer/3276334273?utm_psn=1711150724442902528)
+
+大模型推理框架 llama.cpp 是开发者 Georgi Gerganov 基于 Meta 的 LLaMA 模型 手写的**纯 C/C++** 版本：
+- 支持CPU推理, 当然也支持CUDA/OpenCL推理
+- 具有 FP16 和 FP32 的混合精度
+- 支持8-bit/4bit量化 ...
+
+
+llama.cpp 的代码结构比较直观，如下所示，为整体代码结构中的比较核心的部分的代码结构
+
+```sh
+|-- example
+|  |-- main
+|     |-- main.cpp  # 推理llama 2的主函数
+|-- ggml.c # ggml.c 和.h文件定义一些框架的基础数据结构和函数等
+|-- ggml.h
+|-- ggml-alloc.c #内存分配管理
+|-- ggml-alloc.h
+|-- llama.cpp # 整个llama 2的计算图构建和weight加载等
+|-- llama.h
+|-- ggml-cuda.cu  #cuda版本的llama2 中的kernel实现与调用
+|-- ggml-cuda.h
+|-- ggml-opencl.cpp #opencl版本的llama2 中的kernel实现与调用
+|-- ggml-opencl.h
+|-- ... #其他
+```
+
+源码详解见[原文](https://www.zhihu.com/question/589100471/answer/3276334273)
+
+
+
 #### chatglm.cpp 本地运行
 
 [chatglm.cpp](https://github.com/li-plus/chatglm.cpp) 类似 llama.cpp 的量化加速推理方案，实现笔记本上实时对话
