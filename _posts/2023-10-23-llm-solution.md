@@ -46,6 +46,14 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 
 ## 方法分析
 
+
+### PE vs finetune
+
+【2023-11-30】Prompt Engineering 完胜 Fine-tuning：通用(且强大)的LLM通过prompt即可超越精调的LLM
+- 微软研究，通过**优化**提示词，让GPT-4在**医学领域**完胜Med-PaLM 2（用医学数据精调的LLM）
+- 通用且强大的LLM，能胜任各个领域的任务，比普通但在指定领域精调的LLM更强
+- 【2023-11-18】论文： [Can Generalist Foundation Models Outcompete Special-Purpose Tuning? Case Study in Medicine](https://arxiv.org/pdf/2311.16452.pdf)
+
 ### RAG vs finetune
 
 RAG最直接的优势:
