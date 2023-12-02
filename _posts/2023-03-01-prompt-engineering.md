@@ -1214,6 +1214,24 @@ resp = tokenizer.decode(output[0], skip_special_tokens=True).split('[/INST]')[1]
 print(resp)
 ```
 
+### 2023.12.1 YiVal
+
+【2023-12-1】[Prompt不会写？引入YiVal，自动化提示工程的未来](https://mp.weixin.qq.com/s/SyhSOuA8TtgXqy7b6_mthA)
+- github 地址：[YiVal](https://github.com/YiVal/YiVal)
+- 官方文档 [YiValApi](https://yival.github.io/YiValApi)
+
+YiVal 专为简化GenAI应用提示和循环中的任何配置调整流程而设计。在这个以数据为驱动、以评估为中心的系统中，<span style='color:red'>手动调整已经成为过去式</span>。
+
+YiVal 利用 NLP技术，自动分析和优化提示
+
+YiVal确保了最佳的提示生成、精确的重复性关注（RAG）配置和精细调整的模型参数，从而赋能应用程序轻松实现优化结果，降低延迟，并最小化推理成本。
+
+```py
+#pip install yival
+git clone https://github.com/YiVal/YiVal.git
+cd YiVal
+```
+
 
 ## 图像提示词
 
