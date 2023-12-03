@@ -211,6 +211,112 @@ The key is to educate ChatGPT on the specifics you want. Check the TEN inputs yo
 - Includes: Something you want to add, like relevant examples, case studies, social proofs, comparisons, or anything else.
 - Title and Subtitle Suggestion: Well, it says all.
 
+
+### Prompt 框架
+
+【2023-10-13】[一文汇总市面上所有prompts提示词框架](https://mp.weixin.qq.com/s/ep08dte2qy2Jz2gPZg5b3A)
+
+12种常见的prompts框架
+- 任务型：
+- 角色扮演：
+
+#### 1 ICIO 框架
+
+- Instruction：指令  即你希望AI执行的具体任务
+- Context：背景信息 给AI更多的背景信息引导模型做出更贴合需求的回复
+- Input Data：输入数据 告知模型需要处理的数据
+- Output Indicator：输出引导 告知模型我们要输出的类型或风格
+
+#### 12 PATFU 框架
+
+- PROBLEM：问题 清晰的表达需要解决的问题
+- AERA：领域 问题所在领域或需扮演的角色
+- TASK：任务 解决这个问题需要执行的具体任务
+- FORMAT：格式 详细定义输出的格式和限制条件
+- UPDATE：迭代 记录提示词版本并根据输出结果对提示词进行迭代
+
+#### 4 APE框架
+
+- ACTION: 行动 定义要完成的工作或活动
+- PURPOSE: 目的 讨论意图或目标
+- EXPECTATION: 期望 陈述预期的结果
+
+
+#### 5 COAST框架
+
+- CONTEXT：上下文背景 为对话设定舞台
+- OBJECTIVE：目的 描述目标
+- ACTION ：行动 解释所需行动
+- SCENARIO：方案 描述场景
+- TASK：任务 描述任务
+
+#### 6 TAG框架
+
+- TASK：任务 描述任务
+- ACTION：行动 解释所需行动
+- GOAL：目标 解释最终目标
+
+
+#### 8 TRACE框架
+
+- TASK：任务 定义特定任务
+- REQUEST：请求 描述要求
+- ACTION：行动 说明需要的操作
+- CONTEXT：上下文 提供上下文信息或情况
+- EXAMPLE：示例 举例子说明你想要达成的效果
+
+#### 9 ERA框架
+
+- EXPECTATION：期望 描述所需的结果
+- ROLE：角色 指定角色
+- ACTION：行动 指定需要采取哪些操作
+
+#### 10 CARE框架
+
+- CONTEXT:上下文 提供上下文信息或情况
+- ACTION：行动 说明需要的操作
+- RESULT：结果 描述所需的结果
+- EXAMPLE：示例 举例子说明你想要达成的效果
+
+#### 11 ROSES框架
+
+- ROLE：角色 指定角色
+- OBJECTIVE：目的 陈述目标
+- SCENARIO：方案 描述情况
+- EXPECTED SOLUTION：解决方案 定义所需的结果
+- STEPS：步骤 要求达到目标所需的步骤
+
+
+#### 2 CRISPE 框架
+
+- Capacity and Role: **能力和角色** ChatGPT应扮演什么角色
+- Insight: 见解 提供你请求的背后见解、背景和上下文
+- Statement: 声明 你要求ChatGPT 做什么
+- Personality: 个性 你希望 ChatGPT 以何种风格、个性或方式回应
+- Experiment: 实验 请求 ChatGPT 为你回复多个示例
+
+
+#### 3 BROKE框架
+
+- Background: 背景  说明背景，为ChatGPT 提供充足信息
+- Role: 角色 希望ChatGPT扮演的角色
+- Objectives: 目标 希望实现什么
+- Key Result: 关键结果 要什么具体效果试验并调整
+- Evolve: 试验并改进 三种改进方法自由组合   
+  - a. 改进输入：从答案的不足之处着手改进背景B，目标O与关键结果R   
+  - b. 改进答案：在后续对话中指正chatGPT答案缺点   
+  - c. 重新生成：尝试在 Prompt 不变的情况下多次生成结果，优中选优
+
+#### 7 RISE框架
+
+- ROLE: 角色 指定ChatGPT的角色
+- INPUT: 输入 描述信息或资源
+- STEPS：步骤 询问详细的步骤
+- EXPECTATION 期望 描述所需的结果
+
+
+
+
 ## 提示工程指南
 
 【2023-4-13】提示工程指南[Prompt-Engineering-Guide](https://github.com/dair-ai/Prompt-Engineering-Guide),  Guides, papers, lecture, notebooks and resources for prompt engineering
