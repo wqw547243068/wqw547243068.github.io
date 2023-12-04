@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络  人工智能  AI  机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化
+tags: 神经网络 人工智能 AI 机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -331,6 +331,11 @@ TensorFlow 官网提供的神经网络可视化 [playground](https://playground.
 [TensorSpace](https://tensorspace.org) 是一款 3D 模型可视化框架。 
 - [TensorSpace Playground](https://tensorspace.org/html/playground/index.html)
 - ![](https://live.staticflickr.com/65535/49755093623_a3776ca7c7_b.jpg)
+
+
+【2023-12-4】 GPT 3D可视化及动态演示: [bbycroft](https://bbycroft.net/llm), 支持 Nano-GPT，GPT-2和GPT-3，可交互
+
+
 
 ## 神经网络如何记忆
 
