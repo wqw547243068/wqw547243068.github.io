@@ -46,6 +46,16 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 
 ## 方法分析
 
+[Full Fine-Tuning, PEFT, Prompt Engineering, and RAG: Which One Is Right for You?](https://deci.ai/blog/fine-tuning-peft-prompt-engineering-and-rag-which-one-is-right-for-you)
+
+
+|方法|说明|分析|图解|
+|---|---|---|
+|`PE`|提示工程||![](https://deci.ai/wp-content/uploads/2023/09/3-4.png.webp)|
+|`PEFT`|参数高效微调||![](https://deci.ai/wp-content/uploads/2023/09/4-6.png.webp)|
+|`RAG`|检索增强生成||![](https://deci.ai/wp-content/uploads/2023/09/2-5.png.webp)|
+|`Full FineTune`|全参数微调||![](https://deci.ai/wp-content/uploads/2023/09/1-3.png.webp)|
+
 
 ### PE vs finetune
 
@@ -126,6 +136,7 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
 
 【2023-10-17】[如何选择最适合你的LLM优化方法：全面微调、PEFT、提示工程和RAG对比分析](https://zhuanlan.zhihu.com/p/661830285?utm_psn=1697685536221999105)
 - [RAG vs Finetuning — Which Is the Best Tool to Boost Your LLM Application?](https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)
+- 【2023-12-4】英文原文：[Full Fine-Tuning, PEFT, Prompt Engineering, and RAG: Which One Is Right for You?](https://deci.ai/blog/fine-tuning-peft-prompt-engineering-and-rag-which-one-is-right-for-you/)
 
 四种主要的调优方法：
 - **全面微调**：使用任务特定数据调整LLM的所有参数。
