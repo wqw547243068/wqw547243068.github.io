@@ -142,6 +142,9 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 - 通用且强大的LLM，能胜任各个领域的任务，比普通但在指定领域精调的LLM更强
 - 【2023-11-18】论文： [Can Generalist Foundation Models Outcompete Special-Purpose Tuning? Case Study in Medicine](https://arxiv.org/pdf/2311.16452.pdf)
 
+【2023-9-27】[RAG 与 Finetuning，谁是提升 LLM 的最佳工具？](https://mp.weixin.qq.com/s/D-8r3FHKCyh4xk-yM7lMag)
+
+
 ### RAG vs finetune
 
 RAG最直接的优势:
@@ -235,17 +238,61 @@ Meta 研究人员发现，通过提供与手头任务相关的信息，模型在
 
 由于LLM具有有限的上下文窗口长度，在处理当前任务时**只能传递最相关的知识**。添加到上下文中数据质量影响着模型生成响应结果的质量。机器学习从业者在RAG流程不同阶段使用多种技术来改善LLM性能。
 
-### 什么是 RAG
+### RAG 介绍
 
 科里·祖
 > “检索增强生成是用您（系统）从其他地方检索到的附加信息来补充用户输入到 ChatGPT 等大型语言模型 (LLM) 的过程。然后，法学硕士可以使用该信息来增强其生成的响应。” 
 
-检索增强生成（简称 `RAG`）是 Meta 于 2020 年推广的一种架构，通过将**相关信息**与**问题/任务细节**一起传递给模型来提高 LLM 的性能。
 
-【2023-9-27】[RAG 与 Finetuning，谁是提升 LLM 的最佳工具？](https://mp.weixin.qq.com/s/D-8r3FHKCyh4xk-yM7lMag)
+检索增强生成（简称 `RAG`）是 Meta 于 2020 年推广的一种架构，通过将**相关信息**与**问题/任务细节**一起传递给模型来提高 LLM 的性能。
+- 【2020-9-28】[Retrieval Augmented Generation: Streamlining the creation of intelligent natural language processing models](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
+
+RAG模型直接把Retrieve augmentation加到名字里。
+
+解决的痛点：
+- 之前的研究（如REALM）基于MLM模型，只做**提取**任务，其他任务受限，用generator可以赋予其更大的能力。
+
+两个模型变种：`RAG-Sequence`和`RAG-Token`
+- `RAG-Sequence`，先找到k个最详尽的例子（k个z），然后根据每个z作为条件去预测完整个句子，然后概率求和。在每一次去预测的时候都是只看一个doc的。先乘后加。对应的decode需要额外处理
+  - ![](https://pic4.zhimg.com/80/v2-68b1299d6a4b92e5cab3e0fcd4561af7_1440w.webp)
+- `RAG-Token`，先找到k个最详尽的例子（k个z），但是每预测一个token的时候都要看k个doc然后求和。先加后乘，对应的decode需要额外处理
+  - ![](https://pic3.zhimg.com/v2-70ae3fec7b473b30b4a5692a45982a86_b.jpg)
+
+retriever 用 DPR，generator 用 BART，联合训练。预测时候有一些小小操作详情见原[论文](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
+
+[REALM](https://huggingface.co/docs/transformers/model_doc/realm) 和 [RAG](https://huggingface.co/docs/transformers/model_doc/rag) 在huggingface上都已经被实现了，直接使用。
+
+`FiD`和`FiD-KD`，简单高效的Generator端的改进
+- `FiD` 全称是 Fusion-in-Decoder，作者的一篇短文被提出（小彩蛋：通讯作者是当时cached LM的一作）
+  - 主要改进 Generator端，方法一张图：
+  - ![](https://pic1.zhimg.com/80/v2-7adbf779c5e97a23bb387a09a6122f48_1440w.webp)
+  - 基于seq2seq的模型，拆开两半用，第一步用encoder将检索出来的N个段落分别与Question进行拼接的N个拼接编码，之后就和seq2seq剩余的部分一样了，cross attention，causual mask什么的使用decoder把他们拼起来的结果解码即可。结果还是很不错的，简单有效刷SOTA。
+- `FiD-KD`: 发完FiD不久，统一团队对FiD迅速补充提出了KD的FiD。
+  - 解决的痛点: 很难去监督retrieve出来的结果，因为几乎没有对到底检索出来哪些文档有有监督的标注，之前的REALM和RAG也对这个根本没有监督。FiD-KD对此进行改进。
+  - FiD中将所有的encoding拼接之后接下来继续完成seq2seq，会进行一下cross attention，（如果对cross attention不熟悉那么就可以去看看huggingface transformers的BART源码），cross attention的attention值的大小是一个很好的监督信号。cross attention的值这个可以对检索出来的文章进行一个打分，进而作为信号被我们用来拉近retriever的结果和retriever打分的分布。具体的attention怎么处理的，怎样拉近分布比较好详情见论文。
+
+UniK-QA，扩展Open-domain QA的知识来源
+- 之前的KBQA（涉及结构化知识）和开放域问答（涉及非结构化知识）是分别分开研究的，使用的技术也不一样，同时也限制了知识的来源。作者希望他们之间能通过统一使得QA的性能得以提高。所以作者提出了一个pipeline：首先将结构化文本进行flatten表示为非结构化文本“一段话”（也就是传统的开放域问答所使用的知识形式）
+
+TLM，使用检索来进行专用化的高效预训练
+- 2021年的11月，杨植麟团队提出了一种新的预训练范式，Task-driven Language Modeling (TLM)，根据下游需要完成的任务来有针对性的进行上游预训练数据的筛选。这种针对性的预训练可以大幅度加速下游的微调时间，从而取得更好的效果。
+
+CASPER，检索examples作为辅助
+
+RETRO，retrieve-based LM领域的大厂强心剂
+- jalammar写的很简洁，直接看就可以很快地了解RETRO在干什么，几个takeaway是：
+  - 1）不训练检索器就很好使，RETRO直接用冻结的BERT作为检索器，效果也很好。
+  - 2）cross attention固然好用，像RETRO这样设计新的深度融合可能会更好，这也是可以做的一个蓝海方向。
+
+更多：[检索、提示：检索增强的（Retrieval Augmented）自然语言处理](https://zhuanlan.zhihu.com/p/470784563)
+
 
 
 ### RAG 进化路线
+
+
+模型：
+> `Knn-LM` -> `REALM` -> `DPR` -> `RAG` -> `FID` -> `COG` -> `GenRead` -> `REPLUG` -> `Adaptive retrieval`
 
 【2023-10-30】[ACL2023](https://acl2023-retrieval-lm.github.io/)陈丹琦等《基于检索的大语言模型及其应用》
 - 【2023-7-10】[陈丹琦ACL学术报告来了！详解大模型「外挂」数据库7大方向3大挑战，3小时干货满满](https://www.qbitai.com/2023/07/67259.html)
