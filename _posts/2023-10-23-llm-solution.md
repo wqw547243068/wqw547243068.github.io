@@ -294,6 +294,8 @@ RETRO，retrieve-based LM领域的大厂强心剂
 模型：
 > `Knn-LM` -> `REALM` -> `DPR` -> `RAG` -> `FID` -> `COG` -> `GenRead` -> `REPLUG` -> `Adaptive retrieval`
 
+详情见[文章](https://blog.csdn.net/qq_52852138/article/details/133019348)
+
 【2023-10-30】[ACL2023](https://acl2023-retrieval-lm.github.io/)陈丹琦等《基于检索的大语言模型及其应用》
 - 【2023-7-10】[陈丹琦ACL学术报告来了！详解大模型「外挂」数据库7大方向3大挑战，3小时干货满满](https://www.qbitai.com/2023/07/67259.html)
 - ![](https://pic1.zhimg.com/80/v2-8fda0e178a75c4c4f7e832e78ffae8c4_1440w.webp)
@@ -562,8 +564,6 @@ github: [tiger](https://github.com/tigerlab-ai/tiger)
   - 关系型数据的查询方案：小型数据基于 pandas dataframe，大型数据基于 sql
   - 图数据库应用：主要解决多度关系和推荐问题。
 
-
-#### 学术进展
 
 
 ### CoN 承认不会
