@@ -2427,6 +2427,18 @@ pip install playsound
 
 相比目前市面上的其他现有方法通常使用较小的、更紧密配对的「音频 - 文本」训练数据集，或使用广泛但无监督的音频预训练集。因为 Whisper 是在一个大型和多样化的数据集上训练的，而<span style='color:red'>没有针对任何特定的数据集进行微调</span>，虽然它没有击败专攻 LibriSpeech 性能的模型（著名的语音识别基准测试），然而在许多不同的数据集上测量 Whisper 的 `Zero-shot`（不需要对新数据集重新训练，就能得到很好的结果）性能时，研究人员发现它比那些模型要稳健得多，犯的错误要少 50%。
 
+#### Distil-Whisper
+
+【2023-12-6】Distil-Whisper 不仅继承了原始Whisper模型的优秀血统，更在性能和速度上进行了显著的提升。专为英语设计的Distil-Whisper，在减小模型体积的同时，实现了处理速度的大幅跳跃，这在现有的AI语音识别技术中堪称一次创新的突破。
+
+论文详解：Distil-Whisper的原理和技术架构，请访问论文地址。
+- [论文](https://arxiv.org/pdf/2311.00430.pdf)
+
+项目实践：若想实际操作Distil-Whisper，可以通过项目地址访问其GitHub页面。
+- [distil-whisper](https://github.com/huggingface/distil-whisper#1-usage)
+
+国内资源：为了方便国内开发者，Whisper v2&v3模型的国内镜像可以通过AIFastHub进行下载。
+- [aifasthub](https://aifasthub.com/models/openai)
 
 #### 实时转写
 
