@@ -969,5 +969,17 @@ NExT-GPT 并不是**首个**实现任意模态输入到任意模态输出功能�
 
 相比之下，`NExT-GPT`却良好地解决了上述的现有工作的问题——既保证具有较好的学习成效，又全面降低、控制学习成本。
 
+
+#### 【谷歌】Gemini
+
+【2023-12-6】Google 正式推出了原生多模态的大型语言模型Gemini，可以同时支持文字、图片和声音的输入。
+- [gemini](https://deepmind.google/technologies/gemini/#introduction)
+
+在32项AI测试中，有30项的评分超越了OpenAI的GPT-4。Google CEO Sundar Pichai强调，Gemini是Google有史以来最强大也是最通用的模型。
+
+Gemini模型经过海量数据训练，可以很好识别和理解文本、图像、音频等内容，并可以回答复杂主题相关的问题。所以，非常擅长解释数学和物理等复杂学科的推理任务。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JPwU1FNhMOA?si=85W6sLiefLH3cOfi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 # 结束
 
