@@ -936,6 +936,31 @@ ChatGPT记忆模块搜索优化——文本语义向量相似M3E模型微调实�
 
 更多支持的向量数据库使用方法，可转至链接。
 
+【2023-12-7】[主流数据库一览](https://zhuanlan.zhihu.com/p/628148081)
+
+几个主流的向量数据库中
+- Milvus 在大规模、检索性能、社区影响力等方面都具备**绝对优势**，其分布式架构也更Match下一代存储的理念。
+- Weaviate 在使用案例上，有很多现成的例子，跟当前GPT前沿热门项目贴合比较紧秘，但在大规模生产环境使用场景中，还需要接受考验。
+- Chroma 是一个很轻量级的数据库，底层使用了clickhouse、duckdb等存储引擎
+
+| 数据库名称 | 是否开源	| 社区影响力  | 编程语言	| 核心特性	| 适用场景 |
+| --- | ---	| ---  | --- | ---	| --- |
+| `Pinecone`	| 否	|	| 未知	| 向量存储与检索、全托管 | Saas类业务场景 |
+| `weaviate`	| 是	| 5.3k star |	Go |  同时支持向量与对象的存储、支持向量检索与结构化过滤、具备主流模式成熟的使用案例。高速、灵活，不仅仅具备向量检索，还会支持推荐、总结等能力	||
+| `qdrant`	| 是	| 6.3k star	| Rust	| 向量存储与检索、云原生、分布式、支持过滤、丰富的数据类型、WAL日志写入	||
+| `milvus`	| 是	| 17.7k star |	Go	| 极高的检索性能: 万亿矢量数据集的毫秒级搜索非结构化数据的极简管理丰富的API跨平台实时搜索和分析可靠：具有很高的容灾与故障转移能力高度可拓展与弹性支持混合检索统一的Lambda架构社区支持、行业认可	||
+| `Chroma`	| 是	| 4.1k star	| python	| 轻量、内存级	 ||
+
+
+### Redis
+
+Redis 通过 RedisSearch 模块，也原生支持向量检索。 
+
+RedisSearch 是一个Redis模块，提供了查询、二级索引，全文检索以及向量检索等能力。
+
+如果要使用RedisSearch，需要首先在Redis数据上声明索引
+
+
 ### Faiss
 
 
@@ -962,8 +987,11 @@ docs_and_scores = vector_store.similarity_search_with_score(query)
 ```
 
 
-### Mulvus
+### Milvus
 
+Milvus: 面向下一代的生成式AI向量数据库，支持云原生
+
+Zilliz, 构建在Milvus之上的数据基础设施
 
 ```py
 vector_db = Milvus.from_documents(
@@ -975,8 +1003,16 @@ docs = vector_db.similarity_search(query)
 docs[0]
 ```
 
+### Qdrant
+
+Qdrant 是面向下一代的生成式AI向量数据库，同时也具备云原生的特性
+
 
 ### Chroma
+
+Chroma是一个很轻量级的数据库，底层使用了clickhouse、duckdb等存储引擎
+
+Chroma: 一个开源的向量数据库。 可以快速基于Python和JavaScript构建内存级LLM应用
 
 Chroma 比较轻量，直接安装库
 
@@ -1007,6 +1043,21 @@ print(docs.page_content)
 ```
 
 ### Pinecone
+
+[Pinecone](https://www.pinecone.io/)是一个专门为工程师与开发者设计的向量数据库。 
+
+作为一个全托管的服务，它减轻了工程师以及运维人员的负担，使得客户可以聚焦于数据内在价值的抽取。 
+- 免费版可以支持500w的向量存储，其用法简单，价格低廉，可以快速支持向量检索业务的验证与尝试。
+- 在特性上Pinecone也具有高速、准确以及可拓展等特性，此外也具备对单级元数据过滤和尖端稀疏-密集索引等高级功能。
+
+使用案例
+
+| 名称	| 描述 |
+|---|---|
+| GPT-4 Retrieval Augmentation	| 如何通过检索增强来增强GPT4的能力 |
+| Generative Question-Answering	| 生成式问答 |
+| Semantic Search	| 语义搜索，构建一个简单的语义搜索 |
+
 
 ```py
 import pinecone 
@@ -1068,5 +1119,15 @@ for doc, score in docs_with_score:
     print("-" * 80)
 ```
 
+
+### Weaviate
+
+[Weaviate](https://weaviate.io/) 是一个开源的矢量数据库，具有健壮、可拓展、云原生以及快速等特性
+
+Weaviate 是一个开源的向量数据库，可以存储对象、向量，支持将矢量搜索与结构化过滤与云原生数据库容错和可拓展性等能力相结合。 
+- 支持GraphQL、REST和各种语言的客户端访问。 
+- github[地址](https://github.com/weaviate/weaviate)
+
+Weaviate在使用案例上，有很多现成的例子，跟当前GPT前沿热门项目贴合比较紧秘，但在大规模生产环境使用场景中，还需要接受考验。
 
 # 结束
