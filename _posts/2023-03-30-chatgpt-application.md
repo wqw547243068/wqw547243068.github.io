@@ -356,6 +356,18 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
   - 工具链和下游应用插件需要持续完善。
   - 打造垂直领域模型的微服务网络，内置包括图像分割、语音识别等众多专业模型，便于企业客户随时调用、自由组合。
 
+
+#### coze
+
+字节 [coze](https://www.coze.com/) 
+
+
+#### gptbots
+
+【2023-12-7】对话平台 [gptbots](https://www.gptbots.ai/)， 类似字节 [coze](https://www.coze.com/) 
+
+
+
 ### 提效降本
 
 #### AutoAgent
