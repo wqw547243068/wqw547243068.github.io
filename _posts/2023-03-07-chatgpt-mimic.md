@@ -4181,6 +4181,17 @@ UC伯克利重磅开源神级LLM推理和服务系统——`vLLM`，利用PagedA
 Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 Web 浏览器的项目。一切都在浏览器内运行，无需服务器支持，并使用 WebGPU 加速。这开辟了许多有趣的机会，可以为每个人构建 AI 助手，并在享受 GPU 加速的同时实现隐私。
 
 
+
+### 【谷歌】Gemini
+
+【2023-12-6】Google 正式推出了原生多模态的大型语言模型Gemini，可以同时支持文字、图片和声音的输入。
+- [gemini](https://deepmind.google/technologies/gemini/#introduction)
+
+在32项AI测试中，有30项的评分超越了OpenAI的GPT-4。Google CEO Sundar Pichai强调，Gemini是Google有史以来最强大也是最通用的模型。
+
+Gemini模型经过海量数据训练，可以很好识别和理解文本、图像、音频等内容，并可以回答复杂主题相关的问题。所以，非常擅长解释数学和物理等复杂学科的推理任务。
+
+
 ### cpp 本地部署 
 
 支持多种模型
