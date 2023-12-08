@@ -26,6 +26,7 @@ permalink: /llm_opt
 - 【2023-8-17】[LLM 的推理优化技术纵览](https://zhuanlan.zhihu.com/p/642412124)
 
 
+
 ## 指标
 
 LLM 推理服务重点关注两个指标：`吞吐量`和`时延`：
@@ -80,6 +81,21 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 - MQA和GQA通过共享键值投影或分组，可以显著减少cache内存需求。   
 - Falcon、PaLM、LLAMA等新模型设计都采用了这些优化技术，以支持长文本场景。   
 - 持续研究工作致力于进一步提升大模型计算和内存效率，部署LLM仍面临挑战。选择合适的算法和模型架构十分关键。
+
+## 加速框架
+
+
+### TensorRT-LLM
+
+【2023-10-17】[tensorrt-llm](https://nvidia.github.io/TensorRT-LLM/) 支持主流大模型加速， [github](https://github.com/NVIDIA/TensorRT-LLM/tree/main)
+- TensorRT-LLM 是 TensorRT 和 FastTransformer 的结合体，旨为大模型推理加速而生。
+- 除了 FastTransformer 对Transformer做的attention优化、softmax优化、算子融合等方式之外，还引入了众多的大模型推理优化特性
+- 支持很多主流大模型
+- TensorRT两阶段的调用方式——build+run：
+  - build：通过配置参数将模型文件序列化为tensorRT的engine文件
+  - run：加载engine文件，传入数据，进行inference
+
+
 
 
 ## 优化方法
