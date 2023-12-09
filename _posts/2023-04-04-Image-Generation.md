@@ -952,9 +952,9 @@ Stable Diffusion is a state of the art text-to-image model that generates images
 - transformers上的 [Stable Diffusion Demo](https://huggingface.co/spaces/stabilityai/stable-diffusion)
 - For faster generation and forthcoming API access you can try [DreamStudio Beta](http://beta.dreamstudio.ai/)
 - <iframe src="https://beta.dreamstudio.ai/dream">
+- [stable diffusion v1.5 huggingface](https://huggingface.co/runwayml/stable-diffusion-v1-5), [github](https://github.com/huggingface/diffusers)
 
-本地部署
-- 模型比较大，所以必须要有NVIDIA GPU，至少4GB VRAM，本地磁盘至少有15GB的空间，我们打包的项目解压后需要11G的磁盘。
+[Stable Diffusion 2.1 Demo](https://huggingface.co/spaces/stabilityai/stable-diffusion)
 
 【2023-4-3】[Kaggle Stable Diffusion赛题 高分思路](https://mp.weixin.qq.com/s/LDWa7sR__MFjbj0CTHajcA)
 
@@ -966,6 +966,10 @@ Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的Com
 [Stable Diffusion](https://stablediffusionweb.com/)
 - Stable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input, cultivates autonomous freedom to produce incredible imagery, empowers billions of people to create stunning art within seconds.
 - [demo](https://stablediffusionweb.com/#demo)
+
+支持功能
+- 文生图: [官方文档](https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/text2img)
+- 图生图: [官方文档](https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/img2img)
 
 #### 体验方法
 
@@ -992,6 +996,115 @@ Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的Com
 - **画家/画风**：成图更接近哪位画家的风格，此处可以输入不止一位画家，如「Van Gogh:3」and「Monet:2」，即作品三分像梵高，两分像莫奈；或直接描述风格种类，如 very coherent symmetrical artwork，将作品结构设为连贯对称的。
 - **配色**：yellow color scheme 指整个画面的主色调为黄色。
 - **画面描述**：除了对主题进行描述，还可以添加多个画面元素，如 beautiful background, forest, octane render, night；添加画面质量描述，如 highly detailed, digital painting, Trending on artstation, concept art, smooth, sharp focus, illustration,8k。
+
+
+#### 本地部署
+
+【2023-12-9】
+- 模型比较大，所以必须要有 NVIDIA GPU，至少**4GB** VRAM，本地磁盘至少有15GB的空间，打包的项目解压后需要11G的磁盘。
+
+在 v100 显卡上实验 stable diffuse 工具：
+
+
+```py
+from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionImg2ImgPipeline
+import torch
+
+# --------- 本地模型信息 ----------
+model_path = '/mnt/bd/wangqiwen-hl/models/video'
+model_id = "runwayml/stable-diffusion-v1-5"
+
+# --------- text2image ---------
+#pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, cache_dir=model_path)
+pipe = pipe.to("cuda")
+
+prompt = "a man and a woman holding a cat and a dog"
+negative_prompt = "distorted faces, low resolution"
+images = pipe(prompt, num_images_per_prompt=3, negative_prompt=negative_prompt).images  
+num = len(images)
+print(f"一共生成了{num}张图片, 默认保存第一张")
+for i in range(num):
+    images[i].save(f"output_{i+1}.png")
+#image[0].save("output.png")
+
+# --------- image2image ---------
+pipeimg = StableDiffusionImg2ImgPipeline.from_pretrained(model_id, torch_dtype=torch.float16, cache_dir=model_path)
+pipeimg = pipe.to("cuda")
+# 选取一张来进一步修改
+from PIL import Image
+init_image = Image.open("output_1.png").convert("RGB").resize((768, 512))
+
+prompt = "add another girl"
+images = pipe(prompt=prompt, num_images_per_prompt=3, negative_prompt=negative_prompt, image=init_image, strength=0.75, guidance_scale=7.5).images
+num = len(images)
+for i in range(num): 
+    images[i].save(f"modify_{i+1}.png")
+#images[0].save("output_modify.png")
+```
+
+效果
+- 中文提示词效果很差，无法理解，猜测是没有中文分词器
+- 加负向提示词有利于改进效果
+- image2image 并未对已有图片做改进
+
+基于Gradio的Web版
+
+```py
+
+```
+
+
+##### 踩坑
+
+报错：
+> Failed to import transformers.models.clip.modeling_clip because of the following error (look up to see its traceback): name 'cuda_setup' is not defined
+
+
+原因
+- bitsandbytes 工具包版本问题，默认版本是 0.36
+
+```sh
+# 版本降级 bitsandbytes
+pip install bitsandbytes==0.35.0
+```
+
+解决后，出现新的报错：
+> RuntimeError: cuDNN error: CUDNN_STATUS_NOT_INITIALIZED
+
+原因 [参考](https://blog.csdn.net/weixin_43935696/article/details/114950143)
+- Pytorch需要安装的四个包，版本没有对应，导致CUDA没法用
+
+解决：
+- 去官网找到对应版本的 pytorch、系统（linux），重新安装环境
+
+```sh
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+```
+
+成功！
+
+
+#### Stable Diffusion Web UI
+
+[Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui/tree/master) 提供了多种功能，如 txt2img、img2img、inpaint 等，还包含了许多模型融合改进、图片质量修复等附加升级,通过调节不同参数可以生成不同效果，用户可以根据自己的需要和喜好进行创作。
+- [Install-and-Run-on-NVidia-GPUs](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-NVidia-GPUs)
+
+启动界面可以大致分为4个区域【模型】【功能】【参数】【出图】四个区域
+1. 模型区域：模型区域用于切换我们需要的模型，模型下载后放置相对路径为/modes/Stable-diffusion目录里面，网上下载的safetensors、ckpt、pt模型文件请放置到上面的路径，模型区域的刷新箭头刷新后可以进行选择。
+2. 功能区域：功能区域主要用于我们切换使用对应的功能和我们安装完对应的插件后重新加载UI界面后将添加对应插件的快捷入口在功能区域，功能区常见的功能描述如下
+  - txt2img（文生图） --- 标准的文字生成图像；
+  - img2img （图生图）--- 根据图像成文范本、结合文字生成图像；
+  - Extras （更多）--- 优化(清晰、扩展)图像；
+  - PNG Info --- 图像基本信息
+  - Checkpoint Merger --- 模型合并
+  - Textual inversion --- 训练模型对于某种图像风格
+  - Settings --- 默认参数修改
+3. 参数区域：根据您选择的功能模块不同，可能需要调整的参数设置也不一样。例如，在文生图模块您可以指定要使用的迭代次数，掩膜概率和图像尺寸等参数配置
+4. 出图区域：出图区域是我们看到AI绘图的最终结果，在这个区域我们可以看到绘图使用的相关参数等信息。
+
+![](https://pic4.zhimg.com/80/v2-e383384bd449b84b748b11f5f4002fff_1440w.webp)
 
 #### LoRA使用
 
