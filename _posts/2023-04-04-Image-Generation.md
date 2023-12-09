@@ -1005,6 +1005,7 @@ Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的Com
 
 在 v100 显卡上实验 stable diffuse 工具：
 
+##### 后台调用
 
 ```py
 from diffusers import StableDiffusionPipeline
@@ -1049,10 +1050,114 @@ for i in range(num):
 - 加负向提示词有利于改进效果
 - image2image 并未对已有图片做改进
 
+##### Web UI
+
 基于Gradio的Web版
+- image传参有问题，尚未调通
 
 ```py
+import gradio as gr
+import torch
+from torch import autocast
+from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler, StableDiffusionImg2ImgPipeline
+import requests
+from PIL import Image
+from io import BytesIO
 
+# 本地模型地址、名称
+model_path = '/mnt/bd/wangqiwen-hl/models/video'
+model_id = "runwayml/stable-diffusion-v1-5"
+
+lms = LMSDiscreteScheduler(
+    beta_start=0.00085, 
+    beta_end=0.012, 
+    beta_schedule="scaled_linear"
+)
+
+# 文升图
+pipe = StableDiffusionPipeline.from_pretrained(
+    #"CompVis/stable-diffusion-v1-4", 
+    model_id, cache_dir=model_path,
+    scheduler=lms,
+    revision="fp16", 
+    use_auth_token=True
+).to("cuda")
+# 图生图
+pipeimg = StableDiffusionImg2ImgPipeline.from_pretrained(
+    #"CompVis/stable-diffusion-v1-4",
+    model_id, cache_dir=model_path,
+    revision="fp16", 
+    torch_dtype=torch.float16,
+    use_auth_token=True
+).to("cuda")
+
+# ------ Web UI -------
+block = gr.Blocks(css=".container { max-width: 800px; margin: auto; }")
+
+num_samples = 2
+
+def infer(prompt, init_image, strength):
+    if init_image != None:
+        init_image = init_image.resize((512, 512))
+        #init_image = preprocess(init_image)
+        with autocast("cuda"):
+            #images = pipeimg([prompt] * num_samples, init_image=init_image, strength=strength, guidance_scale=7.5)["sample"]
+            images = pipeimg([prompt] * num_samples, init_image=init_image, strength=strength, guidance_scale=7.5)
+    else: 
+        with autocast("cuda"):
+            #images = pipe([prompt] * num_samples, guidance_scale=7.5)["sample"]
+            images = pipe([prompt] * num_samples, guidance_scale=7.5)
+
+    return images
+
+
+with block as demo:
+    gr.Markdown("<h1><center>Stable Diffusion</center></h1>")
+    gr.Markdown(
+        "Stable Diffusion is an AI model that generates images from any prompt you give!"
+    )
+    with gr.Group():
+        with gr.Box():
+            with gr.Row().style(mobile_collapse=False, equal_height=True):
+
+                text = gr.Textbox(
+                    label="Enter your prompt", show_label=False, max_lines=1
+                ).style(
+                    border=(True, False, True, True),
+                    rounded=(True, False, False, True),
+                    container=False,
+                )
+                btn = gr.Button("Run").style(
+                    margin=False,
+                    rounded=(False, True, True, False),
+                )
+        strength_slider = gr.Slider(
+            label="Strength",
+            maximum = 1,
+            value = 0.75         
+        )
+        image = gr.Image(
+            label="Intial Image",
+            type="pil"
+        )
+               
+        gallery = gr.Gallery(label="Generated images", show_label=False).style(
+            grid=[2], height="auto"
+        )
+        text.submit(infer, inputs=[text, image, strength_slider], outputs=gallery)
+        btn.click(infer, inputs=[text, image, strength_slider], outputs=gallery)
+
+    gr.Markdown(
+        """___
+   <p style='text-align: center'>
+   Created by CompVis and Stability AI
+   <br/>
+   </p>"""
+    )
+
+# 启动时，要先填 huggingface的token，否则报错. 
+# huggingface-cli login 输入自己的key...
+demo.launch(debug=True, share=True)
 ```
 
 
