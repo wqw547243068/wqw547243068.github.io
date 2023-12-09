@@ -2766,6 +2766,25 @@ RPA 利用软件机器人或称为 “BOT” 来模拟和执行重复性、规�
 - [ChatDev](https://github.com/OpenBMB/ChatDev)：多智能体协作开发框架，让多个不同角色的智能体进行协作，自动化开发软件应用。
 - [AgentVerse](https://github.com/OpenBMB/AgentVerse)：大模型驱动的智能体通用平台，招募各种各样的 agent 专家，共同帮助用户解决复杂任务。
 
+
+#### boston Spot 2.0
+
+【2023-10-28】波士顿动力公司的 Spot 2.0 集成了 OpenAI 的 GPT-4 和 3 种新的人工智能能力
+
+探索革命性的 Spot 2.0，波士顿动力公司（Boston Dynamics）的机器狗现在由 OpenAI 的 GPT-4 驱动，展示了三种惊人的新人工智能能力。深入了解机器人技术与先进人工智能的变革性融合，见证 Spot 如何重新定义人机互动。
+
+Spot 身上添加了蓝牙**扬声器**和**麦克风**，一个配备摄像头的**手臂**作为其颈部和头部。Spot 抓握手通过张开和闭合来模仿说话的嘴。这为机器人提供了一种肢体语言。
+
+语言和图像处理方面，升级后的 Spot 使用 OpenAI 最新的GPT-4模型，以及**视觉问答**（VQA）数据集和 OpenAI 的 **Whisper** 语音识别软件，以实现与人类的真实对话。
+
+例如，随着“嘿，Spot！”的叫醒声，机器狗在波士顿动力总部履行导游职责时回答问题。Spot 还可以识别旁边的人，并在对话过程中转向该人。
+- 当被问及公司创始人 Marc Raibert 时，Spot 回答说他不认识此人，但可以向 IT 服务台请求支持。此请求帮助并不是提示中的明确指示。
+- 当被问及父母时，Spot提到了他实验室里的前辈“Spot V1”和“大狗”，称他的长辈。
+
+此外，波士顿动力公司写道， ChatGPT机器人非常擅长坚持预先定义的角色，例如不断发表尖酸刻薄的言论。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1EHprsM948s?si=c-7RNBug4QJhrcjt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### 可穿戴
 
 蠢萌可爱的**机器狗**、拿下千万出货量的**VR头显**、还是轻便小巧的**AR眼镜**...谁将成为下一个黄金时代的“智能手机”？
