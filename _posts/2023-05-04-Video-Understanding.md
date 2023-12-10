@@ -139,6 +139,131 @@ permalink: /video
 # 视频处理工具
 
 
+## 视频下载
+
+视频下载工具：[流媒体下载的10种方法](http://www.jianshu.com/p/e7d2c3a624f6)
+- [硕鼠](http://www.flvcd.com/)(可以下载流视频，可按专辑下载)，[硕鼠Mac版下载地址](http://www.pc6.com/mac/118056.html)（官网地址有问题）
+- [维棠](http://www.vidown.cn/)
+
+- twitter 视频下载： 【2023-11-19】[twitterxz](twitterxz.com), 输入链接即可
+- YouTube 视频下载：(更多方法参考知乎帖子：[如何下载youtube视频](https://www.zhihu.com/question/51714507?sort=created))，①修改网址：youtube→yout②修改网址：youtube→youtubeme，或者加now③修改网址：youtube→ssyoutube④独立网站，如noTube，[Audio](https://audio.rip/), [y2mate](https://www.y2mate.com/youtube/3-ZST_bGW3Q)
+
+
+- 【2020-3-29】[在线下载YouTube视频](http://www.youtube-video-downloader.xyz/)
+- （1）每个视频域名稍作修改即可（youtube.com->kissyoutube.com）,[SaveMedia](https://savemedia.com/)提供，在线下载+系列视频自动推荐
+- (2) `you-get` python代码下载, `pip3 install you-get`
+  - you-get 'https://www.youtube.com/watch?v=jNQXAC9IVRw', 支持的视频网站范围广. 
+  - 【2018-9-20】视频下载工具[annie](https://github.com/iawia002/annie), 更名 [Lux](https://github.com/iawia002/lux)，覆盖几乎所有视频网站; Lux is a fast and simple video downloader built with Go
+    - lux http://.... 
+    - 支持 抖音、b站、youtube等
+- 【2019-04-24】安装annie，可批量下载，windows下：[scoop](https://scoop.sh/) install annie，步骤：Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
+- (3) [clipconverter](http://www.clipconverter.cc/)
+
+### 流视频下载
+
+[m3u8 视频在线提取工具](https://github.com/Momo707577045/m3u8-downloader)
+- [体验地址](https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html)
+
+m3u8视频格式简介
+
+m3u8视频格式原理：
+- 将完整的视频拆分成多个 .ts 视频碎片，.m3u8 文件详细记录每个视频片段的地址。
+- 视频播放时，会先读取 .m3u8 文件，再逐个下载播放 .ts 视频片段。
+- 常用于直播业务，也常用该方法规避视频窃取的风险。加大视频窃取难度。
+
+鉴于 m3u8 以上特点，无法简单通过视频链接下载，需使用特定下载软件。
+- 但软件下载过程繁琐，试错成本高。
+- 使用软件的下载情况不稳定，常出现浏览器正常播放，但软件下载速度慢，甚至无法正常下载的情况。
+- 软件被编译打包，无法了解内部运行机制，不清楚里面到底发生了什么。
+
+
+工具特点
+- 无需安装，打开网页即可用。
+- 强制下载现有片段，无需等待完整视频下载完成。
+- 操作直观，精确到视频碎片的操作。
+
+### 实测
+
+lux 实测
+- 支持 抖音、b站、youtube等
+
+```sh
+brew install lux
+# b站视频
+lux https://www.bilibili.com/video/BV1vu411x74Z/?spm_id_from=333.337.search-card.all.click&vd_source=ec1c777505e146eb20d947449d6bba6e
+# b站快捷下载，提供ep或av值即可
+lux -i ep198381 av21877586
+# 抖音视频
+lux https://www.douyin.com/video/7263993359235140923
+# youtube视频
+lux https://www.youtube.com/watch?v=hQSewmXxUho
+lux https://www.douyin.com/shipin/7309342173366044735
+# -------- 参数 -------
+# 调试模式
+lux -i -d "http://www.bilibili.com/video/av20088587"
+# 输出参数
+lux -o ../ -O "hello" "https://example.com"
+# 使用cookie
+lux -c "name=value; name2=value2" "https://www.bilibili.com/video/av20203945"
+lux -c cookies.txt "https://www.bilibili.com/video/av20203945"
+# refer
+lux -r "https://www.bilibili.com/video/av20383055/" "http://cn-scnc1-dx.acgvideo.com/"
+# 使用代理
+HTTP_PROXY="http://127.0.0.1:1087/" lux -i "https://www.youtube.com/watch?v=Gnbch2osEeo"
+HTTP_PROXY="socks5://127.0.0.1:1080/" lux -i "https://www.youtube.com/watch?v=Gnbch2osEeo"
+# 多线程
+--multi-thread or -m
+--thread or -n
+# --------------
+
+# 多视频下载
+lux -i "https://www.bilibili.com/video/av21877586" "https://www.bilibili.com/video/av21990740"
+# 从文件中读取url链接，批量下载
+#   -start
+#       	File line to start at (default 1)
+#   -end
+#       	File line to end at
+#   -items
+#       	File lines to download. Separated by commas like: 1,5,6,8-10
+lux -F ~/Desktop/u.txt
+
+```
+
+音频提取
+
+```sh
+video_file = "实拍工程苹果醋制作全过程，全程自动化，居然用无人机采摘苹果.mp4"
+ffmpeg -i $video_file -vn audio.mp3
+```
+
+## 字幕提取
+
+
+### VSE
+
+[Video-subtitle-extractor](https://github.com/YaoFANGUK/video-subtitle-extractor) (VSE) 是一款将视频中的硬字幕提取为外挂字幕文件(srt格式)的软件
+
+功能：
+- 提取视频中的关键帧
+- 检测视频帧中文本的所在位置
+- 识别视频帧中文本的内容
+- 过滤非字幕区域的文本
+- 去除水印、台标文本、原视频硬字幕，可配合：video-subtitle-remover (VSR)
+- 去除重复字幕行，生成srt字幕文件
+- 支持视频字幕批量提取
+- 多语言：支持简体中文（中英双语）、繁体中文、英文、日语、韩语、越南语、阿拉伯语、法语、德语、俄语、西班牙语、葡萄牙语、意大利语等87种语言的字幕提取
+- 多模式：
+  - 快速：（推荐）使用轻量模型，快速提取字幕，可能丢少量字幕、存在少量错别字
+  - 自动：（推荐）自动判断模型，CPU下使用轻量模型；GPU下使用精准模型，提取字幕速度较慢，可能丢少量字幕、几乎不存在错别字
+  - 精准：（不推荐）使用精准模型，GPU下逐帧检测，不丢字幕，几乎不存在错别字，但速度非常慢
+
+项目特色：
+- 采用本地进行OCR识别，无需设置调用任何API，不需要接入百度、阿里等在线OCR服务即可本地完成文本识别
+- 支持GPU加速，GPU加速后可以获得更高的准确率与更快的提取速度
+
+![](https://github.com/YaoFANGUK/video-subtitle-extractor/raw/main/design/demo.png)
+
+
 
 ## ffmpeg
 
@@ -625,6 +750,31 @@ ffmpeg -i input.mp3 -af "atempo=2.0,atempo=2.0" ouutput.mp3 # 音频加速
 - 下载视频
 
 
+## 视频洗稿
+
+
+怎样正确的洗稿呢？
+- 举例：这个男人叫阿伟为了钱可以抛弃一切，下手也是相当的狠。
+- 洗稿：这个男人非常凶残为了钱不择手段。
+
+大概中心意思没有变，但突出重点【男人、钱、凶残】，更加简洁明了，改编成自己的语句。
+
+GPT Prompt
+> 帮我修改─篇电影解说文案,以叙述故事的口吻写出，让文案更适合电影解说，原文核心意思不变，看起来像俩篇文案，文案开头修改的一定要吸引观众的眼球。准备好了我给你发送原文案。
+
+【2023-12-10】文案洗稿流程 [参考](https://www.douyin.com/shipin/7309342173366044735)
+1. 确定选题
+1. 提取文案
+  1. 找对标热门视频
+  1. 链接转文字
+  1. 提取文案
+1. 文案修改
+  1. 提取框架
+  1. 发散性创作
+  1. 删减优化
+1. 润色
+  1. 口语化
+1. 确定标题
 
 
 # 结束
