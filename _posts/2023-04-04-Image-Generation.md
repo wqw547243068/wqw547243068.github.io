@@ -801,13 +801,13 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 ### 汇总
 
 AI作画三巨头
-- Mid Journey : 地表最强AI，快速生成一组连贯图像，烧会员钱，需联网调用
+- `Mid Journey` : 地表最强AI，快速生成一组连贯图像，烧会员钱，需联网调用
   - MJ较SD上手难度低、视觉效果好、界面很流畅、审核门槛高。
-- Stable Diffusion : 低调神秘慈善家，可本地部署使用；擅长摄影、油画、水彩、概念艺 术等风格都能全面掌握，更具全能性。
+- `Stable Diffusion` : 低调神秘慈善家，可本地部署使用；擅长摄影、油画、水彩、概念艺 术等风格都能全面掌握，更具全能性。
   - SD较MJ推理性更强、可控性更高、模型更多样、内容很开放
-- Dall-E 2 : 甲方终结者
-- Leonardo.ai：使用现有模型或自己训练AI模型来生成各种生产就绪的艺术资产。结合了MJ和SD的优点，但纯属**低配版**MJ+SD
-- Novelai：几乎只能生成动漫、 手绘、素描、CG风格图片，但在这些风格的人像上出图率更高，是专精型选手。对prompt不敏感;擅长全身夸张二次元整活
+- `Dall-E 2` : 甲方终结者
+- `Leonardo.ai`：使用现有模型或自己训练AI模型来生成各种生产就绪的艺术资产。结合了MJ和SD的优点，但纯属**低配版**MJ+SD
+- `Novelai`：几乎只能生成动漫、 手绘、素描、CG风格图片，但在这些风格的人像上出图率更高，是专精型选手。对prompt不敏感;擅长全身夸张二次元整活
 
 Midjourney 的内容限制确实比其他竞争对手（例如 OpenAI 的 DALL-E）更宽松，但目前的管控宽松之王仍然是 Stable Diffusion。
 
@@ -895,6 +895,29 @@ Midjourney 的内容限制确实比其他竞争对手（例如 OpenAI 的 DALL-E
 - 支持inpaint
 - 支持超分算法
 - 更多功能开放中
+
+### 评测对比
+
+【2023-12-11】[四大顶级AI绘画模型直接对比](https://zhuanlan.zhihu.com/p/671465726?utm_psn=1717543743962599424)
+
+Meta AI模型和Adobe Firefly 2，Midjourney，DALL-E 3的直接对比
+- DALL-E 3语义理解最强，能最符合用户的prompt
+- 而 Midjourney 生成图像质量最好。
+- 而 Meta的AI模型在语义理解上不如DALL-E 3，在生成质量上也不如Midjourney。
+
+|主题|Prompt|图|说明|
+|---|---|---|---|
+|人物|a closeup candid shot of a happy young woman wearing a blue scarf on a vacation in santorini, white buildings and blue domes|![](https://pic4.zhimg.com/80/v2-ba138ea88bb3d14c985dc01ec2b54303_1440w.webp)||
+|特写镜头|extreme closeup shot of an old man with long gray hair and head covered in wrinkles; focused expression looking at the camera|![](https://pic1.zhimg.com/80/v2-93f0f1c15f3eb40064675768698f9220_1440w.webp)||
+|野生动物|a macro wildlife photo of a green frog in a rainforest pond, highly detailed, eye-level shot|![](https://pic3.zhimg.com/80/v2-bcad9e85a0dbe096de7528dbe8af15b6_1440w.webp)||
+|风景|an aerial drone shot of the breathtaking landscape of the Bora Bora islands, with sparkling waters under the sun|![](https://pic1.zhimg.com/80/v2-9abfbcf3d11faa7a9e1f9a4167501e98_1440w.webp)||
+|广告|a bottle of perfume on a clean backdrop, surrounded by fragrant white flowers, product photography, minimalistic, natural light|![](https://pic3.zhimg.com/80/v2-abd2f57db9bed7767c2e76d4dd5f0aee_1440w.webp)||
+|文字生成|custom sticker design on an isolated white background with the words "Rachel" written in an elegant font decorated by watercolor butterflies, daisies and soft pastel hues|![](https://pic2.zhimg.com/80/v2-d96c2de71fc39e68807f0cc091164159_1440w.webp)||
+|矢量图|simple flat vector illustration of a woman sitting at the desk with her laptop with a puppy, isolated on white background|![](https://pic4.zhimg.com/80/v2-bb712d46d2eaf3ab3869194bbc282d8b_1440w.webp)||
+|像素艺术|chibi pixel art, game asset for an rpg game on a white background featuring the armor of a dragon sorcerer wielding the power of fire surrounded by a matching item set|![](https://pic3.zhimg.com/80/v2-5dcbac65a22368d7cf558a78a544ddd2_1440w.webp)||
+|室内设计|a bedroom with large windows and modern furniture, gray and gold, luxurious, mid century modern style|![](https://pic4.zhimg.com/80/v2-e8e99789bfa18e066970a22dda95024b_1440w.webp)||
+|着色书|kid's coloring book, a happy young girl holding a flower, cartoon, thick lines, black and white, white background|![](https://pic2.zhimg.com/80/v2-6478da24102ce6a9692724b5550e50ad_1440w.webp)||
+
 
 ### 本地部署
 
