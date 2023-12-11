@@ -3,7 +3,7 @@ layout: post
 title:  "视频理解 - Video Understanding"
 date:   2023-05-04 08:01:00
 categories: 计算机视觉
-tags: 视频理解 ffmpeg 视频
+tags: 视频理解 ffmpeg 视频 moviepy lux you-get
 excerpt: 视频理解
 mathjax: true
 permalink: /video
@@ -692,6 +692,301 @@ ffmpeg -i input.mkv -vf "setpts=0.5*PTS" output.mkv # 视频加速
 ffmpeg -i input.mp4 -vf "setpts=2*PTS" output,mp4 # 视频减速一半
 ffmpeg -i input.wav -af "atempo=0.75" output.wav # 音频减速
 ffmpeg -i input.mp3 -af "atempo=2.0,atempo=2.0" ouutput.mp3 # 音频加速
+```
+
+
+## moviepy
+
+MoviePy 是开源软件，原作者为[Zulko](https://github.com/Zulko)，并根据MIT licence发行。
+- 在Windows、Mac和Linux环境中以Python2或Python3运行。
+
+python 视频处理模块 moviepy
+- 基本操作：剪切、拼接、插入标题、视频合成（即非线性编辑）、视频处理和创建高级特效。
+- 常见视频格式进行读写，包括GIF。
+
+文档
+- [moviepy中文文档](https://moviepy-cn.readthedocs.io/zh/latest/index.html)
+- 【2022-2-17】[【首发】python moviepy 的用法，看这篇就能入门](https://bbs.huaweicloud.com/blogs/331588)
+
+
+### 工作原理
+
+MoviePy
+- 用ffmpeg软件读取和导出视频和音频文件。
+- 用（可选）ImageMagick来生成文字和制作GIF文件。
+- 不同媒体的处理依靠Python的快速的数学库Numpy。
+- 高级效果和增强功能使用一些Python的图片处理库（PIL，Scikit-image，scipy等）。
+
+![](http://zulko.github.io/moviepy/_images/explanations.jpeg)
+
+MoviePy 核心对象是**剪辑**，可用`AudioClips`或`VideoClips`来处理。
+- **剪辑**可被修改（剪切、降低速度、变暗等）或与其他剪辑混合组成新剪辑。
+- **剪辑**可被预览（使用PyGame或IPython Notebook），也可生成文件（如MP4文件、GIF文件、MP3文件等）。
+
+以VideoClips为例，它由一个视频文件、一张图片、一段文字或者一段卡通动画而来。可包含音频轨道（即AudioClip）和一个遮罩（一种特殊的VideoClip），用于表明当两个剪辑混合时，哪一部分的画面被隐藏）。
+
+
+### 安装
+
+MoviePy 依赖 
+- Numpy 、 imageio 、 Decorator 和 tqdm
+- MoviePy 依赖 FFMPEG 软件对视频进行读写, 初次使用时，FFMPEG将会自动由ImageIO下载和安装
+
+可选依赖
+- ImageMagick: 添加文字时用到, 安装后会被MoviePy自动检测到，除了Windows环境
+- PyGame: 视频和声音预览中会使用到
+- 高级的图片处理: PIL(Pillow), Scipy, ScikitImage, OpenCV
+
+```sh
+pip install moviepy
+```
+
+测试
+
+```py
+from moviepy.editor import *
+```
+
+mac 上执行报错
+
+```sh
+ImportError: cannot import name 'is_ascii' from 'charset_normalizer.utils' (/Users/bytedance/miniconda3/envs/py310/lib/python3.10/site-packages/charset_normalizer/utils.py)
+```
+
+解决
+- 安装chardet
+
+```sh
+pip install chardet
+```
+
+
+### 视频信息
+
+视频的分辨率和时间
+
+```py
+from moviepy.editor import *
+
+video = VideoFileClip('1644974996.mp4')
+print(dir(video))
+
+size = os.path.getsize('1644974996.mp4') # 文件大小
+print(size)
+print(video.size) # 获取分辨率
+print(video.duration) # 获取视频总时长
+# 视频封面
+clip.save_frame("frame.jpg")  # 保存第1帧
+clip.save_frame("frame.png", t=2)  # 保存2s时刻的那1帧
+```
+
+### 播放速度
+
+读取视频，调用 `speedx()` 方法，其中设置要加速到的倍数
+
+```py
+from moviepy.editor import *
+
+clip = VideoFileClip('./1644974996.mp4')
+
+video_1 = clip.speedx(2) # 加速两倍
+video_1.write_videofile('sss.mp4')
+
+```
+
+
+### 视频裁剪
+
+VideoFileClip 类的构造函数如下所示：
+
+```py
+__init__(self, filename, has_mask=False,
+	audio=True, audio_buffersize=200000,
+	target_resolution=None, resize_algorithm='bicubic',
+	audio_fps=44100, audio_nbytes=2, verbose=False,
+	fps_source='tbr')
+```
+
+其中, 只有 filename 为**必填**项，其余都为选填内容。
+- filename：视频**文件名**，一般常见格式都支持；
+- has_mask：是否包含**遮罩**；
+- audio：是否加载**音频**；
+- audio_buffersize：音频**缓冲区**大小；
+- target_resolution：加载后需要变换到的**分辨率**；
+- resize_algorithm：调整分辨率的算法，默认是 bicubic，可以设置为 bilinear，fast_bilinear；
+- audio_fps：声音的**采样频率**；
+- audio_nbytes：采样的**位数**；
+- verbose：是否输出处理信息。
+- subclip(t1,t2) 方法的含义为截取t1到t2时间段内的片段。
+- write_videofile() 方法用于视频输出。
+
+`subclip(t_start,t_end)` 方法时间参数
+- 秒:  `(t_start=10)` ，以秒表示
+- 分:  `(t_start=(1,20))` ，以1分20秒
+- 时: `(t_start=(0,1,20))` 或者 `(t_start=(00:01:20))` , 以**小时: 分钟: 秒**形式表示
+-  t_end 的默认值是视频长度
+
+
+```py
+from moviepy.editor import *
+import time
+
+clip = VideoFileClip('./1644974996.mp4').subclip(10, 20)
+# 保存视频片段
+new_file = str(int(time.time())) + '_subclip.mp4'
+clip.write_videofile(new_file)
+# 片段转gif
+clip.write_gif('demo.gif',fps=5) # 生成之后的文件小
+clip.write_gif('demo.gif',fps=15) # 生成之后的文件大
+```
+
+
+### 音频提取
+
+`VideoFileClip` 对象的 **audio** 属性，获取视频的音频部分，然后 调用 `set_audio()` 方法对文件进行音频设置
+- 注意: 合成的音频和视频等于长的。
+
+```py
+from moviepy.editor import *
+
+# 读取2个视频文件 
+videoclip_a = VideoFileClip("1644974996.mp4")
+videoclip_b = VideoFileClip("1644974998.mp4")
+
+# 去掉音频
+video = video.without_audio() # 去除声音
+video.write_videofile('cc.mp4')
+
+# 提取A视频的音频
+audio_a = videoclip_a.audio # 提取音频
+audio_a.write_audiofile('a.mp3')  # 写入音频文件
+
+# 给B设置音频，注意视频最终合成的大小会依据长的为准
+videoclip_c = videoclip_b.set_audio(audio_a)
+
+# 输出新的视频文件
+videoclip_c.write_videofile("videoclip_c.mp4")
+```
+
+### 视频合成
+
+视频合成，也称为**非线性编辑**，把许多视频剪辑放在一起，变成一个新剪辑。
+
+视频剪辑都会带有音轨和遮罩
+
+两种合成方法
+- **连接**： 变成一个更长的剪辑，一个接一个播放
+- **堆**：并排组成画面更大的剪辑
+
+#### 连接 concatenate_videoclips
+
+用 concatenate_videoclips 函数进行**连接**操作。
+
+
+```py
+from moviepy.editor import VideoFileClip, concatenate_videoclips
+
+clip1 = VideoFileClip("myvideo.mp4")
+clip2 = VideoFileClip("myvideo2.mp4").subclip(50,60)
+clip3 = VideoFileClip("myvideo3.mp4")
+# final_clip 是一个剪辑，使clip 1、2和3一个接一个播放。
+final_clip = concatenate_videoclips([clip1,clip2,clip3])
+final_clip.write_videofile("my_concatenation.mp4")
+```
+
+注意
+- 剪辑不一定必须要**相同**尺寸。
+- 如果各剪辑尺寸不同，那么将被居中播放，而画面大小足够包含最大的剪辑，而且可以选择一种颜色来填充边界部分。
+  - 通过 transition=my_clip 选项来在剪辑之间加一个过场
+
+#### 堆 clip_array
+
+clip_array 函数对剪辑进行堆叠操作
+
+```py
+from moviepy.editor import VideoFileClip, clips_array, vfx
+clip1 = VideoFileClip("myvideo.mp4").margin(10) # add 10px contour
+clip2 = clip1.fx( vfx.mirror_x)
+clip3 = clip1.fx( vfx.mirror_y)
+clip4 = clip1.resize(0.60) # downsize 60%
+final_clip = clips_array([[clip1, clip2],
+                          [clip3, clip4]])
+final_clip.resize(width=480).write_videofile("my_stack.mp4")
+```
+
+效果
+- ![](http://zulko.github.io/moviepy/_images/stacked.jpeg)
+
+
+#### 合成 CompositeVideoClip
+
+`CompositeVideoClip` 类提供了非常灵活的方法来合成剪辑，但比 `concatenate_videoclips` 和 `clips_array` 更复杂一些。
+
+```py
+# 当前video播放clip1，clip2在clip1的上层，而clip3在clip1和clip2的上层
+video = CompositeVideoClip([clip1,clip2,clip3])
+video = CompositeVideoClip([clip1,clip2,clip3], size=(720,460)) # 修改尺寸
+clip1 = clip1.set_start(5) # start after 5 seconds # 起始时间
+video = CompositeVideoClip([clip1, # starts at t=0
+                            clip2.set_start(5), # start at t=5s
+                            clip3.set_start(9)]) # start at t=9s
+# 淡入效果
+video = CompositeVideoClip([clip1, # starts at t=0
+                            clip2.set_start(5).crossfadein(1),
+                            clip3.set_start(9).crossfadein(1.5)])
+# 剪辑定位
+video = CompositeVideoClip([clip1,
+                            clip2.set_pos((45,150)),
+                            clip3.set_pos((90,100))])
+clip2.set_pos((45,150)) # x=45, y=150 , in pixels
+clip2.set_pos("center") # automatically centered
+# clip2 is horizontally centered, and at the top of the picture
+clip2.set_pos(("center","top"))
+# clip2 is vertically centered, at the left of the picture
+clip2.set_pos(("left","center"))
+# clip2 is at 40% of the width, 70% of the height of the screen:
+clip2.set_pos((0.4,0.7), relative=True)
+# clip2's position is horizontally centered, and moving down !
+clip2.set_pos(lambda t: ('center', 50+t) )
+```
+
+指定坐标的时候请记住，y坐标的0位置在图片的最上方
+- ![](http://zulko.github.io/moviepy/_images/videoWH.jpeg)
+
+视频剪辑混合在一起时，MoviePy将会把它们各自的音轨自动合成为最终剪辑的音轨
+
+```py
+from moviepy.editor import *
+# ... make some audio clips aclip1, aclip2, aclip3
+concat = concatenate_audioclips([aclip1, aclip2, aclip3])
+compo = CompositeAudioClip([aclip1.volumex(1.2),
+                            aclip2.set_start(5), # start at t=5s
+                            aclip3.set_start(9)])
+```
+
+实例
+
+```py
+# Import everything needed to edit video clips
+from moviepy.editor import *
+# 读取视频
+video_file = "../download/apple.mp4"
+# Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
+clip = VideoFileClip(video_file).subclip(50,60)
+# 降低音量 Reduce the audio volume (volume x 0.8)
+clip = clip.volumex(0.8)
+
+# 生成字幕：中文字幕无法识别 Generate a text clip. You can customize the font, color, etc.
+txt_clip = TextClip("Apple 苹果制作过程",fontsize=70,color='white')
+# Say that you want it to appear 10s at the center of the screen
+txt_clip = txt_clip.set_pos('center').set_duration(10)
+
+# 视频合成 Overlay the text clip on the first video clip
+video = CompositeVideoClip([clip, txt_clip])
+
+# 保存合成视频 Write the result to a file (many options available !)
+#video.write_videofile("my_works.mp4") # mp4 格式，清晰，但没有声音
+video.write_videofile("my_works.webm") # webm 格式，有声音，但画面模糊
 ```
 
 
