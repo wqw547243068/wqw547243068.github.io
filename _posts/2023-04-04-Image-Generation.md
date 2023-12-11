@@ -1239,6 +1239,39 @@ conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cud
 【2023-3-20】[AI作画的lora模型使用体验](https://www.zhihu.com/pin/1621129614524129280?utm_psn=1627101983164256256)
 - Stable Diffusion有个lora训练功能，可以在6G显存显卡上进行训练风格或者人物的模型，lora模型体积小，所以备受青睐。演示的图是一些lora模型，相互融合所作或者从大模型提取的lora模型而作，诸如人+水墨风格或者动漫风格参考图（扇子）而创作。
 
+
+#### 改进: VAE Stable Diffusion
+
+VAE Stable Diffusion（稳定扩散）是一种用于生成模型的算法，结合了`变分自编码器`（Variational Autoencoder，VAE）和扩散生成网络（Diffusion Generative Network）的思想。它通过对变分自编码器进行改进，提高了生成样本的质量和多样性。
+
+VAE Stable Diffusion 核心思想
+- 使用**扩散生成网络**来替代传统的**解码器**。
+
+扩散生成网络逐步生成样本，每步都通过对噪声进行扩散来生成样本。这种逐步生成的过程可以提高生成样本的质量，并且可以控制生成样本的多样性。
+
+Stable Diffusion中使用VAE, 能得到颜色更**鲜艳**、细节更**锋利**的图像，同时也有助于改善脸和手等部位的图像质量。
+
+如果本身对图像质量没有苛刻要求，其实是不需要额外部署VAE模型
+
+Stability AI 推出 `EMA` （Exponential Moving Average）和 `MSE` （Mean Square Error ）两个类型的 VAE 模型。
+- [stabilityai/sd-vae-ft-ema](https://huggingface.co/stabilityai/sd-vae-ft-ema)
+- [stabilityai/sd-vae-ft-mse](https://huggingface.co/stabilityai/sd-vae-ft-mse)
+
+EMA 会更**锐利**、MSE 会更**平滑**。
+
+此外，还有两个比较知名的 VAE 模型，主要用在动漫风格的图片生成中：
+- WarriorMama777/OrangeMixs
+- [hakurei/waifu-diffusion-v1-4](https://huggingface.co/hakurei/waifu-diffusion-v1-4)
+
+有一些模型会自带 VAE 模型，比如最近发布的 SDXL 模型，在项目中，能够看到模型自己的 VAE 模型。
+- [stabilityai/stable-diffusion-xl-refiner-1.0/vae](https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/tree/main/vae)
+- [stabilityai/stable-diffusion-xl-base-1.0/vae](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/tree/main/vae)
+
+在 Stable Diffusion 的世界，**修复人脸**主要依赖的是下面两个项目的能力：
+- TencentARC/GFPGAN
+- sczhou/CodeFormer
+
+
 ### Mid-Journey
 
 Mid 是一款搭载在`discord`上的人工智能绘画聊天机器人
