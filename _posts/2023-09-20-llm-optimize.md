@@ -641,6 +641,23 @@ FlashAttention 的 Scheduling 过程
 FLAT-Attention 的 Scheduling 过程
 - ![](https://pic1.zhimg.com/80/v2-9c707e5a5b342707478ef54ceaeaf744_1440w.webp)
 
+
+#### 【2023-11-20】META S2A
+
+【2023-11-20】[System 2 Attention (is something you might need too)](https://arxiv.org/pdf/2311.11829.pdf)
+
+System 2 Attention (S2A) 将 system 2思想引入注意力，改进推理效果
+
+Meta AI 的**系统2注意力**(S2A)，包括提示LLM创建一个上下文，剥离掉可能扭曲推理的不相关信息。
+
+LLM提供了一个上下文(x)，并负责生成高质量的输出(y)。S2A通过两步法修改了这个过程。
+- 首先，S2A通过删除可能对输出产生负面影响的元素，将给定的上下文(x)重新表述为精炼的版本(x’)。用 `x' ~ S2A(x)` 表示。
+- 然后，LLM使用修改后的上下文`(x')`生成最终响应`(y)`，而不是用`y ~ LLM(x')`表示的原始上下文。
+
+![](https://pic3.zhimg.com/80/v2-3aaded91283921e4027a1e6dc96dbe46_1440w.webp)
+
+Meta AI选择LLaMA-2-70B-chat作为他们的主要评估模型。
+
 ### 服务优化
 
 服务相关优化主要包括：Continuous Batching、Dynamic Batching 和 异步 Tokenize / Detokenize。
