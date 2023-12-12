@@ -1239,7 +1239,7 @@ conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cud
 【2023-3-20】[AI作画的lora模型使用体验](https://www.zhihu.com/pin/1621129614524129280?utm_psn=1627101983164256256)
 - Stable Diffusion有个lora训练功能，可以在6G显存显卡上进行训练风格或者人物的模型，lora模型体积小，所以备受青睐。演示的图是一些lora模型，相互融合所作或者从大模型提取的lora模型而作，诸如人+水墨风格或者动漫风格参考图（扇子）而创作。
 
-### SD 金华
+### SD 进化
 
 
 #### VAE Stable Diffusion
@@ -1282,7 +1282,7 @@ EMA 会更**锐利**、MSE 会更**平滑**。
 
 体验方式
 - 下载 Playground v2 模型，在 SD 的 WebUI 或者 ComfyUI 中作为大模型来使用
-- 登录 [playgroundai](https://playgroundai.com/) 的官网来使用
+- 登录 [playgroundai](https://playgroundai.com/) 的官网来使用，需要国外vpn
 
 playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模式。
 - board 模式
@@ -1525,6 +1525,11 @@ Meta AI 的 AI 绘图功能，名为“[imagine](https://imagine.meta.com)”，
 
 全新“reimagine”功能：在 Messengericon 和 Instagramicon 上新增的这个功能，群聊中可以与朋友一起创造、修改图像。只需简单的文本提示，Meta AI 就能将原始图像变成全新的作品，让你和朋友们的互动更加有趣。
 
+### openart.ai
+
+[openart.ai](http://openart.ai/promptbook), 需要 国外vpn
+
+One-time 50 trial credits for all the features. Join Discord for additional one-time 100 trial credits
 
 
 ## 如何鉴别生成图像
