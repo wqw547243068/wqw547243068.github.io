@@ -3,17 +3,18 @@ layout: post
 title:  "中国社会发展回顾"
 date:   2022-06-29 12:24:00
 categories: 读书笔记
-tags: 认知 社会 命运
+tags: 认知 社会 命运 经济 谋略 商场 高铁
 excerpt: 近40年，中国人是如何借势改变个人命运的？一共7次机会，首富许家印抓住了4次，看你抓住了几次。
 author: 鹤啸九天
 mathjax: true
 ---
 
 * content
+
 {:toc}
 
 
-# 眼界
+# 社会发展
 
 
 ## 80-90年代社会困境
@@ -99,6 +100,16 @@ mathjax: true
 |⑧|未来5-7年|**全国统一大市场**|应对出口衰退问题，打破地域垄断，共同富裕||
 
 ![](https://p6.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/fcc6a12e0226496287905f53fed14f14~tplv-obj:1079:1431.image?from=post)
+
+## 谋略
+
+
+### 中国高铁
+
+【2023-12-12】
+- [知知人物](https://www.toutiao.com/c/user/token/MS4wLjABAAAATs9fElmXg6VBxUH0LOqHXNl-x1_Sl7f_zcFnPcoJljGd0-jyEzHC8AwSqtrzVm0h/)：铁道部用**二桃杀三士**，砍下100亿，西门子谈判团队集体被炒鱿鱼, [视频](https://www.toutiao.com/video/7310169494180069938)
+- 书籍：《中国速度：中国高铁崛起之路》
+
 
 ## 改变命运的七次机遇
 
