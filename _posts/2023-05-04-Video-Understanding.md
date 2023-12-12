@@ -141,13 +141,11 @@ permalink: /video
 
 ## 视频下载
 
-视频下载工具：[流媒体下载的10种方法](http://www.jianshu.com/p/e7d2c3a624f6)
-- [硕鼠](http://www.flvcd.com/)(可以下载流视频，可按专辑下载)，[硕鼠Mac版下载地址](http://www.pc6.com/mac/118056.html)（官网地址有问题）
-- [维棠](http://www.vidown.cn/)
+
+### 视频网站
 
 - twitter 视频下载： 【2023-11-19】[twitterxz](twitterxz.com), 输入链接即可
 - YouTube 视频下载：(更多方法参考知乎帖子：[如何下载youtube视频](https://www.zhihu.com/question/51714507?sort=created))，①修改网址：youtube→yout②修改网址：youtube→youtubeme，或者加now③修改网址：youtube→ssyoutube④独立网站，如noTube，[Audio](https://audio.rip/), [y2mate](https://www.y2mate.com/youtube/3-ZST_bGW3Q)
-
 
 - 【2020-3-29】[在线下载YouTube视频](http://www.youtube-video-downloader.xyz/)
 - （1）每个视频域名稍作修改即可（youtube.com->kissyoutube.com）,[SaveMedia](https://savemedia.com/)提供，在线下载+系列视频自动推荐
@@ -159,7 +157,18 @@ permalink: /video
 - 【2019-04-24】安装annie，可批量下载，windows下：[scoop](https://scoop.sh/) install annie，步骤：Set-ExecutionPolicy RemoteSigned -scope CurrentUser; iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
 - (3) [clipconverter](http://www.clipconverter.cc/)
 
+视频号
+
+【2023-12-12】如何下载视频号上的视频？
+- 加机器人（`视频妙取-H`）好友, 也可以搜公众号、关注。
+- 然后把视频号播放页转发给机器人
+- 对话框出现H5链接，点击就能观看、下载了
+
 ### 流视频下载
+
+视频下载工具：[流媒体下载的10种方法](http://www.jianshu.com/p/e7d2c3a624f6)
+- [硕鼠](http://www.flvcd.com/)(可以下载流视频，可按专辑下载)，[硕鼠Mac版下载地址](http://www.pc6.com/mac/118056.html)（官网地址有问题）
+- [维棠](http://www.vidown.cn/)
 
 [m3u8 视频在线提取工具](https://github.com/Momo707577045/m3u8-downloader)
 - [体验地址](https://blog.luckly-mjw.cn/tool-show/m3u8-downloader/index.html)
