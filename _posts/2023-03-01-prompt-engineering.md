@@ -1342,8 +1342,15 @@ cd YiVal
 
 ## 图像提示词
 
-【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
 
+- 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
+- 【2023-12-12】[阿里巴巴StableDiffusion提示词指南](https://zhuanlan.zhihu.com/p/668727775?utm_psn=1717852489863344129)
+
+### StableDiffusion 提示词指南
+
+[openart.ai](http://openart.ai/promptbook), 需要 国外vpn
+
+One-time 50 trial credits for all the features. Join Discord for additional one-time 100 trial credits
 
 ### 视觉 prompt 自动生成
 
@@ -1351,6 +1358,8 @@ cd YiVal
 - 首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
 - 提出简单高效的迁移框架 [VPGTrans](https://github.com/VPGTrans/VPGTrans), 包含两个阶段
 - ![](https://github.com/VPGTrans/VPGTrans/raw/main/figs/VPGTrans.png)
+
+
 
 
 
