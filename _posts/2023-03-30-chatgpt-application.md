@@ -2793,17 +2793,17 @@ Spot 身上添加了蓝牙**扬声器**和**麦克风**，一个配备摄像头�
 
 
 【2021-11-23】阿里巴巴 [中国：机器人采摘苹果，人工智能改变农业的时代](https://www.bilibili.com/video/BV1gY411471r/)
-- <iframe src="//player.bilibili.com/player.html?aid=251853891&bvid=BV1gY411471r&cid=447083040&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=251853891&bvid=BV1gY411471r&cid=447083040&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0"  height="600" width="100%" allowfullscreen="true"> </iframe>
 
 【2023-4-1】[苹果采摘机器人系统 无人机采摘苹果 农业机器人](https://www.bilibili.com/video/BV1HT411s766)
 
 一个有趣的苹果采摘系统，[Tevel](https://www.tevel-tech.com/) 的无人机采摘系统使用计算机视觉和人工智能算法识别并精准采摘成熟苹果，采摘精度和速度都很可观，同时避免破坏其他水果和果树。是农业机器人领域一个不错的实现
 
-<iframe src="//player.bilibili.com/player.html?aid=484452858&bvid=BV1HT411s766&cid=1078554904&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=484452858&bvid=BV1HT411s766&cid=1078554904&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 [实拍工程苹果醋制作全过程，全程自动化，居然用无人机采摘苹果](https://www.bilibili.com/video/BV1vu411x74Z)
 
-<iframe src="//player.bilibili.com/player.html?aid=528821639&bvid=BV1vu411x74Z&cid=1134116686&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=528821639&bvid=BV1vu411x74Z&cid=1134116686&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
 ### 可穿戴
@@ -3222,7 +3222,7 @@ ChatGPT is not all you need. [A State of the Art Review of large Generative AI m
 
 【2023-2-26】B站UP主：硅谷101，[ChatGPT这一战，科技巨头将重新洗牌](https://www.bilibili.com/video/BV1Jo4y1i72j)
 
-<iframe src="//player.bilibili.com/player.html?aid=394397165&bvid=BV1Jo4y1i72j&cid=1008617222&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=394397165&bvid=BV1Jo4y1i72j&cid=1008617222&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
 ### 微软
