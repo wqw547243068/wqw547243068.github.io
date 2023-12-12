@@ -2786,6 +2786,24 @@ Spot 身上添加了蓝牙**扬声器**和**麦克风**，一个配备摄像头�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1EHprsM948s?si=c-7RNBug4QJhrcjt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
+#### 无人机
+
+【2023-11-25】[让大模型操纵无人机，北航团队提出具身智能新架构](https://www.toutiao.com/article/7311595621582897704)
+
+北京航空航天大学智能无人机团队周尧明教授团队等研究人员，提出了一种基于多模态大模型的具身智能体架构。
+- [Agent as Cerebrum, Controller as Cerebellum: Implementing an Embodied LMM-based Agent on Drones](https://arxiv.org/abs/2311.15033)
+
+只要视觉模块捕捉到启动条件，大模型这个“大脑”就会生成动作指令，接着无人机便能迅速准确地执行。
+
+将真实物理世界的照片、声音、传感器数据等多源信息融合成能体的感知，将对于真实世界的执行器的操作作为智能体的行为。
+
+同时，团队提出了一套“Agent as Cerebrum，Controller as Cerebellum”（**智能体**即大脑，**控制器**即小脑）的控制架构：
+- 智能体作为大脑这一决策生成器，专注于生成高层级的行为；
+- 控制器作为小脑这一运动控制器，专注于将高层级的行为（如期望目标点）转换成低层级的系统命令（如旋翼转速）。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/3f1ef9c9d7644a018061f14bc0f5cac0~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1702986734&x-signature=7A%2BQdJDJ0SyvCFwJFEMQQBZGc90%3D)
+
+这些节点通过ROS相连，通过ROS中消息的订阅与发布或服务的请求与响应实现通信，区别于传统的端到端的机器人大模型控制。
+
 #### 智慧农业
 
 
