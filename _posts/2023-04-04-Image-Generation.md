@@ -1239,8 +1239,10 @@ conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cud
 【2023-3-20】[AI作画的lora模型使用体验](https://www.zhihu.com/pin/1621129614524129280?utm_psn=1627101983164256256)
 - Stable Diffusion有个lora训练功能，可以在6G显存显卡上进行训练风格或者人物的模型，lora模型体积小，所以备受青睐。演示的图是一些lora模型，相互融合所作或者从大模型提取的lora模型而作，诸如人+水墨风格或者动漫风格参考图（扇子）而创作。
 
+### SD 金华
 
-#### 改进: VAE Stable Diffusion
+
+#### VAE Stable Diffusion
 
 VAE Stable Diffusion（稳定扩散）是一种用于生成模型的算法，结合了`变分自编码器`（Variational Autoencoder，VAE）和扩散生成网络（Diffusion Generative Network）的思想。它通过对变分自编码器进行改进，提高了生成样本的质量和多样性。
 
@@ -1271,6 +1273,25 @@ EMA 会更**锐利**、MSE 会更**平滑**。
 - TencentARC/GFPGAN
 - sczhou/CodeFormer
 
+
+#### Playground v2
+
+【2023-12-11】[Playground v2，全面超越 SDXL 了](https://zhuanlan.zhihu.com/p/671456802?utm_psn=1717851514960236544)
+
+官方宣传： Playground v2 出图效果各项指标都超越了 SDXL
+
+体验方式
+- 下载 Playground v2 模型，在 SD 的 WebUI 或者 ComfyUI 中作为大模型来使用
+- 登录 [playgroundai](https://playgroundai.com/) 的官网来使用
+
+playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模式。
+- board 模式
+  - ![](https://pic1.zhimg.com/80/v2-98cdbf1ee961aa68b547abe7b3f099b4_1440w.webp)
+- Canvas 模式: 删除图片背景,不需要的元素,拓展图片
+
+ playgroundai 每天可以免费生成 500 张图片
+
+![](https://pic1.zhimg.com/80/v2-d531178fda67793a89e2a7e7b7e57528_1440w.webp)
 
 ### Mid-Journey
 
