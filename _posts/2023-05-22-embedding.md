@@ -155,6 +155,25 @@ print(qa.run(query))
 - 单独的embedding服务
 - LLM里的embedding
 
+
+### Embedding 评测
+
+【2023-12-14】评测结论
+
+Embedding向量化实验
+- Top 1召回 Accracy: `Ada v2`(84%) > `BGE`(81%) > `M3E`(?) > `AngIE`(67%)
+
+| model | top1 | top3 | top5 | top10 | 维度 | 语言 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Openai AdaEmbedding V2 | 0.8415 | 0.9471 | 0.9660 | 0.9849 | 1536 | 中文 |
+| m3e | 0.7811 | 0.9132 | 0.9472 | 0.9811 | 768 | 中文 |
+| bge | 0.8113| 0.9358| 0.9660| 0.9849| 768| 中文 |
+| angle | 0.6716 | 0.8604 | 0.9056 | 0.9283 | 768 | 中文 |
+
+纬度不同，这个比较对m3e和bge和angle不太公平
+
+top3的bge，m3e和ada002比差距不大了，top5基本就持平
+
 ### LLM Embedding
 
 【2023-8-1】[使用LLMs进行句子嵌入不如直接用BERT](https://mp.weixin.qq.com/s/mdC8EJ2Ajs8a_DCaxAET3Q)
@@ -222,6 +241,8 @@ OpenAI官方的embedding服务
 
 OpenAIEmbeddings：
 - 使用简单，并且效果比较好；
+
+Ada 几个版本
 
 #### OpenAI的Embedding服务
 
