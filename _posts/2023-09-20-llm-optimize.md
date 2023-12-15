@@ -380,6 +380,15 @@ SmoothQuant的续作, 从源代码来看, 它对SmoothQuant中计算scale时需�
 -   尝试引入QAT方案, 达到所见即所得, 拥抱极限 -- 但这个有点太激进, 还是需要在模型有足够理解后去尝试.
 -   端云推理的协同优化, 即手机端和GPU之间如何交互, 利用手机端训个人SFT, 分配算力等
 
+
+##### 量化实践
+
+huggingface上[thebloke](https://huggingface.co/TheBloke)，每出一个新模型，就会上传对应的量化模型
+- 目前已经有 3181 个量化模型
+- [Mixtral-8x7B-v0.1-GPTQ](https://huggingface.co/TheBloke/Mixtral-8x7B-v0.1-GPTQ/tree/main )
+
+
+
 #### 2.3 蒸馏(Distillation)
 
 [知识蒸馏](https://arxiv.org/abs/2006.05525)是一种构建更小、更便宜的模型（“student 模型”）的直接方法，通过从预先训练的昂贵模型中转移技能来加速推理（“ teacher 模型”）融入 student。 除了与 teacher 匹配的输出空间以构建适当的学习目标之外，对于如何构建 student 架构没有太多限制。
