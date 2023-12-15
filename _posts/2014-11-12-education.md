@@ -319,7 +319,6 @@ Pay close attention. This is your life. This is water.
 
 ## 上海教育
 
-
 ### 上海户口
 
 【2023-1-18】[2022年上海居住证积分满120就能落户上海？](https://www.163.com/dy/article/HC7RAB6U0553D1FY.html)
@@ -353,6 +352,20 @@ Pay close attention. This is your life. This is water.
 评论：[微博](https://m.weibo.cn/status/4814251220535602?sourceType=weixin&from=10D1095060&wm=9006_2001&featurecode=newtitle)
 - 上海2021年落户了97628人，相比之下，北京积分落户6000多人似乎太儿戏了
 - 不去想办法提升城市管理水平和运作能力，单纯靠疏解缩减人口来缓解大城市病，置广大北漂的切身利益于不顾，造成众多孩子转学回老家，家长辞职回去陪读，这是懒政、不作为！是对人民的不负责！谁为几百万北漂想过这事？
+
+### 上海行政区划
+
+【2023-12-15】全市共16区（**7市区**，9郊区）［7，5，3，1阵型］
+1. 黄浦区(10)，静安区(14)，徐汇区(13)，长宁区(10)，普陀区(10)，虹口区(8)，杨浦区(12)
+2. 闵行区(14)，宝山区(13)，嘉定区(12)，青浦区(11)，松江区(17)
+3. 奉贤区(11)，金山区(10)，崇明区(18)
+4. 浦东新区(36)
+
+
+图
+- ![](https://baishancdn.flowus.cn/oss/4030821e-51e7-4b08-987a-2567ab75a4e0/362ed71b-0024-4fe7-a070-6d0bab1068f3/mmexport1643073834062.jpg?time=1702627200&token=ce6d419cf9f2e4d8f2a09349b39f0855&role=share&img_process=/resize,w_1080/quality,q_90/)
+
+[参考](https://flowus.cn/share/357ac99c-3390-4add-9ecc-a84ef24460c2)
 
 ## 北京教育
 
