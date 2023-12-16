@@ -4193,6 +4193,10 @@ Gemini模型经过海量数据训练，可以很好识别和理解文本、图�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JPwU1FNhMOA?si=85W6sLiefLH3cOfi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+【2023-12-14】谷歌宣布，**免费**开放`Gemini Pro`和`Gemini Pro Vision`的**API**，支持中文。每分钟可发出**60**个请求，将比其他免费产品高20倍。
+- [bard体验地址](https://bard.google.com)，gemini加持的是英文版的bard，用中文就不是gemini
+- [api](https://makersuite.google.com/app/apikey)
+
 
 ### cpp 本地部署 
 
