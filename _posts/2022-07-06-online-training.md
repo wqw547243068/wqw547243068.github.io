@@ -7,14 +7,147 @@ tags: 对话系统 教育 培训 机器人 用户画像
 excerpt: 智能培训在在线教育中的探索、应用
 author: 鹤啸九天
 mathjax: true
+permalink: /tutor
 ---
 
 * content
 {:toc}
 
 
-# 智能培训
+# 在线教育
 
+
+## 行业观察
+
+在线教育的创新本质上都在解决“<span style='color:blue'>如何规模化优质供给</span>”的问题：
+- Coursera  用**录像**方式实现全球 Top 级大学经典课程这一稀缺教育资源的规模化
+- 国内市场中，Vipkid 创新在于用**差异化**的“北美教师”供给和线上授课的方式降低了少儿外教的门槛。
+
+### 模式分析
+
+
+从成本和教学体验维度来衡量，把现有的学习解决方案进行简单分类：
+- 1）基于**录播课**的**异步**学习公开资源和工具（如 Youtube 视频、google 翻译、慕课等免费录播课）；
+- 2）**工具类**服务，将学习中的某类需求或学习过程抽象为标准化产品，例如 Chegg、Duolingo 等；
+- 3）**真人老师**的**实时**授课，包括线上、线下的大班课和 1对1 私教。
+
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-12-17T11:27:17.477Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36\&quot; etag=\&quot;K37-b4ZbGotZ6_37gOqf\&quot; version=\&quot;22.1.11\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1238\&quot; dy=\&quot;789\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;700\&quot; y=\&quot;310\&quot; width=\&quot;180\&quot; height=\&quot;100\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CRyWcW9bKPYmjVe2kgWn-2\&quot; value=\&quot;在线教育模式分析\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=22;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;595\&quot; y=\&quot;170\&quot; width=\&quot;200\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-30\&quot; value=\&quot;wqw547243068@163.com&amp;lt;br&amp;gt;2023-12-17\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;851.37\&quot; y=\&quot;600\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-1\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#999999;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;400\&quot; y=\&quot;560\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;980\&quot; y=\&quot;560\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-2\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#999999;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;400\&quot; y=\&quot;560\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;400\&quot; y=\&quot;230\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-3\&quot; value=\&quot;&amp;lt;font&amp;gt;效果&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;677.3700000000001\&quot; y=\&quot;560\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-4\&quot; value=\&quot;&amp;lt;font&amp;gt;高&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#999999;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;916.3700000000001\&quot; y=\&quot;560\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-5\&quot; value=\&quot;&amp;lt;font&amp;gt;成本&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;364.0000000000001\&quot; y=\&quot;370\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-6\&quot; value=\&quot;&amp;lt;font&amp;gt;好&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#999999;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;374.0000000000001\&quot; y=\&quot;240\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-7\&quot; value=\&quot;&amp;lt;font&amp;gt;差&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#999999;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;374.0000000000001\&quot; y=\&quot;520\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-8\&quot; value=\&quot;&amp;lt;font&amp;gt;低&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#999999;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;414.0000000000001\&quot; y=\&quot;560\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-9\&quot; value=\&quot;公开资源/工具\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;420\&quot; y=\&quot;470\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-10\&quot; value=\&quot;线下自学\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;540\&quot; y=\&quot;510\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-11\&quot; value=\&quot;付费资源/工具\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;590\&quot; y=\&quot;410\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-12\&quot; value=\&quot;学习班\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;715\&quot; y=\&quot;360\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-13\&quot; value=\&quot;一对一学习\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;807\&quot; y=\&quot;320\&quot; width=\&quot;63\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-14\&quot; value=\&quot;AI 辅导\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;922.1800000000001\&quot; y=\&quot;263\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-15\&quot; value=\&quot;Youtube/Google翻译&amp;lt;br&amp;gt;MOOC\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;420\&quot; y=\&quot;430\&quot; width=\&quot;130\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-16\&quot; value=\&quot;看书\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;545\&quot; y=\&quot;480\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-17\&quot; value=\&quot;duolinggo, max, speak\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;580\&quot; y=\&quot;380\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-18\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;exitX=1;exitY=0;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;JPcd8CNpdyUwO0oxOTY8-13\&quot; target=\&quot;JPcd8CNpdyUwO0oxOTY8-14\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;793\&quot; y=\&quot;895\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;850\&quot; y=\&quot;895\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-25\&quot; value=\&quot;模仿\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;JPcd8CNpdyUwO0oxOTY8-18\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.1492\&quot; y=\&quot;4\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-19\&quot; value=\&quot;&amp;lt;font&amp;gt;异步学习&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=14;fontColor=#006600;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;440.00000000000006\&quot; y=\&quot;500\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-20\&quot; value=\&quot;&amp;lt;font&amp;gt;工具类学习&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=14;fontColor=#006600;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;601.74\&quot; y=\&quot;440\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-21\&quot; value=\&quot;&amp;lt;font&amp;gt;真人老师实时授课&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=14;fontColor=#006600;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;740\&quot; y=\&quot;410\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-22\&quot; value=\&quot;线上/线下大班课\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;710\&quot; y=\&quot;387\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-23\&quot; value=\&quot;一对一私教 Group learning\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;800\&quot; y=\&quot;350\&quot; width=\&quot;170\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-24\&quot; value=\&quot;AI Tutor\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;930.0000000000001\&quot; y=\&quot;290\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+综合来看，对于学习者来说
+- **体验最好**的一定是 1 对 1 教学服务，但**成本最高**。
+
+随着 LLM 和其他 AI 技术的成熟，用 AI 来复刻真人课堂环境、甚至更进一步模拟过去只有真人教师才能提供的实时互动成为可能，即 `AI Tutor`本质上是用技术**规模化**教师供给，低成本的实现真人授课。
+
+## 教育大模型
+
+AI辅助家教，20美元/月定制虚拟老师家庭还是教育的园地，但很多父母难以对孩子进行很好的辅导，如果每个家里有一个定制虚拟老师会不是让情况变得不一样？
+
+国内知名教育机构
+- 5月5日, `学而思`传出正自研数学大模型`MathGPT`，将于年内推出基于该自研大模型的产品级应用；
+- 同日，`网易有道`官方发布了基于“`子曰`”大模型开发的AI口语老师剧透视频；
+- 5月6日，`科大讯飞`发布了认知大模型成果，并演示了“大模型+`AI学习机`”的功能，包括批改作文、模拟口语老师实景对话等。
+
+
+## AI Tutor
+
+
+现阶段 `AI Tutor` 
+- 最典型的产品形态就是“**解释错题**”，例如，Duolingo Max 可以为用户讲解错题的原因、给出具体指导，还可以让用户和 AI 进行 Roleplay 对话练习语言。
+- 此外，还有产品借助日益成熟的 AI 语音识别、Avatar 技术提供“AI 教师”功能，以一种更沉浸式、拟人化方式实现 AI Tutor 功能，OpenAI 投资的 Speak 就是其中的典型代表。
+
+| 公司 | LLM产品 | 功能 |
+| --- | --- | --- |
+| Duolingo | Duolingo Max | 功能包括Explain my answer,roleplay。|
+| Preply | 推出一款人工智能助手 |  帮助老师创建练习、解释语法、与用户对话。 |
+| Chegg | Cheggmate与ScaleAl合作,利用Chegg的专有数据,训练自己的LLMS | 作为对话式学习伴侣提高学生作业的准确率和效率。 |
+| Khan Academy | Khanmigo | 为学校打造的聊天机器人导师,模拟一对一的人类辅导。 |
+| Quizlet | Q-chat | 利用Quizlet教育内容库,根据学习材料向学生提问。 |
+
+虽然现阶段 AI Tutor 的效果和传统 1 对 1 私教仍存在一些差距，但已经很大幅度改变用户在学习过程中的互动体验，对话式问题解答功能的引入使得学习不再是单向的知识传递，而更像是与一个智能伙伴进行深入互动的过程。
+
+免费方案包括可以进行语音交互的 ChatGPT、Pi、Character AI 中的语言老师、Call Annie 等。
+
+
+### Quizlet
+
+- 国外教育应用平台`Quizlet`率先采用了ChatGPT。试想一下，如果所有孩子都有一个一对一家教将会怎样？
+  - 2月28日，Quizlet推出了一款基于ChatGPT的家教软件，名为“`Q-Chat`”。不同于许多企业希望ChatGPT来帮其回答问题，Q-Chat通过有趣的聊天体验，根据相关学习材料提出可选问题，吸引学生。其从Quizlet的大量教育内容库中提取知识，能够测试学生学习情况，提出深入的问题，帮助学生学习语言，鼓励学生养成健康的学习习惯。
+  - Q-Chat的聊天教学界面：[演示视频](https://vdn6.vzuu.com/SD/2fb5539a-ee5e-11ed-a975-a66626372a59-v1_f4_t2_FicCvwfw.mp4)
+
+
+### 可汗：Khanmigo
+
+美国可汗实验学校的Khanmigo基于GPT-4等模型开发了个性化学习工具，比如“辅导我”模式和针对不同科目的测验模块。
+- 首席学习官Kristen DiCerbo（克里斯汀·迪塞尔博）说：“该模型（GPT-4）对于K12主题的问题回答最准确，但对于小众主题则不太准确。”享受这一服务需要每月支付至少20美元。
+- ![](https://pic2.zhimg.com/80/v2-f01869b18962c8075b2cf918ed48a915_1440w.webp)
+
+
+### 讯飞AI学习机
+
+【2023-8-25】[首个大模型教育产品开箱：“最聪明”国产大模型加持的学习机，质变了吗？](https://mp.weixin.qq.com/s/kEoLRJgmxaJM1ujBIPT9Dw)
+
+随着星火大模型的几次迭代，讯飞AI学习机T20系列、Lumie10系列率先完成了7大功能升级 —— 英语口语陪练、中英作文批改、数学互动辅学、百科自由问答、亲子教育助手；主打就是一个1V1的陪伴
+
+以及最近星火V2.0多模态和代码能力的更新，学习机也相应搭载了智能编程助手、创意绘画伙伴。
+
+
+### 网易：Hi Echo 口语私教
+
+【2023-7-26】有道宣布推出国内首个教育领域垂直大模型“`子曰`”，同时发布基于“子曰”大模型研发的6款应用——“`LLM翻译`”、“`虚拟人口语教练`”、“`AI作文指导`”、“语法精讲”、“AIBox”以及“文档问答”。
+
+网易推出全球首个虚拟人口语私教 Hi Echo
+
+用户可通过微信小程序或应用市场搜索“Hi Echo”体验。结束与虚拟人的对话之后，用户可查看结果报告，提供发音、语法、表达建议。
+
+### 多邻国（Duolingo）
+
+美国教育平台多邻国（Duolingo）上的新Roleplay机器人可以与法语和西班牙语学习者聊天，纠正他们的错误并提出建议以提高他们的词汇量。
+- 公司对大语言模型进行了二次开发，使其以教师身份出现，应用发现没有两次对话是相同的，教师会随着学习者的进步变得更高级。
+- 这一服务每月收费30美元或每年168美元。
+
+多邻国Roleplay机器人服务界面
+- ![](https://pic4.zhimg.com/80/v2-6ebce5c943e691db4c7c00d135130d67_1440w.webp)
+
+Duolingo 从创立就在探索 AI 和语言学习的结合，同样也提前试用了 GPT-4 ，并在此基础上推出了  AI Tutor 功能，即 Duolingo Max。Duolingo 最大的优势在于其庞大的用户基础及完整且丰富的产品设计。
+
+Duolingo Max 提供的 “Explain My Answer”和“Roleplay”功能与 Speak 极为相似，均为模拟真实对话场景，并且针对用户的错误给出即时反馈。从 Reddit 上用户的评价综合来看，Duolingo Max 获得了一定积极反馈，用户评论主要集中在提供更多互动和体验个性化、实时解决问题、提高口语能力等，但也有不少用户认为价格太高、超出预算、担心 AI 的准确性。
+
+目前 Duolingo Max 尚未在全球用户中全量开放，所以对于其他早期团队而言，也许存在一定窗口期。
+
+### Speak
+
+【2023-12-15】[Speak：用LLM重塑语言学习，再造一个Duolingo](https://mp.weixin.qq.com/s/vAFcTyDA4mtdHlEXLYQHig)
+
+Speak 是由 Connor Zwick 和 Andrew Hsu 在 2016 年在旧金山创立的一款语言学习产品，在其创立早期就积极探索 用 AI 提升语言学习的效率和体验。
+
+Speak 早期主要专注于韩国的英语学习市场。目前 Speak 在韩国苹果商店 “教育应用”中排第一名。
+- 2023 年之前，Speak 重点放在课程研发，累计开设了近 1500 万节英语课程。
+- 2023 年开始国际扩张、多语种扩张，目前产品已在日本、德国、法国、巴西、墨西哥等 20 多个国家上线。
+
+2022 年， Speak 获得 OpenAI Startup Fund 及头部硅谷基金的支持，融资 2700 万美元，2023 年 8 月又融资 1600 万美元，估值在不到一年的时间里翻了一番。
+
+作为 OpenAI 的合作伙伴，Speak 提前获取了 GPT-4、Whisper 的使用权以及微软的 Azure 资源，通过和 Speak 的语言学习系统、教学法相结合，开发语言学习的 AI Tutor ，目标是为用户提供更准确的实时反馈、提升用户的语言学习体验。Speak 的 CEO 认为，高度个性化和语境反馈只能使用 GPT-4 开发，GPT-4 是对早期语言模型的实质性改进。
+
+Speak 主打的是**口语学习**，希望通过 AI Tutor 让用户像和真人教师对话那样一样不断进行口语练习，再基于 AI 提供的发音、语法、词汇等方面实时反馈不断完善语言学习。
+
+Speak 首先会由专业教研人员设计框架和内容，这个过程主要以教研和用户研究为主导，团队也会借助 LLM 进行课程研发中的头脑风暴、效率提升。根据学习者的水平，Speak 将课程分为基础初级、进阶初级和实力中级三个等级。每个等级内有约 30 天课程设计。总体上，Speak 目前的可能内容较为基础，更适合入门的学习者。
+
+Speak 的课程分为三部分：**视频课**、**口语操练**和**角色扮演**。
+- **视频课程**主要由真人录制
+- **口语操练**是预先设置的题目
+- **角色扮演**就是集成了 GPT-4 能力的 AI Tutor，也是 Speak 主打的点。
+
+Speak 的 AI tutor 主要体现在**角色扮演**和**话题畅聊**两部分。用户首先在特定主题下与 AI 进行开放式对话。系统也会给到发音、语法、词汇等方面的反馈，例如怎么调整句子可以让表达更自然、更简洁等，和 Duolingo Max 类似。
+
+
+Speak 没有免费模式，必须付费才能使用软件，在开启订阅后有 7 天免费试用期，订阅分为两档：
+- • Premium 计划：$99.99/年，每月 2000 个 AI 家教积分；
+- • Premium plus 计划：$ 234.99/年，每月 10000 个 AI 家教积分。
+
+家教积分对应的是用户和 AI Tutor 的对话字数，每和 AI 对话一个词即 1 积分。在我们的实际测试中，2000 家教积分学习 5 天就会消耗完，这也意味着如果用户想天天和 AI 对话，只靠 Premium 计划远远不够，对于有强刚需的用户，更适合的选择是 Premium Plus 方案。
+
+Speak 的定价和  Coursera、Udemy、Skillshare、Duolingo 等其他在线教育产品的费用基本一致。
 
 # 房产实践
 
