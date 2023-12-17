@@ -386,8 +386,7 @@ permalink: /management
 - 只想应付考核，不想踏实干活，出现问题只会互相甩锅
 - 1个续班10个入口，用户不知道往哪走，哪里交钱才能报名成功
 - 家长报名五科目，有五个助教跟着，信息收集五遍家长要炸了
-- 什么独立人格，什么特么诚信负责
-- 只会为老板的朋友圈高歌
+- 什么独立人格，什么特么诚信负责，只会为老板的朋友圈高歌
 - 领导随口一说，立刻讨好跟着，项目马上启动不计后果
 - 找个学校试点，旅游城市优先，度假都不用再自己花钱
 - 细数这么多年，不来总部这边，难道是嫌北京学校太远
@@ -399,21 +398,22 @@ permalink: /management
 - 烂摊子从没管过，吹牛X从没停过（消音），之前的PPT继续白话
 - 一线工作从没去过，客服电话从没听过，借员工用户的名义去胡说
 - 重复的都抢着做，创新的没有几个，美其名曰“延续性”实怕担责
-- 一个简单问题需要答案
-- 董事长问总裁，而总裁问校长，校长问总监，总监问经理，经理问主管，主管问专员，专员还要问兼职
+- 一个简单问题需要答案，董事长问总裁，而总裁问校长，校长问总监，总监问经理，经理问主管，主管问专员，专员还要问兼职
 - 什么全球视野，什么特么志高行远，说好的三年规划每年都要变
 - 业绩好功劳在你，业绩差不能怪你，或许是职能部门不够给力
 - 白天黑夜工作，如此拼命奔波，要做出成绩才对得起自我
-- 前方迷途太多，坚持就有突破
-- 正确做事就会越来越广阔
+- 前方迷途太多，坚持就有突破，正确做事就会越来越广阔
 - 教育非常严肃，千万不能糊弄，对学员负责是一切的基础
 - 虽然前路漫长，心中还有力量，别忘了绝望中的那种希望
-- 问题不会灭亡，只能自己变强
-- 牛逼的人在哪里都不彷徨
-- 新年有新气象，热血依旧滚烫
-- 要相信是金子早晚会发光
+- 问题不会灭亡，只能自己变强，牛逼的人在哪里都不彷徨
+- 新年有新气象，热血依旧滚烫，要相信是金子早晚会发光
 
-<iframe src="//player.bilibili.com/player.html?aid=41737082&bvid=BV1it41147yo&cid=73283562&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="500" height="603"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=41617129&bvid=BV1it41147yo&cid=73081306&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="500" height="603"> </iframe>
+
+
+2020新东方年会释放自我2.0
+
+<iframe src="//player.bilibili.com/player.html?aid=938225909&bvid=BV1DT4y1h7zm&cid=576403528&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="500" height="603"> </iframe>
 
 
 ## 技术管理
