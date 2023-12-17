@@ -84,6 +84,27 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 
 ## 加速框架
 
+### GPT-Fast
+
+这几年，有一堆文本生成的开源项目 llama.cpp, vLLM, 和 MLC-LLM. 为了更加使用方便，长城要求模型转成特殊格式、增加新依赖。
+
+纯pytorch框架上的transformer推理能有多快？
+
+【2023-12-3】PyTorch 团队纯用 Pytorch写个推理框架 [GPT-Fast](https://github.com/pytorch-labs/gpt-fast) ，极小推理框架，大约1000多行代码，号称性能最高提升**10倍**。
+- [accelerating-generative-ai](https://pytorch.org/blog/accelerating-generative-ai-2/)
+
+We leverage a breadth of optimizations including:
+- `Torch.compile`: A compiler for PyTorch models
+- `GPU quantization`: Accelerate models with reduced precision operations
+- `Speculative Decoding`: Accelerate LLMs using a small “draft” model to predict large “target” model’s output
+- `Tensor Parallelism`: Accelerate models by running them across multiple devices.
+
+做法简单：
+- 做了个最简版的 `kvcache`(避免重复计算) + `GPTQ`量化（减少GPU显存通讯） +   `PyTorch-Compile`(自动对pytorch python代码生成cuda相关的优化代码,可以控制区间，本质就是AI编译器啦) +`Tensor Parallelism`（多卡计算基本要求） + `Speculative Sampling`(特别适合打速度排名。。。。因为面对复杂任务这里是逆优化。。。)
+
+- Llama-7B Eager版推理速度 25 tokens/s, gpt-fast 版提升到 246 tokens/s
+- Llama-70B 77 tokens/s
+- ![](https://pytorch.org/assets/images/accelerating-generative-ai-2/screen-recording.gif)
 
 ### TensorRT-LLM
 
@@ -96,6 +117,11 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
   - run：加载engine文件，传入数据，进行inference
 
 
+### llama.cpp
+
+### vLLM
+
+### MLC-LLM
 
 
 ## 优化方法
