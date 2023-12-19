@@ -789,9 +789,12 @@ Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/g
 #### PromptPerfect
 
 【2023-9-20】JinaAI 的 [PromptPerfect](https://promptperfect.jinaai.cn) 专业的提示词工程：设计、优化、部署一条龙 
-- 自动生成提示词。先指定使用哪个模型，然后输入关键词，就给出一段完整的提示词，并让你预览两种提示词的 AI 返回结果。
-- “流水线”模式，让用户可以**逐步**调试提示词，提供了各种参数，直接无缝对比在**不同 AI 模型**下的表现。
-- 提供 REST API 让开发者远程调用，可作为 Prompt-as-service。简单说，直接搞个 AI Agent，向公众提供服务或者做一个对话机器人。
+- **AutoTune** 自动生成提示词。
+  - 先指定使用哪个模型，然后输入关键词，就给出一段完整的提示词，并让你预览两种提示词的 AI 返回结果。
+- **Streamline** “流水线”模式
+  - 让用户可以**逐步**调试提示词，提供了各种参数，直接无缝对比在**不同 AI 模型**下的表现。
+- 提供 REST API 让开发者远程调用，可作为 Prompt-as-service。
+  - 直接搞个 AI Agent，向公众提供服务或者做一个对话机器人。
 
 文本提示词
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/82464de68c9543d8a4d1d1ae6a663d01~tplv-obj:892:1334.image?_iz=97245&from=post&x-expires=1703030400&x-signature=Ew6Dr4LXxmW6Dz7PRA5ZIG6KkLI%3D)
