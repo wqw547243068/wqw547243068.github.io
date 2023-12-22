@@ -718,6 +718,7 @@ GPTCache是一个开源库，支持OpenAI ChatGPT 接口和 LangChain 接口
 GPTCache 通过 embedding 算法将query转换为向量，并使用向量数据库进行相似性搜索，从缓存中检索相关查询。 
 
 GPTCache 采用了模块化的设计，允许用户灵活自定义每个模块。
+- ![](https://github.com/zilliztech/GPTCache/raw/main/docs/GPTCacheStructure.png)
 
 虽然语义缓存可能会返回假正类（false positive）和负类（negative）结果，但 GPTCache 提供 3 种性能指标来帮助开发人员优化其缓存系统。
 
