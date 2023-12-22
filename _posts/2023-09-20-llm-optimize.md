@@ -693,6 +693,77 @@ LLM提供了一个上下文(x)，并负责生成高质量的输出(y)。S2A通�
 
 Meta AI选择LLaMA-2-70B-chat作为他们的主要评估模型。
 
+
+#### 【2023-11-6】Stateful API
+
+OpenAI 11月6日 提到的Stateful API 背后用的技术类似于KV Cache，每次NTP下一字预测时，使用缓存，不再重新计算前面的所有字符注意力，空间换时间，提高推理性能
+
+
+#### 【2023-4-11】GPTCache -- query语义缓存
+
+GPTCache将query转换为向量进行相似性搜索，从缓存中检索相关查询，本质上还是语义缓存。
+
+GPTCache是一个开源库，支持OpenAI ChatGPT 接口和 LangChain 接口
+- 通过缓存语言模型的response来提高 GPT 应用的效率和速度。
+- 支持用户根据自定义缓存规则，包括 embedding 函数、相似性计算方式、存储位置和存储逐出规则等。
+
+三个词来概括：**高效**（省时间）、**节约成本**（省钱）、**定制化**（省劲儿）
+
+**GPTCache 工作原理**
+- [什么是 GPTCache](https://zilliz.com.cn/what-is-gptcache)
+
+[GPTCache](https://github.com/zilliztech/GPTCache) 利用在线服务的**数据局部性**特点，存储常用数据，降低检索时间，减轻后端服务器负载。
+- 与传统缓存系统不同，GPTCache 进行**语义缓存**，识别并存储相似或相关的查询以提高缓存命中率。
+
+GPTCache 通过 embedding 算法将query转换为向量，并使用向量数据库进行相似性搜索，从缓存中检索相关查询。 
+
+GPTCache 采用了模块化的设计，允许用户灵活自定义每个模块。
+
+虽然语义缓存可能会返回假正类（false positive）和负类（negative）结果，但 GPTCache 提供 3 种性能指标来帮助开发人员优化其缓存系统。
+
+通过上述流程，GPTCache 能够从缓存中寻找并召回相似或相关查询，如下图所示。
+- ![](https://zilliz.com.cn/images/opensourceGptCache/infra.svg)
+
+GPTCache 模块化的架构设计方便用户定制个性化语义缓存。每个模块都提供多种选择，适合各种应用场景。
+-   **大语言模型适配器（LLM Adapter）**: 适配器将大语言模型请求转换为缓存协议，并将缓存结果转换为 LLM 响应。适配器方便轻松集成所有大语言模型，并可灵活扩展。GPTCache 支持多种大语言模型，包括：
+  -   OpenAI ChatGPT API
+  -   langchain
+  -   Minigpt4
+  -   Llamacpp
+  -   dolly
+  -   后续将支持：Hugging Face Hub、Bard、Anthropic 等
+-  **预处理器（Pre-Processor）**：预处理器管理、分析请求，并在将请求发送至 LLM 前调整请求格式，具体包括：移除输入种冗余的信息、压缩输入信息、切分长文本、执行其他相关任务等。
+-   **向量生成器（Embedding Generator）**: Embedding 生成器将用户查询的问题转化为 embedding 向量，便于后续的向量相似性检索。GPTCache 支持多种模型，包括：
+  -   OpenAI embedding API
+  -   ONNX（GPTCache/paraphrase-albert-onnx 模型）
+  -   Hugging Face embedding API
+  -   Cohere embedding API
+  -   fastText embedding API
+  -   SentenceTransformers embedding API
+  -   Timm 模型库中的图像模型
+-   **缓存存储（Cache Store）**: GPTCache 将 LLM 响应存储在各种数据库管理系统中。GPTCache 支持丰富的缓存存储数据库，用户可根据性能、可扩展性需求和成本预算，灵活选择最适合的数据库。GPTCache 支持多个热门数据库，包括：
+  -   SQLite
+  -   PostgreSQL
+  -   MySQL
+  -   MariaDB
+  -   SQL Server
+  -   Oracle
+-   **向量存储（Vector Store）**: 向量存储模块会根据输入请求的 embedding 查找 top-K 最相似的请求。简而言之，该模块用于评估请求之间的相似性。GPTCache 的界面十分友好，提供丰富的向量存储数据库。选择不同的向量数据库会影响相似性检索的效率和准确性。GPTCache 支持多个向量数据库，包括：
+  -   [Milvus](https://milvus.io/)
+  -   [Zilliz Cloud](https://zilliz.com.cn/cloud)
+  -   Milvus Lite
+  -   Hnswlib
+  -   PGVector
+  -   Chroma
+  -   DocArray
+  -   FAISS    
+-   **逐出策略（Eviction Policy）** 管理：控制缓存存储和向量存储模块的操作。缓存满了之后，缓存替换机制会决定淘汰哪些数据，为新数据腾出空间。GPTCache 目前支持以下两种标准逐出策略：
+  -   “最近最少使用”逐出策略（Least Recently Used，LRU）
+  -   “先进先出”逐出策略（First In First Out，FIFO）        
+-   **相似性评估器（Similarity Evaluator）**: GPTCache 中的相似性评估模块从 Cache Storage 和 Vector Store 中收集数据，并使用各种策略来确定输入请求与来自 Vector Store 的请求之间的相似性。该模块用于确定某一请求是否与缓存匹配。GPTCache 提供标准化接口，集成各种相似性计算方式。多样的的相似性计算方式能狗灵活满足不同的需求和应用场景。GPTCache 根据其他用例和需求提供灵活性。
+-   **后处理器（Post-Processor）**：后处理器负责在返回响应前处理最终响应。如果没有命中缓存中存储的数据，大语言模型适配器会从 LLM 请求响应并将响应写入缓存存储中。
+
+
 ### 服务优化
 
 服务相关优化主要包括：Continuous Batching、Dynamic Batching 和 异步 Tokenize / Detokenize。
