@@ -4197,6 +4197,30 @@ Gemini模型经过海量数据训练，可以很好识别和理解文本、图�
 - [bard体验地址](https://bard.google.com)，gemini加持的是英文版的bard，用中文就不是gemini
 - [api](https://makersuite.google.com/app/apikey)
 
+### NexusRaven
+
+【2023-12-23】[清华特奖焦剑涛大模型创业：突破GPT-4工具使用能力，搞开源种子轮融资七千万](https://mp.weixin.qq.com/s/twShew3e_jgJg6IqUIOZow)
+
+两位清华校友打造NexusRaven, 13b，在GPT-4核心优势之一使用工具上实现超越。
+
+2023年9月,公司 Nexusflow 刚刚亮相，并当即宣布千万美元级种子轮融资。
+- 短短不到3个月时间就发布了2代大模型 NexusRaven，其中第二代直接单点突破GPT-4，引起开源社区大量关注。
+
+NexusRaven 开源和商用，完全不用担心侵权，因为训练不涉及任何由专有LLM(如GPT-4) 生成的数据。
+
+当然，隐私数据就更不用担心了，NexusRaven称自己的安全性比GPT-4要高了21个百分点。
+
+NexusRaven-V2完全基于开放数据集打造，并在CodeLlama-13B-instruct上进行了指令微调。
+- 问题 “Get me good food nearby?”
+- 立刻编写出几行代码，然后开始定位你的城市、将城市坐标转换为经纬度、领取目标任务（20个饭店建议）以及按距离从远到近排序。
+
+人工生成的9项基准测试中，只有130亿参数的NexusRaven-V2做到了58.2%的平均调用成功率，比GPT-4高出4个百分点（在零样本情况下）。
+
+其中，两者在单个或并行函数调用这种简单任务上的表现差不多。
+
+但如果再单看复杂的嵌套函数调用任务，NexusRaven-V2的成绩比GPT-4表现得要更好，直接高出了7个百分点。
+
+
 
 ### cpp 本地部署 
 
