@@ -43,7 +43,6 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 建议
 - 微调之前先尝试RAG
 
-
 ## 方法分析
 
 [Full Fine-Tuning, PEFT, Prompt Engineering, and RAG: Which One Is Right for You?](https://deci.ai/blog/fine-tuning-peft-prompt-engineering-and-rag-which-one-is-right-for-you)
