@@ -1357,14 +1357,25 @@ One-time 50 trial credits for all the features. Join Discord for additional one-
 
 ### 视觉 prompt 自动生成
 
+
+#### 2023.7.24 VPGTrans
+
 【2023-7-24】[Transfer Visual Prompt Generator across LLMs](https://arxiv.org/abs/2305.01278)
 - 首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
 - 提出简单高效的迁移框架 [VPGTrans](https://github.com/VPGTrans/VPGTrans), 包含两个阶段
 - ![](https://github.com/VPGTrans/VPGTrans/raw/main/figs/VPGTrans.png)
 
 
+#### 2023.12.27 谷歌: Prompt Expansion
 
+两大挑战：
+- **提示工程**复杂：用户需精心设计提示以生成高质量图像。这涉及使用专业术语（如“35mm”、“背光”等）和独特描述（如“大胆创新”）。由于有效提示的不稳定性，用户需不断试验，这限制了模型的易用性和创造力。
+- 图像**多样性不足**：即便用户提示未具体指定细节，生成的图像往往缺乏变化。例如，“南瓜灯设计”的提示可能导致风格和视角相似的图像。这不仅可能加剧社会偏见，还限制了探索更多元图像的可能。
 
+谷歌发布Prompt Expansion框架，让文生图更轻松
+- [Prompt Expansion for Adaptive Text-to-Image Generation](https://arxiv.org/pdf/2312.16720.pdf)
+
+谷歌推出了一种名为提示扩展（Prompt Expansion）的创新框架，旨在帮助用户更轻松地创造出既高质量又多样化的图像
 
 ## Prompt质量评估
 
