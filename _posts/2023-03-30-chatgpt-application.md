@@ -2782,6 +2782,23 @@ Spot 身上添加了蓝牙**扬声器**和**麦克风**，一个配备摄像头�
 <iframe src="//player.bilibili.com/player.html?aid=528821639&bvid=BV1vu411x74Z&cid=1134116686&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
+#### 家政机器人
+
+
+##### mobile aloha
+
+
+【2024-1-5】斯坦福大学重磅发布开源机器人mobile aloha, 能在日常环境中自主完成复杂的任务
+- Mobile aloha 通过模仿学习直接克隆人类行为，这能让它学会任意技能。通过低成本全身远程操作来学习双手移动操纵技术。目标是使机器人能够执行复杂的移动操作任务，同时保持低成本和易于操作的特点。
+- [Learning Bimanual Mobile Manipulation with Low-Cost Whole-Body Teleoperation](http://arxiv.org/abs/2401.02117)
+- [Mobile aloha主页](https://mobile-aloha.github.io/)
+- 代码： [act-plus-plus](https://github.com/MarkFzp/act-plus-plus)
+
+Mobile ALOHA并不是一个机器人，而是一个操作系统。借助这个系统，机器人可以轻松完成各种惊喜工作，比如煎蘑菇
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mnLVbwxSdNM?si=hc34Mj7XEaKwuCIZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
 ### 可穿戴
 
 蠢萌可爱的**机器狗**、拿下千万出货量的**VR头显**、还是轻便小巧的**AR眼镜**...谁将成为下一个黄金时代的“智能手机”？
