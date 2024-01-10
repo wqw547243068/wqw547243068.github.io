@@ -1727,6 +1727,30 @@ VALL·E目前还没开源
 Talk - Talking with ChatGPT is a breeze，a single-page application crafted to converse with AI using voice, replicating the user experience akin to a native app’ proxoar [GitHub](github.com/proxoar/talk)
 - ![](https://github.com/proxoar/talk/raw/main/doc/figjam-talk-2023-09-22.png)
 
+
+#### Voice->3D
+
+【2024-1-3】Meta AI又发布了一个[炸裂的东西](https://www.toutiao.com/w/1787229586874380)：从音频生成全身逼真的虚拟人物形象。
+- 从多人对话中语音中生成与对话相对应的逼真面部表情、完整身体和手势动作。
+- [From Audio to Photoreal Embodiment: Synthesizing Humans in Conversations](http://arxiv.org/pdf/2401.01885)
+- [demo](https://people.eecs.berkeley.edu/~evonne_ng/pro)
+- 暂无代码
+
+这些生成的虚拟人物不仅在视觉上很逼真，而且能够准确地反映出对话中的手势和表情细节，如指点、手腕抖动、耸肩、微笑、嘲笑等。
+
+工作原理：
+
+该项目结合了向量量化的样本多样性和通过扩散获得的高频细节的优势，以生成更具动态性和表现力的动作。
+- 1、数据集捕获：首先捕获了一组丰富的双人对话数据集，这些数据集允许进行逼真的重建。
+- 2、运动模型构建：项目构建了一个包括面部运动模型、引导姿势预测器和身体运动模型的复合运动模型。
+- 3、面部运动生成：使用预训练的唇部回归器处理音频，提取面部运动相关的特征。
+利用条件扩散模型根据这些特征生成面部运动。
+- 4、身体运动生成：以音频为输入，自回归地输出每秒1帧的向量量化（VQ）引导姿势。将音频和引导姿势一起输入到扩散模型中，以30帧/秒的速度生成高频身体运动。
+- 5、虚拟人物渲染：将生成的面部和身体运动传入训练好的虚拟人物渲染器，生成逼真的虚拟人物。
+- 6、结果展示：最终展示的是根据音频生成的全身逼真虚拟人物，这些虚拟人物能够表现出对话中的细微表情和手势动作。
+
+
+
 ### 智能对话
 
 
