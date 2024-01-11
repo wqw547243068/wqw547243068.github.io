@@ -413,7 +413,9 @@ huggingface上[thebloke](https://huggingface.co/TheBloke)，每出一个新模�
 - 目前已经有 3181 个量化模型
 - [Mixtral-8x7B-v0.1-GPTQ](https://huggingface.co/TheBloke/Mixtral-8x7B-v0.1-GPTQ/tree/main )
 
+【2024-1-10】智源团队提出首个用于自然语言理解任务的 **1bit** 轻量化预训练模型 `BiPFT`。与标准的FP32相比，使用 1bit weight 和 1bit activation，在推理阶段显著节省了56倍的操作数量和28倍的内存。该工作已被 AAAI 2024 收录。
 
+与以往面向特定任务的 1bit Transformer结构的模型相比，BiPFT显著提升了 1bit 神经网络（BNN）的学习和泛化能力，与直接在下游任务上进行二值量化的BERT模型相比，BiPFT 模型在GLUE标准测试集上平均性能超过15.4%。
 
 #### 2.3 蒸馏(Distillation)
 
