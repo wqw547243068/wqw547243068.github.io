@@ -788,6 +788,18 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 
 虽然本文使用上述八种条件进行了实验，但用户可以使用 Composer 自由定制条件。
 
+#### 图片编辑
+
+##### AnyText
+
+【2023-12-15】阿里通义实验室推出AnyText，一种基于**扩散模型**的**多语言视觉文本生成和编辑**模型，能够在图片上生成和编辑任何语言的文字，而且，效果非常逼真和自然。
+
+AnyText 开源了代码和数据集。
+- 代码 [AnyText](https://github.com/tyxsspa/AnyText)
+- [在线体验地址](https://modelscope.cn/studios/damo/studio_anytext/summary)。
+- 论文 [ANYTEXT: MULTILINGUAL VISUAL TEXT GENERATION AND EDITING](https://arxiv.org/pdf/2311.03054.pdf)
+
+
 ## AI 作画
 
 文本生成图片
