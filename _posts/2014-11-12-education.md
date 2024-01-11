@@ -399,6 +399,8 @@ Pay close attention. This is your life. This is water.
 
 ### 北京学区
 
+#### 海淀学区概览
+
 海淀优质学区：上地学区，中关村学区，（海淀学区），万寿路学区，八里庄学区，羊坊店学区；
 - 上地学区和中关村学区是顶级学区。也是中国学区房最贵的区域，抢占优质学区的神操作模式：多数家长会买个小房子，占坑小学名额，然后在其他区域租房住或者有能力的在其他区域买大房子住。毕竟学区房具备很强的资产升值属性，所以一般作为顶级优质资产奇货可居。
 
@@ -423,6 +425,12 @@ Pay close attention. This is your life. This is water.
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/2b4b7e97aaac4529ab2c71d8a30da309~tplv-obj:1192:1067.image?_iz=97245&from=post&x-expires=1702425600&x-signature=au6G8rTDDAdKAkaMzMlaijR4Cds%3D)
 
 [参考](https://www.toutiao.com/w/1776877041136704)
+
+
+#### 西三旗学区
+
+【2024-1-10】西三旗学区越来越好了，前有**枫丹实验小学**加入北大附中教育集团，后有**永泰小学**和**清河四小**加入十一龙樾教育集团，由于十一龙樾没有小学部，四小和永泰一下子翻身。再加上原有的不错的育鹰、育新和后来崛起的北大附中西三旗、新鑫学校，再无渣小，西三旗学区一下子跻身海淀优质学区，[未来可期](https://www.toutiao.com/w/1787706235840523)
+
 
 ### 北京户口
 
