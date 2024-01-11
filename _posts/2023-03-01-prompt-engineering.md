@@ -1343,6 +1343,7 @@ cd YiVal
 ```
 
 
+
 ## 图像提示词
 
 
@@ -1376,6 +1377,22 @@ One-time 50 trial credits for all the features. Join Discord for additional one-
 - [Prompt Expansion for Adaptive Text-to-Image Generation](https://arxiv.org/pdf/2312.16720.pdf)
 
 谷歌推出了一种名为提示扩展（Prompt Expansion）的创新框架，旨在帮助用户更轻松地创造出既高质量又多样化的图像
+
+
+#### 2024.1.10 PromptLLM
+
+【2024-1-10】[贾扬清创业新动作：推出AIGC提示工具，几个字玩转SDXL，细节拉满](https://www.toutiao.com/article/7322387911557595688)
+
+贾扬清团队LeptonAI最新推出的AIGC提示工具——`PromptLLM`。
+- 贾扬清LeptonAI同HippoML合作。LeptonAI提供API平台支持。HippoML提供PrivateCanvas系统来保障运行。
+
+只需短短几个字提示，就能收获一张细节感满满的绘图(SDXL模型)。API已开放，也可免费体验[Demo](https://promptcraft.lepton.run/)
+
+|示例|生成的prompt|效果|
+|---|---|---|
+|elon musk in the sky|Elon musk in the sky, dressed in a spacesuit, floating amidst clouds, the Moon and the Sun in the background, Photorealistic, UHD art style with intricate details and vivid colors.||
+||||
+||||
 
 ## Prompt质量评估
 
