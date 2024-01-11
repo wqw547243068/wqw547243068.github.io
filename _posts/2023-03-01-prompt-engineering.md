@@ -1350,19 +1350,74 @@ cd YiVal
 - 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
 - 【2023-12-12】[阿里巴巴StableDiffusion提示词指南](https://zhuanlan.zhihu.com/p/668727775?utm_psn=1717852489863344129)
 
+
+### 文生图提示词
+
+知名AI画图模型工具Midjourney，Stable Diffusion，使用时，同样需要像文本对话提示语一样，不断试探、调试。
+
+Prompt基本格式
+- 提问引导：生成什么样的图
+- 示例：要描述的词汇特点，结合反向提示词更好
+- 单词顺序：顺序跟词语本身一样重要
+
+要想得到更好的效果，还需要结合使用修饰词、咒语、参数
+
+修饰词（Modifiers）
+- Photography/摄影
+- Art Mediums/艺术媒介
+- Artists/艺术家
+- Illustration/插图
+- Emotions/情感
+- Aesthetics/美学
+
+Magic words（咒语）
+- Highly detailed/高细节
+- Professional/专业
+- Vivid Colors/鲜艳的颜色
+- Bokeh/背景虚化
+- Sketch vs Painting/素描 vs 绘画
+
+模型参数，以sd为例
+
+Stable Diffusion参数
+- Resolution/分辨率
+- CFC/提词相关性
+- Step count/步数
+- Seed/种子
+- Sampler/采样
+- 反向提示词(Prompt)
+
+最后，还可以使用高级技能，充分利用辅助工具
+
+img2img（图生图）,in/outpainting（扩展/重绘)
+- 将草图转化为专业艺术作品
+- 风格转换
+- lmg2lmg 变体
+- Img2lmg+多个AI问题
+- lmg2lmg 低强度变体
+- 重绘
+- 扩展/裁剪
+
+
 ### StableDiffusion 提示词指南
 
 [openart.ai](http://openart.ai/promptbook), 需要 国外vpn
 
 One-time 50 trial credits for all the features. Join Discord for additional one-time 100 trial credits
 
-### 视觉 prompt 自动生成
+OpenArt上有文生图优质案例，但面向国外，只有50个免费额度，如果是discord，有100次额度。
+
+
+### prompt 自动生成
+
+
+【2024-1-11】[文生图Prompt如何自动化？贾扬清PromptLLM实测](https://zhuanlan.zhihu.com/p/677236977)
 
 
 #### 2023.7.24 VPGTrans
 
 【2023-7-24】[Transfer Visual Prompt Generator across LLMs](https://arxiv.org/abs/2305.01278)
-- 首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
+- Sea-NExT Joint Lab和新加坡国立首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
 - 提出简单高效的迁移框架 [VPGTrans](https://github.com/VPGTrans/VPGTrans), 包含两个阶段
 - ![](https://github.com/VPGTrans/VPGTrans/raw/main/figs/VPGTrans.png)
 
@@ -1393,6 +1448,18 @@ One-time 50 trial credits for all the features. Join Discord for additional one-
 |elon musk in the sky|Elon musk in the sky, dressed in a spacesuit, floating amidst clouds, the Moon and the Sun in the background, Photorealistic, UHD art style with intricate details and vivid colors.||
 ||||
 ||||
+
+【2024-1-11】[文生图Prompt如何自动化？贾扬清PromptLLM实测](https://zhuanlan.zhihu.com/p/677236977)
+- ![](https://pic3.zhimg.com/80/v2-0bc04a821a5758952f394269f2a3cf72_1440w.webp)
+
+
+总结
+- 英文效果大幅优于中文，英文版可用，目前SDXL对中文支持不佳；
+- 除了SD模型，其它（如Mid-Journey）效果如何，未知
+- 目前处于测试阶段，免费使用，收集用户反馈
+
+改进方法：
+- 提前翻译成英文，这个功能应该由平台自动完成（给PromptLLM的建议）
 
 ## Prompt质量评估
 
