@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding
+tags: 向量化 milvus vector embedding mistral
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -767,6 +767,28 @@ angle = AnglE.from_pretrained('hfl/chinese-roberta-wwm-ext', pretrained_model_pa
 corrcoef, accuracy = angle.evaluate(test_ds, device=angle.device)
 print('corrcoef:', corrcoef)
 ```
+
+### E5-mistral-7b-instruct
+
+【2024-1-7】[微软E5-mistral-7b-instruct: 站在LLM肩膀上的text embedding](https://zhuanlan.zhihu.com/p/676366430)
+- 论文 [Improving Text Embeddings with Large Language Models](https://arxiv.org/pdf/2401.00368.pdf)
+
+微软发布的text embedding模型E5-mistral-7b-instruct登顶MTEB，并且甩出了第二名一段明显距离。
+
+E5-mistral-7b-instruct利用LLM产生了接近**100种**语言的高质量且多样化的训练数据，利用**纯decoder**的LLM在合成数据上进一步finetune。
+
+仅依靠合成数据训练得到的text embedding可以媲美目前主流的sota模型，而混合合成数据跟真实标注数据训练完成的text embedding模型在BEIR跟MTEB上都达到新的sota效果。
+
+数据集
+- 借助GPT3.5-Turbo，GPT4去生成训练数据，构建多种语言跟任务类型的数据来增强训练数据的多样性。从大类来看可以将合成数据分为两大类，即非对称任务跟对称任务，最终构建得到超过15万个task definition的包括93种语言的50万个训练样本，每个样本的格式为（task definition, user query, positive document, hard negative document）。
+
+模型训练
+- mistral-7b-instruct的训练方式跟之前介绍的instructor相似，在query侧将task definition跟user query拼接到一起作为一个整体去生成query的向量表征，而document侧则不添加任何前缀。由于采用的纯decoder的语言模型Mistral-7b，会在query或者document后插入一个`[EOS]`，然后一同输入到语言模型中，将`[EOS]`位置上最后一层的隐层表示作为句向量。训练损失采用的是常规的对比损失，希望task definition+user query跟positive document足够靠近，同时跟hard negative document或者其他batch的负样本足够疏远。
+
+实验结论
+- 从MTEB上看，仅用LLM生成数据训练得到的text embedding效果就很不错了，混合了合成数据跟真实监督数据训练得到的text embedding更是取得了新的sota效果。在多语言能力上，也有不俗的表现，文中认为在低资源语言上的表现稍差一筹在于基底模型Mistral-7b预训练语料主要是英语。
+- 弱监督对比学习预训练是主流text embedding模型成功的一个关键因素，研究人员对比弱监督对比学习预训练对于纯encoder的XLM跟纯decoder的Mistral-7b的影响，发现不做预训练对于Mistral-7b几乎没有影响，这可能是因为自回归预训练任务已经让纯decoder的Mistral-7b具备获取高质量文本表征的能力，所以只要经过finetune就可以称为强大的text embedding模型了。
+- ![](https://pic2.zhimg.com/80/v2-a46537a220eebe5d1fc6f37eee218f1d_1440w.webp)
 
 ## 向量评估
 
