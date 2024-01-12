@@ -907,7 +907,7 @@ YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术�
 
 ![](https://p6-tt.byteimg.com/origin/pgc-image/3ae75db8898d47eaac8b9649a0ff5a97?from=pc)
 
-## Real-Time-Person-Removal
+## 实时检测
 
 - [实时隐身不留痕项目作者：Jason Mayes](https://mp.weixin.qq.com/s?__biz=MzU1NTUxNTM0Mg==&mid=2247493105&idx=1&sn=7726468d8faaf777284f32997ee33750&chksm=fbd18950cca60046ac133d3fde0857ecfeb7a93769dd135f4a915b923f1da386eeb5264e912a&scene=126&sessionid=1583675043&key=6dc1e3ec383dbb13146e922235a89f44535156bfd8c1191ba4da2e1c3d0365f4f30f345dd86d90910b1a201f10123e81b09a81195d6b3ab30bb32c563907f5525316a57147dc102623de78139e3578d1&ascene=1&uin=OTY1NzE1MTYw&devicetype=Windows+10&version=62080079&lang=zh_CN&exportkey=AX872ydDK0J27zzwMHx%2Fm7c%3D&pass_ticket=5I0Z9AD6y0vIicNPU2j%2BnyzrIe8dG1OkhbEAOwj1UMnKZY%2F9N8SIhRHlOQiY2k%2Bd)
 - [Real-Time-Person-Removal](https://github.com/jasonmayes/Real-Time-Person-Removal)
@@ -923,6 +923,29 @@ YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术�
   - 如果不和其他模型搭配的话，BodyPix只适用于单人影像。
 
 <iframe src="https://storage.googleapis.com/tfjs-models/demos/body-pix/index.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='800' height='600'> </iframe>
+
+### OpenPose
+
+【2024-1-12】[实时多人关键点AI检测开源！](https://www.toutiao.com/article/7322712733185884724)
+
+OpenPose 是一个开源的**实时**多人关键点检测库，由卡内基梅隆大学的感知计算实验室（Perceptual Computing Lab）开发。它旨在通过深度学习技术实现高效的**人体姿态估计**，并可以同时检测多个人的身体、面部、手部和脚部的关键点。
+
+OpenPose 的出现为人体姿态估计领域带来了重要的突破，特别是在实时性和多人检测方面。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-twdt4qpehh/3b5cbf862f644d82a8a934c278bb7415~noop.image)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-twdt4qpehh/3b5cbf862f644d82a8a934c278bb7415~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1705675968&x-signature=G5W65u7Q1rVVV6TzsPrXZTX6ias%3D)
+
+核心特点
+- 实时性：OpenPose 设计用于实时处理，可以在接近实时的时间内完成关键点检测。
+- 多人检测：OpenPose 能够在单张图像中同时检测多个人的姿态，这对于多人交互场景尤为重要。
+- 关键点检测：它可以识别和定位人体、面部、手部和脚部的关键点，总共超过 135 个关键点。
+- 灵活性：OpenPose 支持多种编程语言和框架，包括 Python、C++ 和 MATLAB，以及 TensorFlow、Caffe 和 PyTorch 等。
+- 开源：OpenPose 是开源的，这意味着任何人都可以自由使用和修改代码，以适应不同的应用需求。
+
+应用场景
+- 增强现实和虚拟现实：在 AR/VR 应用中，OpenPose 可以用来跟踪用户的身体和手部动作，提供更自然的交互体验。
+- 人机交互：OpenPose 可以用于智能助手和机器人，帮助它们更好地理解和响应用户的需求。
+- 体育分析：在体育比赛中，OpenPose 可以用来分析运动员的姿态和动作，提供战术和训练建议。
+- 安全监控：在安全监控领域，OpenPose 可以用来识别异常行为或特定姿态，提高监控系统的有效性。
+
 
 ## 基于tensorflow.js的实时检测Demo
 
