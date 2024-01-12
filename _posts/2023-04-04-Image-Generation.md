@@ -788,6 +788,13 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 
 虽然本文使用上述八种条件进行了实验，但用户可以使用 Composer 自由定制条件。
 
+#### PIXART-δ
+
+【2024-1-12】[PIXART-δ：具有潜在一致性模型的快速可控图像生成](https://www.toutiao.com/article/7323030365239706127)
+- [PIXART-δ: Fast and Controllable Image Generation with Latent Consistency Models](https://arxiv.org/pdf/2401.05252.pdf)
+
+将Latent Consistency Model (LCM)和ControlNet集成到高级PIXART-α模型中的文本到图像合成框架。PIXART-α因其能够通过非常高效的训练过程生成1024px分辨率的高质量图像而受到认可。将LCM集成到PIXART-δ中，可以显著加速推理速度，使生产高质量图像只需要2-4步。值得注意的是，PIXART-δ在生成1024×1024像素的图像时只需要0.5秒，比PIXART-α快了7倍。此外，PIXART-δ被设计为在32GB V100 GPU上能够进行高效的训练，并在一天内完成。凭借其8位推理能力（来自Von Platen等人，2023），PIXART-δ可以在8GB GPU内存限制下合成1024px的图像，大大提高了其可用性和可访问性。此外，通过结合ControlNet-like模块，可以对文本到图像的扩散模型进行精细控制。我们引入了一种专门为Transformer设计的ControlNet-Transformer架构，实现了明确的可控制性和高质量的图像生成。作为最先进的开源图像生成模型之一，PIXART-δ为Stable Diffusion系列模型提供了一个有前途的替代方案，为文本到图像的合成做出了重大贡献。
+
 #### 图片编辑
 
 ##### AnyText
@@ -798,6 +805,14 @@ AnyText 开源了代码和数据集。
 - 代码 [AnyText](https://github.com/tyxsspa/AnyText)
 - [在线体验地址](https://modelscope.cn/studios/damo/studio_anytext/summary)。
 - 论文 [ANYTEXT: MULTILINGUAL VISUAL TEXT GENERATION AND EDITING](https://arxiv.org/pdf/2311.03054.pdf)
+
+
+##### outfit-anyone
+
+用户能够在不真实试穿衣物的情况下，尝试不同的时尚款式上传衣服即可试穿。服装电商要好好用上后，让顾客在线体验穿衣搭配
+- [outfit-anyone](https://humanaigc.github.io/outfit-anyone/)
+
+
 
 
 ## AI 作画
