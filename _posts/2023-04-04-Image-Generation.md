@@ -810,10 +810,9 @@ AnyText 开源了代码和数据集。
 ##### outfit-anyone
 
 用户能够在不真实试穿衣物的情况下，尝试不同的时尚款式上传衣服即可试穿。服装电商要好好用上后，让顾客在线体验穿衣搭配
-- [outfit-anyone](https://humanaigc.github.io/outfit-anyone/)
-
-
-
+- [outfit-anyone demo](https://humanaigc.github.io/outfit-anyone/), [github](https://github.com/HumanAIGC/OutfitAnyone)
+- paper [Outfit Anyone: Ultra-high quality virtual try-on for Any Clothing and Any Person](https://humanaigc.github.io/outfit-anyone/)
+- ![](https://humanaigc.github.io/outfit-anyone/content/teaser/t3.gif)
 
 ## AI 作画
 
