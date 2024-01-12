@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -357,10 +357,34 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
   - 打造垂直领域模型的微服务网络，内置包括图像分割、语音识别等众多专业模型，便于企业客户随时调用、自由组合。
 
 
-#### coze
+#### 字节 大模型产品
 
-字节 [coze](https://www.coze.com/) 
+##### 豆包/Cici
 
+字节 
+- 2023年下半年先后发布APP: 豆包（Grace）、Cici，问答、智能创作、聊天等。
+- [coze](https://www.coze.com/) 
+
+##### Coze
+
+[Coze](https://www.coze.com/) 
+
+##### ChitChop/小悟空
+
+【2023-12-1】发布基于大模型的 App ChitChop
+- 国内：[小悟空](https://wukong.com/tool)
+- 国外：[ChitChop Web](https://www.chitchop.com/)
+- APP见Google、Apple Store
+
+一个私人AI助理，包括AI创作、AI绘画、娱乐、AI学习、工作、生活等6大使用场景。
+- ChitChop由POLIGON开发和运营，而字节海外的社交产品`Helo`、日本漫画App 「FizzoToon」也由同一家公司运营
+- POLIGON公司是字节海外的重要运营公司之一，于2020年在新加坡注册成立，主营业务是软件和应用程序的开发，其次是电脑游戏的开发。ChitChop是今年11月最新推出的App
+- ChitChop宣称可以为用户提供多达200多个智能机器人服务，因为6大场景中每个场景包含10多个人工智能工具
+
+
+比起豆包，ChitChop的应用场景和功能更加丰富，且进一步细分。
+- AI创作，可以实现文章生成、文章续写、创作灵感、文章润色、爆款标题、视频脚本、微型故事、写演讲稿、写公关稿等功能。
+- AI学习，可以进行作文提升、英语陪练、学习小语种、雅思写作、AI备课、论文生成、论文大纲、论文润色、万能翻译等。
 
 #### gptbots
 
