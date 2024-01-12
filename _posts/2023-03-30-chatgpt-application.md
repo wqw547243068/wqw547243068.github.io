@@ -369,6 +369,11 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 
 [Coze](https://www.coze.com/) 
 
+
+##### LLM应用平台
+
+搜索的[LLM应用平台](https://gpt.bytedance.net/gpt_agent/square)
+
 ##### ChitChop/小悟空
 
 【2023-12-1】发布基于大模型的 App ChitChop
