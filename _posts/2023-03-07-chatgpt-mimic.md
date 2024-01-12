@@ -2593,6 +2593,11 @@ Chinese-LLaMA-Alpaca是在通用中文语料上训练了基于 sentencepiece 的
 
 详见：[中文LLaMA&Alpaca大语言模型词表扩充+预训练+指令精调](https://mp.weixin.qq.com/s/-Zei1OsM45BHc41WNGmZQQ)
 
+
+#### 端侧LLaMA
+
+端侧小模型见站内[专题](llm_end)
+
 ### 斯坦福 Aplaca（基于LLaMA）
 
 Meta开源了LLaMA系列模型，包含了参数量为7B/13B/33B/65B的不同模型，然而，原模型的效果较差（如生成的结果文不对题、以及无法自然地结束生成等）。
