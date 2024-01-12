@@ -1355,6 +1355,8 @@ cd YiVal
 
 知名AI画图模型工具Midjourney，Stable Diffusion，使用时，同样需要像文本对话提示语一样，不断试探、调试。
 
+#### Prompt要点
+
 Prompt基本格式
 - 提问引导：生成什么样的图
 - 示例：要描述的词汇特点，结合反向提示词更好
@@ -1397,6 +1399,74 @@ img2img（图生图）,in/outpainting（扩展/重绘)
 - lmg2lmg 低强度变体
 - 重绘
 - 扩展/裁剪
+
+
+#### Prompt关键词
+
+[AI绘画 Midjourney关键词](https://zhuanlan.zhihu.com/p/677049475?utm_psn=1729254555429396480)
+
+一、 Midjourney关键词结构
+
+提示词的结构公式
+- **公式建议**：画面内容+风格描述+修图后缀+属性描述
+- **画面内容：**主体描述，主要表达我们想要画什么样的画面，比如人还是环境，在干什么，环境怎么样等等
+- **风格描述：**主要表达想要什么样的风格，是赛博朋克、还是国风、漫画、手绘等等
+- **修图后缀：**描述灯光、画面视角等等
+- **属性描述：**图像基础词汇，描述想要的画面尺寸、画面质量等
+
+![](https://pic2.zhimg.com/v2-eb7be0f51538324a1ccd97bbe57c9425_b.jpg)
+
+使用Midjourney生成图像时，输入正确的关键词排序，可以更好的产出想要的图片。
+
+关键词重要，结构同样很重要！
+- ![](https://pic2.zhimg.com/80/v2-b3664cbcfd864bf1a6a6ec82a7fb9365_1440w.webp)
+
+提示词：
+> Self-luminous surrealism, Chinese beauty model, blue pink transparent liquid,8K, real face details, ultra-high-definition surreal photography photos, ultra-high-definition physical details,contemporary fairy tales Style, star troupe, salon system --s 1000 --niji 5 --ar 3:
+
+二、 **风格篇关键词合集**
+
+
+1、 宫崎骏风格（Miyazaki Hayao style）
+- ![](https://pic3.zhimg.com/v2-91e014c0a3220e61e177290aed645486_b.jpg)
+
+提示词：
+> Chinese villages, villas, entrances are small bridges full of grass, fish in the water, summer, sunny valleys, good light, comics, moving, Miyazaki Hayao style
+
+2、 迪士尼风（Disney-style）
+
+![](https://pic2.zhimg.com/v2-fe889954a012023e4f6ed1cecd8ff6a1_b.jpg)
+
+提示词：
+> Disney style, 3d, camping, clear nights, stars blinking in the sky, two little boys singing in front of the tent, singing and singing. a lake. photorealistic, hyper detailed, cinematic, 35mm shot, detailed, moody
+
+3、 水墨风（Ink Wash Painting Style）
+
+![](https://pic3.zhimg.com/80/v2-24959a4dd0fd0e26a76e9895bb67b9ca_1440w.webp)
+
+提示词：
+> Ink style, green water, good weather, bright flowers, birds flying, beautiful landscapes, soft lights. Highly detailed, ultra realistic
+
+4、 电影风格（Hollywood-style）
+
+![](https://pic4.zhimg.com/80/v2-176145140863a5804382b7a7ca3b0537_1440w.webp)
+
+提示词：
+> Hollywood-style, two girls wearing beautiful dresses, having fun in the castle, Lolita style, high quality, moving, high detail, soft and light.
+
+5、 水彩风格（watercolor style）
+
+![](https://pic4.zhimg.com/80/v2-b8154c6d210a826737369ed4a51d4cdb_1440w.webp)
+
+提示词：
+> Watercolor style, A couple in love, Riding happily, Romantic sunsets, Laughter with the wind, Of high quality
+
+6、 油画风格（Oil-painting style）
+
+![](https://pic3.zhimg.com/80/v2-034efcd0a0b1271dd804693c956c23ce_1440w.webp)
+
+提示词：
+> Oil-painting style，A girl with spirits reading books, deep exploration of the soul world, soft lights.
 
 
 ### StableDiffusion 提示词指南
