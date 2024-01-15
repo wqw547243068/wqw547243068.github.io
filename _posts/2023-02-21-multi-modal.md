@@ -997,5 +997,40 @@ Gemini模型经过海量数据训练，可以很好识别和理解文本、图�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JPwU1FNhMOA?si=85W6sLiefLH3cOfi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+
+#### 字节&复旦 LEGO -- 视频解读
+
+【2024-1-12】[精确指出特定事件发生时间!字节&复旦多模态大模型解读视频太香了](https://www.toutiao.com/article/7323810989189726755)
+
+字节&复旦大学多模态理解大模型来了，可以精确定位到视频中特定事件的发生时间。
+- LEGO模型全都读得懂，并毫不犹豫给出正确答案
+- 一个语言增强的多模态grounding模型，多模态LLM跨多种模态进行细粒度理解的能力，此前业内的成果主要强调全局信息。
+- 论文 [LEGO:Language Enhanced Multi-modal Grounding Model](https://arxiv.org/pdf/2401.06071.pdf)
+- [Demo](https://lzw-lzw.github.io/LEGO.github.io/)
+
+示例
+- 狗子转身看镜头时的时间戳是多少？
+- 什么时候用爪子推开滑板？
+- 宝宝什么时候推起眼镜、舒展了一下身体？又是什么时候翻的书？
+
+
+数据集转换（Dataset Conversion）：构建模态对齐和细粒度对齐的基础多模态数据集
+- 图像模态，作者利用LLaVA-pretrain595K数据集进行模态对齐，细粒度对齐则使用特定数据集如RefCOCO。
+- 视频模态用Valley-Pretrain-703K进行模态对齐，Charades-STA数据集用于细粒度对齐。
+
+指令调整数据集生成（Instruction-tuning Dataset Generation）。
+- 目的是让模型更好地理解和遵循人类指令。
+- 选择了公开可用的数据集（Flickr30K Entities、VCR、DiDeMo等）的子集进行人工注释，以创建上下文示例。它用于指导GPT-3.5在生成指令调整数据集时遵循类似的模式。
+- 随后，特定任务的系统提示和随机选择的示例被输入到GPT-3.5中，以生成单轮或多轮对话。最后，进行数据过滤以确保数据集质量。
+
+LEGO模型架构：
+- 每个模态的输入通过独立的编码器进行处理，提取特征，然后使用适配器将这些特征映射到LLM的嵌入空间。
+- 视频和图像模式的两个示例，蓝色方框表示视频作为输入，而黄色方框表示图像作为输入。
+- 由于其基于模块化设计和适配器的架构，LEGO可以无缝集成新的编码器，处理额外的模态，如点云和语音，主打一个好扩展。
+- 最后，LEGO使用Vicuna1.5-7B作为基础语言模型，训练由三个阶段完成：多模态预训练，细粒度对齐调整和跨模式指令调整。
+- ![](https://lzw-lzw.github.io/LEGO.github.io/images/architecture.png)
+
+LEGO的能力不仅在于视频定位，对图片、音频等多模态任务都很在行。
+
 # 结束
 
