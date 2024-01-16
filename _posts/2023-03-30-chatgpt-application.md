@@ -529,9 +529,9 @@ ExtractGPT
 【2023-10-22】[为标注员的LLM（五）：3种标注范式以及思考](https://zhuanlan.zhihu.com/p/662285150?utm_psn=1699572009640701952)
 
 标注的本质以及LLM的作用
-- 标注 = 常识 + 标注规则。
-- 常识，对应先验知识。有了常识能力，可以在仅提供类别名称、而未提供标注规则的情况下进行标注。这也是零样本NLP模型（如Siamese-uniNLU[8]、paddleNLP[9]）的核心。
-- 标注规则，核心在于帮助标注员明确任务、区分边界。需要做的工作包括：任务定义、类别定义、边界处理逻辑等。
+- `标注` = `常识` + `标注规则`
+- 常识对应先验知识。有了常识能力，可以在仅提供类别名称、而未提供标注规则的情况下进行标注。这也是零样本NLP模型（如Siamese-uniNLU[8]、paddleNLP[9]）的核心。
+- 标注规则帮助标注员明确任务、区分边界。需要做的工作包括：任务定义、类别定义、边界处理逻辑等。
 
 
 而将LLM引入标注，意味着什么呢？
@@ -574,7 +574,7 @@ ExtractGPT
 
 ![](https://pic2.zhimg.com/80/v2-c688bca456452bb24fecc785273ec801_1440w.webp)
 
-##### ChatGPT超过人工标注
+##### ChatGPT 超过人工标注
 
 【2023-3-29】ChatGPT超过人工标注
 - [ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks](https://arxiv.org/abs/2303.15056?fbclid=IwAR2j7nL9y2pvxkHHkbZtbWbfEGuyaqiQ6NYVO39WkpUK5NGkBGZLjiMx0ho)
@@ -597,8 +597,18 @@ ChatGPT和MTurk分别将推文以“相关性、立场、主题、政策、实�
 
 “生成训练数据需要人工”的说法已经成为过去式
 
+##### ChatGPT NER Demo
+
 ChatGPT 用于 人工标注的 Web系统：[Weak Labeling Tool using ChatGPT](https://github.com/ainbr/chatgpt-weak-labeler-web-ui), [代码](https://github.com/ainbr/chatgpt-weak-labeler-web-ui/blob/master/app.py)
 - ![](https://github.com/ainbr/chatgpt-weak-labeler-web-ui/raw/master/misc/screenshot1.png)
+
+```sh
+git clone https://github.com/ainbr/chatgpt-weak-labeler-webui.git
+pip install -r requirements.txt
+gradio app.py
+```
+
+填入OpenAI Key即可启动NER任务
 
 【2023-6-18】[无需人力标注！悉尼大学华人团队提出"GPT自监督标注范式](https://www.toutiao.com/article/7245196537557549623)
 
@@ -635,8 +645,16 @@ ChatGPT 用于 人工标注的 Web系统：[Weak Labeling Tool using ChatGPT](ht
   - 论文: [RLAIF:Scaling Reinforcement Learning from Human Feedback with AI Feedback]()
 - Anthropic采用了Constitutional AI来处理数据，也获得了很好的对齐效果
   - 论文: [Constitutional Al: Harmlessness from AI Feeedback]()
-- 初创公司refuel，也上线了一个AI标注数据的开源处理工具：`Autolabel`。用AI标注数据，效率最高提升100倍. [introducing-autolabel](https://www.refuel.ai/blog-posts/introducing-autolabel)
-  - 按照使用成本最高的GPT-4来算，采用`Autolabel`标注的成本只有使用人工标注的1/7，而如果使用其他更便宜的模型，成本还能进一步降低
+
+初创公司refuel，也上线了一个AI标注数据的开源处理工具：`Autolabel`。用AI标注数据，效率最高提升100倍. [introducing-autolabel](https://www.refuel.ai/blog-posts/introducing-autolabel)
+- 按照使用成本最高的GPT-4来算，采用`Autolabel`标注的成本只有使用人工标注的1/7，而如果使用其他更便宜的模型，成本还能进一步降低
+
+![](https://accesspath-com-1252517293.cos.ap-nanjing.myqcloud.com/2023/09/8619824325141295306.png?imageMogr2/format/webp)
+
+要点
+- 1、开源工具Autolabel能用LLM代替人工高效标注数据，效率提升100倍，成本仅1/7。
+- 2、Autolabel支持主流LLM，可快速标注NLP数据集，准确率高达88.4%，超过人工标注。
+- 3、Autolabel可估计标注置信度，不同LLM可平衡成本与质量，大幅降低标注门槛。
 
 Autolabel安装
 
