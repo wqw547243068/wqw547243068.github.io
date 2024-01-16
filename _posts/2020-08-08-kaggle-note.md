@@ -3,7 +3,7 @@ layout: post
 title:  "算法竞赛知识点汇总-Algo-Competition-Note"
 date:   2020-08-08 11:27:00
 categories: 机器学习 数据挖掘
-tags: Kaggle XGBoot 天池 KDD 特征工程 oov
+tags: Kaggle XGBoot 天池 KDD 特征工程 oov 大模型
 author : 鹤啸九天
 excerpt: 机器学习类竞赛知识点总结
 mathjax: true
@@ -916,6 +916,32 @@ Callback
     - ▲ LIBFFM: http://www.csie.ntu.edu.tw/~r01922136/libffm/
     - ▲ XGBoost: https://github.com/dmlc/xgboost
 
+
+
+## 智能体
+
+
+### 天池2023博金大模型挑战赛
+
+【2024-1-15】[天池2023博金大模型挑战赛总结](https://mp.weixin.qq.com/s/p7yEvJ06nitd9MBhxDtCgA)
+- 赛题类型：知识问答、RAG、NL2SQL
+- 赛题任务：构建通用知识问答方案，可以进行文本理解和数据查询
+- [地址](https://tianchi.aliyun.com/competition/entrance/532164/information)
+
+一个智能体能根据用户需求进行**意图识别**和**决策**。本次大赛的赛题虽为单一，但融合了**数据查询**与**文本理解**两大任务，充分体现了Agent核心思想：根据不确定输入，判断用户意图，并调用相应服务或功能生成答案。
+
+以“通义千问金融大模型”或“通义千问7B模型”(不限制pretrain和chat)作为基础大模型，可以结合多个模型，共同创建一个问答系统。可以采用Prompt Engineering方法，也可以使用外部数据对模型进行微调。
+
+数据查询题挑战
+- 任务目标：使用通义千问金融大模型或通义千问7B模型，根据用户问题进行高准确率的查询。
+- 技术难题：处理多表之间的复杂关联，如 理解基金股票持仓明细与A股日行情表的连接，并确保查询的高准确性。
+
+文本理解题挑战
+- 任务目标：对长文本进行细致检索与解读，高效提取关键信息。
+- 技术难题：处理长文本的复杂结构，确保信息完整性。对超长文本，选手需合理分块，并从文档分块中准确提炼答案。
+
+优胜方案总结
+- [FinQwen](https://github.com/Tongyi-EconML/FinQwen)
 
 # 结束
 
