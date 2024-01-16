@@ -692,6 +692,9 @@ Generalizable SAM（GenSAM）模型旨在摆脱像 SAM 这类提示分割方法�
 
 #### 数据分析
 
+
+##### Pandas AI
+
 【2023-5-6】[Pandas AI](https://github.com/gventuri/pandas-ai)
 - 将 Pandas 和 AI 结合，更方便地分析数据。
 
@@ -735,6 +738,54 @@ Name: country, dtype: object
 
 AI 根据需求，画一了各个国家的 GDP 条形图。
 - [img](https://mmbiz.qpic.cn/mmbiz_png/v1JN0W4OpXgoevdlbWGnibC449Dicxr2e0tQZtQPf571xu6T4cRcm2VBoIyibxoicp8iaoZoUEicxBwDN7wQNdEK3ZOA/640?wx_fmt=png&tp=wxpic&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+##### NL2SQL
+
+【2024-1-15】[vanna-ai](https://github.com/vanna-ai/vanna)，[文档](https://vanna.ai/docs/)
+
+
+vanna-ai 工作原理
+- Train a RAG "model" on your data.
+  - 准备数据：DLL, Document, SQL语句
+  - 生成 embedding
+  - 存储embedding和metadata
+- Ask questions.
+  - question → 生产 embedding → 找相关的数据 → 构建 prompt,发送给LLM → SQL语句
+
+![](https://vanna.ai/blog/img/how-it-works.png)
+
+```py
+# pip install vanna
+import vanna as vn
+# --------- 训练 -------
+# Train with DDL Statements
+vn.train(ddl="""
+    CREATE TABLE IF NOT EXISTS my-table (
+        id INT PRIMARY KEY,
+        name VARCHAR(100),
+        age INT
+    )
+""")
+# Train with Documentation
+vn.train(documentation="Our business defines XYZ as ...")
+# Train with SQL
+vn.train(sql="SELECT name, age FROM my-table WHERE name = 'John Doe'")
+# --------- Asking questions -----------
+vn.ask("What are the top 10 customers by sales?")
+```
+
+返回
+
+```sql
+SELECT c.c_name as customer_name,
+        sum(l.l_extendedprice * (1 - l.l_discount)) as total_sales
+FROM   snowflake_sample_data.tpch_sf1.lineitem l join snowflake_sample_data.tpch_sf1.orders o
+        ON l.l_orderkey = o.o_orderkey join snowflake_sample_data.tpch_sf1.customer c
+        ON o.o_custkey = c.c_custkey
+GROUP BY customer_name
+ORDER BY total_sales desc limit 10;
+```
 
 ### 内容管理/营销
 
