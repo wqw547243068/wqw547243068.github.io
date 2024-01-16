@@ -3,7 +3,7 @@ layout: post
 title:  提示工程指南及技巧
 date:   2023-03-01 16:52:00
 categories: 大模型
-tags: ChatGPT prompt 大模型
+tags: ChatGPT prompt 大模型 贾扬清
 excerpt: 如何使用提示工程调戏ChatGPT、Mid-Journey？
 mathjax: true
 permalink: /pe

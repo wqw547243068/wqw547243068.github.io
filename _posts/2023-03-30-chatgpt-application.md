@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -194,6 +194,12 @@ ChatGPT在办公软件、社交文娱、营销广告、家庭助理四大方向�
 - ![](https://pic3.zhimg.com/80/v2-bdd24bc6e1db0c18c5d8f616dcc578be_1440w.webp)
 - [全面接入！ChatGPT杀进15个商业应用，让AI替你打工](https://zhuanlan.zhihu.com/p/628096018)
 
+2023 年是 AI 跳变式发展一年：
+- ChatGPT 成为史上最快突破 1 亿用户的超级应用；
+- Perplexity 用“问答引擎”撬开了 Google 在内容搜索上的强势；
+- GPT-4 的发布定义了 LLM 军备竞赛的决赛门槛是什么；
+- Runway、Pika 以及以及 VideoPoet 为模型带来更多形态智能能力；
+- Llama 2 和 Mistral-7B 是开源势力带给社区的惊喜；
 
 ### 受益方
 
@@ -1066,6 +1072,11 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 - 更快速的代码搜索体验
 
 
+#### Lepton Search
+
+【2024-1-14】贾扬清内侧版 [Lepton Search](https://search.lepton.run/) 
+
+类似季逸超的 [Peak Labs](https://www.peak-labs.com/en/) 推出的 [Magi](https://magi.com/)，暂停服务
 
 ### 排序
 
