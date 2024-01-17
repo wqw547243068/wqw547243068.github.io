@@ -424,9 +424,16 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 - AI创作，可以实现文章生成、文章续写、创作灵感、文章润色、爆款标题、视频脚本、微型故事、写演讲稿、写公关稿等功能。
 - AI学习，可以进行作文提升、英语陪练、学习小语种、雅思写作、AI备课、论文生成、论文大纲、论文润色、万能翻译等。
 
+
 #### gptbots
 
 【2023-12-7】对话平台 [gptbots](https://www.gptbots.ai/)， 类似字节 [coze](https://www.coze.com/) 
+
+#### Gnomic
+
+【2024-1-16】[Gnomic](https://www.gnomic.cn/agentCenter/index) 智能体平台
+- 无需魔法，随时随地免费使用GPT-4，并打造个性化GPTs智能体
+- 集成 GPT-4, Gemini
 
 
 
