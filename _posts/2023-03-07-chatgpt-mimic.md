@@ -34,6 +34,13 @@ There are three important steps for a ChatGPT-like LLM:
 
 ## 大模型行业
 
+谷歌、Meta等公司不断发布百亿到千亿规模的大型语言模型，例如
+- `Gopher`（2021年）、`Chinchilla`（2022年）、`PaLM`（2022年）、`Claude`（2022年）等等
+
+但是这些模型都不开源，因此开源大语言模型也开始受到关注，比如
+- META的`OPT`（2022年）、`BLOOM`（2022年）、`LLaMA`（2023年）。
+
+智谱AI则选择在2022年开源了自己的千亿基座模型 `GLM-130B`
 
 ### LLM 之争
 
