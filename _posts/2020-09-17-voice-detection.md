@@ -2234,7 +2234,9 @@ audio_array = generate_audio(text_prompt)
 ```
 
 
-### MockingBird 语音克隆
+###  语音克隆
+
+#### MockingBird
 
 【2023-4-9】[实时中文语音克隆，声音模仿如此简单](https://www.toutiao.com/article/7217818267170193960)
 - 开源项目 `MockingBird`，`拟声鸟` 能够使用 5 秒的真实语音录音，即可通过机器学习的方式，对声音进行克隆，从而实现按相同声音说出任意的文本。
@@ -2246,6 +2248,12 @@ audio_array = generate_audio(text_prompt)
 - MockingBird 使用 PyTorch 开发，能够在 Windows 和 Linux 系统中运行，MockingBird 现在是可以开箱即用
 - MockingBird 还提供了一个可供使用的 Web 页面，运行命令 python web.py 即可查看。
 
+#### GPT-SoVITS 开源
+
+【2024-1-16】[GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS)：适用于中文的语音克隆，据说目前中文最佳，支持通过5秒音频克隆、1分钟音频克隆，也支持通过完整训练来克隆。
+
+A Powerful Few-shot Voice Conversion and Text-to-Speech WebUI
+- [Demo视频](https://www.bilibili.com/video/BV12g4y1m7Uw/)
 
 ### MMS（META）
 
