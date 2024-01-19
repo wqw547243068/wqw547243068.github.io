@@ -823,6 +823,69 @@ E5-mistral-7b-instruct利用LLM产生了接近**100种**语言的高质量且多
 - 弱监督对比学习预训练是主流text embedding模型成功的一个关键因素，研究人员对比弱监督对比学习预训练对于纯encoder的XLM跟纯decoder的Mistral-7b的影响，发现不做预训练对于Mistral-7b几乎没有影响，这可能是因为自回归预训练任务已经让纯decoder的Mistral-7b具备获取高质量文本表征的能力，所以只要经过finetune就可以称为强大的text embedding模型了。
 - ![](https://pic2.zhimg.com/80/v2-a46537a220eebe5d1fc6f37eee218f1d_1440w.webp)
 
+#### E5-mistral-7b-instruct 代码
+
+[E5-mistral-7b-instruct](https://huggingface.co/intfloat/e5-mistral-7b-instruct) 代码
+
+Below is an example to encode queries and passages from the MS-MARCO passage ranking dataset.
+
+```py
+import torch
+import torch.nn.functional as F
+
+from torch import Tensor
+from transformers import AutoTokenizer, AutoModel
+
+
+def last_token_pool(last_hidden_states: Tensor,
+                 attention_mask: Tensor) -> Tensor:
+    left_padding = (attention_mask[:, -1].sum() == attention_mask.shape[0])
+    if left_padding:
+        return last_hidden_states[:, -1]
+    else:
+        sequence_lengths = attention_mask.sum(dim=1) - 1
+        batch_size = last_hidden_states.shape[0]
+        return last_hidden_states[torch.arange(batch_size, device=last_hidden_states.device), sequence_lengths]
+
+
+def get_detailed_instruct(task_description: str, query: str) -> str:
+    return f'Instruct: {task_description}\nQuery: {query}'
+
+
+# Each query must come with a one-sentence instruction that describes the task
+task = 'Given a web search query, retrieve relevant passages that answer the query'
+queries = [
+    get_detailed_instruct(task, 'how much protein should a female eat'),
+    get_detailed_instruct(task, 'summit define')
+]
+# No need to add instruction for retrieval documents
+documents = [
+    "As a general guideline, the CDC's average requirement of protein for women ages 19 to 70 is 46 grams per day. But, as you can see from this chart, you'll need to increase that if you're expecting or training for a marathon. Check out the chart below to see how much protein you should be eating each day.",
+    "Definition of summit for English Language Learners. : 1  the highest point of a mountain : the top of a mountain. : 2  the highest level. : 3  a meeting or series of meetings between the leaders of two or more governments."
+]
+input_texts = queries + documents
+
+tokenizer = AutoTokenizer.from_pretrained('intfloat/e5-mistral-7b-instruct')
+model = AutoModel.from_pretrained('intfloat/e5-mistral-7b-instruct')
+
+max_length = 4096
+# Tokenize the input texts
+batch_dict = tokenizer(input_texts, max_length=max_length - 1, return_attention_mask=False, padding=False, truncation=True)
+# append eos_token_id to every input_ids
+batch_dict['input_ids'] = [input_ids + [tokenizer.eos_token_id] for input_ids in batch_dict['input_ids']]
+batch_dict = tokenizer.pad(batch_dict, padding=True, return_attention_mask=True, return_tensors='pt')
+
+outputs = model(**batch_dict)
+embeddings = last_token_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
+
+# normalize embeddings
+embeddings = F.normalize(embeddings, p=2, dim=1)
+scores = (embeddings[:2] @ embeddings[2:].T) * 100
+print(scores.tolist())
+
+```
+
+
 ## 向量评估
 
 ChatGPT记忆模块搜索优化——文本语义向量相似M3E模型微调实战
