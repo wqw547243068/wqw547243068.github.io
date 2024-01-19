@@ -174,6 +174,8 @@ Embedding向量化实验
 
 top3的bge，m3e和ada002比差距不大了，top5基本就持平
 
+Embedding榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+
 ### LLM Embedding
 
 【2023-8-1】[使用LLMs进行句子嵌入不如直接用BERT](https://mp.weixin.qq.com/s/mdC8EJ2Ajs8a_DCaxAET3Q)
@@ -768,16 +770,47 @@ corrcoef, accuracy = angle.evaluate(test_ds, device=angle.device)
 print('corrcoef:', corrcoef)
 ```
 
-### E5-mistral-7b-instruct
+### 【2024-1-7】E5-mistral-7b-instruct 新sota
 
 【2024-1-7】[微软E5-mistral-7b-instruct: 站在LLM肩膀上的text embedding](https://zhuanlan.zhihu.com/p/676366430)
 - 论文 [Improving Text Embeddings with Large Language Models](https://arxiv.org/pdf/2401.00368.pdf)
 
-微软发布的text embedding模型E5-mistral-7b-instruct登顶MTEB，并且甩出了第二名一段明显距离。
+微软发布的text embedding模型E5-mistral-7b-instruct登顶[MTEB](https://huggingface.co/spaces/mteb/leaderboard)，并且甩出了第二名一段明显距离。
+- 首次采用LLM来做向量化模型
+- 用LLM来生成向量化任务的人造数据，然后用`对比学习`的loss，微调`mistral-7b`，仅仅使用人造数据，达到和其他模型可比的结果，当使用人造数据和开源的标注数据微调时，达到了MTEB的**sota**，比第二名高了2%。
+- 生成式大语言模型和向量化任务是一枚硬币的正反面。都要求模型对自然语言有深刻的理解。（从而可以更好的表征句子）。而生成式大语言模型，采用**自回归**的预训练方式，在更多的数据上微调过，可以更好的表示句子。只需要少量的微调，就可以得到一个好的向量化模型。
+
+向量化任务分为两种：**不对称**任务, **对称**任务。
+1. 不对称任务：query和doc语义相关，但不是彼此另外的释义。（不仅仅是表达方式不同）
+  - 根据长度，又划分了四个细粒度：短-长；短-短；长-短；长-长匹配。
+  - 为每个细粒度，设计了两阶段的prompt模板。
+    1. 提供几个候选，让大模头脑风暴一个类似候选任务的池子。（书籍搜索，科学文档搜索）
+    2. 根据具体的任务定义，生成数据。
+  - 不对称任务，直接让LLM一个阶段生成数据的话，没有两个阶段做的多样性好。
+2. 对称任务：query和doc语义相关，不过表达方式不同。
+  - 单语匹配(STS)和多语匹配。
+  - 两个定义了不同的prompt模板，因为任务简单，直接一个阶段做的。
+
+效果为什么好？[参考](https://www.zhihu.com/question/637789621/answer/3361687482?utm_psn=1731097826090815489)
+- E5-mistral-7b-instruct在query前面加一个细粒度的任务描述，利用LLM在训练阶段的能力，为句子得到更好的向量表示，之前确实模型做的没有这么细粒度。而且同一个query，任务不同，可以生成不同的向量。这个向量针对具体任务，有一定的辨识度。
+  - 针对不同的任务，给query侧加上任务定义的指令。doc侧不加。
+- 不管是LLM生成的人造数据还是开源数据集，E5-mistral-7b-instruct都为正例挖掘了难负例。对于LLM生成的人造数据，让大模型自己生成难负例。对于开源数据集，用e5-base去挖掘了top100的难负例。这相当于让另外一个模型，去构造难负例，增加学习难度。相当于让encoder模型去为decoder构造了难负例。
+- 模型扩大了10倍，比MTEB榜上的encoder模型，向量维度也是4096，如果encode模型这么大了，会不会有更好的效果呢？
 
 E5-mistral-7b-instruct利用LLM产生了接近**100种**语言的高质量且多样化的训练数据，利用**纯decoder**的LLM在合成数据上进一步finetune。
 
 仅依靠合成数据训练得到的text embedding可以媲美目前主流的sota模型，而混合合成数据跟真实标注数据训练完成的text embedding模型在BEIR跟MTEB上都达到新的sota效果。
+
+**给query加指令**：
+
+针对不同的任务，给query侧加上任务定义的指令。doc侧不加。（类似给每个任务细粒度的任务定义。）
+1. 生成的数据，就直接用大模型给的。
+2. 其他已有的数据集，就人工构造一个任务定义，加上。
+
+模型训练：
+- 对于query，输入指令+query+EOS；对于doc，输入doc+EOS。
+- 输入到llm中，拿EOS token的向量，作为整个句子的表示。
+- 然后用典型的对比学习，infoNCE loss。batch内随机负例+难负例。
 
 数据集
 - 借助GPT3.5-Turbo，GPT4去生成训练数据，构建多种语言跟任务类型的数据来增强训练数据的多样性。从大类来看可以将合成数据分为两大类，即非对称任务跟对称任务，最终构建得到超过15万个task definition的包括93种语言的50万个训练样本，每个样本的格式为（task definition, user query, positive document, hard negative document）。
