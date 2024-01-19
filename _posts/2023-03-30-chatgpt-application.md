@@ -3046,6 +3046,17 @@ Mobile ALOHA并不是一个机器人，而是一个操作系统。借助这个�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mnLVbwxSdNM?si=hc34Mj7XEaKwuCIZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
+#### RoboFlamingo
+
+【2024-1-17】[机器人领域首个开源视觉-语言操作大模型，RoboFlamingo激发开源VLMs更大潜能](https://m.sohu.com/a/752424819_129720)
+
+ByteDance Research 基于开源的多模态语言视觉大模型 OpenFlamingo 开发了开源、易用的 RoboFlamingo 机器人操作模型，只用单机就可以训练。使用简单、少量的微调就可以把 VLM 变成 Robotics VLM，从而适用于语言交互的机器人操作任务。
+
+OpenFlamingo 在机器人操作数据集 CALVIN 上进行了验证，实验结果表明，RoboFlamingo 只利用了 1% 的带语言标注的数据即在一系列机器人操作任务上取得了 SOTA 的性能。
+- [项目主页](https://roboflamingo.github.io)
+- [代码地址](https://github.com/RoboFlamingo/RoboFlamingo)
+- [论文地址](https://arxiv.org/abs/2311.01378)
+
 ### 可穿戴
 
 蠢萌可爱的**机器狗**、拿下千万出货量的**VR头显**、还是轻便小巧的**AR眼镜**...谁将成为下一个黄金时代的“智能手机”？

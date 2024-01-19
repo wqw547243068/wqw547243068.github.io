@@ -986,7 +986,7 @@ NExT-GPT 并不是**首个**实现任意模态输入到任意模态输出功能�
 相比之下，`NExT-GPT`却良好地解决了上述的现有工作的问题——既保证具有较好的学习成效，又全面降低、控制学习成本。
 
 
-#### 【谷歌】Gemini
+#### Gemini 谷歌
 
 【2023-12-6】Google 正式推出了原生多模态的大型语言模型Gemini，可以同时支持文字、图片和声音的输入。
 - [gemini](https://deepmind.google/technologies/gemini/#introduction)
@@ -998,7 +998,7 @@ Gemini模型经过海量数据训练，可以很好识别和理解文本、图�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JPwU1FNhMOA?si=85W6sLiefLH3cOfi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-#### 字节&复旦 LEGO -- 视频解读
+####  LEGO -- 字节&复旦，视频解读
 
 【2024-1-12】[精确指出特定事件发生时间!字节&复旦多模态大模型解读视频太香了](https://www.toutiao.com/article/7323810989189726755)
 
@@ -1031,6 +1031,19 @@ LEGO模型架构：
 - ![](https://lzw-lzw.github.io/LEGO.github.io/images/architecture.png)
 
 LEGO的能力不仅在于视频定位，对图片、音频等多模态任务都很在行。
+
+
+#### RoboFlamingo 字节
+
+【2024-1-17】[机器人领域首个开源视觉-语言操作大模型，RoboFlamingo激发开源VLMs更大潜能](https://m.sohu.com/a/752424819_129720)
+
+ByteDance Research 基于开源的多模态语言视觉大模型 OpenFlamingo 开发了开源、易用的 RoboFlamingo 机器人操作模型，只用单机就可以训练。使用简单、少量的微调就可以把 VLM 变成 Robotics VLM，从而适用于语言交互的机器人操作任务。
+
+OpenFlamingo 在机器人操作数据集 CALVIN 上进行了验证，实验结果表明，RoboFlamingo 只利用了 1% 的带语言标注的数据即在一系列机器人操作任务上取得了 SOTA 的性能。
+- [项目主页](https://roboflamingo.github.io)
+- [代码地址](https://github.com/RoboFlamingo/RoboFlamingo)
+- [论文地址](https://arxiv.org/abs/2311.01378)
+
 
 # 结束
 
