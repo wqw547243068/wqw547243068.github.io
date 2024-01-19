@@ -1338,8 +1338,10 @@ playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模�
 
 ### Mid-Journey
 
+
+#### 介绍
+
 Mid 是一款搭载在`discord`上的人工智能绘画聊天机器人
-- Midjourney 5 显著提高 了人物图像的描绘质量。例如，以往 AI 生成图像总是处理不好手部形态，这在新版本中已不再是问题。光照和面料质感更加真实，新系统还能生成无数名人和公众人物的形象。
 
 `Midjourney` 的工作机制与 `Stable Diffusion` 和 `DALL-E` 等图像合成器相近，它使用了经过数百万人造艺术作品训练的 AI 模型，根据称为“提示”的文本描述生成图像。
 
@@ -1349,6 +1351,8 @@ Mid 是一款搭载在`discord`上的人工智能绘画聊天机器人
 - 跟 Midjourney 最近生成的一系列病毒式传播图像有关。包括 Trump 被捕和教皇身着时尚夹克的伪造图像，都被部分网民误认为真实存在。
 
 Midjourney 目前是盈利状态，现金流很健康，团队只有 20 多人，没有接受外部融资。
+
+#### 体验方式
 
 一个AI 生成算图工具，只需输入文字就会自动产生图像，Midjourney目前架设在Discord频道上，因此需要有Discord帐号才能使用。
 - [Discord](https://discord.com)是一款专为社群设计的免费通讯社交软体，类似于LINE或Slack，但功能更为强大，自带机器人与各种程式功能，能够在上面发开自己工具，有网页版与手机版APP。
@@ -1360,6 +1364,31 @@ Midjourney 目前是盈利状态，现金流很健康，团队只有 20 多人�
 - 等待 MidJourney 机器人处理您的请求。 请求需要一分钟才能根据您的提示生成四个选项。
 
 【2023-5-9】[midjourney官方](https://www.midjourney.com/app/)查看自己的作品，仅 5月8日 可用，每月8美金，可以用银联账户
+
+#### V5
+
+【2023-3-17】Midjourney 发布了其商用 AI 图像合成服务的第 5 版。该服务可以生成非常逼真的图像，其质量水平极高，一些 AI 艺术爱好者认为这些输出令人毛骨悚然且“过于完美”。Midjourney v5 现在处于 alpha 测试阶段，提供给订阅 Midjourney 服务的客户，该服务可通过 Discord 获取。
+
+Midjourney 5 显著提高 了人物图像的描绘质量。例如，以往 AI 生成图像总是处理不好手部形态，这在新版本中已不再是问题。光照和面料质感更加真实，新系统还能生成无数名人和公众人物的形象。
+
+#### V6
+
+【2023-12-22】[Midjourney能生成文字了！V6版5大升级惊艳网友](https://www.toutiao.com/article/7315272179547931170/)
+
+V6相比于V5来说速度更慢、成本更高（大约每次imagine消耗1gpu/min，每次upscale消耗2gpu/min），但昨天已对V6做了一次更新，速度已提高2.7倍
+
+V6共有5大升级：
+- 更精确且更长的提示响应
+- 改进了连贯性和模型知识
+- 图像生成和混合（remix）得到了优化
+- 新增了基础文字绘制功能
+- upscale（放大器）功能得到增强，具有’subtle’和’creative’两种模式，分辨率提升两倍
+
+只需给文字加上"引号"，比如"Hello World!"：
+- ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/6f0920aacc354b41b1caddc6eb6e7310~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1706239862&x-signature=0Fpk0hbdnboSLGt75JKm6DkBFhE%3D)
+
+
+
 
 ### Disco Diffusion
 
