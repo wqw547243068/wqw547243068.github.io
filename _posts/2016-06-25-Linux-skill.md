@@ -732,6 +732,107 @@ perf既然这么强大，那它的实现原理是什么呢？
 - tac的功能是将文件从最后一行开始倒过来将内容数据输出到屏幕上。我们可以发现，tac实际上是cat反过来写。这个命令不常用。
   - tac语法：tac 文件名。
 
+
+### 终端访问
+
+终端客户端工具
+- Xshellicon
+- Mobaxterm
+- FinalShell
+- XTerminal 是一个功能强大的远程终端管理平台，支持多平台支持、安全、终端控制、远程监控、远程协作、脚本自动化、插件icon扩展等功能。
+
+
+
+### 自动登录
+
+- [2018-3-26]自动登录鲁班测试机
+- 方法一：
+
+```shell
+#参考expect用法
+passwd="***"
+expect -c "
+        spawn ssh user@host -p 8022
+    expect {
+        \"*assword:\" {send \"$passwd\r\"; exp_continue }
+    }
+"
+```
+- 方法二：
+   - login.sh内容：
+
+```shell
+#!/usr/bin/expect -f
+set host luban@10.84.176.174
+set port 8022
+set pwd M95B8RBR
+ 
+spawn ssh "$host" -p $port
+set timeout 30
+expect "password:"
+send "$pwd\r"
+interact
+```
+   - 执行：expect login.sh
+   - 自动登录, ~/.bash_profile里配置别名即可一直使用
+   - alias luban='expect ~/login.sh'
+
+
+### 日期
+
+- 【2020-9-21】时间矫正
+
+```shell
+ sudo ntpdate cn.pool.ntp.org # 矫正系统时间
+ ```
+
+### 任务启动
+
+
+#### 自定义批量启动
+
+【2023-8-9】批量启动服务
+- 若已有任务端口在跑，跳过(参数空)/杀死
+
+```sh
+#lsof -i:9001 | awk '{if($2=="PID")next;print $2}'
+source common.sh # 定义彩色日志函数 log
+
+run_cmd(){
+	# 批量启动任务
+	name=$1 # 任务名
+	cmd=$2 # 命令
+	port=$3 # 端口,用于已有任务检测重启
+	[ $port ] && {
+		log "INFO" "检测已有任务端口:$port"
+		detect=`lsof -i:$port | awk '{if($2=="PID")next;print $2}'`
+		[ $detect ] &&  { log "检测到已有任务, 关闭任务"; kill $detect; }
+	}
+	log "INFO" "开始执行 $cmd"
+	eval $cmd
+	[ $? -eq 0 ] && log "INFO" "服务 $name 启动完毕" || log "ERROR" "服务 $name 启动失败"
+}
+
+run_cmd "test" "ls" 9002
+run_cmd "test" "ls" 9001
+```
+
+返回结果
+
+```
+ [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9002 
+ [2023-08-09 17:38:18] [INFO] 开始执行 ls 
+a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
+ [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕 
+ [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9001 
+ [2023-08-09 17:38:18] [INFO] 检测到已有任务, 关闭任务 
+kill 2303865
+ [2023-08-09 17:38:18] [INFO] 开始执行 ls 
+a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
+ [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕
+```
+
+
 ### md5
 
 Mac下安装MD5工具
@@ -1271,6 +1372,163 @@ make
 /nick # 设置昵称
 ./smallchat-client 127.0.0.1 7711
 ```
+
+
+### 文件传输
+
+【2017-12-16】远程文件传输的几种方式：
+- secureCRT、ftpxp客户端
+- scp命令
+- rsync命令
+- ftp、http服务
+  - 【2018-1-4】python搭建简易web服务，可以下载文件
+      - 服务端：python -m SimpleHTTPServer 8088
+      - 客户端浏览器：http://uemc-train-srv00.gz01:8088/
+      - 参考：[三种Shell脚本编程中避免SFTP输入密码的方法](http://blog.csdn.net/hereiskxm/article/details/7861759)
+- sftp服务
+- szrz命令
+- nc命令
+  - Linux网络工具中的“瑞士军刀”盛誉的netcat,能通过TCP和UDP在网络中读写数据
+  - (1) 检测端口是否可用：
+      - nc -v www.thanks.live 80
+  - （2）文件传输
+      - 接收端：nc -l 9995 > tmp
+      - 发送端：nc 10.200.0.79 9995 < send_file
+      - 注：
+        - 端口范围(1024,65535)
+        - 发送、接收顺序不限
+        - 传输目录
+            - 接收端：nc -l 9995 \| tar xfvz -
+            - 发送端：tar cfz - * \| nc 10.0.1.162 9995
+  - （3）聊天功能
+      - 类似文件传输操作步骤，去掉文件定向（<>）即可
+      - A：nc -l 9995
+      - B：nc 10.200.0.79 9995
+  - （4）telnet服务器（远程登录）
+      - 服务端：nc -l -p 9995 -e bash
+      - 客户端：nc 10.200.0.79 9995
+- samba
+- Git LFS
+
+
+#### nc（NetCat，瑞士军刀）
+
+[NetCat](http://netcat.sourceforge.net/)（简称nc），在网络工具中有“**瑞士军刀**”美誉，其有Windows和Linux的版本。
+- 因为它**短小精悍**（1.84版本也不过25k，旧版本或缩减版甚至更小）、**功能实用**，被设计为一个简单、可靠的网络工具，可通过TCP或UDP协议传输读写数据。
+- 还是一个网络应用**Debug分析器**，因为它可以根据需要创建各种不同类型的网络连接。
+- 参考：[nc命令详解](https://www.cnblogs.com/wenbiao/p/3375811.html)
+
+【2021-12-8】亲测，使用nc命令局域网跨系统传输大文件夹（13G），mac → Ubuntu，Windows也可以安装，但安装包被win10拦截
+
+安装：
+- Windows系统安装：[nc下载链接](https://eternallybored.org/misc/netcat/)，把解压的文件存到c:\WINDOWS\system32路径下。
+打开cmd 输入nc -help，查看命令使用方法。
+- linux/mac一般自带，安装命令如下：
+
+```shell
+# linux yum
+yum install -y nc
+# linux rpm
+rpm -q nc
+```
+
+参数：
+- -g<网关> 设置路由器跃程通信网关，最多可设置8个。
+- -G<指向器数目> 设置来源路由指向器，其数值为4的倍数。
+- -h 在线帮助。
+- -i<延迟秒数> 设置时间间隔，以便传送信息及扫描通信端口。
+- -l 使用监听模式，管控传入的资料。
+- -n 直接使用IP地址，而不通过域名服务器。
+- -o<输出文件> 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。
+- -p<通信端口> 设置本地主机使用的通信端口。
+- -r 乱数指定本地与远端主机的通信端口。
+- -s<来源地址> 设置本地主机送出数据包的IP地址。
+- -u 使用UDP传输协议。
+- -v 显示指令执行过程。
+- -w<超时秒数> 设置等待连线的时间。
+- -z 使用0输入/输出模式，只在扫描通信端口时使用。
+
+注意：
+  - 端口范围(1024,65535)
+  - 发送、接收顺序不限
+
+用法：
+
+```shell
+# （0）远程聊天：a与b两台机器
+# --- 接收 ----
+nc -l 1234  # a端开启监听
+nc -lp 22222 # 或者
+# --- 发送 ----
+nc  192.168.200.27 1234 # b端开启
+nc -nv 40.2.214.139 22222 # 或者
+
+# （1）远程复制
+#     s1(发送端) → s2(接收端)
+nc -l 1234 > 1234.txt # s2上开通监听端口1234
+nc -w 1 192.168.200.27 1234 < abc.txt # 发送端，传入文件abc.txt
+
+nc -lp 22222 > log.rar # 接收端
+nc -nc -vn 26.5.189.16 22222 < log.rar # 发送端
+
+# 发送完后自动断开连接（超时3s）
+nc –n ip port > yyy # 接收
+nc –n –l –p port –vv –w 3 < xxx # 发送
+
+# 传目录
+nc -l 9995 | tar xfvz - # 发送端
+tar cfz - * | nc 10.0.1.162 9995 # 发送端，当前目录
+
+# （2）硬盘/分区 克隆
+#     基本相似，由dd获得硬盘或分区的数据，然后传输即可。克隆硬盘或分区的操作，不应在已经mount的的系统上进行。
+nc -l -p 1234 | dd of=/dev/sda # s2开启监听
+dd if=/dev/sda | nc 192.168.200.27 1234 # s1上开始传输
+
+# （3）端口扫描
+nc -nvv 192.168.0.1 80 //扫描 80端口
+nc -v www.thanks.live 80 # 检测端口80是否可用
+nc -v -w 1 192.168.200.29 -z 20-30 # 从20依次扫描到30
+nc -v -z -w2 192.168.0.3 1-100 # TCP端口扫描
+nc -u -z -w2 192.168.0.1 1-1000 # UDP扫描192.168.0.3 的端口 范围是 1-1000
+
+# （4）telnet服务器（远程登录）
+nc -l -p 9995 -e bash # 服务端
+nc 10.200.0.79 9995 # 客户端
+```
+
+
+#### 第三方工具
+
+最强跨平台传输软件，速度快体积小，比苹果隔空传送好...
+
+- syncthing和localsend都有用，localsend日常跨设备分享很方便， syncthing 偏向同步
+
+##### reep.io 网页
+
+- 【2018-6-21】webrtc peer to peer文件传输工具[reep.io](https://reep.io/)失效，[send-anywhere](https://send-anywhere.com/)全终端覆盖, 基于浏览器，直接选中本地文件，生成下载链接，速度400kb；[Snapdrop](Snapdrop.net),免软件免登录的一款工具，只需在同一WIFI环境下打开Snapdrop网页，就能侦测到彼此，并开始传输文件。知乎[大文件传输工具有哪些](https://www.zhihu.com/question/333234462), 示例：[mathematica下载](https://reep.io/d/9vsymkgm3e)，【2019-05-16】[mathematica快速入门](https://zhuanlan.zhihu.com/p/47896722)
+
+##### LocalSend 开源
+
+[LocalSend](https://localsend.org/#/) 是一款免费开源的跨平台文件传输工具
+- 支持 Android、Windows、macOS、iOS、Linux等平台，安装后只需要在设置中打开快速保存开关即可使用。
+- 速度快、支持跨平台传输，还能自定义保存目录。
+- 电脑端安装包只有15MB，不会占用资源，可以在后台运行，需要时随时反应。
+
+相比于苹果的隔空传送，LocalSend更方便快捷，适合办公人士使用。
+
+##### syncthing
+
+[syncthing](https://syncthing.net/)
+
+Syncthing 是一个开源免费的数据同步神器，被称为 Resilio Sync 的替代品，支持 Android、Linux、Windows、Mac OS X 等系统
+- 在 2 台任何系统任何设备之间，实现文件实时同步，很强大。
+- 而且数据很安全，不会存储在你的设备以外的其他地方。
+- 所有通信都使用 TLS 进行保护。
+- 所使用的加密包括完美的前向保密，以防止窃听者获得对您的数据的访问权限。
+
+很适合用来搭建私有同步网盘。
+
+
 
 ## linux进程
 
@@ -4254,251 +4512,7 @@ set smartcase " 如果同时打开了ignorecase，那么对于只有一个大写
     - 参考：[ESC退出全屏模式和vi编辑模式的ESC键冲突](https://github.com/jumpserver/jumpserver/issues/4091)
 
 
-# Linux工具
-
-## 日期
-
-- 【2020-9-21】时间矫正
-
-```shell
- sudo ntpdate cn.pool.ntp.org # 矫正系统时间
- ```
-
-## 文件传输
-
-【2017-12-16】远程文件传输的几种方式：
-- secureCRT、ftpxp客户端
-- scp命令
-- rsync命令
-- ftp、http服务
-  - 【2018-1-4】python搭建简易web服务，可以下载文件
-      - 服务端：python -m SimpleHTTPServer 8088
-      - 客户端浏览器：http://uemc-train-srv00.gz01:8088/
-      - 参考：[三种Shell脚本编程中避免SFTP输入密码的方法](http://blog.csdn.net/hereiskxm/article/details/7861759)
-- sftp服务
-- szrz命令
-- nc命令
-  - Linux网络工具中的“瑞士军刀”盛誉的netcat,能通过TCP和UDP在网络中读写数据
-  - (1) 检测端口是否可用：
-      - nc -v www.thanks.live 80
-  - （2）文件传输
-      - 接收端：nc -l 9995 > tmp
-      - 发送端：nc 10.200.0.79 9995 < send_file
-      - 注：
-        - 端口范围(1024,65535)
-        - 发送、接收顺序不限
-        - 传输目录
-            - 接收端：nc -l 9995 \| tar xfvz -
-            - 发送端：tar cfz - * \| nc 10.0.1.162 9995
-  - （3）聊天功能
-      - 类似文件传输操作步骤，去掉文件定向（<>）即可
-      - A：nc -l 9995
-      - B：nc 10.200.0.79 9995
-  - （4）telnet服务器（远程登录）
-      - 服务端：nc -l -p 9995 -e bash
-      - 客户端：nc 10.200.0.79 9995
-- samba
-- Git LFS
-
-
-### nc（NetCat，瑞士军刀）
-
-[NetCat](http://netcat.sourceforge.net/)（简称nc），在网络工具中有“**瑞士军刀**”美誉，其有Windows和Linux的版本。
-- 因为它**短小精悍**（1.84版本也不过25k，旧版本或缩减版甚至更小）、**功能实用**，被设计为一个简单、可靠的网络工具，可通过TCP或UDP协议传输读写数据。
-- 还是一个网络应用**Debug分析器**，因为它可以根据需要创建各种不同类型的网络连接。
-- 参考：[nc命令详解](https://www.cnblogs.com/wenbiao/p/3375811.html)
-
-【2021-12-8】亲测，使用nc命令局域网跨系统传输大文件夹（13G），mac → Ubuntu，Windows也可以安装，但安装包被win10拦截
-
-安装：
-- Windows系统安装：[nc下载链接](https://eternallybored.org/misc/netcat/)，把解压的文件存到c:\WINDOWS\system32路径下。
-打开cmd 输入nc -help，查看命令使用方法。
-- linux/mac一般自带，安装命令如下：
-
-```shell
-# linux yum
-yum install -y nc
-# linux rpm
-rpm -q nc
-```
-
-参数：
-- -g<网关> 设置路由器跃程通信网关，最多可设置8个。
-- -G<指向器数目> 设置来源路由指向器，其数值为4的倍数。
-- -h 在线帮助。
-- -i<延迟秒数> 设置时间间隔，以便传送信息及扫描通信端口。
-- -l 使用监听模式，管控传入的资料。
-- -n 直接使用IP地址，而不通过域名服务器。
-- -o<输出文件> 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。
-- -p<通信端口> 设置本地主机使用的通信端口。
-- -r 乱数指定本地与远端主机的通信端口。
-- -s<来源地址> 设置本地主机送出数据包的IP地址。
-- -u 使用UDP传输协议。
-- -v 显示指令执行过程。
-- -w<超时秒数> 设置等待连线的时间。
-- -z 使用0输入/输出模式，只在扫描通信端口时使用。
-
-注意：
-  - 端口范围(1024,65535)
-  - 发送、接收顺序不限
-
-用法：
-
-```shell
-# （0）远程聊天：a与b两台机器
-# --- 接收 ----
-nc -l 1234  # a端开启监听
-nc -lp 22222 # 或者
-# --- 发送 ----
-nc  192.168.200.27 1234 # b端开启
-nc -nv 40.2.214.139 22222 # 或者
-
-# （1）远程复制
-#     s1(发送端) → s2(接收端)
-nc -l 1234 > 1234.txt # s2上开通监听端口1234
-nc -w 1 192.168.200.27 1234 < abc.txt # 发送端，传入文件abc.txt
-
-nc -lp 22222 > log.rar # 接收端
-nc -nc -vn 26.5.189.16 22222 < log.rar # 发送端
-
-# 发送完后自动断开连接（超时3s）
-nc –n ip port > yyy # 接收
-nc –n –l –p port –vv –w 3 < xxx # 发送
-
-# 传目录
-nc -l 9995 | tar xfvz - # 发送端
-tar cfz - * | nc 10.0.1.162 9995 # 发送端，当前目录
-
-# （2）硬盘/分区 克隆
-#     基本相似，由dd获得硬盘或分区的数据，然后传输即可。克隆硬盘或分区的操作，不应在已经mount的的系统上进行。
-nc -l -p 1234 | dd of=/dev/sda # s2开启监听
-dd if=/dev/sda | nc 192.168.200.27 1234 # s1上开始传输
-
-# （3）端口扫描
-nc -nvv 192.168.0.1 80 //扫描 80端口
-nc -v www.thanks.live 80 # 检测端口80是否可用
-nc -v -w 1 192.168.200.29 -z 20-30 # 从20依次扫描到30
-nc -v -z -w2 192.168.0.3 1-100 # TCP端口扫描
-nc -u -z -w2 192.168.0.1 1-1000 # UDP扫描192.168.0.3 的端口 范围是 1-1000
-
-# （4）telnet服务器（远程登录）
-nc -l -p 9995 -e bash # 服务端
-nc 10.200.0.79 9995 # 客户端
-```
-
-
-### 第三方工具
-
-最强跨平台传输软件，速度快体积小，比苹果隔空传送好...
-
-- syncthing和localsend都有用，localsend日常跨设备分享很方便， syncthing 偏向同步
-
-#### reep.io 网页
-
-- 【2018-6-21】webrtc peer to peer文件传输工具[reep.io](https://reep.io/)失效，[send-anywhere](https://send-anywhere.com/)全终端覆盖, 基于浏览器，直接选中本地文件，生成下载链接，速度400kb；[Snapdrop](Snapdrop.net),免软件免登录的一款工具，只需在同一WIFI环境下打开Snapdrop网页，就能侦测到彼此，并开始传输文件。知乎[大文件传输工具有哪些](https://www.zhihu.com/question/333234462), 示例：[mathematica下载](https://reep.io/d/9vsymkgm3e)，【2019-05-16】[mathematica快速入门](https://zhuanlan.zhihu.com/p/47896722)
-
-#### LocalSend 开源
-
-[LocalSend](https://localsend.org/#/) 是一款免费开源的跨平台文件传输工具
-- 支持 Android、Windows、macOS、iOS、Linux等平台，安装后只需要在设置中打开快速保存开关即可使用。
-- 速度快、支持跨平台传输，还能自定义保存目录。
-- 电脑端安装包只有15MB，不会占用资源，可以在后台运行，需要时随时反应。
-
-相比于苹果的隔空传送，LocalSend更方便快捷，适合办公人士使用。
-
-#### syncthing
-
-[syncthing](https://syncthing.net/)
-
-Syncthing 是一个开源免费的数据同步神器，被称为 Resilio Sync 的替代品，支持 Android、Linux、Windows、Mac OS X 等系统
-- 在 2 台任何系统任何设备之间，实现文件实时同步，很强大。
-- 而且数据很安全，不会存储在你的设备以外的其他地方。
-- 所有通信都使用 TLS 进行保护。
-- 所使用的加密包括完美的前向保密，以防止窃听者获得对您的数据的访问权限。
-
-很适合用来搭建私有同步网盘。
-
-## 自动登录
-
-- [2018-3-26]自动登录鲁班测试机
-- 方法一：
-
-```shell
-#参考expect用法
-passwd="***"
-expect -c "
-        spawn ssh user@host -p 8022
-    expect {
-        \"*assword:\" {send \"$passwd\r\"; exp_continue }
-    }
-"
-```
-- 方法二：
-   - login.sh内容：
-
-```shell
-#!/usr/bin/expect -f
-set host luban@10.84.176.174
-set port 8022
-set pwd M95B8RBR
- 
-spawn ssh "$host" -p $port
-set timeout 30
-expect "password:"
-send "$pwd\r"
-interact
-```
-   - 执行：expect login.sh
-   - 自动登录, ~/.bash_profile里配置别名即可一直使用
-   - alias luban='expect ~/login.sh'
-
-## 任务启动
-
-
-### 自定义批量启动
-
-【2023-8-9】批量启动服务
-- 若已有任务端口在跑，跳过(参数空)/杀死
-
-```sh
-#lsof -i:9001 | awk '{if($2=="PID")next;print $2}'
-source common.sh # 定义彩色日志函数 log
-
-run_cmd(){
-	# 批量启动任务
-	name=$1 # 任务名
-	cmd=$2 # 命令
-	port=$3 # 端口,用于已有任务检测重启
-	[ $port ] && {
-		log "INFO" "检测已有任务端口:$port"
-		detect=`lsof -i:$port | awk '{if($2=="PID")next;print $2}'`
-		[ $detect ] &&  { log "检测到已有任务, 关闭任务"; kill $detect; }
-	}
-	log "INFO" "开始执行 $cmd"
-	eval $cmd
-	[ $? -eq 0 ] && log "INFO" "服务 $name 启动完毕" || log "ERROR" "服务 $name 启动失败"
-}
-
-run_cmd "test" "ls" 9002
-run_cmd "test" "ls" 9001
-```
-
-返回结果
-
-```
- [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9002 
- [2023-08-09 17:38:18] [INFO] 开始执行 ls 
-a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
- [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕 
- [2023-08-09 17:38:18] [INFO] 检测已有任务端口:9001 
- [2023-08-09 17:38:18] [INFO] 检测到已有任务, 关闭任务 
-kill 2303865
- [2023-08-09 17:38:18] [INFO] 开始执行 ls 
-a.sh  bak  bin	common.sh  files  log.txt  log_file.txt  start_all.sh  work
- [2023-08-09 17:38:18] [INFO] 服务 test 启动完毕
-```
-
-# 小项目
+# 项目
 
 ## python健康打卡
 
