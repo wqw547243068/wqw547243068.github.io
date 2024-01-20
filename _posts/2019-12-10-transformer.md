@@ -28,9 +28,9 @@ permalink: /transformer
 
 Transformer，从**NLP**领域横跨到**语音**和**图像**领域，最终统一几乎**所有模态**的架构。
 - 基于 Transformers 架构的大型语言模型 (LLM)，如 `GPT`、`T5` 和 `BERT`，已经在各种自然语言处理 (NLP) 任务中取得了 SOTA 结果。
-- 此外，还开始涉足其他领域，例如：**计算机视觉** (`VIT`、`Stable Diffusion`、`LayoutLM`) 和**音频** (`Whisper`、`XLS-R`)
+- 此外，涉足其他领域，例如：**计算机视觉** (`VIT`、`Stable Diffusion`、`LayoutLM`) 和**音频** (`Whisper`、`XLS-R`)
 
-Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最重要的核心就是`Self-Attention`机制，中文也叫`自注意力`。
+Google 2017年发的一篇论文，标题叫《Attention Is All You Need》，核心是`Self-Attention`机制，中文也叫`自注意力`。
 - 在语言模型建模过程中，把注意力放在那些重要的Token上。
 
 基于transformer的多模态模型
@@ -48,27 +48,46 @@ Google2017年发的一篇论文，标题叫《Attention Is All You Need》，最
 
 `Transformer`是一种`Encoder-Decoder`架构(Seq2Seq架构也是)，先把**输入**映射到`Encoder`，可以把Encoder想象成RNN，Decoder也是。
 
-Transformer 这个架构基于`Seq2Seq`，可以同时处理NLU和NLG任务，而且这种Self Attention机制的特征提取能力很强。
-- 但不同于Seq2Seq, Transformer 是一个 `set-to-set` 模型，不在依赖串行，解决了并行能力
+Transformer 这个架构基于`Seq2Seq`，同时处理`NLU`和`NLG`任务，而且Self Attention机制的特征提取能力很强。
+- 不同于Seq2Seq, Transformer 是一个 `set-to-set` 模型，不再依赖串行，解决了seq2seq并行能力问题
+  - seq2seq: **序列到序列**模式
+  - transformer: **集合到集合**模式
 - 只要数据是基本单位组成的集合（a set of units），就可以应用 transformer；
 
 这样，左边负责**编码**，右边则负责**解码**。不同的是
-- `编码`时，因为知道数据，所以建模时可以同时利用当前Token的**历史Token**和**未来Token**；
-  - Encoder的block分两个模块：Multi-Head Attention和Feed Forward，
-  - Multi-Head Attention中用到Self Attention，和Attention类似，不过它是每个Token和每个Token的**重要性权重**。Multi-Head将自注意力重复n次，每个注意到的信息不一样，可以捕获到更多信息。
+- (1) `编码`时，因为知道数据，所以建模时可以同时利用当前Token的**历史Token**和**未来Token**；
+  - Encoder的block分两个模块：`Multi-Head Attention`和`Feed Forward`，
+  - ① `Multi-Head Attention`用到`Self Attention`，和Attention类似，不过它是Token和Token的**重要性权重**。`Multi-Head`将自注意力重复n次，每个token注意到的信息不一样，可以捕获到更多信息。
     - 比如：「<span style='color:blue'>我喜欢在深夜的星空下伴随着月亮轻轻地想你</span>」，有的Head「我」注意到「**喜欢**」，有的Head「我」注意到「**深夜**」，有的Head「我」注意到「**想你**」……
-  - Feed Forward，相当于「记忆层」，大模型大部分知识都存在此，Multi-Head Attention则根据不同权重的注意提取知识。
-- 但`解码`时，因为是逐个Token输出，所以只能根据**历史Token**以及Encoder的**Token表示**进行建模，而不能利用未来Token。
+  - ② `Feed Forward`相当于「**记忆**层」，大模型大部分知识都存在此，`Multi-Head Attention`根据不同权重的注意提取知识。
+- (2) 但`解码`时逐个Token输出，所以只能根据**历史Token**以及Encoder的**Token表示**进行建模，而不能利用未来Token。
 
-然而，大多数NLP任务其实并不是Seq2Seq，最常见的主要包括几种：句子级别`分类`、Token级别分类（也叫`序列标注`）、`相似度`匹配和生成；
+NLP典型任务
+
+|任务|理解(`NLU`)|生成(`NLG`)|分析|
+|---|---|---|---|
+|文本分类|✅|❌|适合Encoder|
+|文本匹配|✅|❌|适合Encoder|
+|文本生成|❌|✅|适合Encoder|
+|序列标注|✅|❌|适合Encoder|
+|文本摘要|❌|✅|适合Decoder|
+|机器翻译|❌|✅|适合Decoder|
+|改写/纠错|❌|✅|适合Decoder|
+|||||
+
+然而，大多数NLP任务其实并不是Seq2Seq，典型代表：句子级别`分类`、Token级别分类（也叫`序列标注`）、`相似度`匹配和生成；
 - 而前三种应用最为广泛。这时候`Encoder`和`Decoder`可以拆开用。
   - 左边的Encoder在把句子表示成一个向量时，利用**上下文**信息，也就是**双向**；
   - 右边的Decoder不能看到未来的Token，一般只利用**上文**，是**单向**的。
-- 虽然都可以用来完成刚刚提到的几个任务，但从效果上来说，`Encoder`更加适合**非生成类**任务，`Decoder`更加适合**生成类**任务。
+- 虽然都可以用来完成刚刚提到的几个任务，但从效果上来说
+  - `Encoder`更加适合**非生成类**(即理解类)任务
+  - `Decoder`更加适合**生成类**任务。
 
-NLP领域，一般分别叫做`NLU`（Natural Language Understanding，自然语言理解）任务和`NLG`（Natural Language Generation，自然语言生成）任务。
-- NLU任务：句子级别分类是给定一个句子，输出一个类别。因为句子可以表示为一个向量，经过张量运算，自然可以映射到每个类的概率分布。这和之前的语言模型没有本质区别，只是语言模型的类别是**整个词表大小**，而分类的类别看具体任务，有`二分类`、`多分类`、`多标签分类`等等。
-- NLG任务: 除了生成外，常见的任务还有文本摘要、机器翻译、改写纠错等。
+NLP领域一般分别叫做`NLU`（Natural Language Understanding，自然语言理解）任务和`NLG`（Natural Language Generation，自然语言生成）任务。
+- **NLU任务**：句子级别分类，给定一个句子输出一个类别。
+  - 因为句子可以表示为一个向量，经过张量运算映射到每个类的概率分布。
+  - 这和之前的语言模型没有本质区别，只是语言模型的类别是**整个词表大小**，而分类的类别看具体任务，有`二分类`、`多分类`、`多标签分类`等等。
+- **NLG任务**: 除了生成外，常见的有`文本摘要`、`机器翻译`、`改写纠错`等。
 
 ### self-attention 理解
 
