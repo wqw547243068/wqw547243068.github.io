@@ -64,16 +64,16 @@ Transformer 这个架构基于`Seq2Seq`，同时处理`NLU`和`NLG`任务，而�
 
 NLP典型任务
 
-|任务|理解(`NLU`)|生成(`NLG`)|分析|
+|任务|理解(`NLU`)|生成(`NLG`)|输入/输出模式|分析|
 |---|---|---|---|
-|文本分类|✅|❌|适合Encoder|
-|文本匹配|✅|❌|适合Encoder|
-|文本生成|❌|✅|适合Encoder|
-|序列标注|✅|❌|适合Encoder|
-|文本摘要|❌|✅|适合Decoder|
-|机器翻译|❌|✅|适合Decoder|
-|改写/纠错|❌|✅|适合Decoder|
-|||||
+|文本分类|✅|❌|多对一|适合Encoder|
+|文本匹配|✅|❌|近似多对一|适合Encoder|
+|文本生成|❌|✅|多对多,变长|适合Encoder|
+|序列标注|✅|❌|多对多,定长|适合Encoder|
+|文本摘要|❌|✅|多对多,变长,一般变少|适合Decoder|
+|机器翻译|❌|✅|多对多,变长|适合Decoder|
+|改写/纠错|❌|✅|多对多,维度近似|适合Decoder|
+|问答系统|❌|✅|多对多,维度不定|适合Decoder|
 
 然而，大多数NLP任务其实并不是Seq2Seq，典型代表：句子级别`分类`、Token级别分类（也叫`序列标注`）、`相似度`匹配和生成；
 - 而前三种应用最为广泛。这时候`Encoder`和`Decoder`可以拆开用。
@@ -149,8 +149,8 @@ self-attention 模型非常简单，本质上是加权平均公式，为什么�
 - 如果对输入序列进行**重排**（permute），输出序列除了也跟着重排，其他方面将完全相同，self-attention 是**排列等变**的（permutation equivariant）。
 - 构建完整的 transformer 时，还是会引入一些东西来保持输入的顺序信息，但要明白 <span style='color:red'>self-attention 本身是不关心输入的顺序属性的（sequential nature）</span>。
 
-最基础的 self-attention 模型的实现：
-- 两次 矩阵乘法 和 一次 归一化（softmax）。
+最基础的 self-attention 模型实现：
+- 2次 矩阵乘法 和 1次 归一化（softmax）。
 
 ```py
 import torch
@@ -174,7 +174,8 @@ y = torch.bmm(weights, x)
   - 由于点积的**平均值**随着嵌入维度 k 的增加而增大，因此点积送到 softmax 之前进行缩放有助于缓解这个问题。
   - $ w_ij = q_i^T k_j$ -> $ w_ij = \frac{q_i^T k_j}{\sqrt{k}}$
 - 引入 multi-head attention
-  - 同一个单词随着相邻单词们的不同表示的意思也可能不同, 基本的 self-attention 欠缺了很多灵活性。
+  - 同一个单词随着相邻单词们的不同表示的意思也可能不同, <span style='color:red'>基本的 self-attention 欠缺了很多灵活性</span>。
+    - 如何理解？
   - 让模型有更强的辨识力，一种解法：组合多个 self-attention（用 r 索引）， 每个对应不同的 query/key/value 参数矩阵 $ 𝐖^r_q$ , $ 𝐖^r_k $, $ 𝐖^r_v $， 称为 attention heads（注意力头）。
   - 对于 input 𝐱i，每个 attention head 产生不同的 output vector $ 𝐲^r_i $（一部分输出）。 最后再将这些部分输出连接起来，通过线性变换来降维回 k。
 
@@ -206,10 +207,11 @@ multi-head self-attention 完整流程
 - 对低维度 output vectors 进行拼接，**重新**回到与 input vectors 一样的维度。
 
 参数规模
-- single-head: 总参数数量是 $3k^2$。
-- multi-head: 参数个数 $ 3hk\frac{k}{h}=3k^2 $
+- `single-head`: 总参数数量是 $3k^2$。
+- `multi-head`: 参数个数 $ 3hk\frac{k}{h}=3k^2 $
   - 与 single-head self-attention 的参数数量相同。
-- 唯一的区别: multi-head self-attention 最后拼接 output vector 时多了一个矩阵 Wo
+- 唯一区别: 
+  - multi-head self-attention 最后拼接 output vector 时多了一个矩阵 Wo
 
 - 参考：[Transformer 是如何工作的：600 行 Python 代码实现两个（文本分类+文本生成）Transformer](http://arthurchiao.art/blog/transformers-from-scratch-zh/)
 
@@ -217,7 +219,7 @@ multi-head self-attention 完整流程
 
 针对rnn和cnn的缺陷，Transformer怎么解决这些问题？
 - 并行化
-- 提升长程依赖的学习能力
+- 长程依赖学习
 - 层次化建模
 
 [Transformer视频极速讲解](https://vdn6.vzuu.com/SD/8e617f0a-18b6-11ed-a515-caa2f7fe3b8b.mp4)
