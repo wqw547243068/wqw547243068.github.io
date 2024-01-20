@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -297,6 +297,56 @@ transformer 结构分成：
 - 最后，decoder输出的结果，经过一个线性层，然后计算softmax。
 
 **word embedding**和**positional encoding**后面会解释。首先详细地分析一下encoder和decoder的每一层是怎么样的。
+
+
+## 序列化
+
+模型只认识数字，因此，输入前需要将各种模态的数据序列化成数组/向量
+
+数据模态
+- 文本
+- 语音
+- 图像
+
+参考[知乎](https://www.zhihu.com/question/362131975/answer/3360076979?utm_psn=1732160182669500416)
+
+### 文本序列化
+
+- 文字序列根据 BPE 或者其它编码方法得到 Token
+  - 文字编码方式：一个英文单词编码在 1～2 个 token， 一个汉字编码是 1～3 个 token，每个 token 都是一个数字
+- Token 通过查表直接得到 Embeding矩阵
+  - 这个表通常非常大 ，比如 GPT3 可能是 12288x4096， 12288是 token 个数，4096 是维度，每个 token 查表后有 4096 维，这个是训练出来的
+- Token 通过 Postion 计算 Positional Encoding（标准算法公式）
+- 将 Embedding 与 Positional Encoding 相加得到 Transformer的输入
+
+Token 查表示意图
+- ![计算公式](https://pic1.zhimg.com/80/v2-7adff3d727accdb4666bb4c660c36920_1440w.webp?source=2c26e567)
+- 每个token的位置embedding受多个因素影响：词库总数n, embedding维度d, token对应的词库id(k), 句子中的第几个(i), sin还是cos
+- ![示意图](https://picx.zhimg.com/80/v2-e527b6da0c2a2b70ff944bedc2ef93df_1440w.webp?source=2c26e567)
+
+
+### 图像序列化
+
+图像的 token 化
+- 直接把图像矩阵分割成小块(如 16x16)
+- 再按顺序排好
+- 然后加位置编码
+
+示例
+- ![](https://picx.zhimg.com/80/v2-f2948cab056293658e4077daa1cc0510_1440w.webp?source=2c26e567)
+
+图片被切割拉平后，直接扔到一个 CNN 网络里变成 Transformer 的输入部分
+
+### 语音序列化
+
+声音的 token 化最简单，因为天生就有二维特征: mel 谱数据
+
+以 openai 的 whisper 项目为例
+- 声音输入的 token 每 30ms 一个，80 个log mel 谱数据。
+- 这样只要不断切段，这个声音就直接变成了二维矩阵
+- ![](https://picx.zhimg.com/80/v2-08ad9aaaa6295e24cb10a82bbab7f1a2_1440w.webp?source=2c26e567)
+
+声音输入也有 position embedding
 
 ## Encoder
 
