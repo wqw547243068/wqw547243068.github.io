@@ -1342,7 +1342,17 @@ git clone https://github.com/YiVal/YiVal.git
 cd YiVal
 ```
 
+### 2023.12.30 Auto-Prompt Builder
 
+【2024-1-18】[Langchain创始人新项目Auto-Prompt Builder一键优化Prompt](https://www.toutiao.com/article/7321550837883650612)
+
+有没有这样一款工具：把用户的prompt进行优化改写以便达到最佳效果呢？
+
+jinaAI开发的PromptPefect就能达到目的，但是一款完整产品，覆盖了prompt编写到应用服务的全过程，对于开发者，不太利于集成。
+
+langchain创始人Harrison Chase最新开发的一个能力纯粹的开源项目[auto-openai-prompter](https://github.com/hwchase17/auto-openai-prompter)，其核心思路
+- 将OpenAI的Prompt优化原则提交给GPT，然后让GPT-4帮助你优化prompt，可谓是用魔法打败魔法。
+- [Demo](https://openai-prompting-helper-e924c62387f55170bc7836f9f-ffoprvkqsa-uc.a.run.app/auto-prompter/playground/)
 
 ## 图像提示词
 
