@@ -1512,8 +1512,11 @@ OpenArt上有文生图优质案例，但面向国外，只有50个免费额度�
 
 ##### OPS提示词工具
 
+AIGC 提示词可视化编辑器 OPS Open Prompt Studio
+
 [OPS提示词工具](https://moonvy.com/apps/ops/)
-- 输入中文关键词会自动翻译，提示词词典有丰富的关键词提供，可以把关键词可视化分类！
+- 输入中文关键词会自动翻译，提示词词典有丰富的关键词提供，可以把关键词可视化分类
+- 支持 mj 和 sd
 - ![](https://pic1.zhimg.com/80/v2-875c1755603370e9f082fc76fbc7ac68_1440w.webp)
 
 #### 2023.7.24 VPGTrans
