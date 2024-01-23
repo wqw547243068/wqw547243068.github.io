@@ -1491,8 +1491,30 @@ OpenArt上有文生图优质案例，但面向国外，只有50个免费额度�
 ### prompt 自动生成
 
 
-【2024-1-11】[文生图Prompt如何自动化？贾扬清PromptLLM实测](https://zhuanlan.zhihu.com/p/677236977)
+- 【2024-1-11】[文生图Prompt如何自动化？贾扬清PromptLLM实测](https://zhuanlan.zhihu.com/p/677236977)
 
+
+#### 提示词产品
+
+【2024-1-23】[一键生成Midjourney提示词](https://zhuanlan.zhihu.com/p/677432362?utm_psn=1733070543354626049)
+
+##### AI灵创提词器
+
+【2023-7-13】[AI灵创提词器](https://frozenland.cc/teleprompter.html): 最方便、简单的ai绘画提示词工具,直接点击网站使用,免费！辅助生成 Mid-Journey提示词
+- 包括输入中文需求自动转化成英文关键词、丰富的风格和参数等可以任意选取和权重调整，关键词描述框架非常完整，操作很简单很适合新手小白使用提取提示词
+- ![](https://pic4.zhimg.com/80/v2-f255acaeae6ae8f450710bcb95b34b83_1440w.webp)
+
+##### MidJourney Prompt生成器
+
+[MidJourney Prompt生成器](https://ai.sppinfo.cn/)
+- 直接输入中文的关键词，可以翻译成英文的Midjourney关键词，还有丰富的风格和参数可以选择调整。
+- ![](https://pic3.zhimg.com/80/v2-1307ab5ba61bad0a017fb1ec9a61b042_1440w.webp)
+
+##### OPS提示词工具
+
+[OPS提示词工具](https://moonvy.com/apps/ops/)
+- 输入中文关键词会自动翻译，提示词词典有丰富的关键词提供，可以把关键词可视化分类！
+- ![](https://pic1.zhimg.com/80/v2-875c1755603370e9f082fc76fbc7ac68_1440w.webp)
 
 #### 2023.7.24 VPGTrans
 
