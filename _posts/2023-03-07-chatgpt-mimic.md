@@ -1316,6 +1316,9 @@ GPT模型进化
 
 #### LLMs 对比
 
+
+【2024-1-23】[choose the best model and API hosting provider for your use-case](https://artificialanalysis.ai/), 全方位对比各大主流模型，涉及：模型质量、速度、价格
+
 各种模型详情
 
 | LLMs<br>大模型 | Model Arch<br>模型架构 |	License<br>协议	| Commercial Use<br>商用许可 |	Other noteable restrictions<br>其它限制 |	Data License<br>数据许可	| Corpus<br>训练语料 |
