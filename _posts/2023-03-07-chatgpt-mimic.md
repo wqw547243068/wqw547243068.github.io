@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
 categories: 大模型
-tags: gpt 文本生成 ChatGPT 评测 蒸馏
+tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama
 excerpt: ChatGPT复现笔记
 mathjax: true
 permalink: /chatgpt_mimic
@@ -1261,6 +1261,7 @@ ChatGPT之争已经超出了算法的范畴，它更是一个AI+云计算能力�
 
 详情见站内专题：[大模型沉思录](llm)
 
+
 ### 资讯总结
 
 【2023-6-13】LLM 里程碑论文及各大模型信息, pretrain、instruct、对齐、开源模型等维度汇总LLM
@@ -2475,6 +2476,7 @@ class PolicyLoss(nn.Module):
 
 一位研究人员利用Meta泄露的LLaMA，创建了一个完全不受限制的「BasedGPT」聊天机器人。Discord上的这个聊天机器人经常会做出极端且愚蠢的回答。没有ChatGPT那么好，这是肯定的，但话说回来，它使用的计算能力少了1000倍。[参考](https://www.toutiao.com/article/7209928157732864552)
 
+
 #### LLaMA 模型结构
 
 LLaMA模型结构与GPT相同，采用了causal decoder-only的transformer模型结构。在模型细节上，做了以下几点改动：
@@ -2494,6 +2496,12 @@ Llama系列模型都使用了**自回归Transformer**架构，即 Transformer's 
 - **预归一化**（Pre-normalization）：对每一个transformer的子层输入都进行归一化，使用RMSNorm归一化函数
 - `SwiGLU`激活函数：在前馈神经网络（FFN）使用SwiGLU 激活函数替换了Transformer中的 ReLU 激活函数来提升性能
 - **旋转嵌入编码**（Rotary Positional Embeddings，`RoPE`）：RoPE可以兼顾相对位置和绝对位置的信息以提高模型的泛化能力
+
+【2024-1-24】[Llama.cpp 代码浅析（一）：并行机制与KVCache](https://zhuanlan.zhihu.com/p/670515231?utm_psn=1733263938836525056)
+
+Transformer vs Llama
+- ![](https://pic3.zhimg.com/80/v2-8ec08fb6dedacf27a71a71e11a11d6c6_1440w.webp)
+- ![](https://pic3.zhimg.com/80/v2-6eddbabe0877eb43b2e46d1e7367bf42_1440w.webp)
 
 #### LLaMA 下载
 
@@ -4250,7 +4258,6 @@ NexusRaven-V2完全基于开放数据集打造，并在CodeLlama-13B-instruct上
 - 支持CPU推理, 当然也支持CUDA/OpenCL推理
 - 具有 FP16 和 FP32 的混合精度
 - 支持8-bit/4bit量化 ...
-
 
 llama.cpp 的代码结构比较直观，如下所示，为整体代码结构中的比较核心的部分的代码结构
 
