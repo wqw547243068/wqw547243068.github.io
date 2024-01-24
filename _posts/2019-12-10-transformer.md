@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -1897,6 +1897,15 @@ RETRO 架构由一个**编码器**堆栈和一个**解码器**堆栈组成。
 dilated attention能够产生线性计算复杂度和token之间的对数依赖性，从而解决了注意力资源有限，但每一个token都可访问的矛盾。
 
 ## Attention 改进
+
+### 组注意力 Grouped-Query Attention
+
+Grouped-Query Attention ：对于更大参数量、更大的 context length、更大的 batchsize 来说，原始的MHA（multi-head attention）的内存占用会更高（因为在计算时要缓存pre token的K、V矩阵）。
+- MQA（multi-query attention）让所有的 head 共享 1 个 KV projection 矩阵；
+- GQA（grouped-query attention ）使用 8 个 KV projections（选择8是因为A100 8GPUs） 来减少内存占用。
+
+在 30B 模型上训练 150B tokens，发现 GQA 效果和 MHA 差不多，比 MQA 要好；在 1 个node的 8 个 A100 GPUs 上推理速度 GQA 和 MQA差不多，比 MHA 要好（MQA 在推理的时候，要把 KV projections 复制到8张卡上）。
+
 
 
 ### 推理加速
