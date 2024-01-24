@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 llm
+tags: gpt 量化 llm deepspeed
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_opt
@@ -119,6 +119,8 @@ We leverage a breadth of optimizations including:
 
 ### llama.cpp
 
+详见站内文章: [llm_think](llm)
+
 ### vLLM
 
 ### MLC-LLM
@@ -176,10 +178,12 @@ We leverage a breadth of optimizations including:
 
 #### 1.2 DeepSpeed Inference
 
-[DeepSpeed Inference](https://arxiv.org/pdf/2207.00032.pdf) by Microsoft
+微软推出的 Transformer 模型的前向推理框架。
+- [DeepSpeed Inference](https://arxiv.org/pdf/2207.00032.pdf) by Microsoft
+- 把模型分散到多块卡（多机）上跑。
+  - 有 150G+ 显存占用的模型，同时最大卡的显存只有 24G 卡，很多块，那么如果有这种框架随便跑。
 
 对于 Transformer layer，可分为以下4个主要部分：
-
 1.  Input Layer-Norm plus Query, Key, and Value GeMMs and their bias adds.
 2.  Transform plus Attention.
 3.  Intermediate FF, Layer-Norm, Bias-add, Residual, and Gaussian Error Linear Unit (GELU).
@@ -194,9 +198,38 @@ We leverage a breadth of optimizations including:
 -   INT8 模型量化
 -   推理的 pipeline 方案
 
-更多详细介绍及实践可参考笔者之前的文章：
+DeepSpeed 实现 ZeRO ，为了减少显存使用，跨机器跨节点进行更大模型的训练。一般按层切分模型分别载入参数，像是模型并行。但运行时其实质则是**数据并行**方式，不同的数据会在不同的卡运行，且同一组数据一般会在一块卡上完成全部前向和后向过程。而被切分的参数和梯度等数据会通过互联结构在运行态共享到不同节点，只是复制出的数据用后即焚删除了，不再占用空间。
+- [ZeRO & DeepSpeed: New system optimizations enable training models with over 100 billion parameters](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)
+- ![](https://pic1.zhimg.com/80/v2-145e05075831ece0553d65a577daaab4_1440w.webp)
 
-[紫气东来：NLP（十二）：DeepSpeed Inference 在 LLM 推理上的优化探究](https://zhuanlan.zhihu.com/p/629085568?)
+安装
+- MII 是个壳，主要封装了服务 api。核心并行机制都在 DeepSpeed 里。
+
+```sh
+pip install deepspeed
+pip install deepspeed-mii
+```
+
+测试脚本: `example.py`
+
+```py
+import mii
+
+pipe = mii.pipeline("mistralai/Mistral-7B-v0.1")
+response = pipe(["DeepSpeed is", "Seattle is"], max_new_tokens=128)
+print(response)
+```
+
+执行
+
+```sh
+deepspeed --num_gpus 2 mii-example.py
+```
+
+
+更多详细介绍及实践可参考笔者之前的文章：
+- [紫气东来：NLP（十二）：DeepSpeed Inference 在 LLM 推理上的优化探究](https://zhuanlan.zhihu.com/p/629085568?)
+- [DeepSpeed inference 代码理解](https://zhuanlan.zhihu.com/p/668181423)
 
 #### 1.3 MLC LLM
 
