@@ -951,77 +951,24 @@ def sequence_mask(seq):
 
 至此，mask相关的问题解决了。
 
-## Positional encoding是什么？
+## Positional encoding 是什么？
 
 【2021-8-25】[面经：什么是Transformer位置编码？](https://blog.csdn.net/Datawhale/article/details/119582757)
 
-终于要解释**位置编码**了，那就是文字开始的结构图提到的**Positional encoding**。
+**位置编码**是结构图里的**Positional encoding**。
 
-就目前而言，我们的Transformer架构似乎少了点什么东西。没错，就是**它对序列的顺序没有约束**！序列的顺序是一个很重要的信息，如果缺失了这个信息，可能我们的结果就是：所有词语都对了，但是无法组成有意义的语句
+序列顺序是一个很重要的信息，如果缺失，结果就是：所有词语都对了，但是无法组成有意义的语句
 
-Self-attention可以一次性的将所有的字都当做输入。但是NLP的输入是有特点的，其特点是输入的文本要按照一定的顺序才可以。不同的语序就有不同的语义。
+Self-attention 一次性将所有字都当做输入，感知不到方向、位置、间距。
+
+但是NLP输入的文本要按照一定的顺序才可以。不同语序就有不同语义。
 - 句子1：我喜欢吃洋葱
 - 句子2：洋葱喜欢吃我
 
-对于Transformer结构而言，为了更好的发挥并行输入的特点，首先要解决的问题就是要让输入的内容具有一定的位置信息。论文提出了**Positional encoding**。一句话概括就是：**对序列中的词语出现的位置进行编码**！如果对位置进行编码，那模型就可以捕捉顺序信息
+Transformer结构为了更好的发挥并行输入的特点，首先要让输入内容具有一定位置信息。
 
-### 位置编码分类
-
-***位置编码分类***
-
-总的来说，位置编码分为两个类型：`函数型`和`表格型`
-- `函数型`：通过输入token位置信息，得到相应的位置编码；
-  - 方法①：使用[ 0, 1 ]范围分配。第一个token分配0，最后一个token分配去1，其余的token按照文章的长度平均分配。
-    - 示例：
-        - 我喜欢吃洋葱 【0 0.16 0.32.....1】
-        - 我真的不喜欢吃洋葱【0 0.125 0.25.....1】
-    - 问题：如果句子长度不同，那么位置编码是不一样，所以无法表示句子之间有什么相似性。
-  - 方法②：1-n正整数范围分配
-    - 这个方法比较直观，就是按照输入的顺序，一次分配给token所在的索引位置。具体形式如下：
-      - 我喜欢吃洋葱 【1，2，3，4，5，6】
-      - 我真的不喜欢吃洋葱【1，2，3，4，5，6，7】
-    - 问题：往往句子越长，后面的值越大，数字越大说明这个位置占的权重也越大，这样的方式无法凸显每个位置的真实的权重。
-  - 总结：过去的方法总有这样或者那样的不好，所以Transformer对于位置信息的编码做了改进
-- `表格型`：建立一个长度为L的词表，按词表的长度来分配位置id
-  - 相对位置编码的特点，关注一个token与另一个token距离的**相对位置**(距离差几个token)。位置1和位置2的距离比位置3和位置10的距离更近，位置1和位置2与位置3和位置4都只相差1。这种方法可以清晰的知道单词之间的距离远近的关系。
-  - ![图示](https://img-blog.csdnimg.cn/img_convert/ef2c7618ee3451e8c16c2e7fa21fbd71.png)
-  - 问题：这种方式虽说可以表示出相对的距离关系，但是也是有局限的。其中一个比较大的问题是：只能的到相对关系，无法得到**方向关系**。所谓的方向关系就是，对于两个token谁在谁的前面，或者谁在谁的后面是无法判断的。
-
-transformer位置编码采用函数型，GPT-3论文给出的公式：
-- ![公式](https://img-blog.csdnimg.cn/img_convert/0eed794d556ddb9a75bb2e39cf2791b7.png)
-- 注意：每一个Token的位置信息编码不是数字，而是一个不同频率分割出来，和文本一样维度的向量。不同频率是通过Wn来表示。
-- 得到位置向量P之后，将和模型的embedding向量相加，得到进入Transformer模型的最终表示 ![公式](https://img-blog.csdnimg.cn/img_convert/c096e564bb2b7b833c96769511a704a5.png), 其中，$w_i=1/10000^{2i/d_{model}}$,  t是每个token的位置，比如说是位置1，位置2，以及位置n
-
-transformer怎么做呢？论文的实现很有意思，使用正余弦函数。公式如下：
-- $$PE(pos,2i) = sin(pos/10000^{2i/d_{model}}) $$
-- $$PE(pos,2i+1) = cos(pos/10000^{2i/d_{model}})$$
-
-其中，`pos`是指词语在序列中的位置。可以看出，在**偶数位置，使用正弦编码，在奇数位置，使用余弦编码**。
-
-上面公式中的$d_{model}$是模型的维度，论文默认是`512`。
-
-这个编码公式的意思就是：给定词语的位置$\text{pos}$，我们可以把它编码成$d_{model}$维的向量！也就是说，位置编码的每一个维度对应正弦曲线，波长构成了从$2\pi$$到$$10000*2\pi$的等比序列。
-
-上面的位置编码是**绝对位置编码**。但是词语的**相对位置**也非常重要。这就是论文为什么要使用三角函数的原因！
-
-正弦函数能够表达相对位置信息。主要数学依据是以下两个公式：
-- $$sin(\alpha+\beta) = sin\alpha cos\beta + cos\alpha sin\beta$$
-- $$cos(\alpha+\beta) = cos\alpha cos\beta - sin\alpha sin\beta$$
-
-上面的公式说明，对于词汇之间的位置偏移`k`，$PE(pos+k)$可以表示成$PE(pos)$和$PE(k)$的组合形式，这就是表达相对位置的能力！
-
-以上就是$PE$的所有秘密。说完了positional encoding，那么我们还有一个与之处于同一地位的**word embedding**。
-
-**Word embedding**大家都很熟悉了，它是对序列中的词汇的编码，把每一个词汇编码成$d_{model}$维的向量！看到没有，**Postional encoding是对词汇的位置编码，word embedding是对词汇本身编码**
-
-所以，我更喜欢positional encoding的另外一个名字**Positional embedding**
-
-### 图解位置编码
-
-输入 attention 结构之前，每个字做 word embedding 和 positional embedding。
-- 加位置 embedding是为了服务于 self-attention 的目标，即得到一个 word 序列中每两个word 之间的相关性。
-- word之间的相关性，只跟**相对位置**有关、而与绝对位置无关。[img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
-- ![img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
+于是，论文提出了**Positional encoding**。
+- **对序列中的词语出现的位置进行编码**，如果对位置进行编码，那模型就可以捕捉顺序信息
 
 
 ### 为什么用位置编码
@@ -1029,8 +976,8 @@ transformer怎么做呢？论文的实现很有意思，使用正余弦函数。
 【2023-6-13】[如何理解Transformer论文中的positional encoding，和三角函数有什么关系？](https://www.zhihu.com/question/347678607/answer/2301693596)
 
 为什么考虑顺序?
-- 捕捉序列顺序，交换单词位置后 attention map 的对应位置数值也会交换，产生数值变化，补充词序信息。
-- 不同距离的单词影响程度不同
+- 捕捉序列**顺序**，交换单词位置后 attention map 的对应位置数值也会交换，产生数值变化，补充词序信息。
+- 不同**距离**的单词影响程度不同
 
 为什么用相对位置？
 
@@ -1090,7 +1037,70 @@ Transformer位置编码可视化
 - 由于sin/cos函数的性质，位置向量每个值都位于\[-1, 1\]之间。
 - 同时，纵向来看，图的右半边几乎都是蓝色的，因为越往后的位置，频率越小，波长越长，所以不同的t对最终结果影响不大。而越往左边走，颜色交替的频率越频繁。
 
-### Positional encoding的实现
+### 位置编码分类
+
+***位置编码分类***
+
+位置编码分为两个类型：`函数型`和`表格型`
+- `函数型`：通过输入token位置信息得到相应的位置编码；
+  - 方法①：使用`[0, 1]`范围分配。第一个token分配0，最后一个token分配去1，其余token按照文章长度平均分配。
+    - 示例：
+        - 我喜欢吃洋葱 `【0 0.16 0.32.....1】`
+        - 我真的不喜欢吃洋葱`【0 0.125 0.25.....1】`
+    - 问题：如果句子长度不同，那么位置编码是不一样，所以, <span style='color:red'>无法表示句子之间有什么相似性</span>。
+  - 方法②：1-n**正整数**范围分配
+    - 直观，按照输入顺序，一次分配给token所在的索引位置。具体形式如下：
+      - 我喜欢吃洋葱 `【1，2，3，4，5，6】`
+      - 我真的不喜欢吃洋葱`【1，2，3，4，5，6，7】`
+    - 问题：句子越长，后面值越大，数字越大说明这个位置占的权重也越大,<span style='color:red'>无法凸显每个位置的真实权重</span>。
+  - 总结：
+    - 过去的方法有各种不足，所以Transformer对于位置信息编码做了改进
+- `表格型`：建长度为L的词表，按词表长度来分配位置id
+  - **相对位置编码**关注token与token距离的**相对位置**(距离差几个token)。位置1和位置2的距离比位置3和位置10的距离更近，位置1和位置2与位置3和位置4都只相差1。这种方法可以知道单词之间的**距离远近**关系。
+  - ![图示](https://img-blog.csdnimg.cn/img_convert/ef2c7618ee3451e8c16c2e7fa21fbd71.png)
+  - 问题：虽说可以表示出相对的距离关系，但是也有局限。
+    - 只能的到**相对**关系，无法得到**方向关系**。对于两个token谁在谁的前面/后面，无法判断。
+
+Transformer位置编码采用`函数型`，GPT-3论文给出公式：
+- ![公式](https://img-blog.csdnimg.cn/img_convert/0eed794d556ddb9a75bb2e39cf2791b7.png)
+- 注意：每一个Token的位置信息编码不是数字，而是一个不同频率分割出来，和文本一样维度的向量。不同频率是通过Wn来表示。
+- 得到位置向量P之后，将和模型的embedding向量相加，得到进入Transformer模型的最终表示 ![公式](https://img-blog.csdnimg.cn/img_convert/c096e564bb2b7b833c96769511a704a5.png), 其中，$w_i=1/10000^{2i/d_{model}}$,  t是每个token的位置，比如说是位置1，位置2，以及位置n
+
+transformer怎么做呢？论文的实现很有意思，使用正余弦函数。公式如下：
+- $$PE(pos,2i) = sin(pos/10000^{2i/d_{model}}) $$
+- $$PE(pos,2i+1) = cos(pos/10000^{2i/d_{model}})$$
+
+其中，`pos`是指词语在序列中的位置。可以看出，在**偶数位置，使用正弦编码，在奇数位置，使用余弦编码**。
+
+上面公式中的$d_{model}$是模型的维度，论文默认是`512`。
+
+这个编码公式的意思就是：给定词语的位置$\text{pos}$，我们可以把它编码成$d_{model}$维的向量！也就是说，位置编码的每一个维度对应正弦曲线，波长构成了从$2\pi$$到$$10000*2\pi$的等比序列。
+
+上面的位置编码是**绝对位置编码**。但是词语的**相对位置**也非常重要。这就是论文为什么要使用三角函数的原因！
+
+正弦函数能够表达相对位置信息。主要数学依据是以下两个公式：
+- $$sin(\alpha+\beta) = sin\alpha cos\beta + cos\alpha sin\beta$$
+- $$cos(\alpha+\beta) = cos\alpha cos\beta - sin\alpha sin\beta$$
+
+上面的公式说明，对于词汇之间的位置偏移`k`，$PE(pos+k)$可以表示成$PE(pos)$和$PE(k)$的组合形式，这就是表达相对位置的能力！
+
+以上就是$PE$的所有秘密。说完了positional encoding，那么我们还有一个与之处于同一地位的**word embedding**。
+
+**Word embedding**大家都很熟悉了，它是对序列中的词汇的编码，把每一个词汇编码成$d_{model}$维的向量！看到没有，**Postional encoding是对词汇的位置编码，word embedding是对词汇本身编码**
+
+所以，我更喜欢positional encoding的另外一个名字**Positional embedding**
+
+### 图解位置编码
+
+输入 attention 结构之前，每个字做 word embedding 和 positional embedding。
+- 加位置 embedding是为了服务于 self-attention 的目标，即得到一个 word 序列中每两个word 之间的相关性。
+- word之间的相关性，只跟**相对位置**有关、而与绝对位置无关。[img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
+- ![img](https://pic4.zhimg.com/80/v2-84165bd9ee3ef5cdf52ec6be63bd7dab_1440w.webp)
+
+
+
+
+### Positional encoding 实现
 
 PE的实现也不难，按照论文的公式即可。代码如下：
 
@@ -1098,12 +1108,10 @@ PE的实现也不难，按照论文的公式即可。代码如下：
 import torch
 import torch.nn as nn
 
-
 class PositionalEncoding(nn.Module):
     
     def __init__(self, d_model, max_seq_len):
         """初始化。
-        
         Args:
             d_model: 一个标量。模型的维度，论文默认是512
             max_seq_len: 一个标量。文本序列的最大长度
