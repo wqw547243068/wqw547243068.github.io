@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "概率统计 - Probability and statistics"
+title:  "数学基础：概率统计 - Probability and statistics"
 date:   2019-10-23 16:53:00
 categories: 数学基础
 tags: 概率 统计 幂律分布 正态分布 长尾分布 样本数 置信度 赌博 香农 凯利 庄家
@@ -1002,6 +1002,14 @@ Weibull Distribution是连续性的概率分布
 ## 应用
 
 
+
+【2024-1-25】三门问题：[专家都答错的三门问题](https://www.toutiao.com/video/7326489933207339570)
+- [蒙提霍尔问题/三门问题（Monty Hall problem）](https://zhuanlan.zhihu.com/p/23338174), [知乎问答](https://www.zhihu.com/question/26709273)
+
+某个电视节目比赛环节中，参赛者会看见三扇关闭了的门，其中一扇的后面有一辆汽车，选中后面有车的那扇门可赢得该汽车，另外两扇门后面则各藏有一只山羊。参赛者选定了一扇门，但未开启它，随后节目主持人蒙提霍尔（Monty Hall）开启了剩下的两扇门中的一扇并且发现后面是一只山羊，此时主持人会给予选手重新选择的机会。问题是：此时参赛者换另一扇门会否增加赢得汽车的机率？
+- ![](https://picx.zhimg.com/80/v2-4212eb565b669de4e9524b13f8f48efd_1440w.webp?source=1def8aca)
+
+- 第一次选中的概率只有1/3，选错的概率是2/3，只要第一次选错了，换了就必中，只有第一次选对了，换才会不中，所以换会提高中奖几率
 
 ### 赌博
 
