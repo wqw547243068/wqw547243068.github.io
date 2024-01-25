@@ -29,6 +29,8 @@ PyTorch实现了从语言中识别情绪情感反讽的DeepMoji模型：https://
 
 【2022-9-7】注册账户后[申请token](https://huggingface.co/settings/tokens)才能下载模型
 
+【2024-1-25】[huggingface官方介绍及测试题](https://huggingface.co/learn/nlp-course/zh-CN/chapter1/3?fw=pt)
+
 ## Transformers 库
 
 Transformers库 [GitHub](https://github.com/huggingface/transformers)
