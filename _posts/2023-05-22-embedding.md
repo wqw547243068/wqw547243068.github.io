@@ -244,6 +244,8 @@ OpenAI官方的embedding服务
 OpenAIEmbeddings：
 - 使用简单，并且效果比较好；
 
+2022年12月发布的text-embedding-ada-002
+
 Ada 几个版本
 
 #### OpenAI的Embedding服务
@@ -303,6 +305,36 @@ embeddings = OpenAIEmbeddings()
 from langchain.embeddings import OpenAIEmbeddings
 embeddings = OpenAIEmbeddings()
 ```
+
+#### 【2024-1-26】text-embedding-3-large
+
+【2024-1-26】[OpenAI发布新一代向量大模型](https://www.datalearner.com/blog/1051706229448685)，接口已经更新到text-embedding-3-large，embedding长度升级，价格最高下降5倍
+
+决定向量检索准确性的核心是向量大模型的能力，即文本转成embedding向量是否准确。
+
+OpenAI宣布了第三代向量大模型text-embedding
+- 向量大模型包括2个版本，分别是: `text-embedding-3-small` 和 `text-embedding-3-large`
+  - 规模较小但是效率很高,后者是规模更大的版本，最高支持3072维度的向量
+- 模型能力增强的同时价格下降
+
+当前OpenAI不同向量大模型的对比：
+
+| 模型名称 | 发布日期 | 输入维度 | 输出向量维度 | MIRACL 平均分 | MTEB平均分 | 价格 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `text-embedding-ada-002` | 2022年12月 | 8191 | 1536 | 31.4 | 61.0 | $0.0001 /1K tokens |
+| `text-embedding-3-small` | 2023年1月25日 | 8191 | 512和1536可选 | 44 | 512得分61.6<br>1536得分62.3 | $0.00002 /1K tokens |
+| `text-embedding-3-large` | 2023年1月25日 | 8191 | 256/1024/3072可选 | 54.9 | 256得分62.0<br>1024得分64.1<br>3072得分64.6 | $0.00013 / 1k tokens |
+
+新向量大模型`text-embedding-3`支持dimensions参数，可选择生成不同长度的向量。而更长的向量效果更好，但是成本更高，速度更慢。从价格上来说，`text-embedding-3-small`和前一代的向量大模型维度一致，效果略强，不过价格下降5倍
+
+MTEB评分结果
+- 尽管text-embedding-3-large最高已经达到64.6分，但是MTEB排行榜上依然只能拍第四
+
+| 排名 | 模型名称 | 模型大小(GB) | 输出向量维度 | 输入长度 | MTEB平均分 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `voyage-lite-02-instruct` | / | 1024 | 4000 | 67.13 |
+| 2 | `e5-mistral-7b-instruct` | 14.22 | 4096 | 32768 | 66.63 |
+| 3 | `UAE-Large-V1` | 1.34 | 1024 | 512 | 64.64 |
 
 ### HuggingFaceEmbeddings
 
