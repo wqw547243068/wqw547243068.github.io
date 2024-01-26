@@ -1100,8 +1100,15 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 #### Lepton Search
 
 【2024-1-14】贾扬清内侧版 [Lepton Search](https://search.lepton.run/) 
+- 类似季逸超的 [Peak Labs](https://www.peak-labs.com/en/) 推出的 [Magi](https://magi.com/)，暂停服务
 
-类似季逸超的 [Peak Labs](https://www.peak-labs.com/en/) 推出的 [Magi](https://magi.com/)，暂停服务
+500行Python代码构建的AI搜索工具，而且还会开源。后端是 `Mixtral-8x7b` 模型，托管在 LeptonAI 上，输出速度能达到每秒大约200个 token，用的搜索引擎是 Bing 的搜索 API。
+- [体验](https://search.lepton.run/search)
+
+作者还写了一下自己的经验：
+- (1) 搜索质量至关重要。优质的摘要片段是形成精准概括的关键。
+- (2) 适当加入一些虚构内容实际上有助于补充摘要片段中缺失的“常识性信息”。
+- (3) 在进行内容概括时，开源模型表现出了卓越的效果
 
 ### 排序
 
