@@ -1294,6 +1294,8 @@ LoRA微调与全量微调相比效果会更差，但团队将LoRA添加到所有
 - 这些低秩矩阵的参数**远少于**原始模型，因此可以使用更少的 GPU 内存进行微调。
 - 低阶适配器的微调取得了与微调完整预训练模型相当的结果。
 
+#### LoRA 原理
+
 核心思想
 - 冻结预训练模型权重，将可训练的秩分解矩阵注入 Transformer 架构的每一层，从而大大减少了下游任务的微调参数量
 
@@ -1303,20 +1305,18 @@ LoRA 的实现流程概述如下：
 - 模型的输入、输出维度不变，左右两边共用模型的输入，输出时将 PLM 与旁路的输出叠加：h=Wx+BAx
 - 用零均值随机高斯分布初始化 A，用全零矩阵初始化 B，矩阵 B 的全零初始化，使得在训练最开始的一段时间，右路的结果会接近于0，这样模块的输出就基本上来自于左路，也就是大模型原有参数的计算结果，这使得模型优化的初始点和原始的大模型保持一致。
 
+
 示意图
 - ![](https://pic4.zhimg.com/80/v2-48e88e61040a94284cc0499be8ecda37_1440w.webp)
 
 LoRA微调可以采用不同的低秩矩阵适配不同的任务类型，且LLM的原始权重不用变化；
 - ![](https://pic2.zhimg.com/80/v2-0ba745c8fff2c7015d9463206c5be631_1440w.webp)
 
-LoRA将会使用低秩表示来编码 `△W` ，同时实现计算高效和存储高效。当预训练模型是175B GPT-3，可训练参数 `|0|` 可以小至 
-`|W0|` 的 0.01%
- 
+LoRA将会使用低秩表示来编码 `△W` ，同时实现计算高效和存储高效。当预训练模型是175B GPT-3，可训练参数 `|0|` 可以小至 `|W0|` 的 0.01%
 
 整体上LoRA微调效果相对于基座模型有较大的提升，但是相对于全参数微调方式来说效果上还是低一点。
 - `Full fine-tune` > `LoRA` > `base model`
 - ![](https://pic4.zhimg.com/80/v2-90f36dc2e8d97ccbe6bb20b941a9745b_1440w.webp)
-
 
 
 对于 $\delta W_x$ 这部分，会乘上一个 scale 系数 $\frac{\alpha}{r}$
@@ -1380,6 +1380,79 @@ class LoraLayer:
         # 是否要禁用低秩分解的部分，如果是，则仅使用预训练权重部分
         self.disable_adapters = False
 ```
+
+
+【2024-1-29】自威斯康星大学麦迪逊分校的统计学助理教授Sebastian Raschka [使用 LoRA 和 QLoRA 微调LLM：数百次实验的见解](https://zhuanlan.zhihu.com/p/679172768?utm_psn=1735254298701877248)总结的经验
+- 如何节省内存、选择最佳配置等问题。
+- 是否应该用SGD取代AdamW，使用调度器的潜在价值
+  - AdamW 和 SGD 优化器选择没区别
+- 如何调整LoRA的超参数。
+  - 提高r时，合适的 alpha 值是 2*r
+- 原文链接：[Finetuning LLMs with LoRA and QLoRA: Insights from Hundreds of Experiments - Lightning AI](https://lightning.ai/pages/community/lora-insights/)
+
+LoRA 将权重矩阵分解为两个较小的权重矩阵，以更参数有效的方式近似完全监督微调
+
+实验模型
+- 重点关注尚未进行指令微调的模型：[phi-1.5 1.3B](https://arxiv.org/abs/2309.05463)、[Mistral 7B](https://arxiv.org/abs/2310.06825)、[Llama 2 7B](https://arxiv.org/abs/2307.09288)、 Llama 2 13B 和[Falcon 40B](https://falconllm.tii.ae/)
+
+GPU 资源
+- 单卡A100 GPU
+
+效果
+- Mistral 7B 模型在数学基准测试非常出色。
+- phi-1.5 1.3B 型号由于其相对较小的尺寸，在TruthfulQA MC2 性能较好。
+- 由于某种原因，Llama 2 13B 在算术基准测试中表现不佳，而较小的 Llama 2 7B 在该领域表现明显优于它。
+
+目前推测 phi-1.5 1.3B 和 Mistral 7B 可能已经接受过基准测试数据的训练，因此不用。
+
+此外，剩余模型中最小的模型将提供最大的改进空间，同时保持较低的硬件要求。重点关注 Llama 2 7B。
+- ![](https://pic1.zhimg.com/80/v2-5b5947fd3087bfdc8280e1bcf89305c8_1440w.webp)
+
+Lit-GPT 中的 `–quantize` 标志（4 位普通浮点类型）启用 QLoRA
+- ![](https://pic3.zhimg.com/80/v2-76124bca16d8ae19e5f86c49189c2e06_1440w.webp)
+- QLoRA 非常节省内存，但会增加运行时成本。
+- QLoRA 对模型性能的影响确实较小
+
+LoRA 参数
+- ![](https://lightningaidev.wpengine.com/wp-content/uploads/2023/10/lora-expimage7.png)
+- [finetune/lora.py](https://github.com/Lightning-AI/lit-gpt/blob/bf60124fa72a56436c7d4fecc093c7fc48e84433/finetune/lora.py#L38)
+- QKV:
+  - LoRA 默认仅针对多头自注意力块中的 Key 和 Query 矩阵启用
+  - 更改配置，启动值矩阵、投影层和线性层
+- 迭代次数
+  - 迭代次数的增加会导致整体性能变差。
+- `r`: 最重要的参数 R，矩阵的秩/维度,直接影响模型复杂性和容量
+  - 仅增加 r 本身就会使结果变得更糟
+  - 较**高**的“r”意味着更强的表达能力，但可能导致**过拟合**
+  - 而较**低**的“r”可以减少过度拟合，但会牺牲表达能力。
+  - 实验： r 从 8 增加到 16，发现仅增加 r 本身就会使结果变得更糟
+- `alpha`: 
+  - 较高的“alpha”会更加强调低秩结构或正则化
+  - 而较低的“alpha”会减少其影响，使模型更加依赖于原始参数。
+  - 调整“alpha”有助于在拟合数据和通过正则化模型防止过度拟合之间取得平衡。
+  - 提高r时，选择较大的 alpha 值至关重要
+  - 经验：微调 LLM 时，通常选择两倍于R的 alpha（注意与扩散模型时有所不同），以 QLoRA 为例，r=256 和 alpha=512 模型效果最佳
+
+```py
+# Hyperparameters
+learning_rate = 3e-4
+batch_size = 128
+micro_batch_size = 1
+max_iters = 50000  # train dataset size
+weight_decay = 0.01
+lora_r = 8 # 最重要的参数 R，矩阵的秩/维度,直接影响模型复杂性和容量
+lora_alpha = 16
+lora_dropout = 0.05
+lora_query = True # Q 矩阵启用
+lora_key = False # K
+lora_value = True # V 矩阵启用
+lora_projection = False # 投影层是否启用
+lora_mlp = False # 线性层是否启动
+lora_head = False # 
+warmup_steps = 100
+```
+
+![](https://lightningaidev.wpengine.com/wp-content/uploads/2023/10/lora-expimage10.jpg)
 
 #### LoRA 使用
 
