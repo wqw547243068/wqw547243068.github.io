@@ -1018,6 +1018,10 @@ ssh-add ~/.ssh/id_rsa
 # 服务器上查询~/.ssh/目录下多了一个文件:authorized_keys
 ```
 
+【2024-1-29】 网页版（Github/GitLab）上添加key，网页地址：
+- `user settings` → `user profile` → `SSH Keys`
+
+
 **单向**登陆的操作过程：
 - 1、登录A机器 
 - 2、ssh-keygen -t [rsa\|dsa]，将会生成密钥文件和私钥文件 `id_rsa`, `id_rsa.pub` 或 `id_dsa`, `id_dsa.pub`
