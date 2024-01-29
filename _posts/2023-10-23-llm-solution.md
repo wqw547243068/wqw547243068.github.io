@@ -438,6 +438,31 @@ pip install trulens
 
 github: [tiger](https://github.com/tigerlab-ai/tiger)
 
+#### RAGxplorer 可视化
+
+【2024-1-26】[大模型RAG流程可视化的开源工具—RAGxplorer](https://mp.weixin.qq.com/s/gCuARWfFPg5mP9vYJEKgNg)
+
+[RAGxplorer](https://github.com/gabrielchua/RAGxplorer) 是一个交互式的streamlit工具，用于支持构建基于检索增强生成（Retrieval Augmented Generation, RAG）的应用程序，通过可视化文档块和嵌入空间中的查询来实现。
+- •文档上传：用户可以上传PDF文档。
+- •块配置：配置块大小和重叠的选项。
+- •嵌入模型选择：all-MiniLM-L6-v2或text-embedding-ada-002。
+- •向量数据库创建：使用Chroma构建向量数据库。
+- •查询扩展：生成子问题和假设答案，以增强检索过程。
+- •交互式可视化：使用Plotly来可视化块。
+
+```sh
+pip install -r requirements-local-deployment.txt
+# 设置OPENAI_API_KEY（必需）和NYSCALE_API_KEY（如果您需要anyscale）。复制.streamlit/secrets.example.toml文件到.streamlit/secrets.toml并填写值。
+streamlit run app.py
+```
+
+```py
+import('pysqlite3')
+import sys
+
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+```
+
 
 ### RAG 不足
 
