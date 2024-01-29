@@ -15,6 +15,41 @@ permalink: /resource
 # 视频资源
 
 
+商业片
+- 疯狂的石头，甲方乙方，大腕
+
+个人成长
+- 暖春：孤儿的艰苦童年
+- 忠犬八公
+
+求学
+- 其实不想走：西北大学生兄弟上海求学故事
+
+乡村
+- 几度菊花香：知青下乡
+- 我的教师生涯：乡村教师的一辈子
+- 一个都不能少
+
+爱情
+- 听说：听障人士简单、勤劳的爱情故事
+- 等风来：倪妮出演
+- 暖：改编自白狗秋千架，井和
+
+历史剧
+- 活着，1942
+- 大宋提刑官：古代法医故事，宋慈
+- 康熙王朝，大明王朝1566
+- 大明劫：明末神医吴又可治疗瘟疫的事情
+
+财经
+- 大时代：香港炒股电影
+
+创业
+- 中国合伙人
+- 纪录片：燃点
+
+
+
 ## Netflix
 
 【2023-11-27】[Netflix（奈飞）上有哪些好看的纪录片？](https://www.zhihu.com/question/333004188/answer/3263581953?utm_psn=1712421855422656512)
@@ -569,23 +604,24 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 - [硅谷大佬](https://www.bilibili.com/video/av10418675)6集
 - 电影：中国合伙人，[视频](https://www.vodxc.in/JQP/20294/20294-1-1.html)
 - 综艺节目：[合伙中国人](https://v.qq.com/x/search/?q=%E5%90%88%E4%BC%99%E4%B8%AD%E5%9B%BD%E4%BA%BA%E7%AC%AC3%E5%AD%A3&stag=9)
-   - [90后遭投资人痛批](https://v.youku.com/v_show/id_XMjg3NjI4MDM2NA==.html?spm=a2h0j.11185381.listitem_page1.5!11~A&&s=48efbfbd3b535eefbfbd)
+- [90后遭投资人痛批](https://v.youku.com/v_show/id_XMjg3NjI4MDM2NA==.html?spm=a2h0j.11185381.listitem_page1.5!11~A&&s=48efbfbd3b535eefbfbd)
 
 <iframe src="http://player.youku.com/embed/XMjg3NjI4MDM2NA==" frameborder="0" allowfullscreen=“true” height="600" width="100%" ></iframe>
 
 - 纪录片：燃点，[视频](https://v.youku.com/v_show/id_XNDA4NzYwNzEyOA==.html)
    - 戴威的ofo要挂了，papi的内容创业偃旗息鼓，马薇薇名气下滑，傅盛还是意气风发，金星的新氧上市了，许单单的拉勾还在，老罗的锤子挂了。。。不胜唏嘘
    - 安传东的经历最具参考价值，跟我一样出身农村，人大毕业后连续创业，愈挫愈勇
-   ![](https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2256751130,3427799725&fm=173&app=49&f=JPEG?w=550&h=296&s=298A9C5D1A2A2E17508BC5AA03006049)
+   - ![](https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2256751130,3427799725&fm=173&app=49&f=JPEG?w=550&h=296&s=298A9C5D1A2A2E17508BC5AA03006049)
 - 【2019-12-31】创客兄弟：以创客的奋斗故事为主线，其中摒弃山寨手机等低端电子产品，到研发人工智能产品的场景，与华强北商业街的转型升级相呼应
-![](https://pics6.baidu.com/feed/024f78f0f736afc346ff177f703432c1b64512ef.jpeg?token=2a3eeccbe1a11a2d8eb656ddc79940fa&s=BA9305CD4B6011074051942D0300E043)
+  - ![](https://pics6.baidu.com/feed/024f78f0f736afc346ff177f703432c1b64512ef.jpeg?token=2a3eeccbe1a11a2d8eb656ddc79940fa&s=BA9305CD4B6011074051942D0300E043)
 - [2019我赚钱了](https://mp.weixin.qq.com/s/AbjlrLWdQQRXAD_fFWbIBA)
 - 【2020-1-13】只工作、不上班
    - 豆瓣帖子：[采访100个不上班的人：“我只是想和别人不一样”](https://book.douban.com/review/10588140/)
       - ![](https://img1.doubanio.com/view/thing_review/l/public/3525518.webp)
    - B站视频：[【100个不上班的人】](https://space.bilibili.com/18937939), [旅行博主：那个睡陌生人家沙发，睡上电视的女孩](https://www.bilibili.com/video/av69166304)
       - ![](https://img1.doubanio.com/view/thing_review/l/public/3525519.webp)
-      - <iframe src="//player.bilibili.com/player.html?aid=69166304&cid=119869704&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+<iframe src="//player.bilibili.com/player.html?aid=69166304&cid=119869704&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 ## 历史
 
@@ -602,7 +638,8 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 - [陆毅版电视剧苏东坡诗系列](https://www.bilibili.com/video/av3573999)
 
 <iframe src="//player.bilibili.com/player.html?aid=3573999&cid=5707455&page=4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-- MV说尽苏轼这一生:[一如这摸样]](https://www.bilibili.com/video/av63131519)
+
+- MV说尽苏轼这一生:[一如这摸样](https://www.bilibili.com/video/av63131519)
 
 <iframe src="//player.bilibili.com/player.html?aid=63131519&cid=109646986&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
