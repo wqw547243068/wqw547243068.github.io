@@ -1312,6 +1312,8 @@ SDK是什么
   - 其次，RPC框架一般都有**注册中心**，有丰富的监控管理；
   - 发布、下线接口、动态扩展等，对调用方来说是**无感知**、统一化的操作。
 
+
+
 ## 什么是RPC
 
 - [什么是RPC](https://www.jianshu.com/p/7d6853140e13)
@@ -1320,6 +1322,20 @@ SDK是什么
 |---|---|---|--——| --- |
 | 本地函数调用 | 传参→本地函数代码→执行→返回结果| int result = Add(1, 2); | ![](http://cdn1.taocms.org/imgpxy.php?url=gnp%3Dtmf_xw%3F046%2FA4JAWAtPcfAaM6mUOrOJtvOA29yCSf7ciISf1Fccln8svRpUwftH6VbDxxRbifkHGL95EQ6UrM431yOYhkcxzerY%2Fgnp_zibmm_zs%2Fnc.cipq.zibmm%2F%2F%3Asptth) | 所有动作发生同一个进程空间 |
 | 远程过程调用 | 传参→远程调用→远程执行→返回结果 | int result = Add(1, 2);（socket通信） |![](http://cdn1.taocms.org/imgpxy.php?url=gnp%3Dtmf_xw%3F046%2FQMTbiMcucicJlpTXIbigNciUc0rVf7I0psdaYGsMbi2mjCdr7M6nsVAG4h1DxxRbifkHGL95EQ6UrM431yOYhkcxzerY%2Fgnp_zibmm_zs%2Fnc.cipq.zibmm%2F%2F%3Asptth) | 跨进程、跨服务器 | 
+
+
+RPC是什么
+- 单机时代，一台电脑中跑多个进程，各个进程互不干扰，如果A进程需要实现一个功能，恰好B进程已经有了这个功能，于是A进程调B进程的该功能，于是出现了`IPC`（Inter-process communication，**进程间通信**）。
+- 互联网时代，多个电脑互联互通，一台电脑实现的功能，另一台电脑也需要就进行调用，相当于扩展了 `IPC`，成为 `RPC` （remote process communication 远程过程调用）
+
+RPC 是一台电脑进程调用另一台电脑进程的工具。
+- 成熟的`RPC`方案大多数会具备**服务注册**、**服务发现**、**熔断降级**和**限流**等机制。
+
+RPC传输协议
+- RPC 协议可以是 json、xml、http2，成熟的 RPC 框架一般都会定制自己的协议以满足各种需求，比如 thrift 的 TBinaryProtocal、TCompactProtocol
+
+目前市面上的RPC已经有很多成熟的了
+- Facebook家的`Thrift`、Google家的`gRPC`、阿里家的`Dubbo`和蚂蚁家的`SOFA`。
 
 
 RPC（Remote Procedure Call）**远程过程调用**，简单的理解是一个节点请求另一个节点提供的服务
@@ -1394,6 +1410,195 @@ RPC框架的职责，就是要屏蔽各种复杂性：
   - ② 又是一个工业级的产品，QPS可以到50W，应该是行业能目前性能最好的RPC框架了吧，有不少超高并发的线上应用都使用它。
 - （7）。。。
 
+
+### Thrift —— RPC框架
+
+- [thrift c++ rpc](https://www.cnblogs.com/Forever-Kenlen-Ja/p/9649724.html)
+
+【2020-12-26】thrift是Facebook开源的一套rpc框架，目前被许多公司使用
+- 使用IDL语言生成多语言的实现代码，程序员只需要实现自己的业务逻辑
+- 支持序列化和反序列化操作，底层封装协议，传输模块
+- 以同步rpc调用为主，使用libevent evhttp支持http形式的异步调用
+- rpc服务端线程安全，客户端大多数非线程安全
+- 相比protocol buffer效率差些，protocol buffer不支持rpc，需要自己实现rpc扩展，目前有grpc可以使用
+- 由于thrift支持序列化和反序列化，并且支持rpc调用，其代码风格较好并且使用方便，对效率要求不算太高的业务，以及需要rpc的场景，可以选择thrift作为基础库
+- ![](https://img2018.cnblogs.com/blog/524932/201809/524932-20180915020117562-1191051189.png)
+
+#### Thrift 介绍
+
+
+`Thrift`最初由Facebook研发，用于各个服务之间的RPC通信。
+
+Thrift是一个典型的`CS`（客户端/服务端）结构，客户端和服务端可以使用不同的语言开发。既然客户端和服务端能使用不同的语言开发，那么一定就要有一种**中间语言**来关联客户端和服务端的语言，这种语言就是`IDL`（Interface Description Language）
+
+Thrift 是一个提供可扩展、**跨语言**的服务开发框架，通过其强大的代码生成器，可以和 C++、Java、Python、PHP、Erlang、Haskell、C#、Cocoa、Javascript、NodeJS、Smalltalk、OCaml、Golang等多种语言高效无缝的工作。
+- thrift 使用二进制进行传输，速度更快。
+
+#### Thrift IDL
+
+[thrift入门教程](https://www.jianshu.com/p/0f4113d6ec4b)
+
+Thrift IDL 接口定义语言
+- 实现端对端之间可靠通讯的一套编码方案。
+- 涉及传输数据的**序列化**和**反序列化**，常用的http的请求一般用json当做序列化工具，定制rpc协议的时候因为要求响应迅速等特点，所以大多数会定义一套序列化协议 
+
+Thrift IDL支持的**数据类型**包含：
+
+
+##### 基本类型
+
+thrift不支持无符号类型，因为很多编程语言不存在无符号类型，比如java
+- byte: 有符号字节
+- i16: 16位有符号整数
+- i32: 32位有符号整数
+- i64: 64位有符号整数
+- double: 64位浮点数
+- string: 字符串
+
+
+##### 容器类型
+
+集合中的元素可以是除了service之外的任何类型，包括exception。
+- `list<T>`: 一系列由T类型的数据组成的有序列表，元素可以重复
+- `set<T>`: 一系列由T类型的数据组成的无序集合，元素不可重复
+- `map<K, V>`: 一个字典结构，key为K类型，value为V类型，相当于Java中的HMap<K,V>
+
+
+##### 结构体(struct)
+
+就像C语言一样，thrift也支持struct类型，目的就是将一些数据聚合在一起，方便传输管理。struct的定 义形式如下：
+
+```go
+struct People {
+     1: string name;
+     2: i32 age;
+     3: string sex;
+}
+```
+
+##### 枚举(enum)
+
+枚举的定义形式和Java的Enum定义差不多，例如：
+
+```go
+enum Sex {
+    MALE,
+    FEMALE
+}
+```
+
+
+##### 异常(exception)
+
+thrift支持自定义exception，规则和struct一样，如下：
+
+```go
+exception RequestException {
+    1: i32 code;
+    2: string reason;
+}
+```
+
+
+##### 服务(service)
+
+thrift定义服务相当于Java中创建Interface一样，创建的service经过代码生成命令之后就会生成客户端和服务端的框架代码。定义形式如下：
+
+```go
+service HelloWordService {
+     // service中定义的函数，相当于Java interface中定义的函数
+     string doAction(1: string name, 2: i32 age);
+ }
+```
+
+##### 类型定义
+
+thrift支持类似C++一样的typedef定义，比如：
+
+```go
+typedef i32 Integer
+typedef i64 Long
+```
+
+注意，末尾没有逗号或者分号
+
+##### 常量(const)
+
+thrift也支持常量定义，使用const关键字，例如：
+
+```go
+const i32 MAX_RETRIES_TIME = 10
+const string MY_WEBSITE = "http://qifuguang.me";
+```
+
+末尾的分号是可选的，可有可无，并且支持16进制赋值
+
+##### 命名空间
+
+thrift的命名空间相当于Java中的package的意思，主要目的是组织代码。thrift使用关键字namespace定义命名空间，例如：
+
+```go
+namespace java com.winwill.thrift
+```
+
+格式是：namespace 语言名 路径， 注意末尾不能有分号。
+
+文件包含
+thrift也支持文件包含，相当于C/C++中的include，Java中的import。使用关键字include定义，例 如：
+- `include "global.thrift"`
+
+注释
+- thrift注释方式支持shell风格的注释，支持C/C++风格的注释，即#和//开头的语句都单当做注释，/**/包裹的语句也是注释。
+
+可选与必选
+- thrift提供两个关键字required，optional，分别用于表示对应的字段时必填的还是可选的。例如：
+
+```go
+struct People {
+    1: required string name;
+    2: optional i32 age;
+}
+```
+
+表示name是必填的，age是可选的。
+
+##### 生成代码
+
+知道了怎么定义thirtf文件之后，我们需要用定义好的thrift文件生成我们需要的目标语言的源码，本文以生成java源码为例。假设现在定义了如下一个thrift文件：
+
+```go
+namespace java com.winwill.thrift
+
+enum RequestType {
+   SAY_HELLO,   //问好
+   QUERY_TIME,  //询问时间
+}
+
+struct Request {
+   1: required RequestType type;  // 请求的类型，必选
+   2: required string name;       // 发起请求的人的名字，必选
+   3: optional i32 age;           // 发起请求的人的年龄，可选
+}
+
+exception RequestException {
+   1: required i32 code;
+   2: optional string reason;
+}
+
+// 服务名
+service HelloWordService {
+   string doAction(1: Request request) throws (1:RequestException qe); // 可能抛出异常。
+}
+```
+
+在终端运行如下命令(前提是已经安装thrift)：
+- thrift --gen java Test.thrift
+
+则在当前目录会生成一个gen-java目录，该目录下会按照namespace定义的路径名一次一层层生成文件夹，到gen-java/com/winwill/thrift/目录下可以看到生成的4个Java类：
+- thrift文件中定义的enum，struct，exception，service都相应地生成了一个Java类，这就是能支持Java语言的基本的框架代码。
+
+更多见：[thrift入门教程](https://www.jianshu.com/p/0f4113d6ec4b)
+
 ### gRPC与REST
 
 - REST通常以业务为导向，将业务对象上执行的操作映射到HTTP动词，格式非常简单，可以使用浏览器进行扩展和传输，通过JSON数据完成客户端和服务端之间的消息通信，直接支持请求/响应方式的通信。不需要中间的代理，简化了系统的架构，不同系统之间只需要对JSON进行解析和序列化即可完成数据的传递。
@@ -1404,19 +1609,6 @@ RPC框架的职责，就是要屏蔽各种复杂性：
 - 不过gRPC的缺点是不方便与JavaScript集成，某些防火墙不支持该协议。
 - 注册中心：当项目中有很多服务时，可以把所有的服务在启动的时候注册到一个注册中心里面，用于维护服务和服务器之间的列表，当注册中心接收到客户端请求时，去找到该服务是否远程可以调用，如果可以调用需要提供服务地址返回给客户端，客户端根据返回的地址和端口，去调用远程服务端的方法，执行完成之后将结果返回给客户端。这样在服务端加新功能的时候，客户端不需要直接感知服务端的方法，服务端将更新之后的结果在注册中心注册即可，而且当修改了服务端某些方法的时候，或者服务降级服务多机部署想实现负载均衡的时候，我们只需要更新注册中心的服务群即可。
 - ![](https://upload-images.jianshu.io/upload_images/7632302-0b09dd85b8baa318.png)
-
-### thrift
-
-- [thrift c++ rpc](https://www.cnblogs.com/Forever-Kenlen-Ja/p/9649724.html)
-- 【2020-12-26】thrift是Facebook开源的一套rpc框架，目前被许多公司使用
-    - 使用IDL语言生成多语言的实现代码，程序员只需要实现自己的业务逻辑
-    - 支持序列化和反序列化操作，底层封装协议，传输模块
-    - 以同步rpc调用为主，使用libevent evhttp支持http形式的异步调用
-    - rpc服务端线程安全，客户端大多数非线程安全
-    - 相比protocol buffer效率差些，protocol buffer不支持rpc，需要自己实现rpc扩展，目前有grpc可以使用
-    - 由于thrift支持序列化和反序列化，并且支持rpc调用，其代码风格较好并且使用方便，对效率要求不算太高的业务，以及需要rpc的场景，可以选择thrift作为基础库
-![](https://img2018.cnblogs.com/blog/524932/201809/524932-20180915020117562-1191051189.png)
-
 
 ### sRPC
 
