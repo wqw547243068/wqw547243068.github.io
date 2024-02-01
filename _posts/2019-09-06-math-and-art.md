@@ -3,8 +3,8 @@ layout: post
 title:  "数学历史与知识-Maths History and Konwledge"
 date:   2019-09-06 10:29:00
 categories: 数学基础
-tags: 丘成桐 数学 人文 陶哲轩 危机
-excerpt: 人文与数学的前后关系
+tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab
+excerpt: 人文与数学的前后关系；数学软件
 mathjax: true
 permalink: /math
 ---
