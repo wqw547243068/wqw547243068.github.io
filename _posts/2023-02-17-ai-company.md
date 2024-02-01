@@ -3,7 +3,7 @@ layout: post
 title:   AI顶级机构
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智 人才 奇绩创坛
+tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清
 excerpt: 世界顶级AI机构（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -93,6 +93,22 @@ AI学者国家分布
 - 德国位列第四，人次未超过100，但依旧是欧盟学者数量最多的国家。
 - 整个欧洲学者数量表现较上年有所流失。
 
+
+#### 贾扬清
+
+【2024-2-1】[阿里副总裁"人设"翻车：30岁成AI顶尖科学家，但我很懒](http://www.ityouknow.com/money/2020/08/01/renshe.html)
+
+贾扬清的花名是扬青
+- ![](http://favorites.ren/assets/images/2020/it/renshe/renshe08.jpg)
+
+浙江绍兴人
+- 1982年，贾扬清出生于绍兴上虞，父母都是中学语文老师。
+- 2002年，高考考了686分上了清华自动化专业
+- 硕士毕业后去了伯克利读博，开发了深度学习框架，取名“Caffe ”
+- 博士毕业后进了谷歌，头上顶着研究科学家的光环，埋头搞AI。
+- 谷歌呆了两年，TensorFlow框架开发
+- 跳槽Facebook，做了AI架构总监。
+- 两年后，加入阿里巴巴，出任技术副总裁
 
 ### 大模型人才
 
