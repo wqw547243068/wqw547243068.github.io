@@ -919,11 +919,26 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 
 ## 数学软件
 
+【2024-2-1】三大数学软件（Matlab、Mathematica、Maple）后两个已经名不副实，长期吃老本不思进取，性能低下bug太多只会吹牛，近年来被开源免费的GeoGebra吊打，GeoGebra的发展势头很猛，超越Matlab也是迟早的事
+
+matlab 是工程软件，不是数学软件。想干掉他的人多了，如scilab、octave、Julia……，但其至今仍活的有声有色。
+
+
+### Mathematica
+
 【2023-4-3】wolfram language 是图灵完备的编程语言, 计算机代数系统
 - mathematica软件擅长数学，科学计算；
 - MATLAB 是竞争对手.但是 MATLAB 不是图灵完备的, 编程能力比较差；
 
 近期还有用mathematica[实现chatgpt](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
+
+### Matlab
+
+
+### Maple
+
+### GeoGebra
+
 
 ## 数列
 
