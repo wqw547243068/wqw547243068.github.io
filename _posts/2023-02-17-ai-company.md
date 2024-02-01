@@ -97,6 +97,7 @@ AI学者国家分布
 #### 贾扬清
 
 【2024-2-1】[阿里副总裁"人设"翻车：30岁成AI顶尖科学家，但我很懒](http://www.ityouknow.com/money/2020/08/01/renshe.html)
+- [Twitter](https://twitter.com/jiayq)
 
 贾扬清的花名是扬青
 - ![](http://favorites.ren/assets/images/2020/it/renshe/renshe08.jpg)
