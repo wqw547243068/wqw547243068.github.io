@@ -369,7 +369,7 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 
 字节 
 - 2023年下半年先后发布APP: 豆包（Grace）、Cici，问答、智能创作、聊天等。
-- [coze](https://www.coze.com/) 
+- [coze](https://www.coze.com/) ，[官方文档](https://www.coze.cn/docs/guides/prompt)
 
 ##### Coze
 
