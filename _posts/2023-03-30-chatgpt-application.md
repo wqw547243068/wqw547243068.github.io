@@ -818,6 +818,18 @@ GROUP BY customer_name
 ORDER BY total_sales desc limit 10;
 ```
 
+
+##### ChatExcel
+
+【2024-2-4】北京大学出的4款免费神器
+- [Chat Law](https://chatlaw.cloud/)：北大法律AI大模型，免费全能律师，思维导入分析案情，给出建议
+- [ChatExcel](https://chatexcel.com/) 
+- 中国历代人物：收录53w古代历史人物
+- 可视化看中国：视觉方式呈现历史背景、关系图
+
+[ChatExcel](https://chatexcel.com/) 通过自然语言操作excel表格
+- ![](https://chatexcel.com/static/pic/case/case-01.gif)
+
 ### 内容管理/营销
 
 CRM 记录姓名、电话等结构化数据
@@ -2891,6 +2903,9 @@ BloombergGPT的训练数据库名为FINPILE，由一系列英文金融信息组�
 
 【2023-7-3】[ChatLaw](https://github.com/PKU-YuanGroup/ChatLaw), 基于 IDEA发布的[姜子牙](https://huggingface.co/IDEA-CCNL/Ziya-LLaMA-13B-v1) 训练而来，源自 LLaMA
 - [在线体验](https://chatlaw.cloud/lawchat/)
+- ![](https://raw.githubusercontent.com/PKU-YuanGroup/ChatLaw/main/images/ChatLaw_framework.png)
+
+[ChatLaw](https://chatlaw.cloud/)：北大法律AI大模型，免费全能律师，思维导入分析案情，给出建议
 - ![](https://raw.githubusercontent.com/PKU-YuanGroup/ChatLaw/main/images/ChatLaw_framework.png)
 
 ChatLAW的数据主要由论坛、新闻、法条、司法解释、法律咨询、法考题、判决文书组成，随后经过清洗、数据增强等来构造对话数据
