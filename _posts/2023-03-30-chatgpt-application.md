@@ -3223,6 +3223,7 @@ Ghost in Shells:
 
 朱明实践：声控 AI 玩具 —— `SpheroGPT`
 - 用 LLM (ChatGPT3.5) + Sphero 开发一个可以声控自然语言编程的 AI 玩具, 作为学习 ChatGPT 应用开发的方法.
+- [地址](https://bytedance.larkoffice.com/docx/Hw4GdbGSco2KX7xSGc6cqMDmnHb)
 
 基础模式
 1. 对话与基本指令: 对话 / 前进 / 后退 / 旋转 / 画圆
