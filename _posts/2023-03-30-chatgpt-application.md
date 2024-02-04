@@ -3187,6 +3187,64 @@ UMass Amherst、UCLA和MIT-IBM Watson AI Lab研究人员，推出了全新的具
 - 还擅长使用工具、物体检索、导航、任务分解等多种任务。
 
 
+#### 玩具机器人
+
+
+##### Sphero
+
+[Sphero](https://sphero.com/) 玩具介绍
+- [Sphero](https://sphero.com/) 是一个**球形机器人**玩具, 既可以用面板控制它滚动, 也可以实现编程, 包括积木编程.
+- STEAM Education for All Ages & Stages
+
+基本能力如下: 
+- 滚动:  可以设置  方向/速度  
+- 旋转:  原地旋转
+- LED Matrix :  背部有一个 LED 的矩阵
+- 头灯 / 尾灯 :  Sphero 前后有两个灯
+- 指南针:  Sphero 可以通过指南针来校正朝向
+- 碰撞感知:   可以感知到碰撞事件
+
+<iframe src='//player.bilibili.com/player.html?bvid=BV1AJ411b7X7&cid=136813283&p=1&share_source=copy_web' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true'></iframe>
+
+用 LLM 来驱动一个实体机器人, 让 LLM 提供两个关键能力: 
+1. 自然语言交互能力 (NLU)
+2. 自主决策能力 (AI)
+
+一整套 LLM + `DSL` (领域语言) 的架构
+1. 用编程的驱动程序控制实体设备
+2. 用设计过的 DSL 调用驱动程序
+3. 用 LLM 扮演自然语言理解单元, 将自然语言解析成 DSL 驱动设备
+4. 让人类通过语音来自然语言控制
+5. 让 LLM 作为 AI,  直接控制设备, 自主决策
+
+Ghost in Shells:
+- Ghost: 负责机器人的思维, 记忆, 决策, 思考状态等.
+- Shells: 负责机器人的身体, 管理 通信/设备状态/事件 等.  
+
+朱明实践：声控 AI 玩具 —— `SpheroGPT`
+- 用 LLM (ChatGPT3.5) + Sphero 开发一个可以声控自然语言编程的 AI 玩具, 作为学习 ChatGPT 应用开发的方法.
+
+基础模式
+1. 对话与基本指令: 对话 / 前进 / 后退 / 旋转 / 画圆
+2. 绘制基本图形:  三角形, 正方形, 五角星,  数字 8 . 依赖 ChatGPT 使用基本指令自主编程.
+
+学习模式 (模拟函数封装/调用) . 有以下目标:
+- 多轮对话模式
+- 允许 教学 /  测试 / 保存 等多个动作
+- 支持基于上下文的 "修改"
+- 支持将复杂命令保存为 "技能" (函数)
+- 支持调用 "技能"
+- 支持在一个技能里调用另一个技能  (函数嵌套)
+- 支持循环调用技能 (循环调用函数)
+
+基本的技术栈: 
+- 编程语言: python
+- LLM : 分别使用了 openai 的 text-davinci-003, gpt-3.5-turbo, gpt-3.5-turbo-16k-0613 
+- 开发框架: 朱明开发的 [ghost-in-shells](https://github.com/thirdgerb/ghost-in-shells) 项目作为框架
+- Sphero驱动: 用[spherov2](https://spherov2.readthedocs.io/en/latest/) , 逆向了 andorid 客户端实现的 python SDK
+- 语音设备: 直接用 Mac 
+- 语音驱动: 用的 [SpeechRecognition](https://github.com/Uberi/speech_recognition)
+- 语音识别 & 生成:  用的[百度 ASR / TTS](https://ai.baidu.com/tech/speech)
 
 ### 可穿戴
 
