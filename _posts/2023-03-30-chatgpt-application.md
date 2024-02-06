@@ -2725,11 +2725,35 @@ Resources List
 - 提出了本草模型（原叫“华驼“），一个生物医学领域的中文LLM。BenTsao建立在开源LLaMa-7B模型的基础上，整合了来自中国医学知识图谱（CMeKG）的结构化和非结构化医学知识，并采用基于知识的指令数据进行微调。
 - ![](https://pic3.zhimg.com/80/v2-d5e5fc0f94aca6f539bdfb6e92cd9a8e_1440w.webp)
 
-#### 心理测评
+#### 心理学
+
+##### 测评
 
 用chatgpt做MBTI心理测评
 - 论文：[Can ChatGPT Assess Human Personalities? A General Evaluation Framework](https://www.aminer.cn/pub/640166a590e50fcafd68b4ab/can-chatgpt-assess-human-personalities-a-general-evaluation-framework)
 - 提出了三个评估指标，以衡量最先进的LLMs（包括ChatGPT和InstructGPT）评估结果的`一致性`、`稳健性`和`公平性`。实验结果表明，ChatGPT具有评估人类个性的能力，平均结果表明，ChatGPT可以实现更为一致和公平的评估，尽管对提示偏差的鲁棒性较低，相比之下，InstructGPT的鲁棒性更高。
+
+
+##### EmoLLM
+
+【2024-2-5】[EmoLLM：心理健康辅导链路的心理健康大模型](https://mp.weixin.qq.com/s/78lrRl2tlXEKUfElnkVx4A)
+- [主页](https://openxlab.org.cn/apps/detail/jujimeizuo/EmoLLM)
+- GitHub [EmoLLM](https://github.com/aJupyter/EmoLLM)
+
+EmoLLM 是一个能够支持 理解用户-支持用户-帮助用户 心理健康辅导链路的心理健康大模型，由 InternLM2 指令微调而来
+
+心理健康大模型（Mental Health Grand Model）是一个综合性的概念，它旨在全面理解和促进个体、群体乃至整个社会的心理健康状态。这个模型通常包含以下几个关键组成部分：
+- 认知因素：涉及个体的思维模式、信念系统、认知偏差以及解决问题的能力。认知因素对心理健康有重要影响，因为它们影响个体如何解释和应对生活中的事件。
+- 情感因素：包括情绪调节、情感表达和情感体验。情感健康是心理健康的重要组成部分，涉及个体如何管理和表达自己的情感，以及如何从负面情绪中恢复。
+- 行为因素：涉及个体的行为模式、习惯和应对策略。这包括应对压力的技巧、社交技能以及自我效能感，即个体对自己能力的信心。
+- 社会环境：包括家庭、工作、社区和文化背景等外部因素，这些因素对个体的心理健康有着直接和间接的影响。
+- 生理健康：身体健康与心理健康紧密相关。良好的身体健康可以促进心理健康，反之亦然。
+- 心理韧性：指个体在面对逆境时的恢复力和适应能力。心理韧性强的人更能够从挑战中恢复，并从中学习和成长。
+- 预防和干预措施：心理健康大模型还包括预防心理问题和促进心理健康的策略，如心理教育、心理咨询、心理治疗和社会支持系统。
+评估和诊断工具：为了有效促进心理健康，需要有科学的工具来评估个体的心理状态，以及诊断可能存在的心理问题。
+
+
+
 
 #### DoctorGLM -- 中文LLM
 
