@@ -1354,6 +1354,39 @@ langchain创始人Harrison Chase最新开发的一个能力纯粹的开源项目
 - 将OpenAI的Prompt优化原则提交给GPT，然后让GPT-4帮助你优化prompt，可谓是用魔法打败魔法。
 - [Demo](https://openai-prompting-helper-e924c62387f55170bc7836f9f-ffoprvkqsa-uc.a.run.app/auto-prompter/playground/)
 
+### 2024.1.23 Meta-prompting
+
+【2024-2-6】斯坦福和OpenAI提出meta-prompting，最强零样本prompting技术诞生了
+- 论文标题：[Meta-Prompting: Enhancing Language Models with Task-Agnostic Scaffolding](https://arxiv.org/abs/2401.12954)
+- 项目地址：[meta-prompting](https://github.com/suzgunmirac/meta-prompting)
+- [数据](https://huggingface.co/datasets/turingmachine/meta-prompting)
+
+传统脚手架方法针对每个任务调整具体的指令或示例，而 meta-prompting 则不同，在多种任务和输入上都采用了**同一套高层级指令**。不必为每个具体任务提供详细的示例或具体指示了。
+- 示例: 「写一首关于自拍的莎士比亚式十四行诗」
+- 用户无需补充高质量的新古典主义诗歌示例。
+
+这种技术涉及构建一个高层级的「元」 prompt，作用是指示语言模型做到以下几点：
+1. 将复杂任务或问题**分解**成更小/容易解决的子任务；
+2. 使用适当且详细的**自然语言指令**将这些子任务分配给**「专家」模型**；
+3. **监督**这些专家模型之间的通信；
+4. 通过这个过程应用其自己的批判性思维、推理和验证技能。
+
+meta-prompting 不仅能提升整体性能，而且在多个不同任务上也往往能实现新的最佳结果。
+
+其灵活性尤其值得称道：
+- 指挥员模型有能力调用专家模型（基本上就是其本身，只是指令不一样）执行多种不同的功能。
+- 这些功能可能包括点评之前的输出、为特定任务选取特定 AI 人设、优化生成的内容、确保最终输出在实质和形式上都满足所需标准。
+
+meta-prompting 方法的伪代码
+- 首先, 对输入执行变换，使其符合适当的模板；
+- 然后执行以下循环：
+  - (a) 向元模型提交 prompt
+  - (b) 如有需要，使用特定领域的专家模型
+  - (c) 返回最终响应
+  - (d) 处理错误。
+
+
+
 ## 图像提示词
 
 
