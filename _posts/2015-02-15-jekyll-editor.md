@@ -566,6 +566,10 @@ Jekyll 都会通过 Liquid 模板工具来生成一系列的数据。
 限制大小
 - <img src="https://img3.doubanio.com/lpic/s28012945.jpg" height="100%" width="100" />
 
+```html
+<img src="https://img3.doubanio.com/lpic/s28012945.jpg" height="100%" width="100" />
+```
+
 【2020-6-20】如何插入自己的图片？[Jekyll博客中如何用相对路径来加载图片？](https://www.zhihu.com/question/31123165)
 - 不要在\_posts下面建立目录，在根目录,也就是 yourname.github.io/ 下面建立一个新目录pics放图片。
 - 然后引用即可。 
@@ -578,7 +582,7 @@ Jekyll 都会通过 Liquid 模板工具来生成一系列的数据。
 
 或者：
 
-```shell
+```md
 # 简洁模式
 ![](/wqw/fig/3brown1blue.png)
 # 正规模式
