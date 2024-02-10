@@ -891,6 +891,87 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 
 目前数字电视的能力，提供4K信号已经是可行的，目前全国范围内有CCTV 4K和广东综艺两个4K频道，但是具体家里能不能接收到4K信号，和有线电视服务商以及家用机顶盒是否支持有关。
 
+### IPTV
 
+- [IPTV资源汇总](https://github.com/Meroser/IPTV)
+
+电子节目指南（electrical program guide，简称EPG）
+- Electronic Program Guide的英文缩写，意思是电子节目菜单，即节目预告。
+
+各个渠道的IPTV软件资源汇总
+- [Awesome IPTV](https://github.com/iptv-org/awesome-iptv#apps)
+- [IPTV网络直播](https://down.iptv2020.com/down.php)
+
+免费 IPTV 客户端
+- [Televizo IPTV](https://televizo-iptv-player.en.softonic.com/android)
+- [Tivimate IPTV](https://tivimate-iptv-video-player-ott.en.softonic.com/android), 高级功能需要付费
+- [Dream Player IPTV](https://dream-player-iptv.en.softonic.com/android)
+- [TT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 号称优于 Dream Player，如果想完全免费，用 Lazy 和 Rayo
+- [Lazy IPTV](https://en.softonic.com/download/lazy-iptv/android/post-download)
+- [IPTV Rayo](https://en.softonic.com/download/iptv-rayo/android/post-download)
+
+播放源
+- [https://iptv-org.github.io/iptv/index.m3u](https://iptv-org.github.io/iptv/index.m3u)
+- [https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u](https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u)
+
+#### Android 环境
+
+Android 如何观看
+
+软件
+- `Smarters Player`: [IPTV Smarters Player & M3U Player](https://www.androidfreeware.mobi/download-apk-com-iptv-smart-player.html)
+- `TiviMate`: [TiviMate IPTV Player for Android  V 4.7.0](https://en.softonic.com/download/tivimate-iptv-video-player-ott/android/post-download)
+
+
+#### Android TV 环境
+
+[Comparing Some of the Best IPTV Streaming Apps](https://www.softwaretestinghelp.com/best-free-iptv-apps/)
+
+| Name | Best For | Fees  | Ratings | Website |
+| --- | --- | --- | --- | --- |
+| **[Xtreme HD IPTV](https://softwaretesthelp.com/Xtreme-HD)** | Access to thousands of premium channels across the globe. | Starts at $15.99 per month | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://xtremehdiptv.org/billing/aff.php?aff=429) |
+| **[IPTV Trends](https://iptvtrends.com/billing/aff.php?aff=19)** | 4K Video Quality Support | Starts at $18.99 | ![Star_rating_4.5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_4.5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_4.5_of_5.png) | [Visit](https://iptvtrends.com/billing/aff.php?aff=19) |
+| **[Tubi](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US)** | Free Movie, TV Show, and Anime Streaming | Free |  ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US) |
+| **[Red Bull TV](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US)** | Watch extreme sports events live with AR | Free | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US) |
+| **[Pluto TV](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US)** | Access Library of  Cult Movies and  Spanish Language support | Free |![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US) |
+| **[IPTV](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US)** | Extended Playlists History | Free | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US) |
+| **[IPTV Smarters Pro](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US)** | Fully Customizable OTT Experience | Free.  $1.62 for the premium version allows streaming on upto 5 devices. | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US) |
+
+
+#### Mac 环境
+
+Mac 下如何观看？
+- 下载 软件 
+  - [ApTV](https://apps.apple.com/cn/app/aptv/id1630403500), APTV，一款可实时预览的高颜值直播源播放器App，是一个可播放可回看(需要直播源支持)的多功能播放器
+  - [VLC for Mac](https://get.videolan.org/vlc/3.0.20/macosx/vlc-3.0.20-intel64.dmg)
+- 添加播放列表
+
+
+### 小米电视
+
+小米电视配套设施
+- 【2021-5-23】[电视家破解版](http://www.ucbug.com/shouji/126280.html)，数字电视直播软件；免费版有广告，央视频道可以安装另一款软件：新视听
+- 乐播投屏、小米投屏神器（可以用手操作安装应用，摆脱遥控器）
+- NetFlix tv：流媒体巨头，资源丰厚，无删减，用户体验领先国内大部分视频网站八百条街
+   - [Netflix安装包](https://apkpure.com/netflix/com.netflix.mediaclient)
+   - 安装：参考[文章](https://www.66152.com/article/202107/305898.html)
+   - ① U盘拷到电视上下载
+   - ② 下一个 `Aptoide TV`（相当于国外版“`当贝市场`”）—— 也可用当贝市场里的文件快传功能接受下载的aptoide tv
+      - 不一定成功，因为国内只有索尼一家的电视支持安装Netflix TV
+      - 非索尼电视，怎么办？购买海外版小米盒子（MiBox） or Amazon电视棒；二者都内置 Netflix，后者还自带传说中的人工智能Alexa（美版天猫精灵）
+   - ③ 下一个适合你电视/盒子的软件，并买一个鼠标
+   - 安装成功，但卡壳，无法正常使用,Netflix无法用小米电视遥控器选择节目外; 参考[地址](https://www.typemylife.com/netflix-youtube-on-xiaomi-tv/)
+   - netflix有两个版本，一个是**TV版**，白色的logo。另一个是**安卓版**，黑色logo。
+   - 小米电视上可以安装黑色的那个，需要鼠标控制，但是图像模糊。装白色那个就会提示“此 App 与您的设备不兼容”
+   - 解法一：小米投屏神器 可以直接切换鼠标模式 
+   - 解法二：淘宝搜索“空中鼠标”，买一个（最好是带键盘输入的）
+- Youtube TV：需要谷歌框架，需要使用另一款：[Smart YouTube TV](https://smartyoutubetv.github.io/)，[下载地址](https://github.com/yuliskov/SmartTubeNext/releases/download/latest/smarttube_stable.apk)
+  - [在小米电视和小米盒子上看YouTube](https://www.williamlong.info/archives/5624.html)
+- 翻墙：Clash（mac版是clashx）、v2rayN
+  - Clash是一款用 Go开发的支持 Linux/MacOS/Windows等多平台的代理工具，支持 ss/v2ray/snell（不支持 ssr），支持规则分流（类似于 Surge 的配置）；参考[文章](https://freebrid.com/index.php/2021/03/01/clash-for-mac/)
+  - Clash的[win版](https://github.com/Fndroid/clash_for_windows_pkg/releases)、[mac版](https://github.com/Fndroid/clash_for_windows_pkg/releases) (亲测无法安装，改用[clashx](https://github.com/yichengchen/clashX/releases))、[apk版](https://github.com/Kr328/ClashForAndroid/releases)
+  - [ClashX github下载](https://github.com/yichengchen/clashX/releases), [Clash for Mac 版使用教程 ClashX 教程](https://2022vpn.net/clash-for-mac-tutorial/)
+- Apple TV 4K盒子体验
+-【2019-05-27】[电视直播链接汇总](http://bddn.cn/zb.htm)，国外免费电视直播：[pluto.tv](https://pluto.tv/)，[fox news](https://freeetv.com/live-television-5643.html)
 
 # 结束
