@@ -868,13 +868,14 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 3. 宽带运营商和广电合作，一方负责传输, 一方负责内容播控的`IPTV`网络电视，这个也是目前主流，对原有的有线电视冲击较大。
 4. 国家地面数字电视`DTMB`无线数字覆盖网络。(地面波天线)
 5. 在移动互联网领域，背靠移动的`咪咕`和`央视频`等`手机电视`。
+6. 开源的免费TV聚合APP软件, 如 TVBox，可以在所有安卓端：电视、平板、手机安装使用
 
 其实只有这三个：
 - 1、安装`有线电视`(最多)，通过地方广电部门差转、广电公司提供服务的电视信号收看电视节目。
 - 2、安装由电信运营商提供服务的`IPTV`。
   - 广东IPTV是不能收看港澳电视节目。
   - 外省应该没有这种区别，也没有收看港澳电视的需求。
-- 3、自行安装`天线`，通过`地面波天线`接收各地广电部门依照国家政策免费提供的地面电视信号。
+- 3、自行安装`天线`，通过`地面波天线`（dtmb）接收各地广电部门依照国家政策免费提供的地面电视信号。
   - 原本还可以接收到CCTV的3、5、6、8，最近可能是广州越秀山发射塔出了什么问题接收不到
 
 
@@ -906,7 +907,8 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 - [Televizo IPTV](https://televizo-iptv-player.en.softonic.com/android)
 - [Tivimate IPTV](https://tivimate-iptv-video-player-ott.en.softonic.com/android), 高级功能需要付费
 - [Dream Player IPTV](https://dream-player-iptv.en.softonic.com/android)
-- [TT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 号称优于 Dream Player，如果想完全免费，用 Lazy 和 Rayo
+- [OTT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 号称优于 Dream Player，如果想完全免费，用 Lazy 和 Rayo
+  - OttPlayer是一个非常精致的播放器，支持多种协议，包括HLS，RTSP，UDP和TS，以及RTMP。
 - [Lazy IPTV](https://en.softonic.com/download/lazy-iptv/android/post-download)
 - [IPTV Rayo](https://en.softonic.com/download/iptv-rayo/android/post-download)
 
@@ -946,6 +948,13 @@ Mac 下如何观看？
   - [VLC for Mac](https://get.videolan.org/vlc/3.0.20/macosx/vlc-3.0.20-intel64.dmg)
 - 添加播放列表
 
+
+### DTMB
+
+DTMB全称是数字地面多媒体广播（Digital Terrestrial Multimedia Broadcast）。DTMB是提供广播电视公共服务的一种基本手段和重要方式，它与卫星数字电视广播系统和有线数字电视广播系统一起相互协同提供全面的广播电视覆盖。
+- 优点：安装成功后可以接收十多个电视台，清高度也是不错的。
+- 缺点：要求所在地区有覆盖，且需要购买适合自家电视的DTMB电视天线才行，然后自行安装即可。
+- ![](https://picx.zhimg.com/80/v2-0ef49dc51770273f338233da8d7eecd4_1440w.webp?source=2c26e567)
 
 ### 小米电视
 
