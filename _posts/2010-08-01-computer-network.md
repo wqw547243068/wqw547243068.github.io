@@ -933,6 +933,7 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 ### IPTV
 
 - [IPTV资源汇总](https://github.com/Meroser/IPTV)
+- 各国 IPTV [电视直播入口](https://iptv-org.github.io/)
 
 电子节目指南（electrical program guide，简称EPG）
 - Electronic Program Guide的英文缩写，意思是电子节目菜单，即节目预告。
