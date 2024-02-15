@@ -16,12 +16,66 @@ permalink: /image-generation
 
 ## 图像生成技术演变
 
-【2023-4-4】[从VAE到扩散模型：一文解读以文生图新范式](https://zhuanlan.zhihu.com/p/519415802)
+- 【2023-4-4】[从VAE到扩散模型：一文解读以文生图新范式](https://zhuanlan.zhihu.com/p/519415802)
+- 【2024-1-19】[一文纵览文生图/文生视频技术发展路径与应用场景](https://mp.weixin.qq.com/s/pOLIf6JVQ_b8v3T6LcA7Fg)
 
 图像生成方法除了熟知的**生成对抗网络**（`GAN`），主流方法还包括**变分自编码器**（`VAE`）和基于**流**的生成模型（Flow-based models），以及近期颇受关注的**扩散模型**（Diffusion models）
 - ![](https://pic1.zhimg.com/80/v2-724971117e7467e02370d3b689174630_1440w.webp)
 
-自2014年生成对抗网络（`GAN`）诞生以来，**图像生成**研究成为了深度学习乃至整个人工智能领域的重要前沿课题，现阶段技术发展之强已达到以假乱真的程度。除了为人熟知的`生成对抗网络`（GAN），主流方法还包括`变分自编码器`（VAE）和`基于流的生成模型`（Flow-based models），以及近期颇受关注的`扩散模型`（Diffusion models）。
+自2014年生成对抗网络（`GAN`）诞生以来，**图像生成**研究成为了深度学习乃至整个人工智能领域的重要前沿课题，现阶段技术发展之强已达到以假乱真的程度。
+- `生成对抗网络`（GAN）通过生成器和判别器之间的对抗学习来生成图像
+- `变分自编码器`（VAE）利用编码器和解码器来学习数据的潜在表示
+- `基于流的生成模型`（Flow-based models）
+- `扩散模型`（Diffusion models）通过逐步去除加入数据的噪声来重建图像
+
+文生图的主流技术路径可分为 4 类
+- 基于 `GAN`（Generative Adversarial Network）
+  - 发展阶段：2016 年 -2021 年较火热，后续放缓，不再是主流方向
+  - 原理 ：GAN 由**生成器**和**判别器**构成，通过训练生成器和判别器来进行对抗学习，学习数据的分布，并生成新的数据样本。
+  - 其中生成器试图生成与真实数据相似的样本，而判别器则试图区分生成的样本和真实样本（二分类问题）。
+  - 生成器和判别器通过博弈论中的对抗过程进行训练，使得生成器不断改进生成的样本，直到判别器无法区分生成的样本和真实样本为止。
+  - 代表模型： DF-GAN、StackGAN++、GoGAN、AttnGAN
+- 基于 `VAE`（Variational Autoencoder）
+  - 发展阶段：2014 年提出，目前应用广泛，但独立生成图片质量不足，常与 Diffusion Model、自回归模型等架构结合使用
+  - 原理 ：VAE 本质是一个基于梯度的 encoder-decoder 架构，**编码器**用来学习数据的潜在变量表示（高斯分布的均值和方差）；**解码器**用变分后验来学习生成能力（标准高斯映射到数据样本的能力；而将标准高斯映射到数据样本是自己定义的），生成新的数据样本。
+  - VAE 通过将数据编码为潜在变量的分布，并使用重新参数化技巧来生成新的样本，VAE 的训练过程可以看作是最小化数据的重构误差和潜在变量的 KL 散度。
+    - **编码器**（Encoder）：VAE 首先通过编码器将输入数据（如图像）转换成潜在空间中的表示。这个表示不是单个值，而是概率分布的参数（通常是均值和方差）。
+    - **潜在空间**（Latent Space）：潜在空间的数据表示形式更简洁、抽象，可以在捕捉数据的关键特征的同时大幅降低计算成本。
+    - **重参数化**（Reparameterization）：为了使模型能够通过梯度下降进行学习，VAE 采用重参数化技巧：从编码器得到的分布中采样，生成可以反向传播的样本。
+    - **解码器**（Decoder）：最后，VAE 使用解码器从潜在空间中的样本重建原始数据。
+  - 代表模型： DF-GAN、StackGAN++、GoGAN、AttnGAN
+- 基于 Diffusion Model
+  - 发展阶段：2022 年至今，受益于开源模式和参数量较少，研究成本相对低，在学术界和工业界的传播和迭代速度快
+  - 原理：Diffusion Model 通过连续添加高斯噪声来破坏训练数据，然后通过消除噪声来学习如何重建数据
+  - 代表模型： Stable Diffusion、Midjourney、GLIDE、DALL-E 2、DALL-E 3
+- 基于自回归模型（`Auto-regressive Model`）
+  - 发展阶段：2020 年至今，囿于闭源模式和参数量较大，研究成本高，迭代速度慢于 Diffusion Model
+  - 原理：自回归模型 Encoder 将文本转化成 token，经特征融合后，由训练好的模型 Decoder 输出图像
+  - 代表模型： DALL-E、CogView、CogView2、Parti、CM3leon
+
+`Diffusion Model` 和 `Auto-regressive LLM` 两个技术路线并非完全独立，有融合趋势， Diffusion 也不断地吸收和学习语言模型方法，目前主流 Diffusion Model 实际上大量使用 Transformer 模型架构。
+1. 引入 `Latent Diffusion`。
+  - 核心思想：把高维数据（如大图像）先降维到一个特征空间（使用 token），然后在这个特征空间上进行扩散过程，然后再把特征空间映射回图像空间。
+  - Latent Diffusion 研究团队之前主要研究语言模型。借鉴语言模型中的 tokenizer 概念，用于把图像转换为一系列的连续 token，从而使得 Diffusion 模型能更高效地处理复杂数据。
+2. 把 `U-Net` 替换为 `Transformer`。
+  - 核心思想：Transformer 的处理能力和生成能力更强大，而 U-Net 架构是初期 Diffusion 模型中常用的架构，在处理更复杂任务时存在局限性，例如：
+  - 冗余太大，由于每个 pixel（像素点）都需要取一个 patch（贴片），那么相邻的两个 pixel 的 patch 相似度是非常高的，导致非常多的冗余，降低网络训练速度。
+
+感受野和定位精度不可兼得，当感受野选取比较大的时候，后面对应的 pooling 层的降维倍数就会增大，这样就会导致定位精度降低，但是如果感受野比较小，那么分类精度就会降低。      
+
+|维度|GAN|VAE|Diffusion Model(扩散模型)|AR(自回归)||
+|---|---|---|---|---|---|
+|生成质量|中(多样性不足)|中|高|高||
+|生成速度|快|快|中|中/慢|AR受模型规模和推理资源限制|
+|算力成本<br>训练/推理|低|低|中|高||
+|训练数据量|高|中|高|非常高||
+|训练稳定性|不稳定|较稳定|较稳定|较稳定||
+|分类|两阶段(生成/判别)<br>多阶段(逐层次/分阶段生成细化)|-|早期:pixel diffusion,直接在表示空间进行像素扩散<br>后期:latent diffusion, 引入transformer/VAE/GAN,形成各种变体|-||
+|图像生成示例|DF-GAN,Giga GAN,StyleGAN-T|Stack++<br>GoGAN<br>AttnGAN|VAE<br>CVAE<br>VQVAE|早期:DALE 2,Imagen,eDiff-l,DDPM,Improved DDPM,Diffusion Beats GAN<br>后期:GLIDE,Parti,DALL-E 3,Stable Diffusion,MidJourney,ERNIE-VLG 2|DALL-E,CogView系列,Parti,CM3leon|
+|视频生成示例|VGAN,TGAN,VideoGPT,DVD-GAN|-|Runway Gen-2,Stable Video Diffusion,MagicVideo-v2,WALT|CogVideo,GODIVA,VideoPoet|VideoPoet是基于LLM的Video foundation model|
+|优点|计算成本低,生成速度快|训练稳定,成本低,速度快|训练稳定,图像细节逼真,模型泛化强|训练文档,细节逼真,速度快,泛化强<br>视频生成帧与帧之间更为连贯||
+|缺点|训练不稳定,多样性不足,泛化差|缺乏细节/清晰度|速度慢,资源消耗大,视频采样速度慢|参数量大,资源消耗大,数据量大||
+|||||||
 
 
 <div class="mermaid">
