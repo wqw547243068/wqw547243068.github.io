@@ -954,6 +954,7 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 播放源
 - [https://iptv-org.github.io/iptv/index.m3u](https://iptv-org.github.io/iptv/index.m3u)
 - [https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u](https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u)
+- [ibert](https://m3u.ibert.me/o_all.m3u)
 
 #### Android 环境
 
