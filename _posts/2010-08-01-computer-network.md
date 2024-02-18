@@ -944,6 +944,8 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 
 免费 IPTV 客户端
 - [Televizo IPTV](https://televizo-iptv-player.en.softonic.com/android)
+  - 配置方法: TV上U安装，详见[Meroser's IPTV](https://github.com/Meroser/IPTV)
+  - 播放源[TPv6链接](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/IPTV.m3u), [EPG源信息](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/tvxml.xml), 未关联成功
 - [Tivimate IPTV](https://tivimate-iptv-video-player-ott.en.softonic.com/android), 高级功能需要付费
 - [Dream Player IPTV](https://dream-player-iptv.en.softonic.com/android)
 - [OTT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 号称优于 Dream Player，如果想完全免费，用 Lazy 和 Rayo
@@ -951,7 +953,12 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 - [Lazy IPTV](https://en.softonic.com/download/lazy-iptv/android/post-download)
 - [IPTV Rayo](https://en.softonic.com/download/iptv-rayo/android/post-download)
 
+【2024-2-17】软件实测，小米tv
+- [Televizo IPTV](https://televizo-iptv-player.en.softonic.com/android)和[OTT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 免费可用
+- [Tivimate IPTV](https://tivimate-iptv-video-player-ott.en.softonic.com/android)限制数目，引导付费
+
 播放源
+- 播放源[TPv6链接](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/IPTV.m3u), [EPG源信息](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/tvxml.xml), 国内电视台 191个, 有广告
 - [https://iptv-org.github.io/iptv/index.m3u](https://iptv-org.github.io/iptv/index.m3u)
 - [https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u](https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u)
 - [ibert](https://m3u.ibert.me/o_all.m3u)
