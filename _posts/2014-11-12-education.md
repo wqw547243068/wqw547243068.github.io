@@ -1036,6 +1036,11 @@ Pay close attention. This is your life. This is water.
 - ✔ 优才申请须知下载：[优秀人才入境计划申请须知-中文版：入境事务处](http://www.immd.gov.hk/hks/forms/forms/id-c-982.html)
 - ✔ 宜港汇优才政策解读&身份相关资讯：[提供全方位香港新闻热点资讯及DIY香港优才信息,宜港汇 (hkdiy.cn)](http://www.hkdiy.cn/)
 
+相关资料
+- [申请须知-中文版](https://www.immd.gov.hk/pdforms/id(c)982.pdf)
+- [赴港居留同意书 pdf](https://www.immd.gov.hk/pdforms/Letter_of_Consent_for_Residence_in_Hong_Kong.pdf), 要单位盖章
+- 补充资料：[工作经验](https://www.immd.gov.hk/pdforms/QMAS_efillable_company_info_SR_chi.pdf)
+
 **② 自我评分&准备材料**
 
 - ✔ 优才官方评分表：[優秀人才入境計劃：入境事務處](http://www.immd.gov.hk/hkt/services/visas/points-based-tests.html%23general)
@@ -1048,11 +1053,11 @@ Pay close attention. This is your life. This is water.
 - [美国新闻与世界报道高校排名查询](http://www.usnews.com/education/best-global-universities/rankings)
 
 **③ 资料投递**
-- ✔ 申请资料递交入口：[**APPLIES-2**](http://webapp.es2.immd.gov.hk/applies2-client/QueueIt_qmas.html%3FapplicationId%3D840%26language%3Dzh%26country%3DCN%26appType%3DQE)
+- ✔ 申请资料递交入口：[**APPLIES-2**](https://webapp.es2.immd.gov.hk/applies2-client/QueueIt_qmas.html?applicationId=840&language=zh&country=CN&appType=QE)
 - ✔ 申请资料补递入口：[**GovHK 香港政府一站通：网上递交补充文件﹝适用于有关签证／进入许可的申请﹞**](http://www.gov.hk/sc/residents/immigration/nonpermanent/applyextensionstay/submitsupplementdoc.htm)
 
 **④ 跟进申请处理情况**
-✔优才申请情况查询：[**ESERVICES2 (immd.gov.hk)**](http://webapp.es2.immd.gov.hk/applies2-client/ase/zh-CN/requirements%3FsvcId%3D735%26applicationId%3D735%26ticketId%3D735-f5f88a01-1a75-4a2c-9611-27e8140a4709)
+✔优才申请情况查询：[**ESERVICES2 (immd.gov.hk)**](http://webapp.es2.immd.gov.hk/applies2-client/ase/zh-CN/requirements?svcId=735&applicationId=735&ticketId=735-f5f88a01-1a75-4a2c-9611-27e8140a4709)
 
 
 不在香港常住可以拿到永居身份?
