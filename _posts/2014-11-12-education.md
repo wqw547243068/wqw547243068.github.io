@@ -258,10 +258,26 @@ Pay close attention. This is your life. This is water.
 
 ### 名校光环背后
 
+
+#### 衡水中学
+
 【2021-10-30】[“复读时去了传说中的衡水中学，看到了很多匪夷所思的事，三观被颠覆了…完整版](https://www.bilibili.com/video/BV1Uz4y1C7dY/?spm_id_from=autoNext)
 
 <iframe src="//player.bilibili.com/player.html?aid=585193619&bvid=BV1Uz4y1C7dY&cid=252332015&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width="100%" height="600"> </iframe>
 
+#### 北大刘丁宁
+
+刘丁宁
+- 女，高中毕业于本溪市高级中学
+- 2013年和2014年两届辽宁省高考文科状元。
+- 2013年高考，刘丁宁考出了668（含加分10分）分，为辽宁高考文科状元，被`香港大学`全额奖学金录取。
+- 2013年10月，刘丁宁离开香港大学重回母校复读，只为追寻纯粹国学。
+- 2014年高考，刘丁宁以666分再次获得辽宁省高考文科最高分，进入`北京大学`中文系读书。网友评价“彪悍的人生也不需要解释”。
+- 2023年12月29日，博主 “在下辉子”（以下简称“辉子”）发视频介绍“弃港大选北大”女孩刘丁宁现状，目前她在教育行业工作。她称，一直到大二才敢回看之前的采访，以前很在乎外界评价，但现在释然了。之所以退学港大选择北大，是内心的一种执着，想在青春能沉浸在文史哲艺术里
+
+大学期间曾遭遇校园霸凌，收到很多“莫名其妙地指摘”。她参加戏曲方面的社团，她非常投入地为一次演出参加了半年地排练，却遇到同学排挤，对方说：“你再来排练我就报警了，不要觉得你天下第一。”这件事对她的伤害十分巨大，“你付出了很多的心血和感情去做你的事业，但是不被理解。”
+
+#### 北大杜青云
 
 北京青年-凉子访谈录：[15岁进北大，退学复读考上清华，我不想再当「做题工具人」](https://www.bilibili.com/video/BV1vN411f7FF/)
 - 小镇做题家：杜青云，湖南张家界农家子弟，15岁以湖南省第二名考入北大，按父母意愿进入光华管理学院，然而室友家庭背景很好，功利心较重，边缘化农村学生，转寝室申请被辅导员驳回后，杜青云开始抑郁，失去方向，完成自我重构后，大三重新高考，再次以湖南省第一考入清华
@@ -271,6 +287,8 @@ Pay close attention. This is your life. This is water.
   - 有北大学生到社会上分享学习心得、人生经验，是一种很功利的行为，大家只看重成果，而忽略这个人，这很危险，分数绝对不是一切，我不会参与这些事情
 
 <iframe src="//player.bilibili.com/player.html?aid=502898907&bvid=BV1vN411f7FF&cid=333156320&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"> </iframe>
+
+#### 北大硕士厌倦北大身份
 
 [“如果能重来，我宁愿从未来过北大这座‘神坛’” 完整版](https://www.bilibili.com/video/BV18V411a7HK/?spm_id_from=333.788.recommend_more_video.1)
 - 2007年考入北师大，毕业后回山西当老师，两年后，考北大研究生、博士
