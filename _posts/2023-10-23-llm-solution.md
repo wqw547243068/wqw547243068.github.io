@@ -1413,13 +1413,15 @@ Lit-GPT 中的 `–quantize` 标志（4 位普通浮点类型）启用 QLoRA
 - QLoRA 非常节省内存，但会增加运行时成本。
 - QLoRA 对模型性能的影响确实较小
 
+#### LoRA 参数
+
 LoRA 参数
 - ![](https://lightningaidev.wpengine.com/wp-content/uploads/2023/10/lora-expimage7.png)
 - [finetune/lora.py](https://github.com/Lightning-AI/lit-gpt/blob/bf60124fa72a56436c7d4fecc093c7fc48e84433/finetune/lora.py#L38)
 - QKV:
   - LoRA 默认仅针对多头自注意力块中的 Key 和 Query 矩阵启用
   - 更改配置，启动值矩阵、投影层和线性层
-- 迭代次数
+- 迭代次数 epoch
   - 迭代次数的增加会导致整体性能变差。
 - `r`: 最重要的参数 R，矩阵的秩/维度,直接影响模型复杂性和容量
   - 仅增加 r 本身就会使结果变得更糟
@@ -1427,11 +1429,17 @@ LoRA 参数
   - 而较**低**的“r”可以减少过度拟合，但会牺牲表达能力。
   - 实验： r 从 8 增加到 16，发现仅增加 r 本身就会使结果变得更糟
 - `alpha`: 
-  - 较高的“alpha”会更加强调低秩结构或正则化
+  - 较高的“alpha”加强低秩结构或正则化
   - 而较低的“alpha”会减少其影响，使模型更加依赖于原始参数。
   - 调整“alpha”有助于在拟合数据和通过正则化模型防止过度拟合之间取得平衡。
   - 提高r时，选择较大的 alpha 值至关重要
   - 经验：微调 LLM 时，通常选择两倍于R的 alpha（注意与扩散模型时有所不同），以 QLoRA 为例，r=256 和 alpha=512 模型效果最佳
+- 火山引擎方舟平台： 
+  - r 调小时, 需要同步加大学习率, 该参数需要谨慎
+  - alpha 是缩放系数, `scale = alpha / rank`
+  - warmup相关参数: steps 需要多少步“热身”, step_rate 热身数据集的百分比
+  - max batch tokens: 单worker每个batch最大token数
+  - LR Scheduler type
 
 ```py
 # Hyperparameters
@@ -1456,8 +1464,8 @@ warmup_steps = 100
 
 #### LoRA 使用
 
-LoRA 已经被作者打包到了loralib中。
-- pip install loralib
+LoRA 已经被作者打包到了`loralib`中。
+- `pip install loralib`
 
 可以选择用loralib中实现的对应层来替换一些层。
 - 目前loralib只支持 nn.Linear、nn.Embedding 和 nn.Conv2d。
@@ -1475,6 +1483,7 @@ layer = lora.Linear(in_features, out_features, r=16)
 ```
 
 详见原文：[微软LoRA: Low-Rank Adaptation of Large Language Models 代码解读](https://zhuanlan.zhihu.com/p/515954218)
+
 
 #### LoRA 实现
 
