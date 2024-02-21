@@ -1318,24 +1318,24 @@ LoRA将会使用低秩表示来编码 `△W` ，同时实现计算高效和存�
 - `Full fine-tune` > `LoRA` > `base model`
 - ![](https://pic4.zhimg.com/80/v2-90f36dc2e8d97ccbe6bb20b941a9745b_1440w.webp)
 
-对于 $\delta W_x$ 这部分，会乘上一个 scale 系数 <span style='color:red;font-size:300%'> $\frac{\alpha}{r}$ </span>
-- $\alpha$ 相对于 r 保持一个常数倍的关系。调节这个 $\alpha$ 大致相当于**调节学习率**，于是干脆固定为常数
+对于 $\delta W_x$ 这部分，会乘上一个 scale 系数 <span style='color:red;font-size:300%'> $ Scale = \frac{\alpha}{r}$ </span>
+- $\alpha$ 相对于 r, 保持常数倍关系。调节这个 $\alpha$ 大致, 相当于**调节学习率**，于是干脆固定为常数
 - 实践中，rank r 应该设为多少比较合适呢？可以很低，不超过8
 - [当红炸子鸡 LoRA，是当代微调 LLMs 的正确姿势？](https://zhuanlan.zhihu.com/p/618894919)
 
-LoRA 一般会在 Transformer 每层中的 query_key_value 部分增加旁路，其中 r 为矩阵的秩，在模型训练中是可调节的参数，r << d，r 越大，可训练的参数越多。
+LoRA 一般会在 Transformer 每层中的 query_key_value 部分增加旁路，其中 `r` 为矩阵的秩，在模型训练中是可调节的参数，`r << d`，`r` 越大，可训练参数越多。
 - 图见[原文](https://mp.weixin.qq.com/s/yTX_bQEur8Nj6h_uGFJ31g)
 
-LoRA 的优势在于能够使用较少的 GPU 资源，在下游任务中对大模型进行微调。
-- 在开源社区中，开发者们使用 LoRA 对 Stable Diffusion 进行微调，取得了非常不错的效果。
+LoRA 优势: 使用较少 GPU 资源，在下游任务中对大模型进行微调。
+- 开源社区中，开发者们使用 LoRA 对 `Stable Diffusion` 进行微调，取得了非常不错的效果。
 - 随着 ChatGPT 的火爆，也涌现出了许多使用 LoRA 对 LLM 进行指令微调的工作。
 
-这种技术允许使用小部分内存来微调 LLM。然而，也有缺点
-- 由于适配器层中的额外矩阵乘法，前向和反向传递的速度大约是原来的**两倍**。
+这种技术允许使用小部分内存来微调 LLM。然而也有缺点
+- 由于适配器层中的**额外**矩阵乘法，<span style='color:red'>前向和反向传递的速度大约是原来的**两倍**</span>。
 
-LoRA 是 Parameter Efficient 的方法之一。
-- 过度参数化的模型其实是位于一个低的**内在维度**上，所以作者假设在模型适应过程中的权重变化也具有较低的“内在等级”。
-- [LoRA](https://github.com/microsoft/LoRA)的主要方法为**冻结**一个预训练模型的矩阵参数，并选择用A和B矩阵来替代，在下游任务时只更新A和B。
+LoRA 是 Parameter Efficient 方法之一。
+- 过度参数化的模型位于一个低**内在维度**上，所以假设在模型适应过程中的权重变化也具有较低的“内在等级”。
+- [LoRA](https://github.com/microsoft/LoRA)主要方法为**冻结**一个预训练模型的矩阵参数，并选择用A和B矩阵来替代，在下游任务时只更新A和B。
 - ![](https://pic4.zhimg.com/80/v2-67cd3e1e603a5bb674463ddc4db38d57_1440w.webp)
 - ![](https://pic2.zhimg.com/80/v2-f56b07afc29ccad77a6faffa130ab24d_1440w.webp)
 
