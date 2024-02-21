@@ -1318,7 +1318,7 @@ LoRA将会使用低秩表示来编码 `△W` ，同时实现计算高效和存�
 - `Full fine-tune` > `LoRA` > `base model`
 - ![](https://pic4.zhimg.com/80/v2-90f36dc2e8d97ccbe6bb20b941a9745b_1440w.webp)
 
-对于 $\delta W_x$ 这部分，会乘上一个 scale 系数 $\frac{\alpha}{r}$
+对于 $\delta W_x$ 这部分，会乘上一个 scale 系数 <span style='color:red;font-size:300%'> $\frac{\alpha}{r}$ </span>
 - $\alpha$ 相对于 r 保持一个常数倍的关系。调节这个 $\alpha$ 大致相当于**调节学习率**，于是干脆固定为常数
 - 实践中，rank r 应该设为多少比较合适呢？可以很低，不超过8
 - [当红炸子鸡 LoRA，是当代微调 LLMs 的正确姿势？](https://zhuanlan.zhihu.com/p/618894919)
