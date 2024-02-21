@@ -1234,6 +1234,14 @@ RT（Response-time）响应时间：执行一个请求从开始到最后收到�
 - ![](https://p3-sign.toutiaoimg.com/pgc-image/7c6b1a9cda24431993cea2182fec0180~noop.image?_iz=58558&from=article.pc_detail&x-expires=1660284418&x-signature=9QEepr%2FTP2P3UGltReSOJGGUh7I%3D)
 
 
+### p99
+
+【2024-2-21】
+- p50：数据集按升序排列，第50分位置大的数据（即升序排列后排在50%位置的数据）
+- p90：数据集按升序排列，第90分位置大的数据（即升序排列后排在90%位置的数据）
+- p99：数据集按升序排列，第99分位置大的数据（即升序排列后排在99%位置的数据
+
+
 ## 服务限流
 
 四大限流算法的特点，优劣势对比，适用场景
