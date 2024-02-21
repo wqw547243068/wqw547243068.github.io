@@ -1056,5 +1056,16 @@ OpenFlamingo 在机器人操作数据集 CALVIN 上进行了验证，实验结�
 - [论文地址](https://arxiv.org/abs/2311.01378)
 
 
+#### LargeWorldModel
+
+谷歌 Gemini 1.5 最强竞对——[LargeWorldModel](https://github.com/LargeWorldModel/LWM)
+
+产品信息：
+- LargeWorldModel（LWM）是一种大型多模态自回归模型，由UC伯克利大学开发。它使用 RingAttention 在包含长视频和长文本的大型数据集上进行训练，从而执行语言、图像和视频的理解和生成。
+
+产品功能：
+- LWM支持处理多模态信息，能在100万token中准确找到目标文本，还能一口气看完1小时的视频后，准确地回答出有关视频内容细节的问题，突破了当前语言模型在处理复杂的长格式任务的不足。除此之外，LWM还支持图像和视频的生成，被外界视为谷歌Gemini 1.5最强竞对。
+
+
 # 结束
 
