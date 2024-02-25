@@ -1403,6 +1403,26 @@ conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cud
 
 成功！
 
+#### Mac 版本
+
+【2024-2-25】[MochiDiffusion](https://github.com/godly-devotion/MochiDiffusion) 一款在Macicon上原生运行Stable Diffusion的客户端。
+- [MochiDiffusion 下载地址](https://github.com/godly-devotion/MochiDiffusion/releases)
+
+MochiDiffusion 内置 Apple 的 Core ML Stable Diffusion 框架 以实现在搭载 Apple 芯片的 Mac 上用极低的内存占用发挥出最优性能。
+
+功能：
+- 极致性能和极低内存占用 (使用神经网络引擎时 ~150MB)
+- 在所有搭载 Apple 芯片的 Mac 上充分发挥神经网络引擎的优势
+- 生成图像时无需联网
+- 图像转图像（Image2Image）
+- 使用 ControlNet 生成图像
+- 在图像的 EXIF 信息中存储所有的关键词（在访达的“显示简介”窗口中查看）
+- 使用 RealESRGAN 放大生成的图像
+- 自动保存 & 恢复图像
+- 自定义 Stable Diffusion Core ML 模型
+- 无需担心损坏的模型
+- 使用 macOSicon 原生框架 SwiftUI 开发
+
 
 #### Stable Diffusion Web UI
 
