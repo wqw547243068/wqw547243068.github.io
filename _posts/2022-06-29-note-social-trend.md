@@ -3,7 +3,7 @@ layout: post
 title:  "中国社会发展回顾"
 date:   2022-06-29 12:24:00
 categories: 读书笔记
-tags: 认知 社会 命运 经济 谋略 商场 高铁 农民工
+tags: 认知 社会 命运 经济 谋略 商场 高铁 农民工 人口
 excerpt: 近40年，中国人是如何借势改变个人命运的？一共7次机会，首富许家印抓住了4次，看你抓住了几次。
 author: 鹤啸九天
 mathjax: true
@@ -228,6 +228,14 @@ mathjax: true
 - [知知人物](https://www.toutiao.com/c/user/token/MS4wLjABAAAATs9fElmXg6VBxUH0LOqHXNl-x1_Sl7f_zcFnPcoJljGd0-jyEzHC8AwSqtrzVm0h/)：铁道部用**二桃杀三士**，砍下100亿，西门子谈判团队集体被炒鱿鱼, [视频](https://www.toutiao.com/video/7310169494180069938)
 - 书籍：《中国速度：中国高铁崛起之路》
 
+
+### 人口问题
+
+【2024-2-26】[视频](https://www.toutiao.com/video/7337841120862391552)
+- 问题： 现在出生率下降这么多，生孩子是个好时机？
+- 回答：你以为是分蛋糕呢？实际上，大部分是抬轿子的，坐娇子的人越来越多，抬轿子的人越来越少
+  - 以前是八个人踩自行车发电，以后人不够了就是四个人踩，而且要加大工作时间
+  - 庞氏骗局的核心就是拉人头
 
 ## 改变命运的七次机遇
 
