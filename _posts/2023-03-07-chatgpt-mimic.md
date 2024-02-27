@@ -44,6 +44,9 @@ There are three important steps for a ChatGPT-like LLM:
 
 ### LLM 之争
 
+【2024-2-27】[总结](https://www.toutiao.com/w/1791953879006346)当前大模型现状: 按照通用、垂类，是否落地两个维度分类
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/b41a7fad5f06482b84e9b3f66e9b9b8a~tplv-obj:1080:3876.image)
+
 【2023-6-5】[千模大赛哪家强？ 大语言模型中文评测实践](https://zhuanlan.zhihu.com/p/634884575)
 - ![](https://pic1.zhimg.com/80/v2-9bb5d154a9b41d4f57445a5231cbbac4_1440w.webp)
 
