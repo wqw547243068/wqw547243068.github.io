@@ -56,6 +56,7 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 |`Full FineTune`|全参数微调|- 优点: 训练数据集更少、提高精度、增加鲁棒性<br>缺点: 高计算成本、内存需求高、时间/专业知识密集|![](https://deci.ai/wp-content/uploads/2023/09/1-3.png.webp)|
 
 
+
 [OpenAI：最大化LLM性能的技术综述](https://zhuanlan.zhihu.com/p/667439436?utm_psn=1709306396712189953)
 
 <iframe src="//player.bilibili.com/player.html?aid=365929392&bvid=BV1p94y1G7yH&cid=1331597093&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  width='800' height='600'> </iframe>
@@ -1028,17 +1029,23 @@ Task Description:
 
 ## （3）PEFT 参数高效微调
 
-- **参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
-  - PEFT 方法可训练的部分不同。一些技术优先训练原始模型参数的**选定部分**。其他方法集成并训练较小的**附加组件**，如适配器层，而不修改原始结构
-  - ![](https://pic2.zhimg.com/80/v2-1d62f9b57373a592407db8aedd90b681_1440w.webp)
-  - LoRA是最常用的 PEFT 方法，使用重参数化，这种技术通过执行低秩近似来缩小可训练参数的集合。
-  - LoRA优点：
-    - 任务切换效率 - 创建模型的不同版本以适应特定任务变得更容易。你可以简单地存储预训练权重的单个副本，并构建许多小 LoRA 模块。当你从任务切换到任务时，你只替换矩阵 A 和 B，并保留 LLM。这显著减少了存储需求。
-    - 需要更少的 GPU - LoRA 将 GPU 内存需求减少了最多 3 倍，因为我们不计算/重新训练大多数参数。
-    - 高精度 - 在各种评估基准上，LoRA 的性能被证明几乎等同于全面微调 - 而且只需要一部分成本
-  - PEFT 相比全面微调的优势
-    - 更高效和更快的训练
-    - 保留预训练的知识
+**参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
+- PEFT 方法可训练的部分不同。一些技术优先训练原始模型参数的**选定部分**。其他方法集成并训练较小的**附加组件**，如适配器层，而不修改原始结构
+- ![](https://pic2.zhimg.com/80/v2-1d62f9b57373a592407db8aedd90b681_1440w.webp)
+- LoRA是最常用的 PEFT 方法，使用重参数化，这种技术通过执行低秩近似来缩小可训练参数的集合。
+- LoRA优点：
+  - 任务切换效率 - 创建模型的不同版本以适应特定任务变得更容易。你可以简单地存储预训练权重的单个副本，并构建许多小 LoRA 模块。当你从任务切换到任务时，你只替换矩阵 A 和 B，并保留 LLM。这显著减少了存储需求。
+  - 需要更少的 GPU - LoRA 将 GPU 内存需求减少了最多 3 倍，因为我们不计算/重新训练大多数参数。
+  - 高精度 - 在各种评估基准上，LoRA 的性能被证明几乎等同于全面微调 - 而且只需要一部分成本
+- PEFT 相比全面微调的优势
+  - 更高效和更快的训练
+  - 保留预训练的知识
+
+【2024-2-27】PEFT 包括 LORA、QLoRA、Adapter Tuning、Prefix Tuning、Prompt Tuning、P-Tuning及P-Tuning v2等
+
+7个主流微调方法在Transformer网络架构的作用位置和[简要说明](https://zhuanlan.zhihu.com/p/681254858?utm_psn=1745759328311623680)
+- ![](https://pic4.zhimg.com/80/v2-615cae7a66974b32cc4e8b7ebbd4e5a7_1440w.webp)
+
 
 ### PEFT 参数高效微调技术
 
