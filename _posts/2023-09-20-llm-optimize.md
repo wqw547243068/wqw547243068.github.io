@@ -442,6 +442,9 @@ SmoothQuant的续作, 从源代码来看, 它对SmoothQuant中计算scale时需�
 
 ##### 量化实践
 
+
+###### Mixtal GPTQ
+
 huggingface上[thebloke](https://huggingface.co/TheBloke)，每出一个新模型，就会上传对应的量化模型
 - 目前已经有 3181 个量化模型
 - [Mixtral-8x7B-v0.1-GPTQ](https://huggingface.co/TheBloke/Mixtral-8x7B-v0.1-GPTQ/tree/main )
@@ -449,6 +452,35 @@ huggingface上[thebloke](https://huggingface.co/TheBloke)，每出一个新模�
 【2024-1-10】智源团队提出首个用于自然语言理解任务的 **1bit** 轻量化预训练模型 `BiPFT`。与标准的FP32相比，使用 1bit weight 和 1bit activation，在推理阶段显著节省了56倍的操作数量和28倍的内存。该工作已被 AAAI 2024 收录。
 
 与以往面向特定任务的 1bit Transformer结构的模型相比，BiPFT显著提升了 1bit 神经网络（BNN）的学习和泛化能力，与直接在下游任务上进行二值量化的BERT模型相比，BiPFT 模型在GLUE标准测试集上平均性能超过15.4%。
+
+
+###### BitNet -- 1 Bit 量化
+
+【2023-10-29】[BitNet：用1-bit Transformer训练LLM](https://zhuanlan.zhihu.com/p/663967487): 可扩展且稳定的 1-bit Transformer架构来实现大语言模型，称为`BitNet`。
+- 使用BitLinear作为标准nn的替代品。
+
+实验结果
+- `BitNet`能够显著减少存储占用和能力消耗，并且与最先进的`8-bit`量化和`FP16` Transformer能力相当。
+- BitNet也表现出了类似于全精度Transformer的scaling law
+- 这也表明其有潜力在保持效率和性能的同时，能够更加有效的扩展至更大的语言模型。
+
+模型结构
+- ![](https://pic4.zhimg.com/80/v2-7b080895d67f263b9832849898b6650f_1440w.webp)
+
+BitNet采用与Transformer相同的布局，但是采用BitLinear而不是标准的矩阵乘法，其他组件仍保持高精度。原因如下：
+- (1) 残差连接和Layer Normalization的计算代价对于LLM可以忽略不计；
+- (2) 随着模型增大，QKV变换的计算代价远小于投影；
+- (3) 保留输入/输出嵌入层的精度，因为语言模型必须使用高精度来执行采样。
+
+【2024-2-28】微软 [The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits](https://huggingface.co/papers/2402.17764) BitNet b1.58
+- [bitnet](https://github.com/microsoft/unilm/tree/master/bitnet)
+- [BitNet: Scaling 1-bit Transformers for Large Language Models](https://arxiv.org/pdf/2310.11453.pdf)
+
+1 Bit LLM变体，即BitNet b1.58
+- LLM的每个参数(或权重)都是**三进制** `{- 1,0,1}`。在困惑度和最终任务性能方面，它与全精度(即FP16或BF16) Transformer LLM相匹配，具有相同的模型大小和训练token，同时在延迟、内存、吞吐量和能耗方面明显更具有成本效益。
+- 1.58位LLM定义了新的缩放规律和训练新一代高性能且具有成本效益的LLM的方法。
+- 此外，实现了一种新的计算范式，并为设计针对1位llm优化的特定硬件打开了大门。
+
 
 #### 2.3 蒸馏(Distillation)
 
