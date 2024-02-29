@@ -1426,6 +1426,19 @@ GitHub 中星数前 10 名的 LLM 开源项目中，和开源模型相关有第�
 - OpenLLaMA 和 RedPajama INCITE 等项目开始从预训练环节攻克可商用问题，微调的方向也更百花齐放。
 
 
+### Google AI进展
+
+谷歌Al进展时间轴 [参考](https://www.toutiao.com/article/7340612138169582120)
+- 2023年12月6日，谷歌官宣Gemini 1.0,推出Ultra、Pro和Nano三个参数量版本
+- 2024年2月1日，Gemini更新,增加多语言支持和文生图功能
+- 2024年2月8日 推出付费订阅GeminiAdvanced版本(Gemini 1.0 Ultra)
+  - Bard正式更名为Gemini
+- 2024年2月15日 发布Gemini 1.5Pro,可处理百万级上下文长度
+- 2024年2月21日 发布开源模型Gemma,提供2B和7B参数量版本
+- 2024年2月23日 因种族争议下架Gemini生图功能,并发文致歉
+- 2024年2月23日 提交世界模型Genie论文
+
+
 
 ## 清华大学
 
