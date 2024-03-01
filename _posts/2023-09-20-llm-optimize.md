@@ -297,6 +297,92 @@ LLM 模型推理`吞吐量`和`时延`这两个重要的性能指标上：
 低比特量化技术可以降低**显存占用量和访存量**，加速关键在于:
 - 显存量和访存量的节省以及量化计算的加速**远大于**反量化带来的额外开销。
 
+##### 浮点数
+
+【2024-3-1】[一次搞懂FP16、BF16、TF32、FP32](https://zhuanlan.zhihu.com/p/676509123)
+
+英伟达安培架构白皮书
+- ![](https://pic4.zhimg.com/80/v2-b596418746b700fb6984a1dd7e1db667_1440w.webp)
+
+新数据类型历史
+- FP16 最早是在图形学领域写 shader 相关的语言中引入。
+  - 其与8位或16位整数相比,**动态范围高**，可以使高对比度图片中更多细节得以保留。
+  - 与单精度浮点数相比，优点是只需要一半的存储空间和带宽（但是会牺牲精度和数值范围）。
+- 之后 FP16 随着 Volta 系列 Tensor Core 推出而广泛引用于深度学习，从而发扬光大。 
+  - 类似的数据类型还有 INT8 INT4 和 binary 1-bit 精度数据在图灵架构推出。 
+  - A100 Tensor Core 增加了 TF32 、BF16 和 FP64 的支持。
+
+这些 Reduced Precision 在算力紧缺的深度学习时代，在精度和性能做了取舍，推动着各种计算任务的发展，而背后真正的不同在于其各自代表的**位宽**和**位模式**不一样。
+
+以单精度浮点数为例： 一个浮点数 (Value) 的表示其实可以这样表示(大多数情况) ：
+- Value = sign X exponent X fraction
+
+浮点数的实际值，等于符号位（sign bit）乘以指数偏移值(exponent bias)再乘以分数值(fraction)。
+
+如 2024.0107 实际表示 [工具](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
+- ![](https://pic3.zhimg.com/80/v2-b59defbe68831e35cb6557383059fe4e_1440w.webp)
+- 不同于定点数，浮点数很多都其实都是近似
+- 特殊意义：比如说 nan，inf ，0 之类
+
+(1) FP32 到 BF16 的转换
+- ![](https://pic4.zhimg.com/80/v2-b91b8960afe45dcf8835258e9f8c08fb_1440w.webp)
+- BF16 组成：1个符号位， 8 个指数位， 举例 `0 11110 1111111111 = 65504` （max half precision）
+- 转换: 把 float32 后边多余的位给砍掉
+
+ncnn 代码
+
+```c++
+// convert float to brain half
+NCNN_EXPORT NCNN_FORCEINLINE unsigned short float32_to_bfloat16(float value)
+{
+    // 16 : 16
+    union
+    {
+        unsigned int u;
+        float f;
+    } tmp;
+    tmp.f = value;
+    return tmp.u >> 16;
+}
+// convert brain half to float
+NCNN_EXPORT NCNN_FORCEINLINE float bfloat16_to_float32(unsigned short value)
+{
+    // 16 : 16
+    union
+    {
+        unsigned int u;
+        float f;
+    } tmp;
+    tmp.u = value << 16;
+    return tmp.f;
+}
+```
+
+(2) FP32 到 FP16 的转换
+- ![](https://pic4.zhimg.com/80/v2-8881579eaa53975812574340134a4367_1440w.webp)
+- FP16 和 BF16 位宽一样，但要做起数据类型转换可比 BF16 复杂了不少。 
+- FP16 是比 BF16 更早得到广泛应用的数据类型
+  - 组成: 1个符号位5个符号位10个尾数位, 这就和 float32 的位模式只有符号位是相同的了。
+
+转换过程三个映射而已：符号位的对应，指数位的对应，尾数位的对应
+
+```c++
+// 拆分
+unsigned int sign = x & 0x80000000;                   //sign flag
+unsigned int mantissa_f32 = x & 0x007FFFFF;           // mantissa
+unsigned int exponent_f32 = x & 0x7f800000;           // exp
+// 映射 
+// ...
+```
+
+(3) FP32 vs. TF32
+
+TF32 也是深度学习时代诞生的一种新类型。
+- 针对 Nvidia Ampere 的 GPU 模式，一般也是 TensorCore 的中间计算类型，默认情况下将启用。
+- 由于使用了 TF32，某些 float32 操作在基于 Ampere 架构的 GPU 上以较低的精度运行，包括乘法和卷积。具体来说，这类运算的输入从 23 位精度四舍五入到 10 位。这对于深度学习模型来说，在实践中不太会造成问题。
+- ![](https://pic3.zhimg.com/80/v2-a55efaccc98aed7d341e757687a08cae_1440w.webp)
+- TF32 保持了 range 和 FP32 一致，减少了小数位，使用和 half 一样的 10bit 小数位，使得总体位数为 19 个 bit，降低了数据精度，但同时也在安培架构上带来了强劲的性能提升
+
 ##### 量化分类
 
 量化可以按不同角度对其进行归类: 
