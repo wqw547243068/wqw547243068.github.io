@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
 categories: 大模型
-tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama
+tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议
 excerpt: ChatGPT复现笔记
 mathjax: true
 permalink: /chatgpt_mimic
@@ -1370,6 +1370,7 @@ GPT模型进化
 - `Transformer` 结构使得模型突破到**上亿**参数量
 - `MoE` **稀疏混合专家**结构使模型参数量产生进一步突破，达到数**万亿**规模。
 
+#### 开源LLM
 
 开源大语言模型主要有三大类：
 - `GLM`衍生的大模型（wenda、ChatSQL等）
@@ -1419,6 +1420,43 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
   - facebook 对标gpt-3开放了`opt`模型，其于huggingface平台提供的finetune和推理接口
 - 国内
   - `阿里达摩院`，其于modelscope平台提供的finetune和推理接口，目前提供的版本如下：[img](https://pic3.zhimg.com/80/v2-3e6b687dbeea0bfaca523a0b9d228532_1440w.webp)
+
+#### 可商用LLM
+
+【2024-3-1】
+
+| 序号 | 模型名称 | 下载地址 | 许可证 | 许可证类型 | 使用提示及注意事项 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | LLAMA | [地址](https://research.facebook.com/publications/llama-open-and-efficient-foundation-language-models) | noncommercial license | 禁止商用 | 不可商用，就算纯内部使用、仅作为训练初始参数也不建议。学术可以 |
+| 1 | Llama 2 | [地址](https://ai.meta.com/resources/models-and-libraries/llama-downloads/) | LLAMA 2 COMMUNITY LICENSE AGREEMENT | 禁止大规模商用；学术使用需要单独评估 | 月活超过7亿的主体不可使用，当前请不要填表申请；|
+| 1 | Code llama | [地址](https://about.fb.com/news/2023/08/code-llama-ai-for-coding/) | LLAMA 2 COMMUNITY LICENSE AGREEMENT | 同上（Llama 2）
+| 1 | open_llama | [open_llama_3b](https://huggingface.co/openlm-research/open_llama_3b), [open_llama_7b](https://huggingface.co/openlm-research/open_llama_7b), [open_llama_13b](https://huggingface.co/openlm-research/open_llama_13b) | Apache 2.0 | 允许商用，基本无限制<br>没有特别限制，如果涉及到将模型部署到公司之外，需要法务评审。
+| 1 | Chinese-LLaMa-Alpaca | [Chinese-LLaMA-Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca), [Chinese-LLaMA-Alpaca-2](https://github.com/ymcui/Chinese-LLaMA-Alpaca-2) | LLAMA 2 COMMUNITY LICENSE AGREEMENT 或者禁止商用 | 不允许商用or 禁止字节商用 | Chinese-LLaMa-Alpaca 1不允许商用；<br>Chinese-LLaMa-Alpaca 2本身是LORA，由于该LORA使用需要配合llama 2，且llama 2不允许商用<br>所以可能实质上没有办法商用Chinese-LLaMa-Alpaca-2 |
+| 1 | CogVLM-17B | [CogVLM](https://github.com/THUDM/CogVLM) | LLAMA 2 COMMUNITY LICENSE AGREEMENT的限制同时适用 | 禁止商用，学术使用需要单独评估 |
+| 2 | glm | [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B)<br>[ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B)<br>[ChatGLM3](https://github.com/THUDM/ChatGLM3) (2023.11.03更新) | The ChatGLM-6B License | 允许商用，但是填写问卷进行申请 | 目前智谱已经开放了问卷申请，建议填写问卷重新申请。|
+| 3 | Stable diffision | [CompVis](https://huggingface.co/CompVis) | Open RAIL-M |  允许商用但需要声明 | 1. 内部使用作为提效工具，接口/服务本身不对外暴露，没有额外义务，但是不能用于非法、歧视等不正当目的；<br>2. 提供接口供外部调用生成图片的，需要完成声明义务，具体参考Stable Diffusion 的许可证合规指引 ；<br>3. [CompVis](https://huggingface.co/CompVis) 包括多个细分模型的参数，凡是许可证为The CreativeML OpenRAIL M license均受到上述限制；<br>4. [civitai](https://civitai.com/) 上的SD衍生模型有可能有额外限制，即使内容使用也需要评审；
+| 4 | Dolly 2.0 | [dolly](https://www.databricks.com/blog/2023/03/24/hello-dolly-democratizing-magic-chatgpt-open-models.html), [databricks-dolly-15k](https://huggingface.co/datasets/databricks/databricks-dolly-15k/tree/main) | cc-by-sa-3.0 | 允许商用，基本无限制 | 没有特别限制，如果涉及到将模型部署到公司之外，法务评审。|
+| 5 | RedPajama | [redpajama](https://together.ai/blog/redpajama-models-v1) | Apache 2.0 | 允许商用，基本无限制 | 没有特别限制，如果涉及到将模型部署到公司之外，法务评审。| 
+| 6 | bloomz |[bloomz](https://huggingface.co/bigscience/bloomz),<br>[bloomz-1b7](https://huggingface.co/bigscience/bloomz-1b7),<br>[bloom-1b7](https://huggingface.co/bigscience/bloom-1b7) | bigscience-bloom-rail-1.0 | 允许商用但需要登记和声明 | 1. 在内部使用模型生成素材并将素材对外使用，需要将素材标识为AI生成；,<br>2. 基于该模型对外提供服务的，需要遵循道德条款并且声明用到了该模型且通过协议要求用户遵循道德条款；具体可以参考：Bloom 许可证合规指引 ,<br>3. 内部使用作为提效工具，接口/服务本身不对外暴露，没有额外义务；但是不能用于非法、歧视等不正当目的；但是即使内部使用，也建议引入开源法务评估 |
+| 7 | MOSS |[moss-moon-003-base](https://huggingface.co/fnlp/moss-moon-003-base),<br>[moss-moon-003-sft](https://huggingface.co/fnlp/moss-moon-003-sft),<br>[moss-moon-003-sft-plugin](https://huggingface.co/fnlp/moss-moon-003-sft-plugin),<br>[moss-moon-003-sft-int8](https://huggingface.co/fnlp/moss-moon-003-sft-int4/tree/mainhttps://huggingface.co/fnlp/moss-moon-003-sft-int8),<br>[moss-moon-003-sft-plugin-int4](https://huggingface.co/fnlp/moss-moon-003-sft-plugin-int4),<br>[moss-moon-003-sft-plugin-int8](https://huggingface.co/fnlp/moss-moon-003-sft-plugin-int8) | AGPL 3.0 | 允许商用，基本无限制 | 内部使用（包括提供SaaS服务）可以，但是如果fine-tune其参数且用于SaaS服务可能需要开源fine-tune过的参数，具体什么场景下需要开源fine-tune过的参数法务沟通 |
+| 8 | 百川 | [Baichuan-7B](https://huggingface.co/baichuan-inc/Baichuan-7B) | baichuan-7B 模型许可协议 | 允许商用但需要登记和声明<br>如果要商用，需要填写问卷进行登记，且在对外提供服务时需要声明用到了该模型 |
+| 8 | 百川 | [Baichuan-13B-Base](https://huggingface.co/baichuan-inc/Baichuan-13B-Base) | Baichuan-13B 模型社区许可协议 | 允许商用但需要登记和声明，此外需要配合宣传 | 如果要商用，填写问卷登记，且对外提供服务时，需要明确标识baichuan-inside，以及同意配合百川的宣传 |
+| 8 | 百川 | [Baichuan2-7B-Base](https://huggingface.co/baichuan-inc/Baichuan2-7B-Base) | Baichuan2 模型社区许可协议 | | |
+| 8 | 百川 | [Baichuan2-13B-Base](https://huggingface.co/baichuan-inc/Baichuan2-13B-Base) | Baichuan2 模型社区许可协议 | | |
+| 9 | Falcon | [falcon-7b-instruct](https://huggingface.co/tiiuae/falcon-7b-instruct)
+,<br>[falcon-40b-instruct](https://huggingface.co/tiiuae/falcon-40b-instruct) | Apache 2.0 | 较为宽松，允许各种形式商用 | 如果涉及到部署到公司之外，法务联系 |
+| 9 | Falcon | [falcon-180B-chat](https://huggingface.co/tiiuae/falcon-180B-chat) | falcon-180b-license | 不能对外提供SaaS推理和fine-tune服务，可部署在内部支持公司的App | 
+| 10 | 通义千问 | <br>[Qwen](https://github.com/QwenLM/Qwen), <br>[Qwen-VL](https://github.com/QwenLM/Qwen-VL) <br>注意：不包括QW1.5下的各个模型 | [AGREEMENT](https://github.com/QwenLM/Qwen/blob/main/Tongyi%20Qianwen%20LICENSE%20AGREEMENT) | 目前已经获得了针对QW-7B版本、14B版本以及72B的模型许可证，可以商用 | 不能用模型的输出训练其他模型（Qwen模型除外）；|
+| 11 | 书生 | [InternLM](https://github.com/InternLM/InternLM) (7B基座模型和chat模型，20B基座模型和chat模型) | | 允许部分团队商用,下载、精调和部署该模型，也可以对其他业务提供API；| 其他主体的团队使用该模型需要另行评估；|
+| 11 | 书生 | 部分xposer系列模型,<br>[internlm-xcomposer-7b](https://huggingface.co/internlm/internlm-xcomposer-7b),<br>[internlm-xcomposer-vl-7b](https://huggingface.co/internlm/internlm-xcomposer-vl-7b) | Apache 2.0 | 较为宽松，允许各种形式商用,如果涉及部署公司外，法务联系 |
+| 11 | 书生 | [internlm-xcomposer2-vl-7b](https://huggingface.co/internlm/internlm-xcomposer2-vl-7b) | 需要填表申请 | 申请中，尚没有得到回复，暂时不要使用 |
+| 12 | Yi | [Yi-6B](https://huggingface.co/01-ai/Yi-6B),<br>[Yi-34B](https://huggingface.co/01-ai/Yi-34B) | Yi Series Models License Agreement | 可商用，有声明义务 | 对外提供服务供第三方使用的，需要进行声明，具体落地方式请与开源法务进一步沟通；<br>涉及到私有化部署的，也需要进一步沟通 |
+| 12 | Yi | Yi-VL系列：[Yi-VL-6B](https://huggingface.co/01-ai/Yi-VL-6B), <br>[Yi-VL-34B](https://huggingface.co/01-ai/Yi-VL-34B) | [LICENSE](https://huggingface.co/01-ai/Yi-VL-34B/blob/main/LICENSE) | 需要发邮件申请 |
+| 13 | mistral | [announcing-mistral-7b](https://mistral.ai/news/announcing-mistral-7b/),<br>[mixtral-of-experts](https://mistral.ai/news/mixtral-of-experts/) | Apache 2.0 | 7B和mixtral-of-experts的许可证均较为宽松，允许各种形式商用 | 如果涉及到部署到公司之外，法务联系 |
+| 14 | llava | [MODEL_ZOO](https://github.com/haotian-liu/LLaVA/blob/main/docs/MODEL_ZOO.md)| 适用llama 2许可证 | 禁止商用，学术使用需要单独评估 | Llava 有多个版本，主要版本有非商用限制，如果发现某个版本的许可证为宽松许可证，且确实有适用的需求，与开源法务沟通| 
+| 15 | Deepseek | [deepseek-ai](https://huggingface.co/deepseek-ai)；[DeepSeek-Coder](https://github.com/deepseek-ai/DeepSeek-Coder/tree/main) | Deepseek model license | 允许商用；但对外服务需要声明<br>1.截至到24年1月10日，huggingface上deepseek主页的模型许可证均为deep seek model license，针对该许可证适用该指引；代码的许可证（MIT）、以及后续如果是该主页下的采用其他模型的许可证不适用该指引；<br>2.义务和限制：不能滥用（用于违法目的），且对外提供服务时，需要通过声明（或者协议）限制用户滥用，具体落地方式可以联系开源法务进一步沟通；纯内部部署并且服务不会对外的情形不需要做此类的限制；|
+| 16 | phi-2 | [phi-2](https://huggingface.co/microsoft/phi-2) | MIT | 较为宽松，允许各种形式商用 | 如果涉及到部署到公司之外（比如部署在客户端或者涉及私有化部署），与开源法务联系 |
+| 17 | Gemma | [gemma-2b](https://huggingface.co/google/gemma-2b),<br>[gemma-2b-it](https://huggingface.co/google/gemma-2b-it),<br>[gemma-7b](https://huggingface.co/google/gemma-7b),<br>[gemma-7b-it](https://huggingface.co/google/gemma-7b-it) |  [license](https://www.kaggle.com/models/google/gemma/license/consent) | 较为宽松，允许各种形式商用，但基于模型对外提供服务时，有比较多的声明义务 | 在基于Gemma以及其精调后模型对外提供服务时，声明义务包括：<br>1.通过协议条款限制用户对于服务的使用（避免用户滥用）；<br>2.如果有修改，需要说明对模型进行了修改；<br>3.需要向用户提供模型的信息和许可证。|
 
 
 #### MoE
