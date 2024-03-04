@@ -121,6 +121,8 @@ mathjax: true
 - [Causal inference course written from a machine learning perspective](https://www.bradyneal.com/causal-inference-course)，包含课程ppt列表
   - <iframe src="//player.bilibili.com/player.html?aid=885688534&bvid=BV1CK4y1L7uA&cid=267895326&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" > </iframe>
 
+【2024-3-2】[A-Survey-of-Deep-Causal-Models-and-Their-Industrial-Applications](https://hub.nuaa.cf/alwaysmodest/A-Survey-of-Deep-Causal-Models-and-Their-Industrial-Applications/blob/main/paper/Dragonnet.pdf)
+
 
 # 因果推理书籍
 
