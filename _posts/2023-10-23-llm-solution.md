@@ -1877,6 +1877,82 @@ S-LoRA 包含三个主要创新部分。论文第 4 节介绍了批处理策略�
 
 与 HuggingFace `PEFT` 和 `vLLM`（仅支持 LoRA 服务）等最先进的库相比，`S-LoRA` 吞吐量最多可提高 4 倍，服务适配器数量可增加几个数量级。因此，S-LoRA 能够为许多特定任务的微调模型提供可扩展的服务，并为大规模定制微调服务提供了潜力。
 
+### DoRA
+
+【2024-3-1】[DoRA：LoRA再升级-参数高效微调](https://zhuanlan.zhihu.com/p/684833295)
+
+Lora 本质上把大矩阵拆成两个小矩阵的乘法
+- ![](https://pic1.zhimg.com/80/v2-5a6c032445742aa6df093e6fec4dfd98_1440w.webp)
+
+```py
+class LoRALayer(nn.Module):
+    def __init__(self, in_dim, out_dim, rank, alpha):
+        super().__init__()
+        std_dev = 1 / torch.sqrt(torch.tensor(rank).float())
+        self.A = nn.Parameter(torch.randn(in_dim, rank) * std_dev)
+        self.B = nn.Parameter(torch.zeros(rank, out_dim))
+        self.alpha = alpha
+
+    def forward(self, x):
+        x = self.alpha * (x @ self.A @ self.B)
+        return x
+
+class LinearWithLoRAMerged(nn.Module):
+    def __init__(self, linear, rank, alpha):
+        super().__init__()
+        self.linear = linear
+        self.lora = LoRALayer(
+            linear.in_features, linear.out_features, rank, alpha
+        )
+
+    def forward(self, x):
+        lora = self.lora.A @ self.lora.B # Combine LoRA matrices
+        # Then combine LoRA with orig. weights
+        combined_weight = self.linear.weight + self.lora.alpha*lora.T 
+        return F.linear(x, combined_weight, self.linear.bias)
+```
+
+DoRA（Weight-Decomposed Low-Rank Adaptation）主要思想
+- 将预训练权重分解为**幅度**（magnitude）和**方向**（direction），并利用LoRA来微调方向矩阵
+- ![](https://pic1.zhimg.com/80/v2-34cab3f7896975b3ea1032113441aff8_1440w.webp)
+- 公式见原文
+
+```py
+class LinearWithDoRAMerged(nn.Module):
+
+    def __init__(self, linear, rank, alpha):
+        super().__init__()
+        self.linear = linear
+        self.lora = LoRALayer(
+            linear.in_features, linear.out_features, rank, alpha
+        )
+        self.m = nn.Parameter(
+            self.linear.weight.norm(p=2, dim=0, keepdim=True))
+
+  # Code loosely inspired by    
+  # https://github.com/catid/dora/blob/main/dora.py
+
+    def forward(self, x):
+        lora = self.lora.A @ self.lora.B
+        numerator = self.linear.weight + self.lora.alpha*lora.T
+        denominator = numerator.norm(p=2, dim=0, keepdim=True)
+        directional_component = numerator / denominator
+        new_weight = self.m * directional_component
+        return F.linear(x, new_weight, self.linear.bias)
+```
+
+**LoRA通常会等比例增减幅度和方向，DoRA通过将预训练权重矩阵分解为幅度和方向，能够更接近全量微调的效果**。
+
+- 使用比LoRA更少的参数，效果还更好
+- ![](https://pic3.zhimg.com/v2-2681727bb6226a5b1d3651b80ccbc52e_b.jpg)
+-   使用较小的rank，效果也很好
+- ![](https://pic2.zhimg.com/80/v2-8e92d2e2f256e7d69226772e0083e9c5_1440w.webp)
+
+相信DoRA应该很快会成为一种普遍的大模型微调方法。
+
+资料：
+- DoRA: Weight-Decomposed Low-Rank Adaptation
+- Improving LoRA: Implementing Weight-Decomposed Low-Rank Adaptation (DoRA) from Scratch
 
 
 ## （4）全量微调
