@@ -2912,6 +2912,41 @@ fi
 
 ```
 
+实测
+- `=` 和 `==` 等效
+- `[]` 和 `test` 等效
+-  `[[]]` 和 `[]`大体等效，但正则表达式只能用双括号
+- `=` 两边要留空，否则结果错误
+
+```sh
+echo "单括号（识别错误）"
+if [ "1"="" ] && [ "1"="1" ]; then echo A; else echo B; fi # A
+if [ "1"="" -a "1"="1" ]; then echo A; else echo B; fi # A
+echo "留空格（正确）"
+if [ "1" = "" ] && [ "1" = "1" ]; then echo A; else echo B; fi # B
+if [ "1" = "" -a "1" = "1" ]; then echo A; else echo B; fi # B
+echo "双括号"
+if [[ "1"="" ]] && [[ "1"="1" ]]; then echo A; else echo B; fi # A
+if [[ "1" = "" ]] && [[ "1" = "1" ]]; then echo A; else echo B; fi # B
+# if [[ "1"="" -a "1"="1" ]]; then echo A; else echo B; fi # 报错
+echo "双等号（正确）"
+if [ "1" == "" ] && [ "1" == "1" ]; then echo A; else echo B; fi # B
+if [ "1" == "" -a "1" == "1" ]; then echo A; else echo B; fi # B
+# 正则表达式需要双括号，否则报错
+if [[ ${BASEDIR} =~ ^hdfs ]];then
+    echo "y"
+else
+    echo 'n'
+fi
+# 组合条件中, 正则表达式单独使用[[]]括起来，不能混用！
+# if [ $mode = 'local' -a ${BASEDIR} =~ ^hdfs ];then
+if [ $mode = 'local' ] && [[ ${BASEDIR} =~ ^hdfs ]]; then
+    echo "y"
+else
+    echo 'n'
+fi
+```
+
 #### for 循环判断
 
 ```sh
