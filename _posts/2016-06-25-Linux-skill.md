@@ -2547,6 +2547,8 @@ typedef union epoll_data {
 更多编程语言介绍：
 - [编程语言发展历史]({{ site.baseurl}}{% post_url 2010-07-26-computer-history %}#编程语言变迁)
 - 【2022-11-20】[linux bash shell 最常用的函数和指令](https://www.toutiao.com/article/7167905628231565827)
+- 【2024-3-5】[Bash Shell脚本进阶](https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/zheng-wen/part1)
+
 ## Shell知识点
 
 在 Linux 的基础上再度深入学习 Shell，可以极大的减少重复工作的压力。毕竟批量处理才是工作的常态呢~
