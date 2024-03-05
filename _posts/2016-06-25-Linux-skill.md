@@ -2558,6 +2558,13 @@ typedef union epoll_data {
 
 ## 常规语法
 
+查看 Shell 版本
+
+```sh
+bash --version
+echo "$BASH_VERSION"
+```
+
 ### 执行shell
 
 ```sh
@@ -2794,7 +2801,23 @@ $_ # 上一个命令的最后一个参数
 
 ### 控制
 
-#### 条件判断
+#### 操作系统差异
+
+
+debain（乌班图）linux 下，字符串判断时，会出现以下错误
+- 因为 ubuntu 默认 shell 使用 dash，dash 与 bash 一些指令上有些差异
+- 解法: 改回 `/bin/sh -> bash`，修改默认sh
+  - `sudo dpkg-reconfigure dash` 启动可视化编辑页面
+  - 然后选 No，改回 `/bin/sh -> bash`
+  - 把 == 改成 =
+
+```sh
+[: =~: binary operator expected
+[[: =~: binary operator expected
+```
+
+
+#### if 条件判断
 
 ```sh
 # 字符串比较
@@ -2865,10 +2888,9 @@ fi
 if [ "$1" = 'n' -o $2 -lt 0 ]; then
     echo "no"
 fi
-
 ```
 
-#### for
+#### for 循环判断
 
 ```sh
 # 基本 for 循环
