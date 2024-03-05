@@ -3948,14 +3948,15 @@ Claude 2.0 单次回话只支持 10 万个 Token，而 Claude 2.1 支持输入�
 - Claude 2.1 号称准确率是 Claude 2.0 两倍，此外该模型也改善了对于文本内容的理解能力，特别是对法律文件、财报与技术规格等更高准确度的文档进行了优化，号称“出现错误答案的比例减少了 30%”
 
 
-#### Claude 3
+#### 【2024-3-4】 Claude 3
 
 【2024-3-4】Anthropic 发布了一组 Claude 3 系列大模型，称其功能最强大的模型在各种基准测试中均优于 OpenAI 的 GPT-4 和 Google 的 Gemini 1.0 Ultra。
 - Claude3 优化了**准确性**和**长文本窗口**能力。
   - 准确性上，Anthropic 用了大量复杂的**事实问题**来针对当前模型中已知的弱点，将答案分为**正确答案**、**错误答案**（或幻觉）和**承认不确定性**。相应地，Claude3 模型表示它<span style='color:red'>不知道答案，而不是提供不正确的信息</span>。其中最强的版本 Claude 3 Opus 在具有挑战性的开放式问题上的准确性（或正确答案）上，比 Claude 2.1 提高了1倍，同时也减少了错误答案的水平。
 - Claude 3 有「引用」功能，可指向参考材料中的精确句子来验证他们的答案。
 - Claude 3 系列模型将提供 **200K** token 的上下文窗口。后续，所有这三种模型都能够接受超过 100 万 token 的输入，这部分能力会提供给需要增强处理能力的精选客户。Anthropic 在技术报告中简单阐述了 Claude3 的上文本窗口能力，包括有效处理更长的上下文提示词，以及回忆能力。
-- Claude3 作为**多模态**模型，可以输入图像，但无法输出图像内容
+- Claude3 首次带来**多模态**模型，可以输入图像，但无法输出图像内容
+  - Opus 版本的 MMMU 得分为 59.4%，超过 GPT-4V，与 Gemini  1.0 Ultra 持平）。用户现在可以上传照片、图表、文档和其他类型的非结构化数据，让 AI 进行分析和解答。
 - Claude3 是一组模型：`Haiku`(小杯)、`Sonnet`（中杯） 和 `Opus`（大杯），让企业客户根据自身场景选择不同性能、不同成本的版本。
   - Sonnet 的速度比 Claude 2 和 Claude 2.1 快 2 倍，且智能水平更高。
   - ![](https://imgslim.geekpark.net/uploads/image/file/5e/5f/5e5f63e4a03388887f3d3719956dc65e.png)
@@ -3963,10 +3964,30 @@ Claude 2.0 单次回话只支持 10 万个 Token，而 Claude 2.1 支持输入�
 - 但目前方法可能无法实现**完全**无偏见的人工智能。
   - 「创建一个完全中立的生成式人工智能工具几乎是不可能的，不仅在技术上，而且还因为并不是每个人都同意什么是中立。」
 
-Anthropic 在 159 个国家开放使用 Claude3 系列的两款模型（Opus 和 Sonnet），最强版本 Haiku 也即将推出。同时，Anthropic 也通过亚马逊和谷歌的云平台提供服务，后者曾分别向 Anthropic 注资 40 亿美元和 20 亿美元。
+效果：
+- 能力最强的 `Opus` 在多项基准测试中得分都超过了 `GPT-4` 和 `Gemini 1.0 Ultra`，在数学、编程、多语言理解、视觉等多个维度树立了新的行业基准。
+- Claude 3 Opus 拥有人类本科生水平的知识
+- ![](https://image.jiqizhixin.com/uploads/editor/cf8e07d3-f981-4c84-9ab4-a182179c5971/640.png)
+
+
+Anthropic 访问
+- [claude](https://claude.ai)
+- 159 个国家开放使用 Claude3 系列的两款模型（Opus 和 Sonnet），最强版本 Haiku 也即将推出。
+- 同时，Anthropic 也通过**亚马逊**和**谷歌**的云平台提供服务，后者曾分别向 Anthropic 注资 40 亿美元和 20 亿美元。
+
+
+定价
+- 能力最强的 Claude 3 也比 GPT-4 Turbo 要贵得多：
+  - GPT-4 Turbo 每百万 token 输入 / 输出收费为 **10/30** 美元 ；
+  - 而 Claude 3 Opus 为 **15/75** 美元。
+
+42 页的技术报告
+- 《[The Claude 3 Model Family: Opus, Sonnet, Haiku](https://www-cdn.anthropic.com/de8ba9b01c9ab7cbabf5c33b80b7bbc618857627/Model_Card_Claude_3.pdf)》
+- [claude-3-family](https://www.anthropic.com/news/claude-3-family)
 
 参考
 - [刚刚曝光的 Claude3，直击 OpenAI 最大弱点](https://www.geekpark.net/news/331955)
+- [GPT-4时代已过？全球网友实测Claude 3，只有震撼](https://www.jiqizhixin.com/articles/2024-03-05-4)
 
 ### TruthGPT
 
