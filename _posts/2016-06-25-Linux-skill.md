@@ -2610,7 +2610,7 @@ python hello.py &>/dev/null    # 标准输出和标准错误到（空null）
 python hello.py < foo.txt      # 将 foo.txt 提供给 python 的标准输入
 ```
 
-### 变量
+### 变量操作
 
 sheel变量
 
@@ -2652,6 +2652,108 @@ bash 注释
 cat <<END
 hello world
 END
+```
+
+特殊变量
+
+```sh
+#!/bin/bash
+echo "Process ID: $$"
+echo "File Name: $0"
+echo "First Parameter : $1"
+echo "Second Parameter : $2"
+echo "All parameters 1: $@"
+echo "All parameters 2: $*"
+echo "Total: $#"
+```
+
+### 变量作用域
+
+#### 变量的作用域（Scope）
+
+Shell 变量作用域分三种：
+- **全局变量**（global variable）: **当前 Shell 会话**中使用
+- **局部变量**（local variable）: 只能在**函数内部**使用
+- **环境变量**（environment variable）: 在**其它 Shell** 中使用。
+
+解析
+- **全局变量**：变量在当前的整个 Shell 会话中都有效。每个 Shell 会话都有自己的作用域，彼此之间互不影响。在 Shell 中定义的变量，默认就是全局变量。
+- **局部变量**：Shell 函数中定义的变量默认是**全局变量**，它和在函数外部定义变量拥有一样的效果
+- **环境变量**：环境变量被创建时所处的 Shell 被称为父 Shell，如果在父 Shell 中再创建一个 Shell，则该 Shell 被称作子 Shell。当子 Shell 产生时，它会继承父 Shell 的环境变量为自己所用，所以说环境变量可从父 Shell 传给子 Shell。
+  - 注意，环境变量只能**向下传递**而不能向上传递，即“传子不传父”
+
+
+```sh
+a=3 # 全局变量
+global a=3 # 报错，没有global关键词
+export a # 将自定义变量设定为系统环境变量
+
+fun f(){
+    c='1' # 全局变量
+    local t='2' # 局部变量,仅函数内使用
+}
+local t='2' # 报错，local必须出现在函数内
+```
+
+
+#### export
+
+Linux export 命令用于设置/显示环境变量。
+
+shell 中执行程序时，shell 会提供一组环境变量。export 可新增，修改或删除环境变量，供后续执行的程序使用。
+
+export 命令的作用域：
+> 当前终端中直接输入的 export 变量仅**当前shell终端**及其**子shell**可见，另起一个终端将无法访问。
+
+注意
+- 父shell中的export变量，子shell可读
+- 子shell变量是父shell的一个拷贝，不影响父shell取值
+- 子shell export变量，父shell读不到
+
+```sh
+export WORD="hello"
+
+echo $WORD           # 可以看到输出 hello
+env | grep WORD      # 可以看到有WORD变量
+sh -c "echo $WORD"   # 子shell中执行，同样可以看到输出了 hello
+```
+
+如何保证其他终端可见？
+- `~/.bashrc` 或者 `/etc/profile` 中使用 `export` 命令配置全局的环境变量，然后`source`，所有终端都可见
+
+#### 变量传递
+
+如何从子shell向父shell传递变量
+- 命令传输
+- 中间文件
+- 管道
+- here文档
+
+```sh
+# 命令传输
+pvar=`subvar='hello shell'`
+echo $pvar
+# 文件传输
+(
+    subvar='hello shell'
+    echo "$subvar" > tmp.txt
+)
+read pvar < tmp.txt
+echo $pvar
+# 管道传输
+mkfifo -m 777 npipe # 创建管道 npipe
+(
+    subsend="hello world"
+    echo "$subsend" > npipe &
+)
+read pread < npipe
+echo "$pread"
+# here 文档
+read pvar <<HERE
+`subvar="hello shell"
+echo $subvar`
+HERE
+echo $pvar
 ```
 
 ### 函数参数
