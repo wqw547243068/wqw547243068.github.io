@@ -2890,6 +2890,28 @@ if [ "$1" = 'n' -o $2 -lt 0 ]; then
 fi
 ```
 
+复合条件判断
+- `&& ||-a –o` 处理
+
+```sh
+#!/bin/bash
+
+# 等效表达: [[]] ＝ []
+[  exp1  -a exp2  ] = [[  exp1 && exp2 ]] = [  exp1  ]&& [  exp2  ] = [[ exp1  ]] && [[  exp2 ]]
+[  exp1  -o exp2  ] = [[  exp1 || exp2 ]] = [  exp1  ]|| [  exp2  ] = [[ exp1  ]] || [[  exp2 ]]
+
+# 整型比较
+count="$1"
+if [ $count -gt 15 -o $count -lt 5 ];then
+   echo right
+fi
+# 字符串
+if [[ "a" == "a" ]] || [[ 2 -gt 1]] ;then
+    echo "ok";
+fi
+
+```
+
 #### for 循环判断
 
 ```sh
