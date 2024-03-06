@@ -122,6 +122,22 @@ CentOS规定了startup文件的加载顺序如下：
 
 [原文链接](https://blog.csdn.net/sch0120/article/details/70256318)
 
+
+#### 登录历史
+
+【2024-3-6】查看服务器登录历史
+
+```sh
+last
+# 输出信息
+root@singapore:~/wqw# last
+root     pts/1        120.244.236.142  Wed Mar  6 11:32   still logged in
+root     pts/1        120.244.236.142  Wed Mar  6 11:19 - 11:32  (00:13)
+root     pts/4        114.251.196.89   Tue Mar  5 13:13 - 14:50  (01:36)
+root     pts/4        2.59.151.97      Sun Mar  3 16:52 - 16:56  (00:03)
+```
+
+
 ## Mac OS 技巧
 
 
