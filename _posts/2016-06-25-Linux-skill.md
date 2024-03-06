@@ -528,6 +528,17 @@ Linux 将用户账号、密码等相关的信息分别存储在四个文件夹�
   - 用户组名 : 密码 : 用户组管理员账号 : 该用户组包含的账号名称
   - root : : : root
 
+修改文件权限
+
+```sh
+# 格式
+chown -R owner_name:group_name folder_name
+chown -R new_owner_name directory1 directory2 directory3 # 多个目录
+# 示例
+sudo chown wqw test_dir # 修改文件所属权限（不含目录子文件）
+sudo chown -R wqw test_dir # 递归修改文件所属权限
+```
+
 `adduser` 与 `useradd` 在一些方面存在不同。
 - useradd 创建用户，但是不创建密码等其他用户信息，需要使用 passwd 设置密码才能使用；而 adduser 能通过交互界面，由用户直接输入密码等，设置用户信息。
 - useradd 默认不在 /home 下创建用户同名的主文件夹，而 adduser 默认创建。
