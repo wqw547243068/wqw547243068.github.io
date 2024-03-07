@@ -21,9 +21,13 @@ permalink: /phone
 
 ### 海外手机号
 
-[全球各国区号表](https://baike.baidu.com/item/%E5%9B%BD%E9%99%85%E9%95%BF%E9%80%94%E7%94%B5%E8%AF%9D%E5%8C%BA%E5%8F%B7%E8%A1%A8/12803495)
+国家区号信息
+- [全球各国区号表](https://baike.baidu.com/item/%E5%9B%BD%E9%99%85%E9%95%BF%E9%80%94%E7%94%B5%E8%AF%9D%E5%8C%BA%E5%8F%B7%E8%A1%A8/12803495)
 
 如美国区号是 1
+
+区号地图可视化见 [Wikipedia](https://zh.wikipedia.org/wiki/%E5%9B%BD%E9%99%85%E7%94%B5%E8%AF%9D%E5%8C%BA%E5%8F%B7%E5%88%97%E8%A1%A8), [img](https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Country_calling_codes_map.svg/2880px-Country_calling_codes_map.svg.png)
+- ![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Country_calling_codes_map.svg/2880px-Country_calling_codes_map.svg.png)
 
 #### 接码平台
 
