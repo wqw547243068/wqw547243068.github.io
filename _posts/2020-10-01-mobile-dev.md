@@ -3,7 +3,7 @@ layout: post
 title:  "移动设备知识"
 date:   2020-10-01 20:30:00
 categories: 技术工具
-tags: adb otg 手机 内存 闪存 rom ram
+tags: adb otg 手机 内存 闪存 rom ram 手机 接码
 author : 鹤啸九天 
 excerpt: 移动端知识及开发
 mathjax: true
@@ -14,6 +14,46 @@ permalink: /phone
 {:toc}
 
 # 移动设备
+
+
+## 手机号
+
+
+### 海外手机号
+
+#### 接码平台
+
+虚拟国外手机号用于接收注册验证码。
+- 如果没有真实手机号，通过第三方**接码平台**来注册国外手机号，支付宝要有 1.5 元人民币。
+- gv（google voice虚拟号）不行
+
+接码平台推荐：
+- [sms-activate](https://sms-activate.org/getNumber)
+
+注册短信平台并充值
+- 先注册在线接受短信的虚拟号码 
+- SMS-Activate，注册好之后进行对应的充值
+
+其它虚拟号平台（免费公开，难以找到可用的虚拟号）
+- 【2023-10-20】[sms24](https://sms24.info/en/numbers/85226034303), 香港号码
+
+接码平台 
+- 注册平台账户，俄罗斯的网站[sms-activate](https://sms-activate.org/en#)，可以提供全球各地的电话号码，用来做短信验证
+- 充值：国内可以用支付宝充值，比如 0.2美元，对应1.43元，14卢比
+- 左侧选择应用（OpenAI）、国家（推荐印度）
+- 购买，大约10卢比
+- 虚拟号生成，如：917079589203
+  - 注意：虚拟号20min内有效
+
+【2023-2-2】接码平台故障，无法登陆，改用别的
+- 免费接码平台，[接号码](https://jiemahao.com/sms)，[smsonline](https://www.smsonline.cloud/zh/)，号码公开，基本都被人用过，OpenAI对每个手机号关联数目有限制，超限就报错：<span style='color:red'>This phone number is already linked to the maximum number of accounts.</span>
+- 直接提供号码及验证码：[sms24](https://sms24.info/en/messages/OpenAI)，找了一堆，终于遇到一个捷克可用号码[420605118029](https://sms24.info/en/numbers/420605118029)，然而，迟迟收不到短信
+
+#### 国内漫游
+
+除了接码平台，还可以再国内漫游免费接收短信
+
+国产手机稳定支持美国手机卡开通wificalling功能，可漫游免费接收短信
 
 
 ## 手机设备
