@@ -3,7 +3,7 @@ layout: post
 title:   大模型微调落地方案 LLM Solution
 date:   2023-10-23 16:52:00
 categories: 大模型
-tags: 微调 RAG lora prompt 陈丹琦 知识图谱
+tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe
 excerpt: 大模型工业落地经验总结
 mathjax: true
 permalink: /llm_solution
@@ -2015,6 +2015,39 @@ class LinearWithDoRAMerged(nn.Module):
 - DoRA: Weight-Decomposed Low-Rank Adaptation
 - Improving LoRA: Implementing Weight-Decomposed Low-Rank Adaptation (DoRA) from Scratch
 
+
+### LoRA + MoE
+
+【2024-3-5】[大模型微调新范式：当LoRA遇见MoE](https://mp.weixin.qq.com/s/t_X8AHFgi-RHuviTuCYv0Q)
+
+对比
+- 原始版本的 LoRA，权重稠密，每个样本都会激活**所有参数**；
+- 与混合专家（MoE）框架结合的 LoRA，每一层插入多个并行的 LoRA 权重（即 MoE 中的多个专家模型），路由模块（Router）输出每个专家的激活概率，以决定激活哪些 LoRA 模块。
+
+为了克服**稠密模型**的参数效率瓶颈，以 Mistral、DeepSeek MoE 为代表的混合专家（Mixure of Experts，简称 MoE）模型框架。
+
+模型某个模块（如 Transformer 的某个 FFN 层）存在多组形状相同的权重（称为专家），另外有一个**路由模块**（Router）接受原始输入、输出各专家的激活权重，最终的输出为：
+- 如果是**软路由**（soft routing），输出各专家输出的**加权求和**；
+- 如果是**离散路由**（discrete routing），即 Mistral、DeepDeek MoE 采用的**稀疏混合专家**（Sparse MoE）架构,则将 Top-K（K 为固定的 超参数，即每次激活的专家个数，如 1 或 2）之外的权重置零，再加权求和。
+
+MoE 架构中每个专家参数的激活程度取决于数据决定的**路由权重**，使得各专家的参数能各自关注其所擅长的数据类型。在离散路由的情况下，路由权重在 TopK 之外的专家甚至不用计算，在保证总参数容量的前提下极大降低了推理的计算代价。
+
+案例
+- MoV、MoLORA、LoRAMOE 和 MOLA 等新的 PEFT 方法，相比原始版本的 LORA 进一步提升了大模型微调的效率。
+
+详情
+- `MoV` 和 `MoLORA`：
+  - 2023 年 9 月，首个结合 PEFT 和 MoE 的工作，MoV 和 MoLORA 分别是 `IA` 和 `LORA` 的 MOE 版本，采用 token 级别的**软路由**（加权合并所有专家的输出）。
+  - 对 3B 和 11B 的 T5 大模型的 SFT，MoV 仅使用不到 1% 可训练参数量就可以达到和全量微调相当的效果，显著优于同等可训练参数量设定下的 LoRA。
+  - [Pushing Mixture of Experts to the Limit: Extremely Parameter Efficient MoE for Instruction Tuning](https://arxiv.org/abs/2309.05444)
+- `LoRAMOE`：LoRA专家分组，预训练知识记得更牢
+  - 问题：随着所用数据量的增长，SFT 训练会导致模型参数大幅度偏离预训练参数，预训练阶段学习到的世界知识（world knowledge）逐渐被遗忘，虽然模型的指令跟随能力增强、在常见的测试集上性能增长，但需要这些世界知识的 QA 任务性能大幅度下降
+  - 2023 年 12 月，在 MoLORA 基础上，为解决微调大模型时的灾难遗忘问题，将同一位置的 LoRA 专家分为两组，分别负责保存预训练权重中的世界知识和微调时学习的新任务，并为此目标设计了新的负载均衡 loss。
+  - [LoRAMoE: Revolutionizing Mixture of Experts for Maintaining World Knowledge in Language Model Alignment](https://arxiv.org/abs/2312.09979)
+- `MOLA`：统筹增效，更接近输出端的高层需要更多专家
+  - 问题: 专家个数过多容易导致性能下降
+  - 2024 年 2 月，使用离散路由（每次只激活路由权重 top-2 的专家），并发现在每一层设置同样的专家个数不是最优的，增加高层专家数目、降低底层专家数目，能在可训练参数量不变的前提下，明显提升 LLaMa-2 微调的效果。
+  - [Higher Layers Need More LoRA Experts](https://arxiv.org/abs/2402.08562)
 
 ## （4）全量微调
 
