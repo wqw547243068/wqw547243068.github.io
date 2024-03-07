@@ -3971,9 +3971,10 @@ Claude 2.0 单次回话只支持 10 万个 Token，而 Claude 2.1 支持输入�
 
 
 Anthropic 访问
-- [claude](https://claude.ai)
+- [claude](https://claude.ai), [Claude Chat](https://claude.ai/chats)
 - 159 个国家开放使用 Claude3 系列的两款模型（Opus 和 Sonnet），最强版本 Haiku 也即将推出。
 - 同时，Anthropic 也通过**亚马逊**和**谷歌**的云平台提供服务，后者曾分别向 Anthropic 注资 40 亿美元和 20 亿美元。
+- 【2024-3-7】接码平台虚拟手机号失败，改用美国真实号码，成功
 
 
 定价
