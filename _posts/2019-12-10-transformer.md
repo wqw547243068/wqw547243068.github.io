@@ -14,7 +14,7 @@ permalink: /transformer
 
 
 
-# Transformer学习笔记
+# Transformer 学习笔记
 
 - [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html),Harvard NLP出品，含pytorch版代码实现
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
@@ -43,6 +43,51 @@ Google 2017年发的一篇论文，标题叫《Attention Is All You Need》，�
 
 【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
 - <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
+【2024-3-8】transformer [Transformer 逐层图解](https://zhuanlan.zhihu.com/p/604450283), medium 文章翻译
+- 整体结构
+  - ![](https://pic1.zhimg.com/80/v2-7c5f1ff66fc2c38ceb500d4f3ae688b4_1440w.webp)
+- 词嵌入（Embedding ） + 位置编码（Position Encoding）
+  - Transformer 输入关注每个词的信息：含义和序列位置。
+    - 嵌入层对词含义编码。
+    - 位置编码层表示词的位置。一条正弦曲线(偶数)和余弦曲线(奇数)
+  - ![](https://pic4.zhimg.com/80/v2-354f0896f625a165a7673a570a0b9013_1440w.webp)
+- 矩阵维度（Matrix Dimensions）
+  - 嵌入层接受一个 (samples, sequence_length) 形状的**二维单词ID矩阵**，将每个单词ID编码成一个**单词向量**，其大小为 embedding_size，得到（samples, sequence_length, embedding_size) 形状的**三维输出矩阵**。
+  - 由嵌入层和位置编码层产生的（samples, sequence_length, embedding_size) 形状在模型中被保留下来，随数据在编码器和解码器堆栈中流动，直到它被最终的输出层改变形状（实际上变成了samples, sequence_length, vocab_size) 。
+  - ![](https://pic3.zhimg.com/80/v2-5484c46f15803fadde7127f7b7ed9fca_1440w.webp)
+- 编码器 （Encoder）
+  - 编码器和解码器堆栈分别由几个（通常是 6 个）编码器和解码器组成，按顺序连接。
+  - 堆栈中的第一个编码器从嵌入和位置编码中接收其输入。堆栈中的其他编码器从前一个编码器接收它们的输入。
+  - 当前编码器接受上一个编码器的输入，并将其传入当前编码器的自注意力层。当前自注意力层的输出被传入前馈层，然后将其输出至下一个编码器。
+  - 自注意力层和前馈网络都会接入一个残差连接，之后再送入正则化层。注意，上一个解码器的输入进入当前解码器时，也有一个残差连接。
+  - 编码器堆栈中的最后一个编码器的输出，会送入解码器堆栈中的每一个解码器中。
+  - ![](https://pic3.zhimg.com/80/v2-4ee351389eef7f2ff34dc39a9df63aca_1440w.webp)
+- 解码器（Decoder）
+  - 解码器结构与编码器类似，但有一些区别。
+    - 像编码器一样，堆栈中的第一个解码器从嵌入层（词嵌入+位置编码）中接受输入；堆栈中的其他解码器从上一个解码器接受输入。
+    - 在一个解码器内部，输入首先进入自注意力层，这一层的运行方式与编码器相应层的区别在于：
+      - 训练过程中，每个时间步的输入，是直到当前时间步所对应的目标序列，而不仅是前一个时间步对应的目标序列(即输入的是step0-stepT-1，而非仅仅stepT-1）。
+      - 推理过程中，每个时间步的输入，是直到当前时间步所产生的整个输出序列。
+      - 解码器的上述功能主要是通过 mask 方法进行实现。
+    - 解码器与编码器的另一个不同：解码器有第二个注意层层，即**编码器-解码器注意力层** Encoder-Decoder-attention 层。其工作方式与自注意力层类似，只是其输入来源有两处：位于其前的自注意力层及 E解码器堆栈的输出。
+    - Encoder-Decoder attention 的输出被传入前馈层，然后将其输出向上送至下一个Decoder。
+    - Decoder 中的每一个子层，即 Multi-Head-Self-Attention、Encoder-Decoder-attention 和 Feed-forward层，均由一个残差连接，并进行层规范化。
+    - ![](https://pic2.zhimg.com/80/v2-9a88fdd6495c8fe04e84ea9dd69f3d15_1440w.webp)
+- 注意力（Attention）
+  - 注意力被用在三个地方：
+    - Encoder 中的 Self-attention：输入序列对自身的注意力计算；
+    - Decoder 中的 Self-attention：目标序列对自身的注意力计算；
+    - Decoder 中的Encoder-Decoder-attention：目标序列对输入序列的注意力计算。
+  - 注意力层（Self-attention 层及 Encoder-Decoder-attention 层）以三个参数的形式接受其输入，称为查询（Query）、键（Key）和值（Value）
+    - Decoder self-attention，解码器的输入同样被传递给所有三个参数，Query、Key和 Value。
+    - Encoder-Decoder-attention，编码器堆栈中最后一个编码器的输出被传递给Value和Key参数。位于其前的 Self-attention 和 Layer Norm 模块的输出被传递给 Query 参数。
+    - ![](https://pic4.zhimg.com/80/v2-8eead7c22c8bce22e9ac2f5328bab70f_1440w.webp)
+  - 自注意力计算方式
+    - ![])(https://pic3.zhimg.com/80/v2-7cda913d104961a1db0e5ea6ff3a8b86_1440w.webp)
+- 多头注意力（Multi-head Attention）
+  - 多头注意力--Multi-head Attention 通过融合几个相同的注意力计算，使注意力计算具有更强大的分辨能力
+- 掩码
 
 ### Transformer 架构理解
 
