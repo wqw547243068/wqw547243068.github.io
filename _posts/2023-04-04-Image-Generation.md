@@ -1503,6 +1503,19 @@ playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模�
 
 ![](https://pic1.zhimg.com/80/v2-d531178fda67793a89e2a7e7b7e57528_1440w.webp)
 
+
+#### Stable Diffusion 3
+
+【2024-2-22】Stability AI 发布[Stable Diffusion 3](https://stability.ai/news/stable-diffusion-3)，号称史上最强大的文生图模型。
+
+新版模型在文本语义理解、色彩饱和度、图像构图、分辨率、类型、质感、对比度等方面都有了显著提升，甚至开始触摸物理世界的奥秘，让生成的图片看起来更加逼真。
+- 参数范围在8亿到80亿之间，专为移动设备设计，AI算力消耗更低，推理速度却更快。
+
+Stable Diffusion 3 还具备“**多主题生成**”和“**超高画质**”的特点。理解文字描述，甚至能一句话描绘出包含多个主题和多样物品的图像，而且生成的每一张图片都堪称艺术品，无论是在自然写实风景，还是在漫画、海报中，都能精准地捕捉和理解文字描述的每一个细节，将抽象的文字语言转换为具象的画面元素。
+
+技术层面上，Stable Diffusion 3 采用与Sora类似的`Diffusion Transformer`架构，这种架构在训练过程中通过学习给图片添加和去除噪声，实现了高质量的图像生成。这种创新的架构设计，结合扩散型transformer架构和flow matching，是Stable Diffusion 3取得显著进步的关键。
+
+
 ### Mid-Journey
 
 
