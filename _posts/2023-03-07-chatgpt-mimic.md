@@ -3905,7 +3905,7 @@ python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m 
 
 
 
-#### Claude 1
+#### 【2023-4-13】Claude 1
 
 【2023-4-13】[「ChatGPT最强竞品」爆火：不限量不要钱免注册！](https://mp.weixin.qq.com/s/QB85YPjh6DMBTPla4NDfXg)
 - [introducing-claude](https://www.anthropic.com/index/introducing-claude), [Meet Claude: Anthropic’s Rival to ChatGPT](https://scale.com/blog/chatgpt-vs-claude)
@@ -3913,14 +3913,14 @@ python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m 
 - 体验方式：[poe](https://poe.com/Claude-instant)
 - 申请：[Claude Early Access](https://www.anthropic.com/earlyaccess)
 
-#### Claude 100k
+#### 【2023-5-12】Claude 100k
 
 【2023-5-12】[Introducing 100K Context Windows](https://www.anthropic.com/index/100k-context-windows)
 - We’ve expanded Claude’s context window from 9K to 100K tokens, corresponding to around 75,000 words
 - The average person can read 100,000 tokens of text in ~5+ hours[1], and then they might need substantially longer to digest, remember, and analyze that information. Claude can now do this in less than a minute. 
 
 
-#### Claude 2
+#### 【2023-7-11】Claude 2
 
 【2023-7-11】[Claude2](https://www.anthropic.com/news/claude-2) 对比于ChatGPT来说，主要优点：
 - 免费注册使用（魔法上网）
@@ -3966,12 +3966,15 @@ Claude 2.0 单次回话只支持 10 万个 Token，而 Claude 2.1 支持输入�
 
 效果：
 - 能力最强的 `Opus` 在多项基准测试中得分都超过了 `GPT-4` 和 `Gemini 1.0 Ultra`，在数学、编程、多语言理解、视觉等多个维度树立了新的行业基准。
+- 排行榜: [LMSYS Chatbot Arena Leaderboard](https://chat.lmsys.org/)
 - Claude 3 Opus 拥有人类本科生水平的知识
 - ![](https://image.jiqizhixin.com/uploads/editor/cf8e07d3-f981-4c84-9ab4-a182179c5971/640.png)
 
 
 Anthropic 访问
-- [claude](https://claude.ai), [Claude Chat](https://claude.ai/chats)
+- [claude](https://claude.ai), [Claude Chat](https://claude.ai/chats)，需要国外手机号注册，免费版只支持 sonnet
+- 免费渠道
+  - [Chatbot Arena](https://chat.lmsys.org/), direct chat 区，支持 sonnet 和 opus(claude-3-opus-20240229), 另外还支持其他主流模型
 - 159 个国家开放使用 Claude3 系列的两款模型（Opus 和 Sonnet），最强版本 Haiku 也即将推出。
 - 同时，Anthropic 也通过**亚马逊**和**谷歌**的云平台提供服务，后者曾分别向 Anthropic 注资 40 亿美元和 20 亿美元。
 - 【2024-3-7】接码平台虚拟手机号失败，改用美国真实号码，成功
