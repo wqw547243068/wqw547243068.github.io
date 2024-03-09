@@ -3623,6 +3623,8 @@ OLMo目前开源的模型主要有三个规模：1b, 7b, 65b(训练中)
 
 OLMo 7B 大部分评测上和Meta开源的Llama 2 7B相当
 
+安装
+
 ```sh
 pip install ai2-olmo
 # ------------
@@ -3630,6 +3632,59 @@ git clone https://github.com/allenai/OLMo.git
 cd OLMo
 pip install -e .[all]
 ```
+
+推理
+
+You can utilize our Hugging Face integration to run inference on the olmo checkpoints:
+
+```py
+from hf_olmo import * # registers the Auto* classes
+
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+olmo = AutoModelForCausalLM.from_pretrained("allenai/OLMo-1B")
+tokenizer = AutoTokenizer.from_pretrained("allenai/OLMo-1B")
+
+message = ["Language modeling is "]
+inputs = tokenizer(message, return_tensors='pt', return_token_type_ids=False)
+response = olmo.generate(**inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+print(tokenizer.batch_decode(response, skip_special_tokens=True)[0])
+Alternatively, with the Hugging Face pipeline abstraction:
+# ----------- 简版 ---------
+from transformers import pipeline
+olmo_pipe = pipeline("text-generation", model="allenai/OLMo-7B")
+print(olmo_pipe("Language modeling is"))
+```
+
+微调
+- 提前按要求转换语料格式，id化
+
+```sh
+torchrun --nproc_per_node=8 scripts/train.py {path_to_train_config} \
+    --data.paths=[{path_to_data}/input_ids.npy] \
+    --data.label_mask_paths=[{path_to_data}/label_mask.npy] \
+    --load_path={path_to_checkpoint} \
+    --reset_trainer_state
+```
+
+微调模型推理
+
+Inference on finetuned checkpoints
+- If you finetune the model using the code above, you can use the conversion script to convert a native OLMo checkpoint to a Hugging Face-compatible checkpoint
+
+```sh
+# olmo 模型 转 hf 格式
+python hf_olmo/convert_olmo_to_hf.py --checkpoint-dir /path/to/checkpoint
+```
+
+量化
+
+Quantization
+
+```py
+olmo = AutoModelForCausalLM.from_pretrained("allenai/OLMo-7B", torch_dtype=torch.float16, load_in_8bit=True)  # requires bitsandbytes
+```
+
 
 ### cpp 本地部署 
 
