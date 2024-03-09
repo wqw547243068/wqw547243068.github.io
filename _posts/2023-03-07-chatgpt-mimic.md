@@ -44,6 +44,11 @@ There are three important steps for a ChatGPT-like LLM:
 
 ### LLM 之争
 
+【2024-3-9】过去一个月，有四个语言模型在各项基准测试中接近甚至超过了GPT-4的表现。  
+- Google Gemma、Mistral、Anthropic 和 Inflection。  
+- 尽管并非每个模型都明显优于GPT-4，但都是有力的竞争者。
+
+
 【2024-2-27】[总结](https://www.toutiao.com/w/1791953879006346)当前大模型现状: 按照通用、垂类，是否落地两个维度分类
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/b41a7fad5f06482b84e9b3f66e9b9b8a~tplv-obj:1080:3876.image)
 
@@ -3584,6 +3589,16 @@ NexusRaven-V2完全基于开放数据集打造，并在CodeLlama-13B-instruct上
 
 但如果再单看复杂的嵌套函数调用任务，NexusRaven-V2的成绩比GPT-4表现得要更好，直接高出了7个百分点。
 
+### Inflection-2.5
+
+【2024-3-7】美国 AI 创业公司 [Inflection AI](https://inflection.ai) 正式发布新一代大语言模型 Inflection-2.5, 包含Web（[Pi](https://pi.ai/talk)）、[客户端](https://pi.ai/desktop)和App。
+- 官方通报: [Inflection-2.5: meet the world's best personal AI](https://inflection.ai/inflection-2-5)
+- 2022 年成立，三位联合创始人分别是原 DeepMind 联合创始人 Mustafa Suleyman、Linkedln 联合创始人 Reid Hoffman，还有前 DeepMind 首席科学家 Karen Simonyan。
+
+Inflection-2.5 将强大的 LLM 能力与 Inflection 标志性的「同理心微调」结合在一起，兼具高情商与高智商，可联网获取事实信息，其性能可与 GPT-4、Gemini 等领先大模型相媲美。
+- Inflection-2.5 实现了接近 GPT-4 的性能，而训练过程却仅使用 GPT-4 40% 的算力
+
+Inflection-2.5 现已向所有 [Pi](https://pi.ai/talk) 用户开放，在 PC 端、iOS 和安卓 App 上均是免费可用。
 
 
 ### cpp 本地部署 
