@@ -3601,6 +3601,36 @@ Inflection-2.5 将强大的 LLM 能力与 Inflection 标志性的「同理心微
 Inflection-2.5 现已向所有 [Pi](https://pi.ai/talk) 用户开放，在 PC 端、iOS 和安卓 App 上均是免费可用。
 
 
+### OLMo
+
+【2023-3-6】AI2（Allen Institute for AI）开源了 [OLMo](https://allenai.org/olmo)（Open Language Model）：[真正完全开源的大模型](https://mp.weixin.qq.com/s/uB6jxCWDTJhtFsh9Bc_DYQ)
+- github: [olmo](https://github.com/allenai/olmo)
+- OLMo 独特之处是**完全开源**，除了训练模型，还有训练数据，训练代码以及模型评估代码。
+- 只要你有GPU卡，再基于OLMo开源的数据和代码，就可以快速从零训练一个自己的LLM。
+
+OLMo还直接公开了训练模型的日志：
+- [博客](https://blog.allenai.org/olmo-open-language-model-87ccfc95f580)
+- 代码: GitHub - allenai/OLMo: Modeling, training, eval, and inference code for OLMo
+- 数据: GitHub - allenai/dolma: Data and tools for generating and inspecting OLMo pre-training data.
+- [论文](https://arxiv.org/abs/2402.00838)
+- 模型[OLMo-7B](https://huggingface.co/allenai/OLMo-7B)
+- 评估[OLMo-Eval](https://github.com/allenai/OLMo-Eval)
+- 微调[open-instruct](https://github.com/allenai/open-instruct)
+- [日志](https://wandb.ai/ai2-llm/OLMo-7B/reports/OLMo-7B--Vmlldzo2NzQyMzk5)
+
+OLMo目前开源的模型主要有三个规模：1b, 7b, 65b(训练中)
+- 7b还有OLMo 7B Instruct
+
+OLMo 7B 大部分评测上和Meta开源的Llama 2 7B相当
+
+```sh
+pip install ai2-olmo
+# ------------
+git clone https://github.com/allenai/OLMo.git
+cd OLMo
+pip install -e .[all]
+```
+
 ### cpp 本地部署 
 
 支持多种模型
