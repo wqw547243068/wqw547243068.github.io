@@ -402,6 +402,31 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 - 字节策略更狠，**GPT4 不要钱**，能提前把一堆需要使用的AI的个人开发者，企业应用者，先进的工作者吸引到这个平台。站在GPT4的高度，吸引一波客户，反向在非GPT4能力上构建核心优势（包含平台化能力、自动化能力、数据延伸能力），也可以探索更多可能得场景（AI Playbook 为后面Agents时代提供更多思路。)
   - 以金钱换时间，还能吸引忠实的用户，用AzureAPI也是用，用字节的GPT的API也是用，只要能先把用户接上去，后面都好说。后面字节能打的大模型出来后，直接换引擎就是！真是一招妙招。反正OpenAI的套路大家都清楚了，无非就是钱的问题。
 
+缺陷
+- Multiagent模式有两个“不爽”的地方，都跟Agent跳转有关。
+  - 第一个：Agent跳转**必须要用户输入**后才能触发，而不能由Agent自己触发，或者当Agent完成任务后自动跳转到下一个Agent。难以避免一些不必要的跟用户的交互。Multiagent模式下，Bot设计者应该有自由度去控制Bot什么时候自动执行流程，什么时候停下来跟用户交互。不然交互很多、流程复杂的程序就很难设计。
+  - 第二点，在Multiagent模式，可以使用**自然语言**来配置Agent的跳转条件。然而这个跳转的判断逻辑非常不稳定。
+
+
+Bot 如何盈利？
+- Notion的目标就是要做一个All-in-one的工具。但Notion做法不是把所有的功能都打包到一个产品里，也不是做N多个App出来，Notion的做法是花很长时间去打磨那些组成软件的基本且必要的Building Blocks，例如文本编辑、关系数据库等等，然后用户可以用这些"Lego Blocks"组装自己的工具，让软件适配自己的需求和工作流。与其说Notion是一家生产力公司，不如说它是一家软件建构公司。
+- Poe的Bot创作者主要有两种收益途径：
+  1. 如果Bot给Poe带来新的订阅，Poe会分成；
+  2. 给Bot Message定价，用户使用你的Bot，要为每条Bot Message付费（还没落实）
+- Coze这个平台实际上也是沿着GPT Store这个路子，只不过相比于GPT Store，Coze的可定制性更强些，主要是因为Workflow以及Multiagent Flow这两大特性，其他如插件更丰富，支持变量和数据库，支持很多发布渠道等等这些特性也增色不少。但是Coze依然要面临盈利模式的问题
+- Bot这种软件形态短期内应该是达不到手机App那种程度，Bot Store短期内也成为不了App Store。
+
+
+实践案例
+- 【2024-2-14】[如何用Coze制作一个信息检索Bot（含Workflow的基础用法）](https://mp.weixin.qq.com/s?__biz=MzU5MDM4ODIxMw==&mid=2247484073&idx=1&sn=de056ee432ae8b7a9adc471a796122c7&chksm=fe3e4c33c949c525517971f70a6535efa1d6ea99867635f788b65672980c45592412a006d36f&cur_album_id=3329086383935635457&scene=189#wechat_redirect)
+- 【2024-3-6】[Bot创作者如何在Coze上赚钱？](https://mp.weixin.qq.com/s/WO-ZPuVgNHF129b4qsSjlQ)
+  - 用 Coze 搭建 《卧底》的Multiagent Flow设计， Coze《[卧底](https://www.coze.com/store/bot/7338755327309070344?bid=MDQEELy4E1Vi4ozYnvcSpa2MA8wEHvJR-erI00A6JQ0WX0JuyVWyDvIp2qVX8wAFJqq14wQA&share=1&from=others)》
+  - 从3月3号发文，截止到3月5号，《卧底》总共收获10笔订单，其中有效订单8笔（其中有2笔是朋友帮忙测试支付流程的），总收入是1032元
+- 【2024-3-8】[Coze + 爬虫 = 周末去哪不用愁！](https://mp.weixin.qq.com/s/OfN3ndVfye9p_0wIeuQWng), 搭建一个“周末去哪玩”的Bot
+  - 单纯靠提示词来实现这个Bot明显不太行，还是要自己加定制
+  - 需求: 发送「城市+区+类型(景点、展览、音乐、话剧等)」 ，Bot输出对应区域的 「周末活动信息」，如：深圳市南山区-景点，Bot输出景点列表：【景点名称】景点地址；深圳市南山区-展览，Bot输出这周末的展览信息列表：【展名称】时间|票价|地点。
+  - 实现: 写节点函数，实现 扣子: [7337619854435876876](https://www.coze.cn/store/bot/7338728599152951346)
+
 
 ##### LLM应用平台
 
