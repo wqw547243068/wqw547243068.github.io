@@ -142,6 +142,11 @@ Pay close attention. This is your life. This is water.
 
 ## 美国教育
 
+### 美国教育制度
+
+【2024-3-10】图解美国教育制度 [参考](https://www.toutiao.com/w/1792846008674368)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/5685ba52acbe46ccb15e659bf32471da~tplv-obj:1280:1706.image)
+
 
 ### 学渣更容易融入美国社会
 
