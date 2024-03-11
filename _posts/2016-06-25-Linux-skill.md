@@ -3462,6 +3462,73 @@ cat file.txt | while read line; do
 done
 ```
 
+### 随机抽样
+
+
+shell 中随机抽取数据，有多种方法
+
+#### bash
+
+bash 随机数
+
+```sh
+random=${RANDOM} # 25256
+```
+
+
+#### sort
+
+「sort」命令的「-R」选项。
+
+```sh
+sort -R filename | head -n 100
+```
+
+例如，以下命令会随机抽取文件「data.txt」中的一行：
+
+
+#### shuf
+
+shuf 类似sort的命令行实用程序，包含在Coreutils中
+
+shuf 命令
+
+```sh
+shuf -n 100 data.txt
+shuf -e line1 line2 line3 line4 line5 # 指定输入集合（字符串）
+shuf -e 1 2 3 4 5 # 指定输入集合 1~5
+shuf -n 3 -e 1 2 3 4 5 # 从指定集合中抽取3个
+shuf -i 1-10 # 指定范围: 1~10
+```
+
+#### awk
+
+或用「awk」命令，例如：
+
+```sh
+awk 'BEGIN{srand()} {if(rand()<0.01) print $0}' data.txt
+awk 'BEGIN{srand()} {print rand()"\t"$0}' filename | sort -nk 1 | head -n100 | awk -F '\t' '{print $2}' # 假如输出的内容只有一列
+```
+
+这两个命令都可以随机地从文件中抽取一行数据。
+
+
+```sh
+#!/bin/bash
+
+IN_FILE=$1
+LINE_NUM=$2
+awk -vN=${LINE_NUM} -vC="`wc -l ${IN_FILE}`" 'BEGIN{srand();while(n<N){i=int(rand()*C+1);if(!(i in a)){a[i]++;n++}}}NR in a' ${IN_FILE}
+```
+
+抽样
+
+```sh
+sh my_shuf.sh datas.txt 100 | awk '{print $1}' > random_data_100
+```
+
+
+
 ### 三剑客
 
 grep 、sed、awk被称为linux中的"三剑客"。
@@ -3665,10 +3732,7 @@ cat share.txt | awk '{print "when substr(source_from,1,3)='\''" $1 "'\'' then '\
 # when substr(source_from,1,3)='1.2' then '微客主页-热门资讯'
 # when substr(source_from,1,3)='1.3' then '微客主页-热门房源'
 # when substr(source_from,1,3)='1.4' then '微客主页-热门楼盘'
-
 ```
-
-
 
 
 ## sed
