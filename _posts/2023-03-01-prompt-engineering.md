@@ -510,6 +510,17 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
 为什么会这样？原因尚不清晰，但是毫无疑问与**模型训练数据**有关：
 - 可能在训练阶段见过了大量的心理学知识，又或者是在fine-tuning阶段被有意去掉了大量有偏见或不健康的数据。
+- 越礼貌的文字越可能质量越高，受过更多教育的人提供
+
+OpenAI的前首席科学家Ilya Sutskever 推动的 Superalignment（超级对齐）项目。
+- 【2024-12-4】近期国外的实验：给小费和没给的区别很大，小费多少也是。
+
+ChatGPT输出的文本长度，四组实验：
+- 1 没有说给不给小费，输出长度是3024
+- 2 明确说了不给小费，输出长度是是2949
+- 3 给20刀的小费，输出长度是是3223
+- 4 给200刀的小费，输出长度是是3360
+- ![](https://pic1.zhimg.com/80/v2-ed1565d20a542c909c436af4bb4dd299_1440w.webp?source=1def8aca)
 
 #### 【2023.7.14】EmotionPrompt
 
@@ -520,6 +531,7 @@ EmotionPrompt 作用就是通过prompt巧妙地将这些隐藏对话模式激活
 大模型有一定情感智能，原始 prompt 上增加一些情绪刺激，指令遵循上会相对提升8%，通用领域能力会提升 10.9%
 
 EmotionPrompt已被第三方库 LlamaIndex实现：[https://gpt-index.readthedocs.io](https://gpt-index.readthedocs.io/en/latest/examples/prompts/emotion_prompt.html)
+- ![](https://picx.zhimg.com/80/v2-30c3ac8c42b20bda27dddea7e8ac6ffe_1440w.webp?source=1def8aca)
 
 ### 基础Prompt技巧  
 
