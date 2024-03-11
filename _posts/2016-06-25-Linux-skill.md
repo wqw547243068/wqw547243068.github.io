@@ -3491,6 +3491,12 @@ sort -R filename | head -n 100
 
 shuf 类似sort的命令行实用程序，包含在Coreutils中
 
+Mac 需要单独安装
+
+```sh
+brew install coreutils
+```
+
 shuf 命令
 
 ```sh
