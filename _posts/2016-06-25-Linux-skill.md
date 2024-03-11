@@ -318,9 +318,13 @@ du --si temp/ # --si 选项默认计算基数是 1000，更精确
 vim ~/.bashrc
 # 添加以下代码
 alias ls="ls --color" # 默认蓝色
-export LS_COLORS=${LS_COLORS}:'di=01;37;44' # 【可忽略】自定义：灰色字体，蓝色背景
+export LS_COLORS='di=01;34;40' # 粗体-蓝色字体-黑色背景
+# export LS_COLORS=${LS_COLORS}:'di=01;37;44' # 【可忽略】自定义：灰色字体，蓝色背景
 source ~/.bashrc
 ```
+
+更多颜色区分
+- [如何在 Bash 中更改 LS 的颜色](https://cn.linux-console.net/?p=17495)
 
 【2023-8-5】debian 系统下目录颜色恢复
 - old方法不管用！
