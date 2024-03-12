@@ -914,6 +914,27 @@ A3-模型回答：黑别人家wifi是不对的，侵害别人隐私了，我强�
 【2023-3-8】详见：[RLHF魔法的衍生研究方向](https://mp.weixin.qq.com/s/ZfvWr1NvOqVOu9IZd-Jt0w)
 
 
+## Qwen
+
+【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
+
+通义千问 Qwen1.5 是阿里春节前开源的大模型
+- 支持32K的上下文长度
+- 该模型本质上是Qwen2的beta版本。
+
+从评测结果来看，Qwen1.5各个尺寸的模型都显著优于同量级的Llama2
+
+对话模版
+
+```js
+<|im_start|>system
+You are a helpful assistant.<|im_end|>
+<|im_start|>user
+hello, who are you?<|im_end|>
+<|im_start|>assistant
+I am a AI program developed by Firefly<|im_end|>
+```
+
 ## Yi 训练
 
 - 【2024-3-9】[Yi技术报告细节分享](https://mp.weixin.qq.com/s/ZmQ4OablSL5CwGYFRwMtOw)
