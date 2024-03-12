@@ -337,6 +337,20 @@ DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）
 | DPO 训练 | ✅ | | ✅ | ✅ |
 
 
+### trl
+
+
+
+### Firefly
+
+
+[Firefly](https://github.com/yangjianxin1/Firefly) 是开源的大模型**一站式训练框架**
+- 支持对各种大模型进行**预训练**、**指令微调**、`DPO`，支持全量参数、LoRA、QLoRA等训练方式。
+- 支持包括但不限于Gemma、Qwen1.5、MiniCPM、Mixtral-8x7B、Mistral、Llama等绝大多数主流的大模型。
+
+【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
+
+用Firefly项目对Qwen1.5-7B进行训练的实验。我们对训练数据进行精细化筛选，然后在单张V100上进行SFT和DPO。经过两阶段的训练，我们的模型在Open LLM Leaderboard上的表现显著优于官方的Qwen1.5-7B-Chat、Gemma-7B-it、Vicuna-13B等模型。比Qwen1.5-7B-Chat高7.12分，比Gemma-7B-it高8.8分。
 
 ### 总结
 
