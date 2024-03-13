@@ -340,6 +340,157 @@ DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）
 ### trl
 
 
+【2024-3-13】[TRL - Transformer Reinforcement Learning](https://huggingface.co/docs/trl/index)
+
+huggingface 推出的全栈库，包含一整套工具，用于使用强化学习 (Reinforcement Learning) 训练 transformer 语言模型。
+- 从**监督调优** (Supervised Fine-tuning step, SFT)，到训练**奖励模型** (Reward Modeling)，再到**近端策略优化** (Proximal Policy Optimization)，全面覆盖
+- [TRL](https://github.com/huggingface/trl) 库已经与 🤗 transformers 集成，直接使用！
+- 👉 文档[地址](https://hf.co/docs/trl/)
+- ![](https://picx.zhimg.com/70/v2-1c818186d30b9afff9af2341b1eddc6f_1440w.avis?source=172ae18b&biz_tag=Post)
+
+API 文档里功能:
+- Model Class: 公开模型各自用途
+- SFTTrainer: SFTTrainer 实现模型监督调优
+- RewardTrainer: RewardTrainer 训练奖励模型
+- PPOTrainer: PPO 算法对经过监督调优的模型再调优
+- Best-of-N Samppling: 将“拔萃法”作为从模型的预测中采样的替代方法
+- DPOTrainer: 用 DPOTrainer 完成直接偏好优化
+
+文档中给出了几个例子:
+- Sentiment Tuning: 调优模型以生成更积极的电影内容
+- Training with PEFT: 执行由 PEFT 适配器优化内存效率的 RLHF 训练
+- Detoxifying LLMs: 通过 RLHF 为模型解毒，使其更符合人类的价值观
+- StackLlama: 在 Stack exchange 数据集上实现端到端 RLHF 训练一个 Llama 模型
+- Multi-Adapter Training: 使用单一模型和多适配器实现优化内存效率的端到端训练
+
+
+#### Trl 实践
+
+【2023-6-30】[使用TRL强化学习PPO控制文本的生成](https://zhuanlan.zhihu.com/p/616788557)
+
+步骤
+1. 初始化 GPT2 对话模型, 即LLM模型。Huggface中的这个中文对话模型 
+  - [gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese)
+2. 初始化一个情感分类模型即RM模型。这里笔者使用的是Huggface中的这个情感分类模型
+  - 样本情感极性越正向，模型输出的得分越大。
+  - [c2-roberta-base-finetuned-dianping-chinese](https://huggingface.co/liam168/c2-roberta-base-finetuned-dianping-chinese)
+3. 通过PPO强化学习算法，利用情感分类模型评估对话模型的输出，对GPT2对话模型进行优化，让GPT2对话模型的输出的结果在情感分类模型中得到高分。同时不破坏GPT2对话模型输出通顺对话的能力。
+
+强行学习训练
+1. 输入样本给GPT2, 拿到对话语言模型 GPT2的输出。
+2. 将对话语言模型GPT2的输出 输入到 情感分类模型 拿到 情感分类模型的输出，作为reward。
+3. 将对话语言模型GPT2 输入，输出， 以及 情感分类模型的 reward 一并输入给PPO优化器，让PPO优化器去优化对话语言模型GPT2。
+
+```py
+import torch
+from transformers import AutoTokenizer
+from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead, create_reference_model
+from trl.core import respond_to_batch
+import random
+import torch.nn.functional as F
+
+# get models
+gen_model = AutoModelForCausalLMWithValueHead.from_pretrained('dialoggpt/')
+model_ref = create_reference_model(gen_model)
+tokenizerOne = AutoTokenizer.from_pretrained('dialoggpt/',padding_side='left')
+tokenizerOne.eos_token_id = tokenizerOne.sep_token_id
+# 初始化一个情感分类模型，输入文本，判断文本的情感极性
+from transformers import AutoModelForSequenceClassification , AutoTokenizer, pipeline
+
+ts_texts = ["我喜欢下雨。", "我讨厌他."]
+cls_model = AutoModelForSequenceClassification.from_pretrained("./chineseSentiment/", num_labels=2)
+tokenizerTwo = AutoTokenizer.from_pretrained("./chineseSentiment/")
+
+classifier = pipeline('sentiment-analysis', model=cls_model, tokenizer=tokenizerTwo)
+classifier(ts_texts)
+
+# 数据预处理
+from torch.utils.data import Dataset
+import torch.nn.utils.rnn as rnn_utils
+import json
+
+data = []
+with open("./train.txt", "r", encoding="utf-8") as f:
+    for i in f.readlines():
+        line = json.loads(i)
+        data.append(line)
+
+
+def preprocess_conversation(data):
+    sep_id = tokenizerOne.sep_token_id
+    cls_id = tokenizerOne.cls_token_id
+    dialogue_list = []
+    for conver in data:
+        input_ids = [cls_id]
+        start = conver["conversation"][0]
+        # print(start["utterance"])
+        input_ids += tokenizerOne.encode(start["utterance"], add_special_tokens=False)
+        input_ids.append(sep_id)
+        dialogue_list.append(input_ids)
+    return dialogue_list
+
+# 数据处理
+dialogue_list = preprocess_conversation(data)
+
+class MyDataset(Dataset):
+    def __init__(self, data):
+        self.data = data
+
+    def __getitem__(self, index):
+        x = self.data[index]
+        return torch.tensor(x)
+
+    def __len__(self):
+        return len(self.data)
+    
+mydataset = MyDataset(dialogue_list)
+
+def collate_fn(batch):
+    padded_batch = rnn_utils.pad_sequence(batch, batch_first=True, padding_value=tokenizerOne.sep_token_id)
+    return padded_batch
+
+# 定义PPO优化器: 学习率，强化学习steps，batch_size等参数，学习率不宜调大，容易把LLM语言模型调坏。
+config = PPOConfig(
+    model_name="gpt2-positive",
+    learning_rate=1.41e-5,
+    steps = 2000,
+    batch_size = 16
+)
+
+ppo_trainer = PPOTrainer(config, gen_model, model_ref, tokenizerOne, dataset=mydataset, data_collator=collate_fn)
+
+rewards_list = []
+for epoch, batch in enumerate(ppo_trainer.dataloader):
+    #### Get response from gpt2
+    query_tensors = []
+    response_tensors = []
+    query_tensors = [torch.tensor(t).long() for t in batch]
+    for query in batch:
+        input_ids = query.unsqueeze(0)
+        response = []
+        for _ in range(30):
+            outputs = ppo_trainer.model(input_ids=input_ids)
+            logits = outputs[0]
+            next_token_logits = logits[0, -1, :]
+            next_token_logits[ppo_trainer.tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
+            next_token = torch.multinomial(F.softmax(next_token_logits, dim=-1), num_samples=1)
+            if next_token == ppo_trainer.tokenizer.sep_token_id:  #
+                break
+            input_ids = torch.cat((input_ids, next_token.unsqueeze(0)), dim=1)
+            response.append(next_token.item())
+        response_tensors.append(torch.Tensor(response).long())
+    responseSet = ["".join(ppo_trainer.tokenizer.convert_ids_to_tokens([i.item() for i in r])) for r in response_tensors]
+    print(responseSet)
+
+    #### Get reward from sentiment model
+    pipe_outputs = classifier(responseSet)
+    rewards = [torch.tensor(output["score"]) for output in pipe_outputs]
+
+    #### Run PPO step
+    stats = ppo_trainer.step(query_tensors, response_tensors, rewards)
+    print("epoch{}, reword is {}".format(epoch, sum(rewards)))
+    rewards_list.append(sum(rewards))
+```
 
 ### Firefly
 
