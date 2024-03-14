@@ -452,7 +452,18 @@ model.save_pretrained(save_directory) # 保存模型
 
 #### Safetensors
 
-Safetensors 是一种用于在移动设备上运行模型的文件格式。 它提供了安全性、快速加载和兼容性等优点。 通过将模型转换为Safetensors文件格式，可以在移动设备上高效地加载和运行模型，同时保护模型的实现和逻辑
+Safetensors 是一种用于在移动设备上运行模型的文件格式。 安全性、快速加载和兼容性等优点。 
+- 将模型转换为Safetensors文件格式，可在移动设备上高效地加载和运行模型，同时保护模型的实现和逻辑
+
+Hugging Face 开发 Safetensors的新序列化格式
+- 简化和精简大型复杂张量的存储和加载。
+
+张量是深度学习中使用的主要数据结构，其大小会给效率带来挑战。
+- Safetensors结合使用高效的序列化和压缩算法来减少大型张量的大小，使其比pickle等其他序列化格式更快、更高效。
+- 与传统PyTorch序列化格式 `pytorch_model.bin` 和 `model.safetensors` 相比，Safetensors在CPU上的速度快**76.6倍**，在GPU上的速度快**2倍**。
+
+
+
 
 ### GPU
 
