@@ -133,6 +133,104 @@ HuggingFace主干库：
 - 2023-5，发布 StarChat，辅助编程
 
 
+## 数据
+
+数据集工具包
+
+huggingface datasets 
+
+
+### load_dataset 函数
+
+
+```py
+datasets.load_dataset(
+	path: str,
+    name: Optional[str] = None,
+    data_dir: Optional[str] = None,
+    data_files: Optional[Union[str, Sequence[str], Mapping[str, Union[str, Sequence[str]]]]] = None,
+    split: Optional[Union[str, Split]] = None,
+    cache_dir: Optional[str] = None,
+    features: Optional[Features] = None,
+    download_config: Optional[DownloadConfig] = None,
+    download_mode: Optional[DownloadMode] = None,
+    ignore_verifications: bool = False,
+    keep_in_memory: Optional[bool] = None,
+    save_infos: bool = False,
+    revision: Optional[Union[str, Version]] = None,
+    use_auth_token: Optional[Union[bool, str]] = None,
+    task: Optional[Union[str, TaskTemplate]] = None,
+    streaming: bool = False,
+    **config_kwargs
+    )
+```
+
+函数说明
+- `load_dataset`函数从Hugging Face Hub或者本地数据集文件中加载一个数据集。可以通过 [datasets](https://huggingface.co/datasets) 或者 `datasets.list_datasets()` 获取所有可用数据集。
+- 参数 `path` 表示数据集的名字或者路径。可以是一个数据集的名字，比如"imdb"、“glue”；也可以是通用的产生数据集文件的脚本，比如"json"、“csv”、“parquet”、“text”；或者是在数据集目录中的脚本（.py)文件，比如“glue/glue.py”。
+- 参数 `name` 表示数据集中的子数据集，当一个数据集包含多个数据集时，就需要这个参数。比如"glue"数据集下就包含"sst2"、“cola”、"qqp"等多个子数据集，此时就需要指定name来表示加载哪一个子数据集。
+- 参数 `data_dir` 表示数据集所在的目录，参数data_files表示本地数据集文件。
+- 参数 `split` 如果为None，则返回一个DataDict对象，包含多个DataSet数据集对象；如果给定的话，则返回单个DataSet对象。
+- 参数 `cache_dir` 表示缓存数据的目录
+  - 默认为"`~/.cache/huggingface/datasets`"。
+- 参数 `keep_in_memory` 表示是否将数据集缓存在内存中，加载一次后，再次加载可以提高加载速度。
+- 参数 `revision` 表示加载数据集的脚本的版本。
+
+
+### 远程数据集
+
+```py
+import datasets
+
+dataset = datasets.load_dataset("imdb") # imdb 数据集
+# 加载glue下的cola子数据集
+dataset = datasets.load_dataset("glue", name="cola") 
+# 通过csv脚本加载本地的test.tsv文件中的数据集
+dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
+# 本地glue.py脚本文件加载远程cola数据集
+dataset_1 = datasets.load_dataset("../dataset/glue/glue.py", name="cola")
+# 与上一个等价
+dataset_2 = datasets.load_dataset("../dataset/glue", name="cola") 
+
+```
+
+
+### 本地数据集
+
+服务器访问不了外网，如何读取本地数据集？
+1. 首先，下载并存储数据
+2. 然后，把数据集上传到指定服务器地址，并进行本地加载
+
+```py
+import datasets
+
+# 下载远程数据集
+dataset = datasets.load_dataset("dataset_name")
+dataset.save_to_disk('your_path')
+
+# 加载本地数据集
+import datasets
+dataset = load_from_disk("your_path")
+```
+
+更多示例
+
+```py
+import datasets
+# 通过csv脚本加载本地的test.tsv文件中的数据集
+dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
+```
+
+注意：
+- 保存数据集所用机器上的datasets版本和使用本地数据集的datasets的**版本要一致**才行，不然可能会出现数据集加载错误的情况。
+
+
+```py
+dataset = load_dataset("json", data_dir='data', data_files="data/train_dataset.json", split="train")
+```
+
+
+
 ## 模型
 
 ### 模型下载
@@ -351,6 +449,10 @@ transformers库中RobertaTokenizer和BertTokenizer的不同
 tokenizer.save_pretrained(save_directory) # 保存词表
 model.save_pretrained(save_directory) # 保存模型
 ```
+
+#### Safetensors
+
+Safetensors 是一种用于在移动设备上运行模型的文件格式。 它提供了安全性、快速加载和兼容性等优点。 通过将模型转换为Safetensors文件格式，可以在移动设备上高效地加载和运行模型，同时保护模型的实现和逻辑
 
 ### GPU
 
