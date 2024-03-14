@@ -455,6 +455,7 @@ model.save_pretrained(save_directory) # 保存模型
 Safetensors 是一种用于在移动设备上运行模型的文件格式。 安全性、快速加载和兼容性等优点。 
 - 将模型转换为Safetensors文件格式，可在移动设备上高效地加载和运行模型，同时保护模型的实现和逻辑
 
+
 Hugging Face 开发 Safetensors的新序列化格式
 - 简化和精简大型复杂张量的存储和加载。
 
@@ -462,7 +463,59 @@ Hugging Face 开发 Safetensors的新序列化格式
 - Safetensors结合使用高效的序列化和压缩算法来减少大型张量的大小，使其比pickle等其他序列化格式更快、更高效。
 - 与传统PyTorch序列化格式 `pytorch_model.bin` 和 `model.safetensors` 相比，Safetensors在CPU上的速度快**76.6倍**，在GPU上的速度快**2倍**。
 
+Safetensors API 适用于: Pytorch、Tensorflow、PaddlePaddle、Flax和Numpy
 
+安装
+
+```sh
+pip install safetensors
+```
+
+创建模型
+
+```py
+from torch import nn
+
+class Model(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.a = nn.Linear(100, 100)
+        self.b = self.a
+
+    def forward(self, x):
+        return self.b(self.a(x))
+
+
+model = Model()
+print(model.state_dict())
+```
+
+模型导入导出
+
+```py
+from safetensors.torch import load_model, save_model
+
+save_model(model, "model.safetensors")
+
+load_model(model, "model.safetensors")
+print(model.state_dict())
+# OrderedDict([('a.weight', tensor([[-0.0913, 0.0470, -0.0209, ..., -0.0540, -0.0575, -0.0679], [ 0.0268, 0.0765, 0.0952, ..., -0.0616, 0.0146, -0.0343], [ 0.0216, 0.0444, -0.0347, ..., -0.0546, 0.0036, -0.0454], ...,
+
+```
+
+张量导入、导出
+
+```py
+import torch
+from safetensors.torch import save_file, load_file
+
+tensors = {
+   "weight1": torch.zeros((1024, 1024)),
+   "weight2": torch.zeros((1024, 1024))
+}
+save_file(tensors, "new_model.safetensors")
+load_file("new_model.safetensors")
+```
 
 
 ### GPU
