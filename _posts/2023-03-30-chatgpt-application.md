@@ -2919,6 +2919,30 @@ Spot 身上添加了蓝牙**扬声器**和**麦克风**，一个配备摄像头�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1EHprsM948s?si=c-7RNBug4QJhrcjt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
+#### Figure 01 & OpenAI
+
+【2024-3-14】[OpenAI机器人，来了](https://www.stcn.com/article/detail/1145904.html)
+
+人形机器人初创公司 [Figure AI](https://www.figure.ai/) 发布了一段视频演示。视频中，公司研发的Figure 01机器人接入了OpenAI的大模型，能够与人类对话，理解并执行人类的指令和任务。据介绍，OpenAI模型提供高级视觉和语言智能，Figure神经网络提供快速、低级、灵巧的机器人动作。
+
+公司介绍
+- Figure AI 成立于2022年，总部位于美国加州，是一家致力于研发自主通用人形机器人的初创公司。
+- 2023年，Figure AI从Parkway Venture Capital领头的投资者手中筹集了7000万美元，用于加速其首款自主人形机器人Figure 01的开发和制造。
+- 2024年2月底，Figure AI宣布完成新一轮约6.75亿美元（约合人民币48.7亿元）的融资，用于开发为重复且危险的仓库及零售等工作提供劳动力补充的人形机器人。
+- 亚马逊创始人贝索斯、英伟达、微软和OpenAI等硅谷科技巨头都将为Figure AI提供融资支持。
+- Figure AI此轮融资前估值约为20亿美元。
+
+Figure 01 身高大约170cm，体重60KG，可以实现20KG的有效载重，移动速度1.2米/秒，续航可以达到5小时。
+
+
+Figure 01拥有的能力包括：
+- 一、**视觉识别和理解**。当人类问Figure 01看到了什么，Figure 01回答道：“我看到了桌子中央的盘子上有一个红苹果、一个装满杯子和盘子的晾碗架，以及你站在附近，手放在桌子上。”
+- 二、**语言识别和理解**。当人类问Figure 01能够吃点什么东西时，Figure 01将桌上的苹果递给了人类，并表示这是“唯一我可以从桌上为你提供的食物”。
+- 三、**流畅的任务执行**。视频展示了Figure 01清理桌面垃圾、整理晾碗架的场景。
+
+Figure 01在与人类对话及执行具体任务时，速度与流畅度较此前已经有大幅提升。据Figure的联合创始人兼首席执行官Brett Adcock介绍，视频是以正常倍速速度连续拍摄的，没有加速播放，而且没有人类在远程控制机器人的动作。
+
+
 #### 无人机
 
 【2023-11-25】[让大模型操纵无人机，北航团队提出具身智能新架构](https://www.toutiao.com/article/7311595621582897704)
