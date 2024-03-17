@@ -3,7 +3,7 @@ layout: post
 title:  "Tensorflow学习笔记"
 date:   2019-05-10 17:25:00
 categories: 编程语言
-tags: Tensorflow Python 深度学习 可视化
+tags: Tensorflow Python 深度学习 可视化 wandb
 excerpt: Tensorflow编程技能汇总
 author: 鹤啸九天
 mathjax: true
