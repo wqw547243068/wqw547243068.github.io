@@ -680,6 +680,19 @@ SW: Model with 2783M total params, 65M largest layer params.
 
 [Megatron](https://github.com/NVIDIA/Megatron-LM) is a large, powerful transformer developed by the Applied Deep Learning Research team at NVIDIA. This repository is for ongoing research on training large transformer language models at scale. We developed efficient, model-parallel (tensor, sequence, and pipeline), and multi-node pre-training of transformer based models such as GPT, BERT, and T5 using mixed precision.
 
+#### Megatron-LM 介绍
+
+Megatron 是超大规模Transformer模型的**分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
+
+Megatron 核心能力:
+- 多种并行策略组合: Data Parallel、 Tensor Parallel、Pipeline Parallel、Sequence Parallel
+- Distributed-optimiezer: 相当于是deepspeed zero1的策略
+- 高性能算子：Flash Attention
+- Activation checkpoint
+- 混合精度
+- Gradient accumulation
+- MoE
+
 ### Megatron-DeepSpeed
 
 `Megatron-DeepSpeed` 结合了两种主要技术：
@@ -1292,7 +1305,7 @@ GPT 就是这样一个典型的网络结构：
 
 ### 并行模式
 
-分布式训练的目的在于将原本巨大的训练任务拆解成**多个子任务**，每个子任务在独立的机器上单独执行。
+分布式训练目的：将原本巨大的训练任务拆解成**多个子任务**，每个子任务在独立的机器上单独执行。
 
 大规模深度学习任务的难点在于：
 - 1) 训练**数据量巨大**：将数据拆解成多个小模型分布到不同的node上。→ **数据并行**
@@ -1310,10 +1323,11 @@ GPT 就是这样一个典型的网络结构：
 
 ![](https://pic3.zhimg.com/v2-f10be44bff31f5412b3398cc0cfbce96_b.jpg)
 
-数据并行相对简单，N个node(也称为worker)构成一个**分布式集群**，每个worker处理1/N的数据。
+数据并行相对简单，N个node(worker)构成一个**分布式集群**，每个worker处理1/N的数据。
 - 理论情况下能达到**线性**的加速效果。TF、torch、Horovod都可以在原生支持或者微小的改动实现数据并行模式。
 
 多个GPU 情况下，将模型分发到每个GPU上去，每个GPU都保留完整的模型参数。
+- 每个GPU加载全部模型（Parameter、Grad、Optimizer、Activation、Temp buffer）
 - 将每个batch的样本平均分配到每个GPU上进行梯度计算
 - 然后汇总每个GPU上的梯度，在将汇总梯度重新分发到每个GPU上，每个GPU模型根据汇总的梯度进行模型参数更细。
 - ![](https://pic2.zhimg.com/v2-0c13c485f5b43319c3bb4c65ae09d475_b.jpg)
@@ -1324,7 +1338,6 @@ K个GPU并数据并行训练过程如下：
 - 将个GPU中的**局部梯度**聚合，以获得当前小批量的随机梯度；
 - 聚合梯度被重新分发到每个GPU中；
 - 每个GPU使用这个小批量随机梯度，来更新所维护的完整的模型参数集。
-
 
 数据并行是在每个worker上存储一个模型的备份，在各个worker 上处理不同的**数据子集**。然后需要**规约**(reduce)每个worker的结果，在各节点之间同步模型参数。
 - 这一步会成为数据并行的瓶颈，因为如果worker很多的情况下，worker之间的数据传输会有很大的时间成本。
@@ -1341,15 +1354,18 @@ K个GPU并数据并行训练过程如下：
 
 **更新式**方法与**参数平均化**类似，主要区别在于，在**参数**服务器和**工作**服务器之间传递参数时，更新式方法只传递**更新信息**(梯度和张量)。
 
+
+#### DP(单机)+DDP(多机)
+
 数据并行（DP&DDP）
-- `DP`（Data Parallelism）：早期数据并行模式，一般采用参数服务器(Parameters Server)这一编程框架。实际中多用于**单机多卡**。 
+- `DP`（Data Parallelism）：早期数据并行模式，一般采用**参数服务器**(Parameters Server)编程框架。实际中多用于**单机多卡**。 
 - `DDP`（Distributed Data Parallelism）：分布式数据并行，采用`Ring AllReduce`的通讯方式，多用于**多机多卡**场景。
 
 
 
 ### 模型并行（model parallesim）
 
-当**模型参数过大**，单个 GPU无法容纳模型参数时，就需要模型并行,将模型拆分到多个 GPU 上进行训练。
+当**模型参数过大**，单个 GPU无法容纳模型参数时，就需要模型并行, 将模型拆分到多个 GPU 训练。
 
 模型并行相对复杂
 - 原理：分布式系统中的不同worker负责网络模型的不同部分
@@ -1359,22 +1375,23 @@ K个GPU并数据并行训练过程如下：
 但是**模型并行**实现起来比较复杂。工业界还是以**数据并行**为主。
 
 补充：
-- Model Parallel主要分两种：**intra-layer**拆分 和 **inter-layer**拆分
-  - inter-layer拆分：对模型做网络上的拆分。将每一层或者**某几层**放在一个worker上单独训练。
+- `Model Parallel`主要分两种：**intra-layer**拆分 和 **inter-layer**拆分
+  - `inter-layer`拆分：对模型做网络上的拆分,将每一层或者**某几层**放在一个worker上单独训练。
     - 缺点：模型训练串行，整个模型的效率取决于最慢的那一层，存在资源浪费
-- intranet-layer拆分：深度学习的网络结构基本都是一层一层的。常规的卷积、池化、BN等等。如果对某一层进行了拆分，那么就是intra-layer拆分。对单层的拆分其实就是拆分这一层的matrix运算。参考论文：Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
+  - `intranet-layer`拆分：深度学习的网络结构基本都是一层层的。常规的卷积、池化、BN等等。如果对某一层进行了拆分，那么就是intra-layer拆分。对单层的拆分其实就是拆分这一层的matrix运算。
+    - 参考论文：Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
 
-
-**模型并行**通常分为**张量并行**以及**流水线并行**
+**模型并行**通常分为**张量并行**（纵向切分）以及**流水线并行**（横向切分）
 - ![](https://pic2.zhimg.com/v2-37b26149c568865d5112fadb9b1ec9ad_b.jpg)
 - **流水线并行**（Pipeline model parallesim）
-  - 朴素拆分方式是将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
+  - 朴素拆分方式: 将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
     - 缺点: GPU 利用率太低，当一个GPU进行计算时，其他层的GPU都闲置。
-  - 改进: 谷歌提出了GPipe 流水线并行（Pipeline model parallesim ）, 引入micro-batches (MBS)的概念，会提升GPU利用率
+  - 改进: 谷歌提出了GPipe `流水线并行`（Pipeline model parallesim ）, 引入micro-batches (MBS)的概念，会提升GPU利用率
+  - 问题: 流水线最大的问题, 无法充分利用GPU资源，training过程中会出现非预期的Bubble
 - **张量并行**（Tensor Model Parallelism）
-  - 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按矩阵切分。
+  - 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按**矩阵**切分。
   - 2019年，NVIDIA发布《Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM》论文，提出了张量并行方法
-  - 核心思想: 每个GPU仅处理矩阵一部分，当算子需要整个矩阵的时候再进行矩阵聚合。无论是横向切分还是竖向切分，我们都可以将切分后的矩阵放到不同GPU上进行计算，最后将计算的结果再合并。
+  - 核心思想: 每个GPU仅处理矩阵一部分，当算子需要整个矩阵的时候再进行矩阵聚合。无论是横向切分还是竖向切分，都可以将切分后的矩阵放到不同GPU上进行计算，最后将计算的结果再合并。
 
 
 大模型主要结构都是Transformer模型，Transformer核心模块网路结构：**anttention层**+**残差连接**，MLP层+残差连接。
@@ -1383,6 +1400,22 @@ K个GPU并数据并行训练过程如下：
 
 大模型训练时，ZeRO支持将模型显存内存占用划分到多张卡或者多个节点。
 
+
+#### 流水线并行
+
+**流水线并行**（Pipeline model parallesim）
+- 朴素拆分方式: 将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
+  - 缺点: GPU 利用率太低，当一个GPU进行计算时，其他层的GPU都闲置。
+- 改进: 谷歌提出了GPipe `流水线并行`（Pipeline model parallesim ）, 引入micro-batches (MBS)的概念，会提升GPU利用率
+
+#### 张量并行
+
+**张量并行**（Tensor Model Parallelism）
+- 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按**矩阵**切分。
+- 2019年，NVIDIA发布《Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM》论文，提出了张量并行方法
+- 核心思想: 每个GPU仅处理矩阵一部分，当算子需要整个矩阵的时候再进行矩阵聚合。无论是横向切分还是竖向切分，都可以将切分后的矩阵放到不同GPU上进行计算，最后将计算的结果再合并。
+
+#### 示例
 
 【2023-8-28】[模型并行最佳实践（PyTorch）](https://zhuanlan.zhihu.com/p/87596314)
 
@@ -2339,18 +2372,18 @@ CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 t
 
 apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhuanlan.zhihu.com/p/158375055)
 
-### torchrun (更新)
+### Torchrun (更新)
 
-最新版本的PyTorch实现
+最新版本 PyTorch实现
 - 替换 torch.distributed.launch
 
-根据PyTorch官网介绍
-- This module（torch.distributed.launch） is going to be deprecated in favor of torchrun.
+PyTorch 官网介绍
+- This module（torch.distributed.launch） is going to be deprecated in favor of `torchrun`.
 
-torchrun 包含了 torch.distributed.launch 的所有功能，还有以下三点额外的功能：
-- 1、worker的rank和world_size将被自动分配
+`torchrun` 包含了 torch.distributed.launch 的所有功能，还有三点额外功能：
+- 1、worker 的 rank和world_size将被自动分配
 - 2、通过重新启动所有workers来处理workers的故障
-- 3、允许节点数目在最大最小值之间有所改变 即具备弹性
+- 3、允许节点数目在最大最小值之间有所改变 即**具备弹性**
 
 ```py
 # local_rank参数应当从环境变量中读取，而不是通过参数传递。
@@ -2430,9 +2463,9 @@ exmaple: 2 node, 8 GPUs per node (16GPUs)
 ```
 
 
-## Horovod分布式训练
+## Horovod 分布式训练
 
-Horovod是Uber开源的跨平台的分布式训练工具，名字来自于俄国传统民间舞蹈，舞者手牵手围成一个圈跳舞，与Horovod设备之间的通信模式很像，有以下几个特点：
+Horovod 是 Uber开源的跨平台的分布式训练工具，名字来自于俄国传统民间舞蹈，舞者手牵手围成一个圈跳舞，与Horovod设备之间的通信模式很像，有以下几个特点：
 - 兼容TensorFlow、Keras和PyTorch机器学习框架。
 - 使用Ring-AllReduce算法，对比Parameter Server算法，有着无需等待，负载均衡的优点。
 - 实现简单，五分钟包教包会。
