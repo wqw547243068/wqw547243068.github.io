@@ -235,25 +235,55 @@ dataset = load_dataset("json", data_dir='data', data_files="data/train_dataset.j
 
 ### 模型下载
 
-- 在[hugging face模型库](https://huggingface.co/models)里选择需要的预训练模型并下载。
-  - 例如，点击bert-base-uncased以后点Files and versions进行手动下载。
+- 在[huggingface模型库](https://huggingface.co/models)里选择需要的预训练模型并下载。
+  - 例如，点击 `bert-base-uncased` 以后点 `Files and versions` 手动下载。
   - 只要点击对应文件的下载（↓）, 然而要通过from_pretrained方法加载，还需要把模型文件名改成pytorch_model.bin
-- 通常这样下载的模型会是有损的，后续无法使用，因此最好是通过git下载
+- 这样下载的模型**有损**，后续无法使用，因此最好是通过git下载
 
 这种方法麻烦
-- Git LFS 方案要简洁得多 -- 优雅但不灵活
-  - 问题：会下载仓库所有文件，大大延长模型下载时间
-- Hugging Face Hub: 精准下载
+- Git lfs 方案要简洁得多 -- <span style='color:red'>优雅但不灵活</span>
+  - 问题：会下载仓库**所有**文件，大大延长模型下载时间
+- HuggingFace Hub: <span style='color:green'>精准下载</span>
 
 参考
 - 官方提供的下载[方法](https://huggingface.co/docs/hub/models-downloading)
 - [【Hugging Face】如何从hub中下载文件](https://automanbro.blog.csdn.net/article/details/133658587)
 - [如何优雅的下载huggingface-transformers模型](https://zhuanlan.zhihu.com/p/475260268)
 
-#### (1) HuggingFace Hub
+#### (0) 自动下载
 
-通过hugging face hub方式下载模型时，模型文件是**blob编码**
-- 因为huggingface_hub默认下载以系统**全局缓存**形式保存。
+模型文件导入
+- 默认保存路径：`~/.cache/huggingface/hub/`
+
+```py
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+model_name = "distilgpt2"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+
+# ---- 示例 -----
+import transformers
+
+MODEL_PATH = "./transformr_files/bert-base-uncased/"
+# a.通过词典导入分词器
+tokenizer = transformers.BertTokenizer.from_pretrained(f"{MODEL_PATH}/bert-base-uncased-vocab.txt") 
+# b. 导入配置文件
+model_config = transformers.BertConfig.from_pretrained(MODEL_PATH)
+# 【2023-2-22】默认保存路径：~/.cache/huggingface/hub/
+tokenizer = BertTokenizer.from_pretrained(model_name, cache_dir='./transformers/')	# cache_dir表示将预训练文件下载到本地指定文件夹下，而不是默认路径
+
+# 修改配置
+model_config.output_hidden_states = True
+model_config.output_attentions = True
+# 通过配置和路径导入模型
+model = transformers.BertModel.from_pretrained(MODEL_PATH,config = model_config)
+```
+
+#### (1) HuggingFace Hub 精准下载
+
+通过 huggingface hub 下载模型时，模型文件是**blob编码**
+- 因为 huggingface_hub 默认下载以系统**全局缓存**形式保存。
 - 只需要通过修改 `snapshot_download(local_dir_use_symlinks=False)` 即可以得到正常的文件形式
 
 hf_hub_download
@@ -283,7 +313,7 @@ hf_hub_download(repo_id="lysandre/arxiv-nlp", filename="config.json", revision="
 ```
 
 snapshot_download
-- snaphot_download方法提供了`allow_regex`和`ignore_regex`两个参数，前者是对指定的匹配项进行下载，后者是忽略指定的匹配项，下载其余部分。
+- `snaphot_download` 方法提供了`allow_regex`和`ignore_regex`两个参数，前者是对指定的匹配项进行下载，后者是忽略指定的匹配项，下载其余部分。
 
 ```py
 # 下载整个代码库
@@ -297,92 +327,7 @@ snapshot_download(repo_id="lysandre/arxiv-nlp", ignore_patterns=["*.msgpack", "*
 # 实例： 过滤某些文件
 snapshot_download(repo_id="bert-base-chinese")
 snapshot_download(repo_id="bert-base-chinese", ignore_regex=["*.h5", "*.ot", "*.msgpack"])
-
 ```
-
-#### (2) huggingface-cli
-
-huggingface-cli下载命令直接从Hub下载文件。
-- 内部使用 hf_hub_download()和snapshot_download()助手，并将返回的路径打印到终端
-- 文件将被下载到由`HF_HOME`环境变量定义的缓存目录中（如果未指定，则为`~/.cache/huggingface/hub`）
-
-```sh
-# 查看可用参数
-huggingface-cli download --help
-# 下载单个文件
-huggingface-cli download gpt2 config.json
-#~/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
-# 指定身份
-huggingface-cli download gpt2 config.json --token=hf_****
-#/home/wauplin/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
-# 同事下载多个文件，并进度条显示
-huggingface-cli download gpt2 config.json model.safetensors
-# 进度条静音
-huggingface-cli download gpt2 config.json model.safetensors --quiet
-# 指定目录
-huggingface-cli download gpt2 config.json --cache-dir=./cache
-# 下载到本地文件夹，而不带缓存目录结构，则可以使用--local-dir
-huggingface-cli download gpt2 config.json --local-dir=./models/gpt2
-# 指定不同类型的仓库或版本来下载，并使用glob模式包含/排除要下载的文件
-huggingface-cli download bigcode/the-stack --repo-type=dataset --revision=v1.2 --include="data/python/*" --exclude="*.json" --exclude="*.zip"
-```
-
-
-#### (3) git lfs
-
-```shell
-# mac下
-brew install git-lfs
-apt get install git-lfs # ubuntu
-git lfs install
-git clone https://huggingface.co/bert-base-chinese
-# 或
-git lfs clone https://huggingface.co/stabilityai/sd-vae-ft-mse
-# git clone https://huggingface.co/lmsys/vicuna-13b-delta-v0
-# git clone git@hf.co:bigscience/bloom
-# git clone https://huggingface.co/LinkSoul/Chinese-Llama-2-7b
-GIT_LFS_SKIP_SMUDGE=1 # 只下载 pointer 文件，不下大文件
-# 在当前目录新建一个 models 文件夹用来存放大模型
-# 只下载特定文件
-git lfs clone --include="*.bin" [HF_REPO]
-```
-
-#### (4) hf_transfer
-
-hf_transfer是一个基于Rust开发的库，用于加速与Hub的文件传输
-- 安装该包 `pip install hf_transfer`
-- 并将`HF_HUB_ENABLE_HF_TRANSFER=1`设置为环境变量
-
-#### 自动下载
-
-模型文件导入
-
-```python
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
-model_name = "distilgpt2"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
-
-# ---- 示例 -----
-import transformers
-
-MODEL_PATH = "./transformr_files/bert-base-uncased/"
-# a.通过词典导入分词器
-tokenizer = transformers.BertTokenizer.from_pretrained(f"{MODEL_PATH}/bert-base-uncased-vocab.txt") 
-# b. 导入配置文件
-model_config = transformers.BertConfig.from_pretrained(MODEL_PATH)
-# 【2023-2-22】默认保存路径：~/.cache/huggingface/hub/
-tokenizer = BertTokenizer.from_pretrained(model_name, cache_dir='./transformers/')	# cache_dir表示将预训练文件下载到本地指定文件夹下，而不是默认路径
-
-# 修改配置
-model_config.output_hidden_states = True
-model_config.output_attentions = True
-# 通过配置和路径导入模型
-model = transformers.BertModel.from_pretrained(MODEL_PATH,config = model_config)
-```
-
-#### Hugging Face Client Library
 
 使用 [huggingface_hub](https://github.com/huggingface/huggingface_hub) 工具创建、删除、更新和索引模型库
 
@@ -404,6 +349,62 @@ model = joblib.load(
 from transformers import AutoConfig
 config = AutoConfig.from_pretrained("./your/path/bigscience_t0/config.json")
 ```
+
+#### (2) huggingface-cli 单文件下载
+
+huggingface-cli 命令直接从Hub下载文件。
+- 内部使用 `hf_hub_download()` 和 `snapshot_download()` 助手，并将返回路径打印到终端
+- 文件将被下载到由`HF_HOME`环境变量定义的缓存目录中（如果未指定，则为`~/.cache/huggingface/hub`）
+
+```sh
+# 查看可用参数
+huggingface-cli download --help
+# 下载单个文件
+huggingface-cli download gpt2 config.json
+#~/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
+huggingface-cli download google/gemma-7b-it-pytorch
+# 指定身份
+huggingface-cli download gpt2 config.json --token=hf_****
+#/home/wauplin/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
+# 同事下载多个文件，并进度条显示
+huggingface-cli download gpt2 config.json model.safetensors
+# 进度条静音
+huggingface-cli download gpt2 config.json model.safetensors --quiet
+# 指定目录
+huggingface-cli download gpt2 config.json --cache-dir=./cache
+# 下载到本地文件夹，而不带缓存目录结构，则可用 --local-dir 
+huggingface-cli download gpt2 config.json --local-dir=./models/gpt2
+# 指定不同类型的仓库或版本来下载，并使用glob模式包含/排除要下载的文件
+huggingface-cli download bigcode/the-stack --repo-type=dataset --revision=v1.2 --include="data/python/*" --exclude="*.json" --exclude="*.zip"
+```
+
+
+#### (3) git lfs 优雅但不灵活
+
+```shell
+# mac下
+brew install git-lfs
+apt get install git-lfs # ubuntu
+git lfs install
+git clone https://huggingface.co/bert-base-chinese
+# 或
+git lfs clone https://huggingface.co/stabilityai/sd-vae-ft-mse
+# git clone https://huggingface.co/lmsys/vicuna-13b-delta-v0
+# git clone git@hf.co:bigscience/bloom
+# git clone https://huggingface.co/LinkSoul/Chinese-Llama-2-7b
+GIT_LFS_SKIP_SMUDGE=1 # 只下载 pointer 文件，不下大文件
+# 在当前目录新建一个 models 文件夹用来存放大模型
+# 只下载特定文件
+git lfs clone --include="*.bin" [HF_REPO]
+```
+
+#### (4) hf_transfer 
+
+hf_transfer是一个基于Rust开发的库，用于加速与Hub的文件传输
+- 安装该包 `pip install hf_transfer`
+- 并将`HF_HUB_ENABLE_HF_TRANSFER=1`设置为环境变量
+
+
 
 #### 模型不同点
 
