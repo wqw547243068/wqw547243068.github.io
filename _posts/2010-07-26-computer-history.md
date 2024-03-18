@@ -3,7 +3,7 @@ layout: post
 title:  "计算机发展史-Computer History"
 date:   2010-07-26 23:42:00
 categories: 计算机基础
-tags: 高德纳 图灵 冯·诺依曼 陈皓 少儿编程 网络 体系结构 CPU arm x86 OSI 编程语言 编码 32 64
+tags: 高德纳 图灵 冯·诺依曼 陈皓 少儿编程 网络 体系结构 CPU arm x86 OSI 编程语言 编码 32 64 可视化
 excerpt: 计算机发展历史，编程语言诞生过程，及几位关键人物
 mathjax: true
 permalink: /computer
@@ -994,6 +994,22 @@ func add(int a,int b) { #0x0020
 - **函数调用**不仅仅需要跳转地址，还要把函数执行完毕之后要执行的地址存下来，方便折回继续执行。
 - 其实还有个**循环执行**，也就是代码中的for、while之类的，这时程序计数器会不停的在某些地址之间来回切换。
 
+
+### 可视化编程
+
+【2024-3-18】 Flyde
+
+[Flyde](https://www.flyde.dev/) 开源的可视化编程语言。集成到你现有的代码库中，创建和运行可视化程序。
+- [在线体验](https://play.flyde.dev/apps/bec05712-1fbb-4f40-b688-dc5790c8b5ea)
+
+主要特点包括:
+- 开源：Flyde 是免费的，你可以自由的使用和修改它。
+- 可视化：使用可视化编程方式创建和运行程序，使编程变得更直观。
+- 集成：Flyde 集成到现有的代码库中，使得创建和运行任务变得简单。
+- TypeScript集成：无论是在浏览器端还是在Node.js端，Flyde都可以与现有的TypeScript代码进行集成。
+Flyde 所提供的用户体验将使得开发人员轻松扩展其产品或项目。通过运行在IDE中的Flyde，程序员可以直观地观察到任务的运行情况
+
+![](https://www.flyde.dev/assets/images/fibo-cdbc5936ed3856df4928019564ef82dd.gif)
 
 ## 字符编码
 
