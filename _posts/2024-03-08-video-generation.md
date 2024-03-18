@@ -647,7 +647,9 @@ A Chinese Lunar New Year celebration video with Chinese Dragon.
 # 提示：与中国龙一起庆祝中国农历新年的视频。
 ```
 
-## Latte -- Sora 复现
+## Sora 复现
+
+### Latte
 
 【2024-1-5】澳大利亚莫纳什大学+上海AI实验室+南京邮电推出 [Latte](https://maxin-cn.github.io/latte_project/), 又叫 Latent Diffusion Transformer, 采用了前边提到的视频切片序列和Vision Transformer的方法
 - 从视频里抠出来一堆时空token，通过一系列的Transformer模块，在潜在空间里模仿视频分布。
@@ -657,6 +659,14 @@ A Chinese Lunar New Year celebration video with Chinese Dragon.
 - 官方[Latte](https://github.com/Vchitect/Latte)
 - 个人复现 [train_your_own_sora](https://github.com/lyogavin/train_your_own_sora)
 - Latte训练需要80GB显存的A100或者H100。
+
+### Open-Sora
+
+【2024-3-18】[没等来OpenAI，等来了Open-Sora全面开源](https://mp.weixin.qq.com/s/vdr1WBCQVr9aS6bJYcdlRA)
+- 继 2 周前推出成本直降 46% 的 Sora 训练推理复现流程后
+- Colossal-AI 团队全面开源全球首个类 Sora 架构视频生成模型 「Open-Sora 1.0」，涵盖了整个训练流程，包括数据处理、所有训练细节和模型权重，携手全球 AI 热爱者共同推进视频创作的新纪元。
+- [Open-Sora 开源地址](https://github.com/hpcaitech/Open-Sora)
+- 目前版本仅使用了 400K 的训练数据，模型的生成质量和遵循文本的能力都有待提升。例如, 在上面的乌龟视频中，生成的乌龟多了一只脚。Open-Sora 1.0 也并不擅长生成人像和复杂画面。
 
 ## 【2024-2-21】谷歌 Lumiere
 
