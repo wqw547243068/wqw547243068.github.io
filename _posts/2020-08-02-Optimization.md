@@ -1099,8 +1099,11 @@ AdaGrad的问题在于它的运行速度非常慢
 ## Adam——深度学习默认首选，融合动量+RMSProp
 
 Adam 优化器之旅可以说是过山车（roller-coaster）式的。
-- 2014 年推出，本质上是一个出于直觉的简单想法：既然明确地知道某些参数需要移动得更快、更远，那么为什么每个参数还要遵循相同的学习率？因为最近梯度的平方每一个权重可以得到多少信号，所以可以除以这个，以确保即使是最迟钝的权重也有机会发光。
+- 2014 年推出，直觉的简单想法：既然明确地知道某些参数需要移动得更快、更远，那么为什么每个参数还要遵循相同的学习率？因为最近梯度的平方每一个权重可以得到多少信号，所以可以除以这个，以确保即使是最迟钝的权重也有机会发光。
 - Adam 接受了这个想法，在过程中加入了标准方法，就这样产生了 Adam 优化器（稍加调整以避免早期批次出现偏差）！
+
+Adam(Adaptive Moment Estimation) 是带有动量项的RMSprop，利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。
+- 优点: 经过偏置校正后，每一次迭代学习率都有个确定范围，使得参数比较平稳。
 
 2014年
 - Adam是 RMSprop 和 Momentum 的结合。
@@ -1110,6 +1113,49 @@ Adam 优化器之旅可以说是过山车（roller-coaster）式的。
 Adam（自适应矩估计的缩写）兼具**动量**和**RMSProp**的优点，Adam从动量获得速度，并从RMSProp获得了在不同方向适应梯度的能力。 两者的结合使其功能强大。
 
 Adam在经验上表现良好，因此近年来是深度学习问题的首选。
+
+
+### Pytorch Adam
+
+Adam 算法
+- [Adam: A Method for Stochastic Optimization](https://arxiv.org/pdf/1412.6980.pdf)
+
+`torch.optim` 实现了多种优化算法包，大多数通用的方法都已支持，提供了丰富的接口调用
+
+```py
+optimizer = optim.SGD(model.parameters(), lr = 0.01, momentum=0.9)
+optimizer = optim.Adam([var1, var2], lr = 0.0001)
+
+self.optimizer_D_B = torch.optim.Adam(self.netD_B.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
+
+class torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
+  # params(iterable)：可用于迭代优化的参数或者定义参数组的dicts。
+  # lr (float, optional) ：学习率(默认: 1e-3)
+  # betas (Tuple[float, float], optional)：用于计算梯度的平均和平方的系数(默认: (0.9, 0.999))
+  # eps (float, optional)：为了提高数值稳定性而添加到分母的一个项(默认: 1e-8)
+  # weight_decay (float, optional)：权重衰减(如L2惩罚)(默认: 0)
+  def step(closure=None)
+    # 函数：执行单一的优化步骤
+    pass
+  def closure (callable, optional)：
+    # 用于重新评估模型并返回损失的一个闭包
+    pass
+```
+
+参数：
+- `params` (iterable) – 待优化参数的iterable或者是定义了参数组的dict
+- `lr` (float, 可选) – 学习率（默认：1e-3）, 或步长因子，控制权重的更新比率（如 0.001）。
+  - 较大的值（如 0.3）在学习率更新前会有更快的初始学习
+  - 较小的值（如 1.0E-5）会令训练收敛到更好的性能。
+- `betas` (`Tuple[float, float]`, 可选): 计算梯度以及梯度平方的运行平均值系数（默认：0.9，0.999）
+  - betas = （beta1，beta2）
+  - beta1：一阶矩估计的指数衰减率（如 0.9）。
+  - beta2：二阶矩估计的指数衰减率（如 0.999）。该超参数在稀疏梯度（如在 NLP 或计算机视觉任务中）中应该设置为接近 1 的数。
+- `eps` (float, 可选): 为了增加数值计算的稳定性而加到分母里的项（默认：1e-8）
+  - epsilon：非常小的数，其为了防止在实现中除以零（如 10E-8）。
+- `weight_decay` (float, 可选): 权重衰减（L2惩罚）（默认: 0）
+
+
 
 
 ## NAdam
