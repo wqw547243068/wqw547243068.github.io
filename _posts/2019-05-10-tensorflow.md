@@ -2557,7 +2557,25 @@ tensorboard —logdir=./logs/xor_logs # server
 
 【2023-4-10】[wandb使用教程(一)：基础用法](https://zhuanlan.zhihu.com/p/493093033)
 
-wandb是一个免费的，用于记录实验数据的工具。wandb相比于tensorboard之类的工具，有更加丰富的用户管理，团队管理功能，更加方便团队协作。使用wandb首先要在网站上创建team，然后在team下创建project，然后project下会记录每个实验的详细数据。
+wandb是一个免费、用于记录实验数据的工具。
+- wandb相比于tensorboard之类的工具，有更加丰富的**用户管理，团队管理**功能，更加方便团队协作。
+
+wandb 是 Weight & Bias 缩写，与Tensorboard类似的参数可视化平台。
+
+不过，相比较TensorBoard而言，Wandb更加的强大，主要体现在以下的几个方面：
+- 复现模型：Wandb更有利于复现模型。Wandb不仅记录指标，还会记录**超参数**和**代码**版本。
+- 自动上传云端：
+  - 把项目交给同事或者要去度假，Wandb可以便捷地查看所有模型，不必花费大量时间来重新运行旧实验。
+- 快速、灵活的集成：
+  - 只需5分钟即可把Wandb加到项目。
+  - 下载Wandb免费的开源Python包，然后在代码中插入几行，以后每次运行模型都会得到记录完备的指标和记录。
+- 集中式指示板：
+  - Wandb提供同样的集中式指示板。不管在哪里训练模型，不管是在本地机器、实验室集群还是在云端实例；不必花时间从别的机器上复制TensorBoard文件。
+- 强大的表格：
+  - 对不同模型的结果进行搜索、筛选、分类和分组。
+  - 轻而易举地查看成千上万个模型版本，并找到不同任务的最佳模型。
+
+使用wandb，首先要在网站上创建team，然后在team下创建project，然后project下会记录每个实验的详细数据。
 
 ### wandb 安装
 
@@ -2584,14 +2602,35 @@ wandb login
 ```py
 import wandb
 
-wandb.init(config=all_args,
-    project=your_project_name,
+
+config = dict (
+  learning_rate = 0.01,
+  momentum = 0.2,
+  architecture = "CNN",
+  dataset_id = "peds-0192",
+  infra = "AWS",
+)
+
+test = wandb.init(
+    project='wqw', # 项目名称wqw，运行时会创建 wqw 目录
     entity=your_team_name,
     notes=socket.gethostname(),
-    name=your_experiment_name
+    name='test', # 任务名,不设置时，系统会自动拼接两个单词作为名称，如 green-wood-250
     dir=run_dir,
     job_type="training",
-    reinit=True)
+    reinit=True,
+    resume="allow",  #  是否可恢复, 防止意外中断, 默认None
+    config=config) # 实验参数配置, 保存训练配置，这些配置包含超参数、数据集名称或模型类型等输入设置
+# 运行中途可以更新config信息
+wandb.config.update({'a':10})
+test.config.update(dict(epoch=args.epochs, lr=args.lr, batch_size=args.batch_size))
+# 补充观测数据
+wandb.log({'loss': loss, 'epoch': epoch, 'learning rate': cur_lr，
+           'images': wandb.Image(images.float()),
+           'masks': {'true': wandb.Image(targets.float()),
+                     'pred': wandb.Image(pred.float())}
+          })
+wandb.Image() # 用于图像的显示，numpy格式的数组或者PIL实例转化为PNG，从而在网页上直接显示出来。
 ```
 
 ### 示例
@@ -2644,7 +2683,9 @@ wandb.finish()
 
 ### 使用方法
 
-wandb的基础功能就是跟踪训练过程，然后在wandb网站上查看训练数据。wandb通过通用的log()函数，可以展示丰富的数据类型，包括训练`曲线`，`图片`，`视频`，`表格`，`html`，`matplotlib图像`等。
+wandb的基础功能就是跟踪训练过程，然后在wandb网站上查看训练数据。
+
+wandb通过通用的log()函数，可以展示丰富的数据类型，包括训练`曲线`，`图片`，`视频`，`表格`，`html`，`matplotlib图像`等。
 
 详细教程见：[wandb使用教程(一)：基础用法](https://zhuanlan.zhihu.com/p/493093033)，[本地部署](https://zhuanlan.zhihu.com/p/521663928)
 *   展示训练曲线示例: [test_curves.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_curves.sh)
@@ -2656,6 +2697,35 @@ wandb的基础功能就是跟踪训练过程，然后在wandb网站上查看训�
 *   展示html示例: [test_html.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_html.sh)
 *   PyTorch集成示例: [test_pytorch.sh](https://github.com/huangshiyu13/wandb_tutorial/blob/main/basic/test_pytorch.sh)
 
+
+### 问题
+
+
+
+【2024-3-19】执行
+
+```py
+import wandb
+# 不设置 project 时，会默认创建 wandb 目录
+wandb.init()
+# 设置 project
+wandb.init(project="wqw")
+```
+
+报错：
+- [[AttributeError] module 'wandb' has no attribute 'init'](https://github.com/wandb/wandb/issues/5950)
+
+分析
+- 本地有 `wandb` 目录(包含 `__init__.py` )、`wandb.py` 文件
+
+My guess is that you have either:
+- wandb directory that contains an `__init__.py`, or `wandb.py` file in your working directory.
+
+实情
+- 公司内定制了wandb包，将默认包做了修改
+
+解决方法
+- 卸载 
 
 
 # 结束
