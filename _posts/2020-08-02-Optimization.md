@@ -1158,6 +1158,7 @@ class torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_d
 
 
 
+
 ## NAdam
 
 - NAdam在 Adam 之上融合了 NAG 的思想。
@@ -1407,6 +1408,180 @@ AdanW：权重衰减与 L2 正则化
 - 噪声问题。训练数据大概率都是经过去噪处理的，而真实测试时也应该去除噪声。
 
 
+## 学习率
+
+
+### 学习率衰减策略
+
+[深度学习中的固定学习率衰减策略总结](https://zhuanlan.zhihu.com/p/166110607)
+
+学习率衰减策略：**固定策略**的学习率衰减和**自适应**学习率衰减
+- 固定学习率衰减：**分段**衰减、逆时衰减、指数衰减等
+  - piecewise decay **分段常数衰减**: 训练过程中不同阶段设置不同的学习率，便于更精细的调参。
+    - 在目标检测任务如Faster RCNN 和 SSD 的训练中都采用分段常数衰减策略，调整学习率。
+  - exponential decay **指数衰减**：学习率以指数的形式进行衰减，其中指数函数的底为decay_rate， 指数为 global_step / decay_steps
+  - natural exponential decay **自然指数衰减**: 学习率以自然指数进行衰减，其中指数函数底为自然常数e, 指数为 -decay_rate * global_step / decay_step， 相比指数衰减具有更快的衰减速度。
+  - polynomial decay **多项式衰减**：调整学习率的衰减轨迹以多项式对应的轨迹进行。
+    - 其中（1 - global_step / decay_steps） 为幂函数的底； power为指数，控制衰减的轨迹。
+  - cosine decay **余弦衰减**：学习率以cosine 函数曲线进行进行衰减
+  - linear cosine decay **线性余弦衰减**：动机式在开始的几个周期，执行warm up 操作，线性余弦衰减比余弦衰减更具aggressive，通常可以使用更大的初始学习速率。
+  - 循环学习率衰减
+    - 参考[Stochastic Gradient Descent with warm Restart (SGDR)](https://arxiv.org/abs/1608.03983)，学习率以循环周期进行衰减。
+- 自适应学习率衰减：AdaGrad、 RMSprop、 AdaDelta等。
+
+一般情况，两种策略会结合使用。
+
+|衰减策略|说明|图解|
+|---|---|---|
+|分段衰减|不同阶段设置不同的学习率|![](https://pic2.zhimg.com/80/v2-ee78dc6e4b49ecb74f01d5715bae6c99_1440w.webp)|
+|指数衰减|以指数的形式进行衰减|![](https://pic3.zhimg.com/80/v2-5b3ac0132027d5794ae99aa4c3362a1e_1440w.webp)|
+|自然指数衰减|自然指数进行衰减|![](https://pic4.zhimg.com/80/v2-01a8feb650b63a3707bd9b3ee06b434f_1440w.webp)![](https://pic1.zhimg.com/80/v2-6d5972657872ac4a485f918f6e279470_1440w.webp)|
+|多项式衰减||![](https://pic1.zhimg.com/80/v2-150bad04c80f0ec45191f80f14bd7e10_1440w.webp)|
+|余弦衰减||![](https://pic4.zhimg.com/80/v2-e4d31b464c4c6dbe0b720d28b192bce3_1440w.webp)|
+|线性余弦衰减||![](https://pic4.zhimg.com/80/v2-e90b3e46c5f034c413ba97f893846c13_1440w.webp)|
+|循环学习率衰减||![](https://pic3.zhimg.com/80/v2-17793ccaaa19a9d90cca78535bcab3ee_1440w.webp)|
+
+
+学习率衰减策略很大程度上是依赖于经验与具体问题
+
+### PyTorch 学习率衰减
+
+pytorch 中4种常用衰减类型：指数衰减、固定步长的衰减、多步长衰、余弦退火衰减。
+
+#### 1. 固定学习率
+
+设置固定学习率的方法有两种，第一种是直接设置一些学习率，网络从头到尾都使用这个学习率
+
+```py
+optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+```
+
+第二种方法是，可以针对不同的参数设置不同的学习率，设置方法如下：这里给subnet2子结构设置的学习率为0.01 ，如果对某个参数不指定学习率，就使用最外层的默认学习率，这里其他结构默认使用0.03
+
+```py
+optimizer =optim.SGD([
+    {'params': net.subnet1.parameters()}, # lr=0.03
+    {'params': net.subnet2.parameters(), 'lr': 0.01}
+], lr=0.03)
+```
+
+#### 2. 固定步长衰减
+
+每隔多少步就去乘以一个系数，这里的step_size表示运行这么多次的step()才会更新一次。
+
+```py
+optimizer_StepLR = torch.optim.SGD(net.parameters(), lr=0.1)
+StepLR = torch.optim.lr_scheduler.StepLR(optimizer_StepLR, step_size=step_size, gamma=0.65)
+```
+
+gamma参数表示衰减的程度，step_size参数表示每隔多少个step进行一次学习率调整
+
+#### 3. 多步长衰减
+
+固定步长的衰减的虽然能够按照固定的区间长度进行学习率更新，但是有时我们希望不同的区间采用不同的更新频率，或者是有的区间更新学习率，有的区间不更新学习率，这就需要使用MultiStepLR来实现动态区间长度控制：
+
+```py
+optimizer_MultiStepLR = torch.optim.SGD(net.parameters(), lr=0.1)
+torch.optim.lr_scheduler.MultiStepLR(optimizer_MultiStepLR,
+                    milestones=[200, 300, 320, 340, 200], gamma=0.8)
+```
+
+其中milestones参数为表示学习率更新的起止区间，在区间[0. 200]内学习率不更新，而在[200, 300]、[300, 320].....[340, 400]的右侧值都进行一次更新；gamma参数表示学习率衰减为上次的gamma分之一。milestones以外的区间学习率始终保持不变。
+
+#### 4. 指数衰减
+
+学习率指数衰减是比较常用的策略，首先确定需要针对哪个优化器执行学习率动态调整策略，定义好优化器以后，就可以给这个优化器绑定一个指数衰减学习率控制器
+
+```py
+optimizer_ExpLR = torch.optim.SGD(net.parameters(), lr=0.1)
+ExpLR = torch.optim.lr_scheduler.ExponentialLR(optimizer_ExpLR, gamma=0.98)
+```
+
+gamma表示衰减的底数，选择不同的gamma值可以获得幅度不同的衰减曲线
+
+#### 5. 余弦退火
+
+余弦退火策略不应该算是学习率衰减策略，因为它使得学习率按照周期变化，其定义方式如下：
+
+```py
+optimizer_CosineLR = torch.optim.SGD(net.parameters(), lr=0.1)
+CosineLR = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer_CosineLR, T_max=150, eta_min=0)
+```
+
+#### 6. ReduceLRonPlateau
+
+这个方法是对梯度进行监控，其中mode是模式设置，具有两种模式，min 和max指的是如果梯度不下降，或者不上升，就进行调整；factor是调整因子；patience指的是连续多少次不变化就调整；threshold表示只有超过阈值之后，才关注学习率的变化；threshold_mode有两种模式，rel模式：max模式下如果超过best(1+threshold)为显著，min模式下如果低于best(1-threshold)为显著，abs模式：max模式下如果超过best+threshold为显著，min模式下如果低于best-threshold为显著；cooldown是指调整后，有一段冷却时间，多少次不对学习率进行监控；verbose表示是否打印日志；min_lr表示学习率下限；eps 表示学习率衰减最小值；
+
+```py
+lr_scheduler.ReduceLROnPlateau(
+  optimizer,
+  mode='min',
+  factor=0.1,
+  patience=10,
+  verbose=False,
+  threshold = 0.0001,
+  threshold_mode = 'rel',
+  cooldown=0,
+  min_lr = 0,
+  eps = 1e-08
+)
+```
+
+#### 7. 自定义学习率LambdaLR
+
+通过一个lambda来自定义学习率计算方式
+
+```py
+lr_scheduler.LambdaLR(
+  optimizer,
+  lr_lambda,
+  last_epoch=-1
+)
+```
+
+其中lr_lambda 表示自定义的函数，一个例子如下
+
+```py
+scheduler = LambdaLR(optimizer, lr_lambda = lambda epoch: 0.1 ** ( eopch // 10 ))
+```
+
+### TensorFlow 学习率衰减
+
+```py
+# 分段衰减
+tf.train.piecewise_constant_decay() 
+piecewise_with_warmup() # 分段常数衰减
+
+# 指数衰减
+tf.train.exponential_decay() 
+# learning_rate: 基学习率；
+# decay_rate: 衰减率；
+# decay_steps: 衰减步数（周期）
+# staircase: 是否以离散的时间间隔衰减学习率
+
+# 自然指数衰减
+tf.train.natural_exp_decay()
+# learning_rate: 基学习率；
+# decay_rate: 衰减率；
+# decay_steps: 衰减步数/周期；
+# staircase: 是否以离散的时间间隔衰减学习率
+
+# 多项式衰减
+tf.train.polynomial_decay()
+# learning_rate: 基学习率；decay_steps: 衰减率衰减步数；power: 多项式的幂；end_learning_rate：最小学习率
+
+# 余弦衰减
+tf.train.cosine_decay()
+# learning_rate: 基学习率；decay_steps: 衰减率衰减步数；alpha: 最小学习率
+tf.train.linear_cosine_decay() # 线性余弦衰减
+cosine_decay_with_warmup() # 带预热的余弦衰减
+
+# 循环学习率衰减
+tf.train.cosine_decay_restarts()
+# learning_rate: 基学习率；first_decay_steps: 第一个衰减周期迭代次数； t_mul: 迭代次数因子，用于推导第i个周期的迭代次数；m_mul: 学习率衰减因子，用于推导第i个周期的初始学习率；alpha：最小学习率
+exponential_decay_with_burnin() # 单循环学习率衰减
+
+```
 
 # 资料
 
