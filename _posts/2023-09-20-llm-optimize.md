@@ -484,7 +484,7 @@ LLMs模型推理大致分为两个stage: **context** and **generation**.
 
 WeightOnly 量化的典型案例是 [AWQ: Activation-aware Weight Quantization](https://arxiv.org/pdf/2306.00978.pdf)，即只对 weight 进行量化以实现压缩和加速的效果。
 
-##### LLMs的量化方法
+##### LLMs 量化方法
 
 常见方法
 - LLM.in8
@@ -541,6 +541,33 @@ SmoothQuant的续作, 从源代码来看, 它对SmoothQuant中计算scale时需�
 
 
 ##### 量化实践
+
+
+###### PyTorch 量化
+
+Quanto：pytorch量化工具包
+1. quanto是一个灵活的pytorch量化工具包,提供了独特的功能:
+  - 支持eager模式(可用于非可trace的模型)
+  - 量化后的模型可在任意设备上运行(包括CUDA和MPS)  
+  - 自动插入量化和反量化代码
+  - 自动插入量化的函数操作
+  - 自动插入量化的模块(如QLinear、QConv2d等)
+  - 提供从动态到静态量化的流程  
+  - 支持量化模型的状态字典序列化
+  - 不仅支持int8权重,还支持int2和int4
+  - 不仅支持int8激活,还支持float8
+2. 典型的量化流程包括:量化、校准、调优和冻结。
+3. quanto与huggingface transformers库深度集成,可通过QuantoConfig来量化任意模型。
+4. quanto的实现细节:
+  - 提供了针对不同量化类型的定制Tensor子类
+  - 提供了可处理quanto tensor的量化模块,如QLinear、QConv2d等
+  - 通过pytorch dispatch机制,实现了常见函数的量化版本
+  - 计划集成各种PTQ优化算法
+5. quanto的性能:
+  - 在多个模型上展示了不同量化配置的准确率
+  - 展示了相比全精度,量化带来的加速比
+
+《[Quanto: a pytorch quantization toolkit](https://huggingface.co/blog/quanto-introduction)》
 
 
 ###### Mixtal GPTQ
