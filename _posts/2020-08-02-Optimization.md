@@ -129,9 +129,10 @@ permalink: /optimization
 ### 曼哈顿距离（Manhattan Distance）
 
 向量各坐标的绝对值做查后求和。
-- d(i,j)=\|X1-X2\|+\|Y1-Y2\|
-- $d(i,j)=\left|X1-X2\right| +\left|Y1-Y2\right|$
-- [img](https://img-blog.csdn.net/20170411163529421) ![](https://img-blog.csdn.net/20170411163529421)
+- `d(i,j)=|X1-X2|+|Y1-Y2|`
+- `d(i,j)=|X1-X2| +|Y1-Y2|`
+- [img](https://img-blog.csdn.net/20170411163529421) 
+- ![](https://img-blog.csdn.net/20170411163529421)
 
 ### 明可夫斯基距离（Minkowski distance）
 
@@ -1445,6 +1446,143 @@ AdanW：权重衰减与 L2 正则化
 学习率衰减策略很大程度上是依赖于经验与具体问题
 
 ### PyTorch 学习率衰减
+
+`torch.optim` 中实现了多种优化算法
+
+#### Pytorch optim
+
+创建optimizer时，提供需优化的模型参数
+- 模型参数必须是iterable类型且顺序不变。
+- Optimizer 还可以指定一些优化参数，如：learning rate和weight decay等，不同优化算法的优化参数不同，默认情况下优化参数作用于所有模型参数，也可以为不同的模型参数提供不同的优化参数。
+
+```py
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = optim.Adam([var1, var2], lr=0.0001)
+
+# 最外层的优化参数作为default选项用于没设置该优化参数的模型参数组。
+optim.SGD([
+     {'params': model.base.parameters()},
+     {'params': model.classifier.parameters(), 'lr': 1e-3}
+], lr=1e-2, momentum=0.9)
+
+# 在梯度计算之后来用梯度更新参数
+for input, target in dataset:
+    optimizer.zero_grad() # 清理梯度值
+    output = model(input)
+    loss = loss_fn(output, target)
+    loss.backward() # 反向传播，计算梯度
+    optimizer.step() # 更新参数
+
+# 传入closure
+for input, target in dataset:
+    def closure():
+        optimizer.zero_grad()
+        output = model(input)
+        loss = loss_fn(output, target)
+        loss.backward()
+        return loss
+    optimizer.step(closure) # 允许重新计算模型
+```
+
+更新模型参数的三种方式：`forloop`, `foreach`和`fused`
+- 性能排序为 `forloop` < `foreach` < `fused` 
+- Forloop 方式遍历每个param来对其进行更新；
+- Foreach 方式将同一param group的所有param组合成一个multi-tensor来一次性更新所有参数，内存使用多但减少kernel calls；
+- Fused 方式在一个kernel中执行所有计算。
+- Foreach和Fused要求所有的模型参数在CUDA上，而Fused进一步要求所有模型的参数类型为float。
+
+PyTorch中实现的所有优化算法默认使用实现方式为`foreach`(SparseAdam，LBFGS除外，只有forloop方式），只有Adam和AdamW支持fused实现方式。
+
+**Learning Rate**
+
+PyTorch的`torch.optim.lr_scheduler`中提供多种方法来根据epoch数量调整学习率。学习率的调整应该在参数更新之后，在每个epoch最后执行。而且大多数learning rate scheduler可以叠加使用。
+
+```py
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+scheduler = ExponentialLR(optimizer, gamma=0.9)
+scheduler2 = MultiStepLR(optimizer, milestones=[30,80], gamma=0.1)
+
+for epoch in range(20):
+    for input, target in dataset:
+        optimizer.zero_grad()
+        output = model(input)
+        loss = loss_fn(output, target)
+        loss.backward()
+        optimizer.step()
+    scheduler.step()
+    scheduler2.step()
+```
+
+下面是PyTorch中提供的lr scheduler。
+
+```py
+__all__ = ['LambdaLR', 'MultiplicativeLR', 'StepLR', 'MultiStepLR', 'ConstantLR', 'LinearLR',
+           'ExponentialLR', 'SequentialLR', 'CosineAnnealingLR', 'ChainedScheduler', 'ReduceLROnPlateau',
+           'CyclicLR', 'CosineAnnealingWarmRestarts', 'OneCycleLR', 'PolynomialLR', 'LRScheduler']
+```
+
+`torch.optim.Optimizer` 是所有优化算法的父类。
+
+变量：
+- `param_groups`：存放需要优化的模型参数，Tensor或dict组成的iterable；
+- `defaults`：存放指定的优化参数，不同优化算法的优化参数不同；
+- `state`：存放优化器的当前状态，不同优化算法的内容不同；
+
+函数：
+- `state_dict()`：返回优化器的状态，包括packed_state和param_groups；
+- `load_state_dict()`：从参数中加载state_dict；
+- `zero_grad()`：将每个参数的梯度设置为None或0；
+- `step()`：为空函数，实现单步优化；
+- `add_param_group()`：向Optimizer的param_groups中添加需要优化的模型参数组；
+
+```py
+class Optimizer(object):
+
+    def __init__(self, params, defaults):
+        self.defaults = defaults
+        self.state = defaultdict(dict)
+        self.param_groups = [] #dict的列表，[{'params':[Tensor|Dict]}]
+
+        param_groups = list(params) #Tensor或dict的列表
+        if not isinstance(param_groups[0], dict):
+            param_groups = [{'params': param_groups}]
+
+        for param_group in param_groups:
+            self.add_param_group(param_group)
+
+    def __getstate__(self):
+        return {
+            'defaults': self.defaults,
+            'state': self.state,
+            'param_groups': self.param_groups,
+        }
+
+    def state_dict(self):
+        ...
+        return {
+            'state': packed_state,
+            'param_groups': param_groups,
+        }
+
+    def load_state_dict(self, state_dict):
+        ...
+
+    def zero_grad(self, set_to_none: bool = False):
+            for group in self.param_groups:
+                for p in group['params']:
+                    if p.grad is not None:
+                        if set_to_none:
+                            p.grad = None
+                        else:
+                            p.grad.zero_() #简化写法
+
+    def step(self, closure):
+        raise NotImplementedError
+
+    def add_param_group(self, param_group):
+        ...
+```
+
 
 pytorch 中4种常用衰减类型：指数衰减、固定步长的衰减、多步长衰、余弦退火衰减。
 
