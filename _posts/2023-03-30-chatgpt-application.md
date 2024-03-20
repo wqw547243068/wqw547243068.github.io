@@ -363,6 +363,28 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
   - 打造垂直领域模型的微服务网络，内置包括图像分割、语音识别等众多专业模型，便于企业客户随时调用、自由组合。
 
 
+思考
+- DIFY、COZE 等各种LMOps以及各种Agent框架的 workflow 怎么样？
+
+【2024-3-20】[微博观点](https://weibo.com/1896963363/5006706373562303)：workflow 因为模型reasoning能力在真实世界复杂任务时不够强，且短期内没法很大提升，针对合适的问题的从产品思维出发提出的解决方案。
+
+理论上如果有capability很强的LLM，tools pool，可以解决非常多问题。但因为是概率性模型，LLM调用tools不总是100%成功，以及LLM当前的reasoning能力还不支持进行各个tools之间的组合调用，所以不能100%解决问题。
+
+但如果工作流是确定的，那就没必要脱裤子放屁，用LLM去触发这个工作流，而只把LLM弱化，只是作为一个能很好理解用户意图并很擅长NLP任务的交互interface，弱化成一个节点，然后再提供同样丰富的 tools pool，然后让人工通过圈选拖拽等GUI去把这个workflow配置好，就能确定性的解决问题。 workflow就是这个思路。
+
+workflow 核心是要有人识别**确定性工作流**，去配置足够多的模板，以及足够丰富的tools，其实使用门槛并不低，比如是一堆高玩带小白玩。 但workflow有可能像notion的template一样，是商业模式的一部分。
+
+概率模型要想应用在容错率低的严肃场景，如何解决可控性/可预测性是最关键的一环，思路也是弱化 LLM 在业务流中的作用。
+
+
+#### DIFY
+
+[DIFY](https://dify.ai/), 支持各类主流模型
+- 创建[页面](https://cloud.dify.ai/apps)
+
+![](https://framerusercontent.com/images/gyg9CGdxDSKo0v5kmQeTVXR998.png)
+
+
 #### 字节 大模型产品
 
 ##### 豆包/Cici
@@ -415,7 +437,6 @@ Bot 如何盈利？
   2. 给Bot Message定价，用户使用你的Bot，要为每条Bot Message付费（还没落实）
 - Coze这个平台实际上也是沿着GPT Store这个路子，只不过相比于GPT Store，Coze的可定制性更强些，主要是因为Workflow以及Multiagent Flow这两大特性，其他如插件更丰富，支持变量和数据库，支持很多发布渠道等等这些特性也增色不少。但是Coze依然要面临盈利模式的问题
 - Bot这种软件形态短期内应该是达不到手机App那种程度，Bot Store短期内也成为不了App Store。
-
 
 实践案例
 - 【2024-2-14】[如何用Coze制作一个信息检索Bot（含Workflow的基础用法）](https://mp.weixin.qq.com/s?__biz=MzU5MDM4ODIxMw==&mid=2247484073&idx=1&sn=de056ee432ae8b7a9adc471a796122c7&chksm=fe3e4c33c949c525517971f70a6535efa1d6ea99867635f788b65672980c45592412a006d36f&cur_album_id=3329086383935635457&scene=189#wechat_redirect)
