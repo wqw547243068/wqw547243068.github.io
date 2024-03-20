@@ -1493,33 +1493,7 @@ for input, target in dataset:
 
 PyTorch中实现的所有优化算法默认使用实现方式为`foreach`(SparseAdam，LBFGS除外，只有forloop方式），只有Adam和AdamW支持fused实现方式。
 
-**Learning Rate**
 
-PyTorch的`torch.optim.lr_scheduler`中提供多种方法来根据epoch数量调整学习率。学习率的调整应该在参数更新之后，在每个epoch最后执行。而且大多数learning rate scheduler可以叠加使用。
-
-```py
-optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-scheduler = ExponentialLR(optimizer, gamma=0.9)
-scheduler2 = MultiStepLR(optimizer, milestones=[30,80], gamma=0.1)
-
-for epoch in range(20):
-    for input, target in dataset:
-        optimizer.zero_grad()
-        output = model(input)
-        loss = loss_fn(output, target)
-        loss.backward()
-        optimizer.step()
-    scheduler.step()
-    scheduler2.step()
-```
-
-下面是PyTorch中提供的lr scheduler。
-
-```py
-__all__ = ['LambdaLR', 'MultiplicativeLR', 'StepLR', 'MultiStepLR', 'ConstantLR', 'LinearLR',
-           'ExponentialLR', 'SequentialLR', 'CosineAnnealingLR', 'ChainedScheduler', 'ReduceLROnPlateau',
-           'CyclicLR', 'CosineAnnealingWarmRestarts', 'OneCycleLR', 'PolynomialLR', 'LRScheduler']
-```
 
 `torch.optim.Optimizer` 是所有优化算法的父类。
 
@@ -1584,7 +1558,47 @@ class Optimizer(object):
 ```
 
 
-pytorch 中4种常用衰减类型：指数衰减、固定步长的衰减、多步长衰、余弦退火衰减。
+pytorch 中4种常用衰减类型：**指数衰减**、**固定步长的衰减**、**多步长衰**、**余弦退火衰减**。
+
+**Learning Rate**
+
+PyTorch的`torch.optim.lr_scheduler`中提供多种方法来根据epoch数量调整学习率。学习率的调整应该在参数更新之后，在每个epoch最后执行。而且大多数learning rate scheduler可以叠加使用。
+
+```py
+from torch.optim.lr_scheduler import ExponentialLR, MultiStepLR
+
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+scheduler = ExponentialLR(optimizer, gamma=0.9)
+scheduler2 = MultiStepLR(optimizer, milestones=[30,80], gamma=0.1)
+
+for epoch in range(20):
+    for input, target in dataset:
+        optimizer.zero_grad()
+        output = model(input)
+        loss = loss_fn(output, target)
+        loss.backward()
+        optimizer.step()
+    scheduler.step()
+    scheduler2.step()
+```
+
+PyTorch中提供的lr scheduler。
+1. StepLR
+2. MultiStepLR
+3. ExponentialLR
+4. MultiplicativeLR
+5. CosineAnnealingLR
+6. CosineAnnealingWarmRestarts
+7. CyclicLR
+8. OneCycleLR
+9. ReduceLROnPlateau
+
+
+```py
+__all__ = ['LambdaLR', 'MultiplicativeLR', 'StepLR', 'MultiStepLR', 'ConstantLR', 'LinearLR',
+           'ExponentialLR', 'SequentialLR', 'CosineAnnealingLR', 'ChainedScheduler', 'ReduceLROnPlateau',
+           'CyclicLR', 'CosineAnnealingWarmRestarts', 'OneCycleLR', 'PolynomialLR', 'LRScheduler']
+```
 
 #### 1. 固定学习率
 
