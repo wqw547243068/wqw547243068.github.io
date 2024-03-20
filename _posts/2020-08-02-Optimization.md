@@ -1562,7 +1562,7 @@ pytorch 中4种常用衰减类型：**指数衰减**、**固定步长的衰减**
 
 **Learning Rate**
 
-PyTorch的`torch.optim.lr_scheduler`中提供多种方法来根据epoch数量调整学习率。学习率的调整应该在参数更新之后，在每个epoch最后执行。而且大多数learning rate scheduler可以叠加使用。
+PyTorch的 [torch.optim.lr_scheduler](https://pytorch.org/docs/stable/optim.html#module-torch.optim.lr_scheduler) 中提供多种方法来根据epoch数量调整学习率。学习率的调整应该在参数更新之后，在每个epoch最后执行。而且大多数learning rate scheduler可以叠加使用。
 
 ```py
 from torch.optim.lr_scheduler import ExponentialLR, MultiStepLR
