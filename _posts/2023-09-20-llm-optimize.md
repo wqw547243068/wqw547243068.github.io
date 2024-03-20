@@ -961,7 +961,7 @@ GPTCache 模块化的架构设计方便用户定制个性化语义缓存。每�
 
 ### 服务优化
 
-服务相关优化主要包括：Continuous Batching、Dynamic Batching 和 异步 Tokenize / Detokenize。
+服务相关优化主要包括：**Continuous Batching**、**Dynamic Batching** 和 **异步 Tokenize / Detokenize**。
 - Continuous Batching 和 Dynamic Batching 主要围绕提高可并发的 batchsize 来提高`吞吐量`
 - 异步 Tokenize / Detokenize 则通过多线程方式将 Tokenize / Detokenize 执行与模型推理过程时间交叠，实现降低时延目的。
 
@@ -988,6 +988,50 @@ GPTCache 模块化的架构设计方便用户定制个性化语义缓存。每�
 问题一可以理解为在时间轴方向动态插入新序列，问题二则是在 batch 维度动态插入新序列，以尽可能地充分利用显存空间。具体来讲，在自回归迭代生成每个 token 后，调度器通过当前剩余显存量，动态调整 Running 队列的长度，从而实现 Dynamic Batching。例如，当剩余显存量较多时，会尽可能增加 Running 队列长度；当待分配的 KV Cache 超过剩余显存时，调度器会将 Running 队列中低优先级的序列换出至 Waiting 队列，并将换出序列占用的显存释放。
 
 如上两个 batching 相关的优化技术可有效提升推理吞吐量，目前已在 HuggingFace Text-Generation-Interface (TGI)、vLLM、OpenPPL-LLM 等多个框架中实现。
+
+
+#### System Prompt Caching
+
+【2024-3-18】[LLM推理：首token时延优化与System Prompt Caching](https://zhuanlan.zhihu.com/p/687685636?utm_psn=1753431836070633472)
+
+大语言模型（Large Language Model，LLM）推理采用**流式输出**（streaming）的形式，LLM推理的首token时延就是用户感受到的LLM推理服务的响应时间，直接影响用户体验。
+
+对于在线服务，为了提升用户体验，都希望首token时延要小，一般在一秒左右比较好。
+- LLM推理的**首token时延**（time to first token, TTFT）与模型参数规模、Prompt长度、Batch Size、GPU资源等因素有关。
+
+LLM推理过程中，生成首token是**计算密集型**任务，生成首token阶段也称为prefill phase或context phase，生成首token的时间与处理输入给大模型的Prompt的计算量有关，与Prompt长度直接相关。例如，在Prompt长度相对较长的情况下（Prompt计算时间显著超过模型参数IO时间），再考虑到FlashAttention2等技术优化，生成首token的时间与输入Prompt的长度近似成线性关系。
+- ![](https://pic2.zhimg.com/80/v2-4965b0dec5ba11a56d21e3c6c23b2bc1_1440w.webp)
+
+个人助理聊天机器人、RAG客服系统等，输入给大模型的Prompt一般包含`System Prompt`和`User Prompt`两部分
+
+`System Prompt` 相对较长，且对LLM的每一次请求都可能带着相同的`System Prompt`作为输入（作为Prompt的一部分）。这样就导致，对于用户多次请求，LLM推理需要重复计算`System Prompt`，造成GPU资源浪费，特别是增加了不必要的首token时延。
+
+如果能省去对于`System Prompt`的重复计算，那将会显著提升首token生成速度。`System Prompt Caching`方法就是为了避免重复计算System Prompt，从而提高首token生成速度。
+
+`System Prompt Caching`，也称为 `Prefix Sharing`，其基本思想是对`System Prompt`部分进行一次计算，并缓存其对应的Key和Value值（例如，存放在GPU显存中），当LLM推理再次遇到相同的（甚至部分相同的）`System Prompt`时，直接利用已经缓存的System Prompt对应的Key和Value值，这样就避免了对于System Prompt的重复计算。
+
+`System Prompt Caching`主要分两种形式。
+- Prefix Sharing，适用于 “`Prompt = System Prompt + User Prompt`” 场景，其中System Prompt就是Prefix。
+  - 例如，给大模型输入的翻译指令，具有相同的System Prompt (Shared Prefix)。
+  - ![](https://pic3.zhimg.com/80/v2-4ef40f28aa31f8b13672896a2512cf96_1440w.webp)
+  - ![](https://pic2.zhimg.com/80/v2-3e35c15be2c65fb1af26a496b082a9dd_1440w.webp)
+- Prompt Cache，属于相对高级的用法，对整个输入Prompt对应的Key和Value值进行Caching操作，不局限于shared prefix。
+  - 这种方式需要使用Prompt Cache模板，可以针对Prompt的不同部分分别执行KV Cache。
+  - ![](https://pic2.zhimg.com/80/v2-448ad1cd179725aaf5c6509cfd4c9b69_1440w.webp)
+
+多轮对话场景，第二种方式，即Prompt Cache，可支持`Session Prompt Cache`。
+- 多轮对话session里，输入给LLM的Prompt，会携带多轮对话历史，涉及到很多重复计算。
+- 通过 Session Prompt Cache 可以显著减少不必要的重复计算，节省GPU资源，提高对话响应速度和用户体验。
+- ![](https://pic2.zhimg.com/80/v2-d5d62dd9c62f17b89418cef07e670c95_1440w.webp)
+
+TRT-LLM 实现
+- Nvidia 开源的`TensorRT-LLM`（TRT-LLM）推理引擎已经支持了`System Prompt Caching`（Prefix Sharing）功能。
+- 实测，当System Prompt在Prompt中占比较大时（即System Prompt比User Prompt长），System Prompt Caching功能可以带来较大的性能提升，可以显著减少生成首token的时延。
+
+不过，TensorRT-LLM里，System Prompt Caching与FP8 KV Cache、INT8 KV Cache并不兼容。期待TensorRT-LLM的下一个版本可以修复这些问题
+
+LLM推理解决方案，推荐 Triton & TRT-LLM。其中，Triton支持RESTFul API流式输出可以通过增加一个HTTP2gRPC模块来实现（过渡方案），可以实现兼容OpenAI接口协议。Triton未来也会直接支持基于RESTFul API的流式输出。
+
 
 ### 五、动态批处理（Dynamic Batch, Continuous batch）
 
