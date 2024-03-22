@@ -1590,6 +1590,23 @@ plot([mp_mean, rn_mean, pp_mean],
 
 分布式训练上会频繁用到**规约**(AllReduce)操作。主流的**分布式架构**主要分为`参数服务器`(ParameterServer) 和`基于规约`(Reduce)两种模式。早期还有基于`MPI`的方式，不过现在已经很少用了。
 
+传统 parameter server: server和client方式
+- client通过计算分配给自己的数据，产生梯度，传给server
+- server 聚合，然后把参数再传给client
+
+这个方式的弊端: server容易成为瓶颈
+- server通信量太大。
+- 一个client失败，会导致其他client等待。
+
+Ring all reduce 一种分布式方式
+- 各个节点分配通信量。
+- 总的通信量和ps没啥变化，但是通信的压力平摊到各个GPU上了，GPU之间的通信可以并行进行。
+
+假如，GPU数量是N，把模型参数分成N份，每个GPU要存放整个参数。每个GPU也要分配训练数据。
+- 当一次迭代，N个GPU之间要经过一个scatter和gather操作，reduce-scatter是将不同gpu上对应的参数的gradient相加，一共需要通讯（N-1）次。
+- All-gather 将合并完整的参数，传到其他gpu上，需要通讯（N-1）次。
+- 一次all reduce，单卡通信量为2*sita。
+
 #### PS：参数服务器
 
 ParameterServer模式是一种基于reduce和broadcat算法的经典架构。
@@ -3044,6 +3061,18 @@ ZeRO有三个不同级别，对模型状态进行不同程度的分片：
 - ZeRO-2: 对**优化器状态**和**梯度**分片（Optimizer States & Gradients Sharding）
 - ZeRO-3: 对**优化器状态**、**梯度**分片以及**模型权重参数**分片（Optimizer States & Gradients & Parameters Sharding）
 - ![img](https://mmbiz.qpic.cn/mmbiz_png/J0mLianhFicBHEDwE5nPHZKaicqsXBVgES5rYysbjp9PYV3E8JOgU4ZZmyVBDUeryCQpvUBAUu6bGcUico0UWE9uIQ/640?wx_fmt=png&tp=wxpic&wxfrom=5&wx_lazy=1&wx_co=1)
+
+Zero包括3种方案，逐步递进：
+- `zero1`：将adam参数分割成N份，一个GPU上只能保存一份adam参数：这对于forward没啥影响，gradient需要进行一次all-reduce，但是只能更新一部分参数，所以W需要进行一次all-gather，通信量为3N*sita，存储为 12*sita/N + 4*sita
+- `zero2`: 将adamw/gradient都分割成N份，梯度就不需要all-gather了，只需要scatter了，w需要all-gather，通讯量为2N*sita
+- `zero3`: 将参数/adam/gradient都分割，forward的时候，需要将w all-gather，backfoward时，还需要把w all-gather回来，计算梯度，丢掉不属于自己的w，然后对梯度做reduce scatter，更新w，通讯量为3N*sita。
+
+deepspeed 采用stage3：用1.5倍的通讯开销，换回近120倍的显存
+
+ZeRO-Offload 基于Zero2，将adam和gradient放到内存中，在cpu内起了N个线程计算。
+- 一条主线是gradient总是需要scatter的，感觉这个数据并行标志。
+- 注意:不管是forward 还是backward都要有完整的w的。
+- 另外有了gradient，以及adamW的参数，才能更新W。
 
 `ZeRO`（Zero Redundancy Optimizer）由NVIDIA开发的分布式深度学习训练技术，解决在大规模模型上训练时由于**显存限制**而导致的性能瓶颈问题。
 
