@@ -1754,6 +1754,11 @@ Transformer vs Llama
 - ![](https://pic3.zhimg.com/80/v2-8ec08fb6dedacf27a71a71e11a11d6c6_1440w.webp)
 - ![](https://pic3.zhimg.com/80/v2-6eddbabe0877eb43b2e46d1e7367bf42_1440w.webp)
 
+
+【2024-3-22】Meta的LLaMA 依旧采用Transformers架构，并做了如下改动：
+- 为了提高训练稳定性，对每个子层做输入前置归一化，归一化函数为RMSNorm（受GPT-3启发）
+- 为了提升性能，SwiGLU激活函数替换ReLU激活函数（受PaLM启发）从绝对位置嵌入，改为旋转嵌入（受GPT-neo启发）使用causal multi-head attention的一个高效实现来减少内存占用和运行时间
+
 #### LLaMA 下载
 
 【2023-4-18】下载出错
