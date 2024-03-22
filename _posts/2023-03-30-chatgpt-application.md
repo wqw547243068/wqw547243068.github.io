@@ -181,7 +181,7 @@ Prompt是在ChatGPT中输入的一些关键词，按照用户意愿生成出各�
 【2023-5-13】ChatGPT各类应用idea汇总，包含场景、当前解法、解决状态等，持续更新
 - [飞书文档](https://bytedance.feishu.cn/sheets/TcHTsRSczhda3BtpLQ4cMeVNnSf)
 
-【2023-3-16】[Poe](https://poe.com/claude+) 各种机器人，sage, gpt-4, ChatGPT等，一次免费体验机会
+
 
 ## ChatGPT 行业应用
 
