@@ -1014,6 +1014,7 @@ beale函数
 - [SGD算法比较](https://blog.slinuxer.com/2016/09/sgd-comparison)，[代码](https://github.com/SwordYork/simplified-deeplearning/tree/master/sgd-comparison)
 - 如下图，注意：v是动量部分，g是梯度部分
 - ![](https://raw.githubusercontent.com/SwordYork/simplified-deeplearning/master/sgd-comparison/figures/relation.png) ![](http://ruder.io/content/images/2016/09/contours_evaluation_optimizers.gif) ![](http://ruder.io/content/images/2016/09/saddle_point_evaluation_optimizers.gif)
+- Note Book 实践： [Colab](https://colab.research.google.com/drive/19h1-RRS9pYvc394C_FZKtJM2LTLC4yyI#scrollTo=mJZZMG2bpAKh)
 
 
 ## 梯度下降 GD
