@@ -1227,6 +1227,39 @@ VPL 可视化编程，一种使用**图形组件**的语言，如图标、按钮
 - 【2022-7-14】[什么是可视化编程，它是如何工作的？](https://appmaster.io/zh/blog/shi-yao-shi-ke-shi-hua-bian-cheng-ta-shi-ru-he-gong-zuo-de)
 
 
+### Scratch
+
+[Scratch](https://www.scratchjr.org/) 是麻省理工学院的“终身幼儿园团队”在2007 年发布的一种图形化编程工具，主要面对全球青少年开放，是图形化编程工具当中最广为人知的一种，所有人都可以在软件中创作自己的程序。 截至2022 年仍在更新。
+- [官方介绍](https://scratch.mit.edu/about)
+
+[Scratch](https://scratch.mit.edu/about) is the world’s largest coding community for children and a coding language with a simple visual interface that allows young people to create digital stories, games, and animations. Scratch is designed, developed, and moderated by the Scratch Foundation, a nonprofit organization.
+
+![](https://pic1.zhimg.com/80/v2-61eae71de453fa3cb8832ec59325e9fc_1440w.webp)
+
+- [Scratch介绍](https://zhuanlan.zhihu.com/p/143176865)
+
+### snap!
+
+伯克利的可视化编程语言 [snap!](https://snap.berkeley.edu/)
+
+`snap!`是多范式可视化计算机编程语言。
+
+`Snap!` 是一款用JavaScript编写，浏览器里运行的图形化编程语言，旨在赋予学生创作交互式故事，动画，游戏等作品，学习数学和计算概念。`Snap!`由`Scratch`语言衍生，包含和扩展了Scratch的功能。
+
+Snap! 不用在本地设备上安装任何部件，只需网络浏览器即可。
+
+其区别于Scratch的最重要的特性为：
+- 高阶函数
+- 嵌套列表，例如列表的列表
+- 角色嵌套
+- Snap!代码可转换为其他主流程序语言，如Python, JavaScript和C等.
+
+支持续体，声音图片都是第一类数据结构
+
+About Snap！的要点
+- 主要针对12-20岁的用户。
+- 语言支持的一等公民first class包括lists,procedures,甚至continuations
+
 ### Dynamo
 
 【2024-3-23】[Dynamo](https://primer.dynamobim.org/zh-cn/01_Introduction/1_introduction.html)
