@@ -888,6 +888,40 @@ for epoch, batch in enumerate(ppo_trainer.dataloader):
 
 用Firefly项目对Qwen1.5-7B进行训练的实验。我们对训练数据进行精细化筛选，然后在单张V100上进行SFT和DPO。经过两阶段的训练，我们的模型在Open LLM Leaderboard上的表现显著优于官方的Qwen1.5-7B-Chat、Gemma-7B-it、Vicuna-13B等模型。比Qwen1.5-7B-Chat高7.12分，比Gemma-7B-it高8.8分。
 
+
+### TorchTune
+
+【2024-3-23】[PyTorch官方发布LLM微调工具TorchTune](https://zhuanlan.zhihu.com/p/688671130?utm_psn=1755039674018496512)
+
+PyTorch官方最近发布了支持LLM微调的工具：`TorchTune`。
+- TorchTune 是一个原生的 PyTorch 库，用于轻松编写、微调和实验大型语言模型（LLMs）
+
+功能：
+- 原生 PyTorch 实现的流行大型语言模型
+- 支持多种格式的checkpoints，包括 Hugging Face 格式的checkpoints
+- 针对流行微调技术的训练策略，带有参考基准和全面的校验检查
+- 与 HuggingFace 数据集集成用于训练，以及与 EleutherAI 的评估工具 Eval Harness 集成用于评估
+- 支持使用 PyTorch 分布式中的 FSDP 进行分布式训练
+- YAML 配置文件，便于轻松配置训练运行
+- [即将推出] 支持来自 TorchAO 的低精度数据类型和量化技术
+- [即将推出] 与各种推理引擎的互操作性
+
+TorchTune已经支持了**Llama2 7B模型**的微调：
+-   单卡微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py)
+-   分布式微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py)
+-   单卡LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
+-   分布式LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py)
+-   QLoRA：[https://github.com/pytorch/torc](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
+
+torchtune 必须通过克隆仓库并按照以下方式安装来构建：
+
+```py
+git clone https://github.com/pytorch/torchtune.git
+cd torchtune
+pip install -e .
+```
+
+
 ### 总结
 
 Megatron-DeepSpeed 实施 3D 并行以可以让大型模型以非常有效的方式进行训练。
