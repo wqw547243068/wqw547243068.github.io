@@ -1008,6 +1008,15 @@ Transformer模型作为NLP与图片视频领域中，最重要的模型构架，
 - 视频: [老外骑共享单车狂追武汉大妈 ，竟是想体验这件事](https://www.toutiao.com/video/7317202669829967143)
 
 
+[萝卜快跑](https://www.apollo.auto/robotaxi)已在北京、上海、广州、深圳、重庆、长沙、阳泉等城市全面开放，面向公众常态化试运营。 已在北京、重庆、武汉、阳泉等城市开启商业化运营。 其中，萝卜快跑在武汉、重庆、北京、深圳开启了全无人自动驾驶运营。
+- 通过萝卜快跑小程序打车
+
+北京开通地区：
+- 首钢园、中关村软件、亦庄到大兴机场等
+
+![](http://apollo-new.cdn.bcebos.com/data/image/2023/12/08/23072_3cgb_2566.jpg)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yMS1frAMqkE?si=0FNd0nssGymS135n" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
