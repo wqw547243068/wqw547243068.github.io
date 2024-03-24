@@ -674,6 +674,16 @@ Tiktok的变现方式有很多种，目前我主要运营的是**短视频带货
 
 # 自由职业
 
+
+## 关键词
+
+【2024-3-24】What type of freelancer are you? Whatever your style, we'll make it work.
+- A side hustle 副业
+- Solo freelancer 个体自由职业者
+- Agency employee 外包人员
+- Agency owner 外包经理
+
+
 ## 自媒体
 
 【2023-2-2】
