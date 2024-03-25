@@ -1041,6 +1041,12 @@ OpenAI的BPE实现：[tiktoken](https://github.com/openai/tiktoken)
 页面提示
 > Note: Your input contained one or more **unicode characters** that map to multiple tokens. The output visualization may display the bytes in each token in a non-standard way.
 
+
+### The Tokenizer Playground
+
+【2024-3-25】Huggingface [The Tokenizer Playground](https://huggingface.co/spaces/Xenova/the-tokenizer-playground), 可本地浏览器部署，测试各种LLM的分词功能
+
+
 ### Tiktokenizer Demo
 
 可视化展示不同分词结果
