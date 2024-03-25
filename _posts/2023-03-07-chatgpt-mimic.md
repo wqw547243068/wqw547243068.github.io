@@ -3116,7 +3116,6 @@ python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m 
   - 然而，类似于Claude+，Claude-instant-100k目前也只能通过poe会员服务来使用。
 
 
-
 #### 【2023-4-13】Claude 1
 
 【2023-4-13】[「ChatGPT最强竞品」爆火：不限量不要钱免注册！](https://mp.weixin.qq.com/s/QB85YPjh6DMBTPla4NDfXg)
@@ -3887,9 +3886,24 @@ PPO精调LLM的三个步骤:
 
 xAI的团队由马斯克领导，其他11名团队成员则分别来自 DeepMind 、OpenAI、谷歌研究院、微软研究院、特斯拉、多伦多大学等，成员整体都非常年轻，团队成员遍及硅谷、加拿大、英国等地。
 
+
+#### Grok
+
 Grok 是根据《银河系梦游指南》中的刺猬模型制作的，这是我最喜欢的书之一，它是一本关于哲学的书，这个家伙只是一本关于幽默的书。
 
 这构成了我的哲学基础: 不知道生命的意义，但是我们越能扩大意识的范围和规模，无论是数字化的还是生物学的，就越能理解该问什么问题，以了解宇宙这个答案，我有一种好奇心哲学。
+
+#### Grok-1
+
+
+【2024-3-25】[Grok-1 314B 在 M2 Ultra 上部署](https://mp.weixin.qq.com/s/RbLfJpsIeJlmDf4cXyBlUA)
+
+Georgi Gerganov 在推上说 Causally running Grok-1 at home（在家中随意运行 Grok-1）
+- Apple M2 Ultra
+- 4-bit! iq3_s, 130gb metal buffer, 9 t/s
+
+llama.cpp 的 [Add grok-1 support PR](https://github.com/ggerganov/llama.cpp/pull/6204) 上也有详细的讨论，有兴趣的去看看吧
+
 
 
 # 结束
