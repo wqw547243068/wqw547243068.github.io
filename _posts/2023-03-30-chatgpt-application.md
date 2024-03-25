@@ -1562,6 +1562,27 @@ RecurrentGPT 则另辟蹊径，利用大语言模型进行**交互式**长文本
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/f1bd9be64d144e18914652db4ce325c8~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034283&x-signature=4WMRfq0FjPeJxmK0ujy7roS3sbA%3D)
 
 
+### 音频应用
+
+
+#### 音乐生成
+
+
+【2024-3-24】 [音乐ChatGPT时刻来临！Suno V3秒生爆款歌曲，12人团队创现象级AI](https://mp.weixin.qq.com/s/BRzmlw-uE2C6ROF2O2_-nw)
+
+AI初创公司Suno震撼推出[V3](https://www.suno.ai/blog/v3)音乐生成模型，惊艳了全世界。
+- 用户只用几个简短的词，就可以用任何语言创作一首歌曲
+- 只需几秒，即可生成2分钟动听的音频。
+- Suno v3还新增了更丰富的音乐风格和流派选项，比如古典音乐、爵士乐、Hiphop、电子等新潮曲风。
+- 体验地址 [Suno AI](https://app.suno.ai/)
+
+相比与之前的版本
+- v3生成的音乐质量更高，而且能制作各种各样的风格和流派的音乐和歌曲。
+- 提示词的连贯性也有了大幅提升，歌曲结尾的质量也获得了极大的提高。
+- 而且伴随着v3版本的推出，还发布了**AI音乐水印系统**，每段由平台生成的音乐都添加了人声无法识别的水印，从而在未来能够保护用户在Suno的创作，也能打击抄袭，防止将Suno产生的音乐进行滥用。
+
+Suno目前只有12名员工，不过现在他们正在扩大规模，在现有的临时办公位置上他们正在加盖办公室。
+
 
 ### 视觉应用
 
