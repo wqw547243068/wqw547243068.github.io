@@ -676,6 +676,130 @@ SW: Model with 2783M total params, 65M largest layer params.
 - 启动时，进程被杀死，并且没有打印出traceback：CPU显存不够
 - loss是NaN：训练时用的是bf16，使用时是fp16。常常发生于google在TPU上train的模型，如T5。此时需要使用fp32或者bf16。
 
+
+#### 多机多卡
+
+【2024-3-25】[DeepSpeed 多机多卡训练指南](https://mp.weixin.qq.com/s/ktBPcDiGu5bXOqs7CQawlw)
+
+配置：
+- 7机14卡，每台服务器两张A800
+- 问：为啥每台机只挂两张卡？
+- 答：资源就这样，服务器是云厂商提供，都是PCIE连接，且单机最多只能挂四张卡。
+
+服务器只允许内网访问，不能连接外网
+
+因此，先搞定如何离线配置训练环境
+
+离线配置训练环境
+- 报错：conda was found to be deleted
+- 解决：增加参数`--ignore-missing-files`解决 如：conda pack -n 环境名 -o 新的环境名.tar.gz --ignore-missing-files
+
+共享文件系统
+
+多机多卡训练，配置个共享文件系统是有很多好处，比如
+- 数据集和模型只需要存一份，更重要的是，在
+- 模型保存时，将模型保存到共享文件系统下，就不用保存多份模型
+- 如果没有共享文件系统，在每台服务器上都保存一份模型参数。
+
+断点重训时，手动合并每台机器上的优化器参数，非常麻烦。
+
+如果真的没有共享文件系统，那怎么办？ 
+
+解决办法：
+- 方式1、在deepspeed里配置checkpoint参数的use_node_local_storage
+- 方式2、增加在TrainingArguments中配置参数--save_on_each_node即可
+  - 其实，huggingface中的deepspeed插件文档已经对没有共享文件系统的情况做了说明，确实比较难找，[位置](https://huggingface.co/docs/transformers/main/en/main_classes/deepspeed#use-of-nonshared-filesystem)
+
+```json
+"checkpoint": {
+    "use_node_local_storage": true
+}
+```
+
+deepspeed stage2 配置样例：
+
+```json
+{
+    "bfloat16": {
+        "enabled": false
+    },
+    "fp16": {
+        "enabled": "auto",
+        "loss_scale": 0,
+        "loss_scale_window": 1000,
+        "initial_scale_power": 16,
+        "hysteresis": 2,
+        "min_loss_scale": 1
+    },
+    "optimizer": {
+        "type": "AdamW",
+        "params": {
+            "lr": "auto",
+            "betas": "auto",
+            "eps": "auto",
+            "weight_decay": "auto"
+        }
+    },
+    "zero_optimization": {
+        "stage": 2,
+        "allgather_partitions": true,
+        "allgather_bucket_size": 2e8,
+        "overlap_comm": true,
+        "reduce_scatter": true,
+        "reduce_bucket_size": "auto",
+        "contiguous_gradients": true
+    },
+    "gradient_accumulation_steps": "auto",
+    "gradient_clipping": "auto",
+    "steps_per_print": 1e5,
+    "train_batch_size": "auto",
+    "train_micro_batch_size_per_gpu": "auto",
+    "wall_clock_breakdown": false,
+    "checkpoint": {
+        "use_node_local_storage": true
+    }
+}
+```
+
+[原始文档](https://www.deepspeed.ai/docs/config-json)
+
+
+使用resume路径去恢复训练时，可能卡在:
+- loading extention module ...
+
+GPU有占用，GPU利用率也有显示，此时，你应该检查你的device_map是否为auto，如果不是，那肯定会卡在这
+
+如果device_map="auto"，但代码还是卡在这，可能的解决办法：
+
+
+多台服务器之间配置互相免密登录
+- 必须要做的，最好在一开始就做好，能节省很多时间。
+
+做法
+- 每台服务器都安装 pdsh
+
+多卡训练可能会碰到的问题
+
+问题1：**ninja已经安装**，deepspeed 多机多卡
+- RuntimeError: Ninja is required to load C++ extensions 
+
+答案1：在训练代码的开头加入：
+
+/root/anaconda3/envs/baichuan/bin:是服务器的conda虚拟环境的bin目录
+
+local_env = os.environ.copy()
+local_env["PATH"]= "/root/anaconda3/envs/baichuan/bin:" + local_env["PATH"]
+os.environ.update(local_env)
+
+问题2：
+- libcudart.so.12.2: cannot open shared object file: No such file or directory 
+
+答案2：
+- 1、检查文件libcudart.so.12.2是否存在（正常来说都是存在的），不存在该文件的话，需要重装cuda
+- 2、在命令行执行 sudo ldconfig /usr/local/cuda-12.2/lib64
+
+执行训练的代码，每台机器上要有完全一致的一份，且存储的路径都要一致（包括软件的安装路径等）
+
 ### Megatron-LM -- NVIDIA
 
 [Megatron](https://github.com/NVIDIA/Megatron-LM) is a large, powerful transformer developed by the Applied Deep Learning Research team at NVIDIA. This repository is for ongoing research on training large transformer language models at scale. We developed efficient, model-parallel (tensor, sequence, and pipeline), and multi-node pre-training of transformer based models such as GPT, BERT, and T5 using mixed precision.
