@@ -1154,6 +1154,18 @@ self.loss = tf.reduce_mean(loss * sequence_mask)
   - 以中文文本生成为例，V的值大约是**5000-6000**，即常用汉字的个数。
 - 基数较大，遍历整个生成空间是不现实的。
 
+
+#### 经验
+
+如何让LLM稳定输出？
+
+Temperature 控制模型输出内容稳定性，因为 LLM 的输出是通过“概率”来排序。
+- 如果对同一个问题想要每次输出完全一致的内容，`temperature = 0`。
+- 而如果想提升 LLM 输出内容的“**创意性**”，把 temperature 往上增加
+- 一般 temperature 在 `[0,1]` 范围获得的结果可用，大于1可能结果就不可用。
+- 最好是按不同场景来配置 temperature 的数值，例如写诗就需要更高的 temperature 数值
+
+
 #### 解码原理
 
 【2019-6-16】[文本生成中的decoding strategy整理](https://zhuanlan.zhihu.com/p/68383015)
@@ -1869,6 +1881,7 @@ def top_k_top_p_filtering(logits, top_k=0, top_p=1.0, filter_value=-float("Inf")
         logits[indices_to_remove] = filter_value
     return logits
 ```
+
 
 ### 代码实践
 
