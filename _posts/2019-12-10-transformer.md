@@ -2062,6 +2062,59 @@ Position Embedding 的如何选择实在是一个难题，通常有以下几种�
 - 正弦位置编码：这是早期 transformer 使用的位置编码，论文中有尝试做实验，这种编码会随着训练/预测时的文本长度差异增大，（超过 50 个token 后）性能显著下降。
 - 旋转编码：论文中提到这种方式是比较不错的，只不过因其在每一层都要做一次向量旋转，从而降低训练和推理的速度。
 
+transformer 这类模型的 时间复杂度、内存使用复杂度都是 n^2（n为序列长度）
+- 当序列长度超过 512 时，模型对算力的要求将会大幅提高。
+
+最近一些文章 Longformer, Performer, Reformer, Clustered attention 都试图通过近似全注意力机制改善该问题。
+
+准BERT注意力机制时，问题可能有：
+- 每个词与其他所有词都有关系吗？
+- 为什么每个词的注意力不仅仅集中在最重要的词
+- 如何知道哪些词是重要的
+- 如何有效的让注意力仅考虑个别一些词
+
+#### BigBird
+
+
+【2021-1-8】谷歌退出 BigBird, 基于**稀疏注意力**的Transformer，将基于Transformer的模型（例如 BERT）扩展到更长的序列。
+- 平方级别的依赖降成线性
+- 同等硬件条件下，长度扩充8倍
+- 论文：[Big Bird: Transformers for Longer Sequences](https://arxiv.org/abs/2007.14062)
+- 代码：[bigbird](https://github.com/google-research/bigbird)
+
+开源中文 bigbird 预训练模型，从tiny至base共5个级别预训练模型。可从[huggingface hub](https://huggingface.co/models?language=zh&sort=downloads&search=bigbird)直接下载使用
+
+BigBird 模型实现了三种注意力机制：**随机注意力**、**窗口注意力**和**全局注意力**，这与LongFormer几乎相似
+
+与BERT同等计算力下，可处理序列长度达到4096。
+- 很多长文本序列的任务上达到SOTA效果，例如：长文本摘要、长文本问答。 
+- BigBird RoBERTa 模型在Transformers仓库中使用。
+
+BigBird的注意力机制是一个近似BERT的**全注意力机制**，因此不是比BERT的注意力机制效果更好，而是**运行效率更高**。
+- BERT的注意力机制存储与序列长度是二次方关系，在长文本情况下的存储需求就已经开始令人难以忍受
+- 而 BigBird 的 block sparse attention 就是为了解决这个问题。无限长长度序列上，计算无穷次 次时，把BERT的全注意力机制换成 block sparse attention。 
+
+
+BigBird有两种长程注意力方式，可以让计算变的更有效：
+- 全局词（Global token）：有一些词，需要考虑其他所有词，其他所有词也需要考虑它。例如”HuggingFace is building nice libraries for easy NLP“。如果”building“是一个全局词，模型在有的人物中需要知道词”NLP“和词”HuggingFace“的关系（这两个词在最左边和最右边），那么词”building“需要被设置成全局词，从而处理与”NLP“和”HuggingFace“的关系。
+- 随机词（Random tokens）：随机选择一些词，把信息传递给其他词，这可以降低词与词之间的信息交互难度。
+
+```py
+# 例如第一个词和最后一个词是全局的
+global_tokens = ["BigBird", "answering"]
+# 将全局词加入至key_tokens集合中
+key_tokens.append(global_tokens)
+# 现在用词”is“做随机词
+random_tokens = ["is"]
+key_tokens.append(random_tokens)
+key_tokens # {'now', 'is', 'in', 'answering', 'available', 'BigBird'}
+# 现在，词”available“可以只与这些词做注意力计算，而不是所有词
+```
+
+参考
+- [bigbird长文本预训练模型介绍](https://zhuanlan.zhihu.com/p/444333724)
+- [BigBird：大鸟模型中文生成式长文本摘要实践](https://blog.csdn.net/yjh_SE007/article/details/129244755)
+
 #### 2022.*.* Attention with Linear Bias（ALiBi）
 
 ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理时文本长度不一致**的难题，
