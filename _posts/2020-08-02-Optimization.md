@@ -1017,7 +1017,10 @@ beale函数
 - Note Book 实践： [Colab](https://colab.research.google.com/drive/19h1-RRS9pYvc394C_FZKtJM2LTLC4yyI#scrollTo=mJZZMG2bpAKh)
 
 
+
 ## 梯度下降 GD
+
+通过迭代地沿着梯度的负方向来寻找最优解
 
 【2021-11-9】[梯度下降方法的视觉解释](https://www.toutiao.com/i6836422484028293640/)（动量，AdaGrad，RMSProp，Adam），原文：[A Visual Explanation of Gradient Descent Methods (Momentum, AdaGrad, RMSProp, Adam](https://towardsdatascience.com/a-visual-explanation-of-gradient-descent-methods-momentum-adagrad-rmsprop-adam-f898b102325c)
 
@@ -1032,19 +1035,63 @@ beale函数
 Delta是算法每次迭代后theta的变化量； 希望随着每个这样的变化，θ逐渐接近最佳值。
 - ![](https://p3.toutiaoimg.com/origin/pgc-image/e5527a9c5c2b436ab50a11fb9b0fb4b9)
 
-## Vanilla SGD
+### Vanilla SGD
+
+随机梯度下降法（Stochastic Gradient Descent, SGD）
+- 随机梯度下降在算法效率上做了优化，不使用全量样本计算当前的梯度，而是使用小批量（mini-batch）样本来估计梯度，大大提高了效率
+
+原因
+- 使用更多样本来估计梯度方法的收益低于线性
+- 对于大多数优化算法基于梯度下降，如果每一步中计算梯度的时间大大缩短，则它们会更快收敛。
+- 且训练集通常存在冗余，大量样本都对梯度做出了非常相似的贡献。
+- 此时基于小批量样本估计梯度的策略也能够计算正确的梯度，但是节省了大量时间。
+
+
+
+SGD的缺点是容易陷入局部最优解，可结合其他优化算法如动量法或Adam等来提高收敛效果。
 
 Vannilla梯度下降法是普通的，因为仅对**梯度**起作用
 - 朴素 SGD (Stochastic Gradient Descent) 最为简单，没有动量的概念
     - ![](https://www.zhihu.com/equation?tex=%5Ctheta_%7Bi%2B1%7D%3D+%5Ctheta_t+-+%5Ceta+g_t)
     - ![](https://pic3.zhimg.com/80/v2-2476080e4cdfd489ae64ae3ceeafe48b_720w.jpg)
+
+优点
+- SGD具有快速收敛的特点
+- 适用于处理大规模数据集和分布式计算环境。
+
 缺点
 - 收敛速度慢，可能在鞍点处震荡。
 - 如何合理的选择学习率是 SGD 的一大难点。
 
+
+### 代码实现
+
+```py
+import numpy as np  
+  
+# 定义损失函数  
+def loss_function(w, X, y):  
+    return np.sum(np.square(X.dot(w) - y)) / len(y)  
+  
+# 定义梯度函数  
+def gradient(w, X, y):  
+    return X.T.dot((X.dot(w) - y)) / len(y)  
+  
+# 定义SGD优化器  
+def sgd(X, y, learning_rate=0.01, epochs=100):  
+    n_features = X.shape[1]  
+    w = np.zeros(n_features)  
+    for epoch in range(epochs):  
+        for i in range(len(X)):  
+            grad = gradient(w, X[i], y[i])  
+            w -= learning_rate * grad  
+        print("Epoch %d loss: %f" % (epoch+1, loss_function(w, X, y)))  
+    return w
+```
+
 ## 动量 Momentum
 
-- SGD 在遇到沟壑时容易陷入震荡。为此，可以为其引入**动量** Momentum，加速 SGD 在正确方向的下降并抑制震荡。
+SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，加速 SGD 在正确方向的下降并抑制震荡。
 - 动量算法（或简称为动量）的梯度下降借鉴了物理学的思想。 想象一下，将球滚动到无摩擦碗内。 累积的动量并没有停止在底部，而是将其向前推动，并且球不断来回滚动。
 - 公式
   - ![](https://www.zhihu.com/equation?tex=m_t+%3D+%5Cgamma+m_%7Bt-1%7D+%2B+%5Ceta+g_t)
@@ -1061,7 +1108,16 @@ Vannilla梯度下降法是普通的，因为仅对**梯度**起作用
 - 动量只是移动得**更快**（因为它累积了所有动量）
 - 动量有逃避**局部最小值**的作用（因为动量可能将其推离局部最小值），或更好地通过**高原**地区。
 
-## Nesterov Accelerated Gradient
+### 动量法（Momentum）
+
+动量法（Momentum）和 Nesterov 动量法
+- 动量法通过引入一个动量项来加速梯度下降法的收敛速度。
+- Nesterov 动量法是对动量法的改进，在每一步迭代中考虑了未来的信息，从而更好地指导参数的更新方向。
+
+动量法和Nesterov 动量法适用于**非凸优化**问题，能够跳出局部最优解并加速收敛。
+
+
+### Nesterov Accelerated Gradient
 
 - 人们希望下降的过程更加智能：算法能够在目标函数有增高趋势之前，减缓更新速率。
 - NAG 即是为此而设计的，其在 SGD-M 的基础上进一步改进了步骤 1 中的梯度计算公式
@@ -1069,13 +1125,22 @@ Vannilla梯度下降法是普通的，因为仅对**梯度**起作用
 - ![](https://pic2.zhimg.com/80/v2-fecd469405501ad82788f068985b25cb_720w.jpg)
 
 
-## Adagrad
+
+## 学习率优化
+
 
 机器学习中，稀疏特征的平均梯度通常很小，因此这些特征的训练速度慢。
-- 解决方法之一是为每个特征设置不同的学习率，但这会很快变得混乱。
-- AdaGrad解决思路：当前更新的特征越多，将来更新的特征就越少，从而为其他特征（例如稀疏功能）提供了赶超的机会。
+
+解决方法之一： 为每个特征设置不同的学习率，但这会很快变得混乱。
+
+
+### AdaGrad
+
+AdaGrad解决思路：
+- 当前更新的特征越多，将来更新的特征就越少，从而为其他特征（例如稀疏功能）提供了赶超的机会。
 
 ![](https://p3.toutiaoimg.com/origin/pgc-image/b6ab8e70a4864dc4ac4caa64dcd45444?from=pc)
+
 - AdaGrad（以及其他类似的基于梯度平方的方法，如RMSProp和Adam）可以更好地逃避鞍点。
 - AdaGrad将走一条直线，而梯度下降（或相关的动量）则采取 "让我先滑下陡坡，然后再担心慢速方向" 的方法。 有时，原生梯度下降可能会在两个方向的梯度均为0且在此处完全满足的鞍点处停止。
 
@@ -1083,7 +1148,13 @@ Vannilla梯度下降法是普通的，因为仅对**梯度**起作用
 - SGD、SGD-M 和 NAG 均是以相同的学习率去更新各个分量。而深度学习模型中往往涉及大量的参数，不同参数的更新频率往往有所区别。对于更新不频繁的参数（典型例子：更新 word embedding 中的低频词），我们希望单次步长更大，多学习一些知识；对于更新频繁的参数，我们则希望步长较小，使得学习到的参数更稳定，不至于被单个样本影响太多。
 - Adagrad算法即可达到此效果。其引入了二阶动量
 
-## RMSprop——给劲AdaGrad
+总结
+- AdaGrad 是一种自适应学习率的优化算法，能够根据参数的历史梯度来**动态调整学习率**。
+- RMSprop则是对AdaGrad的改进，引入一个**指数衰减**的平均来平滑历史梯度的方差。
+- AdaGrad和RMSprop适用于处理稀疏数据集和具有非平稳目标函数的优化问题。
+
+
+### RMSprop —— 给劲AdaGrad
 
 AdaGrad的问题在于它的运行速度非常慢
 - 在 Adagrad 中，Vt 单调递增，使得学习率逐渐递减至0，可能导致训练过程提前结束。
@@ -1159,7 +1230,24 @@ class torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_d
 - `weight_decay` (float, 可选): 权重衰减（L2惩罚）（默认: 0）
 
 
+完整示例
 
+```py
+import torch  
+import torch.optim as optim  
+import numpy as np  
+  
+# 定义损失函数和梯度函数（这里使用PyTorch的自动梯度计算）  
+loss_function = torch.nn.MSELoss()  # 均方误差损失函数  
+gradient = torch.autograd.grad  # 自动梯度计算函数  
+  
+# 定义Adam优化器（这里使用了PyTorch的Adam类）  
+optimizer = optim.Adam([torch.Tensor([0.])], lr=0.01)  # 学习率设置为0.01，初始权重为0向量（注意：PyTorch中优化器的权重参数需要是tensor对象）  
+optimizer.zero_grad()  # 清除历史梯度信息（如果使用其他优化器，可能需要手动清除梯度）  
+output = loss_function(torch.Tensor([1]), torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[2], [4]]))  # 计算损失函数值（这里使用了PyTorch的Tensor类，模拟了线性回归问题的数据和目标）  
+output.backward()  # 反向传播计算梯度（这里使用了PyTorch的backward方法）  
+optimizer.step()  # 更新权重（这里使用了PyTorch的step方法）
+```
 
 
 ## NAdam
@@ -1194,6 +1282,138 @@ AdanW：权重衰减与 L2 正则化
 - ![](https://pic4.zhimg.com/80/v2-4113c8fece6437c7e468f42eae76868f_1440w.webp)
 
 # 理论基础
+
+## 优化算法
+
+
+要点
+- 梯度（一阶导数）
+- Hesse 矩阵（二阶导数）
+- Jacobi 矩阵
+
+各类算法的[优缺点](https://mp.weixin.qq.com/s/jIuht56vBget7dD4kJILJw)：
+- 梯度下降类的优化算法：优点是简单、快速，常用于深度神经网络模型；缺点是可能得到的是局部最优解。
+- 牛顿法：优点是二阶收敛，收敛速度快；缺点是需要计算目标函数的Hessian矩阵，计算复杂度高。
+- 模拟退火算法：优点是避免陷入局部最优解，能够找到全局最优解；缺点是收敛速度慢，需要大量时间。
+- 遗传算法：优点是通过变异机制避免陷入局部最优解，搜索能力强；缺点是编程复杂，需要设置多个参数，实现较为复杂。
+- 粒子群优化算法：优点是简单、收敛快、计算复杂度低；缺点是多样性丢失、容易陷入局部最优，实现较为复杂。
+
+
+### Hesse 矩阵
+
+Hesse 矩阵常被应用于牛顿法解决的大规模优化问题
+
+### Jacobi 矩阵
+
+
+Jacobi 矩阵是向量值函数的**梯度矩阵**，假设F:Rn→Rm 是一个从n维欧氏空间转换到m维欧氏空间的函数。
+
+### 梯度
+
+某点的梯度信息
+- 梯度方向：该点坡度最陡的方向
+- 梯度大小：坡度到底有多陡。
+
+注意
+- 梯度也提供了其他方向的变化速度（二维情况下，按照梯度方向倾斜的圆在平面上投影成一个椭圆）。
+
+
+### 牛顿法（Newton's Method）和拟牛顿法（Quasi-Newton Methods）
+
+总结
+- 牛顿法是一种基于目标函数的**二阶导数信息**的优化算法，通过构建二阶导数矩阵并对其进行求解来逼近最优解。
+- 拟牛顿法是牛顿法的改进，构造一个**对称正定矩阵**来逼近目标函数的二阶导数矩阵的逆矩阵，从而避免了直接计算二阶导数矩阵的逆矩阵。
+
+牛顿法和拟牛顿法适用于二阶可导的目标函数，具有较快的收敛速度，但在计算二阶导数矩阵时需要较大的存储空间。
+
+```py
+import numpy as np  
+from scipy.linalg import inv  
+  
+# 定义损失函数和Hessian矩阵  
+def loss_function(w, X, y):  
+    return np.sum(np.square(X.dot(w) - y)) / len(y)  
+  
+def hessian(w, X, y):  
+    return X.T.dot(X) / len(y)  
+  
+# 定义牛顿法优化器  
+def newton(X, y, learning_rate=0.01, epochs=100):  
+    n_features = X.shape[1]  
+    w = np.zeros(n_features)  
+    for epoch in range(epochs):  
+        H = hessian(w, X, y)  
+        w -= inv(H).dot(gradient(w, X, y))  
+        print("Epoch %d loss: %f" % (epoch+1, loss_function(w, X, y)))  
+    return w
+```
+
+### 共轭梯度法（Conjugate Gradient）
+
+共轭梯度法是介于梯度下降法和牛顿法之间的一种方法，利用共轭方向进行搜索。
+
+共轭梯度法的优点
+- 每一步迭代中不需要计算完整的梯度向量，而是通过迭代的方式逐步逼近最优解。
+
+该方法适用于大规模问题，尤其是稀疏矩阵和对称正定的问题。
+
+
+### LBFGS（Limited-memory Broyden–Fletcher–Goldfarb–Shanno）
+
+一种有限内存的Broyden-Fletcher-Goldfarb-Shanno（BFGS）算法，主要用于解决大规模优化问题。
+
+由于只需要有限数量的计算机内存，因此特别适合处理大规模问题。
+
+LBFGS算法的目标是最小化一个给定的函数，通常用于机器学习中的参数估计。
+
+```py
+import numpy as np  
+from scipy.optimize import minimize  
+  
+# 目标函数  
+def objective_function(x):  
+    return x**2 - 4*x + 4  
+  
+# L-BFGS算法求解最小值  
+result = minimize(objective_function, x0=1, method='L-BFGS-B')  
+x_min = result.x  
+print(f"L-BFGS的最小值为：{objective_function(x_min)}")
+```
+
+### SA（Simulated Annealing）
+
+一种随机搜索算法，其灵感来源于物理退火过程。
+
+该算法通过接受或拒绝解的移动来模拟退火过程，以避免陷入局部最优解并寻找全局最优解。
+
+在模拟退火算法中，接受概率通常基于解的移动的优劣和温度的降低，允许在搜索过程中暂时接受较差的解，这有助于跳出局部最优，从而有可能找到全局最优解。
+
+```py
+import numpy as np  
+from scipy.optimize import anneal  
+  
+# 目标函数  
+def objective_function(x):  
+    return (x - 2)**2  
+  
+# SA算法求解最小值  
+result = anneal(objective_function, x0=0, lower=-10, upper=10, maxiter=1000)  
+x_min = result.x  
+print(f"SA的最小值为：{objective_function(x_min)}")
+```
+
+### AC-SA（Adaptive Clustering-based Simulated Annealing）
+
+一种基于自适应聚类的模拟退火算法。通过模拟物理退火过程，利用聚类技术来组织解空间并控制解的移动。该方法适用于处理大规模、高维度的优化问题，尤其适用于那些具有多个局部最优解的问题。
+
+遗传算法是一种基于自然选择和遗传学机理的生物进化过程的模拟算法，适用于解决优化问题，特别是组合优化问题。该算法通过数学的方式，利用计算机仿真运算，将问题的求解过程转换成类似生物进化中的染色体基因的交叉、变异等过程。在求解较为复杂的组合优化问题时，相对一些常规的优化算法，通常能够较快地获得较好的优化结果。
+
+### PSO（Particle Swarm Optimization）
+
+PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为（吐槽下，智能优化算法的领域真是卷麻了！！！）。粒子群算法模仿昆虫、兽群、鸟群和鱼群等的群集行为，这些群体按照一种合作的方式寻找食物，群体中的每个成员通过学习它自身的经验和其他成员的经验来不断改变其搜索模式。PSO算法适用于处理多峰函数和离散优化问题，具有简单、灵活和容易实现的特点。
+
+
+
 
 ## KKT条件
 
