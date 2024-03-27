@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "视频生成技术专题 - Video Generation"
-date:   2023-05-08 08:01:00
-categories: 计算机视觉
+date:   2024-03-08 08:01:00
+categories: 大模型 计算机视觉
 tags: 视频 扩散模型 sora
 excerpt: 文生视频技术
 mathjax: true
