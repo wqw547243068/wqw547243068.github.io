@@ -3507,7 +3507,7 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 #### InternLM 2
 
 
-【2024-1-31】InternLM2 系列模型发布，具有如下特性：
+【2024-1-31】InternLM2 系列模型发布，具有如下特性：[书生官方中文介绍](https://github.com/InternLM/InternLM/blob/main/README_zh-CN.md)
 - 有效支持20万字超长上下文：模型在 20 万字长输入中几乎完美地实现长文“大海捞针”，而且在 LongBench 和 L-Eval 等长文任务中的表现也达到开源模型中的领先水平。 可以通过 LMDeploy 尝试20万字超长上下文推理。
 - 综合性能全面提升：各能力维度相比上一代模型全面进步，在推理、数学、代码、对话体验、指令遵循和创意写作等方面的能力提升尤为显著，综合性能达到同量级开源模型的领先水平，在重点能力评测上 InternLM2-Chat-20B 能比肩甚至超越 ChatGPT （GPT-3.5）。
 - 代码解释器与数据分析：在配合代码解释器（code-interpreter）的条件下，InternLM2-Chat-20B 在 GSM8K 和 MATH 上可以达到和 GPT-4 相仿的水平。基于在数理和工具方面强大的基础能力，InternLM2-Chat 提供了实用的数据分析能力。
@@ -3517,6 +3517,60 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 - 除了使用学术数据集评测以外，还用了人类考试作为评测基准。
 - InternLM 可以在 MMLU、AGIEval、C-Eval 以及 GAOKAO-bench 等涵盖了不同语言以及学科的考试基准集上取得不错的分数，在多个基准集得分超过 ChatGPT
 
+
+InternLM2 包含两种模型规格：**7B** 和 **20B**。
+- 7B 为轻量级的研究和应用提供了一个轻便但性能不俗的模型
+- 20B 模型的综合性能更为强劲，可以有效支持更加复杂的实用场景。
+
+每个规格不同模型关系如图所示：
+- ![](https://camo.githubusercontent.com/740bc4d1b7d9cd211c2f03918c46ff891836de0fc131bf44eb0d8fdd2ab4066a/68747470733a2f2f696e7465726e6c6d2e6f73732d636e2d7368616e676861692e616c6979756e63732e636f6d2f7365726965732e706e67)
+
+- `InternLM2-Base`：高质量和具有很强可塑性的模型基座，是模型进行深度领域适配的高质量起点。
+- `InternLM2`：大规模无标签数据上继续预训练，并结合特定领域的增强语料库进行训练，在评测中成绩优异，同时保持了很好的通用语言能力，是我们推荐的在大部分应用中考虑选用的优秀基座。
+- `InternLM2-Chat-SFT`: 基于 `InternLM2-Base` 模型进行有监督微调(SFT)，是 `InternLM2-Chat` 模型的**中间版本**。将它们开源以助力社区在对齐方面的研究。
+- `InternLM2-Chat`: 在 `InternLM2-Chat-SFT` 基础上进行 online RLHF 以进一步对齐. `InternLM2-Chat` 面向对话交互进行了优化，具有较好的指令遵循、共情聊天和调用工具等的能力，是我们推荐直接用于下游应用的模型。
+
+transformers 加载
+
+```py
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+# transformers >= 4.34
+
+tokenizer = AutoTokenizer.from_pretrained("internlm/internlm2-chat-7b", trust_remote_code=True)
+# 设置`torch_dtype=torch.float16`来将模型精度指定为torch.float16，否则可能会因为您的硬件原因造成显存不足的问题。
+model = AutoModelForCausalLM.from_pretrained("internlm/internlm2-chat-7b", device_map="auto",trust_remote_code=True, torch_dtype=torch.float16)
+# (可选) 如果在低资源设备上，可以通过bitsandbytes加载4-bit或8-bit量化的模型，进一步节省GPU显存.
+  # 4-bit 量化的 InternLM 7B 大约会消耗 8GB 显存.
+  # pip install -U bitsandbytes
+  # 8-bit: model = AutoModelForCausalLM.from_pretrained(model_dir, device_map="auto", trust_remote_code=True, load_in_8bit=True)
+  # 4-bit: model = AutoModelForCausalLM.from_pretrained(model_dir, device_map="auto", trust_remote_code=True, load_in_4bit=True)
+model = model.eval()
+response, history = model.chat(tokenizer, "你好", history=[])
+print(response)
+# 模型输出：你好！有什么我可以帮助你的吗？
+response, history = model.chat(tokenizer, "请提供三个管理时间的建议。", history=history)
+print(response)
+```
+
+启动一个前端的界面来与 InternLM Chat 7B 模型进行交互
+
+```sh
+pip install streamlit
+pip install transformers>=4.34
+streamlit run ./chat/web_demo.py
+```
+
+用 LMDeploy 完成 InternLM 的一键部署。
+
+通过 `pip install lmdeploy>=0.2.1` 安装 LMDeploy 之后，只需 4 行代码，就可以实现离线批处理：
+
+```py
+from lmdeploy import pipeline
+pipe = pipeline("internlm/internlm2-chat-7b")
+response = pipe(["Hi, pls intro yourself", "Shanghai is"])
+print(response)
+```
 
 ### Kimi Chat -- 月之暗面
 
