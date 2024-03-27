@@ -1611,6 +1611,14 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 改进方法：
 - 提前翻译成英文，这个功能应该由平台自动完成（给PromptLLM的建议）
 
+## 音乐提示词
+
+见站内专题[音乐提示词](music_gen#音乐提示词)
+
+## 视频提示词
+
+待定
+
 ## Prompt质量评估
 
 原本 AI 模型的工作思路从“**魔改**”变为了基于 Prompt 的**上下文学习**（In-context Learning, `ICL`），即
