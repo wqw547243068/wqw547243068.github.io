@@ -3504,7 +3504,7 @@ RWKV原理见专题：[RWKV](/transformer#RWKV)
 - 2023-08-22 InternLM-7B-Chat v1.1 已发布，增加了代码解释器和函数调用能力
 
 
-#### InternLM 2
+#### InternLM 2 书生-浦语
 
 
 【2024-1-31】InternLM2 系列模型发布，具有如下特性：[书生官方中文介绍](https://github.com/InternLM/InternLM/blob/main/README_zh-CN.md)
