@@ -1588,6 +1588,63 @@ Suno目前只有12名员工，不过现在他们正在扩大规模，在现有�
 
 【2023-3-14】[ChatGPT 有什么新奇的使用方式？](https://www.zhihu.com/question/582979328/answer/2933058469)
 
+
+#### MoneyPrinterTurbo 短视频一键生成
+
+【2024-3-27】开源免费一键生成短视频的 AI 工具 [MoneyPrinterTurbo](github.com/harry0703/MoneyPrinterTurbo)
+- 只需提供一个视频 主题 或 关键词，全自动生成视频的文案、素材、字幕以及背景音乐，然后合成高清的短视频。
+- 项目是基于 MoneyPrinter 重构而来，大量优化
+- 支持中文并提供易于使用的 Web 界面。
+
+
+功能特性：
+- 完整的 MVC 架构，代码 结构清晰，易于维护，支持 API 和 Web 界面。
+- 支持视频文案 AI 自动生成，也可以自定义文案。
+- 支持多种 高清视频 尺寸，常见的 9:16、16:9。
+- 支持 批量视频生成，可以一次生成多个视频，然后选择一个最满意的。
+- 支持 视频片段时长设置，方便调节素材切换频率。
+- 支持 中文 和 英文 视频文案。
+- 支持 多种语音 合成。
+- 支持 字幕生成，可以调整 字体、位置、颜色、大小，同时支持字幕描边设置。
+- 支持 背景音乐，随机或者指定音乐文件，可设置背景音乐音量。
+- 视频素材来源 高清，而且 无版权。
+- 支持 OpenAI、moonshot、Azure、gpt4free、one-api 等多种模型接入。
+
+![](https://github.com/harry0703/MoneyPrinterTurbo/raw/main/docs/webui.jpg)
+
+
+```py
+git clone https://github.com/harry0703/MoneyPrinterTurbo.git
+cd MoneyPrinterTurbo
+conda create -n MoneyPrinterTurbo python=3.10
+conda activate MoneyPrinterTurbo
+pip install -r requirements.txt
+```
+
+用到的库
+- GPT 服务 openai
+- 视频编辑 moviepy 
+- 语音识别 whisper 和 语音合成 tts
+
+
+```sh
+requests~=2.31.0
+moviepy~=2.0.0.dev2
+openai~=1.13.3
+faster-whisper~=1.0.1
+edge_tts~=6.1.10
+uvicorn~=0.27.1
+fastapi~=0.110.0
+tomli~=2.0.1
+streamlit~=1.32.0
+loguru~=0.7.2
+aiohttp~=3.9.3
+urllib3~=2.2.1
+pillow~=10.2.0
+pydantic~=2.6.3
+g4f~=0.2.5.4
+```
+
 #### Visual ChatGPT
 
 [Visual ChatGPT（一）: 除了语言问答，还能看图问答、AI画图、AI改图的超实用系统](https://zhuanlan.zhihu.com/p/612627818)
