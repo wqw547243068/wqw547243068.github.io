@@ -2073,10 +2073,34 @@ transformer 这类模型的 时间复杂度、内存使用复杂度都是 n^2（
 - 如何知道哪些词是重要的
 - 如何有效的让注意力仅考虑个别一些词
 
-#### BigBird
 
 
-【2021-1-8】谷歌退出 BigBird, 基于**稀疏注意力**的Transformer，将基于Transformer的模型（例如 BERT）扩展到更长的序列。
+#### 【2020-12-2】AllenAI Longformer
+
+【2020-12-2】Allen AI 推出 Longformer
+- 介绍 [Longformer: Transformer 改进版，可处理较长的序列](https://ai-scholar.tech/zh/articles/bert/longformer)
+- 论文: [Longformer: The Long-Document Transformer](https://arxiv.org/pdf/2004.05150.pdf)
+- huggingface [longformer](https://huggingface.co/docs/transformers/model_doc/longformer)
+
+Transformer 计算复杂度随输入序列的增加而呈二次曲线增加, 时间和内存占用非常大
+- 原因：Transformer 主要部分 -- **缩放点积自注意力**（Scaled Dot-Product Self-Attention）
+- 自注意力的计算复杂度为 `O(N^2)` ，当包含长句时，内存使用量会随着输入量的增加而呈4倍增长。
+
+Longformer 是基于 Transformer 的可扩展模型，用于处理**长文档**，可轻松执行各种文档级 NLP 任务，而无需对长输入进行分块或缩短，也无需使用复杂的架构来组合各块信息。
+
+Longformer 结合本地和全局信息，以及三种注意力（滑动窗口注意力、放大滑动窗口注意力和全局注意力）。窗口注意和全局注意）。
+- ![](https://aisholar.s3.ap-northeast-1.amazonaws.com/media/August2023/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88_2023-08-05_7.16.49.png)
+
+效果
+- Longformer 还在 text8 和 enwik8 任务中取得了最佳性能。
+- Longformer 在长文档表现一直优于 RoBERTa，并且在预训练后的 WikiHop 和 TriviaQA 任务中表现最佳。
+
+RoBERTa 只有 512 个位置嵌入，因此需要复制 8 个位置嵌入来容纳 4096 个字。尽管它很简单，但据称却非常有效，这显然是因为复制消除了分区边界。
+
+#### 【2021-1-8】谷歌 BigBird
+
+
+【2021-1-8】谷歌推出 BigBird, 基于**稀疏注意力**的Transformer，将基于Transformer的模型（例如 BERT）扩展到更长的序列。
 - 平方级别的依赖降成线性
 - 同等硬件条件下，长度扩充8倍
 - 论文：[Big Bird: Transformers for Longer Sequences](https://arxiv.org/abs/2007.14062)
