@@ -1186,7 +1186,7 @@ Temperature 控制模型输出内容稳定性，因为 LLM 的输出是通过“
     - 在decoding阶段，若vocabulary中不存在需要decode的词 xt，则直接从输入句子的Attention distribution中copy xt 的attention weight作为 p(xt)。详见论文：[Get To The Point: Summarization with Pointer-Generator Networks](https://arxiv.org/abs/1704.04368)
 - （2）`Stochastic Decoding`: 主要包括 temperature sampling, top-k sampling等
   - 问题：Argmax Decoding常常会导致模型生成重复的句子，如 "<span style='color:blue'>I don't know. I don't know. I don't know....</span>"。
-  - 因为模型中：$ p(know|I don't) < p(know|I don't know. I don't) $
+  - 因为模型中：`p(know|I don't) < p(know|I don't know. I don't)`
   - 解决：decoding过程中引入randomness
   - 但是论文（[The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751)）指出，sampling from full vocabulary distribution生成的句子会非常的杂乱无章，因为当vocabulary size非常大时，每个词的probability都会变得很小，这时模型会有非常高的可能性sample到一个tail distribution中的词，一旦sample到了tail distribution中一个和前文非常不相关的词，很有可能接下来的词都受其影响，使得句子脱离原本的意思。
   - 因此需要sampling from truncated vocabulary distribution，比较常见的算法主要有以下几种：
