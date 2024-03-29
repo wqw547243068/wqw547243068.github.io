@@ -4009,5 +4009,38 @@ xAI发布Grok-1的基本模型权重和网络架构。
 
 Colossal-AI 将在近期进一步推出对Grok-1在并行加速、量化降低显存成本等优化
 
+
+### DBRX
+
+
+【2024-3-27】[开源大模型王座再易主，1320亿参数DBRX上线，基础、微调模型都有](https://finance.sina.com.cn/tech/roll/2024-03-28/doc-inapvxxu3637863.shtml)
+
+1320亿参数`DBRX`上线 
+
+迄今为止最强大的开源大语言模型，超越了 `Llama 2`、`Mistral` 和马斯克刚刚开源的 `Grok-1`
+
+大数据人工智能公司 Databricks 开源通用大模型 DBRX，一款拥有 1320 亿参数的混合专家模型（MoE）。
+
+DBRX 基础（DBRX Base）和微调（DBRX Instruct）版本已经在 GitHub 和 Hugging Face 上发布，可用于研究和商业用途。可自行在公共、自定义或其他专有数据上运行和调整它们，也可通过 API 的形式使用。
+- 基础版：[dbrx-base](https://huggingface.co/databricks/dbrx-base)
+- 微调版：[dbrx-instruct](https://huggingface.co/databricks/dbrx-instruct)
+  - DBRX Instruct 超越了 GPT-3.5（如 GPT-4 论文中所述），并且与 Gemini 1.0 Pro 和 Mistral Medium 具有相当的竞争力
+- GitHub：[dbrx](https://github.com/databricks/dbrx)
+
+DBRX 在语言理解、编程、数学和逻辑等方面轻松击败了目前业内领先的开源大模型，如 LLaMA2-70B、Mixtral 和 Grok-1。
+
+DBRX 也在大多数基准测试上超过了 GPT-3.5，质量上可与 Gemini 1.0 Pro 和 Mistral Medium 竞争，同时速度大大加快。托管在 Mosaic AI Model Serving 上时，速度达到了 150 token/s/ 用户。 
+
+DBRX 的效率很高，基于斯坦福 MegaBlocks 开源项目构建的混合专家模型，平均只用激活 360 亿参数来处理 token，可以实现极高的每秒处理速度。它的推理速度几乎比 LLaMA2-70B 快两倍，总参数和活动参数数量比 Grok 小约 40%。
+
+Databricks NLP 预训练团队负责人 Vitaliy Chiley 介绍道，DBRX 是在 12 万亿 Token 的文本和代码上预训练的 16×12B MoE LLM，它支持的最大上下文长度为 32k Tokens。
+
+DBRX 是一种基于 Transformer 的仅解码器大语言模型（LLM），使用细粒度的专家混合（MoE）架构，共有 1320 亿参数，其中 36B 个参数在任何输入上都处于激活状态。该模型是在 12T 文本和代码数据 token 上预训练而成，最大上下文长度高达 32k。
+
+与 Mixtral 和 Grok-1 等其他开源 MoE 模型相比，DBRX 是细粒度的，这意味着它使用了更多数量的小型专家。DBRX 有 16 个专家模型，从中选择 4 个使用，而 Mixtral 和 Grok-1 有 8 个专家模型，选择其中 2 个。算下来，DBRX 提供了 65 倍可能的专家组合，这种组合方式的倍增提高了模型质量。
+
+与此同时，DBRX 使用旋转位置编码 (RoPE)、门控线性单元 (GLU) 和分组查询注意力 (GQA) 等技术来提高模型质量。此外，DBRX 还使用了 tiktoken 存储库中提供的 GPT-4 分词器。
+
+
 # 结束
 
