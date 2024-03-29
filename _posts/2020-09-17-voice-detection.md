@@ -2448,6 +2448,11 @@ pip install playsound
 国内资源：为了方便国内开发者，Whisper v2&v3模型的国内镜像可以通过AIFastHub进行下载。
 - [aifasthub](https://aifasthub.com/models/openai)
 
+【2024-3-29】【distil-large-v3：Whisper large-v3的蒸馏精简版】
+
+Distil-Whisper的设计旨在加快推理速度，仅使用两个解码器层，实现了与原版Whisper相媲美的语音识别准确性，但速度却提升了惊人的6.3倍。此外，Distil-Whisper在降低幻听错误方面也取得了重大进展，使用分块长文本算法时，幻听错误率降低了约30%。
+
+
 #### 实时转写
 
 ##### Live ASR Engine
