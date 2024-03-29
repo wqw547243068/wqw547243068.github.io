@@ -4042,5 +4042,80 @@ DBRX 是一种基于 Transformer 的仅解码器大语言模型（LLM），使�
 与此同时，DBRX 使用旋转位置编码 (RoPE)、门控线性单元 (GLU) 和分组查询注意力 (GQA) 等技术来提高模型质量。此外，DBRX 还使用了 tiktoken 存储库中提供的 GPT-4 分词器。
 
 
+### Jamba
+
+#### Transformer 问题
+
+目前 LLM 建立在传统 Transformer架构上。虽然强大，但这种架构有两个缺点：
+- **大内存**占用空间：Transformer 内存占用空间随上下文长度而缩放。
+  - 没有大量硬件资源的情况下，运行长上下文窗口或许多并行批次具有挑战性，限制了广泛的实验和部署机会。‍
+- 随着上下文的增长，**推理缓慢**：
+  - Transformer 注意力机制随序列长度进行二次扩展，并减慢吞吐量，因为每个令牌都取决于之前的整个序列——将长上下文用例置于高效生产范围之外。‍
+
+#### Mamba 介绍
+
+卡内基梅隆大学和普林斯顿大学的研究人员提出的 Mamba，恰恰解决了这些缺点，为语言模型开发开辟了新的可能性。
+- Mamba: 基于状态空间模型（State Space Model）的模型
+- Mamba在语言建模方面可以媲美甚至击败 Transformer
+- [Mamba技术背景详解：从RNN到Mamba一文搞定](https://zhuanlan.zhihu.com/p/689215356?utm_psn=1757021969898594304), 英文原文: [A Visual Guide to Mamba and State Space Models](https://maartengrootendorst.substack.com/p/a-visual-guide-to-mamba-and-state)
+
+Transformer到Mamba
+
+RNN：
+- RNN只考虑之前隐藏状态和当前输入，防止重新计算所有先前状态
+- 但RNN会遗忘信息（于是有Transformer）
+- RNN是顺序循环 ——> 训练不能并行
+
+于是，有的lstm和transformer，解决RNN遗忘问题
+
+Tranformer 缺陷：
+- 一次性矩阵每个token进行比较（支持并行化）
+- 推理缺陷：生成下一个token任务中，要算所有token的注意力（L^2）
+
+有没有一种架构技能并行，又能快速推理？随序列长度线性扩展
+- SSM（State Space Model）
+- ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd6480800-2449-456a-87a7-27c8a4e9e718_2520x1388.png)
+
+Mamba
+
+主要贡献：
+- 选择性扫描算法selective scan algorithm——允许模型过滤相关信息
+- 硬件感知算法hardware-aware algorithm——允许通过并行扫描、内核融合和重新计算有效存储结构
+
+问题:
+- 关注或忽略特定输入的能力上表现不佳
+
+两个任务：
+- 选择性复制selective copying
+- 感应头induction heads
+
+#### Jamba 诞生
+
+【2024-3-28】AI21 Labs 首次推出基于Mamba的生产级模型 [Jamba](https://www.ai21.com/jamba) ，提供一流的质量和性能。不再是Transformer一家独大。
+- 成功地将 Mamba 与 Transformer架构相结合，并将混合SSM-Transformer模型推进到生产级规模和质量。
+- AI21 Labs开发了相应的 Joint Attention和Mamba（Jamba）架构。
+- [Jamba](https://www.ai21.com/jamba)由Transformer、曼巴和专家混合（MoE）层组成，同时优化内存、吞吐量和性能。
+
+[Jamba](https://www.ai21.com/jamba) 是世界上第一个基于Mamba的生产级模型。通过用传统Transformer架构的元素增强Mamba结构化状态空间模型（SSM）技术，Jamba弥补了纯SSM模型的固有局限性。提供256K上下文窗口，它已经在吞吐量和效率方面表现出显著的提高
+- [官方介绍](https://www.ai21.com/blog/announcing-jamba)
+- [hf](https://huggingface.co/ai21labs/Jamba-v0.1)
+
+Apache 2.0下许可情况下，Jamba开放权重，开发者可以进一步优化和微调。
+- ![](https://picx.zhimg.com/80/v2-11e3de4bc669df61758305afc8156a4c_1440w.webp?source=2c26e567)
+
+特点
+- 第一个基于生产级Mamba的模型建立在新颖的SSM-Transformer混合架构上
+- 与Mixtral 8x7B相比，长上下文的吞吐量为3倍
+- 民主化访问一个巨大的256K上下文窗口
+- 唯一一款在单个GPU上容纳高达140K上下文的型号
+- 在Apache 2.0下以开放权重发布
+- 可在Hugging Face上获得，并即将登陆NVIDIA API目录
+
+作者：求索
+链接：https://www.zhihu.com/question/650575356/answer/3447537660
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+
 # 结束
 
