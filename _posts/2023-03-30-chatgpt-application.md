@@ -1399,6 +1399,16 @@ Smart Siri 不足：
 
 ### 个人工具
 
+笔记应用
+
+【2024-3-15】[Obsidian - 本地AI助手](https://mp.weixin.qq.com/s/8vU10cY-e1dAqIT2bZRElA): 
+
+Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本地用Ollama，跑了个llama2 7B模型，实现笔记的LLM问答
+- 8G以上的内存
+- 安装Ollama和llama2 7B
+- 安装设置Obsidian Copilot
+- 运行Ollama和使用Copilot
+
 #### 办公工具
 
 详见站内文章：[智能办公](aigc#智能办公)
