@@ -1166,6 +1166,18 @@ AR-Net is now part of a more comprehensive package NeuralProphet.
 
 使用[示例](github/e-alizadeh/medium/blob/master/notebooks/NeuralProphet/neural_prophet.ipynb)
 
+## AutoBNN
+
+2024年3月28日，谷歌发布了开源时间序列预测库 AutoBNN。
+
+AutoBNN 结合传统概率方法的可解释性和神经网络的可扩展性和灵活性，能够自动发现可解释的时间序列预测模型，提供高质量的不确定性估计，并可有效扩展以用于大型数据集。
+
+它基于组合核高斯过程和组合贝叶斯神经网络，使用加权求和等技术进行结构发现。
+- 该库用 JAX 实现，可与 TensorFlow 概率集成。
+- AutoBNN 旨在为社区提供一个强大而灵活的框架，用于构建复杂的时间序列预测模型。
+
+
+
 # 结束
 
 
