@@ -2041,6 +2041,22 @@ predict = model.predict(text,k=1) # 选择概率最大的一个语种
 - Music files in this section are intended for testing of audio applications. The files are organized into different Formats and Sample Rates.
 
 
+
+### DeepSpeech
+
+
+2014年12月18日，百度宣布吴恩达团队首个研究成果 —— 深度学习语音识别系统 `Deep Speech`。 一种更准确的语音识别技术。 
+
+Deep Speech 深度学习语音识别技术能够超越苹果和谷歌相关的语音识别技术
+
+Deep Speech 的优势
+- 在类似人群或是车内嘈杂的环境下能够实现将近81%的辨识准确率，优于谷歌的语音识别引擎(Google API)、Wit.AI、微软Bing语音搜索、苹果语音服务等。
+
+美国卡内基梅隆大学的助理研究员Ian Lane对此表示，百度的该项成果有望打破语音识别的发展格局。
+
+据悉，百度人工智能研发团队共收集了超过9600人、长达7000多小时的语音数据资料，大多数是安静环境中的语音，但百度公司还加入了15种嘈杂环境中的语音样本，如在饭馆、汽车、地铁等。
+
+
 ### 语音识别比赛
 
 ####  2022 科大讯飞的中文语义病句识别挑战赛
