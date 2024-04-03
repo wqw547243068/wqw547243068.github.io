@@ -2271,6 +2271,29 @@ audio_array = generate_audio(text_prompt)
 A Powerful Few-shot Voice Conversion and Text-to-Speech WebUI
 - [Demo视频](https://www.bilibili.com/video/BV12g4y1m7Uw/)
 
+
+#### OpenAI: Voice Engine
+
+【2024-3-31】OpenAI公司最近推出了一项革命性的声音克隆技术——“Voice Engine”
+- [Navigating the Challenges and Opportunities of Synthetic Voices](https://openai.com/blog/navigating-the-challenges-and-opportunities-of-synthetic-voices)
+
+Voice Engine通过文本输入和15秒的音频样本，便能生成与原始说话者声音极为相似、情感丰富且自然逼真的语音。
+
+Voice Engine 是一个少样本语音合成模型：
+- 15s 克隆任意人声；
+- ChatGPT 语音对话、朗读以及 Heygen 数字人背后的技术；
+- Spotify使用它为不同的语言配音播客。
+- 2022 年底开发完成，目前小范围邀测，还未公开发布使用；
+- 配音演员可能会被革命；
+- 定价据透露会是 15 美元 / 100 万字符。
+
+安全措施。
+- 使用水印技术追踪音频来源，以及对系统的使用方式进行主动监控。
+- 产品推向市场时，将设立一个“禁止语音列表”，以检测并阻止与名人声音过于相似的人工智能生成声音，从而避免潜在的版权和隐私问题。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AOjeFlFWkiU?si=jDU3B0Wfn997WeC_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 ### MMS（META）
 
 【2023-5-23】[规模性能双杀OpenAI，Meta语音达LLaMA级里程碑！开源MMS模型可识别1100+语言](https://mp.weixin.qq.com/s/EoL6-IVyHkZJMquXicT3mg)
