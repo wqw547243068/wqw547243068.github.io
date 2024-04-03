@@ -198,6 +198,42 @@ B站爆火数字人ip `柳叶熙`
 - ![](https://ai.bdstatic.com/file/9FCF771D426449B2A55330A8E13C559E)
 
 
+#### 代码 ER-NeRF
+
+
+【2024-4-3】[实时流式数字人，代码开源](https://zhuanlan.zhihu.com/p/675131165)
+
+目前数字人模型效果最好的是ernerf，其借鉴了nerf体渲染的思路，在输入维度上添加了音频特征，通过音频来影响渲染效果（控制嘴型）。 
+
+开源代码[metahuman-stream](https://github.com/lipku/metahuman-stream)基于ernerf模型实现了实时流式数字人
+- 支持声音克隆
+- 支持大模型对话: LLM模型支持Chatgpt,Qwen和GeminiPro。需要在app.py中填入自己的api_key。
+- 支持多种音频特征驱动：wav2vec、hubert
+  - hubert提取音频特征
+- 支持全身视频拼接
+
+![](https://github.com/lipku/metahuman-stream/raw/main/assets/dataflow.png)
+
+总体流程
+- text输入可以来自websocket，实现数字人播报输入文字。
+- 可接入chatgpt，将chatgpt的回答做为text输入，这样就实现了数字人实时对话效果。
+- tts采用的免费edge tts，这个延时有点大。可以换成商用的tts模块，并且加入声音克隆，这样数字人效果更逼真。
+- 提取音频特征（音频转embedding）用的wav2vec模型，相应的ernerf模型训练时也要用wav2vec来提取音频特征
+- ernerf模型在这里面用的推理流程，根据输入的音频特征输出对应嘴型的image
+- 用python做rtmp推流网上没什么现成的库，大部分都是启动ffmpeg命令行进程来实现，但在有音视频同时推流时这种方式行不通。这块卡了比较长时间，最后还是用c++调用ffmpeg api函数来实现rtmp推流
+
+在没有text输入时，通过输入全0的音频来控制嘴型不动，并且保持视频的连续。
+
+性能分析
+- 帧率
+  - 在Tesla T4显卡上测试整体fps为18左右，如果去掉音视频编码推流，帧率在20左右。用4090显卡可以达到40多帧/秒。
+- 优化：新开一个线程运行音视频编码推流
+- 延时: 整体延时5s多
+  - （1）tts延时2s左右，目前用的edgetts，需要将每句话转完后一次性输入，可以优化tts改成流式输入
+  - （2）wav2vec延时1s多，需要缓存50帧音频做计算，可以通过-m设置context_size来减少延时
+  - （3）srs转发延时，设置srs服务器减少缓冲延时。
+
+
 ### 表情迁移
 
 - 【2022-1-24】iphone 手机自带标签迁移功能，imessage里可以通过摄像头捕捉表情，并应用到动画形象上。个性化拟人表情：选取肤色、头饰、眼镜等等
