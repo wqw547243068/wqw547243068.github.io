@@ -573,7 +573,6 @@ Smart Siri 依然有不足：
 
 ![](https://pic4.zhimg.com/v2-7bc35371861868c2410abd30d95bc5e3_b.jpg)
 
-
 LLM时代的对话系统该怎么做？没有固定答案，大家还在不断摸索中。
 
   
