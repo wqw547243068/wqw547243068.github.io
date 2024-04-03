@@ -937,12 +937,48 @@ I am a AI program developed by Firefly<|im_end|>
 
 ## Yi 训练
 
+参考
 - 【2024-3-9】[Yi技术报告细节分享](https://mp.weixin.qq.com/s/ZmQ4OablSL5CwGYFRwMtOw)
-- [Yi: Open Foundation Models by 01.AI](https://arxiv.org/pdf/2403.04652.pdf)
+- [Yi技术报告-划重点看细节](https://mp.weixin.qq.com/s/T4oAvLkgCarN3dXErDsPKA)
+
+
+### Yi 介绍
+
+AI（`零一万物`）是李开复带队孵化的AI公司。
+- 2023年11月初，01.AI 发布并开源了`Yi-6B`、`Yi-34B base`模型，同一周内，又开源了`Yi-6B-200K`和`Yi-34B-200K base`模型。Yi号称是从**零**预训练的双语模型。
+- 接下来的几个月，01.AI陆续推出了**chat模型**、**多模态能力**，`Yi-9B`、**长上下文**的记忆和检索能力等优化。
+
+SuperCLUE/CMMLU等一些榜单数据的实测上，Yi的效果确实不错。能排在同时期中文（开源）大模型里的第一梯队。
+
+2024年3月，Yi终于发布了技术报告，在此来梳理一下报告中的重点内容和值得关注的细节信息。
+
+Yi目前有6B、9B、34B三个规模，其中34B是主力模型。
+- 选择34B，而不是更大规模的原因，是这个规模能在24G显存的消费级显卡（如RTX4090）上运行。
+- 使用int4量化之后的34B模型可运行在24G显存的GPU上。
+
+参考《Understanding INT4 Quantization for Language Models: Latency Speedup, Composability, and Failure Cases》的量化方法
+- Yi-34B int8量化模型相比bf16模型，几乎可以做到效果无损（差距<1%），而int4量化模型在大部分任务的损失也完全可以接受，
+
+官方资料
+- 论文 [Yi: Open Foundation Models by 01.AI](https://arxiv.org/pdf/2403.04652.pdf)
 - Code: [Yi](https://github.com/01-ai/Yi)
 - Model: [01-ai](https://huggingface.co/01-ai)
 
+总结：
+- Yi-34B模型int4量化之后，相比float16损失<1%，可跑在RTX4090上（24G显存）
+- 模型结构不需要太多变化，**LLAMA2 标准结构**已经足够训出很好的效果
+- 3.1T 预训练数据远比scaling law建议的1T大，但是效果更好，并且模型还没饱和，继续增大数据量还能提升
+- **微调数据质量**很重要，由算法人员直接标注，只要**不到10k**数据量就足够了
+- 4k长度的基础预训练模型已经具备长文本能力，只需用长文本数据继续预训练，更新百步就有很好效果
+
+总之，数据要精心设计，数据质量要高，数据量要大
+
+Yi实践结果证明： 较小模型+更大规模高质量数据，可获得进一步效果提升
+- 获得高性价比的推理模型--34B推理成本+大训练投入，就能得到接近普通70B规模的推理效果。
+
 ### 数据构造
+
+数据是LLM最核心的部分，没有之一。Yi最核心的工作就是提升数据数量和质量。
 
 #### 预训练
 
@@ -951,21 +987,30 @@ I am a AI program developed by Firefly<|im_end|>
 Yi模型在预训练阶段的数据处理流程，主要是对爬取的网络文本进行数据过滤和去重
 - 原始网络数据 → 语种过滤 →
 
+语料获取 & 语言分类
+- 从网络爬虫开始，爬取中英文这两种语言的网站，对网站内容进行解析。
+- 参考CCNeT（《CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data》）的做法，进行语言识别。
+
 过滤方法
 - **启发式**过滤：去除**质量较低**的文本内容。过滤规则包含：
   - （1）根据特殊URL、域名、黑名单词表以及乱码文本进行过滤；
   - （2）根据文本长度、特殊字符比例、短、连续或不完整的行比例；
   - （3）根据**重复**词语、N-Gram片段、段落的占比；
   - （4）识别和匿名话个人可识别信息，例如：邮箱、电话等。
-- **学习式**过滤：通过困惑度、 质量、 安全和文档连贯性4种评分器来对文本进行过滤
-  - 其中，困惑度评分器利用KenLM库，按照CCNet的方法评估大量网络文本，丢弃困惑度分数明显高于平均水平的文本；
+- **学习式**过滤：Learned Filters, 规则不好处理的，训练模型来清洗
+  - 通过困惑度、 质量、 安全和文档连贯性4种评分器来对文本进行过滤，共有4个scorer：
+    - `Perplexity Scorer`：参照《CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data》，用kenlm库，把高于平均perplexity的内容丢弃；
+    - `Quality Scorer`：识别如维基百科这样的高质量内容，丢弃低质量内容；
+    - `Document Coherence Scorer`：用于发现句子、段落零散不连贯的文本，要么分割，要么直接丢弃；
+    - `Safety Scorer`：识别并删除暴力、色情、涉政内容
+  - 困惑度评分器利用KenLM库，按照CCNet的方法评估大量网络文本，丢弃困惑度分数明显高于平均水平的文本；
   - 质量评分器经过维基百科数据训练的**分类**模型，当文本内容更偏向于维基这样高质量页面时，认为文本质量较高；
   - 安全评分器是识别并删除包含有毒内容的网络文档，如暴力、色情等；
   - 文档连贯性评分器识别文本的整体连贯性，删除句子或段落不连贯的文本。
-- **聚类**过滤：采用无监督语义聚类对文本进行分组，然后对聚类数据标注质量标签，为后续数据混合策略提供参考。
-
-去重方法：
-- 文本过滤之后进行**去重**流程，涉及基于文档级别的`MinHash`去重和**子文档精确匹配**去重，有效识别和消除文档内部和跨文档中的重复内容。同时利用**主题模型**对数据赋予特定的主题，在最后数据采样过程种对信息密度较低的主题内容进行**下采样**（主要是广告文本）
+- **聚类**过滤：Cluster-based Filters
+  - 采用无监督语义聚类对文本进行分组，然后对聚类数据标注质量标签, 丢弃质量差的类别，为后续数据混合策略提供参考。
+- 去重方法：
+  - 文本过滤之后进行**去重**流程，涉及基于文档级别的`MinHash`去重和**子文档精确匹配**去重，有效识别和消除文档内部和跨文档中的重复内容。同时利用**主题模型**对数据赋予特定的主题，在最后数据采样过程种对信息密度较低的主题内容进行**下采样**（主要是广告文本）
 
 最终预训练数据组成如下图所示，总计3.1T Token。
 - 语种构成: 英语(60%) ＞ 中文(20%) ＞ 代码(10%)
@@ -973,8 +1018,33 @@ Yi模型在预训练阶段的数据处理流程，主要是对爬取的网络文
 
 #### 微调
 
+对于微调数据
+> - Quality is All You Need
+> - 数据质量胜过数量
+
+SFT数据质量能**极大**影响模型效果，随着数据量的增加，高质量数据能带来更多提升
+
 微调阶段数据构造
-- 微调阶段采用 10k 数据 —— 数据质量胜过数量
+- 微调阶段采用 不到10k的 SFT数据
+
+一共只有**<10k条**SFT数据，每条数据都通过**人工多次打磨**，这比大数量但质量一般的数据的效果好。
+这思路和别人一致
+  - 《Gemini: A family of highly capable multimodal models.》
+  - 《Llama 2: Open Foundation and Fine-Tuned Chat Models》
+  - 《Lima: Less is more for alignment》
+- 不同
+  - `FLAN`（《Scaling instruction-finetuned language models》）
+  - `UltraChat`（《Enhancing chat language models by scaling high-quality instructional conversations》）
+
+具体做法：
+- 对于 **prompt distribution selection**：参考《Wizardlm: Empowering large language models to follow complex instructions》，开发复合指令，并通过指令进化，逐步增加指令的复杂度。这种做法显著减少了SFT数据量。
+- 对于 **CoT data formatting**：参考《Take a step back: Evoking reasoning via abstraction in large language models》，采用了“Step-Back”的模式。即通过抽象化处理，让模型学习在深入探讨原始、具体的问题之前，制定更高层次的解决方案。
+- 对于 **response formatting**：使用从《Lima: Less is more for alignment》扩展的默认样式。总体而言，response的结构为introduction-body-conclusion的格式，“where the body is usually a list of bullet point”。
+- 在**缓解幻觉**问题上，思路是确保response中的知识不由模型内部产生，对应的做法是把会导致模型进行记忆的response删掉。（但是这个具体标准是什么，有没有了解的朋友说下看法？）
+- 在缓解**生成重复**的问题上，则是直接把response中包含重复的部分都重写了。（核心还是洗数据，一条条打磨）
+- 数据**多样性**很重要，因此参考《#instag: Instruction tagging for analyzing supervised fine-tuning of large language models》建立了一个打标系统，并设计一个注重多样性的采样算法，平衡了各个领域数据的分布。
+- 为了找到**最佳数据配比**，参考《How abilities in large language models are affected by supervised fine-tuning data composition》，使用近似网络搜索（approximate grid search），对每个领域以{1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64}的比例进行实验和人工测评，找到最佳的组合方式。
+- 除了内容，**数据格式**对效果也有很大影响。参OPENAI的[ChatML格式](https://github.com/openai/openai-python/blob/e389823ba013a24b4c32ce38fa0bd87e6bccae94/chatml.md)，这种结构化的格式使模型能够区分各种信息类型，如system prompt、user input和bot response。
 
 数据构造过程中
 - 采用`WizardLM`方法获取难度较高提示的数据集，采用`LIMA`中回复风格（总-分-总）对生成回复内容格式化，采用“`Step-Back`”模式对维链数据格式化。
@@ -995,19 +1065,118 @@ Yi模型在预训练阶段的数据处理流程，主要是对爬取的网络文
 
 Tokenizer 采用 sentencepece 中 BPE方法对预训练数据训练得来，为平衡计算效率和词理解能力将词表设置为**64000**，将数字拆分为单个数字，将罕见字符用**unicode编码**。
 
+tokenizer
+- 用 BPE，词表大小为64000，平衡了计算效率和表达能力；
+- 其中数字全是单个的digit，让模型能更好地理解数字数据；
+- 对于OOV的词，会降级用unicode编码 ；
+- 保留全角标点符号，不转为半角；
+
+另外，优先考虑英语的LLM在tokenizer会使用虚拟前缀（文本开头的空格）来泛化句子不同位置相同的单词。Yi不这么做，因为即使是在英语语境中，这种假设并不总是成立，比如对于以引号开头的句子，而且在中文语境中，这么做没有明显效果。
+
 #### 模型
 
-模型采用 Transformer-Decoder 结构，采用**llama**代码实现，修改如下：
-- **注意力机制**：Yi-6B和34B版本均采用 Grouped-Query Attention(GQA)，Llama2 中仅70B版本采用GQA。
+模型 Transformer-Decoder 结构，基于标准LLAMA2模型，修改如下：
+- **注意力机制**：LLAMA2只在70B用了GQA，Yi全系列都用了GQA
+  - Yi-6B和34B版本均采用 Grouped-Query Attention(GQA)，Llama2 中仅70B版本采用GQA。
 - **激活函数**：Yi采用`SwiGLU`作为后注意力层的激活函数。
+  - 参考《GLU Variants Improve Transformer》
 - **位置编码**：Yi模型采用**旋转位置编码**（`RoPE`），为例支持200k上下文窗口，调整了基础频率（RoPE ABF）。
+  - 参考 RoPE ABF（《Effective long-context scaling of foundation models》），base扩大到10M，用于支持长上下文。
+
 
 模型微调阶段
 - **仅计算回复内容的损失**，不考虑系统指令和用户指令。
 - 采用AdamW优化器，其中β1、β2和ϵ分别为0.9、0.999和1e−8。
 - 训练数据最大长度为4096，批量大小为64，训练300步，学习率恒定为1e−5，权重衰减为0.1，梯度裁剪最大阈值为1.0，并采用NEFTune方式训练，Yi-34B-Chat和Yi-6B-Chat噪声尺度分别为45和5。
 
-### 改进
+### 训练
+
+
+#### Infra
+
+从数据处理到模型训练都需要大集群大算力的支持。
+
+Yi构建了支持全栈数据处理、预训练、微调和服务的基础设施。包括：
+- (1) 自动管理和监控计算资源的能力；
+- (2) 通过优化并行策略、内核效率和长上下文支持提高训练速度；
+- (3) 统一微调框架，支持异构分布式训练后端，例如在DPO中同时使用Megatron和DeepSpeed进行多个模型的训练；
+- (4) 通过各种LLM服务加速技术（如量化、continuous batching 和 paged attention）降低部署成本。
+
+这部分工作还是很多的，比如
+- 由于经常有硬件坏，坏的硬件会被自动从资源池移除；
+- 任务失败时，会自动跟踪重启。
+- 给算法人员考法UI等。
+
+#### pretrain
+
+预训练
+- 训了4k基础模型。（暂时没有给出更多细节）
+
+
+#### 微调
+
+微调超参如下
+
+```py
+AdamW：beta=[0.9,0.999]，epsilon = 1e-8
+seq_len = 4096
+batch size = 64
+constant lr = 1e-5，weight decay = 0.1
+gradient clip = 1.0
+max step = 300
+```
+
+参考
+- 《Neftune: Noisy embeddings improve instruction finetuning》
+- 对于6B模型 noise scale = 5，对于34B模型 noise scale = 45
+
+
+### 评测
+
+基模型评测
+
+#### 基础能力评测
+
+对其他开源模型，保持和公开的设置相同做法获取结果。Yi使用贪婪解码，没有进行任何后处理
+- 数学和代码能力上，和GPT3.5、GPT4还存在一些差距，而这些能力是可以通过继续预训练和微调来持续提升的。Yi最初的设计并没有针对这些能力，因此没有在预训练数据中包含特别多相关数据，后续会有计划增加这部分能力的提升。
+- 而和其他开源模型相比，在代码和数学以外的任务，Yi基本上做到了跟大一倍模型的效果相近，甚至更好的水平。
+
+**观察**
+- 模型规模带来的增益：尽管Yi-34B和Yi-6B使用了相同的预训练语料，但Yi-34B的性能相比Yi-6B有了质的提升。更大的模型尺寸在代码和数学基准测试上带来了明显的增益。
+- 数据质量：高质量预训练数据的小型模型，如Yi-34B或Qwen-14B，通常表现优于尺寸更大但（可能）数据质量较低的模型，例如Falcon-180B。
+- GPT-4与开源LLM之间的差距：开源LLM在多种基准测试上的性能仍然落后于GPT-4和GPT-3.5。然而，具有代表性的双语LLM，例如Qwen-14B和Yi-34B，可以在包括C-Eval、CMMLU和Gaokao在内的中文知识相关基准测试上匹配甚至超过GPT-4的性能。然而，在BBH、代码（HumanEval）和数学（MATH）等推理相关基准测试上，仍然存在巨大的差距。
+
+**In-Context Learning 能力**
+
+Yi进一步研究了in-context learning的能力，即根据少数展示的输入-输出示例，推断underlying function的能力。
+
+任务是推断加权和的线性系数。具体来说，定义 y = w1x1 + w2x2 + ... + wnxn。
+
+少量示例展示是 x1, x2, ..., xn, y，要求模型预测给定一组新输入 x 的 y。
+
+这就要求模型隐式地推断出 w1, w2, ..., wn。
+
+评测上，使用（a）模型预测的 y 与真实值 y∗ 之间的绝对差，即 |y − y∗| 作为连续度量，以及使用（b）精确匹配 y == y∗ 作为不连续度量。
+
+模型在算术上的效果正常，因此可以认为这样的测试不受算术能力的影响，而能直接看模型是否具备根据给定的实例进行underlying function推理的能力。
+
+实验发现，当问题比较简单时（系数是`[1,-1]`），Yi-34B和LLAMA-70B效果比较好（看下图）。
+
+当问题更复杂点（系数是`[1，1，1，1，1]`），只有LLAMA-70B和Mistral 8*7B这样的大模型表现出了涌现的能力。
+
+
+#### Chat 模型评测
+
+自动评测
+- 评测的任务和base模型相同，分别采用zero-shot和few-shot，效果依然不错
+
+报告强调，如Goodhart’s principle所说，当一个指标变成目标，就不再是一个好指标。因此这里的测试只是为了确认微调没有使得模型的知识能力下降，而不会专门去针对任务做优化。
+
+结果上，Yi-34B-Chat数学能力不错，而Yi-6B-Chat并没有展现出强大的数学能力。推测较小的模型可能需要更多的数据在SFT阶段激活其相应的能力。
+
+人工评测
+
+### 能力扩展
 
 #### 上下文扩展
 
@@ -1028,7 +1197,23 @@ Tokenizer 采用 sentencepece 中 BPE方法对预训练数据训练得来，为�
 微调阶段：
 - 将短SFT数据与长上下文问答问答数据混合使用。文档问答数据由模型辅助构建，即随机将多个文档拼成一个长文档，从中抽取一个或多个段落，要求模型基于抽取段落内容构建问答对。Trick，要求给答案之前模型需要背诵或改写原始段落，这种数据格式鼓励模型进行检索，从而阻止依赖自身知识回答产生的幻觉。
 
-#### 扩展模型深度
+
+#### 多模态
+
+ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始化
+
+3步训练：
+- （1）使用224^2的图像来训练ViT和projection模块的参数。这一训练利用了包含1亿个图像-文本对的数据集，这些数据来自LAION-400M。主要目标是增强ViT在架构中的知识获取能力，并实现ViT与LLM之间更好的对齐。
+- （2）将ViT的图像分辨率提升到448^2，目的是进一步推动模型识别复杂视觉细节的能力。在这个阶段使用的数据集包括从LAION-400M中提取的2000万个图像-文本对。此外，还融入了来自不同来源的大约480万个图像-文本对，例如CLLaVA、LLaVAR、Flickr、VQAv2、RefCOCO、Visual7w等。
+- （3）整个模型的参数一起训练。主要目标是提高模型在多模态聊天交互方面的熟练度，从而赋予它能够无缝融合和解释视觉与语言输入的能力。为此，训练数据集涵盖了多种来源，总共大约有100万张图像-文本对，包括GQA、VizWiz VQA、TextCaps、OCR-VQA、Visual Genome、ShareGPT4V等等。为了确保数据平衡，对任何单一来源的最大数据量设定了上限，将其限制在不超过50,000对。
+
+使用128张A100，6B训了3天，34B训10天。
+
+
+#### 扩展模型深度 Depth Upscaling
+
+目标是把32层的6B扩展到48层的9B模型。
+- 参考《Scaling large language models with simple yet effective depth up-scaling》，通过复制中间的12-28层共16层，把层数扩展为48层。
 
 参考SOLAR 10.7B模型对Yi-6B模型进行深度扩展，将原来的32层扩展到48层，构建Yi-9B模型。在具体层的选择时，通过评估每一层输入和输出直接的余弦相似度得出，余弦相似度越接近于1，则表明复制这些层不会显著改变原始模型输出的logits，因此选择复制原始模型中间12-28的16个层。
 
