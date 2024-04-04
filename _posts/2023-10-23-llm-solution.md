@@ -2063,13 +2063,21 @@ MoE 架构中每个专家参数的激活程度取决于数据决定的**路由�
 ## 混合
 
 
-### RAFT
+### RAFT 
 
-【2024-3-29】[RAFT——针对特定领域的问答的微调和 RAG 方法](https://www.unite.ai/zh-CN/raft-a-fine-tuning-and-rag-approach-to-domain-specific-question-answering/)
+【2024-3-15】UC Berkeley 
+- [RAFT——针对特定领域的问答的微调和 RAG 方法](https://www.unite.ai/zh-CN/raft-a-fine-tuning-and-rag-approach-to-domain-specific-question-answering/)
+- [UC伯克利:提出索增强微调(RAFT)，只需少量微调，就能大幅提升模型领域QA能力](https://cloud.tencent.com/developer/article/2400661)
+- 论文: [RAFT: Adapting Language Model to Domain Specific RAG](https://arxiv.org/pdf/2403.10131.pdf)
+- 代码 [gorilla](https://github.com/ShishirPatil/gorilla)
 
 涉及到将LLMs适应特定领域时，有两个候选方案：
 - 1、通过RAG利用上下文学习
 - 2、有监督的微调
+
+工具调用上超过GPT-4
+- [Gorilla: Large Language Model Connected with Massive APIs](https://gorilla.cs.berkeley.edu/)
+- 论文: [Gorilla: Large Language Model Connected with Massive APIs](https://arxiv.org/pdf/2305.15334.pdf)
 
 分析
 - RAG允许模型在回答问题时参考文档，但错过了从固定领域设置中学习和提前访问测试文档的机会。
@@ -2078,6 +2086,7 @@ MoE 架构中每个专家参数的激活程度取决于数据决定的**路由�
 然而，当前的微调方法要么在测试期间不利用文档，要么忽略了训练期间检索中的不完美之处。
 
 因此，RAFT 将微调与RAG结合起来。通过RAFT，在有监督的情况下，可以为微调收集最佳结果。
+- 同时具备 闭卷考试 + 开卷考试的能力
 - ![](https://www.unite.ai/wp-content/uploads/2024/03/RAFT.png)
 
 RAFT 与标准微调不同，训练数据包含**相关**和**不相关**文档问题，以及从相关文本得出的**思想链式**答案。
