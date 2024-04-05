@@ -938,6 +938,8 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 电子节目指南（electrical program guide，简称EPG）
 - Electronic Program Guide的英文缩写，意思是电子节目菜单，即节目预告。
 
+#### IPTV 播放软件
+
 各个渠道的IPTV软件资源汇总
 - [Awesome IPTV](https://github.com/iptv-org/awesome-iptv#apps)
 - [IPTV网络直播](https://down.iptv2020.com/down.php)
@@ -957,6 +959,8 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 - [Televizo IPTV](https://televizo-iptv-player.en.softonic.com/android)和[OTT Navigator IPTV](https://ott-navigator-iptv.en.softonic.com/android) 免费可用
 - [Tivimate IPTV](https://tivimate-iptv-video-player-ott.en.softonic.com/android)限制数目，引导付费
 
+#### IPTV 播放源
+
 播放源
 - 播放源[TPv6链接](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/IPTV.m3u), [EPG源信息](https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/tvxml.xml), 国内电视台 191个, 有广告
 - [https://iptv-org.github.io/iptv/index.m3u](https://iptv-org.github.io/iptv/index.m3u)
@@ -974,14 +978,14 @@ Android 如何观看
 软件
 - `Smarters Player`: [IPTV Smarters Player & M3U Player](https://www.androidfreeware.mobi/download-apk-com-iptv-smart-player.html)
 - `TiviMate`: [TiviMate IPTV Player for Android  V 4.7.0](https://en.softonic.com/download/tivimate-iptv-video-player-ott/android/post-download)
-- 开源免费的安卓电视直播软件 [My TV](github.com/lizongying/my-tv)
+- 【2024-4-5】开源免费的安卓电视直播软件 [My TV](lyrics.run/my-tv.html)
   - 内置直播源，直接安装即可使用，具有稳定、快速、免费和无广告等特点。
-  - GitHub：[My TV](github.com/lizongying/my-tv)
+  - GitHub：[My TV](github.com/lizongying/my-tv)，直接点击 [链接](https://github.com/lizongying/my-tv/releases/download/v1.7.3/my-tv-v1.7.3.apk) 下载即可
 
 注意：仅支持安卓 4.2 及以上系统。
 
 
-#### Android TV 环境
+**Android TV**
 
 [Comparing Some of the Best IPTV Streaming Apps](https://www.softwaretestinghelp.com/best-free-iptv-apps/)
 
