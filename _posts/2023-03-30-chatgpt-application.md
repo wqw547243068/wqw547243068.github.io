@@ -900,6 +900,30 @@ GPT-4翻译
 ### 搜索
 
 
+#### ollama 本地搜索
+
+【2024-3-29】[LLocalSearch](https://github.com/nilsherzig/LLocalSearch) 开源的完全本地化的AI搜索工具，无需 OpenAI 或 Google API 密钥。
+- 基于 ollama, 7b 模型
+
+项目特点：
+- 🕵️ 完全本地化运行，不需要连接到外部API，因此无需API密钥。
+- 💸 适用于性能相对较低的大型语言模型硬件，例如在演示视频中使用的是7b模型。 
+- 🤓 提供详细的进度日志，这有助于用户更好地理解搜索和处理过程。 
+- 🤔 支持用户提出后续问题，以便深入探讨或解决问题。
+- 📱 界面对移动设备友好，适合在手机或平板电脑上使用。 
+- 🚀 使用Docker Compose工具，可以快速且轻松地部署此服务。 
+- 🌐 提供网络界面，使用户可以从任何设备轻松访问和使用。 
+- 💮 该服务提供精心设计的用户界面，支持浅色和深色模式，满足不同用户的视觉偏好。
+
+```sh
+git clone https://github.com/nilsherzig/LLocalsearch.git
+# 1. make sure to check the env vars inside the `docker-compose.dev.yaml`.
+# 2. Make sure you've really checked the dev compose file not the normal one.
+# 3. build the containers and start the services
+make dev 
+# Both front and backend will hot reload on code changes. 
+```
+
 #### WebGPT
 
 【2021-12-17】基于GPT3模型在搜索结果方面的优化
