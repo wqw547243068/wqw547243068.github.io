@@ -963,6 +963,10 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 - [https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u](https://codeberg.org/testTV/TestV/raw/branch/main/FreeTest.m3u)
 - [ibert](https://m3u.ibert.me/o_all.m3u)
 
+【2024-4-5】最新iptv源，每两小时自动更新一次，含有超过 1w+ 数量的 IPTV 列表，丰富且全面！
+- GitHub：[iptv-sources](github.com/HerbertHe/iptv-sources)
+
+
 #### Android 环境
 
 Android 如何观看
@@ -970,6 +974,11 @@ Android 如何观看
 软件
 - `Smarters Player`: [IPTV Smarters Player & M3U Player](https://www.androidfreeware.mobi/download-apk-com-iptv-smart-player.html)
 - `TiviMate`: [TiviMate IPTV Player for Android  V 4.7.0](https://en.softonic.com/download/tivimate-iptv-video-player-ott/android/post-download)
+- 开源免费的安卓电视直播软件 [My TV](github.com/lizongying/my-tv)
+  - 内置直播源，直接安装即可使用，具有稳定、快速、免费和无广告等特点。
+  - GitHub：[My TV](github.com/lizongying/my-tv)
+
+注意：仅支持安卓 4.2 及以上系统。
 
 
 #### Android TV 环境
