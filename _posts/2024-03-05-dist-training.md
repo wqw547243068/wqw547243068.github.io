@@ -950,12 +950,26 @@ GPT 就是这样一个典型的网络结构：
 ![](https://pic3.zhimg.com/v2-f10be44bff31f5412b3398cc0cfbce96_b.jpg)
 
 数据并行相对简单，N个node(worker)构成一个**分布式集群**，每个worker处理1/N的数据。
-- 理论情况下能达到**线性**的加速效果。TF、torch、Horovod都可以在原生支持或者微小的改动实现数据并行模式。
+- 理论情况下能达到**线性**的加速效果。
+- TF、torch、Horovod都可以在原生支持或者微小的改动实现数据并行模式。
 
-多个GPU 情况下，将模型分发到每个GPU上去，每个GPU都保留完整的模型参数。
-- 每个GPU加载全部模型（Parameter、Grad、Optimizer、Activation、Temp buffer）
-- 将每个batch的样本平均分配到每个GPU上进行梯度计算
-- 然后汇总每个GPU上的梯度，在将汇总梯度重新分发到每个GPU上，每个GPU模型根据汇总的梯度进行模型参数更细。
+DP(单机)+DDP(多机)
+
+数据并行（DP&DDP）
+- `DP`（Data Parallelism）：早期数据并行模式，一般采用**参数服务器**(Parameters Server)编程框架。实际中多用于**单机多卡**。 
+- `DDP`（Distributed Data Parallelism）：分布式数据并行，采用`Ring AllReduce` 通讯方式，多用于**多机多卡**场景。
+
+
+#### DP 单机数据并行
+
+数据并行本质
+- **单进程多线程**实现方式，只能实现**单机**训练, 不算严格意义上的分布式训练
+
+多个GPU 情况下，将模型分发到每个GPU上去，每个GPU都保留完整模型参数。
+- 每个GPU加载**全部模型**（Parameter、Grad、Optimizer、Activation、Temp buffer）
+- 将每个batch样本平均分配到每个GPU上进行梯度计算
+- 然后**汇总**每个GPU上的梯度
+- 将汇总梯度重新分发到每个GPU上，每个GPU模型根据汇总的梯度进行模型参数更细。
 - ![](https://pic2.zhimg.com/v2-0c13c485f5b43319c3bb4c65ae09d475_b.jpg)
 
 K个GPU并数据并行训练过程如下：
@@ -981,13 +995,15 @@ K个GPU并数据并行训练过程如下：
 **更新式**方法与**参数平均化**类似，主要区别在于，在**参数**服务器和**工作**服务器之间传递参数时，更新式方法只传递**更新信息**(梯度和张量)。
 
 
-#### DP(单机)+DDP(多机)
+问题：
+- 负载不均衡，主GPU负载大
+- PS 架构通信开销大
 
-数据并行（DP&DDP）
-- `DP`（Data Parallelism）：早期数据并行模式，一般采用**参数服务器**(Parameters Server)编程框架。实际中多用于**单机多卡**。 
-- `DDP`（Distributed Data Parallelism）：分布式数据并行，采用`Ring AllReduce`的通讯方式，多用于**多机多卡**场景。
+#### DDP 分布式数据并行 
 
-
+DDP (Distribution Data Parallel)
+- AllReduce 架构，在单机和多机上都可以使用。
+- 负载分散在每个gpu节点上，通信成本是恒定的，与 GPU 数量无关。
 
 ### 模型并行（model parallesim）
 
@@ -1027,14 +1043,10 @@ K个GPU并数据并行训练过程如下：
 大模型训练时，ZeRO支持将模型显存内存占用划分到多张卡或者多个节点。
 
 
-#### 流水线并行
-
-**流水线并行**（Pipeline model parallesim）
-- 朴素拆分方式: 将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
-  - 缺点: GPU 利用率太低，当一个GPU进行计算时，其他层的GPU都闲置。
-- 改进: 谷歌提出了GPipe `流水线并行`（Pipeline model parallesim ）, 引入micro-batches (MBS)的概念，会提升GPU利用率
-
 #### 张量并行
+
+分布式张量计算正交且更通用，将张量操作划分到多个设备上，以加速计算或增加模型大小。
+- 把 `Masked Multi Self Attention` 和 `Feed Forward` 都进行切分以并行化，利用Transformers网络的结构，通过添加一些同步原语来创建一个简单的模型并行实现。
 
 **张量并行**（Tensor Model Parallelism）
 - 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按**矩阵**切分。
@@ -1205,6 +1217,45 @@ plot([mp_mean, rn_mean, pp_mean],
 ```
 
 设备到设备的张量复制操作在源设备和目标设备上的当前流（current streams）上同步。如果创建多个流，则必须确保复制操作正确同步。在完成复制操作之前写入源张量或读取/写入目标张量可能导致不确定的行为。上面的实现仅在源设备和目标设备上都使用默认流，因此没有必要强制执行其他同步。
+
+
+### 流水线并行
+
+`数据并行`还是`模型并行`都会在相应机器之间全连接通信，当机器数量增大时，**通信开销和时延**会大到难以忍受
+
+流水并行既解决了**超大模型无法在单设备装下**的难题，又解决了**机器之间的通信开销**的问题
+- 每个阶段（stage） 和下一个阶段之间仅有相邻的某一个 Tensor 数据需要传输，每台机器的数据传输量跟总的网络大小、机器总数、并行规模无关。
+
+**流水线并行**（Pipeline model parallesim）
+- 朴素拆分方式: 将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
+  - 缺点: GPU 利用率太低，当一个GPU进行计算时，其他层GPU都闲置。
+- 改进方法如下
+
+#### G-pipe
+
+谷歌提出 `G-pipe` `流水线并行`（Pipeline model parallesim ）, 引入micro-batches (MBS)的概念，会提升GPU利用率
+- `F-then-B` 调度方式: 原 mini-batch（数据并行切分后的batch）划分成多个 `micro-batch`（`mini-batch`再切分后的batch），每个 pipeline stage （流水线并行的计算单元）先整体进行**前向**计算，再进行**反向**计算。同一时刻分别计算模型的不同部分，F-then-B 可以显著提升设备资源利用率。
+- F-then-B 模式由于缓存了多个 micro-batch 的中间变量和梯度，显存的实际利用率并不高。
+- 解决: `1F1B` （在流水线并行中，pipeline stage 前向计算和反向计算交叉进行的方式）流水线并行方式。1F1B 模式下，前向计算和反向计算**交叉**进行，可以及时释放不必要的中间变量。
+- ![](https://pic1.zhimg.com/80/v2-b678a253f70613169172fd892e0e4064_1440w.webp)
+
+
+#### PipeDream
+
+PipeDream 在单个 GPU 上短暂运行性能分析后，自动决定怎样分割这些 DNN 算子，如何平衡不同 stage 之间的计算负载，而同时尽可能减少目标平台上的通信量。
+
+PipeDream将DNN 层划分为多个阶段 —— 每个阶段（stage）由模型中的一组连续层组成。
+- PipeDream把模型的不同的阶段部署在不同的机器上，每个阶段可能有不同的replication。该阶段对本阶段中所有层执行向前和向后传递。
+- PipeDream将包含输入层的阶段称为**输入**阶段，将包含输出层的阶段称为**输出**阶段。
+- ![](https://pic3.zhimg.com/80/v2-26f04fc799e3220d6806cfbebe415712_1440w.webp)
+
+#### virtual pipeline
+
+virtual pipeline 是 Megatron-2 论文中最主要的一个创新点。
+- 传统的 pipeline 并行通常会在一个 Device 上放置几个 block，为了扩展效率，在计算强度和通信强度中间取一个平衡。
+- 但 virtual pipeline 在 device 数量不变的情况下，分出更多的 pipeline stage，以更多的通信量，换取空泡比率降低，减小了 step e2e 用时。
+- ![](https://pic4.zhimg.com/80/v2-b5347bb2677de0ffd78e091a4e1e79bb_1440w.webp)
+
 
 
 ### 混合并行
