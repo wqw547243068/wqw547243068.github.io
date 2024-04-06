@@ -554,6 +554,44 @@ Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大�
 - 计算效率：流水线并行具有最低的通信量，因为它的通信量只和在各阶段边界的各层的激活值大小成正比。但是，它不能无限扩展。像模型并行一样，增加流水线大小会减少每个流水线阶段的计算量，这会降低计算与通信的比率。如果要实现好的计算效率，流水线并行还要求其每个阶段的计算负载完美的均衡。
 
 
+### LLaMA-Factory
+
+LLaMA Factory 是一款支持多种LLM微调方式的工具，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
+- 支持LoRA和QLoRA微调策略，广泛集成了业界前沿的微调方法。
+- 特点: 支持多种LLM模型，提供了WebUI页面，使非开发人员也能微调。
+- 体验地址：[LLaMA-Board](https://modelscope.cn/studios/hiyouga/LLaMA-Board/summary)
+- 可视化界面 [LLaMA-Board](https://huggingface.co/spaces/hiyouga/LLaMA-Board)
+- github: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)，附各阶段训练数据集
+- ![](https://pic2.zhimg.com/80/v2-7b24a5941a9bf996cf35187ae351f6c1_1440w.webp)
+
+功能
+- 多种模型：LLaMA、Mistral、Mixtral-MoE、Qwen、Yi、Gemma、Baichuan、ChatGLM、Phi 等等。
+- 集成方法：（增量）预训练、指令监督微调、奖励模型训练、`PPO` 训练、`DPO` 训练和 `ORPO` 训练。
+- 多种精度：32 比特全参数微调、16 比特冻结微调、16 比特 LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8 的 2/4/8 比特 QLoRA 微调。
+- 先进算法：GaLore、DoRA、LongLoRA、LLaMA Pro、LoRA+、LoftQ 和 Agent 微调。
+- 实用技巧：FlashAttention-2、Unsloth、RoPE scaling、NEFTune 和 rsLoRA。
+- 实验监控：LlamaBoard、TensorBoard、Wandb、MLflow 等等。
+- 极速推理：基于 vLLM 的 OpenAI 风格 API、浏览器界面和命令行接口。
+
+详情参考
+- [使用LLaMA Factory对大型语言模型进行微调](https://zhuanlan.zhihu.com/p/684989699)
+
+安装
+- [安装说明](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
+
+```sh
+# Clone the repository
+git clone https://github.com/hiyouga/LLaMA-Factory.git
+# Create a virtual environment
+conda create -n llama_factory python=3.10
+# Activate the virtual environment
+conda activate llama_factory
+# Install dependencies
+cd LLaMA-Factory
+pip install -r requirements.txt
+```
+
+
 ## 模型架构
 
 **专家混合**（MoE）方法最近吸引了很多关注，因为研究人员（主要来自谷歌）试图突破模型大小的限制。该想法的核心是整合学习：多个弱学习模型组合以后会形成能力出众的学习模型。
