@@ -105,6 +105,40 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 ## 分布式训练范式
 
+### 通讯原语操作
+
+NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
+- 专为英伟达的计算卡和网络优化，能带来更低的延迟和更高的带宽。
+
+汇总如下
+
+|原语操作|模式|说明|图解|
+|---|---|---|---|
+|`Broadcast`|广播:一对多|广播行为：从节点0广播相同信息到其它指定节点(0-3)|![](https://pic3.zhimg.com/80/v2-ddab6ac76e09c8a86bfc1f8fad8d1d6e_1440w.webp)|
+|`Scatter`|一对多|从0节点将数据不同部分按需发送到不同节点||
+|`Reduce`|规约:多对一|一系列简单聚合运算,如:sum/min/max,prod,lor等|![](https://pic2.zhimg.com/80/v2-25e275b3a8c7a8b98054b83dc6420d8d_1440w.webp)|
+|`AllReduce`|多对多|所有节点上应用相同的Reduce操作|![](https://pic3.zhimg.com/80/v2-4846a68e4fec0d3dbaf73e6c56c2983e_1440w.webp)|
+|`Gather`|多对一|反向Scatter:将多个Sender上的数据收集到单个节点上||
+|`AllGather`|多对多|收集所有节点到所有节点上, `AllGather`=`Gather`+`Broadcast`|![](https://pic2.zhimg.com/80/v2-cd07564e08307b856586106bb79bf3e5_1440w.webp)|
+|`ReduceScatter`||将单节点输入求和，再0维度按卡切分并发送, `ReduceScatter`=`Reduce`+`Scatter`|![](https://pic1.zhimg.com/80/v2-55652f9d4274b76249f1e745c66a40d8_1440w.webp)|
+
+`AllReduce` 的目标: 将不同机器上的数据整合(reduce)后分发给各个机器
+
+`AllReduce` 实现方法
+- 最简单: 每个worker将自己的数据广播给所有worker —— 问题： 大量浪费
+- 改进: 主从架构, 指定一个worker作为master,负责整合运算,以及分发 —— 问题: master成为网络瓶颈
+- 改进: Ring AllReduce 
+
+Ring AllReduce：
+- 第一阶段，将N个worker分布在一个环上，并且把每个worker的数据分成N份。
+- 第二阶段，第k个worker把第**k份**数据发给下一个worker，同时从前一个worker收到第**k-1份**数据。
+- 第三阶段，worker把收到的第k-1份数据和自己的第k-1份数据整合，再将整合的数据发送给下一个worker
+- 此循环N次之后，每一个worker都会包含最终整合结果的一份。
+
+假设每个worker的数据是一个长度为`S`的向量，那么Ring AllReduce里每个worker发送的数据量是`O(S)`，和worker的数量N无关。避免了**主从架构**中master需要处理`O(S*N)`数据量而成为网络瓶颈的问题。
+
+### 并行技术
+
 并行技术：
 - 数据并行（如：PyTorch DDP）
 - 模型/张量并行（如：Megatron-LM（1D）、Colossal-AI（2D、2.5D、3D））
