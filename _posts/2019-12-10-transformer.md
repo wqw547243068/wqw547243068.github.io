@@ -2154,10 +2154,30 @@ ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理�
 
 ## 稀疏Attention
 
+### 起因
+
+transformer能捕捉输入序列token之间的关系，即使是长距离。
+
+长序列输入受到注意力计算和内存资源限制，随着序列长度n二次增长。
+- DeepSpeed提供了 **稀疏 attention kernel** —— 支持**长序列**模型输入，包括文本输入，图像输入和语音输入。
+- 通过块稀疏计算将注意力的计算和内存需求降低几个数量级。
+
+该方法不仅缓解了注意力计算的内存瓶颈，而且可以有效地执行稀疏计算。
+
+除了提供广泛的稀疏性结构外，还具有处理任何用户定义的块稀疏结构的灵活性。
+
+### 总结
+
 稀疏Attention
-- Atrous Self Attention
-- Local Self Attention
-- Sparse Self Attention
+- `Atrous Self Attention` 空洞自注意力，只计算第k,2k,3k,4k...元素
+- `Local Self Attention`
+- `Sparse Self Attention`: OpenAI在image transformer中引入了Sparse self-attention，把两者结合在一块，既可以学习到局部的特性，又可以学习到远程稀疏的相关性
+
+|稀疏Attention|名称|说明||
+|---|---|---|---|
+|`Atrous Self Attention`|空洞自注意力|![](https://pic2.zhimg.com/80/v2-a39db55945b1ae7c413572b22fbe4cd1_1440w.webp)||
+|`Local Self Attention`|局部自注意力|![](https://pic4.zhimg.com/80/v2-c2b46a79fb998e2030ecd8cea99100fb_1440w.webp)||
+|`Sparse Self Attention`|稀疏自注意力|![](https://pic4.zhimg.com/80/v2-a2f4cfa836abe8a6fc537048be262ab3_1440w.webp)|综合以上优点|
 
 【2019-7-27】苏剑林，[节约而生：从标准Attention到稀疏Attention](https://spaces.ac.cn/archives/6853) 节约时间、显存。
 
@@ -2180,7 +2200,7 @@ Attention的核心在于Q,K,V 三个向量序列的交互和融合，其中Q,K �
 
 ### Atrous Self Attention 膨胀注意力
 
-Atrous Self Attention，“膨胀自注意力”、“空洞自注意力”、“带孔自注意力”等。
+Atrous Self Attention，“**膨胀**自注意力”、“**空洞**自注意力”、“**带孔**自注意力”等。
 - 名称是自定义, 原论文《Generating Long Sequences with Sparse Transformers》没有出现过这两个概念
 
 Atrous Self Attention 启发于“**膨胀卷积**（Atrous Convolution）”，如下图所示，它对相关性进行了约束，强行要求每个元素只跟它相对距离为k,2k,3k,… 的元素关联，其中k>1是预先设定的超参数。从下左的注意力矩阵看，就是强行要求相对距离不是k
