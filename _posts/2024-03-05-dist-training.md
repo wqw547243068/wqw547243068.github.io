@@ -293,9 +293,9 @@ DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
 
 DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）和`管道并行`（pipeline parallelism）与 `Megatron-LM` 中的`张量并行`（Tensor Parallelism）相结合，开发了一种基于 **3D 并行**的实现。
 
-`Megatron-DeepSpeed` 实施 3D 并行以可以让大型模型以非常有效的方式进行训练。
+`Megatron-DeepSpeed` 实施 3D 并行, 让大型模型训练更加高效。
 - `DataParallel` (DP) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
-- `TensorParallel` (TP) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量的每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
+- `TensorParallel` (TP) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
 - `PipelineParallel` (PP) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
 - `零冗余优化器` (ZeRO) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
 
