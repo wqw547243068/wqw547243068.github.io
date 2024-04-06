@@ -107,6 +107,8 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 ### 通讯原语操作
 
+【2023-7-27】[大模型-LLM分布式训练框架总结](https://zhuanlan.zhihu.com/p/623746805)
+
 NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - 专为英伟达的计算卡和网络优化，能带来更低的延迟和更高的带宽。
 
@@ -284,22 +286,6 @@ DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
 - 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
 
 详见站内专题: [DeepSpeed](deepspeed)
-
-### Megatron-DeepSpeed
-
-`Megatron-DeepSpeed` 结合了两种主要技术：
-- `DeepSpeed` 是微软开发的深度学习**优化库**，分布式训练变得简单、高效和有效。
-- `Megatron-LM` 是由 `NVIDIA` 的应用深度学习研究团队开发的大型、强大的 **Transformer 模型框架**。
-
-DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）和`管道并行`（pipeline parallelism）与 `Megatron-LM` 中的`张量并行`（Tensor Parallelism）相结合，开发了一种基于 **3D 并行**的实现。
-
-`Megatron-DeepSpeed` 实施 3D 并行, 让大型模型训练更加高效。
-- `DataParallel` (DP) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
-- `TensorParallel` (TP) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
-- `PipelineParallel` (PP) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
-- `零冗余优化器` (ZeRO) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
-
-各个技术细节参考：[大型语言模型(LLM)训练指南](https://zhuanlan.zhihu.com/p/611325149)
 
 
 【2023-8-28】[LLaMA Efficient Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning/blob/main/README_zh.md)
@@ -1306,13 +1292,32 @@ PS架构的问题在于多个worker与ps通信，PS本身可能存在**瓶颈**�
 
 ### 同步范式
 
-实际训练过程中可能遇到各种问题，比如：部分节点资源受限、卡顿、网络延时等等，因此梯度同步时就存在“**木桶**“效应，即集群中的某些worker比其他worker更慢，导致整个训练pipeline需要等待慢的worker，整个集群的训练速度受限于最慢机器的速度。
+实际训练过程中可能遇到各种问题，比如：部分节点资源受限、卡顿、网络延时等等
 
-因此梯度的同步有“**同步**”(sync)、“**异步**”(Async)和**混合**三种范式。
+因此梯度同步时就存在“**木桶**“效应，即集群中的某些worker比其他worker更慢，导致整个训练pipeline需要等待慢的worker，整个集群的训练速度受限于最慢机器的速度。
+
+因此梯度同步有“**同步**”(sync)、“**异步**”(Async)和**混合**三种范式。
 - **同步**范式：只有所有worker完成当前的计算任务，整个集群才会开始下一次迭代。
   - TF中同步范式使用SyncReplicasOptimizer优化器
 - **异步**模式刚好相反，每个worker只关心知己的进程，完成计算后就尝试更新，能与其他多个worker同步梯度完成取决于各worker当前时刻的状态。其过程不可控，有可能出现模型正确性问题。(可在训练时logging对比)
 - **混合**范式结合以上两种情况，各个worker都会等待其他worker的完成，但不是永久等待，有timeout的机制。如果超时了，则此情况下相当于异步机制。并且没来得及完成计算的worker，其梯度则被标记为“stale”而抛弃或另做处理。
+
+**梯度累加**
+
+Gradient Accumulation 把一个大 Batch 拆分成多个 micro-batch， 每个 micro-batch 前后向计算后的梯度累加，在最后一个micro-batch累加结束后，统一更新模型。
+
+`micro-batch` 跟`数据并行`高度相似性：
+- 数据并行是空间上，数据被拆分成多个 tensor，同时喂给多个设备并行计算，然后将梯度累加在一起更新；
+- 而 micro-batch 是**时间**上的数据并行，数据被拆分成多个 tensor， 按照时序依次进入同一个设备串行计算，然后将梯度累加在一起更新。当总的 batch size 一致，且数据并行的并行度和 micro-batch 的累加次数相等时，数据并行和 Gradient Accumulation 在数学上完全等价。
+
+Gradient Accumulation 通过多个 micro-batch的梯度累加, 使下一个 micro-batch 的前向计算不需要依赖上一个 micro-batch 的反向计算，因此可以畅通无阻的进行下去（当然在一个大 batch 的最后一次 micro-batch 还是会触发这个依赖）。
+
+Gradient Accumulation 解决了很多问题：
+- 单卡下，Gradient Accumulation 将一个大 batch size 拆分成等价的多个小 micro-batch ，从而达到节省显存的目的。
+- 数据并行下，Gradient Accumulation 解决了反向梯度同步开销占比过大的问题（随着机器数和设备数的增加，梯度的 AllReduce 同步开销也加大），因为梯度同步变成了一个稀疏操作，因此可以提升数据并行的加速比。
+- 流水并行下， Gradient Accumulation 使得不同 stage 之间可以并行执行不同的 micro-batch， 从而让各个阶段的计算不阻塞，达到流水的目的。如果每个 micro-batch 前向计算的中间结果（activation）被后向计算所消费，则需要在显存中缓存 8多份（梯度累加的次数）完整的前向 activation。这时就不得不用另一项重要的技术：激活检查点（activation checkpointing）。
+
+
 
 ### 物理架构
 
@@ -2729,6 +2734,18 @@ TensorRT官方支持Caffe、Tensorflow、Pytorch、ONNX等模型的转换(不过
 
 ## ZeRO -- 突破显存限制
 
+ZeRO 三个优化阶段，对应**优化器状态**、**梯度**和**参数**划分。
+- a. Pos:减少4倍内存，通信量与数据并行相同
+- b. Pos+g:减少8倍内存，通信量与数据并行相同
+- c. Pos+g+p:内存减少与数据并行度Nd呈线性关系。
+  - 例如，在64个GPU（Nd=64）之间进行拆分将产生64倍的内存缩减。通信量有50%的适度增长。
+
+ZeRO消除了内存冗余，使集群全部聚合内存容量可用。启用所有三个阶段的情况下，ZeRO在1024个NVIDIA GPU上训练万亿参数模型。
+- 像Adam这样具有16位精度的优化器的万亿参数模型需要大约16 TB的内存来保存优化器的状态、梯度和参数。16TB除以1024是16GB，这对于GPU来说是在合理的范围内的。
+- ZeRO2扩展了ZeRO-1，包括减少梯度内存占用，同时还添加了针对激活内存和碎片内存的优化。
+- 与ZeRO-1相比，ZeRO-2将DeepSpeed可以训练的模型大小增加了一倍，同时显著提高了训练效率。
+- 使用ZeRO-2，1000亿参数模型的训练速度可以比仅基于模型并行性的现有技术快10倍。
+
 ### ZeRO: 去除冗余
 
 目前最流行的方法是 `ZeRO`（即零冗余优化器）。针对模型状态的存储优化（去除冗余），ZeRO使用的方法是**分片**，即每张卡只存 1/N 的模型状态量，这样系统内只维护一份模型状态。
@@ -2805,9 +2822,11 @@ ZeRO将模型训练阶段，每张卡中显存内容分为两类：
 
 ### ZeRO-Offload
  
-ZeRO-Offload 是 ZeRO（Zero Redundancy Optimizer）技术的一种**扩展**，它使用显存作为模型参数存储和通信的中间介质，以减少模型并行化训练中的通信和同步开销。
+ZeRO-Offload 使 GPU 单卡能够训练 10 倍大的模型
+
+ZeRO-Offload 是 ZeRO（Zero Redundancy Optimizer）技术**扩展**，用显存作为模型参数存储和通信的中间介质，以减少模型并行化训练中的通信和同步开销。
  
-ZeRO-Offload技术使用显存缓存将模型参数存储在显存中，这可以减少网络带宽的使用，同时还可以加速参数访问和更新。为了最大限度地减少显存的使用，ZeRO-Offload技术使用了一种称为“按需加载”的策略。这种策略只在需要使用参数时才将其从磁盘或网络加载到显存中，而不是一次性将所有参数都加载到显存中。
+ZeRO-Offload 技术用显存缓存将模型参数存储在显存中，这可以减少网络带宽的使用，同时还可以加速参数访问和更新。为了最大限度地减少显存的使用，ZeRO-Offload技术使用了一种称为“按需加载”的策略。这种策略只在需要使用参数时才将其从磁盘或网络加载到显存中，而不是一次性将所有参数都加载到显存中。
 - ![](https://pic4.zhimg.com/80/v2-e83a35c1d2a1db0738cc19770be60207_1440w.webp)
  
 
@@ -2850,6 +2869,7 @@ ZeRO-Offload的切分思路如图 10 所示：
 - ![](https://pic3.zhimg.com/80/v2-bac2b7d030141b2a146852a44d5c379a_1440w.webp)
 
 ### ZeRO 问题
+
 
 【2023-7-6】[DeepSpeed-ZeRO++ 技术简介](https://zhuanlan.zhihu.com/p/641297077)
 
