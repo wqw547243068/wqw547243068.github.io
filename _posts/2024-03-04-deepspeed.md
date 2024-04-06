@@ -31,7 +31,7 @@ permalink: /deepspeed
 DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
 - 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
 
-#### DeepSpeed 介绍
+## DeepSpeed 介绍
 
 DeepSpeed支持多种训练优化策略。包括：
 - 3D并行：数据并行、模型并行、流水线并行以及三者的混合使用
@@ -58,7 +58,7 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 - DeepSpeed 的论文一直强调：可以用更少机器训练更大的模型，但没有突出过在效率上的优势。
 - DeepSpeed 后来又出了一篇论文：[ZeRO-Infinity](https://arxiv.org/abs/2104.07857)，当单层参数量在单张显卡上放不下的时候，它通过对这一层算子切片，一片一片来执行，使得单卡也能跑起来一个巨大的层，可以理解成一种 “时间”轴上展开的模型并行。
 
-#### DeepSpeed 框架
+## DeepSpeed 框架
 
 DeepSpeed 主要分成以下四个板块，包括：Training、Inference、Compression、Science
 - ![](https://pic1.zhimg.com/v2-a9ac939ec325cf859c282511ddd90f2c_b.jpg)
@@ -73,7 +73,7 @@ DeepSpedd-Training 提供一套端到端大模型训练框架，核心板块。
 DeepSpeed发展速度非常快，一些新的大模型热点技术都实现快速支持 。目前DeepSpeed可以支持MoE模型架构训练，并且在超长上下文模型训练问题上也提供了优化方案。
 
 
-#### DeepSpeed-Trianing
+### DeepSpeed-Trianing
 
 DeepSpeed-Trianing 介绍
 - 通信策略优化
@@ -85,7 +85,7 @@ DeepSpeed-Trianing 介绍
     - 如果在 CPU 集群上分布式训练，选择 mpi 和 gloo；
     - 如果在 GPU 上进行分布式训练，可以选择 nccl。
 
-#### DeepSpeed 用法
+## DeepSpeed 用法
 
 DeepSpeed 用法
 - 【2023-5-19】huggingface的[DeepSpeed文档](https://huggingface.co/docs/transformers/main/main_classes/deepspeed)的笔记：[DeepSpeed 入门教程](https://zhuanlan.zhihu.com/p/630734624?utm_psn=1751727518502281216)
@@ -141,7 +141,7 @@ TrainingArguments(..., deepspeed=ds_config_dict)
 - 提供了对显存的管理，减少显存中的碎片
 
 
-##### ZeRO-2 配置
+### ZeRO-2 配置
 
 ```json
 {
@@ -213,7 +213,7 @@ TrainingArguments(..., deepspeed=ds_config_dict)
   - 当梯度累积的步数增加，或者GPU数量增加时，会有更好的性能优势。
 
 
-##### ZeRO-3 配置
+### ZeRO-3 配置
 
 配置示例
 
@@ -327,7 +327,7 @@ NVMe Support
 - 从左到右，所需GPU显存越来越少
   - Stage 0 (DDP) < Stage 1 < Stage 2 < Stage 2 + offload < Stage 3 < Stage 3 + offloads
 
-##### 调参步骤
+### 调参步骤
 
 将batch_size设置为1，通过梯度累积实现任意的有效batch_size
 - 如果OOM则，设置--gradient_checkpointing 1 (HF Trainer)，或者 model.gradient_checkpointing_enable()
@@ -346,7 +346,7 @@ NVMe Support
 - 如果训模型from scratch，hidden size最好可以被16整除
 - batch size最好可以被2整除
 
-##### 优化器和调度器
+### 优化器和调度器
 
 当不使用offload_optimizer 时，可以按照下表，混合使用HF和DS的优化器和迭代器，除了HF Scheduler和DS Optimizer这一种情况。
 
@@ -376,7 +376,7 @@ NVMe Support
 - WarmupDecayLR 使用 --lr_scheduler_type linear
 
 
-##### 训练精度
+### 训练精度
 
 由于 fp16 混合精度大大减少了内存需求，并可以实现更快的速度，因此只有此训练模式表现不佳时，才考虑不使用**混合精度训练**。 
 
@@ -414,7 +414,7 @@ apex
 }
 ```
 
-##### 获取模型参数
+### 获取模型参数
 
 deepspeed会在优化器参数中存储模型的主参数，存储在global_step*/*optim_states.pt 文件中，数据类型为fp32。因此，想要从checkpoint中恢复训练，则保持默认即可
 - 如果模型是在ZeRO-2模式下保存的，模型参数会以fp16的形式存储在pytorch_model.bin中
@@ -436,7 +436,7 @@ python zero_to_fp32.py . pytorch_model.bin
 ```
 
 
-##### ZeRO inference
+### ZeRO inference
 
 只有ZeRO-3是有意义的，因为可以将参数分片：
 
@@ -465,7 +465,7 @@ SW: Model with 2783M total params, 65M largest layer params.
 - loss是NaN：训练时用的是bf16，使用时是fp16。常常发生于google在TPU上train的模型，如T5。此时需要使用fp32或者bf16。
 
 
-#### 多机多卡
+### 多机多卡
 
 【2024-3-25】[DeepSpeed 多机多卡训练指南](https://mp.weixin.qq.com/s/ktBPcDiGu5bXOqs7CQawlw)
 
@@ -588,11 +588,11 @@ os.environ.update(local_env)
 
 执行训练的代码，每台机器上要有完全一致的一份，且存储的路径都要一致（包括软件的安装路径等）
 
-### Megatron-LM -- NVIDIA
+## Megatron-LM -- NVIDIA
 
 [Megatron](https://github.com/NVIDIA/Megatron-LM) is a large, powerful transformer developed by the Applied Deep Learning Research team at NVIDIA. This repository is for ongoing research on training large transformer language models at scale. We developed efficient, model-parallel (tensor, sequence, and pipeline), and multi-node pre-training of transformer based models such as GPT, BERT, and T5 using mixed precision.
 
-#### Megatron-LM 介绍
+### Megatron-LM 介绍
 
 Megatron 是超大规模Transformer模型的**分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
 
@@ -605,6 +605,58 @@ Megatron 核心能力:
 - Gradient accumulation
 - MoE
 
+Megatron-LM
+- 1). Megatron-LM-1
+- 2). Megatron-LM-2
+- 3). Megatron-LM-3
+
+### Megatron-LM-1
+
+利用了`张量并行`和`数据并行`
+
+### Megatron-LM-2
+
+Megatron 2 在 Megatron 1 的基础上新增了 `pipeline 并行`，提出了virtual pipeline:1F1B-interleaving，成为和 DeepSpeed 类似的 `3D 并行`训练框架。
+
+另外 Megatron-2 论文提及了一些通信优化的小 trick，本质是增加本地的 io 操作和通信，从而降低低带宽网络的通信量。
+
+内存占用角度：
+- `G-pipe` 到 `PipeDream` 进化完成，通过及时安排反向过程，将前向激活值释放掉，避免积累太多激活值占用内存，提高了模型并行的能力。
+
+空泡比率角度：
+- 空泡比率的提升主要从 1F1B 到 1F1B-interleaving 的进化得来。pipeline 并行的一个基本规律就是 pipeline 流水的级数越多，overhead 就越小。
+
+### Megatron-LM-3
+
+增加三个feature: 
+- `Sequence Parallelism`: Tensor Parallelism 基础上，将Transformer的LayerNorm以及Dropout层的输入按Sequence Length维度进行了切分，使得各个设备上面只需要做一部分的Dropout和LayerNorm。
+- `Selective Activation Recomputation` 去掉激活值重新计算
+- `Checkpointing Skipping`: GPU显存没占满时候不做checkpointing
+
+Megatron1, 2中，Transformer核的TP通信是由正向两个Allreduce以及后向两个Allreduce组成的。Megatron 3由于对sequence维度进行了划分，Allreduce在这里已经不合适
+- ![](https://pic3.zhimg.com/80/v2-06a0a77032c8a7262cb0f846f87ffe0e_1440w.webp)
+
+
+Checkpointing Skipping
+- ![](https://pic4.zhimg.com/80/v2-2154af6448b05283d58bd27f300b0533_1440w.webp)
+
+
+
+## Megatron-DeepSpeed
+
+`Megatron-DeepSpeed` 结合了两种主要技术：
+- `DeepSpeed` 是微软开发的深度学习**优化库**，分布式训练变得简单、高效和有效。
+- `Megatron-LM` 是由 `NVIDIA` 的应用深度学习研究团队开发的大型、强大的 **Transformer 模型框架**。
+
+DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）和`管道并行`（pipeline parallelism）与 `Megatron-LM` 中的`张量并行`（Tensor Parallelism）相结合，开发了一种基于 **3D 并行**的实现。
+
+`Megatron-DeepSpeed` 实施 3D 并行, 让大型模型训练更加高效。
+- `DataParallel` (DP) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
+- `TensorParallel` (TP) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
+- `PipelineParallel` (PP) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
+- `零冗余优化器` (ZeRO) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
+
+各个技术细节参考：[大型语言模型(LLM)训练指南](https://zhuanlan.zhihu.com/p/611325149)
 
 
 # 结束
