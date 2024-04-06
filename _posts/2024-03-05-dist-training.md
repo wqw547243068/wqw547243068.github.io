@@ -556,7 +556,7 @@ Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大�
 
 ### LLaMA-Factory
 
-LLaMA Factory 是一款支持多种LLM微调方式的工具，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
+LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推出，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
 - 支持LoRA和QLoRA微调策略，广泛集成了业界前沿的微调方法。
 - 特点: 支持多种LLM模型，提供了WebUI页面，使非开发人员也能微调。
 - 体验地址：[LLaMA-Board](https://modelscope.cn/studios/hiyouga/LLaMA-Board/summary)
@@ -575,6 +575,10 @@ LLaMA Factory 是一款支持多种LLM微调方式的工具，包括: **预训�
 
 详情参考
 - [使用LLaMA Factory对大型语言模型进行微调](https://zhuanlan.zhihu.com/p/684989699)
+- 作者北航博士[郑耀威](https://github.com/hiyouga)讲解 [全栈大模型微调框架LLaMA Factory：从预训练到RLHF的高效实现](https://www.bilibili.com/video/BV1Gt421L7dt)
+
+<iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
 
 安装
 - [安装说明](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
