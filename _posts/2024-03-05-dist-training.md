@@ -716,12 +716,18 @@ DDP (Distribution Data Parallel)
 
 但是**模型并行**实现起来比较复杂。工业界还是以**数据并行**为主。
 
-补充：
-- `Model Parallel`主要分两种：**intra-layer**拆分 和 **inter-layer**拆分
-  - `inter-layer`拆分：对模型做网络上的拆分,将每一层或者**某几层**放在一个worker上单独训练。
-    - 缺点：模型训练串行，整个模型的效率取决于最慢的那一层，存在资源浪费
-  - `intranet-layer`拆分：深度学习的网络结构基本都是一层层的。常规的卷积、池化、BN等等。如果对某一层进行了拆分，那么就是intra-layer拆分。对单层的拆分其实就是拆分这一层的matrix运算。
-    - 参考论文：Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
+#### 层间 & 层内
+
+`Model Parallel`主要分两种：**intra-layer**拆分 和 **inter-layer**拆分
+- `inter-layer`拆分：对模型做网络上的拆分,将每一层或者**某几层**放在一个worker上单独训练。
+  - 缺点：模型训练串行，整个模型的效率取决于最慢的那一层，存在资源浪费
+- `intranet-layer`拆分：深度学习的网络结构基本都是一层层的。常规的卷积、池化、BN等等。如果对某一层进行了拆分，那么就是intra-layer拆分。对单层的拆分其实就是拆分这一层的matrix运算。
+  - 参考论文：Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism
+
+对比
+- 层间并行: 流水线并行
+- 层内并行: 张量并行
+- ![](https://pic3.zhimg.com/80/v2-293a367d9c5378f01fa64ad009dd9eb2_1440w.webp)
 
 **模型并行**通常分为**张量并行**（纵向切分）以及**流水线并行**（横向切分）
 - ![](https://pic2.zhimg.com/v2-37b26149c568865d5112fadb9b1ec9ad_b.jpg)
@@ -743,15 +749,6 @@ DDP (Distribution Data Parallel)
 大模型训练时，ZeRO支持将模型显存内存占用划分到多张卡或者多个节点。
 
 
-#### 张量并行
-
-分布式张量计算正交且更通用，将张量操作划分到多个设备上，以加速计算或增加模型大小。
-- 把 `Masked Multi Self Attention` 和 `Feed Forward` 都进行切分以并行化，利用Transformers网络的结构，通过添加一些同步原语来创建一个简单的模型并行实现。
-
-**张量并行**（Tensor Model Parallelism）
-- 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按**矩阵**切分。
-- 2019年，NVIDIA发布《Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM》论文，提出了张量并行方法
-- 核心思想: 每个GPU仅处理矩阵一部分，当算子需要整个矩阵的时候再进行矩阵聚合。无论是横向切分还是竖向切分，都可以将切分后的矩阵放到不同GPU上进行计算，最后将计算的结果再合并。
 
 #### 示例
 
@@ -923,13 +920,21 @@ plot([mp_mean, rn_mean, pp_mean],
 
 `数据并行`还是`模型并行`都会在相应机器之间全连接通信，当机器数量增大时，**通信开销和时延**会大到难以忍受
 
-流水并行既解决了**超大模型无法在单设备装下**的难题，又解决了**机器之间的通信开销**的问题
+流水线(管道)并行既解决了**超大模型无法在单设备装下**的难题，又解决了**机器之间的通信开销**的问题
 - 每个阶段（stage） 和下一个阶段之间仅有相邻的某一个 Tensor 数据需要传输，每台机器的数据传输量跟总的网络大小、机器总数、并行规模无关。
 
+![](https://pic1.zhimg.com/80/v2-bdb9a12c01204d335187f6e3e3aad284_1440w.webp)
+
 **流水线并行**（Pipeline model parallesim）
-- 朴素拆分方式: 将模型各层分组后装载到各个GPU上去，GPU之间进行**串行**计算
-  - 缺点: GPU 利用率太低，当一个GPU进行计算时，其他层GPU都闲置。
-- 改进方法如下
+- 朴素拆分方式: 将模型各层分组后装载到各个GPU上，GPU之间进行**串行**计算
+- ![](https://pic4.zhimg.com/80/v2-a2c0059f72e0e121520b6fce2027deaf_1440w.webp)
+- 缺点: **GPU 利用率太低**，当1个GPU进行计算时，其他层GPU都闲置。
+
+
+改进方法如下
+- GPipe
+- PipeDream
+
 
 #### G-pipe
 
@@ -956,7 +961,23 @@ virtual pipeline 是 Megatron-2 论文中最主要的一个创新点。
 - 但 virtual pipeline 在 device 数量不变的情况下，分出更多的 pipeline stage，以更多的通信量，换取空泡比率降低，减小了 step e2e 用时。
 - ![](https://pic4.zhimg.com/80/v2-b5347bb2677de0ffd78e091a4e1e79bb_1440w.webp)
 
+### 张量并行(Tensor Parallelism)
 
+
+流水线并行主要集中在**多层**神经网络架构训练上，对于Transformer架构的模型（如BERT，GPT等），`MultiHead Attention Layer`和`MLP`的计算量翻了几倍，如果继续按管线切分模型, 可能单层参数都无法被显存装载，因此需要横着把同一层的模型切分开来，这便是**张量并行**
+- 层间并行: 流水线并行
+- 层内并行: 张量并行
+- ![](https://pic3.zhimg.com/80/v2-293a367d9c5378f01fa64ad009dd9eb2_1440w.webp)
+
+分布式张量计算正交且更通用，将张量操作划分到多个设备上，以加速计算或增加模型大小。
+- 把 `Masked Multi Self Attention` 和 `Feed Forward` 都进行切分以并行化，利用Transformers网络的结构，通过添加一些同步原语来创建一个简单的模型并行实现。
+
+**张量并行**（Tensor Model Parallelism）
+- 张量并行（TP）是模型并行一种形式，流水线并行按**网络层**切分，张量并行按**矩阵**切分。
+- 2019年，NVIDIA发布《Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM》论文，提出了张量并行方法
+- 核心思想: 每个GPU仅处理矩阵一部分，当算子需要整个矩阵的时候再进行矩阵聚合。无论是横向切分还是竖向切分，都可以将切分后的矩阵放到不同GPU上进行计算，最后将计算的结果再合并。
+
+张量并行最有名的是： `Megatron` 和 `Deepspeed`
 
 ### 混合并行
 
@@ -989,6 +1010,9 @@ Ring all reduce 一种分布式方式
 ParameterServer模式是一种基于reduce和broadcat算法的经典架构。
 - 其中一个/一组机器作为PS架构的**中心节点**，用来**存储参数和梯度**。
 - 在更新梯度的时候，先全局reduce接受其他worker节点的数据，经过本地计算后(比如参数平均法)，再broadcast回所有其他worker。
+- 论文: [Parameter Server for Distributed Machine Learning](https://www.cs.cmu.edu/~muli/file/ps.pdf)
+- [中文解读](https://www.zhihu.com/tardis/zm/art/82116922?source_id=1003)
+- ![](https://pic3.zhimg.com/80/v2-85e54fee3bdad611072235264df95b66_1440w.webp)
 
 PS架构的问题在于多个worker与ps通信，PS本身可能存在**瓶颈**。
 - 随着worker数量的增加，整体通信量也线性增加，加速比也可能停滞在某个点位上。
