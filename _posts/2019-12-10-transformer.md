@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -24,6 +24,18 @@ permalink: /transformer
 - 【2023-6-14】李沐出品，[动手学深度学习](https://zh-v2.d2l.ai/index.html)，面向中文读者的能运行、可讨论的深度学习教科书，含 PyTorch、NumPy/MXNet、TensorFlow 和 PaddlePaddle 实现，包含 [NLP 预训练章节](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/index.html), [Transformer实践](https://zh-v2.d2l.ai/chapter_natural-language-processing-pretraining/bert.html)
 
 
+
+## Transformer 可视化
+
+
+【2024-4-2】三蓝一棕出品: [可视化讲解 transformer](https://www.youtube.com/watch?v=wjZofJX0v4M)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wjZofJX0v4M?si=e3vpGav59jQoQdrt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
+- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
 ## 总结
 
 Transformer，从**NLP**领域横跨到**语音**和**图像**领域，最终统一几乎**所有模态**的架构。
@@ -37,12 +49,6 @@ Google 2017年发的一篇论文，标题叫《Attention Is All You Need》，�
 - `ViT`: 2020, 图像任务
 - `CLIP`: 2021, 文本和图像混合
 - `KOSMOS-1`: 2023, 多模态大规模语言模型
-
-
-### Transformer 可视化
-
-【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
-- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 【2024-3-8】transformer [Transformer 逐层图解](https://zhuanlan.zhihu.com/p/604450283), medium 文章翻译
 - 整体结构
