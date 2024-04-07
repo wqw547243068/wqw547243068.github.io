@@ -105,9 +105,67 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 ## 分布式训练范式
 
-### 通讯原语操作
+### 通讯原语
+
+#### 如何选择
+
+PyTorch 支持
+
+torch.distributed 支持 3 种后端，分别为 `NCCL`，`Gloo`，`MPI`
+- ![](https://pic4.zhimg.com/80/v2-54b2efac8658c14f72104c2101a81ecf_1440w.webp)
+
+如何选择?
+- NCCL 目前最快，且对**多进程分布式**（Multi-Process Single-GPU）支持极好，可用于单节点以及多节点的分布式训练。
+- 节点即主机。即使是单节点，由于底层机制不同， **distributed** 也比 **DataParallel** 方式要高效。
+
+基本原则：
+- 用 NCCL 进行分布式 GPU 训练
+- 用 Gloo 进行分布式 CPU 训练
+
+无限带宽互联的 GPU 集群
+- 使用 NCCL，因为它是目前唯一支持 InfiniBand 和 GPUDirect 的后端
+
+无限带宽和 GPU 直连
+- 使用 NCCL，因为其目前提供最佳的分布式 GPU 训练性能。尤其是 multiprocess single-node 或 multi-node distributed 训练。
+- 如果用 NCCL 训练有问题，再考虑使用 Cloo。(当前，Gloo 在 GPU 分布式上，相较于 NCCL 慢)
+
+无限带宽互联的 CPU 集群
+- 如果 InfiniBand 对 IB 启用 IP，请使用 Gloo，否则使使用 MPI。
+- 在未来将添加 infiniBand 对 Gloo 的支持
+
+以太网互联的 CPU 集群
+- 使用 Gloo，除非有特别的原因使用 MPI。
+
+
+#### MPI 后端
+
+MPI 即**消息传递接口**（Message Passing Interface），来自于高性能计算领域的标准的工具。
+- 支持点对点通信以及集体通信，并且是 torch.distributed 的 API 的灵感来源。
+- 使用 MPI 后端的优势: 在大型计算机集群上，MPI 应用广泛，且高度优化。
+
+但是，torch.distributed 对 MPI 并不提供原生支持。
+
+因此，要使用 MPI，必须从源码编译 Pytorch。是否支持 GPU，视安装的 MPI 版本而定。
+
+#### Gloo 后端
+
+gloo 后端支持 CPU 和 GPU，其支持集体通信（collective Communication），并对其进行了优化。
+
+由于 GPU 之间可以直接进行数据交换，而无需经过 CPU 和内存，因此，在 GPU 上使用 gloo 后端速度更快。
+
+torch.distributed 对 gloo 提供原生支持，无需进行额外操作。
+
+#### NCCL 通信原语
 
 【2023-7-27】[大模型-LLM分布式训练框架总结](https://zhuanlan.zhihu.com/p/623746805)
+
+NCCL 的全称为 Nvidia 聚合通信库（NVIDIA Collective Communications Library），是一个可以实现多个 GPU、多个结点间聚合通信的库，在 PCIe、Nvlink、InfiniBand 上可以实现较高的通信速度。
+
+NCCL 高度优化和兼容了 MPI，并且可以感知 GPU 的拓扑，促进多 GPU 多节点的加速，最大化 GPU 内的带宽利用率，所以深度学习框架的研究员可以利用 NCCL 的这个优势，在多个结点内或者跨界点间可以充分利用所有可利用的 GPU。
+
+NCCL 对 CPU 和 GPU 均有较好支持，且 torch.distributed 对其也提供了原生支持。
+
+对于每台主机均使用多进程的情况，使用 NCCL 可以获得最大化的性能。每个进程内，不许对其使用的 GPUs 具有独占权。若进程之间共享 GPUs 资源，则可能导致 deadlocks。
 
 NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - 专为英伟达的计算卡和网络优化，能带来更低的延迟和更高的带宽。
@@ -142,6 +200,8 @@ Ring AllReduce：
 `Ring All-reduce`
 - Pytorch 实现: `DistributedDataParallel`
 - `Ring All-reduce`=`reduce-scatter`+`all-gather`
+
+
 
 ### 并行技术
 
@@ -1713,7 +1773,8 @@ Pytorch 通过 torch.distributed 包提供分布式支持，包括 GPU 和 CPU �
 - `group`：即**进程组**。默认只有一个组，一个 job 即为一个组，即一个 world。
   - 当需要进行更加精细的通信时，通过 new_group 接口，使用 word 的子集，创建新组，用于集体通信等。
 - `world size` ：表示**全局进程个数**。
-- `rank`：表示**进程序号**，用于进程间通讯，表征进程优先级。`rank = 0` 主机为 **master 节点**。
+- `rank`：表示**进程序号**，用于进程间通讯，表征进程优先级。取值范围: `0~world_size`
+  - `rank = 0` 主机为 **master 节点**。
 - `local_rank`：进程内，**GPU 编号**，非显式参数，由 `torch.distributed.launch` 内部指定。
   - `rank = 3`，`local_rank = 0` 表示第 3 个进程内的第 1 块 GPU。
 
@@ -1725,7 +1786,98 @@ Pytorch 分布式基本流程：
 - 使用启动工具 `torch.distributed.launch` 在每个主机上执行一次脚本，开始训练
 - 使用 `destory_process_group()` 销毁进程组
 
+torch.distributed 提供了 3 种初始化方式：**tcp**、**共享文件** 和 **环境变量初始化** 等。
+- TCP: 指定进程 0 的 ip 和 port, 手动为每个进程指定进程号。
+- 共享文件: 共享文件对于组内所有进程可见
+- 环境变量:
+
+
+#### 初始化进程组
+
+`init_process_group` 函数原型
+
+```py
+torch.distributed.init_process_group(backend, 
+                                     init_method=None, 
+                                     timeout=datetime.timedelta(0, 1800), 
+                                     world_size=-1, 
+                                     rank=-1, 
+                                     store=None)
+```
+
+函数作用
+- 每个进程中进行调用，用于初始化该进程。在使用分布式时，该函数必须在 distributed 内所有相关函数之前使用。
+
+参数详解
+- `backend` ：指定当前进程要使用的通信后端
+  - 小写字符串，支持的通信后端有 gloo，mpi，nccl 。建议用 nccl。
+- `init_method` ： 指定当前进程组初始化方式
+  - 可选参数，字符串形式。如果未指定 init_method 及 store，则默认为 env://，表示使用读取环境变量的方式进行初始化。该参数与 store 互斥。
+- `rank` ： 指定当前进程的优先级
+- `int` 值。表示当前进程的编号，即优先级。如果指定 store 参数，则必须指定该参数。
+  - rank=0 的为主进程，即 master 节点。
+- `world_size` ：该 job 中的总进程数。如果指定 store 参数，则需要指定该参数。
+- `timeout` ： 指定每个进程的超时时间
+  - 可选参数，datetime.timedelta 对象，默认为 30 分钟。该参数仅用于 Gloo 后端。
+- `store`
+  - 所有 worker 可访问的 key / value，用于交换连接 / 地址信息。与 init_method 互斥。
+
+**new_group**
+
+函数声明
+
+```py
+torch.distributed.new_group(ranks=None, 
+                            timeout=datetime.timedelta(0, 1800), 
+                            backend=None)
+```
+
+函数作用
+- `new_group()` 函数可用于使用所有进程的任意子集来创建新组。其返回一个分组句柄，可作为 collectives 相关函数的 group 参数 。collectives 是分布式函数，用于特定编程模式中的信息交换。
+
+参数详解
+- ranks：指定新分组内的成员的 ranks 列表list ，其中每个元素为 int 型
+- timeout：指定该分组进程组内的操作的超时时间
+  - 可选参数，datetime.timedelta 对象，默认为 30 分钟。该参数仅用于 Gloo 后端。
+- backend：指定要使用的通信后端
+  - 小写字符串，支持的通信后端有 gloo，nccl ，必须与 init_process_group() 中一致。
+
+其它函数
+- get_backend 获取进程组属性 
+- get_rank 获取分布式进程组组内的每个进程的唯一识别
+- get_world_size  获取进程组内的进程数
+- is_initialized 检查默认进程组是否被初始化
+- is_mpi_available 检查 MPI 后端是否可用
+- is_nccl_available 检查 NCCL 后端是否可用
+
+
+
+#### (1) TCP 初始化
+
+```py
+import torch.distributed as dist
+
+# Use address of one of the machines
+dist.init_process_group(backend, init_method='tcp://10.1.1.20:23456',
+                        rank=args.rank, world_size=4)
+```
+
+说明
+- 不同进程内，均使用主进程的 ip 地址和 port，确保每个进程能够通过一个 master 进行协作。该 ip 一般为主进程所在的主机的 ip，端口号应该未被其他应用占用。
+- 实际使用时，在每个进程内运行代码，并需要为每一个进程手动指定一个 rank，进程可以分布与相同或不同主机上。
+- 多个进程之间，同步进行。若其中一个出现问题，其他的也马上停止。
+
+使用
+
+```py
+# Node 1
+python mnsit.py --init-method tcp://192.168.54.179:22225 --rank 0 --world-size 2
+# Node 2
+python mnsit.py --init-method tcp://192.168.54.179:22225 --rank 1 --world-size 2
+```
+
 初始化示例
+- `tcp_init.py`
 
 ```py
 import torch.distributed as dist
@@ -1749,6 +1901,7 @@ net = torch.nn.parallel.DistributedDataParallel(net)
 ```
 
 执行方式
+- `init_method`
 
 ```sh
 # Node 1 : ip 192.168.1.201  port : 12345
@@ -1793,6 +1946,127 @@ mp_model = ToyMpModel(dev0, dev1)
 ddp_mp_model = DDP(mp_model)
 # ......
 ```
+
+#### (2) 共享文件初始化
+
+共享的文件对于组内所有进程可见
+
+设置方式如下：
+
+```py
+import torch.distributed as dist
+
+# rank should always be specified
+dist.init_process_group(backend, init_method='file:///mnt/nfs/sharedfile',
+                        world_size=4, rank=args.rank)
+```
+
+说明
+- `file://`前缀表示文件系统各式初始化。
+- `/mnt/nfs/sharedfile` 表示共享文件，各个进程在共享文件系统中通过该文件进行同步或异步。
+
+因此，所有进程必须对该文件具有读写权限。
+- 每一个进程将会打开这个文件，写入自己的信息，并等待直到其他所有进程完成该操作
+- 在此之后，所有的请求信息将会被所有的进程可访问，为了避免 race conditions，文件系统必须支持通过 fcntl 锁定（大多数的 local 系统和 NFS 均支持该特性）。
+
+说明：
+- 若指定为同一文件，则每次训练开始之前，该文件必须手动删除，但是文件所在路径必须存在！
+
+与 tcp 初始化方式一样，也需要为每一个进程手动指定 rank。
+
+使用
+
+```py
+# 主机 01 上：
+python mnsit.py --init-method file://PathToShareFile/MultiNode --rank 0 --world-size 2
+# 主机 02 上：
+python mnsit.py --init-method file://PathToShareFile/MultiNode --rank 1 --world-size 2
+```
+
+相比于 TCP 方式, 麻烦一点的是运行完一次必须更换共享的文件名，或者删除之前的共享文件，不然第二次运行会报错。
+
+#### (3) Env 初始化(默认)
+
+默认情况下都是环境变量来进行分布式通信，指定 `init_method="env://"`。
+
+通过在所有机器上设置如下四个环境变量，所有进程将会适当的连接到 master，获取其他进程的信息，并最终与它们握手(信号)。
+- `MASTER_PORT`: 必须指定，表示 rank0上机器的一个空闲端口（必须设置）
+- `MASTER_ADDR`: 必须指定，除了 rank0 主机，表示主进程 rank0 机器的地址（必须设置）
+- `WORLD_SIZE`: 可选，总进程数，可以这里指定，在 init 函数中也可以指定
+- `RANK`: 可选，当前进程的 rank，也可以在 init 函数中指定
+
+配合 torch.distribution.launch 使用。
+
+实例
+
+```sh
+# Node 1: (IP: 192.168.1.1, and has a free port: 1234)
+python -m torch.distributed.launch --nproc_per_node=NUM_GPUS_YOU_HAVE
+           --nnodes=2 --node_rank=0 --master_addr="192.168.1.1"
+           --master_port=1234 YOUR_TRAINING_SCRIPT.py (--arg1 --arg2 --arg3
+           and all other arguments of your training script)
+# Node 2
+python -m torch.distributed.launch --nproc_per_node=NUM_GPUS_YOU_HAVE
+           --nnodes=2 --node_rank=1 --master_addr="192.168.1.1"
+           --master_port=1234 YOUR_TRAINING_SCRIPT.py (--arg1 --arg2 --arg3
+           and all other arguments of your training script)
+```
+
+代码 `env_init.py`
+
+```py
+import torch.distributed as dist
+import torch.utils.data.distributed
+
+# ......
+import argparse
+parser = argparse.ArgumentParser()
+# 注意这个参数，必须要以这种形式指定，即使代码中不使用。因为 launch 工具默认传递该参数
+parser.add_argument("--local_rank", type=int)
+args = parser.parse_args()
+
+# ......
+dist.init_process_group(backend='nccl', init_method='env://')
+
+# ......
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=download, transform=transform)
+train_sampler = torch.utils.data.distributed.DistributedSampler(trainset)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, sampler=train_sampler)
+
+# ......
+# 根据 local_rank，配置当前进程使用的 GPU
+net = Net()
+device = torch.device('cuda', args.local_rank)
+net = net.to(device)
+net = torch.nn.parallel.DistributedDataParallel(net, device_ids=[args.local_rank], output_device=args.local_rank)
+```
+
+执行方式
+
+```py
+# 节点0
+python -m torch.distributed.launch --nproc_per_node=2 --nnodes=3 --node_rank=0 --master_addr="192.168.1.201" --master_port=23456 env_init.py
+# 节点1
+python -m torch.distributed.launch --nproc_per_node=2 --nnodes=3 --node_rank=1 --master_addr="192.168.1.201" --master_port=23456 env_init.py
+# 节点2
+python -m torch.distributed.launch --nproc_per_node=2 --nnodes=3 --node_rank=2 --master_addr="192.168.1.201" --master_port=23456 env_init.py
+```
+
+说明
+- Env 方式中，`init_process_group` 无需指定任何参数
+- 必须在 `rank==0` 的进程内保存参数。
+
+该方式使用 `torch.distributed.launch` 在每台主机上创建**多进程**，其中:
+- `nproc_per_node` 参数指定为当前主机创建的进程数。一般设定为当前主机的 GPU 数量
+- `nnodes` 参数指定当前 job 包含多少个节点
+- `node_rank` 指定当前节点的优先级
+- `master_addr` 和 `master_port` 分别指定 master 节点的 ip:port
+- 若没有为每个进程合理分配 GPU，则默认使用当前主机上所有的 GPU。即使一台主机上有多个进程，也会共用 GPU。
+- 使用 `torch.distributed.launch` 工具时，为当前主机创建 `nproc_per_node` 个进程，每个进程独立执行训练脚本。同时，它还会为每个进程分配一个 `local_rank` 参数，表示当前进程在当前主机上的编号。
+  - 例如：r`ank=2`, `local_rank=0` 表示第 3 个节点上的第 1 个进程。
+- 需要合理利用 `local_rank` 参数，来合理分配本地的 GPU 资源
+- 每条命令表示一个进程。若已开启的进程未达到 `word_size` 数量，则所有进程会一直等待
+
 
 详见: [Pytorch 分布式训练](https://zhuanlan.zhihu.com/p/76638962)
 
