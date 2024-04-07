@@ -139,6 +139,10 @@ Ring AllReduce：
 
 假设每个worker的数据是一个长度为`S`的向量，那么Ring AllReduce里每个worker发送的数据量是`O(S)`，和worker的数量N无关。避免了**主从架构**中master需要处理`O(S*N)`数据量而成为网络瓶颈的问题。
 
+`Ring All-reduce`
+- Pytorch 实现: `DistributedDataParallel`
+- `Ring All-reduce`=`reduce-scatter`+`all-gather`
+
 ### 并行技术
 
 并行技术：
@@ -172,6 +176,11 @@ Ring AllReduce：
   - 朴素流水线并行（Naive Pipeline Parallelism）是将一组模型层分布在多个 GPU 上，并简单地将数据从 GPU 移动到 GPU，就好像它是一个大型复合 GPU 一样。
   - 流水线并行 (PP) 与上述朴素流水线并行几乎相同，但它解决了 GPU 闲置问题，方法是将传入的 batch 为 micro-batches 并人工创建流水线，从而允许不同的 GPU 同时参与计算过程。
   - 流水并行是将一个大型计算任务拆分成多个小的**子任务**，并将子任务在多个处理单元上同时执行。不同于数据并行和模型并行，流水并行不是将数据或模型分割成多个部分并在处理单元间并行处理，而是将一系列计算步骤分解成多个流水阶段，并在多个处理单元上同时执行，以减少总体计算时间。
+
+通俗理解
+- `Data Parallelism`：模型1台设备装得下，所以同模型用多份数据分开训练
+- `Pipeline Parallelism`：模型装不下，模型1层或多层1台设备装得下，所以同模型按层拆开训练
+- `Tensor Parallelism`：模型1层都装不下，所以层内拆开训练
 
 ### 数据并行
 
@@ -257,343 +266,6 @@ DataParallel的优缺点如下：
 
 - 多维混合并行指将数据并行、模型并行和流水线并行结合起来进行分布式训练。
 - 超大规模模型的预训练和全参数微调时，都需要用到多维混合并行。
-
-
-## 分布式训练库
-
-### 常见框架
-
-常见的分布式训练框架：
-- 第一类：深度学习框架**自带**分布式训练功能。如：TensorFlow、PyTorch、MindSpore、Oneflow、PaddlePaddle等。
-- 第二类：基于现有的深度学习框架（如：PyTorch、Flax）进行**扩展和优化**，从而进行分布式训练。
-  - 如：`Megatron-LM`（张量并行）、`DeepSpeed`（Zero-DP）、`Colossal-AI`（高维模型并行，如2D、2.5D、3D）、`Alpa`（自动并行）等
-
-### LLM 复现选择
-
-如何选择分布式训练框架？ [参考](https://mp.weixin.qq.com/s/7wtwsNhf27YzALnSFXTmkA)
-- 训练**成本**：不同训练工具，训练同样大模型，成本不一样。对于大模型，训练一次动辄上百万/千万美元的费用。合适的成本始终是正确的选择。
-- 训练**类型**：是否支持数据并行、张量并行、流水线并行、多维混合并行、自动并行等
-- **效率**：将普通模型训练代码变为分布式训练所需编写代码的行数，希望越少越好。
-- **灵活性**：选择的框架是否可以跨不同平台使用？
-
-目前训练超大规模语言模型主要有两条技术路线：
-- TPU + XLA + TensorFlow/JAX ：由Google主导，由于TPU和自家云平台GCP深度绑定
-- GPU + PyTorch + Megatron-LM + DeepSpeed ：由 NVIDIA、Meta、MicroSoft 大厂加持，社区氛围活跃，也更受到大家欢迎。
-
-### DeepSpeed -- 微软
-
-DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
-- 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
-
-详见站内专题: [DeepSpeed](deepspeed)
-
-
-【2023-8-28】[LLaMA Efficient Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning/blob/main/README_zh.md)
-
-| 方法 | 全参数训练 | 部分参数训练 | LoRA | QLoRA | 
-| --- | --- |  --- | --- | --- | 
-| 预训练 | ✅ |  ✅ | ✅ | ✅ | 
-| 指令监督微调 | ✅ | ✅ | ✅ | ✅  |
-| 奖励模型训练 | | | ✅ | ✅ |
-| PPO 训练 | | | ✅ | ✅ | 
-| DPO 训练 | ✅ | | ✅ | ✅ |
-
-
-### trl
-
-
-【2024-3-13】[TRL - Transformer Reinforcement Learning](https://huggingface.co/docs/trl/index)
-
-huggingface 推出的全栈库，包含一整套工具，用于使用强化学习 (Reinforcement Learning) 训练 transformer 语言模型。
-- 从**监督调优** (Supervised Fine-tuning step, SFT)，到训练**奖励模型** (Reward Modeling)，再到**近端策略优化** (Proximal Policy Optimization)，全面覆盖
-- ![](https://huggingface.co/datasets/trl-internal-testing/example-images/resolve/main/images/TRL-readme.png)
-- [TRL](https://github.com/huggingface/trl) 库已经与 🤗 transformers 集成，直接使用！
-- 👉 文档[地址](https://hf.co/docs/trl/)
-- ![](https://picx.zhimg.com/70/v2-1c818186d30b9afff9af2341b1eddc6f_1440w.avis?source=172ae18b&biz_tag=Post)
-
-API 文档里功能:
-- Model Class: 公开模型各自用途
-- SFTTrainer: SFTTrainer 实现模型监督调优
-- RewardTrainer: RewardTrainer 训练奖励模型
-- PPOTrainer: PPO 算法对经过监督调优的模型再调优
-- Best-of-N Samppling: 将“拔萃法”作为从模型的预测中采样的替代方法
-- DPOTrainer: 用 DPOTrainer 完成直接偏好优化
-
-文档中给出了几个例子:
-- Sentiment Tuning: 调优模型以生成更积极的电影内容
-- Training with PEFT: 执行由 PEFT 适配器优化内存效率的 RLHF 训练
-- Detoxifying LLMs: 通过 RLHF 为模型解毒，使其更符合人类的价值观
-- StackLlama: 在 Stack exchange 数据集上实现端到端 RLHF 训练一个 Llama 模型
-- Multi-Adapter Training: 使用单一模型和多适配器实现优化内存效率的端到端训练
-
-
-#### Trl 实践
-
-【2023-6-30】[使用TRL强化学习PPO控制文本的生成](https://zhuanlan.zhihu.com/p/616788557)
-
-步骤
-1. 初始化 GPT2 对话模型, 即LLM模型。Huggface中的这个中文对话模型 
-  - [gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese)
-2. 初始化一个情感分类模型即RM模型。这里笔者使用的是Huggface中的这个情感分类模型
-  - 样本情感极性越正向，模型输出的得分越大。
-  - [c2-roberta-base-finetuned-dianping-chinese](https://huggingface.co/liam168/c2-roberta-base-finetuned-dianping-chinese)
-3. 通过PPO强化学习算法，利用情感分类模型评估对话模型的输出，对GPT2对话模型进行优化，让GPT2对话模型的输出的结果在情感分类模型中得到高分。同时不破坏GPT2对话模型输出通顺对话的能力。
-
-强行学习训练
-1. 输入样本给GPT2, 拿到对话语言模型 GPT2的输出。
-2. 将对话语言模型GPT2的输出 输入到 情感分类模型 拿到 情感分类模型的输出，作为reward。
-3. 将对话语言模型GPT2 输入，输出， 以及 情感分类模型的 reward 一并输入给PPO优化器，让PPO优化器去优化对话语言模型GPT2。
-
-```py
-import torch
-from transformers import AutoTokenizer
-from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead, create_reference_model
-from trl.core import respond_to_batch
-import random
-import torch.nn.functional as F
-
-# get models
-gen_model = AutoModelForCausalLMWithValueHead.from_pretrained('dialoggpt/')
-model_ref = create_reference_model(gen_model)
-tokenizerOne = AutoTokenizer.from_pretrained('dialoggpt/',padding_side='left')
-tokenizerOne.eos_token_id = tokenizerOne.sep_token_id
-# 初始化一个情感分类模型，输入文本，判断文本的情感极性
-from transformers import AutoModelForSequenceClassification , AutoTokenizer, pipeline
-
-ts_texts = ["我喜欢下雨。", "我讨厌他."]
-cls_model = AutoModelForSequenceClassification.from_pretrained("./chineseSentiment/", num_labels=2)
-tokenizerTwo = AutoTokenizer.from_pretrained("./chineseSentiment/")
-
-classifier = pipeline('sentiment-analysis', model=cls_model, tokenizer=tokenizerTwo)
-classifier(ts_texts)
-
-# 数据预处理
-from torch.utils.data import Dataset
-import torch.nn.utils.rnn as rnn_utils
-import json
-
-data = []
-with open("./train.txt", "r", encoding="utf-8") as f:
-    for i in f.readlines():
-        line = json.loads(i)
-        data.append(line)
-
-
-def preprocess_conversation(data):
-    sep_id = tokenizerOne.sep_token_id
-    cls_id = tokenizerOne.cls_token_id
-    dialogue_list = []
-    for conver in data:
-        input_ids = [cls_id]
-        start = conver["conversation"][0]
-        # print(start["utterance"])
-        input_ids += tokenizerOne.encode(start["utterance"], add_special_tokens=False)
-        input_ids.append(sep_id)
-        dialogue_list.append(input_ids)
-    return dialogue_list
-
-# 数据处理
-dialogue_list = preprocess_conversation(data)
-
-class MyDataset(Dataset):
-    def __init__(self, data):
-        self.data = data
-
-    def __getitem__(self, index):
-        x = self.data[index]
-        return torch.tensor(x)
-
-    def __len__(self):
-        return len(self.data)
-    
-mydataset = MyDataset(dialogue_list)
-
-def collate_fn(batch):
-    padded_batch = rnn_utils.pad_sequence(batch, batch_first=True, padding_value=tokenizerOne.sep_token_id)
-    return padded_batch
-
-# 定义PPO优化器: 学习率，强化学习steps，batch_size等参数，学习率不宜调大，容易把LLM语言模型调坏。
-config = PPOConfig(
-    model_name="gpt2-positive",
-    learning_rate=1.41e-5,
-    steps = 2000,
-    batch_size = 16
-)
-
-ppo_trainer = PPOTrainer(config, gen_model, model_ref, tokenizerOne, dataset=mydataset, data_collator=collate_fn)
-
-rewards_list = []
-for epoch, batch in enumerate(ppo_trainer.dataloader):
-    #### Get response from gpt2
-    query_tensors = []
-    response_tensors = []
-    query_tensors = [torch.tensor(t).long() for t in batch]
-    for query in batch:
-        input_ids = query.unsqueeze(0)
-        response = []
-        for _ in range(30):
-            outputs = ppo_trainer.model(input_ids=input_ids)
-            logits = outputs[0]
-            next_token_logits = logits[0, -1, :]
-            next_token_logits[ppo_trainer.tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
-            next_token = torch.multinomial(F.softmax(next_token_logits, dim=-1), num_samples=1)
-            if next_token == ppo_trainer.tokenizer.sep_token_id:  #
-                break
-            input_ids = torch.cat((input_ids, next_token.unsqueeze(0)), dim=1)
-            response.append(next_token.item())
-        response_tensors.append(torch.Tensor(response).long())
-    responseSet = ["".join(ppo_trainer.tokenizer.convert_ids_to_tokens([i.item() for i in r])) for r in response_tensors]
-    print(responseSet)
-
-    #### Get reward from sentiment model
-    pipe_outputs = classifier(responseSet)
-    rewards = [torch.tensor(output["score"]) for output in pipe_outputs]
-
-    #### Run PPO step
-    stats = ppo_trainer.step(query_tensors, response_tensors, rewards)
-    print("epoch{}, reword is {}".format(epoch, sum(rewards)))
-    rewards_list.append(sum(rewards))
-```
-
-### Firefly
-
-
-[Firefly](https://github.com/yangjianxin1/Firefly) 是开源的大模型**一站式训练框架**
-- 支持对各种大模型进行**预训练**、**指令微调**、`DPO`，支持全量参数、LoRA、QLoRA等训练方式。
-- 支持包括但不限于Gemma、Qwen1.5、MiniCPM、Mixtral-8x7B、Mistral、Llama等绝大多数主流的大模型。
-
-【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
-
-用Firefly项目对Qwen1.5-7B进行训练的实验。我们对训练数据进行精细化筛选，然后在单张V100上进行SFT和DPO。经过两阶段的训练，我们的模型在Open LLM Leaderboard上的表现显著优于官方的Qwen1.5-7B-Chat、Gemma-7B-it、Vicuna-13B等模型。比Qwen1.5-7B-Chat高7.12分，比Gemma-7B-it高8.8分。
-
-
-### TorchTune
-
-【2024-3-23】[PyTorch官方发布LLM微调工具TorchTune](https://zhuanlan.zhihu.com/p/688671130?utm_psn=1755039674018496512)
-
-PyTorch官方最近发布了支持LLM微调的工具：`TorchTune`。
-- TorchTune 是一个原生的 PyTorch 库，用于轻松编写、微调和实验大型语言模型（LLMs）
-
-功能：
-- 原生 PyTorch 实现的流行大型语言模型
-- 支持多种格式的checkpoints，包括 Hugging Face 格式的checkpoints
-- 针对流行微调技术的训练策略，带有参考基准和全面的校验检查
-- 与 HuggingFace 数据集集成用于训练，以及与 EleutherAI 的评估工具 Eval Harness 集成用于评估
-- 支持使用 PyTorch 分布式中的 FSDP 进行分布式训练
-- YAML 配置文件，便于轻松配置训练运行
-- [即将推出] 支持来自 TorchAO 的低精度数据类型和量化技术
-- [即将推出] 与各种推理引擎的互操作性
-
-TorchTune已经支持了**Llama2 7B模型**的微调：
--   单卡微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py)
--   分布式微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py)
--   单卡LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
--   分布式LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py)
--   QLoRA：[https://github.com/pytorch/torc](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
-
-torchtune 必须通过克隆仓库并按照以下方式安装来构建：
-
-```py
-git clone https://github.com/pytorch/torchtune.git
-cd torchtune
-pip install -e .
-```
-
-
-### 总结
-
-Megatron-DeepSpeed 实施 3D 并行以可以让大型模型以非常有效的方式进行训练。
-- DataParallel (`DP`) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
-- TensorParallel (`TP`) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量的每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
-- PipelineParallel (`PP`) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
-- 零冗余优化器 (`ZeRO`) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
-
-训练超大规模语言模型主要有两条技术路线：
-- TPU + XLA + TensorFlow/JAX
-- GPU + PyTorch + Megatron-LM + DeepSpeed
-- 前者由Google主导，由于TPU和自家云平台GCP深度绑定，对于非Googler来说， 只可远观而不可把玩
-- 后者背后则有NVIDIA、Meta、MS大厂加持，社区氛围活跃，也更受到群众欢迎。
-
-Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大模型。
-- [大模型的训练工具（1）---Deepspeed](https://zhuanlan.zhihu.com/p/609865550)
-- `DP`+`PP`: DeepSpeed 将 DP 与 PP 结合起来
-  - ![](https://pic1.zhimg.com/80/v2-127d807df8f6efc7b1f8cb6d5ff38620_1440w.webp)
-- `DP`+`PP`+`TP`: 为了获得更高效的训练，PP 与 TP 和 DP 相结合，称为 3D 并行性
-  - ![](https://pic1.zhimg.com/80/v2-7951815d9ab95beedf1d238bc58e73f0_1440w.webp)
-- ZeRO DP+PP+TP: DeepSpeed 的主要功能之一是 ZeRO，它是 DP 的超级可扩展扩展。
-- 【2023-3-16】[大型语言模型(LLM)训练指南](https://zhuanlan.zhihu.com/p/611325149)
-
-增加的功能主要有：
-- 3个维度并行化实现万亿参数模型训练
-- ZeRO-Offload 使 GPU 单卡能够训练 10 倍大的模型
-- 通过 DeepSpeed Sparse Attention 用6倍速度执行10倍长的序列
-- 1 比特 Adam 减少 5 倍通信量
-
-3D 并行：扩展至万亿参数模型
-
-3D 并行同时解决了训练万亿参数模型的两个基本挑战：显存效率和计算效率。因此，DeepSpeed 可以扩展至在显存中放下最巨大的模型，而不会牺牲速度。
-- 显存效率：集群上所能训练的LLM的参数量。
-- 计算效率：单纯计算占系统的开销的比例。
-
-（1）**数据并行**是分布式训练普遍使用的技术。
-
-在该技术中，每批输入的训练数据都在数据并行的 worker 之间平分。反向传播后需要通信并规约梯度，以保证优化器在各个 worker 上进行相同的更新。数据并行性具有几个明显的优势，包括计算效率高和实现起来工作量小。但是，数据并行的 batch 大小随 worker 数量提高，而我们往往无法在不影响收敛性的情况下一直增加 batch 大小。
-- 显存效率：数据并行会在所有 worker 之间进行模型和优化器的复制，因此显存效率不高。DeepSpeed 开发了 ZeRO ，它是一系列用于提高数据并行的显存效率的优化器。 这项工作依赖于 ZeRO 的 1 阶段，该阶段在 worker 之间划分优化器状态量以减少冗余。
-- 计算效率：随着我们提高并行度，每个 worker 执行的计算量是恒定的。数据并行可以在小规模上实现近乎线性扩展。但是，在 worker 之间规约梯度的通信开销跟模型大小成正相关，所以当模型很大或通信带宽很低时，计算效率会受限。。梯度累积是一种用来均摊通信成本的一种常用策略。它会进一步增加batch大小，在本地使用 micro-batch 多次进行正向和反向传播积累梯度后，再进行梯度规约和优化器更新。
-
-（2）**模型并行**是包含范围很广的一类技术。
-
-它会在多个 worker 之间划分模型的各个层。就其本质而言，模型并行性的计算和通信因模型结构而异，因此在实现上有很大的工作量。DeepSpeed 借用了英伟达的 Megatron-LM 来为基于 Transformer 的语言模型提供大规模模型并行功能。模型并行会根据 worker 数量成比例地减少显存使用量，也是这三种并行度中显存效率最高的。但是其代价是计算效率最低。
-- 显存效率：模型并行会根据 worker 数量成比例地减少显存使用量。至关重要的是，这是减少单个网络层的激活显存的唯一方法。DeepSpeed 通过在模型并行 worker 之间划分激活显存来进一步提高显存效率。
-- 计算效率：由于每次前向和反向传播中都需要额外通信激活值，模型并行的计算效率很低。模型并行需要高通信带宽，并且不能很好地扩展到通信带宽受限的节点。此外，每个模型并行worker 都会减少每个通信阶段之间执行的计算量，从而影响计算效率。模型并行性通常与数据并行性结合使用，以在内存和计算效率之间进行权衡。
-
-（3）**流水线并行**训练引擎也被包含在了这次发布的DeepSpeed中
-
-流水线并行将模型的各层划分为可以并行处理的阶段。当一个阶段完成一个 micro-batch 的正向传递时，激活内存将被通信至流水线的下一个阶段。类似地，当下一阶段完成反向传播时，将通过管道反向通信梯度。必须同时计算多个 micro-batch 以确保流水线的各个阶段能并行计算。目前已经开发出了几种用于权衡内存和计算效率以及收敛行为的方法，例如 PipeDream。DeepSpeed 采用的方法是通过梯度累积来实现并行，并保持与传统数据并行和模型并行训练在相同的总 batch 大小下收敛情况相同。
-- 显存效率：流水线并行减少的显存与流水线的阶段数成正比，使模型的大小可以随 worker 的数量线性扩展。但是，流水线并行不会减少每一层的激活函数的显存占用量。此外，每个 worker 必须存储同时运行的各个 micro-batch 的激活值。这导致流水线第一阶段的激活内存与单个 mirco batch 的总激活内存大致相同。一个万亿参数模型将需要为一个 micro batch 提供大约 19 GB 的显存的激活内存，这几乎占到新推出的英伟达 A100 GPU 总显存的一半。
-- 计算效率：流水线并行具有最低的通信量，因为它的通信量只和在各阶段边界的各层的激活值大小成正比。但是，它不能无限扩展。像模型并行一样，增加流水线大小会减少每个流水线阶段的计算量，这会降低计算与通信的比率。如果要实现好的计算效率，流水线并行还要求其每个阶段的计算负载完美的均衡。
-
-
-### LLaMA-Factory
-
-LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推出，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
-- 支持LoRA和QLoRA微调策略，广泛集成了业界前沿的微调方法。
-- 特点: 支持多种LLM模型，提供了WebUI页面，使非开发人员也能微调。
-- 体验地址：[LLaMA-Board](https://modelscope.cn/studios/hiyouga/LLaMA-Board/summary)
-- 可视化界面 [LLaMA-Board](https://huggingface.co/spaces/hiyouga/LLaMA-Board)
-- github: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)，附各阶段训练数据集
-- ![](https://pic2.zhimg.com/80/v2-7b24a5941a9bf996cf35187ae351f6c1_1440w.webp)
-
-功能
-- 多种模型：LLaMA、Mistral、Mixtral-MoE、Qwen、Yi、Gemma、Baichuan、ChatGLM、Phi 等等。
-- 集成方法：（增量）预训练、指令监督微调、奖励模型训练、`PPO` 训练、`DPO` 训练和 `ORPO` 训练。
-- 多种精度：32 比特全参数微调、16 比特冻结微调、16 比特 LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8 的 2/4/8 比特 QLoRA 微调。
-- 先进算法：GaLore、DoRA、LongLoRA、LLaMA Pro、LoRA+、LoftQ 和 Agent 微调。
-- 实用技巧：FlashAttention-2、Unsloth、RoPE scaling、NEFTune 和 rsLoRA。
-- 实验监控：LlamaBoard、TensorBoard、Wandb、MLflow 等等。
-- 极速推理：基于 vLLM 的 OpenAI 风格 API、浏览器界面和命令行接口。
-
-详情参考
-- [使用LLaMA Factory对大型语言模型进行微调](https://zhuanlan.zhihu.com/p/684989699)
-- 作者北航博士[郑耀威](https://github.com/hiyouga)讲解 [全栈大模型微调框架LLaMA Factory：从预训练到RLHF的高效实现](https://www.bilibili.com/video/BV1Gt421L7dt)
-
-<iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-
-安装
-- [安装说明](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
-
-```sh
-# Clone the repository
-git clone https://github.com/hiyouga/LLaMA-Factory.git
-# Create a virtual environment
-conda create -n llama_factory python=3.10
-# Activate the virtual environment
-conda activate llama_factory
-# Install dependencies
-cd LLaMA-Factory
-pip install -r requirements.txt
-```
 
 
 ## 模型架构
@@ -2212,6 +1884,344 @@ Horovod 是 Uber开源的跨平台的分布式训练工具，名字来自于俄�
 - 实现简单，五分钟包教包会。
 
 Horovod环境准备以及示例代码，可参考[上一篇](https://zhuanlan.zhihu.com/p/351693076)
+
+## 分布式训练库
+
+### 常见框架
+
+常见的分布式训练框架：
+- 第一类：深度学习框架**自带**分布式训练功能。如：TensorFlow、PyTorch、MindSpore、Oneflow、PaddlePaddle等。
+- 第二类：基于现有的深度学习框架（如：PyTorch、Flax）进行**扩展和优化**，从而进行分布式训练。
+  - 如：`Megatron-LM`（张量并行）、`DeepSpeed`（Zero-DP）、`Colossal-AI`（高维模型并行，如2D、2.5D、3D）、`Alpa`（自动并行）等
+
+### LLM 复现选择
+
+如何选择分布式训练框架？ [参考](https://mp.weixin.qq.com/s/7wtwsNhf27YzALnSFXTmkA)
+- 训练**成本**：不同训练工具，训练同样大模型，成本不一样。对于大模型，训练一次动辄上百万/千万美元的费用。合适的成本始终是正确的选择。
+- 训练**类型**：是否支持数据并行、张量并行、流水线并行、多维混合并行、自动并行等
+- **效率**：将普通模型训练代码变为分布式训练所需编写代码的行数，希望越少越好。
+- **灵活性**：选择的框架是否可以跨不同平台使用？
+
+目前训练超大规模语言模型主要有两条技术路线：
+- TPU + XLA + TensorFlow/JAX ：由Google主导，由于TPU和自家云平台GCP深度绑定
+- GPU + PyTorch + Megatron-LM + DeepSpeed ：由 NVIDIA、Meta、MicroSoft 大厂加持，社区氛围活跃，也更受到大家欢迎。
+
+### DeepSpeed -- 微软
+
+DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
+- 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
+
+详见站内专题: [DeepSpeed](deepspeed)
+
+
+【2023-8-28】[LLaMA Efficient Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning/blob/main/README_zh.md)
+
+| 方法 | 全参数训练 | 部分参数训练 | LoRA | QLoRA | 
+| --- | --- |  --- | --- | --- | 
+| 预训练 | ✅ |  ✅ | ✅ | ✅ | 
+| 指令监督微调 | ✅ | ✅ | ✅ | ✅  |
+| 奖励模型训练 | | | ✅ | ✅ |
+| PPO 训练 | | | ✅ | ✅ | 
+| DPO 训练 | ✅ | | ✅ | ✅ |
+
+
+### trl
+
+
+【2024-3-13】[TRL - Transformer Reinforcement Learning](https://huggingface.co/docs/trl/index)
+
+huggingface 推出的全栈库，包含一整套工具，用于使用强化学习 (Reinforcement Learning) 训练 transformer 语言模型。
+- 从**监督调优** (Supervised Fine-tuning step, SFT)，到训练**奖励模型** (Reward Modeling)，再到**近端策略优化** (Proximal Policy Optimization)，全面覆盖
+- ![](https://huggingface.co/datasets/trl-internal-testing/example-images/resolve/main/images/TRL-readme.png)
+- [TRL](https://github.com/huggingface/trl) 库已经与 🤗 transformers 集成，直接使用！
+- 👉 文档[地址](https://hf.co/docs/trl/)
+- ![](https://picx.zhimg.com/70/v2-1c818186d30b9afff9af2341b1eddc6f_1440w.avis?source=172ae18b&biz_tag=Post)
+
+API 文档里功能:
+- Model Class: 公开模型各自用途
+- SFTTrainer: SFTTrainer 实现模型监督调优
+- RewardTrainer: RewardTrainer 训练奖励模型
+- PPOTrainer: PPO 算法对经过监督调优的模型再调优
+- Best-of-N Samppling: 将“拔萃法”作为从模型的预测中采样的替代方法
+- DPOTrainer: 用 DPOTrainer 完成直接偏好优化
+
+文档中给出了几个例子:
+- Sentiment Tuning: 调优模型以生成更积极的电影内容
+- Training with PEFT: 执行由 PEFT 适配器优化内存效率的 RLHF 训练
+- Detoxifying LLMs: 通过 RLHF 为模型解毒，使其更符合人类的价值观
+- StackLlama: 在 Stack exchange 数据集上实现端到端 RLHF 训练一个 Llama 模型
+- Multi-Adapter Training: 使用单一模型和多适配器实现优化内存效率的端到端训练
+
+
+#### Trl 实践
+
+【2023-6-30】[使用TRL强化学习PPO控制文本的生成](https://zhuanlan.zhihu.com/p/616788557)
+
+步骤
+1. 初始化 GPT2 对话模型, 即LLM模型。Huggface中的这个中文对话模型 
+  - [gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese)
+2. 初始化一个情感分类模型即RM模型。这里笔者使用的是Huggface中的这个情感分类模型
+  - 样本情感极性越正向，模型输出的得分越大。
+  - [c2-roberta-base-finetuned-dianping-chinese](https://huggingface.co/liam168/c2-roberta-base-finetuned-dianping-chinese)
+3. 通过PPO强化学习算法，利用情感分类模型评估对话模型的输出，对GPT2对话模型进行优化，让GPT2对话模型的输出的结果在情感分类模型中得到高分。同时不破坏GPT2对话模型输出通顺对话的能力。
+
+强行学习训练
+1. 输入样本给GPT2, 拿到对话语言模型 GPT2的输出。
+2. 将对话语言模型GPT2的输出 输入到 情感分类模型 拿到 情感分类模型的输出，作为reward。
+3. 将对话语言模型GPT2 输入，输出， 以及 情感分类模型的 reward 一并输入给PPO优化器，让PPO优化器去优化对话语言模型GPT2。
+
+```py
+import torch
+from transformers import AutoTokenizer
+from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead, create_reference_model
+from trl.core import respond_to_batch
+import random
+import torch.nn.functional as F
+
+# get models
+gen_model = AutoModelForCausalLMWithValueHead.from_pretrained('dialoggpt/')
+model_ref = create_reference_model(gen_model)
+tokenizerOne = AutoTokenizer.from_pretrained('dialoggpt/',padding_side='left')
+tokenizerOne.eos_token_id = tokenizerOne.sep_token_id
+# 初始化一个情感分类模型，输入文本，判断文本的情感极性
+from transformers import AutoModelForSequenceClassification , AutoTokenizer, pipeline
+
+ts_texts = ["我喜欢下雨。", "我讨厌他."]
+cls_model = AutoModelForSequenceClassification.from_pretrained("./chineseSentiment/", num_labels=2)
+tokenizerTwo = AutoTokenizer.from_pretrained("./chineseSentiment/")
+
+classifier = pipeline('sentiment-analysis', model=cls_model, tokenizer=tokenizerTwo)
+classifier(ts_texts)
+
+# 数据预处理
+from torch.utils.data import Dataset
+import torch.nn.utils.rnn as rnn_utils
+import json
+
+data = []
+with open("./train.txt", "r", encoding="utf-8") as f:
+    for i in f.readlines():
+        line = json.loads(i)
+        data.append(line)
+
+
+def preprocess_conversation(data):
+    sep_id = tokenizerOne.sep_token_id
+    cls_id = tokenizerOne.cls_token_id
+    dialogue_list = []
+    for conver in data:
+        input_ids = [cls_id]
+        start = conver["conversation"][0]
+        # print(start["utterance"])
+        input_ids += tokenizerOne.encode(start["utterance"], add_special_tokens=False)
+        input_ids.append(sep_id)
+        dialogue_list.append(input_ids)
+    return dialogue_list
+
+# 数据处理
+dialogue_list = preprocess_conversation(data)
+
+class MyDataset(Dataset):
+    def __init__(self, data):
+        self.data = data
+
+    def __getitem__(self, index):
+        x = self.data[index]
+        return torch.tensor(x)
+
+    def __len__(self):
+        return len(self.data)
+    
+mydataset = MyDataset(dialogue_list)
+
+def collate_fn(batch):
+    padded_batch = rnn_utils.pad_sequence(batch, batch_first=True, padding_value=tokenizerOne.sep_token_id)
+    return padded_batch
+
+# 定义PPO优化器: 学习率，强化学习steps，batch_size等参数，学习率不宜调大，容易把LLM语言模型调坏。
+config = PPOConfig(
+    model_name="gpt2-positive",
+    learning_rate=1.41e-5,
+    steps = 2000,
+    batch_size = 16
+)
+
+ppo_trainer = PPOTrainer(config, gen_model, model_ref, tokenizerOne, dataset=mydataset, data_collator=collate_fn)
+
+rewards_list = []
+for epoch, batch in enumerate(ppo_trainer.dataloader):
+    #### Get response from gpt2
+    query_tensors = []
+    response_tensors = []
+    query_tensors = [torch.tensor(t).long() for t in batch]
+    for query in batch:
+        input_ids = query.unsqueeze(0)
+        response = []
+        for _ in range(30):
+            outputs = ppo_trainer.model(input_ids=input_ids)
+            logits = outputs[0]
+            next_token_logits = logits[0, -1, :]
+            next_token_logits[ppo_trainer.tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
+            next_token = torch.multinomial(F.softmax(next_token_logits, dim=-1), num_samples=1)
+            if next_token == ppo_trainer.tokenizer.sep_token_id:  #
+                break
+            input_ids = torch.cat((input_ids, next_token.unsqueeze(0)), dim=1)
+            response.append(next_token.item())
+        response_tensors.append(torch.Tensor(response).long())
+    responseSet = ["".join(ppo_trainer.tokenizer.convert_ids_to_tokens([i.item() for i in r])) for r in response_tensors]
+    print(responseSet)
+
+    #### Get reward from sentiment model
+    pipe_outputs = classifier(responseSet)
+    rewards = [torch.tensor(output["score"]) for output in pipe_outputs]
+
+    #### Run PPO step
+    stats = ppo_trainer.step(query_tensors, response_tensors, rewards)
+    print("epoch{}, reword is {}".format(epoch, sum(rewards)))
+    rewards_list.append(sum(rewards))
+```
+
+### Firefly
+
+
+[Firefly](https://github.com/yangjianxin1/Firefly) 是开源的大模型**一站式训练框架**
+- 支持对各种大模型进行**预训练**、**指令微调**、`DPO`，支持全量参数、LoRA、QLoRA等训练方式。
+- 支持包括但不限于Gemma、Qwen1.5、MiniCPM、Mixtral-8x7B、Mistral、Llama等绝大多数主流的大模型。
+
+【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
+
+用Firefly项目对Qwen1.5-7B进行训练的实验。我们对训练数据进行精细化筛选，然后在单张V100上进行SFT和DPO。经过两阶段的训练，我们的模型在Open LLM Leaderboard上的表现显著优于官方的Qwen1.5-7B-Chat、Gemma-7B-it、Vicuna-13B等模型。比Qwen1.5-7B-Chat高7.12分，比Gemma-7B-it高8.8分。
+
+
+### TorchTune
+
+【2024-3-23】[PyTorch官方发布LLM微调工具TorchTune](https://zhuanlan.zhihu.com/p/688671130?utm_psn=1755039674018496512)
+
+PyTorch官方最近发布了支持LLM微调的工具：`TorchTune`。
+- TorchTune 是一个原生的 PyTorch 库，用于轻松编写、微调和实验大型语言模型（LLMs）
+
+功能：
+- 原生 PyTorch 实现的流行大型语言模型
+- 支持多种格式的checkpoints，包括 Hugging Face 格式的checkpoints
+- 针对流行微调技术的训练策略，带有参考基准和全面的校验检查
+- 与 HuggingFace 数据集集成用于训练，以及与 EleutherAI 的评估工具 Eval Harness 集成用于评估
+- 支持使用 PyTorch 分布式中的 FSDP 进行分布式训练
+- YAML 配置文件，便于轻松配置训练运行
+- [即将推出] 支持来自 TorchAO 的低精度数据类型和量化技术
+- [即将推出] 与各种推理引擎的互操作性
+
+TorchTune已经支持了**Llama2 7B模型**的微调：
+-   单卡微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py)
+-   分布式微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py)
+-   单卡LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
+-   分布式LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py)
+-   QLoRA：[https://github.com/pytorch/torc](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
+
+torchtune 必须通过克隆仓库并按照以下方式安装来构建：
+
+```py
+git clone https://github.com/pytorch/torchtune.git
+cd torchtune
+pip install -e .
+```
+
+
+### 总结
+
+Megatron-DeepSpeed 实施 3D 并行以可以让大型模型以非常有效的方式进行训练。
+- DataParallel (`DP`) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
+- TensorParallel (`TP`) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量的每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
+- PipelineParallel (`PP`) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
+- 零冗余优化器 (`ZeRO`) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
+
+训练超大规模语言模型主要有两条技术路线：
+- TPU + XLA + TensorFlow/JAX
+- GPU + PyTorch + Megatron-LM + DeepSpeed
+- 前者由Google主导，由于TPU和自家云平台GCP深度绑定，对于非Googler来说， 只可远观而不可把玩
+- 后者背后则有NVIDIA、Meta、MS大厂加持，社区氛围活跃，也更受到群众欢迎。
+
+Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大模型。
+- [大模型的训练工具（1）---Deepspeed](https://zhuanlan.zhihu.com/p/609865550)
+- `DP`+`PP`: DeepSpeed 将 DP 与 PP 结合起来
+  - ![](https://pic1.zhimg.com/80/v2-127d807df8f6efc7b1f8cb6d5ff38620_1440w.webp)
+- `DP`+`PP`+`TP`: 为了获得更高效的训练，PP 与 TP 和 DP 相结合，称为 3D 并行性
+  - ![](https://pic1.zhimg.com/80/v2-7951815d9ab95beedf1d238bc58e73f0_1440w.webp)
+- ZeRO DP+PP+TP: DeepSpeed 的主要功能之一是 ZeRO，它是 DP 的超级可扩展扩展。
+- 【2023-3-16】[大型语言模型(LLM)训练指南](https://zhuanlan.zhihu.com/p/611325149)
+
+增加的功能主要有：
+- 3个维度并行化实现万亿参数模型训练
+- ZeRO-Offload 使 GPU 单卡能够训练 10 倍大的模型
+- 通过 DeepSpeed Sparse Attention 用6倍速度执行10倍长的序列
+- 1 比特 Adam 减少 5 倍通信量
+
+3D 并行：扩展至万亿参数模型
+
+3D 并行同时解决了训练万亿参数模型的两个基本挑战：显存效率和计算效率。因此，DeepSpeed 可以扩展至在显存中放下最巨大的模型，而不会牺牲速度。
+- 显存效率：集群上所能训练的LLM的参数量。
+- 计算效率：单纯计算占系统的开销的比例。
+
+（1）**数据并行**是分布式训练普遍使用的技术。
+
+在该技术中，每批输入的训练数据都在数据并行的 worker 之间平分。反向传播后需要通信并规约梯度，以保证优化器在各个 worker 上进行相同的更新。数据并行性具有几个明显的优势，包括计算效率高和实现起来工作量小。但是，数据并行的 batch 大小随 worker 数量提高，而我们往往无法在不影响收敛性的情况下一直增加 batch 大小。
+- 显存效率：数据并行会在所有 worker 之间进行模型和优化器的复制，因此显存效率不高。DeepSpeed 开发了 ZeRO ，它是一系列用于提高数据并行的显存效率的优化器。 这项工作依赖于 ZeRO 的 1 阶段，该阶段在 worker 之间划分优化器状态量以减少冗余。
+- 计算效率：随着我们提高并行度，每个 worker 执行的计算量是恒定的。数据并行可以在小规模上实现近乎线性扩展。但是，在 worker 之间规约梯度的通信开销跟模型大小成正相关，所以当模型很大或通信带宽很低时，计算效率会受限。。梯度累积是一种用来均摊通信成本的一种常用策略。它会进一步增加batch大小，在本地使用 micro-batch 多次进行正向和反向传播积累梯度后，再进行梯度规约和优化器更新。
+
+（2）**模型并行**是包含范围很广的一类技术。
+
+它会在多个 worker 之间划分模型的各个层。就其本质而言，模型并行性的计算和通信因模型结构而异，因此在实现上有很大的工作量。DeepSpeed 借用了英伟达的 Megatron-LM 来为基于 Transformer 的语言模型提供大规模模型并行功能。模型并行会根据 worker 数量成比例地减少显存使用量，也是这三种并行度中显存效率最高的。但是其代价是计算效率最低。
+- 显存效率：模型并行会根据 worker 数量成比例地减少显存使用量。至关重要的是，这是减少单个网络层的激活显存的唯一方法。DeepSpeed 通过在模型并行 worker 之间划分激活显存来进一步提高显存效率。
+- 计算效率：由于每次前向和反向传播中都需要额外通信激活值，模型并行的计算效率很低。模型并行需要高通信带宽，并且不能很好地扩展到通信带宽受限的节点。此外，每个模型并行worker 都会减少每个通信阶段之间执行的计算量，从而影响计算效率。模型并行性通常与数据并行性结合使用，以在内存和计算效率之间进行权衡。
+
+（3）**流水线并行**训练引擎也被包含在了这次发布的DeepSpeed中
+
+流水线并行将模型的各层划分为可以并行处理的阶段。当一个阶段完成一个 micro-batch 的正向传递时，激活内存将被通信至流水线的下一个阶段。类似地，当下一阶段完成反向传播时，将通过管道反向通信梯度。必须同时计算多个 micro-batch 以确保流水线的各个阶段能并行计算。目前已经开发出了几种用于权衡内存和计算效率以及收敛行为的方法，例如 PipeDream。DeepSpeed 采用的方法是通过梯度累积来实现并行，并保持与传统数据并行和模型并行训练在相同的总 batch 大小下收敛情况相同。
+- 显存效率：流水线并行减少的显存与流水线的阶段数成正比，使模型的大小可以随 worker 的数量线性扩展。但是，流水线并行不会减少每一层的激活函数的显存占用量。此外，每个 worker 必须存储同时运行的各个 micro-batch 的激活值。这导致流水线第一阶段的激活内存与单个 mirco batch 的总激活内存大致相同。一个万亿参数模型将需要为一个 micro batch 提供大约 19 GB 的显存的激活内存，这几乎占到新推出的英伟达 A100 GPU 总显存的一半。
+- 计算效率：流水线并行具有最低的通信量，因为它的通信量只和在各阶段边界的各层的激活值大小成正比。但是，它不能无限扩展。像模型并行一样，增加流水线大小会减少每个流水线阶段的计算量，这会降低计算与通信的比率。如果要实现好的计算效率，流水线并行还要求其每个阶段的计算负载完美的均衡。
+
+
+### LLaMA-Factory
+
+LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推出，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
+- 支持LoRA和QLoRA微调策略，广泛集成了业界前沿的微调方法。
+- 特点: 支持多种LLM模型，提供了WebUI页面，使非开发人员也能微调。
+- 体验地址：[LLaMA-Board](https://modelscope.cn/studios/hiyouga/LLaMA-Board/summary)
+- 可视化界面 [LLaMA-Board](https://huggingface.co/spaces/hiyouga/LLaMA-Board)
+- github: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)，附各阶段训练数据集
+- ![](https://pic2.zhimg.com/80/v2-7b24a5941a9bf996cf35187ae351f6c1_1440w.webp)
+
+功能
+- 多种模型：LLaMA、Mistral、Mixtral-MoE、Qwen、Yi、Gemma、Baichuan、ChatGLM、Phi 等等。
+- 集成方法：（增量）预训练、指令监督微调、奖励模型训练、`PPO` 训练、`DPO` 训练和 `ORPO` 训练。
+- 多种精度：32 比特全参数微调、16 比特冻结微调、16 比特 LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8 的 2/4/8 比特 QLoRA 微调。
+- 先进算法：GaLore、DoRA、LongLoRA、LLaMA Pro、LoRA+、LoftQ 和 Agent 微调。
+- 实用技巧：FlashAttention-2、Unsloth、RoPE scaling、NEFTune 和 rsLoRA。
+- 实验监控：LlamaBoard、TensorBoard、Wandb、MLflow 等等。
+- 极速推理：基于 vLLM 的 OpenAI 风格 API、浏览器界面和命令行接口。
+
+详情参考
+- [使用LLaMA Factory对大型语言模型进行微调](https://zhuanlan.zhihu.com/p/684989699)
+- 作者北航博士[郑耀威](https://github.com/hiyouga)讲解 [全栈大模型微调框架LLaMA Factory：从预训练到RLHF的高效实现](https://www.bilibili.com/video/BV1Gt421L7dt)
+
+<iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+安装
+- [安装说明](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
+
+```sh
+# Clone the repository
+git clone https://github.com/hiyouga/LLaMA-Factory.git
+# Create a virtual environment
+conda create -n llama_factory python=3.10
+# Activate the virtual environment
+conda activate llama_factory
+# Install dependencies
+cd LLaMA-Factory
+pip install -r requirements.txt
+```
+
+
 
 # 推理加速
 
