@@ -1675,7 +1675,10 @@ DDP采用**多进程**控制多GPU，共同训练模型，一份代码会被pyto
 
 对比DP，不需要在进行模型本体的通信，因此可以加速训练。
 
-需要注意以下几点：
+torch.nn.DataParallel
+- DataParallel 全程维护一个 optimizer，对各 GPU 上梯度进行求和，而在主 GPU 进行参数更新，之后再将模型参数 broadcast 到其他 GPU
+
+注意：
 - 1、设置DistributedSampler来打乱数据，因为一个batch被分配到了好几个进程中，要确保不同的GPU拿到的不是同一份数据。
 - 2、要告诉每个进程自己的id，即使用哪一块GPU。
 - 3、如果需要做BatchNormalization，需要对数据进行同步（还待研究，挖坑）
@@ -1685,6 +1688,115 @@ DDP采用All-Reduce架构，单机多卡、多机多卡都能用。
 注意：DDP并不会自动shard数据
 1. 如果自己写数据流，得根据`torch.distributed.get_rank()`去shard数据，获取自己应用的一份
 2. 如果用 Dataset API，则需要在定义Dataloader的时候用 DistributedSampler 去shard
+
+#### torch.distributed 介绍
+
+torch.nn.DataParallel 支持数据并行，但不支持**多机**分布式训练，且底层实现相较于 distributed 的接口，有些许不足。
+
+Pytorch 通过 torch.distributed 包提供分布式支持，包括 GPU 和 CPU 的分布式训练支持。
+- Pytorch 分布式目前只支持 Linux。
+
+`torch.distributed` 优势：
+- 每个进程对应一个独立的训练过程，且只对梯度等少量数据进行信息交换。
+  - 迭代中，每个进程具有自己的 optimizer ，独立完成所有优化步骤，进程内与一般的训练无异。
+  - 各进程梯度计算完成之后，先将梯度进行汇总平均，再由 `rank=0` 的进程，将其 broadcast 到所有进程。最后，各进程用该梯度来更新参数。
+  - 各进程的模型参数始终保持一致: 各进程初始参数、更新参数都一致
+  - 相比 `DataParallel`, `torch.distributed` 传输的数据量更少，因此速度更快，效率更高
+- 每个进程包含独立的解释器和 GIL
+  - 每个进程拥有独立的解释器和 GIL，消除了单个 Python 进程中的多个执行线程，模型副本或 GPU 的额外解释器开销和 GIL-thrashing ，因此可以减少解释器和 GIL 使用冲突
+
+#### torch.distributed 概念
+
+【2024-4-7】[Pytorch 分布式训练](https://zhuanlan.zhihu.com/p/76638962)
+
+概念：
+- `group`：即**进程组**。默认只有一个组，一个 job 即为一个组，即一个 world。
+  - 当需要进行更加精细的通信时，通过 new_group 接口，使用 word 的子集，创建新组，用于集体通信等。
+- `world size` ：表示**全局进程个数**。
+- `rank`：表示**进程序号**，用于进程间通讯，表征进程优先级。`rank = 0` 主机为 **master 节点**。
+- `local_rank`：进程内，**GPU 编号**，非显式参数，由 `torch.distributed.launch` 内部指定。
+  - `rank = 3`，`local_rank = 0` 表示第 3 个进程内的第 1 块 GPU。
+
+Pytorch 分布式基本流程：
+- 使用 distributed 包任何函数前，用 `init_process_group` 初始化进程组，同时初始化 `distributed` 包。
+- 如进行小组内集体通信，用 `new_group` 创建子分组
+- 创建分布式并行模型 `DDP(model, device_ids=device_ids)`
+- 为数据集创建 Sampler
+- 使用启动工具 `torch.distributed.launch` 在每个主机上执行一次脚本，开始训练
+- 使用 `destory_process_group()` 销毁进程组
+
+初始化示例
+
+```py
+import torch.distributed as dist
+import torch.utils.data.distributed
+# ......
+parser = argparse.ArgumentParser(description='PyTorch distributed training on cifar-10')
+parser.add_argument('--rank', default=0, help='rank of current process')
+parser.add_argument('--word_size', default=2,help="word size")
+parser.add_argument('--init_method', default='tcp://127.0.0.1:23456', help="init-method")
+args = parser.parse_args()
+# ......
+dist.init_process_group(backend='nccl', init_method=args.init_method, rank=args.rank, world_size=args.word_size)
+# ......
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=download, transform=transform)
+train_sampler = torch.utils.data.distributed.DistributedSampler(trainset)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, sampler=train_sampler)
+# ......
+net = Net()
+net = net.cuda()
+net = torch.nn.parallel.DistributedDataParallel(net)
+```
+
+执行方式
+
+```sh
+# Node 1 : ip 192.168.1.201  port : 12345
+python tcp_init.py --init_method tcp://192.168.1.201:12345 --rank 0 --word_size 3
+# Node 2 : 
+python tcp_init.py --init_method tcp://192.168.1.201:12345 --rank 1 --word_size 3
+# Node 3 : 
+python tcp_init.py --init_method tcp://192.168.1.201:12345 --rank 2 --word_size 3
+```
+
+说明
+- TCP 方式中，`init_process_group` 中必须手动指定以下参数
+  - `rank` 为当前进程的进程号
+  - `word_size` 为当前 job 总进程数
+  - `init_method` 内指定 **tcp 模式**，且所有进程的 `ip:port` 必须一致，设定为主进程的 `ip:port`
+- 必须在 rank==0 的进程内保存参数。
+- 若程序内未根据 rank 设定当前进程使用的 GPUs，则默认使用**全部 GPU**，且以**数据并行**方式使用。
+- 每条命令表示一个进程。若已开启的进程未达到 word_size 的数量，则所有进程会一直等待
+- 每台主机上可以开启多个进程。但是，若未为每个进程分配合适的 GPU，则同机不同进程可能会共用 GPU，应该坚决避免这种情况。
+- 使用 gloo 后端进行 GPU 训练时，会报错。
+- 若每个进程负责多块 GPU，可以利用多 GPU 进行模型并行。
+
+```py
+class ToyMpModel(nn.Module):
+    def init(self, dev0, dev1):
+        super(ToyMpModel, self).init()
+        self.dev0 = dev0
+        self.dev1 = dev1
+        self.net1 = torch.nn.Linear(10, 10).to(dev0)
+        self.relu = torch.nn.ReLU()
+        self.net2 = torch.nn.Linear(10, 5).to(dev1)
+
+def forward(self, x):
+       x = x.to(self.dev0)
+       x = self.relu(self.net1(x))
+       x = x.to(self.dev1)
+       return self.net2(x)
+# ......
+dev0 = rank * 2
+dev1 = rank * 2 + 1
+mp_model = ToyMpModel(dev0, dev1)
+ddp_mp_model = DDP(mp_model)
+# ......
+```
+
+详见: [Pytorch 分布式训练](https://zhuanlan.zhihu.com/p/76638962)
+
+#### torch.distributed 使用
 
 使用方式(单机多卡环境)
 
@@ -1737,7 +1849,7 @@ DataLoader(dataset, batch_size=batch_size, sampler=sampler)
 
 完整代码如下：
 
-```python
+```py
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -1912,6 +2024,12 @@ Horovod 是 Uber开源的跨平台的分布式训练工具，名字来自于俄�
 - 实现简单，五分钟包教包会。
 
 Horovod环境准备以及示例代码，可参考[上一篇](https://zhuanlan.zhihu.com/p/351693076)
+
+Pytorch 1.x **多机多卡**计算模型没有采用主流的 Parameter Server 结构，而是直接用了Uber Horovod 的形式，即百度开源的 RingAllReduce 算法
+
+Uber 的 Horovod 采用 RingAllReduce 计算方案，特点：网络单次通信量不随着 worker(GPU) 的增加而增加，是一个恒定值。
+
+与 TreeAllReduce 不同，RingAllreduce 算法的每次通信成本是恒定的，与系统中 gpu 的数量无关，完全由系统中 gpu 之间最慢的连接决定。
 
 ## 分布式训练库
 
