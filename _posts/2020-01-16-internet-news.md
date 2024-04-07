@@ -46,17 +46,6 @@ permalink: /internet-news
 【2022-5-28】[视频地址](https://www.douyin.com/video/7101601833398979875)
 
 
-## 地理分布
-
-- 【2021-4-7】[头部互联网公司都爱在哪扎堆？](https://www.toutiao.com/i6947964542664114701/)，互联网公司高度集中在北上广深杭,[图](https://p3-tt.byteimg.com/origin/pgc-image/1eff0045eaa14927b6250be2b454c05d?from=pc)
-  - 北京傲视群雄，对龙头企业的吸引力更为突出：在TOP20的企业名单中，北京拥有美团点评、百度、京东、滴滴出行、字节跳动等总计12家企业，上海仅有拼多多和携程两家，上海的互联网空间从整体上看更为分散一些，但在漕河泾、张江等地，也有头部企业与初创型企业集合发展的趋势。
-  - “扎堆”的区域：北京高度集中在海淀的中关村、西二旗，以及朝阳的望京, 深圳南山科技园汇集了腾讯、百度、爱奇艺等一批知名互联网公司，阿里、腾讯、唯品会在广州的办公地均位于琶洲，杭州的互联网企业多集中在阿里总部所在的未来科技城。
-  - ![](https://p3-tt.byteimg.com/origin/pgc-image/1eff0045eaa14927b6250be2b454c05d)
-  - ![](https://p1-tt.byteimg.com/origin/pgc-image/aeab61a5f4e9489e838bf672d037d90b)
-  - ![](https://p1-tt.byteimg.com/origin/pgc-image/e81ead35a5e94cf297b0ed8994e66508)
-- 【2021-10-17】[杭州有哪些互联网公司](https://mp.weixin.qq.com/s/gvr-HFbHtIyoWJ_6dVqoog), 头条、阿里、京东、网易、华为、中移动、腾讯、51信用卡、蘑菇街、有赞、zoom分部、思科
-
-
 ## 用户需求
 
 【[APP报告](https://www.toutiao.com/w/i1703234361608203/)显示：不同年龄层次的男性，在做不同的事】
