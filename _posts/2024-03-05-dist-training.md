@@ -727,7 +727,11 @@ DDP (Distribution Data Parallel)
 对比
 - 层间并行: 流水线并行
 - 层内并行: 张量并行
-- ![](https://pic3.zhimg.com/80/v2-293a367d9c5378f01fa64ad009dd9eb2_1440w.webp)
+
+|概念|中文|图解|
+|---|---|---|
+|intra-layer and inter-layer|层间并行和层内并行|![](https://pic2.zhimg.com/80/v2-c24f5994e88c4361d578d5e0939be7b9_1440w.webp)|
+|orthogonal and complimentary|正交和互补|![](https://pic2.zhimg.com/80/v2-708c01105de92567824bd9d3456b9459_1440w.webp)|
 
 **模型并行**通常分为**张量并行**（纵向切分）以及**流水线并行**（横向切分）
 - ![](https://pic2.zhimg.com/v2-37b26149c568865d5112fadb9b1ec9ad_b.jpg)
