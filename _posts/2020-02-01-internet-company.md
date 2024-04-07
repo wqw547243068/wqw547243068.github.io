@@ -101,7 +101,21 @@ permalink: /internet_company
 - 2018: Uniswap
 
 
-## 移动互联网两超三强
+## 互联网格局
+
+### 地理分布
+
+- 【2021-4-7】[头部互联网公司都爱在哪扎堆？](https://www.toutiao.com/i6947964542664114701/)，互联网公司高度集中在北上广深杭,[图](https://p3-tt.byteimg.com/origin/pgc-image/1eff0045eaa14927b6250be2b454c05d?from=pc)
+  - 北京傲视群雄，对龙头企业的吸引力更为突出：在TOP20的企业名单中，北京拥有美团点评、百度、京东、滴滴出行、字节跳动等总计12家企业，上海仅有拼多多和携程两家，上海的互联网空间从整体上看更为分散一些，但在漕河泾、张江等地，也有头部企业与初创型企业集合发展的趋势。
+  - “扎堆”的区域：北京高度集中在海淀的中关村、西二旗，以及朝阳的望京, 深圳南山科技园汇集了腾讯、百度、爱奇艺等一批知名互联网公司，阿里、腾讯、唯品会在广州的办公地均位于琶洲，杭州的互联网企业多集中在阿里总部所在的未来科技城。
+  - ![](https://p3-tt.byteimg.com/origin/pgc-image/1eff0045eaa14927b6250be2b454c05d)
+  - ![](https://p1-tt.byteimg.com/origin/pgc-image/aeab61a5f4e9489e838bf672d037d90b)
+  - ![](https://p1-tt.byteimg.com/origin/pgc-image/e81ead35a5e94cf297b0ed8994e66508)
+- 【2021-10-17】[杭州有哪些互联网公司](https://mp.weixin.qq.com/s/gvr-HFbHtIyoWJ_6dVqoog), 头条、阿里、京东、网易、华为、中移动、腾讯、51信用卡、蘑菇街、有赞、zoom分部、思科
+- 【2024-4-7】[北京互联网公司都在哪儿](https://www.toutiao.com/w/1795557195323396)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/f72cb1507cc6427695464faba40c32d8~tplv-obj:1080:1407.image)
+
+### 移动互联网两超三强
 
 - 【2020-3-8】
 - 互联网公司的级别界定，其实并没有统一的标准，但我认为，它主要由 3 个因素组成：
@@ -140,7 +154,7 @@ permalink: /internet_company
 
 - [大家一直都在说“一二线互联网公司”这个概念，所以一二线互联网公司到底有哪些？是如何界定的呢？](https://www.zhihu.com/question/343210116/answer/1039918327)
 
-## 互联网大厂职级待遇对照
+### 大厂职级待遇对照
 
 【2021-11-20】[直接对标](https://duibiao.info/)，仿照国外的levels.fyi, 大厂各职级待遇查找,时薪，工作强度，面经等数据可视化
 - [互联网大厂各职级薪资对应关系图（2020年初）](https://zhuanlan.zhihu.com/p/110443296)
