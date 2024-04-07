@@ -588,7 +588,7 @@ os.environ.update(local_env)
 
 执行训练的代码，每台机器上要有完全一致的一份，且存储的路径都要一致（包括软件的安装路径等）
 
-## Megatron-LM -- NVIDIA
+## Megatron -- NVIDIA
 
 [Megatron](https://github.com/NVIDIA/Megatron-LM) is a large, powerful transformer developed by the Applied Deep Learning Research team at NVIDIA. This repository is for ongoing research on training large transformer language models at scale. We developed efficient, model-parallel (tensor, sequence, and pipeline), and multi-node pre-training of transformer based models such as GPT, BERT, and T5 using mixed precision.
 
@@ -596,7 +596,17 @@ os.environ.update(local_env)
 
 ### Megatron-LM 介绍
 
-Megatron 是超大规模Transformer模型的**分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
+【2020-3-13】Megatron 是超大规模Transformer模型的**分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
+- 论文: [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/pdf/1909.08053.pdf)
+- 中文解读: [Megatron论文和代码详细分析](https://zhuanlan.zhihu.com/p/366906920)
+  - intra-layer and inter-layer: 层间并行和层内并行
+  - orthogonal and complimentary 正交和互补
+  - scaling efficiency的计算公式 76%
+
+|概念|中文|图解|
+|---|---|---|
+|intra-layer and inter-layer|层间并行和层内并行|![](https://pic2.zhimg.com/80/v2-c24f5994e88c4361d578d5e0939be7b9_1440w.webp)|
+|orthogonal and complimentary|正交和互补|![](https://pic2.zhimg.com/80/v2-708c01105de92567824bd9d3456b9459_1440w.webp)|
 
 Megatron 核心能力:
 - 多种并行策略组合: Data Parallel、 Tensor Parallel、Pipeline Parallel、Sequence Parallel
