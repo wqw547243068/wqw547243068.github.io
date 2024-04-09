@@ -1132,8 +1132,8 @@ LLM应用于list-wise时出现的问题
 【2024-1-20】[谈谈AI落地容易的业务-搜广推](https://mp.weixin.qq.com/s/aqDS-nInC97uvLaK8J_DiA)
 - 推荐系统适用场景：**信息过载**时提供**信息匹配**价值
 - 推荐系统技术路线
-  - 早期搜索推荐采用**竞价排名**，早期的百度凤巢，然后产生了一系列问题，戴文渊利用**LR算法**改进了凤巢，后来和陈雨强又引入了**深度学习**，然后雨强又在今日头条担任过架构师。
-  - 另一个主线是以阿里妈妈为代表的**电商广告**，从盖坤2011年提出分片**线性模型MLR**开始，到后面通过类似于**Wide&Deep算法**，构建`GwEN`，再到后来针对用户兴趣建模提出`DIN`，以及将Attention和GRU引入用户兴趣构建的`DIEN`，但是用户兴趣序列长度有限制，又引入异步机制User Interest Center并构建`MIMN`算法对长期行为建模。再到后期提出Search Based Interest Model(`SIM`)，并针对用户不同的行为构建基于Session的分类的Deep Session Interset Network(`DSIN`)，在针对特征间的交互(Co Action)构建的`CAN`，当然还有召回中的利用树结构构建的TDM算法，和利用图结构的二项箔算法等。
+  - 早期搜索推荐采用**竞价排名**，早期的百度凤巢有一系列问题，`戴文渊`利用**LR算法**改进凤巢，和`陈雨强`又引入了**深度学习**， `陈雨强`又在今日头条担任过架构师。
+  - 另一个主线: 阿里妈妈为代表的**电商广告**，从`盖坤` 2011年提出分片**线性模型MLR**开始，到后面通过类似于**Wide&Deep算法**，构建`GwEN`，再到针对用户兴趣建模提出`DIN`，以及将Attention和GRU引入用户兴趣构建的`DIEN`，但是用户兴趣序列长度有限制，又引入异步机制User Interest Center并构建`MIMN`算法对长期行为建模。再到后期提出Search Based Interest Model(`SIM`)，并针对用户不同的行为构建基于Session的分类的Deep Session Interset Network(`DSIN`)，在针对特征间的交互(Co Action)构建的`CAN`，当然还有召回中的利用树结构构建的TDM算法，和利用图结构的二项箔算法等。
 - 推荐系统组件
   - **两阶段**模型：`召回`+`排序`
   - 工业级推荐系统用**四阶段**模型：`召回`，`粗排`，`精排`和`重排`。
@@ -1146,12 +1146,7 @@ LLM应用于list-wise时出现的问题
 
 详见站内[推荐系统专题](rp)
 
-【2023-5-20】[当推荐系统遇到大模型](https://mp.weixin.qq.com/s/YaFQoqAt12y93Nm3tX_j4A)
 
-ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几个方面：
-- **任务统一**：所有类型的推荐任务都可以表述成**文本**，实现了推荐任务大统一，使用统一语言模型进行各个场景和任务上的推荐，有效解决多任务、多场景问题。
-- **小样本**和**冷启动**问题：传统推荐系统中，小样本和冷启动是一个比较常见的问题，而大模型天然具备很强的**语义泛化能力**和**小样本学习**能力。
-- 基础的推荐能力验证：多篇文章已经验证了ChatGPT等模型在推荐系统中应用是可行的，即使不在下游任务finetune，也能取得不错的效果
 
 #### LLM + RS 应用综述
 
@@ -1176,6 +1171,41 @@ ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几�
   - 相比于判别型模型，生成型模型具有更好的自然语言生成能力。
   - 因此，不像大多数基于判别模型的方法**将LLMs学习到的表示与推荐领域对齐**，大多数基于生成模型的工作将**推荐任务**翻译为**自然语言任务**，然后应用像在上下文中学习，提示调优，和指导调优这样的技术，来适应LLMs直接生成推荐结果。
 - ![img](https://pic3.zhimg.com/80/v2-cf281f562afd8340e465360e4f8f2dc6_1440w.webp)
+
+【2023-5-20】[当推荐系统遇到大模型](https://mp.weixin.qq.com/s/YaFQoqAt12y93Nm3tX_j4A)
+
+ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几个方面：
+- **任务统一**：所有类型的推荐任务都可以表述成**文本**，实现了推荐任务大统一，使用统一语言模型进行各个场景和任务上的推荐，有效解决多任务、多场景问题。
+- **小样本**和**冷启动**问题：传统推荐系统中，小样本和冷启动是一个比较常见的问题，而大模型天然具备很强的**语义泛化能力**和**小样本学习**能力。
+- 基础的推荐能力验证：多篇文章已经验证了ChatGPT等模型在推荐系统中应用是可行的，即使不在下游任务finetune，也能取得不错的效果
+
+【2023-11-17】人民大学高瓴AI学院 徐君: [当大语言模型遇见推荐系统](https://zhuanlan.zhihu.com/p/667420567)
+- 【2023-8-24】论文: RecSys 2023 [Uncovering ChatGPT’s Capabilities in Recommender Systems](https://arxiv.org/pdf/2305.02182.pdf)
+- 代码 [LLM4RS](https://github.com/rainym00d/LLM4RS), 包含电影、书籍、音乐与新闻等domain上实践
+
+LLM 做推荐两个思路：
+- 将LLM当作backbone: 训练时的strategy，适应某个推荐任务。
+  - 早期的`BERT4Rec`，训练时让模型猜测，如果少了一个item，这个item应该是什么，由模型补上这个item。
+  - `UniSRec`，用 pre-train 和 fine-tune 流程。
+  - `P5`，用 pre-train和promting 流程。
+- 把LLM当作推荐系统的**补充**。
+  - 把LLM当作一个**embedding生成器**，生成更好的user、item以及context的表达，换句话说，LLM可以辅助理解用户。
+  - 用LLM生成一段文字描述来用户。然后把LLM带来的附加信息加入现有的推荐模型中去。
+
+要点
+1. Key Tasks：Top-K Ranking of Items
+  - 交互页面稳定时, 关键是选取Top-K的items，再排序
+  - 三种方式
+  - `Point-wise ranking`。假设有5个items，直接询问大模型对这5个item的打分。这种方式最大程度模拟了业界推荐模型的工作方式，因为在线侧每一个item都会询问一次大模型，所以是Point-wise的方式。
+  - `Pair-wise ranking`。每次选取两个items去问大模型，哪个才是更适合用户的结果，哪个才是用户更喜欢的item，大模型会告诉我们一个答案。这样的话，如果我们有n个item，那么我们最多问 n*(n-1)/2次，就能得到n个item的排序。
+  - `List-wise ranking`。这种方式是个挑战，直接询问大模型n个item的排序方式，相当于直接把大模型当成item排序结果的生成器。
+2. LLMs for Recommendation: Overall Evaluation Procedure
+  - Prompt的构建包括三部分。
+  - 第一部分是Task Description，指出是哪种推荐系统，比如电影推荐系统，相当于指定推荐的domain；
+  - 第二部分是Demonstration Examples，告诉模型想让它做出什么样的动作；
+  - 最后是New Input Query，想要问的问题。通过这个template，基于是否要in-context learning，就构造出了一个prompt。将这个prompt给到LLM，LLM就会按照它的生成方式，输出一段话，再从这段话中提取出答案。有时这个答案可能是不符合要求的，就需要一个exception处理流程。
+
+分别在电影、书籍、音乐与新闻等domain数据上面，验证了ChatGPT等大模型的表现，并给出了相关实验结论。
 
 #### 最新论文
 
