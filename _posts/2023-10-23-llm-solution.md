@@ -2096,38 +2096,37 @@ LISA是由UIUC联合LMFlow团队提出的另一种大模型微调方法。
 
 ### RAFT 
 
-【2024-3-15】UC Berkeley 
+【2024-3-15】UC Berkeley 提出新方法 `RAFT` = `RAG` + `FT`
 - [RAFT——针对特定领域的问答的微调和 RAG 方法](https://www.unite.ai/zh-CN/raft-a-fine-tuning-and-rag-approach-to-domain-specific-question-answering/)
-- [UC伯克利:提出索增强微调(RAFT)，只需少量微调，就能大幅提升模型领域QA能力](https://cloud.tencent.com/developer/article/2400661)
+- 介绍 [UC伯克利:提出索增强微调(RAFT)，只需少量微调，就能大幅提升模型领域QA能力](https://cloud.tencent.com/developer/article/2400661)
 - 论文: [RAFT: Adapting Language Model to Domain Specific RAG](https://arxiv.org/pdf/2403.10131.pdf)
 - 代码 [gorilla](https://github.com/ShishirPatil/gorilla)
 
-涉及到将LLMs适应特定领域时，有两个候选方案：
+将LLMs适应特定领域时两个候选方案：
 - 1、通过RAG利用上下文学习
 - 2、有监督的微调
 
-工具调用上超过GPT-4
-- [Gorilla: Large Language Model Connected with Massive APIs](https://gorilla.cs.berkeley.edu/)
-- 论文: [Gorilla: Large Language Model Connected with Massive APIs](https://arxiv.org/pdf/2305.15334.pdf)
-
-分析
-- RAG允许模型在回答问题时参考文档，但错过了从固定领域设置中学习和提前访问测试文档的机会。
+分析: 当前微调方法要么测试期间不利用文档，要么忽略训练期间检索中的不完美之处。
+- RAG允许模型回答问题时参考文档，但错过了从固定领域设置中学习和提前访问测试文档的机会。
 - 有监督微调允许从文档中学习更广泛的模式，更好地与终端任务和用户偏好对齐。
 
-然而，当前的微调方法要么在测试期间不利用文档，要么忽略了训练期间检索中的不完美之处。
-
 因此，RAFT 将微调与RAG结合起来。通过RAFT，在有监督的情况下，可以为微调收集最佳结果。
-- 同时具备 闭卷考试 + 开卷考试的能力
+- 同时具备 **闭卷考试** + **开卷考试**的能力
 - ![](https://www.unite.ai/wp-content/uploads/2024/03/RAFT.png)
 
 RAFT 与标准微调不同，训练数据包含**相关**和**不相关**文档问题，以及从相关文本得出的**思想链式**答案。
 - 该方法旨在提高模型不仅**回忆**信息的能力，而且还提高内容中推理和得出答案的能力。
 
+工具调用上超过GPT-4
+- [Gorilla: Large Language Model Connected with Massive APIs](https://gorilla.cs.berkeley.edu/)
+- 论文: [Gorilla: Large Language Model Connected with Massive APIs](https://arxiv.org/pdf/2305.15334.pdf)
+
 评测
 - RAFT 始终优于基线，例如使用和不使用 RAG 的特定领域微调，以及使用 RAG 的 GPT-3.5 等更大的模型。
-- HuggingFace 数据集上，RAFT 的准确率达到了 74%，比特定领域微调 (DSF) 显着提高了 31.41%，比带有 RAG 的 GPT-44.92 显着提高了 3.5%。同样，在 HotpotQA 数据集上，与 DSF 相比，RAFT 的准确率提高了 28.9%。
+- HuggingFace 数据集上，RAFT 的准确率达到了 **74%**，比特定领域微调 (DSF) 显着提高了 **31.41%**，比带有 RAG 的 GPT-4 4.92 显着提高了 3.5%。
+- HotpotQA 数据集上，与 DSF 相比，RAFT 的准确率提高了 **28.9%**。
 
-RAFT方法是一种适应LLMs的方法，用于从正面和负面文档集合中阅读解决方案。
+RAFT 是一种适应LLMs的方法，用于从正面和负面文档集合中阅读解决方案。
 
 这与标准的RAG设置形成对比，在标准的RAG设置中，模型是使用检索器输出进行训练的，包括记忆和阅读。
 
