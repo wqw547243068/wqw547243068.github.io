@@ -3809,6 +3809,27 @@ sed -i '/^package /,$!d' *.go
 sed -n '190,200p' tmp.txt
 ```
 
+
+【2024-4-10】生成连续数字、字符串
+
+```sh
+# -f 或 --format=FORMAT：使用printf风格的浮点格式（使用%g或者%f占位，可指定宽度），可自定义格式输出序列。例如：
+seq -f "ID-%05g" 3
+# ID-00001
+# ID-00002
+# ID-00003
+
+# -s 或 --separator=STRING：使用STRING分隔数字（默认值：\n）。例如：~$ 
+seq -s , 3
+# 1,2,3
+
+# -w 或 --equal-width：使用前导零填充以均衡宽度。例如：~$ 
+seq -w 8 10
+# 08
+# 09
+# 10
+```
+
 ## grep
 
 - 待补充
