@@ -2587,6 +2587,25 @@ typedef union epoll_data {
 - ![](https://raw.githubusercontent.com/woaielf/woaielf.github.io/master/_posts/Pic/1709/170920-2.png)
 - ![](https://raw.githubusercontent.com/woaielf/woaielf.github.io/master/_posts/Pic/1709/170920-3.png)
 
+
+## 总结
+
+
+### 经验
+
+Bash Shell，使用反斜线时，中途注释语句无效!
+- 【2024-4-11】 如下注释行无效
+
+```sh
+deepspeed --master_port 30001 ./llm/training/conversation_reward/main.py \
+   --max_seq_len 2048 \
+   --per_device_train_batch_size 1 \
+   #--per_device_train_batch_size 2 \
+   --per_device_eval_batch_size 2 \
+   --weight_decay 0.01
+```
+
+
 ## 常规语法
 
 查看 Shell 版本
