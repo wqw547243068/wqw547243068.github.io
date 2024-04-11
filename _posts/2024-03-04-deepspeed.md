@@ -172,6 +172,244 @@ DeepSpeed-Trianing 介绍
 DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
 - 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
 
+### DeepSpeed-Chat 介绍
+
+`DeepSpeed-Chat` 是微软发布的类ChatGPT模型训练工具。
+- 该工具基于微软的大模型训练工具DeepSpeed，使用可简单高效地训练ChatGPT。
+
+该工具特点：
+- 完整的训练类ChatGPT代码：包括 预训练模型下载、数据下载、InstructGPT训练过程和测试。
+- 多种规模的模型：模型参数从1.3B到66B，适合新手学习, 也可商用部署。
+- 高效训练：通过使用最新技术(ZeRO和LoRA等)改善训练过程。
+  - 例如，一个67亿（6.7B）参数的模型，使用**8块A00**只需要约**5个小时**完成训练。
+- 推理API：提供易于使用的推理API，方便对话式交互测试。
+
+视频讲解
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RR8E9jy1eWk?si=8s6TvmBTB1nYOKz2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### DeepSpeed-Chat 部署
+
+推荐设置：
+- Linux操作系统
+- GPU 24G以上显存
+- CUDA版本11.7
+
+```sh
+# conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+git clone https://github.com/microsoft/DeepSpeedExamples.git
+cd DeepSpeedExamples/applications/DeepSpeed-Chat/
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+### DeepSpeed-Chat 代码
+
+DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结构：
+- `train.py`  # 入口程序
+- **training**  # 训练脚本
+  - **step1_supervised_finetuning**   # 第1步训练
+    - evaluation_scripts      # 第1步训练后,评价
+    - **training_scripts**        # 模型训练脚本
+    - README.md               # 说明文档
+    - `main.py`                 # 主程序，训练过程的实现细节
+    - `prompt_eval.py`          # 评价主程序
+  - **step2_reward_model_finetuning** # 第二步训练
+    - 省略
+  - **step3_rlhf_finetuning**    # 第三步训练
+    - 省略
+  - **utils** 模型训练，评价的相关函数库
+- **inference** # 测试，评价代码
+
+模型训练调用过程（以1.3b模型为例）
+
+#### train.py
+
+入口程序： `train.py`
+
+主要参数
+- --`step` 1 2 3
+- --`deployment-type` single_gpu single_node multi_node 不同的type主要是参数的设置不同
+- --`actor-model`: "1.3b", "6.7b", "13b", "66b" 预训练模型，默认是1.3b的模型
+- --`reward-model`：使用的是 350m 的模型
+- 其他参数，可以去参考train.py中的说明
+
+#### 配置脚本
+
+配置脚本：
+- training/step1_supervised_finetuning/training_scripts/single_node/run_1.3b.sh
+- train.py 程序会调用 run_1.3b.sh 来执行模型训练
+- un_1.3b.sh 中可以设置参数，并调用对应的 main.py 来开始模型训练
+
+#### 训练程序
+
+训练程序：
+- training/step1_supervised_finetuning/main.py
+
+核心训练脚本，主要功能如下：
+- 数据，模型的下载
+- 模型的训练
+- 评价与测试用程序：prompt_eval.py
+- 用于测试训练后的模型，并提供了微调前后的对比。
+
+
+
+
+### Step1：监督微调
+
+
+使用指定数据微调预训练模型。
+
+启动训练：
+执行下面命令开启模型训练。 
+- 请先确保设置了 CUDA 并激活了 conda 运行环境
+
+```sh
+python3 train.py --step 1 --deployment-type single_gpu  #单GPU训练
+python3 train.py --step 1 --deployment-type single_node #多GPU训练
+python3 train.py --step 1 --deployment-type multi_node  #多Node训练
+```
+
+三种方式中
+- `single_gpu` 只适合训练小模型
+- 而 single_node 和 multi_node 适合训练较大模型。
+
+建议
+- 第一次运行时，用 `single_gpu`，这种模式输出的错误信息会更详细。
+- 如果遇到 GPU 内存不足的问题，尝试使用 `single_node` 和 `multi_node` 来训练。
+- 如果问题仍然存在，需要手动调整 `batch-size`。
+
+此步骤主要进行：
+- 模型下载：自动下载对应的模型
+  - 保存到 `~/.cache/huggingface/hub/models--facebook--opt-1.3b`
+- 数据下载
+  - `Dahoas/rm-static`    # 对话（prompt，response，chosen，rejected） 
+  - `Dahoas/full-hh-rlhf` # 对话（prompt，response，chosen，rejected）
+  - `Dahoas/synthetic-instruct-gptj-pairwise` # 对话（prompt，chosen，rejected）
+  - `yitingxie/rlhf-reward-datasets`  # 对话（prompt，chosen，rejected）
+  - `openai/webgpt_comparisons` # 带人工打分的数据，comparisons with human feedback，19,578 comparisons）
+  - `stanfordnlp/SHP`           # 18个领域的385k 人类标注数据
+- 模型训练：模型训练完成之后会被存储在 `output/actor-models/1.3b` 下面
+  -  `training.log` 文件来查看训练的进度。
+
+评价与测试：
+- 打开文件 `run_prompt.sh` 添加 baseline 模型，和 finetune 后的模型：
+
+```sh
+export CUDA_VISIBLE_DEVICES=0
+python prompt_eval.py \
+    --model_name_or_path_baseline facebook/opt-1.3b \
+    --model_name_or_path_finetune ../../output/actor-models/1.3b
+```
+
+评价程序会调用 `prompt_eval.py` 来分别输出 baseline 和 finetune 后模型的结果。
+
+执行此代码，先切换到 step1_supervised_finetuning 目录下。
+
+```sh
+cd training/step1_supervised_finetuning
+bash evaluation_scripts/run_prompt.sh
+```
+
+常见问题：
+1. 训练过程，无法找到GPU，或者GPU调用错误，可以尝试使用如下设置：
+  - `export CUDA_VISIBLE_DEVICES=0,1` # 2块GPU
+  - `export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7` # 8块GPU
+2. 训练过程，出现端口被占用的问题
+  - 设置 MASTER_ADDR 和 MASTER_PORT，尤其是多个node训练，要设置 MASTER_ADDR。
+  - `export MASTER_ADDR=127.0.0.1` # 多node时，需要设置为主node的IP或者机器名
+  - `export MASTER_PORT=29701`
+  - 以上设置，也可以在 `run1.3b.sh` 文件中进行设置，例如：
+    - `CUDA_VISIBLE_DEVICES=0,1 deepspeed --master_addr=127.0.0.1 --master_port=29701 main.py`
+3. 评价过程出现模型参数不匹配问题： 
+  - `model.decoder.embed_tokens.weight: found shape torch.Size([50272, 2048]) in the checkpoint and torch.Size([50265, 2048]) in the model ...`
+  - 原因: 模型被finetune后，Token对应的词典数量发生了变化，导致输入数据维度变化了（bug，输入端应尽量保持与预训练模型一致）。
+  - 打开文件 `prompt_eval.py`，增加新 config 读取脚本，并把来源模型从 baseline 模型中修改为finerune后的模型：
+  - `config = AutoConfig.from_pretrained(args.model_name_or_path_finetune)` # 新增
+  - `model_fintuned = get_model(config, args.model_name_or_path_finetune, tokenizer)`
+4. 评价过程，出现 RuntimeError: CUDA out of memory
+  - 当对大模型评价时，可能会碰到。比如在32G GPU上使用13b的模型。
+  - 建议尝试使用 chat.py 命令（需要移动到 DeepSpeed-Chat 目录下），执行方式如下：
+    - `python chat.py --path output/actor-models/1.3b`
+
+
+### Step2：Reward模型微调
+
+任务介绍： 
+- 第三步（Step3）中，强化学习阶段需要使用奖励模型。
+- 奖励模型会对模型生成的答案进行打分，Step3 的强化训练会根据这些分数对模型进行优化，从而使最终模型生成更高分的答案。
+- 奖励模型同样基于预训练模型进行训练，这里用 350M 的 opt 模型。
+
+启动训练：
+- 启动训练方法与前面类似：
+
+```sh
+python3 train.py --step 2 --deployment-type single_gpu  #单GPU训练
+python3 train.py --step 2 --deployment-type single_node #多GPU训练
+python3 train.py --step 2 --deployment-type multi_node  #多Node训练
+```
+
+训练数据：
+- 单GPU训练时只使用了 Dahoas/rm-static 数据
+- 多GPU训练使用了更多的数据：
+  - Dahoas/rm-static
+  - Dahoas/full-hh-rlhf
+  - Dahoas/synthetic-instruct-gptj-pairwise
+  - yitingxie/rlhf-reward-datasets
+  - openai/webgpt_comparisons
+  - stanfordnlp/SHP
+
+评价与测试：
+
+步骤：
+- 打开文件 run_eval.sh 设置 --model_name_or_path 参数。
+- 转移到目录 step2_reward_model_finetuning 下
+- 执行：bash evaluation_scripts/run_eval.sh
+
+
+常见错误：
+1. 与上面类似，出现GPU内存不足错误
+  - 调整batch-size或用更多GPU训练。
+  - 如：在 run_350m.sh 文件中添加参数 `--per_device_train_batch_size 8` 将默认batch size从16修改为8，如果问题依然存在，可以进一步调小。
+
+### Step3：RLHF训练
+
+任务介绍：
+
+RLHF 是基于人类反馈的强化学习的缩写。根据官方介绍，此步训练面临两个主要挑战：
+
+同时使用多个模型的内存消耗问题：此步训练不仅使用被训练的主模型，还使用奖励模型进行评分，因此会占用更多的 GPU 内存。
+如何有效地生成答案：在 RLHF 训练过程中，需要生成多个备选答案。由于模型一次推理只能生成一个答案，因此需要进行多次模型推理，这种操作会大幅度增加训练时间。
+在此实例中，通过将 DeepSpeed 训练和推理功能整合为一个统一的混合引擎（Hybrid Engine）来应对这些挑战。更多详细信息可以参考官方说明。
+
+在此步骤首次运行时，会安装并编译新的工具（transformer_inference）。如果编辑过程出现问题，建议升级 PyTorch 和 CUDA 版本。在我的环境下，使用 PyTorch 2.0 和 CUDA 11.7 下可以成功编译。
+
+启动训练：
+
+```sh
+python3 train.py --step 3 --deployment-type single_gpu  #单GPU训练
+python3 train.py --step 3 --deployment-type single_node #多GPU训练
+python3 train.py --step 3 --deployment-type multi_node  #多Node训练
+```
+
+
+此步训练后的模型被存储在 output/step3-models/1.3b/ 下。
+
+常见问题：
+
+Q/A 1. GPU内存不足时，在sh脚本中增加如下设置，调整batch size：
+ --per_device_train_batch_size 8　--per_device_mini_train_batch_size=8
+8 评价与测试
+【观看视频解说】
+
+使用 chat.py 命令（需要移动到 DeepSpeed-Chat 目录下）进行评价与测试。 执行方式如下：
+
+python chat.py --path output/step3-models/1.3b/actor
+上面的程序可以启动13b的模型，但是66b的模型无法成功运行。
+
+
+
 ## DeepSpeed 用法
 
 DeepSpeed 用法
