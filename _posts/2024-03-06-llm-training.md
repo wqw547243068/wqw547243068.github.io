@@ -1230,5 +1230,47 @@ ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始�
 - 设定了一个固定的学习率 3e-5，并采取逐步增加 batch size 的策略，即从 batch size 4M token 开始，每当模型 loss 停止下降时就增加 batch size，使 loss 继续下降，让模型学习更加充分，收敛性能更好。
 
 
+## 训练经验
+
+
+### OOM
+
+【2024-4-11】 OOM
+- 单机单卡(V100S,32G)
+- InternLM2-1.8B, 7.1G
+- 数据集: 231m
+
+报错
+> torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate `7.04` GiB. GPU 0 has a total capacty of `31.75` GiB of which `5.04` GiB is free. Process 743134 has `26.71` GiB memory in use. Of the allocated memory `25.01` GiB is allocated by PyTorch, and 342.98 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting `max_split_size_mb` to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+
+deepspeed 配置
+
+```sh
+deepspeed --master_port 30001 ./llm/training/conversation_reward/main.py \
+   --max_seq_len 2048 \
+   --per_device_train_batch_size 2 \
+   --per_device_eval_batch_size 2 \
+   --weight_decay 0.01 \
+   --dropout 0.0 \
+   --gradient_accumulation_steps 1 \
+   --zero_stage 2 \
+   --dtype bf16 \
+   --num_train_epochs 10 \
+   --train_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/train/cut_train_sequence_en_20240331.csv \
+   --val_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/test/cut_test_0322_es_sequence_v2.csv \
+   --test_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/test/cut_test_0322_en_sequence_v2.csv \
+   --model_name_or_path /mnt/bn/flow-algo-cn/yufeng/ModelHub/internlm2-1_8b \
+   --output_dir /mnt/bn/flow-algo-cn/wangqiwen/model/checkpoints \
+   --debug \
+   --deepspeed
+```
+
+解决
+- 设置GPU缓存碎片 → 无效
+- 改用 A100(80G) → 有效
+
+```sh
+--max_split_size_mb 32  # 无效
+```
 
 # 结束
