@@ -254,10 +254,412 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 - 用于测试训练后的模型，并提供了微调前后的对比。
 
 
+### deepspeed 命令
 
+
+#### deepspeed ft 流程
+
+模型微调的完整流程如下：
+- **数据**部分
+  - 读取tokenizer: 从预训练模型中读取tokenizer
+  - 读取处理数据 train_dataset, eval_dataset
+  - 设置 train_sampler， eval_sampler
+  - 设置train_dataloader， eval_dataloader （使用DataLoader）
+- **模型**部分
+  - 设置DeepSpeed配置参数
+  - 导入并实例化 model
+  - 可选：LoRA设置
+  - 准备需要优化的参数：optimizer_grouped_parameters
+  - 设置 optimizer
+  - 设置 lr_scheduler
+  - 进行初始化 deepspeed.initialize
+- **训练及评价**部分
+  - 开始训练 forward，backward，参数更新
+  - 评价，测试
+  - 模型保存： 注意ZeRO为3时，需要单独处理
+
+
+#### 启动脚本
+
+bash脚本 run_1.3b.sh 来调用 main.py 来进行训练的，所以，我们主要来学习 main.py 程序。
+
+run_1.3b.sh 脚本主要包含以下内容
+
+```sh
+deepspeed main.py \
+   --data_path Dahoas/rm-static \
+   --data_split 2,4,4 \
+   --model_name_or_path facebook/opt-1.3b \
+   --per_device_train_batch_size 8 \
+   --per_device_eval_batch_size 8 \
+   --max_seq_len 512 \
+   --learning_rate 9.65e-6 \
+   --weight_decay 0.1 \
+   --num_train_epochs 2 \
+   --gradient_accumulation_steps 1 \
+   --lr_scheduler_type cosine \
+   --num_warmup_steps 0 \
+   --seed 1234 \
+   --zero_stage $ZERO_STAGE \
+   --deepspeed \
+   --output_dir $OUTPUT \
+   &> $OUTPUT/training.log
+```
+
+#### 参数详解
+
+结合 main.py 程序，将参数分为三大类
+
+|参数|类型|含义|备注|
+|---|---|---|---|
+|`data_path`|数据|huggingface数据路径|Dahoas/rm-static|
+|`data_split`|数据|3个阶段数据拆分方式|2,4,4 是 step1，2，3 分配的数据比例|
+|`max_seq_len`|数据|最大序列长度（超过长度会阶段）||
+|`data_output_path`|数据|输出数据**本地**路径||
+|`model_name_or_path`|模型|模型名称/路径,可以是hf|facebook/opt-1.3b|
+|`lora_dim`|模型|如果大于0，则用LoRA优化||
+|`lora_module_name`|模型|设置LoRA范围|可只针对 decoder.layers|
+|`only_optimize_lora`|模型|是否只优化LoRA||
+|`per_device_train_batch_size`|训练|训练时每个GPU的Batch Size||
+|`per_device_eval_batch_size`|训练|评价时每个GPU的Batch Size||
+|`learning_rate`|训练|学习率||
+|`weight_decay`|训练|权重衰减，防止过拟合||
+|`num_train_epochs`|训练|训练 epoch 数||
+|`gradient_accumulation_steps`|训练|梯度更新步数||
+|`lr_scheduler_type`|训练|learning rate的调整策略|linear, cosine|
+|`zero_stage`|deepspeed|DeepSpeed工具中的zero方式|0，1，2，3|
+|`offload`|deepspeed|ZeRO-Offload利用CPU资源辅助降低GPU计算和内存需求||
+|`local_rank`|deepspeed|标识当前 GPU 设备的本地排名（本机排名，与global-rank不同）||
+|`gradient_checkpointing`|deepspeed|降低训练中的内存消耗||
+|`seed`|其它|随机排序种子||
+|`output_dir`|其它|模型存储目录||
+|||||
+|||||
+
+
+**数据**相关
+
+```js
+data_path        : 数据路径，huggingface数据， 比如：Dahoas/rm-static
+data_split       : 数据的拆分方式，比如 2,4,4 是为step1，2，3分配的数据比例
+max_seq_len      : 最大序列长度（超过长度会被截掉）
+data_output_path : 相关数据的存储地址（local storage，不能是shared storage）
+```
+
+**模型**相关
+
+```js
+model_name_or_path : 模型名称或路径，huggingface模型，比如：facebook/opt-1.3b
+lora_dim           : 如果大于0，则使用LoRA优化
+lora_module_name   : 设置LoRA的范围，比如可以只针对 decoder.layers
+only_optimize_lora : 是否只优化LoRA的参数
+```
+
+**训练**相关
+
+```js
+per_device_train_batch_size : 训练时的 Batch size (per device： 每个GPU的Size)
+per_device_eval_batch_size  : 评价时的 Batch size (per device)
+learning_rate               : 学习率
+weight_decay                : 权重衰减，防止模型过拟合的技术。
+num_train_epochs            : 训练 epoch 数
+gradient_accumulation_steps : 累积多少个 mini-batch 的梯度后再进行一次参数更新。
+lr_scheduler_type           : learning rate的调整策略，比如 linear, cosine
+```
+
+
+deepspeed 相关
+
+```js
+zero_stage  : 这个对应者DeepSpeed工具中的zero方式，分别是0，1，2，3
+offload     : ZeRO-Offload 通过利用主机CPU上的计算和内存资源来执行优化器，从而减少此类模型的GPU计算和内存需求。
+local_rank  : 分布式训练时的一个变量，用于标识当前 GPU 设备的本地排名（本机排名，与global-rank不同）
+gradient_checkpointing : 降低深度学习模型训练过程中内存消耗的技术
+```
+
+其他
+
+```js
+seed        : 随机排序是的seed
+output_dir  : 模型的存储目录
+```
+
+#### 分布式参数
+
+args.`local_rank`
+- local_rank 是分布式训练时变量，标识当前 GPU 设备的**本地排名**（local rank）。
+- args.local_rank = -1，表示代码不在分布式设置下运行，仅使用**单个 GPU** 训练。
+- args.local_rank ≠ -1，代码在分布式设置下运行，当前 GPU 设备被分配了一个**唯一**的本地排名。代码会将设备设置为指定的 GPU（torch.device("cuda", args.local_rank)），并使用 deepspeed.init_distributed() 函数调用初始化分布式后端。
+
+注意：
+- PyTorch 中也有分布式初始化方法 torch.distributed.init_process_group() 函数。
+- 但是当使用 DeepSpeed 库时，不要替换为 deepspeed.init_distributed()。
+
+args.`global_rank`
+- 分布式训练中，每个进程都有唯一的全局排名，用于标识该进程在分布式环境中的位置。
+- 全局排名的范围: 0 ~ world_size-1，其中 `world_size` 是整个分布式环境中**进程总数**。
+- 本程序中通过 torch.distributed.get_rank() 来读取 global_rank， 本函数在初始化分布式后端之后才能调用。
+
+torch.distributed.`barrier`()
+- torch.distributed.barrier() 是同步函数，用于分布式环境中同步各个进程的状态。
+- 调用该函数时，进程会阻塞等待，直到所有进程都调用了该函数之后，才会解除阻塞并继续执行后面的代码。
+
+分布式训练中，torch.distributed.barrier() 通常用于同步各个进程的梯度更新。
+- 每个进程完成一轮前向传播和反向传播后，要同步各自的梯度，并且等待其他进程完成同样的操作，才能进行下一轮更新。
+- 这时用 torch.distributed.barrier() 函数实现同步。
+
+另外一个用法，在模型参数并行训练时，数据的读取只需要在 local_rank 为 0 的GPU上进行，其他进程使用 torch.distributed.barrier() 来阻塞来等待数据读取完成。
+
+
+#### 数据处理
+
+
+##### 分词
+
+DS-Chat 使用的 tokenizer 来自预训练模型
+- Hugging Face Transformers 库中的 AutoTokenizer 类实例化预训练模型的 tokenizer。
+- AutoTokenizer 类自动选择并加载对应的 tokenizer，避免了手动选择的步骤。
+
+```py
+tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path, fast_tokenizer=True)
+tokenizer.pad_token = tokenizer.eos_token
+```
+
+AutoTokenizer.`from_pretrained`() 函数有两个必选参数
+- `model_name_or_path` 预训练模型的名称或路径，例如: "bert-base-uncased" 或 "/path/to/model/directory"。 
+- `fast_tokenizer`: 是否用**快速 tokenizer**。
+  - 如果为 True，则会选择使用 Rust 实现的 tokenizer，速度更快；
+  - 否则使用 Python 实现的 tokenizer。默认为 True。
+
+
+##### 数据准备
+
+数据准备函数: `create_prompt_dataset`
+
+```py
+    train_phase = 1
+    train_dataset, eval_dataset = create_prompt_dataset(
+        args.local_rank, args.data_path, args.data_split,
+        args.data_output_path, train_phase, args.seed, tokenizer,
+        args.max_seq_len)
+```
+
+说明
+- `local_rank` 数据下载等基本处理只在local rank为 0 的 GPU 上执行。每个node上只处理一次数据即可。 -
+- `data_output_path` 设定为 local storage path，分布式训练时存储本地数据用的。
+
+初始化sampler
+- 单GPU 用RandomSampler和SequentialSampler
+- 分布式处理使用DistributedSampler。
+
+sampler 主要用来设置数据采样顺序。
+- 比如随机采样来提高模型的鲁棒性。
+
+```py
+    # DataLoaders creation:
+    if args.local_rank == -1:
+        train_sampler = RandomSampler(train_dataset)
+        eval_sampler = SequentialSampler(eval_dataset)
+    else:
+        train_sampler = DistributedSampler(train_dataset)
+        eval_sampler = DistributedSampler(eval_dataset)
+```
+
+数据读取使用 PyTorch 标准的 DataLoader 来处理。
+- Dataloader 不仅可以设置sampler定义采样方式，还可以自动进行批处理，并且支持多进程数据加载。
+
+```py
+    train_dataloader = DataLoader(train_dataset,
+                                  collate_fn=default_data_collator,
+                                  sampler=train_sampler,
+                                  batch_size=args.per_device_train_batch_size)
+    eval_dataloader = DataLoader(eval_dataset,
+                                 collate_fn=default_data_collator,
+                                 sampler=eval_sampler,
+                                 batch_size=args.per_device_eval_batch_size)
+```
+
+
+#### 模型
+
+(1) **模型初始化**
+
+对模型进行初始化。
+
+```py
+model = create_hf_model(AutoModelForCausalLM, args.model_name_or_path,
+                        tokenizer, ds_config)
+```
+
+其中 AutoModelForCausalLM 是 Hugging Face Transformers 库中的一个类，能够自动选择并加载适当的预训练 Transformer 模型，它支持多种预训练 Transformer 模型，包括 GPT-2、GPT、CTRL、Transformer-XL、XLNet 和 XLM 等。使用该类时，您只需指定模型的名称或路径即可自动加载对应的模型。
+
+具体实现代码，可以参考：utils/model/model_utils.py。
+
+(2) **LoRA**
+
+LoRA
+- 当lora_dim>0时，用LoRA技术对模型进行调整。 从而让模型的优化参数大幅度的变少，改善优化的效率。
+
+通常使用LoRA技术，不仅可以减少参数量，还能进一步改善性能。
+
+因为，这种bottleneck的网络设计，可以防止过拟合，提高模型的鲁棒性。
+
+```py
+    if args.lora_dim > 0:
+        model = convert_linear_layer_to_lora(model, args.lora_module_name, args.lora_dim)
+        if args.only_optimize_lora:
+            model = only_optimize_lora_parameters(model)
+```
+
+提取需要被优化的参数 optimizer_grouped_parameters
+
+```py
+    # Split weights in two groups, one with weight decay and the other not.
+    optimizer_grouped_parameters = get_optimizer_grouped_parameters(
+        model, args.weight_decay)
+
+    AdamOptimizer = DeepSpeedCPUAdam if args.offload else FusedAdam
+    optimizer = AdamOptimizer(optimizer_grouped_parameters,
+                              lr=args.learning_rate,
+                              betas=(0.9, 0.95))
+```
+
+上面代码中，get_optimizer_grouped_parameters() 函数被用来将权重分成两组，一组需要应用权重衰减，另一组则不需要。该函数通过遍历模型的所有参数，并检查参数名称是否包含 bias 或 LayerNorm 等特殊字符串，来区分需要应用权重衰减的参数和不需要的参数。
+
+分组原因： 
+- 对于参数名称中不包含 bias 或 LayerNorm 等特殊字符串的参数，我们认为它们是需要应用权重衰减的参数。对于这些参数，通常会将它们的权重矩阵与权重衰减超参数相乘，以降低它们的权重。与此相反，对于参数名称中包含 bias 或 LayerNorm 等特殊字符串的参数，我们认为它们是不需要应用权重衰减的参数。这是因为 bias 或 LayerNorm 参数通常只是用来偏移或缩放其他层的输出，而不是真正的权重参数。通过将权重分成两组，并分别应用权重衰减和不应用权重衰减，我们可以更好地控制模型的复杂度，从而提高模型的泛化性能。
+
+然后设置Optimizer优化器，根据参数不同会选择 DeepSpeedCPUAdam 或者 FusedAdam 优化器。 并传入了一些参数，包括分组的参数、学习率和 betas。
+
+Adam优化器：
+- 在 Hugging Face 的 Transformers 库中，有两种 Adam 优化器可供选择：FusedAdam 和 DeepSpeedCPUAdam。它们都是基于 PyTorch 实现的优化器，但在不同的硬件上具有不同的优化和性能特征。FusedAdam 是使用 NVIDIA Apex 库实现的优化器，它支持混合精度训练，并且可以同时计算梯度和权重更新操作，从而提高训练效率。FusedAdam 优化器在使用支持 CUDA 的 NVIDIA GPU 时具有较好的性能。DeepSpeedCPUAdam 是一种 CPU 上的优化器，它是 DeepSpeed 框架中的一部分，支持分布式训练和模型平行化。DeepSpeedCPUAdam 优化器在使用 CPU 时具有较好的性能。在上面的代码中，如果 args.offload 为 True，则表示使用基于 CPU 的优化，因此会选择使用 DeepSpeedCPUAdam 优化器。
+
+(3) 设置 **lr_scheduler**
+
+```py
+    num_update_steps_per_epoch = math.ceil(
+        len(train_dataloader) / args.gradient_accumulation_steps)
+    lr_scheduler = get_scheduler(
+        name=args.lr_scheduler_type,
+        optimizer=optimizer,
+        num_warmup_steps=args.num_warmup_steps,
+        num_training_steps=args.num_train_epochs * num_update_steps_per_epoch,
+    )
+```
+
+lr_scheduler 是用来规划整个训练过程中 lr 是如何调整的。lr_scheduler_type 调度器类型，用来描述 lr 是按照什么样的方式变化，例如 LinearWarmup、CosineAnnealing 等。num_warmup_steps 预热步数指定了在训练的前期阶段 lr 增加过程的步数。 总训练步数指定模型共被更新多少次。
+
+**DS初始化**
+
+```py
+    model, optimizer, _, lr_scheduler = deepspeed.initialize(
+        model=model,
+        optimizer=optimizer,
+        args=args,
+        config=ds_config,
+        lr_scheduler=lr_scheduler,
+        dist_init_required=True) 
+```
+
+使用DeepSpeed进行优化是，需要使用deepspeed.initialize() 函数来初始化模型、优化器、学习率调度器等训练相关的组件。其中，model 和 optimizer 是必需的参数，而其他参数则是可选的。
+
+deepspeed.initialize() 函数会对传入的参数进行检查和优化，并返回新的模型、优化器和学习率调度器等组件。例如，它会根据训练参数设置和硬件配置自动调整优化器和梯度累积的设置，并设置模型权重的分布式训练策略。dist_init_required=True 参数指示 DeepSpeed 是否需要进行分布式训练初始化。
+
+DS 配置文件
+- 配置文件包含DeepSpeed模型训练时所需要的相关设置信息，可以通过这里的修改来调整训练过程。
+
+下面是 utils/ds_utils.py 中设置 ：
+
+```py
+ds_config = {
+    "train_batch_size": GLOBAL_BATCH_SIZE,
+    "train_micro_batch_size_per_gpu": MICRO_BATCH_SIZE,
+    "steps_per_print": 10,
+    "zero_optimization": {
+        "stage": stage,
+        "offload_param": {
+            "device": device
+        },
+        "offload_optimizer": {
+            "device": device
+        },
+        "stage3_param_persistence_threshold": 1e4,
+        "stage3_max_live_parameters": 3e7,
+        "stage3_prefetch_bucket_size": 3e7,
+        "memory_efficient_linear": False
+    },
+    "fp16": {
+        "enabled": True,
+        "loss_scale_window": 100
+    },
+    "gradient_clipping": 1.0,
+    "prescale_gradients": False,
+    "wall_clock_breakdown": False,
+    "hybrid_engine": {
+        "enabled": enable_hybrid_engine,
+        "inference_tp_size": inference_tp_size,
+        "release_inference_cache": release_inference_cache,
+        "pin_parameters": pin_parameters,
+        "tp_gather_partition_size": tp_gather_partition_size,
+    }
+}
+```
+
+训练部分的实现代码
+- 使用DS以后，训练部分的代码与标准的PyTorch代码不同。
+
+```py
+    for epoch in range(args.num_train_epochs):
+        print_rank_0(
+            f"Beginning of Epoch {epoch+1}/{args.num_train_epochs}, Total Micro Batches {len(train_dataloader)}",
+            args.global_rank)
+        model.train()
+        for step, batch in enumerate(train_dataloader):
+            batch = to_device(batch, device)
+            outputs = model(**batch, use_cache=False)
+            loss = outputs.loss
+            model.backward(loss)
+            model.step()
+```
+
+**batch解释： 
+- **batch将一个批次的数据传递给模型，避免手动拆分列表或元组，使代码更加简洁易读。
+
+- `*batch` 表示将一个列表对象 batch 中的元素拆分成独立的参数传递给函数或方法。
+  - 例如：`*batch = (input_ids, attention_mask, labels)`
+  - 用 *batch 时，等价于将这些 Tensor 对象拆分为独立的参数，即：`model(*batch)` 等价于 `model(input_ids, attention_mask, labels)`
+- `**batch` 将一个字典对象 batch 拆分成独立的参数传递给函数或方法。
+  - 例如：`batch = {'input_ids': input_ids, 'attention_mask': attention_mask, 'labels': labels}`
+  - `model(**batch)` 等价于 `model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)`
+
+评价
+
+通过 perplexity 来对模型进行评价。
+
+```py
+    # Evaluate perplexity on the validation set
+    perplexity = evaluation(model, eval_dataloader)
+```
+
+模型保存
+
+```py
+    if args.output_dir is not None:
+        print_rank_0('saving the final model ...', args.global_rank)
+        model = convert_lora_to_linear_layer(model)
+
+        if args.global_rank == 0:
+            save_hf_format(model, tokenizer, args)
+
+        if args.zero_stage == 3:
+            # For zero stage 3, each gpu only has a part of the model, so we need a special save function
+            save_zero_three_model(model,
+                                  args.global_rank,
+                                  args.output_dir,
+                                  zero_stage=args.zero_stage)
+```
 
 ### Step1：监督微调
-
 
 使用指定数据微调预训练模型。
 
@@ -408,7 +810,14 @@ Q/A 1. GPU内存不足时，在sh脚本中增加如下设置，调整batch size�
 python chat.py --path output/step3-models/1.3b/actor
 上面的程序可以启动13b的模型，但是66b的模型无法成功运行。
 
+### 问题
 
+- 1: 模型初始化时，定义了`dschf = HfDeepSpeedConfig(ds_config)`，后面没有调用。
+  - 当使用 zero 3 时需要设置 `dschf = HfDeepSpeedConfig(ds_config)`。
+  - 具体说明请[参考](https://huggingface.co/docs/transformers/main_classes/deepspeed#nontrainer-deepspeed-integration)
+- 2: ZeRO 是什么？
+  - `ZeRO`（Zero Redundancy Optimizer）是 DeepSpeed 一种优化技术，旨在提高大规模模型训练的效率和可扩展性。
+  - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
 
 ## DeepSpeed 用法
 
