@@ -631,8 +631,18 @@ AI 根据需求，画一了各个国家的 GDP 条形图。
 
 ##### NL2SQL
 
-【2024-1-15】[vanna-ai](https://github.com/vanna-ai/vanna)，[文档](https://vanna.ai/docs/)
+【2024-1-26】[MLX 上使用 LoRA / QLoRA 微调 Text2SQL](https://wangjunjian.com/mlx/text2sql/2024/01/26/Fine-tuning-Text2SQL-based-on-Mistral-7B-using-LoRA-on-MLX-5.html)：对比使用 LoRA 和 QLoRA 基于 Mistral-7B 微调的效果
+- 相同 Iteration 次数下 QLoRA 不如 LoRA 的效果
+- Prompt tokens/sec: QLoRA 是 LoRA 的 1.79 倍
+- Generation tokens/sec: QLoRA 是 LoRA 的 8.87 倍
 
+|方式|更新参数量|微调耗时(600步)|内存占用|模型大小|测试困惑度(PPL)|测试交叉熵(Loss)|
+|---|---|---|---|---|---|---|
+|LoRA|2.35/万 （1.704M / 7243.436M * 10000）|20 分 26 秒|46G|13G|3.863|1.351|
+|QLoRA|13.70/万（1.704M / 1244.041M * 10000）|23 分 40 秒|46G|4G|4.040|1.396|
+
+
+【2024-1-15】[vanna-ai](https://github.com/vanna-ai/vanna)，[文档](https://vanna.ai/docs/)
 
 vanna-ai 工作原理
 - Train a RAG "model" on your data.
