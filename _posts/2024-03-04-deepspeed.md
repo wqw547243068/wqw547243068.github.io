@@ -155,30 +155,31 @@ DeepSpeed发展速度非常快，一些新的大模型热点技术都实现快�
 ### DeepSpeed-Trianing
 
 DeepSpeed-Trianing 介绍
-- 通信策略优化
-  - 为更好支持在GPU、CPU上的分布式训练以及GPU、CPU的混合训练。DeepSpeed支持 mpi、gloo 和 nccl 等通信策略
-  - Open MPI 可整合高性能计算社区中所有专家，技术和资源，以构建可用的最佳MPI库。
-  - Gloo: facebook开源的一套集体通信库，他提供了对机器学习中有用的一些集合通信算法如：barrier, broadcast, allreduce
-  - nccl: NVIDIA集体通信库（NCCL）实现了针对NVIDIA GPU性能优化的多GPU和多节点集体通信原语。NCCL提供了诸如all-gather, all-reduce, broadcast, reduce, reduce-scatter等实现，这些实现优化后可以通过PCIe和NVLink等高速互联，从而实现高带宽和低延迟。 因为NCCL则是NVIDIA基于自身硬件定制的，能做到更有针对性且更方便优化，故在英伟达硬件上，NCCL的效果往往比其它的通信库更好。
-  - 选择策略: 
-    - 如果在 CPU 集群上分布式训练，选择 mpi 和 gloo；
-    - 如果在 GPU 上进行分布式训练，可以选择 nccl。
+
+通信策略优化
+- 为更好支持GPU、CPU上分布式训练及混合训练。DeepSpeed支持 `mpi`、`gloo` 和 `nccl` 等通信策略
+- Open MPI: 整合高性能计算社区中所有专家，技术和资源，以构建可用的最佳MPI库。
+- `Gloo`: facebook开源的一套集体通信库，提供对机器学习中有用的一些集合通信算法如：barrier, broadcast, allreduce
+- `nccl`: NVIDIA集体通信库（NCCL）实现NVIDIA GPU性能优化的多GPU和多节点**集体通信原语**。NCCL提供了诸如all-gather, all-reduce, broadcast, reduce, reduce-scatter等实现，优化后可以通过PCIe和NVLink等高速互联，高带宽和低延迟。 
+  - 因为NCCL则是NVIDIA基于自身硬件定制，能做到更有针对性且更方便优化，故在英伟达硬件上，NCCL的效果往往比其它通信库更好。
+- 选择策略: 
+  - 如果在 CPU 集群上分布式训练，选择 `mpi` 和 `gloo`；
+  - 如果在 GPU 上进行分布式训练，可以选择 `nccl`。
 
 ## DeepSpeed-Chat
 
 【2024-3-29】[大模型训练入门实战](https://techdiylife.github.io/big-model-training/deepspeed/deepspeed-chat.html)
 
-
-DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
+DeepSpeed 是 Microsoft基于 PyTorch 研发的开源深度学习优化库。
 - 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
 
 ### DeepSpeed-Chat 介绍
 
-`DeepSpeed-Chat` 是微软发布的类ChatGPT模型训练工具。
+`DeepSpeed-Chat` 微软发布的类ChatGPT模型训练工具。
 - 该工具基于微软的大模型训练工具DeepSpeed，使用可简单高效地训练ChatGPT。
 
-该工具特点：
-- 完整的训练类ChatGPT代码：包括 预训练模型下载、数据下载、InstructGPT训练过程和测试。
+工具特点：
+- 类ChatGPT完整训练代码：包括 预训练模型下载、数据下载、InstructGPT训练过程和测试。
 - 多种规模的模型：模型参数从1.3B到66B，适合新手学习, 也可商用部署。
 - 高效训练：通过使用最新技术(ZeRO和LoRA等)改善训练过程。
   - 例如，一个67亿（6.7B）参数的模型，使用**8块A00**只需要约**5个小时**完成训练。
@@ -191,15 +192,14 @@ DeepSpeed 是 Microsoft基于PyTorch研发的开源深度学习优化库。
 ### DeepSpeed-Chat 部署
 
 推荐设置：
-- Linux操作系统
-- GPU 24G以上显存
-- CUDA版本11.7
+- Linux 操作系统
+- GPU 24G 以上显存
+- CUDA 版本 11.7
 
 ```sh
 # conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
 git clone https://github.com/microsoft/DeepSpeedExamples.git
 cd DeepSpeedExamples/applications/DeepSpeed-Chat/
-
 # 安装依赖
 pip install -r requirements.txt
 ```
@@ -230,17 +230,17 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 
 主要参数
 - --`step` 1 2 3
-- --`deployment-type` single_gpu single_node multi_node 不同的type主要是参数的设置不同
+- --`deployment-type` single_gpu single_node multi_node 不同type主要是参数的设置不同
 - --`actor-model`: "1.3b", "6.7b", "13b", "66b" 预训练模型，默认是1.3b的模型
 - --`reward-model`：使用的是 350m 的模型
-- 其他参数，可以去参考train.py中的说明
+- 其他参数参考train.py中的说明
 
 #### 配置脚本
 
 配置脚本：
 - training/step1_supervised_finetuning/training_scripts/single_node/run_1.3b.sh
 - train.py 程序会调用 run_1.3b.sh 来执行模型训练
-- un_1.3b.sh 中可以设置参数，并调用对应的 main.py 来开始模型训练
+- run_1.3b.sh 中可以设置参数，并调用对应的 main.py 来开始模型训练
 
 #### 训练程序
 
@@ -248,8 +248,8 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 - training/step1_supervised_finetuning/main.py
 
 核心训练脚本，主要功能如下：
-- 数据，模型的下载
-- 模型的训练
+- 数据/模型的下载
+- 模型训练
 - 评价与测试用程序：prompt_eval.py
 - 用于测试训练后的模型，并提供了微调前后的对比。
 
@@ -259,12 +259,12 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 
 #### deepspeed ft 流程
 
-模型微调的完整流程如下：
+模型微调完整流程：
 - **数据**部分
   - 读取tokenizer: 从预训练模型中读取tokenizer
   - 读取处理数据 train_dataset, eval_dataset
   - 设置 train_sampler， eval_sampler
-  - 设置train_dataloader， eval_dataloader （使用DataLoader）
+  - 设置 train_dataloader， eval_dataloader （使用DataLoader）
 - **模型**部分
   - 设置DeepSpeed配置参数
   - 导入并实例化 model
@@ -276,12 +276,13 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 - **训练及评价**部分
   - 开始训练 forward，backward，参数更新
   - 评价，测试
-  - 模型保存： 注意ZeRO为3时，需要单独处理
+  - 模型保存：
+    - 注意ZeRO为3时，需要单独处理
 
 
 #### 启动脚本
 
-bash脚本 run_1.3b.sh 来调用 main.py 来进行训练的，所以，我们主要来学习 main.py 程序。
+bash脚本 run_1.3b.sh 调用 main.py 训练，主要学习 main.py 程序。
 
 run_1.3b.sh 脚本主要包含以下内容
 
@@ -824,7 +825,7 @@ python chat.py --path output/step3-models/1.3b/actor
 DeepSpeed 用法
 - 【2023-5-19】huggingface的[DeepSpeed文档](https://huggingface.co/docs/transformers/main/main_classes/deepspeed)的笔记：[DeepSpeed 入门教程](https://zhuanlan.zhihu.com/p/630734624?utm_psn=1751727518502281216)
 
-DeepSpeed目前支持的功能
+DeepSpeed 支持功能
 - Optimizer state partitioning (ZeRO stage 1)
 - Gradient partitioning (ZeRO stage 2)
 - Parameter partitioning (ZeRO stage 3)
@@ -852,9 +853,9 @@ torch.distributed.run --nproc_per_node=2 your_program.py <normal cl args> --deep
 # 多GPU 使用方法2
 deepspeed --num_gpus=2 your_program.py <normal cl args> --deepspeed ds_config.json
 ​​# ======== 多机多卡 =========
-# 多节点多卡 方法1，需要在多个节点上手动启动
+# 多节点多卡 方法1:多个节点上手动启动
 python -m torch.distributed.run --nproc_per_node=8 --nnode=2 --node_rank=0 --master_addr=hostname1 --master_port=9901 your_program.py <normal cl args> --deepspeed ds_config.json
-# 多节点多卡 方法2，需要创建一个 hostfile 文件，只需在一个节点上启动
+# 多节点多卡 方法2:创建 hostfile 文件，只需在一个节点上启动
 hostname1 slots=8
 hostname2 slots=8
 # 然后运行
@@ -870,9 +871,9 @@ TrainingArguments(..., deepspeed=ds_config_dict)
 # 在jupyter中运行，略，参见原始文档
 ```
 
-为什么单卡也可以使用deepspeed？
-- 使用 ZeRO-offload，将部分数据 offload 到 CPU，降低对显存的需求
-- 提供了对显存的管理，减少显存中的碎片
+为什么单卡也能用deepspeed？
+- 使用 `ZeRO-offload`，将部分数据 offload 到 CPU，降低对显存的需求
+- 提供了对显存管理，减少显存碎片
 
 
 ### ZeRO-2 配置
