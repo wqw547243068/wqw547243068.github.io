@@ -2159,7 +2159,7 @@ ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理�
 代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
 
 
-#### Infini-Transformer
+#### 2024.4.10 Infini-Transformer
 
 【2024-4-11】[Google 提出Infini-Transformer架构，可让LLMs处理无限长上下文，内存节约114倍](https://mp.weixin.qq.com/s/factToEEJdWcs5WJG1Ljfg)
 - [Leave No Context Behind: Efficient Infinite Context Transformers with Infini-attention](https://arxiv.org/pdf/2404.07143.pdf)
