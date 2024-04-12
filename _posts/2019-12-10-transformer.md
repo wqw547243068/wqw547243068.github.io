@@ -2158,6 +2158,32 @@ ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理�
 
 代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
 
+
+#### Infini-Transformer
+
+【2024-4-11】[Google 提出Infini-Transformer架构，可让LLMs处理无限长上下文，内存节约114倍](https://mp.weixin.qq.com/s/factToEEJdWcs5WJG1Ljfg)
+- [Leave No Context Behind: Efficient Infinite Context Transformers with Infini-attention](https://arxiv.org/pdf/2404.07143.pdf)
+
+对于批量大小为 512、上下文长度为 2048 的 500B 模型，注意力键值 (KV) 状态的内存占用为 3TB
+
+面对超长序列，相比注意力机制，内存压缩技术更具扩展性。
+- 内存压缩不使用随输入序列长度而增长的数组，而是在有限的内存资源上，维护固定数量的参数来进行信息的存储和回调。
+- 然而，目前的LLMs尚未有一种有效、实用的内存压缩技术，可以在简单性与质量之间取得平衡。
+
+基于以上背景，作者提出了一种新架构：Infini-Transformer，能够让基于Transformer的大模型在有限内存、计算资源的条件下，处理无限长的上下文输入。
+
+Infini-Transformer 可在有限内存条件下，让基于Transformer的大语言模型（LLMs）高效处理无限长的输入序列。
+
+与Transformer-XL类似，Infini-Transformer处理的是一系列片段。
+- 每个片段内 计算 standard causal 点积attention context（注意力上下文）。因此，点积注意力计算在某种意义上是**局部**的，覆盖了索引为 S 的当前片段的总共 N 个标记。
+- 然而，局部注意力在处理下一个片段时会丢弃前一个片段的注意力状态。在Infini-Transformer中，并没有忽略旧的键值（KV）注意力状态，而是通过内存压缩技术重新使用它们来保持整个上下文历史。
+- 因此，Infini-Transformer的每个注意力层都具有**全局**压缩和**局部**细粒度状态，这就是前面提到的无限注意力（Infini-attention）。
+
+实验结果表明：
+- Infini-Transformer在长上下文语言建模任务上超越了基线模型，内存最高可节约114倍。
+
+
+
 ## 稀疏Attention
 
 ### 起因
