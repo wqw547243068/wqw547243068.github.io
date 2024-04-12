@@ -3578,10 +3578,27 @@ iconv -f gbk -t utf8 pattern_0603.txt > pattern.txt
 
 ## grep
 
+文件内容查找
+
 ```sh
 if grep -q 'foo' ~/.bash_history; then
     echo "您过去似乎输入过“foo”"
 fi
+# 文件内容查找: 目录wqw里查找包含yes的文件
+grep yes /wqw
+
+# 从文件内容查找与正则表达式匹配的行：
+grep –e “^yes” myfile
+# 查找时不区分大小写：
+grep –i “yes” myfile
+# 查找匹配的行数：
+grep -c “yes” myfile
+# 从文件内容查找不匹配指定字符串的行：
+grep –v “yes” myfile
+# 从根目录开始查找所有扩展名为.log的文本文件，并找出包含”ERROR”的行
+find / -type f -name “*.log” | xargs grep “ERROR”
+# 从当前目录开始查找所有扩展名为.in的文本文件，并找出包含”thermcontact”的行
+find . -name “*.in” | xargs grep “thermcontact”
 ```
 
 ## awk
