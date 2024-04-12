@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
 categories: 大模型
-tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议
+tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议 mamba jamba
 excerpt: ChatGPT复现笔记
 mathjax: true
 permalink: /chatgpt_mimic
@@ -4199,10 +4199,24 @@ Apache 2.0下许可情况下，Jamba开放权重，开发者可以进一步优�
 - 在Apache 2.0下以开放权重发布
 - 可在Hugging Face上获得，并即将登陆NVIDIA API目录
 
-作者：求索
-链接：https://www.zhihu.com/question/650575356/answer/3447537660
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+#### Mamba in Mamba
+
+【2024-3-7】[阿里提出Mamba in Mamba: 比现有SOTA提速10倍，GPU使用减少73.4%，性能原地起飞](https://mp.weixin.qq.com/s/oLQzaJrwFqRZZ-UYTklWww)
+
+红外小目标检测（ISTD）算法取得了显著进展。
+- 结合卷积网络和 Transformer 结构的模型能够很好地提取局部和全局特征。
+- 同时，也继承了基础模型的缺陷，例如，Transformer 的二次计算复杂度，这影响了效率。
+
+受线性复杂度/长距离建模的基础模型`Mamba`启发，探索了这种状态空间模型在ISTD中的潜力。
+- 直接应用不合适，因为对检测小目标至关重要的局部特征无法得到充分利用。
+- 相反，为高效的ISTD定制了一种`Mamba-in-Mamba`（`MiM-ISTD`）结构。例如，将局部Patch视为“视觉句子”，并进一步分解为作为“视觉单词”的子Patch, 以进一步探索局部性。给定视觉句子中每个单词之间的交互将在几乎无计算成本的情况下计算。通过聚合单词和句子特征，MiM-ISTD的表现能力可以得到显著增强。
+
+在NUAA-SIRST和IRSTD-1k上的实验证明在准确性和效率方面的优势。
+- MiM-ISTD比SOTA快，并且在推理过程中，每个图像的GPU内存使用减少了73.4，克服了在处理高分辨率红外图像时执行基于Mamba理解的计算和内存限制。
+
+源代码：[MiM-ISTD](https://github.com/txchen-USTC/MiM-ISTD)
+
 
 
 # 结束
