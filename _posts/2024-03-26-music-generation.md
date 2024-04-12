@@ -288,6 +288,42 @@ v3
 - light（轻快）、happy（愉悦）、whistle（口哨）、bongos（手鼓）
 
 
+
+## Udio
+
+【2024-4-11】[全新的音乐生成应用Udio正式亮相，比suno有质的提升，效果直逼人类](https://mp.weixin.qq.com/s/IHcg-awC9g4lCbMX3tnqJw)
+- 体验地址：[udio.com](https://www.udio.com)
+- Udio目前处于公测阶段,用户可免费体验,每月可生成1200首作品。
+
+全新的音乐生成应用 [Udio](udio.com)正式亮相。Udio专注于以文字驱动的音乐生成和分享,为用户带来革命性的音乐创作体验
+- Udio采用先进的AI技术, 通过简单的文字输入, 生成各类风格的原创音乐作品。从抒情的福音音乐,到沧桑的蓝调,再到梦幻的流行电音,应有尽有。
+- Udio还支持多种语言,用户可以创作出日语流行、俄罗斯梦幻流行、拉丁节奏等多元化的音乐作品
+
+### Udio 特点
+
+Udio 特点
+- 生成的效果比前段时间大火的音乐生成应用suno 有了质的提升，大家感受一下
+- 另一大特色是可扩展性。
+  - 用户不仅可以指定音乐的引子和尾声,还能以此为基础, 向前向后延伸,生成更长的音乐作品。
+  - 完成创作后,只需点击"发布",作品就能与Udio社区的其他创作者们分享交流
+
+Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技术领域均有深厚积淀。
+- 目标是让Udio成为一款真正改变游戏规则的音乐创作工具,不仅面向专业音乐人,也希望让广大非音乐人也能轻松参与到音乐创作中来
+
+虽然还存在一些粗糙的地方,但团队正在快速迭代优化,计划陆续推出更长音频、更高音质,以及更强大的可控性等新功能
+
+
+### 效果测试
+
+直接使用 OpenAI Sora 视频生成提示词
+>A stylish woman walks down a Tokyo street filled with warm glowing neon and animated city signage.
+
+生成两个示例
+- [1](https://www.udio.com/songs/hBUHy6BHMnfU1dEctBcTr8), [2](https://www.udio.com/songs/qLdNm41L52kbhymKdGgZBk)
+
+点评
+> 没有歌词、专辑画面，音乐质量也不如 Suno AI
+
 ## 扩展应用
 
 生成的音乐能否更加丰富？
