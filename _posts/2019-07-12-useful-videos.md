@@ -14,6 +14,9 @@ permalink: /resource
 
 # 视频资源
 
+
+优质纪录片[汇总](https://www.toutiao.com/w/1795872166226944)
+
 ## 优质电影
 
 商业片
