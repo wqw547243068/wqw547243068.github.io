@@ -163,7 +163,6 @@ permalink: /pytorch_simple
 
 ![](https://pic2.zhimg.com/v2-085f89964dc538738ab96fa421effad5_b.jpg)
 
-
 参数设置
 
 | 函数 | 函数功能 |
@@ -306,6 +305,9 @@ torch.nn.LPPool2d(norm_Type,kernel_size,stride,ceil_mode)
 | momentum | 动态均值和动态方差所使用的动量 |
 | affine | 为True时，给该层添加学习的仿射变换参数x |
 
+
+#### 循环层 RNN 系列
+
 **循环层**
 
 | torch.nn.RNN(input_size,hidden_size,num_layers=1,nonlinearity=tanh,bias=True,batch_first=False,dropout=0,bidirectional=False) |
@@ -327,15 +329,61 @@ torch.nn.LPPool2d(norm_Type,kernel_size,stride,ceil_mode)
 | dropout | 是否使用dropout |
 | bidirectional | 是否使用双向RNN |
 
+
+#### 线性层 Linear
+
+正常的线性计算： 
+- `y = X · W + b`
+
+pytorch内的线性计算：【以数据转置的形式存在】
+- `y = X · W.T + b` 
+
+原因：
+- 图像处理时候让卷积操作和全连接层（线性层）工作方式保持一致。
+
 **线性层**
 
-torch.nn.Linear(in_features,out_features,bias=True)
+torch.nn.`Linear`(in_features,out_features,bias=True)
 
 | 参数 | 参数意义 |
 | --- | --- |
-| in_features | 每个输入样本的大小 |
-| out_features | 每个输出样本的大小 |
+| in_features | 输入样本的大小 |
+| out_features | 输出样本的大小 |
 | bias | 为False时，不学习偏置c |
+
+
+参数详解
+- 1、in_features：输入的最后一维的通道个数
+  - 比如如果输入的数据是N*10的矩阵，表示有N条数据，10个特征，那么in_features应设置为10。
+- 2、out_features：输出的最后一维的通道个数
+  - 比如如果输出的数据是10*3的矩阵，表示有10条数据，3个特征，那么out_features应设置为3。
+- 3、bias：线性回归方程的偏置量
+  - 默认为True，也就是包含偏置项，这也是多数情况的选择。
+
+```py
+import torch
+
+# 数据：3*2
+data = torch.Tensor([[1.0, 2.0],
+                     [7.0, 8.0],
+                     [4.0, 5.0]])
+# 定义输入为2列，输出为3列
+my_nn = torch.nn.Linear(2,3)
+my_nn1 = torch.nn.Linear(3,10)
+# 输出 :3*3
+out = my_nn(data)
+print(out)
+# 查看权重: 权重矩阵3*2，pytorch将数据以转置的形式存储，并且不会影响正常网络运转。
+print(my_nn.weight)
+# 既显示权重，又显示偏置
+print(list(my_nn.parameters()))
+out1 = my_nn2(out) # 多个 MLP 叠加
+# 提取权重参数
+tmp_v = my_nn1.weight.data.T
+```
+
+
+#### 裁剪层 Dropout
 
 **裁剪层**
 
