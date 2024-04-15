@@ -397,6 +397,8 @@ tmp_v = my_nn1.weight.data.T
 | p | 将元素置0的概率 |
 | inplace | 为True时，会原地执行操作i |
 
+#### 稀疏层
+
 **稀疏层**
 
 | torch.nn.Embedding(num_embeddings,embedding_dim,padding_idx=None,max_norm=None,norm_type=2,scale_grad_by_freq=False,sparse=False) |
@@ -420,6 +422,9 @@ tmp_v = my_nn1.weight.data.T
 | --- | --- |
 | p | 范数次数s |
 
+
+#### 损失函数
+
 **损失函数**
 
 | torch.nn.L1Loss(size_average=True) |
@@ -438,6 +443,57 @@ tmp_v = my_nn1.weight.data.T
 | torch.nn.MultiLabelSoftMarginLoss(weight=None,size_average=True) |
 | torch.nn.CosineEmbeddingLoss(margin=0,size_average=True) |
 | torch.nn.MultiMarginLoss(p=1,margin=1,weight=None,size_average=True)c |
+
+
+##### MSELoss
+
+作用：
+- 计算两个输入对应元素差值平方和的均值
+
+默认值（最常用）：
+- reduction='mean',可选：'sum'、'none'
+
+函数效果类似于 `torch.mean((y-y')**2)`
+
+```py
+torch.nn.MSELoss(size_average=None, reduce=None, reduction='mean')
+```
+
+示例
+
+```py
+import torch
+
+# 真实值
+y = [[[0, 0],
+      [0, 0], ],
+     [[0, 0],
+      [0, 0], ]]
+y = torch.tensor(y, dtype=torch.float)
+
+# 预测值
+y_pr = [[[1, 2],
+         [3, 4], ],
+        [[5, 6],
+         [7, 8], ]]
+y_pr = torch.tensor(y_pr, dtype=torch.float)
+
+# 1、利用torch自带的损失
+loss = torch.nn.MSELoss(reduction='mean') # 所有样本损失的均值
+# loss = torch.nn.MSELoss(reduction='sum') # 所有样本损失的和
+# loss = torch.nn.MSELoss(reduction='none') # 返回每个样本的损失，tensor格式的矩阵
+losss = loss(y, y_pr)
+print(losss)
+
+# 2、自己暴力计算
+mean_result = (1 * 1 + 2 * 2 + 3 * 3 + 4 * 4 + 5 * 5 + 6 * 6 + 7 * 7 + 8 * 8)/ 8
+print(mean_result)
+
+# 3、利用torch的mean函数
+print(torch.mean((y - y_pr) ** 2))
+```
+
+#### 视觉层
 
 **视觉层**
 
@@ -500,6 +556,9 @@ tmp_v = my_nn1.weight.data.T
 
 ### 3.5 torch.optim
 
+
+优化包括: 优化损失函数，优化神经网络中的参数计算方式。
+
 | torch.optim.Optimizer(params,default) |
 | --- |
 
@@ -523,6 +582,39 @@ tmp_v = my_nn1.weight.data.T
 | torch.optim.RMSprop(params,lr=0.01,alpha=0.99,eps=1e-8,weight_decay=0,momentum=0,centered=False) | 实现RMSprop算法 |
 | torch.optim.Rprop(params,lr=0.01,etas=(0.5,1.2),step_sizes=(1e-06,50)) | 实现弹性反向传播算法 |
 | torch.optim.SGD(params,lr,momentum=0,dampening=0,weight_decay=0,nesterov=False) | 实现随机梯度下降算法 |
+
+
+#### 理论
+
+一阶矩和二阶矩
+- 一阶矩: 期望，平均值
+  - 一阶中心矩: 每个数字与期望（均值）的期望（均值）
+- 二阶矩
+  - 二阶原点矩: 平方差求和后的均值
+  - 二阶中心矩: 每个数据与数据均值的差的平方和的均值，简称方差
+
+#### Adam
+
+Adam（Adaptive momentum）是一种自适应动量的随机优化方法（A method for stochastic optimization）
+
+参数解释
+
+已经给定值的参数
+- α：学习率，0.001
+- β1 ：一阶矩衰减系数，0.9
+- β2 ：二阶矩衰减系数，0.999
+- ε：防止分母为0，10**-8
+
+其他参数
+- t：循环次数
+- θ：要求解（更新）的参数
+- f(θ)：损失函数
+- gt：损失函数对θ求导所得的梯度
+- mt：gt的一阶原点矩
+- vt：gt的二阶原点矩
+- 𝑚t^：mt的偏置矫正
+- vt^：vt的偏置矫正
+
 
 ### 3.6 torch.nn.init
 
