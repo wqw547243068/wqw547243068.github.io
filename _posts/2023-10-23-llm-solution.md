@@ -2094,6 +2094,22 @@ LISA是由UIUC联合LMFlow团队提出的另一种大模型微调方法。
 ## (5) 混合
 
 
+### LoRAMoE
+
+【2024-3-8】[LoRAMoE: 把MoE用到Lora上](https://mp.weixin.qq.com/s/HaHRyztbWlNfNmz9JVgzBA)
+复旦大学，2024年3月8号 publish 论文
+- LoRAMoE: [Alleviate World Knowledge Forgetting in Large Language Models via MoE-Style Plugin](https://arxiv.org/abs/2312.09979)
+
+MoE: 稀疏门控制的专家混合层介绍过MoE，在LoRA: 大语言模型的低秩适应介绍过Lora。这篇论文把MoE用到了Lora上。
+
+动机
+- 微调阶段的数据过多时，会让模型忘掉很多世界知识。
+
+LoRA+MoE
+- 做法很直接，在FFN层上，加了很多Lora分支，轻量级的expert。
+- LoRAMoE 给不同的lora分支做**分流**时，加入了类型约束，即世界知识相关的任务，分到一组experts中，非世界知识相关的任务，分到剩下的experts中。
+- 图见[原文](https://mp.weixin.qq.com/s/HaHRyztbWlNfNmz9JVgzBA)
+
 ### ReFT
 
 【2024-4-13】ReFT：比现有PEFT微调更好的方法
