@@ -137,6 +137,26 @@ We leverage a breadth of optimizations including:
 
 ### vLLM
 
+
+#### vLLM 源码解析
+
+【2024-4-12】[图解大模型计算加速系列：vLLM源码解析2，调度器策略(Scheduler)](https://mp.weixin.qq.com/s/N2tsOD-XdaNcodf-CKWVhQ)
+- 一、入口函数
+- 二、SequenceGroup
+- 2.1 原生请求输入
+- 2.2 SequenceGroup的作用
+- 2.3 SequenceGroup的结构
+- 三、add_request: 预处理请求
+- 四、step：调度器策略
+- 4.1 调度器结构
+- 4.2 整体调度流程
+- 4.3 _passed_delay：waiting队列调度时间阈值判断
+- 4.4 can_allocate：能否为seq_group分配物理块（prefill）
+- 4.5 can_append_slot: 能否为seq_group分配物理块（decode）
+- 4.6 allocate与append_slot：为seq_group实际分配物理块
+- 4.7 preempt：抢占策略
+- 4.8 调度器整体代码解读
+
 ### MLC-LLM
 
 
