@@ -3516,6 +3516,16 @@ AI pin 核心就是一个可交互式的空中投影设备
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gMsQO5u7-NQ?si=vIbQ2flY-vC9-TjN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+
+#### Limitless Pendant
+
+Limitless Pendant：又一款可穿戴AI设备，可以录音保存用户对话，并提供个性化AI助手服务。
+- 外形小巧时尚，一次充电可使用100小时
+- 价格仅99美元，预计2024年第四季度发货
+
+《[Limitless - Personalized AI powered by what you’ve seen, said, and heard](https://www.limitless.ai)》
+
+
 ### 脑机接口 BRI
 
 大脑与机器人接口（`BRI`）堪称是人类艺术、科学和工程的集大成之作。
