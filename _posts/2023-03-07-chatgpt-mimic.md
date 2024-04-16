@@ -3645,6 +3645,35 @@ response = pipe(["Hi, pls intro yourself", "Shanghai is"])
 print(response)
 ```
 
+
+#### InternLM-XComposer2
+
+【224-4-10】[internlm-xcomposer2-vl-7b](https://huggingface.co/internlm/internlm-xcomposer2-vl-7b)
+- paper [InternLM-XComposer2: Mastering Free-form Text-Image Composition and Comprehension in Vision-Language Large Model](https://arxiv.org/abs/2401.16420)
+
+```py
+import torch
+from transformers import AutoModel, AutoTokenizer
+
+torch.set_grad_enabled(False)
+
+# init model and tokenizer
+model = AutoModel.from_pretrained('internlm/internlm-xcomposer2-vl-7b', trust_remote_code=True).cuda().eval()
+tokenizer = AutoTokenizer.from_pretrained('internlm/internlm-xcomposer2-vl-7b', trust_remote_code=True)
+
+query = '<ImageHere>Please describe this image in detail.'
+image = './image1.webp'
+with torch.cuda.amp.autocast():
+  response, _ = model.chat(tokenizer, query=query, image=image, history=[], do_sample=False)
+print(response)
+#The image features a quote by Oscar Wilde, "Live life with no excuses, travel with no regret,"
+# set against a backdrop of a breathtaking sunset. The sky is painted in hues of pink and orange,
+# creating a serene atmosphere. Two silhouetted figures stand on a cliff, overlooking the horizon.
+# They appear to be hiking or exploring, embodying the essence of the quote.
+# The overall scene conveys a sense of adventure and freedom, encouraging viewers to embrace life without hesitation or regrets.
+
+```
+
 ### Kimi Chat -- 月之暗面
 
 【2023-10-11】[Moonshot AI大模型服务Kimi Chat开始内测，火山引擎提供训练推理加速解决方案](https://mp.weixin.qq.com/s/aV7Vx8k37txwCmG_4VNilw)
