@@ -563,6 +563,16 @@ SmoothQuant的续作, 从源代码来看, 它对SmoothQuant中计算scale时需�
 ##### 量化实践
 
 
+
+###### bitsandbytes3
+
+bitsandbytes 基于 `LLM.int8()` 和 8 比特优化器论文中介绍的方法开发而成。
+
+该库主要专注于大语言模型的 INT8 量化，主要提供对 8 比特矩阵乘法和 8 比特优化器的支持。
+- 目前，bitsandbytes 还支持 4 比特的权重量化和混合精度分解方法，包括 NF4（4-bit NormalFloat）和 FP4 数据类型，可以进行加速模型的输出解码以及基于 QLoRA 的轻量化微调。
+- 使用上，bitsandbytes 已经集成在 HuggingFace 中，加载模型时直接通过运行参数指定实现对模型权重的量化。
+- 例如，可以使用参数 load_in_8bit 和 load_in_4bit 对模型进行 8 比特和 4 比特量化
+
 ###### PyTorch 量化
 
 Quanto：pytorch量化工具包
