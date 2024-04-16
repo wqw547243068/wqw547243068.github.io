@@ -4218,6 +4218,10 @@ Apache 2.0下许可情况下，Jamba开放权重，开发者可以进一步优�
 源代码：[MiM-ISTD](https://github.com/txchen-USTC/MiM-ISTD)
 
 
+### Command R+
+
+
+
 
 # 结束
 
