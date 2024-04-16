@@ -3648,7 +3648,7 @@ print(response)
 
 #### InternLM-XComposer2
 
-【224-4-10】[internlm-xcomposer2-vl-7b](https://huggingface.co/internlm/internlm-xcomposer2-vl-7b)
+【224-1-29】[internlm-xcomposer2-vl-7b](https://huggingface.co/internlm/internlm-xcomposer2-vl-7b)
 - paper [InternLM-XComposer2: Mastering Free-form Text-Image Composition and Comprehension in Vision-Language Large Model](https://arxiv.org/abs/2401.16420)
 
 ```py
