@@ -157,6 +157,12 @@ We leverage a breadth of optimizations including:
 - 4.7 preempt：抢占策略
 - 4.8 调度器整体代码解读
 
+#### 案例
+
+'qwen-vllm - 通义千问VLLM推理部署DEMO' 
+- GitHub: [qwen-vllm](github.com/owenliang/qwen-vllm)
+
+
 ### MLC-LLM
 
 
