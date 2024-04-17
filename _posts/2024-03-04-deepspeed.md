@@ -112,13 +112,13 @@ GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了�
 - Megatron 开始变得无能为力
 - 而DeepSpeed ZeRO方法问世, 解决了这个问题
 
-DeepSpeed支持多种训练优化策略。包括：
+[DeepSpeed](https://www.deepspeed.ai/) 支持多种训练优化策略。包括：
 - 3D并行：数据并行、模型并行、流水线并行以及三者的混合使用
 - Zero Redundancy Optimizer（零冗余优化器）：ZeRO-0、ZeRO-1、ZeRO-2、ZeRO-3、ZeRO-Infinity
 - ZeRO-Offload ：卸载，支持将数据、梯度、优化器状态等下沉到 CPU 和 NVMe
 - 自定义混合精度训练训练：动态精度缩放（Dynamic Loss Scaling）和混合精度优化器（Mixed Precision Optimizer） 
 
-此外, DeepSpeed 还提供许多大模型相关的工具，如分布式训练管理、内存优化和模型压缩等，以帮助开发者更好地管理和优化大规模深度学习训练任务。DeepSpeed在自然语言处理（NLP）和多模态等领域有许多成功的应用案例。DeepSpeed可以极大提升大模型的训练速度、降低训练门槛以及训练成本，并因具备完整健康的社区生态，提升大模型的可用性。让中小公司、独立研究人员解锁了训练具有超过1000亿个参数的模型的能力。
+此外, [DeepSpeed](https://www.deepspeed.ai) 还提供许多大模型相关的工具，如分布式训练管理、内存优化和模型压缩等，以帮助开发者更好地管理和优化大规模深度学习训练任务。DeepSpeed在自然语言处理（NLP）和多模态等领域有许多成功的应用案例。DeepSpeed可以极大提升大模型的训练速度、降低训练门槛以及训练成本，并因具备完整健康的社区生态，提升大模型的可用性。让中小公司、独立研究人员解锁了训练具有超过1000亿个参数的模型的能力。
 - 参考：[LAM](https://zhuanlan.zhihu.com/p/685472786)
 
 - [DeepSpeed](https://www.deepspeed.ai/) is a deep learning optimization library that makes distributed training and inference easy, efficient, and effective.
@@ -137,9 +137,14 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 - DeepSpeed 的论文一直强调：可以用更少机器训练更大的模型，但没有突出过在效率上的优势。
 - DeepSpeed 后来又出了一篇论文：[ZeRO-Infinity](https://arxiv.org/abs/2104.07857)，当单层参数量在单张显卡上放不下的时候，它通过对这一层算子切片，一片一片来执行，使得单卡也能跑起来一个巨大的层，可以理解成一种 “时间”轴上展开的模型并行。
 
+
+### DeepSpeed 文档
+
+[DeepSpeed 官方文档](https://www.deepspeed.ai/getting-started/)
+
 ## DeepSpeed 框架
 
-DeepSpeed 主要分成以下四个板块，包括：Training、Inference、Compression、Science
+[DeepSpeed](https://www.deepspeed.ai/getting-started/) 主要分成以下四个板块，包括：`Training`、`Inference`、`Compression`、`Science`
 - ![](https://pic1.zhimg.com/v2-a9ac939ec325cf859c282511ddd90f2c_b.jpg)
 
 DeepSpedd-Training 提供一套端到端大模型训练框架，核心板块。
@@ -308,6 +313,71 @@ deepspeed main.py \
 ```
 
 #### 参数详解
+
+main.py 可填参数
+
+```sh
+usage: main.py [-h] [--data_path [DATA_PATH ...]] [--data_split DATA_SPLIT] [--data_output_path DATA_OUTPUT_PATH] [--model_name_or_path MODEL_NAME_OR_PATH]
+               [--num_padding_at_beginning NUM_PADDING_AT_BEGINNING] 
+               [--per_device_train_batch_size PER_DEVICE_TRAIN_BATCH_SIZE]
+               [--per_device_eval_batch_size PER_DEVICE_EVAL_BATCH_SIZE] 
+               [--max_seq_len MAX_SEQ_LEN] 
+               [--learning_rate LEARNING_RATE]
+               [--minimum_learning_rate MINIMUM_LEARNING_RATE] 
+               [--weight_decay WEIGHT_DECAY] 
+               [--num_train_epochs NUM_TRAIN_EPOCHS]
+               [--gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS]
+               [--lr_scheduler_type {linear,cosine,cosine_with_restarts,polynomial,constant,constant_with_warmup}] 
+               [--num_warmup_steps NUM_WARMUP_STEPS]
+               [--class_weight CLASS_WEIGHT] 
+               [--device DEVICE] 
+               [--output_dir OUTPUT_DIR] 
+               [--seed SEED] 
+               [--gradient_checkpointing] 
+               [--dropout DROPOUT] 
+               [--offload]
+               [--dtype {fp16,bf16}] 
+               [--zero_stage ZERO_STAGE] 
+               [--lora_dim LORA_DIM] 
+               [--lora_module_name LORA_MODULE_NAME] 
+               [--only_optimize_lora]
+               [--lora_learning_rate LORA_LEARNING_RATE] 
+               [--eval_interval EVAL_INTERVAL] 
+               [--eval_iters EVAL_ITERS] 
+               [--print_steps PRINT_STEPS] 
+               [--save_steps SAVE_STEPS]
+               [--compute_fp32_loss] 
+               [--enable_tensorboard] 
+               [--tensorboard_path TENSORBOARD_PATH] 
+               [--add_eot_token] 
+               [--im_start IM_START] 
+               [--im_end IM_END]
+               [--system SYSTEM] 
+               [--user USER] 
+               [--assistant ASSISTANT] 
+               [--train_data_path TRAIN_DATA_PATH] 
+               [--val_data_path VAL_DATA_PATH]
+               [--test_data_path TEST_DATA_PATH] 
+               [--inference] 
+               [--restore] 
+               [--checkpoint CHECKPOINT] 
+               [--debug] 
+               [--model_name MODEL_NAME] 
+               [--template TEMPLATE]
+               [--label1_dim LABEL1_DIM] 
+               [--label2_dim LABEL2_DIM] 
+               [--label3_dim LABEL3_DIM] 
+               [--chinese_percent CHINESE_PERCENT] 
+               [--only_query]
+               [--cut_flag_token CUT_FLAG_TOKEN] 
+               [--cut_flag_token_id CUT_FLAG_TOKEN_ID] 
+               [--deepspeed] 
+               [--deepspeed_config DEEPSPEED_CONFIG] 
+               [--deepscale]
+               [--deepscale_config DEEPSCALE_CONFIG] 
+               [--deepspeed_mpi]
+```
+
 
 结合 main.py 程序，将参数分为三大类
 
