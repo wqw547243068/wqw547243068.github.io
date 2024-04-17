@@ -407,6 +407,9 @@ usage: main.py [-h] [--data_path [DATA_PATH ...]] [--data_split DATA_SPLIT] [--d
 |||||
 |||||
 
+官方文档: [DeepSpeed Configuration JSON](https://www.deepspeed.ai/docs/config-json/)
+
+#### 数据源
 
 **数据**相关
 
@@ -417,6 +420,8 @@ max_seq_len      : 最大序列长度（超过长度会被截掉）
 data_output_path : 相关数据的存储地址（local storage，不能是shared storage）
 ```
 
+#### 模型
+
 **模型**相关
 
 ```js
@@ -425,6 +430,8 @@ lora_dim           : 如果大于0，则使用LoRA优化
 lora_module_name   : 设置LoRA的范围，比如可以只针对 decoder.layers
 only_optimize_lora : 是否只优化LoRA的参数
 ```
+
+#### 训练
 
 **训练**相关
 
@@ -438,6 +445,15 @@ gradient_accumulation_steps : 累积多少个 mini-batch 的梯度后再进行�
 lr_scheduler_type           : learning rate的调整策略，比如 linear, cosine
 ```
 
+注意：
+- `train_batch_size` = `train_micro_batch_size_per_gpu` * `gradient_accumulation_steps` * `number of GPUs`
+- `train_micro_batch_size_per_gpu` 是单个GPU上前向、反向的实际 batch_size
+- `gradient_accumulation_steps` 是梯度累积步数
+- 指定其中两个参数时, 最后一个参数可以省略，由 deepspeed 自动推导
+
+
+
+#### deepspeed
 
 deepspeed 相关
 
@@ -460,16 +476,16 @@ output_dir  : 模型的存储目录
 args.`local_rank`
 - local_rank 是分布式训练时变量，标识当前 GPU 设备的**本地排名**（local rank）。
 - args.local_rank = -1，表示代码不在分布式设置下运行，仅使用**单个 GPU** 训练。
-- args.local_rank ≠ -1，代码在分布式设置下运行，当前 GPU 设备被分配了一个**唯一**的本地排名。代码会将设备设置为指定的 GPU（torch.device("cuda", args.local_rank)），并使用 deepspeed.init_distributed() 函数调用初始化分布式后端。
+- args.local_rank ≠ -1，代码在分布式设置下运行，当前 GPU 设备被分配了一个**唯一**的本地排名。代码会将设备设置为指定的 GPU（`torch.device("cuda", args.local_rank)`），并使用 `deepspeed.init_distributed()` 函数调用初始化分布式后端。
 
 注意：
-- PyTorch 中也有分布式初始化方法 torch.distributed.init_process_group() 函数。
-- 但是当使用 DeepSpeed 库时，不要替换为 deepspeed.init_distributed()。
+- PyTorch 中也有分布式初始化方法 `torch.distributed.init_process_group()` 函数。
+- 但是当使用 DeepSpeed 库时，不要替换为 `deepspeed.init_distributed()`。
 
 args.`global_rank`
 - 分布式训练中，每个进程都有唯一的全局排名，用于标识该进程在分布式环境中的位置。
 - 全局排名的范围: 0 ~ world_size-1，其中 `world_size` 是整个分布式环境中**进程总数**。
-- 本程序中通过 torch.distributed.get_rank() 来读取 global_rank， 本函数在初始化分布式后端之后才能调用。
+- 本程序中通过 `torch.distributed.get_rank()` 来读取 `global_rank`， 本函数在初始化分布式后端之后才能调用。
 
 torch.distributed.`barrier`()
 - torch.distributed.barrier() 是同步函数，用于分布式环境中同步各个进程的状态。
