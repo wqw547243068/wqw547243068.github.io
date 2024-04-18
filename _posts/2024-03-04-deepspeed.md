@@ -114,6 +114,23 @@ GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了�
 
 DeepSpeed的核心思想: <span style='color:red'>GPU显存不够，CPU内存来凑</span>
 
+### DeepSpeed 适用情形
+
+DeepSpeed 仅适用于:
+- <span style='color:red'>显存极度短缺</span>的情况；
+  - i.e., 模型大到 `batch_size == 1`也跑不了
+- 用DeepSpped节省下来的显存，刚好够支持更大的batch_size。
+
+否则，使用DeepSpeed只会增加时间开销，并没有其他益处。
+- stage3 速度极其缓慢。
+  - 原先需要6h的训练过程，用 DeepSpeed stage3之后，运行了2天2夜，也没有结束的迹象。
+- stage2 由于分配了模型参数到**多个设备**上，console 看不到任何输出信息（但是GPU还是在呼呼响，utility也为100%），不知道程序的运行进度，不友好。
+
+由于 DeepSpeed 通过占用CPU内存来减缓GPU的开销，当系统CPU不够的时候，DeepSpeed 进程就会自动被系统停止，造成没有任何报错，DeepSpeed无法启动的现象。
+- 建议用estimation估计一下CPU内存占用，然后用`free -h`查看一下机器的CPU内存空余量，来判断能否使用DeepSpeed。
+
+### DeepSpeed 功能
+
 [DeepSpeed](https://www.deepspeed.ai/) 支持多种训练优化策略。包括：
 - 3D并行：数据并行、模型并行、流水线并行以及三者的混合使用
 - Zero Redundancy Optimizer（零冗余优化器）：ZeRO-0、ZeRO-1、ZeRO-2、ZeRO-3、ZeRO-Infinity
@@ -166,9 +183,14 @@ TORCH_CUDA_ARCH_LIST="8.6" DS_BUILD_CPU_ADAM=1 DS_BUILD_UTILS=1 pip install . \
 --disable-pip-version-check 2>&1 | tee build.log
 ```
 
-HuggingFace提供了对DeepSpeed的友好集成，DeepSpeed使用所需要的很多参数，可由Transformer的Trainer来自动指定。
+### HuggingFace
 
-DeepSpeed在HuggingFace Transformer上的使用更为便捷（当然，DeepSpeed也可以独立使用，并不依赖于Transformer）。
+Transformers中，`Trainer`集成核心的DeepSpeed功能
+
+HuggingFace 提供 DeepSpeed 集成，所需参数都可以由Transformer的`Trainer`自动指定。
+- DeepSpeed 在 HuggingFace Transformer 上更为便捷（DeepSpeed 可独立使用，并不依赖于Transformer）。
+                        
+[原文](https://blog.csdn.net/weixin_43301333/article/details/127237122)
 
 作为Transformer的附属包安装
 
@@ -244,6 +266,7 @@ DeepSpeed 是 Microsoft基于 PyTorch 研发的开源深度学习优化库。
 视频讲解
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RR8E9jy1eWk?si=8s6TvmBTB1nYOKz2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ### DeepSpeed-Chat 部署
 
@@ -365,7 +388,114 @@ deepspeed main.py \
 
 #### 参数详解
 
-main.py 可填参数
+
+##### deepspeed 参数
+
+```sh
+usage: deepspeed [-h] 
+  [-H HOSTFILE] 
+  [-i INCLUDE] 
+  [-e EXCLUDE] 
+  [--num_nodes NUM_NODES] 
+  [--min_elastic_nodes MIN_ELASTIC_NODES]
+  [--max_elastic_nodes MAX_ELASTIC_NODES] 
+  [--num_gpus NUM_GPUS] 
+  [--master_port MASTER_PORT] 
+  [--master_addr MASTER_ADDR]
+  [--launcher LAUNCHER] 
+  [--launcher_args LAUNCHER_ARGS] 
+  [--module] 
+  [--no_python] 
+  [--no_local_rank] 
+  [--no_ssh_check]
+  [--force_multi] 
+  [--save_pid] 
+  [--enable_each_rank_log ENABLE_EACH_RANK_LOG] 
+  [--autotuning {tune,run}]
+  [--elastic_training] 
+  [--bind_cores_to_rank] 
+  [--bind_core_list BIND_CORE_LIST] 
+  [--ssh_port SSH_PORT]
+  user_script ...
+```
+
+参数含义
+
+```sh
+deepspeed -h
+
+usage: deepspeed [-h] [-H HOSTFILE] [-i INCLUDE] [-e EXCLUDE] [--num_nodes NUM_NODES] [--min_elastic_nodes MIN_ELASTIC_NODES]
+                 [--max_elastic_nodes MAX_ELASTIC_NODES] [--num_gpus NUM_GPUS] [--master_port MASTER_PORT] [--master_addr MASTER_ADDR]
+                 [--launcher LAUNCHER] [--launcher_args LAUNCHER_ARGS] [--module] [--no_python] [--no_local_rank] [--no_ssh_check]
+                 [--force_multi] [--save_pid] [--enable_each_rank_log ENABLE_EACH_RANK_LOG] [--autotuning {tune,run}]
+                 [--elastic_training] [--bind_cores_to_rank] [--bind_core_list BIND_CORE_LIST] [--ssh_port SSH_PORT]
+                 user_script ...
+
+DeepSpeed runner to help launch distributed multi-node/multi-gpu training jobs.
+
+# 位置参数 positional arguments: 
+  user_script  # 要执行的训练脚本入口文件 User script to launch, followed by any required arguments.
+  user_args    # 入口脚本参数
+
+# 可选参数 optional arguments:
+  -h, --help            show this help message and exit
+  -H HOSTFILE, --hostfile HOSTFILE # 机器资源池
+    # Hostfile path (in MPI style) that defines the resource pool available to the job (e.g., worker-0 slots=4) (default: /job/hostfile)
+  -i INCLUDE, --include INCLUDE # 指定可用硬件资源
+    # Specify hardware resources to use during execution. String format is NODE_SPEC[@NODE_SPEC ...], where NODE_SPEC=NAME[:SLOT[,SLOT ...]]. If :SLOT is omitted, include all slots on that host. 
+    # Example: -i "worker-0@worker-1:0,2" will use all slots on worker-0 and slots [0, 2] on worker-1. (default: )
+  -e EXCLUDE, --exclude EXCLUDE # 指定不可用的硬件资源
+    # Specify hardware resources to NOT use during execution. Mutually exclusive with --include. Resource formatting is the same as --include. 
+    # Example: -e "worker-1:0" will use all available resources except slot 0 on worker-1. (default: )
+  --num_nodes NUM_NODES # 节点总数，使用 hostfile 中 top N 机器
+    # Total number of worker nodes to run on, this will use the top N hosts from the given hostfile. (default: -1)
+  --min_elastic_nodes MIN_ELASTIC_NODES # 训练室弹性节点数：最小
+    # Minimum number of nodes to run elastic training on. Default is 1 when elastic training is enabled (default: -1)
+  --max_elastic_nodes MAX_ELASTIC_NODES # 训练室弹性节点数：最大
+    # Maximum number of nodes to run elastic training on. Default is num_nodes when elastic training is enabled (default: -1)
+  --num_gpus NUM_GPUS, --num_accelerators NUM_GPUS # 每个节点上最多使用的gpu数
+    # Max number of GPUs to use on each node, will use [0:N) GPU ids on each node. (default: -1)
+  --master_port MASTER_PORT # 主节点端口,用于分布式训练的通信环节
+    # (optional) Port used by PyTorch distributed for communication during training. (default: 29500)
+  --master_addr MASTER_ADDR # 主节点ip地址
+    # (optional) IP address of node 0, will be inferred via 'hostname -I' if not specified. (default: )
+  --launcher LAUNCHER   # 多机并行方式
+    # (optional) choose launcher backend for multi-node training. Options currently include PDSH, OpenMPI, MVAPICH, SLURM, MPICH, IMPI. (default: pdsh)
+  --launcher_args LAUNCHER_ARGS # 多级并行参数
+    # (optional) pass launcher specific arguments as a single quoted argument. (default: )
+  --module  # Change each process to interpret the launch script as a Python module, executing with the same behavior as 'python -m'. (default: False)
+  --no_python  # 忽略Python脚本,执行执行 Skip prepending the training script with 'python' - just execute it directly. (default: False)
+  --no_local_rank # 调用用户脚本时忽略local_rank参数 Do not pass local_rank as an argument when calling the user's training script. (default: False)
+  --no_ssh_check # 不执行ssh验证 Do not perform ssh check in multi-node launcher model (default: False)
+  --force_multi  # 强制多机模式 Force multi-node launcher mode, helps in cases where user wants to launch on single remote node. (default: False)
+  --save_pid     # Save file containing launcher process id (pid) at /tmp/<main-pid>.ds, where <main-pid> is the pid of the first process that invoked `deepspeed`. Useful when launching deepspeed processes programmatically. (default: False)
+  --enable_each_rank_log ENABLE_EACH_RANK_LOG # 重定向每个节点的标准输出、错误日志
+    # redirect the stdout and stderr from each rank into different log files (default: None)
+  --autotuning {tune,run} # 训练前用 autotuner 探索最佳参数, tune 只调参, run 调参后择优运行
+    # Run DeepSpeed autotuner to discover optimal configuration parameters before running job. (default: )
+  --elastic_training    # 启用弹性训练 Enable elastic training support in DeepSpeed. (default: False)
+  --bind_cores_to_rank  # 绑定 Bind each rank to different cores of the host (default: False)
+  --bind_core_list BIND_CORE_LIST # 绑定
+    # List of cores to bind to with comma separated list of numbers and range. i.e. 1,3-5,7 => [1,3,4,5,7]. When not specified, all cores on system would be used rank binding (default: None)
+  --ssh_port SSH_PORT   # ssh端口,用于远程连接 SSH port to use for remote connections (default: None)
+```
+
+2021年11月15日，DeepSpeed 发布**自动化训练策略**方案：**Autotuning**
+- 本质：对 ZeRO stage 和 stage 相对应的ZeRO配置，以及采用**梯度累计**策略下micro_batch_size大小的**自动化搜索**。 
+- 总结：Autotuning 本质是**超参数搜索**，并没有对数据并行、模型并行的策略进行修改。 
+  - 根据不同超参数配置，自动生成多个实验来计算不同配置下的性能，并从中选择最优的超参数配置。 
+- 不足：
+  - Autotuning 显存计算方法跟实现逻辑有区别，且实测 ZeRO3 面临着显存泄露问题，要重新实现模型来规避。
+  - 显存计算没考虑 torch在cuda初始化时所产生的固定开销。
+- 源码参考: [Autotuning: 来自DeepSpeed的超参数自动搜索方案](https://zhuanlan.zhihu.com/p/435112923)
+
+注意：
+1. DeepSpeed团队把前向过程产生的中间结果(intermediate results 或feature_maps或intermediate activation)叫做激活值(activation)
+2. ZeRO stages, micro-batch sizes和其他的配置也可以被用户配置覆盖。
+
+
+
+##### main.py 参数
 
 ```sh
 usage: main.py [-h] [--data_path [DATA_PATH ...]] [--data_split DATA_SPLIT] [--data_output_path DATA_OUTPUT_PATH] [--model_name_or_path MODEL_NAME_OR_PATH]
@@ -973,6 +1103,9 @@ DeepSpeed 支持功能
 
 ### ZeRO 汇总
 
+一句话总结： 
+> partitioning instead of replicating，划分而不是复制
+
 DeepSpeed 的 ZeRO config文件可分为几类：<span style='color:red'>优化器 → 梯度 → 参数 → offload</span>
 - `ZeRO Stage 1`: 划分optimizer states。
   - 优化器参数被划分到多个memory上，每个momoey上的进程只负责更新自己那部分参数。
@@ -1212,6 +1345,25 @@ NVMe Support
   - Stage 0 (DDP) > Stage 1 > Stage 2 > Stage 2 + offload > Stage 3 > Stage 3 + offloads
 - 从左到右，所需GPU显存越来越少
   - Stage 0 (DDP) < Stage 1 < Stage 2 < Stage 2 + offload < Stage 3 < Stage 3 + offloads
+
+### ZeRO Infinity
+
+除 stage2 和 3 外，介绍下ZeRO-Infinity。
+
+ZeRO-Infinity 是stage-3的进阶版本，依赖 NVMe 支持。
+- 可以offload所有模型参数状态到CPU以及NVMe上。
+- 得益于NMVe协议，除了使用CPU内存之外，ZeRO可以额外利用`SSD`(固态)，从而极大地节约了memory开销，加速了通信速度。
+
+官网对于ZeRO-Infinity的详细介绍：
+
+DeepSpeed官方教程 ：
+> ZeRO-Infinity has all of the savings of ZeRO-Offload, plus is able to offload more the model weights and has more effective bandwidth utilization and overlapping of computation and communication.
+
+HuggingFace官网：
+> It allows for training incredibly large models by extending GPU and CPU memory with NVMe memory. Thanks to smart partitioning and tiling algorithms each GPU needs to send and receive very small amounts of data during offloading so modern NVMe proved to be fit to allow for an even larger total memory pool available to your training process. ZeRO-Infinity requires ZeRO-3 enabled.
+
+具体config文件，以及使用事项，请参见官网。
+
 
 ### 调参步骤
 
