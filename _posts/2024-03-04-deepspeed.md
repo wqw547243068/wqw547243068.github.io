@@ -140,9 +140,10 @@ DeepSpeed 仅适用于:
 此外, [DeepSpeed](https://www.deepspeed.ai) 还提供许多大模型相关的工具，如分布式训练管理、内存优化和模型压缩等，以帮助开发者更好地管理和优化大规模深度学习训练任务。DeepSpeed在自然语言处理（NLP）和多模态等领域有许多成功的应用案例。DeepSpeed可以极大提升大模型的训练速度、降低训练门槛以及训练成本，并因具备完整健康的社区生态，提升大模型的可用性。让中小公司、独立研究人员解锁了训练具有超过1000亿个参数的模型的能力。
 - 参考：[LAM](https://zhuanlan.zhihu.com/p/685472786)
 
-- [DeepSpeed](https://www.deepspeed.ai/) is a deep learning optimization library that makes distributed training and inference easy, efficient, and effective.
-- DeepSpeed trained the world’s most powerful language models (`MT-530B`, `BLOOM`)
-- 微软的 `DeepSpeed` 模型并行等内核取自 `Megatron` ，且 DeepSpeed 主打在数据并行下如何以更少的机器去跑更大的模型 （ ZeRO 、 ZeRO-Offload 等都是用梯度切片、计算、内存/硬盘换入换出来省显存）
+>- [DeepSpeed](https://www.deepspeed.ai/) is a deep learning optimization library that makes distributed training and inference easy, efficient, and effective.
+>- DeepSpeed trained the world’s most powerful language models (`MT-530B`, `BLOOM`)
+
+微软的 `DeepSpeed` 模型并行等内核取自 `Megatron` ，且 DeepSpeed 主打在数据并行下如何以更少的机器去跑更大的模型 （ ZeRO 、 ZeRO-Offload 等都是用梯度切片、计算、内存/硬盘换入换出来省显存）
 
 目前开源的 模型库 主要是 NVIDIA 的 `Megatron-LM` 和微软的 [DeepSpeed](https://www.deepspeed.ai/)。
 
@@ -213,7 +214,7 @@ deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
 使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
 - 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
 
-因此，上面几个参数里，最重要的便是 `--deepspeed`，即提供的config文件，即ZeRO。
+因此，最重要的便是 `--deepspeed`，即提供的config文件，即ZeRO。
 
 ## DeepSpeed 框架
 
@@ -388,6 +389,40 @@ deepspeed main.py \
 
 #### 参数详解
 
+
+DeepSpeed分布式启动器各命令含义
+
+| Argument | Meaning | Example |
+| --- | --- | --- |
+| `master_port` | 主节点端口号 | `--master_port 29500` |
+| `master_addr` | 主节点ip | `--master_addr=10.51.97.28` (ifconfig->eth0->inet) |
+| `nnodes` | 节点数 | 两台机器，`--nnodes=2` |
+| `node_rank` | 节点rank，以第一台机器为0开始递增 | `--node_rank=0` master,即主节点rank |
+| `nproc_per_node` | 每个节点进程数 | 一个节点使用8张卡，`nproc_per_node=8` |
+
+
+##### 节点通信
+
+NCCL(NVIDIA Collective Communications Library) 参数使用说明
+
+| 参数 | 意义 | 说明 |
+| --- | --- | --- |
+| NCCL\_IB\_DISABLE | 禁用IB网卡传输端口 | IB (InfiniBand)是一种用于高性能计算的计算机网络通信标准。 |
+| NCCL\_SHM\_DISABLE | 禁用共享内存传输 | 共享内存(SHM)传输支持运行在相同处理单元/机器中的实体之间的快速通信，这依赖于主机操作系统提供的共享内存机制 |
+| NCCL\_P2P\_DISABLE | 禁用GPU之间信息的传输 | P2P使用CUDA和NVLink直接实现GPU之间的传输与访问 |
+
+关于如何查看GPU是否支持 NVLINK
+
+使用命令
+
+```sh
+nvidia-smi topo -p2p n # 
+```
+
+结果
+- V100 上显示结果 (不支持）
+- A800 上显示结果 (支持
+- ![](https://pic2.zhimg.com/80/v2-c73b0b5e20821bffa1c52b2d79884915_1440w.webp)
 
 ##### deepspeed 参数
 
@@ -645,7 +680,6 @@ lr_scheduler_type           : learning rate的调整策略，比如 linear, cosi
 - 指定其中两个参数时, 最后一个参数可以省略，由 deepspeed 自动推导
 
 
-
 #### deepspeed
 
 deepspeed 相关
@@ -667,9 +701,10 @@ output_dir  : 模型的存储目录
 #### 分布式参数
 
 args.`local_rank`
-- local_rank 是分布式训练时变量，标识当前 GPU 设备的**本地排名**（local rank）。
-- args.local_rank = -1，表示代码不在分布式设置下运行，仅使用**单个 GPU** 训练。
-- args.local_rank ≠ -1，代码在分布式设置下运行，当前 GPU 设备被分配了一个**唯一**的本地排名。代码会将设备设置为指定的 GPU（`torch.device("cuda", args.local_rank)`），并使用 `deepspeed.init_distributed()` 函数调用初始化分布式后端。
+- `local_rank` 是分布式训练时变量，标识当前 GPU 设备的**本地排名**（local rank）。
+- `args.local_rank = -1`，表示代码不在分布式设置下运行，仅使用**单个 GPU** 训练。
+- `args.local_rank ≠ -1`，代码在分布式设置下运行，当前 GPU 设备被分配了一个**唯一**的本地排名。
+  - 代码会将设备设置为指定的 GPU（`torch.device("cuda", args.local_rank)`），并使用 `deepspeed.init_distributed()` 函数调用初始化分布式后端。
 
 注意：
 - PyTorch 中也有分布式初始化方法 `torch.distributed.init_process_group()` 函数。
@@ -677,7 +712,7 @@ args.`local_rank`
 
 args.`global_rank`
 - 分布式训练中，每个进程都有唯一的全局排名，用于标识该进程在分布式环境中的位置。
-- 全局排名的范围: 0 ~ world_size-1，其中 `world_size` 是整个分布式环境中**进程总数**。
+- 全局排名的范围: `0 ~ world_size-1`，其中 `world_size` 是整个分布式环境中**进程总数**。
 - 本程序中通过 `torch.distributed.get_rank()` 来读取 `global_rank`， 本函数在初始化分布式后端之后才能调用。
 
 torch.distributed.`barrier`()
@@ -1129,12 +1164,15 @@ DeepSpeed 的 ZeRO config文件可分为几类：<span style='color:red'>优化�
 
 由于ZeRO-1只分配optimizer states(参数量很小)，实际使用时,一般只会考虑`ZeRO-2`和`ZeRO-3`。
 
-|ZeRO等级|特点|分析|
-|---|---|---|
-|`ZeRO-1`|优化器状态||
-|`ZeRO-2`|梯度||
-|`ZeRO-3`|参数||
-|`ZeRO-3 offload`|参数+offload||
+ZeRO 级别：
+
+| 级别 | 特点 | 作用 |
+| --- | --- | --- |
+| `Zero-0` |  | 不使用所有类型分片，仅使用DeepSpeed作为DDP |
+| `Zero-1` | 优化器状态 | 分割 Optimizer States， 减少4倍内存，通信容量和数据并行性相同 |
+| `Zero-2` | 梯度 | 分割 Optimizer States和Gradients，减少8倍内存，通信容量和数据并行性相同 |
+| `Zero-3` | 参数 | 分割 Optimizer States、gradients、Parametes，内存减少与数据并行度呈线性关系。例如，在64个GPU（Nd=64）之间进行拆分将产生64倍的内存缩减。通信量有50%的适度增长 |
+| `Zero-Infinity` | 参数+offload | Zero-Infinity是 Zero-3 扩展，通过使用 NVMe **固态硬盘**扩展 GPU 和 CPU 内存来训练大型模型 |
 
 
 ```sh
@@ -1360,10 +1398,10 @@ NVMe Support
 
 ### ZeRO Infinity
 
-除 stage2 和 3 外，介绍下ZeRO-Infinity。
+除 stage2 和 3 外，介绍下 ZeRO-Infinity。
 
-ZeRO-Infinity 是stage-3的进阶版本，依赖 NVMe 支持。
-- 可以offload所有模型参数状态到CPU以及NVMe上。
+ZeRO-Infinity 是stage-3 进阶版本，依赖 NVMe 支持。
+- offload所有模型参数状态到CPU以及NVMe上。
 - 得益于NMVe协议，除了使用CPU内存之外，ZeRO可以额外利用`SSD`(固态)，从而极大地节约了memory开销，加速了通信速度。
 
 官网对于ZeRO-Infinity的详细介绍：
@@ -1375,6 +1413,17 @@ HuggingFace官网：
 > It allows for training incredibly large models by extending GPU and CPU memory with NVMe memory. Thanks to smart partitioning and tiling algorithms each GPU needs to send and receive very small amounts of data during offloading so modern NVMe proved to be fit to allow for an even larger total memory pool available to your training process. ZeRO-Infinity requires ZeRO-3 enabled.
 
 具体config文件，以及使用事项，请参见官网。
+
+GPU上进行前向和后向计算，将梯度传给CPU，进行参数更新，再将更新后的参数传给GPU。
+
+为了提高效率，将**计算**和**通信**并行起来
+- GPU在**反向传播**阶段，待梯度值填满bucket后，一边计算新梯度，一边将bucket传输给CPU
+- 当**反向传播**结束，CPU基本上已经有最新的梯度值了，同样，CPU在参数更新时也同步将已经计算好的参数传给GPU
+
+
+四个计算类节点：FWD、BWD、Param update 和 float2half，前两个计算复杂度大致是 O(MB)， B是batch size，后两个计算复杂度是 O(M)。
+- 为了不降低计算效率，将前两个节点放在GPU，后两个节点不但计算量小还需要和Adam状态打交道，所以放在CPU上，Adam状态自然也放在内存中，为了简化数据图，将前两个节点融合成一个节点FWD-BWD Super Node，将后两个节点融合成一个节点Update Super Node。如下图右边所示，沿着gradient 16和parameter 16两条边切分。
+
 
 
 ### 调参步骤
