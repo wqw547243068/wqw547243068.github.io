@@ -897,14 +897,6 @@ Q/A 1. GPU内存不足时，在sh脚本中增加如下设置，调整batch size�
 python chat.py --path output/step3-models/1.3b/actor
 上面的程序可以启动13b的模型，但是66b的模型无法成功运行。
 
-### 问题
-
-- 1: 模型初始化时，定义了`dschf = HfDeepSpeedConfig(ds_config)`，后面没有调用。
-  - 当使用 zero 3 时需要设置 `dschf = HfDeepSpeedConfig(ds_config)`。
-  - 具体说明请[参考](https://huggingface.co/docs/transformers/main_classes/deepspeed#nontrainer-deepspeed-integration)
-- 2: ZeRO 是什么？
-  - `ZeRO`（Zero Redundancy Optimizer）是 DeepSpeed 一种优化技术，旨在提高大规模模型训练的效率和可扩展性。
-  - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
 
 ## DeepSpeed 用法
 
@@ -1408,6 +1400,48 @@ os.environ.update(local_env)
 - 2、在命令行执行 sudo ldconfig /usr/local/cuda-12.2/lib64
 
 执行训练的代码，每台机器上要有完全一致的一份，且存储的路径都要一致（包括软件的安装路径等）
+
+
+### 问题
+
+- 1: 模型初始化时，定义了`dschf = HfDeepSpeedConfig(ds_config)`，后面没有调用。
+  - 当使用 zero 3 时需要设置 `dschf = HfDeepSpeedConfig(ds_config)`。
+  - 具体说明请[参考](https://huggingface.co/docs/transformers/main_classes/deepspeed#nontrainer-deepspeed-integration)
+- 2: ZeRO 是什么？
+  - `ZeRO`（Zero Redundancy Optimizer）是 DeepSpeed 一种优化技术，旨在提高大规模模型训练的效率和可扩展性。
+  - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
+
+
+#### unrecognized arguments: --local_rank=3
+
+多GPU进行训练时, 错误信息 
+
+```sh
+main.py: error: unrecognized arguments: --local_rank=3
+Traceback (most recent call last):
+  File "/opt/tiger/rh2/rh2/init/arnold.py", line 582, in main
+    raise Exception('failed to execute user script with exit code {}'.format(sub_exit_code))
+Exception: failed to execute user script with exit code 2
+```
+
+原因: [pytorch](https://discuss.pytorch.org/t/error-unrecognized-arguments-local-rank-1/83679)
+- main.py 里的 ArgumentParser 未接收 local_rank 参数
+
+解法: 添加local_rank参数
+
+```py
+parser.add_argument("--local_rank", type=int, default=0)
+```
+
+pytorch 解法
+- `python -m torch.distributed.launch` 已淘汰, 替换成 `torchrun`
+
+```sh
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=27803 # replaced by 
+# 直接改成 torchrun
+torchrun --nproc_per_node=4 --master_port=27803 ...
+```
+
 
 
 
