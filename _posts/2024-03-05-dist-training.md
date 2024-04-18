@@ -1433,6 +1433,66 @@ CUDA_VISIBLE_DEVICES 得知了当前程序可见的 GPU 数量为 4，而创建�
   - 这种计算方法存在的缺陷是：每一轮的梯度更新，都要等到A、B、C三台电脑都计算完毕后，才能更新参数，也就是迭代更新速度取决与A、B、C三台中，最慢的那一台电脑，所以采用同步更新的方法，建议A、B、C三台的计算能力都不想。
 - 2、**异步更新**：ps服务器收到只要收到一台机器的梯度值，就直接进行参数更新，无需等待其它机器。这种迭代方法比较不稳定，收敛曲线震动比较厉害，因为当A机器计算完更新了ps中的参数，可能B机器还是在用上一次迭代的旧版参数值。
 
+#### 多机多卡讲解
+
+【2024-4-18】[大模型多机多卡训练经验总结](https://zhuanlan.zhihu.com/p/693040848)
+
+LLM多机多卡训练教程好少，有些还拿 `torch.distributed.launch` 来做，殊不知早就改用 `torchrun` 了。
+
+环境准备: 以2台机器为例
+- 首先, 2台机器要能**免密登录**，编辑/etc/hosts文件，加入node信息：
+
+```sh
+# vi /etc/hosts
+ip1 node01
+ip2 node02
+```
+
+然后, 两个node分别执行以下操作, 生成私钥和公钥：
+
+```sh
+ssh-keygen -t rsa
+```
+
+然后, 全部回车，采用默认值。再互相拷贝秘钥：
+
+```sh
+ssh-copy-id root@ip1
+ssh-copy-id root@ip2
+```
+
+分别在2台机器上试试互相ssh，如果无密码输入要求直接登录到另一台服务器则说明配置成功。
+
+2台机器环境必须保持一致，包括python版本，训练所需依赖包等。
+
+还需确保安装了pdsh：
+
+```sh
+apt-get install pdsh
+```
+
+多机训练
+
+使用 torchrun，毕竟单张GPU有80G显存，7B模型单卡完全放得下。
+- 假设node01为master，node02需要有相同的模型权重和代码，可以直接在master用scp拷贝过去。
+
+准备工作完成后, 可以启动训练命令
+- 首先在node01(master)执行如下命令（非完整，仅供参考，使用deepspeed ZeRO-2）：
+
+```sh
+torchrun --nproc_per_node 8 --nnodes 2 --master_addr ${MASTER_ADDR} --master_port 14545 --node_rank 0 train.py \
+  --deepspeed ${deepspeed_config_file} \
+  ...
+```
+ 
+参数
+- nproc_per_node表示每个节点的进程数，可以理解为每个节点所需GPU数
+- nnode表示节点数，2台机器就是2个节点数
+- master_add为master的ip
+- node_rank表示当前启动的是第几个节点
+
+在node02执行同样命令，但需将node_rank指定为1，不出意外的话可以成功跑通，即便报错可能也是依赖包版本两台机器不一致导致。很快就会在控制台看到transformers打印的日志，但发现save_total_limit只在master上管用。
+
 #### TF
 
 代码编写
