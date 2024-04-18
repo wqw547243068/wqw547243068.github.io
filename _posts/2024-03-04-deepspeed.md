@@ -480,6 +480,9 @@ DeepSpeed runner to help launch distributed multi-node/multi-gpu training jobs.
   --ssh_port SSH_PORT   # ssh端口,用于远程连接 SSH port to use for remote connections (default: None)
 ```
 
+
+##### 超参优化
+
 2021年11月15日，DeepSpeed 发布**自动化训练策略**方案：**Autotuning**
 - 本质：对 ZeRO stage 和 stage 相对应的ZeRO配置，以及采用**梯度累计**策略下micro_batch_size大小的**自动化搜索**。 
 - 总结：Autotuning 本质是**超参数搜索**，并没有对数据并行、模型并行的策略进行修改。 
@@ -493,7 +496,16 @@ DeepSpeed runner to help launch distributed multi-node/multi-gpu training jobs.
 1. DeepSpeed团队把前向过程产生的中间结果(intermediate results 或feature_maps或intermediate activation)叫做激活值(activation)
 2. ZeRO stages, micro-batch sizes和其他的配置也可以被用户配置覆盖。
 
-
+autotuning 流程
+- (1) Autotuner 先做一个profile工作，分析所需运行模型的参数量以及激活值的内存。 即跑一遍前向然后结束进程
+  - `Autotuner.model_info_profile_run()` 起一个小experiment, 获取参数量和激活值大小
+  - `ResourceManager.run()` 调用 `self.run_job(exp, reservations)`，其中reservations为可用GPU设备信息。
+  - `ResourceManager.run_job(exp, reservations)` 启动线程(thread)运行run_experiment函数
+  - `run_experiment(exp, reservations, user_script, user_args)` 利用subprocess库执行cmd命令
+    - 示例：`deepspeed --force_multi --include localhost:2 --master_port 12345 my_model_train.py --ds_config_path ds_config.json`
+- (2) Autotuner 以`[0, 1, 2, 3]`顺序先搜索ZeRO的stage，估计每个GPU在训练模型时所需的最小memory(ZeRO实例化时所需的显存量)，并与当前GPU可用显存进行比较。如果小于GPU可用显存，则说明该stage可以运行。Autotuner 尝试搜索该stage下每个GPU的micro-batch的大小，以及其他的ZeRO设置：
+- (3) 如果当前 ZeRO stage 最优设置性能亚于之前其他ZeRO stage的方法，则之后其他Stage的搜索会终止。（因为是按顺序搜索的，默认情况下，前面的stage的最优策略应该batch-size会更小）
+- (4) 最后，全局最优设置会通过log的文件的形式告知用户。如果--autotune设置为run，还会直接开始训练。
 
 ##### main.py 参数
 
