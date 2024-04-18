@@ -1209,8 +1209,48 @@ TrainingArguments(..., deepspeed=ds_config_dict)
 - 使用 `ZeRO-offload`，将部分数据 offload 到 CPU，降低对显存的需求
 - 提供了对显存管理，减少显存碎片
 
+### ZeRO-0 配置
+
+禁用所有分片，此时将DeepSpeed视为DDP使用 (stage默认值：0)
+
+```json
+"zero_optimization": {
+        "stage": 0
+    }
+```
+
+### ZeRO-1 配置
+
+ZeRO第一阶段的优化，将优化器状态进行切分
+
+```json
+"zero_optimization": {
+        "stage": 1
+    }
+```
+
+
 
 ### ZeRO-2 配置
+
+```json
+"zero_optimization": {
+        "stage": 2,
+        "allgather_partitions": true,
+        "allgather_bucket_size": 3e8,
+        "overlap_comm": true,
+        "reduce_scatter": true,
+        "reduce_bucket_size": 3e8,
+        "contiguous_gradients": true
+    }
+```
+
+- allgather_partitions： 在每个步骤结束时，从所有GPU中选择使用allgather集体操作或一系列广播集体操作之间的方式，以收集更新后的参数。 (默认值：true)
+- allgather_bucket_size： 用于调节Allgather操作的分桶大小。将张量分成较小的桶有助于在通信过程中更高效地传输数据。较大的allgather_bucket_size值会导致每个桶的尺寸增大，可能加速通信操作，但也需要更多内存来存储中间结果。选择合适的桶大小需要根据实际情况进行调整。(默认值：5e8)
+- overlap_comm： 控制通信与计算是否交叠执行。当设置为True时，DeepSpeed将尝试在梯度计算期间并行进行梯度通信。这有效地缩短通信时间，从而加速整个训练过程。(默认值：false)
+- reduce_scatter： 使用reduce或reduce scatter来替代allreduce以平均梯度。(默认值：true)
+- reduce_bucket_size： 用于控制Allreduce操作的分桶大小。将张量分为较小的桶有助于数据在通信过程中的更高效传输。随着reduce_bucket_size值的增大，每个桶的尺寸也随之增大，这或许能加速通信操作，但同时也需要更多内存来存储中间结果。合适的桶大小应根据实际情况进行适当调整。(默认值：5e8)
+- contiguous_gradients： 在梯度产生时将其复制到一个连续的缓冲区中。在反向传播过程中避免了内存碎片化问题。(默认值：true)
 
 ```json
 {
@@ -1283,6 +1323,41 @@ TrainingArguments(..., deepspeed=ds_config_dict)
 
 
 ### ZeRO-3 配置
+
+ZeRO-3
+
+```json
+"zero_optimization": {
+        "stage": 3,
+        "offload_optimizer": {
+            "device": "cpu",
+            "pin_memory": true
+        },
+        "offload_param": {
+            "device": "cpu",
+            "pin_memory": true
+        },
+        "overlap_comm": true,
+        "contiguous_gradients": true,
+        "sub_group_size": 1e9,
+        "reduce_bucket_size": 1e6,
+        "stage3_prefetch_bucket_size": 4e6,
+        "stage3_param_persistence_threshold": 1e4,
+        "stage3_max_live_parameters": 1e9,
+        "stage3_max_reuse_distance": 1e9,
+        "stage3_gather_16bit_weights_on_model_save": true
+    },
+```
+
+- sub_group_size： 控制在优化器步骤中参数更新的粒度。参数被分组到大小为sub_group_size的桶中，每个桶依次进行一次更新。当与ZeRO-Infinity中的NVMe offload同时使用时，sub_group_size决定了在优化器步骤期间从NVMe迁移到CPU内存的模型状态的粒度。这有助于避免超大模型对CPU内存的过度占用。在不使用NVMe offload时，请保持其默认值。若遇到内存不足（OOM）情况，可以考虑减小sub_group_size。当优化器迭代较缓慢时，也可以考虑增大sub_group_size。(默认值：1e9)
+- stage3_prefetch_bucket_size： 预取参数的固定缓冲区大小。较小的值使用的内存较少，但可能会因通信而增加停顿。(默认值：5e8)
+- stage3_max_live_parameters： 保留在GPU上的完整参数数量的上限。(默认值：1e9)
+- stage3_max_reuse_distance： 根据参数在未来何时再次使用的指标来决定是舍弃还是保留参数。如果一个参数在不久的将来会再次被使用（小于stage3_max_reuse_distance），则会保留该参数以减少通信开销。在遇到内存不足（OOM）的情况下，可以降低stage3_max_live_parameters和stage3_max_reuse_distance的值。(默认值：1e9)
+- stage3_gather_16bit_weights_on_model_save： 在保存模型时启用模型FP16权重合并。对于大型模型和多GPU环境，这是一项在内存和速度方面代价较高的操作。(默认值：false)
+
+ZeRO-3 中不使用 allgather_partitions、allgather_bucket_size 和 reduce_scatter 配置参数
+
+（其他参数如grad_hooks、round_robin_gradients本文未提及）
 
 配置示例
 
@@ -1512,6 +1587,41 @@ apex
      "opt_level": "auto"
 }
 ```
+
+混合精度训练
+
+```json
+"fp16": {
+    "enabled": true,
+    "auto_cast": false,
+    "loss_scale": 0,
+    "initial_scale_power": 16,
+    "loss_scale_window": 1000,
+    "hysteresis": 2,
+    "consecutive_hysteresis": false,
+    "min_loss_scale": 1
+}
+
+
+"bf16": {
+   "enabled": true
+ }
+```
+
+- auto_cast： 是否将输入强制转换为fp16数据类型 (默认值：false)
+- loss_scale： 表示FP16训练的损失缩放值。默认值0.0启用动态损失缩放，否则该值将用于静态固定损失缩放 (默认值：0.0)
+- initial_scale_power： 表示初始动态损失比例值的功率，实际损失规模计算为 
+ (默认值：16)
+- loss_scale_window： 代表动态损失缩放值上升/下降的窗口范围。(默认值：1000)
+- hysteresis： 表示动态损耗缩放中的延迟偏移 (默认值：2)
+- consecutive_hysteresis： 表示是否在达到不会溢出的迭代时重新填充滞后。(默认值：false)
+- min_loss_scale： 表示最小动态损失比例值 (默认值：1)
+
+注意：开启fp16后可能出现如上图所示overflow情况
+- BF16： 配置以bfloat16浮点格式作为FP16的替代方式。bfloat16需要硬件支持（例如，NVIDIA A100）。使用bfloat16进行训练不需要损失缩放。(默认值：false)
+
+
+
 
 ### 获取模型参数
 
