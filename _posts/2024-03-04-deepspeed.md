@@ -112,6 +112,8 @@ GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了�
 - Megatron 开始变得无能为力
 - 而DeepSpeed ZeRO方法问世, 解决了这个问题
 
+DeepSpeed的核心思想: <span style='color:red'>GPU显存不够，CPU内存来凑</span>
+
 [DeepSpeed](https://www.deepspeed.ai/) 支持多种训练优化策略。包括：
 - 3D并行：数据并行、模型并行、流水线并行以及三者的混合使用
 - Zero Redundancy Optimizer（零冗余优化器）：ZeRO-0、ZeRO-1、ZeRO-2、ZeRO-3、ZeRO-Infinity
@@ -141,6 +143,55 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 ### DeepSpeed 文档
 
 [DeepSpeed 官方文档](https://www.deepspeed.ai/getting-started/)
+
+
+## DeepSpeed 安装
+
+### 如何安装
+
+直接pip安装：
+
+```sh
+pip install deepspeed
+```
+
+官方推荐仓库本地编译安装，更加适配本地硬件环境：
+
+```sh
+git clone https://github.com/microsoft/DeepSpeed/
+cd DeepSpeed
+rm -rf build
+TORCH_CUDA_ARCH_LIST="8.6" DS_BUILD_CPU_ADAM=1 DS_BUILD_UTILS=1 pip install . \
+--global-option="build_ext" --global-option="-j8" --no-cache -v \
+--disable-pip-version-check 2>&1 | tee build.log
+```
+
+HuggingFace提供了对DeepSpeed的友好集成，DeepSpeed使用所需要的很多参数，可由Transformer的Trainer来自动指定。
+
+DeepSpeed在HuggingFace Transformer上的使用更为便捷（当然，DeepSpeed也可以独立使用，并不依赖于Transformer）。
+
+作为Transformer的附属包安装
+
+```sh
+pip install transformers[deepspeed]
+```
+
+### 如何使用
+
+使用DeepSpeed之后，你的命令行看起来就会像下面这样：
+
+```sh
+deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
+--deepspeed ds_config.json
+--master_port # 端口号。最好显示指定，默认为29500，可能会被占用（i.e., 跑了多个DeepSpeed进程）。
+--num_gpus # GPU数目，默认会使用当前所见的所有GPU。
+--deepspeed # 提供的config文件，用来指定许多DeepSpeed的重要参数。
+```
+
+使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
+- 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
+
+因此，上面几个参数里，最重要的便是 `--deepspeed`，即提供的config文件，即ZeRO。
 
 ## DeepSpeed 框架
 
@@ -569,6 +620,9 @@ sampler 主要用来设置数据采样顺序。
 
 #### 模型
 
+
+##### 模型初始化
+
 (1) **模型初始化**
 
 对模型进行初始化。
@@ -581,6 +635,8 @@ model = create_hf_model(AutoModelForCausalLM, args.model_name_or_path,
 其中 AutoModelForCausalLM 是 Hugging Face Transformers 库中的一个类，能够自动选择并加载适当的预训练 Transformer 模型，它支持多种预训练 Transformer 模型，包括 GPT-2、GPT、CTRL、Transformer-XL、XLNet 和 XLM 等。使用该类时，您只需指定模型的名称或路径即可自动加载对应的模型。
 
 具体实现代码，可以参考：utils/model/model_utils.py。
+
+##### LoRA
 
 (2) **LoRA**
 
@@ -620,6 +676,9 @@ LoRA
 
 Adam优化器：
 - 在 Hugging Face 的 Transformers 库中，有两种 Adam 优化器可供选择：FusedAdam 和 DeepSpeedCPUAdam。它们都是基于 PyTorch 实现的优化器，但在不同的硬件上具有不同的优化和性能特征。FusedAdam 是使用 NVIDIA Apex 库实现的优化器，它支持混合精度训练，并且可以同时计算梯度和权重更新操作，从而提高训练效率。FusedAdam 优化器在使用支持 CUDA 的 NVIDIA GPU 时具有较好的性能。DeepSpeedCPUAdam 是一种 CPU 上的优化器，它是 DeepSpeed 框架中的一部分，支持分布式训练和模型平行化。DeepSpeedCPUAdam 优化器在使用 CPU 时具有较好的性能。在上面的代码中，如果 args.offload 为 True，则表示使用基于 CPU 的优化，因此会选择使用 DeepSpeedCPUAdam 优化器。
+
+
+##### lr_scheduler
 
 (3) 设置 **lr_scheduler**
 
@@ -910,6 +969,20 @@ DeepSpeed 支持功能
 - Custom mixed precision training handling
 - A range of fast CUDA-extension-based optimizers
 - ZeRO-Offload to CPU and NVMe
+
+
+### ZeRO 汇总
+
+DeepSpeed 的 ZeRO config文件可分为几类：<span style='color:red'>优化器 → 梯度 → 参数 → offload</span>
+- `ZeRO Stage 1`: 划分optimizer states。
+  - 优化器参数被划分到多个memory上，每个momoey上的进程只负责更新自己那部分参数。
+- `ZeRO Stage 2`: 划分gradient。
+  - 每个memory，只保留它分配到的optimizer state所对应的梯度。
+  - 这很合理，因为梯度和optimizer是紧密联系在一起的。只知道梯度，不知道optimizer state，是没有办法优化模型参数的。
+- `ZeRO Stage 3`: 划分模型参数，或不同的layer. 
+  - ZeRO-3会在forward和backward 时，自动将模型参数分配到多个memory。
+
+由于ZeRO-1只分配optimizer states(参数量很小)，实际使用时,一般只会考虑`ZeRO-2`和`ZeRO-3`。
 
 |ZeRO等级|特点|分析|
 |---|---|---|
@@ -1411,6 +1484,46 @@ os.environ.update(local_env)
   - `ZeRO`（Zero Redundancy Optimizer）是 DeepSpeed 一种优化技术，旨在提高大规模模型训练的效率和可扩展性。
   - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
 
+#### 显存预估
+
+DeepSpeed 使用难点在于**时间和空间权衡**。
+- 分配更多参数到CPU上，虽然能够降低显存开销，但是也会极大地提升时间开销。
+
+DeepSpeed 提供 memory估算代码：
+
+```py
+from transformers import AutoModel
+from deepspeed.runtime.zero.stage3 import estimate_zero3_model_states_mem_needs_all_live
+
+## specify the model you want to train on your device
+model_name_or_path = "/mnt/bn/flow-algo-cn/yufeng/ModelHub/internlm2-1_8b"
+model = AutoModel.from_pretrained(model_name_or_path, trust_remote_code=True) 
+## estimate the memory cost (both CPU and GPU)
+estimate_zero3_model_states_mem_needs_all_live(model, num_gpus_per_node=1, num_nodes=1)
+```
+
+结果 
+- internlm2-1.8b 显存开销 32.37G, 实际开销翻倍(64G, batch_size,缓存)
+- 使用 stage2和3后，显存开销被极大地降低，转而CPU内存消耗显著提升，模型训练时间开销也相应地增大。
+
+```js
+Estimated memory needed for params, optim states and gradients for a:
+HW: Setup with 1 node, 1 GPU per node.
+SW: Model with 1889M total params, 189M largest layer params.
+  per CPU  |  per GPU |   Options
+   47.50GB |   0.71GB | offload_param=cpu , offload_optimizer=cpu , zero_init=1
+   47.50GB |   0.71GB | offload_param=cpu , offload_optimizer=cpu , zero_init=0
+   42.22GB |   4.22GB | offload_param=none, offload_optimizer=cpu , zero_init=1
+   42.22GB |   4.22GB | offload_param=none, offload_optimizer=cpu , zero_init=0
+    1.06GB |  32.37GB | offload_param=none, offload_optimizer=none, zero_init=1
+   10.56GB |  32.37GB | offload_param=none, offload_optimizer=none, zero_init=0
+```
+
+启动任务前大概估计显存消耗，决定**GPU数目**，以及**ZeRO-stage**。
+
+原则: 
+- 能直接**多卡**训练，就不用`ZeRO`；
+- 能用`ZeRO-2`就不用`ZeRO-3`.
 
 #### unrecognized arguments: --local_rank=3
 
@@ -1443,6 +1556,15 @@ torchrun --nproc_per_node=4 --master_port=27803 ...
 ```
 
 
+#### CUDA out of memory
+
+
+```sh
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.25 GiB. 
+GPU 0 has a total capacty of 79.35 GiB of which 210.19 MiB is free. 
+Process 1984273 has 79.14 GiB memory in use. Of the allocated memory 74.99 GiB is allocated by PyTorch, and 1.55 GiB is reserved by PyTorch but unallocated. 
+If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+```
 
 
 # 结束
