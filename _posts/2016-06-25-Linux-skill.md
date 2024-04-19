@@ -3,7 +3,7 @@ layout: post
 title:  "Linux技能大全"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: Linux linux Shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道
+tags: Linux linux Shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 pssh pdsh
 excerpt: Linux使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -4627,6 +4627,46 @@ log "[`date "+%Y-%m-%d %H:%M:%S"`] [NOTE] oneday-pretreat success ! oneday-pretr
 #关闭重定向
 exec 3<&-
 ```
+
+
+## 批主机管理
+
+pdsh、pssh 是之前运维管理人员的利器。
+
+这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 。
+
+### pssh
+
+pssh 是一个 python 编写可以在多台服务器上执行命令的工具，同时支持拷贝文件，是同类工具中很出色的，类似 pdsh 。为方便操作，使用前请在各个服务器上配置好密钥认证访问。
+- 项目地址: [parallel-ssh](https://code.google.com/p/parallel-ssh)
+- [总结](https://blog.opskumu.com/pdsh-pssh.html)
+
+附加工具
+- pscp 传输文件到多个 hosts，类似 scp
+  - `pscp -h hosts.txt -l irb2 foo.txt /home/irb2/foo.txt`
+- pslurp 从多台远程机器拷贝文件到本地
+- pnuke 并行在远程主机杀进程
+  - `pnuke -h hosts.txt -l irb2 java`
+- prsync 使用rsync协议从本地计算机同步到远程主机
+  - `prsync -r -h hosts.txt -l irb2 foo /home/irb2/foo`
+
+### pdsh
+
+pdsh (Parallel Distributed Shell) 可并行执行对目标主机的操作，对于批量执行命令和分发任务有很大的帮助，在使用前需要配置 ssh 无密码登录
+
+pdsh 全称 parallel distributed shell
+- 与pssh类似，pdsh可并行执行对远程目标主机的操作，在有批量执行命令或分发任务的运维需求时，使用这个命令可达到事半功倍的效果。
+- 同时，pdsh还支持**交互模式**，当要执行的命令不确定时，可直接进入pdsh命令行，非常方便。
+
+pdsh应用场景
+- 基本上与pssh相同，都用于大批量服务器的配置、部署、文件复制等运维操作。
+- 使用pdsh时，仍需要配置本地主机和远程主机间的单向ssh信任。
+- 另外，pdsh还附带了pdcp命令，此命令可以将本地文件批量复制到远程的多台主机上，这在大规模的文件分发环境下是非常有用的。
+
+pdsh可以通过多种方式在远程主机上运行命令
+- 默认是rsh方式
+- 另外也支持ssh、mrsh、qsh、mqsh、krb4、xcpu等多种rcmd模块，这个可以在运行命令时通过参数指定。
+
 
 
 # 本文编辑器
