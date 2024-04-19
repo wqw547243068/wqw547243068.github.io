@@ -1991,7 +1991,7 @@ SW: Model with 1889M total params, 189M largest layer params.
 - 能直接**多卡**训练，就不用`ZeRO`；
 - 能用`ZeRO-2`就不用`ZeRO-3`.
 
-#### unrecognized arguments: --local_rank=3
+#### 无法识别 --local_rank=3
 
 多GPU进行训练时, 错误信息 
 
@@ -2031,6 +2031,16 @@ GPU 0 has a total capacty of 79.35 GiB of which 210.19 MiB is free.
 Process 1984273 has 79.14 GiB memory in use. Of the allocated memory 74.99 GiB is allocated by PyTorch, and 1.55 GiB is reserved by PyTorch but unallocated. 
 If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
 ```
+
+
+#### 无法识别 --deepspeed
+
+
+【2024-4-19】无法识别命令行参数 deepspeed, deepspeed_config
+- 提官方[issues](https://github.com/microsoft/DeepSpeed/issues/3961)
+
+
+
 
 
 # 结束
