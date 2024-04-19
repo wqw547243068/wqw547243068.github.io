@@ -124,13 +124,13 @@ deepspeed 底层依赖 `torch.distribution` 、 `cuda` 等等.
 - ['`cuda`', '`cpu`', '`xpu`', '`npu`', '`mps`']
 - 大部分选择 cuda, 可通过环境变量 `DS_ACCELERATOR` 指定
 
-入口只是一个代理，根据不同情况选择三种模式之一
+入口([__init__](https://github.com/microsoft/DeepSpeed/blob/master/deepspeed/__init__.py))只是一个代理，根据不同情况选择三种模式之一
 - `流水线引擎`（PipelineEngine）
 - `混合引擎`（DeepSpeedHybridEngine），同时进行**训练**和**推理**，为 RLHF 训练定制。
 - `一般模式`（DeepSpeedEngine），基本模式，分布式**训练**引擎。
 
 DeepSpeedEngine 的实现在 `deepspeed.runtime.engine` 中， 本身是 `torch.nn.Module` 的子类，对输入模型的一个封装。 
-- DeepSpeedEngine 的 `__init__` 方法中进行了大量初始化操作， 其中最重要的就是对优化器（Optimizer）的初始化， ZeRO 的核心特性的实现都在优化器（Optimizer）中。
+- DeepSpeedEngine 的 [__init__](https://github.com/microsoft/DeepSpeed/blob/master/deepspeed/__init__.py) 方法中进行了大量初始化操作， 其中最重要的就是对优化器（Optimizer）的初始化， ZeRO 的核心特性的实现都在优化器（Optimizer）中。
 
 
 ### DeepSpeed 适用情形
@@ -201,6 +201,12 @@ rm -rf build
 TORCH_CUDA_ARCH_LIST="8.6" DS_BUILD_CPU_ADAM=1 DS_BUILD_UTILS=1 pip install . \
 --global-option="build_ext" --global-option="-j8" --no-cache -v \
 --disable-pip-version-check 2>&1 | tee build.log
+```
+
+检查
+
+```sh
+ds_report
 ```
 
 ### HuggingFace
@@ -584,7 +590,7 @@ hostfile.txt
 
 ##### 超参优化
 
-2021年11月15日，DeepSpeed 发布**自动化训练策略**方案：**Autotuning**
+2021年11月15日，DeepSpeed 发布**自动化训练策略**方案：[Autotuning](https://www.deepspeed.ai/tutorials/autotuning/)
 - 本质：对 ZeRO stage 和 stage 相对应的ZeRO配置，以及采用**梯度累计**策略下micro_batch_size大小的**自动化搜索**。 
 - 总结：Autotuning 本质是**超参数搜索**，并没有对数据并行、模型并行的策略进行修改。 
   - 根据不同超参数配置，自动生成多个实验来计算不同配置下的性能，并从中选择最优的超参数配置。 
