@@ -782,6 +782,11 @@ lr_scheduler_type           : learning rate的调整策略，比如 linear, cosi
 } //2个GPU
 ```
 
+#### 可视化监控
+
+支持多种[可视化监控](https://www.deepspeed.ai/tutorials/monitor/)
+- PyTorch’s TensorBoard, WandB, and simple CSV files
+
 开启TensorBoard可视化
 
 ```json
@@ -790,6 +795,27 @@ lr_scheduler_type           : learning rate的调整策略，比如 linear, cosi
   "output_path": "log/", //可视化文件保存路径
   "job_name": "2023年08月15日16:28:06" //此次实验名称，作为子文件夹
 }
+
+//========================
+{
+  "tensorboard": {
+    "enabled": true,
+    "output_path": "output/ds_logs/",
+    "job_name": "train_bert"
+  }
+  "wandb": {
+    "enabled": true,
+    "team": "my_team",
+    "group": "my_group",
+    "project": "my_project"
+  }
+  "csv_monitor": {
+    "enabled": true,
+    "output_path": "output/ds_logs/",
+    "job_name": "train_bert"
+  }
+}
+
 ```
 
 
@@ -2039,7 +2065,10 @@ If reserved but unallocated memory is large try setting max_split_size_mb to avo
 【2024-4-19】无法识别命令行参数 deepspeed, deepspeed_config
 - 提官方[issues](https://github.com/microsoft/DeepSpeed/issues/3961)
 
-
+```
+deepspeed   0.12.6
+torch       2.1.0+cu121
+```
 
 
 
