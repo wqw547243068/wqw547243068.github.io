@@ -420,6 +420,30 @@ deepspeed main.py \
    &> $OUTPUT/training.log
 ```
 
+
+#### 启动参数
+
+
+JSON文件 / Dict字典 两种启动传参
+- （1）JSON文件
+- （2）Dict字典
+
+```sh
+# (1) Json 文件
+deepspeed  train.py --deepspeed  --deepspeed_config ds_config.json
+# (2) 字典
+ds_config = {"train_batch_size": 16}
+engine, _, _, _ = deepspeed.initialize(model=netconfig=ds_config)
+deepspeed  train.py --deepspeed 
+```
+
+指定GPU运行
+
+```sh
+# 本机第0张卡
+deepspeed --include="localhost:0"  train.py --deepspeed --deepspeed_config xxx.jso
+```
+
 #### 参数详解
 
 
@@ -1276,6 +1300,14 @@ ZeRO 级别：
 | `Zero-2` | 梯度 | 分割 Optimizer States和Gradients，减少8倍内存，通信容量和数据并行性相同 |
 | `Zero-3` | 参数 | 分割 Optimizer States、gradients、Parametes，内存减少与数据并行度呈线性关系。例如，在64个GPU（Nd=64）之间进行拆分将产生64倍的内存缩减。通信量有50%的适度增长 |
 | `Zero-Infinity` | 参数+offload | Zero-Infinity是 Zero-3 扩展，通过使用 NVMe **固态硬盘**扩展 GPU 和 CPU 内存来训练大型模型 |
+
+Zero stage和offload
+- 由于通信增加，故从左到右越来越慢
+  - Stage 0 (DDP) > Stage 1 > Stage 2 > Stage 2 + offload > Stage 3 > Stage 3 + offloads
+- 由于去除各模块冗余和卸载数据到CPU，故从左到右，显存占用越来越少
+  - Stage 0 (DDP) < Stage 1 < Stage 2 < Stage 2 + offload < Stage 3 < Stage 3 + offloads
+
+
 
 
 ```sh
