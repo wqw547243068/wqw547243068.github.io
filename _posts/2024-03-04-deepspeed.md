@@ -542,6 +542,28 @@ autotuning 流程
 - (3) 如果当前 ZeRO stage 最优设置性能亚于之前其他ZeRO stage的方法，则之后其他Stage的搜索会终止。（因为是按顺序搜索的，默认情况下，前面的stage的最优策略应该batch-size会更小）
 - (4) 最后，全局最优设置会通过log的文件的形式告知用户。如果--autotune设置为run，还会直接开始训练。
 
+支持: 随机/网格/模型搜索
+
+```py
+exps = self._generate_experiments(tuning_space, max_train_batch_size_per_gpu)
+
+logger.info(f'Tuner type is {self.autotuning_config.tuner_type}')
+if self.autotuning_config.tuner_type == AUTOTUNING_TUNER_MODELBASED:
+    t = ModelBasedTuner(exps, self.rm, self.metric(), tuning_space)
+elif self.autotuning_config.tuner_type == AUTOTUNING_TUNER_RANDOM:
+    t = RandomTuner(exps, self.rm, self.metric())
+else:
+    t = GridSearchTuner(exps, self.rm, self.metric())
+
+sample_size = len(self.rm.nodes) * self.rm.num_gpus_per_node // (self.exp_num_gpus * self.exp_num_nodes)
+num_exps = t.tune(sample_size=sample_size,
+                  n_trials=self.autotuning_config.tuner_num_trials,
+                  early_stopping=self.autotuning_config.tuner_early_stopping)
+exp = t.best_exp
+metric_val = t.best_metric_val
+```
+
+
 ##### main.py 参数
 
 ```sh
@@ -1796,6 +1818,8 @@ os.environ.update(local_env)
 - 2、在命令行执行 sudo ldconfig /usr/local/cuda-12.2/lib64
 
 执行训练的代码，每台机器上要有完全一致的一份，且存储的路径都要一致（包括软件的安装路径等）
+
+
 
 
 ### 问题
