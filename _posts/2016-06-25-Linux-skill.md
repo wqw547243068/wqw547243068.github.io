@@ -4633,7 +4633,8 @@ exec 3<&-
 
 pdsh、pssh 是之前运维管理人员的利器。
 
-这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 。
+这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt。
+- 【2024-4-19】[参考](https://blog.opskumu.com/pdsh-pssh.html)
 
 ### pssh
 
@@ -4667,6 +4668,51 @@ pdsh可以通过多种方式在远程主机上运行命令
 - 默认是rsh方式
 - 另外也支持ssh、mrsh、qsh、mqsh、krb4、xcpu等多种rcmd模块，这个可以在运行命令时通过参数指定。
 
+
+```sh
+pdsh -h
+Usage: pdsh [-options] command ...
+-S                return largest of remote command return values
+-h                output usage menu and quit                获取帮助
+-V                output version information and quit       查看版本
+-q                list the option settings and quit         列出 `pdsh` 执行的一些信息
+-b                disable ^C status feature (batch mode)
+-d                enable extra debug information from ^C status
+-l user           execute remote commands as user           指定远程使用的用户
+-t seconds        set connect timeout (default is 10 sec)   指定超时时间
+-u seconds        set command timeout (no default)          类似 `-t`
+-f n              use fanout of n nodes                     设置同时连接的目标主机的个数
+-w host,host,...  set target node list on command line      指定主机，host 可以是主机名也可以是 ip
+-x host,host,...  set node exclusion list on command line   排除某些或者某个主机
+-R name           set rcmd module to name                   指定 rcmd 的模块名，默认使用 ssh
+-N                disable hostname: labels on output lines  输出不显示主机名或者 ip
+-L                list info on all loaded modules and exit  列出 `pdsh` 加载的模块信息
+-a                target all nodes                          指定所有的节点
+-g groupname      target hosts in dsh group "groupname"     指定 `dsh` 组名，编译安裝需要添加 `-g` 支持选项 `--with-dshgroups`
+-X groupname      exclude hosts in dsh group "groupname"    排除组，一般和 `-a` 连用
+available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命令模块，默认为 ssh
+```
+
+示例
+
+```sh
+# 单个主机测试
+pdsh -w 192.168.0.231 -l root uptime
+# 192.168.0.231:  16:16:11 up 32 days, 22:14, ? users,  load average: 0.10, 0.14, 0.16
+# 多个主机测试
+pdsh -w 192.168.0.[231-233] -l root uptime
+# 192.168.0.233:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.13, 0.12, 0.10
+# 192.168.0.232:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.45, 0.34, 0.27
+# 192.168.0.231:  16:17:06 up 32 days, 22:15, ? users,  load average: 0.09, 0.13, 0.15
+# 逗号分隔主机
+pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
+# 192.168.0.234:  16:19:44 up 32 days, 22:19, ? users,  load average: 0.17, 0.21, 0.20
+# 192.168.0.231:  16:19:44 up 32 days, 22:17, ? users,  load average: 0.29, 0.18, 0.16
+#  -x 排除某个主机
+pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
+# 192.168.0.233:  16:18:24 up 32 days, 22:19, ? users,  load average: 0.11, 0.12, 0.09
+# 192.168.0.231:  16:18:25 up 32 days, 22:16, ? users,  load average: 0.11, 0.13, 0.15
+```
 
 
 # 本文编辑器
