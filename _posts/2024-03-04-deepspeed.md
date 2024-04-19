@@ -16,6 +16,7 @@ permalink: /deepspeed
 # DeepSpeed 学习笔记
 
 
+
 ## DeepSpeed 框架演进
 
 【2024-4-6】总结：
@@ -112,7 +113,25 @@ GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了�
 - Megatron 开始变得无能为力
 - 而DeepSpeed ZeRO方法问世, 解决了这个问题
 
-DeepSpeed的核心思想: <span style='color:red'>GPU显存不够，CPU内存来凑</span>
+## DeepSpeed 原理
+
+DeepSpeed的核心思想: 
+> <span style='color:red'>GPU显存不够，CPU内存来凑</span>
+
+deepspeed 底层依赖 `torch.distribution` 、 `cuda` 等等. 
+
+底层分布式通信引擎支持多种选择
+- ['`cuda`', '`cpu`', '`xpu`', '`npu`', '`mps`']
+- 大部分选择 cuda, 可通过环境变量 `DS_ACCELERATOR` 指定
+
+入口只是一个代理，根据不同情况选择三种模式之一
+- `流水线引擎`（PipelineEngine）
+- `混合引擎`（DeepSpeedHybridEngine），同时进行**训练**和**推理**，为 RLHF 训练定制。
+- `一般模式`（DeepSpeedEngine），基本模式，分布式**训练**引擎。
+
+DeepSpeedEngine 的实现在 `deepspeed.runtime.engine` 中， 本身是 `torch.nn.Module` 的子类，对输入模型的一个封装。 
+- DeepSpeedEngine 的 `__init__` 方法中进行了大量初始化操作， 其中最重要的就是对优化器（Optimizer）的初始化， ZeRO 的核心特性的实现都在优化器（Optimizer）中。
+
 
 ### DeepSpeed 适用情形
 
@@ -214,7 +233,7 @@ deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
 使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
 - 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
 
-因此，最重要的便是 `--deepspeed`，即提供的config文件，即ZeRO。
+因此，最重要的是 `--deepspeed`，即提供的config文件，即ZeRO。
 
 ## DeepSpeed 框架
 
@@ -244,6 +263,17 @@ DeepSpeed-Trianing 介绍
 - 选择策略: 
   - 如果在 CPU 集群上分布式训练，选择 `mpi` 和 `gloo`；
   - 如果在 GPU 上进行分布式训练，可以选择 `nccl`。
+
+
+### TencentPretrain
+
+[TencentPretrain](https://github.com/Tencent/TencentPretrain) ：[腾讯预训练模型框架](https://github.com/Tencent/TencentPretrain/blob/main/README_ZH.md)
+- Tencent Pre-training framework in PyTorch & Pre-trained Model Zoo
+
+TencentPretrain 是一个用于对文本、图像、语音等模态数据进行预训练和微调的工具包。
+- TencentPretrain遵循模块化的设计原则。通过模块组合，用户能迅速精准的复现已有的预训练模型，并利用已有的接口进一步开发更多的预训练模型。
+- 通过TencentPretrain，建立了一个模型仓库，其中包含不同性质的预训练模型（例如基于不同模态、编码器、目标任务）。用户可以根据具体任务的要求，从中选择合适的预训练模型使用。
+- TencentPretrain继承了开源项目UER (https://github.com/dbiir/UER-py/) 的部分工作，并在其基础上进一步开发，形成支持多模态的预训练模型框架。
 
 ## DeepSpeed-Chat
 
@@ -303,6 +333,9 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 - **inference** # 测试，评价代码
 
 模型训练调用过程（以1.3b模型为例）
+
+
+deepspeed 总入口在 `deepspeed.__init__::initialize`
 
 #### train.py
 
@@ -515,6 +548,15 @@ DeepSpeed runner to help launch distributed multi-node/multi-gpu training jobs.
   --ssh_port SSH_PORT   # ssh端口,用于远程连接 SSH port to use for remote connections (default: None)
 ```
 
+hostfile 示例
+
+hostfile.txt
+
+```js
+1.1.1.1 slots=8
+2.2.2.2 slots=8
+```
+
 
 ##### 超参优化
 
@@ -697,9 +739,28 @@ lr_scheduler_type           : learning rate的调整策略，比如 linear, cosi
 
 注意：
 - `train_batch_size` = `train_micro_batch_size_per_gpu` * `gradient_accumulation_steps` * `number of GPUs`
+- ![](https://pic3.zhimg.com/80/v2-58e440f8f43a73dbc3578394a61efde2_1440w.webp)
 - `train_micro_batch_size_per_gpu` 是单个GPU上前向、反向的实际 batch_size
 - `gradient_accumulation_steps` 是梯度累积步数
-- 指定其中两个参数时, 最后一个参数可以省略，由 deepspeed 自动推导
+- 指定其中2个参数, 最后1个参数可由 deepspeed 自动推导
+
+```json
+{
+ "train_batch_size": 16, //总batch 
+ "train_micro_batch_size_per_gpu": 8,
+ "gradient_accumulation": 1
+} //2个GPU
+```
+
+开启TensorBoard可视化
+
+```json
+"tensorboard": {
+  "enabled": true,  //开启可视化
+  "output_path": "log/", //可视化文件保存路径
+  "job_name": "2023年08月15日16:28:06" //此次实验名称，作为子文件夹
+}
+```
 
 
 #### deepspeed
@@ -712,6 +773,19 @@ offload     : ZeRO-Offload 通过利用主机CPU上的计算和内存资源来�
 local_rank  : 分布式训练时的一个变量，用于标识当前 GPU 设备的本地排名（本机排名，与global-rank不同）
 gradient_checkpointing : 降低深度学习模型训练过程中内存消耗的技术
 ```
+
+deepspeed 核心参数
+- `__init__.py` 文件中已定义, 不能重复定义，否则报错
+- 
+
+```js
+deepspeed : deepspeed 开关, 对后端无影响
+deepspeed_config : deepspeed 配置文件 json 格式
+deepscale : deepspeed 开关, 废弃的 '旧版deepspeed'
+deepscale_config : deepspeed 配置文件 json 格式('旧版deepspeed_config')
+deepspeed_mpi: 启用 MPI 模式(CPU 并行)
+```
+
 
 其他
 
@@ -747,6 +821,13 @@ torch.distributed.`barrier`()
 
 另外一个用法，在模型参数并行训练时，数据的读取只需要在 local_rank 为 0 的GPU上进行，其他进程使用 torch.distributed.barrier() 来阻塞来等待数据读取完成。
 
+
+指定GPU运行
+
+```sh
+# 本机第0张卡
+deepspeed --include="localhost:0"  train.py --deepspeed --deepspeed_config xxx.json
+```
 
 #### 数据处理
 
