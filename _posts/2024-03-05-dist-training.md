@@ -2301,6 +2301,40 @@ apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhua
 
 ### Torchrun (更新)
 
+Pytorch 1.9.0 引入了 `torchrun`，替代 1.9.0 以前版本 `torch.distributed.launch`。
+
+[torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 是
+
+`torchrun` 是 `torch.distributed.launch` 的超集, elastic launch, 等效于 `python -m torch.distributed.run`
+
+包含 `torch.distributed.launch` 几乎所有功能(除了废弃的`--use-env`)
+
+还有三点额外功能：
+- 1、worker rank 和 world_size 将被自动分配
+- 2、`Failover`: worker失败时, 重新启动所有workers来处理workers的故障
+- 3、`Elastic`: 动态增减节点, 允许节点数目在最大/最小值之间改变, 即具备弹性
+
+迁移方法
+
+```sh
+python -m torch.distributed.launch -> torchrun
+# (1) 如果 从环境变量(LOCAL_RANK)中读取 local_rank 参数, 直接忽略
+# 更改前
+python -m torch.distributed.launch --use-env train_script.py
+# 更改后
+torchrun train_script.py
+# (2) 如果 从命令行(--local-rank)读取 local_rank 参数
+# 更改前
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--local-rank", type=int)
+args = parser.parse_args()
+local_rank = args.local_rank
+# 更改后
+import os
+local_rank = int(os.environ["LOCAL_RANK"])
+```
+
 最新版本 PyTorch实现
 - 替换 torch.distributed.launch
 
