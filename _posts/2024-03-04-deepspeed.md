@@ -2050,12 +2050,51 @@ torchrun --nproc_per_node=4 --master_port=27803 ...
 
 #### CUDA out of memory
 
+问题
 
 ```sh
 torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.25 GiB. 
 GPU 0 has a total capacty of 79.35 GiB of which 210.19 MiB is free. 
 Process 1984273 has 79.14 GiB memory in use. Of the allocated memory 74.99 GiB is allocated by PyTorch, and 1.55 GiB is reserved by PyTorch but unallocated. 
 If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+```
+
+解法
+- [[BUG] error: unrecognized arguments: --deepspeed ./ds_config.json #3961](https://github.com/microsoft/DeepSpeed/issues/3961)
+
+`run.sh`
+- 直接将 ds_config 文件添加到deepspeed后面, 或指定 deepspee_config 参数
+
+```sh
+DS_CONFIG_PATH="llm/ds_config.json"
+
+deepspeed --master_port 30001 --autotuning tune \
+   ./llm/training/conversation_reward/main.py \
+   --max_seq_len 3072 \
+   --per_device_train_batch_size 2 \
+   --per_device_eval_batch_size 2 \
+   --weight_decay 0.1 \
+   --dropout 0.0 \
+   --gradient_accumulation_steps 16 \
+   --zero_stage 2 \
+   --dtype bf16 \
+   --num_train_epochs 10 \
+   --train_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/train/cut_train_sequence_all_20240331.csv \
+   --val_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/test/cut_test_toNow_es_sequence_v2.csv \
+   --test_data_path /mnt/bn/flow-algo-cn/wangqiwen/session_process/data/test/cut_test_toNow_en_sequence_v2.csv \
+   --model_name_or_path /mnt/bn/flow-algo-cn/yufeng/ModelHub/internlm2-1_8b \
+   --output_dir /mnt/bn/flow-algo-cn/wangqiwen/model/checkpoints \
+   --save_steps 1000 \
+   --deepspeed $DS_CONFIG_PATH
+#   --deepspeed_config $DS_CONFIG_PATH
+```
+
+
+main.py
+
+```py
+parser = deepspeed.add_config_arguments(parser) # 添加这行
+args = parser.parse_args()
 ```
 
 
