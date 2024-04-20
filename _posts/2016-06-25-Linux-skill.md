@@ -4729,13 +4729,33 @@ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
 ```
 
 【2024-4-20】pdsh 安装
+- sudo apt-get install pdsh -- [错误](https://askubuntu.com/questions/590662/configure-error-invalid-variable-name-prefix-while-runing-configure)
 - 源码安装
 - [google code](https://code.google.com/archive/p/pdsh/downloads)
 
 
 ```sh
-wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pdsh/pdsh-2.29.tar.bz2
+sudo apt-get install pdsh
+# 错误
+pdsh -v
+# pdsh@mlxlabqcvytu4a66056efe-20240328132206-317dg9-nqi3xt-worker: module path "/usr/lib/x86_64-linux-gnu/pdsh" insecure.
+# pdsh@mlxlabqcvytu4a66056efe-20240328132206-317dg9-nqi3xt-worker: "/": Owner not root, current uid, or pdsh executable owner
+# pdsh@mlxlabqcvytu4a66056efe-20240328132206-317dg9-nqi3xt-worker: Couldn't load any pdsh modules
 
+# 源码编译安装
+wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pdsh/pdsh-2.29.tar.bz2
+./configure --with-ssh --enable-static-modules --prefix=/home/wqw/bin && make && make install
+# 问题: error: invalid variable name: –-prefix
+# 解决: 复制过来的 -- 格式有问题, 重新输入
+# 编译完后,生成 bin文件夹 /home/wqw/bin/pdsh/bin
+# 修改配置 vim ~/.bashrc
+export PATH=$PATH:/home/wqw/pdsh/bin
+
+source ~/.bashrc
+
+pdsh-2.29 (+static-modules)
+# rcmd modules: ssh,rsh,exec (default: rsh)
+# misc modules: (none)
 ```
 
 
