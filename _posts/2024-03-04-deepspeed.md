@@ -113,6 +113,67 @@ GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了�
 - Megatron 开始变得无能为力
 - 而DeepSpeed ZeRO方法问世, 解决了这个问题
 
+
+## DeepSpeed 安装
+
+### 如何安装
+
+直接pip安装：
+
+```sh
+pip install deepspeed
+```
+
+官方推荐仓库本地编译安装，更加适配本地硬件环境：
+
+```sh
+git clone https://github.com/microsoft/DeepSpeed/
+cd DeepSpeed
+rm -rf build
+TORCH_CUDA_ARCH_LIST="8.6" DS_BUILD_CPU_ADAM=1 DS_BUILD_UTILS=1 pip install . \
+--global-option="build_ext" --global-option="-j8" --no-cache -v \
+--disable-pip-version-check 2>&1 | tee build.log
+```
+
+检查
+
+```sh
+ds_report
+```
+
+### HuggingFace
+
+Transformers中，`Trainer`集成核心的DeepSpeed功能
+
+HuggingFace 提供 DeepSpeed 集成，所需参数都可以由Transformer的`Trainer`自动指定。
+- DeepSpeed 在 HuggingFace Transformer 上更为便捷（DeepSpeed 可独立使用，并不依赖于Transformer）。
+                        
+[原文](https://blog.csdn.net/weixin_43301333/article/details/127237122)
+
+作为Transformer的附属包安装
+
+```sh
+pip install transformers[deepspeed]
+```
+
+### 如何使用
+
+使用DeepSpeed之后，你的命令行看起来就会像下面这样：
+
+```sh
+deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
+--deepspeed ds_config.json
+--master_port # 端口号。最好显示指定，默认为29500，可能会被占用（i.e., 跑了多个DeepSpeed进程）。
+--num_gpus # GPU数目，默认会使用当前所见的所有GPU。
+--deepspeed # 提供的config文件，用来指定许多DeepSpeed的重要参数。
+```
+
+使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
+- 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
+
+因此，最重要的是 `--deepspeed`，即提供的config文件，即ZeRO。
+
+
 ## DeepSpeed 原理
 
 DeepSpeed的核心思想: 
@@ -182,64 +243,6 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 [DeepSpeed 官方文档](https://www.deepspeed.ai/getting-started/)
 
 
-## DeepSpeed 安装
-
-### 如何安装
-
-直接pip安装：
-
-```sh
-pip install deepspeed
-```
-
-官方推荐仓库本地编译安装，更加适配本地硬件环境：
-
-```sh
-git clone https://github.com/microsoft/DeepSpeed/
-cd DeepSpeed
-rm -rf build
-TORCH_CUDA_ARCH_LIST="8.6" DS_BUILD_CPU_ADAM=1 DS_BUILD_UTILS=1 pip install . \
---global-option="build_ext" --global-option="-j8" --no-cache -v \
---disable-pip-version-check 2>&1 | tee build.log
-```
-
-检查
-
-```sh
-ds_report
-```
-
-### HuggingFace
-
-Transformers中，`Trainer`集成核心的DeepSpeed功能
-
-HuggingFace 提供 DeepSpeed 集成，所需参数都可以由Transformer的`Trainer`自动指定。
-- DeepSpeed 在 HuggingFace Transformer 上更为便捷（DeepSpeed 可独立使用，并不依赖于Transformer）。
-                        
-[原文](https://blog.csdn.net/weixin_43301333/article/details/127237122)
-
-作为Transformer的附属包安装
-
-```sh
-pip install transformers[deepspeed]
-```
-
-### 如何使用
-
-使用DeepSpeed之后，你的命令行看起来就会像下面这样：
-
-```sh
-deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
---deepspeed ds_config.json
---master_port # 端口号。最好显示指定，默认为29500，可能会被占用（i.e., 跑了多个DeepSpeed进程）。
---num_gpus # GPU数目，默认会使用当前所见的所有GPU。
---deepspeed # 提供的config文件，用来指定许多DeepSpeed的重要参数。
-```
-
-使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
-- 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
-
-因此，最重要的是 `--deepspeed`，即提供的config文件，即ZeRO。
 
 ## DeepSpeed 框架
 
@@ -280,6 +283,51 @@ TencentPretrain 是一个用于对文本、图像、语音等模态数据进行�
 - TencentPretrain遵循模块化的设计原则。通过模块组合，用户能迅速精准的复现已有的预训练模型，并利用已有的接口进一步开发更多的预训练模型。
 - 通过TencentPretrain，建立了一个模型仓库，其中包含不同性质的预训练模型（例如基于不同模态、编码器、目标任务）。用户可以根据具体任务的要求，从中选择合适的预训练模型使用。
 - TencentPretrain继承了开源项目UER (https://github.com/dbiir/UER-py/) 的部分工作，并在其基础上进一步开发，形成支持多模态的预训练模型框架。
+
+## DeepSpeed 实例
+
+
+### AlexNet 训练
+
+以 alexnet 为例, 体验 deepspeed 训练, github 文件: [pipeline_parallelism](https://github.com/microsoft/DeepSpeedExamples/tree/master/training/pipeline_parallelism)
+- [alexnet.py](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/alexnet.py)
+- [train.py](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/train.py)
+- [run.sh](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/run.sh)
+- [ds_config.json](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/ds_config.json)
+
+[run.sh](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/run.sh)
+
+```sh
+deepspeed train.py --deepspeed_config=ds_config.json -p 2 --steps=200
+```
+
+[ds_config.json](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/ds_config.json)
+
+```json
+ {
+  "train_batch_size" : 256,
+  "train_micro_batch_size_per_gpu" : 8,
+
+   "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 0.001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-8
+    }
+  },
+  
+  "steps_per_print" : 10,
+  "wall_clock_breakdown" : false
+ }
+```
+
+单机单卡实验
+- A100 训练200步完毕
+
 
 ## DeepSpeed-Chat
 
@@ -470,9 +518,9 @@ NCCL(NVIDIA Collective Communications Library) 参数使用说明
 
 | 参数 | 意义 | 说明 |
 | --- | --- | --- |
-| NCCL\_IB\_DISABLE | 禁用IB网卡传输端口 | IB (InfiniBand)是一种用于高性能计算的计算机网络通信标准。 |
-| NCCL\_SHM\_DISABLE | 禁用共享内存传输 | 共享内存(SHM)传输支持运行在相同处理单元/机器中的实体之间的快速通信，这依赖于主机操作系统提供的共享内存机制 |
-| NCCL\_P2P\_DISABLE | 禁用GPU之间信息的传输 | P2P使用CUDA和NVLink直接实现GPU之间的传输与访问 |
+| NCCL_IB_DISABLE | 禁用IB网卡传输端口 | IB (InfiniBand)是一种用于高性能计算的计算机网络通信标准。 |
+| NCCL_SHM_DISABLE | 禁用共享内存传输 | 共享内存(SHM)传输支持运行在相同处理单元/机器中的实体之间的快速通信，这依赖于主机操作系统提供的共享内存机制 |
+| NCCL_P2P_DISABLE | 禁用GPU之间信息的传输 | P2P使用CUDA和NVLink直接实现GPU之间的传输与访问 |
 
 关于如何查看GPU是否支持 NVLINK
 
@@ -1976,6 +2024,78 @@ os.environ.update(local_env)
   - `ZeRO`（Zero Redundancy Optimizer）是 DeepSpeed 一种优化技术，旨在提高大规模模型训练的效率和可扩展性。
   - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
 
+#### deepspeed 传参问题
+
+deepspeed 传参问题总结
+- 参数位置敏感: 尤其注意区分deepspeed参数和train.py参数
+  - 格式: deepspeed `ds参数` train.py `train参数` 
+- 别漏了 ds 开关 `--deepspeed`
+- ds_config.json: 放最后, 或 `--deepspeed_config`
+
+alexnet 示例
+- [train.py](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/pipeline_parallelism/train.py)
+
+踩过的一系列坑
+
+```sh
+deepspeed train.py -p 1 --steps=200  --deepspeed_config=ds_config.json --autotuning tune
+# (1) autotuning 放 train.py 后面 → error: unrecognized arguments: --autotuning tune
+
+# (2) train.py 挪至最后 → deepspeed: error: unrecognized arguments: -p
+deepspeed -p 1 --steps=200  --deepspeed_config=ds_config.json --autotuning tune train.py
+
+# (3) autotuning 放 train.py 后面 → AssertionError: DeepSpeed configuration is not provided
+deepspeed --autotuning tune train.py -p 1 --steps=200  --deepspeed_config=ds_config.json
+
+# (4) ds_config.json 放 --deepspeed 前面  → File ".../deepspeed/autotuning/autotuner.py", line 176, in _get_user_config if ".json" in user_args[idx + 1]: IndexError: list index out of range
+# 加 deepspeed 参数
+deepspeed --autotuning tune train.py -p 1 --steps=200  --deepspeed_config=ds_config.json --deepspeed
+# 去掉冗余参数 --deepspeed_config=ds_config.json
+deepspeed --autotuning tune train.py -p 1 --steps=200 --deepspeed --deepspeed_config=ds_config.json
+# (5) 报错 没有 pdsh → apt-get install pdsh (失败) → 编译安装 pdsh, 设置prefix, 添加到 PATH
+# ./configure –-with-ssh –-enable-static-modules –-prefix=/home/username && make && make install
+# bashrc: export PATH=$PATH:/home/username/bin
+# pdsh -V
+# (6) 报错 → localhost: ssh: connect to host localhost port 22: Connection refused
+```
+
+ssh错误提交官方 [issue](https://github.com/microsoft/DeepSpeedExamples/issues/894)
+
+解法：ssh 服务异常, 启动ssh服务, 监听端口 22
+
+```sh
+# 测试, 复现成功
+ssh root@127.0.0.1 -v
+# OpenSSH_8.4p1 Debian-5+deb11u3, OpenSSL 1.1.1n  15 Mar 2022
+# debug1: Reading configuration data /etc/ssh/ssh_config
+# debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
+# debug1: /etc/ssh/ssh_config line 21: Applying options for *
+# debug1: Connecting to 127.0.0.1 [127.0.0.1] port 22.
+# debug1: connect to address 127.0.0.1 port 22: Connection refused
+# ssh: connect to host 127.0.0.1 port 22: Connection refused
+
+ps -ef | grep sshd # 查看结果中是否有sshd服务, 如果没有,安装ssh client,启动ssh
+service sshd status # sshd is running.
+vim /etc/ssh/sshd_config # 开启 22 端口
+/etc/init.d/ssh restart
+# 测试
+ssh root@127.0.0.1 -v
+```
+
+继续追查
+- 官方有同样的错误 [issue](https://github.com/microsoft/DeepSpeed/issues/4759)
+
+```sh
+# (7) 
+# [2024-04-20 19:30:23,366] [INFO] [scheduler.py:393:run_experiment] Done running exp_id = 0, exp_name = profile_model_info, with resource = localhost:0
+# 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:56<00:00, 56.53s/it]
+# [2024-04-20 19:30:28,376] [ERROR] [autotuner.py:699:model_info_profile_run] The model is not runnable with DeepSpeed with error = unrecognized arguments: eyJ0cmFpbl9iYXRjaF9zaXplIjogMjU2LCAidHJhaW5fbWljcm9fYmF0Y2hfc2l6ZV9wZXJfZ3B1IjogMSwgIm9wdGltaXplciI6IHsidHlwZSI6ICJBZGFtIiwgInBhcmFtcyI6IHsibHIiOiAwLjAwMSwgImJldGFzIjogWzAuOSwgMC45OTldLCAiZXBzIjogMWUtMDh9fSwgInN0ZXBzX3Blcl9wcmludCI6IDEwLCAid2FsbF9jbG9ja19icmVha2Rvd24iOiBmYWxzZSwgIm5ub2RlIjogMSwgImF1dG90dW5pbmciOiB7ImVuYWJsZWQiOiB0cnVlLCAibW9kZWxfaW5mb19wYXRoIjogImF1dG90dW5pbmdfcmVzdWx0cy9wcm9maWxlX21vZGVsX2luZm8vbW9kZWxfaW5mby5qc29uIiwgIm1vZGVsX2luZm8iOiB7InByb2ZpbGUiOiB0cnVlfSwgIm1ldHJpY19wYXRoIjogImF1dG90dW5pbmdfcmVzdWx0cy9wcm9maWxlX21vZGVsX2luZm8vbWV0cmljcy5qc29uIn0sICJ6ZXJvX29wdGltaXphdGlvbiI6IHsic3RhZ2UiOiAzfSwgIm1lbW9yeV9icmVha19kb3duIjogZmFsc2V9 --per_device_train_batch_size 1
+
+[2024-04-20 19:30:28,376] [INFO] [runner.py:366:run_autotuning] [End] Running autotuning
+```
+
+
+
 #### 显存预估
 
 DeepSpeed 使用难点在于**时间和空间权衡**。
@@ -2101,7 +2221,7 @@ args = parser.parse_args()
 #### 无法识别 --deepspeed
 
 
-【2024-4-19】无法识别命令行参数 deepspeed, deepspeed_config
+【2024-4-19】无法识别命令行参数 `deepspeed`, `deepspeed_config`
 - 提官方[issues](https://github.com/microsoft/DeepSpeed/issues/3961)
 
 ```
