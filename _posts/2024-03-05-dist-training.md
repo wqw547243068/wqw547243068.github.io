@@ -1185,9 +1185,16 @@ Gradient Accumulation 解决了很多问题：
 
 ## 分布式实现
 
-- 黄文坚的[Tensorflow分布式实战](https://blog.csdn.net/CodeMaster_/article/details/76223835)
+
+超大规模语言模型主要有两条技术路线：
+- (1) `TPU` + `XLA` + `TensorFlow`/`JAX` : Google主导，由于TPU和自家云平台GCP深度绑定
+- (2) `GPU` + `PyTorch` + `Megatron-LM` + `DeepSpeed`: NVIDIA、Meta、MS大厂加持，社区氛围活跃
+
+(1) 对于非Googler 只可远观而不可把玩，(2) 更受到群众欢迎。
 
 ### TF分布式训练方法
+
+- 黄文坚的[Tensorflow分布式实战](https://blog.csdn.net/CodeMaster_/article/details/76223835)
 
 TensorFlow主要的分布式训练的方法有三种：
 1. Customer Train Loop：最原始，由框架工程师自己开发
@@ -3466,7 +3473,9 @@ ZeRO将模型训练阶段，每张卡中显存内容分为两类：
  
 ZeRO-Offload 使 GPU 单卡能够训练 10 倍大的模型
 
-ZeRO-Offload 是 ZeRO（Zero Redundancy Optimizer）技术**扩展**，用显存作为模型参数存储和通信的中间介质，以减少模型并行化训练中的通信和同步开销。
+`ZeRO-Offload` 是 ZeRO（Zero Redundancy Optimizer）技术**扩展**，用显存作为模型参数存储和通信的中间介质，以减少模型并行化训练中的通信和同步开销。
+- 2021年 UC Merced的 [Jie Ren](https://jren73.github.io/) 发表 于ATC, [ZeRO-Offload: Democratizing Billion-Scale Model Training](https://www.usenix.org/conference/atc21/presentation/ren-jie)，博士期间的研究方向是 Memory Management on Heterogeneous Memory Systems for Machine Learning and HPC
+- `ZeRO-Offload` 让人人训练得起大模型
  
 ZeRO-Offload 技术用显存缓存将模型参数存储在显存中，这可以减少网络带宽的使用，同时还可以加速参数访问和更新。为了最大限度地减少显存的使用，ZeRO-Offload技术使用了一种称为“按需加载”的策略。这种策略只在需要使用参数时才将其从磁盘或网络加载到显存中，而不是一次性将所有参数都加载到显存中。
 - ![](https://pic4.zhimg.com/80/v2-e83a35c1d2a1db0738cc19770be60207_1440w.webp)
@@ -3510,8 +3519,15 @@ ZeRO-Offload的切分思路如图 10 所示：
 所以，现在的计算流程是，在GPU上面进行前向和后向计算，将梯度传给CPU，进行参数更新，再将更新后的参数传给GPU。为了提高效率，可以将计算和通信并行起来，GPU在反向传播阶段，可以待梯度值填满bucket后，一遍计算新的梯度一遍将bucket传输给CPU，当反向传播结束，CPU基本上已经有最新的梯度值了，同样的，CPU在参数更新时也同步将已经计算好的参数传给GPU，如下图所示：
 - ![](https://pic3.zhimg.com/80/v2-bac2b7d030141b2a146852a44d5c379a_1440w.webp)
 
-### ZeRO 问题
 
+### ZeRO-Infinity
+
+ZeRO-Infinity: 利用NVMe打破GPU显存墙
+- 2021年发表于SC, [ZeRO-Infinity: Breaking the GPU Memory Wall for Extreme Scale Deep Learning](https://arxiv.org/pdf/2104.07857.pdf)
+- 同样是进行 offload，ZeRO-Offload 更侧重单卡场景，而 `ZeRO-Infinity` 则是典型的工业界风格，奔着极大规模训练去了。
+
+
+### ZeRO 问题
 
 【2023-7-6】[DeepSpeed-ZeRO++ 技术简介](https://zhuanlan.zhihu.com/p/641297077)
 
