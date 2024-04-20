@@ -428,15 +428,7 @@ rm -rf file/ # 目录
 - ![](https://p1-tt.byteimg.com/origin/pgc-image/dba5dffe4dcd446987f9b252f0b21c50?from=pc)
 - ![](https://p1-tt.byteimg.com/origin/pgc-image/80d9bc3abcf34b3eb7efc9655698e6f6?from=pc)
 
-文件压缩
-- .tar 使用tar命令压缩或解压
-- tar cvfz archive.tar.gz dir/
-- tar xvfz. archive.tar.gz
-- .bz2 使用bzip2命令操作
-- .gz 使用gzip命令操作
-- .zip 使用unzip命令解压
-- .rar 使用unrar命令解压
-- ![](https://p3-tt.byteimg.com/origin/pgc-image/0ffce7c93b324bed86a2e5dabdf92049?from=pc)
+
 
 ```sh
 # 复制文件, vi ~/.bashrc 中 alias cp='cp -i'
@@ -449,17 +441,39 @@ cp -rf zongguofeng linuxzgf # 遇到重复文件时，需要挨个提示
 ### 解压命令
 
 如下：
-- (1) *.tar 用 tar –xvf 解压
-- (2) *.gz 用 gzip -d或者gunzip 解压
-- (3) *.tar.gz和*.tgz 用 tar –xzf 解压
-- (4) *.bz2 用 bzip2 -d或者用bunzip2 解压
-- (5) *.tar.bz2用tar –xjf 解压
-- (6) *.Z 用 uncompress 解压
-- (7) *.tar.Z 用tar –xZf 解压
-- (8) *.rar 用 unrar e解压
-- (9) *.zip 用 unzip 解压
-- (10) *.xz 用 xz -d 解压
-- (11) *.tar.xz 用 tar -zJf 解压
+- (1) `*.tar` 用 `tar –xvf` 解压
+- (2) `*.gz` 用 `gzip -d` 或者 `gunzip` 解压
+- (3) `*.tar.gz` 和 `*.tgz` 用 `tar –xzf` 解压
+- (4) `*.bz2` 用 `bzip2 -d` 或者用 `bunzip2` 解压
+- (5) `*.tar.bz2` 用 `tar –xjf` 解压
+- (6) `*.Z`用 `uncompress` 解压
+- (7) `*.tar.Z` 用 `tar –xZf` 解压
+- (8) `*.rar` 用 `unrar e` 解压
+- (9) `*.zip` 用 `unzip` 解压
+- (10) `*.xz` 用 `xz -d` 解压
+- (11) `*.tar.xz` 用 `tar -zJf` 解压
+
+
+文件压缩
+- .tar 使用tar命令压缩或解压
+- tar cvfz archive.tar.gz dir/
+- tar xvfz. archive.tar.gz
+- .bz2 使用bzip2命令操作
+- .gz 使用gzip命令操作
+- .zip 使用unzip命令解压
+- .rar 使用unrar命令解压
+- ![](https://p3-tt.byteimg.com/origin/pgc-image/0ffce7c93b324bed86a2e5dabdf92049?from=pc)
+
+```sh
+.bz2 
+　　解压1：bzip2 -d FileName.bz2 
+　　解压2：bunzip2 FileName.bz2 
+　　压缩： bzip2 -z FileName 
+
+.tar.bz2 
+　　解压：tar jxvf FileName.tar.bz2        或 tar --bzip xvf FileName.tar.bz2 
+　　压缩：tar jcvf FileName.tar.bz2 DirName 
+```
 
 ### 中文乱码
 
@@ -4712,6 +4726,16 @@ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
 pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
 # 192.168.0.233:  16:18:24 up 32 days, 22:19, ? users,  load average: 0.11, 0.12, 0.09
 # 192.168.0.231:  16:18:25 up 32 days, 22:16, ? users,  load average: 0.11, 0.13, 0.15
+```
+
+【2024-4-20】pdsh 安装
+- 源码安装
+- [google code](https://code.google.com/archive/p/pdsh/downloads)
+
+
+```sh
+wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pdsh/pdsh-2.29.tar.bz2
+
 ```
 
 
