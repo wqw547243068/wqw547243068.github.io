@@ -2302,17 +2302,15 @@ apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhua
 ### Torchrun (更新)
 
 Pytorch 1.9.0 引入了 `torchrun`，替代 1.9.0 以前版本 `torch.distributed.launch`。
-
-[torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 是
-
-`torchrun` 是 `torch.distributed.launch` 的超集, elastic launch, 等效于 `python -m torch.distributed.run`
-
-包含 `torch.distributed.launch` 几乎所有功能(除了废弃的`--use-env`)
+- [torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 是 `torch.distributed.launch` 的超集, elastic launch, 等效于 `python -m torch.distributed.run`
+- [torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 包含 `torch.distributed.launch` 几乎所有功能(除了废弃的`--use-env`)
 
 还有三点额外功能：
 - 1、worker rank 和 world_size 将被自动分配
 - 2、`Failover`: worker失败时, 重新启动所有workers来处理workers的故障
 - 3、`Elastic`: 动态增减节点, 允许节点数目在最大/最小值之间改变, 即具备弹性
+
+#### 迁移 torch.distributed.launch->torchrun
 
 迁移方法
 
@@ -2363,6 +2361,33 @@ local_rank = int(os.environ["LOCAL_RANK"])
 torchrun train_script.py #除了--use_env参数，其他torch.distributed.launch所使用的参数均可使用，
 			 #如nnodes、nproc_per_node
 ```
+
+
+#### 初始化 init_process_group
+
+`dist.init_process_group()` 是PyTorch中用于初始化分布式训练的函数之一。
+- 作用： 设置并行训练环境，连接多个进程以进行数据和模型的分布式处理。
+
+通过`init_process_group()`函数这个方法来进行初始化
+
+其参数包括以下内容
+- `backend`（必需参数）：指定分布式后端的类型，选项之一：
+  - ‘tcp’：使用TCP协议进行通信。
+  - ‘gloo’：使用Gloo库进行通信。
+  - ‘mpi’：使用MPI（Message Passing Interface）进行通信。
+  - ‘nccl’：使用NCCL库进行通信（适用于多GPU的分布式训练）。
+  - ‘hccl’：使用HCCL库进行通信（适用于华为昇腾AI处理器的分布式训练）。
+- `init_method`（可选参数）：指定用于初始化分布式环境的方法。它可以是以下选项之一：
+  - ‘env://’：使用环境变量中指定的方法进行初始化。
+  - ‘file:// ’：使用本地文件进行初始化。
+  - ‘tcp://:’：使用TCP地址和端口进行初始化。
+  - ‘gloo://:’：使用Gloo地址和端口进行初始化。
+  - ‘mpi://:’：使用MPI地址和端口进行初始化。
+- `rank`（可选参数）：指定当前进程的排名（从0开始）。
+- `world_size`（可选参数）：指定总共使用的进程数。
+- `timeout`（可选参数）：指定初始化的超时时间。
+- `group_name`（可选参数）：指定用于连接的进程组名称。
+
 
 ### 多机多卡 DDP
 
