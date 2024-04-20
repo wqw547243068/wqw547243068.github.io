@@ -2677,7 +2677,10 @@ for epoch, batch in enumerate(ppo_trainer.dataloader):
 【2024-3-23】[PyTorch官方发布LLM微调工具TorchTune](https://zhuanlan.zhihu.com/p/688671130?utm_psn=1755039674018496512)
 
 PyTorch官方最近发布了支持LLM微调的工具：`TorchTune`。
-- TorchTune 是一个原生的 PyTorch 库，用于轻松编写、微调和实验大型语言模型（LLMs）
+- [TorchTune](https://pytorch.org/blog/torchtune-fine-tune-llms/) 是一个原生的 PyTorch 库，用于轻松编写、微调和实验大型语言模型（LLMs）
+
+#### TorchTune 功能
+
 
 功能：
 - 原生 PyTorch 实现的流行大型语言模型
@@ -2689,16 +2692,24 @@ PyTorch官方最近发布了支持LLM微调的工具：`TorchTune`。
 - [即将推出] 支持来自 TorchAO 的低精度数据类型和量化技术
 - [即将推出] 与各种推理引擎的互操作性
 
-TorchTune已经支持了**Llama2 7B模型**的微调：
+#### TorchTune 微调
+
+TorchTune 已经支持了**Llama2 7B模型**的微调：
 -   单卡微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_single_device.py)
 -   分布式微调：[https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/full_finetune_distributed.py)
 -   单卡LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
 -   分布式LoRA：[https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_distributed.py)
 -   QLoRA：[https://github.com/pytorch/torc](https://github.com/pytorch/torchtune/blob/main/recipes/lora_finetune_single_device.py)
 
+
+#### torchtune 安装
+
 torchtune 必须通过克隆仓库并按照以下方式安装来构建：
 
 ```py
+# ① 
+pip install torchtune
+# ② 
 git clone https://github.com/pytorch/torchtune.git
 cd torchtune
 pip install -e .
