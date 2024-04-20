@@ -1578,6 +1578,51 @@ Syncthing 是一个开源免费的数据同步神器，被称为 Resilio Sync �
 很适合用来搭建私有同步网盘。
 
 
+### 编译安装
+
+编译安装常见命令
+
+```sh
+./configure # 配置
+make # 构建
+make install # 安装
+```
+
+整个过程分为三步：
+1. `配置`
+  - `configure` 脚本负责在系统软件构建环境。确保构建和安装过程所需要的依赖准备好，并且搞清楚使用这些依赖需要的东西。
+  - Unix 程序一般是用 **C 语言**写，所以需要一个 C 编译器去构建。在这个例子中 configure 要做的就是确保系统中有 C 编译器，并确定它的名字和路径。
+2. `构建`
+  - 当 configure 配置完毕后，可以使用 `make` 命令执行构建。这个过程会执行在 Makefile 文件中定义的一系列任务将软件源代码编译成可执行文件。
+  - 下载的源码包一般没有一个最终的 Makefile 文件，一般是一个模版文件 Makefile.in 文件，然后 configure 根据系统的参数生成一个定制化的 Makefile 文件。
+3. `安装`
+  - 软件已经被构建好且可执行，接下来将可执行文件复制到最终路径。
+  - `make install` 命令将可执行文件、第三方依赖包和文档复制到正确路径。
+  - 可执行文件被复制到某个 PATH 包含的路径，程序调用文档被复制到某个 MANPATH 包含的路径，还有程序依赖的文件也会被存放在合适的路径。
+  - 因为安装这一步也是被定义在 Makefile 中，所以程序安装的路径可以通过 configure 命令的参数指定，或者 configure 通过系统参数决定。
+
+如果要将可执行文件安装在系统路径，执行这步需要赋予相应的权限，一般是通过 sudo。
+
+
+不直接写 configure 脚本文件，而是通过创建一个描述文件 `configure.ac` 来描述 configure 需要做的事情。
+- `configure.ac` 使用 `m4sh` 写，m4sh 是 m4 宏命令和 shell 脚本的组合。
+
+make 和 make install 区别
+- make 用来编译，从Makefile中读取指令，然后编译。
+- make install 用来安装，也从Makefile中读取指令，安装到指定的位置。
+
+常见目标：
+- make all：编译程序、库、文档等（等同于make）
+- make install：安装已经编译好的程序。复制文件树中到文件到指定的位置
+- make unistall：卸载已经安装的程序。
+- make clean：删除由make命令产生的文件
+- make distclean：删除由./configure产生的文件
+- make check：测试刚刚编译的软件（某些程序可能不支持）
+- make installcheck：检查安装的库和程序（某些程序可能不支持）
+- make dist：重新打包成packname-version.tar.gz
+
+【2024-4-20】[configure、 make、 make install 背后的原理](https://zhuanlan.zhihu.com/p/77813702)
+
 
 ## linux进程
 
