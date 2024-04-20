@@ -1879,7 +1879,7 @@ Pytorch 通过 torch.distributed 包提供分布式支持，包括 GPU 和 CPU �
 概念：
 - `group`：即**进程组**。默认只有一个组，一个 job 即为一个组，即一个 world。
   - 当需要进行更加精细的通信时，通过 new_group 接口，使用 word 的子集，创建新组，用于集体通信等。
-- `world size` ：表示**全局进程个数**。
+- `world_size` ：表示**全局进程个数**。
 - `rank`：表示**进程序号**，用于进程间通讯，表征进程优先级。取值范围: `0~world_size`
   - `rank = 0` 主机为 **master 节点**。
 - `local_rank`：进程内，**GPU 编号**，非显式参数，由 `torch.distributed.launch` 内部指定。
@@ -1904,12 +1904,8 @@ torch.distributed 提供了 3 种初始化方式：**tcp**、**共享文件** �
 `init_process_group` 函数原型
 
 ```py
-torch.distributed.init_process_group(backend, 
-                                     init_method=None, 
-                                     timeout=datetime.timedelta(0, 1800), 
-                                     world_size=-1, 
-                                     rank=-1, 
-                                     store=None)
+torch.distributed.init_process_group(backend, init_method=None, timeout=datetime.timedelta(0, 1800), 
+                                     world_size=-1, rank=-1, store=None)
 ```
 
 函数作用
@@ -1918,9 +1914,9 @@ torch.distributed.init_process_group(backend,
 参数详解
 - `backend` ：指定当前进程要使用的通信后端
   - 小写字符串，支持的通信后端有 gloo，mpi，nccl 。建议用 nccl。
-- `init_method` ： 指定当前进程组初始化方式
+- `init_method` ：指定当前进程组初始化方式
   - 可选参数，字符串形式。如果未指定 init_method 及 store，则默认为 env://，表示使用读取环境变量的方式进行初始化。该参数与 store 互斥。
-- `rank` ： 指定当前进程的优先级
+- `rank` ：指定当前进程的优先级
 - `int` 值。表示当前进程的编号，即优先级。如果指定 store 参数，则必须指定该参数。
   - rank=0 的为主进程，即 master 节点。
 - `world_size` ：该 job 中的总进程数。如果指定 store 参数，则需要指定该参数。
@@ -1934,9 +1930,7 @@ torch.distributed.init_process_group(backend,
 函数声明
 
 ```py
-torch.distributed.new_group(ranks=None, 
-                            timeout=datetime.timedelta(0, 1800), 
-                            backend=None)
+torch.distributed.new_group(ranks=None, timeout=datetime.timedelta(0, 1800), backend=None)
 ```
 
 函数作用
@@ -1957,16 +1951,13 @@ torch.distributed.new_group(ranks=None,
 - is_mpi_available 检查 MPI 后端是否可用
 - is_nccl_available 检查 NCCL 后端是否可用
 
-
-
 #### (1) TCP 初始化
 
 ```py
 import torch.distributed as dist
 
 # Use address of one of the machines
-dist.init_process_group(backend, init_method='tcp://10.1.1.20:23456',
-                        rank=args.rank, world_size=4)
+dist.init_process_group(backend, init_method='tcp://10.1.1.20:23456',rank=args.rank, world_size=4)
 ```
 
 说明
@@ -3515,7 +3506,7 @@ ZeRO-Offload的切分思路如图 10 所示：
 - ![](https://pic1.zhimg.com/80/v2-a5ded60ef49d1c2e9a0b9f8cf7ae29a8_1440w.webp)
 
 图10中有四个计算类节点：FWD、BWD、Param update和float2half，前两个计算复杂度大致是 O(MB) ， B 是batch size，后两个计算复杂度是 O(M) 。为了不降低计算效率，将前两个节点放在GPU，后两个节点不但计算量小还需要和Adam状态打交道，所以放在CPU上，Adam状态自然也放在内存中，为了简化数据图，将前两个节点融合成一个节点FWD-BWD Super Node，将后两个节点融合成一个节点Update Super Node。
- 
+
 所以，现在的计算流程是，在GPU上面进行前向和后向计算，将梯度传给CPU，进行参数更新，再将更新后的参数传给GPU。为了提高效率，可以将计算和通信并行起来，GPU在反向传播阶段，可以待梯度值填满bucket后，一遍计算新的梯度一遍将bucket传输给CPU，当反向传播结束，CPU基本上已经有最新的梯度值了，同样的，CPU在参数更新时也同步将已经计算好的参数传给GPU，如下图所示：
 - ![](https://pic3.zhimg.com/80/v2-bac2b7d030141b2a146852a44d5c379a_1440w.webp)
 
