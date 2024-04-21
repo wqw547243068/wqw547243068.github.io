@@ -2478,6 +2478,12 @@ print(text)
 - LinkSoul.AI 开源可商用的中英文双语**视觉-语言**助手 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA) 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文**视觉-文本**多模态对话的开源可商用对话模型。
 - 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
 
+### Llama 3
+
+【2024-4-19】Meta [Llama 3](https://ai.meta.com/blog/meta-llama-3/)
+
+8B base 接近原来的 70B，然后 instruction tuned 的 8B 远超原来的 70B。场景化 fine tune 变成更可行
+
 ### 猎鹰 Falcon -- 唯一免费商用
 
 【2023-6-5】[碾压LLaMA，「猎鹰」彻底开源！400亿参数，万亿token训练，霸榜Hugging Face](https://zhuanlan.zhihu.com/p/634189977)
