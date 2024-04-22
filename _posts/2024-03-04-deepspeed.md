@@ -2083,7 +2083,9 @@ ssh root@127.0.0.1 -v
 ```
 
 继续追查
-- 官方有同样的错误 [issue](https://github.com/microsoft/DeepSpeed/issues/4759)
+- 官方有同样的错误: issue
+  - [The model is not runnable with DeepSpeed with error ](https://github.com/microsoft/DeepSpeed/issues/4759)
+  - [run_after_tuning: No optimal DeepSpeed configuration found by autotuning](https://github.com/huggingface/transformers/issues/27830)
 
 ```sh
 # (7) 
