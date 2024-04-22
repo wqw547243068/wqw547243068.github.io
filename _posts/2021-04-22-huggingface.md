@@ -3,7 +3,7 @@ layout: post
 title:  Huggingface使用笔记
 date:   2021-04-22 16:52:00
 categories: 深度学习 技术工具
-tags: NLP Transformer bert gpt tensorflow pytorch
+tags: NLP Transformer bert gpt tensorflow pytorch datasets
 excerpt: 跟预训练语言模型一起成长壮大的创业公司
 mathjax: true
 permalink: /huggingface
@@ -135,9 +135,7 @@ HuggingFace主干库：
 
 ## 数据
 
-数据集工具包
-
-huggingface datasets 
+数据集工具包 huggingface datasets 
 
 
 ### load_dataset 函数
@@ -197,6 +195,15 @@ dataset_2 = datasets.load_dataset("../dataset/glue", name="cola")
 
 ### 本地数据集
 
+【2024-4-22】错误
+
+```sh
+  File "/usr/local/lib/python3.9/dist-packages/datasets/load.py", line 1780, in dataset_module_factory
+    raise ConnectionError(f"Couldn't reach '{path}' on the Hub ({type(e).__name__})")
+ConnectionError: Couldn't reach 'wikitext' on the Hub (ConnectTimeout)
+```
+
+
 服务器访问不了外网，如何读取本地数据集？
 1. 首先，下载并存储数据
 2. 然后，把数据集上传到指定服务器地址，并进行本地加载
@@ -214,6 +221,17 @@ dataset = load_from_disk("your_path")
 ```
 
 更多示例
+
+```py
+from datasets import Dataset, load_dataset, load_from_disk
+
+dataset = load_dataset("Salesforce/dialogstudio", "TweetSumm")
+dataset.save_to_disk("dataset/Salesforce/dialogstudio") # 保存到该目录下
+# dataset 本地加载
+dataset = load_from_disk("dataset/Salesforce/dialogstudio")
+
+```
+
 
 ```py
 import datasets
