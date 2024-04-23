@@ -519,6 +519,7 @@ Key findings:
 ExtractGPT
 - 一款浏览器扩展程序，可从结构化和非结构化页面中获取数据
 
+
 ##### GPTBot
 
 【2023-8-8】OpenAI刚刚推出了GPTBot，一个自动从整个互联网抓取数据的网络爬虫。
@@ -527,6 +528,14 @@ ExtractGPT
 
 [GPTBot](https://platform.openai.com/docs/gptbot)是OpenAI开发的一个网络爬虫，用于在网络上收集信息，帮助改进AI模型。如果你是网站所有者，可以选择是否允许它访问网站或某些部分。同时，OpenAI确保了在使用GPTBot时，不会访问或使用任何敏感或付费内容。简单说，它就是一个用来学习和改进的小助手，但网站所有者可以自由选择是否和它互动。
 
+##### AutoCrawler
+
+【2024-4-19】Wenhao Huang等人[论文](https://huggingface.co/papers/2404.12753)中提出了AutoCrawler，将大型语言模型与网页爬虫相结合的新型网页自动化框架。
+- 传统的网页抓取方法缺乏适应性和扩展性，而基于大型语言模型的**智能代理**在开放环境中表现不佳。
+
+[AutoCrawler](https://github.com/EZ-hwh/AutoCrawler) 通过分两个阶段、利用HTML的层次结构进行渐进式理解，从错误行动中学习并持续优化HTML，从而更好地生成抓取操作。
+
+实验证明，该框架可有效提高网页爬虫在多样化和动态网络环境中的性能。
 
 
 #### 语料扩充
