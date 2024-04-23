@@ -98,6 +98,19 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 
 ## 加速框架
 
+
+### 推理极限
+
+【2024-4-23】[大模型推理的极限：理论分析、数学建模与 CPU/GPU 实测](https://arthurchiao.art/blog/llm-inference-speed-zh/)
+- [LLM inference speed of light](https://zeux.io/2024/03/15/llm-inference-sol/)
+
+[calm](https://github.com/zeux/calm) 是一个基于 CUDA、完全从头开始编写的轻量级 transformer-based language models 推理实现
+- RTX 4090 上 calm 使用 16 位权重时达到 ~15.4 ms/tok，使用 8 位权重时达到 ~7.8 ms/tok， 达到了理论极限的 90%。
+- Apple M2 Air 上使用 CPU 推理时，calm 和 llama.cpp 只达到理论 100 GB/s 带宽的 ~65%， 然后带宽就上不去了，这暗示需要尝试 Apple iGPU 了。
+- 推导细节 [sol.ipynb](https://github.com/zeux/calm/blob/main/tools/sol.ipynb)
+
+推理过程并未充分利用算力（ALU）。 需要重新平衡 FLOP:byte 比例， [speculative decoding](https://medium.com/@TitanML/in-the-fast-lane-speculative-decoding-10x-larger-model-no-extra-cost-f33ea39d065a) 等技术试图部分解决这个问题。
+
 ### GPT-Fast
 
 这几年，有一堆文本生成的开源项目 llama.cpp, vLLM, 和 MLC-LLM. 为了更加使用方便，长城要求模型转成特殊格式、增加新依赖。
