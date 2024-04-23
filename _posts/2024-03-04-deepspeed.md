@@ -475,6 +475,23 @@ deepspeed main.py \
 ```
 
 
+启动模式
+- 单机多卡: 不用 hostfile
+  - 未指定 hostfile 时, ds 会检测本机可用 GPU 数
+  - include/exclude 正常使用, 但需要设置 localhost, `deepspeed --include localhost:1 ...`
+  - `CUDA_VISIBLE_DEVICES` 控制可用 GPU 失效
+- 多机多卡: 需要 hostfile 文件, 配合 include/exclude 指定部分节点
+  - ds 会传播 NCCL and PYTHON 环境变量到各个节点
+  - 如果想增加变量, 设置 dot 文件 `~/.deepspeed_env`, 格式 `NCCL_IB_DISABLE=1`;
+  - 如果修改 dot 文件, 修改环境变量 `DS_ENV_FILE`
+  - mpirun + DeepSpeed 或 AzureML: 安装 [mpi4py](https://pypi.org/project/mpi4py/)
+
+```sh
+deepspeed --hostfile=myhostfile <client_entry.py> <client args> \
+  --deepspeed --deepspeed_config ds_config.json
+```
+
+
 #### 启动参数
 
 
