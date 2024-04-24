@@ -491,6 +491,159 @@ deepspeed --hostfile=myhostfile <client_entry.py> <client args> \
   --deepspeed --deepspeed_config ds_config.json
 ```
 
+#### 启动脚本源码
+
+
+DeepSpeed/deepspeed/luanch 目录下的文件
+
+```sh
+__init__.py         
+constants.py        
+launch.py           
+launcher_helper.py  
+multinode_runner.py 
+runner.py # ds 主入口
+```
+
+runner.py
+
+```py
+from ..autotuning import Autotuner
+
+def run_autotuning(args, active_resources):
+    # autotune 初始化
+    tuner = Autotuner(args, active_resources)
+    logger.info("[Start] Running autotuning")
+    # tune: 寻参模式
+    tuner.tune()
+    tuner.print_tuning_results()
+    # 保存最优参数
+    logger.info("[End] Running autotuning")
+    tuner.write_optimal_config()
+    # 启动训练任务
+    if args.autotuning == "run":
+        tuner.run_after_tuning()
+
+def main(args=None):
+    args = parse_args(args)
+    #...
+    # 当前可用节点信息
+    active_resources = parse_inclusion_exclusion(resource_pool, args.include, args.exclude)
+    #...
+    # 只要 autotuning 非空, 就启用 autotune
+    if args.autotuning != "":
+        run_autotuning(args, active_resources)
+        return
+```
+
+Autotuner 类定义
+
+```py
+from .config import DeepSpeedAutotuningConfig
+from .constants import *
+from .scheduler import ResourceManager
+from .tuner import GridSearchTuner, RandomTuner, ModelBasedTuner
+from .utils import *
+
+class Autotuner:
+    """The DeepSpeed Autotuner automatically discovers the optimal DeepSpeed configuration that delivers good training speed. The Autotuner uses model information, system information, and heuristics to efficiently tune system knobs that affect compute and memory efficiencies, such as ZeRO optimization stages, micro-batch sizes, and many other ZeRO optimization configurations. It not only reduces the time and resources user spend on tuning, but also can discover configurations better than hand-tuned methods.
+    Autotuning with DeepSpeed requires no code change from DeepSpeed users. Please refer to the README for usage details.
+    """
+    def __init__(self, args, active_resources):
+        self.args = args
+        self.selected_exp_dir = None
+        #...
+        # 实例化资源管理器 set the active resource for the autotuner resource manager
+        self.rm = self._get_resource_manager(active_resources)
+        # 获取实验资源信息:node,gpu数目 get resource requirement for each autotuning experiment
+        self.exp_num_nodes, self.exp_num_gpus = self._get_exp_resources(args)
+    
+    def _get_resource_manager(self, active_resources):
+        """Initialize and return a resource manager
+        Args:
+            active_resources ([dict]): A dictionary of hostname and its slots (GPUs), e.g. {"worker-0": "0,1,2,3,4,5,6,7,8"}
+        Raises:
+            RuntimeError: raises the error if no GPU is available
+        Returns:
+            [ResourceManager]: A resource manager that schedules and runs autotuning experiments.
+        """
+        logger.info(f"active_resources = {active_resources}")
+        hosts = []
+        ngpus_per_node = 100
+        # 遍历当前可用主机
+        for hostname, slots in active_resources.items():
+            hosts.append(hostname)
+            ngpus_per_node = min(len(slots), ngpus_per_node)
+        assert ngpus_per_node > 0, "no gpu is available"
+        return ResourceManager(args=self.args,
+                               hosts=hosts,
+                               num_gpus_per_node=ngpus_per_node,
+                               results_dir=self.results_dir,
+                               exps_dir=self.exps_dir,
+                               arg_mappings=self.autotuning_config.arg_mappings)
+    def tune(self): # 参数搜索
+        """ Tunes Zero stages, micro batch size per GPU, and other Zero configurations. Performance metrics of different tuning spaces are recorded in self.records.
+        """
+        if has_mlflow:
+            self.mlflow_parent_id = os.environ['MLFLOW_RUN_ID']
+            mlflow.start_run(run_id=self.mlflow_parent_id)
+
+        self.start_time = time.time()
+        if self.fast_enabled():
+            logger.info(f"Fast mode is enabled. Tuning micro batch size only.")
+
+        # model info profile run with DEFAULT_MIN_MEM_CONFIG
+        model_info = self.model_info_profile_run()
+        # ...
+
+    def model_info_profile_run(self):
+        """Does a model information profiling experiment that collects the number of model parameters and activation memory.\
+            The experiment produces a "profile_model_info" folder under self.results_dir.
+        Returns:
+            [dict]: a model information dictionary, e.g., {"num_params": 335144976, "trainable_num_params": 335144976, "activation_mem_per_gpu": 324358144, "rank": 0}
+        """
+        logger.info("Starting model info profile run.")
+        model_info = self.autotuning_config.model_info
+        if model_info and MODEL_INFO_NUM_PARAMS in model_info:
+            return model_info
+
+        ds_config = copy.deepcopy(self.user_config)
+        replace_dict(ds_config, DEFAULT_MIN_MEM_CONFIG)
+
+        model_info_path = os.path.join(self.results_dir, "profile_model_info", "model_info.json")
+        ds_config[AUTOTUNING] = {"enabled": True, "model_info_path": model_info_path, "model_info": {"profile": True}}
+
+        exp_config = {}
+        exp_name = "profile_model_info"
+        exp_config['name'] = exp_name
+        exp_config[DS_CONFIG] = ds_config
+        exp_config['num_gpus'] = self.exp_num_gpus
+        exp_config['num_nodes'] = self.exp_num_nodes
+        exp_config['hostfile'] = self.args.hostfile
+        exp_path = os.path.join(self.exps_dir, f'{exp_name}.json')
+        # 读取实验配置信息
+        with open(exp_path, 'w', buffering=BUFSIZE) as fd:
+            json.dump(exp_config, fd)
+            fd.flush()
+            os.fsync(fd)
+        # 安排实验任务
+        self.rm.schedule_experiments([exp_path])
+        # 启动实验任务: 多线程
+        self.rm.run()
+
+        for exp_id, (exp_json, err) in self.rm.finished_experiments.items():
+            self.rm.clear()
+            if err:
+                logger.error(f"The model is not runnable with DeepSpeed with error = {err}")
+                return None
+
+        if os.path.exists(model_info_path):
+            with open(model_info_path, 'r') as f:
+                model_info = hjson.load(f)
+                return model_info
+
+
+```
 
 #### 启动参数
 
