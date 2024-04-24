@@ -243,7 +243,6 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 [DeepSpeed 官方文档](https://www.deepspeed.ai/getting-started/)
 
 
-
 ## DeepSpeed 框架
 
 [DeepSpeed](https://www.deepspeed.ai/getting-started/) 主要分成以下四个板块，包括：`Training`、`Inference`、`Compression`、`Science`
@@ -447,7 +446,7 @@ deepspeed 总入口在 `deepspeed.__init__::initialize`
     - 注意ZeRO为3时，需要单独处理
 
 
-#### 启动脚本
+#### 启动脚本概要
 
 bash脚本 run_1.3b.sh 调用 main.py 训练，主要学习 main.py 程序。
 
@@ -491,10 +490,149 @@ deepspeed --hostfile=myhostfile <client_entry.py> <client args> \
   --deepspeed --deepspeed_config ds_config.json
 ```
 
+启动模式: [gpt2/test_tune.sh](https://github.com/microsoft/DeepSpeedExamples/blob/master/training/autotuning/hf/gpt2/test_tune.sh)
+
+```py
+MODEL_NAME=gpt2
+PER_DEVICE_TRAIN_BATCH_SIZE=1
+HF_PATH=~/projects
+NEPOCHS=1
+NGPUS=16
+NNODES=1
+MAX_STEPS=200
+OUTPUT_DIR=./output_b${PER_DEVICE_TRAIN_BATCH_SIZE}_g${NGPUS}_$MAX_STEPS
+
+TEST=$1
+
+if [ ${TEST} == "0" ]
+then
+    # python -m torch.distributed.launch -> torchrun
+    torchrun --nproc_per_node=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py \
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_0 \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "z0" ]
+then
+    deepspeed --num_nodes=$NNODES --num_gpus=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py --deepspeed ../dsconfigs/ds_config_fp16_z0.json\
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_z0 \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "z1" ]
+then
+    deepspeed --num_nodes=$NNODES --num_gpus=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py --deepspeed ../dsconfigs/ds_config_fp16_z1.json\
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_z1 \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "z2" ]
+then
+    deepspeed --num_nodes=$NNODES --num_gpus=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py --deepspeed ../dsconfigs/ds_config_fp16_z2.json\
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_z2 \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "z3" ]
+then
+    deepspeed --num_nodes=$NNODES --num_gpus=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py --deepspeed ../dsconfigs/ds_config_fp16_z3.json\
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_z3 \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "tune" ]
+then
+    deepspeed --autotuning run --num_nodes=$NNODES --num_gpus=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py --deepspeed ../dsconfigs/ds_config_fp16_tune.json\
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_tune \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+elif [ ${TEST} == "fs" ]
+then
+    torchrun --nproc_per_node=$NGPUS $HF_PATH/transformers/examples/pytorch/language-modeling/run_clm.py \
+    --model_name_or_path $MODEL_NAME \
+    --dataset_name wikitext \
+    --dataset_config_name wikitext-2-raw-v1 \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --per_device_train_batch_size $PER_DEVICE_TRAIN_BATCH_SIZE \
+    --learning_rate 2e-5 \
+    --num_train_epochs $NEPOCHS \
+    --output_dir ${OUTPUT_DIR}_fs \
+    --overwrite_output_dir \
+    --save_steps 0 \
+    --max_steps $MAX_STEPS \
+    --save_strategy "no"
+    --sharded_ddp zero_dp_2
+fi
+```
+
+
 #### 启动脚本源码
 
 
-DeepSpeed/deepspeed/luanch 目录下的文件
+[DeepSpeed/deepspeed/launch](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed/launch) 目录下的文件
 
 ```sh
 __init__.py         
@@ -505,7 +643,7 @@ multinode_runner.py
 runner.py # ds 主入口
 ```
 
-runner.py
+[runner.py](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed/autotuning/runner.py)
 
 ```py
 from ..autotuning import Autotuner
@@ -641,8 +779,6 @@ class Autotuner:
             with open(model_info_path, 'r') as f:
                 model_info = hjson.load(f)
                 return model_info
-
-
 ```
 
 #### 启动参数
