@@ -206,8 +206,8 @@ B站爆火数字人ip `柳叶熙`
 目前数字人模型效果最好的是ernerf，其借鉴了nerf体渲染的思路，在输入维度上添加了音频特征，通过音频来影响渲染效果（控制嘴型）。 
 
 开源代码[metahuman-stream](https://github.com/lipku/metahuman-stream)基于ernerf模型实现了实时流式数字人
-- 支持声音克隆
-- 支持大模型对话: LLM模型支持Chatgpt,Qwen和GeminiPro。需要在app.py中填入自己的api_key。
+- 支持**声音克隆**
+- 支持**大模型对话**: LLM模型支持 Chatgpt,Qwen和GeminiPro。要在app.py中填入自己的api_key。
 - 支持多种音频特征驱动：wav2vec、hubert
   - hubert提取音频特征
 - 支持全身视频拼接
@@ -233,6 +233,21 @@ B站爆火数字人ip `柳叶熙`
   - （2）wav2vec延时1s多，需要缓存50帧音频做计算，可以通过-m设置context_size来减少延时
   - （3）srs转发延时，设置srs服务器减少缓冲延时。
 
+
+【2024-4-24】 
+- MacOS 部署失败,缺乏GPU
+- Ubuntu GPU 部署：docker 启动失败
+
+```sh
+# 运行rtmpserver (srs)
+docker run --rm -it -p 1935:1935 -p 1985:1985 -p 8080:8080 registry.cn-hangzhou.aliyuncs.com/ossrs/srs:5
+# 启动数字人：
+python app.py
+# 如果访问不了huggingface，在运行前
+export HF_ENDPOINT=https://hf-mirror.com
+# 运行成功后，用vlc访问rtmp://serverip/live/livestream
+# 用浏览器打开 http://serverip:8010/echo.html, 在文本框输入任意文字，提交。数字人播报该段文字
+```
 
 ### 表情迁移
 
