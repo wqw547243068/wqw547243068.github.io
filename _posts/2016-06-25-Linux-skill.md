@@ -407,11 +407,18 @@ echo "done"
 
 ### 软连接
 
+如何建立软链接？
+- 大文件，复制多份不环保
+
 ```sh
 # (1) 创建
 ln –s  /var/www/test(源)   /var/test(目标)
 # 将/source/file1目录链接到./file
 ln -s /source/file1 ./file
+# [2024-4-25] 将远程大文件链接到本地小文件
+ln -s /mnt/bn/flow-algo-intl/zhouzefan/aidp_result/20240331/20240331_witheval.json 20240331_witheval.json
+du -sh 20240331_witheval.json # 4k
+less 20240331_witheval.json # 内容正常
 # (2) 修改
 # 将./file的链接目录改成/source/file2
 ln -snf /source/file2 ./file
