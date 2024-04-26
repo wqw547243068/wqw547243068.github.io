@@ -1588,6 +1588,26 @@ PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为�
 【2022-10-9】参考：[帕累托效率与卡尔多-希克斯效率](https://zhuanlan.zhihu.com/p/295443538)
 
 
+### 工程实践
+
+多目标
+- 多个loss引入pareto优化理论
+
+[深度学习多个loss如何平衡](https://www.zhihu.com/question/375794498/answer/2307552166)
+
+【2024-4-26】Pareto optimal solution
+- 论文: [Multi-Task Learning as Multi-Objective Optimization](https://proceedings.neurips.cc/paper/2018/hash/432aca3a1e345e339f35a30c8f65edce-Abstract.html)
+
+#### LibMTL
+
+代码
+- 多任务学习 PyTorch 库 [LibMTL](https://github.com/median-research-group/LibMTL)
+
+Features
+Unified: LibMTL provides a unified code base to implement and a consistent evaluation procedure including data processing, metric objectives, and hyper-parameters on several representative MTL benchmark datasets, which allows quantitative, fair, and consistent comparisons between different MTL algorithms.
+Comprehensive: LibMTL supports many state-of-the-art MTL methods including 8 architectures and 16 optimization strategies. Meanwhile, LibMTL provides a fair comparison of several benchmark datasets covering different fields.
+Extensible: LibMTL follows the modular design principles, which allows users to flexibly and conveniently add customized components or make personalized modifications. Therefore, users can easily and fast develop novel optimization strategies and architectures or apply the existing MTL algorithms to new application scenarios with the support of LibMTL.
+
 
 ## 资料
 
