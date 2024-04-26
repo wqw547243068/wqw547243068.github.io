@@ -174,6 +174,24 @@ deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
 因此，最重要的是 `--deepspeed`，即提供的config文件，即ZeRO。
 
 
+【2023-9-16】[DeepSpeed：炼丹小白居家旅行必备](https://www.bilibili.com/video/BV1mN411n7eg)
+- 代码：[](https://github.com/OvJat/DeepSpeedTutorial)
+- 如何使用deepspeed分布式训练大模型：原理、代码、操作细节
+
+```sh
+deepspeed \
+    --launcher_args "source ${PWD}/setup_env.sh" \
+    --hostfile hostfile \
+    deepspeed_script.py \
+    --deepspeed \
+    --deepspeed_config "$PWD/deepspeed_config.json"
+```
+
+<iframe src="//player.bilibili.com/player.html?aid=491005367&bvid=BV1mN411n7eg&cid=1269537042&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+
+
+
 ## DeepSpeed 原理
 
 DeepSpeed的核心思想: 
@@ -939,8 +957,10 @@ hostfile 示例
 hostfile.txt
 
 ```js
-1.1.1.1 slots=8
-2.2.2.2 slots=8
+// ip  gpu数
+10.2.180.1 slots=2
+10.2.180.2 slots=2
+10.2.180.3 slots=2
 ```
 
 
