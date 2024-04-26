@@ -15,6 +15,14 @@ mathjax: true
 
 # 概率统计
 
+
+## 科普
+
+【2023-9-6】[概率的尽头，是命运吗？](https://www.bilibili.com/video/BV1hw411U7YP)
+
+<iframe src="//player.bilibili.com/player.html?aid=320716079&bvid=BV1hw411U7YP&cid=1258731778&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+
 ## 机器学习中的概率模型
 
 注意
