@@ -1598,6 +1598,9 @@ PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为�
 【2024-4-26】Pareto optimal solution
 - 论文: [Multi-Task Learning as Multi-Objective Optimization](https://proceedings.neurips.cc/paper/2018/hash/432aca3a1e345e339f35a30c8f65edce-Abstract.html)
 
+MGDA 作为基础后改进，MGDA是这篇文章：
+- Multiple-gradient descent algorithm (MGDA) for multiobjective optimization.
+
 #### LibMTL
 
 代码
