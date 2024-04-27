@@ -16,6 +16,9 @@ permalink: /deepspeed
 # DeepSpeed 学习笔记
 
 
+deepspeed 知识点 
+- [ppt](https://github.com/chenzomi12/AISystem/tree/main/06Foundation/07Parallel)
+
 
 ## DeepSpeed 框架演进
 
