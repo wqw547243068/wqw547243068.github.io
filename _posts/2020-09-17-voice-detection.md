@@ -2249,8 +2249,18 @@ text_prompt = """
 audio_array = generate_audio(text_prompt)
 ```
 
+### 语音风格化
+
+音色转换：按照指定音色说话或歌唱
+- [在线体验](https://www.mindtechassist.com/%E9%9F%B3%E8%89%B2%E8%BD%AC%E6%8D%A2)
+
+[人生分离](https://www.mindtechassist.com/%E4%BA%BA%E5%A3%B0%E5%88%86%E7%A6%BB)，人声分离：将音频（音乐）中的人声和其他声音分离
 
 ###  语音克隆
+
+【2024-4-27】
+- 中文声音克隆[在线体验](https://www.mindtechassist.com/%E4%B8%AD%E6%96%87%E5%A3%B0%E9%9F%B3%E5%A4%8D%E5%88%BB)
+- [声音复刻：订制个人专属声音](https://www.mindtechassist.com/%E5%A4%9A%E8%AF%AD%E7%A7%8D%E5%A3%B0%E9%9F%B3%E5%A4%8D%E5%88%BB)
 
 #### MockingBird
 
@@ -3142,7 +3152,14 @@ fine-tune 实践
 
 ![](https://storage.googleapis.com/lablab-static-eu/images/tutorials/result.jpg)
 
-## windows下tts
+
+### 微软 TTS
+
+微软 [Azure TTS](https://azure.microsoft.com/zh-cn/products/ai-services/text-to-speech)
+- [体验地址](https://www.mindtechassist.com/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90)
+
+
+### windows下tts
 
 - 运行环境：Anaconda3（Python 3.7）+ windows 10
 - 效果
