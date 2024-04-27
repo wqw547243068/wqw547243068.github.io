@@ -249,6 +249,19 @@ export HF_ENDPOINT=https://hf-mirror.com
 # 用浏览器打开 http://serverip:8010/echo.html, 在文本框输入任意文字，提交。数字人播报该段文字
 ```
 
+
+#### 腾讯 MuseTalk
+
+【2024-4-27】[腾讯开源的数字人MuseTalk到底行不行？](https://mp.weixin.qq.com/s/M4AEOR2xBMHtrojZrvmkow)
+- [在线使用](https://www.mindtechassist.com)，[数字分身效果展示及体验](https://www.mindtechassist.com/%E6%95%B0%E5%AD%97%E5%88%86%E8%BA%AB(%E9%80%9A%E7%94%A8%E7%89%88))
+- [MuseTalk GitHub](https://github.com/TMElyralab/MuseTalk)
+
+场景
+- 图片数字人：让照片开口说话
+- 真人视频根据语音换嘴型
+
+效果虽然还不是很满意，但总比 wav2lip 好
+
 ### 表情迁移
 
 - 【2022-1-24】iphone 手机自带标签迁移功能，imessage里可以通过摄像头捕捉表情，并应用到动画形象上。个性化拟人表情：选取肤色、头饰、眼镜等等
