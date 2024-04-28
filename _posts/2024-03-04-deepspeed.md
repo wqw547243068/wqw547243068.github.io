@@ -20,13 +20,20 @@ deepspeed 知识点
 - [ppt](https://github.com/chenzomi12/AISystem/tree/main/06Foundation/07Parallel)
 
 
+
 ## 为什么
 
 一个**7B**规模大模型（如LLaMA-2 7B），基于**16-bit**混合精度训练时
 - 仅考虑模型参数、梯度、优化器情况下，显存占用就有**112GB**
   - 参数占GPU 显存近 **14GB**（每个参数2字节）。
   - 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
-  - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数的copy、一个momentum和一个variance，这三个都是float32）
+  - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数copy、一个momentum和一个variance，这三个都是float32）
+    - 2byte 模型**静态**参数权重（以16bit存储） = 14G
+    - 2byte 模型**更新**参数权重 （以16bit存储）= 14G
+    - 2byte **梯度**（以16bit存储）= 14G
+    - 2byte **梯度更新**（以16bit存储）= 14G
+    - 4byte **一阶动量**优化器更新（以32bit存储）= 28G
+    - 4byte **二阶方差**优化器更新（以32bit存储）= 28G
   - 目前，合计112GB
   - 还有：前向传播时激活值，各种临时变量
   - 还与sequence length, hidden size、batch size都有关系。
