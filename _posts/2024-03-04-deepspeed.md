@@ -20,6 +20,29 @@ deepspeed 知识点
 - [ppt](https://github.com/chenzomi12/AISystem/tree/main/06Foundation/07Parallel)
 
 
+## 为什么
+
+一个**7B**规模大模型（如LLaMA-2 7B），基于**16-bit**混合精度训练时
+- 仅考虑模型参数、梯度、优化器情况下，显存占用就有**112GB**
+  - 参数占GPU 显存近 **14GB**（每个参数2字节）。
+  - 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
+  - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数的copy、一个momentum和一个variance，这三个都是float32）
+  - 目前，合计112GB
+  - 还有：前向传播时激活值，各种临时变量
+  - 还与sequence length, hidden size、batch size都有关系。
+- 目前A100、H100这样主流显卡单张是放不下，更别提国内中小厂喜欢用的A6000/5000、甚至消费级显卡。
+
+混合精度训练的迭代流程
+- ![](https://pic1.zhimg.com/80/v2-8aed207b50089e0f6598974edfaeabc8_1440w.webp)
+
+PyTorch 里的 DataParallel 无法满足
+- ![](https://pic2.zhimg.com/80/v2-617ce43cf91185b2fd426daf6e6222e5_1440w.webp)
+
+模型并行和流水线并行实现相对复杂，需要模型拆分、卡间通讯等。以及优化显存占用门槛高。
+
+这也是DeepSpeed被设计的初衷。
+
+
 ## DeepSpeed 框架演进
 
 【2024-4-6】总结：
