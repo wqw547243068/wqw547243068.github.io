@@ -114,7 +114,27 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 ## 分布式训练范式
 
-### 通讯原语
+
+### 通信技术
+
+分布式条件下的多进程、多worker之间的通信技术，常见的主要有：MPI、NCCL，GRPC等。
+- **MPI**主要是被应用在超算等大规模计算领域，机器学习场景下使用较少。主要是openMPI原语等。
+- **NCCL**是NVIDIA针对GPU设计的一种规约库，可以实现多GPU间的直接数据同步，避免内存和显存的，CPU和GPU间的数据拷贝成本。当在TensorFlow中选择单机多卡训练时，其默认采用的就是NCCL方式来通信。
+- **GRPC**是比较成熟的通信技术了，spark等框架内也都有用到。
+
+演变
+- 早期MPI在CPU和GPU的分布式通信领域都是主力军
+- 在NCCL推出之后
+  - MPI库现在就只用在了CPU分布式通信场景
+  - 而GPU分布式通信库目前都是以NCCL为主（NV场景）。
+
+#### 通信方式
+
+Pytorch 分布式训练通信依赖`torch.distributed`模块，`torch.distributed`提供了`point-2-point communication` 和`collective communication`两种通信方式。
+- 点对点 point-2-point communication（`P2P`）提供了send和recv语义，用于任务间的通信。
+- 收集 collective communication（`CC`）提供了scatter/broadcast/gather/reduce/all_reduce/all_gather 语义，不同的backend在提供的通信语义上具有一定的差异性。
+
+训练大模型主要是CC通信
 
 #### 如何选择
 
@@ -179,6 +199,7 @@ NCCL 对 CPU 和 GPU 均有较好支持，且 torch.distributed 对其也提供�
 NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - 专为英伟达的计算卡和网络优化，能带来更低的延迟和更高的带宽。
 
+原语
 - `Broadcast`： 一对多的通信原语，一个数据发送者，多个数据接收者，可以在集群内把一个节点自身的数据广播到其他节点上。
 - `Scatter`： 一对多的通信原语，也是一个数据发送者，多个数据接收者，可以在集群内把一个节点自身的数据发散到其他节点上。与Broadcast不同的是，Broadcast把主节点0的数据发送给所有节点，而Scatter则是将数据进行切片再分发给集群内所有的节点。
 - `Gather`： 多对一的通信原语，具有多个数据发送者，一个数据接收者，可以在集群内把多个节点的数据收集到一个节点上。
@@ -187,17 +208,25 @@ NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - `ReduceScatter`： 多对多的通信原语，具有多个数据发送者，多个数据接收者，在集群内的所有节点上都按维度执行相同的Reduce规约运算，再将结果发散到集群内所有的节点上。Reduce-scatter等价于节点个数次的reduce规约运算操作，再后面执行节点个数的scatter次操作。其反向操作是AllGather。
 - `AllReduce`： 多对多的通信原语，具有多个数据发送者，多个数据接收者，在集群内的所有节点上都执行相同的Reduce操作，可以将集群内所有节点的数据规约运算得到的结果发送到所有的节点上。
 
+
+通信原语汇总
+
 汇总如下
 
-|原语操作|模式|说明|图解|
-|---|---|---|---|
-|`Broadcast`|广播:一对多|广播行为：从节点0广播相同信息到其它指定节点(0-3)|![](https://pic3.zhimg.com/80/v2-ddab6ac76e09c8a86bfc1f8fad8d1d6e_1440w.webp)|
-|`Scatter`|一对多|从0节点将数据不同部分按需发送到不同节点||
-|`Reduce`|规约:多对一|一系列简单聚合运算,如:sum/min/max,prod,lor等|![](https://pic2.zhimg.com/80/v2-25e275b3a8c7a8b98054b83dc6420d8d_1440w.webp)|
-|`AllReduce`|多对多|所有节点上应用相同的Reduce操作|![](https://pic3.zhimg.com/80/v2-4846a68e4fec0d3dbaf73e6c56c2983e_1440w.webp)|
-|`Gather`|多对一|反向Scatter:将多个Sender上的数据收集到单个节点上||
-|`AllGather`|多对多|收集所有节点到所有节点上, `AllGather`=`Gather`+`Broadcast`|![](https://pic2.zhimg.com/80/v2-cd07564e08307b856586106bb79bf3e5_1440w.webp)|
-|`ReduceScatter`||将单节点输入求和，再0维度按卡切分并发送, `ReduceScatter`=`Reduce`+`Scatter`|![](https://pic1.zhimg.com/80/v2-55652f9d4274b76249f1e745c66a40d8_1440w.webp)|
+|原语操作|模式|说明|图解|示意图|
+|---|---|---|---|---|
+|`Broadcast`|广播:一对多|广播行为：从节点0广播相同信息到其它节点(0-3)|![](https://pic3.zhimg.com/80/v2-559434c1d53c4b8314c9d79aa70a32c6_1440w.webp)|![](https://pic4.zhimg.com/80/v2-c8aec100f7984bc64dae66dea5067657_1440w.webp) |
+|`Scatter`|一对多|另一种广播,从节点0将数据**不同部分**按需发送到不同节点,常见于DP的数据分配起步阶段|![](https://pic3.zhimg.com/80/v2-8cbcae4e5a544f607afc88b9d3c2122a_1440w.webp)|![](https://pic2.zhimg.com/80/v2-988509a65724802d800ff0d40c78ab11_1440w.webp)|
+|`Reduce`|规约:多对一|规约操作，Reduce意为减少/精简,一系列简单聚合运算,如:sum/min/max,prod,lor等|![](https://pic2.zhimg.com/80/v2-a364ebb1cdeccfbba2293d983b2b834d_1440w.webp)|![](https://pic1.zhimg.com/80/v2-ea6eef07151786d13cceef53a718fd74_1440w.webp)|
+|`AllReduce`|多对多|所有节点上应用相同的Reduce操作,单节点上 Reduce + Broadcast,最消耗带宽|![](https://pic3.zhimg.com/80/v2-2176fb0289edb0b380cceb6bbd2d5ca2_1440w.webp)|![](https://pic1.zhimg.com/80/v2-0411e66990dac2867af16e425eef27e8_1440w.webp)|
+|`Gather`|多对一|**反向Scatter**:将多个Sender的数据汇总到单个节点上|![](https://pic2.zhimg.com/80/v2-4b74592358b3acaabbff91e6fe61fae5_1440w.webp)|![](https://pic1.zhimg.com/80/v2-badb6e96036f1cbbd65fc1c9ccf54070_1440w.webp)|
+|`AllGather`|多对多|收集所有节点到所有节点上, `AllGather`=`Gather`+`Broadcast`|![](https://pic4.zhimg.com/80/v2-497c129eb7aa4f3b51bd3f3a53e1ca73_1440w.webp)|![](https://pic3.zhimg.com/80/v2-3bfe939e5f713d5c6099ea161fbdffc2_1440w.webp)|
+|`ReduceScatter`||将单节点输入求和，再0维度按卡切分并发送, `ReduceScatter`=`Reduce`+`Scatter`|![](https://pic1.zhimg.com/80/v2-55652f9d4274b76249f1e745c66a40d8_1440w.webp)|![]()|
+|`All2All`||全交换操作，每个节点都获取其他节点的值|![](https://pic2.zhimg.com/80/v2-ff0a3da8d01c5b7d4391edad5da14661_1440w.webp)|![]()|
+
+All2All 与 All Gather 区别在于：[LLM分布式训练第一课（通讯原语）](https://zhuanlan.zhihu.com/p/682896222)
+- All Gather 操作中，不同节点向某一节点收集到的数据是完全相同的
+- 而在 All2All 中，不同的节点向某一节点收集到的数据是不同的。
 
 `AllReduce` 的目标: 将不同机器上的数据整合(reduce)后分发给各个机器
 
@@ -352,7 +381,7 @@ DataParallel的优缺点如下：
 Shazeer 等人于2017年发表了名为“稀疏门控专家混合”（MoE）层的文章，提出了在一个深度神经网络中可以通过连接多个专家的门控机制来实现输出控制的方法。
 
 
-## 神经网络训练开销
+## 模型训练开销
 
 神经网络模型占用的显存包括：
 - 模型自身的参数
@@ -476,6 +505,36 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 
 更多信息见[原文](https://juejin.cn/post/6844903640558206984)
 
+训练时显存不足怎么办？
+
+常见的节省显存操作，优先级从高到低排列。
+1. 去掉 compute_metrics：
+  - 有些代码会在输出层后计算rouge分等，这个会输出一个 `batch_size`*`vocab_size`*`seq_len` 的一个大向量，非常占显存。
+1. 采用`bf16`/`fp16`进行混合精度训练：
+  - 现在大模型基本上都采用 bf16 来进行训练
+  - 但是如 v100 不支持，可以采用fp16进行训练。显存占用能够降低1倍。
+1. `Flash attention`：不仅能够降低显存，更能提高训练速度。
+1. `batch_size` 调小：
+  - batch size 与模型每层激活状态所占显存呈**正相关**
+  - 降低 batch size 能够很大程度上降低这部分显存占用。
+1. 采用**梯度累积**：
+  - `global_batch_size` = `batch_size` * `梯度累积`
+  - 如果降低 batch_size 后想保持 global_batch_size 不变，可适当提高梯度累积值。
+1. 选择合适的**上下文长度**：
+  - 上下文长度与激活状态所占显存呈**正相关**
+  - 因此可适当降低上下文长度来降低显存占用。
+1. `DeepSpeed Zero`：
+  - 显存占用从高到低为：`Zero 1` > `Zero 2` > `Zero 2` + `offload` > `zero 3` > `zero 3` + `offload`
+  - 推荐最多试到 `Zero2` + `offload`。
+1. 选择更小的基座模型：在满足需求的情况下，尽量选择更小的基座模型。
+ 
+慎重选择：
+1. `Lora`: 能跑**全参**就别跑 `Lora` 或 `Qlora`，一方面是麻烦，另一方面的确是效果差点。
+1. `Qlora`: Qlora 速度比lora慢，但所需显存更少，实在没资源可以试试。
+1. `Megatron-LM`: 可采用**流水线**并行和**张量**并行，使用比较麻烦，适合喜欢折腾的同学。
+1. `Pai-Megatron-LM`: Megatron-LM 的衍生，支持 Qwen 的sft和pt，坑比较多，爱折腾可以试试。
+1. **激活检查点**：不推荐，非常耗时。在反向传播时重新计算深度神经网络的中间值。用时间（重新计算这些值两次的时间成本）来换空间（提前存储这些值的内存成本）。
+
 ### GPU 要存哪些参数
 
 【2023-6-28】[参考](https://mp.weixin.qq.com/s/pUcXaCwCqGCw3KOt-fgH-w)
@@ -499,11 +558,11 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 - **int8**精度，一个参数需要 8 bits, **1** byte.
 
 模型需要的RAM大致分三个部分：
-- 模型参数： 参数量*每个参数所需内存
+- **模型参数**： 参数量*每个参数所需内存
   - 对于fp32，LLaMA-6B需要 6B*4 bytes = 24GB 内存
   - 对于int8，LLaMA-6B需要 6B*1 byte = 6GB 内存
-- 梯度： 参数量*每个梯度参数所需内存
-- 优化器参数： 不同的优化器所储存的参数量不同。
+- **梯度**： 参数量*每个梯度参数所需内存
+- **优化器**参数： 不同的优化器所储存的参数量不同。
   - 对于常用的AdamW，需要储存**两倍**的模型参数（用来储存一阶和二阶momentum）。
   - fp32 的 LLaMA-6B，AdamW需要 6B*8 bytes = 48 GB
   - int8 的 LLaMA-6B，AdamW需要 6B*2 bytes = 12 GB
@@ -1177,13 +1236,6 @@ Gradient Accumulation 解决了很多问题：
 - 单机**多卡**：利用一台GPU上的多块GPU进行分布式训练。数据并行和模型并行皆可。整个训练过程一般只有一个进程，多GPU之间的通信通过多线程的方式，模型参数和梯度在进程内是共享的(基于NCCL的可能不大一样)。这种情况下基于Reduce的架构比PS架构更合适一些，因为不需要一个显式的PS，通过进程内的Reduce即可完成梯度同步。
 - **多机**单卡：操作上与多机多卡基本一致
 - 多机**多卡**：多机多卡是最典型的分布式架构，所以它需要较好的进程间的通讯机制(多worker之间的通信)。
-
-### 通信技术
-
-分布式条件下的多进程、多worker之间的通信技术，常见的主要有：MPI、NCCL，GRPC等。
-- **MPI**主要是被应用在超算等大规模计算领域，机器学习场景下使用较少。主要是openMPI原语等。
-- **NCCL**是NVIDIA针对GPU设计的一种规约库，可以实现多GPU间的直接数据同步，避免内存和显存的，CPU和GPU间的数据拷贝成本。当在TensorFlow中选择单机多卡训练时，其默认采用的就是NCCL方式来通信。
-- **GRPC**是比较成熟的通信技术了，spark等框架内也都有用到。
 
 
 内容：
