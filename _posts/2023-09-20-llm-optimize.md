@@ -115,7 +115,7 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 ### generate 函数
 
 【2023-12-18】
-- [How to make LLMs go fast](https://vgel.me/posts/faster-inference/), 译文 [语言大模型推理加速指南](https://www.yunqiic.com/2024/02/01/%E8%AF%AD%E8%A8%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F%E6%8C%87%E5%8D%97/)
+- [How to make LLMs go fast](https://vgel.me/posts/faster-inference/), 译文 [语言大模型推理加速指南](https://www.jiqizhixin.com/articles/2024-02-14-2)
 
 ```py
 def generate(prompt: str, tokens_to_generate: int) -> str:
@@ -154,7 +154,10 @@ GPT-2生成下一个词元的情况：
 "I like bananas, because they have"
 
 # 单次生成
+
 ```
+
+![](https://image.jiqizhixin.com/uploads/editor/ef2cb6fe-34aa-4097-92cd-af28c83a1ba6/640.png)
 
 ### 优化
 
