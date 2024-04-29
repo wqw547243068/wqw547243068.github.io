@@ -43,9 +43,15 @@ AI工程分两个阶段：训练 和 推理
 
 ## 指标
 
-LLM 推理服务重点关注两个指标：`吞吐量`和`时延`：
-- `吞吐量`：主要从系统的角度来看，即系统在单位时间内能处理的 tokens 数量。计算方法为系统处理完成的 tokens 个数除以对应耗时，其中 tokens 个数一般指输入序列和输出序列长度之和。吞吐量越高，代表 LLM 服务系统的资源利用率越高，对应的系统成本越低。
-- `时延`：主要从用户的视角来看，即用户平均收到每个 token 所需位时间。计算方法为用户从发出请求到收到完整响应所需的时间除以生成序列长度。一般来讲，当时延不大于 50 ms/token 时，用户使用体验会比较流畅。
+LLM 推理服务评估指标：
+- 首词元(token)时间（Time to First Token）：接收提示后多久才返回第一个词元？
+- 生成**时延**（Generation Latency）：接收提示后多久才返回最终词元？
+- **吞吐量**（Throughput）：能够同时通过pipeline传递多少个不同的生成？
+- 硬件**利用率**（Hardware Utilization）：在多大程度上有效地利用计算、内存带宽和硬件的其他能力？
+
+重点关注两个指标：`吞吐量`和`时延`：
+- `吞吐量`：从系统角度来看，即系统在单位时间内能处理的 tokens 数量。计算方法为系统处理完成的 tokens 个数除以对应耗时，其中 tokens 个数一般指输入序列和输出序列长度之和。吞吐量越高，代表 LLM 服务系统的资源利用率越高，对应的系统成本越低。
+- `时延`：从用户视角看，即用户平均收到每个 token 所需位时间。计算方法为用户从发出请求到收到完整响应所需的时间除以生成序列长度。一般来讲，当时延不大于 50 ms/token 时，用户使用体验会比较流畅。
 
 `吞吐量`关注系统**成本**，高`吞吐量`代表系统单位时间处理的请求大，系统利用率高。`时延`关注用户使用体验，即返回结果要快。
 
@@ -95,6 +101,102 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 - MQA和GQA通过共享键值投影或分组，可以显著减少cache内存需求。   
 - Falcon、PaLM、LLAMA等新模型设计都采用了这些优化技术，以支持长文本场景。   
 - 持续研究工作致力于进一步提升大模型计算和内存效率，部署LLM仍面临挑战。选择合适的算法和模型架构十分关键。
+
+
+## 解码原理
+
+大模型推理本质上串行，一个字一个字的去预测
+- ![](https://pic1.zhimg.com/80/v2-fe0e1038d6f3b3b5fe10eef22d894ec4_1440w.webp)
+
+[llama 7B模型结构](https://zhuanlan.zhihu.com/p/628511161)
+- ![](https://pic1.zhimg.com/v2-8fb8e3d7da3af3bc7dc3d250be1cd060_r.jpg)
+
+
+### generate 函数
+
+【2023-12-18】
+- [How to make LLMs go fast](https://vgel.me/posts/faster-inference/), 译文 [语言大模型推理加速指南](https://www.yunqiic.com/2024/02/01/%E8%AF%AD%E8%A8%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F%E6%8C%87%E5%8D%97/)
+
+```py
+def generate(prompt: str, tokens_to_generate: int) -> str:
+    tokens = tokenize(prompt)
+    for i in range(tokens_to_generate):
+        next_token = model(tokens)
+        tokens.append(next_token)
+    return detokenize(tokens)
+```
+
+generate 函数
+- (1) **单次生成**: 原版, 一次向模型传递一个序列，并在每个step附加一个词元
+- (2) **批次生成**: 改为一次向模型传递**多个**序列，同一前向传递中为每个序列生成一个补全（completion）
+  - 批处理序列允许模型权重同时用于多个序列，所以将整个序列批次一起运行所需的时间比分别运行每个序列所需的时间少。
+  - 问题: 整个batch未完成时,已完成的序列还要被迫继续生成随机词元，然后截断，浪费 GPU 资源
+- (3) **连续批次生成**: 将新序列插入批次来解决这一问题，插入位置是 `[end]` 词元之后，注意力掩码机制来防止该序列受到上一序列中词元的影响
+
+GPT-2生成下一个词元的情况：
+- 20 个词元 x 1 个序列 = 约 70 毫秒
+- 20 个词元 x 5 个序列 = 约 220 毫秒（线性扩展约 350 毫秒）
+- 20 个词元 x 10 个序列 = 约 400 毫秒（线性扩展约 700 毫秒）
+
+```sh
+# 单次生成
+"Mark is quick. He"
+"Mark is quick. He moves"
+"Mark is quick. He moves quickly."
+"Mark is quick. He moves quickly.[END]"
+# 批次生成
+"Mark is quick. He moves"
+"The Eiffel Tower is"
+"I like bananas, because they"
+# 1
+"Mark is quick. He moves quickly"
+"The Eiffel Tower is in"
+"I like bananas, because they have"
+
+# 单次生成
+```
+
+### 优化
+
+大模型推理优化
+- 大模型**重复**之前计算过的词向量
+  - mask机制，前边词向量不会受到后边词向量影响。
+  - 解法: 缓存已计算过的k,v
+  - 示例: transofrmers（hugging face）库实现了这种推理加速，LlamaAttention类中，通过past_key_value这个变量保存计算过的某个词向量
+- 降低**模型精度**
+  - 从float32降低到float16，预测效果并不会下降很多，但是推理速度会快两倍
+
+
+## 硬件加速 
+
+直截了当的方法（尤其有风险投资) ：
+- 购买更好的硬件, GPU/TPU
+- 如果负担不起，就充分利用已有硬件。
+
+### cpu 传输
+
+注意: 
+- CPU和加速器之间存在传输瓶颈
+  - 如果模型不适应加速器内存，前向传递过程中将被交换出去，显著降低速度。
+  - 这是苹果M1/M2/M3芯片在推理方面表现突出的原因之一，因为有统一的CPU和GPU内存。
+- 无论是CPU还是加速器推理，都要先考虑是否充分利用了硬件
+  - 经过适当优化的程序可从较差硬件中获得更多收益，而未充分优化的程序尽管使用了最好的硬件，获得的收益可能还不如前者。
+
+### kernel 加速
+
+示例
+
+PyTorch 编写注意力
+- `F.softmax(q @ k.T / sqrt(k.size(-1)) + mask) @ v` ，可以得到正确结果。
+- 但改用 `torch.nn.functional.scaled_dot_product_attention`，将在可用时将计算委托给 FlashAttention，从而通过更好地利用缓存的手写kernel实现**3倍**加速。
+
+### 编译器
+
+更为通用的是 torch.compile、TinyGrad 和 ONNX 这样的编译器，将简单的Python代码融合成为针对你的硬件进行优化的kernel。
+
+类似 torch.compile 这样的工具是优化代码、提升硬件性能的绝佳选择，而无需使用CUDA以传统方式编写kernel。
+
+
 
 ## 加速框架
 
