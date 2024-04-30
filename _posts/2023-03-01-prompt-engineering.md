@@ -2292,6 +2292,15 @@ For harder tasks, you might need a lot more examples in which case you might be 
 
 More recently, ChatGPT came into the scene. For many of the attacks that we tried above, ChatGPT already contains some guardrails and it usually responds with a safety message when encountering a malicious or dangerous prompt. While ChatGPT prevents a lot of these adversarial prompting techniques, it's not perfect and there are still many new and effective adversarial prompts that break the model. One disadvantage with ChatGPT is that because the model has all of these guardrails, it might prevent certain behaviors that are desired but not possible given the constraints. There is a tradeoff with all these model types and the field is constantly evolving to better and more robust solutions.
 
+
+##### OpenAI 指令层次化
+
+【2024-4-19】OpenAI （翁丽莲团队） 发布提示注入、越狱防攻击办法
+- [The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions](https://arxiv.org/pdf/2404.13208)
+- 原因: LLM 认为 system prompt 和 用户提供的 user prompt 同等重要
+- 解法: 设计 层次化指令 instruction hierarchy, 让模型忽略低优先级的prompt
+
+
 #### 案例
 
 ChatGPT 案例
