@@ -2793,6 +2793,22 @@ pip install -e .
 ```
 
 
+### torchtitan
+
+【2024-4-28】[torchtitan](https://github.com/pytorch/torchtitan) - 用于大型模型训练的原生 PyTorch 库
+
+[torchtitan](https://github.com/pytorch/torchtitan) is a proof-of-concept (概念验证阶段) for Large-scale LLM training using native PyTorch. 
+- It is (and will continue to be) a repo to showcase PyTorch's latest distributed training features in a clean, minimal codebase. 
+- `torchtitan` is complementary (补充) to and not a replacement (替代) for any of the great large-scale LLM training codebases such as `Megatron`, `Megablocks`, `LLM Foundry`, `Deepspeed`, etc. 
+- Instead, we hope that the features showcased in `torchtitan` will be adopted by these codebases quickly. torchtitan is unlikely to ever grow a large community around it.
+
+Our guiding principles when building torchtitan:
+- Designed to be easy to understand, use and extend for different training purposes.
+- Minimal changes to the model code when applying 1D, 2D, or (soon) 3D Parallel.
+- Modular components instead of a monolithic codebase.
+
+Get started in minutes, not hours!
+
 ### 总结
 
 Megatron-DeepSpeed 实施 3D 并行以可以让大型模型以非常有效的方式进行训练。
