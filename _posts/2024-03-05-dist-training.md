@@ -1977,6 +1977,53 @@ torch.distributed 提供了 3 种初始化方式：**tcp**、**共享文件** �
 - 共享文件: 共享文件对于组内所有进程可见
 - 环境变量:
 
+#### 数据读取 
+
+
+pytorch 分布式训练，数据读取采用**主进程预读取并缓存**，其它进程从**缓存**中读取，不同进程之间的数据同步具体通过torch.distributed.barrier()实现。[参考](https://www.cnblogs.com/pyclq/p/15433787.html)
+- 分布式数据读取： `主进程`读取数据 → `主进程`缓存 → `从进程`读取缓存 
+
+进程号rank
+
+多进程上下文中，通常假定`rank 0`是第一个进程/主进程，其它进程分别具有 0，1，2 不同rank号，这样总共具有4个进程。
+
+（2）单一进程数据处理
+
+通有些操作没必要并行处理，如: 数据读取与处理操作，只需要一个进程进行处理并缓存，然后与其它进程**共享缓存处理数据**
+- 但由于不同进程同步执行，单一进程处理数据必然会导致进程间不同步现象（数据读取操作处理时间较长）对于较短时间的单一进程程序运行不会影响线程不同步的情况
+
+为此，torch中采用了`barrier()`函数对其它**非主进程**进行阻塞，达到同步目的
+
+（3）barrier()具体原理
+
+如果执行 create_dataloader()函数的进程
+- 不是主进程: 即rank不等于0或者-1
+  - 上下文管理器会执行相应的 `torch.distributed.barrier()`，设置一个**阻塞栅栏**，让此进程处于**等待**状态，等待所有进程到达栅栏处（包括主进程数据处理完毕）；
+- 是主进程: 其会直接读取数据，然后处理结束之后会遇到 `torch.distributed.barrier()`
+
+此时，所有进程都到达了当前的栅栏处，这样所有进程就达到了同步，并同时得到释放。
+
+```py
+def create_dataloader():
+    #使用上下文管理器中实现的barrier函数确保分布式中的主进程首先处理数据，然后其它进程直接从缓存中读取
+    with torch_distributed_zero_first(rank):
+        dataset = LoadImagesAndLabels()
+ 
+from contextlib import contextmanager
+ 
+#定义的用于同步不同进程对数据读取的上下文管理器
+@contextmanager
+def torch_distributed_zero_first(local_rank: int):
+    """
+    Decorator to make all processes in distributed training wait for each local_master to do something.
+    """
+    if local_rank not in [-1, 0]:
+        torch.distributed.barrier()
+    yield   #中断后执行上下文代码，然后返回到此处继续往下执行
+    if local_rank == 0:
+        torch.distributed.barrier()
+```
+
 
 #### 初始化进程组
 
