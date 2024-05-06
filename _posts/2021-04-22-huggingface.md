@@ -374,6 +374,7 @@ huggingface-cli 命令直接从Hub下载文件。
 - 内部使用 `hf_hub_download()` 和 `snapshot_download()` 助手，并将返回路径打印到终端
 - 文件将被下载到由`HF_HOME`环境变量定义的缓存目录中（如果未指定，则为`~/.cache/huggingface/hub`）
 
+
 ```sh
 # 查看可用参数
 huggingface-cli download --help
@@ -381,6 +382,8 @@ huggingface-cli download --help
 huggingface-cli download gpt2 config.json
 #~/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
 huggingface-cli download google/gemma-7b-it-pytorch
+# [2024-5-6] merlin 上执行失，败403, mac 本地成功
+huggingface-cli download google/bigbird-roberta-large --local-dir=. --quiet
 # 指定身份
 huggingface-cli download gpt2 config.json --token=hf_****
 #/home/wauplin/.cache/huggingface/hub/models--gpt2/snapshots/11c5a3d5811f50298f278a704980280950aedb10/config.json
