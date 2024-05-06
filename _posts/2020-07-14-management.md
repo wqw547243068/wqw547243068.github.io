@@ -688,6 +688,11 @@ permalink: /management
 - 2.0 向下兼容: 推拉摇移
 - 3.0 做局
 
+[视频](https://www.bilibili.com/video/BV1Rf421Z7wh)
+
+<iframe src="//player.bilibili.com/player.html?aid=1202324525&bvid=BV1Rf421Z7wh&cid=1487285380&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+
 #### 社交1.0
 
 社交1.0 也叫**向上社交**。总结为4个字：**借还送套**。
