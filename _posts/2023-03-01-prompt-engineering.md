@@ -651,13 +651,14 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 - 给定一个训练集，定义好评价指标，运行automatic prompt engineering框架之后，将自动得到能取得最佳效果的prompt。
 - `APE`：candidate -> selection -> resample
   - 核心思路：从候选集中选出好的prompt，再在好的prompt附近进行试探性地搜索。
-  - 生成环节两种模式: reverse mode更加自然，forward mode则更加考验模型的instruction following能力
+  - 生成环节两种模式: 
+    - 前向 reverse mode 更加自然
+    - 后向 forward mode 则更加考验模型的instruction following能力
 - `APO`：gradient descent in language space
-  - 核心思路: 在文本空间实现gradient descent过程
+  - 核心思路: 文本空间实现 gradient descent 过程
   - APO本质: 构建一个optimizer，其框架是参照gradient decent来设计
-- `ORPO`: 谷歌提出的OPRO，其思路更为原生。
+- `OPRO`: 谷歌提出的OPRO，其思路更为原生。
   - 核心思路: 让LLM基于过往的迭代记录、优化目标，总结规律，逐步迭代prompt，整个过程在文本空间上完成。
-
 
 分析
 - APE 主要思路是**挑选+试探性优化**，优化方向性较弱；
