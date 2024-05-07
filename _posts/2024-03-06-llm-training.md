@@ -1247,6 +1247,27 @@ ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始�
 - 设定了一个固定的学习率 3e-5，并采取逐步增加 batch size 的策略，即从 batch size 4M token 开始，每当模型 loss 停止下降时就增加 batch size，使 loss 继续下降，让模型学习更加充分，收敛性能更好。
 
 
+## DeepSeek
+
+
+### DeepSeek-V2
+
+【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh)
+- DeepSeek-V2 基于 2 千亿 MoE 模型底座，领先性能，超低价格，越级场景体验，已在对话官网和API全面上线
+- 技术报告: [浅读 DeepSeek-V2 技术报告](https://zhuanlan.zhihu.com/p/696292840)
+
+DeepSeek-V2 在 DeepSeek上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
+
+DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 的上下文长度。
+- 与DeepSeek 67B相比，DeepSeek-V2 在性能上取得了显著提升，节省了42.5%的训练成本，减少了93.3%的KV缓存，并将最大生成吞吐量提高到了5.76倍。
+
+深度求索将该 DeepSeek-V2 模型已完全上线至平台服务用户，DeepSeek-V2 API也是物美价廉。并且秉持着最开放的开源精神，深度求索将这次的DeepSeek-V2模型和论文也将完全开源，免费商用。
+
+### 模型结构
+
+模型结构
+- ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
+
 ## 训练经验
 
 
