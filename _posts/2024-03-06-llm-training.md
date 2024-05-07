@@ -1255,6 +1255,7 @@ ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始�
 【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh)
 - DeepSeek-V2 基于 2 千亿 MoE 模型底座，领先性能，超低价格，越级场景体验，已在对话官网和API全面上线
 - 技术报告: [浅读 DeepSeek-V2 技术报告](https://zhuanlan.zhihu.com/p/696292840)
+- 仓库和技术报告地址：[DeepSeek-V2](https://github.com/deepseek-ai/DeepSeek-V2)
 
 DeepSeek-V2 在 DeepSeek上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
 
