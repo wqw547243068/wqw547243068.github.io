@@ -3743,5 +3743,21 @@ ZeRO 为了打一个翻身仗，不得不优化自己的短板，减少**跨机�
   - 对 LayerNorm 和 Softmax 进行批处理，使它们更适合并行计算
   - 引入了模型感知分配器，以确保在可变长度请求服务期间内存占用较小
 
+### GPU与神经网络
+
+- [为什么GEMM是深度学习的核心](https://www.jianshu.com/p/6d3f013d8aba) 
+- [Why GEMM is at the heart of deep learning]()
+
+GPU主要加速gemm，论文
+- gemm在深度学习中的耗时占比达到80%以上。
+- fc可以展开为gemm 
+- cnn可以通过im2col展开为gemm
+
+cuda框架中，cuBLAS主要是对gemm类算法进行优化，其他cuFFT，cuRAND, cuSPARSE各自针对不同的算法进行优化。
+
+cuDNN则是完全针对DL中的batchNormalization这类神经网络层的计算进行优化。
+
+作者：[Huisheng Xu](https://www.zhihu.com/question/571648206/answer/2796623713)
+
 
 # 结束
