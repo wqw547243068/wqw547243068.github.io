@@ -3,7 +3,7 @@ layout: post
 title:  "分布式训练及推理加速"
 date:   2024-03-05 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 加速 分布式 tensorrt 推理加速 onnx zero lpu
+tags: GPU Tensorflow Pytorch 并行计算 加速 分布式 tensorrt 推理加速 onnx zero lpu cuda gemm
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -3745,8 +3745,19 @@ ZeRO 为了打一个翻身仗，不得不优化自己的短板，减少**跨机�
 
 ### GPU与神经网络
 
+如何让神经网络的深度学习更快、更省电？
+
+重点关注一个名为GEMM的函数。
+- BLAS（基本线性代数子程序）库的一部分，该库最早创建于1979年
+
+使用Alex Krizhevsky的Imagenet架构进行图像识别的典型深度卷积神经网络的时间。
+- ![](https://petewarden.files.wordpress.com/2015/04/profile.png)
+- 所有以`fc`（即：全连接层）或`conv`（即：卷积层）开头的层都是使用`GEMM`实现的，几乎所有的时间（95%的GPU版本，89%的CPU版本）都花在这些层上。
+
 - [为什么GEMM是深度学习的核心](https://www.jianshu.com/p/6d3f013d8aba) 
-- [Why GEMM is at the heart of deep learning]()
+- [Why GEMM is at the heart of deep learning](https://petewarden.com/2015/04/20/why-gemm-is-at-the-heart-of-deep-learning/)
+
+#### GPU加速核心GEMM
 
 GPU主要加速gemm，论文
 - gemm在深度学习中的耗时占比达到80%以上。
@@ -3758,6 +3769,42 @@ cuda框架中，cuBLAS主要是对gemm类算法进行优化，其他cuFFT，cuRA
 cuDNN则是完全针对DL中的batchNormalization这类神经网络层的计算进行优化。
 
 作者：[Huisheng Xu](https://www.zhihu.com/question/571648206/answer/2796623713)
+
+
+#### 什么是GEMM？
+
+`GEMM` 代表 GEneral Matrix to Matrix Multiplication （**通用矩阵到矩阵乘法**）
+- 本质上完全按照tin上所说的做，将两个输入矩阵相乘，得到一个输出矩阵。
+- 与3D图形世界中的矩阵运算的不同之处在于，处理矩阵通常非常大。
+
+例如，典型网络中的单个网络层可能需要将256行1152列的矩阵乘以1152行192列的矩阵，以产生256行192列的结果。
+- 天真地说，这需要5700万（256x1152x192）次浮点运算，而且在现代网络结构中可能有几十个这样的网络层，所以经常看到一个往往需要几十亿次浮点运算来计算单个图像帧。
+
+
+#### FC 全连接层
+
+
+全连接层是已经存在了几十年的经典神经网络层。
+- FC层的每个输出值都可以看到输入的每个值，将输入乘以该输入对应的权重，然后对结果求和以获得其输出。
+- 有“k”个输入值，“n”个神经元，每个神经元都有自己的学习权重集。对应的图中有“n”个输出值，每个神经元对应其中一个，该输出值利用对其权重和输入值进行点积运算计算得到。
+
+#### Conv 卷积层
+
+conv层将其输入视为二维图像，每个像素具有多个通道，非常类似于具有宽度、高度和深度的经典图像。不过，与我以前处理的图像不同，通道的数量可以达到数百个，而不仅仅是RGB或RGBA
+
+为什么要用GEMM矩阵乘法
+- Fortran世界的科学程序员花了几十年时间优化代码，以执行大型的矩阵乘法（large matrix to matrix multiplications），而且非常规则的内存访问模式带来的好处超过了浪费的存储成本。
+- Nvidia的论文介绍了一些不同方法，描述了为什么最终以修改版的GEMM作为最喜欢的方法。
+  - [cuDNN: Efficient Primitives for Deep Learning](https://arxiv.org/pdf/1410.0759.pdf)
+  - 同时对1个卷积核批处理大量输入图像也有很多优点，[Caffe con TROL](https://arxiv.org/pdf/1504.04343v1.pdf) 使用了这些方法，取得了很好的效果
+- GEMM方法的主要竞争对手是使用傅里叶变换在频率空间中进行运算，但在卷积中使用stride使其难以达到同样的效率。
+
+GEMM是如何应用于卷积层的？
+- 卷积似乎是一个相当专业的运算。
+- 包含多次乘法计算和最后的求和计算，比如完全连接层，但不清楚如何将其转化为GEMM矩阵乘法。
+
+
+
 
 
 # 结束
