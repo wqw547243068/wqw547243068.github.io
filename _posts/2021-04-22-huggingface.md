@@ -290,7 +290,7 @@ from datasets import load_dataset
 # datasets = load_dataset('cail2018') 
 datasets = load_dataset('imdb') 
 print(datasets)  # 查看数据的结构
-
+datasets['train'] # type: datasets.arrow_dataset.Dataset
 # DatasetDict({
 #     train: Dataset({
 #         features: ['text', 'label'],
@@ -308,8 +308,7 @@ print(datasets)  # 查看数据的结构
 
 datasets = load_dataset('cail2018',split='exercise_contest_test') # 如果知道数据结构，在load的时候就可以用split只load进来一部分数据；
 # 从数据集里面取数据
-datasets_sample = datasets[ "exercise_contest_train" ].shuffle(seed= 42 ).select( range ( 1000 ))
-
+datasets_sample = datasets[ "exercise_contest_train" ].shuffle(seed=42).select(range(1000))
 # 这里就是从cail2018这个数据集里面的，exercise_contest_train这部分数据，随机抽取1000个数据
 # 从这个里面切片取数如下所示，规律和np或者dataframe的数据结构形式是一样的。
 print(datasets_sample[10:15] )
@@ -365,6 +364,68 @@ pubmed_dataset_streamed = load_dataset( "json" , data_files=data_files, split= "
 
 
 ## 模型
+
+
+### 模型导入 
+
+导入方法 
+- 默认自动从远程下载模型
+  - 前提：能联网
+  - 默认保存路径：`~/.cache/huggingface/hub/`
+- 可以本地导入
+
+```py
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+model_name = "distilgpt2"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+```
+
+【2024-5-8】transformers 中有哪些包可用？
+- 见官方源码 [transformers/__init__.py](https://github.com/huggingface/transformers/blob/main/src/transformers/__init__.py)
+
+#### 远程导入
+
+
+```py
+from transformers import BertTokenizer, BertModel
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+model = BertModel.from_pretrained('bert-base-chinese')
+```
+
+
+
+#### 本地导入
+
+无法联网时，读取预训练模型会失败
+
+解法
+- 下载模型：huggingface 官网 [Files and versions]() 上下载几个文件
+  - 模型配置文件
+    - `config.json` 
+  - pytorch模型文件
+    - `pytorch_model.bin` 
+  - tokenizer 文件
+    - `tokenizer.json` 
+    - `tokenizer_config.json`
+    - `vocab.txt`
+- 本地导入
+  - 改成本地目录
+  - 额外读取 config 信息
+
+```py
+from transformers import BertTokenizer, BertModel
+
+# config 文件
+config = BertConfig.from_json_file("bert-base-chinese/config.json")
+# tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+# model = BertModel.from_pretrained('bert-base-chinese')
+tokenizer = BertTokenizer.from_pretrained('bert-base-chinese/') ##注意此处为本地文件夹
+model = BertModel.from_pretrained("bert-base-chinese/pytorch_model.bin", config=config)
+```
+
 
 ### 模型下载
 
