@@ -183,7 +183,7 @@ import datasets
 dataset = datasets.load_dataset("imdb") # imdb 数据集
 # 加载glue下的cola子数据集
 dataset = datasets.load_dataset("glue", name="cola") 
-# 通过csv脚本加载本地的test.tsv文件中的数据集
+# csv脚本加载本地的test.tsv文件中的数据集
 dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
 # 本地glue.py脚本文件加载远程cola数据集
 dataset_1 = datasets.load_dataset("../dataset/glue/glue.py", name="cola")
@@ -203,7 +203,6 @@ dataset_2 = datasets.load_dataset("../dataset/glue", name="cola")
 ConnectionError: Couldn't reach 'wikitext' on the Hub (ConnectTimeout)
 ```
 
-
 服务器访问不了外网，如何读取本地数据集？
 1. 首先，下载并存储数据
 2. 然后，把数据集上传到指定服务器地址，并进行本地加载
@@ -211,42 +210,158 @@ ConnectionError: Couldn't reach 'wikitext' on the Hub (ConnectTimeout)
 ```py
 import datasets
 
-# 下载远程数据集
-dataset = datasets.load_dataset("dataset_name")
-dataset.save_to_disk('your_path')
-
-# 加载本地数据集
-import datasets
-dataset = load_from_disk("your_path")
-```
-
-更多示例
-
-```py
-from datasets import Dataset, load_dataset, load_from_disk
-
-dataset = load_dataset("Salesforce/dialogstudio", "TweetSumm")
-dataset.save_to_disk("dataset/Salesforce/dialogstudio") # 保存到该目录下
-# dataset 本地加载
-dataset = load_from_disk("dataset/Salesforce/dialogstudio")
-
-```
-
-
-```py
-import datasets
+local_path = '.' # 本地缓存目录
+all_data = datasets.load_dataset('imdb')
+# 子集
+dataset = load_dataset("Salesforce/dialogstudio", "TweetSumm") 
+# 缓存到本地, 目录名 imdb, 再次执行会报错
+# ValueError: Invalid pattern: '**' can only be an entire path component
+all_data = datasets.load_dataset('imdb', cache_dir=local_path) 
+# 划分训练集、测试集
+train_data, test_data = datasets.load_dataset('imdb', split =['train', 'test'], cache_dir=local_path)
 # 通过csv脚本加载本地的test.tsv文件中的数据集
 dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
+
+# 手工保存到本地
+all_data.save_to_disk('my_imdb')
+all_data.to_csv('my_imdb')
+all_data.to_json('my_imdb')
+# 加载本地数据集
+new_data = datasets.load_from_disk('my_imdb')
 ```
 
-注意：
-- 保存数据集所用机器上的datasets版本和使用本地数据集的datasets的**版本要一致**才行，不然可能会出现数据集加载错误的情况。
+【2024-5-8】再次执行报错
 
+```sh
+ValueError: Invalid pattern: '**' can only be an entire path component
+```
+
+原因
+- 本地有数据集同名目录，改名即可
+
+
+注意：
+- 保存数据集所用机器上 datasets版本和使用本地数据集的datasets的**版本要一致**才行，不然可能会出现数据集加载错误的情况。
 
 ```py
 dataset = load_dataset("json", data_dir='data', data_files="data/train_dataset.json", split="train")
 ```
 
+
+### 内存数据集
+
+内存加载数据
+
+支持从内存中加载字典或者 DafaFrame（pandas）数据结构的数据，具体操作示例如下：
+
+```py
+# 从字典导入数据 
+from datasets import Dataset 
+
+my_dict = {"a": [1, 2, 3]} 
+dataset = Dataset.from_dict(my_dict) # 从dataFrame导入数据 
+
+import pandas as pd 
+df = pd.DataFrame({"a": [1, 2, 3]}) 
+dataset = Dataset.from_pandas(df)
+```
+
+### 数据处理
+
+
+#### 数据查看
+
+加载完数据后, 看看有那些内容
+- 整个数据集划分成了多个数据子集，包含train，valid以及test集。
+- 每个arrow_dataset都有多少条数据
+- 这些数据的feature是什么
+
+| 数据格式 | 函数 |
+| --- | --- |
+| Arrow | save_to_disk() |
+| CSV | to_csv() |
+| JSON | to_json() |
+
+简单两行代码导入数据，然后打印出来看一下；
+
+```py
+from datasets import load_dataset 
+
+# datasets = load_dataset('cail2018') 
+datasets = load_dataset('imdb') 
+print(datasets)  # 查看数据的结构
+
+# DatasetDict({
+#     train: Dataset({
+#         features: ['text', 'label'],
+#         num_rows: 25000
+#     })
+#     test: Dataset({
+#         features: ['text', 'label'],
+#         num_rows: 25000
+#     })
+#     unsupervised: Dataset({
+#         features: ['text', 'label'],
+#         num_rows: 50000
+#     })
+# })
+
+datasets = load_dataset('cail2018',split='exercise_contest_test') # 如果知道数据结构，在load的时候就可以用split只load进来一部分数据；
+# 从数据集里面取数据
+datasets_sample = datasets[ "exercise_contest_train" ].shuffle(seed= 42 ).select( range ( 1000 ))
+
+# 这里就是从cail2018这个数据集里面的，exercise_contest_train这部分数据，随机抽取1000个数据
+# 从这个里面切片取数如下所示，规律和np或者dataframe的数据结构形式是一样的。
+print(datasets_sample[10:15] )
+```
+
+
+#### 数据转换
+
+```py
+from datasets import load_dataset
+datasets = load_dataset('cail2018')
+print(datasets)  # 查看数据的结构
+
+
+def add_prefix(example):
+    example["fact"] = "案件详情: " + example["fact"]
+    return example
+# shuffle 打乱
+datasets_sample = datasets[ "exercise_contest_train" ].shuffle(seed= 42 ).select( range ( 1000 ))
+# map 映射: 逐元素处理
+datasets_sample = datasets_sample.map(add_prefix)
+print(datasets_sample[:3] )
+# filter 过滤
+drug_dataset = drug_dataset.filter(lambda x: x["condition"] is not None)
+# sort 排序
+datasets_sample = datasets_sample.sort('punish_of_money') # 按照被罚金额排序，是从大到小的，这个排序似乎没法改，看了下参数没找到改成从小到大的。。。。
+# set_format 格式转化: [None, 'numpy', 'torch', 'tensorflow', 'pandas', 'arrow'] None 默认
+datasets_sample.set_format("pandas") # 转换为pandas的dataFrame结构，这处理起来还不是手拿把掐的
+
+
+# 生成新列
+from datasets import load_dataset , Dataset
+dataset = Dataset.from_dict({"a": [0, 1, 2]})
+dataset = dataset.map(lambda batch: {"b": batch["a"]*2})  
+# 这里给数据dataset产生一个新的列b，请注意处理的时候要注意，新的列长度必须和原来一致；
+```
+
+
+#### 如何加载大数据
+
+加载超大型的语料，占用内存是加载语料的几倍。比如gpt-2训练的40G语料，可能会让内存爆掉。
+
+huggingface设计了两个机制来解决这个问题，第一个是将数据集视为“内存映射”文件，第二个是“流式传输”语料库。
+- **内存映射**：通过Apache Arrow内存格式和pyarrow库实现的，huggingface已经自己处理好了，网站上官方测试的情况大概是0.3gb/s。
+- **流式传输**：因为很多语料库非常的大（比如pile多达800多G），下载到本地硬盘还是有些吃不消呀，因此huggingface设置了流式传输，类似于视频网站的操作，本地有个缓冲区大小固定，然后不停的迭代新数据。假设缓冲区数据一共10000条，当你处理第一条的时候，他就加载第10001条数据。
+
+示例代码：
+- 只需要设置 streaming= True 即可，这个load上来的数据是一个可迭代对象，之后的处理与前面介绍的一样。
+
+```py
+pubmed_dataset_streamed = load_dataset( "json" , data_files=data_files, split= "train" , streaming= True )
+```
 
 
 ## 模型
