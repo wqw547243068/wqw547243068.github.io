@@ -1406,9 +1406,12 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
 - 一个人的爱好有这其中的一个或者多个 —— 多标签分类任务
 - ![](https://pic3.zhimg.com/80/v2-d0e019b7596cf3c9dc237861c2c3f5ae_1440w.webp)
 
-备注
-- 常规文本分类中的交叉熵为 `tf.nn.softmax_cross_entropy_with_logits`；
-- 多标签文本分类中，交叉熵则为 `tf.nn.sigmoid_cross_entropy_with_logits` 
+#### tensorflow 实现
+
+
+常规文本分类中的交叉熵为 `tf.nn.softmax_cross_entropy_with_logits`；
+
+多标签文本分类中，交叉熵则为 `tf.nn.sigmoid_cross_entropy_with_logits` 
 
 原因：
 - `tf.nn.sigmoid_cross_entropy_with_logits`测量离散分类任务中的概率误差，其中每个类是**独立而不互斥**。这适用于**多标签**分类问题。
@@ -1416,6 +1419,134 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
 
 代码
 - [classifier_multi_label](https://github.com/hellonlp/classifier-multi-label/tree/master/classifier_multi_label)
+
+
+#### pytorch 实现
+
+【2024-5-9】对应的pytorch实现 [MultiLabelSoftMarginLoss](https://pytorch.org/docs/stable/generated/torch.nn.MultiLabelSoftMarginLoss.html)
+- `BCEWithLogitsLoss` = `MultiLabelSoftMarginLoss`
+- `BCEWithLogitsLoss` = One Sigmoid Layer + `BCELoss` (solved numerically unstable problem)
+- 参考 [What is the difference between BCEWithLogitsLoss and MultiLabelSoftMarginLoss](https://discuss.pytorch.org/t/what-is-the-difference-between-bcewithlogitsloss-and-multilabelsoftmarginloss/14944)
+
+
+MultiLabelSoftMargin 计算方法跟 BCEWithLogitsLoss 一样
+- 唯一区别: BCEWithLogitsLoss 有参数‘weight’，而 MultiLabelSoftMarginLoss 没有
+
+```py
+x = Variable(torch.randn(10, 3))
+y = Variable(torch.FloatTensor(10, 3).random_(2))
+
+# double the loss for class 1
+class_weight = torch.FloatTensor([1.0, 2.0, 1.0])
+# double the loss for last sample
+element_weight = torch.FloatTensor([1.0]*9 + [2.0]).view(-1, 1)
+element_weight = element_weight.repeat(1, 3)
+
+bce_criterion = nn.BCEWithLogitsLoss(weight=None, reduce=False)
+multi_criterion = nn.MultiLabelSoftMarginLoss(weight=None, reduce=False)
+
+bce_criterion_class = nn.BCEWithLogitsLoss(weight=class_weight, reduce=False)
+multi_criterion_class = nn.MultiLabelSoftMarginLoss(weight=class_weight, reduce=False)
+
+bce_criterion_element = nn.BCEWithLogitsLoss(weight=element_weight, reduce=False)
+multi_criterion_element = nn.MultiLabelSoftMarginLoss(weight=element_weight, reduce=False)
+
+bce_loss = bce_criterion(x, y)
+multi_loss = multi_criterion(x, y)
+
+bce_loss_class = bce_criterion_class(x, y)
+multi_loss_class = multi_criterion_class(x, y)
+
+bce_loss_element = bce_criterion_element(x, y)
+multi_loss_element = multi_criterion_element(x, y)
+
+print(bce_loss - multi_loss)
+print(bce_loss_class - multi_loss_class)
+print(bce_loss_element - multi_loss_element)
+```
+
+BCEWithLogitsLoss :
+
+bce loss
+- b这里指的是binary，用于二分类问题
+- pytorch 使用 nn.BCELoss时，要在该层前面加上Sigmoid函数
+
+```py
+criterion = nn.BCELoss()
+    input = torch.randn(5, 1, requires_grad=True)
+    target = torch.empty(5, 1).random_(2)#0或1
+    pre = nn.Sigmoid()(input)
+    loss = criterion(pre, target)
+```
+
+top k bce loss:
+- 在所有类别中找出前k个error最高的数据，然后拿出来进行求bce loss
+
+```py
+def BCE_loss(results, labels, topk=10):
+
+    error = torch.abs(labels - torch.sigmoid(results))#one_hot_target
+    error = error.topk(topk, 1, True, True)[0].contiguous()
+    target_error = torch.zeros_like(error).float()
+    error_loss = nn.BCELoss(reduce='mean')(error, target_error)
+
+    return error_loss
+
+if __name__ == '__main__':
+    results = torch.randn((4, 4))
+    target = torch.empty((4,4)).random_(2)
+    print(BCE_loss(results, target,2))
+```
+
+BCEWithLogitsLoss（自带sigmoid)
+
+下面这个代码是输出多个类别,只有一个类别是正例子,对所有类别×相应的权重然后平均或者sum.这个方法可以用于多分类;
+
+```py
+    inputs = torch.tensor([[1, 2], [2, 2], [3, 4], [4, 5]], dtype=torch.float)
+    target = torch.tensor([[1, 0], [1, 0], [0, 1], [0, 1]], dtype=torch.float)
+    #1为标签所在位置
+
+    target_bce = target
+
+    # inputs = torch.sigmoid(inputs)
+
+    weights = torch.tensor([1, 1], dtype=torch.float)
+
+    loss_f_none_w = nn.BCEWithLogitsLoss(weight=weights, reduction='none')
+    loss_f_sum = nn.BCEWithLogitsLoss(weight=weights, reduction='sum')
+    loss_f_mean = nn.BCEWithLogitsLoss(weight=weights, reduction='mean')
+
+    # forward
+    loss_none_w = loss_f_none_w(inputs, target_bce)
+    loss_sum = loss_f_sum(inputs, target_bce)
+    loss_mean = loss_f_mean(inputs, target_bce)
+```
+
+输出只有一个类别,然后用bce,只能用于二分类
+
+```py
+import torch
+import torch.nn as nn
+import math
+
+m = nn.Sigmoid()
+
+loss = nn.BCELoss(size_average=False, reduce=False)
+input = torch.randn(3, requires_grad=True)
+target = torch.empty(3).random_(2)
+lossinput = m(input)
+output = loss(lossinput, target)
+
+print("输入值:")
+print(lossinput)
+print("输出的目标值:")
+print(target)
+print("计算loss的结果:")
+print(output)
+print("自己计算的第一个loss：")
+print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0])))
+```
 
 ### 多标签 vs 层次
 
