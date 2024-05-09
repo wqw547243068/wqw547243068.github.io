@@ -189,6 +189,7 @@ root     pts/4        2.59.151.97      Sun Mar  3 16:52 - 16:56  (00:03)
 |【2021-12-21】|markdown转ppt，[pandoc](https://www.cnblogs.com/wardensky/p/5194332.html)||
 |【2021-12-31】|文档复制受限|右键开发者模式：<br>①从html源码中抠<br>②debugger里disable js代码即可获取纯文本|
 |【2022-8-6】|vscode无法打开终端|解决：更改默认终端配置，“文件”→“首选项”→“设置”，弹出配置文件，按照[链接](https://blog.csdn.net/m0_57189842/article/details/120073595)修改接口|
+|【2024-5-9】|vscode里编辑输入时，卡顿，延迟1-3s，尝试更改setting里各种参数，无效|解决：重启电脑|
 
 【2022-11-22】windows 的图标打架效果，steam平台程序[the lcon battles](https://steamspy.com/app/2135980)，还可以设置成屏保，[效果](https://store.steampowered.com/app/2135980/The_Icon_Battles/), 仅 windows可用
 - ![](https://media.st.dl.eccdnx.com/steam/apps/2135980/ss_8d535886b9b54808e86d617354906802e140c5da.600x338.jpg?t=1667389893)
