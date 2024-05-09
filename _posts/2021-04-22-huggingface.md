@@ -108,36 +108,82 @@ print(pipeline('sentiment-analysis')('I hate you'))"
 
 ### 框架理解
 
+
+源码
+- [解读](https://juejin.cn/post/7350510977052229668)
+
 #### Auto 核心类
 
 transformers 开源库核心组件包括3个：
 - `Conﬁguration`：**配置**类，继承自`PretrainedConﬁg`，保存model或tokenizer的超参数，例如词典大小，隐层维度数，dropout rate等。配置类主要可用于复现模型。
-- `Tokenizer`：**切词**类，继承自`PreTrainedTokenizer`，主要存储词典，token到index映射关系等。
-  - 此外，还会有些model-specific的特性，如特殊token，`[SEP]`, `[CLS]`等处理，token的type类型处理，语句最大长度等，因此tokenizer通常和模型是一对一适配的。比如BERT模型有BertTokenizer。
+- `Tokenizer`：**切词**类，继承自`PreTrainedTokenizer`，主要存储词典（**from_pretrained()**部分），token到index映射关系等。
+  - 三件事情：①分词、②扩展词汇表、③识别并处理特殊token。
+  - model-specific的特性，如特殊token，`[SEP]`, `[CLS]`等处理，token的type类型处理，语句最大长度等
+  - 因此**tokenizer通常和模型是一对一适配**。比如BERT模型有BertTokenizer。
   - Tokenizer 实现方式有多种，如 word-level, character-level或者subword-level，其中subword-level包括Byte-Pair-Encoding，WordPiece。subword-level的方法目前是transformer-based models的主流方法，能够有效解决OOV问题，学习词缀之间的关系等。
   - Tokenizer主要为了将原始的语料编码成适配模型的输入。
 - `Model`: **模型**类。封装了预训练模型的计算图过程，遵循着相同的范式，如根据token ids进行embedding matrix映射，紧接着多个self-attention层做编码，最后一层task-specific做预测。
-  - 除此之外，Model还可以做一些灵活扩展，用于下游任务，例如在预训练好的Base模型基础上，添加task-specific heads。比如，language model heads，sequence classiﬁcation heads等。在代码库中通常命名为，XXXForSequenceClassification or XXXForMaskedLM，其中XXX是模型的名称（如Bert）， 结尾是预训练任务的名称 (MaskedLM) 或下游任务的类型(SequenceClassification)。
+  - 除此之外，Model还可以做一些灵活扩展，用于下游任务，例如在预训练好的Base模型基础上，添加task-specific heads。
+  - 比如，language model heads，sequence classiﬁcation heads等。在代码库中通常命名为，XXX**ForSequenceClassification** or XXX**ForMaskedLM**，其中XXX是模型的名称（如Bert）， 结尾是预训练任务的名称 (MaskedLM) 或下游任务的类型(SequenceClassification)。
 
 
-transformer 还额外封装了`AutoConfig`, `AutoTokenizer`,`AutoModel`
-- 通过模型命名来定位其所属的具体类，比如’bert-base-cased’，就可以知道要加载BERT模型相关的配置、切词器和模型。
-
+transformer 额外封装了`AutoConfig`, `AutoTokenizer`,`AutoModel`
+- 通过**模型命名**就能定位所属的具体类
+- 比如 ’bert-base-cased’，要加载BERT模型相关的配置、切词器和模型。
 
 <!-- draw.io diagram -->
 <div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-05-09T07:13:51.016Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\&quot; etag=\&quot;5qBzsLmuwwd9dOJxDsPq\&quot; version=\&quot;24.3.1\&quot;&gt;\n  &lt;diagram id=\&quot;Lw-1uFHNzwHmlxUDpAkU\&quot; name=\&quot;第 1 页\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;761\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;216\&quot; y=\&quot;170\&quot; width=\&quot;395\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-8\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;170\&quot; y=\&quot;300\&quot; width=\&quot;400\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; value=\&quot;模型类&amp;lt;br&amp;gt;Model\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;338\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; value=\&quot;分词类&amp;lt;br&amp;gt;Tokenizer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; value=\&quot;数据集&amp;lt;br&amp;gt;Dataset\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;625\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-10\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-25\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; value=\&quot;配置类&amp;lt;br&amp;gt;Configuration\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;310\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; value=\&quot;&amp;lt;div&amp;gt;流水线&amp;lt;/div&amp;gt;Pipeline\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;258\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-20\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; value=\&quot;&amp;lt;div&amp;gt;训练&amp;lt;/div&amp;gt;Trainer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;468\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-9\&quot; value=\&quot;Transformers库框架\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;348\&quot; y=\&quot;50\&quot; width=\&quot;170\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;253\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;363\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.678;exitY=-0.05;exitDx=0;exitDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;373\&quot; y=\&quot;330\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;323\&quot; y=\&quot;260\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;383\&quot; y=\&quot;340\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;333\&quot; y=\&quot;270\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;393\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;343\&quot; y=\&quot;280\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-16\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;403\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;353\&quot; y=\&quot;290\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot; value=\&quot;推理阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;268\&quot; y=\&quot;110\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot; value=\&quot;训练/评估阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;472\&quot; y=\&quot;110\&quot; width=\&quot;82\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-21\&quot; value=\&quot;核心组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;170\&quot; y=\&quot;270\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-22\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 保存model、tokenizer超参,便于复习模型\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;123\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); text-align: left;&amp;quot;&amp;gt;PretrainedConﬁg&amp;lt;/span&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;315\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;354\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-27\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; value=\&quot;&amp;lt;div style=&amp;quot;text-align: left;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;background-color: initial;&amp;quot;&amp;gt;&amp;lt;font color=&amp;quot;#000000&amp;quot;&amp;gt;PreTrainedTokenizer&amp;lt;/font&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;238\&quot; y=\&quot;400\&quot; width=\&quot;122\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-31\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 分词、扩展词表、识别特殊字符\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;320\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-32\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 封装模型计算图\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; value=\&quot;AutoConfig\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;textShadow=1;labelBorderColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; value=\&quot;AutoModel\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;328.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; value=\&quot;AutoTokenizer\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;470.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-36\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;253\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;230\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-37\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-38\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;370\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;470\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
-
-
 通常上手时都会用Auto封装类来加载切词器和模型。
 
+
+#### 示例
+
+```py
+# 加载与保存分词器
+from transformers import BertTokenizer
+
+tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
+tokenizer.save_pretrained("./models/bert-base-cased/")
+# 加载与保存模型
+from transformers import AutoModel
+# 所有存储在 HuggingFace Model Hub 上的模型都可以通过 Model.from_pretrained() 来加载权重，参数可以是 checkpoint 的名称，也可以是本地路径（预先下载的模型目录）
+model = AutoModel.from_pretrained("bert-base-cased")
+model.save_pretrained("./models/bert-base-cased/") # 保存模型
+
+inputs = tokenizer(["来到美丽的大自然，我们发现"], return_tensors="pt")
+# {'input_ids': tensor([[    1, 68846, 68881, 67701, 67668, 98899, 91935]]), 'attention_mask': tensor([[1, 1, 1, 1, 1, 1, 1]])}
+
+gen_kwargs = {"max_length": 128, "top_p": 0.8, "temperature": 0.8, "do_sample": True, "repetition_penalty": 1.1}
+output = model.generate(**inputs, **gen_kwargs)
+# decode the new tokens
+output = tokenizer.decode(output[0].tolist(), skip_special_tokens=True)
+print(output)
+```
 
 #### 模型扩展
 
 Transformer-based Pre-trained models
 
+基础 Transformer架构加上不同的head模块组成，部分例子如下：
+
+基础模型：只输出隐层状态
+- *`Model` (retrieve the hidden states)：基础模型，只输出**隐状态**
+- *`ForCausalLM`：常规语言模型(自回归)，典型的有GPT系列
+
+扩展模型：增加层，适配下游应用
+- *`ForMaskedLM`：**掩码**语言模型，典型的有BERT、RoBERTa、DeBERTa
+- *`ForMultipleChoice`：多项选择模型
+- *`ForQuestionAnswering`：问答模型，一般是抽取式问答
+- *`ForSequenceClassification`：序列分类模型
+- *`ForTokenClassification`：token分类模型，如命名实体识别和关系抽取
+
+关系
+- ![](https://qiankunli.github.io/public/upload/machine/transformers_pipelines.png)
+
 开源库实现的模型，包括了BERT，GPT2，XLNet，RoBERTa，ALBERT，ELECTRA，T5等家喻户晓的预训练语言模型。
+
 
 ```py
 CONFIG_MAPPING = OrderedDict(
@@ -170,6 +216,35 @@ CONFIG_MAPPING = OrderedDict(
 
 参考
 - 【2020-7-5】[Transformers源码阅读和实践](http://xtf615.com/2020/07/05/transformers/)
+
+
+代码示例
+
+```py
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+sequences = ["I've been waiting for a HuggingFace course my whole life.", "So have I!"]
+tokens = tokenizer(sequences, padding=True, truncation=True, return_tensors="pt")
+print(tokens)
+#{
+#    'input_ids': tensor([
+#        [  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172,2607,  2026,  2878,  2166,  1012,   102],
+#        [  101,  2061,  2031,  1045,   999,   102,     0,     0,     0,     0, 0,     0,     0,     0,     0,     0]
+#    ]),     
+#    'attention_mask': tensor([
+#        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+#        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#    ])
+#}
+output = model(**tokens)
+print(output)
+# SequenceClassifierOutput(
+#    loss=None, 
+#    logits=tensor([[-1.5607,  1.6123],[-3.6183,  3.9137]], grad_fn=<AddmmBackward0>), 
+#    hidden_states=None, 
+#    attentions=None
+#)
+```
 
 
 ### 生态系统
@@ -207,6 +282,20 @@ HuggingFace主干库：
 ## 数据
 
 数据集工具包 huggingface datasets 
+
+
+### tokenizer
+
+图解
+- ![](https://qiankunli.github.io/public/upload/machine/attention_mask.jpg)
+
+默认情况下，AutoTokenizer 类首先加载 Fast tokenizer
+- Fast 适合海量数据
+- 少量数据时，两者速度差异不大
+
+Fast tokenizer 和 Slow tokenizer 的区别：
+- Slow tokenizer 是在 Transformer 库中用Python编写的。
+- Fast tokenizer 是在 Tokenizers 库中用Rust编写的
 
 
 ### load_dataset 函数
