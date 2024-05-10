@@ -2205,7 +2205,7 @@ GPU上进行前向和后向计算，将梯度传给CPU，进行参数更新，�
 - WarmupDecayLR 使用 --lr_scheduler_type linear
 
 
-### 训练精度
+### 混合精度
 
 由于 fp16 混合精度大大减少了内存需求，并可以实现更快的速度，因此只有此训练模式表现不佳时，才考虑不使用**混合精度训练**。 
 
@@ -2216,12 +2216,38 @@ GPU上进行前向和后向计算，将梯度传给CPU，进行参数更新，�
 PyTorch 默认值是使用`tf32`。
 
 自动混合精度
-
 - `fp16`
   - 可用 `pytorch-like` AMP 方式或者 `apex-like` 方式
   - 使用 `--fp16--fp16_backend amp` 或 `--fp16_full_eval` 命令行参数时启用此模式
 - `bf16`
   - 使用`--bf16` or `--bf16_full_eval` 命令行参数时启用此模式
+
+注意
+- fp32/fp16 绝大多数硬件都支持，所以可用混合精度训练提高吞吐；
+  - 但 bf16/tf32 只有新的硬件才支持，V100/昇腾910等不支持
+- bf16 具有和 fp32 相同的 range，但精度（也就是两个最小单位之间的间隔）降低
+- bf16/fp32 进行混合精度训练，可以减少溢出几率
+- 对于大型 transformer，bf16 损失的精度被证明不怎么影响收敛
+- tf32 是 A100 中引入的新格式，用于替代 fp32，也即可以全程 tf32 训练或 bf16/tf32 混合训练
+- ![](https://pic4.zhimg.com/80/v2-5e80264a8fe8ffaf312d08a50ce103eb_1440w.webp)
+
+bf16/fp32 混合训练
+- 因为两种格式在 range 对齐，并且 bf16 比 fp16 range 更大，所以比 fp16/fp32 混合训练稳定性更高。
+- 但 fp16/fp32 混合训练 GPT-3 大模型也完全可行，只要解决可溢出问题
+
+几个要点：
+- fp32权重备份 + loss scaling 解决下溢出问题
+  - 对 loss 进行 scale：见左图
+  - 对 gradient 进行 scale：见右图
+  - 由于链式法则的存在，对梯度做直接做 scale 也是可以的，反而更划算。这样，所有前向后向都可以全用 fp16 (activation、weight、gradient 全用 fp16)，只在进行更新的时候，才用 fp32 和 master weight 更新
+- 跳过 NaN 的 batch
+  - dynamic loss scale (PyTorch 中采用的这种方案）：在一个 window 内，如果没有 NaN，loss scale 变大（例如乘2）；如果有 NaN，则降低 loss scale，并跳过 NaN 的 batch，不更新梯度
+  - 或将 INF 值改为 FP16 的最大值（需要实际验证）
+- 基于 Tensorcore 进行矩阵乘加：在某些模型中，fp16 矩阵乘法的过程中，需要利用 fp32 来进行矩阵乘法中间结果的累加，以减少加法过程中的舍入误差，保证精度不损失
+
+这也是为什么有些人说，只有 Volta 之后有 TensorCore 的 GPU (例如V100)，才能利用 fp16+混合精度来进行加速。其他 GPU 如果硬要用 fp16，只能做 fp16 的 multiply-add operation，会有较大精度损失
+- [参考](https://zhuanlan.zhihu.com/p/622631376)
+
 
 NCCL
 - 通讯会采用一种单独的数据类型
