@@ -2211,19 +2211,21 @@ GPU上进行前向和后向计算，将梯度传给CPU，进行参数更新，�
 
 通常，当模型未在 fp16 混合精度中进行预训练时，会出现这种情况（例如，使用 bf16 预训练的模型）。 这样的模型可能会溢出，导致loss为NaN。 如果是这种情况，使用完整的 fp32 模式。
 - 如果是基于 Ampere 架构的 GPU，pytorch 1.7 及更高版本将自动切换为使用更高效的 tf32 格式进行某些操作，但结果仍将采用 fp32。
-- 使用 Trainer，可以使用 --tf32 启用它，或使用 --tf32 0 或 --no_tf32 禁用它。 PyTorch 默认值是使用tf32。
+- 使用 Trainer，可以使用 `--tf32` 启用它，或使用 `--tf32 0` 或 `--no_tf32` 禁用它。 
+
+PyTorch 默认值是使用`tf32`。
 
 自动混合精度
 
-- fp16
-  - 可用 pytorch-like AMP 方式或者 apex-like 方式
-  - 使用 --fp16--fp16_backend amp 或 --fp16_full_eval 命令行参数时启用此模式
-- bf16
-  - 使用--bf16 or --bf16_full_eval 命令行参数时启用此模式
+- `fp16`
+  - 可用 `pytorch-like` AMP 方式或者 `apex-like` 方式
+  - 使用 `--fp16--fp16_backend amp` 或 `--fp16_full_eval` 命令行参数时启用此模式
+- `bf16`
+  - 使用`--bf16` or `--bf16_full_eval` 命令行参数时启用此模式
 
 NCCL
 - 通讯会采用一种单独的数据类型
-- 默认情况下，半精度训练使用 fp16 作为reduction操作的默认值
+- 默认情况下，半精度训练使用 `fp16` 作为reduction操作的默认值
 - 可以增加一个小的开销并确保reduction将使用 fp32 作为累积数据类型
 
 ```json
@@ -2272,7 +2274,9 @@ apex
 - min_loss_scale： 表示最小动态损失比例值 (默认值：1)
 
 注意：开启fp16后可能出现如上图所示overflow情况
-- BF16： 配置以bfloat16浮点格式作为FP16的替代方式。bfloat16需要硬件支持（例如，NVIDIA A100）。使用bfloat16进行训练不需要损失缩放。(默认值：false)
+- BF16： 配置以bfloat16浮点格式作为FP16的替代方式。
+- bfloat16需要硬件支持, 例如，NVIDIA A100, 注意 v100不支持！。
+- 使用bfloat16进行训练不需要**损失缩放**。(默认值：false)
 
 
 
