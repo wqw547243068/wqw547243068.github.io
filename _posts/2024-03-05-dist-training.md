@@ -247,7 +247,86 @@ Ring AllReduce：
 - Pytorch 实现: `DistributedDataParallel`
 - `Ring All-reduce`=`reduce-scatter`+`all-gather`
 
+#### NCCL 通信行为分析
 
+【2024-5-10】[集合通信行为分析 - 基于NCCL](https://www.cnblogs.com/Matrix_Yao/p/15905009.html)
+
+deepspeed 启动多卡训练时，日志里会打印NCCL通信信息，这些日志都是什么意思？
+
+NCCL 通信阶段
+- Phase 1 - `启动`阶段 **Bootstrap** Phase: 初始化集合中的所有节点(node)和卡(rank)，确保所有卡知道彼此
+  - Initiate all nodes and then all ranks in a collective. It makes sure all ranks know about all other ranks, so any rank is able to communicate with any other rank.
+- Phase 2 - `拓扑`阶段 **Topology** Phase: 每隔节点了解机器上各个硬件(CPU/GPU/NIC)映射关系, 创建内部拓扑结构（树/环）,通过PCI和NVLink通信
+  - Each node detects and maps out what hardware is located on the machine. 
+  - Hardware includes CPUs, GPUs, NICs and interconnect types. 
+  - Each node then creates an **intra-machine graph**, connects hardware with `PCIe` or `NVLink` interconnect, and evaluates the graph. 
+  - When the intra-machine topology is decided, the system will decide what pattern to use for the whole system. 
+  - The two main patterns are a **tree** or a **ring**. 
+  - While the topology is evaluated, NCCL is also tuning it by performing tests. This allows each rank to pre-compute thresholds for message sizes.
+- Phase 3 - `聚合`阶段 **Collective** Phase: 用户调用NCCL支持的集合通信原语进行通信
+  - A user can dispatch many collective operations using the same topology.
+
+用户调用NCCL支持的集合通信原语进行通信：
+- 集合通信原语
+  - AllReduce
+  - Broadcast
+  - Reduce
+  - AllGather
+  - ReduceScatter
+- 点对点通信原语
+  - Send
+  - Recv
+
+NCCL在getAlgoInfo里面使用ncclTopoGetAlgoTime来遍历计算(algorithm, protocol)，最终选择预测会最快做完指定数据量的指定集合通信原语的algorithm和protocol完成该通信原语。
+
+
+示例
+- 以2机16卡, NCCL 2.8.4为例
+- NCCL会构建tree，ring graph。
+
+(1) tree 
+
+解析
+
+**拓扑**log格式
+
+```sh
+# IP: hostname:pid:tid [cudaDev] NCCL INFO Trees [channel ID] down0 rank/down1 rank/down2 rank->current rank->up rank
+10.0.2.11: 2be7fa6883db:57976:58906 [5] NCCL INFO Trees [0] 14/-1/-1->13->12 [1] 14/-1/-1->13->12
+# 10.0.2.11上的设备5，其rank为13，有两棵树，分别为channel 0和channel 1: channel 0的子节点只有14, 父节点为12; channel 1一样。
+```
+
+**channel** log格式
+
+```sh
+# IP: hostname:pid:tid [cudaDev] NCCL INFO Channel [channel ID] current rank[bus ID]->successor rank[bus ID] via transport type
+10.0.2.11: 2be7fa6883db:57976:58906 [5] NCCL INFO Channel 00 : 13[3e000] -> 14[40000] via P2P/IPC
+# 10.0.2.11上的设备5(rank 为13, bus ID为3e000)，其channel 0连接至rank 14，传输方式为P2P/IPC。
+```
+
+结果
+
+依此解析，可得两棵一样的tree，逻辑拓扑如下：[img](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443691-259562130.png)
+- ![](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443691-259562130.png)
+
+
+(2) ring
+
+Ring Logical Topology
+
+拓扑log格式
+
+```sh
+# IP: hostname:pid:tid [cudaDev] NCCL INFO Channel ring_ID/ring_number: rank0 rank1 … last_rank
+10.0.2.12: 94f182076445:82261:83141 [0] NCCL INFO Channel 00/02 : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+# 建成了02个ring，其中第0个ring的成员有：0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15，该ring共由16个rank组成。
+```
+
+channel log格式
+- 与tree拓扑的格式一致。
+
+可得两个一样的ring，逻辑拓扑如下：[img](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443729-494214121.png)
+- ![](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443729-494214121.png)
 
 ### 并行技术
 
