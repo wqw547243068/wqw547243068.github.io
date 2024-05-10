@@ -1310,13 +1310,97 @@ class PositionalWiseFeedForward(nn.Module):
 ## Transformer 实现
 
 
-### Transformer 模型 pytorch代码
+### pytorch 版本
 
 [Transformer模型的PyTorch实现](https://luozhouyang.github.io/transformer/)
 - Google 2017年的论文 [Attention is all you need](https://arxiv.org/abs/1706.03762) 阐释了什么叫做大道至简！该论文提出了**Transformer**模型，完全基于**Attention mechanism**，抛弃了传统的**RNN**和**CNN**。
 - 根据论文的结构图，一步一步使用 [PyTorch](https://github.com/pytoch/pytorch) 实现这个**Transformer**模型。
 
+
+#### 自注意力实现
+
+Self-Attention的代码实现
+
+
+```py
+# Self-Attention 机制的实现
+from math import sqrt
+import torch
+import torch.nn as nn
+
+class Self_Attention(nn.Module):
+    # input : batch_size * seq_len * input_dim
+    # q : batch_size * input_dim * dim_k
+    # k : batch_size * input_dim * dim_k
+    # v : batch_size * input_dim * dim_v
+    def __init__(self,input_dim, dim_k, dim_v):
+        super(Self_Attention,self).__init__()
+        self.q = nn.Linear(input_dim,dim_k)
+        self.k = nn.Linear(input_dim,dim_k)
+        self.v = nn.Linear(input_dim,dim_v)
+        self._norm_fact = 1 / sqrt(dim_k)
+        
+    def forward(self,x):
+        Q = self.q(x) # Q: batch_size * seq_len * dim_k
+        K = self.k(x) # K: batch_size * seq_len * dim_k
+        V = self.v(x) # V: batch_size * seq_len * dim_v
+         
+        atten = nn.Softmax(dim=-1)(torch.bmm(Q,K.permute(0,2,1))) * self._norm_fact # Q * K.T() # batch_size * seq_len * seq_len
+        
+        output = torch.bmm(atten,V) # Q * K.T() * V # batch_size * seq_len * dim_v
+        
+        return output
+
+
+if __name__ == '__main__':
+
+    X = torch.randn(4,3,2)
+    print(X.size(), X)
+    sa = Self_Attention(2,4,5)
+    res = sa(X)
+    print(res)
+
+```
+
+
 #### 多头注意力实现
+
+
+```py
+# Muti-head Attention 机制的实现
+from math import sqrt
+import torch
+import torch.nn as nn
+
+class Self_Attention_Muti_Head(nn.Module):
+    # input : batch_size * seq_len * input_dim
+    # q : batch_size * input_dim * dim_k
+    # k : batch_size * input_dim * dim_k
+    # v : batch_size * input_dim * dim_v
+    def __init__(self,input_dim,dim_k,dim_v,nums_head):
+        super(Self_Attention_Muti_Head,self).__init__()
+        assert dim_k % nums_head == 0
+        assert dim_v % nums_head == 0
+        self.q = nn.Linear(input_dim,dim_k)
+        self.k = nn.Linear(input_dim,dim_k)
+        self.v = nn.Linear(input_dim,dim_v)
+        
+        self.nums_head = nums_head
+        self.dim_k = dim_k
+        self.dim_v = dim_v
+        self._norm_fact = 1 / sqrt(dim_k)
+    
+    def forward(self,x):
+        Q = self.q(x).reshape(-1,x.shape[0],x.shape[1],self.dim_k // self.nums_head) 
+        K = self.k(x).reshape(-1,x.shape[0],x.shape[1],self.dim_k // self.nums_head) 
+        V = self.v(x).reshape(-1,x.shape[0],x.shape[1],self.dim_v // self.nums_head)
+        print(x.shape)
+        print(Q.size())
+        atten = nn.Softmax(dim=-1)(torch.matmul(Q,K.permute(0,1,3,2))) # Q * K.T() # batch_size * seq_len * seq_len
+        output = torch.matmul(atten,V).reshape(x.shape[0],x.shape[1],-1) # Q * K.T() * V # batch_size * seq_len * dim_v
+        return output
+```
+
 
 【2023-5-10】点的self、cross注意力机制[实现](https://www.cnblogs.com/hellcat/p/15260145.html)
 
@@ -1328,7 +1412,9 @@ def attention(query, key, value):
     return torch.einsum('bhnm,bdhm->bdhn', prob, value), prob
 
 class MultiHeadedAttention(nn.Module):
-    """ Multi-head attention to increase model expressivitiy """
+    """ 
+      Multi-head attention to increase model expressivitiy 
+    """
     def __init__(self, num_heads: int, d_model: int):
         super().__init__()
         assert d_model % num_heads == 0
@@ -1346,11 +1432,11 @@ class MultiHeadedAttention(nn.Module):
         return self.merge(x.contiguous().view(batch_dim, self.dim*self.num_heads, -1))
 ```
 
-需要实现6层的encoder和decoder。
+需要实现6层 encoder和decoder。
 
 encoder代码实现如下：
 
-```python
+```py
 import torch
 import torch.nn as nn
 
