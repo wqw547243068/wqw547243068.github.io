@@ -85,6 +85,13 @@ mathjax: true
 - 小度屏：陪伴数字人, 在小度屏中内置数字人助理，唤醒小度屏后与用户进行交流互动，可重点应用于儿童及老人陪伴等居家场景。
   - ![](https://bce.bdstatic.com/p3m/common-service/uploads/XDP_3f17497.PNG)
 
+
+【2024-5-8】百度智能云推出新功能：文生数字人, [大模型卷爆数字人：一句话5分钟实现定制，跳舞主持带货都能hold住](https://mp.weixin.qq.com/s/E0S6i6dSNKWwAV9XtSmC7A)
+
+清华大学《虚拟数字人研究报告2.0版》数据显示
+- 从头部企业的布局来看，面向B端的数字人产品服务是市场的主要组成部分，占比达到79%。
+- 而随着大模型技术对数字人应用模式的颠覆，不仅中小企业不用再对6位数的3D高精度数字人望而却步，C端的应用也将得以拓展。
+
 #### 游戏角色
 
 【2021-12-23】[江湖无常，寻味 AI 虚拟人物的执念与命运](https://rct.ai/zh-hans/blog/jianghu-days-pondering-the-destiny-of-ai-metabeings)
