@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  数据智能 Data-centric AI
+title:  以数据为中心的AI Data-centric AI
 date:   2024-05-10 12:00:00
 categories: 大模型
 tags: gpt ChatGPT 数据集 
@@ -15,9 +15,16 @@ permalink: /llm_data
 # Data-centric
 
 
-## 什么是 Data-centric AI
+## 数据 ＞ 模型
 
 数据在模型训练中非常重要。
+- 数据提升对于模型效果的提升至关重要，而模型的提升效果却不明显
+- 很多研究人员开始研究**以数据为中心**，想办法加强数据的质量和数量， 而不过多考虑模型或固定数据集
+- [img](http://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6eef698e52a64ce0ad3c23ceeab70042~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+
+## 什么是 Data-centric AI
+
 
 ### Data-centric AI 定义
 
@@ -28,15 +35,88 @@ Andrew Ng: ML团队80%的工作应该放在数据准备上，数据质量最重�
 >- Data-Centric AI is the discipline of systematically engineering the data used to build an AI system.
 >- If 80 percent of our work is data preparation, then ensuring data quality is the important work of a machine learning team.
 
+Data-centric AI 是一种搭建 AI 系统的新理念, 简称 `DCAI`
+> Data-centric AI refers to a framework to develop, iterate, and maintain data for AI systems
 
-Data-centric AI 简称 DCAI
+### Data-centric AI framework
+
+Data-centric AI 是指为人工智能系统开发、迭代和维护数据的框架。它涉及建立有效的训练数据、设计适当的推理数据、维护数据的相关任务和方法。
+
+Data-centric AI 框架
+- 训练数据开发
+  - 数据收集、标注、准备、降维、增强
+- 推理数据开发
+  - 分布内评估
+  - 分布外评估
+  - 提示工程
+- 数据维护
+  - 数据理解、质量维护、存储检索
+
+[图解](https://1feng.github.io/images/blog_images/data-centric-ai/01.png)
+- ![](https://1feng.github.io/images/blog_images/data-centric-ai/01.png)
+
+论文 [Data-centric Artificial Intelligence: A Survey](https://arxiv.org/pdf/2303.10158v2)
+
+
+### Model-centric vs Data-centric
+
+
+对比分析
+- 模型为中心（model-centric）: 传统搭建AI模型,以迭代模型为主，数据相对固定
+  - 聚焦于几个基准数据集，然后设计各式各样的模型去提高预测准确率。
+  - model-centric问题
+    - 没有考虑到实际应用中数据可能出现的各种问题，例如不准确的标签，数据重复和异常数据等。
+    - 准确率高的模型只能确保很好地「拟合」了数据，并不一定意味着实际应用中会有很好的表现。
+- 数据为中心(Data-centric) AI: 
+  - 关注数据本身，而模型相对固定。
+  - 采用 Data-centric AI的方法, 实际场景中会有更大的潜力，因为<span style='color:red'>数据很大程度上决定了模型能力的上限</span>。
+  - Data-centric 更侧重于提高数据的质量和数量。
+
+
+[图](http://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f3ad82df3cc8459d9c2c163918efd58f~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)来自论文
+- 【2023-4-2】[Data-centric AI: Perspectives and Challenges](https://arxiv.org/pdf/2301.04819)
 
 **数据为中心** 和 **模型为中心** 不是对立的，而是相辅相成
+- 一方面，以模型为中心的方法可用于实现以数据为中心的人工智能目标。
+  - 例如，利用生成模型，如 GAN 和扩散模型，来执行数据增强并生成更多高质量数据
+- 另一方面，以数据为中心的人工智能可以促进以模型为中心的人工智能目标的改进。
+  - 例如，增加的数据增强数据的可用性可以激发模型设计的进一步发展
+
+
+
+### DCAI 演变
+
+随着AI发展，组织形式也在不断演进，职责分化，诞生新的功能模块。
+
+传统: 
+- 流程: 由`数据工程师`完成数据标注、清洗、增强、聚合等工作，再由`机器学习工程师`完成模型训练，而`算法工程师`仅需关注算法的开发。
+
+问题: 
+- 数据管理成本高: 
+  - 算力和存储未优化
+  - 人力成本高, 主要靠算法工程师
+  - 时间成本高
+- 无法支持大规模应用: 
+  - 人工管理数据, 到一定程度后,边际效应为0
+  - 无法多维、多模态复杂查询
+  - 稳定性差、安全性差
+
+新的组织带来协作难度升级，也需要新范式来支持
+
+职责分化
+- `Data Ops`: 数据标注(25%), 数据清洗(25%), 数据增强(15%), 数据聚合(10%)
+- `ML Ops`: 模型训练(10%), 数据识别(5%), 模型调参(5%), 机器学习运营(2%)
+- `算法工程师`: 算法开发(3%)
+
+图解
+- [img](http://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1c1802020f1f46408f11f2b20abc244e~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
 
 ### Data-centric AI 资料
 
 综述
-- [Data-centric Artificial Intelligence: A Survey](https://arxiv.org/pdf/2303.10158v2)
+- 【2023-3】[Data-centric Artificial Intelligence: A Survey](https://arxiv.org/pdf/2303.10158v2)  ChatGPT 的成功的重要驱动力就是 data-centric。
+- [Data-Centric AI 介绍](https://juejin.cn/post/7267852125618290707)
 
 MIT: [Introduction to Data-Centric AI](https://dcai.csail.mit.edu/) 课程
 
@@ -73,6 +153,8 @@ OpenAI工程师花了极大心血提升数据质量和数量，GPT模型迭代�
 |`GPT-3`||570G,从45T原石数据中过滤|
 |`ChatGPT`/`GPT-4`||人工演示/标注|
 
+![](https://pic1.zhimg.com/80/v2-60c87fe18fbe252849f4592086568688_1440w.webp)
+
 ## Data-centric 构成
 
 data-centric两个重要部分: **合成数据**和**数据选择**。
@@ -97,7 +179,28 @@ data-centric两个重要部分: **合成数据**和**数据选择**。
     2. 增强鲁棒性
 
 
+### DCAI 自动化
 
+DCAI 研究方向划分为两个视角，即**自动化**程度和**人类协作**程度。
+- 前者侧重于自动化流程的设计，后者则更加关注如何 human in the loop
+- ![](https://1feng.github.io/images/blog_images/data-centric-ai/02.png)
+
+三种Automation
+- Programmatic automation：使用程序自动处理数据。程序通常是根据一些启发式和统计信息设计的，现阶段各类的 automate machine learning 的工作大都集中于此，例如各类 auto feature engineering 的方法
+- Learning-based automation：通过优化学习自动化策略。例如，最小化目标函数，此类方法通常更灵活，适应性更强。例如基于强化学习的方法做超参数调整或基于 meta learning 来确定优化策略等
+- Pipeline automation：跨多个任务的自动化调整优化策略。例如 tpot，autosklearn 这类工作，将数据处理，特征工程，模型调参等一系列任务放置在一个统一的 pipeline 里（Learning-based automation和Programmatic automation可以看作是pipeline automation中的一环）
+
+
+三种Human Participation
+
+从另一个角度来看，面向Human Participation的方法往往需要不同形式的人类参与。可以确定几个程度：
+- Full participation：人类完全控制过程。需要全员参与的方法通常可以很好地符合人类的意图，但代价高昂，例如雇佣大量外包公司来做数据打标
+- Partial participation：不需要人工全程参与，但是需要人类密集或持续地提供信息。例如，通过提供大量反馈或频繁交互。例如大名鼎鼎的RLHF。Active Learning 领域很多研究都是这个范畴
+- Minimum participation：自动化的控制整个过程，只在少量需要时咨询人类。人类只有在收到提示或要求时才会参与。当遇到海量数据和人力预算有限时，这种方法非常合适
+
+
+同样，人类参与的程度在一定程度上，反映了效率（更少的人力）和有效性（更好地与人类保持一致）之间的权衡
+ 
 
 ### 合成数据 Synthetic Data
 
