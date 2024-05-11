@@ -110,6 +110,7 @@ print(pipeline('sentiment-analysis')('I hate you'))"
 
 
 源码
+- [ransformers/__init__.py](https://github.com/huggingface/transformers/blob/main/src/transformers/__init__.py)
 - [解读](https://juejin.cn/post/7350510977052229668)
 
 #### Auto 核心类
