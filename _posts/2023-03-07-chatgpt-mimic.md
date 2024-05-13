@@ -901,9 +901,14 @@ BLOOM数据集: <span style='color:blue'> 英文 30% ＞ 中文 16% ＞ 法文 1
 
 BLOOM 模型结构与GPT相同，采用了causal decoder-only的transformer模型结构。在模型细节上，做了以下几点改动：
 - embedding layer norm：在embedding层后添加了一个 layer normalization，来使训练更加稳定。
-- layer normalization：为了提升训练的稳定性，没有使用传统的post layer norm，而是使用了pre layer Norm。
+  - 启发来自于bitstandbytes的StableEmbedding做法
+- layer normalization：为了提升训练的稳定性，没有使用传统的 post layer norm，而是使用了 pre layer Norm。
 - 激活函数：采用了GeLU激活函数。
-- 位置编码：去除了绝对位置编码，采用了相对位置编码ALiBi。相比于绝对位置编码，ALiBi的外推性更好，即虽然训练阶段的最大序列长度为2048，模型在推理过程中可以处理更长的序列。
+- 位置编码：去除了绝对位置编码，采用了相对位置编码`ALiBi`。
+  - 相比于绝对位置编码，ALiBi的外推性更好，即虽然训练阶段的最大序列长度为2048，模型在推理过程中可以处理更长的序列。
+- ![](https://pic4.zhimg.com/80/v2-c918328f95f9bc2307ebcd8b5df1c7ef_1440w.webp)
+
+
 
 BLOOM 训练目标是语言模型，即根据已有的上文去预测下一个词。
 
