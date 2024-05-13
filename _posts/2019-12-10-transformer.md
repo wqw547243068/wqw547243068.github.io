@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -1884,6 +1884,10 @@ Transformer 已成为大语言模型上的架构，因为它有效地克服了�
 
 ## 模型结构
 
+如果说 RetNet 是从**平行推理效能**的角度革新了网络架构，那么 BitNet 则从正交角度提升了推理效率。
+
+这两者的结合，以及融合其他提升模型效率的技术比如混合专家模型（MoE）和稀疏注意力机制（Sparse Attention），将成为未来基础模型网络架构的基础。
+
 
 ### RetNet
 
@@ -1906,6 +1910,49 @@ RetNet的主要贡献可以概括为两大点
   - B. **循环**表示在内存和计算方面可实现高效的 O(1) 推理。可以显着降低部署成本和延迟。此外，在没有键值缓存技巧的情况下，实现也得到了极大的简化。
   - C. **分块循环**表示可以执行有效的长序列建模。对每个本地块进行并行编码以提高计算速度，同时对全局块进行循环编码以节省 GPU 内存。
 
+新型基础网络架构 Retentive Network（`RetNet`）成功突破了所谓的“`不可能三角`”难题，实现了`帕累托`（Pareto）优化。
+- RetNet 在保持良好的扩展性能和并行训练的同时，实现了低成本部署和高效率推理。
+
+RetNet 推理成本与模型序列长度无关，这表示无论是处理长文本序列，还是长图像序列，亦或是未来更长的音视频序列，RetNet 都可以保持稳定的高效推理。
+
+
+### 微软 BitNet
+
+【2024-2-29】[BitNet b1.58：开启1-bit大语言模型时代](https://mp.weixin.qq.com/s?__biz=MzAwMTA3MzM4Nw==&mid=2649498640&idx=1&sn=a860101ceee6bc3a777f465bdd1586da&chksm=82c7cd94b5b0448231f0017d2694e59f6e41369ea14a38a3a19a32a9ba18c3fe0f934e214bee&scene=21#wechat_redirect)
+
+微软亚洲研究院推出了 1-bit LLM 新变体：`BitNet b1.58`。
+- 论文标题：[The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits](https://arxiv.org/pdf/2402.17764.pdf)
+
+该模型每个参数仅使用三值表示，即-1, 0 或 1。因此，在 LLM 的矩阵乘法操作中只需要整数加法，而不需要任何浮点数乘法或加法。在语言模型困惑度和下游任务性能的评估中
+- BitNet b1.58 能够与具有相同参数量和训练数据量的全精度（即FP16或BF16）Transformer LLM 相匹敌。
+- 与此同时，它在速度、内存使用、吞吐量和能耗等方面具有大幅优势。
+
+BitNet b1.58 为训练新一代高性能高效率的 LLMs 确立了新的**扩展定律**（scaling law）和方法。此外引领了一种全新的计算范式，并为开发专为 1-bit LLMs 优化的硬件设备铺平了道路。
+
+BitNet 是第一个支持训练1比特大语言模型的新型网络结构，具有强大的可扩展性和稳定性，能够显著减少大语言模型的训练和推理成本。
+
+与最先进的8比特量化方法和全精度 Transformer 基线相比，BitNet 在大幅降低内存占用和计算能耗的同时，表现出了极具竞争力的性能。
+
+此外，BitNet 拥有与全精度 Transformer 相似的**规模法则**（Scaling Law），在保持效率和性能优势的同时，还可以更加高效地将其能力扩展到更大的语言模型上，从而让1比特大语言模型（1-bit LLM）成为可能。
+
+### 微软 YOCO
+
+【2024-5-13】[YOCO：打破传统Decoder-only架构，内存消耗仅为Transformer的六分之一](https://mp.weixin.qq.com/s/X4HSyEreN4L4xTizC-_mow)
+
+模型架构还只有三大类：Decoder-Only、Encoder-Only、Encoder-Decoder。
+
+微软亚洲研究院推出了一种创新性的 Decoder-Decoder 架构 `YOCO`（You Only Cache Once）。通过**自解码器**和**交叉解码器**的独特架构，YOCO 仅需缓存一次键值对，从而显著降低 GPU 内存的使用。
+- 论文 [You Only Cache Once: Decoder-Decoder Architectures for Language Models](https://arxiv.org/abs/2405.05254)
+
+模型评估中，YOCO 展现出与同规模 Transformer 模型相媲美的性能，并在语言建模评估、模型大小扩展以及长上下文处理方面具有显著优势。特别是在降低 GPU 内存占用和缩短预填充延迟方面，
+
+YOCO 整体架构设计如下，分为`自解码器`（Self-Decoder）和`交叉解码器`（Cross-Decoder）两部分。
+
+YOCO 实现了“**模型越大，内存越省**”，为自然语言处理领域带来了全新的研究和应用范式。
+- YOCO 仅缓存一次键值对，可大幅降低 GPU 内存需求，且保留全局注意力能力。
+
+打破 GPT 系列开创的 `Decoder-Only` 架构——提出 `Decoder-Decoder` 新型架构，名为 `YOCO` (You Only Cache Once)。
+- 在处理 512K 上下文长度时，标准 Transformer 内存使用是 YOCO 的6.4倍，预填充延迟是 YOCO 的30.3倍，而 YOCO 的吞吐量提升到标准 Transformer 的9.6倍。
 
 
 ## 位置编码方式
