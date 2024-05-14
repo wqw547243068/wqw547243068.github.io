@@ -673,6 +673,29 @@ pubmed_dataset_streamed = load_dataset( "json" , data_files=data_files, split= "
 ## 模型
 
 
+huggingface transformers 框架主要有三个类
+- model 类
+- configuration 类
+- tokenizer 类
+
+所有相关类都衍生自这三个类，都有`from_pretained()`方法和`save_pretrained()`方法。
+
+
+### 模型信息
+
+从 hf 下载的模型，常见文件
+- 配置文件 `config.json`
+- 词典文件 `vocab.json`
+- 预训练模型文件
+  - 如果用 pytorch, 则保存 `pytorch_model.bin`
+  - 如果用 tensorflow 2，则保存 `tf_model.h5`
+
+额外的文件
+- merges.txt、special_tokens_map.json、added_tokens.json、tokenizer_config.json、sentencepiece.bpe.model等
+
+这几类是tokenizer需要使用的文件
+
+
 ### 模型导入 
 
 导入方法 
@@ -692,14 +715,39 @@ model = AutoModelForCausalLM.from_pretrained(model_name)
 【2024-5-8】transformers 中有哪些包可用？
 - 见官方源码 [transformers/__init__.py](https://github.com/huggingface/transformers/blob/main/src/transformers/__init__.py)
 
+
+如果传入的是目录, 则从中找 vocab.json、pytorch_model.bin、tf_model.h5、merges.txt、special_tokens_map.json、added_tokens.json、tokenizer_config.json、sentencepiece.bpe.model等进行加载。
+
 #### 远程导入
 
+方法
+- 使用repo id下载到缓存并加载
+  - 默认下载到 `~/.cache/huggingface/hub`/models--Helsinki-NLP--opus-mt-zh-en
+  - 缓存目录: `blobs`, `refs`, `snapshots`
+  - 其中 snapshots 包含多个md5字符串的目录, 对应不同版本, 其中任意一个包含实际模型文件信息(config.json,generation_config.json, tokenizer_config.json, pytorch_model.bin等)
+- 本地路径，避免访问 http://huggingface.co，从而迅速加载模型
 
 ```py
 from transformers import BertTokenizer, BertModel
 
-tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
-model = BertModel.from_pretrained('bert-base-chinese')
+# ① 使用repo id下载到缓存并加载
+model_name = 'Helsinki-NLP/opus-mt-zh-en'
+model_name = 'bert-base-chinese'
+model_path = '/tmp/model'
+
+# 每次执行时都下载远程模型
+tokenizer = BertTokenizer.from_pretrained(model_name)
+model = BertModel.from_pretrained(model_name)
+
+tokenizer.save_pretrained(model_path)
+model.save_pretrained(model_path)
+
+# 每次执行时先检查本地是否存在，再远程下载
+tokenizer = BertTokenizer.from_pretrained(model_name, cache_dir=model_path)
+model = BertModel.from_pretrained(model_name, cache_dir=model_path)
+# 只从本地加载，没有就报错
+tokenizer = BertTokenizer.from_pretrained(model_name, local_files_only=True)
+model = BertModel.from_pretrained(model_name, local_files_only=True)
 ```
 
 
@@ -709,18 +757,22 @@ model = BertModel.from_pretrained('bert-base-chinese')
 无法联网时，读取预训练模型会失败
 
 解法
-- 下载模型：huggingface 官网 [Files and versions]() 上下载几个文件
-  - 模型配置文件
+- 下载模型：huggingface 官网 [Files and versions]() 下载几个文件
+  - 模型`配置文件`
     - `config.json` 
-  - pytorch模型文件
+  - pytorch`模型文件`
     - `pytorch_model.bin` 
-  - tokenizer 文件
+  - tokenizer `分词文件`
     - `tokenizer.json` 
     - `tokenizer_config.json`
     - `vocab.txt`
 - 本地导入
-  - 改成本地目录
+  - 改成**本地目录**
   - 额外读取 config 信息
+
+AutoTokenizer 
+- 只会从传入路径找 tokenizer_config.json 文件
+- 找到后，所有的加载内容都以 tokenizer_config.json 中内容为准，这里的“auto_map”告诉加载器要去哪里找对应的tokenizer类，前半段的路径标记的就是去哪里找`.py`文件，使用`--`分割后面的就是指的对应的python文件中的Tokenizer类
 
 ```py
 from transformers import BertTokenizer, BertModel
@@ -729,8 +781,40 @@ from transformers import BertTokenizer, BertModel
 config = BertConfig.from_json_file("bert-base-chinese/config.json")
 # tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
 # model = BertModel.from_pretrained('bert-base-chinese')
-tokenizer = BertTokenizer.from_pretrained('bert-base-chinese/') ##注意此处为本地文件夹
+tokenizer = BertTokenizer.from_pretrained('bert-base-chinese/') # 此处为本地文件夹，包含 tokenizer_config.json 文件
 model = BertModel.from_pretrained("bert-base-chinese/pytorch_model.bin", config=config)
+```
+
+【2024-5-14】本地模型加载实践
+
+```py
+from datasets import load_dataset, load_from_disk
+from transformers import AutoConfig, AutoTokenizer, DataCollatorWithPadding
+from transformers import AutoModelForSequenceClassification
+
+local_dir = '/mnt/bn/flow-algo-cn/wangqiwen'
+
+# 数据集加载
+# raw_datasets = load_dataset("glue", "mrpc") # 远程数据集
+local_data = f'{local_dir}/data/my_imdb'
+local_model = f'{local_dir}/model/bigbird'
+print(f'本地数据目录: {local_data}\n本地模型目录:{local_model}')
+
+raw_datasets = load_from_disk(local_data) # 本地数据集
+
+# model_name = "bert-base-uncased"
+model_name = 'bigbird-roberta-base'
+model_path = f'{local_model}/{model_name}'
+model_file = f"{model_path}/pytorch_model.bin"
+
+# 远程模型
+# tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=local_model)
+# model = AutoModelForSequenceClassification.from_pretrained(model_name, cache_dir=local_model)
+
+# 加载本地模型: 配置文件、分词器、模型文件
+config = AutoConfig.from_pretrained(f"{local_model}/{model_name}/config.json") # 配置文件
+tokenizer = AutoTokenizer.from_pretrained(model_path) # 分词器, tokenizer_config.json
+model = AutoModelForSequenceClassification.from_pretrained(model_file, config=config) # 本地模型
 ```
 
 
