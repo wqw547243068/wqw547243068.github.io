@@ -280,6 +280,130 @@ HuggingFace主干库：
 - 2023-5，发布 StarChat，辅助编程
 
 
+## hf 使用方法
+
+多种模式
+1. pipeline 方式: 直接使用预训练模型，不训练 —— 最简单
+1. AutoXXX 方式: 使用已有模型, 灵活性增加
+1. finetune: 微调方式 Trainer、tensorflow、pytorch
+
+
+### pipeline方式
+
+直接使用预训练模型
+
+最简单，不进行finetune，直接完成任务，bert提供了pipeline的功能
+
+pipeline 参数
+- task 下游任务
+- model 预训练模型
+- config 对应模型的具体配置。
+- tokenizer 分词器。
+- framework：pt或者tf用于指定模型使用torch还是tensorflow版的
+- use_fast: 是否使用优化后的分词器
+
+```py
+pipeline(task: str, model: Optional = None, \
+    config: Union[str, transformers.configuration_utils.PretrainedConfig, NoneType] = None, \
+    tokenizer: Union[str, transformers.tokenization_utils.PreTrainedTokenizer, NoneType] = None, \
+    framework: Union[str, NoneType] = None, revision: Union[str, NoneType] = None,  \
+    use_fast: bool = True, model_kwargs: Dict[str, Any] = {}, **kwargs) \
+-> transformers.pipelines.base.Pipeline
+```
+
+
+示例
+
+```py
+from transformers import pipeline
+
+classifier = pipeline(task='sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
+classifier('We are very happy to show you the   Transformers library.')
+```
+
+### AutoXXX 方式
+
+用 nn.module + class 方式构建完可以训练的model。
+
+pipeline 封装代码主要用 autoXXX 实现，这种方式和现有的torch以及tf.keras的框架结合起来，本质上把这些预训练模型当作一个大型的model，相对于pipeline来说，封装的程度小一点
+
+automodelforXXX 实际上帮你把下游对应的任务层搭建好
+
+```py
+self.model = BertForSequenceClassification.from_pretrained(pretrain_Model_path,config=config)
+# ==== auto 模式 ====
+# pytorch
+self.model = AutoModelForSequenceClassification.from_pretrained(pretrain_Model_path,config=config)
+# tensorflow
+from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
+model = TFAutoModelForSequenceClassification.from_pretrained(model_name)
+# tf_model = TFAutoModelForSequenceClassification.from_pretrained(pt_save_directory, from_pt=True)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+```
+
+完整代码
+
+```py
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("bert-base-cased-finetuned-mrpc")
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased-finetuned-mrpc")
+
+classes = ["not paraphrase", "is paraphrase"]
+sequence_0 = "The company HuggingFace is based in New York City"
+sequence_1 = "Apples are especially bad for your health"
+sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
+
+paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="pt")
+not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="pt")
+paraphrase_classification_logits = model(**paraphrase).logits
+not_paraphrase_classification_logits = model(**not_paraphrase).logits
+paraphrase_results = torch.softmax(paraphrase_classification_logits, dim=1).tolist()[0]
+not_paraphrase_results = torch.softmax(not_paraphrase_classification_logits, dim=1).tolist()[0]
+# Should be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(paraphrase_results[i] * 100))}%")
+# Should not be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
+```
+
+
+### finetune
+
+
+pytorch 示例
+
+```py
+from transformers import TrainingArguments, Trainer
+import numpy as np
+import evaluate
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained("google-bert/bert-base-cased", num_labels=5)
+
+# training_args = TrainingArguments(output_dir="test_trainer")
+training_args = TrainingArguments(output_dir="test_trainer", evaluation_strategy="epoch")
+
+metric = evaluate.load("accuracy")
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics,
+)
+trainer.train()
+```
+
+
 ## 数据
 
 数据集工具包 huggingface datasets 
@@ -297,6 +421,28 @@ HuggingFace主干库：
 Fast tokenizer 和 Slow tokenizer 的区别：
 - Slow tokenizer 是在 Transformer 库中用Python编写的。
 - Fast tokenizer 是在 Tokenizers 库中用Rust编写的
+
+支持 tensorflow 和 pytorch, 参数 return_tensors = pt/tf
+
+```py
+# pytorch
+pt_batch = tokenizer(
+    ["We are very happy to show you the 🤗 Transformers library.", "We hope you don't hate it."],
+    padding=True,
+    truncation=True,
+    max_length=512,
+    return_tensors="pt",
+)
+
+# tensorflow
+tf_batch = tokenizer(
+    ["We are very happy to show you the 🤗 Transformers library.", "We hope you don't hate it."],
+    padding=True,
+    truncation=True,
+    max_length=512,
+    return_tensors="tf",
+)
+```
 
 
 ### load_dataset 函数
