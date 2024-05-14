@@ -3,7 +3,7 @@ layout: post
 title:  "分布式训练及推理加速"
 date:   2024-03-05 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 加速 分布式 tensorrt 推理加速 onnx zero lpu cuda gemm
+tags: GPU Tensorflow Pytorch 并行计算 加速 分布式 tensorrt 推理加速 onnx zero lpu cuda gemm huggingface
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -1876,7 +1876,7 @@ DDP 既可用于**单机多卡**也可用于**多机多卡**，它能解决 Data
 - ![](https://pic3.zhimg.com/80/v2-0c8048a903e59659880350df0ea98e1a_1440w.webp)
 - （1）初始化进程组：用 init_process_group 函数
   - backend：是通信所用的后端，可以是“nccl”或“gloo”。一般来说，nccl 用于 GPU 分布式训练，gloo 用于 CPU 进行分布式训练。
-  - init_method：字符串类型，是一个 url，用于指定进程初始化方式，默认是 “env://”，表示从环境变量初始化，还可以使用 TCP 的方式或共享文件系统 。
+  - init_method：字符串类型，是一个 url，进程初始化方式，默认是 “env://”，表示从环境变量初始化，还可以使用 TCP 的方式或共享文件系统 。
   - world_size：执行训练的所有的进程数，表示一共有多少个节点（机器）。
   - rank：进程的编号，也是其优先级，表示当前节点（机器）的编号。group_name：进程组的名字。
 - （2）模型并行化：用 DistributedDataParallel，将模型分发至多 GPU 上
@@ -2872,6 +2872,304 @@ for epoch, batch in enumerate(ppo_trainer.dataloader):
     print("epoch{}, reword is {}".format(epoch, sum(rewards)))
     rewards_list.append(sum(rewards))
 ```
+
+
+### Trainer
+
+
+Trainer 名称歧义
+- PyTorch Lightning有个 Trainer
+- HuggingFace Transformers也有 Trainer
+- 还有一些github上封装的或者基于这两个继续封装的Trainer
+
+这里的 Trainer 指 Huggingface 的 Trainer 训练框架
+
+Trainer 介于原生 torch 和 pytorch-lighning 之间，是轻量级的辅助torch模型训练的utils，因为其实稍微改造一下，huggingface的trainer 可用来训练常规的非nlp的torch模型。
+- 封装程度: `torch` < `pytorch lightning` < `trainer`
+
+Trainer 封装了 PyTorch 训练过程，包括：**前向传播**、**反向传播**和**参数更新**等步骤，用户只需要设计模型，调参就行
+
+高级的 Trainer 加上了各种功能，比如：**日志记录**，**断点重训**，**训练方式**与**精度**，支持各种分布式训练框架像原生、Apex、Deepspeed和Fairscale，支持自定的回调函数等等
+
+Lightning 官网的一张gif还是比较生动形象
+
+
+#### Trainer 定义
+
+[trainer.py](https://github.com/huggingface/transformers/blob/v4.34.1/src/transformers/trainer.py#L236)
+
+
+do_train,do_eval,do_predict 这三个参数和trainer没什么关系
+
+
+#### 自定义
+
+
+##### model_init
+
+model_init
+
+```py
+def model_init():
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_args.model_name_or_path,
+        from_tf=bool(".ckpt" in model_args.model_name_or_path),
+        config=config,
+        cache_dir=model_args.cache_dir,
+        revision=model_args.model_revision,
+        use_auth_token=True if model_args.use_auth_token else None
+    )
+    return model
+```
+
+
+##### compute_metrics
+
+```py
+def compute_metrics(p: EvalPrediction) -> Dict:
+    preds,labels=p
+    preds = np.argmax(preds, axis=-1)
+    #print('shape:', preds.shape, '\n')
+    precision, recall, f1, _ = precision_recall_fscore_support(lables.flatten(), preds.flatten(), average='weighted', zero_division=0)
+    return {
+        'accuracy': (preds == p.label_ids).mean(),
+        'f1': f1,
+        'precision': precision,
+        'recall': recall
+    }
+```
+
+##### 加权loss
+
+分类任务中，类目不均衡时，采用加权loss
+
+做法
+- (1) 继承 Trainer 类, 重定义 compute_loss 函数
+- (2) 使用回调函数 [callback](https://huggingface.co/docs/transformers/v4.34.1/en/main_classes/callback)
+
+示例
+- 三分类问题，各类目加权 1 : 2 : 3
+
+```py
+from torch import nn
+from transformers import Trainer
+
+class CustomTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        labels = inputs.pop("labels")
+        # forward pass
+        outputs = model(**inputs)
+        logits = outputs.get("logits")
+        # compute custom loss (suppose one has 3 labels with different weights)
+        loss_fct = nn.CrossEntropyLoss(weight=torch.tensor([1.0, 2.0, 3.0], device=model.device))
+        loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
+        return (loss, outputs) if return_outputs else loss
+```
+
+
+#### 参数详解
+
+[Trainer 官网文档](https://huggingface.co/docs/transformers/v4.34.1/en/main_classes/trainer#trainer)，版本为4.34.0
+
+##### Trainer类 参数
+
+Transformers Trainer类 参数：
+- `model` (`PreTrainedModel` 或 `torch.nn.Module`, 可选)：训练、评估或预测的实例化模型
+  - 如果不提供，必须传递一个 `model_init` 来初始化一个模型。
+- `args` (TrainingArguments, 可选)：训练参数
+  - 如果不提供，用 TrainingArguments 默认参数，其中 output_dir 设置为当前目录中的名为 "tmp_trainer" 的目录。
+- `data_collator` (DataCollator, 可选)：用于从 train_dataset 或 eval_dataset 中构成batch的函数
+  - 如果未提供tokenizer，将默认使用 default_data_collator()；如果提供，将使用 DataCollatorWithPadding 。
+- `train_dataset` (torch.utils.data.`Dataset` 或 torch.utils.data.`IterableDataset`, 可选)：训练数据集
+  - 如果是 torch.utils.data.Dataset，则会自动删除模型的 forward() 方法不接受的列。
+- `eval_dataset` (Union[torch.utils.data.Dataset, Dict[str, torch.utils.data.Dataset]), 可选)：同上，评估数据集
+  - 如果是字典，将对每个数据集进行评估，并在指标名称前附加字典的键值。
+- `tokenizer` (PreTrainedTokenizerBase, 可选)：预处理数据的**分词器**
+  - 如果提供，将在批量输入时自动对输入进行填充到最大长度，并会保存在模型目录下中，为了重新运行中断的训练或重复微调模型时更容易进行操作。
+- `model_init` (Callable[[], PreTrainedModel], 可选)：模型实例化函数
+  - 如果提供，每次调用 train() 时都会从此函数给出的模型的新实例开始。
+- `compute_metrics` (Callable[`[EvalPrediction]`, Dict], 可选)：评估时**计算指标**的函数，必须接受 EvalPrediction 作为入参，并返回一个字典，其中包含了不同性能指标的名称和相应的数值，一般是准确度、精确度、召回率、F1 分数等。
+- `callbacks` (TrainerCallback 列表, 可选)：自定义**回调函数**
+  - 如果要删除使用的默认回调函数，要使用 Trainer.remove_callback() 方法。
+- `optimizers` (Tuple[torch.optim.Optimizer, torch.optim.lr_scheduler.LambdaLR], 可选)：指定包含优化器和学习率调度器的元组（Tuple）
+  - 元组的两个元素分别是**优化器**（torch.optim.Optimizer）和**学习率调度器**（torch.optim.lr_scheduler.LambdaLR），默认会创建一个基于AdamW优化器的实例，并使用 get_linear_schedule_with_warmup() 函数创建一个学习率调度器。
+- `preprocess_logits_for_metrics` (Callable[[torch.Tensor, torch.Tensor], torch.Tensor], 可选)：指定函数，每次评估步骤（evaluation step）前，进入compute_metrics函数前对模型的输出 logits 进行**预处理**。
+  - 接受两个张量（tensors）作为参数，一个是模型的输出 logits，另一个是**真实标签**（labels）。
+  - 然后返回一个经过预处理后的 logits 张量，给到compute_metrics函数作为参数。
+
+
+
+##### TrainingArguments 参数
+
+args：超参数定义，trainer的重要功能，大部分训练相关的参数都是这里设置
+
+TrainingArguments 有接近100个参数
+
+TrainingArguments 参数
+- `output_dir` (str)：模型checkpoint/最终结果的输出目录。
+- `overwrite_output_dir` (bool, 可选，默认为 False)：如果设置为True，将**覆盖**输出目录中已存在的内容
+  - 继续训练模型并且输出目录, 指向一个checkpoint目录。
+- `do_train` (bool, 可选，默认为 False)：是否执行**训练**
+  - 其实Trainer 不直接使用此参数，主要是用于写脚本时，作为if的条件来判断是否执行接下来的代码。
+- `do_eval` (bool, 可选)：是否在验证集上进行**评估**，如果评估策略（evaluation_strategy）不是"no"，将自动设置为True。
+  - 与do_train类似，不直接由Trainer使用，主要是用于写训练脚本。
+- `do_predict` (bool, 可选，默认为 False)：是否在测试集上**预测**。
+- `evaluation_strategy` (str, 可选，默认为 "no")：指定训练期间采用的评估策略，可选值包括：
+  - "no"：在训练期间不进行任何评估。
+  - "steps"：每隔 eval_steps 步骤进行评估。
+  - "epoch"：每个训练周期结束时进行评估。
+- `prediction_loss_only` (bool, 可选, 默认为 False)：
+  - 如果设置为True，评估和预测时，只返回**损失值**，而不返回其他评估指标。
+- `per_device_train_batch_size` (int, 可选, 默认为 8)：**训练**阶段，每个GPU/XPU/TPU/MPS/NPU/CPU的batch，每个训练步骤中每个硬件上的样本数量。
+- `per_device_eval_batch_size` (int, 可选, 默认为 8)：**评估**阶段的每个GPU/XPU/TPU/MPS/NPU/CPU的batch，每个评估步骤中每个硬件上的样本数量。
+- `gradient_accumulation_steps` (int, 可选, 默认为 1)：执行反向传播之前，**梯度积累的更新步数**。
+  - 梯度积累可以在多个batch上累积梯度，然后一次性执行反向传播，显存不够的情况下执行大batch的反向传播。
+  - 假设4张卡，每张卡的batch size为8，那么一个steps的batch size就是32，如果这个参数设置为4，那么做反向传播的训练样本数量就是128。
+  - 两个好处：①显存不够增大此参数；②能加快训练速度，毕竟做反向传播的次数少了。
+- `eval_accumulation_steps` (int, 可选)：执行评估时，模型会累积多少个预测步骤的输出张量，然后才从GPU/NPU/TPU移动到CPU上，默认是整个评估的输出结果将在GPU/NPU/TPU上累积，然后一次性传输到CPU，速度更快，但占显存。
+- `eval_delay` (float, 可选)：等待执行第一次评估的轮数或步数。
+  - 如果evaluation_strategy为"steps"，设置此参数为10，则10个steps后才进行首次评估。
+- `learning_rate` (float, 可选, 默认为 5e-5)：AdamW优化器的**初始学习率**。
+- `weight_decay` (float, 可选, 默认为 0)：**权重衰减**的值，应用在 AdamW 优化器所有层上，除了偏置（bias）和 Layer Normalization 层（LayerNorm）的权重上。
+  - 权重衰减是一种**正则化**手段，通过向损失函数添加一个额外的项，来惩罚较大的权重值，有助于防止模型**过拟合**训练数据。
+- `adam_beta1` (float, 可选, 默认为 0.9)：AdamW优化器的beta1超参数。
+- `adam_beta2` (float, 可选, 默认为 0.999)：AdamW优化器的beta2超参数。
+- `adam_epsilon` (float, 可选, 默认为 1e-8)：AdamW优化器的epsilon超参数。
+- `max_grad_norm` (float, 可选, 默认为 1.0)：梯度剪裁的最大梯度范数，可以防止梯度爆炸，一般都是1，如果某一步梯度的L2范数超过了 此参数，那么梯度将被重新缩放，确保它的大小不超过此参数。
+- `num_train_epochs` (float, 可选, 默认为 3.0)：训练的**总epochs数**。
+- `max_steps` (int, 可选, 默认为 -1)：如果设置为正数，执行的总训练步数，会覆盖 num_train_epochs。
+  - 注意：如果使用此参数，就算没有达到这个参数值的步数，训练也会在数据跑完后停止。
+- `lr_scheduler_type` (str, 可选, 默认为"linear")：学习率scheduler类型，根据训练进程来自动调整学习率。详细见：
+  - "linear"：**线性**学习率scheduler，学习率以线性方式改变
+  - "cosine"：**余弦**学习率scheduler，学习率以余弦形状的方式改变。
+  - "constant"：**常数**学习率，学习率在整个训练过程中保持不变。
+  - "polynomial"：**多项式**学习率scheduler，学习率按多项式函数的方式变化。
+  - "piecewise"：**分段常数**学习率scheduler，每个阶段使用不同的学习率。
+  - "exponential"：**指数**学习率scheduler，学习率以指数方式改变。
+- `warmup_ratio` (float, 可选, 默认为0.0)：线性热身占总训练步骤的比例，线性热身是一种训练策略，学习率在开始阶段从0逐渐增加到其最大值（通常是设定的学习率），然后在随后的训练中保持不变或者按照其他调度策略进行调整。如果设置为0.0，表示没有热身。
+- `warmup_steps` (int,可选, 默认为0)：线性热身的步骤数，这个参数会覆盖warmup_ratio，如果设置了warmup_steps，将会忽略warmup_ratio。
+- `log_level` (str, 可选, 默认为passive)：主进程上要使用的日志级别，
+  - `debug`：最详细的日志级别。
+  - `info`：用于一般的信息性消息。
+  - `warning`：用于警告信息。
+  - `error`：用于错误信息。
+  - `critical`：用于严重错误信息。
+  - `passive`：不设置任何内容，将会使用Transformers库当前的日志级别（默认为"warning"）。
+  - 建议训练时使用info级别。
+- `log_level_replica` (str, 可选, 默认为warning)：副本上要使用的日志级别，与log_level相同。
+- `log_on_each_node` (bool, optional, defaults to True)：在多节点分布式训练中，是否在每个节点上使用log_level进行日志记录。
+- `logging_dir` (str, 可选)：TensorBoard日志目录。默认为output_dir/runs/CURRENT_DATETIME_HOSTNAME。
+- `logging_strategy` (str, 可选, 默认为"steps")：训练过程中采用的日志记录策略。可选包括：
+  - "no"：在训练过程中不记录任何日志。
+  - "epoch"：在每个epoch结束时记录日志。
+  - "steps"：根据logging_steps参数记录日志。
+- `logging_steps` (int or float,可选, 默认为500)：
+  - 如果logging_strategy="steps"，则此参数为每多少步记录一次步骤。
+- `logging_nan_inf_filter` (bool, 可选, 默认为 True)：是否过滤日志记录中为nan和inf的loss
+  - 如果设置为True，将过滤每个步骤的loss，如果出现nan或inf，将取当前日志窗口的平均损失值。
+- `save_strategy` (str , 可选, 默认为 "steps")：训练过程中保存checkpoint的策略，包括：
+  - "no"：在训练过程中不保存checkpoint。
+  - "epoch"：在每个epoch束时保存checkpoint。
+  - "steps"：根据save_steps参数保存checkpoint。
+- `save_steps` (int or float, 可选, 默认为500)：
+  - 如果save_strategy="steps"，就是指两次checkpoint保存之间的更新步骤数。如果是在[0, 1)的浮点数，则就会当做与总训练步骤数的比例。
+- `save_total_limit` (int, 可选)：如果给定了参数，将限制checkpoint的总数，因为checkpoint也是很占硬盘的，将会删除输出目录中旧的checkpoint。
+  - 当启用load_best_model_at_end时，会根据metric_for_best_model保留最好的checkpoint，以及最近的checkpoint。
+  - 当save_total_limit=5和指定load_best_model_at_end时，将始终保留最近的四个checkpoint以及最好的checkpoint；
+  - 当save_total_limit=1和指定load_best_model_at_end时，会保存两个checkpoint：最后一个和最好的一个（如果不同一个）。
+- `load_best_model_at_end` (bool, 可选, 默认为False)：是否在训练结束时，加载在训练过程中最好的checkpoint
+  - 设置为 True 时，找到在验证集上指标最好的checkpoint并且保存，然后还会保存最后一个checkpoint
+  - 在普通的多epoch训练中，最好设置为True
+  - 但在大模型训练中，一般是一个epoch，使用的就是最后一个checkpoint。
+- `save_safetensors` (bool, 可选, 默认为False)：是否在保存和加载模型参数时使用 "safetensors"
+  - "safetensors" 更好地处理了不同 PyTorch 版本之间的模型参数加载的兼容性问题。
+- `save_on_each_node` (bool, 可选, 默认为 False)：多节点分布式训练时，是否在每个节点上保存checkpoint，还是仅在主节点上保存。
+  - 注意如果多节点使用的是同一套存储设备，比如都是外挂一个nas，开启后会报错，因为文件名称都一样。
+- `use_cpu` (bool, 可选, 默认为 False)：是否用CPU训练。如果设置为False，将使用CUDA或其他可用设备。
+- `seed` (int, 可选, 默认为42)：训练过程的随机种子，确保训练的可重现性，主要用于model_init，随机初始化权重参数。
+- `data_seed` (int, 可选)：数据采样的随机种子，如果没有设置将使用与seed相同的种子，可以确保数据采样的可重现性。
+- `jit_mode_eval` (bool, 可选, 默认为False)：是否在推理（inference）过程中使用 PyTorch 的 JIT（Just-In-Time）跟踪功能
+  - PyTorch JIT 是 PyTorch 的一个功能，用于将模型的前向传播计算编译成高性能的机器代码，会加速模型的推理。
+- `use_ipex` (bool, 可选, 默认为 False)：是否使用英特尔扩展（Intel extension）来优化 PyTorch，需要安装IPEX
+  - IPEX是一组用于优化深度学习框架的工具和库，提高训练和推理的性能，特别针对英特尔的处理器做了优化。
+- `bf16` (bool, 可选, 默认为False)：是否使用bf16进行混合精度训练，而不是fp32训练，需要安培架构或者更高的NVIDIA架构，关于精度的问题可以看这篇文章：Glan格蓝：LLM大模型之精度问题（FP16，FP32，BF16）详解与实践
+  - 混合精度训练：模型训练时将模型参数和梯度存储为`fp32`，但在前向和后向传播计算中使用`fp16`，这样可以减少内存使用和计算时间，并提高训练速度。
+- `fp16` (bool,** 可选, 默认为****False)**：是否使用fp16进行混合精度训练，而不是fp32训练。
+- `fp16_opt_level` (str, 可选, 默认为 ''O1'')：对于fp16训练，选择的Apex AMP的优化级别，可选值有 ['O0', 'O1', 'O2'和'O3']。详细信息可以看Apex文档。
+- `half_precision_backend` (str, 可选, 默认为"auto")：混合精度训练（Mixed Precision Training）时要使用的后端，必须是 "auto"、"cuda_amp"、"apex"、"cpu_amp" 中的一个。
+  - "auto"将根据检测到的PyTorch版本来使用后端，而其他选项将会强制使用请求的后端。使用默认就行。
+- `bf16_full_eval` (bool, 可选, 默认为 False)：是否使用完全的bf16进行评估，而不是fp32。这样更快且省内存，但因为精度的问题指标可能会下降。
+- `fp16_full_eval` (bool, 可选, 默认为 False)：同上，不过将使用fp16.
+- `tf32` (bool, 可选)：是否启用tf32精度模式，适用于安培架构或者更高的NVIDIA架构，默认值取决于PyTorch的版本torch.backends.cuda.matmul.allow_tf32 默认值。
+- `local_rank` (int, 可选, 默认为 -1)：在分布式训练中的当前进程（本地排名）的排名，这个用户不用设置，使用PyTorch分布式训练时会**自动**设置，默认为自动设置。
+- `ddp_backend` (str, 可选)：处理分布式计算的后端框架，用于多个计算节点协同工作以加速训练，处理模型参数和梯度的同步、通信等操作，可选值如下
+  - "`nccl`"：这是 NVIDIA Collective Communications Library (NCCL) 的后端。
+  - "`mpi`"：Message Passing Interface (MPI) 后端， 是一种用于不同计算节点之间通信的标准协议。
+  - "`ccl`"：这是 Intel的oneCCL (oneAPI Collective Communications Library) 的后端。
+  - "`gloo`"：这是Facebook开发的分布式通信后端。
+  - "`hccl`"：这是Huawei Collective Communications Library (HCCL) 的后端，用于华为昇腾NPU的系统上进行分布式训练。
+  - 默认会根据系统自动设置，一般是nccl。
+- `tpu_num_cores` (int, 可选)：TPU上训练时，TPU核心的数量。
+- `dataloader_drop_last` (bool, 可选, 默认为False)：是否丢弃最后一个不完整的batch，发生在数据集的样本数量不是batch_size的整数倍的时候。
+- `eval_steps` (int or float, 可选)：如果evaluation_strategy="steps"，两次评估之间的更新步数，如果未设置，默认和设置和logging_steps相同的值，如果是在[0, 1)的浮点数，则就会当做与总评估步骤数的比例。
+- `dataloader_num_workers` (int, 可选, 默认为 0)：数据加载时的子进程数量（仅用于PyTorch）, PyTorch的num_workers参数，0表示数据将在主进程中加载。
+- `past_index` (int, 可选, 默认为 -1)：一些模型（如TransformerXL或XLNet）可用过去的隐藏状态进行预测，如果将此参数设置为正整数，Trainer将使用相应的输出（通常索引为2）作为过去状态，并将其在下一个训练步骤中作为mems关键字参数提供给模型，只针对一些特定模型。
+- `run_name` (str, 可选)：训练运行（run）的字符串参数，与日志记录工具（例如wandb和mlflow）一起使用，不影响训练过程，就是给其他的日志记录工具开了一个接口，个人还是比较推荐wandb比较好用。
+- `disable_tqdm` (bool, 可选)：是否禁用Jupyter笔记本中的~notebook.NotebookTrainingTracker生成的tqdm进度条，如果日志级别设置为warn或更低，则将默认为True，否则为False。
+- `remove_unused_columns` (bool, 可选, 默认为True)：是否自动删除模型在训练时，没有用到的数据列，默认会删除，比如你的数据有两列分别是content和id，如果没有用到id这一列，训练时就会被删除。
+- `label_names` (List[str], 可选)：在模型的输入字典中对应于标签（labels）的键，默认情况下不需要显式指定。
+- `metric_for_best_model` (str, 可选)：与 load_best_model_at_end 结合使用，比较不同模型的度量标准，默认情况下，如果未指定，将使用验证集的 "loss" 作为度量标准，可使用accuracy、F1、loss等。
+- `greater_is_better` (bool, 可选)：与 load_best_model_at_end 和 metric_for_best_model 结合使用，这个和上面的那个参数是对应的，那个指标是越大越好还是越小越好
+  - 如果是loss, 越小越好，这个参数就会被设置为False；
+  - 如果是accuracy，把这个值设为True。
+- `ignore_data_skip` (bool, 可选，默认为False)：是否**断点训练**，即训练终止又恢复后，是否跳过之前的训练数据。
+- `resume_from_checkpoint` (str, 可选)：从checkpoint恢复训练的路径。
+- `sharded_ddp` (bool, str 或 ShardedDDPOption 列表, 可选, 默认为'')：是否在分布式训练中使用 Sharded DDP（Sharded Data Parallelism），FairScale提供的，默认不使用
+  - FairScale 是Mate开发的一个用于高性能和大规模训练的 PyTorch 扩展库。这个库扩展了基本的 PyTorch 功能，同时引入了最新的先进规模化技术，通过可组合的模块和易于使用的API，提供了最新的分布式训练技术。详细的可以看其官网。
+- `fsdp` (bool, str 或 FSDPOption 列表, 可选, 默认为'')：是否启用 PyTorch 的 `FSDP`（Fully Sharded Data Parallel Training），以及如何配置分布式并行训练。
+- `fsdp_config` (str 或 dict, 可选)：配置 PyTorch 的 FSDP（Fully Sharded Data Parallel Training）的配置文件
+- `deepspeed` (str 或 dict, 可选)：是否启用 DeepSpeed，以及如何配置 DeepSpeed。
+  - 目前分布式训练使用最多的框架，比上面pytorch原生分布式训练以及FairScale用的范围更广，详细的可以看其官网。
+- `label_smoothing_factor` (float, 可选，默认为0.0)：标签平滑的因子。
+- `debug` (str 或 DebugOption 列表, 可选, 默认为'')：启用一个或多个调试功能,支持选项：
+  - "underflow_overflow"：此选项用于检测模型输入/输出中的溢出。
+  - "tpu_metrics_debug"：此选项用于在 TPU 上打印调试指标。
+- `optim` (str 或 training_args.OptimizerNames, 可选, 默认为 "adamw_torch")：要用的优化器。可选项：
+  - "adamw_hf"
+  - "adamw_torch"
+  - "adamw_torch_fused"
+  - "adamw_apex_fused"
+  - "adamw_anyprecision"
+  - "adafactor"
+- `optim_args` (str, 可选)：用于向特定类型的优化器（如adamw_anyprecision）提供额外的参数或自定义配置。
+- `group_by_length` (bool, 可选, 默认为 False)：是否在训练数据集中对大致相同长度的样本进行分组然后放在一个batch里，目的是尽量减少在训练过程中进行的padding，提高训练效率。
+- `length_column_name` (str, 可选, 默认为 "length")：当上个参数设置为True时，可以给训练数据在增加一列”长度“，就是事先计算好的，可以加快分组的速度，默认是length。
+- `report_to` (str 或 str 列表, 可选, 默认为 "all")：要将训练结果和日志报告到的不同日记集成平台，有很多"azure_ml", "clearml", "codecarbon", "comet_ml", "dagshub", "flyte", "mlflow", "neptune", "tensorboard", and "wandb"。直接默认就行，都发。
+- `ddp_find_unused_parameters` (bool, 可选)：使用分布式训练时，这个参数用于控制是否查找并处理那些在计算中没有被使用的参数，如果启用了**梯度检查点**（gradient checkpointing），表示部分参数是惰性加载的，这时默认值为 False，因为梯度检查点本身已经考虑了未使用的参数，如果没有启用梯度检查点，默认值为 True，表示要查找并处理所有参数，以确保它们的梯度被正确传播。
+- `ddp_bucket_cap_mb` (int, 可选)：在分布式训练中，数据通常分成小块进行处理，这些小块称为"桶"，这个参数每个桶的最大内存占用大小，一般自动分配即可。
+- `ddp_broadcast_buffers` (bool, 可选)：分布式训练中，模型的某些部分可能包含缓冲区，如 Batch Normalization 层的统计信息，这个参数用于控制是否将这些缓冲区广播到所有计算设备，以确保模型在不同设备上保持同步，如果启用了梯度检查点，表示不需要广播缓冲区，因为它们不会被使用，如果没有启用梯度检查点，默认值为 True，表示要广播缓冲区，以确保模型的不同部分在所有设备上都一致。
+- `gradient_checkpointing` (bool, 可选, 默认为False)：是否开启梯度检查点，简单解释一下：训练大型模型时需要大量的内存，其中在反向传播过程中，需要保存前向传播的中间计算结果以计算梯度，但是这些中间结果占用大量内存，可能会导致内存不足，梯度检查点会在训练期间释放不再需要的中间结果以减小内存占用，但它会使反向传播变得更慢。
+- `dataloader_pin_memory` (bool, 可选, 默认为 True)：dataloader加载数据时，是否启用“pin memory”功能。“Pin memory” 用于将数据加载到GPU内存之前，将数据复制到GPU的锁页内存（pinned memory）中，锁页内存是一种特殊的内存，可以更快地传输数据到GPU，从而加速训练过程，但是会占用额外的CPU内存，会导致内存不足的问题，如果数据量特别大，百G以上建议False。
+- `skip_memory_metrics` (bool, 可选, 默认为 True)：是否将内存分析报告添加到性能指标中，默认情况下跳过这一步，以提高训练和评估的速度，建议打开，更能够清晰的知道每一步的内存使用。
+- `include_inputs_for_metrics` (bool, 可选, 默认为 False)：是否将输入传递给 compute_metrics 函数，一般计算metrics用的是用的是模型预测的结果和我们提供的标签，但是有的指标需要输入，比如cv的IoU（Intersection over Union）指标。
+- `auto_find_batch_size` (bool, 可选, 默认为 False)：是否使用自动寻找适合内存的batch size大小，以避免 CUDA 内存溢出错误，需要安装 accelerate（使用 pip install accelerate），这个功能还是比较NB的。
+- `full_determinism` (bool, 可选, 默认为 False)：如果设置为 True，将调用 enable_full_determinism() 而不是 set_seed()，训练过程将启用完全确定性（full determinism），在训练过程中，所有的随机性因素都将被消除，确保每次运行训练过程都会得到相同的结果，注意：会对性能产生负面影响，因此仅在调试时使用。
+- `torchdynamo` (str, 可选)：用于选择 TorchDynamo 的后端编译器，TorchDynamo 是 PyTorch 的一个库，用于提高模型性能和部署效率，可选的选择包括 "eager"、"aot_eager"、"inductor"、"nvfuser"、"aot_nvfuser"、"aot_cudagraphs"、"ofi"、"fx2trt"、"onnxrt" 和 "ipex"。默认就行，自动会选。
+- `ray_scope` (str, 可选, 默认为 "last")：用于使用 Ray 进行超参数搜索时，指定要使用的范围，默认情况下，使用 "last"，Ray 将使用所有试验的最后一个检查点，比较它们并选择最佳的。详细的可以看一下它的文档。
+- `ddp_timeout` (int, 可选, 默认为 1800)：用于 torch.distributed.init_process_group 调用的超时时间，在分布式运行中执行较慢操作时，用于避免超时，具体的可以看 PyTorch 文档 。
+`torch_compile` (bool, 可选, 默认为 False)：是否使用 PyTorch 2.0 及以上的 torch.compile 编译模型，具体的可以看 PyTorch 文档 。
+- `torch_compile_backend` (str, 可选)：指定在 torch.compile 中使用的后端，如果设置为任何值，将启用 torch_compile。
+- `torch_compile_mode` (str, 可选)：指定在 torch.compile 中使用的模式，如果设置为任何值，将启用 torch_compile。
+- `include_tokens_per_second` (bool, 可选)：确定是否计算每个设备的每秒token数以获取训练速度指标，会在整个训练数据加载器之前进行迭代，会稍微减慢整个训练过程，建议打开。
+- `push_to_hub` (bool, 可选, 默认为 False)：指定是否在每次保存模型时将模型推送到Huggingface Hub。
+- `hub_model_id` (str, 可选)：指定要与本地 output_dir 同步的存储库的名称。
+- `hub_strategy` (str 或 HubStrategy, 可选, 默认为 "every_save")：指定怎么推送到Huggingface Hub。
+- `hub_token` (str, 可选)：指定推送模型到Huggingface Hub 的token。
+- `hub_private_repo` (bool, 可选, 默认为 False)：如果设置为 True，Huggingface Hub 存储库将设置为私有。
+- `hub_always_push` (bool, 可选, 默认为 False)：是否每次都推送模型。
+
+详见
+- [LLM大模型之Trainer以及训练参数](https://zhuanlan.zhihu.com/p/662619853)
 
 ### Firefly
 
