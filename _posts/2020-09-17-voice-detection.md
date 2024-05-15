@@ -2256,6 +2256,17 @@ audio_array = generate_audio(text_prompt)
 
 [人生分离](https://www.mindtechassist.com/%E4%BA%BA%E5%A3%B0%E5%88%86%E7%A6%BB)，人声分离：将音频（音乐）中的人声和其他声音分离
 
+#### Supertone Shift 
+
+【2024-5-14】实时变声器 “[Supertone Shift](https://product.supertone.ai/shift)” 新维度, 可以实时自由地转换声音，使 Discord、VRChat 和 Twitch 上的流媒体更加有趣。
+
+除了调整声音之外，还可以通过将自己的声音和角色的声音混合在一起来创造新的声音。
+
+[Supertone Shift](https://product.supertone.ai/shift) 需要改变音频音高而又不希望其他音频特性发生变化的场合下非常有用。
+
+无论是音乐制作、声音修正、音频后期制作还是DJ混音，Supertone Shift都能提供一个方便快捷的解决方案，帮助创作者实现他们的创意和需求。
+
+
 ###  语音克隆
 
 【2024-4-27】
