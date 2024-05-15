@@ -695,6 +695,37 @@ huggingface transformers 框架主要有三个类
 
 这几类是tokenizer需要使用的文件
 
+以 GPT-2 模型为例
+
+```sh
+# 默认下载目录
+ls ~/.cache/huggingface/hub/models--gpt2/*
+# 3 个子目录: blobs, refs, snapshots
+~/.cache/huggingface/hub/models--gpt2/blobs:
+# 10c66461e4c109db5a2196bff4bb59be30396ed8                         
+# 3dc481ecc3b2c47a06ab4e20dba9d7f4b447bdf3
+# 248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707  # 523M
+~/.cache/huggingface/hub/models--gpt2/refs:
+# main
+~/.cache/huggingface/hub/models--gpt2/snapshots:
+# 607a30d783dfa663caf39e06633721c8d4cfcd7e
+# 子目录下有3个文件: config.json, generation_config.json, model.safetensors
+```
+
+格式转换
+
+```sh
+mkdir -p Helsinki-NLP/opus-mt-zh-en
+cd Helsinki-NLP/opus-mt-zh-en/
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/0ab361451ecc57b6223303c7b52e216ff40dc7e6 source.spm
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/3be15dddf54535a2257b485f32c8f9226352d5c4 vocab.json
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/60000ab989b1eec84f7b0299368f9dd498cdab61 tokenizer_config.json
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/710dcdf966ec0aa5b3d991a35264c7cb174ccf14 config.json
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/878ae3c6ca6afea7971e3be0b18debdd0d41e3ea target.spm
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/a43af728d2ddefe1ed73656ce004be6391c02e0a generation_config.json
+cp ~/.cache/huggingface/hub/models--Helsinki-NLP--opus-mt-zh-en/blobs/9d8ceb91d103ef89400c9d9d62328b4858743cf8924878aee3b8afc594242ce0 pytorch_model.bin
+```
+
 
 ### 模型导入 
 
