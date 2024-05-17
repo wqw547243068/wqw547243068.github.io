@@ -670,6 +670,65 @@ AI 根据需求，画一了各个国家的 GDP 条形图。
 
 ##### NL2SQL
 
+text2sql(NL2SQL) 是NLP诸多任务中较难的任务，即便发展迅速的LLM，也没有完全解决text2sql中复杂查询问题
+
+参考
+- [NL2SQL技术方案系列](https://www.cnblogs.com/ting1/p/18145360)
+
+NL2SQL 任务目标: 将用户对某个数据库的自然语言问题转化为相应的SQL查询。
+
+随着LLM的发展，使用LLM进行NL2SQL已成为一种新的范式。
+- 如何利用提示工程来发掘LLM的NL2SQL能力显得尤为重要。
+
+现状：大语言模型虽然在不断的迭代过程中越来越强大，但类似**商业智能**企业级应用要远比分析一个 Excel 文件、总结一个 PDF 文件的问题要复杂的多：
+- **数据结构复杂**：企业信息系统的数据结构复杂性远远超过几个简单的 Excel 文件，一个大型企业应用可能存在几百上千个数据实体，所以在实际应用中，大型 BI 系统会在前端经过汇聚、简化与抽象成新的语义层，方便理解。
+- **数据量较大**：分析类应用以海量历史数据为主，即使一些数据在分析之前会经过多级汇总处理。这决定了无法在企业应用中把数据简单的脱机成文件进行分析处理。
+- **分析需求复杂**：企业应用的数据分析需求涵盖及时查询、到各个维度的报表与指标展现、数据的上下钻、潜在信息的挖掘等，很多需求有较复杂的后端处理逻辑。
+
+这些特点决定了当前大语言模型在企业数据分析中的应用<span style='color:red'>无法完全取代目前所有/部分的分析工具</span>。
+
+其合适的定位或许是：作为现有数据分析手段的一种**有效补充**，在部分需求场景下，给经营决策人员提供一种更易于使用与交互的分析工具。
+
+具体的应用场景包括：‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍
+- 及时数据查询。提供对运营或统计数据的简单自定义查询，当然你只需要使用自然语言。‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍
+- 传统 BI 工具能力的升级。很多传统 BI 工具会定义一个抽象的语义层，其本身的意义之一就是为了让数据分析对业务人员更友好。而大模型天然具有强大的语义理解能力，因此将传统 BI 中的一些功能进化到基于自然语言的交互式分析，是非常水到渠成的。
+- 简单的数据挖掘与洞察。在某些场景下的交互式数据挖掘与洞察，可以利用大语言模型的 Code 生成能力与算法实现对数据隐藏模式的发现。
+
+三种基础技术方案介绍
+- 自然语言转数据分析的 **API**, `text2API`
+  - 类似现有的一些 BI 工具会基于自己的语义层开放出独立的 API 用于扩展应用，因此如果把自然语言转成对这些数据分析 API 的调用，是一种很自然的实现方式。当然完全也可以自己实现这个 API 层。
+  - 特点是受到 API 层的制约，在后面我们会分析。
+- 自然语言转关系数据库 **SQL**, `text2SQL`
+  - 目前最受关注的一种大模型能力（本质上也是一种特殊的 text2code）。由于 SQL 是一种相对标准化的数据库查询语言，且完全由数据库自身来解释执行，因此把自然语言转成 SQL 是最简单合理、实现路径最短的一种解决方案。
+- 自然语言转数据分析的**语言代码**，即 `text2Code`
+  - 即代码解释器方案。让 AI 自己编写代码（通常是 Python）然后自动在本地或者沙箱中运行后获得分析结果。当然目前的 Code Interpreter 大多是针对本地数据的分析处理（如 csv 文件），因此在面对企业应用中的数据库内数据时，需要在使用场景上做特别考虑。
+
+![图](https://ai-studio-static-online.cdn.bcebos.com/384654a64ddc45048d9fe0f1bf83152d876c635fcfbc461c92628d644bdf36de)
+
+text2sql的常用数据集与方法
+
+中文 text-to-SQL数据集:
+- CSpider (Min et al., 2019a)
+- TableQA (Sun et al., 2020)
+- DuSQL (Wang et al., 2020c)
+- ESQL (Chen et al., 2021a)
+- Chase https://xjtu-intsoft.github.io/chase/
+
+
+解法 （[参考](https://zhuanlan.zhihu.com/p/646404160)）
+- LLM 前处理
+  - RAT-SQL [RAT-SQL: Relation-Aware Schema Encoding and Linking for Text-to-SQL Parsers](), 基于Encoding + relation self attention
+  -  LGESQL
+    - [LGESQL: Line Graph Enhanced Text-to-SQL Model with Mixed Local and Non-Local Relations]()
+    - 基于Relation Graph, 虽然RATSQL等融合了关系信息，但目前仍有两点限制：① 无法发现有效的源路径（RATSQL是预先定义好的关系）② 相邻两个点，无法区分是不是local，即同一个表内。
+  - UnifiedSKG 逐渐过渡到LLM思路
+    - UnifiedSKG: Unifying and Multi-Tasking Structured Knowledge Grounding with Text-to-Text Language Models
+- LLM 后处理
+  - DIN-SQL 问题分解再纠错
+  - [DB-GPT](https://github.com/csunny/DB-GPT), [Doc](https://db-gpt.readthedocs.io/en/latest/), DB-GPT基于 FastChat 构建大模型运行环境，并提供 vicuna 作为基础的大语言模型，通过LangChain提供私域知识库问答能力。
+
+
+
 【2024-1-26】[MLX 上使用 LoRA / QLoRA 微调 Text2SQL](https://wangjunjian.com/mlx/text2sql/2024/01/26/Fine-tuning-Text2SQL-based-on-Mistral-7B-using-LoRA-on-MLX-5.html)：对比使用 LoRA 和 QLoRA 基于 Mistral-7B 微调的效果
 - 相同 Iteration 次数下 QLoRA 不如 LoRA 的效果
 - Prompt tokens/sec: QLoRA 是 LoRA 的 1.79 倍
