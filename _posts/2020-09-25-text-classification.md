@@ -1406,6 +1406,111 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
 - 一个人的爱好有这其中的一个或者多个 —— 多标签分类任务
 - ![](https://pic3.zhimg.com/80/v2-d0e019b7596cf3c9dc237861c2c3f5ae_1440w.webp)
 
+
+#### 多标签分类评估指标
+
+【2024-5-17】[sklearn中多标签分类场景下的常见的模型评估指标](https://zhuanlan.zhihu.com/p/420436876)
+
+多标签分类评估指标
+- (1) 完全正确
+  - 绝对匹配率（Exact Match Ratio）
+    - 对于每一个样本，只有预测值与真实值**完全相同**才算预测正确，只要有一个类别的预测结果有差异都算没有预测正确。
+  - 0-1损失（Zero-One Loss）
+    - 绝对准确率是**完全预测正确**的样本占总样本数的比例，而0-1损失计算的是**完全预测错误**的样本占总样本的比例。
+- (2) 部分正确
+  - 绝对匹配率 和 0-1损失 在计算结果时都没有考虑部分正确的情况，显然是不准确。
+  - 例如，假设正确标签为`[1,0,0,1]`，模型预测的标签为`[1,0,1,0]`。尽管模型没有预测对全部的标签，但是预测对了一部分。
+  - 将部分预测正确的结果也考虑进去。Sklearn 提供了在多标签分类场景下的`精确率`（Precision）、`召回率`（Recall）和`F1`值计算方法。
+  - `Hamming Score`: 为针对多标签分类场景下另一种求取准确率的方法。
+    - Hamming Score其实计算的是所有样本的平均准确率。而对于每个样本来说，准确率就是预测正确的标签数在整个预测为正确和真实为正确标签数中的占比。
+  - `Hamming Loss`:
+
+```py
+import numpy as np
+
+y_true = np.array([[0, 1, 0, 1],
+                   [0, 1, 1, 0],
+                   [1, 0, 1, 1]])
+
+y_pred = np.array([[0, 1, 1, 0],
+                   [0, 1, 1, 0],
+                   [0, 1, 0, 1]])
+
+# 绝对匹配率
+from sklearn.metrics import accuracy_score
+print(accuracy_score(y_true,y_pred)) # 0.33333333
+print(accuracy_score(np.array([[0, 1], [1, 1]]), np.ones((2, 2)))) # 0.5
+
+# 0-1 损失
+from sklearn.metrics import zero_one_loss
+print(zero_one_loss(y_true,y_pred)) # 0.66666
+```
+
+Hamming Score
+
+```py
+import numpy as np
+
+def hamming_score(y_true, y_pred, normalize=True, sample_weight=None):
+    '''
+    Compute the Hamming score (a.k.a. label-based accuracy) for the multi-label case
+    http://stackoverflow.com/q/32239577/395857
+    '''
+    acc_list = []
+    for i in range(y_true.shape[0]):
+        set_true = set(np.where(y_true[i])[0] )
+        set_pred = set(np.where(y_pred[i])[0] )
+        tmp_a = None
+        if len(set_true) == 0 and len(set_pred) == 0:
+            tmp_a = 1
+        else:
+            tmp_a = len(set_true.intersection(set_pred))/float(len(set_true.union(set_pred)) )
+        acc_list.append(tmp_a)
+    return np.mean(acc_list)
+
+y_true = np.array([[0, 1, 0, 1],
+                   [0, 1, 1, 0],
+                   [1, 0, 1, 1]])
+
+y_pred = np.array([[0, 1, 1, 0],
+                   [0, 1, 1, 0],
+                   [0, 1, 0, 1]])
+
+print('Hamming score: {0}'.format(hamming_score(y_true, y_pred))) # 0.5277
+```
+
+海明距离（Hamming Loss）
+
+Hamming Loss 衡量所有样本中，预测错的标签数在整个标签标签数中的占比。
+- 所以，对于Hamming Loss损失来说，其值越小表示模型的表现结果越好。取值在0~1之间。距离为0说明预测结果与真实结果完全相同，距离为1就说明模型与想要的结果完全就是背道而驰。
+
+```py
+def Hamming_Loss(y_true, y_pred):
+    count = 0
+    for i in range(y_true.shape[0]):
+        # 单个样本的标签数
+        p = np.size(y_true[i] == y_pred[i])
+        # np.count_nonzero用于统计数组中非零元素的个数
+        # 单个样本中预测正确的样本数
+        q = np.count_nonzero(y_true[i] == y_pred[i])
+        print(f"{p}-->{q}")
+        count += p - q
+    print(f"样本数：{y_true.shape[0]}, 标签数：{y_true.shape[1]}") # 样本数：3, 标签数：4
+    return count / (y_true.shape[0] * y_true.shape[1])
+print(Hamming_Loss(y_true, y_pred)) # 0.4166
+```
+
+sklearn中的实现方法如下：
+
+```py
+from sklearn.metrics import hamming_loss
+
+print(hamming_loss(y_true, y_pred))# 0.4166
+print(hamming_loss(np.array([[0, 1], [1, 1]]), np.zeros((2, 2)))) # 0.75
+```
+
+
+
 #### tensorflow 实现
 
 
