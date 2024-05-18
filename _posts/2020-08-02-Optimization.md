@@ -340,6 +340,11 @@ Levenshtein.jaro_winkler('abc', 'aecfaf') # 0.7
 
 当然，可以同时最大化盈利，最小化费用和时间。所以这两种任务可以组合起来出现在同一个问题框架下，这就是对于目标函数的定义。
 
+最优化问题分类：
+- **无约束**优化问题：直接求导、最速下降法、共轭梯度法、牛顿法等；
+- **等式约束**优化问题：`拉格朗日`(Lagrange)乘数法；
+- **不等式约束**优化问题：`KKT条件`。
+
 ## 凸优化
 
 现实生活中，<span style='color:red'>几乎所有问题的本质都是非凸的</span>
@@ -1424,11 +1429,21 @@ PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为�
 
 
 
-## KKT条件
+## KKT 条件
+
+​KKT条件(Karush–Kuhn–Tucker conditions) 是最优化（特别是非线性规划）领域最重要的成果之一
+- 判断**某点是极值点**的必要条件
+- 适用于 **不等式约束**的优化问题
+
+![](https://pic1.zhimg.com/80/v2-7bc81054001aa972a6939af852cc968c_1440w.webp)
 
 【2020-9-5】[直观理解KKT条件](https://www.toutiao.com/i6628696392690827779/)
-- KKT最优化条件是Karush[1939]，以及Kuhn和Tucker[1951]先后独立发表出來的。这组最优化条件在Kuhn和Tucker发表之后才逐渐受到重视，因此许多情况下只记载成`库恩塔克`条件（Kuhn-Tucker conditions)
+- KKT最优化条件是Karush[1939]，以及Kuhn和Tucker 1951年先后独立发表出來的。这组最优化条件在Kuhn和Tucker发表之后才逐渐受到重视，因此许多情况下只记载成`库恩塔克`条件（Kuhn-Tucker conditions)
 - 库恩塔克条件(Kuhn-Tucker conditions)是非线性规划领域里最重要的理论成果之一，是确定某点为极值点的必要条件。如果所讨论的规划是凸规划，那么库恩-塔克条件也是充分条件。
+
+含有一个不等式约束的KKT条件
+- ![](https://pic1.zhimg.com/80/v2-a33c64daa408f5bcf6b68d8ea7edc39c_1440w.webp)
+- 详见 [KKT条件，原来如此简单](https://zhuanlan.zhihu.com/p/556832103)
 
 
 **KKT条件**:
