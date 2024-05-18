@@ -1269,6 +1269,122 @@ DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 
 模型结构
 - ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
 
+
+
+## MiniCPM
+
+
+【2024-4-22】[MiniCPM：揭示端侧大语言模型的无限潜力](https://shengdinghu.notion.site/MiniCPM-c805a17c5c8046398914e47f0542095a)
+- [MiniCPM: Unveiling the Potential of Small Language Models with Scalable Training Strategies](https://arxiv.org/abs/2404.06395) (arxiv.org)
+
+[MiniCPM](https://github.com/OpenBMB/MiniCPM) 是一系列端侧语言大模型，主体语言模型 `MiniCPM-2B` 具有2.4B的非词嵌入参数量。
+- 综合性榜单上与Mistral-7B相近（中文、数学、代码能力更优），整体性能超越Llama2-13B、MPT-30B、Falcon-40B等模型。
+- 当前最接近用户体感的榜单MTBench上，MiniCPM-2B也超越了Llama2-70B-Chat、Vicuna-33B、Mistral-7B-Instruct-v0.1、Zephyr-7B-alpha等众多代表性开源大模型。
+
+
+### 超参调优
+
+Hyper-parameters、Batch size、Learning Rate、Learning Rate Scheduler、Data Strategy 五个方面模型沙盒研究。
+
+近400次在0.009B模型规模上的贝叶斯参数搜索得到
+
+超参数对模型的性能具有重大影响
+- 传统训练方法要对每个模型进行超参数调整，这对于大模型并不现实。
+
+借鉴 uP 方法，对模型各参数模块之间进行了连接权重的调整、以及对模型初始化的调整。部分调整接近Cerebras-GPT。
+
+| 名称 | 具体操作 |
+| --- | --- |
+| Embedding Output Scaling | 将Embedding的输出乘12 |
+| Residual Connection Scaling | 将每层的残差连接处的增量放缩为 1.4/sqrt(num_layers) = 0.22 倍 |
+| Initialization of Tensors | 将每个二维的张量参数的初始化标准差设置为 0.1/sqrt(dim_model/256) = 0.033，其他参数初始化设置为0.1 |
+| Learning Rate Scaling of Tensors | 将每个二维的张量参数的学习率调整为其他部分学习率（或称整体学习率）的1/(dim_model/256) = 0.11倍 |
+| lm_head Scaling | 将输出logits调整为原来的0.11倍 |
+
+
+#### batch size
+
+Batchsize 随损失变化: 更大的Batchsize可能可达到更低的loss
+- 扩大Batchsize 时, 损失会有一次较大幅度的下降
+
+2020年, OpenAI 开山之作研究了**损失函数**随**token数**变化的规律: 消耗更多的步数等价于消耗更多的时间
+
+在这种假设下，OpenAI定义了`临界Batchsize`（Critical Batchsize），使得达到一定的损失，既不消耗过多step，也不消耗过多token。
+
+然而利用当前以A100为主的计算资源，结合gradient checkpointing策略进行训练时，通常**计算速度**（而不是显存）是**瓶颈**
+- 相同机器数量下，<span style='color:red'>多一倍 Batchsize 几乎等同于慢一倍的单步时间</span>。
+
+基于这个观察，取消了对“不消耗过多step”的追求，而转向追求用最少的token量达到最低的loss。
+
+0.009B，0.036B，0.17B的模型上分别进行了6个batchsize的训练实验
+- ![](https://shengdinghu.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F30c36155-a603-469f-957f-b0854b6e2372%2F0086e773-a7c6-4e94-aa08-84c7a1936ff2%2FUntitled.png?table=block&id=a5bbe015-1311-440a-b284-e49a95583065&spaceId=30c36155-a603-469f-957f-b0854b6e2372&width=770&userId=&cache=v2)
+- `log(BS) = -6.24 * log(L) + 20.91`
+
+最优batchsize随着C4数据集上的loss的偏移规律
+- 规律: <span style='color:red'> BS = 1.211 * 10^9 / L^6.2393 </span>
+- 预估: 2B模型达到C4损失2.5左右，4M是比较合适的Batchsize
+
+#### learning rate
+
+模型最关键超参数:学习率
+
+**lr 不会因为模型规模扩大有大幅度的改变**
+
+0.04B, 0.1B, 0.3B, 0.5B 上分别做了6组学习率实验，发现虽然模型大小扩大了10倍，但是**最优学习率偏移并不明显**，均在`0.01`左右
+- 在 2.1B 规模上进行了简单验证，发现在 0.01 的学习率确实能取得最低的Loss。
+- ![](https://shengdinghu.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F30c36155-a603-469f-957f-b0854b6e2372%2F44a3d57c-6131-4c93-8ddd-7d7f718b110f%2Floss_vs_lr.png?table=block&id=0a9c1f96-0a98-40d5-8cf6-f192dd97cf55&spaceId=30c36155-a603-469f-957f-b0854b6e2372&width=1060&userId=&cache=v2)
+
+#### lr 调度策略
+
+<span style='color:red'>不同训练阶段使用不同学习率的调整策略，对模型性能影响很关键</span>。
+
+当前通用的学习率策略是**Cosine图像**，即 学习率从 Warmup阶段升高到最高点之后，开始呈现余弦函数的降低。
+- 几乎所有大模型都使用了 Cosine Learning Rate Scheduler (简称Cosine LRS）的方式。
+
+为什么 Cosine Scheduler 表现优异？
+
+对0.036B的模型，设置不同的Learning Rate Scheduler的截止步数$T$，进行了持续训练。
+- ![](https://shengdinghu.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F30c36155-a603-469f-957f-b0854b6e2372%2F44dbc039-68b0-4a17-88ae-10f2939eeece%2FUntitled.png?table=block&id=0a274cda-127e-4c4a-9e15-6f9cc504972a&spaceId=30c36155-a603-469f-957f-b0854b6e2372&width=2000&userId=&cache=v2)
+- 对于训练至 S 步的模型，将 <span style='color:blue'>Cosine LRS 截止步数 T 设置为 S 步, 总是能获得最优的性能</span>，而设置为更多或者更少性能都不是最优。
+
+**持续训练**场景会发现 Cosine调度器有问题。
+- 如果在Cosine的截止步数之后, 继续沿用0.1倍的最大学习率（通常做法），则继续训练**收敛非常缓慢**；
+- 如果在Cosine的截止步数之后, 重启Cosine LRS（即再次从最大学习率开始下降，或者是逐渐上升到最大学习率，再开始下降）则损失会经历长时间的上升周期，而这段时间，模型处于**不可用状态**。
+
+猜想 Cosine LRS 在预先指定步数的时候性能优异原因：
+1. T=S下的Cosine LRS，相对于Linear LRS、Noam LRS、以及`T<S`的Cosine LRS，有更长时间的大学习率训练。这一阶段可能有助于模型寻找更好的全局最优解。
+2. T=S下的Cosine LRS ，相对于`T>S`的Cosine LRS、Constant LRS，有更充分的学习率下降的退火阶段，这一阶段可能发生了较为特别的动力学现象，导致模型可以找到更好的局部最优解。
+
+结合这两点，提出了一种新的学习率调度策略，`Warmup-Stable-Decay`（`WSD`）调度器。
+- 公式见原文
+- Cosine调度器结束后, 需要持续保持**最低学习率**，以保证loss不上升
+- 而WSD调度器则从退火(decay)前开始继续用**最大学习率**训练，经过更长的训练再开始退火
+
+这种学习率调度器分为三个阶段: 
+- `warmup`阶段（用W表示warmup阶段结束时的步数/训练量）
+- `稳定训练`阶段（用S表示稳定训练阶段结束时的步数/训练量）
+- `退火`阶段（用D表示退火阶段的训练量）
+  - 随着学习率的变小，损失有大幅度的快速下降，在步数S时迅速降低至和T=S的Cosine LRS相等或更低
+- ![](https://shengdinghu.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F30c36155-a603-469f-957f-b0854b6e2372%2Fb837e282-7a3c-47dd-aca5-7aac4b5c072f%2FUntitled.png?table=block&id=cd4faecf-079e-4c2f-a3b8-0c6cbeaf099b&spaceId=30c36155-a603-469f-957f-b0854b6e2372&width=2000&userId=&cache=v2)
+
+WSD好处：
+1. 可以持续训练。
+2. 可以随时取出。
+3. 性能优于Cosine LRS。
+4. 有显式区分的训练阶段，便于使用不同的数据策略。
+
+
+#### 数据策略
+
+结合训练阶段特点，使用不同类型的数据
+- 预训练阶段: 只用通用、量大的预训练**粗质量**数据
+- 退火阶段: 用非常广泛的**高质量知识和能力**数据以及SFT的高质量数据，混合入预训练数据进行退火。
+
+实验结果
+- 退火开始时加入高质量数据的收益远高于在退火完成后的sft阶段加入。
+
+因此, 建议模型能力的特化和增强应从退火阶段开始进行。
+
 ## 训练经验
 
 
