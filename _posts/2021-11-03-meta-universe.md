@@ -274,6 +274,15 @@ export HF_ENDPOINT=https://hf-mirror.com
 
 效果虽然还不是很满意，但总比 wav2lip 好
 
+腾讯选择的路子： **对口型**， 死磕对口型，如果一个视频中人物的口型能对上，通过GPT产生文本，通过TTS产生声音。视频对口型。那么数字人技术就解决了！
+
+MuseV自动化产生短视频和MuseTalk给视频中的人物对口型的功能，共同构成了一个完整的数字人视频解决方案。
+- 1） 首先生产 无限长度视频
+  - 源码：[musev](http://www.gitpp.com/museai/musev)
+- 2）对口型
+  - 源码：[musetalk](http://www.gitpp.com/museai/musetalk)
+
+
 ### 表情迁移
 
 - 【2022-1-24】iphone 手机自带标签迁移功能，imessage里可以通过摄像头捕捉表情，并应用到动画形象上。个性化拟人表情：选取肤色、头饰、眼镜等等
