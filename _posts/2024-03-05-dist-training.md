@@ -671,7 +671,7 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 
 一个**7B**规模大模型（如LLaMA-2 7B），基于**16-bit**混合精度训练时
 - 仅考虑模型参数、梯度、优化器情况下，显存占用就有**112GB**
-  - 参数占GPU 显存近 **14GB**（每个参数2字节）。
+  - 参数占 GPU 显存近 **14GB**（每个参数2字节）。
   - 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
   - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数copy、一个momentum和一个variance，这三个都是float32）
     - 2byte 模型**静态**参数权重（以16bit存储） = 14G
@@ -680,10 +680,10 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
     - 2byte **梯度更新**（以16bit存储）= 14G
     - 4byte **一阶动量**优化器更新（以32bit存储）= 28G
     - 4byte **二阶方差**优化器更新（以32bit存储）= 28G
-  - 目前，合计112GB
+  - 目前，合计 112GB
   - 还有：前向传播时激活值，各种临时变量
   - 还与sequence length, hidden size、batch size都有关系。
-- 目前A100、H100这样主流显卡单张是放不下，更别提国内中小厂喜欢用的A6000/5000、甚至消费级显卡。
+- 目前<span style='color:red'>A100、H100这样主流显卡单张是放不下</span>，更别提国内中小厂喜欢用的A6000/5000、甚至消费级显卡。
 
 #### Adam + fp16 混合精度预估
 
@@ -701,8 +701,8 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 - (4) 临时混存 Buffer & Fragmentation
 
 (1) 和 (3) 可以精确估计
-- 显存占用大头是 Adam 优化器，占可计算部分的 12/16=75%
-- 其次是模型参数+梯度，显存容量至少是参数量的**16倍**
+- 显存占用大头是 **Adam 优化器**，占可计算部分的 12/16=75%
+- 其次是**模型参数**+**梯度**，显存容量至少是参数量的**16倍**
 
 Adam + fp16混合精度训练
 - ![](https://pic1.zhimg.com/80/v2-b4b2b377eeac7222bd783f9505c1115c_1440w.webp)
@@ -3320,7 +3320,7 @@ LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推
 - [使用LLaMA Factory对大型语言模型进行微调](https://zhuanlan.zhihu.com/p/684989699)
 - 作者北航博士[郑耀威](https://github.com/hiyouga)讲解 [全栈大模型微调框架LLaMA Factory：从预训练到RLHF的高效实现](https://www.bilibili.com/video/BV1Gt421L7dt)
 
-<iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 安装
