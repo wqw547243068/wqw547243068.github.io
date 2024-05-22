@@ -50,6 +50,12 @@ mathjax: true
 
 ### 案例
 
+#### nick 个人
+
+【2024-5-22】b站: [我不是真人](https://www.bilibili.com/video/BV14t421M7Qc/?spm_id_from=333.999.0.0)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1754631510&bvid=BV14t421M7Qc&cid=1544862927&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"></iframe>
+
 #### 虚拟客服
 
 [“黑科技”出乎所料，百度终端虚拟人3.0重磅发布](https://new.qq.com/omn/20210402/20210402A0DZSY00.html)
