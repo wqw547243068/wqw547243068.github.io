@@ -286,6 +286,29 @@ We leverage a breadth of optimizations including:
 
 ## 优化方法
 
+### 工业实践
+
+
+#### GPT-4 投机采样
+
+GPT4 一些技术细节泄露后，对于**投机采样**【Speculative Decoding】策略加速推理的研究比较多，但是**投机采样**依赖一个小而强的模型, 生成对于原始的模型来说比较简单的token，其次在一个系统中维护2个不同的模型，导致架构上的复杂性，最后使用投机采样的时候，会带来额外的解码开销，尤其是当使用一个比较高的采样温度值时。
+
+
+#### Google Medusa 美杜莎
+
+【2023-9-18】[LLM推理加速-Medusa](https://zhuanlan.zhihu.com/p/655809033)
+- 项目主页: [medusa-llm](https://sites.google.com/view/medusa-llm)
+- Github [Medusa](https://github.com/FasterDecoding/Medusa)
+- 论文: [Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads](https://arxiv.org/abs/2401.10774)
+
+Medusa: Simple Framework for Accelerating LLM Generation with Multiple Decoding Heads
+- ![](https://pic3.zhimg.com/80/v2-9de3ccb0b3107514b4fc71495ed78342_1440w.webp)
+
+正常的LLM 基础上，增加几个解码头，并且每个头预测的偏移量是不同的，比如原始的头预测第i个token，而新增的medusa heads分别为预测第i+1，i+2...个token。如上图，并且每个头可以指定topk个结果，这样可以将所有的topk组装成一个一个的候选结果，最后选择最优的结果
+- ![](https://pic1.zhimg.com/80/v2-6abff04d4dc96eb7752be0a8d7948e14_1440w.webp)
+
+更多解读见[文章](https://zhuanlan.zhihu.com/p/655809033)
+
 ### 一、子图融合（subgraph fusion）
 
 图融合技术即通过将多个 OP（算子）合并成一个 OP（算子），来减少`Kernel`的调用。因为每一个基本 OP 都会对应一次 GPU kernel 的调用，和多次显存读写，这些都会增加大量额外的开销。
