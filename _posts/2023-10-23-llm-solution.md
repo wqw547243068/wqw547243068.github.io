@@ -1866,7 +1866,7 @@ QLoRA可以用在手机上，论文共同一作Tim Dettmers估计以 iPhone 12 P
 - 同时，模型训练的速度会**慢于**LoRA。
 
 
-#### ReLoRA
+### ReLoRA
 
 【2023-8-21】[LoRA继任者ReLoRA登场，通过叠加多个低秩更新矩阵实现更高效大模型训练效果](https://www.toutiao.com/article/7269582259458572834)
 - 论文链接：[paper](https://arxiv.org/abs/2307.05695)
@@ -2095,6 +2095,23 @@ LISA是由UIUC联合LMFlow团队提出的另一种大模型微调方法。
 
 综上所述，LISA在保持与LoRA相当的资源消耗的同时，提供了更快的计算速度和更好的微调效果，是一种具有潜力的大模型微调技术。
 
+
+### PiSSA
+
+【2024-4-12】[改变LoRA的初始化方式，北大新方法PiSSA显著提升微调效果](https://www.jiqizhixin.com/articles/2024-04-12-7)
+
+北京大学的研究团队提出了一种名为 PiSSA 的参数高效微调方法，主流数据集上都超过了目前广泛使用的 LoRA 的微调效果。
+- 论文: [PiSSA: Principal Singular Values and Singular Vectors Adaptation of Large Language Models](https://arxiv.org/pdf/2404.02948.pdf)
+- 代码链接: [PiSSA](https://github.com/GraphPKU/PiSSA)
+
+PiSSA 在模型架构上和 LoRA 完全一致，只是**Adapter初始化方式**不同。[img](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
+- `LoRA` 使用高斯噪声初始化 A，使用 0 初始化 B。
+- `PiSSA` 用主奇异值和奇异向量 (Principal Singular values and Singular vectors) 来初始化 Adapter 来初始化 A 和 B。
+- ![](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
+
+PiSSA 的微调效果显著超越了 LoRA，甚至超越了全参数微调
+
+PiSSA 比 LoRA 收敛更快，最终效果更好，唯一的代价仅是需要几秒的 SVD 初始化过程。
 
 ## （4）全量微调
 
