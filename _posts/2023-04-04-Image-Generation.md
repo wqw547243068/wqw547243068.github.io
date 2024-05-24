@@ -1538,6 +1538,10 @@ Mid 是一款搭载在`discord`上的人工智能绘画聊天机器人
 
 Midjourney 目前是盈利状态，现金流很健康，团队只有 20 多人，没有接受外部融资。
 
+一图总结效果迭代
+- ![](https://pic4.zhimg.com/80/v2-28f6061e30d50cf7330b17a991fa30a7_1440w.webp)
+- 【2024-4-24】 [斯坦福AI（大模型）指数2024年度报告](https://zhuanlan.zhihu.com/p/699687555)
+
 #### 体验方式
 
 一个AI 生成算图工具，只需输入文字就会自动产生图像，Midjourney目前架设在Discord频道上，因此需要有Discord帐号才能使用。
