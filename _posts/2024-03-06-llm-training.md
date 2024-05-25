@@ -442,7 +442,7 @@ python chat.py \
 
 同一个prompt输出的多个答案，人工评测排序后，使用lambdarank的思想，优化RM奖励模型。
 
-RM模型学习的就是对于一个prompt，人类对答案的喜好程度。
+RM模型学习的是对于一个prompt，人类对答案的喜好程度。
 - RM模型【左】RM损失函数【右】
 - ![](https://pic3.zhimg.com/80/v2-6b22d510b56efc300b6bb1686407a40e_1440w.webp)
 - ![rm](https://pic1.zhimg.com/v2-bc1af700e9147ae7458824f5619b1ed4_b.jpg)
@@ -451,7 +451,7 @@ RM模型学习的就是对于一个prompt，人类对答案的喜好程度。
 
 引入RM模型的作用是对生成的文本进行打分排序，让模型生成的结果更加符合人类的日常理解习惯，更加符合人们想要的答案。
 
-RM模型主要分为两个部分：数据获取和模型训练。流程如下图所示
+RM模型主要分为两个部分：**数据获取**和**模型训练**。流程如下图所示
 - ![](https://pic2.zhimg.com/80/v2-ac62759c2862ab04a024d51fe2a19991_1440w.webp)
 
 原论文中使用GPT架构做了一个reward model
@@ -462,8 +462,8 @@ RM模型主要分为两个部分：数据获取和模型训练。流程如下图
 RM模型主要在于人工参与的**训练数据构建**部分，将训练好的SFT模型输入Prompt进行生成任务，每个Prompt生成4~9个文本，然后人为的对这些文本进行排序，将每个Prompt生成的文本构建为排序序列的形式进行训练，得到打分模型，以此模型用来评估SFT模型生成的文本是否符合人类的思维习惯。
 
 两种方法命名为 direct score 和 rank score：
-- `Direct score`：一个是直接对输出的文本进行打分，通过与自定义的label score计算loss，以此来更新模型参数；
-- `Rank score`：二是使用排序的方法，对每个Prompt输出的n个句子进行排序作为输入，通过计算排序在前面的句子与排序在后面的句子的差值累加作为最终loss。
+- `Direct score`：直接对输出的文本进行打分，通过与自定义的label score计算loss，以此来更新模型参数；
+- `Rank score`：用排序方法对每个Prompt输出的n个句子进行排序作为输入，通过计算排序在前面的句子与排序在后面的句子的差值累加作为最终loss。
 
 【2023-6-5】[ChatGPT 为什么不用 Reward-Model 的数据直接 fine-tune，而用 RL？](https://www.zhihu.com/question/596230048/answer/3055888005)
 - Reward-model的输出对于整个token序列，一种滞后反馈，而finetune需要在每个token都有监督信号。这是强化学习与监督学习的差别。
@@ -472,7 +472,7 @@ RM模型主要在于人工参与的**训练数据构建**部分，将训练好�
 #### ① Direct score方法
 
 ① Direct score方法
-- 利用 Bert模型对标注数据进行编码，用 linear层 映射到1维，然后利用Sigmoid函数输出每个句子的得分，与人工标记的得分进行loss计算，以此来更新模型参数。流程如下所示
+- 利用 Bert模型对标注数据进行编码，用 linear层 映射到1维，然后用 Sigmoid函数输出每个句子的得分，与人工标记的得分进行loss计算，以此来更新模型参数。流程如下所示
 - ![](https://pic1.zhimg.com/80/v2-c040a19b5054a8b6076a4f4e1506b784_1440w.webp)
 
 数据为SFT最后所生成的数据，数据准备：
@@ -861,6 +861,29 @@ def predict(model_path):
 ```
 
 
+#### 模型结构
+
+Reward Model 不同于原始 SFT Model，要在后面加上 value head （一个 Linear层）
+- 输入维度为模型的 hidden_dim，输出维度为1
+- 输出表示模型预测每一字符获取的得分。
+
+DeepSpeed-Chat 用最后一个字符的得分作为整个response的得分
+- 当然也可以用整个句子中每个字符的平均分作为整体得分
+- ![](https://pic2.zhimg.com/80/v2-2925e0da2644595a89bdc1523e2e5851_1440w.webp)
+
+#### 训练目标
+
+训练 Reward Model 是一个排序任务，针对 query，输入 chosen 和 rejected response
+
+训练目标尽可能使 chosen 和 rejected 差值更大，损失函数为：
+- Lr = -log( sigmoid(r(query,chosen)-r(query,rejected)) )
+
+第二步Training Reward Model的全部过程，基于rank loss训练了一个打分模型。
+
+第三步强化学习中，reward模型将扮演环境的角色，针对模型预测的字符给出奖励分数。
+
+
+
 #### 人工标注平台
 
 【2023-8-15】排序数据集 标注 参考：[RLHF](https://github.com/HarderThenHarder/transformers_tasks/tree/main/RLHF)
@@ -869,7 +892,9 @@ def predict(model_path):
 
 
 
-### （3）第三步 PPO
+### （3）第三步 RLHF
+
+#### RLHF 流程
 
 训练策略模型，RLHF流程
 - ![flow](https://image.jiqizhixin.com/uploads/editor/791cb019-65f3-4aa2-98c8-ecdfdb6f145f/640.png)
@@ -885,6 +910,26 @@ def predict(model_path):
 - ![](https://pic3.zhimg.com/80/v2-b550c2a2474a6ca28e8c51023c5e1afa_1440w.webp)
 
 根据 PPO 算法，按当前批次数据的奖励指标进行优化 (来自 PPO 算法 on-policy 的特性) 。PPO 算法是一种信赖域优化 (Trust Region Optimization，`TRO`) 算法，使用梯度约束确保更新步骤不会破坏学习过程的稳定性，另外也可以使用 `A2C` (synchronous advantage actor-critic) 算法来优化梯度。
+
+RLHF基于A2C方法，包含了四个模型:
+- `Actor Model`：SFT之后模型初始化而来。作为策略（policy）模型，接收上文，做出动作，预测下一个字符。最终使用的就是这个模型。
+- `Reference Model`：和`Actor Model`同样初始化自SFT Model，训练过程中**冻结参数**，用于和Actor Model做对比，保证模型不要偏离原始SFT Model太多。
+- `Reward Model`：作为**环境**（env），训练过程中冻结参数，针对每一个状态给出奖励分数。
+- `Critic Model`：由Reward Model初始化而来，用于近似价值函数，输入为状态s，估计当前状态的价值V。
+
+![](https://pic1.zhimg.com/80/v2-ecdeb469dff53084b4a005a79ee41fdc_1440w.webp)
+
+训练过程整体分为两步：maker experience 和 learn。
+- (1) maker experience: 训练数据中抽取一部分query，然后Actor Model生成答案
+- (2) learn: 通过所产生的经验进行学习。Actor Model与Critic Model近似策略函数和价值函数
+
+(1) 整体流程
+- ![](https://pic1.zhimg.com/80/v2-ec605d24d6ad0d0a39e0dade86bdf040_1440w.webp)
+
+(2) 整体流程
+- ![](https://pic1.zhimg.com/80/v2-005944a9946bca1a81329958e15e9d08_1440w.webp)
+
+更多参考 [RLHF实践](https://zhuanlan.zhihu.com/p/635569455?utm_psn=1775106549545119744)
 
 利用SFT模型对输出进行改造，构造一个**双头PPO模型**，模型一头输出一个张量，代表生成序列每个元素的价值value；另一头将输出映射成prompt answer词典答案。[参考](https://zhuanlan.zhihu.com/p/618325377)
 - 将 `<prompt, prompt answer>` 输入到RM模型中，获得一个评估当前prompt对的奖励R，然后用R作为奖励，反向更新每个元素的价值value，这就是PPO强化学习算法。
