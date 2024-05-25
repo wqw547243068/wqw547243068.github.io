@@ -378,6 +378,12 @@ channel log格式
 - 这3个维度互不影响，可同时实现，即 `3D parallelism`。
 - ![](https://pic1.zhimg.com/80/v2-227b93fda9e3bf182e0aea9f4abb23a0_1440w.webp)
 
+
+| 并行维度 | 切分方式 Split | 模型完整性 | 通讯 | 对gpu的利用 | 优化手段 |
+| data | data | Copy of whole model | 非常少 （只有前向和反向的时候需要通讯） | High （for 训练加速）| ZeRO |
+| pipeline | model-layer | Part of model | 中等 | Low （for 显存占用太多，优化显存）| |
+| tensor | model-tensor | Part of model | 很多（每个需要reduce的中间结果都要通讯）| High （模型算到底再通讯） ||
+
 详见: [分布式训练优化--进阶篇](https://zhuanlan.zhihu.com/p/699372131?utm_psn=1777577429458386944)
 
 
@@ -492,9 +498,26 @@ DataParallel的优缺点如下：
 
 ### 多维混合并行 （3D并行）
 
-- 多维混合并行(3D并行)指将`数据并行`、`模型并行`和`流水线并行`结合起来进行分布式训练。
+- 多维混合并行指将`数据并行`、`模型并行`和`流水线并行`结合起来进行分布式训练。
 - 超大规模模型的预训练和全参数微调时，都需要用到多维混合并行。
 
+
+#### 2D 并行
+
+主要有
+- Data 并行+ pipeline 并行
+  - Deepspeed [web-link](https://www.deepspeed.ai/tutorials/pipeline/)给出了 pipeline 和 data-parallel 的2D并行示意图，其中 rank0 和 rank1 为 data-parallelism， rank0里的 gpu-0 和 gpu-2 进行 pipeline 并行，他们交替进行前向和反向过程，疑问的是（这里没有模型运行的最终的loss，如何进行反向传播呢？）
+  - ![](https://pic1.zhimg.com/80/v2-aed6e288293f97bfc17ed0b3c9087290_1440w.webp)
+- Tensor 并行 + pipeline
+  - ![](https://pic1.zhimg.com/80/v2-af38ecbaa5ccb7059c97e8774e484370_1440w.webp)
+
+
+
+#### 3D 并行
+
+3D并行 => Tensor + pipeline + data 
+
+![](https://pic1.zhimg.com/80/v2-e3446e66333f5df91b960933965a6c64_1440w.webp)
 
 ### 自动搜索并行空间
 
