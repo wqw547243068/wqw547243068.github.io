@@ -328,15 +328,58 @@ channel log格式
 可得两个一样的ring，逻辑拓扑如下：[img](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443729-494214121.png)
 - ![](https://img2022.cnblogs.com/blog/46419/202202/46419-20220217155443729-494214121.png)
 
+
+#### 梯度压缩
+
+分布式训练的 bandwidth 与 latency bottleneck 主要分布在 梯度 `all-reduce` 和 `scatter` 过程中
+- 其中 联邦学习 受限的地方还有与端侧设备的通讯
+- ![](https://pic4.zhimg.com/80/v2-cd8999264a7670d906e98e6d5de3978f_1440w.webp)
+
+解法：梯度压缩
+- 方法1： prune， 【Deep gradient compression】
+  - worker 向 server push 梯度时， 可以对梯度做 prune (sparse gradient) 与 quantization
+- 方法2： Low-Rank 【PowerSGD】，梯度映射到低秩空间，而不是去做细粒度的剪枝和量化
+  - 2019年 EPFL 的文章 [PowerSGD](https://arxiv.org/abs/1905.13727)， 发了 NIPS
+- 方法3： 量化， 1bit SGD
+  - 用 one bit 的矩阵作为需要通讯的梯度
+- 方法5： terngrad， ternery
+  - 梯度量化到 0， -1， 1
+
+梯度延迟更新：解决 latency 的 bottleneck
+
+详见: [分布式训练优化--进阶篇](https://zhuanlan.zhihu.com/p/699372131?utm_psn=1777577429458386944)
+
 ### 并行技术
 
 并行技术：
-- 数据并行（如：PyTorch DDP）
-- 模型/张量并行（如：Megatron-LM（1D）、Colossal-AI（2D、2.5D、3D））
-- 流水线并行（如：GPipe、PipeDream、PipeDream-2BW、PipeDream Flush（1F1B））
+- **数据并行** `dp`（如：PyTorch DDP）: 每个节点复制完整的模型，数据分片
+  - 内存开销大，通信量低，容易实施
+  - ZeRO 对 data-parallel 的优化，每个gpu有自己独特的数据，同时模型的参数也被均匀的分到 n个gpu上
+- **模型并行** `mp` : 完整模型只有一份，其它节点只有模型的局部
+  - `张量并行` `tp`: 模型按张量分发
+    - 内存开销小，通信量高，容易实施
+    - 如：Megatron-LM（1D）、Colossal-AI（2D、2.5D、3D）
+  - `流水线并行` `pp`: 模型按层分发
+    - 内存开销小，通信量中等，实施难度大
+    - 如：GPipe、PipeDream、PipeDream-2BW、PipeDream Flush（1F1B）
 - **多维混合**并行（如：3D并行（数据并行、模型并行、流水线并行））
-- **自动**并行（如：Alpa（自动算子内/算子间并行））
+  - 2D 并行: dp+pp, tp+pp
+  - 3D 并行: dp+tp+pp
+- **自动**并行: 自动搜索并行空间
+  - 如：Alpa（自动算子内/算子间并行））, 将并行空间分为 inter-op （pipeline） 与 intra-op （tensor并行），使用NAS搜索这两个空间，考虑整个搜索空间的cost。
 - 优化器相关并行（如：ZeRO（零冗余优化器，在执行的逻辑上是数据并行，但可以达到模型并行的显存优化效果）、PyTorch FSDP）
+
+
+【2023-12-15】MIT 端侧模型训练课程: [TinyML and Efficient Deep Learning Computing](https://hanlab.mit.edu/courses/2023-fall-65940), 含 ppt 和 视频
+- powerful deep learning applications on resource-constrained devices.
+- Topics include model compression, pruning, quantization, neural architecture search, distributed training, data/model parallelism, gradient compression, and on-device fine-tuning. application-specific acceleration techniques
+
+模型切分分3个互相正交的维度：[`data`, `model-layer`, `model-activation`(Tensor)]
+- 这3个维度互不影响，可同时实现，即 `3D parallelism`。
+- ![](https://pic1.zhimg.com/80/v2-227b93fda9e3bf182e0aea9f4abb23a0_1440w.webp)
+
+详见: [分布式训练优化--进阶篇](https://zhuanlan.zhihu.com/p/699372131?utm_psn=1777577429458386944)
+
 
 
 常见多GPU训练方法：
@@ -451,6 +494,23 @@ DataParallel的优缺点如下：
 
 - 多维混合并行(3D并行)指将`数据并行`、`模型并行`和`流水线并行`结合起来进行分布式训练。
 - 超大规模模型的预训练和全参数微调时，都需要用到多维混合并行。
+
+
+### 自动搜索并行空间
+
+
+#### alpa
+
+[Alpa](https://github.com/alpa-projects/alpa) 将并行空间分为 `inter-op` （pipeline） 与 `intra-op` （tensor并行），使用 NAS搜索这两个空间，考虑整个搜索空间的cost。
+- 首先搜索 inter-op 的搜索空间， 制定 pipeline 并行策略
+- 然后搜索 intra-op空间， 指定 data-para 与 operator-para 策略（包括两种）
+- Data para
+- Operator parallel （weight 广播，input拆分）
+- Operator parallel （weight 拆分，input拆分） --> 需要增加 all-reduce cost
+
+
+UCB博士 `郑怜悯` 的工作， 他还参加过其他项目 Ansor，TVM， vLLM， FastChat，LMSYS-Chat-1M
+- ![](https://pic1.zhimg.com/80/v2-e76476aa985ccf7bc12fb2c04a60feec_1440w.webp)
 
 
 ## 模型架构
