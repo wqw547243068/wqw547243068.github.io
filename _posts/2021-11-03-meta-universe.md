@@ -54,7 +54,7 @@ mathjax: true
 
 【2024-5-22】b站: [我不是真人](https://www.bilibili.com/video/BV14t421M7Qc/?spm_id_from=333.999.0.0)
 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1754631510&bvid=BV14t421M7Qc&cid=1544862927&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"></iframe>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1754631510&bvid=BV14t421M7Qc&cid=1544862927&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"></iframe>
 
 #### 虚拟客服
 
@@ -270,9 +270,33 @@ export HF_ENDPOINT=https://hf-mirror.com
 
 #### 腾讯 MuseTalk
 
-【2024-4-27】[腾讯开源的数字人MuseTalk到底行不行？](https://mp.weixin.qq.com/s/M4AEOR2xBMHtrojZrvmkow)
+腾讯音乐娱乐实验室开源了一个名为 MuseTalk 模型, 实时高品质唇形同步模型。
+- 参考 [腾讯MuseTalk：实时音唇同步虚拟数字人模型](https://mp.weixin.qq.com/s/3hyVcBGBjiOGDk26yoodEg), 包含各种示例
+- 【2024-4-27】[腾讯开源的数字人MuseTalk到底行不行？](https://mp.weixin.qq.com/s/M4AEOR2xBMHtrojZrvmkow)
+
+MuseTalk 可与输入视频一起使用，例如由 MuseV 生成的视频，作为完整的虚拟数字人人解决方案。
+- [腾讯MuseV：无限长度和高保真虚拟人视频生成，ComfyUI使用指南](https://mp.weixin.qq.com/s?__biz=MjM5NTM1NDcyOQ==&mid=2651625826&idx=1&sn=a5a76754c96b3946255ca8a7be7c8c09&scene=21#wechat_redirect)
+
+MuseTalk 是一个**实时高品质**音频驱动的唇形同步模型，在 ft-mse-vae 的潜在空间中进行训练
+
+该模型：
+1. 能够根据输入的音频修改未知的面部动作，面部区域大小为 256 x 256。
+2. 支持中文、英文和日文等多种语言的音频。
+3. 在 NVIDIA Tesla V100 上支持超过 30fps 的实时推理。
+4. 支持修改面部区域中心点，这对生成结果有 显著 影响。
+5. 在 HDTF 数据集上训练的模型checkpoint。
+
+关于 MuseV 和 MuseTalk 结合作为虚拟人生成的完整解决方案。建议首先使用 MuseV 生成一个视频（文本到视频、图像到视频或姿态到视频）。建议使用帧插值以增加帧率。然后，可以使用 MuseTalk 生成一个音唇同步视频。
+
+MuseTalk 在潜在空间中进行训练，其中图像由冻结的 VAE 编码，音频由冻结的 whisper-tiny 模型编码。
+- 生成网络的架构借鉴了 stable-diffusion-v1-4 的 UNet，其中音频嵌入通过交叉注意力与图像嵌入融合。
+
+注：尽管MuseTalk使用的架构与 Stable Diffusion 非常相似，但 MuseTalk 的独特之处在于它不是一个扩散模型。相反，MuseTalk 是通过在潜在空间中单步修复来操作。
+
+MuseTalk
 - [在线使用](https://www.mindtechassist.com)，[数字分身效果展示及体验](https://www.mindtechassist.com/%E6%95%B0%E5%AD%97%E5%88%86%E8%BA%AB(%E9%80%9A%E7%94%A8%E7%89%88))
 - [MuseTalk GitHub](https://github.com/TMElyralab/MuseTalk)
+- [ComfyUI-MuseV](https://github.com/chaojie/ComfyUI-MuseTalk)
 
 场景
 - 图片数字人：让照片开口说话
