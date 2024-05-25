@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 表示定理
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -2088,6 +2088,56 @@ RETRO 架构由一个**编码器**堆栈和一个**解码器**堆栈组成。
 
 dilated attention能够产生线性计算复杂度和token之间的对数依赖性，从而解决了注意力资源有限，但每一个token都可访问的矛盾。
 
+
+## MLP 改进
+
+多层感知器（MLP）被称为**全连接前馈**神经网络，是当今深度学习模型的基础构建块。
+
+MLP 重要性无论怎样强调都不为过，是机器学习中用于逼近非线性函数的默认方法。
+
+然而，MLP 是否最佳非线性回归器呢？
+
+尽管 MLP 被广泛使用，但存在明显缺陷。
+- 例如，在 Transformer 模型中，MLP 几乎消耗了所有非嵌入式参数，并且通常在没有后处理分析工具的情况下，相对于注意力层来说，它们的可解释性较差。
+
+### KAN
+
+【2024-5-3】[Transformer要变Kansformer？用了几十年的MLP迎来挑战者KAN](https://www.jiqizhixin.com/articles/2024-05-03-3)
+
+MIT 提出的 KAN 灵感来源于 Kolmogorov-Arnold 表示定理的网络。
+- 论文：[KAN: Kolmogorov-Arnold Networks](https://arxiv.org/pdf/2404.19756)
+- Github：[pykan](https://github.com/KindXiaoming/pykan)
+
+KAN 在准确性和可解释性方面表现优于 MLP，而且能以非常少的参数量胜过以更大参数量运行的 MLP。
+
+有研究者将 KAN 创新架构的理念扩展到卷积神经网络，将卷积的经典线性变换更改为每个像素中可学习的非线性激活函数，提出并开源 KAN 卷积（CKAN）
+- 【2024-5-20】[替代MLP的KAN，被开源项目扩展到卷积了](https://www.jiqizhixin.com/articles/2024-05-20-2)
+- [Convolutional-KANs](https://github.com/AntonioTepsich/Convolutional-KANs)
+
+Kolmogorov 1957 年就发现了**多层**神经网络，比 Rumerhart、Hinton 和 William 的 1986 年论文发表的时间要早得多，但他却被西方忽视了。
+
+一种有前景的多层感知器（MLP）的替代方案，称为 Kolmogorov-Arnold Networks（KAN）。
+- MLP 的设计灵感来源于`通用近似定理` （通用逼近定理）
+- 而 KAN 设计灵感则来源于 `Kolmogorov-Arnold 表示定理`。
+
+Kolmogorov-Arnold 表示定理
+- Vladimir Arnold 和 Andrey Kolmogorov 证明了如果 f 是一个在有界域上的**多变量连续函数**，那么 f 可以写成一个**单变量连续函数**和**二元加法运算**的有限组合。
+
+与 MLP 类似，KAN 拥有**全连接**结构。而 MLP 在节点（神经元）上放置固定激活函数，KAN 则在边（权重）上放置可学习的激活函数。
+
+因此，KAN **完全没有线性权重矩阵**： [对比图](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
+- 每个权重参数都被替换为一个可学习的一维函数，参数化为**样条**（spline）。
+- KAN 的节点仅对传入信号进行求和，而不应用任何非线性变换。
+- ![对比图](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
+
+尽管 KAN 数学解释能力不错，但实际上只是**样条**和 **MLP** 的组合，利用了二者的优点，避免了缺点的出现。
+- 样条在低维函数上准确度高，易于局部调整，并且能够在不同分辨率之间切换。然而，由于样条无法利用组合结构，因此存在严重 COD 问题。
+- 另一方面，MLP 由于其特征学习能力，较少受到 COD 的影响，但在低维空间中却不如样条准确，因为它们无法优化单变量函数。
+
+KAN 的最大瓶颈: 训练速度慢。
+- 相同数量的参数下，KAN 的训练耗时通常是 MLP 的 10 倍。
+- KAN 训练速度慢更像是一个未来可以改进的工程问题，而不是一个根本性的限制
+
 ## Attention 改进
 
 ### 组注意力 Grouped-Query Attention
@@ -2167,6 +2217,56 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 #### 2023.7.4 FasterTransfomer
 
 【2023-7-4】[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) 是 NVIDIA 高度优化的 Transformer 模型库，在生成时达到 **2.5倍**的速度，详见 [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
+
+#### MHA -> DCMHA
+
+KAN
+
+【2024-5-25】[ICML2024高分论文！大模型计算效率暴涨至200%](https://mp.weixin.qq.com/s/8650CfLSSRUPfiYUTakkNQ)
+
+KAN突然爆火，成为可以替代MLP的一种全新神经网络架构，200个参数顶30万参数；而且，GPT-4o的生成速度也是惊艳了一众大模型爱好者。
+
+大模型的计算效率很重要，提升大模型的tokens生成速度是很关键的一环。
+
+而提升大模型的tokens生成速度，除了花钱升级GPU外，更长效的做法是改善Transformer模型架构的计算效率。
+
+彩云科技 对Transformer计算最耗时的核心组件——**多头注意力模块**（MHA）下手，将Transformer计算性能提升了有2倍之高。
+- 论文标题：[Improving Transformers with Dynamically Composable Multi-Head Attention](https://arxiv.org/abs/2405.08553)
+- 开源项目地址：[DCFormer](https://github.com/Caiyun-AI/DCFormer)
+
+Github上已开源这项工作的代码、模型和训练数据集。
+
+承载Transformer计算量的核心模块是**多头注意力**（MHA）模块，位置（position=i）上的每一个**注意力头**（attention head）会与全部位置上的注意力头计算出一个注意力分布矩阵。
+- 这个过程中，位置 i 上的各个注意力头计算出来的注意力分布矩阵是相互独立的。
+
+这种多头独立计算的机制会带来两大问题：
+- 低秩瓶颈（Low-rank Bottleneck）：注意力矩阵的秩较低，模型的表达能力受限
+- 头冗余（Head Redundancy）：不同的注意力头可能会学习到相似的模式，导致冗余
+
+因此，彩云科技提出了一种叫**动态可组合**多头注意力（DCMHA）的机制，DCMHA 通过一个核心的组合函数（Compose function），以输入依赖的方式转换注意力得分和权重矩阵，从而动态地组合注意力头，解决了传统MHA模块中存在的上述低秩瓶颈和头冗余问题。
+
+DCMHA旨在提高模型的表达能力，同时保持参数和计算效率，可以作为任何Transformer架构中MHA模块的即插即用替代品，以获得相应的DCFormer模型。
+
+DCMHA机制的核心是引入的Compose函数。这个Compose函数可以视为一个可学习的参数，它可以动态地组合不同头的QK矩阵和VO矩阵，内部通过一系列变换来分解和重构注意力向量。可以近似理解为：经过组合映射后，H个基础的注意力头可组合成多至H*H个注意力头。
+
+根据输入数据调整头之间的交互方式
+- 一是打破头的独立性
+- 二是可以根据输入数据动态组合
+
+从而可以增强模型的表达能力。
+
+效果
+
+论文通过实验表明， `DCFormer` 在不同的架构和模型规模下，在语言建模方面显著优于Transformer，与计算量增加1.7倍至2倍的模型性能相匹配。
+
+DCFormer可提高70%~100%的模型计算效率
+- DCFormer 在不同参数规模下（405M到6.9B参数），对 Transformer 和 Transformer++ 模型的性能提升显著
+- DCPythia-6.9B 在预训练困惑度和下游任务评估方面优于开源的Pythia-12B。
+- ImageNet-1K数据集上的实验验证了DCMHA在非语言任务中也是有效性的。
+
+相同的参数量下，使用DCFormer将具备更强的模型表达能力；用更少的参数量，拥有相同的模型表示效果。
+
+DCFormer在不同的架构和模型规模下，在语言建模方面显著优于Transformer，与计算量增加1.7倍至2倍的模型性能相匹配。
 
 
 
@@ -2653,6 +2753,7 @@ RWKV与Transformer表现相当，且能在训练时能够并行、在推理时�
 
 但RWKV也存在局限：
 - 比起标准Transformer的平方注意力所维护的完整信息，**线性注意力**和**递归架构**使信息通过单个向量表示在多个时间步上漏斗式传递，可能限制模型回忆非常长的上下文中细节信息的能力。并且，提示工程变得更加重要。
+
 
 
 
