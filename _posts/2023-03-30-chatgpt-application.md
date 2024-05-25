@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -334,6 +334,49 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 - 对于行业来说，这是一种无需巨额前期投入即可完成大模型训练、推理的途径；
 - 对于大模型提供商来说，这是一种探索商业化落地、获得资金回报的可靠方法。
 
+
+#### workflow 平台
+
+【2024-5-11】[16个AI Workflow automation（无代码AI工作流）构建平台](https://mp.weixin.qq.com/s/JmAU_cjijfpXpHhWmT5fgg)
+
+AI Workflow automation（无代码AI工作流）构建平台
+
+特点：
+- 不同程度地支持自定义插件、llm；
+- 自己设定workflow，类似RPA流程
+- 有workflow模版、store模版、plugin模版
+
+平台总结
+- 目前功能扎实、真正在做产品
+  - 国内 dify api/fastGPT
+  - 国外 微软 power automate
+  - 办公场景 questFlow
+- 其他的要么是产品很初期，要么只是为了割韭菜
+
+
+|平台|介绍|优点|不足|
+|---|---|---|---|
+|Microsoft Power Automate|微软, 从产品技术角度出发，连接的节点还有本地laptop RPA和云上的DPA|功能最丰富|付费|
+|dify's introduction/fastGPT|多个版本<br>开源版的FastGPT<vr>商业版Dify功能更多|国内workflow体验最佳||
+|Coze/扣子|字节,国内扣子，国外Coze|功能多|体验并不好|
+|MindStuido|像coze一样有自定义LLM、知识库，支持多种插件，生成api嵌入到另一平台和能在后台看到使用量||按照使用量付费，知识库需要付费才能用，新注册用户有5美元免费额度|
+|影刀&zapier|传统RPA转型而来，对应国外的Zapier|有很多适合国内各电商、社交平台的成熟插件<br>ai 功能，包括ChatGPT、AI生成视频的HeyGen||
+|scriptit|支持自定义文本和一些api|网站做得挺亮眼|产品功能，用户体验都一般|
+|Leap||图片插件多|插件还较少，自定义流程也偏简单|
+|GPTAgent|简单自定义workflow构建应用|||
+|mazaal|提供简单的现有应用，比如分析照片的情绪，AI图片分类、zero-shot text classification||界面也跟mindstudio类似，右边是模型处理结果,套壳|
+|actionize|||要跨平台操作|
+|Coflow|小众产品，只有简单的workflow流程|||
+|Questflow|Product Hunt排第4名，近期比较火<br>侧重团队工作的wokflow，比如发邮箱，开会总结，社交平台自动发帖、收集新闻等，从它提供的plugin来看都是Notion、google sheet、gmail和lark|已有商业场景，收费：8美元一个月能执行250次automations|模版不多，都是基于提供的插件生成的，主要是收集新闻类，翻译邮件，收集邮件，写邮件，生成一些文案|
+|Bardeen|总结zoom会议，撰写email邮件，爬取网络信息形成表格，发送到slack、日历提醒等|||
+|Levity|功能更简单，自动化根据用户信息给用户发邮件|||
+|达观RPA|前些年传统的AI workflow|||
+|n8n|传统的AI workflow,支持code和UI两种模式|有开源版本|操作界面不是特别友好|
+
+还有 团队之间工作流的产品
+- make 、nanonets，没有 perplex、GPT这些AI模型
+
+
 #### 火山方舟
 
 [抖音团队在用的大模型服务平台"火山方舟"](https://www.toutiao.com/article/7250108244323107368)
@@ -384,6 +427,28 @@ workflow 核心是要有人识别**确定性工作流**，去配置足够多的�
 
 ![](https://framerusercontent.com/images/gyg9CGdxDSKo0v5kmQeTVXR998.png)
 
+多个版本
+- 开源版 FastGPT
+- 商业版 Dify, 功能更多，不需要自定义太多
+
+支持多种核心节点,包括:
+- LLM节点:选择任意一个主流的大型语言模型,并定义它的输入和输出。
+- 工具节点:使用内置的和自定义的工具来扩展workflow的功能。
+- 意图分类器:让LLM对用户的输入进行自动分类,根据不同的类别进行工作流转。
+- 知识检索:为LLMs挂载来自现有知识库的上下文数据。
+- 代码节点:执行自定义的Python或Node.js代码。
+- If/Else 块:定义条件逻辑以创建分支的Workflows。
+
+
+解决了什么问题？
+1. **复杂逻辑**构建：开发基于LLM应用时，构建包含复杂逻辑的应用通常需要 复杂的提示设计和管理
+  - Dify Workflow 通过多步骤的工作流程设计，简化了这一过程。
+2. 应用的**稳定性**和**可复现性**：传统的基于单一提示的LLM应用，其输出的不确定性和可 变性较高。
+  - Dify Work1ow 通过允许用户精细控制每一步的逻辑和输出，提高了应用的 稳定性和可复现性。
+3. 集成复杂业务逻辑：在企业级应用中，往往需要将A!功能与复杂的业务逻辑结合。
+  - Dify Workflow使得集成这些逻辑成为可能，无需编写大量的自定义代码。
+
+国内workflow产品目前体验最佳。
 
 #### 字节 大模型产品
 
