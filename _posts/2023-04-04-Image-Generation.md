@@ -249,6 +249,13 @@ GAN是生成式模型中应用最广泛的技术，在图像、视频、语音�
 - 扩散模型在图片生成任务中超越了原SOTA：GAN，并且在诸多应用领域都有出色的表现，如计算机视觉，NLP、波形信号处理、多模态建模、分子图建模、时间序列建模、对抗性净化等。此外，扩散模型与其他研究领域有着密切的联系，如稳健学习、表示学习、强化学习。然而，原始的扩散模型也有缺点，它的采样速度慢，通常需要数千个评估步骤才能抽取一个样本；它的最大似然估计无法和基于似然的模型相比；它泛化到各种数据类型的能力较差。如今很多研究已经从实际应用的角度解决上述限制做出了许多努力，或从理论角度对模型能力进行了分析。
 - ![](https://pic1.zhimg.com/80/v2-3ce40580db330cd3d35fb4db24aa2438_1440w.webp)
 
+【2024-5-27】 MIT 助理教授 Song Han 的 100多页 [DDPM 介绍 ppt](https://www.dropbox.com/scl/fi/q8y9ap7mlucmiimyh3zl5/lec16.pdf)
+
+<object type="application/pdf" data="https://www.dropbox.com/scl/fi/q8y9ap7mlucmiimyh3zl5/lec16.pdf"
+           id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
+</object>
+
+
 #### 语言模型也可以
 
 【2023-10-13】[资讯](https://www.toutiao.com/article/7288583411143459363), 图像、视频生成上，语言模型首次击败扩散模型，tokenizer是关键
