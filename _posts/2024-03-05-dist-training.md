@@ -112,7 +112,27 @@ GPU 模式下的模型训练如图所示，分为4步：
   - 如何在单机训练中充分地利用 GPU 和 CPU 资源，让部分层在 CPU 执行，部分层在 GPU 执行呢？
 - 问题二：频繁数据拷贝，训练效率低
 
-## 分布式训练范式
+## 分布式训练
+
+
+### 资料
+
+【2024-5-27】 MIT 助理教授 Song Han 的 分布式训练介绍 ppt: 
+- Distributed Training: [part1](https://www.dropbox.com/scl/fi/vn3n0b2r5fgcc0j0vrh0k/lec17.pdf), [part2](https://www.dropbox.com/scl/fi/11d766q8f62y5lx2tnt9h/lec18.pdf)
+- [On-Device Training and Transfer Learning](https://www.dropbox.com/scl/fi/6h69a1z5vqry63nxqdzt0/lec19.pdf)
+- [Efficient Fine-tuning and Prompt Engineering](https://www.dropbox.com/scl/fi/lt97w5j9zyscsgizyawme/lec20.pdf)
+
+part1
+
+<object type="application/pdf" data="https://www.dropbox.com/scl/fi/vn3n0b2r5fgcc0j0vrh0k/lec17.pdf"
+           id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
+</object>
+
+part2
+
+<object type="application/pdf" data="https://www.dropbox.com/scl/fi/11d766q8f62y5lx2tnt9h/lec18.pdf"
+           id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
+</object>
 
 
 ### 通信技术
