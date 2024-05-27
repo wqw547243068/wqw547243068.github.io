@@ -890,7 +890,22 @@ DeepSpeed-Chat 用最后一个字符的得分作为整个response的得分
 - ![](https://github.com/HarderThenHarder/transformers_tasks/blob/main/RLHF/assets/rank_list_labler.png)
 
 
+#### 思考
 
+ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
+
+因为：
+- RM 针对整个token序列，滞后反馈，强化学习
+- 而 finetune 针对每个token，即时反馈, 监督学习
+- RM 训练数据有些是pair形式 `<query, win, lose>`, 这种数据无法用于监督学习
+
+【2023-4-19】John Schulman 观点 [YouTube](https://www.youtube.com/watch?v=hhiLw5Q_UFg)
+- pretrain 阶段学习知识
+- finetune 阶段学会:
+  - 拒识: 不确定的问题, 回答不知道
+  - 减少幻觉: 不要编造事实 (hallucintion)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hhiLw5Q_UFg?si=BTdMgDpxHx9pP6E8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### （3）第三步 RLHF
 
