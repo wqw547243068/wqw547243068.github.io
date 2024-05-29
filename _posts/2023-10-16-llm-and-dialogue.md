@@ -722,6 +722,19 @@ ArXiv上搜了下对话系统和大模型两个关键词，相关文章有62篇
   - LLM在多轮任务对话中，显性受信状态跟踪（explicit belief state tracking）的表现不如特定任务模型，如果提供了正确槽值、增加回复引导，效果会改善
 
 
+##### 指令遵循
+
+【2024-5-23】孙宇冲（人大），刘澈（快手）， [Parrot: Enhancing Multi-Turn Instruction Following for Large Language Models](https://arxiv.org/pdf/2310.07301)
+- 问题: LLMs在遵循多轮指令方面的能力缺口，包括训练数据集、训练方法和评估标准等方面。
+- 本文提出名为Parrot的方案，旨在提升LLMs在多轮指令遵循方面的表现。
+
+思路
+- 收集多轮交互的指令数据高效方法，例如使用指代和省略。
+  - 利用预训练模型和诸如ShareGPT等公开的人机对话日志，通过`监督式微调`（Supervised Fine-Tuning, SFT）过程，训练一个提问模型（Ask Model），该模型模拟用户提问并与大型模型进行对话，以此生成超过10轮的多轮对话数据。
+- 其次，提出了一种**上下文感知**的偏好优化策略 CaPO（Context-Aware Preference Optimization）。
+  - 通过对多轮对话数据的上下文进行编辑（如删除、替换、添加噪音等），构建具备上下文感知的正负样本对，从而进一步增强LLMs在多轮互动中处理复杂指令的能力。
+- 此外，为了定量评估LLMs在多轮指令遵循方面的表现，构建了一个基于现有基准MT-Bench的扩展评估基准，称为 `MT-Bench++`。这个新的评估基准包含8轮对话，能够更全面地测试和评估LLMs在多轮指令遵循方面的能力。
+
 
 ####  NLG升级
 
