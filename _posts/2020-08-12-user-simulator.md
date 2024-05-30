@@ -610,6 +610,37 @@ AgentSims 易于使用，可供各学科研究人员测试特定能力。
 choosing which items to talk about, expressing binary preferences, expressing open-ended preferences, requesting recommendations, and giving feedback
 
 
+### AgentClinic
+
+
+【2024-5-22】斯坦福、约翰霍普金斯推出 [AgentClinic](https://agentclinic.github.io/)
+- [AgentClinic: a multimodal agent benchmark to evaluate AI in simulated clinical environments](https://arxiv.org/pdf/2405.07960)
+- 代码 [agentclinic](https://github.com/samuelschmidgall/agentclinic)
+- ![](https://agentclinic.github.io/static/videos/mainfigure.png)
+
+AgentClinic 将**静态医疗 QA 问题**转化为临床环境（医生、患者、医疗设备）中的**代理**，以便为医学语言模型提供更具临床相关性的挑战。
+- 问题：现有评测标准基于静态QA，无法处理交互式决策问题（interactive decision-making）
+- 方案：在临床模拟环境中操作智能体，实现多模态评估LLM
+  - AgentClinic: a multimodal benchmark to evaluate LLMs in their ability to operate as agents in simulated clinical environments.
+  - 医生通过对话和交互数据来评估病人病情
+
+诊断和管理患者是一个复杂的、连续的决策过程，需要**医生获取信息**---例如要执行哪些测试---并**采取行动**。人工智能 （AI） 和大型语言模型 （LLMs） 的最新进展有望对临床护理产生深远影响。
+
+然而，目前的评估方案**过度依赖静态的医学问答基准**，缺乏现实生活中临床工作所需的**交互式决策**。
+
+AgentClinic：一个多模式基准，用于评估LLMs在**模拟临床环境**中作为**代理**运行的能力。
+- 基准测试中，**医生代理**必须通过对话和主动数据收集来发现患者的诊断。
+
+发布两个开放基准：**多模态图像**和**对话环境** AgentClinic-NEJM 和**纯对话**环境。
+- AgentClinic-MedQA: 代理以美国医学执照考试~（USMLE） 的案例为基础
+- AgentClinic-NEJM: 代理以多模式新英格兰医学杂志 （NEJM） 的案例挑战为基础。
+
+在患者和医生代理中嵌入**认知和隐性偏见** (cognitive and implicit biases)，以模拟有偏见的代理之间的真实互动。
+
+引入**偏倚**会导致医生代理的诊断准确性大幅降低，以及患者代理的依从性、信心和后续咨询意愿降低。通过评估一套最先进的技术LLMs，一些在MedQA等基准测试中表现出色的模型在AgentClinic-MedQA中表现不佳。
+- 在AgentClinic基准测试中，患者代理中使用的LLM药物是性能的重要因素。 
+- 有限的相互作用和过多的相互作用都会降低医生代理的诊断准确性。
+
 
 # 结束
 
