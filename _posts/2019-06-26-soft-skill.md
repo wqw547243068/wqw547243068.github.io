@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "如何提升软素质-How to level up inner skill"
+title:  "个人认知提升-How to level up inner skill"
 date:   2019-06-26 19:00:00
 categories: 人文科学
 tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 黑天鹅 反脆弱 情绪 一元论 二元论 事实 观点 人性 阶层
