@@ -3,10 +3,11 @@ layout: post
 title:  "用户模拟器-User Simulator"
 date:   2020-08-12 20:46:00
 categories: 深度学习
-tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator
+tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体
 excerpt: 对话系统之用户模拟器专题
 author: 鹤啸九天
 mathjax: true
+permalink: /simulator
 ---
 
 * content
@@ -564,6 +565,51 @@ The possible values of user intents are:
 <object type="application/pdf" data="https://aclanthology.org/2021.acl-long.13.pdf"
            id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
 </object>
+
+
+
+## Agent 角色模拟
+
+【2024-5-30】用 LLM 的 Agent 方案实现用户模拟器
+
+### AgentSims
+
+【2023-8-8】PTA、宾夕法尼亚大学、北航 推出 LLM 评估沙盒 AgentSims ，开源
+- 论文 [AgentSims: An Open-Source Sandbox for Large Language Model Evaluation](https://arxiv.org/pdf/2308.04026)
+- 代码 [AgentSims](https://github.com/py499372727/AgentSims)
+- ![](https://github.com/py499372727/AgentSims/blob/main/cover.png)
+
+现有的评估方法存在以下缺陷：
+- （1）评估能力受限；单轮QA形式，无法全面评估
+- （2）基准脆弱；测试集容易泄露
+- （3）指标不客观：已有开放评测指标过时，GPT-4无法评估超GPT-4模型
+
+基于任务的评估（即 LLM 代理在模拟环境中完成任务）是解决上述问题的**万能**方案。
+
+AgentSims 易于使用，可供各学科研究人员测试特定能力。
+- AgentSims 是一种**交互式**、**可视化**和**基于程序**的基础设施
+- 在交互式图形用户界面上添加代理和建筑来建立自己的评估任务，或者通过几行代码来部署和测试新的支持机制，即**记忆**、**规划**和**工具使用**系统。
+- [演示程序](https://agentsims.com)
+
+### 对话推荐用户模拟器
+
+【2024-3-13】加州大学
+- 论文 [Evaluating Large Language Models as Generative User Simulators for Conversational Recommendation](https://arxiv.org/pdf/2403.09738v1)
+
+大型语言模型(LLM)作为对话推荐系统，提出一种评估用户模拟器的新标准。
+
+设计了五项评估任务, 每项任务都针对模拟器成为真实用户代理
+- 选择待推荐项
+- 偏好表达：二值, 喜欢/不喜欢
+- 开放域偏好表达
+- 请求推荐
+- 反馈
+
+通过在模拟器上运行这些任务, 展示了这些任务能有效地揭示模拟器与真实用户之间的差异。
+
+choosing which items to talk about, expressing binary preferences, expressing open-ended preferences, requesting recommendations, and giving feedback
+
+
 
 # 结束
 
