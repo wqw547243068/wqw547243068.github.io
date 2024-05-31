@@ -129,6 +129,15 @@ InstructGPT 分为如下三大步：
 
 【2023-11-20】[transformers_tasks](https://github.com/HarderThenHarder/transformers_tasks/tree/main/RLHF) GPT-2 和 RLHF 示例
 
+【2023-9-11】[Understanding and Using Supervised Fine-Tuning (SFT) for Language Models](https://cameronrwolfe.substack.com/p/understanding-and-using-supervised)
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffb9d0144-3952-42db-8382-8e2eb37d917e_1670x640.png)
+
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F680ffa81-7b96-474f-832b-4be758e8d2e6_1176x638.png)
+
+![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb5dd2fe9-0f4d-40d7-bc83-f00da6592de9_2396x466.png)
+
+
 ### GPT 训练流程
 
 【2023-5-23】Andrej Karpathy 在微软Build 2023开发者大会上进行了主题演讲：[State of GPT](https://wangjunjian.com/gpt/2023/05/30/state-of-gpt.html)（GPT的现状）
@@ -197,6 +206,11 @@ SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt�
 - Transformer【左】GPT【右】
 
 大模型训练**基座模型**时，都采用「Next Token Prediction，`NTP`」 任务
+
+
+【2024-5-31】sft分为两种，**拟合**和**对齐**。
+- **拟合**：通过finetuning 得到稳定、符合需求的输出，包括格式、风格、特定模式等，是在业务落地中高频使用的方式；
+- **对齐**：指令对齐，让LLM更好地理解人类语言、执行自然语言指令，即LLM三个阶段之第二个阶段（pretrain、sft、rlhf）。
 
 #### IFT 的问题
 
@@ -1016,6 +1030,145 @@ hello, who are you?<|im_end|>
 <|im_start|>assistant
 I am a AI program developed by Firefly<|im_end|>
 ```
+
+
+## QWen
+
+【2023-9-26】
+- QWen 技术报告 [QWEN TECHNICAL REPORT](https://arxiv.org/pdf/2309.16609)
+- [通义千问-Qwen技术报告细节分享](https://zhuanlan.zhihu.com/p/658392609)
+- GitHub: [Qwen](https://github.com/QwenLM/Qwen)
+
+Qwen系列的模型有: Base模型、RM模型、Chat模型、Code模型、Math模型、多模态模型。
+- 由于Code模型和Math模型暂时没有开源，多模态Qwen-VL模型本身有自己的论文
+- ![](https://pic3.zhimg.com/80/v2-679860ea6c24c49e592bb30a91eaf092_1440w.webp)
+
+Qwen-14B模型效果从12个数据集（涉及语言理解、知识、推理等多个领域）上进行均优于现有同等级的13B，但仍落后于GPT-3.5和GPT-4。
+
+
+### 数据
+
+预训练数据共3TB，涉及: 公共网络文档、百科全书、书籍、代码等，数据涉及多语言，但以中文和英文为主。
+
+为了保证数据质量，制定了一套全面的预处理程序。
+- Web数据需要从HTML中提取文本内容，并采用**语言识别**工具确定语种；
+- 通过**重复数据删除**技术增加数据的多样性，包括规范化后的**精确匹配**重复数据删除方法和使用`MinHash`和`LSH`算法的**模糊重复**数据删除方法；
+- 结合规则和**机器学习**的方法过滤低质量数据，即通过多个模型对内容进行评分，包括语言模型、文本质量评分模型以及用于识别潜在冒犯性模型；
+- 从各种来源数据中手动采样并进行审查，以确保其质量；
+- 有选择地对来自某些来源的数据进行采样，以确保模型在各种高质量内容上进行训练。
+
+
+
+### Tokenizer
+
+词表大小影响者模型的训练效率和下游任务效果，Qwen采用开源快速`BPE`分词器-`tiktoken`，以cl100k为基础词库，增加了常用的中文字词以及其他语言的词汇，并把数字字符串拆成单个数字，最终词表大小为152K。
+
+从不同语言上对比不同模型的压缩率，如下图所示，Qwen在绝大多少语言上都优于LLaMA-7B、Baichuan-7B、ChatGLM-6B、InternLM-7B模型。
+
+
+### 模型
+
+模型采用Transformer框架，主要做了以下修改：
+- Embedding and output projection：对于embedding层和lm_head层不进行权重共享，是两个单独的权重。
+- Positional embedding：采用`RoPE`为位置编码，并选择使用`FP32`精确度的逆频率矩阵。
+- Bias：在QKV注意力层中添加了**偏差**，以增强模型的外推能力。
+- Pre-Norm & RMSNorm：采用预归一化提高训练稳定性，并将传统归一化方法替换为`RMSNorm`。
+- Activation function：采用SwiGLU激活函数，不同于传统FFN的2个矩阵，SwiGLU有三个矩阵，因此缩小了隐藏层维度，由原来的4倍变成8/3倍。
+
+### 外推能力扩展
+
+Transformer 模型的注意力机制在上下文长度上有很大限制，模型会随着上下文长度的增加，计算成本和内存会成倍增加。
+
+Qwen模型利用了简单地非训练计算，在推理过程中扩展**上下文长度**。
+- 动态NTK感知插值，即对序列长度的增加动态缩放位置信息。
+- LogN-Scaling，根据上下文长度与训练长度的比率，对Q和V的点积进行重新缩放，确保注意力值的熵随着上下文长度的增长而保持稳定。
+- Window attention，将注意力限制在一个上下文窗口内，防止模型关注到太远的内容。并在不同层采用不同的窗口大小，较低的层使用较短的窗口，而较高的层使用较长的窗口。
+
+
+### 训练
+
+
+#### 预训练
+
+遵循**自回归**语言建模的标准方法，通过前面Token的内容预测下一个Token；
+- 模型预训练时最大长度为2048，为了构建批次数据，对文本内容进行随机打乱及合并，再讲其截断到指定长度。
+- 注意力模块采用`Flash Attention`技术，提高训练速度；
+- 优化器采用AdamW，超参数β1、β2和ϵ为别为0.9、0.95和10−8；
+- 采用`余弦学习率`计划，学习率会衰减到峰值的10%；
+- 采用`BFloat16`进行混合精度训练。
+
+QWEN模型再同等级参数下表现优异，即使是更大的型号如LLaMA2-70B，在3个任务中也被QWEN-14B超越。
+
+#### 有监督微调SFT
+
+为了提高有监督微调数据集的能力，对多种风格的对话进行了标注，来关注不同任务的自然语言生成，进一步提高模型的有用性。并且大小训练方法也会影响模型行了，Qwen采用`ChatML`样式的格式来进行模型训练。
+
+ChatML格式让模型有效区分各类信息，包括：系统质量、用户输入、模型输出等，可以增强模型对复杂会话的处理分析能力。
+- ![](https://pic3.zhimg.com/80/v2-21b4b7d706fa651fbaecbd0aafab452a_1440w.webp)
+
+ChatML Format
+
+```md
+<|im-start|>system
+You are a helpful assistant.<|im_end|>
+<|im_start|>user
+Hello!<|im-end|>
+<|im_start|>assistant
+Hello!How can I assist you today?<|im_end|>
+```
+
+训练
+- 优化器采用`AdamW`，超参数β1、β2和ϵ为别为0.9、0.95和1e−8；
+- 模型最大输入长度`2048`；
+- 训练批次大小为`128`；
+- 模型共训练4000步，在前1430步中，学习率逐渐增加，达到2e−6的峰值。
+- 为了防止过拟合，权重衰减的值设置为0.1，dropout设置为0.1，梯度裁剪的限制为1.0。
+
+#### RM
+
+RM模型
+
+奖励模型构建上，先采用大量数据进行**偏好模型预训练**（preference model pretraining，`PMP`），在经过高质量偏好数据进行奖励模型精调。
+
+高质量偏好数据通过6600详细标签的分类系统平衡采样获取，为保证数据的**多样性**和**复杂性**。
+
+奖励模型时由同等大小Qwen模型+池化层得来，用特殊的句子结束标记映射值作为模型奖励值。
+
+模型在训练过程中，学习率恒为3e−6，批次大小为64，最大长度为2048，训练一个epoch。
+
+效果
+- ![](https://pic4.zhimg.com/80/v2-0900e3eb4450def2b133a3141eac7a47_1440w.webp)
+
+
+#### PPO
+
+PPO阶段共包含四个模型：policy模型、value模型、reference模型、reward模型。
+
+训练过程中，先对policy模型训练50步**预热**，这样保证了value模型能够有效地适应不同的奖励模型。在PPO过程中，对每个query会同时采样两个response，KL散度系数设为0.04，并根据平均值对奖励进行归一化处理。
+
+policy模型和value模型的学习率分别为1e−6和5e−6。为了增强训练的稳定性，裁剪值0.15。在进行推理时，生成策略的top-p值设置为0.9。
+
+对齐效果
+
+Qwen的效果优于相同规模的其他开源模型，如LLaMA2、ChatGLM2、InternLM、Baichuan2
+- ![](https://pic1.zhimg.com/80/v2-61de89631bc26043f9eecee91a695158_1440w.webp)
+
+人工评测，比较了 Qwen-7B-Chat（SFT）、Qwen-14B-Chat（SFT）、Qwen-14B-Chat（RLHF）、GPT4在对话上与GPT3.5的差异。
+
+RLHF模型明显优于SFT模型，说明RLHF可以生成更受人类喜爱的回答。
+- ![](https://pic1.zhimg.com/80/v2-6561d91643988786091cc488afc584a0_1440w.webp)
+
+### 工具使用
+
+Qwen模型具有工具使用能力：
+- 通过ReAct提示进行使用未见的工具；
+- 用Python解释器增强数学推理、数据分析等能力；
+- 作为代理，与人类交互过程中，可以访问HuggingFace中大量多模态模型集合。
+
+PS：高质量数据2000条-React格式数据。
+
+[如何用 ReAct Prompting 技术命令千问使用工具](https://github.com/QwenLM/Qwen/blob/main/examples/react_prompt.md)
+
 
 ## Yi 训练
 
