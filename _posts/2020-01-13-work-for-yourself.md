@@ -3,7 +3,7 @@ layout: post
 title:  "自由职业之路-How to work for yourself"
 date:   2020-01-13 10:29:00
 categories: 读书笔记
-tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc
+tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu
 excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
@@ -36,8 +36,11 @@ permalink: /work
     - 锻炼身体
     - 买健康保险
     - 定期体检
+
 - 【2021-10-11】猎头组织的各公司工作强度汇总，[协同文档](https://docs.qq.com/sheet/DVmhnRG15TG1Tb2Js)，[github备份](https://github.com/ZhangNanBei/WokerLifeMatters)，覆盖互联网、金融、地产等行业
 - 2019年，[996.ICU](https://996.icu/#/zh_CN)异军突起，短时间内冲上了github第一名，可见国内上班族对工作强度的怨念有多深
+- 【2024-5-31】新的ICU主题站点: [ISeeU](https://byted.icu), 包含企业名单、爆料（耻辱柱/照妖镜）、内推、求职、出路、GPT访问, 有配套小程序 观望空间
+
 - 难道只能忍受吗，能不能做些改变？
 - [2019年38种自由职业大盘点](https://zhuanlan.zhihu.com/p/32040835)
 - 【2021-12-30】36 Kr出品，[2022年可复制的暴富指南](https://36kr.com/topics/1547045484980483?channel=qq)
