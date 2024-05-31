@@ -1010,29 +1010,17 @@ A3-模型回答：黑别人家wifi是不对的，侵害别人隐私了，我强�
 【2023-3-8】详见：[RLHF魔法的衍生研究方向](https://mp.weixin.qq.com/s/ZfvWr1NvOqVOu9IZd-Jt0w)
 
 
-## Qwen
+## 【2023-5-18】LIMA
 
-【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
-
-通义千问 Qwen1.5 是阿里春节前开源的大模型
-- 支持32K的上下文长度
-- 该模型本质上是Qwen2的beta版本。
-
-从评测结果来看，Qwen1.5各个尺寸的模型都显著优于同量级的Llama2
-
-对话模版
-
-```js
-<|im_start|>system
-You are a helpful assistant.<|im_end|>
-<|im_start|>user
-hello, who are you?<|im_end|>
-<|im_start|>assistant
-I am a AI program developed by Firefly<|im_end|>
-```
+META 发布 [LIMA: Less Is More for Alignment](https://arxiv.org/pdf/2305.11206)
 
 
-## QWen
+## 【2023-7-19】Llama 2
+
+【2023-7-19】Llama 2 技术报告 [Llama 2: Open Foundation and Fine-Tuned Chat Models](https://arxiv.org/pdf/2307.09288)
+
+## 【2023-9-26】Qwen
+
 
 【2023-9-26】
 - QWen 技术报告 [QWEN TECHNICAL REPORT](https://arxiv.org/pdf/2309.16609)
@@ -1044,6 +1032,14 @@ Qwen系列的模型有: Base模型、RM模型、Chat模型、Code模型、Math�
 - ![](https://pic3.zhimg.com/80/v2-679860ea6c24c49e592bb30a91eaf092_1440w.webp)
 
 Qwen-14B模型效果从12个数据集（涉及语言理解、知识、推理等多个领域）上进行均优于现有同等级的13B，但仍落后于GPT-3.5和GPT-4。
+
+【2024-3-5】[使用Firefly在单卡V100上对Qwen1.5进行SFT和DPO，大幅超越Qwen1.5和Gemma](https://mp.weixin.qq.com/s/C5X0qX2YsxhIoFvRsqcMMA)
+
+通义千问 Qwen1.5 是阿里春节前开源的大模型
+- 支持32K的上下文长度
+- 该模型本质上是Qwen2的beta版本。
+
+从评测结果来看，Qwen1.5各个尺寸的模型都显著优于同量级的Llama2
 
 
 ### 数据
@@ -1106,15 +1102,15 @@ QWEN模型再同等级参数下表现优异，即使是更大的型号如LLaMA2-
 ChatML格式让模型有效区分各类信息，包括：系统质量、用户输入、模型输出等，可以增强模型对复杂会话的处理分析能力。
 - ![](https://pic3.zhimg.com/80/v2-21b4b7d706fa651fbaecbd0aafab452a_1440w.webp)
 
-ChatML Format
+ChatML Format 对话模版
 
-```md
-<|im-start|>system
+```js
+<|im_start|>system
 You are a helpful assistant.<|im_end|>
 <|im_start|>user
-Hello!<|im-end|>
+hello, who are you?<|im_end|>
 <|im_start|>assistant
-Hello!How can I assist you today?<|im_end|>
+I am a AI program developed by Firefly<|im_end|>
 ```
 
 训练
@@ -1170,7 +1166,13 @@ PS：高质量数据2000条-React格式数据。
 [如何用 ReAct Prompting 技术命令千问使用工具](https://github.com/QwenLM/Qwen/blob/main/examples/react_prompt.md)
 
 
-## Yi 训练
+## 【2024-3-4】GPT-4
+
+【2024-3-4】[GPT-4 Technical Report](https://arxiv.org/pdf/2303.08774)
+
+
+
+## 【2024-3-9】Yi
 
 参考
 - 【2024-3-9】[Yi技术报告细节分享](https://mp.weixin.qq.com/s/ZmQ4OablSL5CwGYFRwMtOw)
@@ -1460,31 +1462,8 @@ ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始�
 - 设定了一个固定的学习率 3e-5，并采取逐步增加 batch size 的策略，即从 batch size 4M token 开始，每当模型 loss 停止下降时就增加 batch size，使 loss 继续下降，让模型学习更加充分，收敛性能更好。
 
 
-## DeepSeek
 
-
-### DeepSeek-V2
-
-【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh)
-- DeepSeek-V2 基于 2 千亿 MoE 模型底座，领先性能，超低价格，越级场景体验，已在对话官网和API全面上线
-- 技术报告: [浅读 DeepSeek-V2 技术报告](https://zhuanlan.zhihu.com/p/696292840)
-- 仓库和技术报告地址：[DeepSeek-V2](https://github.com/deepseek-ai/DeepSeek-V2)
-
-DeepSeek-V2 在 DeepSeek上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
-
-DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 的上下文长度。
-- 与DeepSeek 67B相比，DeepSeek-V2 在性能上取得了显著提升，节省了42.5%的训练成本，减少了93.3%的KV缓存，并将最大生成吞吐量提高到了5.76倍。
-
-深度求索将该 DeepSeek-V2 模型已完全上线至平台服务用户，DeepSeek-V2 API也是物美价廉。并且秉持着最开放的开源精神，深度求索将这次的DeepSeek-V2模型和论文也将完全开源，免费商用。
-
-### 模型结构
-
-模型结构
-- ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
-
-
-
-## MiniCPM
+## 【2024-4-22】MiniCPM
 
 
 【2024-4-22】[MiniCPM：揭示端侧大语言模型的无限潜力](https://shengdinghu.notion.site/MiniCPM-c805a17c5c8046398914e47f0542095a)
@@ -1597,6 +1576,31 @@ WSD好处：
 - 退火开始时加入高质量数据的收益远高于在退火完成后的sft阶段加入。
 
 因此, 建议模型能力的特化和增强应从退火阶段开始进行。
+
+
+## 【2024-5-7】DeepSeek
+
+
+### DeepSeek-V2
+
+【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh)
+- DeepSeek-V2 基于 2 千亿 MoE 模型底座，领先性能，超低价格，越级场景体验，已在对话官网和API全面上线
+- 技术报告: [浅读 DeepSeek-V2 技术报告](https://zhuanlan.zhihu.com/p/696292840)
+- 仓库和技术报告地址：[DeepSeek-V2](https://github.com/deepseek-ai/DeepSeek-V2)
+
+DeepSeek-V2 在 DeepSeek上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
+
+DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 的上下文长度。
+- 与DeepSeek 67B相比，DeepSeek-V2 在性能上取得了显著提升，节省了42.5%的训练成本，减少了93.3%的KV缓存，并将最大生成吞吐量提高到了5.76倍。
+
+深度求索将该 DeepSeek-V2 模型已完全上线至平台服务用户，DeepSeek-V2 API也是物美价廉。并且秉持着最开放的开源精神，深度求索将这次的DeepSeek-V2模型和论文也将完全开源，免费商用。
+
+### 模型结构
+
+模型结构
+- ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
+
+
 
 ## 训练经验
 
