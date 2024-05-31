@@ -737,6 +737,21 @@ AI 根据需求，画一了各个国家的 GDP 条形图。
 
 text2sql(NL2SQL) 是NLP诸多任务中较难的任务，即便发展迅速的LLM，也没有完全解决text2sql中复杂查询问题
 
+【2024-5-29】[DB-GPT：蚂蚁开源的Text-to-SQL利器](https://mp.weixin.qq.com/s/tP1iLkI5-tcUwmtUqelBKQ)
+- 代码 [DB-GPT](https://github.com/eosphoros-ai/DB-GPT)
+
+[DB-GPT](https://docs.dbgpt.site) 主要模块包括：
+- `SMMF` (服务化多模型管理框架)：DB-GPT 的核心模块之一，SMMF 负责管理和调用各种大语言模型，它提供统一的接口，屏蔽了不同模型之间的差异，方便开发者灵活地选择和切换模型。
+- `Retrieval` (检索)：检索模块负责从知识库中检索相关信息。DB-GPT 的检索模块支持多知识库检索增强，可以同时检索多个知识库，并对检索结果进行排序和筛选，提高检索效率和准确性。
+- `Agents` (智能体)：Agents 模块是 DB-GPT 的智能化核心。DB-GPT 提供了数据驱动的 Multi-Agents 框架，开发者可以创建多个 Agents，并为每个 Agent 分配不同的角色和任务。Agents 可以互相协作，共同完成复杂的任务。
+- `Fine-tuning` (微调)：微调模块负责对大语言模型进行微调，使其更适应特定领域的任务。DB-GPT 提供了自动化微调框架，支持多种微调方法，并提供评估指标，帮助开发者找到最佳的微调方案。
+- `Connections` (连接)：连接模块负责连接各种数据源，包括数据库、数据仓库、Excel 等。DB-GPT 提供了统一的数据连接接口，方便开发者访问和处理不同类型的数据。
+- `Observability` (可观测性)：可观测性模块提供 DB-GPT 运行时的监控和日志信息，方便开发者了解 DB-GPT 的运行状态，及时发现和解决问题。
+- `Evaluation` (评估)：评估模块提供工具和指标，用于评估 DB-GPT 的性能和准确性。开发者可以使用评估模块对不同模型、不同参数配置进行比较，找到最佳的方案。
+
+AWEL (Agentic Workflow Expression Language) 是 DB-GPT 中专门用于编排智能体工作流程的语言。它提供了一种简洁、灵活的方式来定义 Agents 之间的交互、数据流动以及任务执行顺序。
+
+
 参考
 - [NL2SQL技术方案系列](https://www.cnblogs.com/ting1/p/18145360)
 
