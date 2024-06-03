@@ -3,7 +3,7 @@ layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
-tags: llm 对话系统 coze dm prompt
+tags: llm 对话系统 coze dm prompt rasa
 excerpt: 大模型时代对话何去何从？
 mathjax: true
 permalink: /llm_dialogue_system
@@ -776,6 +776,31 @@ ArXiv上搜了下对话系统和大模型两个关键词，相关文章有62篇
 - 【2023-11-15】比利时根特大学（Ghent University）[I Was Blind but Now I See: Implementing Vision-Enabled Dialogue in Social Robots](https://arxiv.org/abs/2311.08957) 借助LLM，通过视觉信号来增强文本提示，机器人视觉对话系统
 
 
+### 工业界做法
+
+
+
+#### RasaGPT
+
+【2024-5-28】 [RasaGPT](https://rasagpt.dev) 是一个基于 Rasa(用于自动化基于文本和语音的机器人对话开发框架) 和 Langchain(用于构建基于大型语言模型的应用程序的开源框架) 构建的无界面 LLM 聊天机器人平台。
+
+RasaGPT 结合了 Rasa 的对话管理功能和 Langchain 的索引、检索与上下文注入功能，支持多种集成和扩展，适用于各种应用场景。
+
+GitHub 开源关键字：[paulpierre/rasagpt](https://github.com/paulpierre/RasaGPT)
+
+特点：    
+1. 使用FastAPI创建专有机器人端点，文档上传和“训练”流程已包含在内。    
+2. 集成Langchain/LlamaIndex和Rasa。    
+3. 解决了库与大型语言模型库之间的冲突以及元数据的传递    
+4. 在MacOS上运行Rasa的Docker支持。    
+5. ngrok与聊天机器人进行反向代理。    
+6. 使用自定义模式实现pgvector，而不是使用Langchain的高度自定义的PGVector类。    
+7. 添加多租户（Rasa本身不支持这一功能）、会话以及Rasa与您自己的后端/应用程序之间的元数据。
+
+
+演示视频
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GAPnQ0qf1-E?si=wGU9aD8dJbQ9rozD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
