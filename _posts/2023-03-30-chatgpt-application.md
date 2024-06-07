@@ -3198,6 +3198,21 @@ python main.py
 Lock the area on the right for real-time detection
 ```
 
+
+#### 小爱音箱
+
+【2024-6-7】将小爱音箱接入 ChatGPT 和豆包，改造成你的专属语音助手
+- MiGPT：智能家居，从未如此贴心
+- [mi-gpt](https://github.com/idootop/mi-gpt)
+
+MiGPT 通过将小爱音箱、米家智能设备，与 ChatGPT 的理解能力完美融合，让你的智能家居更懂你。
+
+MiGPT 不仅仅是关于设备自动化，而是关于：打造一个懂你、有温度、与你共同进化的家
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1555304659&bvid=BV1N1421y7qn&cid=1573774536&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" ></iframe>
+
+
+
 ### 数字人
 
 详见 [数字人专题](aigc#数字人)
