@@ -3218,6 +3218,53 @@ btn.grid(row=3,column=0,padx=20,pady=10)
 tts.mainloop()
 ```
 
+### ChatTTS
+
+【】[ChatTTS](github.com/2noise/ChatTTS) 对话场景的文本转语音
+- 在线免费使用
+
+ChatTTS 专为对话场景设计的语音生成模型，特别适用于大型语言模型(LLM)助手的对话任务，以及诸如对话式音频和视频介绍等应用。它支持中文和英文，通过使用大约100,000小时的中文和英文数据进行训练，ChatTTS在语音合成中表现出高质量和自然度。
+
+#### 特点
+
+ChatTTS特点
+- 多语言支持: ChatTTS 的一个关键特性是支持多种语言，包括英语和中文。这使其能够为广泛用户群提供服务，并克服语言障碍
+- 大规模数据训练: ChatTTS 使用了大量数据进行训练，大约有1000万小时的中文和英文数据。这样的大规模训练使其声音合成质量高，听起来自然
+- 对话任务兼容性: ChatTTS 很适合处理通常分配给大型语言模型LLMs的对话任务。它可以为对话生成响应，并在集成到各种应用和服务时提供更自然流畅的互动体验
+- 开源计划: 项目团队计划开源一个经过训练的基础模型。这将使学术研究人员和社区开发人员能够进一步研究和发展这项技术
+- 控制和安全性: 团队致力于提高模型的可控性，添加水印，并将其与LLMs集成。这些努力确保了模型的安全性和可靠性
+- 易用性: ChatTTS 为用户提供了易于使用的体验。它只需要文本信息作为输入，就可以生成相应的语音文件。这样的简单性使其方便有语音合成需求的用户
+
+#### 使用
+
+安装
+
+```sh
+git clone https://github.com/2noise/ChatTTS
+pip install torch ChatTTS
+```
+
+测试
+
+```py
+import torch
+import ChatTTS
+from IPython.display import Audio
+
+# 初始化ChatTTS
+chat = ChatTTS.Chat()
+chat.load_models()
+
+# 定义要转换为语音的文本
+texts = ["你好，欢迎使用ChatTTS！"]
+
+# 生成语音
+wavs = chat.infer(texts, use_decoder=True)
+
+# 播放生成的音频
+Audio(wavs[0], rate=24_000, autoplay=True)
+```
+
 ## 音频处理
 
 
