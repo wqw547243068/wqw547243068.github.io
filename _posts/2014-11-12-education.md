@@ -325,16 +325,16 @@ Pay close attention. This is your life. This is water.
 
 年龄越大，就越会发现，这个世界上的人是形形色色，天差地别的。有的人我们一生都无法理解，而他们也永远无法理解。我们以前总以为<span style='color:blue'>人的性格是随着年龄的增大而逐渐形成</span>的，可后来才知道，<span style='color:blue'>原来大多数人的一生从他们出生开始就已经被注定了</span>。
 - 每个人的一生都会经历两个家庭，一是出生和**成长**的家，另一个是自己长大后**组建**的家。
-- 而第一个家对我们的一生起着决定性的关键作用。没错，我们今天的话题就是关于原生家庭，这里是一语见心的个人自媒体原创作品
+- 而第一个家对我们的一生起着决定性的关键作用，没错，就是**原生家庭**。
 
-每个人在年轻的时候，都是在想方设法的满足自身的各种需求，我们和我们的父母也都一样，这个世界上绝大多数的父母之所以会决定要一个孩子，其实都是出于自身的需要
+每个人年轻时都在想方设法的满足自身的各种需求，我们和我们的父母也都一样，这个世界上绝大多数的父母之所以会决定要一个孩子，其实都是出于自身的需要
 - 比如想要和大多数人一样有个自己的孩子，想要有个孩子传宗接代或给自己养老送终，想孩子给自己的人生带来更多的快乐，想要在夫妻情感日益淡漠的时候要个孩子来调剂下生活的。
 
 真相是，极少有父母单纯是为了想要<span style='color:blue'>见证一个生命的成长，而不求任何回报的去生下一个孩子，抚养一个孩子</span>。
 
 每一个孩子都是被动的，来到这个世界上的大多数人都有生育的能力，却不代表每一个人都有能**教育好孩子**的能力。但可笑的是，<span style='color:red'>父母这么重要的岗位竟然是不需要学习的，只要有生育能力就能上岗</span>。
 
-所以我们才会看到，大多数父母自己活得浑浑噩噩，却在用各种自以为是的方式管教和影响着孩子。
+大多数父母自己活得浑浑噩噩，却在用各种**自以为是**的方式管教和影响着孩子。
 - 他们以为自己一直在付出，其实只是在满足自己的需求，将孩子培养成他们想要的样子，而非发挥孩子的天性和特长。让孩子成为真正的自己。
 - 更有些父母人云亦云，朋友的孩子上补习班，他的孩子就也要上，邻居的孩子考了100分，他的孩子考95分就不行，同时带孩子到国外旅游，他看了照片就马上也开始订机票。表面上是为了孩子好，本质上是<span style='color:blue'>自己没有独立思考的能力和主见</span>。
 
@@ -343,19 +343,23 @@ Pay close attention. This is your life. This is water.
 而以上这些荒唐的做法，与父母的认知有关，与孩子无关。
 - 不健康的原生家庭能把一个心智健全的孩子生吞活剥，看看那些受点刺激就用极端的方式去表达反抗的孩子，再看看那些后天自卑自闭的孩子，现在满大街的行。走的人们虽然大多表面光鲜亮丽，可内心满是创伤和畸形的也不少。
 
-有句话是这样说的<span style='color:green'>好的原生家庭将治愈你的一生，不好的原生家庭将用你的一生去治愈</span>。我深以为是，也许你也遇到过很多中年或老年人，尽管已经离开原生家庭很多年，尽管已经耗尽半生去原谅和化解那些负能量，却依然一提到当年就泪流满面，无法平复。
+有句话：<span style='color:green'>好的原生家庭将治愈你的一生，不好的原生家庭将用你的一生去治愈</span>。
+
+也许你也遇到过很多中年或老年人，尽管已经离开原生家庭很多年，尽管已经耗尽半生去原谅和化解那些负能量，却依然一提到当年就泪流满面，无法平复。
 
 这世上的父母分为两种，一种是成为孩子一生的**榜样**，一种是让孩子决心永远不要活成他们那样。
-- 如果一个人习惯性的对妻子和孩子实行家暴，那么在他的原生家庭里一定也常常出现这样的情景，因为他就是看着这些长大的。
-- 如果一个人做事没有担当，没有责任，那么在他的童年时期也一定被无数次的辜负过。
-- 如果一个人非常自卑、自闭，没有主见，那么在他的原生家庭里，大多有个非常强势的母亲
-- 如果一个人独立又冷漠，内心缺乏安全感，那他的父母一定经常冷战或已经离婚。
+
+如果一个人
+- 习惯性的对妻子和孩子实行家暴，那么在他的原生家庭里一定也常常出现这样的情景，因为他就是看着这些长大的。
+- 做事没有担当，没有责任，那么在他的童年时期也一定被无数次的辜负过。
+- 非常自卑、自闭，没有主见，那么在他的原生家庭里，大多有个非常强势的母亲
+- 独立又冷漠，内心缺乏安全感，那他的父母一定经常冷战或已经离婚。
 
 还有那些在原生家庭里极度缺乏爱和呵护的人，一旦走入社会，如果得到一点异性的关心或爱，就会如同抓到了救命的稻草一般，任由对方不断欺负和打压都不敢放手。
 
-所有的**原生家庭**都会无一例外的影响再生家庭，而你的**再生家庭**就是你孩子的原生家庭，代代相传。当然，我们今天说原生家庭并不是为了让你把过往的不幸统统甩给自己的父母，而是为了帮助你找出自己性格缺陷的由来，并学会自我更新，更要避免你的下一代继续受到影响。
+所有**原生家庭**都会无一例外的影响**再生家庭**，而**再生家庭**就是你孩子的原生家庭，代代相传。当然，说原生家庭，并不是把过往的不幸统统甩给父母，而是为了帮助你**找出自己性格缺陷的由来，并学会自我更新**，更要避免下一代继续受到影响。
 
-其实每个人都有自己的局限性，包括我们和我们自己的父母。人生是条不归路，但是我们不需要每个脚印都承载成长的厚重，因为只有往前走，才会有更。每个旅程，愿每个承受过原生家庭不幸的个体都能迈向新生，愿每个曾饱受原生家庭折磨的灵魂都能得到安然的蜕变。
+其实每个人都有局限性，包括我们自己和父母。人生是条不归路，但是不需要每个脚印都承载成长的厚重，因为只有往前走，才会有更。每个旅程，愿每个承受过原生家庭不幸的个体都能迈向新生，愿每个曾饱受原生家庭折磨的灵魂都能得到安然的蜕变。
 
 
 ## 精英教育
@@ -642,6 +646,13 @@ Pay close attention. This is your life. This is water.
 - ·8、另外是**考公考编、随军家属落户、亲属投靠落户、博士后出站、解决夫妻两地分居**。
 
 以上相加可以算算，估计每年至少几十万人落户北京。
+
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-06-09T15:16:13.619Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\&quot; etag=\&quot;qrDtB94Yw-REwwjXMXno\&quot; version=\&quot;24.4.8\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1238\&quot; dy=\&quot;761\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;nseSPB6Go69togGukG2C-2\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;385\&quot; y=\&quot;263\&quot; width=\&quot;130\&quot; height=\&quot;115\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;545\&quot; y=\&quot;410\&quot; width=\&quot;170\&quot; height=\&quot;95\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CRyWcW9bKPYmjVe2kgWn-2\&quot; value=\&quot;普通人如何获得京户\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=22;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;365\&quot; y=\&quot;90\&quot; width=\&quot;220\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-30\&quot; value=\&quot;wqw547243068@163.com&amp;lt;br&amp;gt;2024-6-9\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;552.25\&quot; y=\&quot;530\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;JPcd8CNpdyUwO0oxOTY8-9\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#0000ff&amp;quot;&amp;gt;换郊区房，拿职住分&amp;lt;br&amp;gt;&amp;lt;/font&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;390\&quot; y=\&quot;320\&quot; width=\&quot;115\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;s2pv88CfUx30G5g510ko-1\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;startArrow=none;startFill=0;\&quot; parent=\&quot;1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;70\&quot; y=\&quot;520\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;830\&quot; y=\&quot;518\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;s2pv88CfUx30G5g510ko-2\&quot; value=\&quot;时间开销\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#999999;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;750\&quot; y=\&quot;490\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;s2pv88CfUx30G5g510ko-3\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;startArrow=none;startFill=0;\&quot; parent=\&quot;1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;70\&quot; y=\&quot;520\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;70\&quot; y=\&quot;140\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;s2pv88CfUx30G5g510ko-5\&quot; value=\&quot;难度\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#999999;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;65\&quot; y=\&quot;150\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;s2pv88CfUx30G5g510ko-11\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#0000ff&amp;quot;&amp;gt;婚姻限制&amp;lt;br&amp;gt;&amp;lt;/font&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;562.25\&quot; y=\&quot;460\&quot; width=\&quot;65.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;nseSPB6Go69togGukG2C-7\&quot; value=\&quot;积分落户\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#990000;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380\&quot; y=\&quot;260\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;nseSPB6Go69togGukG2C-12\&quot; value=\&quot;每年6k, 希望渺茫&amp;lt;div&amp;gt;提升措施&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;395\&quot; y=\&quot;280\&quot; width=\&quot;110\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;nseSPB6Go69togGukG2C-22\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=3;strokeColor=#66B2FF;\&quot; parent=\&quot;1\&quot; source=\&quot;JPcd8CNpdyUwO0oxOTY8-26\&quot; target=\&quot;nseSPB6Go69togGukG2C-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;260.5\&quot; y=\&quot;235\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;245\&quot; y=\&quot;245\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-1\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#0000ff&amp;quot;&amp;gt;纳税分: 工作要稳定&amp;lt;br&amp;gt;&amp;lt;/font&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;390\&quot; y=\&quot;348\&quot; width=\&quot;115\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-2\&quot; value=\&quot;找京户结婚\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#990000;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;410\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-3\&quot; value=\&quot;结婚满10年,社保无要求\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;562.25\&quot; y=\&quot;430\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-4\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;120\&quot; y=\&quot;183\&quot; width=\&quot;145\&quot; height=\&quot;127\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-5\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#0000ff&amp;quot;&amp;gt;公司是高新+工龄要求&amp;lt;br&amp;gt;&amp;lt;/font&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;125\&quot; y=\&quot;240\&quot; width=\&quot;120\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-6\&quot; value=\&quot;人才引进\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#990000;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;115\&quot; y=\&quot;180\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-7\&quot; value=\&quot;应届生C9直接落&amp;lt;div&amp;gt;往届生主要靠月薪8/6倍&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;200\&quot; width=\&quot;150\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-8\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#0000ff&amp;quot;&amp;gt;月薪6-8倍,持续增长&amp;lt;/font&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;125\&quot; y=\&quot;268\&quot; width=\&quot;115\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;iHcBtHFxeVBG0u2rYXTs-9\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=3;strokeColor=#66B2FF;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;nseSPB6Go69togGukG2C-2\&quot; target=\&quot;iHcBtHFxeVBG0u2rYXTs-4\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;555\&quot; y=\&quot;468\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;460\&quot; y=\&quot;388\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
 
 #### 积分落户
 
@@ -1038,12 +1049,13 @@ Pay close attention. This is your life. This is water.
 2. 直接去窗口办理。
   - 京籍人员可直接持`二代居民身份证`及办证材料到出入境证件办理机构进行现场办理，无需预申请。
   - 非京籍人员则须先进行**网上预申请**后再进行现场办理。
+  - 【2024-6-9】 实测，西城出入境办事厅，用已有的港澳通行证自助签注即可，港澳各15元，两种选项：3个月和1年
 3. 自助服务机办理。
   - 京籍人员办理个人旅游签注，以及“全国通办”人员办理团队旅游签注时，可通过**出入境24小时自助服务机**上进行自助办理签注业务。
 
 申请示例
 
-```
+```sh
 身份证号 4211****
 手机号 152***
 证件种类 往来港澳通行证
