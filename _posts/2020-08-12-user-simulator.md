@@ -655,6 +655,19 @@ AgentClinic：一个多模式基准，用于评估LLMs在**模拟临床环境**�
 - 有限的相互作用和过多的相互作用都会降低医生代理的诊断准确性。
 
 
+### MultiOn
+
+【2024-6-13】[MultiOn](https://app.multion.ai/playground)
+- 可在线体验
+- 本地体验，chrome插件植入本地, 需要再 discord 上申请
+
+演示视频
+- [Exploring MultiOn: The Future of Personal AI Agents](https://www.youtube.com/watch?v=Y7QAfPOs-bc)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y7QAfPOs-bc?si=YHrmqoLok1s1Lrkg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
 # 结束
 
 
