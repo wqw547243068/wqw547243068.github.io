@@ -364,6 +364,49 @@ importances = pd.Series(importances, index=range(X.shape[1]))
 importances.plot.bar()
 ```
 
+【2024-6-14】实践
+
+```py
+import numpy as np
+import pandas as pd
+#!pip install xgboost
+import xgboost as xgb
+import matplotlib.pyplot as plt; 
+# plt.style.use('seaborn')
+
+# 加载数据集
+# data = pd.read_csv('data.csv')
+data = df_cn_train # is_recommend 是标签
+# 回归
+model = xgb.XGBRegressor(max_depth=5, learning_rate=0.03, n_estimators=300)
+model.fit(data.loc[:, (data.columns != 'is_recommend')], data.loc[:, data.columns == 'is_recommend'])
+print('特征重要性:\n', model.feature_importances_)
+cols = data.columns.to_numpy()
+cols = cols[cols != 'is_recommend']
+
+weight_info = dict(zip(cols, model.feature_importances_))
+weight_info = sorted(weight_info.items(), key=lambda d: d[1], reverse=True)
+print(f'| 特征 | 权重 |')
+print(f'| --- | --- |')
+for i in weight_info:
+    print(f'| {i[0]} | {i[1]} |')
+x_list = [i[0] for i in weight_info]
+y_list = [i[1] for i in weight_info]
+
+# 绘图
+plt.figure(figsize=(15, 5))
+
+# plt.bar(range(len(cols)), model.feature_importances_)
+# plt.xticks(range(len(cols)), cols, rotation=-90, fontsize=10)
+
+plt.bar(range(len(cols)), y_list)
+plt.xticks(range(len(cols)), x_list, rotation=-90, fontsize=10)
+
+plt.title('Feature importance', fontsize=14)
+plt.show()
+```
+
+
 (2) 随机森林
 
 ```py
