@@ -58,20 +58,20 @@ Feature engineering and selection is the art/science of converting data to the b
   - 深度学习技术在计算机视觉、语音、NLP领域的成功，使得在这些领域手工做特征工程的重要性大大降低，因此有人觉得深度学习时代不再需要人工做特征工程。然后，在搜索、推荐、广告等领域，特征数据主要以关系型结构组织和存储，在关系型数据上的特征生成和变换操作主要有两大类型
     - 一种是基于**行**（row-based）的特征变换，也就是同一个样本的不同特征之间的变换操作，比如特征组合；
     - 另一种是基于**列**（column-based）的特征变换，比如类别型特征的分组统计值，如最大值、最小值、平均值、中位数等。
-  -  <img src="https://pic1.zhimg.com/50/v2-4e06a49c7e4d4c082e2e0b671b1aebd1\_720w.jpg" > 
+  -  <img src="https://pic1.zhimg.com/50/v2-4e06a49c7e4d4c082e2e0b671b1aebd1_720w.jpg" > 
   - 模型可以一定程度上学习到**row**-based的特征变换，比如PNN、DCN、DeepFM、xDeepFM、AutoInt等模型都可以建模特征的交叉组合操作。尽管如此，<font color='red'>模型却很难学习到基于列的特征变换</font>
   - 因为深度模型一次只能接受一个**小批次**的样本，无法建模到**全局**的统计聚合信息，而这些信息往往是很重要的。
   - 综上，即使是深度学习模型也是需要精准特征工程的。
 2. 误区二：<font color='blue'>有了AutoFE工具就不再需要手工做特征工程</font>
   - AutoFE工具尙处于初级阶段
   - 特征工程非常依赖于数据科学家的业务知识、直觉和经验
-  - <img src="https://picx.zhimg.com/50/v2-dc2ea388246599af2bdfd5daf65ace20\_720w.jpg">
+  - <img src="https://picx.zhimg.com/50/v2-dc2ea388246599af2bdfd5daf65ace20_720w.jpg">
 3. 误区三：<font color='blue'>特征工程是没有技术含量的脏活累活</font>
   - 很多学生和工作不久的同事会有一种偏见: **算法模型**才是高大上的技术，**特征工程**是脏活累活，没有技术含量。
   - 因此，很多人把大量精力投入到算法模型的学习和积累中，而很少化时间和精力去积累特征工程方面的经验。
   - 其实，算法模型的学习过程就好比是西西弗斯推着石头上山，石头最终还会滚落下来，这是因为算法模型的更新迭代速度太快了，总会有效率更高、效果更好的模型被提出，从而让之前的积累变得无用。
   - 另一方面，特征工程的经验沉淀就好比是一个**滚雪球**的过程，雪球会越滚越大，最终我们会成为一个业务的领域专家，对业务贡献无可代替的价值。
-  - <img src="https://picx.zhimg.com/50/v2-7a40c2577fe10cf7c2ea374c032385b7\_720w.jpg">
+  - <img src="https://picx.zhimg.com/50/v2-7a40c2577fe10cf7c2ea374c032385b7_720w.jpg">
   - 机器学习工作流就好比是一个厨师做菜的过程，简单来说，清洗食材对应了清洗数据，食材的去皮、切片和搭配就对于了特征工程的过程，食物的烹饪对应了模型训练的过程。如果你觉得数据清洗和特征工程不重要，莫非是你想吃一份没有经过清洗、去皮、切片、调料，而直接把原始的带着泥沙的蔬菜瓜果放在大锅里乱炖出来的“菜”? 先不说卫生的问题，能不能弄熟了都是个问题。
 
 
@@ -172,9 +172,15 @@ Feature scaling，常见的提法有“特征归一化”、“标准化”，�
 ### 特性分析方法
 
 特征重要性分析方法
-- 1、排列重要性 PermutationImportance: 随机排列每个特征的值，监控模型性能下降的程度
-- 2、内置特征重要性(coef_或feature_importances_)
-  - 一些模型，如线性回归和随机森林，可以直接输出特征重要性分数, 显示每个特征对最终预测的贡献。
+- 1、排列重要性: 随机排列每个特征的值，监控模型性能下降程度
+- 2、内置特征重要性: 直接输出特征重要性分数
+- 3、Leave-one-out: 迭代删除1个特征并评估准确性
+- 4、相关性分析: 计算各特征与目标变量之间的相关性
+- 5、递归特征消除: 递归删除特征并查看它如何影响模型性能
+- 6、XGBoost重要性: 计算1个特性用于跨所有树拆分数据的次数
+- 7、主成分分析 PCA: 主成分分析，并查看每个主成分的**解释方差比**
+- 8、方差分析 ANOVA: 每个特征的**方差分析f值**
+- 9、卡方检验: 每个特征的卡方统计信息
 
 不同的方法会检测到不同的特征
 
@@ -196,27 +202,28 @@ Feature scaling，常见的提法有“特征归一化”、“标准化”，�
 
 #### 1、排列重要性 PermutationImportance
 
-随机排列每个特征的值，监控模型性能下降的程度
-
+随机排列每个特征的值，监控模型性能下降程度
+- inspection 里的 permutation_importance
 
 ```py
-from sklearn.datasets import load\_breast\_cancer  
+from sklearn.datasets import load_breast_cancer  
 from sklearn.ensemble import RandomForestClassifier  
-from sklearn.inspection import permutation\_importance  
-from sklearn.model\_selection import train\_test\_split  
+from sklearn.inspection import permutation_importance  
+from sklearn.model_selection import train_test_split  
 import matplotlib.pyplot as plt  
    
-cancer = load\_breast\_cancer()  
+cancer = load_breast_cancer()  
    
-X\_train, X\_test, y\_train, y\_test = train\_test\_split(cancer.data, cancer.target, random\_state=1)  
+X_train, X_test, y_train, y_test = train_test_split(cancer.data, cancer.target, random_state=1)  
    
-rf = RandomForestClassifier(n\_estimators=100, random\_state=1)  
-rf.fit(X\_train, y\_train)  
+rf = RandomForestClassifier(n_estimators=100, random_state=1)  
+rf.fit(X_train, y_train)  
    
-baseline = rf.score(X\_test, y\_test)  
-result = permutation\_importance(rf, X\_test, y\_test, n\_repeats=10, random\_state=1, scoring='accuracy')  
+baseline = rf.score(X_test, y_test)
+# 排列重要性
+result = permutation_importance(rf, X_test, y_test, n_repeats=10, random_state=1, scoring='accuracy')  
    
-importances = result.importances\_mean  
+importances = result.importances_mean  
    
 # Visualize permutation importances  
 plt.bar(range(len(importances)), importances)  
@@ -225,23 +232,24 @@ plt.ylabel('Permutation Importance')
 plt.show()
 ```
 
-#### 2、内置特征重要性(coef_或feature_importances_)
+#### 2、内置特征重要性
 
-一些模型，如线性回归和随机森林，可以直接输出特征重要性分数。这些显示了每个特征对最终预测的贡献。
+内置特征重要性 (coef_或feature_importances_)
+
+一些模型(如线性回归和随机森林)直接输出特征重要性分数, 显示每个特征对最终预测的贡献。
 
 ```py
-from sklearn.datasets import load\_breast\_cancer  
+from sklearn.datasets import load_breast_cancer  
 from sklearn.ensemble import RandomForestClassifier  
    
-X, y = load\_breast\_cancer(return\_X\_y=True)  
-   
-rf = RandomForestClassifier(n\_estimators=100, random\_state=1)  
+X, y = load_breast_cancer(return_X_y=True)  
+
+rf = RandomForestClassifier(n_estimators=100, random_state=1)  
 rf.fit(X, y)  
-   
-importances = rf.feature\_importances\_  
-   
+
+importances = rf.feature_importances_  
 # Plot importances  
-plt.bar(range(X.shape\[1\]), importances)  
+plt.bar(range(X.shape[1]), importances)  
 plt.xlabel('Feature Index')  
 plt.ylabel('Feature Importance')  
 plt.show()
@@ -250,172 +258,175 @@ plt.show()
 
 #### 3、Leave-one-out
 
-迭代地每次删除一个特征并评估准确性。
+迭代删除1个特征并评估准确性。
 
 ```py
-from sklearn.datasets import load\_breast\_cancer  
- from sklearn.model\_selection import train\_test\_split  
- from sklearn.ensemble import RandomForestClassifier  
- from sklearn.metrics import accuracy\_score  
- import matplotlib.pyplot as plt  
- import numpy as np  
-   
- # Load sample data  
- X, y = load\_breast\_cancer(return\_X\_y=True)  
-   
- # Split data into train and test sets  
- X\_train, X\_test, y\_train, y\_test = train\_test\_split(X, y, test\_size=0.3, random\_state=1)  
-   
- # Train a random forest model  
- rf = RandomForestClassifier(n\_estimators=100, random\_state=1)  
- rf.fit(X\_train, y\_train)  
-   
- # Get baseline accuracy on test data  
- base\_acc = accuracy\_score(y\_test, rf.predict(X\_test))  
-   
- # Initialize empty list to store importances  
- importances = \[\]  
-   
- # Iterate over all columns and remove one at a time  
- for i in range(X\_train.shape\[1\]):  
-    X\_temp = np.delete(X\_train, i, axis=1)  
-    rf.fit(X\_temp, y\_train)  
-    acc = accuracy\_score(y\_test, rf.predict(np.delete(X\_test, i, axis=1)))  
-    importances.append(base\_acc - acc)  
-       
- # Plot importance scores      
- plt.bar(range(len(importances)), importances)  
- plt.show()
+from sklearn.datasets import load_breast_cancer  
+from sklearn.model_selection import train_test_split  
+from sklearn.ensemble import RandomForestClassifier  
+from sklearn.metrics import accuracy_score  
+import matplotlib.pyplot as plt  
+import numpy as np  
+  
+# Load sample data  
+X, y = load_breast_cancer(return_X_y=True)  
+  
+# Split data into train and test sets  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)  
+  
+# Train a random forest model  
+rf = RandomForestClassifier(n_estimators=100, random_state=1)  
+rf.fit(X_train, y_train)  
+  
+# Get baseline accuracy on test data  
+base_acc = accuracy_score(y_test, rf.predict(X_test))  
+  
+# Initialize empty list to store importances  
+importances = []  
+  
+# Iterate over all columns and remove one at a time  
+for i in range(X_train.shape[1]):  
+   X_temp = np.delete(X_train, i, axis=1)  
+   rf.fit(X_temp, y_train)  
+   acc = accuracy_score(y_test, rf.predict(np.delete(X_test, i, axis=1)))  
+   importances.append(base_acc - acc)  
+      
+# Plot importance scores      
+plt.bar(range(len(importances)), importances)  
+plt.show()
 ```
 
 
 #### 4、相关性分析
 
-计算各特征与目标变量之间的相关性。相关性越高的特征越重要。
-
+计算各特征与目标变量之间的相关性。
+- 相关性越高的特征越重要。
 
 ```py
 import pandas as pd  
-from sklearn.datasets import load\_breast\_cancer  
+from sklearn.datasets import load_breast_cancer  
    
-X, y = load\_breast\_cancer(return\_X\_y=True)  
+X, y = load_breast_cancer(return_X_y=True)  
 df = pd.DataFrame(X, columns=range(30))  
-df\['y'\] = y  
+df['y'] = y  
    
 correlations = df.corrwith(df.y).abs()  
-correlations.sort\_values(ascending=False, inplace=True)  
-   
+correlations.sort_values(ascending=False, inplace=True)  
 correlations.plot.bar()
 ```
 
 
 #### 5、递归特征消除 Recursive Feature Elimination
 
-递归地删除特征并查看它如何影响模型性能。删除时会导致更大下降的特征更重要。
+递归删除特征并查看它如何影响模型性能。删除时会导致更大下降的特征更重要。
 
 ```py
 from sklearn.ensemble import RandomForestClassifier  
- from sklearn.feature\_selection import RFE  
- import pandas as pd  
- from sklearn.datasets import load\_breast\_cancer  
- import matplotlib.pyplot as plt  
-   
- X, y = load\_breast\_cancer(return\_X\_y=True)  
- df = pd.DataFrame(X, columns=range(30))  
- df\['y'\] = y  
-   
- rf = RandomForestClassifier()  
-   
- rfe = RFE(rf, n\_features\_to\_select=10)  
- rfe.fit(X, y)  
-   
- print(rfe.ranking\_)
+from sklearn.feature_selection import RFE  
+import pandas as pd  
+from sklearn.datasets import load_breast_cancer  
+import matplotlib.pyplot as plt  
+  
+X, y = load_breast_cancer(return_X_y=True)  
+df = pd.DataFrame(X, columns=range(30))  
+df['y'] = y  
+  
+rf = RandomForestClassifier()  
+  
+rfe = RFE(rf, n_features_to_select=10)  
+rfe.fit(X, y)  
+  
+print(rfe.ranking_)
 ```
 
 
-#### 6、XGBoost特性重要性
+#### 6、XGBoost重要性
 
-计算一个特性用于跨所有树拆分数据的次数。更多的分裂意味着更重要。
+计算1个特性用于跨所有树拆分数据的次数。更多的分裂意味着更重要。
 
 
 ```py
 import xgboost as xgb  
- import pandas as pd  
- from sklearn.datasets import load\_breast\_cancer  
- import matplotlib.pyplot as plt  
-   
- X, y = load\_breast\_cancer(return\_X\_y=True)  
- df = pd.DataFrame(X, columns=range(30))  
- df\['y'\] = y  
-   
- model = xgb.XGBClassifier()  
- model.fit(X, y)  
-   
- importances = model.feature\_importances\_  
- importances = pd.Series(importances, index=range(X.shape\[1\]))  
- importances.plot.bar()
+import pandas as pd  
+from sklearn.datasets import load_breast_cancer  
+import matplotlib.pyplot as plt  
+  
+X, y = load_breast_cancer(return_X_y=True)  
+df = pd.DataFrame(X, columns=range(30))  
+df['y'] = y  
+  
+model = xgb.XGBClassifier()  
+model.fit(X, y)  
+  
+importances = model.feature_importances_  
+importances = pd.Series(importances, index=range(X.shape[1]))  
+importances.plot.bar()
 ```
 
 #### 7、主成分分析 PCA
 
-对特征进行主成分分析，并查看每个主成分的解释方差比。在前几个组件上具有较高负载的特性更为重要。
+对特征进行主成分分析，并查看每个主成分的**解释方差比**。
+
+在前几个组件上具有较高负载的特性更为重要。
 
 
 ```py
 from sklearn.decomposition import PCA  
- import pandas as pd  
- from sklearn.datasets import load\_breast\_cancer  
- import matplotlib.pyplot as plt  
-   
- X, y = load\_breast\_cancer(return\_X\_y=True)  
- df = pd.DataFrame(X, columns=range(30))  
- df\['y'\] = y  
-   
- pca = PCA()  
- pca.fit(X)  
-   
- plt.bar(range(pca.n\_components\_), pca.explained\_variance\_ratio\_)  
- plt.xlabel('PCA components')  
- plt.ylabel('Explained Variance')
+import pandas as pd  
+from sklearn.datasets import load_breast_cancer  
+import matplotlib.pyplot as plt  
+  
+X, y = load_breast_cancer(return_X_y=True)  
+df = pd.DataFrame(X, columns=range(30))  
+df['y'] = y  
+  
+pca = PCA()  
+pca.fit(X)  
+  
+plt.bar(range(pca.n_components_), pca.explained_variance_ratio_)  
+plt.xlabel('PCA components')  
+plt.ylabel('Explained Variance')
 ```
 
 
 #### 8、方差分析 ANOVA
 
-使用f_classif()获得每个特征的方差分析f值。f值越高，表明特征与目标的相关性越强。
+使用 f_classif() 获得每个特征的**方差分析f值**。
+- f值越高，表明特征与目标的相关性越强。
 
 ```py
- from sklearn.feature\_selection import f\_classif  
- import pandas as pd  
- from sklearn.datasets import load\_breast\_cancer  
- import matplotlib.pyplot as plt  
-   
- X, y = load\_breast\_cancer(return\_X\_y=True)  
- df = pd.DataFrame(X, columns=range(30))  
- df\['y'\] = y  
-   
- fval = f\_classif(X, y)  
- fval = pd.Series(fval\[0\], index=range(X.shape\[1\]))  
- fval.plot.bar()
+from sklearn.feature_selection import f_classif  
+import pandas as pd  
+from sklearn.datasets import load_breast_cancer  
+import matplotlib.pyplot as plt  
+  
+X, y = load_breast_cancer(return_X_y=True)  
+df = pd.DataFrame(X, columns=range(30))  
+df['y'] = y  
+  
+fval = f_classif(X, y)  
+fval = pd.Series(fval[0], index=range(X.shape[1]))  
+fval.plot.bar()
 ```
 
 #### 9、卡方检验
 
-使用chi2()获得每个特征的卡方统计信息。得分越高的特征越有可能独立于目标。
+使用 chi2() 获得每个特征的卡方统计信息。
+- 得分越高的特征越有可能独立于目标。
 
 ```py
- from sklearn.feature\_selection import chi2  
- import pandas as pd  
- from sklearn.datasets import load\_breast\_cancer  
- import matplotlib.pyplot as plt  
-   
- X, y = load\_breast\_cancer(return\_X\_y=True)  
- df = pd.DataFrame(X, columns=range(30))  
- df\['y'\] = y  
-   
- chi\_scores = chi2(X, y)  
- chi\_scores = pd.Series(chi\_scores\[0\], index=range(X.shape\[1\]))  
- chi\_scores.plot.bar()
+from sklearn.feature_selection import chi2  
+import pandas as pd  
+from sklearn.datasets import load_breast_cancer  
+import matplotlib.pyplot as plt  
+  
+X, y = load_breast_cancer(return_X_y=True)  
+df = pd.DataFrame(X, columns=range(30))  
+df['y'] = y  
+  
+chi_scores = chi2(X, y)  
+chi_scores = pd.Series(chi_scores[0], index=range(X.shape[1]))  
+chi_scores.plot.bar()
 ```
 
 ## 特征归一化
@@ -3178,7 +3189,7 @@ Feature Column是TensorFlow提供的用于处理结构化数据的工具，是�
 
 ![](https://img-blog.csdnimg.cn/img_convert/071c506b4a5179d6fbd7bb2bf3f1afc1.png)
  
-在` categorical\_column\_with\_hash\_bucket `的文档\[2\]里面说到：对于String类型的输入，会执行\`output\_id = Hash(input\_feature\_string) % bucket\_size\`做哈希操作，而对于整数类型的输入会先转成String类型然后再进行同样的哈希操作。通过查看源代码\[3\]可以看到这样的逻辑：
+在` categorical_column_with_hash_bucket `的文档[2]里面说到：对于String类型的输入，会执行\`output_id = Hash(input_feature_string) % bucket_size\`做哈希操作，而对于整数类型的输入会先转成String类型然后再进行同样的哈希操作。通过查看源代码[3]可以看到这样的逻辑：
 ![](https://img-blog.csdnimg.cn/img_convert/3799b20a61c2d96ae0ea98eefec50f97.png)
 
 在推荐业务中，通常这类ID都是已经过某种方式的哈希，形成64bit的整型特征放到样本里面，因此必然要执行整型转化成String的操作。但是在TensorFlow 的 Timeline中可以看到函数\`as_string\`所对应的TF内部的\`AsString\` OP其实是一个比较耗时的操作，经过分析对比发现\`AsString\` OP的耗时通常是后面的哈希操作的3倍以上，如下图所示：
@@ -3197,7 +3208,7 @@ Feature Column是TensorFlow提供的用于处理结构化数据的工具，是�
 
 ![](https://img-blog.csdnimg.cn/img_convert/f9ffd1309fe16b22e3f8b320aa0d0243.png)
 
-以上面的代码为例子，举例解析一下 TensorFlow 内部的Tensor 转换逻辑。如下图所示，两个样本user\_name分别为bob和wanda，经过样本解析成shape为2的Dense Tensor，然后经过\`categorical\_column\_with\_vocabulary\_list\`转换，查找词表分别转成0和2，再经过\`indicator\_column\`转换成One hot编码的Dense输入。
+以上面的代码为例子，举例解析一下 TensorFlow 内部的Tensor 转换逻辑。如下图所示，两个样本user_name分别为bob和wanda，经过样本解析成shape为2的Dense Tensor，然后经过\`categorical_column_with_vocabulary_list\`转换，查找词表分别转成0和2，再经过\`indicator_column\`转换成One hot编码的Dense输入。
 
 ![](https://img-blog.csdnimg.cn/img_convert/94341e5e7d231ab28218a7b083d437bb.png)
 
