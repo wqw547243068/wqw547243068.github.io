@@ -3,7 +3,7 @@ layout: post
 title:  "特征工程-Fearture Engineering"
 date:   2020-04-26 21:50:00
 categories: 机器学习
-tags: 深度学习 特征工程 tensorflow sklearn 特征
+tags: 深度学习 特征工程 tensorflow sklearn 特征 可解释
 excerpt: 特征工程点点滴滴，及scikit-learn实现
 author: 鹤啸九天
 mathjax: true
@@ -340,10 +340,11 @@ print(rfe.ranking_)
 ```
 
 
-#### 6、XGBoost重要性
+#### 6、决策树重要性
 
 计算1个特性用于跨所有树拆分数据的次数。更多的分裂意味着更重要。
 
+(1) XGBoost
 
 ```py
 import xgboost as xgb  
@@ -361,6 +362,32 @@ model.fit(X, y)
 importances = model.feature_importances_  
 importances = pd.Series(importances, index=range(X.shape[1]))  
 importances.plot.bar()
+```
+
+(2) 随机森林
+
+```py
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import pandas as pd
+# 加载数据集
+iris = load_iris()
+X = iris.data
+y = iris.target
+# 划分训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# 构建随机森林分类器
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
+# 获取特征重要性
+feature_importances = rf.feature_importances_
+# 将特征名称和重要性得分整合到DataFrame中
+feature_names = iris.feature_names
+importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importances})
+# 按重要性得分降序排序
+importance_df = importance_df.sort_values(by='Importance', ascending=False)
+print(importance_df)
 ```
 
 #### 7、主成分分析 PCA
@@ -428,6 +455,97 @@ chi_scores = chi2(X, y)
 chi_scores = pd.Series(chi_scores[0], index=range(X.shape[1]))  
 chi_scores.plot.bar()
 ```
+
+
+#### SHAP值
+
+SHAP值源自于`博弈论`，机器学习中用于计算每个样本中各个特征施加的影响力。
+
+```py
+import shap
+
+ds_data = data.sample(100000)  # 需要降采样，数量级过大不能出图
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(ds_data.loc[:, (ds_data.columns != 'label')])
+shap.summary_plot(shap_values, ds_data.loc[:, (ds_data.columns != 'label')], max_display=10)
+# Explain
+shap.summary_plot(shap_values, ds_data.loc[:, (ds_data.columns != 'label')], plot_type='bar')
+
+```
+
+算法排序了最重要的几个特征，其中一个点代表一个样本，颜色越红说明特征的数值越大，蓝色反之。如果蓝色样本在<0部分集中，说明特征数值越小，对模型结果的副作用越大；同理如果红色样本在>0部分集中，则说明数值越大，对模型的正向作用越大。
+
+完整代码
+
+```py
+import numpy as np
+import pandas as pd
+import xgboost as xgb
+from sklearn import metrics
+import matplotlib.pyplot as plt; plt.style.use('seaborn')
+import shap
+
+
+def calc_feature_importance_roc_auc(data, label):
+    """
+    计算特征重要性（ROC AUC）
+    :param data: 特征数据
+    :param label: 标签数据
+    :returns: 特征重要性
+    """
+    # 分特征计算AUC
+    features_auc = []
+    for i in data.columns:
+        y = data[i]
+        std = y.std()
+        if std != 0:
+            y = (y - y.mean()) / std
+            fpr, tpr, thresholds = metrics.roc_curve(label, y.to_numpy())
+            auc = metrics.auc(fpr, tpr)
+            features_auc.append(auc)
+        else:  # 无效数据
+            features_auc.append(0.5)
+
+    # 对结果进行修正
+    features_auc = [abs(x - 0.5) for x in features_auc]
+    return pd.DataFrame(features_auc)
+
+
+def calc_feature_importance_shap(tree_model, data):
+    """
+    计算特征重要性（SHAP）
+    :param tree_model: 树模型
+    :param data: 特征数据
+    :returns: 特征重要度
+    """
+    explainer = shap.TreeExplainer(tree_model)
+    shap_values = explainer.shap_values(data)
+    shap_values_df = pd.DataFrame(shap_values)
+    return shap_values_df.abs().mean(axis=0)
+
+
+if __name__ == "__main__":
+    # 读原始数据
+    data = pd.read_csv('data.csv')
+
+    # 训练XGB模型
+    feature_data = data.loc[:, (data.columns != 'label')]
+    label_data = data.loc[:, data.columns == 'label']
+    model = xgb.XGBRegressor(max_depth=5, learning_rate=0.03, n_estimators=300)
+    model.fit(feature_data, label_data)
+
+    # 计算重要度
+    feature_importances = pd.DataFrame({
+        'feature': feature_data.columns,
+        'roc_auc': calc_feature_importance_roc_auc(feature_data, label_data['label'].apply(func=lambda x : 1 if x > 0.01 else 0))[0],
+        'shap': calc_feature_importance_shap(model, feature_data.sample(1000000)),
+        'xgb': model.feature_importances_,
+    })
+
+    # 保存到文件
+    feature_importances.to_csv('feature_importances.csv')
+```
+
 
 ## 特征归一化
 
