@@ -344,7 +344,7 @@ print(rfe.ranking_)
 
 计算1个特性用于跨所有树拆分数据的次数。更多的分裂意味着更重要。
 
-(1) XGBoost
+##### (1) XGBoost
 
 ```py
 import xgboost as xgb  
@@ -406,8 +406,11 @@ plt.title('Feature importance', fontsize=14)
 plt.show()
 ```
 
+图解
+- ![](http://chu-studio.com/posts/2021/assets/20210215165611127_22512.png)
+- 更多[参考](http://chu-studio.com/posts/2021/%E5%A6%82%E4%BD%95%E8%A1%A1%E9%87%8F%E7%89%B9%E5%BE%81%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7)
 
-(2) 随机森林
+##### (2) 随机森林
 
 ```py
 from sklearn.datasets import load_iris
@@ -498,6 +501,76 @@ chi_scores = chi2(X, y)
 chi_scores = pd.Series(chi_scores[0], index=range(X.shape[1]))  
 chi_scores.plot.bar()
 ```
+
+
+#### ROC曲线法
+
+通过ROC曲线也可以分析特征和结果之间的关联程度。
+
+```py
+from sklearn import metrics
+
+y = data['feature1']
+label = data['label'].apply(func=lambda x : 1 if x > 0.01 else 0)
+
+# 数据规格化处理
+std = y.std()
+if std != 0:
+    y = (y - y.mean()) / std
+
+# 计算ROC
+fpr, tpr, thresholds = metrics.roc_curve(label, y.to_numpy())
+
+# 绘图
+plt.plot(fpr, tpr, marker='.', label='Feature')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.legend()
+plt.show()
+```
+
+效果图
+- ![](http://chu-studio.com/posts/2021/assets/20210215174617487_28800.png)
+- 更多[参考](http://chu-studio.com/posts/2021/%E5%A6%82%E4%BD%95%E8%A1%A1%E9%87%8F%E7%89%B9%E5%BE%81%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7)
+
+对所有特征计算ROC_AUC可以得到特征重要性结果。
+
+```py
+from sklearn import metrics
+
+label = data['label'].apply(func=lambda x : 1 if x > 0.01 else 0)
+
+# 分特征计算AUC
+features = []
+features_auc = []
+for i in data.columns:
+    if i != "label":
+        y = data[i]
+        std = y.std()
+        if std != 0:
+            y = (y - y.mean()) / std
+            fpr, tpr, thresholds = metrics.roc_curve(label, y.to_numpy())
+            auc = metrics.auc(fpr, tpr)
+            features.append(i)
+            features_auc.append(auc)
+        else:  # 无效数据
+            features.append(i)
+            features_auc.append(0.5)
+
+# 对结果进行修正
+features_auc = [abs(x - 0.5) for x in features_auc]
+
+# 绘图
+plt.figure(figsize=(15, 5))
+plt.bar(range(len(features)), features_auc)
+plt.xticks(range(len(features)), features, rotation=-90, fontsize=10)
+plt.title('Feature importance', fontsize=14)
+plt.show()
+```
+
+和 xgboost 特征重要度差异挺大，可能是用例的特征在**非线性空间**里表现更好导致
+- ![](http://chu-studio.com/posts/2021/assets/20210215180010621_21960.png)
+- 更多[参考](http://chu-studio.com/posts/2021/%E5%A6%82%E4%BD%95%E8%A1%A1%E9%87%8F%E7%89%B9%E5%BE%81%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7)
 
 
 #### SHAP值
