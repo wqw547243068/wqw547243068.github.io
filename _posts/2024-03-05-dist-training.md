@@ -103,6 +103,7 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 - 更多 GPU 知识见站内专题 [并行计算GPU](/gpu)
 
+
 ### 常见问题
 
 模型训练的常见问题
@@ -155,6 +156,74 @@ Pytorch 分布式训练通信依赖`torch.distributed`模块，`torch.distribute
 - 收集 collective communication（`CC`）提供了scatter/broadcast/gather/reduce/all_reduce/all_gather 语义，不同的backend在提供的通信语义上具有一定的差异性。
 
 训练大模型主要是CC通信
+
+
+#### GPU通信技术
+
+【2024-6-17】[GPU通信技术：GPU Direct、NVLink与RDMA](https://developer.baidu.com/article/details/3136719)
+
+GPU通信技术是加速计算的关键，其中`GPU Direct`、`NVLink`和`RDMA`是三种主流技术。
+
+RDMA（Remote Direct Memory Access）是一种远程直接内存访问技术，允许一个设备直接访问另一个设备上的内存数据。在GPU通信中，RDMA技术用于加速GPU与CPU、GPU与GPU以及GPU与网络之间的数据传输。
+
+`DMA` 是“**直接内存读取**”的意思，用来传输数据，它也属于**外设**。只是在传输数据时，无需占用CPU。
+- 高速IO设备可以在处理器安排下直接与主存储器成批交换数据,称为**直接存储器访问**(Directly Memory Access 简称DMA)
+
+比如GPU与CPU之间存在着大量的数据传输. 
+- CPU将需要显示的原始数据放在内存中,让GPU通过DMA的方式读取数据,经过解析和运算,将结果写至显存中,再由显示控制器读取显存中的数据并显示输出.
+
+GPU与CPU集成至同一个处理器芯片时,能够大大减少芯片间的数据搬运,同时因为显存和内存的合并,会大大增加访存压力
+
+DMA传输方向有三个：**外设到内存**，**内存到外设**，**内存到内存**。
+- `外设`到`内存`。即从外设读取数据到内存。例如ADC采集数据到内存，ADC寄存器地址为源地址，内存地址为目标地址。
+- `内存`到`外设`。即从内存读取数据到外设。例如串口向电脑发送数据，内存地址为源地址，串口数据寄存器地址为目标地址。此时内存存储了需要发送的变量数据。
+- `内存`到`内存`。以内部flash向内部sram传输数据为例，此时内部flash地址即为源地址，内部sram地址即为目标地址。同时，需要将DMA_CCRx寄存器的MEM2MEM置位。
+
+
+##### 一、GPU Direct
+
+GPU Direct 是一种优化GPU之间或GPU与第三方设备之间数据传输的技术。它通过**共享内存访问**和**点对点通信**减少了数据复制和传输延迟。
+
+(1) GPU Direct `Shared Memory`
+
+2010年，NVIDIA推出了GPU Direct Shared Memory技术，允许GPU与第三方PCI Express设备通过共享的host memory实现共享内存访问。这使得内存空间得以共享，减少了数据复制，降低了数据交换延迟。
+
+(2) GPU Direct `P2P` (Peer-to-Peer)
+
+2011年，GPU Direct增加了Peer-to-Peer（`P2P`）技术，支持同一PCI Express总线上的GPU之间的直接访问和传输。这种技术绕过了CPU，使得GPU之间通信更加高效。
+
+(3) GPU Direct `RDMA`
+
+2013年，GPU Direct增加了`RDMA`（Remote Direct Memory Access）支持。
+
+RDMA允许第三方PCI Express设备绕过CPU host memory，直接访问GPU内存。这种技术大幅提升了数据传输效率，尤其适用于高性能计算和数据中心等场景。
+
+##### 二、NVLink
+
+NVLink是一种专门设计用于连接NVIDIA GPU的高速互联技术。它通过点对点通信方式，绕过传统的PCIe总线，提供了更高的带宽和更低的延迟。
+
+带宽与延迟
+NVLink采用串行协议，支持双向数据传输，每个方向都有高达32GB/s的带宽。这使得两个GPU之间能够实现高速数据传输和共享，为多GPU系统提供了更高的性能和效率。与传统的PCIe总线相比，NVLink显著降低了通信延迟。
+
+连接与扩展
+NVLink可用于连接两个或多个GPU，以实现多GPU协同工作。这种连接方式简化了系统架构，提高了可扩展性。通过NVLink连接的GPU可以共享数据和计算资源，从而在某些应用中实现性能倍增。
+
+##### 三、RDMA
+
+RDMA（Remote Direct Memory Access）是一种远程直接内存访问技术，允许一个设备直接访问另一个设备上的内存数据。在GPU通信中，RDMA技术用于加速GPU与CPU、GPU与GPU以及GPU与网络之间的数据传输。
+
+DMA原理
+在介绍RDMA之前，我们需要理解DMA（Direct Memory Access）原理。DMA是一种技术，允许硬件控制器直接从内存读取或写入数据，而不需要经过CPU。这大大减轻了CPU的负担，提高了数据传输效率。RDMA基于此原理，进一步扩展了其应用范围。
+
+RDMA的优势
+RDMA提供了高带宽和低延迟的数据传输能力。它利用网卡等设备的远程直接内存访问功能，允许设备之间快速高效地传输大量数据。在高性能计算、数据中心和云计算等领域，RDMA成为提高系统性能的关键技术之一。
+
+GPU与RDMA的结合
+通过将RDMA与GPU相结合，可以实现高性能的GPU通信。在这种配置中，GPU可以借助RDMA直接访问其他设备或网络的内存数据，从而避免了不必要的CPU中介和数据拷贝。这不仅提高了数据传输速率，还降低了CPU负载和功耗。
+
+总结：
+GPU通信技术在加速计算领域发挥着越来越重要的作用。GPU Direct、NVLink和RDMA是三种主流的GPU通信技术，它们分别通过共享内存访问、高速互联和远程直接内存访问等方式提高了GPU之间的通信效率。在实际应用中，根据不同的场景和需求选择合适的通信技术至关重要。随着技术的不断发展，未来我们有望看到更多创新性的GPU通信解决方案，为高性能计算和数据中心等领域带来更大的性能提升。
+
 
 #### 如何选择
 
