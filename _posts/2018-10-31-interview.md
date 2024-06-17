@@ -4,7 +4,7 @@ title:  "面试指南及算法工程师成长-The Guide for Interview"
 date:   2018-10-31 20:08:00
 categories: 人生规划
 excerpt : AI初学者不要过于迷信企业项目，忽略基本功的学习，不要mnist都没研究透彻就嫌简单，直奔难度更大的resnet，好高骛远，得不偿失，学东西请务必戒骄戒躁，一步一个脚印，才能越走越远。企业项目的事实跟你想象的大不一样
-tags: 实习 应届生 AI 算法工程师 面试 工业界 学术界 简历 危机 能力 等级 调参 调包 软考 证书 最优停止 大模型 star ober
+tags: 实习 应届生 招聘 AI 算法工程师 面试 工业界 学术界 简历 危机 能力 等级 调参 调包 软考 证书 最优停止 大模型 star ober
 permalink: /interview
 ---
 
@@ -94,6 +94,12 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 - 8、内推。一般微信群、朋友圈或者论坛为主。
 
 ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/a1900d50a8c74c0c8fab0beda683cf75~tplv-obj:636:850.image?_iz=97245&from=post&x-expires=1705449600&x-signature=6ATEwNrjYQyxojF8cMdI9rjIcGM%3D)
+
+
+渠道信息
+- [阿里巴巴招聘官网](https://talent.alibaba.com/?lang=zh), [实习生渠道](https://talent-holding.alibaba.com/campus/position-list?campusType=internship&lang=zh)
+
+
 
 ## 面试流程
 
