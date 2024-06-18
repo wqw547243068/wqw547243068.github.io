@@ -1254,7 +1254,7 @@ AMC还可以上市，发行股票
 - **内资**银行比如`中国银行`（香港），`工商银行`（亚洲），`建设银行`（亚洲）等
 - **外资**银行是`汇丰`，`渣打`，`花旗`，`星展`等
 - **香港本土**银行有`恒生`银行，`东亚`银行，`招商永隆`等。
-- ![](https://pic1.zhimg.com/80/v2-bc3332f1dc2c639430a42764a2fd4ad0_1440w.webp)
+- [图](https://pic1.zhimg.com/80/v2-bc3332f1dc2c639430a42764a2fd4ad0_1440w.webp)
 
 ### 香港货币发行
 
@@ -1279,17 +1279,17 @@ AMC还可以上市，发行股票
 - 1994年5月，中国银行正式发行港币。 
 
 香港现有三家**发钞银行**: `香港上海汇丰银行`有限公司、`渣打银行（香港）`有限公司和`中国银行（香港）`有限公司。 
-- ![](https://i0.hdslb.com/bfs/article/watermark/9f39278c64fc26f2be165ce7051c8e6a4c61d940.png@1256w_858h_!web-article-pic.avif)
+- [图](https://i0.hdslb.com/bfs/article/watermark/9f39278c64fc26f2be165ce7051c8e6a4c61d940.png@1256w_858h_!web-article-pic.avif)
 
 真正的港币是`香港金融管理局`发行的**硬币**和**10元纸币**，纸币上有「香港法定货币」字样
-- ![](https://i0.hdslb.com/bfs/article/watermark/6a7f97c5d7ae49328f0fbf4a40b0bc40a866803d.jpg@1256w_624h_!web-article-pic.avif)
+- [图](https://i0.hdslb.com/bfs/article/watermark/6a7f97c5d7ae49328f0fbf4a40b0bc40a866803d.jpg@1256w_624h_!web-article-pic.avif)
 
 而`汇丰`、`渣打`、`中银`三家商业银行发行的都是「**银行兑换票**」，纸币上面印有「**凭票即付**」字样。本质上是一张凭票即付的**汇票**，靠政府信誉流通。
-- ![](https://i0.hdslb.com/bfs/article/watermark/5d8289c8f721ff9812a358d8be4e0f35f83f1742.jpg@1256w_942h_!web-article-pic.avif)
+- [图](https://i0.hdslb.com/bfs/article/watermark/5d8289c8f721ff9812a358d8be4e0f35f83f1742.jpg@1256w_942h_!web-article-pic.avif)
 - 每一张港币都有发钞行董事长签字。
 - 三家发行的港币，地位是完全平等的，但**发行量**并不相同，汇丰占比最多，其次为中银，最后为渣打。
 - 根据金管局发布的《2018年年报》，截至2018年底，流通银行纸币（指发钞银行发行的纸币）总值4,838亿港元。汇丰、中银、渣打的纸币流通金额分别为58.0%，32.3%，9.7%。
-- ![](https://i0.hdslb.com/bfs/article/watermark/7404c2fb5748e863b4be3d4b798e6d717fda276c.png@1256w_1090h_!web-article-pic.avif)
+- [图](https://i0.hdslb.com/bfs/article/watermark/7404c2fb5748e863b4be3d4b798e6d717fda276c.png@1256w_1090h_!web-article-pic.avif)
 - 三家银行分别发行，分别回收。如果你去这三家发钞银行取现金，只能取到自己发行的钞票。
 
 
