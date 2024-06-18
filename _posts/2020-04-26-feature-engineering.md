@@ -4,7 +4,7 @@ title:  "特征工程-Fearture Engineering"
 date:   2020-04-26 21:50:00
 categories: 机器学习
 tags: 深度学习 特征工程 tensorflow sklearn 特征 可解释
-excerpt: 特征工程点点滴滴，及scikit-learn实现
+excerpt: 特征工程点点滴滴，scikit-learn实现
 author: 鹤啸九天
 mathjax: true
 ---
@@ -138,12 +138,6 @@ Feature scaling，常见的提法有“特征归一化”、“标准化”，�
 特征重要性分析用于了解每个特征(变量或输入)对于做出预测的有用性或价值。
 - 目标: 确定对模型输出影响最大最重要的特征。
 
-西瓜书（周志华《机器学习》）:
-- 对当前任务有用的属性称为“相关特征”(relevant feature)
-- 没什么用的称为“无关特征”(irrelevant feature)
-- 从给定特征集合中选择相关特征子集的过程，称为“特征选择”(feature selection)
-
-特征选择是一个数据预处理过程。
 
 ### 为什么要分析特征
 
@@ -171,9 +165,440 @@ Feature scaling，常见的提法有“特征归一化”、“标准化”，�
 - LR，random forest算法都可以用来做特征筛选
 - grid search的方法也可以用来搜索特征好坏
 
-
 详情：[何为优秀的机器学习特征](https://yangxudong.github.io/good-feature/)
 
+### 特征选择
+
+西瓜书（周志华《机器学习》）:
+- 对当前任务有用的属性称为“相关特征”(relevant feature)
+- 没什么用的称为“无关特征”(irrelevant feature)
+- 从给定特征集合中选择相关特征子集的过程，称为“特征选择”(feature selection)
+
+特征选择是一个数据预处理过程，常用方法
+- 1）`过滤式`特征选择：特征选择与优化器分离
+  - **过滤式**特征选择通过选择与响应变量（目标变量）相关性度量（可能是相关系数，互信息，卡方检验等）高于设定阈值的特征。
+  - 单变量特征选择
+    - 单变量特征选择是通过单变量统计检验来选择最好的特征。它可以看作是估计器的预处理步骤。
+- 2）`包裹式`特征选择：将优化器目标作为选择标准（不含优化过程）, 效果更好，计算开销更大
+  - 包裹式特征选择方法通过不断训练模型，在每轮迭代过程中，去除那些贡献度最低的特征，直至达到最小特征数，或者模型性能出现大幅下降为止。
+- 3）`嵌入式`特征选择：将优化器过程融合起来, 训练过程中自动进行特征选择
+  - 方法: L1、树模型
+  - L1: 回归用Lasso,分类用LR和LinearSVC, 基于 coef_ 进行选择
+  - 树模型: 基于feature_importance_进行选择
+
+[特征工程-特征选择--过滤法、包裹法、嵌入法/特征提取-PCA、LDA、SVD](https://www.cnblogs.com/nanguajiejie/articles/13201192.html)
+
+#### 1）过滤式特征选择
+
+过滤式特征选择方法：
+1. 移除**低方差**的特征；
+2. **相关系数**排序，分别计算每个特征与输出值之间的相关系数，设定一个阈值，选择相关系数大于阈值的部分特征；
+3. 利用**假设检验**得到特征与输出值之间的相关性，方法有比如卡方检验、t检验、F检验等。
+4. **互信息**，利用互信息从信息熵的角度分析相关性。
+
+##### 方差
+
+1）移除**方差小于指定阈值**的特征
+
+特征的分布方差低，表示特征的分布集中度高，多样性较低，包含的信息量少，对模型的作用不大。
+- 如某个特征的取值全为0，则该特征在模型训练过程中起不到正向作用。
+
+```py
+from sklearn.feature_selection import VarianceThreshold
+ 
+X = [[0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [0, 1, 0], [0, 1, 1]]
+
+# threshold是二分类特征中，某个取值占样本总体的80%
+var_selection = VarianceThreshold(threshold=0.8 * (1 - 0.8))
+# 计算得到的各个属性列的方差
+# var_selection.variances_
+# 方差选择法，返回值为特征选择后的数据
+X_selection = var_selection.fit_transform(X)
+X_selection
+
+# -----------------
+def var():
+    var=VarianceThreshold(threshold=1.0)
+    data=var.fit_transform([[0,2,0,3],[0,1,4,3],[0,1,1,3]])
+    print(data)
+    return None
+var()
+```
+
+##### 单变量
+
+2）单变量特征选择
+
+原理
+- 单独计算每个变量的某个统计指标，根据该指标来判断哪些指标重要，剔除那些不重要的指标。
+- A．**分类**（y离散）：卡方检验、F检验、互信息
+- B．**回归**（y连续）：相关系数、互信息
+- 互信息：一个随机变量包含的关于另一个随机变量的信息量，或一个随机变量由于已知另一个随机变量而减少的不确定性。
+- SelectKBest 移除得分前 k 名以外的所有特征(取top k)
+- SelectPercentile 移除得分在用户指定百分比以后的特征(取top k%)
+
+单变量特征选择: 通过**单变量统计检验**来选择最好的特征, 是估计器的预处理步骤。
+- SelectKBest 按照度量得分，选择得分前k个特征
+- SelectPercentile 按照度量得分，选择得分前百分之多少的特征
+
+###### ① 卡方检验
+
+- 卡方检验是检验定性自变量对定性因变量的相关性.
+
+```py
+# 卡方检验完成单变量特征选择
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.datasets import load_iris
+ 
+"""
+Parameters
+ |  ----------
+ |  score_func : callable
+ |      Function taking two arrays X and y, and returning a pair of arrays
+ |      (scores, pvalues) or a single array with scores.
+ |      Default is f_classif (see below "See also"). The default function only
+ |      works with classification tasks.
+ |  
+ |  k : int or "all", optional, default=10
+ |      Number of top features to select.
+ |      The "all" option bypasses selection, for use in a parameter search.
+"""
+ 
+X, y = load_iris(return_X_y=True)
+# 使用卡方检验计算特征和目标值的关系，并保留得分最高的k=2个特征
+kBest = SelectKBest(chi2, k=2)
+kBest.fit_transform(X, y)
+print(kBest.scores_, kBest.pvalues_)
+print(X.shape, X_new.shape)
+print(X[:5, 2:],"\n" ,X_new[:5, :])
+# chi2(X, y)
+```
+
+SelectPercentile 按照度量得分，选择得分前百分之多少的特征
+
+```py
+from sklearn.feature_selection import SelectPercentile
+from sklearn.feature_selection import chi2
+from sklearn.datasets import load_iris
+ 
+"""
+score_func : callable
+ |      Function taking two arrays X and y, and returning a pair of arrays
+ |      (scores, pvalues) or a single array with scores.
+ |      Default is f_classif (see below "See also"). The default function only
+ |      works with classification tasks.
+ |  
+ |  percentile : int, optional, default=10
+ |      Percent of features to keep.
+"""
+ 
+X, y = load_iris(return_X_y=True)
+# 使用卡方检验计算特征和目标值的关系，并保留特征
+percentile = SelectPercentile(chi2, percentile=0.5)
+percentile.fit_transform(X, y)
+print(percentile.scores_, percentile.pvalues_)
+print(X.shape, X_new.shape)
+print(X[:5, 2:],"\n" ,X_new[:5, :])
+# chi2(X, y)
+```
+
+###### ② 相关系数
+
+相关系数（距离相关系数）
+
+Pearson 相关系数一个明显缺陷: 作为特征排序机制，只对**线性关系**敏感。
+- 如果非线性，即便两个变量具有一一对应的关系，Pearson相关性也可能会接近0。
+
+```py
+import numpy as np
+from scipy.stats import pearsonr
+
+np.random.seed(0)
+size = 300
+x = np.random.normal(0,1,size)
+# pearsonr(x, y)的输入为特征矩阵和目标向量
+print("Lower noise", pearsonr(x, x + np.random.normal(0, 1, size)))
+print("Higher noise", pearsonr(x, x + np.random.normal(0, 10, size)))
+```
+
+###### ③ 互信息及最大相关系数
+
+（MINE库安装失败）
+
+互信息直接用于特征选择其实不是太方便（不太适用于连续变量，在不同数据集上无法比较），用最大信息系数去改进，它首先寻找一种最优的离散化方式，然后把互信息取值转换成一种度量方式，取值区间在[0，1]。
+
+```py
+from minepy import MINE
+
+m = MINE()
+x = np.random.uniform(-1, 1, 10000)
+m.compute_score(x, x**2)
+print(m.mic())
+```
+
+###### ④ 模型
+
+基于模型的特征排序
+
+可以采用决策树、随机森林、SVM、LogisticRegression的方法，得到特征排序的重要性。
+
+波士顿房价数据  随机森林
+
+```py
+from sklearn.model_selection import cross_val_score, ShuffleSplit
+from sklearn.datasets import load_boston
+from sklearn.ensemble import RandomForestRegressor
+import numpy as np
+
+# Load boston housing dataset as an example
+boston = load_boston()
+X = boston["data"]
+Y = boston["target"]
+names = boston["feature_names"]
+
+rf = RandomForestRegressor(n_estimators=20, max_depth=4)
+scores = []
+# 单独采用每个特征进行建模，并进行交叉验证
+for i in range(X.shape[1]):
+    score = cross_val_score(rf, X[:, i:i+1], Y, scoring="r2",cv=ShuffleSplit(len(X), 3, .3))
+    # 注意X[:, i]shape(1,m)和X[:, i:i+1]的区别hape(m,1)
+    scores.append((format(np.mean(score), '.3f'), names[i]))
+print(sorted(scores, reverse=True))
+```
+
+#### 2）包裹式特征选择
+
+过滤式特征选择不考虑学习器，而包裹式特征选择**直接把学习器目标作为评价准则**
+- 因而 效果更好，但计算开销更大
+
+Wrapper（包裹法） 递归特征消除 (Recursive Feature Elimination)
+
+包裹式特征选择方法通过不断训练模型，每轮迭代过程去除那些贡献度最低的特征，直至达到最小特征数，或者模型性能出现大幅下降为止。
+
+sklearn官方解释：
+- 对特征含有权重的预测模型(例如，线性模型对应参数coefficients)，RFE通过递归减少考察的特征集规模来选择特征。首先，预测模型在原始特征上训练，每个特征指定一个权重。之后，那些拥有最小绝对值权重的特征被踢出特征集。如此往复递归，直至剩余的特征数量达到所需的特征数量。
+
+RFECV 通过交叉验证的方式执行RFE，以此来选择最佳数量的特征：对于一个数量为d的feature的集合，他的所有的子集的个数是2的d次方减1(包含空集)。指定一个外部的学习算法，比如SVM之类的。通过该算法计算所有子集的validation error。选择error最小的那个子集作为所挑选的特征
+
+
+```py
+# 使用递归的特征消除方法RFE进行特征选择
+%matplotlib inline
+from sklearn.datasets import load_digits
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
+from matplotlib import pyplot as plt
+from sklearn.svm import SVC
+ 
+digits = load_digits()
+X = digits.images.reshape(len(digits.images), -1)
+y = digits.target
+print(X.shape)
+ 
+# 用于训练的简单模型
+svc = SVC(kernel="linear", C=1)
+ 
+# n_features_to_select：选择的特征数量， step：每次迭代清除的特征数量
+rfe = RFE(estimator=svc, n_features_to_select=16, step=1)
+rfe.fit(X, y)
+# 特征得分
+ranking = rfe.ranking_.reshape(digits.images[0].shape)
+print(ranking.shape)
+ 
+# ranking_结果表示每个特征的最终排序名次,被选中的特征的ranking_值为1
+print("每个特征的最终排序名次：", rfe.ranking_)
+# support_表示每个特征是否被选中 True or False, ranking_为1的对应位置为True
+print("每次特征是否被选中：", rfe.support_)
+# n_features_表示最终选择的特征数量
+print("选中的特征数量：", rfe.n_features_)
+print("模型：\n", rfe.estimator_)
+ 
+# 依据特征选择结果选择特征
+X_selected = X[:, rfe.support_]
+print("被选择的特征数据：", X_selected.shape)
+ 
+# Plot pixel ranking, ranking -> (8, 8)表示每个像素点的特征重要性排序
+plt.matshow(ranking, cmap=plt.cm.Blues)
+plt.colorbar()
+plt.title("Ranking of pixels with RFE")
+plt.show()
+```
+
+
+#### 3）嵌入式特征选择
+
+过滤式和包裹式特征选择方法，特征选择和学习器优化过程分离
+
+Embedding（嵌入法）
+
+嵌入式将特征选择过程与学习期训练过程融合，一次性完成
+
+使用 SelectFromModel选择特征 (Feature selection using SelectFromModel)
+
+有些机器学习方法本身就具有对特征进行打分的机制，或很容易将其运用到特征选择任务中，例如: 回归模型，SVM，决策树，随机森林等等。
+- 其实Pearson相关系数等价于线性回归里的标准化回归系数。
+
+嵌入式特征选择原则：
+- a. 基于**L1正则化**的特征选择
+  - 1）、对于回归问题使用Lasso进行回归特征选择
+  - 2）、对于分类问题使用LR和LinearSVC进行特征选择
+  - 3）、基于L1正则化的特征选择方法基于coef_进行选择
+- b. 基于**树模型**的特征选择方法
+  - 1）、基于树模型的特征选择方法基于feature_importance_进行选择
+
+方法
+- L1: **回归**用`Lasso`, **分类**用`LR`和`LinearSVC`, 基于 coef_ 进行选择
+- 树模型: 基于feature_importance_进行选择
+
+```py
+SelectFromModel(estimator=ExtraTreesClassifier(bootstrap=False,
+                                               class_weight=None,
+                                               criterion='gini', max_depth=None,
+                                               max_features='auto',
+                                               max_leaf_nodes=None,
+                                               min_impurity_decrease=0.0,
+                                               min_impurity_split=None,
+                                               min_samples_leaf=1,
+                                               min_samples_split=2,
+                                               min_weight_fraction_leaf=0.0,
+                                               n_estimators=50, n_jobs=None,
+                                               oob_score=False,
+                                               random_state=None, verbose=0,
+                                               warm_start=False),
+                max_features=None, norm_order=1, prefit=True,
+                threshold=0.24999999999999994)
+```
+
+基于 L1 的特征选择
+- 使用L1范数作为惩罚项的线性模型(Linear models)会得到稀疏解：大部分特征对应的系数为0。
+- 当希望减少特征的维度以用于其它分类器时，可以通过 feature_selection.SelectFromModel 来选择不为0的系数。
+
+常用的稀疏预测模型: 
+- linear_model.Lasso（lasso回归）
+- linear_model.LogisticRegression（逻辑回归）
+- svm.LinearSVC（SVM支持向量机）
+
+对于SVM和逻辑回归，参数C控制稀疏性：C越小，被选中的特征越少。对于Lasso，参数alpha越大，被选中的特征越少。
+
+##### ① LassoCV 模型
+
+基于LassoCV模型完成嵌入式特征选择
+
+```py
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LassoCV
+ 
+# 糖尿病数据集
+from sklearn.datasets import load_diabetes
+
+diabetes = load_diabetes()
+X = diabetes.data
+y = diabetes.target
+ 
+feature_names = diabetes.feature_names
+print(feature_names)
+X[:2]
+
+# 训练LassoCV估计器
+clf = LassoCV().fit(X, y)
+# 由于LassoCV训练得到的模型参数可能为正或者负，为正表示对于正类有积极影响，为负表示对正类有消极影响
+# 积极影响和消极影响都是影响，所以要对影响系数取绝对值
+importance = np.abs(clf.coef_)
+print(importance)
+
+idx_third = importance.argsort()[-3]
+threshold = importance[idx_third] + 0.01
+ 
+# 获取排名前2的特征索引编号
+idx_features = (-importance).argsort()[:2]
+# 获取排名前2的特征名
+name_features = np.array(feature_names)[idx_features]
+print('Selected features: {}'.format(name_features))
+ 
+sfm = SelectFromModel(clf, threshold=threshold)
+sfm.fit(X, y)
+X_transform = sfm.transform(X)
+ 
+# 特征选择后的特征数量
+n_features = sfm.transform(X).shape[1]
+X_transform.shape, n_features
+
+print("特征选择标记：", sfm.get_support())
+print("模型参数权重：", sfm.estimator_.coef_)
+print("特征选择阈值：", sfm.threshold_)
+
+# 特征选择标记： [False False  True False False False False False  True False]
+# 模型参数权重： [  -0.         -226.2375274   526.85738059  314.44026013 -196.92164002  1.48742026 -151.78054083  106.52846989  530.58541123   64.50588257]
+# 特征选择阈值： 314.450260129206
+```
+
+##### ② LR
+
+基于LR完成嵌入式特征选择
+
+```py
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LogisticRegression
+
+X = [[ 0.87, -1.34,  0.31 ],
+     [-2.79, -0.02, -0.85 ],
+     [-1.34, -0.48, -2.55 ],
+     [ 1.92,  1.48,  0.65 ]]
+y = [0, 1, 0, 1]
+selector = SelectFromModel(estimator=LogisticRegression()).fit(X, y)
+
+print("模型参数权重：", selector.estimator_.coef_)
+# 特征选择阈值默认为权重参数绝对值的均值
+print("特征选择阈值：", selector.threshold_, np.mean(np.abs(selector.estimator_.coef_)))
+print("特征选择标记：", selector.get_support())
+X_transformed = selector.transform(X)
+X_transformed.shape
+```
+
+##### ③ L1正则化
+
+基于L1正则化完成特征选择（回归：Lasso,分类：LR/LinearSVC）
+
+```py
+# iris 数据集特征选择
+from sklearn.svm import LinearSVC
+from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectFromModel
+
+X, y = load_iris(return_X_y=True)
+print(X.shape)
+# 带有L1正则化项的LinearSVC分类模型
+lsvc = LinearSVC(C=0.01, penalty="l1", dual=False).fit(X, y)
+
+model = SelectFromModel(lsvc, prefit=True)
+X_new = model.transform(X)
+print(X_new.shape)
+print(model.get_support())
+```
+
+##### ④ 树模型
+
+基于**树模型**的特征选择方法
+
+```py
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.feature_selection import SelectFromModel
+
+X, y = load_iris(return_X_y=True)
+print(X.shape)
+clf = ExtraTreesClassifier(n_estimators=50)
+clf = clf.fit(X, y)
+print(clf.feature_importances_  )
+# 默认使用的threshold是clf模型feature_importance_的均值
+model = SelectFromModel(clf, prefit=True, threshold=np.mean(clf.feature_importances_))
+X_new = model.transform(X)
+print(X_new.shape)
+print(model.get_support())
+```
 
 ### 特性分析方法
 
