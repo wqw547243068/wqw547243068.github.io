@@ -26,7 +26,8 @@ permalink: /pe
 
 ## 资讯
 
-【2023-7-26】OpenAI 专家 Lili Weng 翁丽莲 博客专题 [Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
+- 【2023-7-26】OpenAI 专家 Lili Weng 翁丽莲 博客专题 [Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
+- 【2024-6-6】马里兰、OpenAI、斯坦福微软等合著的 Prompt 综述报告 [The Prompt Report: A Systematic Survey of Prompting Techniques](https://arxiv.org/pdf/2406.06608)
 
 ### OpenAI 自定义指令
 
