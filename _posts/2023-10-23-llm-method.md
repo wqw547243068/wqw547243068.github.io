@@ -1964,15 +1964,27 @@ print(tokenizer.decode(outputs[0]))
 
 
 
-#### 【2023.3.18】AdaLoRA
+#### 单 LoRA
+
+##### 【2023-3-18】AdaLoRA
 
 对LoRA的一种改进，根据**重要性评分**动态分配参数预算给权重矩阵，将关键的增量矩阵分配高秩以捕捉更精细和任务特定的信息，而将较不重要的矩阵的秩降低，以防止过拟合并节省计算预算。
+
+论文
+- [ADALORA: ADAPTIVE BUDGET ALLOCATION FOR PARAMETER-EFFICIENT FINE-TUNING](https://arxiv.org/pdf/2303.10512)
+
+出发点：
+- 在不同层、不同$$\textbf{W}$$上添加LoRA，效果不同，那么如何在规定的总rank预算下，达成最优效果。也就是如何给不同$$\textbf{W}$$分配不同的rank进行finetune
 
 预训练语言模型中的不同权重参数对下游任务的贡献不同。
 
 因此需要更加智能地分配参数预算，以便在微调过程中更加高效地更新那些对模型性能贡献较大的参数。
 - 通过**奇异值分解**将权重矩阵分解为**增量矩阵**，并根据**新重要性度量**动态地调整每个增量矩阵中奇异值的大小。
 - 这样可以使得在微调过程中只更新那些对模型性能贡献较大或必要的参数，从而提高了模型性能和参数效率。
+
+效果
+1. 在相同总rank下，adaLoRA效果好于LoRA
+2. 不同层不同$$\textbf{W}$$的rank：更偏好FFN1和更高层的W
 
 代码样例：
 
@@ -1982,7 +1994,8 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, return_dict=Tru
 model = get_peft_model(model, peft_config)
 ```
 
-#### QLoRA
+
+##### 【2023-5-23】QLoRA
 
 【2023-5-23】华盛顿大学发布一种高效的微调方法：QLoRA，在保持完整的16位微调任务性能下，实现单个 48GB GPU 上微调 65B 参数量模型。
 - [QLoRA: Efficient Finetuning of Quantized LLMs](arxiv.org/abs/2305.14314)
@@ -2020,8 +2033,20 @@ QLoRA可以用在手机上，论文共同一作Tim Dettmers估计以 iPhone 12 P
 - 用 QLoRA 微调模型，可以显著降低对于显存的要求。
 - 同时，模型训练的速度会**慢于**LoRA。
 
+##### 【2023-8-7】LoRA-FA
 
-#### ReLoRA
+LoRA-FA，香港科技大学
+- 论文: [LORA-FA: MEMORY-EFFICIENT LOW-RANK ADAPTATION FOR LARGE LANGUAGE MODELS FINE-TUNING](https://arxiv.org/pdf/2308.03303)
+
+做法
+1. 随机初始化 A ， B 初始化为$$\textbf{0}$$矩阵
+2. freeze  A ，只更新$$\textbf{B}$$，需要更新的参数降为一半
+
+效果也与LoRA相当
+- 减少训练参数，不减少计算量
+
+
+##### 【2023-8-21】ReLoRA
 
 【2023-8-21】[LoRA继任者ReLoRA登场，通过叠加多个低秩更新矩阵实现更高效大模型训练效果](https://www.toutiao.com/article/7269582259458572834)
 - 论文链接：[paper](https://arxiv.org/abs/2307.05695)
@@ -2050,8 +2075,7 @@ ReLoRA方法包含
 作者选择目前非常火热的`自回归语言模型`进行实验，并且保证每个实验所使用的GPU计算时间不超过8天。
 
 
-
-#### LongLoRA
+##### 【2023-10-1】LongLoRA
 
 【2023-10-1】[贾佳亚韩松团队新作：两行代码让大模型上下文窗口倍增](https://www.toutiao.com/article/7284843466167796239)
 
@@ -2066,35 +2090,28 @@ ReLoRA方法包含
 - [GitHub项目页](https://github.com/dvlab-research/LongLoRA)
 
 
-#### S-LoRA 多服务部署
+##### 【2024-1-16】VERA
 
-【2023-11-15】S-LoRA：一个GPU运行数千大模型成为可能
+阿姆斯特丹大学
+- [VERA: VECTOR-BASED RANDOM MATRIX ADAPTATION](https://arxiv.org/pdf/2310.11454)
 
-大语言模型部署都会采用「预训练 — 微调」模式。但是，针对众多任务（如个性化助手）对 base 模型进行微调时，训练和服务成本会变得非常高昂。
+1. 不训练AB，训练额外的两个向量
+2. AB在所有层共享，且都随机初始化，显著减少需要训练的参数量
 
-低秩适配（LowRank Adaptation，LoRA）是一种参数效率高的微调方法，通常用于将 base 模型适配到多种任务中，从而产生了大量从一个 base 模型衍生出来的 LoRA 适配程序。
+效果
+- 可学习参数量显著少于LoRA的情况下，效果和LoRA基本持平
 
-只对适配器权重进行微调，就能获得与全权重微调相当的性能。虽然这种方法可以实现单个适配器的低延迟推理和跨适配器的串行执行，但在同时为多个适配器提供服务时，会显著降低整体服务吞吐量并增加总延迟。总之，如何大规模服务于这些微调变体的问题仍未得到解决。
+##### 【2024-2-19】LoRA+
 
-UC 伯克利、斯坦福等高校的研究者提出了一种名为 S-LoRA 的新微调方式。
-- 论文地址：[https://arxiv.org/pdf/2311.03285.pdf](https://arxiv.org/pdf/2311.03285.pdf)
-- 项目地址：[https://github.com/S-LoRA/S-LoRA](https://github.com/S-LoRA/S-LoRA)
+【2024-2-19】LoRA+
+- 论文: [LoRA+: Efficient Low Rank Adaptation of Large Models](https://arxiv.org/pdf/2402.12354)
+（UCB）
 
-S-LoRA 专为众多 LoRA 适配程序的可扩展服务而设计，它将所有适配程序存储在主内存中，并将当前运行查询所使用的适配程序取到 GPU 内存中。
-- S-LoRA 提出「**统一分页**」（Unified Paging）技术，即使用统一的内存池来管理不同等级的动态适配器权重和不同序列长度的 KV 缓存张量。
-  - PagedAttention 扩展为**统一分页**（Unified Paging），后者除了管理 KV 缓存外，还管理适配器权重。
-- 此外，S-LoRA 还采用了新的**张量并行**策略和高度优化的定制 CUDA 内核，以实现 LoRA 计算的异构批处理。
+结论
+- 当B的学习率大于A的学习率时效果更好
+- B的学习率是A的 $$\sqrt{m/r}$$ 倍时, 效果最好(理论值，实验时倍数当作超参)
 
-S-LoRA 包含三个主要创新部分。论文第 4 节介绍了批处理策略，该策略分解了 base 模型和 LoRA 适配器之间的计算。此外，研究者还解决了需求调度的难题，包括适配器集群和准入控制等方面。跨并发适配器的批处理能力给内存管理带来了新的挑战。第 5 节，研究者将 PagedAttention 推广到 Unfied Paging，支持动态加载 LoRA 适配器。这种方法使用统一的内存池以分页方式存储 KV 缓存和适配器权重，可以减少碎片并平衡 KV 缓存和适配器权重的动态变化大小。最后，第 6 节介绍了新的张量并行策略，能够高效地解耦 base 模型和 LoRA 适配器。
-
-如果将 LoRA 适配器存储在主内存中，数量可能会很大，但当前运行批所需的 LoRA 适配器数量是可控的，因为批大小受 GPU 内存的限制。为了利用这一优势，研究者将所有的 LoRA 适配卡都存储在主内存中，并在为当前正在运行的批进行推理时，仅将该批所需的 LoRA 适配卡取到 GPU RAM 中。在这种情况下，可服务的适配器最大数量受限于主内存大小。
-- ![](https://pic1.zhimg.com/80/v2-02ad431025559544cb5e501d7d44ffc4_1440w.webp)
-
-这些功能使 S-LoRA 能够以较小开销在单个 GPU 或多个 GPU 上为数千个 LoRA 适配器提供服务（同时为 2000 个适配器提供服务），并将增加的 LoRA 计算开销降至最低。相比之下，vLLM-packed 需要维护多个权重副本，并且由于 GPU 内存限制，只能为少于 5 个适配器提供服务。
-
-与 HuggingFace `PEFT` 和 `vLLM`（仅支持 LoRA 服务）等最先进的库相比，`S-LoRA` 吞吐量最多可提高 4 倍，服务适配器数量可增加几个数量级。因此，S-LoRA 能够为许多特定任务的微调模型提供可扩展的服务，并为大规模定制微调服务提供了潜力。
-
-#### DoRA
+##### 【2024-3-1】DoRA
 
 【2024-3-1】[DoRA：LoRA再升级-参数高效微调](https://zhuanlan.zhihu.com/p/684833295)
 - [DoRA: Weight-Decomposed Low-Rank Adaptation](https://arxiv.org/pdf/2402.09353)
@@ -2164,8 +2181,11 @@ class LinearWithDoRAMerged(nn.Module):
 
 - 使用比LoRA更少的参数，效果还更好
 - ![](https://pic3.zhimg.com/v2-2681727bb6226a5b1d3651b80ccbc52e_b.jpg)
--   使用较小的rank，效果也很好
+- 使用较小的rank，效果也很好
 - ![](https://pic2.zhimg.com/80/v2-8e92d2e2f256e7d69226772e0083e9c5_1440w.webp)
+
+1. DoRA在多个数据集上效果好于LoRA
+2. DoRA对不同rank r取值更鲁棒
 
 相信DoRA应该很快会成为一种普遍的大模型微调方法。
 
@@ -2173,8 +2193,115 @@ class LinearWithDoRAMerged(nn.Module):
 - DoRA: Weight-Decomposed Low-Rank Adaptation
 - Improving LoRA: Implementing Weight-Decomposed Low-Rank Adaptation (DoRA) from Scratch
 
+##### 【2024-3-28】LISA
 
-#### LoRA + MoE
+LoRA（Low-Rank Adaptation）
+
+LoRA是一种大模型微调技术，核心思想是在预训练的大型语言模型（PLM）基础上，通过增加一个低秩适配器来实现微调。这种方法通过在原始模型的每一层注入可训练的低秩矩阵，从而以较小的参数量实现模型的微调。
+
+LoRA主要优势在于减少了微调过程中需要更新的参数数量，从而降低了存储和计算资源的需求。然而，LoRA在某些任务上可能无法超越全参数微调的效果，且其理论性质分析较为困难。
+
+【2024-3-28】香港理工 LISA（Layerwise Importance Sampled AdamW）
+- 论文: [LISA: Layerwise Importance Sampling for Memory-Efficient Large Language Model Fine-Tuning](https://arxiv.org/pdf/2403.17919.pdf)
+
+LISA是由UIUC联合LMFlow团队提出的另一种大模型微调方法。
+- 与LoRA不同，LISA算法核心在于**始终更新底层embedding和顶层linearhead**，同时**随机更新**少数中间的self-attention层。
+- 这种方法在实验中显示出在指令微调任务上超过LoRA甚至全参数微调的效果。
+- LISA的空间消耗与LoRA相当甚至更低，且由于其每次中间只会激活一小部分参数，对更深的网络和梯度检查点技术（GradientCheckpointing）也很友好，能够带来更大的空间节省。
+
+此外，LISA的收敛性质比LoRA有很大提升（17~30%），且计算速度比LoRA快将近50%。
+
+对比总结
+- **微调效果**：LISA在某些任务上显示出比LoRA更好的微调效果，甚至能超越全参数微调。
+- **资源消耗**：LISA在空间消耗上与LoRA相当，但由于其更新策略，可能在某些情况下更加节省资源。
+- **计算速度**：LISA的计算速度比LoRA快，因为它减少了需要更新的参数数量。
+- **理论分析**：LISA的理论性质相对容易分析，可以使用现有的优化领域的数学工具进行分析。
+- **应用友好性**：LISA对更深的网络和梯度检查点技术更加友好，有助于在资源受限的情况下进行微调。
+
+综上所述，LISA在保持与LoRA相当的资源消耗的同时，提供了更快的计算速度和更好的微调效果，是一种具有潜力的大模型微调技术。
+
+
+
+##### 【2024-4-12】PiSSA
+
+【2024-4-12】[改变LoRA的初始化方式，北大新方法PiSSA显著提升微调效果](https://www.jiqizhixin.com/articles/2024-04-12-7)
+
+北京大学的研究团队提出了一种名为 PiSSA 的参数高效微调方法，主流数据集上都超过了目前广泛使用的 LoRA 的微调效果。
+- 论文: [PiSSA: Principal Singular Values and Singular Vectors Adaptation of Large Language Models](https://arxiv.org/pdf/2404.02948.pdf)
+- 代码链接: [PiSSA](https://github.com/GraphPKU/PiSSA)
+
+PiSSA 在模型架构上和 LoRA 完全一致，只是**Adapter初始化方式**不同。[img](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
+- `LoRA` 使用高斯噪声初始化 A，使用 0 初始化 B。
+- `PiSSA` 用主奇异值和奇异向量 (Principal Singular values and Singular vectors) 来初始化 Adapter 来初始化 A 和 B。
+- ![](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
+
+效果
+- PiSSA 微调效果显著超越了 LoRA，甚至超越了全参数微调
+- PiSSA 比 LoRA 收敛更快，最终效果更好，唯一的代价仅是需要几秒的 SVD 初始化过程。
+
+
+##### 【2024-4-15】LoRA Dropout
+
+LoRA Dropout, PKU
+- 论文: [LoRA Dropout as a Sparsity Regularizer for Overfitting Control]()
+
+1. 训练阶段对A和B矩阵进行整行或整列的dropout，而不是element-wise的dropout，这样可以使得BA中有大量为0值，达到mask W的效果
+2. inference时，无法像原始dropout那样乘以(1-p)来rescale。因此需多次使用dropout，取ensemble的结果，效果有提升(效率降低)
+
+效果
+1. +dropout在lora和adalora上效果均更好
+2. Dropout rate取0.6时效果最好
+
+
+##### 【2024-6-18】LoRA-drop
+
+哈工大
+- 论文: [LoRA-drop: Efficient LoRA Parameter Pruning based on Output Evaluation](https://arxiv.org/pdf/2402.07721)
+
+1. LoRA在不同位置(针对不同W)的 $$||\Delta Wx||$$ 不同，认为越大的越重要
+2. 按以下步骤将不重要的LoRA进行权重共享，然后重新训练，减少训练参数，不减少计算量
+
+
+效果与lora差不多，可减少lora约一半的内存占用
+
+
+
+#### 工程优化
+
+
+##### 【2023-11-15】S-LoRA 多服务部署
+
+【2023-11-15】S-LoRA：一个GPU运行数千大模型成为可能
+
+大语言模型部署都会采用「预训练 — 微调」模式。但是，针对众多任务（如个性化助手）对 base 模型进行微调时，训练和服务成本会变得非常高昂。
+
+低秩适配（LowRank Adaptation，LoRA）是一种参数效率高的微调方法，通常用于将 base 模型适配到多种任务中，从而产生了大量从一个 base 模型衍生出来的 LoRA 适配程序。
+
+只对适配器权重进行微调，就能获得与全权重微调相当的性能。虽然这种方法可以实现单个适配器的低延迟推理和跨适配器的串行执行，但在同时为多个适配器提供服务时，会显著降低整体服务吞吐量并增加总延迟。总之，如何大规模服务于这些微调变体的问题仍未得到解决。
+
+UC 伯克利、斯坦福等高校的研究者提出了一种名为 S-LoRA 的新微调方式。
+- 论文地址：[https://arxiv.org/pdf/2311.03285.pdf](https://arxiv.org/pdf/2311.03285.pdf)
+- 项目地址：[https://github.com/S-LoRA/S-LoRA](https://github.com/S-LoRA/S-LoRA)
+
+S-LoRA 专为众多 LoRA 适配程序的可扩展服务而设计，它将所有适配程序存储在主内存中，并将当前运行查询所使用的适配程序取到 GPU 内存中。
+- S-LoRA 提出「**统一分页**」（Unified Paging）技术，即使用统一的内存池来管理不同等级的动态适配器权重和不同序列长度的 KV 缓存张量。
+  - PagedAttention 扩展为**统一分页**（Unified Paging），后者除了管理 KV 缓存外，还管理适配器权重。
+- 此外，S-LoRA 还采用了新的**张量并行**策略和高度优化的定制 CUDA 内核，以实现 LoRA 计算的异构批处理。
+
+S-LoRA 包含三个主要创新部分。论文第 4 节介绍了批处理策略，该策略分解了 base 模型和 LoRA 适配器之间的计算。此外，研究者还解决了需求调度的难题，包括适配器集群和准入控制等方面。跨并发适配器的批处理能力给内存管理带来了新的挑战。第 5 节，研究者将 PagedAttention 推广到 Unfied Paging，支持动态加载 LoRA 适配器。这种方法使用统一的内存池以分页方式存储 KV 缓存和适配器权重，可以减少碎片并平衡 KV 缓存和适配器权重的动态变化大小。最后，第 6 节介绍了新的张量并行策略，能够高效地解耦 base 模型和 LoRA 适配器。
+
+如果将 LoRA 适配器存储在主内存中，数量可能会很大，但当前运行批所需的 LoRA 适配器数量是可控的，因为批大小受 GPU 内存的限制。为了利用这一优势，研究者将所有的 LoRA 适配卡都存储在主内存中，并在为当前正在运行的批进行推理时，仅将该批所需的 LoRA 适配卡取到 GPU RAM 中。在这种情况下，可服务的适配器最大数量受限于主内存大小。
+- ![](https://pic1.zhimg.com/80/v2-02ad431025559544cb5e501d7d44ffc4_1440w.webp)
+
+这些功能使 S-LoRA 能够以较小开销在单个 GPU 或多个 GPU 上为数千个 LoRA 适配器提供服务（同时为 2000 个适配器提供服务），并将增加的 LoRA 计算开销降至最低。相比之下，vLLM-packed 需要维护多个权重副本，并且由于 GPU 内存限制，只能为少于 5 个适配器提供服务。
+
+与 HuggingFace `PEFT` 和 `vLLM`（仅支持 LoRA 服务）等最先进的库相比，`S-LoRA` 吞吐量最多可提高 4 倍，服务适配器数量可增加几个数量级。因此，S-LoRA 能够为许多特定任务的微调模型提供可扩展的服务，并为大规模定制微调服务提供了潜力。
+
+
+#### MoE+LoRA
+
+
+##### LoRA + MoE
 
 【2024-3-5】[大模型微调新范式：当LoRA遇见MoE](https://mp.weixin.qq.com/s/t_X8AHFgi-RHuviTuCYv0Q)
 
@@ -2197,63 +2324,41 @@ MoE 架构中每个专家参数的激活程度取决于数据决定的**路由�
 - `MoV` 和 `MoLORA`：
   - 2023 年 9 月，首个结合 PEFT 和 MoE 的工作，MoV 和 MoLORA 分别是 `IA` 和 `LORA` 的 MOE 版本，采用 token 级别的**软路由**（加权合并所有专家的输出）。
   - 对 3B 和 11B 的 T5 大模型的 SFT，MoV 仅使用不到 1% 可训练参数量就可以达到和全量微调相当的效果，显著优于同等可训练参数量设定下的 LoRA。
-  - [Pushing Mixture of Experts to the Limit: Extremely Parameter Efficient MoE for Instruction Tuning](https://arxiv.org/abs/2309.05444)
+  - `MoLORA` 论文： [Pushing Mixture of Experts to the Limit: Extremely Parameter Efficient MoE for Instruction Tuning](https://arxiv.org/abs/2309.05444)
+  - 结论
+    1. 15个expert效果能超过full finetune
+    2. expert不是越多越好，后面会收敛
+    3. Soft router好于top-1/2，可能是由于top-1/2这种本身难于训练，样本还少
+    4. 对于multi-task数据集，不同expert能focus在不同task上
 - `LoRAMOE`：LoRA专家分组，预训练知识记得更牢
   - 问题：随着所用数据量的增长，SFT 训练会导致模型参数大幅度偏离预训练参数，预训练阶段学习到的世界知识（world knowledge）逐渐被遗忘，虽然模型的指令跟随能力增强、在常见的测试集上性能增长，但需要这些世界知识的 QA 任务性能大幅度下降
-  - 2023 年 12 月，在 MoLORA 基础上，为解决微调大模型时的灾难遗忘问题，将同一位置的 LoRA 专家分为两组，分别负责保存预训练权重中的世界知识和微调时学习的新任务，并为此目标设计了新的负载均衡 loss。
+  - 2023 年 12 月，在 `MoLORA` 基础上，为解决微调大模型时的灾难遗忘问题，将同一位置的 LoRA 专家分为两组，分别负责保存预训练权重中的世界知识和微调时学习的新任务，并为此目标设计了新的负载均衡 loss。
   - [LoRAMoE: Revolutionizing Mixture of Experts for Maintaining World Knowledge in Language Model Alignment](https://arxiv.org/abs/2312.09979)
 - `MOLA`：统筹增效，更接近输出端的高层需要更多专家
   - 问题: 专家个数过多容易导致性能下降
   - 2024 年 2 月，使用离散路由（每次只激活路由权重 top-2 的专家），并发现在每一层设置同样的专家个数不是最优的，增加高层专家数目、降低底层专家数目，能在可训练参数量不变的前提下，明显提升 LLaMa-2 微调的效果。
-  - [Higher Layers Need More LoRA Experts](https://arxiv.org/abs/2402.08562)
+  - 模型的不同层添加不同数量的LoRA experts，越高层使用更多expert效果更好
+  - 论文 [Higher Layers Need More LoRA Experts](https://arxiv.org/abs/2402.08562)
+  - 相同总experts数的情况下，倒三角结构效果最好。越高层离output越近，参数就越重要（非MOE情况下，也是更高层的LoRA更重要）
 
 
+#### 序列式 LoRA
 
-#### LISA
-
-LoRA（Low-Rank Adaptation）
-
-LoRA是一种大模型微调技术，核心思想是在预训练的大型语言模型（PLM）基础上，通过增加一个低秩适配器来实现微调。这种方法通过在原始模型的每一层注入可训练的低秩矩阵，从而以较小的参数量实现模型的微调。
-
-LoRA主要优势在于减少了微调过程中需要更新的参数数量，从而降低了存储和计算资源的需求。然而，LoRA在某些任务上可能无法超越全参数微调的效果，且其理论性质分析较为困难。
-
-【2024-3-28】香港理工 LISA（Layerwise Importance Sampled AdamW）
-- 论文: [LISA: Layerwise Importance Sampling for Memory-Efficient Large Language Model Fine-Tuning](https://arxiv.org/pdf/2403.17919.pdf)
-
-
-LISA是由UIUC联合LMFlow团队提出的另一种大模型微调方法。
-- 与LoRA不同，LISA算法核心在于**始终更新底层embedding和顶层linearhead**，同时**随机更新**少数中间的self-attention层。
-- 这种方法在实验中显示出在指令微调任务上超过LoRA甚至全参数微调的效果。
-- LISA的空间消耗与LoRA相当甚至更低，且由于其每次中间只会激活一小部分参数，对更深的网络和梯度检查点技术（GradientCheckpointing）也很友好，能够带来更大的空间节省。
-
-此外，LISA的收敛性质比LoRA有很大提升（17~30%），且计算速度比LoRA快将近50%。
-
-对比总结
-- **微调效果**：LISA在某些任务上显示出比LoRA更好的微调效果，甚至能超越全参数微调。
-- **资源消耗**：LISA在空间消耗上与LoRA相当，但由于其更新策略，可能在某些情况下更加节省资源。
-- **计算速度**：LISA的计算速度比LoRA快，因为它减少了需要更新的参数数量。
-- **理论分析**：LISA的理论性质相对容易分析，可以使用现有的优化领域的数学工具进行分析。
-- **应用友好性**：LISA对更深的网络和梯度检查点技术更加友好，有助于在资源受限的情况下进行微调。
-
-综上所述，LISA在保持与LoRA相当的资源消耗的同时，提供了更快的计算速度和更好的微调效果，是一种具有潜力的大模型微调技术。
+相关工作
+- Chain of LoRA
+  - 论文: [Chain of LoRA: Efficient Fine-tuning of Language Models via Residual Learning](https://arxiv.org/pdf/2401.04151)
+- ReLoRA: 
+  - 论文: [ReLoRA: High-Rank Training Through Low-Rank Updates](https://arxiv.org/pdf/2307.05695)
+  - 拟合更高秩的W
+  - 效果: 实验结果好于LoRA
+- PeriodicLoRA
+  - 论文: [PeriodicLoRA: Breaking the Low-Rank Bottleneck in LoRA Optimization](https://arxiv.org/pdf/2402.16141)
+- Delta-LoRA
+  - 论文: [DELTA-LORA: FINE-TUNING HIGH-RANK PARAMETERS WITH THE DELTA OF LOW-RANK MATRICES](https://arxiv.org/pdf/2309.02411)
+  - 比LoRA多一步：每次更新时，通过$$\textbf{AB}$$近似计算$$\Delta \textbf{W}$$，来对$$\textbf{W}$$进行更新
+  - 实验结果好于LoRA
 
 
-#### PiSSA
-
-【2024-4-12】[改变LoRA的初始化方式，北大新方法PiSSA显著提升微调效果](https://www.jiqizhixin.com/articles/2024-04-12-7)
-
-北京大学的研究团队提出了一种名为 PiSSA 的参数高效微调方法，主流数据集上都超过了目前广泛使用的 LoRA 的微调效果。
-- 论文: [PiSSA: Principal Singular Values and Singular Vectors Adaptation of Large Language Models](https://arxiv.org/pdf/2404.02948.pdf)
-- 代码链接: [PiSSA](https://github.com/GraphPKU/PiSSA)
-
-PiSSA 在模型架构上和 LoRA 完全一致，只是**Adapter初始化方式**不同。[img](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
-- `LoRA` 使用高斯噪声初始化 A，使用 0 初始化 B。
-- `PiSSA` 用主奇异值和奇异向量 (Principal Singular values and Singular vectors) 来初始化 Adapter 来初始化 A 和 B。
-- ![](https://image.jiqizhixin.com/uploads/editor/cf318bea-5793-4f34-83a3-ecc1bc7d7773/640.png)
-
-PiSSA 的微调效果显著超越了 LoRA，甚至超越了全参数微调
-
-PiSSA 比 LoRA 收敛更快，最终效果更好，唯一的代价仅是需要几秒的 SVD 初始化过程。
 
 
 ### MAM Adapter
