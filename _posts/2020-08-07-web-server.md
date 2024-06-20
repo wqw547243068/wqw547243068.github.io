@@ -1419,6 +1419,128 @@ RPC框架的职责，就是要屏蔽各种复杂性：
 - （7）。。。
 
 
+### Protobuf
+
+protobuf 复杂场景使用，包含**多层结构体嵌套**，repeated等成员参数情况
+
+定义[实例](https://blog.csdn.net/lycx1234/article/details/136038908)
+- （1）TKeyID结构体为TChargeYx结构体的必须的结构体成员。
+- （2）TChangeYxPkg结构体包含一个必须成员TPkgHead结构体成员，一个重复的结构体成员TChargeYx。
+- （3）相当于有三层结构体嵌套，且有重复结果体实现。
+
+`data_struct.pb.h`
+
+```c++
+message TKeyID
+{
+	required string sg_id = 1; //设备对象编码
+	required string sg_column_id = 2; //
+};
+ 
+message TPkgHead
+{
+	required int32	package_type = 1; //消息类型：
+	required int32	data_num = 2; //数据个数
+	required int64	second = 3; //时间,1970开始秒
+	required int32	msecond = 4; //时间,毫秒部分
+	required int32	data_source = 5; //数据源标识
+};
+ 
+message TChangeYx
+{
+	required TKeyID	keyid = 1; //ID
+	required int64 yx_id = 2; //DID
+	required int32 value = 3; //值
+	required int32 status = 4; //质量码
+	required int64 second = 5; //数据时间,1970开始秒
+	required int32 msecond = 6; //数据时间,毫秒部分
+};
+ 
+message TChangeYxPkg //
+{
+	required TPkgHead package_head = 1;
+	repeated TChangeYx yx_seq = 2;
+};
+```
+
+
+c/c++ 引入 protobuf 文件
+
+```c
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "data_struct.pb.h"
+
+using namespace std;
+ 
+int main(int argc, char* argv[]) {
+ 
+while(true)
+{
+  string tmp_str; 
+  TKeyID *KeyId = new TKeyID();;//预留结构体，是yxyc的成员
+  TChangeYxPkg *Yxpkg = new TChangeYxPkg();
+  TPkgHead *PkgHead;//存放消息头
+ 
+  KeyId->set_sg_id("0");
+  KeyId->set_sg_column_id("1");
+      
+  for (int  i = 0; i < 6; i++)
+  {
+    TChangeYx* tmpchangeYx = Yxpkg->add_yx_seq();
+    tmpchangeYx->set_allocated_keyid(KeyId);
+    int64_t pnt_id = 11111+ i;
+    int fvalue = 10000+i*2;
+    int q= 1;
+    int64_t iCurrtSoc = time(NULL);
+    int  iCurrtMs = 20 * i;
+    tmpchangeYx->set_yx_id(pnt_id);
+    tmpchangeYx->set_value(fvalue);
+    tmpchangeYx->set_status(q);
+    tmpchangeYx->set_second(iCurrtSoc);
+    tmpchangeYx->set_msecond(iCurrtMs);
+    
+  }
+ 
+  PkgHead = new TPkgHead();
+  int64_t iCurrtSoc = time(NULL);
+  int  iCurrtMs = 20 ;
+  PkgHead->set_package_type(1000);//变化
+  PkgHead->set_data_num(6);
+  PkgHead->set_second(iCurrtSoc);
+  PkgHead->set_msecond(iCurrtMs);
+  PkgHead->set_data_source(1);
+ 
+  Yxpkg->set_allocated_package_head(PkgHead);
+  
+  // 调⽤序列化⽅法，将序列化后的⼆进制序列存⼊string
+  if (!Yxpkg->SerializeToString(&tmp_str))
+      cout << "序列化失败." << endl; 
+ 
+  TChangeYxPkg YxpkgTwo;
+  // 调⽤反序列化⽅法，读取string中存放的⼆进制序列，并反序列化出对象
+  if (!YxpkgTwo.ParseFromString(tmp_str))
+      cout << "反序列化失败." << endl; 
+ 
+  printf("%d-%d-%ld-%d-%d\n",YxpkgTwo.package_head().package_type(),YxpkgTwo.package_head().data_num(),YxpkgTwo.package_head().second(),YxpkgTwo.package_head().msecond(),YxpkgTwo.package_head().data_source());
+   
+  int iCount = YxpkgTwo.yx_seq_size();
+  for (int  i = 0; i < iCount; i++)
+  {
+    printf("%ld-",YxpkgTwo.yx_seq(i).yx_id());
+    printf("%d-%d-%ld-%d\n",YxpkgTwo.yx_seq(i).value(),YxpkgTwo.yx_seq(i).status(),YxpkgTwo.yx_seq(i).second(),YxpkgTwo.yx_seq(i).msecond());
+    
+  }
+  printf("finish\n");
+  sleep(5);
+
+  }
+  return 0;
+}
+```
+
+
 ### Thrift —— RPC框架
 
 - [thrift c++ rpc](https://www.cnblogs.com/Forever-Kenlen-Ja/p/9649724.html)
@@ -1437,12 +1559,14 @@ RPC框架的职责，就是要屏蔽各种复杂性：
 
 `Thrift`最初由Facebook研发，用于各个服务之间的RPC通信。
 
-Thrift是一个典型的`CS`（客户端/服务端）结构，客户端和服务端可以使用不同的语言开发。既然客户端和服务端能使用不同的语言开发，那么一定就要有一种**中间语言**来关联客户端和服务端的语言，这种语言就是`IDL`（Interface Description Language）
+Thrift是一个典型的`CS`（客户端/服务端）结构，客户端和服务端可以使用**不同语言**开发。
+
+既然客户端和服务端能使用不同的语言开发，那么一定就要有一种**中间语言**来关联客户端和服务端的语言，这种语言就是`IDL`（Interface Description Language）
 
 Thrift 是一个提供可扩展、**跨语言**的服务开发框架，通过其强大的代码生成器，可以和 C++、Java、Python、PHP、Erlang、Haskell、C#、Cocoa、Javascript、NodeJS、Smalltalk、OCaml、Golang等多种语言高效无缝的工作。
 - thrift 使用二进制进行传输，速度更快。
 
-#### Thrift IDL
+#### Thrift IDL 介绍
 
 [thrift入门教程](https://www.jianshu.com/p/0f4113d6ec4b)
 
@@ -1453,34 +1577,208 @@ Thrift IDL 接口定义语言
 Thrift IDL支持的**数据类型**包含：
 
 
+#### Thrift 安装
+
+
+##### Python 版
+
+Python 安装 thrift
+
+```sh
+# ① 安装 Python 工具包
+pip install thrift # python 工具包
+# ② 本机工具命令
+brew install thrit # mac
+thrift -version # 如果打印出来：Thrift version x.x.x 表明 complier 安装成功
+```
+
+##### demo
+
+项目示例: `thrift_demo` [参考](https://www.cnblogs.com/276815076/p/10078645.html)
+- 1 client 目录下的 client.py 实现客户端发送数据并打印接收到 server 端处理后的数据
+- 2 server 目录下的 server.py 实现服务端接收客户端发送的数据，并对数据进行大写处理后返回给客户端
+- 3 file 用于存放 thrift 的 IDL 文件： *.thrift
+
+创建过程
+
+```sh
+mkdir thrift_demo && cd thrift_demo
+mkdir server client file
+cd file
+# 填入 thrift 内容
+echo "...." >  example.thrift
+# 生成项目文件
+thrift -out .. --gen py example.thrift # 在 file 同级目录下生成 python 的包：example
+```
+
+example.thrift
+
+```js
+namespace py example
+
+struct Data {
+    1: string text
+    2: i32 id
+}
+
+service format_data {
+    Data do_format(1:Data data),
+}
+```
+
+
+最后目录结构
+
+```sh
+tree
+.
+├── __init__.py
+├── client
+│   └── client.py
+├── file
+│   └── example.thrift
+└── server
+|   ├── log.txt
+|   └── server.py
+├── example
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-310.pyc
+│   │   ├── format_data.cpython-310.pyc
+│   │   └── ttypes.cpython-310.pyc
+│   ├── constants.py
+│   ├── format_data-remote
+│   ├── format_data.py
+│   └── ttypes.py
+```
+
+server.py 代码
+
+```py
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+cur_path =os.path.abspath(os.path.join(os.path.dirname('__file__'), os.path.pardir))
+sys.path.append(cur_path)
+
+from example import format_data
+from example import ttypes
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+from thrift.server import TServer
+
+__HOST = 'localhost'
+__PORT = 9000
+
+
+class FormatDataHandler(object):
+    def do_format(self, data):
+        print(data.text, data.id)
+        # can do something
+        return ttypes.Data(data.text.upper(), data.id)
+
+
+if __name__ == '__main__':
+    handler = FormatDataHandler()
+
+    processor = format_data.Processor(handler)
+    transport = TSocket.TServerSocket(__HOST, __PORT)
+    # 传输方式，使用buffer
+    tfactory = TTransport.TBufferedTransportFactory()
+    # 传输的数据类型：二进制
+    pfactory = TBinaryProtocol.TBinaryProtocolFactory()
+
+    # 创建一个thrift 服务
+    rpcServer = TServer.TSimpleServer(processor,transport, tfactory, pfactory)
+
+    print('Starting the rpc server at', __HOST,':', __PORT)
+    rpcServer.serve()
+    print('done')
+```
+
+client.py 代码
+
+```py
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname('__file__'), os.path.pardir)))
+
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+from example.format_data import Client
+from example.format_data import Data
+
+__HOST = 'localhost'
+__PORT = 9000
+
+try:
+    tsocket = TSocket.TSocket(__HOST, __PORT)
+    transport = TTransport.TBufferedTransport(tsocket)
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    client = Client(protocol)
+
+    data = Data('hello,world!', 123)
+    transport.open()
+    print('client-requets')
+    res = client.do_format(data)
+    # print(client.do_format(data).text)
+    print('server-answer', res)
+
+    transport.close()
+except Thrift.TException as ex:
+    print(ex.message)
+```
+
+启动thrift
+- 启动 server: 进入server目录，执行 `python server.py`, 日志信息:
+  - *Starting the rpc server at localhost : 9000*
+- 新窗口执行 client: 进入client目前，执行 `python client.py`, 日志信息:
+  - *client-requets*
+  - *server-answer Data(text='HELLO,WORLD!', id=123)*
+  - 此时, server 端输出: *hello,world! 123*
+- Thrift 的 RPC 接口定义成功
+
+
+#### 数据类型
+
 ##### 基本类型
 
 thrift不支持无符号类型，因为很多编程语言不存在无符号类型，比如java
-- byte: 有符号字节
-- i16: 16位有符号整数
-- i32: 32位有符号整数
-- i64: 64位有符号整数
-- double: 64位浮点数
-- string: 字符串
 
-
-##### 容器类型
-
-集合中的元素可以是除了service之外的任何类型，包括exception。
-- `list<T>`: 一系列由T类型的数据组成的有序列表，元素可以重复
-- `set<T>`: 一系列由T类型的数据组成的无序集合，元素不可重复
-- `map<K, V>`: 一个字典结构，key为K类型，value为V类型，相当于Java中的HMap<K,V>
+基本类型：
+- bool：布尔值，true 或 false
+- byte：8 位有符号整数
+- i16：16 位有符号整数
+- i32：32 位有符号整数
+- i64：64 位有符号整数
+- double：64 位浮点数
+- string：未知编码文本或二进制字符串
 
 
 ##### 结构体(struct)
 
-就像C语言一样，thrift也支持struct类型，目的就是将一些数据聚合在一起，方便传输管理。struct的定 义形式如下：
+结构体类型：
+- struct：定义公共对象，类似于 C 语言中的结构体定义
+
+thrift也支持struct类型，将一些数据聚合在一起，方便传输管理。
+
+struct 定义形式：
+- 序号表示存储时各元素的相对顺序, 类似 Protobuf 中的id, 不一定非得连续
+- 如 255 与 3 间隔大一片空缺, 预留空间
 
 ```go
 struct People {
      1: string name;
      2: i32 age;
      3: string sex;
+    255: string extra;
 }
 ```
 
@@ -1495,8 +1793,22 @@ enum Sex {
 }
 ```
 
+##### 容器类型
+
+容器类型：
+- `list<T>`: 一系列由T类型的数据组成的有序列表，元素可以重复
+- `set<T>`: 一系列由T类型的数据组成的无序集合，元素不可重复
+- `map<K, V>`: 一个字典结构，key为K类型，value为V类型，相当于Java中 `HMap<K,V>`
+
+集合元素可以是除了service之外的**任何**类型，包括exception。
+
 
 ##### 异常(exception)
+
+
+异常类型：
+exception 异常在语法和功能上类似于结构体，它在语义上不同于结构体—当定义一个 RPC 服务时，开发者可能需要声明一个远程方法抛出一个异常。
+
 
 thrift支持自定义exception，规则和struct一样，如下：
 
@@ -1510,7 +1822,12 @@ exception RequestException {
 
 ##### 服务(service)
 
-thrift定义服务相当于Java中创建Interface一样，创建的service经过代码生成命令之后就会生成客户端和服务端的框架代码。定义形式如下：
+服务类型：
+- service：对应服务的类
+
+thrift定义服务相当于Java中创建`Interface`，service经过代码生成命令之后就会生成客户端和服务端的框架代码。
+
+定义形式如下：
 
 ```go
 service HelloWordService {
@@ -1519,7 +1836,7 @@ service HelloWordService {
  }
 ```
 
-##### 类型定义
+##### 类型自定义
 
 thrift支持类似C++一样的typedef定义，比如：
 
@@ -1532,7 +1849,7 @@ typedef i64 Long
 
 ##### 常量(const)
 
-thrift也支持常量定义，使用const关键字，例如：
+thrift 也支持常量定义，使用const关键字，例如：
 
 ```go
 const i32 MAX_RETRIES_TIME = 10
@@ -1541,25 +1858,38 @@ const string MY_WEBSITE = "http://qifuguang.me";
 
 末尾的分号是可选的，可有可无，并且支持16进制赋值
 
-##### 命名空间
+#### 命名空间
 
-thrift的命名空间相当于Java中的package的意思，主要目的是组织代码。thrift使用关键字namespace定义命名空间，例如：
+thrift 命名空间相当于Java中的package，主要目的是组织代码。
+
+##### 命名空间定义
+
+thrift使用关键字namespace定义命名空间，例如：
 
 ```go
 namespace java com.winwill.thrift
 ```
 
-格式是：namespace 语言名 路径， 注意末尾不能有分号。
+格式是：namespace `语言名` `路径`
 
-文件包含
+注意：
+- 末尾不能有分号。
+
+##### 文件包含
+
 thrift也支持文件包含，相当于C/C++中的include，Java中的import。使用关键字include定义，例 如：
 - `include "global.thrift"`
 
 注释
-- thrift注释方式支持shell风格的注释，支持C/C++风格的注释，即#和//开头的语句都单当做注释，/**/包裹的语句也是注释。
+- thrift 注释方式支持shell, C/C++风格的注释，即: #和//开头的语句都单当做注释，/**/包裹的语句也是注释。
+
+
+##### 可选/必选
 
 可选与必选
-- thrift提供两个关键字required，optional，分别用于表示对应的字段时必填的还是可选的。例如：
+- thrift 提供两个关键字`required`，`optional`，分别用于表示对应的字段时必填的还是可选的。
+
+例如：
 
 ```go
 struct People {
@@ -1570,9 +1900,20 @@ struct People {
 
 表示name是必填的，age是可选的。
 
-##### 生成代码
+#### 生成代码
 
-知道了怎么定义thirtf文件之后，我们需要用定义好的thrift文件生成我们需要的目标语言的源码，本文以生成java源码为例。假设现在定义了如下一个thrift文件：
+用定义好的thrift文件**生成**目标语言的源码
+
+
+##### python
+
+```sh
+thrift -out .. --gen py example.thrift # 在 file 同级目录下生成 python 的包：example
+```
+
+##### java
+
+假设现在定义了如下一个thrift文件：
 
 ```go
 namespace java com.winwill.thrift
@@ -1600,7 +1941,7 @@ service HelloWordService {
 ```
 
 在终端运行如下命令(前提是已经安装thrift)：
-- thrift --gen java Test.thrift
+- `thrift --gen java Test.thrift`
 
 则在当前目录会生成一个gen-java目录，该目录下会按照namespace定义的路径名一次一层层生成文件夹，到gen-java/com/winwill/thrift/目录下可以看到生成的4个Java类：
 - thrift文件中定义的enum，struct，exception，service都相应地生成了一个Java类，这就是能支持Java语言的基本的框架代码。
@@ -1630,8 +1971,8 @@ service HelloWordService {
 #### srpc特点
 
 srpc有些什么特点？
-- （1）支持多种IDL格式，包括Protobuf，Thrift等，对于这类项目，可以一键迁移；
-- （2）支持多种序列化方式，包括Protobuf，Thrift，json等；
+- （1）支持多种IDL格式，包括`Protobuf`，`Thrift`等，对于这类项目，可以一键迁移；
+- （2）支持多种序列化方式，包括`Protobuf`，`Thrift`，json等；
 - （3）支持多压缩方法，对应用透明，包括gzip，zlib，lz4，snappy等；
 - （4）支持多协议，对应用透明，包括http，https，ssl，tcp等；
 - （5）高性能；不同客户端线程压力下的性能表现非常稳定，QPS在50W左右，优于同等压测配置的bRPC与thrift。
