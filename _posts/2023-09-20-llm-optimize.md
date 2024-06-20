@@ -56,14 +56,15 @@ LLM 推理服务评估指标：
 `吞吐量`关注系统**成本**，高`吞吐量`代表系统单位时间处理的请求大，系统利用率高。`时延`关注用户使用体验，即返回结果要快。
 
 这两个指标一般相互影响，因此需要**权衡**。
-- 提高`吞吐量`的方法一般是提升 batchsize，即将用户的请求由串行改为并行。
+- 提高`吞吐量`的方法一般是提升 batchsize，将用户请求由**串行**改为**并行**。
 - 但 batchsize 的增大会在一定程度上损害每个用户的`时延`，因为以前只计算一个请求，现在合并计算多个请求，每个用户等待的时间变长。
 
 模型小型化关注：模型**平均推理时间**和**功耗**
 - 平均推理时间: 用 `latency` 或 `throughput` 来衡量
 - 功耗: 用参考生成token过程中所用到GPU的功耗来近似(因为TP/PP等方法就会引入多个GPU). 
 
-这两个指标都与**模型参数量**紧密相关, 特别是LLMs的参数量巨大, 导致部署消耗GPU量大(而且甚至会引起旧GPU, 如: 2080ti等消费级卡直接下线离场)及GPU的IO时间长(memory write/read 的cycles是要远大于 operations cycles, 印象中是百倍)
+这两个指标都与**模型参数量**紧密相关, 特别是LLMs参数量巨大, 导致部署消耗GPU量大(而且甚至会引起旧GPU, 如: 
+- 2080ti等消费级卡直接下线离场)及GPU的IO时间长(memory write/read 的cycles是要远大于 operations cycles, 印象中是百倍)
 
 部署过程中如何使得模型变得更小更轻且保持智能尽可能不下降就成了一个重要的研究话题。
 
@@ -105,7 +106,7 @@ LLM 推理性能优化主要以提高吞吐量和降低时延为目的，具体�
 
 ## 解码原理
 
-大模型推理本质上串行，一个字一个字的去预测
+大模型推理本质上串行，逐字预测
 - ![](https://pic1.zhimg.com/80/v2-fe0e1038d6f3b3b5fe10eef22d894ec4_1440w.webp)
 
 [llama 7B模型结构](https://zhuanlan.zhihu.com/p/628511161)
@@ -247,7 +248,6 @@ We leverage a breadth of optimizations including:
 - TensorRT两阶段的调用方式——build+run：
   - build：通过配置参数将模型文件序列化为tensorRT的engine文件
   - run：加载engine文件，传入数据，进行inference
-
 
 ### llama.cpp
 
