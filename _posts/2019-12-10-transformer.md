@@ -29,6 +29,8 @@ permalink: /transformer
 
 
 【2024-4-2】三蓝一棕出品: [可视化讲解 transformer](https://www.youtube.com/watch?v=wjZofJX0v4M)
+- 文字笔记总结： [为什么我还是无法理解transformer？ - ketchum的回答](https://www.zhihu.com/question/596771388/answer/3456855475)
+
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wjZofJX0v4M?si=e3vpGav59jQoQdrt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
