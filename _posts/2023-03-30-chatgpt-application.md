@@ -3677,6 +3677,56 @@ Ghost in Shells:
 - 语音驱动: 用的 [SpeechRecognition](https://github.com/Uberi/speech_recognition)
 - 语音识别 & 生成:  用的[百度 ASR / TTS](https://ai.baidu.com/tech/speech)
 
+
+##### FoloToy
+
+【2024-4-9】[切入传统赛道，「FoloToy」用AI升级玩具](https://mp.weixin.qq.com/s/GtIvnbsqHXI2rG1xNpAewg)
+
+用AI改造传统行业（玩具），原先仅能播放音乐、讲故事的**早教玩具**，有了更多“玩法”，可实现**多语种**、**多角色**扮演对话，并且联网后还能提供丰富的天文地理知识。
+
+「`FoloToy`」团队接入大模型后，同`火火兔`玩具厂商推出一款儿童或老人陪伴玩具——`Fofo`。
+- ![](https://folotoy.com/_astro/hero-fofo-pink.6cc37f3e_Z1WTXQE.avif)
+
+[FoloToy](https://folotoy.com/cn/) 创始人`王乐`和`郭兴华`具备机器人和智能硬件开发经验。大模型出现后，基于日常家庭观察，公司认为故事机类玩具可与大模型结合，提升互动效果和承载的知识体量。
+
+> FoloToy 是一系列 AI 陪伴对话玩具，我们采用了最新的人工智能技术和 爱♥️ 来制作。每个人都可以使用 FoloToy 亲手打造一个与众不同的玩具角色，给爱的人带来快乐。
+
+Fofo 玩具内置7种角色，能适配不同年龄段的儿童，
+- 儿童可以和玩具对话，玩具解答诸如十万个为什么等知识性提问。
+- 此外，家长可以在在后台系统配置大模型和引导词等参数后，让玩具成为特定的角色来用户进行对话。
+- 同时，Fofo还可克隆家长的声音。
+- 除讲故事外，Fofo多语言的能力，可以成为英语、法语等语言的口语陪练，引导儿童进行口语练习。
+
+使用场景
+- **AI陪伴玩具**面向全年龄段用户
+- **电路板AI改造套件**主要针对DIY玩家和企业客户，可以快速完成AI玩具的改造和AI语音对话产品原型搭建。
+
+DIY 的 FoloToys。
+- 语音输入和语音输出
+- LLM（大型语言模型）支持OpenAI/Azure OpenAI/Google Gemini/Baidu Qianfan/Dify/Moonshot
+- SST（声音转文本）支持OpenAI Whisper/Azure Speech Service/Azure Whisper/Aliyun ASR/Dify
+- TTS（文本转声音）支持OpenAI TTS/Azure Speech Service/Elevenlabs/Edge TTS/Aliyun TTS/Netease EmotiVoice/OpenVoice
+- AI 对话数据发布到MQTT服务器
+
+详见 [FoloToy 服务部署说明](https://github.com/FoloToy/folotoy-server-self-hosting/blob/main/README.zh_CN.md)
+
+2023年7月，王乐和郭兴华在海外社交平台和国内B站(老郭AI玩具的工房)等渠道发布DIY教学视频，推广该[套件](https://gf.bilibili.com/item/detail/1104222005)。
+- [淘宝店铺](https://folotoy.taobao.com/), [twitter](https://x.com/lewangx)
+- 在海外Twitter上，他们已有数万粉丝，套件和成品玩具也被销往北美、欧洲、阿联酋、日本、新加坡等地。
+
+Fofo定价在千元内，电路板套件定价百元左右，两者在全球销量合计已超千件。
+
+除直接销售玩具产品和套件外，FoloToy与**潮玩品牌**合作。
+- 去年年底，公司与`妖米星球`共同推出高端**AI人偶**。
+- FoloToy主要负责定制化AI玩偶硬件，使其性格、音色和角色设定的故事能融入与购买者的交互中。该玩偶定价数千元。
+
+FoloToy的产品也支持企业定制使用。王乐介绍，FoloToy的套件产品能支持海内外主流的大模型云计算平台，如OpenAI、Microsoft Azure、阿里云等。企业可根据FoloToy提供的教学文档，选择合适的组合方案，便能定制出企业专用的对话机器人。
+
+
+示例
+- [用Coze做了一只能听你吐槽的AI仙人掌](https://www.bilibili.com/video/BV18V411P7kQ)
+- [自从家里有了ChatGPT火火兔](https://www.bilibili.com/video/BV18V411P7kQ)
+
 ### 可穿戴
 
 蠢萌可爱的**机器狗**、拿下千万出货量的**VR头显**、还是轻便小巧的**AR眼镜**...谁将成为下一个黄金时代的“智能手机”？
