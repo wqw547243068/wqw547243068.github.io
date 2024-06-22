@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 表示定理
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
