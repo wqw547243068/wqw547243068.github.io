@@ -3,7 +3,7 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络 人工智能 AI 机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化 希尔伯特 叠加定理 通用逼近定理 万能逼近定理 哈密顿 KAN
+tags: 神经网络 人工智能 AI 机器学习  ML  表示学习 周志华 戴海琼 Hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化 希尔伯特 叠加定理 通用逼近定理 万能逼近定理 哈密顿 kan 样条
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 ---
@@ -603,7 +603,24 @@ Nature的这篇文章 [Human-like systematic generalization through a meta-learn
 
 KAN最关键的创新点
 - (1) 把计算放在网络的**边**（edge）上而不是**点**（node）上，点上只执行加法运算，这样可以缩小网络的规模。KAN和多层感知器 (MLP) 没有本质区别
-- (2) 学习**激活函数**而不是学习**权重**。但学习函数比学习权重要困难得多。KAN中，激活函数是用B-spline来拟合的，B-spline的所有劣势自然也会被带进KAN中。如果学习激活函数的成本很高，网络就丧失了通用性（universality）。
+- (2) 学习**激活函数**而不是学习**权重**。但学习函数比学习权重要困难得多。KAN中，激活函数是用`B-spline`来拟合的，B-spline的所有劣势自然也会被带进KAN中。如果学习激活函数的成本很高，网络就丧失了通用性（universality）。
+
+`样条`（spline）是一种特殊函数，由多项式**分段**定义。
+- [spline function](https://zh.wikipedia.org/wiki/%E6%A0%B7%E6%9D%A1%E5%87%BD%E6%95%B0)是一类分段（片）**光滑**、并且在各段交接处也有一定光滑性的函数
+- 样条的英语单词spline来源于可变形的样条工具，那是一种在造船和工程制图时用来画出光滑形状的工具。
+- 中国大陆，早期曾经被称做**齿函数**。后来因为工程学术语中放样一词而得名
+- ![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Parametic_Cubic_Spline.svg/800px-Parametic_Cubic_Spline.svg.png)
+
+样条插值
+- 厄尔密样条（Hermite spline）
+  - 三次厄尔密样条
+  - 基数样条（cardinal spline）
+  - Catmull-Rom样条
+  - Kochanek-Bartels样条
+- B样条
+- 非均匀有理B样条（non-uniform rational B-spline，NURBS）
+- de Boor算法，计算B样条的一个有效方法
+- 贝塞尔样条
 
 
 ### 万能逼近定理
