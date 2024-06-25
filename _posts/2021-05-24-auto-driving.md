@@ -707,6 +707,45 @@ chffr：app记录路况，摄像头
 # 应用
 
 
+## 海外
+
+美国自动驾驶：Waymo、特斯拉
+
+### 日本机器人开车
+
+【2024-6-25】日本为了弯道超车自动驾驶，研发**AI人形机器人**开车
+- [东京大学研发的仿人机器人"武藏"可以驾驶汽车](https://www.keqidao.com/detail?id=360625953898497)
+- [视频](https://www.toutiao.com/video/7382902361024515379)
+- Our paper presented at Robotics and Automation Magazine is now on
+- paper: [Toward Autonomous Driving by Musculoskeletal Humanoids:A Study of Developed Hardware and Learning-Based Software](arxiv.org/abs/2406.05573)
+- 作者 twitter [Kento Kawaharazuka / 河原塚 健人](https://x.com/KKawaharazuka/status/1800453023493484846)
+- youtube: [Toward Autonomous Driving by Musculoskeletal Humanoids (RAM 2020)](https://www.youtube.com/watch?v=qQqv2pFMhmo)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qQqv2pFMhmo?si=lEG6aVFtvGeKQHiR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+东京大学开发并训练了一种名为"`武藏`"的"**肌肉骨骼仿人**"，让它驾驶一辆小型电动汽车通过测试轨道。
+
+`武藏`"装有
+- 两个摄像头，可以代替人类的眼睛，"看到"前方的道路以及汽车侧镜反射的景象。
+- 通过机械手，它可以转动汽车钥匙、拉手刹和打开转向灯。
+- 此外，凭借防滑"脚"，"武藏"还能踩下油门或刹车踏板。
+
+通过向"武藏"提供原始传感器数据，"教会"它如何使用汽车方向盘后，他们设法让机器人在十字路口转弯，同时遵守交通信号灯的指示。
+
+但也有注意事项
+- 首先，"武藏"在转弯时只是轻轻地把"脚"从制动踏板上抬起来，而不是猛踩油门。研究人员说，这是技术限制的结果，也是出于谨慎，但结果是，转弯花了大约两分钟。
+
+"武藏"确实在另一项实验中使用了加速器。但它很难保持稳定的速度，这取决于道路坡度的陡峭程度。
+
+因此，显然还有一些工作要做。
+- 他们已经准备好迎接挑战，并计划开发下一代机器人和软件。
+- 也许几十年后，"武藏"将成为你下一辆东京出租车的驾驶员。
+
+让人形机器人学开车，肌肉和骨架跟人很像
+- 自动挂挡、踩离合、拉手刹，每个动作都依靠AI驱动，快速适应人类方向盘和刹车
+- 目前只能开老头乐，不能合法上路
+
+
 ## 汽车品牌格局
 
 
