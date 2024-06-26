@@ -1170,10 +1170,29 @@ Box-Cox变换是统计建模中常用的一种数据变换，用于**连续**响
 变换公式: 源自 [结构化数据转换（Box-Cox)](https://www.cnblogs.com/zhengzhe/p/8993867.html?share_token=f63d5774-b44a-47e3-b310-04cb8cb80e50)
 - ![](https://images2018.cnblogs.com/blog/1074595/201805/1074595-20180505095938667-1357616992.png)
 
-Box-Cox变换的一个显著优点
-- 通过求变换参数来确定变换形式，而这个过程完全基于数据本身而无须任何先验信息，这无疑比凭经验或通过尝试而选用对数、平方根等变换方式要客观和精确。
+Box-Cox变换显著优点
+- 通过求变换参数，确定变换形式
+- 完全基于数据本身，无须任何先验信息
+- 比凭经验或通过尝试而选用对数、平方根等变换方式要**客观**和**精确**。
 
-变换的目的是为了让数据满足线性模型的基本假定，即**线性**、**正态性**及**方差齐性**，然而经变换后数据是否同时满足了以上假定，仍需要考察验证。
+变换目的
+- 让数据满足**线性**模型的基本假定，即**线性**、**正态性**及**方差齐性**
+- 变换后数据是否同时满足了以上假定，仍需要考察验证。
+
+
+代码
+- [sklearn 官方](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.power_transform.html)
+
+```py
+import numpy as np
+from sklearn.preprocessing import power_transform
+
+data = [[1, 2], [3, 2], [4, 5]]
+print(power_transform(data, method='box-cox'))
+# 注意：不要在训练集、测试集切分前使用 `power_transform` ，这会导致数据泄露，改进方法
+pipe = make_pipeline(PowerTransformer(), LogisticRegression())
+```
+
 
 ## 特征分箱
 
