@@ -717,10 +717,40 @@ RAG工作流
 
 ### HyDE
 
-假设性文档嵌入（Hypothetical Document Embeddings, HyDE）
+**假设性文档嵌入**（Hypothetical Document Embeddings, `HyDE`）
 
 HyDE不仅与问题进行相似度搜索，而是生成一个**假答案**并与之进行相似度搜索。
 
+"假设"文档
+> 通过 mask、重排等方式人为构造的虚拟文档。
+
+
+HyDE 基于 RAG 模型
+- 用 LLM 生成一个**假设回答文档**
+- 然后将文档与知识库中的文档进行比较，从而找到与用户问题相关的信息。
+
+HyDE 核心思想
+- 对比真实文档和"假设"文档的差异，学习出能够更好捕捉文本语义和上下文信息的文档向量表示。
+
+模型需要学会区分真实文档和这些假设文档，从而得到蕴含深层语义的文档向量。
+
+[img](https://www.4async.com/2024/04/learn-hyde-from-scratch-1/cover_hua9bada4ff4643b8c5d0bd42b9fa020ef_200642_1024x0_resize_box_3.png)
+- ![](https://www.4async.com/2024/04/learn-hyde-from-scratch-1/cover_hua9bada4ff4643b8c5d0bd42b9fa020ef_200642_1024x0_resize_box_3.png)
+
+相比原生 RAG，HyDE 和 RAG 合作，多了两步：
+- 用 LLM 尝试回答问题
+- 生成一个假设的文档，这个假设的文档是通过 LLM 生成的。
+
+同时，embedding 时使用的来源也不同：原生 RAG 是使用的用户问题，HyDE 则是使用了 LLM 生成的文档进行。
+
+HyDE 效果：
+- 利用 HyDE 提升 RAG 生成性能：
+  - HyDE 生成文档向量更好地捕捉文本语义和上下文信息，有助于 RAG 模型产生更加相关、连贯的生成内容。
+- 增强 RAG 模型可靠性：
+  - RAG 可以利用外部知识库增强自身知识，提高生成内容的准确性；而 HyDE 则能进一步**约束**生成过程，确保输出结果更加可靠。
+
+参考
+- [从零学习 Hypothetical Document Embeddings (HyDE) - 1](https://www.4async.com/2024/04/learn-hyde-from-scratch-1/)
 
 ### CoN 承认不会
 
