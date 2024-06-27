@@ -729,6 +729,8 @@ HyDE 基于 RAG 模型
 - 用 LLM 生成一个**假设回答文档**
 - 然后将文档与知识库中的文档进行比较，从而找到与用户问题相关的信息。
 
+#### HyDE 原理
+
 HyDE 核心思想
 - 对比真实文档和"假设"文档的差异，学习出能够更好捕捉文本语义和上下文信息的文档向量表示。
 
@@ -751,6 +753,28 @@ HyDE 效果：
 
 参考
 - [从零学习 Hypothetical Document Embeddings (HyDE) - 1](https://www.4async.com/2024/04/learn-hyde-from-scratch-1/)
+
+#### Langchain 实现
+
+[说明](https://blog.csdn.net/wangjiansui/article/details/139751438)
+
+```py
+from langchain.chains import HypotheticalDocumentEmbedder, LLMChain
+from langchain.prompts import PromptTemplate
+from langchain_openai import OpenAI, OpenAIEmbeddings
+
+# 初始化基础嵌入模型
+base_embeddings = OpenAIEmbeddings()
+# 初始化语言模型
+llm = OpenAI()
+
+# 使用web_search提示加载HyDE
+embeddings = HypotheticalDocumentEmbedder.from_llm(llm, base_embeddings, "web_search")
+
+# 现在我们可以像使用任何嵌入类一样使用它
+result = embeddings.embed_query("泰姬陵在哪里？")
+```
+
 
 ### CoN 承认不会
 
