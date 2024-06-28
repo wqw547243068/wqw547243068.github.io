@@ -1158,6 +1158,37 @@ Task Description:
 5. If no passage is relevant, direcly provide answer without considering the passages.
 ```
 
+
+### 【2024-6-26】UAR
+
+【2024-6-26】[复旦+上海AI Lab提出统一主动检索RAG，减少延迟，提升响应](https://mp.weixin.qq.com/s/4i5lWgTkp1GpsCJzdq6PEg)
+- 复旦大学和上海人工智能实验室Qinyuan Cheng等人发表《[Unified Active Retrieval for Retrieval Augmented Generation](https://arxiv.org/pdf/2406.12534)》
+- [UAR](https://github.com/xiami2019/UAR) 代码尚未放出
+
+在检索增强型生成（Retrieval-Augmented Generation, RAG）中，如何智能地决定何时使用检索来增强大型语言模型（LLMs）的输出。
+
+RAG中并非所有情况下检索都是有益的，对每个指令都应用检索是次优的。
+
+因此，确定是否进行检索对于RAG来说至关重要，这通常被称为**主动检索**（Active Retrieval）。
+
+现有的主动检索方法面临两个挑战：
+- 依赖单一标准，难以处理各种类型的指令；
+- 依赖于专业化和高度差异化的程序，这使得将它们结合到RAG系统中更加复杂，并导致响应延迟增加。
+
+为了解决这些挑战，提出`统一主动检索`（Unified Active Retrieval, `UAR`）的新框架。
+
+UAR包含四个正交标准，转化为即插即用的分类任务，以最小额外推理成本实现多方面的检索时机判断。
+
+文章还引入了`统一主动检索标准`（UAR-Criteria），旨在通过标准化程序处理多种主动检索场景。
+
+通过在四种代表性用户指令类型的实验中，UAR在检索时机判断和下游任务性能上显著优于现有工作，证明了UAR的有效性及其对下游任务的帮助。
+
+贡献
+- 提出了UAR这一主动检索框架，创建了评估检索时机准确性的Active Retrieval Benchmark（AR-Bench），并在AR-Bench和下游任务上进行了全面的实验，展示了UAR的显著性能提升。
+- 此外，发布了代码、数据、模型和相关资源，以促进未来的研究。
+
+
+
 ## （3）PEFT 参数高效微调
 
 **参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
