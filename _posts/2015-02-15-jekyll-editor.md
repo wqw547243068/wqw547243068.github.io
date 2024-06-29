@@ -4,7 +4,7 @@ title:  "Jekyll编辑功能汇总"
 date:   2015-02-15 22:14:54
 categories: 技术工具
 excerpt: "jekyll用法汇总" 
-tags: jekyll markdown 插件 github gitee 码云 latex 公式
+tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格
 permalink: /jekyll
 ---
 
@@ -461,6 +461,11 @@ Jekyll 都会通过 Liquid 模板工具来生成一系列的数据。
 
 ### 表格编辑
 
+
+#### 常规表格
+
+markdown语法
+
 |左对齐|右对齐（设置宽度）|居中|
 |:---|----------:|:-----:|
 |你好|你好|你好|
@@ -549,6 +554,15 @@ Jekyll 都会通过 Liquid 模板工具来生成一系列的数据。
 1. Change your Pages source to <span style='color:blue'>GitHub Actions</span> (this is in beta)
 1. Add a "vanilla" Jekyll workflow to your repository ([example](https://github.com/actions/starter-workflows/blob/main/pages/jekyll.yml))
 1. Use this plugin: [jekyll-spaceship](https://github.com/jeffreytse/jekyll-spaceship)
+
+
+
+#### 网页表格转markdown
+
+【2024-6-29】如何将网页上的表格转成markdown格式？
+- 在线转换: [TableConvert](https://tableconvert.com/csv-to-markdown) 提供各种格式的表格转换，支持表格编辑
+  - 如 复制网页表格内容到csv格式即可生成markdown表格
+
 
 ### 图片嵌入
 
