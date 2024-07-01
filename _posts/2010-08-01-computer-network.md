@@ -3,7 +3,7 @@ layout: post
 title:  "计算机网络-Computer Network"
 date:   2010-08-01 23:42:00
 categories: 计算机基础
-tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星
+tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星 蓝牙 耳机
 excerpt: 计算机网络知识点
 mathjax: true
 permalink: /network
@@ -1042,5 +1042,23 @@ DTMB全称是数字地面多媒体广播（Digital Terrestrial Multimedia Broadc
   - [ClashX github下载](https://github.com/yichengchen/clashX/releases), [Clash for Mac 版使用教程 ClashX 教程](https://2022vpn.net/clash-for-mac-tutorial/)
 - Apple TV 4K盒子体验
 -【2019-05-27】[电视直播链接汇总](http://bddn.cn/zb.htm)，国外免费电视直播：[pluto.tv](https://pluto.tv/)，[fox news](https://freeetv.com/live-television-5643.html)
+
+
+
+## 耳机
+
+
+
+### 蓝牙耳机
+
+
+无限蓝牙耳机评测
+
+【2024-7-1】500以内的**开放式耳机**评测 
+- 倍思eli > sanag 塞那 > 1MORE
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0ztT_cwAF_Q?si=oxKoUTPLvrz9Y3Zk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 
 # 结束
