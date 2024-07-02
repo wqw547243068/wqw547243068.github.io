@@ -3220,6 +3220,24 @@ ChatLaw系列模型
 ### 3D 建模
 
 
+#### Unique3D
+
+
+【2024-6-13】[3D革命来袭！北大清华00后学霸团队打造爆火模型“Unique3D”](https://mp.weixin.qq.com/s/7ZfDLeIvIzdR2RwEXd566w)
+
+`清华`00后学霸团队——`AVAR AI`的`Unique3D`
+- Github链接：[Unique3D](https://github.com/AiuniAI/Unique3D)
+- Huggingface [Demo](https://huggingface.co/spaces/Wuvin/Unique3D)
+- [项目主页](https://wukailu.github.io/Unique3D)
+- 论文链接：[Unique3D: High-Quality and Efficient 3D Mesh Generation from a Single Image](https://arxiv.org/pdf/2405.20343)
+
+`AVAR AI`团队由北大计算机系毕业的CEO`胡雅婷`领衔，成员包括来自清华姚班的CTO`吴凯路`等。
+- 应用前景：从3D到4D的跨越, 新功能DreamCamera即将上线
+
+
+团队成员不仅在技术领域有着深厚的背景，更有着艺术创作的才华。
+
+
 #### Diffusion4D
 
 【2024-6-29】[靠Scaling Laws炼出4D版视频生成模型，多伦多大学北交大等新成果](https://www.toutiao.com/article/7385796646182912523)
