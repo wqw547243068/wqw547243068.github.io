@@ -164,6 +164,7 @@ B站爆火数字人ip `柳叶熙`
 
 
 #### 国外MetaHuman
+
 - 【2022-1-6】元宇宙虚拟人物建模工具 [MetaHuman Creator](https://www.unrealengine.com/zh-CN/metahuman-creator) （源自3D创作公司[unrealengine](https://www.unrealengine.com/zh-CN/)）是一款基于云服务的应用，能帮助任何人在几分钟内创建照片级逼真的数字人类。韩国姑娘失业后通过此工具玩游戏主播，成立公司。[使用示例](https://www.ixigua.com/7047138696230931747)
   - ![](https://i0.hdslb.com/bfs/article/4dffc65ff80a035e9ffcbaa827da4f1683faa533.png@942w_531h_progressive.webp)
   - [分分钟打造超写实角色！MetaHuman这个黑科技怎么用？](http://www.gamelook.com.cn/2021/05/441678)
@@ -217,7 +218,7 @@ B站爆火数字人ip `柳叶熙`
 - ![](https://ai.bdstatic.com/file/9FCF771D426449B2A55330A8E13C559E)
 
 
-#### 代码 ER-NeRF
+#### ER-NeRF
 
 
 【2024-4-3】[实时流式数字人，代码开源](https://zhuanlan.zhihu.com/p/675131165)
@@ -251,6 +252,13 @@ B站爆火数字人ip `柳叶熙`
   - （1）tts延时2s左右，目前用的edgetts，需要将每句话转完后一次性输入，可以优化tts改成流式输入
   - （2）wav2vec延时1s多，需要缓存50帧音频做计算，可以通过-m设置context_size来减少延时
   - （3）srs转发延时，设置srs服务器减少缓冲延时。
+
+
+第三方效果展示 [metahuman-stream](https://github.com/lipku/metahuman-stream)
+- 实时互动数字人musetalk效果, [b站](https://www.bilibili.com/video/BV1PM4m1y7Q2/)
+
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1304657234&bvid=BV1PM4m1y7Q2&cid=1543054375&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"></iframe>
 
 
 【2024-4-24】 
@@ -312,6 +320,24 @@ MuseV自动化产生短视频和MuseTalk给视频中的人物对口型的功能�
   - 源码：[musev](http://www.gitpp.com/museai/musev)
 - 2）对口型
   - 源码：[musetalk](http://www.gitpp.com/museai/musetalk)
+
+
+
+第三方效果展示 [metahuman-stream](https://github.com/lipku/metahuman-stream)
+- 实时互动数字人musetalk效果, [b站](https://www.bilibili.com/video/BV1gm421N7vQ)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1605146957&bvid=BV1gm421N7vQ&cid=1560200163&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"></iframe>
+
+
+
+#### wav2lip
+
+
+第三方效果展示 [metahuman-stream](https://github.com/lipku/metahuman-stream)
+- wav2lip实时互动数字人实时互动数字人效果, [b站](https://www.bilibili.com/video/BV1Bw4m1e74P/)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1105937791&bvid=BV1Bw4m1e74P&cid=1584848028&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"></iframe>
+
 
 
 #### DUIX.ai
