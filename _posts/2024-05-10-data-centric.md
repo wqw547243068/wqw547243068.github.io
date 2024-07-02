@@ -339,7 +339,43 @@ Stanford
 ## 案例
 
 
-### 斯坦福 Self-Instruct
+### Self-Instruct
+
+大模型严重依赖于人类编写的指令数据，而这些数据在数量、多样性和创造力方面受到限制，阻碍了调整模型的通用性。
+
+【2023-5-25】华盛顿作者提出了Self-instruct框架，通过预训练语言模型**自己引导自己**来提高的指令遵循能力的框架。
+- 论文 [Self-Instruct: Aligning Language Model with Self Generated Instructions](https://arxiv.org/pdf/2212.10560)
+- self-instruct代码：[self-instruct](https://github.com/yizhongw/self-instruct), [代码讲解](https://blog.csdn.net/dzysunshine/article/details/130390587)
+- 大模型自己遵循一套流程来生成数据
+- 再用这些生成的数据来指令微调训自己
+- 从而提高模型自己的能力
+
+半自动的self-instruction过程，用于使用来自模型本身的指示信号对预训练的LM进行指令调整。
+
+迭代的自引导（iterative bootstrapping）算法
+- 从一个有限人工编写的指令种子集开始，用于指导整个生成。
+- 第一个阶段，提示模型为新任务生成指令。此步骤利用现有的指令集合来创建更广泛的指令，这些指令定义(通常是新的)任务。
+- 对于新生成指令集，框架还创建输入-输出实例，这些实例可在以后用于监督指令调优。
+- 最后，在将低质量和重复的指令添加到任务池之前，使用各种措施来修剪它们。这个过程可以在许多交互中重复，直到达到大量的任务。
+
+
+核心思想：生成指令遵循数据
+
+指令数据由**指令**、**输入**、**输出**组成。
+
+数据生成piple包含四个步骤：
+- 1）生成任务指令
+- 2）确定指令是否代表分类任务
+- 3）使用输入优先或输出优先方法生成实例
+- 4）过滤低质量的数据。
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fca2828b808349669e5fc67892f8c237~tplv-k3u1fbpfcp-zoom-1.image)
+
+
+贡献如下：
+- SELFINSTRUCT，一种用最少的人工标记数据诱导指令跟随能力的方法;
+- 通过大量指令调优实验证明了其有效性;
+- 发布包含52K指令的大型合成数据集和一组手动编写的新任务，用于构建和评估未来的指令遵循模型。
 
 
 
