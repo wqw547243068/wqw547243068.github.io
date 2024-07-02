@@ -223,9 +223,11 @@ B站爆火数字人ip `柳叶熙`
 
 ##### Hallo
 
+Hallo 由百度联合复旦大学、苏黎世联邦理工学院和南京大学共同研发的一款开源数字人项目，在音频驱动的肖像动画生成方面取得了显著进展。
 
-百度开源数字人项目 Hallo
+开源数字人项目 Hallo
 - [官网](https://fudan-generative-vision.github.io/hallo/)
+- 论文 [Hierarchical Audio-Driven Visual Synthesis for Portrait Image Animation](https://arxiv.org/pdf/2406.08801)
 - github: [hallo](https://github.com/fudan-generative-vision/hallo)
 - 启动整合包[下载](https://pan.quark.cn/s/455b24f79fc6)
 
@@ -238,10 +240,20 @@ B站爆火数字人ip `柳叶熙`
 
 此外，该项目支持与 ComfyUI 工具集成
 
+软件功能：
+- 音频同步视频：利用先进的音频分析技术，将语音与肖像图像完美结合，生成动态的面部动画，实现逼真的唇动同步效果。
+- 面部表情生成：根据音频信号中的情感和语调变化，自动生成相应的面部表情，增强视频动画的表现力。
+- 头部姿态控制：支持调整视频中的头部姿态，使动画更加自然，更好地反映音频内容的意图和情感。
+- 时间一致性维护：确保动画中的动作和表情在时间上流畅过渡，避免不自然的变化。
+- 动作多样性：支持生成多样化的动作和风格，如手势、眨眼等，丰富视频的表现力。
+
 ![](https://cdn.aondata.work/img/best_visual_results.jpg)
 
 详见: [AI数字人项目-hallo一键启动整合包](https://noisevip.cn/18358.html)
 
+配置：[部署方法](https://aiyy.info/hallo/)
+- 操作系统：Windows 10/11 64位
+- 显卡：至少12G显存的英伟达（NVIDIA）显卡（建议16G及以上，否则生成速度太慢）
 
 效果
 - [百度开源数字人项目Hallo，效果炸裂！](https://www.bilibili.com/video/BV1HS411A7xz)
