@@ -171,7 +171,10 @@ B站爆火数字人ip `柳叶熙`
   - 渲染条件：一台可访问互联网的Windows或macOS计算机，以及一个Chrome、Edge（Chromium）、火狐或Safari网页浏览器。你还需要一个Epic Games账户。要下载MetaHuman则需要安装免费的虚拟现实引擎：[Quixel Bridge应用](https://quixel.com/bridge)。
 
 
-#### 百度智能云
+#### 百度
+
+
+##### 百度智能云
 
 【2021-08-24】[简单、快捷、低成本的超写实虚拟人平台来了……](https://ai.baidu.com/support/news?action=detail&id=2575)
 
@@ -216,6 +219,34 @@ B站爆火数字人ip `柳叶熙`
 - ![](https://ai.bdstatic.com/file/E4FE8A6A05374A718D34482F12FAAD2F)
 三种驱动模式：AI 驱动、拟合驱动和真人驱动，让你既可以不需要真人直接用 AI 智能驱动，也可以用真人在背后进行“中之人”演绎。
 - ![](https://ai.bdstatic.com/file/9FCF771D426449B2A55330A8E13C559E)
+
+
+##### Hallo
+
+
+百度开源数字人项目 Hallo
+- [官网](https://fudan-generative-vision.github.io/hallo/)
+- github: [hallo](https://github.com/fudan-generative-vision/hallo)
+- 启动整合包[下载](https://pan.quark.cn/s/455b24f79fc6)
+
+
+【2024-6-26】hallo 用于**人像图像动画**的分层**音频驱动视觉合成**的项目，在使用语音音频输入的驱动下，人像图像动画领域在生成逼真和动态的人像。
+- 采用了端到端**扩散**范式，并引入了分层音频驱动的视觉合成模块，以提高音频输入和视觉输出之间的对齐精度，包括嘴唇、表情和姿势运动。
+- 无缝集成了基于扩散的生成模型、基于UNet的降噪器、时间对齐技术和参考网络。
+- 所提出的分层音频驱动的视觉合成提供了对表情和姿势多样性的自适应控制，从而实现了针对不同身份的更有效的个性化。
+- 在图像和视频质量、唇形同步精度和运动多样性方面取得了明显的提高
+
+此外，该项目支持与 ComfyUI 工具集成
+
+![](https://cdn.aondata.work/img/best_visual_results.jpg)
+
+详见: [AI数字人项目-hallo一键启动整合包](https://noisevip.cn/18358.html)
+
+
+效果
+- [百度开源数字人项目Hallo，效果炸裂！](https://www.bilibili.com/video/BV1HS411A7xz)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1905907943&bvid=BV1HS411A7xz&cid=1585823533&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
 #### ER-NeRF
@@ -337,6 +368,14 @@ MuseV自动化产生短视频和MuseTalk给视频中的人物对口型的功能�
 - wav2lip实时互动数字人实时互动数字人效果, [b站](https://www.bilibili.com/video/BV1Bw4m1e74P/)
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1105937791&bvid=BV1Bw4m1e74P&cid=1584848028&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"></iframe>
+
+
+
+#### 本地部署
+
+【2024-6-14】[小模型数字人，本地推理实时驱动，不用训练，不用GPU](https://www.bilibili.com/video/BV18z421b7FQ)
+
+
 
 
 
