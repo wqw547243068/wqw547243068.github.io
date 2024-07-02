@@ -258,7 +258,7 @@ Hallo 由百度联合复旦大学、苏黎世联邦理工学院和南京大学�
 效果
 - [百度开源数字人项目Hallo，效果炸裂！](https://www.bilibili.com/video/BV1HS411A7xz)
 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1905907943&bvid=BV1HS411A7xz&cid=1585823533&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1905907943&bvid=BV1HS411A7xz&cid=1585823533&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
 #### ER-NeRF
