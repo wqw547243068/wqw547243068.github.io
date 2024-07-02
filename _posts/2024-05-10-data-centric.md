@@ -3,7 +3,7 @@ layout: post
 title:  以数据为中心的AI Data-centric AI
 date:   2024-05-10 12:00:00
 categories: 大模型
-tags: gpt ChatGPT 数据集 
+tags: gpt ChatGPT 数据集 persona 用户画像
 excerpt: 数据质量直接决定模型上限，如何高效利用数据？
 mathjax: true
 permalink: /llm_data
@@ -334,6 +334,61 @@ Stanford
 2. 定义了一种数据度量方法，称为KL reduction，计算使用数据选择方法选定的数据集与随机选择的数据集相比，在特征空间上相对于目标分布的KL散度的平均减少量。
   - KL reduction 的值越大，表示通过数据选择过程选定的数据集在特征空间上与目标分布的接近程度越高，即数据选择过程更有效。
 
+
+
+## 案例
+
+
+### 斯坦福 Self-Instruct
+
+
+
+### 人物角色驱动的数据构造
+
+【2024-7-1】[腾讯AI Lab技术报告：一种以10亿人物角色驱动的新颖数据构造方法](https://mp.weixin.qq.com/s/1TbWDrkVy4JaNTJpTx9hog)
+
+大规模创建合成数据并非易事，尤其是确保数据的**多样性**。
+- 以往的研究, 通过**实例**驱动或**关键点**驱动的方法来增加数据的多样性，但这些方法在可扩展性上存在限制。
+
+因此, 腾讯提出了一种新颖的**人物角色**（Personas）驱动的数据合成方法，利用大型语言模型（LLM）中的多种视角来创建多样化的合成数据。
+- [Scaling Synthetic Data Creation with 1,000,000,000 Personas](https://arxiv.org/pdf/2406.20094)
+- [persona-hub](https://github.com/tencent-ailab/persona-hub)
+- huggingface数据集 [PersonaHub](https://huggingface.co/datasets/proj-persona/PersonaHub)
+
+By showcasing PERSONA HUB’s use cases in synthesizing high-quality mathematical and logical reasoning problems, instructions (i.e., user prompts), knowledge-rich texts, game NPCs and tools (functions) at scale, we demonstrate persona-driven data synthesis is versatile, scalable, flexible, and easy to use, potentially driving a paradigm shift in synthetic data creation and applications in practice, which may have a profound impact on LLM research and development.
+- ![](https://github.com/tencent-ailab/persona-hub/blob/main/assets/persona_overview.png?raw=true)
+
+```sh
+create ($data) with ($persona)
+```
+
+data: 
+- math problem
+- logical reasoning problem
+- user prompt to an LLM
+
+persona: 
+
+|persona|`math` problem|`logical reasoning` problem|`user prompt` to an LLM|
+|---|---|---|---|
+|a moving company **driver**||||
+|a chemical kinetics **researcher**||||
+|...||||
+|a **musician** interested in audio processing||||
+
+
+人物角色可以与广泛的数据合成提示（例如，创建一个数学问题或用户提示）一起工作，以指导大型语言模型（LLM）合成具有相应视角的数据。
+
+人物角色中心中的10亿个人物角色可以促进在十亿规模上为各种数据合成场景创建合成数据。
+- “人物角色库”（Persona Hub）：一个从网络数据自动策划的包含10亿个不同人格的集合。这些人格作为世界知识的分布式载体，可以深入LLM中的几乎所有视角，从而促进大规模创建多样化的合成数据。
+
+角色库采用了两种可扩展的方法：`Text-to-Persona` 和 `Persona-to-Persona`
+- `Text-to-Persona` 方法通过特定文本**推断**出可能阅读、写作或喜欢该文本的特定人格。
+  - **文本到人物角色**的方法：任何文本作为输入，只需通过提示大型语言模型“`谁可能[阅读|写作|喜欢|不喜欢|...这个文本？]`”，就可以获得相应的角色。
+- `Persona-to-Persona` 方法则是从已有人格中**衍生**出具有人际关系的其他人格。
+  - **角色到角色**方法：通过人际关系获取多样化的角色，这可以通过向大型语言模型提问“`谁是与给定角色有密切关系的人？`”来轻松实现。
+
+通过“人物角色库”合成高质量数学和逻辑推理问题、指令（即用户提示）、知识丰富的文本、游戏NPC和工具（功能）的用例。
 
 
 # 结束
