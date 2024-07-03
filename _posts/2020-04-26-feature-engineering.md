@@ -3,7 +3,7 @@ layout: post
 title:  "特征工程-Fearture Engineering"
 date:   2020-04-26 21:50:00
 categories: 机器学习
-tags: 深度学习 特征工程 tensorflow sklearn 特征 可解释
+tags: 深度学习 特征工程 tensorflow sklearn 特征 可解释 pearson spearman 相关系数
 excerpt: 特征工程点点滴滴，scikit-learn实现
 author: 鹤啸九天
 mathjax: true
