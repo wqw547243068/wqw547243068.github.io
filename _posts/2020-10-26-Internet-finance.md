@@ -1336,8 +1336,17 @@ AMC还可以上市，发行股票
 
 ### 银行介绍
 
-#### 汇丰
 
+#### 银行转账
+
+
+各银行转账收费
+- [香港汇丰转账规定](https://www.hsbc.com.hk/zh-cn/ways-to-bank/internet/online-discount/)，通过"转数快"转账至其他银行账户，或收取转自其他银行的款项，免费，但其他银行可能会有不同收费安排
+- 中银香港个人账户网上汇款免费，[政策](https://www.bochk.com/sc/crossborder/remittance/charges.html)
+
+
+
+#### 汇丰
 
 
 ##### 汇丰中国
