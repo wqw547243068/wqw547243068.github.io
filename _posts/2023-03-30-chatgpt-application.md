@@ -934,7 +934,11 @@ print(response)
 - 【2024-7-3】南京大学[机器翻译和大语言模型研究进展](https://aclanthology.org/2023.ccl-2.3.pdf)
   - ChatGPT在不同语言间的表现更加平衡，并且在英语核心的翻译方向超过有监督基线模型NLLB
   - 低资源小语种上，ChatGPT仍然落后于有监督模型和商用机器翻译系统
-
+- 【2023-8-2】[Do LLMs or MT Engines Perform Translation Better?](https://www.welocalize.com/insights/do-llms-or-mt-engines-perform-translation-better/)
+  - 上一代NMT翻译超过LLM及混合版(LLM纠正NMT)
+  - GPT-4 略逊于 Google 翻译, 显著差于 Google AutoML定制版翻译
+  - 英语→阿拉伯/中文/日语/西班牙上
+  - ![](https://www.welocalize.com/wp-content/uploads/2024/04/Screenshot-2023-07-31-at-12.17-1.png)
 
 ##### SeamlessM4T
 
