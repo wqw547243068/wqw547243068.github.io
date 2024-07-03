@@ -927,6 +927,27 @@ print(response)
 
 #### 机器翻译
 
+
+##### SeamlessM4T
+
+2023年8月23日，Meta（Facebook、Instagram等母公司）宣布开源**多语音**、语言，翻译、转录大模型 `SeamlessM4T`。
+- 开源地址：[seamless_communication](https://github.com/facebookresearch/seamless_communication)
+- 论文：[SeamlessM4T—Massively Multilingual & Multimodal Machine Translation](https://ai.meta.com/research/publications/seamless-m4t), [论文](https://scontent-nrt1-2.xx.fbcdn.net/v/t39.2365-6/369747868_602316515432698_2401716319310287708_n.pdf?_nc_cat=106&ccb=1-7&_nc_sid=3c67a6&_nc_ohc=1-E88jt4D3oQ7kNvgGNHuhm&_nc_ht=scontent-nrt1-2.xx&oh=00_AYDBbmWUIr4GVecV5itImWS-GIzcNfg1BQG7VhyyJ3hrGw&oe=668B2DF9)
+- 在线演示：https://seamless.metademolab.com/
+- huggingface演示：https://huggingface.co/spaces/facebook/seamless_m4t
+
+多数翻译产品只能翻译常规语音、语音，例如，中文、法语、德语、英语等，对于那些冷门使用较少的语言支持较差。
+
+SeamlessM4T 在技术层面实现了巨大突破，支持多达100种语音、语言，同时与单一翻译产品相比，翻译效率/质量、降低延迟方面更优秀，使得全球不同地区的人可以实现流程的交流。
+
+SeamlessM4T 是首个**一体化**AI翻译大模型，支持100种语音、语言翻译，可执行语音到文本、**语音到语音**、文本到语音和文本到文本的多模式翻译任务。
+- 实现**多模式翻译**功能主要由多款功能强大的翻译模型组合而成。
+- 例如，将一段英文语音，自动翻译成地方中文语音（如闽南话）。
+
+SeamlessM4T集成了Meta之前发布的NLLB、MMS等翻译模型，并使用了270,000小时的语音和文本对齐数据。所以，这也是目前规模最大、功能最全的开源翻译模型。
+
+
+
 ##### translation-agent
 
 【2024-6-13】吴恩达开源 AI Agent 翻译工作流 Translation Agent。
