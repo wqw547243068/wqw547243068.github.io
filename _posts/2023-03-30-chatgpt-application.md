@@ -928,6 +928,14 @@ print(response)
 #### 机器翻译
 
 
+大模型翻译效果如何？
+- 【2024-6-5】[Machine Translation vs GenAI in Translation: A Comparative Analysis](https://www.acolad.com/en/services/translation/machine-translation-genai-translation-comparison.html)
+  - 结论: 大部分关键指标上, NMT翻译效果超过大模型（生成式AI）
+- 【2024-7-3】南京大学[机器翻译和大语言模型研究进展](https://aclanthology.org/2023.ccl-2.3.pdf)
+  - ChatGPT在不同语言间的表现更加平衡，并且在英语核心的翻译方向超过有监督基线模型NLLB
+  - 低资源小语种上，ChatGPT仍然落后于有监督模型和商用机器翻译系统
+
+
 ##### SeamlessM4T
 
 2023年8月23日，Meta（Facebook、Instagram等母公司）宣布开源**多语音**、语言，翻译、转录大模型 `SeamlessM4T`。
