@@ -95,7 +95,6 @@ Cue-CoT 把用户回复生成建模成多阶段的推理过程：
 
 > 行业巨变，物换星移，阁中帝子今不在，旧朝老臣空叹息：沧海桑田，何去何从？
 
-![](https://pic4.zhimg.com/v2-40fe0dc89c8d4d76fd475e7c641a97fb_b.jpg)
 
 ## （0）行业变革
 
@@ -550,8 +549,6 @@ ChatGPT是通用领域聊天机器人。
 
 对话系统从业者积累的大部分经验都废了，时代抛弃你时，连再见都不会说，一个悲伤的故事。
 
-![](https://pic4.zhimg.com/v2-03879bb14b8584ab7a880a3a7cf2e5f7_b.jpg)
-
 
 ### **（3.2）大模型入局对话系统**
 
@@ -641,8 +638,6 @@ Smart Siri 依然有不足：
 
 大浪袭来，除了疲于奔命，淋成落汤鸡，不妨深思熟虑，提前准备好帆板，借势起飞。
 
-![](https://pic4.zhimg.com/v2-7bc35371861868c2410abd30d95bc5e3_b.jpg)
-
 LLM时代的对话系统该怎么做？没有固定答案，大家还在不断摸索中。
 
   
@@ -657,7 +652,7 @@ LLM时代开发范式
 
 其中，有些场景中（2）可以省略。 
 
-详见站内专题：[LLM时代开发范式](llm_dev)
+详见站内专题：[LLM时代开发范式](llm_dev#模式总结)
 
 ### DM 升级
 
@@ -667,7 +662,7 @@ LLM时代开发范式
 Workflow supports the combination of plugins, LLMs, code blocks, and other features through a visual interface, enabling the orchestration of complex and stable business processes, such as travel planning, report analysis.
 
 Workflow 支持通过可视化界面组合`Prompt`、`插件`、`LLM`、`代码块`和**其他功能**，来编排复杂且稳定的业务流程（如旅行计划、报告分析）
-
+- 详见站内专题: [workflow-平台](llm_dev#workflow-平台)
 
 如用 Coze 做一个任务会话
 
@@ -753,7 +748,13 @@ Human: Determine which next command to use, and respond using the format specifi
 
 #### Agent
 
-更高级的方式，全托管。
+更高级的方式，全托管，增加记忆、规划、反思组件，更像“人”。
+
+
+#### Multi-Agent
+
+复杂交互场景，多种角色交互，共同完成任务。
+
 
 ### （4.4）学术界做法
 
@@ -809,17 +810,17 @@ ArXiv上搜了下对话系统和大模型两个关键词，相关文章有62篇
 ####  NLG升级
 
 
--   【2023-9-15】[Unleashing Potential of Evidence in Knowledge-Intensive Dialogue Generation](https://arxiv.org/pdf/2309.08380), To fully Unleash the potential of evidence, we propose a framework to effectively incorporate Evidence in knowledge-Intensive Dialogue Generation (u-EIDG). Specifically, we introduce an automatic evidence generation framework that harnesses the power of Large Language Models (LLMs) to mine reliable evidence veracity labels from unlabeled data
+- 【2023-9-15】[Unleashing Potential of Evidence in Knowledge-Intensive Dialogue Generation](https://arxiv.org/pdf/2309.08380), To fully Unleash the potential of evidence, we propose a framework to effectively incorporate Evidence in knowledge-Intensive Dialogue Generation (u-EIDG). Specifically, we introduce an automatic evidence generation framework that harnesses the power of Large Language Models (LLMs) to mine reliable evidence veracity labels from unlabeled data
 
 #### 对话与推荐融合
 
--   【2023-8-11】[A Large Language Model Enhanced Conversational Recommender System](https://arxiv.org/abs/2308.06212) 伦敦大学和快手，新加坡南洋理工，对话式推荐系统（CRSs）涉及多个子任务：用户偏好诱导、推荐、解释和物品信息搜索，user preference elicitation, recommendation, explanation, and item information search，LLM-based CRS 可以解决现有问题
+- 【2023-8-11】[A Large Language Model Enhanced Conversational Recommender System](https://arxiv.org/abs/2308.06212) 伦敦大学和快手，新加坡南洋理工，对话式推荐系统（CRSs）涉及多个子任务：用户偏好诱导、推荐、解释和物品信息搜索，user preference elicitation, recommendation, explanation, and item information search，LLM-based CRS 可以解决现有问题
 
 #### 用户模拟器
 
--   【2023-9-22】[User Simulation with Large Language Models for Evaluating Task-Oriented Dialogue](https://arxiv.org/pdf/2309.13233)，加利福尼亚大学+AWS AI Lab，利用LLM当做模拟器，用来评估任务型（TOD）多轮会话
+- 【2023-9-22】[User Simulation with Large Language Models for Evaluating Task-Oriented Dialogue](https://arxiv.org/pdf/2309.13233)，加利福尼亚大学+AWS AI Lab，利用LLM当做模拟器，用来评估任务型（TOD）多轮会话
 
-
+详见站内专题：用户模拟器
 
 #### 开放域
 
