@@ -620,6 +620,66 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 ### RAG优化
 
 
+#### Agentic RAG
+
+【2024-6-19】[Agentic RAG 与图任务编排](https://zhuanlan.zhihu.com/p/704229450)
+
+（1）朴素 RAG 流程
+- 用户提出问题 -> 系统基于用户提问召回 -> 对召回结果进行重排序 -> 拼接提示词后送给 LLM 生成答案
+- ![](https://pic2.zhimg.com/80/v2-67419924f4b4af90a2ca2a87a8df34c5_1440w.webp)
+- 问题: 用户意图并不明确时，无法通过直接检索找到答案
+  - 例如：针对多文档的总结类提问，需要进行**多步推理** (Reasoning) 等等。
+- 解决方法: Agentic RAG
+
+
+（2）Agentic RAG 是基于 Agent 的 RAG。
+
+Agent 与 RAG 关系紧密，两者互为基石。
+
+Agentic RAG 和简单 RAG 的最大区别
+- Agentic RAG 引入了 Agent 的**动态编排**机制，可根据用户提问的不同意图，引入**反馈**和**查询改写**机制，并进行“多跳”知识推理，从而实现对复杂提问的回答。
+
+Agentic RAG 方法
+- 初级: `Self-RAG` 
+- 高级: `Adaptive RAG `
+
+`Self-RAG` 引入反思机制。
+- 从知识库中检索出结果后，评估结果是否**与用户提问相关**。
+  - 如果不相关，就要改写查询
+- 然后重复 RAG 流程直到相关度评分达到要求。
+
+![](https://pic4.zhimg.com/80/v2-063736cdf25e35ab24f86627708a1b8b_1440w.webp)
+
+Self-RAG 实现两大组件：
+- 一套基于 Graph 的**任务编排系统**。
+- Graph 内执行的必要算子：比如在 Self-RAG 中，**评分算子**就至关重要。
+  - 原始论文需要自己训练一个**打分模型**来针对检索结果评分；
+  - 在实际实现中也可以采用 **LLM 进行评分**，简化系统开发并且减少对各类环节依赖。
+
+`Self-RAG` 是相对初级的 Agentic RAG，RAGFlow 中也已提供了相关实现。
+
+实践证明
+- `Self-RAG` 对于较复杂多跳问答和多步推理可以明显提升性能。
+
+`Adaptive RAG` 根据用户提问的不同意图，采用对应策略：
+- 开放域问答：直接通过 LLM 产生答案而无需依赖 RAG 检索。
+- 多跳问答：首先将多跳查询分解为更简单的单跳查询，重复访问 LLM 和 RAG 检索器来解决这些子查询，并合并它们的答案以形成完整答案。
+- 自适应检索：适用于需要多步逻辑推理的复杂问题。复杂的问答往往需要从多个数据源综合信息并进行多步推理。自适应检索通过迭代地访问 RAG 检索器和 LLM，逐步构建起解决问题所需的信息链。
+
+`Adaptive-RAG` 工作流程与 `Self-RAG` 类似，只是在前面增加了一个查询分类器，就提供了更多种对话的策略选择。
+- ![](https://pic4.zhimg.com/80/v2-26eded60f4fe1605c4a3d6ce328b0603_1440w.webp)
+
+高级 RAG 系统基于任务编排系统上提供以下功能：
+- 复用已有的 Pipeline 或者子图。
+- 与包含 Web Search 在内的外部工具协同工作。
+- 可以规划查询任务，例如查询意图分类，查询反馈等等。
+
+任务编排系统类似的实现: Langchain 的 ️LangGraph 和 llamaIndex；
+
+Agent 开发框架包括: AgentKit、Databricks 最新发布的 Mosaic AI Agent Framework 等等。 
+
+[RAGFlow](https://ragflow.io/) 是一款基于深度文档理解构建的开源 RAG（Retrieval-Augmented Generation）引擎。RAGFlow 可以为各种规模的企业及个人提供一套精简的 RAG 工作流程，结合大语言模型（LLM）针对用户各类不同的复杂格式数据提供可靠的问答以及有理有据的引用。
+
 #### RAG优化方向
 
 【2023-12-11】RAG优化分为两个方向：RAG基础功能优化、RAG架构优化
