@@ -23,6 +23,10 @@ permalink: /llm_dialogue_system
 
 ## 资料
 
+
+
+### LLM 对话系统综述
+
 【2023-11-28】香港中文大学和华为诺亚方舟实验室，综述文章: [大模型时代，对话系统的演进和机会](https://www.kuxai.com/article/1770)
 - 论文: [An Survey of the Evolution of Language Model-Based Dialogue Systems](https://arxiv.org/pdf/2311.16789.pdf)
 - 代码链接: [Survey-Evolution-DS](https://github.com/ruleGreen/Survey-Evolution-DS)
@@ -56,6 +60,35 @@ LLM 几个显著优势：
 - **内部推理**+**外部交互** （Reasoning + Acting）: 这时候的对话系统其实更加的拟人化了，或者说更加的类似于language agent的概念，不仅要及时的推理对话上下文中蕴含的信息，还要和外部环境进行一系列的交互，从而获取更多的信息，最终生成更加完美的回复。
 
 
+
+### 论文
+
+
+【2023-12-4】香港中文大学 [武侠小说视角：大模型对话系统的内功与外功](https://cloud.tencent.com/developer/article/2367267)
+
+- 论文：[Cue-CoT: Chain-of-thought Prompting for Responding to In-depth Dialogue Questions with LLMs](https://arxiv.org/abs/2305.11792)
+- 代码：[Cue-CoT](https://github.com/ruleGreen/Cue-CoT)
+
+Cue-CoT 把用户回复生成建模成多阶段的推理过程：
+- O-Cue：One-step inference， 类似于传统 CoT，一步直接生成中间推理过程和最终回复。
+  - 首先要求 LLM 推理出来当前对话历史里面蕴含的不同维度的用户信息（使用不同的 prompts）
+  - 然后让 LLM 接着生成最终的回复。（相对复杂的指令和内容臃肿的输出）
+- M-Cue：Multi-step inference，逐步生成 LLM 输出的内容。和 O-Cue 一样
+  - 第一步要求 LLM 推理出来当前对话历史里面蕴含的不同维度的用户信息，然后给定对话上下文和第一步生成的中间结果
+  - 第二步让 LLM 接着生成最终的回复。（相对简单的指令和内容清晰的输出）
+
+
+不是每轮对话都需要外部知识，也不是要所有外部知识，有时候要的是这些知识库之间存在依赖
+
+- 论文：[Large Language Models as Source Planner for Personalized Knowledge-grounded Dialogues](https://arxiv.org/pdf/2310.08840.pdf)
+- 代码：[SAFARI](https://github.com/ruleGreen/SAFARI)
+
+提出一个框架 SAFARI，将**外部知识选择**和**回复生成**解耦。
+
+将整个对话回复生成解耦成三个任务
+- 1）Planning：规划是否需要使用知识，何时使用知识，以及多种知识库之间的调用顺序；
+- 2）Retrieval：使用外部的 retriever 对上一步规划使用的知识库按顺序抽取对应的 Top-n 的辅助文档；
+- 3）Assembling：将对话上下文和中间抽取到的辅助文档拼接在一起进行最终的回复生成。
 
 
 ## 引言
