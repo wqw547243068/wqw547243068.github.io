@@ -972,10 +972,20 @@ SeamlessM4T集成了Meta之前发布的NLLB、MMS等翻译模型，并使用了2
 另外，这是高度可控的翻译工作流，只需修改提示词，就可以指定语气（正式或非正式）、地区等，还可以提供专业术语表来确保术语翻译的一致性。
 
 GitHub：[translation-agent](github.com/andrewyng/translation-agent)
+- prompt 设计见代码 [utils.py](https://github.com/andrewyng/translation-agent/blob/main/src/translation_agent/utils.py)
 
-经测试，翻译质量媲美领先的商业翻译工具
+```py
+# git clone https://github.com/andrewyng/translation-agent.git
+import translation_agent as ta
 
-##### 实测
+source_lang, target_lang, country = "English", "Spanish", "Mexico"
+translation = ta.translate(source_lang, target_lang, source_text, country)
+```
+
+翻译质量媲美领先的商业翻译工具
+
+
+##### LLM 翻译实测
 
 原文：
 > 翻译这段话:"人要是行,干一行行一行,一行行行行行。行行行干哪行都行。要是不行,干一行不行一行,一行不行行行不行,行行不行,干哪行都不行。要想行行,首先一行行。成为行业内的内行,行行成内行。行行行,你说我说得行不行。"
@@ -989,6 +999,8 @@ GitHub：[translation-agent](github.com/andrewyng/translation-agent)
 
 GPT-4翻译
 > Translate this passage: "If a person is capable, they can excel in any profession they choose. If they're not capable, they won't succeed in any profession, no matter which one they choose. If you want to be successful, you must first become proficient in one field. Become an expert in your industry, and you'll achieve success. Is what I'm saying reasonable?"
+
+
 
 ### 搜索
 
