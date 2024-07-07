@@ -418,6 +418,40 @@ DUIX.ai
 - 批量生成营销视频？小菜一碟！
 
 
+
+#### YinMei
+
+【2024-7-7】[AI 虚拟主播 AI-YinMei](https://mp.weixin.qq.com/s/h6kWY6U8IrVURtYN2zOVxg)
+
+项目简介
+- 支持 fastgpt 知识库聊天对话
+- 支持 LLM 大语言模型的一整套解决方案：[fastgpt] + [one-api] + [Xinference]
+- 支持对接 bilibili 直播间弹幕回复和进入直播间欢迎语
+- 支持微软 edge-tts 语音合成
+- 支持 Bert-VITS2 语音合成
+- 支持 GPT-SoVITS 语音合成
+- 支持表情控制 Vtuber Studio
+- 支持绘画 stable-diffusion-webui 输出 OBS 直播间
+- 支持绘画图片鉴黄 public-NSFW-y-distinguish
+- 支持搜索和搜图服务 duckduckgo（需要魔法上网）
+- 支持搜图服务 baidu 搜图（不需要魔法上网）
+- 支持 AI 回复聊天框【html 插件】
+- 支持 AI 唱歌 Auto-Convert-Music
+- 支持歌单【html 插件】
+- 支持跳舞功能
+- 支持表情视频播放
+- 支持摸摸头动作
+- 支持砸礼物动作
+- 支持唱歌自动启动伴舞功能
+- 聊天和唱歌自动循环摇摆动作
+- 支持多场景切换、背景音乐切换、白天黑夜自动切换场景
+- 支持开放性唱歌和绘画，让 AI 自动判断内容
+- 支持流式聊天，提速 LLM 回复与语音合成
+- 对接 bilibili 开放平台弹幕【稳定性高】
+- 支持 funasr 阿里语音识别系统
+
+
+
 ### 表情迁移
 
 - 【2022-1-24】iphone 手机自带标签迁移功能，imessage里可以通过摄像头捕捉表情，并应用到动画形象上。个性化拟人表情：选取肤色、头饰、眼镜等等
