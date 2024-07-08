@@ -318,6 +318,7 @@ permalink: /future
 ### 程序员创业方向
 
 【2024-7-8】[程序员创业的几个方向](https://mp.weixin.qq.com/s/lNKV4OJHGexkrAwse5HrVw)
+- [极客学伟创业周记](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU4NDE1MzIwNg==&action=getalbum&album_id=3044710252514050050&scene=21#wechat_redirect)
 
 程序员创业的几个方向
 - `卖课`
