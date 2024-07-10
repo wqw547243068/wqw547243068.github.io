@@ -3,7 +3,7 @@ layout: post
 title:  "具身认知 - Embodied Cognition"
 date:   2023-02-07 19:02:00
 categories: 人工智能
-tags: 认知 人工智能 元宇宙 具身智能
+tags: 认知 人工智能 元宇宙 具身智能 机器人
 excerpt: 人工智能新兴方向：具身认知，或具身学习，通过AGI的一条可行路线
 author: 鹤啸九天
 mathjax: true
@@ -18,6 +18,9 @@ mathjax: true
 - ![Embodied Cognition](https://www.researchgate.net/profile/Jelle-Dijk/publication/262275530/figure/fig1/AS:299964061241348@1448528413832/Sketch-of-the-Embodied-Cognition-perspective-Cognition-emerges-from-interactions-between.png)
 - （题图来自 [Jelle van Dijk](https://www.researchgate.net/figure/Sketch-of-the-Embodied-Cognition-perspective-Cognition-emerges-from-interactions-between_fig1_262275530)）
 - 摘自：[具身认知学习笔记（20220227）](https://fangfrancis.github.io/trends/2022/02/27/Embodied/)
+
+【2024-7-10】创业邦+中移动出品: 人形机器人研究报告
+- ppt[微云地址](https://share.weiyun.com/TOQPQfAm)
 
 ## 具身智能
 
