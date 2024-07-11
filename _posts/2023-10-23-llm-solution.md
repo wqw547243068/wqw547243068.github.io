@@ -620,6 +620,52 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 ### RAG优化
 
 
+【2024-6-5】[LlamaIndex团队技术报告：“RAG的尽头是Agent”](https://mp.weixin.qq.com/s/wuyMN7CLAT9HGYlmjLWUtA)
+
+LlamaIndex 团队2024年Talk：
+- 报告人：Jerry Liu, LlamaIndex co-founder/CEO，
+- 报告主题：“超越RAG：构建高级上下文增强型大型语言模型（LLM）应用”，
+- 主题原文：“Beyond RAG: Building Advanced Context-Augmented LLM Applications”。
+
+看完报告的感受: “RAG的尽头是Agent”
+
+概要内容如下：
+- **RAG局限性**：
+  - RAG最初是为**简单问题**和**小型文档集**设计的，包括数据解析、索引检索和简单的问答。
+  - 然而，处理更复杂的问题时存在局限性，例如：**总结**整个年度报告、**比较**问题、**结构化分析**和**语义搜索**等。
+
+Pain Points 痛点
+
+There's certain questions we want to ask where naive RAG will fail.Examples:
+- 总结 Summarization Questions: "Give me a summary of the entire \<company\>10K annual report”
+- 对比 Comparison Questions: "Compare the open-source contributions ofcandidate A and candidate B”
+- 结构分析+语义搜索 Structured Analytics + Semantic Search: "Tell me about the risk factors ofthe highest-performing rideshare company in the us"
+- 多方观点 General Multi-part Questions:"Tell me about the pro-x arguments in articleA, and tell me about the pro-Y arguments in article B, make a table based onour internal style guide, then generate your own conclusion based on these facts.”
+
+
+
+- **Agent引入**：为了解决RAG的局限性，文档提出了引入Agent的概念。
+  - Agent是一种更高级的系统，它能够执行多轮对话、查询/任务规划、工具使用、反思和记忆维护等更复杂的功能。
+
+从RAG到Agent的转变：提到了从RAG到Agent的转变，这涉及到增加以下几个层次的功能：
+- 多轮对话：与用户进行更深入的互动。
+- 查询/任务规划层：能够理解并规划复杂的查询和任务。
+- 工具接口：与外部环境进行交互，使用工具来辅助任务执行。
+- 反思：能够自我评估并改进执行过程。
+- 记忆：维护用户交互的历史，以提供个性化服务。
+
+Agent不同层次：从简单到高级Agent的不同层次，包括：
+- 简单Agent：成本较低，延迟较低，但功能有限。
+- 高级Agent：成本较高，延迟较高，但提供更复杂的功能，如动态规划和执行。
+- ReAct：ReAct（Reasoning + Acting with LLMs），这是一个结合了推理和行动的LLM系统，它利用查询规划、工具使用和记忆来执行更复杂的任务。
+- LLMCompiler：一个Agent编译器，用于并行多功能规划和执行，它通过生成步骤的有向无环图（DAG）来优化任务执行。
+
+- 自我反思和可观察性：Agent能够通过自我反思和反馈来改进执行，同时提供可观察性，以便开发者能够追踪和理解Agent的行为。
+- 多Agent系统：多Agent系统的概念，其中多个Agent可以同步或异步地交互，以执行更复杂的任务。
+
+
+
+
 #### Agentic RAG
 
 【2024-6-19】[Agentic RAG 与图任务编排](https://zhuanlan.zhihu.com/p/704229450)
@@ -1143,6 +1189,8 @@ Connections to Prior Work
 - v.s. **Learning from Critique** (Feedback) `Self-RAG`再多个参考结果中调整奖励权重，不需要训练
   - Reflection tokens are inserted offline by another Critic model trained on machine-generated feedback, making training much more memory efficient and stable than widely adopted RLHF methods (e.g., PPO).
   - `Self-RAG` enables tailored behaviors by simply adjusting reward weights across multiple preference aspects, while prior fine-grained feedback learning method requires training for different model behaviors.
+
+【2024-7-11】[手把手代码复现Self RAG](https://mp.weixin.qq.com/s/_80ndeV9RVtyLdkQtGt96g)
 
 
 
