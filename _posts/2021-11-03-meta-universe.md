@@ -159,6 +159,24 @@ B站爆火数字人ip `柳叶熙`
 【2024-5-7】日本数字人[imma](https://aww.tokyo/vhuman/imma/), 覆盖各个主流平台 
 
 
+#### EchoMimic
+
+【2024-7-11】蚂蚁金服 退出数字人 [EchoMimic](https://github.com/BadToBest/EchoMimic) 
+- 论文 [EchoMimic: Lifelike Audio-Driven Portrait Animations through Editable Landmark Conditioning]()
+
+Python Environment Setup
+- Tested System Environment: Centos 7.2/Ubuntu 22.04, Cuda >= 11.7
+- Tested GPUs: A100(80G) / RTX4090D (24G) / V100(16G)
+- Tested Python Version: 3.8 / 3.10 / 3.11
+
+测试
+
+```sh
+# Download the Codes
+git clone https://github.com/BadToBest/EchoMimic
+cd EchoMimic
+```
+
 
 ### 虚拟人创建工具
 
