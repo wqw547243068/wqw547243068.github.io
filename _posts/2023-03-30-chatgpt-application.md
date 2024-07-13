@@ -1646,6 +1646,10 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 - 论文 [SWE-bench: Can Language Models Resolve Real-World GitHub Issues?]() 
 - Claude 2 能解决 1.96% 的问题
 
+概览
+- [Awesome Devins](https://github.com/e2b-dev/awesome-devins) 汇总各个数字程序员实现
+- ![](https://github.com/e2b-dev/awesome-devins/raw/main/assets/landscape-latest.png)
+
 
 ##### OpenDevin
 
@@ -1699,6 +1703,8 @@ docker run -it \
 - [Devon](), 多文件编辑、git 工具使用
 - [SWE-agent](https://swe-agent.com/) 12.3% SWE-bench，通过 docker 本地执行
   - "Agent-Computer Interface" (ACI), LLMs 友好. 允许的动作: run code, look for code, edit code, and submit changes to GitHub.
+
+
 
 #### 数学工具
 
