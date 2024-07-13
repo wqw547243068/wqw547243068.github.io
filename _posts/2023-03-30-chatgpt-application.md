@@ -3335,9 +3335,6 @@ Diffusion4D 整理筛选了约81K个4D assets，利用8卡GPU共16线程，花�
 4D内容生成的一致性包含了时间上和空间上的一致性，它们分别在视频生成模型和多视图生成模型中被探索过。基于这个洞见，Diffusion4D将时空的一致性嵌入在一个模型中，并且一次性获得多时间戳的跨视角监督。
 
 
-
-
-
 ### 机器人
 
 ChatGPT接入实体机器人，线上线下整合营销ChatGPT大多数时候主要作用于线上，但在线下消费场景也显示出潜力。
@@ -3783,6 +3780,35 @@ Haivivi 输出内容可以对孩子进行心理层面的引导：
 相较带语音功能的绘本和故事机产品，AI毛绒玩具除了有更可爱的外观外，还可提供双向沟通场景。相比较“哪里不会点哪里”的学习机而言，后者的学习模式杜绝了以往的单向灌输模式，而更倾向于互动式沟通。
 
 除毛绒玩具 IP的竞争力外，其在硬件、软件、算法中的研发工作也是壁垒之一。其中包括模型Fine-Tune工作，硬件层面的语音编解码和网络传输协议优化等。
+
+
+
+#### Aibi
+
+【2024-4-27】Living AI公司最新研发的口袋宠物机器人Aibi，蓝牙耳机盒的大小，可以随时随地带着它去任何地方，重新定义智能AI口袋桌宠，时刻陪伴着你
+- [资讯](https://fangx.ai/aibi-pocket-pet-from-livingai/)
+
+AIBI Pocket 是 Living.AI 继 EMO 之后最新的一款 AI 宠物机器人。
+- 它可以陪伴娱乐用户，提供情感交流。
+- 与 EMO 相比，AIBI Pocket 更加小巧便携，以便用户放入口袋随身携带。
+- AIBI Pocket 是去年 11 月首次公布的，现在仍处于预售状态，价格为 249 美元。
+
+![](https://i0.wp.com/fangx.ai/wp-content/uploads/2024/04/Emo-from-LivingAI.jpg?w=1712&ssl=1)
+
+AIBI Pocket 的功能和特点包括：
+- 人脸识别和摄影：AIBI Pocket 可以识别你的脸部和声音，并做出相应的反应。例如你可以语音命令 AIBI 拍一张照片；
+- AIBI 需要你的照顾：你要像照顾孩子一样照顾 AIBI，例如安慰 AIBI 入睡，喂 AIBI 吃东西，他感到难过时候抚摸他；
+- 闹钟、提醒和天气报告：AIBI 会积极地帮你做事情，例如叫你起床、提醒你吃药、通过生动的动画向你报告天气是雨、雪、冰雹还是晴天等等；
+- 旋转 AI 摄像头：AIBI 的头部是可以像云台一样自由旋转的，并能锁定和实时跟踪移动的物体。
+语音命令和 ChatGPT：AIBI 支持离线命令和在线问答。即使没有互联网，AIBI 也能理解你的命令。对于复杂问题，AIBI 将连接到 ChatGPT 获取答案。
+- 毫米波雷达：AIBI 身体内置有毫米波雷达，使其能够从远距离感知人的存在。
+三麦克风阵列：AIBI 的只有几厘米长的头部上集成了麦克风阵列。新算法使 AIBI 能够更准确地确定方向和识别指令。
+近场通信：AIBI 的背部内置有近距离光通信，因此两个 AIBI 能够交换信息，例如可以互相添加为好友。
+
+![](https://i0.wp.com/fangx.ai/wp-content/uploads/2024/04/aibi-pocket-from-livingai.jpg?fit=1200%2C630&ssl=1)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1253500011&bvid=BV1vJ4m1H7qM&cid=1521134595&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
 
 ### 可穿戴
 
