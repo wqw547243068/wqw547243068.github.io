@@ -1640,6 +1640,41 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 详见站内文章：[智能办公](aigc#智能办公)
 
 
+##### OpenDevin
+
+【2024-3-12】数字程序员: OpenDevin
+- [OpenDevin: Code Less, Make More](https://github.com/OpenDevin/OpenDevin)
+- AI,LLM驱动的数字程序员, 写代码、查bug、发布特性
+
+![](https://github.com/OpenDevin/OpenDevin/raw/main/docs/static/img/screenshot.png)
+
+```sh
+git clone https://github.com/OpenDevin/OpenDevin.git
+cd OpenDevin
+```
+
+启动
+- web [地址](http://localhost:3000)
+
+```sh
+WORKSPACE_BASE=$(pwd)/workspace
+docker run -it \
+    --pull=always \
+    -e SANDBOX_USER_ID=$(id -u) \
+    -e WORKSPACE_MOUNT_PATH=$WORKSPACE_BASE \
+    -v $WORKSPACE_BASE:/opt/workspace_base \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -p 3000:3000 \
+    --add-host host.docker.internal:host-gateway \
+    --name opendevin-app-$(date +%Y%m%d%H%M%S) \
+    ghcr.io/opendevin/opendevin
+```
+
+[Introducing Devin, the first AI software engineer](https://www.youtube.com/watch?v=fjHtjT7GO1c)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fjHtjT7GO1c?si=laPx9LBXmXvyfpXZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 #### 数学工具
 
 
