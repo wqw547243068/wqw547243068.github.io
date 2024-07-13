@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -28,15 +28,27 @@ permalink: /transformer
 ## Transformer 可视化
 
 
+### 三棕一蓝
+
 【2024-4-2】三蓝一棕出品: [可视化讲解 transformer](https://www.youtube.com/watch?v=wjZofJX0v4M)
 - 文字笔记总结： [为什么我还是无法理解transformer？ - ketchum的回答](https://www.zhihu.com/question/596771388/answer/3456855475)
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wjZofJX0v4M?si=e3vpGav59jQoQdrt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+### 3D可视化
 
 【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
 - <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+
+
+### Transformer Explainer
+
+【2024-7-11】Transformer Explainer 
+- [Demo](https://poloclub.github.io/transformer-explainer/), 网页交互式展示 transformer 原理
+- [github](github.com/poloclub/transformer-explainer)
+- 视频地址 [video](http://t.cn/A6QEqjDy)
+
 
 ## 总结
 
