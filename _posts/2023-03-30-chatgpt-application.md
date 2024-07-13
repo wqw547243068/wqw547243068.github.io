@@ -1640,9 +1640,18 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 详见站内文章：[智能办公](aigc#智能办公)
 
 
+#### 代码研发
+
+【2023-10】评测标注 SWE benchmark 包含 github上 python仓库上的2,294 个任务
+- 论文 [SWE-bench: Can Language Models Resolve Real-World GitHub Issues?]() 
+- Claude 2 能解决 1.96% 的问题
+
+
 ##### OpenDevin
 
-【2024-3-12】数字程序员: OpenDevin
+Chatbots like ChatGPT, Perplexity, and Phind can generate code, but Devin went further. It can also run, test, and implement the code, using a sandbox as runtime.
+
+【2024-3-12】 [Cognition AI](https://www.cognition.ai/blog) 发布数字程序员: OpenDevin
 - [OpenDevin: Code Less, Make More](https://github.com/OpenDevin/OpenDevin)
 - AI,LLM驱动的数字程序员, 写代码、查bug、发布特性
 
@@ -1674,6 +1683,22 @@ docker run -it \
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fjHtjT7GO1c?si=laPx9LBXmXvyfpXZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+
+
+##### Devin 开源替代版
+
+[Open-Source Alternatives to Devin](https://e2b.dev/blog/open-source-alternatives-to-devin)
+- [OpenDevin](https://github.com/OpenDevin) 
+- [AutoCodeRover](https://github.com/nus-apr/auto-code-rover) 能解决 SWE-bench 上 16% 的问题
+- [Devika]() 除了写代码，还支持浏览器交互式抓取信息，[demo](https://www.youtube.com/watch?v=GBvNxHiquKM)
+  - Devika supports Claude 3, GPT-4, GPT-3.5, and Local LLMs via Ollama
+- [Anterion](), 受 OpenDevin 启发， [demo](https://www.youtube.com/watch?v=J-KZNFVcAxU&ab_channel=Anterion)
+- [MetaGPT](), 多智能体框架，比上面都早
+- [AutoDev](), 多种编程语言 
+  - Python, and JavaScript/TypeScript, but also Rust, Java, Kotlin, Golang, or C/C++/OC.
+- [Devon](), 多文件编辑、git 工具使用
+- [SWE-agent](https://swe-agent.com/) 12.3% SWE-bench，通过 docker 本地执行
+  - "Agent-Computer Interface" (ACI), LLMs 友好. 允许的动作: run code, look for code, edit code, and submit changes to GitHub.
 
 #### 数学工具
 
