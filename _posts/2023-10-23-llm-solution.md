@@ -3,7 +3,7 @@ layout: post
 title:   大模型应用技术方案 LLM Solution
 date:   2023-10-23 16:52:00
 categories: 大模型
-tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe
+tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe 翁丽莲
 excerpt: 大模型工业落地的技术经验总结
 mathjax: true
 permalink: /llm_solution
@@ -976,6 +976,20 @@ Graph RAG 可简单实现：
 Llama Index 有两种方法实现 Graph RAG：
 - `KnowledgeGraphIndex` 从任何私有数据只是**从零构建知识图谱**（基于 LLM 或者其他语言模型），然后 4 行代码进行 Graph RAG。
 - `KnowledgeGraphRAGQueryEngine` 在任何**已经存在的知识图谱**上进行 Graph RAG，不过还没有完成这个 PR。
+
+
+#### 分析
+
+
+GraphRAG 的优势主要体现在以下三个方面：
+- 更高的准确度和更完整的答案（运行时间/生产效益）
+  - 2023 年底，数据目录公司 Data.world 发表一项研究，GraphRAG 在 43 个业务问题中平均将 LLM 响应的准确性提高了 3 倍。
+  - 2024年2月，微软：GraphRAG 极大地改进了 RAG 的‘检索’部分，用更高相关性的内容填充上下文窗口，从而得到更好的答案并捕获证据出处。 ” GraphRAG 所需 token 减少了 26% 到 97%，这不仅使其能够更好地提供答案，而且更便宜、更具可扩展性。
+  - Linkedin: GraphRAG 提高了回答客户服务问题的正确性和丰富性（因此也提高了实用性），为其客户服务团队将每个问题的平均解决时间缩短了 28.6% 。
+- 一旦创建了知识图谱，构建、维护 RAG 应用程序更加容易（开发时间优势）
+- 更好的可解释性、可追溯性和访问控制（治理优势）
+
+治理：可解释性、安全性等
 
 #### text2cypher
 
