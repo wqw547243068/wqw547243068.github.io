@@ -991,6 +991,15 @@ Llama Index 有两种方法实现 Graph RAG：
 3 行代码就能跑起来 text2cypher。
 
 
+#### 示例
+
+【2024-7-15】 [GraphRAG制作的《凡人修仙传》知识图谱长什么样](https://www.youtube.com/watch?v=pWqQS0OX2Qs)
+- 用 LLM 从小说中抽取 `节点`、`边`、`属性`信息
+- 实体类别: `person`, `event`, `geo`, `organization`, `cencept`, `role`, `technology`
+- 以 图方式检索、排序，附带权重
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pWqQS0OX2Qs?si=9N4QTnBquh7K3JdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### Vector RAG
 
 基于embedding的 RAG方法，常见
