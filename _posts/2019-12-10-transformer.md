@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -2429,6 +2429,27 @@ Infini-Transformer 可在有限内存条件下，让基于Transformer的大语�
 实验结果表明：
 - Infini-Transformer在长上下文语言建模任务上超越了基线模型，内存最高可节约114倍。
 
+
+
+### TTT
+
+【2024-7-20】[彻底改变语言模型：全新架构TTT超越Transformer，ML模型代替RNN隐藏状态](https://www.jiqizhixin.com/articles/2024-07-10-2)
+
+问题
+- 长上下文的挑战是 RNN 层本质上所固有的：与自注意力机制不同，RNN 层必须将上下文压缩为固定大小的隐藏状态，更新规则需要发现数千甚至数百万个 token 之间的底层结构和关系。
+
+斯坦福大学、加州大学伯克利分校、加州大学圣迭戈分校和 Meta 设计了一种新架构 TTT，用**机器学习模型**取代了 **RNN 隐藏状态**。
+- 该模型通过输入 token 的实际梯度下降来压缩上下文。
+- 测试时训练（Test-Time Training）
+- TTT 层直接取代 Attention，并通过表达性记忆解锁线性复杂性架构，使我们能够在上下文中训练具有数百万（有时是数十亿）个 token 的 LLM。 
+
+TTT 层作为一种新的信息压缩和模型记忆机制，可简单地直接替代 Transformer 中的自注意力层。
+- 与 Mamba 相比，TTT-Linear 的困惑度更低，FLOP 更少（左），对长上下文的利用更好（右）：
+
+全新的大语言模型（LLM）架构有望代替至今在 AI 领域如日中天的 Transformer，性能也比 Mamba 更好。
+- 论文：[Learning to (Learn at Test Time): RNNs with Expressive Hidden States](https://arxiv.org/abs/2407.04620)
+- 代码与 jax 训练和测试：[ttt-lm-jax](https://github.com/test-time-training/ttt-lm-jax)
+- PyTorch 推理代码：[ttt-lm-pytorch](https://github.com/test-time-training/ttt-lm-pytorch)
 
 
 ## 稀疏Attention
