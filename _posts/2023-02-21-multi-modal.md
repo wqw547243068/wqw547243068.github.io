@@ -658,14 +658,19 @@ UNITER的思路是通过使用**单流**结构，直接将视觉特征和文本�
 
 #### ViT
 
+将 transformer 引入到 CV 领域
+- 1、将图片**patch化**，解决 Transformer 不能应用于图像领域问题；
+- 2、patch embedding 提取图像特征高效；
+- 3、基于ViT模型衍生了视频Transformer相关模型。
+
 [ViT（Vision Transformer）解析](https://zhuanlan.zhihu.com/p/445122996)
 
-2020年，Google提出ViT，将Transformer应用在图像分类的模型
-- 虽然不是第1篇将transformer应用在视觉任务的论文，但是因为其模型“简单”且效果好，可扩展性强（scalable，模型越大效果越好），成为了transformer在CV领域应用的里程碑著作，也引爆了后续相关研究
+2020年，Google提出`ViT`，将Transformer应用在图像分类的模型
+- transformer应用在视觉任务论文, 非首次，但模型“简单”且效果好，可扩展性强（scalable，模型越大效果越好），成为了transformer在CV领域应用的**里程碑**著作，也引爆了后续相关研究
 
-ViT原论文中最核心的结论
-- 当拥有足够多的数据进行预训练时，ViT的表现就会超过CNN，突破transformer缺少归纳偏置的限制，可以在下游任务中获得较好的迁移效果
-- 当训练数据集不够大的时候，ViT的表现通常比同等大小的ResNets要差一些，因为Transformer和CNN相比缺少归纳偏置（inductive bias），即一种先验知识，提前做好的假设。
+ViT 论文中最核心结论
+- 当拥有**足够多**的数据进行预训练时，`ViT` 表现就会超过`CNN`，突破transformer缺少归纳偏置的限制，可在下游任务中获得较好的迁移效果
+- 当训练数据集**不够大**的时候，`ViT` 表现通常比同等大小的`ResNets`要差一些，因为Transformer和CNN相比缺少归纳偏置（inductive bias），即一种先验知识，提前做好的假设。
 
 CNN具有两种归纳偏置
 - 一种是**局部性**（locality/two-dimensional neighborhood structure），即图片上相邻的区域具有相似的特征；
@@ -673,9 +678,10 @@ CNN具有两种归纳偏置
 
 当CNN具有以上两种归纳偏置，就有了很多先验信息，需要相对少的数据就可以学习一个比较好的模型
 
-ViT只使用了Transformer的encoder
+`ViT`只使用了Transformer的encoder
 
-ViT将输入图片分为多个patch（16x16），再将每个patch投影为固定长度的向量送入Transformer，后续encoder的操作和原始Transformer中完全相同。但是因为对图片分类，因此在输入序列中加入一个特殊的token，该token对应的输出即为最后的类别预测
+`ViT` 将输入图片分为多个`patch`（16x16），再将每个patch投影为固定长度的向量送入Transformer，后续encoder的操作和原始Transformer中完全相同。
+- 但是因为对图片分类，因此在输入序列中加入一个特殊的token，该token对应的输出即为最后的类别预测
 
 ![](https://pic4.zhimg.com/v2-5afd38bd10b279f3a572b13cda399233_b.jpg)
 
@@ -789,12 +795,30 @@ CLIP这个模型最大的亮点：<span style='color:red'>zero-shot图像分类<
 
 整体结构类似CLIP，但是引入了单模态和多模态的预训练任务，单模态的任务有MLM，MIM，多模态有GC，ITM等，同时将融合两个模态的方式改为了Transformer
 
-#### BEiT-3
 
-BEiT-3模型输入变成了三部分，图，文，图文对，通过各自的自注意力机制和全联接网络
+#### BEiT 系列
 
 
-#### BLIP
+##### BEiT-1
+
+【2022-9-3】 哈工大+微软 推出 `BEiT`, Bidirectional Encoder representation from Image Transformers
+- 1、将生成式预训练`MLM`方法从NLP迁移至CV，引入 ViT， 实现CV大规模自监督预训练；
+  - masked image modeling (MIM) 任务
+- 2、统一多模态大模型`BEiT-3`前身。
+
+论文
+- [BEIT: BERT Pre-Training of Image Transformers](https://arxiv.org/pdf/2106.08254)
+
+##### BEiT-3
+
+
+`BEiT-3`模型输入变成了三部分: `图`，`文`，`图文对`，通过各自自注意力机制和全联接网络
+
+
+#### BLIP 系列
+
+
+##### BLIP-1
 
 【2022-2-15】Saleforce Research
 
@@ -810,7 +834,7 @@ BEiT-3模型输入变成了三部分，图，文，图文对，通过各自的�
 具体如下：
 - 1）提出一种**多模混合** encoder-decoder 架构 (MED)：可以作为独立的编码器，也可以分别作为基于图像的文本编码器和解码器。通过联合三种视觉-语言 的目标进行学习：图文对比学习、图文匹配 和 基于图像的语言建模(image-conditioned language modeling)。
 
-BLIP结合了encoder和decoder，形成了统一的理解和生成多模态模型。
+BLIP 结合了encoder和decoder，形成了统一的理解和生成多模态模型。
 - 论文：[BLIP: Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation](https://arxiv.org/pdf/2201.12086.pdf)
 - 代码：[BLIP](https://github.com/salesforce/BLIP)
 
@@ -846,9 +870,9 @@ BLIP两大亮点分别为：
 - 2）在 image caption 任务中，CIDEr 指标提升 2.8%
 - 3) 在 VQA 本方案相对 SOTA 算法获得了 1.6% 的VQA score 指标提升
 
-#### BLIP-2 （Flamingo）
+##### BLIP-2 （Flamingo）
 
-【2023-1-30】BLIP-2 基于  Flamingo
+【2023-1-30】BLIP-2 基于 Flamingo
 -  论文：[BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597)
 - 代码：[blip-2](https://huggingface.co/docs/transformers/main/model_doc/blip-2), [lavis](https://github.com/salesforce/LAVIS/tree/5ee63d688ba4cebff63acee04adaef2dee9af207)
 
@@ -1193,7 +1217,7 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 - 多模态模型大多聚集在视觉、文本上，而语音也需要关注，LLaSM 是端到端多模态语音语言模型，能遵循语音→语言指令
 - LLaSM 是首个支持中英文语音 - 文本多模态对话的开源可商用对话模型。通过便捷的语音输入的交互方式，大幅改善过往以文本为输入的大模型的使用体验，同时有效避免基于 ASR 解决方案的繁琐流程以及可能引入的错误。
 
-#### NExT-GPT
+#### NExT-GPT 任意模态
 
 【2023-9-18】[无限接近AGI！新加坡华人团队开源全能“大一统”多模态大模型](https://www.toutiao.com/article/7280048966555992617)
 
@@ -1202,20 +1226,20 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 - 另一方面是只关注于多模态内容在**输入端**的理解，而不能以任意多种模态的灵活形式输出内容。
 
 已有多模态
-- 支持**图像类**的MiniGPT-4、BLIP-2、Flamingo、InstructBLIP等
-- 支持**视频类**的Video-LLaMA, PandaGPT等
-- 支持**声音类**的SpeechGPT等等。
+- **图像类**: `MiniGPT-4`、`BLIP-2`、`Flamingo`、`InstructBLIP`等
+- **视频类**: `Video-LLaMA`, `PandaGPT`等
+- **声音类**: `SpeechGPT`等等。
 
-然而目前的多模态LLM，距离真正人类级别的AGI，总感觉少了点「那味儿」。
+目前的多模态LLM距离真正人类级别的AGI，总感觉少了点「那味儿」。
 
-新加坡国立大学NExT++实验室华人团队近期开源了一种支持任意模态输入和任意模态输出的「大一统」多模态大模型，[NExT-GPT](https://next-gpt.github.io)(GPT of Next generation)，可以支持任意模态输入到任意模态输出。
+新加坡国立大学`NExT++`实验室华人团队近期开源了一种支持任意模态输入和任意模态输出的「大一统」多模态大模型，[NExT-GPT](https://next-gpt.github.io)(GPT of Next generation)，支持**任意模态**输入到**任意模态**输出。
 - 代码开源：[NExT-GPT](https://github.com/NExT-GPT/NExT-GPT), 上线了Demo系统
-- 论文地址：[](https://arxiv.org/abs/2309.05519)
+- 论文地址：[NExT-GPT: Any-to-Any Multimodal LLM](https://arxiv.org/abs/2309.05519)
 
-NExT-GPT又是如何实现任意模态输入到任意模态输出的呢？
+NExT-GPT 如何实现任意模态输入到任意模态输出的呢？
 
-原理简单，在技术层面上「没有显著的创新点」——
-- 通过有机连接现有的开源 1）**LLM**，2）**多模态编码器**和 3）各种模态**扩散解码器**，便构成了NExT-GPT的整体框架，实现任意模态的输入和输出，可谓大道至简。
+技术层面上「没有显著的创新点」——
+- 通过有机连接现有的开源 1）**LLM**，2）**多模态编码器**和 3）各种模态**扩散解码器**，构成 NExT-GPT的整体框架，实现任意模态的输入和输出，可谓大道至简。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/13d78d7d7d2f40358ce85117d9be6aeb~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image?_iz=58558&from=article.pc_detail&x-expires=1695639711&x-signature=hL1txP43n4cDNFMznIs6Rr9%2BNOg%3D)
 
 模型呈现为一个「编码端-推理中枢-解码器」三层架构：
