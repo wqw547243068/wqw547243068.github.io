@@ -2084,6 +2084,15 @@ DP 是直接将一个 batch 的数据划分到不同的卡，但是多机多卡�
 
 ## Pytorch 分布式训练
 
+
+PyTorch 原生支持的并行模式：
+- 完全分片数据并行（full sharded data parallel，`FSDP`）
+- 混合分片数据并行（hybrid sharding data parallel，`HSDP`）
+- 张量并行（tensor parallel，`TP`）
+- 流水线并行（pipeline parallel，`PP`）
+- 序列并行（sequence parallel，`SP`）
+- 上下文并行（context parallel，`CP`）
+
 【2023-3-2】[PyTorch 分布式训练实现(DP/DDP/torchrun/多机多卡)](https://zhuanlan.zhihu.com/p/489011749)
 
 相对 Tensorflow，Pytorch 简单的多。分布式训练主要有两个API：
