@@ -3249,6 +3249,112 @@ echo "${ARR[@]^}" # => Hello World 数组元素首字母大写
 ```
 
 
+#### 字符串包含
+
+【2024-7-18】实测结果
+
+```sh
+cur_dir=$(pwd)
+
+# 通配符 [[ $A == *$B* ]]
+# 正则匹配
+[[ $cur_dir =~ "change_query" ]] && { 
+    echo "目标目录: $cur_dir"
+} || {
+    echo "非目标目录, 退出: $cur_dir"
+    exit 0
+}
+
+main_dir="${cur_dir%%/change_query}"
+# main_dir='/mnt/bn/flow-algo-intl/wangqiwen'
+# 项目主目录
+project_dir="${main_dir}/change_query"
+data_dir="${project_dir}/data"
+# 识别结果
+echo -e "自动识别结果:\n本地主目录: ${main_dir}\n项目主目录: ${project_dir}\n数据目录: ${data_dir}"
+```
+
+##### 方法一：grep查找
+
+```sh
+strA="long string"
+strB="string"
+result=$(echo $strA | grep "${strB}")
+if [[ "$result" != "" ]]
+then
+    echo "包含"
+else
+    echo "不包含"
+fi
+```
+
+先打印长字符串，然后在长字符串中 grep 查找要搜索的字符串，用变量result记录结果，如果结果不为空，说明strA包含strB。如果结果为空，说明不包含。
+
+这个方法充分利用了grep 的特性，最为简洁。
+ 
+
+##### 方法二：正则
+
+正则表达式
+
+```sh
+strA="helloworld"
+strB="low"
+if [[ $strA =~ $strB ]]
+then
+    echo "包含"
+else
+    echo "不包含"
+fi
+```
+
+利用字符串运算符 =~ 直接判断strA是否包含strB。
+
+##### 方法三：通配符
+
+```sh
+A="helloworld"
+B="low"
+if [[ $A == *$B* ]]
+then
+    echo "包含"
+else
+    echo "不包含"
+fi
+```
+
+用通配符*号代理strA中非strB的部分，如果结果相等说明包含，反之不包含。
+
+
+##### 方法四：case in 语句
+
+```sh
+thisString="1 2 3 4 5"    # 源字符串
+searchString="1 2"        # 搜索字符串
+case $thisString in 
+    *"$searchString"*) echo  "包含";;
+    *) echo  "不包含" ;;
+esac    
+```
+
+
+
+##### 方法五：字符串替换
+
+替换子串后，字符串是否跟原来相同
+
+```sh
+STRING_A="helloworld"
+STRING_B="low"
+if [[ ${STRING_A/${STRING_B}//} == $STRING_A ]]
+then
+    echo  "不包含"
+else
+    echo  "包含"
+fi
+```
+
+
 ### 数组
 
 - 代码：
