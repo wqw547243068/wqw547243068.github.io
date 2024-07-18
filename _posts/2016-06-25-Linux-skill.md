@@ -3,7 +3,7 @@ layout: post
 title:  "Linux技能大全"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: Linux linux Shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 pssh pdsh
+tags: Linux linux Shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 pssh pdsh yaml
 excerpt: Linux使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -3171,6 +3171,8 @@ date -d `date +%y%m01`"-1 day" # 上月最后一天
 date -d '3 month 1 day'    # 显示3月零1天以后的时间
 date -d "n days ago" +%y%m%d # 或n天前的
 date -d '25 Dec' +%j    #显示12月25日在当年的哪一天
+# [2024-7-18] 设置参考日期(20231010), 前3天
+date -d '3 days ago 20231010' +%Y%m%d
 
 date -d "-3 day" # 3天前
 date -d "+3 month"  # 3月后
@@ -3551,6 +3553,48 @@ cat file.txt | while read line; do
     echo $line
 done
 ```
+
+
+#### yaml 文件
+
+yaml 示例
+
+```json
+configuration:
+  account: account1
+  warehouse: warehouse1
+  database: database1
+  object_type:
+    schema: schema1
+    functions: funtion1
+    tables:
+      - table: table1
+        sql_file_loc: some_path/some_file.sql
+      - table: table2
+        sql_file_loc: some_path/some_file.sql
+```
+
+代码
+
+```sh
+function parse_yaml {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\):|\1|" \
+        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
+}
+```
+
 
 ### 随机抽样
 
@@ -3942,7 +3986,7 @@ seq -w 8 10
 
 ### 自定义通用函数
 
-common.sh包含的函数：
+common.sh 包含的函数：
 - 打日志
 - 发邮件
 - 发短信
@@ -3968,6 +4012,7 @@ common.sh包含的函数：
 #===============================================================================
  
 ulimit -c unlimited
+
 #init_log <log_file>
 init_log()#清空log文件打一条日志
 {
@@ -3987,11 +4032,10 @@ log()
     echo -e "\n--------------------------[$log_count]th log--------------------------------\n"
     echo -e `date "+%Y-%m-%d %H:%M:%S"`"\t$@"
 }
- 
+
 #read_mail <mail.conf> 结果在mail_receivers变量中
 read_alarm_mail(){
     declare -i flag=0 # 整型局部变量
- 
     if [ -f "$1" ];then
         cut -d "#" -f 1 "$1" |grep -v "^$" >tmp.$$
         while read line; do
@@ -4015,26 +4059,26 @@ read_alarm_mail(){
 #$2:    需要被告警的详细内容
 send_alarm_mail( )
 {
-        if [ $# -ne 2 ]; then
-                return -1
-        fi
-    #获取收件人列表
-        echo "$2" | mail -s "$1" "$mail_receivers"
-        if [ $? -ne 0 ]; then
-                log "[`date "+%Y-%m-%d %H:%M:%S"`] [ERROR] 发送到 $mail_receivers 的邮件($1)失败!"
-        else
-                log "[`date "+%Y-%m-%d %H:%M:%S"`] [NOTE] 成功将邮件($1---$2) 发送至 $mail_receivers !"
-        fi
-        return 0
+    if [ $# -ne 2 ]; then
+        return -1
+    fi
+    # 获取收件人列表
+    echo "$2" | mail -s "$1" "$mail_receivers"
+    if [ $? -ne 0 ]; then
+        log "[`date "+%Y-%m-%d %H:%M:%S"`] [ERROR] 发送到 $mail_receivers 的邮件($1)失败!"
+    else
+        log "[`date "+%Y-%m-%d %H:%M:%S"`] [NOTE] 成功将邮件($1---$2) 发送至 $mail_receivers !"
+    fi
+    return 0
 }
 #对所有手机报警
 #$1:    报警内容
-send_list_msgs( )
+send_list_msgs()
 { # 传入两个参数: $1 --> 报警短信内容  $n (n>=2) --> 报警接收人的手机号
-        if [ $# -lt 2 ]; then
+    if [ $# -lt 2 ]; then
         echo "短信报警函数send_list_msgs参数不够!"
-                return -1
-        fi
+        return -1
+    fi
     local i="-"
     local phone_number="-"
     for((i=2;i<=$#;i++))
