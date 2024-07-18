@@ -3574,7 +3574,46 @@ configuration:
         sql_file_loc: some_path/some_file.sql
 ```
 
-代码
+代码1
+
+```sh
+#! /bin/bash
+
+# 关键词
+key="vehicle_type"
+
+#  yaml文件位置
+yaml_name="/home/xxxx/vehicle_param/vehicle_params.yaml"
+
+
+function read_key(){
+    flag=0
+    # 逐行读取内容
+    cat $1 | while read LINE
+    do 
+        if [ $flag == 0 ];then
+            # 属性开始标志 vehicle_type:
+            if [ "$(echo $LINE | grep "$key:")" != "" ];then
+                if [ "$(echo $LINE | grep -E ' ')" != "" ];then
+                    # 截取出key值
+                    echo "$LINE" | awk -F " " '{print $2}'
+                    continue
+                else
+                    # 如果关键词后面没有空格，则跳出继续查找
+                    continue
+                fi
+            fi
+        fi
+    done
+}
+
+value=($(read_key $yaml_name))
+echo ${value}
+```
+
+代码2
+
+
 
 ```sh
 function parse_yaml {
