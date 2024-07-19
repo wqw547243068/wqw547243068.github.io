@@ -1024,6 +1024,7 @@ META 发布 [LIMA: Less Is More for Alignment](https://arxiv.org/pdf/2305.11206)
 
 【2023-9-26】
 - QWen 技术报告 [QWEN TECHNICAL REPORT](https://arxiv.org/pdf/2309.16609)
+- 【2024-7-19】[QWen2 技术报告](https://zhuanlan.zhihu.com/p/709272621)
 - [通义千问-Qwen技术报告细节分享](https://zhuanlan.zhihu.com/p/658392609)
 - GitHub: [Qwen](https://github.com/QwenLM/Qwen)
 
