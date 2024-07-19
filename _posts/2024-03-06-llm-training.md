@@ -115,6 +115,183 @@ SFT-训练参数
 
 
 
+## 二次开发
+
+
+[二次开发方法分类](https://zhuanlan.zhihu.com/p/708059967)
+- 1、`领域知识注入`：Continue PreTraining(`增量预训练`): 一般垂直大模型是基于通用大模型进行二次开发，用领域内的语料进行继续预训练。
+- 2、`知识召回`（激发）：SFT( Supervised Finetuning,`有监督微调`): 通过SFT激发大模型理解领域内的各种问题, 并进行回答的能力。
+- 3、基础`偏好对齐`：奖励模型（RM）、强化学习（RL），让大模型的回答对齐人们的偏好，比如行文风格。
+- 4、高阶`偏好对齐`：`RLHF`(人类反馈强化学习训练)、`DPO`(直接偏好优化)。
+
+3个阶段:
+- (1)、第一阶段: `CPT`(Continue PreTraining)**增量预训练**，在海量领域文档数据上二次预训练GPT模型，以注入领域知识。
+- (2)、第二阶段: `SFT`(Supervised Fine-tuning)**有监督微调**，构造指令微调数据集，在预训练模型基础上做指令精调，以对齐指令意图。
+- (3)、第三阶段 : `RLHF`和`DPO`二选一。
+
+### Post-pretraining
+
+
+Post-pretraining（后期预训练）是一种在模型的初始预训练和最终微调之间进行的训练方法。这种方法通常用于进一步适应模型以处理特定类型的数据或任务。
+- 在通用预训练模型的基础上，对模型进行额外训练，使模型更好地适应特定的领域或任务
+- 数据集: 某个领域，但比微调阶段使用的数据集更大、更广泛。
+- 训练方法: 监督学习，自监督学习，取决于数据类型和训练目标, 如语言建模、文本分类、实体识别等
+
+Post-pretraining 允许模型在保持通用性的同时，**增强对特定领域的理解**，有助于模型在后续的微调阶段更快速地适应特定任务。
+- 与 SFT 相比，Post-pretraining 在微调之前提供了一个**中间步骤**，有助于模型更平滑地过渡到特定任务上。
+- 与 RLHF 相比，Post-pretraining 不依赖于复杂的**奖励机制**或**人类反馈**，而是通过大量的领域特定数据来提升模型性能。
+
+总结
+- Post-pretraining 是一个介于`预训练`和`微调`之间的训练阶段
+- 使用大量的领域特定数据来进一步调整模型，使其更好地理解特定领域的语言和任务。
+- 这个阶段不需要复杂的奖励机制，而是通过传统的监督或自监督学习方法来实现模型性能的提升。
+
+
+### 增量预训练
+
+
+`增量预训练`是属于`后期预训练`（Post-pretraining）
+
+`增量预训练`也叫`领域自适应预训练`（domain-adapter pretraining），即在所属领域数据上继续预训练。
+
+`自适应预训练`（domain-adapter pretraining）的方法可以分为三类：Prompt-based方法、representation-based方法和model mixed-based方法。
+- Prompt-based 方法
+- representation-based 方法
+- model mixed-based 方法
+
+
+#### 1. Prompt-based 方法
+
+使用模型全局tuning的方式适应下游任务时，预训练模型的**泛化性能会被严重削弱**
+
+因此, Prompt-based方法在保持预训练模型参数权重不变的条件下， 增加额外可学习的 Prompt tuning 模块来实现对下游任务的泛化，这样就能较好地保持原模型的泛化性能。
+
+![](https://pic2.zhimg.com/80/v2-636e5b60c86845866c230e14b68b91fd_1440w.webp)
+
+`VPT` 虽然可以较好地保留模型的泛化性，但是面对新的任务时，以往的Prompt模块的知识同样被覆盖，依旧遭遇了`灾难性遗忘`问题。
+
+为此，有学者提出了`Prompt Pool` 概念，设计了Prompt模块的集合，即`P={P1,P2,…,Pm}`(m表示该Pool的最大尺寸)。
+
+Prompt Pool 有效避免了单一Prompt的问题，但是Pool的设计使得其需要进行Prompt Selection操作，也就是需要将特定任务与其对应的Prompt模块进行索引匹配。
+
+`L2P`算法是一种较为常用的 Prompt selection算法，该算法设计了一种Key-Query的Prompt匹配方法，为每一个Prompt提供一个可学习的索引键k，即 `P={(k1,P1),(k2,P2),…,(km,Pm)}`。
+
+L2P利用预训练模型将输入特征编码到Key对用的嵌入空间中，然后利用余弦距离损失函数在已有的Pool中搜索最近似的Key。接着，利用如交叉熵损失等方法对搜索到的Key对应的Prompt进行进行优化。
+
+![](https://pic4.zhimg.com/80/v2-a74fdb8100faa61ed64f16034fe6b62b_1440w.webp)
+
+类似的Prompt Selection 算法很多，如DualPrompt算法，该算法将Prompt进行解耦，分化为General Prompt和Expert Prompt。General Prompt面向所有任务，为所有任务中共享信息，而Expert Prompt针对独立任务，数量与任务量一致。其采用了和L2P相同的key-query匹配策略。
+
+![](https://pic2.zhimg.com/v2-b679b15d5076609da5e0c06bba1e5d49_b.jpg)
+
+Prompt Selection虽然可行，但仍是硬匹配，选项有限。基于注意力信息加权的Prompt Combination方法则有效缓解了该问题。如CODA-Prompt通过对Prompt Pool进行注意力机制嵌入，为每个注意力赋予自适应权重，进而求算全局Key-Query的加权和，实现可学习式Prompt组合。我觉得稀疏式注意力Prompt combination应该也是很有趣的研究。
+
+![](https://pic1.zhimg.com/v2-25e62c49e297988f38acac5ac17efc0c_b.jpg)
+
+从根本上来说Prompt Combination仍受制于Prompt Pool的范围。为此， 许多学者则开展**Prompt Generation**有关的研究，如**DAP**，其利用MLP进行特定任务提示信息的编码生成。
+
+![](https://pic2.zhimg.com/v2-216e2fcb0aae29ad72042f6a3dbf3971_b.jpg)
+
+优点：
+- Prompt 有助于弥合domain gap，并可有效地对特定任务的知识进行编码。
+- Prompt Design 属于lightweight模块，与input feature具有相同的维度，因此保存Prompt是parameter-efficient，适用于边缘场景。
+- Prompt Pool作为预训练模型的外部存储器，其支持自适应知识的检索和特定实例的预测。
+
+缺点：
+- 一些研究发现L2P中的prompt selection过程收敛到一个单点，使得prompt selection只集中在特定子集上。
+- 由于key和query在整个学习过程中不断变化，这些参数的更新将会消除先前任务的参数，导致matchimg-level和prompt-level的遗忘，使prompt selection成为CL的瓶颈。
+- 固定大小的Prompt Pool会使得模型的表示能力受限。但是，若Prompt Pool随着数据的发展而增长，可能会为旧任务检索新的提示，导致训练和测试之间的不匹配。
+- 最后，一些研究发现prompt-based CL的性能低于简单的representation-based的baseline性能。并且批量提示有损比较的公平性。
+
+#### 2. Representation-based 方法
+
+representation-based 方法直接利用预训练模型强大的泛化性和通用性来实现持续学习。
+- 比如Simple-CIL方法，是ADAM算法原文中提出的Baseline，Simple-CIL冻结预训练模型参数，并通过求算类别中心的方式来构建Classifier。在面对很多类别时，计算同类的embedding或features的平均值，并将该平均值作为该类别的标准（prototype），最后结合类别标准与余弦比较的方法替换模型的原始Classifier。
+
+虽然基于prototype的方法存在一定的作用，但是并未很好地适应下游任务。为此，一些研究在基于prototype方法的基础上结合了外置参数高效调节模块或者外置适配器来使得预训练模型更加适应下游任务，如ADAM等。
+
+![](https://pic3.zhimg.com/80/v2-7ca9e14032444706e8b18ae320e2930e_1440w.webp)
+
+ADAM等算法在进行类别标准设定时，类别标准之间的仍存在联系，导致任务效果降低。为此，RanPAC算法则采用online LDA classifier来去除原始方法prototype计算结果之间的相关性，加大类别间的分布差异。此外，RanPAC算法利用Random Projection layer将features映射到高维空间中，并在高维空间中进行prototype的计算，以使得特征分布符合高斯拟合。
+
+![](https://pic1.zhimg.com/80/v2-1591726ea8ce39f4aebe13ee91777358_1440w.webp)
+
+相较于前面将预训练模型的通用语和适应性分离处理的方式，SLCA算法采用了差异学习率调整和特征经验重播的方式进行持续学习研究。该算法使用较小的learn rate调整模型主体部分，而使用较大的learn rate 调节模型的classifier，以实现模型的逐步微调和classifier的快速适应。为了避免忘记以前的分类器，SLCA还对分类特征分布进行建模，并重播它们以校准classifier。
+
+![](https://pic3.zhimg.com/80/v2-3bd9f6a7f9eaff4ca9157cb6c96f4cee_1440w.webp)
+
+优点：
+- 由于class prototype代表了对应类别最常见的标准格式，因此利用其构建模型具有直观和可解释性。
+- Representation-based 方法主要是冻结backbone和更新classifier权重。lightweight的更新成本增加了其现实应用的可行性。
+
+缺点：
+- 将不同模型的特征连接起来形成class prototype，容易造成模型信息冗余。例如，不同的backbone中存在重复提取共享特征。
+- 当下游任务涉及多个领域时，在第一阶段调整模型不足以弥合数据集之间的领域差距。在这种情况下，不断调整backbone可能更适合提取特定于任务的特征。
+
+#### 3. Model Mixture-based 方法
+
+Model Mixture-based 方法在持续学习工程中构建了一组模型，然后再推理阶段通过Model Ensemble和Model Merge来进行信息综合决策。
+
+Model Ensemble中，ESN算法凭借预训练模型强大的通用性，构建多个classifier，在面对新任务重新初始化和训练一个新的classifier。在推理时，采用投票策略来整合多个模型的结果进行最终决策。
+
+由于Model Ensemble的核心因素取决于模型的方差，一些研究通过增强模型之间的多样性来替代使用相同的预训练模型构建不同的classifier。如PromptFusion利用预训练的ViT和CLIP，并在推理过程中动态地对logit进行组合，即f(x) = λ fvit (x) +(1−λ)fclip(x)。
+- ![](https://pic4.zhimg.com/80/v2-9cf0c968663f7460ba048ca73aafbee7_1440w.webp)
+
+与多个backbone的集成不同，PROOF采用了仅使用单个CLIP的更全面的推理方法。由于CLIP支持视觉和文本特征的跨模态匹配，因此PROOF设计了一个三层集成，考虑image-to-text、image-to-image prototype、image-to-adjusted text的跨模态融合。
+- ![](https://pic1.zhimg.com/80/v2-f808c6fe848a58565456843c3e040fe8_1440w.webp)
+
+Model Merge将多个不同的模型合并为一个统一的模型，无需要额外的训练。LAE定义了online和offline学习协议，online模型通过交叉熵损失进行更新，目的是在新的任务中获取新的知识。离线模型则通过Model Merge进行更新，例如指数移动平均(EMA): θ offline←α·θ offline +(1−α)·θ Online，其中α为权衡参数。LAE仅将EMA应用于参数高效调谐模块(如prompt)，其利用online和offline模型的最大logit进行推断。
+- ![](https://pic4.zhimg.com/80/v2-300c71cd7013a62a2ac99c3baa8cb4e3_1440w.webp)
+
+与LAE一样，ZSCL将合并技术应用于CLIP模型，目的是在持续学习过程中保持其zero-shot性能。然而，随着EMA中权衡参数的改变，CLIP性能不再具有鲁棒性。因此，ZSCL建议每隔几次迭代合并参数，从而在模型训练期间创建平滑的损失轨迹。
+- ![](https://pic2.zhimg.com/80/v2-5efd3c33952783712c64fc3b7105fb6d_1440w.webp)
+
+此外，CoFiMA注意到EMA在Merge过程中对每个参数的重要性是相等的，CoFiMA 在Merge过程中插入Fisher information（费雪信息）作为每个参数的估计重要性。
+- ![](https://pic2.zhimg.com/80/v2-53acb68fb1e700aebcddd71b76f5b51d_1440w.webp)
+
+
+优点：
+- 学习多个模型可以做出不同的决策。因此，使用Model Ensemble和Model Merge自然会产生更健壮的结果。
+- 由于直接合并模型进行统一预测，因此可以调整前模型和后模型的权重，以突出不同阶段之间知识共享的重要性。
+- 由于模型集将在推理过程中合并，因此最终的推理成本不会随着模型集中添加更多模型而增加。
+
+缺点：
+- Model Ensemble需要保存所有的历史模型，并消耗大量的内存缓冲区。虽然基于Model Merge不需要这么大的成本，但合并大型backbone的权重也需要大量的额外计算。
+- 决定Merge哪些参数仍然是问题。
+
+### 微调 (Fine-tuning)
+
+这个阶段，预训练模型（可能经过了Post-pretraining）被进一步训练，以优化特定任务上的表现。
+
+微调通常在一个相对较小的、特定任务的数据集上进行，这个数据集包含了明确的标签，模型通过监督学习来进行优化。
+
+微调目的: 调整模型的参数，使其能够在特定任务上做出准确的预测。
+
+### SFT 监督微调
+
+SFT (Supervised Fine-Tuning) 是微调的一种形式，强调在有监督的环境下进行。
+
+SFT阶段，用**特定领域**数据或**私有化**数据, 对预训练模型进行改良。
+
+这一阶段需要指令微调数据，数据集通常由输入（用户问题）和输出（标准答案）两个字段构成。标准答案通常由专家标注获得。
+- 1、SFT是一种简单的微调方法，它使用带有正确答案的数据集来继续训练一个预训练的模型。
+- 2、这种方法依赖于大量的标注数据，即每个输入都有一个预先定义的正确输出。
+- 3、微调的目的是使模型更好地适应特定的任务或领域【垂直领域】，比如特定类型的语言理解或生成任务。
+- 4、SFT通常不涉及复杂的策略或奖励函数，只是简单地最小化预测输出和真实输出之间的差异。
+
+
+### RLHF 人类反馈强化学习
+
+RLHF 利用人类反馈来训练强化学习模型。
+
+在RLHF中，模型通过与人类交互获得反馈，这些反馈作为奖励信号来指导模型的行为。RLHF通常用于训练能够生成更自然、更符合人类偏好的文本或其他输出的模型。这种方法特别适用于需要模型理解和适应人类偏好的场景。
+- 1、RLHF (Reinforcement Learning from Human Feedback) 是一种更复杂的训练方法，结合了监督学习和强化学习。
+- 2、在RLHF中，模型首先通过`监督学习`进行预训练，然后通过人类提供的反馈来进行强化学习。
+- 3、人类反馈可以**直接**对模型输出评分，或模型输出之间做出选择的**偏好**。
+- 4、强化学习部分涉及到定义一个`奖励函数`，根据人类反馈来调整模型的行为，以优化长期的奖励。
+- 5、RLHF目标: 训练出一个在没有明确标签的复杂任务中表现良好的模型，这些任务可能需要更细致的判断和调整。
+
+
 ## ChatGPT 三步走
 
 InstructGPT 分为如下三大步：
