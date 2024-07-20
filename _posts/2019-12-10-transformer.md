@@ -2190,6 +2190,31 @@ Grouped-Query Attention ：对于更大参数量、更大的 context length、�
 详细：iconetched.ai
 
 
+#### TransNAR
+
+拯救Transformer推理能力DeepMind新研究，TransNAR：给模型嵌入算法推理大脑
+
+【2024-6-19】DeepMind 论文提出用**混合架构**方法，解决Transformer模型的**推理**缺陷。
+- 论文地址：[Transformers meet Neural Algorithmic Reasoners](https://arxiv.org/abs/2406.09308)
+
+将Transformer的NLU技能与基于GNN的神经算法推理器（NAR）的强大算法推理能力相结合，可以实现更加泛化、稳健、准确的LLM推理。
+- TransNAR：用预训练NAR增强Transformer
+- ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.05_879FCE72BC2CB9C3039E5FC2ADFE91C3.png)
+
+神经算法推理（NAR）由作者之一Petar Veleckovic, 2021年与人合著的一篇论文中提出，并被接收为Patterns期刊的opinion paper。
+- 论文地址：[Neural Algorithmic Reasoning](https://arxiv.org/abs/2105.02761)
+
+NAR被称为「构建能执行算法的神经网络的艺术」。算法与深度学习的本质不同，但如果神经网络能够更好地模仿算法，它甚至可能具备算法的强泛化性。
+
+NAR 整体想法: 
+- 训练一个高维隐空间中的处理器网络P（processor network），旨在不断逼近算法的运行结果A(x)。
+- 但由于算法的输入和输出一般是图、树、矩阵等抽象、结构化的形式，这与深度学习模型高维、嘈杂且多变的输入很不兼容，因此还需要训练编码器f和解码器g，将抽象形式转换为自然形式。
+- ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.04_CDB708FC9A27BC289DDAB7A1F81FE99A.png)
+
+NAR 泛化能力似乎远远优于Transformer架构
+
+详见: [拯救Transformer推理能力！DeepMind新研究TransNAR：给模型嵌入「算法推理大脑」](http://lib.ia.ac.cn/news/newsdetail/68837)
+
 ### 计算效率
 
 attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
