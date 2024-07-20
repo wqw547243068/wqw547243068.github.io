@@ -3,7 +3,7 @@ layout: post
 title:   AI顶级机构
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清
+tags: OpenAI ChatGPT AI 开源 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman
 excerpt: 世界顶级AI机构（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -938,6 +938,13 @@ Ilya 在 OpenAI 属于精神领袖的存在，他的技术直觉和品味很好�
 - 因为早年 `Seq2Seq` 也是他搞出来的，所以当google把`transformer` 搞出来时，他的嗅觉最灵敏，知道这东西能解决`LSTM`存在的记忆问题，从而能够scale。而大部分人看到`transformer`并不会产生这种认知。
 - 而ChatGPT基本原理和之前的OpenAI Dota Five，Alphastar 没有本质区别，都是先`监督学习`再`强化学习`，只是**变成语言通用**场景了。单单这个认知也是太强了！
 
+
+##### SSI 公司
+
+【2024-6-19】Ilya 正式出山，建立「安全超级智能」 [SSI 公司](https://ssi.inc/), Safe Superintelligence Inc.
+- 强调只有一个重点、一个目标、一个产品，用技术确保大模型将要带来的超级人工智能对人类是安全的。
+
+「AI 将万世不朽，它的诞生如同开天辟地」。当 Ilya 目光炯炯地谈及 AI 的进程，他也最有资格断言，并引领着，「迈向 AGI 的激动人心又危险的旅程」。
 
 
 #### Wojciech Zaremba 攻坚手
