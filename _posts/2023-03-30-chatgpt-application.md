@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -1661,6 +1661,10 @@ Smart Siri 不足：
 - 2）AvatarMaster，根据用户个人资料生成3D数字化身，从外表和面部特征到服饰选择，均支持多种个性化功能；用户创建和定制虚拟分身后，可在视频会议、游戏通话以及多个平台之间以动画和流媒体形式展现自己；Legion 7i等部分联想Legion设备系统都配备了AvatarMaster软件，将流媒体和协作体验提升到新的水平；
 - 3）Yoga Creator Zone，是专为创作者、艺术家等用户设计的生成式AI助手，旨在为想象力赋能，提供图像生成工具，可将基于文本的描述或草图转换为图像，无需输入任何复杂的提示、代码或设置。用户只需输入任何预想的内容，系统即可快速生成相应的视觉图像
 
+
+【2024-7-12】个人实践: [Easy-RAG](https://github.com/yuntianhe2014/Easy-RAG), 用 ollama 和本地llm 实现语言操控电脑
+- langchain_experimental 包开发，基于ollama的大模型，去注册tool，并且调用
+- [详见](https://mp.weixin.qq.com/s/FFAptDBJF5NfP56Uqq4lfA)
 
 #### Friend
 
