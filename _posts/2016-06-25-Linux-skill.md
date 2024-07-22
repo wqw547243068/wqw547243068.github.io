@@ -3125,7 +3125,9 @@ while true; do
 done
 ```
 
-#### Case/switch
+#### Case
+
+类似 switch 用法
 
 ```sh
 case "$1" in
@@ -3137,6 +3139,20 @@ case "$1" in
     ;;
 esac
 ```
+
+【2024-7-22】 实践
+
+```sh
+[ $# -lt 1 ] && { cur_dir=`pwd`; echo "未指定环境, 开始自动检测"; } || { cur_dir=$1; echo "使用传入的参数环境, $1"; }
+env="cn"
+case $cur_dir in 
+   *"flow-algo-cn"*) env="cn"; echo "国内环境";;
+   *"flow-algo-intl"*) env="va"; echo "美国环境";;
+   *"flow-algo-my2"*) env="my2"; echo "马来西亚环境";;
+   *) echo "默认环境";;
+esac
+```
+
 
 ### 时间日期
 
