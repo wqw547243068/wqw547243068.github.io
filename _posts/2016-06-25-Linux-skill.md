@@ -2903,6 +2903,23 @@ result="$(myfunc)"
 
 #### 参数
 
+【2024-7-22】参数解析, [详见](https://blog.csdn.net/woailyoo0000/article/details/78981412)
+- 手工处理: `$1`~`${10}`
+- `getopts`: shell内置，不支持长选项, 如: --a=1
+- `getopt`: 外部工具,支持长选项
+
+`getopt` 与 `getopts` 都是 Bash 中获取命令行参数的工具。
+
+两者比较
+- （1）getopts 是 Shell **内建**命令， getopt 是一个独立外部工具
+- （2）getopts 使用语法**简单**， getopt 使用语法较**复杂**
+- （3）getopts 不支持**长参数**（如：--option ），getopt 支持
+- （4）getopts 不会重排所有参数的顺序，getopt 会**重排参数顺序**
+- （5）getopts 为了代替 getopt 较快捷的执行参数分析工作
+
+
+##### $1
+
 ```sh
 $0 # 脚本本身的名称
 $1 … $9 # 参数 1 ... 9
@@ -2915,6 +2932,137 @@ $@ # 所有参数，从第一个开始
 $- # 当前选项
 $_ # 上一个命令的最后一个参数
 ```
+
+
+
+
+##### getopts
+
+用法
+
+```sh
+#!/bin/bash
+
+# 选项后面的冒号, 表示该选项需要参数
+while getopts "a:bc" arg
+do
+        case $arg in
+             a)
+                echo "a's arg:$OPTARG" #参数存在$OPTARG中
+                argument1=$OPTARG
+                ;;
+             b)
+                echo "b"
+                branch=1
+                ;;
+             c)
+                echo "c"
+                iscar=1
+                ;;
+             ?)  #当有不认识的选项的时候arg为?
+            echo "unkonw argument"
+        exit 1
+        ;;
+        esac
+done
+
+# 使用
+./test.sh -a arg -b -c
+./test.sh -a arg -bc
+```
+
+局限：
+1. 选项参数的格式必须是`-d val`，中间没有空格的`-dval`, 不行。
+2. 所有选项参数**必须写在其它参数的前面**，因为getopts是从命令行前面开始处理，遇到非`-`开头的参数，或者选项参数结束标记`--`就中止了，如果中间遇到非选项的命令行参数，后面的选项参数就都取不到了。
+3. 不支持`长选项`， 也就是`--debug`之类的选项
+
+
+【2024-7-22】 实践
+
+```sh
+cur_dir=`pwd`
+project='change_query' # session_cut
+mode='train'
+# 参数解析
+while getopts "e:p:m" arg
+do
+   case $arg in
+      e)
+         echo "环境路径(environment), $OPTARG";cur_dir=${OPTARG};;
+      p)
+         echo "项目名(project): $OPTARG";project=$OPTARG;;
+      m)
+         echo "运行模式(mode): $OPTARG";model='infer';;
+      ?)
+         echo "未知参数: $OPTARG";break;;
+   esac
+done
+echo -e "[参数解析]: \n\t环境路径(environment)\t${cur_dir}\n\t项目名(project)\t${project}\n\t运行模式(mode)\t${mode}"
+```
+
+##### 改进 getopt
+
+外部改进版
+
+```sh
+# 经过getopt 处理，具体选项。
+while true; 
+do
+    case "$1" in
+        -a|--a-long) echo "Option a" ; shift ;;
+        -b|--b-long) echo "Option b, argument \`$2'" ; shift 2 ;;
+        -c|--c-long)
+            # c has an optional argument. As we are in quoted mode,
+            # an empty parameter will be generated if its optional
+            # argument is not found.
+            case "$2" in
+                "") echo "Option c, no argument"; shift 2 ;;
+                *)  echo "Option c, argument \`$2'" ; shift 2 ;;
+            esac ;;
+        --) shift ; break ;;
+        *) echo "Internal error!" ; exit 1 ;;
+    esac
+done
+echo "Remaining arguments:"
+for arg do
+   echo '--> '"\`$arg'" ;
+done
+
+
+#!/bin/bash
+ 
+ARGS=`getopt -o "ao:" -l "arg,option:" -n "getopt.sh" -- "$@"`
+ 
+eval set -- "${ARGS}"
+ 
+while true; do
+    case "${1}" in
+        -a|--arg)
+            shift;
+            echo -e "arg: specified"
+            ;;
+        -o|--option)
+            shift;
+            if [[ -n "${1}" ]]; then
+                echo -e "option: specified, value is ${1}"
+                shift;
+            fi
+            ;;
+        --)
+            shift;
+            break;
+            ;;
+    esac
+
+
+# 使用
+./test -a  -b arg arg1 -c
+# 命令行中多了个arg1参数，在经过getopt和set之后，命令行会变为：
+-a -b arg -c -- arg1
+# $1指向-a,$2指向-b,$3指向arg,$4指向-c,$5指向--,而多出的arg1则被放到了最后。
+```
+
+
 
 ### 控制
 
