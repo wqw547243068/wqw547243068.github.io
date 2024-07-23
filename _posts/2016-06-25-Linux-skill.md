@@ -2740,13 +2740,19 @@ python hello.py < foo.txt      # 将 foo.txt 提供给 python 的标准输入
 
 sheel变量
 
+#### 默认值
+
 ```sh
 # 默认值
 ${FOO:-val} # $FOO，如果未设置，则为 val
 ${FOO:=val} # 如果未设置，则将 $FOO 设置为 val
 ${FOO:+val} # val 如果设置了$FOO
 ${FOO:?message} # 如果 $FOO 未设置，则显示消息并退出
+```
 
+#### 变量拼接
+
+```sh
 NAME="John"
 echo ${NAME}    # => John (变量)
 echo $NAME      # => John (变量)
@@ -2762,11 +2768,7 @@ echo {1..5} # 与 1 2 3 4 5 相同
 a=2
 $((a + 200))      # Add 200 to $a
 $(($RANDOM%200))  # 随机数 Random number 0..199
-# 特殊变量
-$? # 最后一个任务的退出状态
-$! # 最后一个后台任务的 PID
-$$ # shell PID
-$0 # shell 脚本的文件名
+
 
 # 注释：多行注释使用 :' 打开和 ' 关闭
 : '
@@ -2780,10 +2782,17 @@ hello world
 END
 ```
 
-特殊变量
+#### 特殊变量
 
 ```sh
 #!/bin/bash
+
+# 特殊变量
+$? # 最后一个任务的退出状态
+$! # 最后一个后台任务的 PID
+$$ # shell PID
+$0 # shell 脚本的文件名
+
 echo "Process ID: $$"
 echo "File Name: $0"
 echo "First Parameter : $1"
@@ -2792,6 +2801,16 @@ echo "All parameters 1: $@"
 echo "All parameters 2: $*"
 echo "Total: $#"
 ```
+
+#### 控制判断
+
+
+```sh
+# 如何避免变量控制？
+[ s"$choice" == "sy" ] # ①
+[ $choice -a $choice == "y" ] # ②
+```
+
 
 ### 变量作用域
 
@@ -3164,6 +3183,13 @@ fi
 # 等效表达: [[]] ＝ []
 [  exp1  -a exp2  ] = [[  exp1 && exp2 ]] = [  exp1  ]&& [  exp2  ] = [[ exp1  ]] && [[  exp2 ]]
 [  exp1  -o exp2  ] = [[  exp1 || exp2 ]] = [  exp1  ]|| [  exp2  ] = [[ exp1  ]] || [[  exp2 ]]
+# [2024-7-22]
+read -p "是否使用如下配置? [y/n]" choice
+echo "你选择了: $choice"
+# 如何避免变量控制？
+[ s"$choice" == "sy" ] # ①
+[ $choice -a $choice == "y" ] # ②
+[ $choice -a $choice == "y" ] && {  echo "开始训练..."; } || { echo "不训练, 退出...";exit 0; }
 
 # 整型比较
 count="$1"
