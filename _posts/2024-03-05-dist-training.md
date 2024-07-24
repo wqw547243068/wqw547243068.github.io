@@ -2084,7 +2084,6 @@ DP 是直接将一个 batch 的数据划分到不同的卡，但是多机多卡�
 
 ## Pytorch 分布式训练
 
-
 PyTorch 原生支持的并行模式：
 - 完全分片数据并行（full sharded data parallel，`FSDP`）
 - 混合分片数据并行（hybrid sharding data parallel，`HSDP`）
@@ -2107,6 +2106,16 @@ PyTorch 原生支持的并行模式：
 - `DDP`每个batch只需要一次数据传输；
 - `DP`可能存在多次数据同步(不用worker之间可能快慢不一样)。
 - DataParallel 通常慢于 DistributedDataParallel
+
+【2024-7-24】PyTorch 为数据分布式训练提供了多种选择。
+
+随着应用从简单到复杂，从原型到产品，常见的开发轨迹可以是：
+1. 数据和模型能放入**单个GPU**，单设备训练，此时不用担心训练速度；
+1. 服务器上有**多个GPU**，且**代码修改量最小**，加速训练用**单个机器多GPU** `DataParallel`；
+1. 进一步加速训练,且愿意写点代码，用单个机器多个GPU `DistributedDataParallel`；
+1. 应用程序**跨机器边界**扩展，用多机器`DistributedDataParallel`和**启动脚本**；
+1. 预期有错误（比如OOM）或资源可**动态连接和分离**，使用`torchelastic`来启动分布式训练。
+
 
 
 ### 1、DataParallel
