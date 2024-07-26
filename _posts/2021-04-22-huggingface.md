@@ -528,6 +528,11 @@ all_data = datasets.load_dataset('imdb', cache_dir=local_path)
 train_data, test_data = datasets.load_dataset('imdb', split =['train', 'test'], cache_dir=local_path)
 # 通过csv脚本加载本地的test.tsv文件中的数据集
 dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
+# 多种加载形式
+dataset = datasets.load_dataset('csv', data_files='my_file.csv') # 单个文件
+dataset = datasets.load_dataset('csv', data_files=['my_file_1.csv', 'my_file_2.csv', 'my_file_3.csv']) # 多文件, list 形式
+dataset = datasets.load_dataset('csv', data_files={'train':['my_train_file_1.csv','my_train_file_2.csv'],'test': 'my_test_file.csv'}) # 多文件, dict 形式
+
 
 # 手工保存到本地
 all_data.save_to_disk('my_imdb')
@@ -572,6 +577,76 @@ import pandas as pd
 df = pd.DataFrame({"a": [1, 2, 3]}) 
 dataset = Dataset.from_pandas(df)
 ```
+
+
+### 自定义数据集
+
+加载自定义数据, 只需要继承类（`torch.util.data.Dataset`），并且覆写 `__len__` 和 `__getitem__` 两个方法
+- 不覆写会直接返回错误。
+
+```py
+class MyDataset(Dataset):
+    def __init__(self, ...):
+        ...
+
+    def __len__(self):
+        ...
+        return len # 返回数据集数据个数
+
+    def __getitem__(self, index):
+        ...
+        return image, label # 返回第 index 个数据 + 标签
+```
+
+步骤：
+- 继承 `torch.util.data.Dataset`
+- `__init__`：改写`__init__`函数时，要添加对父类的初始化，一些参数初始化工作，定义一些路径或者变量
+- `__getitem__`: 加载数据，用于读取每一条数据，有个参数idx，对应的索引，用来获取一些索引的数据，使 `dataset[i]` 返回数据集中第i个样本。
+`__len__`：实现 len(dataset), 返回整个数据集的大小
+
+
+
+
+示例
+
+
+```py
+# 加载数据集，自己重写DataSet类
+class dataset(Dataset):
+    # image_dir为数据目录，label_file，为标签文件
+    def __init__(self, image_dir, label_file, transform=None):
+        super(dataset, self).__init__()    # 添加对父类的初始化
+        self.image_dir = image_dir         # 图像文件所在路径
+        self.labels = read(label_file)     # 图像对应的标签文件, read label_file之后的结果
+        self.transform = transform         # 数据转换操作
+        self.images = os.listdir(self.image_dir )#目录里的所有img文件
+    
+    # 加载每一项数据
+    def __getitem__(self, idx):
+        image_index = self.images[index]    #根据索引index获取该图片
+        img_path = os.path.join(self.image_dir, image_index) #获取索引为index的图片的路径名    
+        labels = self.labels[index]   # 对应标签
+ 
+        image = Image.open(img_name)
+        if self.transform:
+            image = self.transform(image)
+        # 返回一张照片，一个标签
+        return image, labels
+    
+    # 数据集大小
+    def __len__(self):
+        return (len(self.images))
+
+if __name__ == '__main__':
+    data = AnimalData(img_dir_path, label_file, transform=None) # 初始化类，设置数据集所在路径以及变换
+    dataloader = DataLoader(data, batch_size=128, shuffle=True) # 使用DataLoader加载数据
+    for i_batch,batch_data in enumerate(dataloader):
+        print(i_batch)#打印batch编号
+        print(batch_data['image'].size())#打印该batch里面图片的大小
+        print(batch_data['label'])#打印该batch里面图片的标签
+
+```
+
 
 ### 数据处理
 
