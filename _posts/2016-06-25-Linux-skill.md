@@ -557,12 +557,20 @@ Linux 将用户账号、密码等相关的信息分别存储在四个文件夹�
 修改文件权限
 
 ```sh
+ls -l a.txt
+# -rw-r--r-- 12 linuxize users 12.0K Apr  8 20:51 a.txt
+# |[-][-][-]-   [------] [---]
+#                 |       |
+#                 |       +-----------> Group
+#                 +-------------------> Owner
 # 格式
 chown -R owner_name:group_name folder_name
 chown -R new_owner_name directory1 directory2 directory3 # 多个目录
 # 示例
-sudo chown wqw test_dir # 修改文件所属权限（不含目录子文件）
+sudo chown wqw a.txt # 修改文件所属权限（不含目录子文件）
 sudo chown -R wqw test_dir # 递归修改文件所属权限
+chown wqw:root a.txt # 同事设置user和group
+chown --reference=b.txt a.txt # 参考 文件 b.txt 设置 a.txt 权限 
 ```
 
 `adduser` 与 `useradd` 在一些方面存在不同。
