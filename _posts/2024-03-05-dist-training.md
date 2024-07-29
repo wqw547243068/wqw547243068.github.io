@@ -153,7 +153,7 @@ part2
 
 Pytorch 分布式训练通信依赖`torch.distributed`模块，`torch.distributed`提供了`point-2-point communication` 和`collective communication`两种通信方式。
 - 点对点 point-2-point communication（`P2P`）提供了send和recv语义，用于任务间的通信。
-- 收集 collective communication（`CC`）提供了scatter/broadcast/gather/reduce/all_reduce/all_gather 语义，不同的backend在提供的通信语义上具有一定的差异性。
+- 收集 collective communication（`CC`）提供了 scatter/broadcast/gather/reduce/all_reduce/all_gather 语义，不同的backend在提供的通信语义上具有一定的差异性。
 
 训练大模型主要是CC通信
 
@@ -2732,6 +2732,53 @@ CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 t
 ```
 
 apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhuanlan.zhihu.com/p/158375055)
+
+
+### pytorch 分布式操作
+
+#### all_gather
+
+分布式操作
+- gather 操作用于在**不同节点间收集信息**
+- 首先初始化一个空Tensor列表tensor_list, 用于接收所有节点的信息
+- 然后调用 all_gather 在所有节点中得到包含每个节点本地张量的列表
+- 列表中有 world_size 个元素，每个元素都是bs大小，后续通过cat操作即可得到大小为 bs * world_size 表示
+
+Pytorch DDP 分布式数据合并通信 torch.distributed.all_gather()
+
+[torch.distributed.all_gather()](https://pytorch.org/docs/master/distributed.html?highlight=all_gather#torch.distributed.all_gather)
+
+```py
+all_gather(tensor_list, tensor,group=None,async_op=False)：
+```
+
+- tensor_list 每个元素代表每个rank的数据
+- tensor 代表每个进程中的tensor数据
+- 其中tensor_list每个分量的维度要与对应的tensor参数中每个rank的维度相同。
+
+
+
+```py
+# 两个机器，每个4张卡，批大小为bs
+tensor = torch.arange(bs, dtype=torch.int64) + 1 + 2 * rank
+tensor_list = [torch.zeros(bs, dtype=torch.int64) for _ in range(torch.distributed.get_world_size())]
+dist.all_gather(tensor_list, tensor)
+tensor_list
+```
+
+#### all_reduce
+
+all_reduce
+
+all_reduce 操作用于在不同节点中**同步信息**
+- 调用该方法, 在所有节点中**求和/平均**，使用前后大小均为bs
+
+```py
+tensor = torch.arange(bs, dtype=torch.int64) + 1 + 2 * rank
+dist.all_reduce(tensor, op=ReduceOp.SUM)
+tensor
+```
+
 
 ### Torchrun (更新)
 
