@@ -1340,6 +1340,15 @@ MarsCode不仅仅是一个编程工具，它是一个全方位的AI助手，集�
 
 ### 推荐系统
 
+【2024-6-18】 新疆大学 CherryRec - 新闻推荐框架
+- [CherryRec:Enhancing News Recommendation Quality via LLM-driven Framework](https://arxiv.org/pdf/2406.12243)
+- CherryRec 框架包含三个核心组件：知识感知新闻快速选择器（KnRS）、内容感知LLM评估器（CnLE）和价值感知新闻评分器（VaNS）。
+- KnRS基于用户互动历史快速筛选候选新闻，CnLE通过微调的LLM深入理解用户偏好
+- 而VaNS综合评分以形成CherryRec分数，指导最终推荐。
+
+通过在MIND、Yahoo R6B和Adressa等基准数据集上的实验，CherryRec在推荐准确性和效率方面均优于现有方法。研究结果证明了CherryRec在实时新闻推荐领域的潜力，未来工作将探索整合多媒体内容以进一步提升推荐质量。
+
+
 【2024-1-20】[谈谈AI落地容易的业务-搜广推](https://mp.weixin.qq.com/s/aqDS-nInC97uvLaK8J_DiA)
 - 推荐系统适用场景：**信息过载**时提供**信息匹配**价值
 - 推荐系统技术路线
