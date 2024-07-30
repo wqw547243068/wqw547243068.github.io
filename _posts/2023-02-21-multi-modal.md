@@ -206,8 +206,19 @@ The “deep learning” era (2010s until …)，促使多模态研究发展的�
 
 ## 多模态技术路线
 
-【2024-5-30】[多模态模型的演进和四种主流架构类型](https://blog.csdn.net/robinfang2019/article/details/139322252)
+【2024-7-30】
 
+| 大方向 | 子方向 | 代表工作 |
+| --- | --- | --- |
+| 内容理解和文本生成<br>Comprehension and text generation | image-text understanding | BLIP-2, llaVA, MiniGPT-4, OpenFlamingo |
+| 内容理解和文本生成<br>Comprehension and text generation | video-text understanding | VideoChat, Video-ChatGPT, LLaMA-VID
+| 内容理解和文本生成<br>Comprehension and text generation | audio-text understanding | Qwen-Audio |
+| 特定模态<br>specific modality outputs | image-text output | GILL, Kosmos-2, Emu, MiniGPT-4 |
+| 特定模态<br>specific modality outputs | speech/audio-text output | speechGPT, AudioPaLM |
+| 任意模态<br>any-to-any modality outputs |  amalgamate tools | VisualChatGPT, HuggingGPT, AudioGPT |
+| 任意模态<br>any-to-any modality outputs | end-to-end | NExT-GPT, CoDi-2, ModaVerse |
+
+【2024-5-30】[多模态模型的演进和四种主流架构类型](https://blog.csdn.net/robinfang2019/article/details/139322252)
 
 多模态按照架构模式分为四类：A、B、C、D。
 - A和B类型在模型内部，深度融合多模态输入，实现细粒度控制模态信息流动，但需要大量训练数据和计算资源；
@@ -422,6 +433,7 @@ D类模型
 
 ## 多模态典型任务
 
+
 多模态机器学习的核心任务主要包括`表示学习`，`模态映射`，`模态对齐`，`模态融合`，`协同学习`。
 
 ### 表示学习
@@ -444,6 +456,25 @@ D类模型
 - <img src="https://picx.zhimg.com/50/v2-1d732cb95b79362f2ca3129fed2af035\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1190" data-rawheight="295" class="origin\_image zh-lightbox-thumb" width="1190" data-original="https://picx.zhimg.com/v2-1d732cb95b79362f2ca3129fed2af035\_r.jpg?source=1940ef5c"/>
 - 检索任务（Index Task）：主要包括文本检索图片或者图片检索文本，检索任务应该不用加以过多的解释了，比较好理解，就是以文搜图或者以图搜文。下面图中就是Google 以图搜文的服务，当然包括华为手机里面的截图识字，淘宝拼多多的以文搜图等身边很多诸如此类的服务啦。
 - <img src="https://pic1.zhimg.com/50/v2-ae0f2f691f4c09ef198b3575f71b2a31\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1493" data-rawheight="553" class="origin\_image zh-lightbox-thumb" width="1493" data-original="https://picx.zhimg.com/v2-ae0f2f691f4c09ef198b3575f71b2a31\_r.jpg?source=1940ef5c"/>
+
+
+### 多模态模块
+
+多模态大模型包括以下5个模块
+- Modality Encoder：`模态编码器`，将除文本外的其他模态如图片、视频、音频、3D等编码为隐层向量
+  - Visual Modality: ViT, transformers 替换 cnn
+    - 图片补丁 image patch encoder: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
+    - 图片补丁位置嵌入: image patch position embedding, 查询表
+- Input Projector: `输入映射`，将不同模态的语义向量和LLM的语义对齐
+- LLM Backbone: `大语言模型基座`，强大的基座模型
+- Output Projector: `输出映射`，将LLM生成的语义和各模态的语义对齐
+- Modality Decoder: `模态解码器`，将各模态的语义解码为对应的模态
+
+几个tips
+- 注重 Comprehension and text generation 的多模态模型，只需要如上5个模块的**前3个**模块
+- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会冻结参数，只优化 Input Projector个Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
+- SFT阶段，LLM一般也会参与，因而SFT阶段需要更多显存。
+
 
 ### 跨模态预训练
 
