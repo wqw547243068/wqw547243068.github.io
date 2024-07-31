@@ -1705,7 +1705,7 @@ AI的公平，或许不太是供给的公平问题，更可能是“底线”的
 
 
 
-### 个人工具
+#### 个人笔记
 
 笔记应用
 
@@ -1716,6 +1716,14 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 - 安装Ollama和llama2 7B
 - 安装设置Obsidian Copilot
 - 运行Ollama和使用Copilot
+
+【2024-7-31】快速将音视频转结构化笔记的开源免费工具 AudioNotes。
+
+基于 FunASR 和 Qwen2 构建，可快速提取音视频内容，并利用大模型能力整理成一份结构化的 Markdown 笔记，方便快速阅读。
+- GitHub：[AudioNotes](github.com/harry0703/AudioNotes)
+
+工具支持搭配 Ollama 使用本地模型，并提供了 Docker 快速部署方式。
+
 
 #### 办公工具
 
