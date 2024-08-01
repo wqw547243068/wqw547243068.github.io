@@ -3615,6 +3615,39 @@ pip install -r requirements.txt
 ```
 
 
+### Xtuner
+
+上海AI实验室推出的 [XTuner](https://github.com/InternLM/xtuner) 是一个高效、灵活、全能的轻量化大模型微调工具库。与 LLaMA-Factory 类似，不过，在**长序列训练**、**token生成速度**等方面要比 LLaMA-Factory 更强。
+
+简析
+- 数据集: LLaMA-Factory 支持**多种格式**的数据集，更通用泛化；而 `XTuner` 只支持类似 `ShareGPT` 格式的数据集。
+- 模型支持: LLaMA-Factory 支持模型种类也要比XTuner更多；但 XTuner 多模态模型（LLaVA-Internlm2-7B / 20B、LLaVA-v1.5）的支持要比 LLaMA-Factory。
+
+多轮对话训练时的loss计算。
+- 从文档来看，XTuner更清晰，而且是我想要的效果；
+- 而对于 LLaMA-Factory，其放出来的只是数据集格式文档，loss计算没那么透明，只能啃源码。
+
+多轮对话所对应的**长序列**训练性能。随着 Gemini 1M context length 和 Sora 出世，如何训练超长上下文的大模型引起了大家广泛关注。同时在大多数的场景下，多轮对话一般也就是一个conversations包含几轮对话；但在实际情况中，一个conversations下有几百个对话，即长对话，这种场景还是比较多的。
+
+解决方案比较麻烦，需要做拆分；在基座模型支持长上下文的情况下，如果微调框架能支持长序列训练，且性能不错，是很好的选择；
+
+XTuner 在这方面要比 LLaMA-Factory 更好。
+
+XTuner 序列并行设计思路参考了 DeepSpeed 的工作 DeepSpeed Ulysses，并加以优化，以达到直接基于 transformers 算法库或 Huggingface Hub 上的开源模型训练 1M 以上超长序列的目标。
+
+| 模型	| 序列并行支持情况 |
+| ---	| --- |
+| baichuan | 1/2	❌ |
+| chatglm | 2/3	❌ |
+| deepseek	| ✅ |
+| gemma	| ❌ |
+| internlm 2	| ✅ |
+| llama 2	| ✅ |
+| mistral	| ❌ |
+| qwen 1/1.5	| ❌ |
+| starcoder	| ❌ |
+| yi	| ✅ |
+| zephyr	| ✅ |
 
 # 推理加速
 
