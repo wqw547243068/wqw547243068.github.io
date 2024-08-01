@@ -518,7 +518,7 @@ Nature的这篇文章 [Human-like systematic generalization through a meta-learn
 
   而只考虑其**非线性**
 
-**为什么要使用非线性激活函数？**——神经网络的万能近似定理
+**为什么要使用非线性激活函数？**——神经网络的`万能近似定理`
 
 > 视频中没有提到为什么使用非线性激活函数，但这确实是神经网络能够具有如此强大**表示能力**的关键
 - 使用**非线性激活函数**的目的是为了向网络中加入**非线性因素**，从而加强网络的表示能力
@@ -527,8 +527,45 @@ Nature的这篇文章 [Human-like systematic generalization through a meta-learn
 - 首先要有这样一个认识，非线性函数具有比线性函数更强的表示能力。
 - 如果不使用非线性激活函数，那么每一层输出都是上层输入的线性组合；
 
-  容易验证，此时无论有多少层，神经网络都只是一个线性函数。
+容易验证，此时无论有多少层，神经网络都只是一个线性函数。
 
+### ReLU
+
+**新时代的激活函数——线性整流单元 ReLU**
+
+这里简单说下 sigmoid 的问题：
+- `sigmoid` 函数在输入取绝对值非常大的正值或负值时会出现**饱和现象**，此时函数会对输入的微小改变会变得不敏感
+
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702114132.png)
+> 饱和现象：在图像上表现为函数值随自变量的变化区域平缓（斜率接近 0）
+
+- 饱和现象会导致**基于梯度的学习**变得困难，并在传播过程中丢失信息（**梯度消失**）
+
+**线性整流单元 ReLU**
+
+- [![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180702171411.png)](http://www.codecogs.com/eqnedit.php?latex=\text{ReLU}(a)=\max(0,a))
+
+![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702171146.png)
+
+- `ReLU` 取代 `sigmoid` 的主要原因就是：使神经网络更容易训练（**减缓梯度消失**）
+- 此外，一种玄学的说法是，早期引入 `sigmoid` 的原因之一就是为了模仿生物学上神经元的激发
+
+而 `ReLU` 比 `sigmoid` 更接近这一过程。
+
+
+
+## 神经网络理论
+
+【2024-7-28】[综述](https://zhuanlan.zhihu.com/p/711418008?utm_psn=1801223942255566848), 2024，通用逼近定理（UAT），函数逼近，Kolmogorov–Arnold定理（KAT），任意深度/宽度的网络逼近
+- 论文 [​A Survey on Universal Approximation Theorems](https://arxiv.org/abs/2407.12895)
+- 代码 [nn-python](https://github.com/MIDHUNTA30/NN-PYTHON)
+
+要点
+- 神经网络（NN）
+- 通用逼近定理（UATs）
+-  UAT：前身
+-  UAT：任意宽度的情况
+-  UAT：任意深度情况
 
 ### 叠加定理
 
@@ -623,7 +660,7 @@ KAN最关键的创新点
 - 贝塞尔样条
 
 
-### 万能逼近定理
+### UAT 万能逼近定理
 
 **万能近似定理** 通用逼近定理
 
@@ -632,28 +669,17 @@ KAN最关键的创新点
 
 > 《深度学习》 6.4.1 万能近似性质和深度
 
-### ReLU
 
-**新时代的激活函数——线性整流单元 ReLU**
+`通用逼近定理`（`UAT`s）是与 NN 逼近能力相关的理论结果。
 
-这里简单说下 sigmoid 的问题：
-- `sigmoid` 函数在输入取绝对值非常大的正值或负值时会出现**饱和现象**，此时函数会对输入的微小改变会变得不敏感
+UAT 在以下方向进行探讨：
+- 任意**宽度**：研究具有任意数量神经元（但隐藏层数量有限）的 NN 的逼近能力。
+  - 例如，图 4(a)显示了一个具有一个隐藏层并且具有任意数量神经元的 NN。
+- 任意**深度**：研究具有任意数量隐藏层（但每层神经元数量有限）的 NN 的逼近能力。
+  - 例如，图 4(b) 显示了一个具有任意数量隐藏层且每层有一个神经元的 NN。
 
-![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702114132.png)
-> 饱和现象：在图像上表现为函数值随自变量的变化区域平缓（斜率接近 0）
+![](https://pic3.zhimg.com/80/v2-e2955b39477d0b5033096665a5e2c5ee_1440w.webp)
 
-- 饱和现象会导致**基于梯度的学习**变得困难，并在传播过程中丢失信息（**梯度消失**）
-
-**线性整流单元 ReLU**
-
-- [![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/公式_20180702171411.png)](http://www.codecogs.com/eqnedit.php?latex=\text{ReLU}(a)=\max(0,a))
-
-![](https://github.com/imhuay/Algorithm_Interview_Notes-Chinese/blob/master/_assets/TIM截图20180702171146.png)
-
-- `ReLU` 取代 `sigmoid` 的主要原因就是：使神经网络更容易训练（**减缓梯度消失**）
-- 此外，一种玄学的说法是，早期引入 `sigmoid` 的原因之一就是为了模仿生物学上神经元的激发
-
-而 `ReLU` 比 `sigmoid` 更接近这一过程。
 
 
 ## 梯度下降法
