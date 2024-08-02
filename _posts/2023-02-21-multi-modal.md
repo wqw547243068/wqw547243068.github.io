@@ -601,6 +601,22 @@ CLIP流程有三个阶段：
 
 ## 多模态模型
 
+
+### 多模态模型榜单
+
+【2024-8-2】[中文多模态大模型基准8月榜单发布！8大维度30个测评任务，3个模型超过70分](https://mp.weixin.qq.com/s/8QtQCk-z2QfZVl6jmYuJMg)
+
+测评要点
+- 1：**GPT-4o领跑**
+  - `GPT-4o` 取得74.36分，领跑多模态基准。其中基础多模态认知能力和应用能力均有70+分的表现，在技术和应用方面均有一定领先优势。
+- 2：**国内多模态大模型表现不俗**
+  - 国内多模态大模型 `hunyuan-vision` 和 `InternVL2-40B` 表现不俗，取得70+分的优异成绩，仅次于 `GPT-4o`。尤其在多模态应用方面领先 `Claude3.5-Sonnet` 和 `Gemini-1.5-Pro`，展现出较强的应用优势。
+- 3：国内大模型**基础能力仍需提升**
+  - 在基础能力方面国内大模型较海外模型仍有一定差距，尤其在细粒度视觉认知任务上，国内外最好模型有5分的差距，需要进一步对多模态深度认知能力做优化提升。
+
+> GPT-4o > hunyuan-vision > InterVL2-40B > Claude3.5-Sonnet > Gemini-1.5-Pro > Step-1V-8k > GPT-4-Turbo-0409 > GLM-4v > Qwen-VL-Max > ERNIE-4-Turbo > Qwen-VL-Plus > Yi-VL-34B
+
+
 ### 模型进化史
 
 <div class="mermaid">
