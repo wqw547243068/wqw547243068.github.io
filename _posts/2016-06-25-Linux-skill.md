@@ -240,7 +240,7 @@ ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local
 
 [图解 Linux 最常用命令](https://www.toutiao.com/a6756106065248518664/)
 
-### linux的目录结构
+### linux 目录结构
 
 [linux的目录结构](https://p3-tt.byteimg.com/origin/pgc-image/ab3bdd7224a14682a35e60fe1ee802cf?from=pc)
 
@@ -300,6 +300,30 @@ du -h temp/ # 易读方式显示
 du -sh temp/ # 易读方式显示目录总大小，基数是 1024
 du --si temp/ # --si 选项默认计算基数是 1000，更精确
 ```
+
+
+#### 问题: disk quota exceeded
+
+【2024-8-2】[Disk quota exceeded problem](https://unix.stackexchange.com/questions/67890/disk-quota-exceeded-problem)
+
+错误原因
+- 文件过大, 超过磁盘容量
+- 个别文件数过多, 超过目录限制, 此时删大文件无效, linux 系统几乎瘫痪
+
+|错误|说明|解决|
+|---|---|---|
+| 1 | 文件过大, 超过磁盘容量 | 删除大文件<br>扩容 |
+| 2 | 个别文件数过多, 超过目录限制 | 删大文件无效<br>rm问题目录失效 |
+
+
+```sh
+df -h # 查看磁盘分区使用情况
+df -i
+
+# 超看文件数超限的目录
+find /mnt/bn/flow-algo-intl/wangqiwen -type d -size +256k
+```
+
 
 ### 文件颜色
 
