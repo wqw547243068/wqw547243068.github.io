@@ -2736,11 +2736,16 @@ apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhua
 
 ### pytorch 分布式操作
 
+【2024-8-4】[彻底搞清楚torch. distributed分布式数据通信all_gather、all_reduce](https://zhuanlan.zhihu.com/p/712631827?utm_psn=1803475758301179905)
+
+all_gather和all_reduce；gather、reduce、scatter方法对比
+- ![](https://pic2.zhimg.com/80/v2-ff290214bab003c79d6a28363d65bc7d_1440w.webp)
+
 #### all_gather
 
 分布式操作
 - gather 操作用于在**不同节点间收集信息**
-- 首先初始化一个空Tensor列表tensor_list, 用于接收所有节点的信息
+- 首先初始化一个空 Tensor 列表 tensor_list, 用于接收所有节点的信息
 - 然后调用 all_gather 在所有节点中得到包含每个节点本地张量的列表
 - 列表中有 world_size 个元素，每个元素都是bs大小，后续通过cat操作即可得到大小为 bs * world_size 表示
 
@@ -2748,8 +2753,12 @@ Pytorch DDP 分布式数据合并通信 torch.distributed.all_gather()
 
 [torch.distributed.all_gather()](https://pytorch.org/docs/master/distributed.html?highlight=all_gather#torch.distributed.all_gather)
 
+函数定义
+- `tensor_list` 是list，大小是 word_size，每个元素为了是gather后，保存每个rank的数据，所以初始化一般使用torch.empty；
+- `tensor` 代表各rank中的tensor数据，其中tensor_list每个分量的维度要与对应的tensor参数中每个rank的维度相同。
+
 ```py
-all_gather(tensor_list, tensor,group=None,async_op=False)：
+all_gather(tensor_list, tensor, group=None, async_op=False)：
 ```
 
 - tensor_list 每个元素代表每个rank的数据
@@ -2768,7 +2777,6 @@ tensor_list
 
 #### all_reduce
 
-all_reduce
 
 all_reduce 操作用于在不同节点中**同步信息**
 - 调用该方法, 在所有节点中**求和/平均**，使用前后大小均为bs
@@ -2778,6 +2786,9 @@ tensor = torch.arange(bs, dtype=torch.int64) + 1 + 2 * rank
 dist.all_reduce(tensor, op=ReduceOp.SUM)
 tensor
 ```
+
+all_reduce 函数定义
+- tensor 代表各rank中的tensor数据，op代表可以选择的操作，主要有: SUM、PRODUCT、MIN,MAX、BAND、BOR、BXOR、PREMUL_SUM
 
 
 ### Torchrun (更新)
