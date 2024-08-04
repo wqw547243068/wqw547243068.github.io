@@ -559,6 +559,40 @@ InstructGPT和instruction tuning方向的工作比较相关，独特之处在于
 - `LoRA`：低秩适配，冻结大模型权重，只训练新增的网络层（两个小矩阵的乘积），降低fine-tune成本，同时保持类似效果
 
 
+### (0) Pre-Train
+
+
+#### 问题
+
+【2024-7-28】[面试LLM//各阶段](https://zhuanlan.zhihu.com/p/691588703?utm_psn=1801229804424544256)
+
+##### CLS token
+
+预训练阶段：
+- 模型训练句子时, 没有加 `<CLS>` Token，但是预测时加了`<CLS>` Token
+- 或者训练时加了`<CLS>` token, 但是预测时没有加`<CLS>` Token
+
+benchmark 预测会有啥问题？
+
+benchmark会直接崩溃，之前gemma-2b训的时候带BOS，预测忘加了，benchmark全崩了。
+
+原因
+- 一个句子的第一个Token在模型中会吸收大量attention，那么当预测时改变了第一个Token，句子的预测会改变比较大，因为第一个Token改变了，而预测中大量attention来自第一个Token，所以预测的时候大量benchmark效果会不好。
+
+##### 三个阶段训练（SFT->RM->PPO）过程较长，更新迭代较慢？
+
+考虑以下几种方法：
+- 并行化训练：利用多个计算资源进行并行化训练，可以加速整个训练过程。可以通过使用多个CPU核心或GPU来并行处理不同的训练任务，从而提高训练的效率和速度。
+- 分布式训练：将训练任务分发到多台机器或多个节点上进行分布式训练。通过将模型和数据分布在多个节点上，并进行并行计算和通信，可以加快训练的速度和更新的迭代。
+- 优化算法改进：针对每个阶段的训练过程，可以考虑改进优化算法来加速更新迭代。例如，在SFT（Supervised Fine-Tuning）阶段，可以使用更高效的优化算法，如自适应学习率方法（Adaptive Learning Rate）或者剪枝技术来减少模型参数；在RM（Reward Modeling）阶段，可以使用更快速的模型训练算法，如快速梯度法（Fast Gradient Method）等；在PPO（Proximal Policy Optimization）阶段，可以考虑使用更高效的采样和优化方法，如并行采样、多步采样等。
+- 迁移学习和预训练：利用迁移学习和预训练技术，可以利用已有的模型或数据进行初始化或预训练，从而加速训练过程。通过将已有模型的参数或特征迁移到目标模型中，可以减少目标模型的训练时间和样本需求。
+- 参数调优和超参数搜索：对于每个阶段的训练过程，可以进行参数调优和超参数搜索，以找到更好的参数设置和配置。通过系统地尝试不同的参数组合和算法设定，可以找到更快速和高效的训练方式。
+
+综合运用上述方法，可以加速三个阶段训练过程，提高更新迭代的速度和效率，从而减少训练时间和资源消耗。
+
+
+
+
 ### （1） 第一步 SFT（全参数微调）
 
 SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt文本
@@ -572,7 +606,7 @@ SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt�
 - **拟合**：通过finetuning 得到稳定、符合需求的输出，包括格式、风格、特定模式等，是在业务落地中高频使用的方式；
 - **对齐**：指令对齐，让LLM更好地理解人类语言、执行自然语言指令，即LLM三个阶段之第二个阶段（pretrain、sft、rlhf）。
 
-#### IFT 的问题
+#### IFT 问题
 
 5 月，伯克利的论文 The False Promise of Imitating Proprietary LLMs 指出这种方式微调出来的**指令遵循**模型存在的一系列问题：
 - 在缺少大量模仿 ChatGPT 数据支持的任务上，这类模型无法改善 Base Model 到 ChatGPT 的差距；
@@ -807,7 +841,65 @@ python chat.py \
 | 你是谁	| 我是一个AI语言模型，没有个人身份和情感。我的目的是回答你的问题并提供有用的信息来帮助你解决问题或提供娱乐性内容。如果你有任何其他的问题需要解答，请随时问我！ |
 
 
+#### SFT 思考
+
+
+##### SFT packing 是什么
+
+SFT packing 指训练sft过程中，将**多个sft数据pack到一个样本内**进行训练
+- 这种方式会加快模型训练速度，如果不进行SFT packing，那么对于短文本sft需要padding到一个batch最长长度，浪费很多计算token。
+- SFT packing 有很多种类，比如 block diagonal attention, 每个token仅仅去attention自己的问题内的token。但一般业务中会直接将其相连接，然后进行预测，虽然这样会引入一些噪音，但好像相对于非sft packing方式的整体的效果损失不大。这个可能是因为pretrain的时候模型也是这么训练的。
+
+##### SFT packing 对SFT训练的影响
+
+SFT packing 后削弱了模型对难的短query和短答案的拟合。
+- 无sft packing 情况下，假设batch_size = 1，那么如果有个短query和短答案在这个batch里，其余补充padding，那么这个batch的gradient全是这个短文本的gradient，模型对这个query的拟合能力会变强。
+- 但SFT packing 后，多个短文本在一个样本中，这个batch的gradient会被稀释，短文本的拟合就不会特别强。但拟合能力似乎和泛化不可以挂钩，初步观察sft packing和non sft packing的效果差不了很多。在数据量小或者特定困难的数据上，sft packing是有损泛化效果的，non-packing的方式会影响模型续写的效果，因此会影响一些benchmark效果。但在大批量数据上是无损泛化效果的。
+
+##### SFT 关注什么方面
+
+- 1 **根据 prompt 筛选sft数据**：Prompt的diversity：丰富多样的prompt数据可以让模型更多的了解人类的指令，包括指令指复杂指令中每一步的含义。Prompt的丰富程度决定了模型指令遵循的能力。
+  - 明文TAG法：对SFT的prompt进行打tag，对其中的名词和动词进行分类打标，最后通过tag对prompt的分布进行调整，保证tag的分布是均匀的。著名的就是InsTag这个方法。
+  - 模型embedding聚类方法：通过模型最后一层的embedding对prompt进行表示，那么通过prompt embedding的距离表示prompt的相似度，对于过于相似的prompt进行删除。著名的有Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning。
+  - 从complexity角度，对于prompt直接进行难度的升级，所以即使在同一个语意空间的prompt也会变得diverse。比较著名的是Wizard 方法，通过GPT4进行prompt难度升级，然后构成complexity丰富的prompt。
+- 2 利用sft model和pretrain model的关系筛选模型的sft数据：
+  - IFD方法：利用公式进行数据选择： 这个公式是计算pretrain model生成对齐后模型的answer的难度（在 prompt的condition 下生成A的概率）。这个概率越低，越说明生成难度高，那么sft模型学习到的对齐规律越多，那么我们更应该选择这个sft数据。
+  - Hybrid Method （混合了多种之前列举的指标和方法。）：例如 What MakeGood Data for Alignment? A Comprehensive Study of Automatic Data Selectionin Instruction Tuning [2] 文章，从complexity，diversity和quality三个方向对sft数据建模，训练了多个模型对各个指标维度进行分别衡量。
+- 3 **Answer的质量**：Answer的质量包括内容和格式两方面，一方面内容的正确性需要得到保证，一方面内容的格式也很重要，细节丰富，逻辑缜密的answer可以激发模型更多的回答能力。
+- 4 SFT阶段**不能太多的知识注入**：过多的知识注入，或者超过模型能力本身的回答过多会导致对齐税。
+
+##### 提升模型 reasoning 能力
+
+什么数据格式在SFT或者ICL阶段可以提升模型的reasoning的能力？
+
+数学reasoning上是有**三种形式**可显著提高效果模型 reasoning 能力
+- **Reverse** ： 128 + 367 = 495 -> 128 + 367 = ^594, 因为人就是反着计算的，从个位数到百位数。
+- `COT` or `POT` (Simplified Scratchpad): 把这个计算过程列举下来，用自然语言、符号或者代码形式呈现。
+- **Detailed Scratchpad**：把整个思考过程详细地用自然语言和符号表达出来。
+  - 整体上Detailed Scratchpad需要的总条数最少就能达到100%在加法上的效果，但是其实总token数和plain需要差不多数量达到最好的效果。
+
+##### SFT 中代码数据+文本数据, 哪个更容易改变
+
+代码数据，因为
+- 预训练中, 代码数据**确定性更高，ppl更低**，记忆越深刻
+- 而**文本数据变化更大，ppl更高**，熵更高。
+
+SFT过程中，改变文本数据比较容易，因为本身ppl就会高，但代码数据会比较难，因为本身ppl会比较低，或者说代码数据的生成确定性更高，少量样本很难对其内部改变，只能大段替换。
+
+
+##### SFT 能学新知识吗
+
+虽然理论上可以，但很少且不推荐sft阶段去学习知识。
+- LIMA原文中就表述过同样一个假设，sft阶段更多是**将模型能力和人类对齐，而不过多学习新的知识**。
+
+原因如下：
+- sft相对于pretrain过的数据量实在太小，模型的知识学习的概率就很低。
+- 如果加大sft的数据量和pretrain数据相当，那么sft有一些特定的格式以及一些system prompt需要重复当作context进行attention，这些重复的context势必会影响模型原始的attention模式，从而影响模型的效果。
+- 最后, 如果希望sft学习新知识，不如把这部分sft的新知识组织好放入pre-train or post-train阶段更为合适。
+
+
 ### （2）第二步 RM训练
+
 
 **奖励模型**（Reward Model, RM）目标是刻画模型的输出是否在人类看来表现不错。
 - 输入: \[提示(prompt)，模型生成的文本\] 
@@ -842,6 +934,7 @@ RM模型主要在于人工参与的**训练数据构建**部分，将训练好�
 【2023-6-5】[ChatGPT 为什么不用 Reward-Model 的数据直接 fine-tune，而用 RL？](https://www.zhihu.com/question/596230048/answer/3055888005)
 - Reward-model的输出对于整个token序列，一种滞后反馈，而finetune需要在每个token都有监督信号。这是强化学习与监督学习的差别。
 - 生成Reward-model的数据有些是结果对比较**pair数据**，没法直接用于监督学习finetune。
+
 
 #### ① Direct score方法
 
@@ -1266,7 +1359,7 @@ DeepSpeed-Chat 用最后一个字符的得分作为整个response的得分
 
 #### 思考
 
-ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
+##### ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
 
 因为：
 - RM 针对整个token序列，滞后反馈，强化学习
@@ -1280,6 +1373,60 @@ ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
   - 减少幻觉: 不要编造事实 (hallucintion)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hhiLw5Q_UFg?si=BTdMgDpxHx9pP6E8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+##### RM 和 基座模型保持一致？
+
+奖励模型需要和基础模型一致吗？
+- 可以一致，也可以不同，取决于任务需求和优化目标。
+- 单任务: 共享参数
+- 多任务: 子任务奖励模型整合成奖励函数
+
+##### Pair RM是什么形式的RM，相比于原RM形式有什么好处？
+
+- **原始RM** 是 BT model形式的RM，每个sample组成形式是 `(prompt，answer)`，通过 maximize positive sample 和 negative sample 的 gap来完成pointwise的rank。
+- **Pair RM** 是 pairwise rank，数据组成形式是`（prompt，pos_answer, neg_answer）`. Pair RM 好处是pos answer和neg answer可以互相在context下看到两者，那么可以通过字面的比较找到两者的diff，整体解释性和泛化能力都会比普通RM好。因为普通RM很容易overfit原数据，很难找到真正diff地pattern。
+
+现在Alpaca-Eval 榜单上就有Pair RM 身影，而且Pair RM整体很小 ，效果很好。
+
+
+##### 如何处理 RM 中的噪声数据？
+
+reward model 噪声来自哪几个方面：
+
+如果reward model的pair数据来自：
+- **人标注**，那么人类 preference的倾向性以及标注人员的专业性会带来一定的bias，即 众包系统的Noise。
+- **AI**，例如GPT4，那么这种倾向性也很严重，比如length bias。（严格来说，这属于bias，不能算噪声。）
+
+那么去噪可使用一些古早的方式：
+- **预测**阶段去噪声：
+  - Ensumble model 去噪声，多个rm model的checkpoint进行预测减少噪声的影响（model merge）。
+  - Margin 去噪声，只有预测 pair的分数**大于一定阈值**的时候，进行预测减少噪声。
+- **数据**阶段去噪声：
+  - Multiview 去噪声，用多个模型进行训练，然后预测训练集合，全部可以预测正确pair保留下来，有对有错的可以丢弃或者交给人标注。
+  - Active Learning 思路去噪声，训练一个模型，然后把margin小于一定阈值的送给标注人员去噪声。
+
+
+##### 如何解决reward model的OOD的问题？
+
+模型PPO过程中，reward model 准确率逐渐下降，俗称的reward model的**OOD问题**
+- 因为 reward model 训练样本一般来自sft模型的responses，那么在PPO过程中
+  - policy model刚开始和sft生成的response很相似，所以reward model准确率较高
+  - 但是在逐渐偏离sft 时，reward model 准确率会持续下降，这基本就是现阶段reward model的主要问题。
+
+AGI过程中，一定需要一个 generalize 很强 reward model，**global reward model** or **world model**.
+
+现阶段解决reward model的OOD普遍解决方法: Llama2 做法
+- 训练过一段时间RLHF以后，重新对policy采样pair对，人标数据然后继续训练reward model。
+- 但这种方式就是**太费人力**，感觉并不是持久之道。
+
+除此之外：
+- [Secrets of RLHF in Large Language Models Part II: Reward Modeling]() 中，通过 **meta learning** 方式解决这个问题，整体思想就是由于policy model在reward model训练情况下会向reward 高的方向更新，所以reward model应该对reward高的response pair更有区分度，所以设置gradient更新逐渐倾向于对reward高分training response pair倾斜。
+  - 这种方法说得通，但实际中由于缺少对模型on policy 采样，效果不太好。
+- [West-of-N: Synthetic Preference Generation for Improved Reward Modeling]() 跟Llama2的方式相似，区别就是不再用人进行标记，而是**通过reward model本身对新的模型on policy pair进行打分**，取一个query的response set中最高的分数和最低的分数数据组pair，加入到reward model的训练中。
+  - 这种方式采样，虽然通过on policy采样加强rm的泛化能力，但实际上上限受原先rm model的能力影响。
+
+
 
 ### （3）第三步 RLHF
 
@@ -1328,9 +1475,130 @@ RLHF基于A2C方法，包含了四个模型:
 - Y>=, PPO_ptx
 
 
+#### RLHF 问题
+
+##### RLHF 实践过程中存在哪些不足？
+
+RLHF（Reinforcement Learning from Human Feedback）尽管具有一定优势，但在仍然存在以下不足之处：
+- 人类反馈的**代价高昂**：获取高质量的人类反馈通常需要大量的人力和时间成本。人类专家需要花费时间来评估模型的行为并提供准确的反馈，这可能限制了RLHF方法的可扩展性和应用范围。
+- 人类反馈的**主观性**：人类反馈往往是主观的，不同专家可能会有不同的意见和判断。这可能导致模型在不同专家之间的反馈上存在差异，从而影响模型的训练和性能。
+- **反馈延迟和稀疏性**：获取人类反馈可能存在延迟和稀疏性的问题。人类专家不可能实时监控和评估模型的每一个动作，因此模型可能需要等待一段时间才能收到反馈，这可能会导致训练的效率和效果下降。
+- **错误反馈**的影响：人类反馈可能存在错误或误导性的情况，这可能会对模型的训练产生负面影响。如果模型在错误的反馈指导下进行训练，可能会导致模型产生错误的行为策略。
+- 缺乏**探索与利用的平衡**：在RLHF中，人类反馈通常用于指导模型的行为，但可能会导致模型过于依赖人类反馈而缺乏探索的能力。这可能限制了模型发现新策略和优化性能的能力。
+
+针对这些不足，研究人员正在探索改进RLHF方法，如设计更高效的人类反馈收集机制、开发更准确的反馈评估方法、结合自适应探索策略等，以提高RLHF方法的实用性和性能。
+
+
+##### 如何解决标注成本高的问题
+
+如何解决 人工产生的偏好数据集成本较高、难量产问题？
+
+解决人工产生偏好数据集成本高、难以量产的问题，以下几种方法：
+- 引入**模拟数据**：使用模拟数据来代替或辅助人工产生的数据。
+  - 模拟数据可以通过模拟环境或模型生成，以模拟人类用户的行为和反馈。这样可以降低数据收集的成本和难度，并且可以大规模生成数据。
+- **主动学习**：采用主动学习方法来优化数据收集过程。
+  - 主动学习是一种主动选择样本的方法，通过选择那些对模型训练最有帮助的样本进行标注，从而减少标注的工作量。
+  - 可以使用一些算法，如**不确定性采样**、**多样性采样**等，来选择最有价值的样本进行人工标注。
+- **在线学习**：采用在线学习方法进行模型训练。
+  - 在线学习是一种增量学习的方法，在模型运行的同时进行训练和优化。
+  - 这样可以利用实际用户的交互数据来不断改进模型，减少对人工标注数据的依赖。
+- **众包和协作**：利用众包平台或协作机制来收集人工产生的偏好数据。
+  - 通过将任务分发给多个人参与，可以降低每个人的负担，并且可以通过众包平台的规模效应来提高数据收集的效率。
+- **数据增强**和**迁移学习**：通过数据增强技术，如数据合成、数据扩增等，来扩充有限的人工产生数据集。
+  - 此外，可以利用迁移学习的方法，将从其他相关任务或领域收集的数据应用于当前任务，以减少对人工产生数据的需求。
+
+综合运用上述方法，可有效降低人工产生偏好数据的成本，提高数据的量产能力，并且保证数据的质量和多样性。
+
+##### PPO 优点
+
+PPO优点：
+- On policy采样：on policy采样目前看来是最高效的`拟合蒙特卡洛`采样方式。
+  - 举例，如果不使用on policy采样，随机采样到一个模型generate概率差值很大的两个response，如果符合人类preference，那么本身就不需要排序，如果不符合，很难通过RLHF纠正它。如果强行纠正，会破坏模型本来的平衡。
+- Credit Assign: 由于value model的存在，其实PPO会很好的把reward分配给不同的token，那么一些关键的token会合理地分配一个高reward，一些不关键的token会分配一个低reward。
+- Rank Model：PPO内部其实是一种内置的rank model，比较的是高reward和低reward的response，只是高和低一直是动态的变化的。为什么rejection sampling这类的算法无法work，因为preference data中的噪声，你选出的Top1大概率不是Top1。
+
+
+##### PPO 问题
+
+PPO 问题
+- Notable Complexity **模型太多**: PPO中要**4个模型同时加载**在GPU中，`policy model`，`ref policy model`，`value model`，`reward model`。所以会占用很多GPU机器。
+- Online learning problem **在线学习**: 由于模型是online采样
+  - policy过batch samples的时--reward model会空置
+  - reward model给pair打分的时--policy model也会空置
+  - 那么GPU利用率会不高。
+- PPO超参数比较困难，需要一些炼丹高手和经验去做。
+
+
+##### 如何解决 PPO 训练的资源瓶颈
+
+PPO 的训练过程同时存在**4个模型**（2训练，2推理），对计算资源的要求较高
+
+考虑以下几种方法：
+- **减少模型规模**：减少模型的规模和参数量，可降低对计算资源的需求。可用模型压缩技术、剪枝算法等方法来减少模型的参数数量，从而降低计算资源的使用量。
+- **降低训练频率**：可以降低PPO训练频率，减少每个训练周期的次数。
+  - 例如，可增加每个训练周期的时间间隔，或者减少每个周期中的训练步数。这样可以减少训练过程中对计算资源的占用。
+- **模型并行化**：利用多个计算资源进行模型并行化训练，可以加速PPO的训练过程。
+  - 将模型参数分布到多个GPU上，并进行并行计算和通信，以提高训练的效率和速度。
+- **异步训练**：采用异步训练的方式，可在多个计算资源上同时进行PPO的训练。
+  - 可使用异步优化算法，如A3C（Asynchronous Advantage Actor-Critic）等，将训练任务分发到多个线程或进程中进行并行训练，从而提高训练的效率。
+- 云计算和**分布式**训练：利用云计算平台或分布式系统进行PPO的训练，可以充分利用大规模计算资源。
+  - 可以将训练任务分发到多个计算节点上进行分布式训练，以加速训练过程。
+- **参数共享**和**模型缓存**：对于有多个模型的情况，可以考虑共享部分参数或缓存已计算的模型输出。
+  - 通过共享参数和缓存计算结果，可以减少重复计算和存储，从而降低对计算资源的要求。 
+
+综合运用上述方法，可以有效降低PPO训练过程中对计算资源的要求，提高训练的效率和速度。
+
+##### PPO 平替
+
+如何看待各种ppo rlhf的平替算法
+
+平替算法：
+- dpo/kto/rrhf/slic/orpo/samug/remax 等算法号称性能等能超过ppo？
+
+##### DPO
+
+DPO介绍：最大化奖励来优化模型参数。
+
+与ppo相比DPO 绕过了建模奖励函数这一步，而是直接在偏好数据上优化模型来提高性能。
+
+优点：相对RLHF两阶段而言具有多项优越性
+- (1) 简单性稳定性：DPO更容易实施，不易陷入局部最优，保证训练过程更加可靠。
+- (2) 效率：与RLHF 相比, DPO 需要更少的计算资源和数据，使其计算量轻。
+- (3) 有效性：实验结果表明，DPO在**情感控制、摘要和对话生成**等任务中可以优于 RLHF 。
+
+DPO 目标是**优化模型参数以最大化奖励**函数。并不是说DPO没有奖励模型, 而是利用同个阶段训练建立模型和强化学习。除了奖励最大化目标外，还需要添加一个相对于参考模型的 KL 惩罚项，以防止模型学习作弊或钻营奖励模型。
+
+DPO
+- 第0步loss是固定的, loss = sigmoid(b-b) = 0.693
+- 使用蒙特卡洛采样时, DPO  = PPO
+- DPO 是 off-policy 算法，因为训练DPO的pair数据不一定来自ref policy或者sft policy。
+- 而PPO 是 on-policy 算法
+- DPO公式是由PPO的objective公式推导过来
+
+
+缺点：
+- 最大化正负例子的差距得到的模型会塌缩成只有正例子的空间，失去所有负例子的概率。在DPO中就是只会生成正例，负例子输出概率为0。在RM中正例子会无限接近于1，负例子会无限接近于0。那么这样的模型是没有entropy的，抗噪声能力会减弱。如果正负pair标错了，会导致严重后果。
+- 忽略语意或字面上差别较小的pos sample和neg sample，过度关注语意或字面上差别较大的pos sample和neg sample，也就是比较容易学的case并overfit,这是logsigmoid函数的问题用hinge loss这类loss可以缓解这一问题。
+- 不能找出全序关系，如果数据集里有A > B, B > C, C > A这种偏序关系，并不能找到它的nash equivalence的点，只会学乱。
+
+DPO输出越来越长？
+- 并不是一定会越来越长。如果尝试用所有正例子的response都比负例子的短，那么也会输出越来越短。究其原因是由于数据构造原因导致的DPO训练后的模型输出越来越长。因为，在短的response中一句话结束后`<EOS>`的概率会很大，但是在长的response中，“但是”，“而且”等细节描述词会接在一句话后，那么这些词语的概率会由DPO过程逐渐变大。
+
+training positive的概率和training negative的概率都同时下降？
+- DPO的loss是maximize training set中positive和negative的gap。那从公式上它就无法保证training positive的概率是一直上升的。主要和采样的方式以及DPO loss组成相关
+
+DPO 变体有哪些
+- `IPO`: 由于BT model 目标是最大化正负response的reward gap，但其实其中忽略了真实情况下组的pair可能会有噪音，那么无限去扩大reward gap其实是不准确的，也就是overfit了preference的pair数据，那么解决方案是需要限制这个gap的范围。
+- `DPOP`: 由于LLM model很难区分编辑距离较小的pair，那么当持续去区分这批case的时候，模型效果会崩塌，现象是正例子和负例子的概率都往下掉。那么DPOP用了一个新项来惩罚正例往下掉的pair，使得正例概率继续提升。
+- `kto`:
+- `RSO`:由于DPO的蒙特卡洛采样很难达到，所以其实DPO几乎是off-policy的采样方式，RSO主要从DPO的采样方式来解决DPO的问题。
+- `Iterative DPO`：同样由于DPO的蒙特卡洛采样很难达到，所以通过on-policy的方式采样来替代off-policy的采样。
+
+
+
 #### RL+LM研究方向
 
-由于InstructGPT效果太好，RL+LM这个新范式能衍生出哪些研究方向？
+由于 InstructGPT 效果太好，RL+LM 这个新范式能衍生出哪些研究方向？
 - (1) <span style='color:blue'>花式魔改Reward</span>：
   - 监督学习在实际落地时，主要优化方法是加特征、洗数据。对于强化学习也是如此，优化实际RL效果的重点在加特征、调整reward
   - OpenAI在做摘要任务的论文中，就在奖励上增加了KL散度，希望：
