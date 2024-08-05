@@ -531,8 +531,6 @@ cp -rf zongguofeng linuxzgf
 
 文件压缩
 - .tar 使用tar命令压缩或解压
-- tar cvfz archive.tar.gz dir/
-- tar xvfz. archive.tar.gz
 - .bz2 使用bzip2命令操作
 - .gz 使用gzip命令操作
 - .zip 使用unzip命令解压
@@ -540,6 +538,9 @@ cp -rf zongguofeng linuxzgf
 - ![](https://p3-tt.byteimg.com/origin/pgc-image/0ffce7c93b324bed86a2e5dabdf92049?from=pc)
 
 ```sh
+tar cvfz archive.tar.gz dir/
+tar xvfz. archive.tar.gz
+
 .bz2 
 　　解压1：bzip2 -d FileName.bz2 
 　　解压2：bunzip2 FileName.bz2 
