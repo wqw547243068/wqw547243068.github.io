@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -4142,9 +4142,11 @@ Araya 公司的Sasai 团队成功使用高密度脑电图（EEG）设备和ChatG
 
 #### Synchron Switch
 
-【2024-8-6】 美国初创公司 Synchron 首次将 ChatGPT 整合到大脑中，以便瘫痪等残障人士更容易控制数字设备，重新加入自然速度的对话中来
+【2024-8-6】[资讯](https://finance.sina.com.cn/tech/roll/2024-08-06/doc-inchthwx9857850.shtml), [视频](https://www.thepaper.cn/newsDetail_forward_28286358)
+- 美国初创公司 Synchron 首次将 ChatGPT 整合到大脑中，以便瘫痪等残障人士更容易控制数字设备，重新加入自然速度的对话中来
 
 Synchron凭借其独特的脑机接口（BCI）技术脱颖而出，该技术巧妙地运用了成熟的支架与导管技术，实现了无创或微创的设备植入大脑，彻底摒弃了传统开放式颅骨手术的复杂与风险。
+- Synchron Switch 通过`颈静脉`这一自然通道轻松进入大脑，精准定位于运动皮层附近，实现了大脑运动信号与外部设备的无线桥梁。患者仅凭意念即可驱动外部设备，开启了全新的生活方式。
 
 Synchron Switch 旨在成为瘫痪患者的福音，尤其是那些因肌萎缩侧索硬化症（ALS）、中风、意外伤害等不幸失去行动能力的人群。
 
