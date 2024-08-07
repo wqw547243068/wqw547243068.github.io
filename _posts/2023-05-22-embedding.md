@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral
+tags: 向量化 milvus vector embedding mistral pytorch
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -38,10 +38,10 @@ permalink: /emb
 
 详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
-## 文档向量化
+### 文档向量化
 
-自研框架的选择
-- 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
+自研框架选择
+- 基于 OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
 - 也可以使用 LangChain 框架。
 
 参考
@@ -114,6 +114,165 @@ print(qa.run(query))
 
 基础模型大多基于 Transformer Encoder 预训练语言模型: `BERT`, `RoBERTa`，`Ernie`等
 
+
+### nn.Embedding
+
+[pytorch nn.Embedding详解](https://blog.csdn.net/lsb2002/article/details/132993128)
+
+`nn.Embedding` 是 PyTorch中的一个常用模块
+- 主要作用: 将输入**整数序列**转换为**密集**向量表示
+- 值是 `正态分布` `N(0,1)`中**随机**取值
+
+```py
+torch.nn.Embedding(num_embeddings,  # 字典大小
+                   embedding_dim,   # 向量维数
+                   padding_idx=None, # 将制定idx填充0
+                   max_norm=None, 
+                   norm_type=2.0, 
+                   scale_grad_by_freq=False, 
+                   sparse=False, 
+                   _weight=None, 
+                   _freeze=False, 
+                   device=None, 
+                   dtype=None)
+```
+
+nn.Embedding 用来实现词与词向量的映射。
+- nn.Embedding 有个权重（`.weight`），形状是`(num_words, embedding_dim)`。
+- 例如一共有100个词，每个词用16维向量表征，对应的权重就是一个100×16的矩阵。
+- Embedding 输入形状`N×W`，N是batch size，W是序列的长度，输出的形状是 N×W×`embedding_dim`。
+- Embedding 输入**必须**是`LongTensor`，`FloatTensor` 需通过 `tensor.long()` 方法转成 `LongTensor`。
+- Embedding 权重可训练，既可以采用随机初始化，也可以预训练好的词向量初始化。
+
+
+#### nn.Embedding 示例
+
+
+两个句子：
+- **I want a plane**
+- **I want to travel to Beijing**
+
+将两个句子转化为ID映射：
+- `{I：1，want：2，a：3，plane：4，to：5，travel：6，Beijing：7}`
+
+转化成ID表示的两个句子如下：
+- **1,2,3,4**
+- **1,2,5,6,5,7**
+
+
+```py
+import torch
+from torch import nn
+ 
+# 创建最大词个数为10，每个词用维度为4表示
+embedding = nn.Embedding(10, 4)
+ 
+# 将第一个句子填充0，与第二个句子长度对齐
+in_vector = torch.LongTensor([
+    [1, 2, 3, 4, 0, 0], 
+    [1, 2, 5, 6, 5, 7]
+])
+
+out_emb = embedding(in_vector)
+print(in_vector.shape)
+print((out_emb.shape))
+print(out_emb)
+print(embedding.weight)
+```
+
+注意：
+- 句子中ID 不能大于最大词的index（上面例子中，不能大于词库总数）
+- embeding 输入必须是**维度对齐**的，如果长度不够，需要预先做填充
+
+#### 静态嵌入
+
+示例
+- 定义一个`词汇表`大小（vocab_size）为 20 的嵌入层,每个词被嵌入到一个5维的`向量空间`（embedding_dim）。
+- 用 `nn.Embedding` 创建嵌入层。
+- 创建一个输入张量,代表一系列词的索引。
+- 通过嵌入层处理输入,得到每个词的嵌入向量
+
+代码实现
+
+```py
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
+# 设置参数
+vocab_size = 20  # 词汇表大小
+embedding_dim = 5  # 嵌入维度
+# 创建嵌入层
+embedding = nn.Embedding(vocab_size, embedding_dim)
+# 创建输入张量（词索引）
+input_tensor = torch.LongTensor([1, 3, 5, 7, 8, 12, 3])
+# 获取嵌入结果
+embedded = embedding(input_tensor)
+print("Input shape:", input_tensor.shape) # torch.Size([7])
+print("Embedded shape:", embedded.shape)  # torch.Size([7, 5])
+print("Embedding matrix shape:", embedding.weight.shape) # torch.Size([20, 5])
+# 打印嵌入结果
+print("\nEmbedded vectors:")
+print(embedded)
+# tensor([[-0.7115,  1.3720,  1.0951, -0.1077,  0.0682],
+#         [-1.3939, -0.2694, -0.7298, -1.5005,  1.5755],
+#         [-0.5595, -0.5638,  1.5433,  2.0986, -1.2377],
+#         [-0.2058,  1.0504, -0.3790,  0.1947, -1.3308],
+#         [ 0.1186, -0.1589,  0.4095,  0.6911,  0.7207],
+#         [-0.1059,  1.3301,  0.1568, -1.6441, -0.9790],
+#         [-1.3939, -0.2694, -0.7298, -1.5005,  1.5755]],
+#        grad_fn=<EmbeddingBackward0>)
+
+# ------- 可视化 ---------
+plt.figure(figsize=(10, 6))
+for i in range(len(input_tensor)):
+    word_embedding = embedded[i].detach().numpy()
+    plt.plot(range(embedding_dim), word_embedding, marker='o', label=f'Word {input_tensor[i].item()}')
+
+plt.xlabel('Embedding Dimension')
+plt.ylabel('Value')
+plt.title('Word Embeddings Visualization')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+![](https://pic3.zhimg.com/80/v2-31a1427331d70dd378f8b86e0aeebdfa_1440w.webp)
+
+
+
+#### 动态嵌入
+
+
+nn.Embedding 可学习性
+- nn.Embedding 参数可以变化，参与梯度下降。
+- 更新模型参数也会更新 nn.Embedding 参数， nn.Embedding 参数本身也是模型参数的一部分。
+
+```py
+import torch
+from torch import nn
+ 
+# 创建最大词个数为10，每个词用维度为4表示
+embedding = nn.Embedding(10, 4)
+
+# 将第一个句子填充0，与第二个句子长度对齐
+in_vector = torch.LongTensor([[1, 2, 3, 4, 0, 0], [1, 2, 5, 6, 5, 7]])
+
+# embedding 权重参与梯度下降
+optimizer = torch.optim.SGD(embedding.parameters(), lr=0.01)
+criteria = nn.MSELoss()
+ 
+for i in range(1000):
+    outputs = embedding(torch.LongTensor([1, 2, 3, 4]))
+    loss = criteria(outputs, torch.ones(4, 4))
+    loss.backward()
+    optimizer.step()
+    optimizer.zero_grad()
+ 
+print(embedding.weight)
+new_output = embedding(in_vector)
+print(new_output)
+```
 
 
 ### 向量化方式
