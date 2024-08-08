@@ -959,6 +959,7 @@ GraphRAG 方法：
 
 增加一路与向量库平行的KG（知识图谱）上下文增强策略
 - ![](https://picx.zhimg.com/80/v2-971de4e9e7562db93ba913111f0dfba5_1440w.webp?source=2c26e567)
+- ![](https://pic2.zhimg.com/80/v2-85243e4a9ce90fd15ca948843dc28b19_1440w.webp)
 
 query进行KG增强是通过NL2Cypher模块实现的。可用更简单的图采样技术来进行KG上下文增强。具体流程是：
 - 根据query抽取**实体**
@@ -1015,6 +1016,77 @@ GraphRAG 的优势主要体现在以下三个方面：
 - 以 图方式检索、排序，附带权重
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/pWqQS0OX2Qs?si=9N4QTnBquh7K3JdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+#### 结合 Neo4j
+
+
+【2024-8-8】[将微软GraphRAG集成到Neo4j中](https://zhuanlan.zhihu.com/p/713201715)
+- 将 GraphRAG 生成的 Parquet 文件导入到 Neo4j 中, [ms_graphrag_import.ipynb](https://github.com/tomasonjo/blogs/blob/master/msft_graphrag/ms_graphrag_import.ipynb)
+- 用LangChain和LlamaIndex实现检索器。
+
+```py
+import pandas as pd
+from neo4j import GraphDatabase
+import time
+
+GRAPHRAG_FOLDER="artifacts"
+
+NEO4J_URI="bolt://localhost"
+NEO4J_USERNAME="neo4j"
+NEO4J_PASSWORD="password"
+NEO4J_DATABASE="neo4j"
+
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
+def batched_import(statement, df, batch_size=1000):
+    """
+    Import a dataframe into Neo4j using a batched approach.
+    Parameters: statement is the Cypher query to execute, df is the dataframe to import, and batch_size is the number of rows to import in each batch.
+    """
+    total = len(df)
+    start_s = time.time()
+    for start in range(0,total, batch_size):
+        batch = df.iloc[start: min(start+batch_size,total)]
+        result = driver.execute_query("UNWIND $rows AS value " + statement, 
+                                      rows=batch.to_dict('records'),
+                                      database_=NEO4J_DATABASE)
+        print(result.summary.counters)
+    print(f'{total} rows in { time.time() - start_s} s.')    
+    return total
+
+statements = """
+create constraint chunk_id if not exists for (c:__Chunk__) require c.id is unique;
+create constraint document_id if not exists for (d:__Document__) require d.id is unique;
+create constraint entity_id if not exists for (c:__Community__) require c.community is unique;
+create constraint entity_id if not exists for (e:__Entity__) require e.id is unique;
+create constraint entity_title if not exists for (e:__Entity__) require e.name is unique;
+create constraint entity_title if not exists for (e:__Covariate__) require e.title is unique;
+create constraint related_id if not exists for ()-[rel:RELATED]->() require rel.id is unique;
+""".split(";")
+
+for statement in statements:
+    if len((statement or "").strip()) > 0:
+        print(statement)
+        driver.execute_query(statement)
+
+doc_df = pd.read_parquet(f'{GRAPHRAG_FOLDER}/create_final_documents.parquet', columns=["id", "title"])
+doc_df.head(2)
+
+# import documents
+statement = """
+MERGE (d:__Document__ {id:value.id})
+SET d += value {.title}
+"""
+
+batched_import(statement, doc_df)
+```
+
+更多源码见笔记
+- [ms_graphrag_import.ipynb](https://github.com/tomasonjo/blogs/blob/master/msft_graphrag/ms_graphrag_import.ipynb)
+
+![](https://pic2.zhimg.com/80/v2-19c55b1ccd80ba395bd9f05a21326145_1440w.webp)
+
 
 ### Vector RAG
 
