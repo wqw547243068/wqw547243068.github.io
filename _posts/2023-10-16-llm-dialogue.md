@@ -3,7 +3,7 @@ layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
-tags: llm 对话系统 coze dm prompt rasa
+tags: llm 对话系统 coze dm prompt rasa 全双工
 excerpt: 大模型时代对话何去何从？
 mathjax: true
 permalink: /llm_dialogue_system
@@ -774,6 +774,46 @@ ArXiv上搜了下对话系统和大模型两个关键词，相关文章有62篇
 #### 机器人
 
 - 【2023-11-15】比利时根特大学（Ghent University）[I Was Blind but Now I See: Implementing Vision-Enabled Dialogue in Social Robots](https://arxiv.org/abs/2311.08957) 借助LLM，通过视觉信号来增强文本提示，机器人视觉对话系统
+
+
+#### 全双工 LSLM
+
+【2024-8-5】[全双工对话：大模型能边说边听了](https://mp.weixin.qq.com/s/ud0Zhy380vgTGQ7-t1S9VA)
+- 上海交大开发出新模型 `LSLM`（Listening-while-Speaking Language Model），实现了真正的"**全双工对话**"。listening-while-speaking language model
+- 论文 [Language Model Can Listen While Speaking](https://arxiv.org/abs/2408.02622)
+- [Demo](https://ziyang.tech/LSLM/)
+
+传统的AI对话模型都是"你一句我一句"的轮流模式。但LSLM不一样，它可以同时说话和听话。AI一边"嘴巴"不停，一边"耳朵"也没闲着
+
+两个关键技术：
+- 基于token的解码器TTS：负责生成语音
+- 流式自监督学习编码器：实时处理音频输入
+
+为了让"说"和"听"这两个通道更好地协同工作，探索了三种融合策略：
+- 早期融合
+- 中期融合
+- 晚期融合
+- ![](https://ziyang.tech/LSLM/pic/model-fusion.png)
+
+最终，中期融合脱颖而出，在语音生成和实时交互之间取得了最佳平衡。
+- "中期融合就像人类大脑处理信息的方式，既不会太早下结论，也不会反应太慢。这可能是未来对话AI的发展方向。"
+
+两种实验场景：
+- 基于命令的全双工模式
+- 基于语音的全双工模式
+
+结果显示，LSLM不仅能抗噪音，还能对各种指令保持敏感。
+
+Full Duplex Modeling (FDM)
+- ![](https://ziyang.tech/LSLM/pic/duplex.png)
+- ![](https://ziyang.tech/LSLM/pic/model-model.png)
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vNV4ZhuUb8o?si=CqerpFw8_iscMBsD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+虽然LSLM看起来很厉害，但距离真正的"自然对话"还有一段距离。
+
+不过，这项研究确实为交互式语音对话系统的发展开辟了新路径，让AI在实际应用中更接地气。
 
 
 ### 工业界做法
