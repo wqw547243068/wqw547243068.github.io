@@ -4,9 +4,9 @@ title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
 tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清
-excerpt: 大模型时代对话何去何从？
+excerpt: 大模型时代对话何去何从？LLM时代，如何改造智能对话？
 mathjax: true
-permalink: /llm_dialogue_system
+permalink: /llm_ds
 ---
 
 * content
