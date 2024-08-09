@@ -3,7 +3,7 @@ layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
-tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音
+tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清
 excerpt: 大模型时代对话何去何从？
 mathjax: true
 permalink: /llm_dialogue_system
@@ -846,8 +846,7 @@ Full Duplex Modeling (FDM)
 #### Lepton LLM API
 
 【2024-8-8】 [告别TTS！贾扬清领衔的 Lepton AI 推出实时语音交互](https://mp.weixin.qq.com/s/4mNd43wTiUbffSkRRAkYCA)
-
-
+- 官方 [API](https://www.lepton.ai/references/llm_models)
 
 ##### 技术原理
 
@@ -866,6 +865,8 @@ Lepton AI 直接把 `LLM` 和 `TTS` 合二为一。
 向AI提问题后，AI立即进行回答，几乎是秒回，而且还有不同音色任君选择。
 
 根据测试，他们已经能做到让AI在在300ms内开始回答问题。
+
+贾扬清 [Twitter 演示视频](https://x.com/LeptonAI/status/1820868523746312636)
 
 
 ### 工业界做法
