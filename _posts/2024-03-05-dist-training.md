@@ -36,12 +36,12 @@ permalink: /dist
 ### 性能提速
 
 在 pytorch1.7 + cuda10 + TeslaV100的环境下，使用ResNet34，batch_size=16, SGD对花草数据集训练的情况如下：
-- 1块GPU需要9s一个epoch
-- 2块GPU是5.5s
-- 8块是2s。
+- 1块 GPU需要9s一个epoch
+- 2块 GPU是5.5s
+- 8块 是2s。
 
 问题
-- 为什么运行时间不是9/8≈1.1s ? 
+- 为什么运行时间不是 9/8≈1.1s ? 
 - 因为使用GPU数量越多，设备之间的通讯会越来越复杂，所以随着GPU数量的增加，训练速度的提升也是递减的。
 - ![](https://pic1.zhimg.com/80/v2-aac042e783410385f791b8a0f70e6d6c_1440w.webp)
 
@@ -49,8 +49,8 @@ permalink: /dist
 - 在每个GPU训练step结束后，将每块GPU的**损失梯度**求**平均**，而不是每块GPU各计算各的。
 
 BN如何在不同设备之间同步？
-- 假设batch_size=2，每个GPU计算的均值和方差都针对这两个样本而言的。
-- 而BN的特性是：batch_size越大，均值和方差越接近与整个数据集的均值和方差，效果越好。
+- 假设 batch_size=2，每个GPU计算的均值和方差都针对这两个样本而言的。
+- 而BN的特性是：batch_size 越大，均值和方差越接近与整个数据集的均值和方差，效果越好。
 - 使用多块GPU时，会计算每个BN层在所有设备上输入的**均值**和**方差**。如果GPU1和GPU2都分别得到两个特征层，那么两块GPU一共计算4个特征层的均值和方差，可以认为batch_size=4。
 - 注意：如果不用**同步BN**，而是每个设备计算自己的批次数据的均值方差，效果与单GPU一致，仅仅能提升**训练**速度；
 - 如果使用**同步BN**，效果会有一定提升，但是会损失一部分**并行**速度。
@@ -64,6 +64,12 @@ BN如何在不同设备之间同步？
 两种GPU训练方法：`DataParallel`和`DistributedDataParallel`：
 - DataParallel是**单进程多线程**的，仅仅能工作在**单机**中。而DistributedDataParallel是**多进程**的，可以工作在单机或多机器中。
 - DataParallel通常会慢于DistributedDataParallel。所以目前主流的方法是DistributedDataParallel。
+
+|维度|DP|DDP|
+|---|---|---|
+|运行环境|单机,单进程多线程|单/多机,多进程|
+|速度|慢|快|
+||||
 
 
 ## 分布式模式
@@ -2219,7 +2225,7 @@ torch.nn.DataParallel
 - DataParallel 全程维护一个 optimizer，对各 GPU 上梯度进行求和，而在主 GPU 进行参数更新，之后再将模型参数 broadcast 到其他 GPU
 
 注意：
-- 1、设置DistributedSampler来打乱数据，因为一个batch被分配到了好几个进程中，要确保不同的GPU拿到的不是同一份数据。
+- 1、设置 DistributedSampler 来打乱数据，因为一个batch被分配到了好几个进程中，要确保不同的GPU拿到的不是同一份数据。
 - 2、要告诉每个进程自己的id，即使用哪一块GPU。
 - 3、如果需要做BatchNormalization，需要对数据进行同步（还待研究，挖坑）
 
