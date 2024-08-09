@@ -2090,6 +2090,12 @@ DP 是直接将一个 batch 的数据划分到不同的卡，但是多机多卡�
 
 ## Pytorch 分布式训练
 
+
+### 分布式基础
+
+
+#### 分布式模式
+
 PyTorch 原生支持的并行模式：
 - 完全分片数据并行（full sharded data parallel，`FSDP`）
 - 混合分片数据并行（hybrid sharding data parallel，`HSDP`）
@@ -2122,6 +2128,8 @@ PyTorch 原生支持的并行模式：
 1. 应用程序**跨机器边界**扩展，用多机器`DistributedDataParallel`和**启动脚本**；
 1. 预期有错误（比如OOM）或资源可**动态连接和分离**，使用`torchelastic`来启动分布式训练。
 
+
+分布式训练的场景很多，单机多卡，多机多卡，模型并行，数据并行等等。接下来就以常见的单机多卡的情况进行记录。
 
 
 ### 1、DataParallel
@@ -2255,22 +2263,32 @@ Pytorch 通过 torch.distributed 包提供分布式支持，包括 GPU 和 CPU �
 
 【2024-4-7】[Pytorch 分布式训练](https://zhuanlan.zhihu.com/p/76638962)
 
+
 概念：
 - `group`：即**进程组**。默认只有1个组，1个 job 即为1个组，即 1个 world。
   - 当需要进行更加精细的通信时，通过 new_group 接口，使用 word 的子集，创建新组，用于集体通信等。
-- `world_size` ：表示**全局进程个数**。
-- `rank`：表示**进程序号**，用于进程间通讯，表征进程优先级。取值范围: `0~world_size`
+- `world_size` ：表示**全局进程数**。一个进程可对应**多个**GPU
+  - `world_size ≠ GPU数`: 1个进程用多个GPU
+  - `world_size = GPU数`: 1个进程用1个GPU
+- `local_word_size`: 某个节点上进程数 (相对比较少见)
+- `rank`：全局进程id, 表示**进程序号**，用于进程间通讯，表征进程优先级。取值范围: `0~world_size`
   - `rank = 0` 主机为 **master 节点**。
-- `local_rank`：进程内，**GPU 编号**，非显式参数，由 `torch.distributed.launch` 内部指定。
+- `local_rank`：某个节点上进程id, 进程内**GPU 编号**，非显式参数，由 `torch.distributed.launch` 内部指定。
   - `rank = 3`，`local_rank = 0` 表示第 3 个进程内的第 1 块 GPU。
 - `global_rank`: 全局 gpu编号
+
+如果 所有进程数(`world_size`)为`W`，每个节点上的进程数(`local_world_size`)为`L`, 则每个进程上的两个ID：
+- `rank` 取值范围：`[0, W-1]`
+  - `rank`=0 进程为**主进程**，负责同步分发工作
+  - `rank`>0 进程为**从进程**
+  - `rank`=-1, 默认值，非GPU进程?
+- `local_rank` 取值：`[0, L-1]`
 
 2机8卡的分布式训练[示例](https://zhuanlan.zhihu.com/p/489892744)
 - ![](https://pic1.zhimg.com/80/v2-2baae86e212177108872d36a6040a2dc_1440w.webp)
 - gpu 编号: 0~3
 - local rank: gpu 本地编号, 0~3
 - global rank: gpu 全局编号, 0~7
-
 
 Pytorch 分布式基本流程：
 - 使用 distributed 包任何函数前，用 `init_process_group` 初始化进程组，同时初始化 `distributed` 包。
@@ -2284,6 +2302,51 @@ torch.distributed 提供了 3 种初始化方式：**tcp**、**共享文件** �
 - TCP: 指定进程 0 的 ip 和 port, 手动为每个进程指定进程号。
 - 共享文件: 共享文件对于组内所有进程可见
 - 环境变量:
+
+
+
+测试代码
+
+```py
+import torch.distributed as dist
+import argparse, os
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--local_rank", type=ine, default=0)
+args = parser.parse_args()
+
+# 分布式初始化, 读取环境变量 RANK=1 WORLD_SIZE=3 MASTER_ADDR=127.0.0.1 MASTER_PORT=8000
+dist.init_process_group("nccl") # 进程组初始化
+rank = dist.get_rank()
+local_rank_arg = args.local_rank               # 命令行形式ARGS形式
+local_rank_env = int(os.environ['LOCAL_RANK']) # 用env初始ENV环境变量形式
+local_world_size = int(os.environ['LOCAL_WORLD_SIZE'])
+# local_rank_env = int(os.environ.get('LOCAL_RANK', 0)) # 在利用env初始ENV环境变量形式
+# local_world_size = int(os.environ.get('LOCAL_WORLD_SIZE', 3))
+
+print(f"{rank=}; {local_rank_arg=}; {local_rank_env=}; {local_world_size=}")
+```
+
+执行
+
+```sh
+python3 -m torch.distributed.launch --nproc_per_node=4 test.py 
+```
+
+在一台4卡机器上执行, 样例输出：
+
+```sh
+# WARNING:torch.distributed.run:
+# *****************************************
+# Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+# *****************************************
+rank=2; local_rank_arg=2; local_rank_env=2, local_world_size=4
+rank=0; local_rank_arg=0; local_rank_env=0, local_world_size=4
+rank=3; local_rank_arg=3; local_rank_env=3, local_world_size=4
+rank=1; local_rank_arg=1; local_rank_env=1, local_world_size=4
+```
+
+一般分布式训练都是为每个进程赋予一块GPU，这样比较简单而且容易调试。 这种情况下，可以通过 local_rank 作为当前进程GPU的id。
 
 #### 数据读取 
 
@@ -2331,9 +2394,8 @@ def torch_distributed_zero_first(local_rank: int):
     if local_rank == 0:
         torch.distributed.barrier()
 ```
-
-
-#### 初始化进程组
+ 
+#### 初始化进程组 init_process_group
 
 `init_process_group` 函数原型
 
@@ -2343,13 +2405,19 @@ torch.distributed.init_process_group(backend, init_method=None, timeout=datetime
 ```
 
 函数作用
-- 每个进程中进行调用，用于初始化该进程。在使用分布式时，该函数必须在 distributed 内所有相关函数之前使用。
+- 每个进程中进行调用，用于初始化该进程。
+- 使用分布式时，该函数必须在 distributed 内所有相关函数之前使用。
 
 参数详解
 - `backend` ：指定当前进程要使用的通信后端
-  - 小写字符串，支持的通信后端有 gloo，mpi，nccl 。建议用 nccl。
-- `init_method` ：指定当前进程组初始化方式
-  - 可选参数，字符串形式。如果未指定 init_method 及 store，则默认为 env://，表示使用读取环境变量的方式进行初始化。该参数与 store 互斥。
+  - 小写字符串，支持的通信后端有 `gloo`, `mpi`, `nccl`, 建议用 `nccl`。
+  - cpu 分布式选 `gloo`
+  - gpu 分布式选 `nccl`
+- `init_method` ：当前进程组初始化方式
+  - 可选参数，字符串形式。两种方式: `init_method` + `store`, `init_method`是`store`的高层封装, 二者互斥
+  - `init_method`: **TCP连接**、File**共享文件**系统、**ENV环境变量**三种方式
+  - `store`: 同时指定world_size 和 rank参数。store 是一种分布式中核心的key-value存储，用于不同进程间共享信息
+  - 如果未指定, 默认为 `env`，表示使用读取环境变量方式初始化。该参数与 store 互斥。
 - `rank` ：指定当前进程的优先级
 - `int` 值。表示当前进程的编号，即优先级。如果指定 store 参数，则必须指定该参数。
   - rank=0 的为主进程，即 master 节点。
@@ -2358,6 +2426,65 @@ torch.distributed.init_process_group(backend, init_method=None, timeout=datetime
   - 可选参数，datetime.timedelta 对象，默认为 30 分钟。该参数仅用于 Gloo 后端。
 - `store`
   - 所有 worker 可访问的 key / value，用于交换连接 / 地址信息。与 init_method 互斥。
+
+三种init_method：
+- `init_method`='**tcp://ip:port**'： 通过指定rank 0（MASTER进程）的IP和端口，各个进程**tcp**进行信息交换。需指定 rank 和 world_size 这两个参数。
+- `init_method`='**file://path**'：通过所有进程都可以访问**共享文件系统**来进行信息共享。需要指定rank和world_size参数。
+- `init_method`=**env://**：从**环境变量**中读取分布式信息(os.environ)，主要包括 `MASTER_ADDR`, `MASTER_PORT`, `RANK`, `WORLD_SIZE`。 其中，rank和world_size可手动指定，否则从环境变量读取。
+
+tcp 和 env 两种方式比较类似, 其实 env就是对tcp 一层封装），都是通过**网络地址**方式进行通信，最常用的初始化方法。
+
+```py
+import os, argparse
+import torch
+import torch.distributed as dist
+
+parse = argparse.ArgumentParser()
+parse.add_argument('--init_method', type=str)
+parse.add_argument('--rank', type=int)
+parse.add_argument('--ws', type=int)
+args = parse.parse_args()
+
+if args.init_method == 'TCP':
+	dist.init_process_group('nccl', init_method='tcp://127.0.0.1:28765', rank=args.rank, world_size=args.ws)
+elif args.init_method == 'ENV':
+    dist.init_process_group('nccl', init_method='env://')
+
+rank = dist.get_rank()
+print(f"rank = {rank} is initialized")
+# 单机多卡情况下，localrank = rank. 严谨应该是local_rank来设置device
+torch.cuda.set_device(rank)
+tensor = torch.tensor([1, 2, 3, 4]).cuda()
+print(tensor)
+```
+
+单机双卡机器上，开两个终端，同时运行命令
+
+```py
+# TCP方法
+python3 test_ddp.py --init_method=TCP --rank=0 --ws=2
+python3 test_ddp.py --init_method=TCP --rank=1 --ws=2
+# ENV方法
+MASTER_ADDR='localhost' MASTER_PORT=28765 RANK=0 WORLD_SIZE=2 python3 test_gpu.py --init_method=ENV
+MASTER_ADDR='localhost' MASTER_PORT=28765 RANK=1 WORLD_SIZE=2 python3 test_gpu.py --init_method=ENV
+```
+
+如果开启的进程未达到 word_size 的数量，则所有进程会一直等待，直到都开始运行，可以得到输出如下：
+
+```py
+# rank0 的终端：
+rank 0 is initialized
+tensor([1, 2, 3, 4], device='cuda:0')
+# rank1的终端
+rank 1 is initialized
+tensor([1, 2, 3, 4], device='cuda:1')
+```
+
+说明
+- 初始化DDP时，给后端提供主进程的**地址端口**、本身**RANK**，以及**进程数量**即可。
+- 初始化完成后，可以执行很多分布式的函数，比如 dist.`get_rank`, dist.`all_gather` 等等。
+
+
 
 **new_group**
 
@@ -2385,7 +2512,7 @@ torch.distributed.new_group(ranks=None, timeout=datetime.timedelta(0, 1800), bac
 - is_mpi_available 检查 MPI 后端是否可用
 - is_nccl_available 检查 NCCL 后端是否可用
 
-#### (1) TCP 初始化
+##### (1) TCP 初始化
 
 ```py
 import torch.distributed as dist
@@ -2479,7 +2606,7 @@ ddp_mp_model = DDP(mp_model)
 # ......
 ```
 
-#### (2) 共享文件初始化
+##### (2) 共享文件初始化
 
 共享的文件对于组内所有进程可见
 
@@ -2517,7 +2644,7 @@ python mnsit.py --init-method file://PathToShareFile/MultiNode --rank 1 --world-
 
 相比于 TCP 方式, 麻烦一点的是运行完一次必须更换共享的文件名，或者删除之前的共享文件，不然第二次运行会报错。
 
-#### (3) Env 初始化(默认)
+##### (3) Env 初始化(默认)
 
 默认情况下都是环境变量来进行分布式通信，指定 `init_method="env://"`。
 
@@ -2605,10 +2732,141 @@ python -m torch.distributed.launch --nproc_per_node=2 --nnodes=3 --node_rank=2 -
 #### GPU 启动方式
 
 常见的GPU 启动方式
-- torch.multiprocessing: 容易控制,更加灵活
-- torch.distributed.launch: 代码量少, 启动速度快
+- torch.`multiprocessing`: 容易控制, 更加灵活
+- torch.`distributed.launch`: 代码量少, 启动速度快
+- `torchrun`: `distributed.launch` 的进化版, 代码量更少
 - Slurm Workload Manager: slurm 启动近期更新掉
-- torchrun
+
+DDP 本身是一个 python **多进程**，完全可以直接通过**多进程**方式来启动分布式程序。
+
+torch 提供**两种**启动工具运行torch DDP程序。
+- torch.multiprocessing
+- launch/run
+
+##### (1) mp.spawn
+
+用 torch.`multiprocessing`（python multiprocessing的封装类) 自动生成多个进程
+
+基本的调用函数 spawn:
+
+```py
+mp.spawn(fn, args=(), nprocs=1, join=True, daemon=False)
+```
+
+其中:
+- `fn`: 进程**入口函数**，第一个参数会被默认自动加入当前进程的rank， 即实际调用： fn(rank, *args)
+- `nprocs`: **进程数量**，即：world_size
+- `args`: 函数fn的其他常规参数以tuple形式传递
+
+示例
+
+```py
+import torch
+import torch.distributed as dist
+import torch.multiprocessing as mp
+
+def fn(rank, ws, nums):
+    dist.init_process_group('nccl', init_method='tcp://127.0.0.1:28765', rank=rank, world_size=ws)
+    rank = dist.get_rank()
+    print(f"rank = {rank} is initialized")
+    torch.cuda.set_device(rank)
+    tensor = torch.tensor(nums).cuda()
+    print(tensor)
+
+if __name__ == "__main__":
+    ws = 2
+    mp.spawn(fn, nprocs=ws, args=(ws, [1, 2, 3, 4]))
+```
+
+命令 
+
+```sh
+python3 test_ddp.py
+```
+
+输出如下：
+
+```sh
+rank = 0 is initialized
+rank = 1 is initialized
+tensor([1, 2, 3, 4], device='cuda:1')
+tensor([1, 2, 3, 4], device='cuda:0')
+```
+
+这种方式同时适用于 TCP 和 ENV 初始化。
+
+##### (2) launch/run
+
+torch 提供的 `torch.distributed.launch` 工具，以模块形式直接执行：
+
+```sh
+python3 -m torch.distributed.launch --配置 train.py --args参数
+```
+
+常用配置有:
+- --`nnodes`: 使用的机器数量，单机的话，就默认是1了
+- --`nproc_per_node`: 单机的进程数，即单机的worldsize
+- --`master_addr`/`port`: 使用的主进程rank0的地址和端口
+- --`node_rank`: 当前的进程rank
+
+单机情况下
+- 只有 --`nproc_per_node` 是必须指定
+- --`master_addr`/`port` 和 `node_rank` 都是可以由launch通过环境自动配置
+
+```py
+mport torch
+import torch.distributed as dist
+import torch.multiprocessing as mp
+import os
+
+dist.init_process_group('nccl', init_method='env://')
+
+rank = dist.get_rank()
+local_rank = os.environ['LOCAL_RANK']
+master_addr = os.environ['MASTER_ADDR']
+master_port = os.environ['MASTER_PORT']
+print(f"rank = {rank} is initialized in {master_addr}:{master_port}; local_rank = {local_rank}")
+torch.cuda.set_device(rank)
+tensor = torch.tensor([1, 2, 3, 4]).cuda()
+print(tensor)
+```
+
+启动命令
+
+```sh
+python3 -m torch.distribued.launch --nproc_per_node=2 test_ddp.py
+```
+
+输出如下：
+
+```sh
+rank = 0 is initialized in 127.0.0.1:29500; local_rank = 0
+rank = 1 is initialized in 127.0.0.1:29500; local_rank = 1
+tensor([1, 2, 3, 4], device='cuda:1')
+tensor([1, 2, 3, 4], device='cuda:0')
+```
+
+##### (3) torchrun
+
+torch 1.10 开始用终端命令 `torchrun` 来代替 `torch.distributed.launch`
+- `torchrun` 实现了 launch 的一个**超集**
+
+不同：
+- 完全使用环境变量配置各类参数，如 RANK,LOCAL_RANK, WORLD_SIZE 等，尤其是 local_rank 不再支持用命令行隐式传递的方式
+- 更加优雅处理某个worker失败情况，重启worker。
+  - 需要代码中有 load_checkpoint(path) 和 save_checkpoint(path) 这样有worker失败的话，可以通过load最新的模型，重启所有的worker接着训练。
+- 训练节点数目可以**弹性**变化。
+
+上面代码直接使用运行即可，不用写那么长长的命令了。
+
+```sh
+torchrun --nproc_per_node=2 test_gpu.py
+```
+
+注意
+- torchrun 或者 launch 对上面`ENV`初始化方法支持最完善, `TCP`初始化方法的可能会出现问题，尽量使用env来初始化dist。
+
+
 
 #### torch.distributed 使用
 
@@ -2738,6 +2996,169 @@ CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 t
 ```
 
 apex加速(混合精度训练、并行训练、同步BN)可[参考](https://zhuanlan.zhihu.com/p/158375055)
+
+
+### 代码分布式改造
+
+如何将单机训练代码改成分布式运行？
+
+基本流程：
+- 分布式训练数据加载
+- 分布式训练
+- 分布式评估
+
+
+#### 分布式数据集
+
+`Dataloader` 要把所有数据分成N份(N为worldsize), 并能正确分发到不同进程中，每个进程可以拿到一个数据的子集，不重叠，不交叉。
+
+这部分工作靠 `DistributedSampler` 完成，函数签名如下:
+
+```py
+torch.utils.data.distributed.DistributedSampler(dataset,
+				num_replicas=None, rank=None, shuffle=True, seed=0, drop_last=False)
+```
+
+参数说明
+- `dataset`: 需要加载的完整数据集
+- `num_replicas`： 把数据集分成多少份，默认是当前dist的world_size
+- `rank`: 当前进程的id，默认从dist的rank
+- `shuffle`：是否打乱
+- `drop_last`: 如果数据长度不能被world_size整除，可以考虑是否将剩下的扔掉
+- `seed`：随机数种子。
+  - 注意: 从源码中可以看出，真正的种子其实是 self.seed + self.epoch, 好处是，不同epoch每个进程拿到的数据是不一样，因此要在每个epoch开始前设置下：`sampler.set_epoch(epoch)`
+
+Sampler 实现核心代码：
+
+```py
+indices[self.rank: self.total_size: self.num_replicas]
+```
+
+假设4卡12条数据，rank=0,1,2,3, num_replicas=4, 那么每个卡取的数据索引就是：
+
+```sh
+rank0: [0 4 8]; rank1: [1 5 9]; rank2: [2 6 10]; rank3: [3 7 11]
+```
+
+保证不重复不交叉。这样在分布式训练的时候，只需要给 Dataloader 指定 DistributedSampler 即可，简单示例如下：
+
+```py
+sampler = DistributedSampler(dataset)
+loader = DataLoader(dataset, sampler=sampler)
+for epoch in range(start_epoch, n_epochs):
+  sampler.set_epoch(epoch) # 设置epoch 更新种子
+  train(loader)
+```
+
+模型的分布式训练封装。将单机模型使用 torch.nn.parallel.`DistributedDataParallel` 进行封装，如下：
+
+```py
+torch.cuda.set_device(local_rank)
+model = Model().cuda()
+model = DistributedDataParallel(model, device_ids=[local_rank])
+# 要调用model内的函数或者属性. model.module.xxxx
+```
+
+多卡训练时，每个进程有一个model副本和optimizer，使用自己的数据进行训练，之后**反向传播**计算完梯度的时候，所有进程的梯度会进行 all-reduce 操作进行同步，进而保证每个卡上的模型更新梯度是一样的，模型参数也是一致的。
+
+注意
+- 在save和load模型时候，为了减小所有进程同时读写磁盘，以**主进程**为主，rank0 先save模型，在map到其他进程。
+- 另外一个好处: 最开始训练时，模型随机初始化之后，保证了所有进程的模型参数保持一致。
+
+torch的DDP封装时，已经做到了这一点，即使开始随机初始化不同，经过DDP封装，所有进程都一样的参数
+
+简洁代码如下：
+
+```py
+model = DistributedDataParallel(model, device_ids=[local_rank])
+CHECKPOINT_PATH ="./model.checkpoint"
+if rank == 0:
+  torch.save(ddp_model.state_dict(), CHECKPOINT_PATH)
+# barrier()其他保证rank 0保存完成
+dist.barrier()
+map_location = {"cuda:0": f"cuda:{local_rank}"}
+model.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=map_location))
+# 后面正常训练代码
+optimizer = xxx
+for epoch:
+  for data in Dataloader:
+      model(data)
+      xxx
+    # 训练完成 只需要保存rank 0上的即可
+    # 不需要dist.barrior()， all_reduce 操作保证了同步性
+  if rank == 0:
+     torch.save(ddp_model.state_dict(), CHECKPOINT_PATH)
+```
+
+#### 分布式训练
+
+DDP分布式训练步骤：
+- 初始化进程组 dist.init_process_group
+- 设置分布式采样器 DistributedSampler
+- 使用DistributedDataParallel封装模型
+- 使用torchrun 或者 mp.spawn 启动分布式训练
+
+使用分布式做 evaluation 时，要先把所有进程的输出结果进行 gather，再进行指标计算，两个常用函数:
+
+```py
+dist.all_gather(tensor_list, tensor) # 将所有进程的tensor进行收集并拼接成新的tensorlist返回，比如:
+dist.all_reduce(tensor, op) # 对tensor 的 in-place 操作, 对所有进程的某个tensor进行合并操作，op可以是求和等
+```
+
+代码
+
+```py
+import torch
+import torch.distributed as dist
+
+dist.init_process_group('nccl', init_method='env://')
+rank = dist.get_rank()
+torch.cuda.set_device(rank)
+
+tensor = torch.arange(2) + 1 + 2 * rank
+tensor = tensor.cuda()
+print(f"rank {rank}: {tensor}")
+
+tensor_list = [torch.zeros_like(tensor).cuda() for _ in range(2)]
+dist.all_gather(tensor_list, tensor)
+print(f"after gather, rank {rank}: tensor_list: {tensor_list}")
+
+dist.barrier()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+print(f"after reduce, rank {rank}: tensor: {tensor}")
+```
+
+命令
+
+```sh
+torchrun --nproc_per_node=2 test_ddp.py
+```
+
+输出结果如下:
+
+```sh
+rank 1: tensor([3, 4], device='cuda:1')
+rank 0: tensor([1, 2], device='cuda:0')
+after gather, rank 1: tensor_list: [tensor([1, 2], device='cuda:1'), tensor([3, 4], device='cuda:1')]
+after gather, rank 0: tensor_list: [tensor([1, 2], device='cuda:0'), tensor([3, 4], device='cuda:0')]
+after reduce, rank 0: tensor: tensor([4, 6], device='cuda:0')
+after reduce, rank 1: tensor: tensor([4, 6], device='cuda:1')
+```
+
+#### 分布式评估
+
+evaluation 时，可以拿到所有进程中模型输出，最后统一计算指标，基本流程如下：
+
+```py
+pred_list = []
+for data in Dataloader:
+    pred = model(data)
+    batch_pred = [torch.zeros_like(label) for _ in range(world_size)]
+    dist.all_gather(batch_pred, pred)
+    pred_list.extend(batch_pred)
+pred_list = torch.cat(pred_list, 1)
+# 所有进程pred_list是一致的，保存所有数据模型预测的值
+```
 
 
 ### pytorch 分布式操作
@@ -2955,7 +3376,102 @@ exmaple: 2 node, 8 GPUs per node (16GPUs)
 ```
 
 
-## Horovod 分布式训练
+##  分布式训练高层封装
+
+对 torch 几个流程进行一层封装【初始化、包装模型、优化器、数据加载】。
+
+考虑几个因素
+- 支持分布式训练**模式丰富**，如 CPU，单机单卡，单机多卡，多机多卡，FP16等
+- **代码简单**，不需要改动大量代码， 即可进行分布式训练
+- **接口丰富**，方便自定义。比如 能调用和访问底层分布式的一些变量如rank，worldsize，或实现或封装一些分布式函数，比如dist.gather/reduce等。
+
+得到更加易用的框架：
+- Accelerator
+- Horovod
+
+这两个都是非常易用的分布式框架。 还有一些其他的，比如 `pytorch-lightning`，`deepspeed`。
+
+以bert情感分类为例子，介绍了如何使用原生DDP和上面2个框架来进行分布式训练
+- 代码见：[torch-ddp-examples](https://github.com/ShomyLiu/torch-ddp-examples)
+
+### Accelerator
+
+由大名鼎鼎的 huggingface 发布的 Accelerator，专门适用于Pytorch 分布式训练框架：
+- GitHub: [accelerate](https://github.com/huggingface/accelerate)
+- 官网教程：[accelerate](https://huggingface.co/docs/accelerate)
+
+将单进程代码改为多进程分布式：
+
+```py
+import accelerate
+accelerator = accelerate.Accelerator()
+device = accelerator.device #获取当前进程的设备
+...
+# 进行封装
+model, optimizer, dataloader = accelerator.prepare(model, optimizer, dataloader)
+
+#训练时 loss.backward() 换为：
+accelerator.backward(loss)
+```
+
+使用CLI命令行方式运行，先使用 `accelerator config` 配置一次分布式训练参数，之后就使用 `acceleratoe launch` 运行。
+
+
+除此之外，accelerator 还提供了一些很便利的接口，基本覆盖了分布式训练中需要用到的方法，比如：
+- accelerator.`print`: 仅仅在主进程输出
+- accelerator.`process_index`: 当前进程ID，没有使用rank命名，而是用的process_index来表示
+- accelerator.`is_local_main_process`/`is_main_processs`: 是否local_rank 或则rank为0， 主进程
+- accelerator.`wait_for_everyone`(): 类似 dist.barrier() , 等所有进程到达这一步。
+- accelerator.`save`: 保存模型
+- kwargs_handlers: 可以定义DDP初始化的一些参数，比如最常用的就是 find_unused_parameters，比如：
+
+```py
+import accelerate
+from accelerate import DistributedDataParallelKwargs as DDPK
+kwargs = DDPK(find_unused_parameters=True)
+accelerator = accelerate.Accelerator(kwargs_handlers=[kwargs])
+```
+
+accelerator 基本已经满足使用 Pytorch 进行分布训练的需求,而且十分符合 huggingface 风格，把某个小项目做到最好用，类似的还有 transformers, tokenizers, datasets 等等。
+
+不足
+- accelerate 支持的 collective function 比较少，目前只有 all_gather。
+
+Horovod
+第二个常用的分布式库Horovod是一个通用的深度学习分布式训练框架，支持Tensorflow，Pytorch，MXNet，Keras等等，因此比Accelerator要更加重些，但是功能也会更加丰富，这里以Pytorch为例来简单介绍。多说一下，Horovod的安装相对复杂一些，需要针对具体的环境参考readme进行安装。
+
+GitHub：https://github.com/horovod/horovod
+官网：https://horovod.ai/
+Horovod的使用也很简单，基本也是那几个流程：
+
+```py
+import horovod.torch as hvd
+# 初始化
+hvd.init()
+# Samapler
+# *此处num_replicas=hvd.size(), rank=hvd.rank()必须*
+train_sampler = torch.utils.data.distributed.DistributedSampler(
+    train_dataset, num_replicas=hvd.size(), rank=hvd.rank())
+
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=..., sampler=train_sampler)
+# 优化器包装
+optimizer = hvd.DistributedOptimizer(optimizer, named_parameters=model.named_parameters())
+# 模型分发广播
+hvd.broadcast_parameters(model.state_dict(), root_rank=0)
+# 模型训练不需要修改
+```
+
+horovod 支持的运行方式非常多，最常用的就是 horovodrun ，比如单机四卡运行：
+
+```sh
+horovodrun -np 4 -H localhost:4 python3 train.py
+```
+
+horovod 相比 accelerate 功能更加丰富，支持的接口，函数，框架都要多， 比如: hvd.all_reduce, hvd.all_gather等等。
+
+
+
+### Horovod
 
 Horovod 是 Uber开源的跨平台的分布式训练工具，名字来自于俄国传统民间舞蹈，舞者手牵手围成一个圈跳舞，与Horovod设备之间的通信模式很像，有以下几个特点：
 - 兼容TensorFlow、Keras和PyTorch机器学习框架。
