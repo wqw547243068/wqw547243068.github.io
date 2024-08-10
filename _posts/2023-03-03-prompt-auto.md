@@ -200,6 +200,34 @@ Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/g
 文生图提示词
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-ezhpy3drpa/9aca7e63cd0b44ab8bcb730ad8314eff~tplv-obj:896:1228.image?_iz=97245&from=post&x-expires=1703030400&x-signature=kP7pjHSt2XvLnVNZS2NSg1JX%2FWs%3D)
 
+
+
+#### DSPy Visualizer
+
+【2024-8-6】[DSPy Visualizer：可视化Prompt优化过程](https://mp.weixin.qq.com/s/X_vbUNFY1JeY9Ph8h8pYRw)
+
+DSPy 是开源社区比较有影响力的大模型提示词、参数调优仓库，使得用户以一种编程的方式，调整和优化大模型模板和参数。
+1. [langwatch](https://github.com/langwatch/langwatch)
+2. [dspy](https://github.com/stanfordnlp/dspy)
+3. 代码：ziqi-jin/dspy-examples: Running DSPy examples by llama3 (github.com) 
+
+DSPy 设计思想借鉴了Torch，使得Torch 使用者可以很快的理解DSPy的使用方式。
+
+使用Torch时，研究人员往往会使用 Tensorboard 等可视化工具来直观的查看模型的训练情况，那么是否有适配 DSPy 优化过程的可视化工具呢？
+- 答案是Yes，本文将首先介绍带有DSPy优化器的优化示例，然后使用 langwatch 仓库提供的DSPy Visualizer 查看具体的优化过程，包括显示每个优化步骤的Predictior、Example、大模型调用内容等。
+
+确保已经安装了langwatch 以及 dspy 的python包。
+
+```sh
+pip install dspy-ai==2.4.12          
+pip install langwatch
+```
+
+DSPy 优化流程需要: 准备数据集、程序主体、优化器以及衡量指标
+- 然后在固定数据集合衡量指标的情况下，调整程序主体和算法以达到优化的目的
+
+使用方法见[原文](https://mp.weixin.qq.com/s/X_vbUNFY1JeY9Ph8h8pYRw)
+
 ### prompt 生成方法
 
 Prompt 是用来提升模型输出效果的前缀序列（sequence of prefix tokens）, 详见 翁丽莲博客[smart-prompt-design](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/#smart-prompt-design)
