@@ -338,7 +338,7 @@ raw_inputs = [
 inputs = tokenizer(raw_inputs, padding=True, truncation=True, return_tensors="pt")
 print(inputs) # 返回一个包含两个键的字典，input_ids和attention_mask
 # ----- 模型 ------
-outputs = model(**inputs)
+outputs = model(**inputs)  # dict 展开, 提取 input_ids 和 attention_mask 参数
 print(outputs.last_hidden_state.shape)
 # 输出 torch.Size([2, 16, 768])
 ```
@@ -475,9 +475,9 @@ classifier(
 ```
 
 
-#### Text classification
+#### Text classification 文本分类
 
-默认checkpoint 是 distilbert-base-uncased-finetuned-sst-2-english
+默认 checkpoint 是 distilbert-base-uncased-finetuned-sst-2-english
 
 ```python
 from transformers import pipeline
@@ -496,6 +496,7 @@ classifier([
 ])
 ```
 
+段落关系判断
 
 ```python
 ## ------------ PYTORCH CODE ------------ 
@@ -565,6 +566,17 @@ for i in range(len(classes)):
     print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
 ```
 
+
+NLI 句子关系推断
+
+```py
+from transformers import pipeline
+classifier = pipeline('zero-shot-classification', model='roberta-large-mnli')
+
+sequence_to_classify = "one day I will see the world"
+candidate_labels = ['travel', 'cooking', 'dancing']
+classifier(sequence_to_classify, candidate_labels)
+```
 
 #### Zero-shot classification 零样本分类
 
@@ -759,6 +771,7 @@ translator("Ce cours est produit par Hugging Face.")
 ```
 
 
+
 ### AutoXXX 方式
 
 用 nn.module + class 方式构建可训练的model。
@@ -813,7 +826,39 @@ for i in range(len(classes)):
 ### finetune
 
 
-pytorch 示例
+官方示例代码: [section4.ipynb](https://colab.research.google.com/github/huggingface/notebooks/blob/master/course/zh-CN/chapter3/section4.ipynb#scrollTo=_O0q0aFZk_dO)
+
+#### 简易示例
+
+```py
+import torch
+from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification
+
+# Same as before
+checkpoint = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+# 数据集
+sequences = [
+    "I've been waiting for a HuggingFace course my whole life.",
+    "This course is amazing!",
+]
+batch = tokenizer(sequences, padding=True, truncation=True, return_tensors="pt")
+# 定义 label
+batch["labels"] = torch.tensor([1, 1])
+# 定义 优化器
+optimizer = AdamW(model.parameters())
+# 计算 loss
+loss = model(**batch).loss
+# 计算梯度
+loss.backward()
+# 更新梯度
+optimizer.step()
+```
+
+
+#### Trainer
+
 
 ```py
 from transformers import TrainingArguments, Trainer
@@ -842,6 +887,8 @@ trainer = Trainer(
 )
 trainer.train()
 ```
+
+
 
 
 ## 分词
@@ -1199,15 +1246,22 @@ datasets.load_dataset(
 ```
 
 函数说明
-- `load_dataset`函数从Hugging Face Hub或者本地数据集文件中加载一个数据集。可以通过 [datasets](https://huggingface.co/datasets) 或者 `datasets.list_datasets()` 获取所有可用数据集。
-- 参数 `path` 表示数据集的名字或者路径。可以是一个数据集的名字，比如"imdb"、“glue”；也可以是通用的产生数据集文件的脚本，比如"json"、“csv”、“parquet”、“text”；或者是在数据集目录中的脚本（.py)文件，比如“glue/glue.py”。
-- 参数 `name` 表示数据集中的子数据集，当一个数据集包含多个数据集时，就需要这个参数。比如"glue"数据集下就包含"sst2"、“cola”、"qqp"等多个子数据集，此时就需要指定name来表示加载哪一个子数据集。
-- 参数 `data_dir` 表示数据集所在的目录，参数data_files表示本地数据集文件。
-- 参数 `split` 如果为None，则返回一个DataDict对象，包含多个DataSet数据集对象；如果给定的话，则返回单个DataSet对象。
+- `load_dataset`函数从 Hugging Face Hub 或本地数据集文件中加载一个数据集。可以通过 [datasets](https://huggingface.co/datasets) 或者 `datasets.list_datasets()` 获取所有可用数据集。
+- 参数 `path` 表示数据集的名字/路径。
+  - 数据集名字: 比如"imdb"、“glue”；
+  - 数据集生成脚本: 比如 "json"、“csv”、“parquet”、“text”；
+  - 数据集目录中的脚本（.py)文件，比如“glue/glue.py”
+- 参数 `name` 表示数据集中的子数据集
+  - 当一个数据集包含多个数据集时，需要这个参数。比如"glue"数据集下就包含"sst2"、“cola”、"qqp"等多个子数据集，此时就需要指定name来表示加载哪一个子数据集。
+- 参数 `data_dir` 数据集所在的目录
+  - 参数 `data_files` 表示本地数据集文件。
+- 参数 `split` 
+  - 如果为 None，则返回 DataDict 对象，包含多个 DataSet 数据集对象；
+  - 如果给定，则返回单个 DataSet 对象。
 - 参数 `cache_dir` 表示缓存数据的目录
-  - 默认为"`~/.cache/huggingface/datasets`"。
-- 参数 `keep_in_memory` 表示是否将数据集缓存在内存中，加载一次后，再次加载可以提高加载速度。
-- 参数 `revision` 表示加载数据集的脚本的版本。
+  - 默认为 `~/.cache/huggingface/datasets`
+- 参数 `keep_in_memory` 是否将数据集**缓存**在内存中，加载一次后，再次加载可以提高加载速度。
+- 参数 `revision` 加载数据集的脚本版本。
 
 
 ### 远程数据集
@@ -1224,8 +1278,54 @@ dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
 dataset_1 = datasets.load_dataset("../dataset/glue/glue.py", name="cola")
 # 与上一个等价
 dataset_2 = datasets.load_dataset("../dataset/glue", name="cola") 
-
 ```
+
+```py
+from datasets import load_dataset
+
+raw_datasets = load_dataset("glue", "mrpc")
+# 数据格式
+raw_train_dataset.features
+# 访问数据
+raw_datasets
+raw_train_dataset = raw_datasets["train"]
+raw_train_dataset[0]
+```
+
+输出
+- DatasetDict对象，其中包含训练集、验证集和测试集。
+- 每个集合都包含几个列(sentence1, sentence2, label, and idx) 以及一个代表行数的变量，即每个集合中的行的个数
+- 数据集默认缓存到 `~/.cache/huggingface/datasets`.
+- 可通过设置`HF_HOME`环境变量来自定义缓存文件夹
+
+```py
+DatasetDict({
+    train: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 3668
+    })
+    validation: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 408
+    })
+    test: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 1725
+    })
+})
+# ['sentence1', 'sentence2', 'label', 'idx']
+{'sentence1': Value(dtype='string', id=None),
+ 'sentence2': Value(dtype='string', id=None),
+ 'label': ClassLabel(num_classes=2, names=['not_equivalent', 'equivalent'], names_file=None, id=None),
+ 'idx': Value(dtype='int32', id=None)}
+# 取数
+{'idx': 0,
+ 'label': 1,
+ 'sentence1': 'Amrozi accused his brother , whom he called " the witness " , of deliberately distorting his evidence .',
+ 'sentence2': 'Referring to him as only " the witness " , Amrozi accused his brother of deliberately distorting his evidence .'
+}
+```
+
 
 
 ### 本地数据集
@@ -1260,7 +1360,6 @@ dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
 dataset = datasets.load_dataset('csv', data_files='my_file.csv') # 单个文件
 dataset = datasets.load_dataset('csv', data_files=['my_file_1.csv', 'my_file_2.csv', 'my_file_3.csv']) # 多文件, list 形式
 dataset = datasets.load_dataset('csv', data_files={'train':['my_train_file_1.csv','my_train_file_2.csv'],'test': 'my_test_file.csv'}) # 多文件, dict 形式
-
 
 # 手工保存到本地
 all_data.save_to_disk('my_imdb')
@@ -1333,10 +1432,7 @@ class MyDataset(Dataset):
 `__len__`：实现 len(dataset), 返回整个数据集的大小
 
 
-
-
 示例
-
 
 ```py
 # 加载数据集，自己重写DataSet类
@@ -1869,6 +1965,10 @@ transformers库中RobertaTokenizer和BertTokenizer的不同
 tokenizer.save_pretrained(save_directory) # 保存词表
 model.save_pretrained(save_directory) # 保存模型
 ```
+
+保存后的结果
+- config.json 模型结构信息
+- pytorch_model.bin 模型所有权重
 
 #### Safetensors
 
@@ -2648,7 +2748,7 @@ input_text = "Here is some text to encode"
 # 通过tokenizer把文本变成 token_id
 input_ids = tokenizer.encode(input_text, add_special_tokens=True)
 # input_ids: [101, 2182, 2003, 2070, 3793, 2000, 4372, 16044, 102]
-input_ids = torch.tensor([input_ids])
+input_ids = torch.tensor([input_ids]) # 矩阵转化为张量, 输入模型
 # 中文测试
 input_ids = torch.tensor(tokenizer.encode("遇见被老师提问问题", add_special_tokens=True)).unsqueeze(0)	# 增加一个维度因为输入到Bert模型中要求二维(Batch_size, seq_len)
 print("input_ids: ", input_ids)
@@ -2929,95 +3029,6 @@ class BertPooler(nn.Module):
 在这个文件中还有上述基础的BertModel的进一步的变化，比如BertForMaskedLM，BertForNextSentencePrediction这些是Bert加了预训练头的模型，还有BertForSequenceClassification， BertForQuestionAnswering 这些加上了特定任务头的模型。
 
 [Huggingface简介及BERT代码浅析](https://zhuanlan.zhihu.com/p/120315111)
-
-### pipeline NLP快速应用
-
-[参考文章](https://blog.csdn.net/YangStudent/article/details/118879560)：pipeline涉及多个NLP任务，transformers库，pipline函数
-- 分类，实体识别，生成，预测，问答，摘要，翻译，相似度，迁移学习，预训练模型，transformer概念
-- 类似sklearn的pipeline流水线机制
-
-```python
-from transformers import pipeline
- 
-# 1. 情感分类
-classfier1 = pipeline("sentiment-analysis")
-print(classfier1("My wife is a beautiful girl"))
-# [{'label': 'POSITIVE', 'score': 0.9998767971992493}]
- 
-# print(classfier1('I am pool', 'My PBL is beautiful, but I love it'))
-# [{'label': 'NEGATIVE', 'score': 0.7211759090423584}, {'label': 'POSITIVE', 'score': 0.9998372197151184}]
- 
-classfier2  = pipeline("zero-shot-classification")
-print(classfier2(
-    "This a project about the Style transfer",
-    candidate_labels = ['education', 'politics', 'business']
-))
-# {'sequence': 'This a project about the Style transfer', 'labels': ['business', 'education', 'politics'], 'scores': [0.673454225063324, 0.17288313806056976, 0.15366260707378387]}
- 
-# 2.文本生成
-generator1 = pipeline("text-generation") # 默认的文本生成模型是gpt2
-print(generator1(
-    "I owe 2300 yuan",
-    max_length = 50, # 指定生成句的大小
-    num_return_sequence = 2, # 指定生成的句子个数
-))
-# [{'generated_text': "I owe 2300 yuan from the bank since it made me a few dollars but it's just so damn hard to pay. I'm on a two-yearly policy and the current rate I'm using has to be 100 yuan. So, I"}]
-#
- 
-generator2 = pipeline("text-generation", model="distilgpt2") # 指定模型为distilgpt2,轻量的gpt2
-print(generator2(
-    "I owe 2300 yuan"
-))
-# [{'generated_text': 'I owe 2300 yuan to the country.”'}]
- 
-# 3.预测文本遮罩
-unmasker = pipeline('fill-mask') # 基于bert
-print(unmasker('My favorite girl is <mask>'))
-# top_k的含义是返回最有可能的两种结果
-# [{'sequence': '<s>My favorite girl is…</s>', 'score': 0.035072073340415955, 'token': 1174, 'token_str': 'âĢ¦'}, {'sequence': '<s>My favorite girl is...</s>', 'score': 0.034020423889160156, 'token': 734, 'token_str': '...'}, {'sequence': '<s>My favorite girl is Barbie</s>', 'score': 0.01795039512217045, 'token': 31304, 'token_str': 'ĠBarbie'}, {'sequence': '<s>My favorite girl is Cinderella</s>', 'score': 0.011553746648132801, 'token': 34800, 'token_str': 'ĠCinderella'}, {'sequence': '<s>My favorite girl is ______</s>', 'score': 0.010862686671316624, 'token': 47259, 'token_str': 'Ġ______'}]
- 
-# 4.命名实体识别，识别一句话中的，实体，如人，组织，或地点
-ner = pipeline('ner', grouped_entities=True) # grouped_entities=True, 允许相似的实体分组到同一个组内
-print(ner("I'm working in CCNU , is a beautiful school , and I like Wollongong"))
-# [{'entity_group': 'I-ORG', 'score': 0.9960816502571106, 'word': 'CCNU'}, {'entity_group': 'I-LOC', 'score': 0.9867993593215942, 'word': 'Wollongong'}]
- 
- 
-# 5.提取问题答案 在context中提取出question的答案
-question_answer = pipeline('question-answering')
-print(question_answer(
-    question = 'Who are you?',
-    context = 'I am XsY and good luck to see you',
-))
-# {'score': 0.6727198958396912, 'start': 5, 'end': 8, 'answer': 'XsY'}
- 
-# 6.文本摘要
-summarizer = pipeline('summarization')
-print(summarizer("""    America has changed dramatically during recent years. Not only has the number of 
-    graduates in traditional engineering disciplines such as mechanical, civil, 
-    electrical, chemical, and aeronautical engineering declined, but in most of 
-    the premier American universities engineering curricula now concentrate on 
-    and encourage largely the study of engineering science. As a result, there 
-    are declining offerings in engineering subjects dealing with infrastructure, 
-    the environment, and related issues, and greater concentration on high 
-    technology subjects, largely supporting increasingly complex scientific 
-    developments. While the latter is important, it should not be at the expense 
-    of more traditional engineering.
-    Rapidly developing economies such as China and India, as well as other 
-    industrial countries in Europe and Asia, continue to encourage and advance 
-    the teaching of engineering. Both China and India, respectively, graduate 
-    six and eight times as many traditional engineers as does the United States. 
-    Other industrial countries at minimum maintain their output, while America 
-    suffers an increasingly serious decline in the number of engineering graduates 
-    and a lack of well-educated engineers.
-    """))
-# [{'summary_text': ' America has changed dramatically during recent years . The number of engineering graduates in the U.S. has declined in traditional engineering disciplines such as mechanical, civil, electrical, chemical, and aeronautical engineering . Rapidly developing economies such as China and India, as well as other industrial countries, continue to encourage and advance the teaching of engineering .'}]
- 
- 
-# 7.翻译
-translator = pipeline('translation', model='Helsinki-NLP/opus-mt-zh-en')
-print(translator('我是真的很穷不要再坑我了'))
-# [{'translation_text': "I'm really poor. Don't lie to me again."}]
-```
 
 
 
