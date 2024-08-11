@@ -475,6 +475,159 @@ Assistant3: You are welcome.
 数据集中的 "conversation" 键对应的值是一个列表，用于保存每一轮对话的指令和实际回答（GroundTruth）。为了保持格式统一，增量预训练数据集和单轮对话数据集中的 "conversation" 键也对应一个列表，只不过该列表的长度为 1。而在多轮对话数据集中，"conversation" 列表的长度为 n，以容纳 n 轮的对话内容。
 
 
+### LLMs 数据格式汇总
+
+各类LLM数据格式汇总: [chat_template](https://github.com/mst272/LLM-Dojo/tree/main/chat_template)
+
+不同模型在是否存在默认 system message上, 有所不同(大多数模型都是没有的)。
+
+每个模型都附上了**有system**版本和**无system**版本，如果在训练模型时希望加上system message, 可以参照template模板自行添加。
+
+#### Qwen
+
+官方默认 system message 即：You are a helpful assistant
+
+```s
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+#### Yi
+
+官方版本没有默认 system message，可以与llama一样, 不加 system message使用，有
+
+```s
+<|im_start|>system
+This is a system message<|im_end|>
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+无system模式
+
+```s
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+#### Gemma
+
+官方版本不支持system
+
+无system模式
+
+```s
+<bos><start_of_turn>user
+This is a instruction<end_of_turn>
+<start_of_turn>model
+This is a answer<end_of_turn>
+```
+
+#### Phi-3
+
+官方版本没有默认的system message, 有此需求可依据下述模板自己构建
+
+```s
+<s><|system|>
+This is a system message<|end|>
+<|user|>
+This is a instruction<end>
+<|assistant|>
+This is a answer<end>
+```
+
+无system模式
+
+```s
+<s><|user|>
+This is a instruction<end>
+<|assistant|>
+This is a answer<end>
+```
+
+#### Deepseek
+
+官方同样没有提供默认system message，有此需求可依据下述模板自己构建
+
+```s
+<｜begin▁of▁sentence｜>This is a system message
+User:This is a instruction
+Assistant:This is a answer<｜end▁of▁sentence｜>
+```
+
+无system模式
+
+```s
+<｜begin▁of▁sentence｜>User:This is a instruction
+Assistant:This is a answer<｜end▁of▁sentence｜>
+```
+
+#### Mistral
+
+没有提供system模式
+
+无system模式
+
+```s
+<s>[INST]:This is a instruction [/INST]This is a answer</s>
+```
+
+#### Llama2
+
+```s
+<s>[INST] <<SYS>>
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+<</SYS>>
+
+There's a llama in my garden 😱 What should I do? [/INST] This is a answer</s>
+```
+
+#### Llama3&3.1
+
+```s
+<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+
+This is a system prompt.<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+This is the first user input.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+This is the first assistant response.<|eot_id|>
+```
+
+#### MiniCPM
+
+```s
+<用户>This is a system message<AI>This is a instruction</s>
+```
+
+#### DeepSeek-coder
+
+<｜begin▁of▁sentence｜>User: {user_message_1}
+
+Assistant: {assistant_message_1}<｜end▁of▁sentence｜>User: {user_message_2}
+
+Assistant:
+You can also add an optional system message:
+
+<｜begin▁of▁sentence｜>{system_message}
+
+User: {user_message_1}
+
+Assistant: {assistant_message_1}<｜end▁of▁sentence｜>User: {user_message_2}
+
+Assistant:
+```
+
 ## ChatGPT 三步走
 
 InstructGPT 分为如下三大步：
