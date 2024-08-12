@@ -1053,6 +1053,99 @@ float InvSqrt(float x){
 每个节点上标出了平衡度，所有的节点的平衡度的绝对值都小于等于0或1，所以它是一棵平衡二叉树。
 
 
+### 案例
+
+
+#### 找到首次出现的元素
+
+【2024-8-12】腾讯
+- (1) 线性遍历: 从左到右逐个查找,遇到就返回, 否则返回 length --- 时间复杂度 O(n)
+- (2) 二分法:找到相同值, 然后向左滑动找边界 --- 时间复杂度: log(n)
+
+极端情况怎么办? array 全部都是目标值
+- 二分法改造: 除了比较 `array[mid] == target`, 还比较 `array[start]`,`array[mid]`,`array[end]`, 只要其中有相同值, 就更新 start,end,mid
+
+
+```c
+//#include <iostream>
+//#include <vector>
+#include<stdio.h>
+
+//using namespace std;
+
+// 该函数负责返回数组中target第一次出现的下标位置，数组有序，存在有重复数字
+int find(int * array, int length, int target){
+	/* 
+        (1) 线性遍历: 从左到右逐个查找,遇到就返回, 否则返回 length --- 时间复杂度 O(n)
+        (2) 二分法:找到相同值, 然后向左滑动找边界 --- 时间复杂度: log(n)
+        {2,4,5,5,5,7,8,12,15}
+    */
+    // 空数组识别
+	if(length<=0){
+	    return -1;
+	}
+	if(length==1){
+	    if(length==target) {return 0;}
+	    else return -2;
+	}
+	// 判断增序还是降序
+// 	int order = 0; // 1 增序, -1 降序
+// 	if(array[0]<=array[1]) order = 1;
+// 	else order = -1;
+	
+    // 初始化
+	int start = 0;
+	int end = length -1;
+	int mid = 0;
+	while(start<end){
+		mid = (int)((end+start)/2);
+		printf("[%d,%d] mid=%d -> mid_val=%d, target=%d\n", start, end, mid, array[mid], target);
+		if(array[mid] == target){
+			// 找到元素
+			break;
+			printf("找到目标数值: [%d, %d] mid=%d -> %d\n", start, end, mid, target);
+		}else if(array[mid] <= target){
+			// 往左移动
+			start = mid+1;
+		}else{// 往右移动
+			end = mid-1;
+		}
+	}
+	printf("跳出循环:[%d,%d] mid=%d -> %d\n", start, end, mid, target);
+	// 跟mid值判断结果
+	if(mid>end || mid<start){
+		// 越界
+		return -2;
+	} 
+	// 找到目标数值, 向左寻找等值边界
+	int left = mid-1;
+	while(left>=0 && array[left]==array[mid]){
+		left--;
+	}
+	return left+1;
+}
+
+int main(){
+	int array[] = {2,4,5,5,5,7,8,12,15};
+    // 测试值: [1,5,8, 13, 16]
+    int target_list[5] = {1,5,8, 13, 16};
+    // 计算数组长度
+	int len = sizeof(array) / sizeof(array[0]);
+	printf("长度: %d\n", len);
+    
+    for(int i=0;i<5;i++)
+    {
+	   int idx = find(array, len, target_list[i]);
+	   //int idx = 0;
+       printf("【测试】第%d个: %d -> %d\n", i+1, target_list[i], idx); 
+       if(i>5){break;}
+    }
+	return 0;
+}
+```
+
+
+
 ## 递归
 
 递归概念
