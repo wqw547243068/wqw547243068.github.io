@@ -59,9 +59,17 @@ permalink: /algorithm
 
 ## 代码实战
 
+
+### C++ 面试题
+
 【2022-5-20】[wqw547243068/DS_Algorithm](https://github.com/wqw547243068/DS_Algorithm/blob/master/LeetCode%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.ipynb)
 - crack the coding interview： C++ 编写
 - 剑指offer
+
+### 在线调试
+
+在线代码调试
+- [bejson](https://www.bejson.com/runcode/cpp920/), 支持各种语言的调试
 
 
 ## 解题技巧
