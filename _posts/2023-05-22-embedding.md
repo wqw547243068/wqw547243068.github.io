@@ -36,7 +36,8 @@ permalink: /emb
 
 以 `Milvus` 为代表的`向量数据库`利用语义搜索（Semantic Search）更快地检索到相关性更强的文档。
 
-详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
+详见：
+- sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
 ### 文档向量化
 
@@ -147,7 +148,6 @@ nn.Embedding 用来实现词与词向量的映射。
 
 #### nn.Embedding 示例
 
-
 两个句子：
 - **I want a plane**
 - **I want to travel to Beijing**
@@ -158,7 +158,6 @@ nn.Embedding 用来实现词与词向量的映射。
 转化成ID表示的两个句子如下：
 - **1,2,3,4**
 - **1,2,5,6,5,7**
-
 
 ```py
 import torch
@@ -320,20 +319,21 @@ print(new_output)
 【2023-12-14】评测结论
 
 Embedding向量化实验
-- Top 1召回 Accracy: `Ada v2`(84%) > `BGE`(81%) > `M3E`(?) > `AngIE`(67%)
+- top1 召回 Accracy: `Ada v2`(84%) > `BGE`(81%) > `M3E`(78%) > `AngIE`(67%)
+- top3 bge，m3e和ada002比差距不大了
+- top5 基本就持平
 
 | model | top1 | top3 | top5 | top10 | 维度 | 语言 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Openai AdaEmbedding V2 | 0.8415 | 0.9471 | 0.9660 | 0.9849 | 1536 | 中文 |
-| m3e | 0.7811 | 0.9132 | 0.9472 | 0.9811 | 768 | 中文 |
-| bge | 0.8113| 0.9358| 0.9660| 0.9849| 768| 中文 |
-| angle | 0.6716 | 0.8604 | 0.9056 | 0.9283 | 768 | 中文 |
+| Openai AdaEmbedding V2 | 0.8415 | 0.9471 | 0.9660 | 0.9849 | **1536** | 中文 |
+| `m3e` | 0.7811 | 0.9132 | 0.9472 | 0.9811 | 768 | 中文 |
+| `bge` | 0.8113| 0.9358| 0.9660| 0.9849| 768| 中文 |
+| `angle` | 0.6716 | 0.8604 | 0.9056 | 0.9283 | 768 | 中文 |
 
-纬度不同，这个比较对m3e和bge和angle不太公平
+注意
+- embedding 纬度不同，对 m3e/bge/angle 不公平
 
-top3的bge，m3e和ada002比差距不大了，top5基本就持平
-
-Embedding榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
 
 ### LLM Embedding
 
