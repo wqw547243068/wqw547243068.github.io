@@ -4295,6 +4295,49 @@ Apache 2.0下许可情况下，Jamba开放权重，开发者可以进一步优�
 源代码：[MiM-ISTD](https://github.com/txchen-USTC/MiM-ISTD)
 
 
+#### Falcon Mamba 7B
+
+【2024-8-13】[非Transformer架构站起来了！首个纯无注意力大模型，超越开源巨头Llama 3.1](https://mp.weixin.qq.com/s/ET9gghK4asEr5ObuW2padw)
+
+自 2023 年 12 月首次推出以来，Mamba 便成为了 Transformer 的强有力竞争对手。
+
+此后，采用 Mamba 架构的模型不断出现
+- Mistral 发布的首个基于 Mamba 架构的开源大模型 Codestral 7B。
+
+阿布扎比技术创新研究所（TII）发布了一个新的开源 Mamba 模型 ——Falcon Mamba 7B。
+
+Falcon Mamba 7B 也成为了继 Falcon 180B、Falcon 40B 和 Falcon 2 之后，TII 开源的第四个模型，并且是首个 Mamba SSLM 架构模型。
+
+亮点：
+- 无需增加内存存储，就可以处理任意长度序列，并且能够在单个 24GB A10 GPU 上运行。
+
+效果
+- Falcon Mamba 7B 在一些基准上超越同尺寸级别的领先模型，包括 Meta 的 `Llama 3 8B`、`Llama 3.1 8B` 和 `Mistral 7B`。
+
+Falcon Mamba 7B 分为四个变体模型: 基础版本、指令微调版本、4bit 版本和指令微调 4bit 版本。
+
+Falcon Mamba 7B 采用了基于 Apache 2.0 的许可证「Falcon License 2.0」，支持研究和应用目的
+- Hugging Face 地址：[falcon-mamba-7b](https://huggingface.co/tiiuae/falcon-mamba-7b)
+
+训练数据
+- Falcon Mamba 7B 训练数据高达 5500GT ，主要由 RefinedWeb 数据集组成，并添加了来自公共源的高质量技术数据、代码数据和数学数据。所有数据通过 Falcon-7B/11B 标记器进行 tokenized 操作。
+- 与其他 Falcon 系列模型类似，Falcon Mamba 7B 采用多阶段训练策略进行训练，上下文长度从 2048 增加到了 8192。此外，受到课程学习概念的启发，TII 在整个训练阶段精心选择了混合数据，充分考虑了数据的多样性和复杂性。
+
+在最后的训练阶段，TII 使用了一小部分高质量精选数据（即来自 Fineweb-edu 的样本），以进一步提升性能。
+
+训练过程、超参数
+- Falcon Mamba 7B 的大部分训练是在 256 个 H100 80GB GPU 上完成的，采用了 3D 并行（TP=1、PP=1、DP=256）与 ZeRO 相结合的策略。下图为模型超参数细节，包括精度、优化器、最大学习率、权重衰减和 batch 大小。
+
+具体而言，Falcon Mamba 7B 经过了 AdamW 优化器、WSD（预热 - 稳定 - 衰减）学习率计划的训练， 并且在前 50 GT 的训练过程中，batch 大小从 b_min=128 增加到了 b_max=2048。
+
+在稳定阶段，TII 使用了最大学习率 η_max=6.4×10^−4，然后使用超过 500GT 的指数计划将其衰减到最小值图片。同时，TII 在加速阶段采用了 BatchScaling 以重新调整学习率 η，使得 Adam 噪声温度图片保持恒定。
+
+整个模型训练花费了大约两个月时间。
+
+
+
+
+
 ### Command R+
 
 
