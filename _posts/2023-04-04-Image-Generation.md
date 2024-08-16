@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -1167,6 +1167,7 @@ Stable Diffusion is a state of the art text-to-image model that generates images
 
 【2023-4-3】[Kaggle Stable Diffusion赛题 高分思路](https://mp.weixin.qq.com/s/LDWa7sR__MFjbj0CTHajcA)
 
+
 #### 介绍
 
 Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的CompVis小组开发，基于潜在扩散模型打造，也是**唯一**一款能部署在家用电脑上的 AI 绘图工具，可以在 6GB 显存显卡或无显卡（只依赖 CPU）下运行，并在几秒钟内生成图像，无需预处理和后处理。
@@ -1521,12 +1522,26 @@ playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模�
 
 【2024-2-22】Stability AI 发布[Stable Diffusion 3](https://stability.ai/news/stable-diffusion-3)，号称史上最强大的文生图模型。
 
+【2024-8-16】[Stable Diffusion 3 论文及源码概览](https://mp.weixin.qq.com/s/YQE0o8MLR4MwllNXomLiZw)
+
+
 新版模型在文本语义理解、色彩饱和度、图像构图、分辨率、类型、质感、对比度等方面都有了显著提升，甚至开始触摸物理世界的奥秘，让生成的图片看起来更加逼真。
 - 参数范围在8亿到80亿之间，专为移动设备设计，AI算力消耗更低，推理速度却更快。
 
 Stable Diffusion 3 还具备“**多主题生成**”和“**超高画质**”的特点。理解文字描述，甚至能一句话描绘出包含多个主题和多样物品的图像，而且生成的每一张图片都堪称艺术品，无论是在自然写实风景，还是在漫画、海报中，都能精准地捕捉和理解文字描述的每一个细节，将抽象的文字语言转换为具象的画面元素。
 
 技术层面上，Stable Diffusion 3 采用与Sora类似的`Diffusion Transformer`架构，这种架构在训练过程中通过学习给图片添加和去除噪声，实现了高质量的图像生成。这种创新的架构设计，结合扩散型transformer架构和flow matching，是Stable Diffusion 3取得显著进步的关键。
+
+
+SD3 中的去噪网络 DiT 模型是怎么一步一步搭起来
+
+除 将去噪网络从 U-Net 改成 DiT 外，SD3 还在模型结构与训练策略上做了很多小改进：
+- 改变训练时噪声采样方法
+- 将一维位置编码改成二维位置编码
+- 提升 VAE 隐空间通道数
+- 对注意力 QK 做归一化以确保高分辨率下训练稳定
+
+论文及源码讲解: [Stable Diffusion 3 论文及源码概览](https://mp.weixin.qq.com/s/YQE0o8MLR4MwllNXomLiZw)
 
 
 ### Mid-Journey
