@@ -3,7 +3,7 @@ layout: post
 title:  提示攻击 Prompt Attack
 date:   2023-03-02 16:52:00
 categories: 大模型
-tags: ChatGPT prompt 大模型 
+tags: ChatGPT prompt 大模型 controlnet
 excerpt: 如何攻击大模型、如何防守？
 mathjax: true
 permalink: /prompt_auto
@@ -1054,5 +1054,25 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 
 改进方法：
 - 提前翻译成英文，这个功能应该由平台自动完成（给PromptLLM的建议）
+
+#### Omost
+
+Controlnet 作者张吕敏新开源项目 [Omost](https://www.omost.cc/)
+- 一种将LLM的文本生成能力转化为图像生成能力的方法
+- [Github](https://github.com/lllyasviel/Omost)
+
+基本思路
+- 训练LLM模型，根据输入图像描述生成特定格式的代码，这些代码定义了一个虚拟的"画布(Canvas)"对象及其属性和方法。
+- 然后，这些代码可以输入到对应的图像生成模型(如扩散模型)中，由图像生成模型解析这些代码并生成对应的图像。
+
+目前，Omost开源了基于Llama3和Phi3训练的三个LLM模型。
+- 训练数据包括Open-Images等数据集的人工标注、自动标注的数据、基于图像生成偏好的强化学习数据，以及少量GPT-4等多模态模型生成的fine-tuning数据。
+
+该项目目前可在hugging face上直接使用，或下载到本地部署。
+- [Omost](https://huggingface.co/spaces/lllyasviel/Omost)
+
+![](https://private-user-images.githubusercontent.com/19834515/335529442-c60dadfc-6e82-4582-9561-8389260714c0.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjM5NTA2NjIsIm5iZiI6MTcyMzk1MDM2MiwicGF0aCI6Ii8xOTgzNDUxNS8zMzU1Mjk0NDItYzYwZGFkZmMtNmU4Mi00NTgyLTk1NjEtODM4OTI2MDcxNGMwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA4MTglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwODE4VDAzMDYwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTllZDQ1MTM2ZWE1MDIwNmIwMzNlZjRhMGNiZTlmNTUwNTkxN2E5NzU2ZDZlYWUyNmY0YWVlMTk4NmNmZWFkYTQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.byB6IqnN2FvY1RfTa3wEu1n7jEly3dKzu5_pNMyF0mA)
+
+
 
 # 结束
