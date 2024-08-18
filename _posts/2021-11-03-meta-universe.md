@@ -469,6 +469,14 @@ DUIX.ai
 - 支持 funasr 阿里语音识别系统
 
 
+#### ReSyncer
+
+【2024-8-6】 清华、南洋理工发布 最好的数字人 ReSyncer
+- [主页](https://guanjz20.github.io/projects/ReSyncer/)
+- [ReSyncer: Rewiring Style-based Generator for Unified Audio-Visually Synced Facial Performer](https://arxiv.org/pdf/2408.03284)
+- ![](https://guanjz20.github.io/projects/ReSyncer/pipeline.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ayyJSmv4Nzo?si=0dCmv0xKIdF9ebfl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### 表情迁移
 
