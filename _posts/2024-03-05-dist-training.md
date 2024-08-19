@@ -3220,28 +3220,76 @@ all_reduce 函数定义
 
 ### Torchrun (更新)
 
+
+PyTorch 官网介绍
+- This module（torch.distributed.launch） is going to be deprecated in favor of `torchrun`.
+
 Pytorch 1.9.0 引入了 `torchrun`，替代以前的 `torch.distributed.launch`。
 - [torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 是 `torch.distributed.launch` 的超集, elastic launch, 等效于 `python -m torch.distributed.run`
 - [torchrun](https://pytorch.org/docs/stable/elastic/run.html#launcher-api) 包含 `torch.distributed.launch` 几乎所有功能(除了废弃的`--use-env`)
 
-三点额外功能：
-- 1、worker rank 和 world_size 将被自动分配
-- 2、`Failover`: worker失败时, 重新启动所有workers来处理workers的故障
-- 3、`Elastic`: 动态增减节点, 允许节点数目在最大/最小值之间改变, 即具备弹性
+`torchrun` 包含了 torch.distributed.launch 所有功能，还有三点额外功能：
+- 1、`worker_rank` 和 `world_size` 将被自动分配
+- 2、`Failover`: worker失败时, 重新启动所有workers来处理 workers 故障
+- 3、`Elastic`: 动态增减节点, 允许节点数目在最大/最小值之间改变, 即具备**弹性**
 
 
-#### 示例
+#### torchrun 用法
 
-2机8卡的分布式训练[示例](https://zhuanlan.zhihu.com/p/489892744)
+2机8卡 分布式训练[示例](https://zhuanlan.zhihu.com/p/489892744)
 - ![](https://pic1.zhimg.com/80/v2-2baae86e212177108872d36a6040a2dc_1440w.webp)
 - gpu 编号: 0~3
 - local rank: gpu 本地编号, 0~3
 - global rank: gpu 全局编号, 0~7
 
+环境
+- code: [BetterDL - train_elastic.py](https://github.com/tingshua-yts/BetterDL/blob/master/test/pytorch/DDP/train_elastic.py)
+- 运行环境: 2台4卡 v100机器
+
+train_elastic.py
+
+```py
+def run():
+    env_dict = {
+        key: os.environ[key]
+        for key in ("MASTER_ADDR", "MASTER_PORT", "WORLD_SIZE", "LOCAL_WORLD_SIZE")
+    }
+    print(f"[{os.getpid()}] Initializing process group with: {env_dict}")
+    dist.init_process_group(backend="nccl")
+    train()
+    dist.destroy_process_group()
+
+if __name__ == "__main__":
+    run()
+```
+
+启动脚本 run_elastic.sh 
+- node0 和 node1 上分别执行脚本
+
+```sh
+torchrun \
+    --nnodes=1:3\
+    --nproc_per_node=4\
+    --max_restarts=3\
+    --rdzv_id=1\
+    --rdzv_backend=c10d\
+    --rdzv_endpoint="192.0.0.1:1234"\
+    train_elastic.py
+```
+
+描述如下（注：node0和node1均通过该脚本进行启动）
+- --`nnodes`=**1:3**: 当前训练任务接受最少1个node，最多3个node, 参与分布式训练；
+- --`nproc_per_node`=4: 每个node上节点有4个process
+- --`max_restarts`=3: worker group最大的重启次数；
+  - 注意: node fail、node scale down和node scale up都会导致restart；
+- --`rdzv_id`=1：一个unique的job id，所有node均使用同一个job id；
+- --`rdzv_backend`: rendezvous backend实现，默认支持c10d和etcd两种；rendezvous用于多个node之间的通信和协调；
+- --`rdzv_endpoint`: rendezvous 地址，应该为一个node的host ip和port；
 
 
+#### 迁移 launch -> torchrun
 
-#### 迁移 torch.distributed.launch -> torchrun
+torch.distributed.launch -> torchrun
 
 迁移方法
 
@@ -3252,6 +3300,10 @@ python -m torch.distributed.launch -> torchrun
 python -m torch.distributed.launch --use-env train_script.py
 # 更改后
 torchrun train_script.py
+```
+
+
+```py
 # (2) 如果 从命令行(--local-rank)读取 local_rank 参数
 # 更改前
 import argparse
@@ -3264,16 +3316,7 @@ import os
 local_rank = int(os.environ["LOCAL_RANK"])
 ```
 
-最新版本 PyTorch实现
-- 替换 torch.distributed.launch
 
-PyTorch 官网介绍
-- This module（torch.distributed.launch） is going to be deprecated in favor of `torchrun`.
-
-`torchrun` 包含了 torch.distributed.launch 的所有功能，还有三点额外功能：
-- 1、worker 的 rank和world_size将被自动分配
-- 2、通过重新启动所有workers来处理workers的故障
-- 3、允许节点数目在最大最小值之间有所改变 即**具备弹性**
 
 ```py
 # local_rank参数应当从环境变量中读取，而不是通过参数传递。
