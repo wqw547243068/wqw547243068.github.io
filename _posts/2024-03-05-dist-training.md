@@ -2097,8 +2097,8 @@ DP 是直接将一个 batch 的数据划分到不同的卡，但是多机多卡�
 #### 分布式模式
 
 PyTorch 原生支持的并行模式：
-- 完全分片数据并行（full sharded data parallel，`FSDP`）
-- 混合分片数据并行（hybrid sharding data parallel，`HSDP`）
+- **完全**分片数据并行（full sharded data parallel，`FSDP`）
+- **混合**分片数据并行（hybrid sharding data parallel，`HSDP`）
 - 张量并行（tensor parallel，`TP`）
 - 流水线并行（pipeline parallel，`PP`）
 - 序列并行（sequence parallel，`SP`）
@@ -2128,8 +2128,21 @@ PyTorch 原生支持的并行模式：
 1. 应用程序**跨机器边界**扩展，用多机器`DistributedDataParallel`和**启动脚本**；
 1. 预期有错误（比如OOM）或资源可**动态连接和分离**，使用`torchelastic`来启动分布式训练。
 
-
 分布式训练的场景很多，单机多卡，多机多卡，模型并行，数据并行等等。接下来就以常见的单机多卡的情况进行记录。
+
+PyTorch 使用 DDP（Distributed Data Parallel） 实现了**真正**的分布式`数据并行`，两个场景下都可使用 DDP 实现模型的分布式训练：
+- (1) 单机、多 GPU（单进程多线程的**伪**分布式）
+- (2) 多机、多 GPU（多机多进程的**真正**分布式）
+
+方法(1)类似简单 DP 数据并行模式
+- DP 使用**单进程**、多线程范式来实现；
+- 而 DDP 完全使用**多进程**方式，包括单机多进程、多机多进程
+
+即使单机、多 GPU，也建议使用 DDP 模式，实现基于数据并行的模型训练，使用单机 DDP 模式训练模型的性能要比 DP 模式好很多。
+
+DDP 基于**集合通信**（Collective Communications）实现分布式训练过程中的梯度同步。
+
+反向传播过程中，DDP 使用 AllReduce 来实现分布式梯度计算和同步。
 
 
 ### 1、DataParallel
