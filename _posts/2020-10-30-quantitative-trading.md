@@ -862,6 +862,22 @@ plt.plot(valid[['Close','Predictions']])
 在三个市场上进行为期六年的实验，发现STHAN-SR显著优于最先进的神经股票预测方法。通过对STHAN-SR的空间和时间组件进行烧蚀和探索性分析来验证我们的设计选择，并证明其实用性。
 
 
+### TimesNet
+
+【2024-8-18】[短时序预测排名第一的网络模型](https://mp.weixin.qq.com/s/aEY62dNgH_nvsZ8299Dyxw)
+- 【2023-4-12】清华 [TIMESNET: TEMPORAL 2D-VARIATION MODELING FOR GENERAL TIME SERIES ANALYSIS](https://arxiv.org/pdf/2210.02186)
+- 代码 [TimesNet](https://github.com/thuml/TimesNet), 模型定义 [models/TimesNet.py](https://github.com/thuml/Time-Series-Library/blob/main/models/TimesNet.py)
+
+截止2024.3, 时间序列在不同类型数据集合排名
+- TimesNet: 短周期序列的预测上排名第一, 核心是捕捉时序中的多周期关系
+
+TimesNet根据时间序列的多周期性，它的模块化架构能够捕捉来自不同周期的时间模式。对于每个周期，为了捕捉相应的周期内和周期间的变化，我们在TimesNet中设计了一个TimesBlock，它可以将一维时间序列转换为二维空间，并通过一个参数高效的inception模块同时对这两种变化进行建模。
+
+核心思想
+- 用模块化方法进行时间变化建模。通过将一维时间序列转换为二维空间，这样可以同时呈现周期内和周期间的变。这样我们便可以挖掘多重周期性以及周期内和周期间复杂交互。
+- TimesNet使用TimesBlock通过一个参数高效的Inception模块来发现多个周期，并从转换后的二维张量中捕捉时间上的二维变化。
+
+
 ## 大模型与量化
 
 【2024-6-26】[“量化四大天王”之一的锐天投资创始人、CEO徐晓波](https://m.gelonghui.com/p/627703)
