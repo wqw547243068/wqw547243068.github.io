@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  提示攻击 Prompt Attack
+title:  提示词自动化 Prompt Automation
 date:   2023-03-02 16:52:00
 categories: 大模型
 tags: ChatGPT prompt 大模型 controlnet
-excerpt: 如何攻击大模型、如何防守？
+excerpt: 提示词如何自动化？
 mathjax: true
 permalink: /prompt_auto
 ---
