@@ -510,6 +510,41 @@ Sparse VS Dense GEMM
 - [关于大模型推理的量化算法总结](https://zhuanlan.zhihu.com/p/645308698)
 - [大语言模型的模型量化(INT8/INT4)技术](https://zhuanlan.zhihu.com/p/627436535)
 
+【2024-8-22】 [「模型量化技术」可视化指南：A Visual Guide to Quantization](https://mp.weixin.qq.com/s/dgS-yRVpGe_w1uzbcVctXg), 可视化图解各种模型量化技术的原理和实现方法
+
+目录
+- 01 第 1 部分：LLMs 存在的“问题”
+-     1.1 参数数值（value）的表示方法
+-     1.2 内存限制问题
+- 02 第 2 部分：模型量化技术简介
+-     2.1 常用的数据类型
+-         2.1.1 FP16
+-         2.1.2 BF16
+-         2.1.3 INT8
+-     2.2 对称量化 Symmetric Quantization
+-     2.3 非对称量化 asymmetric quantization
+-    2.4 取值范围的映射与裁剪
+-     2.5 校准过程 Calibration
+-         2.5.1 权重（和偏置项） Weights (and Biases)
+-         2.5.2 激活值
+- 03 第 3 部分：Post-Training Quantization
+- 
+-     3.1 动态量化（Dynamic Quantization）
+-     3.2 静态量化（Static Quantization）
+-     3.2 探索 4-bit 量化的极限
+-         3.2.1 GPTQ
+-         3.2.2 GGUF
+- 04 第 4 部分：Quantization Aware Training
+-     4.1 1-bit LLM 的时代：BitNet
+-     4.2 权重的量化 Weight Quantization
+-     4.3 激活值的量化 Activation Quantization
+-     4.4 反量化过程 Dequantization
+-     4.5 所有 LLMs 实际上均为 1.58-bit
+-         4.5.1 The Power of 0
+-         4.5.2 Quantization 量化过程
+- 05 Conclusion
+
+
 `量化`(Quantization)可以很好地通过将**float**模型表征为**低位宽模型**实现减小模型存储空间, 加速模型推理的目标. 
 
 量化定义为: 
