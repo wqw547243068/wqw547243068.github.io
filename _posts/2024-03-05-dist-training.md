@@ -170,6 +170,10 @@ GPU 模式下的模型训练如图所示，分为4步：
 
 ### 资料
 
+
+
+【2024-8-23】Github 分布式训练总结 [tech_slides](https://github.com/JianyuZhan/tech_slides/blob/main/LLM%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83%E6%8A%80%E6%9C%AF.pdf), pdf
+
 【2024-5-27】 MIT 助理教授 Song Han 的 分布式训练介绍 ppt: 
 - Distributed Training: [part1](https://www.dropbox.com/scl/fi/vn3n0b2r5fgcc0j0vrh0k/lec17.pdf), [part2](https://www.dropbox.com/scl/fi/11d766q8f62y5lx2tnt9h/lec18.pdf)
 - [On-Device Training and Transfer Learning](https://www.dropbox.com/scl/fi/6h69a1z5vqry63nxqdzt0/lec19.pdf)
