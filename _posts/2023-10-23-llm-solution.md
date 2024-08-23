@@ -1877,6 +1877,15 @@ LoRA 实现流程：
 - 用零均值随机**高斯分布**初始化 A，用全零矩阵初始化 B，矩阵 B 的全零初始化，使得在训练最开始的一段时间，右路结果会接近于0，这样模块输出就基本上来自于左路，也就是大模型原有参数的计算结果，这使得模型优化的初始点和原始的大模型保持一致。
 
 
+- 思想：在原模型旁边增加一个旁路，通过**低秩分解**（先降维再升维）模拟参数的更新量。
+- 训练：原模型固定，只训练降维矩阵A和升维矩阵B。
+- 推理：可将BA加到原参数上，不引入额外的推理延迟。
+- 初始化：A采用高斯分布初始化，B初始化为全0，保证训练开始时旁路为0矩阵。
+
+可插拔式的切换任务：当前任务W0+B1A1，将lora部分减掉，换成B2A2，即可实现任务切换。
+
+
+
 示意图
 - ![](https://pic4.zhimg.com/80/v2-48e88e61040a94284cc0499be8ecda37_1440w.webp)
 
@@ -2062,6 +2071,67 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, return_dict=Tru
 model = get_peft_model(model, peft_config)
 ```
 
+#### LoRA 思考
+
+【2024-8-22】[大模型面经——LoRA最全总结](https://mp.weixin.qq.com/s/d3WIiA3VDyyRPyWWkwHa3w)
+
+优点
+- 1）一个中心模型服务多个下游任务，**节省参数存储量** 
+- 2）推理阶段不引入额外计算量 
+- 3）与其它参数高效微调方法正交，可有效组合 
+- 4）训练任务比较稳定，效果比较好 
+- 5）LoRA 几乎不添加任何推理延迟，因为适配器权重可以与基本模型合并
+
+
+缺点
+- LoRA 参与训练的模型参数量不多，也就百万到千万级别的参数量，所以效果比全量微调差很多。
+- 数据以及算力满足的情况下，还是微调的参数越多越好
+
+
+
+训练理论
+1. ChatGLM-6B LoRA 后的 权重多大？ 
+  - rank 8 target_module query_key_value 条件下，大约15M。
+1. LoRA 微调方法为啥能加速训练？ 
+  - 1）只更新了**部分参数**：比如 LoRA原论文就选择只更新Self Attention的参数，实际使用时还可以选择只更新部分层的参数；
+  - 2）减少了**通信时间**：由于更新参数量变少了，所以（尤其是多卡训练时）要传输的数据量也变少了，从而减少了传输时间； 
+  - 3）采用了各种**低精度加速**技术，如FP16、FP8或者INT8量化等。
+  - 这三部分原因确实能加快训练速度，然而并不是LoRA所独有，事实上几乎都有参数高效方法都具有这些特点。LoRA的优点是低秩分解很直观，在不少场景下跟全量微调的效果一致，以及在预测阶段不增加推理成本。
+1. LoRA 这种微调方法和**全参数**比起来有什么劣势吗？
+  - 如果有足够计算资源以及有10k以上数据，建议**全参数微调**
+  - lora 初衷是解决不够计算资源的情况下微调，只引入了少量参数，就可以在消费级gpu上训练
+  - 但lora 问题: 不能节省训练时间，相比于全量微调，他要训练更久，同时因为可训练参数量很小，在同样大量数据训练下，比不过全量微调。
+1. LORA 应该作用于Transformer 哪个参数矩阵？ 
+  - 1）将所有微调参数都放到attention的某一个参数矩阵的效果并不好，将可微调参数平均分配到 Wq 和 Wk 的效果最好；
+  - 2）即使是秩仅取4也能在 ∆W 中获得足够的信息。
+  - 实际操作中，应当将可微调参数分配到多种类型权重矩阵中，而不应该用更大的秩单独微调某种类型的权重矩阵。
+1. LoRA 微调参数量怎么确定？ 
+  - LoRA 模型中可训练参数的结果数量取决于低秩更新矩阵的大小，其主要由秩 r 和原始权重矩阵的形状确定。实际使用过程中，通过选择不同的 lora_target 决定训练的参数量。 
+  - 以 LLama 为例： --lora_target q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj
+1. Lora 矩阵怎么初始化？为什么要初始化为全0？
+  - 矩阵B被初始化为0，而矩阵A正常高斯初始化。 
+  - 如果B，A全都初始化为0，那么缺点与深度网络全0初始化一样，很容易导致梯度消失(因为此时初始所有神经元的功能都是等价的)。 
+  - 如果B，A全部高斯初始化，那么在网络训练刚开始就会有概率为得到一个过大的偏移值Δ W 从而引入太多噪声，导致难以收敛。 
+  - 因此，一部分初始为0，一部分正常初始化是为了在训练开始时维持网络的原有输出(初始偏移为0)，但同时也保证在真正开始学习后能够更好的收敛。
+1. Rank 如何选取？ 
+  - Rank 取值常见的是8，理论上说Rank在4-8之间效果最好，再高并没有效果提升。
+  - 不过论文的实验是面向下游单一监督任务的，因此在指令微调上根据指令分布的广度，Rank选择还是需要在8以上的取值进行测试。
+1. 是否可以逐层调整 LoRA 最优rank？ 
+  - 理论上，可为不同层选择不同的LoRA rank，类似于为不同层设定不同学习率，但由于增加了调优复杂性，实际中很少执行。
+1. alpha 参数 如何选取？ 
+  - alpha 其实是个**缩放参数**，本质和learning rate相同，所以为了简化可以默认让 alpha=rank，只调整lr，这样可以简化超参。
+1. LoRA 高效微调如何避免`过拟合`？
+  - 过拟合还是比较容易出现。减小r或增加数据集大小可以帮助减少过拟合，还可以尝试增加优化器的权重衰减率或LoRA层的dropout值。
+1. 如何在已有 LoRA 模型上**继续训练**？
+  - 理解此问题的情形是：已有lora模型只训练了一部分数据，要训练另一部分数据的话，是在这个lora上继续训练呢，还是跟base 模型合并后再套一层lora，或者从头开始训练一个lora？ 
+  - 把之前的LoRA跟base model 合并后，继续训练就可以，为了保留之前的知识和能力，训练新的LoRA时，加入一些之前的训练数据是需要的。每次都要重头训练的话成本比较高。
+1. 哪些因素会影响**内存使用**？ 
+  - 内存使用受到模型大小、批量大小、LoRA参数数量以及数据集特性的影响。例如，使用较短的训练序列可以节省内存。
+1. LoRA 权重是否可以**合入原模型**？
+  - 可以，将训练好的低秩矩阵（B*A）+原模型权重合并（相加），计算出新的权重。
+1. LoRA 权重是否可以**合并**？ 
+  - 可将多套LoRA权重合并。训练中保持LoRA权重独立，并在前向传播时添加，训练后可以合并权重以简化操作。
+
 
 #### LoRA 实现
 
@@ -2090,26 +2160,26 @@ cd DeepSpeedExamples/applications/DeepSpeed-Chat/
 ds lora 
 
 ```sh
-deepspeed --num_gpus 1 main.py \\
-   --data_path Dahoas/rm-static \\
-   --data_split 2,4,4 \\
-   --model_name_or_path facebook/opt-6.7b \\
-   --per_device_train_batch_size 8 \\
-   --per_device_eval_batch_size 8 \\
-   --max_seq_len 512 \\
-   --learning_rate 1e-3 \\
-   --weight_decay 0.1 \\
-   --num_train_epochs 2 \\
-   --gradient_accumulation_steps 16 \\
-   --lr_scheduler_type cosine \\
-   --num_warmup_steps 0 \\
-   --seed 1234 \\
-   --gradient_checkpointing \\
-   --zero_stage 0 \\
-   --lora_dim 128 \\
-   --lora_module_name decoder.layers. \\
-   --deepspeed \\
-   --output_dir $OUTPUT_PATH \\
+deepspeed --num_gpus 1 main.py \
+   --data_path Dahoas/rm-static \
+   --data_split 2,4,4 \
+   --model_name_or_path facebook/opt-6.7b \
+   --per_device_train_batch_size 8 \
+   --per_device_eval_batch_size 8 \
+   --max_seq_len 512 \
+   --learning_rate 1e-3 \
+   --weight_decay 0.1 \
+   --num_train_epochs 2 \
+   --gradient_accumulation_steps 16 \
+   --lr_scheduler_type cosine \
+   --num_warmup_steps 0 \
+   --seed 1234 \
+   --gradient_checkpointing \
+   --zero_stage 0 \
+   --lora_dim 128 \
+   --lora_module_name decoder.layers. \
+   --deepspeed \
+   --output_dir $OUTPUT_PATH \
    &> $OUTPUT_PATH/training.log
 ```
 
