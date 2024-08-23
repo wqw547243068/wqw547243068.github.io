@@ -1167,6 +1167,8 @@ Stable Diffusion is a state of the art text-to-image model that generates images
 
 【2023-4-3】[Kaggle Stable Diffusion赛题 高分思路](https://mp.weixin.qq.com/s/LDWa7sR__MFjbj0CTHajcA)
 
+【2024-8-22】[苹果设备上运行Stable Diffusion模型](https://mp.weixin.qq.com/s/kFnpMMtkbA8iB_6xXZqhoQ)
+
 
 #### 介绍
 
@@ -1209,6 +1211,121 @@ SD基本概念
   - Docker Desktop 将 [Stable Diffusion WebUI Docker](https://github.com/AbdBarho/stable-diffusion-webui-docker) 部署在 Windows 系统，从而利用 NVIDIA 显卡免费实现 AI 文字绘画，不再被在线工具所限制。Mac 同样适用于该方法，并可省略下方的环境配置步骤。
   - ![](https://pic4.zhimg.com/80/v2-3ee8f0fad4499798263ae5d8295574b3_1440w.webp)
 
+
+#### 模型下载
+
+【2024-8-22】[苹果设备上运行Stable Diffusion模型](https://mp.weixin.qq.com/s/kFnpMMtkbA8iB_6xXZqhoQ)
+
+Stable Diffusion 模型可在 huggingface 或 Civitai 下载到。
+
+可能会有三种格式
+- `CoreML` 格式: 模型较少，文件主要以 `.mlmodelc` 或 `.mlmodel` 为主
+- `Diffusers` 格式: huggingface 渠道的主流格式
+- `safetensors` 格式: Civitai网站下载的大多是这种格式，一个文件，非常方便。
+
+##### CoreML
+
+CoreML格式
+- 这种类别的模型较少，文件主要以 `.mlmodelc` 或 `.mlmodel` 为主
+
+Core ML 是 Apple Silicon 芯片产品（包括macOS、iOS、watchOS 和 tvOS）中的机器学习框架，用于执行快速预测或推理，在边缘轻松集成预训练的机器学习模型，从而可以对设备上的实时图像或视频进行实时预测。
+
+Core ML 通过利用 CPU、GPU 和 神经网络引擎 ，同时最大程度地减小内存占用空间和功耗，来优化设备端性能。由于模型严格地在用户设备上，因此无需任何网络连接，这有助于保护用户数据的私密性和 App 的响应速度。
+
+如果模型运行在Silicon芯片的苹果设备上，利用Core ML可以获得更快的性能和更低的内存及能耗。
+
+其文件结构大致为：
+
+```s
+├── TextEncoder.mlmodelc
+├── TextEncoder2.mlmodelc
+├── Unet.mlmodelc
+├── VAEDecoder.mlmodelc
+├── merges.txt
+└── vocab.json
+```
+
+Diffusers格式
+
+在 huggingface 上下载的模型大多是这种类型，其文件结构大致为：
+
+```s
+├── model_index.json
+├── scheduler
+│   └── scheduler_config.json
+├── text_encoder
+│   ├── config.json
+│   └── pytorch_model.bin
+├── tokenizer
+│   ├── merges.txt
+│   ├── special_tokens_map.json
+│   ├── tokenizer_config.json
+│   └── vocab.json
+├── unet
+│   ├── config.json
+│   └── diffusion_pytorch_model.bin
+└── vae
+    ├── config.json
+    └── diffusion_pytorch_model.bin
+```
+
+
+#### 格式转换
+
+下载的模型都转成 CoreML 格式，如果第一步下载的模型已经是 CoreML 格式，那么可以跳过。
+
+`Diffusers` -> `CoreML`
+
+Diffusers 格式转 CoreML 格式
+- 首先下载该仓库代码：ml-stable-diffusion。查看System Requirements检查自己的设备是否支持。
+- 然后安装依赖：
+
+```sh
+pip install -r requirements.txt
+```
+
+找到 torch2coreml.py 文件，执行以下命令：
+
+```sh
+python torch2coreml.py \
+--bundle-resources-for-swift-cli \
+--xl-version \
+--convert-unet \
+--convert-text-encoder \
+--convert-vae-decoder \
+--attention-implementation ORIGINAL \
+--model-version /your/model/path \
+-o /your/model/output/path
+```
+
+注意有个参数--xl-version，如果模型是sdxl类型的，就加上，否则把这行删除。另外如果你的模型支持图生图，你可以加上--convert-vae-encoder参数。
+
+运行完该命令，应该在你指定的目录生成了文件，在Resources目录下的文件就是转换好的CoreML格式。
+
+`safetensors` -> `Diffusers`
+
+safetensors 格式转 Diffusers 格式
+- 首先下载该仓库代码：Diffusers。
+- 然后安装依赖：
+
+```sh
+pip install --upgrade diffusers
+```
+
+找到 convert_original_stable_diffusion_to_diffusers.py 文件并执行以下命令：
+
+```sh
+python convert_original_stable_diffusion_to_diffusers.py \
+--checkpoint_path /your/model/path \
+--dump_path /your/model/output/path \
+--from_safetensors \
+--half \
+--device mps
+```
+
+这里 --half 表示转换时精度为 fp16, --device mps 表示模型使用mps(GPU)进行推理。
+
+运行完该命令，会生成Diffusers格式的模型，再利用Diffusers格式转CoreML格式的步骤，将模型转换为CoreML格式。
 
 #### 如何画出好作品？
 
