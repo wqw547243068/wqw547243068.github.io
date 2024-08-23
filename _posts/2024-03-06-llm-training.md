@@ -694,6 +694,7 @@ This is the first assistant response.<|eot_id|>
 
 #### DeepSeek-coder
 
+```s
 <｜begin▁of▁sentence｜>User: {user_message_1}
 
 Assistant: {assistant_message_1}<｜end▁of▁sentence｜>User: {user_message_2}
