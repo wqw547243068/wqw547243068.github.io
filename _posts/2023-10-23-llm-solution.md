@@ -1512,10 +1512,15 @@ RankRAG整体包括两个阶段：指令调优阶段、排名与生成综合指�
   - 更高效和更快的训练
   - 保留预训练的知识
 
-【2024-2-27】PEFT 包括 LORA、QLoRA、Adapter Tuning、Prefix Tuning、Prompt Tuning、P-Tuning及P-Tuning v2等
+【2024-2-27】PEFT: 
+- LORA、QLoRA
+- Adapter Tuning
+- Prefix Tuning、Prompt Tuning、P-Tuning 及 P-Tuning v2 等
 
 7个主流微调方法在Transformer网络架构的作用位置和[简要说明](https://zhuanlan.zhihu.com/p/681254858?utm_psn=1745759328311623680)
 - ![](https://pic4.zhimg.com/80/v2-615cae7a66974b32cc4e8b7ebbd4e5a7_1440w.webp)
+
+详见: [一文彻底搞懂Fine-tuning - 参数高效微调（Parameter-Efficient Fine-Tuning）](https://mp.weixin.qq.com/s/OFufH9hSFdLsntQkNwL4LA), 含图解
 
 
 ### PEFT 参数高效微调技术
@@ -1532,7 +1537,13 @@ PEFT技术通过**最小化**微调参数的数量和计算复杂度，来提高
 - 即使计算资源受限，也可以利用预训练模型的知识来迅速适应新任务，实现高效的迁移学习。
 - 因此，PEFT技术可以在提高模型效果的同时，大大缩短模型训练时间和计算成本，让更多人能够参与到深度学习研究中来。
 
-#### PEFT 方法
+### PEFT 方法
+
+PEFT 主要方法：
+- Prefix Tuning（在**模型输入层**添加**可训练** `前缀`嵌入）
+- LoRA（通过`低秩矩阵`近似模型参数更新）
+- Adapter Tuning（在模型层间插入**小型神经网络**adapters）。
+
 
 方法
 - `Prefix Tuning`：与full fine-tuning更新所有参数的方式不同，该方法是在输入token之前构造一段任务相关的virtual tokens作为Prefix，然后训练的时候只更新Prefix部分的参数，而Transformer中的其他部分参数固定。该方法其实和构造Prompt类似，只是Prompt是人为构造的“显式”的提示,并且无法更新参数，而Prefix则是可以学习的“隐式”的提示。同时，为了防止直接更新Prefix的参数导致训练不稳定的情况，他们在Prefix层前面加了MLP结构(相当于将Prefix分解为更小维度的Input与MLP的组合后输出的结果)，训练完成后，只保留Prefix的参数。
@@ -1606,7 +1617,7 @@ PEFT内置7种主流高效调参方法
 - 模型精度会变差
 
 
-#### 应用示例
+### 应用示例
 
 典型应用：
 - `ChatGLM-Tuning` ：一种平价的chatgpt实现方案，基于清华的 ChatGLM-6B + LoRA 进行finetune。
@@ -1674,9 +1685,26 @@ FineTune 微调
 - 训练参数量极小（约0.1%）。
 - 大部分任务上效果会**差于**LoRA、Adapter等方法。
 
+### Prefix Tuning
 
+Prefix Tuning 通过在模型输入层之前添加可训练的`前缀嵌入`（prefix embeddings）来影响模型的输出。
 
-### 【2021.3.2】Prompt Tuning -- 离散token
+这些前缀嵌入与原始输入拼接后一起输入到模型中，而模型的其他部分保持不变。
+
+Prefix Tuning（前缀微调）
+
+什么是Prefix Tuning？
+- Prefix Tuning 在原始文本进行词嵌入之后，在**前面**拼接上一个**前缀矩阵**，或将前缀矩阵拼在模型每一层的输入前。
+- 这个前缀与输入序列一起作为注意力机制的输入，从而影响模型对输入序列的理解和表示。
+- 由于前缀可学习，可在微调过程中根据特定任务进行调整，使得模型能够更好地适应新的领域或任务。
+
+注意
+- finetune 更新整个模型权重
+- prefix tuning 则只更新前缀编码, 模型编码不动, fixed
+
+详见: [一文彻底搞懂Fine-tuning - 参数高效微调（Parameter-Efficient Fine-Tuning）](https://mp.weixin.qq.com/s/OFufH9hSFdLsntQkNwL4LA), 含图解
+
+#### 【2021.3.2】Prompt Tuning -- 离散token
 
 受语言模型 in-context learning能力启发，只要有合适的上下文，语言模型就可以很好的解决自然语言任务。
 
@@ -1719,7 +1747,7 @@ model = get_peft_model(model, peft_config)
 ```
 
 
-### 【2021.8.1】Prefix Tuning -- 连续token
+#### 【2021.8.1】Prefix Tuning -- 连续token
 
 prompt tuning 是 Prefix Tuning 简化版本
 
@@ -1760,7 +1788,7 @@ model = get_peft_model(model, peft_config)
 ```
 
 
-### 【2021.11.2】P-Tuning
+#### 【2021.11.2】P-Tuning
 
 手动尝试最优的提示无异于大海捞针，于是有了**自动离散提示搜索**方法
 
@@ -1806,7 +1834,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, return_dict=Tru
 model = get_peft_model(model, peft_config)
 ```
 
-### 【2022.3.20】P-Tuning v2
+#### 【2022.3.20】P-Tuning v2
 
 p-tuning 问题：小参数量模型上表现差
 
@@ -1838,11 +1866,22 @@ model = get_peft_model(model, peft_config)
 特点：
 - 通过在Transformer层中嵌入Adapter结构，在推理时会额外增加推理时长。
 
-### AdapterFusion
+Adapter Tuning（适配器微调）
+
+什么是Adapter Tuning？
+- Adapter Tuning 在保持模型参数数量相对较小的情况下，通过增加**少量可训练参数**（即适配器）来提高模型在特定任务上的表现。
+
+Adapter Tuning 核心思想
+- 在预训练模型的中间层中插入小的可训练层或“适配器”。
+- 这些适配器通常包括一些全连接层、非线性激活函数等，它们被设计用来捕获特定任务的知识，而不需要对整个预训练模型进行大规模的微调。
+
+详见: [一文彻底搞懂Fine-tuning - 参数高效微调（Parameter-Efficient Fine-Tuning）](https://mp.weixin.qq.com/s/OFufH9hSFdLsntQkNwL4LA), 含图解
+
+#### AdapterFusion
 
 一种融合多任务信息的Adapter的变体，在 Adapter 的基础上进行优化，通过将学习过程分为两阶段来提升下游任务表现。
 
-### AdapterDrop
+#### AdapterDrop
 
 该方法在不影响任务性能的情况下，对Adapter动态高效的移除，尽可能的减少模型的参数量，提高模型在反向传播（训练）和正向传播（推理）时的效率。
 
