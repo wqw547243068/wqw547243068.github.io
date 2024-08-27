@@ -292,6 +292,206 @@ RLHF 利用人类反馈来训练强化学习模型。
 - 5、RLHF目标: 训练出一个在没有明确标签的复杂任务中表现良好的模型，这些任务可能需要更细致的判断和调整。
 
 
+### 思考
+
+#### 对齐
+
+instruction following 是 alignment （对齐）的一个特殊形式，但它并不构成对齐的全部内容。
+
+对齐问题原本称为`价值对齐` （value alignment）指一个 AI 系统训练目标可能与其实际需要面对的核心价值并不一致。
+- 训练目标与真正希望 AI 满足的目标之间存在不匹配，而如何解决这个不匹配的问题被称作 value alignment problem。
+
+OpenAI 2024年初提出 “Super-Alignment”, 探讨了 AGI 的水平远远超越人类，人类将如何是好。
+
+OpenAI 当时提出了一个概念，即 “Weak-to-Strong Generalization”，如果目前机器智能尚不及人类，人类尚能与之互动；但若其智能发展至极高水平，人类似乎难以与其沟通。那么也就产生了一个问题，人们应该如何训练 AI，是否应该采用特定的方式？Next Token Prediction 或是 instruction following 是不是一个好的对齐方法？
+
+alignment 问题核心假设：
+- 因为人类很多时候并不清楚自己到底想要什么，因此很难给出一个完全具体的价值观描述，且不同人的价值观都有区分。
+- 如果人类给出的指令永远不是特别准确，那么 AI 系统在执行任务时需要保持一定的不确定性。
+
+框架 Cooperative Inverse Reinforcement Learning，来源于师兄 Dylan Hadfield-Menell（目前在MIT任教）和导师做的一个研究。
+- 假设每个人都有一个 hidden reward function。当人与 AI 交互时，人可能想的是 AI 帮我递个咖啡，但人给 AI 的具体指令可能并不是这样，比如人可能只是说了“给我个喝的”，AI 需要不断去推断人类的真正意图。
+
+在这样的定义下，人类的真正意图可以被建模成一个**隐藏的奖励函数**，机器人需要不断地根据人给出的所有信息来主动推断人类的真正意图。如果不确定时，最优策略是 AI 去问人类。
+
+
+#### post-training 让模型更聪明
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+曾在 OpenAI 负责 post-traning 的 John Schulman: (RL 拥趸和布道者)
+- **post-training** 是模型变得越来越聪明的重要原因，而 `RLHF` 是最重要的技术 tricks。
+
+John Schulman 对 RLHF 的信仰来自 OpenAI 的亲身实践：
+- GPT-4 的 Elo 分数之所以能比第一代 GPT 高出 100 分也和 post-traning 的提升相关。
+
+Scaling law 让 AI 更聪明，而 RL 让 AI 更有用
+
+InstructGPT 核心思想
+- 利用人类的判断来指导模型的训练，因为这些 instruction following 的任务本身就是人类给出的指令。
+- InstructGPT 能够处理复杂的指令，包括写代码等任务，很多在 zero-shot 设定上 GPT-3 做不了的任务都可以被完成。
+
+InstructGPT 目标: 微调 GPT 模型，使其能够产生满足人类指令的输出。
+
+为了使 GPT 完成指令遵从，技术挑战集中在：如何收集数据？
+
+为了实现这一目标，需要完成两件事情：
+- 指令，fine-tuning 首先需要收集指令，即人类的 prompts 或 instructions。
+- 反馈，需要收集好的反馈来满足 human instructions。
+
+从训练语言模型的角度来看，收集大量的人类指令（human instructions），以及对应的人类反馈。这些对应好的数据将被作为 Next Token Prediction 的训练数据，通过传统语言模型训练方法，即 SFT （Supervised Fine-Tuning），来进行训练。
+
+于是, InstructGPT 训练过程：
+- •  第一步，通过 SFT 收集 human demostration data 进行 SFT。
+- •  第二步，收集人类偏好数据，利用数据学习一个奖励模型。
+- •  第三步，使用 reward model 进行强化学习的 RLHF 训练。
+
+最终就可以得到优化后的 InstructGPT 模型。
+
+之后的 ChatGPT 总体训练流程概括为两个主要部分。
+- `Pre-training` ：涉及使用大量数据，通过语言模型的训练方法来训练一个基础模型。
+- `Post-training`：`InstructGPT` 和 `ChatGPT` 所执行的步骤，即利用人类的标注数据或高质量的人类反馈数据进行后训练。
+
+`Post-training`通常包括至少两个步骤：
+- 1）SFT 步骤，通过 human demonstration 的方法进行`监督学习`；
+- 2）RLHF 步骤，通过 human preference data 的方法进行`奖励学习`。
+
+预训练与后训练之间也存在区别：
+- • **数据**方面：预训练和后训练在数据的质量和数量上存在差异。
+  - 预训练阶段需要处理海量数据，这可能需要大量的计算资源和较长的时间。
+  - 而在后训练部分，大量的数据是人类**标注**或通过某种方式**构造**出来的数据，数据质量通常较高，但与预训练阶段相比，数量会少很多。
+- • 训练目标方面：
+  - 预训练的目标是**压缩**和 `Next Token Prediction`；
+  - 后训练的目标是 `instruction following`。通过训练激发大模型的能力与智能，使模型 usable，能够尊从人类指令。
+- • **训练过程**方面 （dynamics）：
+  - 预训练通常是固定的，需要收集一个庞大的数据集进行训练，这些数据通常是静态的。
+  - 对应 post-training，尤其是 RLHF ，其反馈是**在线**的，需要不断收集人的反馈，不断迭代，逐渐进化模型，这是一个动态的在线过程。
+
+最后， post-training phase 也被称为`对齐`（alignment phase）, 将 LLM 的能力和人类的偏好保持一致，希望大模型的输出能够满足人类的价值取向和意图，确保模型的输出与人类的偏好一致。
+
+
+#### SFT < RLHF ?
+
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+为什么 `RLHF` 效果优于 `SFT` ?
+
+PPO 算法提出者 `John Schulman`，曾经在 OpenAI 工作，Berkeley 的PhD, 2024年4月, 到 Berkeley 做过一场讲座，仔细讨论了 RLHF PPO 的重要性，两个观点：
+- 第一, SFT 会导致**幻觉** hallucination ：
+- 第二, RLHF helps uncertainty awareness，让大模型“知道”自己“**确实不知道**”。
+
+进一步完善, RLHF 过程三点好处：
+- 使用 负向反馈 进行`对比学习`，通过对比过程帮助模型**降低幻觉** halluciation。
+- 强化学习不是一个固定的过程。允许模型随着能力的不断提升，通过不断地问问题、不断地给出答案、不断地评判，从而让模型不停地从当前能力的边界进行主动探索，并不断拓宽自己的能力边界。
+- 这两个因素共同作用能够形成 **反事实推理** counter-factual reasoning 的作用，有可能解锁`因果学习`（casual learning）的巨大潜力，让模型具备更强的 reasoning 能力。
+
+
+##### SFT 会导致幻觉
+
+John Schulman 认为，大型模型之所以会产生幻觉，是因为 SFT 阶段学到了一些不正确的认知。
+
+举例
+- 当 GPT-3 被要求 “ write a bio of AI researcher John Schulman”时，GPT 错误地输出：John 从 2009 年开始在 CMU 任职 associate professor，从 2012 年开始任职 professor。但是真实情况是，John 在完成 PHD 学位后就在 OpenAI 工作，并未在其他地方工作（注：最近John刚加入了Anthropic）。GPT-3 输出的内容与实际明显不符。
+
+为何大型模型会生成这样的**错误信息**？
+- 思维实验，假设在预训练阶段，就存在一个 知识截断（knowledge cut off）。比如，假设 ChatGPT 的所有的知识和数据都截止于 2023 年。到 2024 年，希望通过 SFT 的方式 fine-tune ChatGPT，让它来描述 2024 年欧洲杯的情况。但因为 GPT 在预训练过程中没有任何关于 2024 年欧洲杯的信息，它自然也不知道西班牙是否夺冠，也不知道是否有进球等具体情况。
+
+如果用现有的数据进行简单的 SFT，实际上 GPT 并不知道 2024 年发生了什么，但由于 SFT 的数据中包含了其他欧洲杯相关的问答数据，这些回答都是精准的，因此大模型可能会觉得，对于2024年欧洲杯的问题也应该给出一个准确答案才可以，但它本身可能在预训练阶段并没有掌握正确的信息，于是就鹦鹉学舌地说一些错误的内容。这种情况下，SFT 过强的监督信号导致人类实际上在引导 ChatGPT 说它不知道的东西。
+
+另外还存在一种可能性，即 GPT 实际上知道答案，但提供标注的人员不知道。
+- 例如，如果问到 2022 年某场足球联赛的问题，标注人员可能不了解答案，而 GPT 反而可能知道。在这种情况下，标注人员可能会给出 “I don't know ” 的人类反馈。这反倒可能导致 GPT 产生混淆，因为它明明知道答案却被要求说不知道。这两种原因综合来看就可能导致模型在经过 SFT 阶段后非常容易出现 hallucination 现象。
+
+**他人观点**
+- SFT 确实容易导致幻觉，但不一定完全是预训练阶段数据的**知识截断**导致的，SFT也能学习新知识
+
+问题：大模型在是否学会新知识？
+
+存在一个非常微妙的边界。
+- 如果不提供数据，大模型就不能够提供答案；
+- 如果提供数据**不完整**，可能导致模型出现`幻觉`；
+- 如果数据提供足够多，模型就可能会学会**新知识**。
+
+因此，到底给多少数据,很难判断，SFT 高质量数据集也是非常难构建的，这里就有一个非常不容易的**数据挑战**（ a non-trivial data challenge for building a good SFT dataset）。
+
+
+##### RLHF让大模型“知道”自己“确实不知道”
+
+RLHF helps uncertainty awareness，让大模型“知道”自己“确实不知道”。
+
+欧洲杯的例子
+- 如果大模型不知道 2024 年欧洲杯的情况，用户却让大模型去描述欧洲杯的情况(在2024年欧洲杯上哪位运动员有进球)，那大模型就可能会产生幻觉，这是因为模型实际上并不了解 2024 年欧洲杯的具体事件但被 SFT 引导说一个貌似正确的回复。
+
+RLHF 如何防止 hallucination 的出现？
+- 如果存在一个设计良好的`奖励函数`，情况就会不同。
+- 如果模型给出正确答案，就给予正向的奖励分数 1分；
+- 如果模型表示“我不知道”，就给予 0分；
+- 如果模型给出错误答案，则扣除分数 4分。
+
+在这种情况下，如果模型不知道 2024 年发生了什么，在强化学习过程中无法提供正确的回答，选择“不知道”成为更合理的策略。
+
+这种机制鼓励模型在不知道答案时能够提供“不知道”的回答。这种方式能帮助模型保留了一定的不确定性，使模型能够产生正确的自我认知，来判断是否真的知道一个问题的答案。
+
+**他人观点**
+- 基本正确，尽管 John 解释可能不完全准确
+- RLHF 所带来的不仅仅是处理知识边界的不确定性的能力（not only handle the knowledge cut off problem）
+
+
+##### RLHF 提高了模型推理能力
+
+RLHF 过程不仅帮助模型意识到不确定性，更重要的事情是 RLHF 帮助模型提高了 reasoning 能力。
+
+`相关性`不代表`因果性`。大家会希望大模型掌握`因果性`，而不希望仅仅看到`相关性`。
+
+因果性指什么？
+- 传统统计学习里面有一个判断因果性的过程，叫 反事实推理 counter-factual reasoning。
+
+
+#### 是否可以舍弃 online attempt
+
+问题：
+- 模型训练上利用 negative signal 和 online exploration 两件事上，是否可以舍弃 online attempt ？即只通过**正反馈**和**负反馈**是否足够，而不需要模型持续在线尝试。只通过 contrasted learning，在 SFT 上加上负向案例，能否达到预期效果？
+
+
+可以, `DPO`（ Direct Policy Optimization）
+- 它与 `PPO` 算法的主要区别: `DPO` 去除了在线尝试的部分。 `DPO` 算法其实很简单，基本遵从了SFT训练流程，但是在收集正例之外还会收集负例，对于每一个 prompt 都要求标注员提供好的和坏的两个答案。对于好的答案提升概率，对于坏的答案则是让模型“不说”。
+
+DPO 算法是否能达到与 PPO 效果？
+- 今年的 ICML2024 大会上的论文，[Is DPO Superior to PPO for LLM Alignment？A Comprehensive Study]() 讨论了这个问题。这篇论文也是今年被选中的 4 篇有关 alignment 的 oral papers 的其中之一。
+
+如果仅仅通过**静态数据** 覆盖 LLM 所有可能的输出, 非常困难。因此，**在线探索**和**及时奖励反馈**是一种更加高效让 LLM 学会说正确答案的方法。
+
+
+结论
+- 如果能够实现 `PPO` 算法，PPO 效果将会远远超过 `DPO`。因为, 正例反例和在线探索两件事都非常重要。
+- 用 PPO 和 Code Llama 在 Coding Contest 上做了测试，发现使用开源模型加上 PPO 可以比 AlphaCode 这样的闭源模型在很难的 CodeForce 竞赛题上通过率提高 6%。这是一个纯开源模型加 RLHF 的尝试，并未添加任何新的数据。在这种很难的、需要强调 reasoning 能力的任务上，DPO 完全没有效果。
+
+#### PPO RLHF 框架有哪些挑战？
+
+PPO 包含四个模型：actor、critic、value network 和 reference network。
+- 不同模型还有不同依赖，也就是前后依赖关系；
+- 不同模型也有不同吞吐量，比如，actor 是一个传统的大模型，需要输出所有 response，而 critic 则只需要做评分。评分的吞吐量会远小于需要输出 response 的模型。
+
+因此，不同模块的计算量存在显著差异。将这四个模块 scale up，并且做好算力平衡是具有挑战的。
+
+挑战
+- 算法: PPO RLHF 算法流程相对复杂
+  - 算法、流程都相对麻烦，多了很多流程。不仅需要正反馈、负反馈、需要奖励模型，并且涉及在线探索过程。
+  - 建议: 要 advantage normalization、需要一个大的 training batch；reference model 需要 moving average 等。
+- 系统: 强化学习训练系统与传统的 SFT 有不太一样
+  - SFT 或 DPO 模型通常只包含一个 policy 模型，只需将数据输入语言模型即可，其训练逻辑相对简单。然而，对于强化学习，或者对于 PPO RLHF，情况则更为复杂。
+- 数据: 数据非常重要
+  - RLHF 数据包括两部分：一是 prompt，即人写的 instruction。二是指模型的 responses。这两部分都相当复杂
+
+
+PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
+1. 算法层面：关键在于如何稳定训练过程，并调整算法的细节以提高性能。
+2. 系统设计：由于强化学习 PPO，RLHF 的计算流程非常复杂，系统设计需要提高整体的训练效率。
+3. 数据：数据分为两部分，一部分是 prompt，一部分是 response。两部分都很关键，只有将它们结合起来，才能形成一个完整的，比较成功的 PPO RLHF 的 training process。
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+
 ## 训练数据
 
 
