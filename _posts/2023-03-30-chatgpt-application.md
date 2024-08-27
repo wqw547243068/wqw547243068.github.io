@@ -1812,6 +1812,22 @@ docker run -it \
   - "Agent-Computer Interface" (ACI), LLMs 友好. 允许的动作: run code, look for code, edit code, and submit changes to GitHub.
 
 
+##### WatsonX
+
+2023年5月9日，5月9日，IBM召开“Think”大会，重磅推出了大模型Watsonx，全面深度布局生成式AI领域
+- [WatsonX](https://www.ibm.com/watsonx) 一个开发工作室，供企业“训练、调整和部署” 机器学习模型
+- [中文介绍](https://www.sohu.com/a/674323012_121649381)
+
+Watsonx 由三大块组成
+- 基础模型 watsonx.ai；
+- 基于开放式 Lakehouse 架构构建的专用数据存储平台watsonx.data；
+- 用于AI安全治理的 watsonx.governance。
+
+这三大平台赋能下，可为用户提供一站式安全可靠的生成式AI服务。
+
+IBM还与开源社区Hugging Face 进行深度技术合作，为 watsonx平台上的企业带来更好的开源生成式AI模型体验。
+
+根据IBM官方介绍，7月份，watsonx.ai将在Hugging Face平台上开源。
 
 #### 数学工具
 
