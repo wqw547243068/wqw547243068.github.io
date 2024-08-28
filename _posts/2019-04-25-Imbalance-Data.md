@@ -12,25 +12,19 @@ permalink: /imbalance
 * content
 {:toc}
 
-# 汇总
+# 机器学习: 不平衡问题 
 
-- 【2021-7-14】[ICML 2021 (Long Oral) 深入研究不平衡回归问题](https://zhuanlan.zhihu.com/p/369627086)，在经典的数据不平衡问题下，探索了非常实际但极少被研究的问题：数据不平衡回归问题。现有的处理不平衡数据/长尾分布的方法绝大多数仅针对分类问题，即目标值是不同类别的离散值（索引）；但是，许多实际的任务涉及连续的，甚至有时是无限多的目标值。本文推广了传统不平衡分类问题的范式，将数据不平衡问题从离散值域推广到连续域。
-  - ![](https://pic4.zhimg.com/80/v2-e70edea5b4096e4299e999547325799f_720w.jpg)
-  - ![](https://pic2.zhimg.com/v2-9c0da9f202c09997c73732d7634ae3c5_b.webp)
-- 【2020-7-17】focal loss[论文](https://arxiv.org/abs/1708.02002)，[配套代码](https://github.com/Tony607/Focal_Loss_Keras)
-- [非平衡数据集 focal loss 多类分类](https://www.yanxishe.com/TextTranslation/1646)
-- [Focal Loss理解](https://www.cnblogs.com/king-lps/p/9497836.html)：降低了大量简单负样本在训练中所占的权重，也可理解为一种困难样本挖掘
-  - ![](https://images2018.cnblogs.com/blog/1055519/201808/1055519-20180818162755861-24998254.png)
-- 普通的交叉熵对于正样本而言，输出概率越大损失越小。对于负样本而言，输出概率越小则损失越小。此时的损失函数在大量简单样本的迭代过程中比较缓慢且可能无法优化至最优
-- ![](https://images2018.cnblogs.com/blog/1055519/201808/1055519-20180818174944824-933422059.png)
-- ![](https://images2018.cnblogs.com/blog/1055519/201808/1055519-20180818174822290-765890427.png)
-- ![](https://images2018.cnblogs.com/blog/1055519/201808/1055519-20180818170840882-453549240.png)
-- 在原有的基础上加了一个因子，其中gamma>0使得减少易分类样本的损失。使得更关注于困难的、错分的样本。
-- 只添加alpha虽然可以平衡正负样本的重要性，但是无法解决简单与困难样本的问题。
-- gamma调节简单样本权重降低的速率，当gamma为0时即为交叉熵损失函数，当gamma增加时，调整因子的影响也在增加。实验发现gamma为2是最优。
 
 不平衡数据集如何处理？
-- 某些应用下，<span style='color:red'>1∶35</span>的比例就会使某些分类方法无效，甚至<span style='color:red'>1∶10</span>的比例也会使某些分类方法无效。
+
+某些应用下
+- <span style='color:red'>1∶35</span>的比例就会使某些分类方法无效，甚至<span style='color:red'>1∶10</span>的比例也会使某些分类方法无效。
+
+
+# 不平衡问题解法
+
+以 Albert + TextCNN 为基础框架，将已有**长尾问题**损失函数解决方案集成进该基础框架进行多标签文本分类,数据的长尾问题是经常会遇见的一个棘手的问题，更为极端的情况甚至极个别的类的 trainning sample等于0。这对一个模型的性能影响是非常大的。
+- ![](https://pic2.zhimg.com/v2-8a3ccd7ed59de691a27406065477b3b9_720w.jpg?source=3af55fa1)
 
 [分类问题中不平衡数据集的解决方案](https://www.52ml.net/16294.html)，正负样本玄虚
 - 1.`过抽样`：简单赋值负样本——最常用，容易过拟合，SVM模型里用途不大
@@ -69,13 +63,6 @@ permalink: /imbalance
    - 长尾分布：少数类别的样本数目非常多，多数类别的样本数目非常少。
    - ![](http://p8.itc.cn/q_70/images03/20200913/ce0ea36c06ec4f2ea121f78ad7920a93.png)
 - 【2021-8-17】不要对不平衡的数据集使用准确度（accuracy）指标。这个指标常用于分类模型，不平衡数据集应采用**kappa系数**或**马修斯相关系数**（MCC）指标。
-
-
-# 不平衡问题解法
-
-以 Albert + TextCNN 为基础框架，将已有**长尾问题**损失函数解决方案集成进该基础框架进行多标签文本分类,数据的长尾问题是经常会遇见的一个棘手的问题，更为极端的情况甚至极个别的类的 trainning sample等于0。这对一个模型的性能影响是非常大的。
-- ![](https://pic2.zhimg.com/v2-8a3ccd7ed59de691a27406065477b3b9_720w.jpg?source=3af55fa1)
-
 
 
 ## 重采样
@@ -120,13 +107,29 @@ Tomek 连接 在空间上"最近"的样本，但是是不同类别的样本。�
 
 ## 算法
 
+
+### 回归
+
+
+#### 2021 DIR
+
+【2021-7-14】[ICML 2021 (Long Oral) 深入研究不平衡回归问题](https://zhuanlan.zhihu.com/p/369627086)，经典数据不平衡问题下，探索了非常实际但极少被研究的问题：数据不平衡回归问题。
+- 现有的处理不平衡数据/长尾分布的方法绝大多数仅针对**分类问题**，即目标值是不同类别的离散值（索引）；
+- 但是，许多实际的任务涉及连续的，甚至有时是无限多的目标值。
+
+本文推广了传统不平衡分类问题的范式，将数据不平衡问题从**离散**值域推广到**连续**域。
+- ![](https://pic4.zhimg.com/80/v2-e70edea5b4096e4299e999547325799f_720w.jpg)
+- ![](https://pic2.zhimg.com/v2-9c0da9f202c09997c73732d7634ae3c5_b.webp)
+
+
+### 分类
+
 加权交叉熵损失函数
 
 类别不均衡的情况下，需要通过损失函数中设置权重参数来调节各类之间的比重。一般不同类别的权重占比需要通过**多次**实验调整。如首先采用**中值频率平衡**的方法来结算每一个类的权重。然后在同时实验的效果对权重进行微调找到最合适的类别权重。
 
 中值频率平衡的原理如下：
- 
-![[公式]](https://www.zhihu.com/equation?tex=weight_c+%3D+freq_c%2Fmedium)
+- ![[公式]](https://www.zhihu.com/equation?tex=weight_c+%3D+freq_c%2Fmedium)
  
 其中 ![[公式]](https://www.zhihu.com/equation?tex=sum_c) 表示 ![[公式]](https://www.zhihu.com/equation?tex=c) 类别在训练集中的实例个数， ![[公式]](https://www.zhihu.com/equation?tex=sum) 表示训练集的大小， ![[公式]](https://www.zhihu.com/equation?tex=medium) 对所有类别的实例数目进行排序之后取到的中位数。
  
@@ -143,21 +146,21 @@ weight = tf.constant(weight_c)
 loss = -tf.reduce_mean(weight*label*tf.log(logits)+(1-label)*tf.log((1-logits)))
 ```
 
-### Focal loss
+#### Focal loss
 
 详见站内专题: [损失函数](loss)
 
-### Dice Loss
+#### Dice Loss
 
 详见站内专题: [损失函数](loss)
 
-### Class-Balanced Loss
+#### Class-Balanced Loss
 
 【2021-10-17】谷歌对CVPR 2019上发表的一篇文章的综述。它为最常用的损耗(softmax-cross-entropy、focal loss等)提出了一个针对每个类别的重新加权方案，能够快速提高精度，特别是在处理高度类不平衡的数据时。
 - 论文: [Class-Balanced Loss Based on Effective Number of Samples]()
 - [PyTorch实现源码]https://github.com/vandit15/Class-balanced-loss-pytorch)
 
-### 样本有效数量
+#### 样本有效数量
 
 在处理长尾数据集(其中大部分样本属于很少的类，而许多其他类的样本非常少)的时候，如何对不同类的损失进行加权可能比较棘手, 通常将权重设置为类样本的**倒数**或类样本的**平方根**的倒数。
 - ![](https://p9.toutiaoimg.com/origin/pgc-image/5fdb00997dc840bd9e48c965c7108f59?from=pc)
@@ -173,7 +176,7 @@ loss = -tf.reduce_mean(weight*label*tf.log(logits)+(1-label)*tf.log((1-logits)))
 - 这意味着当N很大时，有效样本数与样本数N相同。在这种情况下，唯一原型数N很大，每个样本都是唯一的。然而，如果N=1，这意味着所有数据都可以用一个原型表示。
 - ![](https://p9.toutiaoimg.com/origin/pgc-image/bdd0d77498994872b7e6552b66a8da32?from=pc)
 
-### 类别均衡损失
+#### 类别均衡损失
 
 如果没有额外的信息，不能为每个类设置单独的Beta值，因此，使用整个数据的时候，将把它设置为一个特定的值(通常设置为0.9、0.99、0.999、0.9999中的一个)。
 
