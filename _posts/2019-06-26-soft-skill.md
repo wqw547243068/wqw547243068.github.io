@@ -104,6 +104,32 @@ permalink: /skill
 ## 个人心智
 
 
+【2024-8-29】罗翔
+
+- 学会要做一个**没有情绪的人** Learn to be emotionless
+- 不要**到处诉苦** Don't go around complaining
+- 也不要轻易相信别人的话 And don't believe in others'words so easily 
+- 更不要**对谁都充满期待** And don't expect anything from anyone 
+- 谁在背后议论你，都无所谓 It doesn't matter who's talking about you behind vour back 
+- 你只需要关心你的当下和未来就可以 You only need to care about your present and your future
+
+- 你不需要人人都喜欢你，了解你 You don't need everyone to like you and understand you 
+- 当然你也不要轻易给别人提意见 And of course you don't give advice to others easily 
+- **每个人都是环境的产物** Everyone is a product of their environment 
+- 不要随便发脾气 Don't just lose your temper 
+- 不但不能解決问题，反而会伤了自己的身体 Not only can't solve the problem,You'll hurt yourself 
+- 但凡相处让你感觉很累的关系 If you feel tired of the relationship 
+- **直接结束**就行  Just end it
+
+- 不要为难自己 Don't make it hard on yourself 
+- 记住**用实力说话** Remember to use your strength to speak 
+- 这个世界最愚蠢的行为 The most stupid behavior in this world 
+- 就是你很弱的时候，跟别人讲道理 Is when you are weak,To reason with others 
+- 永远记住位置不同 Always remember if the position is different 
+- 少言为贵 less talk is more expensive 
+- 认知不等不争辩 Cognition is not equal,no argument
+
+
 ### 人生意义
 
 人生没有意义。不稳定才是常态。生而为人，不过是地球借我100斤原子分子只来这人世间体验几十年，再还回去。
