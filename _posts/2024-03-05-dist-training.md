@@ -4488,4 +4488,31 @@ XTuner 序列并行设计思路参考了 DeepSpeed 的工作 DeepSpeed Ulysses�
 
 
 
+## 新技术
+
+### DisTrO
+
+【2024-8-29】[DisTrO 让你家里的电脑也能训练超级大模型](https://mp.weixin.qq.com/s/wap7pZ3jUawNKG_3uMzojQ)
+
+Nous Research 最近放出了一份重磅报告，介绍最新研究成果——DisTrO（Distributed Training Over-the-Internet）。
+- [A PRELIMINARY REPORT ON DISTRO](https://venturebeat.com/wp-content/uploads/2024/08/A_Preliminary_Report_on_DisTrO.pdf)
+- [A_Preliminary_Report_on_DisTrO.pdf](https://github.com/NousResearch/DisTrO/blob/main/A_Preliminary_Report_on_DisTrO.pdf)
+
+有望让告别"只有大公司才能训练大模型"的时代，开启全民AI狂欢！
+
+DisTrO 是一个**分布式优化器**家族，两个超级牛X的特点：
+- 与架构无关：不管你用啥架构，它都能用。
+- 与网络无关：网速慢？没关系，它照样能跑！
+
+最厉害的是，DisTrO把GPU之间的通信需求减少了1000到10000倍！
+
+在龟速网络上，用各种杂牌子的网络硬件，也能训练大型神经网络，而且收敛速度跟AdamW+All-Reduce一样快！
+
+DisTrO究竟有什么用呢？
+- 提高LLM训练的抗风险能力：不再依赖单一实体的计算能力，训练过程更安全、更公平。
+- 促进研究合作与创新：研究人员和机构可以更自由地合作，尝试新技术、新算法、新模型。
+- 推动AI民主化：降低了训练大模型的门槛，让更多人有机会参与其中。
+
+
+
 # 结束
