@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral pytorch
+tags: 向量化 milvus vector embedding mistral pytorch 评估
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -315,6 +315,52 @@ print(new_output)
 
 
 ### Embedding 评测
+
+
+衡量 word embedding 是好是坏，并没有完美方案。
+
+实际上，评价其质量最好的方式: 以word embedding对于具体任务的实际收益（上线效果）为评价标准
+
+评估方法主要分为 `word2vec` 和 `item2vec` 两个部分
+- 前者有较多的比较成熟的度量方案
+- 后者则基本上没有统一认可的方案。
+
+【2024-8-30】[CTR 预测理论（八）：Embedding 质量评估方法总结](https://blog.csdn.net/Dby_freedom/article/details/88820726)
+
+#### word2vec
+
+1. **Relatedness**
+  - Relatedness: task(相似度评价指标，看看空间距离近的词，跟人的直觉是否一致)目前大部分工作都是依赖wordsim353等词汇相似性数据集进行相关性度量，并以之作为评价word embedding质量的标准。这种评价方式对数据集的大小、领域等属性很敏感。
+  - [wordsim353 相关内容](http://alfonseca.org/eng/research/wordsim353.html)
+2. **Analogy**
+  - Analogy: task也就是著名 A - B = C - D 词汇类比任务（所谓的 analogy task，如 king – queen = man – woman）
+3. **Categorization**
+  - Categorization分类 看词在每个分类中的概率
+  - 文本也可采用 document classification task：一种通过使用词向量来计算文本向量（可以被用来进行文本分类的工作）的方法，为了得到文本向量，task通常采用了一种很简单的方法:取文本中所有词的
+4. **聚类算法**（可视化）
+  - 例如 kmeans 聚类，查看聚类分布效果 。若向量维度偏高，则对向量进行降维，并可视化。如使用pca，t-sne等降维可视化方法，包括google的tensorboard（http://projector.tensorflow.org/），python的matplotlib等工具，从而得到词向量分布。
+
+#### Item2vec
+
+Item2vec 应用到推荐场景中，把 item 视为 word，将用户行为序列视为一个集合，item 间的共现为正样本，并按照item的频率分布进行负样本采样。
+- 关于 Item2Vec 请参考论文：[Item2Vec: Neural Item Embedding for Collaborative Filtering](https://arxiv.org/vc/arxiv/papers/1603/1603.04259v2.pdf)
+
+目前绝大部分资料针对 word2vec，很多方案（上述方法 1, 2, 3）并不能迁移到 item2vec。
+- 比如第 1 个方案，对于 word2vec，目前存在 wordsim353 作为评价 word embedding 质量的标准，但是 item2vec 并没有此类标准。
+- 而对于2, 3来说，用户行为序列并不太容易用来 Analogy 和 Categorization。
+
+解决方式如下：
+- 从item2vec得到的词向量中随机抽出一部分进行人工判别可靠性。即人工判断各维度item与标签item的相关程度，判断是否合理，序列是否相关。
+- 然后word2vec的方法4,5可以借鉴，对item2vec得到的词向量进行聚类或者可视化，查看其聚类效果如何。这样就从局部（抽样人工筛查）和整体（聚类效果）两方面进行了评估，虽然不够准确，但是也算是一种思路。
+
+事实上，这种方式相对更容易操作一些，例如，对于用户商品 ID 特征，是否训练之后对应的 embedding 可以聚类到一起（可通过 TensorBoard 的 t-sne 进行可视化展现），从可视化结果中应该可以得到一个较好的展现。
+
+还有一种方案，就是用大量数据训练出一个相对新的类似于 wordsim353 标准的 item 类型的标准，之后进行相似度度量。但是实现难度主要在训练数据的质量和时效性方面，对于商品类还好，但对于新闻类这种更新率极快的 item 类型，时效性是很大问题。
+
+当然，也可通过观察实际效果来定，也可采用替换 embedding 对应值为初试值来看预测效果是否有显著下降；
+
+
+#### 评测实践
 
 【2023-12-14】评测结论
 
