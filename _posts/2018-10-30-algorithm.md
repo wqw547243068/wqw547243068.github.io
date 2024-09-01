@@ -161,7 +161,10 @@ permalink: /algorithm
 - 【2021-1-23】可视化解释A*、Dijkstra、BFS寻路算法，[在线体验地址](https://interactive-pathfinding.netlify.app/)，完整代码[Interactive pathfinding](https://github.com/npretto/pathfinding) - Visual explanation of pathfinding algorithms and how a*, Dijkstra and BFS can be seen as the same algorithm with different parameter/data structures used under the hood' by Nicolò Pretto
 - 【2021-4-14】算法经验总结，[labuladong](https://labuladong.gitee.io/algo/), [gitee地址]([labuladong](https://labuladong.gitee.io/algo/))，各种类型题目解题思路，如[动态规划](https://github.com/labuladong/fucking-algorithm/blob/master/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%B3%BB%E5%88%97/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%AF%A6%E8%A7%A3%E8%BF%9B%E9%98%B6.md)，[pdf文件](https://share.weiyun.com/vdGvmPMe)
 
+
+
 - 【2021-5-8】基础[算法笔记](https://dairongpeng.github.io/algorithm-note/)，[Github地址](https://github.com/Dairongpeng/algorithm-note)，Morris算法可以实现二叉树遍历O(N)时间+O(1)空间
+
 
 目录概览
 
@@ -194,6 +197,7 @@ permalink: /algorithm
 
 - [数据结构总结篇](https://blog.csdn.net/weixin_46733442/article/details/105923468)
 - [数据结构之线性表](https://www.cnblogs.com/chengxiao/p/5979059.html)
+- 【2024-9-1】[计算机基础（三）：数据结构与基础算法](https://zhuanlan.zhihu.com/p/714361028?utm_psn=1813685003269308417)
 
 **数据结构**与**算法**是程序设计的两大基础，大型的IT企业面试时也会出数据结构和算法的题目，它可以说明你是否有良好的逻辑思维，用来测试潜力，即使技术存在某些缺陷，面试公司也会认为你很有培养价值，至少在一段时间之后，技术可以很快得到提高
 
