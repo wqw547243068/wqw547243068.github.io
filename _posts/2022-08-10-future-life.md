@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "未来会变成什么样 - Future life (society, economy, politics and so on)"
+title:  "未来会变成什么样 - Future life"
 date:   2022-08-10 19:30:00
 categories: 人文科学
 tags: 经济 房产 金融 互联网 gdp 未来 kfk 智囊团 制造 产业 玩具 川普 中国 博弈
