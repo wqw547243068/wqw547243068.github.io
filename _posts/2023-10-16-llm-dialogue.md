@@ -871,6 +871,13 @@ Lepton AI 直接把 `LLM` 和 `TTS` 合二为一。
 
 ### 工业界做法
 
+#### 智能客服
+
+详见站内专题 [LLM与ICS](ics#llm-%E4%B8%8E-ics) 升级智能客服
+
+#### 小米小爱
+
+【2024-9-5】[大模型在小爱同学应用实践](https://mp.weixin.qq.com/s/M-agcbwjFC7_ZFglKm8jDg)
 
 
 #### RasaGPT
