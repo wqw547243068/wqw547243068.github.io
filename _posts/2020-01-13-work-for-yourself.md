@@ -821,8 +821,10 @@ Tiktok的变现方式有很多种，目前我主要运营的是**短视频带货
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
+### 独立开发
 
-### BuiltWith
+
+#### BuiltWith
 
 【2022-11-8】[一个人、一家公司、年入一个亿！](https://www.toutiao.com/article/7163262534219366952), 英文原文:[How BuiltWith generates $14 million a year while having zero employees](https://5to9.beehiiv.com/p/builtwith-generates-14-million-year-zero-employees?continueFlag=1838bf3e0269217efe76e92490560e86)
 - 程序员 Gary Brewer 创建的 BuiltWith 背后没有销售团队，没有服务团队，也没有工程师。年入 1400 万美元，“BuiltWith”是一个揭秘网站搭建技术的网站。
@@ -875,6 +877,61 @@ BuiltWith 的运营，一人足矣
 由于 BuiltWith 功能的特点，实际上企业在进入 BuiltWith.com 前，是否要为其付费就已经是一件既定的事情了，无需多加推销：要么有目的性地成为高级付费用户，挖掘更多潜在客户；要么就坚决“白嫖”，只需知道竞争对手在用什么技术即可。
 
 甚至因为 BuiltWith 的使用方法简单，Gary Brewer 都不需要向客户解释什么，简单制作一个 20 秒的视频教程作为参考就够了——换句话说，BuiltWith 的运营已经完全自动化，并不需要工程师等员工来推送功能或添加资源等。
+
+#### Pieter Levels
+
+【2024-9-6】[一个人，13年，70个创业项目，独立开发的超级传奇](https://mp.weixin.qq.com/s/T1MGR6yTh_3Z9nU3U9G-Yw)
+
+一人公司正在成为一种趋势，[Pieter Levels](https://x.com/levelsio) 是这个领域里的**超级玩家**。
+>- 自学成才，独立开发，从 2012 年到 2021 年，启动了 70 个创业项目，成功运营 40 个，其中只有 4 个让他赚了很多钱。
+>- 最成功的，`Nomad List`，一年盈利 210 万美金。2021 年后，做了几个 AI 产品，MRR 十几万美元。
+
+95% 项目都失败了，5% 的「命中率」，所以只要做得够多就行。
+
+一个人干活，游历世界，走遍 40 多个国家，150 多个城市。
+- 酒店里，笔记本电脑，只穿条短裤，用一种对腰部不太友好的坐姿，HTML、jQuery、PHP 和 SQLight
+
+Build in public，所有成果都公开透明，成功和失败都记录在案。Pieter 是很多开发者和企业家的灵感来源，尤其是那些热衷于创造实用又有趣的东西的人。
+
+Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo AI、Nomad List、Remote OK 等，从找点子、判断点子好不好、如何启动、学编程和技术，到为什么从没卖过手上的项目、创业核心理念，还有独立开发者的个人生活等，聊了很多，而且，都很坦诚。
+- 写了一本书，[MAKE: Bootstrapper's Handbook]()，如何创业。
+
+知名产品
+- [Nomad List](https://nomads.com/): 在线平台，为`数字游民`（即远程工作者和旅行者）提供关于全球**最佳工作地点**的信息。该平台根据用户的偏好和需求，推荐适合的工作地点和生活环境。用户可以在该平台上搜索、评价和分享他们喜欢的工作地点，并与其他数字游民交流和分享旅行和工作经验。
+- [thishousedoesnotexist](thishousedoesnotexist.org): 扩散模型生成不存在的房子
+- Reddit 上有个「房子美图」的子版块，这是 Stable Diffusion 的第一个版本, 生成室内设计方面表现得很好，所以转向了 [interiorai](interiorai.com)
+- 📸[PhotoAI](http://PhotoAI.com) $120K/m
+- 🌍[Nomads](http://Nomads.com) $57K/m
+- 🏡[InteriorAI](http://InteriorAI.com) $42K/m
+- 🎁[levelsio](http://levelsio.com) $20K/m
+- 🛰[RemoteOK](http://RemoteOK.com) $28K/m
+- 📥[ApplicantAI](http://ApplicantAI.com) $1K/m
+- 🏩[HotelList](http://HotelList.com) $0K/m
+
+
+重点：
+- 很多创业者不喜欢当 CEO，不喜欢当经理，但又没办法退出。他们真正喜欢的是**做基础工作，敲代码**。所以做一些有创造力的事能让人保持快乐。
+- （做产品）**保持简陋**非常重要，因为时间有限，得专注于可以快速完成的事。
+- 意识到生活中的一些方面可以做得更好，其实并不是一件容易的事，因为往往很快就习惯了那些不太舒适的状况。
+- 刚开始创业时，**技术栈并不是最重要的**，最重要的是**验证市场**，确认有人愿意为产品付费。
+- 那些顶尖开发者往往对技术栈不挑剔，能学会任何技术。这种人真的不多，可能只占 5% 左右。因为大部分开发者，其实都表现得很一般。
+- 编程训练营不太有效。更好的方式是自学，定目标，直接去做。
+- 咖啡馆里到处都是**梦想家**。你可以笑话他们每个人都以为自己会建立一家万亿公司，但并不是每个人都会成功。99% 的人可能都不会成功。但他们确实在做事。
+
+服务托管
+- Replicate 是一个云端 AI 模型运行平台，它允许用户通过云端 API 直接运行机器学习模型，非专业人士也能上手
+
+旅行会让你发现很多问题，其他地方已经找到的解决方案。
+- 10 年前的亚洲, 已经有了像`微信`这样的全能应用，现在 `Elon Musk` 也想把 `X` 打造成一个像微信的东西。
+- 在`印尼`或`泰国`，用一个 app 就能**订餐、订杂货、叫按摩师**，甚至还能叫**修车工**，这种事其实就是套利。可以回到自己的国家，做一个类似的应用。
+- 旅行本身就会让你面临更多问题，因为旅行挺不舒服的。机场很糟糕，飞机上也不舒服。只要离开家门，就会开始注意到这些问题。
+
+谷歌多年前就开发了 Transformers 和很多 AI 技术，但一直没发布产品。
+- 他们本可以在 2019 年发布跟 ChatGPT 相似的东西，但因为公司内部的官僚主义，拖了很久。
+- 明明有条件，有数据、有技术、有工程师，但就是没做。
+
+
+
 
 ## 肉身fan墙
 
