@@ -4044,6 +4044,27 @@ python3 chatglm_cpp/convert.py -i baichuan-inc/Baichuan2-13B-Chat -t q4_0 -o bai
 # 你好！今天我能为您提供什么帮助？
 ```
 
+
+### Reflection 70B
+
+【2024-9-6】[刚刚，开源大模型的新王诞生了：超越GPT-4o，模型还能自动纠错](https://mp.weixin.qq.com/s/hCSwRKyF5R_izOMHn6P8Ww)
+
+
+AI 写作初创公司 HyperWrite 推出的开源大模型 Reflection 70B，横扫 MMLU、MATH、IFEval、GSM8K，在每项基准测试上都超过了 GPT-4o，还击败了 405B 的 Llama 3.1。
+- Hugging Face：[Reflection-70B](https://huggingface.co/mattshumer/Reflection-70B)
+- 试用网址：[demo](https://reflection-playground-production.up.railway.app/)
+
+Reflection 70B 底层模型建立在 Meta 的 `Llama 3.1` 70B Instruct 上，并使用原始的 Llama chat 格式，确保了与现有工具和 pipeline 的兼容性。
+
+Reflection 70B 已在多个基准测试中经过严格测试，包括 MMLU 和 HumanEval。测试结果表明， Reflection 的表现始终优于 Meta 的 Llama 系列，并与 GPT-4o 等全球顶尖的商用模型展开了激烈竞争。
+
+通用能力之外，Reflection 70B 的亮点还包括「错误识别」和「错误纠正」。
+
+一种名为「Reflection-Tuning」的技术，使得模型能够在最终确定回复之前，先检测自身推理的错误并纠正。
+
+Reflection 70B 引入了几个用于推理和纠错的特殊 token，使用户能够以更结构化的方式与模型交互。在推理过程中，模型会在特殊标签内输出其推理，以便在检测到错误时进行实时纠正。
+
+
 ### trl
 
 [Ivwerra/trl](https://github.com/lvwerra/trl)，[文档](https://huggingface.co/docs/trl/index) 
