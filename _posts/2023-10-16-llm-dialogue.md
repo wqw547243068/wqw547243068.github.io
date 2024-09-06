@@ -868,6 +868,74 @@ Lepton AI 直接把 `LLM` 和 `TTS` 合二为一。
 
 贾扬清 [Twitter 演示视频](https://x.com/LeptonAI/status/1820868523746312636)
 
+#### Mini-Omni
+
+【2024-9-3】[开源版GPT-4o语音来袭，Mini-Omni开启实时语音对话](https://mp.weixin.qq.com/s/tdtEeJ0yRWKEs2TucWK9NA)
+
+Mini-Omni, 更强大的实时语音对话AI模型开源
+
+【2024-8-30】清华 gpt-omni 团队开发，语音助手界的一匹黑马，不仅能实现**实时**语音对话，还能同时生成**文本**和**音频**
+- 模型下载：[mini-omni](https://hf.co/gpt-omni/mini-omni)
+- 论文地址：[Mini-Omni: Language Models Can Hear, Talk While Thinking in Streaming](https://hf.co/papers/2408.16725)
+- 代码仓库：[mini-omni](https://github.com/gpt-omni/mini-omni)
+
+Mini-Omni有哪些特性呢？
+- **实时**语音对话：这意味着你说话的同时，AI就能立即理解并回应，不再有明显的延迟。
+- 同时生成**文本**和**音频**：这个功能简直太强大了！AI不仅能说，还能同步给出文字版本，对听力不好的朋友来说简直是福音。
+- **流式**音频输出：这个技术确保了对话的流畅性，让整个交互过程更加自然。
+
+Mini-Omni：语言模型在流式处理中的听、说、思考能力
+
+Mini-Omni 是一个开源的多模态大型语言模型，能够在思考的同时进行听觉和对话。它具备实时的端到端语音输入和流式音频输出对话功能。
+- [Qwen2](https://github.com/QwenLM/Qwen2) 作为 LLM 主干。
+- [litGPT](https://github.com/Lightning-AI/litgpt) 用于训练和推理。
+- [whisper](https://github.com/openai/whisper) 用于音频编码。
+- [snac](https://github.com/hubertsiuzdak/snac) 用于音频解码。
+- [CosyVoice](https://github.com/FunAudioLLM/CosyVoice) 用于生成**合成**语音。
+- [OpenOrca](https://huggingface.co/datasets/Open-Orca/OpenOrca) 和 [MOSS](https://github.com/OpenMOSS/MOSS/tree/main) 用于对齐。
+
+
+功能特点
+- ✅ 实时语音对话功能，无需额外的ASR或TTS模型。
+- ✅ 边思考边对话，支持同时生成文本和音频。
+- ✅ 支持流式音频输出。
+- ✅ 提供“音频转文本”和“音频转音频”的批量推理，进一步提升性能。
+
+模型结构
+- ![](https://github.com/gpt-omni/mini-omni/raw/main/data/figures/frameworkv3.jpg)
+
+
+安装
+
+```sh
+conda create -n omni python=3.10
+conda activate omni
+
+git clone https://github.com/gpt-omni/mini-omni.git
+cd mini-omni
+pip install -r requirements.txt
+```
+
+使用
+
+```sh
+# 启动服务器
+conda activate omni
+cd mini-omni
+
+# 本地测试运行预设的音频样本和问题
+python inference.py
+
+# 启动服务
+python3 server.py --ip '0.0.0.0' --port 60808
+# 运行 Streamlit 演示
+# 注意：本地运行 Streamlit 并安装 PyAudio。
+pip install PyAudio==0.2.14
+API_URL=http://0.0.0.0:60808/chat streamlit run webui/omni_streamlit.py
+# 运行 Gradio 演示
+API_URL=http://0.0.0.0:60808/chat python3 webui/omni_gradio.py
+```
+
 
 ### 工业界做法
 
