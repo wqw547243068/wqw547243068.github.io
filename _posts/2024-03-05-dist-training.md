@@ -4412,9 +4412,11 @@ Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大�
 
 ### LLaMA-Factory
 
-LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推出，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
-- 支持LoRA和QLoRA微调策略，广泛集成了业界前沿的微调方法。
-- 特点: 支持多种LLM模型，提供了WebUI页面，使非开发人员也能微调。
+#### LLaMA-Factory 介绍
+
+LLaMA Factory 支持多种LLM微调方式，北航博士生推出，包括: **预训练**、**指令监督微调**和**奖励模型**训练等。
+- 支持`LoRA`和`QLoRA`微调策略，广泛集成了业界前沿的微调方法。
+- 特点: 支持多种LLM模型，提供了**WebUI页面**，使非开发人员也能微调。
 - 体验地址：[LLaMA-Board](https://modelscope.cn/studios/hiyouga/LLaMA-Board/summary)
 - 可视化界面 [LLaMA-Board](https://huggingface.co/spaces/hiyouga/LLaMA-Board)
 - github: [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)，附各阶段训练数据集
@@ -4422,7 +4424,7 @@ LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推
 
 功能
 - 多种模型：LLaMA、Mistral、Mixtral-MoE、Qwen、Yi、Gemma、Baichuan、ChatGLM、Phi 等等。
-- 集成方法：（增量）预训练、指令监督微调、奖励模型训练、`PPO` 训练、`DPO` 训练和 `ORPO` 训练。
+- 集成方法：（**增量**）预训练、指令监督微调、奖励模型训练、`PPO` 训练、`DPO` 训练和 `ORPO` 训练。
 - 多种精度：32 比特全参数微调、16 比特冻结微调、16 比特 LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8 的 2/4/8 比特 QLoRA 微调。
 - 先进算法：GaLore、DoRA、LongLoRA、LLaMA Pro、LoRA+、LoftQ 和 Agent 微调。
 - 实用技巧：FlashAttention-2、Unsloth、RoPE scaling、NEFTune 和 rsLoRA。
@@ -4435,6 +4437,8 @@ LLaMA Factory 是一款支持多种LLM微调方式的工具，北航博士生推
 
 <iframe src="//player.bilibili.com/player.html?aid=1801563508&bvid=BV1Gt421L7dt&cid=1463913844&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
+
+#### LLaMA-Factory 安装
 
 安装
 - [安装说明](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
@@ -4451,6 +4455,236 @@ cd LLaMA-Factory
 pip install -r requirements.txt
 ```
 
+#### LLaMA-Factory 使用
+
+多GPU分布式训练, 多种工具
+- huggingface Accelerate
+- DeepSpeed
+
+[参考](https://zhuanlan.zhihu.com/p/718263213?utm_psn=1815334840821751808)
+
+##### 指令监督微调
+
+Accelerate
+
+```sh
+accelerate launch   src/train.py \
+  --ddp_timeout  18000000 \
+    --stage sft \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --dataset alpaca_gpt4_data_zh,alpaca_gpt4_data_en,glaive_toolcall_zh_demo,adgen_local \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_sft_checkpoint \
+    --overwrite_cache \
+    --overwrite_output_dir
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 3.0 \
+    --plot_loss \
+    --fp16
+```
+
+使用 DeepSpeed
+
+```sh
+deepspeed --num_gpus 2   src/train.py \
+ --deepspeed ds_config.json \
+  --ddp_timeout  18000000 \
+    --stage sft \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --dataset alpaca_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_sft_checkpoint \
+    --overwrite_cache \
+    --overwrite_output_dir
+    --per_device_train_batch_size 4 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 5e-5 \
+    --num_train_epochs 3.0 \
+    --plot_loss \
+    --fp16
+```
+
+
+##### 奖励模型训练
+
+Accelerate
+
+```sh
+accelerate launch   src/train.py \
+    --stage rm \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset dpo_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_ac_rm_checkpoint \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16
+```
+
+使用 DeepSpeed
+
+```sh
+deepspeed --num_gpus 2   src/train.py \
+   --deepspeed ds_config.json \
+    --stage rm \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset dpo_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_deep_rm_checkpoint \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16
+```
+
+##### ppo 训练
+
+Accelerate
+
+```sh
+accelerate launch src/train.py \
+    --stage ppo \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset alpaca_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --reward_model path_to_ac_rm_checkpoint \
+    --output_dir path_to_ac_ppo_checkpoint \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --top_k 0 \
+    --top_p 0.9 \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16
+```
+
+deepspeed
+
+```sh
+deepspeed --num_gpus 2  src/train.py \
+    --deepspeed ds_config.json  \
+    --stage ppo \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset alpaca_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --reward_model path_to_deep_rm_checkpoint \
+    --output_dir path_to_deep_ppo_checkpoint \
+    --per_device_train_batch_size 4 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --top_k 0 \
+    --top_p 0.9 \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16
+```
+
+
+
+##### dpo 训练
+
+Accelerate
+
+```sh
+accelerate launch src/train.py \
+    --stage dpo \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset dpo_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_ac_dpo_checkpoint \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16 
+```
+
+deepspeed
+
+```sh
+deepspeed --num_gpus 2   src/train.py \
+    --deepspeed ds_config.json  \
+    --stage dpo \
+    --do_train \
+    --model_name_or_path /gemini/pretrain/Qwen1.5-4B/ \
+    --adapter_name_or_path path_to_sft_checkpoint \
+    --create_new_adapter \
+    --dataset dpo_zh_demo \
+    --template qwen \
+    --finetuning_type lora \
+    --lora_target q_proj,v_proj \
+    --output_dir path_to_deep_dpo_checkpoint \
+    --per_device_train_batch_size 2 \
+    --gradient_accumulation_steps 4 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 1000 \
+    --learning_rate 1e-5 \
+    --num_train_epochs 1.0 \
+    --plot_loss \
+    --fp16 
+```
 
 ### Xtuner
 
