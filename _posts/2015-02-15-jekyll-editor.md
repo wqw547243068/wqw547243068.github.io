@@ -1649,6 +1649,28 @@ jekyll 插件安装失败
 - ![](https://openwrite.cn/readmore/readmore-5.png)
 - ![](https://openwrite.cn/images/202206/readmore/1654941000718.png)
 
+
+### 付费阅读
+
+
+【2024-9-7】付费阅读功能：[效果](http://i.scwy.net/other/2019/072718-first)
+- １ 文章前后显示扫码付费后才能阅读，文章只显示一部份。
+- ２ 用户扫码付费，在备注中填写文章编号。
+- ３ 文章自动显示所有内容。
+
+参考 [原文](https://blog.csdn.net/wyyyh9458/article/details/105690822)
+
+
+### 私文隐藏
+
+【2024-9-7】私文隐藏功能：[效果](http://i.scwy.net/it/2020/043014-health)
+- １在输入框中输入管理员密码（在配置文件中设置），将发送显示密码到我的微信号。
+- ２输入框中输入密码，将显示隐藏内容。
+
+                        
+参考 [原文](https://blog.csdn.net/wyyyh9458/article/details/105690822)
+
+
 ### Markdown写作
 
 - 制作文档
