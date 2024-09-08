@@ -3442,6 +3442,8 @@ BloombergGPT的训练数据库名为FINPILE，由一系列英文金融信息组�
 见站内[量化专题](quant)
 
 GPT在量化暂还没有广泛应用
+- 【2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
+
 
 ### 法律
 
