@@ -310,14 +310,41 @@ print(new_output)
 ## 向量化方案
 
 可选
-- 单独的embedding服务
-- LLM里的embedding
+- 单独 embedding服务
+- LLM embedding
+
+### 方案选型
+
+一般默认使用 OpenAI 的 Embedding 接口来生成向量。
+
+OpenAI通用型 Embedding 模型适合初学者，但一旦需求开始增加，最明智的选择：
+- a) 使用自己的 Embedding 模型
+- b) 使用不同的开源或闭源模型。
+
+Embedding 模型的选择很大程度上受**任务复杂程度**影响。
+- 简单任务（如情感分析或关键词匹配等）可能适合使用 MTEB 排行榜上任何一个通用模型。
+- 但是，许多情况下需要采用特殊的 Embedding 模型。
+
+示例
+- 只差一个逗号, 意思大不相同
+
+```sh
+"Let's eat, Chris."
+"Let's eat Chris."
+```
+
+大多数通用模型会认为这两个句子在高维 Embedding 空间中位置非常接近。但实际上，这两个句子应处于高维空间的两端，因为这两个句子含义的相似度较低。
+
+许多 Embedding 模型是基于**通用**语言数据训练的，可能无法捕捉**专业词汇或术语**的微妙含义。
+
+针对特定领域数据集训练或微调的模型能够为专业领域内的文本生成更精确的 Embeddings。在医疗诊断、法律文件分析或为特定产品提供技术支持等应用中，特定领域的模型能够更深入地理解相应领域使用的专业语言，显著优于通用模型。
 
 
 ### Embedding 评测
 
+衡量 word embedding 好坏，没有完美方案。
 
-衡量 word embedding 是好是坏，并没有完美方案。
+【2024-8-30】[CTR 预测理论（八）：Embedding 质量评估方法总结](https://blog.csdn.net/Dby_freedom/article/details/88820726)
 
 实际上，评价其质量最好的方式: 以word embedding对于具体任务的实际收益（上线效果）为评价标准
 
@@ -325,7 +352,18 @@ print(new_output)
 - 前者有较多的比较成熟的度量方案
 - 后者则基本上没有统一认可的方案。
 
-【2024-8-30】[CTR 预测理论（八）：Embedding 质量评估方法总结](https://blog.csdn.net/Dby_freedom/article/details/88820726)
+
+【2024-9-5】[如何评估 Embedding 模型](https://mp.weixin.qq.com/s/ACql-ExAAlP9CTgDID_MYw)
+
+评估文本 Embedding 模型的两种主流方法。
+- `Arize-Phoenix`
+  - Arize AI 的 Phoenix 库个非常实用的多功能工具，评估 LLM 和 Embedding 模型。Phoenix 提供了一种简单且灵活的方法来记录和查看高维 Embeddings，帮助用户了解模型可能出错的地方。
+  - 可视化展示空间距离
+- `Ragas`
+  - 虽然 LlamaIndex 或 Haystack 等现有工具支持构建 RAG（检索增强生成）Pipeline，但如何测试性能是非常棘手。
+  - Ragas 能轻松完成这项任务。Ragas（检索增强生成评估）是一个开源库，提供评估 LLM 生成文本的工具，帮助了解 RAG Pipeline 的性能。
+  - 此外，Ragas 还与 CI/CD 流程集成，允许定期检查性能，从而维持并提升 RAG 生成的质量。
+
 
 #### word2vec
 
