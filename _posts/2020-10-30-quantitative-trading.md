@@ -880,6 +880,8 @@ TimesNet根据时间序列的多周期性，它的模块化架构能够捕捉来
 
 ## 大模型与量化
 
+### 观点
+
 【2024-6-26】[“量化四大天王”之一的锐天投资创始人、CEO徐晓波](https://m.gelonghui.com/p/627703)
 - 2013年，徐晓波在上海创立锐天投资，最早从股指期货高频起家，2016年进军资产管理的新赛道，开始建立股票中高频的策略团队。
 - 目前，锐天投资旗下既有股票的高频、中频、低频，也有CTA和可转债的策略。
@@ -888,13 +890,13 @@ TimesNet根据时间序列的多周期性，它的模块化架构能够捕捉来
 
 GPT在量化暂还没有广泛应用
 
-以前大家对AI（含GPT）的认知是一个统计模型
-- 非线性的统计模型，跟一个纯线性的统计模型并没有质的变化
+以前大家对AI（含GPT）的认知是一个**统计模型**
+- **非线性**的统计模型，跟一个纯线性的统计模型并没有质的变化
 
 GPT 是一个非常颠覆式的科技突破和创新
 - 不只停留在模型的网络架构，或者是其中一些环节、流程的创新，而是在于**范式和思想**创新
 
-GPT的**语言理解**能力，比以前越来越强。
+GPT **语言理解**能力，比以前越来越强。
 - 理解能力的增强，一方面来源于参数本身的扩大，同时也来源于语料库的丰富。
 - GPT甚至开始在数学领域证明数学定理——能做一些非常复杂的推理的工作，以前不具备
 
@@ -903,6 +905,38 @@ GPT跟量化的可能性。
 - 量化多以数字形式存在，常用机器学习方法预测收益率，语言模型不适合
   - 但用语言模型去更好地理解多种形态的数据（新闻、研报）值得探索
 - GPT去更好地挖掘一些市场规律？短期内，有待考证
+
+
+### 量化交易机器人
+
+【2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
+- 原文 [52% Returns in 30 Days: Your GPT-4o Quant Trading Bot Strategy](https://readmedium.com/52-returns-in-30-days-your-gpt-4o-quant-trading-bot-strategy-2eb98e9f360b)
+
+用 ChatGPT 创建交易策略。文章：
+- [Use This ChatGPT Trading Bot to Beat 99% of Wall Street Investors!](https://medium.datadriveninvestor.com/use-this-chatgpt-trading-bot-to-beat-99-of-wall-street-investors-cb924ee38d99)
+- [Step-by-Step of How to Create a Profitable Trading Bot & How to Backtest it with Zero Coding Knowledge Needed.](https://medium.datadriveninvestor.com/use-this-chatgpt-trading-bot-to-beat-99-of-wall-street-investors-cb924ee38d99)
+
+一个月内创造了 52% 回报。然而，交易中没有100%确定的事情，过去的结果可能与未来的回报并不一致。
+
+TradingView 测试AI交易策略。
+- 步骤 1 - 选择资产
+  - 对于**均值回归**等量化交易策略来说，**横盘交易**的资产往往能产生更好的效果。
+  - 选择以太坊，因为已经横盘数月。验证能否创建一个在市场横盘甚至下跌时获利的交易机器人。
+- 步骤 2 - 用图表提示 GPT-4o
+  - **简单提示**比冗长复杂提示更有效，提示必须简洁明了。在本例中，结合图表对AI进行了如下提示：
+    - 为图表中的资产创建可盈利的均值回归 Pine 5 量化策略。
+    - Create a profitable mean regression Pine 5 quant strategy for the asset in the chart.
+  - GPT-4o: 策略包括使用**布林带**和 `RSI`
+- 步骤 3 - 将 Pinescript 代码复制/粘贴至 [TradingView](https://www.tradingview.com/?aff_id=120549)
+  - 转到 TradingView 的 Pine Editor 并粘贴代码，然后将其添加到图表中。
+  - 现在，该策略应该可以在图表上和策略测试选项卡中进行回测。
+- 步骤 4 - 微调量化策略
+  - 除了要对策略进行上百次测试以外，还必须手动优化策略。
+  - 在不同的时间框架和不同参数下测试策略，尝试不同的值，看看哪个值能产生最好的结果。将策略应用于实际资金之前，对其进行广泛测试至关重要
+- 出色的回报（回溯测试）
+  - 回测中，GPT-4o 创建的策略产生了非常令人印象深刻的结果
+  - 1 个月的时间里，该策略在交易以太坊（ETH/USD）时创造了 52% 的惊人回报。
+
 
 ## 工程实践
 
