@@ -3,7 +3,7 @@ layout: post
 title:  "多任务学习-Multi-Task-Learning"
 date:   2020-07-28 15:26:00
 categories: 机器学习 深度学习
-tags: 多任务学习 深度学习 神经网络 广告预估 CTR CVR
+tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函数
 excerpt: 多任务学习相关知识点
 author: 鹤啸九天
 mathjax: true
@@ -54,6 +54,7 @@ mathjax: true
 【2021-4-15】多任务学习的所有资料，包括：代表性学者主页、论文、综述、最新文集和开源代码。[github](https://github.com/beyondliangcai/Multitask-Learning)
 
 ## Personal Page
+
 * [Massimiliano Pontil - UCL](http://www0.cs.ucl.ac.uk/staff/M.Pontil/pubs.html)
 * [Yu Zhang (张宇) - HKUST](https://www.cse.ust.hk/~yuzhangcse/)
 * [Tong Zhang (张潼)- Tencent AI Lab](http://tongzhang-ml.org/publication.html)
@@ -73,6 +74,7 @@ mathjax: true
 * [SFU Machine Learning Reading Group](https://www.cs.ubc.ca/~schmidtm/MLRG/)
 
 ## Package and Toolbox
+
 * [MALSAR: Multi-task learning via Structural Regularization](http://jiayuzhou.github.io/MALSAR/)
 * [Multi-Task Learning: Theory, Algorithms, and Applications](https://archive.siam.org/meetings/sdm12/multi.php)
 * [SparseMTL Toolbox](http://asi.insa-rouen.fr/enseignants/~arakoto/code/SparseMTL.html#description)
@@ -84,6 +86,7 @@ mathjax: true
 * [Multi-task_Survival_Analysis](https://github.com/yanlirock/Multi-task_Survival_Analysis)
 
 ## Papers
+
 * [Multitask Learning](https://link.springer.com/article/10.1023/A:1007379606734)
 * [A Survey on Multi-Task Learning](https://arxiv.org/abs/1707.08114)
 * [An overview of multi-task learning](https://academic.oup.com/nsr/article/5/1/30/4101432)
@@ -95,19 +98,19 @@ mathjax: true
 ## Multitask Learning Areas
 
 ### 多任务建模方式
-* 多任务关系学习
-    + [Asymmetric Multi-Task Learning](https://github.com/BlasterL/AMTL)
-    + [Hierarchical_Multi_Task_Learning](https://github.com/digbose92/Hierarchical_Multi_Task_Learning)
-    + [Asynchronous Multi-Task Learning](https://github.com/illidanlab/AMTL)
-    + [Asymmetric Multi-Task Learning](https://github.com/BlasterL/AMTL)
-    + [Calibrated Multi-Task Learning Based on Non-convex Low Rank](https://github.com/sudalvxin/Multi-task-Learning)
-* 多任务特征学习
-    + [Multi-task feature learning](https://github.com/argyriou/multi_task_learning)
-    + [Multi-task feature learning by using trace norm regularization](http://adsabs.harvard.edu/abs/2017OPhy...15...79J)
-    + [Task Sensitive Feature Exploration and Learning for Multi-Task Graph Classification](http://www.cse.fau.edu/~xqzhu/FelMuG/index.html)
-* 多任务特征与关系学习
-    + [Variable Selection and Task Grouping for Multi-Task Learning (VSTG-MTL)](https://github.com/JunYongJeong/VSTG-MTL)
 
+* 多任务关系学习
+  + [Asymmetric Multi-Task Learning](https://github.com/BlasterL/AMTL)
+  + [Hierarchical_Multi_Task_Learning](https://github.com/digbose92/Hierarchical_Multi_Task_Learning)
+  + [Asynchronous Multi-Task Learning](https://github.com/illidanlab/AMTL)
+  + [Asymmetric Multi-Task Learning](https://github.com/BlasterL/AMTL)
+  + [Calibrated Multi-Task Learning Based on Non-convex Low Rank](https://github.com/sudalvxin/Multi-task-Learning)
+* 多任务特征学习
+  + [Multi-task feature learning](https://github.com/argyriou/multi_task_learning)
+  + [Multi-task feature learning by using trace norm regularization](http://adsabs.harvard.edu/abs/2017OPhy...15...79J)
+  + [Task Sensitive Feature Exploration and Learning for Multi-Task Graph Classification](http://www.cse.fau.edu/~xqzhu/FelMuG/index.html)
+* 多任务特征与关系学习
+  + [Variable Selection and Task Grouping for Multi-Task Learning (VSTG-MTL)](https://github.com/JunYongJeong/VSTG-MTL)
 * 聚类多任务学习
 * 多任务聚类
     + [Self-Paced Multi-Task Clustering](https://arxiv.org/abs/1808.08068)
@@ -144,7 +147,7 @@ mathjax: true
 
 # 多任务学习介绍
 
-Stein 悖论是探索多任务学习（MTL）（Caruana，1997）的早期动机。很多东西看起来表面上是不相关的，但其实它们会服从一个潜在的相似的模式，这就是多任务学习在统计学上的基础。
+`Stein 悖论`是探索`多任务学习`（MTL）（Caruana，1997）的早期动机。很多东西看起来表面上是不相关的，但其实它们会服从一个潜在的**相似模式**，这就是多任务学习在统计学上的基础。
 
 多任务学习是一种学习范式，其中来自多任务的数据被用来获得优于独立学习每个任务的性能。即便是真实世界中看似无关的任务也因数据共享的过程而存在一定的依赖性或者相关性。
 
@@ -156,25 +159,25 @@ Stein 悖论是探索多任务学习（MTL）（Caruana，1997）的早期动机
 ### 概念区别（multi-class/multi-label等）
 
 - 【2020-12-16】几种概念区别（参考：[Multi-class, Multi-label 以及 Multi-task 问题](https://blog.csdn.net/golden1314521/article/details/51251252)）
-    - Multiclass classification 就是**多分类**问题，比如年龄预测中把人分为小孩，年轻人，青年人和老年人这四个类别。Multiclass classification 与 binary classification相对应，性别预测只有男、女两个值，就属于后者。
-    - Multilabel classification 是**多标签**分类，比如一个新闻稿A可以与{政治，体育，自然}有关，就可以打上这三个标签。而新闻稿B可能只与其中的{体育，自然}相关，就只能打上这两个标签。
-    - Multioutput-multiclass classification 和 **multi-task** classification 指的是同一个东西。仍然举前边的新闻稿的例子，定义一个三个元素的向量，该向量第1、2和3个元素分别对应是否（分别取值1或0）与政治、体育和自然相关。那么新闻稿A可以表示为[1,1,1]，而新闻稿B可以表示为[0,1,1]，这就可以看成是multi-task classification 问题了。 从这个例子也可以看出，**Multilabel classification 是一种特殊的multi-task classification 问题**。之所以说它特殊，是因为一般情况下，向量的元素可能会取多于两个值，比如同时要求预测年龄和性别，其中年龄有四个取值，而性别有两个取值。
+  - Multiclass classification 就是**多分类**问题，比如年龄预测中把人分为小孩，年轻人，青年人和老年人这四个类别。Multiclass classification 与 binary classification相对应，性别预测只有男、女两个值，就属于后者。
+  - Multilabel classification 是**多标签**分类，比如一个新闻稿A可以与{政治，体育，自然}有关，就可以打上这三个标签。而新闻稿B可能只与其中的{体育，自然}相关，就只能打上这两个标签。
+  - Multioutput-multiclass classification 和 **multi-task** classification 指的是同一个东西。仍然举前边的新闻稿的例子，定义一个三个元素的向量，该向量第1、2和3个元素分别对应是否（分别取值1或0）与政治、体育和自然相关。那么新闻稿A可以表示为[1,1,1]，而新闻稿B可以表示为[0,1,1]，这就可以看成是multi-task classification 问题了。 从这个例子也可以看出，**Multilabel classification 是一种特殊的multi-task classification 问题**。之所以说它特殊，是因为一般情况下，向量的元素可能会取多于两个值，比如同时要求预测年龄和性别，其中年龄有四个取值，而性别有两个取值。
 - ![](https://img-blog.csdn.net/20160728203028250)
 - [多标签文本分类介绍，以及对比训练](https://zhuanlan.zhihu.com/p/152140983)
 - ![](https://pic2.zhimg.com/80/v2-58230a1e88af3486940e005269e161d5_720w.jpg)
 
 - 参考：[模型汇总-14 多任务学习-Multitask Learning概述](https://zhuanlan.zhihu.com/p/27421983)
 - 单任务学习 VS 多任务学习
-    - **单任务**学习：一次只学习一个任务（task），大部分的机器学习任务都属于单任务学习。
-        - 现在大多数机器学习任务都是单任务学习。对于复杂的问题，也可以分解为简单且相互独立的子问题来单独解决，然后再合并结果，得到最初复杂问题的结果。
-        - 看似合理，其实是不正确的，因为现实世界中很多问题不能分解为一个一个独立的子问题，即使可以分解，各个子问题之间也是相互关联的，通过一些**共享因素**或**共享表示**（share representation）联系在一起。把现实问题当做一个个独立的单任务处理，忽略了问题之间所富含的丰富的关联信息。
-    - **多任务**学习：把多个相关（related）的任务放在一起学习，同时学习多个任务。
-        - 多任务学习就是为了解决这个问题而诞生的。把多个相关（related）的任务（task）放在一起学习
-        - 多个任务之间共享一些因素，它们可以在学习过程中，共享它们所学到的信息，这是单任务学习所具备的。相关联的多任务学习比单任务学习能去的更好的泛化（generalization）效果。
-    - 对比
-        - 单任务学习时，各个任务之间的模型空间（Trained Model）是相互独立的。
-        - 多任务学习时，多个任务之间的模型空间（Trained Model）是共享的
-        - ![](https://pic3.zhimg.com/80/v2-9eed3a14f160f9562a37eafe82991b8e_720w.png)
+  - **单任务**学习：一次只学习一个任务（task），大部分的机器学习任务都属于单任务学习。
+    - 现在大多数机器学习任务都是单任务学习。对于复杂的问题，也可以分解为简单且相互独立的子问题来单独解决，然后再合并结果，得到最初复杂问题的结果。
+    - 看似合理，其实是不正确的，因为现实世界中很多问题不能分解为一个一个独立的子问题，即使可以分解，各个子问题之间也是相互关联的，通过一些**共享因素**或**共享表示**（share representation）联系在一起。把现实问题当做一个个独立的单任务处理，忽略了问题之间所富含的丰富的关联信息。
+  - **多任务**学习：把多个相关（related）的任务放在一起学习，同时学习多个任务。
+    - 多任务学习就是为了解决这个问题而诞生的。把多个相关（related）的任务（task）放在一起学习
+    - 多个任务之间共享一些因素，它们可以在学习过程中，共享它们所学到的信息，这是单任务学习所具备的。相关联的多任务学习比单任务学习能去的更好的泛化（generalization）效果。
+  - 对比
+   - 单任务学习时，各个任务之间的模型空间（Trained Model）是相互独立的。
+   - 多任务学习时，多个任务之间的模型空间（Trained Model）是共享的
+   - ![](https://pic3.zhimg.com/80/v2-9eed3a14f160f9562a37eafe82991b8e_720w.png)
 
 - 多**任务**学习（Multitask learning）是迁移学习算法的一种，迁移学习之前介绍过。定义一个一个**源领域**source domain和一个**目标领域**（target domain），在source domain学习，并把学习到的知识迁移到target domain，提升target domain的学习效果（performance）。
 - 多**标签**学习（Multilabel learning）是多任务学习中的一种，建模多个label之间的相关性，同时对多个label进行建模，多个类别之间共享相同的数据/特征。
@@ -184,12 +187,12 @@ Stein 悖论是探索多任务学习（MTL）（Caruana，1997）的早期动机
  
 ### 1.1 MTL
 
-什么是多任务学习？
-- 多任务学习（Multitask learning）定义：
+什么是`多任务学习`？
+- `多任务学习`（Multitask learning）定义：
     - 基于共享表示（shared representation），把多个相关的任务放在一起学习的一种机器学习方法。
-- 多任务学习（Multitask Learning）是一种推导迁移学习方法，主任务（main tasks）使用相关任务（related tasks）的训练信号（training signal）所拥有的领域相关信息（domain-specific information），做为一直推导偏差（inductive bias）来提升主任务（main tasks）泛化效果（generalization performance）的一种机器学习方法。
+- `多任务学习`（Multitask Learning）是一种推导迁移学习方法，主任务（main tasks）使用相关任务（related tasks）的训练信号（training signal）所拥有的领域相关信息（domain-specific information），做为一直推导偏差（inductive bias）来提升主任务（main tasks）泛化效果（generalization performance）的一种机器学习方法。
 - 多任务学习涉及多个**相关**的任务同时并行学习，梯度同时反向传播，多个任务通过底层的共享表示（shared representation）来互相帮助学习，提升泛化效果。
-- 简单来说：多任务学习把多个相关的任务放在一起学习（注意，一定要是相关的任务，后面会给出相关任务（related tasks）的定义，以及他们共享了那些信息），学习过程（training）中通过一个在浅层的共享（shared representation）表示来互相分享、互相补充学习到的领域相关的信息（domain information），互相促进学习，提升泛化的效果。
+- 多任务学习把多个相关的任务放在一起学习（注意，一定要是相关的任务，后面会给出相关任务（related tasks）的定义，以及他们共享了那些信息），学习过程（training）中通过一个在浅层的共享（shared representation）表示来互相分享、互相补充学习到的领域相关的信息（domain information），互相促进学习，提升泛化的效果。
 - **相关**（related）的具体定义很难，但我们可以知道的是，在多任务学习中，related tasks可以提升main task的学习效果，基于这点得到相关的定义：
   - Related（Main Task，Related tasks，LearningAlg）= 1
   - LearningAlg（Main Task||Related tasks）> LearningAlg（Main Task） （1）
@@ -206,17 +209,17 @@ Stein 悖论是探索多任务学习（MTL）（Caruana，1997）的早期动机
 
 **共享表示**shared representation：
 - 共享表示的目的是为了提高**泛化**（improving generalization），图2中给出了多任务学习最简单的共享方式，多个任务在浅层共享参数。MTL中共享表示有两种方式：
-    - （1）、基于**参数**的共享（Parameter based）：比如基于神经网络的MTL，高斯处理过程。
-    - （2）、基于**约束**的共享（regularization based）：比如均值，联合特征（Joint feature）学习（创建一个常见的特征集合）。
-        - 基于特征的共享MTL（联合特征学习，Joint feature learning），通过创建一个常见的特征集合来实现多个任务之间基于特征（features）的shared representation
-        - ![](https://pic3.zhimg.com/80/v2-c19abd44c5a10c7bb0b17a3db84dd386_720w.png)
-        - 基于特征共享的MTL输入输出关系如图4所示，其中采用L1正则来保证稀疏性
-        - ![](https://pic4.zhimg.com/80/v2-59d7eaf42327905b757f4f98ddf48e77_720w.png)
-    - 其他MTL
-        - 均值约束 MTL：基于均值来约束所有的task
-        - 参数共享的高斯处理MTL
-        - 低秩约束MTL
-        - 交替结构优化MTL等等
+  - （1）、基于**参数**的共享（Parameter based）：比如基于神经网络的MTL，高斯处理过程。
+  - （2）、基于**约束**的共享（regularization based）：比如均值，联合特征（Joint feature）学习（创建一个常见的特征集合）。
+    - 基于特征的共享MTL（联合特征学习，Joint feature learning），通过创建一个常见的特征集合来实现多个任务之间基于特征（features）的shared representation
+    - ![](https://pic3.zhimg.com/80/v2-c19abd44c5a10c7bb0b17a3db84dd386_720w.png)
+    - 基于特征共享的MTL输入输出关系如图4所示，其中采用L1正则来保证稀疏性
+    - ![](https://pic4.zhimg.com/80/v2-59d7eaf42327905b757f4f98ddf48e77_720w.png)
+  - 其他MTL
+    - 均值约束 MTL：基于均值来约束所有的task
+    - 参数共享的高斯处理MTL
+    - 低秩约束MTL
+    - 交替结构优化MTL等等
 
 为什么把多个相关的任务放在一起学习，可以提高学习的效果？关于这个问题，有很多解释。这里列出其中一部分，以图2中由单隐含层神经网络表示的单任务和多任务学习对比为例。
 - （1）、多人相关任务放在一起学习，有相关的部分，但也有不相关的部分。当学习一个任务（Main task）时，与该任务不相关的部分，在学习过程中相当于是噪声，因此，引入噪声可以提高学习的泛化（generalization）效果。
@@ -271,14 +274,20 @@ MLT 主要有两种形式，一种是基于参数的共享，另一种是基于�
 
 ### 1.1.2 Why MTL work
  
-那么，为什么 MLT 有效呢？主要有以下几点原因：
+为什么 MLT 有效呢？
+
+主要原因：
 1.  多任务一起学习时，会互相增加噪声，从而提高模型的泛化能力；
 2.  多任务相关作用，逃离局部最优解；
 3.  多任务共同作用模型的更新，增加错误反馈；
 4.  降低了过拟合的风险；
 5.  类似 ESMM，解决了样本偏差和数据稀疏问题，未来也可以用来解决冷启动问题。
-    
- 
+
+相对于单任务学习，多任务学习有以下优势：
+- 多个任务共享一个模型，占用**内存**量减少；
+- 多个任务一次前向计算得出结果，**推理速度**增加；
+- 关联任务通过共享信息，**相互补充**，可以提升彼此的表现。
+
 ### 1.2 Challenge in MTL
  
 在多任务学习中，假设有这样两个相似的任务：猫分类和狗分类。他们通常会有比较接近的底层特征，比如皮毛、颜色等等。如下图所示：
@@ -304,6 +313,109 @@ MLT 主要有两种形式，一种是基于参数的共享，另一种是基于�
 其实，在实际过程中，如何去识别不同任务之间的相关性也是非常难的：
  
 ![Google 多任务学习框架 MMoE](http://p1-tt.byteimg.com/large/pgc-image/5ed2a60bae25442496ce1179acca00bd?from=pc)
+
+
+## 损失函数
+
+硬参数共享的share bottom结构为例，多任务loss，最简单的是将多个任务的loss直接相加，得到整体的loss
+
+整体的loss来源于不同任务loss之和
+- L = sum(li) = L1 + L2 + L3 + ... + Ln
+
+合理吗？
+- 不同任务的loss量纲可能不同, 直接相加会导致整体loss被某个子任务主导, 任务学偏 —— 零和博弈
+
+改进方法
+- **静态加权**: 手工设置子任务重要性, 固定w伴随整个训练周期
+  - L = sum( wi * li )
+  - 问题: 子任务难易程度不同, 不同阶段loss也不同, 固定权重限制任务学习
+- **动态加权**: 根据学习阶段、难以程度及学习效果动态调整权重
+  - L = sum( wi(t) * li )
+
+
+### 动态调权
+
+几种多任务学习的loss优化方式
+- ![](https://pica.zhimg.com/80/v2-799d73295f8941b8d962dde9373afdda_1440w.webp)
+
+#### Gradient Normalization——梯度标准化
+
+
+论文《Gradnorm: Gradient normalization for adaptive loss balancing in deep multitask networks》，ICML 2018，Cites：177
+
+【主要思想】：
+- 希望不同任务Loss量级接近；
+- 不同任务以相近速度学习。
+
+两种类型的Loss：`Label Loss` 和 `Gradient Loss`。
+- `Label Loss`: 多任务里的数据标签, loss 由任务类型（回归/分类）而定，加权求和
+- `Gradient Loss`: 衡量每个人物的loss权重( wi(t) )好坏
+
+注意：这两种Loss独立优化，不进行相加。
+
+优点：
+- Gradient Normalization 既考虑loss量级，又考虑了不同任务的训练速度。
+
+缺点：
+- 每一步迭代都需要额外计算梯度，当W选择的参数多的时候，会影响训练速度；
+- Li(0) 过于依赖于参数初始值；如果初始值变化很大的话，可采用其他值代替，比如分类任务，可以用log(C) 来代替 Li(0)，C是类别数量。
+
+#### Dynamic Weight Averaging ——动态加权平均
+
+
+论文: 《End-to-End Multi-Task Learning with Attention》，CVPR 2019，Cites：107
+
+【主要思想】：
+- DWA 希望各个任务以相近的速度来进行学习。
+
+【实现】：
+- loss缩小快的任务，则权重会变小；反之权重会变大。
+
+优点：
+- 只需要记录不同step的loss值，从而避免了为了获取不同任务的梯度，运算较快。
+
+缺点：
+- 没有考虑不同任务的loss的量级，需要额外的操作把各个任务的量级调整到差不多。
+
+#### Dynamic Task Prioritization ——动态任务优先级
+
+
+论文《Dynamic task prioritization for multitask learning》，ECCV 2018，Cites：53
+
+【主要思想】：
+- DTP希望让更难学的任务具有更高的权重。
+
+KPI高的任务，学习起来比较简单，则权重会变小；反之，难学的任务权重会变大。
+
+【评价】：
+
+优点：
+- 需要获取不同step的KPI值，从而避免了为了获取不同任务的梯度，运算较快
+
+缺点：
+- DTP没有考虑不同任务的loss的量级，需要额外的操作把各个任务的量级调整到差不多；且需要经常计算KPI......
+
+
+#### Uncertainty Weighting——不确定性加权
+
+
+论文《Multi-task learning using uncertainty to weigh losses for scene geometry and semantics》
+
+CVPR 2018, Cites：676
+
+【主要思想】：
+- 希望让“简单”的任务有更高的权重。
+
+【背景】：
+
+NIPS2017 论文《What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision?》中提到，当使用数据集，基于输入x和输出y训练模型的时候，面临两种不确定性（Uncertainties）：认知不确定性（epistemic）和偶然不确定性（aleatoric）。
+- **认知**不确定性（epistemic）：指的是由于缺少数据导致的认知偏差。当数据很少的时候，训练数据提供的样本分布很难代表数据全局的分布，导致模型训练学偏。这种不确定性可以通过增加数据来改善。
+- **偶然**不确定性（aleatoric）：指的是由于数据本身，或者任务本身带来的认知偏差。偶然不确定性有个特点，其不会随着数据量增加而改善结果，数据即使增加，偏差仍然存在。
+
+偶然不确定性可以分为两种情况：
+- 数据依赖型或异方差（Data-dependent or Heteroscedastic uncertainty）。在进行数据标注的时候的误标记、错标记等，这些错误的数据也会造成模型预测偏差；
+- 任务依赖型或同方差（Task-dependent or Homoscedastic uncertainty）。这个指的是，同一份数据，对于不同的任务可能会导致不同的偏差。比如，有个任务，我们要通过”公司 + 工作类型“来预测工作时长
+
 
 # 工程实现
 
@@ -350,7 +462,9 @@ EasyRec介绍：
 - EasyRec是阿里云计算平台机器学习PAI团队开源的大规模分布式推荐算法框架，EasyRec 正如其名字一样，简单易用，集成了诸多优秀前沿的推荐系统论文思想，并且有在实际工业落地中取得优良效果的特征工程方法，集成训练、评估、部署，与阿里云产品无缝衔接，可以借助 EasyRec 在短时间内搭建起一套前沿的推荐系统。作为阿里云的拳头产品，现已稳定服务于数百个企业客户。
 
 
-## [Google 多任务学习框架 MMoE](https://www.toutiao.com/i6838966189872382475/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1595857174&app=news_article&utm_source=mobile_qq&utm_medium=toutiao_android&use_new_style=1&req_id=20200727213933010147084145261AF78B&group_id=6838966189872382475)
+## MMoE
+
+[Google 多任务学习框架 MMoE](https://www.toutiao.com/i6838966189872382475/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1595857174&app=news_article&utm_source=mobile_qq&utm_medium=toutiao_android&use_new_style=1&req_id=20200727213933010147084145261AF78B&group_id=6838966189872382475)
  
 基于神经网络的多任务学习已经过成功应用内许多现实应用中，比如说之前我们介绍的阿里巴巴基于多任务联合学习的 ESMM 算法，其利用多任务学习解决了 CVR 中样本选择偏差和样本稀疏这两大问题，并在实际应用场景中取得了不错的成绩。
  
@@ -438,12 +552,13 @@ Gate 网络在两个任务的不同分布：
 ![](https://pic1.zhimg.com/80/v2-a316f17c3752dcf405ae40a929362e88_1440w.jpg)
 
 
-# 实践
 
-- 【2020-12-16】[多标签文本分类 ALBERT+TextCNN-附代码](https://zhuanlan.zhihu.com/p/158622992)
-    - ![](https://pic1.zhimg.com/80/v2-a693fbe72498802b9e7aaf601b694f58_720w.jpg)
+
 
 ## TensorFlow实现多任务学习
+
+- 【2020-12-16】[多标签文本分类 ALBERT+TextCNN-附代码](https://zhuanlan.zhihu.com/p/158622992)
+- ![](https://pic1.zhimg.com/80/v2-a693fbe72498802b9e7aaf601b694f58_720w.jpg)
 
 - [Tensorflow多任务学习总结](https://blog.csdn.net/chanbo8205/article/details/86539355)，faster rcnn是检测和分类的多任务学习
 - [英文原文](Multi-Task Learning in Tensorflow)
