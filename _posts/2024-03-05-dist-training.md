@@ -4721,6 +4721,13 @@ XTuner 序列并行设计思路参考了 DeepSpeed 的工作 DeepSpeed Ulysses�
 | zephyr	| ✅ |
 
 
+### SWIFT
+
+【2024-7-4】 阿里推出训练框架 [SWIFT](https://github.com/modelscope/ms-swift/blob/main/README_CN.md) (Scalable lightWeight Infrastructure for Fine-Tuning)
+
+SWIFT支持300+ LLM和50+ MLLM（多模态大模型）的训练(预训练、微调、对齐)、推理、评测和部署。开发者可以直接将我们的框架应用到自己的Research和生产环境中，实现模型训练评测到应用的完整链路。我们除支持了PEFT提供的轻量训练方案外，也提供了一个完整的Adapters库以支持最新的训练技术，如NEFTune、LoRA+、LLaMA-PRO等，这个适配器库可以脱离训练脚本直接使用在自己的自定流程中。
+
+
 
 ## 新技术
 
