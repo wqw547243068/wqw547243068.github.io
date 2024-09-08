@@ -515,8 +515,9 @@ ExtractGPT
 
 详见站内专题：[数据标注](label)
 
-#### 数据分析
+#### BI
 
+AI BI: LLM 用于数据分析
 
 ##### LLM 适合分析什么
 
@@ -549,6 +550,18 @@ LLM 擅长的数据集分析类型
 - 【2024-5-6】[我如何夺冠新加坡首届 GPT-4 提示工程大赛](https://baoyu.io/translations/prompt-engineering/how-i-won-singapores-gpt-4-prompt-engineering-competition?continueFlag=f4f91eca909d1c12022f5ef16e650de9)
 
 ##### Pandas AI
+
+
+【2024-9-8】[PandasAI实战 - 投资业绩数据AI问答Agent](https://zhuanlan.zhihu.com/p/718838922?utm_psn=1816166976671842305)，含代码示例
+
+做一个AI问答Agent，一句话可以跟投资业绩数据进行问答，如：
+- XX投资人投资的项目金额的TOP5；
+- XX基金投资了多少项目，总共投资金额和退出金额是多少；
+- XX项目总共有几笔交易，每笔交易的交割时间和金额；
+
+用户进行提问，给予精准的回答，不精准是没有意义的。
+
+
 
 【2023-5-6】[Pandas AI](https://github.com/gventuri/pandas-ai)
 - 将 Pandas 和 AI 结合，更方便地分析数据。
@@ -737,6 +750,8 @@ ORDER BY total_sales desc limit 10;
 
 [ChatExcel](https://chatexcel.com/) 通过自然语言操作excel表格
 - ![](https://chatexcel.com/static/pic/case/case-01.gif)
+
+
 
 ### 内容管理/营销
 
