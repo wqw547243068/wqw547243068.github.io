@@ -843,6 +843,10 @@ meta-prompting 方法的伪代码
 作为一个自动的提示补充工具，PAS可以集成到任何可用的LLMs中，通过公共API或开放参数进行集成。这种灵活性使得PAS能够在不同的平台和系统中广泛应用，增强现有LLMs的能力，而无需进行广泛的重新训练或修改。
 
 
+
+基于 OPRO 的模式构建一个自动迭代 prompt 的项目，其中用到的 meta-prompt 方案主要就是基于上一个 prompt + badcase，让模型生成新的 prompt 来定向修正，通过记录每次优化后评测的 score 来记录过程
+- [英文原文](https://towardsdatascience.com/automated-prompt-engineering-the-definitive-hands-on-guide-1476c8cd3c50)
+
 ## 图像提示词
 
 
