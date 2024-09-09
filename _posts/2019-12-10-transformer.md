@@ -1379,6 +1379,35 @@ if __name__ == '__main__':
 ```
 
 
+另一种写法
+
+```py
+import torch.nn as nn
+​
+class SelfAttention(nn.Module):
+​
+    def __init__(self, d_in, d_out_kq, d_out_v):
+        super().__init__()
+        self.d_out_kq = d_out_kq
+        self.W_query = nn.Parameter(torch.rand(d_in, d_out_kq))
+        self.W_key   = nn.Parameter(torch.rand(d_in, d_out_kq))
+        self.W_value = nn.Parameter(torch.rand(d_in, d_out_v))
+​
+    def forward(self, x):
+        keys = x @ self.W_key
+        queries = x @ self.W_query
+        values = x @ self.W_value
+        
+        attn_scores = queries @ keys.T  # unnormalized attention weights    
+        attn_weights = torch.softmax(
+            attn_scores / self.d_out_kq**0.5, dim=-1
+        )
+        
+        context_vec = attn_weights @ values
+        return context_vec
+```
+
+
 #### 多头注意力实现
 
 
