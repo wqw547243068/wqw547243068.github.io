@@ -538,7 +538,7 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 
 那么Transformer模型采用的是哪种呢？答案是：**scaled dot-product attention**。
 
-### Scaled dot-product attention是什么？
+### Scaled dot-product attention 是什么？
 
 论文[Attention is all you need](https://arxiv.org/abs/1706.03762)里面对于attention机制的描述是这样的：
 > An attention function can be described as a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility of the query with the corresponding key.
@@ -571,9 +571,11 @@ $$ \text{Attention}(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V $$
 
 上面scaled dot-product attention和decoder的self-attention都出现了**masking**这样一个东西。那么这个mask到底是什么呢？这两处的mask操作是一样的吗？这个问题在后面会有详细解释。
 
-### Scaled dot-product attention的实现
+### Scaled dot-product attention 实现
 
-先把scaled dot-product attention实现了吧。代码如下：
+#### 实现1
+
+scaled dot-product attention 实现代码如下：
 
 ```python
 import torch
@@ -634,6 +636,98 @@ Multi-head attention的公式如下：
 其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
 
 论文里面，$d_{model}=512$，$h=8$。所以在scaled dot-product attention里面的 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+
+
+#### 实现2
+
+【2024-9-10】代码
+
+```py
+import math
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SelfAttention(nn.Module):
+    """
+        自注意力机制
+    """
+    def __init__(self, d, d_q, d_k, d_v):
+        super(SelfAttention, self).__init__()
+        self.d = d
+        self.d_q = d_q
+        self.d_k = d_k
+        self.d_v = d_v
+        self.W_query = nn.Parameter(torch.rand(d, d_q))
+        self.W_key = nn.Parameter(torch.rand(d, d_k))
+        self.W_value = nn.Parameter(torch.rand(d, d_v))
+        
+    def forward(self, x):
+        """
+            前向传播
+        """
+        Q = x @ self.W_query
+        K = x @ self.W_key
+        V = x @ self.W_value
+        attention_scores = Q @ K.T / math.sqrt(self.d_k)
+        attention_weights = F.softmax(attention_scores, dim=-1)
+        context_vector = attention_weights @ V
+        return context_vector
+
+if __name__ == '__main__':
+    sentence = 'the quick brown fox jumps over the lazy dog'
+    print('提取词库')
+    dc = {s: i for i, s in enumerate(sorted(sentence.replace(',', '').split()))}
+    print(dc)
+    print('映射 str -> id')
+    r = [dc[i] for i in sentence.replace(',', '').split()]
+    sentence_int = torch.tensor(r)
+    print(sentence_int)
+    
+    print('id -> embedding')
+    vocab_size = 50000  # Assume a large vocabulary size
+    torch.manual_seed(123)
+    embed = nn.Embedding(vocab_size, 3)
+    embedded_sentence = embed(sentence_int).detach()
+    print(embedded_sentence)
+    
+    print('计算自注意力')
+    sa = SelfAttention(d=3, d_q=2, d_k=2, d_v=4)
+    cv = sa(embedded_sentence)
+    print(cv.shape)
+    print(cv)
+```
+
+输出
+
+```s
+提取词库
+{'brown': 0, 'dog': 1, 'fox': 2, 'jumps': 3, 'lazy': 4, 'over': 5, 'quick': 6, 'the': 8}
+映射 str -> id
+tensor([8, 6, 0, 2, 3, 5, 8, 4, 1])
+id -> embedding
+tensor([[ 0.4965, -1.5723,  0.9666],
+        [-0.1690,  0.9178,  1.5810],
+        [ 0.3374, -0.1778, -0.3035],
+        [-0.2196, -0.3792,  0.7671],
+        [-1.1925,  0.6984, -1.4097],
+        [ 0.2692, -0.0770, -1.0205],
+        [ 0.4965, -1.5723,  0.9666],
+        [ 0.1794,  1.8951,  0.4954],
+        [-0.5880,  0.3486,  0.6603]])
+计算自注意力
+torch.Size([9, 4])
+tensor([[-0.0269, -0.0440, -0.0042,  0.0399],
+        [ 0.4747,  0.1601,  0.6337,  0.7438],
+        [ 0.1518, -0.0326,  0.0235,  0.2049],
+        [ 0.1134, -0.0163,  0.0691,  0.1872],
+        [ 0.0674, -0.0990, -0.1767,  0.0518],
+        [ 0.1159, -0.0648, -0.0747,  0.1341],
+        [-0.0269, -0.0440, -0.0042,  0.0399],
+        [ 0.5645,  0.1703,  0.7147,  0.8803],
+        [ 0.2060,  0.0059,  0.1400,  0.2985]], grad_fn=<MmBackward0>)
+```
+
 
 ### Multi-head attention的实现
 
