@@ -318,13 +318,21 @@ print(new_output)
 
 ## 向量化方案
 
+
 可选
-- 单独 embedding服务
+- 单独 embedding 服务
 - LLM embedding
 
 注意
 - 语言模型很容易得到文本向量模型，但语言模型并不是为向量训练的，因此 直接pooling 不一定能取得满意效果
 - 使用时需要针对任务微调, 把相似句子向量聚拢更近一些，把不相关的句子向量拉的更远一些。
+
+### 榜单
+
+Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+- 英语: `NV-Embed-v2` > `bge-en-icl` > `stella-en_1.5b_v5` > `SFR-Embedding-2_R` > `gte-Qwen2-7b-instruct`
+- 中文: `Conan-embedding-v1` > `xiaobu-embedding-v2` > `gte-Qwen2-7b-instruct`
+- ![](https://picx.zhimg.com/80/v2-abfd4f5f382c016569924092857c9275_1440w.webp)
 
 
 ### 方案选型
