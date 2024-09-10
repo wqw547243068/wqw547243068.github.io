@@ -356,6 +356,9 @@ Embedding 模型的选择很大程度上受**任务复杂程度**影响。
 
 ### Embedding 训练
 
+
+【2024-9-7】[动手学RAG：文本向量模型](https://zhuanlan.zhihu.com/p/718814303?utm_psn=1816849515245862913)
+
 如何从一个语言模型训练出一个向量模型呢？
 
 几种范式总结：
@@ -366,6 +369,8 @@ Embedding 模型的选择很大程度上受**任务复杂程度**影响。
 - 多任务: 用不同任务不同来源的数据进行训练，一个batch内如何组织数据也有优化空间。
   - instruction-based fine-tuning 可以在训练时帮助模型拿到任务上的线索
 
+#### open-retrievals
+
 [Open-Retrievals](https://github.com/LongxingTan/open-retrievals/tree/master) 是一个统一文本向量、检索、重排的工具，使信息检索、RAG等更加便捷
 - 全套**向量微调**，对比学习、大模型、point-wise、pairwise、listwise
 - 全套**重排微调**，cross encoder、ColBERT、LLM
@@ -374,6 +379,11 @@ Embedding 模型的选择很大程度上受**任务复杂程度**影响。
 [文档](https://github.com/LongxingTan/open-retrievals/blob/master/README_zh-CN.md)
 
 [All-in-One: Text Embedding, Retrieval, Reranking and RAG](https://github.com/LongxingTan/open-retrievals)
+
+```sh
+pip install open-retrievals
+```
+
 
 #### (1) BGE模型
 
