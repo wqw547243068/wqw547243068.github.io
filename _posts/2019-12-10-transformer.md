@@ -641,6 +641,7 @@ Multi-head attention的公式如下：
 #### 实现2
 
 【2024-9-10】代码
+- [解释](https://mp.weixin.qq.com/s/NEN39QhyfB5HjMoxuugFog)
 
 ```py
 import math
