@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -4093,6 +4093,14 @@ AIBI Pocket 的功能和特点包括：
 ![](https://i0.wp.com/fangx.ai/wp-content/uploads/2024/04/aibi-pocket-from-livingai.jpg?fit=1200%2C630&ssl=1)
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1253500011&bvid=BV1vJ4m1H7qM&cid=1521134595&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+##### 宠物翻译器
+
+【2024-9-10】traini，狗语翻译器，才0.01b，准确率80％，好奇是谁打的标… 
+
+国内小程序：宠物语言翻译
+
 
 
 ### 可穿戴
