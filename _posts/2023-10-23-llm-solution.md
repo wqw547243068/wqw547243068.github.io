@@ -1564,8 +1564,6 @@ AbutionGraph-时序/向量/图谱数据库的一体化GraphRAG实现方案介绍
 |`HybridRAG`|结合VectorRAG和GraphRAG的特点, `向量图谱数据库`||||
 
 
-
-
 将 AbutionGraph 时序向量图谱数据库的 HybridRAG 实现方案与3种主流RAG技术方案进行了功能融合和对比，用于介绍该种创新的一体化RAG技术实现方式：
 
 - 1）VectorRAG：
@@ -1582,6 +1580,74 @@ AbutionGraph-时序/向量/图谱数据库的一体化GraphRAG实现方案介绍
 AbutionGraph数据库通过向量图谱存储方式，继承了Vector+Graph RAG的优势，简化了HybridRAG的实现，提供了一种构建存储和查询检索更优化、成本效益更高的选择。它支持静态图谱、时序图谱和向量图谱的存储，适用于需要高时效性和生成高质量响应的场景或通常一种数据库无法轻易完成的交叉性场景。
 
 
+### 文档分割
+
+【2024-2-23】文档语义分割
+- [一文掌握文本语义分割：从朴素切分、Cross-Segment到阿里SeqModel](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+RAG中，embedding 和 文档语义分割、段落分割 是绕不开的关键点，重点梳理下各类典型的语义分割模型
+
+基于 CrossSegmentAttention 的模型（如 `Cross-segmentBERT` 和 `BERT+Bi-LSTM`）以及阿里巴巴开源的 `SeqModel`，对比了在处理文本分割任务时的上下文利用和效率
+
+#### CrossSegmentAttention
+
+
+RAG 场景下，常用文本切块方法基于**策略**，例如大模型应用开发框架提供的 `RecursiveCharacterTextSplitter` 方法，定义**多级分割符**，用上一级切割符分割后的文本块, 如果还是超过最大长度限制，再用第二级切割符进一步切割
+
+Lukasik 等人在论文《[Text Segmentation by Cross Segment Attention](https://blog.csdn.net/v_JULY_v/article/details/135386202)》提出了三种基于transformer的**分割模型**架构。
+- 其中一种仅利用每个**候选断点**(candidate break)周围的局部上下文
+- 而另外两种则利用来自输入的完整上下文(所谓候选断点指任何潜在的段边界，即 any potential segment boundary)
+
+(1) `Cross-segment BERT`：确定某个句子是否作为下一个段落的开头
+
+分割模型旨在完成**文档分割**任务，预测每个句子是否是文本分段边界
+- 在 `Cross-segment BERT` 模型中，围绕潜在段落断点的局部上下文输入到模型中：左边k个标记和右边k个标记
+- 其中与`[CLS]`对应的输出隐状态被传递给softmax分类器，以便对候选断点进行分段决策
+
+(2) `BERT+Bi-LSTM`
+
+在BERT+Bi-LSTM模型中，首先用 BERT 对每个句子进行编码，然后将句子表示输入到Bi-LSTM中
+- 当用BERT编码每个句子时，所有序列都以`[CLS]`标记开始
+- LSTM 负责处理具有**线性**计算复杂度的多样化和潜在的大型句子序列
+
+(3) `Hierarchical BERT`
+
+分层BERT模型中，首先用 BERT 对每个句子进行编码，然后将输出的句子表示输入到基于Transformer的另一个模型中
+
+图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+
+#### SeqModel
+
+阿里语义分割模型 SeqModel
+
+SeqModel 核心原理
+- Cross-Segment 提出基于**本地上下文**的**跨段BERT模型**和**分层BERT模型**（Hier.BERT），利用两个BERT模型对句子和文档进行编码，从而实现更长的上下文建模
+- 2020年，论文《Two-level transformer and auxiliary coherence modeling for improved text segmentation》还采用了两个分层连接的Transformer结构(uses two hierarchically con-nected transformers)。然而，由于分层模型计算成本高且推理速度较慢
+
+
+SeqModel：将文档分割建模为**句子级序列标记**任务
+
+Zhang 等人在论文《Sequence Model with Self-Adaptive Sliding Window for Efficient Spoken Document Segmentation》中提出了SeqModel
+
+SeqModel 利用BERT对**多个句子同时编码**，建模更长的上下文之间依赖关系之后再计算句向量，最后预测每个句子后边是否进行文本分割
+
+此外，该模型还使用了**自适应滑动窗口**方法，在在不牺牲准确性的情况下进一步加快推理速度
+
+图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+步骤
+- 首先，文档中每个句子经过 WordPiece 分词器进行分词
+- 然后，通过由“token嵌入、位置嵌入和段落嵌入”组成的输入表示层来对这些句子进行编码
+- 这些嵌入被送入Transformer编码器，输出与k个标记对应的隐状态，并使用均值池化方法得到句子编码
+- 最后，将所有句子编码输入softmax二元分类器，以判断每个句子是否为段落边界，训练目标是最小化softmax交叉熵损失
+
+自适应滑动窗口(Self-adaptive Sliding Window)
+
+还提出了一种自适应滑动窗口方法，在不牺牲准确性的情况下进一步加快推理速度
+- 传统分割推理滑动窗口使用**固定前向步长**。自适应滑动窗口方法，在推理过程中，从前一个窗口中的最后一句话开始，模型在最大后向步长内 向后查看，以找到来自前一个推理步骤的积极分割决策（模型对分割预测概率>0.5）
+- 当在这个跨度内有积极的决策时，下一个滑动窗口将自动调整为：从最近预测片段边界之后的下一个句子开始
+- 考虑到最后一段和历史对下一个分割决策影响已经降低，这种策略有助于丢弃滑动窗口内不相关的历史信息。因此，自适应滑动窗口既可以加快推理速度也可以提高分割准确性
 
 
 ## （3）PEFT 参数高效微调
