@@ -15,6 +15,8 @@ permalink: /emb
 
 # 向量化
 
+向量模型把人类世界里的语言转化为为计算机世界中的数字
+
 ## 向量化用途
 
 向量化用途广泛，LLM时代的作用大
@@ -27,6 +29,13 @@ permalink: /emb
 -   情境学习 _In-Context Learning (icl)_
 -   工具调用 _Tool Learning (tool)_
 - ![](https://github.com/FlagOpen/FlagEmbedding/raw/master/FlagEmbedding/llm_embedder/imgs/llm-embedder.png)
+
+文本向量用途除了**RAG检索**，还有 **信息检索**、**排序**、**分类**、**聚类**、**语义相似度**中。[IMG](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+- Embedding: Point wise, Pair wise, List wise
+- Rerank: Cross-encoder, ColBERT, LLM
+- RAG: 
+- ![](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+
 
 ## 文本向量化
 
@@ -313,6 +322,11 @@ print(new_output)
 - 单独 embedding服务
 - LLM embedding
 
+注意
+- 语言模型很容易得到文本向量模型，但语言模型并不是为向量训练的，因此 直接pooling 不一定能取得满意效果
+- 使用时需要针对任务微调, 把相似句子向量聚拢更近一些，把不相关的句子向量拉的更远一些。
+
+
 ### 方案选型
 
 一般默认使用 OpenAI 的 Embedding 接口来生成向量。
@@ -338,6 +352,66 @@ Embedding 模型的选择很大程度上受**任务复杂程度**影响。
 许多 Embedding 模型是基于**通用**语言数据训练的，可能无法捕捉**专业词汇或术语**的微妙含义。
 
 针对特定领域数据集训练或微调的模型能够为专业领域内的文本生成更精确的 Embeddings。在医疗诊断、法律文件分析或为特定产品提供技术支持等应用中，特定领域的模型能够更深入地理解相应领域使用的专业语言，显著优于通用模型。
+
+
+### Embedding 训练
+
+如何从一个语言模型训练出一个向量模型呢？
+
+几种范式总结：
+- 训练方式: 合理设计的多阶段pipeline仍然能够提升性能
+- 数据，数据大小、质量、多样性很重要: 甚至更长的文本在向量模型中也更受重视。合成数据开始展露头脚
+- 模型: **Decoder-only LLM 微调的向量模型效果越来越好**。大模型也逐步统治向量模型榜单，带来的收益和增加的开销相比如何，咱也不知道，但是这些参数中蕴含的知识确实让人印象深刻
+- `对比学习`和**难负样本挖掘**仍然扮演关键角色。
+- 多任务: 用不同任务不同来源的数据进行训练，一个batch内如何组织数据也有优化空间。
+  - instruction-based fine-tuning 可以在训练时帮助模型拿到任务上的线索
+
+[Open-Retrievals](https://github.com/LongxingTan/open-retrievals/tree/master) 是一个统一文本向量、检索、重排的工具，使信息检索、RAG等更加便捷
+- 全套**向量微调**，对比学习、大模型、point-wise、pairwise、listwise
+- 全套**重排微调**，cross encoder、ColBERT、LLM
+- 定制化、模块化RAG，支持在Transformers、Langchain、LlamaIndex中便捷使用微调后的模型
+
+[文档](https://github.com/LongxingTan/open-retrievals/blob/master/README_zh-CN.md)
+
+[All-in-One: Text Embedding, Retrieval, Reranking and RAG](https://github.com/LongxingTan/open-retrievals)
+
+#### (1) BGE模型
+
+- 普通文本语料进行 RetroMAE 预训练
+- 大量文本对进行 batch内 负样本`对比学习`
+- 高质量文本进行困难负样本+batch内负样本根据任务对比学习微调
+
+![](https://pic1.zhimg.com/80/v2-1b36b036f88e40036e622d1bfa612354_1440w.webp)
+
+#### (2) GTE模型
+
+- 大量文本对进行 batch内 负样本`对比学习`
+- 高质量文本进行**困难负样本学习**
+
+![](https://pica.zhimg.com/80/v2-c50cca4e401227fcee012ca2e7eef680_1440w.webp)
+
+#### (3) E5-mistral模型
+
+合成大量不同任务, 不同语言的检索数据，困难负样本与batch内**负样本对比学习**
+
+![](https://pic1.zhimg.com/80/v2-39549284110e4d7c420189a65bbe499c_1440w.webp)
+
+
+#### (4) nv-embed模型
+
+- 高质量检索数据进行困难负样本加batch内**负样本对比学习**
+- 继续根据非检索数据，如一些分类等其他任务数据进行微调
+
+![](https://pic4.zhimg.com/80/v2-a9bd2e136f19c721abb0b14f61e59c61_1440w.webp)
+
+无论是transformer encoder还是decoder模型，都可以从以下统一结构中衍生而来，只不过有些步骤可以省略。
+- 语言模型继续预训练
+- 大量文本对的in-batch对比学习
+- 高质量文本对的**困难负样本对比学习**
+- 多任务进一步微调
+
+![](https://pica.zhimg.com/80/v2-51501376cf7a9ec5eaee7d99b26b0b66_1440w.webp)
+
 
 
 ### Embedding 评测
