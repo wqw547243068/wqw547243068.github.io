@@ -515,6 +515,16 @@ ExtractGPT
 
 详见站内专题：[数据标注](label)
 
+
+#### 知识挖掘
+
+GraphRAG 里用 LLM 构建知识图谱
+
+[LLM-graph-builder](https://github.com/neo4j-labs/llm-graph-builder) 利用大语言模型，将非结构化数据转化为结构化知识图谱，支持 GPT-3.5、GPT-4o、Gemini等模型，同时可以与非结构化数据进行对话交互
+
+
+
+
 #### BI
 
 AI BI: LLM 用于数据分析
