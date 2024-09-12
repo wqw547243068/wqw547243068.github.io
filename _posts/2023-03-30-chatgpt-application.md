@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物 字节
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -252,12 +252,39 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
   - 工具链和下游应用插件需要持续完善。
   - 打造垂直领域模型的微服务网络，内置包括图像分割、语音识别等众多专业模型，便于企业客户随时调用、自由组合。
 
+#### 基座模型
+
+【2024-5-15】一口气推出[9个基座模型](https://mp.weixin.qq.com/s/_mycwh_cJ5mS2bKuATW8cg)
+- 通用模型 Pro: 窗口尺寸最大可达128K，全系列可精调
+- 通用模型 Lite: 较快响应速度
+- Function Call模型
+- 向量化模型
+- 角色扮演模型
+- 语音识别模型、语音合成模型、声音复刻模型
+- 文生图模型
+
+没有榜单分数，参数规模
+
+价格让现场观众“哇声一片”的大亮点，和其它大模型相比：
+- 小于32K窗口尺寸：豆包通用模型pro，只要0.0008元/千tokens，比行业价格低99.3%
+- 128K窗口尺寸：豆包通用模型pro，只要0.005元/千tokens，比行业价格低95.8%
+
+1元=1250000tokens
 
 #### workflow 平台
 
 详见站内专题: [llm开发平台](llm_dev#llm-开发平台)
 
 #### 字节 大模型产品
+
+
+Flow 产品矩阵
+- AI智能助手: 豆包、Cici
+- AI智能体开发平台: 扣子、Coze
+- 图片生成: 星绘
+- 角色对话: 猫箱、小黄蕉
+- AI教育产品: 豆包爱学
+- 搜题产品: GauthMath
 
 ##### 豆包/Cici
 
