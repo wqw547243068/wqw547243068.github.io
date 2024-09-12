@@ -480,29 +480,44 @@ pip install trulens
 
 ### RAG 问题
 
-RAG 项目中常见问题及解法
+
+RAG 面临的七大挑战及解决方案
+- • **缺失内容**：数据清理和提示工程，确保输入数据的质量并引导模型更准确地回答问题。
+- • **未识别出**的最高排名：调整检索参数和优化文件排序来解决，以确保向用户呈现最相关的信息。
+- • **背景不足**：扩大处理范围和调整检索策略至关重要，以包含更广泛的相关信息。
+- • **格式错误**：改进提示、使用输出解析器和 Pydantic 解析器实现，有助于按照用户期望的格式获取信息。
+- • **不完整部分**：查询转换来解决，确保全面理解问题并作出回应。
+- • **未提取部分**：数据清洗、消息压缩和 LongContextReorder 是有效的解决策略。
+- • **特定性不正确**：可以通过更精细化的检索策略如 Auto Merging Retriever、元数据替换等技巧来解决问题，并进一步提高信息查找精度。
+
+通过对 RAG 系统挑战的深入分析和优化，不仅可以提升LLM的准确性和可靠性，还能大幅提高用户对技术的信任度和满意度。
+- 以上方案的[代码实现](https://www.53ai.com/news/qianyanjishu/2024060334169.html), [架构图](https://api.ibos.cn/v4/weapparticle/accesswximg?aid=81998&url=aHR0cHM6Ly9tbWJpei5xcGljLmNuL3N6X21tYml6X3BuZy9uVUQ1RE13cW8wNmdKYmlhdkhuQXlYVXRtQXFoelVuYUQ3eDJCWHNSYUFzQ0I1aWJ4b3JFbzdwaFpoNjN3c2pOcjBHcWljQWpLZDRqcE0zdVZ0aDQ0SGhVQS82NDA/d3hfZm10PXBuZyZhbXA=;from=appmsg)
+
+RAG 常见问题及解法
 - 模型在解析查询内容时可能存在理解不足的问题，其在通过检索文本并总结出答案的能力上还有提升空间。例如，当询问“张三和李四谁更高？”时，如果知识库中张三和李四的身高信息并未在同一数据块（chunk）中同时出现，那么检索返回的文本信息密度较低，意味着需要整合多个数据块的内容才能得出正确的答案。可以通过query的改写来缓解这个问题，即将复杂问题拆解为多个子问题，每个子问题会从提供部分答案的相关文件检索答案。然后，收集这些中间结果，并将所有部分结果合成为最终响应。
-- 数据分块导致数据语义不完整性：基于规则或长度的分块可能会将一个完整的语义单元切割成多个块，或者将多个不同的语义单元混合在一个块中，导致信息的不完整或混淆。信息冗余：如果分块大小设置不当，可能会导致一个块中包含大量与查询无关的信息，增加了信息处理的负担，并可能降低检索的效率。忽视语义边界：规则或长度的分块可能不遵循自然语言的语义边界，如句子、段落或主题的边界，这会影响检索的准确性和效率。对文本结构敏感：不同的文本结构（如列表、表格、段落）可能需要不同的分块策略。基于规则或长度的方法可能无法适应这些多样性。这些问题可能导致RAG效率低、耗时长、答案准确性和相关度低等问题。使用基于语义的分块方法，如阿里的SequenceModel等。
+- **数据分块**导致数据**语义不完整性**：基于规则或长度的分块可能会将一个完整的语义单元切割成多个块，或者将多个不同的语义单元混合在一个块中，导致信息的不完整或混淆。信息冗余：如果分块大小设置不当，可能会导致一个块中包含大量与查询无关的信息，增加了信息处理的负担，并可能降低检索的效率。忽视语义边界：规则或长度的分块可能不遵循自然语言的语义边界，如句子、段落或主题的边界，这会影响检索的准确性和效率。对文本结构敏感：不同的文本结构（如列表、表格、段落）可能需要不同的分块策略。基于规则或长度的方法可能无法适应这些多样性。这些问题可能导致RAG效率低、耗时长、答案准确性和相关度低等问题。使用基于语义的分块方法，如阿里的SequenceModel等。
 
 
-如何解决多实体提问问题？
-- 基本思路是采用子问题分解，将多实体问题分解为多个单实体的子问题，然后逐一回答子问题，最后对答案汇总，给出最终答案。子问题分解，通常对模型的推理能力有较高的要求。
+如何解决**多实体提问**问题？
+- **子问题分解**: 将多实体问题分解为多个单实体的子问题，然后逐一回答子问题，最后对答案汇总，给出最终答案。子问题分解，通常对模型的推理能力有较高的要求。
 
-如何确定合适的embedding？
-- 通过检索器的性能衡量Embedding的效果，我们选择被广泛接受的两个指标：Hit Rate和 Mean Reciprocal Rank (MRR)。
-- 命中率（Hit Rate）：命中率计算在前k个检索到的文档中找到正确答案的查询的百分比。简单地说，这是关于我们的系统在前几次猜测中正确的频率。
-- 平均倒数排名（MRR）：对于每个查询，MRR通过查看排名最高的相关文档的排名来评估系统的准确性。具体来说，它是所有查询中这些排名的倒数的平均值。因此，如果第一个相关文档是最高结果，则倒数为1；如果是第二个，则倒数为1/2，依此类推。
+如何确定合适的 embedding？
+- 通过检索器的性能衡量Embedding 效果，选择被广泛接受的两个指标：`Hit Rate`和 `Mean Reciprocal Rank` (MRR)。
+- `命中率`（Hit Rate）：命中率计算在前k个检索到的文档中找到正确答案的查询的百分比。简单地说，这是关于我们的系统在前几次猜测中正确的频率。
+- `平均倒数排名`（MRR）：对于每个查询，MRR通过查看排名最高的相关文档的排名来评估系统的准确性。具体来说，它是所有查询中这些排名的倒数的平均值。因此，如果第一个相关文档是最高结果，则倒数为1；如果是第二个，则倒数为1/2，依此类推。
 
-RAG如何处理LLM漏答或者回答不完整的问题？
-- 提高RAG推理能力的一个好方法是添加查询理解层——在实际查询向量存储之前添加查询转换。下面是四种不同的查询转换:
-- 路由:保留初始查询，同时确定它所属的工具的适当子集，将这些工具指定为合适的查询工作。
-- 查询重写:但以多种方式重新表述查询，以便在同一组工具中应用查询。
-- 子问题:将查询分解为几个较小的问题，每个问题针对不同的工具。
-- ReAct:根据原始查询，确定要使用哪个工具，并制定要在该工具上运行的特定查询。
+RAG 如何处理LLM漏答或者回答不完整的问题？
+- 的一个好方法是添加查询理解层——在实际查询向量存储之前添加查询转换。
 
-生成增强检索（GAR）和检索增强生成（RAG）
-- GAR 是retrieval-generation协作框架的一部分，迭代retrieval-generation协同框架在每次迭代中包含两个步骤：（1）生成增强检索（GAR）：利用上一次迭代的输出来扩展查询，以帮助检索更多相关文档；（2）检索增强生成（RAG）：利用检索到的文档来生成新文档来回答问题。
-- GAR的思想与Query改写的子问题分解思想类似。
+四种不同的查询转换:
+- **路由**: 保留初始查询，同时确定它所属的工具的适当子集，将这些工具指定为合适的查询工作。
+- **查询重写**: 但以多种方式重新表述查询，以便在同一组工具中应用查询。
+- **子问题**: 将查询分解为几个较小的问题，每个问题针对不同的工具。
+- `ReAct`: 根据原始查询，确定要使用哪个工具，并制定要在该工具上运行的特定查询。
+
+生成增强检索（`GAR`）和检索增强生成（`RAG`）
+- `GAR` 是 retrieval-generation 协作框架的一部分，迭代retrieval-generation协同框架在每次迭代中包含两个步骤：（1）生成增强检索（GAR）：利用上一次迭代的输出来扩展查询，以帮助检索更多相关文档；（2）检索增强生成（RAG）：利用检索到的文档来生成新文档来回答问题。
+- `GAR` 思想与Query改写的子问题分解思想类似。
 
 
 ### RAG 工具
@@ -682,8 +697,6 @@ There's certain questions we want to ask where naive RAG will fail.Examples:
 - 结构分析+语义搜索 Structured Analytics + Semantic Search: "Tell me about the risk factors ofthe highest-performing rideshare company in the us"
 - 多方观点 General Multi-part Questions:"Tell me about the pro-x arguments in articleA, and tell me about the pro-Y arguments in article B, make a table based onour internal style guide, then generate your own conclusion based on these facts.”
 
-
-
 - **Agent引入**：为了解决RAG的局限性，文档提出了引入Agent的概念。
   - Agent是一种更高级的系统，它能够执行多轮对话、查询/任务规划、工具使用、反思和记忆维护等更复杂的功能。
 
@@ -850,11 +863,11 @@ RAG工作流
 - 意图识别优化：<span style='color:red'>传统NLP不是“破落户”</span>
   - 基于**词性标注**和成分**句法分析**（Constituency Parsing、CON），解决**并列**关系的**多实体**、**多条件**提取问题。
   - **意图识别**的重要性
-  - 意图识别涉及的意图分类和槽位填充的解决方案。
+  - 意图识别: **意图分类**和**槽位填充**。
     - 涉及：rule-based 、 BERT fine-tuning，DIET 等。
-  - **上下文补全**的解决方案
-  - 复杂多轮对话中，如何与用户交互直到其补全所有信息。
-- 检索优化：从向量到关系
+  - **上下文补全**解决方案
+  - 复杂多轮对话中，如何与用户交互,直到其**补全**所有信息。
+- 检索优化：从`向量`到`关系`
   - 知识库召回其实不仅仅是 vector store，还可以使用**关系型**数据库和**图数据库**
   - vector store 使用 embedding 召回的上下文补全解决方案
   - 关系型数据的查询方案：小型数据基于 pandas dataframe，大型数据基于 sql
@@ -863,9 +876,19 @@ RAG工作流
 
 ### HyDE
 
-**假设性文档嵌入**（Hypothetical Document Embeddings, `HyDE`）
+**假设文档嵌入**（Hypothetical Document Embeddings, `HyDE`）
 
-HyDE不仅与问题进行相似度搜索，而是生成一个**假答案**并与之进行相似度搜索。
+2022 年, Gao 等人 论文《[Precise Zero-Shot Dense Retrieval without Relevance Labels]()》
+
+Contriever 源自 2022 年 8 月Izacard 等人发表的早期论文
+- 《[Unsupervised Dense Information Retrieval with Contrastive Learning](https://arxiv.org/pdf/2112.09118.pdf)》
+- 神经网络已成为检索的词频方法的良好替代方案，但需要大量数据，而且并不总是能很好地迁移到新的应用领域。因此，设计了一种通过`对比学习`以`无监督`方式训练嵌入网络的方法。
+- 该方法能够与 BM25 等无监督词频方法相匹配，并且在跨语言检索方面也表现良好，这是术语匹配方法无法实现的。
+
+
+改进零样本密集检索的方法（即使用语义嵌入相似性）。
+
+HyDE 不仅与问题进行**相似度搜索**，而是生成一个**假答案**并与之进行相似度搜索。
 
 "假设"文档
 > 通过 mask、重排等方式人为构造的虚拟文档。
@@ -873,7 +896,9 @@ HyDE不仅与问题进行相似度搜索，而是生成一个**假答案**并与
 
 HyDE 基于 RAG 模型
 - 用 LLM 生成一个**假设回答文档**
-- 然后将文档与知识库中的文档进行比较，从而找到与用户问题相关的信息。
+- 将文档与知识库中的文档进行比较，从而找到与用户问题相关的信息。
+
+
 
 #### HyDE 原理
 
@@ -889,7 +914,15 @@ HyDE 核心思想
 - 用 LLM 尝试回答问题
 - 生成一个假设的文档，这个假设的文档是通过 LLM 生成的。
 
-同时，embedding 时使用的来源也不同：原生 RAG 是使用的用户问题，HyDE 则是使用了 LLM 生成的文档进行。
+HyDE 两步法
+- 步骤1 指令提示语言模型（论文中用 GPT-3）根据**原始查询**生成**假设文档**。
+- 步骤2 使用 Contriever 或 “无监督对比编码器”将该假设文档转换为**嵌入向量**，用于下游相似性搜索和检索。
+
+![](https://pica.zhimg.com/80/v2-4d8598bdfbbef05aaf54ad9f91327d72_1440w.webp)
+
+同时，embedding 时使用来源也不同：
+- 原生 RAG 使用 用户问题
+- HyDE 则用 LLM 生成文档。
 
 HyDE 效果：
 - 利用 HyDE 提升 RAG 生成性能：
@@ -902,23 +935,159 @@ HyDE 效果：
 
 #### Langchain 实现
 
-[说明](https://blog.csdn.net/wangjiansui/article/details/139751438)
+HyDE 实现：生成、嵌入、平均、检索。
+- [LangChain 文档HyDE指南](https://python.langchain.com.cn/docs/modules/chains/additional/hyde)
+- [Langchain 实现 Demo](https://github.com/ianhohoho/auto-hyde/blob/main/langchain-hyde-demo.ipynb)
+- [说明](https://blog.csdn.net/wangjiansui/article/details/139751438)
 
 ```py
 from langchain.chains import HypotheticalDocumentEmbedder, LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_openai import OpenAI, OpenAIEmbeddings
 
-# 初始化基础嵌入模型
+# 初始化 embedding 模型
 base_embeddings = OpenAIEmbeddings()
-# 初始化语言模型
-llm = OpenAI()
 
-# 使用web_search提示加载HyDE
-embeddings = HypotheticalDocumentEmbedder.from_llm(llm, base_embeddings, "web_search")
+# 初始化 LLM: 以下多种方式选其一即可
+# ① 生成一个文档
+llm = OpenAI() 
+# ② 生成多个文档, 取平均
+llm = OpenAI(n=4, best_of=4) 
+# ③ 自定义 prompt
+prompt_template = """请回答关于最近一次国情咨文的用户问题
+问题$：{question}
+回答$："""
 
-# 现在我们可以像使用任何嵌入类一样使用它
+prompt = PromptTemplate(input_variables=["question"], template=prompt_template)
+llm_chain = LLMChain(llm=llm, prompt=prompt)
+
+# HyDE 执行 
+embeddings = HypotheticalDocumentEmbedder(
+    llm_chain=llm_chain, base_embeddings=base_embeddings
+)
+
+result = embeddings.embed_query("Where is the Taj Mahal?")
+
+# 使用 web_search 提示加载HyDE
+embeddings = HypotheticalDocumentEmbedder.from_llm(llm, 
+  base_embeddings, 
+  "web_search"
+)
+
+# 使用
 result = embeddings.embed_query("泰姬陵在哪里？")
+
+# --------- 检索 ----------
+from langchain_community.vectorstores import Chroma
+from langchain_text_splitters import CharacterTextSplitter
+
+with open("data/state_of_the_union.txt") as f:
+    state_of_the_union = f.read()
+
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+texts = text_splitter.split_text(state_of_the_union)
+docsearch = Chroma.from_texts(texts, embedding_fn, persist_directory="./data/.chroma_db")
+
+query = "What did the president say about Ketanji Brown Jackson"
+docs = docsearch.similarity_search(query)
+
+```
+
+
+
+
+#### HyDE 局限
+
+局限性
+- 问答框架: 
+  - 并非所有检索用例都用于问答, 所以 让LLM假设回答问答不一定都有意义
+  - 文档分块检索时, 各分块在风格、语气和结构等方面并不一定同质, 难以用一个通用提示捕捉多样性
+- 用户表达: 多数意图表达模糊
+
+
+#### AutoHyDE
+
+
+【2024-9-12】[AutoHyDE：使HyDE更好地用于高级LLM RAG](https://zhuanlan.zhihu.com/p/714886313?utm_psn=1817475798434721793)
+
+假设文档嵌入(HyDE) 已被证明是一种强大的查询重写形式，可提高检索文档的相关性。
+
+但 现有HyDE实现并非开箱即用，不够灵活
+
+AutoHyDE，提高 LLM RAG 假设文档嵌入（HyDE）的有效性、覆盖率和适用性的**半监督**框架。
+
+AutoHyDE **自动**发现索引文档中的**潜在相关模式**，并生成直接表示这些相关性模式的假设文档。
+- 直接调整了 LangChainHypotheticalDocumentEmbedder 类来实现 AutoHyDE，以便它仍然可以与 LangChain 的其他部分链接在一起。
+
+AutoHyDE 主要改进: **假设文档生成方式**。
+- 没有使用固定提示（无论是 LangChain 预定义, 还是用户自定义）
+- 而是设计框架, 自动发现所有文档中可能被基线检索忽略的潜在相关模式
+- 并为每一种模式生成假设文档。
+
+通过这种方式，我们能够使 HyDE 适应各种各样的任务和环境，并适应相关模式异构的索引的检索。
+
+AutoHyDE 主要目的
+- 自动发现向量数据库中各种**相关模式**, 并生成各种文档, 以提高这些模式的**覆盖率**。
+
+主要步骤
+- 从query中提取关键词
+- 初步检索
+- 获取包含关键词的忽略文档
+- 被忽略文档聚类
+- 生成假设文档
+- 嵌入
+- 合并
+
+技术上，采用 LangChain 中 HypotheticalDocumentEmbedder 类的现有实现，并创建了新函数来实现 AutoHyDE，这样它就可以立即作为任何 RAG 链的一部分运行
+
+
+代码实现
+- [auto-hyde-demo.ipynb](https://github.com/ianhohoho/auto-hyde/blob/main/auto-hyde-demo.ipynb)
+
+```py
+# ------- Define LLM and Embeddings -------
+from langchain_openai import OpenAIEmbeddings
+# embedding 定义
+base_embeddings = OpenAIEmbeddings()
+
+# LLM 定义
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model_name="gpt-4-1106-preview", temperature=1)
+# ------- Split Documents -------
+from langchain_community.document_loaders import TextLoader
+
+loader = TextLoader("data/util.txt")
+documents = loader.load()
+
+from langchain_text_splitters import CharacterTextSplitter
+
+text_splitter = CharacterTextSplitter(separator='.', chunk_size=1200, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+# ------- Define Chroma Vector DB -------
+from langchain_community.vectorstores import Chroma
+
+db = Chroma.from_documents(docs, 
+                           base_embeddings, 
+                           collection_metadata={'hnsw:space': 'cosine'})
+
+# ------- Instantiate improved HypotheticalDocumentEmbedder --------
+from src.auto_hyde import HypotheticalDocumentEmbedder
+
+hyde_embedder = HypotheticalDocumentEmbedder(
+    llm_chain=llm, base_embeddings=base_embeddings
+)
+# Define Custom HyDE params
+hypo_params = {
+    'baseline_k': 20,
+    'exploration_multiplier': 5,
+    'verbose': True
+}
+# Get Embedding
+query = 'what is the relationship between justice and happiness?'
+hyde_embedding = hyde_embedder.embed_query(text=query, db=db, hypo_params=hypo_params)
+
+hyde_embedding[:10]
 ```
 
 
