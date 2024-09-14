@@ -782,7 +782,7 @@ langchain创始人Harrison Chase最新开发的一个能力纯粹的开源项目
 
 ### 2024.1.23 Meta-prompting
 
-【2024-2-6】斯坦福和OpenAI提出meta-prompting，最强零样本prompting技术诞生了
+【2024-2-6】斯坦福 和 OpenAI 提出 meta-prompting，最强**零样本prompting技术**诞生了
 - 论文标题：[Meta-Prompting: Enhancing Language Models with Task-Agnostic Scaffolding](https://arxiv.org/abs/2401.12954)
 - 项目地址：[meta-prompting](https://github.com/suzgunmirac/meta-prompting)
 - [数据](https://huggingface.co/datasets/turingmachine/meta-prompting)
@@ -810,6 +810,16 @@ meta-prompting 方法的伪代码
   - (b) 如有需要，使用特定领域的专家模型
   - (c) 返回最终响应
   - (d) 处理错误。
+
+
+### 2024.4.17 人大 GPO
+
+
+人民大学：2024年4月份的一篇论文，让LLM做 prompt自动优化
+- 早期工作: Large Language Models as Optimizers，虽然说是 prompt优化，实际上真正输入给 LLM optimizer 的是 `meta-prompt`，还是需要人工设计
+- 本文研究如何设计 `meta-prompt`，仿照`梯度下降`算法流程，提出了 Gradient-inspired LLM-based Prompt Optimizer(`GPO`)
+- 论文 [Unleashing the Potential of Large Language Models as Prompt Optimizers: An Analogical Analysis with Gradient-based Model Optimizers](https://arxiv.org/pdf/2402.17564)
+- 源代码地址： [GPO](github.com/RUCAIBox/GPO)
 
 
 ### 2024.7.12 北大 PAS
