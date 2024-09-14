@@ -27,14 +27,41 @@ permalink: /network
 
 ## 互联网
 
-互联网（ Internet ）：通过各种**互联网协议**为全世界成千上万的设备建立互联的**全球计算机网络系统**。
-- 互联网 → 路由器 → 手机（家庭设备）
+`互联网`（ Internet ）：通过各种**互联网协议**为全世界成千上万的设备建立互联的**全球计算机网络系统**。
+- `互联网` → `路由器` → `手机`（家庭设备）
 - ![](https://p26.toutiaoimg.com/origin/tos-cn-i-qvj2lq49k0/a2396d3285dd4bba9971e3c74c3a4d1e?from=pc)
 
 种类：
-- 局域网（ LAN ）：在一个有限区域内实现终端设备互联的网络。
-- 城域网（ MAN ）：规模大于局域网，覆盖区域小到一个方圆数千米的大型园区，大到一个城市圈的网络。
-- 广域网（ WAN ）：跨越大范围地理区域建立连接的网络。
+- `局域网`（ LAN ）：在一个有限区域内实现终端设备互联的网络。
+- `城域网`（ MAN ）：规模大于局域网，覆盖区域小到一个方圆数千米的大型园区，大到一个城市圈的网络。
+- `广域网`（ WAN ）：跨越大范围地理区域建立连接的网络。
+
+
+### 全球互联网
+
+上世纪50年代，不同计算机用户和通信网络之间进行常规通信的需求开始萌发，促使分散网络、排队论和数据包交换等研究相继出现；
+- 随后，`ARPAnet`(阿帕网) 60年代问世，并于1973年扩展成为互联网；
+- 之后一年，ARPA 罗伯特·卡恩和斯坦福的温登·泽夫提出了`TCP/IP`协议，终于定义了在电脑网络之间传送报文的方法...
+
+互联网大发展的序幕由此拉开！
+
+4个入口8条光缆
+
+1994年4月，中国与国际 64K Internet 信道开通（借助国际卫星信道接入），“走向世界”的一个转折点。
+- 然而 这次与世界的沟通，仅仅是“窄带”沟通，让国内的几百名科学家“体验”收发电子邮件...
+
+互联网“宽带”沟通又是如何实现？答案是`海底光缆`。
+
+所谓全球互联网是世界各国的网络相互联接而组成的超**大型局域网**，其中实现**洲际**联接靠`卫星通信`和`海底光缆`。
+- 考虑到`卫星通信`带宽有限且价格不菲，因此, 全球90%以上的国际数据都是通过`海底光缆`进行传输的
+- 基本上是海底光缆构建了今天的全球“宽带”互联网！
+- ![](http://www.dxdlw.com/Uploads/Image/201902/19/=84958=6368617419876150293949634.png)
+
+[海底光缆分布图](http://www.dxdlw.com/ShowPost.aspx?ThreadID=209746)
+
+【2019】回形针 [Vol 124 海底光缆如何连接全球互联网](https://www.youtube.com/watch?v=q7CjsfLJuuE)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q7CjsfLJuuE?si=BwmcaenefktZGgVb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## 物联网
 
