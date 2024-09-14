@@ -1278,6 +1278,17 @@ LLM应用于list-wise时出现的问题
 - [Large Language Models Meet NL2Code: A Survey](https://arxiv.org/abs/2212.09420)
 
 
+#### AI Shell
+
+AI Shell 将**自然语言**转换为**Shell命令**的CLI工具。受 GitHub Copilot X CLI 启发，但AI Shell是开源的，为所有人提供服务。
+
+用户只需安装 AI Shell 并从OpenAI获取API密钥，便可使用该工具。
+- [ai-shell](https://github.com/BuilderIO/ai-shell)
+
+![](https://user-images.githubusercontent.com/844291/230413167-773845e7-4c9f-44a5-909c-02802b5e49f6.gif)
+
+
+
 #### Cursor
 
 待补充
