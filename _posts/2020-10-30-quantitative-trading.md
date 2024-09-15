@@ -3,7 +3,7 @@ layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
 categories: 技术工具
-tags: 股票 预测 量化交易 时间序列
+tags: 股票 预测 量化交易 时间序列 LLM
 author : 鹤啸九天
 excerpt: 用技术来辅助炒股，优化交易
 mathjax: true
@@ -879,6 +879,26 @@ TimesNet根据时间序列的多周期性，它的模块化架构能够捕捉来
 
 
 ## 大模型与量化
+
+
+### 总结
+
+- 【2024-7-26】哥伦比亚大学 [Large Language Model Agent in Financial Trading: A Survey](https://arxiv.org/pdf/2408.06361),对利用大型语言模型作为**金融交易Agent**进行了首次系统调研，总结了两种主要**架构设计**、四类关键**数据类型**以及**评估方法**，并讨论了当前局限性与未来方向。
+
+从 27 篇用LLM做量化交易的论文中总结出来, 其中 7篇文章标题里包含 Agent
+- Google Scholar 搜索词: LLM for trading, GPT stock agent
+
+Agent 架构分两种
+- (1) LLM as a Trader: 直接生成交易策略, 买入/持有/卖出
+  - news-driven: 最基础类型, 将股票新闻和宏观经济更新信息集成到Prompt中, LLM预测股票下一周期预测趋势, 案例: `LLMFactor`, `MarketSenseAI`
+  - reflection-driven: `FinAgent`, `FinMem`
+  - debate-driven: `TradingGPT`, `HAD`
+  - reinforcement learning(RL)-driven: `SEP`
+- (2) LLM as an Alpha Miner: 生成高质量alpha因子,用于下游交易系统
+  - `AlphaGPT`:
+  - `QuantAgent`: 
+
+详见[原文](https://arxiv.org/pdf/2408.06361)
 
 ### 观点
 
