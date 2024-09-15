@@ -3,7 +3,7 @@ layout: post
 title:  提示词自动化 Prompt Automation
 date:   2023-03-02 16:52:00
 categories: 大模型
-tags: ChatGPT prompt 大模型 controlnet
+tags: ChatGPT prompt 大模型 controlnet o1
 excerpt: 提示词如何自动化？
 mathjax: true
 permalink: /prompt_auto
@@ -21,9 +21,18 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 【2023-10-25】[自动优化Prompt：Automatic Prompt Engineering的3种方法](https://mp.weixin.qq.com/s/kbZZUoTjLGyU59B3strwVg)
 
+## 资讯
 
-### 方法分析
 
+### o1
+
+- o1 本质是 **CoT等复杂Prompt的 自动化**: 
+  - CoT 背后的树形搜索空间，组合爆炸, 人工编写CoT不可行, 需要仿照AlphaGo的MCTS（蒙特卡洛树搜索）+强化学习, 让LLM快速找到CoT路径
+  - 复杂问题上, 推理时间成本不是问题, 总会解决, 真正的问题是效果
+- **Prompt 工程会消失**: 后面不需要用户构造复杂prompt, 反人性, 大趋势是所有复杂环节自动化
+
+
+## 方法分析
 
 与LLM高效交流方式
 - （1）模型向人对齐：
@@ -56,10 +65,10 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 
 以第三点为例，可以根据用户的反馈数据，训练一个reward model作为评价者，运行 automatic prompt engineering框架，优化现有的Prompt，这一点和RLHF有异曲同工之处。
 
-### 自动化工具
+## 自动化工具
 
 
-#### 演化图
+### 演化图
 
 
 【2023-11-20】Prompt自动化演进
@@ -69,7 +78,7 @@ Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
-#### 2023.7.21 gpt-prompt-engineer
+### 2023.7.21 gpt-prompt-engineer
 
 [gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer)
 - 【2023-8-4】Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/gpt-prompt-engineer/blob/main/gpt_prompt_engineer.ipynb)
@@ -88,7 +97,7 @@ Features
 - **ELO Rating System**: Each prompt starts with an ELO rating of **1200**. As they compete against each other in generating responses to the test cases, their ELO ratings change based on their performance. This way, you can easily see which prompts are the most effective.
 - **Classification Version**: The gpt-prompt-engineer--Classification Version notebook is designed to handle **classification** tasks. It evaluates the correctness of a test case by matching it to the expected output ('true' or 'false') and provides a table with scores for each prompt.
 
-#### PromptsRoyale
+### PromptsRoyale
 
 [PromptsRoyale](https://promptsroyale.com/), 自动创建prompt，并相互对比，选择最优Prompt的工具
 - 借鉴项目：[gpt-prompt-engineer](https://github.com/mshumer/gpt-prompt-engineer)
@@ -184,7 +193,7 @@ Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/g
       - Elo 打分: `update_elo`
 
 
-#### PromptPerfect
+### PromptPerfect
 
 【2023-9-20】JinaAI 的 [PromptPerfect](https://promptperfect.jinaai.cn) 专业的提示词工程：设计、优化、部署一条龙 
 - **AutoTune** 自动生成提示词。
@@ -202,7 +211,7 @@ Elo Python实践代码: [gpt_prompt_engineer.ipynb](https://github.com/mshumer/g
 
 
 
-#### DSPy Visualizer
+### DSPy Visualizer
 
 【2024-8-6】[DSPy Visualizer：可视化Prompt优化过程](https://mp.weixin.qq.com/s/X_vbUNFY1JeY9Ph8h8pYRw)
 
@@ -228,7 +237,7 @@ DSPy 优化流程需要: 准备数据集、程序主体、优化器以及衡量�
 
 使用方法见[原文](https://mp.weixin.qq.com/s/X_vbUNFY1JeY9Ph8h8pYRw)
 
-### prompt 生成方法
+## 文本提示自动化
 
 Prompt 是用来提升模型输出效果的前缀序列（sequence of prefix tokens）, 详见 翁丽莲博客[smart-prompt-design](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/#smart-prompt-design)
 - (1) 当做可训练参数，在embedding空间上通过梯度下降直接优化
@@ -991,29 +1000,29 @@ One-time 50 trial credits for all the features. Join Discord for additional one-
 OpenArt上有文生图优质案例，但面向国外，只有50个免费额度，如果是discord，有100次额度。
 
 
-### prompt 自动生成
+## prompt 自动生成
 
 
 - 【2024-1-11】[文生图Prompt如何自动化？贾扬清PromptLLM实测](https://zhuanlan.zhihu.com/p/677236977)
 
 
-#### 提示词产品
+### 提示词产品
 
 【2024-1-23】[一键生成Midjourney提示词](https://zhuanlan.zhihu.com/p/677432362?utm_psn=1733070543354626049)
 
-##### AI灵创提词器
+#### AI灵创提词器
 
 【2023-7-13】[AI灵创提词器](https://frozenland.cc/teleprompter.html): 最方便、简单的ai绘画提示词工具,直接点击网站使用,免费！辅助生成 Mid-Journey提示词
 - 包括输入中文需求自动转化成英文关键词、丰富的风格和参数等可以任意选取和权重调整，关键词描述框架非常完整，操作很简单很适合新手小白使用提取提示词
 - ![](https://pic4.zhimg.com/80/v2-f255acaeae6ae8f450710bcb95b34b83_1440w.webp)
 
-##### MidJourney Prompt生成器
+#### MidJourney Prompt生成器
 
 [MidJourney Prompt生成器](https://ai.sppinfo.cn/)
 - 直接输入中文的关键词，可以翻译成英文的Midjourney关键词，还有丰富的风格和参数可以选择调整。
 - ![](https://pic3.zhimg.com/80/v2-1307ab5ba61bad0a017fb1ec9a61b042_1440w.webp)
 
-##### OPS提示词工具
+#### OPS提示词工具
 
 AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 
@@ -1022,7 +1031,7 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 - 支持 mj 和 sd
 - ![](https://pic1.zhimg.com/80/v2-875c1755603370e9f082fc76fbc7ac68_1440w.webp)
 
-#### 2023.7.24 VPGTrans
+### 2023.7.24 VPGTrans
 
 【2023-7-24】[Transfer Visual Prompt Generator across LLMs](https://arxiv.org/abs/2305.01278)
 - Sea-NExT Joint Lab和新加坡国立首次调研 可视提示生成（visual prompt generator (VPG)），将一个LLM的提示迁移到另一个LLM
@@ -1030,7 +1039,7 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 - ![](https://github.com/VPGTrans/VPGTrans/raw/main/figs/VPGTrans.png)
 
 
-#### 2023.12.27 谷歌: Prompt Expansion
+### 2023.12.27 谷歌: Prompt Expansion
 
 两大挑战：
 - **提示工程**复杂：用户需精心设计提示以生成高质量图像。这涉及使用专业术语（如“35mm”、“背光”等）和独特描述（如“大胆创新”）。由于有效提示的不稳定性，用户需不断试验，这限制了模型的易用性和创造力。
@@ -1042,7 +1051,7 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 谷歌推出了一种名为提示扩展（Prompt Expansion）的创新框架，旨在帮助用户更轻松地创造出既高质量又多样化的图像
 
 
-#### 2024.1.10 PromptLLM
+### 2024.1.10 PromptLLM
 
 【2024-1-10】[贾扬清创业新动作：推出AIGC提示工具，几个字玩转SDXL，细节拉满](https://www.toutiao.com/article/7322387911557595688)
 
@@ -1069,7 +1078,7 @@ AIGC 提示词可视化编辑器 OPS Open Prompt Studio
 改进方法：
 - 提前翻译成英文，这个功能应该由平台自动完成（给PromptLLM的建议）
 
-#### Omost
+### Omost
 
 Controlnet 作者张吕敏新开源项目 [Omost](https://www.omost.cc/)
 - 一种将LLM的文本生成能力转化为图像生成能力的方法

@@ -3,7 +3,7 @@ layout: post
 title:  提示工程指南及技巧
 date:   2023-03-01 16:52:00
 categories: 大模型
-tags: ChatGPT prompt 大模型 贾扬清
+tags: ChatGPT prompt 大模型 贾扬清 o1
 excerpt: 如何使用提示工程调戏ChatGPT、Mid-Journey？
 mathjax: true
 permalink: /pe
@@ -41,6 +41,18 @@ permalink: /pe
 - OpenAI 表示，此功能开始为 Plus 用户提供测试版，并在未来几周内扩展到所有用户。
 - OpenAI CEO Sam Altman 评价说，「自定义指令只是朝着更加个性化的 AI 迈出的一小步，但却是非常有趣 / 有用的一步。」
 
+
+### OpenAI o1
+
+【2024-9-15】如何才能驾驭这个"高智商"模型呢？
+
+OpenAI 给出了四点建议：
+- 保持提示简单直接，不要过多引导模型，因为它已经能很好地理解指令了。
+- 避免使用思维链提示，因为 o1 模型已经在内部进行推理了。
+- 使用分隔符，如三重引号、XML 标签和章节标题，让模型更清楚地理解各个部分。
+- 限制额外上下文，特别是在检索增强生成（RAG）任务中，因为添加更多上下文或文档可能会使响应变得过于复杂。
+
+这完全颠覆了上一版PE建议，提示工程会消失
 
 ## 什么是 Prompt
 
