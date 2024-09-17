@@ -135,7 +135,7 @@ NLP典型任务
 |---|---|---|---|
 |文本分类|✅|❌|多对一|适合Encoder|
 |文本匹配|✅|❌|近似多对一|适合Encoder|
-|文本生成|❌|✅|多对多,变长|适合Encoder|
+|文本生成|❌|✅|多对多,变长|适合Decoder|
 |序列标注|✅|❌|多对多,定长|适合Encoder|
 |文本摘要|❌|✅|多对多,变长,一般变少|适合Decoder|
 |机器翻译|❌|✅|多对多,变长|适合Decoder|
@@ -158,10 +158,13 @@ NLP领域一般分别叫做`NLU`（Natural Language Understanding，自然语言
 
 ### self-attention 理解
 
-Self-Attention 是能力超强的特征提取器，跟 RNN、CNN 相比
+`Self-Attention` 是能力超强的**特征提取器**，跟 `RNN`、`CNN` 相比
 - ![](https://d2l.ai/_images/cnn-rnn-self-attention.svg)
 
-self-attention 运算是所有 transformer 架构的基本运算, 而 Self-attention 是 sequence-to-sequence 运算： 
+
+#### 自注意力
+
+self-attention 运算是所有 transformer 架构的**基本运算**, 而 Self-attention 是 sequence-to-sequence 运算： 
 - 输入一个向量序列（x1,x2,...,xm），输出另一个向量序列 (y1,y2,...,yn)，所有字符都映射成k维向量；
 - 输出向量是x的加权平均： yi = ∑ wi * xi
 - 计算权重矩阵W 最简单函数就是`点积`（dot product）: $ w_ij = x_i^T * x_j $
@@ -173,32 +176,36 @@ self-attention 运算是所有 transformer 架构的基本运算, 而 Self-atten
   - output vector 中的每个元素 yj 都是对 input vector 中所有元素的加权和；
   - 对于 yj，加权矩阵由 input 元素 xj 与每个 input 元素计算得到；
 
-self-attention 是整个架构中唯一在 input & output vector 之间 所做的运算；
+self-attention 是整个架构中**唯一**在 input & output vector 间做运算；
 - Transformer 架构中的其他运算都是单纯对 input vector 做运算。
 
-self-attention 模型非常简单，本质上是加权平均公式，为什么效果这么好呢？
+<span style='color:red'>self-attention 模型简单，本质是**加权平均**公式，为什么效果这么好？</span>
+
+
+#### 电影推荐
 
 以电影推荐为例
 
 **传统推荐系统**：特性向量点积用户偏好
-- 步骤：
-  - 人工设计一些**电影特征**，比如：浪漫指数、动作指数，
-  - 人工设计一些**用户特征**，例如：喜欢浪漫电影或动作片的可能性；
-  - 有了这两个维度的数据（特征向量）之后，对二者做`点积`（dot product）， 得到电影属性与用户喜欢程度之间的**匹配程度**，用得分表示
+- 人工设计一些**电影特征**，比如：浪漫指数、动作指数，
+- 人工设计一些**用户特征**，例如：喜欢浪漫电影或动作片的可能性；
+
+有了这两个维度的数据（特征向量）之后，对二者做`点积`（dot product）， 得到电影属性与用户喜欢程度之间的**匹配程度**，用得分表示
 - 电影推荐：**电影**特征向量（浪漫、动作、喜剧）与**用户**特性向量（喜欢浪漫、动作、喜剧的程度）做**点积运算**
 - ![](http://arthurchiao.art/assets/img/transformers-from-scratch/movie-dot-product.png)
 
 得分数值：
-- 如果特征的符号相同，例如“浪漫电影 && 用户喜欢浪漫电影”， 或者“不是浪漫电影 && 用户不喜欢浪漫电影”，得到的点积就是**正数**；反之就是**负数**；
-- 特征值的大小决定该特征对总分的**贡献大小**： 一部电影可能有点浪漫，但不是很明显，或者用户可能只是不喜欢浪漫，但也没到讨厌的程度。
+- 如果特征**符号相同**，例如“浪漫电影 && 用户喜欢浪漫电影”， 或者“不是浪漫电影 && 用户不喜欢浪漫电影”，得到的点积就是**正数**；反之就是**负数**；
+- 特征值大小决定该特征对总分的**贡献大小**： 一部电影可能有点浪漫，但不是很明显，或者用户可能只是不喜欢浪漫，但也没到讨厌的程度。
 
 分析
 - 优点：简单直接，很容易上手；
 - 缺点：规模大了很难搞， 因为对几百万部电影打标的成本非常高，精确标记用户喜欢或不喜欢什么也几乎是不可能的。
 
+
 基于 **self-attention 的推荐系统**
 
-电影特征和用户特征作为模型参数，匹配已知的用户偏好
+电影特征和用户特征作为模型参数，匹配已知用户偏好
 
 两步：
 - 电影特征和用户特征不再直接做点积运算，而是作为**模型参数**（parameters of the model）；
@@ -214,7 +221,9 @@ self-attention 模型非常简单，本质上是加权平均公式，为什么�
 不同于一般的 sequence-to-sequence 运算：
 - self-attention 将输入当做一个**集合**（set）而不是**序列**（sequence）。
 - 如果对输入序列进行**重排**（permute），输出序列除了也跟着重排，其他方面将完全相同，self-attention 是**排列等变**的（permutation equivariant）。
-- 构建完整的 transformer 时，还是会引入一些东西来保持输入的顺序信息，但要明白 <span style='color:red'>self-attention 本身是不关心输入的顺序属性的（sequential nature）</span>。
+- 构建完整的 transformer 时，会引入一些东西来保持输入的顺序信息，但要明白 <span style='color:red'>self-attention 本身不关心输入的顺序属性（sequential nature）</span>。
+
+#### self-attention 实现
 
 最基础的 self-attention 模型实现：
 - 2次 矩阵乘法 和 1次 归一化（softmax）。
@@ -282,7 +291,7 @@ multi-head self-attention 完整流程
 
 - 参考：[Transformer 是如何工作的：600 行 Python 代码实现两个（文本分类+文本生成）Transformer](http://arthurchiao.art/blog/transformers-from-scratch-zh/)
 
-### transformer解决什么问题
+### transformer 解决什么问题
 
 针对rnn和cnn的缺陷，Transformer怎么解决这些问题？
 - 并行化
@@ -484,7 +493,41 @@ Attention 机制也可以分成很多种。[Attention? Attention!](https://lilia
 
 那么这种**乘性注意力机制**是怎么样的呢？从上表中的公式也可以看出来：**两个隐状态进行点积**！
 
-### Self-attention是什么？
+
+### 注意力与机器翻译
+
+Attention 机制 为`机器翻译`任务带来了曙光
+- Attention 显著地提高了翻译算法的表现。使Decoder网络注意原文中的某些重要区域来得到更好的翻译。
+- Attention 解决了**信息瓶颈**问题。原先 Encoder-Decoder 网络的中间状态**只能存储有限的文本信息**，从繁重的记忆任务中解放出来了，它只需要完成如何**分配注意力**任务即可。
+- Attention 减轻了**梯度消失**问题。Attention 在网络后方到前方建立了连接捷径，使得梯度可以更好的传递。
+- Attention 提供了一些**可解释性**。通过观察网络运行过程中产生的**注意力分布**，可知道网络在输出某句话时都把注意力集中在哪里；而且通过训练网络还得到了一个免费的**翻译词典**（soft alignment）, 尽管未曾明确地告诉网络两种语言之间的词汇对应关系，但是显然网络依然学习到了一个大体上是正确的词汇对应表。
+- Attention 代表一种更为广泛的运算。之前学 Attention机制在机器翻译问题上的应用，实际上 Attention 还可以使用于更多任务中。
+  - Attention机制的广义定义：给定一组向量Value和一个查询Query，Attention是一种**分配技术**，根据Query需求和内容计算出Value的加权和。
+  - Attention 被认为是大量信息的**选择性总结归纳**，或给定一些表示（query）的情况下，用一个固定大小的表示（ Ck ）来表示任意许多其他表示集合的方法（Key）。
+
+![](https://picx.zhimg.com/80/v2-ca5c2202e49ff2d07fd4cd508b9dd22b_1440w.webp)
+
+
+### Attention 类型
+
+Attention
+- Hard Attention: 只选取向量中一个元素, 赋值1, 其余都是0
+- Soft Attention
+
+|Attention 种类|原理|实现方法|优点|缺点|其它|
+|---|---|---|---|---|---|
+|`Hard Attention`|只选取向量中一个元素, 赋值1, 其余都是0|1. max(a_ki) **最大采样**, 选最高权重的隐含层<br>2. 按 a_ki 分布进行**随机采样**|简单|最大采样/随机采样选择信息, 导致损失函数与注意力分布函数关系不可导, 无法用BP训练|![](https://pica.zhimg.com/80/v2-dc56532b06e30bd7028ebfcdd4975d66_1440w.webp)|
+|`Soft Attention`|常规意义上的Attention实现, 加权平均|逐点相乘再累加|Hard Attention改进|全局对齐,计算量大,运行效率低|![](https://pic4.zhimg.com/80/v2-740c1ab6d6600c003ca092a8e8a5668b_1440w.webp)|
+|`Global Attention`|以上都是Global|所有位置参与运算||计算量大||
+|`Local Attention`|改进: 只对**局部**计算注意力|找对齐位置pt,前后扩展D个长度(如正态分布),局部范围内计算注意力<br>1. pt周围固定范围<br>2. pt周围正态分布|计算量降低, 大大加速||![](https://pic4.zhimg.com/80/v2-2a020600b246fa374bd5553fb36181d7_1440w.webp)|
+|Not-Self Attention|Encoder-Decoder结构只适用于seq2seq任务|Hhc 计算模式||无法解决非seq2seq任务, 如阅读理解|kv相同<br>![](https://pic1.zhimg.com/80/v2-0d50edb2fb138a4843892e75e5c73a52_1440w.webp)|
+|`Self Attention`|自监督（Self-Attention）也叫 Intra-Attention, 寻找一段文本内关系|QKV 计算模式<br>用Query在数据库中按照Key进行筛选|自监督注意力适合非seq2seq任务||阅读理解,文本摘要,文本蕴含<br>kv不同<br>![](https://pic4.zhimg.com/80/v2-ff7ecfefe79518aab20a560b5b9ae0f9_1440w.webp)|
+|`Attention`||||||
+
+
+参考 [第三章 Transformer原理、结构详解](https://zhuanlan.zhihu.com/p/720320507)
+
+### Self-attention 是什么？
 
 什么是**self-attention**
 
@@ -506,7 +549,7 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 - `值向量` （Value 向量）：值向量是单词真正的**表征**，当算出注意力得分后，使用值向量进行加权求和得到能代表当前位置上下文的向量。
 - ![](https://pic4.zhimg.com/80/v2-773eec2cc3564bef9f99d97513b2af27_1440w.webp)
 
-比喻: 档案柜中找文件。
+比喻: <span style='color:red'>档案柜中找文件</span>。
 >- 查询向量就像一张**便利贴**，上面写着正在研究的课题。
 >- 键向量像是档案柜中文件夹上贴的**标签**。当你找到和便利贴上所写相匹配的文件夹时，拿出它，文件夹里的东西便是值向量。只不过最后找的并不是单一的值向量，而是很多文件夹值向量的混合。
 
@@ -617,25 +660,51 @@ class ScaledDotProductAttention(nn.Module):
         return context, attention
 ```
 
-### Multi-head attention又是什么呢？
+### Multi-head attention 又是什么
 
-理解了Scaled dot-product attention，Multi-head attention也很简单了。论文提到，将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
 
-下面是multi-head attention的结构图：  
+自注意力机制缺陷：
+- **模型在对当前位置信息进行编码时，会过度的将注意力集中于自身的位置**
+
+`多头注意力机制`解决这一问题。
+
+同时，`多头注意力机制` 还能给予注意力层的输出包含有不同**子空间**中的编码表示信息，从而增强模型的表达能力。
+
+论文提到
+- 将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。
+- 然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。
+
+这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
+
+multi-head attention的结构图：  
 - ![multi-head attention_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/multi_head_attention_arch.png) 
 
 *Figure 4: Multi-head attention architecture.*  
 
 注意：上面所说的**分成 $h$ 份**是在 $d_k、d_q、d_v$ 维度上面进行切分的。因此，进入到scaled dot-product attention的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
 
-Multi-head attention允许模型加入不同位置的表示子空间的信息。
+Multi-head attention 允许模型加入不同位置的表示子空间的信息。
 
-Multi-head attention的公式如下：
+Multi-head attention 公式如下：
 - $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_ 1,\dots,\text{head}_ h)W^O$$
 
 其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
 
-论文里面，$d_{model}=512$，$h=8$。所以在scaled dot-product attention里面的 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+相同维度下使用单头和多头的区别是什么
+- $d_{model}=512$，$h=8$。所以在 scaled dot-product attention 里 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+
+如果
+- h=1，得到一个各个位置**只集中于自身位置**的注意力权重矩阵；
+- h=2，得到另外一个注意力权重**稍微分配合理**的权重矩阵；
+
+因而, 多头这一做法也恰好是论文作者提出用于克服「**模型在对当前位置的信息进行编码时，会过度的将注意力集中于自身的位置**」的问题。
+
+这里再插入一张真实场景下同一层的不同注意力权重矩阵可视化结果图：
+- ![](https://pic3.zhimg.com/80/v2-206e013c6615f1ec33558112585d7642_1440w.webp)
+
+当 h 不一样时，dk 取值也不一样，使得对**权重矩阵的scale程度**不一样。
+
+当模型维度 dm 确定时，一定程度上 h 越大, 整个模型的表达能力越强，越能提高模型对于注意力权重的合理分配。
 
 
 #### 实现2
