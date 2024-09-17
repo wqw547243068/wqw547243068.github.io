@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "文本生成&评价-Text Generation and Evaluation"
-date:   2023-04-28 21:39:00
+date:   2019-11-28 21:39:00
 categories: 自然语言处理
-tags: 深度学习 NLP GAN rnn lstm Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性
+tags: 深度学习 NLP GAN rnn lstm Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性 注意力 transformer
 excerpt: 深度学习在NLP子领域——文本生成的应用汇总，如seq2seq、GAN系列
 author: 鹤啸九天
 mathjax: true
@@ -2311,7 +2311,7 @@ NVidia K80 GPU Kaggle，在上面的代码。100个epoch，需要70分钟的训�
 
 【2023-5-26】详见：[辅助生成: 低延迟文本生成的新方向](https://mp.weixin.qq.com/s/HSSgrJX-gNDs9VFLMKvVYQ)
 
-### Seq2Seq的优化技巧
+### Seq2Seq 优化技巧
 
 【2023-3-16】[Tensorflow中的Seq2Seq全家桶](https://zhuanlan.zhihu.com/p/47929039)
 
