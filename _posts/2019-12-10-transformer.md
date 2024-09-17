@@ -41,7 +41,7 @@ permalink: /transformer
 ### 3D可视化
 
 【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
-- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 
 ### Transformer Explainer
@@ -521,7 +521,7 @@ Attention
 |`Global Attention`|以上都是Global|所有位置参与运算||计算量大||
 |`Local Attention`|改进: 只对**局部**计算注意力|找对齐位置pt,前后扩展D个长度(如正态分布),局部范围内计算注意力<br>1. pt周围固定范围<br>2. pt周围正态分布|计算量降低, 大大加速||![](https://pic4.zhimg.com/80/v2-2a020600b246fa374bd5553fb36181d7_1440w.webp)|
 |Not-Self Attention|Encoder-Decoder结构只适用于seq2seq任务|Hhc 计算模式||无法解决非seq2seq任务, 如阅读理解|kv相同<br>![](https://pic1.zhimg.com/80/v2-0d50edb2fb138a4843892e75e5c73a52_1440w.webp)|
-|`Self Attention`|自监督（Self-Attention）也叫 Intra-Attention, 寻找一段文本内关系|QKV 计算模式<br>用Query在数据库中按照Key进行筛选|自监督注意力适合非seq2seq任务||阅读理解,文本摘要,文本蕴含<br>kv不同<br>![](https://pic4.zhimg.com/80/v2-ff7ecfefe79518aab20a560b5b9ae0f9_1440w.webp)|
+|`Self Attention`|自监督（Self-Attention）也叫 Intra-Attention, 寻找一段文本内关系|QKV 计算模式<br>用Query在数据库中按照Key进行筛选|自监督注意力适合非seq2seq任务<br>阅读理解,文本摘要,文本蕴含||kv不同<br>![](https://pic4.zhimg.com/80/v2-ff7ecfefe79518aab20a560b5b9ae0f9_1440w.webp)|
 |`Attention`||||||
 
 
