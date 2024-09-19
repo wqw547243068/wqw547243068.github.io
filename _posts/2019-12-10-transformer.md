@@ -508,6 +508,7 @@ Attention 机制 为`机器翻译`任务带来了曙光
 ![](https://picx.zhimg.com/80/v2-ca5c2202e49ff2d07fd4cd508b9dd22b_1440w.webp)
 
 
+
 ### Attention 类型
 
 Attention
@@ -527,6 +528,10 @@ Attention
 
 参考 [第三章 Transformer原理、结构详解](https://zhuanlan.zhihu.com/p/720320507)
 
+
+`Attention` 是 BERT 乃至整个预训练语言模型的基石，接棒`CNN`/`RNN`，成为**特征抽取**的新利器。Attention is all you need !
+
+
 ### Self-attention 是什么？
 
 什么是**self-attention**
@@ -536,9 +541,11 @@ self-attention 结构图。[原文](https://zhuanlan.zhihu.com/p/636889198)
 - ![img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
 - [img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
 
-attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
+attention 机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
 
-**self-attention**实际是：**输出序列**就是**输入序列**！因此，计算自己的attention得分，就叫做**self-attention**！
+**self-attention**实际是：**输出序列**就是**输入序列**
+
+因此，计算自己的 attention 得分，就叫做**self-attention**
 
 最上层的 transformer 模块在处理单词「it」的时候会关注「a robot」，所以「a」、「robot」、「it」这三个单词与其得分相乘加权求和后的特征向量会被送入之后的神经网络层。
 - ![](https://pic4.zhimg.com/80/v2-e748fe9dc233efd6210ef79852371407_1440w.webp)
@@ -565,8 +572,158 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 - ![](https://pic4.zhimg.com/80/v2-0871db72d018b09d71d90b31c2d1362f_1440w.webp)
 
 
+#### Attention 解决什么问题
 
-### Context-attention是什么？
+背景：
+- RNN 处理序列数据时，token 逐个喂给模型。比如在a3的位置，模型要等a1和a2的信息都处理完成后，才可以生成a3。
+- 问题：
+  - a. 随着序列长度增加，模型并行计算的能力变差。
+  - b. 随着token间距离的增加，对于远距离处的信息，RNN很难捕获其依赖关系。
+
+改进：提升模型的**并行运算**能力，序列中的每个token 无损地捕获序列里的其他tokens信息。
+- Attention: 在每个位置，例如在a2处产生b2时，attention将会同时看过a1到a4的每个token。此外，每个token生成其对应的输出的过程是同时进行的，计算不需要等待。
+- Attention 机制是Transformer架构引入的提取信息的方法。Attention机制通过对模型的输入部分赋予不同的权重，对value值进行加权求和。以此来抽取数据中更重要的信息。
+
+Attention机制的核心: 从关注**全部**到关注**重点**。
+
+Attention机制本质是对源数据中元素的值(value)进行**加权求和**，而其中查询(query)和键(key)用于计算权重系数。
+
+Attention函数本质：
+- Attention函数描述为将一个查询(query)映射到一系列键值对(key-value)的过程，其中通过计算查询(query)和键(key)的相似性或相关性来得到每个键对应值的权重系数，最终对值(value)进行加权求和，以产生Attention数值。
+
+Attention的优点：
+1. 相对于传统的CNN和RNN,Attention参数数量更少。
+2. 使 Transformer模型在计算Query时实现**并行计算**。
+3. 使得模型能够更好地捕捉**长距离依赖关系**，模型效果更好。
+
+
+#### Self-Attention 解决什么问题
+
+
+提出 Self-Attention 原因：
+- 传统 Attention 模块能捕获source端和target端的token间的依赖关系，但不能捕获source端或target端**自身token间的依赖关系**。
+- self-attention 可以学习source端句子**内部**的token间的依赖关系，捕获句子的内部信息。
+
+【2024-8-3】[【LLM基础知识】LLMs-Attention知识总结笔记v4.0](https://www.53ai.com/news/LargeLanguageModel/2024080362015.html)
+
+#### Attention 和 Self-Attention 区别
+
+Self-Attention 多两个约束条件：
+1. Q，K，V 计算输入**同源**，K-Q-V三者都来源于 X。
+2. Q，K，V 遵循 attention做法。
+
+Self 的意思是 Attention完全来自输入序列自己，而不来自外部信息（比如output）。
+
+
+
+#### Self-Attention 如何解决长距离依赖?
+
+解决方式： 
+- 利用注意力机制来**“动态”生成不同连接的权重**，从而处理变长的信息序列。
+
+具体介绍： 
+- 对于当前query，需要与句子中所有 key 进行点乘后再 Softmax ，以获得句子中所有 key 对于当前query的score(权重)
+- 然后与所有词 的value向量进行加权融合之后，就能使当前token学习到句子中其他词的信息；
+
+
+
+#### self-attention 如何并行化？
+
+Transformer 的并行化主要体现在 self-attention 模块
+- 在Encoder端 Transformer可以并行处理整个序列，并得到整个输入序列经过 Encoder 端的输出
+- 在 self-attention 模块，对于某个序列(x1,x2,...xn)，self-attention 模块可以直接计算xi,xj的点乘结果，而RNN系列的模型就必须按照顺序从x1计算到xn。
+
+Self-Attention 并行计算句子中不同的query，每个query之间并不存在先后依赖关系，使得transformer能够并行化；
+
+Self-Attention 在计算的过程中，如何对padding位做mask? [知乎](https://zhuanlan.zhihu.com/p/149634836)
+
+#### Attention与MLP层的区别？
+
+既然 Attention 是为了关注某些局部信息，那些不就相当于连上一层在关注的部分权重更大的全连接层吗，二者的区别何在？
+- Attention的最终输出可看成是一个“在关注部分权重更大的全连接层”。但是与全连接层的区别在于，注意力机制可**利用输入特征信息确定哪些部分更重要**。
+
+#### 两个 FFN 层作用
+
+注意力计算后，用了两个**FFN层**，为什么第一个FFN层先把维提升，第二个FFN层再把维度降回原大小？
+
+[解释](https://mp.weixin.qq.com/s/DXOKLkXdTFfANpvV4eiQNA)
+- 1、提升维度：类似SVM kernel，通过提升维度识别一些在低维无法识别的特征。
+- 2、提升维度：更大的可训练参数，提升模型容量。
+- 3、降回原维度：方便多层注意力层和残差模块进行拼接，而无需进行额外处理。
+
+
+#### QKV 哪里来?
+
+WQ, WK, WV 由来
+- 先初始化为`[h,h]`维度，再用模型训练学习这里面的参数。
+
+
+#### 为什么要计算Q和K点乘？ 
+
+Q和K点乘是为了计算序列中**每个token与其他token的相似度**, 得到 attention score 矩阵，用来对V进行提纯。
+
+假设句子 "Hello, how are you?" 长度是6，embedding维度是 300，那么 Q，K，V都是(6, 300)的矩阵。
+- "Hello, how are you?" 这句话，当前token为”you"的时候，可知道”you“对于"Hello", ” , “, "how", "are", "?"这几个token对应的关注度是多少。
+- 有了这个 attention score，可知道处理到”you“的时候，模型在关注句子中的哪些token。
+
+#### Q和K为什么用不同？
+
+Q和K 为什么用不同的权重矩阵进行线性变换投影？
+- 如果 WQ 和 WK 一样，则 QKᐪ结果是**对称矩阵**，这样就**减弱了模型的表达能力**。
+- 同时在**对称矩阵**中，对角线的值会比较大，导致每个token过分关注自己。
+- 使用不同的投影矩阵，参数增多，可以增强模型表达能力。
+
+Self-Attention 计算时乘上WQ.WK.WV的好处？
+1. 增加了**参数量**，增加模型的**表达能力**。
+2. 加入了**不同线性变换**相当于对x 做了不同的投影，将向量x 投影到不同空间，增加模型的**泛化能力**。
+3. 允许某个token对其他位置token的注意力大于对自己的注意力，才能更好的**捕捉全局位置的注意力**。
+
+[知乎](https://zhuanlan.zhihu.com/p/626820422)
+
+#### 能不能只用QV，KV或V?
+
+为什么要用 Q,K,V? 仅仅使用QV，KV或者V行不行？
+
+不行
+- 使用 QKV 主要为了增强网络的**容量**和**表达能力**。
+- self-attention 使用 Q,K,V 这三个参数独立，模型的表达能力和灵活性显然会比只用 QV 或者只用 V 要好些
+
+
+#### 自注意力实现
+
+
+Self-Attention 计算公式
+- QKV计算不加**偏置项**: 缩放点积注意力：Scaled Dot-Product Attention
+- QKV计算加**偏置项**: Q = WQ*x+bQ
+
+
+#### 计算量多大
+
+Self-Attention 时间复杂度多少？
+
+Self-Attention 时间复杂度：`O(n²⋅d)`
+- n是序列的长度seq_length
+- d是embedding的维度d_model。
+
+Self-Attention 包括三个步骤：相似度计算，softmax和加权平均，时间复杂度分别是：
+- 相似度计算: `(n,d)`和`(d,n)`矩阵相乘: `(n,d)∗(d,n)=O(n²⋅d)` ，
+- softmax 直接计算，时间复杂度为 `O(n²)`
+- 加权平均: `(n,n)`和`(n,d)`的矩阵相乘: `(n,n)∗(n,d)=O(n²⋅d)` 
+
+Self-Attention 时间复杂度是 `O(n²⋅d)` 。
+
+[知乎](https://zhuanlan.zhihu.com/p/132554155)
+
+Self-Attention和Multi-head Attention的参数量怎么计算？
+
+self-attention块的模型参数有Q,K,V的权重矩阵WQ,WK,WV和偏置,输出权重矩阵Wo和偏置。
+
+4个权重矩阵的形状为【h,h】,4个偏置的形状为【h】。总参数量为4h²+4h.
+
+Multi-head Attention也符合这个参数量，但实际上需要分head计算再组合。
+
+
+### Context-attention 是什么？
 
 知道了**self-attention**，那你肯定猜到了**context-attention**是什么了：**它是encoder和decoder之间的attention**！所以，你也可以称之为**encoder-decoder attention**!
 
@@ -581,40 +738,75 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 
 那么Transformer模型采用的是哪种呢？答案是：**scaled dot-product attention**。
 
-### Scaled dot-product attention 是什么？
+### 点乘注意力是什么？
 
-论文[Attention is all you need](https://arxiv.org/abs/1706.03762)里面对于attention机制的描述是这样的：
+什么是 点乘注意力 Scaled dot-product attention ?
+
+论文[Attention is all you need](https://arxiv.org/abs/1706.03762)对 attention机制的描述：
 > An attention function can be described as a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility of the query with the corresponding key.
 
-这句话描述得很清楚了。翻译过来就是：**通过确定Q和K之间的相似程度来选择V**！
+翻译：**通过确定Q和K之间的相似程度来选择V**
 
-用公式来描述更加清晰：
+公式描述更加清晰：
 
 $$ \text{Attention}(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V $$
 
-**scaled dot-product attention**和**dot-product attention**唯一的区别就是，**scaled dot-product attention**有一个缩放因子 $ \frac{1}{\sqrt d_k} $。
+**scaled dot-product attention**和**dot-product attention**唯一的区别:
+- **scaled dot-product attention** 有个缩放因子 $ \frac{1}{\sqrt d_k} $。
 
-上面公式中的$d_k$表示的是K的维度，在论文里面，默认是`64`。
+$d_k$ 表示 K的维度，论文里默认是`64`。
 
-那么为什么需要加上这个缩放因子呢？论文里给出了解释：对于$d_k$很大的时候，点积得到的结果维度很大，使得结果处于softmax函数梯度很小的区域。
+#### 为什么加缩放因子？
 
-梯度很小的情况，这对反向传播不利。为了克服这个负面影响，除以一个缩放因子，可以一定程度上减缓这种情况。
+提示: 面试题
 
-为什么是$\frac{1}{\sqrt d_k}$呢？论文没有进一步说明。个人觉得你可以使用其他缩放因子，看看模型效果有没有提升。
+论文解释：
+- 对于 $d_k$ 很大时，点积得到的结果维度很大，使得结果处于 softmax 函数梯度很小的区域, 对反向传播不利。
 
-论文也提供了一张很清晰的结构图，供大家参考：  
-- ![scaled_dot_product_attention_arch](http://blog.stupidme.me/wp-content/uploads/2018/09/scaled_dot_product_attention_arch.png)  
-*Figure 3. Scaled dot-product attention architecture.*  
+为了克服这个负面影响，除以一个**缩放因子**，一定程度上减缓这种情况。
 
-首先说明一下我们的K、Q、V是什么：
-* 在encoder的self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
-* 在decoder的self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
-* 在encoder-decoder attention中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
+
+#### 为什么是 1/dk ？
+
+(1) 为什么是 $\frac{1}{\sqrt d_k}$
+
+论文没有进一步说明。可用其他缩放因子，看看模型效果有没有提升。
+
+提示: 面试题
+
+scaled 参数除 $ \sqrt d_k $？
+1. 使 QKᐪ 结果满足 `r ~ N(0,1)` , 期望为0，方差为1的标准正态分布，类似于**归一化**。
+1. 使输入值进入 softmax 敏感区间, 导数为0, 防止梯度消失
+
+作者发现
+- 当维度dk值很大时，输入softmax的值QKᐪ就越大，导致后面的softmax计算会有极小的梯度，不利于更新学习
+- 因此除以dk，防止梯度消失。(softmax值过大,其偏导数趋于0)
+
+(2) 必须是 $ \sqrt d_k $ 吗?
+
+只要做到每层参数的梯度保持在训练**敏感范围内**，使网络好训练。缓解梯度消失就可以。
+- 不用除根号dk方式有 Google T5 的 **Xavier初始化**。
+
+
+(3) 为什么要满足 标准正态分布?
+- 权重一般初始化为正态分布
+
+
+
+#### KQV 是什么
+
+K、Q、V 是什么：
+* 在 encoder 的 self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
+* 在 decoder 的 self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
+* 在 encoder-decoder attention 中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
 * Q、K、V三者的维度一样，即 $d_q=d_k=d_v$。
 
-上面scaled dot-product attention和decoder的self-attention都出现了**masking**这样一个东西。那么这个mask到底是什么呢？这两处的mask操作是一样的吗？这个问题在后面会有详细解释。
+上面 scaled dot-product attention 和 decoder 的 self-attention都出现了**masking**这样一个东西。
 
-### Scaled dot-product attention 实现
+那么这个mask到底是什么呢？这两处的mask操作是一样的吗？
+
+### 点乘注意力 实现
+
 
 #### 实现1
 
@@ -662,42 +854,41 @@ class ScaledDotProductAttention(nn.Module):
 
 ### Multi-head attention 又是什么
 
+提示: 面试题
 
 自注意力机制缺陷：
 - **模型在对当前位置信息进行编码时，会过度的将注意力集中于自身的位置**
 
-`多头注意力机制`解决这一问题。
-
-同时，`多头注意力机制` 还能给予注意力层的输出包含有不同**子空间**中的编码表示信息，从而增强模型的表达能力。
+`多头注意力机制`解决这一问题，还能给予注意力层的输出包含有不同**子空间**中的编码表示信息，从而增强模型的表达能力。
 
 论文提到
-- 将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。
-- 然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。
+- 将 Q、K、V 通过一个线性映射之后，分成 h 份，对每份进行 **scaled dot-product attention** 效果更好。
+- 把各个部分结果合并起来，再次经过线性映射，得到最终的输出。
 
-这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
+所谓的**multi-head attention**。超参数 h 是**heads**数量。论文默认是`8`。
 
-multi-head attention的结构图：  
-- ![multi-head attention_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/multi_head_attention_arch.png) 
+multi-head attention 结构图：  
 
-*Figure 4: Multi-head attention architecture.*  
+注意：
+- **分成 h 份**是在 $d_k$、$d_q$、$d_v$ 维度上切分。
+- 因此，进入到 scaled dot-product attention 的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
 
-注意：上面所说的**分成 $h$ 份**是在 $d_k、d_q、d_v$ 维度上面进行切分的。因此，进入到scaled dot-product attention的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
+Multi-head attention 允许模型加入不同位置的**表示子空间**信息。
 
-Multi-head attention 允许模型加入不同位置的表示子空间的信息。
-
-Multi-head attention 公式如下：
+Multi-head attention 公式：
 - $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_ 1,\dots,\text{head}_ h)W^O$$
 
-其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
+其中，$ \text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V) $
 
-相同维度下使用单头和多头的区别是什么
-- $d_{model}=512$，$h=8$。所以在 scaled dot-product attention 里 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+相同维度下用**单头**和**多头**的区别是什么
+- $d_{model}=512$，$h=8$。
+- 在 scaled dot-product attention 里 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
 
 如果
 - h=1，得到一个各个位置**只集中于自身位置**的注意力权重矩阵；
-- h=2，得到另外一个注意力权重**稍微分配合理**的权重矩阵；
+- h=2，得到另一个注意力权重**稍微分配合理**的权重矩阵；
 
-因而, 多头这一做法也恰好是论文作者提出用于克服「**模型在对当前位置的信息进行编码时，会过度的将注意力集中于自身的位置**」的问题。
+多头恰好克服「**模型在对当前位置的信息进行编码时，会过度的将注意力集中于自身的位置**」的问题。
 
 这里再插入一张真实场景下同一层的不同注意力权重矩阵可视化结果图：
 - ![](https://pic3.zhimg.com/80/v2-206e013c6615f1ec33558112585d7642_1440w.webp)
@@ -913,7 +1104,7 @@ Query和Key作用得到的attention权值作用到Value上。因此它们之间�
 
 而每一层线性映射参数矩阵都是独立的，所以经过映射后的Q, K, V各不相同，模型参数优化的目标在于将q, k, v被映射到新的高维空间，使得每层的Q, K, V在不同抽象层面上捕获到q, k, v之间的关系。一般来说，底层layer捕获到的更多是lexical-level的关系，而高层layer捕获到的更多是semantic-level的关系。
  
-### 2.4. Attention的作用
+### 2.4. Attention 作用
  
 下面这段我会以机器翻译为例，用通俗的语言阐释一下attention的作用，以及query, key, value的含义。
 - ![](https://pic4.zhimg.com/80/v2-cca6e1f0dd02f08cc554d731362a08af_720w.jpg)
