@@ -120,10 +120,6 @@ permalink: /quant
 
 更多：[如何学习量化交易](https://www.zhihu.com/question/22211032/answer/2615443093)
 
-## 炒股工具
-
-- 【2022-1-12】[WnStock](https://github.com/woniu201/WnStock/tree/master/Release), WnStock是个开源的查看股票行情软件，使用VC++/MFC开发，IDE选用Visual Studio 2010，如IDE版本非2010可能会存在编译错误
-- [股票告警分析工具](https://github.com/lusson-luo/stock_tool)
 
 ## 机器学习炒股
 
