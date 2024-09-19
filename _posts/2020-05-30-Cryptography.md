@@ -3,7 +3,7 @@ layout: post
 title:  "密码学-Cryptography"
 date:   2020-05-30 00:13:00
 categories: 新技术
-tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码
+tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码
 excerpt: 密码学知识，常见的加密、解码算法，对称密钥、非对称密钥和Hash散列
 author: 鹤啸九天
 mathjax: true
@@ -398,6 +398,19 @@ O T O E O I O U Y V L进行再次解码。分成两排：
 - RSA密码诞生
 
 ![](https://upload-images.jianshu.io/upload_images/2990730-1e446769f7fd0fa2.png)
+
+
+### 二维码
+
+
+回形针: [Vol.120 二维码的秘密](https://www.youtube.com/watch?v=XW8sgT_D0To)
+- 一维码: 条形码
+- 二维码: QRCode, Quick Response Code, 校验、纠正，同时保证准确度
+
+QR Code 核心: 里德-所罗门编码, 前向错误更正的信道编码, 具备纠错能力，用了近世代数的伽罗瓦，概念 伽罗瓦域
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XW8sgT_D0To?si=YswOJMDNdw8zT_Et" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ## 资料
 
