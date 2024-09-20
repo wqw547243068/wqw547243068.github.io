@@ -209,7 +209,8 @@ OpenAI 作为一个有声望的非营利组织，致力于开发能够推动社�
 
 OpenAI 发布
 - 【2020-1-23】论文 [Scaling Laws for Neural Language Models](https://arxiv.org/pdf/2001.08361.pdf)
-- OpenAI 官方文章 [Scaling laws for neural language models](https://openai.com/research/scaling-laws-for-neural-language-models)
+  - OpenAI 官方文章 [Scaling laws for neural language models](https://openai.com/research/scaling-laws-for-neural-language-models)
+  - [解读](https://blog.csdn.net/CY19980216/article/details/125139643)
 - 【2020-11-6】第二篇文章 OpenAI Scaling Paper: [Scaling Laws for Autoregressive Generative Modeling](https://arxiv.org/pdf/2010.14701), [解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
 
 
