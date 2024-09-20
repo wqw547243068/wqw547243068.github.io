@@ -16,6 +16,59 @@ permalink: /llm_scaling_law
 # Scaling Law 缩放定律
 
 
+## 思考
+
+[解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
+
+需求：
+- 训练10B模型，至少要**多大数据**？
+- 1T数据能训练**多大模型**？
+- 100张A100，应该用**多少数据**训一个**多大模型**，最终效果最好？
+- 10B模型不满意，扩大到100B模型，效果能提升到多少？
+
+以上这些问题都可以基于 Scaling Law 理论进行回答。
+
+
+### LLM 为什么都是 6b/13b/52b...
+
+总结
+> scaling law 指导下，匹配当前的显卡资源和数据资源
+
+- [现在LLM 大小为什都设计成6/7B、13B和130B几个档次？](https://www.zhihu.com/question/627258986/answer/3260798103?utm_psn=1733426493282344961)
+
+[方佳瑞](https://www.zhihu.com/question/627258986/answer/3261239043)
+
+最大尺寸版本确定的核心逻辑是: DeepMind 的 `Chinchilla Scaling Law`。
+
+开发大模型时，清洗出来的开源数据数量是**离散值**。
+- LLaMA-1 预训练时，从各种开源数据集凑够了 1.4T tokens，所以最大版本是**70B**，很接近`Chinchilla Scaling Law`的计算结果。
+- 用1024张A100，MFU=0.55情况下，训练时长大概是38天，这是一个比较可行的预训练方案。
+- 至于更小版本选型比较随意，主要考虑调试时，计算量要控制在一个可控范围，比如一般会选择一个10^22 FLOPs计算量（差不多256卡两三天出结果）下的最优模型尺寸，因此最优尺寸肯定是在10B以内。由于一些矩阵维度的限制，一般都是**6B**，**7B**。
+- ![](https://pic1.zhimg.com/50/v2-df87270c8e67f83b38b584f720b8cd95_720w.jpg)
+
+`Chinchilla Scaling Law`有些争议，正溯还是得看OpenAI文章[Scaling laws for neural language models](https://arxiv.org/pdf/2001.08361)，过去一年内大家还是会follow这套理论。
+
+[刘聪NLP](https://www.zhihu.com/question/627258986/answer/3260798103)
+
+LLM 一般都是基于Transormer结构，**参数总和** = **Embedding部分**参数 + **Transormer-Decoder部分**参数
+- Embedding 部分参数由词表大小和模型维度决定；
+- Decoder 部分参数由模型层数和模型维度决定。
+
+决定参数的几个因素有：**词表大小**、**模型层数**（深度）、**模型维度**（宽度）。
+- 关于词表大小设置，越大的词表的压缩会更好，但可能导致模型训练不充分；越小的词表压缩会比较差，导致模型对长度需求较高。
+- 关于层数设置问题，其实模型层数和维度具体设置成多少是最优的（但一般层数变大，维度也会变大），目前没有论文明确表明，但绝大多数感觉跟着GPT3的层数和维度来的。
+- ![](https://picx.zhimg.com/50/v2-757af3b0e13e0d76d8bb1c75018a8b44_720w.jpg)
+
+常见模型 6/7B 是**32层**、13B 是**40层**。
+
+PS：由于GPT3模型先出，让OPT、Bloom等都是为了做开源的GPT3所提出的，因此参数规模是一致的。
+- llama 为了对标GPT3，不过为了证明效果更好，也在中间多了`33B`和`65B`规模。
+- `130B` 只有GLM大模型是这个参数。
+
+现在流传甚广的其实是6/7B(小)、13B(中)，主要是由于更大的模型训练成本会更高，并且对于很多人来说13B的模型已经算顶配了（消费显卡跑得了）。
+
+
+
 ## 语言模型进化
 
 【2024-8-10】[大语言模型 Scaling Law：如何随着模型大小、训练数据和计算资源的增加而扩展](https://mp.weixin.qq.com/s/7XnuXjN8Y44FCkWJ6YwTTQ)
@@ -123,6 +176,14 @@ Scaling Laws 意义:
 - 计算损失对w的梯度时，需要恰好2次FLOPs。
 - 用损失的梯度更新参数w时，需要恰好2次FLOPs。
 
+
+
+
+【2024-9-20】[AI can't cross this line and we don't know why](https://www.youtube.com/watch?v=5eqRuVp65eY)
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5eqRuVp65eY?si=dfoIUDqztuQOr8hx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### Scaling Law 定义
 
 
@@ -149,6 +210,16 @@ OpenAI 作为一个有声望的非营利组织，致力于开发能够推动社�
 OpenAI 发布
 - 【2020-1-23】论文 [Scaling Laws for Neural Language Models](https://arxiv.org/pdf/2001.08361.pdf)
 - OpenAI 官方文章 [Scaling laws for neural language models](https://openai.com/research/scaling-laws-for-neural-language-models)
+- 【2020-11-6】第二篇文章 OpenAI Scaling Paper: [Scaling Laws for Autoregressive Generative Modeling](https://arxiv.org/pdf/2010.14701), [解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
+
+
+核心结论
+- 对于 Decoder-only 模型，计算量`C`(Flops), 模型参数量`N`, 数据大小`D`(token数)，三者满足: `C ≈ 6ND`
+- 模型最终性能主要与计算量`C`，模型参数量`N`和数据大小`D`三者相关，而与模型结构(层数/深度/宽度)基本无关。
+- 计算量`C`，模型参数量`N`和数据大小`D`，当不受其他两个因素制约时，模型性能与每个因素都呈现**幂律**关系
+  - ![](https://pic3.zhimg.com/80/v2-3aa5475bcadc607ea96f20136158f80a_1440w.webp)
+- 为了提升模型性能，模型参数量`N`和数据大小`D`需要**同步放大**，但模型和数据分别放大的比例还存在争议。
+- Scaling Law 不仅适用于语言模型，还适用于其他模态以及跨模态的任务
 
 论文首次提出**模拟**神经语言模型的`模型性能`（Loss）与`模型大小`、`数据集大小`和`训练计算量`的关系。
 - 三者中任何一个因素受限时，Loss与其之间存在`幂律关系`。
@@ -300,44 +371,73 @@ Scaling Law 再次被 OpenAI带火，人们坚信：“模型越大，效果越�
 
 ## 应用
 
-### LLM 为什么都是 6b/13b/52b...
+[解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
 
-总结
-> scaling law 指导下，匹配当前的显卡资源和数据资源
+### GPT-4
 
-- [现在LLM 大小为什都设计成6/7B、13B和130B几个档次？](https://www.zhihu.com/question/627258986/answer/3260798103?utm_psn=1733426493282344961)
+GPT4报告中 Scaling Law曲线，计算量C和模型性能满足幂律关系
+- ![](https://pic1.zhimg.com/80/v2-1f6306d2d33a66bd7de98f374fd3e406_1440w.webp)
+- 横轴是归一化之后的**计算量**，假设GPT4计算量为1。基于10,000倍小的计算规模，能预测最终GPT4的性能。
+- 纵轴是"Bits for words", **交叉熵**单位。在计算交叉熵时，如果使用以 2 为底的对数，`交叉熵`单位是 "bits per word"，与`信息论`中的比特（bit）概念相符。所以这个值越低，说明模型的性能越好。
 
-[方佳瑞](https://www.zhihu.com/question/627258986/answer/3261239043)
 
-最大尺寸版本确定的核心逻辑是: DeepMind 的 `Chinchilla Scaling Law`。
+### Baichuan2
 
-开发大模型时，清洗出来的开源数据数量是**离散值**。
-- LLaMA-1 预训练时，从各种开源数据集凑够了 1.4T tokens，所以最大版本是**70B**，很接近`Chinchilla Scaling Law`的计算结果。
-- 用1024张A100，MFU=0.55情况下，训练时长大概是38天，这是一个比较可行的预训练方案。
-- 至于更小版本选型比较随意，主要考虑调试时，计算量要控制在一个可控范围，比如一般会选择一个10^22 FLOPs计算量（差不多256卡两三天出结果）下的最优模型尺寸，因此最优尺寸肯定是在10B以内。由于一些矩阵维度的限制，一般都是**6B**，**7B**。
-- ![](https://pic1.zhimg.com/50/v2-df87270c8e67f83b38b584f720b8cd95_720w.jpg)
+Baichuan2 技术报告中的 Scaling Law曲线。
 
-`Chinchilla Scaling Law`有些争议，正溯还是得看OpenAI文章[Scaling laws for neural language models](https://arxiv.org/pdf/2001.08361)，过去一年内大家还是会follow这套理论。
+基于10M~3B 模型在1T数据上训练的性能，可预测出最后7B模型和13B模型在2.6T数据上的性能
+- ![](https://pic4.zhimg.com/80/v2-704359ac707ceaaf7965555cc56dd2f5_1440w.webp)
 
-[刘聪NLP](https://www.zhihu.com/question/627258986/answer/3260798103)
+幂律定律
+- 模型参数固定，**无限堆数据并不能无限提升模型性能**，模型最终性能会慢慢趋向一个固定值
 
-LLM 一般都是基于Transormer结构，**参数总和** = **Embedding部分**参数 + **Transormer-Decoder部分**参数
-- Embedding 部分参数由词表大小和模型维度决定；
-- Decoder 部分参数由模型层数和模型维度决定。
+实验数据
+- ![](https://pic1.zhimg.com/80/v2-844a2d16cad92d28b0736c0211abe086_1440w.webp)
 
-决定参数的几个因素有：**词表大小**、**模型层数**（深度）、**模型维度**（宽度）。
-- 关于词表大小设置，越大的词表的压缩会更好，但可能导致模型训练不充分；越小的词表压缩会比较差，导致模型对长度需求较高。
-- 关于层数设置问题，其实模型层数和维度具体设置成多少是最优的（但一般层数变大，维度也会变大），目前没有论文明确表明，但绝大多数感觉跟着GPT3的层数和维度来的。
-- ![](https://picx.zhimg.com/50/v2-757af3b0e13e0d76d8bb1c75018a8b44_720w.jpg)
+#### 如何计算
 
-常见模型 6/7B 是**32层**、13B 是**40层**。
+如果模型参数量为 10^3（紫色线），数量达到10^9，模型基本收敛。继续增加数据，产生的计算量，没有同样计算量下提升模型参数量带来的收益大（计算效率更优）。
 
-PS：由于GPT3模型先出，让OPT、Bloom等都是为了做开源的GPT3所提出的，因此参数规模是一致的。
-- llama 为了对标GPT3，不过为了证明效果更好，也在中间多了`33B`和`65B`规模。
-- `130B` 只有GLM大模型是这个参数。
+根据 `C=6ND` ，进一步转换成**模型参数**与**计算量**关系，即:
+- 模型参数为 10^3，计算量为 `6*10^12` Flops，即 `7*10^(-8)` PF-days时, 基本收敛。右图中紫色线拐点。
 
-现在流传甚广的其实是6/7B(小)、13B(中)，主要是由于更大的模型训练成本会更高，并且对于很多人来说13B的模型已经算顶配了（消费显卡跑得了）。
+Baichuan 实验
+- 中英场景下，7B 模型收敛时的算力是 10^23 FLOPS，对应数据量应该是 $ D=\frac{10^23}{6*7*10^9}=2.3T $
 
+计算效率最优时，**模型参数**与**计算量**幂次成**线性关系**，**数据量大小**也与**计算量**幂次成线性关系。
+
+观点
+- OpenAI 认为**模型规模**更重要，即 a=0.73, b=0.27
+- 而 DeepMind 在 Chinchilla工作和Google在PaLM工作中都验证了 a=b=0.5 ，即**模型和数据同等重要**。
+
+假定计算量整体放大**10倍**
+- OpenAI 认为模型参数更重要，模型应放大 10^0.73=5.32 倍，数据放大 10^0.27=**1.86** 倍；
+- DeepMind和Google认为模型参数量与数据同等重要，两者都应该分别放大 10^0.5=**3.16** 倍。
+
+最好在自己的数据上做实验来获得你场景下的a,b
+
+### MindLLM
+
+MindLLM 技术报告中 Scaling Law曲线。
+
+基于10M~500M 模型在10B数据上训练的性能，预测出最后3B模型在500B数据上的性能。
+- ![](https://pic2.zhimg.com/80/v2-11c690520359c7484bbf23ba520e8ed9_1440w.webp)
+
+
+### LLaMA
+
+LLaMA: 反Scaling Law 大模型
+
+假设遵循**计算效率最优**来研发LLM，那么根据 Scaling Law，给定**模型大小**，可推算出**最优计算量**，进一步根据最优计算量就能推算出需要的**token数量**，然后训练就行。
+
+但是**计算效率最优**是针对**训练**阶段而言，并不是**推理**阶段，实际应用中推理阶段效率更实用。
+
+Meta 在 LLaMA 的观点是：
+- 给定模型目标性能，并不需要用最优的计算效率在最快时间训练好模型，而应该在**更大规模的数据上，训练一个相对更小模型**，这样的模型在推理阶段的成本更低，尽管训练阶段的效率不是最优的（同样的算力其实能获得更优的模型，但是模型尺寸也会更大）。
+- 根据 Scaling Law，**10B**模型只需**200B**数据，但是**7B**模型性能在**1T**数据后还能继续提升。
+
+所以, LLaMA 重点是训练一系列语言模型，通过使用更多数据，让模型在有限推理资源下有最佳的性能。
+- 确定模型尺寸后，Scaling Law 给到的只是**最优数据量**，一个至少的数据量，实际在训练中观察在各个指标上的性能表现，只要还在继续增长，就可以持续增加训练数据。
 
 ## 改进
 
