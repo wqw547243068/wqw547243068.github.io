@@ -874,7 +874,7 @@ RAG工作流
   - 图数据库应用：主要解决多度关系和推荐问题。
 
 
-### HyDE
+### 【2022-8-29】HyDE
 
 **假设文档嵌入**（Hypothetical Document Embeddings, `HyDE`）
 
@@ -912,7 +912,7 @@ HyDE 核心思想
 
 相比原生 RAG，HyDE 和 RAG 合作，多了两步：
 - 用 LLM 尝试回答问题
-- 生成一个假设的文档，这个假设的文档是通过 LLM 生成的。
+- 生成一个**假设文档**，这个假设的文档是通过 LLM 生成的。
 
 HyDE 两步法
 - 步骤1 指令提示语言模型（论文中用 GPT-3）根据**原始查询**生成**假设文档**。
@@ -1091,14 +1091,17 @@ hyde_embedding[:10]
 ```
 
 
-### CoN 承认不会
+### 【2023-11-15】CoN 承认不会
+
+
+【2023-11-15】腾讯AI Lab
 
 Chain-of-Note：大模型检索增强生成更加鲁棒
 - 论文链接：[CoN](https://arxiv.org/pdf/2311.09210.pdf)
 
 缺乏知识的情况下，基于检索增强的语言模型应当能够**承认自己的“无知”**。为了应对这些挑战，作者引入Chain-of-Noting（CON）的方法，提高基于检索增强的语言模型面对嘈杂、不相关文档以及处理未知场景的鲁棒性。
 
-CON的核心思想
+CON 核心思想
 - 为检索到的文档生成**连续阅读笔记**，使其能够彻底评估与给定问题的相关性，并将这些信息整合以生成最终答案。
 
 三种不同类型的CoN
@@ -1107,30 +1110,61 @@ CON的核心思想
 - 语言模型遇到不相关文档并缺乏回应所需知识的情况，能够承认自己的“无知”
 
 
-### FILCO 提前过滤不相关
+### 【2023-11-14】FILCO 提前过滤不相关
+
+
+【2023-11-14】CMU 提出
 
 FILCO：检索增强生成加一道“过滤”
-- 论文链接：[paper](https://arxiv.org/pdf/2311.08377.pdf)
+- 论文链接：[Learning to Filter Context for Retrieval-Augmented Generation](https://arxiv.org/pdf/2311.08377.pdf)
 
 在开放领域问答和事实验证等任务中，如何改进检索增强型生成系统的性能。
 - 生成回答时，会检索相关知识，但由于检索系统并不完美，有时会提供**部分或完全不相关的信息**。这可能导致生成模型过度或不足地依赖于上下文信息，进而产生错误的输出，例如虚构信息。
 - 论文提出一种名为 FILCO 的方法，它通过词汇和信息论方法来识别有用的上下文，并训练上下文过滤模型在测试时过滤检索到的上下文。
 
-FILCO 方法：
-
-这种方法通过两个步骤改善生成器提供的上下文质量：
+FILCO 方法通过两个步骤改善生成器提供的上下文质量：
 - (1) 基于词汇和信息论方法识别有用的上下文；
 - (2) 训练上下文过滤模型在测试时过滤检索到的上下文。
 
-### GraphRAG
+### 【2024-2-13】GraphRAG
 
 【2023-8-15】GraphRAG 基于知识图谱的搜索增强
 
-【2024-4】微软 首次宣布推出 GraphRAG
+#### GraphRAG 发布
+
+【2024-2-13】微软 首次宣布推出 GraphRAG
+- [GraphRAG: Unlocking LLM discovery on narrative private data](https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/)
+- GraphRAG 对复杂信息进行文档分析, 用 LLM 生成知识图, 显着提高问答性能
+- 便于在私有数据集上增强RAG能力, 如: 企业专有研究、商业文档或通信。
+
+传统 RAG 不擅长 
+- 通过共享属性遍历不同信息, 提供新的综合见解: 
+- 全面理解大型数据集,甚至单个大型文档, 概括语义概念；
+  - 传统 RAG 依赖于数据集中语义相似文本内容的矢量搜索。查询中没有任何内容可以将其定向到正确的信息。
+  - 数据中排名前 5 位的主题是什么？
+
+GraphRAG 用LLM基于**私有数据集**创建知识图谱。然后与`图机器学习`一起使用，查询时执行提示增强。 
+- GraphRAG 在回答上述两类问题上，提升明显，展示了优于之前应用于私有数据集的其他方法的智能或掌握能力。
+
+问题：
+- Query: “What is Novorossiya?” 问题： “什么是新俄罗斯？”
+- 基线RAG 和 GraphRAG 表现良好
+
+|类型|示例|Baseline RAG|GraphRAG|分析|
+|---|---|---|---|---|
+|常规|“What is Novorossiya?” <br> “什么是新俄罗斯？”|所提供的上下文中未提及“Novorossiya”一词。然而，为了提供一些信息，Novorossiya（新俄罗斯）是一个历史术语，指的是乌克兰南部的一个地区，该地区在 18 世纪被俄罗斯帝国征服。近年来，俄罗斯支持的乌克兰东部分离主义者重新使用了这个词来指代他们声称拥有主权的领土，但国际机构并未正式承认它是一个独立的实体。|新俄罗斯，又称新俄罗斯，是一个具有历史和当代意义的术语。历史上，它指的是俄罗斯帝国南部的一个地区，现在是乌克兰的一部分。在当代背景下，它被亲俄分离主义者用来指代乌克兰的某些地区[数据：实体（6494, 912, 6493）]。<br>“Novorossiya”一词在乌克兰的政治运动中被使用，特别是俄罗斯民族主义者。这一运动与破坏乌克兰稳定和创建所谓的“Novorossiya”的努力有关 [ 数据：实体（912）；关系（15211、15206） ]。该术语还被用来表示乌克兰的一个分离主义国家，称为新俄罗斯联邦共和国 (FRN) [数据：实体 (7690)]。|二者表现都可以|
+|需要连接|What has Novorossiya done?”<br>“新俄罗斯做了什么？”|该文本没有提供有关 Novorossiya 所做工作的具体信息。|乌克兰的政治运动 Novorossiya 参与了一系列破坏性活动，特别是针对乌克兰的各种实体 [实体 (6494, 912)]。该运动与摧毁多个乌克兰实体财产的计划有关，包括罗森、敖德萨罐头厂、敖德萨地区广播电视传输中心和乌克兰国家电视公司[ 关系（15207、15208、15209、15210）] 。除此之外，Novorossiya 还参与了摧毁 Roshen、敖德萨音乐学院工厂、敖德萨地区广播电视传输中心和乌克兰国家电信公司财产的计划 [关系 (8329、8330、8331、8332)] 。此外，Novorossiya 还参与了炸毁乌克兰最大国有银行 PrivatBank ATM 机的计划 [Relationships (8335, 8335)]。<br>乌克兰总检察长办公室报告了 Novorossiya 的成立，表明政府对该运动的活动的认识和潜在关注 [Relationships (8264, 8264)]。新俄罗斯的破坏活动对目标实体产生了重大影响，并可能加剧了该地区持续的紧张局势和冲突。<br>总之，“新俄罗斯”参与了一系列针对乌克兰境内各个实体的破坏性活动。这些活动对目标实体产生了重大影响，并可能加剧了该地区持续的紧张局势和冲突。乌克兰政府通过总检察长办公室承认了新俄罗斯组织的存在和活动，表明对该运动的行为表示一定程度的关注。|源文档没有任何文本段讨论 Novorossiya，导致此Baseline RAG失败;<br>而GraphRAG 方法在查询中发现了一个实体 Novorossiya, 据此进一步探索，LLM用来通过图中两个实体之间存在的关系来支持特定银行是 Novorossiya 目标的断言|
+|综合理解|“What are the top 5 themes in the data?“<br>“数据中排名前 5 的主题是什么？ “|1. 提高城市生活质量和城市发展。<br>2. 弗拉基米尔·普京与阿拉伯联合酋长国总统穆罕默德·本·扎耶德·阿勒纳哈扬的会晤。<br>3. 俄罗斯各地区投资环境国家评级。<br>4. 俄罗斯经济状况和国内品牌的成长。<br>5. 关于生命意义和科学在理解生命中的作用的讨论。|数据呈现了广泛的主题，但最流行的五个主题可以确定如下：<br>1.冲突和军事活动：很大一部分数据围绕乌克兰持续的冲突，有大量报告详细介绍了各种实体的军事活动、占领和袭击。该主题包括乌克兰军队、俄罗斯军队以及其他各种军事单位和实体的行动[ 数据：报告（513、241、151、493、343，+更多）]。...(省略)...|Baseline RAG 主题都与两国之间的战争没有太大关系;<br>GraphRAG结果与整个数据集中发生的情况更加一致。答案提供了五个主要主题以及数据集中观察到的支持细节。|
+||||||
+
+用LLM生成的知识图，GraphRAG 极大地改进了 RAG 的“检索”部分，用更高相关性的内容填充上下文窗口，从而获得更好的答案并捕获证据来源。
+
+#### GraphRAG 开源
 
 【2024-7-4】[下一代 RAG 技术来了！微软正式开源 GraphRAG：大模型行业将迎来新的升级](https://mp.weixin.qq.com/s/UIUWdvSiBWFq6sqqsumbzw)
 
 7月2日，微软开源 GraphRAG，一种基于图的检索增强生成 (RAG) 方法，可以对**私有或以前未见过**的数据集进行问答。
+- [GraphRAG: New tool for complex data discovery now on GitHub](https://www.microsoft.com/en-us/research/blog/graphrag-new-tool-for-complex-data-discovery-now-on-github/)
 - 开源地址：[graphrag](https://github.com/microsoft/graphrag)
 
 GraphRAG 极大增强 LLM 在处理私有数据时的性能，同时具备连点成线的跨大型数据集的复杂语义问题推理能力。普通 RAG 技术在私有数据，如企业的专有研究、商业文档表现非常差，而 GraphRAG 则基于前置的知识图谱、社区分层和语义总结以及图机器学习技术可以大幅度提供此类场景的性能。
@@ -1302,7 +1336,7 @@ batched_import(statement, doc_df)
 基于embedding的 RAG方法，常见
 
 
-### RAG-Fusion
+### 【2023-10-7】RAG-Fusion
 
 【2023-10-7】[使用RAG-Fusion和RRF让RAG在意图搜索方面更进一步](https://mp.weixin.qq.com/s/N7HgjsqgCVf2i-xy05qZtA)
 - 原文: [Forget RAG, the Future is RAG-Fusion](https://towardsdatascience.com/forget-rag-the-future-is-rag-fusion-1147298d8ad1)
@@ -1500,7 +1534,7 @@ Connections to Prior Work
 
 
 
-### Agent RAG 
+### 【2023-10-28】Agent RAG 
 
 - OpenAI community [Standard RAG + Agent Solution](https://community.openai.com/t/standard-rag-agent-solution/454605)
 
@@ -1597,6 +1631,77 @@ Task Description:
 ```
 
 
+### 【2024-2-23】文档分割
+
+【2024-2-23】文档语义分割
+- [一文掌握文本语义分割：从朴素切分、Cross-Segment到阿里SeqModel](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+RAG中，embedding 和 文档语义分割、段落分割 是绕不开的关键点，重点梳理下各类典型的语义分割模型
+
+基于 CrossSegmentAttention 的模型（如 `Cross-segmentBERT` 和 `BERT+Bi-LSTM`）以及阿里巴巴开源的 `SeqModel`，对比了在处理文本分割任务时的上下文利用和效率
+
+#### CrossSegmentAttention
+
+
+RAG 场景下，常用文本切块方法基于**策略**，例如大模型应用开发框架提供的 `RecursiveCharacterTextSplitter` 方法，定义**多级分割符**，用上一级切割符分割后的文本块, 如果还是超过最大长度限制，再用第二级切割符进一步切割
+
+Lukasik 等人在论文《[Text Segmentation by Cross Segment Attention](https://blog.csdn.net/v_JULY_v/article/details/135386202)》提出了三种基于transformer的**分割模型**架构。
+- 其中一种仅利用每个**候选断点**(candidate break)周围的局部上下文
+- 而另外两种则利用来自输入的完整上下文(所谓候选断点指任何潜在的段边界，即 any potential segment boundary)
+
+(1) `Cross-segment BERT`：确定某个句子是否作为下一个段落的开头
+
+分割模型旨在完成**文档分割**任务，预测每个句子是否是文本分段边界
+- 在 `Cross-segment BERT` 模型中，围绕潜在段落断点的局部上下文输入到模型中：左边k个标记和右边k个标记
+- 其中与`[CLS]`对应的输出隐状态被传递给softmax分类器，以便对候选断点进行分段决策
+
+(2) `BERT+Bi-LSTM`
+
+在BERT+Bi-LSTM模型中，首先用 BERT 对每个句子进行编码，然后将句子表示输入到Bi-LSTM中
+- 当用BERT编码每个句子时，所有序列都以`[CLS]`标记开始
+- LSTM 负责处理具有**线性**计算复杂度的多样化和潜在的大型句子序列
+
+(3) `Hierarchical BERT`
+
+分层BERT模型中，首先用 BERT 对每个句子进行编码，然后将输出的句子表示输入到基于Transformer的另一个模型中
+
+图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+
+#### SeqModel
+
+阿里语义分割模型 SeqModel
+
+SeqModel 核心原理
+- Cross-Segment 提出基于**本地上下文**的**跨段BERT模型**和**分层BERT模型**（Hier.BERT），利用两个BERT模型对句子和文档进行编码，从而实现更长的上下文建模
+- 2020年，论文《Two-level transformer and auxiliary coherence modeling for improved text segmentation》还采用了两个分层连接的Transformer结构(uses two hierarchically con-nected transformers)。然而，由于分层模型计算成本高且推理速度较慢
+
+
+SeqModel：将文档分割建模为**句子级序列标记**任务
+
+Zhang 等人在论文《Sequence Model with Self-Adaptive Sliding Window for Efficient Spoken Document Segmentation》中提出了SeqModel
+
+SeqModel 利用BERT对**多个句子同时编码**，建模更长的上下文之间依赖关系之后再计算句向量，最后预测每个句子后边是否进行文本分割
+
+此外，该模型还使用了**自适应滑动窗口**方法，在在不牺牲准确性的情况下进一步加快推理速度
+
+图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+
+步骤
+- 首先，文档中每个句子经过 WordPiece 分词器进行分词
+- 然后，通过由“token嵌入、位置嵌入和段落嵌入”组成的输入表示层来对这些句子进行编码
+- 这些嵌入被送入Transformer编码器，输出与k个标记对应的隐状态，并使用均值池化方法得到句子编码
+- 最后，将所有句子编码输入softmax二元分类器，以判断每个句子是否为段落边界，训练目标是最小化softmax交叉熵损失
+
+自适应滑动窗口(Self-adaptive Sliding Window)
+
+还提出了一种自适应滑动窗口方法，在不牺牲准确性的情况下进一步加快推理速度
+- 传统分割推理滑动窗口使用**固定前向步长**。自适应滑动窗口方法，在推理过程中，从前一个窗口中的最后一句话开始，模型在最大后向步长内 向后查看，以找到来自前一个推理步骤的积极分割决策（模型对分割预测概率>0.5）
+- 当在这个跨度内有积极的决策时，下一个滑动窗口将自动调整为：从最近预测片段边界之后的下一个句子开始
+- 考虑到最后一段和历史对下一个分割决策影响已经降低，这种策略有助于丢弃滑动窗口内不相关的历史信息。因此，自适应滑动窗口既可以加快推理速度也可以提高分割准确性
+
+
+
 ### 【2024-6-26】UAR
 
 【2024-6-26】[复旦+上海AI Lab提出统一主动检索RAG，减少延迟，提升响应](https://mp.weixin.qq.com/s/4i5lWgTkp1GpsCJzdq6PEg)
@@ -1667,7 +1772,8 @@ RankRAG整体包括两个阶段：指令调优阶段、排名与生成综合指�
 - ![](https://pic2.zhimg.com/80/v2-3723a659aa92a0622aff5c81b93599d1_1440w.webp)
 
 
-### HybridRAG
+
+### 【2024-9-6】HybridRAG
 
 
 【2024-9-6】[HybridRAG：VectorRAG+GraphRAG在时序向量图谱数据库AbutionGraph中的一体化实现](https://zhuanlan.zhihu.com/p/718613162?utm_psn=1816525270162743297)
@@ -1749,74 +1855,61 @@ AbutionGraph-时序/向量/图谱数据库的一体化GraphRAG实现方案介绍
 AbutionGraph数据库通过向量图谱存储方式，继承了Vector+Graph RAG的优势，简化了HybridRAG的实现，提供了一种构建存储和查询检索更优化、成本效益更高的选择。它支持静态图谱、时序图谱和向量图谱的存储，适用于需要高时效性和生成高质量响应的场景或通常一种数据库无法轻易完成的交叉性场景。
 
 
-### 文档分割
-
-【2024-2-23】文档语义分割
-- [一文掌握文本语义分割：从朴素切分、Cross-Segment到阿里SeqModel](https://blog.csdn.net/v_JULY_v/article/details/135386202)
-
-RAG中，embedding 和 文档语义分割、段落分割 是绕不开的关键点，重点梳理下各类典型的语义分割模型
-
-基于 CrossSegmentAttention 的模型（如 `Cross-segmentBERT` 和 `BERT+Bi-LSTM`）以及阿里巴巴开源的 `SeqModel`，对比了在处理文本分割任务时的上下文利用和效率
-
-#### CrossSegmentAttention
+### 【2024-9-10】MemoRAG
 
 
-RAG 场景下，常用文本切块方法基于**策略**，例如大模型应用开发框架提供的 `RecursiveCharacterTextSplitter` 方法，定义**多级分割符**，用上一级切割符分割后的文本块, 如果还是超过最大长度限制，再用第二级切割符进一步切割
+RAG 的一个根本挑战: 处理**复杂、模糊查询**和**非结构化**知识。
+- 传统 RAG 非常适合提供**明确信息**的**简单问答**任务，但在面对更细微的场景时就会失败。
 
-Lukasik 等人在论文《[Text Segmentation by Cross Segment Attention](https://blog.csdn.net/v_JULY_v/article/details/135386202)》提出了三种基于transformer的**分割模型**架构。
-- 其中一种仅利用每个**候选断点**(candidate break)周围的局部上下文
-- 而另外两种则利用来自输入的完整上下文(所谓候选断点指任何潜在的段边界，即 any potential segment boundary)
+突破性框架 MemoRAG 通过**集成长期记忆功能**将 RAG 推向新领域，实现更深入的上下文理解和更准确的信息检索。
 
-(1) `Cross-segment BERT`：确定某个句子是否作为下一个段落的开头
+【2024-9-10】`北京智源人工智能研究院` BAAI 与`中国人民大学` RUC 高瓴人工智能学院联合推出基于**长期记忆**的下一代检索增强大模型框架`MemoRAG`，推动RAG技术从仅能处理**简单QA**任务向应对**复杂一般性任务**拓展。
+- 论文: [MemoRAG: Moving Towards Next-Gen RAG Via Memory-Inspired Knowledge Discovery](https://arxiv.org/pdf/2409.05591)
 
-分割模型旨在完成**文档分割**任务，预测每个句子是否是文本分段边界
-- 在 `Cross-segment BERT` 模型中，围绕潜在段落断点的局部上下文输入到模型中：左边k个标记和右边k个标记
-- 其中与`[CLS]`对应的输出隐状态被传递给softmax分类器，以便对候选断点进行分段决策
+MemoRAG 提出“**基于记忆的线索生成**——基于线索指引的信息获取——基于检索片段的内容生成”这一全新的RAG模式，实现了复杂场景条件下(尤其是“模糊查询表述”、“高度非结构化知识”) 的精准信息获取。
 
-(2) `BERT+Bi-LSTM`
+MemoRAG 是一个基于内存的 RAG 创新性框架，通过**高效**、**超长内存模型**支持各种应用场景。
+- 与传统的 RAG 不同，MemoRAG 利用其内存模型来实现对整个数据集的**全局理解记忆**，通过从记忆中生成查询特定线索来增强证据检索，还会从数据集的“记忆”中提取信息，从而生成更准确和上下文丰富的答案。
+- MemoRAG 社区开发非常活跃，此存储库中自9月4日不断发布资源和原型。
 
-在BERT+Bi-LSTM模型中，首先用 BERT 对每个句子进行编码，然后将句子表示输入到Bi-LSTM中
-- 当用BERT编码每个句子时，所有序列都以`[CLS]`标记开始
-- LSTM 负责处理具有**线性**计算复杂度的多样化和潜在的大型句子序列
+MemoRAG 改变游戏规则
 
-(3) `Hierarchical BERT`
+MemoRAG 在传统 RAG 系统难以解决的领域表现出色，特别是在处理：
+- **模糊查询**：即使查询是隐式的或不完整的，MemoRAG 的记忆系统也可以推断用户意图。
+- **分布式**信息检索：需要从数据集的多个部分收集信息的任务可以通过 MemoRAG 从记忆中回忆线索并获取相关详细信息的能力轻松处理。
+- **复杂摘要**：MemoRAG 可以通过生成关键点和检索支持证据将大型非结构化数据集浓缩为连贯的摘要。
 
-分层BERT模型中，首先用 BERT 对每个句子进行编码，然后将输出的句子表示输入到基于Transformer的另一个模型中
+实际应用
 
-图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
-
-
-#### SeqModel
-
-阿里语义分割模型 SeqModel
-
-SeqModel 核心原理
-- Cross-Segment 提出基于**本地上下文**的**跨段BERT模型**和**分层BERT模型**（Hier.BERT），利用两个BERT模型对句子和文档进行编码，从而实现更长的上下文建模
-- 2020年，论文《Two-level transformer and auxiliary coherence modeling for improved text segmentation》还采用了两个分层连接的Transformer结构(uses two hierarchically con-nected transformers)。然而，由于分层模型计算成本高且推理速度较慢
+MemoRAG 在需要复杂信息检索和高级理解的领域特别有效，例如：
+- 法律文件分析：详细背景和精确度至关重要。
+- 财务数据汇总：从大量数据中提取关键趋势至关重要。
+- 对话式应用：MemoRAG 能够记忆并回顾之前的交流，这使其成为长期对话式 AI 应用的强大工具。
 
 
-SeqModel：将文档分割建模为**句子级序列标记**任务
+MemoRAG 对于司法、医疗、教育、代码等现实场景中的领域知识密集型任务的处理展示出了极高潜力。
 
-Zhang 等人在论文《Sequence Model with Self-Adaptive Sliding Window for Efficient Spoken Document Segmentation》中提出了SeqModel
 
-SeqModel 利用BERT对**多个句子同时编码**，建模更长的上下文之间依赖关系之后再计算句向量，最后预测每个句子后边是否进行文本分割
+#### MemoRAG 工作原理
 
-此外，该模型还使用了**自适应滑动窗口**方法，在在不牺牲准确性的情况下进一步加快推理速度
+MemoRAG 是双模型系统架构，采用两种不同的模型：
+- `记忆模型`：轻量级、远程语言模型创建了数据集的**全局记忆**。它充当知识库，在非常长的上下文（100万个token）中压缩和保留关键信息。该模型生成线索或部分答案，指导相关信息的检索。
+- `检索-生成模型`：一个更强大、更具表现力的语言模型，它根据记忆模型生成的线索，从数据库中检索必要的证据，并生成最终的高质量答案。
 
-图见[原文](https://blog.csdn.net/v_JULY_v/article/details/135386202)
+这种双模型系统架构确保 MemoRAG 能够处理需要多跳推理或具有隐含信息需求的任务。通过从记忆中回忆线索并检索相关数据，MemoRAG 弥补了原始输入与有意义且符合语境的准确响应之间的差距。
 
-步骤
-- 首先，文档中每个句子经过 WordPiece 分词器进行分词
-- 然后，通过由“token嵌入、位置嵌入和段落嵌入”组成的输入表示层来对这些句子进行编码
-- 这些嵌入被送入Transformer编码器，输出与k个标记对应的隐状态，并使用均值池化方法得到句子编码
-- 最后，将所有句子编码输入softmax二元分类器，以判断每个句子是否为段落边界，训练目标是最小化softmax交叉熵损失
+####  MemoRAG 主要特点
 
-自适应滑动窗口(Self-adaptive Sliding Window)
+主要特点
+- 全局记忆：单个上下文能够处理多达100万个token，确保对大型数据集的更全面理解；
+- 上下文线索：记忆模型从全局记忆中生成精确的线索，将原始输入连接到答案，解锁复杂数据中的隐藏语义信息；
+- 高效缓存：通过支持缓存分块索引和编码，将上下文预填充速度提高多达30倍；
+- 上下文重用：对长上下文进行一次编码，并支持重复使用；
+- 可优化和灵活：只需几个小时的额外训练就可以轻松适应新任务，以优化性能；
+- 多功能集成：适用于广泛的模型和应用，适合需要高效理解上下文的行业，例如：金融、法律和医疗保健。
 
-还提出了一种自适应滑动窗口方法，在不牺牲准确性的情况下进一步加快推理速度
-- 传统分割推理滑动窗口使用**固定前向步长**。自适应滑动窗口方法，在推理过程中，从前一个窗口中的最后一句话开始，模型在最大后向步长内 向后查看，以找到来自前一个推理步骤的积极分割决策（模型对分割预测概率>0.5）
-- 当在这个跨度内有积极的决策时，下一个滑动窗口将自动调整为：从最近预测片段边界之后的下一个句子开始
-- 考虑到最后一段和历史对下一个分割决策影响已经降低，这种策略有助于丢弃滑动窗口内不相关的历史信息。因此，自适应滑动窗口既可以加快推理速度也可以提高分割准确性
+
+
 
 
 ## （3）PEFT 参数高效微调
