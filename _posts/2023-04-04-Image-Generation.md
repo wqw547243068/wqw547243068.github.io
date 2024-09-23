@@ -810,6 +810,39 @@ Steps: 25, Sampler: DPM++ SDE Karras,
 CFG scale: 7, Seed: 734068303,Size: 1024x1024
 ```
 
+
+##### 应用：装修
+
+【2023-9-3】装修效果美化
+- 方案：[Using ControlNet models to remodel my living room](https://hutsons-hacks.info/using-controlnet-models-to-remodel-my-living-room#google_vignette)
+- 代码: [controlnet-playground](https://github.com/StatsGary/controlnet-playground)
+
+
+效果
+- ![](https://github.com/StatsGary/controlnet-playground/raw/main/images/livingroom.gif)
+
+|分割图|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-1.png)|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-3.png)|
+|living room with grey carpet and jukebox in the corner |![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-4.png)||
+|线图|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-5.png)|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-7.png)|
+
+
+```py
+if __name__=='__main__':
+
+    prompt = 'living room with grey carpet and modern fireplace'
+    img_path = 'images/house.jpeg'
+
+    control_net_seg = ControlNetSegment(
+        prompt=prompt,
+        image_path=img_path)
+    
+    seg_image = control_net_seg.segment_generation(
+        save_segmentation_path='images/house_seg.jpeg',
+        save_gen_path='images/house_seg_gen.jpeg'
+        )
+```
+
+
 #### ControlGPT（微软）-- LLM 控制
 
 【2023-6-8】[微软提出Control-GPT：用GPT-4实现可控文本到图像生成](https://zhuanlan.zhihu.com/p/634514203)
