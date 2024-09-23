@@ -17,26 +17,6 @@ permalink: /llm_solution
 开箱即用的预训练LLM没有按预期或希望执行时，如何提高LLM应用的性能？
 - 用检索增强生成（RAG）还是模型微调来改善结果？
 
-
-## GPT 使用方法
-
-OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的本质。
-
-![](https://pic4.zhimg.com/v2-c2f3cef1b909ea593eb56e9987c958a7_b.webp)
-
-### 技术架构总结
-
-【2023-11-23】[参考](https://zhuanlan.zhihu.com/p/667826259?utm_psn=1711026527125225472)
-
-|类型|说明|图解|
-|---|---|---|
-|纯prompt|一问一答| <img src="hhttps://pic1.zhimg.com/80/v2-f4e4ebe618195d48e9f2b264bdadedec_1440w.webp" height="100%" width="100" />|
-|Agent + Function Calling|Agent：AI 主动提要求<br>Function Calling：AI 要求执行某个函数<br>场景举例：你问过年去哪玩，ta 先反问你有几天假|<img src="https://pic2.zhimg.com/80/v2-7f79119cec8a74043bbe0c9a1af40d7d_1440w.webp" height="100%" width="100" />|
-|Embeddings + 向量数据库|Embeddings：把文字转换为更易于相似度计算的编码。这种编码叫向量<br>向量数据库：把向量存起来，方便查找<br>向量搜索：根据输入向量，找到最相似的向量<br>场景举例：考试时，看到一道题，到书上找相关内容，再结合题目组成答案。然后，就都忘了|<img src="https://pic2.zhimg.com/80/v2-db7f589f134ca9fb8d08f80f1539f095_1440w.webp" height="100%" width="100" />|
-|Fine-tuning|模型微调|<img src="https://pic2.zhimg.com/80/v2-29f966de529981aa7e221960afedb971_1440w.webp" height="100%" width="100" />|
-
-
-
 ## 如何选择优化方法
 
 
@@ -241,7 +221,7 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
 
 
 
-## （1）PE 提示工程
+## (1) PE 提示工程
 
 **提示工程**：改进模型输入以指导其输出。
 - 在新数据集和任务上训练模型参数，使用所有预训练权重（如全面微调）或一组独立权重（如 LoRA）。
@@ -251,13 +231,13 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
 - ![](https://pic4.zhimg.com/80/v2-857d925cf7adc11d94a2fbd9aca37213_1440w.webp)
 
 
-## （2）RAG 检索增强生成
+## (2) RAG 检索增强生成
 
 
 详见站内专题: [检索增强生成 RAG](rag)
 
 
-## （3）PEFT 参数高效微调
+## (3) PEFT 参数高效微调
 
 详见站内专题: [参考高效微调 PEFT](peft)
 
@@ -352,6 +332,24 @@ RAFT 是一种适应LLMs的方法，用于从正面和负面文档集合中阅�
 方法选择
 - 大模型应用：先看**大模型**是否能实现，然后再考虑**小模型**加速；
 - 简单链路保证**性能**，复杂链路保证**效果**
+
+
+## GPT 使用方法
+
+OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的本质。
+
+![](https://pic4.zhimg.com/v2-c2f3cef1b909ea593eb56e9987c958a7_b.webp)
+
+### 技术架构总结
+
+【2023-11-23】[参考](https://zhuanlan.zhihu.com/p/667826259?utm_psn=1711026527125225472)
+
+|类型|说明|图解|
+|---|---|---|
+|纯prompt|一问一答| <img src="hhttps://pic1.zhimg.com/80/v2-f4e4ebe618195d48e9f2b264bdadedec_1440w.webp" height="100%" width="100" />|
+|Agent + Function Calling|Agent：AI 主动提要求<br>Function Calling：AI 要求执行某个函数<br>场景举例：你问过年去哪玩，ta 先反问你有几天假|<img src="https://pic2.zhimg.com/80/v2-7f79119cec8a74043bbe0c9a1af40d7d_1440w.webp" height="100%" width="100" />|
+|Embeddings + 向量数据库|Embeddings：把文字转换为更易于相似度计算的编码。这种编码叫向量<br>向量数据库：把向量存起来，方便查找<br>向量搜索：根据输入向量，找到最相似的向量<br>场景举例：考试时，看到一道题，到书上找相关内容，再结合题目组成答案。然后，就都忘了|<img src="https://pic2.zhimg.com/80/v2-db7f589f134ca9fb8d08f80f1539f095_1440w.webp" height="100%" width="100" />|
+|Fine-tuning|模型微调|<img src="https://pic2.zhimg.com/80/v2-29f966de529981aa7e221960afedb971_1440w.webp" height="100%" width="100" />|
 
 
 # 结束
