@@ -2759,6 +2759,44 @@ typedef union epoll_data {
 - ![](https://static.xjh.me/wp-content/uploads/2017/11/www.xjh.me-2017-11-04_17-18-14_961742-2.png)
 
 
+## Visual Studio Code
+
+
+
+
+### 问题
+
+| 日期|问题|解决|
+|【2022-8-6】|vscode无法打开终端|解决：更改默认终端配置，“文件”→“首选项”→“设置”，弹出配置文件，按照[链接](https://blog.csdn.net/m0_57189842/article/details/120073595)修改接口|
+|【2024-5-9】|vscode里编辑输入时，卡顿，延迟1-3s，尝试更改setting里各种参数，无效|解决：重启电脑|
+
+
+#### 卡顿
+
+查看当前正在使用的插件
+- MacOS: Cmd+Shift+P
+- Windows: Ctrl+Shift+P
+
+输入: `Show Running Extensions`
+
+
+#### running file rename participant
+
+vscode 中更改文件名后, 右下角进度条显示:
+
+- 迟迟无响应, 未显示新文件
+- 编辑文件中, 一直转圈
+- 手工关掉窗口后, 恢复
+
+[解决方案](https://blog.csdn.net/qubes/article/details/127144656)
+- 进入设置: Code -> Settings -> Settings
+- 搜索 rename
+  - Text Editors -> Files
+- 将 Timeout 时间 改为 0
+
+
+
+
 ## Vim技能
 
 ### vim介绍
