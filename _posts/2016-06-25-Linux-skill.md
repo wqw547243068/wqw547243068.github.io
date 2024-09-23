@@ -2780,6 +2780,10 @@ typedef union epoll_data {
 输入: `Show Running Extensions`
 
 
+Vue Language Features 会导致 vscode 卡顿，可能是和别的格式化插件冲突
+
+
+
 #### running file rename participant
 
 vscode 中更改文件名后, 右下角进度条显示:
