@@ -3,7 +3,7 @@ layout: post
 title:  "密码学-Cryptography"
 date:   2020-05-30 00:13:00
 categories: 新技术
-tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码
+tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码 文件
 excerpt: 密码学知识，常见的加密、解码算法，对称密钥、非对称密钥和Hash散列
 author: 鹤啸九天
 mathjax: true
@@ -411,6 +411,18 @@ QR Code 核心: 里德-所罗门编码, 前向错误更正的信道编码, 具�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XW8sgT_D0To?si=YswOJMDNdw8zT_Et" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+【2024-9-24】
+
+二维码文件传输
+- No internet/bluetooth/NFC/etc is used. All data is transmitted through the camera lens.
+- 无需网络、蓝牙和NFC，所有数据只通过摄像头传输
+
+GitHub: [libcimbar](https://github.com/sz3/libcimbar)
+- 发送端: Web 站点 [cimbar](https://cimbar.org/) 上传文件(33M以内)
+- 接收端: [CameraFileCopy](https://github.com/sz3/cfc) (简称 cfc) [apk下载](https://github.com/sz3/cfc/releases/)
+  - 下载速度: (~106 KB/s)
+
+![](https://github.com/sz3/cimbar-samples/raw/v0.6/b/4cecc30f.png)
 
 ## 资料
 

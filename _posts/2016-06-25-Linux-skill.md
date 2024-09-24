@@ -1663,6 +1663,18 @@ Syncthing 是一个开源免费的数据同步神器，被称为 Resilio Sync �
 
 很适合用来搭建私有同步网盘。
 
+#### 二维码传输
+
+【2024-9-24】二维码文件传输
+- No internet/bluetooth/NFC/etc is used. All data is transmitted through the camera lens.
+- 无需网络、蓝牙和NFC，所有数据只通过摄像头传输
+
+GitHub: [libcimbar](https://github.com/sz3/libcimbar)
+- 发送端: Web 站点 [cimbar](https://cimbar.org/) 上传文件(33M以内)
+- 接收端: [CameraFileCopy](https://github.com/sz3/cfc) (简称 cfc) [apk下载](https://github.com/sz3/cfc/releases/)
+  - 下载速度: (~106 KB/s)
+
+![](https://github.com/sz3/cimbar-samples/raw/v0.6/b/4cecc30f.png)
 
 ### 编译安装
 
