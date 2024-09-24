@@ -461,20 +461,22 @@ D类模型
 
 ### 多模态模块
 
-多模态大模型包括以下5个模块
-- Modality Encoder：`模态编码器`，将除文本外的其他模态如图片、视频、音频、3D等编码为隐层向量
-  - Visual Modality: ViT, transformers 替换 cnn
-    - 图片补丁 image patch encoder: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
-    - 图片补丁位置嵌入: image patch position embedding, 查询表
-- Input Projector: `输入映射`，将不同模态的语义向量和LLM的语义对齐
-- LLM Backbone: `大语言模型基座`，强大的基座模型
-- Output Projector: `输出映射`，将LLM生成的语义和各模态的语义对齐
-- Modality Decoder: `模态解码器`，将各模态的语义解码为对应的模态
+**多模态大模型**(`MLLMs`)5个核心模块
+- `Modality Encoder`：`模态编码器`，将不同**模态**输入数据（如图片、视频、音频、3D等），编码为可理解的表示（隐层向量）
+  - `Visual Modality`: `ViT`, transformers 替换 cnn
+    - 图片补丁 `image patch encoder`: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
+    - 图片补丁位置嵌入: `image patch position embedding`, 查询表
+- `Input Projector`: `输入映射`，将不同模态的向量表示映射到共享表示空间，和LLM语义对齐
+- `LLM Backbone`: `大语言模型基座`，LLM基座模型，用于处理文本数据
+- `Output Projector`: `输出映射`，将LLM生成的输出,映射回**原始模态**空间,和各模态对齐
+- `Modality Decoder`: `模态解码器`, 或 `Modality Generator` **模态生成器** ，将各模态语义解码为对应的模态
 
-几个tips
-- 注重 Comprehension and text generation 的多模态模型，只需要如上5个模块的**前3个**模块
-- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会冻结参数，只优化 Input Projector 和 Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
+注意
+- 注重 Comprehension and text generation 的多模态模型，只需要**前3个**模块
+- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会**冻结参数**，只优化 Input Projector 和 Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
 - SFT阶段，LLM一般也会参与，因而SFT阶段需要更多显存。
+
+
 
 
 <!-- draw.io diagram -->
