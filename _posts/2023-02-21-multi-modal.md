@@ -396,19 +396,53 @@ CLIP流程有三个阶段：
 
 ### 模型汇总
 
+[多模态大模型入门指南-长文慎入](https://zhuanlan.zhihu.com/p/682893729)
+
+模型架构5个部分：**模态编码器**、**输入投影器**、**语言模型**骨干、**输出投影器**和**模态生成器**。
+- ![](https://picx.zhimg.com/80/v2-d1f277adfe5d90b5a872fc2acaa6f08f_1440w.webp)
+- 多模态理解主要是前三个部分。（模态对齐）训练期间，encoder，LLM Backbone 和 generator 一般保持冻结。
+- 主要优化输出和输出的 projector。由于Projector 是轻量级的模块，MM-LLMs 中可以训练的参数比例和总参数相比非常小（2% 左右），模型的总体参数规模取决于LLM 部分。
 
 对比分析
+- Vision Encoder 视觉编码器 
+- VL Adapter 转换器  
+- Projection Layer 映射层
 
-| 模型 | 论文时间 | Vision Encoder | VL Adapter  | Projection Layer | LLM    | 训练模块    |
-|-----|-------|-------|--------|---------|--------|----------|
-| BLIP-2       | 2023.06 | ViT-L/14       | Q-former               | a linear layer   | FlanT5 OPT  | Q-former                     |
-| InstructBLIP | 2023.06 | ViT-L/14       | Q-former               | a linear layer   | FlanT5 Vicuna | 同上 |
-| LLaVA        | 2023.12 | ViT-L/14       | /                      | a linear layer   | LLaMA   | 1.linear <br>2.linear+LLM |
-| LLaVA-1.5    | 2024.05 | ViT-L/14       | /                      | 2 layer MLP      | LLaMA  | 同上   |
-| MiniGPT-4    | 2023.1  | ViT-G/14       | Q-former               | a linear layer   | Vicuna | linear |
-| MiniGPT-v2   | 2023.11 | ViT            | /                      | a linear layer   | LLaMA2   | 同上   |
-| Qwen-VL      | 2023.1  | ViT-bigG       | Cross-Attention        | /                | Qwen-7B | 1.ViT, VL-A <br>2.全参 <br>3.LLM, VL-A |
-| Qwen2-VL     | 2024.09 | ViT/14         | Cross-Modal Connection | /                | Qwen2-1.5B <br>Qwen2-7B <br>Qwen2-72B | 1. ViT <br>2.全参 <br>3.LLM|
+| 模型   | 时间 | 机构 | 分辨率 | 模型大小 | 视觉编码器 | 转换器  | LLM    | 映射层 | 备注    |
+|-------|---------|------|------|------|--------|---------|----------|-----|----------|
+| `Flamingo`        | 2022.04 | DeepMind  | 480      | 80P    | NFNet F6            | Perceiver Resampler | Chinchilla 70B + GATED XATTN-DENSE   |     | 接入LLM的多模态      |
+| `BLIP-2`          | 2023.01 | Saleforce | 224      | 7B     | EVA-CLIP ViT-g/14   | Q-Former            | Flan-T5/OPT-6.7B        |     |        |
+| `MiniGPT4-v1`     | 2023.04 | KAUST     | 224      | 13B    | EVA-CLIP ViT-g/14   | Q-Former+MLP        | Vicuna-13B-v0     |     | 基于BLIP-2进行改进   |
+| `InstructBLIP`    | 2023.05 | Saleforce | 224      | 13B    | EVA-CLIP ViT-g/14   | Q-Former            | Flan-T5/Vicuna-13B    |     | 对BLIP2进行大规模    |
+| `VisualGLM-6B`    | 2023.05 | 智谱      | 224      | 6B     | EVA-CLIP ViT-g/14   | Q-Former            | ChatGLM-6B   |     |                |
+| `Shikra`          | 2023.06 | 字节      | 224      | 7B/13B | CLIP ViT-L/14       | 一层MLP               | Vicuna-7B/13B(PEFT)   |     | LLaVA结构        |
+| `Qwen-VL`         | 2023.08 | 阿里通义    | 448      | 9B     | OpenCLIP ViT-G/14   | Cross Attention     | Qwen-7B   |     | 只用了一层Cross Attention |
+| `InternLM-XComposer-VL`| 2023.09 | 上海Al Lab | 224      | 7B     | EVA-CLIP ViT-g/14   | Q-Former            | InternLM-7B  |     | 支持图文混排         |
+| `mPLUG-Owl`       | 2023.04 | 达摩院   | 224      | 7B     | CLIP ViT-L/14       | Perceiver Resampler | LLaMA-7B  |     | 改装自Flamingo    |
+| `mPLUG-Owl V2`    | 2023.11 | 达摩院   | 448      | 7B     | CLIP ViT-L/14       | Perceiver Resampler | LLaMA-7B                             |     | 添加模态自适应的M      |
+| `ShareGPT4V`      | 2023.11 | 上海Al Lab | 336      | 7B     | CLIP ViT-L/14       | 两层MLP               | Vicuna-7B-v1.5  |     | 使用GPT4V提供了-    |
+| `Sphinx`          | 2023.11 | 上海Al Lab | 224      | 13B    | -ConvNext, DINO-v2, | 两个不同的Projector      | LLaMA-2-13B  |     | 将四个不同的encod    |
+| `CogVLM-17B`      | 2023.11 | 智谱    | 224->496 | 17B    | EVA-CLIP ViT-E/14   | 两层Linear            | Vicuna-7B-v1.5 +Visual Expert Module |     | 视觉专家,文本和视      |
+| `Ferret`          | 2023.11 | 添加 Spatial Aware | 336      | 7B/13B | CLIP ViT-L/14       | 一层Linear            | Vicuna-7B/13B-v1.3    |     |      |
+| `MiniGPT-V2`      | 2023.11.7  | Meta AI, KAUST  | 448      | 7B     | EVA-CLIP ViT-G/14   | 一层Linear            | LLaMA2-chat 7B   |     |       |
+| `Qwen-VL2`         | 2024.09 | 阿里通义    | 448      | 9B     |  ViT/14   | Cross-Modal Connection   | Qwen2-1.5B<br>Qwen2-7B <br>Qwen2-72B   |     | 1. ViT <br>2.全参 <br>3.LLM |
+
+
+发展历程图解
+- 最初集中在多模态的**内容理解**和**文本生成**: 
+  - Flamingo,BLIP-2, Kosmos-1,LLaVA/LLaVA-1.5/LLaVA-1.6，MiniGPT-4，MultiModal-GPT，Video-Chat，VIdeo-LLaMA，IDEFICS，Fuyu-8B，Qwen-Audio
+- 同时实现**多模态的输入和输出**工作: MM-LMM，探索特定模态的生成
+  - 例如 Kosmos-2，Mini-GPT5，以及语音生成的 SpeechGPT
+- 将 **LLM 和外部工具继承**进来，实现“any-to-any”的多模态理解和生成。
+  - visual-chatgpt，ViperGPT，MM-React，HuggingGPT，AudioGPT
+- 减少级联过程中传播误差的工作, 开发**任意模式**的多模态模型
+  - NExT-GPT 和 CoDI-2，
+
+![](https://pic3.zhimg.com/80/v2-83bd973cca2e49efa74d8972c7b97f82_1440w.webp)
+
+
+
+
 
 
 ### 多模态模块
