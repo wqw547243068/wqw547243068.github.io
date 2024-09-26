@@ -1596,7 +1596,11 @@ Chameleon，一种**早期融合**，基于token的**混合模态**模型族，�
 从一开始就采用的方法、对齐方法和为早期融合，基于token的混合模态设置。对模型进行了综合评价的任务，包括视觉问答、图像描述、文本生成、图像生成和长形式混合模态生成。变色龙具有广泛和一般的能力，包括在图像描述任务中的最先进性能，在纯文本任务中优于Llama-2 与Mixtral 8x7B和Gemini-Pro等模型竞争，并表现出非平凡图像生成，都在一个模型中。它还匹配或超过了更大的模型的性能， 包括Gemini Pro和GPT-4V，根据人类对新的长形式混合模态的判断
 
 
-#### QWen-VL
+#### QWen-VL 系列
+
+
+
+##### QWen2-VL
 
 【2023-10-13】QWen-VL 发布
 - [论文](https://arxiv.org/pdf/2308.12966)
@@ -1629,9 +1633,18 @@ VL Adapter 创建一组可训练 queries向量 和 image features一起做cross-
 
 【2024-09-18】QWen-VL 发布
 - [论文](https://arxiv.org/pdf/2409.12191)
+- github：[Qwen2](https://github.com/QwenLM/Qwen2)
+
+Qwen2-VL 开源了 2B，7B及其量化版本
 
 能力更强
 - ![](https://pica.zhimg.com/80/v2-4f41ba3c0ed93c815eb5882b4bec3ad8_1440w.webp)
+
+优化亮点：
+- 在各种分辨率和比例的图像的理解SoTA：Qwen2-VL 在视觉理解基准上实现了最先进性能，包括 MathVista、DocVQA、RealWorldQA、MTVQA 等。
+- 支持理解 **20 分钟**以上的视频：借助在线流媒体功能，Qwen2-VL 可以通过基于高质量视频的问答、对话、内容创作等方式理解 20 分钟以上的视频。
+- 可集成在**移动设备**上：Qwen2-VL 具有复杂的推理和决策能力，可以与手机、机器人等设备集成，根据视觉环境和文本指令进行自动操作。
+- **多语言**支持：为了服务全球用户，除了英语和中文，Qwen2-VL 现在还支持理解图像中不同语言的文本，包括大多数欧洲语言、日语、韩语、阿拉伯语、越南语等。
 
 模型结构：
 - Vision Encoder：ViT/14
@@ -1643,7 +1656,7 @@ VL Adapter 创建一组可训练 queries向量 和 image features一起做cross-
 Qwen2-VL 相较于 Qwen-VL 主要改进点（除了一些VQA等基础能力的提升之外）：
 - 1）支持视频理解，支持context上下文长度到128k token（20分钟左右视频）。
 - 2）Visual Agent能力，支持实时视频对话。
-- 3）图像位置编码采用2D-RoPE，一张224*224分辨率的图像经过ViT/patch_size=14等一系列转换之后会被压缩至66个token输入到LLM。
+- 3）图像位置编码采用 2D-RoPE，一张224*224分辨率的图像经过ViT/patch_size=14等一系列转换之后会被压缩至66个token输入到LLM。
 
 训练过程：
 - Stage 1：训练ViT，使用大量image-text对。
