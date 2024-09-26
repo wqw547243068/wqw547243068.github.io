@@ -3,7 +3,7 @@ layout: post
 title:  "密码学-Cryptography"
 date:   2020-05-30 00:13:00
 categories: 新技术
-tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码 文件
+tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码 文件 安全 摄像头 白帽 黑帽
 excerpt: 密码学知识，常见的加密、解码算法，对称密钥、非对称密钥和Hash散列
 author: 鹤啸九天
 mathjax: true
@@ -398,6 +398,15 @@ O T O E O I O U Y V L进行再次解码。分成两排：
 - RSA密码诞生
 
 ![](https://upload-images.jianshu.io/upload_images/2990730-1e446769f7fd0fa2.png)
+
+
+## 隐私安全
+
+
+### 防偷拍
+
+【2024-9-26】`小澄隐私助手`，检测仪 配合 小程序 一起使用, 检测酒店针孔摄像头
+- 白帽直播探测酒店摄像头 [抖音视频](https://www.douyin.com/search/%E5%B0%8F%E6%BE%84%E9%98%B2%E5%81%B7%E6%8B%8D%E6%A3%80%E6%B5%8B%E4%BB%AA)
 
 
 ### 二维码
