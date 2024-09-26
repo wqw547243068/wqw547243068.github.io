@@ -1372,7 +1372,7 @@ class LayerNorm(nn.Module):
 
 顺便提一句，**Layer normalization**多用于RNN这种结构。
 
-## Mask是什么？
+## Mask 是什么？
 
 现在终于轮到讲解mask了!mask顾名思义就是**掩码**，在我们这里的意思大概就是**对某些值进行掩盖，使其不产生效果**。
 
@@ -2598,7 +2598,16 @@ KAN 的最大瓶颈: 训练速度慢。
 
 ## Attention 改进
 
-### 组注意力 Grouped-Query Attention
+
+### QKV
+
+MHA、GQA、MQA、MLA 原理对比
+- 传统 Transformer 采用 MHA，但 KV Cache 在推理过程中可能成为性能瓶颈。
+- `MQA` 和 `GQA` 虽然在一定程度上可以减少KV Cache的占用，但效果通常不如 `MHA`。
+- `MLA` 通过低秩 Key-Value联合压缩技术，不仅实现了比`MHA`更优的效果，还大幅减少了所需的KV Cache大小。
+
+
+#### GQA: Grouped-Query Attention
 
 Grouped-Query Attention ：对于更大参数量、更大的 context length、更大的 batchsize 来说，原始的MHA（multi-head attention）的内存占用会更高（因为在计算时要缓存pre token的K、V矩阵）。
 - MQA（multi-query attention）让所有的 head 共享 1 个 KV projection 矩阵；
@@ -2606,7 +2615,47 @@ Grouped-Query Attention ：对于更大参数量、更大的 context length、�
 
 在 30B 模型上训练 150B tokens，发现 GQA 效果和 MHA 差不多，比 MQA 要好；在 1 个node的 8 个 A100 GPUs 上推理速度 GQA 和 MQA差不多，比 MHA 要好（MQA 在推理的时候，要把 KV projections 复制到8张卡上）。
 
+#### MQA: Muti Query Attention
 
+MQA 是 2019 年提出的一种新的 Attention 机制，其能够在保证模型效果的同时加快 decoder 生成 token 的速度。
+- 论文： [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
+- 所有 head 之间**共享**一份 key 和 value 的参数
+
+MQA 在 encoder 上的提速没有非常明显，但在 decoder 上的提速是很显著的
+- ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
+
+Multi Query Attention（MQA） 和 Multi Head Attention（MHA）只差了一个单词，从「Head」变成了「Query」。
+
+MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头只单独保留了一份 Query 参数，从而大大减少 Key 和 Value 矩阵的参数量。
+- 「参数共享」并不是新奇思路，Albert 通过使用**跨层共享参数**（Cross-layer parameter sharing）方式来大大减少 bert 的参数量
+- MQA 实际上是将 head 中的 key 和 value 矩阵抽出来单独存为一份共享参数，而 query 则是依旧保留在原来的 head 中，每个 head 有一份自己独有的 query 参数。
+
+代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
+
+
+#### MLA: Multi-head Latent Attention
+
+
+【2024-9-26】[注意力机制的变体之MLA](https://mp.weixin.qq.com/s/dWZk8TBY89re207ZL3GjfA)
+
+`MLA`(Multi-head Latent Attention) 是 杭州**深度求索**人工智能在`DeepSeek` V2 提出的一种**注意力机制变体**。
+
+MLA 解决推理过程中, 由于attention机制中**KV Cache占用过多内存**而导致的性能瓶颈问题。
+
+MLA 引入了**低秩KV压缩**技术，有效减少了KV Cache 大小，从而缓解了这一问题。
+- 官方技术报告[介绍](https://arxiv.org/pdf/2405.04434v2)
+
+`MLA` 通过低秩 Key-Value联合压缩技术，不仅实现了比`MHA`更优的效果，还大幅减少了所需的KV Cache大小。
+
+MLA通过低秩联合压缩key和value来减少kv cache。
+
+从注意力机制的步骤来分析：
+- 通过输入x乘以不同矩阵参数Wq、Wk、Wv, 得到不同的QKV向量
+- 转换到QKV向量时，将x乘以一个低秩矩阵，得到低阶矩阵表示
+- 再通过高阶矩阵来恢复原来的特征空间。由于矩阵是模型的权重参数已经保存，所以只需要保存一个低秩的潜层特征就可以恢复成KV，而不是像之前需要同时缓存KV。
+
+
+为什么LoRA提出这么久了，直到 MLA 才提出对KV Cache低秩分解的做法?
 
 ### 推理加速
 
@@ -2758,26 +2807,6 @@ DCFormer可提高70%~100%的模型计算效率
 
 DCFormer在不同的架构和模型规模下，在语言建模方面显著优于Transformer，与计算量增加1.7倍至2倍的模型性能相匹配。
 
-
-
-### Decoder 效率
-
-#### Muti Query Attention (MQA)
-
-MQA 是 2019 年提出的一种新的 Attention 机制，其能够在保证模型效果的同时加快 decoder 生成 token 的速度。
-- 论文： [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
-- 所有 head 之间共享一份 key 和 value 的参数
-
-MQA 在 encoder 上的提速没有非常明显，但在 decoder 上的提速是很显著的
-- ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
-
-Multi Query Attention（MQA） 和 Multi Head Attention（MHA）只差了一个单词，从「Head」变成了「Query」。
-
-MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头只单独保留了一份 Query 参数，从而大大减少 Key 和 Value 矩阵的参数量。
-- 「参数共享」并不是新奇思路，Albert 通过使用**跨层共享参数**（Cross-layer parameter sharing）方式来大大减少 bert 的参数量
-- MQA 实际上是将 head 中的 key 和 value 矩阵抽出来单独存为一份共享参数，而 query 则是依旧保留在原来的 head 中，每个 head 有一份自己独有的 query 参数。
-
-代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
 
 ### 长度限制
 
