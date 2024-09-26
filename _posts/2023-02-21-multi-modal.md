@@ -201,7 +201,269 @@ The “deep learning” era (2010s until …)，促使多模态研究发展的�
 - 2）GPU快速计算
 - 3）强大的视觉特征抽取能力
 - 4）强大的语言特征抽取能力。
+                        
 
+## 多模态结构
+
+多模态人工智能强调不同模态数据之间的**互补性**和**融合性**，通过整合多种模态的数据，利用表征学习、模态融合与对齐等技术，实现跨模态的感知、理解和生成，推动智能应用的全面发展。
+
+三部分：**数据采集与表示**、**数据处理与融合**、**学习与推理**
+- 传感器：多模态学习中，传感器用于捕捉不同模态的数据，如摄像头捕捉图像（视觉模态）、麦克风捕捉声音（声音模态）等。
+  - 传感器是多模态数据采集的起点，它使得机器能够感知并获取来自不同物理世界的信息。
+  - 模态是指信息的表现形式或感知方式，如文本、图像、声音、视频等
+  - 多模态是指利用来自多个不同模态的数据进行学习和推理的过程。这些模态可以是文本、图像、声音、视频等的组合。
+  - 不同模态提供了不同的信息渠道，它们之间可能存在冗余性，但更多的是互补性。多模态模型能够整合来自不同模态的信息，正是利用这些不同模态的信息来增强模型的感知与理解能力。
+- 模态融合：将来自不同模态的信息进行有效整合的过程。
+  - **早期**融合：在数据处理的早期阶段就将不同模态的数据合并在一起。
+  - **晚期**融合：在数据处理的后期阶段才将不同模态的信息进行整合。
+  - **混合**融合：结合早期融合和晚期融合的优点，在不同的处理阶段进行多次融合。
+  - 模态融合能够充分利用不同模态之间的互补性，提高模型的性能和鲁棒性。
+- 模态对齐：寻找来自不同模态数据之间的对应关系或一致性。
+  - **时间**维度对齐：如将视频中的动作与音频中的语音进行对齐。
+  - **空间**维度对齐：如将图像中的像素与文本中的单词进行对齐。
+  - 模态对齐是多模态学习中实现不同模态信息有效融合的重要前提。通过对齐操作，可以确保不同模态的数据在时间和空间上保持一致性，从而进行更有效的融合和推理。
+- **多模态学习**：利用来自多个不同模态的数据进行学习和推理的过程。
+  - 它旨在整合不同模态之间的互补信息，以提高模型的感知与理解能力。
+  - 多模态学习是当前人工智能领域的一个研究热点，它推动了智能应用的边界扩展。通过多模态学习，可以构建更加智能、更加全面的系统来应对复杂多变的现实世界。
+
+多模态机器学习的核心任务主要包括`表示学习`，`模态映射`，`模态对齐`，`模态融合`，`协同学习`。
+
+
+
+### 表示学习
+
+`表示学习`（Representation）：主要研究如何将多个模态数据所蕴含的语义信息，数值化为实值向量，简单来说就是**特征化**。
+- `单模态`的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量 Feature；
+- 而多模态表示学习通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征 Feature。
+
+那在表示学习中主要包括两大研究方向：
+- `联合表示`（Joint Representations）：将多个模态的信息一起映射到一个统一的多模态向量空间。（CLIP 和 DALL·E 使用简单的联合表示，不过效果出奇的赞）。 
+- `协同表示`（Coordinated Representations）：将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间满足一定的相关性约束（例如线性相关）。 
+- <img src="https://pic1.zhimg.com/50/v2-77531575a4083c22b18b399dd17bf54e\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1952" data-rawheight="508" class="origin\_image zh-lightbox-thumb" width="1952" data-original="https://pica.zhimg.com/v2-77531575a4083c22b18b399dd17bf54e\_r.jpg?source=1940ef5c"/>
+
+### 下游任务
+
+接着就是下游任务对特征进行理解（学术上也叫做内容理解），典型的下游任务包括`视觉问答`、`视觉推理`、`视觉联合推理`、`图像检索`、`视频检索`。
+- 视觉问答（Visual Question Answering，VQA）：根据给定的图片提问，从候选中选择出正确的答案，VQA2.0 中从 COCO 图片中筛选了超过100万的问题，训练模型来预测最常见的3129个回答，其本质上可以转化成一个分类问题。
+- <img src="https://pic1.zhimg.com/50/v2-f3e6e48c5a6647fc496a5533cb1223a4\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1538" data-rawheight="402" class="origin\_image zh-lightbox-thumb" width="1538" data-original="https://pic1.zhimg.com/v2-f3e6e48c5a6647fc496a5533cb1223a4\_r.jpg?source=1940ef5c"/>
+- 视觉推理（Visual Reasoning，VR）：视觉推理相对视觉问答更为复杂, 其可以分解为两个子任务视觉问答（Q->A）和选出答案的原因（QA->R）, 除了回答的问题需要用自然语言表达具有挑战性的视觉问题外, 模型还需要解释为什么作出这样的回答, 其最开始由华盛顿大学提出, 同时发布的 VCR 数据集包含 11 万的电影场景和 29 万的多项选择问题。
+- <img src="https://picx.zhimg.com/50/v2-1d732cb95b79362f2ca3129fed2af035\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1190" data-rawheight="295" class="origin\_image zh-lightbox-thumb" width="1190" data-original="https://picx.zhimg.com/v2-1d732cb95b79362f2ca3129fed2af035\_r.jpg?source=1940ef5c"/>
+- 检索任务（Index Task）：主要包括文本检索图片或者图片检索文本，检索任务应该不用加以过多的解释了，比较好理解，就是以文搜图或者以图搜文。下面图中就是Google 以图搜文的服务，当然包括华为手机里面的截图识字，淘宝拼多多的以文搜图等身边很多诸如此类的服务啦。
+- <img src="https://pic1.zhimg.com/50/v2-ae0f2f691f4c09ef198b3575f71b2a31\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1493" data-rawheight="553" class="origin\_image zh-lightbox-thumb" width="1493" data-original="https://picx.zhimg.com/v2-ae0f2f691f4c09ef198b3575f71b2a31\_r.jpg?source=1940ef5c"/>
+
+
+
+### 跨模态预训练
+
+- 图像/视频与语言预训练。
+- 跨任务预训练
+
+ChatGPT 对多模态领域技术发展方向有什么影响？那必然是：卷起来了！
+- 2023年3月6日，谷歌发布“通才”模型`PaLM-`E，作为一种多模态具身 VLM，它不仅可以理解图像，还能理解、生成语言，执行各种复杂的机器人指令而无需重新训练。还展示出了强大的**涌现能力**（模型有不可预测的表现）。
+- 没隔多久，微软开始拉着OpenAI，N鸣惊人。
+- 3月15日，OpenAI携手微软于发布了GPT-4，也是关注**多模态**的，实验效果要比`PaLM`好，并且可以执行非常多的任务，比如，GPT4 在各种职业和学术考试上表现和人类水平相当。
+  - 模拟律师考试，GPT4 取得了前 10% 的好成绩
+  - 做美国高考 SAT 试题，GPT-4 也在阅读写作中拿下 710 分高分、数学 700 分（满分 800）。
+- Bing浏览器立马就把模型用了起来, 推出 New Bing
+- 3月17日，微软发布office 全家桶，将通过生成式人工智能（AI）技术来增强 Office 办公套装：Microsoft 365 Copilot，用于 Office 套装中的 Word、Excel 和 PowerPoint 等软件。新工具将帮助商业客户更快地**撰写文档**，生成**艺术画**，以及**创建图表**，帮助企业的数百万员工节省大量时间。
+  - 微软CEO纳德拉表示，今天是一个里程碑，意味着我们与电脑的交互方式迈入了新的阶段，从此我们的工作方式将永远改变，开启新一轮的生产力大爆发。
+- 3月21日，支持 AI画图 Image Creator，背后调用 OpenAI 的 DALL-E
+
+#### CLIP
+
+OpenAI 推出了 CLIP，在400M的**图像-文本对**数据上，用最朴素的**对比损失**训练双塔网络，利用text信息监督视觉任务自训练，对齐了两个模态的特征空间，本质就是将`分类任务`化成了`图文匹配`任务，效果可与全监督方法相当。
+- 在近 30 个数据集上 zero-shot 达到或超越主流监督学习性能。
+- CLIP：《[Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)》
+
+作者：[ZOMI酱](https://www.zhihu.com/question/505125640/answer/2633346368)
+
+CLIP算法原理
+- CLIP 不预先定义图像和文本标签类别，直接利用从互联网爬取的 400 million 个image-text pair 进行图文匹配任务的训练，并将其成功迁移应用于30个现存的计算机视觉分类。
+- CLIP 无需利用 ImageNet 的数据和标签进行训练，就可以达到 ResNet50 在 ImageNet数据集上有监督训练的结果，所以叫做 Zero-shot。
+
+CLIP（contrastive language-image pre-training）主要的贡献就是利用无监督的文本信息，作为监督信号来学习视觉特征。CLIP 作者先是回顾了并总结了和上述相关的两条表征学习路线： 
+- 构建image和text的联系，比如利用已有的image-text pair数据集，从text中学习image的表征；  
+- 获取更多的数据（不要求高质量，也不要求full labeled）然后做弱监督预训练，就像谷歌使用的JFT-300M数据集进行预训练一样（在JFT数据集中，类别标签是有噪声的）。具体来说，JFT中一共有18291个类别，这能教模型的概念比ImageNet的1000类要多得多，但尽管已经有上万类了，其最后的分类器其实还是静态的、有限的，因为你最后还是得固定到18291个类别上进行分类，那么这样的类别限制还是限制了模型的zero-shot能力。 
+
+这两条路线其实都展现了相当的潜力，前者证明 paired image-text 可以用来训练视觉表征，后者证明扩充数据能极大提升性能，即使数据有noise。于是high-level上，CLIP 作者考虑从网上爬取大量的 image-text pair 以扩充数据，同时这样的 pairs 是可以用来训练视觉表征的。作者随即在互联网上采集了4亿个 image-text 对，准备开始训练模型。
+
+CLIP流程有三个阶段：
+- Contrastive pre-training：对比预训练阶段，使用image-text对进行对比学习训练。
+- Create dataset classifier from label text：提取预测类别文本特征。
+- Use for zero-shot prediction：进行 Zero-Shot 推理预测。
+- ![](https://picx.zhimg.com/80/v2-340920caff256e06c29cff7097e23e62_720w.webp?source=1940ef5c)
+
+#### PaLM-E
+
+【2023-3-7】谷歌发布了个多模态模型 `PaLM-E`，使用传感器数据、自然语言、视觉训练，能直接用人话操作机器人完成任务。
+- [PaLM-E: An Embodied Multimodal Language Model](https://palm-e.github.io/)
+
+### Language-Audio
+
+- Text-to-Speech Synthesis: 给定文本，生成一段对应的声音。
+- Audio Captioning：给定一段语音，生成一句话总结并描述主要内容。(不是语音识别)
+
+### Vision-Audio
+
+- Audio-Visual Speech Recognition(视听语音识别)：给定某人的视频及语音进行语音识别。
+- Video Sound Separation(视频声源分离)：给定视频和声音信号(包含多个声源)，进行声源定位与分离。
+- Image Generation from Audio: 给定声音，生成与其相关的图像。
+- Speech-conditioned Face generation：给定一段话，生成说话人的视频。
+- Audio-Driven 3D Facial Animation：给定一段话与3D人脸模版，生成说话的人脸3D动画。
+
+### Vision-Language
+
+- Image/Video-Text Retrieval (图(视频)文检索): 图像/视频<-->文本的相互检索。
+- Image/Video Captioning(图像/视频描述)：给定一个图像/视频，生成文本描述其主要内容。
+- Visual Question Answering(视觉问答)：给定一个图像/视频与一个问题，预测答案。
+- Image/Video Generation from Text：给定文本，生成相应的图像或视频。
+- Multimodal Machine Translation：给定一种语言的文本与该文本对应的图像，翻译为另外一种语言。
+- Vision-and-Language Navigation(视觉-语言导航)： 给定自然语言进行指导，使得智能体根据视觉传感器导航到特定的目标。
+- Multimodal Dialog(多模态对话)： 给定图像，历史对话，以及与图像相关的问题，预测该问题的回答。
+
+### 定位相关的任务
+
+- Visual Grounding：给定一个图像与一段文本，定位到文本所描述的物体。
+- Temporal Language Localization: 给定一个视频即一段文本，定位到文本所描述的动作(预测起止时间)。
+- Video Summarization from text query：给定一段话(query)与一个视频，根据这段话的内容进行视频摘要，预测视频关键帧(或关键片段)组合为一个短的摘要视频。
+- Video Segmentation from Natural Language Query: 给定一段话(query)与一个视频，分割得到query所指示的物体。
+- Video-Language Inference: 给定视频(包括视频的一些字幕信息)，还有一段文本假设(hypothesis)，判断二者是否存在语义蕴含(二分类)，即判断视频内容是否包含这段文本的语义。
+- Object Tracking from Natural Language Query: 给定一段视频和一些文本，追踪视频中文本所描述的对象。
+- Language-guided Image/Video Editing: 一句话自动修图。给定一段指令(文本)，自动进行图像/视频的编辑。
+
+### 更多模态
+
+- Affect Computing (情感计算)：使用语音、视觉(人脸表情)、文本信息、心电、脑电等模态进行情感识别。
+- Medical Image：不同医疗图像模态如CT、MRI、PETRGB-D模态：RGB图与深度图
+
+
+## 语料库
+
+
+### 多模态情感分析语料库
+
+【2021-8-13】[哈工大：多模态情感分析语料库调研](https://mp.weixin.qq.com/s/YQxGvevrYixWcXXgKg0NXw)
+
+介绍相关子任务和对应数据集以及在数据集上的最新研究工作。主要分为：
+- 面向**视频评论**的情感分析
+- 面向视频评论的**细粒度**情感分析
+- 面向**视频对话**的情绪分析
+- 面向视频的**反讽**识别
+- 面向**图文**的反讽识别
+- 面向图文的情感分析
+- 面向图文的细粒度情感分析、幽默检测、抑郁检测。
+
+本文分别总结了相关数据集和方法，具体内容见第三部分。
+
+[多模态情感分析简述](https://zhuanlan.zhihu.com/p/97170240), 任务概览，总结如下：
+
+![多模态情感分析任务概览](https://pic1.zhimg.com/80/v2-18dfa11b0b0a41fba2f1a92a54cbad18_1440w.jpg)
+
+多模态情感分析相关数据集和方法概览
+
+|模态|任务|数据集及下载地址|方法|
+|---|---|---|---|
+|声图文|面向视频评论的情感分析|[Youtube数据集](https://projects.ict.usc.eduyoutube)，[MOSI数据集](https://github.com/A2Zadeh/CMU-MultimodalSDK)，[MOSEI数据集](https://github.com/A2Zadeh/CMU-MultimodalSDK)|Self-MM，Mult|
+|声图文|面向视频评论的细粒度情感分析|[CH-SIMS数据集](https://github.com/thuiar/MMSA)|MTFN|
+|声图文|面向视频对话的情绪分析|[IEMOCAP数据集](https://sail.usc.edu/iemocap/), [MELD数据集](https://affective-meld.github.io)|DialogueRNN, MESM|
+|声图文|面向视频的反讽识别|[MUStARD数据集](https://github.com/soujanyaporia/MUStARD)|Early Fusion +SVM|
+|图文|面向图文的反讽识别|[Twitter反讽数据集](https://github.com/headacheboy/data-of-multimodal-sarcasm-detection)|D&R net|
+|图文|面向图文的情感分析|[Yelp数据集](https://www.yelp.com/dataset),[MVSA数据集](http://mcrlab.net/research/mvsa-sentiment-analysis-on-multi-view-social-data/)||
+|图文|面向图文的细粒度情感分析|[Multi-ZOL数据集](https://github.com/xunan0812/MIMN),[Twitter-15&17数据集](https://github.com/jefferyYu/TomBERT)|TomBert|
+|声图文|幽默检测|[UR-FUNNY数据集](https://github.com/ROC-HCI/UR-FUNNY)|C-MFN|
+|声图文|抑郁检测|[DAIC-WOZ数据集](https://dcapswoz.ict.usc.edu)||
+|图文|抑郁检测|[Twitter抑郁检测数据集](https://depressiondetection.droppages.com)|MDL|
+
+详情见原文
+
+## 多模态模型
+
+
+### 多模态模型榜单
+
+【2024-8-2】[中文多模态大模型基准8月榜单发布！8大维度30个测评任务，3个模型超过70分](https://mp.weixin.qq.com/s/8QtQCk-z2QfZVl6jmYuJMg)
+
+测评要点
+- 1：**GPT-4o领跑**
+  - `GPT-4o` 取得74.36分，领跑多模态基准。其中基础多模态认知能力和应用能力均有70+分的表现，在技术和应用方面均有一定领先优势。
+- 2：**国内多模态大模型表现不俗**
+  - 国内多模态大模型 `hunyuan-vision` 和 `InternVL2-40B` 表现不俗，取得70+分的优异成绩，仅次于 `GPT-4o`。尤其在多模态应用方面领先 `Claude3.5-Sonnet` 和 `Gemini-1.5-Pro`，展现出较强的应用优势。
+- 3：国内大模型**基础能力仍需提升**
+  - 在基础能力方面国内大模型较海外模型仍有一定差距，尤其在细粒度视觉认知任务上，国内外最好模型有5分的差距，需要进一步对多模态深度认知能力做优化提升。
+
+> GPT-4o > hunyuan-vision > InterVL2-40B > Claude3.5-Sonnet > Gemini-1.5-Pro > Step-1V-8k > GPT-4-Turbo-0409 > GLM-4v > Qwen-VL-Max > ERNIE-4-Turbo > Qwen-VL-Plus > Yi-VL-34B
+
+
+### 模型汇总
+
+
+对比分析
+
+| 模型 | 论文时间 | Vision Encoder | VL Adapter  | Projection Layer | LLM    | 训练模块    |
+|-----|-------|-------|--------|---------|--------|----------|
+| BLIP-2       | 2023.06 | ViT-L/14       | Q-former               | a linear layer   | FlanT5 OPT  | Q-former                     |
+| InstructBLIP | 2023.06 | ViT-L/14       | Q-former               | a linear layer   | FlanT5 Vicuna | 同上 |
+| LLaVA        | 2023.12 | ViT-L/14       | /                      | a linear layer   | LLaMA   | 1.linear <br>2.linear+LLM |
+| LLaVA-1.5    | 2024.05 | ViT-L/14       | /                      | 2 layer MLP      | LLaMA  | 同上   |
+| MiniGPT-4    | 2023.1  | ViT-G/14       | Q-former               | a linear layer   | Vicuna | linear |
+| MiniGPT-v2   | 2023.11 | ViT            | /                      | a linear layer   | LLaMA2   | 同上   |
+| Qwen-VL      | 2023.1  | ViT-bigG       | Cross-Attention        | /                | Qwen-7B | 1.ViT, VL-A <br>2.全参 <br>3.LLM, VL-A |
+| Qwen2-VL     | 2024.09 | ViT/14         | Cross-Modal Connection | /                | Qwen2-1.5B <br>Qwen2-7B <br>Qwen2-72B | 1. ViT <br>2.全参 <br>3.LLM|
+
+
+### 多模态模块
+
+**多模态大模型**(`MLLMs`)5个核心模块
+- `Modality Encoder`：`模态编码器`，将不同**模态**输入数据（如图片、视频、音频、3D等），编码为可理解的表示（隐层向量）
+  - `Visual Modality`: `ViT`, transformers 替换 cnn
+    - 图片补丁 `image patch encoder`: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
+    - 图片补丁位置嵌入: `image patch position embedding`, 查询表
+- `Input Projector`: `输入映射`，将不同模态的向量表示映射到共享表示空间，和LLM语义对齐
+- `LLM Backbone`: `大语言模型基座`，LLM基座模型，用于处理文本数据
+- `Output Projector`: `输出映射`，将LLM生成的输出,映射回**原始模态**空间,和各模态对齐
+- `Modality Decoder`: `模态解码器`, 或 `Modality Generator` **模态生成器** ，将各模态语义解码为对应的模态
+
+注意
+- 注重 Comprehension and text generation 的多模态模型，只需要**前3个**模块
+- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会**冻结参数**，只优化 Input Projector 和 Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
+- SFT阶段，LLM一般也会参与，因而SFT阶段需要更多显存。
+
+
+
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.12\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;2069\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-24\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-540\&quot; y=\&quot;360\&quot; width=\&quot;400\&quot; height=\&quot;270\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;多模态模型组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-214.56\&quot; y=\&quot;260\&quot; width=\&quot;160\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;UnDAMuxRGoDYzSfqeH0n-51\&quot; value=\&quot;2024-9-16&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=2;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;190\&quot; y=\&quot;545\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; value=\&quot;Input Projector&amp;lt;div&amp;gt;输入映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-504.11\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot; value=\&quot;Output Projector&amp;lt;div&amp;gt;输出映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;95.89\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; value=\&quot;Modality Encoder&amp;lt;div&amp;gt;模态编码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.15000000000003\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; value=\&quot;Modality Decoder&amp;lt;div&amp;gt;模态解码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000002\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-87.69999999999992\&quot; y=\&quot;713.01\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-294.11\&quot; y=\&quot;765\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-380.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-295.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot; value=\&quot;&amp;lt;div&amp;gt;LLM Backbone&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;大语言模型基座&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.1500000000001\&quot; y=\&quot;560\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-16\&quot; value=\&quot;&amp;lt;div&amp;gt;各模态转为隐向量&amp;lt;/div&amp;gt;视觉模型: ViT替换CNN\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-314.11\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-18\&quot; value=\&quot;不同模态的语义向量与LLM对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-530\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-19\&quot; value=\&quot;LLM语义与模态语义对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;70\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-22\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-230\&quot; y=\&quot;470\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-39.710000000000036\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-23\&quot; value=\&quot;模态语义转为对应模态\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000001\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-25\&quot; value=\&quot;侧重模态理解+文本生成的多模态模型\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-460\&quot; y=\&quot;630\&quot; width=\&quot;212.2\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-26\&quot; value=\&quot;注意&amp;lt;div&amp;gt;- 训练时, 中间3个（红框）参数冻结&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- 只更新输入、输出映射层（绿框）, 参数量约2%&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- SFT阶段, llm 也参数&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-120\&quot; y=\&quot;585\&quot; width=\&quot;270\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+
+
+
+### 模型进化史
+
+<div class="mermaid">
+    flowchart TD
+    %% 节点颜色
+    classDef red fill:#f02;
+    classDef green fill:#5CF77B;
+    classDef blue fill:#6BE0F7;
+    classDef orange fill:#F7CF6B;
+    classDef grass fill:#C8D64B;
+    %%节点关系定义
+    S(多模态大模型)-->|2022-4-29,DeepMind,多模态多任务|F(Flamingo\n火烈鸟):::orange
+    S-->|2020,Google| V(ViT):::orange
+    T(Transformer)-->V
+    S-->|2021-10-7,Junnan Li\nSalesforce Research\n跨模态注意力引入对比损失\n动量蒸馏| A(ALBEF):::blue
+    F-->|2023-3-29,Christoph Schuhmann\n开源复制品,LMM框架,LLaMA| O(OpenFlamingo):::orange
+    A-.->|2022-2-15,Junnan Li\nSalesforce Research\n统一理解和生成|B(BLIP):::green
+    C-.->|对比|B
+    B-->|2023-1-30,Junnan Li\nSalesforce Research|B2(BLIP-2):::green
+    B2-->|2023-4-20,阿卜杜拉国王科技大学\nBLIP-2+LAVIS+Vicuna\n复现GPT-4多模态能力|M(MiniGPT-4):::grass
+    S-->|2021-2-26,OpenAI|C(CLIP):::blue
+    B-->|2023-4-17,威斯康星+微软+哥大\nCLIP+LLaMA\n复现GPT-4多模态能力|L(LLaVA):::grass
+    C-->|pretrain|L
+    O-->|2023-4-27,OpenMMLab\nLoRA微调| MG(MMGPT):::grass
+</div>
 
 
 ## 多模态技术路线
@@ -430,249 +692,10 @@ D类模型
 - `4M`
   - 官方代码: 4M GitHub
   - 一个可以处理文本、RGB图像、深度、法线和语义分割映射等多模态输入的模型。它使用多模态混合去噪器（Multimodal Mixture of Denoisers）作为预训练目标。
-                        
 
-## 多模态结构
 
-多模态人工智能强调不同模态数据之间的**互补性**和**融合性**，通过整合多种模态的数据，利用表征学习、模态融合与对齐等技术，实现跨模态的感知、理解和生成，推动智能应用的全面发展。
+## 典型模型
 
-三部分：**数据采集与表示**、**数据处理与融合**、**学习与推理**
-- 传感器：多模态学习中，传感器用于捕捉不同模态的数据，如摄像头捕捉图像（视觉模态）、麦克风捕捉声音（声音模态）等。
-  - 传感器是多模态数据采集的起点，它使得机器能够感知并获取来自不同物理世界的信息。
-  - 模态是指信息的表现形式或感知方式，如文本、图像、声音、视频等
-  - 多模态是指利用来自多个不同模态的数据进行学习和推理的过程。这些模态可以是文本、图像、声音、视频等的组合。
-  - 不同模态提供了不同的信息渠道，它们之间可能存在冗余性，但更多的是互补性。多模态模型能够整合来自不同模态的信息，正是利用这些不同模态的信息来增强模型的感知与理解能力。
-- 模态融合：将来自不同模态的信息进行有效整合的过程。
-  - **早期**融合：在数据处理的早期阶段就将不同模态的数据合并在一起。
-  - **晚期**融合：在数据处理的后期阶段才将不同模态的信息进行整合。
-  - **混合**融合：结合早期融合和晚期融合的优点，在不同的处理阶段进行多次融合。
-  - 模态融合能够充分利用不同模态之间的互补性，提高模型的性能和鲁棒性。
-- 模态对齐：寻找来自不同模态数据之间的对应关系或一致性。
-  - **时间**维度对齐：如将视频中的动作与音频中的语音进行对齐。
-  - **空间**维度对齐：如将图像中的像素与文本中的单词进行对齐。
-  - 模态对齐是多模态学习中实现不同模态信息有效融合的重要前提。通过对齐操作，可以确保不同模态的数据在时间和空间上保持一致性，从而进行更有效的融合和推理。
-- **多模态学习**：利用来自多个不同模态的数据进行学习和推理的过程。
-  - 它旨在整合不同模态之间的互补信息，以提高模型的感知与理解能力。
-  - 多模态学习是当前人工智能领域的一个研究热点，它推动了智能应用的边界扩展。通过多模态学习，可以构建更加智能、更加全面的系统来应对复杂多变的现实世界。
-
-多模态机器学习的核心任务主要包括`表示学习`，`模态映射`，`模态对齐`，`模态融合`，`协同学习`。
-
-
-
-### 表示学习
-
-`表示学习`（Representation）：主要研究如何将多个模态数据所蕴含的语义信息，数值化为实值向量，简单来说就是**特征化**。
-- `单模态`的表示学习负责将信息表示为计算机可以处理的数值向量或者进一步抽象为更高层的特征向量 Feature；
-- 而多模态表示学习通过利用多模态之间的互补性，剔除模态间的冗余性，从而学习到更好的特征 Feature。
-
-那在表示学习中主要包括两大研究方向：
-- `联合表示`（Joint Representations）：将多个模态的信息一起映射到一个统一的多模态向量空间。（CLIP 和 DALL·E 使用简单的联合表示，不过效果出奇的赞）。 
-- `协同表示`（Coordinated Representations）：将多模态中的每个模态分别映射到各自的表示空间，但映射后的向量之间满足一定的相关性约束（例如线性相关）。 
-- <img src="https://pic1.zhimg.com/50/v2-77531575a4083c22b18b399dd17bf54e\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1952" data-rawheight="508" class="origin\_image zh-lightbox-thumb" width="1952" data-original="https://pica.zhimg.com/v2-77531575a4083c22b18b399dd17bf54e\_r.jpg?source=1940ef5c"/>
-
-### 下游任务
-
-接着就是下游任务对特征进行理解（学术上也叫做内容理解），典型的下游任务包括`视觉问答`、`视觉推理`、`视觉联合推理`、`图像检索`、`视频检索`。
-- 视觉问答（Visual Question Answering，VQA）：根据给定的图片提问，从候选中选择出正确的答案，VQA2.0 中从 COCO 图片中筛选了超过100万的问题，训练模型来预测最常见的3129个回答，其本质上可以转化成一个分类问题。
-- <img src="https://pic1.zhimg.com/50/v2-f3e6e48c5a6647fc496a5533cb1223a4\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1538" data-rawheight="402" class="origin\_image zh-lightbox-thumb" width="1538" data-original="https://pic1.zhimg.com/v2-f3e6e48c5a6647fc496a5533cb1223a4\_r.jpg?source=1940ef5c"/>
-- 视觉推理（Visual Reasoning，VR）：视觉推理相对视觉问答更为复杂, 其可以分解为两个子任务视觉问答（Q->A）和选出答案的原因（QA->R）, 除了回答的问题需要用自然语言表达具有挑战性的视觉问题外, 模型还需要解释为什么作出这样的回答, 其最开始由华盛顿大学提出, 同时发布的 VCR 数据集包含 11 万的电影场景和 29 万的多项选择问题。
-- <img src="https://picx.zhimg.com/50/v2-1d732cb95b79362f2ca3129fed2af035\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1190" data-rawheight="295" class="origin\_image zh-lightbox-thumb" width="1190" data-original="https://picx.zhimg.com/v2-1d732cb95b79362f2ca3129fed2af035\_r.jpg?source=1940ef5c"/>
-- 检索任务（Index Task）：主要包括文本检索图片或者图片检索文本，检索任务应该不用加以过多的解释了，比较好理解，就是以文搜图或者以图搜文。下面图中就是Google 以图搜文的服务，当然包括华为手机里面的截图识字，淘宝拼多多的以文搜图等身边很多诸如此类的服务啦。
-- <img src="https://pic1.zhimg.com/50/v2-ae0f2f691f4c09ef198b3575f71b2a31\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1493" data-rawheight="553" class="origin\_image zh-lightbox-thumb" width="1493" data-original="https://picx.zhimg.com/v2-ae0f2f691f4c09ef198b3575f71b2a31\_r.jpg?source=1940ef5c"/>
-
-
-### 多模态模块
-
-**多模态大模型**(`MLLMs`)5个核心模块
-- `Modality Encoder`：`模态编码器`，将不同**模态**输入数据（如图片、视频、音频、3D等），编码为可理解的表示（隐层向量）
-  - `Visual Modality`: `ViT`, transformers 替换 cnn
-    - 图片补丁 `image patch encoder`: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
-    - 图片补丁位置嵌入: `image patch position embedding`, 查询表
-- `Input Projector`: `输入映射`，将不同模态的向量表示映射到共享表示空间，和LLM语义对齐
-- `LLM Backbone`: `大语言模型基座`，LLM基座模型，用于处理文本数据
-- `Output Projector`: `输出映射`，将LLM生成的输出,映射回**原始模态**空间,和各模态对齐
-- `Modality Decoder`: `模态解码器`, 或 `Modality Generator` **模态生成器** ，将各模态语义解码为对应的模态
-
-注意
-- 注重 Comprehension and text generation 的多模态模型，只需要**前3个**模块
-- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会**冻结参数**，只优化 Input Projector 和 Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
-- SFT阶段，LLM一般也会参与，因而SFT阶段需要更多显存。
-
-
-
-
-<!-- draw.io diagram -->
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.12\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;2069\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-24\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-540\&quot; y=\&quot;360\&quot; width=\&quot;400\&quot; height=\&quot;270\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;多模态模型组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-214.56\&quot; y=\&quot;260\&quot; width=\&quot;160\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;UnDAMuxRGoDYzSfqeH0n-51\&quot; value=\&quot;2024-9-16&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=2;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;190\&quot; y=\&quot;545\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; value=\&quot;Input Projector&amp;lt;div&amp;gt;输入映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-504.11\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot; value=\&quot;Output Projector&amp;lt;div&amp;gt;输出映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;95.89\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; value=\&quot;Modality Encoder&amp;lt;div&amp;gt;模态编码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.15000000000003\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; value=\&quot;Modality Decoder&amp;lt;div&amp;gt;模态解码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000002\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-87.69999999999992\&quot; y=\&quot;713.01\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-294.11\&quot; y=\&quot;765\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-380.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-295.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot; value=\&quot;&amp;lt;div&amp;gt;LLM Backbone&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;大语言模型基座&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.1500000000001\&quot; y=\&quot;560\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-16\&quot; value=\&quot;&amp;lt;div&amp;gt;各模态转为隐向量&amp;lt;/div&amp;gt;视觉模型: ViT替换CNN\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-314.11\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-18\&quot; value=\&quot;不同模态的语义向量与LLM对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-530\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-19\&quot; value=\&quot;LLM语义与模态语义对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;70\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-22\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-230\&quot; y=\&quot;470\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-39.710000000000036\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-23\&quot; value=\&quot;模态语义转为对应模态\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000001\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-25\&quot; value=\&quot;侧重模态理解+文本生成的多模态模型\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-460\&quot; y=\&quot;630\&quot; width=\&quot;212.2\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-26\&quot; value=\&quot;注意&amp;lt;div&amp;gt;- 训练时, 中间3个（红框）参数冻结&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- 只更新输入、输出映射层（绿框）, 参数量约2%&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- SFT阶段, llm 也参数&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-120\&quot; y=\&quot;585\&quot; width=\&quot;270\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
-
-
-
-### 跨模态预训练
-
-- 图像/视频与语言预训练。
-- 跨任务预训练
-
-ChatGPT 对多模态领域技术发展方向有什么影响？那必然是：卷起来了！
-- 2023年3月6日，谷歌发布“通才”模型`PaLM-`E，作为一种多模态具身 VLM，它不仅可以理解图像，还能理解、生成语言，执行各种复杂的机器人指令而无需重新训练。还展示出了强大的**涌现能力**（模型有不可预测的表现）。
-- 没隔多久，微软开始拉着OpenAI，N鸣惊人。
-- 3月15日，OpenAI携手微软于发布了GPT-4，也是关注**多模态**的，实验效果要比`PaLM`好，并且可以执行非常多的任务，比如，GPT4 在各种职业和学术考试上表现和人类水平相当。
-  - 模拟律师考试，GPT4 取得了前 10% 的好成绩
-  - 做美国高考 SAT 试题，GPT-4 也在阅读写作中拿下 710 分高分、数学 700 分（满分 800）。
-- Bing浏览器立马就把模型用了起来, 推出 New Bing
-- 3月17日，微软发布office 全家桶，将通过生成式人工智能（AI）技术来增强 Office 办公套装：Microsoft 365 Copilot，用于 Office 套装中的 Word、Excel 和 PowerPoint 等软件。新工具将帮助商业客户更快地**撰写文档**，生成**艺术画**，以及**创建图表**，帮助企业的数百万员工节省大量时间。
-  - 微软CEO纳德拉表示，今天是一个里程碑，意味着我们与电脑的交互方式迈入了新的阶段，从此我们的工作方式将永远改变，开启新一轮的生产力大爆发。
-- 3月21日，支持 AI画图 Image Creator，背后调用 OpenAI 的 DALL-E
-
-#### CLIP
-
-OpenAI 推出了 CLIP，在400M的**图像-文本对**数据上，用最朴素的**对比损失**训练双塔网络，利用text信息监督视觉任务自训练，对齐了两个模态的特征空间，本质就是将`分类任务`化成了`图文匹配`任务，效果可与全监督方法相当。
-- 在近 30 个数据集上 zero-shot 达到或超越主流监督学习性能。
-- CLIP：《[Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)》
-
-作者：[ZOMI酱](https://www.zhihu.com/question/505125640/answer/2633346368)
-
-CLIP算法原理
-- CLIP 不预先定义图像和文本标签类别，直接利用从互联网爬取的 400 million 个image-text pair 进行图文匹配任务的训练，并将其成功迁移应用于30个现存的计算机视觉分类。
-- CLIP 无需利用 ImageNet 的数据和标签进行训练，就可以达到 ResNet50 在 ImageNet数据集上有监督训练的结果，所以叫做 Zero-shot。
-
-CLIP（contrastive language-image pre-training）主要的贡献就是利用无监督的文本信息，作为监督信号来学习视觉特征。CLIP 作者先是回顾了并总结了和上述相关的两条表征学习路线： 
-- 构建image和text的联系，比如利用已有的image-text pair数据集，从text中学习image的表征；  
-- 获取更多的数据（不要求高质量，也不要求full labeled）然后做弱监督预训练，就像谷歌使用的JFT-300M数据集进行预训练一样（在JFT数据集中，类别标签是有噪声的）。具体来说，JFT中一共有18291个类别，这能教模型的概念比ImageNet的1000类要多得多，但尽管已经有上万类了，其最后的分类器其实还是静态的、有限的，因为你最后还是得固定到18291个类别上进行分类，那么这样的类别限制还是限制了模型的zero-shot能力。 
-
-这两条路线其实都展现了相当的潜力，前者证明 paired image-text 可以用来训练视觉表征，后者证明扩充数据能极大提升性能，即使数据有noise。于是high-level上，CLIP 作者考虑从网上爬取大量的 image-text pair 以扩充数据，同时这样的 pairs 是可以用来训练视觉表征的。作者随即在互联网上采集了4亿个 image-text 对，准备开始训练模型。
-
-CLIP流程有三个阶段：
-- Contrastive pre-training：对比预训练阶段，使用image-text对进行对比学习训练。
-- Create dataset classifier from label text：提取预测类别文本特征。
-- Use for zero-shot prediction：进行 Zero-Shot 推理预测。
-- ![](https://picx.zhimg.com/80/v2-340920caff256e06c29cff7097e23e62_720w.webp?source=1940ef5c)
-
-#### PaLM-E
-
-【2023-3-7】谷歌发布了个多模态模型 `PaLM-E`，使用传感器数据、自然语言、视觉训练，能直接用人话操作机器人完成任务。
-- [PaLM-E: An Embodied Multimodal Language Model](https://palm-e.github.io/)
-
-### Language-Audio
-
-- Text-to-Speech Synthesis: 给定文本，生成一段对应的声音。
-- Audio Captioning：给定一段语音，生成一句话总结并描述主要内容。(不是语音识别)
-
-### Vision-Audio
-
-- Audio-Visual Speech Recognition(视听语音识别)：给定某人的视频及语音进行语音识别。
-- Video Sound Separation(视频声源分离)：给定视频和声音信号(包含多个声源)，进行声源定位与分离。
-- Image Generation from Audio: 给定声音，生成与其相关的图像。
-- Speech-conditioned Face generation：给定一段话，生成说话人的视频。
-- Audio-Driven 3D Facial Animation：给定一段话与3D人脸模版，生成说话的人脸3D动画。
-
-### Vision-Language
-
-- Image/Video-Text Retrieval (图(视频)文检索): 图像/视频<-->文本的相互检索。
-- Image/Video Captioning(图像/视频描述)：给定一个图像/视频，生成文本描述其主要内容。
-- Visual Question Answering(视觉问答)：给定一个图像/视频与一个问题，预测答案。
-- Image/Video Generation from Text：给定文本，生成相应的图像或视频。
-- Multimodal Machine Translation：给定一种语言的文本与该文本对应的图像，翻译为另外一种语言。
-- Vision-and-Language Navigation(视觉-语言导航)： 给定自然语言进行指导，使得智能体根据视觉传感器导航到特定的目标。
-- Multimodal Dialog(多模态对话)： 给定图像，历史对话，以及与图像相关的问题，预测该问题的回答。
-
-### 定位相关的任务
-
-- Visual Grounding：给定一个图像与一段文本，定位到文本所描述的物体。
-- Temporal Language Localization: 给定一个视频即一段文本，定位到文本所描述的动作(预测起止时间)。
-- Video Summarization from text query：给定一段话(query)与一个视频，根据这段话的内容进行视频摘要，预测视频关键帧(或关键片段)组合为一个短的摘要视频。
-- Video Segmentation from Natural Language Query: 给定一段话(query)与一个视频，分割得到query所指示的物体。
-- Video-Language Inference: 给定视频(包括视频的一些字幕信息)，还有一段文本假设(hypothesis)，判断二者是否存在语义蕴含(二分类)，即判断视频内容是否包含这段文本的语义。
-- Object Tracking from Natural Language Query: 给定一段视频和一些文本，追踪视频中文本所描述的对象。
-- Language-guided Image/Video Editing: 一句话自动修图。给定一段指令(文本)，自动进行图像/视频的编辑。
-
-### 更多模态
-
-- Affect Computing (情感计算)：使用语音、视觉(人脸表情)、文本信息、心电、脑电等模态进行情感识别。
-- Medical Image：不同医疗图像模态如CT、MRI、PETRGB-D模态：RGB图与深度图
-
-
-## 语料库
-
-
-### 多模态情感分析语料库
-
-【2021-8-13】[哈工大：多模态情感分析语料库调研](https://mp.weixin.qq.com/s/YQxGvevrYixWcXXgKg0NXw)
-
-介绍相关子任务和对应数据集以及在数据集上的最新研究工作。主要分为：
-- 面向**视频评论**的情感分析
-- 面向视频评论的**细粒度**情感分析
-- 面向**视频对话**的情绪分析
-- 面向视频的**反讽**识别
-- 面向**图文**的反讽识别
-- 面向图文的情感分析
-- 面向图文的细粒度情感分析、幽默检测、抑郁检测。
-
-本文分别总结了相关数据集和方法，具体内容见第三部分。
-
-[多模态情感分析简述](https://zhuanlan.zhihu.com/p/97170240), 任务概览，总结如下：
-
-![多模态情感分析任务概览](https://pic1.zhimg.com/80/v2-18dfa11b0b0a41fba2f1a92a54cbad18_1440w.jpg)
-
-多模态情感分析相关数据集和方法概览
-
-|模态|任务|数据集及下载地址|方法|
-|---|---|---|---|
-|声图文|面向视频评论的情感分析|[Youtube数据集](https://projects.ict.usc.eduyoutube)，[MOSI数据集](https://github.com/A2Zadeh/CMU-MultimodalSDK)，[MOSEI数据集](https://github.com/A2Zadeh/CMU-MultimodalSDK)|Self-MM，Mult|
-|声图文|面向视频评论的细粒度情感分析|[CH-SIMS数据集](https://github.com/thuiar/MMSA)|MTFN|
-|声图文|面向视频对话的情绪分析|[IEMOCAP数据集](https://sail.usc.edu/iemocap/), [MELD数据集](https://affective-meld.github.io)|DialogueRNN, MESM|
-|声图文|面向视频的反讽识别|[MUStARD数据集](https://github.com/soujanyaporia/MUStARD)|Early Fusion +SVM|
-|图文|面向图文的反讽识别|[Twitter反讽数据集](https://github.com/headacheboy/data-of-multimodal-sarcasm-detection)|D&R net|
-|图文|面向图文的情感分析|[Yelp数据集](https://www.yelp.com/dataset),[MVSA数据集](http://mcrlab.net/research/mvsa-sentiment-analysis-on-multi-view-social-data/)||
-|图文|面向图文的细粒度情感分析|[Multi-ZOL数据集](https://github.com/xunan0812/MIMN),[Twitter-15&17数据集](https://github.com/jefferyYu/TomBERT)|TomBert|
-|声图文|幽默检测|[UR-FUNNY数据集](https://github.com/ROC-HCI/UR-FUNNY)|C-MFN|
-|声图文|抑郁检测|[DAIC-WOZ数据集](https://dcapswoz.ict.usc.edu)||
-|图文|抑郁检测|[Twitter抑郁检测数据集](https://depressiondetection.droppages.com)|MDL|
-
-详情见原文
-
-## 多模态模型
-
-
-### 多模态模型榜单
-
-【2024-8-2】[中文多模态大模型基准8月榜单发布！8大维度30个测评任务，3个模型超过70分](https://mp.weixin.qq.com/s/8QtQCk-z2QfZVl6jmYuJMg)
-
-测评要点
-- 1：**GPT-4o领跑**
-  - `GPT-4o` 取得74.36分，领跑多模态基准。其中基础多模态认知能力和应用能力均有70+分的表现，在技术和应用方面均有一定领先优势。
-- 2：**国内多模态大模型表现不俗**
-  - 国内多模态大模型 `hunyuan-vision` 和 `InternVL2-40B` 表现不俗，取得70+分的优异成绩，仅次于 `GPT-4o`。尤其在多模态应用方面领先 `Claude3.5-Sonnet` 和 `Gemini-1.5-Pro`，展现出较强的应用优势。
-- 3：国内大模型**基础能力仍需提升**
-  - 在基础能力方面国内大模型较海外模型仍有一定差距，尤其在细粒度视觉认知任务上，国内外最好模型有5分的差距，需要进一步对多模态深度认知能力做优化提升。
-
-> GPT-4o > hunyuan-vision > InterVL2-40B > Claude3.5-Sonnet > Gemini-1.5-Pro > Step-1V-8k > GPT-4-Turbo-0409 > GLM-4v > Qwen-VL-Max > ERNIE-4-Turbo > Qwen-VL-Plus > Yi-VL-34B
-
-
-### 模型进化史
-
-<div class="mermaid">
-    flowchart TD
-    %% 节点颜色
-    classDef red fill:#f02;
-    classDef green fill:#5CF77B;
-    classDef blue fill:#6BE0F7;
-    classDef orange fill:#F7CF6B;
-    classDef grass fill:#C8D64B;
-    %%节点关系定义
-    S(多模态大模型)-->|2022-4-29,DeepMind,多模态多任务|F(Flamingo\n火烈鸟):::orange
-    S-->|2020,Google| V(ViT):::orange
-    T(Transformer)-->V
-    S-->|2021-10-7,Junnan Li\nSalesforce Research\n跨模态注意力引入对比损失\n动量蒸馏| A(ALBEF):::blue
-    F-->|2023-3-29,Christoph Schuhmann\n开源复制品,LMM框架,LLaMA| O(OpenFlamingo):::orange
-    A-.->|2022-2-15,Junnan Li\nSalesforce Research\n统一理解和生成|B(BLIP):::green
-    C-.->|对比|B
-    B-->|2023-1-30,Junnan Li\nSalesforce Research|B2(BLIP-2):::green
-    B2-->|2023-4-20,阿卜杜拉国王科技大学\nBLIP-2+LAVIS+Vicuna\n复现GPT-4多模态能力|M(MiniGPT-4):::grass
-    S-->|2021-2-26,OpenAI|C(CLIP):::blue
-    B-->|2023-4-17,威斯康星+微软+哥大\nCLIP+LLaMA\n复现GPT-4多模态能力|L(LLaVA):::grass
-    C-->|pretrain|L
-    O-->|2023-4-27,OpenMMLab\nLoRA微调| MG(MMGPT):::grass
-</div>
 
 ### 传统模型
 
