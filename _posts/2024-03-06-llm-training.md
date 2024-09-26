@@ -280,6 +280,8 @@ SFT阶段，用**特定领域**数据或**私有化**数据, 对预训练模型�
 - 4、SFT通常不涉及复杂的策略或奖励函数，只是简单地最小化预测输出和真实输出之间的差异。
 
 
+
+
 ### RLHF 人类反馈强化学习
 
 RLHF 利用人类反馈来训练强化学习模型。
@@ -1071,6 +1073,74 @@ SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt�
 【2024-5-31】sft分为两种，**拟合**和**对齐**。
 - **拟合**：通过finetuning 得到稳定、符合需求的输出，包括格式、风格、特定模式等，是在业务落地中高频使用的方式；
 - **对齐**：指令对齐，让LLM更好地理解人类语言、执行自然语言指令，即LLM三个阶段之第二个阶段（pretrain、sft、rlhf）。
+
+#### loss 改进
+
+【2024-9-24】[SFT loss 计算的那些坑（多轮合并/packing）](https://zhuanlan.zhihu.com/p/721652210)
+
+SFT 训练时, 直接输入 `(input_ids, label)`, 训练效率低。 
+
+通常有两个加速方法：
+1. **多轮合并**: 同一个会话的拆分、合并
+  - user 和 bot 交互了 3 轮, 数据格式: bot作答部分用 input_ids, 其余用 **-100** 表示
+    - (system, user1, `bot1`, pad), bot1 计算loss
+    - (system, user1, bot1, user2, `bot2`, pad), bot2 计算loss
+    - (system, user1, bot1, user2, bot2, user3, `bot3`), bot3 计算loss
+  - loss 表达式: `loss = 1/3 (l1/n1+l2/n2+l3/n3)`, ni 是 boti token数, li 是第i个样本的 loss
+  - 不同样本之间有很多重复计算的前缀, 训练偏慢
+1. 加速
+  - 将3个样本合成1个, 借助 causal attention mask，每个 token 只能看到前面的 token，计算上和之前是等价
+  - 数据格式: (system, user1, `bot1`, user2, `bot2`, user3, `bot3`), 对应权重 li/ni
+  - 问题: loss 计算有问题, pytorch `CrossEntropyLoss` 默认取均值 mean, `loss = (l1+l2+l3)/(n1+n2+n3)`, 而 ni 不一定相同, 导致 短句子权重被降低, 长句子被加权, loss 不等价
+1. **packing**: 将**多个会话**合成一条, 进一步加速
+  - 将所有样本拼接成1条，并加入 `attention mask`, 保证后面的样本看不见前面的token。如 在 flash attention 中调用 flash_attn_varlen_qkvpacked_func，并传入 cu_seqlens 参数。
+  - 和之前一样，如果不修改 loss 计算方法，packing 的样本之间会存在因为长度不同，导致训练不充分的问题。
+
+loss 计算会经历三次平均
+- micro batch 维度，分母是这个 micro batch 中的所有 label 不是 -100 的 token 数
+- DP 维度，分母是 DP size （和GPU数量相关）
+- 梯度累加维度，分母是梯度累加数
+
+禁用这三个平均，统一用 `global batch` 对话轮数作为分母。
+- 新版 megatron 框架中，开启开关 `--calculate-per-token-loss`, 即可禁用 DP 和梯度累加的平均
+- 然后 修改 `loss_func`，每个 `micro batch` 都需要返回这个 `micro batch` 的轮数
+- 最后 框架会自动将所有轮数求和，作为分母。对于分子，需要除以这个轮次的token 数。
+
+正确实现代码如下（loss_token_num, turn_num 是在构建 data 的时候构建的）：
+
+```py
+def loss_func(output_tensor, loss_mask, loss_token_num, turn_num):
+    losses = output_tensor.view(-1).float()
+    loss_mask = loss_mask.view(-1).float()
+    loss_token_num = loss_token_num.view(-1).float()
+    # label: [-100, -100, a, a, a, -100, b, b, -100, -100, c, c, c, -100, -100]
+    # loss_mask: [0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0]
+    # losses: [a0, a1, a2, a3, a4, b0, b1, b2, c0, c1, c2, c3, c4, d0, d1]
+    # losses * loss_mask = [0, 0, a2, a3, a4, 0, b1, b2, 0, 0, c2, c3, c4, 0, 0]
+    # loss_token_num: [3, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 1, 1]
+    # losses * loss_mask / loss_token_num = [0, 0, a2/3, a3/3, a4/3, 0, b1/2, b2/2, 0, 0, c2/3, c3/3, c4/3, 0, 0]
+    # sum = 1/3 (a2 + a3 + a4) + 1/2 (b1 + b2) + 1/3 (c2 + c3 + c4)
+    loss = torch.sum(losses * loss_mask / loss_token_num)
+
+    loss_and_turn_num = torch.cat([loss.view(1), turn_num.view(1)])
+    # Reduce loss for logging.
+    loss_and_turn_num = loss_and_turn_num.clone().detach()
+    torch.distributed.all_reduce(loss_and_turn_num, group=mpu.get_data_parallel_group())
+    # 新版返回结构，开启 calculate_per_token_loss 开关后，返回三个值
+    # 第一个是反向传播实际使用的 loss, 所有 packing 的 loss 求和
+    # 第二个是 turn_num, 优化器状态更新时会使用对这个值求和然后缩放梯度
+    # 第三个是用于日志打印的 loss, 包含两个值，第一个是所有 loss 求和作为分子，第二个是所有 turn_num 求和作为分母
+    return loss, turn_num, {"lm loss": (loss_and_turn_num[0], loss_and_turn_num[1])}
+```
+
+无论是哪种方法，加速后都需要保证 loss 和原来等价。
+
+加速注意：
+- 不同样本之间等价；
+- 不同轮次之间等价。
+
+合并多轮 / packing 时，要修改 loss 计算方法，为每个 token 设置正确权重，并且关闭 `DP` / `梯度累加`的平均。
+
 
 #### IFT 问题
 
