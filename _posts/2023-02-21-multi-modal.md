@@ -1027,10 +1027,20 @@ BLIP两大亮点分别为：
 ##### BLIP-2 （Flamingo）
 
 【2023-1-30】BLIP-2 基于 Flamingo
--  论文：[BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597)
+-  【2023-6-15】论文：[BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597)
 - 代码：[blip-2](https://huggingface.co/docs/transformers/main/model_doc/blip-2), [lavis](https://github.com/salesforce/LAVIS/tree/5ee63d688ba4cebff63acee04adaef2dee9af207)
 
 充分利用大模型原始能力，不做预训练，而通过一个轻量级的 Querying transformer（Q-former）弥补了模态之间的差距, 连接视觉大模型和语言大模型。
+
+论文主要提出`Q-Former`（Lightweight Querying Transformer）用于连接模态之间的gap。
+
+`BLIP-2` 整体架构包括三个模块：**视觉编码器**、视觉和LLM的**Adapter**(Q-Former)、**LLM**。
+- 其中,Q-Former是BLIP-2模型训练过程中主要更新的参数，视觉Encoder和大语言模型LLM在训练过程中冻结参数。
+
+模型结构：
+- Vision Encoder：ViT-L/14
+- VL Adapter：Q-Former
+- LLM：OPT (decoder-based)，FlanT5（encoder-decoder-based）
 
 Q-former 通过两阶段方式进行训练：
 - 阶段 1：固定图像编码器，学习**视觉-语言**(vision-language)一致性的表征, 从冻结图像编码器引导视觉语言表示学习
@@ -1046,12 +1056,41 @@ our model outperforms Flamingo 80B by 8.7% on zero-shot VQAv2 with 54x fewer tra
 - 性能优于Flamingo、BEIT-3等网络，达到sota
 
 
+##### InstructBLIP
+
+【2023.06.15】发布 InstructBLIP
+- 论文地址：[paper](https://arxiv.org/pdf/2305.06500)
+
+模型结构：
+- Vision Encoder：ViT-g/14
+- VL Adapter：Q-Former
+- LLM：FlanT5-xl(3B), FlanT5-xxl(11B), Vicuna-7B, Vicuna-13B
+
+![](https://picx.zhimg.com/80/v2-a35f49642809ef843ed0c852b9cfc03b_1440w.webp)
+
+
+`InstructBLIP` 模型结构与`BLIP-2`类似，区别在于输入文本换成了**指令数据**Instructions. 
+- Q-Former 抽取指令感知的视觉特征（Instruction-aware vision model），根据指令的不同获取不同的视觉特征。
+- 然后将这些视觉特征作为LLM的软视觉提示（soft prompt），使用language modeling loss和指令微调模型生成回复。
+
+训练过程（Vision-Language Instruction Tuning）：3阶段训练以及zero-shot预测
+- Stage 1：预训练，训练Q-Former和Projection Layer，冻结image encoder。使用image caption数据，学习视觉文本相关性表示。
+- Stage 2：预训练，训练Projection Layer，冻结LLM。使用image caption数据，学习对齐LLM的文本生成。
+- Stage 3：指令微调，训练Q-Former和Projection Layer。使用Instruction任务数据，学习遵循指令生成回复的能力。
+
+训练数据：
+- 收集11个任务以及相应的26个数据集，如下图所示。
+- 对于每个任务，人工编写10-15个自然语言的指令模版，作为构造指令微调数据的基础。
+- 对于偏向较短回复的开源数据集，在指令模版中使用'short/briefly'降低模型过拟合为总是生成较短回复（防止过拟合的方式是在指令中有所体现）。
+
+
 #### miniGPT-4
 
-【2023-4-17】[MiniGPT-4 发布，代码模型开源了](https://mp.weixin.qq.com/s/WTTjXnczPkBNEBhuVG0SAA)，阿卜杜拉国王科技大学的几位博士做的
+【2023-4-17】[MiniGPT-4 发布，代码模型开源了](https://mp.weixin.qq.com/s/WTTjXnczPkBNEBhuVG0SAA)，阿卜杜拉国王科技大学的几位博士
 - GitHub: [MiniGPT-4](https://github.com/Vision-CAIR/MiniGPT-4)
 - [demo](https://minigpt-4.github.io/)
-- 论文：[MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models](https://arxiv.org/abs/2304.10592)
+- 【2023-10-02】论文：[MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models](https://arxiv.org/abs/2304.10592)
+
 
 GPT-4 所实现的多模态能力，在以前的视觉 - 语言模型中很少见，因此认为，GPT-4 先进的多模态生成能力，主要原因在于利用了更先进的大型语言模型。
 
@@ -1076,6 +1115,37 @@ BLIP-2 模型利用冻结预训练的图像编码器和大型语言模型，通�
 - 两种模型保持其独立训练得到的特征表示能力，通过投影层获得了一个共同的更低维的表达空间。
 - 一个冻结的视觉编码器：指的是一个事先训练好的图像特征提取器，它将输入的图像转换成向量形式。
 - 一个冻结的 LLM (Vicuna)：指的是另一个事先训练好的大型语言模型，它可以生成文本或者对文本进行理解。
+
+模型结构：
+- Vision Encoder：ViT-G/14
+- VL Adapter：Q-Former
+- Projection Layer：a single linear
+- LLM：Vicuna
+
+训练过程：
+- Stage 1：只训练Linear Projection Layer来对齐视觉特征和大语言模型。使用大量text-image pair数据。
+- Stage 2：指令微调，使用少量高质量text-image instruction数据
+- 指令模板：`###Human: <Img><ImageFeature></Img><Instruction>###Assistant:`
+
+
+##### MiniGPT-v2
+
+【2023.11.07】
+- 论文地址：[paper](https://arxiv.org/pdf/2310.09478)
+
+模型结构：
+- Vision Encoder：ViT
+- VL Adapter：/
+- Projection Layer：Linear
+- LLM：Llama2-7B
+
+![](https://picx.zhimg.com/80/v2-ec3800841820dadcffa24db69da76be9_1440w.webp)
+
+训练过程：
+- Stage 1：预训练，使用大量弱监督image-text和细粒度数据集的混合数据训练，让模型获取多样化知识
+- Stage 2：多任务训练，只使用细粒度高质量数据集训练模型在不同任务上的能力。
+- Stage 3：多模态质量微调，让模型具备Chat哪里
+
 
 
 #### LLaVA
@@ -1106,11 +1176,40 @@ LLaVA (Language-and-Vision Assistant)，一款展示了某些近似多模态 GPT
 3. 科学问答（Science QA）
   - 单独使用 LLaVA 实现了 90.92％ 的准确率。我们使用仅文本的 GPT-4 作为评判者，根据其自身先前的答案和 LLaVA 的答案预测最终答案。这种“GPT-4 作为评判者”的方案产生了新的 SOTA 92.53％。令人惊讶的是，GPT-4 可以作为一种有效的模型集成方法！这些结果希望启发大家以后刷榜的时候，可以利用 GPT-4 这个神奇来集成不同方法。
 
+
+模型结构：
+- Vision Encoder：ViT-L/14
+- VL Adapter：/
+- Projection Layer：a linear layer
+- LLM：LLaMA
+
+![](https://pic1.zhimg.com/80/v2-e32dc3e950201a2cd19287eb07713b00_1440w.webp)
+
+训练过程：
+- Stage 1：Pre-training for Feature Alignment. 训练Projection Layer
+- Stage 2：Fine-tuning End-to-End. 训练Projection Layer和LLM
+
+
 ##### LLaVA 中文版
 
 - LinkSoul.AI 开源了可商用的中英文双语视觉 - 语言助手 Chinese-LLaVA 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文视觉 - 文本多模态对话的开源可商用对话模型。
   - 代码 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA), 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
   - ![](https://p1.itc.cn/images01/20230804/367c7521624c4ede8d7daf0cfec5a154.gif)
+
+
+##### LLaVA-1.5
+
+【2024.05.15】
+
+论文地址：[paper](https://arxiv.org/pdf/2310.03744)
+
+模型结构：
+- Vision Encoder：Clip预训练 Vit-L/336px
+- VL Adapter：MLP
+- LLM：Vicuna v1.5 13B
+
+![](https://pic1.zhimg.com/80/v2-d3d18f01a2d8e3aa9afd187db56ff1b0_1440w.webp)
+
 
 #### MMGPT （基于OpenFlamingo）
 
@@ -1495,6 +1594,61 @@ OpenFlamingo 在机器人操作数据集 CALVIN 上进行了验证，实验结�
 
 Chameleon，一种**早期融合**，基于token的**混合模态**模型族，能够理解和生成任意序列中的图像和文本。概述了一个稳定的训练 
 从一开始就采用的方法、对齐方法和为早期融合，基于token的混合模态设置。对模型进行了综合评价的任务，包括视觉问答、图像描述、文本生成、图像生成和长形式混合模态生成。变色龙具有广泛和一般的能力，包括在图像描述任务中的最先进性能，在纯文本任务中优于Llama-2 与Mixtral 8x7B和Gemini-Pro等模型竞争，并表现出非平凡图像生成，都在一个模型中。它还匹配或超过了更大的模型的性能， 包括Gemini Pro和GPT-4V，根据人类对新的长形式混合模态的判断
+
+
+#### QWen-VL
+
+【2023-10-13】QWen-VL 发布
+- [论文](https://arxiv.org/pdf/2308.12966)
+
+模型结构：
+- Vision Encoder：ViT-bigG/14
+- VL Adapter：a single-layer cross-attention（Q-former的左侧部分）
+- LLM：Qwen-7B
+
+![](https://pic2.zhimg.com/80/v2-98cc4956c8e5724e662dd336cf639f13_1440w.webp)
+
+VL Adapter 创建一组可训练 queries向量 和 image features一起做cross-attention，将视觉特征压缩至256的固定长度，同时为了提升细粒度的视觉理解，在cross-attention中也加入图像的2D绝对位置编码。
+
+- Image Input 使用特殊token（`<img>` and `</img>`）分隔
+- Bounding Box Input 使用特殊token（`<box>` and `</box>`）分隔
+- bounding box 的 content referred使用特殊token（`<ref>` and `</ref>`）分隔。
+
+训练过程：
+- Stage 1：预训练，训练Cross-Attention和ViT，冻结QwenLM。
+- Stage 2：多任务预训练（7 tasks同时），全参数训练。
+- Stage 3：指令微调，训练Cross-Attention和QwenLM，冻结ViT。
+
+训练数据：
+- 第一个阶段使用image-text pairs数据，77.3%英文、22.7%中文，一共14亿数据训练，图片size=224*224.
+- 第二个阶段使用质量更高的image-text pairs数据，包含7个任务，图像size=448*448. 在同一个任务下构造交错图像文本数据，序列长度为2048. 训练目标与Stage1一致。
+- 第三个阶段使用Instruction数据，训练指令遵循和对话能力，通过LLM self-instruction构造，一共350k条。
+
+
+#### QWen2-VL
+
+【2024-09-18】QWen-VL 发布
+- [论文](https://arxiv.org/pdf/2409.12191)
+
+能力更强
+- ![](https://pica.zhimg.com/80/v2-4f41ba3c0ed93c815eb5882b4bec3ad8_1440w.webp)
+
+模型结构：
+- Vision Encoder：ViT/14
+- VL Adapter：Cross-Modal Connector
+- LLM：Qwen2-1.5B, Qwen2-7B, Qwen2-72B
+
+![](https://pic1.zhimg.com/80/v2-7f27b14d8683bbbaf590c6e640e4046a_1440w.webp)
+
+Qwen2-VL 相较于 Qwen-VL 主要改进点（除了一些VQA等基础能力的提升之外）：
+- 1）支持视频理解，支持context上下文长度到128k token（20分钟左右视频）。
+- 2）Visual Agent能力，支持实时视频对话。
+- 3）图像位置编码采用2D-RoPE，一张224*224分辨率的图像经过ViT/patch_size=14等一系列转换之后会被压缩至66个token输入到LLM。
+
+训练过程：
+- Stage 1：训练ViT，使用大量image-text对。
+- Stage 2：全参数微调，使用更多的数据提升模型全面理解的能力。
+- Stage 3：指令微调，训练LLM。
 
 
 # 结束
