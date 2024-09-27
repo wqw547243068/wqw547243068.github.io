@@ -923,7 +923,7 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 
 # 资料
 
-## 数学软件
+## 数学工具
 
 【2024-2-1】三大数学软件（Matlab、Mathematica、Maple）后两个已经名不副实，长期吃老本不思进取，性能低下bug太多只会吹牛，近年来被开源免费的GeoGebra吊打，GeoGebra的发展势头很猛，超越Matlab也是迟早的事
 
@@ -944,6 +944,25 @@ matlab 是工程软件，不是数学软件。想干掉他的人多了，如scil
 ### Maple
 
 ### GeoGebra
+
+
+
+### Penrose
+
+
+【2024-9-27】CMU [Penrose](https://penrose.cs.cmu.edu/)
+- [Demo](https://penrose.cs.cmu.edu/try/)
+- 示例 [examples](https://penrose.cs.cmu.edu/examples)
+
+![](https://penrose.cs.cmu.edu/img/tutorial/triple_helvetica.png)
+
+
+用 Penrose 创建图像，要在三个特定的文件中编写代码
+
+三个文件分别对应于：
+- .domain 文件，定义特定领域的语言。
+- .substance 文件，创建数学内容的物质。
+- .style 文件，指定视觉表示的样式。
 
 
 ## 数列
