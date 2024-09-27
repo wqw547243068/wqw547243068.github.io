@@ -3,7 +3,7 @@ layout: post
 title:  "数学历史与知识-Maths History and Konwledge"
 date:   2019-09-06 10:29:00
 categories: 数学基础
-tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方
+tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方 可视化
 excerpt: 人文与数学的前后关系；数学软件
 mathjax: true
 permalink: /math
@@ -945,6 +945,26 @@ matlab 是工程软件，不是数学软件。想干掉他的人多了，如scil
 
 ### GeoGebra
 
+- [在线几何作图GeoGebra](https://www.geogebra.org/apps/)（源自 [马同学高等数学](http://www.matongxue.com/madocs/244.html)）
+
+
+- 【2019-07-15】马同学高等数学：[如何通俗讲解牛顿法](https://matongxue.com/madocs/205.html)
+- 切线方程：
+
+$$f \left( x _ { n + 1 } \right) - f \left( x _ { n } \right) = f ^ { \prime } \left( x _ { n } \right) \left( x _ { n + 1 } - x _ { n } \right)$$
+
+<iframe scrolling="no" title="" src="https://www.geogebra.org/material/iframe/id/zxhdVjJa/width/1382/height/574/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="1382px" height="574px" style="border:0px;"> </iframe>
+
+
+- 【2019-07-15】神经网络分类面到底什么样？可交互
+
+<iframe scrolling="no" title="Visualizing Decision Surface of Neural Network" src="https://www.geogebra.org/material/iframe/id/s7NzPGNp/width/1440/height/826/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="1440px" height="826px" style="border:0px;"> </iframe>
+
+
+### Mathigon
+
+- 【2019-04-09】可交互数学课本[Mathigon](https://mathigon.org),[github地址](https://github.com/mathigon/textbooks) 
+- ![mathigon](https://camo.githubusercontent.com/ff8eeb791a687cc78b86f4a70f127f57b1b538a8/68747470733a2f2f6d61746869676f6e2e6f72672f696d616765732f6865726f2e706e67)
 
 
 ### Penrose
