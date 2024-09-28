@@ -14,6 +14,11 @@ permalink: /interview
 
 # 面试
 
+
+level 分级: 
+- 技术线: `Associate`/`Junior` （见习、初级）—>  `engineer` —> `senior` —> `staff` —> `principle`
+- 管理线：manager路线 `Manger` -> `Senior` / `second line` manager -> `Director` (countrywide) -> `Region wide Director` （大洲的director） -> `world wide VP` - `CEO`
+
 Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA](https://www.metacareers.com/life/investing-in-the-future-introducing-new-work-choices-in-emea)
 
 ## 企业需求
