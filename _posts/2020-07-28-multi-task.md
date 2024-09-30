@@ -3,7 +3,7 @@ layout: post
 title:  "多任务学习-Multi-Task-Learning"
 date:   2020-07-28 15:26:00
 categories: 机器学习 深度学习
-tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函数
+tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函数 moe ple
 excerpt: 多任务学习相关知识点
 author: 鹤啸九天
 mathjax: true
@@ -420,6 +420,62 @@ NIPS2017 论文《What Uncertainties Do We Need in Bayesian Deep Learning for Co
 
 # 工程实现
 
+
+## 复现总结
+
+pytorch 复现经典的推荐系统模型, 如: MF, FM, DeepConn, MMOE, PLE, DeepFM, NFM, DCN, AFM, AutoInt, ONN, FiBiNET, DCN-v2, AFN, DCAP等
+- 代码 [recommendation_model](https://github.com/huangjunheng/recommendation_model)
+
+详情
+- 1 实现 `MF`(Matrix Factorization, 矩阵分解)，在 movielen 100k 数据集上, mse为0.853左右
+- 2 实现 `FM`(Factorization machines, 因子分解机), 在 movielen 100k 数据集上 mse 为 0.852 (只使用u, i, ratings 三元组的因子分解机与mf其实是一样的， 故在相同数据集上的结果也差不多）
+  - 参考论文：Steffen Rendle, Factorization Machines, ICDM 2010.
+- 3 DeepConn 是第一篇使用深度学习模型利用评论信息进行推荐的文章，后面有很多改进工作如 `Transnets`(ResSys2017), `NARRE`(www2018)等 所以说，这篇非常值得认真阅读和复现的论文。
+  - 数据集下载[地址](http://jmcauley.ucsd.edu/data/amazon)
+  - 预训练文件[下载地址](https://code.google.com/archive/p/word2vec/), 下载 GoogleNews-vectors-negative300.bin 文件放入 data/embedding_data中
+  - 使用方法：1. 运行pre_precessing.py文件 2. 运行train文件
+  - 实验结果(mse)： office: 0.777, video_game: 1.182
+  - 参考论文：L.zheng et al, Joint deep modeling of users and items using reviews for recommendation, WSDM 2017.
+- 4 `MMOE` 谷歌于2018年提出的一种多任务学习推荐模型，被用于YouTube视频推荐场景，效果良好，被业界广泛关注，实习时线上模型也采用了`MMOE`改进模型，叫`PLE`。 在census 数据集上进行实验，实验结果比原文差一点。
+  - 实验结果(AUC)：'income'：0.942, 'marital': 0.977 原文是0.941， 0.9927
+  - 参考论文：J.Ma et al, Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts, KDD 2018. Z.Zhao et al, Recommending What Video to Watch Next: A Multitask Ranking System, RecSys 2019. Hongyan Tang, Progressive Layered Extraction (PLE): A Novel Multi-Task Learning (MTL) Model for Personalized Recommendations, RecSys 2020.
+- 5 `PLE` 实现，放在 mmoe_model 文件夹下了，使用时把 `mmoe.py` 中导入模型改为`PLE`就行。实验结果与`MMOE`差不多。
+  - 实验结果(AUC)：'income'：0.939, 'marital': 0.979
+- 6 实现`DeepFM`，在 sample Criteo（是对kaggle Criteo数据集的采样，有1000000个样本）数据上实验了一下，主要参考了这位的[代码](https://blog.csdn.net/springtostring/article/details/108157070), 但模型部分写的不太对,又自己重新写了。
+  - 实验结果(AUC): 0.743
+  - 参考论文：HGUO et al, DeepFM: a factorization-machine based neural network for CTR prediction, IJCAI 2017.
+- 7 实现 `NFM`, 数据集同上，主要参考DeepCTR，
+  - 实验结果(AUC): 0.710
+  - 参考论文：Xiangnan He et al, Neural Factorization Machines for Sparse Predictive Analytics, SIGIR 2017.
+- 8 实现 `DCN`, 数据集及参考同上
+  - 实验结果(AUC): 0.750
+  - 参考论文：Ruoxi Wang et al, Deep & Cross Network for Ad Click Predictions, ADKDD 2017.
+- 9 实现 `AFM`, 数据集及参考同上
+  - 实验结果(AUC): 0.715
+  - 参考论文：Jun Xiao et al, Attentional Factorization Machines: Learning the Weight of Feature Interactions via Attention Networks, IJCAI 2017.
+- 10 实现AutoInt, 数据集及参考同上
+  - 实验结果(AUC)：0.717
+  - 参考论文：Weiping Song et al, AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks, CIKM 2019.
+- 11 实现ONN，数据集及参考同上
+  - 实验结果(AUC)：0.735
+  - 参考论文：Yi Yang et al, Operation-aware Neural Networks for user response prediction, Neural Networks 2020.
+- 12 实现 `FiBiNET`，数据集及参考同上
+  - 实验结果(AUC)：0.698
+  - 参考论文：Tongwen Huang et al, FiBiNET: Combining Feature Importance and Bilinear feature Interaction for Click-Through Rate Prediction, RecSys 2019.
+- 13 实现 `Wide&Deep`，数据集及参考同上
+  - 实验结果(AUC)：0.728
+  - 参考论文：Heng-Tze Cheng et al, Wide & Deep Learning for Recommender Systems, RecSys workshop/dlrs 2016.
+- 14 实现 `DCN-v2`，数据集及参考同上
+  - 实验结果(AUC)：0.748
+  - 参考论文：Ruoxi Wang et al, DCN V2: Improved Deep & Cross Network and Practical Lessons for Web-scale Learning to Rank Systems, WWW 2021.
+- 15 实现 `AFN`，数据集及参考同上
+  - 实验结果(AUC)：0.720
+  - 参考论文：Weiyu Cheng et al, Adaptive Factorization Network: Learning Adaptive-Order Feature Interactions, AAAI 2020.
+- 16 实现 `DCAP`，数据集同上
+  - 实验结果(AUC)：0.709
+  - 参考论文：Zekai Chen et al, DCAP: Deep Cross Attentional Product Network for User Response Prediction, CIKM 2021.
+
+
 ## ESMM模型
 
 - 【2022-5-18】[多任务学习模型ESMM原理与实现](https://mp.weixin.qq.com/s/LpJCrVpTzT50L953J6A7Vg)
@@ -545,7 +601,7 @@ Gate 网络在两个任务的不同分布：
  
 共享网络节省了大量计算资源，且 Gate 网络参数较少，所以 MMoE 模型很大程度上也保持了计算优势
 
-## 谷歌SNR模型
+## 谷歌 SNR 模型
 
 - [浅谈多任务学习（Multi-task Learning）](https://zhuanlan.zhihu.com/p/348873723)
 - [图](https://pic1.zhimg.com/80/v2-a316f17c3752dcf405ae40a929362e88_1440w.jpg)
@@ -553,10 +609,220 @@ Gate 网络在两个任务的不同分布：
 ![](https://pic1.zhimg.com/80/v2-a316f17c3752dcf405ae40a929362e88_1440w.jpg)
 
 
+## 腾讯 PLE 
+
+渐进式分层提取（PLE）
+- RecSys 2020，腾讯发布 [Progressive Layered Extraction : A Novel Multi-Task Learning Model for Personalized Recommendations](https://dl.acm.org/doi/abs/10.1145/3383313.3412236)
+
+效果
+- 极大缓解了多任务学习中两大顽疾：**负迁移**（negative transfer）现象和**跷跷板**（seesaw phenomenon），由此带来了相比较其他MTL模型比较大的性能提升
+- 获得 recsys’20 的 best paper award
+- 模型结构上更像**大力出奇迹**，即性能的提升是由参数量变多而带来的
 
 
+### 起因
 
-## TensorFlow实现多任务学习
+多任务学习存在**跷跷板**现象:
+- 一个任务的性能通常要通过损害其他任务的性能来提高。
+- 当任务相关性复杂时，相应的单任务模型相比，多个任务无法同时提高。
+
+多任务学习领域中存在的两大问题：
+- **负迁移**（negative transfer）：MTL 目的是为了不同任务，尤其是数据量较少的任务，可借助 transfer learning（通过共享embedding，当然也可以不仅共享embedding，再往上共享基层全连接网络等等这些很常见的操作）。
+  - 但经常事与愿违，当两个任务之间的**相关性很弱或者非常复杂**时，往往发生负迁移，即共享了之后效果反而很差，还不如不共享。
+  - 比如：一个任务是判断一张图片是否是狗，另一个任务是判断是否是飞机
+- **跷跷板**现象：还是当两个task之间**相关性很弱或者很复杂**时，往往出现的现象是：一个task性能的提升是通过损害另一个task的性能做到的。
+  - 这种现象存在很久，PLE论文起了个非常贴切的名字『跷跷板』，小时候玩跷跷板的情形吧，胖子把瘦子跷起来。
+
+[原文](https://blog.csdn.net/u012328159/article/details/123617326)
+
+基于这一点，渐进分层提取(`PLE`)模型明确分离**共享**组件和**特定任务**组件，采用`渐进式路由机制`，逐步提取和分离更深层次的语义知识。
+
+利用`门结构`和`注意网络`进行信息融合, 在之前的模型中已经很常见，比如: `MMoE`
+
+特点
+- 这类模型没有任务特定概念，**所有专家被所有任务共享**
+
+### PLE 做法
+
+PLE 在 MMoE 基础上改进
+- PLE 明确地分离任务**公共参数**和任务**特定参数**，以避免复杂任务相关性导致的参数冲突。
+
+总结
+- MMoE中，所有任务同时更新所有专家网络，没有任务特定的概念
+- 而 PLE中，明确分离了任务**通用专家**和**特定任务专家**，特定于任务的专家仅接受对应的任务tower梯度更新参数，而共享的专家则被多任务结果更新参数，这使不同类型 experts 可以**专注于更高效地学习不同的知识且避免不必要的交互**。
+- 另外，得益于**门控网络**动态地融合输入，CGC可以更灵活地在不同子任务之间找到平衡且更好地处理任务之间的冲突和样本相关性问题。
+
+对 `CGC`（Customized Gate Control） 模型进行扩展，形成具有**多级**门控网络和**渐进式分离路由**的广义PLE模型
+
+[原文](https://blog.csdn.net/zly_Always_be/article/details/135920523) 包含模型图解，以及 pytorch 版本
+
+
+### pytorch 实现
+
+
+```py
+import numpy as np
+import torch
+from torch import nn
+
+'''专家网络'''
+class Expert_net(nn.Module):
+    def __init__(self, feature_dim, expert_dim):
+        super(Expert_net, self).__init__()
+
+        p = 0
+        self.dnn_layer = nn.Sequential(
+            nn.Linear(feature_dim, 256),
+            nn.ReLU(),
+            nn.Dropout(p),
+            nn.Linear(256, expert_dim),
+            nn.ReLU(),
+            nn.Dropout(p)
+        )
+
+    def forward(self, x):
+        out = self.dnn_layer(x)
+        return out
+
+'''特征提取层'''
+class Extraction_Network(nn.Module):
+    '''FeatureDim-输入数据的维数; ExpertOutDim-每个Expert输出的维数; TaskExpertNum-任务特定专家数;
+       CommonExpertNum-共享专家数; GateNum-gate数(2表示最后一层，3表示中间层)'''
+
+    def __init__(self, FeatureDim, ExpertOutDim, TaskExpertNum, CommonExpertNum, GateNum):
+        super(Extraction_Network, self).__init__()
+
+        self.GateNum = GateNum  # 输出几个Gate的结果，2表示最后一层只输出两个任务的Gate，3表示还要输出中间共享层的Gate
+
+        '''两个任务模块，一个共享模块'''
+        self.n_task = 2
+        self.n_share = 1
+
+        '''TaskA-Experts'''
+        for i in range(TaskExpertNum):
+            setattr(self, "expert_layer" + str(i + 1), Expert_net(FeatureDim, ExpertOutDim).cuda())
+        self.Experts_A = [getattr(self, "expert_layer" + str(i + 1)) for i in
+                          range(TaskExpertNum)]  # Experts_A模块，TaskExpertNum个Expert
+        '''Shared-Experts'''
+        for i in range(CommonExpertNum):
+            setattr(self, "expert_layer" + str(i + 1), Expert_net(FeatureDim, ExpertOutDim).cuda())
+        self.Experts_Shared = [getattr(self, "expert_layer" + str(i + 1)) for i in
+                               range(CommonExpertNum)]  # Experts_Shared模块，CommonExpertNum个Expert
+        '''TaskB-Experts'''
+        for i in range(TaskExpertNum):
+            setattr(self, "expert_layer" + str(i + 1), Expert_net(FeatureDim, ExpertOutDim).cuda())
+        self.Experts_B = [getattr(self, "expert_layer" + str(i + 1)) for i in
+                          range(TaskExpertNum)]  # Experts_B模块，TaskExpertNum个Expert
+
+        '''Task_Gate网络结构'''
+        for i in range(self.n_task):
+            setattr(self, "gate_layer" + str(i + 1),
+                    nn.Sequential(nn.Linear(FeatureDim, TaskExpertNum + CommonExpertNum),
+                                  nn.Softmax(dim=1)).cuda())
+        self.Task_Gates = [getattr(self, "gate_layer" + str(i + 1)) for i in
+                           range(self.n_task)]  # 为每个gate创建一个lr+softmax
+
+        '''Shared_Gate网络结构'''
+        for i in range(self.n_share):
+            setattr(self, "gate_layer" + str(i + 1),
+                    nn.Sequential(nn.Linear(FeatureDim, 2 * TaskExpertNum + CommonExpertNum),
+                                  nn.Softmax(dim=1)).cuda())
+        self.Shared_Gates = [getattr(self, "gate_layer" + str(i + 1)) for i in range(self.n_share)]  # 共享gate
+
+    def forward(self, x_A, x_S, x_B):
+        '''Experts_A模块输出'''
+        Experts_A_Out = [expert(x_A) for expert in self.Experts_A]  #
+        Experts_A_Out = torch.cat(([expert[:, np.newaxis, :] for expert in Experts_A_Out]),
+                                  dim=1)  # 维度 (bs,TaskExpertNum,ExpertOutDim)
+        '''Experts_Shared模块输出'''
+        Experts_Shared_Out = [expert(x_S) for expert in self.Experts_Shared]  #
+        Experts_Shared_Out = torch.cat(([expert[:, np.newaxis, :] for expert in Experts_Shared_Out]),
+                                       dim=1)  # 维度 (bs,CommonExpertNum,ExpertOutDim)
+        '''Experts_B模块输出'''
+        Experts_B_Out = [expert(x_B) for expert in self.Experts_B]  #
+        Experts_B_Out = torch.cat(([expert[:, np.newaxis, :] for expert in Experts_B_Out]),
+                                  dim=1)  # 维度 (bs,TaskExpertNum,ExpertOutDim)
+
+        '''Gate_A的权重'''
+        Gate_A = self.Task_Gates[0](x_A)  # 维度 n_task个(bs,TaskExpertNum+CommonExpertNum)
+        '''Gate_Shared的权重'''
+        if self.GateNum == 3:
+            Gate_Shared = self.Shared_Gates[0](x_S)  # 维度 n_task个(bs,2*TaskExpertNum+CommonExpertNum)
+        '''Gate_B的权重'''
+        Gate_B = self.Task_Gates[1](x_B)  # 维度 n_task个(bs,TaskExpertNum+CommonExpertNum)
+
+        '''GateA输出'''
+        g = Gate_A.unsqueeze(2)  # 维度(bs,TaskExpertNum+CommonExpertNum,1)
+        experts = torch.cat([Experts_A_Out, Experts_Shared_Out],
+                            dim=1)  # 维度(bs,TaskExpertNum+CommonExpertNum,ExpertOutDim)
+        Gate_A_Out = torch.matmul(experts.transpose(1, 2), g)  # 维度(bs,ExpertOutDim,1)
+        Gate_A_Out = Gate_A_Out.squeeze(2)  # 维度(bs,ExpertOutDim)
+        '''GateShared输出'''
+        if self.GateNum == 3:
+            g = Gate_Shared.unsqueeze(2)  # 维度(bs,2*TaskExpertNum+CommonExpertNum,1)
+            experts = torch.cat([Experts_A_Out, Experts_Shared_Out, Experts_B_Out],
+                                dim=1)  # 维度(bs,2*TaskExpertNum+CommonExpertNum,ExpertOutDim)
+            Gate_Shared_Out = torch.matmul(experts.transpose(1, 2), g)  # 维度(bs,ExpertOutDim,1)
+            Gate_Shared_Out = Gate_Shared_Out.squeeze(2)  # 维度(bs,ExpertOutDim)
+        '''GateB输出'''
+        g = Gate_B.unsqueeze(2)  # 维度(bs,TaskExpertNum+CommonExpertNum,1)
+        experts = torch.cat([Experts_B_Out, Experts_Shared_Out],
+                            dim=1)  # 维度(bs,TaskExpertNum+CommonExpertNum,ExpertOutDim)
+        Gate_B_Out = torch.matmul(experts.transpose(1, 2), g)  # 维度(bs,ExpertOutDim,1)
+        Gate_B_Out = Gate_B_Out.squeeze(2)  # 维度(bs,ExpertOutDim)
+
+        if self.GateNum == 3:
+            return Gate_A_Out, Gate_Shared_Out, Gate_B_Out
+        else:
+            return Gate_A_Out, Gate_B_Out
+
+
+class PLE(nn.Module):
+    # FeatureDim-输入数据的维数;ExpertOutDim-每个Expert输出的维数;TaskExpertNum-任务特定专家数;CommonExpertNum-共享专家数;n_task-任务数(gate数)
+    def __init__(self, FeatureDim, ExpertOutDim, TaskExpertNum, CommonExpertNum, n_task=2):
+        super(PLE, self).__init__()
+        # self.FeatureDim = x.shape[1]
+
+        '''一层Extraction_Network，一层CGC'''
+        self.Extraction_layer1 = Extraction_Network(FeatureDim, ExpertOutDim, TaskExpertNum, CommonExpertNum, GateNum=3)
+        self.CGC = Extraction_Network(ExpertOutDim, ExpertOutDim, TaskExpertNum, CommonExpertNum, GateNum=2)
+
+        '''TowerA'''
+        p1 = 0
+        hidden_layer1 = [64, 32]
+        self.tower1 = nn.Sequential(
+            nn.Linear(ExpertOutDim, hidden_layer1[0]),
+            nn.ReLU(),
+            nn.Dropout(p1),
+            nn.Linear(hidden_layer1[0], hidden_layer1[1]),
+            nn.ReLU(),
+            nn.Dropout(p1),
+            nn.Linear(hidden_layer1[1], 1))
+        '''TowerB'''
+        p2 = 0
+        hidden_layer2 = [64, 32]
+        self.tower2 = nn.Sequential(
+            nn.Linear(ExpertOutDim, hidden_layer2[0]),
+            nn.ReLU(),
+            nn.Dropout(p2),
+            nn.Linear(hidden_layer2[0], hidden_layer2[1]),
+            nn.ReLU(),
+            nn.Dropout(p2),
+            nn.Linear(hidden_layer2[1], 1))
+
+    def forward(self, x):
+        Output_A, Output_Shared, Output_B = self.Extraction_layer1(x, x, x)
+        Gate_A_Out, Gate_B_Out = self.CGC(Output_A, Output_Shared, Output_B)
+        out1 = self.tower1(Gate_A_Out)
+        out2 = self.tower2(Gate_B_Out)
+
+        return out1, out2
+
+        return Gate_A_Out, Gate_B_Out
+```
+
+
+## TensorFlow 实现多任务学习
 
 - 【2020-12-16】[多标签文本分类 ALBERT+TextCNN-附代码](https://zhuanlan.zhihu.com/p/158622992)
 - ![](https://pic1.zhimg.com/80/v2-a693fbe72498802b9e7aaf601b694f58_720w.jpg)
