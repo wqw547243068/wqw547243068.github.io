@@ -7,6 +7,7 @@ tags:  对比学习 无监督 表示学习 损失函数
 excerpt: 对比学习综述
 author: 鹤啸九天
 mathjax: true
+permalink: /contrastive
 ---
 
 * content

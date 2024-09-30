@@ -7,6 +7,7 @@ tags:  阅读理解 神经网络 文本摘要
 excerpt: 机器阅读理解笔记
 author: 鹤啸九天
 mathjax: true
+permalink: /mrc
 ---
 
 * content

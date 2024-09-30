@@ -7,6 +7,7 @@ tags: 自然语言处理 sota
 excerpt: 指针网络系列论文串联
 author: 鹤啸九天
 mathjax: true
+permalink: /paper_pointer
 ---
 
 * content
