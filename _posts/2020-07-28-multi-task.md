@@ -7,6 +7,7 @@ tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函�
 excerpt: 多任务学习相关知识点
 author: 鹤啸九天
 mathjax: true
+permalink: /multi-task
 ---
 
 * content
