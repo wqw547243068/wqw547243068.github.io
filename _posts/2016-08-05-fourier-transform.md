@@ -7,6 +7,7 @@ tags: 数学 傅里叶 FFT 级数
 excerpt: 经典数学知识点：傅里叶变换
 author: 鹤啸九天
 mathjax: true
+permalink: /fourier
 ---
 
 * content

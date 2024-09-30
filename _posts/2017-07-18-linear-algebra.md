@@ -7,6 +7,7 @@ tags: 数学 线性代数 矩阵论 欧式空间 希尔伯特 完备 泛函
 excerpt: 线性代数与矩阵论
 author: 鹤啸九天
 mathjax: true
+permalink: /linear
 ---
 
 * content

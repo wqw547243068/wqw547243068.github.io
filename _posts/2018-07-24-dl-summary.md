@@ -7,6 +7,7 @@ tags: 神经网络  人工智能  AI  机器学习 吴恩达 机器学习流程
 excerpt: 深度学习的精简笔记，便于快速回顾
 author: 鹤啸九天
 mathjax: true
+permalink: /dl_sum
 ---
 
 * content

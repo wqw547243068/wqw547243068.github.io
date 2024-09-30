@@ -7,6 +7,7 @@ tags: 情感计算 图灵测试 情感智能 情商 离散情感空间 维度情
 excerpt: 情感计算研究就是试图创建一种能感知、识别和理解人的情感，并能针对人的情感做出智能、灵敏、友好反应的计算系统
 author: 鹤啸九天
 mathjax: true
+permalink: /emotion
 ---
 
 * content

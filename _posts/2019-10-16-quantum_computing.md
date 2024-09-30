@@ -6,6 +6,7 @@ categories: 自然科学
 tags: 量子计算机 量子纠缠 量子叠加 薛定谔的猫 摩尔定律
 excerpt: 什么是量子计算，量子计算机又是什么，为什么这么彪悍？
 mathjax: true
+permalink: /quantum
 ---
 
 * content

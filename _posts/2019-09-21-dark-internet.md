@@ -6,6 +6,7 @@ categories: 互联网
 tags: 互联网 暗网 比特币
 excerpt: 暗网背后的故事
 mathjax: true
+permalink: darknet
 ---
 
 * content

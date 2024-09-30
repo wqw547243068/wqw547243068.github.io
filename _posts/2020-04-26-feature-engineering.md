@@ -7,6 +7,7 @@ tags: 深度学习 特征工程 tensorflow sklearn 特征 可解释 pearson spea
 excerpt: 特征工程点点滴滴，scikit-learn实现
 author: 鹤啸九天
 mathjax: true
+permalink: /fe
 ---
 
 * content

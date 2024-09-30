@@ -7,6 +7,7 @@ tags: 用户画像 标签 互联网 营销 增长
 excerpt: 如何刻画用户特征？用户画像有哪些类别，标签如何构建，怎么使用画像？
 author: 鹤啸九天
 mathjax: true
+permalink: /user
 ---
 
 * content

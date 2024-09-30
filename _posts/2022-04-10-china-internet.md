@@ -7,6 +7,7 @@ tags: 互联网 线上化 智能化 信息化
 excerpt: 国内互联网发展历史及未来趋势展望
 author: 鹤啸九天
 mathjax: true
+permalink: /china_internet
 ---
 
 * content
