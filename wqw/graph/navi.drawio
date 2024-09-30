@@ -100,7 +100,7 @@
                 <mxCell id="403" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="404" target="490">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <UserObject label="对话系统" link="https://wqw547243068.github.io/dialogue-system" id="404">
+                <UserObject label="对话系统" link="dialogue-system" id="404">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="328.5" y="1149" width="60" height="30" as="geometry"/>
                     </mxCell>
@@ -140,7 +140,7 @@
                 <mxCell id="411" value="分布式训练" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
                     <mxGeometry x="449.25" y="1640" width="90" height="30" as="geometry"/>
                 </mxCell>
-                <UserObject label="GPU" link="https://wqw547243068.github.io/gpu" id="412">
+                <UserObject label="GPU" link="gpu" id="412">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
                         <mxGeometry x="380.38" y="1640" width="55" height="30" as="geometry"/>
                     </mxCell>
@@ -220,17 +220,17 @@
                 <mxCell id="431" value="LLM应用方案" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;shadow=1;fontColor=#000000;" vertex="1" parent="1">
                     <mxGeometry x="580" y="1370" width="90" height="30" as="geometry"/>
                 </mxCell>
-                <UserObject label="Transformer" link="https://wqw547243068.github.io/transformer" id="432">
+                <UserObject label="Transformer" link="transformer" id="432">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="388.99" y="1925" width="80" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="GPT" link="https://wqw547243068.github.io/gpt" id="433">
+                <UserObject label="GPT" link="gpt" id="433">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="403.99" y="1850" width="50" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="BERT" link="https://wqw547243068.github.io/bert" id="434">
+                <UserObject label="BERT" link="bert" id="434">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="468.99" y="1850" width="50" height="30" as="geometry"/>
                     </mxCell>
@@ -301,32 +301,32 @@
                 <mxCell id="453" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="454" target="448">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <UserObject label="Prompt Learning&amp;nbsp;&lt;div&gt;提示学习&lt;/div&gt;" link="https://wqw547243068.github.io/prompt" id="454">
+                <UserObject label="Prompt Learning&amp;nbsp;&lt;div&gt;提示学习&lt;/div&gt;" link="prompt" id="454">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
                         <mxGeometry x="740.5" y="1063.37" width="117" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="Transformers 库" link="https://wqw547243068.github.io/huggingface" id="455">
+                <UserObject label="Transformers 库" link="huggingface" id="455">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
                         <mxGeometry x="384" y="1525" width="90" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="Embedding" link="https://wqw547243068.github.io/emb" id="456">
+                <UserObject label="Embedding" link="emb" id="456">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="523.99" y="1925" width="80" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="分词" link="https://wqw547243068.github.io/token" id="457">
+                <UserObject label="分词" link="token" id="457">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="613.99" y="1925" width="45" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="Pretrain Language Model&lt;div&gt;预训练语言模型&lt;/div&gt;" link="https://wqw547243068.github.io/plm" id="458">
+                <UserObject label="Pretrain Language Model&lt;div&gt;预训练语言模型&lt;/div&gt;" link="plm" id="458">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="545.49" y="1850" width="145" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="ChatGPT" link="https://wqw547243068.github.io/chatgpt" id="459">
+                <UserObject label="ChatGPT" link="chatgpt" id="459">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="386.99" y="1780" width="84" height="30" as="geometry"/>
                     </mxCell>
@@ -462,7 +462,7 @@
                         <mxPoint x="-3" y="-20" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <UserObject label="智能客服" link="https://wqw547243068.github.io/ics" id="488">
+                <UserObject label="智能客服" link="ics" id="488">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="328.5" y="1098.3699999999997" width="60" height="30" as="geometry"/>
                     </mxCell>
@@ -470,7 +470,7 @@
                 <mxCell id="489" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="490" target="513">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <UserObject label="对话管理" link="https://wqw547243068.github.io/dialogue-manager" id="490">
+                <UserObject label="对话管理" link="dialogue-manager" id="490">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="231.75" y="1149" width="60" height="30" as="geometry"/>
                     </mxCell>
@@ -478,27 +478,27 @@
                 <mxCell id="491" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
                     <mxGeometry x="895.5" y="1510" width="190" height="230" as="geometry"/>
                 </mxCell>
-                <UserObject label="文本生成" link="https://wqw547243068.github.io/text-generation" id="492">
+                <UserObject label="文本生成" link="text-generation" id="492">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="919" y="1620" width="60" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="文本分类" link="https://wqw547243068.github.io/cls" id="493">
+                <UserObject label="文本分类" link="cls" id="493">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="994.5" y="1580" width="60" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="文本匹配" link="https://wqw547243068.github.io/text-match" id="494">
+                <UserObject label="文本匹配" link="text-match" id="494">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="919" y="1580" width="60" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="NER" link="https://wqw547243068.github.io/ner'" id="495">
+                <UserObject label="NER" link="ner'" id="495">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="919" y="1660" width="60" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="阅读理解" link="https://wqw547243068.github.io/mrc" id="496">
+                <UserObject label="阅读理解" link="mrc" id="496">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="998.5" y="1660" width="60" height="30" as="geometry"/>
                     </mxCell>
@@ -509,7 +509,7 @@
                         <mxPoint x="761" y="1444" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <UserObject label="GPT2" link="https://wqw547243068.github.io/gpt2" id="498">
+                <UserObject label="GPT2" link="gpt2" id="498">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="314.99" y="1850" width="50" height="30" as="geometry"/>
                     </mxCell>
@@ -520,17 +520,17 @@
                         <mxPoint x="438.99" y="1890" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <UserObject label="模型蒸馏" link="https://wqw547243068.github.io/distill" id="500">
+                <UserObject label="模型蒸馏" link="distill" id="500">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="546.75" y="1810" width="53.25" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="NLP基础知识" link="https://wqw547243068.github.io/nlp" id="501">
+                <UserObject label="NLP基础知识" link="nlp" id="501">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="946.5" y="1534" width="90" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="知识图谱" link="https://wqw547243068.github.io/kg" id="502">
+                <UserObject label="知识图谱" link="kg" id="502">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="919" y="1700" width="60" height="30" as="geometry"/>
                     </mxCell>
@@ -553,42 +553,42 @@
                         <mxGeometry x="780" y="1830" width="71" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="神经网络" link="https://wqw547243068.github.io/ann" id="507">
+                <UserObject label="神经网络" link="ann" id="507">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="778.75" y="1880" width="64.5" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="神经网络调参" link="https://wqw547243068.github.io/ann_tune" id="508">
+                <UserObject label="神经网络调参" link="ann_tune" id="508">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="851.75" y="1880" width="81" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="AutoML" link="https://wqw547243068.github.io/automl" id="509">
+                <UserObject label="AutoML" link="automl" id="509">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="940.75" y="1880" width="62.5" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="强化学习" link="https://wqw547243068.github.io/rl" id="510">
+                <UserObject label="强化学习" link="rl" id="510">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="778.75" y="1915" width="64.5" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="因果科学" link="https://wqw547243068.github.io/casual" id="511">
+                <UserObject label="因果科学" link="casual" id="511">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="854.25" y="1915" width="64.5" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="多任务学习" link="https://wqw547243068.github.io/multi-task" id="512">
+                <UserObject label="多任务学习" link="multi-task" id="512">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="939" y="1830" width="77" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="用户模拟器" link="https://wqw547243068.github.io/simulator" id="513">
+                <UserObject label="用户模拟器" link="simulator" id="513">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="139" y="1149" width="71" height="30" as="geometry"/>
                     </mxCell>
                 </UserObject>
-                <UserObject label="图神经网络" link="https://wqw547243068.github.io/gnn" id="514">
+                <UserObject label="图神经网络" link="gnn" id="514">
                     <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
                         <mxGeometry x="928.25" y="1915" width="64.5" height="30" as="geometry"/>
                     </mxCell>
