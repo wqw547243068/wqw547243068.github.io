@@ -3,7 +3,7 @@ layout: post
 title:  "多任务学习-Multi-Task-Learning"
 date:   2020-07-28 15:26:00
 categories: 机器学习 深度学习
-tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函数 moe ple
+tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函数 moe ple 多分类 多标签 不均衡
 excerpt: 多任务学习相关知识点
 author: 鹤啸九天
 mathjax: true
