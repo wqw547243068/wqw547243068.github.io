@@ -420,6 +420,7 @@ ExtractGPT
 - 一款浏览器扩展程序，可从结构化和非结构化页面中获取数据
 
 
+
 ##### GPTBot
 
 【2023-8-8】OpenAI刚刚推出了GPTBot，一个自动从整个互联网抓取数据的网络爬虫。
@@ -490,6 +491,9 @@ ExtractGPT
 
 
 #### 知识挖掘
+
+
+##### GraphRAG
 
 GraphRAG 里用 LLM 构建知识图谱
 
@@ -1767,8 +1771,47 @@ Smart Siri 不足：
 
 AI的公平，或许不太是供给的公平问题，更可能是“底线”的公平问题。
 
+#### 文档理解
 
 
+##### MinerU
+
+MinerU 是一款将**PDF转化为机器可读格式**的工具（如markdown、json），很方便地抽取为**任意**格式。 
+
+MinerU 诞生于`书生-浦语`的预训练过程中，集中精力解决科技文献中的符号转化问题，希望在大模型时代为科技发展做出贡献。 
+
+主要功能
+- 删除页眉、页脚、脚注、页码等元素，保持语义连贯
+- 对多栏输出符合人类阅读顺序的文本
+- 保留原文档的结构，包括标题、段落、列表等
+- 提取图像、图片标题、表格、表格标题
+- 自动识别文档中的公式并将公式转换成latex
+- 自动识别文档中的表格并将表格转换成latex
+- 乱码 PDF自动检测并启用OCR
+- 支持 CPU和GPU环境
+- 支持 windows/linux/mac平台
+
+安装
+
+```sh
+conda create -n MinerU python=3.10
+conda activate MinerU
+pip install -U magic-pdf[full] --extra-index-url https://wheels.myhloli.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+
+##### NotebookLM
+
+Google 推出 [NotebookLM](https://notebooklm.google/), 将论文转成播客
+
+NotebookLM 是一款 AI 赋能的研究和撰写**助理**，最适合与您上传的来源配合使用
+- 上传文档后，NotebookLM 将回答详细问题或提供关键数据洞见 —— 文档问答
+- 将复杂资料转换为简单易懂的格式，例如常见问题解答或简报文档
+- 将关键资源添加到笔记本中并与您的组织共享，以创建群组知识库
+
+
+- ![](https://notebooklm.google/_/static/v3/assets/images/UX-Hero-Dark.png)
+- [演示视频](https://notebooklm.google/_/static/v2/assets/videos/Mod1_Visual@2x.mp4)
 
 #### 个人笔记
 
