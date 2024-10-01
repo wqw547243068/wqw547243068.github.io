@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral pytorch 评估
+tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
