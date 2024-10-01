@@ -493,6 +493,34 @@ ExtractGPT
 #### 知识挖掘
 
 
+##### Wiseflow
+
+【2024-10-01】`首席情报官`（Wiseflow）是一个敏捷的**信息挖掘**工具，从网站、微信公众号、社交平台等各种信息源中按设定的关注点提炼讯息，自动做**标签归类**并上传数据库
+- 我们缺的其实不是信息，而是从海量信息中过滤噪音，从而让有价值的信息显露出来
+
+WiseFlow Team (原数字社工助理 DSW team）
+
+[主页](https://github.com/TeamWiseFlow)开源项目：
+- [wiseflow](https://github.com/TeamWiseFlow/wiseflow) （商业化产品：**首席情报官**） —— 完备的领域信息情报获取与管理系统，基于LLM；
+- Awada —— 基于微信的可在线自主学习的个人AI助理（也可能是行业专家）。
+
+
+wiseflow 是一个原生LLM应用，仅需7B~9B大小LLM就可以很好的执行信息挖掘、过滤与分类任务，且无需向量模型，系统开销很小，适合各种硬件环境下的本地化以及私有化部署。
+
+
+```sh
+git clone https://github.com/TeamWiseFlow/wiseflow.git
+cd wiseflow
+# python 运行
+conda create -n wiseflow python=3.10
+conda activate wiseflow
+cd core
+pip install -r requirements.txt
+# docker 运行
+docker compose up
+docker run -e LANG=zh_CN.UTF-8 -e LC_CTYPE=zh_CN.UTF-8 your_image
+```
+
 ##### GraphRAG
 
 GraphRAG 里用 LLM 构建知识图谱
