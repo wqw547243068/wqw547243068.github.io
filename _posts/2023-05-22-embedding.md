@@ -192,7 +192,7 @@ print(embedding.weight)
 - 句子中ID 不能大于最大词的index（上面例子中，不能大于词库总数）
 - embeding 输入必须是**维度对齐**的，如果长度不够，需要预先做填充
 
-#### 静态嵌入
+#### 静态嵌入-固定
 
 示例
 - 定义一个`词汇表`大小（vocab_size）为 20 的嵌入层,每个词被嵌入到一个5维的`向量空间`（embedding_dim）。
@@ -249,7 +249,7 @@ plt.show()
 
 
 
-#### 动态嵌入
+#### 动态嵌入-可训练
 
 
 nn.Embedding 可学习性
@@ -1249,8 +1249,47 @@ embeddings = last_token_pool(outputs.last_hidden_state, batch_dict['attention_ma
 embeddings = F.normalize(embeddings, p=2, dim=1)
 scores = (embeddings[:2] @ embeddings[2:].T) * 100
 print(scores.tolist())
-
 ```
+
+### Conan-Embedding - sota
+
+【2024-9-30】[通过负样本挖掘炼出更强Embedding模型](https://mp.weixin.qq.com/s/z0jgPnvaPO6RTzgFzB8TFQ)
+
+【2024-8-29】 北大推出 Conan-Embedding 模型，利用更多和更高质量的**负样本**来提升嵌入模型的能力。
+- 论文原文：[Conan-embedding: General Text Embedding with More and Better Negative Samples](https://arxiv.org/pdf/2408.15710)
+
+
+预训练阶段:
+- 标准数据过滤方法（参考Internlm2）对数据进行预处理。
+- bge-large-zh-v1.5 模型进行评分，丢弃评分低于 0.4 的数据。
+- InfoNCE 损失函数 和 In-Batch Negative 方法进行训练
+
+监督微调阶段:
+- 将任务分为**检索**和**语义文本相似性**（STS）两类。
+- **检索**任务使用 InfoNCE 损失函数
+- **STS**任务使用CoSENT损失函数
+- 动态**硬负样本**挖掘:
+  - 记录每个数据点的当前平均负样本得分。
+  - 每100次迭代后，如果得分乘以1.15小于初始得分且绝对值小于0.8，则认为该负样本不再具有挑战性，并进行新一轮的硬负样本挖掘。
+- 跨GPU平衡损失:
+  - 在每个前向-损失-反向-更新周期内，以平衡的方式引入每个任务，以获得稳定的搜索空间并最小化单次模型更新方向与全局最优解之间的差异。
+  - 对于检索任务，确保每个GPU有不同的负样本，同时共享相同的查询和正样本；对于STS任务，增加批次大小以包含更多案例进行比较
+
+
+数据集:
+- 预训练阶段，收集了0.75亿对文本数据，分为标题-内容对、输入-输出对和问答对等类别。
+- 微调阶段，选择了常见的检索、分类和STS任务的数据集。
+
+实现细节:
+- 使用BERT作为基础模型，并通过线性层将维度从1024扩展到1792。
+- 使用AdamW优化器和学习率1e-5进行预训练，批量大小为8，使用64个Ascend 910B GPU进行训练，总时长为138小时。
+- 微调阶段使用相同的优化器参数和学习率，批量大小为4（检索任务）和32（STS任务），使用16个Ascend 910B GPU进行训练，总时长为13小时。
+
+结果与分析
+
+CMTEB结果:
+- Conan-Embedding 模型在CMTEB基准测试中的平均性能为**72.62**，超过了之前的最先进模型。
+- 在检索和重排序任务中，Conan-Embedding 模型表现出显著的性能提升，表明增加的负样本数量和质量使模型能够看到更具挑战性的负样本，从而增强了其召回能力。
 
 
 ## 向量评估
