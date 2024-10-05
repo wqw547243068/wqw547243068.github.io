@@ -531,7 +531,7 @@ EasyRec介绍：
 - 阿里巴巴基于多任务联合学习的 `ESMM` 算法，其利用多任务学习解决了 CVR 中样本选择偏差和样本稀疏这两大问题，并在实际应用场景中取得了不错的成绩。
 
 多任务学习目的
-- 用1个模型来同时学习多个目标和任务，但常用的任务模型的预测质量通常对任务之间的关系很敏感（数据分布不同，ESMM 解决的也是这个问题）
+- 用1个模型来同时学习多个目标和任务，但常用任务模型的预测质量通常对**任务之间的关系**很敏感（数据分布不同，ESMM 解决的也是这个问题）
 
 因此，google 提出`多门混合专家`算法（Multi-gate Mixture-of-Experts，以下简称 `MMoE`）旨在构建一个兼容性更强的多任务学习框架
 - 学习如何从数据中权衡**任务目标**（task-specific objectives）和**任务之间**（inter-task relationships）的关系。
@@ -546,7 +546,10 @@ EasyRec介绍：
 - [更多](https://github.com/luweiagi/machine-learning-notes/blob/master/docs/recommender-systems/industry-application/google/mmoe/Modeling-Task-Relationships-in-Multi-task-Learning-with-Multi-gate-Mixture-of-Experts.md)
 
 MMoE 算法在任务相关性较低时能够具有更好的性能，同时也可以提高模型的可训练性。
-- MMOE 核心思想: 把底层网络划分成一些专用模块，虽然底层参数是共享，但是通过目标和网络参数之间的一个 gate（门）来学习，让每部分网络充分学习到对每个目标的贡献最大的一组参数结构，通过这种方式来保证，底层网络参数共享的时候，不会出现目标之间相互抵消的作用。
+
+MMOE 核心思想: 
+- 把底层网络划分成一些专用模块，虽然底层参数是共享，但是通过目标和网络参数之间的一个 gate（门）来学习，让每部分网络充分学习到对每个目标的贡献最大的一组参数结构
+- 通过这种方式来保证，底层网络参数共享的时候，不会出现目标之间**相互抵消**。
 
 作者也将 MMoE 应用于真实场景中，包括二分类和推荐系统，并取得了不错的成绩。
 
