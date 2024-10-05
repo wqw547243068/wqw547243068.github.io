@@ -1439,7 +1439,7 @@ MarsCode不仅仅是一个编程工具，它是一个全方位的AI助手，集�
 
 【2024-6-18】 新疆大学 CherryRec - 新闻推荐框架
 - [CherryRec:Enhancing News Recommendation Quality via LLM-driven Framework](https://arxiv.org/pdf/2406.12243)
-- CherryRec 框架包含三个核心组件：知识感知新闻快速选择器（KnRS）、内容感知LLM评估器（CnLE）和价值感知新闻评分器（VaNS）。
+- CherryRec 框架包含三个核心组件：**知识感知**新闻快速选择器（KnRS）、**内容感知**LLM评估器（CnLE）和**价值感知**新闻评分器（VaNS）。
 - KnRS基于用户互动历史快速筛选候选新闻，CnLE通过微调的LLM深入理解用户偏好
 - 而VaNS综合评分以形成CherryRec分数，指导最终推荐。
 
@@ -1560,6 +1560,43 @@ LLM 做推荐两个思路：
   - 针对这3类任务，文中构造了如下3类prompt。每类prompt包括**任务描述、例子、当前的问题**三个部分。
   - 3类任务的prompt主要差别是当前问题的组织形式: point-wise就直接问ChatGPT**打分是多少**，pair-wise给两个item让模型做**对比**，list-wise则是对item做**排序**。
   - 整体实验结果: 主要是对比了ChatGPT和一些基础推荐方法（随机推荐、根据商品流行度推荐）的差异，初步能够证明ChatGPT是具备一定的推荐能力的，其中在list-wise类型的任务上能获得最高的性价比。
+
+
+- 【2024-7-9】综述文章: [How Can Recommender Systems Benefit from Large Language Models: A Survey](https://arxiv.org/pdf/2306.05817)
+
+|维度|传统推荐系统|大语言模型|
+|----|----|----|
+| 特征表示| 1. user/item profile id <br>2. 具有协同意义的(combine/match类)id特征 | 1. **文本**数据（语义信息）|
+| 数量级 | **亿**级（用户）/ **千万**级（候选） | **十万**级token |
+| 场景特点 | 1. 领域各异，**领域**知识（数据），不具备迁移性 <br>2. 大量稀疏隐式反馈行为数据 | 1. 能跨领域和跨任务，**通用**模型，One for all<br>2. 语义丰富的，用户主动表达的数据 |
+| 学习范式 | Supervised learning | Pretrain-Finetune、Prompt tuning、Instruction tuning |
+| 模型能力 | 1. 冷启动差，需要大量行为数据训练 <br>2. 定制化的parameter server，能高效利用id 特征中的协同信息 | 1. 丰富的世界知识，冷启动友好 <br>2. 有逻辑推理 和 规划能力 <br>3. 可解释性强 |
+
+推荐系统希望从LLM获取的能力
+- 更丰富的特征表示、丰富的语义信息、知识信息
+- 尝试模型架构（Transformer，Causal language model）
+- 借鉴学习范式（Pretrain-finetune）
+- 交互推荐 和 可解释推荐的能力
+
+
+LLM参与到推荐系统的各个环节: 总结图见论文[原文](https://arxiv.org/pdf/2306.05817)
+- 特征工程&表征提取: 核心思路是引入额外**语义信息**和**世界知识**
+  - feature engineering 特征工程
+  - feature encoder 特征编码
+  - LLM 扩充文本信息 + 文本encoder提供embs + 构造instruction数据 + 与 传统推荐模型 share embs，给embs间接赋予语义信息
+- 序列建模优化
+  - LLM对基于早期LM模型序列建模的改进
+  - 1.重构行为序列 id 特征
+  - 2.基于Tranformer的结构，直接训练序列推荐模型
+- 直接推荐
+  - 探究 LLM zero shot/few shot用于推荐排序的能力
+- 召回推荐
+- 打分排序: 如何利用大模型学习推荐领域信息，再用于排序
+  - scoring/ranking function
+- 交互式推荐&控制
+  - user interaction, and pipeline controller
+
+
 
 #### 大模型对推荐影响
 
