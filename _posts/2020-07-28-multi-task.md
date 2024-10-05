@@ -7,7 +7,7 @@ tags: 多任务学习 深度学习 神经网络 广告预估 ctr cvr 损失函�
 excerpt: 多任务学习相关知识点
 author: 鹤啸九天
 mathjax: true
-permalink: /multi-task
+permalink: /multi_task
 ---
 
 * content
@@ -480,7 +480,7 @@ pytorch 复现经典的推荐系统模型, 如: MF, FM, DeepConn, MMOE, PLE, Dee
   - 参考论文：Zekai Chen et al, DCAP: Deep Cross Attentional Product Network for User Response Prediction, CIKM 2021.
 
 
-## ESMM模型
+## 2018 阿里 ESMM
 
 - 【2022-5-18】[多任务学习模型ESMM原理与实现](https://mp.weixin.qq.com/s/LpJCrVpTzT50L953J6A7Vg)
 - 【2021-4-1】[多任务学习(MTL)在转化率预估上的应用](https://mp.weixin.qq.com/s/uSP3oKe3eiPplWvbgaZJtQ)
@@ -523,23 +523,36 @@ EasyRec介绍：
 - EasyRec是阿里云计算平台机器学习PAI团队开源的大规模分布式推荐算法框架，EasyRec 正如其名字一样，简单易用，集成了诸多优秀前沿的推荐系统论文思想，并且有在实际工业落地中取得优良效果的特征工程方法，集成训练、评估、部署，与阿里云产品无缝衔接，可以借助 EasyRec 在短时间内搭建起一套前沿的推荐系统。作为阿里云的拳头产品，现已稳定服务于数百个企业客户。
 
 
-## MMoE
+## 2018 谷歌 MMoE
 
-[Google 多任务学习框架 MMoE](https://www.toutiao.com/i6838966189872382475/?tt_from=mobile_qq&utm_campaign=client_share&timestamp=1595857174&app=news_article&utm_source=mobile_qq&utm_medium=toutiao_android&use_new_style=1&req_id=20200727213933010147084145261AF78B&group_id=6838966189872382475)
+[Google 多任务学习框架 MMoE](https://www.toutiao.com/i6838966189872382475)
+
+基于神经网络的多任务学习已经过成功应用内许多现实应用中
+- 阿里巴巴基于多任务联合学习的 `ESMM` 算法，其利用多任务学习解决了 CVR 中样本选择偏差和样本稀疏这两大问题，并在实际应用场景中取得了不错的成绩。
+
+多任务学习目的
+- 用1个模型来同时学习多个目标和任务，但常用的任务模型的预测质量通常对任务之间的关系很敏感（数据分布不同，ESMM 解决的也是这个问题）
+
+因此，google 提出`多门混合专家`算法（Multi-gate Mixture-of-Experts，以下简称 `MMoE`）旨在构建一个兼容性更强的多任务学习框架
+- 学习如何从数据中权衡**任务目标**（task-specific objectives）和**任务之间**（inter-task relationships）的关系。
+- 所有任务之间共享混合专家结构（MoE）的子模型来适应多任务学习，同时还拥有可训练的门控网路（Gating Network）以优化每一个任务。
+
+资料
+- 论文: [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](https://dl.acm.org/doi/pdf/10.1145/3219819.3220007)
+- 作者讲解视频: [youtube](https://www.youtube.com/watch?time_continue=3&v=Dweg47Tswxw&feature=emb_logo)
+- MoE 论文: 
+  - MoE 讲解: Hinton在多伦多大学的一篇slides [CSC321: Introduction to Neural Networks and Machine Learning Lecture 15: Mixtures of Experts](https://www.cs.toronto.edu/~hinton/csc321/notes/lec15.pdf)
+  - moe 让几何空间有明显的分割界限，和决策树的空间划分类似
+- [更多](https://github.com/luweiagi/machine-learning-notes/blob/master/docs/recommender-systems/industry-application/google/mmoe/Modeling-Task-Relationships-in-Multi-task-Learning-with-Multi-gate-Mixture-of-Experts.md)
+
+MMoE 算法在任务相关性较低时能够具有更好的性能，同时也可以提高模型的可训练性。
+- MMOE 核心思想: 把底层网络划分成一些专用模块，虽然底层参数是共享，但是通过目标和网络参数之间的一个 gate（门）来学习，让每部分网络充分学习到对每个目标的贡献最大的一组参数结构，通过这种方式来保证，底层网络参数共享的时候，不会出现目标之间相互抵消的作用。
+
+作者也将 MMoE 应用于真实场景中，包括二分类和推荐系统，并取得了不错的成绩。
+
+介绍下 MMoE 框架
  
-基于神经网络的多任务学习已经过成功应用内许多现实应用中，比如说之前我们介绍的阿里巴巴基于多任务联合学习的 ESMM 算法，其利用多任务学习解决了 CVR 中样本选择偏差和样本稀疏这两大问题，并在实际应用场景中取得了不错的成绩。
- 
-多任务学习的目的在于用一个模型来同时学习多个目标和任务，但常用的任务模型的预测质量通常对任务之间的关系很敏感（数据分布不同，ESMM 解决的也是这个问题），因此，google 提出多门混合专家算法（Multi-gate Mixture-of-Experts，以下简称 MMoE）旨在学习如何从数据中权衡任务目标（task-specific objectives）和任务之间（inter-task relationships）的关系。所有任务之间共享混合专家结构（MoE）的子模型来适应多任务学习，同时还拥有可训练的门控网路（Gating Network）以优化每一个任务。
- 
-MMoE 算法在任务相关性较低时能够具有更好的性能，同时也可以提高模型的可训练性。作者也将 MMoE 应用于真实场景中，包括二分类和推荐系统，并取得了不错的成绩。
-  
-作者提出了 MMoE 框架，旨在构建一个兼容性更强的多任务学习框架。
- 
-### 2.MMoE
- 
-本节我们详细介绍下 MMoE 框架。
- 
-### 2.1 Shared-Bottom model
+### 1 Shared-Bottom model
  
 先简单结下 shared-bottom 模型，ESMM 模型就是基于 shared-bottom 的多任务模型。这篇文章把该框架作为多任务模型的 baseline，其结构如下图所示：
  
@@ -549,7 +562,7 @@ MMoE 算法在任务相关性较低时能够具有更好的性能，同时也可
  
 其中，f 为表征函数， 为第 k 个子网络（tower 网络）。
  
-### 2.2 One-gate MoE Layer
+### 2 One-gate MoE Layer
  
 而 One-gate MoE layer 则是将隐藏层划分为三个专家（expert）子网，同时接入一个 Gate 网络将各个子网的输出和输入信息进行组合，并将得到的结果进行相加。
  
@@ -561,19 +574,20 @@ MMoE 算法在任务相关性较低时能够具有更好的性能，同时也可
  
 MoE 的主要目标是实现条件计算，对于每个数据而言，只有部分网络是活跃的，该模型可以通过限制输入的门控网络来选择专家网络的子集。
  
-### 2.3 Multi-gate MoE model
+### 3 Multi-gate MoE model
  
-MoE 能够实现不同数据多样化使用共享层，但针对不同任务而言，其使用的共享层是一致的。这种情况下，如果任务相关性较低，则会导致模型性能下降。
- 
-所以，作者在 MoE 的基础上提出了 MMoE 模型，为每个任务都设置了一个 Gate 网路，旨在使得不同任务和不同数据可以多样化的使用共享层，其模型结构如下：
+MoE 能够实现不同数据多样化使用共享层，但针对不同任务而言，其使用的共享层是一致的。
+- 问题: 如果任务**相关性较低**，则会导致模型性能下降。
+
+所以，在 `MoE` 基础上提出了 `MMoE` 模型，为每个任务都设置了一个 Gate 网路，使得不同任务和不同数据可以多样化的使用共享层，其模型结构如下：
  
 ![Google 多任务学习框架 MMoE](http://p6-tt.byteimg.com/large/pgc-image/dc1f76987a4240eb85c4b69352a89ebb?from=pc)
 
 给出公式定义：
- 
+
 这种情况下，每个 Gate 网络都可以根据不同任务来选择专家网络的子集，所以即使两个任务并不是十分相关，那么经过 Gate 后也可以得到不同的权重系数，此时，MMoE 可以充分利用部分 expert 网络的信息，近似于单个任务；而如果两个任务相关性高，那么 Gate 的权重分布相差会不大，会类似于一般的多任务学习。
  
-### 3.Experiment
+### Experiment
  
 简单看下实验。
  
@@ -599,7 +613,7 @@ Gate 网络在两个任务的不同分布：
 ![Google 多任务学习框架 MMoE](http://p6-tt.byteimg.com/large/pgc-image/ebee034ccc994148bd82276aff27f096?from=pc)
   
  
-### 4.Conclusion
+### Conclusion
  
 总结：作者提出了一种新颖的多任务学习方法——MMoE，其通过多个 Gate 网络来自适应学习不同数据在不同任务下的与专家子网的权重关系系数，从而在相关性较低的多任务学习中取得不错的成绩。
  
@@ -613,7 +627,7 @@ Gate 网络在两个任务的不同分布：
 ![](https://pic1.zhimg.com/80/v2-a316f17c3752dcf405ae40a929362e88_1440w.jpg)
 
 
-## 腾讯 PLE 
+## 2020 腾讯 PLE 
 
 渐进式分层提取（PLE）
 - RecSys 2020，腾讯发布 [Progressive Layered Extraction : A Novel Multi-Task Learning Model for Personalized Recommendations](https://dl.acm.org/doi/abs/10.1145/3383313.3412236)
@@ -824,6 +838,40 @@ class PLE(nn.Module):
 
         return Gate_A_Out, Gate_B_Out
 ```
+
+
+## 2024 快手 HoME
+
+【2024-9-28】[HoME：超越PLE，快手最新多任务学习模型](https://mp.weixin.qq.com/s/4bZghqGTMKncCOJN_IDC-A)
+- 论文标题: [HoME: Hierarchy of Multi-Gate Experts for Multi-Task Learning at Kuaishou](https://arxiv.org/pdf/2408.05430)
+
+快手短视频中的实际问题以及所吸取的经验
+- 用户在使用快手APP时，通常会对浏览的视频产生**上下滑**、**长播**、**互动**等行为
+- 模型通常需要同时预测多个目标。
+
+### MMoE 问题
+
+工业界，多目标任务问题通常使用 `MoE`(Mixture-of-Experts)范式来解决。
+- MMoE 模型由`专家网络`和`门控网络`构成
+- `专家网络`: 用于对输入特征进行建模以及将完成特征交叉；
+- `门控网络`: 用于估计不同专家的重要性，以便为相应任务融合其输出。
+
+
+MMoE 三个问题：
+- （1）专家**崩溃**(Expert Collapse)：专家输出分布差异显著，一些专家在使用 ReLU 时零激活率超过90%，这使得门控网络**难以分配公平的权重**来平衡专家。
+- （2）专家**退化**(Expert Degradation)：一些`共享专家`仅被一个任务占用，**退化为少数任务的`特定专家`**。
+- （3）专家**欠拟合**(Expert Underfitting)：一些数据稀疏的预测任务往往会忽略其`特定专家`，并给`共享专家`分配较大的权重。
+  - 原因: `共享专家`从密集任务中感知到更多的梯度更新和知识，而`特定专家`由于其行为稀疏，容易陷入**欠拟合**状态。
+
+### HoME
+
+基于以上问题，提出 `HoME`，包含 
+- （1）**专家归一化** 和 Swish 机制，用于对齐专家输出分布并避免专家崩溃。
+- （2）**层次掩码机制**，用于提高任务之间的共享效率，减少占用问题并避免专家退化。
+- （3）特征门和**自适应**门机制，用于确保每个专家都能获得适当的梯度以使其有效性最大化。
+
+效果
+- 最终取得平均离线提高0.52%的 GAUC，在线每人提高0.954%的播放时间，并以在快手APP全量应用。
 
 
 ## TensorFlow 实现多任务学习
