@@ -861,10 +861,43 @@ meta-prompting 方法的伪代码
 
 作为一个自动的提示补充工具，PAS可以集成到任何可用的LLMs中，通过公共API或开放参数进行集成。这种灵活性使得PAS能够在不同的平台和系统中广泛应用，增强现有LLMs的能力，而无需进行广泛的重新训练或修改。
 
-
-
 基于 OPRO 的模式构建一个自动迭代 prompt 的项目，其中用到的 meta-prompt 方案主要就是基于上一个 prompt + badcase，让模型生成新的 prompt 来定向修正，通过记录每次优化后评测的 score 来记录过程
 - [英文原文](https://towardsdatascience.com/automated-prompt-engineering-the-definitive-hands-on-guide-1476c8cd3c50)
+
+
+### DCoT
+
+
+【2024-7-3】[DICoT模型让AI学会自我纠错，提示词工程终结](https://mp.weixin.qq.com/s/_3IprbsNPXfFYw1Jdryngw)
+
+多所大学的研究人员提出了一种新的训练方法——**发散式**思维链(Divergent Chain of Thought, `DCoT`)，让AI模型在单次推理中生成多条思维链，从而显著提升了推理能力。
+- [Fine-Tuning With Divergent Chains of Thought Boosts Reasoning Through Self-Correction in Language Models](https://arxiv.org/pdf/2407.03181)
+
+这项研究不仅让AI模型的表现更上一层楼，更重要的是，它让AI具备了自我纠错的能力。
+
+DCoT训练方法主要有三大亮点：
+- 提升**小型模型**性能：即使是规模较小、更易获取的语言模型，经过DCoT训练后也能显著提升表现。
+- 全面超越CoT基线：从1.3B到70B参数的各种规模模型中，DCoT都展现出了优于传统思维链(Chain of Thought, CoT)的性能。
+- 激发**自我纠错**能力：经过DCoT训练的模型能够在单次推理中生成多条思维链，并从中选择最佳答案，实现了自我纠错。
+
+多个推理任务上测试
+- 一致性提升：DCoT在各种模型家族和规模上都取得了持续的性能提升。
+- 多样化思维链：通过实证和人工评估，确认模型能生成多条不同的推理链。
+
+DCoT不仅提高了模型的推理能力，还让模型具备了"多角度思考"的能力。
+
+DCoT在多个方面都超越了传统CoT：
+- 领域内任务：DCoT在训练涉及的任务上表现优异。
+- 未见过的任务：在全新的任务上，DCoT仍然保持优势。
+- 困难任务：即使在CoT可能有害的任务上，DCoT也展现出了稳健性。
+- 兼容性：DCoT还能与现有的CoT扩展方法（如自洽性解码）兼容，进一步提升性能。
+
+CoT训练让模型具备了自我纠错的能力：
+- 无需外部反馈：模型能够在单次推理中生成多条思维链，并从中选择最佳答案。
+- 显著提升：仅生成两条思维链就能带来明显的性能提升，证实了自我纠错的存在。
+- 人工验证：通过人工分析，确认了模型确实在进行自我纠错，而非简单的自我集成。
+
+DCoT的出现无疑为AI与人类的交互开辟了新的可能性
 
 ## 图像提示词
 
