@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 llm deepspeed 推理
+tags: gpt 量化 llm deepspeed 推理 推测解码
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_opt
@@ -171,7 +171,7 @@ generate 函数
   - 问题: 整个batch未完成时,已完成的序列还要被迫继续生成随机词元，然后截断，浪费 GPU 资源
 - (3) **连续批次生成**: 将新序列插入批次来解决这一问题，插入位置是 `[end]` 词元之后，注意力掩码机制来防止该序列受到上一序列中词元的影响
 
-GPT-2生成下一个词元的情况：
+GPT-2 生成下一个词元的情况：
 - 20 个词元 x 1 个序列 = 约 70 毫秒
 - 20 个词元 x 5 个序列 = 约 220 毫秒（线性扩展约 350 毫秒）
 - 20 个词元 x 10 个序列 = 约 400 毫秒（线性扩展约 700 毫秒）
@@ -196,6 +196,8 @@ GPT-2生成下一个词元的情况：
 ```
 
 ![](https://image.jiqizhixin.com/uploads/editor/ef2cb6fe-34aa-4097-92cd-af28c83a1ba6/640.png)
+
+详见站内专题: [文本生成之序列解码](text_decoding)
 
 ### 优化
 
@@ -2131,6 +2133,59 @@ BR100是由壁仞科技发布自主研发的首款通用GPU芯片，其16位浮�
 ![](https://pic3.zhimg.com/80/v2-f5414cf8ea9456a43fe38f49c4c8735e_1440w.webp)
 
 目前未找到公开的在 LLM 方面的推理性能数据。
+
+
+### 推测解码
+
+
+【2024-10-6】 [LLM推理加速新范式！推测解码（Speculative Decoding）最新综述](https://zhuanlan.zhihu.com/p/678404136)
+
+**推测解码**（Speculative Decoding）综述：
+- [Unlocking Efficiency in Large Language Model Inference: A Comprehensive Survey of Speculative Decoding](https://arxiv.org/abs/2401.07851)
+- Repo: [SpeculativeDecodingPapers](https://github.com/hemingkx/SpeculativeDecodingPapers)
+
+#### 推测解码介绍
+
+推测解码定义：
+- 推测解码是一种“**先推测后验证**” (Draft-then-Verify) 的解码算法：
+- 每个解码步，该算法首先高效地“推测”target LLM未来多个解码步的结果，然后用target LLM同时进行验证，以加速推理。
+
+所有符合在每个解码步“高效推测->并行验证“模式的推理算法，都可以称为是**推测解码**（或其变体）。
+
+推测解码实现加速的关键要素，主要在于如下三点：
+- 相比于生成单一token，LLM并行计算额外引入的latency很小，甚至可以忽略；
+- “推测”的高效性&准确性：如何又快又准地“推测”LLM未来多个解码步的生成结果；
+- “验证“策略的选择：如何在确保质量的同时，让尽可能多的“推测”token通过验证，提高解码并行性。
+
+推测解码（Speculative Decoding）是 2023年新兴的**LLM推理加速**技术
+
+
+#### 推测解码原理
+
+解决方案：
+- 通过增加每个解码步 LLM计算的**并行性**，减少总解码步数（即减少了LLM参数的反复读写），从而实现推理加速。
+
+每个解码步，推测解码
+- 首先 高效地“推测”target LLM（待加速的LLM）未来多个解码步可能生成的token
+- 然后 再用target LLM同时验证这些token。通过验证的token作为当前解码步的解码结果。
+- 如果“推测”足够准确，推测解码就可以在单个解码步并行生成多个token，从而实现LLM推理加速。
+- 并且，使用target LLM的验证过程，在理论上保证解码结果和target LLM自回归解码结果的完全一致。
+
+推测解码在实现对 target LLM 推理加速的同时，不损失LLM的解码质量。
+
+这种优异的性质导致推测解码受到了学界和工业界的广泛关注，从2023年初至今涌现了许多优秀的研究工作和工程项目（如Assisted Generation[7]，Medusa[8]，Lookahead Decoding[9]等等）。
+
+#### 推测解码方案
+
+推测解码研究思路的演化
+- ![](https://pic2.zhimg.com/80/v2-70411b91ca1b6bd669f920a5cb4e7faf_1440w.webp)
+
+研究总结
+- ![](https://picx.zhimg.com/80/v2-e7ab90e1d676573e9243650ffb4bdb4b_1440w.webp)
+
+详见介绍
+- [LLM推理加速新范式！推测解码（Speculative Decoding）最新综述](https://zhuanlan.zhihu.com/p/678404136)
+
 
 
 

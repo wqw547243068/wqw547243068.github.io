@@ -3,7 +3,7 @@ layout: post
 title:  "文本生成之序列解码专题 - Decoding Strategy in Text Generation"
 date:   2019-12-01 21:39:00
 categories: 大模型
-tags: gpt 解码 贪心 
+tags: gpt 解码 贪心 推测解码 集束搜索 温度 采样 多项式 对比 moe
 excerpt: 文本生成里的序列解码专题笔记
 author: 鹤啸九天
 mathjax: true
@@ -94,6 +94,8 @@ Temperature 控制模型输出内容稳定性，因为 LLM 的输出是通过“
 
 【2019-6-16】[文本生成中的decoding strategy整理](https://zhuanlan.zhihu.com/p/68383015)
 
+### 解码策略
+
 文本生成 decoding strategy 主要分为两大类：
 - （1） `Argmax Decoding`: 主要包括 beam search, class-factored softmax 等
   - 如果vocabulary size较大，达到了**50k**甚至**150k**，在softmax层的运算量就会变得非常大, 需要降低复杂度
@@ -166,6 +168,53 @@ Decoding Strategies
   - $p_i = \frac{\exp(o_i / (T \cdot \mathbb{1}(i \in g)))}{\sum_j \exp(o_j / (T \cdot \mathbb{1}(j \in g)))} \quad \mathbb{1}(c) = \theta \text{ if the condition }c\text{ is True else }1$
   - 一种惩罚重复子串的采样方法，考虑之前生成过的字符
   - where g contains a set of previously generated tokens, 𝟙1(.) is an identity function. θ=1.2 is found to yield a good balance between less repetition and truthful generation.
+
+
+### GPT-2
+
+huggingface 里的 GPT-2 代码
+
+```py
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model_name = "gpt2-xl"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+
+import pandas as pd
+
+input_txt = "Transformers are the"
+input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
+iterations = []
+n_steps = 8 # 进行8步解码
+choices_per_step = 5 # 每一步候选数量
+
+with torch.no_grad():# eval模式
+    for _ in range(n_steps):# 每步解码
+        iteration = dict()
+        iteration["Input"] = tokenizer.decode(input_ids[0]) # 提示文本
+        output = model(input_ids=input_ids) # 将提示文本输入到模型进行解码
+        # Select logits of the first batch and the last token and apply softmax
+        next_token_logits = output.logits[0, -1, :]
+        next_token_probs = torch.softmax(next_token_logits, dim=-1)
+        sorted_ids = torch.argsort(next_token_probs, dim=-1, descending=True)
+        # Store tokens with highest probabilities
+        for choice_idx in range(choices_per_step): # 概率最大的五个token
+            token_id = sorted_ids[choice_idx]
+            token_prob = next_token_probs[token_id].cpu().numpy()
+            token_choice = (
+                f"{tokenizer.decode(token_id)} ({100 * token_prob:.2f}%)" # 取百分号两位数
+            )
+            iteration[f"Choice {choice_idx+1}"] = token_choice
+        # Append predicted next token to input
+        input_ids = torch.cat([input_ids, sorted_ids[None, 0, None]], dim=-1) # 将概率最大的字符拼接到提示文本
+        iterations.append(iteration)
+# 输出序列解码结果
+pd.DataFrame(iterations)
+```
+
 
 ## 解码方法
 
@@ -417,6 +466,22 @@ model.generate()
 注意
 - 此策略不能用 temperature，top_k，top_p 等改变 logits 参数。
 
+
+#### 优缺点
+
+贪婪搜索缺点：
+- 倾向于产生**重复**序列
+- 可能会错过整体概率较高的单词序列，只是因为高概率的单词刚好在低概率的单词之前。
+
+解法：集束搜索
+
+
+#### 实现1
+
+两种方案
+- model.generate()
+- model.greedy_search()
+
 ```py
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 import torch
@@ -459,15 +524,52 @@ for i, output_sequence in enumerate(generation_output.sequences):
 # Generated sequence 1: say hello to the newest
 ```
 
+#### 实现2
+
+```py
+# （1）贪婪搜索
+input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
+output = model.generate(input_ids, max_new_tokens=n_steps, do_sample=False)
+print(tokenizer.decode(output[0]))
+# Transformers are the most popular toy line in the world,
+# 扩大长度
+max_length = 128
+input_txt = """In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.\n\n
+"""
+input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
+output_greedy = model.generate(input_ids, max_length=max_length, do_sample=False)
+print(tokenizer.decode(output_greedy[0]))
+# Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
+# In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.​
+```
+
+
+
 ### 集束解码 beam-search decoding
 
 
-流程如下：
+#### 原理
+
+集束搜索每步解码时, 不选**概率最高**标记，而是记录**前b个**最有可能的下一个标记，其中, b被称为`波束`或`路径个数`。
+- 下一组集束的选择是考虑现有集束的所有可能的下一个标记的扩展，并选择b个最可能的扩展。
+- 这个过程重复进行，直到达到**最大长度**或**EOS标记**
+- 然后根据对数概率对b个波束进行排序，选择最可能的序列
+- ![](https://pica.zhimg.com/80/v2-ef3522dfec91840dcad6642981722b18_1440w.webp?source=1940ef5c)
+
+为什么用`对数概率`而不是`条件概率`对序列进行评分？
+- 计算一个序列的总体概率 `P(y1，y2，...，yt|x)` 涉及计算条件概率 `P(yt|y < t,x)` 的乘积。由于每个条件概率通常是 `[0，1]` 范围内的小数字，取乘积会导致总概率很容易出现**下溢**。不能再精确地表示计算的结果。
+- ![](https://pic1.zhimg.com/80/v2-06d671883015295f2a493fb4f550f897_1440w.webp?source=1940ef5c)
+- 于是，使用`对数概率`替换`条件概率`
+
+
+BS流程：
 - 初始化：设定一个宽度参数 beam width，表示每步保留的最优候选解的数量。
 - 递归过程：从起始状态开始，模型会预测第一个词语的所有可能选项，并根据它们的概率保留前beam width个概率最高的选项作为候选路径。
 - 扩展路径：对每个保留下来的候选路径，模型接着预测第二个词语，将当前词语添加到之前路径上，并计算新的完整路径的概率。再次保留概率最高的beam width条路径。
 - 迭代求解：重复步骤3的过程，直到达到终止条件（如遇到结束符号或者达到预设的最大长度）。
 - 最后，Beam Search返回的是整个搜索过程中找到的最高概率路径作为最终输出序列。
+
+#### BS 与 直接采样
 
 与`直接采样`（Sampling）的区别：
 
@@ -477,18 +579,13 @@ Beam Search：
 - 可能导致过拟合于训练数据中出现频率较高的模式，产生“僵化”或“机械”的输出。
 
 直接采样（Random Sampling 或 Top-k Sampling 等）：
-- 一种**随机**策略，每次生成新词时，可以按照词汇表中每个词的概率分布进行随机抽样。
+- 一种**随机**策略，每次生成新词时，可以按照词汇表中每个词的概率分布进行**随机抽样**。
 - 采样方法能够生成更加**多样化**的输出，更有可能探索到新颖和未见的序列组合，有助于解决Beam Search可能导致的过于保守的问题。
-- 直接采样的不确定性较大，生成的结果不一定是全局最优解，而且对于较差的概率分布可能出现生成结果质量较低的情况。
+- 直接采样的**不确定性较大**，生成结果不一定是全局最优解，而且对于较差的概率分布可能出现生成结果质量较低的情况。
 
 总结
-- Beam Search旨在寻找**最大概率路径**，确保生成结果的合理性和准确性
-- 而直接采样则通过引入随机性来增强输出的**多样性**和**创造性**，两者在实际应用中可以根据需求权衡精度和多样性来进行选择。
-
-
-beam search 集束解码策略
-- 在 `model.generate()` 中是当 `num_beams` 大于 1 且 `do_sample` 等于 False 时使用
-- 也可调用 `model.beam_search()` 来实现
+- Beam Search 旨在寻找**最大概率路径**，确保生成结果的合理性和准确性
+- 而**直接采样**则通过引入随机性来增强输出的**多样性**和**创造性**，两者在实际应用中可以根据需求权衡精度和多样性来进行选择。
 
 
 #### BS 优缺点
@@ -560,7 +657,60 @@ for idx, sequence in enumerate(result):
     print(f"Sentence {idx + 1}: {' '.join(sequence)}")
 ```
 
+#### 实现
 
+
+beam search 集束解码策略
+- 在 `model.generate()` 中是当 `num_beams` 大于 1 且 `do_sample` 等于 False 时使用
+- 也可调用 `model.beam_search()` 来实现
+
+
+
+```py
+import torch.nn.functional as F
+# 对数概率
+def log_probs_from_logits(logits, labels):
+    logp = F.log_softmax(logits, dim=-1)
+    logp_label = torch.gather(logp, 2, labels.unsqueeze(2)).squeeze(-1)
+    return logp_label
+# 序列总对数概率
+def sequence_logprob(model, labels, input_len=0):
+    with torch.no_grad():
+        output = model(labels)
+        log_probs = log_probs_from_logits(output.logits[:, :-1, :], labels[:, 1:]) # 不算首尾标记，非模型生成
+        # 只需要将每个标记的对数概率相加
+        seq_log_prob = torch.sum(log_probs[:, input_len:])
+    return seq_log_prob.cpu().numpy()
+# 调用
+logp = sequence_logprob(model, output_greedy, input_len=len(input_ids[0]))
+print(tokenizer.decode(output_greedy[0]))
+print(f"\nlog-prob: {logp:.2f}")
+# beam search, 5个
+output_beam = model.generate(input_ids, max_length=max_length, num_beams=5, do_sample=False)
+logp = sequence_logprob(model, output_beam, input_len=len(input_ids[0]))
+print(tokenizer.decode(output_beam[0]))
+print(f"\nlog-prob: {logp:.2f}")
+```
+
+波束越多，得到的结果就越好；然而，生成过程会变得更慢
+
+用集束搜索得到的对数概率（越高越好）比用简单的贪婪解码得到的要好。
+- 然而，集束搜索也受到重复文本的影响。
+
+一个解决方法
+- <span style='color:blue'>用 no_repeat_ngram_size 参数施加一个 n-gram惩罚</span>，跟踪哪些n-gram已经被看到，并将下一个token的概率设置为零，如果它将产生一个以前看到的n-gram
+
+```py
+output_beam = model.generate(input_ids, max_length=max_length, num_beams=5, do_sample=False, no_repeat_ngram_size=2) 
+logp = sequence_logprob(model, output_beam, input_len=len(input_ids[0])) 
+print(tokenizer.decode(output_beam[0])) 
+print(f"\nlog-prob: {logp:.2f}")
+```
+
+停止重复后，尽管产生了较低的分数，但文本仍然是连贯的。
+
+带n-gram惩罚的集束搜索是一种很好的方法，可以在关注**高概率标记**（用束搜索）和**减少重复**（用n-gram惩罚）之间找到一个**平衡点**
+- 通常用于总结或机器翻译等事实正确性很重要的应用中。当事实的正确性不如生成的输出的多样性重要时，例如在开放领域的闲聊或故事生成中，另一种减少重复同时提高多样性的方法是使用抽样。
 
 
 ### 多样式采样 multinomial sampling
@@ -716,12 +866,18 @@ for i, output_sequence in enumerate(generation_output.sequences):
 # Generated sequence 1: say hello to 20
 ```
 
-### assisted decoding
+### 辅助解码 Assisted decoding
 
 **辅助解码**，用另一个模型（称为辅助模型）的输出来辅助生成文本，一般是**借助较小模型来加速生成候选 token**
 - 辅助模型必须具有与目标模型完全相同的**分词器**（tokenizer）
 
-简单实现一下，通过llama7B辅助生成llama13B，一般来说辅助模型要很小，这里只是简单实验：
+
+属于推测解码的一种实现, 详见站内专题 [LLM推理加速中的推测解码](llm_opt)
+
+
+#### 实现
+
+简单实现，通过llama7B辅助生成llama13B，一般来说辅助模型要很小，这里只是简单实验：
 
 ```py
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
@@ -738,7 +894,6 @@ print(f"inputs:{inputs}")
 # inputs:{'input_ids': tensor([[    1,  1827, 22172,   304]]), 'attention_mask': tensor([[1, 1, 1, 1]])}
 input_ids = inputs["input_ids"].to("cuda")
 
-
 generation_output = model.generate(
     assistant_model=assistant_model,
     input_ids=input_ids,
@@ -747,7 +902,6 @@ generation_output = model.generate(
     return_dict_in_generate=True,
     max_length=7,
 )
-
 
 print("query:", text)
 for i, output_sequence in enumerate(generation_output.sequences):
@@ -1024,15 +1178,17 @@ Temperature Parameter 超参数直译为“**温度系数**”
 Temperature 采样受**统计热力学**启发，高温意味着更可能遇到低能态。
 - 将计算过程看做烧水，温度越高，水沸腾越剧烈，类比**信息熵增减**
 
-Temperature 采样中的温度与玻尔兹曼分布有关. 
+Temperature 采样中的温度与`玻尔兹曼`分布有关. 
 - 概率模型中，logits 扮演着**能量**角色，通过将 logits 除以温度来实现**温度采样**，然后将其输入 Softmax 并获得采样概率。
-- 本质: 在 Softmax 函数上添加了温度（T）这个参数。Logits 根据温度值进行缩放，然后传递到 Softmax 函数以计算新的概率分布。
+- 本质: 在 Softmax 函数上添加了**温度**（T）这个参数。Logits 根据温度值进行缩放，然后传递到 Softmax 函数以计算新的概率分布。
 - 越低温度使模型对其首选越**有信心**，而高于1的温度会**降低信心**。
 - 0温度相当于 **argmax 似然**，而无限温度相当于**均匀采样**。
+
+特性
 - 温度系数越大，熵就越高，混乱程度越高，那么函数输出的各类别概率差距会越来越小（因为差距越小那么看出最优结果也就越困难，对应于熵越高），曲线也会愈发平滑。
 - 相反，温度系数越小，函数曲线也会愈发陡峭。
 
-“我喜欢漂亮的___” 例子中，初始温度 T=1 ，直观看一下 T 取不同值下概率会发生什么变化：
+“**我喜欢漂亮的___**” 例子中，初始温度 T=1 ，直观看一下 T 取不同值下概率会发生什么变化：
 - ![](https://pic3.zhimg.com/80/v2-e1673506371968d79a2059575a39d426_1440w.webp)
 - 随着温度的降低，模型愈来愈越倾向选择”女孩“；
 - 随着温度的升高，分布变得越来越均匀。
@@ -1060,12 +1216,142 @@ Temperature 采样中的温度与玻尔兹曼分布有关.
 - “**均匀性**”：小温度系数更关注于将与本样本相似的困难样本分开，因此希望得到一个**分布均匀**的表征空间，从而令负对更远（综述提到这种表征或许是成功的关键）。所以说 <span style='color:blue'>T 应当小</span>。
 - “**容忍性**”：困难样本往往是与本样本相似程度较高的，同类别的狗，但是萨摩耶和吉娃娃这两种不同实例。很多困难负样本其实是潜在的正样本，所以不能过度地分开“困难样本”导致破坏潜在语义结构。所以说 <span style='color:blue'>T 不能太小</span>。
 
-- 采样的时候有一个可以控制的超参数，称为**温度**(temperature, T)。
+- 采样时有个可控超参数，称为**温度**(temperature, T)。
   - 模型蒸馏里用到
 - 解码器的输出层后面通常会跟一个softmax函数来将输出概率归一化，通过改变T可以控制概率的形貌。
 - softmax的公式如下
   - 当T大的时候，概率分布趋向平均，随机性增大；
   - 当T小的时候，概率密度趋向于集中，即强者俞强，随机性降低，会更多地采样出“放之四海而皆准”的词汇。
+
+
+公式
+- ![img](https://picx.zhimg.com/80/v2-85841701ef0074344a545b4ece6fc3e1_1440w.webp?source=1940ef5c)
+- `|V|`表示词汇的cardinality。
+- 通过添加一个温度参数T来轻松控制输出的**多样性**，该参数在采取softmax之前重新调整对数：
+- ![img](https://picx.zhimg.com/80/v2-16883c3dda877b20a4b3269bccc37ffb_1440w.webp?source=1940ef5c)
+
+通过调整T控制概率分布的形状。
+- 当 T≪1 时，分布在原点周围变得尖锐，罕见的标记被压制。
+- 当 T≫1 时，分布变得平缓，每个令牌的可能性相同。
+
+温度对标记概率的影响。
+- 当 temperature→0，就变成`greedy search`；
+- 当 temperature→∞，就变成`均匀采样`（uniform sampling）。
+- ![img](https://picx.zhimg.com/80/v2-13462a3839b939f7a70ae0aaf80da28c_1440w.webp?source=1940ef5c)
+- 详见论文：The Curious Case of Neural Text Degeneration
+
+generate() 函数中设置温度参数`temperature`,`top_k`，以T=2为例进行采样
+
+```py
+import matplotlib.pyplot as plt
+import numpy as np
+
+def softmax(logits, T=1):
+    e_x = np.exp(logits / T)
+    return e_x / e_x.sum()
+
+logits = np.exp(np.random.random(1000))
+sorted_logits = np.sort(logits)[::-1]
+x = np.arange(1000)
+
+for T in [0.5, 1.0, 2.0]:
+    plt.step(x, softmax(sorted_logits, T), label=f"T={T}")
+plt.legend(loc="best")
+plt.xlabel("Sorted token probabilities")
+plt.ylabel("Probability")
+plt.show()
+```
+
+调用
+
+```py
+torch.manual_seed(42);
+# 高温
+output_temp = model.generate(input_ids, max_length=max_length, do_sample=True, temperature=2.0, top_k=0)
+# 温度降下来
+output_temp = model.generate(input_ids, max_length=max_length, do_sample=True, temperature=0.5, top_k=0)
+print(tokenizer.decode(output_temp[0]))
+```
+
+高温产生了大部分的胡言乱语；
+- 通过调大罕见词汇出现的概率，使模型产生了奇怪的语法和相当多的生造词
+- 降温后，更有连贯性
+
+控制样本质量(**一致性**和**多样性**)的方法, 在**一致性**（低温）和**多样性**（高温）之间总有一个权衡
+- 温度
+- 截断词汇的分布
+
+随着温度自由地调整多样性，在更有限的范围内，排除那些在语境中过于奇怪的词（即低概率词）。有两种主要的方法：`top-k`和`nucleus`（或`top-p`）采样。
+
+tempreature 选择呈现如下规律：
+- 当 temperature 设置为较小或者0的值时， Temperature Sampling 等同于 每次选择最大概率的 Greedy Search。 
+- 小的temperature 会引发极大的 repetitive 和predictable文本，但是文本内容往往更贴合语料(highly realistic)，基本所有的词都来自与语料库。 当temperatures较大时, 生成的文本更具有随机性(random)、趣味性(interesting)，甚至创造性(creative); 甚至有些时候能发现一些新词(misspelled words) 。 
+- 当 设置高 temperature时，文本局部结构往往会被破坏，大多数词可能会时 semi-random strings 的形式。 
+- 实际应用中，往往experiment with multiple temperature values! 当保持了一定的随机性又能不破坏结构时，往往会得到有意思的生成文本。
+
+`Top-k`和`nucleus`（`top-p`）抽样是两种流行的替代方法/使用温度的扩展。
+- 基本思想: 限制每个时间步长中可以取样的可能标记数量。
+- ![](https://picx.zhimg.com/80/v2-20a086d6f1c3250a28dd567b4ac144e3_1440w.webp?source=1940ef5c)
+- 上图挑选概率最高的字符（10^-1处的孤立条）的概率是1/10。
+- 按概率降序排列标记，并计算前10,000个标记的累积总和（GPT-2的词汇中总共有50,257个标记）
+- 在概率最高的1,000个标记中，大约有96%的机会挑选任何一个标记。该概率迅速上升到90%以上，但在几千个标记之后才饱和，接近100%。该图 显示，有1/100的概率没有选到任何甚至不在前2000名的标记。
+
+这些数字乍看很小，但很重要，因为在生成文本时
+- 对每个标记取样一次, 只有1/100或1/1000的机会
+- 如果取样数百次，就有很大的机会在某一时刻选到一个不可能的标记，而且在取样时选到这样的标记会严重影响生成文本的质量。
+
+因此, 通常希望避免这些非常不可能的标记。top-k和top-p采样发挥作用的地方
+
+top-k抽样
+- 在Top-K Sampling中，将挑选出K个最有可能的下一个单词，并且仅在这K个下一个单词之间重新为它们分配概率。 
+- GPT2就是采用了这种采样方案，这也是其生成故事效果不错的原因之一。
+- ![](https://pic1.zhimg.com/80/v2-a165f4fbb64fcc76e8796bc3df82b4d9_1440w.webp?source=1940ef5c)
+- K=6，将采样最有可能的6个单词，记为V top-K  . 在第一步采样中，V top-K 包含了整体的2/3，第二步采样则包含了几乎全部，但是有效地去除了一些奇奇怪怪的单词。
+
+top-k抽样背后的想法
+- 通过只从概率最高的k个标记中抽样来避免低概率的选择。
+- 这就在分布的长尾上设置了一个固定的切口，确保我们只从可能的选择中取样。
+- top-k抽样相当于定义一条垂直线并从左边的标记中抽样。
+
+同样，`generate()` 函数通过`top_k`参数提供了一个简单的方法来实现这一点:
+
+```py
+output_topk = model.generate(input_ids, max_length=max_length, do_sample=True, top_k=50)
+print(tokenizer.decode(output_topk[0]))
+```
+
+最终得到最像人类的文本
+
+如何选择k呢？
+- k的值是手动选择的，对序列中的每个选择都是一样的，与实际的输出分布无关。
+- 通过查看一些文本质量指标来找到一个好的k值
+
+动态截断
+- 在核抽样或顶抽样中，不选择一个固定的截断值，而是设定一个截断的时间条件。在选择中达到一定的概率质量时。
+
+top-p 采样
+- 在 Top-p 采样中，不是从仅最可能的K个单词中采样，而是从其**累积概率**超过一个阈值p的最小可能单词集合中进行选择，然后将这组单词重新分配概率。 
+- 这样，单词集合的大小（也就是集合中单词的数量）可以根据下一个单词的概率分布动态地增加或减少。
+- ![](https://picx.zhimg.com/80/v2-0d091bc6c6d820a8715befa576fe3f42_1440w.webp?source=1940ef5c)
+- 设置 p = 0.92，定义为 V top-p ，所有单词累计概率超过0.92的最小单词子集。 在第一步采样中，包括了9个最有可能的单词，而在第二步采样中，只需选择前3个单词即可超过92％。
+- 当下一个单词的可预测性不确定时，保留了较多的单词
+
+generate() 函数也提供了一个激活 top-p 抽样的参数
+
+```py
+torch.manual_seed(42)
+output_topp = model.generate(input_ids, max_length=max_length, do_sample=True, top_p=0.90)
+print(tokenizer.decode(output_topp[0]))
+```
+
+Top-p 采样也产生了一个连贯的故事。把这两种抽样方法结合起来以获得最佳效果。
+- 设置 top_k=50 和 top_p=0.9，相当于从最多50个标记的池子里选择概率质量为90%的标记的规则。
+
+使用抽样时，也可以用束搜索。与其贪婪地选择下一批候选标记，可以对它们进行抽样，并以同样的方式建立起波束。
+
+参考：[关于文本生成（text generation），有哪些提高生成多样性的方法？](https://www.zhihu.com/question/415657741/answer/2430106609)
+
+
 
 #### 示例
 
@@ -1097,9 +1383,7 @@ print(f"probs_high:{probs_high}")
 分析
 - temperature 较高时，会更平均地分配概率给各个token，这导致生成的文本更具**随机性**和**多样性**；
 - temperature 较低接近0时，会倾向于选择概率最高的token，从而使生成的文本更加**确定和集中**。
-- temperature=1时，不用此方式。
-
-
+- temperature=1 时，不用此方式。
 
 
 #### pytorch 实现
@@ -1162,7 +1446,7 @@ print("new_probs:", new_probs)
 # new_probs: tensor([[0.2559, 0.5154,   -inf,   -inf]])
 ```
 
-实现
+#### top k 实现
 
 ```py
 def top_k_sampling(model, input, max_length, k):
@@ -1215,6 +1499,8 @@ class TopKSampler(Sampler):
         return self.sampler(zeros)
 ```
 
+#### top k 优缺点
+
 top-k 优点：
 - 根据不同输入文本**动态调整**候选单词的数量，而不是固定为 k 个。这是因为不同的输入文本可能会导致不同的概率分布，有些分布可能比较平坦，有些分布可能比较尖锐。如果分布比较平坦，那么前 k 个单词可能都有相近的概率，那么我们就可以从中进行随机采样；如果分布比较尖锐，那么前 k 个单词可能会占据绝大部分概率，那么我们就可以近似地进行贪心解码。
 - 通过调整 k 的大小来控制生成的**多样性和质量**。一般来说，k 越大，生成的多样性越高，但是生成的质量越低；k 越小，生成的质量越高，但是生成的多样性越低。因此，我们可以根据不同的任务和场景来选择合适的k 值。
@@ -1230,7 +1516,9 @@ top-k 优点：
 
 通常会考虑 top-k 和其它策略结合，比如 top-p。
 
-### Top-p 采样 -- 核采样 Nucleus sampling
+### Top-p 采样 
+
+又称 `核采样` Nucleus sampling
 
 top-k 有个缺陷
 - “k 值取多少是最优的？” 非常难确定。
@@ -1262,9 +1550,6 @@ top-p 值通常设置为比较高的值（如0.75），目的是限制低概率 
 
 疑问
 - 当top-p设置的很小，累加的概率没超过怎么办？一般代码中都会强制至少选出一个token。
-
-
-
 
 ```py
 import torch
@@ -1394,27 +1679,73 @@ class NucleusSampler(Sampler):
 ```
 
 
-### 联合采样（top-k & top-p & Temperature）
+### 联合采样
 
 通常将 top-k、top-p、Temperature 联合使用。
 
 先后顺序: 
-- top-k -> top-p -> Temperature
+- `top-k` -> `top-p` -> `Temperature`
 
 设置 top-k = 3，表示保留概率最高的3个 token。
-- 这样就会保留女孩、鞋子、大象这3个 token。
--   女孩：0.664
--   鞋子：0.199
--   大象：0.105
 
-接下来使用 top-p 的方法，保留概率的累计和达到 0.8 的单词
+这样就会保留女孩、鞋子、大象这3个 token。
+- 女孩：0.664
+- 鞋子：0.199
+- 大象：0.105
+
+接下来使用 top-p 方法，保留概率的累计和达到 0.8 的单词
 - 选取女孩和鞋子这两个 token。
 
 接着使用 Temperature = 0.7 进行归一化，变成：
--   女孩：0.660
--   鞋子：0.340
+- 女孩：0.660
+- 鞋子：0.340
 
 接着，从上述分布中进行随机采样，选取一个单词作为最终的生成结果。
+
+
+#### 示例
+
+top k 和 top p 联合
+
+```py
+# 代码输入的是logits，而且考虑很周全（我感觉漏了考虑k和p都给了的情况，这应该是不合适的）
+# 巧妙地使用了torch.cumsum
+# 避免了一个词都选不出来的尴尬情况
+def top_k_top_p_filtering(logits, top_k=0, top_p=1.0, filter_value=-float("Inf"), min_tokens_to_keep=1):
+    """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
+        Args:
+            logits: logits distribution shape (batch size, vocabulary size)
+            if top_k > 0: keep only top k tokens with highest probability (top-k filtering).
+            if top_p < 1.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
+                Nucleus filtering is described in Holtzman et al. (http://arxiv.org/abs/1904.09751)
+            Make sure we keep at least min_tokens_to_keep per batch example in the output
+        From: https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
+    """
+    if top_k > 0:
+        top_k = min(max(top_k, min_tokens_to_keep), logits.size(-1))  # Safety check
+        # Remove all tokens with a probability less than the last token of the top-k
+        indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
+        logits[indices_to_remove] = filter_value
+
+    if top_p < 1.0:
+        sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+        # Remove tokens with cumulative probability above the threshold (token with 0 are kept)
+        sorted_indices_to_remove = cumulative_probs > top_p
+        if min_tokens_to_keep > 1:
+            # Keep at least min_tokens_to_keep (set to min_tokens_to_keep-1 because we add the first one below)
+            sorted_indices_to_remove[..., :min_tokens_to_keep] = 0
+        # Shift the indices to the right to keep also the first token above the threshold
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+
+        # scatter sorted tensors to original indexing
+        indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+        logits[indices_to_remove] = filter_value
+    return logits
+```
+
 
 
 ### 惩罚重复
@@ -1555,311 +1886,12 @@ MoE (Mixture of Experts)模型的基本思想
 
 
 
-## 实践
+## 资料
 
 - NLP界著名Python包[Transformers](https://github.com/huggingface/transformers)
 - 解析过程见：[解读Beam Search (1/2)](http://www.wuyuanhao.com/2020/03/20/%e8%a7%a3%e8%af%bbbeam-search-1-2/)
 
 
-### 代码实现
-
-- 上述各种采样方式在HuggingFace的库里都已经实现了
-
-```python
-# 代码输入的是logits，而且考虑很周全（我感觉漏了考虑k和p都给了的情况，这应该是不合适的）
-# 巧妙地使用了torch.cumsum
-# 避免了一个词都选不出来的尴尬情况
-def top_k_top_p_filtering(logits, top_k=0, top_p=1.0, filter_value=-float("Inf"), min_tokens_to_keep=1):
-    """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
-        Args:
-            logits: logits distribution shape (batch size, vocabulary size)
-            if top_k > 0: keep only top k tokens with highest probability (top-k filtering).
-            if top_p < 1.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
-                Nucleus filtering is described in Holtzman et al. (http://arxiv.org/abs/1904.09751)
-            Make sure we keep at least min_tokens_to_keep per batch example in the output
-        From: https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
-    """
-    if top_k > 0:
-        top_k = min(max(top_k, min_tokens_to_keep), logits.size(-1))  # Safety check
-        # Remove all tokens with a probability less than the last token of the top-k
-        indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
-        logits[indices_to_remove] = filter_value
-
-    if top_p < 1.0:
-        sorted_logits, sorted_indices = torch.sort(logits, descending=True)
-        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
-
-        # Remove tokens with cumulative probability above the threshold (token with 0 are kept)
-        sorted_indices_to_remove = cumulative_probs > top_p
-        if min_tokens_to_keep > 1:
-            # Keep at least min_tokens_to_keep (set to min_tokens_to_keep-1 because we add the first one below)
-            sorted_indices_to_remove[..., :min_tokens_to_keep] = 0
-        # Shift the indices to the right to keep also the first token above the threshold
-        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-        sorted_indices_to_remove[..., 0] = 0
-
-        # scatter sorted tensors to original indexing
-        indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
-        logits[indices_to_remove] = filter_value
-    return logits
-```
-
-
-huggingface 里提供的GPT-2代码
-
-```py
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model_name = "gpt2-xl"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
-
-import pandas as pd
-
-input_txt = "Transformers are the"
-input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
-iterations = []
-n_steps = 8 # 进行8步解码
-choices_per_step = 5 # 每一步候选数量
-
-with torch.no_grad():# eval模式
-    for _ in range(n_steps):# 每步解码
-        iteration = dict()
-        iteration["Input"] = tokenizer.decode(input_ids[0]) # 提示文本
-        output = model(input_ids=input_ids) # 将提示文本输入到模型进行解码
-        # Select logits of the first batch and the last token and apply softmax
-        next_token_logits = output.logits[0, -1, :]
-        next_token_probs = torch.softmax(next_token_logits, dim=-1)
-        sorted_ids = torch.argsort(next_token_probs, dim=-1, descending=True)
-        # Store tokens with highest probabilities
-        for choice_idx in range(choices_per_step): # 概率最大的五个token
-            token_id = sorted_ids[choice_idx]
-            token_prob = next_token_probs[token_id].cpu().numpy()
-            token_choice = (
-                f"{tokenizer.decode(token_id)} ({100 * token_prob:.2f}%)" # 取百分号两位数
-            )
-            iteration[f"Choice {choice_idx+1}"] = token_choice
-        # Append predicted next token to input
-        input_ids = torch.cat([input_ids, sorted_ids[None, 0, None]], dim=-1) # 将概率最大的字符拼接到提示文本
-        iterations.append(iteration)
-# 输出序列解码结果
-pd.DataFrame(iterations)
-```
-
-### （1）贪婪搜索
-
-```py
-# （1）贪婪搜索
-input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
-output = model.generate(input_ids, max_new_tokens=n_steps, do_sample=False)
-print(tokenizer.decode(output[0]))
-# Transformers are the most popular toy line in the world,
-# 扩大长度
-max_length = 128
-input_txt = """In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.\n\n
-"""
-input_ids = tokenizer(input_txt, return_tensors="pt")["input_ids"].to(device)
-output_greedy = model.generate(input_ids, max_length=max_length, do_sample=False)
-print(tokenizer.decode(output_greedy[0]))
-# Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
-# In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English.​
-```
-
-贪婪搜索缺点：
-- 倾向于产生重复序列
-- 可能会错过整体概率较高的单词序列，只是因为高概率的单词刚好在低概率的单词之前。
-
-解法：集束搜索
-
-### （2）集束搜索（beam search decoding）
-
-集束搜索每步解码是不选概率最高标记，而是记录**前b个**最有可能的下一个标记，其中b被称为`波束`或`路径个数`。
-- 下一组集束的选择是考虑现有集束的所有可能的下一个标记的扩展，并选择b个最可能的扩展。
-- 这个过程重复进行，直到达到**最大长度**或**EOS标记**
-- 然后根据对数概率对b个波束进行排序，选择最可能的序列
-- ![](https://pica.zhimg.com/80/v2-ef3522dfec91840dcad6642981722b18_1440w.webp?source=1940ef5c)
-
-为什么用`对数概率`而不是`条件概率`对序列进行评分？
-- 计算一个序列的总体概率 $P(y1，y2，...，yt\|x)$ 涉及计算条件概率 $P(yt\|y < t,x)$ 的乘积。由于每个条件概率通常是\[0，1\]范围内的小数字，取乘积会导致总概率很容易出现**下溢**。不能再精确地表示计算的结果。
-- ![](https://pic1.zhimg.com/80/v2-06d671883015295f2a493fb4f550f897_1440w.webp?source=1940ef5c)
-- 于是，使用`对数概率`替换`条件概率`
-
-```py
-import torch.nn.functional as F
-# 对数概率
-def log_probs_from_logits(logits, labels):
-    logp = F.log_softmax(logits, dim=-1)
-    logp_label = torch.gather(logp, 2, labels.unsqueeze(2)).squeeze(-1)
-    return logp_label
-# 序列总对数概率
-def sequence_logprob(model, labels, input_len=0):
-    with torch.no_grad():
-        output = model(labels)
-        log_probs = log_probs_from_logits(output.logits[:, :-1, :], labels[:, 1:]) # 不算首尾标记，非模型生成
-        # 只需要将每个标记的对数概率相加
-        seq_log_prob = torch.sum(log_probs[:, input_len:])
-    return seq_log_prob.cpu().numpy()
-# 调用
-logp = sequence_logprob(model, output_greedy, input_len=len(input_ids[0]))
-print(tokenizer.decode(output_greedy[0]))
-print(f"\nlog-prob: {logp:.2f}")
-# beam search, 5个
-output_beam = model.generate(input_ids, max_length=max_length, num_beams=5, do_sample=False)
-logp = sequence_logprob(model, output_beam, input_len=len(input_ids[0]))
-print(tokenizer.decode(output_beam[0]))
-print(f"\nlog-prob: {logp:.2f}")
-```
-
-波束越多，得到的结果就越好；然而，生成过程会变得更慢
-
-用集束搜索得到的对数概率（越高越好）比用简单的贪婪解码得到的要好。
-- 然而，集束搜索也受到重复文本的影响。
-
-一个解决方法
-- <span style='color:blue'>用 no_repeat_ngram_size 参数施加一个 n-gram惩罚</span>，跟踪哪些n-gram已经被看到，并将下一个token的概率设置为零，如果它将产生一个以前看到的n-gram
-
-```py
-output_beam = model.generate(input_ids, max_length=max_length, num_beams=5, do_sample=False, no_repeat_ngram_size=2) 
-logp = sequence_logprob(model, output_beam, input_len=len(input_ids[0])) 
-print(tokenizer.decode(output_beam[0])) 
-print(f"\nlog-prob: {logp:.2f}")
-```
-
-停止重复后，尽管产生了较低的分数，但文本仍然是连贯的。
-
-带n-gram惩罚的集束搜索是一种很好的方法，可以在关注**高概率标记**（用束搜索）和**减少重复**（用n-gram惩罚）之间找到一个**平衡点**
-- 通常用于总结或机器翻译等事实正确性很重要的应用中。当事实的正确性不如生成的输出的多样性重要时，例如在开放领域的闲聊或故事生成中，另一种减少重复同时提高多样性的方法是使用抽样。
-
-### （3）温度采样方法（Temperature Sampling Methods）
-
-公式
-- ![img](https://picx.zhimg.com/80/v2-85841701ef0074344a545b4ece6fc3e1_1440w.webp?source=1940ef5c)
-- \|V\|表示词汇的cardinality。
-- 通过添加一个温度参数T来轻松控制输出的**多样性**，该参数在采取softmax之前重新调整对数：
-- ![img](https://picx.zhimg.com/80/v2-16883c3dda877b20a4b3269bccc37ffb_1440w.webp?source=1940ef5c)
-
-通过调整T控制概率分布的形状。
-- 当 T≪1 时，分布在原点周围变得尖锐，罕见的标记被压制。
-- 当 T≫1 时，分布变得平缓，每个令牌的可能性相同。
-
-温度对标记概率的影响。
-- 当 temperature→0，就变成`greedy search`；
-- 当 temperature→∞，就变成`均匀采样`（uniform sampling）。
-- ![img](https://picx.zhimg.com/80/v2-13462a3839b939f7a70ae0aaf80da28c_1440w.webp?source=1940ef5c)
-- 详见论文：The Curious Case of Neural Text Degeneration
-
-generate()函数中设置温度参数`temperature`,`top_k`，以T=2为例进行采样
-
-```py
-import matplotlib.pyplot as plt
-import numpy as np
-
-def softmax(logits, T=1):
-    e_x = np.exp(logits / T)
-    return e_x / e_x.sum()
-
-logits = np.exp(np.random.random(1000))
-sorted_logits = np.sort(logits)[::-1]
-x = np.arange(1000)
-
-for T in [0.5, 1.0, 2.0]:
-    plt.step(x, softmax(sorted_logits, T), label=f"T={T}")
-plt.legend(loc="best")
-plt.xlabel("Sorted token probabilities")
-plt.ylabel("Probability")
-plt.show()
-```
-
-调用
-
-```py
-torch.manual_seed(42);
-# 高温
-output_temp = model.generate(input_ids, max_length=max_length, do_sample=True, temperature=2.0, top_k=0)
-# 温度降下来
-output_temp = model.generate(input_ids, max_length=max_length, do_sample=True, temperature=0.5, top_k=0)
-print(tokenizer.decode(output_temp[0]))
-```
-
-高温产生了大部分的胡言乱语；
-- 通过调大罕见词汇出现的概率，使模型产生了奇怪的语法和相当多的生造词
-- 降温后，更有连贯性
-
-控制样本质量(**一致性**和**多样性**)的方法, 在**一致性**（低温）和**多样性**（高温）之间总有一个权衡
-- 温度
-- 截断词汇的分布
-
-随着温度自由地调整多样性，在更有限的范围内，排除那些在语境中过于奇怪的词（即低概率词）。有两种主要的方法：`top-k`和`nucleus`（或`top-p`）采样。
-
-tempreature的选择往往呈现如下规律：
-- 当 temperature 设置为较小或者0的值时， Temperature Sampling 等同于 每次选择最大概率的 Greedy Search。 
-- 小的temperature 会引发极大的 repetitive 和predictable文本，但是文本内容往往更贴合语料(highly realistic)，基本所有的词都来自与语料库。 当temperatures较大时, 生成的文本更具有随机性(random)、趣味性(interesting)，甚至创造性(creative); 甚至有些时候能发现一些新词(misspelled words) 。 
-- 当 设置高 temperature时，文本局部结构往往会被破坏，大多数词可能会时 semi-random strings 的形式。 
-- 实际应用中，往往experiment with multiple temperature values! 当保持了一定的随机性又能不破坏结构时，往往会得到有意思的生成文本。
-
-`Top-k`和`nucleus`（`top-p`）抽样是两种流行的替代方法/使用温度的扩展。
-- 基本思想: 限制每个时间步长中可以取样的可能标记数量。
-- ![](https://picx.zhimg.com/80/v2-20a086d6f1c3250a28dd567b4ac144e3_1440w.webp?source=1940ef5c)
-- 上图挑选概率最高的字符（10^-1处的孤立条）的概率是1/10。
-- 按概率降序排列标记，并计算前10,000个标记的累积总和（GPT-2的词汇中总共有50,257个标记）
-- 在概率最高的1,000个标记中，大约有96%的机会挑选任何一个标记。该概率迅速上升到90%以上，但在几千个标记之后才饱和，接近100%。该图 显示，有1/100的概率没有选到任何甚至不在前2000名的标记。
-
-这些数字乍看很小，但很重要，因为在生成文本时
-- 对每个标记取样一次, 只有1/100或1/1000的机会
-- 如果取样数百次，就有很大的机会在某一时刻选到一个不可能的标记，而且在取样时选到这样的标记会严重影响生成文本的质量。
-
-因此, 通常希望避免这些非常不可能的标记。top-k和top-p采样发挥作用的地方
-
-top-k抽样
-- 在Top-K Sampling中，将挑选出K个最有可能的下一个单词，并且仅在这K个下一个单词之间重新为它们分配概率。 
-- GPT2就是采用了这种采样方案，这也是其生成故事效果不错的原因之一。
-- ![](https://pic1.zhimg.com/80/v2-a165f4fbb64fcc76e8796bc3df82b4d9_1440w.webp?source=1940ef5c)
-- K=6，将采样最有可能的6个单词，记为V top-K  . 在第一步采样中，V top-K 包含了整体的2/3，第二步采样则包含了几乎全部，但是有效地去除了一些奇奇怪怪的单词。
-
-top-k抽样背后的想法
-- 通过只从概率最高的k个标记中抽样来避免低概率的选择。
-- 这就在分布的长尾上设置了一个固定的切口，确保我们只从可能的选择中取样。
-- top-k抽样相当于定义一条垂直线并从左边的标记中抽样。
-
-同样，generate()函数通过`top_k`参数提供了一个简单的方法来实现这一点:
-
-```py
-output_topk = model.generate(input_ids, max_length=max_length, do_sample=True, top_k=50)
-print(tokenizer.decode(output_topk[0]))
-```
-
-最终得到最像人类的文本
-
-如何选择k呢？
-- k的值是手动选择的，对序列中的每个选择都是一样的，与实际的输出分布无关。
-- 通过查看一些文本质量指标来找到一个好的k值
-
-动态截断
-- 在核抽样或顶抽样中，不选择一个固定的截断值，而是设定一个截断的时间条件。在选择中达到一定的概率质量时。
-
-top-p采样
-- 在Top-p采样中，不是从仅最可能的K个单词中采样，而是从其**累积概率**超过一个阈值p的最小可能单词集合中进行选择，然后将这组单词重新分配概率。 
-- 这样，单词集合的大小（也就是集合中单词的数量）可以根据下一个单词的概率分布动态地增加或减少。
-- ![](https://picx.zhimg.com/80/v2-0d091bc6c6d820a8715befa576fe3f42_1440w.webp?source=1940ef5c)
-- 设置p = 0.92 p = 0.92p=0.92，定义为V top-p ，所有单词累计概率超过0.92的最小单词子集。 在第一步采样中，包括了9个最有可能的单词，而在第二步采样中，只需选择前3个单词即可超过92％。
-- 当下一个单词的可预测性不确定时，保留了较多的单词
-
-generate()函数也提供了一个激活top-p抽样的参数
-
-```py
-torch.manual_seed(42)
-output_topp = model.generate(input_ids, max_length=max_length, do_sample=True, top_p=0.90)
-print(tokenizer.decode(output_topp[0]))
-```
-
-Top-p采样也产生了一个连贯的故事。把这两种抽样方法结合起来以获得最佳效果。
-- 设置top_k=50和top_p=0.9，相当于从最多50个标记的池子里选择概率质量为90%的标记的规则。
-
-使用抽样时，也可以用束搜索。与其贪婪地选择下一批候选标记，可以对它们进行抽样，并以同样的方式建立起波束。
-
-参考：[关于文本生成（text generation），有哪些提高生成多样性的方法？](https://www.zhihu.com/question/415657741/answer/2430106609)
 
 
 
