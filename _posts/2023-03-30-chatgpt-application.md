@@ -766,7 +766,10 @@ ORDER BY total_sales desc limit 10;
 [ChatExcel](https://chatexcel.com/) 通过自然语言操作excel表格
 - ![](https://chatexcel.com/static/pic/case/case-01.gif)
 
+##### PyGWalker
 
+【2024-10-6】[PyGWalker](https://kanaries.net/pygwalker) 将 pandas DataFrame 数据交互可视化
+- 支持 NL2SQL, 新建特征变量, 实时编辑数据点
 
 ### 内容管理/营销
 
