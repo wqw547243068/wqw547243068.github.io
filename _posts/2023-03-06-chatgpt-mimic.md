@@ -1469,8 +1469,8 @@ sh train_dummy.sh
 
 基于 `LLaMA` 模型，`Colossal-AI` 第一个开源包含完整 RLHF 流程的类Chat模型复现方案 `ColossalChat` ，是目前最接近 ChatGPT 原始技术路线的实用开源项目
 
-流程
-- ![](https://github.com/hpcaitech/ColossalAI/blob/main/applications/Chat/assets/stage-3.jpeg?raw=true)
+流程图 [官方](https://github.com/hpcaitech/ColossalAI/tree/main/applications/ColossalChat)
+- ![](https://raw.githubusercontent.com/hpcaitech/public_assets/main/applications/chat/stage-3.jpeg)
 
 内容
 - Demo：可直接在线体验模型效果，无需注册或 waitinglist
@@ -1495,6 +1495,68 @@ ColossalChat跟Alpaca的区别：
 
 ![](https://pic1.zhimg.com/80/v2-27e03390d404c7f2eae315f69a557634_1440w.webp)
 
+数据格式
+
+SFT 数据
+
+```json
+[
+    {"messages":
+      [
+        {
+          "from": "user",
+          "content": "what are some pranks with a pen i can do?"
+        },
+        {
+          "from": "assistant",
+          "content": "Are you looking for practical joke ideas?"
+        },
+      ]
+    },
+]
+```
+
+RM 数据格式
+
+```json
+[
+    {"context": [
+        {
+          "from": "human",
+          "content": "Introduce butterflies species in Oregon."
+        }
+      ],
+      "chosen": [
+        {
+          "from": "assistant",
+          "content": "About 150 species of butterflies live in Oregon, with about 100 species are moths..."
+        },
+      ],
+      "rejected": [
+        {
+          "from": "assistant",
+          "content": "Are you interested in just the common butterflies?  There are a few common ones which will be easy to find..."
+        },
+      ]
+    },
+]
+```
+
+PPO 数据格式
+
+```json
+[
+    {"messages":
+      [
+        {
+          "from": "human",
+          "content": "what are some pranks with a pen i can do?"
+        }
+      ]
+    },
+]
+```
+
 
 ##### 评测
 
@@ -1518,13 +1580,12 @@ ColossalChat跟Alpaca的区别：
 ```
 
 
-
-
 ##### 三步运行
 
 【2023-3-29】ColossalChat 开源了基于 LLaMA 模型，复现训练 ChatGPT 三个阶段的完整代码。
 
 第一阶段，训练 SFT 模型：
+- 代码 [train_sft.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_sft.sh)
 
 ```sh
 # Training with a 4-GPU servers 
@@ -1532,6 +1593,7 @@ colossalai run --nproc_per_node=4 train_sft.py \     --pretrain "/path/to/LLaMa-
 ```
 
 第二阶段，训练奖励模型：
+- 代码 [train_rm.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_rm.sh)
 
 ```sh
 # Training with a 4-GPU servers 
@@ -1539,6 +1601,7 @@ colossalai run --nproc_per_node=4 train_reward_model.py \     --pretrain "/path/
 ```
 
 第三阶段，使用 RL 训练：
+- [train_ppo.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_ppo.sh)
 
 ```sh
 # Training with a 8-GPU servers 
