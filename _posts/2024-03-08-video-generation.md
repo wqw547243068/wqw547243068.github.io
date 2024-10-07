@@ -470,6 +470,11 @@ Sora是一种扩散模型，通过从一开始看似静态噪声的视频出发�
 - [拆解OpenAI技术报告：Sora是怎么生成视频的？](https://m.huxiu.com/article/2683137.html?type=text)
 - 【2024-2-28】微软和理海大学解读Sora技术解读技术报告和逆向工程，首次全面回顾了 Sora 的背景、相关技术、新兴应用、当前局限和未来机遇。 
   - [Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models](https://arxiv.org/pdf/2402.17177.pdf)
+- 【2024-3-20】张俊林 [技术神秘化的去魅：Sora关键技术逆向工程图解]https://zhuanlan.zhihu.com/p/687928845)
+  - Sora的Visual Encoder-Decoder很可能采用了TECO（Temporally Consistent Transformer ）模型的思路，而不是广泛传闻的MAGVIT-v2
+  - Patch部分支持“可变分辨率及可变长宽比”视频，应该是采用了NaVIT的思路，而不是Padding方案
+  - Sora保持生成视频的“长时一致性”也许会采取暴力手段
+  - ![](https://pic4.zhimg.com/80/v2-964d508813e646bcae477e8c163d48cb_1440w.webp)
 - 袁粒课题组-北大信工 [PKU-YuanGroup](https://github.com/PKU-YuanGroup)，推出开源复现 [Open-Sora-Plan](https://github.com/PKU-YuanGroup/Open-Sora-Plan)
 - [Sora学习手册-飞书文档](https://zl49so8lbq.feishu.cn/wiki/PiW6wlVlqi3sdnkIRHXcUK8CnK7)
 - 【2024-3-1】[微软37页论文逆向工程Sora，得到了哪些结论](https://mp.weixin.qq.com/s/5-pySWU40omjBowsV2WCKA)， 人工智能生成内容（AIGC）技术的最新进展实现了内容创建的民主化，使用户能够通过简单的文本指令生成所需的内容
@@ -497,7 +502,7 @@ Sora 核心本质：一个具有灵活采样维度的扩散 Transformer。由三
 
 #### Sora 技术
 
-Sora背后的技术
+Sora 背后的技术
 
 OpenAI 技术报告，一些关于Sora的剖析：
 - Sora建立在DiT模型上（Scalable Diffusion Models with Transformers, ICCV 2023）
@@ -507,10 +512,9 @@ OpenAI 技术报告，一些关于Sora的剖析：
 - 用于训练的1920x1080p视频（无裁剪）
 - 重新标注（OpenAI DALL·E 3）和文本扩展（OpenAI GPT）
 
+从 OpenAI Sora 技术报告和 Saining Xie 的推特可以看出，Sora 基于 Diffusion Transformer 模型。它大量借鉴了DiT、ViT和扩散模型，没有太多花哨的东西。
 
-从OpenAI Sora技术报告和Saining Xie的推特可以看出，Sora基于Diffusion Transformer模型。它大量借鉴了DiT、ViT和扩散模型，没有太多花哨的东西。
-
-在Sora之前，不清楚是否可以实现长篇幅一致性。通常，这类模型只能生成几秒钟的256*256视频。“我们从大型语言模型中获得灵感，这些模型通过在互联网规模的数据上训练获得了通用能力。”Sora已经展示了通过可能在互联网规模数据上进行端到端训练，可以实现这种长篇幅一致性。
+在Sora之前，不清楚是否可以实现长篇幅一致性。通常，这类模型只能生成几秒钟的256*256视频。“我们从大型语言模型中获得灵感，这些模型通过在互联网规模的数据上训练获得了通用能力。” Sora已经展示了通过可能在互联网规模数据上进行端到端训练，可以实现这种长篇幅一致性。
 
 Sora 建立在扩散Transformer（DiT）模型之上（发表于ICCV 2023）, 可能的架构
 - 一个带有Transformer骨架的扩散模型：`DiT` = [`VAE`编码器 + `ViT` + `DDPM` + `VAE`解码器]。
