@@ -443,6 +443,51 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 
 deepspeed 总入口在 `deepspeed.__init__::initialize`
 
+#### 实践
+
+deepspeed chat 框架
+
+目录结构
+
+```sh
+dschat/ # 核心目录
+  rlhf/ # RLHF算法
+    ppo_trainer.py
+    rlhf_engine.py
+  utils/
+    data/
+      data_utils.py # 【数据处理入口】【自定义】sft 数据处理类
+      reward_datasets.py # 【自定义】rm 数据处理
+    model/ # 模型配置、定义
+      model_utils.py
+      quantization.py
+      reward_model.py
+      # LLM 个性化信息, chatglm,qwen,internlm等
+      configuration_internlm2.py # internlm 配置
+      modeling_internlm2.py # internlm 结构, 头部引入以上配置文件, 
+        # from .configuration_internlm2 import InternLM2Config
+    module/ # 组件, 如 lora
+      lora.py
+    ds_utils.py
+    optimization.py
+    perf.py
+    utils.py
+inference/
+tests/
+tranining/
+  step1_supervised_finetuning/
+  step2_reward_model_finetuning/
+  step3_rlhf_finetuning/
+  conversation_reward/ # 【自定义】监督学习训练任务
+    main.py
+    run.sh
+run.sh
+debug.sh
+e2e_rlhf.py
+requirements.xt
+to_onnx.py
+```
+
 #### train.py
 
 入口程序： `train.py`
