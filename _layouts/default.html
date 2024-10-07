@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 
+<!-- 主页 -->
+
   {% include head.html %}
 
   <body>
     {% include header.html %}
     
+    <h2 id="Navigation"> 可视化导航 </h2>
+    {% include tool_navi.html %}
+
         {{ content }}
-    
+
     {% include footer.html %}
     {% include backToTop.html %}
     <script src="{{ " /js/main.js " | prepend: site.baseurl }}" charset="utf-8"></script>
