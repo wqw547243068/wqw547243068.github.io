@@ -306,6 +306,15 @@ du -sh temp/ # 易读方式显示目录总大小，基数是 1024
 du --si temp/ # --si 选项默认计算基数是 1000，更精确
 ```
 
+tree 命令
+
+```sh
+yum install tree -y # centos
+apt install tree -y # ubuntu
+tree 
+tree -d temp/ # 显示目录深度
+```
+
 
 #### 问题: disk quota exceeded
 
