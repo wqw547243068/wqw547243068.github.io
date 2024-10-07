@@ -4,7 +4,11 @@ layout: default
 <!-- 适配其它markdown页面 -->
 <div class="page clearfix" post>
     <div class="left">
-        <h1>{{page.title}}</h1>
+
+    <h2 id="Navigation"> 可视化导航 </h2>
+    {% include tool_navi.html %}
+
+    <h1>{{page.title}}</h1>
         <hr>
         {{content}}
         <!-- 打赏 -->
@@ -15,7 +19,7 @@ layout: default
 	<!-- 评论区 -->
     <h2 id="comments">Comments</h2>
         {% include comments.html %}
-    <h2 id="Navigation"> 文章可视化导读 </h2>
+    <h2 id="Navigation"> 可视化导航 </h2>
     {% include tool_navi.html %}
 
     </div>
