@@ -4,7 +4,7 @@ title:  "Jekyll编辑功能汇总"
 date:   2015-02-15 22:14:54
 categories: 技术工具
 excerpt: "jekyll用法汇总" 
-tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格
+tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格 ocr 转换 pdf
 permalink: /jekyll
 ---
 
@@ -18,7 +18,9 @@ permalink: /jekyll
 
 ## Jekyll 简介
 
-Jekyll 是一个简单的，博客感知的，静态网站生成器。可以认为，Jekyll 是一个基于文件的内容管理系统（CMS）。它使用 Ruby 编写，通过 Markdown 和 Liquid 模板生成内容。
+Jekyll 是一个简单，博客感知，静态网站生成器。
+
+Jekyll 是一个基于文件的内容管理系统（CMS）。用 Ruby 编写，通过 Markdown 和 Liquid 模板生成内容。
 - Jekyll 最初由 GitHub co-founder、前首席执行官 Tom Preston-Werner 创立。
 - 目前，Jekyll 的维护者是 Parker Moore，他本人也于2016年初加入了 GitHub。
 
@@ -27,14 +29,14 @@ Jekyll 是一个简单的，博客感知的，静态网站生成器。可以认�
 ## Jekyll 部署
 
 步骤：
-- 安装 Ruby： brew install ruby
-- 安装jekyll：gem install jekyll
+- 安装 Ruby： `brew install ruby`
+- 安装jekyll：`gem install jekyll`
 - 生成站点
-  - jekyll build
+  - `jekyll build`
 - 编译
-  - jekyll serve
-  - jekyll server
-  - jekyll s
+  - `jekyll serve`
+  - `jekyll server`
+  - `jekyll s`
 - 通过 http://localhost:4000 进行访问
 
 ### 时差
@@ -99,7 +101,7 @@ permalink: /other
 
 参考：jekyll官方[文档](http://jekyllcn.com/docs/pages/)
 
-### markdown编辑环境
+### markdown 编辑环境
 
 - 【2021-3-24】[Typora+PicGo+Gitee笔记方案](https://blog.csdn.net/lin455989875/article/details/104621967)
 - [Typora+PicGo+Github/Gitee搭建免费稳定的图床](https://www.jianshu.com/p/a1e2cf01e05f)，github图床设置，gitee
@@ -200,7 +202,20 @@ plugins: [jekyll-paginate,jekyll-jupyter-notebook]
 * [MarkDown语法笔记（完整版）](http://blog.csdn.net/witnessai1/article/details/52551362)
 * [马克飞象markdown语法在线测试](https://maxiang.io/ "可以在线测试MD语言！")
 
-【2022-9-1】jekyll默认的markdown：[kramdown](https://kramdown.gettalong.org/quickref.html) (Jekyll's default markdown parser) 
+【2022-9-1】jekyll默认的 markdown：[kramdown](https://kramdown.gettalong.org/quickref.html) (Jekyll's default markdown parser) 
+
+
+#### 表格->markdown
+
+【2024-9-26】excel 表格转 markdown 格式
+- [TableConvert](https://tableconvert.com/csv-to-markdown), 将各种格式(csv/xls/json等)的表格转化为markdown格式, 在线编辑
+
+#### 图片->markdown
+
+使用 [白描](https://web.baimiaoapp.com/image-to-excel) 多种格式的在线OCR，如 文字、公式、表格
+- 将包含表格的图片黏贴到网页上，提取成内存、txt、excel 格式
+- 再使用以上 **表格->markdown** 工具
+
 
 ### 编辑功能
 
@@ -1648,6 +1663,28 @@ jekyll 插件安装失败
 - 整合后的博客文章内容将自动隐藏一半，同时显示“阅读全文”按钮(重点：虽然隐藏，但只是视觉上的，并不影响SEO)：
 - ![](https://openwrite.cn/readmore/readmore-5.png)
 - ![](https://openwrite.cn/images/202206/readmore/1654941000718.png)
+
+
+### 付费阅读
+
+
+【2024-9-7】付费阅读功能：[效果](http://i.scwy.net/other/2019/072718-first)
+- １ 文章前后显示扫码付费后才能阅读，文章只显示一部份。
+- ２ 用户扫码付费，在备注中填写文章编号。
+- ３ 文章自动显示所有内容。
+
+参考 [原文](https://blog.csdn.net/wyyyh9458/article/details/105690822)
+
+
+### 私文隐藏
+
+【2024-9-7】私文隐藏功能：[效果](http://i.scwy.net/it/2020/043014-health)
+- １在输入框中输入管理员密码（在配置文件中设置），将发送显示密码到我的微信号。
+- ２输入框中输入密码，将显示隐藏内容。
+
+                        
+参考 [原文](https://blog.csdn.net/wyyyh9458/article/details/105690822)
+
 
 ### Markdown写作
 

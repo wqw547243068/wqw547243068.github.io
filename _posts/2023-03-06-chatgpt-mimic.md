@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
 categories: 大模型
-tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议 mamba jamba
+tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议 mamba jamba ttt
 excerpt: ChatGPT复现笔记
 mathjax: true
 permalink: /chatgpt_mimic
@@ -1469,8 +1469,8 @@ sh train_dummy.sh
 
 基于 `LLaMA` 模型，`Colossal-AI` 第一个开源包含完整 RLHF 流程的类Chat模型复现方案 `ColossalChat` ，是目前最接近 ChatGPT 原始技术路线的实用开源项目
 
-流程
-- ![](https://github.com/hpcaitech/ColossalAI/blob/main/applications/Chat/assets/stage-3.jpeg?raw=true)
+流程图 [官方](https://github.com/hpcaitech/ColossalAI/tree/main/applications/ColossalChat)
+- ![](https://raw.githubusercontent.com/hpcaitech/public_assets/main/applications/chat/stage-3.jpeg)
 
 内容
 - Demo：可直接在线体验模型效果，无需注册或 waitinglist
@@ -1495,6 +1495,68 @@ ColossalChat跟Alpaca的区别：
 
 ![](https://pic1.zhimg.com/80/v2-27e03390d404c7f2eae315f69a557634_1440w.webp)
 
+数据格式
+
+SFT 数据
+
+```json
+[
+    {"messages":
+      [
+        {
+          "from": "user",
+          "content": "what are some pranks with a pen i can do?"
+        },
+        {
+          "from": "assistant",
+          "content": "Are you looking for practical joke ideas?"
+        },
+      ]
+    },
+]
+```
+
+RM 数据格式
+
+```json
+[
+    {"context": [
+        {
+          "from": "human",
+          "content": "Introduce butterflies species in Oregon."
+        }
+      ],
+      "chosen": [
+        {
+          "from": "assistant",
+          "content": "About 150 species of butterflies live in Oregon, with about 100 species are moths..."
+        },
+      ],
+      "rejected": [
+        {
+          "from": "assistant",
+          "content": "Are you interested in just the common butterflies?  There are a few common ones which will be easy to find..."
+        },
+      ]
+    },
+]
+```
+
+PPO 数据格式
+
+```json
+[
+    {"messages":
+      [
+        {
+          "from": "human",
+          "content": "what are some pranks with a pen i can do?"
+        }
+      ]
+    },
+]
+```
+
 
 ##### 评测
 
@@ -1518,13 +1580,12 @@ ColossalChat跟Alpaca的区别：
 ```
 
 
-
-
 ##### 三步运行
 
 【2023-3-29】ColossalChat 开源了基于 LLaMA 模型，复现训练 ChatGPT 三个阶段的完整代码。
 
 第一阶段，训练 SFT 模型：
+- 代码 [train_sft.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_sft.sh)
 
 ```sh
 # Training with a 4-GPU servers 
@@ -1532,6 +1593,7 @@ colossalai run --nproc_per_node=4 train_sft.py \     --pretrain "/path/to/LLaMa-
 ```
 
 第二阶段，训练奖励模型：
+- 代码 [train_rm.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_rm.sh)
 
 ```sh
 # Training with a 4-GPU servers 
@@ -1539,6 +1601,7 @@ colossalai run --nproc_per_node=4 train_reward_model.py \     --pretrain "/path/
 ```
 
 第三阶段，使用 RL 训练：
+- [train_ppo.sh](https://github.com/hpcaitech/ColossalAI/blob/main/applications/ColossalChat/examples/training_scripts/train_ppo.sh)
 
 ```sh
 # Training with a 8-GPU servers 
@@ -4044,6 +4107,27 @@ python3 chatglm_cpp/convert.py -i baichuan-inc/Baichuan2-13B-Chat -t q4_0 -o bai
 # 你好！今天我能为您提供什么帮助？
 ```
 
+
+### Reflection 70B
+
+【2024-9-6】[刚刚，开源大模型的新王诞生了：超越GPT-4o，模型还能自动纠错](https://mp.weixin.qq.com/s/hCSwRKyF5R_izOMHn6P8Ww)
+
+
+AI 写作初创公司 HyperWrite 推出的开源大模型 Reflection 70B，横扫 MMLU、MATH、IFEval、GSM8K，在每项基准测试上都超过了 GPT-4o，还击败了 405B 的 Llama 3.1。
+- Hugging Face：[Reflection-70B](https://huggingface.co/mattshumer/Reflection-70B)
+- 试用网址：[demo](https://reflection-playground-production.up.railway.app/)
+
+Reflection 70B 底层模型建立在 Meta 的 `Llama 3.1` 70B Instruct 上，并使用原始的 Llama chat 格式，确保了与现有工具和 pipeline 的兼容性。
+
+Reflection 70B 已在多个基准测试中经过严格测试，包括 MMLU 和 HumanEval。测试结果表明， Reflection 的表现始终优于 Meta 的 Llama 系列，并与 GPT-4o 等全球顶尖的商用模型展开了激烈竞争。
+
+通用能力之外，Reflection 70B 的亮点还包括「错误识别」和「错误纠正」。
+
+一种名为「Reflection-Tuning」的技术，使得模型能够在最终确定回复之前，先检测自身推理的错误并纠正。
+
+Reflection 70B 引入了几个用于推理和纠错的特殊 token，使用户能够以更结构化的方式与模型交互。在推理过程中，模型会在特殊标签内输出其推理，以便在检测到错误时进行实时纠正。
+
+
 ### trl
 
 [Ivwerra/trl](https://github.com/lvwerra/trl)，[文档](https://huggingface.co/docs/trl/index) 
@@ -4295,9 +4379,72 @@ Apache 2.0下许可情况下，Jamba开放权重，开发者可以进一步优�
 源代码：[MiM-ISTD](https://github.com/txchen-USTC/MiM-ISTD)
 
 
+#### Falcon Mamba 7B
+
+【2024-8-13】[非Transformer架构站起来了！首个纯无注意力大模型，超越开源巨头Llama 3.1](https://mp.weixin.qq.com/s/ET9gghK4asEr5ObuW2padw)
+
+自 2023 年 12 月首次推出以来，Mamba 便成为了 Transformer 的强有力竞争对手。
+
+此后，采用 Mamba 架构的模型不断出现
+- Mistral 发布的首个基于 Mamba 架构的开源大模型 Codestral 7B。
+
+阿布扎比技术创新研究所（TII）发布了一个新的开源 Mamba 模型 ——Falcon Mamba 7B。
+
+Falcon Mamba 7B 也成为了继 Falcon 180B、Falcon 40B 和 Falcon 2 之后，TII 开源的第四个模型，并且是首个 Mamba SSLM 架构模型。
+
+亮点：
+- 无需增加内存存储，就可以处理任意长度序列，并且能够在单个 24GB A10 GPU 上运行。
+
+效果
+- Falcon Mamba 7B 在一些基准上超越同尺寸级别的领先模型，包括 Meta 的 `Llama 3 8B`、`Llama 3.1 8B` 和 `Mistral 7B`。
+
+Falcon Mamba 7B 分为四个变体模型: 基础版本、指令微调版本、4bit 版本和指令微调 4bit 版本。
+
+Falcon Mamba 7B 采用了基于 Apache 2.0 的许可证「Falcon License 2.0」，支持研究和应用目的
+- Hugging Face 地址：[falcon-mamba-7b](https://huggingface.co/tiiuae/falcon-mamba-7b)
+
+训练数据
+- Falcon Mamba 7B 训练数据高达 5500GT ，主要由 RefinedWeb 数据集组成，并添加了来自公共源的高质量技术数据、代码数据和数学数据。所有数据通过 Falcon-7B/11B 标记器进行 tokenized 操作。
+- 与其他 Falcon 系列模型类似，Falcon Mamba 7B 采用多阶段训练策略进行训练，上下文长度从 2048 增加到了 8192。此外，受到课程学习概念的启发，TII 在整个训练阶段精心选择了混合数据，充分考虑了数据的多样性和复杂性。
+
+在最后的训练阶段，TII 使用了一小部分高质量精选数据（即来自 Fineweb-edu 的样本），以进一步提升性能。
+
+训练过程、超参数
+- Falcon Mamba 7B 的大部分训练是在 256 个 H100 80GB GPU 上完成的，采用了 3D 并行（TP=1、PP=1、DP=256）与 ZeRO 相结合的策略。下图为模型超参数细节，包括精度、优化器、最大学习率、权重衰减和 batch 大小。
+
+具体而言，Falcon Mamba 7B 经过了 AdamW 优化器、WSD（预热 - 稳定 - 衰减）学习率计划的训练， 并且在前 50 GT 的训练过程中，batch 大小从 b_min=128 增加到了 b_max=2048。
+
+在稳定阶段，TII 使用了最大学习率 η_max=6.4×10^−4，然后使用超过 500GT 的指数计划将其衰减到最小值图片。同时，TII 在加速阶段采用了 BatchScaling 以重新调整学习率 η，使得 Adam 噪声温度图片保持恒定。
+
+整个模型训练花费了大约两个月时间。
+
+
+
+
+
 ### Command R+
 
 
+
+### TTT
+
+【2024-7-20】[彻底改变语言模型：全新架构TTT超越Transformer，ML模型代替RNN隐藏状态](https://www.jiqizhixin.com/articles/2024-07-10-2)
+
+问题
+- 长上下文的挑战是 RNN 层本质上所固有的：与自注意力机制不同，RNN 层必须将上下文压缩为固定大小的隐藏状态，更新规则需要发现数千甚至数百万个 token 之间的底层结构和关系。
+
+斯坦福大学、加州大学伯克利分校、加州大学圣迭戈分校和 Meta 设计了一种新架构 TTT，用**机器学习模型**取代了 **RNN 隐藏状态**。
+- 该模型通过输入 token 的实际梯度下降来压缩上下文。
+- 测试时训练（Test-Time Training）
+- TTT 层直接取代 Attention，并通过表达性记忆解锁线性复杂性架构，使我们能够在上下文中训练具有数百万（有时是数十亿）个 token 的 LLM。 
+
+TTT 层作为一种新的信息压缩和模型记忆机制，可简单地直接替代 Transformer 中的自注意力层。
+- 与 Mamba 相比，TTT-Linear 的困惑度更低，FLOP 更少（左），对长上下文的利用更好（右）：
+
+全新的大语言模型（LLM）架构有望代替至今在 AI 领域如日中天的 Transformer，性能也比 Mamba 更好。
+- 论文：[Learning to (Learn at Test Time): RNNs with Expressive Hidden States](https://arxiv.org/abs/2407.04620)
+- 代码与 jax 训练和测试：[ttt-lm-jax](https://github.com/test-time-training/ttt-lm-jax)
+- PyTorch 推理代码：[ttt-lm-pytorch](https://github.com/test-time-training/ttt-lm-pytorch)
 
 
 # 结束

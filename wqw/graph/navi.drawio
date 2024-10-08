@@ -1,0 +1,1322 @@
+<mxfile host="65bd71144e">
+    <diagram id="4u5yHArNrn4fvDAkmxS5" name="第 1 页">
+        <mxGraphModel dx="689" dy="379" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="522" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="291.75" y="2007" width="408.25" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="523" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1090" width="680" height="430" as="geometry"/>
+                </mxCell>
+                <mxCell id="524" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="117.13" y="1060" width="352.87" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="525" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="1026" y="1750" width="224" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="526" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="910" y="1190" width="290" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="527" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="734" y="1060" width="266.5" height="103.37" as="geometry"/>
+                </mxCell>
+                <mxCell id="528" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="640" y="1223.25" width="230" height="96.75" as="geometry"/>
+                </mxCell>
+                <mxCell id="529" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="863" y="1370" width="190" height="126.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="530" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#E6D0DE;strokeColor=#ae4132;" vertex="1" parent="1">
+                    <mxGeometry x="269.75" y="1365" width="441.5" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="531" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="296" y="1750" width="408.25" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="532" value="" style="ellipse;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="305.5" y="1200" width="324.5" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="533" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#E6D0DE;strokeColor=#E6E6E6;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="1520" width="470" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="534" value="模型层" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=13;fontStyle=1;fontColor=#6666FF;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="435.38" y="1400" as="geometry">
+                        <mxPoint x="-3" y="-20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="535" value="模态层" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=13;fontStyle=1;fontColor=#6666FF;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="347.13" y="1260" as="geometry">
+                        <mxPoint x="-8" y="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="文本生成" link="text-generation" id="536">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="385" y="1209" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="图像生成" link="image-generation" id="537">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="481" y="1220" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="538" value="语音生成" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                    <mxGeometry x="357" y="1260" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <UserObject label="视频生成" link="video_gen" id="539">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="539.25" y="1260" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="540" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="597" target="536">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="469" y="1675" as="sourcePoint"/>
+                        <mxPoint x="539" y="1675" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="541" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="597" target="537">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="465" y="1350" as="sourcePoint"/>
+                        <mxPoint x="439" y="1285" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="542" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="597" target="539">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="528" y="1330" as="sourcePoint"/>
+                        <mxPoint x="555" y="1285" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="543" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="597" target="538">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="558" y="1360" as="sourcePoint"/>
+                        <mxPoint x="585" y="1315" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="扩散模型" link="ddpm" id="544">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="497" y="1149" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="545" value="NLP任务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                    <mxGeometry x="780" y="1480" width="75" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="546" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="548" target="635">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="547" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="548" target="637">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="对话系统" link="dialogue-system" id="548">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="328.5" y="1149" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="549" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="536" target="548">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="425" y="1260" as="sourcePoint"/>
+                        <mxPoint x="565" y="1220" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="550" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="545" target="638">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="490" y="1570" as="sourcePoint"/>
+                        <mxPoint x="325" y="1455" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="551" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;exitX=0.617;exitY=0.05;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="537" target="544">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="685" y="1433" as="sourcePoint"/>
+                        <mxPoint x="735" y="1455" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="552" value="LLM大模型专题导航" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=19;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="524.248484809835" y="980.0011254969539" as="geometry">
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="LLM训练流程" link="llm_train" id="553">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="454.25" y="1570" width="80.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="分布式训练" link="dist" id="554">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="449.25" y="1640" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="GPU" link="gpu" id="555">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
+                        <mxGeometry x="380.38" y="1640" width="55" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="DeepSpeed" link="deepspeed" id="556">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
+                        <mxGeometry x="514.88" y="1525" width="70.12" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="557" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="554" target="553">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="535.38" y="1240" as="sourcePoint"/>
+                        <mxPoint x="630.38" y="1590" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="558" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="555" target="553">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="525.38" y="1650" as="sourcePoint"/>
+                        <mxPoint x="525.38" y="1610" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="559" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="553" target="608">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="535.38" y="1660" as="sourcePoint"/>
+                        <mxPoint x="535.38" y="1620" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="560" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="561" target="565">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="RAG" link="rag" id="561">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="723" y="1239" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="FineTune" link="finetune" id="562">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="803" y="1276" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="RLHF" link="rlhf" id="563">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="619.25" y="1646" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="564" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="565" target="589">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="PEFT" link="peft" id="565">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                        <mxGeometry x="803" y="1239" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="566" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="568" target="575">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="567" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="568" target="692">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="568" value="数据准备" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                    <mxGeometry x="287.13" y="1570" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <UserObject label="模型评估" link="llm_eva" id="569">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="630.38" y="1570" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="570" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#999999;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashPattern=1 1;" edge="1" parent="1" source="568" target="553">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="534.38" y="1310" as="sourcePoint"/>
+                        <mxPoint x="630.38" y="1350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="571" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#999999;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="553" target="569">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="560.38" y="1585" as="sourcePoint"/>
+                        <mxPoint x="480.38" y="1595" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="PyTorch" link="pytorch" id="572">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
+                        <mxGeometry x="548.5" y="1640" width="55" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="573" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="572" target="553">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="525.38" y="1650" as="sourcePoint"/>
+                        <mxPoint x="525.38" y="1610" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="574" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="575" target="686">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="数据标注" link="label" id="575">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="287.13" y="1525" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="MoE" link="moe" id="576">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="685" y="1610" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LLM应用方案" link="llm_solution" id="577">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;shadow=1;fontColor=#000000;" vertex="1" parent="1">
+                        <mxGeometry x="580" y="1370" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Transformer" link="transformer" id="578">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="388.99" y="1925" width="80" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="GPT" link="gpt" id="579">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="403.99" y="1850" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="BERT" link="bert" id="580">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="468.99" y="1850" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="581" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="578" target="579">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="508.99" y="1845" as="sourcePoint"/>
+                        <mxPoint x="594.99" y="1805" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="582" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="578" target="580">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="438.99" y="1935" as="sourcePoint"/>
+                        <mxPoint x="388.99" y="1890" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="583" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="579" target="605">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="448.99" y="1945" as="sourcePoint"/>
+                        <mxPoint x="398.99" y="1900" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="Scaline Law" link="llm_scaling_law" id="584">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="943" y="1379" width="73" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="585" value="复杂推理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                    <mxGeometry x="879.5" y="1461.25" width="50" height="30" as="geometry"/>
+                </mxCell>
+                <UserObject label="Function Call" link="function" id="586">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="873" y="1421.25" width="73" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Plugin 插件" link="plugin" id="587">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="953" y="1421.25" width="73" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="588" value="小模型" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="342" y="1370" width="56" height="30" as="geometry"/>
+                </mxCell>
+                <UserObject label="Agent&lt;div&gt;智能体&lt;/div&gt;" link="agent" id="589">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="920" y="1238.81" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LangChain" link="langchain" id="590">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1106.5" y="1258.81" width="70" height="33.75" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AutoGen" link="autogen" id="591">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1106.5" y="1215.44" width="70" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="CoT" link="cot" id="592">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="619.25" y="1610" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="593" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="594" target="595">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="Prompt Engineering&amp;nbsp;&lt;div&gt;提示工程&lt;/div&gt;" link="pe" id="594">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="740.5" y="1113.37" width="117" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="APE&amp;nbsp;&lt;div&gt;提示词自动化&lt;/div&gt;" link="prompt_auto" id="595">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="895.5" y="1113.37" width="80" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Prompt Attack&amp;nbsp;&lt;div&gt;提示词攻击&lt;/div&gt;" link="prompt_attack" id="596">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="890.5" y="1063.37" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="多模态" link="modal" id="597">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="464.25" y="1370" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="598" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="594" target="596">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="599" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="600" target="594">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="Prompt Learning&amp;nbsp;&lt;div&gt;提示学习&lt;/div&gt;" link="prompt" id="600">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="740.5" y="1063.37" width="117" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Transformers 库" link="huggingface" id="601">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;" vertex="1" parent="1">
+                        <mxGeometry x="384" y="1525" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Embedding" link="emb" id="602">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="523.99" y="1925" width="80" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="分词" link="token" id="603">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="613.99" y="1925" width="45" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Pretrain Language Model&lt;div&gt;预训练语言模型&lt;/div&gt;" link="plm" id="604">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="545.49" y="1850" width="145" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ChatGPT" link="chatgpt" id="605">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="386.99" y="1780" width="84" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="606" value="NLP模型" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="579.998484809835" y="1740.001125496954" as="geometry">
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="607" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=5;strokeColor=#CCCCCC;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="531" target="533">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="500" y="1420" as="sourcePoint"/>
+                        <mxPoint x="499" y="1460" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="608" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+                    <mxGeometry x="310" y="1425" width="369.25" height="70" as="geometry"/>
+                </mxCell>
+                <UserObject label="ChatGLM" link="chatglm" id="609">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;shadow=1;fontColor=#000000;" vertex="1" parent="1">
+                        <mxGeometry x="459.25" y="1450" width="70" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Baichuan" link="baichuan" id="610">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;shadow=1;fontColor=#000000;" vertex="1" parent="1">
+                        <mxGeometry x="554.25" y="1450" width="70" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ChatGPT" link="chatgpt" id="611">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;shadow=1;fontColor=#000000;" vertex="1" parent="1">
+                        <mxGeometry x="369.25" y="1450" width="70" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="612" value="大语言模型" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=13;fontStyle=1;fontColor=#333300;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="494.25" y="1440" as="geometry"/>
+                </mxCell>
+                <mxCell id="613" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="608" target="597">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="504" y="1580" as="sourcePoint"/>
+                        <mxPoint x="504" y="1520" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="614" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="608" target="588">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="490" y="1430" as="sourcePoint"/>
+                        <mxPoint x="504" y="1410" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="615" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.039;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="577" target="528">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="504" y="1440" as="sourcePoint"/>
+                        <mxPoint x="650" y="1310" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="616" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="632" target="590">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="735.5" y="1462.81" as="sourcePoint"/>
+                        <mxPoint x="810.5" y="1453.81" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="617" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="589" target="632">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="651.5" y="1338.81" as="sourcePoint"/>
+                        <mxPoint x="1041.5" y="1233.81" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="618" value="垂类模型" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="242.88" y="1370" width="56" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="619" value="专题优化" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="750.5" y="1419" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="620" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="530" target="619">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="505" y="1435" as="sourcePoint"/>
+                        <mxPoint x="504" y="1410" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="幻觉" link="hallucination" id="621">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="876.5" y="1379" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="622" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="619" target="529">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="720.5" y="1488" as="sourcePoint"/>
+                        <mxPoint x="760.5" y="1444" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="623" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="624" target="561">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="753" y="1289" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="PE" link="pe" id="624">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="650" y="1239" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="625" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="530" target="589">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="654" y="1380" as="sourcePoint"/>
+                        <mxPoint x="710" y="1340" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="626" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="608" target="577">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="640" y="1375" as="sourcePoint"/>
+                        <mxPoint x="655" y="1333" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="627" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="561" target="562">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="793" y="1264" as="sourcePoint"/>
+                        <mxPoint x="813" y="1264" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="628" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="629" target="684">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="629" value="推理优化" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="1440" width="56" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="630" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="624" target="527">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="635" y="1380" as="sourcePoint"/>
+                        <mxPoint x="662" y="1330" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="631" value="Prompt优化" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;rotation=-30;" vertex="1" connectable="0" parent="630">
+                    <mxGeometry x="-0.0199" y="1" relative="1" as="geometry">
+                        <mxPoint x="-13" y="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="632" value="Agent框架" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcd28;strokeColor=none;shadow=1;gradientColor=#FFB570;" vertex="1" parent="1">
+                    <mxGeometry x="1010.5" y="1238.81" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="633" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="632" target="591">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1096.5" y="1263.81" as="sourcePoint"/>
+                        <mxPoint x="1116.5" y="1271.81" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="634" value="模型训练" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=13;fontStyle=1;fontColor=#6666FF;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="314" y="1670" as="geometry">
+                        <mxPoint x="-3" y="-20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="智能客服" link="ics" id="635">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="328.5" y="1098.3699999999997" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="636" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="637" target="660">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="对话管理" link="dialogue-manager" id="637">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="231.75" y="1149" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="638" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                    <mxGeometry x="895.5" y="1510" width="190" height="230" as="geometry"/>
+                </mxCell>
+                <UserObject label="文本生成" link="text-generation" id="639">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="919" y="1620" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="文本分类" link="cls" id="640">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="994.5" y="1580" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="文本匹配" link="text-match" id="641">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="919" y="1580" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="NER" link="ner" id="642">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="919" y="1660" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="阅读理解" link="mrc" id="643">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="998.5" y="1660" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="644" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.995;exitY=0.874;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="530" target="545">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="721" y="1443" as="sourcePoint"/>
+                        <mxPoint x="761" y="1444" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="GPT2" link="gpt2" id="645">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="314.99" y="1850" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="646" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="579" target="645">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="438.99" y="1935" as="sourcePoint"/>
+                        <mxPoint x="438.99" y="1890" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="模型蒸馏" link="distill" id="647">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="546.75" y="1810" width="53.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="NLP基础知识" link="nlp" id="648">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="946.5" y="1534" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="知识图谱" link="kg" id="649">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="919" y="1700" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="650" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="720" y="1750" width="300" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="651" value="深度学习" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="846.378484809835" y="1740.001125496954" as="geometry">
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="机器学习" link="ml" id="652">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="735.25" y="1770" width="54.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="深度学习" link="dl_note" id="653">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="736" y="1807" width="54.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="神经网络" link="ann" id="654">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="730" y="1917" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="神经网络调参" link="ann_tune" id="655">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="803" y="1917" width="81" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AutoML" link="automl" id="656">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="892" y="1917" width="62.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="强化学习" link="rl" id="657">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="730" y="1952" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="因果科学" link="casual" id="658">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="805.5" y="1952" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="多任务学习" link="multi-task" id="659">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="877.5" y="1879.5" width="77" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="用户模拟器" link="simulator" id="660">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="139" y="1149" width="71" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="图神经网络" link="gnn" id="661">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="879.5" y="1952" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AGI" link="agi" id="662">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1042" y="1810" width="48" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="脑机接口" link="bci" id="663">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1152" y="1810" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AIGC行业报告" link="aigc" id="664">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1116.5" y="1770" width="83.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="665" value="行业知识" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="1156.8784848098348" y="1740.001125496954" as="geometry">
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="AI行业报告" link="ai_report" id="666">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1042" y="1770" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="具身智能" link="embodied" id="667">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1209.88" y="1810" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ML笔记" link="ml_note" id="668">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="792.75" y="1770" width="47.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="669" value="应用层" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=13;fontStyle=1;fontColor=#6666FF;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="613.99" y="1111.68" as="geometry">
+                        <mxPoint x="-7" y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="670" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="671" target="673">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <UserObject label="人工智障" link="dialogue" id="671">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="233.75" y="1098.37" width="58" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="672" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="548" target="671">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="369" y="1159" as="sourcePoint"/>
+                        <mxPoint x="369" y="1138" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="大模型时代对话系统" link="llm_ds" id="673">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;shadow=1;fontColor=#ffffff;" vertex="1" parent="1">
+                        <mxGeometry x="139" y="1098.37" width="71" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LLM 开发模式" link="llm_dev" id="674">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="659.25" y="1280" width="90" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="对比学习" link="contrastive" id="675">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="803" y="1879.5" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="计算机视觉" link="cv" id="676">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="731" y="1992" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="视频理解" link="video" id="677">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="595" y="1170" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="678" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="539" target="677">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="528" y="1232" as="sourcePoint"/>
+                        <mxPoint x="537" y="1189" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="推荐系统" link="rp" id="679">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="734.5" y="2030" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="文档问答" link="doc_chat" id="680">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="395" y="1099.9999999999998" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="681" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="680">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="390" y="1170" as="sourcePoint"/>
+                        <mxPoint x="369" y="1138" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="开放域问答" link="dialogue_qa" id="682">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="395" y="1063.37" width="65" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LLM问题" link="llm_think" id="683">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="752.5" y="1385" width="58" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="推理优化" link="llm_opt" id="684">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="169.5" y="1440" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="服务部署实验" link="exp" id="685">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="169.5" y="1480" width="80.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="自动标注" link="label" id="686">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="200" y="1525" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ChatGPT应用" link="chatgpt_application" id="687">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="217.75" y="1208.81" width="78.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="评估方法" link="eva" id="688">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="711.25" y="1540" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="目标检测" link="loss" id="689">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="808.75" y="1992" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="大模型评测" link="llm_eva" id="690">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="711.25" y="1575" width="62" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ChatGPT复现" link="chatgpt_mimic" id="691">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="365.12" y="1490" width="78.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AI生成" link="llm_data" id="692">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="200" y="1570" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LLM原理" link="llm_arch" id="693">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="357.13" y="1590" width="62.87" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="音乐生成" link="music_gen" id="694">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="256" y="1260.68" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="695" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;strokeColor=#999999;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="538" target="694">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="528" y="1232" as="sourcePoint"/>
+                        <mxPoint x="537" y="1189" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="推理加速" link="infer" id="696">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="169.5" y="1400" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="端侧LLM" link="llm_end" id="697">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="310" y="1320" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="OpenAI" link="openai" id="698">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1044" y="1849.9999999999998" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AI公司" link="ai_company" id="699">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1102" y="1850" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="AIGC 机会" link="aigc_idea" id="700">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1209.88" y="1770" width="60.12" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="701" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="702">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="180" y="1180" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <UserObject label="用户画像" link="user" id="702">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="155" y="1198.81" width="51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="大脑原理" link="brain" id="703">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1094" y="1810" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="回归分析" link="regression" id="704">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="888.5" y="1806" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="芯片" link="chip" id="705">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1156.88" y="1850" width="38" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="在线教育" link="tutor" id="706">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1090" y="2053" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="汽车原理" link="car" id="707">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1044" y="1935" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="自动驾驶" link="driving" id="708">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1109" y="1935" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="异常检测" link="anomaly" id="709">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="732.88" y="1842.5" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="聚类算法" link="cluster" id="710">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="799.62" y="1842.5" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="711" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=#f5f5f5;dashed=1;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="720" y="2098" width="300" height="130" as="geometry"/>
+                </mxCell>
+                <UserObject label="贝叶斯" link="bayes" id="712">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="829.75" y="2112" width="47.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="元宇宙" link="meta" id="713">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1044" y="1975" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="新技术" link="new_tech" id="714">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1107" y="1891" width="48" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="机器人" link="robot" id="715">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1200" y="1850" width="40" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="搜索" link="search" id="716">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="884" y="2030" width="40.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="可解释性" link="explain" id="717">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="958.13" y="1880" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="NAS" link="nas" id="718">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="959.5" y="1917" width="46.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="元学习" link="meta_learning" id="719">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="948.5" y="1952" width="47.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="情感计算" link="emotion" id="720">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="994.5" y="1620" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="知识追踪" link="dkt" id="721">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1149.38" y="2053" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="互联网金融" link="finance" id="722">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1047.75" y="2014" width="62.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="房产行业" link="house" id="723">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1044" y="1892" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="量化交易" link="quant" id="724">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1116.5" y="2014" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="股票" link="stock" id="725">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1176.5" y="2014" width="43.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="物联网" link="iot" id="726">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1160" y="1893" width="45" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="移动设备" link="phone" id="727">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1169" y="1935" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="语音识别" link="voice" id="728">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="883.75" y="1995" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="模型部署" link="model_deploy" id="729">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="255.5" y="1480" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="最优化" link="optimization" id="730">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="863.75" y="1842.5" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="排序学习" link="ltr" id="731">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="808.75" y="2030" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="微积分" link="calculus" id="732">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="881" y="2112" width="40.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="知识图谱" link="kg" id="733">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="955.26" y="1995" width="64.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="博弈论" link="game-thoery" id="734">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="925.5" y="2148" width="43.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="联邦学习" link="faderation" id="735">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="930" y="2030" width="58.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="密码学" link="cryptography" id="736">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="808" y="2186" width="37.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="流形学习" link="manifold" id="737">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="781.62" y="2148" width="57.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Python" link="python" id="738">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="310.74" y="2020" width="45.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="特征工程" link="fe" id="739">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="808.75" y="1806" width="64.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="区块链" link="block-chain" id="740">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1106.5" y="1975" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="信息论" link="information" id="741">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="925.5" y="2112" width="46" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="概率统计" link="probability" id="742">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="724.87" y="2148" width="50.87" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="量子计算" link="quantum" id="743">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1169" y="1975" width="53" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Pandas" link="pandas" id="744">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="365" y="2020" width="42.38" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Scikit-learn" link="sklearn" id="745">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="415.75" y="2020" width="64.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="文本挖掘" link="text-mining" id="746">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="996.63" y="1700" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="神经网络可视化" link="train_vis" id="747">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="932" y="1842.5" width="94" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="不均衡问题" link="imbalance" id="748">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="729" y="1879.5" width="70" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="精简笔记" link="dl_sum" id="749">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="955.25" y="1770" width="54.75" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="文本分类" link="cls" id="750">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="953.75" y="1806" width="60" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ML军规" link="ml_rule" id="751">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="846.38" y="1770" width="47.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="线性代数与矩阵" link="bayes" id="752">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="724.87" y="2112" width="94.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Go" link="go" id="753">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="489.24" y="2020" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="ML本质" link="ml_essense" id="754">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="900.75" y="1770" width="47.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="LBS" link="lbs" id="755">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1230" y="1935" width="30" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="傅里叶变换" link="fourier" id="756">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="728.68" y="2186" width="70.44" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Git" link="git" id="757">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="312.73" y="2059" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Jupyter" link="jupyter" id="758">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="353.1" y="2059" width="41.64" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Linux" link="linux" id="759">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="444.99" y="2059" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Shell" link="shell" id="760">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="530.75" y="2020" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Latex" link="latex" id="761">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="400.98" y="2059" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Jekyll" link="jekyll" id="762">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="651.23" y="2100" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="教育" link="edu" id="763">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="1047.75" y="2053" width="32.25" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="分形几何" link="fractal" id="764">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="845.4999999999999" y="2148" width="70.44" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="SQL" link="data" id="765">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="313.24" y="2137" width="32.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="可视化" link="vis" id="766">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="358.74" y="2137" width="47.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="数据挖掘" link="dm" id="767">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="416.74" y="2137" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="vpn" link="vpn" id="768">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="314.49" y="2177" width="32.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="计算机网络" link="network" id="769">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="360.74" y="2177" width="65.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="计算机语言" link="computer" id="770">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="431.13" y="2177" width="65.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="操作系统" link="os" id="771">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="501.74" y="2177" width="54.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="图形学" link="graphic" id="772">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="560.99" y="2177" width="54.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="计算机知识脑图" link="mindmap" id="773">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="474.24" y="2137" width="91.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="基础算法" link="algorithm" id="774">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="313.24" y="2098" width="52.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="算法比赛" link="kaggle" id="775">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="377.37" y="2098" width="52.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Web前端" link="web" id="776">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="439.12" y="2098" width="52.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="架构设计" link="arch" id="777">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="500.24" y="2098" width="52.51" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Docker" link="docker" id="778">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="627.94" y="2138" width="41.64" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="小程序" link="mini" id="779">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="559.49" y="2099" width="46.26" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="测试" link="test" id="780">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="609.74" y="2100" width="36.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="面试指南" link="interview" id="781">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="571.75" y="2138" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="数学历史" link="math" id="782">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="851.62" y="2186" width="57.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="makefile" link="makefile" id="783">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="575.75" y="2020" width="50" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Linux C" link="linux-program" id="784">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="489.25" y="2059" width="51.5" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="C/C++" link="c" id="785">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="635.75" y="2020" width="35.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="设计模式" link="design" id="786">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="621.75" y="2177" width="54.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Tensorflow" link="linux-program" id="787">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="544.74" y="2059" width="56.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Pytorch" link="linux-program" id="788">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="607.74" y="2059" width="43.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <UserObject label="Pytorch手册" link="pytorch_simple" id="789">
+                    <mxCell style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=none;shadow=1;" vertex="1" parent="1">
+                        <mxGeometry x="656.99" y="2059" width="43.01" height="30" as="geometry"/>
+                    </mxCell>
+                </UserObject>
+                <mxCell id="790" value="计算机基础" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="510.74848480983496" y="2001.001125496954" as="geometry">
+                        <mxPoint x="-4" y="-4" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="791" value="数学知识" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="851.618484809835" y="2089.001125496954" as="geometry">
+                        <mxPoint x="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="792" value="【2024-9-30】&lt;div&gt;wqw547243068@163.com&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="279.99848480983496" y="1720.001125496954" as="geometry">
+                        <mxPoint x="-4" y="-4" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

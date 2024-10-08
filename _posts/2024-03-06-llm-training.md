@@ -115,6 +115,834 @@ SFT-训练参数
 
 
 
+## 二次开发
+
+
+[二次开发方法分类](https://zhuanlan.zhihu.com/p/708059967)
+- 1、`领域知识注入`：Continue PreTraining(`增量预训练`): 一般垂直大模型是基于通用大模型进行二次开发，用领域内的语料进行继续预训练。
+- 2、`知识召回`（激发）：SFT( Supervised Finetuning,`有监督微调`): 通过SFT激发大模型理解领域内的各种问题, 并进行回答的能力。
+- 3、基础`偏好对齐`：奖励模型（RM）、强化学习（RL），让大模型的回答对齐人们的偏好，比如行文风格。
+- 4、高阶`偏好对齐`：`RLHF`(人类反馈强化学习训练)、`DPO`(直接偏好优化)。
+
+3个阶段:
+- (1)、第一阶段: `CPT`(Continue PreTraining)**增量预训练**，在海量领域文档数据上二次预训练GPT模型，以注入领域知识。
+- (2)、第二阶段: `SFT`(Supervised Fine-tuning)**有监督微调**，构造指令微调数据集，在预训练模型基础上做指令精调，以对齐指令意图。
+- (3)、第三阶段 : `RLHF`和`DPO`二选一。
+
+### Post-pretraining
+
+
+Post-pretraining（后期预训练）是一种在模型的初始预训练和最终微调之间进行的训练方法。这种方法通常用于进一步适应模型以处理特定类型的数据或任务。
+- 在通用预训练模型的基础上，对模型进行额外训练，使模型更好地适应特定的领域或任务
+- 数据集: 某个领域，但比微调阶段使用的数据集更大、更广泛。
+- 训练方法: 监督学习，自监督学习，取决于数据类型和训练目标, 如语言建模、文本分类、实体识别等
+
+Post-pretraining 允许模型在保持通用性的同时，**增强对特定领域的理解**，有助于模型在后续的微调阶段更快速地适应特定任务。
+- 与 SFT 相比，Post-pretraining 在微调之前提供了一个**中间步骤**，有助于模型更平滑地过渡到特定任务上。
+- 与 RLHF 相比，Post-pretraining 不依赖于复杂的**奖励机制**或**人类反馈**，而是通过大量的领域特定数据来提升模型性能。
+
+总结
+- Post-pretraining 是一个介于`预训练`和`微调`之间的训练阶段
+- 使用大量的领域特定数据来进一步调整模型，使其更好地理解特定领域的语言和任务。
+- 这个阶段不需要复杂的奖励机制，而是通过传统的监督或自监督学习方法来实现模型性能的提升。
+
+
+### 增量预训练
+
+
+`增量预训练`是属于`后期预训练`（Post-pretraining）
+
+`增量预训练`也叫`领域自适应预训练`（domain-adapter pretraining），即在所属领域数据上继续预训练。
+
+`自适应预训练`（domain-adapter pretraining）的方法可以分为三类：Prompt-based方法、representation-based方法和model mixed-based方法。
+- Prompt-based 方法
+- representation-based 方法
+- model mixed-based 方法
+
+
+#### 1. Prompt-based 方法
+
+使用模型全局tuning的方式适应下游任务时，预训练模型的**泛化性能会被严重削弱**
+
+因此, Prompt-based方法在保持预训练模型参数权重不变的条件下， 增加额外可学习的 Prompt tuning 模块来实现对下游任务的泛化，这样就能较好地保持原模型的泛化性能。
+
+![](https://pic2.zhimg.com/80/v2-636e5b60c86845866c230e14b68b91fd_1440w.webp)
+
+`VPT` 虽然可以较好地保留模型的泛化性，但是面对新的任务时，以往的Prompt模块的知识同样被覆盖，依旧遭遇了`灾难性遗忘`问题。
+
+为此，有学者提出了`Prompt Pool` 概念，设计了Prompt模块的集合，即`P={P1,P2,…,Pm}`(m表示该Pool的最大尺寸)。
+
+Prompt Pool 有效避免了单一Prompt的问题，但是Pool的设计使得其需要进行Prompt Selection操作，也就是需要将特定任务与其对应的Prompt模块进行索引匹配。
+
+`L2P`算法是一种较为常用的 Prompt selection算法，该算法设计了一种Key-Query的Prompt匹配方法，为每一个Prompt提供一个可学习的索引键k，即 `P={(k1,P1),(k2,P2),…,(km,Pm)}`。
+
+L2P利用预训练模型将输入特征编码到Key对用的嵌入空间中，然后利用余弦距离损失函数在已有的Pool中搜索最近似的Key。接着，利用如交叉熵损失等方法对搜索到的Key对应的Prompt进行进行优化。
+
+![](https://pic4.zhimg.com/80/v2-a74fdb8100faa61ed64f16034fe6b62b_1440w.webp)
+
+类似的Prompt Selection 算法很多，如DualPrompt算法，该算法将Prompt进行解耦，分化为General Prompt和Expert Prompt。General Prompt面向所有任务，为所有任务中共享信息，而Expert Prompt针对独立任务，数量与任务量一致。其采用了和L2P相同的key-query匹配策略。
+
+![](https://pic2.zhimg.com/v2-b679b15d5076609da5e0c06bba1e5d49_b.jpg)
+
+Prompt Selection虽然可行，但仍是硬匹配，选项有限。基于注意力信息加权的Prompt Combination方法则有效缓解了该问题。如CODA-Prompt通过对Prompt Pool进行注意力机制嵌入，为每个注意力赋予自适应权重，进而求算全局Key-Query的加权和，实现可学习式Prompt组合。我觉得稀疏式注意力Prompt combination应该也是很有趣的研究。
+
+![](https://pic1.zhimg.com/v2-25e62c49e297988f38acac5ac17efc0c_b.jpg)
+
+从根本上来说Prompt Combination仍受制于Prompt Pool的范围。为此， 许多学者则开展**Prompt Generation**有关的研究，如**DAP**，其利用MLP进行特定任务提示信息的编码生成。
+
+![](https://pic2.zhimg.com/v2-216e2fcb0aae29ad72042f6a3dbf3971_b.jpg)
+
+优点：
+- Prompt 有助于弥合domain gap，并可有效地对特定任务的知识进行编码。
+- Prompt Design 属于lightweight模块，与input feature具有相同的维度，因此保存Prompt是parameter-efficient，适用于边缘场景。
+- Prompt Pool作为预训练模型的外部存储器，其支持自适应知识的检索和特定实例的预测。
+
+缺点：
+- 一些研究发现L2P中的prompt selection过程收敛到一个单点，使得prompt selection只集中在特定子集上。
+- 由于key和query在整个学习过程中不断变化，这些参数的更新将会消除先前任务的参数，导致matchimg-level和prompt-level的遗忘，使prompt selection成为CL的瓶颈。
+- 固定大小的Prompt Pool会使得模型的表示能力受限。但是，若Prompt Pool随着数据的发展而增长，可能会为旧任务检索新的提示，导致训练和测试之间的不匹配。
+- 最后，一些研究发现prompt-based CL的性能低于简单的representation-based的baseline性能。并且批量提示有损比较的公平性。
+
+#### 2. Representation-based 方法
+
+representation-based 方法直接利用预训练模型强大的泛化性和通用性来实现持续学习。
+- 比如Simple-CIL方法，是ADAM算法原文中提出的Baseline，Simple-CIL冻结预训练模型参数，并通过求算类别中心的方式来构建Classifier。在面对很多类别时，计算同类的embedding或features的平均值，并将该平均值作为该类别的标准（prototype），最后结合类别标准与余弦比较的方法替换模型的原始Classifier。
+
+虽然基于prototype的方法存在一定的作用，但是并未很好地适应下游任务。为此，一些研究在基于prototype方法的基础上结合了外置参数高效调节模块或者外置适配器来使得预训练模型更加适应下游任务，如ADAM等。
+
+![](https://pic3.zhimg.com/80/v2-7ca9e14032444706e8b18ae320e2930e_1440w.webp)
+
+ADAM等算法在进行类别标准设定时，类别标准之间的仍存在联系，导致任务效果降低。为此，RanPAC算法则采用online LDA classifier来去除原始方法prototype计算结果之间的相关性，加大类别间的分布差异。此外，RanPAC算法利用Random Projection layer将features映射到高维空间中，并在高维空间中进行prototype的计算，以使得特征分布符合高斯拟合。
+
+![](https://pic1.zhimg.com/80/v2-1591726ea8ce39f4aebe13ee91777358_1440w.webp)
+
+相较于前面将预训练模型的通用语和适应性分离处理的方式，SLCA算法采用了差异学习率调整和特征经验重播的方式进行持续学习研究。该算法使用较小的learn rate调整模型主体部分，而使用较大的learn rate 调节模型的classifier，以实现模型的逐步微调和classifier的快速适应。为了避免忘记以前的分类器，SLCA还对分类特征分布进行建模，并重播它们以校准classifier。
+
+![](https://pic3.zhimg.com/80/v2-3bd9f6a7f9eaff4ca9157cb6c96f4cee_1440w.webp)
+
+优点：
+- 由于class prototype代表了对应类别最常见的标准格式，因此利用其构建模型具有直观和可解释性。
+- Representation-based 方法主要是冻结backbone和更新classifier权重。lightweight的更新成本增加了其现实应用的可行性。
+
+缺点：
+- 将不同模型的特征连接起来形成class prototype，容易造成模型信息冗余。例如，不同的backbone中存在重复提取共享特征。
+- 当下游任务涉及多个领域时，在第一阶段调整模型不足以弥合数据集之间的领域差距。在这种情况下，不断调整backbone可能更适合提取特定于任务的特征。
+
+#### 3. Model Mixture-based 方法
+
+Model Mixture-based 方法在持续学习工程中构建了一组模型，然后再推理阶段通过Model Ensemble和Model Merge来进行信息综合决策。
+
+Model Ensemble中，ESN算法凭借预训练模型强大的通用性，构建多个classifier，在面对新任务重新初始化和训练一个新的classifier。在推理时，采用投票策略来整合多个模型的结果进行最终决策。
+
+由于Model Ensemble的核心因素取决于模型的方差，一些研究通过增强模型之间的多样性来替代使用相同的预训练模型构建不同的classifier。如PromptFusion利用预训练的ViT和CLIP，并在推理过程中动态地对logit进行组合，即f(x) = λ fvit (x) +(1−λ)fclip(x)。
+- ![](https://pic4.zhimg.com/80/v2-9cf0c968663f7460ba048ca73aafbee7_1440w.webp)
+
+与多个backbone的集成不同，PROOF采用了仅使用单个CLIP的更全面的推理方法。由于CLIP支持视觉和文本特征的跨模态匹配，因此PROOF设计了一个三层集成，考虑image-to-text、image-to-image prototype、image-to-adjusted text的跨模态融合。
+- ![](https://pic1.zhimg.com/80/v2-f808c6fe848a58565456843c3e040fe8_1440w.webp)
+
+Model Merge将多个不同的模型合并为一个统一的模型，无需要额外的训练。LAE定义了online和offline学习协议，online模型通过交叉熵损失进行更新，目的是在新的任务中获取新的知识。离线模型则通过Model Merge进行更新，例如指数移动平均(EMA): θ offline←α·θ offline +(1−α)·θ Online，其中α为权衡参数。LAE仅将EMA应用于参数高效调谐模块(如prompt)，其利用online和offline模型的最大logit进行推断。
+- ![](https://pic4.zhimg.com/80/v2-300c71cd7013a62a2ac99c3baa8cb4e3_1440w.webp)
+
+与LAE一样，ZSCL将合并技术应用于CLIP模型，目的是在持续学习过程中保持其zero-shot性能。然而，随着EMA中权衡参数的改变，CLIP性能不再具有鲁棒性。因此，ZSCL建议每隔几次迭代合并参数，从而在模型训练期间创建平滑的损失轨迹。
+- ![](https://pic2.zhimg.com/80/v2-5efd3c33952783712c64fc3b7105fb6d_1440w.webp)
+
+此外，CoFiMA注意到EMA在Merge过程中对每个参数的重要性是相等的，CoFiMA 在Merge过程中插入Fisher information（费雪信息）作为每个参数的估计重要性。
+- ![](https://pic2.zhimg.com/80/v2-53acb68fb1e700aebcddd71b76f5b51d_1440w.webp)
+
+
+优点：
+- 学习多个模型可以做出不同的决策。因此，使用Model Ensemble和Model Merge自然会产生更健壮的结果。
+- 由于直接合并模型进行统一预测，因此可以调整前模型和后模型的权重，以突出不同阶段之间知识共享的重要性。
+- 由于模型集将在推理过程中合并，因此最终的推理成本不会随着模型集中添加更多模型而增加。
+
+缺点：
+- Model Ensemble需要保存所有的历史模型，并消耗大量的内存缓冲区。虽然基于Model Merge不需要这么大的成本，但合并大型backbone的权重也需要大量的额外计算。
+- 决定Merge哪些参数仍然是问题。
+
+### 微调 (Fine-tuning)
+
+这个阶段，预训练模型（可能经过了Post-pretraining）被进一步训练，以优化特定任务上的表现。
+
+微调通常在一个相对较小的、特定任务的数据集上进行，这个数据集包含了明确的标签，模型通过监督学习来进行优化。
+
+微调目的: 调整模型的参数，使其能够在特定任务上做出准确的预测。
+
+### SFT 监督微调
+
+SFT (Supervised Fine-Tuning) 是微调的一种形式，强调在有监督的环境下进行。
+
+SFT阶段，用**特定领域**数据或**私有化**数据, 对预训练模型进行改良。
+
+这一阶段需要指令微调数据，数据集通常由输入（用户问题）和输出（标准答案）两个字段构成。标准答案通常由专家标注获得。
+- 1、SFT是一种简单的微调方法，它使用带有正确答案的数据集来继续训练一个预训练的模型。
+- 2、这种方法依赖于大量的标注数据，即每个输入都有一个预先定义的正确输出。
+- 3、微调的目的是使模型更好地适应特定的任务或领域【垂直领域】，比如特定类型的语言理解或生成任务。
+- 4、SFT通常不涉及复杂的策略或奖励函数，只是简单地最小化预测输出和真实输出之间的差异。
+
+
+
+
+### RLHF 人类反馈强化学习
+
+RLHF 利用人类反馈来训练强化学习模型。
+
+在RLHF中，模型通过与人类交互获得反馈，这些反馈作为奖励信号来指导模型的行为。RLHF通常用于训练能够生成更自然、更符合人类偏好的文本或其他输出的模型。这种方法特别适用于需要模型理解和适应人类偏好的场景。
+- 1、RLHF (Reinforcement Learning from Human Feedback) 是一种更复杂的训练方法，结合了监督学习和强化学习。
+- 2、在RLHF中，模型首先通过`监督学习`进行预训练，然后通过人类提供的反馈来进行强化学习。
+- 3、人类反馈可以**直接**对模型输出评分，或模型输出之间做出选择的**偏好**。
+- 4、强化学习部分涉及到定义一个`奖励函数`，根据人类反馈来调整模型的行为，以优化长期的奖励。
+- 5、RLHF目标: 训练出一个在没有明确标签的复杂任务中表现良好的模型，这些任务可能需要更细致的判断和调整。
+
+
+### 思考
+
+#### 对齐
+
+instruction following 是 alignment （对齐）的一个特殊形式，但它并不构成对齐的全部内容。
+
+对齐问题原本称为`价值对齐` （value alignment）指一个 AI 系统训练目标可能与其实际需要面对的核心价值并不一致。
+- 训练目标与真正希望 AI 满足的目标之间存在不匹配，而如何解决这个不匹配的问题被称作 value alignment problem。
+
+OpenAI 2024年初提出 “Super-Alignment”, 探讨了 AGI 的水平远远超越人类，人类将如何是好。
+
+OpenAI 当时提出了一个概念，即 “Weak-to-Strong Generalization”，如果目前机器智能尚不及人类，人类尚能与之互动；但若其智能发展至极高水平，人类似乎难以与其沟通。那么也就产生了一个问题，人们应该如何训练 AI，是否应该采用特定的方式？Next Token Prediction 或是 instruction following 是不是一个好的对齐方法？
+
+alignment 问题核心假设：
+- 因为人类很多时候并不清楚自己到底想要什么，因此很难给出一个完全具体的价值观描述，且不同人的价值观都有区分。
+- 如果人类给出的指令永远不是特别准确，那么 AI 系统在执行任务时需要保持一定的不确定性。
+
+框架 Cooperative Inverse Reinforcement Learning，来源于师兄 Dylan Hadfield-Menell（目前在MIT任教）和导师做的一个研究。
+- 假设每个人都有一个 hidden reward function。当人与 AI 交互时，人可能想的是 AI 帮我递个咖啡，但人给 AI 的具体指令可能并不是这样，比如人可能只是说了“给我个喝的”，AI 需要不断去推断人类的真正意图。
+
+在这样的定义下，人类的真正意图可以被建模成一个**隐藏的奖励函数**，机器人需要不断地根据人给出的所有信息来主动推断人类的真正意图。如果不确定时，最优策略是 AI 去问人类。
+
+
+#### post-training 让模型更聪明
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+曾在 OpenAI 负责 post-traning 的 John Schulman: (RL 拥趸和布道者)
+- **post-training** 是模型变得越来越聪明的重要原因，而 `RLHF` 是最重要的技术 tricks。
+
+John Schulman 对 RLHF 的信仰来自 OpenAI 的亲身实践：
+- GPT-4 的 Elo 分数之所以能比第一代 GPT 高出 100 分也和 post-traning 的提升相关。
+
+Scaling law 让 AI 更聪明，而 RL 让 AI 更有用
+
+InstructGPT 核心思想
+- 利用人类的判断来指导模型的训练，因为这些 instruction following 的任务本身就是人类给出的指令。
+- InstructGPT 能够处理复杂的指令，包括写代码等任务，很多在 zero-shot 设定上 GPT-3 做不了的任务都可以被完成。
+
+InstructGPT 目标: 微调 GPT 模型，使其能够产生满足人类指令的输出。
+
+为了使 GPT 完成指令遵从，技术挑战集中在：如何收集数据？
+
+为了实现这一目标，需要完成两件事情：
+- 指令，fine-tuning 首先需要收集指令，即人类的 prompts 或 instructions。
+- 反馈，需要收集好的反馈来满足 human instructions。
+
+从训练语言模型的角度来看，收集大量的人类指令（human instructions），以及对应的人类反馈。这些对应好的数据将被作为 Next Token Prediction 的训练数据，通过传统语言模型训练方法，即 SFT （Supervised Fine-Tuning），来进行训练。
+
+于是, InstructGPT 训练过程：
+- •  第一步，通过 SFT 收集 human demostration data 进行 SFT。
+- •  第二步，收集人类偏好数据，利用数据学习一个奖励模型。
+- •  第三步，使用 reward model 进行强化学习的 RLHF 训练。
+
+最终就可以得到优化后的 InstructGPT 模型。
+
+之后的 ChatGPT 总体训练流程概括为两个主要部分。
+- `Pre-training` ：涉及使用大量数据，通过语言模型的训练方法来训练一个基础模型。
+- `Post-training`：`InstructGPT` 和 `ChatGPT` 所执行的步骤，即利用人类的标注数据或高质量的人类反馈数据进行后训练。
+
+`Post-training`通常包括至少两个步骤：
+- 1）SFT 步骤，通过 human demonstration 的方法进行`监督学习`；
+- 2）RLHF 步骤，通过 human preference data 的方法进行`奖励学习`。
+
+预训练与后训练之间也存在区别：
+- • **数据**方面：预训练和后训练在数据的质量和数量上存在差异。
+  - 预训练阶段需要处理海量数据，这可能需要大量的计算资源和较长的时间。
+  - 而在后训练部分，大量的数据是人类**标注**或通过某种方式**构造**出来的数据，数据质量通常较高，但与预训练阶段相比，数量会少很多。
+- • 训练目标方面：
+  - 预训练的目标是**压缩**和 `Next Token Prediction`；
+  - 后训练的目标是 `instruction following`。通过训练激发大模型的能力与智能，使模型 usable，能够尊从人类指令。
+- • **训练过程**方面 （dynamics）：
+  - 预训练通常是固定的，需要收集一个庞大的数据集进行训练，这些数据通常是静态的。
+  - 对应 post-training，尤其是 RLHF ，其反馈是**在线**的，需要不断收集人的反馈，不断迭代，逐渐进化模型，这是一个动态的在线过程。
+
+最后， post-training phase 也被称为`对齐`（alignment phase）, 将 LLM 的能力和人类的偏好保持一致，希望大模型的输出能够满足人类的价值取向和意图，确保模型的输出与人类的偏好一致。
+
+
+#### SFT < RLHF ?
+
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+为什么 `RLHF` 效果优于 `SFT` ?
+
+PPO 算法提出者 `John Schulman`，曾经在 OpenAI 工作，Berkeley 的PhD, 2024年4月, 到 Berkeley 做过一场讲座，仔细讨论了 RLHF PPO 的重要性，两个观点：
+- 第一, SFT 会导致**幻觉** hallucination ：
+- 第二, RLHF helps uncertainty awareness，让大模型“知道”自己“**确实不知道**”。
+
+进一步完善, RLHF 过程三点好处：
+- 使用 负向反馈 进行`对比学习`，通过对比过程帮助模型**降低幻觉** halluciation。
+- 强化学习不是一个固定的过程。允许模型随着能力的不断提升，通过不断地问问题、不断地给出答案、不断地评判，从而让模型不停地从当前能力的边界进行主动探索，并不断拓宽自己的能力边界。
+- 这两个因素共同作用能够形成 **反事实推理** counter-factual reasoning 的作用，有可能解锁`因果学习`（casual learning）的巨大潜力，让模型具备更强的 reasoning 能力。
+
+
+##### SFT 会导致幻觉
+
+John Schulman 认为，大型模型之所以会产生幻觉，是因为 SFT 阶段学到了一些不正确的认知。
+
+举例
+- 当 GPT-3 被要求 “ write a bio of AI researcher John Schulman”时，GPT 错误地输出：John 从 2009 年开始在 CMU 任职 associate professor，从 2012 年开始任职 professor。但是真实情况是，John 在完成 PHD 学位后就在 OpenAI 工作，并未在其他地方工作（注：最近John刚加入了Anthropic）。GPT-3 输出的内容与实际明显不符。
+
+为何大型模型会生成这样的**错误信息**？
+- 思维实验，假设在预训练阶段，就存在一个 知识截断（knowledge cut off）。比如，假设 ChatGPT 的所有的知识和数据都截止于 2023 年。到 2024 年，希望通过 SFT 的方式 fine-tune ChatGPT，让它来描述 2024 年欧洲杯的情况。但因为 GPT 在预训练过程中没有任何关于 2024 年欧洲杯的信息，它自然也不知道西班牙是否夺冠，也不知道是否有进球等具体情况。
+
+如果用现有的数据进行简单的 SFT，实际上 GPT 并不知道 2024 年发生了什么，但由于 SFT 的数据中包含了其他欧洲杯相关的问答数据，这些回答都是精准的，因此大模型可能会觉得，对于2024年欧洲杯的问题也应该给出一个准确答案才可以，但它本身可能在预训练阶段并没有掌握正确的信息，于是就鹦鹉学舌地说一些错误的内容。这种情况下，SFT 过强的监督信号导致人类实际上在引导 ChatGPT 说它不知道的东西。
+
+另外还存在一种可能性，即 GPT 实际上知道答案，但提供标注的人员不知道。
+- 例如，如果问到 2022 年某场足球联赛的问题，标注人员可能不了解答案，而 GPT 反而可能知道。在这种情况下，标注人员可能会给出 “I don't know ” 的人类反馈。这反倒可能导致 GPT 产生混淆，因为它明明知道答案却被要求说不知道。这两种原因综合来看就可能导致模型在经过 SFT 阶段后非常容易出现 hallucination 现象。
+
+**他人观点**
+- SFT 确实容易导致幻觉，但不一定完全是预训练阶段数据的**知识截断**导致的，SFT也能学习新知识
+
+问题：大模型在是否学会新知识？
+
+存在一个非常微妙的边界。
+- 如果不提供数据，大模型就不能够提供答案；
+- 如果提供数据**不完整**，可能导致模型出现`幻觉`；
+- 如果数据提供足够多，模型就可能会学会**新知识**。
+
+因此，到底给多少数据,很难判断，SFT 高质量数据集也是非常难构建的，这里就有一个非常不容易的**数据挑战**（ a non-trivial data challenge for building a good SFT dataset）。
+
+
+##### RLHF让大模型“知道”自己“确实不知道”
+
+RLHF helps uncertainty awareness，让大模型“知道”自己“确实不知道”。
+
+欧洲杯的例子
+- 如果大模型不知道 2024 年欧洲杯的情况，用户却让大模型去描述欧洲杯的情况(在2024年欧洲杯上哪位运动员有进球)，那大模型就可能会产生幻觉，这是因为模型实际上并不了解 2024 年欧洲杯的具体事件但被 SFT 引导说一个貌似正确的回复。
+
+RLHF 如何防止 hallucination 的出现？
+- 如果存在一个设计良好的`奖励函数`，情况就会不同。
+- 如果模型给出正确答案，就给予正向的奖励分数 1分；
+- 如果模型表示“我不知道”，就给予 0分；
+- 如果模型给出错误答案，则扣除分数 4分。
+
+在这种情况下，如果模型不知道 2024 年发生了什么，在强化学习过程中无法提供正确的回答，选择“不知道”成为更合理的策略。
+
+这种机制鼓励模型在不知道答案时能够提供“不知道”的回答。这种方式能帮助模型保留了一定的不确定性，使模型能够产生正确的自我认知，来判断是否真的知道一个问题的答案。
+
+**他人观点**
+- 基本正确，尽管 John 解释可能不完全准确
+- RLHF 所带来的不仅仅是处理知识边界的不确定性的能力（not only handle the knowledge cut off problem）
+
+
+##### RLHF 提高了模型推理能力
+
+RLHF 过程不仅帮助模型意识到不确定性，更重要的事情是 RLHF 帮助模型提高了 reasoning 能力。
+
+`相关性`不代表`因果性`。大家会希望大模型掌握`因果性`，而不希望仅仅看到`相关性`。
+
+因果性指什么？
+- 传统统计学习里面有一个判断因果性的过程，叫 反事实推理 counter-factual reasoning。
+
+
+#### 是否可以舍弃 online attempt
+
+问题：
+- 模型训练上利用 negative signal 和 online exploration 两件事上，是否可以舍弃 online attempt ？即只通过**正反馈**和**负反馈**是否足够，而不需要模型持续在线尝试。只通过 contrasted learning，在 SFT 上加上负向案例，能否达到预期效果？
+
+
+可以, `DPO`（ Direct Policy Optimization）
+- 它与 `PPO` 算法的主要区别: `DPO` 去除了在线尝试的部分。 `DPO` 算法其实很简单，基本遵从了SFT训练流程，但是在收集正例之外还会收集负例，对于每一个 prompt 都要求标注员提供好的和坏的两个答案。对于好的答案提升概率，对于坏的答案则是让模型“不说”。
+
+DPO 算法是否能达到与 PPO 效果？
+- 今年的 ICML2024 大会上的论文，[Is DPO Superior to PPO for LLM Alignment？A Comprehensive Study]() 讨论了这个问题。这篇论文也是今年被选中的 4 篇有关 alignment 的 oral papers 的其中之一。
+
+如果仅仅通过**静态数据** 覆盖 LLM 所有可能的输出, 非常困难。因此，**在线探索**和**及时奖励反馈**是一种更加高效让 LLM 学会说正确答案的方法。
+
+
+结论
+- 如果能够实现 `PPO` 算法，PPO 效果将会远远超过 `DPO`。因为, 正例反例和在线探索两件事都非常重要。
+- 用 PPO 和 Code Llama 在 Coding Contest 上做了测试，发现使用开源模型加上 PPO 可以比 AlphaCode 这样的闭源模型在很难的 CodeForce 竞赛题上通过率提高 6%。这是一个纯开源模型加 RLHF 的尝试，并未添加任何新的数据。在这种很难的、需要强调 reasoning 能力的任务上，DPO 完全没有效果。
+
+#### PPO RLHF 框架有哪些挑战？
+
+PPO 包含四个模型：actor、critic、value network 和 reference network。
+- 不同模型还有不同依赖，也就是前后依赖关系；
+- 不同模型也有不同吞吐量，比如，actor 是一个传统的大模型，需要输出所有 response，而 critic 则只需要做评分。评分的吞吐量会远小于需要输出 response 的模型。
+
+因此，不同模块的计算量存在显著差异。将这四个模块 scale up，并且做好算力平衡是具有挑战的。
+
+挑战
+- 算法: PPO RLHF 算法流程相对复杂
+  - 算法、流程都相对麻烦，多了很多流程。不仅需要正反馈、负反馈、需要奖励模型，并且涉及在线探索过程。
+  - 建议: 要 advantage normalization、需要一个大的 training batch；reference model 需要 moving average 等。
+- 系统: 强化学习训练系统与传统的 SFT 有不太一样
+  - SFT 或 DPO 模型通常只包含一个 policy 模型，只需将数据输入语言模型即可，其训练逻辑相对简单。然而，对于强化学习，或者对于 PPO RLHF，情况则更为复杂。
+- 数据: 数据非常重要
+  - RLHF 数据包括两部分：一是 prompt，即人写的 instruction。二是指模型的 responses。这两部分都相当复杂
+
+
+PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
+1. 算法层面：关键在于如何稳定训练过程，并调整算法的细节以提高性能。
+2. 系统设计：由于强化学习 PPO，RLHF 的计算流程非常复杂，系统设计需要提高整体的训练效率。
+3. 数据：数据分为两部分，一部分是 prompt，一部分是 response。两部分都很关键，只有将它们结合起来，才能形成一个完整的，比较成功的 PPO RLHF 的 training process。
+
+【2024-8-23】[RL 是 LLM 的新范式](https://mp.weixin.qq.com/s/hpMUscIzuDryT2pbh5b_9w)
+
+
+## 训练数据
+
+
+【2024-9-11】[大模型数据基础：预训练阶段数据详解](https://zhuanlan.zhihu.com/p/716331881)
+
+- 预训练数据集组成
+- 1 通用预训练数据集
+  - 1.1 网页
+  - 1.2 语言文本
+  - 1.3 书籍
+  - 1.4 学术材料
+  - 1.5 代码
+  - 1.6 平行语料库
+  - 1.7 社交媒体数据
+  - 1.8 百科全书
+  - 1.9 多类别数据
+- 2 特定领域预训练数据集
+- 预训练数据处理步骤
+  - 1 数据收集
+  - 2 数据过滤
+    - 2.1 基于模型的方法
+    - 2.2 基于启发式的方法
+  - 3 数据去重
+  - 4 数据标准化
+  - 5 数据审核
+- 预训练数据整体分布现状及分析
+
+预处理通常包括五个步骤：
+- ![](https://pic1.zhimg.com/80/v2-65b4e84d0e842fa0d4fe11d09f9085ec_1440w.webp)
+
+
+
+
+【2024-5-23】[再聊多轮对话微调训练格式与长序列训练](https://www.53ai.com/news/qianyanjishu/2024052324781.html)
+
+3个阶段的数据集格式: 增量预训练、单轮对话、多轮对话
+- 增量预训练数据集：提升模型在**特定领域**或**任务**的能力。
+- 单轮对话和多轮对话数据集：用于**指令微调**（instruction tuning）阶段，以提升模型回复特定指令的能力。
+
+指令微调阶段目标：训练语言模型根据人类指令给出回答。一般只有**回答部分**（Output）的 loss 会用于梯度回传，而**指令部分**（System、Input）部分的 loss 则不会用于权重更新。 
+
+数据集进行预处理时引入  "system"、"input" 和 "output" 三个字段
+- "system"、"input" 字段用于保存<span style='color:red'>不需要计算 loss 的文本</span>，如 系统或用户指令
+- 而 "output" 字段则用于保存 需要计算 loss 的文本，如 输入指令对应的 GroundTruth 回答。
+
+
+
+### 数据量
+
+资源受限时，模型训练应该用多少数据？
+- 预训练: 参考 缩放定律 ( scaling law)
+- 微调: 如下文
+
+【2024-7-29】[大型语言模型高效微调策略](https://mp.weixin.qq.com/s/LUFuikQ8rl1sLmw-MFTCWg)，通过实验发现少量数据即可显著提升特定任务性能，并提出一种基于早期模型表现的贝叶斯超参数优化方法，有效预测最终模型效果，为资源节约型的LLM微调提供新途径。
+- 论文题目：[Crafting Efficient Fine-Tuning Strategies for Large Language Models](https://arxiv.org/abs/2407.13906)
+
+
+#### 数据效率研究
+
+模型性能与数据量之间的最佳平衡点，从而优化资源利用。
+- 虽然小型数据集显著改进效果，但是必须仔细考虑训练数据中**属性分布**，确保模型在所有目标变量上的全面表现。
+- 另外可探索数据增强技术或不同的采样策略，增强模型性能，特别是针对那些出现频率较低的属性。
+
+数据量对模型效果影响
+- `200` (显著提升18pp) -> `1000` (放缓) -> `6500` (平衡点过后,收益减少)
+
+详情
+- （1）快速初始改进：
+  - 约`200`个样本（相当于大约100个网页），模型准确率从70%显著提升至88%。—— 即使是相对较小的数据集也能带来显著的性能提升。
+- （2）收益递减：
+  - 达到`1,000`个样本后，准确率**提升速度放缓**，大部分性能增益在这个数据量水平就已经实现。
+- （3）属性特定趋势：
+  - 后期准确率提升主要由一个特定属性类型（如产品评分）所驱动。这一属性在数据集中出现的频率较低，只在大约25%的产品详情页面中出现。
+- （4）性能瓶颈：
+  - 大约`6,500`个样本时，模型达到最大性能，这表明存在一个“最佳点”，在此之后，更多数据带来的收益逐渐减少。
+- （5）战略数据采样重要性：
+  - 即使小数据集也能显著提升模型性能，但要确保所有目标变量在训练数据中的**分布均衡**，以实现全面的模型表现。
+
+####  超参数优化
+
+通过采用`贝叶斯`（Bayesian）优化并结合早期模型性能评估，可显著提高大型语言模型微调的效率和效果，减少计算成本，同时确保高最终准确率。
+- 首先，使用一系列超参数进行`LoRA`微调。
+- 然后，训练过程早期阶段，使用模型评估验证集上的准确率。
+- 接着，将超参数配置及准确率添加到结果池中。
+- 最后，运用Bayesian优化算法，基于结果池生成下一组超参数。
+
+
+（1）超参数优化目标
+- 寻找最优超参数集：找到一组能最大化模型在验证集上性能指标（如准确率）的超参数集合。
+- 预测最终性能：最大化早期训练阶段与最终训练阶段之间模型性能的相关性，以便通过早期表现预测最终模型的质量。
+
+（2）方法论
+- Bayesian优化：采用Bayesian优化算法智能地探索超参数空间，平衡`探索`（exploration）和`利用`（exploitation），通过构建**代理模型**（surrogate model）预测不同超参数设置下的模型性能。
+- LoRA微调：首先使用一组超参数进行LoRA（Low-Rank Adaptation）微调，然后在训练过程的早期阶段评估模型性能。
+- 迭代优化：保存超参数配置及其对应的性能值，然后使用Bayesian优化算法更新代理模型，建议下一步要评估的超参数配置。
+
+训练**早期阶段**的模型性能与**最终阶段**的性能具有强烈的**正相关性**: 早期评估可有效地预测模型质量。
+
+
+### 数据配比
+
+引入大量行业数据，模型怎么反而变弱了？ [参考](https://mp.weixin.qq.com/s/ItpCTCcMjTWQJtgpvdwTfw)
+- 对一个回答问题能力不错的模型，用大量数据做`指令微调`后，模型不会回答问题了。
+
+原因：
+- 数据配比
+- 数据差异过大
+
+大模型可能在训练过程中过度专注于**垂类数据**，导致 loss 收敛不再依赖全局而是从部分数据进行考虑。
+
+贝壳论文中，比较好的结果:
+- 开源数据集:垂域数据集 = 4:1, 即开源占比总体训练数据的80%，而垂类数据仅占20%。
+- [《垂域大模型训练》](https://arxiv.org/pdf/2307.15290.pdf)
+
+对 continue pretraining, 如果要让模型不丢失通用能力，比如 summarization，qa 等
+
+(1) 领域数据 continue pretraining 时，一定更要混合大量通用数据。
+- - 「**领域数据**比例要在`15%`以下」
+  - 一旦超过这个阈值，模型通用能力会下降很明显。
+- 这个阈值和不同的预训练模型相关，有些模型比如llama需要控制的阈值更低。
+
+阈值其实是经验主义结论，范围都在 10%-15% 左右。
+- 而且，该阈值和预训练模型的大小，预训练时原始数据的比例等条件都息息相关，需要在实践中反复修正。
+
+(2) sft，比例就可以提高不少
+- 领域数据:通用数据=1:1
+- 当然，如果sft的数据量少，混不混数据差别就不太大了。
+
+
+### 统一格式
+
+统一`增量预训练`、`单轮对话`和`多轮对话`三种数据集格式
+
+```json
+[{
+    "conversation":[
+        {
+            "system": "xxx",
+            "input": "xxx",
+            "output": "xxx"
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "xxx",
+            "input": "xxx",
+            "output": "xxx"
+        },
+        {
+            "input": "xxx",
+            "output": "xxx"
+        }
+    ]
+}]
+```
+
+训练过程中，将一条数据中 多组 <span style='color:blue'>"system"、"input" 和 "output"</span> 进行拼接，之后输入模型，并行计算每个位置的 loss ，但<span style='color:red'>只有 "output" 部分对应的 loss 参与梯度回传</span>
+
+`<BOS>`和`<EOS>`表示句子或文本的开始和结束
+
+
+### 图解
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.4\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-2\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;fontColor=#333333;strokeColor=none;glass=0;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;240\&quot; y=\&quot;690\&quot; width=\&quot;720\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;LLM训练数据格式\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;587.75\&quot; y=\&quot;410\&quot; width=\&quot;180\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;_ze0iByAne0-O5BmJI7g-5\&quot; value=\&quot;Loss计算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#FF3333;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;690\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-1\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#E6D0DE;fontColor=#333333;strokeColor=none;glass=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;240\&quot; y=\&quot;870\&quot; width=\&quot;720\&quot; height=\&quot;460\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-4\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;267.5\&quot; y=\&quot;730\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-5\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;471.5\&quot; y=\&quot;730\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-6\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;545.5\&quot; y=\&quot;730\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-9\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;730\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-10\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;824\&quot; y=\&quot;730\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-11\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;898\&quot; y=\&quot;730\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-12\&quot; value=\&quot;Loss计算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;830\&quot; y=\&quot;690\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-13\&quot; value=\&quot;CPT 增量预训练\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;237.5\&quot; y=\&quot;650\&quot; width=\&quot;160\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-14\&quot; value=\&quot;SFT 监督指令微调\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;240\&quot; y=\&quot;830\&quot; width=\&quot;180\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-15\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;conversation&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:[&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;system&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;input&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;output&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;]&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;}&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFCC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;980\&quot; y=\&quot;460\&quot; width=\&quot;190\&quot; height=\&quot;200\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-16\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;fontColor=#333333;strokeColor=none;glass=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;241.25\&quot; y=\&quot;510\&quot; width=\&quot;720\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-17\&quot; value=\&quot;Loss计算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;481.25\&quot; y=\&quot;510\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-18\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;325.75\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-19\&quot; value=\&quot;input\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;398.75\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-20\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;268.75\&quot; y=\&quot;550\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-21\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;472.75\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-22\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;546.75\&quot; y=\&quot;550\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-23\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;678.25\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-24\&quot; value=\&quot;input\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;751.25\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-25\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;621.25\&quot; y=\&quot;550\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-26\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;825.25\&quot; y=\&quot;550\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-27\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;899.25\&quot; y=\&quot;550\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-28\&quot; value=\&quot;Loss计算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;831.25\&quot; y=\&quot;510\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-29\&quot; value=\&quot;统一格式\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=19;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;240\&quot; y=\&quot;470\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-30\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;conversation&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:[&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;system&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;input&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;output&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;I&amp;amp;nbsp;am&amp;amp;nbsp;named&amp;amp;nbsp;Puyu.&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;]&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;}&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFCC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;980\&quot; y=\&quot;660\&quot; width=\&quot;300\&quot; height=\&quot;200\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-31\&quot; value=\&quot;学习特定领域/任务的表达能力→&amp;lt;font color=&amp;quot;#ff3333&amp;quot;&amp;gt;全部&amp;lt;/font&amp;gt;参与loss运算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;410\&quot; y=\&quot;655\&quot; width=\&quot;380\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-32\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;316.75\&quot; y=\&quot;910\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-33\&quot; value=\&quot;input\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;389.75\&quot; y=\&quot;910\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-34\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;910\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-35\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;463.75\&quot; y=\&quot;910\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-36\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537.75\&quot; y=\&quot;910\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-42\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;316.75\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-43\&quot; value=\&quot;Q1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;389.75\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-44\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;1050\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-45\&quot; value=\&quot;A1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;463.75\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-46\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537.75\&quot; y=\&quot;1050\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-47\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;669.25\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-48\&quot; value=\&quot;Q2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;742.25\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-49\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;612.25\&quot; y=\&quot;1050\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-50\&quot; value=\&quot;A2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.25\&quot; y=\&quot;1050\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-51\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;890.25\&quot; y=\&quot;1050\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-52\&quot; value=\&quot;1个指令(问题)+ground truth(作答)→&amp;lt;font color=&amp;quot;#ff3333&amp;quot;&amp;gt;只有output&amp;lt;/font&amp;gt;参与loss运算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;370.75\&quot; y=\&quot;875\&quot; width=\&quot;490\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-53\&quot; value=\&quot;&amp;lt;font style=&amp;quot;font-size: 20px;&amp;quot;&amp;gt;单轮会话&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#CC0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;870\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-54\&quot; value=\&quot;&amp;lt;font style=&amp;quot;font-size: 20px;&amp;quot;&amp;gt;多轮会话&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#CC0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;985\&quot; width=\&quot;100\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-55\&quot; value=\&quot;多个指令(问题)+ground truth(作答)→&amp;lt;font color=&amp;quot;#ff3333&amp;quot;&amp;gt;只有output&amp;lt;/font&amp;gt;参与loss运算\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;370.75\&quot; y=\&quot;990\&quot; width=\&quot;490\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-56\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;316.75\&quot; y=\&quot;1120\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-57\&quot; value=\&quot;Q1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;389.75\&quot; y=\&quot;1120\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-58\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;1120\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-59\&quot; value=\&quot;A1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;463.75\&quot; y=\&quot;1120\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-60\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537.75\&quot; y=\&quot;1120\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-66\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;conversation&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:[&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;system&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;非空&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;input&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;非空&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;output&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;I&amp;amp;nbsp;am&amp;amp;nbsp;named&amp;amp;nbsp;Puyu.&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;]&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;}&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFCC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;980\&quot; y=\&quot;860\&quot; width=\&quot;300\&quot; height=\&quot;200\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-67\&quot; value=\&quot;问题：未充分利用语料, A1未参与训练\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;441.75\&quot; y=\&quot;1020\&quot; width=\&quot;300\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-68\&quot; value=\&quot;方法1&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;: 一字排开&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;249.75\&quot; y=\&quot;1020\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-69\&quot; value=\&quot;方法2&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;: 分别展开&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;249.25\&quot; y=\&quot;1090\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-70\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;316.75\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-71\&quot; value=\&quot;Q1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;389.75\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-72\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;1169\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-73\&quot; value=\&quot;A1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;463.75\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-74\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537.75\&quot; y=\&quot;1169\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-75\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;669.25\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-76\&quot; value=\&quot;Q2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;742.25\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-77\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;612.25\&quot; y=\&quot;1169\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-78\&quot; value=\&quot;A2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.25\&quot; y=\&quot;1169\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-79\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;890.25\&quot; y=\&quot;1169\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-80\&quot; value=\&quot;问题：数据扩充n倍, 训练效率降为1/n\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;441.75\&quot; y=\&quot;1090\&quot; width=\&quot;300\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-81\&quot; value=\&quot;system\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;316.75\&quot; y=\&quot;1260\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-82\&quot; value=\&quot;input\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;389.75\&quot; y=\&quot;1260\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-83\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;259.75\&quot; y=\&quot;1260\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-84\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;463.75\&quot; y=\&quot;1260\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-85\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537.75\&quot; y=\&quot;1260\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-87\&quot; value=\&quot;input\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;669.25\&quot; y=\&quot;1260\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-88\&quot; value=\&quot;BOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=none;shadow=1;fontSize=20;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;612.25\&quot; y=\&quot;1260\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-89\&quot; value=\&quot;output\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;743.25\&quot; y=\&quot;1260\&quot; width=\&quot;63.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-90\&quot; value=\&quot;EOS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3333;shadow=1;fontSize=20;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;817.25\&quot; y=\&quot;1260\&quot; width=\&quot;50\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-91\&quot; value=\&quot;方法3&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;: 多轮拼接&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=1;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;247.5\&quot; y=\&quot;1220\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-92\&quot; value=\&quot;并行计算每个位置的loss，Xtuner支持\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;441.75\&quot; y=\&quot;1220\&quot; width=\&quot;300\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-93\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;conversation&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:[&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;system&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;非空&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;input&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;Q1&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;output&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;A1&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;},&amp;lt;/span&amp;gt;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;{&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;input&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;Q2&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;,&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre; color: rgb(209, 154, 102); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;output&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;:&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre; color: rgb(152, 195, 121); line-height: 26px;&amp;quot;&amp;gt;&amp;quot;A2&amp;quot;&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; white-space: pre;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;}&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;&amp;amp;nbsp;]&amp;lt;/span&amp;gt;&amp;lt;br style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(171, 178, 191); font-family: &amp;amp;quot;Operator Mono&amp;amp;quot;, Consolas, Monaco, Menlo, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;}&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFCC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;980\&quot; y=\&quot;1100\&quot; width=\&quot;220\&quot; height=\&quot;290\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-94\&quot; value=\&quot;ChatML格式\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;340\&quot; y=\&quot;475\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Vs7qPiKoduQPsseb_geP-95\&quot; value=\&quot;【2024-8-2】wqw547243068@163.com\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;strokeWidth=2;fontFamily=Verdana;fontStyle=0;fontColor=#4D4D4D;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;580\&quot; y=\&quot;1350\&quot; width=\&quot;340\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+
+### 增量预训练
+
+增量预训练旨在帮助模型学习针对**特定下游任务**的语言知识和表达能力，因此数据集的全部内容对应的 loss 都应该用于梯度回传。
+
+因此，数据集的 "system"、"input" 为空，而 "output" 为一整条语料数据。
+
+```json
+[{
+    "conversation":[
+        {
+            "system": "",
+            "input": "",
+            "output": "I am an artificial intelligence (AI) assistant named Puyu. I was created by the Shanghai AI Laboratory and my purpose is to assist users with various tasks through natural language processing technology."
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "",
+            "input": "",
+            "output": "I am an artificial intelligence programmed to assist with various types of tasks, including answering questions, providing information, and performing automated processes."
+        }
+    ]
+}]
+```
+
+
+### 单轮数据
+
+单轮对话数据集由1条指令（或问题）及其对应 GroundTruth 回答组成。
+
+由于只有回答**部分**需要对 loss 进行回传，因此数据集的 "system"、"input" 字段为输入指令，"output" 字段为对应回答
+
+```json
+[{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant."
+            "input": "Give three tips for staying healthy.",
+            "output": "1.Eat a balanced diet. 2. Exercise regularly. 3. Get enough sleep."
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant."
+            "input": "How to study English?",
+            "output": "1. Set clear goals. 2. Create a study plan. 3. Build vocabulary. 4. Practice speaking."
+        }
+    ]
+}]
+```
+
+### 多轮数据
+
+多轮对话数据集往往由**多轮指令**（或问题）+ 对应 GroundTruth 回答组成。
+
+假设有一条多轮对话数据，内容如下。
+
+对于第 n 轮对话，将 User 和 Assistant 对应的输出设为 UserN 和 AssistantN。
+
+```sh
+System: You are an AI asssistant.
+User1: Hello?
+Assistant1: Hello! How can I help you?
+User2: What\'s the date today?
+Assistant2: Today is Monday, August 14, 2023.
+User3: Thank you!
+Assistant3: You are welcome.
+```
+
+如何使用上述这条多轮对话数据训练大模型？目前有两个主流方法。
+- 方法 1
+  - System、User1、Assistant1、User2、Assistant2、User3 文本都视为模型的输入部分，将 Assistant3 的文本视为模型的预测部分，只有 Assistant3 部分的 loss 参与权重更新。
+  - 弊端在于**没有充分利用多轮对话**的训练数据，因为 Assistant1 和 Assistant2 的内容没有参与模型训练，导致训练数据利用率较低。
+- 方法 2
+  - 将1条多轮对话数据拆分成多条数据。如将以上示例拆分成如下三条数据。
+  - 相比于方法1，方法2可以充分利用每一轮对话的数据，但需要将一条包含 n 轮对话的数据拆分为 n 条数据，**训练效率降低 1/n**。
+- 方法 3
+  - XTuner 训练多轮对话模型时，采取了一种更加充分高效的方法。
+  - 将多轮对话进行拼接，之后输入模型，并行计算每个位置的 loss，而只有 Output 部分的 loss 参与回传。
+
+```json
+[{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant."
+            "input": "Hello?",
+            "output": "Hello! How can I help you?"
+        },
+        {
+            "input": "What's the date today?",
+            "output": "Today is Monday, August 14, 2023."
+        },
+        {
+            "input": "Thank you!",
+            "output": "You are welcome."
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant."
+            "input": "Hello?",
+            "output": "Hello! How can I help you?"
+        },
+        {
+            "input": "How's the weather today in Rosso?",
+            "output": "The weather in Rosso on Wednesday, August 16th, is going to be cloudy for most of the day, together with moderate rain around noon."
+        },
+        {
+            "input": "Thank you!",
+            "output": "You are welcome."
+        }
+    ]
+}]
+```
+
+数据集中的 "conversation" 键对应的值是一个列表，用于保存每一轮对话的指令和实际回答（GroundTruth）。为了保持格式统一，增量预训练数据集和单轮对话数据集中的 "conversation" 键也对应一个列表，只不过该列表的长度为 1。而在多轮对话数据集中，"conversation" 列表的长度为 n，以容纳 n 轮的对话内容。
+
+
+### LLMs 数据格式汇总
+
+各类LLM数据格式汇总: [chat_template](https://github.com/mst272/LLM-Dojo/tree/main/chat_template)
+
+不同模型在是否存在默认 system message上, 有所不同(大多数模型都是没有的)。
+
+每个模型都附上了**有system**版本和**无system**版本，如果在训练模型时希望加上system message, 可以参照template模板自行添加。
+
+#### Qwen
+
+官方默认 system message 即：You are a helpful assistant
+
+```s
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+#### Yi
+
+官方版本没有默认 system message，可以与llama一样, 不加 system message使用，有
+
+```s
+<|im_start|>system
+This is a system message<|im_end|>
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+无system模式
+
+```s
+<|im_start|>user
+This is a instruction<|im_end|>
+<|im_start|>assistant
+This is a answer<|im_end|>
+```
+
+#### Gemma
+
+官方版本不支持system
+
+无system模式
+
+```s
+<bos><start_of_turn>user
+This is a instruction<end_of_turn>
+<start_of_turn>model
+This is a answer<end_of_turn>
+```
+
+#### Phi-3
+
+官方版本没有默认的system message, 有此需求可依据下述模板自己构建
+
+```s
+<s><|system|>
+This is a system message<|end|>
+<|user|>
+This is a instruction<end>
+<|assistant|>
+This is a answer<end>
+```
+
+无system模式
+
+```s
+<s><|user|>
+This is a instruction<end>
+<|assistant|>
+This is a answer<end>
+```
+
+#### Deepseek
+
+官方同样没有提供默认system message，有此需求可依据下述模板自己构建
+
+```s
+<｜begin▁of▁sentence｜>This is a system message
+User:This is a instruction
+Assistant:This is a answer<｜end▁of▁sentence｜>
+```
+
+无system模式
+
+```s
+<｜begin▁of▁sentence｜>User:This is a instruction
+Assistant:This is a answer<｜end▁of▁sentence｜>
+```
+
+#### Mistral
+
+没有提供system模式
+
+无system模式
+
+```s
+<s>[INST]:This is a instruction [/INST]This is a answer</s>
+```
+
+#### Llama2
+
+```s
+<s>[INST] <<SYS>>
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+<</SYS>>
+
+There's a llama in my garden 😱 What should I do? [/INST] This is a answer</s>
+```
+
+#### Llama3&3.1
+
+```s
+<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+
+This is a system prompt.<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+This is the first user input.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+
+This is the first assistant response.<|eot_id|>
+```
+
+#### MiniCPM
+
+```s
+<用户>This is a system message<AI>This is a instruction</s>
+```
+
+#### DeepSeek-coder
+
+```s
+<｜begin▁of▁sentence｜>User: {user_message_1}
+
+Assistant: {assistant_message_1}<｜end▁of▁sentence｜>User: {user_message_2}
+
+Assistant:
+You can also add an optional system message:
+
+<｜begin▁of▁sentence｜>{system_message}
+
+User: {user_message_1}
+
+Assistant: {assistant_message_1}<｜end▁of▁sentence｜>User: {user_message_2}
+
+Assistant:
+```
+
 ## ChatGPT 三步走
 
 InstructGPT 分为如下三大步：
@@ -199,6 +1027,40 @@ InstructGPT和instruction tuning方向的工作比较相关，独特之处在于
 - `LoRA`：低秩适配，冻结大模型权重，只训练新增的网络层（两个小矩阵的乘积），降低fine-tune成本，同时保持类似效果
 
 
+### (0) Pre-Train
+
+
+#### 问题
+
+【2024-7-28】[面试LLM//各阶段](https://zhuanlan.zhihu.com/p/691588703?utm_psn=1801229804424544256)
+
+##### CLS token
+
+预训练阶段：
+- 模型训练句子时, 没有加 `<CLS>` Token，但是预测时加了`<CLS>` Token
+- 或者训练时加了`<CLS>` token, 但是预测时没有加`<CLS>` Token
+
+benchmark 预测会有啥问题？
+
+benchmark会直接崩溃，之前gemma-2b训的时候带BOS，预测忘加了，benchmark全崩了。
+
+原因
+- 一个句子的第一个Token在模型中会吸收大量attention，那么当预测时改变了第一个Token，句子的预测会改变比较大，因为第一个Token改变了，而预测中大量attention来自第一个Token，所以预测的时候大量benchmark效果会不好。
+
+##### 三个阶段训练（SFT->RM->PPO）过程较长，更新迭代较慢？
+
+考虑以下几种方法：
+- 并行化训练：利用多个计算资源进行并行化训练，可以加速整个训练过程。可以通过使用多个CPU核心或GPU来并行处理不同的训练任务，从而提高训练的效率和速度。
+- 分布式训练：将训练任务分发到多台机器或多个节点上进行分布式训练。通过将模型和数据分布在多个节点上，并进行并行计算和通信，可以加快训练的速度和更新的迭代。
+- 优化算法改进：针对每个阶段的训练过程，可以考虑改进优化算法来加速更新迭代。例如，在SFT（Supervised Fine-Tuning）阶段，可以使用更高效的优化算法，如自适应学习率方法（Adaptive Learning Rate）或者剪枝技术来减少模型参数；在RM（Reward Modeling）阶段，可以使用更快速的模型训练算法，如快速梯度法（Fast Gradient Method）等；在PPO（Proximal Policy Optimization）阶段，可以考虑使用更高效的采样和优化方法，如并行采样、多步采样等。
+- 迁移学习和预训练：利用迁移学习和预训练技术，可以利用已有的模型或数据进行初始化或预训练，从而加速训练过程。通过将已有模型的参数或特征迁移到目标模型中，可以减少目标模型的训练时间和样本需求。
+- 参数调优和超参数搜索：对于每个阶段的训练过程，可以进行参数调优和超参数搜索，以找到更好的参数设置和配置。通过系统地尝试不同的参数组合和算法设定，可以找到更快速和高效的训练方式。
+
+综合运用上述方法，可以加速三个阶段训练过程，提高更新迭代的速度和效率，从而减少训练时间和资源消耗。
+
+
+
+
 ### （1） 第一步 SFT（全参数微调）
 
 SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt文本
@@ -212,7 +1074,75 @@ SFT 原理比较简单，难的是数据问题，需要大量的有监督Prompt�
 - **拟合**：通过finetuning 得到稳定、符合需求的输出，包括格式、风格、特定模式等，是在业务落地中高频使用的方式；
 - **对齐**：指令对齐，让LLM更好地理解人类语言、执行自然语言指令，即LLM三个阶段之第二个阶段（pretrain、sft、rlhf）。
 
-#### IFT 的问题
+#### loss 改进
+
+【2024-9-24】[SFT loss 计算的那些坑（多轮合并/packing）](https://zhuanlan.zhihu.com/p/721652210)
+
+SFT 训练时, 直接输入 `(input_ids, label)`, 训练效率低。 
+
+通常有两个加速方法：
+1. **多轮合并**: 同一个会话的拆分、合并
+  - user 和 bot 交互了 3 轮, 数据格式: bot作答部分用 input_ids, 其余用 **-100** 表示
+    - (system, user1, `bot1`, pad), bot1 计算loss
+    - (system, user1, bot1, user2, `bot2`, pad), bot2 计算loss
+    - (system, user1, bot1, user2, bot2, user3, `bot3`), bot3 计算loss
+  - loss 表达式: `loss = 1/3 (l1/n1+l2/n2+l3/n3)`, ni 是 boti token数, li 是第i个样本的 loss
+  - 不同样本之间有很多重复计算的前缀, 训练偏慢
+1. 加速
+  - 将3个样本合成1个, 借助 causal attention mask，每个 token 只能看到前面的 token，计算上和之前是等价
+  - 数据格式: (system, user1, `bot1`, user2, `bot2`, user3, `bot3`), 对应权重 li/ni
+  - 问题: loss 计算有问题, pytorch `CrossEntropyLoss` 默认取均值 mean, `loss = (l1+l2+l3)/(n1+n2+n3)`, 而 ni 不一定相同, 导致 短句子权重被降低, 长句子被加权, loss 不等价
+1. **packing**: 将**多个会话**合成一条, 进一步加速
+  - 将所有样本拼接成1条，并加入 `attention mask`, 保证后面的样本看不见前面的token。如 在 flash attention 中调用 flash_attn_varlen_qkvpacked_func，并传入 cu_seqlens 参数。
+  - 和之前一样，如果不修改 loss 计算方法，packing 的样本之间会存在因为长度不同，导致训练不充分的问题。
+
+loss 计算会经历三次平均
+- micro batch 维度，分母是这个 micro batch 中的所有 label 不是 -100 的 token 数
+- DP 维度，分母是 DP size （和GPU数量相关）
+- 梯度累加维度，分母是梯度累加数
+
+禁用这三个平均，统一用 `global batch` 对话轮数作为分母。
+- 新版 megatron 框架中，开启开关 `--calculate-per-token-loss`, 即可禁用 DP 和梯度累加的平均
+- 然后 修改 `loss_func`，每个 `micro batch` 都需要返回这个 `micro batch` 的轮数
+- 最后 框架会自动将所有轮数求和，作为分母。对于分子，需要除以这个轮次的token 数。
+
+正确实现代码如下（loss_token_num, turn_num 是在构建 data 的时候构建的）：
+
+```py
+def loss_func(output_tensor, loss_mask, loss_token_num, turn_num):
+    losses = output_tensor.view(-1).float()
+    loss_mask = loss_mask.view(-1).float()
+    loss_token_num = loss_token_num.view(-1).float()
+    # label: [-100, -100, a, a, a, -100, b, b, -100, -100, c, c, c, -100, -100]
+    # loss_mask: [0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0]
+    # losses: [a0, a1, a2, a3, a4, b0, b1, b2, c0, c1, c2, c3, c4, d0, d1]
+    # losses * loss_mask = [0, 0, a2, a3, a4, 0, b1, b2, 0, 0, c2, c3, c4, 0, 0]
+    # loss_token_num: [3, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 1, 1]
+    # losses * loss_mask / loss_token_num = [0, 0, a2/3, a3/3, a4/3, 0, b1/2, b2/2, 0, 0, c2/3, c3/3, c4/3, 0, 0]
+    # sum = 1/3 (a2 + a3 + a4) + 1/2 (b1 + b2) + 1/3 (c2 + c3 + c4)
+    loss = torch.sum(losses * loss_mask / loss_token_num)
+
+    loss_and_turn_num = torch.cat([loss.view(1), turn_num.view(1)])
+    # Reduce loss for logging.
+    loss_and_turn_num = loss_and_turn_num.clone().detach()
+    torch.distributed.all_reduce(loss_and_turn_num, group=mpu.get_data_parallel_group())
+    # 新版返回结构，开启 calculate_per_token_loss 开关后，返回三个值
+    # 第一个是反向传播实际使用的 loss, 所有 packing 的 loss 求和
+    # 第二个是 turn_num, 优化器状态更新时会使用对这个值求和然后缩放梯度
+    # 第三个是用于日志打印的 loss, 包含两个值，第一个是所有 loss 求和作为分子，第二个是所有 turn_num 求和作为分母
+    return loss, turn_num, {"lm loss": (loss_and_turn_num[0], loss_and_turn_num[1])}
+```
+
+无论是哪种方法，加速后都需要保证 loss 和原来等价。
+
+加速注意：
+- 不同样本之间等价；
+- 不同轮次之间等价。
+
+合并多轮 / packing 时，要修改 loss 计算方法，为每个 token 设置正确权重，并且关闭 `DP` / `梯度累加`的平均。
+
+
+#### IFT 问题
 
 5 月，伯克利的论文 The False Promise of Imitating Proprietary LLMs 指出这种方式微调出来的**指令遵循**模型存在的一系列问题：
 - 在缺少大量模仿 ChatGPT 数据支持的任务上，这类模型无法改善 Base Model 到 ChatGPT 的差距；
@@ -447,7 +1377,65 @@ python chat.py \
 | 你是谁	| 我是一个AI语言模型，没有个人身份和情感。我的目的是回答你的问题并提供有用的信息来帮助你解决问题或提供娱乐性内容。如果你有任何其他的问题需要解答，请随时问我！ |
 
 
+#### SFT 思考
+
+
+##### SFT packing 是什么
+
+SFT packing 指训练sft过程中，将**多个sft数据pack到一个样本内**进行训练
+- 这种方式会加快模型训练速度，如果不进行SFT packing，那么对于短文本sft需要padding到一个batch最长长度，浪费很多计算token。
+- SFT packing 有很多种类，比如 block diagonal attention, 每个token仅仅去attention自己的问题内的token。但一般业务中会直接将其相连接，然后进行预测，虽然这样会引入一些噪音，但好像相对于非sft packing方式的整体的效果损失不大。这个可能是因为pretrain的时候模型也是这么训练的。
+
+##### SFT packing 对SFT训练的影响
+
+SFT packing 后削弱了模型对难的短query和短答案的拟合。
+- 无sft packing 情况下，假设batch_size = 1，那么如果有个短query和短答案在这个batch里，其余补充padding，那么这个batch的gradient全是这个短文本的gradient，模型对这个query的拟合能力会变强。
+- 但SFT packing 后，多个短文本在一个样本中，这个batch的gradient会被稀释，短文本的拟合就不会特别强。但拟合能力似乎和泛化不可以挂钩，初步观察sft packing和non sft packing的效果差不了很多。在数据量小或者特定困难的数据上，sft packing是有损泛化效果的，non-packing的方式会影响模型续写的效果，因此会影响一些benchmark效果。但在大批量数据上是无损泛化效果的。
+
+##### SFT 关注什么方面
+
+- 1 **根据 prompt 筛选sft数据**：Prompt的diversity：丰富多样的prompt数据可以让模型更多的了解人类的指令，包括指令指复杂指令中每一步的含义。Prompt的丰富程度决定了模型指令遵循的能力。
+  - 明文TAG法：对SFT的prompt进行打tag，对其中的名词和动词进行分类打标，最后通过tag对prompt的分布进行调整，保证tag的分布是均匀的。著名的就是InsTag这个方法。
+  - 模型embedding聚类方法：通过模型最后一层的embedding对prompt进行表示，那么通过prompt embedding的距离表示prompt的相似度，对于过于相似的prompt进行删除。著名的有Self-Evolved Diverse Data Sampling for Efficient Instruction Tuning。
+  - 从complexity角度，对于prompt直接进行难度的升级，所以即使在同一个语意空间的prompt也会变得diverse。比较著名的是Wizard 方法，通过GPT4进行prompt难度升级，然后构成complexity丰富的prompt。
+- 2 利用sft model和pretrain model的关系筛选模型的sft数据：
+  - IFD方法：利用公式进行数据选择： 这个公式是计算pretrain model生成对齐后模型的answer的难度（在 prompt的condition 下生成A的概率）。这个概率越低，越说明生成难度高，那么sft模型学习到的对齐规律越多，那么我们更应该选择这个sft数据。
+  - Hybrid Method （混合了多种之前列举的指标和方法。）：例如 What MakeGood Data for Alignment? A Comprehensive Study of Automatic Data Selectionin Instruction Tuning [2] 文章，从complexity，diversity和quality三个方向对sft数据建模，训练了多个模型对各个指标维度进行分别衡量。
+- 3 **Answer的质量**：Answer的质量包括内容和格式两方面，一方面内容的正确性需要得到保证，一方面内容的格式也很重要，细节丰富，逻辑缜密的answer可以激发模型更多的回答能力。
+- 4 SFT阶段**不能太多的知识注入**：过多的知识注入，或者超过模型能力本身的回答过多会导致对齐税。
+
+##### 提升模型 reasoning 能力
+
+什么数据格式在SFT或者ICL阶段可以提升模型的reasoning的能力？
+
+数学reasoning上是有**三种形式**可显著提高效果模型 reasoning 能力
+- **Reverse** ： 128 + 367 = 495 -> 128 + 367 = ^594, 因为人就是反着计算的，从个位数到百位数。
+- `COT` or `POT` (Simplified Scratchpad): 把这个计算过程列举下来，用自然语言、符号或者代码形式呈现。
+- **Detailed Scratchpad**：把整个思考过程详细地用自然语言和符号表达出来。
+  - 整体上Detailed Scratchpad需要的总条数最少就能达到100%在加法上的效果，但是其实总token数和plain需要差不多数量达到最好的效果。
+
+##### SFT 中代码数据+文本数据, 哪个更容易改变
+
+代码数据，因为
+- 预训练中, 代码数据**确定性更高，ppl更低**，记忆越深刻
+- 而**文本数据变化更大，ppl更高**，熵更高。
+
+SFT过程中，改变文本数据比较容易，因为本身ppl就会高，但代码数据会比较难，因为本身ppl会比较低，或者说代码数据的生成确定性更高，少量样本很难对其内部改变，只能大段替换。
+
+
+##### SFT 能学新知识吗
+
+虽然理论上可以，但很少且不推荐sft阶段去学习知识。
+- LIMA原文中就表述过同样一个假设，sft阶段更多是**将模型能力和人类对齐，而不过多学习新的知识**。
+
+原因如下：
+- sft相对于pretrain过的数据量实在太小，模型的知识学习的概率就很低。
+- 如果加大sft的数据量和pretrain数据相当，那么sft有一些特定的格式以及一些system prompt需要重复当作context进行attention，这些重复的context势必会影响模型原始的attention模式，从而影响模型的效果。
+- 最后, 如果希望sft学习新知识，不如把这部分sft的新知识组织好放入pre-train or post-train阶段更为合适。
+
+
 ### （2）第二步 RM训练
+
 
 **奖励模型**（Reward Model, RM）目标是刻画模型的输出是否在人类看来表现不错。
 - 输入: \[提示(prompt)，模型生成的文本\] 
@@ -482,6 +1470,7 @@ RM模型主要在于人工参与的**训练数据构建**部分，将训练好�
 【2023-6-5】[ChatGPT 为什么不用 Reward-Model 的数据直接 fine-tune，而用 RL？](https://www.zhihu.com/question/596230048/answer/3055888005)
 - Reward-model的输出对于整个token序列，一种滞后反馈，而finetune需要在每个token都有监督信号。这是强化学习与监督学习的差别。
 - 生成Reward-model的数据有些是结果对比较**pair数据**，没法直接用于监督学习finetune。
+
 
 #### ① Direct score方法
 
@@ -906,7 +1895,7 @@ DeepSpeed-Chat 用最后一个字符的得分作为整个response的得分
 
 #### 思考
 
-ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
+##### ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
 
 因为：
 - RM 针对整个token序列，滞后反馈，强化学习
@@ -920,6 +1909,60 @@ ChatGPT 为什么不用 RewardModel 数据直接 finetune，而用 RL?
   - 减少幻觉: 不要编造事实 (hallucintion)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hhiLw5Q_UFg?si=BTdMgDpxHx9pP6E8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+##### RM 和 基座模型保持一致？
+
+奖励模型需要和基础模型一致吗？
+- 可以一致，也可以不同，取决于任务需求和优化目标。
+- 单任务: 共享参数
+- 多任务: 子任务奖励模型整合成奖励函数
+
+##### Pair RM是什么形式的RM，相比于原RM形式有什么好处？
+
+- **原始RM** 是 BT model形式的RM，每个sample组成形式是 `(prompt，answer)`，通过 maximize positive sample 和 negative sample 的 gap来完成pointwise的rank。
+- **Pair RM** 是 pairwise rank，数据组成形式是`（prompt，pos_answer, neg_answer）`. Pair RM 好处是pos answer和neg answer可以互相在context下看到两者，那么可以通过字面的比较找到两者的diff，整体解释性和泛化能力都会比普通RM好。因为普通RM很容易overfit原数据，很难找到真正diff地pattern。
+
+现在Alpaca-Eval 榜单上就有Pair RM 身影，而且Pair RM整体很小 ，效果很好。
+
+
+##### 如何处理 RM 中的噪声数据？
+
+reward model 噪声来自哪几个方面：
+
+如果reward model的pair数据来自：
+- **人标注**，那么人类 preference的倾向性以及标注人员的专业性会带来一定的bias，即 众包系统的Noise。
+- **AI**，例如GPT4，那么这种倾向性也很严重，比如length bias。（严格来说，这属于bias，不能算噪声。）
+
+那么去噪可使用一些古早的方式：
+- **预测**阶段去噪声：
+  - Ensumble model 去噪声，多个rm model的checkpoint进行预测减少噪声的影响（model merge）。
+  - Margin 去噪声，只有预测 pair的分数**大于一定阈值**的时候，进行预测减少噪声。
+- **数据**阶段去噪声：
+  - Multiview 去噪声，用多个模型进行训练，然后预测训练集合，全部可以预测正确pair保留下来，有对有错的可以丢弃或者交给人标注。
+  - Active Learning 思路去噪声，训练一个模型，然后把margin小于一定阈值的送给标注人员去噪声。
+
+
+##### 如何解决reward model的OOD的问题？
+
+模型PPO过程中，reward model 准确率逐渐下降，俗称的reward model的**OOD问题**
+- 因为 reward model 训练样本一般来自sft模型的responses，那么在PPO过程中
+  - policy model刚开始和sft生成的response很相似，所以reward model准确率较高
+  - 但是在逐渐偏离sft 时，reward model 准确率会持续下降，这基本就是现阶段reward model的主要问题。
+
+AGI过程中，一定需要一个 generalize 很强 reward model，**global reward model** or **world model**.
+
+现阶段解决reward model的OOD普遍解决方法: Llama2 做法
+- 训练过一段时间RLHF以后，重新对policy采样pair对，人标数据然后继续训练reward model。
+- 但这种方式就是**太费人力**，感觉并不是持久之道。
+
+除此之外：
+- [Secrets of RLHF in Large Language Models Part II: Reward Modeling]() 中，通过 **meta learning** 方式解决这个问题，整体思想就是由于policy model在reward model训练情况下会向reward 高的方向更新，所以reward model应该对reward高的response pair更有区分度，所以设置gradient更新逐渐倾向于对reward高分training response pair倾斜。
+  - 这种方法说得通，但实际中由于缺少对模型on policy 采样，效果不太好。
+- [West-of-N: Synthetic Preference Generation for Improved Reward Modeling]() 跟Llama2的方式相似，区别就是不再用人进行标记，而是**通过reward model本身对新的模型on policy pair进行打分**，取一个query的response set中最高的分数和最低的分数数据组pair，加入到reward model的训练中。
+  - 这种方式采样，虽然通过on policy采样加强rm的泛化能力，但实际上上限受原先rm model的能力影响。
+
+
 
 ### （3）第三步 RLHF
 
@@ -968,9 +2011,130 @@ RLHF基于A2C方法，包含了四个模型:
 - Y>=, PPO_ptx
 
 
+#### RLHF 问题
+
+##### RLHF 实践过程中存在哪些不足？
+
+RLHF（Reinforcement Learning from Human Feedback）尽管具有一定优势，但在仍然存在以下不足之处：
+- 人类反馈的**代价高昂**：获取高质量的人类反馈通常需要大量的人力和时间成本。人类专家需要花费时间来评估模型的行为并提供准确的反馈，这可能限制了RLHF方法的可扩展性和应用范围。
+- 人类反馈的**主观性**：人类反馈往往是主观的，不同专家可能会有不同的意见和判断。这可能导致模型在不同专家之间的反馈上存在差异，从而影响模型的训练和性能。
+- **反馈延迟和稀疏性**：获取人类反馈可能存在延迟和稀疏性的问题。人类专家不可能实时监控和评估模型的每一个动作，因此模型可能需要等待一段时间才能收到反馈，这可能会导致训练的效率和效果下降。
+- **错误反馈**的影响：人类反馈可能存在错误或误导性的情况，这可能会对模型的训练产生负面影响。如果模型在错误的反馈指导下进行训练，可能会导致模型产生错误的行为策略。
+- 缺乏**探索与利用的平衡**：在RLHF中，人类反馈通常用于指导模型的行为，但可能会导致模型过于依赖人类反馈而缺乏探索的能力。这可能限制了模型发现新策略和优化性能的能力。
+
+针对这些不足，研究人员正在探索改进RLHF方法，如设计更高效的人类反馈收集机制、开发更准确的反馈评估方法、结合自适应探索策略等，以提高RLHF方法的实用性和性能。
+
+
+##### 如何解决标注成本高的问题
+
+如何解决 人工产生的偏好数据集成本较高、难量产问题？
+
+解决人工产生偏好数据集成本高、难以量产的问题，以下几种方法：
+- 引入**模拟数据**：使用模拟数据来代替或辅助人工产生的数据。
+  - 模拟数据可以通过模拟环境或模型生成，以模拟人类用户的行为和反馈。这样可以降低数据收集的成本和难度，并且可以大规模生成数据。
+- **主动学习**：采用主动学习方法来优化数据收集过程。
+  - 主动学习是一种主动选择样本的方法，通过选择那些对模型训练最有帮助的样本进行标注，从而减少标注的工作量。
+  - 可以使用一些算法，如**不确定性采样**、**多样性采样**等，来选择最有价值的样本进行人工标注。
+- **在线学习**：采用在线学习方法进行模型训练。
+  - 在线学习是一种增量学习的方法，在模型运行的同时进行训练和优化。
+  - 这样可以利用实际用户的交互数据来不断改进模型，减少对人工标注数据的依赖。
+- **众包和协作**：利用众包平台或协作机制来收集人工产生的偏好数据。
+  - 通过将任务分发给多个人参与，可以降低每个人的负担，并且可以通过众包平台的规模效应来提高数据收集的效率。
+- **数据增强**和**迁移学习**：通过数据增强技术，如数据合成、数据扩增等，来扩充有限的人工产生数据集。
+  - 此外，可以利用迁移学习的方法，将从其他相关任务或领域收集的数据应用于当前任务，以减少对人工产生数据的需求。
+
+综合运用上述方法，可有效降低人工产生偏好数据的成本，提高数据的量产能力，并且保证数据的质量和多样性。
+
+##### PPO 优点
+
+PPO优点：
+- On policy采样：on policy采样目前看来是最高效的`拟合蒙特卡洛`采样方式。
+  - 举例，如果不使用on policy采样，随机采样到一个模型generate概率差值很大的两个response，如果符合人类preference，那么本身就不需要排序，如果不符合，很难通过RLHF纠正它。如果强行纠正，会破坏模型本来的平衡。
+- Credit Assign: 由于value model的存在，其实PPO会很好的把reward分配给不同的token，那么一些关键的token会合理地分配一个高reward，一些不关键的token会分配一个低reward。
+- Rank Model：PPO内部其实是一种内置的rank model，比较的是高reward和低reward的response，只是高和低一直是动态的变化的。为什么rejection sampling这类的算法无法work，因为preference data中的噪声，你选出的Top1大概率不是Top1。
+
+
+##### PPO 问题
+
+PPO 问题
+- Notable Complexity **模型太多**: PPO中要**4个模型同时加载**在GPU中，`policy model`，`ref policy model`，`value model`，`reward model`。所以会占用很多GPU机器。
+- Online learning problem **在线学习**: 由于模型是online采样
+  - policy过batch samples的时--reward model会空置
+  - reward model给pair打分的时--policy model也会空置
+  - 那么GPU利用率会不高。
+- PPO超参数比较困难，需要一些炼丹高手和经验去做。
+
+
+##### 如何解决 PPO 训练的资源瓶颈
+
+PPO 的训练过程同时存在**4个模型**（2训练，2推理），对计算资源的要求较高
+
+考虑以下几种方法：
+- **减少模型规模**：减少模型的规模和参数量，可降低对计算资源的需求。可用模型压缩技术、剪枝算法等方法来减少模型的参数数量，从而降低计算资源的使用量。
+- **降低训练频率**：可以降低PPO训练频率，减少每个训练周期的次数。
+  - 例如，可增加每个训练周期的时间间隔，或者减少每个周期中的训练步数。这样可以减少训练过程中对计算资源的占用。
+- **模型并行化**：利用多个计算资源进行模型并行化训练，可以加速PPO的训练过程。
+  - 将模型参数分布到多个GPU上，并进行并行计算和通信，以提高训练的效率和速度。
+- **异步训练**：采用异步训练的方式，可在多个计算资源上同时进行PPO的训练。
+  - 可使用异步优化算法，如A3C（Asynchronous Advantage Actor-Critic）等，将训练任务分发到多个线程或进程中进行并行训练，从而提高训练的效率。
+- 云计算和**分布式**训练：利用云计算平台或分布式系统进行PPO的训练，可以充分利用大规模计算资源。
+  - 可以将训练任务分发到多个计算节点上进行分布式训练，以加速训练过程。
+- **参数共享**和**模型缓存**：对于有多个模型的情况，可以考虑共享部分参数或缓存已计算的模型输出。
+  - 通过共享参数和缓存计算结果，可以减少重复计算和存储，从而降低对计算资源的要求。 
+
+综合运用上述方法，可以有效降低PPO训练过程中对计算资源的要求，提高训练的效率和速度。
+
+##### PPO 平替
+
+如何看待各种ppo rlhf的平替算法
+
+平替算法：
+- dpo/kto/rrhf/slic/orpo/samug/remax 等算法号称性能等能超过ppo？
+
+##### DPO
+
+DPO介绍：最大化奖励来优化模型参数。
+
+与ppo相比DPO 绕过了建模奖励函数这一步，而是直接在偏好数据上优化模型来提高性能。
+
+优点：相对RLHF两阶段而言具有多项优越性
+- (1) 简单性稳定性：DPO更容易实施，不易陷入局部最优，保证训练过程更加可靠。
+- (2) 效率：与RLHF 相比, DPO 需要更少的计算资源和数据，使其计算量轻。
+- (3) 有效性：实验结果表明，DPO在**情感控制、摘要和对话生成**等任务中可以优于 RLHF 。
+
+DPO 目标是**优化模型参数以最大化奖励**函数。并不是说DPO没有奖励模型, 而是利用同个阶段训练建立模型和强化学习。除了奖励最大化目标外，还需要添加一个相对于参考模型的 KL 惩罚项，以防止模型学习作弊或钻营奖励模型。
+
+DPO
+- 第0步loss是固定的, loss = sigmoid(b-b) = 0.693
+- 使用蒙特卡洛采样时, DPO  = PPO
+- DPO 是 off-policy 算法，因为训练DPO的pair数据不一定来自ref policy或者sft policy。
+- 而PPO 是 on-policy 算法
+- DPO公式是由PPO的objective公式推导过来
+
+
+缺点：
+- 最大化正负例子的差距得到的模型会塌缩成只有正例子的空间，失去所有负例子的概率。在DPO中就是只会生成正例，负例子输出概率为0。在RM中正例子会无限接近于1，负例子会无限接近于0。那么这样的模型是没有entropy的，抗噪声能力会减弱。如果正负pair标错了，会导致严重后果。
+- 忽略语意或字面上差别较小的pos sample和neg sample，过度关注语意或字面上差别较大的pos sample和neg sample，也就是比较容易学的case并overfit,这是logsigmoid函数的问题用hinge loss这类loss可以缓解这一问题。
+- 不能找出全序关系，如果数据集里有A > B, B > C, C > A这种偏序关系，并不能找到它的nash equivalence的点，只会学乱。
+
+DPO输出越来越长？
+- 并不是一定会越来越长。如果尝试用所有正例子的response都比负例子的短，那么也会输出越来越短。究其原因是由于数据构造原因导致的DPO训练后的模型输出越来越长。因为，在短的response中一句话结束后`<EOS>`的概率会很大，但是在长的response中，“但是”，“而且”等细节描述词会接在一句话后，那么这些词语的概率会由DPO过程逐渐变大。
+
+training positive的概率和training negative的概率都同时下降？
+- DPO的loss是maximize training set中positive和negative的gap。那从公式上它就无法保证training positive的概率是一直上升的。主要和采样的方式以及DPO loss组成相关
+
+DPO 变体有哪些
+- `IPO`: 由于BT model 目标是最大化正负response的reward gap，但其实其中忽略了真实情况下组的pair可能会有噪音，那么无限去扩大reward gap其实是不准确的，也就是overfit了preference的pair数据，那么解决方案是需要限制这个gap的范围。
+- `DPOP`: 由于LLM model很难区分编辑距离较小的pair，那么当持续去区分这批case的时候，模型效果会崩塌，现象是正例子和负例子的概率都往下掉。那么DPOP用了一个新项来惩罚正例往下掉的pair，使得正例概率继续提升。
+- `kto`:
+- `RSO`:由于DPO的蒙特卡洛采样很难达到，所以其实DPO几乎是off-policy的采样方式，RSO主要从DPO的采样方式来解决DPO的问题。
+- `Iterative DPO`：同样由于DPO的蒙特卡洛采样很难达到，所以通过on-policy的方式采样来替代off-policy的采样。
+
+
+
 #### RL+LM研究方向
 
-由于InstructGPT效果太好，RL+LM这个新范式能衍生出哪些研究方向？
+由于 InstructGPT 效果太好，RL+LM 这个新范式能衍生出哪些研究方向？
 - (1) <span style='color:blue'>花式魔改Reward</span>：
   - 监督学习在实际落地时，主要优化方法是加特征、洗数据。对于强化学习也是如此，优化实际RL效果的重点在加特征、调整reward
   - OpenAI在做摘要任务的论文中，就在奖励上增加了KL散度，希望：
@@ -1024,6 +2188,7 @@ META 发布 [LIMA: Less Is More for Alignment](https://arxiv.org/pdf/2305.11206)
 
 【2023-9-26】
 - QWen 技术报告 [QWEN TECHNICAL REPORT](https://arxiv.org/pdf/2309.16609)
+- 【2024-7-19】[QWen2 技术报告](https://zhuanlan.zhihu.com/p/709272621)
 - [通义千问-Qwen技术报告细节分享](https://zhuanlan.zhihu.com/p/658392609)
 - GitHub: [Qwen](https://github.com/QwenLM/Qwen)
 
@@ -1579,6 +2744,50 @@ WSD好处：
 
 
 ## 【2024-5-7】DeepSeek
+
+
+### DeepSeek 介绍
+
+[揭秘DeepSeek:一个更极致的中国技术理想主义故事](https://zhuanlan.zhihu.com/p/720160943)
+
+中国7家大模型创业公司中，[DeepSeek](https://www.deepseek.com/)（深度求索）最不声不响，但又总能以出其不意的方式被人记住。
+- 一年前，这种出其不意源自背后的量化私募巨头`幻方`，大厂外唯一一家储备**万张**A100芯片的公司
+- 一年后，则来自引发中国大模型**价格战**的源头。
+
+被AI连续轰炸的5月，DeepSeek一跃成名。起因是发布的一款名为`DeepSeek V2`开源模型，提供了一种史无前例的性价比：推理成本被降到每百万token仅 1块钱，约等于 Llama3 70B 七分之一，GPT-4 Turbo 七十分之一。
+
+DeepSeek被迅速冠以“AI界拼多多”之称的同时，字节、腾讯、百度、阿里等大厂也按耐不住，纷纷降价。中国大模型价格战由此一触即发。
+
+成见：
+- 美国更擅长从0-1的**技术**创新，而中国更擅长从1-10的**应用**创新。
+
+事实：
+> 与很多大厂烧钱补贴不同，DeepSeek 有利润
+
+DeepSeek 对模型架构进行了**全方位创新**。
+- 提出一种崭新的`MLA`（一种**多头潜在注意力机制**）架构，把显存占用降到了过去最常用的`MHA`架构的**5%-13%**
+- 独创 `DeepSeekMoESparse` 结构，把计算量降到极致，所有这些最终促成了成本的下降。
+
+OpenAI前政策主管、Anthropic联合创始人`Jack Clark`: 
+- DeepSeek “雇佣了一批高深莫测的奇才”，还认为中国制造的大模型，“将和无人机、电动汽车一样，成为不容忽视的力量。”
+
+梁文锋：
+- 并没有什么高深莫测的奇才，都是一些Top高校的`应届毕业生`、没毕业的博四、博五`实习生`，还有一些毕业才几年的年轻人。都是本土
+- 选人标准: 一直都是**热爱**和**好奇心**，所以很多人会有一些奇特的经历。对做**研究**的渴望远超对**钱**的在意。
+- 对顶级人才吸引最大的，肯定是去**解决世界上最难的问题**。其实，顶尖人才在中国是被低估的。因为整个社会层面的**硬核创新太少**了，使得他们没有机会被识别出来。
+
+Attention 架构提出多年来，几乎未被成功改过，更遑论大规模验证；对模型结构进行创新，没有路径可依，要经历很多失败，时间、经济成本都耗费巨大。
+
+而 DeepSeek 成功了，它是 7家中国大模型创业公司中，唯一一家放弃“**既要又要**”路线，至今专注研究和技术，未做toC应用的公司，也是唯一一家**未全面考虑商业化**，坚定选择开源路线甚至都没融过资的公司。
+- 公司 60 个人, 50 个技术, 10 个工程
+
+DeepSeek创始人`梁文锋` 浙江大学电子工程系人工智能方向, 从`幻方时代` 就在幕后**潜心研究技术**的80后创始人，在 DeepSeek 时代，依旧延续低调作风，和所有研究员一样，每天 “**看论文，写代码，参与小组讨论**”。
+
+`梁文锋`是当下中国AI界非常罕见
+- “兼具强大的**infra工程**能力和**模型研究**能力，又能**调动资源**”
+- “既可以从高处做精准判断，又可以在细节上强过一线研究员”的人，他拥有“令人恐怖的学习能力”，同时又“完全不像一个老板，而更像一个极客”。
+
+他是少有把“**是非观**”置于“**利害观**”之前，并提醒看到时代惯性，把“原创式创新”提上日程的人。
 
 
 ### DeepSeek-V2

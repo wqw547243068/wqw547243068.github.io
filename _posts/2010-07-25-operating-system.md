@@ -81,6 +81,15 @@ permalink: /os
 <iframe src="//player.bilibili.com/player.html?aid=545025905&bvid=BV1Xi4y1w7np&cid=322975564&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
+### 字体
+
+【2024-8-24】 Mac 系统字体路径
+- 用户字体路径 `/Library/Fonts`
+- 系统字体路径 `/System/Library/Fonts`
+
+Mac 中文字体包括: 华文黑体 STHeiti、Hei、苹果丽黑 Apple LiGothic、Arial Unicode MS 和 AppleGothic
+- ![](https://www.thetype.com/wp-content/uploads/2009/01/mac_ch_2.jpg)
+
 ### 如何查看显存
 
 【2023-8-8】[使用苹果M1芯片的Mac上的自动显存](https://kb.parallels.com/cn/125351)

@@ -3,7 +3,7 @@ layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
 categories: 技术工具
-tags: 股票 预测 量化交易 时间序列
+tags: 股票 预测 量化交易 时间序列 LLM
 author : 鹤啸九天
 excerpt: 用技术来辅助炒股，优化交易
 mathjax: true
@@ -120,10 +120,6 @@ permalink: /quant
 
 更多：[如何学习量化交易](https://www.zhihu.com/question/22211032/answer/2615443093)
 
-## 炒股工具
-
-- 【2022-1-12】[WnStock](https://github.com/woniu201/WnStock/tree/master/Release), WnStock是个开源的查看股票行情软件，使用VC++/MFC开发，IDE选用Visual Studio 2010，如IDE版本非2010可能会存在编译错误
-- [股票告警分析工具](https://github.com/lusson-luo/stock_tool)
 
 ## 机器学习炒股
 
@@ -862,7 +858,85 @@ plt.plot(valid[['Close','Predictions']])
 在三个市场上进行为期六年的实验，发现STHAN-SR显著优于最先进的神经股票预测方法。通过对STHAN-SR的空间和时间组件进行烧蚀和探索性分析来验证我们的设计选择，并证明其实用性。
 
 
+### TimesNet
+
+【2024-8-18】[短时序预测排名第一的网络模型](https://mp.weixin.qq.com/s/aEY62dNgH_nvsZ8299Dyxw)
+- 【2023-4-12】清华 [TIMESNET: TEMPORAL 2D-VARIATION MODELING FOR GENERAL TIME SERIES ANALYSIS](https://arxiv.org/pdf/2210.02186)
+- 代码 [TimesNet](https://github.com/thuml/TimesNet), 模型定义 [models/TimesNet.py](https://github.com/thuml/Time-Series-Library/blob/main/models/TimesNet.py)
+
+截止2024.3, 时间序列在不同类型数据集合排名
+- TimesNet: 短周期序列的预测上排名第一, 核心是捕捉时序中的多周期关系
+
+TimesNet根据时间序列的多周期性，它的模块化架构能够捕捉来自不同周期的时间模式。对于每个周期，为了捕捉相应的周期内和周期间的变化，我们在TimesNet中设计了一个TimesBlock，它可以将一维时间序列转换为二维空间，并通过一个参数高效的inception模块同时对这两种变化进行建模。
+
+核心思想
+- 用模块化方法进行时间变化建模。通过将一维时间序列转换为二维空间，这样可以同时呈现周期内和周期间的变。这样我们便可以挖掘多重周期性以及周期内和周期间复杂交互。
+- TimesNet使用TimesBlock通过一个参数高效的Inception模块来发现多个周期，并从转换后的二维张量中捕捉时间上的二维变化。
+
+
 ## 大模型与量化
+
+量化交易机器人
+
+### 总结
+
+- 【2024-7-26】哥伦比亚大学 [Large Language Model Agent in Financial Trading: A Survey](https://arxiv.org/pdf/2408.06361),对利用大型语言模型作为**金融交易Agent**进行了首次系统调研，总结了两种主要**架构设计**、四类关键**数据类型**以及**评估方法**，并讨论了当前局限性与未来方向。
+
+从 27 篇用LLM做量化交易的论文中总结出来, 其中 7篇文章标题里包含 Agent
+- Google Scholar 搜索词: LLM for trading, GPT stock agent
+
+Agent 架构分两种
+- (1) LLM as a Trader: 直接生成交易策略, 买入/持有/卖出
+  - news-driven: 最基础类型, 将股票新闻和宏观经济更新信息集成到Prompt中, LLM预测股票下一周期预测趋势, 案例: `LLMFactor`, `MarketSenseAI`
+  - reflection-driven: `FinAgent`, `FinMem`
+  - debate-driven: `TradingGPT`, `HAD`
+  - reinforcement learning(RL)-driven: `SEP`
+- (2) LLM as an `Alpha` Miner: 生成高质量alpha因子,用于下游交易系统
+  - `AlphaGPT`:
+  - `QuantAgent`: 
+
+详见[原文](https://arxiv.org/pdf/2408.06361)
+
+### (1) Trader
+
+
+2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
+- 原文 [52% Returns in 30 Days: Your GPT-4o Quant Trading Bot Strategy](https://readmedium.com/52-returns-in-30-days-your-gpt-4o-quant-trading-bot-strategy-2eb98e9f360b)
+
+用 ChatGPT 创建交易策略。文章：
+- [Use This ChatGPT Trading Bot to Beat 99% of Wall Street Investors!](https://medium.datadriveninvestor.com/use-this-chatgpt-trading-bot-to-beat-99-of-wall-street-investors-cb924ee38d99)
+- [Step-by-Step of How to Create a Profitable Trading Bot & How to Backtest it with Zero Coding Knowledge Needed.](https://medium.datadriveninvestor.com/use-this-chatgpt-trading-bot-to-beat-99-of-wall-street-investors-cb924ee38d99)
+
+一个月内创造了 52% 回报。然而，交易中没有100%确定的事情，过去的结果可能与未来的回报并不一致。
+
+TradingView 测试AI交易策略。
+- 步骤 1 - 选择资产
+  - 对于**均值回归**等量化交易策略来说，**横盘交易**的资产往往能产生更好的效果。
+  - 选择以太坊，因为已经横盘数月。验证能否创建一个在市场横盘甚至下跌时获利的交易机器人。
+- 步骤 2 - 用图表提示 GPT-4o
+  - **简单提示**比冗长复杂提示更有效，提示必须简洁明了。在本例中，结合图表对AI进行了如下提示：
+    - 为图表中的资产创建可盈利的均值回归 Pine 5 量化策略。
+    - Create a profitable mean regression Pine 5 quant strategy for the asset in the chart.
+  - GPT-4o: 策略包括使用**布林带**和 `RSI`
+- 步骤 3 - 将 Pinescript 代码复制/粘贴至 [TradingView](https://www.tradingview.com/?aff_id=120549)
+  - 转到 TradingView 的 Pine Editor 并粘贴代码，然后将其添加到图表中。
+  - 现在，该策略应该可以在图表上和策略测试选项卡中进行回测。
+- 步骤 4 - 微调量化策略
+  - 除了要对策略进行上百次测试以外，还必须手动优化策略。
+  - 在不同的时间框架和不同参数下测试策略，尝试不同的值，看看哪个值能产生最好的结果。将策略应用于实际资金之前，对其进行广泛测试至关重要
+- 出色的回报（回溯测试）
+  - 回测中，GPT-4o 创建的策略产生了非常令人印象深刻的结果
+  - 1 个月的时间里，该策略在交易以太坊（ETH/USD）时创造了 52% 的惊人回报。
+
+
+### (2) Alpha Miner
+
+【2024-9-15】[基于大模型的量化交易股票投资框架，实现自动化策略发现](https://mp.weixin.qq.com/s/bpM0pLlTYLg4Bx4Luw8LOw)
+- [Automate Strategy Finding with LLM in Quant investnent](https://arxiv.org/pdf/2409.06289) 用大型语言模型（LLMs）和多智能体架构，提出了一个新的量化股票投资框架，通过LLMs挖掘alpha因子并使用多智能体动态评估市场条件
+
+
+
+### 观点
 
 【2024-6-26】[“量化四大天王”之一的锐天投资创始人、CEO徐晓波](https://m.gelonghui.com/p/627703)
 - 2013年，徐晓波在上海创立锐天投资，最早从股指期货高频起家，2016年进军资产管理的新赛道，开始建立股票中高频的策略团队。
@@ -872,13 +946,13 @@ plt.plot(valid[['Close','Predictions']])
 
 GPT在量化暂还没有广泛应用
 
-以前大家对AI（含GPT）的认知是一个统计模型
-- 非线性的统计模型，跟一个纯线性的统计模型并没有质的变化
+以前大家对AI（含GPT）的认知是一个**统计模型**
+- **非线性**的统计模型，跟一个纯线性的统计模型并没有质的变化
 
 GPT 是一个非常颠覆式的科技突破和创新
 - 不只停留在模型的网络架构，或者是其中一些环节、流程的创新，而是在于**范式和思想**创新
 
-GPT的**语言理解**能力，比以前越来越强。
+GPT **语言理解**能力，比以前越来越强。
 - 理解能力的增强，一方面来源于参数本身的扩大，同时也来源于语料库的丰富。
 - GPT甚至开始在数学领域证明数学定理——能做一些非常复杂的推理的工作，以前不具备
 
@@ -887,6 +961,7 @@ GPT跟量化的可能性。
 - 量化多以数字形式存在，常用机器学习方法预测收益率，语言模型不适合
   - 但用语言模型去更好地理解多种形态的数据（新闻、研报）值得探索
 - GPT去更好地挖掘一些市场规律？短期内，有待考证
+
 
 ## 工程实践
 

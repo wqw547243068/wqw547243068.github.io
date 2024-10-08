@@ -6,7 +6,7 @@ categories: 机器学习
 tags: 机器学习 周志华 通用逼近定理 归纳 演绎 漂移 逼近 本质
 excerpt: 机器学习的本质到底是什么？有哪些优缺点，存在哪些局限性
 mathjax: true
-permalink: /ml
+permalink: /ml_essense
 ---
 
 * content
@@ -66,7 +66,7 @@ permalink: /ml
 通用逼近定理 Universal Approximation Theorem
 - a feed-forward network with a single hidden layer containing a finite number of neurons can approximate any continuous function.
 - <span style='red'>**单隐层**神经网络即可任意逼近闭集上的任意连续函数，只要隐层节点数量足够多</span>
-- By approximate, we mean that by using enough hidden neurons, we can always find a neural network whose output $ g(x) $ satisfies $ |g(x)−f(x)|<ϵ $, for all inputs x.
+- By approximate, we mean that by using enough hidden neurons, we can always find a neural network whose output $ g(x) $ satisfies `|g(x)−f(x)|<ϵ`, for all inputs x.
 - In other words, the approximation will be good to within the desired accuracy for every possible input. And if a function is discontinuous, i.e., makes sudden, sharp jumps, then it won’t, in general, be possible to approximate using a neural net. 
 
 【2023-2-19】[Jason Wei](https://jasonwei20.github.io/posts/2018/1/blog-post-2/)的老师 Cybenko：

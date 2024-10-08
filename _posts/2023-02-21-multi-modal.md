@@ -201,12 +201,34 @@ The “deep learning” era (2010s until …)，促使多模态研究发展的�
 - 2）GPU快速计算
 - 3）强大的视觉特征抽取能力
 - 4）强大的语言特征抽取能力。
+                        
 
+## 多模态结构
 
+多模态人工智能强调不同模态数据之间的**互补性**和**融合性**，通过整合多种模态的数据，利用表征学习、模态融合与对齐等技术，实现跨模态的感知、理解和生成，推动智能应用的全面发展。
 
-## 多模态典型任务
+三部分：**数据采集与表示**、**数据处理与融合**、**学习与推理**
+- 传感器：多模态学习中，传感器用于捕捉不同模态的数据，如摄像头捕捉图像（视觉模态）、麦克风捕捉声音（声音模态）等。
+  - 传感器是多模态数据采集的起点，它使得机器能够感知并获取来自不同物理世界的信息。
+  - 模态是指信息的表现形式或感知方式，如文本、图像、声音、视频等
+  - 多模态是指利用来自多个不同模态的数据进行学习和推理的过程。这些模态可以是文本、图像、声音、视频等的组合。
+  - 不同模态提供了不同的信息渠道，它们之间可能存在冗余性，但更多的是互补性。多模态模型能够整合来自不同模态的信息，正是利用这些不同模态的信息来增强模型的感知与理解能力。
+- 模态融合：将来自不同模态的信息进行有效整合的过程。
+  - **早期**融合：在数据处理的早期阶段就将不同模态的数据合并在一起。
+  - **晚期**融合：在数据处理的后期阶段才将不同模态的信息进行整合。
+  - **混合**融合：结合早期融合和晚期融合的优点，在不同的处理阶段进行多次融合。
+  - 模态融合能够充分利用不同模态之间的互补性，提高模型的性能和鲁棒性。
+- 模态对齐：寻找来自不同模态数据之间的对应关系或一致性。
+  - **时间**维度对齐：如将视频中的动作与音频中的语音进行对齐。
+  - **空间**维度对齐：如将图像中的像素与文本中的单词进行对齐。
+  - 模态对齐是多模态学习中实现不同模态信息有效融合的重要前提。通过对齐操作，可以确保不同模态的数据在时间和空间上保持一致性，从而进行更有效的融合和推理。
+- **多模态学习**：利用来自多个不同模态的数据进行学习和推理的过程。
+  - 它旨在整合不同模态之间的互补信息，以提高模型的感知与理解能力。
+  - 多模态学习是当前人工智能领域的一个研究热点，它推动了智能应用的边界扩展。通过多模态学习，可以构建更加智能、更加全面的系统来应对复杂多变的现实世界。
 
 多模态机器学习的核心任务主要包括`表示学习`，`模态映射`，`模态对齐`，`模态融合`，`协同学习`。
+
+
 
 ### 表示学习
 
@@ -228,6 +250,8 @@ The “deep learning” era (2010s until …)，促使多模态研究发展的�
 - <img src="https://picx.zhimg.com/50/v2-1d732cb95b79362f2ca3129fed2af035\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1190" data-rawheight="295" class="origin\_image zh-lightbox-thumb" width="1190" data-original="https://picx.zhimg.com/v2-1d732cb95b79362f2ca3129fed2af035\_r.jpg?source=1940ef5c"/>
 - 检索任务（Index Task）：主要包括文本检索图片或者图片检索文本，检索任务应该不用加以过多的解释了，比较好理解，就是以文搜图或者以图搜文。下面图中就是Google 以图搜文的服务，当然包括华为手机里面的截图识字，淘宝拼多多的以文搜图等身边很多诸如此类的服务啦。
 - <img src="https://pic1.zhimg.com/50/v2-ae0f2f691f4c09ef198b3575f71b2a31\_720w.jpg?source=1940ef5c" data-caption="" data-size="normal" data-rawwidth="1493" data-rawheight="553" class="origin\_image zh-lightbox-thumb" width="1493" data-original="https://picx.zhimg.com/v2-ae0f2f691f4c09ef198b3575f71b2a31\_r.jpg?source=1940ef5c"/>
+
+
 
 ### 跨模态预训练
 
@@ -354,6 +378,101 @@ CLIP流程有三个阶段：
 
 ## 多模态模型
 
+
+### 多模态模型榜单
+
+【2024-8-2】[中文多模态大模型基准8月榜单发布！8大维度30个测评任务，3个模型超过70分](https://mp.weixin.qq.com/s/8QtQCk-z2QfZVl6jmYuJMg)
+
+测评要点
+- 1：**GPT-4o领跑**
+  - `GPT-4o` 取得74.36分，领跑多模态基准。其中基础多模态认知能力和应用能力均有70+分的表现，在技术和应用方面均有一定领先优势。
+- 2：**国内多模态大模型表现不俗**
+  - 国内多模态大模型 `hunyuan-vision` 和 `InternVL2-40B` 表现不俗，取得70+分的优异成绩，仅次于 `GPT-4o`。尤其在多模态应用方面领先 `Claude3.5-Sonnet` 和 `Gemini-1.5-Pro`，展现出较强的应用优势。
+- 3：国内大模型**基础能力仍需提升**
+  - 在基础能力方面国内大模型较海外模型仍有一定差距，尤其在细粒度视觉认知任务上，国内外最好模型有5分的差距，需要进一步对多模态深度认知能力做优化提升。
+
+> GPT-4o > hunyuan-vision > InterVL2-40B > Claude3.5-Sonnet > Gemini-1.5-Pro > Step-1V-8k > GPT-4-Turbo-0409 > GLM-4v > Qwen-VL-Max > ERNIE-4-Turbo > Qwen-VL-Plus > Yi-VL-34B
+
+
+### 模型汇总
+
+[多模态大模型入门指南-长文慎入](https://zhuanlan.zhihu.com/p/682893729)
+
+模型架构5个部分：**模态编码器**、**输入投影器**、**语言模型**骨干、**输出投影器**和**模态生成器**。
+- ![](https://picx.zhimg.com/80/v2-d1f277adfe5d90b5a872fc2acaa6f08f_1440w.webp)
+- 多模态理解主要是前三个部分。（模态对齐）训练期间，encoder，LLM Backbone 和 generator 一般保持冻结。
+- 主要优化输出和输出的 projector。由于Projector 是轻量级的模块，MM-LLMs 中可以训练的参数比例和总参数相比非常小（2% 左右），模型的总体参数规模取决于LLM 部分。
+
+对比分析
+- Vision Encoder 视觉编码器 
+- VL Adapter 转换器  
+- Projection Layer 映射层
+
+| 模型   | 时间 | 机构 | 分辨率 | 模型大小 | 视觉编码器 | 转换器  | LLM    | 映射层 | 备注    |
+|-------|---------|------|------|------|--------|---------|----------|-----|----------|
+| `Flamingo`        | 2022.04 | DeepMind  | 480      | 80P    | NFNet F6            | Perceiver Resampler | Chinchilla 70B + GATED XATTN-DENSE   |     | 接入LLM的多模态      |
+| `BLIP-2`          | 2023.01 | Saleforce | 224      | 7B     | EVA-CLIP ViT-g/14   | Q-Former            | Flan-T5/OPT-6.7B        |     |        |
+| `MiniGPT4-v1`     | 2023.04 | KAUST     | 224      | 13B    | EVA-CLIP ViT-g/14   | Q-Former+MLP        | Vicuna-13B-v0     |     | 基于BLIP-2进行改进   |
+| `InstructBLIP`    | 2023.05 | Saleforce | 224      | 13B    | EVA-CLIP ViT-g/14   | Q-Former            | Flan-T5/Vicuna-13B    |     | 对BLIP2进行大规模    |
+| `VisualGLM-6B`    | 2023.05 | 智谱      | 224      | 6B     | EVA-CLIP ViT-g/14   | Q-Former            | ChatGLM-6B   |     |                |
+| `Shikra`          | 2023.06 | 字节      | 224      | 7B/13B | CLIP ViT-L/14       | 一层MLP               | Vicuna-7B/13B(PEFT)   |     | LLaVA结构        |
+| `Qwen-VL`         | 2023.08 | 阿里通义    | 448      | 9B     | OpenCLIP ViT-G/14   | Cross Attention     | Qwen-7B   |     | 只用了一层Cross Attention |
+| `InternLM-XComposer-VL`| 2023.09 | 上海Al Lab | 224      | 7B     | EVA-CLIP ViT-g/14   | Q-Former            | InternLM-7B  |     | 支持图文混排         |
+| `mPLUG-Owl`       | 2023.04 | 达摩院   | 224      | 7B     | CLIP ViT-L/14       | Perceiver Resampler | LLaMA-7B  |     | 改装自Flamingo    |
+| `mPLUG-Owl V2`    | 2023.11 | 达摩院   | 448      | 7B     | CLIP ViT-L/14       | Perceiver Resampler | LLaMA-7B                             |     | 添加模态自适应的M      |
+| `ShareGPT4V`      | 2023.11 | 上海Al Lab | 336      | 7B     | CLIP ViT-L/14       | 两层MLP               | Vicuna-7B-v1.5  |     | 使用GPT4V提供了-    |
+| `Sphinx`          | 2023.11 | 上海Al Lab | 224      | 13B    | -ConvNext, DINO-v2, | 两个不同的Projector      | LLaMA-2-13B  |     | 将四个不同的encod    |
+| `CogVLM-17B`      | 2023.11 | 智谱    | 224->496 | 17B    | EVA-CLIP ViT-E/14   | 两层Linear            | Vicuna-7B-v1.5 +Visual Expert Module |     | 视觉专家,文本和视      |
+| `Ferret`          | 2023.11 | 添加 Spatial Aware | 336      | 7B/13B | CLIP ViT-L/14       | 一层Linear            | Vicuna-7B/13B-v1.3    |     |      |
+| `MiniGPT-V2`      | 2023.11.7  | Meta AI, KAUST  | 448      | 7B     | EVA-CLIP ViT-G/14   | 一层Linear            | LLaMA2-chat 7B   |     |       |
+| `Qwen-VL2`         | 2024.09 | 阿里通义    | 448      | 9B     |  ViT/14   | Cross-Modal Connection   | Qwen2-1.5B<br>Qwen2-7B <br>Qwen2-72B   |     | 1. ViT <br>2.全参 <br>3.LLM |
+
+
+发展历程图解
+- 最初集中在多模态的**内容理解**和**文本生成**: 
+  - Flamingo,BLIP-2, Kosmos-1,LLaVA/LLaVA-1.5/LLaVA-1.6，MiniGPT-4，MultiModal-GPT，Video-Chat，VIdeo-LLaMA，IDEFICS，Fuyu-8B，Qwen-Audio
+- 同时实现**多模态的输入和输出**工作: MM-LMM，探索特定模态的生成
+  - 例如 Kosmos-2，Mini-GPT5，以及语音生成的 SpeechGPT
+- 将 **LLM 和外部工具继承**进来，实现“any-to-any”的多模态理解和生成。
+  - visual-chatgpt，ViperGPT，MM-React，HuggingGPT，AudioGPT
+- 减少级联过程中传播误差的工作, 开发**任意模式**的多模态模型
+  - NExT-GPT 和 CoDI-2，
+
+![](https://pic3.zhimg.com/80/v2-83bd973cca2e49efa74d8972c7b97f82_1440w.webp)
+
+
+
+
+
+
+### 多模态模块
+
+**多模态大模型**(`MLLMs`)5个核心模块
+- `Modality Encoder`：`模态编码器`，将不同**模态**输入数据（如图片、视频、音频、3D等），编码为可理解的表示（隐层向量）
+  - `Visual Modality`: `ViT`, transformers 替换 cnn
+    - 图片补丁 `image patch encoder`: 不用像素, 而是 用视野和步幅较大的卷积核提取**图片补丁**上的特征
+    - 图片补丁位置嵌入: `image patch position embedding`, 查询表
+- `Input Projector`: `输入映射`，将不同模态的向量表示映射到共享表示空间，和LLM语义对齐
+- `LLM Backbone`: `大语言模型基座`，LLM基座模型，用于处理文本数据
+- `Output Projector`: `输出映射`，将LLM生成的输出,映射回**原始模态**空间,和各模态对齐
+- `Modality Decoder`: `模态解码器`, 或 `Modality Generator` **模态生成器** ，将各模态语义解码为对应的模态
+
+注意
+- 注重 Comprehension and text generation 的多模态模型，只需要**前3个**模块
+- 预训练阶段，Modality Encoder、LLM Backbone、Modality Decoder 一般都会**冻结参数**，只优化 Input Projector 和 Output Projector（约占整体参数的2%），因而训练一个多模态模型的成本会小很多。
+- SFT阶段，LLM一般也会参与，因而SFT阶段需要更多显存。
+
+
+
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.12\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;2069\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-24\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-540\&quot; y=\&quot;360\&quot; width=\&quot;400\&quot; height=\&quot;270\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;多模态模型组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-214.56\&quot; y=\&quot;260\&quot; width=\&quot;160\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;UnDAMuxRGoDYzSfqeH0n-51\&quot; value=\&quot;2024-9-16&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=2;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;190\&quot; y=\&quot;545\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; value=\&quot;Input Projector&amp;lt;div&amp;gt;输入映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-504.11\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot; value=\&quot;Output Projector&amp;lt;div&amp;gt;输出映射层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#009900;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;95.89\&quot; y=\&quot;420\&quot; width=\&quot;114.11\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; value=\&quot;Modality Encoder&amp;lt;div&amp;gt;模态编码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.15000000000003\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; value=\&quot;Modality Decoder&amp;lt;div&amp;gt;模态解码层&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000002\&quot; y=\&quot;420\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-8\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-87.69999999999992\&quot; y=\&quot;713.01\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-294.11\&quot; y=\&quot;765\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-380.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-295.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-11\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-9\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164.11\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100.11\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot; value=\&quot;&amp;lt;div&amp;gt;LLM Backbone&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;大语言模型基座&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#FF3399;shadow=1;fontStyle=1;fontSize=14;strokeWidth=3;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-305.1500000000001\&quot; y=\&quot;560\&quot; width=\&quot;131.04\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-16\&quot; value=\&quot;&amp;lt;div&amp;gt;各模态转为隐向量&amp;lt;/div&amp;gt;视觉模型: ViT替换CNN\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-314.11\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-18\&quot; value=\&quot;不同模态的语义向量与LLM对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-530\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-19\&quot; value=\&quot;LLM语义与模态语义对齐\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;70\&quot; y=\&quot;460\&quot; width=\&quot;177.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-10\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-164\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-100\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-22\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;YTmzy6fBNNcobJbAdKNS-15\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-230\&quot; y=\&quot;470\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-39.710000000000036\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-23\&quot; value=\&quot;模态语义转为对应模态\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.71000000000001\&quot; y=\&quot;390\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-25\&quot; value=\&quot;侧重模态理解+文本生成的多模态模型\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-460\&quot; y=\&quot;630\&quot; width=\&quot;212.2\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-26\&quot; value=\&quot;注意&amp;lt;div&amp;gt;- 训练时, 中间3个（红框）参数冻结&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- 只更新输入、输出映射层（绿框）, 参数量约2%&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;- SFT阶段, llm 也参数&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FF3333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-120\&quot; y=\&quot;585\&quot; width=\&quot;270\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+
+
+
 ### 模型进化史
 
 <div class="mermaid">
@@ -379,6 +498,238 @@ CLIP流程有三个阶段：
     C-->|pretrain|L
     O-->|2023-4-27,OpenMMLab\nLoRA微调| MG(MMGPT):::grass
 </div>
+
+
+## 多模态技术路线
+
+【2024-7-30】
+
+| 大方向 | 子方向 | 代表工作 |
+| --- | --- | --- |
+| 内容理解和文本生成<br>Comprehension and text generation | image-text understanding | BLIP-2, llaVA, MiniGPT-4, OpenFlamingo |
+| 内容理解和文本生成<br>Comprehension and text generation | video-text understanding | VideoChat, Video-ChatGPT, LLaMA-VID
+| 内容理解和文本生成<br>Comprehension and text generation | audio-text understanding | Qwen-Audio |
+| 特定模态<br>specific modality outputs | image-text output | GILL, Kosmos-2, Emu, MiniGPT-4 |
+| 特定模态<br>specific modality outputs | speech/audio-text output | speechGPT, AudioPaLM |
+| 任意模态<br>any-to-any modality outputs |  amalgamate tools | VisualChatGPT, HuggingGPT, AudioGPT |
+| 任意模态<br>any-to-any modality outputs | end-to-end | NExT-GPT, CoDi-2, ModaVerse |
+
+【2024-5-30】[多模态模型的演进和四种主流架构类型](https://blog.csdn.net/robinfang2019/article/details/139322252)
+
+多模态按照架构模式分为四类：A、B、C、D。
+- A和B类型在模型内部，深度融合多模态输入，实现细粒度控制模态信息流动，但需要大量训练数据和计算资源；
+- C和D类型在输入层，融合多模态输入
+  - C类型具有**模块化**设计，可以容易地添加更多模态。
+  - D类型使用标记化，可训练不同模态，但需要训练通用标记器。
+
+按照不同架构模式，跟踪多模态发展里程碑：
+
+### 多模态发展里程碑
+
+
+多模态发展里程碑
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.14\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;2069\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;2rrU_kqTqN86A4O8P-Nc-53\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#666666;dashed=1;dashPattern=1 1;opacity=50;fontColor=#333333;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-510\&quot; y=\&quot;806.99\&quot; width=\&quot;190\&quot; height=\&quot;363.01\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;多模态技术演进\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-60\&quot; y=\&quot;340\&quot; width=\&quot;160\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;UnDAMuxRGoDYzSfqeH0n-51\&quot; value=\&quot;2024-7-16&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;strokeWidth=2;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-490\&quot; y=\&quot;1125\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;2rrU_kqTqN86A4O8P-Nc-3\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-9\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-12\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;313.84999999999985\&quot; y=\&quot;773\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-1\&quot; value=\&quot;Transformers\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-247.29000000000002\&quot; y=\&quot;380\&quot; width=\&quot;104.83\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-2\&quot; value=\&quot;VL-T5\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-249.33999999999997\&quot; y=\&quot;620\&quot; width=\&quot;112.16\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; value=\&quot;Flamingo&amp;lt;div&amp;gt;火烈鸟&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-250\&quot; y=\&quot;730\&quot; width=\&quot;112.82\&quot; height=\&quot;33.01\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-7\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-13\&quot; target=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-37.08\&quot; y=\&quot;743\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-185.08\&quot; y=\&quot;603\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-12\&quot; value=\&quot;【A】标准交叉注意力\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-390\&quot; y=\&quot;760\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-22\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-13\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-16\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-400\&quot; y=\&quot;880\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-3\&quot; value=\&quot;开源实现\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;\&quot; parent=\&quot;D7jkmO4b4NPNle1_V9Gg-22\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.0616\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-19\&quot; y=\&quot;-14\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-13\&quot; value=\&quot;Flamingo\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-449.11\&quot; y=\&quot;815\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; target=\&quot;D7jkmO4b4NPNle1_V9Gg-13\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-218\&quot; y=\&quot;746.99\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-218\&quot; y=\&quot;818.99\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;D7jkmO4b4NPNle1_V9Gg-24\&quot; value=\&quot;2017年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;370\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-1\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#CCCCCC;\&quot; parent=\&quot;1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-520\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-520\&quot; y=\&quot;1110\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-2\&quot; value=\&quot;2020年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;510\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-3\&quot; value=\&quot;2021年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;570\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-4\&quot; value=\&quot;2018年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;410\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-5\&quot; value=\&quot;2019年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;460\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-6\&quot; value=\&quot;2022年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;690\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-7\&quot; value=\&quot;2023年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;810\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-8\&quot; value=\&quot;2024年\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#999999;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-580\&quot; y=\&quot;940\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-10\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-1\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-9\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-195.06\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-195.06\&quot; y=\&quot;610\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-11\&quot; value=\&quot;首次应用于视觉领域\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;\&quot; parent=\&quot;rftaN9jHHxlRs_W2yEbK-10\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.0773\&quot; y=\&quot;-1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-4\&quot; y=\&quot;32\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-9\&quot; value=\&quot;ViT\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-249.33999999999997\&quot; y=\&quot;513\&quot; width=\&quot;109.35\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-12\&quot; value=\&quot;CLIP\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-249.57\&quot; y=\&quot;573\&quot; width=\&quot;109.35\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-13\&quot; value=\&quot;S4\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-249.33999999999997\&quot; y=\&quot;673\&quot; width=\&quot;112.16\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-14\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-2\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-13\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-185.08\&quot; y=\&quot;573\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-185.08\&quot; y=\&quot;643\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-15\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-12\&quot; target=\&quot;D7jkmO4b4NPNle1_V9Gg-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-185.08\&quot; y=\&quot;573\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-52.08\&quot; y=\&quot;593\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-16\&quot; value=\&quot;OpenFlamingo\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-409.11\&quot; y=\&quot;910\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-17\&quot; value=\&quot;Dolphins\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-413\&quot; y=\&quot;1041.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-18\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-13\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-389\&quot; y=\&quot;886.99\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-389\&quot; y=\&quot;918.99\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-19\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;dashPattern=1 1;opacity=50;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-307.82\&quot; y=\&quot;810\&quot; width=\&quot;140\&quot; height=\&quot;370\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-20\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-21\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-22\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-21\&quot; value=\&quot;LLaMA-Adapter\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-294.96000000000004\&quot; y=\&quot;846.99\&quot; width=\&quot;116.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-22\&quot; value=\&quot;LLaMA-Adapter-V2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-304.96000000000004\&quot; y=\&quot;908.98\&quot; width=\&quot;136.05\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-23\&quot; value=\&quot;CogAgent\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-286.05\&quot; y=\&quot;976.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-24\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-22\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-226.82\&quot; y=\&quot;890\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-226.82\&quot; y=\&quot;922\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=1 1;opacity=50;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-150\&quot; y=\&quot;815\&quot; width=\&quot;210\&quot; height=\&quot;365\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-26\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-27\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-28\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-27\&quot; value=\&quot;BLIP2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-109.10999999999999\&quot; y=\&quot;855\&quot; width=\&quot;58.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-28\&quot; value=\&quot;InstructBLIP\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-128.23000000000002\&quot; y=\&quot;916.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-29\&quot; value=\&quot;Next-GPT\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-128.23000000000002\&quot; y=\&quot;990\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-30\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-28\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-29\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-69\&quot; y=\&quot;895\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-69\&quot; y=\&quot;927\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-31\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;dashPattern=1 1;opacity=50;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;109.99999999999999\&quot; y=\&quot;815\&quot; width=\&quot;140\&quot; height=\&quot;280\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-32\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-33\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-34\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-33\&quot; value=\&quot;CM3Leon\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;142.54999999999995\&quot; y=\&quot;923.01\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-34\&quot; value=\&quot;Unified-IO\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;142.54999999999995\&quot; y=\&quot;985\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-35\&quot; value=\&quot;Unified-IO-2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;142.54999999999995\&quot; y=\&quot;1050\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-36\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-34\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-35\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;201.77999999999997\&quot; y=\&quot;963.01\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;201.77999999999997\&quot; y=\&quot;995.01\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-37\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.556;entryY=-0.007;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-19\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-218\&quot; y=\&quot;777\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-389\&quot; y=\&quot;857\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-38\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-25\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-218\&quot; y=\&quot;777\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-227\&quot; y=\&quot;860\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-39\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;D7jkmO4b4NPNle1_V9Gg-3\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-31\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-218\&quot; y=\&quot;777\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-70\&quot; y=\&quot;825\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-40\&quot; value=\&quot;mPLUG-Owl2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-286.05\&quot; y=\&quot;1011.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-41\&quot; value=\&quot;InternVL\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-286.93\&quot; y=\&quot;1041.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-42\&quot; value=\&quot;MM-Interleaved\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-286.04999999999995\&quot; y=\&quot;1095\&quot; width=\&quot;104.96\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-43\&quot; value=\&quot;CogCoM\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-286.93\&quot; y=\&quot;1130\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-44\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.581;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-41\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-42\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-227\&quot; y=\&quot;949\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-227\&quot; y=\&quot;987\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-45\&quot; value=\&quot;LLaVA\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-25\&quot; y=\&quot;845\&quot; width=\&quot;60.88\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-46\&quot; value=\&quot;MiniGPT-4\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-40\&quot; y=\&quot;878.98\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-47\&quot; value=\&quot;QWen-VL\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-48.669999999999995\&quot; y=\&quot;1011.99\&quot; width=\&quot;78.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-48\&quot; value=\&quot;CoDI-2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-128.23000000000002\&quot; y=\&quot;1056.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-49\&quot; value=\&quot;ModaVerse\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-128.23000000000002\&quot; y=\&quot;1116.99\&quot; width=\&quot;98.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-50\&quot; value=\&quot;MM1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-19.11\&quot; y=\&quot;1116.99\&quot; width=\&quot;49.11\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-51\&quot; value=\&quot;GILL\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-24.99\&quot; y=\&quot;916.99\&quot; width=\&quot;34.99\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-52\&quot; value=\&quot;Embodied-GPT\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-54.56\&quot; y=\&quot;946.99\&quot; width=\&quot;109.11\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-53\&quot; value=\&quot;4M\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;245.89\&quot; y=\&quot;985\&quot; width=\&quot;36.66\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-54\&quot; value=\&quot;TEAL\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;292.55\&quot; y=\&quot;985\&quot; width=\&quot;36.66\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-56\&quot; value=\&quot;【B】定制层\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-247.29000000000002\&quot; y=\&quot;770\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-59\&quot; value=\&quot;【C】非token早期融合\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-130.44\&quot; y=\&quot;780\&quot; width=\&quot;160\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;rftaN9jHHxlRs_W2yEbK-60\&quot; value=\&quot;【D】分词器早期融合\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;54.550000000000004\&quot; y=\&quot;770\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-1\&quot; value=\&quot;优点：多模态信息精细控制&amp;lt;div&amp;gt;缺点：模型复杂，计算开销大，扩展难&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;strokeWidth=2;fontFamily=Verdana;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-500\&quot; y=\&quot;775\&quot; width=\&quot;240\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-2\&quot; value=\&quot;Otter\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-400\&quot; y=\&quot;970\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-4\&quot; value=\&quot;MultiModal-GPT\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-424.11\&quot; y=\&quot;1006.99\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-5\&quot; value=\&quot;IDEFICS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-493\&quot; y=\&quot;908.98\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-6\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-16\&quot; target=\&quot;YTmzy6fBNNcobJbAdKNS-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-389\&quot; y=\&quot;949\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-451\&quot; y=\&quot;987\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;YTmzy6fBNNcobJbAdKNS-7\&quot; value=\&quot;PaLi-X\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-504.11\&quot; y=\&quot;970\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-1\&quot; value=\&quot;2020年,谷歌将transformer用于图像任务, 使用了encoder部分；&amp;lt;div&amp;gt;模型简单效果好,可扩展&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-137.18\&quot; y=\&quot;500\&quot; width=\&quot;210\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-2\&quot; value=\&quot;2021-2-26,OpenAI,&amp;amp;nbsp;文本和图像混合预训练,零样本迁移学习,4亿文本图像对&amp;lt;div&amp;gt;文本编码器+图像编码器，映射到矩阵&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-125\&quot; y=\&quot;563\&quot; width=\&quot;215\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-3\&quot; value=\&quot;2022-4-29,DeepMind&amp;lt;div&amp;gt;多模态多任务框架&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-330\&quot; y=\&quot;706.51\&quot; width=\&quot;120.44\&quot; height=\&quot;23.49\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-4\&quot; value=\&quot;2022-2-15,Junnan Li, Salesforce Research&amp;lt;br&amp;gt;统一理解和生成；\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-40\&quot; y=\&quot;680\&quot; width=\&quot;240\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-5\&quot; value=\&quot;BLIP\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-108.22999999999999\&quot; y=\&quot;696.51\&quot; width=\&quot;58.23\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-6\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-12\&quot; target=\&quot;z5jKJojGF6zH0VbhjXEN-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-185\&quot; y=\&quot;613\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-183\&quot; y=\&quot;630\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z5jKJojGF6zH0VbhjXEN-5\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-27\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-130\&quot; y=\&quot;598\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-35\&quot; y=\&quot;707\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-8\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#009900;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;rftaN9jHHxlRs_W2yEbK-27\&quot; target=\&quot;rftaN9jHHxlRs_W2yEbK-46\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-70\&quot; y=\&quot;895\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;-69\&quot; y=\&quot;927\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-9\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z5jKJojGF6zH0VbhjXEN-3\&quot; target=\&quot;z5jKJojGF6zH0VbhjXEN-3\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z5jKJojGF6zH0VbhjXEN-10\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&amp;quot;&amp;gt;轻量级 Q-former弥补模态间差距&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-153.68\&quot; y=\&quot;820\&quot; width=\&quot;174.56\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+### 1、A型多模态模型
+
+A类模型：基于**标准交叉注意力**的深度融合（Standard Cross-Attention based Deep Fusion, SCDF）。
+
+#### 1.1 特点
+
+特点
+- 内部层深度融合：该架构使用标准的Transformer模型，并在模型的内部层添加了标准的交叉注意力层，以实现输入多模态信息的深度融合。
+- 不同模态输入编码：每个输入模态（图像、视频、音频等）都通过对应的编码器进行编码，然后将编码后的多模态特征输入到模型内部层。
+- 跨模态特征融合：模型内部层通过标准的交叉注意力层对不同模态的特征进行融合，使模型能够同时处理多个模态的信息。
+- 多模态解码器：通常采用只包含解码器的Transformer模型作为多模态解码器，用于生成多模态输出。
+- 自回归生成：多模态解码器可以实现多模态输入的自回归生成，即生成多模态输出。
+- 训练数据需求：需要大量多模态训练数据，计算资源需求较高。
+- 添加模态困难：在模型内部层添加更多模态比较困难。
+
+#### 1.2 优势与不足
+
+A类型多模态模型
+- 优势：多模态信息精细控制
+- 不足：计算资源需求较高，模型复杂，添加模态困难。
+
+#### 1.3 典型模型开源代码
+
+- `Flamingo` 
+  - 官方代码 [flamingo](https://github.com/flamingo-vl/flamingo)
+  - 基于Transformer 多模态模型，可处理图像和文本数据。
+- `OpenFlamingo`
+  - 官方代码：OpenAI [flamingo](https://github.com/openai/flamingo)
+  - 开源Flamingo模型实现，提供了模型的复现。
+- `Otter`
+  - 官方代码： 微软 [otter-generative](https://github.com/microsoft/otter-generative)
+  - 基于OpenFlamingo的多模态模型，可处理图像和文本数据。
+- `MultiModal-GPT`
+  - 官方代码： [multimodal-gpt](https://github.com/tuanvu2203/multimodal-gpt)
+  - 基于OpenFlamingo的多模态模型，可以处理图像和文本数据。
+- `PaLI-X`
+  - 官方代码： 微软 [PALI-X](https://github.com/microsoft/PALI-X)
+  - 多模态模型，可以处理图像、文本和视频数据。
+- `IDEFICS`
+  - 官方代码： 谷歌 [IDEFICS](https://github.com/google/IDEFICS)
+  - 开源的Flamingo模型的实现，提供了模型的复现。
+- `Dolphins`
+  - 官方代码： 微软 [Dolphins](https://github.com/microsoft/Dolphins)
+  - 基于OpenFlamingo的多模态模型，用于自动驾驶场景。
+
+### 2、B型多模态模型
+
+B类模型
+- 基于定制层的**深度融合**（Custom Layer based Deep Fusion, CLDF），在多模态学习中以其定制化的层和深度融合策略而著称。
+
+#### 2.1 特点
+
+- 使用自定义层进行模态融合：与A类型模型不同，B类型模型不使用标准的Transformer跨注意力层来融合多模态输入，而是采用自定义设计的层来进行模态间的融合。这些自定义层可以是自注意力层、卷积层、线性层等。
+- 跨注意力层或自定义层的深度融合：多模态输入通过模态编码器进行处理，然后通过自定义层或跨注意力层与语言模型进行深度融合。这种深度融合有助于模态间的信息交互和共享。
+- 解码器端多模态模型为主：通常包含一个预训练的语言模型，用于作为解码器。模态编码器处理不同模态的数据，然后通过自定义层或跨注意力层与解码器层进行融合，从而生成多模态的输出。
+- 模态交互和共享机制：通过自定义层或跨注意力层实现模态间的交互和共享。这种机制有助于模型更好地理解多模态数据之间的关联性。
+- 支持更多模态类型：自定义层设计可以支持更多类型的模态，包括图像、文本、音频、视频等。通过灵活的自定义层设计，模型可以适应不同的多模态任务需求。
+- 训练数据和计算资源需求：训练需要大量的多模态数据和计算资源。自定义层的设计需要大量的实验和调参来优化模型性能。
+- 可扩展性：自定义层设计具有一定的可扩展性，可以方便地添加新的模态类型。然而，模型的扩展性仍然有限，需要仔细设计自定义层以支持新的模态类型。
+
+#### 2.2 优势与不足
+
+优势
+- 细粒度模态控制：模型可以通过自适应注意力层或自适应模块更好地控制不同模态信息在模型中的流动，实现细粒度的模态融合。
+- 灵活的架构设计：自适应注意力层或自适应模块可以根据不同的任务需求进行定制设计，提供更多的灵活性。
+- 降低计算复杂度：相比Type-A，B类型模型不需对LLM内部层进行大规模的修改，计算复杂度较低。
+- 可扩展性：模型支持增加新的模态，只需要在输入层添加新的自适应模块或注意力层即可。
+
+不足
+- 计算资源需求：虽然B类型模型计算复杂度较低，但相比C类型，训练和推理仍然需要较多的计算资源。
+- 训练难度：自适应注意力层或自适应模块的设计和训练需要较深的神经网络知识，对研究者有一定挑战。
+- 模态融合控制：虽然提供了细粒度的模态控制，但过多控制可能导致模态信息的过度融合或不融合，需要仔细设计。
+- 参数数量：添加自适应注意力层或自适应模块会增加模型参数数量，增加计算和存储需求。
+- 性能：相比C类型，B类型模型的性能可能略低，因为模型设计更为复杂，需要更多训练数据和计算资源。
+
+#### 2.3 典型B类模型开源代码
+
+- `LLaMA-Adapter`
+  - 官方代码：[llama-adapter](https://github.com/microsoft/llama-adapter)
+  - 采用自适应注意力层进行模态融合，适用于文本和图像输入，并输出文本。
+- `LLaMA-Adapter-V2`
+  - 官方代码：[paper](https://arxiv.org/abs/2304.15010)
+  - 在LLaMA-Adapter基础上增加了视觉指令模型，使用自适应注意力层进行模态融合，适用于文本和图像输入，并输出文本。
+- `CogVLM`
+  - 官方代码：微软 [cogvlm](https://github.com/microsoft/cogvlm)
+  - LLM注意力层之前添加了自适应注意力层，用于学习图像特征，适用于图像和文本输入，并输出文本。
+- `mPLUG-Owl2`
+  - 官方代码：微软 [mplug-owl](https://github.com/microsoft/mplug-owl)
+  - 在LLM的注意力层之前添加了自适应注意力层，称为“模式适应模块”，适用于图像和文本输入，并输出文本。
+- `CogAgent`
+  - 官方代码：[cogagent](https://github.com/microsoft/cogagent)
+  - 在LLM的注意力层之前添加了自适应注意力层，用于学习图像特征，适用于图像和文本输入，并输出文本。
+- `InternVL`
+  - 官方代码：微软 [internvl](https://github.com/microsoft/internvl)
+  - 包含视觉编码器、重采样器、LLM、特征同步器等，适用于图像和文本输入，并输出文本。
+- `MM-Interleaved`
+  - 官方代码：微软 [mm-interleaved](https://github.com/microsoft/mm-interleaved)
+  - 包含视觉编码器、重采样器、LLM、特征同步器等，适用于图像和文本输入，并输出图像和文本。
+- `CogCoM`
+  - 官方代码：微软 [cogcom](https://github.com/microsoft/cogcom)
+  - 包含视觉编码器、重采样器、LLM、特征同步器等，适用于图像和文本输入，并输出图像和文本。
+- `InternLM-XComposer2`
+  - 官方代码：微软 [internlm-xcomposer](https://github.com/microsoft/internlm-xcomposer)
+  - 添加了LoRA权重来学习图像模态，适用于图像和文本输入，并输出文本。
+- `MoE-LLaVA`
+  - 官方代码：[moe-llava](https://github.com/microsoft/moe-llava)
+  - 在LLaVA的基础上修改了每个解码器层的FFN层，创建了混合专家层，适用于图像和文本输入，并输出文本。
+
+### 3、C型多模态模型
+
+C类模型
+- 非标记化早期融合（NTEF）架构，在多模态学习领域中以其模块化和灵活性而著称。
+
+#### 3.1 特点
+
+- 早期融合：与深度融合模型（A类和B类）不同，C类模型在模型的输入阶段就实现了模态的融合，而不是在模型的内部层中。
+- 非标记化输入：直接将不同模态的输入提供给模型，而不需要将输入转换为离散的标记（tokens）。这意味着模型在处理输入时不需要进行复杂的分词处理。
+- 模块化设计：具有模块化架构，将不同模态的编码器输出与语言模型（LLM）或变换器模型直接连接起来，无需在模型内部层进行模态融合。可以轻松替换或更新模型的不同部分，如编码器或连接层，而不影响整个系统的其他部分。
+- 简化的集成：由于其模块化的特性，可以更容易地集成新的模态或更新现有模态的处理方式。
+- 端到端可训练：尽管在输入阶段融合模态，但它们仍然可以端到端地进行训练。
+- 资源效率：与其他类型的多模态模型相比，C类模型通常需要较少的训练数据和计算资源。
+- 连接器/适配器的使用：使用不同类型的连接器或适配器来链接模态编码器和语言模型（LLM）。这些连接器可以是线性层、多层感知器（MLP）、Q-former、注意力池化层、卷积层、Perceiver resampler或Q-former的变体。
+- 训练策略：通常采用预训练、指令调整和对齐调整的三阶段训练策略。预训练阶段主要目的是对齐不同模态并学习多模态世界知识；指令调整用于提高模型对用户指令的理解能力；对齐调整则进一步优化模型以适应人类交互。
+- 易于扩展：由于其设计，可以较容易地扩展以包含更多的模态，这使得它们在构建任何到任何的多模态模型时非常有用。
+
+#### 3.2 优势与不足
+
+优势
+- 简单高效：不需要在模型内部层进行模态融合，因此其设计较为简单，易于实现和训练。此外，模型的模块化设计也使得其在计算资源需求上相对较低。
+- 多模态输入输出：可以接受多种模态（如图像、文本、音频等）作为输入，并生成相应的多模态输出。模型的输入端可以根据需要连接不同的模态编码器，例如图像编码器、文本编码器等。
+- 适应性强：模块化设计使得其具有较强的适应性，可以轻松地集成新的模态或修改现有的模态编码器，以满足不同任务的需求。
+- 通用性强：通用性较强，可以应用于多种多模态任务，如多模态文本生成、多模态对话、多模态理解等。
+
+不足
+- 模态信息处理：C类型模型在模态信息的处理上相对简单，可能无法充分挖掘不同模态之间的潜在联系。
+- 性能限制：C类型模型的性能可能略低于Type-A和Type-B，因为模型的设计更为复杂，需要更多训练数据和计算资源。
+- 模态编码器设计：C类型模型的性能在很大程度上取决于模态编码器的性能，因此需要设计高效的模态编码器。
+- 模态融合控制：C类型模型在模态融合的控制上较为困难，需要仔细设计连接模块，以确保不同模态信息的有效融合。
+
+#### 3.3 典型C类模型开源代码
+
+- `BLIP-2`
+  - 官方代码: BLIP-2 GitHub
+  - 使用一个名为Q-Former的模块来同时处理图像和文本输入。
+- `MiniGPT-4`
+  - 官方代码: MiniGPT-4 GitHub
+  - 一个大规模的、可微调的多模态语言模型，它通过设计一个连接模块来连接图像编码器输出和语言模型。
+- `LLaVA`
+  - 官方代码: LLaVA GitHub
+  - 一个基于指令微调的、可以处理多模态输入和输出的语言模型。它使用一个线性层来连接图像编码器输出和语言模型。
+
+### 4、D型多模态模型
+
+D类模型
+- Tokenized Early Fusion (TEF)，其架构特点主要围绕使用分词器（tokenizer）来处理和融合多模态输入。
+
+#### 4.1 特点
+
+- 输入分词化：使用通用分词器或模态特定的分词器将多模态输入（如图像、视频、音频）转换为离散的标记（tokens）。
+- 早期融合：与C类模型类似，D类模型也在输入阶段实现模态融合，但不同之处在于D类模型通过分词化实现这一融合。
+- 统一的Transformer架构：通常采用预训练的大型语言模型（LLM）或编码器-解码器（encoder-decoder）风格的Transformer模型来处理分词化后的输入，并生成多模态输出。
+- 端到端可训练：D类模型是端到端可训练的，这意味着从输入分词化到输出生成的整个过程可以在一个统一的框架内进行训练。
+- 自动回归目标：由于输入和输出都被分词化，可以使用标准的自动回归目标函数来训练模型，这简化了训练过程。
+- 处理多种模态：用于处理包括文本在内的多种模态，使其能够生成图像、音频和不同模态的tokens。
+- 灵活性和扩展性：通过分词化，可以相对容易地适应新的模态，尽管为新模态训练或调整分词器可能是一项挑战。
+- 大规模训练数据需求：通常需要大量的训练数据来训练分词器和主Transformer模型，这可能导致计算资源的大量需求。
+- 可训练参数数量大：由于模型需要学习将不同模态的输入映射到统一的标记空间，D类模型往往具有大量的可训练参数。
+- 适用于任何到任何的多模态任务：D类模型由于其设计，非常适合构建能够处理任何输入模态到任何输出模态的多模态模型。
+
+#### 4.2 优势与不足
+
+优势
+- 标准化训练目标：由于模态都被标记化，模型可以使用标准的自回归目标函数进行训练，这简化了训练过程。
+- 模态扩展性：新的模态可以通过训练一个新的标记化器来添加到模型中，这种灵活性使得模型能够扩展到新的模态。
+- 模态通用性：标记化的模态表示可以用于多种下游任务，包括文本生成、图像生成、文本到图像的生成等。
+
+不足
+- 标记化复杂性：训练一个通用的标记化器或模态特定的标记化器可能是一个挑战。
+- 计算资源需求：标记化和去标记化过程增加了计算复杂性，可能需要额外的计算资源。
+- 模态信息的损失：标记化可能会丢失一些模态的原始信息，这可能导致模型性能的下降。
+- 模态独立性：标记化可能导致模型在学习模态间交互时遇到困难，因为标记化表示可能掩盖了模态间的依赖关系。
+
+#### 4.3 典型D类模型开源代码
+
+- `Unified-IO`
+  - 官方代码: Unified-IO GitHub
+  - 一个多模态预训练模型，它使用VQ-GAN风格的标记化器来处理不同模态的输入，并使用投影层将非文本模态的输出嵌入映射到文本模态的词汇空间。
+- `Unified-IO-2`
+  - 官方代码: Unified-IO-2 GitHub
+  - Unified-IO的升级版，它包含了更多的模态和更复杂的预训练任务。
+- `4M`
+  - 官方代码: 4M GitHub
+  - 一个可以处理文本、RGB图像、深度、法线和语义分割映射等多模态输入的模型。它使用多模态混合去噪器（Multimodal Mixture of Denoisers）作为预训练目标。
+
+
+## 典型模型
+
 
 ### 传统模型
 
@@ -442,14 +793,19 @@ UNITER的思路是通过使用**单流**结构，直接将视觉特征和文本�
 
 #### ViT
 
+将 transformer 引入到 CV 领域
+- 1、将图片**patch化**，解决 Transformer 不能应用于图像领域问题；
+- 2、patch embedding 提取图像特征高效；
+- 3、基于ViT模型衍生了视频Transformer相关模型。
+
 [ViT（Vision Transformer）解析](https://zhuanlan.zhihu.com/p/445122996)
 
-2020年，Google提出ViT，将Transformer应用在图像分类的模型
-- 虽然不是第1篇将transformer应用在视觉任务的论文，但是因为其模型“简单”且效果好，可扩展性强（scalable，模型越大效果越好），成为了transformer在CV领域应用的里程碑著作，也引爆了后续相关研究
+2020年，Google提出`ViT`，将Transformer应用在图像分类的模型
+- transformer应用在视觉任务论文, 非首次，但模型“简单”且效果好，可扩展性强（scalable，模型越大效果越好），成为了transformer在CV领域应用的**里程碑**著作，也引爆了后续相关研究
 
-ViT原论文中最核心的结论
-- 当拥有足够多的数据进行预训练时，ViT的表现就会超过CNN，突破transformer缺少归纳偏置的限制，可以在下游任务中获得较好的迁移效果
-- 当训练数据集不够大的时候，ViT的表现通常比同等大小的ResNets要差一些，因为Transformer和CNN相比缺少归纳偏置（inductive bias），即一种先验知识，提前做好的假设。
+ViT 论文中最核心结论
+- 当拥有**足够多**的数据进行预训练时，`ViT` 表现就会超过`CNN`，突破transformer缺少归纳偏置的限制，可在下游任务中获得较好的迁移效果
+- 当训练数据集**不够大**的时候，`ViT` 表现通常比同等大小的`ResNets`要差一些，因为Transformer和CNN相比缺少归纳偏置（inductive bias），即一种先验知识，提前做好的假设。
 
 CNN具有两种归纳偏置
 - 一种是**局部性**（locality/two-dimensional neighborhood structure），即图片上相邻的区域具有相似的特征；
@@ -457,9 +813,10 @@ CNN具有两种归纳偏置
 
 当CNN具有以上两种归纳偏置，就有了很多先验信息，需要相对少的数据就可以学习一个比较好的模型
 
-ViT只使用了Transformer的encoder
+`ViT`只使用了Transformer的encoder
 
-ViT将输入图片分为多个patch（16x16），再将每个patch投影为固定长度的向量送入Transformer，后续encoder的操作和原始Transformer中完全相同。但是因为对图片分类，因此在输入序列中加入一个特殊的token，该token对应的输出即为最后的类别预测
+`ViT` 将输入图片分为多个`patch`（16x16），再将每个patch投影为固定长度的向量送入Transformer，后续encoder的操作和原始Transformer中完全相同。
+- 但是因为对图片分类，因此在输入序列中加入一个特殊的token，该token对应的输出即为最后的类别预测
 
 ![](https://pic4.zhimg.com/v2-5afd38bd10b279f3a572b13cda399233_b.jpg)
 
@@ -573,12 +930,49 @@ CLIP这个模型最大的亮点：<span style='color:red'>zero-shot图像分类<
 
 整体结构类似CLIP，但是引入了单模态和多模态的预训练任务，单模态的任务有MLM，MIM，多模态有GC，ITM等，同时将融合两个模态的方式改为了Transformer
 
-#### BEiT-3
 
-BEiT-3模型输入变成了三部分，图，文，图文对，通过各自的自注意力机制和全联接网络
+#### BEiT 系列
 
 
-#### BLIP
+演进[过程](https://github.com/microsoft/unilm/tree/master/beit)
+-   June 2021: release preprint [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)
+-   July 2021: release [the code and pretrained models of **BEiT**](https://github.com/microsoft/unilm/tree/master/beit)
+-   July 2021: BEiT-large achieves **state-of-the-art ImageNet top-1 accuracy (88.6%) under the setting without extra data other than ImageNet-22k**.
+-   July 2021: BEiT-large achieves **[state-of-the-art results on ADE20K](https://paperswithcode.com/sota/semantic-segmentation-on-ade20k) (a big jump to 57.0 mIoU) for semantic segmentation**.
+-   August 2021: [**BEiT**](https://huggingface.co/transformers/master/model_doc/beit.html) is on [HuggingFace](https://github.com/huggingface/transformers)
+-   January, 2022: [**BEiT**](https://openreview.net/forum?id=p-BhZSz59o4) was accepted by **ICLR 2022 as Oral presentation** (54 out of 3391).
+-   March, 2022: add [linear probe examples](https://github.com/microsoft/unilm/blob/master/beit/get_started_for_image_classification.md#example-linear-probe-on-imagenet)
+-   June 2022: release preprint [VL-BEiT: Generative Vision-Language Pretraining](https://arxiv.org/abs/2206.01127)
+-   Aug 2022: release preprint [BEiT v2: Masked Image Modeling with Vector-Quantized Visual Tokenizers](https://arxiv.org/abs/2208.06366)
+-   Aug 2022: release preprint [Image as a Foreign Language: BEiT Pretraining for All Vision and Vision-Language Tasks](https://arxiv.org/abs/2208.10442)
+-   Sept 2022: release [the code and pretrained models of **BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2)
+-   March, 2023: [**BEiT-3**](https://arxiv.org/abs/2208.10442) was accepted by **CVPR 2023**.
+-   March, 2023: release [the code and pretrained models of **BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3)
+
+
+
+##### BEiT-1
+
+【2022-9-3】 哈工大+微软 推出 `BEiT`, Bidirectional Encoder representation from Image Transformers
+- 1、将生成式预训练`MLM`方法从NLP迁移至CV，引入 ViT， 实现CV大规模自监督预训练；
+  - masked image modeling (MIM) 任务
+- 2、统一多模态大模型`BEiT-3`前身。
+
+论文
+- [BEIT: BERT Pre-Training of Image Transformers](https://arxiv.org/pdf/2106.08254)
+- ![](https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/model_doc/beit_architecture.jpg)
+
+
+##### BEiT-3
+
+
+`BEiT-3`模型输入变成了三部分: `图`，`文`，`图文对`，通过各自自注意力机制和全联接网络
+
+
+#### BLIP 系列
+
+
+##### BLIP-1
 
 【2022-2-15】Saleforce Research
 
@@ -594,7 +988,7 @@ BEiT-3模型输入变成了三部分，图，文，图文对，通过各自的�
 具体如下：
 - 1）提出一种**多模混合** encoder-decoder 架构 (MED)：可以作为独立的编码器，也可以分别作为基于图像的文本编码器和解码器。通过联合三种视觉-语言 的目标进行学习：图文对比学习、图文匹配 和 基于图像的语言建模(image-conditioned language modeling)。
 
-BLIP结合了encoder和decoder，形成了统一的理解和生成多模态模型。
+BLIP 结合了encoder和decoder，形成了统一的理解和生成多模态模型。
 - 论文：[BLIP: Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation](https://arxiv.org/pdf/2201.12086.pdf)
 - 代码：[BLIP](https://github.com/salesforce/BLIP)
 
@@ -630,13 +1024,23 @@ BLIP两大亮点分别为：
 - 2）在 image caption 任务中，CIDEr 指标提升 2.8%
 - 3) 在 VQA 本方案相对 SOTA 算法获得了 1.6% 的VQA score 指标提升
 
-#### BLIP-2 （Flamingo）
+##### BLIP-2 （Flamingo）
 
-【2023-1-30】BLIP-2 基于  Flamingo
--  论文：[BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597)
+【2023-1-30】BLIP-2 基于 Flamingo
+-  【2023-6-15】论文：[BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597)
 - 代码：[blip-2](https://huggingface.co/docs/transformers/main/model_doc/blip-2), [lavis](https://github.com/salesforce/LAVIS/tree/5ee63d688ba4cebff63acee04adaef2dee9af207)
 
 充分利用大模型原始能力，不做预训练，而通过一个轻量级的 Querying transformer（Q-former）弥补了模态之间的差距, 连接视觉大模型和语言大模型。
+
+论文主要提出`Q-Former`（Lightweight Querying Transformer）用于连接模态之间的gap。
+
+`BLIP-2` 整体架构包括三个模块：**视觉编码器**、视觉和LLM的**Adapter**(Q-Former)、**LLM**。
+- 其中,Q-Former是BLIP-2模型训练过程中主要更新的参数，视觉Encoder和大语言模型LLM在训练过程中冻结参数。
+
+模型结构：
+- Vision Encoder：ViT-L/14
+- VL Adapter：Q-Former
+- LLM：OPT (decoder-based)，FlanT5（encoder-decoder-based）
 
 Q-former 通过两阶段方式进行训练：
 - 阶段 1：固定图像编码器，学习**视觉-语言**(vision-language)一致性的表征, 从冻结图像编码器引导视觉语言表示学习
@@ -652,12 +1056,41 @@ our model outperforms Flamingo 80B by 8.7% on zero-shot VQAv2 with 54x fewer tra
 - 性能优于Flamingo、BEIT-3等网络，达到sota
 
 
+##### InstructBLIP
+
+【2023.06.15】发布 InstructBLIP
+- 论文地址：[paper](https://arxiv.org/pdf/2305.06500)
+
+模型结构：
+- Vision Encoder：ViT-g/14
+- VL Adapter：Q-Former
+- LLM：FlanT5-xl(3B), FlanT5-xxl(11B), Vicuna-7B, Vicuna-13B
+
+![](https://picx.zhimg.com/80/v2-a35f49642809ef843ed0c852b9cfc03b_1440w.webp)
+
+
+`InstructBLIP` 模型结构与`BLIP-2`类似，区别在于输入文本换成了**指令数据**Instructions. 
+- Q-Former 抽取指令感知的视觉特征（Instruction-aware vision model），根据指令的不同获取不同的视觉特征。
+- 然后将这些视觉特征作为LLM的软视觉提示（soft prompt），使用language modeling loss和指令微调模型生成回复。
+
+训练过程（Vision-Language Instruction Tuning）：3阶段训练以及zero-shot预测
+- Stage 1：预训练，训练Q-Former和Projection Layer，冻结image encoder。使用image caption数据，学习视觉文本相关性表示。
+- Stage 2：预训练，训练Projection Layer，冻结LLM。使用image caption数据，学习对齐LLM的文本生成。
+- Stage 3：指令微调，训练Q-Former和Projection Layer。使用Instruction任务数据，学习遵循指令生成回复的能力。
+
+训练数据：
+- 收集11个任务以及相应的26个数据集，如下图所示。
+- 对于每个任务，人工编写10-15个自然语言的指令模版，作为构造指令微调数据的基础。
+- 对于偏向较短回复的开源数据集，在指令模版中使用'short/briefly'降低模型过拟合为总是生成较短回复（防止过拟合的方式是在指令中有所体现）。
+
+
 #### miniGPT-4
 
-【2023-4-17】[MiniGPT-4 发布，代码模型开源了](https://mp.weixin.qq.com/s/WTTjXnczPkBNEBhuVG0SAA)，阿卜杜拉国王科技大学的几位博士做的
+【2023-4-17】[MiniGPT-4 发布，代码模型开源了](https://mp.weixin.qq.com/s/WTTjXnczPkBNEBhuVG0SAA)，阿卜杜拉国王科技大学的几位博士
 - GitHub: [MiniGPT-4](https://github.com/Vision-CAIR/MiniGPT-4)
 - [demo](https://minigpt-4.github.io/)
-- 论文：[MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models](https://arxiv.org/abs/2304.10592)
+- 【2023-10-02】论文：[MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models](https://arxiv.org/abs/2304.10592)
+
 
 GPT-4 所实现的多模态能力，在以前的视觉 - 语言模型中很少见，因此认为，GPT-4 先进的多模态生成能力，主要原因在于利用了更先进的大型语言模型。
 
@@ -682,6 +1115,37 @@ BLIP-2 模型利用冻结预训练的图像编码器和大型语言模型，通�
 - 两种模型保持其独立训练得到的特征表示能力，通过投影层获得了一个共同的更低维的表达空间。
 - 一个冻结的视觉编码器：指的是一个事先训练好的图像特征提取器，它将输入的图像转换成向量形式。
 - 一个冻结的 LLM (Vicuna)：指的是另一个事先训练好的大型语言模型，它可以生成文本或者对文本进行理解。
+
+模型结构：
+- Vision Encoder：ViT-G/14
+- VL Adapter：Q-Former
+- Projection Layer：a single linear
+- LLM：Vicuna
+
+训练过程：
+- Stage 1：只训练Linear Projection Layer来对齐视觉特征和大语言模型。使用大量text-image pair数据。
+- Stage 2：指令微调，使用少量高质量text-image instruction数据
+- 指令模板：`###Human: <Img><ImageFeature></Img><Instruction>###Assistant:`
+
+
+##### MiniGPT-v2
+
+【2023.11.07】
+- 论文地址：[paper](https://arxiv.org/pdf/2310.09478)
+
+模型结构：
+- Vision Encoder：ViT
+- VL Adapter：/
+- Projection Layer：Linear
+- LLM：Llama2-7B
+
+![](https://picx.zhimg.com/80/v2-ec3800841820dadcffa24db69da76be9_1440w.webp)
+
+训练过程：
+- Stage 1：预训练，使用大量弱监督image-text和细粒度数据集的混合数据训练，让模型获取多样化知识
+- Stage 2：多任务训练，只使用细粒度高质量数据集训练模型在不同任务上的能力。
+- Stage 3：多模态质量微调，让模型具备Chat哪里
+
 
 
 #### LLaVA
@@ -712,11 +1176,40 @@ LLaVA (Language-and-Vision Assistant)，一款展示了某些近似多模态 GPT
 3. 科学问答（Science QA）
   - 单独使用 LLaVA 实现了 90.92％ 的准确率。我们使用仅文本的 GPT-4 作为评判者，根据其自身先前的答案和 LLaVA 的答案预测最终答案。这种“GPT-4 作为评判者”的方案产生了新的 SOTA 92.53％。令人惊讶的是，GPT-4 可以作为一种有效的模型集成方法！这些结果希望启发大家以后刷榜的时候，可以利用 GPT-4 这个神奇来集成不同方法。
 
+
+模型结构：
+- Vision Encoder：ViT-L/14
+- VL Adapter：/
+- Projection Layer：a linear layer
+- LLM：LLaMA
+
+![](https://pic1.zhimg.com/80/v2-e32dc3e950201a2cd19287eb07713b00_1440w.webp)
+
+训练过程：
+- Stage 1：Pre-training for Feature Alignment. 训练Projection Layer
+- Stage 2：Fine-tuning End-to-End. 训练Projection Layer和LLM
+
+
 ##### LLaVA 中文版
 
 - LinkSoul.AI 开源了可商用的中英文双语视觉 - 语言助手 Chinese-LLaVA 以及中英文视觉 SFT 数据集 [Chinese-LLaVA-Vision-Instructions](https://huggingface.co/datasets/LinkSoul/Chinese-LLaVA-Vision-Instructions)，支持中英文视觉 - 文本多模态对话的开源可商用对话模型。
   - 代码 [Chinese-LLaVA](https://github.com/LinkSoul-AI/Chinese-LLaVA), 模型、代码和数据[地址](https://huggingface.co/spaces/LinkSoul/Chinese-LLaVa)
   - ![](https://p1.itc.cn/images01/20230804/367c7521624c4ede8d7daf0cfec5a154.gif)
+
+
+##### LLaVA-1.5
+
+【2024.05.15】
+
+论文地址：[paper](https://arxiv.org/pdf/2310.03744)
+
+模型结构：
+- Vision Encoder：Clip预训练 Vit-L/336px
+- VL Adapter：MLP
+- LLM：Vicuna v1.5 13B
+
+![](https://pic1.zhimg.com/80/v2-d3d18f01a2d8e3aa9afd187db56ff1b0_1440w.webp)
+
 
 #### MMGPT （基于OpenFlamingo）
 
@@ -977,7 +1470,7 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 - 多模态模型大多聚集在视觉、文本上，而语音也需要关注，LLaSM 是端到端多模态语音语言模型，能遵循语音→语言指令
 - LLaSM 是首个支持中英文语音 - 文本多模态对话的开源可商用对话模型。通过便捷的语音输入的交互方式，大幅改善过往以文本为输入的大模型的使用体验，同时有效避免基于 ASR 解决方案的繁琐流程以及可能引入的错误。
 
-#### NExT-GPT
+#### NExT-GPT 任意模态
 
 【2023-9-18】[无限接近AGI！新加坡华人团队开源全能“大一统”多模态大模型](https://www.toutiao.com/article/7280048966555992617)
 
@@ -986,20 +1479,20 @@ VisCPM 是一个开源的多模态大模型系列，支持中英双语的多模�
 - 另一方面是只关注于多模态内容在**输入端**的理解，而不能以任意多种模态的灵活形式输出内容。
 
 已有多模态
-- 支持**图像类**的MiniGPT-4、BLIP-2、Flamingo、InstructBLIP等
-- 支持**视频类**的Video-LLaMA, PandaGPT等
-- 支持**声音类**的SpeechGPT等等。
+- **图像类**: `MiniGPT-4`、`BLIP-2`、`Flamingo`、`InstructBLIP`等
+- **视频类**: `Video-LLaMA`, `PandaGPT`等
+- **声音类**: `SpeechGPT`等等。
 
-然而目前的多模态LLM，距离真正人类级别的AGI，总感觉少了点「那味儿」。
+目前的多模态LLM距离真正人类级别的AGI，总感觉少了点「那味儿」。
 
-新加坡国立大学NExT++实验室华人团队近期开源了一种支持任意模态输入和任意模态输出的「大一统」多模态大模型，[NExT-GPT](https://next-gpt.github.io)(GPT of Next generation)，可以支持任意模态输入到任意模态输出。
+新加坡国立大学`NExT++`实验室华人团队近期开源了一种支持任意模态输入和任意模态输出的「大一统」多模态大模型，[NExT-GPT](https://next-gpt.github.io)(GPT of Next generation)，支持**任意模态**输入到**任意模态**输出。
 - 代码开源：[NExT-GPT](https://github.com/NExT-GPT/NExT-GPT), 上线了Demo系统
-- 论文地址：[](https://arxiv.org/abs/2309.05519)
+- 论文地址：[NExT-GPT: Any-to-Any Multimodal LLM](https://arxiv.org/abs/2309.05519)
 
-NExT-GPT又是如何实现任意模态输入到任意模态输出的呢？
+NExT-GPT 如何实现任意模态输入到任意模态输出的呢？
 
-原理简单，在技术层面上「没有显著的创新点」——
-- 通过有机连接现有的开源 1）**LLM**，2）**多模态编码器**和 3）各种模态**扩散解码器**，便构成了NExT-GPT的整体框架，实现任意模态的输入和输出，可谓大道至简。
+技术层面上「没有显著的创新点」——
+- 通过有机连接现有的开源 1）**LLM**，2）**多模态编码器**和 3）各种模态**扩散解码器**，构成 NExT-GPT的整体框架，实现任意模态的输入和输出，可谓大道至简。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/13d78d7d7d2f40358ce85117d9be6aeb~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image?_iz=58558&from=article.pc_detail&x-expires=1695639711&x-signature=hL1txP43n4cDNFMznIs6Rr9%2BNOg%3D)
 
 模型呈现为一个「编码端-推理中枢-解码器」三层架构：
@@ -1101,6 +1594,134 @@ OpenFlamingo 在机器人操作数据集 CALVIN 上进行了验证，实验结�
 
 Chameleon，一种**早期融合**，基于token的**混合模态**模型族，能够理解和生成任意序列中的图像和文本。概述了一个稳定的训练 
 从一开始就采用的方法、对齐方法和为早期融合，基于token的混合模态设置。对模型进行了综合评价的任务，包括视觉问答、图像描述、文本生成、图像生成和长形式混合模态生成。变色龙具有广泛和一般的能力，包括在图像描述任务中的最先进性能，在纯文本任务中优于Llama-2 与Mixtral 8x7B和Gemini-Pro等模型竞争，并表现出非平凡图像生成，都在一个模型中。它还匹配或超过了更大的模型的性能， 包括Gemini Pro和GPT-4V，根据人类对新的长形式混合模态的判断
+
+
+#### QWen-VL 系列
+
+
+
+##### QWen2-VL
+
+【2023-10-13】QWen-VL 发布
+- [论文](https://arxiv.org/pdf/2308.12966)
+
+模型结构：
+- Vision Encoder：ViT-bigG/14
+- VL Adapter：a single-layer cross-attention（Q-former的左侧部分）
+- LLM：Qwen-7B
+
+![](https://pic2.zhimg.com/80/v2-98cc4956c8e5724e662dd336cf639f13_1440w.webp)
+
+VL Adapter 创建一组可训练 queries向量 和 image features一起做cross-attention，将视觉特征压缩至256的固定长度，同时为了提升细粒度的视觉理解，在cross-attention中也加入图像的2D绝对位置编码。
+
+- Image Input 使用特殊token（`<img>` and `</img>`）分隔
+- Bounding Box Input 使用特殊token（`<box>` and `</box>`）分隔
+- bounding box 的 content referred使用特殊token（`<ref>` and `</ref>`）分隔。
+
+训练过程：
+- Stage 1：预训练，训练Cross-Attention和ViT，冻结QwenLM。
+- Stage 2：多任务预训练（7 tasks同时），全参数训练。
+- Stage 3：指令微调，训练Cross-Attention和QwenLM，冻结ViT。
+
+训练数据：
+- 第一个阶段使用image-text pairs数据，77.3%英文、22.7%中文，一共14亿数据训练，图片size=224*224.
+- 第二个阶段使用质量更高的image-text pairs数据，包含7个任务，图像size=448*448. 在同一个任务下构造交错图像文本数据，序列长度为2048. 训练目标与Stage1一致。
+- 第三个阶段使用Instruction数据，训练指令遵循和对话能力，通过LLM self-instruction构造，一共350k条。
+
+
+#### QWen2-VL
+
+【2024-09-18】QWen-VL 发布
+- [论文](https://arxiv.org/pdf/2409.12191)
+- github：[Qwen2](https://github.com/QwenLM/Qwen2)
+
+Qwen2-VL 开源了 2B，7B及其量化版本
+
+能力更强
+- ![](https://pica.zhimg.com/80/v2-4f41ba3c0ed93c815eb5882b4bec3ad8_1440w.webp)
+
+优化亮点：
+- 在各种分辨率和比例的图像的理解SoTA：Qwen2-VL 在视觉理解基准上实现了最先进性能，包括 MathVista、DocVQA、RealWorldQA、MTVQA 等。
+- 支持理解 **20 分钟**以上的视频：借助在线流媒体功能，Qwen2-VL 可以通过基于高质量视频的问答、对话、内容创作等方式理解 20 分钟以上的视频。
+- 可集成在**移动设备**上：Qwen2-VL 具有复杂的推理和决策能力，可以与手机、机器人等设备集成，根据视觉环境和文本指令进行自动操作。
+- **多语言**支持：为了服务全球用户，除了英语和中文，Qwen2-VL 现在还支持理解图像中不同语言的文本，包括大多数欧洲语言、日语、韩语、阿拉伯语、越南语等。
+
+模型结构：
+- Vision Encoder：ViT/14
+- VL Adapter：Cross-Modal Connector
+- LLM：Qwen2-1.5B, Qwen2-7B, Qwen2-72B
+
+![](https://pic1.zhimg.com/80/v2-7f27b14d8683bbbaf590c6e640e4046a_1440w.webp)
+
+Qwen2-VL 相较于 Qwen-VL 主要改进点（除了一些VQA等基础能力的提升之外）：
+- 1）支持视频理解，支持context上下文长度到128k token（20分钟左右视频）。
+- 2）Visual Agent能力，支持实时视频对话。
+- 3）图像位置编码采用 2D-RoPE，一张224*224分辨率的图像经过ViT/patch_size=14等一系列转换之后会被压缩至66个token输入到LLM。
+
+训练过程：
+- Stage 1：训练ViT，使用大量image-text对。
+- Stage 2：全参数微调，使用更多的数据提升模型全面理解的能力。
+- Stage 3：指令微调，训练LLM。
+
+
+#### VITA
+
+**首个**能够同时处理视频、图像、文本和音频的开源多模态大语言模型。
+
+【2024-9-10】腾讯优图实验室等机构研究者提出了 VITA，第一个开源的**多模态**大语言模型 (MLLM)，同时处理和分析**视频**、**图像**、**文本**和**音频**模态，具有先进的多模态交互体验。
+- 以 `Mixtral 8×7B` 为语言基础，然后扩大其汉语词汇量，并进行**双语**指令微调。
+- 通过**多模态对齐**和**指令微调**的两阶段多任务学习赋予语言模型视觉和音频能力。
+
+
+VITA 展示了强大的多语言、视觉和音频理解能力，其在单模态和多模态基准测试中的出色表现证明了这一点。
+- 论文[主页](https://vita-home.github.io)
+- 论文标题：[VITA: Towards Open-Source Interactive Omni Multimodal LLM](https://arxiv.org/pdf/2408.05211)
+- Github: [VITA](https://github.com/VITA-MLLM/VITA)
+
+提升自然多模态**人机交互体验**方面也取得了长足进步。
+- 第一个在 MLLM 中利用**非唤醒交互**和**音频中断**的研究。
+- 还设计了额外的状态 token 以及相应的训练数据和策略来感知各种交互场景。
+
+![](https://github.com/VITA-MLLM/VITA/raw/main/asset/VITA_features.png)
+
+VITA 部署采用**复式**方案，一个模型负责**生成**对用户查询的响应，另一个模型持续**跟踪环境输入**。这使得 VITA 具有很好人机交互功能。
+- ![](https://github.com/VITA-MLLM/VITA/raw/main/asset/VITA_duplex.png)
+
+VITA 是开源社区探索多模态理解和交互无缝集成的第一步。虽然在 VITA 上还有很多工作要做才能接近闭源同行，但该研究希望 VITA 作为先驱者的角色可以成为后续研究的基石。
+
+用户可以和 VITA 无障碍沟通
+- 看到用户穿的白色 T 恤后，会给出搭配什么颜色的裤子；
+- 在被问到数学题时，能够实时查看题目类型，进行推理，然后给出准确的答案；
+- 当你和别人讲话时，VITA 也不会插嘴，因为知道用户不是和它交流；
+- 出去旅游，VITA 也会给出一些建议；
+
+在 VITA 输出的过程中，可以实时打断对话，并展开另一个话题。 
+
+
+VITA 整体训练流程包括三个阶段：`LLM 指令微调`、`多模态对齐`和`多模态指令微调`。
+- `LLM 指令微调`
+  - Mixtral 8x7B 的性能属于顶级开源 LLM 中一员，因此该研究将其作为基础。然而研究者观察到官方的 Mixtral 模型在理解中文方面的能力有限。为了注入双语（中文和英文）理解能力，该研究将中文词汇量扩展到基础模型，将词汇量从 32,000 个增加到 51,747 个。在扩展词汇量后，研究者使用 500 万个合成的双语语料库进行纯文本指令微调。
+- `多模态对齐`
+  - 为了弥合文本和其他模态之间的表征差距，从而为多模态理解奠定基础。仅在视觉对齐阶段训练视觉连接器。
+  - (1) 视觉模态
+    - 首先, `视觉编码器`。研究者使用 `InternViT-300M-448px` 作为视觉编码器，它以分辨率 448×448 的图像作为输入，并在使用一个作为简单两层 MLP 的视觉连接器后生成了 256 个 token。对于高分辨率图像输入，研究者利用动态 patching 策略来捕捉局部细节。
+      - 视频被视作图像的特殊用例。如果视频长度短于 4 秒，则统一每秒采样 4 帧。如果视频长度在 4 秒到 16 秒之间，则每秒采样一帧。对于时长超过 16 秒的视频，统一采样 16 帧。
+    - 其次, `视觉对齐`。研究者仅在视觉对齐阶段训练视觉连接器，并且在该阶段没有使用音频问题。
+    - 最后, `数据级联`。对于纯文本数据和图像数据，该研究旨在将上下文长度级联到 6K token，如图 4 所示。值得注意的是，视频数据不进行级联。
+      - 级联不同的数据有两个好处：使用级联数据训练的模型与使用原始数据训练的模型性能相当。
+        - 支持更长的上下文长度，允许从单个图像问题交互扩展到多个图像问题交互，从而产生更灵活的输入形式，并扩展上下文长度。
+        - 提高了计算效率，因为视频帧通常包含大量视觉 token。通过级联图像 - 问题对，该研究可以在训练批中保持平衡的 token 数量，从而提高计算效率。
+  - (2) 音频模态
+    - 一方面是`音频编码器`。输入音频在最开始通过一个 Mel 滤波器组块进行处理，该块将音频信号分解为 mel 频率范围内的各个频带，模仿人类对声音的非线性感知。随后，研究者先后利用了一个 4×CNN 的下采样层和一个 24 层的 transformer，总共 3.41 亿参数，用来处理输入特征。同时他们使用一个简单的两层 MLP 作为音频 - 文本模态连接器。最后，每 2 秒的音频输入被编码为 25 个 tokens。
+    - 另一方面是`音频对齐`。对于对齐任务，研究者利用了自动语言识别（ASR）。数据集包括 Wenetspeech（拥有超过 1 万小时的多领域语音识别数据，主要侧重于中文任务）和 Gigaspeech（拥有 1 万小时的高质量音频数据，大部分数据面向英文语音识别任务）。对于音频字幕任务，研究者使用了 Wavcaps 的 AudioSet SL 子集，包含了 400k 个具有相应音频字幕的音频片段。在对齐过程中，音频编码器和连接器都经过了训练。
+- 多模态指令微调
+  - 该研究对模型进行了指令调整，以增强其指令遵循能力，无论是文本还是音频。
+  - 数据构建。指令调优阶段的数据源与表 1 中对齐阶段的数据源相同，但该研究做了以下改进：
+    - 问题被随机（大约一半）替换为其音频版本（使用 TTS 技术，例如 GPT-SoVITS6），旨在增强模型对音频查询的理解及其指令遵循能力。
+    - 设置不同的系统 prompt，避免不同类型数据之间的冲突，如表 2 所示。例如，有些问题可以根据视觉信息来回答或者基于模型自己的知识，导致冲突。此外，图像数据已被 patch，类似于多帧视频数据，这可能会混淆模型。系统 prompt 显式区分不同数据类型，有助于更直观地理解。
+  - 为了实现两种交互功能，即**非唤醒**交互和**音频中断**交互，该研究提出了**复式部署框架**，即同时部署了两个 VITA 模型。
+  - 在典型情况下，**生成模型**（Generation model）会回答用户查询。同时，**监控模型**（Monitoring model）在生成过程中检测环境声音。它忽略非查询用户声音，但在识别到查询音频时停止生成模型的进度。监控模型随后会整合历史上下文并响应最新的用户查询，生成模型和监控模型的身份发生了转换。
+
 
 
 # 结束

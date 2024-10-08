@@ -3,7 +3,7 @@ layout: post
 title:  Transformer知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -34,12 +34,14 @@ permalink: /transformer
 - 文字笔记总结： [为什么我还是无法理解transformer？ - ketchum的回答](https://www.zhihu.com/question/596771388/answer/3456855475)
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wjZofJX0v4M?si=e3vpGav59jQoQdrt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="100%" height="600" src="https://www.youtube.com/embed/wjZofJX0v4M?si=e3vpGav59jQoQdrt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 
 ### 3D可视化
 
 【2023-7-28】[关于 AI 的深度研究：ChatGPT 正在产生心智吗？](https://www.bilibili.com/video/BV1uu4y1m7ak/?spm_id_from=333.1007.0.0)，Transformer 原理 3D 可视化
-- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
+- <iframe src="//player.bilibili.com/player.html?aid=829105480&bvid=BV1uu4y1m7ak&cid=1213654982&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 
 ### Transformer Explainer
@@ -133,7 +135,7 @@ NLP典型任务
 |---|---|---|---|
 |文本分类|✅|❌|多对一|适合Encoder|
 |文本匹配|✅|❌|近似多对一|适合Encoder|
-|文本生成|❌|✅|多对多,变长|适合Encoder|
+|文本生成|❌|✅|多对多,变长|适合Decoder|
 |序列标注|✅|❌|多对多,定长|适合Encoder|
 |文本摘要|❌|✅|多对多,变长,一般变少|适合Decoder|
 |机器翻译|❌|✅|多对多,变长|适合Decoder|
@@ -154,133 +156,8 @@ NLP领域一般分别叫做`NLU`（Natural Language Understanding，自然语言
   - 这和之前的语言模型没有本质区别，只是语言模型的类别是**整个词表大小**，而分类的类别看具体任务，有`二分类`、`多分类`、`多标签分类`等等。
 - **NLG任务**: 除了生成外，常见的有`文本摘要`、`机器翻译`、`改写纠错`等。
 
-### self-attention 理解
 
-Self-Attention 是能力超强的特征提取器，跟 RNN、CNN 相比
-- ![](https://d2l.ai/_images/cnn-rnn-self-attention.svg)
-
-self-attention 运算是所有 transformer 架构的基本运算, 而 Self-attention 是 sequence-to-sequence 运算： 
-- 输入一个向量序列（x1,x2,...,xm），输出另一个向量序列 (y1,y2,...,yn)，所有字符都映射成k维向量；
-- 输出向量是x的加权平均： yi = ∑ wi * xi
-- 计算权重矩阵W 最简单函数就是`点积`（dot product）: $ w_ij = x_i^T * x_j $
-- 结果取值范围是**正负无穷**，为了使累加和（表示概率）等于 100%， 需要做归一化, 即 softmax
-- 总结起来就是两点：
-  - vector-to-vector 运算：self-attention 是对 input vector 做矩阵运算，得到一个加权结果作为 output vector；
-  - 加权矩阵计算：权重矩阵不是常量，而是跟它所在的位置 (i,j) 直接相关，根据对应位置的 input vector 计算。
-  - ![](http://arthurchiao.art/assets/img/transformers-from-scratch/self-attention.png)
-  - output vector 中的每个元素 yj 都是对 input vector 中所有元素的加权和；
-  - 对于 yj，加权矩阵由 input 元素 xj 与每个 input 元素计算得到；
-
-self-attention 是整个架构中唯一在 input & output vector 之间 所做的运算；
-- Transformer 架构中的其他运算都是单纯对 input vector 做运算。
-
-self-attention 模型非常简单，本质上是加权平均公式，为什么效果这么好呢？
-
-以电影推荐为例
-
-**传统推荐系统**：特性向量点积用户偏好
-- 步骤：
-  - 人工设计一些**电影特征**，比如：浪漫指数、动作指数，
-  - 人工设计一些**用户特征**，例如：喜欢浪漫电影或动作片的可能性；
-  - 有了这两个维度的数据（特征向量）之后，对二者做`点积`（dot product）， 得到电影属性与用户喜欢程度之间的**匹配程度**，用得分表示
-- 电影推荐：**电影**特征向量（浪漫、动作、喜剧）与**用户**特性向量（喜欢浪漫、动作、喜剧的程度）做**点积运算**
-- ![](http://arthurchiao.art/assets/img/transformers-from-scratch/movie-dot-product.png)
-
-得分数值：
-- 如果特征的符号相同，例如“浪漫电影 && 用户喜欢浪漫电影”， 或者“不是浪漫电影 && 用户不喜欢浪漫电影”，得到的点积就是**正数**；反之就是**负数**；
-- 特征值的大小决定该特征对总分的**贡献大小**： 一部电影可能有点浪漫，但不是很明显，或者用户可能只是不喜欢浪漫，但也没到讨厌的程度。
-
-分析
-- 优点：简单直接，很容易上手；
-- 缺点：规模大了很难搞， 因为对几百万部电影打标的成本非常高，精确标记用户喜欢或不喜欢什么也几乎是不可能的。
-
-基于 **self-attention 的推荐系统**
-
-电影特征和用户特征作为模型参数，匹配已知的用户偏好
-
-两步：
-- 电影特征和用户特征不再直接做点积运算，而是作为**模型参数**（parameters of the model）；
-- 收集少量的用户偏好作为目标，然后通过优化用户特征和电影特征（模型参数）， 使二者的点积匹配已知的用户喜好。
-
-这就是 self-attention 的基本原理。
-
-以一串单词作为输入，原理上只要将其作为 input vector 送到 self-attention 模型。
-- 但实际上要对 input vector 做预处理，生成一个**中间表示**，即序列建模中的嵌入层。为每个单词 t 分配一个`嵌入向量`（embedding vector） 𝐯t（我们后面将学习到这个值）。
--  input vector -> embedding vector -> self-attention -> output vector
-- (the, cat) -> (V_the, V_cat) -> 加权求和 -> y_the, y_cat
-
-不同于一般的 sequence-to-sequence 运算：
-- self-attention 将输入当做一个**集合**（set）而不是**序列**（sequence）。
-- 如果对输入序列进行**重排**（permute），输出序列除了也跟着重排，其他方面将完全相同，self-attention 是**排列等变**的（permutation equivariant）。
-- 构建完整的 transformer 时，还是会引入一些东西来保持输入的顺序信息，但要明白 <span style='color:red'>self-attention 本身是不关心输入的顺序属性的（sequential nature）</span>。
-
-最基础的 self-attention 模型实现：
-- 2次 矩阵乘法 和 1次 归一化（softmax）。
-
-```py
-import torch
-import torch.nn.functional as F
-
-# 假设我们有一些 tensor x 作为输入，它是 (b, t, k) 维矩阵
-x = ...
-
-# torch.bmm() 是批量矩阵乘法（batched matrix multiplication）函数，对一批矩阵执行乘法操作
-raw_weights = torch.bmm(x, x.transpose(1, 2))
-# 正值化、归一化
-weights = F.softmax(raw_weights, dim=2)
-# 计算输出
-y = torch.bmm(weights, x)
-```
-
-现代 transformer 对 self-attention 的扩展
-- 引入控制参数（queries, keys and values）
-- 对点积做缩放处理（scaling the dot product）
-  - softmax 函数对非常大的输入值敏感。这些 input 会梯度消失，学习变慢甚至完全停止。 
-  - 由于点积的**平均值**随着嵌入维度 k 的增加而增大，因此点积送到 softmax 之前进行缩放有助于缓解这个问题。
-  - $ w_ij = q_i^T k_j$ -> $ w_ij = \frac{q_i^T k_j}{\sqrt{k}}$
-- 引入 multi-head attention
-  - 同一个单词随着相邻单词们的不同表示的意思也可能不同, <span style='color:red'>基本的 self-attention 欠缺了很多灵活性</span>。
-    - 如何理解？
-  - 让模型有更强的辨识力，一种解法：组合多个 self-attention（用 r 索引）， 每个对应不同的 query/key/value 参数矩阵 $ 𝐖^r_q$ , $ 𝐖^r_k $, $ 𝐖^r_v $， 称为 attention heads（注意力头）。
-  - 对于 input 𝐱i，每个 attention head 产生不同的 output vector $ 𝐲^r_i $（一部分输出）。 最后再将这些部分输出连接起来，通过线性变换来降维回 k。
-
-multi-head self-attention 提效：query/key/value 降维
-- multi-head self-attention 看作**多个并行**的 self-attention 机制，每个都有自己的键、值和查询转换。
-- Multi-head self-attention 的缺点: 慢，对于 R 头，慢 R 倍。 
-
-优化办法：
-- 实现这样的 multi-head self-attention，既能利用多个 self-attention 提升辨识力， 又与 single-head self-attention 基本一样快。
-- 每个 head 对 query/key/value 降维。 
-
-如果输入向量有 k=256 维，模型有 h=4 个 attention head，则降维操作包括：
-- 将输入向量乘以一个 256×64 矩阵，这会将 input vector 从 256 维降到 64 维；
-- 对于每个 head 需要执行 3 次降维：分别针对 query/key/value 的计算。
-
-甚至只用三次 k×k 矩阵乘法就能实现 multi-head 功能， 唯一需要的额外操作是将生成的 output vector 重新按块排序
-
-multi-head self-attention 完整流程
-- ![](http://arthurchiao.art/assets/img/transformers-from-scratch/multi-head.png)
-
-4-head self-attention 的直观解释。对输入进行降维，针对 key/value/query 分别进行矩阵运算来实现。
-
-从左到右分为 5 列：
-- 原始 256-维 input vector；
-- 输入降维：将 input vector 乘以 256x64 矩阵，降维到 64 维；(256/4=64)
-  - 注意：对每个 input vector 需要分别针对 query/key/value 降维，总共是 3 遍；
-- 将降维后的 input 分别输入多个并行的 self-attention；
-- 计算得到多个降维之后的 output vector；
-- 对低维度 output vectors 进行拼接，**重新**回到与 input vectors 一样的维度。
-
-参数规模
-- `single-head`: 总参数数量是 $3k^2$。
-- `multi-head`: 参数个数 $ 3hk\frac{k}{h}=3k^2 $
-  - 与 single-head self-attention 的参数数量相同。
-- 唯一区别: 
-  - multi-head self-attention 最后拼接 output vector 时多了一个矩阵 Wo
-
-- 参考：[Transformer 是如何工作的：600 行 Python 代码实现两个（文本分类+文本生成）Transformer](http://arthurchiao.art/blog/transformers-from-scratch-zh/)
-
-### transformer解决什么问题
+### transformer 解决什么问题
 
 针对rnn和cnn的缺陷，Transformer怎么解决这些问题？
 - 并行化
@@ -340,7 +217,7 @@ transformer 结构分成：
 
 作者：[Transformer模型学习](https://www.jianshu.com/p/04b6dd396d62)
 
-### 图解Transformer
+### 图解 Transformer
 
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/),中文翻译：[BERT大火却不懂Transformer？](https://zhuanlan.zhihu.com/p/54523019)
 - [jalammar github repo](https://github.com/jalammar/jalammar.github.io/blob/master/_posts/2018-06-27-illustrated-transformer.md)
@@ -453,7 +330,10 @@ GPT-2 用的 Decoder 结构
 - ![decoder](https://jalammar.github.io/images/xlnet/transformer-decoder-intro.png)
 - 去掉 transformer decoder结构里的 `编码器-解码器自注意力层`
 
-## Attention机制
+## Attention 机制
+
+
+### 直观理解
 
 语言的含义极度依赖上下文，比如，机器人第二法则：
 - <span style='color:blue'>机器人第二法则机器人必须遵守人类给**它**的**命令**，除非该命令违背了**第一法则**</span>。
@@ -482,18 +362,176 @@ Attention 机制也可以分成很多种。[Attention? Attention!](https://lilia
 
 那么这种**乘性注意力机制**是怎么样的呢？从上表中的公式也可以看出来：**两个隐状态进行点积**！
 
-### Self-attention是什么？
 
-什么是**self-attention**
+注意力机制 核心概念: Query（查询）、Key（键）和 Value（值）。
+- `Query` (Q)：当前单词的一种表示，对所有其他单词进行**评分**（用Key）。只关心当前正在处理的token的 Query 。生成任务中，通常是最后一个token的表示。
+- `Key` (K)：所有单词的**标签**。它们是我们在搜索相关单词时所匹配的内容。用于与Query进行匹配，决定应该关注哪些信息。
+- `Value` (V)：单词实际表示，一旦对每个单词的**相关性**进行了评分，聚合起来表示当前单词的值。
+
+工作原理类比：
+- 假设输入为: “A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.”
+- Query (查询)：手里拿着一张便利贴,上面写着"it"。当前词的查询向量, 例子中是第9个位置的查询向量。
+- Key (键)：文件柜中每个文件夹的标签, 像键向量, 代表序列中每个词的"标识"。4个文件夹,分别标记为"a", "robot", "must", "obey"。
+- Value (值)：每个文件夹里的实际内容对应着值向量,包含词具体信息。
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.16\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-4\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;372.59\&quot; y=\&quot;310\&quot; width=\&quot;150\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-2\&quot; value=\&quot;Self-Attention 原理图解\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;427.59000000000003\&quot; y=\&quot;200\&quot; width=\&quot;200\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-12\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;Query #9&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;372.5899999999999\&quot; y=\&quot;280\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-30\&quot; value=\&quot;wqw547243068@163.com&amp;lt;br&amp;gt;2024-09-25\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;612.1800000000001\&quot; y=\&quot;600\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-2\&quot; value=\&quot;it\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=20;fontColor=#7F00FF;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;442.59\&quot; y=\&quot;375\&quot; width=\&quot;30\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-1\&quot; value=\&quot;0.3\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;397.59\&quot; y=\&quot;330\&quot; width=\&quot;30\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-2\&quot; value=\&quot;0.6\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;427.59\&quot; y=\&quot;330\&quot; width=\&quot;30\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-3\&quot; value=\&quot;0.1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;457.59\&quot; y=\&quot;330\&quot; width=\&quot;30\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot; value=\&quot;\&quot; style=\&quot;group\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;692.88\&quot; y=\&quot;280\&quot; width=\&quot;200\&quot; height=\&quot;300\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-34\&quot; value=\&quot;Value #4\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;verticalAlign=top;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;75\&quot; width=\&quot;80\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-5\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry y=\&quot;25\&quot; width=\&quot;150\&quot; height=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-6\&quot; value=\&quot;Key #4\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=none;fontStyle=1;fontSize=14;labelBorderColor=none;rounded=1;glass=0;shadow=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-7\&quot; value=\&quot;abey\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=20;fontColor=#7F00FF;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;95\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-8\&quot; value=\&quot;0.3\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-9\&quot; value=\&quot;0.6\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;32\&quot; y=\&quot;25\&quot; width=\&quot;18\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-10\&quot; value=\&quot;0.1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;52\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot; value=\&quot;\&quot; style=\&quot;group\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-35\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-30\&quot; y=\&quot;45\&quot; width=\&quot;200\&quot; height=\&quot;255\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-37\&quot; value=\&quot;Value #3\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;verticalAlign=top;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;75\&quot; width=\&quot;80\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-38\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry y=\&quot;25\&quot; width=\&quot;150\&quot; height=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-39\&quot; value=\&quot;Key #3\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=none;fontStyle=1;fontSize=14;labelBorderColor=none;rounded=1;glass=0;shadow=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-40\&quot; value=\&quot;must\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=20;fontColor=#7F00FF;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;95\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-41\&quot; value=\&quot;0.3\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-42\&quot; value=\&quot;0.6\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;32\&quot; y=\&quot;25\&quot; width=\&quot;18\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-43\&quot; value=\&quot;0.1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;52\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot; value=\&quot;\&quot; style=\&quot;group\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-36\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-35\&quot; y=\&quot;45\&quot; width=\&quot;200\&quot; height=\&quot;210\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-45\&quot; value=\&quot;Value #2\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;verticalAlign=top;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;75\&quot; width=\&quot;80\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-46\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry y=\&quot;25\&quot; width=\&quot;150\&quot; height=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-47\&quot; value=\&quot;Key #2\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=none;fontStyle=1;fontSize=14;labelBorderColor=none;rounded=1;glass=0;shadow=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-48\&quot; value=\&quot;robot\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=20;fontColor=#7F00FF;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;95\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-49\&quot; value=\&quot;0.3\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-50\&quot; value=\&quot;0.6\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;32\&quot; y=\&quot;25\&quot; width=\&quot;18\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-51\&quot; value=\&quot;0.1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;52\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot; value=\&quot;\&quot; style=\&quot;group\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-44\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-39\&quot; y=\&quot;45\&quot; width=\&quot;160\&quot; height=\&quot;165\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-53\&quot; value=\&quot;Value #1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;verticalAlign=top;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;75\&quot; width=\&quot;80\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-54\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry y=\&quot;25\&quot; width=\&quot;150\&quot; height=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-55\&quot; value=\&quot;Key #1\&quot; style=\&quot;text;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=none;fontStyle=1;fontSize=14;labelBorderColor=none;rounded=1;glass=0;shadow=0;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-56\&quot; value=\&quot;a\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=20;fontColor=#7F00FF;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;95\&quot; width=\&quot;30\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-57\&quot; value=\&quot;0.3\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-58\&quot; value=\&quot;0.6\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;32\&quot; y=\&quot;25\&quot; width=\&quot;18\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-59\&quot; value=\&quot;0.1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;6DHZA2WNbksqPKNvCXTy-52\&quot;&gt;\n          &lt;mxGeometry x=\&quot;52\&quot; y=\&quot;25\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-60\&quot; value=\&quot;30%\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;548.88\&quot; y=\&quot;430\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-61\&quot; value=\&quot;50%\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;580.7\&quot; y=\&quot;385\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-62\&quot; value=\&quot;0.1%\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;612.18\&quot; y=\&quot;340\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-63\&quot; value=\&quot;0.1%\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;642.88\&quot; y=\&quot;300\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-64\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#7f00ff&amp;quot;&amp;gt;it&amp;lt;/font&amp;gt; 表示&amp;amp;nbsp;= &amp;lt;font color=&amp;quot;#ff0080&amp;quot;&amp;gt;0.3&amp;lt;/font&amp;gt; a + &amp;lt;font color=&amp;quot;#ff0080&amp;quot;&amp;gt;0.5&amp;lt;/font&amp;gt; robot + &amp;lt;font color=&amp;quot;#ff0080&amp;quot;&amp;gt;0.001&amp;lt;/font&amp;gt; must + &amp;lt;font color=&amp;quot;#ff0080&amp;quot;&amp;gt;0.001&amp;lt;/font&amp;gt; obey\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;208.18\&quot; y=\&quot;540\&quot; width=\&quot;340.7\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-65\&quot; value=\&quot;&amp;lt;font&amp;gt;Query: 当前token的问题/需求&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#0000FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;233.70999999999995\&quot; y=\&quot;450\&quot; width=\&quot;210\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-66\&quot; value=\&quot;&amp;lt;font&amp;gt;Key: 每个token可能提供的信息&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF3399;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;232.58999999999995\&quot; y=\&quot;470\&quot; width=\&quot;220\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-67\&quot; value=\&quot;\&quot; style=\&quot;shape=flexArrow;endArrow=classic;html=1;rounded=0;fillColor=#e1d5e7;strokeColor=#9673a6;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;549.71\&quot; y=\&quot;375\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;612.1800000000001\&quot; y=\&quot;375\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6DHZA2WNbksqPKNvCXTy-68\&quot; value=\&quot;&amp;lt;font&amp;gt;Value: 实际传输的信息内存&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#7F00FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;232.58999999999995\&quot; y=\&quot;490\&quot; width=\&quot;190\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+注意力计算过程：
+- 拿着"it"便利贴(Query #9),与每个文件夹的标签(Key #1到#4)进行比较。比较结果决定了你对每个文件夹内容的关注程度。
+- "a" 文件夹得到30%的关注
+- "robot"文件夹得到50%的关注
+- "must"和"obey"文件夹各得到0.1%的关注
+
+百分比是注意力权重,决定从每个文件夹中提取信息的比例。
+
+信息综合：
+
+最后根据这些权重从各个文件夹中提取信息,并将它们综合起来,形成对"it"这个词的理解。
+
+最终的表示是多个信息源的加权组合。这个加权组合可以用一个简单的形式表达：
+- `it`的表示 = 0.3`a` + 0.5`robot` + 0.001`must` + 0.001`obey`
+
+每个词前的系数代表**注意力权重**，而词本身代表了其 Value 向量。这种加权求和方式使模型能根据当前上下文需求，灵活整合来自不同位置的信息，从而形成对当前词"it"的理解。
+
+这个简化表达忽略了很多细节，但基本表达了注意力机制中信息综合的核心思想。
+
+注意力机制本质：
+- `Query` 向量代表当前 token 的"问题"或"需求"。
+- `Key` 向量代表每个 token 可能提供的"信息"。
+- `Value` 向量是实际传递的"信息内容"。
+
+生成新 token 时，新"问题"（Query）查询所有历史"信息"（Key）并获取相关的"内容"（Value）。
+
+注意力机制允许模型**动态地**"查阅"之前的信息。不同信息源(早先的词)会根据其相关性获得不同程度的"注意力"。最终表示是多个信息源的**加权组合**。
+
+
+### 注意力与机器翻译
+
+Attention 机制 为`机器翻译`任务带来了曙光
+- Attention 显著地提高了翻译算法的表现。使Decoder网络注意原文中的某些重要区域来得到更好的翻译。
+- Attention 解决了**信息瓶颈**问题。原先 Encoder-Decoder 网络的中间状态**只能存储有限的文本信息**，从繁重的记忆任务中解放出来了，它只需要完成如何**分配注意力**任务即可。
+- Attention 减轻了**梯度消失**问题。Attention 在网络后方到前方建立了连接捷径，使得梯度可以更好的传递。
+- Attention 提供了一些**可解释性**。通过观察网络运行过程中产生的**注意力分布**，可知道网络在输出某句话时都把注意力集中在哪里；而且通过训练网络还得到了一个免费的**翻译词典**（soft alignment）, 尽管未曾明确地告诉网络两种语言之间的词汇对应关系，但是显然网络依然学习到了一个大体上是正确的词汇对应表。
+- Attention 代表一种更为广泛的运算。之前学 Attention机制在机器翻译问题上的应用，实际上 Attention 还可以使用于更多任务中。
+  - Attention机制的广义定义：给定一组向量Value和一个查询Query，Attention是一种**分配技术**，根据Query需求和内容计算出Value的加权和。
+  - Attention 被认为是大量信息的**选择性总结归纳**，或给定一些表示（query）的情况下，用一个固定大小的表示（ Ck ）来表示任意许多其他表示集合的方法（Key）。
+
+![](https://picx.zhimg.com/80/v2-ca5c2202e49ff2d07fd4cd508b9dd22b_1440w.webp)
+
+
+
+### Attention 类型
+
+Attention
+- Hard Attention: 只选取向量中一个元素, 赋值1, 其余都是0
+- Soft Attention
+
+|Attention 种类|原理|实现方法|优点|缺点|其它|
+|---|---|---|---|---|---|
+|`Hard Attention`|只选取向量中一个元素, 赋值1, 其余都是0|1. max(a_ki) **最大采样**, 选最高权重的隐含层<br>2. 按 a_ki 分布进行**随机采样**|简单|最大采样/随机采样选择信息, 导致损失函数与注意力分布函数关系不可导, 无法用BP训练|![](https://pica.zhimg.com/80/v2-dc56532b06e30bd7028ebfcdd4975d66_1440w.webp)|
+|`Soft Attention`|常规意义上的Attention实现, 加权平均|逐点相乘再累加|Hard Attention改进|全局对齐,计算量大,运行效率低|![](https://pic4.zhimg.com/80/v2-740c1ab6d6600c003ca092a8e8a5668b_1440w.webp)|
+|`Global Attention`|以上都是Global|所有位置参与运算||计算量大||
+|`Local Attention`|改进: 只对**局部**计算注意力|找对齐位置pt,前后扩展D个长度(如正态分布),局部范围内计算注意力<br>1. pt周围固定范围<br>2. pt周围正态分布|计算量降低, 大大加速||![](https://pic4.zhimg.com/80/v2-2a020600b246fa374bd5553fb36181d7_1440w.webp)|
+|Not-Self Attention|Encoder-Decoder结构只适用于seq2seq任务|Hhc 计算模式||无法解决非seq2seq任务, 如阅读理解|kv相同<br>![](https://pic1.zhimg.com/80/v2-0d50edb2fb138a4843892e75e5c73a52_1440w.webp)|
+|`Self Attention`|自监督（Self-Attention）也叫 Intra-Attention, 寻找一段文本内关系|QKV 计算模式<br>用Query在数据库中按照Key进行筛选|自监督注意力适合非seq2seq任务<br>阅读理解,文本摘要,文本蕴含||kv不同<br>![](https://pic4.zhimg.com/80/v2-ff7ecfefe79518aab20a560b5b9ae0f9_1440w.webp)|
+|`Attention`||||||
+
+
+参考 [第三章 Transformer原理、结构详解](https://zhuanlan.zhihu.com/p/720320507)
+
+
+`Attention` 是 BERT 乃至整个预训练语言模型的基石，接棒`CNN`/`RNN`，成为**特征抽取**的新利器。Attention is all you need !
+
+### 注意力可视化
+
+【2024-9-20】三蓝一棕 [可视化注意力机制](https://www.youtube.com/watch?v=eMlx5fFNoYc)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eMlx5fFNoYc?si=aelWCs2t0um-7UGR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### self-attention
+
+`Self-Attention` 是能力超强的**特征提取器**，跟 `RNN`、`CNN` 相比
+- ![](https://d2l.ai/_images/cnn-rnn-self-attention.svg)
+
+
+#### 电影推荐
+
+以电影推荐为例
+
+**传统推荐系统**：特性向量点积用户偏好
+- 人工设计一些**电影特征**，比如：浪漫指数、动作指数，
+- 人工设计一些**用户特征**，例如：喜欢浪漫电影或动作片的可能性；
+
+有了这两个维度的数据（特征向量）之后，对二者做`点积`（dot product）， 得到电影属性与用户喜欢程度之间的**匹配程度**，用得分表示
+- 电影推荐：**电影**特征向量（浪漫、动作、喜剧）与**用户**特性向量（喜欢浪漫、动作、喜剧的程度）做**点积运算**
+- ![](http://arthurchiao.art/assets/img/transformers-from-scratch/movie-dot-product.png)
+
+得分数值：
+- 如果特征**符号相同**，例如“浪漫电影 && 用户喜欢浪漫电影”， 或者“不是浪漫电影 && 用户不喜欢浪漫电影”，得到的点积就是**正数**；反之就是**负数**；
+- 特征值大小决定该特征对总分的**贡献大小**： 一部电影可能有点浪漫，但不是很明显，或者用户可能只是不喜欢浪漫，但也没到讨厌的程度。
+
+分析
+- 优点：简单直接，很容易上手；
+- 缺点：规模大了很难搞， 因为对几百万部电影打标的成本非常高，精确标记用户喜欢或不喜欢什么也几乎是不可能的。
+
+
+基于 **self-attention 的推荐系统**
+
+电影特征和用户特征作为模型参数，匹配已知用户偏好
+
+两步：
+- 电影特征和用户特征不再直接做点积运算，而是作为**模型参数**（parameters of the model）；
+- 收集少量的用户偏好作为目标，然后通过优化用户特征和电影特征（模型参数）， 使二者的点积匹配已知的用户喜好。
+
+这就是 self-attention 的基本原理。
+
+以一串单词作为输入，原理上只要将其作为 input vector 送到 self-attention 模型。
+- 但实际上要对 input vector 做预处理，生成一个**中间表示**，即序列建模中的嵌入层。为每个单词 t 分配一个`嵌入向量`（embedding vector） 𝐯t（我们后面将学习到这个值）。
+-  input vector -> embedding vector -> self-attention -> output vector
+- (the, cat) -> (V_the, V_cat) -> 加权求和 -> y_the, y_cat
+
+不同于一般的 sequence-to-sequence 运算：
+- self-attention 将输入当做一个**集合**（set）而不是**序列**（sequence）。
+- 如果对输入序列进行**重排**（permute），输出序列除了也跟着重排，其他方面将完全相同，self-attention 是**排列等变**的（permutation equivariant）。
+- 构建完整的 transformer 时，会引入一些东西来保持输入的顺序信息，但要明白 <span style='color:red'>self-attention 本身不关心输入的顺序属性（sequential nature）</span>。
+
+
+#### Self-attention 是什么？
+
+什么是**self-attention** ？
+
+self-attention 运算是所有 transformer 架构的**基本运算**, 而 Self-attention 是 sequence-to-sequence 运算： 
+- 输入一个向量序列（x1,x2,...,xm），输出另一个向量序列 (y1,y2,...,yn)，所有字符都映射成k维向量；
+- 输出向量是x的加权平均： yi = ∑ wi * xi
+- 计算权重矩阵W 最简单函数就是`点积`（dot product）: $ w_ij = x_i^T * x_j $
+- 结果取值范围是**正负无穷**，为了使累加和（表示概率）等于 100%， 需要做归一化, 即 softmax
+- 总结起来就是两点：
+  - vector-to-vector 运算：self-attention 是对 input vector 做矩阵运算，得到一个加权结果作为 output vector；
+  - 加权矩阵计算：权重矩阵不是常量，而是跟它所在的位置 (i,j) 直接相关，根据对应位置的 input vector 计算。
+  - ![](http://arthurchiao.art/assets/img/transformers-from-scratch/self-attention.png)
+  - output vector 中的每个元素 yj 都是对 input vector 中所有元素的加权和；
+  - 对于 yj，加权矩阵由 input 元素 xj 与每个 input 元素计算得到；
+
+self-attention 是整个架构中**唯一**在 input & output vector 间做运算；
+- Transformer 架构中的其他运算都是单纯对 input vector 做运算。
+
+<span style='color:red'>self-attention 模型简单，本质是**加权平均**公式，为什么效果这么好？</span>
+
 
 self-attention 结构图。[原文](https://zhuanlan.zhihu.com/p/636889198)
 - 一个输入序列的向量集合（矩阵），经过Wq、Wk、Wv三个权重矩阵计算之后，生成了Q、K、V三个矩阵，经过FF网络，最后生成了新的向量集合。
 - ![img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
 - [img](https://pic1.zhimg.com/80/v2-545cd59a1accb86ab17cc739a029de34_1440w.webp)
 
-attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
+attention 机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序列第i个位置产生的隐状态，后者是输出序列在第t个位置产生的隐状态。
 
-**self-attention**实际是：**输出序列**就是**输入序列**！因此，计算自己的attention得分，就叫做**self-attention**！
+
+**self-attention**实际是：**输出序列**就是**输入序列**
+
+因此，计算自己的 attention 得分，就叫做**self-attention**
 
 最上层的 transformer 模块在处理单词「it」的时候会关注「a robot」，所以「a」、「robot」、「it」这三个单词与其得分相乘加权求和后的特征向量会被送入之后的神经网络层。
 - ![](https://pic4.zhimg.com/80/v2-e748fe9dc233efd6210ef79852371407_1440w.webp)
@@ -504,7 +542,7 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 - `值向量` （Value 向量）：值向量是单词真正的**表征**，当算出注意力得分后，使用值向量进行加权求和得到能代表当前位置上下文的向量。
 - ![](https://pic4.zhimg.com/80/v2-773eec2cc3564bef9f99d97513b2af27_1440w.webp)
 
-比喻: 档案柜中找文件。
+比喻: <span style='color:red'>档案柜中找文件</span>。
 >- 查询向量就像一张**便利贴**，上面写着正在研究的课题。
 >- 键向量像是档案柜中文件夹上贴的**标签**。当你找到和便利贴上所写相匹配的文件夹时，拿出它，文件夹里的东西便是值向量。只不过最后找的并不是单一的值向量，而是很多文件夹值向量的混合。
 
@@ -521,7 +559,158 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 
 
 
-### Context-attention是什么？
+#### Attention 解决什么问题
+
+背景：
+- RNN 处理序列数据时，token 逐个喂给模型。比如在a3的位置，模型要等a1和a2的信息都处理完成后，才可以生成a3。
+- 问题：
+  - a. 随着序列长度增加，模型并行计算的能力变差。
+  - b. 随着token间距离的增加，对于远距离处的信息，RNN很难捕获其依赖关系。
+
+改进：提升模型的**并行运算**能力，序列中的每个token 无损地捕获序列里的其他tokens信息。
+- Attention: 在每个位置，例如在a2处产生b2时，attention将会同时看过a1到a4的每个token。此外，每个token生成其对应的输出的过程是同时进行的，计算不需要等待。
+- Attention 机制是Transformer架构引入的提取信息的方法。Attention机制通过对模型的输入部分赋予不同的权重，对value值进行加权求和。以此来抽取数据中更重要的信息。
+
+Attention机制的核心: 从关注**全部**到关注**重点**。
+
+Attention机制本质是对源数据中元素的值(value)进行**加权求和**，而其中查询(query)和键(key)用于计算权重系数。
+
+Attention函数本质：
+- Attention函数描述为将一个查询(query)映射到一系列键值对(key-value)的过程，其中通过计算查询(query)和键(key)的相似性或相关性来得到每个键对应值的权重系数，最终对值(value)进行加权求和，以产生Attention数值。
+
+Attention的优点：
+1. 相对于传统的CNN和RNN,Attention参数数量更少。
+2. 使 Transformer模型在计算Query时实现**并行计算**。
+3. 使得模型能够更好地捕捉**长距离依赖关系**，模型效果更好。
+
+
+#### Self-Attention 解决什么问题
+
+
+提出 Self-Attention 原因：
+- 传统 Attention 模块能捕获source端和target端的token间的依赖关系，但不能捕获source端或target端**自身token间的依赖关系**。
+- self-attention 可以学习source端句子**内部**的token间的依赖关系，捕获句子的内部信息。
+
+【2024-8-3】[【LLM基础知识】LLMs-Attention知识总结笔记v4.0](https://www.53ai.com/news/LargeLanguageModel/2024080362015.html)
+
+#### Attention 和 Self-Attention 区别
+
+Self-Attention 多两个约束条件：
+1. Q，K，V 计算输入**同源**，K-Q-V三者都来源于 X。
+2. Q，K，V 遵循 attention做法。
+
+Self 的意思是 Attention完全来自输入序列自己，而不来自外部信息（比如output）。
+
+
+
+#### Self-Attention 如何解决长距离依赖?
+
+解决方式： 
+- 利用注意力机制来**“动态”生成不同连接的权重**，从而处理变长的信息序列。
+
+具体介绍： 
+- 对于当前query，需要与句子中所有 key 进行点乘后再 Softmax ，以获得句子中所有 key 对于当前query的score(权重)
+- 然后与所有词 的value向量进行加权融合之后，就能使当前token学习到句子中其他词的信息；
+
+
+
+#### self-attention 如何并行化？
+
+Transformer 的并行化主要体现在 self-attention 模块
+- 在Encoder端 Transformer可以并行处理整个序列，并得到整个输入序列经过 Encoder 端的输出
+- 在 self-attention 模块，对于某个序列(x1,x2,...xn)，self-attention 模块可以直接计算xi,xj的点乘结果，而RNN系列的模型就必须按照顺序从x1计算到xn。
+
+Self-Attention 并行计算句子中不同的query，每个query之间并不存在先后依赖关系，使得transformer能够并行化；
+
+Self-Attention 在计算的过程中，如何对padding位做mask? [知乎](https://zhuanlan.zhihu.com/p/149634836)
+
+#### Attention与MLP层的区别？
+
+既然 Attention 是为了关注某些局部信息，那些不就相当于连上一层在关注的部分权重更大的全连接层吗，二者的区别何在？
+- Attention的最终输出可看成是一个“在关注部分权重更大的全连接层”。但是与全连接层的区别在于，注意力机制可**利用输入特征信息确定哪些部分更重要**。
+
+#### 两个 FFN 层作用
+
+注意力计算后，用了两个**FFN层**，为什么第一个FFN层先把维提升，第二个FFN层再把维度降回原大小？
+
+[解释](https://mp.weixin.qq.com/s/DXOKLkXdTFfANpvV4eiQNA)
+- 1、提升维度：类似SVM kernel，通过提升维度识别一些在低维无法识别的特征。
+- 2、提升维度：更大的可训练参数，提升模型容量。
+- 3、降回原维度：方便多层注意力层和残差模块进行拼接，而无需进行额外处理。
+
+
+#### QKV 哪里来?
+
+WQ, WK, WV 由来
+- 先初始化为`[h,h]`维度，再用模型训练学习这里面的参数。
+
+
+#### 为什么要计算Q和K点乘？ 
+
+Q和K点乘是为了计算序列中**每个token与其他token的相似度**, 得到 attention score 矩阵，用来对V进行提纯。
+
+假设句子 "Hello, how are you?" 长度是6，embedding维度是 300，那么 Q，K，V都是(6, 300)的矩阵。
+- "Hello, how are you?" 这句话，当前token为”you"的时候，可知道”you“对于"Hello", ” , “, "how", "are", "?"这几个token对应的关注度是多少。
+- 有了这个 attention score，可知道处理到”you“的时候，模型在关注句子中的哪些token。
+
+#### Q和K为什么用不同？
+
+Q和K 为什么用不同的权重矩阵进行线性变换投影？
+- 如果 WQ 和 WK 一样，则 QKᐪ结果是**对称矩阵**，这样就**减弱了模型的表达能力**。
+- 同时在**对称矩阵**中，对角线的值会比较大，导致每个token过分关注自己。
+- 使用不同的投影矩阵，参数增多，可以增强模型表达能力。
+
+Self-Attention 计算时乘上WQ.WK.WV的好处？
+1. 增加了**参数量**，增加模型的**表达能力**。
+2. 加入了**不同线性变换**相当于对x 做了不同的投影，将向量x 投影到不同空间，增加模型的**泛化能力**。
+3. 允许某个token对其他位置token的注意力大于对自己的注意力，才能更好的**捕捉全局位置的注意力**。
+
+[知乎](https://zhuanlan.zhihu.com/p/626820422)
+
+#### 能不能只用QV，KV或V?
+
+为什么要用 Q,K,V? 仅仅使用QV，KV或者V行不行？
+
+不行
+- 使用 QKV 主要为了增强网络的**容量**和**表达能力**。
+- self-attention 使用 Q,K,V 这三个参数独立，模型的表达能力和灵活性显然会比只用 QV 或者只用 V 要好些
+
+
+#### 自注意力实现
+
+
+Self-Attention 计算公式
+- QKV计算不加**偏置项**: 缩放点积注意力：Scaled Dot-Product Attention
+- QKV计算加**偏置项**: Q = WQ*x+bQ
+
+
+#### 计算量多大
+
+Self-Attention 时间复杂度多少？
+
+Self-Attention 时间复杂度：`O(n²⋅d)`
+- n是序列的长度seq_length
+- d是embedding的维度d_model。
+
+Self-Attention 包括三个步骤：相似度计算，softmax和加权平均，时间复杂度分别是：
+- 相似度计算: `(n,d)`和`(d,n)`矩阵相乘: `(n,d)∗(d,n)=O(n²⋅d)` ，
+- softmax 直接计算，时间复杂度为 `O(n²)`
+- 加权平均: `(n,n)`和`(n,d)`的矩阵相乘: `(n,n)∗(n,d)=O(n²⋅d)` 
+
+Self-Attention 时间复杂度是 `O(n²⋅d)` 。
+
+[知乎](https://zhuanlan.zhihu.com/p/132554155)
+
+Self-Attention和Multi-head Attention的参数量怎么计算？
+
+self-attention块的模型参数有Q,K,V的权重矩阵WQ,WK,WV和偏置,输出权重矩阵Wo和偏置。
+
+4个权重矩阵的形状为【h,h】,4个偏置的形状为【h】。总参数量为4h²+4h.
+
+Multi-head Attention也符合这个参数量，但实际上需要分head计算再组合。
+
+
+### Context-attention 是什么？
 
 知道了**self-attention**，那你肯定猜到了**context-attention**是什么了：**它是encoder和decoder之间的attention**！所以，你也可以称之为**encoder-decoder attention**!
 
@@ -536,42 +725,99 @@ attention机制涉及两个隐状态： $ h_i $ 和 $s_t$，前者是输入序�
 
 那么Transformer模型采用的是哪种呢？答案是：**scaled dot-product attention**。
 
-### Scaled dot-product attention是什么？
+### 点乘注意力是什么？
 
-论文[Attention is all you need](https://arxiv.org/abs/1706.03762)里面对于attention机制的描述是这样的：
+什么是 点乘注意力 Scaled dot-product attention ?
+
+论文[Attention is all you need](https://arxiv.org/abs/1706.03762)对 attention机制的描述：
 > An attention function can be described as a query and a set of key-value pairs to an output, where the query, keys, values, and output are all vectors. The output is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility of the query with the corresponding key.
 
-这句话描述得很清楚了。翻译过来就是：**通过确定Q和K之间的相似程度来选择V**！
+翻译：**通过确定Q和K之间的相似程度来选择V**
 
-用公式来描述更加清晰：
+公式描述更加清晰：
 
 $$ \text{Attention}(Q,K,V)=softmax(\frac{QK^T}{\sqrt d_k})V $$
 
-**scaled dot-product attention**和**dot-product attention**唯一的区别就是，**scaled dot-product attention**有一个缩放因子 $ \frac{1}{\sqrt d_k} $。
+**scaled dot-product attention**和**dot-product attention**唯一的区别:
+- **scaled dot-product attention** 有个缩放因子 $ \frac{1}{\sqrt d_k} $。
 
-上面公式中的$d_k$表示的是K的维度，在论文里面，默认是`64`。
+$d_k$ 表示 K的维度，论文里默认是`64`。
 
-那么为什么需要加上这个缩放因子呢？论文里给出了解释：对于$d_k$很大的时候，点积得到的结果维度很大，使得结果处于softmax函数梯度很小的区域。
+#### 为什么加缩放因子？
 
-梯度很小的情况，这对反向传播不利。为了克服这个负面影响，除以一个缩放因子，可以一定程度上减缓这种情况。
+提示: 面试题
 
-为什么是$\frac{1}{\sqrt d_k}$呢？论文没有进一步说明。个人觉得你可以使用其他缩放因子，看看模型效果有没有提升。
+论文解释：
+- 对于 $d_k$ 很大时，点积得到的结果维度很大，使得结果处于 softmax 函数梯度很小的区域, 对反向传播不利。
 
-论文也提供了一张很清晰的结构图，供大家参考：  
-- ![scaled_dot_product_attention_arch](http://blog.stupidme.me/wp-content/uploads/2018/09/scaled_dot_product_attention_arch.png)  
-*Figure 3. Scaled dot-product attention architecture.*  
+为了克服这个负面影响，除以一个**缩放因子**，一定程度上减缓这种情况。
 
-首先说明一下我们的K、Q、V是什么：
-* 在encoder的self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
-* 在decoder的self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
-* 在encoder-decoder attention中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
+
+#### 为什么是 1/dk ？
+
+(1) 为什么是 $\frac{1}{\sqrt d_k}$
+
+论文没有进一步说明。可用其他缩放因子，看看模型效果有没有提升。
+
+提示: 面试题
+
+scaled 参数除 $ \sqrt d_k $？
+1. 使 QKᐪ 结果满足 `r ~ N(0,1)` , 期望为0，方差为1的标准正态分布，类似于**归一化**。
+1. 使输入值进入 softmax 敏感区间, 导数为0, 防止梯度消失
+
+作者发现
+- 当维度dk值很大时，输入softmax的值QKᐪ就越大，导致后面的softmax计算会有极小的梯度，不利于更新学习
+- 因此除以dk，防止梯度消失。(softmax值过大,其偏导数趋于0)
+
+(2) 必须是 $ \sqrt d_k $ 吗?
+
+只要做到每层参数的梯度保持在训练**敏感范围内**，使网络好训练。缓解梯度消失就可以。
+- 不用除根号dk方式有 Google T5 的 **Xavier初始化**。
+
+
+(3) 为什么要满足 标准正态分布?
+- 权重一般初始化为正态分布
+
+
+
+#### KQV 是什么
+
+K、Q、V 是什么：
+* 在 encoder 的 self-attention中，Q、K、V都来自同一个地方（相等），他们是上一层encoder的输出。对于第一层encoder，它们就是word embedding和positional encoding相加得到的输入。
+* 在 decoder 的 self-attention中，Q、K、V都来自于同一个地方（相等），它们是上一层decoder的输出。对于第一层decoder，它们就是word embedding和positional encoding相加得到的输入。但是对于decoder，我们不希望它能获得下一个time step（即将来的信息），因此我们需要进行**sequence masking**。
+* 在 encoder-decoder attention 中，Q来自于decoder的上一层的输出，K和V来自于encoder的输出，K和V是一样的。
 * Q、K、V三者的维度一样，即 $d_q=d_k=d_v$。
 
-上面scaled dot-product attention和decoder的self-attention都出现了**masking**这样一个东西。那么这个mask到底是什么呢？这两处的mask操作是一样的吗？这个问题在后面会有详细解释。
+上面 scaled dot-product attention 和 decoder 的 self-attention都出现了**masking**这样一个东西。
 
-### Scaled dot-product attention的实现
+那么这个mask到底是什么呢？这两处的mask操作是一样的吗？
 
-先把scaled dot-product attention实现了吧。代码如下：
+### self-attention 实现
+
+#### 基础 self-attention
+
+最基础的 self-attention 模型实现：
+- 2次 矩阵乘法 和 1次 归一化（softmax）。
+
+```py
+import torch
+import torch.nn.functional as F
+
+# 假设我们有一些 tensor x 作为输入，它是 (b, t, k) 维矩阵
+x = ...
+
+# torch.bmm() 是批量矩阵乘法（batched matrix multiplication）函数，对一批矩阵执行乘法操作
+raw_weights = torch.bmm(x, x.transpose(1, 2))
+# 正值化、归一化
+weights = F.softmax(raw_weights, dim=2)
+# 计算输出
+y = torch.bmm(weights, x)
+```
+
+
+#### 点乘注意力实现
+
+scaled dot-product attention 实现代码如下：
 
 ```python
 import torch
@@ -613,25 +859,194 @@ class ScaledDotProductAttention(nn.Module):
         return context, attention
 ```
 
-### Multi-head attention又是什么呢？
 
-理解了Scaled dot-product attention，Multi-head attention也很简单了。论文提到，将Q、K、V通过一个线性映射之后，分成 $h$ 份，对每一份进行**scaled dot-product attention**效果更好。然后，把各个部分的结果合并起来，再次经过线性映射，得到最终的输出。这就是所谓的**multi-head attention**。上面的超参数 $$h$$ 就是**heads**数量。论文默认是`8`。
+### self-attention 改进
 
-下面是multi-head attention的结构图：  
-- ![multi-head attention_architecture](http://blog.stupidme.me/wp-content/uploads/2018/09/multi_head_attention_arch.png) 
+现代 transformer 对 self-attention 扩展
+- 引入**控制参数**（queries, keys and values）
+- 对点积做**缩放**处理（scaling the dot product）
+  - softmax 函数对非常大的输入值敏感。这些 input 会梯度消失，学习变慢甚至完全停止。 
+  - 由于点积**平均值**随着嵌入维度 k 的增加而增大，因此点积送到 softmax 之前进行缩放有助于缓解这个问题。
+  - $ w_ij = q_i^T k_j$ -> $ w_ij = \frac{q_i^T k_j}{\sqrt{k}}$
+- 引入 **multi-head attention**
+  - 同一个单词随着相邻单词们的不同表示的意思也可能不同, <span style='color:red'>基本的 self-attention 欠缺了很多灵活性</span>。
+  - 如何理解？让模型有更强的辨识力，一种解法：组合多个 self-attention（用 r 索引）， 每个对应不同的 query/key/value 参数矩阵 $ 𝐖^r_q$ , $ 𝐖^r_k $, $ 𝐖^r_v $， 称为 attention heads（注意力头）。
+  - 对于 input 𝐱i，每个 attention head 产生不同的 output vector $ 𝐲^r_i $（一部分输出）。 最后再将这些部分输出连接起来，通过线性变换来降维回 k。
 
-*Figure 4: Multi-head attention architecture.*  
+multi-head self-attention 提效：**query/key/value 降维**
+- multi-head self-attention 看作**多个并行** self-attention 机制，每个都有自己的键、值和查询转换。
+- Multi-head self-attention 的缺点: **慢**，对于 R 头，慢 R 倍。 
 
-注意：上面所说的**分成 $h$ 份**是在 $d_k、d_q、d_v$ 维度上面进行切分的。因此，进入到scaled dot-product attention的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
+优化：
+- 实现这 multi-head self-attention，既能利用多个 self-attention 提升辨识力， 又与 single-head self-attention 基本一样快。
+- 每个 head 对 query/key/value 降维。 
 
-Multi-head attention允许模型加入不同位置的表示子空间的信息。
+如果输入向量有 k=256 维，模型有 h=4 个 attention head，则降维操作包括：
+- 将输入向量乘以一个 256×64 矩阵，这会将 input vector 从 256 维降到 64 维；
+- 对于每个 head 需要执行 3 次降维：分别针对 query/key/value 的计算。
 
-Multi-head attention的公式如下：
+甚至只用三次 k×k 矩阵乘法就能实现 multi-head 功能， 唯一需要的额外操作是将生成的 output vector 重新按块排序
+
+multi-head self-attention 完整流程
+- ![](http://arthurchiao.art/assets/img/transformers-from-scratch/multi-head.png)
+
+4-head self-attention 的直观解释。对输入进行降维，针对 key/value/query 分别进行矩阵运算来实现。
+
+从左到右分为 5 列：
+- 原始 256-维 input vector；
+- 输入降维：将 input vector 乘以 256x64 矩阵，降维到 64 维；(256/4=64)
+  - 注意：对每个 input vector 需要分别针对 query/key/value 降维，总共是 3 遍；
+- 将降维后的 input 分别输入多个并行的 self-attention；
+- 计算得到多个降维之后的 output vector；
+- 对低维度 output vectors 进行拼接，**重新**回到与 input vectors 一样的维度。
+
+参数规模
+- `single-head`: 总参数数量是 $3k^2$。
+- `multi-head`: 参数个数 $ 3hk\frac{k}{h}=3k^2 $
+  - 与 single-head self-attention 的参数数量相同。
+- 唯一区别: 
+  - multi-head self-attention 最后拼接 output vector 时多了一个矩阵 Wo
+
+- 参考：[Transformer 是如何工作的：600 行 Python 代码实现两个（文本分类+文本生成）Transformer](http://arthurchiao.art/blog/transformers-from-scratch-zh/)
+
+
+### Multi-head attention 又是什么
+
+提示: 面试题
+
+自注意力机制缺陷：
+- **模型在对当前位置信息进行编码时，会过度的将注意力集中于自身的位置**
+
+`多头注意力机制`解决这一问题，还能给予注意力层的输出包含有不同**子空间**中的编码表示信息，从而增强模型的表达能力。
+
+论文提到
+- 将 Q、K、V 通过一个线性映射之后，分成 h 份，对每份进行 **scaled dot-product attention** 效果更好。
+- 把各个部分结果合并起来，再次经过线性映射，得到最终的输出。
+
+所谓的**multi-head attention**。超参数 h 是**heads**数量。论文默认是`8`。
+
+multi-head attention 结构图：  
+
+注意：
+- **分成 h 份**是在 $d_k$、$d_q$、$d_v$ 维度上切分。
+- 因此，进入到 scaled dot-product attention 的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
+
+Multi-head attention 允许模型加入不同位置的**表示子空间**信息。
+
+Multi-head attention 公式：
 - $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_ 1,\dots,\text{head}_ h)W^O$$
 
-其中，$\text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V)$
+其中，$ \text{head}_ i = \text{Attention}(QW_i^Q,KW_i^K,VW_i^V) $
 
-论文里面，$d_{model}=512$，$h=8$。所以在scaled dot-product attention里面的 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+相同维度下用**单头**和**多头**的区别是什么
+- $d_{model}=512$，$h=8$。
+- 在 scaled dot-product attention 里 $d_q = d_k = d_v = d_{model}/h = 512/8 = 64$
+
+如果
+- h=1，得到一个各个位置**只集中于自身位置**的注意力权重矩阵；
+- h=2，得到另一个注意力权重**稍微分配合理**的权重矩阵；
+
+多头恰好克服「**模型在对当前位置的信息进行编码时，会过度的将注意力集中于自身的位置**」的问题。
+
+这里再插入一张真实场景下同一层的不同注意力权重矩阵可视化结果图：
+- ![](https://pic3.zhimg.com/80/v2-206e013c6615f1ec33558112585d7642_1440w.webp)
+
+当 h 不一样时，dk 取值也不一样，使得对**权重矩阵的scale程度**不一样。
+
+当模型维度 dm 确定时，一定程度上 h 越大, 整个模型的表达能力越强，越能提高模型对于注意力权重的合理分配。
+
+
+#### 实现2
+
+【2024-9-10】代码
+- [解释](https://mp.weixin.qq.com/s/NEN39QhyfB5HjMoxuugFog)
+
+```py
+import math
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SelfAttention(nn.Module):
+    """
+        自注意力机制
+    """
+    def __init__(self, d, d_q, d_k, d_v):
+        super(SelfAttention, self).__init__()
+        self.d = d
+        self.d_q = d_q
+        self.d_k = d_k
+        self.d_v = d_v
+        self.W_query = nn.Parameter(torch.rand(d, d_q))
+        self.W_key = nn.Parameter(torch.rand(d, d_k))
+        self.W_value = nn.Parameter(torch.rand(d, d_v))
+        
+    def forward(self, x):
+        """
+            前向传播
+        """
+        Q = x @ self.W_query
+        K = x @ self.W_key
+        V = x @ self.W_value
+        attention_scores = Q @ K.T / math.sqrt(self.d_k)
+        attention_weights = F.softmax(attention_scores, dim=-1)
+        context_vector = attention_weights @ V
+        return context_vector
+
+if __name__ == '__main__':
+    sentence = 'the quick brown fox jumps over the lazy dog'
+    print('提取词库')
+    dc = {s: i for i, s in enumerate(sorted(sentence.replace(',', '').split()))}
+    print(dc)
+    print('映射 str -> id')
+    r = [dc[i] for i in sentence.replace(',', '').split()]
+    sentence_int = torch.tensor(r)
+    print(sentence_int)
+    
+    print('id -> embedding')
+    vocab_size = 50000  # Assume a large vocabulary size
+    torch.manual_seed(123)
+    embed = nn.Embedding(vocab_size, 3)
+    embedded_sentence = embed(sentence_int).detach()
+    print(embedded_sentence)
+    
+    print('计算自注意力')
+    sa = SelfAttention(d=3, d_q=2, d_k=2, d_v=4)
+    cv = sa(embedded_sentence)
+    print(cv.shape)
+    print(cv)
+```
+
+输出
+
+```s
+提取词库
+{'brown': 0, 'dog': 1, 'fox': 2, 'jumps': 3, 'lazy': 4, 'over': 5, 'quick': 6, 'the': 8}
+映射 str -> id
+tensor([8, 6, 0, 2, 3, 5, 8, 4, 1])
+id -> embedding
+tensor([[ 0.4965, -1.5723,  0.9666],
+        [-0.1690,  0.9178,  1.5810],
+        [ 0.3374, -0.1778, -0.3035],
+        [-0.2196, -0.3792,  0.7671],
+        [-1.1925,  0.6984, -1.4097],
+        [ 0.2692, -0.0770, -1.0205],
+        [ 0.4965, -1.5723,  0.9666],
+        [ 0.1794,  1.8951,  0.4954],
+        [-0.5880,  0.3486,  0.6603]])
+计算自注意力
+torch.Size([9, 4])
+tensor([[-0.0269, -0.0440, -0.0042,  0.0399],
+        [ 0.4747,  0.1601,  0.6337,  0.7438],
+        [ 0.1518, -0.0326,  0.0235,  0.2049],
+        [ 0.1134, -0.0163,  0.0691,  0.1872],
+        [ 0.0674, -0.0990, -0.1767,  0.0518],
+        [ 0.1159, -0.0648, -0.0747,  0.1341],
+        [-0.0269, -0.0440, -0.0042,  0.0399],
+        [ 0.5645,  0.1703,  0.7147,  0.8803],
+        [ 0.2060,  0.0059,  0.1400,  0.2985]], grad_fn=<MmBackward0>)
+```
+
 
 ### Multi-head attention的实现
 
@@ -747,7 +1162,7 @@ Query和Key作用得到的attention权值作用到Value上。因此它们之间�
 
 而每一层线性映射参数矩阵都是独立的，所以经过映射后的Q, K, V各不相同，模型参数优化的目标在于将q, k, v被映射到新的高维空间，使得每层的Q, K, V在不同抽象层面上捕获到q, k, v之间的关系。一般来说，底层layer捕获到的更多是lexical-level的关系，而高层layer捕获到的更多是semantic-level的关系。
  
-### 2.4. Attention的作用
+### 2.4. Attention 作用
  
 下面这段我会以机器翻译为例，用通俗的语言阐释一下attention的作用，以及query, key, value的含义。
 - ![](https://pic4.zhimg.com/80/v2-cca6e1f0dd02f08cc554d731362a08af_720w.jpg)
@@ -957,7 +1372,7 @@ class LayerNorm(nn.Module):
 
 顺便提一句，**Layer normalization**多用于RNN这种结构。
 
-## Mask是什么？
+## Mask 是什么？
 
 现在终于轮到讲解mask了!mask顾名思义就是**掩码**，在我们这里的意思大概就是**对某些值进行掩盖，使其不产生效果**。
 
@@ -1374,6 +1789,35 @@ if __name__ == '__main__':
     res = sa(X)
     print(res)
 
+```
+
+
+另一种写法
+
+```py
+import torch.nn as nn
+​
+class SelfAttention(nn.Module):
+​
+    def __init__(self, d_in, d_out_kq, d_out_v):
+        super().__init__()
+        self.d_out_kq = d_out_kq
+        self.W_query = nn.Parameter(torch.rand(d_in, d_out_kq))
+        self.W_key   = nn.Parameter(torch.rand(d_in, d_out_kq))
+        self.W_value = nn.Parameter(torch.rand(d_in, d_out_v))
+​
+    def forward(self, x):
+        keys = x @ self.W_key
+        queries = x @ self.W_query
+        values = x @ self.W_value
+        
+        attn_scores = queries @ keys.T  # unnormalized attention weights    
+        attn_weights = torch.softmax(
+            attn_scores / self.d_out_kq**0.5, dim=-1
+        )
+        
+        context_vec = attn_weights @ values
+        return context_vec
 ```
 
 
@@ -2154,7 +2598,16 @@ KAN 的最大瓶颈: 训练速度慢。
 
 ## Attention 改进
 
-### 组注意力 Grouped-Query Attention
+
+### QKV
+
+MHA、GQA、MQA、MLA 原理对比
+- 传统 Transformer 采用 MHA，但 KV Cache 在推理过程中可能成为性能瓶颈。
+- `MQA` 和 `GQA` 虽然在一定程度上可以减少KV Cache的占用，但效果通常不如 `MHA`。
+- `MLA` 通过低秩 Key-Value联合压缩技术，不仅实现了比`MHA`更优的效果，还大幅减少了所需的KV Cache大小。
+
+
+#### GQA: Grouped-Query Attention
 
 Grouped-Query Attention ：对于更大参数量、更大的 context length、更大的 batchsize 来说，原始的MHA（multi-head attention）的内存占用会更高（因为在计算时要缓存pre token的K、V矩阵）。
 - MQA（multi-query attention）让所有的 head 共享 1 个 KV projection 矩阵；
@@ -2162,7 +2615,47 @@ Grouped-Query Attention ：对于更大参数量、更大的 context length、�
 
 在 30B 模型上训练 150B tokens，发现 GQA 效果和 MHA 差不多，比 MQA 要好；在 1 个node的 8 个 A100 GPUs 上推理速度 GQA 和 MQA差不多，比 MHA 要好（MQA 在推理的时候，要把 KV projections 复制到8张卡上）。
 
+#### MQA: Muti Query Attention
 
+MQA 是 2019 年提出的一种新的 Attention 机制，其能够在保证模型效果的同时加快 decoder 生成 token 的速度。
+- 论文： [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
+- 所有 head 之间**共享**一份 key 和 value 的参数
+
+MQA 在 encoder 上的提速没有非常明显，但在 decoder 上的提速是很显著的
+- ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
+
+Multi Query Attention（MQA） 和 Multi Head Attention（MHA）只差了一个单词，从「Head」变成了「Query」。
+
+MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头只单独保留了一份 Query 参数，从而大大减少 Key 和 Value 矩阵的参数量。
+- 「参数共享」并不是新奇思路，Albert 通过使用**跨层共享参数**（Cross-layer parameter sharing）方式来大大减少 bert 的参数量
+- MQA 实际上是将 head 中的 key 和 value 矩阵抽出来单独存为一份共享参数，而 query 则是依旧保留在原来的 head 中，每个 head 有一份自己独有的 query 参数。
+
+代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
+
+
+#### MLA: Multi-head Latent Attention
+
+
+【2024-9-26】[注意力机制的变体之MLA](https://mp.weixin.qq.com/s/dWZk8TBY89re207ZL3GjfA)
+
+`MLA`(Multi-head Latent Attention) 是 杭州**深度求索**人工智能在`DeepSeek` V2 提出的一种**注意力机制变体**。
+
+MLA 解决推理过程中, 由于attention机制中**KV Cache占用过多内存**而导致的性能瓶颈问题。
+
+MLA 引入了**低秩KV压缩**技术，有效减少了KV Cache 大小，从而缓解了这一问题。
+- 官方技术报告[介绍](https://arxiv.org/pdf/2405.04434v2)
+
+`MLA` 通过低秩 Key-Value联合压缩技术，不仅实现了比`MHA`更优的效果，还大幅减少了所需的KV Cache大小。
+
+MLA通过低秩联合压缩key和value来减少kv cache。
+
+从注意力机制的步骤来分析：
+- 通过输入x乘以不同矩阵参数Wq、Wk、Wv, 得到不同的QKV向量
+- 转换到QKV向量时，将x乘以一个低秩矩阵，得到低阶矩阵表示
+- 再通过高阶矩阵来恢复原来的特征空间。由于矩阵是模型的权重参数已经保存，所以只需要保存一个低秩的潜层特征就可以恢复成KV，而不是像之前需要同时缓存KV。
+
+
+为什么LoRA提出这么久了，直到 MLA 才提出对KV Cache低秩分解的做法?
 
 ### 推理加速
 
@@ -2188,6 +2681,31 @@ Grouped-Query Attention ：对于更大参数量、更大的 context length、�
 详细：iconetched.ai
 
 
+#### TransNAR
+
+拯救Transformer推理能力DeepMind新研究，TransNAR：给模型嵌入算法推理大脑
+
+【2024-6-19】DeepMind 论文提出用**混合架构**方法，解决Transformer模型的**推理**缺陷。
+- 论文地址：[Transformers meet Neural Algorithmic Reasoners](https://arxiv.org/abs/2406.09308)
+
+将Transformer的NLU技能与基于GNN的神经算法推理器（NAR）的强大算法推理能力相结合，可以实现更加泛化、稳健、准确的LLM推理。
+- TransNAR：用预训练NAR增强Transformer
+- ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.05_879FCE72BC2CB9C3039E5FC2ADFE91C3.png)
+
+神经算法推理（NAR）由作者之一Petar Veleckovic, 2021年与人合著的一篇论文中提出，并被接收为Patterns期刊的opinion paper。
+- 论文地址：[Neural Algorithmic Reasoning](https://arxiv.org/abs/2105.02761)
+
+NAR被称为「构建能执行算法的神经网络的艺术」。算法与深度学习的本质不同，但如果神经网络能够更好地模仿算法，它甚至可能具备算法的强泛化性。
+
+NAR 整体想法: 
+- 训练一个高维隐空间中的处理器网络P（processor network），旨在不断逼近算法的运行结果A(x)。
+- 但由于算法的输入和输出一般是图、树、矩阵等抽象、结构化的形式，这与深度学习模型高维、嘈杂且多变的输入很不兼容，因此还需要训练编码器f和解码器g，将抽象形式转换为自然形式。
+- ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.04_CDB708FC9A27BC289DDAB7A1F81FE99A.png)
+
+NAR 泛化能力似乎远远优于Transformer架构
+
+详见: [拯救Transformer推理能力！DeepMind新研究TransNAR：给模型嵌入「算法推理大脑」](http://lib.ia.ac.cn/news/newsdetail/68837)
+
 ### 计算效率
 
 attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
@@ -2212,20 +2730,27 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 
 #### 2023.6.24 PageAttention -- 管理qkv缓存
 
-【2023-6-24】UC Berkeley 团队推出一个用于加速LLM推理的开源库`vLLM`，Vicuna在线推理服务的幕后英雄。
-- 利用PagedAttention技术，通过有效地管理Attention模块中的Key和Value的Cache，重新定义了LLM的推理服务。无需更改任何模型架构，它的吞吐量比原生HF Transformers高出**24倍**。
+【2023-6-24】UC Berkeley 团队推出一个用于加速LLM推理的开源库`vLLM`，Vicuna 在线推理服务的幕后英雄。
+- 利用 PagedAttention 技术，有效管理Attention模块中的Key和Value的Cache，重新定义了LLM的推理服务。
+- 无需更改任何模型架构，吞吐量比原生 HF Transformers 高出**24倍**。
 
-现有的Cache仍存在一些问题，
-- Large：对于LLaMA-13B中的单个序列，它占用高达1.7GB的内存。
-- Dynamic：它的大小取决于序列长度，而序列长度具有高度可变和不可预测的特点。
+KV Cache 核心思想
+- 缓存并重用之前计算过的Key和Value, 避免重复计算。
 
-因此，高效地管理KV Cache是一个重大挑战。
-- 现有系统（HuggingFace 默认实现是pytorch的内存分配策略）由于内存碎片化和过度预留而浪费了60%至80%的内存。
+现有 Cache 仍存在一些问题，
+- Large 大：对于LLaMA-13B中的单个序列，它占用高达1.7GB的内存。
+- Dynamic 动态：大小取决于序列长度，而序列长度具有高度可变和不可预测的特点。
 
-为了解决这个问题，引入了PagedAttention，一种受传统操作系统**虚拟内存**和**分页**概念启发的注意力算法。
-- 与传统的注意力算法不同，PagedAttention允许将**连续的键和值存储在非连续的内存空间**中。
-- 具体而言，PagedAttention将每个序列的KV缓存分成多个块，每个块包含固定数量的标记的键和值。
+因此，高效地管理 KV Cache 是重大挑战。
+- 现有系统（HuggingFace 默认实现是pytorch的内存分配策略）由于内存碎片化和过度预留而浪费了60%-80%的内存。
+
+为了解决这个问题，引入了 PagedAttention，一种受传统操作系统**虚拟内存**和**分页**概念启发的注意力算法。
+- 与传统注意力算法不同，PagedAttention 允许将**连续的键和值存储在非连续的内存空间**中。
+
+PagedAttention 将每个序列的 KV 缓存分成多个块，每个块包含固定数量的标记的键和值。
 - 在注意力计算过程中，PagedAttention Kernel高效地识别和获取这些块，采用并行的方式加速计算。（和ByteTransformer的思想有点像）
+
+[vLLM 原理详解](https://mp.weixin.qq.com/s/FFcZ1c_a3Ua0vLIj3DGaCQ)
 
 
 #### 2023.7.4 FasterTransfomer
@@ -2282,26 +2807,6 @@ DCFormer可提高70%~100%的模型计算效率
 
 DCFormer在不同的架构和模型规模下，在语言建模方面显著优于Transformer，与计算量增加1.7倍至2倍的模型性能相匹配。
 
-
-
-### Decoder 效率
-
-#### Muti Query Attention (MQA)
-
-MQA 是 2019 年提出的一种新的 Attention 机制，其能够在保证模型效果的同时加快 decoder 生成 token 的速度。
-- 论文： [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
-- 所有 head 之间共享一份 key 和 value 的参数
-
-MQA 在 encoder 上的提速没有非常明显，但在 decoder 上的提速是很显著的
-- ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
-
-Multi Query Attention（MQA） 和 Multi Head Attention（MHA）只差了一个单词，从「Head」变成了「Query」。
-
-MQA 让**所有的头之间 共享 同一份 Key 和 Value 矩阵**，每个头只单独保留了一份 Query 参数，从而大大减少 Key 和 Value 矩阵的参数量。
-- 「参数共享」并不是新奇思路，Albert 通过使用**跨层共享参数**（Cross-layer parameter sharing）方式来大大减少 bert 的参数量
-- MQA 实际上是将 head 中的 key 和 value 矩阵抽出来单独存为一份共享参数，而 query 则是依旧保留在原来的 head 中，每个 head 有一份自己独有的 query 参数。
-
-代码见[原文](https://zhuanlan.zhihu.com/p/634236135)
 
 ### 长度限制
 
@@ -2429,6 +2934,27 @@ Infini-Transformer 可在有限内存条件下，让基于Transformer的大语�
 实验结果表明：
 - Infini-Transformer在长上下文语言建模任务上超越了基线模型，内存最高可节约114倍。
 
+
+
+### TTT
+
+【2024-7-20】[彻底改变语言模型：全新架构TTT超越Transformer，ML模型代替RNN隐藏状态](https://www.jiqizhixin.com/articles/2024-07-10-2)
+
+问题
+- 长上下文的挑战是 RNN 层本质上所固有的：与自注意力机制不同，RNN 层必须将上下文压缩为固定大小的隐藏状态，更新规则需要发现数千甚至数百万个 token 之间的底层结构和关系。
+
+斯坦福大学、加州大学伯克利分校、加州大学圣迭戈分校和 Meta 设计了一种新架构 TTT，用**机器学习模型**取代了 **RNN 隐藏状态**。
+- 该模型通过输入 token 的实际梯度下降来压缩上下文。
+- 测试时训练（Test-Time Training）
+- TTT 层直接取代 Attention，并通过表达性记忆解锁线性复杂性架构，使我们能够在上下文中训练具有数百万（有时是数十亿）个 token 的 LLM。 
+
+TTT 层作为一种新的信息压缩和模型记忆机制，可简单地直接替代 Transformer 中的自注意力层。
+- 与 Mamba 相比，TTT-Linear 的困惑度更低，FLOP 更少（左），对长上下文的利用更好（右）：
+
+全新的大语言模型（LLM）架构有望代替至今在 AI 领域如日中天的 Transformer，性能也比 Mamba 更好。
+- 论文：[Learning to (Learn at Test Time): RNNs with Expressive Hidden States](https://arxiv.org/abs/2407.04620)
+- 代码与 jax 训练和测试：[ttt-lm-jax](https://github.com/test-time-training/ttt-lm-jax)
+- PyTorch 推理代码：[ttt-lm-pytorch](https://github.com/test-time-training/ttt-lm-pytorch)
 
 
 ## 稀疏Attention

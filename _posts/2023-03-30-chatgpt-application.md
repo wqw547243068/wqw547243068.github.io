@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物 字节
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -71,117 +71,7 @@ ChatGPT2022年12月发布，但真正火到出圈，是春节后，尤其是3月
 
 ### 创业公司
 
-【2023-5-30】[大模型创业潮：狂飙 180 天](https://mp.weixin.qq.com/s/yodYn8oXDtHEzyRFZrICuw)
-
-陆奇在近期演讲中，给出中国大模型发展第一阶段的标准：
-> 谁先达到 GPT-3.5 水平，谁将能进入第一梯队。在此之前，许多事要从零做起。
-
-【2023-5-27】大批高管离职投身大模型创业
-- 1、千挂科技CEO`陶吉`已离职，曾任百度自动驾驶负责人。
-- 2、Momenta 副总裁 `Charles Wang`离职，或进行大模型创业。
-- 3、阿里研究员（P10），`吴翰清`离职，投身AI短视频创业。
-- 4、淘宝技术部担任商品3D重建及AI设计算法负责人`贾荣飞`离职。
-- 5、小红书AI平台负责人`颜深根`离职。
-- 6、原百度副总裁`马杰`加入创新工厂做大模型。
-
-国内估值最高的两家创业公司是`光年之外`和 `MiniMax`
-
-MiniMax 公司名字取自一种算法，2021 年 12 月成立, 合作方有不少知名公司：
-- 已有文本、语音、视觉 3 个模态的自研基础模型。
-- 2023 年 3 月，MiniMax 推出面向企业用户的 API 开放平台，支持文本和语音模型的服务调用。
-- 4 月 18 日，火山引擎总裁谭待在发布会上专门提到 “火山引擎上跑了抖音，也跑了 MiniMax”
-- 金山办公发布 WPS AI，CEO 章庆元介绍其底层大模型由 MiniMax 提供。
-
-MiniMax 团队成员大多出生在 1990 年代。多位创投人士认为，开始大模型创业的最佳年龄在 **35 岁以下**。
-- 大模型技术更新速度 “以天计算”，年轻人能更快迭代认知，并且知识结构不陈旧
-
-云启资本合伙人陈昱学计算机出身，他指出机器学习领域近年有两个里程碑式进展：
-- 2012 年 CNN 架构爆发
-- 2017 年 “所有人一边倒地去搞 Transformer 架构”，GPT、BERT、LLaMa 等主流大模型都基于 Transformer。
-
-新技术已经覆盖和超越传统 NLP 技术
-- “一个人在不同年份开始接触机器学习，知识结构完全不一样。”
-- “早年的知识不是经验，而是累赘。”
-
-多位创业者认为
-- 考虑 2C 商业模式、监管等因素，ChatGPT 在国内并不是最适合的产品形态。
-- 王慧文愿意尝试 “Chat” 这个已经被充分验证的机会，但他更强调 “keep open-minded”，别在起跑时就笃定哪一条路是正确的。
-
-2B or 2C
-- 周明: 2B 和 2C 是完全不同的两条路，打算两者都做的创业者属于 “没想明白”。
-  - 坚定选择 2B，做针对特定领域的专用大模型，“节奏慢但是更务实”。
-  - 2C 像是一条 “不归路”。2C 需要把语言理解能力和做各种任务的能力放在一个模型里，相应地模型参数规模必须大，未来会进入参数规模、数据量和算力的军备竞赛。
-- 而 MiniMax 和 深言科技 都认为: 现阶段大模型可以在通用场景发挥价值，2B 和 2C 的市场需求都能满足，不会刻意区分。
-- 李志飞选的方向是 to “professional consumer”，用户是 “产消者”。他们希望为创造某些内容而消费的个体提供 AIGC 工具
-  - 出门问问曾以 AI 识别为重点，但困难重重。做 2C 的语音助手时，很难满足用户的期望。尽管语音识别、语音合成等基础技术很成熟，但一个语音助手产品包括自然语言理解、对话、数据查询等 8 个环节。
-  - 2020 年的 CES 国际消费电子展得到启发, 看到极高画质渲染出来的数字人 Neon。第一次被 AI 生成的体验震撼。回去后，他调整研发重点，带团队开始投入生成式 AI
-  - 不久后，带团队研发的 AI 配音平台 “魔音工坊” 带来让他惊喜的利润。
-  - 2023 年 4 月，出门问问发布基于自研大模型发布 AI 写作应用 “奇妙文”，“魔音工坊” 等应用也开始与大模型整合。
-
-- 2C 产品，帮助它们和人的价值观对齐
-  - 聆心智能创始人黄民烈：
-    - 设计的一个重要规则：当情感陪伴类产品识别出用户有危险行为时，机器能以符合专业干预技术的方式施行紧急援助。
-- 2B 产品，引入专家知识和规则帮助它们表现得更准确。
-  - 第四范式于 4 月底首次公布 “以生成式 AI 重构企业软件（AIGS）” 战略，提出企业级 Copilot（助手）的进阶 “Copilot+ 知识库”。涂威威解释，第四范式 “培养” 出大模型的基础能力，等它进入企业后，接上内部知识库就能 “自学”，更准确地理解任务、知道什么工作该调用什么资源，输出结果也能溯源，“像一位董秘”。
-
-【2023-3-20】[李开复正在筹组AI2.0公司，不只要做中文版ChatGPT](https://finance.sina.cn/tech/2023-03-20/detail-imymnsya3432523.d.html)
-
-李开复称：
-> “Project AI 2.0不仅仅要做中文版ChatGPT。 我认为AI 2.0不仅仅是个高能聊天工具，也不仅仅是图文创作的AIGC生成，Co- pilot和如今看到的应用都还只是AI 2.0能力的开端。”
-
-李开复：
-- 在AI方向，已经塔尖孵化了7家公司，包括成立4年就成为港交所“AI＋制造”第一股的`创新奇智`，`澜舟科技`、`呈元科技`等，`ProjectAI 2.0`是第7家。
-
-### 教人如何挣钱
-
-【2023-4-11】国内靠ChatGPT挣钱的[第一波人](https://www.toutiao.com/w/1762574053066767)，主要教别人怎么靠ChatGPT挣钱的。快速包装交付、精准找到愿意为这些信息差付费的客群
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/cb048fac14c04e40914e28fbe538da2f~tplv-obj:823:813.image?_iz=97245&from=post&x-expires=1688947200&x-signature=LMhWJtDCvvO44zYNtOtnKVj%2BnQQ%3D)
-
-评论
-> 有钱赚他自己不赚，也不教给他父母兄弟姐妹去赚，他教给陌生的你？
-
-#### ChatBase
-
-【2023-5-28】[ChatGPT 造富“神话”：大四学生放弃大厂去创业，半年后月收入45万](https://mp.weixin.qq.com/s/IS5NvCAzs0q4Xi5ABfszFQ)
-
-埃及大学生[Yasser](https://twitter.com/yasser_elsaid_)在 Meta 和 Tesla 等大厂实习半年后，其创办的聊天机器人公司就已经稳定月收 6.4 万美元（约合 45 万人民币），而且自首次上线以来，业务流量从未下滑缩水。
-- Chatbase 市场定位并不复杂，也没做过验证或者商业调查。毕竟 AI 这个领域才刚刚诞生，对我来说‘用 ChatGPT 处理数据’肯定有搞头，能帮助许许多多用户解决实际需求
-- Chatbase 最初其实是想做成一款处理 PDF 的 ChatGPT 工具，这是 Yasser 当时想到的最直观的用例。比如用户可以上传一份 PDF，然后让 ChatGPT 总结一下其中的内容。
-- 第一个版本花了两个月时间，2023 年 2 月 2 号，Yasser 发布给了 Twitter 上的全部 16 个关注者，结果一下子就火了，巨大的商机，Yasser 马上中止了在校课业，把所有时间和精力都集中在 Chatbase 上
-
-[Chatbase.co](https://www.chatbase.co/) 是一款为网站构建自定义 ChatGPT 界面的工具，用户只需上传**文档**或添加到**网站链接**，就可以获得一个类似 ChatGPT 的聊天机器人，并将它作为小组件添加到网站上。
-
-Yasser 用 React、Next.js 和 Supabase 来构 web 应用。Yasser 还在应用的 AI 部分使用了 OpenAI 的 API、Langchain 还有 Pinecone。付款部分用的是 Stripe。目前这套技术栈运行得不错，但后续 Yasser 可能需要做些调整来控制成本，比如尝试不同的 Vector 数据库或者托管选项
-
-可集成到自己的网站, 官方提供[看板配置](https://www.chatbase.co/chatbot/zNSQTQvqYJYf0rb0V-wYX/dashboard)
-- 示例：[test](https://www.chatbase.co/chatbot/zNSQTQvqYJYf0rb0V-wYX)
-- 国外介绍：[How a college student reached $64,000/mo in 6 months by being an AI first mover](https://www.indiehackers.com/post/how-a-college-student-reached-64-000-mo-in-6-months-by-being-an-ai-first-mover-ba7981f6e1)
-
-### Prompt 编写
-
-Prompt是在ChatGPT中输入的一些关键词，按照用户意愿生成出各种各样的内容，提高工作效率。
-- Prompt的好处是不仅可以大大减少思考时间，还可以让创造力更加丰富多彩。
-
-详见站内专题：[ChatGPT提示工程](https://wqw547243068.github.io/chatgpt#%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B)
-
-#### AIPRM
-
-有人组织了社区来工具化优质prompt，集人类智慧形成普惠大众的工具 —— AIPRM， 自动生成优质Prompt的工具
-- AIPRM 全称：Artificial Intelligence Project Resource Manager
-- 要解决的问题就是通过社区互助提高使用AI产品的生产力（比如chatGPT）
-- ![](https://pic3.zhimg.com/80/v2-24a428805505f96e183f040cf2397e02_1440w.webp)
-- ![](https://pic2.zhimg.com/80/v2-423bc023da6630c8cdd0cacaabd88145_1440w.webp)
-
-【2023-4-11】[终极写作工具：小白也会用的ChatGPT Prompt提示综合指南](https://zhuanlan.zhihu.com/p/611365958)
-- [AIPRM](https://www.aiprm.com/)
-- Chrome 插件：[aiprm-for-chatgp](https://chrome.google.com/webstore/detail/aiprm-for-chatgpt/ojnbohmppadfgpejeebfnmnknjdlckgj?hl=en)
-
-### 点子
-
-【2023-5-13】ChatGPT各类应用idea汇总，包含场景、当前解法、解决状态等，持续更新
-- [飞书文档](https://bytedance.feishu.cn/sheets/TcHTsRSczhda3BtpLQ4cMeVNnSf)
-
-
+详见站内专题: [AIGC创业机会](aigc_idea)
 
 ## ChatGPT 行业应用
 
@@ -362,12 +252,95 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
   - 工具链和下游应用插件需要持续完善。
   - 打造垂直领域模型的微服务网络，内置包括图像分割、语音识别等众多专业模型，便于企业客户随时调用、自由组合。
 
+#### 基座模型
+
+【2024-5-15】一口气推出[9个基座模型](https://mp.weixin.qq.com/s/_mycwh_cJ5mS2bKuATW8cg)
+- 通用模型 Pro: 窗口尺寸最大可达128K，全系列可精调
+- 通用模型 Lite: 较快响应速度
+- Function Call模型
+- 向量化模型
+- 角色扮演模型
+- 语音识别模型、语音合成模型、声音复刻模型
+- 文生图模型
+
+没有榜单分数，参数规模
+
+价格让现场观众“哇声一片”的大亮点，和其它大模型相比：
+- 小于32K窗口尺寸：豆包通用模型pro，只要0.0008元/千tokens，比行业价格低99.3%
+- 128K窗口尺寸：豆包通用模型pro，只要0.005元/千tokens，比行业价格低95.8%
+
+1元=1250000tokens
 
 #### workflow 平台
 
 详见站内专题: [llm开发平台](llm_dev#llm-开发平台)
 
 #### 字节 大模型产品
+
+Flow 旗下现有 AI 智能助手`豆包`（APP 版和 PC 版）、AI 智能体开发平台`扣子`（中国版）和 `Coze`（海外版）、图片生成产品`星绘`、类 Character.AI 的角色对话产品`猫箱`（原叫话炉）和`小黄蕉`、AI 教育产品`豆包爱学`（原河马爱学）、出海搜题产品 `Gauthmath` 等数款 AI 软件和互联网应用。
+
+Flow 产品矩阵
+- AI智能助手: 豆包、Cici
+- AI智能体开发平台: 扣子、Coze
+- 图片生成: 星绘
+- 角色对话: 猫箱、小黄蕉
+- AI教育产品: 豆包爱学
+- 搜题产品: GauthMath
+- 硬件：AI耳机、眼镜
+
+【2024-9-10】[字节再试硬件：探索 AI 耳机、眼镜等产品，与豆包大模型联动](https://mp.weixin.qq.com/s/5ucLbynQBokHsUncRpVIWQ)
+- 豆包大模型与豆包App联动的智能耳机：语音对话随时使用豆包，app上也可以操作耳机
+  - 李浩乾于 2019 年创立大十未来，2022 年，推出第一代 Oladance 耳机，主打 “OWS”（ Open Wearable Stereo 开放式穿戴无线耳机）：把音响集成得足够小，可不入耳穿戴。
+  - 2023年底收购的智能耳机公司——大十未来
+- 探索AI眼镜方向
+  - 2021 年底，字节跳动还曾投资 AI 技术及智能眼镜研发商 “李未可”。当时入股后的持股比例为 20%。
+  - 2024 年 7 月，李未可与博士宣布，将在全国 50 家博士眼镜门店线下首发李未可的 MetaLensChatAI 眼镜。
+
+##### 硬件尝试
+
+2017 年，字节以 10 亿美元收购了朱骏和阳陆育在 2014 年创立的 Musical.ly，抖音和 TikTok 的产品形态都借鉴了 Musical.ly。
+
+2022 年，阳陆育离开字节跳动创业，据《界面新闻》，阳陆育关联公司在今年推出 AIGC 角色扮演对话产品 “Museland”。朱骏则一直留在字节，目前向字节 CEO 梁汝波汇报。
+
+2024 年 5 月, 火山引擎 FORCE 原动力大会上，字节对外展示了 3 款外部合作方开发的 AI 硬件产品，包括: `机器狗`、`学习机`，以及`学习机器人`。
+
+字节屡败硬件，AB test 和数据驱动的失灵
+
+2012 年之后，字节凭借今日头条、抖音等一系列成功的移动互联网应用快速成为新一代中国互联网巨头。
+
+自 2019 年起，字节也开始多次尝试硬件，先后收购锤子科技、PICO 等智能硬件公司，试水手机、教育硬件和 VR 头显等产品，但这些尝试都不算成功。
+
+字节在 2019 年以 3 亿元收购智能手机厂商锤子科技的部分专利和团队，组建新石实验室；后被并入由阳陆育负责的教育硬件团队，推出了大力智能灯和写字板等教育硬件。
+
+大力智能灯在 2021 年的销售目标是 200 万台，但到 2021 年 3 月底，它在淘宝和京东上的总销量不过 4 万台，远不及预期。
+
+2021 年，字节又以 90 亿元收购 VR 头显品牌 PICO，PICO 团队在高峰期的员工总数超过 2000 人。字节也投入了不少资源发展 VR 内容生态，曾斥资 10 亿元购买卡塔尔世界杯版权做 VR 转播，自制郑钧、汪峰等明星的 VR 演唱会。
+
+近年来，教育硬件和 PICO 团队都已大幅收缩。2021 年，字节跳动裁撤教育业务。2023 年 11 月初，PICO 接近半数员工转岗或被裁。字节的第一轮硬件探索告一段落。
+
+字节擅长的互联网软件产品方法并不适应硬件开发。
+
+做互联网软件产品时，字节高效执行了小步快跑、敏捷迭代的法则：在短时间里上线多个产品，通过大量 AB test 定量测试产品反馈，向表现好、增长快的产品追加开发与投放资源，快速试出王牌。如 2016 年，字节就同时上线了 “火山”、“抖音”、“西瓜” 三个短视频 App，抖音最终脱颖而出成为主力产品。
+
+移动 App 战场的成功，让字节获得了相信数据、看重短时反馈的惯性。而这些特点并不利于研发消费电子等硬件产品。硬件的开发周期长得多，苹果在推出划时代的 iPhone 4 前研发了快 2 年。这期间，产品开发团队很难获得大规模的数据反馈，他们必须更多依靠自己的判断和洞察，再结合消费者调研做出产品决策。
+
+乔布斯 1990 年接受波士顿公共电视频道采访时曾说：“用户无法预测他们没见过的产品。只有把产品摆在眼前，用户才能反馈有用的意见。”
+
+字节之外，一些其它互联网或软件公司也未能幸免硬件魔咒。Google 的手机、微软的 Surface 平板都是前车之鉴。Meta 在 2014 年以 20 亿美元收购了 VR 头显品牌 Oculus，据外媒报道，直到 2023 年初，该系列累计总销量只有 2000 万台。
+
+硬件被认为是大模型落地的重要方向之一。
+
+如今年 8 月，Google 推出了 AI 手机 Pixel 9 和耳机 Pixel Buds Pro 2，都搭载了 Gemini 模型，手机和耳机能够智能交互。今年 6 月的苹果 WWDC2024 开发者大会上，苹果也宣布了 OpenAI 的 GPT-4o 将被整合进 Siri。
+
+耳机和眼镜也可以搭配手机使用，定位为 “手机配件” 而非 “替代手机”，能降低消费者接受新品类的门槛。
+
+在一级市场，一批智能耳机公司，如科大讯飞孵化的未来智能（iFLYBUDS）、时空壶翻译耳机等今年也陆续获得新融资。
+
+反例则是，去年诞生的一些全新 AI 硬件发展遇阻。如没有屏幕、以随时能和大模型对话为卖点的 Ai Pin。在今年 4 月正式发售后，其 5 到 8 月的退货量比购买量还多。开发 Ai Pin 的公司 Humane 也正在寻找收购方。
+
+此刻在中国市场做 AI 硬件的另一重利好是，苹果的手机 AI 新功能要在明年后才能在中国使用。苹果被认为最有实力承接 AI 硬件红利，它的暂时缺席会给一批中国公司创造窗口期。
+
+
 
 ##### 豆包/Cici
 
@@ -447,6 +420,7 @@ ExtractGPT
 - 一款浏览器扩展程序，可从结构化和非结构化页面中获取数据
 
 
+
 ##### GPTBot
 
 【2023-8-8】OpenAI刚刚推出了GPTBot，一个自动从整个互联网抓取数据的网络爬虫。
@@ -515,8 +489,50 @@ ExtractGPT
 
 详见站内专题：[数据标注](label)
 
-#### 数据分析
 
+#### 知识挖掘
+
+
+##### Wiseflow
+
+【2024-10-01】`首席情报官`（Wiseflow）是一个敏捷的**信息挖掘**工具，从网站、微信公众号、社交平台等各种信息源中按设定的关注点提炼讯息，自动做**标签归类**并上传数据库
+- 我们缺的其实不是信息，而是从海量信息中过滤噪音，从而让有价值的信息显露出来
+
+WiseFlow Team (原数字社工助理 DSW team）
+
+[主页](https://github.com/TeamWiseFlow)开源项目：
+- [wiseflow](https://github.com/TeamWiseFlow/wiseflow) （商业化产品：**首席情报官**） —— 完备的领域信息情报获取与管理系统，基于LLM；
+- Awada —— 基于微信的可在线自主学习的个人AI助理（也可能是行业专家）。
+
+
+wiseflow 是一个原生LLM应用，仅需7B~9B大小LLM就可以很好的执行信息挖掘、过滤与分类任务，且无需向量模型，系统开销很小，适合各种硬件环境下的本地化以及私有化部署。
+
+
+```sh
+git clone https://github.com/TeamWiseFlow/wiseflow.git
+cd wiseflow
+# python 运行
+conda create -n wiseflow python=3.10
+conda activate wiseflow
+cd core
+pip install -r requirements.txt
+# docker 运行
+docker compose up
+docker run -e LANG=zh_CN.UTF-8 -e LC_CTYPE=zh_CN.UTF-8 your_image
+```
+
+##### GraphRAG
+
+GraphRAG 里用 LLM 构建知识图谱
+
+[LLM-graph-builder](https://github.com/neo4j-labs/llm-graph-builder) 利用大语言模型，将非结构化数据转化为结构化知识图谱，支持 GPT-3.5、GPT-4o、Gemini等模型，同时可以与非结构化数据进行对话交互
+
+
+
+
+#### BI
+
+AI BI: LLM 用于数据分析
 
 ##### LLM 适合分析什么
 
@@ -549,6 +565,18 @@ LLM 擅长的数据集分析类型
 - 【2024-5-6】[我如何夺冠新加坡首届 GPT-4 提示工程大赛](https://baoyu.io/translations/prompt-engineering/how-i-won-singapores-gpt-4-prompt-engineering-competition?continueFlag=f4f91eca909d1c12022f5ef16e650de9)
 
 ##### Pandas AI
+
+
+【2024-9-8】[PandasAI实战 - 投资业绩数据AI问答Agent](https://zhuanlan.zhihu.com/p/718838922?utm_psn=1816166976671842305)，含代码示例
+
+做一个AI问答Agent，一句话可以跟投资业绩数据进行问答，如：
+- XX投资人投资的项目金额的TOP5；
+- XX基金投资了多少项目，总共投资金额和退出金额是多少；
+- XX项目总共有几笔交易，每笔交易的交割时间和金额；
+
+用户进行提问，给予精准的回答，不精准是没有意义的。
+
+
 
 【2023-5-6】[Pandas AI](https://github.com/gventuri/pandas-ai)
 - 将 Pandas 和 AI 结合，更方便地分析数据。
@@ -737,6 +765,11 @@ ORDER BY total_sales desc limit 10;
 
 [ChatExcel](https://chatexcel.com/) 通过自然语言操作excel表格
 - ![](https://chatexcel.com/static/pic/case/case-01.gif)
+
+##### PyGWalker
+
+【2024-10-6】[PyGWalker](https://kanaries.net/pygwalker) 将 pandas DataFrame 数据交互可视化
+- 支持 NL2SQL, 新建特征变量, 实时编辑数据点
 
 ### 内容管理/营销
 
@@ -966,17 +999,18 @@ SeamlessM4T 是首个**一体化**AI翻译大模型，支持100种语音、语�
 SeamlessM4T集成了Meta之前发布的NLLB、MMS等翻译模型，并使用了270,000小时的语音和文本对齐数据。所以，这也是目前规模最大、功能最全的开源翻译模型。
 
 
-
 ##### translation-agent
 
 【2024-6-13】吴恩达开源 AI Agent 翻译工作流 Translation Agent。
 
 步骤：
-1. 通过指定大语言模型（LLM）跨语言**翻译**；
+1. 通过大语言模型（LLM）跨语言**翻译**；
 2. 对翻译结果进行**反思**，并提出改进建议；
 3. 再根据建议进行**优化**翻译。
 
-另外，这是高度可控的翻译工作流，只需修改提示词，就可以指定语气（正式或非正式）、地区等，还可以提供专业术语表来确保术语翻译的一致性。
+对于长文本，只需要通过相应算法将长文本分割成相对均匀的小“文本块”，再对多个小文本块进行循环处理即可
+
+高度可控的翻译工作流，只需修改提示词，就可以指定语气（正式或非正式）、地区等，还可以提供专业术语表来确保术语翻译的一致性。
 
 GitHub：[translation-agent](github.com/andrewyng/translation-agent)
 - prompt 设计见代码 [utils.py](https://github.com/andrewyng/translation-agent/blob/main/src/translation_agent/utils.py)
@@ -990,6 +1024,91 @@ translation = ta.translate(source_lang, target_lang, source_text, country)
 ```
 
 翻译质量媲美领先的商业翻译工具
+
+【2024-7-17】[Coze + Bot API：实现带自我反思的高质量长文翻译Agent（吴恩达方法）](https://mp.weixin.qq.com/s/AcL3BkG1s8dpx2ra33P6lA), 含代码实现
+
+prompt
+
+```md
+你是一个把英文文本转化成简体中文的翻译助手。
+
+源文本如下，以XML标签<SOURCE_TEXT>和</SOURCE_TEXT>分隔。
+
+你只需要翻译源文本中以<TRANSLATE_THIS>和</TRANSLATE_THIS>分隔的部分；您可以将其余部分作为上下文，但不要翻译其他文本。
+
+不要输出任何除指定部分的翻译之外的内容。不要有多余解释。不要重复原文。
+
+--------
+
+英文文本：{{source_text}}
+
+中文文本：
+
+再次重申，仅翻译<TRANSLATE_THIS>和</TRANSLATE_THIS>之间的文本。
+```
+
+**反思**与**完善**环节处理方式类似。通过这样处理后的Bot既可以支持
+- 直接**短文本块处理**（给全部文本添加`<TRANSLATE_THIS>`标签）；
+- 也支持长文本下的单个文本块循环处理（给每次需要处理的文本块增加`<TRANSLATE_THIS>`标签）
+
+##### LLaMAX
+
+【2024-7-18】 [上海AI lab开源LLaMAX，用3.5万小时的A100训练让大模型掌握上百种语言翻译](https://mp.weixin.qq.com/s/_UcBD-aD9Aky30X05qqzbA)
+- 论文：[LLaMAX: Scaling Linguistic Horizons of LLM by Enhancing Translation Capabilities Beyond 100 Languages](https://arxiv.org/pdf/2407.05975)
+
+问题
+- 传统大语言模型在处理不同语言时，存在明显的性能差异。如阿拉伯语等非拉丁字母语言时，性能下降更为明显。
+- 开源多语言大模型的局限性。一些模型如PolyLM、Yayi2等性能仍有较大提升空间。特别是低资源语言的翻译任务上，表现远远不能满足实际应用的需求。
+
+LLaMAX项目实现各种语言之间的性能均衡
+
+通过**持续预训练**（continual pre-training）显著提升LLaMA系列模型的多语言能力
+- 如何在提升多语言能力的同时，保持模型在英语任务上的优秀表现。
+
+技术创新包括：
+- 词表扩展策略优化
+  - 随着词汇量增加，模型在罗马尼亚语（ro）和孟加拉语（bn）上的翻译性能呈现下降趋势。当新增词汇达到51200个时，spBLEU分数分别降至17.79和1.14，远低于原始词表的性能。
+  - 用 KS-Lottery 方法观察到新增词汇导致了原有词嵌入分布的显著偏移，过多新词会改变模型的训练重点
+  - 解法: 保留LLaMA2 原始词表
+- 数据增强技术
+  - 问题: 低资源语言数据不足
+  - 解法: 
+    - 基于字典的数据增强方法,字典中目标语言实体的数量与翻译性能呈现正相关
+    - 单跳（1-hop）和双跳（2-hop）翻译数据增强,单跳翻译优于双跳翻译，因为单跳翻译能更好地保持原始语义，减少错误累积
+    - 即: `直接翻译`（src→trg）转化为基于英语的`两步翻译`（src→en→trg）
+- 平行语料处理策略
+  - "connected-parallel"方法: 将**源语言**和**目标语言**的句子对视为一个整体，而不是分别处理。ceb→en（宿务语到英语）的翻译中，spBLEU从23.19提升到27.06。
+- 持续预训练框架设计
+  - 动态数据采样、多语言混合训练等策略，以确保模型能均衡学习各种语言的特征。
+  - 数据集: MC4、MADLAD-400和Lego-MT在内的多个数据集，覆盖了102种语言的单语和平行语料。
+  - 训练过程使用了24台 A100 80GB GPU，持续训练超过60天，累计训练时间达3.5万GPU小时。
+- 指令微调优化
+  - 在持续预训练后进行指令微调。用Alpaca数据集进行英语指令微调，同时探索了特定任务的多语言指令微调策略。显著提升了模型在多语言常识推理（X-CSQA）、自然语言推理（XNLI）和数学推理（MGSM）等任务上的性能。
+
+LLaMAX不仅在开源大语言模型中表现出色，还与专业的翻译系统展开了激烈竞争。
+- LLaMAX-Alpaca的性能已经达到了专业翻译模型 M2M-100-12B 水平，在某些语言对上甚至超越了后者
+- LLaMAX-Alpaca在中文和日语相关的翻译任务中均优于专门针对这些语言优化的模型（如ChineseLLaMA2-Alpaca和Swallow）
+
+LLaMAX与GPT-4进行了对比
+- 高资源语言（如英语、中文、德语）的翻译上, LLaMAX略逊于GPT-4
+- 但在低资源语言（如尼泊尔语、阿塞拜疆语、宿务语）的翻译任务上，LLaMAX展现出了与GPT-4不相上下甚至更优的性能。
+
+
+##### Agent 同声翻译
+
+【2024-7-31】头条通过LLM Agent实现超强的同声翻译
+
+通过 LLM Agent 实现端到端与人类同等水平的同声翻译
+- 项目：[clasi](byteresearchcla.github.io/clasi/)
+- 论文：[wards Achieving Human Parity on End-to-end Simultaneous Speech Translation via LLM Agent](arxiv.org/abs/2407.21646)
+
+摘要：
+
+在本文中，我们介绍了跨语言代理——同声传译 (CLASI)，一种高质量且类似于人类的同声语音翻译 (SiST) 系统。
+
+受专业人工翻译的启发，我们利用一种新颖的数据驱动读写策略来平衡翻译质量和延迟。为了应对翻译领域内术语的挑战，CLASI 采用多模态检索模块来获取相关信息以增强翻译。在 LLM 的支持下，我们的方法可以通过考虑输入音频、历史背景和检索到的信息来生成错误容忍的翻译。
+
+实验结果表明，我们的系统比其他系统好得多。与专业人工翻译保持一致，我们使用更好的人工评估指标——有效信息比例 (VIP) 来评估 CLASI，它衡量可以成功传达给听众的信息量。在现实场景中，由于语音通常不流畅、非正式且不清楚，CLASI 在中译英和英译中方向分别实现了 81.3% 和 78.0% 的 VIP。相比之下，最先进的商业或开源系统仅能达到 35.4% 和 41.6%。在极其困难的数据集上，其他系统的 VIP 低于 13%，而 CLASI 仍能达到 70% 的 VIP。
 
 
 ##### LLM 翻译实测
@@ -1096,6 +1215,43 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 待补充
 
 
+#### 秘塔
+
+【2024-4-11】[国产AI搜索之光，秘塔AI搜索，打败Perplexity？](https://m.cyzone.cn/article/758618.html)
+
+秘塔科技由`闵可锐`在2018年4月创立。CEO`闵可锐`本科毕业于复旦计算机科学，是牛津大学数学专业的硕士，美国伊利诺伊大学香槟分校的博士，曾任玻森数据CTO、猎豹移动首席科学家，并在微软做过实习研究员，也参与过谷歌项目。
+
+秘塔AI推出的[秘塔AI搜索](https://metaso.cn/), 中国版 Perplexity 的 AI搜索引擎“秘塔AI搜索”
+- 注册后即可免费使用，不用科学上网，也没有语言上的理解误差，在中文语境上的表现更有优势。其slogan是：“没有广告，直达结果”。
+- 示例：[o1原理](https://metaso.cn/search/8528655713793687552?q=o1%E7%9A%84%E5%8E%9F%E7%90%86)
+
+截至2024年3月1日, 前28天，秘塔AI搜索网站共计访问478.3万次，峰值在3月18日达到45万次。
+
+秘塔科技推出了4款产品：秘塔**AI搜索**、秘塔**写作猫**、秘塔**翻译**、秘塔**检索**。其中秘塔写作猫之前被大多文字工作者们所熟知。
+
+秘塔AI搜索特点：
+- 1、没有广告，直达结果：秘塔AI搜索界面只有一个搜索框，没有广告和闲杂信息的干扰。
+- 2、结构化信息展示：秘塔AI搜索会将搜索结果整理成更方便阅读的脑图和大纲形式。
+- 3、信息来源追溯：秘塔AI搜索为每条搜索结果、每条信息提供了来源链接，用户可以轻松溯源验证信息的出处和可靠性。
+- 4、辅助信息梳理：秘塔AI搜索会整合和搜索主题相关的辅助信息，包括相关事件名称、事件时间线、相关人物组织等，以表格的形式呈现，让用户更全面理解搜索主题。
+- 5、学术搜索模式：秘塔AI搜索在首页搜索框，将搜索范围限定为学术后，信息来源会从全网聚焦到专业期刊和论文。还增加了一个快速浏览摘要的功能，最后汇总所有的参考文献，并且是导出即可使用的规范格式。
+
+相比于Perplexity，秘塔AI搜索实际上走了一条具有差异化的路线。Perplexity开启co-pilot之后会引导你追问下一个问题，给出的模态会更多，包括图片和视频源。
+
+背后自研大模型 `MetaLLM`（基于Transformer底层架构投入中文语料训练），支持多轮对话式搜索，被誉为**中国版Perplexity**。
+
+
+工具添加
+- Chrome 插件添加: [秘塔AI](https://chromewebstore.google.com/detail/%E7%A7%98%E5%A1%94ai%E6%90%9C%E7%B4%A2/amjmldchkefejkpgebhgioimmfkakgpo)
+- Chrome 站点搜索: 
+  - 设置页面: chrome://settings/searchEngines
+  - Site search -> Add
+    - 名称：秘塔AI搜索
+    - 快捷字词：metaso.cn
+    - 网址格式：https://metaso.cn/?q=%s
+- 其它设置[方法](https://metaso.cn/browser-setting#title2)
+
+
 #### devvai
 
 【2023-11-30】最懂程序员的新一代AI搜索引擎来了，[devvai](https://devv.ai/zh) 可以基本代替使用Google/StackOverflow等等的使用场景
@@ -1148,7 +1304,7 @@ Arc Search 的巧妙之处
 虽然 The Browser Company 没有明确指出 Arc Search 背后调用的大模型，但按照 Arc Browser 的相关报道，Arc Search 应该也是通过 API 调用了包括 GPT-4 在内的混合模型。
 
 
-#### 招聘
+### 招聘
 
 
 ##### SeekOut
@@ -1164,81 +1320,11 @@ SeekOut是一家AI招聘公司，通过AI为岗位匹配合适人才一尤其是
 
 因此 SeekOut的增长曲线一下子就从上升变成下滑。
 
-### 排序
-
-重排器（Reranker）作为信息检索的第二阶段，需要根据查询和文档的相关性，对候选文档做细粒度的排序。经典的重排方法一般使用交叉编码器，结合文档和查询的语义信息进行打分和排序。
-
-现有的涉及LLM的重排方法大致可以分为三类：
-- 用重排任务**微调**LLM
-- 使用**prompt**让LLM进行重排
-- 以及利用LLM做训练数据的**增强**
-
-#### 综述
-
-【2023-12-20】[LLM in Reranking——利用LLM进行重排](https://mp.weixin.qq.com/s/I1gbHW_ZAE9J5HjB4cmRCw)
-
-本文中针对前两种方法介绍一些研究。
-
-排序学习方法主要分为 point-wise，pair-wise 以及 list-wise 三种思路，LLM通过prompt进行重排也类似。
-
-LLM不同于传统的交叉编码器，具有更强的语义理解能力，并且能够捕捉到文档列表整体的顺序信息，它仍然面对几个不可忽视的问题。
-- 一方面，LLM的输入长度对于一个文档列表来说还是十分受限的，必须通过滑动窗口或集成的方式才能实现文档输入。
-- 另一方面，list-wise的LLM重排器对于输入非常敏感，在某些极端的情况下，例如将输入文档随机打乱顺序时，模型的输出结果甚至可能不如BM25。
-- 另外，还有参数过剩与时效性的问题会导致LLM重排器难以落地。
-
-参考综述：
-- [Large Language Models for Information Retrieval: A Survey](https://arxiv.org/abs/2308.07107v2)
-
-#### LRL
-
-Zero-Shot Listwise Document Reranking with a Large Language Model
-
-这篇文章与现有的 score and rank 的 point-wise打分方式不同，作者提出一种名为 Listwise Reranker with a Large Language Model (`LRL`) 的方法，利用 GPT-3 对文档进行 list-wise 的排序，直接生成候选文档的identifier序列实现重排, 这种list-wise的方法能够让模型同时关注到所有的文档信息
-
-#### RankVicuna
-
-- RankVicuna: Zero-Shot Listwise Document Reranking with Open-Source Large Language Models
-
-RankVicuna 也是一种 Listwise 的LLM排序方法，但是不同于LRL，它是经过针对重排微调后的模型。
-- 利用RankGPT-3.5作为教师模型在MS MARCO v1训练集中随机抽样的100K套训练集文档上生成数据，将RankGPT的能力蒸馏到7B的RankVicuna中。
-
-#### PRP
-
-- Large Language Models are Effective Text Rankers with Pairwise Ranking Prompting
-
-作者提出利用LLM做list-wise与point-wise重排任务时，模型存在无法很好地理解排序指令的问题，并且在越小规模的模型中越显著。
-
-作者认为这一问题有可能与预训练中缺少相应任务有关。
-
-LLM应用于list-wise时出现的问题
-
-针对这一问题，作者提出一种名为 pairwise ranking prompting (PRP) 的范式，设计了一种简单的prompt，结合了生成和打分的模型API，使得规模较小的开源模型也能够在公开数据集上实现SOTA.
-
-#### PROMPTRANK
-
-- Few-shot Reranking for Multi-hop QA via Language Model Prompting
-
-本文中提出一种名为 PROMPTRANK 的框架，依靠prompting和多跳重排，可以在少样本的前提下解决复杂的多跳问答（MQA）。
-
-多跳问答（multi-hop question answering, MQA）是指query对应多个文档，且回答问题需要结合召回的复数文档进行多步推理的场景。目前的MQA大多基于retrieve-then-read的pipeline，然而这种模式下往往需要大规模的训练数据，对低资源场景（如医疗、法律等特定领域）不友好。
-
-#### LLMRank
-
-【2023-5-15】人民大学发表论文：LLM用于推荐系统排序
-- [Implementation of "Large Language Models are Zero-Shot Rankers for Recommender Systems"](https://arxiv.org/pdf/2305.08845.pdf)
-- 代码[LLMRank](https://github.com/RUCAIBox/LLMRank)
-
-将推荐问题形式化为条件排序任务，将历史交互作为条件，将召回得到的候选item作为候选。 
-
-采用特定提示方法来应用LLM解决排序任务：包括**交互历史**、**候选item**和**排序指令**来设计提示模板。
-- LLM 具有很有前途的**零样本**排序能力。
-- LLM **难以感知历史交互顺序**，并且可能会受到位置偏差等偏差的影响，而这些问题可以通过专门设计的**提示和引导策略**来缓解。
-- ![img](https://pic3.zhimg.com/v2-b15c0128a3bedddb1eccd71772eb7116_b.jpg)
-
-
 
 ### 写代码
 
+【2024-9-6】 第三方观点 常见编码助手：阿里通义灵码，商汤小浣熊，智谱codegeex，讯飞iflycoder
+- 反响最好是通义灵码…
 
 #### NL2Code
 
@@ -1246,6 +1332,17 @@ LLM应用于list-wise时出现的问题
 - NL2Code: 将自然语言转换成可执行代码来提高开发人员的工作效率
 - 中科院和微软亚洲研究院在 ACL 2023 国际顶会上发表的一篇综述：调研了 NL2Code 领域中的「27 个大型语言模型以及相关评价指标」，分析了「LLMs 的成功在于模型参数、数据质量和专家调优」，并指出了「NL2Code 领域研究的 5 个机遇挑战」，最后作者建立了一个分享[网站](https://nl2code.github.io)来跟踪 LLMs 在 NL2Code 任务上的最新进展。
 - [Large Language Models Meet NL2Code: A Survey](https://arxiv.org/abs/2212.09420)
+
+
+#### AI Shell
+
+AI Shell 将**自然语言**转换为**Shell命令**的CLI工具。受 GitHub Copilot X CLI 启发，但AI Shell是开源的，为所有人提供服务。
+
+用户只需安装 AI Shell 并从OpenAI获取API密钥，便可使用该工具。
+- [ai-shell](https://github.com/BuilderIO/ai-shell)
+
+![](https://user-images.githubusercontent.com/844291/230413167-773845e7-4c9f-44a5-909c-02802b5e49f6.gif)
+
 
 
 #### Cursor
@@ -1269,231 +1366,9 @@ MarsCode不仅仅是一个编程工具，它是一个全方位的AI助手，集�
 
 详见专题：[文档问答](doc_chat)
 
-### 推荐系统
+### 推荐系统/排序
 
-【2024-1-20】[谈谈AI落地容易的业务-搜广推](https://mp.weixin.qq.com/s/aqDS-nInC97uvLaK8J_DiA)
-- 推荐系统适用场景：**信息过载**时提供**信息匹配**价值
-- 推荐系统技术路线
-  - 早期搜索推荐采用**竞价排名**，早期的百度凤巢有一系列问题，`戴文渊`利用**LR算法**改进凤巢，和`陈雨强`又引入了**深度学习**， `陈雨强`又在今日头条担任过架构师。
-  - 另一个主线: 阿里妈妈为代表的**电商广告**，从`盖坤` 2011年提出分片**线性模型MLR**开始，到后面通过类似于**Wide&Deep算法**，构建`GwEN`，再到针对用户兴趣建模提出`DIN`，以及将Attention和GRU引入用户兴趣构建的`DIEN`，但是用户兴趣序列长度有限制，又引入异步机制User Interest Center并构建`MIMN`算法对长期行为建模。再到后期提出Search Based Interest Model(`SIM`)，并针对用户不同的行为构建基于Session的分类的Deep Session Interset Network(`DSIN`)，在针对特征间的交互(Co Action)构建的`CAN`，当然还有召回中的利用树结构构建的TDM算法，和利用图结构的二项箔算法等。
-- 推荐系统组件
-  - **两阶段**模型：`召回`+`排序`
-  - 工业级推荐系统用**四阶段**模型：`召回`，`粗排`，`精排`和`重排`。
-    - 原因：整个环节上对延迟有严格的需求，通常要求端到端延迟低于100ms，因此需要构建**逐级过滤**的算法实现。
-
-
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-01-20T09:18:51.913Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\&quot; etag=\&quot;NmeZhpZLXT-p41geF3cQ\&quot; version=\&quot;22.1.18\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;701\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-22\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-1\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;570.0999999999999\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;推荐系统组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;624.5\&quot; y=\&quot;340\&quot; width=\&quot;140\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-2\&quot; value=\&quot;2024-1-20\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;637\&quot; y=\&quot;370\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-44\&quot; value=\&quot;处理数据量大&amp;lt;br&amp;gt;速度要&amp;lt;font color=&amp;quot;#ff0000&amp;quot;&amp;gt;足够快&amp;lt;/font&amp;gt;&amp;lt;br&amp;gt;模型不能太复杂&amp;lt;br&amp;gt;使用较少特征\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0000FF;fontStyle=1;labelBackgroundColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537\&quot; y=\&quot;610\&quot; width=\&quot;100\&quot; height=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-1\&quot; value=\&quot;All Items\&quot; style=\&quot;shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;330\&quot; y=\&quot;510\&quot; width=\&quot;90\&quot; height=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-2\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;510\&quot; y=\&quot;515\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-3\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;Millions 百万级别&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;515\&quot; width=\&quot;100\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-4\&quot; value=\&quot;阶段1：召回\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;labelBackgroundColor=none;fillColor=#f5f5f5;fontColor=#333333;strokeColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;532.5\&quot; y=\&quot;450\&quot; width=\&quot;75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-5\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;Candidate Generation&amp;lt;br&amp;gt;候选Item生成&amp;lt;br&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;540\&quot; y=\&quot;550\&quot; width=\&quot;140\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-6\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;735.5\&quot; y=\&quot;515\&quot; width=\&quot;83\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-7\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-2\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;614\&quot; y=\&quot;535\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;734\&quot; y=\&quot;535\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-8\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;Hundreds 百级别&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;515\&quot; width=\&quot;100\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-9\&quot; value=\&quot;阶段2：排序\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;labelBackgroundColor=none;fillColor=#f5f5f5;fontColor=#333333;strokeColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;739.5\&quot; y=\&quot;450\&quot; width=\&quot;75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-10\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;Candidate Ranking&amp;lt;br&amp;gt;候选Item排序&amp;lt;br&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;750\&quot; y=\&quot;540\&quot; width=\&quot;140\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-11\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;900\&quot; y=\&quot;515\&quot; width=\&quot;50\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-13\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-6\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-11\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;610\&quot; y=\&quot;555\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;757\&quot; y=\&quot;555\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-14\&quot; value=\&quot;处理数据量小&amp;lt;br&amp;gt;模型要&amp;lt;font color=&amp;quot;#ff0000&amp;quot;&amp;gt;足够精准&amp;lt;/font&amp;gt;&amp;lt;br&amp;gt;模型可以复杂&amp;lt;br&amp;gt;使用较多特征\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0000FF;fontStyle=1;labelBackgroundColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;739.5\&quot; y=\&quot;600\&quot; width=\&quot;100\&quot; height=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-15\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;推荐结果&amp;lt;br&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;900\&quot; y=\&quot;535\&quot; width=\&quot;63\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-16\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-17\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-18\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;570.0999999999999\&quot; y=\&quot;800\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-17\&quot; value=\&quot;All Items\&quot; style=\&quot;shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f5f5;strokeColor=#666666;shadow=1;fontColor=#333333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;330\&quot; y=\&quot;850\&quot; width=\&quot;90\&quot; height=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-18\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;855\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-19\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;千万&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;855\&quot; width=\&quot;30\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-20\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;537\&quot; y=\&quot;855\&quot; width=\&quot;100\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-21\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-18\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-20\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;614\&quot; y=\&quot;875\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;734\&quot; y=\&quot;875\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-22\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;万&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;532.5\&quot; y=\&quot;855\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-23\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;900\&quot; y=\&quot;855\&quot; width=\&quot;50\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-24\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-32\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-23\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;610\&quot; y=\&quot;895\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;757\&quot; y=\&quot;895\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-25\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;推荐结果&amp;lt;br&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;893.5\&quot; y=\&quot;875\&quot; width=\&quot;63\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-26\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;召回&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;472.5\&quot; y=\&quot;870\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-28\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;粗排&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;567\&quot; y=\&quot;870\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-29\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;召回&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;505\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-30\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;排序&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;757\&quot; y=\&quot;510\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#e1d5e7;strokeColor=#9673a6;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;687\&quot; y=\&quot;855\&quot; width=\&quot;70\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-33\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-20\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;662\&quot; y=\&quot;885\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;895\&quot; y=\&quot;885\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-32\&quot; value=\&quot;\&quot; style=\&quot;shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=90;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;792.12\&quot; y=\&quot;855\&quot; width=\&quot;55.75\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-34\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;精排&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;699.5\&quot; y=\&quot;870\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-35\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-32\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;660\&quot; y=\&quot;895\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;702\&quot; y=\&quot;895\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-37\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;重排&amp;lt;br style=&amp;quot;font-size: 16px;&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fontStyle=1;labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;797\&quot; y=\&quot;870\&quot; width=\&quot;40\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-38\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;千&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;855\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-39\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;千/百&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;757\&quot; y=\&quot;855\&quot; width=\&quot;33\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-41\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-40\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-18\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-40\&quot; value=\&quot;表示学习\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;450\&quot; y=\&quot;750\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-45\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-42\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-20\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-47\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-42\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-42\&quot; value=\&quot;用户特征\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;710\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-48\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-43\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;740\&quot; y=\&quot;860\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-49\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-43\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-20\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-43\&quot; value=\&quot;物料特征\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;760\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-44\&quot; value=\&quot;交叉特征\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;640\&quot; y=\&quot;800\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-50\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF0000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-42\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;500\&quot; y=\&quot;790\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;660\&quot; y=\&quot;760\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-51\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF0000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-43\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-44\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;670\&quot; y=\&quot;750\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;670\&quot; y=\&quot;770\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-52\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF0000;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;pv1TiN8nKofBFrHRIT3c-44\&quot; target=\&quot;pv1TiN8nKofBFrHRIT3c-31\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;670\&quot; y=\&quot;800\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;678\&quot; y=\&quot;810\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-53\&quot; value=\&quot;两阶段模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;labelBackgroundColor=none;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;200\&quot; y=\&quot;535\&quot; width=\&quot;75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;pv1TiN8nKofBFrHRIT3c-54\&quot; value=\&quot;工业界&amp;lt;br&amp;gt;四阶段模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;labelBackgroundColor=none;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;210\&quot; y=\&quot;875\&quot; width=\&quot;75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
-
-
-详见站内[推荐系统专题](rp)
-
-
-
-#### LLM + RS 应用综述
-
-【2023-6-17】[基于LLM的推荐系统全面综述](https://zhuanlan.zhihu.com/p/634534308), 将基于LLM的推荐系统分为两大范式，方法、技术和性能的洞察，分别是
-- 用于推荐的判别型LLM（DLLM4Rec）
-- 用于推荐的生成型LLM（GLLM4Rec），首次被系统地整理出来。
-
-大型语言模型（LLMs）融入推荐系统的关键优势
-- 能提取高质量的**文本特征表示**，并利用其中编码的广泛外部知识 \[Liu等人，2023b\]
-
-范式总结
-- (1) <span style='color:blue'>LLM Embeddings + RS</span>。这种建模范式将语言模型视为**特征提取器**，将物品和用户的特征输入到LLM中并输出相应的嵌入。传统的RS模型可以利用**知识感知嵌入**进行各种推荐任务。
-- (2) <span style='color:blue'>LLM Tokens + RS</span>。与前一种方法类似，根据输入的物品和用户的特征**生成token**。生成的令牌通过语义挖掘捕捉潜在的偏好，可以被整合到推荐系统的决策过程中。
-- (3) <span style='color:blue'>LLM作为RS</span>。与(1)和(2)不同，这个范式的目标是直接将预训练的LLM转换为一个强大的**推荐系统**。输入序列通常包括简介描述、行为提示和任务指示。输出序列预计会提供一个合理的推荐结果。
-- ![img](https://pic3.zhimg.com/80/v2-10d4fc0aaf05736a5915dd281a326ee2_1440w.webp)
-
-推荐的**判别式LLM**和**生成式LLM**。
-- **判别式**语言模型非常适合在范式(1)中嵌入
-  - 判别性语言模型主要是指BERT系列的模型
-  - ![](https://pic1.zhimg.com/80/v2-775c803c461316ae550cd6f4b7ab63b0_1440w.webp)
-- 而**生成式**语言模型的响应生成能力进一步支持范式(2)或(3)。
-  - 相比于判别型模型，生成型模型具有更好的自然语言生成能力。
-  - 因此，不像大多数基于判别模型的方法**将LLMs学习到的表示与推荐领域对齐**，大多数基于生成模型的工作将**推荐任务**翻译为**自然语言任务**，然后应用像在上下文中学习，提示调优，和指导调优这样的技术，来适应LLMs直接生成推荐结果。
-- ![img](https://pic3.zhimg.com/80/v2-cf281f562afd8340e465360e4f8f2dc6_1440w.webp)
-
-【2023-5-20】[当推荐系统遇到大模型](https://mp.weixin.qq.com/s/YaFQoqAt12y93Nm3tX_j4A)
-
-ChatGPT在推荐系统中的应用有不小的潜力，主要体现在以下几个方面：
-- **任务统一**：所有类型的推荐任务都可以表述成**文本**，实现了推荐任务大统一，使用统一语言模型进行各个场景和任务上的推荐，有效解决多任务、多场景问题。
-- **小样本**和**冷启动**问题：传统推荐系统中，小样本和冷启动是一个比较常见的问题，而大模型天然具备很强的**语义泛化能力**和**小样本学习**能力。
-- 基础的推荐能力验证：多篇文章已经验证了ChatGPT等模型在推荐系统中应用是可行的，即使不在下游任务finetune，也能取得不错的效果
-
-【2023-11-17】人民大学高瓴AI学院 徐君: [当大语言模型遇见推荐系统](https://zhuanlan.zhihu.com/p/667420567)
-- 【2023-8-24】论文: RecSys 2023 [Uncovering ChatGPT’s Capabilities in Recommender Systems](https://arxiv.org/pdf/2305.02182.pdf)
-- 代码 [LLM4RS](https://github.com/rainym00d/LLM4RS), 包含电影、书籍、音乐与新闻等domain上实践
-
-LLM 做推荐两个思路：
-- 将LLM当作backbone: 训练时的strategy，适应某个推荐任务。
-  - 早期的`BERT4Rec`，训练时让模型猜测，如果少了一个item，这个item应该是什么，由模型补上这个item。
-  - `UniSRec`，用 pre-train 和 fine-tune 流程。
-  - `P5`，用 pre-train和promting 流程。
-- 把LLM当作推荐系统的**补充**。
-  - 把LLM当作一个**embedding生成器**，生成更好的user、item以及context的表达，换句话说，LLM可以辅助理解用户。
-  - 用LLM生成一段文字描述来用户。然后把LLM带来的附加信息加入现有的推荐模型中去。
-
-要点
-1. Key Tasks：Top-K Ranking of Items
-  - 交互页面稳定时, 关键是选取Top-K的items，再排序
-  - 三种方式
-  - `Point-wise ranking`。假设有5个items，直接询问大模型对这5个item的打分。这种方式最大程度模拟了业界推荐模型的工作方式，因为在线侧每一个item都会询问一次大模型，所以是Point-wise的方式。
-  - `Pair-wise ranking`。每次选取两个items去问大模型，哪个才是更适合用户的结果，哪个才是用户更喜欢的item，大模型会告诉我们一个答案。这样的话，如果我们有n个item，那么我们最多问 n*(n-1)/2次，就能得到n个item的排序。
-  - `List-wise ranking`。这种方式是个挑战，直接询问大模型n个item的排序方式，相当于直接把大模型当成item排序结果的生成器。
-2. LLMs for Recommendation: Overall Evaluation Procedure
-  - Prompt的构建包括三部分。
-  - 第一部分是Task Description，指出是哪种推荐系统，比如电影推荐系统，相当于指定推荐的domain；
-  - 第二部分是Demonstration Examples，告诉模型想让它做出什么样的动作；
-  - 最后是New Input Query，想要问的问题。通过这个template，基于是否要in-context learning，就构造出了一个prompt。将这个prompt给到LLM，LLM就会按照它的生成方式，输出一段话，再从这段话中提取出答案。有时这个答案可能是不符合要求的，就需要一个exception处理流程。
-
-分别在电影、书籍、音乐与新闻等domain数据上面，验证了ChatGPT等大模型的表现，并给出了相关实验结论。
-
-#### 最新论文
-
-论文
-- 【2023-1-2】Recommendation as language processing (rlp): A unified pretrain, personalized prompt & predict paradigm
-  - P5将各类推荐任务通过**prompt形式**全都转换成**统一文本**，然后利用这些文本训练一个 Transformer Encoder-Decoder模型。P5利用语言模型解决推荐系统问题，由于各种推荐系统任务都能表述成文字，使得统一建模各类推荐系统任务成为了可能。
-  - prompt构造方法：针对每种任务设计一个prompt模板，对于**商品信息**、**用户信息**等，直接将id作为本文输入。P5在这种文本上训练，对于商品和用户id相当于都当成一个独立的词进行embedding的学习。
-- 【2023-4-4】[Chat-REC: Towards Interactive and Explainable LLMs-Augmented Recommender System](https://arxiv.org/abs/2303.14524)
-  - Chat-REC将ChatGPT应用到推荐系统中，**会话推荐系统**, 具有交互式和可解释的能力，验证了大模型在**一般推荐场景、跨域推荐、冷启动推荐**等场景下都有着不错的表现。
-  - Chat-REC核心：将包括**用户特征、搜索词、用户和item的历史交互信息、历史对话信息**等一系列信息，输入到一个Prompt Constructor中，自动生成一个prompt。这个prompt输入到ChatGPT中，让ChatGPT生成推荐结果，或者解释推荐利用。
-  - 通过这种方式让推荐系统能够产生**可解释**的推荐结果，例如在对话过程中，可以询问对话系统推荐的原因，prompt会将推荐系统给到的结果和用户的问题输入Prompt Constructor，生成新的prompt，让ChatGPT生成对应的解答。
-  - Chat_REC整体利用了ChatGPT优化原有的推荐系统，让其能够实现更丰富的用户和推荐系统的交互。
-- 【2023-5-11】A First Look at LLM-Powered Generative News Recommendation
-  - 利用大模型来提升**新闻推荐系统**的效果。新闻推荐系统中存在很多挑战，一方面新闻标题可能不含实际内容的关键词，需要更深入的**语义理解**；另一方面对于**用户特征缺失、冷启动**等情况，推荐效果也会变差。
-  - 这篇文章利用大模型进行**title扩展、用户特征生成、解决冷启动**等问题。
-  - 构造prompt，进行3方面的数据扩充，再利用扩展出的数据进行下游新闻推荐系统模型的训练
-    - 为了在新闻标题中补充更丰富的信息，设计了一个**摘要prompt**，根据title和新闻信息生成扩展后的title。
-    - 为了补充**用户特征**，利用用户历史的浏览行为，生成指定的相关特征。
-    - 最后，对于**冷启动**用户，利用用户少量的历史浏览行为，让大模型生成更多用户可能感兴趣的新闻信息。
-- 【2023-5-12】Is ChatGPT Fair for Recommendation? Evaluating Fairness in Large Language Model Recommendation
-  - 研究利用大模型进行推荐时是否存在**公平性**问题。
-  - 公平性问题：用户侧一些敏感属性的特征，可能会引起大模型产出不公平的推荐结果，因为大模型经过大规模语料进行训练，其中会存在这样的有偏信息。
-  - 为了对这个问题进行实验和验证，构建了大模型推荐系统公平性的benchmark，在评估时基础做法是生成一些instruction产出推荐结果，再在instruction中插入各种敏感词对比推荐结果，判断推荐结果因为敏感词插入造成的差异大小。差异越大，说明大模型用于推荐系统存在的不公平现象越严重。
-- 【2023-4-20】[Is ChatGPT a Good Recommender? A Preliminary Study](https://arxiv.org/abs/2304.10149)
-  - 通过5种类型的推荐任务评估ChatGPT在推荐系统中应用的效果。这5个任务包括：**排序预测** rating prediction、**序列推荐** sequential recommendation、**直接推荐** direct recommendation、**可解释生成** explanation generation、总结 review summarization等。[解读](https://juejin.cn/post/7230094051470606393)
-  - `评分预测`：评分预测旨在预测用户对特定项目的评分，如上图所示，黑字部分代表任务的描述，评分预测被翻译为“How will user rate this product_title?”，灰字表示当前的输入，即要求用户评分的项目，红字表示针对输出的格式要求，在评分预测任务中，要求有“1 being lowest and 5 being highest”和“Just give me back the exact number a result”；
-  - `序列推荐`：序列推荐任务要求系统根据用户过去的序贯行为预测其之后的行为，如上图所示，论文为该任务设计了三种 Prompt 格式，分别是基于交互历史直接预测用户的下一个行为，从候选列表中选出可能的下一个行为以及判断指定行为成为用户下一个行为的可能性；
-  - `直接推荐`：直接推荐指通过利用用户评分或评论信息直接显示反馈推荐的任务，论文将这一任务的 Prompt 设计为从潜在的候选项中选择出最适合的一项；
-  - `解释生成`：解释生成是为用户提供解释以澄清为什么会推荐此项的推荐系统任务，具体地，如上图所示，论文要求 ChatGPT 生成一个文本解释，以阐明解释生成过程，对每个类别，可以包含如提示词或星级评分等的辅助信息；
-  - `评论总结`：旨在使用推荐系统自动生成用户评论摘要。通过输入用户的评论信息，Prompt 提示推荐系统总结评论的主要含义。
-  - 针对这5种任务分别设计了相应的prompt，输入到ChatGPT中生成预测结果。5种任务的prompt构造例子，每个prompt都包含：任务描述、格式声明以及一些user和item交互的例子，以给ChatGPT提供few-shot信息。
-  - 从推荐系统**准确率**相关指标来看（如hit rate等），ChatGPT在rating任务上表现比较好，但是在其他任务上表现比较差。但是如果人工评估的话，ChatGPT的结果是比较好的，这说明使用推荐系统指标评估ChatGPT也是有局限性的。同时，文中的ChatGPT并没有在推荐系统数据上进行finetune，就能达到这样的效果，也表明了ChatGPT在推荐系统中的落地是非常有潜力的。
-- 【2023-5-11】Uncovering ChatGPT’s Capabilities in Recommender Systems（2023.5.11）
-  - 尝试挖掘ChatGPT在推荐系统中3类任务的能力，包括`point-wise`、`pair-wise`、`list-wise`三类推荐系统面临的给定user推荐item的任务。
-  - 针对这3类任务，文中构造了如下3类prompt。每类prompt包括**任务描述、例子、当前的问题**三个部分。
-  - 3类任务的prompt主要差别是当前问题的组织形式: point-wise就直接问ChatGPT**打分是多少**，pair-wise给两个item让模型做**对比**，list-wise则是对item做**排序**。
-  - 整体实验结果: 主要是对比了ChatGPT和一些基础推荐方法（随机推荐、根据商品流行度推荐）的差异，初步能够证明ChatGPT是具备一定的推荐能力的，其中在list-wise类型的任务上能获得最高的性价比。
-
-#### 大模型对推荐影响
-
-【2023-5-12】[gpt4这种大模型能力对推荐系统这个领域有什么影响？](https://www.zhihu.com/question/591580147)
-
-结论：
-- 短期内，不会对推荐系统有大的影响。
-- 长期看，对推荐系统的影响体现在
-  - 大模型催生**新的业务场景**：比如基于问答的推荐场景，当用户查询旅游攻略时，除了常规的线路规划，还可以给出基于用户偏好的酒店，餐厅推荐候选。在这类的场景下，搜索和推荐相比当前的交互，会更加融合。
-  - 大模型提升**生产力**，导致垃圾内容泛滥：如何识别aigc 内容，降低该类内容对内容生态冲击，流量蚕食会是未来的一个新命题。
-  - 大模型在用户关怀上的应用：通过内容生产能力，为用户产生**不同风格化评论**，对创作者进行促活，也是一个比较有潜力的应用，现在的生成模型缺乏内容理解和产出风格化的能力。
-  - 大模型对**内容理解能力**的提升，使推荐朝**端到端**的方向发展：当前推荐建模依赖大量**离散**特征以及**统计后验**特征，如果未来能通过大模型的内容理解能力，直接匹配用户理解，这样端到端的新范式，会重塑推荐系统的发展线路。
-
-推荐大模型最有可能的路线
-- 借助语言图像类大模型的**内容理解能力**，把对内容的理解固定在一个稳定的embedding 空间，完全替代掉推荐模型里的itemid类稀疏特征，在系统层面，真正的学到推荐“知识”，并具有大规模泛化能力，这是最令我激动和充满热情的技术路线。
-
-作者：[手套销售拉呱总](https://www.zhihu.com/question/591580147/answer/3006390042)
-
-#### 提示学习与推荐
-
-随着prompt learning在nlp的出色表现，也开始向cv，向多模态进行扩展，当然，也有不少研究人员用它来解决推荐系统问题。
-
-【2022-8-29】提示学习用于推荐系统问题
-- [PPR，PFRec](https://nakaizura.blog.csdn.net/article/details/126572223)
-- [PEPLER，P5，PRL](https://nakaizura.blog.csdn.net/article/details/124558817)
-
-论文
-- KDD  2022： [Towards Unified Conversational Recommender Systems via Knowledge-Enhanced Prompt Learning](https://dl.acm.org/doi/10.1145/3534678.3539382), [解读](https://blog.csdn.net/qq_27590277/article/details/128017508)
-  - 会话推荐系统 (下面简称为：`CRS`) 旨在通过自然语言对话主动引发用户偏好并推荐高质量的项目。通常，CRS 由一个推荐模块（用于预测用户的首选项目）和一个对话模块（用于生成适当的响应）组成。
-  - 提出了一种统一的 CRS 方法，即基于 PLM 的知识增强型即时学习，`UniCRS`。
-
-#### Chat-Rec
-
-【2023-4-4】[Chat-REC: 当推荐系统遇上 ChatGPT, 会发生什么奇妙反应](https://mp.weixin.qq.com/s/ulV8R72zSStdwwNfhtys_g)，[解说](https://zhuanlan.zhihu.com/p/619161007)
-- [Chat-REC: Towards Interactive and Explainable LLMs-Augmented Recommender System](https://arxiv.org/abs/2303.14524)
-
-推荐系统已被广泛部署用于自动推断人们的偏好并提供高质量的推荐服务。然而大多数现有的推荐系统仍面临诸多缺陷，例如缺少交互性、可解释性，缺乏反馈机制，以及冷启动和跨域推荐。
-
-本文中提出了一种用 LLMs 增强传统推荐的范式 `Chat-Rec`（ChatGPT Augmented Recommender System）。通过将**用户画像**和**历史交互**转换为 Prompt
-- Chat-Rec 将用户与物品的历史交互、用户档案、用户查询 和对话历史 （如果有的话）作为输入，并与任何推荐系统R接口。
-- 如果任务被确定为推荐任务，该模块使用 R 来生成一个候选项目集。否则，它直接向用户输出一个响应，如对生成任务的解释或对项目细节的要求。提示器模块需要多个输入来生成一个自然语言段落，以捕捉用户的查询和推荐信息。这些输入如下：
-  1. 用户与物品的历史交互，指的是用户过去与物品的互动，比如他们点击过的物品，购买过的物品，或者评价过的物品。这些信息被用来了解用户的偏好并进行个性化推荐。
-  2. 用户画像，其中包含关于用户的人口统计和偏好信息。这可能包括年龄、性别、地点和兴趣。用户资料有助于系统了解用户的特点和偏好。
-  3. 用户查询 Qi ，这是用户对信息或建议的具体要求。这可能包括他们感兴趣的一个具体项目或流派，或者是对某一特定类别的推荐的更一般的请求。
-- ![](https://pic3.zhimg.com/80/v2-234ea3011f274c43cda0a6d233cb7d8a_1440w.webp)
-- Chat-Rec 的框架。左边显示了用户和 ChatGPT 之间的对话。中间部分显示了 Chat-Rec 如何将传统的推荐系统与 ChatGPT 这样的对话式人工智能联系起来的流程图。右侧描述了该过程中的具体判断。
-- 对于一个用户query：“你能推荐一些动作片给我吗？”。
-- 确定这个query是否是一个推荐任务【ChatGPT来判断】
-  - 如果是推荐任务，则使用该输入来执行“推荐动作电影”模块。但由于推荐空间是巨大的，所以该模块需要分为两个步骤：1推荐系统产生一个少量的候选得到top20的推荐结果，2然后再进行重新排序和调整【ChatGPT来重排】，以生成top5的最终输出。这种方法可以确保向用户展示一个更小、更相关的物品集，增加他们找到自己喜欢的东西的可能性。
-  - 如果不是推荐任务，如用户询问“为什么会推荐你会推荐fargo电影给我”。系统将使用电影标题、历史记录交互和用户配置文件作为输入来执行对推荐模块的解释【ChatGPT来生成解释】。
-
-由于ChatGPT的输入是自然语言文本，所以中间模块的主要目标：
-- 如何利用用户与物品的历史交互、用户档案、用户查询和对话历史 （如果有的话）等等多个输入ChatGPT来生成一个自然语言段落，以捕捉用户的查询和推荐信息。
-- User-item history interactions：用户与物品的历史交互，指的是用户过去与物品的互动，比如他们点击过的物品，购买过的物品，或者评价过的物品。
-- User profile：用户画像，其中包含关于用户的人口统计和偏好信息，如年龄、性别、地点和兴趣。
-- User query Qi：查询句子，可能是推荐任务也可能是通用任务。
-- History of dialogue Hi : 用户和chatgpt之间的所有上下文 
-
-对于topk推荐任务来说，生成的prompt例子
-
-如何解决**冷启动**？
-
-大模型中拥有很多知识，利用商品文字描述就能够借助LLM的力量来帮助推荐系统缓解新项目的冷启动问题，即没有大量用户互动也可以得到embedding。
-
-两种chatGPT难以执行推荐场景：
-- 1 让不能联网的chatGPT推荐2023最新的动作电影；
-- 2 让chatGPT推荐一个它知识储备中没有的动作电影。
-
-因此，离线利用LLM来生成相应的embedding表征并进行缓存。从而在当chatGPT遇到新的物品推荐时，会首先计算离线商品特征和用户query特征之间的相似性，然后检索最相关商品一起输入到 ChatGPT 进行推荐。
-
-如何解决**跨域**推荐？
-
-类似的，LLM中的知识可以很方便，对不同领域的商品有认知，如电影，音乐和书籍等等，并且还能够分清楚在不同领域产品之间的关系。
-
-因此，直接依靠chatGPT把上下文对话输入一起编码进chatGPT的输入后，就能在用户询问关于其他类型作品的建议时，实现跨域推荐，如对书籍、电视剧、播客和视频游戏进行推荐。
-
-从top5推荐和评分预测这个俩结果上来看，似乎text-davinci-003才是最好的
-
-- `Chat-Rec` 可以有效地学习用户的偏好，它<span style='color:blue'>不需要训练，而是完全依赖于上下文学习</span>，并可以有效推理出用户和产品之间之间的联系。通过 LLM 的增强，在每次对话后都可以迭代用户偏好，更新候选推荐结果。
-
-此外，产品之间的用户偏好是相关联的，这允许更好的跨域产品推荐。Chat-Rec 为运用 ChatGPT 等对话 AI 进行多种推荐情景的应用提供了有希望的技术路线。
-
-#### 商品推荐
-
-定制化商品推荐，告别传统“傻瓜”推荐算法
-- 当下国内众多电商的推荐算法都还是基于传统技术，因此也会出现“买过的东西依然推荐”的傻瓜做法，AI大模型有望彻底改变这些业态
-
-ChatGPT有一些营销场景应用是围绕垂直领域展开，革新推荐算法逻辑，让产品卖点更精准地触达目标客户。
-- 海外生鲜电商平台`Intacart`的食物搜索工具，其基于ChatGPT推出了面向食物推荐的应用，与自身来自75000多零售合作商店的产品数据结合了起来，帮助客户找到购物的灵感。
-- 美国一款名为`Expedia`软件内置了一个聊天机器人，通过AI大模型算法为用户规划旅游。有人经历过用ChatGPT规划旅游被推荐一个不存在的海滩，能够在iOS上轻便运行的Expedia据称不会出现这个问题。Expedia会根据旅游地推荐经济实惠的酒店，建议可以打卡的景点，是大模型落地垂直旅游行业的一个代表应用案例。
-
-
-
-
-#### InstructRec
-
-利用LLM的用户推荐，便于将用户偏好或需求用自然语言描述来表达，因此instruct tuning是非常适合的方案。
-- [Recommendation as Instruction Following: A Large Language Model Empowered Recommendation Approach](https://arxiv.org/pdf/2305.07001.pdf)
-- 开源LLM（3B的 Flan-T5-XL）进行指令调优来适应推荐系统。[原文解读](Chat-REC、InstructRec（LLM大模型用于推荐系统）)
-- 模型流程：用户直接给出instructions如“I prefer”，然后历史记录和用户指定将一起输入formulation模块中，生成模型能够理解的instructions形式，然后输入到大模型中，最后可以完成各种任务如sequential recommendation、product search、personalized search等。
-
-该工作最重要的模块就是通用指令的设计，以全面地描述用户的偏好、意图、任务形式。
-- **偏好**（Preference）。指用户偏好。其中隐式偏好用商品标题而非id，显式偏好用用户query中的明确表达（如用户评论），而不是之前的评分或点赞。
-- **意图**（Intention）。指用户对某些类型的物品的需求。模糊的意图如“给我儿子的一些礼物”、具体的意图如“蓝色、便宜、iPhone13”）。
-- **任务形式**（Task Form）。要做到统一的推荐系统，需要有适应各种任务的能力。
-  - `Pointwise`。某个候选商品是否适合用户，那么直接用用户需求和商品特征来匹配。
-  - `Pairwise`。让LLM从item pairs中选择更合适的一个即可。
-  - `Matching`。`召回`模块，LLM从整个商品语料库中生成候选集合。
-  - `Reranking`。`排序`模块，LLM从候选中重排序商品。
+详见站内专题: [大模型时代的推荐系统](llm_rs)
 
 ### 个人助理
 
@@ -1593,6 +1468,10 @@ Smart Siri 不足：
 - 3）Yoga Creator Zone，是专为创作者、艺术家等用户设计的生成式AI助手，旨在为想象力赋能，提供图像生成工具，可将基于文本的描述或草图转换为图像，无需输入任何复杂的提示、代码或设置。用户只需输入任何预想的内容，系统即可快速生成相应的视觉图像
 
 
+【2024-7-12】个人实践: [Easy-RAG](https://github.com/yuntianhe2014/Easy-RAG), 用 ollama 和本地llm 实现语言操控电脑
+- langchain_experimental 包开发，基于ollama的大模型，去注册tool，并且调用
+- [详见](https://mp.weixin.qq.com/s/FFAptDBJF5NfP56Uqq4lfA)
+
 #### Friend
 
 【2024-6-29】[Friend：又看到一个很有用但可能争议巨大额AI硬件](https://mp.weixin.qq.com/s/j7lvaG0p9bhDvtuTFu9l4g)
@@ -1620,10 +1499,49 @@ Smart Siri 不足：
 
 AI的公平，或许不太是供给的公平问题，更可能是“底线”的公平问题。
 
+#### 文档理解
 
 
+##### MinerU
 
-### 个人工具
+MinerU 是一款将**PDF转化为机器可读格式**的工具（如markdown、json），很方便地抽取为**任意**格式。 
+
+MinerU 诞生于`书生-浦语`的预训练过程中，集中精力解决科技文献中的符号转化问题，希望在大模型时代为科技发展做出贡献。 
+
+主要功能
+- 删除页眉、页脚、脚注、页码等元素，保持语义连贯
+- 对多栏输出符合人类阅读顺序的文本
+- 保留原文档的结构，包括标题、段落、列表等
+- 提取图像、图片标题、表格、表格标题
+- 自动识别文档中的公式并将公式转换成latex
+- 自动识别文档中的表格并将表格转换成latex
+- 乱码 PDF自动检测并启用OCR
+- 支持 CPU和GPU环境
+- 支持 windows/linux/mac平台
+
+安装
+
+```sh
+conda create -n MinerU python=3.10
+conda activate MinerU
+pip install -U magic-pdf[full] --extra-index-url https://wheels.myhloli.com -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+
+##### NotebookLM
+
+Google 推出 [NotebookLM](https://notebooklm.google/), 将论文转成播客
+
+NotebookLM 是一款 AI 赋能的研究和撰写**助理**，最适合与您上传的来源配合使用
+- 上传文档后，NotebookLM 将回答详细问题或提供关键数据洞见 —— 文档问答
+- 将复杂资料转换为简单易懂的格式，例如常见问题解答或简报文档
+- 将关键资源添加到笔记本中并与您的组织共享，以创建群组知识库
+
+
+- ![](https://notebooklm.google/_/static/v3/assets/images/UX-Hero-Dark.png)
+- [演示视频](https://notebooklm.google/_/static/v2/assets/videos/Mod1_Visual@2x.mp4)
+
+#### 个人笔记
 
 笔记应用
 
@@ -1634,6 +1552,14 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 - 安装Ollama和llama2 7B
 - 安装设置Obsidian Copilot
 - 运行Ollama和使用Copilot
+
+【2024-7-31】快速将音视频转结构化笔记的开源免费工具 AudioNotes。
+
+基于 FunASR 和 Qwen2 构建，可快速提取音视频内容，并利用大模型能力整理成一份结构化的 Markdown 笔记，方便快速阅读。
+- GitHub：[AudioNotes](github.com/harry0703/AudioNotes)
+
+工具支持搭配 Ollama 使用本地模型，并提供了 Docker 快速部署方式。
+
 
 #### 办公工具
 
@@ -1705,6 +1631,22 @@ docker run -it \
   - "Agent-Computer Interface" (ACI), LLMs 友好. 允许的动作: run code, look for code, edit code, and submit changes to GitHub.
 
 
+##### WatsonX
+
+2023年5月9日，5月9日，IBM召开“Think”大会，重磅推出了大模型Watsonx，全面深度布局生成式AI领域
+- [WatsonX](https://www.ibm.com/watsonx) 一个开发工作室，供企业“训练、调整和部署” 机器学习模型
+- [中文介绍](https://www.sohu.com/a/674323012_121649381)
+
+Watsonx 由三大块组成
+- 基础模型 watsonx.ai；
+- 基于开放式 Lakehouse 架构构建的专用数据存储平台watsonx.data；
+- 用于AI安全治理的 watsonx.governance。
+
+这三大平台赋能下，可为用户提供一站式安全可靠的生成式AI服务。
+
+IBM还与开源社区Hugging Face 进行深度技术合作，为 watsonx平台上的企业带来更好的开源生成式AI模型体验。
+
+根据IBM官方介绍，7月份，watsonx.ai将在Hugging Face平台上开源。
 
 #### 数学工具
 
@@ -2055,6 +1997,39 @@ Rask 自推出后就立即受到很多视频内容创作者的关注和好评，
 <iframe src='//player.bilibili.com/player.html?bvid=BV19o4y1K7tB&cid=1154479677&p=1&share_source=copy_web&autoplay=0' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true'  width="720" height="405"></iframe>
 
 翻译内容的准确性及配音的流畅程度都没有问题，特别是翻译为英语时我的音色被保留了，就像真的是自己在说英语一样，感觉非常神奇。而在翻译成日语时就明显能听出是 AI 配音，因为目前 Rask 只支持英语、德语、法语、葡萄牙语、意大利语、波兰语、西班牙语、印地语 8 种语言的声音克隆。
+
+
+##### VideoLingo
+
+【2024-10-4】VideoLingo: 连接世界的每一帧
+- 官方站点 [VideoLingo](videolingo.io)
+- GitHub [VideoLingo](https://github.com/Huanshere/VideoLingo/blob/main/README.zh.md)
+
+一键**全自动**视频工具：VideoLingo
+
+VideoLingo 将视频进行字幕切割、翻译、对齐、配音，最终生成 Netflix 级别的字幕和配音
+
+特点：
+- 1、自动化：一键完成视频字幕切割、翻译、对齐和配音，无需手动操作
+- 2、字幕：使用NLP和 LLM 技术进行字幕分割，提供智能术语知识库，实现上下文感知翻译
+- 3、对齐：单词级别的字幕对齐，字幕与视频内容同步
+- 4、个性化配音：使用 GPT-SoVITS，克隆声音并进行配音
+
+
+功能：
+- 🎥 使用 yt-dlp 从 Youtube 链接下载视频
+- 🎙️ 使用 WhisperX 进行单词级时间轴字幕识别
+- 📝 使用 NLP 和 GPT 根据句意进行字幕分割
+- 📚 GPT 总结提取术语知识库，上下文连贯翻译
+- 🔄 三步直译、反思、意译，媲美字幕组精翻效果
+- ✅ 按照 Netflix 标准检查单行长度，绝无双行字幕
+- 🗣️ 使用 GPT-SoVITS 等方法对齐配音
+- 🚀 整合包一键启动，在 streamlit 中一键出片
+- 📝 详细记录每步操作日志，支持随时中断和恢复进度
+- 🌐 全面的多语言支持，轻松实现跨语言视频本地化
+
+与同类项目的主要区别：绝无多行字幕，最佳的翻译质量
+
 
 
 #### 视频剪辑
@@ -2857,209 +2832,15 @@ Character.ai 行业启发在于：随着高性能大模型的使用门槛进一�
 - [视频](https://www.toutiao.com/video/7351236230073322767)
 
 
+#### 宛在
+
+【2024-7-28】 微博大v `逝者如斯夫` 推出的数字人项目 [宛在](http://wanzaiai.com)
+- 功能: 声音克隆、角色模拟、视频交互
+
 
 ### 智能客服
 
-
-【2023-6-30】[AIGC 重构后的智能客服，能否淘到大模型时代的第一桶金](https://www.infoq.cn/article/85UCQYO6sJUC23W1JWBu)
-
-以 ChatGPT 为代表的大模型已经在许多企业中用于智能客服应用。它通过自动回答常见问题、解决简单问题和提供基本支持，减轻人工客服的负担。大语言模型通过深度学习和大量的语言数据训练，能够理解和生成人类语言，使得用户能够以自然的方式与它交互。在一些常见的客户查询和问题解答方面，这类大模型已经取得了相当不错的效果。
-
-然而，当前大语言模型在实际应用于智能客服场景中时仍存在一些挑战
-- 可能会生成**错误或不准确**的回答，尤其是对于复杂的问题或领域特定的知识，这就对智能化程度提出了更高的要求。未来的在线客服系不仅需要更高级的算法和机器学习技术，还需要更多精准的自然语言处理能力。这将对在技术上不太强大的企业形成巨大的压力。
-- 此外，随着用户数量和访客量的增多，未来智能客服将需要处理**超大规模并发**请求。这需要系统在多种方面都拥有特殊的设计，如负载均衡、高可扩展性和高可用性等。
-
-现在市面上的很多对话机器人，回答是单一固定的，变化比较少，与真实的人与人对话还有差距，未来的智能客服系统将需要进一步加强对用户行为的**自适应性**和**个性化**服务。这就需要系统学习更多的用户数据和信息，并适应不同的用户行为，为他们提供更好的服务和体验。
-
-如何提升用户体验就成为了智能客服供应商主攻的方向。具体来讲，主要应从**人性化**服务、**个性化**服务和**拟人化**的对话交互方面进行改进。
-- 首先是**人性化**服务。在场景和意图理解精准的基础上，附加更有**温度**的对话语境，可以让机器人在拟人化上，再进一步。
-  - **多模态**情感计算是实现这一步的有效方法。目前正在推进虚拟数字人客服进行人机交互对话，在此过程中结合情感计算，可识别用户通过视频、语音、文本所传递的情感表达，让智能客服在应对是作出相应情感反馈，打造具有情感理解、有温度的人机交互。这种多模态情感计算技术的实现方法主要是通过基于专家规则和基于机器学习两种。其中，基于机器学习的方法通过训练模型来自动学习情感状态的分类标准，可以更好地适应不同领域、不同语境下的情感表达，效果相对更优些。
-- 其次是**拟人化**的对话型交互。
-  - 通过场景化设计优化，比如问题拆解、主题继承、多轮对话、上下文理解等等，机器人能够带来一种更加贴近自然对话场景的对话型交互模式。
-- 第三是**个性化**服务。
-  - 根据客户画像千人千面提供个性化服务，从多角度出发进行语义理解，此外还要附加语音情绪判别。 
-
-大模型诞生后，无疑为智能客服领域注入了新的“营养剂”。这种“革新”体现在多个方面，包括座席辅助和座席提效、闲聊寒暄、话术优化建议、提供语料扩写等。
-- 座席辅助和座席提效：过去的智能辅助更多局限于按单轮对话来完成，基于大模型的能力能够快速分析并生成面向客户侧的系统支撑策略，这种处理效率和结果，远超出依附纯规则或者纯知识库所能达到的效果；
-- 闲聊寒暄：是智能客服非常关键的基础能力，能够帮助企业对任意进线客户进行即时响应。过去的智能客服闲聊主要是将各类非业务相关的语料堆到素材库，并通过调取数据库已有的关键词进行内容的回复。如今可以充分借助大模型能力提供闲聊，在非业务领域上为座席和客服提供更多决策依据和参考；
-- 话术优化建议：话术往往决定了客服的效果，话术回复不精准将直接导致用户的流失。通过大模型强大的内容生成能力，智能客服能够对话术进行不断地迭代和与优化，提升客户满意度；
-- 提供语料扩写：在智能客服冷启动阶段，往往需要足够多的语料来丰富知识库的相似问法，以保证上线初期智能客服有足够高的解决率和场景覆盖率。以往的语料生成模型很难覆盖众多垂直行业和领域，大模型在通用领域中积累了足够的数据和语料，可以很好的弥补语料生成模型的不足，快速生成相似问法，解决智能客服冷启动语料不足，场景覆盖率低等问题。
-
-归根结底，提高对话质量的核心还是理解客户和用户的场景，以及能够搭建出衡量得失的数据框架。这两个组合之下，会有一个循环反馈的过程，就能够通过正常的产品迭代达到好的效果，并且能够衡量出来 ROI 和对实际业务的共享。
-
-#### Shopify
-
-真智能客服来了，无需再呼唤“人工”
-- 很多人以前都遇到过“鸡同鸭讲”的傻瓜机器客服，ChatGPT将改变这一情况。让智能客服真正理解客户的需求，基于客户诉求创作营销内容，根据数据分析营销效果，真正的智能客服能做的事远不止向客户介绍产品。
-- 今年3月，全球领先电商SaaS服务商Shopify已集成了ChatGPT。Shopify主要面向企业及个人客户提供电商网站建立、维护管理等服务。采用ChatGPT，Shopify一方面升级智能客服功能，帮商家与客户沟通更顺畅；另一方面，商家可以通过ChatGPT获取平台商品评论数据分析、标题及关键词优化、营销文案撰写、网站智能化开发编程等多项服务，提升运营效率。
-- ![](https://pic1.zhimg.com/80/v2-e060c9c4457739571493e9ab8e25ba94_1440w.webp)
-- 智能客服作为ChatGPT最直接能落地的领域，一定会很快入驻各大电商平台，让一批不具备更多技能的客服被替换掉
-
-【2023-6-18】[基于ChatGPT构建智能客服系统(query分类&安全审核&防注入)](https://mp.weixin.qq.com/s/HYIKNYSWlgIktrSbrM3KCA) 介绍3点：
-- 智能客服场景中的用户query分类
-- 使用OpenAI的接口进行安全审核
-- 如何防止Prompt注入
-
-（1）多级分类 prompt
-- 主要类别
-- 次要类别
-
-```py
-delimiter = "####"
-system_message = f"""\
-您将获得<客户服务查询>。\
-<客户服务查询>将用{delimiter}字符分隔。\
-
-将每个查询分类为主要类别和次要类别。\
-以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，其他的不需要输出。\
-
-主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。
-
-<结算>次要类别：\
-取消订阅或升级 \
-添加付款方式 \
-有关费用的说明 \
-争议费用
-
-<技术支持>次要类别：\
-一般故障排除\
-设备兼容性 \
-软件更新 \
-
-<账户管理>次要类别：\
-重置密码 \
-更新个人信息 \
-关闭账户 \
-账户安全 \
-
-<一般查询>次要类别：
-产品信息 \
-支付 \
-反馈 \
-与人交谈 \
-"""
-
-user_message = f""" 我想让你删除我的个人资料和我所有的用户数据 """
-
-messages =  [  
-  {'role':'system', 'content': system_message},    
-  {'role':'user', 'content': f"{delimiter}{user_message}{delimiter}"},  
-]
-response = get_completion_from_messages(messages)
-print(response)
-# ------
-{
-    "primary": "账户管理",
-    "secondary": "关闭账户"
-}
-```
-
-（2）Prompt 注入
-
-```py
-# 会被视为 Prompt 注入
-user_message = f"""介绍下你们的平板电视吧"""
-
-messages =  [  
-{'role':'system', 
- 'content': system_message},    
-{'role':'user', 
- 'content': f"{delimiter}{user_message}{delimiter}"},  
-]
-response = get_completion_from_messages(messages) # 调用OpenAI
-print(response)
-```
-
-ChatGPT回复如下：
-> 抱歉，我是一个语言模型，无法提供实时产品信息。建议您访问电视制造商的官方网站或者联系客服获取更详细的产品信息。如果您有其他问题需要帮助，请随时问我。
-
-完整的messages如下：
-
-```json
-[{'role': 'system', 'content': '您将获得<客户服务查询>。<客户服务查询>将用####字符分隔。\n将每个查询分类为主要类别和次要类别。以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，其他的不需要输出。\n主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。\n\n<结算>次要类别：取消订阅或升级 添加付款方式 有关费用的说明 争议费用\n\n<技术支持>次要类别：一般故障排除设备兼容性 软件更新 \n<账户管理>次要类别：重置密码 更新个人信息 关闭账户 账户安全 \n<一般查询>次要类别：\n产品信息 支付 反馈 与人交谈 \n'}, {'role': 'user', 'content': '####介绍下你们的平板电视吧####'}]
-```
-
-Prompt注入问题
-- 使用变量
-- 示例1: 忽略前面的指令
-- 示例2: 判断是否存在Prompt注入
-
-更多：吴恩达《Building Systems with the ChatGPT API》课程
-
-**指定变量**方式防止Prompt注入：
-- 上述被视为 Prompt 注入，做出以下修正
-
-```py
-delimiter = "##"
-system_message = f"""\
-您将获得<客户服务查询>query_text。\
-<客户服务查询>query_text。\
-
-将每个<客户服务查询>分类为主要类别和次要类别。\
-结果以Json格式提供输出，key为：<primary>和<secondary>。\
-只需要输出Json格式的输出结果，不要输出其他，key对应的值没有的话，用空字符串填充。\
-
-主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。
-
-（同上，略）
-
-"""
-
-raw_user_message = "介绍下你们的平板电视吧"
-user_message = f"""query_text={raw_user_message}"""
-
-print("user_message=", user_message)
-
-messages =  [  
-{'role':'system', 
- 'content': system_message},    
-{'role':'user', 
- 'content': user_message},  
-]
-print("messages=", messages)
-
-response = get_completion_from_messages(messages)
-print("response=",response)
-```
-
-ChatGPT回复如下：
-
-```json
-{
-    "primary": "一般查询",
-    "secondary": "产品信息"
-}
-```
-
-中间信息如下：
-
-```json
-user_message= query_text=介绍下你们的平板电视吧
-messages= [{'role': 'system', 'content': '您将获得<客户服务查询>query_text。<客户服务查询>query_text。\n将每个<客户服务查询>分类为主要类别和次要类别。结果以Json格式提供输出，key为：<primary>和<secondary>。只需要输出Json格式的输出结果，不要输出其他，key对应的值没有的话，用空字符串填充。\n主要类别：<结算>、<技术支持>、<账户管理>或<一般查询>。\n\n<结算>次要类别：取消订阅或升级 添加付款方式 有关费用的说明 争议费用\n\n<技术支持>次要类别：一般故障排除设备兼容性 软件更新 \n<账户管理>次要类别：重置密码 更新个人信息 关闭账户 账户安全 \n<一般查询>次要类别：\n产品信息 支付 反馈 与人交谈 \n'}, {'role': 'user', 'content': 'query_text=介绍下你们的平板电视吧'}]
-```
-
-
-
-（3）内容审核
-
-OpenAI 官方提供了内容审核的接口 Moderation。
-- 通过OpenAI的内容审核接口可以检查用户输入的内容是否符合OpenAI的使用政策，包括识别是否存在不良信息、仇恨言论、暴力内容、色情内容等，并对其进行过滤或标记。
-
-```py
-# sexual
-response = openai.Moderation.create(
-    input="""➕V看你想看的，日韩应有尽有"""
-)
-moderation_output = response["results"][0]
-print(moderation_output)
-# violence类别识别
-response = openai.Moderation.create(
-    input="""你再这样PUA张三的话，张三可能会拿电锯把你切成碎片"""
-)
-moderation_output = response["results"][0]
-print(moderation_output)
-
-```
+详见站内专题: [大模型时代的智能客服](ics#llm-在线客服)
 
 
 ### AI教育
@@ -3273,6 +3054,31 @@ MiGPT 不仅仅是关于设备自动化，而是关于：打造一个懂你、�
 
 ### 金融 
 
+【2024-9-17】[扯淡的银行业大模型](https://mp.weixin.qq.com/s/ZKPGVxuVFwJT72tkJrpGUQ)
+
+查询了下各个银行的年报和公开信息，提千亿极概念的不止一个银行，目前已经有
+- `中国银行`（内部知识服务，辅助编码场景）
+- `工商银行`（座席助手，网点员工智能助手场景）
+- `交通银行`（办公助手，客服问答场景)
+- `农业银行`（客服知识库答案推荐，知识库辅助搜索场景）
+- `邮储银行`（研发测试，运营管理，客户营销，智能风控，投诉问题分类场景)
+- `建设银行`（向量知识库，文生图，智能客服，市场营销，投研报告，智慧办公，智能运营，智能风控场景）
+- `中信银行`（代码生成，智能操作场景）
+- `平安银行`（零售贷款审批，运营管理，消保降诉，汽车金融AI验车场景）
+- `招商银行`（零售，批发，中后台场景）
+- `民生银行`（数字化决策场景）
+- `兴业银行`（智能研报摘要生成，企金产品智能问答，研发代码辅助生成，数字助手场景）
+
+不完全统计，11个银行公开提出了大模型建设并明确了对应的研发场景。
+
+大模型汇报层面已经形成完备的方法论和理论知识体系，扯淡的功夫一脉相承。所谓的大模型或采购，或自研。
+
+但是，出彩的场景并不多，而且所谓自研，大概就是基于某个开源模型用场景数据微调。
+
+大部分没分清楚大模型和小模型，大模型的核心技术底座和大模型应用的区别, 就出来大吹特吹，这完全符合银行科技部高管吹牛逼不打草稿而业务并不熟练的人设特征。
+
+场景为王，科技深入一线，少提概念，多干实事
+
 #### 度小满: 轩辕
 
 【2023-5-26】[度小满开源国内首个千亿参数金融大模型“轩辕”](https://mp.weixin.qq.com/s/qiRiRQEKxS47HeSjrIQkmQ)
@@ -3312,6 +3118,9 @@ BloombergGPT的训练数据库名为FINPILE，由一系列英文金融信息组�
 见站内[量化专题](quant)
 
 GPT在量化暂还没有广泛应用
+- 【2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
+- 【2024-7-26】哥伦比亚大学 [Large Language Model Agent in Financial Trading: A Survey](https://arxiv.org/pdf/2408.06361),对利用大型语言模型作为**金融交易Agent**进行了首次系统调研，总结了两种主要架构设计、四类关键数据类型以及评估方法，并讨论了当前局限性与未来方向。
+
 
 ### 法律
 
@@ -3692,7 +3501,7 @@ UMass Amherst、UCLA和MIT-IBM Watson AI Lab研究人员，推出了全新的具
 #### 玩具机器人
 
 
-##### Sphero
+##### 开发套件: Sphero
 
 [Sphero](https://sphero.com/) 玩具介绍
 - [Sphero](https://sphero.com/) 是一个**球形机器人**玩具, 既可以用面板控制它滚动, 也可以实现编程, 包括积木编程.
@@ -3750,7 +3559,7 @@ Ghost in Shells:
 - 语音识别 & 生成:  用的[百度 ASR / TTS](https://ai.baidu.com/tech/speech)
 
 
-##### FoloToy
+##### 开发套件: FoloToy
 
 【2024-4-9】[切入传统赛道，「FoloToy」用AI升级玩具](https://mp.weixin.qq.com/s/GtIvnbsqHXI2rG1xNpAewg)
 
@@ -3800,7 +3609,7 @@ FoloToy的产品也支持企业定制使用。王乐介绍，FoloToy的套件产
 - [自从家里有了ChatGPT火火兔](https://www.bilibili.com/video/BV18V411P7kQ)
 
 
-##### Haivivi
+##### 毛绒玩具: Haivivi
 
 【2024-7-8】[毛绒玩具也可内置大模型，这款AI+硬件的产品会不会卖爆](https://mp.weixin.qq.com/s/7aZKGG0yMvNku-QdTeExeg)
 
@@ -3848,10 +3657,82 @@ Haivivi 输出内容可以对孩子进行心理层面的引导：
 除毛绒玩具 IP的竞争力外，其在硬件、软件、算法中的研发工作也是壁垒之一。其中包括模型Fine-Tune工作，硬件层面的语音编解码和网络传输协议优化等。
 
 
+##### 毛绒玩具: BubblePal
 
-#### Aibi
 
-【2024-4-27】Living AI公司最新研发的口袋宠物机器人Aibi，蓝牙耳机盒的大小，可以随时随地带着它去任何地方，重新定义智能AI口袋桌宠，时刻陪伴着你
+【2024-9-3】[对话跃然创新：把大模型做到毛绒玩具上，一个AI界的泡泡玛特就出来了？](https://mp.weixin.qq.com/s/_Q7FTTu49ogPUtdTiI4oCg)
+
+找不到商业化落地场景 `Agent`＋一个简单的`Wifi音箱`＋儿童喜爱的`毛绒玩具`，这三个看起来都平平无奇的元素，加在一起
+
+挂在小熊玩偶上的“彩色泡泡”名叫`BubblePal`，从硬件形态上看像一个可爱版的AI Friend
+- 小朋友可以自由选择泡泡背后的角色: `爱因斯坦`、`艾莎公主`还是`孙悟空`等等耳熟能详的动画角色，捏住泡泡就能与其对话；
+- 家长在后端通过手机APP能够获取对话的全部内容，以此来了解3-6岁小朋友的成长和心理健康动态。
+
+就是这样的一个简单的“泡泡”，几乎巧妙地避开了如今围绕着AI的所有难题。
+- 基座大模型能力还不够用？
+- 容易出现幻觉？
+- Agent不够像？
+- 用户没有付费意愿？
+
+对于根本不知道ChatGPT、Claude还是Kimi的小朋友和家长而言
+- 在儿童提问场景，模型能力已经**完全超出预期**，甚至**幻觉**也可以当成是一种**加分项**和**娱乐**。
+  - 大模型幻觉可在儿童天马行空的对话场景下被接受的，毕竟儿童对话中信息密度和准确度的要求没那么高。
+- 而在毛绒玩具市场里，IP联名本身就已经是成熟的商业模式，Agent有了天然的落地场景。
+
+跃然创新创始人李勇
+- BubblePal 上线一个月，用户活跃度非常好，用户平均每天使用时长超过了 30 分钟
+- 上线当周，后台收到了大量订单咨询，家长反馈特别强烈。没想过能卖得这么好，更没想过的是，日tokens调用量正在成倍地往上涨，上线两周，单日tokens 消耗达到了2亿，现在每日 tokens消耗已经超过了4亿。
+- BubblePal 研发时间仅仅用了**9个月**，在开售不到1个月的时间里，设备已经有效激活了超过**1万台**，以399元一个的产品定价，GMV超过400万元，“今年预计销量8万台，从目前的销售情况来看，应该比较乐观。”
+- 毛绒玩具复购率很高，三岁给孩子买了孙悟空毛绒玩具，五岁又买了爱因斯坦毛绒玩具，因为绑定的是同一个账户，那么孩子跟孙悟空已经聊了两年了，这两年的记忆就可以自动同步给新的爱因斯坦毛绒玩具。
+- 玩偶打通了之后还可以干嘛呢？开启“玩具总动员”的**多智能体模式**。孩子可以让孙悟空扮演船长，爱因斯坦扮演大副，三个人一起去冒险，我们在云端设置一个虚拟Agent去调配这两个角色，当孩子说了一句话之后，虚拟Agent就直接决定接下来轮到谁说话、说什么内容，沉浸式过家家。
+
+为什么要做一个泡泡，而不是把它做在毛绒玩具里面？
+- 两个都要做，先做泡泡是因为，内置在毛绒玩具里，IP方审核周期比较长，产品要年底才能上线。
+- 泡泡相对来说研发周期更短一些，也能挖掘一部分存量市场。
+
+接近3个小时的对话里，李勇多次提到“活着”，作为一名创业老兵，他曾经跟随罗永浩在锤子科技追求过理想，也被现实的商业世界逼到过墙角，2023年公司一度濒临破产，这让他的思考变得十分务实。
+
+从 商业模式出发, BubblePal 本质上是一款面向儿童的消费电子，唯一不同的是接入了**大模型能力**。
+- `技术不是壁垒，现在不是，以后也不会是`; **两层模型** = 通用大模型 + 垂直小模型
+  - 通用大模型: 国内主流 MiniMax、豆包、智谱都有，现在主要 MiniMax, 国外接 GPT等几家大模型; GPT-4o有了端到端语音能力，那我们可以减少延迟，让用户端的语音情绪能完全保留下来；模型端一旦具备了连续对话能力，我们还可以做多智能体。
+  - 垂直小模型: 基于Llama 2 开源模型fine-tune。
+- 产品： `别总盯着“AI圈”，才能找到PMF`
+  - 把大模型功能放在最喜欢的**卡通角色**里，那孩子不就疯了吗？
+  - 最近刚上线的孙悟空角色，有同事的女儿中午午休玩了一中午不放手。
+  - AI儿歌功能，测下来，感觉 MiniMax 效果不错, 早期用户有很多免费 tokens 额度
+- 没有技术壁垒，有产品壁垒么？
+  - (1) APP除了联网, 家长还可以查看孩子的聊天记录, 准备成长报告; 为孩子报名了舞蹈班，但这周我发现孩子并没有谈论舞蹈，而是聊了十次足球，我就能发现孩子的兴趣所在。
+  - (2) 家长还可以在APP里还切换角色. 目前已经推出几十个角色，当然家长也可以自己创建，比如小猪佩奇、艾莎公主、库洛米等等。现在大概每周都会不定时更新一些角色吧。
+  - (3) 家长首次登录账户，选择角色时，还设置了角色标签，就是一个prompt，让家长根据孩子的特点，调整角色的对话主题和目标。比如说，我家孩子比较内向、胆小，我就设置让AI多鼓励孩子，多讲一些关于勇气和冒险的故事等等。
+  - 第一个破圈的AI硬件产品。之前所有AI硬件(Meta的眼镜、AI Pin、Rabbit R1) 早期用户都是**科技圈**的，但我们的产品购买者都是**年轻妈妈**，很多家长根本不知道什么叫AIGC、大模型，甚至很多用户在买回去后不会联网，但他们是真的有需求、感兴趣。
+  - 技术没有壁垒，应用壁垒是**用户网络效应**，或用户使用量的**滚雪球效应**，用户迁移成本是壁垒
+- 新鲜感过后还能继续吗
+  - 大部分玩具都是孩子玩着玩着就不爱玩了？
+    - 第一是是**孩子长大**，兴趣点和喜欢的玩具会变化
+    - 第二是玩具的**功能太简单**，孩子很快掌握后，就失去了新鲜感。
+  - 现在黏性很好，平均每天超过30min
+    - 每天就是会有无穷无尽的困惑，现在的大模型可以回应孩子的每一个奇思妙想；
+    - 孩子们**没有手机**，他们最多只有`手表`、`智能音箱`这种冰冷工具。
+- 实时聊天记录的隐私问题？
+  - 产品主要面向3到6岁的儿童，3~6岁的孩子本身就非常依赖父母引导，而大模型又是一个新事物，有些家长会担心大模型会对孩子产生不良影响，为了让父母放心，最好的办法就是公开透明给家长。
+- 小模型有什么能力？除了识别用户意图
+  - 通用大模型主要是负责计算和推理的，而小模型是负责把通用模型的结果转换成适合给孩子的内容
+  - (1) 小模型里封装了一层跟孩子对话的Agent的一系列prompt，让AI的回答更贴IP角色的人设。 以小猪佩奇的口吻来解释什么是量子纠缠，“就像我和我的弟弟乔治，虽然它躲在沙发背面，我也能感知到他。”
+  - (2) 回答调整得更加情绪化: 大模型表达分成四个象限，那我们肯定是第一象限，非常**主观**+**情绪化**，但通用大模型是第三象限，理性+客观，因为他要取最大公约数。所以在实际交互过程中，就需要我们的小模型用口语化的高质量数据集，来训练情绪。
+  - (3) **长期记忆**的部分，比如，当孩子问，我上一次跟妈妈吵架是什么时候？我上一次去游泳是什么时候？我自己的小模型通过查询向量数据库就可以直接输出，不需要调用通用大模型。
+- 国内很多AI对话app也在做IP角色，但好像都不像
+  - 很多App不像，因为他们没必要做得很像。Character.AI的佛祖、乔布斯、苏格拉底都非常像了，可惜公司也卖了，光靠用户订阅充值的商业模式是撑不起来的底层的训练和Token消耗的。除非做一个硬件，而且硬件产品有足够多的利润去支撑模型的优化，因为对消费者来说，为硬件付费是一个很自然的事情，我们有动力去持续迭代。
+- 记忆：向量数据库加RAG
+- 垂直小模型是开源模型封装了一套成熟的prompt，质疑技术壁垒？
+  - 我们没有技术壁垒，用了很多开源项目。但我们是大模型应用公司，要做的是调用大模型的能力更好的实现用户需求。
+
+
+#### 宠物
+
+
+##### Aibi
+
+【2024-4-27】Living AI公司最新研发的**口袋宠物机器人**Aibi，蓝牙耳机盒的大小，可以随时随地带着它去任何地方，重新定义智能AI口袋桌宠，时刻陪伴着你
 - [资讯](https://fangx.ai/aibi-pocket-pet-from-livingai/)
 
 AIBI Pocket 是 Living.AI 继 EMO 之后最新的一款 AI 宠物机器人。
@@ -3874,6 +3755,14 @@ AIBI Pocket 的功能和特点包括：
 ![](https://i0.wp.com/fangx.ai/wp-content/uploads/2024/04/aibi-pocket-from-livingai.jpg?fit=1200%2C630&ssl=1)
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1253500011&bvid=BV1vJ4m1H7qM&cid=1521134595&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+##### 宠物翻译器
+
+【2024-9-10】traini，狗语翻译器，才0.01b，准确率80％，好奇是谁打的标… 
+
+国内小程序：宠物语言翻译
+
 
 
 ### 可穿戴
@@ -4027,6 +3916,22 @@ Araya 公司的Sasai 团队成功使用高密度脑电图（EEG）设备和ChatG
 - [演示视频](https://video.h5.weibo.cn/1034:4901414615318533/4901415334449860)
 - ![](https://www.araya.org/wp-content/uploads/2023/05/fig2.png)
 
+
+#### Synchron Switch
+
+【2024-8-6】[资讯](https://finance.sina.com.cn/tech/roll/2024-08-06/doc-inchthwx9857850.shtml), [视频](https://www.thepaper.cn/newsDetail_forward_28286358)
+- 美国初创公司 Synchron 首次将 ChatGPT 整合到大脑中，以便瘫痪等残障人士更容易控制数字设备，重新加入自然速度的对话中来
+
+Synchron凭借其独特的脑机接口（BCI）技术脱颖而出，该技术巧妙地运用了成熟的支架与导管技术，实现了无创或微创的设备植入大脑，彻底摒弃了传统开放式颅骨手术的复杂与风险。
+- Synchron Switch 通过`颈静脉`这一自然通道轻松进入大脑，精准定位于运动皮层附近，实现了大脑运动信号与外部设备的无线桥梁。患者仅凭意念即可驱动外部设备，开启了全新的生活方式。
+
+Synchron Switch 旨在成为瘫痪患者的福音，尤其是那些因肌萎缩侧索硬化症（ALS）、中风、意外伤害等不幸失去行动能力的人群。
+
+它不仅让患者能够自由地进行文本输入、在线购物、银行交易等日常活动，更重要的是，它重新连接了患者与外界的沟通桥梁，赋予了他们新的生活希望。
+
+作为这一技术的受益者之一，马克在2021年被确诊ALS后，手部功能几近丧失。然而，作为全球首批接受 Synchron BCI 植入的十位受试者之一，他如今已能享受前所未有的便利。通过单次“思维点击”，他就能轻松完成回复，大大提升了沟通效率。更令人惊喜的是，当AI的回答偶有偏差时，一个简单的刷新动作即可重新获取更加贴合心意的答案，且随着使用的深入，AI仿佛越来越能读懂他的心声。
+
+关于成本方面，Synchron的BCI系统预计定价于50,000至100,000美元之间，这一价格区间与心脏起搏器、人工耳蜗等高端医疗植入设备的市场价格相媲美，展现了其作为高端医疗科技产品的价值与潜力。
 
 
 ### 自动驾驶

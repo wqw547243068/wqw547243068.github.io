@@ -7,6 +7,7 @@ tags: 深度学习 NLP KG 知识图谱 表示学习 因果科学 集智俱乐部
 excerpt: 如何让AI系统具备真正的推理能力？图灵奖得主、贝叶斯网络之父 Judea Pearl 的解法——因果科学
 author: 鹤啸九天
 mathjax: true
+permalink: /casual
 ---
 
 * content

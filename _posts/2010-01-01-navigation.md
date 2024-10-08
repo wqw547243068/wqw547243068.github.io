@@ -81,6 +81,11 @@ permalink: /navi
 </div>
 
 
+【2024-9-30】新版导读图示，点击方块即可跳转到对应文章
+
+{% include tool_navi.html %}
+
+
 ## 联系作者
 
 - [来呀，点我！](https://wqw547243068.github.io/about/)

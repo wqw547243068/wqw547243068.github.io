@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral
+tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -14,6 +14,8 @@ permalink: /emb
 
 
 # 向量化
+
+向量模型把人类世界里的语言转化为为计算机世界中的数字
 
 ## 向量化用途
 
@@ -28,6 +30,13 @@ permalink: /emb
 -   工具调用 _Tool Learning (tool)_
 - ![](https://github.com/FlagOpen/FlagEmbedding/raw/master/FlagEmbedding/llm_embedder/imgs/llm-embedder.png)
 
+文本向量用途除了**RAG检索**，还有 **信息检索**、**排序**、**分类**、**聚类**、**语义相似度**中。[IMG](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+- Embedding: Point wise, Pair wise, List wise
+- Rerank: Cross-encoder, ColBERT, LLM
+- RAG: 
+- ![](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+
+
 ## 文本向量化
 
 `嵌入`（Embedding）是一种将**文本或对象**转换为**向量表示**的技术，将词语、句子或其他文本形式转换为固定长度的向量表示。
@@ -36,12 +45,13 @@ permalink: /emb
 
 以 `Milvus` 为代表的`向量数据库`利用语义搜索（Semantic Search）更快地检索到相关性更强的文档。
 
-详见：sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
+详见：
+- sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
-## 文档向量化
+### 文档向量化
 
-自研框架的选择
-- 基于OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
+自研框架选择
+- 基于 OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
 - 也可以使用 LangChain 框架。
 
 参考
@@ -115,6 +125,163 @@ print(qa.run(query))
 基础模型大多基于 Transformer Encoder 预训练语言模型: `BERT`, `RoBERTa`，`Ernie`等
 
 
+### nn.Embedding
+
+[pytorch nn.Embedding详解](https://blog.csdn.net/lsb2002/article/details/132993128)
+
+`nn.Embedding` 是 PyTorch中的一个常用模块
+- 主要作用: 将输入**整数序列**转换为**密集**向量表示
+- 值是 `正态分布` `N(0,1)`中**随机**取值
+
+```py
+torch.nn.Embedding(num_embeddings,  # 字典大小
+                   embedding_dim,   # 向量维数
+                   padding_idx=None, # 将制定idx填充0
+                   max_norm=None, 
+                   norm_type=2.0, 
+                   scale_grad_by_freq=False, 
+                   sparse=False, 
+                   _weight=None, 
+                   _freeze=False, 
+                   device=None, 
+                   dtype=None)
+```
+
+nn.Embedding 用来实现词与词向量的映射。
+- nn.Embedding 有个权重（`.weight`），形状是`(num_words, embedding_dim)`。
+- 例如一共有100个词，每个词用16维向量表征，对应的权重就是一个100×16的矩阵。
+- Embedding 输入形状`N×W`，N是batch size，W是序列的长度，输出的形状是 N×W×`embedding_dim`。
+- Embedding 输入**必须**是`LongTensor`，`FloatTensor` 需通过 `tensor.long()` 方法转成 `LongTensor`。
+- Embedding 权重可训练，既可以采用随机初始化，也可以预训练好的词向量初始化。
+
+
+#### nn.Embedding 示例
+
+两个句子：
+- **I want a plane**
+- **I want to travel to Beijing**
+
+将两个句子转化为ID映射：
+- `{I：1，want：2，a：3，plane：4，to：5，travel：6，Beijing：7}`
+
+转化成ID表示的两个句子如下：
+- **1,2,3,4**
+- **1,2,5,6,5,7**
+
+```py
+import torch
+from torch import nn
+ 
+# 创建最大词个数为10，每个词用维度为4表示
+embedding = nn.Embedding(10, 4)
+ 
+# 将第一个句子填充0，与第二个句子长度对齐
+in_vector = torch.LongTensor([
+    [1, 2, 3, 4, 0, 0], 
+    [1, 2, 5, 6, 5, 7]
+])
+
+out_emb = embedding(in_vector)
+print(in_vector.shape)
+print((out_emb.shape))
+print(out_emb)
+print(embedding.weight)
+```
+
+注意：
+- 句子中ID 不能大于最大词的index（上面例子中，不能大于词库总数）
+- embeding 输入必须是**维度对齐**的，如果长度不够，需要预先做填充
+
+#### 静态嵌入-固定
+
+示例
+- 定义一个`词汇表`大小（vocab_size）为 20 的嵌入层,每个词被嵌入到一个5维的`向量空间`（embedding_dim）。
+- 用 `nn.Embedding` 创建嵌入层。
+- 创建一个输入张量,代表一系列词的索引。
+- 通过嵌入层处理输入,得到每个词的嵌入向量
+
+代码实现
+
+```py
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
+# 设置参数
+vocab_size = 20  # 词汇表大小
+embedding_dim = 5  # 嵌入维度
+# 创建嵌入层
+embedding = nn.Embedding(vocab_size, embedding_dim)
+# 创建输入张量（词索引）
+input_tensor = torch.LongTensor([1, 3, 5, 7, 8, 12, 3])
+# 获取嵌入结果
+embedded = embedding(input_tensor)
+print("Input shape:", input_tensor.shape) # torch.Size([7])
+print("Embedded shape:", embedded.shape)  # torch.Size([7, 5])
+print("Embedding matrix shape:", embedding.weight.shape) # torch.Size([20, 5])
+# 打印嵌入结果
+print("\nEmbedded vectors:")
+print(embedded)
+# tensor([[-0.7115,  1.3720,  1.0951, -0.1077,  0.0682],
+#         [-1.3939, -0.2694, -0.7298, -1.5005,  1.5755],
+#         [-0.5595, -0.5638,  1.5433,  2.0986, -1.2377],
+#         [-0.2058,  1.0504, -0.3790,  0.1947, -1.3308],
+#         [ 0.1186, -0.1589,  0.4095,  0.6911,  0.7207],
+#         [-0.1059,  1.3301,  0.1568, -1.6441, -0.9790],
+#         [-1.3939, -0.2694, -0.7298, -1.5005,  1.5755]],
+#        grad_fn=<EmbeddingBackward0>)
+
+# ------- 可视化 ---------
+plt.figure(figsize=(10, 6))
+for i in range(len(input_tensor)):
+    word_embedding = embedded[i].detach().numpy()
+    plt.plot(range(embedding_dim), word_embedding, marker='o', label=f'Word {input_tensor[i].item()}')
+
+plt.xlabel('Embedding Dimension')
+plt.ylabel('Value')
+plt.title('Word Embeddings Visualization')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+![](https://pic3.zhimg.com/80/v2-31a1427331d70dd378f8b86e0aeebdfa_1440w.webp)
+
+
+
+#### 动态嵌入-可训练
+
+
+nn.Embedding 可学习性
+- nn.Embedding 参数可以变化，参与梯度下降。
+- 更新模型参数也会更新 nn.Embedding 参数， nn.Embedding 参数本身也是模型参数的一部分。
+
+```py
+import torch
+from torch import nn
+ 
+# 创建最大词个数为10，每个词用维度为4表示
+embedding = nn.Embedding(10, 4)
+
+# 将第一个句子填充0，与第二个句子长度对齐
+in_vector = torch.LongTensor([[1, 2, 3, 4, 0, 0], [1, 2, 5, 6, 5, 7]])
+
+# embedding 权重参与梯度下降
+optimizer = torch.optim.SGD(embedding.parameters(), lr=0.01)
+criteria = nn.MSELoss()
+ 
+for i in range(1000):
+    outputs = embedding(torch.LongTensor([1, 2, 3, 4]))
+    loss = criteria(outputs, torch.ones(4, 4))
+    loss.backward()
+    optimizer.step()
+    optimizer.zero_grad()
+ 
+print(embedding.weight)
+new_output = embedding(in_vector)
+print(new_output)
+```
+
 
 ### 向量化方式
 
@@ -151,30 +318,198 @@ print(qa.run(query))
 
 ## 向量化方案
 
+
 可选
-- 单独的embedding服务
-- LLM里的embedding
+- 单独 embedding 服务
+- LLM embedding
+
+注意
+- 语言模型很容易得到文本向量模型，但语言模型并不是为向量训练的，因此 直接pooling 不一定能取得满意效果
+- 使用时需要针对任务微调, 把相似句子向量聚拢更近一些，把不相关的句子向量拉的更远一些。
+
+### 榜单
+
+Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+- 英语: `NV-Embed-v2` > `bge-en-icl` > `stella-en_1.5b_v5` > `SFR-Embedding-2_R` > `gte-Qwen2-7b-instruct`
+- 中文: `Conan-embedding-v1` > `xiaobu-embedding-v2` > `gte-Qwen2-7b-instruct`
+- ![](https://picx.zhimg.com/80/v2-abfd4f5f382c016569924092857c9275_1440w.webp)
+
+
+### 方案选型
+
+一般默认使用 OpenAI 的 Embedding 接口来生成向量。
+
+OpenAI通用型 Embedding 模型适合初学者，但一旦需求开始增加，最明智的选择：
+- a) 使用自己的 Embedding 模型
+- b) 使用不同的开源或闭源模型。
+
+Embedding 模型的选择很大程度上受**任务复杂程度**影响。
+- 简单任务（如情感分析或关键词匹配等）可能适合使用 MTEB 排行榜上任何一个通用模型。
+- 但是，许多情况下需要采用特殊的 Embedding 模型。
+
+示例
+- 只差一个逗号, 意思大不相同
+
+```sh
+"Let's eat, Chris."
+"Let's eat Chris."
+```
+
+大多数通用模型会认为这两个句子在高维 Embedding 空间中位置非常接近。但实际上，这两个句子应处于高维空间的两端，因为这两个句子含义的相似度较低。
+
+许多 Embedding 模型是基于**通用**语言数据训练的，可能无法捕捉**专业词汇或术语**的微妙含义。
+
+针对特定领域数据集训练或微调的模型能够为专业领域内的文本生成更精确的 Embeddings。在医疗诊断、法律文件分析或为特定产品提供技术支持等应用中，特定领域的模型能够更深入地理解相应领域使用的专业语言，显著优于通用模型。
+
+
+### Embedding 训练
+
+
+【2024-9-7】[动手学RAG：文本向量模型](https://zhuanlan.zhihu.com/p/718814303?utm_psn=1816849515245862913)
+
+如何从一个语言模型训练出一个向量模型呢？
+
+几种范式总结：
+- 训练方式: 合理设计的多阶段pipeline仍然能够提升性能
+- 数据，数据大小、质量、多样性很重要: 甚至更长的文本在向量模型中也更受重视。合成数据开始展露头脚
+- 模型: **Decoder-only LLM 微调的向量模型效果越来越好**。大模型也逐步统治向量模型榜单，带来的收益和增加的开销相比如何，咱也不知道，但是这些参数中蕴含的知识确实让人印象深刻
+- `对比学习`和**难负样本挖掘**仍然扮演关键角色。
+- 多任务: 用不同任务不同来源的数据进行训练，一个batch内如何组织数据也有优化空间。
+  - instruction-based fine-tuning 可以在训练时帮助模型拿到任务上的线索
+
+#### open-retrievals
+
+[Open-Retrievals](https://github.com/LongxingTan/open-retrievals/tree/master) 是一个统一文本向量、检索、重排的工具，使信息检索、RAG等更加便捷
+- 全套**向量微调**，对比学习、大模型、point-wise、pairwise、listwise
+- 全套**重排微调**，cross encoder、ColBERT、LLM
+- 定制化、模块化RAG，支持在Transformers、Langchain、LlamaIndex中便捷使用微调后的模型
+
+[文档](https://github.com/LongxingTan/open-retrievals/blob/master/README_zh-CN.md)
+
+[All-in-One: Text Embedding, Retrieval, Reranking and RAG](https://github.com/LongxingTan/open-retrievals)
+
+```sh
+pip install open-retrievals
+```
+
+
+#### (1) BGE模型
+
+- 普通文本语料进行 RetroMAE 预训练
+- 大量文本对进行 batch内 负样本`对比学习`
+- 高质量文本进行困难负样本+batch内负样本根据任务对比学习微调
+
+![](https://pic1.zhimg.com/80/v2-1b36b036f88e40036e622d1bfa612354_1440w.webp)
+
+#### (2) GTE模型
+
+- 大量文本对进行 batch内 负样本`对比学习`
+- 高质量文本进行**困难负样本学习**
+
+![](https://pica.zhimg.com/80/v2-c50cca4e401227fcee012ca2e7eef680_1440w.webp)
+
+#### (3) E5-mistral模型
+
+合成大量不同任务, 不同语言的检索数据，困难负样本与batch内**负样本对比学习**
+
+![](https://pic1.zhimg.com/80/v2-39549284110e4d7c420189a65bbe499c_1440w.webp)
+
+
+#### (4) nv-embed模型
+
+- 高质量检索数据进行困难负样本加batch内**负样本对比学习**
+- 继续根据非检索数据，如一些分类等其他任务数据进行微调
+
+![](https://pic4.zhimg.com/80/v2-a9bd2e136f19c721abb0b14f61e59c61_1440w.webp)
+
+无论是transformer encoder还是decoder模型，都可以从以下统一结构中衍生而来，只不过有些步骤可以省略。
+- 语言模型继续预训练
+- 大量文本对的in-batch对比学习
+- 高质量文本对的**困难负样本对比学习**
+- 多任务进一步微调
+
+![](https://pica.zhimg.com/80/v2-51501376cf7a9ec5eaee7d99b26b0b66_1440w.webp)
+
 
 
 ### Embedding 评测
 
+衡量 word embedding 好坏，没有完美方案。
+
+【2024-8-30】[CTR 预测理论（八）：Embedding 质量评估方法总结](https://blog.csdn.net/Dby_freedom/article/details/88820726)
+
+实际上，评价其质量最好的方式: 以word embedding对于具体任务的实际收益（上线效果）为评价标准
+
+评估方法主要分为 `word2vec` 和 `item2vec` 两个部分
+- 前者有较多的比较成熟的度量方案
+- 后者则基本上没有统一认可的方案。
+
+
+【2024-9-5】[如何评估 Embedding 模型](https://mp.weixin.qq.com/s/ACql-ExAAlP9CTgDID_MYw)
+
+评估文本 Embedding 模型的两种主流方法。
+- `Arize-Phoenix`
+  - Arize AI 的 Phoenix 库个非常实用的多功能工具，评估 LLM 和 Embedding 模型。Phoenix 提供了一种简单且灵活的方法来记录和查看高维 Embeddings，帮助用户了解模型可能出错的地方。
+  - 可视化展示空间距离
+- `Ragas`
+  - 虽然 LlamaIndex 或 Haystack 等现有工具支持构建 RAG（检索增强生成）Pipeline，但如何测试性能是非常棘手。
+  - Ragas 能轻松完成这项任务。Ragas（检索增强生成评估）是一个开源库，提供评估 LLM 生成文本的工具，帮助了解 RAG Pipeline 的性能。
+  - 此外，Ragas 还与 CI/CD 流程集成，允许定期检查性能，从而维持并提升 RAG 生成的质量。
+
+
+#### word2vec
+
+1. **Relatedness**
+  - Relatedness: task(相似度评价指标，看看空间距离近的词，跟人的直觉是否一致)目前大部分工作都是依赖wordsim353等词汇相似性数据集进行相关性度量，并以之作为评价word embedding质量的标准。这种评价方式对数据集的大小、领域等属性很敏感。
+  - [wordsim353 相关内容](http://alfonseca.org/eng/research/wordsim353.html)
+2. **Analogy**
+  - Analogy: task也就是著名 A - B = C - D 词汇类比任务（所谓的 analogy task，如 king – queen = man – woman）
+3. **Categorization**
+  - Categorization分类 看词在每个分类中的概率
+  - 文本也可采用 document classification task：一种通过使用词向量来计算文本向量（可以被用来进行文本分类的工作）的方法，为了得到文本向量，task通常采用了一种很简单的方法:取文本中所有词的
+4. **聚类算法**（可视化）
+  - 例如 kmeans 聚类，查看聚类分布效果 。若向量维度偏高，则对向量进行降维，并可视化。如使用pca，t-sne等降维可视化方法，包括google的tensorboard（http://projector.tensorflow.org/），python的matplotlib等工具，从而得到词向量分布。
+
+#### Item2vec
+
+Item2vec 应用到推荐场景中，把 item 视为 word，将用户行为序列视为一个集合，item 间的共现为正样本，并按照item的频率分布进行负样本采样。
+- 关于 Item2Vec 请参考论文：[Item2Vec: Neural Item Embedding for Collaborative Filtering](https://arxiv.org/vc/arxiv/papers/1603/1603.04259v2.pdf)
+
+目前绝大部分资料针对 word2vec，很多方案（上述方法 1, 2, 3）并不能迁移到 item2vec。
+- 比如第 1 个方案，对于 word2vec，目前存在 wordsim353 作为评价 word embedding 质量的标准，但是 item2vec 并没有此类标准。
+- 而对于2, 3来说，用户行为序列并不太容易用来 Analogy 和 Categorization。
+
+解决方式如下：
+- 从item2vec得到的词向量中随机抽出一部分进行人工判别可靠性。即人工判断各维度item与标签item的相关程度，判断是否合理，序列是否相关。
+- 然后word2vec的方法4,5可以借鉴，对item2vec得到的词向量进行聚类或者可视化，查看其聚类效果如何。这样就从局部（抽样人工筛查）和整体（聚类效果）两方面进行了评估，虽然不够准确，但是也算是一种思路。
+
+事实上，这种方式相对更容易操作一些，例如，对于用户商品 ID 特征，是否训练之后对应的 embedding 可以聚类到一起（可通过 TensorBoard 的 t-sne 进行可视化展现），从可视化结果中应该可以得到一个较好的展现。
+
+还有一种方案，就是用大量数据训练出一个相对新的类似于 wordsim353 标准的 item 类型的标准，之后进行相似度度量。但是实现难度主要在训练数据的质量和时效性方面，对于商品类还好，但对于新闻类这种更新率极快的 item 类型，时效性是很大问题。
+
+当然，也可通过观察实际效果来定，也可采用替换 embedding 对应值为初试值来看预测效果是否有显著下降；
+
+
+#### 评测实践
+
 【2023-12-14】评测结论
 
 Embedding向量化实验
-- Top 1召回 Accracy: `Ada v2`(84%) > `BGE`(81%) > `M3E`(?) > `AngIE`(67%)
+- top1 召回 Accracy: `Ada v2`(84%) > `BGE`(81%) > `M3E`(78%) > `AngIE`(67%)
+- top3 bge，m3e和ada002比差距不大了
+- top5 基本就持平
 
 | model | top1 | top3 | top5 | top10 | 维度 | 语言 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Openai AdaEmbedding V2 | 0.8415 | 0.9471 | 0.9660 | 0.9849 | 1536 | 中文 |
-| m3e | 0.7811 | 0.9132 | 0.9472 | 0.9811 | 768 | 中文 |
-| bge | 0.8113| 0.9358| 0.9660| 0.9849| 768| 中文 |
-| angle | 0.6716 | 0.8604 | 0.9056 | 0.9283 | 768 | 中文 |
+| Openai AdaEmbedding V2 | 0.8415 | 0.9471 | 0.9660 | 0.9849 | **1536** | 中文 |
+| `m3e` | 0.7811 | 0.9132 | 0.9472 | 0.9811 | 768 | 中文 |
+| `bge` | 0.8113| 0.9358| 0.9660| 0.9849| 768| 中文 |
+| `angle` | 0.6716 | 0.8604 | 0.9056 | 0.9283 | 768 | 中文 |
 
-纬度不同，这个比较对m3e和bge和angle不太公平
+注意
+- embedding 纬度不同，对 m3e/bge/angle 不公平
 
-top3的bge，m3e和ada002比差距不大了，top5基本就持平
-
-Embedding榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
 
 ### LLM Embedding
 
@@ -914,8 +1249,57 @@ embeddings = last_token_pool(outputs.last_hidden_state, batch_dict['attention_ma
 embeddings = F.normalize(embeddings, p=2, dim=1)
 scores = (embeddings[:2] @ embeddings[2:].T) * 100
 print(scores.tolist())
-
 ```
+
+### Conan-Embedding - sota
+
+【2024-9-30】[通过负样本挖掘炼出更强Embedding模型](https://mp.weixin.qq.com/s/z0jgPnvaPO6RTzgFzB8TFQ)
+
+【2024-8-29】 北大推出 Conan-Embedding 模型，利用更多和更高质量的**负样本**来提升嵌入模型的能力。
+- 论文原文：[Conan-embedding: General Text Embedding with More and Better Negative Samples](https://arxiv.org/pdf/2408.15710)
+
+起因
+- embedding 效果对 RAG 效果至关重要
+- 当前embedding优化主要通过`对比学习`来改进, 即 在预处理阶段, 挖掘使用**硬负样本**
+
+思路
+- 训练过程中, 动态挖掘负样本, 充分利用负样本
+- 跨GPU平衡损失
+
+预训练阶段:
+- 标准数据过滤方法（参考Internlm2）对数据进行预处理。
+- bge-large-zh-v1.5 模型进行评分，丢弃评分低于 0.4 的数据。
+- InfoNCE 损失函数 和 In-Batch Negative 方法进行训练
+
+监督微调阶段:
+- 将任务分为**检索**和**语义文本相似性**（STS）两类。
+- **检索**任务使用 InfoNCE 损失函数
+- **STS**任务使用CoSENT损失函数
+
+要点
+- (1) 动态**硬负样本**挖掘:
+  - 记录每个数据点的当前平均负样本得分。
+  - 每100次迭代后，如果得分乘以1.15小于初始得分且绝对值小于0.8，则认为该负样本不再具有挑战性，并进行新一轮的硬负样本挖掘。
+- (2) **跨GPU平衡损失**:
+  - 在每个 前向-损失-反向-更新 周期内，以平衡方式引入每个任务，以获得稳定的搜索空间并最小化单次模型更新方向与全局最优解之间的差异。
+  - 对于检索任务，确保每个GPU有不同的负样本，同时共享相同的查询和正样本；
+  - 对于STS任务，增加批次大小以包含更多案例进行比较
+
+
+数据集:
+- 预训练阶段，收集了0.75亿对文本数据，分为标题-内容对、输入-输出对和问答对等类别。
+- 微调阶段，选择了常见的检索、分类和STS任务的数据集。
+
+实现细节:
+- 使用BERT作为基础模型，并通过线性层将维度从1024扩展到1792。
+- 使用AdamW优化器和学习率1e-5进行预训练，批量大小为8，使用64个Ascend 910B GPU进行训练，总时长为138小时。
+- 微调阶段使用相同的优化器参数和学习率，批量大小为4（检索任务）和32（STS任务），使用16个Ascend 910B GPU进行训练，总时长为13小时。
+
+结果与分析
+
+CMTEB结果:
+- Conan-Embedding 模型在CMTEB基准测试中的平均性能为**72.62**，超过了之前的最先进模型。
+- 在检索和重排序任务中，Conan-Embedding 模型表现出显著的性能提升，表明增加的负样本数量和质量使模型能够看到更具挑战性的负样本，从而增强了其召回能力。
 
 
 ## 向量评估

@@ -7,6 +7,7 @@ tags: 机器学习 联邦学习 同态加密 群体学习 tensorflow
 excerpt: 如何保护用户隐私的同时也能充分利用各类数据？
 author: 鹤啸九天
 mathjax: true
+permalink: /faderation
 ---
 
 * content

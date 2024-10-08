@@ -7,6 +7,7 @@ categories: 深度学习
 excerpt: 元学习介绍
 author: Lily
 mathjax: true
+permalink: /meta_learning
 ---
 
 

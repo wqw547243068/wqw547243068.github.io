@@ -6,6 +6,7 @@ categories: 自然科学
 tags: 爱因斯坦 相对论 经典力学 物理 光 三体
 excerpt: 爱因斯坦相对论发现过程
 mathjax: true
+permalink: /relativity
 ---
 
 * content

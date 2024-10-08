@@ -8,6 +8,7 @@ categories: 深度学习
 excerpt: NAS详解
 author: lil-log
 mathjax: true
+permalink: /nas
 ---
 
 * content

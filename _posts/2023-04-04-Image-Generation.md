@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散 
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -64,7 +64,7 @@ permalink: /image-generation
 感受野和定位精度不可兼得，当感受野选取比较大的时候，后面对应的 pooling 层的降维倍数就会增大，这样就会导致定位精度降低，但是如果感受野比较小，那么分类精度就会降低。      
 
 |维度|GAN|VAE|Diffusion Model(扩散模型)|AR(自回归)||
-|---|---|---|---|---|---|
+|--------|---|---|---|---|---|
 |生成质量|中(多样性不足)|中|高|高||
 |生成速度|快|快|中|中/慢|AR受模型规模和推理资源限制|
 |算力成本<br>训练/推理|低|低|中|高||
@@ -200,516 +200,13 @@ GAN是生成式模型中应用最广泛的技术，在图像、视频、语音�
 
 ## 扩散模型
 
-扩散模型
-- ![](https://pic1.zhimg.com/80/v2-ee822b476d8c4c54667b8ee59b036828_1440w.webp)
+详见站内专题：[扩散模型](ddpm)
 
-标准的**扩散模型**分为两个主要过程：`正向过程`（扩散）和`反向过程`（去噪、还原和生成目标）。
-- 正向扩散阶段，逐渐引入噪声，直到图像变成完全随机的噪声。
-- 再通过反向过程，使用一系列的`马尔科夫链`进行去噪，得到最终清晰的图像数据。
-- ![](https://pica.zhimg.com/80/v2-09911fadad0b4ab0f787444db62c2bbe_1440w.webp?source=1940ef5c)
-
-新出现的`扩散模型`（Denoising Diffusion Probabilistic Model，`DDPM`），整体原理上与 `VAE` 更加接近。
-- X0 是输入样本，如一张原始图片，通过 T 步**前向过程**（Forward process）采样变换，最后生成了噪声图像 XT ，理解为隐变量 z。这个过程通过马尔科夫链实现。
-
-随机过程中一个定理
-- 符合马尔科夫链状态转移的模型，当状态转移到一定次数时，模型状态最终收敛于一个**平稳分布**。
-- 等效于溶质在溶液中溶解的过程，随着溶解过程的进行，**溶质**（噪声）最终会整体分布到**溶液**（样本）中。类似 VAE 中的 encoder。而**逆向过程**（Reverse process）可以理解为 decoder。通过 T 步来还原到原始样本。
-
-### 什么是扩散模型
-
-扩散模型灵感来自**非平衡热力学**。通过定义了一个扩散步骤的`马尔可夫链`，以缓慢地将随机噪声添加到数据中，然后学习反转扩散过程以从噪声中构建所需的数据样本。
-- 发布DALL·E的15个月后，OpenAI在今年春天带了续作DALL·E 2，以其更加惊艳的效果和丰富的可玩性迅速占领了各大AI社区的头条。近年来，随着生成对抗网络（GAN）、变分自编码器（VAE）、扩散模型（Diffusion models）的出现，深度学习已向世人展现其强大的图像生成能力；加上GPT-3、BERT等NLP模型的成功，人类正逐步打破文本和图像的信息界限。
-- DALL·E 2中，只需输入简单的文本（prompt），它就可以生成多张1024*1024的高清图像。这些图像甚至可以将不合常理的语义表示，以超现实主义的形式创造出天马行空的视觉效果，例如图1中“写实风格的骑马的宇航员（An astronaut riding a horse in a photorealistic style）”。
-
-【2022-8-31】苏剑林的[生成扩散模型漫谈](https://kexue.fm/archives/9119)
-- 生成模型中，VAE、GAN“如雷贯耳”，还有一些比较小众的选择，如flow模型、VQ-VAE等，颇有人气，尤其是VQ-VAE及其变体VQ-GAN，近期已经逐渐发展到“图像的Tokenizer”的地位，用来直接调用NLP的各种预训练方法。
-- 除此之外，还有一个本来更小众的选择——`扩散模型`（Diffusion Models）——正在生成模型领域“异军突起”，当前最先进的两个文本生成图像—— OpenAI 的 `DALL·E 2` 和 Google的`Imagen`，都是基于`扩散模型`来完成的。
-
-生成扩散模型的大火，始于2020年所提出的[DDPM](https://arxiv.org/abs/2006.11239)（Denoising Diffusion Probabilistic Model），虽然也用了“**扩散模型**”这个名字，但事实上除了采样过程的形式有一定的相似之外，DDPM与传统基于`朗之万`方程采样的扩散模型完全不一样，一个新的起点、新的篇章。
-
-【2024-2-13】[深入理解3D扩散模型](https://www.toutiao.com/article/7326786220804047396)
-
-扩散过程具有向图像添加噪声的正向过程和从图像中去除噪声的反向过程。
-- `噪声图像` = a ⋅ `噪声较小的图像` + b ⋅ `噪声`
-- `噪声较小的图像` = (`噪声图像` - b⋅ `噪声`)/a
-- ab是常数, 所有 `图像`=（`噪声图像` - b'·`噪声`）/a'
-
-主要步骤
-- 从纯噪声开始作为噪声图像
-- 使用模型预测噪声，将图像推向噪声较少的图像
-- 进行上述计算以获得噪声较少的图像
-
-### 扩散模型概览
-
-【2023-4-5】扩散模型(Diffusion Model)首篇[综述](https://zhuanlan.zhihu.com/p/562389931) 
-- [Diffusion Models: A Comprehensive Survey of Methods and Applications](https://arxiv.org/abs/2209.00796)
-- 加州大学&Google Research的Ming-Hsuan Yang、斯坦福大学（OpenAI）的Yang Song（Score SDE一作）、北京大学崔斌实验室以及CMU、UCLA、蒙特利尔Mila研究院等众研究团队，首次对现有的扩散生成模型（diffusion model）进行了全面的总结分析，从diffusion model算法细化分类、和其他五大生成模型的关联以及在七大领域中的应用等方面展开，最后提出了diffusion model的现有limitation和未来的发展方向。
-
-扩散模型（diffusion models）是深度生成模型中新的SOTA。其他的五种生成模型GAN，VAE，Autoregressive model, Normalizing flow, Energy-based model。
-- 扩散模型在图片生成任务中超越了原SOTA：GAN，并且在诸多应用领域都有出色的表现，如计算机视觉，NLP、波形信号处理、多模态建模、分子图建模、时间序列建模、对抗性净化等。此外，扩散模型与其他研究领域有着密切的联系，如稳健学习、表示学习、强化学习。然而，原始的扩散模型也有缺点，它的采样速度慢，通常需要数千个评估步骤才能抽取一个样本；它的最大似然估计无法和基于似然的模型相比；它泛化到各种数据类型的能力较差。如今很多研究已经从实际应用的角度解决上述限制做出了许多努力，或从理论角度对模型能力进行了分析。
-- ![](https://pic1.zhimg.com/80/v2-3ce40580db330cd3d35fb4db24aa2438_1440w.webp)
-
-【2024-5-27】 MIT 助理教授 Song Han 的 100多页 [DDPM 介绍 ppt](https://www.dropbox.com/scl/fi/q8y9ap7mlucmiimyh3zl5/lec16.pdf)
-
-<object type="application/pdf" data="https://www.dropbox.com/scl/fi/q8y9ap7mlucmiimyh3zl5/lec16.pdf"
-           id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
-</object>
-
-
-#### 语言模型也可以
-
-【2023-10-13】[资讯](https://www.toutiao.com/article/7288583411143459363), 图像、视频生成上，语言模型首次击败扩散模型，tokenizer是关键
-
-大型语言模型（LLM 或 LM）一开始是用来生成**语言**的，但随着时间的推移，已经能够生成多种模态的内容，并在音频、语音、代码生成、医疗应用、机器人学等领域开始占据主导地位。
-
-当然，LM 也能生成**图像**和**视频**。
-- 图像像素会被视觉 tokenizer 映射为一系列**离散 token**。
-- 这些 token 被送入 LM transformer，就像词汇一样被用于生成建模。
-
-尽管 LM 在视觉生成方面取得了显著进步，但 LM 的表现仍然不如扩散模型。
-- 例如，在图像生成的金标基准 — ImageNet 数据集上进行评估时，最佳语言模型的表现比扩散模型差了 48% 之多（以 256ˆ256 分辨率生成图像时，FID 为 3.41 对 1.79）。
-
-为什么语言模型在视觉生成方面落后于扩散模型？
-- 谷歌、CMU 的研究表明： tokenizer 是关键。缺乏一个良好的视觉表示，类似于我们的自然语言系统，以有效地建模视觉世界。
-- 论文链接：[paper](https://arxiv.org/pdf/2310.05737.pdf)
-
-在相同的训练数据、可比模型大小和训练预算条件下，利用良好的视觉 tokenizer，掩码语言模型在图像和视频基准的生成保真度和效率方面都超过了 SOTA 扩散模型。这是语言模型在标志性的 ImageNet 基准上击败扩散模型的首个证据。
-
-目的不是断言语言模型是否优于其他模型，而是促进 LLM 视觉 tokenization 方法的探索。
-- LLM 与其他模型（如扩散模型）的根本区别在于，LLM 使用**离散**的潜在格式，即从可视化 tokenizer 获得的 token。
-
-这项研究表明，这些离散的视觉 token 的价值不应该被忽视，因为存在以下优势：
-- 1、**与 LLM 的兼容性**。token 表示的主要优点是与语言 token **共享**相同的形式，可直接利用社区多年来为开发 LLM 所做的优化，包括更快的训练和推理速度、模型基础设施的进步、扩展模型的方法以及 GPU/TPU 优化等创新。通过相同的 token 空间统一视觉和语言可以为真正的多模态 LLM 奠定基础，后者可以在我们的视觉环境中理解、生成和推理。
-- 2、**压缩表示**。离散 token 可以为视频压缩提供一个新视角。可视化 token 可以作为一种新的视频压缩格式，以减少数据在互联网传输过程中占用的磁盘存储和带宽。与压缩的 RGB 像素不同，这些 token 可以直接输入生成模型，绕过传统的解压缩和潜在编码步骤。这可以加快生成视频应用的处理速度，在边缘计算情况下尤其有益。
-- 3、**视觉理解优势**。研究表明，离散 token 在自监督表示学习中作为预训练目标是有价值的，如 BEiT 和 BEVT 中所讨论的那样。此外，研究发现，使用 token 作为模型输入提高了鲁棒性和泛化性。
-
-研究者提出了一个名为 `MAGVIT-v2` 的视频 tokenizer，旨在将视频（和图像）映射为紧凑的离散 token。
-
-该模型建立在 VQ-VAE 框架内的 SOTA 视频 tokenizer——MAGVIT 基础上。基于此，研究者提出了两种新技术：
-- 1）一种新颖的无查找（lookup-free）量化方法，使得大量词汇的学习成为可能，以提高语言模型的生成质量；
-- 2）通过广泛的实证分析，他们确定了对 MAGVIT 的修改方案，不仅提高了生成质量，而且还允许使用共享词汇表对图像和视频进行 token 化。
-
-实验结果表明，新模型在三个关键领域优于先前表现最好的视频 tokenizer——MAGVIT。
-- 首先，新模型显著提高了 MAGVIT 的生成质量，在常见的图像和视频基准上刷新了 SOTA。
-- 其次，用户研究表明，其压缩质量超过了 MAGVIT 和当前的视频压缩标准 HEVC。
-- 此外，它与下一代视频编解码器 VVC 相当。
-- 最后，研究者表明，与 MAGVIT 相比，他们的新 token 在两个设置和三个数据集的视频理解任务中表现更强。
-
-#### 论文
-
-- 【2022-9-20】[扩散模型大全](https://github.com/heejkoo/Awesome-Diffusion-Models)
-- hugginface的扩散模型包：[diffusers](https://github.com/huggingface/diffusers/tree/main/examples)，[colab笔记](https://colab.research.google.com/github/huggingface/notebooks/blob/main/diffusers/diffusers_intro.ipynb#scrollTo=13NnZ4rVioLs), demo: [stable-diffusion](https://huggingface.co/spaces/stabilityai/stable-diffusion)
-
-经典论文
-- 《Deep Unsupervised Learning using Nonequilibrium Thermodynamics》 2015年 扩散模型起源
-- 《Denoising Diffusion Probabilistic Models》 2020年 扩散模型兴起, 对应[pytorch实现](https://github.com/lucidrains/denoising-diffusion-pytorch)
-- 《Improved Denoising Diffusion Probabilistic Models》 2021年 第二篇论文的改进, 对应[pytorch实现](https://github.com/openai/improved-diffusion)
-
-技术文章
-- [The recent rise of diffusion-based models](https://maciejdomagala.github.io/generative_models/2022/06/06/The-recent-rise-of-diffusion-based-models.html) 可以了解到扩散模型近年比较经典的应用
-- [Introduction to Diffusion Models for Machine Learning](https://www.assemblyai.com/blog/diffusion-models-for-machine-learning-introduction/) 从中可以了解到一个实现扩散模型的库denoising_diffusion_pytorch，博客中有使用案例
-- [What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/) 也是扩散模型的一个理论介绍博客，推导挺详细的
-- [Diffusion Models as a kind of VAE](https://angusturner.github.io/generative_models/2021/06/29/diffusion-probabilistic-models-I.html) 探究了VAE和扩散模型的联系
-- [The Annotated Diffusion Model](https://huggingface.co/blog/annotated-diffusion) 扩散模型理论和代码实现，代码我进行理解加了注释与理论对应，方便大家理解
-- [An introduction to Diffusion Probabilistic Models](https://ayandas.me/blog-tut/2021/12/04/diffusion-prob-models.html) 也是一个介绍性博客，公式也很工整
-
-[扩散模型原理和pytorch代码实现初学资料汇总](https://blog.csdn.net/qq_44941689/article/details/126513283)
-
-#### 模型
-
-模型下载
-- [novelAI](https://huggingface.co/acheong08/secretAI/resolve/main/stableckpt/animefull-final-pruned/model.ckpt
-stable_diffusion)
-- [waifu_diffusion](https://huggingface.co/hakurei/waifu-diffusion-v1-3/resolve/main/wd-v1-3-float32.ckpt)
-- [sd-v1-5](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt)
-- [sd-v1-5](https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt)
-
-SD模型的主体结构如下图所示，主要包括三个模型：
-- `autoencoder`：encoder将图像压缩到latent空间，而decoder将latent解码为图像；
-- `CLIP text encoder`：提取输入text的text embeddings，通过cross attention方式送入扩散模型的UNet中作为condition；
-  - SD采用CLIP text encoder来对输入text提取text embeddings，具体的是采用目前OpenAI所开源的最大CLIP模型：clip-vit-large-patch14，这个CLIP的text encoder是一个transformer模型（只有encoder模块）：层数为12，特征维度为768，模型参数大小是123M。
-- `UNet`：扩散模型的主体，用来实现文本引导下的latent生成。
-  - SD的扩散模型是一个860M的UNet
-  - encoder部分包括3个CrossAttnDownBlock2D模块和1个DownBlock2D模块，而decoder部分包括1个UpBlock2D模块和3个CrossAttnUpBlock2D模块，中间还有一个UNetMidBlock2DCrossAttn模块。
-  - encoder和decoder两个部分是完全对应的，中间存在skip connection。
-  - 注意3个CrossAttnDownBlock2D模块最后均有一个2x的downsample操作，而DownBlock2D模块是不包含下采样的。
-
-模型结构
-- ![](https://pic1.zhimg.com/80/v2-fddf45ed17a509336d1550833a257684_1440w.webp?source=1940ef5c)
-
-对于SD模型
-- 其autoencoder模型参数大小为84M
-- CLIP text encoder模型大小为123M
-- 而UNet参数大小为860M
-
-所以SD模型的总参数量约为1B。[详见](https://www.zhihu.com/question/577079491/answer/3032168255?utm_campaign=shareopn&utm_medium=social&utm_oi=27211553832960&utm_psn=1649776451506360320&utm_source=wechat_session)
-
-
-### 扩散模型原理
-
-扩散模型（Diffusion models）定义了正向和逆向两个过程，正向过程或称扩散过程是从真实数据分布采样，逐步向样本添加高斯噪声，生成噪声样本序列，加噪过程可用方差参数控制，当时，可近似等同于一个高斯分布。
-- ![](https://pic4.zhimg.com/80/v2-32e400aab292cd75d7167368746fffcf_1440w.webp)
-
-标准的`扩散模型`（diffusion models）涉及到**图像变换**（添加高斯噪声）和**图像反转**。但是扩散模型的生成并不强烈依赖于图像降解的选择。通过实验证明了基于完全确定性的降解（例如模糊、masking 等），也可以轻松训练一个扩散生成模型。
-- [项目地址](https://github.com/arpitbansal297/cold-diffusion-models)
-- [论文地址](https://arxiv.org/abs/2208.09392)
-这个工作成功地质疑了社区对扩散模型的理解：它并非依赖于**梯度郎之万动力学**（gradient Langevin dynamics）或**变分推理**（variational inference）。
-
-准确来说，`DDPM`叫“**渐变模型**”更为准确一些，扩散模型这一名字反而容易造成理解上的误解，传统扩散模型的**能量模型**、**得分匹配**、`朗之万`方程等概念，其实跟DDPM及其后续变体都没什么关系。
-- DDPM的数学框架其实在ICML2015的论文《Deep Unsupervised Learning using Nonequilibrium Thermodynamics》就已经完成了，但DDPM是首次将它在高分辨率图像生成上调试出来了，从而引导出了后面的火热。由此可见，一个模型的诞生和流行，往往还需要时间和机遇
-
-#### 图解 Stable Diffusion
-
-【2023-4-10】[图解Stable Diffusion](https://zhuanlan.zhihu.com/p/617713156)
-- jalammar的[illustrated-stable-diffusion](https://jalammar.github.io/illustrated-stable-diffusion/)
-
-Stable Diffusion的发布是AI 绘画领域的一个里程碑事件。它的出现使得普通人也能使用高性能的图像生成模型。
-- 生成的图像效果极佳，速度还很快，对硬件资源的要求相对较低。
-
-Stable Diffusion 用法
-- 文本生成图像 text2image
-- ![](https://pic3.zhimg.com/80/v2-ac5018aeb9b47d5083a2f51d72456f2e_1440w.webp)
-- 修改图像（此时输入为文本+图像）
-- ![](https://pic4.zhimg.com/80/v2-666a51f167fc14d37e0afa77b24dba03_1440w.webp)
-
-Stable Diffusion 是一个由多个**组件**和**模型**组成的系统， 而非一个整体的模型。
-- ![](https://pic2.zhimg.com/80/v2-fe7093a950de6c95c0317575c61c1cf5_1440w.webp)
-- `文本理解`（text-understanding）组件: 捕捉文本中的意图，将文本信息转换为模型能够理解的数值表示。
-  - 文本编码器是一种特殊的 Transformer 语言模型（CLIP 模型的文本编码器）。 获取输入文本并输出代表文本中每个单词/token 的数值表示（每个 token 由一个向量表示）
-- `图像生成器`（Image Generator），也由多个组件组成。由以下两个阶段组成：
-  - `图像信息生成器`（Image Information Creator）: Stable Diffusion 成功的秘诀，是性能和效率高于之前工作的原因。运行多步来生成图像信息。步数就是 Stable Diffusion 界面或库中的steps 参数，通常设为 50 或 100。图像信息生成器完全在图像信息空间（或者称为潜层空间 latent space）中进行工作. “扩散（diffusion）”描述的就是该组件的行为。该组件通过一步一步地对信息进行处理，从而得到最终的高质量图像（由接下来的图像解码器组件生成）。
-  - `图像解码器`（Image Decoder）: 根据图像信息生成器生成的信息画出图像。不同于多步运行的信息生成器，图像解码器仅运行一次，来生成最终的像素级图像。
-  - ![](https://pic3.zhimg.com/80/v2-52cbfea8baaf0385e1973b8baf15ccc2_1440w.webp)
-
-Stable Diffusion 的三个主要组件，各自由不同的神经网络组成：
-- ClipText 用于文本编码
-  - 输入：文本
-  - 输出：77 个 token 嵌入向量，每个向量 768 维
-- UNet + Scheduler 用于在潜层空间中逐步地地处理（或者说扩散）信息
-  - 输入：文本嵌入和一个高维噪声张量
-  - 输出：经过处理得到的信息张量
-- AutoEncoder Decoder 根据信息张量画出图像
-  - 输入：信息张量（维度：(4, 64, 64)）
-  - 输出：图像（维度：(3, 512, 512)）
-- ![](https://pic4.zhimg.com/80/v2-e7224e525a72fdf4ea2bcbe5470a42cb_1440w.webp)
-
-什么是扩散模型？
-
-扩散是发生在粉红色图像信息生成器组件内部的过程。 该组件的输入为用于表示输入文本信息的 token 嵌入，和一个起始的随机噪声图像信息张量，生成一个信息张量，图像解码器使用该信息张量绘制最终图像。
-- ![](https://pic4.zhimg.com/80/v2-ccbbd18c5fc37d3838a14edfc7a6a263_1440w.webp)
-- 这个过程以多步形式进行。每步添加更多的相关信息。为了直观地理解整个过程，将随机潜层张量（latent）传递给视觉解码器，看它是否转换为随机视觉噪声。
-- ![](https://pic2.zhimg.com/80/v2-41cdf8da7fa1c7a5b708459628403f7d_1440w.webp)
-- 扩散过程有多步，每步操作一个输入潜层张量，并生成一个新的潜层张量。新的张量更好地集成了输入文本和视觉信息，其中视觉信息来自模型训练集中的图像。
-- ![](https://pic2.zhimg.com/80/v2-475a085b3b302d3e674195e90479ce01_1440w.webp)
-- ![](https://pic2.zhimg.com/80/v2-e3cae41c28f1f0dd34f30bd9ef9cb4fd_1440w.webp)
-
-略，详见原文：[illustrated-stable-diffusion](https://jalammar.github.io/illustrated-stable-diffusion/)
-
-#### UNet
-
-UNet 因为网络的整体结构形似字母U而得名。
-- Unet以图像作为入口，通过减少采样来找到该图像的低维表示后再通过增加采样将图像恢复回来。
-- ![](https://pic1.zhimg.com/80/v2-fd8eafb834095ceb7f61c89dcd996748_1440w.webp?source=1940ef5c)
-
-Unet的整体结构包含了4层`编码器`和4层`解码器`。
-- 每层编码器和解码器中,均包含了一个两层的卷积网络
-- Unet的编码器具有4层结构，每层由一个双层卷积网络构成。结果经过一层最大池化提取出关键特征之后传递到下一层。同时通过Skip-Connection将结果传递给对应的解码器。
-- 解码器部分，同时接收了来自下一层网络的输出，与同层编码器池化前的结果，通过拼接后传递到上一层。
-
-
-```py
-class DoubleConv(nn.Module): 
-
-    def __init__(self, in_ch, out_ch, mid_ch=None):
-        super().__init__()
-        if not mid_ch:
-            mid_ch = out_ch
-        self.conv = nn.Sequential(
-            nn.Conv2d(in_ch, mid_ch, kernel_size=3, padding=1),
-            nn.BatchNorm2d(mid_ch),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(mid_ch, out_ch, kernel_size=3, padding=1),
-            nn.BatchNorm2d(out_ch),
-            nn.ReLU(inplace=True)
-        )
-
-    def forward(self, x):
-        x = self.conv(x)
-        return x
-
-class Down(nn.Module): # 编码器
-    """Downscaling with maxpool then double conv"""
-
-    def __init__(self, in_ch, out_ch):
-        super(Down, self).__init__()
-        self.maxpool_conv = nn.Sequential(
-            nn.MaxPool2d(2),  # 先进行maxpool，再进行两层链接
-            DoubleConv(in_ch, out_ch)
-        )
-
-    def forward(self, x):
-        x = self.maxpool_conv(x)
-        return x
-
-class Up(nn.Module): # 解码器
-    """
-    up path
-    conv_transpose => double_conv
-    """
-
-    def __init__(self, in_ch, out_ch, bilinear=True):
-        super(Up, self).__init__()
-        if bilinear:
-            self.up = lambda x: nn.functional.interpolate(x, scale_factor=2, mode='bilinear', align_corners=True)
-            self.conv = DoubleConv(in_ch, out_ch, in_ch // 2)
-        else:
-            self.up = nn.ConvTranspose2d(in_ch, in_ch // 2, kernel_size=2, stride=2)
-            self.conv = DoubleConv(in_ch, out_ch)
-
-    def forward(self, x1, x2): 
-        """
-            conv output shape = (input_shape - Filter_shape + 2 * padding)/stride + 1
-        """
-        x1 = self.up(x1)
-        diffY = x2.size()[2] - x1.size()[2]  # [N,C,H,W],diffY refers to height
-        diffX = x2.size()[3] - x1.size()[3]  # [N,C,H,W],diffX refers to width
-
-        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
-                        diffY // 2, diffY - diffY // 2])
-        x = torch.cat([x2, x1], dim=1)  # 在通道层将skip传递过来的数据与下层传递来的数据进行拼接
-        x = self.conv(x)
-        return x
-```
-
-网络实现
-
-```py
-import torch
-
-import torch.nn as nn
-import torch.nn.functional as F
-from model.components import DoubleConv, InConv, Down, Up, OutConv
-
-
-class Unet(nn.Module):
-
-    def __init__(self, in_ch, out_ch, gpu_ids=None, bilinear=False):  # inch, 图片的通道数，1表示灰度图像，3表示彩色图像
-        super(Unet, self).__init__()
-        if gpu_ids is None:
-            gpu_ids = []
-        self.loss = None
-        self.matrix_iou = None
-        self.pred_y = None
-        self.x = None
-        self.y = None
-
-        self.loss_stack = 0
-        self.matrix_iou_stack = 0
-        self.stack_count = 0
-        self.display_names = ['loss_stack', 'matrix_iou_stack']
-
-        self.gpu_ids = gpu_ids
-        self.device = torch.device('cuda:{}'.format(self.gpu_ids[0])) if torch.cuda.is_available() else torch.device(
-            'cpu')
-
-        self.bilinear = bilinear
-        factor = 2 if bilinear else 1
-
-        self.bce_loss = nn.BCELoss()
-
-        self.inc = (DoubleConv(in_ch, 64))
-        self.down1 = Down(64, 128)
-        self.down2 = Down(128, 256)
-
-        self.down3 = Down(256, 512)
-        self.drop3 = nn.Dropout2d(0.5)
-
-        self.down4 = Down(512, 1024)
-        self.drop4 = nn.Dropout2d(0.5)
-
-        self.up1 = Up(1024, 512 // factor, bilinear)
-        self.up2 = Up(512, 256 // factor, bilinear)
-        self.up3 = Up(256, 128 // factor, bilinear)
-        self.up4 = Up(128, 64 // factor, bilinear)
-
-        self.out = OutConv(64, out_ch)
-
-        self.optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)
-
-    def forward(self):
-        x1 = self.inc(self.x)
-        x2 = self.down1(x1)
-        x3 = self.down2(x2)
-        x4 = self.down3(x3)
-        x4 = self.drop3(x4)
-        x5 = self.down4(x4)
-        x5 = self.drop4(x5)
-
-        # skip connection与采样结果融合
-        x = self.up1(x5, x4)
-        x = self.up2(x, x3)
-        x = self.up3(x, x2)
-        x = self.up4(x, x1)
-        x = self.out(x)
-        self.pred_y = nn.functional.sigmoid(x)
-
-    def set_input(self, x, y):
-        self.x = x.to(self.device)
-        self.y = y.to(self.device)
-        self.to(self.device)
-
-    def optimize_params(self):
-        self.forward()
-        self._bce_iou_loss()
-        _ = self.accu_iou()
-        self.stack_count += 1
-        self.zero_grad()
-        self.loss.backward()
-        self.optimizer.step()
-
-    def accu_iou(self):
-        y_pred = (self.pred_y > 0.5) * 1.0
-        y_true = (self.y > 0.5) * 1.0
-
-        pred_flat = y_pred.view(y_pred.numel())
-        true_flat = y_true.view(y_true.numel())
-
-        intersection = float(torch.sum(pred_flat * true_flat)) + 1e-7
-        denominator = float(torch.sum(pred_flat + true_flat)) - intersection + 2e-7
-
-        self.matrix_iou = intersection / denominator
-        self.matrix_iou_stack += self.matrix_iou
-        return self.matrix_iou
-
-    def _bce_iou_loss(self):
-        y_pred = self.pred_y
-        y_true = self.y
-        pred_flat = y_pred.view(y_pred.numel())
-        true_flat = y_true.view(y_true.numel())
-
-        intersection = torch.sum(pred_flat * true_flat) + 1e-7
-        denominator = torch.sum(pred_flat + true_flat) - intersection + 1e-7
-        iou = torch.div(intersection, denominator)
-        bce_loss = self.bce_loss(pred_flat, true_flat)
-        self.loss = bce_loss - iou + 1
-        self.loss_stack += self.loss
-
-    def get_current_losses(self):
-        errors_ret = {}
-        for name in self.display_names:
-            if isinstance(name, str):
-                errors_ret[name] = float(getattr(self, name)) / self.stack_count
-        self.loss_stack = 0
-        self.matrix_iou_stack = 0
-        self.stack_count = 0
-        return errors_ret
-
-    def eval_iou(self):
-        with torch.no_grad():
-            self.forward()
-            self._bce_iou_loss()
-            _ = self.accu_iou()
-            self.stack_count += 1
-
-```
-
-### 扩散模型+预训练
-
-扩散模型有很多应用版本
-
-#### DALL-E 1
- 
-DALLE-1模型图
-- ![](https://pic4.zhimg.com/80/v2-9c4d153d5e7c38fc29e34c46b7f75003_1440w.webp)
-- 首先, 图像在第一阶段通过 `dVAE`（离散变分自动编码机）训练得到图像的 image tokens。文本 caption 通过文本编码器得到 text tokens。
-- Text tokens 和 image tokens 会一起拼接起来用作 Transformer 的训练。
-  - Transformer 的作用是将 text tokens 回归到 image tokens。
-  - 当完成这样的训练之后，实现了从文本特征到图像特征的对应。
-- 生成阶段，caption 通过编码器得到 text tokens，然后通过 transformer 得到 image tokens，最后 image tokens 在通过第一阶段训练好的 image decoder 部分生成图像。
-  - 因为图像是通过采样生成，这里还使用了 `CLIP` 模型对生成的图像进行排序，选择与文本特征相似度最高的图像作为最终的生成对象。
-
-#### DALL-E 2
-
-DALLE-2模型图
-- ![](https://pic1.zhimg.com/80/v2-fba4b48963c09cb9be65c598df8f2214_1440w.webp)
- 
-DALLE-2 模型结构。
-- text encoder 和 image encoder 就是用 CLIP 中的相应模块。在训练阶段通过训练 prior 模块，将 text tokens 和 image tokens 对应起来。
-- 同时训练 GLIDE 扩散模型，这一步的目的是使得训练后的 GLIDE 模型可以生成保持原始图像特征，而具体内容不同的图像，达到生成图像的多样性。
-- 当生成图像时，模型整体类似在 CLIP 模型中增加了 prior 模块，实现了文本特征到图像特征的对应。然后通过替换 image decoder 为 GLIDE 模型，最终实现了文本到图像的生成。
-
-#### DALL-E 3
-
-【2023-10-07】DALL-E 3 惊艳发布，完全免费！比肩Midjourney的AI绘图工具
-
-DALL·E 3 没有一个单独网址，要在Bing里面使用它
-- 切换代理到其他国家，然后打开[bing](https://www.bing.com/images/create?FORM=GDPCLS), 直接输入中文
-- 每生成一张照片都消耗电力，初始电力是100点, 目前还是免费
-
-
-#### Imagen (未开源)
-
-Imagen模型结构图
-- ![](https://pic4.zhimg.com/80/v2-170fe8538abff5f42bfc9f2964c153cb_1440w.webp)
- 
-Imagen 生成模型还没有公布代码和模型，从论文中的模型结构来看，似乎除了文本编码器之外，是由一个文本-图像扩散模型来实现图像生成和两个超分辨率扩散模型来提升图像质量。
- 
-#### Imagic (未开源)
-
-Imagic原理图
-- ![](https://pic1.zhimg.com/80/v2-75c0c74a820c109767a3755b7ace675c_1440w.webp)
-- 最新的 Imagic 模型，号称可以实现通过文本对图像进行 **PS 级别**的修改内容生成。目前没有公布模型和代码。
-- 从原理图来看，似乎是通过在文本-图像扩散模型的基础上，通过对文本嵌入的改变和优化来实现生成内容的改变。如果把扩散模型替换成简单的 encoder 和 decoder，有点类似于在 VAE 模型上做不同人脸的生成。只不过是扩散模型的生成能力和特征空间要远超过 VAE。
-
-#### Stable diffusion
- 
-Stable diffusion结构图
-- ![](https://pic4.zhimg.com/80/v2-cf9e1315cbb45c4d49e14d275be39bd7_1440w.webp)
-
-`Stable diffusion` 是 `Stability AI` 公司开发并且开源的一个生成模型。
-
-朴素的 DDPM 扩散模型，每一步都在对**图像**作“加噪”、“去噪”操作。而在 Stable diffusion 模型中，可以理解为是对图像进行编码后的 **image tokens** 作加噪去噪。而在去噪（生成）的过程中，加入了文本特征信息用来引导图像生成（图右 Conditioning 部分）。跟 VAE 中的条件 VAE 和 GAN 中的条件 GAN 原理是一样的，通过加入辅助信息，生成需要的图像。
-
-
-
-### 扩散模型不足
-
-原始扩散模型的三个主要缺点，采样速度慢，最大化似然差、数据泛化能力弱，并提出将的diffusion models改进研究分为对应的三类：采样速度提升、最大似然增强和数据泛化增强。我们首先说明改善的动机，再根据方法的特性将每个改进方向的研究进一步细化分类，从而清楚的展现方法之间的联系与区别。
-- ![](https://pic3.zhimg.com/80/v2-fdd70cb55e77a157ba600b4329aa3796_1440w.webp)
-
-未来研究方向
-- A. 重审假设。需要重新审视和分析扩散模型中的许多典型假设。例如，假设扩散模型的正向过程完全消除了数据中的所有信息并且使其等效于先前分布可能并不总是成立。实际上，完全删除信息是在有限时间内无法实现，了解何时停止前向噪声处理以在采样效率和采样质量之间取得平衡是非常有意义的。
-- B. diffusion model已经成为一个强大的框架，可以在大多数应用中与生成对抗性网络（GAN）竞争，而无需诉诸对抗性训练。对于特定的任务，我们需要了解为什么以及何时扩散模型会比其他网络更加有效，理解扩散模型和其他生成模型的区别将有助于阐明为什么扩散模型能够产生优秀的样本同时拥有高似然值。另外，系统地确定扩散模型的各种超参数也是很重要的。
-- C. diffusion model如何在隐空间中提供良好的latent representation，以及如何将其用于data manipulation的任务也是值得研究的。
-- D. 将diffusion model和generative foundation model结合，探索更多类似于ChatGPT，GPT-4等有趣的AIGC应用
-
-### 扩散模型 vs 语言模型
-
-【2023-7-1】扩散模型的作图缺点
-
-扩散模型
-- 优势
-  - 控制条件可设置
-  - 模型规模可控
-- 劣势
-  - 语义控制不够精准：以标签为基准，无法识别标签属性关系，因为 CLIP 模型
-  - 缺乏语义逻辑性：第一个人在第二个人的左边 --- 无法识别
-
-语言模型
-- 优势
-  - 理解语言与动作
-  - 更友好的交互方式
-  - 统一的任务框架
-- 劣势
-  - 大量数据资源
-  - 大量计算资源
-  - 缺乏多模态控制
-
-### 可控生成
+## 可控生成
 
 可控生成是人工智能内容生成(AIGC)的最后一道高墙。
 
-#### LC-AIGC 介绍
+### LC-AIGC 介绍
 
 局部可控的图像生成（后续简称LC-AIGC）：[参考](https://zhuanlan.zhihu.com/p/618616522)
 - ![](https://pic4.zhimg.com/80/v2-dab50938ea1f50df02af75f7d0b66313_1440w.webp)
@@ -721,7 +218,7 @@ LC-AIGC 问题
 - 可控性。LC-AIGC虽然能够实现局部可控，但是在图片作为条件信息的情况下控制力度远远不够。总的来说，条件信息提供了前景物体的若干属性。如果条件信息是文本、轮廓、颜色，我们知道了前景物体的某个属性，而其他属性是未知的。LC-AIGC默认已知属性是合理的，然后根据背景信息补充其他未知属性，得到完整的前景物体。
 
 
-#### ControlNet
+### ControlNet
 
 文本生成图像只需要用户输入文本(Prompts)就可以实现图像生成，但是由于扩散模型本身特性（diversity较强），生成的图像往往不受控制，不见得能精准满足用户的需求，如何提升生成的可控性？
 
@@ -748,7 +245,7 @@ LC-AIGC 问题
 | Cartoon Line Drawing | ![](https://pic1.zhimg.com/80/v2-d98b515e5991e6b040bb0eac31130e24_1440w.webp) ||
 
 
-##### 部署
+#### 部署
 
 【2023-4-10】
 - 模型[下载](https://huggingface.co/lllyasviel/ControlNet)
@@ -757,7 +254,7 @@ LC-AIGC 问题
 
 ```
 
-##### ControlNet Tile
+#### ControlNet Tile
 
 【2023-5-9】升级版发布：[ControlNet Tile](https://www.toutiao.com/article/7228100045885915651)，支持：
 1. 放大
@@ -810,7 +307,40 @@ Steps: 25, Sampler: DPM++ SDE Karras,
 CFG scale: 7, Seed: 734068303,Size: 1024x1024
 ```
 
-#### ControlGPT（微软）-- LLM 控制
+
+### 应用：装修
+
+【2023-9-3】装修效果美化
+- 方案：[Using ControlNet models to remodel my living room](https://hutsons-hacks.info/using-controlnet-models-to-remodel-my-living-room#google_vignette)
+- 代码: [controlnet-playground](https://github.com/StatsGary/controlnet-playground)
+
+
+效果
+- ![](https://github.com/StatsGary/controlnet-playground/raw/main/images/livingroom.gif)
+
+|分割图|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-1.png)|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-3.png)|
+|living room with grey carpet and jukebox in the corner |![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-4.png)||
+|线图|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-5.png)|![](https://hutsons-hacks.info/wp-content/uploads/2023/03/image-7.png)|
+
+
+```py
+if __name__=='__main__':
+
+    prompt = 'living room with grey carpet and modern fireplace'
+    img_path = 'images/house.jpeg'
+
+    control_net_seg = ControlNetSegment(
+        prompt=prompt,
+        image_path=img_path)
+    
+    seg_image = control_net_seg.segment_generation(
+        save_segmentation_path='images/house_seg.jpeg',
+        save_gen_path='images/house_seg_gen.jpeg'
+        )
+```
+
+
+### ControlGPT（微软）-- LLM 控制
 
 【2023-6-8】[微软提出Control-GPT：用GPT-4实现可控文本到图像生成](https://zhuanlan.zhihu.com/p/634514203)
 
@@ -845,7 +375,7 @@ ControlNet 是扩散模型的一种变体，它需要额外的输入条件。该
 - 首先 GPT-4 会根据文本描述生成 TikZ 代码形式的草图，并输出图像中物体的位置。然后该研究用 LATEX 编译 TikZ 代码，将草图转换为图像格式，再将编程草图、文本描述和物体位置的 grounding token 提供给经过调优的 ControlNet 模型，最终生成符合条件的图像。
 - ![](https://pic1.zhimg.com/80/v2-5567160b9ba059bf87767768572fd768_1440w.webp)
 
-#### 阿里 Composer
+### 阿里 Composer
 
 【2023-4-5】[阿里提出composer：AI绘画的可控生成](https://mp.weixin.qq.com/s/gBLt1sbPInK5VNa8nO1uaA)
 
@@ -867,16 +397,16 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 
 虽然本文使用上述八种条件进行了实验，但用户可以使用 Composer 自由定制条件。
 
-#### PIXART-δ
+### PIXART-δ
 
 【2024-1-12】[PIXART-δ：具有潜在一致性模型的快速可控图像生成](https://www.toutiao.com/article/7323030365239706127)
 - [PIXART-δ: Fast and Controllable Image Generation with Latent Consistency Models](https://arxiv.org/pdf/2401.05252.pdf)
 
 将Latent Consistency Model (LCM)和ControlNet集成到高级PIXART-α模型中的文本到图像合成框架。PIXART-α因其能够通过非常高效的训练过程生成1024px分辨率的高质量图像而受到认可。将LCM集成到PIXART-δ中，可以显著加速推理速度，使生产高质量图像只需要2-4步。值得注意的是，PIXART-δ在生成1024×1024像素的图像时只需要0.5秒，比PIXART-α快了7倍。此外，PIXART-δ被设计为在32GB V100 GPU上能够进行高效的训练，并在一天内完成。凭借其8位推理能力（来自Von Platen等人，2023），PIXART-δ可以在8GB GPU内存限制下合成1024px的图像，大大提高了其可用性和可访问性。此外，通过结合ControlNet-like模块，可以对文本到图像的扩散模型进行精细控制。我们引入了一种专门为Transformer设计的ControlNet-Transformer架构，实现了明确的可控制性和高质量的图像生成。作为最先进的开源图像生成模型之一，PIXART-δ为Stable Diffusion系列模型提供了一个有前途的替代方案，为文本到图像的合成做出了重大贡献。
 
-#### 图片编辑
+### 图片编辑
 
-##### AnyText
+#### AnyText
 
 【2023-12-15】阿里通义实验室推出AnyText，一种基于**扩散模型**的**多语言视觉文本生成和编辑**模型，能够在图片上生成和编辑任何语言的文字，而且，效果非常逼真和自然。
 
@@ -886,7 +416,7 @@ AnyText 开源了代码和数据集。
 - 论文 [ANYTEXT: MULTILINGUAL VISUAL TEXT GENERATION AND EDITING](https://arxiv.org/pdf/2311.03054.pdf)
 
 
-##### outfit-anyone
+#### outfit-anyone
 
 用户能够在不真实试穿衣物的情况下，尝试不同的时尚款式上传衣服即可试穿。服装电商要好好用上后，让顾客在线体验穿衣搭配
 - [outfit-anyone demo](https://humanaigc.github.io/outfit-anyone/), [github](https://github.com/HumanAIGC/OutfitAnyone)
@@ -894,7 +424,7 @@ AnyText 开源了代码和数据集。
 - ![](https://humanaigc.github.io/outfit-anyone/content/teaser/t3.gif)
 
 
-##### InstantID
+#### InstantID
 
 【2024-1-24】[InstantID](https://github.com/InstantID/InstantID) : Zero-shot Identity-Preserving Generation in Seconds
 - InstantID is a new state-of-the-art tuning-free method to achieve ID-Preserving generation with only single image, supporting various downstream tasks.
@@ -970,7 +500,6 @@ image = pipe(
     controlnet_conditioning_scale=0.8,
     ip_adapter_scale=0.8,
 ).images[0]
-
 ```
 
 
@@ -1167,6 +696,9 @@ Stable Diffusion is a state of the art text-to-image model that generates images
 
 【2023-4-3】[Kaggle Stable Diffusion赛题 高分思路](https://mp.weixin.qq.com/s/LDWa7sR__MFjbj0CTHajcA)
 
+【2024-8-22】[苹果设备上运行Stable Diffusion模型](https://mp.weixin.qq.com/s/kFnpMMtkbA8iB_6xXZqhoQ)
+
+
 #### 介绍
 
 Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的CompVis小组开发，基于潜在扩散模型打造，也是**唯一**一款能部署在家用电脑上的 AI 绘图工具，可以在 6GB 显存显卡或无显卡（只依赖 CPU）下运行，并在几秒钟内生成图像，无需预处理和后处理。
@@ -1185,9 +717,6 @@ Stable Diffusion 是以文本生成图像的 AI 工具，`慕尼黑大学`的Com
 #### SD 生态
 
 
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-12-16T16:49:04.826Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36\&quot; etag=\&quot;8uhsoZI8BoKDRtcq4x_-\&quot; version=\&quot;22.1.11\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1238\&quot; dy=\&quot;789\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;exitX=0.058;exitY=0.992;exitDx=0;exitDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-9\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-16\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-13\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;465.63\&quot; y=\&quot;330\&quot; width=\&quot;144.37\&quot; height=\&quot;130\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CRyWcW9bKPYmjVe2kgWn-2\&quot; value=\&quot;Prompt 自动化方法演进\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=22;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;10\&quot; width=\&quot;250\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-1\&quot; value=\&quot;Stable Diffusion 1.4\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;340\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-2\&quot; value=\&quot;Stable Diffusion 生态\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;517.37\&quot; y=\&quot;250\&quot; width=\&quot;180\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-4\&quot; value=\&quot;SD基座大模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#3333FF;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;300\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-5\&quot; value=\&quot;Stable Diffusion 1.5\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;380\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-6\&quot; value=\&quot;Stable Diffusion 2.1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;420\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-7\&quot; value=\&quot;ckpt/safetensor\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;291.75\&quot; y=\&quot;640\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-9\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;280\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-10\&quot; value=\&quot;VAE\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;291.75\&quot; y=\&quot;570\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-12\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;滤镜&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(稳定色彩范围)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;299.99999999999994\&quot; y=\&quot;520\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;465.63\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-14\&quot; value=\&quot;LoRA\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;570\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-15\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;微调&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(特定任务)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;530\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-17\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;670.0000000000001\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-18\&quot; value=\&quot;ControlNet\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;684.3\&quot; y=\&quot;570\&quot; width=\&quot;65.7\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-19\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;可控性&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(条件生成)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;720\&quot; y=\&quot;520\&quot; width=\&quot;130\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-20\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.986;exitY=0.946;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-17\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;548\&quot; y=\&quot;470\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;548\&quot; y=\&quot;570\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;697.37\&quot; y=\&quot;355\&quot; width=\&quot;105.7\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-22\&quot; value=\&quot;SD-WebUI\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;711.7400000000001\&quot; y=\&quot;380\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-23\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;618\&quot; y=\&quot;463\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;720\&quot; y=\&quot;560\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-24\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;Web界面&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;709.5500000000001\&quot; y=\&quot;330\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;860\&quot; y=\&quot;355\&quot; width=\&quot;105.7\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-26\&quot; value=\&quot;工具包\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;874.3700000000001\&quot; y=\&quot;380\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-27\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;整合工具包&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;872.1800000000001\&quot; y=\&quot;330\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-29\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-25\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;620\&quot; y=\&quot;405\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;734\&quot; y=\&quot;405\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-30\&quot; value=\&quot;wqw547243068@163.com&amp;lt;br&amp;gt;2023-11-16\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;832.18\&quot; y=\&quot;570\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
-
 SD基本概念
 - **大模型**：用素材+SD低模（如SD1.5/SD1.4/SD2.1），深度学习之后炼制出的大模型，可以直接用来生图。大模型决定了最终出图的大方向，是底料。多为CKPT/SAFETENSORS扩展名。
 - `VAE`：类似滤镜，是对大模型的补充，稳定画面的色彩范围。多为CKPT/SAFETENSORS扩展名。
@@ -1195,6 +724,14 @@ SD基本概念
 - `ControlNet`：神级插件，让SD有了眼睛，能够基于现有图片得到诸如线条或景深的信息，再反推用于处理图片。
 - `Stable Diffusion Web-UI`（`SD-WEBUI`）：开源大神AUTOMATIC1111基于Stability AI算法制作的开源软件，能够展开浏览器，用图形界面操控SD。
 - **整合包**：由于WEBUI本身基于GitHub的特性，绝大多数时候的部署都需要极高的网络需求，以及Python环境的需求。使用整合包，内置了和电脑本身系统隔离的Python环境，以及内置了Git，不需要了解这两个软件就可以运行。可以几乎忽视这样的门槛，让更多人能够享受AI出图。
+
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.16\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;exitX=0.058;exitY=0.992;exitDx=0;exitDy=0;exitPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-9\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-10\&quot; value=\&quot;细节\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;labelBackgroundColor=none;fontColor=#009900;\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;lHimWeaf7UQe36nZpLsc-11\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.4948\&quot; y=\&quot;-2\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-16\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-13\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-8\&quot; value=\&quot;效果改进\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;labelBackgroundColor=none;fontColor=#009900;\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;lHimWeaf7UQe36nZpLsc-16\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.38\&quot; y=\&quot;-1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;465.63\&quot; y=\&quot;320\&quot; width=\&quot;144.37\&quot; height=\&quot;160\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-1\&quot; value=\&quot;Stable Diffusion 1.4\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;320\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-2\&quot; value=\&quot;Stable Diffusion 生态\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;220\&quot; width=\&quot;180\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-4\&quot; value=\&quot;SD基座大模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;280\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-5\&quot; value=\&quot;Stable Diffusion 1.5\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;360\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-6\&quot; value=\&quot;Stable Diffusion 2.1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;400\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-7\&quot; value=\&quot;ckpt/safetensor\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;340\&quot; y=\&quot;640\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-9\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;280\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-10\&quot; value=\&quot;VAE Stable Diffusion\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;291.75\&quot; y=\&quot;570\&quot; width=\&quot;118.25\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-12\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;滤镜&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(稳定色彩范围)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;299.99999999999994\&quot; y=\&quot;520\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;465.63\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-14\&quot; value=\&quot;LoRA\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;570\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-15\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;微调&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(特定任务)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;545\&quot; y=\&quot;520\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-17\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;670\&quot; y=\&quot;560\&quot; width=\&quot;144.37\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-4\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-18\&quot; target=\&quot;vn8F-dnxZ91uqlz5LsOP-3\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-18\&quot; value=\&quot;ControlNet\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;684.3\&quot; y=\&quot;570\&quot; width=\&quot;65.7\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-19\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;可控性&amp;lt;/font&amp;gt;&amp;lt;span style=&amp;quot;font-weight: normal;&amp;quot;&amp;gt;(条件生成)&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;720\&quot; y=\&quot;520\&quot; width=\&quot;130\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-20\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.986;exitY=0.946;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-17\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;548\&quot; y=\&quot;470\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;548\&quot; y=\&quot;570\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-9\&quot; value=\&quot;属性改进\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;labelBackgroundColor=none;fontColor=#009900;\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;lHimWeaf7UQe36nZpLsc-20\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.3828\&quot; y=\&quot;3\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;780\&quot; y=\&quot;357.5\&quot; width=\&quot;105.7\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-22\&quot; value=\&quot;SD-WebUI\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;794.3700000000001\&quot; y=\&quot;382.5\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-23\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-3\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;618\&quot; y=\&quot;463\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;720\&quot; y=\&quot;560\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-24\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;Web界面&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;792.1800000000001\&quot; y=\&quot;332.5\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;942.63\&quot; y=\&quot;357.5\&quot; width=\&quot;105.7\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-26\&quot; value=\&quot;工具包\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;957.0000000000001\&quot; y=\&quot;382.5\&quot; width=\&quot;62\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-27\&quot; value=\&quot;&amp;lt;font color=&amp;quot;#3333ff&amp;quot;&amp;gt;整合工具包&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;954.8100000000001\&quot; y=\&quot;332.5\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-29\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;lHimWeaf7UQe36nZpLsc-21\&quot; target=\&quot;lHimWeaf7UQe36nZpLsc-25\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;702.63\&quot; y=\&quot;407.5\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;816.63\&quot; y=\&quot;407.5\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;lHimWeaf7UQe36nZpLsc-30\&quot; value=\&quot;wqw547243068@163.com&amp;lt;br&amp;gt;2023-11-16\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;920\&quot; y=\&quot;250\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-1\&quot; value=\&quot;文生图（text2img）\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;570\&quot; y=\&quot;290\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-2\&quot; value=\&quot;文图生图\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;550\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-3\&quot; value=\&quot;ControlNet Tile\&quot; style=\&quot;rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;674.3\&quot; y=\&quot;630\&quot; width=\&quot;85.7\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-5\&quot; value=\&quot;图生图\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#FF0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;665\&quot; y=\&quot;605\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-6\&quot; value=\&quot;【2023-2-10】SD模型中添加类似UNet的ControlNet结构&amp;#xa;- 零卷积\&quot; style=\&quot;text;whiteSpace=wrap;fontColor=#0000FF;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;814.37\&quot; y=\&quot;550\&quot; width=\&quot;313\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-7\&quot; value=\&quot;&amp;lt;font&amp;gt;问题：生成结果不可控&amp;lt;/font&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;fontColor=#CC0000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;320\&quot; y=\&quot;370\&quot; width=\&quot;160\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-11\&quot; value=\&quot;额外条件&amp;#xa;- Edge Map（边缘）, Sketch（骨骼化）, Depth Info（深度信息）, Segmentation Map（分割图）, Human Pose（动作姿势）, Normal Maps，Human Scribbles（手绘），卡通\&quot; style=\&quot;text;whiteSpace=wrap;fontColor=#666666;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;860\&quot; y=\&quot;570\&quot; width=\&quot;260\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-12\&quot; value=\&quot;【2023-5-9】图生图（img2img）&amp;#xa;ControlNet Tile&amp;#xa;支持：放大、修复、细节增强\&quot; style=\&quot;text;whiteSpace=wrap;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;680.06\&quot; y=\&quot;660\&quot; width=\&quot;192.12\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-13\&quot; value=\&quot;小型化、局部增强\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;477.82\&quot; y=\&quot;600\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-14\&quot; value=\&quot;多种功能，如 txt2img、img2img、inpaint 等\&quot; style=\&quot;text;whiteSpace=wrap;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;792.18\&quot; y=\&quot;412.5\&quot; width=\&quot;135\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-15\&quot; value=\&quot;扩散生成网络替换传统解码器&amp;lt;div&amp;gt;效果：颜色更鲜艳、细节更锋利&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;270\&quot; y=\&quot;600\&quot; width=\&quot;190\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-16\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(51, 51, 51); font-family: Arial, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, 黑体, 宋体, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(248, 248, 253); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&amp;quot;&amp;gt;Stability AI 推出&amp;lt;span&amp;gt;&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;code class=&amp;quot;language-plaintext highlighter-rouge&amp;quot; style=&amp;quot;box-sizing: border-box; padding: 1px 4px; margin: 0px 2px; font-size: 14.4px; border-radius: 3px; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0.06); border: 1px solid rgb(215, 208, 210); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&amp;quot;&amp;gt;EMA（锐利）&amp;lt;/code&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(51, 51, 51); font-family: Arial, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, 黑体, 宋体, sans-serif; font-size: 16px; background-color: rgb(248, 248, 253);&amp;quot;&amp;gt;和&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;code style=&amp;quot;box-sizing: border-box; padding: 1px 4px; margin: 0px 2px; font-size: 14.4px; border-radius: 3px; background-color: rgba(0, 0, 0, 0.06); border: 1px solid rgb(215, 208, 210); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif;&amp;quot; class=&amp;quot;language-plaintext highlighter-rouge&amp;quot;&amp;gt;MSE（平滑）&amp;lt;/code&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;270\&quot; y=\&quot;670\&quot; width=\&quot;220\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-17\&quot; value=\&quot;Stable Diffusion 3\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;474.5\&quot; y=\&quot;440\&quot; width=\&quot;115.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;vn8F-dnxZ91uqlz5LsOP-18\&quot; value=\&quot;【2024-2-22】DiT结构\&quot; style=\&quot;text;whiteSpace=wrap;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;584.5\&quot; y=\&quot;440\&quot; width=\&quot;125.5\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+
 
 
 #### 体验方法
@@ -1208,6 +745,121 @@ SD基本概念
   - Docker Desktop 将 [Stable Diffusion WebUI Docker](https://github.com/AbdBarho/stable-diffusion-webui-docker) 部署在 Windows 系统，从而利用 NVIDIA 显卡免费实现 AI 文字绘画，不再被在线工具所限制。Mac 同样适用于该方法，并可省略下方的环境配置步骤。
   - ![](https://pic4.zhimg.com/80/v2-3ee8f0fad4499798263ae5d8295574b3_1440w.webp)
 
+
+#### 模型下载
+
+【2024-8-22】[苹果设备上运行Stable Diffusion模型](https://mp.weixin.qq.com/s/kFnpMMtkbA8iB_6xXZqhoQ)
+
+Stable Diffusion 模型可在 huggingface 或 Civitai 下载到。
+
+可能会有三种格式
+- `CoreML` 格式: 模型较少，文件主要以 `.mlmodelc` 或 `.mlmodel` 为主
+- `Diffusers` 格式: huggingface 渠道的主流格式
+- `safetensors` 格式: Civitai网站下载的大多是这种格式，一个文件，非常方便。
+
+##### CoreML
+
+CoreML格式
+- 这种类别的模型较少，文件主要以 `.mlmodelc` 或 `.mlmodel` 为主
+
+Core ML 是 Apple Silicon 芯片产品（包括macOS、iOS、watchOS 和 tvOS）中的机器学习框架，用于执行快速预测或推理，在边缘轻松集成预训练的机器学习模型，从而可以对设备上的实时图像或视频进行实时预测。
+
+Core ML 通过利用 CPU、GPU 和 神经网络引擎 ，同时最大程度地减小内存占用空间和功耗，来优化设备端性能。由于模型严格地在用户设备上，因此无需任何网络连接，这有助于保护用户数据的私密性和 App 的响应速度。
+
+如果模型运行在Silicon芯片的苹果设备上，利用Core ML可以获得更快的性能和更低的内存及能耗。
+
+其文件结构大致为：
+
+```s
+├── TextEncoder.mlmodelc
+├── TextEncoder2.mlmodelc
+├── Unet.mlmodelc
+├── VAEDecoder.mlmodelc
+├── merges.txt
+└── vocab.json
+```
+
+Diffusers格式
+
+在 huggingface 上下载的模型大多是这种类型，其文件结构大致为：
+
+```s
+├── model_index.json
+├── scheduler
+│   └── scheduler_config.json
+├── text_encoder
+│   ├── config.json
+│   └── pytorch_model.bin
+├── tokenizer
+│   ├── merges.txt
+│   ├── special_tokens_map.json
+│   ├── tokenizer_config.json
+│   └── vocab.json
+├── unet
+│   ├── config.json
+│   └── diffusion_pytorch_model.bin
+└── vae
+    ├── config.json
+    └── diffusion_pytorch_model.bin
+```
+
+
+#### 格式转换
+
+下载的模型都转成 CoreML 格式，如果第一步下载的模型已经是 CoreML 格式，那么可以跳过。
+
+`Diffusers` -> `CoreML`
+
+Diffusers 格式转 CoreML 格式
+- 首先下载该仓库代码：ml-stable-diffusion。查看System Requirements检查自己的设备是否支持。
+- 然后安装依赖：
+
+```sh
+pip install -r requirements.txt
+```
+
+找到 torch2coreml.py 文件，执行以下命令：
+
+```sh
+python torch2coreml.py \
+--bundle-resources-for-swift-cli \
+--xl-version \
+--convert-unet \
+--convert-text-encoder \
+--convert-vae-decoder \
+--attention-implementation ORIGINAL \
+--model-version /your/model/path \
+-o /your/model/output/path
+```
+
+注意有个参数--xl-version，如果模型是sdxl类型的，就加上，否则把这行删除。另外如果你的模型支持图生图，你可以加上--convert-vae-encoder参数。
+
+运行完该命令，应该在你指定的目录生成了文件，在Resources目录下的文件就是转换好的CoreML格式。
+
+`safetensors` -> `Diffusers`
+
+safetensors 格式转 Diffusers 格式
+- 首先下载该仓库代码：Diffusers。
+- 然后安装依赖：
+
+```sh
+pip install --upgrade diffusers
+```
+
+找到 convert_original_stable_diffusion_to_diffusers.py 文件并执行以下命令：
+
+```sh
+python convert_original_stable_diffusion_to_diffusers.py \
+--checkpoint_path /your/model/path \
+--dump_path /your/model/output/path \
+--from_safetensors \
+--half \
+--device mps
+```
+
+这里 --half 表示转换时精度为 fp16, --device mps 表示模型使用mps(GPU)进行推理。
+
+运行完该命令，会生成Diffusers格式的模型，再利用Diffusers格式转CoreML格式的步骤，将模型转换为CoreML格式。
 
 #### 如何画出好作品？
 
@@ -1467,14 +1119,14 @@ MochiDiffusion 内置 Apple 的 Core ML Stable Diffusion 框架 以实现在搭�
 
 #### VAE Stable Diffusion
 
-VAE Stable Diffusion（稳定扩散）是一种用于生成模型的算法，结合了`变分自编码器`（Variational Autoencoder，VAE）和扩散生成网络（Diffusion Generative Network）的思想。它通过对变分自编码器进行改进，提高了生成样本的质量和多样性。
+VAE Stable Diffusion（稳定扩散）是一种用于生成模型的算法，结合了`变分自编码器`（Variational Autoencoder，VAE）和`扩散生成网络`（Diffusion Generative Network）的思想。它通过对变分自编码器进行改进，提高了生成样本的质量和多样性。
 
 VAE Stable Diffusion 核心思想
 - 使用**扩散生成网络**来替代传统的**解码器**。
 
 扩散生成网络逐步生成样本，每步都通过对噪声进行扩散来生成样本。这种逐步生成的过程可以提高生成样本的质量，并且可以控制生成样本的多样性。
 
-Stable Diffusion中使用VAE, 能得到颜色更**鲜艳**、细节更**锋利**的图像，同时也有助于改善脸和手等部位的图像质量。
+Stable Diffusion 使用 VAE, 能得到颜色更**鲜艳**、细节更**锋利**的图像，同时也有助于改善脸和手等部位的图像质量。
 
 如果本身对图像质量没有苛刻要求，其实是不需要额外部署VAE模型
 
@@ -1521,12 +1173,26 @@ playgroundai 有两种模式，一种就是 board 模式，一种是 Canvas 模�
 
 【2024-2-22】Stability AI 发布[Stable Diffusion 3](https://stability.ai/news/stable-diffusion-3)，号称史上最强大的文生图模型。
 
+【2024-8-16】[Stable Diffusion 3 论文及源码概览](https://mp.weixin.qq.com/s/YQE0o8MLR4MwllNXomLiZw)
+
+
 新版模型在文本语义理解、色彩饱和度、图像构图、分辨率、类型、质感、对比度等方面都有了显著提升，甚至开始触摸物理世界的奥秘，让生成的图片看起来更加逼真。
 - 参数范围在8亿到80亿之间，专为移动设备设计，AI算力消耗更低，推理速度却更快。
 
 Stable Diffusion 3 还具备“**多主题生成**”和“**超高画质**”的特点。理解文字描述，甚至能一句话描绘出包含多个主题和多样物品的图像，而且生成的每一张图片都堪称艺术品，无论是在自然写实风景，还是在漫画、海报中，都能精准地捕捉和理解文字描述的每一个细节，将抽象的文字语言转换为具象的画面元素。
 
 技术层面上，Stable Diffusion 3 采用与Sora类似的`Diffusion Transformer`架构，这种架构在训练过程中通过学习给图片添加和去除噪声，实现了高质量的图像生成。这种创新的架构设计，结合扩散型transformer架构和flow matching，是Stable Diffusion 3取得显著进步的关键。
+
+
+SD3 中的去噪网络 DiT 模型是怎么一步一步搭起来
+
+除 将去噪网络从 U-Net 改成 DiT 外，SD3 还在模型结构与训练策略上做了很多小改进：
+- 改变训练时噪声采样方法
+- 将一维位置编码改成二维位置编码
+- 提升 VAE 隐空间通道数
+- 对注意力 QK 做归一化以确保高分辨率下训练稳定
+
+论文及源码讲解: [Stable Diffusion 3 论文及源码概览](https://mp.weixin.qq.com/s/YQE0o8MLR4MwllNXomLiZw)
 
 
 ### Mid-Journey

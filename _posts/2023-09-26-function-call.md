@@ -444,7 +444,7 @@ if(message.get("function_call")):
 效果
 - ![](https://pic2.zhimg.com/80/v2-32ed80648cd0b5ceb381ce1a5de1561d_1440w.webp)
 
-## Function Call评测
+## Function Call 评测
 
 
 【2023-12-14】评测结论
@@ -766,12 +766,21 @@ Answer: 4.0
 所以对于代理 Langchain Agent 来说，工作非常流畅，会与其他的 llm 链一起工作。
 
 
-## ChatGLM3 Function Call
+## Function Call 训练
+
+[开源模型 Function Call 方案梳理](https://zhuanlan.zhihu.com/p/713937194)
+
+开源模型 Function Calling 能力的相关信息，包括采用的 chat template，function call 训练方案等。
+
+涉及模型: LlaMa 3.1， Mistral Large 2，glm-4-9b-chat，Qwen 2。
+
+
+### ChatGLM3 Function Call
 
 【2023-10-31】[ChatGLM3 的工具调用（FunctionCalling）实现原理](https://zhuanlan.zhihu.com/p/664233831)
 
 
-### tool信息
+#### tool信息
 
 Tool 信息
 - 放入请求参数里的 tools 里
@@ -816,7 +825,7 @@ system_info = {"role": "system", "content": "Answer the following questions as b
 ```
 
 
-### 测试
+#### 测试
 
 提出问题
 
@@ -875,9 +884,9 @@ print(response)
 
 对于工具调用来说，response 是调用函数的参数，是经过特殊处理的。但是大模型只能生成文本，返回结果出现了dict 对象一定是有trick在里面的。
 
-### 工具调用的原理
+#### 工具调用原理
 
-ChatGLM3的训练工具调用的样本数据是如何构造的。
+ChatGLM3 训练工具调用的样本数据是如何构造的。
 
 ```js
 <|system|>
@@ -1058,13 +1067,57 @@ process_response(output, history)
 - 从源码上面看，stream_chat 没有调用 process_response方法，自然就没法返回处理过的工具调用结果。
 - 这只是表面原因，根本原因是 stream_chat 是一个个吐字的，没法中间做手脚将工具调用结果进行处理。
 
-### 问题
+#### 问题
 
 GitHub上有人反馈了一堆 Function Call的问题
 - [function call 必填参数不输入,不会提示,有时还会自己输出无关内容](https://github.com/THUDM/ChatGLM3/issues/53)
   - tool_using中的cli_demo_tool.py,必填参数不输入,不会提示,有时还会自己编内容
 - 正常能回答的问题也会去调用工具，不管有没有; 没有自动判断是否使用工具的能力，一直在各种问题上强制使用tools
   - [issue](https://github.com/THUDM/ChatGLM3/issues/74), 包含完整测试代码
+
+
+### llama 3.1
+
+
+Tool Call Template 样式
+
+[Llama 技术报告](https://arxiv.org/pdf/2407.21783)
+- llama 3 工具调用能力在 post training 时加上去的。
+- 大致的使用 tool 流程和 GPT 的 tool call 差不多
+- ![](https://pic2.zhimg.com/80/v2-17dca3cb2433d2c35895d98286d54bb1_1440w.webp)
+
+
+几种数据格式
+- 样式1：Json based tool calling
+- 样式2：Built in Python based tool calling
+  - 官方自带支持 brave_search, wolfram_alpha, 和 code interpreter 三种工具，使用这三种工具时，tokenizer 的处理方式与 json based tool calling 不太一样。具体是要在 system prompt
+
+llama 3.1 tool call 格式，假设用户与agent有了以下对话：
+
+```json
+tool_call = {"name": "get_current_temperature", "arguments": {"location": "Paris, France"}}
+​
+messages = [
+  {"role": "system", "content": "You are a bot that responds to weather queries."},
+  {"role": "user", "content": "Hey, what's the temperature in Paris right now?"},
+  {"role": "assistant", "tool_calls": [{"type": "function", "function": tool_call}]},
+  {"role": "tool", "name": "get_current_temperature", "content": "22.0"}
+]
+```
+
+huggingface 提供的 function call 示例进行计算：
+
+```py
+model_path = "/home/kevin/models/Meta-Llama-3.1-70B-Instruct"
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+inputs = tokenizer.apply_chat_template(messages, 
+                                       tools=[get_current_temperature],
+                                       add_generation_prompt=True, 
+                                       tokenize=False,
+                                       tools_in_user_message=False)
+```
+
+详见 [开源模型 Function Call 方案梳理](https://zhuanlan.zhihu.com/p/713937194)
 
 
 # 结束

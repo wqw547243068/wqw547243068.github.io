@@ -115,6 +115,7 @@ print(pipeline('sentiment-analysis')('I hate you'))"
 
 #### Auto 核心类
 
+
 transformers 开源库核心组件包括3个：
 - `Conﬁguration`：**配置**类，继承自`PretrainedConﬁg`，保存model或tokenizer的超参数，例如词典大小，隐层维度数，dropout rate等。配置类主要可用于复现模型。
 - `Tokenizer`：**切词**类，继承自`PreTrainedTokenizer`，主要存储词典（**from_pretrained()**部分），token到index映射关系等。
@@ -132,9 +133,13 @@ transformer 额外封装了`AutoConfig`, `AutoTokenizer`,`AutoModel`
 - 通过**模型命名**就能定位所属的具体类
 - 比如 ’bert-base-cased’，要加载BERT模型相关的配置、切词器和模型。
 
+所有相关类都衍生自这三个类，都有`from_pretained()`方法和`save_pretrained()`方法。
+
+
 <!-- draw.io diagram -->
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-05-09T07:13:51.016Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\&quot; etag=\&quot;5qBzsLmuwwd9dOJxDsPq\&quot; version=\&quot;24.3.1\&quot;&gt;\n  &lt;diagram id=\&quot;Lw-1uFHNzwHmlxUDpAkU\&quot; name=\&quot;第 1 页\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;761\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;216\&quot; y=\&quot;170\&quot; width=\&quot;395\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-8\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;170\&quot; y=\&quot;300\&quot; width=\&quot;400\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; value=\&quot;模型类&amp;lt;br&amp;gt;Model\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;338\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; value=\&quot;分词类&amp;lt;br&amp;gt;Tokenizer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; value=\&quot;数据集&amp;lt;br&amp;gt;Dataset\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;shadow=1;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;625\&quot; y=\&quot;310\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-10\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-25\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; value=\&quot;配置类&amp;lt;br&amp;gt;Configuration\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;310\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; value=\&quot;&amp;lt;div&amp;gt;流水线&amp;lt;/div&amp;gt;Pipeline\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;258\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-20\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; value=\&quot;&amp;lt;div&amp;gt;训练&amp;lt;/div&amp;gt;Trainer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;468\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-9\&quot; value=\&quot;Transformers库框架\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;348\&quot; y=\&quot;50\&quot; width=\&quot;170\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;253\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;363\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.678;exitY=-0.05;exitDx=0;exitDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;373\&quot; y=\&quot;330\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;323\&quot; y=\&quot;260\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;383\&quot; y=\&quot;340\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;333\&quot; y=\&quot;270\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;393\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;343\&quot; y=\&quot;280\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-16\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;403\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;353\&quot; y=\&quot;290\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot; value=\&quot;推理阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;268\&quot; y=\&quot;110\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot; value=\&quot;训练/评估阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;472\&quot; y=\&quot;110\&quot; width=\&quot;82\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-21\&quot; value=\&quot;核心组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;170\&quot; y=\&quot;270\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-22\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 保存model、tokenizer超参,便于复习模型\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;123\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); text-align: left;&amp;quot;&amp;gt;PretrainedConﬁg&amp;lt;/span&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;10\&quot; y=\&quot;315\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;354\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-27\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; value=\&quot;&amp;lt;div style=&amp;quot;text-align: left;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;background-color: initial;&amp;quot;&amp;gt;&amp;lt;font color=&amp;quot;#000000&amp;quot;&amp;gt;PreTrainedTokenizer&amp;lt;/font&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;238\&quot; y=\&quot;400\&quot; width=\&quot;122\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-31\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 分词、扩展词表、识别特殊字符\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;320\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-32\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 封装模型计算图\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;360\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; value=\&quot;AutoConfig\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;textShadow=1;labelBorderColor=none;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; value=\&quot;AutoModel\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;328.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; value=\&quot;AutoTokenizer\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;470.5\&quot; y=\&quot;470\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-36\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;253\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;230\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-37\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-38\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontColor=#009900;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;370\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;470\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.6\&quot;&gt;\n  &lt;diagram id=\&quot;Lw-1uFHNzwHmlxUDpAkU\&quot; name=\&quot;第 1 页\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;265\&quot; y=\&quot;495\&quot; width=\&quot;216.5\&quot; height=\&quot;250\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;240\&quot; y=\&quot;170\&quot; width=\&quot;344\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-8\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;170\&quot; y=\&quot;395\&quot; width=\&quot;400\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; value=\&quot;模型类&amp;lt;br&amp;gt;Model\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;shadow=1;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;338\&quot; y=\&quot;405\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; value=\&quot;分词类&amp;lt;br&amp;gt;Tokenizer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;shadow=1;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;405\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; value=\&quot;数据集&amp;lt;br&amp;gt;Dataset\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;shadow=1;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;300\&quot; width=\&quot;70\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-10\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;strokeColor=#6666FF;startArrow=none;startFill=0;endArrow=diamond;endFill=0;strokeWidth=3;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-25\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-24\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; value=\&quot;配置类&amp;lt;br&amp;gt;Configuration\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;405\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; value=\&quot;&amp;lt;div&amp;gt;流水线&amp;lt;/div&amp;gt;Pipeline\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;258\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-20\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; value=\&quot;&amp;lt;div&amp;gt;训练&amp;lt;/div&amp;gt;Trainer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;468\&quot; y=\&quot;180\&quot; width=\&quot;90\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-9\&quot; value=\&quot;Transformers库框架\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;348\&quot; y=\&quot;50\&quot; width=\&quot;170\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;253\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;510\&quot; y=\&quot;300\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;250\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;373\&quot; y=\&quot;330\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;323\&quot; y=\&quot;260\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;383\&quot; y=\&quot;340\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;333\&quot; y=\&quot;270\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;393\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;343\&quot; y=\&quot;280\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-16\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-3\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-6\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;403\&quot; y=\&quot;360\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;353\&quot; y=\&quot;290\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-17\&quot; value=\&quot;推理阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;268\&quot; y=\&quot;110\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-18\&quot; value=\&quot;训练/评估阶段\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;472\&quot; y=\&quot;110\&quot; width=\&quot;82\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-21\&quot; value=\&quot;核心组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;275.5\&quot; y=\&quot;365\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-22\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 保存model、tokenizer超参,便于复习模型\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;123\&quot; y=\&quot;455\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-23\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); text-align: left;&amp;quot;&amp;gt;PretrainedConﬁg&amp;lt;/span&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;13\&quot; y=\&quot;410\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#6666FF;startArrow=none;startFill=0;endArrow=diamond;endFill=0;strokeWidth=3;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-2\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;354\&quot; y=\&quot;445\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-27\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; parent=\&quot;eTGUqoqL8qtCVFqHRuqP-26\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-6\&quot; y=\&quot;3\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-28\&quot; value=\&quot;&amp;lt;div style=&amp;quot;text-align: left;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;background-color: initial;&amp;quot;&amp;gt;&amp;lt;font color=&amp;quot;#000000&amp;quot;&amp;gt;PreTrainedTokenizer&amp;lt;/font&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;610\&quot; y=\&quot;405\&quot; width=\&quot;122\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-31\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 分词、扩展词表、识别特殊字符\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;518\&quot; y=\&quot;455\&quot; width=\&quot;152\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-32\&quot; value=\&quot;&amp;lt;b&amp;gt;&amp;lt;font color=&amp;quot;#333333&amp;quot;&amp;gt;功能&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;: 封装模型计算图\&quot; style=\&quot;text;whiteSpace=wrap;fillColor=none;html=1;fontColor=#0066CC;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380\&quot; y=\&quot;455\&quot; width=\&quot;122\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; value=\&quot;AutoConfig\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;textShadow=1;labelBorderColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185.5\&quot; y=\&quot;305\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; value=\&quot;AutoModel\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;328.5\&quot; y=\&quot;305\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; value=\&quot;AutoTokenizer\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;470.5\&quot; y=\&quot;305\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-36\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;fontColor=#009900;dashed=1;dashPattern=1 1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;eTGUqoqL8qtCVFqHRuqP-4\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-33\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;230\&quot; y=\&quot;400\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;313\&quot; y=\&quot;230\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-37\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;fontColor=#009900;dashed=1;dashPattern=1 1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-34\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;373\&quot; y=\&quot;410\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;371\&quot; y=\&quot;330\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;eTGUqoqL8qtCVFqHRuqP-38\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#B3B3B3;fontColor=#009900;dashed=1;dashPattern=1 1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-35\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;515\&quot; y=\&quot;410\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;515\&quot; y=\&quot;330\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-3\&quot; value=\&quot;***ForMaskedLM\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;540\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-4\&quot; value=\&quot;***ForSequenceClassification\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;675\&quot; width=\&quot;170\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-5\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=1 1;strokeColor=#6666FF;startArrow=none;startFill=0;endArrow=diamond;endFill=0;strokeWidth=3;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;P3gGXrqknLxYuqlMmNd4-7\&quot; target=\&quot;eTGUqoqL8qtCVFqHRuqP-1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;665\&quot; y=\&quot;450\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;665\&quot; y=\&quot;280\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-6\&quot; value=\&quot;继承\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];\&quot; parent=\&quot;P3gGXrqknLxYuqlMmNd4-5\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;0.0571\&quot; y=\&quot;1\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;3\&quot; y=\&quot;6\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-8\&quot; value=\&quot;***ForCasualLM\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;572\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-9\&quot; value=\&quot;***ForTokenClassification\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;708\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-11\&quot; value=\&quot;***ForMultipleChoice\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;605\&quot; width=\&quot;130\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-12\&quot; value=\&quot;***ForQestionAnswering\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;638\&quot; width=\&quot;141.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-13\&quot; value=\&quot;***Model\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontStyle=1;textShadow=1;labelBorderColor=none;fontColor=#ffffff;align=left;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;299.25\&quot; y=\&quot;508\&quot; width=\&quot;50.75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-14\&quot; value=\&quot;基础模型，输出隐含层状态\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;370\&quot; y=\&quot;508\&quot; width=\&quot;172.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-15\&quot; value=\&quot;掩码语言模型, BERT系列\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;414.75\&quot; y=\&quot;538\&quot; width=\&quot;169.25\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-17\&quot; value=\&quot;自回归模型，GPT系列\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;414.75\&quot; y=\&quot;570\&quot; width=\&quot;158.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-18\&quot; value=\&quot;多项选择模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;444\&quot; y=\&quot;605\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-19\&quot; value=\&quot;问答模型，抽取式\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;450\&quot; y=\&quot;638\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-20\&quot; value=\&quot;序列分类模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;481.5\&quot; y=\&quot;675\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;P3gGXrqknLxYuqlMmNd4-21\&quot; value=\&quot;Token分类模型\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;480\&quot; y=\&quot;708\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
 
 通常上手时都会用Auto封装类来加载切词器和模型。
 
@@ -283,24 +288,153 @@ HuggingFace主干库：
 ## hf 使用方法
 
 多种模式
-1. pipeline 方式: 直接使用预训练模型，不训练 —— 最简单
-1. AutoXXX 方式: 使用已有模型, 灵活性增加
-1. finetune: 微调方式 Trainer、tensorflow、pytorch
+1. `pipeline` 方式: **直接用**预训练模型，不训练 —— 最简单
+1. `Auto`XXX 方式: 使用已有模型, **灵活性**增加
+1. `finetune`: **微调**方式 Trainer、tensorflow、pytorch
+
+Transformers 中有许多不同的架构可用，每一种架构都围绕着处理特定任务而设计：
+* `Model` (retrieve the hidden states)
+* `ForCausalLM`
+* `ForMaskedLM`
+* `ForMultipleChoice`
+* `ForQuestionAnswering`
+* `ForSequenceClassification`
+* `ForTokenClassification`
+* and others
+
+### hf 整体流程
+
+接收文本后，有三步：**preprocess** （Tokenizer） -> **fit model**（训练模型） -> **postprocessing** 
+- （1）预处理
+  - 将输入文本进行**分词**（Tokenizer）
+    - 变成：words，subwords，或者symbols，这些统称为token
+  - 将每个token映射为一个 **integer**
+  - 为输入添加模型需要的**特殊字符**。
+- （2）传入模型
+- （3）预测结果后处理
+
+![](https://pic2.zhimg.com/v2-d9b23d02a7e5e1988ba8f902d7da9c0d_r.jpg)
+
+注意：
+- 所有预处理阶段（Preprocessing）都要**与模型预训练阶段保持一致**，所以要从 Model Hub 中下载预处理的信息。
+- 用 `AutoTokenizer` 的 `from_pretrained` 方法进行 `tokenizer` 的加载，通过把 tokenizer 的 checkpoint 导入，自动获取tokenizer需要的数据并进行缓存（下次无需下载）。
+
+#### 示例
+
+```py
+from transformers import AutoTokenizer
+from transformers import AutoModel
+
+checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint) # 加载分词器
+model = AutoModel.from_pretrained(checkpoint) # 加载模型
+
+raw_inputs = [
+    "I've been waiting for a HuggingFace course my whole life.",
+    "I hate this so much!",
+]
+# ----- 文本id化 -----
+# 指定返回的张量类型（PyTorch、TensorFlow 或 NumPy），用 return_tensors 参数
+inputs = tokenizer(raw_inputs, padding=True, truncation=True, return_tensors="pt")
+print(inputs) # 返回一个包含两个键的字典，input_ids和attention_mask
+# ----- 模型 ------
+outputs = model(**inputs)  # dict 展开, 提取 input_ids 和 attention_mask 参数
+print(outputs.last_hidden_state.shape)
+# 输出 torch.Size([2, 16, 768])
+```
+
+返回
+
+```json
+{
+    'input_ids': tensor([
+        [  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172, 2607,  2026,  2878,  2166,  1012,   102],
+        [  101,  1045,  5223,  2023,  2061,  2172,   999,   102,     0,     0,     0,     0,     0,     0,     0,     0]
+    ]), 
+    'attention_mask': tensor([
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ])
+}
+```
+
+![](https://pic3.zhimg.com/80/v2-f51f9dae359ec191229b35028d0897ca_1440w.webp)
 
 
-### pipeline方式
+#### 后处理
 
-直接使用预训练模型
+
+3）Post-Processing
+- 模型最后一层输出的原始**非标准化分数**。
+- 要转换为概率，需要经过一个SoftMax层（所有 Transformers 模型都输出 logits，因为用于训练的损耗函数一般会将最后的激活函数(如SoftMax)与实际损耗函数(如交叉熵)融合 
+
+```py
+import torch
+
+predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+print(predictions)
+```
+
+
+### pipeline
+
+pipeline API 可快速体验 Transformers。
+- 它将模型的预处理、后处理等步骤包装起来，直接定义好任务名称后输出文本，得到结果。
+- 这是一个高级API，可以领略到transformers 这个库的强大且友好。
 
 最简单，不进行finetune，直接完成任务，bert提供了pipeline的功能
 
-pipeline 参数
-- task 下游任务
-- model 预训练模型
-- config 对应模型的具体配置。
-- tokenizer 分词器。
-- framework：pt或者tf用于指定模型使用torch还是tensorflow版的
-- use_fast: 是否使用优化后的分词器
+用 [pipeline API](https://huggingface.co/docs/transformers/v4.26.1/en/main_classes/pipelines#pipelines)，输入任务名称，默认会选择特定已经存好的模型文件，然后会进行下载并且缓存。
+
+主要模型：
+- 自回归：GPT2、Transformer-XL、XLNet
+- 自编码：BERT、ALBERT、RoBERTa、ELECTRA
+- Seq2Seq：BART、Pegasus、T5
+
+各种任务的代表模型
+
+| Model	 | Examples	| Tasks |
+|---|---|---|
+| `Encoder` 编码器模型 | ALBERT, BERT, DistilBERT, ELECTRA, RoBERTa	| Sentence classification, named entity recognition, extractive question answering <br>适合需要理解完整句子的任务，例如句子分类、命名实体识别（以及更一般的单词分类）和提取式问答 |
+| `Decoder` 解码器模型 | CTRL, GPT, GPT-2, Transformer XL	| Text generation <br>解码器模型的预训练通常围绕预测句子中的下一个单词。这些模型最适合涉及文本生成的任务 |
+| `Encoder-decoder` 序列到序列模型 | BART, T5, Marian, mBART | Summarization, translation, generative question answering <br>序列到序列模型最适合围绕根据给定输入生成新句子的任务，例如摘要、翻译或生成式问答。|
+
+
+
+#### pipeline 任务
+
+目前支持的pipeline 如下：
+- feature-extraction (get the vector representation of a text) 特征抽取
+- fill-mask 掩码回复(填补空缺)
+- ner (named entity recognition) 命名实体识别
+- question-answering 问答
+- sentiment-analysis 情感分析
+- summarization 文本摘要
+- text-generation 文本生成
+- translation 机器翻译
+- zero-shot-classification 零样本分类
+
+最新pipeline类型：详见[官网介绍](https://huggingface.co/transformers/main_classes/pipelines.html)
+- AudioClassificationPipeline
+- AutomaticSpeechRecognitionPipeline
+- ConversationalPipeline
+- FeatureExtractionPipeline
+- FillMaskPipeline
+- ImageClassificationPipeline
+- ObjectDetectionPipeline
+- QuestionAnsweringPipeline
+- SummarizationPipeline
+- TableQuestionAnsweringPipeline
+- TextClassificationPipeline
+- TextGenerationPipeline
+- Text2TextGenerationPipeline
+- TokenClassificationPipeline
+- TranslationPipeline
+- ZeroShotClassificationPipeline
+
+所有的API都可以通过 搜索，并且在线测试
+
+#### pipeline 函数
 
 ```py
 pipeline(task: str, model: Optional = None, \
@@ -311,21 +445,338 @@ pipeline(task: str, model: Optional = None, \
 -> transformers.pipelines.base.Pipeline
 ```
 
+pipeline 参数
+- task 下游任务
+- model 预训练模型
+- config 对应模型的具体配置。
+- tokenizer 分词器。
+- framework：pt或者tf用于指定模型使用torch还是tensorflow版的
+- use_fast: 是否使用优化后的分词器
 
-示例
+
+#### 示例
 
 ```py
 from transformers import pipeline
 
+# 分类任务流水线
+# classifier = pipeline("sentiment-analysis")
 classifier = pipeline(task='sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
-classifier('We are very happy to show you the   Transformers library.')
+
+# 单句测试
+classifier("I've been waiting for a HuggingFace course my whole life.")
+# [{'label': 'POSITIVE', 'score': 0.9598047137260437}]
+# 多句测试
+classifier(
+    ["I've been waiting for a HuggingFace course my whole life.", "I hate this so much!"]
+)
+# [{'label': 'POSITIVE', 'score': 0.9598047137260437},
+#  {'label': 'NEGATIVE', 'score': 0.9994558095932007}]
 ```
+
+
+#### Text classification 文本分类
+
+默认 checkpoint 是 distilbert-base-uncased-finetuned-sst-2-english
+
+```python
+from transformers import pipeline
+
+#checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
+#tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+classifier = pipeline("sentiment-analysis")
+# 指定模型，硬件环境
+pipe = pipeline("sentiment-analysis", model=model_name, device=0)
+# 单句
+classifier("I've been waiting for a HuggingFace course my whole life.")
+# 多句
+classifier([
+    "I've been waiting for a HuggingFace course my whole life.", 
+    "I hate this so much!"
+])
+```
+
+段落关系判断
+
+```python
+## ------------ PYTORCH CODE ------------ 
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+model_name = "bert-base-cased-finetuned-mrpc"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+classes = ["not paraphrase", "is paraphrase"]
+
+sequence_0 = "The company HuggingFace is based in New York City"
+sequence_1 = "Apples are especially bad for your health"
+sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
+
+# The tokenizer will automatically add any model specific separators (i.e. <CLS> and <SEP>) and tokens to
+# the sequence, as well as compute the attention masks.
+paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="pt")
+not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="pt")
+
+paraphrase_classification_logits = model(**paraphrase).logits
+not_paraphrase_classification_logits = model(**not_paraphrase).logits
+
+paraphrase_results = torch.softmax(paraphrase_classification_logits, dim=1).tolist()[0]
+not_paraphrase_results = torch.softmax(not_paraphrase_classification_logits, dim=1).tolist()[0]
+
+# Should be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(paraphrase_results[i] * 100))}%")
+
+# Should not be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
+
+## ------------ TENSORFLOW CODE ------------ 
+from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
+import tensorflow as tf
+
+model_name = "bert-base-cased-finetuned-mrpc"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = TFAutoModelForSequenceClassification.from_pretrained(model_name)
+
+classes = ["not paraphrase", "is paraphrase"]
+
+sequence_0 = "The company HuggingFace is based in New York City"
+sequence_1 = "Apples are especially bad for your health"
+sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
+
+# The tokenizer will automatically add any model specific separators (i.e. <CLS> and <SEP>) and tokens to
+# the sequence, as well as compute the attention masks.
+paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="tf")
+not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="tf")
+
+paraphrase_classification_logits = model(paraphrase).logits
+not_paraphrase_classification_logits = model(not_paraphrase).logits
+
+paraphrase_results = tf.nn.softmax(paraphrase_classification_logits, axis=1).numpy()[0]
+not_paraphrase_results = tf.nn.softmax(not_paraphrase_classification_logits, axis=1).numpy()[0]
+
+# Should be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(paraphrase_results[i] * 100))}%")
+
+# Should not be paraphrase
+for i in range(len(classes)):
+    print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
+```
+
+
+NLI 句子关系推断
+
+```py
+from transformers import pipeline
+classifier = pipeline('zero-shot-classification', model='roberta-large-mnli')
+
+sequence_to_classify = "one day I will see the world"
+candidate_labels = ['travel', 'cooking', 'dancing']
+classifier(sequence_to_classify, candidate_labels)
+```
+
+#### Zero-shot classification 零样本分类
+
+文本分类标注非常耗时，huggingface 提供了0样本分类的pipeline
+- 用户只需要传入文本内容，以及可能的分类标签，就可以得到每个标签的概率
+
+自定义候选标签
+- `candidate_labels` 候选标签集合
+
+```py
+from transformers import pipeline
+
+classifier = pipeline("zero-shot-classification")
+# 指定候选标签
+classifier(
+    "This is a course about the Transformers library",
+    candidate_labels=["education", "politics", "business"],
+)
+
+# {'sequence': 'This is a course about the Transformers library',
+#  'labels': ['education', 'business', 'politics'],
+#  'scores': [0.8445963859558105, 0.111976258456707, 0.043427448719739914]}
+```
+
+
+#### Text generation 文本生成
+
+文本生成任务: 输入开头的话术（prompt），机器自动生成完剩下的句子。
+
+Text generation 中包含了一些**随机因子**，因此每次生成的结果都可能不同。
+
+直接启动生成任务
+- model 可以选择 [模型中心](https://huggingface.co/models)上模型
+
+参数
+- `num_return_sequences` 控制生成多少个不同的序列
+- `max_length` 控制输出文本总长度
+
+```py
+from transformers import pipeline
+# 初始化
+generator = pipeline("text-generation")
+generator = pipeline("text-generation", model="distilgpt2") # 指定 ModelHub 上的模型
+# 执行生成任务
+# 简易用法
+generator("In this course, we will teach you how to") 
+# 复杂用法
+generator(
+    "In this course, we will teach you how to",
+    max_length=30, # 最大长度
+    num_return_sequences=2, # 返回两个结果
+)
+# [{'generated_text': 'In this course, we will teach you how to understand and use '
+#                     'data flow and data interchange when handling user data. We '
+#                     'will be working with one or more of the most commonly used '
+#                     'data flows — data flows of various types, as seen by the HTTP'}]
+```
+
+[官方 generate 方法解释](https://huggingface.co/docs/transformers/main_classes/text_generation)
+
+fill-mask pipeline: 填充给定文本中的空白
+- 模型填充了特殊的`<mask>`词，掩码标记。其他模型掩码填充可能不同
+
+参数
+- `top_k` 一次返回哪些结果
+
+```py
+from transformers import pipeline
+
+unmasker = pipeline("fill-mask")
+
+unmasker("This course will teach you all about <mask> models.", top_k=2)
+
+# [{'sequence': 'This course will teach you all about mathematical models.',
+#   'score': 0.19619831442832947,
+#   'token': 30412,
+#   'token_str': ' mathematical'},
+#  {'sequence': 'This course will teach you all about computational models.',
+#   'score': 0.04052725434303284,
+#   'token': 38163,
+#   'token_str': ' computational'}]
+```
+
+top_k 参数控制要显示的结果有多少种。请注意，这里模型填充了特殊的`<mask>`词，掩码标记。其他掩码填充模型可能有不同的掩码标记，因此在探索其他模型时要验证正确的掩码字是什么。检查它的一种方法是查看小组件中使用的掩码。
+
+
+#### Mask filling
+
+掩码恢复是将一个句子中随机遮掩<mask>的词给恢复回来，top_k 控制了概率最大的 top k 个词被返回。
+
+例如：
+
+```python
+from transformers import pipeline
+
+unmasker = pipeline("fill-mask")
+unmasker("This course will teach you all about <mask> models.", top_k=2)
+[{'sequence': 'This course will teach you all about mathematical models.',
+  'score': 0.19619831442832947,
+  'token': 30412,
+  'token_str': ' mathematical'},
+ {'sequence': 'This course will teach you all about computational models.',
+  'score': 0.04052725434303284,
+  'token': 38163,
+  'token_str': ' computational'}]
+```
+
+#### Named entity recognition NER 命名实体识别
+
+命名实体识别 (NER) : 找到输入文本的实体, 如人员、位置或组织之类
+-  Sylvain 是一个人 (PER)，Hugging Face 是一个组织 (ORG)，而布鲁克林是一个位置 (LOC)
+
+参数
+- `grouped_entities`=True: 对应于同一实体的句子部分重新组合在一起
+
+“Hugging” and “Face” 是一个实体organization，所以聚合起来。
+
+数据预处理: Sylvain 被拆解为4 pieces: `S`, `##yl`, `##va`, and `##in`. 这边后处理也会将这些给聚合起来。
+
+```py
+from transformers import pipeline
+
+ner = pipeline("ner", grouped_entities=True)
+# 测试
+ner("My name is Sylvain and I work at Hugging Face in Brooklyn.")
+# [{'entity_group': 'PER', 'score': 0.99816, 'word': 'Sylvain', 'start': 11, 'end': 18}, 
+#  {'entity_group': 'ORG', 'score': 0.97960, 'word': 'Hugging Face', 'start': 33, 'end': 45}, 
+#  {'entity_group': 'LOC', 'score': 0.99321, 'word': 'Brooklyn', 'start': 49, 'end': 57}
+# ]
+```
+
+注意
+- 此pipeline通过从提供的上下文中提取信息来工作；它不会凭空生成答案。
+
+#### Question answering 问答系统
+
+阅读理解: 通过文本内容，以及问题得到答案：
+
+问答 pipeline 使用来自给定上下文的信息回答问题：
+- 从 context 中抽取片段作答
+
+```py
+from transformers import pipeline
+
+question_answerer = pipeline("question-answering")
+question_answerer(
+    question="Where do I work?",
+    context="My name is Sylvain and I work at Hugging Face in Brooklyn",
+)
+# {'score': 0.6385916471481323, 'start': 33, 'end': 45, 'answer': 'Hugging Face'}
+```
+
+
+#### Summarization 文本摘要
+
+将文本缩减为较短文本的任务，同时保留文本中的主要（重要）信息。
+
+参数
+- max_length
+- min_length
+
+```py
+from transformers import pipeline
+
+summarizer = pipeline("summarization")
+summarizer(
+    """
+    America has changed dramatically during recent years. Not only has the number of 
+    graduates in traditional engineering disciplines such as mechanical, civil, .....
+    Both China and India, respectively, graduate 
+    six and eight times as many traditional engineers as does the United States. 
+    Other industrial countries at minimum maintain their output, while America 
+    suffers an increasingly serious decline in the number of engineering graduates 
+    and a lack of well-educated engineers.
+"""
+)
+```
+
+
+#### Translation 翻译
+
+与文本生成和摘要一样，指定结果的 `max_length` 或 `min_length`
+- 如 法翻英模型， Helsinki-NLP/opus-mt-fr-en
+
+```py
+from transformers import pipeline
+
+translator = pipeline("translation", model="Helsinki-NLP/opus-mt-fr-en")
+translator("Ce cours est produit par Hugging Face.")
+
+# [{'translation_text': 'This course is produced by Hugging Face.'}]
+```
+
+
 
 ### AutoXXX 方式
 
-用 nn.module + class 方式构建完可以训练的model。
+用 nn.module + class 方式构建可训练的model。
 
-pipeline 封装代码主要用 autoXXX 实现，这种方式和现有的torch以及tf.keras的框架结合起来，本质上把这些预训练模型当作一个大型的model，相对于pipeline来说，封装的程度小一点
+pipeline 封装代码主要用 autoXXX 实现，这种方式和现有 torch 以及 tf.keras 框架结合起来，本质上把这些预训练模型当作一个大型的model，相对于pipeline来说，封装的程度小一点
 
 automodelforXXX 实际上帮你把下游对应的任务层搭建好
 
@@ -357,8 +808,10 @@ sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
 
 paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="pt")
 not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="pt")
+
 paraphrase_classification_logits = model(**paraphrase).logits
 not_paraphrase_classification_logits = model(**not_paraphrase).logits
+
 paraphrase_results = torch.softmax(paraphrase_classification_logits, dim=1).tolist()[0]
 not_paraphrase_results = torch.softmax(not_paraphrase_classification_logits, dim=1).tolist()[0]
 # Should be paraphrase
@@ -372,8 +825,180 @@ for i in range(len(classes)):
 
 ### finetune
 
+官方示例代码: [section4.ipynb](https://colab.research.google.com/github/huggingface/notebooks/blob/master/course/zh-CN/chapter3/section4.ipynb#scrollTo=_O0q0aFZk_dO)
 
-pytorch 示例
+环境准备
+
+```sh
+!pip install datasets evaluate transformers[sentencepiece]
+!pip install accelerate
+```
+
+bert finetune 代码
+
+```py
+import torch
+from torch.utils.data import DataLoader
+from datasets import load_dataset
+from tqdm.auto import tqdm
+
+from transformers import AutoModelForSequenceClassification
+from transformers import AutoTokenizer, DataCollatorWithPadding
+from transformers import AdamW, get_scheduler
+
+raw_datasets = load_dataset("glue", "mrpc")
+
+checkpoint = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+
+def tokenize_function(example):
+    return tokenizer(example["sentence1"], example["sentence2"], truncation=True)
+
+tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+# 格式矫正: 提出冗余字段, label 重命名为 labels
+tokenized_datasets = tokenized_datasets.remove_columns(["sentence1", "sentence2", "idx"])
+tokenized_datasets = tokenized_datasets.rename_column("label", "labels")
+tokenized_datasets.set_format("torch")
+tokenized_datasets["train"].column_names
+
+# 训练集
+train_dataloader = DataLoader(
+    tokenized_datasets["train"], shuffle=True, batch_size=8, collate_fn=data_collator
+)
+# 验证集
+eval_dataloader = DataLoader(
+    tokenized_datasets["validation"], batch_size=8, collate_fn=data_collator
+)
+
+# 模型初始化
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=2)
+# 学习率衰减策略
+optimizer = AdamW(model.parameters(), lr=3e-5)
+outputs = model(**batch)
+print(outputs.loss, outputs.logits.shape)
+
+# 优化器
+optimizer = AdamW(model.parameters(), lr=5e-5)
+# 训练参数
+num_epochs = 3
+num_training_steps = num_epochs * len(train_dataloader)
+lr_scheduler = get_scheduler(
+    "linear",
+    optimizer=optimizer,
+    num_warmup_steps=0,
+    num_training_steps=num_training_steps,
+)
+print(num_training_steps)
+
+# cpu/gpu
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+model.to(device)
+# 流式读取数据
+progress_bar = tqdm(range(num_training_steps))
+# 开启训练模式
+model.train()
+# 训练开始
+for epoch in range(num_epochs):
+    for batch in train_dataloader:
+        batch = {k: v.to(device) for k, v in batch.items()}
+        outputs = model(**batch)
+        loss = outputs.loss
+        loss.backward() # 计算梯度
+        optimizer.step() # 梯度更新
+        lr_scheduler.step() # 学习率更新
+        optimizer.zero_grad() # 梯度重置
+        progress_bar.update(1) # 数据batch更新
+
+# 评估
+import evaluate
+
+metric = evaluate.load("glue", "mrpc")
+model.eval()
+for batch in eval_dataloader:
+    batch = {k: v.to(device) for k, v in batch.items()}
+    with torch.no_grad():
+        outputs = model(**batch)
+
+    logits = outputs.logits
+    predictions = torch.argmax(logits, dim=-1)
+    metric.add_batch(predictions=predictions, references=batch["labels"])
+
+metric.compute()
+```
+
+accelerate 包
+
+```py
+# -------------- accelerate --------------
+from accelerate import Accelerator
+from transformers import AdamW, AutoModelForSequenceClassification, get_scheduler
+
+accelerator = Accelerator()
+
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=2)
+optimizer = AdamW(model.parameters(), lr=3e-5)
+
+train_dl, eval_dl, model, optimizer = accelerator.prepare(
+    train_dataloader, eval_dataloader, model, optimizer
+)
+
+num_epochs = 3
+num_training_steps = num_epochs * len(train_dl)
+lr_scheduler = get_scheduler(
+    "linear",
+    optimizer=optimizer,
+    num_warmup_steps=0,
+    num_training_steps=num_training_steps,
+)
+
+progress_bar = tqdm(range(num_training_steps))
+
+model.train()
+for epoch in range(num_epochs):
+    for batch in train_dl:
+        outputs = model(**batch)
+        loss = outputs.loss
+        accelerator.backward(loss)
+
+        optimizer.step()
+        lr_scheduler.step()
+        optimizer.zero_grad()
+        progress_bar.update(1)
+```
+
+
+#### 简易示例
+
+```py
+import torch
+from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification
+
+# Same as before
+checkpoint = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+# 数据集
+sequences = [
+    "I've been waiting for a HuggingFace course my whole life.",
+    "This course is amazing!",
+]
+batch = tokenizer(sequences, padding=True, truncation=True, return_tensors="pt")
+# 定义 label
+batch["labels"] = torch.tensor([1, 1])
+# 定义 优化器
+optimizer = AdamW(model.parameters())
+# 计算 loss
+loss = model(**batch).loss
+# 计算梯度
+loss.backward()
+# 更新梯度
+optimizer.step()
+```
+
+
+#### Trainer
+
 
 ```py
 from transformers import TrainingArguments, Trainer
@@ -404,45 +1029,335 @@ trainer.train()
 ```
 
 
-## 数据
 
-数据集工具包 huggingface datasets 
+
+## 分词
+
+常见分词器
+- Byte-level `BPE`, 用于 GPT-2
+- `WordPiece`, 用于 BERT
+- `SentencePiece` or `Unigram`, 用于多个多语言模型
+
+详见站内专题 [分词](token)
+
+### tokenizer 原理
+
+图解
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36\&quot; version=\&quot;24.7.6\&quot;&gt;\n  &lt;diagram id=\&quot;Lw-1uFHNzwHmlxUDpAkU\&quot; name=\&quot;第 1 页\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-24\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=none;dashed=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;490\&quot; width=\&quot;262.5\&quot; height=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-6\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-2\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-7\&quot; value=\&quot;初始化&amp;lt;br&amp;gt;from_pretrained\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontColor=#3333FF;\&quot; parent=\&quot;4mljHL5KWGuyfmyBmRPA-6\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.1\&quot; y=\&quot;3\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-12\&quot; y=\&quot;3\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-2\&quot; value=\&quot;词表&amp;lt;br&amp;gt;vocab.txt\&quot; style=\&quot;shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;105\&quot; y=\&quot;310\&quot; width=\&quot;60\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-8\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-4\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-4\&quot; value=\&quot;输入：句子\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;105\&quot; y=\&quot;232.5\&quot; width=\&quot;80\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-10\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-5\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-9\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-11\&quot; value=\&quot;分词tokenize\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;\&quot; parent=\&quot;4mljHL5KWGuyfmyBmRPA-10\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot;&gt;\n          &lt;mxGeometry x=\&quot;-0.1895\&quot; y=\&quot;4\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint y=\&quot;-8\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-5\&quot; value=\&quot;分词器&amp;lt;br&amp;gt;*Tokenizer\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;shadow=1;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;255\&quot; y=\&quot;230\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-6\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-9\&quot; target=\&quot;qK-hVcwyHwYiYukOBE09-1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;675\&quot; y=\&quot;280\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;597\&quot; y=\&quot;443\&quot; /&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-9\&quot; value=\&quot;id序列\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;566.5\&quot; y=\&quot;232.5\&quot; width=\&quot;60\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-16\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-13\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-15\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-13\&quot; value=\&quot;&amp;lt;meta charset=&amp;quot;utf-8&amp;quot; style=&amp;quot;font-size: 10px;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;BasicTokenizer&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;labelBackgroundColor=none;fontSize=10;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;130\&quot; width=\&quot;95\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-18\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-14\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-5\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-14\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;BertTokenizer&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=center;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;242.5\&quot; y=\&quot;170\&quot; width=\&quot;95\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-15\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;WordPieceTokenizer&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;labelBackgroundColor=none;fontSize=10;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;299\&quot; y=\&quot;130\&quot; width=\&quot;120\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-19\&quot; value=\&quot;标点/大小写/非法字符\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;185\&quot; y=\&quot;100\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-20\&quot; value=\&quot;子词subword\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;325\&quot; y=\&quot;100\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-21\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=10;fillColor=none;dashed=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;172.5\&quot; y=\&quot;120\&quot; width=\&quot;262.5\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-27\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-22\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-22\&quot; value=\&quot;token\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;571\&quot; y=\&quot;115\&quot; width=\&quot;40\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-23\&quot; value=\&quot;ids\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;691\&quot; y=\&quot;115\&quot; width=\&quot;40\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-26\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-24\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-22\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;561\&quot; y=\&quot;128\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-24\&quot; value=\&quot;string\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;475\&quot; y=\&quot;115\&quot; width=\&quot;40\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-28\&quot; value=\&quot;tokenizer\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;495\&quot; y=\&quot;90\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-29\&quot; value=\&quot;[CLS],token, ##izer,[SEP]\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;521\&quot; y=\&quot;135\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-30\&quot; value=\&quot;1000,243, 1333,1001\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;675\&quot; y=\&quot;135\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-31\&quot; value=\&quot;高频在前，低频在后\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#006600;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;80\&quot; y=\&quot;370\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;4mljHL5KWGuyfmyBmRPA-34\&quot; value=\&quot;方法&amp;lt;br&amp;gt;① convert_tokens_to_ids&amp;lt;br&amp;gt;② convert_ids_to_tokens&amp;lt;br&amp;gt;③ convert_token_to_string&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;&amp;lt;div&amp;gt;tokenize分词&amp;lt;br&amp;gt;- encode: 句子传id序列&amp;lt;br&amp;gt;- decode: id序列转句子&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;381\&quot; y=\&quot;240\&quot; width=\&quot;140\&quot; height=\&quot;110\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-1\&quot; value=\&quot;模型&amp;lt;br&amp;gt;*Model\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;shadow=1;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;255\&quot; y=\&quot;420\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-2\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-2\&quot; target=\&quot;qK-hVcwyHwYiYukOBE09-1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;175\&quot; y=\&quot;345\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;270\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-4\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;BertModel&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=center;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;125\&quot; y=\&quot;425\&quot; width=\&quot;82.5\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-5\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;qK-hVcwyHwYiYukOBE09-4\&quot; target=\&quot;qK-hVcwyHwYiYukOBE09-1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;200\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;240\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-7\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;606\&quot; y=\&quot;200\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;606\&quot; y=\&quot;200\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-8\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-24\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;335\&quot; y=\&quot;255\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;675\&quot; y=\&quot;255\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-10\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;4mljHL5KWGuyfmyBmRPA-23\&quot; target=\&quot;4mljHL5KWGuyfmyBmRPA-24\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;715\&quot; y=\&quot;160\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;721\&quot; y=\&quot;125\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-14\&quot; value=\&quot;&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;解码decode&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;571\&quot; y=\&quot;160\&quot; width=\&quot;74\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-15\&quot; value=\&quot;&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;编码encode&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;558\&quot; y=\&quot;70\&quot; width=\&quot;77\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-16\&quot; value=\&quot;输出：标签\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;546.5\&quot; y=\&quot;547.5\&quot; width=\&quot;80\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;qK-hVcwyHwYiYukOBE09-24\&quot; target=\&quot;qK-hVcwyHwYiYukOBE09-16\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;195\&quot; y=\&quot;255\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;265\&quot; y=\&quot;255\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-20\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;分类&amp;amp;nbsp; &amp;amp;nbsp;BertForSequenceClassification&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=left;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;196.25\&quot; y=\&quot;500\&quot; width=\&quot;220\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-21\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;多项选择 BertForMultipleChoice&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=left;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;196.25\&quot; y=\&quot;530\&quot; width=\&quot;220\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-22\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;序列标注 BertForTokenClassification&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=left;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;196.25\&quot; y=\&quot;560\&quot; width=\&quot;220\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-23\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Monaco, Menlo, &amp;amp;quot;Microsoft YaHei Mono&amp;amp;quot;, Consolas, &amp;amp;quot;Courier New&amp;amp;quot;, monospace, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;问答&amp;amp;nbsp; &amp;amp;nbsp; BertForQuestionAnswering&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;labelBackgroundColor=none;fontSize=10;align=left;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;196.25\&quot; y=\&quot;594.5\&quot; width=\&quot;220\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;qK-hVcwyHwYiYukOBE09-25\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;dashed=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;qK-hVcwyHwYiYukOBE09-4\&quot; target=\&quot;qK-hVcwyHwYiYukOBE09-24\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;175\&quot; y=\&quot;350\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;300\&quot; y=\&quot;430\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mvzrrHeS1oib8-yn72NQ-1\&quot; value=\&quot;Huggingface Tokenize 用法\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=16;\&quot; vertex=\&quot;1\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;405\&quot; y=\&quot;165\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;-15\&quot; y=\&quot;-138\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
 ### tokenizer
 
-图解
+图解 [img](https://qiankunli.github.io/public/upload/machine/attention_mask.jpg)
 - ![](https://qiankunli.github.io/public/upload/machine/attention_mask.jpg)
 
-默认情况下，AutoTokenizer 类首先加载 Fast tokenizer
-- Fast 适合海量数据
+Huggingface 官方教程: [标记器（Tokenizer）](https://huggingface.co/learn/nlp-course/zh-CN/chapter2/4?fw=pt)
+
+AutoTokenizer 类默认先加载 Fast tokenizer
+- Fast 适合**海量**数据
 - 少量数据时，两者速度差异不大
 
-Fast tokenizer 和 Slow tokenizer 的区别：
-- Slow tokenizer 是在 Transformer 库中用Python编写的。
-- Fast tokenizer 是在 Tokenizers 库中用Rust编写的
+`Fast tokenizer` 和 `Slow tokenizer` 区别：
+- `Slow tokenizer` 是在 Transformer 库中用 Python 编写。
+- `Fast tokenizer` 是在 Tokenizers 库中用 Rust 编写的
 
-支持 tensorflow 和 pytorch, 参数 return_tensors = pt/tf
+支持 tensorflow, pytorch, numpy
+- 参数 `return_tensors` = pt/tf/np
+- `pt`(pytorch), `tf`(tensorflow), `np`(numpy)
 
 ```py
-# pytorch
+sequences = ["I've been waiting for a HuggingFace course my whole life.", "So have I!"]
+# Returns PyTorch tensors
+model_inputs = tokenizer(sequences, padding=True, return_tensors="pt")
+# Returns TensorFlow tensors
+model_inputs = tokenizer(sequences, padding=True, return_tensors="tf")
+# Returns NumPy arrays
+model_inputs = tokenizer(sequences, padding=True, return_tensors="np")
+
 pt_batch = tokenizer(
     ["We are very happy to show you the 🤗 Transformers library.", "We hope you don't hate it."],
-    padding=True,
-    truncation=True,
-    max_length=512,
-    return_tensors="pt",
-)
-
-# tensorflow
-tf_batch = tokenizer(
-    ["We are very happy to show you the 🤗 Transformers library.", "We hope you don't hate it."],
-    padding=True,
-    truncation=True,
-    max_length=512,
-    return_tensors="tf",
+    padding=True, # 是否填充
+    truncation=True, # 是否截断
+    max_length=512, # 最大长度
+    return_tensors="pt", # tf, np, 返回格式
 )
 ```
+
+完整示例
+
+```py
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+sequences = ["I've been waiting for a HuggingFace course my whole life.", "So have I!"]
+
+tokens = tokenizer(sequences, padding=True, truncation=True, return_tensors="pt")
+output = model(**tokens)
+```
+
+
+### 单句操作
+
+代码示例
+
+```py
+from transformers import AutoTokenizer, AutoModel
+from bertviz import model_view
+
+# 模型名称
+model_version = "distilbert-base-uncased"
+model_version = 'bert-base-chinese'
+
+local_model_path = 'model' # 本地模型目录
+
+tokenizer = AutoTokenizer.from_pretrained(model_version)
+
+# model 加载
+model = AutoModel.from_pretrained(model_version)
+# 获取注意力层 output_attentions
+# model = AutoModel.from_pretrained(model_version, output_attentions=True) # 输出注意力结果
+# 获取隐含层+注意力层
+pt_outputs = pt_model(**pt_batch, output_hidden_states= True, output_attentions=True)
+all_hidden_states ,all_attentions = pt_outputs[-2:]
+
+model = AutoModel.from_pretrained(model_version, cache_dir=local_model_path, output_attentions=True)
+model = AutoModel.from_pretrained(save_directory, from_tf=True) # tf 模型
+
+# model/tokenizer 保存
+tokenizer.save_pretrained(local_model_path)
+model.save_pretrained(local_model_path)
+
+# (1) 测试: 单条句子
+input_text = "Using a Transformer network is simple"
+
+# ----- 编码 -----
+# [分词] str -> token
+tokens = tokenizer.tokenize(sequence) # ['Using', 'a', 'transform', '##er', 'network', 'is', 'simple']
+# [id化] token -> id
+ids = tokenizer.convert_tokens_to_ids(tokens) # [7993, 170, 11303, 1200, 2443, 1110, 3014]
+# 一步到位: str -> token -> id
+# [str->id] 1: 直接使用
+inputs = tokenizer(input_text, return_tensors='pt')
+# [str->id] 2: encoder 方法
+inputs = tokenizer.encode(input_text, return_tensors='pt')
+# inputs 结果: 注意, 增加了一个维度!
+# tensor([[  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172,
+#           2607,  2026,  2878,  2166,  1012,   102]])
+
+# ----- 解码 -----
+# id -> token -> str
+# ids = [7993, 170, 11303, 1200, 2443, 1110, 3014]
+decoded_string = tokenizer.decode(ids) # 'Using a Transformer network is simple'
+
+# 模型推理
+outputs = model(inputs)
+attention = outputs[-1]  # Output includes attention weights when output_attentions=True
+# id -> tokens
+tokens = tokenizer.convert_ids_to_tokens(inputs[0]) 
+
+# (2) 测试: 多条句子
+sentence_a = "老爸叫小宏去买酱油，"
+sentence_b = "回来慢了就骂他。"
+# 得到tokens后输入BERT模型获取注意力权重(attention)
+inputs = tokenizer.encode_plus(sentence_a, sentence_b, return_tensors='pt', add_special_tokens=True)
+token_type_ids = inputs['token_type_ids']
+input_ids = inputs['input_ids']
+
+attention = model(input_ids, token_type_ids=token_type_ids)[-1]
+input_id_list = input_ids[0].tolist() # Batch index 0
+tokens = tokenizer.convert_ids_to_tokens(input_id_list)
+
+```
+
+### 复杂操作
+
+问题：
+- 如何处理**多个序列**？
+  - 批处理: 允许模型在输入多个句子时工作。使用多个序列就像使用单个序列构建批一样简单
+- 如何处理多个序列**不同长度**?
+  - 填充: 
+- **词汇索引**是让模型正常工作的唯一输入吗？
+- 是否存在**序列太长**的问题？
+
+#### Batch 批输入
+
+单个句子并不能直接输入给模型, 而是要组成batch结构
+
+注意
+- batch 模式下, 要启动 padding/truncate 参数
+
+```py
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+
+sequence = "I've been waiting for a HuggingFace course my whole life."
+
+tokens = tokenizer.tokenize(sequence) # str -> token
+ids = tokenizer.convert_tokens_to_ids(tokens) # token -> id
+input_ids = torch.tensor(ids) # 错误做法: 直接 id -> tensor
+# input_ids = torch.tensor([ids]) # 正确做法, 增加1个维度
+# 直接输入model, 报错
+model(input_ids)
+```
+
+错误信息
+> IndexError: Dimension out of range (expected to be in range of [-1, 0], but got 1)
+
+Transformers 模型默认要多个句子, 解法: 新增一个维度, 构成 batch
+
+```py
+input_ids = torch.tensor([ids])
+# Input IDs: [[ 1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172,  2607, 2026,  2878,  2166,  1012]]
+output = model(input_ids)
+# Logits: [[-2.7276,  2.8789]]
+```
+
+
+#### Padding 填充
+
+一个batch内多个句子长度不同, 怎么办?
+- 填充: 使张量变成矩形。
+
+Padding 在短句中添加 Padding token 特殊单词, 确保所有句子长度相同。
+
+如果有10个包含10个单词的句子和1个包含20个单词的句子，填充将确保所有句子都包含20个单词。
+
+```py
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+
+sequence1_ids = [[200, 200, 200]]
+sequence2_ids = [[200, 200]]
+batched_ids = [
+    [200, 200, 200],
+    [200, 200, tokenizer.pad_token_id],
+]
+
+print(model(torch.tensor(sequence1_ids)).logits)
+print(model(torch.tensor(sequence2_ids)).logits)
+print(model(torch.tensor(batched_ids)).logits)
+# tensor([[ 1.5694, -1.3895]], grad_fn=<AddmmBackward>)
+# tensor([[ 0.5803, -0.4125]], grad_fn=<AddmmBackward>)
+# tensor([[ 1.5694, -1.3895],
+#         [ 1.3373, -1.2163]], grad_fn=<AddmmBackward>)
+```
+
+
+问题
+- 预测结果 logits 有问题：第二行应该与第二句 logits相同，但得到了完全不同的值
+
+原因
+- transformer 注意层计算时忽略了填充标记
+
+不同填充策略
+- left 左侧填充
+- right 右侧填充
+
+```py
+# Will pad the sequences up to the maximum sequence length
+model_inputs = tokenizer(sequences, padding="longest") # 最长序列
+# Will pad the sequences up to the model max length
+# (512 for BERT or DistilBERT)
+model_inputs = tokenizer(sequences, padding="max_length") # model 最大长度
+# Will pad the sequences up to the specified max length
+model_inputs = tokenizer(sequences, padding="max_length", max_length=8) # 自定义最大长度
+```
+
+#### Attention Mask 注意力掩码
+
+Attention masks 与输入ID张量形状完全相同，用0和1填充：
+- 1s表示应注意相应的标记
+- 0s表示不应注意相应的标记, 即模型注意力层应忽略它们
+
+```py
+batched_ids = [
+    [200, 200, 200],
+    [200, 200, tokenizer.pad_token_id],
+]
+# 注意力掩码
+attention_mask = [
+    [1, 1, 1],
+    [1, 1, 0],
+]
+
+outputs = model(torch.tensor(batched_ids), attention_mask=torch.tensor(attention_mask))
+print(outputs.logits)
+
+# tensor([[ 1.5694, -1.3895],
+#         [ 0.5803, -0.4125]], grad_fn=<AddmmBackward>)
+```
+
+#### 长序列
+
+Transformers模型序列长度有限。大多数模型处理多达 512 或 1024 个token 序列，当要求处理更长的序列时，会崩溃。
+
+两种解决方案：
+- (1) 使用更长序列长度的模型。
+- (2) 截断序列。
+
+模型有不同的支持序列长度，有些模型专门处理长序列。 
+- Longformer 是个例子
+- 另一个是 LED .
+
+否则，建议指定 max_sequence_length 参数：
+
+```py
+sequence = sequence[:max_sequence_length]
+```
+
+截断策略
+
+```py
+sequences = ["I've been waiting for a HuggingFace course my whole life.", "So have I!"]
+# Will truncate the sequences that are longer than the model max length
+# (512 for BERT or DistilBERT)
+model_inputs = tokenizer(sequences, truncation=True)
+# Will truncate the sequences that are longer than the specified max length
+model_inputs = tokenizer(sequences, max_length=8, truncation=True)
+```
+
+
+#### 特殊词符(token)
+
+序列化时, 模型自动给句子加了特殊token
+- 开头 `[CLS]`, 结尾 `[SEP]`
+- 注意: 有些模型
+  - **不添加**特殊单词
+  - 添加**不同**单词；
+  - 只添加开头或结尾单词
+
+使用模型训练时, 要清楚用了哪些特殊字符
+
+```py
+sequence = "I've been waiting for a HuggingFace course my whole life."
+
+model_inputs = tokenizer(sequence)
+print(model_inputs["input_ids"])
+# [101, 1045, 1005, 2310, 2042, 3403, 2005, 1037, 17662, 12172, 2607, 2026, 2878, 2166, 1012, 102]
+tokens = tokenizer.tokenize(sequence)
+ids = tokenizer.convert_tokens_to_ids(tokens)
+print(ids)
+# [1045, 1005, 2310, 2042, 3403, 2005, 1037, 17662, 12172, 2607, 2026, 2878, 2166, 1012]
+
+print(tokenizer.decode(model_inputs["input_ids"]))
+# "[CLS] i've been waiting for a huggingface course my whole life. [SEP]"
+print(tokenizer.decode(ids))
+# "i've been waiting for a huggingface course my whole life."
+```
+
+
+## 数据
+
+数据集工具包 huggingface datasets 
 
 
 ### load_dataset 函数
@@ -471,15 +1386,22 @@ datasets.load_dataset(
 ```
 
 函数说明
-- `load_dataset`函数从Hugging Face Hub或者本地数据集文件中加载一个数据集。可以通过 [datasets](https://huggingface.co/datasets) 或者 `datasets.list_datasets()` 获取所有可用数据集。
-- 参数 `path` 表示数据集的名字或者路径。可以是一个数据集的名字，比如"imdb"、“glue”；也可以是通用的产生数据集文件的脚本，比如"json"、“csv”、“parquet”、“text”；或者是在数据集目录中的脚本（.py)文件，比如“glue/glue.py”。
-- 参数 `name` 表示数据集中的子数据集，当一个数据集包含多个数据集时，就需要这个参数。比如"glue"数据集下就包含"sst2"、“cola”、"qqp"等多个子数据集，此时就需要指定name来表示加载哪一个子数据集。
-- 参数 `data_dir` 表示数据集所在的目录，参数data_files表示本地数据集文件。
-- 参数 `split` 如果为None，则返回一个DataDict对象，包含多个DataSet数据集对象；如果给定的话，则返回单个DataSet对象。
+- `load_dataset`函数从 Hugging Face Hub 或本地数据集文件中加载一个数据集。可以通过 [datasets](https://huggingface.co/datasets) 或者 `datasets.list_datasets()` 获取所有可用数据集。
+- 参数 `path` 表示数据集的名字/路径。
+  - 数据集名字: 比如"imdb"、“glue”；
+  - 数据集生成脚本: 比如 "json"、“csv”、“parquet”、“text”；
+  - 数据集目录中的脚本（.py)文件，比如“glue/glue.py”
+- 参数 `name` 表示数据集中的子数据集
+  - 当一个数据集包含多个数据集时，需要这个参数。比如"glue"数据集下就包含"sst2"、“cola”、"qqp"等多个子数据集，此时就需要指定name来表示加载哪一个子数据集。
+- 参数 `data_dir` 数据集所在的目录
+  - 参数 `data_files` 表示本地数据集文件。
+- 参数 `split` 
+  - 如果为 None，则返回 DataDict 对象，包含多个 DataSet 数据集对象；
+  - 如果给定，则返回单个 DataSet 对象。
 - 参数 `cache_dir` 表示缓存数据的目录
-  - 默认为"`~/.cache/huggingface/datasets`"。
-- 参数 `keep_in_memory` 表示是否将数据集缓存在内存中，加载一次后，再次加载可以提高加载速度。
-- 参数 `revision` 表示加载数据集的脚本的版本。
+  - 默认为 `~/.cache/huggingface/datasets`
+- 参数 `keep_in_memory` 是否将数据集**缓存**在内存中，加载一次后，再次加载可以提高加载速度。
+- 参数 `revision` 加载数据集的脚本版本。
 
 
 ### 远程数据集
@@ -496,8 +1418,54 @@ dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
 dataset_1 = datasets.load_dataset("../dataset/glue/glue.py", name="cola")
 # 与上一个等价
 dataset_2 = datasets.load_dataset("../dataset/glue", name="cola") 
-
 ```
+
+```py
+from datasets import load_dataset
+
+raw_datasets = load_dataset("glue", "mrpc")
+# 数据格式
+raw_train_dataset.features
+# 访问数据
+raw_datasets
+raw_train_dataset = raw_datasets["train"]
+raw_train_dataset[0]
+```
+
+输出
+- DatasetDict对象，其中包含训练集、验证集和测试集。
+- 每个集合都包含几个列(sentence1, sentence2, label, and idx) 以及一个代表行数的变量，即每个集合中的行的个数
+- 数据集默认缓存到 `~/.cache/huggingface/datasets`.
+- 可通过设置`HF_HOME`环境变量来自定义缓存文件夹
+
+```py
+DatasetDict({
+    train: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 3668
+    })
+    validation: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 408
+    })
+    test: Dataset({
+        features: ['sentence1', 'sentence2', 'label', 'idx'],
+        num_rows: 1725
+    })
+})
+# ['sentence1', 'sentence2', 'label', 'idx']
+{'sentence1': Value(dtype='string', id=None),
+ 'sentence2': Value(dtype='string', id=None),
+ 'label': ClassLabel(num_classes=2, names=['not_equivalent', 'equivalent'], names_file=None, id=None),
+ 'idx': Value(dtype='int32', id=None)}
+# 取数
+{'idx': 0,
+ 'label': 1,
+ 'sentence1': 'Amrozi accused his brother , whom he called " the witness " , of deliberately distorting his evidence .',
+ 'sentence2': 'Referring to him as only " the witness " , Amrozi accused his brother of deliberately distorting his evidence .'
+}
+```
+
 
 
 ### 本地数据集
@@ -528,6 +1496,10 @@ all_data = datasets.load_dataset('imdb', cache_dir=local_path)
 train_data, test_data = datasets.load_dataset('imdb', split =['train', 'test'], cache_dir=local_path)
 # 通过csv脚本加载本地的test.tsv文件中的数据集
 dataset = datasets.load_dataset("csv", data_dir="./test", data_files="test.tsv")
+# 多种加载形式
+dataset = datasets.load_dataset('csv', data_files='my_file.csv') # 单个文件
+dataset = datasets.load_dataset('csv', data_files=['my_file_1.csv', 'my_file_2.csv', 'my_file_3.csv']) # 多文件, list 形式
+dataset = datasets.load_dataset('csv', data_files={'train':['my_train_file_1.csv','my_train_file_2.csv'],'test': 'my_test_file.csv'}) # 多文件, dict 形式
 
 # 手工保存到本地
 all_data.save_to_disk('my_imdb')
@@ -572,6 +1544,73 @@ import pandas as pd
 df = pd.DataFrame({"a": [1, 2, 3]}) 
 dataset = Dataset.from_pandas(df)
 ```
+
+
+### 自定义数据集
+
+加载自定义数据, 只需要继承类（`torch.util.data.Dataset`），并且覆写 `__len__` 和 `__getitem__` 两个方法
+- 不覆写会直接返回错误。
+
+```py
+class MyDataset(Dataset):
+    def __init__(self, ...):
+        ...
+
+    def __len__(self):
+        ...
+        return len # 返回数据集数据个数
+
+    def __getitem__(self, index):
+        ...
+        return image, label # 返回第 index 个数据 + 标签
+```
+
+步骤：
+- 继承 `torch.util.data.Dataset`
+- `__init__`：改写`__init__`函数时，要添加对父类的初始化，一些参数初始化工作，定义一些路径或者变量
+- `__getitem__`: 加载数据，用于读取每一条数据，有个参数idx，对应的索引，用来获取一些索引的数据，使 `dataset[i]` 返回数据集中第i个样本。
+`__len__`：实现 len(dataset), 返回整个数据集的大小
+
+
+示例
+
+```py
+# 加载数据集，自己重写DataSet类
+class dataset(Dataset):
+    # image_dir为数据目录，label_file，为标签文件
+    def __init__(self, image_dir, label_file, transform=None):
+        super(dataset, self).__init__()    # 添加对父类的初始化
+        self.image_dir = image_dir         # 图像文件所在路径
+        self.labels = read(label_file)     # 图像对应的标签文件, read label_file之后的结果
+        self.transform = transform         # 数据转换操作
+        self.images = os.listdir(self.image_dir )#目录里的所有img文件
+    
+    # 加载每一项数据
+    def __getitem__(self, idx):
+        image_index = self.images[index]    #根据索引index获取该图片
+        img_path = os.path.join(self.image_dir, image_index) #获取索引为index的图片的路径名    
+        labels = self.labels[index]   # 对应标签
+ 
+        image = Image.open(img_name)
+        if self.transform:
+            image = self.transform(image)
+        # 返回一张照片，一个标签
+        return image, labels
+    
+    # 数据集大小
+    def __len__(self):
+        return (len(self.images))
+
+if __name__ == '__main__':
+    data = AnimalData(img_dir_path, label_file, transform=None) # 初始化类，设置数据集所在路径以及变换
+    dataloader = DataLoader(data, batch_size=128, shuffle=True) # 使用DataLoader加载数据
+    for i_batch,batch_data in enumerate(dataloader):
+        print(i_batch)#打印batch编号
+        print(batch_data['image'].size())#打印该batch里面图片的大小
+        print(batch_data['label'])#打印该batch里面图片的标签
+
+```
+
 
 ### 数据处理
 
@@ -673,13 +1712,10 @@ pubmed_dataset_streamed = load_dataset( "json" , data_files=data_files, split= "
 ## 模型
 
 
-huggingface transformers 框架主要有三个类
-- model 类
-- configuration 类
-- tokenizer 类
-
-所有相关类都衍生自这三个类，都有`from_pretained()`方法和`save_pretrained()`方法。
-
+Transformer 模型可以分为三类：
+- GPT-like (`自回归`Transformer模型)
+- BERT-like (`自编码`Transformer模型)
+- BART/T5-like (`序列到序列`的 Transformer模型)
 
 ### 模型信息
 
@@ -693,7 +1729,7 @@ huggingface transformers 框架主要有三个类
 额外的文件
 - merges.txt、special_tokens_map.json、added_tokens.json、tokenizer_config.json、sentencepiece.bpe.model等
 
-这几类是tokenizer需要使用的文件
+这几类是 tokenizer 需要使用的文件
 
 以 GPT-2 模型为例
 
@@ -1070,6 +2106,10 @@ tokenizer.save_pretrained(save_directory) # 保存词表
 model.save_pretrained(save_directory) # 保存模型
 ```
 
+保存后的结果
+- config.json 模型结构信息
+- pytorch_model.bin 模型所有权重
+
 #### Safetensors
 
 Safetensors 是一种用于在移动设备上运行模型的文件格式。 安全性、快速加载和兼容性等优点。 
@@ -1161,390 +2201,6 @@ Before diving deeper into the specifics of each concept we first have a look at 
   - Transformer-deploy推理服务器用的是Nvidia Triton。推理引擎为Microsoft ONNX Runtime（用于CPU和GPU推理）和Nvidia TensorRT（仅限 GPU）。如果想在GPU上获得一流的性能，Nvidia Triton+Nvidia TensorRT这样的组合无疑是最佳选择。虽然TensorRT用起来有点难，但它确实能比用Pytorch快5～10倍。
   - 在实际性能测试中，Transformer-deploy在batch size为1、token分别为16和128的输入序列中的推理速度，都比付费的Hugging Face Infinity要快：Transformer-deploy在token为16时要1.52ms，Infinity则需要1.7ms；token为128时需要1.99ms，Infinity则需要2.5ms。
 
-### pipeline
-
-pipeline API可以快速体验 Transformers。它将模型的预处理、后处理等步骤包装起来，直接定义好任务名称后输出文本，得到结果。这是一个高级的API，可以领略到transformers 这个库的强大且友好。
-
-用 [pipeline API](https://huggingface.co/docs/transformers/v4.26.1/en/main_classes/pipelines#pipelines)，输入任务名称，默认会选择特定已经存好的模型文件，然后会进行下载并且缓存。
-
-#### pipeline 流程
-
-接收文本后，通常有三步：**preprocess** （Tokenizer） -> **fit model**（训练模型） -> **postprocessing** 
-- （1）输入文本被预处理成机器可以理解的格式
-  - 将输入的文本进行分词（Tokenizer）
-    - 变成：words，subwords，或者symbols，这些统称为token
-  - 将每个token映射为一个integer
-  - 为输入添加模型需要的特殊字符。
-- （2）被处理后的输入被传入模型中
-- （3）模型的预测结果经过后处理，得到人类可以理解的结果
-
-![](https://pic2.zhimg.com/v2-d9b23d02a7e5e1988ba8f902d7da9c0d_r.jpg)
-
-注意：
-- 所有的预处理阶段（Preprocessing），都要**与模型预训练阶段保持一致**，所以要从Model Hub 中下载预处理的信息。
-- 用 AutoTokenizer 的 from_pretrained 方法进行tokenizer 的加载，通过把tokenizer 的checkpoint 导入，它可以自动获取tokenizer需要的数据并进行缓存（下次无需下载）。
-
-```py
-from transformers import AutoTokenizer
-from transformers import AutoModel
-
-checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
-tokenizer = AutoTokenizer.from_pretrained(checkpoint) # 加载分词器
-model = AutoModel.from_pretrained(checkpoint) # 加载模型
-
-raw_inputs = [
-    "I've been waiting for a HuggingFace course my whole life.",
-    "I hate this so much!",
-]
-# ----- 文本id化 -----
-# 指定返回的张量类型（PyTorch、TensorFlow 或普通 NumPy），用 return_tensors 参数
-inputs = tokenizer(raw_inputs, padding=True, truncation=True, return_tensors="pt")
-print(inputs) # 返回一个包含两个键的字典，input_ids和attention_mask
-# ----- 模型 ------
-outputs = model(**inputs)
-print(outputs.last_hidden_state.shape)
-# 输出 torch.Size([2, 16, 768])
-
-```
-
-返回
-
-```
-{
-    'input_ids': tensor([
-        [  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 12172, 2607,  2026,  2878,  2166,  1012,   102],
-        [  101,  1045,  5223,  2023,  2061,  2172,   999,   102,     0,     0,     0,     0,     0,     0,     0,     0]
-    ]), 
-    'attention_mask': tensor([
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ])
-}
-```
-
-![](https://pic3.zhimg.com/80/v2-f51f9dae359ec191229b35028d0897ca_1440w.webp)
-
-Transformers 中有许多不同的架构可用，每一种架构都围绕着处理特定任务而设计，清单：
-* Model (retrieve the hidden states)
-* ForCausalLM
-* ForMaskedLM
-* ForMultipleChoice
-* ForQuestionAnswering
-* ForSequenceClassification
-* ForTokenClassification
-* and others
-
-3）Post-Processing
-- 模型最后一层输出的原始非标准化分数。要转换为概率，它们需要经过一个SoftMax层（所有 Transformers 模型都输出 logits，因为用于训练的损耗函数一般会将最后的激活函数(如SoftMax)与实际损耗函数(如交叉熵)融合 
-
-```py
-import torch
-
-predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
-print(predictions)
-```
-
-
-
-#### pipeline 任务
-
-目前支持的pipeline 如下：
-- feature-extraction (get the vector representation of a text) 特征抽取
-- fill-mask 掩码回复
-- ner (named entity recognition) 命名实体识别
-- question-answering 问答
-- sentiment-analysis 情感分析
-- summarization 文本摘要
-- text-generation 文本生成
-- translation 机器翻译
-- zero-shot-classification 零样本分类
-
-最新pipeline类型：详见[官网介绍](https://huggingface.co/transformers/main_classes/pipelines.html)
-- AudioClassificationPipeline
-- AutomaticSpeechRecognitionPipeline
-- ConversationalPipeline
-- FeatureExtractionPipeline
-- FillMaskPipeline
-- ImageClassificationPipeline
-- ObjectDetectionPipeline
-- QuestionAnsweringPipeline
-- SummarizationPipeline
-- TableQuestionAnsweringPipeline
-- TextClassificationPipeline
-- TextGenerationPipeline
-- Text2TextGenerationPipeline
-- TokenClassificationPipeline
-- TranslationPipeline
-- ZeroShotClassificationPipeline
-
-所有的API都可以通过 搜索，并且在线测试
-
-#### 任务模型
-
-主要的模型：
-- 自回归：GPT2、Transformer-XL、XLNet
-- 自编码：BERT、ALBERT、RoBERTa、ELECTRA
-- Seq2Seq：BART、Pegasus、T5
-
-各种任务的代表模型
-
-| Model	 | Examples	| Tasks |
-|---|---|---|
-| Encoder 编码器模型 | ALBERT, BERT, DistilBERT, ELECTRA, RoBERTa	| Sentence classification, named entity recognition, extractive question answering <br>适合需要理解完整句子的任务，例如句子分类、命名实体识别（以及更一般的单词分类）和提取式问答 |
-| Decoder 解码器模型 | CTRL, GPT, GPT-2, Transformer XL	| Text generation <br>解码器模型的预训练通常围绕预测句子中的下一个单词。这些模型最适合涉及文本生成的任务 |
-| Encoder-decoder 序列到序列模型 | BART, T5, Marian, mBART | Summarization, translation, generative question answering <br>序列到序列模型最适合围绕根据给定输入生成新句子的任务，例如摘要、翻译或生成式问答。|
-
-#### Text classification
-
-默认checkpoint 是 distilbert-base-uncased-finetuned-sst-2-english
-
-```python
-from transformers import pipeline
-
-#checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
-#tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-classifier = pipeline("sentiment-analysis")
-# 指定模型，硬件环境
-pipe = pipeline("sentiment-analysis", model=model_name, device=0)
-# 单句
-classifier("I've been waiting for a HuggingFace course my whole life.")
-# 多句
-classifier([
-    "I've been waiting for a HuggingFace course my whole life.", 
-    "I hate this so much!"
-])
-```
-
-
-```python
-## ------------ PYTORCH CODE ------------ 
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
-
-model_name = "bert-base-cased-finetuned-mrpc"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSequenceClassification.from_pretrained(model_name)
-
-classes = ["not paraphrase", "is paraphrase"]
-
-sequence_0 = "The company HuggingFace is based in New York City"
-sequence_1 = "Apples are especially bad for your health"
-sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
-
-# The tokenizer will automatically add any model specific separators (i.e. <CLS> and <SEP>) and tokens to
-# the sequence, as well as compute the attention masks.
-paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="pt")
-not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="pt")
-
-paraphrase_classification_logits = model(**paraphrase).logits
-not_paraphrase_classification_logits = model(**not_paraphrase).logits
-
-paraphrase_results = torch.softmax(paraphrase_classification_logits, dim=1).tolist()[0]
-not_paraphrase_results = torch.softmax(not_paraphrase_classification_logits, dim=1).tolist()[0]
-
-# Should be paraphrase
-for i in range(len(classes)):
-    print(f"{classes[i]}: {int(round(paraphrase_results[i] * 100))}%")
-
-# Should not be paraphrase
-for i in range(len(classes)):
-    print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
-
-## ------------ TENSORFLOW CODE ------------ 
-from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
-import tensorflow as tf
-
-model_name = "bert-base-cased-finetuned-mrpc"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = TFAutoModelForSequenceClassification.from_pretrained(model_name)
-
-classes = ["not paraphrase", "is paraphrase"]
-
-sequence_0 = "The company HuggingFace is based in New York City"
-sequence_1 = "Apples are especially bad for your health"
-sequence_2 = "HuggingFace's headquarters are situated in Manhattan"
-
-# The tokenizer will automatically add any model specific separators (i.e. <CLS> and <SEP>) and tokens to
-# the sequence, as well as compute the attention masks.
-paraphrase = tokenizer(sequence_0, sequence_2, return_tensors="tf")
-not_paraphrase = tokenizer(sequence_0, sequence_1, return_tensors="tf")
-
-paraphrase_classification_logits = model(paraphrase).logits
-not_paraphrase_classification_logits = model(not_paraphrase).logits
-
-paraphrase_results = tf.nn.softmax(paraphrase_classification_logits, axis=1).numpy()[0]
-not_paraphrase_results = tf.nn.softmax(not_paraphrase_classification_logits, axis=1).numpy()[0]
-
-# Should be paraphrase
-for i in range(len(classes)):
-    print(f"{classes[i]}: {int(round(paraphrase_results[i] * 100))}%")
-
-# Should not be paraphrase
-for i in range(len(classes)):
-    print(f"{classes[i]}: {int(round(not_paraphrase_results[i] * 100))}%")
-```
-
-
-#### Zero-shot classification
-
-文本分类标注往往非常耗时，huggingface 提供了0样本分类的pipeline， 用户只需要传入文本内容，以及可能的分类标签，就可以得到每个标签的概率，这样子可以提供标注人员参考结果，大大提高标注效率。
-
-```python
-from transformers import pipeline
-
-classifier = pipeline("zero-shot-classification")
-classifier(
-    "This is a course about the Transformers library",
-    candidate_labels=["education", "politics", "business"],
-)
-{'sequence': 'This is a course about the Transformers library',
- 'labels': ['education', 'business', 'politics'],
- 'scores': [0.8445963859558105, 0.111976258456707, 0.043427448719739914]}
-```
-
-#### Text generation
-
-[官方 generate 方法解释](https://huggingface.co/docs/transformers/main_classes/text_generation)
-
-文本生成任务，是指你输入开头的话术（prompt），然后让机器自动帮你生成完剩下的句子。Text generation 中包含了一些随机因子，因此每次生成的结果都可能不同。
-
-```python
-from transformers import pipeline
-
-generator = pipeline("text-generation")
-generator("In this course, we will teach you how to")
-[{'generated_text': 'In this course, we will teach you how to understand and use '
-                    'data flow and data interchange when handling user data. We '
-                    'will be working with one or more of the most commonly used '
-                    'data flows — data flows of various types, as seen by the '
-                    'HTTP'}]
-```
-
-你可以设置参数 num_return_sequences 选择返回的结果个数，也可以通过 max_length 限制每次返回的结果句子的长度.
-
-并且模型选择可以通过 model 设置，这边选择 distilgpt2
-
-```python
-from transformers import pipeline
-
-generator = pipeline("text-generation", model="distilgpt2")
-generator(
-    "In this course, we will teach you how to",
-    max_length=30,
-    num_return_sequences=2,
-)
-[{'generated_text': 'In this course, we will teach you how to manipulate the world and '
-                    'move your mental and physical capabilities to your advantage.'},
- {'generated_text': 'In this course, we will teach you how to become an expert and '
-                    'practice realtime, and with a hands on experience on both real '
-                    'time and real'}]
-```
-
-#### Mask filling
-
-掩码恢复是将一个句子中随机遮掩<mask>的词给恢复回来，top_k 控制了概率最大的 top k 个词被返回。
-
-例如：
-
-```python
-from transformers import pipeline
-
-unmasker = pipeline("fill-mask")
-unmasker("This course will teach you all about <mask> models.", top_k=2)
-[{'sequence': 'This course will teach you all about mathematical models.',
-  'score': 0.19619831442832947,
-  'token': 30412,
-  'token_str': ' mathematical'},
- {'sequence': 'This course will teach you all about computational models.',
-  'score': 0.04052725434303284,
-  'token': 38163,
-  'token_str': ' computational'}]
-```
-
-#### Named entity recognition
-
-命名实体是被是指如何将文本中的实体，例如：persons, locations, or organizations，识别出来的任务：
-
-```python
-from transformers import pipeline
-
-ner = pipeline("ner", grouped_entities=True)
-ner("My name is Sylvain and I work at Hugging Face in Brooklyn.")
-[{'entity_group': 'PER', 'score': 0.99816, 'word': 'Sylvain', 'start': 11, 'end': 18}, 
- {'entity_group': 'ORG', 'score': 0.97960, 'word': 'Hugging Face', 'start': 33, 'end': 45}, 
- {'entity_group': 'LOC', 'score': 0.99321, 'word': 'Brooklyn', 'start': 49, 'end': 57}
-]
-```
-
-注意这边设置了 grouped_entities=True，这就告诉模型，将同一个entity的部分，聚合起来，例如这边的 “Hugging” and “Face” 是一个实体organization，所以就把它给聚合起来。
-
-在数据预处理的部分， Sylvain 被拆解为4 pieces: S, ##yl, ##va, and ##in. 这边后处理也会将这些给聚合起来。
-
-#### Question answering
-
-阅读理解的问题，是通过文本内容，以及提出的问题，得到答案：
-
-```python
-from transformers import pipeline
-
-question_answerer = pipeline("question-answering")
-question_answerer(
-    question="Where do I work?",
-    context="My name is Sylvain and I work at Hugging Face in Brooklyn"
-)
-{'score': 0.6385916471481323, 'start': 33, 'end': 45, 'answer': 'Hugging Face'}
-```
-
-#### Summarization
-
-摘要问题，是将长文本的进行句子的压缩，得到简练的句子表达。
-
-```python
-from transformers import pipeline
-
-summarizer = pipeline("summarization")
-summarizer("""
-    America has changed dramatically during recent years. Not only has the number of 
-    graduates in traditional engineering disciplines such as mechanical, civil, 
-    electrical, chemical, and aeronautical engineering declined, but in most of 
-    the premier American universities engineering curricula now concentrate on 
-    and encourage largely the study of engineering science. As a result, there 
-    are declining offerings in engineering subjects dealing with infrastructure, 
-    the environment, and related issues, and greater concentration on high 
-    technology subjects, largely supporting increasingly complex scientific 
-    developments. While the latter is important, it should not be at the expense 
-    of more traditional engineering.
-
-    Rapidly developing economies such as China and India, as well as other 
-    industrial countries in Europe and Asia, continue to encourage and advance 
-    the teaching of engineering. Both China and India, respectively, graduate 
-    six and eight times as many traditional engineers as does the United States. 
-    Other industrial countries at minimum maintain their output, while America 
-    suffers an increasingly serious decline in the number of engineering graduates 
-    and a lack of well-educated engineers.
-""")
-[{'summary_text': ' America has changed dramatically during recent years . The '
-                  'number of engineering graduates in the U.S. has declined in '
-                  'traditional engineering disciplines such as mechanical, civil '
-                  ', electrical, chemical, and aeronautical engineering . Rapidly '
-                  'developing economies such as China and India, as well as other '
-                  'industrial countries in Europe and Asia, continue to encourage '
-                  'and advance engineering .'}]
-```
-
-跟text generation 任务一样，我们也可以设置参数： max_length or a min_length ，限制文本的长度。
-
-#### Translation
-
-文本翻译，你可以在 Model Hub 中，找到特定的翻译模型，例如法翻英的模型， Helsinki-NLP/opus-mt-fr-en：
-
-```python
-from transformers import pipeline
-
-translator = pipeline("translation", model="Helsinki-NLP/opus-mt-fr-en")
-translator("Ce cours est produit par Hugging Face.")
-[{'translation_text': 'This course is produced by Hugging Face.'}]
-```
 
 ### generate
 
@@ -2232,7 +2888,7 @@ input_text = "Here is some text to encode"
 # 通过tokenizer把文本变成 token_id
 input_ids = tokenizer.encode(input_text, add_special_tokens=True)
 # input_ids: [101, 2182, 2003, 2070, 3793, 2000, 4372, 16044, 102]
-input_ids = torch.tensor([input_ids])
+input_ids = torch.tensor([input_ids]) # 矩阵转化为张量, 输入模型
 # 中文测试
 input_ids = torch.tensor(tokenizer.encode("遇见被老师提问问题", add_special_tokens=True)).unsqueeze(0)	# 增加一个维度因为输入到Bert模型中要求二维(Batch_size, seq_len)
 print("input_ids: ", input_ids)
@@ -2513,95 +3169,6 @@ class BertPooler(nn.Module):
 在这个文件中还有上述基础的BertModel的进一步的变化，比如BertForMaskedLM，BertForNextSentencePrediction这些是Bert加了预训练头的模型，还有BertForSequenceClassification， BertForQuestionAnswering 这些加上了特定任务头的模型。
 
 [Huggingface简介及BERT代码浅析](https://zhuanlan.zhihu.com/p/120315111)
-
-### pipeline NLP快速应用
-
-[参考文章](https://blog.csdn.net/YangStudent/article/details/118879560)：pipeline涉及多个NLP任务，transformers库，pipline函数
-- 分类，实体识别，生成，预测，问答，摘要，翻译，相似度，迁移学习，预训练模型，transformer概念
-- 类似sklearn的pipeline流水线机制
-
-```python
-from transformers import pipeline
- 
-# 1. 情感分类
-classfier1 = pipeline("sentiment-analysis")
-print(classfier1("My wife is a beautiful girl"))
-# [{'label': 'POSITIVE', 'score': 0.9998767971992493}]
- 
-# print(classfier1('I am pool', 'My PBL is beautiful, but I love it'))
-# [{'label': 'NEGATIVE', 'score': 0.7211759090423584}, {'label': 'POSITIVE', 'score': 0.9998372197151184}]
- 
-classfier2  = pipeline("zero-shot-classification")
-print(classfier2(
-    "This a project about the Style transfer",
-    candidate_labels = ['education', 'politics', 'business']
-))
-# {'sequence': 'This a project about the Style transfer', 'labels': ['business', 'education', 'politics'], 'scores': [0.673454225063324, 0.17288313806056976, 0.15366260707378387]}
- 
-# 2.文本生成
-generator1 = pipeline("text-generation") # 默认的文本生成模型是gpt2
-print(generator1(
-    "I owe 2300 yuan",
-    max_length = 50, # 指定生成句的大小
-    num_return_sequence = 2, # 指定生成的句子个数
-))
-# [{'generated_text': "I owe 2300 yuan from the bank since it made me a few dollars but it's just so damn hard to pay. I'm on a two-yearly policy and the current rate I'm using has to be 100 yuan. So, I"}]
-#
- 
-generator2 = pipeline("text-generation", model="distilgpt2") # 指定模型为distilgpt2,轻量的gpt2
-print(generator2(
-    "I owe 2300 yuan"
-))
-# [{'generated_text': 'I owe 2300 yuan to the country.”'}]
- 
-# 3.预测文本遮罩
-unmasker = pipeline('fill-mask') # 基于bert
-print(unmasker('My favorite girl is <mask>'))
-# top_k的含义是返回最有可能的两种结果
-# [{'sequence': '<s>My favorite girl is…</s>', 'score': 0.035072073340415955, 'token': 1174, 'token_str': 'âĢ¦'}, {'sequence': '<s>My favorite girl is...</s>', 'score': 0.034020423889160156, 'token': 734, 'token_str': '...'}, {'sequence': '<s>My favorite girl is Barbie</s>', 'score': 0.01795039512217045, 'token': 31304, 'token_str': 'ĠBarbie'}, {'sequence': '<s>My favorite girl is Cinderella</s>', 'score': 0.011553746648132801, 'token': 34800, 'token_str': 'ĠCinderella'}, {'sequence': '<s>My favorite girl is ______</s>', 'score': 0.010862686671316624, 'token': 47259, 'token_str': 'Ġ______'}]
- 
-# 4.命名实体识别，识别一句话中的，实体，如人，组织，或地点
-ner = pipeline('ner', grouped_entities=True) # grouped_entities=True, 允许相似的实体分组到同一个组内
-print(ner("I'm working in CCNU , is a beautiful school , and I like Wollongong"))
-# [{'entity_group': 'I-ORG', 'score': 0.9960816502571106, 'word': 'CCNU'}, {'entity_group': 'I-LOC', 'score': 0.9867993593215942, 'word': 'Wollongong'}]
- 
- 
-# 5.提取问题答案 在context中提取出question的答案
-question_answer = pipeline('question-answering')
-print(question_answer(
-    question = 'Who are you?',
-    context = 'I am XsY and good luck to see you',
-))
-# {'score': 0.6727198958396912, 'start': 5, 'end': 8, 'answer': 'XsY'}
- 
-# 6.文本摘要
-summarizer = pipeline('summarization')
-print(summarizer("""    America has changed dramatically during recent years. Not only has the number of 
-    graduates in traditional engineering disciplines such as mechanical, civil, 
-    electrical, chemical, and aeronautical engineering declined, but in most of 
-    the premier American universities engineering curricula now concentrate on 
-    and encourage largely the study of engineering science. As a result, there 
-    are declining offerings in engineering subjects dealing with infrastructure, 
-    the environment, and related issues, and greater concentration on high 
-    technology subjects, largely supporting increasingly complex scientific 
-    developments. While the latter is important, it should not be at the expense 
-    of more traditional engineering.
-    Rapidly developing economies such as China and India, as well as other 
-    industrial countries in Europe and Asia, continue to encourage and advance 
-    the teaching of engineering. Both China and India, respectively, graduate 
-    six and eight times as many traditional engineers as does the United States. 
-    Other industrial countries at minimum maintain their output, while America 
-    suffers an increasingly serious decline in the number of engineering graduates 
-    and a lack of well-educated engineers.
-    """))
-# [{'summary_text': ' America has changed dramatically during recent years . The number of engineering graduates in the U.S. has declined in traditional engineering disciplines such as mechanical, civil, electrical, chemical, and aeronautical engineering . Rapidly developing economies such as China and India, as well as other industrial countries, continue to encourage and advance the teaching of engineering .'}]
- 
- 
-# 7.翻译
-translator = pipeline('translation', model='Helsinki-NLP/opus-mt-zh-en')
-print(translator('我是真的很穷不要再坑我了'))
-# [{'translation_text': "I'm really poor. Don't lie to me again."}]
-```
 
 
 

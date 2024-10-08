@@ -5,7 +5,7 @@ date:   2019-06-05 23:41:00
 categories: 人工智能
 tags: 人工智能 AI 清华大学 天机 自行车 AGI 类脑 类机 waitbutwhy 脑机接口 斯坦福
 excerpt: 脑机接口原理及应用
-permalink: /brain
+permalink: /bci
 mathjax: true
 ---
 

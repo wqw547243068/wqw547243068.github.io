@@ -38,6 +38,7 @@ type: page
 - 大数据文摘+清华+SoAI共同承办的AI培训班：[The School of AI Beijing](https://wqw547243068.github.io/school-of-ai-beijing)
 ![](https://wqw547243068.github.io/school-of-ai-beijing/other/bdd_siraj.png)
 - 雷锋网上开的Python入门AI课程：[有趣的Python](https://wqw547243068.github.io/Python-learning), [AI研习社课程](https://mooc.yanxishe.com/course/489)
+
 [![](https://static.mooc.ai/files/course/2018/05-08/17590372d80d143595.jpg)](http://www.mooc.ai/course/489)
 
 ## 联系我
@@ -47,7 +48,6 @@ type: page
 * [知乎](https://www.zhihu.com/people/wangqiwen/activities)
 * [CSDN](http://blog.csdn.net/wqw547243068)
 
-![]({{site.url}}/wqw/fig/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0.jpg)
 
 ## 关于本站
 

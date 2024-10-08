@@ -3,10 +3,11 @@ layout: post
 title:  "对比学习(无监督)综述-Contrastive Learning"
 date:   2021-03-29 17:24:00
 categories: 机器学习
-tags:  对比学习 无监督 表示学习
+tags:  对比学习 无监督 表示学习 损失函数
 excerpt: 对比学习综述
 author: 鹤啸九天
 mathjax: true
+permalink: /contrastive
 ---
 
 * content
@@ -73,11 +74,15 @@ Sentence Embeddings 即能表征句子语义的特征向量
 
 为了解决该问题，可以使用**对比学习**的方法对模型进行预训练，从而使模型能够学习到更好的句子语义表示，并且更好地应用到下游任务中。
 
-## SimCSE
+# SimCSE
 
-[SimCSE：简单有效的句向量对比学习方法](https://mp.weixin.qq.com/s/7glAjhvBfiWG3bWP-uI5Qg), EMNLP2021, 陈丹琦的一篇论文[SimCSE](https://github.com/princeton-nlp/SimCSE)。
+
+## 介绍
+
+[SimCSE：简单有效的句向量对比学习方法](https://mp.weixin.qq.com/s/7glAjhvBfiWG3bWP-uI5Qg), EMNLP 2021, `陈丹琦`的论文
 - 一种简单有效的NLP对比学习方法，通过Dropout的方式进行正样本增强，模型能够学习到良好的句向量表示。按照惯例，我们也对该模型在STS-B数据集上进行了实验复现。
-- [论文链接](https://arxiv.org/abs/2104.08821)
+- 论文: [SimCSE: Simple Contrastive Learning of Sentence Embeddings](https://arxiv.org/abs/2104.08821) 
+- [SimCSE 代码](https://github.com/princeton-nlp/SimCSE)
 - [实验复现代码](https://github.com/yangjianxin1/SimCSE)
 
 为什么计算相似度时要对句子向量做L2正则？
@@ -86,7 +91,7 @@ Sentence Embeddings 即能表征句子语义的特征向量
 - 另一方面如果模型表示能力足够好，能够把相似的句子在超球面上聚集到较近区域，那么很容易使用线性分类器把某类和其它类区分开,[图示](https://img-blog.csdnimg.cn/20210430160326135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTgzOTY5Mw==,size_16,color_FFFFFF,t_70)。当然在图像领域上很多实验也证明了，增加L2正则确实能提升模型效果。
 
 总结
-- 相比于Pre-trained Bert, Fine-tune Sup. Bert, Bert-whitening等模型，SimCSE有极大程度的优势，可以说是碾压。
+- 相比于 Pre-trained Bert, Fine-tune Sup. Bert, Bert-whitening等模型，SimCSE 有极大程度的优势，可以说是碾压。
 - 对于 Unsup. SimCSE来说，CLS 的效果远好于 Pooler，且 Unsup. SimCSE只需要8000+个句子样本即可收敛，且多样本反而会使效果变差。
 - 对于 Sup. SimCSE来说，$Batchsize_{128}+CLS$ 达到最好效果，尽管 Pooler最终能得到接近的效果，但需要的数据量是CLS的三倍左右。
 
@@ -96,12 +101,118 @@ Sentence Embeddings 即能表征句子语义的特征向量
 
 【2021-8-31】[张俊林：对比学习在微博内容表示的应用](https://mp.weixin.qq.com/s/MteoquDoks4kuVPA9jzT_Q)
 
-**对比学习**可以看作是一种新型的**自监督学习范式**，具备广阔发展前景。对比学习跟以下两个目前比较流行的技术关联较深。
-- Bert采用的**自监督学习**。Bert采用自监督学习，节约了大量的人工标注成本，可以有效发挥海量数据的潜力。对比学习借鉴了自监督学习的思路，旨在充分利用海量的无标注数据；
-- **度量学习**。`度量学习`的基本思路是让**正例**特征编码内容距离**拉近**，**负例**编码结果距离**推远**。其中的正例一般是源自有监督数据。对比学习主体思路跟度量学习接近，最大的区别在于其正例是由自监督方式得来。
-综上，可以认为对比学习是一种**自监督**版本的**度量学习**。
+**对比学习**是一种新型**自监督学习范式**。对比学习跟以下两个目前比较流行的技术关联较深。
+- Bert采用的**自监督学习**。Bert 采用自监督学习，节约了大量的人工标注成本，可以有效发挥海量数据的潜力。对比学习借鉴了自监督学习的思路，旨在充分利用海量的无标注数据；
+- **度量学习**。`度量学习`基本思路是让**正例**特征编码内容距离**拉近**，**负例**编码结果距离**推远**。其中的正例一般是源自有监督数据。对比学习主体思路跟度量学习接近，最大的区别在于其正例是由自监督方式得来。
 
-对比学习起源于计算机视觉任务，核心思想是拉近每个样本与正样本之间的距离，拉远其与负样本之间的距离。
+综上，可以认为`对比学习`是一种**自监督**版本的**度量学习**。
+
+`对比学习`起源于计算机视觉任务，核心思想: 拉近每个样本与正样本之间的距离，拉远其与负样本之间的距离。
+
+分析
+- `无监督学习`：通过将输入句子预测自身，使用标准的dropout作为**噪声**，这种方法出人意料地有效，与以前的监督方法表现相当。
+- `监督学习`：利用自然语言推理（NLI）数据集中的标注句子对，通过将“蕴含”对作为正例，“矛盾”对作为硬负例，进一步提高性能。
+
+| 	        | 正例/蓝框 | 	负例/黄框 |
+| --- | --- | ---- |
+| 无监督学习	| 预测自己	| batch内其它无关的sentence |
+| 有监督学习	| 支持假设的蕴含sentence	| 不支持假设的sentence、batch内其它无关的sentence |
+
+无监督SimCSE：
+- 将同一个文本送入预训练的编码器两次，经过两次应用Dropout后, 得到两个不同的embedding向量作为"正例对"，
+- 将同一批次内的其他文本作为"负例对"。
+- 再计算批次内负采样交叉熵损失。
+
+有监督SimCSE：
+- 首先，前序研究证实，NLI自然语言推理，在sentence emb中有用处。
+- NLI之后，有三种结果：entailment、neural、contradiction
+
+## SimCSE
+
+【2022-4-7】[SimCSE:简单有效的句向量对比学习方法](https://www.aisoutu.com/a/2363026)
+- EMNLP2021的一篇[论文](https://arxiv.org/abs/2104.08821)：SimCSE。一种简单有效的NLP**对比学习**方法，通过Dropout的方式进行正样本增强，模型能够学习到良好的句向量表示。
+- [实验复现代码](https://github.com/yangjianxin1/SimCSE)
+- 中文数据集的复现结果可以参考[苏剑林的复现实验](https://kexue.fm/archives/8348)
+
+对比学习起源于计算机视觉任务，核心思想: **拉近**每个样本与**正**样本之间的距离，拉**远**其与**负**样本之间的距离。
+
+如何为每个样本构造**正样本与负样本**是对比学习中的关键问题。
+- 负样本的构造往往比较容易，随机采样或者把同一个batch里面的其他样本作为负样本即可，难点在于如何构造正样本。
+- 对于图像来说，对图像进行翻转、裁剪、旋转、扭曲等操作即可很容易地生成正样本。
+- 对于NLP来说，往往会采用替换、删除、添加词语的方法来进行正样本构造，但是上述操作非常容易引入噪声，并且改变原有文本的语义。
+  - 例如对【我爱你】进行替换操作得到【我恨你】，就改变的原来的文本的语义。
+
+为了解决上述问题，`SimCSE`论文中提出了一种基于Dropout的**无监督对比学习**方法，同时也对有监督对比学习方法进行了探索。
+- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711085915213.png)
+
+有两种形式：
+- **无监督** unsupervised SimCSE。将相同的输入语句两次传递给经过预训练的编码器，并通过应用独立采样的dropout掩码获得两个嵌入，作为“正例对”。通过仔细的分析，作者们发现dropout本质上是作为数据扩充来使用，而删除它会导致表示崩溃。
+- **有监督** supervised SimCSE。利用了基于**自然语言推理**（NLI）数据集进行句子嵌入学习，并将受监督的句子对纳入对比学习中。
+
+### 无监督SimCSE
+
+Dropout是一种用来防止神经网络过拟合的方法，在训练的时候，通过dropout mask的方式，模型中的每个神经元都有一定的概率会失活。所以在训练的每个step中，都相当于在训练一个不同的模型。在推理阶段，模型最终的输出相当于是多个模型的组合输出
+- Dropout可以视为一种数据增强的手段，通过dropout mask的方式，模型在编码同一个句子的时候，引入了数据噪声，从而为同一个句子生成不同的句向量，并且不影响其语义信息。其中dropout rate的大小可以视为引入的噪声的强度。
+- 为了验证模型dropout rate对无监督SimCSE的影响，作者在STS-B数据集上进行了消融实验，其中训练数据是作者从维基百科中随机爬取的十万个句子。
+
+[图解](https://img-blog.csdnimg.cn/20210430153842722.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTgzOTY5Mw==,size_16,color_FFFFFF,t_70)
+
+
+损失函数计算方法
+
+```python
+def simcse_unsup_loss(y_pred, device, temp=0.05):
+    """无监督的损失函数
+    y_pred (tensor): bert的输出, [batch_size * 2, dim]
+    """
+    # 得到y_pred对应的label, [1, 0, 3, 2, ..., batch_size-1, batch_size-2]
+    y_true = torch.arange(y_pred.shape[0], device=device)
+    y_true = (y_true - y_true % 2 * 2) + 1
+    # batch内两两计算相似度, 得到相似度矩阵(对角矩阵)
+    sim = F.cosine_similarity(y_pred.unsqueeze(1), y_pred.unsqueeze(0), dim=-1)
+    # 将相似度矩阵对角线置为很小的值, 消除自身的影响
+    sim = sim - torch.eye(y_pred.shape[0], device=device) * 1e12
+    # 相似度矩阵除以温度系数
+    sim = sim / temp
+    # 计算相似度矩阵与y_true的交叉熵损失
+    # 计算交叉熵，每个case都会计算与其他case的相似度得分，得到一个得分向量，目的是使得该得分向量中正样本的得分最高，负样本的得分最低
+    loss = F.cross_entropy(sim, y_true)
+    return torch.mean(loss)
+```
+
+
+### 有监督SimCSE
+
+作者还尝试了使用各种人工标注的数据集对模型进行有监督训练，包括QQP、Flickr30k、ParaNMT、NLI数据集。
+- 与无监督SimCSE一样，作者利用数据集中人工标注的正样本对，使用InfoNCE loss对模型进行训练，可以看到使用SNLI+MNLI数据集训练的模型效果最好，并且其指标也比无监督SimCSE提高了2.4个点。
+
+对于无监督SimCSE与有监督SimCSE，论文的实验结果如下表，可以看到，在STS任务中，无论是无监督还是有监督的训练方法，都比之前的方法有了较大幅度的提高，这证明了论文方法的有效性。
+
+[图解](https://img-blog.csdnimg.cn/20210430162642209.png)
+
+损失函数计算方法
+
+```python
+def simcse_sup_loss(y_pred, device, temp=0.05):
+    """
+    有监督损失函数
+    y_pred (tensor): bert的输出, [batch_size * 3, dim]
+    """
+    similarities = F.cosine_similarity(y_pred.unsqueeze(0), y_pred.unsqueeze(1), dim=2)
+    row = torch.arange(0, y_pred.shape[0], 3)
+    col = torch.arange(0, y_pred.shape[0])
+    col = col[col % 3 != 0]
+
+    similarities = similarities[row, :]
+    similarities = similarities[:, col]
+    similarities = similarities / temp
+
+    y_true = torch.arange(0, len(col), 2, device=device)
+    loss = F.cross_entropy(similarities, y_true)
+    return loss
+```
+
+
 
 ## 方法
 
@@ -778,7 +889,9 @@ VAE的思想是用 ![[公式]](https://www.zhihu.com/equation?tex=r%28c%29) 【�
  
 ![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+I%28X%2CC%29%26%5Cleq+E_%7Bp%28x%2Cc%29%7D%5Cleft%28+%5Cfrac%7Bp%28c%5Cmid+x%29%7D%7Br%28c%29%7D+%5Cright%29%5C%5C+%26%5Capprox+E_%7Bp%28c+%5Cmid+x%29%7D%5Cleft%28+%5Cfrac%7Bp%28c%5Cmid+x%29%7D%7Br%28c%29%7D+%5Cright%29%5C%5C+%26%3DD_%7BKL%7D%28p%28c%5Cmid+x%29%7C%7Cr%28c%29%29%5C%5C+%5Cend%7Baligned%7D%5C%5C)
  
-### CLUB估计\[ICML2020\]
+### CLUB估计
+
+ICML2020
  
 由于没有进行先验估计，所以是更加紧的上界。
  
@@ -799,7 +912,7 @@ VAE的思想是用 ![[公式]](https://www.zhihu.com/equation?tex=r%28c%29) 【�
  
 ### Triplet Loss
  
-### 核心代码
+#### 核心代码
 
 ```python
 def cl_forward(cls,...): #对比学习的部分代码
@@ -864,7 +977,7 @@ def cl_forward(cls,...): #对比学习的部分代码
     loss = loss_fct(cos_sim, labels)
 ```
 
-### 结论
+#### 结论
  
 我们将三元组重新描述为 ![[公式]](https://www.zhihu.com/equation?tex=%28x%2Cx%5E%2B%2Cx%5E-%29) 。
  
@@ -874,7 +987,7 @@ def cl_forward(cls,...): #对比学习的部分代码
  
 ![[公式]](https://www.zhihu.com/equation?tex=L%3Dmax%5C%7Bd%28x%2Cx%5E%2B%29-d%28x%2Cx%5E-%29%2B%5Calpha%2C0%5C%7D%5C%5C)
  
-### 原理
+#### 原理
  
 Triplet Loss，即三元组损失，是Google在2015年发表的FaceNet论文中提出\[2\]。
  
@@ -902,11 +1015,11 @@ Triplet Loss，即三元组损失，是Google在2015年发表的FaceNet论文中
  
 【这部分证明参考\[b\]博客，这位大佬写的非常详细，这里做了一些简化方便讲解。】
  
-### 结论
+#### 结论
  
 ![[公式]](https://www.zhihu.com/equation?tex=J%5Ec_%7BNCE%7D%3D%5Cmathbb+%7BE%7D%7Bw%5Cthicksim++%5Ctilde+p%28w%7Cc%29%7D+%5Clog%5Cfrac%7Bu%5Ctheta%28w%2Cc%29%7D%7Bu_%5Ctheta%28w%2Cc%29%2Bkq%28w%29%7D+%2Bk%5Cmathbb+%7BE%7D%7Bw%5Cthicksim+q%28w%29%7D+%5Clog+%5Cfrac%7Bkq%28w%29%7D%7Bu%5Ctheta%28w%2Cc%29%2Bkq%28w%29%7D%5C%5C%5C+J_%7BNCE%7D%3D%5Csum_c+P%28c%29J%5Ec_%7BNCE%7D+%5C%5C)
  
-### 推导【觉得复杂可以跳过】
+#### 推导
  
 NCE，也就是 Noise Contrastive Estimate（噪声对比估计）\[3\]中提出，不过是连续的概率密度函数。由\[4\]提出了其离散分布时的表现形式，将 NCE 应用到 NLP 领域。
  
@@ -1006,7 +1119,7 @@ NCE 的目标函数还需要在(9)式的基础上除以正样本的数量 ![[公
 2.  训练一个二分类器，通过一个类似于交叉熵损失函数的目标函数进行训练（如果取正样本数量为 1，那么(9)与(10) 式等价，NCE 目标函数就等价于交叉熵损失函数）。  
     
  
-### 原理
+#### 原理
  
 上面虽然推导了那么多公式，但实际只是按照 NCE 的思想进行问题的转换，那么这样做究竟是否正确呢？
  
@@ -1032,11 +1145,11 @@ NCE 的目标函数还需要在(9)式的基础上除以正样本的数量 ![[公
  
 ### InfoNCE Loss
  
-### 结论
+#### 结论
  
 ![[公式]](https://www.zhihu.com/equation?tex=%5Cmathcal+%7BL%7D%5E%7BInfoNCE%7D_N%3D-%5Cmathbb%7BE%7D_X%5B%5Clog+%5Cfrac+%7Bf_k%28x_%7Bt%2Bk%7D%2Cc_t%29%7D%7B%5Csum_%7Bx_j%5Cin+X%7Df_k%28x_j%2Cc_t%29%7D%5D+%5C%5C)
  
-### 推导
+#### 推导
  
 【建议看完CPC介绍再来看这里】
  
@@ -1096,7 +1209,7 @@ InfoNCE 是在\[6\]CPC中提出的。CPC(对比预测编码) 就是一种通过�
  
 上式就是最终得到的 InfoNCE 损失函数了，并且最小化 InfoNCE，也就等价于最大化![[公式]](https://www.zhihu.com/equation?tex=x_%7Bt%2Bk%7D) 和 ![[公式]](https://www.zhihu.com/equation?tex=c_t) 的互信息的下限，从而做到了我们所要求的最大化 ![[公式]](https://www.zhihu.com/equation?tex=I%28x_%7Bt%2Bk%7D%3Bc_t%29) 。
  
-### 原理
+#### 原理
  
 为什么最小化InfoNCE等价于最大化 ![[公式]](https://www.zhihu.com/equation?tex=x_%7Bt%2Bk%7D)和 ![[公式]](https://www.zhihu.com/equation?tex=c_t) 的互信息的下限？
  
@@ -1121,92 +1234,6 @@ InfoNCE 是在\[6\]CPC中提出的。CPC(对比预测编码) 就是一种通过�
 
 - 【2021-5-27】[SimCLR: 用对比学习生成图像表征](https://www.toutiao.com/i6966574071790256679/)，利用对比学习生成图像表征的算法 SimCLR，SimCLR 出自 Google 的论文《A Simple Framework for Contrastive Learning of Visual Representations》
 - 《[SimCSE: 通过对比学习获得句子向量](https://www.toutiao.com/a6963651410546197005/?channel=&source=search_tab)》：SimCSE 采用对比学习训练得到句子向量
-
-
-## SimCSE
-
-【2022-4-7】[SimCSE:简单有效的句向量对比学习方法](https://www.aisoutu.com/a/2363026)
-- EMNLP2021的一篇[论文](https://arxiv.org/abs/2104.08821)：SimCSE。一种简单有效的NLP**对比学习**方法，通过Dropout的方式进行正样本增强，模型能够学习到良好的句向量表示。
-- [实验复现代码](https://github.com/yangjianxin1/SimCSE)
-- 中文数据集的复现结果可以参考[苏剑林的复现实验](https://kexue.fm/archives/8348)
-
-对比学习起源于计算机视觉任务，它的核心思想是，**拉近**每个样本与**正**样本之间的距离，拉**远**其与**负**样本之间的距离。
-
-如何为每个样本构造**正样本与负样本**是对比学习中的关键问题。
-- 负样本的构造往往比较容易，随机采样或者把同一个batch里面的其他样本作为负样本即可，难点在于如何构造正样本。
-- 对于图像来说，对图像进行翻转、裁剪、旋转、扭曲等操作即可很容易地生成正样本。
-- 对于NLP来说，往往会采用替换、删除、添加词语的方法来进行正样本构造，但是上述操作非常容易引入噪声，并且改变原有文本的语义。
-  - 例如对【我爱你】进行替换操作得到【我恨你】，就改变的原来的文本的语义。
-
-为了解决上述问题，SimCSE论文中提出了一种基于Dropout的**无监督对比学习**方法，同时也对有监督对比学习方法进行了探索。
-- ![img](https://weixin.aisoutu.com/cunchu7/2022-04-05/4_16491711085915213.png)
-
-有两种形式：
-- **无监督** unsupervised SimCSE。将相同的输入语句两次传递给经过预训练的编码器，并通过应用独立采样的dropout掩码获得两个嵌入，作为“正例对”。通过仔细的分析，作者们发现dropout本质上是作为数据扩充来使用，而删除它会导致表示崩溃。
-- **有监督** supervised SimCSE。利用了基于**自然语言推理**（NLI）数据集进行句子嵌入学习，并将受监督的句子对纳入对比学习中。
-
-### 无监督SimCSE
-
-Dropout是一种用来防止神经网络过拟合的方法，在训练的时候，通过dropout mask的方式，模型中的每个神经元都有一定的概率会失活。所以在训练的每个step中，都相当于在训练一个不同的模型。在推理阶段，模型最终的输出相当于是多个模型的组合输出
-- Dropout可以视为一种数据增强的手段，通过dropout mask的方式，模型在编码同一个句子的时候，引入了数据噪声，从而为同一个句子生成不同的句向量，并且不影响其语义信息。其中dropout rate的大小可以视为引入的噪声的强度。
-- 为了验证模型dropout rate对无监督SimCSE的影响，作者在STS-B数据集上进行了消融实验，其中训练数据是作者从维基百科中随机爬取的十万个句子。
-
-[图解](https://img-blog.csdnimg.cn/20210430153842722.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTgzOTY5Mw==,size_16,color_FFFFFF,t_70)
-
-
-损失函数计算方法
-
-```python
-def simcse_unsup_loss(y_pred, device, temp=0.05):
-    """无监督的损失函数
-    y_pred (tensor): bert的输出, [batch_size * 2, dim]
-    """
-    # 得到y_pred对应的label, [1, 0, 3, 2, ..., batch_size-1, batch_size-2]
-    y_true = torch.arange(y_pred.shape[0], device=device)
-    y_true = (y_true - y_true % 2 * 2) + 1
-    # batch内两两计算相似度, 得到相似度矩阵(对角矩阵)
-    sim = F.cosine_similarity(y_pred.unsqueeze(1), y_pred.unsqueeze(0), dim=-1)
-    # 将相似度矩阵对角线置为很小的值, 消除自身的影响
-    sim = sim - torch.eye(y_pred.shape[0], device=device) * 1e12
-    # 相似度矩阵除以温度系数
-    sim = sim / temp
-    # 计算相似度矩阵与y_true的交叉熵损失
-    # 计算交叉熵，每个case都会计算与其他case的相似度得分，得到一个得分向量，目的是使得该得分向量中正样本的得分最高，负样本的得分最低
-    loss = F.cross_entropy(sim, y_true)
-    return torch.mean(loss)
-```
-
-
-### 有监督SimCSE
-
-作者还尝试了使用各种人工标注的数据集对模型进行有监督训练，包括QQP、Flickr30k、ParaNMT、NLI数据集。
-- 与无监督SimCSE一样，作者利用数据集中人工标注的正样本对，使用InfoNCE loss对模型进行训练，可以看到使用SNLI+MNLI数据集训练的模型效果最好，并且其指标也比无监督SimCSE提高了2.4个点。
-
-对于无监督SimCSE与有监督SimCSE，论文的实验结果如下表，可以看到，在STS任务中，无论是无监督还是有监督的训练方法，都比之前的方法有了较大幅度的提高，这证明了论文方法的有效性。
-
-[图解](https://img-blog.csdnimg.cn/20210430162642209.png)
-
-损失函数计算方法
-
-```python
-def simcse_sup_loss(y_pred, device, temp=0.05):
-    """
-    有监督损失函数
-    y_pred (tensor): bert的输出, [batch_size * 3, dim]
-    """
-    similarities = F.cosine_similarity(y_pred.unsqueeze(0), y_pred.unsqueeze(1), dim=2)
-    row = torch.arange(0, y_pred.shape[0], 3)
-    col = torch.arange(0, y_pred.shape[0])
-    col = col[col % 3 != 0]
-
-    similarities = similarities[row, :]
-    similarities = similarities[:, col]
-    similarities = similarities / temp
-
-    y_true = torch.arange(0, len(col), 2, device=device)
-    loss = F.cross_entropy(similarities, y_true)
-    return loss
-```
 
 
 ## 1. 概述
@@ -1307,6 +1334,82 @@ SimCLR 迁移学习和有监督学习
 *   SimCLR: A Simple Framework for Contrastive Learning of Visual Representations [「链接」](https://arxiv.org/pdf/2002.05709.pdf)
 *   代码 [「链接」](https://github.com/google-research/simclr)
 *   博客: The Illustrated SimCLR Framework [「链接」](https://amitness.com/2020/03/illustrated-simclr/)
+
+
+# 进化
+
+SimCSE 进化版本
+
+## 2022.5 华为 RetroMAE
+
+【22.5 RetroMAE：华为】
+
+- BGE-M3里用到了 RetroMAE 作为 text encoder
+- 论文: [RetroMAE: Pre-Training Retrieval-oriented Language Models Via Masked Auto-Encoder](https://arxiv.org/abs/2205.12035)
+
+Masked Auto-Encoder（MAE）流程：
+- 输入的句子会通过不同的掩码对编码器和解码器进行污染。
+- 编码器的掩码输入用于生成句子嵌入，然后结合解码器的掩码输入和句子嵌入，通过掩码语言建模恢复原始句子。
+
+不对称：
+- 不对称的模型结构：编码器是类似BERT的全尺寸变换器，而解码器则是单层变换器。
+- 为编码器和解码器设置了不同的掩码比例，前者掩码比例（15%至30%），而解码器使用50%至70%的比例，以提高重建任务对编码质量的要求。
+
+
+## 2023.8 阿里 GTE
+
+【2023-8】阿里达摩院 
+- 论文: [Towards General Text Embeddings with Multi-stage Contrastive Learning](https://arxiv.org/abs/2308.03281)
+
+多阶段对比学习：GTE 模型采用`对比学习`方法，在多个阶段对模型进行训练。
+- 首先是在大量**无监督**文本对上进行预训练
+- 然后, 使用**有监督**的**细粒度**调整来进一步提升模型性能。
+- ![](https://pic2.zhimg.com/80/v2-9d124c7ac7055f47e7b77a28a5294501_1440w.webp)
+
+大规模数据集的利用
+
+跨多种NLP任务的高性能：包括文本分类、文本检索、问答系统等。
+
+代码搜索能力：GTE 模型在处理代码搜索任务时，即使没有针对每种编程语言进行特定的微调，也展现出了很好的性能。
+
+改进的对比损失函数，它能够在固定的批次大小下有效扩大负样本池，从而提高训练效率。
+- 样本是三元组的形式：(q, d+, d−)，后面是正负样本
+- Loss采用 InfoNCE
+
+GTE模型的参数量相对较小（110M），但它在许多基准测试中的表现超过了更大的模型，甚至超过了OpenAI提供的黑盒嵌入API。
+
+## 2024.2 智源 BGE-M3
+
+【2024-2】BGE-M3：北京智源BAAI
+- 论文 [BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation](https://arxiv.org/abs/2402.03216)
+
+概念
+- BGE：BAAI/北京智源 General Embedding
+- M3: 多**语言**性（Multi-Linguality）、多**功能**性（Multi-Functionality）和**多粒度**性（Multi-Granularity）
+- ![](https://pica.zhimg.com/80/v2-2690d4c9bebb3322ce038ed9608065bc_1440w.webp)
+
+特性
+- 多语言支持：M3-Embedding 能够支持超过100种工作语言的语义检索，实现了多语言内部检索和不同语言之间的交叉语言检索。
+- 多功能检索：
+  - 密集检索（Dense Retrieval）
+  - 多向量检索（Multi-Vector Retrieval）
+  - 稀疏检索（Sparse Retrieval）
+- 多粒度输入处理：M3-Embedding能够处理不同粒度的输入，从短句到长达8,192个令牌的长文档。
+  - 提出了一种新颖的自知识蒸馏方法，通过整合不同检索功能的相关性分数作为教师信号，以增强训练质量。
+- 多阶段训练流程：
+  - 在预训练阶段，模型使用大规模无监督数据进行训练，主要训练密集检索。
+  - 在微调阶段，应用自知识蒸馏来建立->三种检索功能。
+
+BGE-M3 模型训练分为三个阶段：
+- 1）RetroMAE 预训练，在105种语言的网页数据和wiki数据上进行，提供可支持8192长度和面向表示任务的基座模型；
+- 2）PreTrain 无监督对比学习，在194种单语言和1390种翻译对数据共1.1B的文本对上进行的大规模对比学习；
+- 3）fineture 多检索方式统一优化，在高质量多样化的数据上进行多功能检索优化，使模型具备多种检索能力。
+
+自知识蒸馏，只用于第二阶段-多模检索 FineTune；在第一阶段Pretrain时，只有dense retrieval用对比学习训练。
+
+继续使用 InfoNCE，这基本成了Contrastive Learning的标配Loss。
+
+直接使用 InfoNCE，多种检索会冲突的，所以提出了 self-knowledge distillation。
 
 
 # 应用

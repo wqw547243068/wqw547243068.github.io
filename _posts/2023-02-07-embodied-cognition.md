@@ -7,6 +7,7 @@ tags: 认知 人工智能 元宇宙 具身智能 机器人
 excerpt: 人工智能新兴方向：具身认知，或具身学习，通过AGI的一条可行路线
 author: 鹤啸九天
 mathjax: true
+permalink: /embodied
 ---
 
 * content

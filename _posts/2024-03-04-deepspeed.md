@@ -381,20 +381,23 @@ deepspeed train.py --deepspeed_config=ds_config.json -p 2 --steps=200
 
 ## DeepSpeed-Chat
 
-【2024-3-29】[大模型训练入门实战](https://techdiylife.github.io/big-model-training/deepspeed/deepspeed-chat.html)
 
 DeepSpeed 是 Microsoft基于 PyTorch 研发的开源深度学习优化库。
 - 目的: 降低大模型训练的门槛，提升大模型的训练的效率，帮助开发者更有效率地管理及优化大模型的训练、部署任务。
 
+DSChat代码解读
+- 【2024-3-29】[大模型训练入门实战](https://techdiylife.github.io/big-model-training/deepspeed/deepspeed-chat.html)
+- 【2024-8-18】[从零实现带RLHF的类ChatGPT：逐行解析微软DeepSpeed Chat的源码](https://blog.csdn.net/v_JULY_v/article/details/132939877)
+
 ### DeepSpeed-Chat 介绍
 
-`DeepSpeed-Chat` 微软发布的类ChatGPT模型训练工具。
-- 该工具基于微软的大模型训练工具DeepSpeed，使用可简单高效地训练ChatGPT。
+`DeepSpeed-Chat` 微软发布的**类ChatGPT模型**训练工具。
+- 基于微软的大模型训练工具DeepSpeed，简单高效地训练ChatGPT。
 
 工具特点：
-- 类ChatGPT完整训练代码：包括 预训练模型下载、数据下载、InstructGPT训练过程和测试。
-- 多种规模的模型：模型参数从1.3B到66B，适合新手学习, 也可商用部署。
-- 高效训练：通过使用最新技术(ZeRO和LoRA等)改善训练过程。
+- 类ChatGPT**完整**训练代码：包括 预训练模型下载、数据下载、InstructGPT 训练过程和测试。
+- 多规模模型：模型参数从1.3B到66B，适合新手学习, 可商用部署。
+- 高效训练：通过使用最新技术(`ZeRO`和`LoRA`等)改善训练过程。
   - 例如，一个67亿（6.7B）参数的模型，使用**8块A00**只需要约**5个小时**完成训练。
 - 推理API：提供易于使用的推理API，方便对话式交互测试。
 
@@ -438,8 +441,343 @@ DS-chat 代码位于 `applications/DeepSpeed-Chat` 目录下，主要程序结�
 
 模型训练调用过程（以1.3b模型为例）
 
-
 deepspeed 总入口在 `deepspeed.__init__::initialize`
+
+#### 实践
+
+deepspeed chat 框架
+
+目录结构
+
+```sh
+dschat/ # 核心目录
+  rlhf/ # RLHF算法
+    ppo_trainer.py
+    rlhf_engine.py
+  utils/
+    data/
+      data_utils.py # 【数据处理入口】【自定义】sft 数据处理类
+      reward_datasets.py # 【自定义】rm 数据处理
+    model/ # 模型配置、定义
+      model_utils.py
+      quantization.py
+      reward_model.py
+      # LLM 个性化信息, chatglm,qwen,internlm等
+      configuration_internlm2.py # internlm 配置
+      modeling_internlm2.py # internlm 结构, 头部引入以上配置文件, 
+        # from .configuration_internlm2 import InternLM2Config
+    module/ # 组件, 如 lora
+      lora.py
+    ds_utils.py
+    optimization.py
+    perf.py
+    utils.py
+inference/
+tests/
+tranining/
+  step1_supervised_finetuning/
+  step2_reward_model_finetuning/
+  step3_rlhf_finetuning/
+  conversation_reward/ # 【自定义】监督学习训练任务
+    main.py
+    run.sh
+run.sh
+debug.sh
+e2e_rlhf.py
+requirements.xt
+to_onnx.py
+```
+
+改进点
+- 数据处理
+  - 数据格式: 兼容多种数据格式
+  - LLM 相关: 特殊分隔符 `<sos>`,`<eos>`,`UNK` , padding 策略, 转 chatml 格式
+  - 任务格式: 支持二分类、多分类, num_classes = 2, 11
+  - 会话数据格式转换: 
+    - 只保留q: `[q1,a1,q2,a2]` -> `[q1,q2]`
+    - 保留qa,截断: 按最近窗口截断 
+  - 数据不均衡
+    - 数据集再均衡: 降采样
+    - loss 改进: focal loss/ class balanced loss
+- 训练监控
+  - 增加 wandb: 训练参数变化可视化
+- 训练模式
+  - 单机多卡: GPU 显存预估
+  - 分布式: torch.distribute 开启分布式模式, dist.`all_gather`(labels1_all_gather, labels_all1)
+- 调参
+  - 学习率: batch_size, learning_rate (衰减策略)
+  - 自动调参: autotune
+- 模型保存
+  - 模型自动保存: 不再是每个epoch保存模型, 而是 loss 取值下滑/acc指标上升 才保存模型
+  - 转 onnx 格式: onnxruntime 推理加速
+- 效果评估
+  - 可视化: 验证集指标输出, 混淆矩阵 -> 可视化
+- 推理预测
+  - inference.py 中需要单独处理 model 修改部分
+
+```py
+# 超参
+parser = argparse.ArgumentParser(description='reward model for AI charactor')
+parser.add_argument('--model', type=str, default='stransformers', help='choose a model: bert, ERNIE, bert_CNN')
+parser.add_argument('--local_rank')
+parser.add_argument('--model_name', type=str, default='stransformers')
+parser.add_argument('--data_map', type=str, help="数据格式字段映射关系",
+                    default='{"prompt":"prompt","label":"label_id", "history":"context_info"}')
+
+# 推理环节
+def main():
+
+    device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
+    # 模型加载
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path)
+    
+    tokenizer = BertTokenizer.from_pretrained(args.model_path)
+    tokenizer.truncation_side = "right" # 默认是right
+    tokenizer.padding_side = "right" # 默认是right
+
+    # 加载数据集
+    _, _, test_data = build_dataset(args, tokenizer) # python list
+    test_data = RewardDataset(test_data) # pytorch datasets 格式
+    # pytorch tensor 格式, torch.LongTensor
+    test_iter = Data.DataLoader(dataset=test_data, batch_size=args.batch_size, shuffle=True) 
+
+    model =  Model(args)
+    # 设备适配: cpu, gpu
+    if not torch.cuda.is_available():
+        state_dict = torch.load(args.checkpoint_path, map_location=torch.device('cpu'))
+    else:
+        state_dict = torch.load(args.checkpoint_path)
+    
+    if not args.inference: # 训练模式
+      model =  Model(args)
+      logging.info("load model finished")
+      if torch.cuda.device_count() > 1:
+          logging.info('Let us use ' + str(torch.cuda.device_count()) + "GPUs!")
+          model = nn.DataParallel(model)
+      model = model.to(device)
+      # train
+      train(args, model, train_iter, dev_iter, test_iter, device, logging)
+    else: # 推理模式
+      # 模型权重
+      state_dict_new = {}
+      for key,value in state_dict.items():
+          if key.startswith("module"): # 模型自定义参数
+              new_key = key.lstrip("module")[1:]
+          else: # 默认参数
+              new_key = key
+          # 存储到字典
+          state_dict_new[new_key] = value
+
+      model.load_state_dict(state_dict_new)
+      if torch.cuda.device_count() > 1:
+          print('Let us use ' + str(torch.cuda.device_count()) + "GPUs!")
+          model = nn.DataParallel(model)
+
+      model = model.to(device)
+      test_en_acc1, test_en_acc2, predict_tag_list,  acc1_list, acc2_list, indexs_all = evaluate(model, test_en_iter, label2tag_dic, device=device)
+      test_en = pd.merge(test_en, pd.DataFrame({"index": indexs_all, "predict": predict_tag_list, "acc1": acc1_list, "acc2": acc2_list}), on="index", how="inner")
+      print(f"en, acc1: {test_en_acc1}, acc2: {test_en_acc2}")
+
+
+
+def train(args, model, train_iter, dev_iter, test_iter, device, logging):
+    model.train()
+    # param_optimizer = list(model.named_parameters())
+    # no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
+    # optimizer_grouped_parameters = [
+    #     {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)], 'weight_decay': 0.01},
+    #     {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}]
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    # optimizer = BertAdam(optimizer_grouped_parameters,
+    #                      lr=config.learning_rate,
+    #                      warmup=0.05,
+    #                      t_total=len(train_iter) * config.num_epochs)
+    total_batch = 0  # 记录进行到多少batch
+    dev_best_acc = -float('inf')
+    last_improve = 0  # 记录上次验证集loss下降的batch数
+    flag = False  # 记录是否很久没有效果提升
+    model.train()
+    if args.loss_type == "focal_loss":
+        loss_functioin = FocalLoss(alpha=args.alpha)
+    else:
+        #class_weight = torch.tensor([float(x) for x in args.class_weight.split(",")]).to(device)
+        #loss_functioin = nn.CrossEntropyLoss(weight=class_weight)
+        loss_functioin = nn.CrossEntropyLoss()
+
+    for epoch in range(args.num_epochs):
+        logging.info('Epoch [{}/{}]'.format(epoch + 1, args.num_epochs))
+        for i, (x, seq_len, mask, labels, _) in enumerate(train_iter):
+            trains = (x.to(device), seq_len, mask.to(device))
+            labels = labels[:,0].to(device)
+            outputs = model(trains) # trains[0].shape [batch_size, dim], trains[1].shape [batch_size], trains[2].shape [64, 512]
+            model.zero_grad()
+            loss = loss_functioin(outputs, labels)
+            loss.backward()
+            optimizer.step()
+
+            if total_batch % args.loss_print_every_n_iter == 0:
+                # 每多少轮输出在训练集和验证集上的效果
+                true = labels.data.cpu()
+                predic = torch.max(outputs.data, 1)[1].cpu()
+                train_acc = metrics.accuracy_score(true, predic)
+                dev_acc, dev_auc, *_ = evaluate(model, dev_iter)
+                test_acc, test_auc, *_ = evaluate(model, test_iter)
+                if dev_acc > dev_best_acc:
+                    dev_best_acc = dev_acc
+                    torch.save(model.state_dict(), args.save_path)
+                    improve = '*'
+                    last_improve = total_batch
+                else:
+                    improve = ''
+                msg = 'Iter: {0:>6},  Train Loss: {1:>5.2},  Train Acc: {2:>6.2%}, dev Acc: {3:>6.2%}, dev auc: {4:>6.2%}, test Acc: {5:>6.2%}, test auc: {6:>6.2%}, {7}'
+                logging.info(msg.format(total_batch, loss.item(), train_acc, dev_acc, dev_auc, test_acc, test_auc, improve))
+                model.train()
+            total_batch += 1
+            if total_batch - last_improve > args.require_improvement:
+                # 验证集loss超过1000batch没下降，结束训练
+                logging.info("No optimization for a long time, auto-stopping...")
+                flag = True
+                break
+        torch.save(model.state_dict(), os.path.join(args.save, 'checkpoint-' + 'epoch-' + str(epoch + 1) + '.pth'))
+        if flag:
+            break
+        # epoch结束测试一次
+        test(args, model, test_iter, logging)
+        model.train()
+
+def evaluate(model, data_iter, device=torch.device('cuda')):
+    model.eval()
+    loss_total = 0
+    predict_all = np.array([], dtype=int)
+    labels_all = np.array([], dtype=int)
+    indexs_all = np.array([], dtype=int)
+    score_all = np.array([], dtype=float)
+    loss_functioin = nn.CrossEntropyLoss()
+    with torch.no_grad():
+        for i, (x, seq_len, mask, labels, indexs) in enumerate(data_iter):
+            trains = (x.to(device), seq_len, mask.to(device))
+            labels = labels.to(device)[:,0]
+            outputs = model(trains)
+            outputs_score = F.softmax(outputs, dim=1)
+            loss = loss_functioin(outputs, labels)
+            loss_total += loss
+            # 按照thresholds来计算新的label
+            predic = torch.max(outputs.data, 1)[1]
+            predic = predic.cpu().numpy()
+            labels = labels.data.cpu().numpy()
+            indexs_all = np.append(indexs_all, indexs.numpy())
+            predict_all = np.append(predict_all, predic)
+            labels_all = np.append(labels_all, labels)
+            score_all = np.append(score_all, outputs_score.cpu().numpy()[:, 1])
+    fpr, tpr, thresholds = metrics.roc_curve(labels_all, score_all, pos_label=1)
+    auc = round(metrics.auc(fpr, tpr), 4)
+    accuracy = round(metrics.accuracy_score(labels_all, predict_all), 4)
+    confusion_matrix = metrics.confusion_matrix(labels_all, predict_all)
+    classification_report = metrics.classification_report(labels_all, predict_all)
+    # 计算准确率
+    return accuracy, auc, confusion_matrix, classification_report, indexs_all
+
+
+```
+
+
+
+run.sh
+
+```sh
+#!/usr/bin/bash
+# -*- coding:utf8 -*-
+
+# **************************************************************************
+# * Copyright (c) 2024 wqw547243068@163.com, All Rights Reserved
+# **************************************************************************
+# * 本地实验脚本,支持多类目分类,非均衡类目
+# * Command: bash run.sh
+# * Command: 二分类模式, 开启 task_type="single", 同时确认对应日期目录下有single字符串的数据文件
+# * Command: 多分类模式, 开启 task_type="multi"，同时确认对应日期目录下有multi字符串的数据文件
+# * @author wangqiwen
+# * @date 2024/09/22 13:00
+# **************************************************************************
+
+# -------- 数据日期 --------
+date_str="20240914"
+
+home_dir="/mnt/bn/flow-algo-cn/wangqiwen"
+main_dir="${home_dir}/change_query"
+# [prompt,label,history]
+# -------- 任务类型 --------
+# [index,session_id,lang,intent,label_id,label_name,context_num,prompt,context_info]
+task_type="multi" # single(二分类), multi(多分类)
+# task_type="single" # single(二分类)
+# -------- 数据地址 --------
+train_path="${main_dir}/data/output_format_${task_type}_train_cls_${date_str}.csv"
+dev_path="${main_dir}/data/output_format_${task_type}_val_cls_${date_str}.csv"
+test_path="${main_dir}/data/output_format_${task_type}_test_cls_${date_str}.csv"
+
+# 多种数据格式
+# [index,session_id,lang,intent,label_id,label_name,context_num,prompt,context_info]
+# index,session_id,lang,label,context_num,prompt,context
+# data_map='{"prompt":"prompt","label":"label_id", "history":"context_info"}'
+data_map='{\"prompt\":\"prompt\",\"label\":\"label_id\", \"history\":\"context_info\"}'
+
+train_path="${main_dir}/data/${date_str}/output_format_${task_type}_train_cls_${date_str}.csv"
+dev_path="${main_dir}/data/${date_str}/output_format_${task_type}_val_cls_${date_str}.csv"
+test_path="${main_dir}/data/${date_str}/output_format_${task_type}_test_cls_${date_str}.csv"
+
+model_name="bert-base-multilingual-cased" # v100-32g
+# model_name="bigbird-roberta-base" # a100-80g
+# model_name="bigbird-roberta-large" # a100-80g OOM
+
+model_path="${home_dir}/model/bert/${model_name}"
+
+max_length=512
+# max_length=2048
+per_device_batch_size=64 # 128 单机越界
+# per_device_batch_size=96
+
+[ $task_type = "single" ]&&{
+    # 二分类
+    num_classes=2
+    class_list="0,1"
+    class_weight="1,1"
+}||{ 
+    # 多标签
+    # num_classes=11
+    # class_list="2,3,4,10,20,30,41,42,51,52,53"
+    # class_weight="1,1,1,1,1,1,1,1,1,1,1"
+    # 新版
+    num_classes=6
+    class_list="0,10,20,30,40,50"
+    class_weight="1,1,1,1,1,1"
+    # cross_entropy
+    loss_type="cross_entropy"
+    # focal loss
+    # loss_type="focal_loss"
+    # cb loss
+    # loss_type="cb_loss"
+    # class_weight="17830,3240,1678,1372,224,6" # 各类目频次分布, 临时占用权重字段
+}
+
+cmd="""
+python3 main.py 
+    --per_device_batch_size $per_device_batch_size
+    --data_map \"$data_map\" 
+    --train_path $train_path
+    --dev_path $dev_path
+    --test_path $test_path
+    --model_path $model_path
+    --max_length $max_length
+    --num_classes ${num_classes:-2}
+    --class_list "${class_list:-0,1}"
+    --class_weight "${class_weight:-1,1}"
+    --loss_type ${loss_type:-cross_entropy}
+"""
+
+echo "[Info] 开始执行命令: \n $cmd"
+
+eval $cmd
+```
+
 
 #### train.py
 
@@ -455,19 +793,20 @@ deepspeed 总入口在 `deepspeed.__init__::initialize`
 #### 配置脚本
 
 配置脚本：
-- training/step1_supervised_finetuning/training_scripts/single_node/run_1.3b.sh
-- train.py 程序会调用 run_1.3b.sh 来执行模型训练
-- run_1.3b.sh 中可以设置参数，并调用对应的 main.py 来开始模型训练
+- training/step1_supervised_finetuning/training_scripts/single_node/`run_1.3b.sh`
+
+`train.py` 程序会调用 `run_1.3b.sh` 来执行模型训练
+- `run_1.3b.sh` 中可以设置参数，并调用对应的 main.py 来开始模型训练
 
 #### 训练程序
 
 训练程序：
-- training/step1_supervised_finetuning/main.py
+- `training/step1_supervised_finetuning/main.py`
 
 核心训练脚本，主要功能如下：
-- 数据/模型的下载
+- 数据/模型下载
 - 模型训练
-- 评价与测试用程序：prompt_eval.py
+- 评价与测试用程序：`prompt_eval.py`
 - 用于测试训练后的模型，并提供了微调前后的对比。
 
 
@@ -526,11 +865,11 @@ deepspeed main.py \
 
 
 启动模式
-- 单机多卡: 不用 hostfile
+- **单机多卡**: 不用 hostfile
   - 未指定 hostfile 时, ds 会检测本机可用 GPU 数
   - include/exclude 正常使用, 但需要设置 localhost, `deepspeed --include localhost:1 ...`
   - `CUDA_VISIBLE_DEVICES` 控制可用 GPU 失效
-- 多机多卡: 需要 hostfile 文件, 配合 include/exclude 指定部分节点
+- **多机多卡**: 要 hostfile 文件, 配合 include/exclude 指定部分节点
   - ds 会传播 NCCL and PYTHON 环境变量到各个节点
   - 如果想增加变量, 设置 dot 文件 `~/.deepspeed_env`, 格式 `NCCL_IB_DISABLE=1`;
   - 如果修改 dot 文件, 修改环境变量 `DS_ENV_FILE`

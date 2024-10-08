@@ -7,6 +7,7 @@ tags: 数学 微积分 几何学 导数 梯度 极限 级数 幂级数 傅里叶
 excerpt: 微积分知识点概括，参考普林斯顿微积分读本，以通俗易懂方式讲解微积分概念
 author: 鹤啸九天
 mathjax: true
+permalink: /calculus
 ---
 
 * content

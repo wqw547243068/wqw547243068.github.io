@@ -3,7 +3,7 @@ layout: post
 title:  "文本匹配-Text Matching"
 date:   2020-09-11 20:43:00
 categories: 深度学习
-tags: 深度学习 NLP 相似度 语义 simhash 编辑距离
+tags: 深度学习 NLP 相似度 语义 simhash 编辑距离 hash 哈希
 excerpt: 深度学习在NLP子领域——文本匹配的应用汇总
 author: 鹤啸九天
 mathjax: true
@@ -204,6 +204,24 @@ acquaintance(a,b)
 - 传统Hash算法只负责将原始内容尽量均匀随机地映射为一个签名值，原理上仅相当于伪随机数产生算法。即便是两个原始内容只相差一个字节，所产生的签名也很可能差别很大，所以传统的Hash是无法在签名的维度上来衡量原内容的相似度。
 - 而SimHash本身属于一种**局部敏感hash**，其主要思想是**降维**，将高维的特征向量转化成一个f位的**指纹**（fingerprint），通过算出两个指纹的**海明距离**（hamming distince）来确定两篇文章的相似度，海明距离越小，相似度越低（根据 Detecting Near-Duplicates for Web Crawling 论文中所说），一般海明距离为3就代表两篇文章相同。     
 - simhash也有其局限性，在处理小于500字的短文本时，simhash的表现并不是很好，所以在使用simhash前一定要注意这个细节。
+
+
+#### hash
+
+【2024-8-13】 Python 计算 hash值的代码
+
+```py
+import hashlib
+
+def calculate_md5(data):
+    md5_hash = hashlib.md5()
+    md5_hash.update(data.encode('utf-8'))
+    return md5_hash.hexdigest()
+
+s = 'hi, who are you'
+r = calculate_md5(s)
+print(r)
+```
 
 
 #### simhash原理

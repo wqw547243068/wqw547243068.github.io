@@ -3,10 +3,11 @@ layout: post
 title:  "密码学-Cryptography"
 date:   2020-05-30 00:13:00
 categories: 新技术
-tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码
+tags: 密码学 同态加密 彩虹表 加盐 量子计算机 王小云 摩斯密码 二维码 文件 安全 摄像头 白帽 黑帽
 excerpt: 密码学知识，常见的加密、解码算法，对称密钥、非对称密钥和Hash散列
 author: 鹤啸九天
 mathjax: true
+permalink: /cryptography
 ---
 
 * content
@@ -398,6 +399,40 @@ O T O E O I O U Y V L进行再次解码。分成两排：
 - RSA密码诞生
 
 ![](https://upload-images.jianshu.io/upload_images/2990730-1e446769f7fd0fa2.png)
+
+
+## 隐私安全
+
+
+### 防偷拍
+
+【2024-9-26】`小澄隐私助手`，检测仪 配合 小程序 一起使用, 检测酒店针孔摄像头
+- 白帽直播探测酒店摄像头 [抖音视频](https://www.douyin.com/search/%E5%B0%8F%E6%BE%84%E9%98%B2%E5%81%B7%E6%8B%8D%E6%A3%80%E6%B5%8B%E4%BB%AA)
+
+
+### 二维码
+
+
+回形针: [Vol.120 二维码的秘密](https://www.youtube.com/watch?v=XW8sgT_D0To)
+- 一维码: 条形码
+- 二维码: QRCode, Quick Response Code, 校验、纠正，同时保证准确度
+
+QR Code 核心: 里德-所罗门编码, 前向错误更正的信道编码, 具备纠错能力，用了近世代数的伽罗瓦，概念 伽罗瓦域
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XW8sgT_D0To?si=YswOJMDNdw8zT_Et" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+【2024-9-24】
+
+二维码文件传输
+- No internet/bluetooth/NFC/etc is used. All data is transmitted through the camera lens.
+- 无需网络、蓝牙和NFC，所有数据只通过摄像头传输
+
+GitHub: [libcimbar](https://github.com/sz3/libcimbar)
+- 发送端: Web 站点 [cimbar](https://cimbar.org/) 上传文件(33M以内)
+- 接收端: [CameraFileCopy](https://github.com/sz3/cfc) (简称 cfc) [apk下载](https://github.com/sz3/cfc/releases/)
+  - 下载速度: (~106 KB/s)
+
+![](https://github.com/sz3/cimbar-samples/raw/v0.6/b/4cecc30f.png)
 
 ## 资料
 

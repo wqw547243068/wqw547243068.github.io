@@ -3,7 +3,7 @@ layout: post
 title:  "优质视频资源汇总"
 date:   2019-07-12 23:08:00
 categories: 人文科学
-tags: 王阳明 人生意义 思考 财经 哲学 科技 风景 纪录片
+tags: 王阳明 人生意义 思考 财经 哲学 科技 风景 纪录片 电影
 excerpt: 汇总优质视频，启发思考，开阔视野
 mathjax: true
 permalink: /resource
@@ -16,6 +16,8 @@ permalink: /resource
 
 
 优质纪录片[汇总](https://www.toutiao.com/w/1795872166226944)
+
+【2024-9-16】[磁力熊](https://www.cilixiong.com/movie/)
 
 ## 优质电影
 

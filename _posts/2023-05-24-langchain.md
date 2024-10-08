@@ -3,8 +3,8 @@ layout: post
 title:  LangChain 学习笔记
 date:   2023-05-24 22:46:00
 categories: 大模型
-tags: gpt ChatGPT
-excerpt: 大模型 LLM 驱动的智能体 Agent
+tags: gpt ChatGPT langchain
+excerpt: 大模型 LLM 驱动的智能体 Agent 
 mathjax: true
 permalink: /langchain
 ---
@@ -31,7 +31,7 @@ LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，�
 
 LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
 
-### 功能
+## 功能
 
 LangChain 构建的有趣应用程序包括（但不限于）：
 - 聊天机器人
@@ -51,13 +51,108 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 
 ### 文档介绍
 
-- [官方文档](https://python.langchain.com/en/latest/index.html)
+- [官方文档](https://python.langchain.com/en/latest/index.html), [中文文档](https://python.langchain.com.cn/docs/get_started/quickstart)
 - [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
 - Github: [python版本](https://github.com/hwchase17/langchain )(已经有4W多的star), [go语言版](https://github.com/tmc/langchaingo)
 - [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
 - 【2023-8-2】[京东云LangChain简介](https://www.zhihu.com/question/609483833/answer/3146379316)
 
-### LangChain 安装
+
+## LangChain 生态
+
+
+框架由几个部分组成。
+- `LangChain` 库：Python 和 JavaScript 库。包含了各种组件的接口和集成，一个基本的运行时，用于将这些组件组合成链和代理，以及现成的链和代理的实现。
+- LangChain **模板**：一系列易于部署的参考架构，用于各种任务。
+- `LangServe`: 一个用于将 LangChain 链部署为 REST API 的库。
+- `LangSmith`: 一个开发者平台，让你可以调试、测试、评估和监控基于任何 LLM 框架构建的链，并且与 LangChain 无缝集成。
+
+简化整个应用程序的生命周期：
+- **开发**：在 `LangChain`/`LangChain.js` 中编写应用程序。使用模板作为参考，快速开始。
+- **生产化**：使用 `LangSmith` 来检查、测试和监控链，这样可不断改进并有信心地部署。
+- **部署**：使用 `LangServe` 将任何链转换为 API。
+
+
+```py
+pip install langchain # 工具包
+pip install -e . # 源码安装
+
+pip install langchain-community # 社区版
+pip install langchain-core # 核心版
+pip install langchain-experimental # 实验版
+
+pip install "langserve[all]" # langserve
+# 将LangChain可运行文件和链作为REST API部署
+pip install langchain-cli # 包含 langserve
+pip install langsmith
+```
+
+
+### LangFlow 可视化
+
+【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
+
+[LogSpace](https://logspace.ai/) 出品，LangFlow [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
+- 提供多种 LangChain 组件以供选择，如语言模型、提示序列化器、代理和链等。
+- 通过编辑提示参数、链接链和代理，以及跟踪代理的思考过程，用户可以探索这些组件的功能。
+- 使用 LangFlow，用户可以将流程导出为 JSON 文件，然后在 LangChain 中使用。
+- LangFlow 的图形用户界面（GUI）提供了一种直观的方式来进行流程实验和原型开发，包括拖放组件和聊天框
+- ![](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true)
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3985851583544f95acce1c6c2399147a~tplv-obj:1280:640.image?_iz=97245&from=post&x-expires=1696204800&x-signature=d4gBt5CjT3X6m6%2FF9sTfMLy1x6o%3D)
+- [官方 UI 配置文件集合](https://huggingface.co/spaces/Logspace/Langflow)
+
+```sh
+pip install langflow # 安装
+langflow # 启动
+python -m langflow # 上面命令不管用时用这个
+```
+
+自动弹出本地web页面: http://127.0.0.1:7860/, 配置可导出为json格式
+
+json格式导入 flow
+
+```py
+from langflow import load_flow_from_json
+
+flow = load_flow_from_json("path/to/flow.json")
+# Now you can use it like any chain
+flow("Hey, have you heard of LangFlow?")
+```
+
+### LangSmith
+
+
+LangSmith 是 LangChain 官方推出的 **生产级**LLM应用程序**构建平台**。
+- 可以调试、测试、评估和监控任何LLM框架上构建的链和智能代理，并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
+- langchain 执行过程中的数据可视化展示，用于观察 chain tool llm 之前的嵌套关系、执行耗时、token 消耗等指标
+- [官方文档](https://docs.smith.langchain.com/)
+
+LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
+
+
+## LangChain 观点
+
+【2023-7-23】[我为什么放弃了 LangChain？](https://zhuanlan.zhihu.com/p/645345926)
+
+由 LangChain 推广的 `ReAct` 工作流在 InstructGPT/text-davinci-003 中特别有效，但**成本很高**，而且对于小型项目来说并不容易使用。
+> 「LangChain 是 RAG 最受欢迎的工具，阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
+
+经过一周的研究，运行 LangChain 的 demo 示例可以工作，但是任何调整以适应食谱聊天机器人约束的尝试都会失败。
+- 解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，没有找到任何解决方案。
+- 用回了低级别的 ReAct 流程，立即在**对话质量**和**准确性**上超过了 LangChain 实现
+
+LangChain 问题: <span style='color:blue'>让简单事情变得相对复杂</span>，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
+- LangChain 代码量与仅用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
+- LangChain 吹嘘的提示工程只是 `f-strings`，还有额外步骤。为什么需要使用这些 PromptTemplates 来做同样的事情呢？
+- 真正要做的：
+  - 如何创建 Agent，结合迫切想要的 `ReAct` 工作流。而 LangChain示例里每个`思想` / `行动` / `观察`中都使用了自己的 API 调用 OpenAI，所以链条比想象的要慢。
+- LangChain 如何存储到目前为止的对话?
+
+制作自己的 Python 软件包要比让 LangChain 来满足自己的需求容易得多
+
+LangChain 确实也有很多实用功能，比如**文本分割器**和集成**向量存储**，这两种功能都是「用 PDF / 代码聊天」演示不可或缺的（在我看来这只是一个噱头）。
+
+## LangChain 安装
 
 安装步骤
 - python 3.8 以上才能安装
@@ -165,80 +260,12 @@ conversation.predict(input="Tell me about yourself.")
 ```
 
 
-## LangChain 生态
-
-LangSmith 是LangChain官方推出的 生产级LLM应用程序构建平台。
-- 可以调试、测试、评估和监控任何LLM框架上构建的链和智能代理，并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
-- langchain 执行过程中的数据可视化展示，用于观察 chain tool llm 之前的嵌套关系、执行耗时、token 消耗等指标
-- [官方文档](https://docs.smith.langchain.com/)
-
-LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
-
-
-### LangFlow 可视化
-
-【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true) 是 `LangChain` 的一种图形用户界面（`GUI`），它为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
-
-[LogSpace](https://logspace.ai/) 出品，LangFlow [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
-- 提供多种 LangChain 组件以供选择，如语言模型、提示序列化器、代理和链等。
-- 通过编辑提示参数、链接链和代理，以及跟踪代理的思考过程，用户可以探索这些组件的功能。
-- 使用 LangFlow，用户可以将流程导出为 JSON 文件，然后在 LangChain 中使用。
-- LangFlow 的图形用户界面（GUI）提供了一种直观的方式来进行流程实验和原型开发，包括拖放组件和聊天框
-- ![](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif?raw=true)
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3985851583544f95acce1c6c2399147a~tplv-obj:1280:640.image?_iz=97245&from=post&x-expires=1696204800&x-signature=d4gBt5CjT3X6m6%2FF9sTfMLy1x6o%3D)
-- [官方 UI 配置文件集合](https://huggingface.co/spaces/Logspace/Langflow)
-
-```sh
-pip install langflow # 安装
-langflow # 启动
-python -m langflow # 上面命令不管用时用这个
-```
-
-自动弹出本地web页面: http://127.0.0.1:7860/, 配置可导出为json格式
-
-json格式导入 flow
-
-```py
-from langflow import load_flow_from_json
-
-flow = load_flow_from_json("path/to/flow.json")
-# Now you can use it like any chain
-flow("Hey, have you heard of LangFlow?")
-```
-
-### LangSmith
-
-LangSmith 是LangChain官方推出的 生产级LLM应用程序构建平台。
-- 可以调试、测试、评估和监控任何LLM框架上构建的链和智能代理，并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
-- langchain 执行过程中的数据可视化展示，用于观察 chain tool llm 之前的嵌套关系、执行耗时、token 消耗等指标
-- [官方文档](https://docs.smith.langchain.com/)
-
-LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
-
-
-## LangChain 观点
-
-【2023-7-23】[我为什么放弃了 LangChain？](https://zhuanlan.zhihu.com/p/645345926)
-
-由 LangChain 推广的 `ReAct` 工作流在 InstructGPT/text-davinci-003 中特别有效，但**成本很高**，而且对于小型项目来说并不容易使用。
-> 「LangChain 是 RAG 最受欢迎的工具，阅读 LangChain 的全面文档，以便更好地理解如何最好地利用它。」
-
-经过一周的研究，运行 LangChain 的 demo 示例可以工作，但是任何调整以适应食谱聊天机器人约束的尝试都会失败。
-- 解决了这些 bug 之后，聊天对话的整体质量很差，而且毫无趣味。经过紧张的调试之后，没有找到任何解决方案。
-- 用回了低级别的 ReAct 流程，立即在**对话质量**和**准确性**上超过了 LangChain 实现
-
-LangChain 问题: <span style='color:blue'>让简单事情变得相对复杂</span>，而这种不必要的复杂性造成了一种「部落主义」，损害了整个新兴的人工智能生态系统。
-- LangChain 代码量与仅用官方 openai 库的代码量大致相同，估计 LangChain 合并了更多对象类，但代码优势并不明显。
-- LangChain 吹嘘的提示工程只是 `f-strings`，还有额外步骤。为什么需要使用这些 PromptTemplates 来做同样的事情呢？
-- 真正要做的：
-  - 如何创建 Agent，结合迫切想要的 `ReAct` 工作流。而 LangChain示例里每个`思想` / `行动` / `观察`中都使用了自己的 API 调用 OpenAI，所以链条比想象的要慢。
-- LangChain 如何存储到目前为止的对话?
-
-制作自己的 Python 软件包要比让 LangChain 来满足自己的需求容易得多
-
-LangChain 确实也有很多实用功能，比如**文本分割器**和集成**向量存储**，这两种功能都是「用 PDF / 代码聊天」演示不可或缺的（在我看来这只是一个噱头）。
-
 ## LangChain 组件
+
+LangChain 库本身由几个不同的包组成。
+- `langchain-core`：基础抽象和 LangChain 表达式语言。
+- `langchain-community`：第三方集成。
+- `langchain`：构成应用程序认知架构的链、代理和检索策略。
 
 2 个核心功能为：
 - 1）LLM 模型与**外部数据源**进行连接。
@@ -259,10 +286,13 @@ LangChain主要支持6种组件：
 
 ### 框架
 
+
 LangChain 框架示意图
 
 <div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-07-19T14:21:54.356Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\&quot; etag=\&quot;-aOkMyNOUPzSYAY1Qx6N\&quot; version=\&quot;21.6.3\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;YUrH7kkdw6S7EPocWAtV\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1434\&quot; dy=\&quot;771\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-64\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;587\&quot; y=\&quot;226\&quot; width=\&quot;123.75\&quot; height=\&quot;135\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;70\&quot; y=\&quot;153.75\&quot; width=\&quot;270\&quot; height=\&quot;67.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CRyWcW9bKPYmjVe2kgWn-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;800\&quot; y=\&quot;215\&quot; width=\&quot;110\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CRyWcW9bKPYmjVe2kgWn-2\&quot; value=\&quot;LangChain组件\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0;fontSize=22;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;310.13\&quot; y=\&quot;10\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-3\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-5\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-4\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-6\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; value=\&quot;LangChain&amp;lt;br&amp;gt;兰链\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#B3B3B3;strokeColor=#314354;fontStyle=1;fontSize=17;fontColor=#ffffff;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;225.44\&quot; y=\&quot;267.5\&quot; width=\&quot;109.62\&quot; height=\&quot;45\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-24\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-60\&quot; target=\&quot;CRyWcW9bKPYmjVe2kgWn-25\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;630.75\&quot; y=\&quot;290\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-57\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FF6666;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-10\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-56\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-2\&quot; value=\&quot;Models&amp;lt;br&amp;gt;模型\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;rounded=1;fontStyle=1;fontSize=14;fontColor=#ffffff;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430.25\&quot; y=\&quot;272.5\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-16\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF9999;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-4\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-10\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-4\&quot; value=\&quot;Chains&amp;lt;br&amp;gt;链\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;rounded=1;fontStyle=1;fontSize=14;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;237.5\&quot; y=\&quot;170\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-17\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF9999;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-7\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-2\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-7\&quot; value=\&quot;Prompts&amp;lt;br&amp;gt;提示\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;rounded=1;fontStyle=1;fontSize=14;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430.25\&quot; y=\&quot;340\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-32\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-8\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-25\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;282\&quot; y=\&quot;515\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-8\&quot; value=\&quot;Document Loader &amp;amp;amp; Utils\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;206.82\&quot; y=\&quot;450\&quot; width=\&quot;149.38\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-9\&quot; value=\&quot;Memory&amp;lt;br&amp;gt;记忆\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;rounded=1;fontColor=#ffffff;fontStyle=1;fontSize=14;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;80\&quot; y=\&quot;272.5\&quot; width=\&quot;107.75\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-10\&quot; value=\&quot;Agents&amp;lt;br&amp;gt;代理\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=none;rounded=1;fontColor=#ffffff;fontStyle=1;fontSize=14;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;80\&quot; y=\&quot;170\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-11\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=1;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-10\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;297.5\&quot; y=\&quot;285\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;330.5\&quot; y=\&quot;215\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-12\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-9\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;220\&quot; y=\&quot;290\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;182.5\&quot; y=\&quot;245\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-33\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-8\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;260.5\&quot; y=\&quot;303\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;192.5\&quot; y=\&quot;255\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-7\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;270.5\&quot; y=\&quot;313\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;202.5\&quot; y=\&quot;265\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-18\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-9\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-48\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.409;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-18\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-41\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-18\&quot; value=\&quot;Vectorstores\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=1\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;80\&quot; y=\&quot;450\&quot; width=\&quot;107.75\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-20\&quot; value=\&quot;GPT 3.5\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.13\&quot; y=\&quot;225\&quot; width=\&quot;73.87\&quot; height=\&quot;25\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-21\&quot; value=\&quot;GPT 4\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.13\&quot; y=\&quot;255\&quot; width=\&quot;73.87\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-22\&quot; value=\&quot;Claude\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.13\&quot; y=\&quot;285\&quot; width=\&quot;73.87\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-23\&quot; value=\&quot;ChatGLM\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;816.13\&quot; y=\&quot;322.5\&quot; width=\&quot;73.87\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;414\&quot; y=\&quot;435\&quot; width=\&quot;222.25\&quot; height=\&quot;65\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-26\&quot; value=\&quot;Text\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;426.25\&quot; y=\&quot;443\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-27\&quot; value=\&quot;Image\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;496.38\&quot; y=\&quot;443\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-28\&quot; value=\&quot;Word\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;426.25\&quot; y=\&quot;473\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-29\&quot; value=\&quot;PDF\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;496.38\&quot; y=\&quot;473\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-30\&quot; value=\&quot;Video\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;566.25\&quot; y=\&quot;443\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-31\&quot; value=\&quot;Url\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;566.25\&quot; y=\&quot;473\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-35\&quot; value=\&quot;记忆类型&amp;lt;br&amp;gt;① short term: buffer&amp;lt;br&amp;gt;② long term: Entity&amp;lt;br&amp;gt;组件类型&amp;lt;br&amp;gt;① 全部对话内容&amp;lt;br&amp;gt;② 最近k轮&amp;lt;br&amp;gt;③ 内容摘要&amp;lt;br&amp;gt;④ 匹配最相似的k组\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;20.25\&quot; y=\&quot;292.5\&quot; width=\&quot;130\&quot; height=\&quot;130\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-36\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-1\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-33\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;313\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;450\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-33\&quot; value=\&quot;Indexes&amp;lt;br&amp;gt;索引\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=none;rounded=1;fontStyle=1;fontSize=14;shadow=1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;239.26\&quot; y=\&quot;375\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-37\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#999999;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-33\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-18\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;292\&quot; y=\&quot;420\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;292\&quot; y=\&quot;460\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-38\&quot; value=\&quot;组件&amp;lt;br&amp;gt;① Document Loader&amp;lt;br&amp;gt;② Vector Stores&amp;lt;br&amp;gt;③ Text Splitters&amp;lt;br&amp;gt;④ Retrievers\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;330.13\&quot; y=\&quot;353\&quot; width=\&quot;130\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-39\&quot; value=\&quot;任务链&amp;lt;br&amp;gt;① Simple Chain（模板）&amp;lt;br&amp;gt;② Sequential Chain&amp;lt;br&amp;gt;③ 与外部数据&amp;lt;br&amp;gt;④ 与长期记忆\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;245\&quot; y=\&quot;80\&quot; width=\&quot;160\&quot; height=\&quot;90\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-40\&quot; value=\&quot;Autonomus Chains&amp;lt;br&amp;gt;① Tools + Agents&amp;lt;br&amp;gt;② BabyAGI, AutoGPT\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;47.74999999999999\&quot; y=\&quot;200\&quot; width=\&quot;140\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-41\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;43\&quot; y=\&quot;520\&quot; width=\&quot;222.25\&quot; height=\&quot;65\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-42\&quot; value=\&quot;FAISS\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;55.25\&quot; y=\&quot;528\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-43\&quot; value=\&quot;ES\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;125.38\&quot; y=\&quot;528\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-44\&quot; value=\&quot;Pinecone\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;55.25\&quot; y=\&quot;558\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-45\&quot; value=\&quot;Chroma\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;125.38\&quot; y=\&quot;558\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-46\&quot; value=\&quot;Milvus\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;195.25\&quot; y=\&quot;528\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-47\&quot; value=\&quot;PGVector\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;195.25\&quot; y=\&quot;558\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-49\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#E6E6E6;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;514.75\&quot; y=\&quot;123.75\&quot; width=\&quot;222.25\&quot; height=\&quot;65\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-50\&quot; value=\&quot;Google\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;527\&quot; y=\&quot;131.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-51\&quot; value=\&quot;Wolfram\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;597.13\&quot; y=\&quot;131.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-52\&quot; value=\&quot;Wikipedia\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;527\&quot; y=\&quot;161.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-53\&quot; value=\&quot;API\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;597.13\&quot; y=\&quot;161.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-54\&quot; value=\&quot;Youtube\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;667\&quot; y=\&quot;131.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-55\&quot; value=\&quot;Web\&quot; style=\&quot;whiteSpace=wrap;html=1;rounded=1;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;667\&quot; y=\&quot;161.75\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-56\&quot; value=\&quot;Tools\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=0;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;375.63\&quot; y=\&quot;138.75\&quot; width=\&quot;84.5\&quot; height=\&quot;35\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-58\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-56\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-49\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;483\&quot; y=\&quot;283\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;483\&quot; y=\&quot;245\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-59\&quot; value=\&quot;六大组件：Models、Prompts、Indexes、Memory、Chains、Agents\&quot; style=\&quot;text;fontColor=default;labelBackgroundColor=none;fontSize=12;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;500\&quot; y=\&quot;80\&quot; width=\&quot;366.24\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-61\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;RI6usgfjZI69E3hADuvV-2\&quot; target=\&quot;RI6usgfjZI69E3hADuvV-60\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;515\&quot; y=\&quot;290\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;626\&quot; y=\&quot;290\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-60\&quot; value=\&quot;LLMs\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=0;fontSize=14;shadow=0;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;600.75\&quot; y=\&quot;276.5\&quot; width=\&quot;60.63\&quot; height=\&quot;27.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-62\&quot; value=\&quot;Chat Models\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=0;fontSize=14;shadow=0;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;597\&quot; y=\&quot;235\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-63\&quot; value=\&quot;Text Embedding\&quot; style=\&quot;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=0;fontSize=14;shadow=0;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;597\&quot; y=\&quot;318.75\&quot; width=\&quot;110\&quot; height=\&quot;27.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-65\&quot; value=\&quot;顺序确定\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;200\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-66\&quot; value=\&quot;改进：不定\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF0000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;165\&quot; y=\&quot;158.75\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-67\&quot; value=\&quot;组成&amp;lt;br&amp;gt;① Action执行操作&amp;lt;br&amp;gt;② Observation 收到的信息&amp;lt;br&amp;gt;③ Decision 决策\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;25.25\&quot; y=\&quot;68.75\&quot; width=\&quot;170\&quot; height=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;RI6usgfjZI69E3hADuvV-68\&quot; value=\&quot;wangqiwen&amp;#xa;2023-7-19\&quot; style=\&quot;text;fontColor=default;labelBackgroundColor=none;fontSize=12;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;476.5\&quot; y=\&quot;533.75\&quot; width=\&quot;69.75\&quot; height=\&quot;37.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
 
 
 ### Document Loaders and Utils
@@ -984,7 +1014,7 @@ Chain提供了一种将各种组件统一到应用程序中的方法。
 - 通过多个Chain与其他部件结合，可生成复杂的链，完成复杂的任务。
 - ![Chains示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/4d5ba1c00889406fb3bc7c86fbb9660f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=pLKYIarzSV1QkVxKv%2Blc0t8lDrE%3D)
 
-LangChain中，主要有下面几种链，`LLMChain`、`Sequential Chain` 以及 `Route Chain`，其中最常用的是LLMChain。
+LangChain中，主要有下面几种链，`LLMChain`、`Sequential Chain` 以及 `Route Chain`，最常用 LLMChain。
 - `LLMChain` 最基本的链
   - LLMChain由 **PromptTemplate**、**模型**和可选的**输出解析器**组成。
   - 链接收多个输入变量，使用PromptTemplate生成提示，传递给模型，最后使用输出解析器把模型返回值转换成最终格式。
@@ -1000,10 +1030,60 @@ LLM与其他组件结合，创建不同应用，一些例子：
 - LLM与**外部数据**结合，比如，通过langchain获取youtube视频链接，通过LLM视频问答
 - LLM与**长期记忆**结合，比如聊天机器人
 
+
 #### LLMChain
 
-LLMChain，由 PromptTemplate、LLM 和 OutputParser 组成。LLM 的输出一般为文本，OutputParser 用于让 LLM 结构化输出并进行结果解析，方便后续的调用。
+LangChain 核心构建模块是 `LLMChain`
+
+LLMChain 由 PromptTemplate、LLM 和 OutputParser 组成。
+
+三个方面:
+- `LLM`: 语言模型是核心推理引擎。用LangChain 需要了解不同类型的语言模型以及如何使用。
+- `Prompt Templates`: 提供语言模型指令。这控制了语言模型的输出，因此了解如何构建提示和不同的提示策略至关重要。
+- `Output Parsers`: 将LLM 原始响应转换为更易处理的格式，使得在下游使用输出变得容易。
+
+
+LLM 的输出一般为文本，OutputParser 用于让 LLM 结构化输出并进行结果解析，方便后续的调用。
 - ![](https://picx.zhimg.com/80/v2-774b73df8d40ecc40ea265c5f15fd40d_1440w.webp?source=1940ef5c)
+
+
+##### LLM
+
+LLMs 输入/输出简单易懂 - **字符串**。
+
+但 `ChatModels` 
+- 输入: `ChatMessage` 列表
+- 输出: 单独 `ChatMessage`。 
+
+一个 ChatMessage 有两个必需的组件:
+- `content`: 消息内容。
+- `role`: `ChatMessage` 实体角色。
+
+LangChain 提供了几个对象，用于方便地区分不同的角色:
+- `HumanMessage`: 人类/用户 ChatMessage。
+- `AIMessage`: AI/助手 ChatMessage。
+- `SystemMessage`: 系统 ChatMessage。
+- `FunctionMessage`: 函数调用 ChatMessage。
+
+如果这些角色都不合适，可用 ChatMessage类 手动指定角色
+
+LangChain 提供标准接口:
+- `predict`: 接受一个字符串，返回一个字符串
+- `predict_messages`: 接受一个消息列表，返回一个消息。
+
+```py
+from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
+
+llm = OpenAI()
+chat_model = ChatOpenAI()
+text = "What would be a good company name for a company that makes colorful socks?"
+llm.predict(text) # "Hi"
+chat_model.predict(text) # "Hi"
+```
+
+
+
 
 ```py
 from langchain import LLMChain
@@ -1013,7 +1093,7 @@ question = "Can Barack Obama have a conversation with George Washington?"
 print(llm_chain.run(question))
 ```
 
-LLMChain是一个简单的链，它接受一个提示模板，用用户输入格式化它并返回来自 LLM 的响应。
+LLMChain 是一个简单的链，它接受一个提示模板，用用户输入格式化它并返回来自 LLM 的响应。
 
 ```py
 from langchain.llms import OpenAI
@@ -1114,33 +1194,197 @@ RouterChain 由两个组件组成：
 
 #### Documents Chain
 
-下面4 种 Chain 主要用于 **Document 处理**，在基于文档生成摘要、基于文档的问答等场景中经常会用到，在后续的落地实践里也会有所体现。
+下面 4 种 Chain 主要用于 **Document 处理**，基于文档生成**摘要**、**问答**等场景中经常会用到，在后续的落地实践里也会有所体现。
 - ![](https://pica.zhimg.com/80/v2-48163d2a9246b271491e96fd29e17256_1440w.webp?source=1940ef5c)
+
+load_summarize_chain 三种不同的链式类型：stuff, map_reduce 和 refine
+- `stuff`: 文档内容**直接**送给 llm
+- `refine`: 文档**串行**传送给llm, 当前文档内容+上一步中间结果
+- `map_reduce`: 每个文档单独**并行**处理, 再合并调用
+- `map_rerank`: 每个文档单独**并行**处理, 再排序调用
+
+数据准备
+
+```py
+from langchain import OpenAI, PromptTemplate, LLMChain
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.chains.mapreduce import MapReduceChain
+from langchain.prompts import PromptTemplate
+
+llm = OpenAI(temperature=0)
+
+text_splitter = CharacterTextSplitter()
+with open("../../state_of_the_union.txt") as f:
+    state_of_the_union = f.read()
+texts = text_splitter.split_text(state_of_the_union)
+
+from langchain.docstore.document import Document
+
+docs = [Document(page_content=t) for t in texts[:3]]
+```
 
 ##### Stuff
 
-StuffDocumentsChain 最简单直接，是将所有获取到的文档作为 context 放入到 Prompt 中，传递到 LLM 获取答案。
+`StuffDocumentsChain` 最直接，将所有获取到的文档作为 context 放入到 Prompt 中，传递到 LLM 获取答案。
 
-这种方式可以**完整保留上下文**，调用 LLM 的次数也比较少，建议能使用 stuff 的就使用这种方式。其适合文档拆分的比较小，一次获取文档比较少的场景，不然容易超过 token 的限制。
+这种方式**完整保留上下文**，调用 LLM 次数较少，建议能使用 stuff 的就使用这种方式。
+- 其适合文档拆分的比较小，一次获取文档比较少的场景，不然容易超过 token 限制。
 - ![](https://picx.zhimg.com/80/v2-5012639aaddebf3ded6bc275e0e9b26f_1440w.webp?source=1940ef5c)
+
+```py
+chain = load_summarize_chain(llm, chain_type="stuff")
+chain.run(docs)
+```
+
+自定义 Prompt
+
+```py
+prompt_template = """Write a concise summary of the following:
+
+{text}
+
+CONCISE SUMMARY IN ITALIAN:"""
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
+chain = load_summarize_chain(llm, chain_type="stuff", prompt=PROMPT)
+chain.run(docs)
+```
+
 
 ##### Refine
 
-RefineDocumentsChain 是通过**迭代更新**方式获取答案。先处理第一个文档，作为 context 传递给 llm，获取中间结果 intermediate answer。然后将第一个文档的中间结果以及第二个文档发给 llm 进行处理，后续的文档类似处理。
+`RefineDocumentsChain` 通过**迭代更新**方式获取答案。
+- 先处理第一个文档，作为 context 传递给 llm，获取中间结果 intermediate answer。
+- 然后将第一个文档的**中间结果**以及**第二个文档**发给 llm 进行处理，后续的文档类似处理。
 
 Refine 这种方式能部分保留上下文，以及 token 的使用能控制在一定范围。
 - ![](https://pica.zhimg.com/80/v2-58114a41deaa562d13d627ee750dc0b7_1440w.webp?source=1940ef5c)
 
+```py
+# 一步到位
+chain = load_summarize_chain(llm, chain_type="refine")
+chain.run(docs)
+# 中间步骤
+chain = load_summarize_chain(OpenAI(temperature=0), chain_type="refine", return_intermediate_steps=True)
+chain({"input_documents": docs}, return_only_outputs=True)
+
+```
+
+自定义 prompt
+
+```py
+prompt_template = """Write a concise summary of the following:
+
+
+{text}
+
+
+CONCISE SUMMARY IN ITALIAN:"""
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
+refine_template = (
+    "Your job is to produce a final summary\n"
+    "We have provided an existing summary up to a certain point: {existing_answer}\n"
+    "We have the opportunity to refine the existing summary"
+    "(only if needed) with some more context below.\n"
+    "------------\n"
+    "{text}\n"
+    "------------\n"
+    "Given the new context, refine the original summary in Italian"
+    "If the context isn't useful, return the original summary."
+)
+refine_prompt = PromptTemplate(
+    input_variables=["existing_answer", "text"],
+    template=refine_template,
+)
+chain = load_summarize_chain(OpenAI(temperature=0), chain_type="refine", return_intermediate_steps=True, question_prompt=PROMPT, refine_prompt=refine_prompt)
+chain({"input_documents": docs}, return_only_outputs=True)
+```
+
 ##### MapReduce
 
-MapReduceDocumentsChain 先通过 LLM 对每个 document 进行处理，然后将所有文档的答案在通过 LLM 进行合并处理，得到最终的结果。
+`MapReduceDocumentsChain` 先通过 LLM 对每个 document 进行处理，然后将所有文档的答案在通过 LLM 进行**合并处理**，得到最终结果。
 
-MapReduce 的方式将每个 document 单独处理，可以并发进行调用。但是每个文档之间缺少上下文。
+MapReduce 方式将每个 document 单独处理，可以**并发**进行调用。但是每个文档之间缺少上下文。
 - ![](https://picx.zhimg.com/80/v2-8774dd34362cdafec7ef5a71f1e0ebb6_1440w.webp?source=1940ef5c)
+
+```py
+from langchain.chains.summarize import load_summarize_chain
+# 一次到位
+chain = load_summarize_chain(llm, chain_type="map_reduce")
+chain.run(docs)
+
+# 显示中间步骤 return_intermediate_steps 参数
+chain = load_summarize_chain(OpenAI(temperature=0), chain_type="map_reduce", return_intermediate_steps=True)
+chain({"input_documents": docs}, return_only_outputs=True) # {'map_steps':['a','b'], 'output_text':'...'}
+```
+
+自定义提示
+
+```py
+prompt_template = """Write a concise summary of the following:
+
+{text}
+
+CONCISE SUMMARY IN ITALIAN:"""
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
+chain = load_summarize_chain(OpenAI(temperature=0), chain_type="map_reduce", return_intermediate_steps=True, map_prompt=PROMPT, combine_prompt=PROMPT)
+chain({"input_documents": docs}, return_only_outputs=True)
+```
+
+map, reduce 阶段使用不同的 prompt
+
+```py
+from langchain.chains.combine_documents.map_reduce import MapReduceDocumentsChain
+from langchain.chains.combine_documents.stuff import StuffDocumentsChain
+# map 阶段
+map_template_string = """Give the following python code information, generate a description that explains what the code does and also mention the time complexity.
+Code:
+{code}
+
+Return the the description in the following format:
+name of the function: description of the function
+"""
+# reduce 阶段
+reduce_template_string = """Give the following following python fuctions name and their descritpion, answer the following question
+{code_description}
+Question: {question}
+Answer:
+"""
+
+MAP_PROMPT = PromptTemplate(input_variables=["code"], template=map_template_string)
+REDUCE_PROMPT = PromptTemplate(input_variables=["code_description", "question"], template=reduce_template_string)
+
+llm = OpenAI()
+# 分别初始化
+map_llm_chain = LLMChain(llm=llm, prompt=MAP_PROMPT) # map chain
+reduce_llm_chain = LLMChain(llm=llm, prompt=REDUCE_PROMPT) # reduce chain
+
+generative_result_reduce_chain = StuffDocumentsChain(
+    llm_chain=reduce_llm_chain,
+    document_variable_name="code_description",
+)
+
+combine_documents = MapReduceDocumentsChain(
+    llm_chain=map_llm_chain, # map 阶段
+    combine_document_chain=generative_result_reduce_chain, # reduce 合并阶段, 用 stuff chain
+    document_variable_name="code",
+)
+# map_reduce chain 构建
+map_reduce = MapReduceChain(
+    combine_documents_chain=combine_documents,
+    text_splitter=CharacterTextSplitter(separator="\n##\n", chunk_size=100, chunk_overlap=0),
+)
+code = """
+shellSort():
+ ...
+"""
+map_reduce.run(input_text=code, question="Which function has a better time complexity?")
+
+```
 
 ##### MapRerank
 
-MapRerankDocumentsChain 和 MapReduceDocumentsChain 类似，先通过 LLM 对每个 document 进行处理，每个答案都会返回一个 score，最后选择 score 最高的答案。
+`MapRerankDocumentsChain` 和 `MapReduceDocumentsChain` 类似
+- 先通过 LLM 对每个 document 进行处理，每个答案都会返回一个 score，最后选择 score 最高的答案。
 
 MapRerank 和 MapReduce 类似，会大批量的调用 LLM，每个 document 之间是独立处理。
 - ![](https://pic1.zhimg.com/80/v2-db2b87a6d0f49fd5fe8e03fb358ade7a_1440w.webp?source=1940ef5c)
@@ -1344,16 +1588,15 @@ print(conversation.predict(input="我的姓名是什么"))
 - 2）通过 Splitter 基于 Token 进行文档拆分
 - 3）加载 summarize 链，链类型为 refine，迭代进行总结
 
-```py
 
-3、LangChain 落地实践
+LangChain 落地实践
+
 3.1 文档生成总结
-1）通过 Loader 加载远程文档
+- 1）通过 Loader 加载远程文档
+- 2）通过 Splitter 基于 Token 进行文档拆分
+- 3）加载 summarize 链，链类型为 refine，迭代进行总结
 
-2）通过 Splitter 基于 Token 进行文档拆分
-
-3）加载 summarize 链，链类型为 refine，迭代进行总结
-
+```py
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import PlaywrightURLLoader
 from langchain.chains.summarize import load_summarize_chain
@@ -1385,7 +1628,9 @@ REFINE_PROMPT = PromptTemplate(
     template=refine_template, input_variables=["existing_answer", "text"]
 )
 
+# 三种不同的链式类型：stuff, map_reduce 和 refine
 chain = load_summarize_chain(llm, chain_type="refine", question_prompt=PROMPT, refine_prompt=REFINE_PROMPT, verbose=False)
+# chain = load_summarize_chain(llm, chain_type="map_reduce")
 
 docs = text_splitter.split_documents(data)
 result = chain.run(docs)
