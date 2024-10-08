@@ -637,13 +637,13 @@ It’s grind season homie. # /ɡraɪnd/ 摩擦
 
 - 【2019-10-13】[中国历史年表](https://www.bilibili.com/video/av66583807?from=search&seid=10290663082694934788)，10分钟从上古之战到溥仪退位，中国历史年表超燃影视化混剪
 
-<iframe src="//player.bilibili.com/player.html?aid=66583807&cid=116735636&page=3" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=66583807&cid=116735636&page=3&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2019-12-11】[大型人文历史纪录片《苏东坡》6集全](https://www.bilibili.com/video/av12305983)
 
 <iframe src="//player.bilibili.com/player.html?aid=12305983&cid=20775710&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - [陆毅版电视剧苏东坡诗系列](https://www.bilibili.com/video/av3573999)
 
-<iframe src="//player.bilibili.com/player.html?aid=3573999&cid=5707455&page=4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=3573999&cid=5707455&page=4&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 - MV说尽苏轼这一生:[一如这摸样](https://www.bilibili.com/video/av63131519)
 
