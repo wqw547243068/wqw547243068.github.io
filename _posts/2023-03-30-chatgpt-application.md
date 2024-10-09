@@ -3524,7 +3524,8 @@ UMass Amherst、UCLA和MIT-IBM Watson AI Lab研究人员，推出了全新的具
 - 指南针:  Sphero 可以通过指南针来校正朝向
 - 碰撞感知:   可以感知到碰撞事件
 
-<iframe src='//player.bilibili.com/player.html?bvid=BV1AJ411b7X7&cid=136813283&p=1&share_source=copy_web' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true'></iframe>
+<iframe src='//player.bilibili.com/player.html?bvid=BV1AJ411b7X7&cid=136813283&p=1&share_source=copy_web' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true' width="720" height="405"></iframe>
+
 
 用 LLM 来驱动一个实体机器人, 让 LLM 提供两个关键能力: 
 1. 自然语言交互能力 (NLU)
