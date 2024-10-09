@@ -3453,6 +3453,15 @@ Mobile ALOHA并不是一个机器人，而是一个操作系统。借助这个�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mnLVbwxSdNM?si=hc34Mj7XEaKwuCIZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
+
+##### Cybrothel
+
+德国柏林 首家**虚拟妓院** 成人用品使用AI技术
+
+世界首家虚拟妓院 [Cybrothel](https://cybrothel.com/en/dolls)，顾客可租借AI加持的实体逼真情趣玩偶，在虚拟现实中与之互动
+- 下一代机器人玩偶，能够实时响应触摸和说话
+- 视频[演示](https://m.weibo.cn/status/5087074024423491)
+
 #### RoboFlamingo
 
 【2024-1-17】[机器人领域首个开源视觉-语言操作大模型，RoboFlamingo激发开源VLMs更大潜能](https://m.sohu.com/a/752424819_129720)
