@@ -240,6 +240,11 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 - <iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7253003137412399676?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
 
 
+### 人体构造
+
+【2024-10-11】人类的骨骼到底是进化的杰作还是设计的奇迹？ [微博视频](https://weibo.com/tv/show/1034:5087676680830985)
+
+
 ### 生命真的来自进化论吗
 
 【2022-4-19】
