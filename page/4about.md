@@ -11,16 +11,35 @@ type: page
 
 ## 关于我
 
+
+### 履历
+
 [你好，我是码农！](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=502284435&idx=1&sn=b40f727830cae264e65c29c75f75ee70&chksm=3ec3dd8e09b45498b3bc2efccc3fe52a2f79e8f424774dc4afaedb84b3bfc0954968b7a678de&mpshare=1&scene=23&srcid&sharer_sharetime=1564480271727&sharer_shareid=b8d409494a5439418f4a89712efcd92a%23rd)
-- 普通程序猿，些许爱好，爱思考，偶尔发发呆，公众号（[鹤啸九天](http://mp.weixin.qq.com/mp/homepage?__biz=MjM5ODY2OTQyNg==&hid=1&sn=259f54743846ee6be7585e06be6e267e&scene=18%23wechat_redirect)）和这个技术博客
+- 10+年大厂程序猿, 长期从事算法研发工作
+- 技术栈
+  - 从推荐系统、Hadoop/Hive，到数据挖掘、机器学习
+  - 再到深度学习、聊天机器人、计算机视觉、自然语言处理, 其中, 对话系统经验最为丰富
+  - 以及2022年兴起的大模型技术
+
+从学校到职场，孜孜不倦
+- 本科糊里糊涂进了数学系, 避之不及, 沉沦之后, 奋发图强, 学生工作、专业成绩两不误, 拿了国家励志奖学金, 借考研机会转计算机方向, 图形图像
   - 2007年，[全国大学生数学建模竞赛](http://www.mcm.edu.cn/index_cn.html)省一等奖, 总教练[汪晓银](https://www.x-mol.com/university/faculty/99162)
   - 2010年，[研究生数学建模竞赛国家二等奖](https://news.cau.edu.cn/art/2010/12/6/art_10889_213074.html)
+- 工作后转机器学习、NLP以及大模型
+  - 2011年, 好不容易挤进互联网顶级大厂`百度`（被誉为国内IT的黄埔军校,虽然现在发展一般）, 随后去了`阿里巴巴`（高德地图/iDST, 达摩院前身）继续做机器学习、深度学习
+  - 2017年, `滴滴`、`贝壳`, 做智能交互业务，涉及：智能客服、培训助手、智能家居等
+  - 2022年, `字节跳动`(房产→Flow), 转大模型方向, 垂类模型训练、文本生成、图像生成等, 落地AIGC业务, 参与过豆包/Coze研发
+
+
+虽然饱经沧桑，白发渐增, 但依旧持续积累、分享, 送人玫瑰, 手留余香。
+
+
+### 兴趣爱好
+
+- 些许爱好，爱思考，偶尔发发呆，公众号（[鹤啸九天](http://mp.weixin.qq.com/mp/homepage?__biz=MjM5ODY2OTQyNg==&hid=1&sn=259f54743846ee6be7585e06be6e267e&scene=18%23wechat_redirect)）和这个技术博客
 - 动静结合
   - 动：长跑、游泳、爬山
   - 静：诗词书画，一颗伪文艺的心
-- BAT江湖混迹多年，工作内容上
-
-> 从推荐系统、Hadoop/Hive，到数据挖掘、机器学习，再到深度学习、聊天机器人、计算机视觉和自然语言处理等。
 
 > 崇尚终身学习,自律更自由，平凡不平庸
 
@@ -28,18 +47,22 @@ type: page
 
 <img src="{{site.url}}/wqw/fig/wqw.png" alt="欢迎关注鹤啸九天" height="200" width="200" />
 
-## 相关项目
 
-讲过的AI课程
-- 2017年在雷锋网上主讲的深度学习读书分享
+
+## 个人项目
+
+讲过的**AI课程**
+- 2017年, 雷锋网上`深度学习`读书分享
   - 文字版：[BAT资深算法工程师「Deep Learning」读书系列分享（一） 分享总结](https://www.leiphone.com/news/201708/LEBNjZzvm0Q3Ipp0.html)
   - 视频版：[腾讯云](https://cloud.tencent.com/edu/learning/course-1042-825)、[AI研习社](https://www.yanxishe.com/center/teachingCourses/4101350)
   - ![](https://static.leiphone.com/uploads/new/article/740_740/201708/598fd35654561.jpg)
-- 大数据文摘+清华+SoAI共同承办的AI培训班：[The School of AI Beijing](https://wqw547243068.github.io/school-of-ai-beijing)
-![](https://wqw547243068.github.io/school-of-ai-beijing/other/bdd_siraj.png)
-- 雷锋网上开的Python入门AI课程：[有趣的Python](https://wqw547243068.github.io/Python-learning), [AI研习社课程](https://mooc.yanxishe.com/course/489)
+- `大数据文摘`+清华+SoAI共同承办的AI培训班：[The School of AI Beijing](https://wqw547243068.github.io/school-of-ai-beijing)
+  - ![](https://wqw547243068.github.io/school-of-ai-beijing/other/bdd_siraj.png)
+- 雷锋网开设 Python入门AI课程：[有趣的Python](https://wqw547243068.github.io/Python-learning), [AI研习社课程](https://mooc.yanxishe.com/course/489)
 
 [![](https://static.mooc.ai/files/course/2018/05-08/17590372d80d143595.jpg)](http://www.mooc.ai/course/489)
+
+
 
 ## 联系我
 
@@ -47,6 +70,25 @@ type: page
 * Email：wqw547243068@{163,gmail}.com
 * [知乎](https://www.zhihu.com/people/wangqiwen/activities)
 * [CSDN](http://blog.csdn.net/wqw547243068)
+
+
+|联系渠道|方法|智能服务响应速度|本人响应速度|
+|---|---|---|---|
+|**站内评论区**|文章末尾评论区，多种登录方式|无|大概14-30天|
+|**公众号私信**|扫右下角二维码关注公众号`鹤啸九天`, 私聊即可|实时|7-14天|
+|**邮件咨询**|发邮件到 wqw547243068@mail.com |无|3-7天|
+|**加微信**|请通过公众号私信，明确意图|实时|3-7天|
+
+
+提示：
+- 公众号背后对接大模型智能对话，真人不定期回复
+- **付费用户**高优响应, 付费越多越及时
+
+如何付费？
+- 技术博客每篇文章底栏有**赞赏**按钮
+- 公众号文章/知乎文章末尾有**赞赏**功能
+- 打赏一杯咖啡即可, 付费时，备注上 **微信id/昵称**, 以便高优响应
+
 
 
 ## 关于本站
