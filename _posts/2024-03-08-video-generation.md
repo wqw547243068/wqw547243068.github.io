@@ -312,6 +312,20 @@ Stable Video Diffusion 以两种图像到视频模型的形式发布，能够以
 在外部评估中，Stability AI 证实这些模型超越了用户偏好研究中领先的闭源模型（runway、pika Labs）
 
 
+## ControlVideo
+
+【2023-5-26】清华发布 [ControlVideo](https://ml.cs.tsinghua.edu.cn/controlvideo/)
+- ControlVideo 论文 [ControlVideo: Conditional Control for One-shot Text-driven Video Editing and Beyond](https://arxiv.org/abs/2305.17098)
+
+最新成果 ControlVideo，一种用于**文本驱动视频编辑**的新方法。 
+- 利用文本到图像扩散模型 和 ControlNet 的功能，ControlVideo 旨在增强与给定文本对齐的视频的保真度和时间一致性，同时保留源视频的结构。 这是通过结合额外的条件来实现的，例如边缘图，使用精心设计的策略对源视频文本对的关键帧和时间注意力进行微调。 
+- 对 ControlVideo 的设计进行了深入探索，以指导未来对一次性调整视频扩散模型的研究。 
+- 在数量上，ControlVideo 在忠实度和一致性方面优于一系列竞争基线，同时仍与文本提示保持一致。 
+- 此外，它还提供具有高视觉真实感和保真度的视频。 源内容，展示了使用包含不同程度源视频信息的控件的灵活性，以及多个控件组合的潜力
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=229492417&bvid=BV1w8411Z75p&cid=1151826959&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
 ## pika
 
 Pika Labs （[pika.art](https://pika.art/)） 是一款创新的视频创建工具，可以将文本和图像转换为引人入胜的视频
@@ -399,19 +413,6 @@ W.A.L.T的关键是将图像和视频编码到一个共享的潜在空间中。
 Transformer主干通过具有两层窗口限制注意力的块来处理这些潜在空间——空间层捕捉图像和视频中的空间关系，而时空层模拟视频中的时间动态，并通过身份注意力掩码传递图像。
 
 
-## 【2024-2-20】字节 Boximator
-
-视频界“神笔马良” —— 字节[Boximator](https://boximator.github.io)模型
-
-产品信息：
-- [Boximator](https://boximator.github.io) 是一款由字节跳动开发的文生视频模型，可通过文本精准控制生成视频中人物或物体的动作。
-
-产品功能：
-- 用户只需输入一句描述具体动作的文本，Boximator便可生成对应动作的视频片段，目前很多文生视频大模型其实做不到这一点。
-
-同时在Pika 1.0、Gen-2、Boximator上输入文本“一位英俊的男人用右手从口袋中掏出一支玫瑰，并注视着这只玫瑰”，三个大模型最终生成的视频中，只有Boximator做到了男士掏花和看花的动作，其他两个均没有
-
-2024年2月20日，字节跳动相关人士表示，Boximator是视频生成领域控制对象运动的技术方法研究项目，目前还无法作为完善的产品落地，距离国外领先的视频生成模型在画面质量、保真率、视频时长等方面还有很大差距。
 
 ## 【2024-2-16】OpenAI Sora
 
@@ -784,5 +785,47 @@ SadTalker 的应用非常广泛，包括：
 
 Gen-3 还没有正式全面公测，但邀请了影视、开发等人员进行了内测，流出来的视频效果非常棒， 一次可以生成11秒的视频。
 
+
+
+## 字节
+
+2024年5月，字节跳动旗下的文生视频产品 `Dreamina`（隶属于视频剪辑产品“剪映”）在改名为“`即梦`”，改名同时产品做了一次更新，普通用户即可使用AI文生视频工具生成**3秒**的短视频，VIP用户可以生成**6秒**的短视频。
+
+【2024-9-24】字节跳动旗下火山引擎在深圳举办AI创新巡展，同时发布了豆包视频生成 PixelDance 和 Seaweed 两款大模型，目前已经面向企业市场开启邀测。
+
+即梦的内测版已经在使用最新的豆包视频生成模型——Seaweed。
+
+豆包视频生成模型也是基于DiT架构。不过，豆包视频生成模型通过高效的DiT融合计算单元，让视频在大动态与运镜中自由切换，拥有变焦、环绕、平摇、缩放、目标跟随等多镜头语言能力。全新设计的扩散模型训练方法攻克了多镜头切换的一致性难题，在镜头切换的同时保持主体、风格、氛围的一致性。
+
+“豆包视频生成大模型能攻克指令遵循、运镜（多镜头下主体一致性）等难题，背后有技术上的突破和全栈能力的优势，还有抖音、剪映对视频理解的优势。”谭待说道。
+
+### 【2024-2-20】字节 Boximator
+
+视频界“神笔马良” —— 字节[Boximator](https://boximator.github.io)模型
+
+产品信息：
+- [Boximator](https://boximator.github.io) 是一款由字节跳动开发的文生视频模型，可通过文本精准控制生成视频中人物或物体的动作。
+
+产品功能：
+- 用户只需输入一句描述具体动作的文本，Boximator便可生成对应动作的视频片段，目前很多文生视频大模型其实做不到这一点。
+
+同时在Pika 1.0、Gen-2、Boximator上输入文本“一位英俊的男人用右手从口袋中掏出一支玫瑰，并注视着这只玫瑰”，三个大模型最终生成的视频中，只有Boximator做到了男士掏花和看花的动作，其他两个均没有
+
+2024年2月20日，字节跳动相关人士表示，Boximator是视频生成领域控制对象运动的技术方法研究项目，目前还无法作为完善的产品落地，距离国外领先的视频生成模型在画面质量、保真率、视频时长等方面还有很大差距。
+
+
+### 【2024-9-24】PixelDance
+
+
+[PixelDance](https://makepixelsdance.github.io/) 一种基于扩散模型的新颖方法，它将第一帧和最后一帧的图像指令与视频生成的文本指令相结合。 
+
+综合实验结果表明，使用公共数据训练的 PixelDance 在合成复杂场景和复杂动作的视频方面表现出明显更好的熟练程度，为视频生成树立了新标准
+
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=876317191&bvid=BV13N4y1U7E9&cid=1340976646&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+### 【2024-9-24】Seaweed
+
+待定
 
 # 结束
