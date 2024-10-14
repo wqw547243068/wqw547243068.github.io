@@ -2,13 +2,12 @@
 layout: post
 title:  "自由职业之路-How to work for yourself"
 date:   2020-01-13 10:29:00
-categories: 读书笔记
+categories: 读书笔记 人生规划
 tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费
 excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
 permalink: /work
-
 ---
 
 * content
@@ -95,57 +94,6 @@ Business Insider 统计数据显示，BAT 三家里，员工平均在职时长�
   - 90后的他对日本有特殊的情结，据说退休前就去了100多次。字节跳动实行双周末制，他上班之余每个双周末会飞去日本，在那里旅游、投资房产、经营旅行社。据传他现在在日本各地有多处房产，国内开保时捷718上下班，去日本后开的宾利欧陆。
 
 
-## 普通人如何做副业
-
-【2024-10-10】`我是潘妮`，普通人如何开启副业？
-
-互联网核心逻辑
-- `流量`，`产品`，`转化`；
-
-没有产品？
-- 借别人的，赚佣金
-- 用虚拟产品：如 旅游攻略、考证资料
-
-
-核心
-- 流量获取能力
-
-
-做副业要迈过的坎儿：
-- ① 足够的认知
-- ② 耐心，半年行动计划
-- ③ 强大的执行力
-
-不建议做线下，尽量做线上
-- 线下付出精力更多
-
-
-自媒体账号是**消耗品**，无法保证账号不被封，头部网红都不行
-
-
-渠道
-- `视频号`：**中老年多**，其余渠道都是年轻人
-- `小红书`：**消费能力最强**，以精致女性为主，货源是pdd/1688
-  - 流量源：搜索、推荐
-  - 小红书不要做广告收益，应该做精准获客
-- 
-
-`公域`流量一定要引导到`私域`, 产生复购, 收益才能持久；
-
-
-`盈利模式`比`流量`更重要；
-- 一定要想清楚如何变现？不然做到10w也难以变现，打赏方式不可持续
-- 普通人不太适合餐饮、开店
-  - 数据统计，全国餐饮行业只有**20%**的店铺盈利，其余亏损。。。
-
-
-盈利模式
-- 知识付费
-- 合作分成：小红书旅游攻略引流到旅行付费
-- 视频号带货
-
-流量越大，变现越难，如 泛娱乐账号
-前期不要自己写，先模仿
 
 
 # 书籍：只工作、不上班
@@ -211,7 +159,7 @@ Business Insider 统计数据显示，BAT 三家里，员工平均在职时长�
 
 【2021-12-30】36 Kr出品，[2022年可复制的暴富指南](https://36kr.com/topics/1547045484980483?channel=qq)
 
-## 普通人的创富故事
+## 普通人创富故事
 
 ### 工作两年如何达到百万年薪
 
@@ -765,6 +713,8 @@ Tiktok的变现方式有很多种，目前我主要运营的是**短视频带货
 
 <iframe src="//player.bilibili.com/player.html?aid=841695904&bvid=BV1854y1i7jL&cid=222037428&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
+
+
 # 自由职业
 
 
@@ -779,207 +729,9 @@ Tiktok的变现方式有很多种，目前我主要运营的是**短视频带货
 
 ## 自媒体
 
-【2023-2-2】
-- lightup AI君，百度工作几年，辞职做自媒体，教大家创业
-- 大树新出路，专注于大厂人副业、创业的自媒体
 
-### 个人品牌计划
+详见站内专题: [自媒体之路](solo)
 
-【2023-2-1】个人品牌打造
-- （1）持续输入：密切跟进业务热点，技术变化等
-- （2）不断消化：按专题归纳、整理，形成自己的体系，记录在博客上
-- （3）不定期输出：挑选热门专题，消化、提炼，写文章、视频，发到网上
-
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-02-01T06:56:22.894Z\&quot; agent=\&quot;5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36\&quot; etag=\&quot;n0vRQJI7hMQqpi7czFZ7\&quot; version=\&quot;20.6.0\&quot;&gt;&lt;diagram id=\&quot;xdYpP7w1t2VaaceZiyqw\&quot; name=\&quot;第 1 页\&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;&quot;}"></div>
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
-
-### 编辑指南
-
-#### 自媒体平台
-
-现在国内的自媒体平台，感觉已经超过100家了
-- 对于图文，真正适合自媒体人运营的，也就是公众号、今日头条、百家号这几个。
-- 对于短视频，应该考虑抖音、快手这些平台
-- 宣传、推广，那就玩搜狐、网易，因为不怎么赚钱，这些平台逐利的自媒体人比较少，整体环境和氛围要好一些。
-- 剑走偏锋，趣头条这样的平台也可尝试，毕竟没有新手期，对新人很友好。
-
-自媒体平台
-1. 微信公众号
-  - 微信公众号都是最值得进入的。因为只有公众号粉丝是真正的粉丝。在其他平台，你有十万粉丝，变现的途径也赶不上一万粉丝的公众号。所以大家会发现所有人都谈引流，不少人经营搜狐、知乎、豆瓣、简书这些平台的唯一目的，就是把关注度引到微信公众号，成为他的粉丝。
-  - 公众号有了粉丝，也就有阅读量，然后就有了各种各样的变现方式。
-  - 公众号文章要求有深度，有思想，能引起别人共鸣。这样才有人愿意在朋友圈分享，传播。它的文章在所有自媒体平台中，对质量要求是最高的。在其他平台一千字，如果标题取得好，就很可能是爆文，在公众号几乎不可能。
-1. 今日头条
-  - 字节跳动已经成长为阿里、腾讯之后的又一个大公司，好像有超越百度的趋势。未来前景非常看好，因为它有今日头条、抖音、悟空问答、西瓜视频、火山、微头条等多个玩法，是目前自媒体平台玩法最全面的。
-  - 不要拿单价来衡量是否做哪个平台。很多人会说百家号一万阅读单价高于头条。可是阅读量呢？再说了，挣钱并非主要靠流量，获得青云计划、月度优秀账号挣钱其实更多。
-  - 今日头条吸引了大量的自媒体人进入。头条有时候会略微有一些**混乱**，比如
-    - 因为青云计划吸引力太强（第一篇1000块钱），很多人为了挣这个钱，洗稿抄袭太多；
-    - 微头条扶持力度大，很多人毫无节操编一些情感段子，博取高阅读量，这些低劣的内容，会影响头条的吸引力；
-    - 这几个月通过新人训练营有很多粉丝几十、几百的人加了黄V，拿到原创，把这些持续创作能力并不强的人加为黄V，给原创，对创作者生态或许会是一个破坏。
-  - 总体上，头条目前是如日中天的。我相信它能发现这些问题，并进行自我调整。
-  - 头条有一个问题，就是不支持个人账号发布社会新闻评论的内容。只允许正式媒体发布
-  - 【2023-2-4】[今日头条写文章与写微头条的收益标准](https://www.toutiao.com/article/7191685749740192256/), $ 创作收益=千次阅读单价×获利阅读数量 $ , 基础收益会受到作品在平台上产生的广告价值影响：作品带来的广告效应越好，阅读单价越高。
-    - $ 作者系数=原创分×优质作者分×用户偏好分×粉丝阅读分 $
-      - `原创分值`：3, 开通原创比不开通原创高3倍的收益
-      - `优质作者分`: 最高3, 多数内容被头条品鉴官鉴定为优质内容时，将会受到加倍的分成收益扶持。
-      - `用户偏好分`: 最高3, 由用户对您内容的消费和互动等一系列指标综合评估而成。评估指标包含：点赞、评论、转发、关注、回复等以及阅读时长。所以内容一定引起读者共鸣互动。
-      - `粉丝阅读分`: 最高3, 代表粉丝阅读对你作品的影响，针对粉丝的阅读，在实际计算该篇收益时，平台会以粉丝阅读量**×3**进行计算，也就是文章粉丝阅读量越高，收益就越高。
-    - 微头条与文章的收益构成大致相同，但是微头条没有**原创×3**的系数
-    - 如果是优质垂类文章，通过文章这个窗口发布，一定要打开原创按键！字数最好在一千字以上。
-    - 如果随心所欲的写东西那就直接从微头条窗口发布，要求不高。
-1. 知乎
-  - 知乎社区的氛围很好，毕竟群体的素质比较高。
-  - 阅读量点赞量都不是很高，但是很实在，不像有些平台虚假繁荣。知乎还有一个好处就是不断升级，荣誉勋章，前面刚开始玩，每个周四等待评估，升级，虽然目前只是LV3，但觉得和自己的付出是匹配的。
-1. 百家号
-  - 百家号是百度旗下的，文章容易被百度引擎检索到。像今日头条、微信公众号的文章，百度引擎是搜不到的。而百度引擎这么重要的入口，肯定不能放过。
-  - 百家号对作者最大的吸引力就是单价，据说一万阅读量它最高。
-  - 百家号的文章审核机制比较严格，经常在其他平台能通过，在这里通不过。理由是各种各样的：有推广、疑似夸张......
-1. 企鹅号
-  - 企鹅号也是腾讯旗下的。据说主要在腾讯新闻、QQ看点推送。我大致看到我的文章主要在腾讯新闻客户端。
-1. 大鱼号
-  - 大鱼号是阿里旗下的。很多人非常推崇，说是流量高，补贴大。
-  - 大鱼号可以说是高开低走。从申请到通过新手期，几天就可以。保持每天发一篇文章，一个周就通过了。但是接下来拿原创和升级，就很难。截止目前我唯一没有拿到原创的平台，大鱼号的原创规则是邀请。
-  - 大鱼号的推荐也很可怜，刚开始还有一些四位数的阅读，现在基本上就是两位数和个位数了。
-  - 大鱼号还有一个缺点就是客服，反正我找不到人工的。企鹅号、百家号这种，就算再差，也还能排队找个人工客服咨询咨询。但是大鱼号永远都是机器人客服。截止目前只有一次和真人留言互动，这种客服方式，我觉得很难接受。
-1. 搜狐号
-  - 搜狐号、网易号、新浪看点是传统互联网门户网站，这几个平台特点是流量大，但是几乎没啥收益。
-  - 搜狐号是所有自媒体账号中唯一可以做推广的，审核迅速，宽松。我所有文章，截止目前没有审核不通过的，并且是秒过。它的文章是分级的，我的一般是三星，然后根据文章星级给流量。
-1. 网易号
-1. 新浪看点、微博
-  - 新浪看点也是基本上没啥收益
-1. 趣头条
-  - 趣头条是对标今日头条的一个产品，今日头条是小红，趣头条是小绿。但是市场主要定位在三四线城市及农村。我最早没想着玩趣头条，后来发现趣头条有个优点：就是没有新手期，直接发文直接赚钱。
-  - 趣头条APP到处都是赚金币的诱惑
-1. 搜狗号
-  - 搜狗号是搜狗旗下的。文章主要在搜狗浏览器和搜狗输入法推广。总体上流量不会太大，所以我没有主动申请。是平台邀请我开通的，直接给LV4的权益。
-1. 东方号
-  - 最大的困扰就是审核的严格，各种不通过。是我所有平台中，审核通过率最低的。
-1. 快传号
-  - 快传号是360旗下的。要做它的理由，就是它的文章是360搜索引擎检索入口。
-
-截至目前，就从今日头条挣了两万多。源自：[自媒体平台点评](https://zhuanlan.zhihu.com/p/133470376)
-
-#### 跨平台同步
-
-同步方法
-- （1）chrome浏览器插件
-  - [wechatsync](https://www.wechatsync.com/): 公众号吴文素材栏，预览页面可以看到同步该文章按钮。支持知乎、B站、IPFS备份
-  - [安装方法](https://www.wechatsync.com/#install)，[chrome应用商店](https://chrome.google.com/webstore/detail/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E5%90%8C%E6%AD%A5%E5%8A%A9%E6%89%8B/hchobocdmclopcbnibdnoafilagadion/related),[参考](https://zhuanlan.zhihu.com/p/395180376)
-- （2）第三方工具软件
-- （3）开启账户关联：如知乎上关联公众号，自动同步发表
-
-【2023-2-2】[文章一键发布到多个平台，视频一键上传，公司矩阵自媒体运营工具](https://zhuanlan.zhihu.com/p/107903773)
-
-很多朋友是自己单独在做公众号运营（选题、撰文、排版一肩挑），根本没有那么多时间和精力去其他平台推送内容
-
-自媒体多发辅助工具能一键将**公众号**文章同步推送到 10 余个其他平台
-1. `易媒助手`
-  - 推荐原因：支持40+平台**图文、视频**一键发送，自媒体号管理、每天实时更新所有数据。
-  - 一.针对员工做限制：可创建子账号、收益等数据不让员工查看、员工无法查看平台密码，轻松管理员工。
-  - 二.轻松支持图文、小视频30+平台同时分发，告别繁琐重复操作。
-  - 三.轻松安全管理200+自媒体账号，再不用总是担心账号乱七八糟。
-2. `新媒体管家`
-  - 一款小巧但近乎完美的浏览器插件，《7 款公众号图文排版小白神器》曾经提到过，今天要讲的是他的多账号管理、内容多发功能
-  - 当前支持8个同步媒体平台，包含微博、头条号、百家号、一点号、企鹅号、网易号、搜狐号、简书
-  - 同步的文章源只支持微信公众号内的文章，包括但不限于已经发布的文章、正在编辑的文章素材等，发文时同样会根据不同平台规则对文章作适当修改, 含有二维码及水印的图片可能会导致部分平台发文失败
-3. `微小宝`多平台助手
-  - 一款 PC 端软件，具有云端储存，一键分发，定时群发等强大的内容管理功能
-  - 支持 8个自媒体平台内容同步推送，包括公众号、百家号、头条号、企鹅号、大鱼号、一点号、搜狐号、网易号
-  - 同步内容源来自内置编辑器撰写或公众号内素材，内置编辑器还支持创建单图文（所有平台均可同步）、多图文（仅微信、QQ 平台可同步），内置素材库还支持搜索下载全网热文、爆文用于内容编辑
-4. `秒书`
-  - 第一款支持在手机端写作、排版、发布的自媒体辅助工具（PC 端也有）.
-  - 目前支持内容同步推送 9 个自媒体平台，包括朋友圈、公众号、QQ 空间、微博、头条号、天天快报、facebook 和 twitter
-  - 同步的内容源需要在秒书平台上创作完成，如果公众号未认证，则只能同步素材库，不能直接群发内容
-  - 除此之外，还内置了思维导图、图文排版、图片素材等功能
-
-
-## 知识付费
-
-
-### 公众号付费
-
-几个渠道
-- 赞赏: 主要看粉丝心情, 不稳定
-- 广告费: 看流量, 广告
-- 付费阅读: 
-  - 适用: 小说连载，或者是干货知识类的文章
-  - 时机: 不宜经常设置付费, 影响粉丝体验
-
-
-#### 付费阅读
-
-【2024-10-14】付费阅读带来至少三种红利方式: 好奇心红利，预言家红利和干活红利
-
-微信付费阅读功能介绍
-- 开通付费功能
-  - 申请条件
-    - 公众号已注册超过3个月
-    - 近3个月内无严重违规记录
-    - 已发表至少3篇原创文章
-  - 绑定自己的银行卡，要转账来激活
-  - 发布文章时，可选择是否付费阅读，注意，别忘了选付费后可以赠送1位好友免费阅读
-- 之后, 文章分为“`普通图文`”和“`付费图文`”两种类型，默认为“`普通图文`”，可在编辑图文时切换为“`付费图文`”。
-- `付费图文`必须为**原创**文章，文章设置为“`付费图文`”时，默认一同声明原创，若原创声明失败，文章则不能以付费图文形式群发。
-- `付费图文`暂不支持**转载**和**插入广告**。
-- 内容群发后，文章价格、试读比例、前言等参数及设置均不可修改。
-- 用户
-  - 未付费前, 可免费阅读**前言**和**试读**部分，留言只可查看；
-  - 付费后可阅读全文、写留言。
-- 用户支付金额有一定的结算账期和渠道抽成（支付渠道不同，账期和抽成不同），平台后续亦可能收取技术服务费，具体以后续公告和付费功能页面信息为准。
-
-作者：[小鱼儿101](https://www.zhihu.com/question/296064723/answer/1188512349)
-
-图示
-- ![](https://picx.zhimg.com/80/v2-2d7934be66db64c7ea811214152d945d_720w.webp?source=1def8aca)
-
-
-### 知识付费平台
-
-付费知识平台就是通过发布知识来获取收入，而在这上面想要看到自己需要的知识，就需要支付相应的费用，这是也随着移动支付的兴起而变得越来越流行
-
-[做知识付费社群，请远离知识星球和小鹅通](https://zhuanlan.zhihu.com/p/432244546)
-
-知识付费的解决方案
-
-|平台|费用|支持二次开发|开源|用户数据和内容|脱离？||
-|---|---|---|---|---|---|---|
-|`小鹅通`|2w/年|否|否|他人平台|不能||
-|`知识星球`|每单手续费20%|否|否|他人平台|不能||
-|`discuzQ`|代码免费,服务器/域名费 2k/3年|是|是|自己平台|自己的||
-||||||||
-
-
-saas平台，永远躺着就能赚钱，因为有源源不断的大V帮赚钱给他们分成。
-
-#### discuzQ
-
-[discuzQ](https://doc.q.discuz.vip/)，腾讯旗下的知识社群解决方案，开源，免费。而且这个支持二次开发，自己买个服务器搭建好后，用户数据，啥的都在自己的服务器上，就相当于自己的地盘盖自己的房子，只要你自己不把网站关了，就可以永远开放。
-- ![](https://pica.zhimg.com/80/v2-4f8c6c313b4992c7aaa66948fdb23cb6_720w.webp)
-
-服务器和域名现在也很便宜，腾讯云服务器4核8G内存5M带宽的服务器三年才一千多块，域名一年60多块，三年下来也就不到2000块
-
-而且这个付费社群做大了，还可以融资，上市，因为从服务器，到内容数据，到用户数据，都是你自己的。
-
-
-开源程序的好处就是什么都是自己的，一切可以自己把控。而用了别人系统的，你的几年的运营苦力和用户数据，内容数据都是别人的，离开了平台你一无所有。
-
-#### 十大付费知识平台
-
-平台
-- 1、`知乎`：知乎是现在网上最为流行的中文互联网知识分享平台，在知乎里面有着许多的知识，涉及到我们生活和学习工作的各个方面，许多人都喜欢看知乎。
-- 2、`得到`：得到是一个专栏订阅型知识平台，得到，旨在为用户提供“省时间的高效知识服务”，2016年5月上线，由罗辑思维团队出品，提倡碎片化学习方式，让用户短时间内获得有效的知识。
-- 3、`喜马拉雅FM`：喜马拉雅FM是以音频为主的付费知识平台，喜马拉雅FM的音频很多，有小说，也有各个方面的知识，可以轻松的获取。
-- 4、`创客匠人`：创客匠人是一个教育培训行业的知识付费系统，创客匠人属于厦门创匠信息科技股份有限公司下品牌，总部位于厦门。创客匠人专注为培训讲师、机构、自媒体、出版社等内容创业者提供知识付费一站式解决方案，产品集合了主流内容付费形式。
-- 5、`腾讯课堂`：腾讯课堂是一个十分流行的在线教育平台，其实有着许多的教育机构和名师，涉及了很多行业及各个学科的知识。
-- 6、`网易云课堂`：网易云课堂是一个在线实用技能学习平台，网易云课堂上的课程数量庞大，涵盖的行业也很多，许多人都在上面学习。
-- 7、`豆瓣时间`：豆瓣时间是一个以音频、文字等形式为主的付费知识平台，豆瓣甄选用户最渴念的知识领域精心制作各类付费专栏。
-- 8、`有书共读`：有书共读是一个语音领读结合的书籍精读的读书平台。
-- 9、`百度问咖`：百度问咖是一个来自于『百度知道』孵化的付费交流平台。
-- 10、`樊登读书会`：樊登读书会是一个在线付费问答平台,樊登读书会结合了视频、音频、图文等的读书精华解读平台。被称为基于移动互联网的学习型机构，是倡导“全民阅读”的先行者。
-
-
-### 电商导流
-
-- 公众号流量转到视频号、微信小店
 
 ## 技术创业
 
@@ -1649,7 +1401,7 @@ Once you've sent the invite, your friend will need to complete these steps befor
 - 书籍：《[漫画算法：小灰的算法之旅](https://book.douban.com/subject/35019100/)》，畅销书，一年5w册
 - 除了自媒体以外，小灰也做了许多其他尝试，比如开发H5游戏，开发仓鼠币系统，入驻社交电商平台 “芬香”。
 
-这辈子做过最正确的事情，就是选择做**公众号**，或者更笼统的说，是对于个人**副业**的尝试和坚持。大家应该都还记得去年年末互联网行业的情况，用寒冬来形容一点也不过分。各大公司纷纷进行人员优化，多年经验的求职者也很难找到工作。因此，很多人即使在公司干得再不舒服，也只能忍气吞声。但是小灰有这个底气，因为小灰有副业。这个副业收入比当时的上司还要多的多。所以，去年这个时候，小灰毅然裸辞了，而且很可能是永久地告别了职场。
+这辈子做过最正确的事情，就是选择做**公众号**，对于个人**副业**的尝试和坚持。大家应该都还记得去年年末互联网行业的情况，用寒冬来形容一点也不过分。各大公司纷纷进行人员优化，多年经验的求职者也很难找到工作。因此，很多人即使在公司干得再不舒服，也只能忍气吞声。但是小灰有这个底气，因为小灰有副业。这个副业收入比当时的上司还要多的多。所以，去年这个时候，小灰毅然裸辞了，而且很可能是永久地告别了职场。
 
 2019年做了4类事情：输入、输出、连接、布局
 - `输入`：持续学习，不再局限于编程，而是涵盖了经济、历史、文化、科学等方方面面。小灰这一年，共读完了12本图书，听完了9门得到平台的课程。
@@ -1666,24 +1418,6 @@ Once you've sent the invite, your friend will need to complete these steps befor
   - 除了自媒体以外，小灰也做了许多其他尝试，比如开发**H5游戏**，开发**仓鼠币**系统，入驻社交电商平台 “**芬香**”。其中社交电商是一件蛮有潜力的事情，小灰有些遗憾自己入驻的时间较晚，但凭借过去积累的流量，目前做得还算不错，小灰相信这条路在未来还有很大发展空间。
   - 此外，微信**小圈子**也是一条全新的赛道，虽然不确定能不能火起来，但是小灰已经做好了布局。
 
-### 自媒体
-
-自媒体涉及：短视频、公众号
-- b站视频关注点：
-- （1）电影解说
-- （2）科普，李永乐，回形针等
-- （3）游戏直播
-- （4）美食
-- （5）萌宠，猫狗
-- （6）动漫
-- （7）技术类
-
-
-#### 科技资讯
-
-案例
-- 【2023-1-30】公众号：[大厂日爆](https://mp.weixin.qq.com/s/O9Mzk0sQqMyRo4nXy-Tg0Q)，汇总大公司资讯、小道消息，一篇5-6w阅读量
-- 湾区日报
 
 ### IT培训
 
@@ -1706,38 +1440,6 @@ Once you've sent the invite, your friend will need to complete these steps befor
 - 第三：我24小时都在思考公司如何发展，如何创造利润。每一个决策都可能影响着公司所有人的收入和未来。而你只要想什么时候能休息，哪些对你不公平。
   - 我们之间的差别在： **责任**的轻重。
 
-### 商业思维
-
-
-#### To B产品商业化
-
-【2021-3-6】[To B产品商业化的真相](https://mp.weixin.qq.com/s/K77Y5akJJnVvZz8mFY_oMg)
-- 产品商业化的误区：
-  - 1）重研发轻销售：产品的生命周期不是从研发结束的那一刻开始的，而是从客户使用的那一刻开始的
-  - 2）重销售轻交付：商机来了，运营拉上产研团队和合作伙伴蜂拥而上，见客户、吹牛逼、写方案、斗友商
-  - 3）重交付轻运营：项目经理协调服务商全力保障项目的交付质量，等项目交付告一段落，甚至在项目初验结束后，就打道回府。
-- 如何开启产品商业化？见[图](https://mmbiz.qpic.cn/mmbiz_png/jIwqrGkiaUBDnksJAKuxKEfcic7hFc2BvKR6ZOjpWnxXUdHrGGWs2icYGDJywKxgB5flXRdBE5fncgHmVmWGrRfDw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-  - 想法→原型→产品→产品集成方案→客户解决方案→客户项目案例
-    - ![](https://mmbiz.qpic.cn/mmbiz_png/jIwqrGkiaUBDnksJAKuxKEfcic7hFc2BvK7jQafwKyt3sRQ13NxFSz0iahWiamuiatBerPF1wePegQHO6FH93picH7icA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-  - 卖什么→卖给谁→凭什么→怎么卖→怎么交付→怎么运营 
-    - ![](https://mmbiz.qpic.cn/mmbiz_png/jIwqrGkiaUBDnksJAKuxKEfcic7hFc2BvKG6FBVoMicrqcXuQjcXzToLjcEws5mjtpkibKDfICtWdib2vLeQGS1KeYA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-  - ![](https://mmbiz.qpic.cn/mmbiz_png/jIwqrGkiaUBDnksJAKuxKEfcic7hFc2BvKR6ZOjpWnxXUdHrGGWs2icYGDJywKxgB5flXRdBE5fncgHmVmWGrRfDw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-
-#### 地摊里的营销思维
-
-【2022-11-25】[最后还是输给了这个大叔](https://www.ixigua.com/7168023853476744459)，如何卖橘子？
-- 传统方法：摆地摊，3.5元/斤，蹲点守候
-- 新方法：不按斤，而是按袋子卖，15元/袋，客户随便装，只要不漏出来。
-  - 利益分析：一个袋子最多装4-5斤，橘子成本价 2元/斤，这样袋子装满后，成本价 2*5=10元，卖 15元，利润：15 - 2 * 5 = 5 元
-  - 如果是老方法，5斤卖 3.5 * 5 = 17.5元，多2.5元，但是，速度慢，未必卖的完
-  - ① 引流：事件营销，打个广告，袋子15块钱一个, 客户觉得新奇，都过来买，一下子就卖完了
-  - ② 留存：买橘子必须关注抖音号，建立用户池子（第一粉丝），便于精准画像，这些用户都是住附近，属于精准用户
-  - ③ 转单：用户加入到粉丝群，每天发一个红包，发个2-5都行，可以当做优惠券，抵10倍的来买水果，香蕉、橘子、菠萝等（不是橘子），这叫生单
-  - ④ 裂变：用户口碑，介绍更多用户过来，分发贵宾卡，可以免费领半斤橘子
-- 总结：`引流` → `留存` → `转单` → `裂变`，其实就是把**陌生人**变成**自己人**，生意才会自运转，就像这个水果店一样
-  - 不摆摊，去开水果店，这样就有了商业模式
-
-<iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7168023853476744459?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
 
 ### 程序员创业方向
 
@@ -1983,7 +1685,9 @@ Once you've sent the invite, your friend will need to complete these steps befor
 - ![](https://p1-tt-ipv6.byteimg.com/img/tos-cn-i-0022/c38e5fa12d174c5aabc56c93ac9ed685~tplv-shrink:900:506.jpeg)
 
 
-### [陆奇：如何抓住技术趋势带来的商业机会？](https://www.lieyunwang.com/archives/460965)
+### 陆奇：如何抓住技术趋势带来的商业机会
+
+[陆奇：如何抓住技术趋势带来的商业机会？](https://www.lieyunwang.com/archives/460965)
 
 - 【2019-11-21】
 
