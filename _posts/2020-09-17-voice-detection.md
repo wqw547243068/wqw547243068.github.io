@@ -2341,6 +2341,14 @@ Voice Engine 是一个少样本语音合成模型：
 <iframe width="560" height="315" src="https://www.youtube.com/embed/AOjeFlFWkiU?si=jDU3B0Wfn997WeC_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
+#### F5-TTS
+
+【2024-10-15】F5-TTS：5秒语音样本，精准克隆你的声音 
+- 代码：[F5-TTS](https://github.com/SWivid/F5-TTS/tree/main)
+- 项目主页：[F5-TTS](https://swivid.github.io/F5-TTS/)
+
+
+
 ### MMS（META）
 
 【2023-5-23】[规模性能双杀OpenAI，Meta语音达LLaMA级里程碑！开源MMS模型可识别1100+语言](https://mp.weixin.qq.com/s/EoL6-IVyHkZJMquXicT3mg)
