@@ -40,9 +40,9 @@ permalink: /tensorflow
     - 3，TensorFlow2和Pytorch实际上整体风格已经非常相似了，学会了其中一个，学习另外一个将比较容易。两种框架都掌握的话，能够参考的开源模型案例更多，并且可以方便地在两种框架之间切换。
 - Keras库在2.3.0版本后将不再更新，用户应该使用tf.keras
 
-# Tensorflow介绍
+# Tensorflow 介绍
 
-## TensorFlow历史
+## TensorFlow 历史
 
 - 2015年11月9日，Google Research 发布了文章：TensorFlow - Google’s latest machine learning system, open sourced for everyone，正式宣布其新一代机器学习系统开源。
 - 2016年4月13日，TensorFlow v0.8发布，提供分布式计算支持。
@@ -52,6 +52,33 @@ permalink: /tensorflow
 - 2016年8月30日，TF-Slim——TensorFlow的高层库发布，用户可以更简单快速地定义模型。
 - 2017年2月15日，TensorFlow v1.0发布，提高了速度和灵活性，并且承诺提供稳定的Python API。
 - 2019年10月1日，TensorFlow在经历七个多月(2019年3月1日-2019年10月1日)的2.0 Alpha 版本的更新迭代后发布 2.0 正式版
+
+
+## TensorFlow 生态
+
+- `Hub`：
+  - TensorFlow Hub 是一个经过训练的机器学习模型库，可以进行微调，让用户只需几行代码就能使用像 BERT 这样的模型。Hub 包含适用于不同用例的 TensorFlow、TensorFlow Lite 和 TensorFlow.js 模型，可用于图像、视频、音频和文本处理。
+- `Model Garden`：
+  - 如果现成的预训练模型不适用于用户的应用，那么 TensorFlow 的存储库 Model Garden 可以提供 SOTA 模型的源代码。对于想要深入了解模型工作原理，或根据自己的需要修改模型的用户，Model Garden 将非常有用。
+  - Model Garden 包含谷歌维护的官方模型、研究人员维护的研究模型和社区维护的精选社区模型。TensorFlow 的长期目标是在 Hub 上提供来自 Model Garden 的模型的预训练版本，并使 Hub 上的预训练模型在 Model Garden 中具有可用的源代码。
+- `Extended`（TFX）：
+  - TensorFlow Extended 是 TensorFlow 用于模型部署的端到端平台。该平台的功能强大，包括：加载、验证、分析和转换数据；训练和评估模型；使用 Serving 或 Lite 部署模型；跟踪 artifact 及其依赖项。TFX 还可以与 Jupyter 或 Colab 一起使用，并且可以使用 Apache Airflow/Beam 或 Kubernetes 进行编排。TFX 与 Google Cloud 紧密集成，可与 Vertex AI Pipelines 一起使用。
+- `Vertex AI`：
+  - Vertex AI 是 Google Cloud 今年刚刚发布的统一机器学习平台，旨在统一 GCP、AI Platform 和 AutoML，成为一个平台。Vertex AI 能够以无服务器方式编排工作流，帮助用户自动化、监控和管理机器学习系统。Vertex AI 还可以存储工作流的 artifact，让用户可以跟踪依赖项和模型的训练数据、超参数和源代码。
+- `Coral`：
+  - 尽管有各种各样的 SaaS 公司依赖基于云的人工智能，但许多行业对本地人工智能的需求也在不断增长，Google Coral 就是为了满足这一需求而创建的。Coral 是一个完整的工具包，可以使用本地 AI 构建产品。Coral 于 2020 年发布，解决了部署部分 TFLite 中提到的实现板载 AI 的问题，克服了隐私和效率等方面的困难。
+  - Coral 提供了一系列用于原型设计、生产和传感的硬件产品，其中一些本质上是增强型的树莓派，专为 AI 应用程序创建，能够利用 Edge TPU 在低功耗设备上进行高性能推理。Coral 还提供用于图像分割、姿态估计、语音识别等任务的预编译模型，为希望创建本地 AI 系统的开发人员提供支持。创建模型的基本步骤如下面的流程图所示。
+  - ![](https://p26.toutiaoimg.com/origin/tos-cn-i-tjoges91tu/SsBmRMl2J55OqA?from=pc)
+- `TensorFlow.js`：
+  - TensorFlow.js 是一个用于机器学习的 JavaScript 库，允许用户使用 Node.js 在浏览器和服务器端训练和部署模型。
+- `Cloud`：
+  - TensorFlow Cloud 是一个可以将本地环境连接到 Google Cloud 的库，它的 API 旨在弥补本地机器上模型构建和调试与 GCP 上分布式训练和超参数调整之间的差距，而无需使用 Cloud Console。
+- `Colab`：
+  - Google Colab 是一个基于云的 notebook 环境，与 Jupyter 非常相似。Colab 易于连接到 Google Cloud 进行 GPU 或 TPU 训练，并且 Colab 还可以和 PyTorch 一起使用。
+- `Playground`：
+  - Playground 是一个小而精致的可视化工具，用于帮助用户理解神经网络的基础知识。要户可以更改 Playground 内置神经网络的层数和大小，以实时查看神经网络是如何学习特征的，用户还可以看到改变学习率和正则化强度等超参数如何影响不同数据集的学习过程。Playground 允许实时播放学习过程，以高度直观的方式查看输入在训练过程中是如何转换的。Playground 还提供了一个开源的小型神经网络库，是它自身的构建基础，用户能够查看其源代码的具体细节。
+- `Datasets`：
+  - 谷歌研究院的 Datasets 是谷歌定期发布的数据集的整合资源。谷歌还提供了数据集搜索以访问更广泛的数据集资源。当然，PyTorch 用户也可以利用这些数据集。
 
 ## 安装
 
