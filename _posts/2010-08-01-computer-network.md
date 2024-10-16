@@ -3,7 +3,7 @@ layout: post
 title:  "计算机网络-Computer Network"
 date:   2010-08-01 23:42:00
 categories: 计算机基础
-tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星 蓝牙 耳机
+tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星 蓝牙 耳机 wifi
 excerpt: 计算机网络知识点
 mathjax: true
 permalink: /network
@@ -437,9 +437,31 @@ A记录也有一些好处，例如可以在输入域名时不用输入WWW.来访
 
 路由就干这个的，交换机把数据给路由，路由决定是否转发，比交换机智能点。这样能避免过多的广播造成网络堵塞。 现在路由多用在分内外网上
 
-在Modem和终端设备间，增加了（无线）路由器（Router）就可以实现多台电脑同时上网
+在 Modem 和 终端设备间，增加了（无线）路由器（Router）就可以实现多台电脑同时上网
 - `ISP` -> `Modem` -> `Router` -> `PC`s (Desktop+Laptop)
 - ![](https://img-blog.csdn.net/20131006101802531?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcGFuX3RpYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+
+### 路由器构成
+
+路由器 构成: CPU、内存、闪存、功放芯片、PCB、外壳
+- ![](https://pic3.zhimg.com/v2-fdaa4d0f0d49fb51b2e74ee3b27d11e0_b.webp?consumer=ZHI_MENG)
+
+说明
+- `CPU`：CPU 也有品牌，知名度高，且很多路由器在用的
+  - 博通、高通、联发科MTK等，还有中兴、华为的自研产品（不过是自家在用）。
+- `内存`：越大越好。
+  - 目前最大内存的家用路由器是1G内存的。普通路由器，一般就128MB、256MB，比较大就512MB。
+- `闪存`：和内存同理，闪存越大越好。
+- `FEM芯片`：分为独立、集成（非独立）两种。独立FEM，在抗干扰上，会比集成好一些，当然，这不绝对。
+- 部分CPU，会集成功放（比如MT7622B），或集成内存（比如HI5651L）。
+
+记住：
+- CPU：CPU要好，网速上会有影响。
+- 内存：越大越好，比如BX54的512MB内存。
+- 闪存：越大越好。
+
+### 路由器 vs 交换机
 
 路由器与交换机
 - 交换机创建网络：方便同一网络下多台设备互通
@@ -460,6 +482,30 @@ OSI模型上，交换机位于第二层的Datalink层，路由器位于第三层
 【2022-4-5】[交换器和路由器区别](https://www.ixigua.com/6960673453431226893)
 
 <iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/6960673453431226893?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
+
+
+### 路由器5G、2.4G区别
+
+频段分为 **高频**的`5G` 和 **低频** `2.4G`。
+
+信号覆盖范围上：`2.4G` ＞ `5G`
+- `5G` 高频波长短，穿透性差。5G信号好，但覆盖范围小。
+- `2.4G` 低频波长长，穿透性好。2.4G覆盖范围大。但使用2.4G频段的东西太多，也最容易被干扰（这就是一些家庭，宽带好，但网络差的原因之一）。
+
+
+### 路由器品牌
+
+常见品牌
+- 主要做**高端**：华硕、网件。
+- 中端、高端都不错的：H3c、华为、小米，
+- 全方位覆盖的：TP、水星、腾达、中兴。
+
+避坑：别买那些电商品牌、浏览器品牌路由器。
+
+![](https://pica.zhimg.com/v2-71f1b3db27890b39f4d7fc989ab6d60c_b.webp?consumer=ZHI_MENG)
+
+
+[路由器性价比推荐](https://www.zhihu.com/tardis/zm/art/465563915)
 
 ### WAN/LAN/WLAN
 
@@ -552,7 +598,57 @@ AC强大的管理和控制功能，能够构建出个性化、专业化的WLAN�
 
 YA-3030大功率吸顶式无线AP，采用MIMO、OFDM、SDM、GI等技术，是基于IEEE 802.11n技术标准的无线接入设备，内置2*2MIMO双极化全向智能天线，超强无线传输性能，传输速率自适应，最高可达300M，覆盖更广，信号更强、更稳定。可广泛应用于酒店、商场、KTV、会议室、咖啡厅等娱乐场所无线WIFI网络覆盖。
 
-# 案例
+
+## wifi
+
+
+###  WiFi 协议
+
+目前主流 WiFi协议：802.11n、802.11ac(wave1、wave2)、802.11ax 。
+
+这样的命名方式对外行难以理解。
+
+2018年，WiFi联盟正式将 802.11ax 标准定为 第六代 WiFi技术，同时开启了WiFi协议命名简化的时代。
+
+此前对于外行较为生涩的WiFi协议名称将变成更易理解的简化版本。
+
+具体来说：
+- `802.11n` 变成 Wi-Fi 4
+- `802.11ac` 变成 Wi-Fi 5
+  - 2013年发布（16年发布了支持160Mhz的Wave2）
+- `802.11ax` 变成 Wi-Fi 6
+  - 2018年发布。
+  - WiFi6 相比 WiFi5，有更大的带宽、并行量，降低了延迟。速度更快、更稳定。
+- `802.11be` 变成 Wi-Fi 7
+  - 在 Wi-Fi 6 和 Wi-Fi 6E 的基础上，因为4096QAM、320MHz，以及最大空间流达到了16×16，相对于Wifi6直接翻倍，使其带宽更高（提升20%以上）、有更低的延迟，在高端WiFi7路由器上，理论覆盖更高。
+  - 另外，现在多数 Wifi6 路由器的Mesh功能，因为WiFi7的改进，可以在网络切换时，更丝滑，理论能做到更好的“无缝切换”。
+
+WiFi理论速率：
+- WiFi 4 单流：150Mbps，4流：600 Mpbs
+- WiFi 5 单流：433Mbps，8流：3466 Mpbs （wave2 版本，867 Mbps，8流：6933 Mpbs）
+- WiFi 6 单流：1200Mbps，8流：9.6 Gpbs
+
+[原文链接](https://blog.csdn.net/u012247418/article/details/134861037)
+
+
+【2024-10-16】荣耀手机能显示wifi协议类型，华为 mate 30不行
+
+
+
+### 查看wifi密码
+
+mac环境： [如何查看Mac上已连接WiFi的密码？](https://zhuanlan.zhihu.com/p/104847180)
+- 打开“钥匙串访问”，在其左侧的“钥匙串”列表中选择“系统”，右侧栏就会出现与系统有关的各类密钥。
+- 找到你需要连接的WiFi名称，右击，选择“将密码拷贝到剪贴板”
+
+Windows环境
+
+```shell
+netsh wlan show profiles # 查看连接过的wifi
+netsh wlan show profiles name ＝ “当前用户配置文件名” key ＝ clear # 查看wifi密码
+# “安全设置”—>“安全密钥”
+```
+
 
 ## 网速
 
@@ -595,7 +691,7 @@ YA-3030大功率吸顶式无线AP，采用MIMO、OFDM、SDM、GI等技术，是�
   - 下载 88.88 Mbps， 上传 53.42 Mbps
 
 
-## 网吧电脑为什么快
+### 网吧电脑为什么快
 
 【2021-12-16】[网吧网咖的电脑配置比家里的低，为什么速度却更快？](https://zhuanlan.zhihu.com/p/374210363)
 - （1）**操作系统优化**：网吧的电脑系统十分**精简**，并且系统还是优化过的。很多用户从安装好系统后一直使用的都是系统默认设置。而网吧里的电脑，都开启了最佳性能模式。
@@ -622,19 +718,7 @@ LAN-to-LAN或LAN-to-WAN网络连接方式
   - 该模式下，可以修改子局域网的DNS设置，从而限制子网中设备能够访问的网站。此外，子网中的设备也更安全，黑客访问它们也会更加困难。因此家长可以用此来监控孩子访问互联网。
   - 开启主路由器的DHCP服务，自动分配192.168.1.2与192.168.1.50之间的IP地址。
 
-## 查看wifi密码
 
-mac环境： [如何查看Mac上已连接WiFi的密码？](https://zhuanlan.zhihu.com/p/104847180)
-- 打开“钥匙串访问”，在其左侧的“钥匙串”列表中选择“系统”，右侧栏就会出现与系统有关的各类密钥。
-- 找到你需要连接的WiFi名称，右击，选择“将密码拷贝到剪贴板”
-
-Windows环境
-
-```shell
-netsh wlan show profiles # 查看连接过的wifi
-netsh wlan show profiles name ＝ “当前用户配置文件名” key ＝ clear # 查看wifi密码
-# “安全设置”—>“安全密钥”
-```
 
 ## 为什么颜色网站会卡顿
 
