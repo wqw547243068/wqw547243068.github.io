@@ -81,6 +81,30 @@ permalink: /os
 <iframe src="//player.bilibili.com/player.html?aid=545025905&bvid=BV1Xi4y1w7np&cid=322975564&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
+### 软件安装
+
+
+#### 第三方软件安装失败
+
+错误提示
+> It cannot be opened because the deveoper caonnot be verified
+
+
+环境： macOS Monterey 12.2.1
+
+原因
+- Mac 系统对未知来源的安装包管控严格
+
+【2024-10-16】解决
+- 首先下载好 dmg文件，但是不要进行安装。
+- 打开 System Preferences ->Security & Privacy -> General
+- 点击左下角的 锁 “ Click the lock to make changes”
+- 此时再进行安装dmg文件。
+
+此时在界面：
+- System Preferences ->Security & Privacy -> General 中 点击**允许第三方软件运行**
+
+
 ### 字体
 
 【2024-8-24】 Mac 系统字体路径
