@@ -3006,15 +3006,104 @@ public:
 
 ## 常见问题
 
+
+### top k 问题
+
+[拜托，面试别再问我TopK了](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651961587&idx=1&sn=54bf39db7043cc638315caf70f24d94b&chksm=bd2d0d2f8a5a84395246be4522d10fbfc1f744658047d5fb3fad8e9f3c3d76baab3a2ce84867&mpshare=1&scene=23&srcid=1105ZuGdQ1PGSyatSFc4tzqt%23rd)
+
+TopK 是问得比较多的几个问题之一，到底有几种方法，优化思路究竟是怎么样的
+- 问题描述：从 `arr[1, n]` 这n个数中，找出最大的k个数，这就是经典的TopK问题。
+- 栗子：从 `arr[1, 12] = {5,3,7,1,8,2,9,4,7,2,6,6}` 这 n=12 个数中，找出最大的 k=5 个。
+
+TopK，不难；其思路优化过程，不简单：
+1. **全局排序**，<font color='red'>O(n*lg(n))</font>
+  - 最简单：将n个数排序之后，取出最大的k个
+  - 分析：明明只需要TopK，却将全局都排序了，这也是这个方法复杂度非常高的原因。那能不能不全局排序，而只局部排序呢？
+2. **局部排序**，只排序TopK个数，<font color='red'>O(n*k)</font>
+  - 不再全局排序，只对最大的k个排序；冒泡是一个很常见的排序方法，每冒一个泡，找出最大值，冒k个泡，就得到TopK。
+  - 分析：冒泡，将全局排序优化为了局部排序，非TopK的元素是不需要排序的，节省了计算资源。不少朋友会想到，需求是TopK，是不是这最大的k个元素也不需要排序呢？这就引出了第三个优化方法。
+3. **堆**，TopK个数也**不排序**了，<font color='red'>O(n*lg(k))</font>
+  - 思路：只找到TopK，不排序TopK，将冒泡的TopK排序优化为了TopK不排序，节省了计算资源
+    - 先用前k个元素生成一个**小顶堆**，这个小顶堆用于存储，当前最大的k个元素
+    - 接着从第k+1个元素开始扫描，和**堆顶**（堆中最小的元素）比较，如果被扫描的元素大于堆顶，则替换堆顶的元素，并调整堆，以保证堆内的k个元素，总是当前最大的k个元素。
+    - 直到，扫描完所有n-k个元素，最终堆中的k个元素，就是猥琐求的Top
+4. TopK 另一个解法：`随机选择`+`partition`
+  - `随机选择`是《算法导论》中经典算法，其时间复杂度为`O(n)`，是一个**线性复杂度**方法。核心算法思想是`分治法`。
+  - `分治法`（ Divide & Conquer）把一个大的问题，转化为若干个`子问题`（Divide），每个子问题“都”解决，大的问题便随之解决（Conquer）。
+    - 关键词是“**都**”。从伪代码里可以看到，快速排序递归时，先通过 partition 把数组分隔为两个部分，两个部分“都”要再次递归。
+  - `减治法`（ Reduce & Conquer），分治法特例,把`大问题`转化为若干个`子问题`（Reduce），这些子问题中“只”解决一个，大的问题便随之解决（Conquer）。
+    - 关键词是“**只**”。二分查找 binary_search，BS，是一个典型的运用`减治法`思想的算法
+  - `分治法`：每个分支“都要”递归
+    - 例如：快速排序，<font color='red'>O(n*lg(n))</font>
+  - `减治法`：分治法特例叫`减治法`。“只要”递归一个分支
+    - 例如：二分查找`O(lg(n))`，随机选择`O(n)`; 二分查找，大问题可以用一个mid元素，分成左半区，右半区两个子问题。而左右两个子问题，只需要解决其中一个，递归一次，就能够解决二分查找全局的问题。
+  - 通过分治法与减治法的描述，可以发现，分治法的复杂度一般来说是大于减治法的：
+  - TopK是希望求出 `arr[1,n]` 中最大的k个数，那如果找到了第k大的数，做一次partition，不就一次性找到最大的k个数了么？问题变成了`arr[1, n]`中找到第k大的数
+  - **随机选择**（randomized_select），找到`arr[1, n]`中第k大的数，再进行一次partition，就能得到TopK的结果
+知其然，知其所以然。思路比结论重要。
+
+分治和减治
+- 分治法，大问题分解为小问题，小问题都要递归各个分支，例如：快速排序 O(n*lg(n))
+- 减治法，大问题分解为小问题，小问题只要递归一个分支，例如：二分查找 O(lg(n))，随机选择
+
+```c++
+// 快排伪代码 —— 分治算法
+void quick_sort(int[]arr, int low, inthigh){
+    if(low == high) return;
+    int i = partition(arr, low, high); // 快排核心，比i小的放左边，否则右边，保持整体大致有序
+    quick_sort(arr, low, i-1);
+    quick_sort(arr, i+1, high);
+}
+// 二分法伪代码 —— 减治算法
+int BS(int[]arr, int low, inthigh, int target){
+    if(low> high) return -1;
+    mid= (low+high)/2;
+    if(arr[mid]== target) return mid;
+    if(arr[mid]> target)
+        return BS(arr, low, mid-1, target);
+    else
+        return BS(arr, mid+1, high, target);
+}
+// 随机选择算法randomized_select，RS —— 减治算法
+int RS(arr, low, high, k){
+  if(low== high) return arr[low];
+  i= partition(arr, low, high);
+  temp= i-low; //数组前半部分元素个数
+  if(temp>=k)
+      return RS(arr, low, i-1, k); //求前半部分第k大
+  else
+      return RS(arr, i+1, high, k-i); //求后半部分第k-i大
+}
+```
+
+【2023-6-3】快速排序简洁代码，由大模型claude提供
+
+```py
+def quick_sort(arr): 
+    if len(arr) <= 1: 
+        return arr
+    pivot = arr[len(arr)//2]  
+    left = [x for x in arr if x < pivot]  
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+arr = [5,3,8,6,7,2]
+print(quick_sort(arr))
+# [2, 3, 5, 6, 7, 8]
+```
+
+
+
 ### 最长公共子串
 
 【2022-5-17】[最长公共子序列和最长公共子串](https://zhuanlan.zhihu.com/p/68409952)
 
 问题描述：
-- 给定两个序列：X[ 1...m ] 和 Y[ 1...n ]，求在两个序列中同时出现的**最长子序列**的长度。
+- 给定两个序列：`X[ 1...m ]` 和 `Y[ 1...n ]`，求在两个序列中同时出现的**最长子序列**的长度。
 - 假设 X 和 Y 的序列如下：
-  - X[ 1...m] = {A, B, C, B, D, A, B}
-  - Y[ 1...n] = {B, D, C, A, B, A}
+  - `X[ 1...m] = {A, B, C, B, D, A, B}`
+  - `Y[ 1...n] = {B, D, C, A, B, A}`
 
 **最长公共子串**（Longest Common Substring）与**最长公共子序列**（Longest Common Subsequence）的区别： 
 - 子串要求在原字符串中是**连续**的，而子序列则只需保持**相对顺序**，并不要求连续。
@@ -3027,8 +3116,8 @@ X 和 Y 的最长公共子串有：BD, AB
 最大公共子串要求的字串是连续的
 
 求子串的方法和求子序列方法类似：
-- 当str1[i] == str2[j]时，子序列长度veca[i][j] = veca[i - 1][j - 1] + 1；
-- 当str1[i] != str2[j]时，veca[i][j]长度要为0，而不是 max{ veca[i - 1][j], veca[i][j - 1] }。
+- 当`str1[i] == str2[j]`时，子序列长度 `veca[i][j] = veca[i - 1][j - 1] + 1`；
+- 当`str1[i] != str2[j]`时，`veca[i][j]` 长度要为0，而不是 `max{ veca[i - 1][j], veca[i][j - 1] }`。
 
 下面是求解时的动态规划表，可以看出 X 和 Y 的最长公共子串的长度为2：
 - ![](https://pic1.zhimg.com/80/v2-b59f7f61a57d7b648af3783ee6eaa7bc_720w.jpg)
@@ -3092,8 +3181,8 @@ int main()
 - ![](https://pic3.zhimg.com/80/v2-541861d0d359988663b6d6100ffa719a_720w.jpg)
 
 输出最长公共子串很简单，只需要判断table[i][j]是否等于**最长公共子串的长度**即可，然后沿着**对角线**往左上角找大于等于1的数字即可；
-- 如果table[i][j] == lcs_len（lcs_len指最长公共子串长度），则把这个字符放入LCS中，并跳入table[i-1][j-1]中继续进行判断；
-- 直到table[i][j] < 1为止；倒序输出LCS放入set中。
+- 如果 table[i][j] == lcs_len（lcs_len指最长公共子串长度），则把这个字符放入LCS中，并跳入table[i-1][j-1]中继续进行判断；
+- 直到 table[i][j] < 1 为止；倒序输出LCS放入set中。
 从上图的红色路径显示，X 和 Y 的最长公共子串有 3 个，分别为 “BD”、“AB”、“AB”。因“AB”与“AB”重复，故只输出“BD”、“AB”即可。
 
 ```c++
@@ -3207,7 +3296,7 @@ X 和 Y 的最长公共子序列有 “BDAB”、“BCAB”、“BCBA”，即�
 
 LCS 问题是否具有动态规划问题的两个特性。
 - ① 最优子结构
-  - 设 C[ i,j] = | LCS(x[ 1...i], y[ 1...j]) |，即 C[ i,j] 表示序列 X[ 1...i] 和 Y[ 1...j] 的最长公共子序列的长度，则 C[ m,n] = |LCS(x,y)|就是问题的解。
+  - 设 `C[ i,j] = | LCS(x[ 1...i], y[ 1...j]) |`，即 C[ i,j] 表示序列 X[ 1...i] 和 Y[ 1...j] 的最长公共子序列的长度，则 `C[ m,n] = |LCS(x,y)|` 就是问题的解。
   - 递归推导式：
     - ![](https://pic2.zhimg.com/80/v2-0df332d4e230d9ab8f14744991ef3a01_720w.jpg)
   - 从这个递归公式可以看出，问题具有**最优子结构**性质！

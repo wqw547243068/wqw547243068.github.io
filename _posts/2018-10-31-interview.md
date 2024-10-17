@@ -499,6 +499,8 @@ HR也想不看**背景**、不看**出身**、不看过往经验来找到合适�
 ## 面试问题
 
 
+基础算法知识及题目见站内专题 [基础算法笔记](algorithm)
+
 ### 大模型
 
 行情
@@ -863,90 +865,6 @@ Instruct GPT 论文：
 - 符尧：模型到一定规模，才会出现涌现能力
 - 问题：为什么 1.3b 的模型效果比 175b的GPT-3 好？
 
-### 基础算法
-
-#### top k 问题
-
-【20】[拜托，面试别再问我TopK了](https://mp.weixin.qq.com/s?__biz=MjM5ODYxMDA5OQ==&mid=2651961587&idx=1&sn=54bf39db7043cc638315caf70f24d94b&chksm=bd2d0d2f8a5a84395246be4522d10fbfc1f744658047d5fb3fad8e9f3c3d76baab3a2ce84867&mpshare=1&scene=23&srcid=1105ZuGdQ1PGSyatSFc4tzqt%23rd)
-
-TopK，是问得比较多的几个问题之一，到底有几种方法，这些方案里蕴含的优化思路究竟是怎么样的
-- 问题描述：从 arr[1, n] 这n个数中，找出最大的k个数，这就是经典的TopK问题。
-- 栗子：从 arr[1, 12] = {5,3,7,1,8,2,9,4,7,2,6,6} 这n=12个数中，找出最大的k=5个。
-
-TopK，不难；其思路优化过程，不简单：
-1. **全局排序**，<font color='red'>O(n*lg(n))</font>
-  - 最简单：将n个数排序之后，取出最大的k个
-  - 分析：明明只需要TopK，却将全局都排序了，这也是这个方法复杂度非常高的原因。那能不能不全局排序，而只局部排序呢？
-1. **局部排序**，只排序TopK个数，<font color='red'>O(n*k)</font>
-  - 不再全局排序，只对最大的k个排序；冒泡是一个很常见的排序方法，每冒一个泡，找出最大值，冒k个泡，就得到TopK。
-  - 分析：冒泡，将全局排序优化为了局部排序，非TopK的元素是不需要排序的，节省了计算资源。不少朋友会想到，需求是TopK，是不是这最大的k个元素也不需要排序呢？这就引出了第三个优化方法。
-1. **堆**，TopK个数也**不排序**了，<font color='red'>O(n*lg(k))</font>
-  - 思路：只找到TopK，不排序TopK，将冒泡的TopK排序优化为了TopK不排序，节省了计算资源
-    - 先用前k个元素生成一个**小顶堆**，这个小顶堆用于存储，当前最大的k个元素
-    - 接着从第k+1个元素开始扫描，和**堆顶**（堆中最小的元素）比较，如果被扫描的元素大于堆顶，则替换堆顶的元素，并调整堆，以保证堆内的k个元素，总是当前最大的k个元素。
-    - 直到，扫描完所有n-k个元素，最终堆中的k个元素，就是猥琐求的Top
-1. TopK的另一个解法：随机选择+partition
-  - 随机选择算在是《算法导论》中一个经典的算法，其时间复杂度为O(n)，是一个线性复杂度的方法。核心算法思想是，分治法。
-  - `分治法`（ Divide & Conquer），把一个大的问题，转化为若干个子问题（Divide），每个子问题“都”解决，大的问题便随之解决（Conquer）。这里的关键词是“都”。从伪代码里可以看到，快速排序递归时，先通过partition把数组分隔为两个部分，两个部分“都”要再次递归。
-  - `减治法`（ Reduce & Conquer），分治法特例,把一个大的问题，转化为若干个子问题（Reduce），这些子问题中“只”解决一个，大的问题便随之解决（Conquer）。这里的关键词是“只”。二分查找binary_search，BS，是一个典型的运用减治法思想的算法
-  - 分治法：每个分支“都要”递归，例如：快速排序，<font color='red'>O(n*lg(n))</font>
-  - 减治法：分治法特例叫减治法。“只要”递归一个分支，例如：二分查找O(lg(n))，随机选择O(n); 二分查找，大问题可以用一个mid元素，分成左半区，右半区两个子问题。而左右两个子问题，只需要解决其中一个，递归一次，就能够解决二分查找全局的问题。
-  - 通过分治法与减治法的描述，可以发现，分治法的复杂度一般来说是大于减治法的：
-  - TopK是希望求出 arr[ 1,n] 中最大的k个数，那如果找到了第k大的数，做一次partition，不就一次性找到最大的k个数了么？问题变成了arr[1, n]中找到第k大的数
-  - **随机选择**（randomized_select），找到arr[1, n]中第k大的数，再进行一次partition，就能得到TopK的结果
-知其然，知其所以然。思路比结论重要。
-
-分治和减治
-- 分治法，大问题分解为小问题，小问题都要递归各个分支，例如：快速排序 O(n*lg(n))
-- 减治法，大问题分解为小问题，小问题只要递归一个分支，例如：二分查找 O(lg(n))，随机选择
-
-```c++
-// 快排伪代码 —— 分治算法
-void quick_sort(int[]arr, int low, inthigh){
-         if(low== high) return;
-         int i = partition(arr, low, high); // 快排核心，比i小的放左边，否则右边，保持整体大致有序
-         quick_sort(arr, low, i-1);
-         quick_sort(arr, i+1, high);
-}
-// 二分法伪代码 —— 减治算法
-int BS(int[]arr, int low, inthigh, int target){
-         if(low> high) return -1;
-         mid= (low+high)/2;
-         if(arr[mid]== target) return mid;
-         if(arr[mid]> target)
-                   return BS(arr, low, mid-1, target);
-         else
-                   return BS(arr, mid+1, high, target);
-}
-// 随机选择算法randomized_select，RS —— 减治算法
-int RS(arr, low, high, k){
-  if(low== high) return arr[low];
-  i= partition(arr, low, high);
-  temp= i-low; //数组前半部分元素个数
-  if(temp>=k)
-      return RS(arr, low, i-1, k); //求前半部分第k大
-  else
-      return RS(arr, i+1, high, k-i); //求后半部分第k-i大
-}
-```
-
-【2023-6-3】快速排序简洁代码，由大模型claude提供
-
-```py
-def quick_sort(arr): 
-    if len(arr) <= 1: 
-        return arr
-    pivot = arr[len(arr)//2]  
-    left = [x for x in arr if x < pivot]  
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quick_sort(left) + middle + quick_sort(right)
-
-arr = [5,3,8,6,7,2]
-print(quick_sort(arr))
-# [2, 3, 5, 6, 7, 8]
-```
-
 
 ### 数学问题
 
@@ -965,9 +883,9 @@ print(quick_sort(arr))
 - 方法1：最朴素的想法，7*7=49，49*7=343，... 一步一步算，共进行了**9次**乘法。
   - 这样算无疑太慢了，尤其对计算机的CPU而言，每次运算只乘上一个个位数，无疑太屈才了。
   - 这时也许可以**拆分**问题。
-- 方法2：先算7的5次方，即7*7*7*7*7，再算它的平方，共进行了**5次**乘法。
+- 方法2：先算7的5次方，即 7*7*7*7*7 ，再算它的平方，共进行了**5次**乘法。
   - 但这并不是最优解，因为对于“7的5次方”，我们仍然可以拆分问题。
-- 方法3：先算7*7得49，则7的5次方为49*49*7，再算它的平方，共进行了**4次**乘法。
+- 方法3：先算 7*7 得49，则7的5次方为49*49*7，再算它的平方，共进行了**4次**乘法。
   - 模仿这样的过程，得到一个在 O(logn) 时间内计算出幂的算法，也就是`快速幂`。
 
 ##### 递归解法
