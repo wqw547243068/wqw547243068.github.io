@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "计算机经典基础算法总结-Classical Algorithm"
+title:  "基础算法总结-Classical Algorithm"
 categories: 计算机基础
 tags:  数据结构 算法 KMP Morris 二叉树 字符串 leetcode 面试 图 匹配 匈牙利 牛顿法 二分法 字节 排序
 author: 风之筝
@@ -100,7 +100,7 @@ permalink: /algorithm
   - Two pointers 
 - （2）If asked for all permutations / subsets then 
   - Backtracking 
--（3）If given a treethen 
+- （3）If given a treethen 
   - DFS 
   - BFS 
 - （4）If given a graph then 
@@ -1942,6 +1942,52 @@ typedef struct BTree *btlink;
 
 ![](https://images2015.cnblogs.com/blog/1024555/201702/1024555-20170213202419816-108138766.png)
 
+
+#### 先序遍历
+
+略
+
+#### 中序遍历
+
+【2024-10-17】 微软考题
+
+```py
+class TreeNode:
+    def __init__(self, val, left=None, right=None):
+        self.data = val
+        self.left = left
+        self.right = right
+
+# 1 2 3 4 5 6 7 8
+
+# 树构建
+#          4
+#     2        6
+# 1     3    5     7
+
+t = TreeNode(4)
+t.left = TreeNode(2)
+t.right = TreeNode(6)
+t.left.left = TreeNode(1)
+t.left.right = TreeNode(3)
+t.right.left = TreeNode(5)
+t.right.right = TreeNode(7)
+
+def traverseMiddle(t):
+    """
+        中序遍历()
+    """
+    # 左根右
+    if not t.data:
+        return ''
+    if t.left:
+        traverseMiddle(t.left)
+    print(f'{t.data}', end=',')
+    if t.right:
+        traverseMiddle(t.right)
+
+traverseMiddle(t) # 1,2,3,4,5,6,7
+```
 
 
 ### 节点删除
