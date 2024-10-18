@@ -130,6 +130,17 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 渠道信息
 - [阿里巴巴招聘官网](https://talent.alibaba.com/?lang=zh), [实习生渠道](https://talent-holding.alibaba.com/campus/position-list?campusType=internship&lang=zh)
 
+### 行业选择
+
+【2024-10-18】八个行业不能去：
+- **房地产**（上市七成公司员工降到33-20％）
+- **婴幼儿**行业（出生率急剧减少，妇产门诊关闭过半）
+- **互联网**行业（内容生产，电商，短视频饱和，在线教育，裁员飞起，不少百万年薪程序员待业）
+- **游戏**（大监管力度增强，黑悟空只是个例，部分零利润下滑）
+- 门店**线下零售**（消费降级，电商利润更薄，更何况线下还有铺位租金人力）
+- 靠**信息差**赚钱的行业：`房产中介`，`基金经理`，`猎头`，每个人都是自媒体，信息差不再存在
+- **影视**
+- **广告**
 
 
 ## 面试流程
