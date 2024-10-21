@@ -17,7 +17,14 @@ permalink: /resource
 
 优质纪录片[汇总](https://www.toutiao.com/w/1795872166226944)
 
-【2024-9-16】[磁力熊](https://www.cilixiong.com/movie/)
+## 资源获取
+
+【2024-9-16】[磁力熊](https://www.cilixiong.com/movie/), 搜索资源
+- [天下长河](https://www.cilixiong.com/drama/3056.html)
+- [凡人歌](https://www.ddkk.tv/detail/269116.html)
+
+【2024-10-21】免费影视资源, 在线播放 [哆哆追剧](https://www.ddkk.tv/)
+
 
 ## 优质电影
 
