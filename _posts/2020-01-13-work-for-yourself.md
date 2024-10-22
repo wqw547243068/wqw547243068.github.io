@@ -1232,27 +1232,35 @@ Go 和 Python 在后端语言的人气榜中名列前茅，但请注意，这里
 #### 二、国外远程工作平台
 
 国外接私活因为有**英文门槛**，而且结算用的是**美元**，工资相较于国内会高一些；但是想在这些网站上找到兼职得有比较好的网速，因为稍有不慎这些单子就会被**东南亚**和**印度**那边的程序员以价格优势给拿下。
-1. Upwork：Upwork, The World’s Work Marketplace
+1. `Upwork`：Upwork, The World’s Work Marketplace
   - Upwork 是全球最大的、最优秀的、最规范的综合类人力外包服务平台，由著名的 Elance 和 oDesk 合并。这里聚集 900 万来自全球各地的自由工作者，项目很多，机会也很多，但是最近平台上有不少。
-2. Stackoverflow：Stack Overflow - Where Developers Learn, Share, & Build Careers
+2. `Stackoverflow`：Stack Overflow - Where Developers Learn, Share, & Build Careers
   - Stackoverflow 本身就是全球程序员非常热爱的一个社区，而且它也是一个提倡全民远程工作的公司，为程序员提供了远程工作的服务，Stackoverflow Jobs 里有远程职位的筛选，这里有丰富的远程技术职位。而且Stackoverflow 本身的被认可度就非常的高，相较于其他国外的接单网站，其占据很大优势。
-3. Freelancer：Freelance.com : 370 000 consultants et experts
+3. `Freelancer`：Freelance.com : 370 000 consultants et experts
   - Freelancer的工作类型覆盖了很多不同的领域，由程序开发到市场营销、广告、会计、法务等一系列的可以远程的工作，而且Freelancer有一个优势就是支持中文版本，门槛相对更低，也因此平台上的项目单价、客户质量都比Upwork低一些。但是大家要注意，最近上面骗子挺多的，要注意甄别项目的真实性和可行性。
-4. Dribbble：Graphic Design Jobs - Browse 100s of Design Jobs , Dribbble
+4. `Dribbble`：Graphic Design Jobs - Browse 100s of Design Jobs , Dribbble
   - Dribbble 不只是全球最受欢迎的设计师社区，同样是设计师寻找远程工作的好出处。自从被 Tiny 收购后，Dribbble 的招聘属性正在慢慢增强，你可以试着持续 PO 出自己的好作品，等待你的伯乐；同样你可以关注 Jobs 页面，给心仪的 Team 提交简历
-5. topcoder：Top Website Designers, Developers, Freelancers for Your Next Project, Topcoder
+5. `topcoder`：Top Website Designers, Developers, Freelancers for Your Next Project, Topcoder
   - TopCoder是一个面向平面设计师和程序员的网站。它采用比赛、评分、支酬等方式吸引众多平面设计师和程序员业余工作。网站主要领域均在编程方面。
   - 值得注意的是，Topcoder 通过算法比赛吸引世界顶级的程序员，他会将一下大型项目分割成很多小模块，通过竞赛的模式交给用户来做，优胜者可以拿到制定模块的奖金。
-6. Toptal ：Toptal - Hire Freelance Talent from the Top 3%
+6. `Toptal` ：Toptal - Hire Freelance Talent from the Top 3%
   - Toptal 号称全球精英自由职业者平台，所以平台审核相当严格，每年申请10万多人中，只有3%自由职业者能成功入驻，对申请者的要求有英语沟通能力，还有限时算法测试、现场编程等。平台上面项目单笔成交金额较大，有实力的小伙伴可以去尝试下。
-7. AngelList：Find Startup Jobs Near You and Remote Jobs | AngelList Talent
+7. `AngelList`：Find Startup Jobs Near You and Remote Jobs | AngelList Talent
   - AngelList 主要是服务于初创公司和天使投资人的平台，这里还有初创公司提供的远程工作的机会，如果对远程加入初创公司感兴趣的，可以尝试一下。
-8. Remote ok：Remote Jobs in Programming, Design, Sales and more #OpenSalaries (remoteok.com)
+8. `Remote ok`：Remote Jobs in Programming, Design, Sales and more #OpenSalaries (remoteok.com)
   - Remoteok不仅提供最初的兼职类远程工作，还有全职类，签署合同类和实习类的工作。网站开发者本人Pieter Levels就是一个digital nomad。
-9. Guru：Find Freelance Projects and Jobs on Guru - Work Your Way
+9. `Guru`：Find Freelance Projects and Jobs on Guru - Work Your Way
   - 你可以在guru的平台上很好的展示自己的作品，并且针对你的技能，guru会为你推送适合的工作项目。
-10. WWR：We Work Remotely: Remote jobs in design, programming, marketing and more
+10. `WWR`：We Work Remotely: Remote jobs in design, programming, marketing and more
   - WWR是 WE WORK REMOTELY的缩写，这个网站也是面向程序员远程工作的一个网站，但是市面上相关的信息比较少，目前还是一片蓝海，具有较高的探索价值。
+
+
+【2024-10-22】[fiveer](https://www.fiverr.com/) , `Jim 不在硅谷`: 中国自由职业者可以给外国人提供的五大业务
+- 产品供应链: 本地供应商的了解, 提供专业知识, 800-2500 元/h
+- 汉语课程: 在线教授汉语, 150-400 元/h
+- 书法&绘画: 西方属于高雅艺术, 300-800 元/h
+- 传统中医: 草药/针灸/饮食建议, 咨询服务
+- 太极&功夫: 在线课程, 200-600元/h
 
 ### 图灵
 
