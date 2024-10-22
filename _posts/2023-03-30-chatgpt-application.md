@@ -2219,6 +2219,9 @@ AI主播经常被拆分成**数字人**+**对话式营销**两项技术，这两
 
 一款非常丝滑的 AI 虚拟交友聊天产品日前上线，中文名为“小黄蕉”，英文为Chatwiz，可以生成照片，非常接近真人对话情景。
 
+AI创业新风口，爆火的AI女友、虚拟陪伴 [chatgirl](https://chatgirl.ai/home)
+- [android 版](https://www.pgyer.com/xwac-adr)
+
 ##### 电商直播
 
 【2023-10-12】[大模型+数字人始于电商直播，发展于千行百业](https://m.thepaper.cn/newsDetail_forward_24905573)
