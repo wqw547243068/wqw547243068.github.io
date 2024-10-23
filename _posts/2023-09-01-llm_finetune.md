@@ -289,32 +289,77 @@ Chat模型上进行普通任务微调，会导致模型对齐效果丧失，也�
 
 ### (3) WiSE-FT
 
+
+####  WiSE-FT 介绍
+
+华盛顿大学、OpenAI、哥伦比亚大学和Google
+- 【2022-6-21】论文 [Robust fine-tuning of zero-shot models](https://arxiv.org/abs/2109.01903)
+- 代码 [wise-ft](https://github.com/mlfoundations/wise-ft)
+
 [参考](https://www.zhihu.com/question/633875412/answer/3592874843)
 
 `WiSE-FT`（Weight-space Ensembling for Fine-tuning）微调方法。
-- 好处：WiSE-FT 通过组合**零样本模型**的**权重**和微调后模型的**权重**来解决遗忘问题。
+- 好处：`WiSE-FT` 通过组合**零样本模型**的**权重**和微调后模型的**权重**来解决遗忘问题。
   - 这种方法简单、通用，能够在**不增加额外计算成本**的情况下，几行代码实现。
-- WiSE-FT 在多个数据集上展示了比标准微调更好的准确性，尤其是在数据分布变化时，提高了模型的鲁棒性。
+- `WiSE-FT` 在多个数据集上展示了比标准微调更好的准确性，尤其是在数据分布变化时，提高了模型的鲁棒性。
 
-算法原理与实现：
+#### 算法原理与实现
 
 WiSE-FT 步骤：
-- ● 微调**零样本**模型：首先，在特定应用数据上微调预训练的零样本模型。
-  - 可通过标准微调过程来完成，即在新数据集上训练模型参数，以适应新的任务。
+- ● 微调**零样本**模型：特定应用数据上微调预训练的零样本模型。
+  - 标准微调过程，在新数据集上训练模型参数，以适应新任务。
 - ● **权重组合**：微调完成后，将微调后的模型权重与原始零样本模型的权重进行组合。
-  - 这种组合是通过**线性插值**实现，对两个模型权重进行**加权平均**。加权平均的权重α是超参数，根据具体情况进行调整。
-- ● **权重空间组合**：在微调过程中或微调结束后，通过线性插值将两个模型的权重组合起来
+  - 这种组合是通过**线性插值**实现，对两个模型权重进行**加权平均**。
+  - `wse(x, α) = f(x, (1 − α) · θ0 + α · θ1)`
+  - 加权平均的权重`α`是超参数，根据具体情况进行调整。 α is 0 ~ 0.4 
+- ● **权重空间组合**：微调过程中或微调结束后，通过**线性插值**将两个模型的权重组合起来
   - WiSE-FT 关键在于通过**权重空间组合**来利用零样本模型和微调后模型的互补性。
 
-这种方法基于两个观察：
-- 首先，零样本模型和微调后模型在权重空间中可以通过一条线性路径连接，在这条路径上模型的准确性保持较高；
-- 其次，这种组合可以利用两个模型的互补预测能力。
+基于两个观察：
+- 首先，零样本模型和微调后模型在权重空间中, 可通过一条线性路径连接，在这条路径上模型的准确性保持较高；
+- 其次，这种组合可以利用两个模型的**互补**预测能力。
 
-WiSE-FT在多种数据分布变化下都能提高模型的鲁棒性，并且在多个数据集上比标准微调方法有更好的准确性。此外，WiSE-FT还在低数据量的情况下显示出性能提升，这表明即使在微调数据稀缺的情况下，该方法也能提供改进。
+
+#### 效果
+
+WiSE-FT 在多种数据分布变化下都能提高模型的鲁棒性，并且在多个数据集上比标准微调方法有更好的准确性。
+
+此外，WiSE-FT 还在低数据量的情况下显示出性能提升，这表明即使在微调数据稀缺的情况下，该方法也能提供改进。
 
 WiSE-FT 提高了 Radford 等人研究的五个 ImageNet 分布偏移上微调 CLIP 模型的准确性。同时保持或提高 ImageNet 的准确性。
 - 相对于微调解决方案，`WiSE-FT` (α= 0.5) 将分布偏移下性能提高了 3.5、6.2、1.7、2.1、9.0 和 23.2 pp，同时将参考分布的性能降低最多 0.3 pp（准确度参考分布通常会得到改善）。
 - 即使超参数发生微小变化，微调模型的稳健性也会发生很大变化。应用 WiSE-FT 可以解决这种脆弱性，并且可以消除参考分布和移位分布的准确性之间的权衡。
+
+
+#### 源码
+
+pytorch 伪码实现
+- 代码 [wise-ft](https://github.com/mlfoundations/wise-ft)
+
+```py
+def wse(model, zeroshot_checkpoint, finetuned_checkpoint, alpha):
+  # load state dicts from checkpoints
+  theta_0 = torch.load(zeroshot_checkpoint)["state_dict"]
+  theta_1 = torch.load(finetuned_checkpoint)["state_dict"]
+  # make sure checkpoints are compatible
+  assert set(theta_0.keys()) == set(theta_1.keys())
+  # interpolate between all weights in the checkpoints
+  theta = {
+    key: (1-alpha) * theta_0[key] + alpha * theta_1[key]
+    for key in theta_0.keys()
+  }
+  # update the model (in-place) according to the new weights
+  model.load_state_dict(theta)
+
+def wise_ft(model, dataset, zeroshot_checkpoint, alpha, hparams):
+  # load the zero-shot weights
+  theta_0 = torch.load(zeroshot_checkpoint)["state_dict"]
+  model.load_state_dict(theta_0)
+  # standard fine-tuning
+  finetuned_checkpoint = finetune(model, dataset, hparams)
+  # perform weight-space ensembling (in-place)
+  wse(model, zeroshot_checkpoint, finetuned_checkpoint, alpha)
+```
 
 
 ### (4) LM-Cocktail
