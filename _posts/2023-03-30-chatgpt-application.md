@@ -1523,11 +1523,20 @@ Smart Siri 不足：
 
 #### AI PC
 
+##### Easy-RAG
+
+【2024-7-12】个人实践: [Easy-RAG](https://github.com/yuntianhe2014/Easy-RAG), 用 ollama 和本地llm 实现语言操控电脑
+- langchain_experimental 包开发，基于ollama的大模型，去注册tool，并且调用
+- [详见](https://mp.weixin.qq.com/s/FFAptDBJF5NfP56Uqq4lfA)
+
+
+##### 联想 AI PC
+
 【2024-1-9】[CES 2024现场体验：你的AI PC，未来长这样！ CES 2024现场体验：你的AI PC，未来长这样！](https://www.toutiao.com/video/7322067014749621530)
 
 一个未来最有可能落地的趋势，就是AIPC人工智能版个人电脑
 
-联想 AIPC 个人 AI 助理 AI NOW
+联想 AIPC 个人 AI 助理 `AI NOW`
 - 2023年10月底，联想在Tech World大会上提出了AIPC的概念
 - 本届CES上，联想连续发布了多款主打AIPC概念的新产品。
 
@@ -1539,9 +1548,16 @@ Smart Siri 不足：
 - 3）Yoga Creator Zone，是专为创作者、艺术家等用户设计的生成式AI助手，旨在为想象力赋能，提供图像生成工具，可将基于文本的描述或草图转换为图像，无需输入任何复杂的提示、代码或设置。用户只需输入任何预想的内容，系统即可快速生成相应的视觉图像
 
 
-【2024-7-12】个人实践: [Easy-RAG](https://github.com/yuntianhe2014/Easy-RAG), 用 ollama 和本地llm 实现语言操控电脑
-- langchain_experimental 包开发，基于ollama的大模型，去注册tool，并且调用
-- [详见](https://mp.weixin.qq.com/s/FFAptDBJF5NfP56Uqq4lfA)
+
+##### 联想智能体一体机
+
+【2024-10-23】[一图读懂联想智能体一体机](https://mp.weixin.qq.com/s/uh5Xw-W2DZeJ99BSMf1oGQ)
+- 【2024-10-9】[联想业界全新智能体一体机解决方案，以AI为支点，撬动行业变革](https://www.163.com/dy/article/JE26CGLC0524DCM6.html)
+
+联想最新发布的智能体一体机通过高度集成的软硬件设计,带来了“开箱即用”的便捷体验。
+- 软件层面, 联想智能体一体机配备了“**联想智能体平台**”, 集成多种开源大模型、智能体样例及开发评估工具,并提供零代码开发功能,支持用户在短时间内以低门槛的方式创建智能体。无需复杂的部署与配置,用户即可快速启动智能体的开发与应用,实现从模型训练到应用落地的全过程管理,进一步简化了AI技术的应用流程,助力企业用户轻松接入并快速运行。
+- 硬件方面, 智能体一体机基于联想 ThinkStation PX 旗舰工作站打造,采用桌面级安装部署,避免了服务器需要专门机房运维的复杂性,大大简化了维护管理的工作量,极大地方便了运维操作。
+- 性能上, ThinkStation PX专为深度学习和数据分析设计,搭载双路Intel Xeon处理器和4张NVIDIA RTX 5000 Ada显卡,能够处理高并发任务和大规模数据计算。在复杂AI场景下,ThinkStation PX凭借其强大性能,支持多路并发任务,确保智能体一体机实现7×24小时的高效稳定运行,充分满足企业和教育用户的多样化需求。
 
 #### Friend
 
