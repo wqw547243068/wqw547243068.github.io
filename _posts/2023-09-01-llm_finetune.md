@@ -365,14 +365,25 @@ def wise_ft(model, dataset, zeroshot_checkpoint, alpha, hparams):
 ### (4) LM-Cocktail
 
 
-[大模型灾难性遗忘解决方法之一：LM-Cocktail](https://zhuanlan.zhihu.com/p/689403852?utm_psn=1816553734890725376)
-- [LM-Cocktail: Resilient Tuning of Language Models via Model Merging]()
+【2023-12-8】`智源研究院`信息检索与知识计算组发布`LM-Cocktail`模型治理策略，为大模型开发者提供一个**低成本持续提升模型性能**的方式：通过少量样例计算融合权重，借助模型融合技术融合微调模型和原模型的优势，实现“模型资源”的高效利用。
+- **融合多个LLM**：既能提升目标任务性能，又能保持通用能力收集和构建目标任务数据集并对大语言模型（LLM）进行微调，可以提高其在目标任务的性能表现
+  - 然而，这种方式会导致**除目标任务以外的一般任务的性能明显下降**，损害LLM原本具备的通用能力。
+  - 模型融合技术通过融合多个模型提高单模型的性能。受此启发，LM-Cocktail 策略进一步通过对目标任务计算不同模型的重要性，赋予不同模型不同的权重，在此基础上进行模型融合，在提升目标任务上性能的同时，保持在通用任务上的强大能力。
+- **模型治理新策略**：博采众长，持续为大模型增添新技能
+  - 开源社区的模型逐渐增多，大模型开发者也可能在多次训练中累计了越来越多的模型，每个模型都具有各自的优势，如何选择合适的模型执行任务或进一步微调反而成为一个问题。
+  - **LM-Cocktail 策略** 可帮助汇总各模型的优势能力，就像制作鸡尾酒那样，通过加入不同的模型进行调制，得到一个具备多种特长的“多技能”模型。
+  - LM-Cocktail **手动**选择模型配比，或者输入少量样例**自动**计算加权权重，来融合现有模型生成一个新模型，该过程不需要对模型进行重新训练并且具备适配多种结构的模型，如大语言模型 Llama，语义向量模型 BGE等。
+  - 此外，如果开发者缺乏某些目标任务的标签数据，或者缺少计算资源进行模型微调，那么采用 LM-Cocktail 策略可以省去模型微调步骤，通过构造非常少量的数据样例，融合开源社区中已有的大语言模型来调制自己的“LM鸡尾酒”。
 
-通过模型融合兼顾通用以及domain能力
-- 以一定权重融合多个模型
+[大模型灾难性遗忘解决方法之一：LM-Cocktail](https://zhuanlan.zhihu.com/p/689403852?utm_psn=1816553734890725376)
+- 论文 [LM-Cocktail: Resilient Tuning of Language Models via Model Merging](https://arxiv.org/pdf/2311.13534)
+- 代码、模型: [FlagEmbedding](https://github.com/FlagOpen/FlagEmbedding)
+
+通过**模型融合**兼顾通用以及domain能力
+- 以一定**权重**融合多个模型
 
 合并时有两大问题
-- 合并哪些模型 -》 base’模型和微调后的模型
+- 合并哪些模型 -》 base模型和微调模型
 - 以什么权重合并
 
 公式
@@ -382,11 +393,19 @@ def wise_ft(model, dataset, zeroshot_checkpoint, alpha, hparams):
 合并后的模型和原始模型一样在垂域表现近似
 
 变种
-- mono-specialist：直接垂域ft和原始hebing
-- without-ft：如果没有数据，多个其他domain合并
+- mono-specialist：直接垂域ft和原始合并
+  - `Mr ← αMt + (1 − α)Mb`, Mb是base模型
+- without-ft：如果没有数据/GPU可供目标领域微调，直接融合基座和多个domain模型
+  - `Mr ← ∑ wi ∗ Mi`
 
 实验结果
 - ![](https://pic3.zhimg.com/80/v2-dd3def5aa36f1de70f859ff862622aa8_1440w.webp)
+
+
+
+### (5) MoE
+
+多个分支, 分别指向通用基座、特定场景的LLM
 
 
 ## 微调经验
