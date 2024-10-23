@@ -279,6 +279,24 @@ SFT阶段，用**特定领域**数据或**私有化**数据, 对预训练模型�
 - 3、微调的目的是使模型更好地适应特定的任务或领域【垂直领域】，比如特定类型的语言理解或生成任务。
 - 4、SFT通常不涉及复杂的策略或奖励函数，只是简单地最小化预测输出和真实输出之间的差异。
 
+#### SFT VS Pretrain
+
+【2024-10-22】[细谈大模型监督微调SFT：实战经验技巧和debug分析思路](https://mp.weixin.qq.com/s/OaVjCQ008u75whN8MmrFTQ?poc_token=HKS4F2ejwYa96ZbQz2wEdOjU2-4OIhwIk-ipW6MH)
+
+SFT 和 pretrain 在训练方式上没有任何区别，主要区别在于**数据组成**形式上：
+1. pretrain 每条数据都是满编 4K / 8K，SFT 每条数据原本多长就是多长；
+2. SFT 会引入 pretrain 阶段未见过的 special_token，来让它们学习全新的语义；
+3. SFT 会让模型见到最重要的 eos_token，pretrain 模型因为没见过该 token 而无法停止生成；
+4. 借助 special_token，SFT 会把语料切分成不同的角色，标配的有 system、user、assistant，根据业务需求也可以有“背景”、“旁白”、“事件”等等；
+5. SFT 的 prompt 不做 loss，但这并不是说它不能做 loss。主要原因是 prompt 的同质化比较严重，不做 loss_mask 的话，同样的一句话会被翻来覆去的学，但如果你能保证你的每条 prompt 都是独一无二的，就完全可以省去 prompt 的 loss_mask 环节。对了，session 数据一定要想清楚是每一个 answer 都算 loss，还是只对最后一轮的 answer 算 loss。
+
+
+除此之外，训练目的也不一样。
+- pretrain 是在背书，纯粹的学习知识；
+- sft 则是在做题，学习的是指令 follow 能力。
+
+切勿在 sft 阶段强行给模型做知识注入，比如训个 50W 条的 code 数据，所有的知识注入工作应该采用 continue-pretrain 的思路进行，否则都会使得模型的通用能力掉点明显（SFT 做知识注入基本上是 100% 某个知识，但 continue-pretrain 做知识注入会控制在 10% ～ 20% 左右的比例）。
+
 
 
 
