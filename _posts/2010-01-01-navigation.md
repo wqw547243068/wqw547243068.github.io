@@ -97,7 +97,7 @@ permalink: /navi
 
 <div class="mermaid">
 %% 导航
-    graph LR
+    graph TD
     A(Home):::s
     classDef s fill:#C8D64B;
     style A fill:#F7CF6B;
