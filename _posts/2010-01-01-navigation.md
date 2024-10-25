@@ -90,7 +90,7 @@ permalink: /navi
 一点直达
 - [学习资料汇总（持续更新）](https://wqw547243068.github.io/collection/)
 
-### 可视化导航
+### 网站导航
 
 - 点击对应方块就能快速跳转
 - Click these blocks below to jump pages quickly ...
@@ -124,7 +124,9 @@ permalink: /navi
 </div>
 
 
-【2024-9-30】新版导读图示，点击方块即可跳转到对应文章
+### 主题导航
+
+【2024-9-30】新版导读图示，点击`方块`即可跳转到对应技术文章
 
 {% include tool_navi.html %}
 
