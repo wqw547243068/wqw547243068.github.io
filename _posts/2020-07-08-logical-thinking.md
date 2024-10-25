@@ -7,6 +7,7 @@ tags: 逻辑 推理 思维 哲学 三段论 亚里士多德 学习方法 认知 
 excerpt: 如何培养自己的逻辑思维能力，一眼看到问题本质，发现漏洞，深度思考？
 author: 鹤啸九天
 mathjax: true
+permalink: /mind
 ---
 
 * content
