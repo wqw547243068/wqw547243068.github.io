@@ -114,6 +114,7 @@ permalink: /navi
     A -->|联系我| G(About)
     A -->|找大牛| H(Links)
     A -->|找主题文章| I(搜索框)
+    A -->|主题| W(Navi)
     click A "https://wqw547243068.github.io/" "主页"
     click B "https://wqw547243068.github.io/archive" "文章目录"
     click C "https://wqw547243068.github.io/category" "大类目"
@@ -121,6 +122,7 @@ permalink: /navi
     click E "https://wqw547243068.github.io/collection" "大类目"
     click F "https://wqw547243068.github.io/demo" "Demo"
     click G "https://wqw547243068.github.io/about" "找我"
+    click W "https://wqw547243068.github.io/navi" "主题"
 </div>
 
 
