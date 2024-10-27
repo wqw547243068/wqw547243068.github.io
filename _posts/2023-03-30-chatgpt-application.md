@@ -1596,6 +1596,12 @@ Smart Siri 不足：
 
 #### AI PC
 
+##### AI 模拟操控
+
+
+详见站内专题: [Agent 设备操控](agent#设备操控)
+
+
 ##### Easy-RAG
 
 【2024-7-12】个人实践: [Easy-RAG](https://github.com/yuntianhe2014/Easy-RAG), 用 ollama 和本地llm 实现语言操控电脑
