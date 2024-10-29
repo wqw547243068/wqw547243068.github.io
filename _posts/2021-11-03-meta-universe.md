@@ -246,6 +246,14 @@ cd EchoMimic
 - 基于分身数字人可以制作数字人名片，更加亲切。
 - 一次训练，实现多语种驱动。通过录制5分钟中文演讲视频，就可以生成分身数字人，用于多语种的视频生成。
 
+
+#### Ultralight
+
+【2024-10-29】[Ultralight Digital Human： 第一款完全开源的实时视频数字人](https://mp.weixin.qq.com/s/ZjytjhNOS6cmalqHA9-0VQ)
+- 源码地址：[Ultralight-Digital-Human](https://github.com/anliyuan/Ultralight-Digital-Human)
+
+一个能在移动设备上实时运行的数字人模型，第一个开源的如此**轻量级**的数字人模型
+
 ### 虚拟人创建工具
 
 
