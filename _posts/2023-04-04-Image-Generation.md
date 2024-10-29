@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散 
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -64,7 +64,7 @@ permalink: /image-generation
 感受野和定位精度不可兼得，当感受野选取比较大的时候，后面对应的 pooling 层的降维倍数就会增大，这样就会导致定位精度降低，但是如果感受野比较小，那么分类精度就会降低。      
 
 |维度|GAN|VAE|Diffusion Model(扩散模型)|AR(自回归)||
-|--------|---|---|---|---|---|
+|---------------|---|---|---|---|---|
 |生成质量|中(多样性不足)|中|高|高||
 |生成速度|快|快|中|中/慢|AR受模型规模和推理资源限制|
 |算力成本<br>训练/推理|低|低|中|高||
@@ -210,27 +210,104 @@ GAN是生成式模型中应用最广泛的技术，在图像、视频、语音�
 
 局部可控的图像生成（后续简称LC-AIGC）：[参考](https://zhuanlan.zhihu.com/p/618616522)
 - ![](https://pic4.zhimg.com/80/v2-dab50938ea1f50df02af75f7d0b66313_1440w.webp)
-- 在背景图片(background image)上给定一个边界框(bounding box)，提供所需的条件信息(condition)，在边界框内生成满足条件信息的前景物体，得到完整的真实自然的图片(generated image)。条件信息包括很多种类型，比如文本(text)、轮廓(sketch)、颜色(color)、图片(image)等等。
-- 其中和图像合成最相关的是将一张前景物体的图片作为条件信息，即在背景图片的边界框内生成该物体，并使其光照、阴影、视角和背景适配。
+- 在背景图片(background image)上给定一个边界框(bounding box)，提供所需的条件信息(condition)，在边界框内生成满足条件信息的前景物体，得到完整的真实自然的图片(generated image)。
+- 条件信息包括很多种类型，比如: 文本(text)、轮廓(sketch)、颜色(color)、图片(image)等等。
+- 其中和图像合成最相关的是将一张**前景物体**图片作为条件信息，即在背景图片的边界框内生成该物体，并使其光照、阴影、视角和背景适配。
 
 LC-AIGC 问题
 - 边界框的自动生成。某些应用场景（比如数据增广）需要在背景图片上自动产生大量的合理的边界框。该任务叫**物体放置**(object placement),相关[资料](https://github.com/bcmi/Awesome-Object-Placement)。
 - 可控性。LC-AIGC虽然能够实现局部可控，但是在图片作为条件信息的情况下控制力度远远不够。总的来说，条件信息提供了前景物体的若干属性。如果条件信息是文本、轮廓、颜色，我们知道了前景物体的某个属性，而其他属性是未知的。LC-AIGC默认已知属性是合理的，然后根据背景信息补充其他未知属性，得到完整的前景物体。
 
 
+【2024-20-26】[深入浅出完整解析ControlNet核心基础知识](https://zhuanlan.zhihu.com/p/660924126)
+
+由于 `Stable Diffusion` + `LoRA` + `ControlNet` 三巨头的强强联合，形成了一个千变万化的AI绘画“兵器库”
+- 传统**图像处理**技术（Canny、Depth、SoftEdge等）再次得到广泛使用，成功“文艺复兴”；
+- 传统**深度学习**技术（人脸识别、目标检测、人体关键点检测、图像分割、图像分类等）也直接过渡到AIGC时代中，成为AI绘画工作流中的重要辅助工具。
+
+计算机视觉历史中的沉淀与积累，都在AIGC时代有了相应的位置。
+- `Stable Diffusion` 是AIGC时代的“`YOLO`”
+- `Stable Diffusion XL` 是AIGC时代的“`YOLOv3`”
+- `LoRA` 系列模型是AIGC时代的“`ResNet`”
+- `ControlNet` 系列模型就是AIGC时代的“`Transformer`”。
+
+
 ### ControlNet
 
-文本生成图像只需要用户输入文本(Prompts)就可以实现图像生成，但是由于扩散模型本身特性（diversity较强），生成的图像往往不受控制，不见得能精准满足用户的需求，如何提升生成的可控性？
+文本生成图像只需要用户输入文本(Prompts)就可以实现图像生成，但是由于扩散模型本身特性（多样性较强），生成的图像往往**不受控制**，不见得能精准满足用户的需求
+
+问题：如何提升生成的可控性？
+
+#### 介绍
+
 
 【2023-4-4】[ControlNet: 给以文生图模型添加条件约束](https://zhuanlan.zhihu.com/p/608161469)
-- Stable Diffusion (SD)模型，添加**额外**条件（Edge Map, Sketch, Depth Info, Segmentation Map, Human Pose, Normal Maps）做**受控**图像生成的方法，主要思路在SD模型中为添加与UNet结构类似的ControlNet以学习额外条件信息，映射进参数固定的SD模型中，完成条件生成。
+- Stable Diffusion (SD)模型，添加**额外**条件（Edge Map, Sketch, Depth Info, Segmentation Map, Human Pose, Normal Maps）做**受控**图像生成的方法
+
+#### 原理
+
+- 主要思路: 在`SD`模型中为添加与`UNet`结构类似的`ControlNet`, 学习额外条件信息，映射进参数固定的SD模型中，完成条件生成。
 - 【2023-2-10】论文 [Adding Conditional Control to Text-to-Image Diffusion Models](https://arxiv.org/pdf/2302.05543.pdf)
 - [ControlNet代码](https://github.com/lllyasviel/ControlNet), [model](https://huggingface.co/lllyasviel/ControlNet/tree/main)
+- diffusers 框架的 ControlNet训练脚本：[diffusers/examples/controlnet](https://github.com/huggingface/diffusers/tree/main/examples/controlnet)
 - ![](https://pic4.zhimg.com/80/v2-a223547711e54464811ec00a01e6a367_1440w.webp)
-- 固定原始网络参数，复制一个可以训练的拷贝网络，对于输入的条件c，通过零卷积(zero convolution)，与网络原本的输入x进行特征加和，之后对于拷贝网络的输出，同样通过领卷积处理后与原始网络进行特征加和，输出最终的结果。
-- 零卷积(zero convolution):权重和偏置都是用0初始化的1 x 1卷积。
-- 零卷积的好处：在训练刚开始的阶段，controlNet的输出对原始网络没有影响，这样之后的任何优化基本上等同于在finetune这个模型，速度会比较快。
+- **固定**原始网络参数，**复制**一个可训练的拷贝网络，对于输入的条件c，通过**零卷积**(zero convolution)，与网络原本的输入x进行特征加和，之后对于拷贝网络的输出，同样通过领卷积处理后与原始网络进行特征加和，输出最终的结果。
+  - 零卷积(zero convolution): 权重和偏置都是用0初始化的1 x 1卷积。
+  - 零卷积的好处：训练刚开始，controlNet 输出对原始网络没有影响，之后的任何优化基本上等同于在finetune这个模型，速度会比较快。
+
+ControlNet 模型
+- Stable Diffusion 模型的权重被复制出**两个**相同部分，分别是“**锁定**”副本（locked）和“**可训练**”副本。
+
+ControlNet 主要在“**可训练**”副本上施加控制条件，然后，将施加控制条件之后的结果和原来SD模型的结果相加（add）获得最终的输出结果。
+- 其中, “锁定”副本中的**权重保持不变**，保留了 Stable Diffusion 模型原本的能力；
+- 与此同时，使用额外数据对“可训练”副本进行微调，学习想要添加的条件。
+- 因为有 Stable Diffusion 模型作为预训练权重，所以使用小批量数据集就能对控制条件进行学习训练，同时不会破坏Stable Diffusion 模型原本的能力。
+
+ControlNet 模型的最小单元结构中有两个 zero convolution （零卷积） 模块，1×1卷积，并且**权重和偏置都初始化为零**。
+- 开始训练ControlNet之前，所有zero convolution模块的输出都为零，使得 ControlNet 完完全全就在原有Stable Diffusion 底模型的能力上进行微调训练，不会产生大的能力偏差。
+
+疑问: 如果 zero convolution 模块的初始权重为零，那么梯度也为零，ControlNet模型将不会学到任何东西。
+- 那么为什么“zero convolution模块”有效呢？（AIGC算法面试必考点）
+
+解答
+- 假设 controlnet 权重为 y=wx+b, 分别求导, dy/dw=x, dy/dx=w, dy/db=1
+- 只要 x≠0, 一次梯度下降迭代将使 w 变成非零值。然后就得到：dy/dx≠0。这样就能让 zero convolution模块**逐渐**成为具有**非零权重**的公共卷积层，并不断优化参数权重。
+
+制作副本而不是直接训练原始权重主要是为了**避免数据集较小时的过拟合**，并保持从数十亿张图像中学习到的大型模型的能力。
+
+controlNet 详细结构
 - ![](https://pic4.zhimg.com/80/v2-a87dde8bbc7562ef282f4f7cc8f31e47_1440w.webp)
+
+主要在 Stable Diffusion 的 `U-Net` 中起作用
+- ControlNet 主要将 Stable Diffusion U-Net 的 Encoder 部分和 Middle 部分进行复制训练
+- 在 Stable Diffusion U-Net 的 Decoder模块中通过 skip connection 加入了zero convolution模块处理后的特征，以实现对最终模型与训练数据的一致性。
+
+由于 ControlNet 训练与使用方法是与原始 Stable Diffusion U-Net 模型进行连接，并且 Stable Diffusion U-Net 模型权重是固定的, 不需要进行梯度计算。
+
+这种设计思想减少了 ControlNet 训练中一半的计算量，在计算上非常高效，能够加速训练过程并减少GPU显存的使用。
+- 单个 Nvidia A100 PCIE 40G 环境下，实际应用到Stable Diffusion模型的训练中，ControlNet 仅使得每次迭代所需的GPU显存增加大约**23%**，时间增加**34%**左右。
+
+ControlNet 包含了12个编码块和 1个Stable Diffusion U-Net中间块的“可训练”副本。
+- 这12个编码块有4种分辨率，分别是64×64、32×32、16×16和8×8，每种分辨率对应3个编码块 。
+- ControlNet的输出被添加到Stable Diffusion U-Net的12 个残差结构和1个中间块中。
+
+同时, 由于Stable Diffusion U-Net是经典的U-Net结构，因此 ControlNet架构有很强的兼容性与迁移能力，可以用于其他扩散模型中。
+
+ControlNet 输入包括Latent特征、Time Embedding、Text Embedding以及额外的condition。
+- 其中前三个和SD的输入是一致的，而额外的condition是ControlNet独有的输入
+- 额外的condition是和输入图片一样大小的图像，比如**边缘检测**图、**深度信息**图、**轮廓图**等。
+
+问题: ControlNet 一开始的输入Condition怎么与SD模型的隐空间特征结合呢？
+- ControlNet主要是训练过程中添加了4层卷积层，将图像空间 Condition 转化为隐空间Condition。
+- 这些卷积层的卷积核为4×4，步长为2，通道分别为16，32，64，128，初始化为高斯权重，并与整个ControlNet模型进行联合训练。
+
+ControlNet的架构与思想，让其可以对图像的背景、结构、动作、表情等特征进行精准的控制。
+
+ControlNet模型思想使得训练的模型鲁棒性好，能够避免模型过度拟合，并在针对特定问题时具有良好的泛化性，在小规模甚至个人设备上进行训练成为可能。
+
+
+#### 效果
+
 
 实验效果
 
@@ -245,14 +322,84 @@ LC-AIGC 问题
 | Cartoon Line Drawing | ![](https://pic1.zhimg.com/80/v2-d98b515e5991e6b040bb0eac31130e24_1440w.webp) ||
 
 
-#### 部署
+#### ControlNet WebUI
 
-【2023-4-10】
-- 模型[下载](https://huggingface.co/lllyasviel/ControlNet)
+ControlNet 有18种 Control Type，分别是
+- Canny，Depth，NormalMap，OpenPose，MLSD，Lineart，SoftEdge，Scribble/Sketch，Segmentation，Shuffle，Tile/Blur，Inpaint，InstructP2P，Reference，Recolor，Revision，T2I-Adapter，IP-Adapter。
+- 各种模式使用详解见文章 [深入浅出完整解析ControlNet核心基础知识](https://zhuanlan.zhihu.com/p/660924126)
+
+ControlNet 引领了CV领域的“文艺复兴”，很多传统图像处理时代的算子（Canny，Depth，SoftEdge等）在AIGC时代中再次展现它们的能量。
+
+安装ControlNet插件：
 
 ```sh
-
+cd stable-diffusion-webui/extensions/
+git clone https://github.com/Mikubill/sd-webui-controlnet.git
 ```
+
+重启WebUI即可看到ControlNet插件面板：
+- ![](https://pic4.zhimg.com/v2-9535e8088a61a6f8c836ad6741e7d019_b.jpg)
+
+ControlNet插件面板中各个参数的具体作用，大家可以点赞收藏本文，在使用时可以方便的找到：
+
+ControlNet插件面板第一行中的ControlNet Unit 0-3表示默认设置为三个ControlNet选项界面，能够在Stable Diffusion生成过程中使用三个ControNet模型，可以手动增加或减少ControlNet选项界面。
+
+ControlNet 插件面板第二行有Single Image和Batch两个选项卡，表示使用一张图片或一个Batch的图片进行预处理，用于ControlNet过程。
+- Enable（启用）：点击选择Enable后，点击WebUI中的Generate按钮时，将会加载ControlNet模型辅助控制图像的生成过程。如果不点击选择Enable按钮不生效。
+- Low VRAM（低显存模式）：如果我们的显卡显存小于4GB，可以开启此选项降低生成图片时ControlNet的显存占用。
+- Pixel Perfect（完美像素模式）：开启完美像素模式之后，ControlNet 将自动计算选择预处理器分辨率，不再需要我们手动设置分辨率。通过自动进行这些调整，它可以保证最高的图像质量和清晰度。Rocky在这里打一个不太恰当的比喻，ControlNet的Pixel Perfect功能，就如同YOLOv5的自适应anchor一样，自动化为我们的参数调整免去了很多麻烦。
+- Allow Preview（预览展示模式）：启用后将会把图片经过Preprocessor预处理后的结果展示出来，比如图片的边缘信息，深度信息，关键点信息等。
+- Control Type（控制类型）：一共有18种控制类型可以选择，选择一个Control Type后，Preprocessor和Model栏里也会限定只能选择与Control Type相匹配的算法和模型，非常方便。
+- Preprocessor（预处理器）：在Preprocessor栏里我们可以选择需要的预处理器，每个预处理器都有不同的功能。选择的预处理器会先将上传的图片进行预处理，例如Canny会提取图片的边缘特征信息。如果图片不需要进行预处理，设置Preprocessor为none即可。
+- Model（模型）：Model栏里我们可以选择ControlNet模型，用于SD生成图片时进行控制。
+- Control Weight（ControlNet权重）：代表使用ControlNet模型辅助控制SD生成图片时的权重。
+- Starting Control Step（引导介入时机）：表示在图片生成过程中的哪一步开始使用ControlNet进行控制。如果设置为0，就表示从一开始就使用ControlNet控制图片的生成；如果设置为0.5就表示ControlNet从50%的步数时开始进行控制。
+- Ending Control Step（引导推出时机）：表示在图片生成过程中的哪一步结束ControlNet的控制。和引导介入时机相对应，如果设置为1，表示使用ControlNet进行控制直到完成图片的生成。Ending Control Step默认为1，可调节范围0-1，如果设置为0.8时表示到80%的步数时结束控制。
+- Control Mode（控制模式）：在使用ControlNet进行控制时，有三种控制模式可以选择，用于确定ControlNet于Prompt之间的配比。我们可以选择平衡二者 (Balanced)，或是偏重我们的提示词 (My prompt is more important)，亦或者是偏重ControlNet (ControlNet is more important)。
+- Resize Mode（缩放模式）：用于调整图像大小模式，一共三个选项：Just Resize，Crop and Resize和Resize and Fill。
+  - 拿512x500的图像为例，使用三个缩放模式生成一个 1024x1024的图像，看看主要经过了哪些过程：
+  - Just Resize：不考虑宽高比，直接将图像拉伸成1024x1024分辨率。
+  - Crop and Resize：考虑宽高比，先将图片裁剪至 500x500，然后缩放至1024x1024分辨率，会造成左右两侧的一些数据丢失。
+  - Resize and Fill：通过添加噪音的方式将图像填充至512x512，然后缩放到1024x1024分辨率。
+- Loopbac按钮：`[Loopback]` Automatically send generated images to this ControlNet unit。点击开启后，在mov2mov等持续性生成过程中，每一帧的结果都会进行ControlNet控制。
+- Presets：用于保存已经配置好的ControlNet参数，以便后续快速加载相关参数。
+
+
+三种控制模式的原理：
+- "Balanced"（**平衡**）：ControlNet的能力在CFG Scale中均衡的使用，一般我们默认可以选择Balanced。
+- "My prompt is more important"（**提示更重要**）：ControlNet 能力在CFG Scale中使用，但逐渐减少在SD U-Net模型的注入（`layer_weight *= 0.825^I`，其中 0<=I<13，13表示ControlNet注入了SD 13次）。在这种情况下，提示词Prompt在图像的生成过程中占据更大的比重。
+- "ControlNet is more important"（**ControlNet更重要**）：ControlNet 仅在CFG Scale的条件控制部分使用。
+  - 设置的CFG Scale是X，那么ControlNet的控制强度将是X倍（如果我们设置CFG Scale为7，那么ControlNet的强度将是7倍）。
+  - 注意: X倍强度与“Control Weights”（控制权重）不同，因为ControlNet的权重没有被修改。这种“更强”的效果通常会产生较少的人工痕迹，并且给ControlNet更多空间去猜测我们的提示词中缺少的内容（在之前的版本，这个模式被称为"Guess Mode"）。
+
+效果对比
+- ![](https://pic4.zhimg.com/v2-58dfcc4e9d7a97d58df7b2793dc059e5_b.jpg)
+
+
+#### ControlNet 1.1
+
+
+ControlNet 1.1 在 ControlNet 1.0 基础上进行了优化，提高了**鲁棒性**和**控制**效果，同时添加了几个新的ControlNet模型。
+
+从ControlNet 1.1开始，ControlNet模型开始有**标准的命名规则**（SCNNR）来命名所有模型，这样使用时也能更加方便。
+- ![](https://picx.zhimg.com/v2-552904b6593ede0b5e48dff8290b79dd_b.jpg)
+
+ControlNet 1.1 一共发布了14个模型（11个成品模型和3 个实验模型）：
+- control_v11p_sd15_canny
+- control_v11p_sd15_mlsd
+- control_v11f1p_sd15_depth
+- control_v11p_sd15_normalbae
+- control_v11p_sd15_seg
+- control_v11p_sd15_inpaint
+- control_v11p_sd15_lineart
+- control_v11p_sd15s2_lineart_anime
+- control_v11p_sd15_openpose
+- control_v11p_sd15_scribble
+- control_v11p_sd15_softedge
+- control_v11e_sd15_shuffle（实验模型）
+- control_v11e_sd15_ip2p（实验模型）
+- control_v11f1e_sd15_tile（实验模型）
+
 
 #### ControlNet Tile
 
@@ -306,6 +453,29 @@ Steps: 25, Sampler: DPM++ SDE Karras,
 
 CFG scale: 7, Seed: 734068303,Size: 1024x1024
 ```
+
+
+#### IC-Light V2
+
+【2024-10-28】[ControlNet 作者重磅发布IC-Light V2，基于Flux，细节保存能力大大提升！](https://mp.weixin.qq.com/s/gCGxn03DQiJUPvONTvRPUg)
+
+ControlNet 作者重磅发布 IC-Light V2，一系列基于 Flux 的 IC-Light 模型，具有 16ch VAE 和原生高分辨率。
+
+IC-Light V2将包括以下几个版本：
+- 前景条件模型，强调**保留输入图像细节**（此模型）。
+- 前景条件模型，强调进行**大修改**的能力，例如处理低光图像和更改硬阴影（尚未发布）。
+- 前景和背景条件模型（尚未发布）。
+- 与环境 HDRI 集成（尚未发布）。
+
+得益于16ch VAE、原生高分辨率和更好的训练方法，细节保存能力远高于SD1.5
+
+目前发布的是**前景条件模型**
+- [huggingface](https://huggingface.co/spaces/lllyasviel/iclight-v2)上体验
+- 案例讨论详情见 [discussions](https://github.com/lllyasviel/IC-Light/discussions/98)
+
+与 SD1.5 的另一个重要区别: 处理**风格化**图像的能力。
+- SD15 IC-Light 有时对图像风格进行的修改过大
+
 
 
 ### 应用：装修
