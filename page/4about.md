@@ -36,7 +36,7 @@ type: page
 
 ### 兴趣爱好
 
-- 些许爱好，爱思考，偶尔发发呆，公众号（[鹤啸九天](http://mp.weixin.qq.com/mp/homepage?__biz=MjM5ODY2OTQyNg==&hid=1&sn=259f54743846ee6be7585e06be6e267e&scene=18%23wechat_redirect)）和这个技术博客
+- 些许爱好，爱思考，偶尔发发呆，公众号（右下角二维码）和这个技术博客
 - 动静结合
   - 动：长跑、游泳、爬山
   - 静：诗词书画，一颗伪文艺的心
@@ -68,6 +68,9 @@ type: page
 
 * GitHub：[wqw](https://github.com/wqw547243068)
 * Email：wqw547243068@{163,gmail}.com
+* 公众号：`鹤啸九天`
+  * [大模型导航](https://mp.weixin.qq.com/mp/homepage?__biz=MjM5ODY2OTQyNg==&hid=2&sn=21acb3a6dcff109dfd2144f5946125cf&scene=1&devicetype=android-31&version=28003537&lang=zh_CN&nettype=WIFI&ascene=7&session_us=gh_9fe59e6fae87)
+  * [人文社科](http://mp.weixin.qq.com/mp/homepage?__biz=MjM5ODY2OTQyNg==&hid=1&sn=259f54743846ee6be7585e06be6e267e&scene=18%23wechat_redirect)
 * [知乎](https://www.zhihu.com/people/wangqiwen/activities)
 * [CSDN](http://blog.csdn.net/wqw547243068)
 
