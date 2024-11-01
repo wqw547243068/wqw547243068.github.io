@@ -15,6 +15,11 @@ permalink: /hallucination
 
 # 幻觉 Hallucination
 
+![](https://pica.zhimg.com/v2-ba731f552d48c33403c31251c443efc2_b.jpg)
+
+专题发布
+- 知乎：[大模型胡说八道，怎么办？（幻觉, Hallucination ）](https://zhuanlan.zhihu.com/p/4377391000)
+
 
 ## 资料
 
@@ -38,16 +43,19 @@ ChatGPT生成的内容中，高达19.5%的回复无法验证是否幻觉，涉�
 ### 生物幻觉
 
 
+#### 幻觉定义
+
 【2024-6-24】[What Is a Hallucination?](https://www.verywellhealth.com/hallucination-5101682)
 
 幻觉是感知到环境中不存在的、由大脑创造的事物。“幻觉”这个词在拉丁语中的意思是“精神上徘徊”，幻觉可以看到、听到、感觉到、闻到和尝到的非常生动的体验。
 
 有的幻觉让人愉悦，但有的幻觉让人可怕、震惊，具有破坏性。
+- ![](https://pic2.zhimg.com/v2-f22b891def54f5b964dc629ce09b76df_b.jpg)
 
 幻觉发生在具有精神疾病的人身上，也可能是某些药物、癫痫的副作用
 - ![](https://www.verywellhealth.com/thmb/uq3OFuo4nLVcZZgYMA-rFCmWXIE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-1154176947-351df4104aad4d139cd3d74268738d93.jpg)
 
-幻觉种类
+#### 幻觉种类
 
 幻觉可以出现在五中感官中，最常见的是听觉
 - 幻听(Auditory hallucinations): 听到没有物理源头的声音，消极、积极或中立，从脚步声、敲击声到音乐
@@ -63,10 +71,15 @@ ChatGPT生成的内容中，高达19.5%的回复无法验证是否幻觉，涉�
 - Medical Causes : 高烧、偏头疼、癫痫、视觉听觉损失、耳鸣、脑肿瘤、肾功能衰竭、睡眠障碍等
 - Substance Use-Related Causes 物质因素: 酒精、药物作用下发生幻觉，尤其是可卡因、LSD、PSP等物质，治疗身心状况的药物也会引起幻觉，如 治疗帕金森病、抑郁症、精神病和癫痫的药物。
 
+#### 幻觉检测
+
 Diagnosis  诊断 
 - Blood tests 血液测试
 - Electroencephalogram (EEG) 脑电图（EEG）检查癫痫发作或异常脑活动
 - Magnetic resonance imaging (MRI) 磁共振成像 （MRI） 寻找脑部结构问题的证据，例如肿瘤或中风
+
+
+#### 幻觉治疗
 
 Treatment  治疗
 
@@ -87,6 +100,9 @@ Treatment  治疗
 注：
 - `Faithfulness`(诚实): 是否**遵循输入**内容。
 - `Factualness`(事实): 是否符合**世界知识**。
+
+
+![](https://pic1.zhimg.com/v2-373ce3b45a43142644c59265561abfae_b.jpg)
 
 幻觉分为两类：`内在幻觉` 和 `外在幻觉`
 - `内在幻觉`: 是否遵循输入内容, 生成的输出与源内容**相矛盾**。
@@ -124,15 +140,20 @@ Treatment  治疗
 【2023-9-24】腾讯、浙大，大模型幻觉分类，幻觉这个词在NLP领域，其实在大模型之前就存在，指生成无意义或不忠于所提供的内容的内容
 - 论文 [Siren's Song in the AI Ocean: A Survey on Hallucination in Large Language Models](https://arxiv.org/abs/2309.01219)
 
+
+2023年4月，OpenAI联合创始人兼研究科学家`John Schulman`在UC伯克利的演讲中，详细阐述了大模型难以攻克的难题。
+- LLM黑盒内部隐藏着一个「**知识图谱**」。如果这个架构中没有的知识，仅通过SFT教大模型（即行为克隆）知识，实则在教它输出幻觉。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/1c3fae47b1dc4696b52021b37264cf4e~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image)
+- 参考: [baichuan如何解决幻觉问题](https://www.toutiao.com/article/7283012199466140223)
+
+
+### 事实型+忠实度
+
 LLM幻觉分为两种：
 - **事实型**幻觉: 事实不一致、事实捏造；
   - 可细分为 输入幻觉、上下文幻觉
 - **忠实度**幻觉: 指令-答案 不一致、文本不一致，以及逻辑不一致。
 
-LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲突幻觉。
-- **输入**冲突幻觉：生成内容与用户输入不符；
-- **上下文**冲突幻觉：生成内容较长或多轮会话时，与之前生成信息相矛盾；
-- **事实**冲突幻觉：是指生成的内容与已知的**世界知识**不符。
 
 ![](https://pic1.zhimg.com/80/v2-e6f4cc8dbea2d54a6e43211b1cb0a6e9_1440w.webp?source=2c26e567)
 
@@ -146,6 +167,8 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
   - b. 上下文不一致：是指大模型的输出与用户提供的上下文信息不相符的情况。
   - c. 逻辑不一致：是指大模型输出表现出内部逻辑矛盾，通常在推理任务中可以看到。
 
+
+### 内在幻觉+外在幻觉
 
 `内在型幻觉`（Intrinsic Hallucinations）与`外在型幻觉`（Extrinsic Hallucinations）
 
@@ -178,12 +201,28 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
   - 例子：错误操作、误导步骤
   - 描述：模型错误地描述了某个功能或过程。
 
+### 常见类型
+
+LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲突幻觉。
+- **输入**冲突幻觉：生成内容与用户输入不符；
+- **上下文**冲突幻觉：生成内容较长或多轮会话时，与之前生成信息相矛盾；
+- **事实**冲突幻觉：是指生成的内容与已知的**世界知识**不符。
+
+![](https://pic1.zhimg.com/v2-b79f4afac05891ffe4e8584ffe178e22_b.jpg)
 
 
-2023年4月，OpenAI联合创始人兼研究科学家`John Schulman`在UC伯克利的演讲中，详细阐述了大模型难以攻克的难题。
-- LLM黑盒内部隐藏着一个「**知识图谱**」。如果这个架构中没有的知识，仅通过SFT教大模型（即行为克隆）知识，实则在教它输出幻觉。
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/1c3fae47b1dc4696b52021b37264cf4e~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image)
-- 参考: [baichuan如何解决幻觉问题](https://www.toutiao.com/article/7283012199466140223)
+### 多模态幻觉
+
+
+注意
+- 幻觉不止出现于文本，还会再多模态场景中出现
+- 如：图文理解、图像生成
+
+|案例|方法|问题|图例|
+|---|---|---|---|
+|图文理解||图片里并没有人|![](https://pica.zhimg.com/v2-9b7cf5b932d33e05df13dcebf357d84e_b.jpg)|
+|图像生成|扩散模型（Stable Diffusion）典型案例：<br>正向提示词 Prompt：a super beautiful chinese girl showing two hands,Open palms in a welcome sign,smiling,wearing pink dress,standing in the street,front view,upper body|挺漂亮的小姐姐，可惜人有6个手指、局部残缺扭曲|![](https://pic2.zhimg.com/v2-d89795ece97cf64bdac0d38d7ddcfd4b_b.jpg)|
+|||||
 
 
 ## 幻觉原因
@@ -294,6 +333,25 @@ LLM产生幻觉的根本原因分为三个关键方面：数据、训练和推�
 
 ## 幻觉检测
 
+
+### 评估指标
+
+两种评估幻觉的指标：**幻觉命名实体**（NE）错误率、**蕴含比率**（Entailment ratios）。
+
+较高的 NE错误率 和 较低的蕴含比率表明事实性较高，研究发现这两个指标都与人类注释相关，较大模型在此基准上表现更佳。
+
+幻觉评估
+- 现有的传统幻觉评估指标和人类结果的相关性较低，同时大都是task-specific的。
+- 2021, [Understanding factuality in abstractive summarization with FRANK: A benchmark for factuality metrics](https://arxiv.org/abs/2104.13346)
+
+幻觉评估：
+- Chatgpt倾向于在回复中生成**无法被验证**的内容（幻觉），占比 **约11.4%**
+- 当前强大的LLM，如Chatgpt，都很难精准检测出文本中出现的幻觉问题
+- 通过提供外部知识和增加推理步数，能够提升LLM检测幻觉的能力
+
+
+### 检测方法
+
 【2024-7-14】 [OpenAI Lilian Weng万字长文解读LLM幻觉：从理解到克服](https://zhuanlan.zhihu.com/p/708743656?utm_psn=1795846986416652288)，OpenAI 翁丽莲
 
 幻觉检测
@@ -311,17 +369,25 @@ LLM产生幻觉的根本原因分为三个关键方面：数据、训练和推�
 - 间接查询
   - Agrawal et al.(2023) 在论文《Do Language Models Know When They're Hallucinating References?》中研究了 LLM 生成结果中出现幻觉参考文献的问题，比如编造出不存在的书籍、文章和论文标题。
 
+【2024-1-15】[一份全面的「大模型幻觉」综述](https://www.toutiao.com/article/7321227259992605194)
 
-幻觉评估
-- 现有的传统幻觉评估指标和人类结果的相关性较低，同时大都是task-specific的。
-- 2021, [Understanding factuality in abstractive summarization with FRANK: A benchmark for factuality metrics](https://arxiv.org/abs/2104.13346)
+事实性幻觉的检测方法通常分为 "检索**外部事实**"（Retrieve External Facts）和 "**不确定性估计**"（Uncertainty Estimation）。
+- **检索外部事实**：为了有效地指出 LLM 输出中的事实不准确之处，一种直观的策略是将模型生成的内容与可靠的知识来源进行比较，如下图 3 所示。
+- **不确定性估计**大致可分为两种：基于**内部状态**和 **LLM 行为**。前者的前提是可以访问模型的内部状态，而后者则适用于更受限制的环境，仅利用模型的可观测行为来推断其潜在的不确定性。
 
-幻觉评估：
-- Chatgpt倾向于在回复中生成**无法被验证**的内容（幻觉），占比 **约11.4%**
-- 当前强大的LLM，如Chatgpt，都很难精准检测出文本中出现的幻觉问题
-- 通过提供外部知识和增加推理步数，能够提升LLM检测幻觉的能力
+忠实性幻觉的检测方法：
+- 主要侧重于确保生成的内容与给定上下文保持一致，从而避免无关或矛盾输出的潜在隐患。
 
-（1）Reference-based
+LLM 生成中检测不忠实的方法。
+- 基于事实度量：通过检测生成内容与源内容之间的事实重叠度来评估忠实度。
+- 基于分类器的度量：利用经过训练的分类器来区分生成内容与源内容之间的关联程度。
+- 基于QA的度量方法：利用问题解答系统来验证源内容与生成内容之间的信息一致性。
+- 不确定性估计：通过测量模型对其生成输出的置信度来评估忠实度。
+- 基于prompt的度量方法：让LLM充当评估者，通过特定的prompt策略来评估生成内容的忠实度。
+
+
+
+#### （1）Reference-based
 
 Reference-based的指标有两类：
 - 基于 Source Information 和 Target Reference：利用一些**统计学指标**，比如ROUGE、BLEU来评估输出结果和Source/Target信息的重叠度。
@@ -330,7 +396,7 @@ Reference-based的指标有两类：
 注：
 > 基于Reference的评价指标只能评价`Faithfulness`，而无法评价`Factualness`，因此不适用于LLMs。
 
-（2）Reference-Free
+#### （2）Reference-Free
 
 方法
 - (1) 基于`IE`：将知识限定于可以用三元组形式表示的关系和事件，基于额外的IE模型进行抽取，接着使用额外模型进行验证。缺点：
@@ -367,21 +433,6 @@ Reference-based的指标有两类：
 提到：LLMs并不能判断自己的推理结果是否正确，如果强行让其纠错，反而会引导模型选择其他选项，降低准确率。
 
 
-【2024-1-15】[一份全面的「大模型幻觉」综述](https://www.toutiao.com/article/7321227259992605194)
-
-事实性幻觉的检测方法通常分为 "检索**外部事实**"（Retrieve External Facts）和 "**不确定性估计**"（Uncertainty Estimation）。
-- **检索外部事实**：为了有效地指出 LLM 输出中的事实不准确之处，一种直观的策略是将模型生成的内容与可靠的知识来源进行比较，如下图 3 所示。
-- **不确定性估计**大致可分为两种：基于**内部状态**和 **LLM 行为**。前者的前提是可以访问模型的内部状态，而后者则适用于更受限制的环境，仅利用模型的可观测行为来推断其潜在的不确定性。
-
-忠实性幻觉的检测方法：
-- 主要侧重于确保生成的内容与给定上下文保持一致，从而避免无关或矛盾输出的潜在隐患。
-
-LLM 生成中检测不忠实的方法。
-- 基于事实度量：通过检测生成内容与源内容之间的事实重叠度来评估忠实度。
-- 基于分类器的度量：利用经过训练的分类器来区分生成内容与源内容之间的关联程度。
-- 基于QA的度量方法：利用问题解答系统来验证源内容与生成内容之间的信息一致性。
-- 不确定性估计：通过测量模型对其生成输出的置信度来评估忠实度。
-- 基于prompt的度量方法：让LLM充当评估者，通过特定的prompt策略来评估生成内容的忠实度。
 
 
 ###  亚马逊 RefChecker
@@ -615,6 +666,36 @@ OpenAI 安全系统团队负责人 Lilian Weng 介绍了近年来在理解、检
   - 为搜索结果生成条件时为模型输出分配归因。训练 LLM 更好地理解检索到的内容和分配高质量归因是一个比较热门的研究分支。
   - Nakano, et al. (2022) 在论文《WebGPT: Browser-assisted question-answering with human feedback》中提出的 WebGPT 将用于检索文档的网络搜索与微调 GPT 模型组合到了一起，目的是解答长篇问题以降低幻觉，实现更好的事实准确度。
   - Menick et al. (2022) 在论文《Teaching language models to support answers with verified quotes》中提出的 GopherCite 与 WebGPT 非常类似，都使用了搜索引擎来创建支持材料以及教模型提供参考。
+
+
+### 多模态幻觉修复
+
+
+对于文生图里的问题样例，解决方法：
+- 收集bad case，返回给基座模型训练——周期长，代价大
+- 对于少量案例，后处理，即时修复——周期端，见效快
+
+修复方法
+- ① 图生图局部重绘：针对两只手，分别人工框选问题区域，二次绘制，输入图片及提示词：和生成图片的正向提示词保存一致。
+- ② 条件生成：借助ControlNet，人工一次性标记两个问题区域，指定特定条件进行修复。如：
+  - 姿态修复（openpose），识别人体姿态，修复局部信息，手部操作容易，可控性很强，细节瑕疵（长度和接头处）
+  - 深度修复（HandRefiner），识别深度信息，手部突出，然后一次性修复。
+
+直接贴上几种方案对比图：
+- ![](https://picx.zhimg.com/v2-a5f72d7c9482e1f82292d585d9351edb_b.jpg)
+
+
+### 幻觉根治
+
+真的无法根治吗？
+
+【2024-5-6】原文Exclusive: Alembic debuts hallucination-free AI for enterprise data analysis and decision support
+
+AI初创公司Alembic首次宣布，一种全新AI系统，用于企业数据分析和决策支持，完全解决了LLM虚假信息生成问题, 饱受诟病的LLM幻觉，被彻底攻破
+
+新型图神经网络充当因果推理引擎获取数据，组织成一个复杂节点和连接网络，捕捉事件和数据点随着时间推移形成的关联。
+
+听起来挺有道理，但是方法未开源，无从验证该方法有效性。
 
 ## 幻觉评估数据集
 
