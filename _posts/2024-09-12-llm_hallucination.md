@@ -699,6 +699,28 @@ AI初创公司Alembic首次宣布，一种全新AI系统，用于企业数据分
 
 ## 幻觉评估数据集
 
+### SimpleQA
+
+OpenAI 新武器—— SimpleQA，开源，全新的**事实性基准测试**，专门用来检测大模型回答事实性问题的准确性
+- 【2024-10-31】[OpenAI推出SimpleQA：专治大模型“胡说八道”,实测o1和Claude3.5都不及格](https://mp.weixin.qq.com/s/Z9gbJrZ6ZxL6kfb1UozTOA)
+- 开源地址：[SimpleQA](https://github.com/openai/simple-evals/)
+- [官方介绍](https://openai.com/index/introducing-simpleqa)
+- SimpleQA Paper: [论文](https://cdn.openai.com/papers/simpleqa.pdf)
+
+OpenAI雇佣了AI训练师从网上收集问题和答案，并制定了严格的标准：答案必须唯一、准确、不会随时间变化，而且大多数问题必须能诱导GPT-4o或GPT-3.5产生“幻觉”。为了保证质量，还有第二位AI训练师独立回答每个问题，只有两位训练师答案一致的问题才会被收录。最后，还有第三位训练师对1000个随机问题进行验证，最终估算出数据集的固有错误率约为3%
+
+SimpleQA 三大特点：
+- **设置简单**到爆： 包含 4000 道由人类编写、清晰无歧义的**事实性**问题，每个问题都只有一个无可争议的正确答案。模型回答会被自动评分器评为“正确”、“错误”或“未尝试”
+- **挑战性大**，前沿模型也跪了： 
+  - SimpleQA 对目前最先进的大模型也构成了巨大挑战！连 o1-preview 和 Claude Sonnet 3.5 的准确率都不到 50%！
+- **参考答案准确度高**，经得起时间考验： 
+  - 所有问题都经过精心设计，参考答案经过两位独立标注员的验证，确保准确可靠。而且，这些问题的设计也考虑到了时效性，即使 5 年或 10 年后，SimpleQA 仍然是一个有用的基准测试，相当耐用！
+
+
+除了评估事实性，SimpleQA还可以用**来测量大模型的“校准”程度**，也就是模型“知之为知之，不知为不知”的能力。
+- 置信度与准确率: 通过让模型给出答案的同时给出置信度，然后比较置信度和实际准确率之间的关系，就能看出模型的校准程度。结果表明，模型普遍高估了自己的置信度，还有很大的改进空间。o1-preview比o1-mini校准程度更好，GPT-4比GPT-4-mini校准程度更好，这与之前的研究结果一致，即更大的模型校准程度更好
+- 答案频率与准确率: 另一种测量校准的方法是将同一个问题问模型100次。由于语言模型在重复尝试时可能会产生不同的答案，因此可以评估特定答案的出现频率与其正确性是否相符。更高的频率通常表明模型对答案更有信心。o1-preview 在这方面表现最好，其答案的频率与准确率基本一致。与通过置信度判断的校准结果类似，o1-preview 比 o1-mini 的校准程度更好，GPT-4 比 GPT-4-mini 的校准程度更好
+
 ### (1) TruthfulQA
 
 TruthfulQA (Lin et al. 2021) 可以度量 LLM 生成诚实响应的优劣程度。该基准包含 817 个问题，涵盖医疗、法律、金融和政治等 38 个主题
@@ -712,7 +734,7 @@ TruthfulQA (Lin et al. 2021) 可以度量 LLM 生成诚实响应的优劣程度�
 - 更大的模型更容易编造回答。
 - 微调后的GPT3可以有效分辨是否回答是truthful的。
 
-#### (2) HaluEval benchmark
+### (2) HaluEval benchmark
 
 - [HaluEval: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models](arxiv.org/abs/2305.11747)
 
