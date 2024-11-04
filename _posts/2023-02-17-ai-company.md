@@ -3,7 +3,7 @@ layout: post
 title:   AIGC 顶级机构、公司
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司
+tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔
 excerpt: 世界顶级AI机构/公司（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -1075,7 +1075,25 @@ Mira 的背景十分有趣，在加入 OpenAI 之前，Mira 在 Leap Motion 负�
 
 • Lilian Weng：前沿技术和应用研究的桥梁，也是 OpenAI 高管团队中唯一的中国人。
 
+OpenAI研究副总裁（安全）`翁荔`
+
 Lilian 是前沿技术和应用研究的桥梁，通过设计 API 拓宽了 GPT 的应用领域。在 GPT-4 项目中，她主导了应用领域的研究。在她的 Lil Log 中有很多研究的分享，是在 AI 从业者中很有影响力的博客。
+
+北大毕业后，翁荔在2018年加入OpenAI，后来在GPT-4项目中主要参与预训练、强化学习&对齐、模型安全等方面的工作。
+
+最著名的Agent公式也由她提出，即：Agent=大模型+记忆+主动规划+工具使用。
+
+在今晚的2024Bilibili超级科学晚活动上，翁荔站在舞台上，以《AI安全与“培养”之道》为主题进行了演讲分享。
+
+【2024-11-1】[2024 bilibili超级科学晚全程回顾](https://www.bilibili.com/video/BV1U71LY1EWc/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+- 《AI安全与“培养”之道》
+- [翁荔演讲全文](https://news.qq.com/rain/a/20241101A0A0AB00)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113384771029496&bvid=BV1U71LY1EWc&cid=26577274538&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+![](https://inews.gtimg.com/news_bt/OJeGHsgPeuDkQnhLoi2NqLbzXywLk2axMt_cLEsGaejxwAA/641)
+
 
 #### Jakub Pachocki -- 预训练专家
 
