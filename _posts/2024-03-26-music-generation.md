@@ -287,6 +287,15 @@ v3
 提示词：
 - light（轻快）、happy（愉悦）、whistle（口哨）、bongos（手鼓）
 
+#### 尚雯婕
+
+尚雯婕演示用ai创作音乐
+
+【2024-11-1】[2024 bilibili超级科学晚全程回顾](https://www.bilibili.com/video/BV1U71LY1EWc/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113384771029496&bvid=BV1U71LY1EWc&cid=26577274538&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
 
 
 ## Udio
