@@ -3,7 +3,7 @@ layout: post
 title:  "目标检测及跟踪--Obeject Detection&Tracing"
 date:   2020-03-08 18:30:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 大模型 sam
+tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 大模型 sam 无人机
 excerpt: 计算机视觉之目标检测知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -913,6 +913,38 @@ YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术�
 
 ![](https://p6-tt.byteimg.com/origin/pgc-image/3ae75db8898d47eaac8b9649a0ff5a97?from=pc)
 
+
+## 应用案例
+
+
+### 无人机
+
+
+#### 大疆航拍巡查
+
+[无人机航空航拍技术应用](https://www.bilibili.com/video/BV1o7411u7WN)，环境监测、水利巡检、交通巡查、线路巡检
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=88897204&bvid=BV1o7411u7WN&cid=151851876&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+#### 河道巡查
+
+
+全球领先的低空无人机遥感网运营商: 广州[中科云图](https://www.geoai.com/)
+- 公众号: [GEOAI中科云图]()
+
+无人机高效巡检河道违法捕捞和周围篷房违建
+- AI 识别船只、漂浮物和垃圾堆放
+
+- 一巢三机
+  - 首创“一巢三机”智能化无人机飞行控制平台，机动性更强，作业能力覆盖更广。
+- 5G+微波
+  - 超低延时图传，多重控制保障，飞行全程可控。
+- 全局掌控
+  - 丰富感知负载，多源信息采集；低空飞行，提供720°全局视野。
+- 机载AI
+  - 首创“无人机”智能负载，集成21T超强算力AI芯片，实现物体识别与目标跟踪。
+
 ## 实时检测
 
 - [实时隐身不留痕项目作者：Jason Mayes](https://mp.weixin.qq.com/s?__biz=MzU1NTUxNTM0Mg==&mid=2247493105&idx=1&sn=7726468d8faaf777284f32997ee33750&chksm=fbd18950cca60046ac133d3fde0857ecfeb7a93769dd135f4a915b923f1da386eeb5264e912a&scene=126&sessionid=1583675043&key=6dc1e3ec383dbb13146e922235a89f44535156bfd8c1191ba4da2e1c3d0365f4f30f345dd86d90910b1a201f10123e81b09a81195d6b3ab30bb32c563907f5525316a57147dc102623de78139e3578d1&ascene=1&uin=OTY1NzE1MTYw&devicetype=Windows+10&version=62080079&lang=zh_CN&exportkey=AX872ydDK0J27zzwMHx%2Fm7c%3D&pass_ticket=5I0Z9AD6y0vIicNPU2j%2BnyzrIe8dG1OkhbEAOwj1UMnKZY%2F9N8SIhRHlOQiY2k%2Bd)
@@ -1229,6 +1261,10 @@ ReactDOM.render(React.createElement(App), domContainer);
 总之，SAM（Segment Anything Model）和 YOLO（You Only Look Once）的融合代表了图像分析领域的重大进步，在各个领域具有深远的影响。这一整合结合了 YOLO 在目标检测方面的敏锐性和 SAM 在分割方面的精确性，使我们能够从视觉数据中获得更深入的见解。从优化自动驾驶车辆的感知系统到帮助医学专家诊断疾病，SAM+YOLO 的协同潜力远远超越了传统边界。
 
 代码实践见[原文](https://mp.weixin.qq.com/s/iqT7sks2tl0RzWJAto2qTg)
+
+
+
+
 
 # 姿态识别
 
