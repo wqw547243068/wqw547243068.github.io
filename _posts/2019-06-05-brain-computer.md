@@ -130,6 +130,18 @@ NOIR 关键技术贡献包括一个模块化解码神经信号, 以获知人类�
 
 通过以人类为师进行少样本机器人学习，可以显著提升 NOIR 系统的效率。这种使用人脑信号协作来构建智能机器人系统的方法潜力巨大，可用于为人们（尤其是残障人士）开发至关重要的辅助技术，提升他们的生活品质。
 
+### 【2024-11-1】脑机接口操控无人机/机械臂
+
+【2024-11-1】[2024 bilibili超级科学晚全程回顾](https://www.bilibili.com/video/BV1U71LY1EWc/?vd_source=ec1c777505e146eb20d947449d6bba6e) 西工大 谢松云教授
+- 45min处, 带`脑电帽`操控3台无人机表演，9个指令之一
+- 脑电波操控机械臂，抓豆角
+- `脑电帽`提取脑电波特征，翻译成行为指令
+  - 不用剃头发, 接触头皮即可
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113384771029496&bvid=BV1U71LY1EWc&cid=26577274538&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+
 # 清华“天机”
 
 【2019-08-01】[清华“天机”芯片登上Nature封面：全球首款异构融合类脑芯片](https://www.tmtpost.com/4099136.html)
