@@ -2401,6 +2401,17 @@ Qwen模型利用了简单地非训练计算，在推理过程中扩展**上下�
 ### 训练
 
 
+qwen系列大模型本地部署，法律大模型训练，
+- 只需5G内存**部署**本地大模型，
+- 只需6G显存训练自己的法律大模型。
+- lora模型训练完成后，会合并到主模型，生成自己专属的大模型。
+
+
+视频演示
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113349991862098&bvid=BV1zFypY7E6X&cid=26409109960&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%" ></iframe>
+
+
 #### 预训练
 
 遵循**自回归**语言建模的标准方法，通过前面Token的内容预测下一个Token；
@@ -2410,7 +2421,7 @@ Qwen模型利用了简单地非训练计算，在推理过程中扩展**上下�
 - 采用`余弦学习率`计划，学习率会衰减到峰值的10%；
 - 采用`BFloat16`进行混合精度训练。
 
-QWEN模型再同等级参数下表现优异，即使是更大的型号如LLaMA2-70B，在3个任务中也被QWEN-14B超越。
+QWEN 模型再同等级参数下表现优异，即使是更大的型号如LLaMA2-70B，在3个任务中也被QWEN-14B超越。
 
 #### 有监督微调SFT
 
