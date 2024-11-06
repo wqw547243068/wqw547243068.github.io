@@ -1682,6 +1682,11 @@ Apple Intelligence 令人失望的地方：
 - Apple Intelligence 可以总结用户选定的所有通知，但就目前体验来看，这项功能没什么大用。更确切地讲，跟“智能”关系不大。
 
 
+##### Turbo
+
+【2024-10-30】思必驰AI办公本Turbo，革命性替代纸质笔记本的新一代智能办公本
+- AI笔记，思维导图，手写笔美化
+
 #### Friend
 
 【2024-6-29】[Friend：又看到一个很有用但可能争议巨大额AI硬件](https://mp.weixin.qq.com/s/j7lvaG0p9bhDvtuTFu9l4g)
