@@ -888,6 +888,28 @@ chffr：app记录路况，摄像头
 # 应用
 
 
+## 实践
+
+
+### 无人遥控车
+
+【2024-10-25】自制远程遥控车，低成本，带摄像头
+
+教程：老肖带你做车
+- [地址](https://flowus.cn/share/b0598e07-d829-42d6-8036-8681fc5cc36c?code=QEQ7RX)，[资料下载地址](https://flowus.cn/share/5d05507c-61bd-48c8-ade2-e84cf1810df7?code=QEQ7RX)
+
+- 车型一：前后采用**双直流有刷电机(四驱)+2线直流有刷电机转向**，对标市面上200元左右至以下的RC遥控车
+  - 固件下载：[链接](https://a0g763fyqsf.feishu.cn/file/Of3WbIw3HotV6GxmUqzcdAbrnQg?from=from_copylink)（最后更新：20241026）
+- 车型二：前后采用**单直流有刷电机+3线舵机转向**，对标市面上300-500元的RC遥控车
+  - 固件下载：[链接](https://a0g763fyqsf.feishu.cn/file/I4n8bAYlaoLkyExDUxKc2M1pnSg?from=from_copylink)，（最后更新：20241106）
+- 车型三：前后采用**单直流有刷电机+5线舵机转向**，对标市面上300-500元的RC遥控车
+  - 固件下载：链接(待更新)
+- 车型四：**双电机**，L298驱动版
+  - 固件下载：[链接](https://a0g763fyqsf.feishu.cn/file/PIq6bLGn2o7WkXxOXZAc7QUunte?from=from_copylink)（最后更新：20241026）
+
+
+
+
 ## 海外
 
 美国自动驾驶：Waymo、特斯拉
