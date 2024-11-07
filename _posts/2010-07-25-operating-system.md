@@ -105,6 +105,16 @@ permalink: /os
 - System Preferences ->Security & Privacy -> General 中 点击**允许第三方软件运行**
 
 
+### 终端 Terminal
+
+mac terminal如何更改默认主题？
+
+设置背景主体
+- 打开Terminal终端，右击鼠标，选择“显示检查器”。
+- 选择主题（如homebrew），在颜色与效果处，把透明度调到最大，背景就全黑了。
+- 点击“默认”，即完成设置
+
+
 ### 字体
 
 【2024-8-24】 Mac 系统字体路径
