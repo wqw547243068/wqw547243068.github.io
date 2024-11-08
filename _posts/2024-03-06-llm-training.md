@@ -3,7 +3,7 @@ layout: post
 title:  LLM 大模型训练之路
 date:   2024-03-06 12:00:00
 categories: 大模型
-tags: ChatGPT 训练
+tags: ChatGPT 训练 罗福莉
 excerpt: 大模型训练原理，如何训练，有什么经验？
 mathjax: true
 permalink: /llm_train
@@ -2563,21 +2563,22 @@ Yi模型在预训练阶段的数据处理流程，主要是对爬取的网络文
   - （3）根据**重复**词语、N-Gram片段、段落的占比；
   - （4）识别和匿名话个人可识别信息，例如：邮箱、电话等。
 - **学习式**过滤：Learned Filters, 规则不好处理的，训练模型来清洗
-  - 通过困惑度、 质量、 安全和文档连贯性4种评分器来对文本进行过滤，共有4个scorer：
-    - `Perplexity Scorer`：参照《CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data》，用kenlm库，把高于平均perplexity的内容丢弃；
-    - `Quality Scorer`：识别如维基百科这样的高质量内容，丢弃低质量内容；
-    - `Document Coherence Scorer`：用于发现句子、段落零散不连贯的文本，要么分割，要么直接丢弃；
+  - 通过**困惑度**、 **质量**、 **安全**和文档**连贯性**4种评分器来对文本进行过滤，共有4个scorer：
+    - `Perplexity Scorer`：参照《CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data》，用kenlm库，把高于平均 perplexity 内容丢弃；
+    - `Quality Scorer`：识别如维基百科高质量内容，丢弃低质量内容；
+    - `Document Coherence Scorer`：发现句子、段落零散不连贯的文本，要么分割，要么直接丢弃；
     - `Safety Scorer`：识别并删除暴力、色情、涉政内容
-  - 困惑度评分器利用KenLM库，按照CCNet的方法评估大量网络文本，丢弃困惑度分数明显高于平均水平的文本；
+  - 困惑度评分器利用KenLM库，按照CCNet方法评估大量网络文本，丢弃困惑度分数明显高于平均水平的文本；
   - 质量评分器经过维基百科数据训练的**分类**模型，当文本内容更偏向于维基这样高质量页面时，认为文本质量较高；
   - 安全评分器是识别并删除包含有毒内容的网络文档，如暴力、色情等；
   - 文档连贯性评分器识别文本的整体连贯性，删除句子或段落不连贯的文本。
 - **聚类**过滤：Cluster-based Filters
   - 采用无监督语义聚类对文本进行分组，然后对聚类数据标注质量标签, 丢弃质量差的类别，为后续数据混合策略提供参考。
 - 去重方法：
-  - 文本过滤之后进行**去重**流程，涉及基于文档级别的`MinHash`去重和**子文档精确匹配**去重，有效识别和消除文档内部和跨文档中的重复内容。同时利用**主题模型**对数据赋予特定的主题，在最后数据采样过程种对信息密度较低的主题内容进行**下采样**（主要是广告文本）
+  - 文本过滤之后进行**去重**流程，涉及基于文档级别的`MinHash`去重和**子文档精确匹配**去重，有效识别和消除文档内部和跨文档中的重复内容。
+  - 同时利用**主题模型**对数据赋予特定主题，在最后数据采样过程种对信息密度较低的主题内容进行**下采样**（主要是广告文本）
 
-最终预训练数据组成如下图所示，总计3.1T Token。
+最终预训练数据组成如下图所示，总计 3.1T Token。
 - 语种构成: 英语(60%) ＞ 中文(20%) ＞ 代码(10%)
 - 语料类型: 网页内容(80%) ＞ 代码(8%) ＞ 论文(5%) ＞ 书籍(3%)
 
@@ -2592,9 +2593,9 @@ SFT数据质量能**极大**影响模型效果，随着数据量的增加，高�
 微调阶段数据构造
 - 微调阶段采用 不到10k的 SFT数据
 
-一共只有**<10k条**SFT数据，每条数据都通过**人工多次打磨**，这比大数量但质量一般的数据的效果好。
-这思路和别人一致
-  - 《Gemini: A family of highly capable multimodal models.》
+一共只有<**10k条**SFT数据，每条数据都通过**人工多次打磨**，这比大数量但质量一般数据的效果好。
+- 这思路和别人一致
+  - 《Gemini: A family of highly capable multimodal models》
   - 《Llama 2: Open Foundation and Fine-Tuned Chat Models》
   - 《Lima: Less is more for alignment》
 - 不同
@@ -2604,11 +2605,12 @@ SFT数据质量能**极大**影响模型效果，随着数据量的增加，高�
 具体做法：
 - 对于 **prompt distribution selection**：参考《Wizardlm: Empowering large language models to follow complex instructions》，开发复合指令，并通过指令进化，逐步增加指令的复杂度。这种做法显著减少了SFT数据量。
 - 对于 **CoT data formatting**：参考《Take a step back: Evoking reasoning via abstraction in large language models》，采用了“Step-Back”的模式。即通过抽象化处理，让模型学习在深入探讨原始、具体的问题之前，制定更高层次的解决方案。
-- 对于 **response formatting**：使用从《Lima: Less is more for alignment》扩展的默认样式。总体而言，response的结构为introduction-body-conclusion的格式，“where the body is usually a list of bullet point”。
+- 对于 **response formatting**：使用从《Lima: Less is more for alignment》扩展的默认样式。
+  - response的结构为introduction-body-conclusion的格式，“where the body is usually a list of bullet point”。
 - 在**缓解幻觉**问题上，思路是确保response中的知识不由模型内部产生，对应的做法是把会导致模型进行记忆的response删掉。（但是这个具体标准是什么，有没有了解的朋友说下看法？）
 - 在缓解**生成重复**的问题上，则是直接把response中包含重复的部分都重写了。（核心还是洗数据，一条条打磨）
 - 数据**多样性**很重要，因此参考《#instag: Instruction tagging for analyzing supervised fine-tuning of large language models》建立了一个打标系统，并设计一个注重多样性的采样算法，平衡了各个领域数据的分布。
-- 为了找到**最佳数据配比**，参考《How abilities in large language models are affected by supervised fine-tuning data composition》，使用近似网络搜索（approximate grid search），对每个领域以{1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64}的比例进行实验和人工测评，找到最佳的组合方式。
+- 为了找到**最佳数据配比**，参考《How abilities in large language models are affected by supervised fine-tuning data composition》，使用近似**网络搜索**（approximate grid search），对每个领域以 {1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64} 比例进行实验和人工测评，找到最佳的组合方式。
 - 除了内容，**数据格式**对效果也有很大影响。参OPENAI的[ChatML格式](https://github.com/openai/openai-python/blob/e389823ba013a24b4c32ce38fa0bd87e6bccae94/chatml.md)，这种结构化的格式使模型能够区分各种信息类型，如system prompt、user input和bot response。
 
 数据构造过程中
@@ -2672,9 +2674,9 @@ Yi构建了支持全栈数据处理、预训练、微调和服务的基础设施
 - 任务失败时，会自动跟踪重启。
 - 给算法人员考法UI等。
 
-#### pretrain
+#### 预训练 
 
-预训练
+预训练 pretrain
 - 训了4k基础模型。（暂时没有给出更多细节）
 
 
@@ -2707,15 +2709,19 @@ max step = 300
 - 而和其他开源模型相比，在代码和数学以外的任务，Yi基本上做到了跟大一倍模型的效果相近，甚至更好的水平。
 
 **观察**
-- 模型规模带来的增益：尽管Yi-34B和Yi-6B使用了相同的预训练语料，但Yi-34B的性能相比Yi-6B有了质的提升。更大的模型尺寸在代码和数学基准测试上带来了明显的增益。
+- 模型规模带来的增益：尽管Yi-34B和Yi-6B使用了相同的预训练语料，但Yi-34B的性能相比Yi-6B有了质的提升。
+  - 更大的模型尺寸在代码和数学基准测试上带来了明显的增益。
 - 数据质量：高质量预训练数据的小型模型，如Yi-34B或Qwen-14B，通常表现优于尺寸更大但（可能）数据质量较低的模型，例如Falcon-180B。
-- GPT-4与开源LLM之间的差距：开源LLM在多种基准测试上的性能仍然落后于GPT-4和GPT-3.5。然而，具有代表性的双语LLM，例如Qwen-14B和Yi-34B，可以在包括C-Eval、CMMLU和Gaokao在内的中文知识相关基准测试上匹配甚至超过GPT-4的性能。然而，在BBH、代码（HumanEval）和数学（MATH）等推理相关基准测试上，仍然存在巨大的差距。
+- GPT-4与开源LLM差距：
+  - 开源LLM在多种基准测试上的性能仍然落后于GPT-4和GPT-3.5。
+  - 然而，具有代表性的双语LLM，例如Qwen-14B和Yi-34B，在包括C-Eval、CMMLU和Gaokao在内的中文知识相关基准测试上匹配甚至超过GPT-4的性能。然而，在BBH、代码（HumanEval）和数学（MATH）等推理相关基准测试上，仍然存在巨大差距。
 
 **In-Context Learning 能力**
 
-Yi进一步研究了in-context learning的能力，即根据少数展示的输入-输出示例，推断underlying function的能力。
+Yi进一步研究了in-context learning能力，即根据少数展示的输入-输出示例，推断underlying function的能力。
 
-任务是推断加权和的线性系数。具体来说，定义 y = w1x1 + w2x2 + ... + wnxn。
+任务是**推断加权**和的**线性系数**。
+- 定义 `y = w1x1 + w2x2 + ... + wnxn`。
 
 少量示例展示是 x1, x2, ..., xn, y，要求模型预测给定一组新输入 x 的 y。
 
@@ -2733,9 +2739,11 @@ Yi进一步研究了in-context learning的能力，即根据少数展示的输�
 #### Chat 模型评测
 
 自动评测
-- 评测的任务和base模型相同，分别采用zero-shot和few-shot，效果依然不错
+- 评测任务和base模型相同，分别采用zero-shot和few-shot，效果依然不错
 
-报告强调，如Goodhart’s principle所说，当一个指标变成目标，就不再是一个好指标。因此这里的测试只是为了确认微调没有使得模型的知识能力下降，而不会专门去针对任务做优化。
+报告强调，如Goodhart’s principle所说
+- 当一个指标变成目标，就不再是一个好指标。
+- 因此这里的测试只是为了确认微调没有使得模型的知识能力下降，而不会专门去针对任务做优化。
 
 结果上，Yi-34B-Chat数学能力不错，而Yi-6B-Chat并没有展现出强大的数学能力。推测较小的模型可能需要更多的数据在SFT阶段激活其相应的能力。
 
@@ -2748,10 +2756,10 @@ Yi进一步研究了in-context learning的能力，即根据少数展示的输�
 扩展模型上下文长度
 
 对于长上下文的解决方法：采用**继续预训练**和**微调**两种方法
-- 。基础模型其实本身已经存在利用200K输入上下文中任何位置信息的前来，继续预训练可以“解锁”这种能力，通过微调可以进一步调整生成内容的风格以更好地遵循人类指令和偏好。
+- 基础模型其实本身已经存在利用200K输入上下文中任何位置信息的前来，继续预训练可以“解锁”这种能力，通过微调可以进一步调整生成内容的风格以更好地遵循人类指令和偏好。
 
 预训练阶段：
-- 采用**序列并行**和**分布式注意力**的方式蛮力对模型全部注意力进行训练。
+- 采用**序列并行**和**分布式注意力**方式蛮力对模型全部注意力进行训练。
 
 数据来源：
 - （1）原始预训练数据；
@@ -2760,7 +2768,8 @@ Yi进一步研究了in-context learning的能力，即根据少数展示的输�
 
 
 微调阶段：
-- 将短SFT数据与长上下文问答问答数据混合使用。文档问答数据由模型辅助构建，即随机将多个文档拼成一个长文档，从中抽取一个或多个段落，要求模型基于抽取段落内容构建问答对。Trick，要求给答案之前模型需要背诵或改写原始段落，这种数据格式鼓励模型进行检索，从而阻止依赖自身知识回答产生的幻觉。
+- 将短SFT数据与长上下文问答问答数据**混合**使用。文档问答数据由模型辅助构建，即随机将多个文档拼成一个长文档，从中抽取一个或多个段落，要求模型基于抽取段落内容构建问答对。
+- Trick，要求给答案之前模型需要背诵或改写原始段落，这种数据格式鼓励模型进行检索，从而阻止依赖自身知识回答产生的幻觉。
 
 
 #### 多模态
@@ -2769,7 +2778,7 @@ ViT部分由CLIP ViT-H/14 model初始化，后面的transformer由Yi-Chat初始�
 
 3步训练：
 - （1）使用224^2的图像来训练ViT和projection模块的参数。这一训练利用了包含1亿个图像-文本对的数据集，这些数据来自LAION-400M。主要目标是增强ViT在架构中的知识获取能力，并实现ViT与LLM之间更好的对齐。
-- （2）将ViT的图像分辨率提升到448^2，目的是进一步推动模型识别复杂视觉细节的能力。在这个阶段使用的数据集包括从LAION-400M中提取的2000万个图像-文本对。此外，还融入了来自不同来源的大约480万个图像-文本对，例如CLLaVA、LLaVAR、Flickr、VQAv2、RefCOCO、Visual7w等。
+- （2）将ViT图像分辨率提升到448^2，目的是进一步推动模型识别复杂视觉细节的能力。在这个阶段使用的数据集包括从LAION-400M中提取的2000万个图像-文本对。此外，还融入了来自不同来源的大约480万个图像-文本对，例如CLLaVA、LLaVAR、Flickr、VQAv2、RefCOCO、Visual7w等。
 - （3）整个模型的参数一起训练。主要目标是提高模型在多模态聊天交互方面的熟练度，从而赋予它能够无缝融合和解释视觉与语言输入的能力。为此，训练数据集涵盖了多种来源，总共大约有100万张图像-文本对，包括GQA、VizWiz VQA、TextCaps、OCR-VQA、Visual Genome、ShareGPT4V等等。为了确保数据平衡，对任何单一来源的最大数据量设定了上限，将其限制在不超过50,000对。
 
 使用128张A100，6B训了3天，34B训10天。
@@ -2909,17 +2918,22 @@ WSD好处：
 ## 【2024-5-7】DeepSeek
 
 
+[深度求索（DeepSeek）顶尖人才招聘](https://mp.weixin.qq.com/s/iKVBXclSNporHl-EmaPUkw)
+
 ### DeepSeek 介绍
 
 [揭秘DeepSeek:一个更极致的中国技术理想主义故事](https://zhuanlan.zhihu.com/p/720160943)
 
 中国7家大模型创业公司中，[DeepSeek](https://www.deepseek.com/)（深度求索）最不声不响，但又总能以出其不意的方式被人记住。
-- 一年前，这种出其不意源自背后的量化私募巨头`幻方`，大厂外唯一一家储备**万张**A100芯片的公司
+- 一年前，这种出其不意源自背后的量化私募巨头`幻方`，大厂外唯一储备**万张**A100芯片的公司
 - 一年后，则来自引发中国大模型**价格战**的源头。
 
-被AI连续轰炸的5月，DeepSeek一跃成名。起因是发布的一款名为`DeepSeek V2`开源模型，提供了一种史无前例的性价比：推理成本被降到每百万token仅 1块钱，约等于 Llama3 70B 七分之一，GPT-4 Turbo 七十分之一。
+2023年5月，DeepSeek （深度求索） 成立
 
-DeepSeek被迅速冠以“AI界拼多多”之称的同时，字节、腾讯、百度、阿里等大厂也按耐不住，纷纷降价。中国大模型价格战由此一触即发。
+被AI连续轰炸的5月，DeepSeek一跃成名。起因是发布的一款名为`DeepSeek V2`开源模型，提供了一种史无前例的**性价比**：
+- 推理成本被降到每百万token仅 1块钱，约等于 Llama3 70B 1/7，GPT-4 Turbo 1/70。
+
+DeepSeek 被迅速冠以“AI界拼多多”之称的同时，字节、腾讯、百度、阿里等大厂也按耐不住，纷纷降价。中国大模型价格战由此一触即发。
 
 成见：
 - 美国更擅长从0-1的**技术**创新，而中国更擅长从1-10的**应用**创新。
@@ -2935,7 +2949,10 @@ OpenAI前政策主管、Anthropic联合创始人`Jack Clark`:
 - DeepSeek “雇佣了一批高深莫测的奇才”，还认为中国制造的大模型，“将和无人机、电动汽车一样，成为不容忽视的力量。”
 
 梁文锋：
-- 并没有什么高深莫测的奇才，都是一些Top高校的`应届毕业生`、没毕业的博四、博五`实习生`，还有一些毕业才几年的年轻人。都是本土
+- 并没有什么高深莫测的奇才，都是一些Top高校的`应届毕业生`、没毕业的博四、博五`实习生`，还有一些毕业才几年的年轻人。都是本土 —— 达摩院背景的`罗福莉`  参考 [罗福莉：天才AI少女“祛魅”记](https://zhuanlan.zhihu.com/p/515631834)
+  - 保研北大、在顶会顶刊发文章、拿遍大厂offer、进入阿里达摩院、转行跳槽知名私募公司…
+  - 2019年，一位北大硕士，因在NLP国际顶会 ACL 上发表 8 篇论文（其中2篇一作），曾登上知乎热搜
+  - 在达摩院，罗福莉主导开发的跨语言预训练模型VECO，成为深度语言模型体系AliceMind八大模型之一，并被顶会ACL2021录用，她也在AliceMind集体开源中挑起大梁。AliceMind 登顶多模态权威榜单VQA Challenge 2021，并在阿里内部数十个核心业务落地，日均调用50亿次，活跃场景超过200个，其中不乏大家熟悉的天猫精灵智能音响等。
 - 选人标准: 一直都是**热爱**和**好奇心**，所以很多人会有一些奇特的经历。对做**研究**的渴望远超对**钱**的在意。
 - 对顶级人才吸引最大的，肯定是去**解决世界上最难的问题**。其实，顶尖人才在中国是被低估的。因为整个社会层面的**硬核创新太少**了，使得他们没有机会被识别出来。
 
@@ -2953,25 +2970,45 @@ DeepSeek创始人`梁文锋` 浙江大学电子工程系人工智能方向, 从`
 他是少有把“**是非观**”置于“**利害观**”之前，并提醒看到时代惯性，把“原创式创新”提上日程的人。
 
 
-### DeepSeek-V2
+### DeepSeek V2
 
-【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh)
+【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh) 全球最强开源通用MoE模型
 - DeepSeek-V2 基于 2 千亿 MoE 模型底座，领先性能，超低价格，越级场景体验，已在对话官网和API全面上线
 - 技术报告: [浅读 DeepSeek-V2 技术报告](https://zhuanlan.zhihu.com/p/696292840)
 - 仓库和技术报告地址：[DeepSeek-V2](https://github.com/deepseek-ai/DeepSeek-V2)
 
-DeepSeek-V2 在 DeepSeek上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
+DeepSeek-V2 在 DeepSeek 上改进，但并没有沿用主流的“类LLaMA的Dense结构”和“类Mistral的Sparse结构”，而是对Transformer架构中的自注意力机制进行了全方位创新，提出了`MLA`（Multi-head Latent Attention）结构，并使用了MoE技术进一步将计算量降低，大幅提高了推理效率。
+
+特点
+- 独创 MLA 结构
+- 稀疏结构 DeepSeek-MoE
+- 推理成本降低近百倍
+- LMSYS榜单中，位列开源模型第一
+
 
 DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 的上下文长度。
 - 与DeepSeek 67B相比，DeepSeek-V2 在性能上取得了显著提升，节省了42.5%的训练成本，减少了93.3%的KV缓存，并将最大生成吞吐量提高到了5.76倍。
 
 深度求索将该 DeepSeek-V2 模型已完全上线至平台服务用户，DeepSeek-V2 API也是物美价廉。并且秉持着最开放的开源精神，深度求索将这次的DeepSeek-V2模型和论文也将完全开源，免费商用。
 
-### 模型结构
+#### 模型结构
 
 模型结构
 - ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
 
+
+### DeepSeek Coder 
+
+
+2023年11月，DeepSeek Coder V1发布
+
+2024年6月，DeepSeek Coder V2 全球最强代码开源模型
+- 全球首个超越 GPT4-Turbo 的开源代码模型
+- BigCodeBench 6月榜单中第二
+
+### DeepSeek VL
+
+自然语言到多模态初探
 
 
 ## 训练经验
