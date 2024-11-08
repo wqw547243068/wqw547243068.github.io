@@ -3,7 +3,7 @@ layout: post
 title:   大模型微调 LLM Finetune
 date:   2023-09-01 16:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora
+tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉
 excerpt: GPT之类大模型微调方法
 mathjax: true
 permalink: /finetune
@@ -444,7 +444,65 @@ def wise_ft(model, dataset, zeroshot_checkpoint, alpha, hparams):
 3. LORA 其实在训练专家模型方面挺靠谱的，不过得需要配合 MOE 架构
 4. LORA 的灾难性遗忘问题比较严重，只适合训练专家模型
 
-## 前沿进展
+
+### 小数据过拟合
+
+罗福莉 [当“大”模型遇上“小”数据](https://zhuanlan.zhihu.com/p/428263027)
+
+
+Fine-tuning 过程中，一方面想利用大规模预训练模型提供的强大知识，另一方面又想解决“海量参数”与“少量标注样本”的不匹配问题，那么能否采用这样的方式来解决问题呢？
+
+BERT提出以来，预训练模型参数量从最开始的**3亿**，逐渐攀升到了GPT-2的**15亿**，再到火出NLP圈的**1750亿**参数的GPT-3。
+
+模型越来越大，但下游任务的**标注数据量却很少**。
+
+如果直接将“大”模型在下游“小”数据上进行标准Fine-tune，将模型迁移到目标任务中去，会导致什么情况呢？
+- 由于这种“大”与“小”的不匹配，容易过拟合，导致模型在下游任务中的表现差、不稳定、泛化性能差。
+
+如何解决这种不匹配现象，缓解大规模预训练模型在下游任务过拟合。
+
+
+#### 2021 Child-Tuning
+
+EMNLP'21 Child-Tuning 从 backward 参数更新的角度思考问题，提出一种新 Fine-tuning 策略，在Fine-tuning过程中仅更新部分参数（对应的Child Network），效果出奇的好
+- 论文 [Raise a Child in Large Language Model: Towards Effective and Generalizable Fine-tuning](https://arxiv.org/abs/2109.05687)
+- 代码 [ChildTuning](https://github.com/alibaba/AliceMind/tree/main/ChildTuning)
+
+在不同下游任务中相比 Vanilla Fine-tuning 有明显提高，如基于BERT模型在四个不同数据集中平均带来 1.5个点 提升，在ELETRA上甚至提升8.6个点。
+
+
+两个步骤：
+- Step1: 在预训练模型中发现确认Child Network，并生成对应的Weights的Gradients 0-1 Mask；
+- Step2: 在后向传播计算完梯度之后，仅仅对Child Network中的参数进行更新，而其他参数保持不变。梯度掩码(Gradients Mask)
+
+![](https://pic1.zhimg.com/80/v2-dcfe1ab54eee785cb42b9bee3b70492c_720w.webp?source=d16d100b)
+
+怎么识别Step1提到的Child Network呢？两种算法。
+- 一种是与下游任务无关的Child-Tuning_F方法
+- 另一种则是与下游任务相关、能够自适应感知下游任务特点的Child-Tuning_D
+
+这两种方式各有优缺点。
+- 任务无关算法Child-Tuning_F 对于下游任务无关算法Child-Tuning_F（F for Task-Free） ，其最大的优点是简单有效，在Fine-tune的过程中，只需要在每一步更新的迭代中，从伯努利分布中采样得到一个Gradients Mask(M_t)即可，相当于在对网络参数更新的时候随机地将一部分梯度丢弃。
+
+代码实现
+
+原来optimizer里加入简单几行代码：
+
+```py
+for p in model.parameters():
+  grad = p.grad.data
+  
+  ## Child-Tuning_F Begin ## 
+  reserve_p = 0.2  # the ratio of gradients that are reserved. 
+  grad_mask = Bernoulli(grad.new_full(size=grad.size(), fill_value=reserve_p))
+  grad *= grad_mask.sample() / reserve_p
+  ## Child-Tuning_F End ## 
+​
+  # the followings are the original code of optimizer
+  ....
+
+```
+
 
 ### 【2023-10-10】马里兰 NEFTune -- 加随机噪声
 
