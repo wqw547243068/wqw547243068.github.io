@@ -899,6 +899,43 @@ CoT训练让模型具备了自我纠错的能力：
 
 DCoT的出现无疑为AI与人类的交互开辟了新的可能性
 
+### 2024.11.6 斯坦福 DSPy
+
+【2024-11-6】[告别繁琐提示词，斯坦福DSPy框架开创LLM开发新思路，Star突破1.8万](https://mp.weixin.qq.com/s/-HWx7VZC6NthROGBaATcLA)
+
+斯坦福大学NLP小组推出一款革命性框架 - `DSPy`, 颠覆了传统 LLM开发方式。
+
+不同于繁琐的手写提示词,DSPy采用编程式声明与组合,为大模型应用开发带来全新体验
+
+DSPy 的一大亮点是内置了 Teleprompter 优化器:
+
+```py
+# 准备训练数据
+trainset = [
+    (doc1, expert_analysis1),
+    (doc2, expert_analysis2),
+    # ...
+]
+
+# 自动优化提示词
+teleprompter = dspy.Teleprompter()
+optimized_analyzer = teleprompter.optimize(
+    LegalAnalyzer,
+    trainset,
+    metric=dspy.Metrics.Accuracy
+)
+```
+
+这个优化过程会:
+
+• 自动发现最佳提示词模板
+
+• 优化推理链路
+
+• 提高输出质量
+
+
+
 ## 图像提示词
 
 
