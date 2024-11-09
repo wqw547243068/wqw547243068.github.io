@@ -805,7 +805,17 @@ ArXiv上搜了下对话系统和大模型两个关键词，相关文章有62篇
 
 ### 语音交互
 
-LLM + TTS
+端到端实时语音交互 LLM + TTS
+
+#### 总结
+
+端到端的音频模型：
+- 1、[hertz-dev](https://github.com/Standard-Intelligence/hertz-dev)
+- 2、[mini-omni2](https://github.com/gpt-omni/mini-omni2)
+- 3、[GLM-4-Voice](https://github.com/THUDM/GLM-4-Voice)
+- 4、[moshi](https://moshi.chat) 
+- 5、[Spiritlm](https://github.com/facebookresearch/spiritlm)
+
 
 #### 传统AI语音助手 
 
@@ -962,6 +972,24 @@ API_URL=http://0.0.0.0:60808/chat streamlit run webui/omni_streamlit.py
 # 运行 Gradio 演示
 API_URL=http://0.0.0.0:60808/chat python3 webui/omni_gradio.py
 ```
+
+
+#### Hertz-dev
+
+【2024-11-5】[Hertz-dev： 首个开源的超低延迟的实时交互语音对话模型](https://mp.weixin.qq.com/s/9QSrPeaYLfODZ1BpPpEYSQ)
+
+- 代码地址：[hertz-dev](https://github.com/Standard-Intelligence/hertz-dev)
+- 体验地址：[hertz-dev](https://si.inc/hertz-dev/)
+
+Hertz-dev 在 RTX 4090 上的理论延迟为 65 毫秒，实际平均延迟为 120 毫秒。这比世界上任何公共模型的延迟都低约 2 倍
+
+模型能够以类似人类的方式互动的先决条件，而不是感觉像延迟、断断续续的电话通话。
+
+作者目前正在训练更大、更先进的 Hertz 版本，它将使用缩放的基础模型配方和 RL 调整来大幅提高模型的原始功能和最终一致性。
+
+Hertz-dev 是实时语音交互的一次探索，也是世界上最容易让研究人员进行微调和构建的对话音频模型。
+
+
 
 
 ### 工业界做法
