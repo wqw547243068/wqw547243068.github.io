@@ -3,7 +3,7 @@ layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
-tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清 小爱
+tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清 小爱 cui gui
 excerpt: 大模型时代对话何去何从？LLM时代，如何改造智能对话？
 mathjax: true
 permalink: /llm_ds
@@ -246,6 +246,7 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 
 > 当前的助手为什么智障？CUI为什么难？
 
+
 #### 人是如何聊天
 
 【2019-5-13】[聊天机器人:困境和破局](https://cloud.tencent.com/developer/article/1424359)
@@ -280,7 +281,30 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 
 #### CUI 特点
 
-2016年，Mingke的文章《为什么现在的人工智能助理都像人工智障》里详细解释了CUI的特点。
+
+【2024-11-13】[智能对话时代来临：GUI正在向CUI快速演变](https://zhuanlan.zhihu.com/p/623244635)
+
+随着AIGC的应用，传统的GUI将会向CUI（对话式用户界面，Conversational User Interface）演变。
+
+CLI（命令行界面）、GUI（图形用户界面）和CUI（对话式用户界面）三者之间的一些差异
+
+| 类型	| 出现时间	| 特点	| 示例	| 当前发展阶段 | 
+| ---	| ---	| ---	| ---	| ---- | 
+| CLI	| 1960	| 基于文本输入和命令行操作，通过命令和参数进行交互。	| Unix/Linux终端、Windows命令提示符	| 成熟、广泛应用| 
+| GUI	| 1970-1980	| 基于图形界面，通过鼠标、键盘等进行交互，提供可视化的操作和反馈。	| Windows操作系统、macOS、Photoshop	成熟、广泛应用 | 
+| CUI	| 最早1960-1970	| 基于对话式交互，通过自然语言、语音等进行对话，可以有上下文记忆和智能化回应。	| Siri、Amazon Alexa、Google Assistant	发展中、尚处于探索阶段 | 
+
+差异对比
+
+| 类型 | 输入方式	| 输出方式	| 交互方式	| 学习成本	| 灵活性	| 用户体验 | 
+| --- | ---	| ---	| ---	| ---	| ---	| --- |
+| CLI	| 文本输入和命令| 	文本输出| 	命令和参数| 	非常高| 	高| 	需要记忆和学习 | 
+| GUI	| 鼠标、键盘、触摸等| 	图形、文本等| 	可视化操作| 	中等| 	高| 	直观、直接 | 
+| CUI	| 自然语言、语音等| 	文本、语音等| 	对话式、上下文记忆| 	低| 	中等| 	个性化、智能化 | 
+
+
+
+2016年，Mingke的文章《[为什么现在的人工智能助理都像人工智障]()》里详细解释了CUI的特点。
 
 对话类产品**69.7%**集中在个人助理，具体是生活综合服务，出行、日程、购物、订餐，包含这类功能的产品是“天坑”
 - ![](https://pic4.zhimg.com/v2-b30a196de41a305596945af77c9e7723_b.jpg)
@@ -288,7 +312,7 @@ Observable Markov Decision Process , POMDP）的统计对话系统；鲁棒性�
 比如简单的订餐场景，上一代人机交互形式GUI，产品交互方式相对确定，场景受限，用户需要乖乖按照预设功能逐步操作，附近/类型/排序，所见即所选，如果不知道自己要啥，就麻烦了，在信息的汪洋大海里随机游弋。
 - ![](https://pic3.zhimg.com/v2-32d5b6ddefdfbc14f450d65bca9ace06_b.jpg)
 
-从**特定领域**(specific domain)扩展到**开放领域**（open domain)的CUI，交互形式只剩下一个简简单单的对话页面，主动权返还给用户，而用户需求、对话顺序千差万别，长尾更加明显。这时的交互设计难以一招打遍天下
+从**特定领域**(specific domain)扩展到**开放领域**（open domain) 的CUI，交互形式只剩下一个简简单单的对话页面，主动权返还给用户，而用户需求、对话顺序千差万别，长尾更加明显。这时的交互设计难以一招打遍天下
 
 2016年底作者亲自测试，看看几个主流智能助理是否满足一个看似简单的需求:“推荐餐厅，不要日本菜”。结果各家的AI助理都会给出一堆餐厅推荐，全是日本菜。
 - ![](https://pic3.zhimg.com/v2-2153068778ab93a3efa8f5e1826b5f12_b.jpg)
