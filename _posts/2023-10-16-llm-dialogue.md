@@ -18,7 +18,7 @@ permalink: /llm_ds
 原文
 - 【2023-10-26】[大模型时代对话系统何去何从](https://zhuanlan.zhihu.com/p/661558522)
 - 【2024-11-13】[大模型时代对话系统（续）](https://zhuanlan.zhihu.com/p/6871393700)
-- 公众号[版本](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&mid=2649769463&idx=1&sn=7dffe779f8e260f1da32338586bfd3f7)，旧版, 新版对话系统总结部分不够清晰、系统
+- 公众号[版本](https://mp.weixin.qq.com/s/IKQBi7ZnOBjqvEitGyqL5Q)，旧版, 新版对话系统总结部分不够清晰、系统
 
 
 
