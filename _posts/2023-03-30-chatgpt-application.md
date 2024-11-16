@@ -1491,7 +1491,58 @@ AI Shell 将**自然语言**转换为**Shell命令**的CLI工具。受 GitHub Co
 
 #### Cursor
 
-待补充
+【2024-11-16】10几个人如何构建20多亿的cursor，Lex 对 Cursor 团队访谈
+- 视频版 [Cursor CEO访谈](https://youtu.be/oFfVt3S51T4?si=pOPwdXxdALWLrcuw)
+- 文章介绍 
+  - 【2024-10-31】[Cursor：如何构建 AI Coding 最佳实践？](https://mp.weixin.qq.com/s/4gXqwmtTFny9QMuw1WVdRw)
+
+AI coding 是模型推理能力增加之后的下一个竞争高地。
+- Github Copilot 是第一个 LLM-driven 的消费级应用
+
+除了模型厂商、AI Labs 之外，这个领域的参与者也有着 Cursor 这样的初创团队
+
+作为一个 LLM-first IDE，Cursor 在今年迅速出圈
+- 一方面: 底层模型 `Claude Sonnet 3.5` 模型 coding 能力提升带来的体验升级
+- 另一方面: 团队在 AI Coding UI/UX 上的持续投入。
+
+技术选型
+- 刚开始用 Vim 做代码编辑。当时还没有 Neovim，只有 Vim 和一个终端。
+- 2021 年 Copilot 发布时，由于 Copilot 只能在 VS Code 上使用，所以 Cursor 转用 VS Code 了。
+- Copilot 和 VS Code 组合使用体验特别好，所以即便很喜欢 Vim，还是转向了 VS Code。
+- 开发 Cursor 之前，VS Code 都是默认编辑器。
+
+Cursor 是怎么做预测的？Cursor 延迟很低, Tab 健能做下一步动作预测（next action prediction）
+
+背后的技术细节
+- 训练了专门**MoE小模型**: 这些模型很依赖 pre-fill tokens
+  - 这些模型面对的是非常长的 prompt，需要处理很多代码行，但是实际生成的 token 并不多。这种情况下使用**稀疏模型**（Sparse Model）就很合适，一种 MoE 模型。这个突破**显著**提高了模型处理长上下文时的性能。
+- 基于**推测解码**（Speculative Decoding）构建了**推测编辑**（Speculative Edits）。
+
+这两个因素是 Cursor 生成质量高、速度快的关键。
+
+没有哪个模型能在所有方面的表现都比其他模型更好，包括速度、代码编辑能力、处理大量代码的能力、上下文长度和代码能力等等。不过，整体上表现最好的模型是 Sonnet，这也是共识。
+
+大量和 prompt 相关的信息，包括文档、添加的文件和对话历史等。
+
+问题：在 context window 有限的情况下，该如何筛选和组织这些信息？
+- Cursor Priompt  渲染器把内容合理地排布在页面上，只需要告诉它想要什么，它就会帮你实现。
+- 开发了 Priompt 内部系统， 借鉴现代网页开发的最佳实践。和固定版式的杂志排版不同，网站开发中会涉及到的一个情况是，不同设备的中信息的展示多少、格式等是动态变化的，而用户到底在哪里查看网站开发者事前并不知道，但无论终端怎么变，都要保证网站信息在不同设备上正常显示。AI 提示词工程也是类似，我们要做到无论 input 内容多大、怎么变，output 的格式都能正确展示。
+
+
+团队创始成员 Aman Sanger （CEO）、Arvid Lunnemark（CTO）、Sualeh Asif（COO）和 Michael Truell（设计主管）详细分享了 Cursor 产品体验、infra、模型训练、数据安全等细节，以及对于 AI coding、AI Agent 的思考，通过这些分享也能了解 Cursor UI/UX 背后的理念。
+- • **o1 不会干掉 Cursor**，AI Coding 领域才刚刚开始；
+- • 围绕**代码预测、补齐**等各类任务 Cursor 还训练了一系列专门的小模型；
+- • Cursor 正在试验一个叫做 `Shadow Space` 的产品概念，后台运行一个隐藏窗口让 AI 在不影响到开发者的操作的情况下进行 coding 任务；
+- • 团队在 code base  indexing 上投入了大量精力，这个 indexing 系统会成为接下来其他代码任务可以展开的基础；
+- • 未来编程会是自然语言和代码将共存，根据具体任务选择最有效的交互；
+- • **AI 正在重塑编程体验**，提高效率的同时保持程序员的创造力和控制力；
+- • Cursor 认为 Claude 3.5 Sonnet 综合实力更强，Sonnet 最强的地方在于能够很好地**理解开发者表述并不清晰的目标**，预测程序员接下来的操作、给出适当建议；
+- • 即便是 SOTA 模型, 也**不擅长找 bug**，这会是 Cursor 的机会；
+- • 当前代码任务基准测试并不能准确反映模型的真实能力，因为现实中的代码任务更加复杂多样，并且充满了模糊性和上下文依赖。Cursor 团队更倾向于通过真实用户的使用反馈来评估模型的性能；
+- • 目前还没有人能很好地解决 models routing 问题，底座模型和自有模型之间可以初步实现模型切换，但如果是 GPT-4o、Claude sonnet 和 o1 之间的切换可能要更加复杂。
+
+
+
 
 #### MarsCode
 
