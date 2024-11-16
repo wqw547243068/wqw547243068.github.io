@@ -1203,14 +1203,14 @@ Dario 的胞妹 Daniela Amodei 之前也在 OpenAI 从事和 Dario 相同方向�
 - 一家重拾 OpenAI 慢慢忘却的初心的“正统” AI 基础科研机构。
 - Anthropic 的创始团队成员，大多为 OpenAI 的重要员工或关联成员，包括（排名不分先后）Jared Kaplan、Sam McCandlish、Tom Brown、Gabriel Goh、Kamal Ndousse、Jack Clark、Ben Mann、Chris Olah 等。
 
-OpenAI 离职的核心员工当中就包括 `Dario Amodei` 和他的同胞姐妹 Daniela。
+OpenAI 离职的核心员工当中就包括 `Dario Amodei` 和他的同胞姐妹 `Daniela`。
 - 2021年2月创办了 Anthropic 公司，Dario 任 CEO，Daniela 任总裁。
 
 Anthropic 的官网这样介绍自己：
 >-  我们是一家AI 安全和研究公司，致力于开发可靠、可解释和可调整的 AI 系统。
 >- “今天的大规模的通用（AI）系统能够带来很高的收益，但他们同时却是不可预测、不可靠，和不透明的。我们的使命是在这些问题上做出进步。”
 
-Anthropic 联合创始人兼 CEO Dario Amodei 表示。
+Anthropic 联合创始人兼 CEO `Dario Amodei` 表示。
 > “Anthropic 的使命是从事基础科研，让我们可以打造能力更强、更通用、更可靠的 AI 系统，并且应用这些系统从而让人类获益，”
 
 伟大计划：
@@ -1220,6 +1220,53 @@ Anthropic 联合创始人兼 CEO Dario Amodei 表示。
 - ![img](https://cdn.pingwest.com/portal/2021/06/15/portal/2021/06/15/SE_eX2yfidtk1PHX46Y823kEXwF3Xdh6?x-oss-process=style/article-body)
 
 【2021-6-15】[OpenAI核心人员集体离职创立新公司：人均大神，融资1亿多美金只为“初心”](https://www.pingwest.com/a/244275)
+
+【2024-11-16】CEO 访谈
+- [Dario Amodei: Anthropic CEO on Claude, AGI & the Future of AI & Humanity](https://lexfridman.com/dario-amodei/)
+
+OUTLINE:
+- (00:00) – Introduction
+- (10:19) – Scaling laws
+- (19:25) – Limits of LLM scaling
+- (27:51) – Competition with OpenAI, Google, xAI, Meta
+- (33:14) – Claude
+- (36:50) – Opus 3.5
+- (41:36) – Sonnet 3.5
+- (44:56) – Claude 4.0
+- (49:07) – Criticism of Claude
+- (1:01:54) – AI Safety Levels
+- (1:12:42) – ASL-3 and ASL-4
+- (1:16:46) – Computer use
+- (1:26:41) – Government regulation of AI
+- (1:45:30) – Hiring a great team
+- (1:54:19) – Post-training
+- (1:59:45) – Constitutional AI
+- (2:05:11) – Machines of Loving Grace
+- (2:24:17) – AGI timeline
+- (2:36:52) – Programming
+- (2:43:52) – Meaning of life
+- (2:49:58) – Amanda Askell – Philosophy
+- (2:52:26) – Programming advice for non-technical people
+- (2:56:15) – Talking to Claude
+- (3:12:47) – Prompt engineering
+- (3:21:21) – Post-training
+- (3:26:00) – Constitutional AI
+- (3:30:53) – System prompts
+- (3:37:00) – Is Claude getting dumber?
+- (3:49:02) – Character training
+- (3:50:01) – Nature of truth
+- (3:54:38) – Optimal rate of failure
+- (4:01:49) – AI consciousness
+- (4:16:20) – AGI
+- (4:24:58) – Chris Olah – Mechanistic Interpretability
+- (4:29:49) – Features, Circuits, Universality
+- (4:47:23) – Superposition
+- (4:58:22) – Monosemanticity
+- (5:05:14) – Scaling Monosemanticity
+- (5:14:02) – Macroscopic behavior of neural networks
+- (5:18:56) – Beauty of neural networks
+
+
 
 ### 创始人 Sam Altman
 
