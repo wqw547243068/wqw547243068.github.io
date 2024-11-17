@@ -3,7 +3,7 @@ layout: post
 title:  "短视频学习笔记 - Short Video"
 date:   2023-05-04 08:01:00
 categories: 计算机视觉
-tags: 视频理解  短视频  抖音 tt tiktok
+tags: 视频理解  短视频  抖音 tt tiktok 剪辑 拍摄
 excerpt: 自媒体时代，个人如何高效制作优质短视频？
 mathjax: true
 permalink: /short_video
