@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT应用
 date:   2023-03-30 19:10:00
 categories: 大模型
-tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物 字节
+tags: AIGC ChatGPT 智能客服 加密 搜索 推荐 排序 标注 yolo 豆包 cici coze 贾扬清 workflow 具身智能 机器人 ollama 脑机接口 宠物 字节 视频
 excerpt: ChatGPT应用思考
 mathjax: true
 permalink: /chatgpt_application
@@ -2417,6 +2417,13 @@ Captions 的兴起受益于短视频，第一个王牌功能也是至今仍然�
 - 和 CapCut 相比，Captions 的整体功能和 UI 更简洁（CapCut 已经逐渐被创作者们认为是一个“中等”复杂度的产品），把字幕和贴纸能力做到了极致，还在不断迭代 AI 能力，推出了 AI Eye Contact、AI Dubbing、AI Music 等能力。
 
 
+#### 视频理解
+
+【2024-11-4】NVIDIA 推出云/端AI智能体, 用于实时/存档视频的视频搜索、摘要
+
+【2024-11-4】[Early Access to NVIDIA AI Blueprint for Video Search And Summarization](https://developer.nvidia.com/zh-cn/blog/build-a-video-search-and-summarization-agent-with-nvidia-ai-blueprint/)
+
+详见站内: [视频理解技术](video)
 
 ### 直播
 
