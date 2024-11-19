@@ -1182,7 +1182,7 @@ Ian Goodfellow Google Brain研究员, 对抗生成网络（Gan）之父Ian Goodf
 
 #### Dario Amodei
 
-Dario是 OpenAI 的早期员工之一，曾发表多篇 AI 可解释性、安全等方面的论文，离职前在 OpenAI 担任研究 VP。在此之前，Dario 还曾在`百度`担任研究员，在前首席科学家`吴恩达`手下工作。他博士毕业于普林斯顿大学，后回到本科毕业的斯坦福大学担任博士后学者。
+Dario 是 OpenAI 的早期员工之一，曾发表多篇 AI 可解释性、安全等方面的论文，离职前在 OpenAI 担任研究 VP。在此之前，Dario 还曾在`百度`担任研究员，在前首席科学家`吴恩达`手下工作。他博士毕业于普林斯顿大学，后回到本科毕业的斯坦福大学担任博士后学者。
 
 他是 OpenAI 的前核心成员，也被认为是深度学习领域最为前沿的研究员之一。
 - ![img](https://cdn.pingwest.com/portal/2021/06/15/portal/2021/06/15/8NWG3b2Tr7TTi_1p5S2jnTraPETtK965?x-oss-process=style/article-body)
@@ -1220,6 +1220,9 @@ Anthropic 联合创始人兼 CEO `Dario Amodei` 表示。
 - ![img](https://cdn.pingwest.com/portal/2021/06/15/portal/2021/06/15/SE_eX2yfidtk1PHX46Y823kEXwF3Xdh6?x-oss-process=style/article-body)
 
 【2021-6-15】[OpenAI核心人员集体离职创立新公司：人均大神，融资1亿多美金只为“初心”](https://www.pingwest.com/a/244275)
+
+
+##### 
 
 【2024-11-16】CEO 访谈
 - [Dario Amodei: Anthropic CEO on Claude, AGI & the Future of AI & Humanity](https://lexfridman.com/dario-amodei/)
@@ -1266,6 +1269,11 @@ OUTLINE:
 - (5:14:02) – Macroscopic behavior of neural networks
 - (5:18:56) – Beauty of neural networks
 
+
+##### Christopher Olah
+
+【2024-11-19】`Christopher Olah`, Google Brain、OpenAI 以及 anthropic员工, 知名技术博客 [colah's blog](https://colah.github.io/about.html) 博主
+- 神经网络可视化、流形学习、循环神经网络、信息论可视化
 
 
 ### 创始人 Sam Altman
