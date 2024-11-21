@@ -3,7 +3,7 @@ layout: post
 title:  LLM 发展方向
 date:   2024-11-20 12:00:00
 categories: 大模型
-tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释   norm 大脑 json 缩放定律 鹦鹉 意识 o1
+tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释   norm 大脑 json 缩放定律 鹦鹉 意识 o1 ttt
 excerpt: 大模型会往哪个方向发展？
 mathjax: true
 permalink: /llm_direction
@@ -491,6 +491,35 @@ transformer 架构不是唯一
 
 #### ttt
 
+ttt 替代自注意力层
+- 论文标题：[The Surprising Effectiveness of Test-Time Training for Abstract Reasoning](https://ekinakyurek.github.io/papers/ttt.pdf)
+
+将 TTT 有效应用于 few-shot 学习的几个关键要素：
+- 在与测试时类似的**合成任务**上进行初始微调；
+- 用于构建测试时数据集的增强型 leave-1-out 任务生成策略；
+- 训练适用于每个实例的适应器；
+- 可逆变换下的自我一致性（self-consistency）方法。
+
+两种不同的 TTT 数据生成方式：
+- 一是 in-context learning（ICL）格式；从给定的测试演示中创建 leave-1-out 任务
+- 另一种是端到端格式。将每个 i/o 对视为一个单独的任务
+
+实验环节，研究者在抽象与推理语料库（ARC,抽象与推理语料库）中对这些方法进行了评估。ARC 语料库收集了很多极具挑战性的 few-shot 视觉推理问题，被认为是测试 LM 泛化极限的理想基准。目前的大多语言模型在 ARC 上均表现不佳。
+
+TTT 可以显著提高 LM 在 ARC 上的性能 —— 在 1B 模型上将准确率提高到原来的 6 倍，使用 8B 模型时也超过其它已发布的 SOTA 纯神经模型方法。
+
+【2024-11-12】[连OpenAI都推不动Scaling Law了？MIT把「测试时训练」系统研究了一遍，发现还有路](https://www.jiqizhixin.com/articles/2024-11-12-7)
+
+OpenAI 下一代旗舰模型的质量提升幅度不及前两款旗舰模型之间的质量提升，因为高质量文本和其他数据的供应量正在减少，原本的 Scaling Law（用更多的数据训练更大的模型）可能无以为继。此外，OpenAI 研究者 Noam Brown 指出，更先进的模型可能在经济上也不具有可行性，因为花费数千亿甚至数万亿美元训练出的模型会很难盈利。
+
+从预训练来看，Scaling Law 可能会放缓；
+
+但有关推理的 Scaling Law 还未被充分挖掘，OpenAI o1 的发布就证明了这一点。它从后训练阶段入手，借助**强化学习**、原生的**思维链**和更长的**推理时间**，把大模型能力又往前推了一步。
+- 这种范式被称为「`测试时计算`」，相关方法包括**思维链提示**、**多数投票采样**（self-consistency）、**代码执行**和**搜索**等。
+
+还有个新概念 —— `测试时训练`（ Test-Time Training ，TTT），二者都试图在测试（推理）阶段通过不同的手段来提升模型的性能，但 `TTT` 会根据测试时输入，通过**显式梯度**步骤更新模型。
+
+这种方法不同于标准微调，因为在数据量极低的环境中运行的 —— 通常是通过单个输入的无监督目标，或应用于一个或两个 in-context 标注示例的有监督目标。
 
 
 详见站内: [transformer 专题](transformer#ttt)
