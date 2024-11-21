@@ -3,7 +3,7 @@ layout: post
 title:  规模法则 Scaling Law
 date:   2023-09-05 12:00:00
 categories: 大模型
-tags: LLM ilya 缩放定律
+tags: LLM ilya 缩放定律 ttt
 excerpt:  谈谈影响LLM发展的重要定律, 规模法则(Scaling Law)
 mathjax: true
 permalink: /llm_scaling_law
@@ -333,6 +333,17 @@ Deepmind 的 Hoffmann 等人团队提出与OpenAI**截然不同**的观点。
 
 这也引来OpenAI员工大赞特赞：
 - 将非常酷地看到如何SOTA量化方案（mxfp，Pw≠Pkv≠Pa等）推动前沿；在我看来，将一半的计算预算用于一次大规模运行，以检查模型是否适用于大模型是值得的。
+
+### ttt 能继续挖掘
+
+【2024-11-12】[连OpenAI都推不动Scaling Law了？MIT把「测试时训练」系统研究了一遍，发现还有路](https://www.jiqizhixin.com/articles/2024-11-12-7)
+
+OpenAI 下一代旗舰模型的质量提升幅度不及前两款旗舰模型之间的质量提升，因为高质量文本和其他数据的供应量正在减少，原本的 Scaling Law（用更多的数据训练更大的模型）可能无以为继。此外，OpenAI 研究者 Noam Brown 指出，更先进的模型可能在经济上也不具有可行性，因为花费数千亿甚至数万亿美元训练出的模型会很难盈利。
+
+从预训练来看，Scaling Law 可能会放缓；
+
+但有关推理的 Scaling Law 还未被充分挖掘，OpenAI o1 的发布就证明了这一点。它从后训练阶段入手，借助**强化学习**、原生的**思维链**和更长的**推理时间**，把大模型能力又往前推了一步。
+- 这种范式被称为「`测试时计算`」，相关方法包括**思维链提示**、**多数投票采样**（self-consistency）、**代码执行**和**搜索**等。
 
 
 ### Ilya
