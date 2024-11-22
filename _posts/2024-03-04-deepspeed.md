@@ -66,12 +66,12 @@ PyTorch 里的 DataParallel 无法满足
 
 ### Megatron-LM 介绍
 
-【2020-3-13】Megatron 是超大规模Transformer模型的**分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
+【2020-3-13】Megatron 是超大规模 Transformer 模型 **分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
 - 论文: [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/pdf/1909.08053.pdf)
 - 中文解读: [Megatron论文和代码详细分析](https://zhuanlan.zhihu.com/p/366906920)
-  - intra-layer and inter-layer: 层间并行和层内并行
-  - orthogonal and complimentary 正交和互补
-  - scaling efficiency的计算公式 76%
+  - intra-layer and inter-layer: **层间**并行和**层内**并行
+  - orthogonal and complimentary **正交**和**互补**
+  - scaling efficiency 计算公式 76%
 
 |概念|中文|图解|
 |---|---|---|
@@ -80,7 +80,7 @@ PyTorch 里的 DataParallel 无法满足
 
 Megatron 核心能力:
 - 多种并行策略组合: Data Parallel、 Tensor Parallel、Pipeline Parallel、Sequence Parallel
-- Distributed-optimiezer: 相当于是deepspeed zero1的策略
+- Distributed-optimiezer: 相当于 deepspeed zero1 策略
 - 高性能算子：Flash Attention
 - Activation checkpoint
 - 混合精度
@@ -98,15 +98,84 @@ Megatron-LM
 
 ### Megatron-LM-2
 
-Megatron 2 在 Megatron 1 的基础上新增了 `pipeline 并行`，提出了virtual pipeline:1F1B-interleaving，成为和 DeepSpeed 类似的 `3D 并行`训练框架。
+Megatron 2 在 Megatron 1 的基础上新增 `pipeline 并行`，提出了 virtual pipeline:`1F1B-interleaving`，成为和 DeepSpeed 类似的 `3D 并行`训练框架。
 
 另外 Megatron-2 论文提及了一些通信优化的小 trick，本质是增加本地的 io 操作和通信，从而降低低带宽网络的通信量。
 
-内存占用角度：
+**内存占用**角度：
 - `G-pipe` 到 `PipeDream` 进化完成，通过及时安排反向过程，将前向激活值释放掉，避免积累太多激活值占用内存，提高了模型并行的能力。
 
-空泡比率角度：
-- 空泡比率的提升主要从 1F1B 到 1F1B-interleaving 的进化得来。pipeline 并行的一个基本规律就是 pipeline 流水的级数越多，overhead 就越小。
+`空泡比率`角度：
+- 空泡比率的提升主要从 `1F1B` 到 `1F1B-interleaving` 进化得来。
+
+pipeline 并行的基本规律: 
+- pipeline 流水级数越多, overhead(开销) 就越大。
+
+如何计算空泡率？[参考](https://zhuanlan.zhihu.com/p/613196255)
+- 阴影部分所表示的时间段里，总有GPU在空转。Gpipe中，将阴影部分定义为bubble
+- 假设有 K 块GPU，而单块GPU上做一次forward和backward的时间为：t_fb = t_f + t_b
+- 空泡率: `(K-1)K*t_fb/K*K*t_fb=(K-1)/K`
+
+bubble部分的时间复杂度为： `O((K-1)/K)`
+- 当K越大，即GPU越多，空置比例接近1，GPU资源都被浪费掉了
+
+
+[模型并行训练：Megatron-LM pipeline并行源码解读](https://zhuanlan.zhihu.com/p/678724323)
+
+
+pipeline并行状态 parallel_state
+- `get_pipeline_model_parallel_world_size`：pipeline并行的卡数
+- `get_pipeline_model_parallel_rank`：当前卡在pipeline并行中的序号
+- `is_pipeline_last_stage(ignore_virtual=True)` + `is_pipeline_first_stage(ignore_virtual=True)`: 忽略virtual stage时，判断当前stage是否为流水线并行的最后一个、第一个stage。
+
+如下图，红色框均为 first stage，黄色框均为 last stage。
+- ![](https://pic3.zhimg.com/v2-f6c537b8f0138668ccc4f1bbf5c71b2e_1440w.jpg)
+
+p2p_communication，主要功能两个事情：**发送** send 和 **接受** recv。
+- `forward`：
+  - 从前面的stage 获取中间结果: 前面stage的output tensor，做为当前stage的 input tensor，这个操作对于当前stage称为recv，具体为recv_forward；
+  - 之后，需要当前stage的输出发送到后面的stage，这个操作对于当前stage是send，具体为send_forward。
+- `backward`：
+  - backward之前，需要从前面的stage获取recv中间结果的梯度，recv_backward；
+  - backward之后，需要将输入的梯度send到后面的stage去，send_backward。
+
+forward_backward_pipelining_with_interleaving 调度过程分成三个部分：warmup、1F1B、cooldown。
+- 第一条红线左边是`warmup`，第二条红线右边是`cooldown`，中间是`1F1B`。
+- ![](https://pic4.zhimg.com/v2-3432f4a0a08f0e046f3331226355c3f7_1440w.jpg)
+
+forward_only 情况比 forward+backward 的情况要简单。
+
+`warmup`
+- warmup只做forward。
+- warmup内，又分为三种情况，第一个、最后一个、中间。
+  - 第一个：forward跑之前去做一次recv_forward；跑完做一次send_forward_recv_backward，send当前stage的output tensor，recv下一个stage的input tensor。
+  - 中间：跑完forward之后做一次send_forward_recv_forward，send当前stage的output tensor，recv下一次的input tensor。
+  - 最后一个：跑完forward之后做一次send_forward_recv_forward_backward，send当前的output tensor，recv下一次的input tensor，recv 1F1B中第一个backward使用的输入。
+
+`1F1B`
+- 1F1B，一次forward一次backward，轮流交替进行。
+- 先 forward + backward
+- 然后 send_forward_backward_recv_forward_backward，recv的是下一次1F1B用到的输入输出，最后一次1F1B这里需要特判一下。
+
+`cooldown`
+- cooldown只做backward。
+- 先backward，然后send_backward_recv_backward，特判最后一次不需要recv。
+
+
+调度策略
+- default 调度 和 interleaved 调度
+- ![](https://pica.zhimg.com/v2-101e982ef8459a8c78ebbeab6b594534_1440w.jpg)
+
+相同点：都分为 `warmup`、`1F1B`、`cooldown` 三个过程。
+
+不同
+- forward、backward 是否对齐
+  - default 时，不同device上的forward、backward 不对齐；
+  - 而interleaved 是对齐的。
+- 一个forward 做完后是否立即通信
+  - default 立刻开始通信，传递中间结果，下一个device需要紧接着使用它。
+  - interleaved 不需要立刻开始通信传递中间结果，下一个device需要先做一次backward才会做用到传递的中间结果。
+
 
 ### Megatron-LM-3
 
