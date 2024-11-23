@@ -489,35 +489,6 @@ EasyEdit »¹Ìá¹©ÁËÎå¸öÆÀ¹À±à¼­·½·¨ÐÔÄÜµÄ¹Ø¼üÖ¸±ê£¬°üÀ¨`¿É¿¿ÐÔ`£¨Reliability£©¡¢`·
 
 transformer ¼Ü¹¹²»ÊÇÎ¨Ò»
 
-
-#### LLM ÀàÄÔ
-
-¡¾2024-10-30¡¿[MIT´óÅ£ÐÂ·¢ÏÖ£ºLLMºÍÈËÀà´óÄÔ½á¹¹ÀàËÆ£¬´æÔÚÄÔÒ¶·ÖÇø](https://mp.weixin.qq.com/s/7kxPoraUO746t0e5Ov4LPg)
-
-MIT´«Ææ´óÅ£Max TegmarkÍÅ¶ÓµÄÐÂ×÷£¬ÔÙ´ÎÕ¨·­AIÈ¦¡£
-- ÂÛÎÄ [THE GEOMETRY OF CONCEPTS SPARSE AUTOENCODER FEATURE STRUCTURE](https://arxiv.org/abs/2410.19750)
-
-LLMÏÔÊ¾³öÁîÈË¾ªÑÈµÄ¼¸ºÎ½á¹¹¡ª¡ª
-- ÐÎ³ÉÒ»ÖÖÀàËÆÈËÀà´óÄÔµÄ¡¸ÄÔÒ¶¡¹£»
-- Æä´Î£¬ÐÎ³ÉÒ»ÖÖ¡¸ÓïÒå¾§Ìå¡¹£¬±È³õ¿´ÆðÀ´¸ü¾«È·£»²¢ÇÒ£¬LLM ¸ÅÄîÔÆ¸ü¾ß**·ÖÐÎ**ÌØÕ÷£¬¶ø·ÇÔ²ÐÎ¡£
-
-LLMÖÐÏ¡Êè×Ô±àÂëÆ÷£¨SAE£©µÄÌØÕ÷ÏòÁ¿±íÊ¾µÄ¡£
-
-Max Tegmark ÍÅ¶ÓµÄÑÐ¾¿½á¹û±íÃ÷£¬SAEÌØÕ÷Ëù´ú±íµÄ¸ÅÄîÓîÖæÔÚ¶à¸ö¿Õ¼ä³ß¶ÈÉÏÕ¹ÏÖ³öÓÐÈ¤µÄ½á¹¹£¬´ÓÓïÒå¹ØÏµµÄÔ­×Ó²ãÃæµ½Õû¸öÌØÕ÷¿Õ¼äµÄ´ó¹æÄ£×éÖ¯¡£
-
-ÊýÑ§²ÅÊÇÒ»ÇÐµÄ»ù´¡£¬¶ø·ÇÈËÀà¹¹Ôì
-
-SAEÌØÕ÷µÄ¸ÅÄîÓîÖæÔÚÈý¸ö²ãÃæÉÏ¶¼¾ßÓÐÓÐÈ¤µÄ½á¹¹£º
-- Ð¡³ß¶È¡¸Ô­×Ó¡¹
-  - Ô­×Ó¼¶µÄÎ¢¹Û½á¹¹£¬°üº¬ÃæÎªÆ½ÐÐËÄ±ßÐÎ»òÌÝÐÎµÄ¡¸¾§Ìå¡¹£¬ÕâÊÇ¶Ô¾­µä°¸ÀýµÄÍÆ¹ã£¨±ÈÈç¡¸ÄÐÈË-Å®ÈË-¹úÍõ-Íõºó¡¹µÄ¹ØÏµ£©¡£
-- ÖÐ³ß¶È¡¸´óÄÔ¡¹
-  - ÀàËÆ¡¸´óÄÔ¡¹µÄÖÐ¼ä³ß¶È½á¹¹£¬ÔòÕ¹ÏÖ³öÁËÃ÷ÏÔµÄ¿Õ¼äÄ£¿é»¯ÌØÕ÷£¬ÍÅ¶Ó½«ÆäÃèÊöÎª¿Õ¼ä¼¯ÈººÍ¹²ÏÖ¼¯ÈºÖ®¼äµÄ¶ÔÆë¡£
-  - Èç£¬ÊýÑ§ºÍ´úÂëÌØÕ÷ÐÎ³ÉÁËÒ»¸ö¡¸ÄÔÒ¶¡¹£¬¸úÉñ¾­¹¦ÄÜ´Å¹²ÕñÍ¼ÏñÖÐ¹Û²ìµ½µÄÈËÀà´óÄÔ¹¦ÄÜ·ÖÇøÏàËÆ¡£
-- ´ó³ß¶È¡¸ÐÇÏµ¡¹
-  - ¡¸ÐÇÏµ¡¹µÄ´ó³ß¶È½á¹¹ÉÏ£¬ÌØÕ÷µãÔÆ²¢·Ç³Ê¸÷ÏòÍ¬ÐÔ£¨¸÷¸ö·½ÏòÐÔÖÊÏàÍ¬£©£¬¶øÊÇ±íÏÖ³öÌØÕ÷ÖµÃÝÂÉ·Ö²¼£¬ÖÐ¼ä²ãµÄÐ±ÂÊ×î¶¶¡£
-  - ¶ø¾ÛÀàìØÒ²ÔÚÖÐ¼ä²ãÖÜÎ§´ïµ½·åÖµ£¡
-
-
 #### ttt
 
 ttt Ìæ´ú×Ô×¢ÒâÁ¦²ã
