@@ -1,105 +1,105 @@
 ---
 layout: post
-title:  LLM ·¢Õ¹·½Ïò
+title:  LLM å‘å±•æ–¹å‘
 date:   2024-11-20 12:00:00
-categories: ´óÄ£ÐÍ
-tags: gpt LLM ´óÄ£ÐÍ AGI ÊÀ½çÄ£ÐÍ ÏµÍ³ ¿ìË¼¿¼ ÂýË¼¿¼ ÔÖÄÑ ÒÅÍü »Ã¾õ ÍÆÀí  ¿É½âÊÍ   norm ´óÄÔ json Ëõ·Å¶¨ÂÉ ðÐðÄ ÒâÊ¶ o1 ttt
-excerpt: ´óÄ£ÐÍ»áÍùÄÄ¸ö·½Ïò·¢Õ¹£¿
+categories: å¤§æ¨¡åž?
+tags: gpt LLM å¤§æ¨¡åž? AGI ä¸–ç•Œæ¨¡åž‹ ç³»ç»Ÿ å¿«æ€è€? æ…¢æ€è€? ç¾éš¾ é—å¿˜ å¹»è§‰ æŽ¨ç†  å¯è§£é‡?   norm å¤§è„‘ json ç¼©æ”¾å®šå¾‹ é¹¦é¹‰ æ„è¯† o1 ttt
+excerpt: å¤§æ¨¡åž‹ä¼šå¾€å“ªä¸ªæ–¹å‘å‘å±•ï¼?
 mathjax: true
-permalink: /llm_new
+permalink: /llm_direction
 ---
 
 * content
 {:toc}
 
 
-# LLM ÓÅ»¯·½Ïò
+# LLM ä¼˜åŒ–æ–¹å‘
 
 
-¡¾2023-6-16¡¿Öªºõ×¨Ìâ£º[´óÄ£ÐÍLLMÁìÓò£¬ÓÐÄÄÐ©¿ÉÒÔ×÷ÎªÑ§ÊõÑÐ¾¿·½Ïò£¿](https://www.zhihu.com/question/595298808/answer/3071907155)
+ã€?2023-6-16ã€‘çŸ¥ä¹Žä¸“é¢˜ï¼š[å¤§æ¨¡åž‹LLMé¢†åŸŸï¼Œæœ‰å“ªäº›å¯ä»¥ä½œä¸ºå­¦æœ¯ç ”ç©¶æ–¹å‘ï¼Ÿ](https://www.zhihu.com/question/595298808/answer/3071907155)
 
-- **Ä£ÐÍ²ã**£º
-  - GPTÏµÁÐ£¬¶àÄ£Ì¬ÏµÁÐ£¬ÊÓ¾õÀàSAM£ºÔ­ÉúµÄ¹¤¾ßµ÷ÓÃÄÜÁ¦£»
-  - °²È«ÐÔ£º¼ÓÃÜ£¬¿ÉÐÅÈÎ£¬Áª°îÑ§Ï°£»
-  - ÐÂÄ£ÐÍ£¬ÐÂ·¶Ê½£º³¤ÎÄ±¾½¨Ä££¬²»ÐèÒªRLHFµÈ£»
-  - Ó¿ÏÖÎÊÌâµÄÑÐ¾¿¡¢ºÚºÐµÄÑÐ¾¿£»
-  - ²¢ÐÐ¡¢ÔËËã¡¢ÏÔ´æµÄÓÅ»¯¡£EL-Attention£¬ZeRo£¬¼ôÖ¦²¿Êð£¬ÕôÁóÑ¹Ëõ¡£
-- **½Ó¿Ú²ã**£º
-  - Ë½ÓÐ»¯²¿Êð£»
-  - Adapter£¬prefix£¬Lora£»
-  - Fusing¡£
-- **Ó¦ÓÃ²ã**£º
-  - Visual ChatGPT£¬HuggingGPT£¬AutoGPT£¬LangChain£»
-  - Prompt¹¤³Ì£¬ÏòÁ¿¿â£¬dense retrieval£»
-  - ×ÔÎÒ¾À´í£¬×ÔÎÒµü´ú£¬chain of thought ¼ÓÇ¿£»
-  - ÆÀ²âÊý¾Ý¼¯¡¢ÐÂÊ±´úÏÂµÄÐÂÈÎÎñ£¬generatice agentsµÈ
+- **æ¨¡åž‹å±?**ï¼?
+  - GPTç³»åˆ—ï¼Œå¤šæ¨¡æ€ç³»åˆ—ï¼Œè§†è§‰ç±»SAMï¼šåŽŸç”Ÿçš„å·¥å…·è°ƒç”¨èƒ½åŠ›ï¼?
+  - å®‰å…¨æ€§ï¼šåŠ å¯†ï¼Œå¯ä¿¡ä»»ï¼Œè”é‚¦å­¦ä¹ ï¼›
+  - æ–°æ¨¡åž‹ï¼Œæ–°èŒƒå¼ï¼šé•¿æ–‡æœ¬å»ºæ¨¡ï¼Œä¸éœ€è¦RLHFç­‰ï¼›
+  - æ¶ŒçŽ°é—®é¢˜çš„ç ”ç©¶ã€é»‘ç›’çš„ç ”ç©¶ï¼?
+  - å¹¶è¡Œã€è¿ç®—ã€æ˜¾å­˜çš„ä¼˜åŒ–ã€‚EL-Attentionï¼ŒZeRoï¼Œå‰ªæžéƒ¨ç½²ï¼Œè’¸é¦åŽ‹ç¼©ã€?
+- **æŽ¥å£å±?**ï¼?
+  - ç§æœ‰åŒ–éƒ¨ç½²ï¼›
+  - Adapterï¼Œprefixï¼ŒLoraï¼?
+  - Fusingã€?
+- **åº”ç”¨å±?**ï¼?
+  - Visual ChatGPTï¼ŒHuggingGPTï¼ŒAutoGPTï¼ŒLangChainï¼?
+  - Promptå·¥ç¨‹ï¼Œå‘é‡åº“ï¼Œdense retrievalï¼?
+  - è‡ªæˆ‘çº é”™ï¼Œè‡ªæˆ‘è¿­ä»£ï¼Œchain of thought åŠ å¼ºï¼?
+  - è¯„æµ‹æ•°æ®é›†ã€æ–°æ—¶ä»£ä¸‹çš„æ–°ä»»åŠ¡ï¼Œgeneratice agentsç­?
 
-¼ÙÉèÒÑ¾­ÓÐ GPT-3.5 »ù´¡Ä£ÐÍ£¬Ò»Ç§ÕÅ¿¨£¬Ë¼¿¼ÄÜ×öÊ²Ã´£¿È»ºóÓÃÐ¡Ä£ÐÍ£¬±ÈÈçLLaMa 7BÈ¥ÑéÖ¤£¬Èç¹û³É¹¦£¬ÔÙÂýÂý¼Ó´óµ½13B£¬30B£¬»­³öÒ»ÌõÉÏÉýµÄÇúÏß£»²»Ò»¶¨Òªscaleµ½×î´óµÄÄ£ÐÍ£¬Ö»Òª×Ô¼ºµÄ½áÂÛÄÜ»®³öÒ»ÌõÉÏÉýµÄÇúÏß£¬ÄÇÃ´ÕâÌõÇúÏß¾Í¿ÉÍâÍÆµ½¸ü´ó¡£
+å‡è®¾å·²ç»æœ? GPT-3.5 åŸºç¡€æ¨¡åž‹ï¼Œä¸€åƒå¼ å¡ï¼Œæ€è€ƒèƒ½åšä»€ä¹ˆï¼Ÿç„¶åŽç”¨å°æ¨¡åž‹ï¼Œæ¯”å¦‚LLaMa 7BåŽ»éªŒè¯ï¼Œå¦‚æžœæˆåŠŸï¼Œå†æ…¢æ…¢åŠ å¤§åˆ?13Bï¼?30Bï¼Œç”»å‡ºä¸€æ¡ä¸Šå‡çš„æ›²çº¿ï¼›ä¸ä¸€å®šè¦scaleåˆ°æœ€å¤§çš„æ¨¡åž‹ï¼Œåªè¦è‡ªå·±çš„ç»“è®ºèƒ½åˆ’å‡ºä¸€æ¡ä¸Šå‡çš„æ›²çº¿ï¼Œé‚£ä¹ˆè¿™æ¡æ›²çº¿å°±å¯å¤–æŽ¨åˆ°æ›´å¤§ã€?
 
-Ô´×ÔÖªºõ£º[LessTalk](https://www.zhihu.com/question/595298808/answer/3071907155)
+æºè‡ªçŸ¥ä¹Žï¼š[LessTalk](https://www.zhihu.com/question/595298808/answer/3071907155)
 
-- Æ½Ì¨¹¤¾ß¼°¹¤³Ì»¯²¿Êð
-- Ð¡Ä£ÐÍÄâºÏ´óÄ£ÐÍ½µµÍ¼ÆËãÁ¿
-- ¶àÄ£Ì¬µÄÊäÈëÓëÊä³ö
+- å¹³å°å·¥å…·åŠå·¥ç¨‹åŒ–éƒ¨ç½²
+- å°æ¨¡åž‹æ‹Ÿåˆå¤§æ¨¡åž‹é™ä½Žè®¡ç®—é‡?
+- å¤šæ¨¡æ€çš„è¾“å…¥ä¸Žè¾“å‡?
 - Prompt Engineering
-- ´¹Ö±ÁìÓòÓ¦ÓÃ ËÑË÷+ÖªÊ¶Í¼Æ×¡¢»úÆ÷ÈË¡¢×Ô¶¯¼ÝÊ»µÈ
+- åž‚ç›´é¢†åŸŸåº”ç”¨ æœç´¢+çŸ¥è¯†å›¾è°±ã€æœºå™¨äººã€è‡ªåŠ¨é©¾é©¶ç­‰
 
-Ìá¸Ù
-- »ù´¡ÀíÂÛ£º´óÄ£ÐÍµÄ»ù´¡ÀíÂÛÊÇÊ²Ã´£¿
-- ÍøÂç¼Ü¹¹£ºTransformerÊÇÖÕ¼«¿ò¼ÜÂð£¿
-- ¸ßÐ§¼ÆËã£ºÈçºÎÊ¹´óÄ£ÐÍ¸ü¼Ó¸ßÐ§£¿
-- ¸ßÐ§ÊÊÅä£º´óÄ£ÐÍÈçºÎÊÊÅäµ½ÏÂÓÎÈÎÎñ£¿
-- ¿É¿ØÉú³É£ºÈçºÎÊµÏÖ´óÄ£ÐÍµÄ¿É¿ØÉú³É£¿
-- °²È«¿ÉÐÅ£ºÈçºÎ¸ÄÉÆ´óÄ£ÐÍÖÐµÄ°²È«Â×ÀíÎÊÌâ£¿
-- ÈÏÖªÑ§Ï°£ºÈçºÎÊ¹´óÄ£ÐÍ»ñµÃ¸ß¼¶ÈÏÖªÄÜÁ¦£¿
-- ´´ÐÂÓ¦ÓÃ£º´óÄ£ÐÍÓÐÄÄÐ©´´ÐÂÓ¦ÓÃ£¿
-- Êý¾ÝÆÀ¼Û£ºÈçºÎÆÀ¹À´óÄ£ÐÍµÄÐÔÄÜ£¿
-- Ò×ÓÃÐÔ£ºÈçºÎ½µµÍ´óÄ£ÐÍµÄÊ¹ÓÃÃÅ¼÷£¿
+æçº²
+- åŸºç¡€ç†è®ºï¼šå¤§æ¨¡åž‹çš„åŸºç¡€ç†è®ºæ˜¯ä»€ä¹ˆï¼Ÿ
+- ç½‘ç»œæž¶æž„ï¼šTransformeræ˜¯ç»ˆæžæ¡†æž¶å—ï¼?
+- é«˜æ•ˆè®¡ç®—ï¼šå¦‚ä½•ä½¿å¤§æ¨¡åž‹æ›´åŠ é«˜æ•ˆï¼Ÿ
+- é«˜æ•ˆé€‚é…ï¼šå¤§æ¨¡åž‹å¦‚ä½•é€‚é…åˆ°ä¸‹æ¸¸ä»»åŠ¡ï¼Ÿ
+- å¯æŽ§ç”Ÿæˆï¼šå¦‚ä½•å®žçŽ°å¤§æ¨¡åž‹çš„å¯æŽ§ç”Ÿæˆï¼Ÿ
+- å®‰å…¨å¯ä¿¡ï¼šå¦‚ä½•æ”¹å–„å¤§æ¨¡åž‹ä¸­çš„å®‰å…¨ä¼¦ç†é—®é¢˜ï¼?
+- è®¤çŸ¥å­¦ä¹ ï¼šå¦‚ä½•ä½¿å¤§æ¨¡åž‹èŽ·å¾—é«˜çº§è®¤çŸ¥èƒ½åŠ›ï¼Ÿ
+- åˆ›æ–°åº”ç”¨ï¼šå¤§æ¨¡åž‹æœ‰å“ªäº›åˆ›æ–°åº”ç”¨ï¼Ÿ
+- æ•°æ®è¯„ä»·ï¼šå¦‚ä½•è¯„ä¼°å¤§æ¨¡åž‹çš„æ€§èƒ½ï¼?
+- æ˜“ç”¨æ€§ï¼šå¦‚ä½•é™ä½Žå¤§æ¨¡åž‹çš„ä½¿ç”¨é—¨æ§›ï¼?
 
-×÷Õß£º[zibuyu9](https://www.zhihu.com/question/595298808/answer/3047369015)
+ä½œè€…ï¼š[zibuyu9](https://www.zhihu.com/question/595298808/answer/3047369015)
 
-ÆäËü
-- reasoning Âß¼­ÍÆÀí£ºÄ¿Ç°llmÄÜÁ¦»¹²»¹»µÄµØ·½¡£±ÈÈçÄÜ²»ÄÜÈÃllm×öleetcode hard¡£½øÒ»²½µÄ£¬ÄÜ²»ÄÜ×Ô¼º´´ÔìÐÂµÄÖªÊ¶£¬½â¾ö¸çµÂ°ÍºÕ²ÂÏë¡£
-- compression and acceleration Ä£ÐÍÑ¹ËõÓë¼ÓËÙ£ºÔõÃ´°ÑÒ»¸ö10bµÄÄ£ÐÍÅªµ½ÊÖ»úÉÏ²¢¸ßËÙÔËÐÐ
-- agent£ºÔõÃ´¸üºÃµÄ¸øllm¼ÓÉÏÑÛ¾¦ÓëÊÖ½Å£¬ÈÃllm±ä³ÉagentÖ´ÐÐÈÎÎñ£¬²¢¹¹Ôì¸÷ÖÖ¸÷ÑùÈ«ÐÂµÄbenchmark¡£±ÈÈçÈÃagent·¢Öªºõ»Ø´ðÒÔµãÔÞ¶àÎªÄ¿±ê¡£ÄÜ²»ÄÜÍ¨¹ýRL°ÑÕâ¼þÊÂ×öÁË?¾ÍºÍµ±Äê¸ãÓÎÏ·aiÒ»Ñù¡£
-- multi-modal ¶àÄ£Ì¬£ºGPT-4Ã»ÓÐ¿ªÔ´£¬ÉõÖÁÃ»ÓÐ¼¼ÊõÏ¸½Ú£¬ÔõÃ´×öÒ»¸ö¿ªÔ´µÄ±Æ½ügpt-4µÄÄ£ÐÍ¡£mini-gpt4, llavaÊÇ¸ö²»´íµÄ³¢ÊÔ¡£
-- Hallucination »Ã¾õÎÊÌâ£ºGPT-4ÒÑ¾­ºÃÁËºÜ¶à£¬µ«ÈÔÈ»Ã»ÓÐÍêÈ«½â¾ö¡£ËùÒÔÒò´ËÂíË¹¿ËËµÒª×öTruthGPT. ÒªÈÃLLMÖªÖ®ÎªÖªÖ®²»ÖªÎª²»Öª¡£Õâ¸öÄÑ¶ÈÆäÊµºÜ´ó¡£
-- Evaluation¡£¿ªÔ´ÊÀ½çÐèÒªÒ»Ì×ÐÂµÄEvaluationµÄ·½·¨À´ÆÀ¹ÀllmµÄÐ§¹û£¬´Ó¶ø·½±ãÍÆ½ø¿ªÔ´llmµÄ½øÕ¹¡£
-- dataset¡£Õâ¸öÊÇchatgpt±»´´Ôì³öÀ´µÄÔ´Í·¡£ËùÒÔ£¬ÄÜ·ñ¶à¹¹½¨Ò»¸ö×¨¼ÒµÄÊý¾Ý¿âÀ´°ïÖúÓÅ»¯llmÄØ£¿Ã¿Ò»·Ý¿ªÔ´Êý¾Ý¶¼·Ç³£ÓÐ¼ÛÖµ¡£
+å…¶å®ƒ
+- reasoning é€»è¾‘æŽ¨ç†ï¼šç›®å‰llmèƒ½åŠ›è¿˜ä¸å¤Ÿçš„åœ°æ–¹ã€‚æ¯”å¦‚èƒ½ä¸èƒ½è®©llmåšleetcode hardã€‚è¿›ä¸€æ­¥çš„ï¼Œèƒ½ä¸èƒ½è‡ªå·±åˆ›é€ æ–°çš„çŸ¥è¯†ï¼Œè§£å†³å“¥å¾·å·´èµ«çŒœæƒ³ã€?
+- compression and acceleration æ¨¡åž‹åŽ‹ç¼©ä¸ŽåŠ é€Ÿï¼šæ€Žä¹ˆæŠŠä¸€ä¸?10bçš„æ¨¡åž‹å¼„åˆ°æ‰‹æœºä¸Šå¹¶é«˜é€Ÿè¿è¡?
+- agentï¼šæ€Žä¹ˆæ›´å¥½çš„ç»™llmåŠ ä¸Šçœ¼ç›ä¸Žæ‰‹è„šï¼Œè®©llmå˜æˆagentæ‰§è¡Œä»»åŠ¡ï¼Œå¹¶æž„é€ å„ç§å„æ ·å…¨æ–°çš„benchmarkã€‚æ¯”å¦‚è®©agentå‘çŸ¥ä¹Žå›žç­”ä»¥ç‚¹èµžå¤šä¸ºç›®æ ‡ã€‚èƒ½ä¸èƒ½é€šè¿‡RLæŠŠè¿™ä»¶äº‹åšäº†?å°±å’Œå½“å¹´æžæ¸¸æˆaiä¸€æ ·ã€?
+- multi-modal å¤šæ¨¡æ€ï¼šGPT-4æ²¡æœ‰å¼€æºï¼Œç”šè‡³æ²¡æœ‰æŠ€æœ¯ç»†èŠ‚ï¼Œæ€Žä¹ˆåšä¸€ä¸ªå¼€æºçš„é€¼è¿‘gpt-4çš„æ¨¡åž‹ã€‚mini-gpt4, llavaæ˜¯ä¸ªä¸é”™çš„å°è¯•ã€?
+- Hallucination å¹»è§‰é—®é¢˜ï¼šGPT-4å·²ç»å¥½äº†å¾ˆå¤šï¼Œä½†ä»ç„¶æ²¡æœ‰å®Œå…¨è§£å†³ã€‚æ‰€ä»¥å› æ­¤é©¬æ–¯å…‹è¯´è¦åšTruthGPT. è¦è®©LLMçŸ¥ä¹‹ä¸ºçŸ¥ä¹‹ä¸çŸ¥ä¸ºä¸çŸ¥ã€‚è¿™ä¸ªéš¾åº¦å…¶å®žå¾ˆå¤§ã€?
+- Evaluationã€‚å¼€æºä¸–ç•Œéœ€è¦ä¸€å¥—æ–°çš„Evaluationçš„æ–¹æ³•æ¥è¯„ä¼°llmçš„æ•ˆæžœï¼Œä»Žè€Œæ–¹ä¾¿æŽ¨è¿›å¼€æºllmçš„è¿›å±•ã€?
+- datasetã€‚è¿™ä¸ªæ˜¯chatgptè¢«åˆ›é€ å‡ºæ¥çš„æºå¤´ã€‚æ‰€ä»¥ï¼Œèƒ½å¦å¤šæž„å»ºä¸€ä¸ªä¸“å®¶çš„æ•°æ®åº“æ¥å¸®åŠ©ä¼˜åŒ–llmå‘¢ï¼Ÿæ¯ä¸€ä»½å¼€æºæ•°æ®éƒ½éžå¸¸æœ‰ä»·å€¼ã€?
 
-ÂÛÎÄ£º[A PhD Student¡¯s Perspective on Research in NLP in the Era of Very Large Language Models](https://arxiv.org/pdf/2305.12544.pdf)
+è®ºæ–‡ï¼š[A PhD Studentâ€™s Perspective on Research in NLP in the Era of Very Large Language Models](https://arxiv.org/pdf/2305.12544.pdf)
 
 
-## Ä£ÐÍÈÚºÏ
+## æ¨¡åž‹èžåˆ
 
-¡¾2024-8-8¡¿[Ä£ÐÍÈÚºÏÀ´Ï®£¡ChatGPTºÍClaude ÔÓ½»ÄÜ±ä´ÏÃ÷10±¶£¿](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
+ã€?2024-8-8ã€‘[æ¨¡åž‹èžåˆæ¥è¢­ï¼ChatGPTå’ŒClaude æ‚äº¤èƒ½å˜èªæ˜Ž10å€ï¼Ÿ](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
 
-### Ê²Ã´ÊÇÄ£ÐÍÈÚºÏ
+### ä»€ä¹ˆæ˜¯æ¨¡åž‹èžåˆ
 
-Ê²Ã´ÊÇÄ£ÐÍÈÚºÏ£¿
-- °Ñ¶à¸öAIÄ£ÐÍµÄ²ÎÊý»ìºÏÔÚÒ»Æð£¬Éú³ÉÒ»¸öÐÂÄ£ÐÍ¡£
+ä»€ä¹ˆæ˜¯æ¨¡åž‹èžåˆï¼?
+- æŠŠå¤šä¸ªAIæ¨¡åž‹çš„å‚æ•°æ··åˆåœ¨ä¸€èµ·ï¼Œç”Ÿæˆä¸€ä¸ªæ–°æ¨¡åž‹ã€?
 
-¼òµ¥, µ«Ð§¹ûÈ´³öÆæµÄºÃ
-- ²»ÐèÒª¶îÍâµÄÊý¾ÝºÍËãÁ¦£¬Ö»Òª°Ñ**Ä£ÐÍÈ¨ÖØ**¼Ó¼õÒ»ÏÂ¾ÍÐÐÁË¡£
-- ÈÚºÏºóµÄÄ£ÐÍ»¹ÕæÄÜ¼¯¸÷¼ÒÖ®Ëù³¤£¬ÐÔÄÜÃ÷ÏÔÌáÉý¡£
+ç®€å?, ä½†æ•ˆæžœå´å‡ºå¥‡çš„å¥½
+- ä¸éœ€è¦é¢å¤–çš„æ•°æ®å’Œç®—åŠ›ï¼Œåªè¦æŠ?**æ¨¡åž‹æƒé‡**åŠ å‡ä¸€ä¸‹å°±è¡Œäº†ã€?
+- èžåˆåŽçš„æ¨¡åž‹è¿˜çœŸèƒ½é›†å„å®¶ä¹‹æ‰€é•¿ï¼Œæ€§èƒ½æ˜Žæ˜¾æå‡ã€?
 
-±ÈÈç Prometheus-2 Ä£ÐÍÓÃÕâÕÐ°Ñ¼¸¸öÆÀ¹ÀÄ£ÐÍµÄÄÜÁ¦ÈÚºÏµ½Ò»ÆðµÄ
+æ¯”å¦‚ Prometheus-2 æ¨¡åž‹ç”¨è¿™æ‹›æŠŠå‡ ä¸ªè¯„ä¼°æ¨¡åž‹çš„èƒ½åŠ›èžåˆåˆ°ä¸€èµ·çš„
 
-### ÈÚºÏ·½·¨
+### èžåˆæ–¹æ³•
 
-³£¼û·½·¨£ºÍ¼¼û[Ô­ÎÄ](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
-- **ÏßÐÔ**ÈÚºÏ£º×î¼òµ¥´Ö±©£¬Ö±½Ó¶Ô²ÎÊý**¼ÓÈ¨Æ½¾ù**¡£ËäÈ»¼òµ¥µ«³öÆæµÄÓÐÐ§¡£
-- **ÈÎÎñÏòÁ¿**£º°ÑÎ¢µ÷ºóµÄÄ£ÐÍ¼õÈ¥Ô­Ê¼Ä£ÐÍ£¬µÃµ½Ò»¸ö"ÈÎÎñÏòÁ¿"¡£ÓÃÕâ¸öÏòÁ¿×ö¼Ó¼õ·¨£¬±ÈÈç¼õµôÓÐ¶¾ÄÚÈÝµÄÈÎÎñÏòÁ¿£¬Ä£ÐÍ¾ÍÄÜÉú³É¸ü¸É¾»µÄÄÚÈÝÁË¡£
-- `TIES`ÈÚºÏ£ºÔÚÈÎÎñÏòÁ¿»ù´¡ÉÏ¼ÓÁËÈý°å¸« - ÐÞ¼ô¡¢Ñ¡¾ÙºÍ·ÖÀë£¬¿ÉÒÔÈ¥µôÈßÓàÈ¨ÖØ¡¢½â¾öÈÎÎñÏòÁ¿¼äµÄ·ÖÆç¡£
-- `DARE`ÈÚºÏ£º¸úTIESË¼Â·ÀàËÆ£¬µ«ÓÃËæ»ú¶ªÆúºÍÖØÐÂËõ·ÅÀ´È¥µôÈßÓàÈ¨ÖØ¡£
+å¸¸è§æ–¹æ³•ï¼šå›¾è§[åŽŸæ–‡](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
+- **çº¿æ€?**èžåˆï¼šæœ€ç®€å•ç²—æš´ï¼Œç›´æŽ¥å¯¹å‚æ•?**åŠ æƒå¹³å‡**ã€‚è™½ç„¶ç®€å•ä½†å‡ºå¥‡çš„æœ‰æ•ˆã€?
+- **ä»»åŠ¡å‘é‡**ï¼šæŠŠå¾®è°ƒåŽçš„æ¨¡åž‹å‡åŽ»åŽŸå§‹æ¨¡åž‹ï¼Œå¾—åˆ°ä¸€ä¸?"ä»»åŠ¡å‘é‡"ã€‚ç”¨è¿™ä¸ªå‘é‡åšåŠ å‡æ³•ï¼Œæ¯”å¦‚å‡æŽ‰æœ‰æ¯’å†…å®¹çš„ä»»åŠ¡å‘é‡ï¼Œæ¨¡åž‹å°±èƒ½ç”Ÿæˆæ›´å¹²å‡€çš„å†…å®¹äº†ã€?
+- `TIES`èžåˆï¼šåœ¨ä»»åŠ¡å‘é‡åŸºç¡€ä¸ŠåŠ äº†ä¸‰æ¿æ–§ - ä¿®å‰ªã€é€‰ä¸¾å’Œåˆ†ç¦»ï¼Œå¯ä»¥åŽ»æŽ‰å†—ä½™æƒé‡ã€è§£å†³ä»»åŠ¡å‘é‡é—´çš„åˆ†æ­§ã€?
+- `DARE`èžåˆï¼šè·ŸTIESæ€è·¯ç±»ä¼¼ï¼Œä½†ç”¨éšæœºä¸¢å¼ƒå’Œé‡æ–°ç¼©æ”¾æ¥åŽ»æŽ‰å†—ä½™æƒé‡ã€?
 
-ÂÛÎÄÁ´½Ó£º
-- ÈÎÎñÏòÁ¿£º[paper](https://arxiv.org/abs/2212.04089)
-- TIES£º[paper](https://arxiv.org/abs/2306.01708)
-- DARE£º[paper](https://arxiv.org/abs/2311.03099)
-- Ç¶ÈëÏòÁ¿ÈÚºÏ£º[paper](https://arxiv.org/abs/1912.00772)
+è®ºæ–‡é“¾æŽ¥ï¼?
+- ä»»åŠ¡å‘é‡ï¼š[paper](https://arxiv.org/abs/2212.04089)
+- TIESï¼š[paper](https://arxiv.org/abs/2306.01708)
+- DAREï¼š[paper](https://arxiv.org/abs/2311.03099)
+- åµŒå…¥å‘é‡èžåˆï¼š[paper](https://arxiv.org/abs/1912.00772)
 
-¹¤¾ß mergekit£º
+å·¥å…· mergekitï¼?
 - [merge-models](https://huggingface.co/blog/mlabonne/merge-models)
 
 
@@ -107,61 +107,61 @@ permalink: /llm_new
 
 Gac: Generation as Classification
 
-¡¾2024-6-18¡¿ÉÏº£AI Lab ÍÆ³ö [ÈÚºÏ¶à¸ö´óÄ£ÐÍÐÂË¼Â· --- Generation as Classification](https://zhuanlan.zhihu.com/p/715404265)
+ã€?2024-6-18ã€‘ä¸Šæµ·AI Lab æŽ¨å‡º [èžåˆå¤šä¸ªå¤§æ¨¡åž‹æ–°æ€è·¯ --- Generation as Classification](https://zhuanlan.zhihu.com/p/715404265)
 
-³£´ò±ÈÈüµÄÈË(ÈçKaggle)ºÜÊìÏ¤, ºÜ¶àÊ±ºòÆ´µÄ¾ÍÊÇ¸÷ÖÖ**»¨Ê½Ä£ÐÍÈÚºÏ**, ½«¶à¸ömodelÈÚºÏ(ensemble)ºó¿ÉÒÔÍ»ÆÆÏÖÓÐÆ¿¾±, ÉñÆæµØÈÃÈÚºÏºóµÄÐÔÄÜ³¬¹ýÈÎºÎÒ»¸ö²ÎÓëensembleµÄµ¥Ò»Ä£ÐÍ¡£
+å¸¸æ‰“æ¯”èµ›çš„äºº(å¦‚Kaggle)å¾ˆç†Ÿæ‚?, å¾ˆå¤šæ—¶å€™æ‹¼çš„å°±æ˜¯å„ç§?**èŠ±å¼æ¨¡åž‹èžåˆ**, å°†å¤šä¸ªmodelèžåˆ(ensemble)åŽå¯ä»¥çªç ´çŽ°æœ‰ç“¶é¢?, ç¥žå¥‡åœ°è®©èžåˆåŽçš„æ€§èƒ½è¶…è¿‡ä»»ä½•ä¸€ä¸ªå‚ä¸Žensembleçš„å•ä¸€æ¨¡åž‹ã€?
 
-ImageNet ÊÓ¾õ·ÖÀàÈÎÎñ, ·ÖÀàÄ£ÐÍ»áÊä³öÒ»¸öÎ¬¶ÈÎª 1000 ÏòÁ¿´ú±íÔ¤²âÃ¿¸öÀà±ðµÄ¸ÅÂÊ£¬½ö½ö½«¶à¸öÄ£ÐÍµÄ·ÖÀàÏòÁ¿¼ÓÆðÀ´ºóÈ¡Æ½¾ù, ¾Í¿ÉÒÔÈ¡µÃ²»´íµÄ×¼È·ÂÊÌáÉý
-- Ô­±¾×î¸ßµÄÊÇ RepGhostNet 78.81%, ½«Èý¸öÄ£ÐÍÈÚºÏºó¾ÍÌáÉýµ½ÁË 80.62%. 
+ImageNet è§†è§‰åˆ†ç±»ä»»åŠ¡, åˆ†ç±»æ¨¡åž‹ä¼šè¾“å‡ºä¸€ä¸ªç»´åº¦ä¸º 1000 å‘é‡ä»£è¡¨é¢„æµ‹æ¯ä¸ªç±»åˆ«çš„æ¦‚çŽ‡ï¼Œä»…ä»…å°†å¤šä¸ªæ¨¡åž‹çš„åˆ†ç±»å‘é‡åŠ èµ·æ¥åŽå–å¹³å?, å°±å¯ä»¥å–å¾—ä¸é”™çš„å‡†ç¡®çŽ‡æå?
+- åŽŸæœ¬æœ€é«˜çš„æ˜? RepGhostNet 78.81%, å°†ä¸‰ä¸ªæ¨¡åž‹èžåˆåŽå°±æå‡åˆ°äº? 80.62%. 
 
-ÀàËÆµØ, °ÑLLMÃ¿¸ögeneration step¶¼µ±³ÉÒ»´Î·ÖÀàÈÎÎñ(Generation as Classification, GaC)È¥ensemble, ´Ó¶øÌáÉýËùÉú³ÉµÄÃ¿¸ötokenµÄÕýÈ·ÐÔ, ²¢×îÖÕ»ñµÃ¸üºÃ response.
+ç±»ä¼¼åœ?, æŠŠLLMæ¯ä¸ªgeneration stepéƒ½å½“æˆä¸€æ¬¡åˆ†ç±»ä»»åŠ?(Generation as Classification, GaC)åŽ»ensemble, ä»Žè€Œæå‡æ‰€ç”Ÿæˆçš„æ¯ä¸ªtokençš„æ­£ç¡®æ€?, å¹¶æœ€ç»ˆèŽ·å¾—æ›´å¥? response.
 
-ºËÐÄË¼Ïë: LLMÉú³ÉÎÄ±¾Ê±, Ã¿¸ögeneration step¶¼ÓÉ¶à¸öLLM¹²Í¬¾ö¶¨ÏÂÒ»¸ötokenÒªÊä³öÊ²Ã´
+æ ¸å¿ƒæ€æƒ³: LLMç”Ÿæˆæ–‡æœ¬æ—?, æ¯ä¸ªgeneration stepéƒ½ç”±å¤šä¸ªLLMå…±åŒå†³å®šä¸‹ä¸€ä¸ªtokenè¦è¾“å‡ºä»€ä¹?
 - ![](https://pica.zhimg.com/80/v2-e8c84b1cf0e391ffe40b2a9fe2fc966a_1440w.webp)
 - Paper Title: [Breaking the Ceiling of the LLM Community by Treating Token Generation as a Classification for Ensembling](https://arxiv.org/pdf/2406.12585)
 - [GaC](https://github.com/yaoching0/GaC)
 
-ÈçºÎÊµÊ©£¿
+å¦‚ä½•å®žæ–½ï¼?
 
-ÎÊÌâ
-- LLM Ã¿²½Éú³É¸úÆä**´Ê»ã±íµÈ³¤**µÄ¸ÅÂÊÏòÁ¿, ¶ø **LLMs ´Ê»ã±í³¤¶È²»Ò»Ñù**
-- ±ÈÈç: 
-  - Llama3 ´Ê»ã±í³¤¶È 128256
-  - Qwen2  ´Ê»ã±í³¤¶È 152064
-- ÕâºÍImageNet·ÖÀàÈÎÎñÉÏËùÓÐÄ£ÐÍ¶¼Êä³ö1000Î¬¶ÈµÄÏòÁ¿²»Í¬.
+é—®é¢˜
+- LLM æ¯æ­¥ç”Ÿæˆè·Ÿå…¶**è¯æ±‡è¡¨ç­‰é•?**çš„æ¦‚çŽ‡å‘é‡?, è€? **LLMs è¯æ±‡è¡¨é•¿åº¦ä¸ä¸€æ ?**
+- æ¯”å¦‚: 
+  - Llama3 è¯æ±‡è¡¨é•¿åº? 128256
+  - Qwen2  è¯æ±‡è¡¨é•¿åº? 152064
+- è¿™å’ŒImageNetåˆ†ç±»ä»»åŠ¡ä¸Šæ‰€æœ‰æ¨¡åž‹éƒ½è¾“å‡º1000ç»´åº¦çš„å‘é‡ä¸å?.
 
-Ö±¾õ×ö·¨: 
-- ¶ÔËùÓÐ²ÎÓëensembleµÄLLM´Ê»ã±íÈ¡**²¢¼¯**µÃµ½ Vu, ²¢ÓÃ**0-1¾ØÕó**¼ÇÂ¼ÏÂÔ­±¾LLM´Ê»ã±íºÍ Vu **¶ÔÓ¦¹ØÏµ**. 
-- Ò»¸ögeneration stepÖÐ, ½«Ã¿¸öLLMÉú³ÉµÄ**¸ÅÂÊÏòÁ¿**³ËÒÔ¸÷×ÔµÄ0-1¾ØÕó×ª»»µ½ Vu Î¬¶È
-- ËæºóÔÙ**È¡Æ½¾ù**²¢µÃµ½ensembleºóµÄ¸ÅÂÊÏòÁ¿
-- ÔÙ¸ù¾Ý¸ÃÏòÁ¿sample³öÏÂÒ»¸ötoken, ´ËÊ±Õâ¸ötoken¾ÍÊÇÓÉËùÓÐ²ÎÓëensembleµÄLLM¾ö¶¨µÄ
-- µ±Ñ¡³öÒ»¸ötokenºó, Ã¿¸öLLM»áÓÃ¸÷×ÔµÄtokenizer½«Õâ¸ötoken×ª»»Îª¸÷×ÔµÄ token id(s), ²¢Æ´»Øµ½¸÷×ÔµÄÊäÈëÖÐÒÔ½øÐÐÏÂÒ»¸ögeneration step.
+ç›´è§‰åšæ³•: 
+- å¯¹æ‰€æœ‰å‚ä¸Žensembleçš„LLMè¯æ±‡è¡¨å–**å¹¶é›†**å¾—åˆ° Vu, å¹¶ç”¨**0-1çŸ©é˜µ**è®°å½•ä¸‹åŽŸæœ¬LLMè¯æ±‡è¡¨å’Œ Vu **å¯¹åº”å…³ç³»**. 
+- ä¸€ä¸ªgeneration stepä¸?, å°†æ¯ä¸ªLLMç”Ÿæˆçš?**æ¦‚çŽ‡å‘é‡**ä¹˜ä»¥å„è‡ªçš?0-1çŸ©é˜µè½¬æ¢åˆ? Vu ç»´åº¦
+- éšåŽå†?**å–å¹³å?**å¹¶å¾—åˆ°ensembleåŽçš„æ¦‚çŽ‡å‘é‡
+- å†æ ¹æ®è¯¥å‘é‡sampleå‡ºä¸‹ä¸€ä¸ªtoken, æ­¤æ—¶è¿™ä¸ªtokenå°±æ˜¯ç”±æ‰€æœ‰å‚ä¸Žensembleçš„LLMå†³å®šçš?
+- å½“é€‰å‡ºä¸€ä¸ªtokenå?, æ¯ä¸ªLLMä¼šç”¨å„è‡ªçš„tokenizerå°†è¿™ä¸ªtokenè½¬æ¢ä¸ºå„è‡ªçš„ token id(s), å¹¶æ‹¼å›žåˆ°å„è‡ªçš„è¾“å…¥ä¸­ä»¥è¿›è¡Œä¸‹ä¸€ä¸ªgeneration step.
 - ![](https://pic4.zhimg.com/80/v2-007b5f3229ad47a81a4613587dfd4433_1440w.webp)
 
-ÕâÖÖ¼òµ¥×ö·¨¾¹È»´òÆÆÏÖÓÐµÄLLMÉçÇøÌì»¨°å£¡(µ±È», »¨·ÑÁË¸ü¶à¼ÆËãÁ¿)
+è¿™ç§ç®€å•åšæ³•ç«Ÿç„¶æ‰“ç ´çŽ°æœ‰çš„LLMç¤¾åŒºå¤©èŠ±æ¿ï¼(å½“ç„¶, èŠ±è´¹äº†æ›´å¤šè®¡ç®—é‡)
 - ![](https://pica.zhimg.com/80/v2-21d29f4a7f9f30cba52ae96330720956_1440w.webp)
 
-Qwen2 ÊÇ 2024/06/07 ÍË³ö, ÄÃËüºÍÊµÁ¦Ïàµ±µÄ llama3 ½øÐÐÈÚºÏ, ¸÷¸öÖ¸±êÉÏÆ½¾ù4%µÄÌáÉý! ´ïµ½ 2024/06/07¿ªÔ´ÉçÇø×îºÃ½á¹û
+Qwen2 æ˜? 2024/06/07 é€€å‡?, æ‹¿å®ƒå’Œå®žåŠ›ç›¸å½“çš„ llama3 è¿›è¡Œèžåˆ, å„ä¸ªæŒ‡æ ‡ä¸Šå¹³å?4%çš„æå?! è¾¾åˆ° 2024/06/07å¼€æºç¤¾åŒºæœ€å¥½ç»“æž?
 
-¸Ã·½·¨²»ÊÜÄ£ÐÍ¼Ü¹¹µÄÏÞÖÆ, Ëæ×ÅÐÂÄ£ÐÍµÄÊÍ³ö»¹ÊÇ¿ÉÒÔ²»¶ÏµÄÒÔÐÂÄ£ÐÍÎª»ù´¡¼ÌÐøÍÆÉýÌì»¨°å.
+è¯¥æ–¹æ³•ä¸å—æ¨¡åž‹æž¶æž„çš„é™åˆ¶, éšç€æ–°æ¨¡åž‹çš„é‡Šå‡ºè¿˜æ˜¯å¯ä»¥ä¸æ–­çš„ä»¥æ–°æ¨¡åž‹ä¸ºåŸºç¡€ç»§ç»­æŽ¨å‡å¤©èŠ±æ?.
 
 
-## ¿É¿ØÉú³É
+## å¯æŽ§ç”Ÿæˆ
 
-¡¾2023-7-10¡¿[LLM ¿É¿ØÉú³É³õÌ½](https://mp.weixin.qq.com/s/BngY2WgCcpTOlvdyBNJxqA)
+ã€?2023-7-10ã€‘[LLM å¯æŽ§ç”ŸæˆåˆæŽ¢](https://mp.weixin.qq.com/s/BngY2WgCcpTOlvdyBNJxqA)
 
-»ùÓÚ LLM µÄÓ¦ÓÃ¿ª·¢¹ý³ÌÖÐ£¬ÓÐ¼¸¸öÌôÕ½£¬°üÀ¨£º
-- ÈçºÎ±ÜÃâ¡°ºúËµ°ËµÀ¡±, ÌáÉýÄ£ÐÍÊä³öµÄ**¿É¿¿ÐÔ/ÎÈ¶¨ÐÔ**
-- ¿ØÖÆÄ£ÐÍµÄ¼ÆËã¿ªÏúºÍÏìÓ¦ËÙ¶ÈµÈµÈ
+åŸºäºŽ LLM çš„åº”ç”¨å¼€å‘è¿‡ç¨‹ä¸­ï¼Œæœ‰å‡ ä¸ªæŒ‘æˆ˜ï¼ŒåŒ…æ‹¬ï¼š
+- å¦‚ä½•é¿å…â€œèƒ¡è¯´å…«é“â€?, æå‡æ¨¡åž‹è¾“å‡ºçš?**å¯é æ€?/ç¨³å®šæ€?**
+- æŽ§åˆ¶æ¨¡åž‹çš„è®¡ç®—å¼€é”€å’Œå“åº”é€Ÿåº¦ç­‰ç­‰
 
-Ä¿Ç°Ö÷Á÷µÄ½â¾öÊÖ¶Î°üÀ¨£º
-- ¸üºÃµÄ prompt Éè¼Æ
-- Í¨¹ý retrieval À´×öÔöÇ¿
-- ÓëÍâ²¿¹¤¾ßµÄ½áºÏ
-- Á÷³Ì±àÅÅÓë²úÆ·Éè¼Æ
-- ¿¼ÂÇÊ¹ÓÃ fine tune Ä£ÐÍ»ò»ìºÏÄ£ÐÍÓ¦ÓÃ
+ç›®å‰ä¸»æµçš„è§£å†³æ‰‹æ®µåŒ…æ‹¬ï¼š
+- æ›´å¥½çš? prompt è®¾è®¡
+- é€šè¿‡ retrieval æ¥åšå¢žå¼º
+- ä¸Žå¤–éƒ¨å·¥å…·çš„ç»“åˆ
+- æµç¨‹ç¼–æŽ’ä¸Žäº§å“è®¾è®?
+- è€ƒè™‘ä½¿ç”¨ fine tune æ¨¡åž‹æˆ–æ··åˆæ¨¡åž‹åº”ç”?
 
-|PromptÓÅ»¯ÀàÐÍ|latency|compute|
+|Promptä¼˜åŒ–ç±»åž‹|latency|compute|
 |---|---|---|
 |Few-Shot CoT|??|??|
 |Zero-Shot CoT|?|?|
@@ -170,129 +170,129 @@ Qwen2 ÊÇ 2024/06/07 ÍË³ö, ÄÃËüºÍÊµÁ¦Ïàµ±µÄ llama3 ½øÐÐÈÚºÏ, ¸÷¸öÖ¸±êÉÏÆ½¾ù4%µÄÌá
 |Self-Criticism|????|??|
 ||||
 
-¿É¿ØÉú³É×îÖ±½ÓµÄ·½°¸£º
-- Ê×ÏÈÍ¨¹ý prompt ¸æÖª LLM ÎÒÃÇËùÐèÒªµÄ·µ»Ø¸ñÊ½£¬²¢½øÐÐÉú³É¡£
-- Í¨¹ýÒ»Ð©¹æÔòÀ´¼ì²é·µ»Ø½á¹û£¬Èç¹û²»·ûºÏ¸ñÊ½£¬Éú³ÉÏà¹Ø´íÎóÐÅÏ¢¡£
-- ½«ÉÏÒ»´ÎµÄÉú³ÉÄÚÈÝºÍ¼ì²éµÄ´íÎóÐÅÏ¢¸æÖª LLM£¬½øÐÐÏÂÒ»´ÎµÄÐÞÕýÉú³É¡£
-- ÖØ¸´ 2-3 ²½Öè£¬Ö±µ½Éú³ÉµÄÄÚÈÝÍêÈ«·ûºÏÒªÇó¡£
+å¯æŽ§ç”Ÿæˆæœ€ç›´æŽ¥çš„æ–¹æ¡ˆï¼š
+- é¦–å…ˆé€šè¿‡ prompt å‘ŠçŸ¥ LLM æˆ‘ä»¬æ‰€éœ€è¦çš„è¿”å›žæ ¼å¼ï¼Œå¹¶è¿›è¡Œç”Ÿæˆã€?
+- é€šè¿‡ä¸€äº›è§„åˆ™æ¥æ£€æŸ¥è¿”å›žç»“æžœï¼Œå¦‚æžœä¸ç¬¦åˆæ ¼å¼ï¼Œç”Ÿæˆç›¸å…³é”™è¯¯ä¿¡æ¯ã€?
+- å°†ä¸Šä¸€æ¬¡çš„ç”Ÿæˆå†…å®¹å’Œæ£€æŸ¥çš„é”™è¯¯ä¿¡æ¯å‘ŠçŸ¥ LLMï¼Œè¿›è¡Œä¸‹ä¸€æ¬¡çš„ä¿®æ­£ç”Ÿæˆã€?
+- é‡å¤ 2-3 æ­¥éª¤ï¼Œç›´åˆ°ç”Ÿæˆçš„å†…å®¹å®Œå…¨ç¬¦åˆè¦æ±‚ã€?
 
-LLM µÄ¿É¿ØÐÔ¡¢ÎÈ¶¨ÐÔ¡¢ÊÂÊµÐÔ¡¢°²È«ÐÔµÈÎÊÌâÊÇÍÆ½øÆóÒµ¼¶Ó¦ÓÃÖÐ·Ç³£¹Ø¼üµÄÎÊÌâ£¬ÏÂÃæÕâÐ©ÏîÄ¿ÔÚÕâ·½Ãæ×öÁËºÜ¶àÌ½Ë÷£¬Ò²ÓÐºÜ¶àÖµµÃ½è¼øµÄµØ·½¡£
+LLM çš„å¯æŽ§æ€§ã€ç¨³å®šæ€§ã€äº‹å®žæ€§ã€å®‰å…¨æ€§ç­‰é—®é¢˜æ˜¯æŽ¨è¿›ä¼ä¸šçº§åº”ç”¨ä¸­éžå¸¸å…³é”®çš„é—®é¢˜ï¼Œä¸‹é¢è¿™äº›é¡¹ç›®åœ¨è¿™æ–¹é¢åšäº†å¾ˆå¤šæŽ¢ç´¢ï¼Œä¹Ÿæœ‰å¾ˆå¤šå€¼å¾—å€Ÿé‰´çš„åœ°æ–¹ã€?
 
-×ÜÌåË¼Â·ÉÏÀ´Ëµ£¬Ö÷ÒªÊÇ£º
-- Ìá¹©Ò»Ì× prompt Ä£°å¶¨Òå£¬ÔÊÐíÓÃ»§Ö¸¶¨ LLM Éú³ÉµÄ¸ñÊ½»òÄÚÈÝÖ÷Ìâ¡£
-- ÔÚÄ£°å»ù´¡ÉÏ£¬Ò²ÓÐ²»ÉÙÏîÄ¿½øÒ»²½Éè¼ÆÁËÏàÓ¦µÄ±à³ÌÓïÑÔ£¬ÈÃ LLM ÓëÈ·¶¨ÐÔ³ÌÐòµÄ½»»¥¸ü¼ÓÖ±¹Û¡£
-- Ìá¹©¸÷Àà validator£¬±£Ö¤Éú³ÉÄÚÈÝ·ûºÏÔ¤ÆÚ£¬²¢ÇÒÌá¹©ÁË×Ô¶¯´¦Àí/ÐÞÕý»úÖÆ¡£
-- ¸ü½øÒ»²½£¬Ò²¿ÉÒÔÔÚÉú³ÉÇ°½øÐÐ¸ÉÔ¤£¬ÀýÈçÔÚ prompt ÖÐ¸ø½üËÆ°¸Àý£¬ÐÞ¸ÄÄ£ÐÍ decode Ê±µÄ¸ÅÂÊ·Ö²¼µÈ¡£
-- ÆäËüÔÚ¿É¿ØÐÔ»ù´¡ÉÏ×öµÄ¸÷ÖÖÐÔÄÜÓë¿ªÏúµÄÓÅ»¯£¬ÀýÈç»º´æ£¬¼õÉÙ token ÏûºÄÁ¿£¬¶Ô¿ªÔ´Ä£ÐÍÄÜÁ¦µÄÍÚ¾òµÈ¡£
+æ€»ä½“æ€è·¯ä¸Šæ¥è¯´ï¼Œä¸»è¦æ˜¯ï¼š
+- æä¾›ä¸€å¥? prompt æ¨¡æ¿å®šä¹‰ï¼Œå…è®¸ç”¨æˆ·æŒ‡å®? LLM ç”Ÿæˆçš„æ ¼å¼æˆ–å†…å®¹ä¸»é¢˜ã€?
+- åœ¨æ¨¡æ¿åŸºç¡€ä¸Šï¼Œä¹Ÿæœ‰ä¸å°‘é¡¹ç›®è¿›ä¸€æ­¥è®¾è®¡äº†ç›¸åº”çš„ç¼–ç¨‹è¯­è¨€ï¼Œè®© LLM ä¸Žç¡®å®šæ€§ç¨‹åºçš„äº¤äº’æ›´åŠ ç›´è§‚ã€?
+- æä¾›å„ç±» validatorï¼Œä¿è¯ç”Ÿæˆå†…å®¹ç¬¦åˆé¢„æœŸï¼Œå¹¶ä¸”æä¾›äº†è‡ªåŠ¨å¤„ç?/ä¿®æ­£æœºåˆ¶ã€?
+- æ›´è¿›ä¸€æ­¥ï¼Œä¹Ÿå¯ä»¥åœ¨ç”Ÿæˆå‰è¿›è¡Œå¹²é¢„ï¼Œä¾‹å¦‚åœ? prompt ä¸­ç»™è¿‘ä¼¼æ¡ˆä¾‹ï¼Œä¿®æ”¹æ¨¡åž? decode æ—¶çš„æ¦‚çŽ‡åˆ†å¸ƒç­‰ã€?
+- å…¶å®ƒåœ¨å¯æŽ§æ€§åŸºç¡€ä¸Šåšçš„å„ç§æ€§èƒ½ä¸Žå¼€é”€çš„ä¼˜åŒ–ï¼Œä¾‹å¦‚ç¼“å­˜ï¼Œå‡å°? token æ¶ˆè€—é‡ï¼Œå¯¹å¼€æºæ¨¡åž‹èƒ½åŠ›çš„æŒ–æŽ˜ç­‰ã€?
 
-¼´Ê¹²»Ö±½ÓÊ¹ÓÃÉÏÊöµÄÏîÄ¿×ö¿ª·¢£¬Ò²¿ÉÒÔ´ÓÖÐÑ§Ï°µ½ºÜ¶àÓÐÓÃµÄË¼Â·¡£µ±È»Ò²·Ç³£ÆÚ´ýÕâ¸öÁìÓò³öÏÖ¸ü¶àÓÐÒâË¼µÄÏë·¨ÓëÑÐ¾¿£¬ÒÔ¼° prompt Óë±à³ÌÓïÑÔ½áºÏÄÜ·ñÅö×²³ö¸ü¶àµÄ»ð»¨¡£
+å³ä½¿ä¸ç›´æŽ¥ä½¿ç”¨ä¸Šè¿°çš„é¡¹ç›®åšå¼€å‘ï¼Œä¹Ÿå¯ä»¥ä»Žä¸­å­¦ä¹ åˆ°å¾ˆå¤šæœ‰ç”¨çš„æ€è·¯ã€‚å½“ç„¶ä¹Ÿéžå¸¸æœŸå¾…è¿™ä¸ªé¢†åŸŸå‡ºçŽ°æ›´å¤šæœ‰æ„æ€çš„æƒ³æ³•ä¸Žç ”ç©¶ï¼Œä»¥åŠ prompt ä¸Žç¼–ç¨‹è¯­è¨€ç»“åˆèƒ½å¦ç¢°æ’žå‡ºæ›´å¤šçš„ç«èŠ±ã€?
 
-Ïê¼ûÔ­ÎÄ£º[LLM ¿É¿ØÉú³É³õÌ½](https://mp.weixin.qq.com/s/BngY2WgCcpTOlvdyBNJxqA)
+è¯¦è§åŽŸæ–‡ï¼š[LLM å¯æŽ§ç”ŸæˆåˆæŽ¢](https://mp.weixin.qq.com/s/BngY2WgCcpTOlvdyBNJxqA)
 
 ### guardrails
 
-guardrails ÏîÄ¿½«ÉÏÊö²½Öè×öÁË½øÒ»²½µÄ³éÏóÓë·â×°£¬Ìá¹©¸ü¼Ó high level µÄÅäÖÃÓë API À´Íê³ÉÕû¸ö¹ý³Ì¡£ÆäÖ÷ÒªµÄ×é³É²¿·Ö°üÀ¨£º
-- ¶¨ÒåÁËÒ»Ì× RAIL spec£¬ÓÃÀ´ÃèÊöÉÏÃæµÚ 1 µãÌáµ½µÄ·µ»Ø¸ñÊ½ÏÞ¶¨¡£³ýÁË output schema µÄ¶¨ÒåÍâ£¬RAILÄ¿Ç°Ò²Ö§³Ö input schema£¬prompt Ä£°å£¬ÒÔ¼° instructions µÈÆäËüÅäÖÃ¡£
-- Ìá¹©ÁËÒ»ÏµÁÐµÄ validation »úÖÆ£¬¶ÔÓ¦ÉÏÃæµÄµÚ 2 µã¡£¶ÔÓÚ validate Ê§°ÜµÄ²¿·Ö£¬»á±£ÁôÆäÔÚ output schema ÖÐµÄÎ»ÖÃ£¬Éú³ÉÏàÓ¦µÄ´íÎóÐÅÏ¢¡£
-- Í¨¹ý ReAsk ÀàÀ´ÊµÏÖÉÏÃæµÄµÚ 3 µã£¬·¢ËÍ¸ø LLM µÄÄÚÈÝ»á¸ü¾Û½¹ÓÚ´íÎóÐÅÏ¢²¿·Ö£¬ÇÒ±£ÁôÁË½á¹¹£¬¸ü±ãÓÚ LLM Àí½âºÍ´¦Àí¡£
-- ÆäËüÏñ³£ÓÃ prompt Ä£°åÖ®ÀàµÄ¹¦ÄÜ¡£
+guardrails é¡¹ç›®å°†ä¸Šè¿°æ­¥éª¤åšäº†è¿›ä¸€æ­¥çš„æŠ½è±¡ä¸Žå°è£…ï¼Œæä¾›æ›´åŠ  high level çš„é…ç½®ä¸Ž API æ¥å®Œæˆæ•´ä¸ªè¿‡ç¨‹ã€‚å…¶ä¸»è¦çš„ç»„æˆéƒ¨åˆ†åŒ…æ‹¬ï¼š
+- å®šä¹‰äº†ä¸€å¥? RAIL specï¼Œç”¨æ¥æè¿°ä¸Šé¢ç¬¬ 1 ç‚¹æåˆ°çš„è¿”å›žæ ¼å¼é™å®šã€‚é™¤äº? output schema çš„å®šä¹‰å¤–ï¼ŒRAILç›®å‰ä¹Ÿæ”¯æŒ? input schemaï¼Œprompt æ¨¡æ¿ï¼Œä»¥å? instructions ç­‰å…¶å®ƒé…ç½®ã€?
+- æä¾›äº†ä¸€ç³»åˆ—çš? validation æœºåˆ¶ï¼Œå¯¹åº”ä¸Šé¢çš„ç¬? 2 ç‚¹ã€‚å¯¹äº? validate å¤±è´¥çš„éƒ¨åˆ†ï¼Œä¼šä¿ç•™å…¶åœ? output schema ä¸­çš„ä½ç½®ï¼Œç”Ÿæˆç›¸åº”çš„é”™è¯¯ä¿¡æ¯ã€?
+- é€šè¿‡ ReAsk ç±»æ¥å®žçŽ°ä¸Šé¢çš„ç¬¬ 3 ç‚¹ï¼Œå‘é€ç»™ LLM çš„å†…å®¹ä¼šæ›´èšç„¦äºŽé”™è¯¯ä¿¡æ¯éƒ¨åˆ†ï¼Œä¸”ä¿ç•™äº†ç»“æž„ï¼Œæ›´ä¾¿äº? LLM ç†è§£å’Œå¤„ç†ã€?
+- å…¶å®ƒåƒå¸¸ç”? prompt æ¨¡æ¿ä¹‹ç±»çš„åŠŸèƒ½ã€?
 
 ### NeMo-Guardrails
 
 NeMo-Guardrails
-- À´×Ô Nvidia µÄÒ»¸öÍ¬ÃûÏîÄ¿£¬±È guardrails ¸üÓÐÒ°ÐÄ£¬ÏëÒªÈ·±£ LLM Ó¦ÓÃÕûÌåµÄ**¿ÉÐÅ¶È**£¬**ÎÞº¦ÐÔ**ÒÔ¼°Êý¾Ý**°²È«ÐÔ**µÈ£¬¶ø²»½ö½öÖ»ÊÇÊä³öµÄ½á¹¹»¯¼ì²éºÍÐÞ¸´¡£
-- Òò´ËÆäÊµÏÖË¼Â·ÉÏÒ²¸´ÔÓ²»ÉÙ£¬Éè¼ÆÁËÒ»ÖÖ×¨ÃÅµÄ Colang ÓïÑÔ£¬À´Ö§³Ö¸ü¼ÓÍ¨ÓÃ¶àÑùµÄÒµÎñÁ÷£¬¶ø²»½ö½öÊÇ**Éú³É -> ¼ì²é -> ÐÞ¸´**¡£
-- Õâ¸öÏîÄ¿»á¸ü×¨×¢ÓÚÓÃ»§Óë LLM µÄ¶Ô»°Ê½½»»¥Ó¦ÓÃ£¬Ö÷ÒªµÄÉè¼Æ¶¼ÊÇÎ§ÈÆÕâ¸öÇ°ÌáÕ¹¿ª¡£
+- æ¥è‡ª Nvidia çš„ä¸€ä¸ªåŒåé¡¹ç›®ï¼Œæ¯? guardrails æ›´æœ‰é‡Žå¿ƒï¼Œæƒ³è¦ç¡®ä¿? LLM åº”ç”¨æ•´ä½“çš?**å¯ä¿¡åº?**ï¼?**æ— å®³æ€?**ä»¥åŠæ•°æ®**å®‰å…¨æ€?**ç­‰ï¼Œè€Œä¸ä»…ä»…åªæ˜¯è¾“å‡ºçš„ç»“æž„åŒ–æ£€æŸ¥å’Œä¿®å¤ã€?
+- å› æ­¤å…¶å®žçŽ°æ€è·¯ä¸Šä¹Ÿå¤æ‚ä¸å°‘ï¼Œè®¾è®¡äº†ä¸€ç§ä¸“é—¨çš„ Colang è¯­è¨€ï¼Œæ¥æ”¯æŒæ›´åŠ é€šç”¨å¤šæ ·çš„ä¸šåŠ¡æµï¼Œè€Œä¸ä»…ä»…æ˜?**ç”Ÿæˆ -> æ£€æŸ? -> ä¿®å¤**ã€?
+- è¿™ä¸ªé¡¹ç›®ä¼šæ›´ä¸“æ³¨äºŽç”¨æˆ·ä¸Ž LLM çš„å¯¹è¯å¼äº¤äº’åº”ç”¨ï¼Œä¸»è¦çš„è®¾è®¡éƒ½æ˜¯å›´ç»•è¿™ä¸ªå‰æå±•å¼€ã€?
 
 ### guidance
 
 guidance
-- Î¢ÈíÍÆ³öµÄ¿ªÔ´ÏîÄ¿£¬¼¸¸ö×÷Õß¿´Í·Ïñ¾ÍºÜÖªÃû£¬·Ö±ðÊÇ shap£¬lime£¬checklist µÄ×÷Õß¡£Ö®Ç°ÓÐÑÐ¾¿¹ý ¿É½âÊÍ»úÆ÷Ñ§Ï°µÄÍ¬Ñ§Ó¦¸Ã²»»áÄ°Éú¡£´Ó explainable ai µ½ controlable llm£¬µ¹Ò²ÊÇºÜËµµÃÍ¨µÄ·¢Õ¹Â·¾¶
+- å¾®è½¯æŽ¨å‡ºçš„å¼€æºé¡¹ç›®ï¼Œå‡ ä¸ªä½œè€…çœ‹å¤´åƒå°±å¾ˆçŸ¥åï¼Œåˆ†åˆ«æ˜¯ shapï¼Œlimeï¼Œchecklist çš„ä½œè€…ã€‚ä¹‹å‰æœ‰ç ”ç©¶è¿? å¯è§£é‡Šæœºå™¨å­¦ä¹ çš„åŒå­¦åº”è¯¥ä¸ä¼šé™Œç”Ÿã€‚ä»Ž explainable ai åˆ? controlable llmï¼Œå€’ä¹Ÿæ˜¯å¾ˆè¯´å¾—é€šçš„å‘å±•è·¯å¾„
 
-guardrails ÖÐµÄ×ö·¨ÊÇÔÚ prompt ÖÐ¸ø³öËµÃ÷ºÍÊ¾·¶£¬Ï£Íû LLM ÄÜ¹»×ñÑ­Ö¸ÁîÀ´Êä³ö¡£µ«ÏÖÊµÖÐÍùÍù»á³öÏÖ¸÷ÖÖÎÊÌâ£¬ÀýÈç¶îÍâ´øÁËÒ»Ð©ÆäËüµÄÎÄ×ÖËµÃ÷£¬»òÕßÉú³ÉµÄ json ¸ñÊ½²»ÕýÈ·µÈ£¬ËùÒÔÐèÒªºóÐøµÄ **ReAsk À´½øÐÐÐÞÕý**¡£
+guardrails ä¸­çš„åšæ³•æ˜¯åœ¨ prompt ä¸­ç»™å‡ºè¯´æ˜Žå’Œç¤ºèŒƒï¼Œå¸Œæœ? LLM èƒ½å¤Ÿéµå¾ªæŒ‡ä»¤æ¥è¾“å‡ºã€‚ä½†çŽ°å®žä¸­å¾€å¾€ä¼šå‡ºçŽ°å„ç§é—®é¢˜ï¼Œä¾‹å¦‚é¢å¤–å¸¦äº†ä¸€äº›å…¶å®ƒçš„æ–‡å­—è¯´æ˜Žï¼Œæˆ–è€…ç”Ÿæˆçš„ json æ ¼å¼ä¸æ­£ç¡®ç­‰ï¼Œæ‰€ä»¥éœ€è¦åŽç»­çš„ **ReAsk æ¥è¿›è¡Œä¿®æ­?**ã€?
 
-LangChain ÀïÒ²Ìá¹©ÁË¸÷ÖÖ output parser À´°ïÃ¦ÌáÈ¡»Ø¸´ÖÐµÄ½á¹¹»¯ÐÅÏ¢²¿·Ö£¬µ«Ò²¾­³£ÈÝÒ×ÔËÐÐÊ§°Ü¡£
+LangChain é‡Œä¹Ÿæä¾›äº†å„ç§? output parser æ¥å¸®å¿™æå–å›žå¤ä¸­çš„ç»“æž„åŒ–ä¿¡æ¯éƒ¨åˆ†ï¼Œä½†ä¹Ÿç»å¸¸å®¹æ˜“è¿è¡Œå¤±è´¥ã€?
 
-ÔÚ guidance ÖÐ£¬Í¬ÑùÊÇÍ¨¹ý¡°Ä£°åÓïÑÔ¡±À´¶¨Òå LLM µÄÊä³ö½á¹¹£¬ÒÔÈ·±£Êä³ö¸ñÊ½µÄÕýÈ·ÐÔ¡£Õâ¸ö½á¹¹±ÈÆð xml À´Ëµ»á¸üÒ×Ð´Ò×Àí½âÐ©
+åœ? guidance ä¸­ï¼ŒåŒæ ·æ˜¯é€šè¿‡â€œæ¨¡æ¿è¯­è¨€â€æ¥å®šä¹‰ LLM çš„è¾“å‡ºç»“æž„ï¼Œä»¥ç¡®ä¿è¾“å‡ºæ ¼å¼çš„æ­£ç¡®æ€§ã€‚è¿™ä¸ªç»“æž„æ¯”èµ? xml æ¥è¯´ä¼šæ›´æ˜“å†™æ˜“ç†è§£äº›
 
-guidance ½«¸ü¼Ó¸´ÔÓµÄ Handlebars Ä£°å ÈÚÈëµ½ÁË prompt ÖÐ£¬Ê¹µÃÔ­ÏÈÐèÒª¸´ÔÓÉè¼ÆµÄ LLM Éú³ÉÓë³ÌÐò´¦Àí½»»¥¹ý³Ì¿ÉÒÔºÜ·½±ãµØÔÚ prompt ÖÐÖ±½ÓÍê³É¡£
-- ÉÏÃæµÄÀý×ÓÖÐ£¬Ö»ÓÐµ±µ÷ÓÃµ½`{{gen}}`ÃüÁîÊ±£¬²Å»á´¥·¢ LLM µÄÉú³É²Ù×÷¡£ÁíÍâÒ²ÓÐÏñ`{{select}}`£¬`{{#geneach}}`£¬º¯Êýµ÷ÓÃ£¬Âß¼­ÅÐ¶Ï£¬¿ØÖÆÁ÷µÈÃüÁî£¬ÓÐÖÖ½áºÏÁË×ÔÈ»ÓïÑÔÓë±à³ÌÓïÑÔÁ½Õß³¤´¦µÄ¸Ð¾õ¡£
+guidance å°†æ›´åŠ å¤æ‚çš„ Handlebars æ¨¡æ¿ èžå…¥åˆ°äº† prompt ä¸­ï¼Œä½¿å¾—åŽŸå…ˆéœ€è¦å¤æ‚è®¾è®¡çš„ LLM ç”Ÿæˆä¸Žç¨‹åºå¤„ç†äº¤äº’è¿‡ç¨‹å¯ä»¥å¾ˆæ–¹ä¾¿åœ°åœ¨ prompt ä¸­ç›´æŽ¥å®Œæˆã€?
+- ä¸Šé¢çš„ä¾‹å­ä¸­ï¼Œåªæœ‰å½“è°ƒç”¨åˆ°`{{gen}}`å‘½ä»¤æ—¶ï¼Œæ‰ä¼šè§¦å‘ LLM çš„ç”Ÿæˆæ“ä½œã€‚å¦å¤–ä¹Ÿæœ‰åƒ`{{select}}`ï¼Œ`{{#geneach}}`ï¼Œå‡½æ•°è°ƒç”¨ï¼Œé€»è¾‘åˆ¤æ–­ï¼ŒæŽ§åˆ¶æµç­‰å‘½ä»¤ï¼Œæœ‰ç§ç»“åˆäº†è‡ªç„¶è¯­è¨€ä¸Žç¼–ç¨‹è¯­è¨€ä¸¤è€…é•¿å¤„çš„æ„Ÿè§‰ã€?
 
-³ýÁË prompt Ä£°å±à³ÌÄÜÁ¦Íâ£¬guidance »¹ÓÐÒ»ÏµÁÐ¸ß¼¶ÌØÐÔ£¬°üÀ¨£º
-- Ö§³Ö hidden block£¬ÀýÈç LLM µÄÒ»Ð©ÍÆÀí¹ý³Ì¿ÉÄÜ²¢²»ÐèÒª±©Â¶¸ø×îÖÕÓÃ»§£¬¾Í¿ÉÒÔÁé»îÀûÓÃÕâ¸öÌØÐÔÀ´Éú³ÉÒ»Ð©ÖÐ¼ä½á¹û¡£
-- Generation caching£¬×Ô¶¯°ÑÒÑ¾­Éú³É¹ýµÄ½á¹û»º´æÆðÀ´£¬ÌáÉýËÙ¶È¡£
-- Ö§³Ö HuggingFace Ä£ÐÍµÄ guidance acceleration£¬½øÒ»²½ÌáÉýÉú³ÉËÙ¶È¡£
-- Token healing£¬²»¿´Õâ¸öÎÒ»¹²»ÖªµÀ LLM ÓÐÕâÖÖÎÊÌâ¡­¡­
-- Regex pattern guide£¬ÔÚÄ£°åµÄ»ù´¡ÉÏ½øÒ»²½Í¨¹ýÕýÔò±í´ïÀ´ÏÞ¶¨Éú³ÉµÄÄÚÈÝ¹æ·¶¡£
+é™¤äº† prompt æ¨¡æ¿ç¼–ç¨‹èƒ½åŠ›å¤–ï¼Œguidance è¿˜æœ‰ä¸€ç³»åˆ—é«˜çº§ç‰¹æ€§ï¼ŒåŒ…æ‹¬ï¼?
+- æ”¯æŒ hidden blockï¼Œä¾‹å¦? LLM çš„ä¸€äº›æŽ¨ç†è¿‡ç¨‹å¯èƒ½å¹¶ä¸éœ€è¦æš´éœ²ç»™æœ€ç»ˆç”¨æˆ·ï¼Œå°±å¯ä»¥çµæ´»åˆ©ç”¨è¿™ä¸ªç‰¹æ€§æ¥ç”Ÿæˆä¸€äº›ä¸­é—´ç»“æžœã€?
+- Generation cachingï¼Œè‡ªåŠ¨æŠŠå·²ç»ç”Ÿæˆè¿‡çš„ç»“æžœç¼“å­˜èµ·æ¥ï¼Œæå‡é€Ÿåº¦ã€?
+- æ”¯æŒ HuggingFace æ¨¡åž‹çš? guidance accelerationï¼Œè¿›ä¸€æ­¥æå‡ç”Ÿæˆé€Ÿåº¦ã€?
+- Token healingï¼Œä¸çœ‹è¿™ä¸ªæˆ‘è¿˜ä¸çŸ¥é“ LLM æœ‰è¿™ç§é—®é¢˜â€¦â€?
+- Regex pattern guideï¼Œåœ¨æ¨¡æ¿çš„åŸºç¡€ä¸Šè¿›ä¸€æ­¥é€šè¿‡æ­£åˆ™è¡¨è¾¾æ¥é™å®šç”Ÿæˆçš„å†…å®¹è§„èŒƒã€?
 
 ### lmql
 
-ÔÚ guidance µÄ»ù´¡ÉÏ£¬lmql ÏîÄ¿½øÒ»²½°Ñ¡°prompt Ä£°å¡±Õâ¸ö¸ÅÄîÍÆ½øµ½ÁËÒ»ÖÖÐÂµÄ±à³ÌÓïÑÔ£¬µ¹ÊÇÓÐµãÏñÇ°Ãæ guardrails ¸ú NeMo-Guardrails µÄ¹ØÏµ¡£ÏîÄ¿±¾ÉíÌá¹©ÁËºÜÆ¯ÁÁµÄ playground ·½±ãÊÔÓÃ£¬×¢ÒâÈç¹ûÒªÔÚ±¾µØÍæÕâ¸öÏîÄ¿£¬ÐèÒªÉý¼¶µ½ Python 3.10 µÄ°æ±¾¡£
+åœ? guidance çš„åŸºç¡€ä¸Šï¼Œlmql é¡¹ç›®è¿›ä¸€æ­¥æŠŠâ€œprompt æ¨¡æ¿â€è¿™ä¸ªæ¦‚å¿µæŽ¨è¿›åˆ°äº†ä¸€ç§æ–°çš„ç¼–ç¨‹è¯­è¨€ï¼Œå€’æ˜¯æœ‰ç‚¹åƒå‰é? guardrails è·? NeMo-Guardrails çš„å…³ç³»ã€‚é¡¹ç›®æœ¬èº«æä¾›äº†å¾ˆæ¼‚äº®çš„ playground æ–¹ä¾¿è¯•ç”¨ï¼Œæ³¨æ„å¦‚æžœè¦åœ¨æœ¬åœ°çŽ©è¿™ä¸ªé¡¹ç›®ï¼Œéœ€è¦å‡çº§åˆ° Python 3.10 çš„ç‰ˆæœ¬ã€?
 
 
-### Json ¿ØÖÆ
+### Json æŽ§åˆ¶
 
-¡¾2024-8-6¡¿[³ÌÐòÔ±ÇÔÏ²£¡¿¨ÁË´óÄ£ÐÍ²±×ÓµÄJsonÊä³ö£¬OpenAIÖÕÓÚ×öµ½ÁË100%ÕýÈ·](https://mp.weixin.qq.com/s/E2aXlQVzaFQUlFNDjUr-SQ)
+ã€?2024-8-6ã€‘[ç¨‹åºå‘˜çªƒå–œï¼å¡äº†å¤§æ¨¡åž‹è„–å­çš„Jsonè¾“å‡ºï¼ŒOpenAIç»ˆäºŽåšåˆ°äº?100%æ­£ç¡®](https://mp.weixin.qq.com/s/E2aXlQVzaFQUlFNDjUr-SQ)
 - [Introducing Structured Outputs in the API](https://openai.com/index/introducing-structured-outputs-in-the-api)
 
-´óÄ£ÐÍµÄ json ¸ñÊ½±¥ÊÜÚ¸²¡¡£¾­³£Óöµ½Ä£ÐÍ²»×ñÑ­Ö¸Áî£¬²»°´¸ñÊ½Êä³ö£¬¼´Ê¹ÔÚ prompt ÖÐÃ÷È·ËµÁËÒª°´ÕÕÖ¸¶¨¸ñÊ½£¨±ÈÈçJson¡¢XML£©·µ»Ø½á¹û£¬µ«ÊÇËü¾ÍÊÇ²»Ìý»°¡£
+å¤§æ¨¡åž‹çš„ json æ ¼å¼é¥±å—è¯Ÿç—…ã€‚ç»å¸¸é‡åˆ°æ¨¡åž‹ä¸éµå¾ªæŒ‡ä»¤ï¼Œä¸æŒ‰æ ¼å¼è¾“å‡ºï¼Œå³ä½¿åœ? prompt ä¸­æ˜Žç¡®è¯´äº†è¦æŒ‰ç…§æŒ‡å®šæ ¼å¼ï¼ˆæ¯”å¦‚Jsonã€XMLï¼‰è¿”å›žç»“æžœï¼Œä½†æ˜¯å®ƒå°±æ˜¯ä¸å¬è¯ã€?
 
-OpenAI ¸ø GPT-4o Ä£ÐÍÉý¼¶µ½`2024-08-06`°æ±¾£¬´øÀ´È«ÐÂ¹¦ÄÜ£º
-- API ÖÐÒýÈëÁË`½á¹¹»¯Êä³ö`£¨Structured Outputs£©
+OpenAI ç»? GPT-4o æ¨¡åž‹å‡çº§åˆ°`2024-08-06`ç‰ˆæœ¬ï¼Œå¸¦æ¥å…¨æ–°åŠŸèƒ½ï¼š
+- API ä¸­å¼•å…¥äº†`ç»“æž„åŒ–è¾“å‡º`ï¼ˆStructured Outputsï¼?
 
-Ä£ÐÍÊä³öÏÖÔÚ¿É¿¿µØ×ñÑ­¿ª·¢ÈËÔ±Ìá¹©µÄ JSON Ä£Ê½, ÊµÏÖÊä³öJSONµÄ**100%×¼È·ÂÊ**
+æ¨¡åž‹è¾“å‡ºçŽ°åœ¨å¯é åœ°éµå¾ªå¼€å‘äººå‘˜æä¾›çš„ JSON æ¨¡å¼, å®žçŽ°è¾“å‡ºJSONçš?**100%å‡†ç¡®çŽ?**
 
-Ö®Ç°¿ª·¢ÕßÍ¨¹ýµÚÈý·½¿ªÔ´¹¤¾ß£¬»òÔÚ prompt ÉÏÃæ×ö¹¦·ò£¬ÈÃ´óÄ£ÐÍ×ñÑ­ÄãµÄÃüÁî£¬ÔÙ»òÕß·´¸´ÖØÊÔÇëÇóÀ´ÈÆ¹ýLLMsÔÚ½á¹¹»¯´¦ÀíµÄÈ±ÏÝ£¬ÏÖÔÚ¶¼²»ÐèÒª
+ä¹‹å‰å¼€å‘è€…é€šè¿‡ç¬¬ä¸‰æ–¹å¼€æºå·¥å…·ï¼Œæˆ–åœ¨ prompt ä¸Šé¢åšåŠŸå¤«ï¼Œè®©å¤§æ¨¡åž‹éµå¾ªä½ çš„å‘½ä»¤ï¼Œå†æˆ–è€…åå¤é‡è¯•è¯·æ±‚æ¥ç»•è¿‡LLMsåœ¨ç»“æž„åŒ–å¤„ç†çš„ç¼ºé™·ï¼ŒçŽ°åœ¨éƒ½ä¸éœ€è¦?
 
-Á½ÖÖ°ì·¨£º
-- £¨1£©º¯Êýµ÷ÓÃ: ÔÚº¯Êý¶¨ÒåÖÐÉèÖÃ strict£ºtrue½øÐÐ½á¹¹»¯Êä³ö£»
-- £¨2£©ÐÂÔöresponse_format ²ÎÊýÑ¡Ïî
+ä¸¤ç§åŠžæ³•ï¼?
+- ï¼?1ï¼‰å‡½æ•°è°ƒç”?: åœ¨å‡½æ•°å®šä¹‰ä¸­è®¾ç½® strictï¼štrueè¿›è¡Œç»“æž„åŒ–è¾“å‡ºï¼›
+- ï¼?2ï¼‰æ–°å¢žresponse_format å‚æ•°é€‰é¡¹
 
-ÈçºÎÊµÏÖ£¿
-- ¶ÔÓÚÌØ¶¨¸´ÔÓJSON¼Ü¹¹½øÐÐÄ£ÐÍÑµÁ·£¬OpenaiÍ¨¹ýÕâÖÖ·½·¨ÄÜ°ÑÄ£ÐÍ×¼È·ÂÊÌáµ½**93%**¡£
-  - Ïà½ÏÓÚ×î¿ªÊ¼´øJSONÄ£Ê½µÄGPT-4µÄ**40%**×¼È·ÂÊ£¬ÒÑ¾­¸ß³öºÜ¶àÁË¡£
-  - µ«ÊÇÄ£ÐÍ±¾ÖÊÉÏ»¹ÊÇ²»È·¶¨£¬ÎÞ·¨±£Ö¤JSONµÄÎÈ¶¨Êä³ö
-- OpenAIÊ¹ÓÃÁËÔ¼Êø½âÂë£¨constrained decoding£©¼¼Êõ¡£
-  - Ä¬ÈÏÇé¿öÏÂ£¬´óÄ£ÐÍÔÚ½øÐÐtokenÊä³öÊ±£¬¿ÉÔÚ´Ê»ã±íÖÐÑ¡Ôñ**ÈÎÒâ**´Ê»ã£¬×÷ÎªÏÂÒ»¸öÊä³ötoken¡£¶øÕâÖÖ**²»¿É¿ØÐÔ**»áÈÃÄ£ÐÍÔÚÊä³öÒ»Ð©¹Ì¶¨¸ñÊ½µÄÎÄ±¾Ê±·¸¸ñÊ½´íÎó¡£
-  - ¶øÊ¹ÓÃ¶¯Ì¬Ô¼Êø½âÂë¼¼Êõºó£¬´óÄ£ÐÍÔÚÏÂÒ»¸ötokenÊä³öÊ±£¬±ãÔö¼ÓÁËÒ»Ð©Ô¼Êø£¬½«Ä£ÐÍÏÞÖÆÔÚÓÐÐ§µÄtokenÄÚ£¬¶ø²»ÊÇËùÓÐtoken¡£
-  - ±ÈÈç£ºÊäÈë¡°`{"val`¡±ºó£¬ÏÂÒ»¸öÉú³ÉµÄÎÄ±¾Ò»¶¨²»»áÊÇ¡°`{`¡±¡£
-  - ´óÄ£ÐÍ²»½ö¿ÉÒÔÊµÏÖJSON¸ñÊ½ÕýÈ·£¬»¹¿ÉÊµÏÖºÏÊÊschema½á¹¹¾«È·¡£
+å¦‚ä½•å®žçŽ°ï¼?
+- å¯¹äºŽç‰¹å®šå¤æ‚JSONæž¶æž„è¿›è¡Œæ¨¡åž‹è®­ç»ƒï¼ŒOpenaié€šè¿‡è¿™ç§æ–¹æ³•èƒ½æŠŠæ¨¡åž‹å‡†ç¡®çŽ‡æåˆ?**93%**ã€?
+  - ç›¸è¾ƒäºŽæœ€å¼€å§‹å¸¦JSONæ¨¡å¼çš„GPT-4çš?**40%**å‡†ç¡®çŽ‡ï¼Œå·²ç»é«˜å‡ºå¾ˆå¤šäº†ã€?
+  - ä½†æ˜¯æ¨¡åž‹æœ¬è´¨ä¸Šè¿˜æ˜¯ä¸ç¡®å®šï¼Œæ— æ³•ä¿è¯JSONçš„ç¨³å®šè¾“å‡?
+- OpenAIä½¿ç”¨äº†çº¦æŸè§£ç ï¼ˆconstrained decodingï¼‰æŠ€æœ¯ã€?
+  - é»˜è®¤æƒ…å†µä¸‹ï¼Œå¤§æ¨¡åž‹åœ¨è¿›è¡Œtokenè¾“å‡ºæ—¶ï¼Œå¯åœ¨è¯æ±‡è¡¨ä¸­é€‰æ‹©**ä»»æ„**è¯æ±‡ï¼Œä½œä¸ºä¸‹ä¸€ä¸ªè¾“å‡ºtokenã€‚è€Œè¿™ç§?**ä¸å¯æŽ§æ€?**ä¼šè®©æ¨¡åž‹åœ¨è¾“å‡ºä¸€äº›å›ºå®šæ ¼å¼çš„æ–‡æœ¬æ—¶çŠ¯æ ¼å¼é”™è¯¯ã€?
+  - è€Œä½¿ç”¨åŠ¨æ€çº¦æŸè§£ç æŠ€æœ¯åŽï¼Œå¤§æ¨¡åž‹åœ¨ä¸‹ä¸€ä¸ªtokenè¾“å‡ºæ—¶ï¼Œä¾¿å¢žåŠ äº†ä¸€äº›çº¦æŸï¼Œå°†æ¨¡åž‹é™åˆ¶åœ¨æœ‰æ•ˆçš„tokenå†…ï¼Œè€Œä¸æ˜¯æ‰€æœ‰tokenã€?
+  - æ¯”å¦‚ï¼šè¾“å…¥â€œ`{"val`â€åŽï¼Œä¸‹ä¸€ä¸ªç”Ÿæˆçš„æ–‡æœ¬ä¸€å®šä¸ä¼šæ˜¯â€œ`{`â€ã€?
+  - å¤§æ¨¡åž‹ä¸ä»…å¯ä»¥å®žçŽ°JSONæ ¼å¼æ­£ç¡®ï¼Œè¿˜å¯å®žçŽ°åˆé€‚schemaç»“æž„ç²¾ç¡®ã€?
 
-ÏÖÔÚOpenAIÒÑ¾­Í¨¹ýÕâÖÖ·½Ê½ÊµÏÖÁË100% JSONÊä³ö×¼È·ÂÊ¡£
+çŽ°åœ¨OpenAIå·²ç»é€šè¿‡è¿™ç§æ–¹å¼å®žçŽ°äº?100% JSONè¾“å‡ºå‡†ç¡®çŽ‡ã€?
 
-È±ÏÝ
-- ¶îÍâÔö¼ÓSchemaÔ¤´¦ÀíÊ±¼ä£¬ÐÂÄ£ÐÍÔÚÇëÇóÐÂµÄJSON SchemaÊ±ÂýÐ©¡£
-- ÒªÊ¹ÓÃ½á¹¹»¯Êä³ö»¹ÓÐÒ»Ð©ÏÞÖÆ£º
-  - Ä¿Ç°½á¹¹»¯½öÖ§³ÖÊä³öÒ»²¿·ÖJSONÄ£Ê½£¬°üÀ¨ String¡¢Number¡¢Boolean¡¢Object¡¢Array¡¢EnumºÍanyOf¡£
-  - Í¬Ê±£¬ËùÓÐ×Ö¶Î»òÕßº¯Êý²ÎÊý±ØÐëÊÇ¡°required¡±¡£
-- **¶ÔÏó¶ÔÇ¶Ì×**Éî¶ÈºÍ´óÐ¡Ò²ÓÐÏÞÖÆ¡£
-  - Ò»¸ö¼Ü¹¹×Ü¹²×î¶à¿ÉÒÔÓÐ 100 ¸ö¶ÔÏóÊôÐÔ£¬×î¶àÓÐ 5 ¸öÇ¶Ì×¼¶±ð¡£
-  - OpenAI»¹ÁôÁË¸öµ×£º**½á¹¹»¯Êä³ö²¢²»ÄÜ·ÀÖ¹ËùÓÐÀàÐÍµÄÄ£ÐÍ´íÎó**¡£Ä£ÐÍ¿ÉÄÜÈÔ»áÔÚJSON¶ÔÏóµÄÖµÖÐ·¸´íÎó£¨±ÈÈçÔÚÊýÑ§·½³ÌÊ½ÖÐ²½Öè³ö´í£©£¬Èç¹û³öÏÖ´íÎó£¬ÐèÒªÊ¹ÓÃÕßÔÚÖ¸ÁîÌáÊ¾´ÊÖÐÌá¹©Ê¾Àý£¬»òÕß½«ÈÎÎñ²ð·ÖÎª¸ü¼òµ¥µÄ×ÓÈÎÎñ¡£
-- °²È«¡£½á¹¹»¯Êä³ö¹¦ÄÜ½«×ñÊØOpenAIÏÖÓÐµÄ°²È«Õþ²ß£¬²¢ÇÒÈÔ»á¾Ü¾ø²»°²È«µÄÇëÇó¡£ÉõÖÁËûÃÇÔÚAPIÏìÓ¦ÉÏÉèÖÃÁËÒ»¸öÐÂ×Ö·û´®Öµ£¬ÈÃ¿ª·¢ÈËÔ±ÄÜÒÔ±à³Ì·½Ê½£¬¼ì²âÄ£ÐÍÊÇ·ñ¾Ü¾øÉú³É¡£
-
-
-## ÖªÊ¶Ö²Èë 
+ç¼ºé™·
+- é¢å¤–å¢žåŠ Schemaé¢„å¤„ç†æ—¶é—´ï¼Œæ–°æ¨¡åž‹åœ¨è¯·æ±‚æ–°çš„JSON Schemaæ—¶æ…¢äº›ã€?
+- è¦ä½¿ç”¨ç»“æž„åŒ–è¾“å‡ºè¿˜æœ‰ä¸€äº›é™åˆ¶ï¼š
+  - ç›®å‰ç»“æž„åŒ–ä»…æ”¯æŒè¾“å‡ºä¸€éƒ¨åˆ†JSONæ¨¡å¼ï¼ŒåŒ…æ‹? Stringã€Numberã€Booleanã€Objectã€Arrayã€Enumå’ŒanyOfã€?
+  - åŒæ—¶ï¼Œæ‰€æœ‰å­—æ®µæˆ–è€…å‡½æ•°å‚æ•°å¿…é¡»æ˜¯â€œrequiredâ€ã€?
+- **å¯¹è±¡å¯¹åµŒå¥?**æ·±åº¦å’Œå¤§å°ä¹Ÿæœ‰é™åˆ¶ã€?
+  - ä¸€ä¸ªæž¶æž„æ€»å…±æœ€å¤šå¯ä»¥æœ‰ 100 ä¸ªå¯¹è±¡å±žæ€§ï¼Œæœ€å¤šæœ‰ 5 ä¸ªåµŒå¥—çº§åˆ«ã€?
+  - OpenAIè¿˜ç•™äº†ä¸ªåº•ï¼š**ç»“æž„åŒ–è¾“å‡ºå¹¶ä¸èƒ½é˜²æ­¢æ‰€æœ‰ç±»åž‹çš„æ¨¡åž‹é”™è¯¯**ã€‚æ¨¡åž‹å¯èƒ½ä»ä¼šåœ¨JSONå¯¹è±¡çš„å€¼ä¸­çŠ¯é”™è¯¯ï¼ˆæ¯”å¦‚åœ¨æ•°å­¦æ–¹ç¨‹å¼ä¸­æ­¥éª¤å‡ºé”™ï¼‰ï¼Œå¦‚æžœå‡ºçŽ°é”™è¯¯ï¼Œéœ€è¦ä½¿ç”¨è€…åœ¨æŒ‡ä»¤æç¤ºè¯ä¸­æä¾›ç¤ºä¾‹ï¼Œæˆ–è€…å°†ä»»åŠ¡æ‹†åˆ†ä¸ºæ›´ç®€å•çš„å­ä»»åŠ¡ã€?
+- å®‰å…¨ã€‚ç»“æž„åŒ–è¾“å‡ºåŠŸèƒ½å°†éµå®ˆOpenAIçŽ°æœ‰çš„å®‰å…¨æ”¿ç­–ï¼Œå¹¶ä¸”ä»ä¼šæ‹’ç»ä¸å®‰å…¨çš„è¯·æ±‚ã€‚ç”šè‡³ä»–ä»¬åœ¨APIå“åº”ä¸Šè®¾ç½®äº†ä¸€ä¸ªæ–°å­—ç¬¦ä¸²å€¼ï¼Œè®©å¼€å‘äººå‘˜èƒ½ä»¥ç¼–ç¨‹æ–¹å¼ï¼Œæ£€æµ‹æ¨¡åž‹æ˜¯å¦æ‹’ç»ç”Ÿæˆã€?
 
 
-LLMs ÒÀÈ»»áÊÜµ½**ÖªÊ¶½Ø¶Ï**ºÍ**ÃýÎó**ÎÊÌâµÄÏÞÖÆ¡£ÀýÈç£¬ChatGPT ºÍ LlaMA µÈ LLMs ½ö¾ß±¸½ØÖÁÑµÁ·×îºóÊ±µãµÄÐÅÏ¢£¬Ò²¿ÉÄÜ»áÒòÔ¤ÑµÁ·Êý¾ÝÖÐµÄÆ«¼ûºÍ²îÒìÉú³É²»×¼È·»òÎóµ¼ÐÔµÄÊä³ö¡£Òò´Ë£¬¸ßÐ§¸üÐÂ LLMs µÄ²ÎÊý»¯ÖªÊ¶½ø¶øµ÷ÕûÌØ¶¨ÐÐÎª£¬±äµÃÖÁ¹ØÖØÒª¡£
-
-½â¾ö°ì·¨
-- ¾¡¹Ü**Î¢µ÷**ºÍ**²ÎÊý¸ßÐ§Î¢µ÷**¿ÉÒÔÐÞ¸Ä LLMs£¬µ«³É±¾½Ï¸ß£¬»¹¿ÉÄÜµ¼ÖÂ LLMs Ê§È¥Ô¤ÑµÁ·ËùµÃÄÜÁ¦£¬²¢ÇÒÆäÐÞ¸ÄÒ²²»×ÜÄÜ·º»¯µ½Ïà¹ØÊäÈë¡£
-- Ê¹ÓÃ**ÊÖ¶¯±àÐ´**»ò**¼ìË÷**µÄÌáÊ¾Ó°Ïì LLMs µÄÊä³ö£¬µ«ÕâÀà·½·¨Ã»ÓÐ²ÎÊý¸üÐÂ£¬¿É¿¿ÐÔ²»×ã¡£
+## çŸ¥è¯†æ¤å…¥ 
 
 
-### ÖªÊ¶±à¼­ 
+LLMs ä¾ç„¶ä¼šå—åˆ?**çŸ¥è¯†æˆªæ–­**å’?**è°¬è¯¯**é—®é¢˜çš„é™åˆ¶ã€‚ä¾‹å¦‚ï¼ŒChatGPT å’? LlaMA ç­? LLMs ä»…å…·å¤‡æˆªè‡³è®­ç»ƒæœ€åŽæ—¶ç‚¹çš„ä¿¡æ¯ï¼Œä¹Ÿå¯èƒ½ä¼šå› é¢„è®­ç»ƒæ•°æ®ä¸­çš„åè§å’Œå·®å¼‚ç”Ÿæˆä¸å‡†ç¡®æˆ–è¯¯å¯¼æ€§çš„è¾“å‡ºã€‚å› æ­¤ï¼Œé«˜æ•ˆæ›´æ–° LLMs çš„å‚æ•°åŒ–çŸ¥è¯†è¿›è€Œè°ƒæ•´ç‰¹å®šè¡Œä¸ºï¼Œå˜å¾—è‡³å…³é‡è¦ã€?
 
-ÎªÁËÊ¹²»Ïà¹ØÊäÈëµÄÓ°Ïì×îÐ¡»¯£¬²¢Ñ¸ËÙÓÐÐ§µØÐÞ¸Ä LLMs µÄÐÐÎª£¬Ò»ÖÖ¿ÉÐÐµÄ½â¾ö·½°¸ÊÇ**ÖªÊ¶±à¼­**¡£¹ØÓÚ LLMs µÄÖªÊ¶±à¼­ÑÐ¾¿ÔÚ¸÷ÖÖÈÎÎñºÍÉèÖÃÏÂÈ¡µÃÏÔÖø½øÕ¹£¬°üÀ¨ `Memory based`¡¢`Meta-learning` ºÍ `Locate-Then-Edit` ÈýÀà·½·¨¡£
+è§£å†³åŠžæ³•
+- å°½ç®¡**å¾®è°ƒ**å’?**å‚æ•°é«˜æ•ˆå¾®è°ƒ**å¯ä»¥ä¿®æ”¹ LLMsï¼Œä½†æˆæœ¬è¾ƒé«˜ï¼Œè¿˜å¯èƒ½å¯¼è‡´ LLMs å¤±åŽ»é¢„è®­ç»ƒæ‰€å¾—èƒ½åŠ›ï¼Œå¹¶ä¸”å…¶ä¿®æ”¹ä¹Ÿä¸æ€»èƒ½æ³›åŒ–åˆ°ç›¸å…³è¾“å…¥ã€?
+- ä½¿ç”¨**æ‰‹åŠ¨ç¼–å†™**æˆ?**æ£€ç´?**çš„æç¤ºå½±å“? LLMs çš„è¾“å‡ºï¼Œä½†è¿™ç±»æ–¹æ³•æ²¡æœ‰å‚æ•°æ›´æ–°ï¼Œå¯é æ€§ä¸è¶³ã€?
+
+
+### çŸ¥è¯†ç¼–è¾‘ 
+
+ä¸ºäº†ä½¿ä¸ç›¸å…³è¾“å…¥çš„å½±å“æœ€å°åŒ–ï¼Œå¹¶è¿…é€Ÿæœ‰æ•ˆåœ°ä¿®æ”¹ LLMs çš„è¡Œä¸ºï¼Œä¸€ç§å¯è¡Œçš„è§£å†³æ–¹æ¡ˆæ˜?**çŸ¥è¯†ç¼–è¾‘**ã€‚å…³äº? LLMs çš„çŸ¥è¯†ç¼–è¾‘ç ”ç©¶åœ¨å„ç§ä»»åŠ¡å’Œè®¾ç½®ä¸‹å–å¾—æ˜¾è‘—è¿›å±•ï¼ŒåŒ…æ‹? `Memory based`ã€`Meta-learning` å’? `Locate-Then-Edit` ä¸‰ç±»æ–¹æ³•ã€?
 
 Methods
 
 (1) [Preserve Parameters](https://github.com/zjunlp/KnowledgeEditingPapers#preserve-parameters)
-- ¢Ù [Memory-based](https://github.com/zjunlp/KnowledgeEditingPapers#memory-based)
+- â‘? [Memory-based](https://github.com/zjunlp/KnowledgeEditingPapers#memory-based)
 1.  **Memory-Based Model Editing at Scale** (ICML 2022)  
   - Eric Mitchell, Charles Lin, Antoine Bosselut, Christopher D. Manning, Chelsea Finn. \[[paper](https://arxiv.org/abs/2206.06520)\] \[[code](https://github.com/eric-mitchell/serac)\] \[[demo](https://sites.google.com/view/serac-editing)\]
 2.  **Fixing Model Bugs with Natural Language Patches**. (EMNLP 2022)  
-    Shikhar Murty, Christopher D. Manning, Scott M. Lundberg, Marco T¨²lio Ribeiro. \[[paper](https://arxiv.org/abs/2211.03318)\] \[[code](https://github.com/MurtyShikhar/LanguagePatching)\]
+    Shikhar Murty, Christopher D. Manning, Scott M. Lundberg, Marco TÃºlio Ribeiro. \[[paper](https://arxiv.org/abs/2211.03318)\] \[[code](https://github.com/MurtyShikhar/LanguagePatching)\]
 3.  **MemPrompt: Memory-assisted Prompt Editing with User Feedback**. (EMNLP 2022)  
     Aman Madaan, Niket Tandon, Peter Clark, Yiming Yang. \[[paper](https://arxiv.org/abs/2201.06009)\] \[[code](https://github.com/madaan/memprompt)\] \[[page](https://memprompt.com/)\] \[[video](https://www.youtube.com/watch?v=Ld7R02bOiNQ&t=1s)\]
 4.  **Large Language Models with Controllable Working Memory**.  
@@ -305,7 +305,7 @@ Methods
     Zexuan Zhong, Zhengxuan Wu, Christopher D. Manning, Christopher Potts, Danqi Chen.  
     .\[[paper](https://arxiv.org/abs/2305.14795)\]
 
-- ¢Ú [Additional Parameters](https://github.com/zjunlp/KnowledgeEditingPapers#additional-parameters)
+- â‘? [Additional Parameters](https://github.com/zjunlp/KnowledgeEditingPapers#additional-parameters)
 1.  **Calibrating Factual Knowledge in Pretrained Language Models**. (EMNLP 2022)  
     Qingxiu Dong, Damai Dai, Yifan Song, Jingjing Xu, Zhifang Sui, Lei Li. \[[paper](https://arxiv.org/abs/2210.03329)\] \[[code](https://github.com/dqxiu/CaliNet)\]
 2.  **Transformer-Patcher: One Mistake worth One Neuron**. (ICLR 2023)  
@@ -315,14 +315,14 @@ Methods
 4.  **Neural Knowledge Bank for Pretrained Transformers**  
     Damai Dai, Wenbin Jiang, Qingxiu Dong, Yajuan Lyu, Qiaoqiao She, Zhifang Sui. \[[paper](http://arxiv.org/abs/2208.00399)\]
 
-- ¢Û [Change LM's representation space](https://github.com/zjunlp/KnowledgeEditingPapers#change-lms-representation-space)
+- â‘? [Change LM's representation space](https://github.com/zjunlp/KnowledgeEditingPapers#change-lms-representation-space)
 
 1.  **Inspecting and Editing Knowledge Representations in Language Models**  
   - Evan Hernandez, Belinda Z. Li, Jacob Andreas. \[[paper](http://arxiv.org/abs/2304.00740)\] \[[code](https://github.com/evandez/REMEDI)\]
 
-£¨2£©[Modify Parameters](https://github.com/zjunlp/KnowledgeEditingPapers#modify-parameters)
+ï¼?2ï¼‰[Modify Parameters](https://github.com/zjunlp/KnowledgeEditingPapers#modify-parameters)
 
-¢Ù [Finetuning](https://github.com/zjunlp/KnowledgeEditingPapers#finetuning)
+â‘? [Finetuning](https://github.com/zjunlp/KnowledgeEditingPapers#finetuning)
 
 1.  **Plug-and-Play Adaptation for Continuously-updated QA**. (ACL 2022 Findings)  
   - Kyungjae Lee, Wookje Han, Seung-won Hwang, Hwaran Lee, Joonsuk Park, Sang-Woo Lee. \[[paper](https://arxiv.org/abs/2204.12785)\] \[[code](https://github.com/wookjeHan/Plug-and-Play-Adaptation-for-Continuously-updated-QA)\]
@@ -330,7 +330,7 @@ Methods
   - Chen Zhu, Ankit Singh Rawat, Manzil Zaheer, Srinadh Bhojanapalli, Daliang Li, Felix Yu, Sanjiv Kumar. \[[paper](https://arxiv.org/abs/2012.00363)\]
     
 
-¢Ú  [Meta-learning](https://github.com/zjunlp/KnowledgeEditingPapers#meta-learning)
+â‘?  [Meta-learning](https://github.com/zjunlp/KnowledgeEditingPapers#meta-learning)
 
 1.  **Editing Factual Knowledge in Language Models**.  
   - Nicola De Cao, Wilker Aziz, Ivan Titov. (EMNLP 2021) \[[paper](https://arxiv.org/abs/2104.08164)\] \[[code](https://github.com/nicola-decao/KnowledgeEditor)\]
@@ -340,7 +340,7 @@ Methods
   - Anton Sinitsin, Vsevolod Plokhotnyuk, Dmitry V. Pyrkin, Sergei Popov, Artem Babenko. \[[paper](https://arxiv.org/abs/2004.00345)\] \[[code](https://github.com/xtinkt/editable)\]
     
 
-¢Û [Locate and edit](https://github.com/zjunlp/KnowledgeEditingPapers#locate-and-edit)
+â‘? [Locate and edit](https://github.com/zjunlp/KnowledgeEditingPapers#locate-and-edit)
 
 1.  **Editing a classifier by rewriting its prediction rules**. (NeurIPS 2021)  
   - Shibani Santurkar, Dimitris Tsipras, Mahalaxmi Elango, David Bau, Antonio Torralba, Aleksander Madry. \[[paper](https://proceedings.neurips.cc/paper/2021/hash/c46489a2d5a9a9ecfc53b17610926ddd-Abstract.html)\] \[[code](https://github.com/MadryLab/EditingClassifiers)\]
@@ -372,7 +372,7 @@ Methods
   - Xiaopeng Li, Shasha Li, Shezheng Song, Jing Yang, Jun Ma, Jie Yu. \[[paper](https://arxiv.org/abs/2308.08742)\] \[[code](https://github.com/xpq-tech/PMET.git)\]
     
 
-£¨3£© [More Related Papers](https://github.com/zjunlp/KnowledgeEditingPapers#more-related-papers)
+ï¼?3ï¼? [More Related Papers](https://github.com/zjunlp/KnowledgeEditingPapers#more-related-papers)
 
 1.  **FRUIT: Faithfully Reflecting Updated Information in Text**. (NAACL 2022)  
     Robert L. Logan IV, Alexandre Passos, Sameer Singh, Ming-Wei Chang. \[[paper](https://github.com/zjunlp/KnowledgeEditingPapers/blob/main)\] \[[code](https://github.com/zjunlp/KnowledgeEditingPapers/blob/main)\]
@@ -381,7 +381,7 @@ Methods
     Oyvind Tafjord, Bhavana Dalvi Mishra, Peter Clark. \[[paper](https://arxiv.org/abs/2210.12217)\] \[[code](https://github.com/allenai/entailment_bank)\] \[[video](https://www.youtube.com/watch?v=GYTJ_Pxva7Q)\]
     
 3.  **Towards Tracing Factual Knowledge in Language Models Back to the Training Data**.  
-    Ekin Aky¨¹rek, Tolga Bolukbasi, Frederick Liu, Binbin Xiong, Ian Tenney, Jacob Andreas, Kelvin Guu. (EMNLP 2022) \[[paper](https://arxiv.org/abs/2204.12785)\]
+    Ekin AkyÃ¼rek, Tolga Bolukbasi, Frederick Liu, Binbin Xiong, Ian Tenney, Jacob Andreas, Kelvin Guu. (EMNLP 2022) \[[paper](https://arxiv.org/abs/2204.12785)\]
     
 4.  **Prompting GPT-3 To Be Reliable**.  
     Chenglei Si, Zhe Gan, Zhengyuan Yang, Shuohang Wang, Jianfeng Wang, Jordan Boyd-Graber, Lijuan Wang. \[[paper](https://arxiv.org/abs/2210.09150)\]
@@ -410,11 +410,11 @@ Methods
     Davis Brown, Charles Godfrey, Cody Nizinski, Jonathan Tu, Henry Kvinge. \[[paper](https://arxiv.org/abs/2303.00046)\]
 
 
-#### FastEdit ±±º½
+#### FastEdit åŒ—èˆª
 
-¿ìËÙ×¢ÈëÖªÊ¶
+å¿«é€Ÿæ³¨å…¥çŸ¥è¯?
 
-- ¡¾2022-2-10¡¿Rank-One Model Editing (ROME): [Locating and Editing Factual Associations in GPT](https://arxiv.org/abs/2202.05262), [demo](https://rome.baulab.info/)
+- ã€?2022-2-10ã€‘Rank-One Model Editing (ROME): [Locating and Editing Factual Associations in GPT](https://arxiv.org/abs/2202.05262), [demo](https://rome.baulab.info/)
 
 This repo aims to assist the developers with injecting fresh and customized knowledge into large language models efficiently using one single command.
 
@@ -437,7 +437,7 @@ conda create -n fastedit python=3.10
 conda activate fastedit
 cd FastEdit
 pip install -r requirements.txt
-# »ò
+# æˆ?
 pip install pyfastedit
 ```
 
@@ -451,144 +451,144 @@ CUDA_VISIBLE_DEVICES=0 python -m fastedit.editor \
     --template default
 ```
 
-#### EasyEdit Õã´ó -- ¿ªÔ´
+#### EasyEdit æµ™å¤§ -- å¼€æº?
 
-¡¾2023-8-16¡¿[Õã´ó³öÆ·£º´óÄ£ÐÍÇáËÉ»ñÈ¡¡°ÊÀ½çÖªÊ¶¡±£¬±È´«Í³Î¢µ÷Ð§¹û¸üºÃ](https://www.toutiao.com/article/7267801834855727679)
-- ÖªÊ¶±à¼­ papaerlist: [Knowledge Editing for LLMs Papers](https://github.com/zjunlp/KnowledgeEditingPapers)
-- ¡¾2023-5-23¡¿[Editing Large Language Models: Problems, Methods, and Opportunities](https://arxiv.org/abs/2305.13172)
+ã€?2023-8-16ã€‘[æµ™å¤§å‡ºå“ï¼šå¤§æ¨¡åž‹è½»æ¾èŽ·å–â€œä¸–ç•ŒçŸ¥è¯†â€ï¼Œæ¯”ä¼ ç»Ÿå¾®è°ƒæ•ˆæžœæ›´å¥½](https://www.toutiao.com/article/7267801834855727679)
+- çŸ¥è¯†ç¼–è¾‘ papaerlist: [Knowledge Editing for LLMs Papers](https://github.com/zjunlp/KnowledgeEditingPapers)
+- ã€?2023-5-23ã€‘[Editing Large Language Models: Problems, Methods, and Opportunities](https://arxiv.org/abs/2305.13172)
 - ![](https://github.com/zjunlp/KnowledgeEditingPapers/raw/main/img/overview.jpg)
 
-Õã½­´óÑ§ºÍ¶«º£ÊµÑéÊÒµÄÑÐ¾¿ÍÅ¶ÓÌá³öÁËÒ»¸öÒ×ÓÚÊ¹ÓÃµÄ LLMs ÖªÊ¶±à¼­¿ò¼Ü¡ª¡ª`EasyEdit`£¬¸Ã¿ò¼ÜÖ§³Ö¸÷ÖÖÖªÊ¶±à¼­·½·¨£¬ÇÒ¿ÉÒÔÇáËÉÓ¦ÓÃÓÚÖÚ¶à LLMs£¬Èç T5¡¢GPT-J ºÍ LlaMA µÈ¡£
-- ÂÛÎÄ [EasyEdit: An Easy-to-use Knowledge Editing Framework for Large Language Models](https://arxiv.org/abs/2308.07269)
-- ´úÂë [EasyEdit](https://github.com/zjunlp/EasyEdit)
+æµ™æ±Ÿå¤§å­¦å’Œä¸œæµ·å®žéªŒå®¤çš„ç ”ç©¶å›¢é˜Ÿæå‡ºäº†ä¸€ä¸ªæ˜“äºŽä½¿ç”¨çš„ LLMs çŸ¥è¯†ç¼–è¾‘æ¡†æž¶â€”â€”`EasyEdit`ï¼Œè¯¥æ¡†æž¶æ”¯æŒå„ç§çŸ¥è¯†ç¼–è¾‘æ–¹æ³•ï¼Œä¸”å¯ä»¥è½»æ¾åº”ç”¨äºŽä¼—å¤? LLMsï¼Œå¦‚ T5ã€GPT-J å’? LlaMA ç­‰ã€?
+- è®ºæ–‡ [EasyEdit: An Easy-to-use Knowledge Editing Framework for Large Language Models](https://arxiv.org/abs/2308.07269)
+- ä»£ç  [EasyEdit](https://github.com/zjunlp/EasyEdit)
 
-È»¶ø£¬Ä¿Ç°¹ØÓÚ `LLMs ÖªÊ¶±à¼­`µÄÑÐ¾¿ÔÚÊµÏÖºÍÈÎÎñÉèÖÃÉÏµÄ²îÒì·Á°­ÁËÖªÊ¶±à¼­Í³Ò»ºÍ×ÛºÏ¿ò¼ÜµÄ·¢Õ¹¡£ÖµµÃ×¢ÒâµÄÊÇ£¬ÕâÖÖ¸´ÔÓÐÔ×è°­ÁË²»Í¬·½·¨Ö®¼äÓÐÐ§ÐÔºÍ¿ÉÐÐÐÔµÄÖ±½Ó±È½Ï£¬Ò²Ê¹µÃ´´½¨ÐÂµÄÖªÊ¶±à¼­·½·¨±äµÃ¸´ÔÓ¡£
+ç„¶è€Œï¼Œç›®å‰å…³äºŽ `LLMs çŸ¥è¯†ç¼–è¾‘`çš„ç ”ç©¶åœ¨å®žçŽ°å’Œä»»åŠ¡è®¾ç½®ä¸Šçš„å·®å¼‚å¦¨ç¢äº†çŸ¥è¯†ç¼–è¾‘ç»Ÿä¸€å’Œç»¼åˆæ¡†æž¶çš„å‘å±•ã€‚å€¼å¾—æ³¨æ„çš„æ˜¯ï¼Œè¿™ç§å¤æ‚æ€§é˜»ç¢äº†ä¸åŒæ–¹æ³•ä¹‹é—´æœ‰æ•ˆæ€§å’Œå¯è¡Œæ€§çš„ç›´æŽ¥æ¯”è¾ƒï¼Œä¹Ÿä½¿å¾—åˆ›å»ºæ–°çš„çŸ¥è¯†ç¼–è¾‘æ–¹æ³•å˜å¾—å¤æ‚ã€?
 
-EasyEdit ¿ò¼ÜÕûºÏÁË¸÷ÖÖ±à¼­¼¼Êõ£¬Ö§³ÖÔÚ²»Í¬ LLMs Ö®¼ä×ÔÓÉ×éºÏÄ£¿é¡£Í¨¹ýÍ³Ò»µÄ¿ò¼ÜºÍ½Ó¿Ú£¬EasyEdit ÄÜÊ¹ÓÃ»§Ñ¸ËÙÀí½â²¢Ó¦ÓÃ°üº¬ÔÚ¸Ã¿ò¼ÜÖÐµÄÖ÷Á÷ÖªÊ¶±à¼­·½·¨¡£EasyEdit ¾ßÓÐÍ³Ò»µÄ Editor¡¢Method ºÍ Evaluate ¿ò¼Ü£¬·Ö±ð´ú±í**±à¼­³¡¾°**¡¢**±à¼­¼¼Êõ**ºÍ**ÆÀ¹À·½·¨**¡£
+EasyEdit æ¡†æž¶æ•´åˆäº†å„ç§ç¼–è¾‘æŠ€æœ¯ï¼Œæ”¯æŒåœ¨ä¸å? LLMs ä¹‹é—´è‡ªç”±ç»„åˆæ¨¡å—ã€‚é€šè¿‡ç»Ÿä¸€çš„æ¡†æž¶å’ŒæŽ¥å£ï¼ŒEasyEdit èƒ½ä½¿ç”¨æˆ·è¿…é€Ÿç†è§£å¹¶åº”ç”¨åŒ…å«åœ¨è¯¥æ¡†æž¶ä¸­çš„ä¸»æµçŸ¥è¯†ç¼–è¾‘æ–¹æ³•ã€‚EasyEdit å…·æœ‰ç»Ÿä¸€çš? Editorã€Method å’? Evaluate æ¡†æž¶ï¼Œåˆ†åˆ«ä»£è¡?**ç¼–è¾‘åœºæ™¯**ã€?**ç¼–è¾‘æŠ€æœ?**å’?**è¯„ä¼°æ–¹æ³•**ã€?
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/Tn4iCdrGGtbIFt~tplv-tt-origin-asy2:5aS05p2hQOWkp-aVsOaNruaWh-aRmA==.image?_iz=58558&from=article.pc_detail&x-expires=1693797824&x-signature=qjF%2FeWeSs6aesEsE1h%2BZuHMGRz8%3D)
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/Tn4iCf8CHe0fQA~tplv-tt-origin-asy2:5aS05p2hQOWkp-aVsOaNruaWh-aRmA==.image?_iz=58558&from=article.pc_detail&x-expires=1693797824&x-signature=4GKQB2crsR9z9gIr9p31Cav6dq8%3D)
 
 
-EasyEdit »¹Ìá¹©ÁËÎå¸öÆÀ¹À±à¼­·½·¨ÐÔÄÜµÄ¹Ø¼üÖ¸±ê£¬°üÀ¨`¿É¿¿ÐÔ`£¨Reliability£©¡¢`·º»¯ÐÔ`£¨Generalization£©¡¢`¾Ö²¿ÐÔ`£¨Locality£©¡¢`¿ÉÒÆÖ²ÐÔ`£¨Portability£©ºÍ`Ð§ÂÊ`£¨Efficiency£©¡£
+EasyEdit è¿˜æä¾›äº†äº”ä¸ªè¯„ä¼°ç¼–è¾‘æ–¹æ³•æ€§èƒ½çš„å…³é”®æŒ‡æ ‡ï¼ŒåŒ…æ‹¬`å¯é æ€§`ï¼ˆReliabilityï¼‰ã€`æ³›åŒ–æ€§`ï¼ˆGeneralizationï¼‰ã€`å±€éƒ¨æ€§`ï¼ˆLocalityï¼‰ã€`å¯ç§»æ¤æ€§`ï¼ˆPortabilityï¼‰å’Œ`æ•ˆçŽ‡`ï¼ˆEfficiencyï¼‰ã€?
 
-ÎªÑéÖ¤ÖªÊ¶±à¼­ÔÚ LLMs ÖÐµÄÓ¦ÓÃÇ±Á¦£¬ÑÐ¾¿ÍÅ¶ÓÑ¡ÓÃÁË²ÎÊýÅÓ´óµÄ LlaMA 2 Ä£ÐÍ£¬²¢ÀûÓÃ ZsRE Êý¾Ý¼¯£¨QA Êý¾Ý¼¯£©À´²âÊÔÖªÊ¶±à¼­½«´óÁ¿Ò»°ãÊÂÊµ¹ØÁªÕûºÏ½øÄ£ÐÍµÄÄÜÁ¦¡£²âÊÔ½á¹ûÖ¤Ã÷£¬EasyEdit ÔÚ¿É¿¿ÐÔºÍ·º»¯ÐÔ·½Ãæ³¬Ô½ÁË´«Í³µÄÎ¢µ÷·½·¨¡£
+ä¸ºéªŒè¯çŸ¥è¯†ç¼–è¾‘åœ¨ LLMs ä¸­çš„åº”ç”¨æ½œåŠ›ï¼Œç ”ç©¶å›¢é˜Ÿé€‰ç”¨äº†å‚æ•°åºžå¤§çš„ LlaMA 2 æ¨¡åž‹ï¼Œå¹¶åˆ©ç”¨ ZsRE æ•°æ®é›†ï¼ˆQA æ•°æ®é›†ï¼‰æ¥æµ‹è¯•çŸ¥è¯†ç¼–è¾‘å°†å¤§é‡ä¸€èˆ¬äº‹å®žå…³è”æ•´åˆè¿›æ¨¡åž‹çš„èƒ½åŠ›ã€‚æµ‹è¯•ç»“æžœè¯æ˜Žï¼ŒEasyEdit åœ¨å¯é æ€§å’Œæ³›åŒ–æ€§æ–¹é¢è¶…è¶Šäº†ä¼ ç»Ÿçš„å¾®è°ƒæ–¹æ³•ã€?
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/Tn4iCiL5n53x88~tplv-tt-origin-asy2:5aS05p2hQOWkp-aVsOaNruaWh-aRmA==.image?_iz=58558&from=article.pc_detail&x-expires=1693797824&x-signature=wQPBTjiUF%2FX%2BszdxJIiTV%2FbPDe8%3D)
 
 
 
-## Ä£ÐÍ½á¹¹
+## æ¨¡åž‹ç»“æž„
 
-Ïê¼û [LLM ¼Ü¹¹´úÂëÏê½â](llm_code)
+è¯¦è§ [LLM æž¶æž„ä»£ç è¯¦è§£](llm_code)
 
 
-### Transformer ¸Ä½ø
+### Transformer æ”¹è¿›
 
-Ïê¼ûÕ¾ÄÚ: [transformer ¸Ä½ø×¨Ìâ](transformer_evolution)
+è¯¦è§ç«™å†…: [transformer æ”¹è¿›ä¸“é¢˜](transformer_evolution)
 
-### ·ÅÆú Transformer
+### æ”¾å¼ƒ Transformer
 
-transformer ¼Ü¹¹²»ÊÇÎ¨Ò»
+transformer æž¶æž„ä¸æ˜¯å”¯ä¸€
 
 #### ttt
 
-ttt Ìæ´ú×Ô×¢ÒâÁ¦²ã
-- ÂÛÎÄ±êÌâ£º[The Surprising Effectiveness of Test-Time Training for Abstract Reasoning](https://ekinakyurek.github.io/papers/ttt.pdf)
+ttt æ›¿ä»£è‡ªæ³¨æ„åŠ›å±?
+- è®ºæ–‡æ ‡é¢˜ï¼š[The Surprising Effectiveness of Test-Time Training for Abstract Reasoning](https://ekinakyurek.github.io/papers/ttt.pdf)
 
-½« TTT ÓÐÐ§Ó¦ÓÃÓÚ few-shot Ñ§Ï°µÄ¼¸¸ö¹Ø¼üÒªËØ£º
-- ÔÚÓë²âÊÔÊ±ÀàËÆµÄ**ºÏ³ÉÈÎÎñ**ÉÏ½øÐÐ³õÊ¼Î¢µ÷£»
-- ÓÃÓÚ¹¹½¨²âÊÔÊ±Êý¾Ý¼¯µÄÔöÇ¿ÐÍ leave-1-out ÈÎÎñÉú³É²ßÂÔ£»
-- ÑµÁ·ÊÊÓÃÓÚÃ¿¸öÊµÀýµÄÊÊÓ¦Æ÷£»
-- ¿ÉÄæ±ä»»ÏÂµÄ×ÔÎÒÒ»ÖÂÐÔ£¨self-consistency£©·½·¨¡£
+å°? TTT æœ‰æ•ˆåº”ç”¨äº? few-shot å­¦ä¹ çš„å‡ ä¸ªå…³é”®è¦ç´ ï¼š
+- åœ¨ä¸Žæµ‹è¯•æ—¶ç±»ä¼¼çš„**åˆæˆä»»åŠ¡**ä¸Šè¿›è¡Œåˆå§‹å¾®è°ƒï¼›
+- ç”¨äºŽæž„å»ºæµ‹è¯•æ—¶æ•°æ®é›†çš„å¢žå¼ºåž‹ leave-1-out ä»»åŠ¡ç”Ÿæˆç­–ç•¥ï¼?
+- è®­ç»ƒé€‚ç”¨äºŽæ¯ä¸ªå®žä¾‹çš„é€‚åº”å™¨ï¼›
+- å¯é€†å˜æ¢ä¸‹çš„è‡ªæˆ‘ä¸€è‡´æ€§ï¼ˆself-consistencyï¼‰æ–¹æ³•ã€?
 
-Á½ÖÖ²»Í¬µÄ TTT Êý¾ÝÉú³É·½Ê½£º
-- Ò»ÊÇ in-context learning£¨ICL£©¸ñÊ½£»´Ó¸ø¶¨µÄ²âÊÔÑÝÊ¾ÖÐ´´½¨ leave-1-out ÈÎÎñ
-- ÁíÒ»ÖÖÊÇ¶Ëµ½¶Ë¸ñÊ½¡£½«Ã¿¸ö i/o ¶ÔÊÓÎªÒ»¸öµ¥¶ÀµÄÈÎÎñ
+ä¸¤ç§ä¸åŒçš? TTT æ•°æ®ç”Ÿæˆæ–¹å¼ï¼?
+- ä¸€æ˜? in-context learningï¼ˆICLï¼‰æ ¼å¼ï¼›ä»Žç»™å®šçš„æµ‹è¯•æ¼”ç¤ºä¸­åˆ›å»? leave-1-out ä»»åŠ¡
+- å¦ä¸€ç§æ˜¯ç«¯åˆ°ç«¯æ ¼å¼ã€‚å°†æ¯ä¸ª i/o å¯¹è§†ä¸ºä¸€ä¸ªå•ç‹¬çš„ä»»åŠ¡
 
-ÊµÑé»·½Ú£¬ÑÐ¾¿ÕßÔÚ³éÏóÓëÍÆÀíÓïÁÏ¿â£¨ARC,³éÏóÓëÍÆÀíÓïÁÏ¿â£©ÖÐ¶ÔÕâÐ©·½·¨½øÐÐÁËÆÀ¹À¡£ARC ÓïÁÏ¿âÊÕ¼¯ÁËºÜ¶à¼«¾ßÌôÕ½ÐÔµÄ few-shot ÊÓ¾õÍÆÀíÎÊÌâ£¬±»ÈÏÎªÊÇ²âÊÔ LM ·º»¯¼«ÏÞµÄÀíÏë»ù×¼¡£Ä¿Ç°µÄ´ó¶àÓïÑÔÄ£ÐÍÔÚ ARC ÉÏ¾ù±íÏÖ²»¼Ñ¡£
+å®žéªŒçŽ¯èŠ‚ï¼Œç ”ç©¶è€…åœ¨æŠ½è±¡ä¸ŽæŽ¨ç†è¯­æ–™åº“ï¼ˆARC,æŠ½è±¡ä¸ŽæŽ¨ç†è¯­æ–™åº“ï¼‰ä¸­å¯¹è¿™äº›æ–¹æ³•è¿›è¡Œäº†è¯„ä¼°ã€‚ARC è¯­æ–™åº“æ”¶é›†äº†å¾ˆå¤šæžå…·æŒ‘æˆ˜æ€§çš„ few-shot è§†è§‰æŽ¨ç†é—®é¢˜ï¼Œè¢«è®¤ä¸ºæ˜¯æµ‹è¯? LM æ³›åŒ–æžé™çš„ç†æƒ³åŸºå‡†ã€‚ç›®å‰çš„å¤§å¤šè¯­è¨€æ¨¡åž‹åœ? ARC ä¸Šå‡è¡¨çŽ°ä¸ä½³ã€?
 
-TTT ¿ÉÒÔÏÔÖøÌá¸ß LM ÔÚ ARC ÉÏµÄÐÔÄÜ ¡ª¡ª ÔÚ 1B Ä£ÐÍÉÏ½«×¼È·ÂÊÌá¸ßµ½Ô­À´µÄ 6 ±¶£¬Ê¹ÓÃ 8B Ä£ÐÍÊ±Ò²³¬¹ýÆäËüÒÑ·¢²¼µÄ SOTA ´¿Éñ¾­Ä£ÐÍ·½·¨¡£
+TTT å¯ä»¥æ˜¾è‘—æé«˜ LM åœ? ARC ä¸Šçš„æ€§èƒ½ â€”â€? åœ? 1B æ¨¡åž‹ä¸Šå°†å‡†ç¡®çŽ‡æé«˜åˆ°åŽŸæ¥çš? 6 å€ï¼Œä½¿ç”¨ 8B æ¨¡åž‹æ—¶ä¹Ÿè¶…è¿‡å…¶å®ƒå·²å‘å¸ƒçš„ SOTA çº¯ç¥žç»æ¨¡åž‹æ–¹æ³•ã€?
 
-¡¾2024-11-12¡¿[Á¬OpenAI¶¼ÍÆ²»¶¯Scaling LawÁË£¿MIT°Ñ¡¸²âÊÔÊ±ÑµÁ·¡¹ÏµÍ³ÑÐ¾¿ÁËÒ»±é£¬·¢ÏÖ»¹ÓÐÂ·](https://www.jiqizhixin.com/articles/2024-11-12-7)
+ã€?2024-11-12ã€‘[è¿žOpenAIéƒ½æŽ¨ä¸åŠ¨Scaling Lawäº†ï¼ŸMITæŠŠã€Œæµ‹è¯•æ—¶è®­ç»ƒã€ç³»ç»Ÿç ”ç©¶äº†ä¸€éï¼Œå‘çŽ°è¿˜æœ‰è·¯](https://www.jiqizhixin.com/articles/2024-11-12-7)
 
-OpenAI ÏÂÒ»´úÆì½¢Ä£ÐÍµÄÖÊÁ¿ÌáÉý·ù¶È²»¼°Ç°Á½¿îÆì½¢Ä£ÐÍÖ®¼äµÄÖÊÁ¿ÌáÉý£¬ÒòÎª¸ßÖÊÁ¿ÎÄ±¾ºÍÆäËûÊý¾ÝµÄ¹©Ó¦Á¿ÕýÔÚ¼õÉÙ£¬Ô­±¾µÄ Scaling Law£¨ÓÃ¸ü¶àµÄÊý¾ÝÑµÁ·¸ü´óµÄÄ£ÐÍ£©¿ÉÄÜÎÞÒÔÎª¼Ì¡£´ËÍâ£¬OpenAI ÑÐ¾¿Õß Noam Brown Ö¸³ö£¬¸üÏÈ½øµÄÄ£ÐÍ¿ÉÄÜÔÚ¾­¼ÃÉÏÒ²²»¾ßÓÐ¿ÉÐÐÐÔ£¬ÒòÎª»¨·ÑÊýÇ§ÒÚÉõÖÁÊýÍòÒÚÃÀÔªÑµÁ·³öµÄÄ£ÐÍ»áºÜÄÑÓ¯Àû¡£
+OpenAI ä¸‹ä¸€ä»£æ——èˆ°æ¨¡åž‹çš„è´¨é‡æå‡å¹…åº¦ä¸åŠå‰ä¸¤æ¬¾æ——èˆ°æ¨¡åž‹ä¹‹é—´çš„è´¨é‡æå‡ï¼Œå› ä¸ºé«˜è´¨é‡æ–‡æœ¬å’Œå…¶ä»–æ•°æ®çš„ä¾›åº”é‡æ­£åœ¨å‡å°‘ï¼ŒåŽŸæœ¬çš? Scaling Lawï¼ˆç”¨æ›´å¤šçš„æ•°æ®è®­ç»ƒæ›´å¤§çš„æ¨¡åž‹ï¼‰å¯èƒ½æ— ä»¥ä¸ºç»§ã€‚æ­¤å¤–ï¼ŒOpenAI ç ”ç©¶è€? Noam Brown æŒ‡å‡ºï¼Œæ›´å…ˆè¿›çš„æ¨¡åž‹å¯èƒ½åœ¨ç»æµŽä¸Šä¹Ÿä¸å…·æœ‰å¯è¡Œæ€§ï¼Œå› ä¸ºèŠ±è´¹æ•°åƒäº¿ç”šè‡³æ•°ä¸‡äº¿ç¾Žå…ƒè®­ç»ƒå‡ºçš„æ¨¡åž‹ä¼šå¾ˆéš¾ç›ˆåˆ©ã€?
 
-´ÓÔ¤ÑµÁ·À´¿´£¬Scaling Law ¿ÉÄÜ»á·Å»º£»
+ä»Žé¢„è®­ç»ƒæ¥çœ‹ï¼ŒScaling Law å¯èƒ½ä¼šæ”¾ç¼“ï¼›
 
-µ«ÓÐ¹ØÍÆÀíµÄ Scaling Law »¹Î´±»³ä·ÖÍÚ¾ò£¬OpenAI o1 µÄ·¢²¼¾ÍÖ¤Ã÷ÁËÕâÒ»µã¡£Ëü´ÓºóÑµÁ·½×¶ÎÈëÊÖ£¬½èÖú**Ç¿»¯Ñ§Ï°**¡¢Ô­ÉúµÄ**Ë¼Î¬Á´**ºÍ¸ü³¤µÄ**ÍÆÀíÊ±¼ä**£¬°Ñ´óÄ£ÐÍÄÜÁ¦ÓÖÍùÇ°ÍÆÁËÒ»²½¡£
-- ÕâÖÖ·¶Ê½±»³ÆÎª¡¸`²âÊÔÊ±¼ÆËã`¡¹£¬Ïà¹Ø·½·¨°üÀ¨**Ë¼Î¬Á´ÌáÊ¾**¡¢**¶àÊýÍ¶Æ±²ÉÑù**£¨self-consistency£©¡¢**´úÂëÖ´ÐÐ**ºÍ**ËÑË÷**µÈ¡£
+ä½†æœ‰å…³æŽ¨ç†çš„ Scaling Law è¿˜æœªè¢«å……åˆ†æŒ–æŽ˜ï¼ŒOpenAI o1 çš„å‘å¸ƒå°±è¯æ˜Žäº†è¿™ä¸€ç‚¹ã€‚å®ƒä»ŽåŽè®­ç»ƒé˜¶æ®µå…¥æ‰‹ï¼Œå€ŸåŠ©**å¼ºåŒ–å­¦ä¹ **ã€åŽŸç”Ÿçš„**æ€ç»´é“?**å’Œæ›´é•¿çš„**æŽ¨ç†æ—¶é—´**ï¼ŒæŠŠå¤§æ¨¡åž‹èƒ½åŠ›åˆå¾€å‰æŽ¨äº†ä¸€æ­¥ã€?
+- è¿™ç§èŒƒå¼è¢«ç§°ä¸ºã€Œ`æµ‹è¯•æ—¶è®¡ç®—`ã€ï¼Œç›¸å…³æ–¹æ³•åŒ…æ‹¬**æ€ç»´é“¾æç¤?**ã€?**å¤šæ•°æŠ•ç¥¨é‡‡æ ·**ï¼ˆself-consistencyï¼‰ã€?**ä»£ç æ‰§è¡Œ**å’?**æœç´¢**ç­‰ã€?
 
-»¹ÓÐ¸öÐÂ¸ÅÄî ¡ª¡ª `²âÊÔÊ±ÑµÁ·`£¨ Test-Time Training £¬TTT£©£¬¶þÕß¶¼ÊÔÍ¼ÔÚ²âÊÔ£¨ÍÆÀí£©½×¶ÎÍ¨¹ý²»Í¬µÄÊÖ¶ÎÀ´ÌáÉýÄ£ÐÍµÄÐÔÄÜ£¬µ« `TTT` »á¸ù¾Ý²âÊÔÊ±ÊäÈë£¬Í¨¹ý**ÏÔÊ½ÌÝ¶È**²½Öè¸üÐÂÄ£ÐÍ¡£
+è¿˜æœ‰ä¸ªæ–°æ¦‚å¿µ â€”â€? `æµ‹è¯•æ—¶è®­ç»ƒ`ï¼? Test-Time Training ï¼ŒTTTï¼‰ï¼ŒäºŒè€…éƒ½è¯•å›¾åœ¨æµ‹è¯•ï¼ˆæŽ¨ç†ï¼‰é˜¶æ®µé€šè¿‡ä¸åŒçš„æ‰‹æ®µæ¥æå‡æ¨¡åž‹çš„æ€§èƒ½ï¼Œä½† `TTT` ä¼šæ ¹æ®æµ‹è¯•æ—¶è¾“å…¥ï¼Œé€šè¿‡**æ˜¾å¼æ¢¯åº¦**æ­¥éª¤æ›´æ–°æ¨¡åž‹ã€?
 
-ÕâÖÖ·½·¨²»Í¬ÓÚ±ê×¼Î¢µ÷£¬ÒòÎªÔÚÊý¾ÝÁ¿¼«µÍµÄ»·¾³ÖÐÔËÐÐµÄ ¡ª¡ª Í¨³£ÊÇÍ¨¹ýµ¥¸öÊäÈëµÄÎÞ¼à¶½Ä¿±ê£¬»òÓ¦ÓÃÓÚÒ»¸ö»òÁ½¸ö in-context ±ê×¢Ê¾ÀýµÄÓÐ¼à¶½Ä¿±ê¡£
+è¿™ç§æ–¹æ³•ä¸åŒäºŽæ ‡å‡†å¾®è°ƒï¼Œå› ä¸ºåœ¨æ•°æ®é‡æžä½Žçš„çŽ¯å¢ƒä¸­è¿è¡Œçš? â€”â€? é€šå¸¸æ˜¯é€šè¿‡å•ä¸ªè¾“å…¥çš„æ— ç›‘ç£ç›®æ ‡ï¼Œæˆ–åº”ç”¨äºŽä¸€ä¸ªæˆ–ä¸¤ä¸ª in-context æ ‡æ³¨ç¤ºä¾‹çš„æœ‰ç›‘ç£ç›®æ ‡ã€?
 
 
-Ïê¼ûÕ¾ÄÚ: [transformer ×¨Ìâ](transformer#ttt)
+è¯¦è§ç«™å†…: [transformer ä¸“é¢˜](transformer#ttt)
 
 #### Yan
 
-¡¾2024-7-11¡¿ RockAI ÍÆ³ö Yan Ä£ÐÍ£¬·ÅÆútransformer¼Ü¹¹, Ì½Ë÷ÀàÄÔË¼Â·
+ã€?2024-7-11ã€? RockAI æŽ¨å‡º Yan æ¨¡åž‹ï¼Œæ”¾å¼ƒtransformeræž¶æž„, æŽ¢ç´¢ç±»è„‘æ€è·¯
 
-¸Ä½øµã
-- (1) transformer »»³É MCSD
-  - ÂÛÎÄ [MCSD: An Ef?cient Language Model with Diverse Fusion](https://arxiv.org/pdf/2406.12230)
-- (2) ¾Ö²¿Ä£Ì¬¼¤»î
-  - transformer¼Ü¹¹: ÎÊ 1+1=?, »á¼¤»îËùÓÐ²ÎÊý, ËãÁ¦ÏûºÄÌ«´ó, ÈËÄÔ²»ÊÇÕâÑù
-  - ÀàÄÔ»úÖÆ: ÈËÄÔ°´ÌýËµ¿´µÈ¹¦ÄÜ·ÖÇø, ¸ù¾ÝÈÎÎñ¼¤»î¶ÔÓ¦ÇøÓò£¬ÆäËüÇøÓò´¦ÓÚÒÖÖÆ×´Ì¬, ÕâÑù¹¦ºÄºÜµÍ, ²Å20w, Ïàµ±ÓÚµçµÆÅÝ 
+æ”¹è¿›ç‚?
+- (1) transformer æ¢æˆ MCSD
+  - è®ºæ–‡ [MCSD: An Ef?cient Language Model with Diverse Fusion](https://arxiv.org/pdf/2406.12230)
+- (2) å±€éƒ¨æ¨¡æ€æ¿€æ´?
+  - transformeræž¶æž„: é—? 1+1=?, ä¼šæ¿€æ´»æ‰€æœ‰å‚æ•?, ç®—åŠ›æ¶ˆè€—å¤ªå¤?, äººè„‘ä¸æ˜¯è¿™æ ·
+  - ç±»è„‘æœºåˆ¶: äººè„‘æŒ‰å¬è¯´çœ‹ç­‰åŠŸèƒ½åˆ†åŒ?, æ ¹æ®ä»»åŠ¡æ¿€æ´»å¯¹åº”åŒºåŸŸï¼Œå…¶å®ƒåŒºåŸŸå¤„äºŽæŠ‘åˆ¶çŠ¶æ€?, è¿™æ ·åŠŸè€—å¾ˆä½?, æ‰?20w, ç›¸å½“äºŽç”µç¯æ³¡ 
 
-ÕûÌåË®Æ½½Ó½üÖ÷Á÷µÄtransformer£¬²¿·ÖÐÔÄÜ³¬Ô½
-- 3b Ä£ÐÍ, ´óÐ¡5G£¬ÓÅ»¯ºó£¬ÄÚ´æÕ¼ÓÃ½ö1G
-- ¶Ë²àÉè±¸ÉÏÔËÐÐ£¬ÐÔÄÜ³¬¹ý transformer 30% ÒÔÉÏ
+æ•´ä½“æ°´å¹³æŽ¥è¿‘ä¸»æµçš„transformerï¼Œéƒ¨åˆ†æ€§èƒ½è¶…è¶Š
+- 3b æ¨¡åž‹, å¤§å°5Gï¼Œä¼˜åŒ–åŽï¼Œå†…å­˜å ç”¨ä»…1G
+- ç«¯ä¾§è®¾å¤‡ä¸Šè¿è¡Œï¼Œæ€§èƒ½è¶…è¿‡ transformer 30% ä»¥ä¸Š
 
-ÎÊÌâ
-- ÈçºÎÅÐ¶Ï¼¤»îÄÄ¸öÇøÓò? **·ÂÕæÉñ¾­ÔªÑ¡ÔñËã·¨**, Ò»¸öµ¥¶ÀµÄÐ¡ÐÍÉñ¾­ÍøÂç, Ëæ×ÅÑµÁ·µÄ½øÐÐ,´ÓËæ»úÑ¡Ôñµü´úµ½Õë¶ÔÐÔÑ¡Ôñ
-- ÑµÁ·ÉÏÓÐÊ²Ã´¼¼ÇÉ? 
+é—®é¢˜
+- å¦‚ä½•åˆ¤æ–­æ¿€æ´»å“ªä¸ªåŒºåŸ?? **ä»¿çœŸç¥žç»å…ƒé€‰æ‹©ç®—æ³•**, ä¸€ä¸ªå•ç‹¬çš„å°åž‹ç¥žç»ç½‘ç»œ, éšç€è®­ç»ƒçš„è¿›è¡?,ä»Žéšæœºé€‰æ‹©è¿­ä»£åˆ°é’ˆå¯¹æ€§é€‰æ‹©
+- è®­ç»ƒä¸Šæœ‰ä»€ä¹ˆæŠ€å·?? 
 
-`Yan 1.3`: ÈºÌåÖÇÄÜµ¥Ôª´óÄ£ÐÍ
-- ÑµÁ·Ð§ÂÊÌáÉý7±¶¡¢ÍÆÀíÍÌÍÂÁ¿ÌáÉý5±¶¡¢¼ÇÒäÄÜÁ¦ÌáÉý3±¶
-- Ãë¼¶Ó°Ïì¡¢·Çtransformer½á¹¹¡¢¶Ëµ½¶Ë¶àÄ£Ì¬¡¢Âú×ã´ó²¿·Ö¶Ë²àÉè±¸
-  - ¹úÄÚÄÜÔÚÊÖ»úcpuÉÏÔËÐÐLLMµÄ¹«Ë¾²»³¬¹ý3¼Ò
+`Yan 1.3`: ç¾¤ä½“æ™ºèƒ½å•å…ƒå¤§æ¨¡åž?
+- è®­ç»ƒæ•ˆçŽ‡æå‡7å€ã€æŽ¨ç†åžåé‡æå‡5å€ã€è®°å¿†èƒ½åŠ›æå?3å€?
+- ç§’çº§å½±å“ã€éžtransformerç»“æž„ã€ç«¯åˆ°ç«¯å¤šæ¨¡æ€ã€æ»¡è¶³å¤§éƒ¨åˆ†ç«¯ä¾§è®¾å¤‡
+  - å›½å†…èƒ½åœ¨æ‰‹æœºcpuä¸Šè¿è¡ŒLLMçš„å…¬å¸ä¸è¶…è¿‡3å®?
 
-ÏÖÔÚ´óÄ£ÐÍÑµÁ··´³£Ê¶£ºÑµÁ·Ò»¸öÄ£ÐÍ£¬»¨·ÑµÄ¼ÆËã×ÊÔ´Ì«¶à£¬ÓÐµÄÉõÖÁÒªÆô¶¯ºËµçÕ¾ÑµÁ·¡£
+çŽ°åœ¨å¤§æ¨¡åž‹è®­ç»ƒåå¸¸è¯†ï¼šè®­ç»ƒä¸€ä¸ªæ¨¡åž‹ï¼ŒèŠ±è´¹çš„è®¡ç®—èµ„æºå¤ªå¤šï¼Œæœ‰çš„ç”šè‡³è¦å¯åŠ¨æ ¸ç”µç«™è®­ç»ƒã€?
 
-ÊÓÆµ½éÉÜ
-- [Õ¾ÆðÀ´ÁË£¡¹úÄÚÕâ¼ÒAI¹«Ë¾ÓÃÐÂ¼¼ÊõÌôÕ½ChatGPTÈ¨Íþ](https://www.bilibili.com/video/BV19LCUYuEKP/?spm_id_from=333.999.0.0&vd_source=ec1c777505e146eb20d947449d6bba6e) RockAIÁª´´×Þ¼ÑË¼
+è§†é¢‘ä»‹ç»
+- [ç«™èµ·æ¥äº†ï¼å›½å†…è¿™å®¶AIå…¬å¸ç”¨æ–°æŠ€æœ¯æŒ‘æˆ˜ChatGPTæƒå¨](https://www.bilibili.com/video/BV19LCUYuEKP/?spm_id_from=333.999.0.0&vd_source=ec1c777505e146eb20d947449d6bba6e) RockAIè”åˆ›é‚¹ä½³æ€?
 
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113328533868595&bvid=BV19LCUYuEKP&cid=26349866723&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
-OpenAI GPT ÔÚattentionÂ·ÉÏÉî¸û£¬²¢·ÇÎ¨Ò»³öÂ·¡£
+OpenAI GPT åœ¨attentionè·¯ä¸Šæ·±è€•ï¼Œå¹¶éžå”¯ä¸€å‡ºè·¯ã€?
 
-¸Ä½ø
-- Á¿»¯£¿
-  - ÎÄ±¾Ä£Ì¬ÉÏÁ¿»¯£¬ÄÜ±£Áô80-90%µÄÐ§¹û£¬¶øÍ¼Ïñ¡¢ÊÓÆµ´ó·ù¶ÈÏÂ»¬
-  - Á¿»¯ºó£¬È¨ÖØ¹Ì¶¨£¬ÎÞ·¨ÔÙÑ§Ï°
+æ”¹è¿›
+- é‡åŒ–ï¼?
+  - æ–‡æœ¬æ¨¡æ€ä¸Šé‡åŒ–ï¼Œèƒ½ä¿ç•™80-90%çš„æ•ˆæžœï¼Œè€Œå›¾åƒã€è§†é¢‘å¤§å¹…åº¦ä¸‹æ»‘
+  - é‡åŒ–åŽï¼Œæƒé‡å›ºå®šï¼Œæ— æ³•å†å­¦ä¹ 
 
-¹úÄÚ´óÄ£ÐÍ»ú»á
-- »ù´¡´´ÐÂ: ÍäµÀ³¬³µµÄ»ú»á£¬¿¨²±×ÓÎÊÌâ
-  - deepseek ÍÆ³ö MLA/O1¸´ÏÖ
-  - RockAI(ÑÒÉ½¿Æ¼¼) Ä¿±ê£º°ÑattentionÄÃµô; ¹úÄÚÄÜÔÚÊÖ»úÉÏÔËÐÐµÄLLM²»³¬¹ý3¼Ò, Yan Ä£ÐÍ½â¾ö¶Ë²àÍÆÀí×ÊÔ´¿ªÏú´óµÄÎÊÌâ
-  - ¹úÄÚ±Ä³öÀ´Ò»ÅúLLM£¬Ô­ÒòÊÇ Llama ¿ªÔ´ÁË¡£¡£¡£META ¼Æ»®±ÕÔ´
-  - ÈË²ÅÒªÇó: ÊýÑ§+Ëã·¨¶¼Ç¿£¬ÇÒÔ¸Òâ×øÀä°åµÊ
-- Ó¦ÓÃ´´ÐÂ
-  - ¹úÄÚ×öÓ¦ÓÃºÜÇ¿
-  - ÈË²ÅÒªÇó£º½»²æÑ§¿Æ±³¾°£¬Èç ¶®Ò½Ñ§+AI
+å›½å†…å¤§æ¨¡åž‹æœºä¼?
+- åŸºç¡€åˆ›æ–°: å¼¯é“è¶…è½¦çš„æœºä¼šï¼Œå¡è„–å­é—®é¢?
+  - deepseek æŽ¨å‡º MLA/O1å¤çŽ°
+  - RockAI(å²©å±±ç§‘æŠ€) ç›®æ ‡ï¼šæŠŠattentionæ‹¿æŽ‰; å›½å†…èƒ½åœ¨æ‰‹æœºä¸Šè¿è¡Œçš„LLMä¸è¶…è¿?3å®?, Yan æ¨¡åž‹è§£å†³ç«¯ä¾§æŽ¨ç†èµ„æºå¼€é”€å¤§çš„é—®é¢˜
+  - å›½å†…è¹¦å‡ºæ¥ä¸€æ‰¹LLMï¼ŒåŽŸå› æ˜¯ Llama å¼€æºäº†ã€‚ã€‚ã€‚META è®¡åˆ’é—­æº
+  - äººæ‰è¦æ±‚: æ•°å­¦+ç®—æ³•éƒ½å¼ºï¼Œä¸”æ„¿æ„åå†·æ¿å‡³
+- åº”ç”¨åˆ›æ–°
+  - å›½å†…åšåº”ç”¨å¾ˆå¼?
+  - äººæ‰è¦æ±‚ï¼šäº¤å‰å­¦ç§‘èƒŒæ™¯ï¼Œå¦? æ‡‚åŒ»å­?+AI
 
 
-`°ßÂíÓã`
-- Ö»ÓÐ¼¸°ÙÍòÉñ¾­Ôª£¬µ«±ÜÕÏÄÜÁ¦·Ç³£Ç¿£¬Õâ¶ÔÖÇÄÜ¼ÝÊ»ºÜÓÐÆô·¢
-- »¹²»Çå³þ´óÄÔÉñ¾­ÓÐÃ»ÓÐÁ¿×ÓÐ§Ó¦¡£
-Èç¹û°ßÂíÓãÉñ¾­ÍøÂçÓÐÁ¿×ÓÐ§Ó¦£¬ÄÇÃ´ÓãÄÔ¼ÆËãÐ§ÂÊ¿Ï¶¨ÊÇ¸ßÐ§µÄ£¬ÕâÔÚÐèÒªÍ¶Èë¶àÉÙËãÁ¦¿ÉÄÜÓÐµÄ²Î¿¼¡£
+`æ–‘é©¬é±¼`
+- åªæœ‰å‡ ç™¾ä¸‡ç¥žç»å…ƒï¼Œä½†é¿éšœèƒ½åŠ›éžå¸¸å¼ºï¼Œè¿™å¯¹æ™ºèƒ½é©¾é©¶å¾ˆæœ‰å¯å‘
+- è¿˜ä¸æ¸…æ¥šå¤§è„‘ç¥žç»æœ‰æ²¡æœ‰é‡å­æ•ˆåº”ã€?
+å¦‚æžœæ–‘é©¬é±¼ç¥žç»ç½‘ç»œæœ‰é‡å­æ•ˆåº”ï¼Œé‚£ä¹ˆé±¼è„‘è®¡ç®—æ•ˆçŽ‡è‚¯å®šæ˜¯é«˜æ•ˆçš„ï¼Œè¿™åœ¨éœ€è¦æŠ•å…¥å¤šå°‘ç®—åŠ›å¯èƒ½æœ‰çš„å‚è€ƒã€?
 
-»úÆ÷ÈË
-- ÓîÊ÷¿Æ¼¼¡¢ÖÇÔ´£¬»úÆ÷ÈËÐÐÒµ»¹ÐèÒª5Äê³Áµí
+æœºå™¨äº?
+- å®‡æ ‘ç§‘æŠ€ã€æ™ºæºï¼Œæœºå™¨äººè¡Œä¸šè¿˜éœ€è¦?5å¹´æ²‰æ·€
 
-### Í¼½â
+### å›¾è§£
 
-×Ü½áLLM¸÷½×¶ÎÓÅ»¯·½Ïò
+æ€»ç»“LLMå„é˜¶æ®µä¼˜åŒ–æ–¹å?
 
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-06-22T15:10:12.254Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\&quot; etag=\&quot;V_7K2ib4bP-NWsyXjMxV\&quot; version=\&quot;21.5.0\&quot;&gt;\n  &lt;diagram id=\&quot;xdYpP7w1t2VaaceZiyqw\&quot; name=\&quot;µÚ 1 Ò³\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;795\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-35\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;dashed=1;dashPattern=1 1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;90\&quot; y=\&quot;300\&quot; width=\&quot;180\&quot; height=\&quot;360\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wGYBfAiltT4hGnPjrrAm-8\&quot; value=\&quot;LLM¸Ä½ø·½Ïò\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;rotation=0;strokeWidth=3;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;242\&quot; y=\&quot;70\&quot; width=\&quot;216\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; value=\&quot;Êý¾Ý\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;118\&quot; y=\&quot;180\&quot; width=\&quot;110\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; value=\&quot;ÑµÁ·\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;570\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-6\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; target=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;275\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;410\&quot; y=\&quot;410\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-15\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; target=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;600\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; value=\&quot;¸´ÏÖ\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;590\&quot; y=\&quot;535\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-12\&quot; value=\&quot;Êý¾Ý¼¯£ºÊÕ¼¯´¦Àí\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-13\&quot; value=\&quot;Èý²½×ßÁ÷³Ì\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-14\&quot; value=\&quot;Ó²¼þ×ÊÔ´¿ªÏú\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-22\&quot; value=\&quot;¸Ä½ø&amp;lt;br&amp;gt;¢Ù µ¥´Ê¡ú×Ö·û&amp;lt;br&amp;gt;¢Ú½â¾öÁËOOVÎÊÌâ\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;190\&quot; y=\&quot;450\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-42\&quot; value=\&quot;2023-6-22&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;120\&quot; y=\&quot;1210\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; value=\&quot;Ð§¹û\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;910\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-3\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-2\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;283\&quot; y=\&quot;500\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;790\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-5\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-4\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;240\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;490\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; value=\&quot;Ä£ÐÍ\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;340\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-7\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-6\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;620\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;780\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; value=\&quot;²¿Êð\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;740\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-8\&quot; value=\&quot;ÎÊÌâ\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;540\&quot; y=\&quot;860\&quot; width=\&quot;230\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-37\&quot; value=\&quot;LLMÆÀ²â\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-9\&quot; value=\&quot;ÖªÊ¶×¼È·ÐÔ£º»Ã¾õ£¬ºúËµ°ËµÀ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-10\&quot; value=\&quot;¸´ÔÓÍÆÀíÄÜÁ¦\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-11\&quot; value=\&quot;ÈËÀàÆ«ºÃ¶ÔÆë£ºRLHF²»×ã\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-12\&quot; value=\&quot;Ó¦ÓÃ\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;1110\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-13\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-12\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;167\&quot; y=\&quot;630\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;90\&quot; y=\&quot;750\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-14\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;460\&quot; y=\&quot;960\&quot; as=\&quot;targetPoint\&quot; /&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;510\&quot; y=\&quot;935\&quot; /&gt;\n              &lt;mxPoint x=\&quot;510\&quot; y=\&quot;935\&quot; /&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-15\&quot; value=\&quot;¹¤³ÌÂäµØ\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;360\&quot; y=\&quot;708\&quot; width=\&quot;140\&quot; height=\&quot;180\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-16\&quot; value=\&quot;Ð¡ÐÍ»¯\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-17\&quot; value=\&quot;±¾µØ²¿Êð\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-18\&quot; value=\&quot;ÐÔÄÜ£ºÊ±ÑÓ¡¢²¢·¢\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-20\&quot; value=\&quot;Êý¾Ý°²È«\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-38\&quot; value=\&quot;ÊäÈë¡¢Êä³öÏÞÖÆ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;150\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.021;entryY=0.9;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-16\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;370\&quot; y=\&quot;605\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-21\&quot; value=\&quot;ÉúÌ¬ÏµÍ³\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380\&quot; y=\&quot;1060\&quot; width=\&quot;140\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxRectangle x=\&quot;550\&quot; y=\&quot;1040\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;alternateBounds\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-22\&quot; value=\&quot;ÁªÍø\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-23\&quot; value=\&quot;²å¼þÊÐ³¡\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-24\&quot; value=\&quot;´¹ÀàÓ¦ÓÃ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-25\&quot; value=\&quot;LLM¿ò¼Ü£ºLangChain\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-26\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-12\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-23\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;775\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;367\&quot; y=\&quot;775\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-27\&quot; value=\&quot;Êý¾Ý¼¯\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;560\&quot; y=\&quot;145\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-28\&quot; value=\&quot;Ô¤ÑµÁ·Êý¾Ý¼¯£ºÖÐÓ¢ÎÄ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-29\&quot; value=\&quot;Ö¸Áî¼¯\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-30\&quot; value=\&quot;promptÊý¾Ý¼¯\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-31\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;entryX=-0.014;entryY=0.933;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-28\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;370\&quot; y=\&quot;605\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-32\&quot; value=\&quot;Ä£ÐÍÓÅ»¯\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;400\&quot; y=\&quot;305\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-33\&quot; value=\&quot;»ù×ù´óÄ£ÐÍ£ºÖÐÎÄ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-34\&quot; value=\&quot;½±ÀøÄ£ÐÍ\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-35\&quot; value=\&quot;RL»·½ÚÓÅ»¯\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-36\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;entryX=-0.007;entryY=0.067;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-34\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;238\&quot; y=\&quot;215\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;408\&quot; y=\&quot;214\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2023-06-22T15:10:12.254Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\&quot; etag=\&quot;V_7K2ib4bP-NWsyXjMxV\&quot; version=\&quot;21.5.0\&quot;&gt;\n  &lt;diagram id=\&quot;xdYpP7w1t2VaaceZiyqw\&quot; name=\&quot;ç¬? 1 é¡µ\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1242\&quot; dy=\&quot;795\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-35\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;dashed=1;dashPattern=1 1;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;90\&quot; y=\&quot;300\&quot; width=\&quot;180\&quot; height=\&quot;360\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wGYBfAiltT4hGnPjrrAm-8\&quot; value=\&quot;LLMæ”¹è¿›æ–¹å‘\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;rotation=0;strokeWidth=3;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;242\&quot; y=\&quot;70\&quot; width=\&quot;216\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; value=\&quot;æ•°æ®\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;118\&quot; y=\&quot;180\&quot; width=\&quot;110\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; value=\&quot;è®­ç»ƒ\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;570\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-6\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; target=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;275\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;410\&quot; y=\&quot;410\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-15\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; target=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;250\&quot; y=\&quot;600\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; value=\&quot;å¤çŽ°\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;590\&quot; y=\&quot;535\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-12\&quot; value=\&quot;æ•°æ®é›†ï¼šæ”¶é›†å¤„ç†\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-13\&quot; value=\&quot;ä¸‰æ­¥èµ°æµç¨‹\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-14\&quot; value=\&quot;ç¡¬ä»¶èµ„æºå¼€é”€\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; parent=\&quot;zweJf7sKE0CawOek9Q0V-11\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-22\&quot; value=\&quot;æ”¹è¿›&amp;lt;br&amp;gt;â‘? å•è¯â†’å­—ç¬?&amp;lt;br&amp;gt;â‘¡è§£å†³äº†OOVé—®é¢˜\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;190\&quot; y=\&quot;450\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;zweJf7sKE0CawOek9Q0V-42\&quot; value=\&quot;2023-6-22&amp;lt;br&amp;gt;wqw547243068@163.com\&quot; style=\&quot;text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;120\&quot; y=\&quot;1210\&quot; width=\&quot;170\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; value=\&quot;æ•ˆæžœ\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;910\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-3\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-2\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;283\&quot; y=\&quot;500\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;790\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-5\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-4\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;240\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;490\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; value=\&quot;æ¨¡åž‹\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;340\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-7\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=13;strokeWidth=2;strokeColor=#808080;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-3\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-6\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;620\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;173\&quot; y=\&quot;780\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; value=\&quot;éƒ¨ç½²\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;740\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-8\&quot; value=\&quot;é—®é¢˜\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;540\&quot; y=\&quot;860\&quot; width=\&quot;230\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-37\&quot; value=\&quot;LLMè¯„æµ‹\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-9\&quot; value=\&quot;çŸ¥è¯†å‡†ç¡®æ€§ï¼šå¹»è§‰ï¼Œèƒ¡è¯´å…«é“\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-10\&quot; value=\&quot;å¤æ‚æŽ¨ç†èƒ½åŠ›\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-11\&quot; value=\&quot;äººç±»åå¥½å¯¹é½ï¼šRLHFä¸è¶³\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;230\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-12\&quot; value=\&quot;åº”ç”¨\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;113\&quot; y=\&quot;1110\&quot; width=\&quot;120\&quot; height=\&quot;50\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-13\&quot; value=\&quot;\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;fontSize=13;strokeWidth=2;strokeColor=#808080;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-12\&quot;&gt;\n          &lt;mxGeometry width=\&quot;50\&quot; height=\&quot;50\&quot; relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;167\&quot; y=\&quot;630\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;90\&quot; y=\&quot;750\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-14\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-2\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-8\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;460\&quot; y=\&quot;960\&quot; as=\&quot;targetPoint\&quot; /&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;510\&quot; y=\&quot;935\&quot; /&gt;\n              &lt;mxPoint x=\&quot;510\&quot; y=\&quot;935\&quot; /&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-15\&quot; value=\&quot;å·¥ç¨‹è½åœ°\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;360\&quot; y=\&quot;708\&quot; width=\&quot;140\&quot; height=\&quot;180\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-16\&quot; value=\&quot;å°åž‹åŒ–\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-17\&quot; value=\&quot;æœ¬åœ°éƒ¨ç½²\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-18\&quot; value=\&quot;æ€§èƒ½ï¼šæ—¶å»¶ã€å¹¶å‘\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-20\&quot; value=\&quot;æ•°æ®å®‰å…¨\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-38\&quot; value=\&quot;è¾“å…¥ã€è¾“å‡ºé™åˆ¶\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-15\&quot;&gt;\n          &lt;mxGeometry y=\&quot;150\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-19\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.021;entryY=0.9;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-6\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-16\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;370\&quot; y=\&quot;605\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-21\&quot; value=\&quot;ç”Ÿæ€ç³»ç»Ÿ\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380\&quot; y=\&quot;1060\&quot; width=\&quot;140\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxRectangle x=\&quot;550\&quot; y=\&quot;1040\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;alternateBounds\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-22\&quot; value=\&quot;è”ç½‘\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-23\&quot; value=\&quot;æ’ä»¶å¸‚åœº\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-24\&quot; value=\&quot;åž‚ç±»åº”ç”¨\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-25\&quot; value=\&quot;LLMæ¡†æž¶ï¼šLangChain\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-21\&quot;&gt;\n          &lt;mxGeometry y=\&quot;120\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-26\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=1 1;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-12\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-23\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;775\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;367\&quot; y=\&quot;775\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-27\&quot; value=\&quot;æ•°æ®é›†\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;560\&quot; y=\&quot;145\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-28\&quot; value=\&quot;é¢„è®­ç»ƒæ•°æ®é›†ï¼šä¸­è‹±æ–‡\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-29\&quot; value=\&quot;æŒ‡ä»¤é›†\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-30\&quot; value=\&quot;promptæ•°æ®é›†\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-27\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-31\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;entryX=-0.014;entryY=0.933;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;zweJf7sKE0CawOek9Q0V-1\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-28\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;243\&quot; y=\&quot;605\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;370\&quot; y=\&quot;605\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-32\&quot; value=\&quot;æ¨¡åž‹ä¼˜åŒ–\&quot; style=\&quot;swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;400\&quot; y=\&quot;305\&quot; width=\&quot;140\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-33\&quot; value=\&quot;åŸºåº§å¤§æ¨¡åž‹ï¼šä¸­æ–‡\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;30\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-34\&quot; value=\&quot;å¥–åŠ±æ¨¡åž‹\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;60\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-35\&quot; value=\&quot;RLçŽ¯èŠ‚ä¼˜åŒ–\&quot; style=\&quot;text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;sLKGas7Howqt66q8ozR_-32\&quot;&gt;\n          &lt;mxGeometry y=\&quot;90\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;sLKGas7Howqt66q8ozR_-36\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#B3B3B3;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;dashed=1;dashPattern=1 1;entryX=-0.007;entryY=0.067;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;sLKGas7Howqt66q8ozR_-4\&quot; target=\&quot;sLKGas7Howqt66q8ozR_-34\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;238\&quot; y=\&quot;215\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;408\&quot; y=\&quot;214\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
 
-# ½áÊø
+# ç»“æŸ

@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  AIGCÄÚÈÝ¼ì²âÓë¹¥»÷
+title:  AIGCå†…å®¹æ£€æµ‹ä¸Žæ”»å‡»
 date:   2024-10-31 22:08:00
-categories: ´óÄ£ÐÍ
-tags: gpt ÎÄ±¾Éú³É ¶Ô¿¹ ¹¥»÷ AIGC ChatGPT Ë®Ó¡
-excerpt: ÈçºÎ¼ì²âAIGCÄÚÈÝ£¿Çø·Ö»úÆ÷»¹ÊÇÈË¹¤±àÐ´£¿ÔõÃ´¹¥»÷AIGC/LLMÄÚÈÝ£¿
+categories: å¤§æ¨¡åž?
+tags: gpt æ–‡æœ¬ç”Ÿæˆ å¯¹æŠ— æ”»å‡» AIGC ChatGPT æ°´å°
+excerpt: å¦‚ä½•æ£€æµ‹AIGCå†…å®¹ï¼ŸåŒºåˆ†æœºå™¨è¿˜æ˜¯äººå·¥ç¼–å†™ï¼Ÿæ€Žä¹ˆæ”»å‡»AIGC/LLMå†…å®¹ï¼?
 mathjax: true
 permalink: /aigc_detect
 ---
@@ -13,59 +13,59 @@ permalink: /aigc_detect
 {:toc}
 
 
-# ÎÄ±¾¼ì²â
+# æ–‡æœ¬æ£€æµ?
 
 
-## ·½·¨×Ü½á
+## æ–¹æ³•æ€»ç»“
 
-¡¾2024-10-23¡¿ÂÛÎÄ: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
+ã€?2024-10-23ã€‘è®ºæ–?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
 
-¼ì²â·½·¨
-- (1) **¼ìË÷**(retrieval-based approach): ¼ì²éÉú³ÉÄÚÈÝÓë¿âÀï´æ´¢µÄÄÚÈÝÊÇ·ñÆ¥Åä
-  - ÎÊÌâ: ÐèÒªÔ¤Éú³É´óÁ¿ÄÚÈÝ¡¢ÒþË½ÎÊÌâ£¨ÒòÎªÒª´æ´¢¡¢ÆÀ¹À£©
-- (2) **ÊÂºó¼´Ê±¼ì²â**(post hoc detection): Ê¹ÓÃÎÄ±¾Í³¼ÆÌØÕ÷£¬»ò»úÆ÷Ñ§Ï°·ÖÀàÆ÷À´Çø·ÖÈË¹¤¡¢AIÉú³ÉÄÚÈÝ
-  - ÓÅµã: ²»ÐèÒª±£´æ¼ÇÂ¼¡¢¸ÉÔ¤ÎÄ±¾Éú³É¹ý³Ì
-  - È±µã: ¼ÆËã¿ªÏú´ó, ³¡¾°ÊÜÏÞ£¨Ä£ÐÍ£©£¬oovÎÊÌâ, ÒÀÀµÈË¹¤±àÐ´Êý¾Ý
-- (3) **ÎÄ±¾Ë®Ó¡**: Éú³É¹ý³ÌÖÐÖ²ÈëË®Ó¡
-  - ¢Ù ±à¼­Ë®Ó¡ Edit-based watermarking: ¹æÔòÎªÖ÷, Èç Í¬Òå´ÊÌæ»»¡¢²åÈëÌØÊâ Unicode ×Ö·û
-  - ¢Ú Êý¾ÝÇý¶¯Ë®Ó¡ data-drived watermarking: ÔÚÌØÊâ´¥·¢¶ÌÓïÊý¾Ý¼¯ÉÏÑµÁ·LLM
-  - ¢Û Éú³ÉÊ½Ë®Ó¡
+æ£€æµ‹æ–¹æ³?
+- (1) **æ£€ç´?**(retrieval-based approach): æ£€æŸ¥ç”Ÿæˆå†…å®¹ä¸Žåº“é‡Œå­˜å‚¨çš„å†…å®¹æ˜¯å¦åŒ¹é…?
+  - é—®é¢˜: éœ€è¦é¢„ç”Ÿæˆå¤§é‡å†…å®¹ã€éšç§é—®é¢˜ï¼ˆå› ä¸ºè¦å­˜å‚¨ã€è¯„ä¼°ï¼‰
+- (2) **äº‹åŽå³æ—¶æ£€æµ?**(post hoc detection): ä½¿ç”¨æ–‡æœ¬ç»Ÿè®¡ç‰¹å¾ï¼Œæˆ–æœºå™¨å­¦ä¹ åˆ†ç±»å™¨æ¥åŒºåˆ†äººå·¥ã€AIç”Ÿæˆå†…å®¹
+  - ä¼˜ç‚¹: ä¸éœ€è¦ä¿å­˜è®°å½•ã€å¹²é¢„æ–‡æœ¬ç”Ÿæˆè¿‡ç¨?
+  - ç¼ºç‚¹: è®¡ç®—å¼€é”€å¤?, åœºæ™¯å—é™ï¼ˆæ¨¡åž‹ï¼‰ï¼Œoové—®é¢˜, ä¾èµ–äººå·¥ç¼–å†™æ•°æ®
+- (3) **æ–‡æœ¬æ°´å°**: ç”Ÿæˆè¿‡ç¨‹ä¸­æ¤å…¥æ°´å?
+  - â‘? ç¼–è¾‘æ°´å° Edit-based watermarking: è§„åˆ™ä¸ºä¸», å¦? åŒä¹‰è¯æ›¿æ€€æ’å…¥ç‰¹æ®? Unicode å­—ç¬¦
+  - â‘? æ•°æ®é©±åŠ¨æ°´å° data-drived watermarking: åœ¨ç‰¹æ®Šè§¦å‘çŸ­è¯­æ•°æ®é›†ä¸Šè®­ç»ƒLLM
+  - â‘? ç”Ÿæˆå¼æ°´å?
 
-¢ÙºÍ¢ÚÕâÁ½ÖÖ·½·¨¶¼¿ÉÄÜÔÚÎÄ±¾ÖÐÁôÏÂÃ÷ÏÔµÄÎ±Ó°
-
-
+â‘ å’Œâ‘¡è¿™ä¸¤ç§æ–¹æ³•éƒ½å¯èƒ½åœ¨æ–‡æœ¬ä¸­ç•™ä¸‹æ˜Žæ˜¾çš„ä¼ªå½±
 
 
-## ChatGPT ´ò¼Ù
 
-×î½üÒ»¶ÎÊ±¼ä£¬ChatGPTÏÈÊÇ³ÉÎªÃÀ¹ú¸ßÖÐÉúµÄÐ´×÷ÒµÀûÆ÷£¬ºóÃæ°ï×¨ÒµÃ½ÌåÐ´¸å×Ó£¬Òý·¢¾Þ´ó¿Ö»Å¡£ÈçNature¡¢Å¦Ô¼½ÌÓý²¿µÈ£¬¶¼Õë¶ÔChatGPT·¢²¼½ûÁî¡£
 
-OpenAI¹Ù·½ÍÆ³öAIÉú³ÉÄÚÈÝÊ¶±ðÆ÷£¬µ«³É¹¦ÂÊÖ»ÓÐ26% [¹«ÖÚºÅÎÄÕÂ](https://mp.weixin.qq.com/s/etHIquIuN4VeSUuFjzBoyA) [Ó¢ÎÄÔ­ÎÄ](https://techcrunch.com/2023/01/31/OpenAI-releases-tool-to-detect-ai-generated-text-including-from-ChatGPT/)
-- ChatGPT Òý·¢ AI ÁìÓò¡¸ÊÇ·ñÒª½ûÓÃ¡¹´óÌÖÂÛÖ®ºó£¬OpenAI µÄÕæ¼Ù¼ø±ð¹¤¾ßÖÕÓÚÀ´ÁË¡£ [AI Text Classifier](https://platform.OpenAI.com/ai-text-classifier)
-- 2023Äê1ÔÂ31ÈÕ£¬OpenAI ¹ÙÐûÁËÇø·ÖÈËÀà×÷Æ·ºÍ AI Éú³ÉÎÄ±¾µÄÊ¶±ð¹¤¾ßÉÏÏß£¬¸Ã¼¼ÊõÖ¼ÔÚÊ¶±ð×Ô¼ÒµÄ ChatGPT¡¢GPT-3 µÈÄ£ÐÍÉú³ÉµÄÄÚÈÝ¡£È»¶ø·ÖÀàÆ÷Ä¿Ç°¿´ÆðÀ´×¼È·ÐÔ¿°ÓÇ£ºOpenAI ÔÚ²©¿ÍÀïÖ¸³ö AI Ê¶±ð AI ¸ßÖÃÐÅ¶ÈÕýÈ·ÂÊÔ¼Îª 26%¡£µ«¸Ã»ú¹¹ÈÏÎª£¬µ±ËüÓëÆäËû·½·¨½áºÏÊ¹ÓÃÊ±£¬¿ÉÒÔÓÐÖúÓÚ·ÀÖ¹ AI ÎÄ±¾Éú³ÉÆ÷±»ÀÄÓÃ¡£
-- OpenAI ÎÄ±¾·ÖÀàÆ÷²»ÊÊÓÃÓÚËùÓÐÀàÐÍµÄÎÄ±¾¡£±»¼ì²âµÄÄÚÈÝÖÁÉÙÐèÒª 1000 ¸ö×Ö·û£¬»ò´óÔ¼ 150 µ½ 250 ¸öµ¥´Ê¡£ËüÃ»ÓÐÂÛÎÄ¼ì²âÆ½Ì¨ÄÇÑùµÄ²éÖØÄÜÁ¦ ¡ª¡ª ¿¼ÂÇµ½ÎÄ±¾Éú³ÉÈË¹¤ÖÇÄÜÒÑ±»Ö¤Ã÷»áÕÕ³­ÑµÁ·¼¯ÀïµÄ¡¸ÕýÈ·´ð°¸¡¹£¬ÕâÊÇÒ»¸ö·Ç³£ÄÑÊÜµÄÏÞÖÆ¡£OpenAI ±íÊ¾£¬ÓÉÓÚÆäÓ¢ÓïÇ°ÏòÊý¾Ý¼¯£¬Ëü¸üÓÐ¿ÉÄÜÔÚ¶ùÍ¯»ò·ÇÓ¢ÓïÓïÑÔÊéÐ´µÄÎÄ±¾ÉÏ³ö´í¡£
+## ChatGPT æ‰“å‡
+
+æœ€è¿‘ä¸€æ®µæ—¶é—´ï¼ŒChatGPTå…ˆæ˜¯æˆä¸ºç¾Žå›½é«˜ä¸­ç”Ÿçš„å†™ä½œä¸šåˆ©å™¨ï¼ŒåŽé¢å¸®ä¸“ä¸šåª’ä½“å†™ç¨¿å­ï¼Œå¼•å‘å·¨å¤§ææ…Œã€‚å¦‚Natureã€çº½çº¦æ•™è‚²éƒ¨ç­‰ï¼Œéƒ½é’ˆå¯¹ChatGPTå‘å¸ƒç¦ä»¤ã€?
+
+OpenAIå®˜æ–¹æŽ¨å‡ºAIç”Ÿæˆå†…å®¹è¯†åˆ«å™¨ï¼Œä½†æˆåŠŸçŽ‡åªæœ‰26% [å…¬ä¼—å·æ–‡ç« ](https://mp.weixin.qq.com/s/etHIquIuN4VeSUuFjzBoyA) [è‹±æ–‡åŽŸæ–‡](https://techcrunch.com/2023/01/31/OpenAI-releases-tool-to-detect-ai-generated-text-including-from-ChatGPT/)
+- ChatGPT å¼•å‘ AI é¢†åŸŸã€Œæ˜¯å¦è¦ç¦ç”¨ã€å¤§è®¨è®ºä¹‹åŽï¼ŒOpenAI çš„çœŸå‡é‰´åˆ«å·¥å…·ç»ˆäºŽæ¥äº†ã€? [AI Text Classifier](https://platform.OpenAI.com/ai-text-classifier)
+- 2023å¹?1æœ?31æ—¥ï¼ŒOpenAI å®˜å®£äº†åŒºåˆ†äººç±»ä½œå“å’Œ AI ç”Ÿæˆæ–‡æœ¬çš„è¯†åˆ«å·¥å…·ä¸Šçº¿ï¼Œè¯¥æŠ€æœ¯æ—¨åœ¨è¯†åˆ«è‡ªå®¶çš„ ChatGPTã€GPT-3 ç­‰æ¨¡åž‹ç”Ÿæˆçš„å†…å®¹ã€‚ç„¶è€Œåˆ†ç±»å™¨ç›®å‰çœ‹èµ·æ¥å‡†ç¡®æ€§å ªå¿§ï¼šOpenAI åœ¨åšå®¢é‡ŒæŒ‡å‡º AI è¯†åˆ« AI é«˜ç½®ä¿¡åº¦æ­£ç¡®çŽ‡çº¦ä¸? 26%ã€‚ä½†è¯¥æœºæž„è®¤ä¸ºï¼Œå½“å®ƒä¸Žå…¶ä»–æ–¹æ³•ç»“åˆä½¿ç”¨æ—¶ï¼Œå¯ä»¥æœ‰åŠ©äºŽé˜²æ­¢ AI æ–‡æœ¬ç”Ÿæˆå™¨è¢«æ»¥ç”¨ã€?
+- OpenAI æ–‡æœ¬åˆ†ç±»å™¨ä¸é€‚ç”¨äºŽæ‰€æœ‰ç±»åž‹çš„æ–‡æœ¬ã€‚è¢«æ£€æµ‹çš„å†…å®¹è‡³å°‘éœ€è¦? 1000 ä¸ªå­—ç¬¦ï¼Œæˆ–å¤§çº? 150 åˆ? 250 ä¸ªå•è¯ã€‚å®ƒæ²¡æœ‰è®ºæ–‡æ£€æµ‹å¹³å°é‚£æ ·çš„æŸ¥é‡èƒ½åŠ› â€”â€? è€ƒè™‘åˆ°æ–‡æœ¬ç”Ÿæˆäººå·¥æ™ºèƒ½å·²è¢«è¯æ˜Žä¼šç…§æŠ„è®­ç»ƒé›†é‡Œçš„ã€Œæ­£ç¡®ç­”æ¡ˆã€ï¼Œè¿™æ˜¯ä¸€ä¸ªéžå¸¸éš¾å—çš„é™åˆ¶ã€‚OpenAI è¡¨ç¤ºï¼Œç”±äºŽå…¶è‹±è¯­å‰å‘æ•°æ®é›†ï¼Œå®ƒæ›´æœ‰å¯èƒ½åœ¨å„¿ç«¥æˆ–éžè‹±è¯­è¯­è¨€ä¹¦å†™çš„æ–‡æœ¬ä¸Šå‡ºé”™ã€?
 - Each document is labeled as either very unlikely, unlikely, unclear if it is, possibly, or likely AI-generated.
-- ÔÚÆÀ¹ÀÒ»¶Î¸ø¶¨µÄÎÄ±¾ÊÇ·ñÓÉ AI Éú³ÉÊ±£¬¼ì²âÆ÷²»»áÕýÃæ»Ø´ðÊÇ»ò·ñ¡£¸ù¾ÝÆäÖÃÐÅ¶È£¬Ëü»á½«ÎÄ±¾±ê¼ÇÎª¡¸·Ç³£²»¿ÉÄÜ¡¹ÓÉ AI Éú³É£¨Ð¡ÓÚ 10% µÄ¿ÉÄÜÐÔ£©¡¢¡¸²»Ì«¿ÉÄÜ¡¹ÓÉ AI Éú³É£¨ÔÚ 10% µ½ 45% Ö®¼äµÄ¿ÉÄÜÐÔ£©¡¢¡¸²»Çå³þËüÊÇ·ñÊÇ¡¹AI Éú³É£¨45% µ½ 90% µÄ»ú»á£©¡¢¡¸¿ÉÄÜ¡¹ÓÉ AI Éú³É£¨90% µ½ 98% µÄ»ú»á£©»ò¡¸ºÜÓÐ¿ÉÄÜ¡¹ÓÉ AI Éú³É£¨³¬¹ý 98% µÄ»ú»á£©¡£
+- åœ¨è¯„ä¼°ä¸€æ®µç»™å®šçš„æ–‡æœ¬æ˜¯å¦ç”? AI ç”Ÿæˆæ—¶ï¼Œæ£€æµ‹å™¨ä¸ä¼šæ­£é¢å›žç­”æ˜¯æˆ–å¦ã€‚æ ¹æ®å…¶ç½®ä¿¡åº¦ï¼Œå®ƒä¼šå°†æ–‡æœ¬æ ‡è®°ä¸ºã€Œéžå¸¸ä¸å¯èƒ½ã€ç”± AI ç”Ÿæˆï¼ˆå°äº? 10% çš„å¯èƒ½æ€§ï¼‰ã€ã€Œä¸å¤ªå¯èƒ½ã€ç”± AI ç”Ÿæˆï¼ˆåœ¨ 10% åˆ? 45% ä¹‹é—´çš„å¯èƒ½æ€§ï¼‰ã€ã€Œä¸æ¸…æ¥šå®ƒæ˜¯å¦æ˜¯ã€AI ç”Ÿæˆï¼?45% åˆ? 90% çš„æœºä¼šï¼‰ã€ã€Œå¯èƒ½ã€ç”± AI ç”Ÿæˆï¼?90% åˆ? 98% çš„æœºä¼šï¼‰æˆ–ã€Œå¾ˆæœ‰å¯èƒ½ã€ç”± AI ç”Ÿæˆï¼ˆè¶…è¿? 98% çš„æœºä¼šï¼‰ã€?
 
-- ËäÈ»Ð§¹û²»¾¡ÈçÈËÒâ£¬µ« OpenAI AI ÎÄ±¾·ÖÀàÆ÷£¨OpenAI AI Text Classifier£©ÔÚ¼Ü¹¹ÉÏÊµÏÖÁËºÍ GPT ÏµÁÐµÄ¶Ô±ê¡£
+- è™½ç„¶æ•ˆæžœä¸å°½å¦‚äººæ„ï¼Œä½? OpenAI AI æ–‡æœ¬åˆ†ç±»å™¨ï¼ˆOpenAI AI Text Classifierï¼‰åœ¨æž¶æž„ä¸Šå®žçŽ°äº†å’? GPT ç³»åˆ—çš„å¯¹æ ‡ã€?
 
-ÖªÃû ML ºÍ AI ÑÐ¾¿ÈËÔ± Sebastian Raschka ÊÔÓÃÖ®ºó£¬¸ø³öÁË¡¸It does not work¡¹µÄÆÀ¼Û¡£ËûÊ¹ÓÃÆä 2015 Äê³õ°æµÄ Python ML Êé¼®×÷ÎªÊäÈëÎÄ±¾£¬½á¹ûÏÔÊ¾ÈçÏÂ¡£
-- Randy Olson µÄ foreword ²¿·Ö±»Ê¶±ðÎª²»Çå³þÊÇ·ñÓÉ AI Éú³É£¨unclear£©
-- Ëû×Ô¼ºµÄ preface ²¿·Ö±»Ê¶±ðÎª¿ÉÄÜÓÉ AI Éú³É£¨possibly AI£©
-- µÚÒ»ÕÂµÄ¶ÎÂä²¿·Ö±»Ê¶±ðÎªºÜ¿ÉÄÜÓÉ AI Éú³É£¨likely AI£©
+çŸ¥å ML å’? AI ç ”ç©¶äººå‘˜ Sebastian Raschka è¯•ç”¨ä¹‹åŽï¼Œç»™å‡ºäº†ã€ŒIt does not workã€çš„è¯„ä»·ã€‚ä»–ä½¿ç”¨å…? 2015 å¹´åˆç‰ˆçš„ Python ML ä¹¦ç±ä½œä¸ºè¾“å…¥æ–‡æœ¬ï¼Œç»“æžœæ˜¾ç¤ºå¦‚ä¸‹ã€?
+- Randy Olson çš? foreword éƒ¨åˆ†è¢«è¯†åˆ«ä¸ºä¸æ¸…æ¥šæ˜¯å¦ç”± AI ç”Ÿæˆï¼ˆunclearï¼?
+- ä»–è‡ªå·±çš„ preface éƒ¨åˆ†è¢«è¯†åˆ«ä¸ºå¯èƒ½ç”? AI ç”Ÿæˆï¼ˆpossibly AIï¼?
+- ç¬¬ä¸€ç« çš„æ®µè½éƒ¨åˆ†è¢«è¯†åˆ«ä¸ºå¾ˆå¯èƒ½ç”± AI ç”Ÿæˆï¼ˆlikely AIï¼?
 
 
 
 ## detect GPT
 
-DetectGPT Demo£º
-- ×÷Õß£º[Chelsea Finn](https://twitter.com/chelseabfinn) ÍÆ³ö [Detecting GPT-2 Generations with DetectGPT](https://detectgpt.ericmitchell.ai/)£¬Ö»Ö§³ÖÓ¢ÎÄ²âÊÔ£¬¿ÉÒÔÏÔÊ¾ÏêÏ¸¼ì²â½á¹û£¬°üº¬Í¼±í¿ÉÊÓ»¯
+DetectGPT Demoï¼?
+- ä½œè€…ï¼š[Chelsea Finn](https://twitter.com/chelseabfinn) æŽ¨å‡º [Detecting GPT-2 Generations with DetectGPT](https://detectgpt.ericmitchell.ai/)ï¼Œåªæ”¯æŒè‹±æ–‡æµ‹è¯•ï¼Œå¯ä»¥æ˜¾ç¤ºè¯¦ç»†æ£€æµ‹ç»“æžœï¼ŒåŒ…å«å›¾è¡¨å¯è§†åŒ?
 
-¡¾2023-1-29¡¿Ë¹Ì¹¸££¬[DetectGPT£ºÀûÓÃ¸ÅÂÊÇúÂÊ¼ì²âÎÄ±¾ÊÇ·ñ´óÄ£ÐÍÉú³É](https://hub.baai.ac.cn/view/23652)£¬½öÓÃÓÚ¼ì²â GPT-2
-- DetectGPT µÄ·½·¨²»ÐèÒªÑµÁ·µ¥¶ÀµÄ·ÖÀàÆ÷¡¢ÊÕ¼¯ÕæÊµ»òÉú³ÉµÄ¶ÎÂäµÄÊý¾Ý¼¯£¬»òÏÔÊ½µØÎªÉú³ÉµÄÎÄ±¾¼ÓË®Ó¡¡£ Ëü½öÊ¹ÓÃ¸ÐÐËÈ¤Ä£ÐÍ¼ÆËãµÄ**¶ÔÊý¸ÅÂÊ**ºÍÀ´×ÔÁíÒ»¸öÍ¨ÓÃÔ¤ÑµÁ·ÓïÑÔÄ£ÐÍ£¨ÀýÈç T5£©¶ÎÂäµÄ**Ëæ»úÈÅ¶¯**¡£ `DetectGPT` ±ÈÏÖÓÐµÄÄ£ÐÍÑù±¾¼ì²âÁãÑù±¾·½·¨¸ü¾ß±æ±ðÁ¦£¬½« 20B ²ÎÊý GPT-NeoX Éú³ÉµÄ¼ÙÐÂÎÅÎÄÕÂµÄ¼ì²â´Ó×îÇ¿ÁãÑù±¾»ùÏßµÄ 0.81 AUROC ÏÔÖøÌá¸ßµ½ `DetectGPT` µÄ 0.95 AUROC
-- ¼ì²â»úÆ÷Éú³ÉµÄÎÄ±¾·½ÃæÓÅÓÚÆäËûÁãÑù±¾·½·¨£¬»òÔÚÎ´À´µÄ»úÆ÷Éú³ÉÎÄ±¾¼ì²é·½Ãæ·Ç³£ÓÐÇ°Í¾¡£ÁíÍâ£¬ËûÃÇÒ²½«³¢ÊÔ½«ÕâÒ»·½·¨ÓÃÓÚ LLM Éú³ÉµÄÒôÆµ¡¢ÊÓÆµºÍÍ¼ÏñµÄ¼ì²â¹¤×÷ÖÐ¡£
-- ¾ÖÏÞÐÔ
-  - Èç¹ûÏÖÓÐµÄÑÚÄ£Ìî³äÄ£ÐÍ²»ÄÜºÜºÃµØ±íÊ¾ÓÐÒâÒåµÄ¸ÄÐ´¿Õ¼ä£¬ÔòÄ³Ð©ÓòµÄÐÔÄÜ¿ÉÄÜ»á½µµÍ£¬´Ó¶ø½µµÍÇúÂÊ¹À¼ÆµÄÖÊÁ¿£»ÒÔ¼° DetectGPT Ïà±ÈÓÚÆäËû¼ì²â·½·¨ÐèÒª¸ü¶àµÄ¼ÆËãÁ¿µÈ¡£
+ã€?2023-1-29ã€‘æ–¯å¦ç¦ï¼Œ[DetectGPTï¼šåˆ©ç”¨æ¦‚çŽ‡æ›²çŽ‡æ£€æµ‹æ–‡æœ¬æ˜¯å¦å¤§æ¨¡åž‹ç”Ÿæˆ](https://hub.baai.ac.cn/view/23652)ï¼Œä»…ç”¨äºŽæ£€æµ? GPT-2
+- DetectGPT çš„æ–¹æ³•ä¸éœ€è¦è®­ç»ƒå•ç‹¬çš„åˆ†ç±»å™¨ã€æ”¶é›†çœŸå®žæˆ–ç”Ÿæˆçš„æ®µè½çš„æ•°æ®é›†ï¼Œæˆ–æ˜¾å¼åœ°ä¸ºç”Ÿæˆçš„æ–‡æœ¬åŠ æ°´å°ã€? å®ƒä»…ä½¿ç”¨æ„Ÿå…´è¶£æ¨¡åž‹è®¡ç®—çš„**å¯¹æ•°æ¦‚çŽ‡**å’Œæ¥è‡ªå¦ä¸€ä¸ªé€šç”¨é¢„è®­ç»ƒè¯­è¨€æ¨¡åž‹ï¼ˆä¾‹å¦? T5ï¼‰æ®µè½çš„**éšæœºæ‰°åŠ¨**ã€? `DetectGPT` æ¯”çŽ°æœ‰çš„æ¨¡åž‹æ ·æœ¬æ£€æµ‹é›¶æ ·æœ¬æ–¹æ³•æ›´å…·è¾¨åˆ«åŠ›ï¼Œå°? 20B å‚æ•° GPT-NeoX ç”Ÿæˆçš„å‡æ–°é—»æ–‡ç« çš„æ£€æµ‹ä»Žæœ€å¼ºé›¶æ ·æœ¬åŸºçº¿çš? 0.81 AUROC æ˜¾è‘—æé«˜åˆ? `DetectGPT` çš? 0.95 AUROC
+- æ£€æµ‹æœºå™¨ç”Ÿæˆçš„æ–‡æœ¬æ–¹é¢ä¼˜äºŽå…¶ä»–é›¶æ ·æœ¬æ–¹æ³•ï¼Œæˆ–åœ¨æœªæ¥çš„æœºå™¨ç”Ÿæˆæ–‡æœ¬æ£€æŸ¥æ–¹é¢éžå¸¸æœ‰å‰é€”ã€‚å¦å¤–ï¼Œä»–ä»¬ä¹Ÿå°†å°è¯•å°†è¿™ä¸€æ–¹æ³•ç”¨äºŽ LLM ç”Ÿæˆçš„éŸ³é¢‘ã€è§†é¢‘å’Œå›¾åƒçš„æ£€æµ‹å·¥ä½œä¸­ã€?
+- å±€é™æ€?
+  - å¦‚æžœçŽ°æœ‰çš„æŽ©æ¨¡å¡«å……æ¨¡åž‹ä¸èƒ½å¾ˆå¥½åœ°è¡¨ç¤ºæœ‰æ„ä¹‰çš„æ”¹å†™ç©ºé—´ï¼Œåˆ™æŸäº›åŸŸçš„æ€§èƒ½å¯èƒ½ä¼šé™ä½Žï¼Œä»Žè€Œé™ä½Žæ›²çŽ‡ä¼°è®¡çš„è´¨é‡ï¼›ä»¥å? DetectGPT ç›¸æ¯”äºŽå…¶ä»–æ£€æµ‹æ–¹æ³•éœ€è¦æ›´å¤šçš„è®¡ç®—é‡ç­‰ã€?
 - [DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature](https://ericmitchell.ai/detectgpt/)
 - The fluency and factual knowledge of large language models (LLMs) heightens the need for corresponding systems to detect whether a piece of text is machine-written. 
 - we first demonstrate that text sampled from an LLM tends to occupy negative curvature regions of the model's log probability function. 
@@ -74,72 +74,72 @@ DetectGPT Demo£º
 
 ## GPTZero
 
-Ò»¸ö¼ì²âChatGPTµÄÍøÕ¾£¬ÃûÔ» [GPTZero](https://gptzero.me/) £¬Ö»ÐèÒª°ÑÏàÓ¦µÄÄÚÈÝÕ³½øÈ¥£¬¼¸ÃëÄÚ¾ÍÄÜ·ÖÎö³ö½á¹û¡£
+ä¸€ä¸ªæ£€æµ‹ChatGPTçš„ç½‘ç«™ï¼Œåæ›° [GPTZero](https://gptzero.me/) ï¼Œåªéœ€è¦æŠŠç›¸åº”çš„å†…å®¹ç²˜è¿›åŽ»ï¼Œå‡ ç§’å†…å°±èƒ½åˆ†æžå‡ºç»“æžœã€?
 
-¼ì²âÔ­Àí [ÂÛÎÄµØÖ·](https://arxiv.org/abs/2301.10226), [ÔÙ²»ÄÜÓÃChatGPTÐ´×÷ÒµÁË£¡ÐÂËã·¨¸øAIÎÄ±¾¼ÓË®Ó¡£¬ÖÃÐÅ¶È99.99%](https://www.toutiao.com/article/7196167767706403362)
-- ¼ò½é£º¸øLLMÖÐÇ¶ÈëË®Ó¡£¬ÔÙ½øÐÐ¼ì²â¡£ÆäÖÐ£¬Ë®Ó¡Ç¶Èë²»»áÓ°ÏìÎÄ±¾Éú³ÉÖÊÁ¿¡£
-- ¾ßÌå£º´ó¹æÄ£ÓïÑÔÄ£ÐÍÃ¿´ÎÉú³ÉÒ»¸ötoken£¬Ã¿¸ötoken½«´Ó°üº¬´óÔ¼5Íò¸ö´Ê»ãµÄ´Ê»ã±íÖÐ½øÐÐÑ¡Ôñ¡£
-  - ÔÚÐÂtokenÉú³ÉÖ®Ç°£¬´Ó»ùÓÚ×î½üÒÑÉú³ÉµÄtokenÎªËæ»úÊýÉú³ÉÆ÷£¨RNG£©Ìá¹©¡°ÖÖ×Ó¡±£¬ÒÔ´ËÀ´Ñ¹Ò»¸öË®Ó¡¡£
-  - È»ºóÊ¹ÓÃRNG½«´Ê»ã±í·ÖÎª**ºÚÃûµ¥**ºÍ**°×Ãûµ¥**£¬²¢ÒªÇóLLM½ÓÏÂÀ´Ö»ÄÜ´Ó°×Ãûµ¥ÖÐÑ¡Ôñ´Ê»ã¡£Èç¹ûÕû¶ÎÎÄ±¾ÖÐ£¬°×Ãûµ¥ÖÐµÄ´Ê»ãÔ½¶à£¬¾ÍÒâÎ¶×ÅÔ½ÓÐ¿ÉÄÜÊÇAIÉú³ÉµÄ¡£ºÚ°×Ãûµ¥µÄÇø·Ö£¬»ùÓÚÒ»¸öÔ­Ôò£º<span style='color:blue'>ÈËÀàÊ¹ÓÃ´Ê»ãµÄËæ»úÐÔ¸üÇ¿</span>¡£[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
-  - ¾ÙÀý£ºÔÚ¡°ÃÀÀöµÄ¡±ºóÃæÉú³É´Ê»ã£¬Ë®Ó¡Ëã·¨»á½«¡°»¨¡±ÁÐÈë°×Ãûµ¥£¬½«¡°À¼»¨¡±ÁÐÈëºÚÃûµ¥¡£ÂÛÎÄ×÷ÕßÈÏÎª£¬AI¸ü¿ÉÄÜÊ¹ÓÃ¡°»¨¡±Õâ¸ö´Ê»ã£¬¶ø²»ÊÇ¡°À¼»¨¡±¡£
+æ£€æµ‹åŽŸç? [è®ºæ–‡åœ°å€](https://arxiv.org/abs/2301.10226), [å†ä¸èƒ½ç”¨ChatGPTå†™ä½œä¸šäº†ï¼æ–°ç®—æ³•ç»™AIæ–‡æœ¬åŠ æ°´å°ï¼Œç½®ä¿¡åº?99.99%](https://www.toutiao.com/article/7196167767706403362)
+- ç®€ä»‹ï¼šç»™LLMä¸­åµŒå…¥æ°´å°ï¼Œå†è¿›è¡Œæ£€æµ‹ã€‚å…¶ä¸­ï¼Œæ°´å°åµŒå…¥ä¸ä¼šå½±å“æ–‡æœ¬ç”Ÿæˆè´¨é‡ã€?
+- å…·ä½“ï¼šå¤§è§„æ¨¡è¯­è¨€æ¨¡åž‹æ¯æ¬¡ç”Ÿæˆä¸€ä¸ªtokenï¼Œæ¯ä¸ªtokenå°†ä»ŽåŒ…å«å¤§çº¦5ä¸‡ä¸ªè¯æ±‡çš„è¯æ±‡è¡¨ä¸­è¿›è¡Œé€‰æ‹©ã€?
+  - åœ¨æ–°tokenç”Ÿæˆä¹‹å‰ï¼Œä»ŽåŸºäºŽæœ€è¿‘å·²ç”Ÿæˆçš„tokenä¸ºéšæœºæ•°ç”Ÿæˆå™¨ï¼ˆRNGï¼‰æä¾›â€œç§å­â€ï¼Œä»¥æ­¤æ¥åŽ‹ä¸€ä¸ªæ°´å°ã€?
+  - ç„¶åŽä½¿ç”¨RNGå°†è¯æ±‡è¡¨åˆ†ä¸º**é»‘åå?**å’?**ç™½åå?**ï¼Œå¹¶è¦æ±‚LLMæŽ¥ä¸‹æ¥åªèƒ½ä»Žç™½åå•ä¸­é€‰æ‹©è¯æ±‡ã€‚å¦‚æžœæ•´æ®µæ–‡æœ¬ä¸­ï¼Œç™½åå•ä¸­çš„è¯æ±‡è¶Šå¤šï¼Œå°±æ„å‘³ç€è¶Šæœ‰å¯èƒ½æ˜¯AIç”Ÿæˆçš„ã€‚é»‘ç™½åå•çš„åŒºåˆ†ï¼ŒåŸºäºŽä¸€ä¸ªåŽŸåˆ™ï¼š<span style='color:blue'>äººç±»ä½¿ç”¨è¯æ±‡çš„éšæœºæ€§æ›´å¼?</span>ã€‚[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
+  - ä¸¾ä¾‹ï¼šåœ¨â€œç¾Žä¸½çš„â€åŽé¢ç”Ÿæˆè¯æ±‡ï¼Œæ°´å°ç®—æ³•ä¼šå°†â€œèŠ±â€åˆ—å…¥ç™½åå•ï¼Œå°†â€œå…°èŠ±â€åˆ—å…¥é»‘åå•ã€‚è®ºæ–‡ä½œè€…è®¤ä¸ºï¼ŒAIæ›´å¯èƒ½ä½¿ç”¨â€œèŠ±â€è¿™ä¸ªè¯æ±‡ï¼Œè€Œä¸æ˜¯â€œå…°èŠ±â€ã€?
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8a41eab15ef149ddb60ead4bdf71802c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=gP1dFkBYO0FZ6B7wLJMdsd62EQA%3D)
-  - È»ºó£¬¾ÍÄÜÍ¨¹ý¼ÆËãÕû¶ÎÎÄ±¾ÖÐ°×Ãûµ¥token³öÏÖµÄÇé¿ö£¬À´¼ì²âË®Ó¡¡£Èç¹ûÒ»¹²ÓÐÉú³ÉÁËN¸ötoken£¬ËùÓÐµÄtoken¶¼Ê¹ÓÃÁË°×Ãûµ¥´Ê»ã£¬ÄÇÃ´Õâ¶ÎÎÄ×ÖÖ»ÓÐ2µÄN´Î·½·ÖÖ®Ò»¸ÅÂÊÊÇÈËÀàÐ´µÄ¡£¼´±ãÕâ¶ÎÎÄ×ÖÖ»ÓÐ25¸ö´Ê×é³É£¬ÄÇÃ´Ë®Ó¡Ëã·¨Ò²ÄÜÅÐ¶Ï³öËüµ½µ×ÊÇ²»ÊÇAIÉú³ÉµÄ¡£
-  - µ«×÷ÕßÒ²±íÊ¾£¬Ë®Ó¡ÓÐÊ±ºòÒ²²»Ò»¶¨ÍêÈ«¿¿Æ×¡£±ÈÈçÄ£ÐÍÊä³öÁË¡°SpongeBob Square¡±£¬ÏÂÒ»¸öµ¥´ÊÒ»¶¨»áÊÇ¡°Pants¡±°É£¿µ«ÊÇPants»á±»±ê¼Çµ½ºÚÃûµ¥Àï£¬¼´ÈÏÎªÊÇÖ»ÓÐÈË²Å»áÐ´µÄ´Ê¡£ÕâÖÖÇé¿ö»áÑÏÖØÓ°ÏìËã·¨µÄ×¼È·ÐÔ£¬Òò´Ë×÷Õß½«Æä¶¨ÒåÎª**µÍìØtoken**£¬ÒòÎªÄ£ÐÍ¼¸ºõ²»»áÓÐ¸üºÃµÄÑ¡Ôñ¡£
-  - ¶ÔÓ¦µÄ£¬Ò²»áÓÐ**¸ßìØtoken**£¬±ÈÈç ¡°º£Ãà±¦±¦¸Ð¾õ____¡± Õâ¸ö¾äÊ½Àï£¬ÄÜÌîÈëµÄ´Ê»ãÌ«¶àÁË¡£ÕâÊ±£¬×÷ÕßÑ¡ÔñÕë¶Ô¸ßìØtokenÖÆ¶¨¸üÇ¿µÄ¹æÔò£¬Í¬Ê±±£ÁôµÍìØtoken£¬È·±£Ë®Ó¡ÖÊÁ¿¸üºÃ¡£
-  - Í¬Ê±£¬»¹Ìí¼ÓÁË**²¨ÊøËÑË÷**£¨Beam search£©£¬ÔÊÐíLLMÄÜ¹»ÅÅ²¼Ò»Õû¸ötokenÐòÁÐ£¬ÒÔ±ÜÃâºÚÃûµ¥´Ê»ã¡£ÕâÃ´×ö£¬ËûÃÇÄÜÈ·±£LLMÊ¹ÓÃ°×Ãûµ¥´Ê»ãµÄ¸ÅÂÊÔÚ´óÔ¼80%×óÓÒ£¬¶øÇÒ²»Ó°ÏìÎÄ±¾Éú³ÉÖÊÁ¿¡£
-  - ¾ÙÀý£ºÏÂÃæÕâ¶ÎÎÄ×Ö£¬Ë®Ó¡Ëã·¨ÈÏÎªËüÓÐ99.999999999994%µÄ¿ÉÄÜÊÇÓÉAIÉú³ÉµÄ¡£ÒòÎªÕâ¶ÎÎÄ×Ö°üº¬36¸ötoken¡£Èç¹ûÊÇÈËÀàÐ´µÄ£¬ÄÇÃ´ÎÄ±¾ÖÐÓ¦¸Ã°üº¬9¡À2.6¸ö°×Ãûµ¥´Ê»ã£¨°×Ãûµ¥´Ê»ãµÄ¸ÅÂÊÔ¼Îª25%£©¡£µ«Õâ¶ÎÎÄ×ÖÖÐ£¬°üº¬ÁË28¸ö°×Ãûµ¥´Ê»ã£¬ËùÒÔÓÉÈËÀàÐ´³öµÄ¸ÅÂÊ£¬½öÓÐ0.0000000000006% £¨6³ËÒÔ10µÄ-15´Î·½£©¡£
+  - ç„¶åŽï¼Œå°±èƒ½é€šè¿‡è®¡ç®—æ•´æ®µæ–‡æœ¬ä¸­ç™½åå•tokenå‡ºçŽ°çš„æƒ…å†µï¼Œæ¥æ£€æµ‹æ°´å°ã€‚å¦‚æžœä¸€å…±æœ‰ç”Ÿæˆäº†Nä¸ªtokenï¼Œæ‰€æœ‰çš„tokenéƒ½ä½¿ç”¨äº†ç™½åå•è¯æ±‡ï¼Œé‚£ä¹ˆè¿™æ®µæ–‡å­—åªæœ‰2çš„Næ¬¡æ–¹åˆ†ä¹‹ä¸€æ¦‚çŽ‡æ˜¯äººç±»å†™çš„ã€‚å³ä¾¿è¿™æ®µæ–‡å­—åªæœ?25ä¸ªè¯ç»„æˆï¼Œé‚£ä¹ˆæ°´å°ç®—æ³•ä¹Ÿèƒ½åˆ¤æ–­å‡ºå®ƒåˆ°åº•æ˜¯ä¸æ˜¯AIç”Ÿæˆçš„ã€?
+  - ä½†ä½œè€…ä¹Ÿè¡¨ç¤ºï¼Œæ°´å°æœ‰æ—¶å€™ä¹Ÿä¸ä¸€å®šå®Œå…¨é è°±ã€‚æ¯”å¦‚æ¨¡åž‹è¾“å‡ºäº†â€œSpongeBob Squareâ€ï¼Œä¸‹ä¸€ä¸ªå•è¯ä¸€å®šä¼šæ˜¯â€œPantsâ€å§ï¼Ÿä½†æ˜¯Pantsä¼šè¢«æ ‡è®°åˆ°é»‘åå•é‡Œï¼Œå³è®¤ä¸ºæ˜¯åªæœ‰äººæ‰ä¼šå†™çš„è¯ã€‚è¿™ç§æƒ…å†µä¼šä¸¥é‡å½±å“ç®—æ³•çš„å‡†ç¡®æ€§ï¼Œå› æ­¤ä½œè€…å°†å…¶å®šä¹‰ä¸º**ä½Žç†µtoken**ï¼Œå› ä¸ºæ¨¡åž‹å‡ ä¹Žä¸ä¼šæœ‰æ›´å¥½çš„é€‰æ‹©ã€?
+  - å¯¹åº”çš„ï¼Œä¹Ÿä¼šæœ?**é«˜ç†µtoken**ï¼Œæ¯”å¦? â€œæµ·ç»µå®å®æ„Ÿè§‰____â€? è¿™ä¸ªå¥å¼é‡Œï¼Œèƒ½å¡«å…¥çš„è¯æ±‡å¤ªå¤šäº†ã€‚è¿™æ—¶ï¼Œä½œè€…é€‰æ‹©é’ˆå¯¹é«˜ç†µtokenåˆ¶å®šæ›´å¼ºçš„è§„åˆ™ï¼ŒåŒæ—¶ä¿ç•™ä½Žç†µtokenï¼Œç¡®ä¿æ°´å°è´¨é‡æ›´å¥½ã€?
+  - åŒæ—¶ï¼Œè¿˜æ·»åŠ äº?**æ³¢æŸæœç´¢**ï¼ˆBeam searchï¼‰ï¼Œå…è®¸LLMèƒ½å¤ŸæŽ’å¸ƒä¸€æ•´ä¸ªtokenåºåˆ—ï¼Œä»¥é¿å…é»‘åå•è¯æ±‡ã€‚è¿™ä¹ˆåšï¼Œä»–ä»¬èƒ½ç¡®ä¿LLMä½¿ç”¨ç™½åå•è¯æ±‡çš„æ¦‚çŽ‡åœ¨å¤§çº?80%å·¦å³ï¼Œè€Œä¸”ä¸å½±å“æ–‡æœ¬ç”Ÿæˆè´¨é‡ã€?
+  - ä¸¾ä¾‹ï¼šä¸‹é¢è¿™æ®µæ–‡å­—ï¼Œæ°´å°ç®—æ³•è®¤ä¸ºå®ƒæœ‰99.999999999994%çš„å¯èƒ½æ˜¯ç”±AIç”Ÿæˆçš„ã€‚å› ä¸ºè¿™æ®µæ–‡å­—åŒ…å?36ä¸ªtokenã€‚å¦‚æžœæ˜¯äººç±»å†™çš„ï¼Œé‚£ä¹ˆæ–‡æœ¬ä¸­åº”è¯¥åŒ…å«9Â±2.6ä¸ªç™½åå•è¯æ±‡ï¼ˆç™½åå•è¯æ±‡çš„æ¦‚çŽ‡çº¦ä¸?25%ï¼‰ã€‚ä½†è¿™æ®µæ–‡å­—ä¸­ï¼ŒåŒ…å«äº?28ä¸ªç™½åå•è¯æ±‡ï¼Œæ‰€ä»¥ç”±äººç±»å†™å‡ºçš„æ¦‚çŽ‡ï¼Œä»…æœ‰0.0000000000006% ï¼?6ä¹˜ä»¥10çš?-15æ¬¡æ–¹ï¼‰ã€?
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/fff66e02c95e4052936e8d5a0db25a03~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=Os3XRxAj0y9q3iJhA2MtdnHeNRA%3D)
-  - ÈçÏÂ±ê×¢µÄÊÇÎÄ±¾ÖÐµÄºÚÃûµ¥token¡£
+  - å¦‚ä¸‹æ ‡æ³¨çš„æ˜¯æ–‡æœ¬ä¸­çš„é»‘åå•tokenã€?
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/e35bc57cb8404f62892cabb461d2ca15~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=sOUXPb%2FCgTV%2FAGNbC9WzO5YbDQA%3D)
 
-×¢Òâ
-- Èç¹ûÏëÒªË®Ó¡Õý³£·¢»Ó×÷ÓÃ²¢²»ÊÜµ½¹¥»÷£¬¾Í±ØÐë¶ÔÎÄ±¾½øÐÐÒ»Ð©±ê×¼»¯´¦Àí£¬²¢ÇÒÐèÒª¼ì²âÄ³Ð©ÀàÐÍµÄ¶Ô¿¹ÐÔÌáÊ¾¡£
+æ³¨æ„
+- å¦‚æžœæƒ³è¦æ°´å°æ­£å¸¸å‘æŒ¥ä½œç”¨å¹¶ä¸å—åˆ°æ”»å‡»ï¼Œå°±å¿…é¡»å¯¹æ–‡æœ¬è¿›è¡Œä¸€äº›æ ‡å‡†åŒ–å¤„ç†ï¼Œå¹¶ä¸”éœ€è¦æ£€æµ‹æŸäº›ç±»åž‹çš„å¯¹æŠ—æ€§æç¤ºã€?
 
-¼ÓÒ»¸öËæ»úÃØÔ¿£¬Ò²ÄÜ±ä³É±£ÃÜÄ£Ê½²¢ÇÒÍÐ¹Üµ½APIÉÏ£¬ÕâÄÜ±£Ö¤Ë®Ó¡²»»á±»´Û¸Ä¡£
-- ÂÛÎÄÖÐÊ¹ÓÃµÄÄ£ÐÍÊÇMeta¿ªÔ´µÄOPT-1.3BÄ£ÐÍ¡£
-- ÓÉÓÚ²»ÓÃ·ÃÎÊµ×²ãÄ£ÐÍ£¬ËùÒÔ¸Ã¼ì²â·½·¨µÄËÙ¶ÈºÜ¿ì£¬³É±¾Ò²²»»áºÜ¸ß¡£¶øÇÒ¿ÉÒÔÊ¹ÓÃ±ê×¼ÓïÑÔÄ£ÐÍÉú³É´øË®Ó¡µÄÎÄ±¾£¬²»ÓÃÔÙÖØÐÂÑµÁ·¡£½«ÔÚ2ÔÂ15ÈÕ¿ªÔ´´úÂë¡£
+åŠ ä¸€ä¸ªéšæœºç§˜é’¥ï¼Œä¹Ÿèƒ½å˜æˆä¿å¯†æ¨¡å¼å¹¶ä¸”æ‰˜ç®¡åˆ°APIä¸Šï¼Œè¿™èƒ½ä¿è¯æ°´å°ä¸ä¼šè¢«ç¯¡æ”¹ã€?
+- è®ºæ–‡ä¸­ä½¿ç”¨çš„æ¨¡åž‹æ˜¯Metaå¼€æºçš„OPT-1.3Bæ¨¡åž‹ã€?
+- ç”±äºŽä¸ç”¨è®¿é—®åº•å±‚æ¨¡åž‹ï¼Œæ‰€ä»¥è¯¥æ£€æµ‹æ–¹æ³•çš„é€Ÿåº¦å¾ˆå¿«ï¼Œæˆæœ¬ä¹Ÿä¸ä¼šå¾ˆé«˜ã€‚è€Œä¸”å¯ä»¥ä½¿ç”¨æ ‡å‡†è¯­è¨€æ¨¡åž‹ç”Ÿæˆå¸¦æ°´å°çš„æ–‡æœ¬ï¼Œä¸ç”¨å†é‡æ–°è®­ç»ƒã€‚å°†åœ?2æœ?15æ—¥å¼€æºä»£ç ã€?
 
-ÖÊÒÉ1
-- Èç¹ûÎÒÔÚAIÉú³ÉµÄÎÄ×Ö»ù´¡ÉÏ£¬ÐÞ¸Ä¼¸¸ö´Ê£¬»¹ÄÜ±»²é³öÀ´Âð£¿ÄÇÔÚÌæ»»³É½üÒå´Êºó£¬¼ì²â×¼È·ÂÊ»áÏÂ½µ¶àÉÙ£¿±Ï¾¹´ó¼ÒÍùÍù²»»áÒ»×Ö²»¸Ä¡¢Ö±½ÓÓÃAIÉú³ÉµÄÄÚÈÝ¡£
+è´¨ç–‘1
+- å¦‚æžœæˆ‘åœ¨AIç”Ÿæˆçš„æ–‡å­—åŸºç¡€ä¸Šï¼Œä¿®æ”¹å‡ ä¸ªè¯ï¼Œè¿˜èƒ½è¢«æŸ¥å‡ºæ¥å—ï¼Ÿé‚£åœ¨æ›¿æ¢æˆè¿‘ä¹‰è¯åŽï¼Œæ£€æµ‹å‡†ç¡®çŽ‡ä¼šä¸‹é™å¤šå°‘ï¼Ÿæ¯•ç«Ÿå¤§å®¶å¾€å¾€ä¸ä¼šä¸€å­—ä¸æ”¹ã€ç›´æŽ¥ç”¨AIç”Ÿæˆçš„å†…å®¹ã€?
 
-×÷Õß¡¢ÂíÀïÀ¼´óÑ§¸±½ÌÊÚTom Goldstein»Ø´ð³Æ£º
-- ¶ÔÓÚÒ»¶Î×Ô´øË®Ó¡µÄÎÄ×Ö£¬ÖÁÉÙµÃÐÞ¸Ä40%-75%µÄtoken£¬²Å¿ÉÄÜ³É¹¦È¥³ýË®Ó¡¡££¨Èç¹ûÓÃÆäËû³ÌÐòÐÞ¸ÄÄÚÈÝ»°£©£¬Îª·¢ÉúÍ¬Òå´Ê¹¥»÷£¬µ¼ÖÂÉú³ÉÄÚÈÝµÄÖÊÁ¿ºÜµÍ¡£
-- ÏëÒªÍ¨¹ý»»½üÒå´ÊÀ´Ïû³ýË®Ó¡£¬µÃ´óÆª·ùÐÞ¸Ä£¬¶øÇÒÈô²»ÊÇÈËÇ××ÔÊÖ¶¯ÐÞ¸ÄµÄ»°£¬Ð§¹û»áºÜÀ­¿è¡£
+ä½œè€…ã€é©¬é‡Œå…°å¤§å­¦å‰¯æ•™æŽˆTom Goldsteinå›žç­”ç§°ï¼š
+- å¯¹äºŽä¸€æ®µè‡ªå¸¦æ°´å°çš„æ–‡å­—ï¼Œè‡³å°‘å¾—ä¿®æ”¹40%-75%çš„tokenï¼Œæ‰å¯èƒ½æˆåŠŸåŽ»é™¤æ°´å°ã€‚ï¼ˆå¦‚æžœç”¨å…¶ä»–ç¨‹åºä¿®æ”¹å†…å®¹è¯ï¼‰ï¼Œä¸ºå‘ç”ŸåŒä¹‰è¯æ”»å‡»ï¼Œå¯¼è‡´ç”Ÿæˆå†…å®¹çš„è´¨é‡å¾ˆä½Žã€?
+- æƒ³è¦é€šè¿‡æ¢è¿‘ä¹‰è¯æ¥æ¶ˆé™¤æ°´å°ï¼Œå¾—å¤§ç¯‡å¹…ä¿®æ”¹ï¼Œè€Œä¸”è‹¥ä¸æ˜¯äººäº²è‡ªæ‰‹åŠ¨ä¿®æ”¹çš„è¯ï¼Œæ•ˆæžœä¼šå¾ˆæ‹‰èƒ¯ã€?
 
-ÖÊÒÉ2
-- ¶ÔÓÚ×¨ÃÅÉè¼Æ¹ýµÄµÍìØtokenÐòÁÐ£¬Ó¦¸ÃÄÜ¼ì²â³öË®Ó¡¡£µ«ÊÇ£¬³¤¶ÈºÍ¼ì²âÂÊÖ®¼ä£¨´æÔÚÒ»Ð©Ã¬¶Ü£©£¬ËüÃÇµÄÓÅÏÈ¼¶Ó¦¸ÃÈçºÎÈ¨ºâ£¿
+è´¨ç–‘2
+- å¯¹äºŽä¸“é—¨è®¾è®¡è¿‡çš„ä½Žç†µtokenåºåˆ—ï¼Œåº”è¯¥èƒ½æ£€æµ‹å‡ºæ°´å°ã€‚ä½†æ˜¯ï¼Œé•¿åº¦å’Œæ£€æµ‹çŽ‡ä¹‹é—´ï¼ˆå­˜åœ¨ä¸€äº›çŸ›ç›¾ï¼‰ï¼Œå®ƒä»¬çš„ä¼˜å…ˆçº§åº”è¯¥å¦‚ä½•æƒè¡¡ï¼Ÿ
 
-Tom½ÌÊÚ±íÊ¾£º
-- ¸ù¾ÝÉè¶¨£¬Ê¹ÓÃ²¨ÊøËÑË÷Ê±£¬¾ø´ó¶àÊý£¨Í¨³£ÊÇ90%£©µÄtokenÔÚ°×Ãûµ¥ÉÏ£¬¼´Ê¹ÊÇµÍìØtoken£¬Ò²»á±»ÁÐÈë°×Ãûµ¥¡£
-- ËùÒÔ£¬ÖÁÉÙµÃÐÞ¸ÄÒ»°ëÒÔÉÏµÄtoken£¬²ÅÄÜÉ¾³ýË®Ó¡£¬¶øÕâÐèÒªÒ»¸ö³¬¼¶Ç¿´óµÄLLMÄ£ÐÍ²ÅÐÐ£¬Ò»°ãÈËºÜÄÑ½Ó´¥µ½¡£
+Tomæ•™æŽˆè¡¨ç¤ºï¼?
+- æ ¹æ®è®¾å®šï¼Œä½¿ç”¨æ³¢æŸæœç´¢æ—¶ï¼Œç»å¤§å¤šæ•°ï¼ˆé€šå¸¸æ˜?90%ï¼‰çš„tokenåœ¨ç™½åå•ä¸Šï¼Œå³ä½¿æ˜¯ä½Žç†µtokenï¼Œä¹Ÿä¼šè¢«åˆ—å…¥ç™½åå•ã€?
+- æ‰€ä»¥ï¼Œè‡³å°‘å¾—ä¿®æ”¹ä¸€åŠä»¥ä¸Šçš„tokenï¼Œæ‰èƒ½åˆ é™¤æ°´å°ï¼Œè€Œè¿™éœ€è¦ä¸€ä¸ªè¶…çº§å¼ºå¤§çš„LLMæ¨¡åž‹æ‰è¡Œï¼Œä¸€èˆ¬äººå¾ˆéš¾æŽ¥è§¦åˆ°ã€?
 
-ÕâÖÖ·½·¨È·Êµ´æÔÚÒ»Ð©¾ÖÏÞÐÔ¡£
-- ¼ì²âË®Ó¡µÄzÍ³¼ÆÁ¿£¬Ö»È¡¾öÓÚ°×Ãûµ¥´óÐ¡²ÎÊý¦ÃºÍÉú³É°×Ãûµ¥µÄ¹þÏ£º¯Êý£¬ºÍÆäËû²»ÉÙÖØÒªµÄ²ÎÊý²¢Ã»ÓÐÊ²Ã´Ïà¹ØÐÔ¡£
-- Õâ¾ÍÈÃËûÈË¿ÉÒÔÔÚÏÂÓÎË®Ó¡¼ì²âÆ÷ÉÏ×öÊÖ½Å£¬¿ÉÒÔ¸Ä±äË®Ó¡²ÉÑùËã·¨£¬ÖØÐÂ²¿ÊðË®Ó¡£¬×îÖÕÈÃÔ­±¾Éú³ÉµÄË®Ó¡Ê§Ð§¡£
+è¿™ç§æ–¹æ³•ç¡®å®žå­˜åœ¨ä¸€äº›å±€é™æ€§ã€?
+- æ£€æµ‹æ°´å°çš„zç»Ÿè®¡é‡ï¼Œåªå–å†³äºŽç™½åå•å¤§å°å‚æ•°Î³å’Œç”Ÿæˆç™½åå•çš„å“ˆå¸Œå‡½æ•°ï¼Œå’Œå…¶ä»–ä¸å°‘é‡è¦çš„å‚æ•°å¹¶æ²¡æœ‰ä»€ä¹ˆç›¸å…³æ€§ã€?
+- è¿™å°±è®©ä»–äººå¯ä»¥åœ¨ä¸‹æ¸¸æ°´å°æ£€æµ‹å™¨ä¸Šåšæ‰‹è„šï¼Œå¯ä»¥æ”¹å˜æ°´å°é‡‡æ ·ç®—æ³•ï¼Œé‡æ–°éƒ¨ç½²æ°´å°ï¼Œæœ€ç»ˆè®©åŽŸæœ¬ç”Ÿæˆçš„æ°´å°å¤±æ•ˆã€?
 
-¾ÍÁ¬OpenAI CEO Sam AltmanÒ²±íÊ¾£º´´ÔìÍêÃÀ¼ì²âAI³­Ï®µÄ¹¤¾ß£¬´Ó¸ù±¾ÉÏÀ´ËµÊÇ²»¿ÉÄÜµÄ¡£
+å°±è¿žOpenAI CEO Sam Altmanä¹Ÿè¡¨ç¤ºï¼šåˆ›é€ å®Œç¾Žæ£€æµ‹AIæŠ„è¢­çš„å·¥å…·ï¼Œä»Žæ ¹æœ¬ä¸Šæ¥è¯´æ˜¯ä¸å¯èƒ½çš„ã€?
 
-## ¶à³ß¶È PU Ñ§Ï°
+## å¤šå°ºåº? PU å­¦ä¹ 
 
-¡¾2023-6-2¡¿[Ê¶±ðChatGPTÔì¼Ù,Ð§¹û³¬Ô½OpenAI£º±±´ó¡¢»ªÎªµÄAIÉú³É¼ì²âÆ÷À´ÁË](https://www.toutiao.com/article/7239952116775764520)
-- ±±´ó¡¢»ªÎªµÄÑÐ¾¿ÕßÃÇÌá³öÁËÒ»ÖÖÊ¶±ð¸÷Ê½ AI Éú³ÉÓïÁÏµÄ¿É¿¿ÎÄ±¾¼ì²âÆ÷¡£¸ù¾Ý³¤¶ÌÎÄ±¾µÄ²»Í¬ÌØÐÔ£¬Ìá³öÁËÒ»ÖÖ»ùÓÚ PU Ñ§Ï°µÄ¶à³ß¶È AI Éú³ÉÎÄ±¾¼ì²âÆ÷ÑµÁ··½·¨¡£Í¨¹ý¶Ô¼ì²âÆ÷ÑµÁ·¹ý³ÌµÄ¸Ä½ø£¬ÔÚÍ¬µÈÌõ¼þÏÂÄÜÈ¡µÃÔÚ³¤¡¢¶Ì ChatGPT ÓïÁÏÉÏ¼ì²âÄÜÁ¦µÄ¿É¹ÛÌáÉý£¬½â¾öÁËÄ¿Ç°¼ì²âÆ÷¶ÔÓÚ¶ÌÎÄ±¾Ê¶±ð¾«¶ÈµÍµÄÍ´µã¡£
-- ÂÛÎÄµØÖ·: [paper](https://arxiv.org/abs/2305.18149)
-- ´úÂëµØÖ· (MindSpore)£º[detect_chatgpt](https://github.com/mindspore-lab/mindone/tree/master/examples/detect_chatgpt)
-- ´úÂëµØÖ· (PyTorch)£º[AIGC_text_detector](https://github.com/YuchuanTian/AIGC_text_detector)
+ã€?2023-6-2ã€‘[è¯†åˆ«ChatGPTé€ å‡,æ•ˆæžœè¶…è¶ŠOpenAIï¼šåŒ—å¤§ã€åŽä¸ºçš„AIç”Ÿæˆæ£€æµ‹å™¨æ¥äº†](https://www.toutiao.com/article/7239952116775764520)
+- åŒ—å¤§ã€åŽä¸ºçš„ç ”ç©¶è€…ä»¬æå‡ºäº†ä¸€ç§è¯†åˆ«å„å¼? AI ç”Ÿæˆè¯­æ–™çš„å¯é æ–‡æœ¬æ£€æµ‹å™¨ã€‚æ ¹æ®é•¿çŸ­æ–‡æœ¬çš„ä¸åŒç‰¹æ€§ï¼Œæå‡ºäº†ä¸€ç§åŸºäº? PU å­¦ä¹ çš„å¤šå°ºåº¦ AI ç”Ÿæˆæ–‡æœ¬æ£€æµ‹å™¨è®­ç»ƒæ–¹æ³•ã€‚é€šè¿‡å¯¹æ£€æµ‹å™¨è®­ç»ƒè¿‡ç¨‹çš„æ”¹è¿›ï¼Œåœ¨åŒç­‰æ¡ä»¶ä¸‹èƒ½å–å¾—åœ¨é•¿ã€çŸ­ ChatGPT è¯­æ–™ä¸Šæ£€æµ‹èƒ½åŠ›çš„å¯è§‚æå‡ï¼Œè§£å†³äº†ç›®å‰æ£€æµ‹å™¨å¯¹äºŽçŸ­æ–‡æœ¬è¯†åˆ«ç²¾åº¦ä½Žçš„ç—›ç‚¹ã€?
+- è®ºæ–‡åœ°å€: [paper](https://arxiv.org/abs/2305.18149)
+- ä»£ç åœ°å€ (MindSpore)ï¼š[detect_chatgpt](https://github.com/mindspore-lab/mindone/tree/master/examples/detect_chatgpt)
+- ä»£ç åœ°å€ (PyTorch)ï¼š[AIGC_text_detector](https://github.com/YuchuanTian/AIGC_text_detector)
 
-ÓÉÓÚAIÉú³ÉµÄÓïÁÏÓëÈËµÄÇø±ð¹ýÐ¡£¬ºÜÄÑÑÏ¸ñÅÐ¶ÏÆäÕæÊµÊôÐÔ¡£Òò´Ë£¬½«¶ÌÎÄ±¾¼òµ¥±ê×¢ÎªÈËÀà / AI ²¢°´ÕÕ´«Í³µÄ¶þ·ÖÀàÎÊÌâ½øÐÐÎÄ±¾¼ì²âÊÇ²»ºÏÊÊµÄ¡£
+ç”±äºŽAIç”Ÿæˆçš„è¯­æ–™ä¸Žäººçš„åŒºåˆ«è¿‡å°ï¼Œå¾ˆéš¾ä¸¥æ ¼åˆ¤æ–­å…¶çœŸå®žå±žæ€§ã€‚å› æ­¤ï¼Œå°†çŸ­æ–‡æœ¬ç®€å•æ ‡æ³¨ä¸ºäººç±» / AI å¹¶æŒ‰ç…§ä¼ ç»Ÿçš„äºŒåˆ†ç±»é—®é¢˜è¿›è¡Œæ–‡æœ¬æ£€æµ‹æ˜¯ä¸åˆé€‚çš„ã€?
 
-Õë¶ÔÕâ¸öÎÊÌâ£¬±¾ÑÐ¾¿½«ÈËÀà / AI µÄ¶þ·ÖÀà¼ì²â²¿·Ö×ª»¯ÎªÁËÒ»¸ö²¿·Ö `PU`£¨Positive-Unlabeled£©Ñ§Ï°ÎÊÌâ£¬¼´ÔÚ½Ï¶ÌµÄ¾ä×ÓÖÐ£¬ÈËµÄÓïÑÔÎªÕýÀà£¨Positive£©£¬»úÆ÷ÓïÑÔÎªÎÞ±ê¼ÇÀà£¨Unlabeled£©£¬ÒÔ´Ë¶ÔÑµÁ·µÄËðÊ§º¯Êý½øÐÐÁË¸Ä½ø¡£´Ë¸Ä½ø¿É¹ÛµØÌáÉýÁË¼ì²âÆ÷ÔÚ¸÷Ê½ÓïÁÏÉÏµÄ·ÖÀàÐ§¹û¡£
+é’ˆå¯¹è¿™ä¸ªé—®é¢˜ï¼Œæœ¬ç ”ç©¶å°†äººç±? / AI çš„äºŒåˆ†ç±»æ£€æµ‹éƒ¨åˆ†è½¬åŒ–ä¸ºäº†ä¸€ä¸ªéƒ¨åˆ? `PU`ï¼ˆPositive-Unlabeledï¼‰å­¦ä¹ é—®é¢˜ï¼Œå³åœ¨è¾ƒçŸ­çš„å¥å­ä¸­ï¼Œäººçš„è¯­è¨€ä¸ºæ­£ç±»ï¼ˆPositiveï¼‰ï¼Œæœºå™¨è¯­è¨€ä¸ºæ— æ ‡è®°ç±»ï¼ˆUnlabeledï¼‰ï¼Œä»¥æ­¤å¯¹è®­ç»ƒçš„æŸå¤±å‡½æ•°è¿›è¡Œäº†æ”¹è¿›ã€‚æ­¤æ”¹è¿›å¯è§‚åœ°æå‡äº†æ£€æµ‹å™¨åœ¨å„å¼è¯­æ–™ä¸Šçš„åˆ†ç±»æ•ˆæžœã€?
 
-»ùÓÚ¶à³ß¶È PU Ñ§Ï°µÄ·½°¸£¬½â¾öÁËÎÄ±¾¼ì²âÆ÷¶ÔÓÚ¶Ì¾äÊ¶±ðµÄÄÑÌâ£¬Ëæ×ÅÎ´À´ AIGC Éú³ÉÄ£ÐÍµÄ·ºÀÄ£¬¶ÔÓÚÕâÀàÄÚÈÝµÄ¼ì²â½«»áÔ½À´Ô½ÖØÒª¡£
+åŸºäºŽå¤šå°ºåº? PU å­¦ä¹ çš„æ–¹æ¡ˆï¼Œè§£å†³äº†æ–‡æœ¬æ£€æµ‹å™¨å¯¹äºŽçŸ­å¥è¯†åˆ«çš„éš¾é¢˜ï¼Œéšç€æœªæ¥ AIGC ç”Ÿæˆæ¨¡åž‹çš„æ³›æ»¥ï¼Œå¯¹äºŽè¿™ç±»å†…å®¹çš„æ£€æµ‹å°†ä¼šè¶Šæ¥è¶Šé‡è¦ã€?
 
 
-## Ò»¾ä»°¼ì²â
+## ä¸€å¥è¯æ£€æµ?
 
-¡¾2023-5-15¡¿
+ã€?2023-5-15ã€?
 - [Bot or Human? Detecting ChatGPT Imposters with A Single Question](https://huggingface.co/papers/2305.06424)
-- ´úÂë£º[FLAIR](https://github.com/hongwang600/FLAIR)
+- ä»£ç ï¼š[FLAIR](https://github.com/hongwang600/FLAIR)
 
 The questions are divided into two categories:
 - Questions that are easy for humans but difficult for bots (e.g., counting, substitution, positioning, noise filtering, and ASCII art)
@@ -158,32 +158,32 @@ Below are the description for each FLAIR question:
 
 ## Ghostbuster
 
-¡¾2023-12-4¡¿Ghostbuster£º¼ì²â´óÐÍÓïÑÔÄ£ÐÍÉú³ÉµÄÎÄ±¾
-- ÂÛÎÄÁ´½Ó£º[paper](https://arxiv.org/pdf/2305.15047.pdf)
+ã€?2023-12-4ã€‘Ghostbusterï¼šæ£€æµ‹å¤§åž‹è¯­è¨€æ¨¡åž‹ç”Ÿæˆçš„æ–‡æœ?
+- è®ºæ–‡é“¾æŽ¥ï¼š[paper](https://arxiv.org/pdf/2305.15047.pdf)
 
-Ö÷ÒªÁÁµã£º
-- ´´ÐÂµÄ¼ì²â·½·¨£ºGhostbusterÍ¨¹ý·ÖÎö¸÷ÖÖÓïÑÔÄ£ÐÍÖÐÃ¿¸ötokenµÄÉú³É¸ÅÂÊ£¬ÄÜ¹»¼ì²âAIÉú³ÉµÄÎÄ±¾£¬¶øÎÞÐèÊ¶±ðÌØ¶¨µÄÄ£ÐÍ¡£ÕâÊ¹ÆäÄÜ¹»ÓÐÐ§µØÓ¦¶ÔÏñChatGPTºÍClaudeÕâÑùµÄÄ£ÐÍ¡£
-- ¸ß¾«¶ÈºÍ·º»¯ÄÜÁ¦£ºGhostbusterÔÚ²»Í¬ÁìÓòÈ¡µÃÁË¸ßF1·ÖÊý£¬³¬Ô½ÁËµ±Ç°µÄ¹¤¾ß¡£ËüÄÜ¹»æµÊìµØ´¦Àí°üÀ¨¶àÖÖÐ´×÷·ç¸ñºÍÌáÊ¾ÔÚÄÚµÄ¸÷ÖÖÎÄ±¾Éú³ÉÇé¿ö¡£
-- ÊÊÓ¦ÐÔÇ¿£ºGhostbuster¶Ô±à¼­¹ýµÄAIÉú³ÉÎÄ±¾ÈÔÈ»ÓÐÐ§£¬²¢ÇÒÔÚ·ÇÓ¢ÓïÄ¸ÓïµÄÐ´×÷ÉÏ±íÏÖ¿É¿¿£¬Ê¹Æä·Ç³£ÊÊºÏÏÖÊµÊÀ½çÖÐµÄÎÄ±¾·ÖÎö¡£
-- ÑµÁ··½·¨£º½«ÎÄµµÍ¨¹ýÒ»ÏµÁÐ½ÏÈõµÄÓïÑÔÄ£ÐÍ£¬È»ºó¶ÔËüÃÇµÄÌØÕ÷½øÐÐ½á¹¹»¯ËÑË÷£¬×îºóÔÚÑ¡¶¨µÄÌØÕ÷ÉÏÑµÁ··ÖÀàÆ÷À´Ô¤²âÎÄµµÊÇ·ñÓÉAIÉú³É¡£
+ä¸»è¦äº®ç‚¹ï¼?
+- åˆ›æ–°çš„æ£€æµ‹æ–¹æ³•ï¼šGhostbusteré€šè¿‡åˆ†æžå„ç§è¯­è¨€æ¨¡åž‹ä¸­æ¯ä¸ªtokençš„ç”Ÿæˆæ¦‚çŽ‡ï¼Œèƒ½å¤Ÿæ£€æµ‹AIç”Ÿæˆçš„æ–‡æœ¬ï¼Œè€Œæ— éœ€è¯†åˆ«ç‰¹å®šçš„æ¨¡åž‹ã€‚è¿™ä½¿å…¶èƒ½å¤Ÿæœ‰æ•ˆåœ°åº”å¯¹åƒChatGPTå’ŒClaudeè¿™æ ·çš„æ¨¡åž‹ã€?
+- é«˜ç²¾åº¦å’Œæ³›åŒ–èƒ½åŠ›ï¼šGhostbusteråœ¨ä¸åŒé¢†åŸŸå–å¾—äº†é«˜F1åˆ†æ•°ï¼Œè¶…è¶Šäº†å½“å‰çš„å·¥å…·ã€‚å®ƒèƒ½å¤Ÿå¨´ç†Ÿåœ°å¤„ç†åŒ…æ‹¬å¤šç§å†™ä½œé£Žæ ¼å’Œæç¤ºåœ¨å†…çš„å„ç§æ–‡æœ¬ç”Ÿæˆæƒ…å†µã€?
+- é€‚åº”æ€§å¼ºï¼šGhostbusterå¯¹ç¼–è¾‘è¿‡çš„AIç”Ÿæˆæ–‡æœ¬ä»ç„¶æœ‰æ•ˆï¼Œå¹¶ä¸”åœ¨éžè‹±è¯­æ¯è¯­çš„å†™ä½œä¸Šè¡¨çŽ°å¯é ï¼Œä½¿å…¶éžå¸¸é€‚åˆçŽ°å®žä¸–ç•Œä¸­çš„æ–‡æœ¬åˆ†æžã€?
+- è®­ç»ƒæ–¹æ³•ï¼šå°†æ–‡æ¡£é€šè¿‡ä¸€ç³»åˆ—è¾ƒå¼±çš„è¯­è¨€æ¨¡åž‹ï¼Œç„¶åŽå¯¹å®ƒä»¬çš„ç‰¹å¾è¿›è¡Œç»“æž„åŒ–æœç´¢ï¼Œæœ€åŽåœ¨é€‰å®šçš„ç‰¹å¾ä¸Šè®­ç»ƒåˆ†ç±»å™¨æ¥é¢„æµ‹æ–‡æ¡£æ˜¯å¦ç”±AIç”Ÿæˆã€?
 
 
-## ´óÄ£ÐÍË®Ó¡
+## å¤§æ¨¡åž‹æ°´å?
 
 
 
 ### SynthID
 
-¡¾2024-10-31¡¿¡¶Nature¡··âÃæ¾ª±¬£¡Google DeepMind ¸øAI´óÄ£ÐÍ¼Ó¡°ÒþÐÎÖ¸ÎÆ¡±£¬ÕâÊÇAI·¢Õ¹ÐÂ×ßÏò»¹ÊÇÁíÓÐÉîÒâ£¿ÊÇ°²È«±£ÕÏ»¹ÊÇÐÂµÄ²Ù¿Ø£¿
-- [SynthID](https://deepmind.google/technologies/synthid/) ÒÑ¼¯³Éµ½¹È¸èAI¹¤¾ß°ü, Gemini
-- huggingface µØÖ·: [synthid-text](https://huggingface.co/spaces/google/synthid-text)
-- ¡¾2024-10-23¡¿ÂÛÎÄ: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
-- [½âËµ](https://hub.baai.ac.cn/view/30219)
-- ¹ÙÍø½éÉÜ£º[identifying-ai-generated-images-with-synthid](https://www.deepmind.com/blog/identifying-ai-generated-images-with-synthid) 
-- Êý×ÖË®Ó¡Ö²ÈëÎÄ±¾¡¢ÒôÆµ¡¢Í¼ÏñºÍÊÓÆµ
-- ¹Ù·½Ô­ÀíÑÝÊ¾: [ÊÓÆµ](https://deepmind.google/api/blob/website/media/Fig_1.mp4)
+ã€?2024-10-31ã€‘ã€ŠNatureã€‹å°é¢æƒŠçˆ†ï¼Google DeepMind ç»™AIå¤§æ¨¡åž‹åŠ â€œéšå½¢æŒ‡çº¹â€ï¼Œè¿™æ˜¯AIå‘å±•æ–°èµ°å‘è¿˜æ˜¯å¦æœ‰æ·±æ„ï¼Ÿæ˜¯å®‰å…¨ä¿éšœè¿˜æ˜¯æ–°çš„æ“æŽ§ï¼Ÿ
+- [SynthID](https://deepmind.google/technologies/synthid/) å·²é›†æˆåˆ°è°·æ­ŒAIå·¥å…·åŒ?, Gemini
+- huggingface åœ°å€: [synthid-text](https://huggingface.co/spaces/google/synthid-text)
+- ã€?2024-10-23ã€‘è®ºæ–?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
+- [è§£è¯´](https://hub.baai.ac.cn/view/30219)
+- å®˜ç½‘ä»‹ç»ï¼š[identifying-ai-generated-images-with-synthid](https://www.deepmind.com/blog/identifying-ai-generated-images-with-synthid) 
+- æ•°å­—æ°´å°æ¤å…¥æ–‡æœ¬ã€éŸ³é¢‘ã€å›¾åƒå’Œè§†é¢‘
+- å®˜æ–¹åŽŸç†æ¼”ç¤º: [è§†é¢‘](https://deepmind.google/api/blob/website/media/Fig_1.mp4)
 
-¶þÕß¸ÅÂÊÀÛ¼Ó£¬ÒÀÈ»±£³ÖÔ­Ê¼·Ö²¼, ²»Ó°ÏìÊä³öµÄÖÊÁ¿¡¢×¼È·ÐÔºÍ´´ÔìÁ¦
+äºŒè€…æ¦‚çŽ‡ç´¯åŠ ï¼Œä¾ç„¶ä¿æŒåŽŸå§‹åˆ†å¸ƒ, ä¸å½±å“è¾“å‡ºçš„è´¨é‡ã€å‡†ç¡®æ€§å’Œåˆ›é€ åŠ›
 - ![](https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41586-024-08025-4/MediaObjects/41586_2024_8025_Fig1_HTML.png?as=webp)
 - Top: LLM text generation typically involves generating text from left to right by repeatedly sampling from the LLM distribution. 
 - Bottom: a **generative watermarking scheme** typically consists of the three components, in the blue boxes: **random seed generator**, **sampling algorithm** and **scoring function**. 
@@ -194,119 +194,119 @@ Below are the description for each FLAIR question:
 
 
 ```sh
-# ÍÆÀí»·½Ú
+# æŽ¨ç†çŽ¯èŠ‚
 My favorite tropical fruits are __
-# LLM ºòÑ¡ tokens: ¡°mango,¡± ¡°lychee,¡± ¡°papaya,¡± ¡°durian¡±, ´ø¸ÅÂÊÖµ
-# SynthID Í¬²½Éú³É¶îÍâµÄ¸ÅÂÊ·Ö²¼
-# ¶þÕß¸ÅÂÊÀÛ¼Ó£¬ÒÀÈ»±£³ÖÔ­Ê¼·Ö²¼, ²»Ó°ÏìÊä³öµÄÖÊÁ¿¡¢×¼È·ÐÔºÍ´´ÔìÁ¦
+# LLM å€™é€? tokens: â€œmango,â€? â€œlychee,â€? â€œpapaya,â€? â€œdurianâ€?, å¸¦æ¦‚çŽ‡å€?
+# SynthID åŒæ­¥ç”Ÿæˆé¢å¤–çš„æ¦‚çŽ‡åˆ†å¸?
+# äºŒè€…æ¦‚çŽ‡ç´¯åŠ ï¼Œä¾ç„¶ä¿æŒåŽŸå§‹åˆ†å¸ƒ, ä¸å½±å“è¾“å‡ºçš„è´¨é‡ã€å‡†ç¡®æ€§å’Œåˆ›é€ åŠ›
 
 ```
 
 
-Watermarking Ë®Ó¡
+Watermarking æ°´å°
 - SynthID embeds a **digital watermark** directly into AI-generated content, without compromising the original content.
-- SynthID Ö±½ÓÇ¶ÈëÊý×ÖË®Ó¡µ½Ô­Ê¼AIÉú³ÉÄÚÈÝ£¬¶ø²»Ó°ÏìÔ­ÄÚÈÝ
+- SynthID ç›´æŽ¥åµŒå…¥æ•°å­—æ°´å°åˆ°åŽŸå§‹AIç”Ÿæˆå†…å®¹ï¼Œè€Œä¸å½±å“åŽŸå†…å®?
 
-Identification ¼ø±ð
-- SynthID can scan images, audio, text or video for digital watermarks, helping users determine if content, or part of it, was generated by Google¡¯s AI tools.
-- SynthID ¿É¼ø±ðÄÚÈÝ
+Identification é‰´åˆ«
+- SynthID can scan images, audio, text or video for digital watermarks, helping users determine if content, or part of it, was generated by Googleâ€™s AI tools.
+- SynthID å¯é‰´åˆ«å†…å®?
 
 SynthID-Text does not affect LLM training and modifies only the sampling procedure; watermark detection is computationally efficient, without using the underlying LLM
 
-SynthID¿ÉÖ±½ÓÇ¶Èëµ½£¬¹È¸èµÄÎÄ±¾Éú³ÉÍ¼Æ¬Ä£ÐÍImagenºÏ³ÉµÄÍ¼Æ¬ÖÐ¡£
-- ÈËÈâÑÛÎÞ·¨¾õ²ìµ½Ë®Ó¡£¬²»ÊÜ¸ü¸ÄÑÕÉ«¡¢Ìí¼ÓÂË¾µµÈÆÆ»µ²Ù×÷Ó°Ïì£»
-- SynthID Ò²¿ÉÒÔÊ¶±ðÍ¼Æ¬ÖÐµÄË®Ó¡¡£SynthIDÏàµ±ÓÚÇ®±ÒÖÐµÄ·ÀÎ±±êÊ¶£¬Í¬Ê±ÓÖÄÜ³äµ±¡°Ñé³®»ú¡±µÄ×÷ÓÃ£¬Ê¶±ðÍ¼Æ¬µÄÕæ¼Ù£¬¼«´óÌáÉýÁËÉú³ÉÊ½AI²úÆ·µÄ°²È«ÐÔ¡£
+SynthIDå¯ç›´æŽ¥åµŒå…¥åˆ°ï¼Œè°·æ­Œçš„æ–‡æœ¬ç”Ÿæˆå›¾ç‰‡æ¨¡åž‹Imagenåˆæˆçš„å›¾ç‰‡ä¸­ã€?
+- äººè‚‰çœ¼æ— æ³•è§‰å¯Ÿåˆ°æ°´å°ï¼Œä¸å—æ›´æ”¹é¢œè‰²ã€æ·»åŠ æ»¤é•œç­‰ç ´åæ“ä½œå½±å“ï¼?
+- SynthID ä¹Ÿå¯ä»¥è¯†åˆ«å›¾ç‰‡ä¸­çš„æ°´å°ã€‚SynthIDç›¸å½“äºŽé’±å¸ä¸­çš„é˜²ä¼ªæ ‡è¯†ï¼ŒåŒæ—¶åˆèƒ½å……å½“â€œéªŒé’žæœºâ€çš„ä½œç”¨ï¼Œè¯†åˆ«å›¾ç‰‡çš„çœŸå‡ï¼Œæžå¤§æå‡äº†ç”Ÿæˆå¼AIäº§å“çš„å®‰å…¨æ€§ã€?
 
-SynthID ÓÉÁ½ÖÖÉî¶ÈÄ£ÐÍ×é³É¶ø³É: **Ìí¼ÓË®Ó¡**£¬**Ê¶±ðË®Ó¡**¡£ÕâÁ½¸öÄ£ÐÍ·Ö±ðÔÚ²»Í¬µÄÍ¼ÏñÊý¾Ý¼¯ÉÏ½øÐÐÁË´ó¹æÄ£ÑµÁ·¡¢ÓÅ»¯£¬ÒÔÌáÉýË®Ó¡µÄ×¼È·ÂÊ¡£
+SynthID ç”±ä¸¤ç§æ·±åº¦æ¨¡åž‹ç»„æˆè€Œæˆ: **æ·»åŠ æ°´å°**ï¼?**è¯†åˆ«æ°´å°**ã€‚è¿™ä¸¤ä¸ªæ¨¡åž‹åˆ†åˆ«åœ¨ä¸åŒçš„å›¾åƒæ•°æ®é›†ä¸Šè¿›è¡Œäº†å¤§è§„æ¨¡è®­ç»ƒã€ä¼˜åŒ–ï¼Œä»¥æå‡æ°´å°çš„å‡†ç¡®çŽ‡ã€?
 
-SynthID ¹¤×÷Ô­Àí½éÉÜ
-- 1£©Ìí¼ÓË®Ó¡£ºSynthID ¿ÉÖ±½Ó½«Ë®Ó¡Ç¶Èëµ½Í¼Æ¬ÖÐ£¬ÈËÈâÑÛÎÞ·¨²ì¾õµ½£¬Í¬Ê±Ò²²»ÊÜÂË¾µ¡¢¸ü¸ÄÑÕÉ«¡¢Ñ¹ËõÌå»ý¡¢¸ü¸ÄÁÁ¶ÈµÈ²Ù×÷Ó°Ïì¡£
-- 2£©Ê¶±ðË®Ó¡£ºSynthID ¿ÉÊ¶±ðÍ¼Æ¬ÖÐµÄË®Ó¡£¬²¢¸æËßÓÃ»§¸ÃÍ¼Æ¬ÊÇ ImagenÄ£ÐÍÉú³ÉµÄ£¬»¹ÊÇÈË¹¤Éè¼Æ¡£µ±Í¼Æ¬ÔâÓöÑÏÖØÆÆ»µÊ±£¬ÀýÈç£¬¸ü¸ÄÁÁ¶È¡¢É¾³ý²¿·ÖÄÚÈÝµÈ£¬SynthID¿ÉÒÔ»ùÓÚÍ¼Æ¬µÄÔªÊý¾Ý£¬ÈÔÈ»¿ÉÒÔ¼ì²âµ½Í¼Æ¬ÖÐµÄË®Ó¡¡£
-
-
-# ÎÄ±¾¶Ô¿¹¹¥»÷
-
-ChatGPT±¬»ðºó£¬Ò»µ©½øÈëÉÌÒµÓ¦ÓÃ£¬Ò»¶¨»á³öÏÖ¶Ô¿¹Ê¶±ðµÄÐèÇó¡£
-- ¡¾2023-7-19¡¿[ChatGPT¼ì²â¹¥ÓëÊØ£ºÎÒÃÇ¸ÃÈçºÎÓ¦¶ÔAIÒÔ¼ÙÂÒÕæ?](https://mp.weixin.qq.com/s/_00COmzPmUCqgbyVkw_H6g)
+SynthID å·¥ä½œåŽŸç†ä»‹ç»
+- 1ï¼‰æ·»åŠ æ°´å°ï¼šSynthID å¯ç›´æŽ¥å°†æ°´å°åµŒå…¥åˆ°å›¾ç‰‡ä¸­ï¼Œäººè‚‰çœ¼æ— æ³•å¯Ÿè§‰åˆ°ï¼ŒåŒæ—¶ä¹Ÿä¸å—æ»¤é•œã€æ›´æ”¹é¢œè‰²ã€åŽ‹ç¼©ä½“ç§¯ã€æ›´æ”¹äº®åº¦ç­‰æ“ä½œå½±å“ã€?
+- 2ï¼‰è¯†åˆ«æ°´å°ï¼šSynthID å¯è¯†åˆ«å›¾ç‰‡ä¸­çš„æ°´å°ï¼Œå¹¶å‘Šè¯‰ç”¨æˆ·è¯¥å›¾ç‰‡æ˜? Imagenæ¨¡åž‹ç”Ÿæˆçš„ï¼Œè¿˜æ˜¯äººå·¥è®¾è®¡ã€‚å½“å›¾ç‰‡é­é‡ä¸¥é‡ç ´åæ—¶ï¼Œä¾‹å¦‚ï¼Œæ›´æ”¹äº®åº¦ã€åˆ é™¤éƒ¨åˆ†å†…å®¹ç­‰ï¼ŒSynthIDå¯ä»¥åŸºäºŽå›¾ç‰‡çš„å…ƒæ•°æ®ï¼Œä»ç„¶å¯ä»¥æ£€æµ‹åˆ°å›¾ç‰‡ä¸­çš„æ°´å°ã€?
 
 
-## Ê²Ã´ÊÇ¶Ô¿¹¹¥»÷
+# æ–‡æœ¬å¯¹æŠ—æ”»å‡»
 
-`¶Ô¿¹¹¥»÷`£¨adversarial attack£©Ö¼ÔÚÀûÓÃ`¶Ô¿¹Ñù±¾`£¨adversarial example£©À´ÆÛÆ­`ÊÜº¦Ä£ÐÍ`£¨victim model£©¡£
-- `¹¥»÷Ä£ÐÍ`£¨attack model£©Í¨¹ý¶ÔÔ­Ñù±¾½øÐÐÇáÎ¢µÄÈÅ¶¯À´Éú³É¶Ô¿¹Ñù±¾£¬ÆäÕæÊµµÄ·ÖÀà±êÇ©ÓëÔ­Ñù±¾±£³ÖÒ»ÖÂ£¬µ«ÊÇÊÜº¦Ä£ÐÍµÄÅÐ¶ÏÈ´»á³ö´í¡£
-- ¶Ô¿¹¹¥»÷±»ÈÏÎª¿ÉÒÔ±©Â¶ÊÜº¦Ä£ÐÍµÄÈõµã£¬Í¬Ê±Ò²ÓÐÖúÓÚÌá¸ßÆäÂ³°ôÐÔºÍ¿É½âÊÍÐÔ¡£
+ChatGPTçˆ†ç«åŽï¼Œä¸€æ—¦è¿›å…¥å•†ä¸šåº”ç”¨ï¼Œä¸€å®šä¼šå‡ºçŽ°å¯¹æŠ—è¯†åˆ«çš„éœ€æ±‚ã€?
+- ã€?2023-7-19ã€‘[ChatGPTæ£€æµ‹æ”»ä¸Žå®ˆï¼šæˆ‘ä»¬è¯¥å¦‚ä½•åº”å¯¹AIä»¥å‡ä¹±çœŸ?](https://mp.weixin.qq.com/s/_00COmzPmUCqgbyVkw_H6g)
 
-Í¼ÏñÁìÓòÒÑÓÐ CleverHans¡¢Foolbox¡¢Adversarial Robustness Toolbox (ART)µÈ¶à¸ö¶Ô¿¹¹¥»÷¹¤¾ß°ü£¬½«Í¼ÏñÁìÓòµÄ¶Ô¿¹¹¥»÷Ä£ÐÍÕûºÏÔÚÒ»Æð£¬´ó´ó¼õÉÙÁËÄ£ÐÍ¸´ÏÖµÄÊ±¼äºÍÄÑ¶È£¬Ìá¸ßÁË¶Ô±ÈÆÀ²âµÄ±ê×¼»¯³Ì¶È£¬ÍÆ¶¯ÁËÍ¼ÏñÁìÓò¶Ô¿¹¹¥»÷µÄ·¢Õ¹¡£
 
-ÎÄ±¾ÁìÓòÏÊÓÐÀàËÆµÄ¹¤¾ß°ü£¬Ä¿Ç°½öÓÐ TextAttack ÕâÒ»¸öÎÄ±¾¶Ô¿¹¹¥»÷¹¤¾ß°ü¡£È»¶øËù¸²¸ÇµÄ¹¥»÷ÀàÐÍÊ®·ÖÓÐÏÞ£¨½öÖ§³Ögradient-/score-basedÀàÐÍµÄ¹¥»÷ÒÔ¼°×Ö/´Ê¼¶±ðµÄÈÅ¶¯£©£¬Æä¿ÉÀ©Õ¹ÐÔÒ²ÓÐ´ýÌá¸ß¡£Ïà±ÈÖ®ÏÂOpenAttackÖ§³ÖËùÓÐµÄ¹¥»÷ÀàÐÍ£¬ÇÒ¾ßÓÐºÜ¸ßµÄ¿ÉÀ©Õ¹ÐÔ¡£
+## ä»€ä¹ˆæ˜¯å¯¹æŠ—æ”»å‡»
 
-OpenAttackÓÐ·á¸»µÄÓ¦ÓÃ³¡¾°£¬ÀýÈç£º
-- Ìá¹©¸÷ÖÖÀàÐÍµÄ¾­µäÎÄ±¾¶Ô¿¹¹¥»÷»ùÏßÄ£ÐÍ£¬´ó´ó¼õÉÙÊµÑé¶Ô±ÈÊ±¸´ÏÖ»ùÏßÄ£ÐÍµÄÊ±¼äºÍÄÑ¶È¡£
-- Ìá¹©ÁËÈ«ÃæµÄÆÀ²âÖ¸±ê£¬¿ÉÒÔ¶Ô×Ô¼ºµÄ¹¥»÷Ä£ÐÍ½øÐÐÏµÍ³µØÆÀ²â¡£
-- °üº¬ÁË³£ÓÃµÄ¹¥»÷Ä£ÐÍÒªËØ£¨ÈçÌæ»»´ÊµÄÉú³É£©£¬¿ÉÒÔ¸¨Öú½øÐÐÐÂµÄ¹¥»÷Ä£ÐÍµÄÑ¸ËÙÉè¼ÆºÍ¿ª·¢¡£
-- ÆÀ²â×Ô¼ºµÄ·ÖÀàÄ£ÐÍÃæ¶Ô¸÷ÖÖÀàÐÍµÄ¹¥»÷Ê±µÄÂ³°ôÐÔ¡£
-- ½øÐÐ¶Ô¿¹ÑµÁ·ÒÔÌá¸ß·ÖÀàÄ£ÐÍÂ³°ôÐÔ¡£
+`å¯¹æŠ—æ”»å‡»`ï¼ˆadversarial attackï¼‰æ—¨åœ¨åˆ©ç”¨`å¯¹æŠ—æ ·æœ¬`ï¼ˆadversarial exampleï¼‰æ¥æ¬ºéª—`å—å®³æ¨¡åž‹`ï¼ˆvictim modelï¼‰ã€?
+- `æ”»å‡»æ¨¡åž‹`ï¼ˆattack modelï¼‰é€šè¿‡å¯¹åŽŸæ ·æœ¬è¿›è¡Œè½»å¾®çš„æ‰°åŠ¨æ¥ç”Ÿæˆå¯¹æŠ—æ ·æœ¬ï¼Œå…¶çœŸå®žçš„åˆ†ç±»æ ‡ç­¾ä¸ŽåŽŸæ ·æœ¬ä¿æŒä¸€è‡´ï¼Œä½†æ˜¯å—å®³æ¨¡åž‹çš„åˆ¤æ–­å´ä¼šå‡ºé”™ã€?
+- å¯¹æŠ—æ”»å‡»è¢«è®¤ä¸ºå¯ä»¥æš´éœ²å—å®³æ¨¡åž‹çš„å¼±ç‚¹ï¼ŒåŒæ—¶ä¹Ÿæœ‰åŠ©äºŽæé«˜å…¶é²æ£’æ€§å’Œå¯è§£é‡Šæ€§ã€?
 
-## Éè¼ÆË¼Â·
+å›¾åƒé¢†åŸŸå·²æœ‰ CleverHansã€Foolboxã€Adversarial Robustness Toolbox (ART)ç­‰å¤šä¸ªå¯¹æŠ—æ”»å‡»å·¥å…·åŒ…ï¼Œå°†å›¾åƒé¢†åŸŸçš„å¯¹æŠ—æ”»å‡»æ¨¡åž‹æ•´åˆåœ¨ä¸€èµ·ï¼Œå¤§å¤§å‡å°‘äº†æ¨¡åž‹å¤çŽ°çš„æ—¶é—´å’Œéš¾åº¦ï¼Œæé«˜äº†å¯¹æ¯”è¯„æµ‹çš„æ ‡å‡†åŒ–ç¨‹åº¦ï¼ŒæŽ¨åŠ¨äº†å›¾åƒé¢†åŸŸå¯¹æŠ—æ”»å‡»çš„å‘å±•ã€?
 
-¿¼ÂÇµ½ÎÄ±¾¶Ô¿¹¹¥»÷Ä£ÐÍÖ®¼äÓÐ½Ï´ó²î±ð£¬ÔÚ¹¥»÷Ä£ÐÍµÄ¼Ü¹¹·½ÃæÁô³öÁË½Ï´óµÄÉè¼Æ×ÔÓÉ¶È£¬Ïà·´¸ü¼Ó¹Ø×¢Ìá¹©¹¥»÷Ä£ÐÍÖÐ³£¼ûµÄÒªËØ£¬ÒÔ±ãÓÃ»§¿ÉÒÔÈÝÒ×µØ×é×°ÐÂµÄ¹¥»÷Ä£ÐÍ¡£
+æ–‡æœ¬é¢†åŸŸé²œæœ‰ç±»ä¼¼çš„å·¥å…·åŒ…ï¼Œç›®å‰ä»…æœ? TextAttack è¿™ä¸€ä¸ªæ–‡æœ¬å¯¹æŠ—æ”»å‡»å·¥å…·åŒ…ã€‚ç„¶è€Œæ‰€è¦†ç›–çš„æ”»å‡»ç±»åž‹ååˆ†æœ‰é™ï¼ˆä»…æ”¯æŒgradient-/score-basedç±»åž‹çš„æ”»å‡»ä»¥åŠå­—/è¯çº§åˆ«çš„æ‰°åŠ¨ï¼‰ï¼Œå…¶å¯æ‰©å±•æ€§ä¹Ÿæœ‰å¾…æé«˜ã€‚ç›¸æ¯”ä¹‹ä¸‹OpenAttackæ”¯æŒæ‰€æœ‰çš„æ”»å‡»ç±»åž‹ï¼Œä¸”å…·æœ‰å¾ˆé«˜çš„å¯æ‰©å±•æ€§ã€?
 
-OpenAttackÓÐÈçÏÂ7¸öÄ£¿é£º
-- TextProcessor£ºÌá¹©tokenization¡¢lemmatization¡¢´ÊÒåÏûÆç¡¢ÃüÃûÊµÌåÊ¶±ðµÈÎÄ±¾Ô¤´¦ÀíµÄ¹¦ÄÜ£¬ÒÔ±ã¹¥»÷Ä£ÐÍ¶ÔÔ­Ñù±¾½øÐÐÈÅ¶¯£»
-- Classifier£ºÊÜº¦·ÖÀàÄ£ÐÍµÄ»ùÀà£»
-- Attacker£º°üº¬¸÷ÖÖ¹¥»÷Ä£ÐÍ£»
-- Substitute£º°üº¬¸÷ÖÖ´Ê¡¢×ÖÌæ»»·½·¨£¨Èç»ùÓÚÒåÔ­µÄ´ÊÌæ»»¡¢Í¬Òå´ÊÌæ»»¡¢ÐÎ½ü×ÖÌæ»»£©£¬ÕâÐ©·½·¨±»¹ã·ºÓ¦ÓÃÓÚ´Ê/×Ö¼¶±ðµÄ¹¥»÷Ä£ÐÍÖÐ£»
-- Metric£ºÌá¹©¸÷Àà¶Ô¿¹Ñù±¾ÖÊÁ¿ÆÀ²âÄ£¿é£¨ÀýÈç¾ä×ÓÏòÁ¿ÏàËÆ¶È¡¢ÓïÑÔÄ£ÐÍÀ§»ó¶È£©£¬ÕâÐ©ÆÀ²âÖ¸±ê¼È¿ÉÒÔÓÃ×÷¹¥»÷Ê±¶ÔºòÑ¡¶Ô¿¹Ñù±¾µÄÔ¼ÊøÌõ¼þ£¬Ò²¿ÉÒÔ×÷Îª¶Ô¿¹¹¥»÷ÆÀ²âÖ¸±ê£»
-- AttackEval£º´Ó²»Í¬·½ÃæÆÀ²âÎÄ±¾¶Ô¿¹¹¥»÷£»
-- DataManager£º¹ÜÀíÆäËûÄ£¿éÖÐÓÃµ½µÄËùÓÐµÄÊý¾Ý¡¢Ô¤ÑµÁ·ºÃµÄÄ£ÐÍµÈ¡£
-- OpenAttack¸÷¸öÄ£¿é.jpg
+OpenAttackæœ‰ä¸°å¯Œçš„åº”ç”¨åœºæ™¯ï¼Œä¾‹å¦‚ï¼š
+- æä¾›å„ç§ç±»åž‹çš„ç»å…¸æ–‡æœ¬å¯¹æŠ—æ”»å‡»åŸºçº¿æ¨¡åž‹ï¼Œå¤§å¤§å‡å°‘å®žéªŒå¯¹æ¯”æ—¶å¤çŽ°åŸºçº¿æ¨¡åž‹çš„æ—¶é—´å’Œéš¾åº¦ã€?
+- æä¾›äº†å…¨é¢çš„è¯„æµ‹æŒ‡æ ‡ï¼Œå¯ä»¥å¯¹è‡ªå·±çš„æ”»å‡»æ¨¡åž‹è¿›è¡Œç³»ç»Ÿåœ°è¯„æµ‹ã€?
+- åŒ…å«äº†å¸¸ç”¨çš„æ”»å‡»æ¨¡åž‹è¦ç´ ï¼ˆå¦‚æ›¿æ¢è¯çš„ç”Ÿæˆï¼‰ï¼Œå¯ä»¥è¾…åŠ©è¿›è¡Œæ–°çš„æ”»å‡»æ¨¡åž‹çš„è¿…é€Ÿè®¾è®¡å’Œå¼€å‘ã€?
+- è¯„æµ‹è‡ªå·±çš„åˆ†ç±»æ¨¡åž‹é¢å¯¹å„ç§ç±»åž‹çš„æ”»å‡»æ—¶çš„é²æ£’æ€§ã€?
+- è¿›è¡Œå¯¹æŠ—è®­ç»ƒä»¥æé«˜åˆ†ç±»æ¨¡åž‹é²æ£’æ€§ã€?
 
-OpenAttackµÄ¸÷¸öÄ£¿é [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
+## è®¾è®¡æ€è·¯
+
+è€ƒè™‘åˆ°æ–‡æœ¬å¯¹æŠ—æ”»å‡»æ¨¡åž‹ä¹‹é—´æœ‰è¾ƒå¤§å·®åˆ«ï¼Œåœ¨æ”»å‡»æ¨¡åž‹çš„æž¶æž„æ–¹é¢ç•™å‡ºäº†è¾ƒå¤§çš„è®¾è®¡è‡ªç”±åº¦ï¼Œç›¸åæ›´åŠ å…³æ³¨æä¾›æ”»å‡»æ¨¡åž‹ä¸­å¸¸è§çš„è¦ç´ ï¼Œä»¥ä¾¿ç”¨æˆ·å¯ä»¥å®¹æ˜“åœ°ç»„è£…æ–°çš„æ”»å‡»æ¨¡åž‹ã€?
+
+OpenAttackæœ‰å¦‚ä¸?7ä¸ªæ¨¡å—ï¼š
+- TextProcessorï¼šæä¾›tokenizationã€lemmatizationã€è¯ä¹‰æ¶ˆæ­§ã€å‘½åå®žä½“è¯†åˆ«ç­‰æ–‡æœ¬é¢„å¤„ç†çš„åŠŸèƒ½ï¼Œä»¥ä¾¿æ”»å‡»æ¨¡åž‹å¯¹åŽŸæ ·æœ¬è¿›è¡Œæ‰°åŠ¨ï¼›
+- Classifierï¼šå—å®³åˆ†ç±»æ¨¡åž‹çš„åŸºç±»ï¼?
+- Attackerï¼šåŒ…å«å„ç§æ”»å‡»æ¨¡åž‹ï¼›
+- Substituteï¼šåŒ…å«å„ç§è¯ã€å­—æ›¿æ¢æ–¹æ³•ï¼ˆå¦‚åŸºäºŽä¹‰åŽŸçš„è¯æ›¿æ¢ã€åŒä¹‰è¯æ›¿æ¢ã€å½¢è¿‘å­—æ›¿æ¢ï¼‰ï¼Œè¿™äº›æ–¹æ³•è¢«å¹¿æ³›åº”ç”¨äºŽè¯?/å­—çº§åˆ«çš„æ”»å‡»æ¨¡åž‹ä¸­ï¼›
+- Metricï¼šæä¾›å„ç±»å¯¹æŠ—æ ·æœ¬è´¨é‡è¯„æµ‹æ¨¡å—ï¼ˆä¾‹å¦‚å¥å­å‘é‡ç›¸ä¼¼åº¦ã€è¯­è¨€æ¨¡åž‹å›°æƒ‘åº¦ï¼‰ï¼Œè¿™äº›è¯„æµ‹æŒ‡æ ‡æ—¢å¯ä»¥ç”¨ä½œæ”»å‡»æ—¶å¯¹å€™é€‰å¯¹æŠ—æ ·æœ¬çš„çº¦æŸæ¡ä»¶ï¼Œä¹Ÿå¯ä»¥ä½œä¸ºå¯¹æŠ—æ”»å‡»è¯„æµ‹æŒ‡æ ‡ï¼?
+- AttackEvalï¼šä»Žä¸åŒæ–¹é¢è¯„æµ‹æ–‡æœ¬å¯¹æŠ—æ”»å‡»ï¼?
+- DataManagerï¼šç®¡ç†å…¶ä»–æ¨¡å—ä¸­ç”¨åˆ°çš„æ‰€æœ‰çš„æ•°æ®ã€é¢„è®­ç»ƒå¥½çš„æ¨¡åž‹ç­‰ã€?
+- OpenAttackå„ä¸ªæ¨¡å—.jpg
+
+OpenAttackçš„å„ä¸ªæ¨¡å? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
 - ![img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
 
-[OpenAttack](https://github.com/thunlp/OpenAttack) »ùÓÚPython¿ª·¢£¬ÓÃÓÚ**ÎÄ±¾¶Ô¿¹¹¥»÷**µÄÈ«¹ý³Ì£¬°üÀ¨ÎÄ±¾**Ô¤´¦Àí**¡¢**ÊÜº¦Ä£ÐÍ·ÃÎÊ**¡¢**¶Ô¿¹Ñù±¾Éú³É**¡¢**¶Ô¿¹¹¥»÷ÆÀ²â**ÒÔ¼°**¶Ô¿¹ÑµÁ·**µÈ¡£¶Ô¿¹¹¥»÷ÄÜ¹»°ïÖú±©Â¶ÊÜº¦Ä£ÐÍµÄÈõµã£¬ÓÐÖúÓÚÌá¸ßÄ£ÐÍµÄÂ³°ôÐÔºÍ¿É½âÊÍÐÔ£¬¾ßÓÐÖØÒªµÄÑÐ¾¿ÒâÒåºÍÓ¦ÓÃ¼ÛÖµ¡£
+[OpenAttack](https://github.com/thunlp/OpenAttack) åŸºäºŽPythonå¼€å‘ï¼Œç”¨äºŽ**æ–‡æœ¬å¯¹æŠ—æ”»å‡»**çš„å…¨è¿‡ç¨‹ï¼ŒåŒ…æ‹¬æ–‡æœ?**é¢„å¤„ç?**ã€?**å—å®³æ¨¡åž‹è®¿é—®**ã€?**å¯¹æŠ—æ ·æœ¬ç”Ÿæˆ**ã€?**å¯¹æŠ—æ”»å‡»è¯„æµ‹**ä»¥åŠ**å¯¹æŠ—è®­ç»ƒ**ç­‰ã€‚å¯¹æŠ—æ”»å‡»èƒ½å¤Ÿå¸®åŠ©æš´éœ²å—å®³æ¨¡åž‹çš„å¼±ç‚¹ï¼Œæœ‰åŠ©äºŽæé«˜æ¨¡åž‹çš„é²æ£’æ€§å’Œå¯è§£é‡Šæ€§ï¼Œå…·æœ‰é‡è¦çš„ç ”ç©¶æ„ä¹‰å’Œåº”ç”¨ä»·å€¼ã€?
 
-OpenAttack¾ßÓÐÈçÏÂÌØµã£º
-- ¸ß¿ÉÓÃÐÔ¡£OpenAttackÌá¹©ÁËÒ»ÏµÁÐµÄÒ×ÓÃµÄAPI£¬Ö§³ÖÎÄ±¾¶Ô¿¹¹¥»÷µÄ¸÷¸öÁ÷³Ì¡£
-- ¹¥»÷ÀàÐÍÈ«¸²¸Ç¡£OpenAttackÊÇÊ×¸öÖ§³ÖËùÓÐ¹¥»÷ÀàÐÍµÄÎÄ±¾¶Ô¿¹¹¥»÷¹¤¾ß°ü£¬¸²¸ÇÁËËùÓÐÈÅ¶¯Á£¶È£º**×Ö**¡¢**´Ê**¡¢**¾ä**¼¶±ð£¬ÒÔ¼°ËùÓÐµÄÊÜº¦Ä£ÐÍ¿É¼û¶È£ºgradient-based¡¢score-based¡¢decision-basedÒÔ¼°blind¡£
-- ¸ß¿ÉÀ©Õ¹ÐÔ¡£³ýÁËºÜ¶àÄÚÖÃµÄ¹¥»÷Ä£ÐÍÒÔ¼°¾­µäµÄÊÜº¦Ä£ÐÍ£¬¿ÉÒÔÊ¹ÓÃOpenAttackÈÝÒ×µØ¶Ô×Ô¼ºµÄÊÜº¦Ä£ÐÍ½øÐÐ¹¥»÷£¬Ò²¿ÉÒÔÉè¼Æ¿ª·¢ÐÂµÄ¹¥»÷Ä£ÐÍ¡£
-- È«ÃæµÄÆÀ²âÖ¸±ê¡£OpenAttackÖ§³Ö¶ÔÎÄ±¾¶Ô¿¹¹¥»÷½øÐÐÈ«Ãæ¶øÏµÍ³µÄÆÀ²â£¬¾ßÌå°üÀ¨¹¥»÷³É¹¦ÂÊ¡¢¶Ô¿¹Ñù±¾ÖÊÁ¿¡¢¹¥»÷Ð§ÂÊ3¸ö·½Ãæ¹²¼Æ8ÖÖ²»Í¬µÄÆÀ²âÖ¸±ê¡£´ËÍâÓÃ»§»¹¿ÉÒÔ×Ô¼ºÉè¼ÆÐÂµÄÆÀ²âÖ¸±ê¡£
+OpenAttackå…·æœ‰å¦‚ä¸‹ç‰¹ç‚¹ï¼?
+- é«˜å¯ç”¨æ€§ã€‚OpenAttackæä¾›äº†ä¸€ç³»åˆ—çš„æ˜“ç”¨çš„APIï¼Œæ”¯æŒæ–‡æœ¬å¯¹æŠ—æ”»å‡»çš„å„ä¸ªæµç¨‹ã€?
+- æ”»å‡»ç±»åž‹å…¨è¦†ç›–ã€‚OpenAttackæ˜¯é¦–ä¸ªæ”¯æŒæ‰€æœ‰æ”»å‡»ç±»åž‹çš„æ–‡æœ¬å¯¹æŠ—æ”»å‡»å·¥å…·åŒ…ï¼Œè¦†ç›–äº†æ‰€æœ‰æ‰°åŠ¨ç²’åº¦ï¼š**å­?**ã€?**è¯?**ã€?**å?**çº§åˆ«ï¼Œä»¥åŠæ‰€æœ‰çš„å—å®³æ¨¡åž‹å¯è§åº¦ï¼šgradient-basedã€score-basedã€decision-basedä»¥åŠblindã€?
+- é«˜å¯æ‰©å±•æ€§ã€‚é™¤äº†å¾ˆå¤šå†…ç½®çš„æ”»å‡»æ¨¡åž‹ä»¥åŠç»å…¸çš„å—å®³æ¨¡åž‹ï¼Œå¯ä»¥ä½¿ç”¨OpenAttackå®¹æ˜“åœ°å¯¹è‡ªå·±çš„å—å®³æ¨¡åž‹è¿›è¡Œæ”»å‡»ï¼Œä¹Ÿå¯ä»¥è®¾è®¡å¼€å‘æ–°çš„æ”»å‡»æ¨¡åž‹ã€?
+- å…¨é¢çš„è¯„æµ‹æŒ‡æ ‡ã€‚OpenAttackæ”¯æŒå¯¹æ–‡æœ¬å¯¹æŠ—æ”»å‡»è¿›è¡Œå…¨é¢è€Œç³»ç»Ÿçš„è¯„æµ‹ï¼Œå…·ä½“åŒ…æ‹¬æ”»å‡»æˆåŠŸçŽ‡ã€å¯¹æŠ—æ ·æœ¬è´¨é‡ã€æ”»å‡»æ•ˆçŽ?3ä¸ªæ–¹é¢å…±è®?8ç§ä¸åŒçš„è¯„æµ‹æŒ‡æ ‡ã€‚æ­¤å¤–ç”¨æˆ·è¿˜å¯ä»¥è‡ªå·±è®¾è®¡æ–°çš„è¯„æµ‹æŒ‡æ ‡ã€?
 
-OpenAttackÄÚÖÃÁËºÜ¶à³£ÓÃµÄ·ÖÀàÄ£ÐÍ£¨ÈçLSTMºÍBERT£©ÒÔ¼°¾­µäµÄ·ÖÀàÊý¾Ý¼¯£¨ÀýÈçSST£¬SNLI£¬AG¡¯s News£©¡£ÓÃ»§¿ÉÒÔºÜ·½±ãµØ¶ÔÕâÐ©ÄÚÖÃµÄÄ£ÐÍ½øÐÐ¶Ô¿¹¹¥»÷¡£
+OpenAttackå†…ç½®äº†å¾ˆå¤šå¸¸ç”¨çš„åˆ†ç±»æ¨¡åž‹ï¼ˆå¦‚LSTMå’ŒBERTï¼‰ä»¥åŠç»å…¸çš„åˆ†ç±»æ•°æ®é›†ï¼ˆä¾‹å¦‚SSTï¼ŒSNLIï¼ŒAGâ€™s Newsï¼‰ã€‚ç”¨æˆ·å¯ä»¥å¾ˆæ–¹ä¾¿åœ°å¯¹è¿™äº›å†…ç½®çš„æ¨¡åž‹è¿›è¡Œå¯¹æŠ—æ”»å‡»ã€?
 
 
-## ¹¥»÷Ä£ÐÍ
+## æ”»å‡»æ¨¡åž‹
 
-ÏÖÓÐµÄÎÄ±¾¶Ô¿¹¹¥»÷·ÖÀà
-- ¸ù¾Ý¶ÔÔ­Ê¼Ñù±¾µÄ**ÈÅ¶¯Á£¶È**·ÖÎª: **×Ö**¡¢**´Ê**¡¢**¾ä**¼¶±ðµÄ¹¥»÷
-- ¸ù¾Ý**ÊÜº¦Ä£ÐÍ¿É¼ûÐÔ**·ÖÎª£º
-  - gradient-based£¨ÊÜº¦Ä£ÐÍ¶Ô¹¥»÷Ä£ÐÍ**ÍêÈ«**¿É¼û£©
-  - score-based£¨ÊÜº¦Ä£ÐÍµÄÊä³ö·ÖÀà**·ÖÊý**¿É¼û£©
-  - decision-based£¨½öÊÜº¦Ä£ÐÍµÄ·ÖÀà**½á¹û**¿É¼û£©
-  - blind£¨ÊÜº¦Ä£ÐÍ**ÍêÈ«²»**¿É¼û£©
+çŽ°æœ‰çš„æ–‡æœ¬å¯¹æŠ—æ”»å‡»åˆ†ç±?
+- æ ¹æ®å¯¹åŽŸå§‹æ ·æœ¬çš„**æ‰°åŠ¨ç²’åº¦**åˆ†ä¸º: **å­?**ã€?**è¯?**ã€?**å?**çº§åˆ«çš„æ”»å‡?
+- æ ¹æ®**å—å®³æ¨¡åž‹å¯è§æ€?**åˆ†ä¸ºï¼?
+  - gradient-basedï¼ˆå—å®³æ¨¡åž‹å¯¹æ”»å‡»æ¨¡åž‹**å®Œå…¨**å¯è§ï¼?
+  - score-basedï¼ˆå—å®³æ¨¡åž‹çš„è¾“å‡ºåˆ†ç±»**åˆ†æ•°**å¯è§ï¼?
+  - decision-basedï¼ˆä»…å—å®³æ¨¡åž‹çš„åˆ†ç±?**ç»“æžœ**å¯è§ï¼?
+  - blindï¼ˆå—å®³æ¨¡åž?**å®Œå…¨ä¸?**å¯è§ï¼?
 
-OpenAttackÄ¿Ç°°üº¬ÁË13ÖÖ¹¥»÷Ä£ÐÍ£¬¸²¸ÇÁËËùÓÐÀàÐÍµÄÈÅ¶¯Á£¶ÈÒÔ¼°ÊÜº¦Ä£ÐÍ¿É¼ûÐÔ [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
+OpenAttackç›®å‰åŒ…å«äº?13ç§æ”»å‡»æ¨¡åž‹ï¼Œè¦†ç›–äº†æ‰€æœ‰ç±»åž‹çš„æ‰°åŠ¨ç²’åº¦ä»¥åŠå—å®³æ¨¡åž‹å¯è§æ€? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
 - ![img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
 
-²Î¿¼
-- THUNLP ¿ªÔ´ÁË**ÎÄ±¾¶Ô¿¹¹¥»÷ºÍ·ÀÓù**±Ø¶ÁÂÛÎÄÁÐ±í£ºTAADPapers£¬¸²¸ÇÁË¼¸ºõÈ«²¿µÄÎÄ±¾¶Ô¿¹¹¥»÷ºÍ·ÀÓùÁìÓòµÄÒÑ·¢±íÂÛÎÄ¡¢×ÛÊöµÈ£¬»¶Ó­´îÅäÊ¹ÓÃ¡£
-  - [TAADPapersÂÛÎÄÁÐ±íµØÖ·](https://github.com/thunlp/TAADpapers)
-- ¡¾2023-1-10¡¿Çå»ª [OpenAttack£ºÎÄ±¾¶Ô¿¹¹¥»÷¹¤¾ß°ü](https://nlp.csai.tsinghua.edu.cn/project/openattack/)
+å‚è€?
+- THUNLP å¼€æºäº†**æ–‡æœ¬å¯¹æŠ—æ”»å‡»å’Œé˜²å¾?**å¿…è¯»è®ºæ–‡åˆ—è¡¨ï¼šTAADPapersï¼Œè¦†ç›–äº†å‡ ä¹Žå…¨éƒ¨çš„æ–‡æœ¬å¯¹æŠ—æ”»å‡»å’Œé˜²å¾¡é¢†åŸŸçš„å·²å‘è¡¨è®ºæ–‡ã€ç»¼è¿°ç­‰ï¼Œæ¬¢è¿Žæ­é…ä½¿ç”¨ã€?
+  - [TAADPapersè®ºæ–‡åˆ—è¡¨åœ°å€](https://github.com/thunlp/TAADpapers)
+- ã€?2023-1-10ã€‘æ¸…å? [OpenAttackï¼šæ–‡æœ¬å¯¹æŠ—æ”»å‡»å·¥å…·åŒ…](https://nlp.csai.tsinghua.edu.cn/project/openattack/)
 
-## ¹¥»÷°¸Àý
+## æ”»å‡»æ¡ˆä¾‹
 
-### ¿Õ¸ñ¹¥»÷·¨
+### ç©ºæ ¼æ”»å‡»æ³?
 
-¡¾2023-7-18¡¿ÉÏº£²Æ¾­´óÑ§´ÞÍòÔÆÑÐ¾¿ÍÅ¶ÓµÄ·¢ÏÖÌôÕ½ÁË¹ØÓÚ·Ö²¼²îÒìµÄ´«Í³Àí½â¡£¿Õ¸ñ×Ö·û¹¥»÷·½·¨£¬ÓÃÒÔ¹æ±Ü AI ÄÚÈÝ¼ì²âÆ÷¡£
+ã€?2023-7-18ã€‘ä¸Šæµ·è´¢ç»å¤§å­¦å´”ä¸‡äº‘ç ”ç©¶å›¢é˜Ÿçš„å‘çŽ°æŒ‘æˆ˜äº†å…³äºŽåˆ†å¸ƒå·®å¼‚çš„ä¼ ç»Ÿç†è§£ã€‚ç©ºæ ¼å­—ç¬¦æ”»å‡»æ–¹æ³•ï¼Œç”¨ä»¥è§„é¿ AI å†…å®¹æ£€æµ‹å™¨ã€?
 - [Evade ChatGPT Detector via A Single Space](https://arxiv.org/pdf/2307.02599)
-- ¼ì²âÆ÷²¢·ÇÖ÷ÒªÒÀÀµ**ÓïÒåºÍ·ç¸ñ**·½ÃæµÄ²îÒì¡£ÑÐ¾¿Õß½ÒÊ¾£¬¼ì²âÆ÷Êµ¼ÊÒÀÀµÏ¸Î¢µÄÄÚÈÝ²îÒì£¬Èç¶îÍâµÄ¿Õ¸ñ¡£'charge,' ±ä³ÉÁË 'charge?,'
-- ÂÛÎÄÌá³öÁËÒ»¸ö¼òµ¥µÄ¹æ±Ü¼ì²â²ßÂÔ£ºÔÚ AI Éú³ÉµÄÄÚÈÝÖÐ£¬Ëæ»úÔÚÒ»¸ö¶ººÅÇ°Ìí¼ÓÒ»¸ö¿Õ¸ñ×Ö·û£©¡£ÕâÒ»²ßÂÔÏÔÖø½µµÍÁË**°×ºÐ**ºÍ**ºÚºÐ**¼ì²âÆ÷µÄ¼ì²âÂÊ¡£¶ÔÓÚ GPTZero£¨°×ºÐ£©ºÍ HelloSimpleAI£¨ºÚºÐ£©¼ì²âÆ÷£¬AI Éú³ÉÄÚÈÝµÄ¼ì²âÂÊ´ÓÔ¼ 60%-80% ½µÖÁ¼¸ºõ 0%¡£
+- æ£€æµ‹å™¨å¹¶éžä¸»è¦ä¾èµ–**è¯­ä¹‰å’Œé£Žæ ?**æ–¹é¢çš„å·®å¼‚ã€‚ç ”ç©¶è€…æ­ç¤ºï¼Œæ£€æµ‹å™¨å®žé™…ä¾èµ–ç»†å¾®çš„å†…å®¹å·®å¼‚ï¼Œå¦‚é¢å¤–çš„ç©ºæ ¼ã€?'charge,' å˜æˆäº? 'charge?,'
+- è®ºæ–‡æå‡ºäº†ä¸€ä¸ªç®€å•çš„è§„é¿æ£€æµ‹ç­–ç•¥ï¼šåœ? AI ç”Ÿæˆçš„å†…å®¹ä¸­ï¼Œéšæœºåœ¨ä¸€ä¸ªé€—å·å‰æ·»åŠ ä¸€ä¸ªç©ºæ ¼å­—ç¬¦ï¼‰ã€‚è¿™ä¸€ç­–ç•¥æ˜¾è‘—é™ä½Žäº?**ç™½ç›’**å’?**é»‘ç›’**æ£€æµ‹å™¨çš„æ£€æµ‹çŽ‡ã€‚å¯¹äº? GPTZeroï¼ˆç™½ç›’ï¼‰å’? HelloSimpleAIï¼ˆé»‘ç›’ï¼‰æ£€æµ‹å™¨ï¼ŒAI ç”Ÿæˆå†…å®¹çš„æ£€æµ‹çŽ‡ä»Žçº¦ 60%-80% é™è‡³å‡ ä¹Ž 0%ã€?
 
-·½·¨ÌØÐÔ£º
-- £¨1£©Ãâ·Ñ£¬ÎÞÐè¶îÍâ³É±¾£»
-- £¨2£©ÎÞÖÊÁ¿ËðÊ§£¬²»Ò×±»²ì¾õ¡£ÐÂµÄÎÄ±¾¾ßÓÐÓëÔ­Ê¼ÎÄ±¾ÏàÍ¬µÄÖÊÁ¿¡£ÓÉÓÚÐÞ¸ÄÖ»Éæ¼°Ôö¼ÓÒ»¸ö¿Õ¸ñ£¬Òò´Ë²»Ò×±»ÈËÀà²ì¾õ£¬Òò¶ø²»½µµÍÖÊÁ¿¡£
-- £¨3£©¹¥»÷ÓëÄ£ÐÍÎÞ¹Ø£¬²»ÐèÒªÖªµÀ LLMs »ò¼ì²âÆ÷µÄÄÚ²¿×´Ì¬¡£ÔÚÂÛÎÄÖÐ£¬ÕâÖÖ²ßÂÔ±»³ÆÎª SpaceInfi¡£
+æ–¹æ³•ç‰¹æ€§ï¼š
+- ï¼?1ï¼‰å…è´¹ï¼Œæ— éœ€é¢å¤–æˆæœ¬ï¼?
+- ï¼?2ï¼‰æ— è´¨é‡æŸå¤±ï¼Œä¸æ˜“è¢«å¯Ÿè§‰ã€‚æ–°çš„æ–‡æœ¬å…·æœ‰ä¸ŽåŽŸå§‹æ–‡æœ¬ç›¸åŒçš„è´¨é‡ã€‚ç”±äºŽä¿®æ”¹åªæ¶‰åŠå¢žåŠ ä¸€ä¸ªç©ºæ ¼ï¼Œå› æ­¤ä¸æ˜“è¢«äººç±»å¯Ÿè§‰ï¼Œå› è€Œä¸é™ä½Žè´¨é‡ã€?
+- ï¼?3ï¼‰æ”»å‡»ä¸Žæ¨¡åž‹æ— å…³ï¼Œä¸éœ€è¦çŸ¥é? LLMs æˆ–æ£€æµ‹å™¨çš„å†…éƒ¨çŠ¶æ€ã€‚åœ¨è®ºæ–‡ä¸­ï¼Œè¿™ç§ç­–ç•¥è¢«ç§°ä¸? SpaceInfiã€?
 
 
 
-# ½áÊø
+# ç»“æŸ

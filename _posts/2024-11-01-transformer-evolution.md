@@ -1,781 +1,781 @@
 ---
 layout: post
-title:  Transformer ¸Ä½ø·½°¸
+title:  Transformer æ”¹è¿›æ–¹æ¡ˆ
 date:   2024-11-01 16:52:00
-categories: Éî¶ÈÑ§Ï° 
-tags: Éî¶ÈÑ§Ï° NLP Transformer BERT GPT Attention BeamSearch seq2seq ÑîÖ²÷ë XLNet Ñ­»·ÖÇÄÜ roformer rwkv ËÕ½£ÁÖ ¼ìË÷ Ð¾Æ¬ ÐòÁÐ»¯ ×¢ÒâÁ¦ ÈýÀ¶Ò»×Ø ÅÁÀÛÍÐ retnet yoco kan Í¨ÓÃ±Æ½ü¶¨Àí µþ¼Ó¶¨Àí ÑùÌõ ¿ÉÊÓ»¯ ttt ÈýÀ¶Ò»×Ø
-excerpt: Transformer ÊÇ´óÄ£ÐÍÎ¨Ò»Ñ¡ÔñÃ´£¿
+categories: æ·±åº¦å­¦ä¹  
+tags: æ·±åº¦å­¦ä¹  NLP Transformer BERT GPT Attention BeamSearch seq2seq æ¨æ¤éº? XLNet å¾ªçŽ¯æ™ºèƒ½ roformer rwkv è‹å‰‘æž? æ£€ç´? èŠ¯ç‰‡ åºåˆ—åŒ? æ³¨æ„åŠ? ä¸‰è“ä¸€æ£? å¸•ç´¯æ‰? retnet yoco kan é€šç”¨é€¼è¿‘å®šç† å åŠ å®šç† æ ·æ¡ å¯è§†åŒ? ttt ä¸‰è“ä¸€æ£?
+excerpt: Transformer æ˜¯å¤§æ¨¡åž‹å”¯ä¸€é€‰æ‹©ä¹ˆï¼Ÿ
 mathjax: true
-permalink: /trans_new
+permalink: /transformer_direction
 ---
 
 * content
 {:toc}
 
 
-# Transformer ¸Ä½ø·½°¸
+# Transformer æ”¹è¿›æ–¹æ¡ˆ
 
-## Transformer ÎÊÌâ
+## Transformer é—®é¢˜
 
 
-¡¾2023-9-18¡¿[RetNet£ºÍòÖÚÆÚ´ýµÄ Transformers É±ÊÖ](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [Í·Ìõ](https://www.toutiao.com/article/7304956621552501285/)
+ã€?2023-9-18ã€‘[RetNetï¼šä¸‡ä¼—æœŸå¾…çš„ Transformers æ€æ‰‹](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [å¤´æ¡](https://www.toutiao.com/article/7304956621552501285/)
 
-Transformer ÒÑ³ÉÎª´óÓïÑÔÄ£ÐÍÉÏµÄ¼Ü¹¹£¬ÒòÎªËüÓÐÐ§µØ¿Ë·þÁËÑ­»·Éñ¾­ÍøÂç (RNN) µÄË³ÐòÑµÁ·ÎÊÌâ¡£
+Transformer å·²æˆä¸ºå¤§è¯­è¨€æ¨¡åž‹ä¸Šçš„æž¶æž„ï¼Œå› ä¸ºå®ƒæœ‰æ•ˆåœ°å…‹æœäº†å¾ªçŽ¯ç¥žç»ç½‘ç»œ (RNN) çš„é¡ºåºè®­ç»ƒé—®é¢˜ã€?
 
-È»¶ø£¬Transformer ²¢²»ÍêÃÀ£¬ÒòÎª½ö½â¾öÁËËùÎ½¡°`impossible triangle`¡±µÄ**Á½**Ìõ±Û¡£
+ç„¶è€Œï¼ŒTransformer å¹¶ä¸å®Œç¾Žï¼Œå› ä¸ºä»…è§£å†³äº†æ‰€è°“â€œ`impossible triangle`â€çš„**ä¸?**æ¡è‡‚ã€?
 
-¡°²»¿ÉÄÜÈý½Ç¡±´ú±íµ±Ç°ÐòÁÐÄ£ÐÍÎÞ·¨Í¬Ê±ÊµÏÖ**ÑµÁ·²¢ÐÐÐÔ**¡¢**µÍ³É±¾ÍÆÀí**ÒÔ¼°**Ç¿´óÐÔÄÜ**µÄËùÓÐ3¸öÆÚÍûÎ¬¶È¡£
+â€œä¸å¯èƒ½ä¸‰è§’â€ä»£è¡¨å½“å‰åºåˆ—æ¨¡åž‹æ— æ³•åŒæ—¶å®žçŽ?**è®­ç»ƒå¹¶è¡Œæ€?**ã€?**ä½Žæˆæœ¬æŽ¨ç?**ä»¥åŠ**å¼ºå¤§æ€§èƒ½**çš„æ‰€æœ?3ä¸ªæœŸæœ›ç»´åº¦ã€?
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-axegupay5k/e154053c06d24a3a8c24253b5185346e~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701422819&x-signature=oxc1OeNc6B1%2BDAdIQ%2BaOw8jw%2BA0%3D)
 
-Èý½ÇÉÏµÄ·½·¨±íÊ¾ÊµÏÖµÄÁ½¸öÎ¬¶È£¬µ«È±ÉÙµÚÈý¸ö¶¥µãµÄËùÐèÊôÐÔ¡£
+ä¸‰è§’ä¸Šçš„æ–¹æ³•è¡¨ç¤ºå®žçŽ°çš„ä¸¤ä¸ªç»´åº¦ï¼Œä½†ç¼ºå°‘ç¬¬ä¸‰ä¸ªé¡¶ç‚¹çš„æ‰€éœ€å±žæ€§ã€?
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/7c1f587ebec642bf9332284352e4a64d~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1701422819&x-signature=nYJb%2B%2FFDdkA1f%2F5FLtlAkG5XEVY%3D)
 
 
-## ¿É½âÊÍÐÔ
+## å¯è§£é‡Šæ€?
 
 
-### °×ºÐ transformer -- CRATE
+### ç™½ç›’ transformer -- CRATE
 
-¡¾2023-11-30¡¿[¡¸GPT-4Ö»ÊÇÔÚÑ¹ËõÊý¾Ý¡¹£¬ÂíÒãÍÅ¶ÓÔì³ö°×ºÐTransformer£¬¿É½âÊÍµÄ´óÄ£ÐÍÒªÀ´ÁËÂð£¿](https://mp.weixin.qq.com/s/ErrCWbz8zDqSYkC9DH79Mg)
+ã€?2023-11-30ã€‘[ã€ŒGPT-4åªæ˜¯åœ¨åŽ‹ç¼©æ•°æ®ã€ï¼Œé©¬æ¯…å›¢é˜Ÿé€ å‡ºç™½ç›’Transformerï¼Œå¯è§£é‡Šçš„å¤§æ¨¡åž‹è¦æ¥äº†å—ï¼Ÿ](https://mp.weixin.qq.com/s/ErrCWbz8zDqSYkC9DH79Mg)
 
-²®¿ËÀûºÍÏã¸Û´óÑ§µÄ`ÂíÒã`½ÌÊÚÁìµ¼µÄÒ»¸öÑÐ¾¿ÍÅ¶Ó¸ø³öÁË×Ô¼ºµÄ×îÐÂÑÐ¾¿½á¹û£º
-> °üÀ¨ GPT-4 ÔÚÄÚµÄµ±Ç° AI ÏµÍ³Ëù×öµÄÕýÊÇÑ¹Ëõ¡£
+ä¼¯å…‹åˆ©å’Œé¦™æ¸¯å¤§å­¦çš„`é©¬æ¯…`æ•™æŽˆé¢†å¯¼çš„ä¸€ä¸ªç ”ç©¶å›¢é˜Ÿç»™å‡ºäº†è‡ªå·±çš„æœ€æ–°ç ”ç©¶ç»“æžœï¼š
+> åŒ…æ‹¬ GPT-4 åœ¨å†…çš„å½“å‰? AI ç³»ç»Ÿæ‰€åšçš„æ­£æ˜¯åŽ‹ç¼©ã€?
 
-Ìá³öµÄÐÂÉî¶ÈÍøÂç¼Ü¹¹ CRATE£¬Í¨¹ýÊýÑ§·½Ê½ÑéÖ¤ÁËÕâÒ»µã¡£
-- CRATE ÊÇÒ»ÖÖ**°×ºÐ Transformer**£¬Æä²»½öÄÜÔÚ¼¸ºõËùÓÐÈÎÎñÉÏÓë**ºÚºÐ Transformer** ÏàæÇÃÀ£¬¶øÇÒ»¹¾ß±¸·Ç³£³öÉ«µÄ**¿É½âÊÍÐÔ**¡£
+æå‡ºçš„æ–°æ·±åº¦ç½‘ç»œæž¶æž„ CRATEï¼Œé€šè¿‡æ•°å­¦æ–¹å¼éªŒè¯äº†è¿™ä¸€ç‚¹ã€?
+- CRATE æ˜¯ä¸€ç§?**ç™½ç›’ Transformer**ï¼Œå…¶ä¸ä»…èƒ½åœ¨å‡ ä¹Žæ‰€æœ‰ä»»åŠ¡ä¸Šä¸?**é»‘ç›’ Transformer** ç›¸åª²ç¾Žï¼Œè€Œä¸”è¿˜å…·å¤‡éžå¸¸å‡ºè‰²çš„**å¯è§£é‡Šæ€?**ã€?
 
-»ùÓÚ´Ë£¬ÂíÒã½ÌÊÚ»¹ÔÚ Twitter ÉÏ·ÖÏíÁËÒ»¸öÓÐÈ¤µÄ¼û½â£º
-- ¼ÈÈ»µ±Ç°µÄ AI Ö»ÊÇÔÚÑ¹ËõÊý¾Ý£¬ÄÇÃ´¾ÍÖ»ÄÜÑ§Ï°µ½Êý¾ÝÖÐµÄ**Ïà¹ØÐÔ / ·Ö²¼**£¬ËùÒÔ¾Í²¢²»ÕæÕý¾ß±¸**Òò¹û»òÂß¼­ÍÆÀí**»ò³éÏóË¼¿¼ÄÜÁ¦¡£
+åŸºäºŽæ­¤ï¼Œé©¬æ¯…æ•™æŽˆè¿˜åœ¨ Twitter ä¸Šåˆ†äº«äº†ä¸€ä¸ªæœ‰è¶£çš„è§è§£ï¼?
+- æ—¢ç„¶å½“å‰çš? AI åªæ˜¯åœ¨åŽ‹ç¼©æ•°æ®ï¼Œé‚£ä¹ˆå°±åªèƒ½å­¦ä¹ åˆ°æ•°æ®ä¸­çš„**ç›¸å…³æ€? / åˆ†å¸ƒ**ï¼Œæ‰€ä»¥å°±å¹¶ä¸çœŸæ­£å…·å¤‡**å› æžœæˆ–é€»è¾‘æŽ¨ç†**æˆ–æŠ½è±¡æ€è€ƒèƒ½åŠ›ã€?
 
-Òò´Ë£¬µ±½ñµÄ AI »¹Ëã²»ÊÇ AGI£¬¼´±ã½üÄêÀ´ÔÚ´¦ÀíºÍ½¨Ä£´óÁ¿¸ßÎ¬ºÍ¶àÄ£Ì¬Êý¾Ý·½Ãæ£¬Éî¶ÈÑ§Ï°ÔÚÊµÑéÖÐÈ¡µÃÁË¾Þ´óµÄ³É¹¦¡£
+å› æ­¤ï¼Œå½“ä»Šçš„ AI è¿˜ç®—ä¸æ˜¯ AGIï¼Œå³ä¾¿è¿‘å¹´æ¥åœ¨å¤„ç†å’Œå»ºæ¨¡å¤§é‡é«˜ç»´å’Œå¤šæ¨¡æ€æ•°æ®æ–¹é¢ï¼Œæ·±åº¦å­¦ä¹ åœ¨å®žéªŒä¸­å–å¾—äº†å·¨å¤§çš„æˆåŠŸã€?
 
-ÕâÖÖ³É¹¦¹é¹¦ÓÚÉî¶ÈÍøÂçÄÜÓÐÐ§Ñ§Ï°Êý¾Ý·Ö²¼ÖÐ**¿ÉÑ¹ËõµÄµÍÎ¬½á¹¹**£¬²¢½«¸Ã·Ö²¼×ª»»Îª¼òÔ¼£¨¼´½ô´ÕÇÒ½á¹¹»¯µÄ£©±íÕ÷¡£ÕâÑùµÄ±íÕ÷¿ÉÓÃÓÚ°ïÖúÐí¶àÏÂÓÎÈÎÎñ£¬±ÈÈçÊÓ¾õ¡¢·ÖÀà¡¢Ê¶±ðºÍ·Ö¸î¡¢Éú³É¡£
+è¿™ç§æˆåŠŸå½’åŠŸäºŽæ·±åº¦ç½‘ç»œèƒ½æœ‰æ•ˆå­¦ä¹ æ•°æ®åˆ†å¸ƒä¸?**å¯åŽ‹ç¼©çš„ä½Žç»´ç»“æž„**ï¼Œå¹¶å°†è¯¥åˆ†å¸ƒè½¬æ¢ä¸ºç®€çº¦ï¼ˆå³ç´§å‡‘ä¸”ç»“æž„åŒ–çš„ï¼‰è¡¨å¾ã€‚è¿™æ ·çš„è¡¨å¾å¯ç”¨äºŽå¸®åŠ©è®¸å¤šä¸‹æ¸¸ä»»åŠ¡ï¼Œæ¯”å¦‚è§†è§‰ã€åˆ†ç±»ã€è¯†åˆ«å’Œåˆ†å‰²ã€ç”Ÿæˆã€?
 
-±íÕ÷Ñ§Ï°ÊÇÍ¨¹ýÑ¹ËõÊ½±àÂëºÍ½âÂëÊµÏÖµÄ
+è¡¨å¾å­¦ä¹ æ˜¯é€šè¿‡åŽ‹ç¼©å¼ç¼–ç å’Œè§£ç å®žçŽ°çš?
 
-°×ºÐÉî¶ÈÍøÂçÀíÂÛ¡£ÎªÑ§Ï°½ô´ÕºÍ½á¹¹»¯µÄ±íÕ÷Ìá³öÁËÒ»¸öÍ³Ò»Ä¿±ê£¬ÓÐÔ­Àí±£Ö¤µÄÓÅÁ¼¶È¶ÈÁ¿¡£¶ÔÓÚÑ§Ï°µ½µÄ±íÕ÷£¬¸ÃÄ¿±êÖ¼ÔÚ¼ÈÓÅ»¯ÆäÔÚ±àÂëÂÊÏÂ½µ·½ÃæµÄÄÚÔÚ¸´ÔÓÐÔ£¬Ò²ÓÅ»¯ÆäÔÚÏ¡ÊèÐÔ·½ÃæµÄÍâÔÚ¸´ÔÓÐÔ¡£¸ÃÄ¿±ê³ÆÎª `Ï¡ÊèÂÊÏÂ½µ`£¨sparse rate reduction£©¡£
+ç™½ç›’æ·±åº¦ç½‘ç»œç†è®ºã€‚ä¸ºå­¦ä¹ ç´§å‡‘å’Œç»“æž„åŒ–çš„è¡¨å¾æå‡ºäº†ä¸€ä¸ªç»Ÿä¸€ç›®æ ‡ï¼Œæœ‰åŽŸç†ä¿è¯çš„ä¼˜è‰¯åº¦åº¦é‡ã€‚å¯¹äºŽå­¦ä¹ åˆ°çš„è¡¨å¾ï¼Œè¯¥ç›®æ ‡æ—¨åœ¨æ—¢ä¼˜åŒ–å…¶åœ¨ç¼–ç çŽ‡ä¸‹é™æ–¹é¢çš„å†…åœ¨å¤æ‚æ€§ï¼Œä¹Ÿä¼˜åŒ–å…¶åœ¨ç¨€ç–æ€§æ–¹é¢çš„å¤–åœ¨å¤æ‚æ€§ã€‚è¯¥ç›®æ ‡ç§°ä¸º `ç¨€ç–çŽ‡ä¸‹é™`ï¼ˆsparse rate reductionï¼‰ã€?
 
-ÎªÁËÓÅ»¯Õâ¸öÄ¿±ê£¬Ìá³öÑ§Ï°Ò»¸ö**ÔöÁ¿Ó³ÉäÐòÁÐ**£¬Ä£ÄâÕ¹¿ªÄ¿±êº¯ÊýµÄÄ³Ð©ÀàËÆÌÝ¶ÈÏÂ½µµÄµü´úÓÅ»¯·½°¸¡£ÕâµÃµ½Ò»¸öÀàËÆ Transformer µÄÉî¶ÈÍøÂç¼Ü¹¹£¬²¢ÇÒËüÍêÈ«ÊÇÒ»¸ö¡¸°×ºÐ¡¹¡ª¡ª ÆäÓÅ»¯Ä¿±ê¡¢ÍøÂçËã×ÓºÍÑ§Ï°µ½µÄ±íÕ÷ÔÚÊýÑ§ÉÏÊÇÍêÈ«¿É½âÊÍµÄ¡£
+ä¸ºäº†ä¼˜åŒ–è¿™ä¸ªç›®æ ‡ï¼Œæå‡ºå­¦ä¹ ä¸€ä¸?**å¢žé‡æ˜ å°„åºåˆ—**ï¼Œæ¨¡æ‹Ÿå±•å¼€ç›®æ ‡å‡½æ•°çš„æŸäº›ç±»ä¼¼æ¢¯åº¦ä¸‹é™çš„è¿­ä»£ä¼˜åŒ–æ–¹æ¡ˆã€‚è¿™å¾—åˆ°ä¸€ä¸ªç±»ä¼? Transformer çš„æ·±åº¦ç½‘ç»œæž¶æž„ï¼Œå¹¶ä¸”å®ƒå®Œå…¨æ˜¯ä¸€ä¸ªã€Œç™½ç›’ã€â€”â€? å…¶ä¼˜åŒ–ç›®æ ‡ã€ç½‘ç»œç®—å­å’Œå­¦ä¹ åˆ°çš„è¡¨å¾åœ¨æ•°å­¦ä¸Šæ˜¯å®Œå…¨å¯è§£é‡Šçš„ã€?
 
-Õâ¸ö°×ºÐÉî¶È¼Ü¹¹ÃüÃûÎª `CRATE` »ò `CRATE-Transformer`£¬ÕâÊÇ `Coding-RATE transformer` µÄËõÐ´¡£»¹Í¨¹ýÊýÑ§·½Ê½Ö¤Ã÷ÕâÐ©ÔöÁ¿Ó³ÉäÔÚ·Ö²¼µÄÒâÒåÉÏÊÇ¿ÉÄæµÄ£¬²¢ÇÒËüÃÇµÄÄæÓ³Éä±¾ÖÊÉÏÓÉÍ¬Ò»ÀàÊýÑ§Ëã×Ó¹¹³É¡£
+è¿™ä¸ªç™½ç›’æ·±åº¦æž¶æž„å‘½åä¸? `CRATE` æˆ? `CRATE-Transformer`ï¼Œè¿™æ˜? `Coding-RATE transformer` çš„ç¼©å†™ã€‚è¿˜é€šè¿‡æ•°å­¦æ–¹å¼è¯æ˜Žè¿™äº›å¢žé‡æ˜ å°„åœ¨åˆ†å¸ƒçš„æ„ä¹‰ä¸Šæ˜¯å¯é€†çš„ï¼Œå¹¶ä¸”å®ƒä»¬çš„é€†æ˜ å°„æœ¬è´¨ä¸Šç”±åŒä¸€ç±»æ•°å­¦ç®—å­æž„æˆã€?
 
-Òò´Ë£¬¿ÉÒÔ½«¼¸ºõÍêÈ«Ò»ÑùµÄ CRATE ¼Ü¹¹ÓÃÓÚ±àÂëÆ÷¡¢½âÂëÆ÷»ò×Ô¶¯±àÂëÆ÷¡£
+å› æ­¤ï¼Œå¯ä»¥å°†å‡ ä¹Žå®Œå…¨ä¸€æ ·çš„ CRATE æž¶æž„ç”¨äºŽç¼–ç å™¨ã€è§£ç å™¨æˆ–è‡ªåŠ¨ç¼–ç å™¨ã€?
 
-## Ä£ÐÍ½á¹¹
+## æ¨¡åž‹ç»“æž„
 
-Èç¹ûËµ RetNet ÊÇ´Ó**Æ½ÐÐÍÆÀíÐ§ÄÜ**µÄ½Ç¶È¸ïÐÂÁËÍøÂç¼Ü¹¹£¬ÄÇÃ´ BitNet Ôò´ÓÕý½»½Ç¶ÈÌáÉýÁËÍÆÀíÐ§ÂÊ¡£
+å¦‚æžœè¯? RetNet æ˜¯ä»Ž**å¹³è¡ŒæŽ¨ç†æ•ˆèƒ½**çš„è§’åº¦é©æ–°äº†ç½‘ç»œæž¶æž„ï¼Œé‚£ä¹? BitNet åˆ™ä»Žæ­£äº¤è§’åº¦æå‡äº†æŽ¨ç†æ•ˆçŽ‡ã€?
 
-ÕâÁ½ÕßµÄ½áºÏ£¬ÒÔ¼°ÈÚºÏÆäËûÌáÉýÄ£ÐÍÐ§ÂÊµÄ¼¼Êõ±ÈÈç»ìºÏ×¨¼ÒÄ£ÐÍ£¨MoE£©ºÍÏ¡Êè×¢ÒâÁ¦»úÖÆ£¨Sparse Attention£©£¬½«³ÉÎªÎ´À´»ù´¡Ä£ÐÍÍøÂç¼Ü¹¹µÄ»ù´¡¡£
+è¿™ä¸¤è€…çš„ç»“åˆï¼Œä»¥åŠèžåˆå…¶ä»–æå‡æ¨¡åž‹æ•ˆçŽ‡çš„æŠ€æœ¯æ¯”å¦‚æ··åˆä¸“å®¶æ¨¡åž‹ï¼ˆMoEï¼‰å’Œç¨€ç–æ³¨æ„åŠ›æœºåˆ¶ï¼ˆSparse Attentionï¼‰ï¼Œå°†æˆä¸ºæœªæ¥åŸºç¡€æ¨¡åž‹ç½‘ç»œæž¶æž„çš„åŸºç¡€ã€?
 
 
 ### RetNet
 
-¡¾2023-9-18¡¿[RetNet£ºÍòÖÚÆÚ´ýµÄ Transformers É±ÊÖ](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [Í·Ìõ](https://www.toutiao.com/article/7304956621552501285/)
+ã€?2023-9-18ã€‘[RetNetï¼šä¸‡ä¼—æœŸå¾…çš„ Transformers æ€æ‰‹](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [å¤´æ¡](https://www.toutiao.com/article/7304956621552501285/)
 
-Î¢ÈíµÄ RetNet Î»ÓÚÕâ¸ö¡°`impossible triangle`¡±µÄÕýÖÐÐÄ£¬Ê¤¹ýÁËËùÓÐ³¢ÊÔ¹ýµ«Î´ÄÜÊµÏÖÕâÒ»×³¾ÙµÄ·½·¨¡£RetNet Éè·¨ÔÚµ¥¸ö¿ò¼ÜÏÂÊµÏÖËùÓÐÊôÐÔ¡£
+å¾®è½¯çš? RetNet ä½äºŽè¿™ä¸ªâ€œ`impossible triangle`â€çš„æ­£ä¸­å¿ƒï¼Œèƒœè¿‡äº†æ‰€æœ‰å°è¯•è¿‡ä½†æœªèƒ½å®žçŽ°è¿™ä¸€å£®ä¸¾çš„æ–¹æ³•ã€‚RetNet è®¾æ³•åœ¨å•ä¸ªæ¡†æž¶ä¸‹å®žçŽ°æ‰€æœ‰å±žæ€§ã€?
 
-Í»ÆÆ£º
-- RetNet ¾ßÓÐ¸üºÃµÄÓïÑÔ½¨Ä£ÐÔÄÜ
-- RetNet ÄÚ´æÏûºÄ½µµÍÁË 3.4 ±¶
-- ¡­.8.4 ±¶¸ü¸ßµÄÍÌÍÂÁ¿
-- ¡­ÑÓ³Ù½µµÍ 15.6 ±¶
+çªç ´ï¼?
+- RetNet å…·æœ‰æ›´å¥½çš„è¯­è¨€å»ºæ¨¡æ€§èƒ½
+- RetNet å†…å­˜æ¶ˆè€—é™ä½Žäº† 3.4 å€?
+- â€?.8.4 å€æ›´é«˜çš„åžåé‡?
+- â€¦å»¶è¿Ÿé™ä½? 15.6 å€?
 
-ÕâËÙ¶È±Èµ±Ç°µÄ SOTA ¿ì**¼¸¸öÊýÁ¿¼¶**£¬Í¬Ê±»¹Ìá¹©¸üºÃµÄÐÔÄÜ£¡Èç¹ûÆäËûÍÅ¶ÓÄÜ¹»¸´ÖÆÕâÒ»µã²¢ÇÒ½øÈë¿ªÔ´ÁìÓò£¬Õâ½«ÊÇ¾Þ´óµÄ½ø²½£¬µ«Ä¿Ç°Î¢Èí¾ø¶ÔÊÇ¡¸Ò£Ò£ÁìÏÈ¡¹
+è¿™é€Ÿåº¦æ¯”å½“å‰çš„ SOTA å¿?**å‡ ä¸ªæ•°é‡çº?**ï¼ŒåŒæ—¶è¿˜æä¾›æ›´å¥½çš„æ€§èƒ½ï¼å¦‚æžœå…¶ä»–å›¢é˜Ÿèƒ½å¤Ÿå¤åˆ¶è¿™ä¸€ç‚¹å¹¶ä¸”è¿›å…¥å¼€æºé¢†åŸŸï¼Œè¿™å°†æ˜¯å·¨å¤§çš„è¿›æ­¥ï¼Œä½†ç›®å‰å¾®è½¯ç»å¯¹æ˜¯ã€Œé¥é¥é¢†å…ˆã€?
 
-RetNetµÄÖ÷Òª¹±Ï×¿ÉÒÔ¸ÅÀ¨ÎªÁ½´óµã
-- RetNetÒýÈë**¶à³ß¶È±£Áô»úÖÆ**À´Ìæ´ú**¶àÍ·×¢ÒâÁ¦**¡£ÕâÊÇÏû³ý×Ô×¢ÒâÁ¦»úÖÆÖÐµÄÄ§¹íÕâÒ»×é³É²¿·ÖµÄ¹Ø¼ü¡£¾¡¹ÜÈç´Ë£¬ÕâÖÖ±£Áô»úÖÆÓÐÒ»¸öÐ¡Ð¡µÄÀíÂÛÉÏµÄÈ±µã¡£
-- RetNet ÊÊÓÃÓÚÈýÖÖ¼ÆËã·¶Ê½£¬¶øÖ»ÓÐÒ»ÖÖ Transformer ÔÚÑµÁ·ºÍÍÆÀí¹ý³ÌÖÐÊ¹ÓÃÏàÍ¬µÄÐòÁÐ´¦Àí·¶Ê½¡£
-  - A. **²¢ÐÐ**±íÊ¾Ê¹ÑµÁ·²¢ÐÐÐÔÄÜ¹»³ä·ÖÀûÓÃ GPU Éè±¸¡£
-  - B. **Ñ­»·**±íÊ¾ÔÚÄÚ´æºÍ¼ÆËã·½Ãæ¿ÉÊµÏÖ¸ßÐ§µÄ O(1) ÍÆÀí¡£¿ÉÒÔÏÔ×Å½µµÍ²¿Êð³É±¾ºÍÑÓ³Ù¡£´ËÍâ£¬ÔÚÃ»ÓÐ¼üÖµ»º´æ¼¼ÇÉµÄÇé¿öÏÂ£¬ÊµÏÖÒ²µÃµ½ÁË¼«´óµÄ¼ò»¯¡£
-  - C. **·Ö¿éÑ­»·**±íÊ¾¿ÉÒÔÖ´ÐÐÓÐÐ§µÄ³¤ÐòÁÐ½¨Ä£¡£¶ÔÃ¿¸ö±¾µØ¿é½øÐÐ²¢ÐÐ±àÂëÒÔÌá¸ß¼ÆËãËÙ¶È£¬Í¬Ê±¶ÔÈ«¾Ö¿é½øÐÐÑ­»·±àÂëÒÔ½ÚÊ¡ GPU ÄÚ´æ¡£
+RetNetçš„ä¸»è¦è´¡çŒ®å¯ä»¥æ¦‚æ‹¬ä¸ºä¸¤å¤§ç‚?
+- RetNetå¼•å…¥**å¤šå°ºåº¦ä¿ç•™æœºåˆ?**æ¥æ›¿ä»?**å¤šå¤´æ³¨æ„åŠ?**ã€‚è¿™æ˜¯æ¶ˆé™¤è‡ªæ³¨æ„åŠ›æœºåˆ¶ä¸­çš„é­”é¬¼è¿™ä¸€ç»„æˆéƒ¨åˆ†çš„å…³é”®ã€‚å°½ç®¡å¦‚æ­¤ï¼Œè¿™ç§ä¿ç•™æœºåˆ¶æœ‰ä¸€ä¸ªå°å°çš„ç†è®ºä¸Šçš„ç¼ºç‚¹ã€?
+- RetNet é€‚ç”¨äºŽä¸‰ç§è®¡ç®—èŒƒå¼ï¼Œè€Œåªæœ‰ä¸€ç§? Transformer åœ¨è®­ç»ƒå’ŒæŽ¨ç†è¿‡ç¨‹ä¸­ä½¿ç”¨ç›¸åŒçš„åºåˆ—å¤„ç†èŒƒå¼ã€?
+  - A. **å¹¶è¡Œ**è¡¨ç¤ºä½¿è®­ç»ƒå¹¶è¡Œæ€§èƒ½å¤Ÿå……åˆ†åˆ©ç”? GPU è®¾å¤‡ã€?
+  - B. **å¾ªçŽ¯**è¡¨ç¤ºåœ¨å†…å­˜å’Œè®¡ç®—æ–¹é¢å¯å®žçŽ°é«˜æ•ˆçš„ O(1) æŽ¨ç†ã€‚å¯ä»¥æ˜¾ç€é™ä½Žéƒ¨ç½²æˆæœ¬å’Œå»¶è¿Ÿã€‚æ­¤å¤–ï¼Œåœ¨æ²¡æœ‰é”®å€¼ç¼“å­˜æŠ€å·§çš„æƒ…å†µä¸‹ï¼Œå®žçŽ°ä¹Ÿå¾—åˆ°äº†æžå¤§çš„ç®€åŒ–ã€?
+  - C. **åˆ†å—å¾ªçŽ¯**è¡¨ç¤ºå¯ä»¥æ‰§è¡Œæœ‰æ•ˆçš„é•¿åºåˆ—å»ºæ¨¡ã€‚å¯¹æ¯ä¸ªæœ¬åœ°å—è¿›è¡Œå¹¶è¡Œç¼–ç ä»¥æé«˜è®¡ç®—é€Ÿåº¦ï¼ŒåŒæ—¶å¯¹å…¨å±€å—è¿›è¡Œå¾ªçŽ¯ç¼–ç ä»¥èŠ‚çœ GPU å†…å­˜ã€?
 
-ÐÂÐÍ»ù´¡ÍøÂç¼Ü¹¹ Retentive Network£¨`RetNet`£©³É¹¦Í»ÆÆÁËËùÎ½µÄ¡°`²»¿ÉÄÜÈý½Ç`¡±ÄÑÌâ£¬ÊµÏÖÁË`ÅÁÀÛÍÐ`£¨Pareto£©ÓÅ»¯¡£
-- RetNet ÔÚ±£³ÖÁ¼ºÃµÄÀ©Õ¹ÐÔÄÜºÍ²¢ÐÐÑµÁ·µÄÍ¬Ê±£¬ÊµÏÖÁËµÍ³É±¾²¿ÊðºÍ¸ßÐ§ÂÊÍÆÀí¡£
+æ–°åž‹åŸºç¡€ç½‘ç»œæž¶æž„ Retentive Networkï¼ˆ`RetNet`ï¼‰æˆåŠŸçªç ´äº†æ‰€è°“çš„â€œ`ä¸å¯èƒ½ä¸‰è§’`â€éš¾é¢˜ï¼Œå®žçŽ°äº†`å¸•ç´¯æ‰˜`ï¼ˆParetoï¼‰ä¼˜åŒ–ã€?
+- RetNet åœ¨ä¿æŒè‰¯å¥½çš„æ‰©å±•æ€§èƒ½å’Œå¹¶è¡Œè®­ç»ƒçš„åŒæ—¶ï¼Œå®žçŽ°äº†ä½Žæˆæœ¬éƒ¨ç½²å’Œé«˜æ•ˆçŽ‡æŽ¨ç†ã€?
 
-RetNet ÍÆÀí³É±¾ÓëÄ£ÐÍÐòÁÐ³¤¶ÈÎÞ¹Ø£¬Õâ±íÊ¾ÎÞÂÛÊÇ´¦Àí³¤ÎÄ±¾ÐòÁÐ£¬»¹ÊÇ³¤Í¼ÏñÐòÁÐ£¬Òà»òÊÇÎ´À´¸ü³¤µÄÒôÊÓÆµÐòÁÐ£¬RetNet ¶¼¿ÉÒÔ±£³ÖÎÈ¶¨µÄ¸ßÐ§ÍÆÀí¡£
-
-
-### Î¢Èí BitNet
-
-¡¾2024-2-29¡¿[BitNet b1.58£º¿ªÆô1-bit´óÓïÑÔÄ£ÐÍÊ±´ú](https://mp.weixin.qq.com/s?__biz=MzAwMTA3MzM4Nw==&mid=2649498640&idx=1&sn=a860101ceee6bc3a777f465bdd1586da&chksm=82c7cd94b5b0448231f0017d2694e59f6e41369ea14a38a3a19a32a9ba18c3fe0f934e214bee&scene=21#wechat_redirect)
-
-Î¢ÈíÑÇÖÞÑÐ¾¿ÔºÍÆ³öÁË 1-bit LLM ÐÂ±äÌå£º`BitNet b1.58`¡£
-- ÂÛÎÄ±êÌâ£º[The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits](https://arxiv.org/pdf/2402.17764.pdf)
-
-¸ÃÄ£ÐÍÃ¿¸ö²ÎÊý½öÊ¹ÓÃÈýÖµ±íÊ¾£¬¼´-1, 0 »ò 1¡£Òò´Ë£¬ÔÚ LLM µÄ¾ØÕó³Ë·¨²Ù×÷ÖÐÖ»ÐèÒªÕûÊý¼Ó·¨£¬¶ø²»ÐèÒªÈÎºÎ¸¡µãÊý³Ë·¨»ò¼Ó·¨¡£ÔÚÓïÑÔÄ£ÐÍÀ§»ó¶ÈºÍÏÂÓÎÈÎÎñÐÔÄÜµÄÆÀ¹ÀÖÐ
-- BitNet b1.58 ÄÜ¹»Óë¾ßÓÐÏàÍ¬²ÎÊýÁ¿ºÍÑµÁ·Êý¾ÝÁ¿µÄÈ«¾«¶È£¨¼´FP16»òBF16£©Transformer LLM ÏàÆ¥µÐ¡£
-- Óë´ËÍ¬Ê±£¬ËüÔÚËÙ¶È¡¢ÄÚ´æÊ¹ÓÃ¡¢ÍÌÍÂÁ¿ºÍÄÜºÄµÈ·½Ãæ¾ßÓÐ´ó·ùÓÅÊÆ¡£
-
-BitNet b1.58 ÎªÑµÁ·ÐÂÒ»´ú¸ßÐÔÄÜ¸ßÐ§ÂÊµÄ LLMs È·Á¢ÁËÐÂµÄ**À©Õ¹¶¨ÂÉ**£¨scaling law£©ºÍ·½·¨¡£´ËÍâÒýÁìÁËÒ»ÖÖÈ«ÐÂµÄ¼ÆËã·¶Ê½£¬²¢Îª¿ª·¢×¨Îª 1-bit LLMs ÓÅ»¯µÄÓ²¼þÉè±¸ÆÌÆ½ÁËµÀÂ·¡£
-
-BitNet ÊÇµÚÒ»¸öÖ§³ÖÑµÁ·1±ÈÌØ´óÓïÑÔÄ£ÐÍµÄÐÂÐÍÍøÂç½á¹¹£¬¾ßÓÐÇ¿´óµÄ¿ÉÀ©Õ¹ÐÔºÍÎÈ¶¨ÐÔ£¬ÄÜ¹»ÏÔÖø¼õÉÙ´óÓïÑÔÄ£ÐÍµÄÑµÁ·ºÍÍÆÀí³É±¾¡£
-
-Óë×îÏÈ½øµÄ8±ÈÌØÁ¿»¯·½·¨ºÍÈ«¾«¶È Transformer »ùÏßÏà±È£¬BitNet ÔÚ´ó·ù½µµÍÄÚ´æÕ¼ÓÃºÍ¼ÆËãÄÜºÄµÄÍ¬Ê±£¬±íÏÖ³öÁË¼«¾ß¾ºÕùÁ¦µÄÐÔÄÜ¡£
-
-´ËÍâ£¬BitNet ÓµÓÐÓëÈ«¾«¶È Transformer ÏàËÆµÄ**¹æÄ£·¨Ôò**£¨Scaling Law£©£¬ÔÚ±£³ÖÐ§ÂÊºÍÐÔÄÜÓÅÊÆµÄÍ¬Ê±£¬»¹¿ÉÒÔ¸ü¼Ó¸ßÐ§µØ½«ÆäÄÜÁ¦À©Õ¹µ½¸ü´óµÄÓïÑÔÄ£ÐÍÉÏ£¬´Ó¶øÈÃ1±ÈÌØ´óÓïÑÔÄ£ÐÍ£¨1-bit LLM£©³ÉÎª¿ÉÄÜ¡£
-
-### Î¢Èí YOCO
-
-¡¾2024-5-13¡¿[YOCO£º´òÆÆ´«Í³Decoder-only¼Ü¹¹£¬ÄÚ´æÏûºÄ½öÎªTransformerµÄÁù·ÖÖ®Ò»](https://mp.weixin.qq.com/s/X4HSyEreN4L4xTizC-_mow)
-
-Ä£ÐÍ¼Ü¹¹»¹Ö»ÓÐÈý´óÀà£ºDecoder-Only¡¢Encoder-Only¡¢Encoder-Decoder¡£
-
-Î¢ÈíÑÇÖÞÑÐ¾¿ÔºÍÆ³öÁËÒ»ÖÖ´´ÐÂÐÔµÄ Decoder-Decoder ¼Ü¹¹ `YOCO`£¨You Only Cache Once£©¡£Í¨¹ý**×Ô½âÂëÆ÷**ºÍ**½»²æ½âÂëÆ÷**µÄ¶ÀÌØ¼Ü¹¹£¬YOCO ½öÐè»º´æÒ»´Î¼üÖµ¶Ô£¬´Ó¶øÏÔÖø½µµÍ GPU ÄÚ´æµÄÊ¹ÓÃ¡£
-- ÂÛÎÄ [You Only Cache Once: Decoder-Decoder Architectures for Language Models](https://arxiv.org/abs/2405.05254)
-
-Ä£ÐÍÆÀ¹ÀÖÐ£¬YOCO Õ¹ÏÖ³öÓëÍ¬¹æÄ£ Transformer Ä£ÐÍÏàæÇÃÀµÄÐÔÄÜ£¬²¢ÔÚÓïÑÔ½¨Ä£ÆÀ¹À¡¢Ä£ÐÍ´óÐ¡À©Õ¹ÒÔ¼°³¤ÉÏÏÂÎÄ´¦Àí·½Ãæ¾ßÓÐÏÔÖøÓÅÊÆ¡£ÌØ±ðÊÇÔÚ½µµÍ GPU ÄÚ´æÕ¼ÓÃºÍËõ¶ÌÔ¤Ìî³äÑÓ³Ù·½Ãæ£¬
-
-YOCO ÕûÌå¼Ü¹¹Éè¼ÆÈçÏÂ£¬·ÖÎª`×Ô½âÂëÆ÷`£¨Self-Decoder£©ºÍ`½»²æ½âÂëÆ÷`£¨Cross-Decoder£©Á½²¿·Ö¡£
-
-YOCO ÊµÏÖÁË¡°**Ä£ÐÍÔ½´ó£¬ÄÚ´æÔ½Ê¡**¡±£¬Îª×ÔÈ»ÓïÑÔ´¦ÀíÁìÓò´øÀ´ÁËÈ«ÐÂµÄÑÐ¾¿ºÍÓ¦ÓÃ·¶Ê½¡£
-- YOCO ½ö»º´æÒ»´Î¼üÖµ¶Ô£¬¿É´ó·ù½µµÍ GPU ÄÚ´æÐèÇó£¬ÇÒ±£ÁôÈ«¾Ö×¢ÒâÁ¦ÄÜÁ¦¡£
-
-´òÆÆ GPT ÏµÁÐ¿ª´´µÄ `Decoder-Only` ¼Ü¹¹¡ª¡ªÌá³ö `Decoder-Decoder` ÐÂÐÍ¼Ü¹¹£¬ÃûÎª `YOCO` (You Only Cache Once)¡£
-- ÔÚ´¦Àí 512K ÉÏÏÂÎÄ³¤¶ÈÊ±£¬±ê×¼ Transformer ÄÚ´æÊ¹ÓÃÊÇ YOCO µÄ6.4±¶£¬Ô¤Ìî³äÑÓ³ÙÊÇ YOCO µÄ30.3±¶£¬¶ø YOCO µÄÍÌÍÂÁ¿ÌáÉýµ½±ê×¼ Transformer µÄ9.6±¶¡£
+RetNet æŽ¨ç†æˆæœ¬ä¸Žæ¨¡åž‹åºåˆ—é•¿åº¦æ— å…³ï¼Œè¿™è¡¨ç¤ºæ— è®ºæ˜¯å¤„ç†é•¿æ–‡æœ¬åºåˆ—ï¼Œè¿˜æ˜¯é•¿å›¾åƒåºåˆ—ï¼Œäº¦æˆ–æ˜¯æœªæ¥æ›´é•¿çš„éŸ³è§†é¢‘åºåˆ—ï¼ŒRetNet éƒ½å¯ä»¥ä¿æŒç¨³å®šçš„é«˜æ•ˆæŽ¨ç†ã€?
 
 
-## Î»ÖÃ±àÂë·½Ê½
+### å¾®è½¯ BitNet
+
+ã€?2024-2-29ã€‘[BitNet b1.58ï¼šå¼€å?1-bitå¤§è¯­è¨€æ¨¡åž‹æ—¶ä»£](https://mp.weixin.qq.com/s?__biz=MzAwMTA3MzM4Nw==&mid=2649498640&idx=1&sn=a860101ceee6bc3a777f465bdd1586da&chksm=82c7cd94b5b0448231f0017d2694e59f6e41369ea14a38a3a19a32a9ba18c3fe0f934e214bee&scene=21#wechat_redirect)
+
+å¾®è½¯äºšæ´²ç ”ç©¶é™¢æŽ¨å‡ºäº† 1-bit LLM æ–°å˜ä½“ï¼š`BitNet b1.58`ã€?
+- è®ºæ–‡æ ‡é¢˜ï¼š[The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits](https://arxiv.org/pdf/2402.17764.pdf)
+
+è¯¥æ¨¡åž‹æ¯ä¸ªå‚æ•°ä»…ä½¿ç”¨ä¸‰å€¼è¡¨ç¤ºï¼Œå?-1, 0 æˆ? 1ã€‚å› æ­¤ï¼Œåœ? LLM çš„çŸ©é˜µä¹˜æ³•æ“ä½œä¸­åªéœ€è¦æ•´æ•°åŠ æ³•ï¼Œè€Œä¸éœ€è¦ä»»ä½•æµ®ç‚¹æ•°ä¹˜æ³•æˆ–åŠ æ³•ã€‚åœ¨è¯­è¨€æ¨¡åž‹å›°æƒ‘åº¦å’Œä¸‹æ¸¸ä»»åŠ¡æ€§èƒ½çš„è¯„ä¼°ä¸­
+- BitNet b1.58 èƒ½å¤Ÿä¸Žå…·æœ‰ç›¸åŒå‚æ•°é‡å’Œè®­ç»ƒæ•°æ®é‡çš„å…¨ç²¾åº¦ï¼ˆå³FP16æˆ–BF16ï¼‰Transformer LLM ç›¸åŒ¹æ•Œã€?
+- ä¸Žæ­¤åŒæ—¶ï¼Œå®ƒåœ¨é€Ÿåº¦ã€å†…å­˜ä½¿ç”¨ã€åžåé‡å’Œèƒ½è€—ç­‰æ–¹é¢å…·æœ‰å¤§å¹…ä¼˜åŠ¿ã€?
+
+BitNet b1.58 ä¸ºè®­ç»ƒæ–°ä¸€ä»£é«˜æ€§èƒ½é«˜æ•ˆçŽ‡çš„ LLMs ç¡®ç«‹äº†æ–°çš?**æ‰©å±•å®šå¾‹**ï¼ˆscaling lawï¼‰å’Œæ–¹æ³•ã€‚æ­¤å¤–å¼•é¢†äº†ä¸€ç§å…¨æ–°çš„è®¡ç®—èŒƒå¼ï¼Œå¹¶ä¸ºå¼€å‘ä¸“ä¸? 1-bit LLMs ä¼˜åŒ–çš„ç¡¬ä»¶è®¾å¤‡é“ºå¹³äº†é“è·¯ã€?
+
+BitNet æ˜¯ç¬¬ä¸€ä¸ªæ”¯æŒè®­ç»?1æ¯”ç‰¹å¤§è¯­è¨€æ¨¡åž‹çš„æ–°åž‹ç½‘ç»œç»“æž„ï¼Œå…·æœ‰å¼ºå¤§çš„å¯æ‰©å±•æ€§å’Œç¨³å®šæ€§ï¼Œèƒ½å¤Ÿæ˜¾è‘—å‡å°‘å¤§è¯­è¨€æ¨¡åž‹çš„è®­ç»ƒå’ŒæŽ¨ç†æˆæœ¬ã€?
+
+ä¸Žæœ€å…ˆè¿›çš?8æ¯”ç‰¹é‡åŒ–æ–¹æ³•å’Œå…¨ç²¾åº¦ Transformer åŸºçº¿ç›¸æ¯”ï¼ŒBitNet åœ¨å¤§å¹…é™ä½Žå†…å­˜å ç”¨å’Œè®¡ç®—èƒ½è€—çš„åŒæ—¶ï¼Œè¡¨çŽ°å‡ºäº†æžå…·ç«žäº‰åŠ›çš„æ€§èƒ½ã€?
+
+æ­¤å¤–ï¼ŒBitNet æ‹¥æœ‰ä¸Žå…¨ç²¾åº¦ Transformer ç›¸ä¼¼çš?**è§„æ¨¡æ³•åˆ™**ï¼ˆScaling Lawï¼‰ï¼Œåœ¨ä¿æŒæ•ˆçŽ‡å’Œæ€§èƒ½ä¼˜åŠ¿çš„åŒæ—¶ï¼Œè¿˜å¯ä»¥æ›´åŠ é«˜æ•ˆåœ°å°†å…¶èƒ½åŠ›æ‰©å±•åˆ°æ›´å¤§çš„è¯­è¨€æ¨¡åž‹ä¸Šï¼Œä»Žè€Œè®©1æ¯”ç‰¹å¤§è¯­è¨€æ¨¡åž‹ï¼?1-bit LLMï¼‰æˆä¸ºå¯èƒ½ã€?
+
+### å¾®è½¯ YOCO
+
+ã€?2024-5-13ã€‘[YOCOï¼šæ‰“ç ´ä¼ ç»ŸDecoder-onlyæž¶æž„ï¼Œå†…å­˜æ¶ˆè€—ä»…ä¸ºTransformerçš„å…­åˆ†ä¹‹ä¸€](https://mp.weixin.qq.com/s/X4HSyEreN4L4xTizC-_mow)
+
+æ¨¡åž‹æž¶æž„è¿˜åªæœ‰ä¸‰å¤§ç±»ï¼šDecoder-Onlyã€Encoder-Onlyã€Encoder-Decoderã€?
+
+å¾®è½¯äºšæ´²ç ”ç©¶é™¢æŽ¨å‡ºäº†ä¸€ç§åˆ›æ–°æ€§çš„ Decoder-Decoder æž¶æž„ `YOCO`ï¼ˆYou Only Cache Onceï¼‰ã€‚é€šè¿‡**è‡ªè§£ç å™¨**å’?**äº¤å‰è§£ç å™?**çš„ç‹¬ç‰¹æž¶æž„ï¼ŒYOCO ä»…éœ€ç¼“å­˜ä¸€æ¬¡é”®å€¼å¯¹ï¼Œä»Žè€Œæ˜¾è‘—é™ä½? GPU å†…å­˜çš„ä½¿ç”¨ã€?
+- è®ºæ–‡ [You Only Cache Once: Decoder-Decoder Architectures for Language Models](https://arxiv.org/abs/2405.05254)
+
+æ¨¡åž‹è¯„ä¼°ä¸­ï¼ŒYOCO å±•çŽ°å‡ºä¸ŽåŒè§„æ¨? Transformer æ¨¡åž‹ç›¸åª²ç¾Žçš„æ€§èƒ½ï¼Œå¹¶åœ¨è¯­è¨€å»ºæ¨¡è¯„ä¼°ã€æ¨¡åž‹å¤§å°æ‰©å±•ä»¥åŠé•¿ä¸Šä¸‹æ–‡å¤„ç†æ–¹é¢å…·æœ‰æ˜¾è‘—ä¼˜åŠ¿ã€‚ç‰¹åˆ«æ˜¯åœ¨é™ä½? GPU å†…å­˜å ç”¨å’Œç¼©çŸ­é¢„å¡«å……å»¶è¿Ÿæ–¹é¢ï¼?
+
+YOCO æ•´ä½“æž¶æž„è®¾è®¡å¦‚ä¸‹ï¼Œåˆ†ä¸º`è‡ªè§£ç å™¨`ï¼ˆSelf-Decoderï¼‰å’Œ`äº¤å‰è§£ç å™¨`ï¼ˆCross-Decoderï¼‰ä¸¤éƒ¨åˆ†ã€?
+
+YOCO å®žçŽ°äº†â€?**æ¨¡åž‹è¶Šå¤§ï¼Œå†…å­˜è¶Šçœ?**â€ï¼Œä¸ºè‡ªç„¶è¯­è¨€å¤„ç†é¢†åŸŸå¸¦æ¥äº†å…¨æ–°çš„ç ”ç©¶å’Œåº”ç”¨èŒƒå¼ã€?
+- YOCO ä»…ç¼“å­˜ä¸€æ¬¡é”®å€¼å¯¹ï¼Œå¯å¤§å¹…é™ä½Ž GPU å†…å­˜éœ€æ±‚ï¼Œä¸”ä¿ç•™å…¨å±€æ³¨æ„åŠ›èƒ½åŠ›ã€?
+
+æ‰“ç ´ GPT ç³»åˆ—å¼€åˆ›çš„ `Decoder-Only` æž¶æž„â€”â€”æå‡? `Decoder-Decoder` æ–°åž‹æž¶æž„ï¼Œåä¸? `YOCO` (You Only Cache Once)ã€?
+- åœ¨å¤„ç? 512K ä¸Šä¸‹æ–‡é•¿åº¦æ—¶ï¼Œæ ‡å‡? Transformer å†…å­˜ä½¿ç”¨æ˜? YOCO çš?6.4å€ï¼Œé¢„å¡«å……å»¶è¿Ÿæ˜¯ YOCO çš?30.3å€ï¼Œè€? YOCO çš„åžåé‡æå‡åˆ°æ ‡å‡? Transformer çš?9.6å€ã€?
+
+
+## ä½ç½®ç¼–ç æ–¹å¼
 
 
 
 ### 2021.3.23 Roformer
 
-¡¾2021-3-23¡¿Rotary Transformer£¬¼ò³Æ `RoFormer`£¬ÊÇ×·Ò»¿Æ¼¼`ËÕ½£ÁÖ`×ÔÑÐµÄÓïÑÔÄ£ÐÍÖ®Ò»£¬Ö÷ÒªÊÇÎªTransformer½á¹¹Éè¼ÆÁËÐÂµÄ`Ðý×ªÊ½Î»ÖÃ±àÂë`£¨Rotary Position Embedding£¬`RoPE`£©¡£
-- `RoPE`¾ßÓÐÁ¼ºÃµÄÀíÂÛÐÔÖÊ£¬ÇÒÊÇÄ¿Ç°**Î¨Ò»**Ò»ÖÖÓÃµ½ÏßÐÔAttentionµÄ¾ø¶ÔÎ»ÖÃ±àÂë£¬Ä¿Ç°À´¿´ÊµÑé½á¹ûÒ²ÆÄÎª²»´í¡£
-- ²Î¿¼ÅäÖÃ£ºÔÚ24GÏÔ´æµÄ3090ÉÏ£¬ÅÜmaxlen=1024£¬batch_sizeÄÜÅÜµ½8ÒÔÉÏ¡£
+ã€?2021-3-23ã€‘Rotary Transformerï¼Œç®€ç§? `RoFormer`ï¼Œæ˜¯è¿½ä¸€ç§‘æŠ€`è‹å‰‘æž—`è‡ªç ”çš„è¯­è¨€æ¨¡åž‹ä¹‹ä¸€ï¼Œä¸»è¦æ˜¯ä¸ºTransformerç»“æž„è®¾è®¡äº†æ–°çš„`æ—‹è½¬å¼ä½ç½®ç¼–ç `ï¼ˆRotary Position Embeddingï¼Œ`RoPE`ï¼‰ã€?
+- `RoPE`å…·æœ‰è‰¯å¥½çš„ç†è®ºæ€§è´¨ï¼Œä¸”æ˜¯ç›®å‰?**å”¯ä¸€**ä¸€ç§ç”¨åˆ°çº¿æ€§Attentionçš„ç»å¯¹ä½ç½®ç¼–ç ï¼Œç›®å‰æ¥çœ‹å®žéªŒç»“æžœä¹Ÿé¢‡ä¸ºä¸é”™ã€?
+- å‚è€ƒé…ç½®ï¼šåœ?24Gæ˜¾å­˜çš?3090ä¸Šï¼Œè·‘maxlen=1024ï¼Œbatch_sizeèƒ½è·‘åˆ?8ä»¥ä¸Šã€?
 
-ÏêÏ¸½éÉÜ£º
-- [TransformerÉý¼¶Ö®Â·£º2¡¢²©²ÉÖÚ³¤µÄÐý×ªÊ½Î»ÖÃ±àÂë](https://kexue.fm/archives/8265)
+è¯¦ç»†ä»‹ç»ï¼?
+- [Transformerå‡çº§ä¹‹è·¯ï¼?2ã€åšé‡‡ä¼—é•¿çš„æ—‹è½¬å¼ä½ç½®ç¼–ç ](https://kexue.fm/archives/8265)
 
-Ê¹ÓÃ
+ä½¿ç”¨
 
-- [pytorch°æ±¾](https://github.com/JunnYu/RoFormer_pytorch)
+- [pytorchç‰ˆæœ¬](https://github.com/JunnYu/RoFormer_pytorch)
 - huggingface [roformer](https://huggingface.co/docs/transformers/model_doc/roformer)
 
 ```py
 from transformers import RoFormerTokenizerFast
 
 tokenizer = RoFormerTokenizerFast.from_pretrained("junnyu/roformer_chinese_base")
-tokenizer.tokenize("½ñÌìÌìÆø·Ç³£ºÃ¡£")
+tokenizer.tokenize("ä»Šå¤©å¤©æ°”éžå¸¸å¥½ã€?")
 ```
 
 
-## ¼ìË÷ÔöÇ¿
+## æ£€ç´¢å¢žå¼?
 
-Ôö´óÄ£ÐÍ²¢²»ÊÇÌáÉýÐÔÄÜµÄÎ¨Ò»Â·¾¶£¬ÓÃÒ»ÖÖËÑË÷/²éÑ¯ÐÅÏ¢µÄ·½Ê½À´ÔöÇ¿Ä£ÐÍ£¬Ð¡µÄÉú³ÉÓïÑÔÄ£ÐÍÒ²ÄÜ´ïµ½Ö®Ç°´óÄ£ÐÍ²ÅÄÜ´ïµ½µÄÐÔÄÜ¡£
+å¢žå¤§æ¨¡åž‹å¹¶ä¸æ˜¯æå‡æ€§èƒ½çš„å”¯ä¸€è·¯å¾„ï¼Œç”¨ä¸€ç§æœç´?/æŸ¥è¯¢ä¿¡æ¯çš„æ–¹å¼æ¥å¢žå¼ºæ¨¡åž‹ï¼Œå°çš„ç”Ÿæˆè¯­è¨€æ¨¡åž‹ä¹Ÿèƒ½è¾¾åˆ°ä¹‹å‰å¤§æ¨¡åž‹æ‰èƒ½è¾¾åˆ°çš„æ€§èƒ½ã€?
 
-ÓïÑÔÄ£ÐÍµÄÈÎÎñÊÇ×ö**Ìî¿ÕÌâ**£¬Õâ¶ÔÓÚÓïÑÔÐÅÏ¢ÓÐÒâÒå£¬µ«ÊÇ¶ÔÓÚÊÂÊµÐÅÏ¢ºÍÊÀ½çÖªÊ¶ÐÅÏ¢ÊÇÎÞÐ§µÄ¡£
-- ÓÐÊ±ÐèÒªÓëÊÂÊµÓÐ¹ØµÄÐÅÏ¢
+è¯­è¨€æ¨¡åž‹çš„ä»»åŠ¡æ˜¯å?**å¡«ç©ºé¢?**ï¼Œè¿™å¯¹äºŽè¯­è¨€ä¿¡æ¯æœ‰æ„ä¹‰ï¼Œä½†æ˜¯å¯¹äºŽäº‹å®žä¿¡æ¯å’Œä¸–ç•ŒçŸ¥è¯†ä¿¡æ¯æ˜¯æ— æ•ˆçš„ã€?
+- æœ‰æ—¶éœ€è¦ä¸Žäº‹å®žæœ‰å…³çš„ä¿¡æ?
 
-´ú±í
-- DeepMind µÄ RETRO Transformer
-  - DeepMind µÄ RETRO£¨Retrieval-Enhanced TRansfOrmer£©Ä£ÐÍ¡£¸ÃÄ£ÐÍÓë GPT-3 ÐÔÄÜÏàµ±£¬µ«²ÎÊýÁ¿½öÎª GPT-3 µÄ 4%¡£
-- OpenAI µÄ WebGPT
+ä»£è¡¨
+- DeepMind çš? RETRO Transformer
+  - DeepMind çš? RETROï¼ˆRetrieval-Enhanced TRansfOrmerï¼‰æ¨¡åž‹ã€‚è¯¥æ¨¡åž‹ä¸? GPT-3 æ€§èƒ½ç›¸å½“ï¼Œä½†å‚æ•°é‡ä»…ä¸? GPT-3 çš? 4%ã€?
+- OpenAI çš? WebGPT
 
 
 ### 2021.12.16 WebGPT
 
-OpenAI ÍÆ³ö WebGPT, ½â¾ö long-form quesion-answering (LFQA) µÄ·½°¸, ¿ª·ÅÓòQA»Ø¸´¸ü³¤¸ü¿É¿¿¡£
+OpenAI æŽ¨å‡º WebGPT, è§£å†³ long-form quesion-answering (LFQA) çš„æ–¹æ¡?, å¼€æ”¾åŸŸQAå›žå¤æ›´é•¿æ›´å¯é ã€?
 - [WebGPT: Improving the factual accuracy of language models through web browsing](https://openai.com/research/webgpt)
-- [WebGPT¼ò¶Á](https://zhuanlan.zhihu.com/p/591565418)
-- ±È InstructGPT Ìá³öÉÔÔçÒ»Ð©
+- [WebGPTç®€è¯»](https://zhuanlan.zhihu.com/p/591565418)
+- æ¯? InstructGPT æå‡ºç¨æ—©ä¸€äº?
 
-WebGPT Ë¼Â·ÀàËÆ Knowledge-Grounded Conversation£¬ÀûÓÃËÑË÷ÒýÇæ×öÏà¹ØÎÄµµ¼ìË÷£¬´Ó¶øÉú³É¸ü³¤µÄ´ð°¸¡£Ö÷ÒªµÄÁ½¸ö¹±Ï×£º
-- Î¢µ÷µÄÓïÑÔÄ£ÐÍ¿ÉÒÔÓëÒ»¸ö»ùÓÚÎÄ±¾µÄWebä¯ÀÀ»·¾³½»»¥£¬´Ó¶ø¿ÉÒÔ¶Ëµ½¶ËµØÊ¹ÓÃÄ£·ÂºÍÇ¿»¯Ñ§Ï°ÓÅ»¯¼ìË÷ºÍ¾ÛºÏÐ§¹û¡£
-- ²Î¿¼Web¼ìË÷³öÀ´µÄÐÅÏ¢Éú³É»Ø¸´¡£labeler¿ÉÒÔ¸ù¾Ý¼ìË÷³öÀ´µÄÐÅÏ¢ÅÐ¶Ïfactual×¼È·ÂÊ£¬½µµÍÁË¶ÀÁ¢µ÷ÑÐÎÊÌâÕýÈ·ÐÔµÄÄÑ¶È¡£
+WebGPT æ€è·¯ç±»ä¼¼ Knowledge-Grounded Conversationï¼Œåˆ©ç”¨æœç´¢å¼•æ“Žåšç›¸å…³æ–‡æ¡£æ£€ç´¢ï¼Œä»Žè€Œç”Ÿæˆæ›´é•¿çš„ç­”æ¡ˆã€‚ä¸»è¦çš„ä¸¤ä¸ªè´¡çŒ®ï¼?
+- å¾®è°ƒçš„è¯­è¨€æ¨¡åž‹å¯ä»¥ä¸Žä¸€ä¸ªåŸºäºŽæ–‡æœ¬çš„Webæµè§ˆçŽ¯å¢ƒäº¤äº’ï¼Œä»Žè€Œå¯ä»¥ç«¯åˆ°ç«¯åœ°ä½¿ç”¨æ¨¡ä»¿å’Œå¼ºåŒ–å­¦ä¹ ä¼˜åŒ–æ£€ç´¢å’Œèšåˆæ•ˆæžœã€?
+- å‚è€ƒWebæ£€ç´¢å‡ºæ¥çš„ä¿¡æ¯ç”Ÿæˆå›žå¤ã€‚labelerå¯ä»¥æ ¹æ®æ£€ç´¢å‡ºæ¥çš„ä¿¡æ¯åˆ¤æ–­factualå‡†ç¡®çŽ‡ï¼Œé™ä½Žäº†ç‹¬ç«‹è°ƒç ”é—®é¢˜æ­£ç¡®æ€§çš„éš¾åº¦ã€?
 
-Õâ¸öÏë·¨²¢·Ç WebGPTÊ×´ÎÌá³ö
-- 2021Äê³õ, Facebook (FAIR) ¾ÍÌá³öÊ¹ÓÃËÑË÷ÒýÇæÀ´ÌáÉý¶Ô»°»Ø¸´µÄÖÊÁ¿£ºACL2022 [Internet-Augmented Dialogue Generation](https://aclanthology.org/2022.acl-long.579/)
+è¿™ä¸ªæƒ³æ³•å¹¶éž WebGPTé¦–æ¬¡æå‡º
+- 2021å¹´åˆ, Facebook (FAIR) å°±æå‡ºä½¿ç”¨æœç´¢å¼•æ“Žæ¥æå‡å¯¹è¯å›žå¤çš„è´¨é‡ï¼šACL2022 [Internet-Augmented Dialogue Generation](https://aclanthology.org/2022.acl-long.579/)
 
-WebGPT Ë¼Â·¸ü½øÒ»²½£¬ÍêÈ«Ä£ÄâÁËÈËÊ¹ÓÃËÑË÷ÒýÇæµÄ·½·¨(ÓÐ¸ü¶àaction: ËÑË÷¡¢µã»÷¡¢·­Ò³¡¢»ØÍËµÈµÈ)£¬¶ø·Ç½öÉú³Ésearch query²¢Ê¹ÓÃÆä½á¹û¡£
+WebGPT æ€è·¯æ›´è¿›ä¸€æ­¥ï¼Œå®Œå…¨æ¨¡æ‹Ÿäº†äººä½¿ç”¨æœç´¢å¼•æ“Žçš„æ–¹æ³?(æœ‰æ›´å¤šaction: æœç´¢ã€ç‚¹å‡»ã€ç¿»é¡µã€å›žé€€ç­‰ç­‰)ï¼Œè€Œéžä»…ç”Ÿæˆsearch queryå¹¶ä½¿ç”¨å…¶ç»“æžœã€?
 
 ### 2022.2.7 RETRO
 
-DeepMind ÍÆ³ö RETRO, ÕûºÏÁË´ÓÊý¾Ý¿âÖÐ¼ìË÷µ½µÄÐÅÏ¢£¬½«Æä²ÎÊý´Ó°º¹óµÄÊÂÊµºÍÊÀ½çÖªÊ¶´æ´¢ÖÐ½â·Å³öÀ´¡£
-- ÂÛÎÄ: [Improving language models by retrieving from trillions of tokens](https://arxiv.org/pdf/2112.04426.pdf)
+DeepMind æŽ¨å‡º RETRO, æ•´åˆäº†ä»Žæ•°æ®åº“ä¸­æ£€ç´¢åˆ°çš„ä¿¡æ¯ï¼Œå°†å…¶å‚æ•°ä»Žæ˜‚è´µçš„äº‹å®žå’Œä¸–ç•ŒçŸ¥è¯†å­˜å‚¨ä¸­è§£æ”¾å‡ºæ¥ã€?
+- è®ºæ–‡: [Improving language models by retrieving from trillions of tokens](https://arxiv.org/pdf/2112.04426.pdf)
 - [illustrated-retrieval-transformer](http://jalammar.github.io/illustrated-retrieval-transformer)
-- ¡¾2022-1-4¡¿[²ÎÊýÁ¿½öÎª4%£¬ÐÔÄÜæÇÃÀGPT-3£º¿ª·¢ÕßÍ¼½âDeepMindµÄRETRO](https://www.jiqizhixin.com/articles/2022-01-04-8)
+- ã€?2022-1-4ã€‘[å‚æ•°é‡ä»…ä¸?4%ï¼Œæ€§èƒ½åª²ç¾ŽGPT-3ï¼šå¼€å‘è€…å›¾è§£DeepMindçš„RETRO](https://www.jiqizhixin.com/articles/2022-01-04-8)
 
-¼ÓÈë¼ìË÷·½·¨Ö®ºó£¬ÓïÑÔÄ£ÐÍ¿ÉÒÔËõÐ¡ºÜ¶à¡£
-- Éñ¾­Êý¾Ý¿â¿ÉÒÔ°ïÖúÄ£ÐÍ¼ìË÷ËüÐèÒªµÄÊÂÊµÐÅÏ¢¡£
+åŠ å…¥æ£€ç´¢æ–¹æ³•ä¹‹åŽï¼Œè¯­è¨€æ¨¡åž‹å¯ä»¥ç¼©å°å¾ˆå¤šã€?
+- ç¥žç»æ•°æ®åº“å¯ä»¥å¸®åŠ©æ¨¡åž‹æ£€ç´¢å®ƒéœ€è¦çš„äº‹å®žä¿¡æ¯ã€?
 - ![](https://image.jiqizhixin.com/uploads/editor/ffbea1f3-54eb-411d-a9a9-3c0912dfef3c/1641280248346.png)
 
-#### Ä£ÐÍ½á¹¹
+#### æ¨¡åž‹ç»“æž„
 
-½á¹¹
-- RETRO ÊÇ **±àÂëÆ÷ - ½âÂëÆ÷**Ä£ÐÍ£¬ÏñÔ­Ê¼µÄ Transformer¡£
-- È»¶øÔÚ¼ìË÷Êý¾Ý¿âµÄ°ïÖúÏÂÔö¼ÓÁË**ÊäÈëÐòÁÐ**¡£
-- ¸ÃÄ£ÐÍÔÚÊý¾Ý¿âÖÐÕÒµ½×î¿ÉÄÜµÄÐòÁÐ£¬²¢Ìí¼Óµ½ÊäÈëÖÐ¡£
-- RETRO ÀûÓÃËüµÄÄ§Á¦Éú³ÉÊä³öÔ¤²â¡£
+ç»“æž„
+- RETRO æ˜? **ç¼–ç å™? - è§£ç å™?**æ¨¡åž‹ï¼ŒåƒåŽŸå§‹çš? Transformerã€?
+- ç„¶è€Œåœ¨æ£€ç´¢æ•°æ®åº“çš„å¸®åŠ©ä¸‹å¢žåŠ äº?**è¾“å…¥åºåˆ—**ã€?
+- è¯¥æ¨¡åž‹åœ¨æ•°æ®åº“ä¸­æ‰¾åˆ°æœ€å¯èƒ½çš„åºåˆ—ï¼Œå¹¶æ·»åŠ åˆ°è¾“å…¥ä¸­ã€?
+- RETRO åˆ©ç”¨å®ƒçš„é­”åŠ›ç”Ÿæˆè¾“å‡ºé¢„æµ‹ã€?
 - ![](https://image.jiqizhixin.com/uploads/editor/96d18172-b521-4ed5-a913-a00440b05625/1641280241153.png)
 
 
-#### RETRO ¼ìË÷Êý¾Ý¿â
+#### RETRO æ£€ç´¢æ•°æ®åº“
 
-ÕâÀïµÄÊý¾Ý¿âÊÇÒ»¸ö**¼üÖµ´æ´¢**£¨key-value store£©Êý¾Ý¿â¡£
-- key ÊÇ±ê×¼µÄ **BERT ¾ä×ÓÇ¶Èë**£¬value ÊÇÓÉÁ½²¿·Ö×é³ÉµÄ**ÎÄ±¾**£º
-- Neighbor£¬ÓÃÓÚ¼ÆËã key£»
-- Completion£¬Ô­ÎÄ¼þÖÐÎÄ±¾µÄÑÓÐø¡£
+è¿™é‡Œçš„æ•°æ®åº“æ˜¯ä¸€ä¸?**é”®å€¼å­˜å‚?**ï¼ˆkey-value storeï¼‰æ•°æ®åº“ã€?
+- key æ˜¯æ ‡å‡†çš„ **BERT å¥å­åµŒå…¥**ï¼Œvalue æ˜¯ç”±ä¸¤éƒ¨åˆ†ç»„æˆçš„**æ–‡æœ¬**ï¼?
+- Neighborï¼Œç”¨äºŽè®¡ç®? keyï¼?
+- Completionï¼ŒåŽŸæ–‡ä»¶ä¸­æ–‡æœ¬çš„å»¶ç»­ã€?
 
-RETRO Êý¾Ý¿â°üº¬»ùÓÚ MassiveText Êý¾Ý¼¯µÄ 2 ÍòÒÚ¸ö¶àÓïÑÔ token¡£neighbor chunk ºÍ completion chunk µÄ³¤¶È×î¶àÎª 64 ¸ö token¡£
+RETRO æ•°æ®åº“åŒ…å«åŸºäº? MassiveText æ•°æ®é›†çš„ 2 ä¸‡äº¿ä¸ªå¤šè¯­è¨€ tokenã€‚neighbor chunk å’? completion chunk çš„é•¿åº¦æœ€å¤šä¸º 64 ä¸? tokenã€?
 - ![](https://image.jiqizhixin.com/uploads/editor/713760aa-cf75-4bc7-8116-e308ce3b8b83/1641280228557.png)
 
-#### Êý¾Ý¿â²éÕÒ
+#### æ•°æ®åº“æŸ¥æ‰?
 
-½øÈë RETRO Ç°
-- ÊäÈëÌáÊ¾½øÈë BERT¡£¶ÔÊä³öµÄÉÏÏÂÎÄÏòÁ¿½øÐÐ**Æ½¾ù**ÒÔ¹¹½¨¾ä×ÓÇ¶ÈëÏòÁ¿¡£
+è¿›å…¥ RETRO å‰?
+- è¾“å…¥æç¤ºè¿›å…¥ BERTã€‚å¯¹è¾“å‡ºçš„ä¸Šä¸‹æ–‡å‘é‡è¿›è¡Œ**å¹³å‡**ä»¥æž„å»ºå¥å­åµŒå…¥å‘é‡ã€?
   - ![](https://image.jiqizhixin.com/uploads/editor/3e8b9491-570a-4280-b36a-e68a6d0fff7c/1641280220663.png)
-- È»ºó£¬Ê¹ÓÃ¸ÃÏòÁ¿²éÑ¯Êý¾Ý¿â¡£½üËÆ×î½üÁÚËÑË÷¡£¼ìË÷Á½¸ö×î½üÁÚ
+- ç„¶åŽï¼Œä½¿ç”¨è¯¥å‘é‡æŸ¥è¯¢æ•°æ®åº“ã€‚è¿‘ä¼¼æœ€è¿‘é‚»æœç´¢ã€‚æ£€ç´¢ä¸¤ä¸ªæœ€è¿‘é‚»
   - ![](https://image.jiqizhixin.com/uploads/editor/aac2a845-a303-415b-b582-7b55402db078/1641280209906.png)
-- ½«ÕâÐ©Ìí¼Óµ½ÓïÑÔÄ£ÐÍµÄÊäÈëÖÐ
-  - ¼ìË÷³öµÄÎÄ±¾³ÉÎª RETRO ÊäÈëµÄÒ»²¿·Ö£¬Transformer ºÍ RETRO ¿é½«ÐÅÏ¢ºÏ²¢µ½ËüÃÇµÄ´¦ÀíÖÐ
+- å°†è¿™äº›æ·»åŠ åˆ°è¯­è¨€æ¨¡åž‹çš„è¾“å…¥ä¸­
+  - æ£€ç´¢å‡ºçš„æ–‡æœ¬æˆä¸? RETRO è¾“å…¥çš„ä¸€éƒ¨åˆ†ï¼ŒTransformer å’? RETRO å—å°†ä¿¡æ¯åˆå¹¶åˆ°å®ƒä»¬çš„å¤„ç†ä¸?
   - ![](https://image.jiqizhixin.com/uploads/editor/ff98762d-0d34-4771-8753-56d6b7762648/1641280203796.png)
 
 
-#### ¸ß²ã´ÎµÄ RETRO ¼Ü¹¹
+#### é«˜å±‚æ¬¡çš„ RETRO æž¶æž„
 
-RETRO ¼Ü¹¹ÓÉÒ»¸ö**±àÂëÆ÷**¶ÑÕ»ºÍÒ»¸ö**½âÂëÆ÷**¶ÑÕ»×é³É¡£
-- ±àÂëÆ÷ÓÉ±ê×¼µÄ Transformer ±àÂëÆ÷¿é£¨self-attention + FFNN£©×é³É¡£Retro Ê¹ÓÃÓÉÁ½¸ö Transformer ±àÂëÆ÷¿é×é³ÉµÄ±àÂëÆ÷¡£
-  - ±àÂëÆ÷¶ÑÕ»»á´¦Àí¼ìË÷µ½µÄ½üÁÚ£¬Éú³ÉºóÐø½«ÓÃÓÚ×¢ÒâÁ¦µÄ KEYS ºÍ VALUES ¾ØÕó
-- ½âÂëÆ÷¶ÑÕ»°üº¬ÁËÁ½ÖÖ½âÂëÆ÷ block£º
-  - ±ê×¼ Transformer ½âÂëÆ÷¿é£¨ATTN + FFNN£©
-  - RETRO ½âÂëÆ÷¿é£¨ATTN + Chunked cross attention (CCA) + FFNN£©
-- ½âÂëÆ÷ block Ïñ GPT Ò»Ñù´¦ÀíÊäÈëÎÄ±¾¡£¶ÔÌáÊ¾ token Ó¦ÓÃ×Ô×¢ÒâÁ¦£¨Òò´ËÖ»¹Ø×¢Ö®Ç°µÄ token£©£¬È»ºóÍ¨¹ý FFNN ²ã¡£Ö»ÓÐµ½´ï RETRO ½âÂëÆ÷Ê±£¬Ëü²Å¿ªÊ¼ºÏ²¢¼ìË÷µ½µÄÐÅÏ¢¡£´Ó 9 ¿ªÊ¼µÄÃ¿¸öµÚÈý¸ö block ÊÇÒ»¸ö RETRO block£¨ÔÊÐíÆäÊäÈë¹Ø×¢½üÁÚ£©¡£ËùÒÔµÚ 9¡¢12¡¢15¡­32 ²ãÊÇ RETRO block¡£
+RETRO æž¶æž„ç”±ä¸€ä¸?**ç¼–ç å™?**å †æ ˆå’Œä¸€ä¸?**è§£ç å™?**å †æ ˆç»„æˆã€?
+- ç¼–ç å™¨ç”±æ ‡å‡†çš? Transformer ç¼–ç å™¨å—ï¼ˆself-attention + FFNNï¼‰ç»„æˆã€‚Retro ä½¿ç”¨ç”±ä¸¤ä¸? Transformer ç¼–ç å™¨å—ç»„æˆçš„ç¼–ç å™¨ã€?
+  - ç¼–ç å™¨å †æ ˆä¼šå¤„ç†æ£€ç´¢åˆ°çš„è¿‘é‚»ï¼Œç”ŸæˆåŽç»­å°†ç”¨äºŽæ³¨æ„åŠ›çš? KEYS å’? VALUES çŸ©é˜µ
+- è§£ç å™¨å †æ ˆåŒ…å«äº†ä¸¤ç§è§£ç å™? blockï¼?
+  - æ ‡å‡† Transformer è§£ç å™¨å—ï¼ˆATTN + FFNNï¼?
+  - RETRO è§£ç å™¨å—ï¼ˆATTN + Chunked cross attention (CCA) + FFNNï¼?
+- è§£ç å™? block åƒ? GPT ä¸€æ ·å¤„ç†è¾“å…¥æ–‡æœ¬ã€‚å¯¹æç¤º token åº”ç”¨è‡ªæ³¨æ„åŠ›ï¼ˆå› æ­¤åªå…³æ³¨ä¹‹å‰çš? tokenï¼‰ï¼Œç„¶åŽé€šè¿‡ FFNN å±‚ã€‚åªæœ‰åˆ°è¾? RETRO è§£ç å™¨æ—¶ï¼Œå®ƒæ‰å¼€å§‹åˆå¹¶æ£€ç´¢åˆ°çš„ä¿¡æ¯ã€‚ä»Ž 9 å¼€å§‹çš„æ¯ä¸ªç¬¬ä¸‰ä¸? block æ˜¯ä¸€ä¸? RETRO blockï¼ˆå…è®¸å…¶è¾“å…¥å…³æ³¨è¿‘é‚»ï¼‰ã€‚æ‰€ä»¥ç¬¬ 9ã€?12ã€?15â€?32 å±‚æ˜¯ RETRO blockã€?
 - ![](https://image.jiqizhixin.com/uploads/editor/5103886f-035d-4506-9e03-32b9ec93259b/1641280193608.png)
 - ![](https://image.jiqizhixin.com/uploads/editor/305626c2-7918-419a-9e4c-5c8d7eaf0e60/1641280182910.png)
 
 
 
 
-## ÊäÈëÊä³ö ¸Ä½ø
+## è¾“å…¥è¾“å‡º æ”¹è¿›
 
 
-ÊäÈë³¤¶È¸Ä½ø
+è¾“å…¥é•¿åº¦æ”¹è¿›
 
 ### 2023.7.8 LongNet
 
-¡¾2023-7-8¡¿[1000000000£¡Î¢Èí¸Ä½øTransformerÒ»´ÎÄÜ¼Ç×¡ÕâÃ´¶àtokenÁË](https://mp.weixin.qq.com/s/PKKC4lMdSTg-ButNnZHLlw)
-- ×îÇ¿µÄGPT-4Ò²²Å×î´óÖ§³ÖÒ»´Î´¦Àí32k token£¬Ïàµ±ÓÚ50Ò³ÎÄ×Ö¡£
-- ¶øÄÜ¹»Ö»ÓÃ1·ÖÖÓ¿´ÍêÒ»±¾ÊýÍò×ÖÐ¡ËµµÄClaude£¬ÆätokenÊýÒ²²»¹ý¡°²Å¡±100k£¨10Íò£©¡£
+ã€?2023-7-8ã€‘[1000000000ï¼å¾®è½¯æ”¹è¿›Transformerä¸€æ¬¡èƒ½è®°ä½è¿™ä¹ˆå¤štokenäº†](https://mp.weixin.qq.com/s/PKKC4lMdSTg-ButNnZHLlw)
+- æœ€å¼ºçš„GPT-4ä¹Ÿæ‰æœ€å¤§æ”¯æŒä¸€æ¬¡å¤„ç?32k tokenï¼Œç›¸å½“äºŽ50é¡µæ–‡å­—ã€?
+- è€Œèƒ½å¤Ÿåªç”?1åˆ†é’Ÿçœ‹å®Œä¸€æœ¬æ•°ä¸‡å­—å°è¯´çš„Claudeï¼Œå…¶tokenæ•°ä¹Ÿä¸è¿‡â€œæ‰â€?100kï¼?10ä¸‡ï¼‰ã€?
 
-Ò»´ÎÐÔÀ©Õ¹µ½10ÒÚ£¬²¢ÇÒÕâ¸öÊý×ÖÀíÂÛÉÏÆäÊµ»¹ÊÇÎÞÏÞµÄ£¬Õâ²»¾ÍÒâÎ¶×Å£º²»¾ÃµÄ½«À´£¬Õû¸öÓïÁÏ¿âÉõÖÁ»¥ÁªÍø¶¼ÄÜÊÓÎªÒ»¸öÐòÁÐ£¿
+ä¸€æ¬¡æ€§æ‰©å±•åˆ°10äº¿ï¼Œå¹¶ä¸”è¿™ä¸ªæ•°å­—ç†è®ºä¸Šå…¶å®žè¿˜æ˜¯æ— é™çš„ï¼Œè¿™ä¸å°±æ„å‘³ç€ï¼šä¸ä¹…çš„å°†æ¥ï¼Œæ•´ä¸ªè¯­æ–™åº“ç”šè‡³äº’è”ç½‘éƒ½èƒ½è§†ä¸ºä¸€ä¸ªåºåˆ—ï¼Ÿ
 
-×÷ÕßÌá³öÒ»¸öTransformer±äÌå£º`LongNet`£¬ËüÓ¦ÓÃÁËÒ»ÖÖ½Ð×ö¡°**ÅòÕÍ×¢ÒâÁ¦**£¨dilated attention£©¡±µÄ»úÖÆ£¬¿ÉÒÔËæ×Å¾àÀëµÄÔö³¤£¬ÈÃ×¢ÒâÁ¦³¡£¨Ä£ÐÍ¸ÐÖª·¶Î§£©³ÊÖ¸Êý¼¶À©Õ¹¡£
+ä½œè€…æå‡ºä¸€ä¸ªTransformerå˜ä½“ï¼š`LongNet`ï¼Œå®ƒåº”ç”¨äº†ä¸€ç§å«åšâ€?**è†¨èƒ€æ³¨æ„åŠ?**ï¼ˆdilated attentionï¼‰â€çš„æœºåˆ¶ï¼Œå¯ä»¥éšç€è·ç¦»çš„å¢žé•¿ï¼Œè®©æ³¨æ„åŠ›åœºï¼ˆæ¨¡åž‹æ„ŸçŸ¥èŒƒå›´ï¼‰å‘ˆæŒ‡æ•°çº§æ‰©å±•ã€?
 
-¾ßÌå¶øÑÔ£¬dilated attentionÌæ´úÁËÆÕÍ¨TransformerÖÐµÄ×¢ÒâÁ¦»úÖÆµÄ£¬ÆäÒ»°ãµÄÉè¼ÆÔ­ÔòÊÇ£º
-> ÈÃ×¢ÒâÁ¦µÄ·ÖÅäËæ×ÅtokenÖ®¼ä¾àÀëµÄÔö³¤£¬³ÊÖ¸Êý¼¶ÏÂ½µ¡£
+å…·ä½“è€Œè¨€ï¼Œdilated attentionæ›¿ä»£äº†æ™®é€šTransformerä¸­çš„æ³¨æ„åŠ›æœºåˆ¶çš„ï¼Œå…¶ä¸€èˆ¬çš„è®¾è®¡åŽŸåˆ™æ˜¯ï¼š
+> è®©æ³¨æ„åŠ›çš„åˆ†é…éšç€tokenä¹‹é—´è·ç¦»çš„å¢žé•¿ï¼Œå‘ˆæŒ‡æ•°çº§ä¸‹é™ã€?
 
-dilated attentionÄÜ¹»²úÉúÏßÐÔ¼ÆËã¸´ÔÓ¶ÈºÍtokenÖ®¼äµÄ¶ÔÊýÒÀÀµÐÔ£¬´Ó¶ø½â¾öÁË×¢ÒâÁ¦×ÊÔ´ÓÐÏÞ£¬µ«Ã¿Ò»¸ötoken¶¼¿É·ÃÎÊµÄÃ¬¶Ü¡£
+dilated attentionèƒ½å¤Ÿäº§ç”Ÿçº¿æ€§è®¡ç®—å¤æ‚åº¦å’Œtokenä¹‹é—´çš„å¯¹æ•°ä¾èµ–æ€§ï¼Œä»Žè€Œè§£å†³äº†æ³¨æ„åŠ›èµ„æºæœ‰é™ï¼Œä½†æ¯ä¸€ä¸ªtokenéƒ½å¯è®¿é—®çš„çŸ›ç›¾ã€?
 
 
-## MLP ¸Ä½ø
+## MLP æ”¹è¿›
 
-¶à²ã¸ÐÖªÆ÷£¨MLP£©±»³ÆÎª**È«Á¬½ÓÇ°À¡**Éñ¾­ÍøÂç£¬ÊÇµ±½ñÉî¶ÈÑ§Ï°Ä£ÐÍµÄ»ù´¡¹¹½¨¿é¡£
+å¤šå±‚æ„ŸçŸ¥å™¨ï¼ˆMLPï¼‰è¢«ç§°ä¸º**å…¨è¿žæŽ¥å‰é¦?**ç¥žç»ç½‘ç»œï¼Œæ˜¯å½“ä»Šæ·±åº¦å­¦ä¹ æ¨¡åž‹çš„åŸºç¡€æž„å»ºå—ã€?
 
-MLP ÖØÒªÐÔÎÞÂÛÔõÑùÇ¿µ÷¶¼²»Îª¹ý£¬ÊÇ»úÆ÷Ñ§Ï°ÖÐÓÃÓÚ±Æ½ü·ÇÏßÐÔº¯ÊýµÄÄ¬ÈÏ·½·¨¡£
+MLP é‡è¦æ€§æ— è®ºæ€Žæ ·å¼ºè°ƒéƒ½ä¸ä¸ºè¿‡ï¼Œæ˜¯æœºå™¨å­¦ä¹ ä¸­ç”¨äºŽé€¼è¿‘éžçº¿æ€§å‡½æ•°çš„é»˜è®¤æ–¹æ³•ã€?
 
-È»¶ø£¬MLP ÊÇ·ñ×î¼Ñ·ÇÏßÐÔ»Ø¹éÆ÷ÄØ£¿
+ç„¶è€Œï¼ŒMLP æ˜¯å¦æœ€ä½³éžçº¿æ€§å›žå½’å™¨å‘¢ï¼Ÿ
 
-¾¡¹Ü MLP ±»¹ã·ºÊ¹ÓÃ£¬µ«´æÔÚÃ÷ÏÔÈ±ÏÝ¡£
-- ÀýÈç£¬ÔÚ Transformer Ä£ÐÍÖÐ£¬MLP ¼¸ºõÏûºÄÁËËùÓÐ·ÇÇ¶ÈëÊ½²ÎÊý£¬²¢ÇÒÍ¨³£ÔÚÃ»ÓÐºó´¦Àí·ÖÎö¹¤¾ßµÄÇé¿öÏÂ£¬Ïà¶ÔÓÚ×¢ÒâÁ¦²ãÀ´Ëµ£¬ËüÃÇµÄ¿É½âÊÍÐÔ½Ï²î¡£
+å°½ç®¡ MLP è¢«å¹¿æ³›ä½¿ç”¨ï¼Œä½†å­˜åœ¨æ˜Žæ˜¾ç¼ºé™·ã€?
+- ä¾‹å¦‚ï¼Œåœ¨ Transformer æ¨¡åž‹ä¸­ï¼ŒMLP å‡ ä¹Žæ¶ˆè€—äº†æ‰€æœ‰éžåµŒå…¥å¼å‚æ•°ï¼Œå¹¶ä¸”é€šå¸¸åœ¨æ²¡æœ‰åŽå¤„ç†åˆ†æžå·¥å…·çš„æƒ…å†µä¸‹ï¼Œç›¸å¯¹äºŽæ³¨æ„åŠ›å±‚æ¥è¯´ï¼Œå®ƒä»¬çš„å¯è§£é‡Šæ€§è¾ƒå·®ã€?
 
 ### KAN
 
-¡¾2024-5-3¡¿[TransformerÒª±äKansformer£¿ÓÃÁË¼¸Ê®ÄêµÄMLPÓ­À´ÌôÕ½ÕßKAN](https://www.jiqizhixin.com/articles/2024-05-03-3)
+ã€?2024-5-3ã€‘[Transformerè¦å˜Kansformerï¼Ÿç”¨äº†å‡ åå¹´çš„MLPè¿Žæ¥æŒ‘æˆ˜è€…KAN](https://www.jiqizhixin.com/articles/2024-05-03-3)
 
-MIT Ìá³öµÄ KAN Áé¸ÐÀ´Ô´ÓÚ Kolmogorov-Arnold ±íÊ¾¶¨ÀíµÄÍøÂç¡£
-- ÂÛÎÄ£º[KAN: Kolmogorov-Arnold Networks](https://arxiv.org/pdf/2404.19756)
-- Github£º[pykan](https://github.com/KindXiaoming/pykan)
+MIT æå‡ºçš? KAN çµæ„Ÿæ¥æºäº? Kolmogorov-Arnold è¡¨ç¤ºå®šç†çš„ç½‘ç»œã€?
+- è®ºæ–‡ï¼š[KAN: Kolmogorov-Arnold Networks](https://arxiv.org/pdf/2404.19756)
+- Githubï¼š[pykan](https://github.com/KindXiaoming/pykan)
 
-KAN ÔÚ×¼È·ÐÔºÍ¿É½âÊÍÐÔ·½Ãæ±íÏÖÓÅÓÚ MLP£¬¶øÇÒÄÜÒÔ·Ç³£ÉÙµÄ²ÎÊýÁ¿Ê¤¹ýÒÔ¸ü´ó²ÎÊýÁ¿ÔËÐÐµÄ MLP¡£
+KAN åœ¨å‡†ç¡®æ€§å’Œå¯è§£é‡Šæ€§æ–¹é¢è¡¨çŽ°ä¼˜äº? MLPï¼Œè€Œä¸”èƒ½ä»¥éžå¸¸å°‘çš„å‚æ•°é‡èƒœè¿‡ä»¥æ›´å¤§å‚æ•°é‡è¿è¡Œçš„ MLPã€?
 
-ÓÐÑÐ¾¿Õß½« KAN ´´ÐÂ¼Ü¹¹µÄÀíÄîÀ©Õ¹µ½¾í»ýÉñ¾­ÍøÂç£¬½«¾í»ýµÄ¾­µäÏßÐÔ±ä»»¸ü¸ÄÎªÃ¿¸öÏñËØÖÐ¿ÉÑ§Ï°µÄ·ÇÏßÐÔ¼¤»îº¯Êý£¬Ìá³ö²¢¿ªÔ´ KAN ¾í»ý£¨CKAN£©
-- ¡¾2024-5-20¡¿[Ìæ´úMLPµÄKAN£¬±»¿ªÔ´ÏîÄ¿À©Õ¹µ½¾í»ýÁË](https://www.jiqizhixin.com/articles/2024-05-20-2)
+æœ‰ç ”ç©¶è€…å°† KAN åˆ›æ–°æž¶æž„çš„ç†å¿µæ‰©å±•åˆ°å·ç§¯ç¥žç»ç½‘ç»œï¼Œå°†å·ç§¯çš„ç»å…¸çº¿æ€§å˜æ¢æ›´æ”¹ä¸ºæ¯ä¸ªåƒç´ ä¸­å¯å­¦ä¹ çš„éžçº¿æ€§æ¿€æ´»å‡½æ•°ï¼Œæå‡ºå¹¶å¼€æº? KAN å·ç§¯ï¼ˆCKANï¼?
+- ã€?2024-5-20ã€‘[æ›¿ä»£MLPçš„KANï¼Œè¢«å¼€æºé¡¹ç›®æ‰©å±•åˆ°å·ç§¯äº†](https://www.jiqizhixin.com/articles/2024-05-20-2)
 - [Convolutional-KANs](https://github.com/AntonioTepsich/Convolutional-KANs)
 
-Kolmogorov 1957 Äê¾Í·¢ÏÖÁË**¶à²ã**Éñ¾­ÍøÂç£¬±È Rumerhart¡¢Hinton ºÍ William µÄ 1986 ÄêÂÛÎÄ·¢±íµÄÊ±¼äÒªÔçµÃ¶à£¬µ«ËûÈ´±»Î÷·½ºöÊÓÁË¡£
+Kolmogorov 1957 å¹´å°±å‘çŽ°äº?**å¤šå±‚**ç¥žç»ç½‘ç»œï¼Œæ¯” Rumerhartã€Hinton å’? William çš? 1986 å¹´è®ºæ–‡å‘è¡¨çš„æ—¶é—´è¦æ—©å¾—å¤šï¼Œä½†ä»–å´è¢«è¥¿æ–¹å¿½è§†äº†ã€?
 
-Ò»ÖÖÓÐÇ°¾°µÄ¶à²ã¸ÐÖªÆ÷£¨MLP£©µÄÌæ´ú·½°¸£¬³ÆÎª Kolmogorov-Arnold Networks£¨KAN£©¡£
-- MLP µÄÉè¼ÆÁé¸ÐÀ´Ô´ÓÚ`Í¨ÓÃ½üËÆ¶¨Àí` £¨Í¨ÓÃ±Æ½ü¶¨Àí£©
-- ¶ø KAN Éè¼ÆÁé¸ÐÔòÀ´Ô´ÓÚ `Kolmogorov-Arnold ±íÊ¾¶¨Àí`¡£
+ä¸€ç§æœ‰å‰æ™¯çš„å¤šå±‚æ„ŸçŸ¥å™¨ï¼ˆMLPï¼‰çš„æ›¿ä»£æ–¹æ¡ˆï¼Œç§°ä¸? Kolmogorov-Arnold Networksï¼ˆKANï¼‰ã€?
+- MLP çš„è®¾è®¡çµæ„Ÿæ¥æºäºŽ`é€šç”¨è¿‘ä¼¼å®šç†` ï¼ˆé€šç”¨é€¼è¿‘å®šç†ï¼?
+- è€? KAN è®¾è®¡çµæ„Ÿåˆ™æ¥æºäºŽ `Kolmogorov-Arnold è¡¨ç¤ºå®šç†`ã€?
 
-Kolmogorov-Arnold ±íÊ¾¶¨Àí
-- Vladimir Arnold ºÍ Andrey Kolmogorov Ö¤Ã÷ÁËÈç¹û f ÊÇÒ»¸öÔÚÓÐ½çÓòÉÏµÄ**¶à±äÁ¿Á¬Ðøº¯Êý**£¬ÄÇÃ´ f ¿ÉÒÔÐ´³ÉÒ»¸ö**µ¥±äÁ¿Á¬Ðøº¯Êý**ºÍ**¶þÔª¼Ó·¨ÔËËã**µÄÓÐÏÞ×éºÏ¡£
+Kolmogorov-Arnold è¡¨ç¤ºå®šç†
+- Vladimir Arnold å’? Andrey Kolmogorov è¯æ˜Žäº†å¦‚æž? f æ˜¯ä¸€ä¸ªåœ¨æœ‰ç•ŒåŸŸä¸Šçš?**å¤šå˜é‡è¿žç»­å‡½æ•?**ï¼Œé‚£ä¹? f å¯ä»¥å†™æˆä¸€ä¸?**å•å˜é‡è¿žç»­å‡½æ•?**å’?**äºŒå…ƒåŠ æ³•è¿ç®—**çš„æœ‰é™ç»„åˆã€?
 
-Óë MLP ÀàËÆ£¬KAN ÓµÓÐ**È«Á¬½Ó**½á¹¹¡£¶ø MLP ÔÚ½Úµã£¨Éñ¾­Ôª£©ÉÏ·ÅÖÃ¹Ì¶¨¼¤»îº¯Êý£¬KAN ÔòÔÚ±ß£¨È¨ÖØ£©ÉÏ·ÅÖÃ¿ÉÑ§Ï°µÄ¼¤»îº¯Êý¡£
+ä¸? MLP ç±»ä¼¼ï¼ŒKAN æ‹¥æœ‰**å…¨è¿žæŽ?**ç»“æž„ã€‚è€? MLP åœ¨èŠ‚ç‚¹ï¼ˆç¥žç»å…ƒï¼‰ä¸Šæ”¾ç½®å›ºå®šæ¿€æ´»å‡½æ•°ï¼ŒKAN åˆ™åœ¨è¾¹ï¼ˆæƒé‡ï¼‰ä¸Šæ”¾ç½®å¯å­¦ä¹ çš„æ¿€æ´»å‡½æ•°ã€?
 
-Òò´Ë£¬KAN **ÍêÈ«Ã»ÓÐÏßÐÔÈ¨ÖØ¾ØÕó**£º [¶Ô±ÈÍ¼](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
-- Ã¿¸öÈ¨ÖØ²ÎÊý¶¼±»Ìæ»»ÎªÒ»¸ö¿ÉÑ§Ï°µÄÒ»Î¬º¯Êý£¬²ÎÊý»¯Îª**ÑùÌõ**£¨spline£©¡£
-- KAN µÄ½Úµã½ö¶Ô´«ÈëÐÅºÅ½øÐÐÇóºÍ£¬¶ø²»Ó¦ÓÃÈÎºÎ·ÇÏßÐÔ±ä»»¡£
-- ![¶Ô±ÈÍ¼](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
+å› æ­¤ï¼ŒKAN **å®Œå…¨æ²¡æœ‰çº¿æ€§æƒé‡çŸ©é˜?**ï¼? [å¯¹æ¯”å›¾](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
+- æ¯ä¸ªæƒé‡å‚æ•°éƒ½è¢«æ›¿æ¢ä¸ºä¸€ä¸ªå¯å­¦ä¹ çš„ä¸€ç»´å‡½æ•°ï¼Œå‚æ•°åŒ–ä¸º**æ ·æ¡**ï¼ˆsplineï¼‰ã€?
+- KAN çš„èŠ‚ç‚¹ä»…å¯¹ä¼ å…¥ä¿¡å·è¿›è¡Œæ±‚å’Œï¼Œè€Œä¸åº”ç”¨ä»»ä½•éžçº¿æ€§å˜æ€€?
+- ![å¯¹æ¯”å›¾](https://image.jiqizhixin.com/uploads/editor/2ea4a752-4eb5-4bd7-a21f-1f228efcc427/640.png)
 
-¾¡¹Ü KAN ÊýÑ§½âÊÍÄÜÁ¦²»´í£¬µ«Êµ¼ÊÉÏÖ»ÊÇ**ÑùÌõ**ºÍ **MLP** µÄ×éºÏ£¬ÀûÓÃÁË¶þÕßµÄÓÅµã£¬±ÜÃâÁËÈ±µãµÄ³öÏÖ¡£
-- ÑùÌõÔÚµÍÎ¬º¯ÊýÉÏ×¼È·¶È¸ß£¬Ò×ÓÚ¾Ö²¿µ÷Õû£¬²¢ÇÒÄÜ¹»ÔÚ²»Í¬·Ö±æÂÊÖ®¼äÇÐ»»¡£È»¶ø£¬ÓÉÓÚÑùÌõÎÞ·¨ÀûÓÃ×éºÏ½á¹¹£¬Òò´Ë´æÔÚÑÏÖØ COD ÎÊÌâ¡£
-- ÁíÒ»·½Ãæ£¬MLP ÓÉÓÚÆäÌØÕ÷Ñ§Ï°ÄÜÁ¦£¬½ÏÉÙÊÜµ½ COD µÄÓ°Ïì£¬µ«ÔÚµÍÎ¬¿Õ¼äÖÐÈ´²»ÈçÑùÌõ×¼È·£¬ÒòÎªËüÃÇÎÞ·¨ÓÅ»¯µ¥±äÁ¿º¯Êý¡£
+å°½ç®¡ KAN æ•°å­¦è§£é‡Šèƒ½åŠ›ä¸é”™ï¼Œä½†å®žé™…ä¸Šåªæ˜?**æ ·æ¡**å’? **MLP** çš„ç»„åˆï¼Œåˆ©ç”¨äº†äºŒè€…çš„ä¼˜ç‚¹ï¼Œé¿å…äº†ç¼ºç‚¹çš„å‡ºçŽ°ã€?
+- æ ·æ¡åœ¨ä½Žç»´å‡½æ•°ä¸Šå‡†ç¡®åº¦é«˜ï¼Œæ˜“äºŽå±€éƒ¨è°ƒæ•´ï¼Œå¹¶ä¸”èƒ½å¤Ÿåœ¨ä¸åŒåˆ†è¾¨çŽ‡ä¹‹é—´åˆ‡æ¢ã€‚ç„¶è€Œï¼Œç”±äºŽæ ·æ¡æ— æ³•åˆ©ç”¨ç»„åˆç»“æž„ï¼Œå› æ­¤å­˜åœ¨ä¸¥é‡? COD é—®é¢˜ã€?
+- å¦ä¸€æ–¹é¢ï¼ŒMLP ç”±äºŽå…¶ç‰¹å¾å­¦ä¹ èƒ½åŠ›ï¼Œè¾ƒå°‘å—åˆ° COD çš„å½±å“ï¼Œä½†åœ¨ä½Žç»´ç©ºé—´ä¸­å´ä¸å¦‚æ ·æ¡å‡†ç¡®ï¼Œå› ä¸ºå®ƒä»¬æ— æ³•ä¼˜åŒ–å•å˜é‡å‡½æ•°ã€?
 
-KAN µÄ×î´óÆ¿¾±: ÑµÁ·ËÙ¶ÈÂý¡£
-- ÏàÍ¬ÊýÁ¿µÄ²ÎÊýÏÂ£¬KAN µÄÑµÁ·ºÄÊ±Í¨³£ÊÇ MLP µÄ 10 ±¶¡£
-- KAN ÑµÁ·ËÙ¶ÈÂý¸üÏñÊÇÒ»¸öÎ´À´¿ÉÒÔ¸Ä½øµÄ¹¤³ÌÎÊÌâ£¬¶ø²»ÊÇÒ»¸ö¸ù±¾ÐÔµÄÏÞÖÆ
+KAN çš„æœ€å¤§ç“¶é¢?: è®­ç»ƒé€Ÿåº¦æ…€€?
+- ç›¸åŒæ•°é‡çš„å‚æ•°ä¸‹ï¼ŒKAN çš„è®­ç»ƒè€—æ—¶é€šå¸¸æ˜? MLP çš? 10 å€ã€?
+- KAN è®­ç»ƒé€Ÿåº¦æ…¢æ›´åƒæ˜¯ä¸€ä¸ªæœªæ¥å¯ä»¥æ”¹è¿›çš„å·¥ç¨‹é—®é¢˜ï¼Œè€Œä¸æ˜¯ä¸€ä¸ªæ ¹æœ¬æ€§çš„é™åˆ¶
 
-## Attention ¸Ä½ø
+## Attention æ”¹è¿›
 
 
 ### QKV
 
-MHA¡¢GQA¡¢MQA¡¢MLA Ô­Àí¶Ô±È
-- ´«Í³ Transformer ²ÉÓÃ MHA£¬µ« KV Cache ÔÚÍÆÀí¹ý³ÌÖÐ¿ÉÄÜ³ÉÎªÐÔÄÜÆ¿¾±¡£
-- `MQA` ºÍ `GQA` ËäÈ»ÔÚÒ»¶¨³Ì¶ÈÉÏ¿ÉÒÔ¼õÉÙKV CacheµÄÕ¼ÓÃ£¬µ«Ð§¹ûÍ¨³£²»Èç `MHA`¡£
-- `MLA` Í¨¹ýµÍÖÈ Key-ValueÁªºÏÑ¹Ëõ¼¼Êõ£¬²»½öÊµÏÖÁË±È`MHA`¸üÓÅµÄÐ§¹û£¬»¹´ó·ù¼õÉÙÁËËùÐèµÄKV Cache´óÐ¡¡£
+MHAã€GQAã€MQAã€MLA åŽŸç†å¯¹æ¯”
+- ä¼ ç»Ÿ Transformer é‡‡ç”¨ MHAï¼Œä½† KV Cache åœ¨æŽ¨ç†è¿‡ç¨‹ä¸­å¯èƒ½æˆä¸ºæ€§èƒ½ç“¶é¢ˆã€?
+- `MQA` å’? `GQA` è™½ç„¶åœ¨ä¸€å®šç¨‹åº¦ä¸Šå¯ä»¥å‡å°‘KV Cacheçš„å ç”¨ï¼Œä½†æ•ˆæžœé€šå¸¸ä¸å¦‚ `MHA`ã€?
+- `MLA` é€šè¿‡ä½Žç§© Key-Valueè”åˆåŽ‹ç¼©æŠ€æœ¯ï¼Œä¸ä»…å®žçŽ°äº†æ¯”`MHA`æ›´ä¼˜çš„æ•ˆæžœï¼Œè¿˜å¤§å¹…å‡å°‘äº†æ‰€éœ€çš„KV Cacheå¤§å°ã€?
 
 
 #### GQA: Grouped-Query Attention
 
-Grouped-Query Attention £º¶ÔÓÚ¸ü´ó²ÎÊýÁ¿¡¢¸ü´óµÄ context length¡¢¸ü´óµÄ batchsize À´Ëµ£¬Ô­Ê¼µÄMHA£¨multi-head attention£©µÄÄÚ´æÕ¼ÓÃ»á¸ü¸ß£¨ÒòÎªÔÚ¼ÆËãÊ±Òª»º´æpre tokenµÄK¡¢V¾ØÕó£©¡£
-- MQA£¨multi-query attention£©ÈÃËùÓÐµÄ head ¹²Ïí 1 ¸ö KV projection ¾ØÕó£»
-- GQA£¨grouped-query attention £©Ê¹ÓÃ 8 ¸ö KV projections£¨Ñ¡Ôñ8ÊÇÒòÎªA100 8GPUs£© À´¼õÉÙÄÚ´æÕ¼ÓÃ¡£
+Grouped-Query Attention ï¼šå¯¹äºŽæ›´å¤§å‚æ•°é‡ã€æ›´å¤§çš„ context lengthã€æ›´å¤§çš„ batchsize æ¥è¯´ï¼ŒåŽŸå§‹çš„MHAï¼ˆmulti-head attentionï¼‰çš„å†…å­˜å ç”¨ä¼šæ›´é«˜ï¼ˆå› ä¸ºåœ¨è®¡ç®—æ—¶è¦ç¼“å­˜pre tokençš„Kã€VçŸ©é˜µï¼‰ã€?
+- MQAï¼ˆmulti-query attentionï¼‰è®©æ‰€æœ‰çš„ head å…±äº« 1 ä¸? KV projection çŸ©é˜µï¼?
+- GQAï¼ˆgrouped-query attention ï¼‰ä½¿ç”? 8 ä¸? KV projectionsï¼ˆé€‰æ‹©8æ˜¯å› ä¸ºA100 8GPUsï¼? æ¥å‡å°‘å†…å­˜å ç”¨ã€?
 
-ÔÚ 30B Ä£ÐÍÉÏÑµÁ· 150B tokens£¬·¢ÏÖ GQA Ð§¹ûºÍ MHA ²î²»¶à£¬±È MQA ÒªºÃ£»ÔÚ 1 ¸önodeµÄ 8 ¸ö A100 GPUs ÉÏÍÆÀíËÙ¶È GQA ºÍ MQA²î²»¶à£¬±È MHA ÒªºÃ£¨MQA ÔÚÍÆÀíµÄÊ±ºò£¬Òª°Ñ KV projections ¸´ÖÆµ½8ÕÅ¿¨ÉÏ£©¡£
+åœ? 30B æ¨¡åž‹ä¸Šè®­ç»? 150B tokensï¼Œå‘çŽ? GQA æ•ˆæžœå’? MHA å·®ä¸å¤šï¼Œæ¯? MQA è¦å¥½ï¼›åœ¨ 1 ä¸ªnodeçš? 8 ä¸? A100 GPUs ä¸ŠæŽ¨ç†é€Ÿåº¦ GQA å’? MQAå·®ä¸å¤šï¼Œæ¯? MHA è¦å¥½ï¼ˆMQA åœ¨æŽ¨ç†çš„æ—¶å€™ï¼Œè¦æŠŠ KV projections å¤åˆ¶åˆ?8å¼ å¡ä¸Šï¼‰ã€?
 
 #### MQA: Muti Query Attention
 
-MQA ÊÇ 2019 ÄêÌá³öµÄÒ»ÖÖÐÂµÄ Attention »úÖÆ£¬ÆäÄÜ¹»ÔÚ±£Ö¤Ä£ÐÍÐ§¹ûµÄÍ¬Ê±¼Ó¿ì decoder Éú³É token µÄËÙ¶È¡£
-- ÂÛÎÄ£º [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
-- ËùÓÐ head Ö®¼ä**¹²Ïí**Ò»·Ý key ºÍ value µÄ²ÎÊý
+MQA æ˜? 2019 å¹´æå‡ºçš„ä¸€ç§æ–°çš? Attention æœºåˆ¶ï¼Œå…¶èƒ½å¤Ÿåœ¨ä¿è¯æ¨¡åž‹æ•ˆæžœçš„åŒæ—¶åŠ å¿« decoder ç”Ÿæˆ token çš„é€Ÿåº¦ã€?
+- è®ºæ–‡ï¼? [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/pdf/1911.02150.pdf)
+- æ‰€æœ? head ä¹‹é—´**å…±äº«**ä¸€ä»? key å’? value çš„å‚æ•?
 
-MQA ÔÚ encoder ÉÏµÄÌáËÙÃ»ÓÐ·Ç³£Ã÷ÏÔ£¬µ«ÔÚ decoder ÉÏµÄÌáËÙÊÇºÜÏÔÖøµÄ
+MQA åœ? encoder ä¸Šçš„æé€Ÿæ²¡æœ‰éžå¸¸æ˜Žæ˜¾ï¼Œä½†åœ¨ decoder ä¸Šçš„æé€Ÿæ˜¯å¾ˆæ˜¾è‘—çš„
 - ![](https://pic1.zhimg.com/80/v2-150a48c2eadeacd0aca50408ea391710_1440w.webp)
 
-Multi Query Attention£¨MQA£© ºÍ Multi Head Attention£¨MHA£©Ö»²îÁËÒ»¸öµ¥´Ê£¬´Ó¡¸Head¡¹±ä³ÉÁË¡¸Query¡¹¡£
+Multi Query Attentionï¼ˆMQAï¼? å’? Multi Head Attentionï¼ˆMHAï¼‰åªå·®äº†ä¸€ä¸ªå•è¯ï¼Œä»Žã€ŒHeadã€å˜æˆäº†ã€ŒQueryã€ã€?
 
-MQA ÈÃ**ËùÓÐµÄÍ·Ö®¼ä ¹²Ïí Í¬Ò»·Ý Key ºÍ Value ¾ØÕó**£¬Ã¿¸öÍ·Ö»µ¥¶À±£ÁôÁËÒ»·Ý Query ²ÎÊý£¬´Ó¶ø´ó´ó¼õÉÙ Key ºÍ Value ¾ØÕóµÄ²ÎÊýÁ¿¡£
-- ¡¸²ÎÊý¹²Ïí¡¹²¢²»ÊÇÐÂÆæË¼Â·£¬Albert Í¨¹ýÊ¹ÓÃ**¿ç²ã¹²Ïí²ÎÊý**£¨Cross-layer parameter sharing£©·½Ê½À´´ó´ó¼õÉÙ bert µÄ²ÎÊýÁ¿
-- MQA Êµ¼ÊÉÏÊÇ½« head ÖÐµÄ key ºÍ value ¾ØÕó³é³öÀ´µ¥¶À´æÎªÒ»·Ý¹²Ïí²ÎÊý£¬¶ø query ÔòÊÇÒÀ¾É±£ÁôÔÚÔ­À´µÄ head ÖÐ£¬Ã¿¸ö head ÓÐÒ»·Ý×Ô¼º¶ÀÓÐµÄ query ²ÎÊý¡£
+MQA è®?**æ‰€æœ‰çš„å¤´ä¹‹é—? å…±äº« åŒä¸€ä»? Key å’? Value çŸ©é˜µ**ï¼Œæ¯ä¸ªå¤´åªå•ç‹¬ä¿ç•™äº†ä¸€ä»? Query å‚æ•°ï¼Œä»Žè€Œå¤§å¤§å‡å°? Key å’? Value çŸ©é˜µçš„å‚æ•°é‡ã€?
+- ã€Œå‚æ•°å…±äº«ã€å¹¶ä¸æ˜¯æ–°å¥‡æ€è·¯ï¼ŒAlbert é€šè¿‡ä½¿ç”¨**è·¨å±‚å…±äº«å‚æ•°**ï¼ˆCross-layer parameter sharingï¼‰æ–¹å¼æ¥å¤§å¤§å‡å°‘ bert çš„å‚æ•°é‡
+- MQA å®žé™…ä¸Šæ˜¯å°? head ä¸­çš„ key å’? value çŸ©é˜µæŠ½å‡ºæ¥å•ç‹¬å­˜ä¸ºä¸€ä»½å…±äº«å‚æ•°ï¼Œè€? query åˆ™æ˜¯ä¾æ—§ä¿ç•™åœ¨åŽŸæ¥çš„ head ä¸­ï¼Œæ¯ä¸ª head æœ‰ä¸€ä»½è‡ªå·±ç‹¬æœ‰çš„ query å‚æ•°ã€?
 
-´úÂë¼û[Ô­ÎÄ](https://zhuanlan.zhihu.com/p/634236135)
+ä»£ç è§[åŽŸæ–‡](https://zhuanlan.zhihu.com/p/634236135)
 
 
 #### MLA: Multi-head Latent Attention
 
 
-¡¾2024-9-26¡¿[×¢ÒâÁ¦»úÖÆµÄ±äÌåÖ®MLA](https://mp.weixin.qq.com/s/dWZk8TBY89re207ZL3GjfA)
+ã€?2024-9-26ã€‘[æ³¨æ„åŠ›æœºåˆ¶çš„å˜ä½“ä¹‹MLA](https://mp.weixin.qq.com/s/dWZk8TBY89re207ZL3GjfA)
 
-`MLA`(Multi-head Latent Attention) ÊÇ º¼ÖÝ**Éî¶ÈÇóË÷**ÈË¹¤ÖÇÄÜÔÚ`DeepSeek` V2 Ìá³öµÄÒ»ÖÖ**×¢ÒâÁ¦»úÖÆ±äÌå**¡£
+`MLA`(Multi-head Latent Attention) æ˜? æ­å·ž**æ·±åº¦æ±‚ç´¢**äººå·¥æ™ºèƒ½åœ¨`DeepSeek` V2 æå‡ºçš„ä¸€ç§?**æ³¨æ„åŠ›æœºåˆ¶å˜ä½?**ã€?
 
-MLA ½â¾öÍÆÀí¹ý³ÌÖÐ, ÓÉÓÚattention»úÖÆÖÐ**KV CacheÕ¼ÓÃ¹ý¶àÄÚ´æ**¶øµ¼ÖÂµÄÐÔÄÜÆ¿¾±ÎÊÌâ¡£
+MLA è§£å†³æŽ¨ç†è¿‡ç¨‹ä¸?, ç”±äºŽattentionæœºåˆ¶ä¸?**KV Cacheå ç”¨è¿‡å¤šå†…å­˜**è€Œå¯¼è‡´çš„æ€§èƒ½ç“¶é¢ˆé—®é¢˜ã€?
 
-MLA ÒýÈëÁË**µÍÖÈKVÑ¹Ëõ**¼¼Êõ£¬ÓÐÐ§¼õÉÙÁËKV Cache ´óÐ¡£¬´Ó¶ø»º½âÁËÕâÒ»ÎÊÌâ¡£
-- ¹Ù·½¼¼Êõ±¨¸æ[½éÉÜ](https://arxiv.org/pdf/2405.04434v2)
+MLA å¼•å…¥äº?**ä½Žç§©KVåŽ‹ç¼©**æŠ€æœ¯ï¼Œæœ‰æ•ˆå‡å°‘äº†KV Cache å¤§å°ï¼Œä»Žè€Œç¼“è§£äº†è¿™ä¸€é—®é¢˜ã€?
+- å®˜æ–¹æŠ€æœ¯æŠ¥å‘Š[ä»‹ç»](https://arxiv.org/pdf/2405.04434v2)
 
-`MLA` Í¨¹ýµÍÖÈ Key-ValueÁªºÏÑ¹Ëõ¼¼Êõ£¬²»½öÊµÏÖÁË±È`MHA`¸üÓÅµÄÐ§¹û£¬»¹´ó·ù¼õÉÙÁËËùÐèµÄKV Cache´óÐ¡¡£
+`MLA` é€šè¿‡ä½Žç§© Key-Valueè”åˆåŽ‹ç¼©æŠ€æœ¯ï¼Œä¸ä»…å®žçŽ°äº†æ¯”`MHA`æ›´ä¼˜çš„æ•ˆæžœï¼Œè¿˜å¤§å¹…å‡å°‘äº†æ‰€éœ€çš„KV Cacheå¤§å°ã€?
 
-MLAÍ¨¹ýµÍÖÈÁªºÏÑ¹ËõkeyºÍvalueÀ´¼õÉÙkv cache¡£
+MLAé€šè¿‡ä½Žç§©è”åˆåŽ‹ç¼©keyå’Œvalueæ¥å‡å°‘kv cacheã€?
 
-´Ó×¢ÒâÁ¦»úÖÆµÄ²½ÖèÀ´·ÖÎö£º
-- Í¨¹ýÊäÈëx³ËÒÔ²»Í¬¾ØÕó²ÎÊýWq¡¢Wk¡¢Wv, µÃµ½²»Í¬µÄQKVÏòÁ¿
-- ×ª»»µ½QKVÏòÁ¿Ê±£¬½«x³ËÒÔÒ»¸öµÍÖÈ¾ØÕó£¬µÃµ½µÍ½×¾ØÕó±íÊ¾
-- ÔÙÍ¨¹ý¸ß½×¾ØÕóÀ´»Ö¸´Ô­À´µÄÌØÕ÷¿Õ¼ä¡£ÓÉÓÚ¾ØÕóÊÇÄ£ÐÍµÄÈ¨ÖØ²ÎÊýÒÑ¾­±£´æ£¬ËùÒÔÖ»ÐèÒª±£´æÒ»¸öµÍÖÈµÄÇ±²ãÌØÕ÷¾Í¿ÉÒÔ»Ö¸´³ÉKV£¬¶ø²»ÊÇÏñÖ®Ç°ÐèÒªÍ¬Ê±»º´æKV¡£
-
-
-ÎªÊ²Ã´LoRAÌá³öÕâÃ´¾ÃÁË£¬Ö±µ½ MLA ²ÅÌá³ö¶ÔKV CacheµÍÖÈ·Ö½âµÄ×ö·¨?
-
-### ÍÆÀí¼ÓËÙ
+ä»Žæ³¨æ„åŠ›æœºåˆ¶çš„æ­¥éª¤æ¥åˆ†æžï¼?
+- é€šè¿‡è¾“å…¥xä¹˜ä»¥ä¸åŒçŸ©é˜µå‚æ•°Wqã€Wkã€Wv, å¾—åˆ°ä¸åŒçš„QKVå‘é‡
+- è½¬æ¢åˆ°QKVå‘é‡æ—¶ï¼Œå°†xä¹˜ä»¥ä¸€ä¸ªä½Žç§©çŸ©é˜µï¼Œå¾—åˆ°ä½Žé˜¶çŸ©é˜µè¡¨ç¤º
+- å†é€šè¿‡é«˜é˜¶çŸ©é˜µæ¥æ¢å¤åŽŸæ¥çš„ç‰¹å¾ç©ºé—´ã€‚ç”±äºŽçŸ©é˜µæ˜¯æ¨¡åž‹çš„æƒé‡å‚æ•°å·²ç»ä¿å­˜ï¼Œæ‰€ä»¥åªéœ€è¦ä¿å­˜ä¸€ä¸ªä½Žç§©çš„æ½œå±‚ç‰¹å¾å°±å¯ä»¥æ¢å¤æˆKVï¼Œè€Œä¸æ˜¯åƒä¹‹å‰éœ€è¦åŒæ—¶ç¼“å­˜KVã€?
 
 
-#### Ð¾Æ¬
+ä¸ºä»€ä¹ˆLoRAæå‡ºè¿™ä¹ˆä¹…äº†ï¼Œç›´åˆ? MLA æ‰æå‡ºå¯¹KV Cacheä½Žç§©åˆ†è§£çš„åšæ³??
 
-¡¾2023-12-19¡¿ÃÀ¹úÐ¾Æ¬³õ´´¹«Ë¾ [Etched AI](https://www.etched.ai/) Ðû³Æ¿ª´´ÁËÒ»ÏîÐÂµÄ¼¼Êõ£¬½« Transformer ¼Ü¹¹Ö±½Ó¡°ÉÕÂ¼¡±µ½ÁËÐ¾Æ¬ÖÐ?£¬´´Ôì³öÁËÊÀ½çÉÏ×îÇ¿´óµÄ×¨ÃÅÓÃÓÚTransformerÍÆÀíµÄ·þÎñÆ÷¡£¿ÉÒÔÔËÐÐÍòÒÚ²ÎÊýµÄÄ£ÐÍ£¡? Ë¦Ó¢Î°´ïicon¼¸°ÙÌõ½Ö?
+### æŽ¨ç†åŠ é€?
+
+
+#### èŠ¯ç‰‡
+
+ã€?2023-12-19ã€‘ç¾Žå›½èŠ¯ç‰‡åˆåˆ›å…¬å? [Etched AI](https://www.etched.ai/) å®£ç§°å¼€åˆ›äº†ä¸€é¡¹æ–°çš„æŠ€æœ¯ï¼Œå°? Transformer æž¶æž„ç›´æŽ¥â€œçƒ§å½•â€åˆ°äº†èŠ¯ç‰‡ä¸­?ï¼Œåˆ›é€ å‡ºäº†ä¸–ç•Œä¸Šæœ€å¼ºå¤§çš„ä¸“é—¨ç”¨äºŽTransformeræŽ¨ç†çš„æœåŠ¡å™¨ã€‚å¯ä»¥è¿è¡Œä¸‡äº¿å‚æ•°çš„æ¨¡åž‹ï¼?? ç”©è‹±ä¼Ÿè¾¾iconå‡ ç™¾æ¡è¡—?
 - ![](https://assets-global.website-files.com/6570a6bdf377183fb173431e/6570b5e6b0cd5f0189cf79b8_hero.webp)
 
-½« Transformer¼Ü¹¹Ö±½Ó¡°ÉÕÂ¼¡±µ½Ð¾Æ¬ÖÐ£¬ÕâÒâÎ¶×ÅTransformerÄ£ÐÍµÄÍÆÀí¿ÉÒÔÔÚ×¨ÃÅµÄÓ²¼þÉÏÔËÐÐ£¬¶ø²»ÐèÒªÒÀÀµ´«Í³µÄCPU»òGPU¡£Õâ½«´ó´óÌá¸ßÍÆÀíËÙ¶È£¬½µµÍ¹¦ºÄ£¬²¢Ìá¸ßÄ£ÐÍµÄÐÔÄÜ¡£
-- ½âÂëËÙ¶ÈÔ¶³¬ A100, H100: NVIDIA A100(1x) < NVIDIA H100(5x) < Etched Sohu(15+x)
+å°? Transformeræž¶æž„ç›´æŽ¥â€œçƒ§å½•â€åˆ°èŠ¯ç‰‡ä¸­ï¼Œè¿™æ„å‘³ç€Transformeræ¨¡åž‹çš„æŽ¨ç†å¯ä»¥åœ¨ä¸“é—¨çš„ç¡¬ä»¶ä¸Šè¿è¡Œï¼Œè€Œä¸éœ€è¦ä¾èµ–ä¼ ç»Ÿçš„CPUæˆ–GPUã€‚è¿™å°†å¤§å¤§æé«˜æŽ¨ç†é€Ÿåº¦ï¼Œé™ä½ŽåŠŸè€—ï¼Œå¹¶æé«˜æ¨¡åž‹çš„æ€§èƒ½ã€?
+- è§£ç é€Ÿåº¦è¿œè¶… A100, H100: NVIDIA A100(1x) < NVIDIA H100(5x) < Etched Sohu(15+x)
 
-¹¦ÄÜ£º
-- ? **ÊµÊ±**ÓïÒô´úÀí£ºÄÜ¹»ÔÚºÁÃëÄÚ´¦Àí³ÉÇ§ÉÏÍòµÄ´Ê¡£
-- ? ¸üºÃµÄ±àÂëÓë**Ê÷ËÑË÷**£º¿ÉÒÔ²¢ÐÐ±È½ÏÊý°Ù¸öÏìÓ¦¡£
-- ? ¶à²¥ÍÆ²â½âÂë£ºÊµÊ±Éú³ÉÐÂÄÚÈÝ¡£
-- ? ÔËÐÐÎ´À´µÄÍòÒÚ²ÎÊýÄ£ÐÍ£ºÖ»ÐèÒ»¸öºËÐÄ£¬Ö§³ÖÈ«¿ªÔ´Èí¼þÕ»£¬¿ÉÀ©Õ¹ÖÁ100T²ÎÊýÄ£ÐÍ¡£
-- ? ¸ß¼¶½âÂë¼¼Êõ£º°üÀ¨¹âÊøËÑË÷ºÍMCTS½âÂë¡£
-- ? Ã¿¸öÐ¾Æ¬144 GB HBM3E£ºÖ§³ÖMoEºÍ×ª»»Æ÷±äÌå¡£
+åŠŸèƒ½ï¼?
+- ? **å®žæ—¶**è¯­éŸ³ä»£ç†ï¼šèƒ½å¤Ÿåœ¨æ¯«ç§’å†…å¤„ç†æˆåƒä¸Šä¸‡çš„è¯ã€?
+- ? æ›´å¥½çš„ç¼–ç ä¸Ž**æ ‘æœç´?**ï¼šå¯ä»¥å¹¶è¡Œæ¯”è¾ƒæ•°ç™¾ä¸ªå“åº”ã€?
+- ? å¤šæ’­æŽ¨æµ‹è§£ç ï¼šå®žæ—¶ç”Ÿæˆæ–°å†…å®¹ã€?
+- ? è¿è¡Œæœªæ¥çš„ä¸‡äº¿å‚æ•°æ¨¡åž‹ï¼šåªéœ€ä¸€ä¸ªæ ¸å¿ƒï¼Œæ”¯æŒå…¨å¼€æºè½¯ä»¶æ ˆï¼Œå¯æ‰©å±•è‡?100Tå‚æ•°æ¨¡åž‹ã€?
+- ? é«˜çº§è§£ç æŠ€æœ¯ï¼šåŒ…æ‹¬å…‰æŸæœç´¢å’ŒMCTSè§£ç ã€?
+- ? æ¯ä¸ªèŠ¯ç‰‡144 GB HBM3Eï¼šæ”¯æŒMoEå’Œè½¬æ¢å™¨å˜ä½“ã€?
 
-Õâ¶ÔÓÚÓ¢Î°´ïÀ´ËµÊÇ¾Þ´óµÄÌôÕ½¡£Ó¢Î°´ïÒ»Ö±ÊÇÈË¹¤ÖÇÄÜÁìÓòµÄÁìµ¼ÕßÖ®Ò»£¬ÆäGPU±»¹ã·ºÓ¦ÓÃÓÚÉî¶ÈÑ§Ï°Ä£ÐÍµÄÑµÁ·ºÍÍÆÀí¡£È»¶ø£¬Etched AIµÄ¼¼Êõ¿ÉÄÜ¸Ä±äÕâÒ»¸ñ¾Ö¡£
+è¿™å¯¹äºŽè‹±ä¼Ÿè¾¾æ¥è¯´æ˜¯å·¨å¤§çš„æŒ‘æˆ˜ã€‚è‹±ä¼Ÿè¾¾ä¸€ç›´æ˜¯äººå·¥æ™ºèƒ½é¢†åŸŸçš„é¢†å¯¼è€…ä¹‹ä¸€ï¼Œå…¶GPUè¢«å¹¿æ³›åº”ç”¨äºŽæ·±åº¦å­¦ä¹ æ¨¡åž‹çš„è®­ç»ƒå’ŒæŽ¨ç†ã€‚ç„¶è€Œï¼ŒEtched AIçš„æŠ€æœ¯å¯èƒ½æ”¹å˜è¿™ä¸€æ ¼å±€ã€?
 
-ÏêÏ¸£ºiconetched.ai
+è¯¦ç»†ï¼šiconetched.ai
 
 
 #### TransNAR
 
-Õü¾ÈTransformerÍÆÀíÄÜÁ¦DeepMindÐÂÑÐ¾¿£¬TransNAR£º¸øÄ£ÐÍÇ¶ÈëËã·¨ÍÆÀí´óÄÔ
+æ‹¯æ•‘TransformeræŽ¨ç†èƒ½åŠ›DeepMindæ–°ç ”ç©¶ï¼ŒTransNARï¼šç»™æ¨¡åž‹åµŒå…¥ç®—æ³•æŽ¨ç†å¤§è„‘
 
-¡¾2024-6-19¡¿DeepMind ÂÛÎÄÌá³öÓÃ**»ìºÏ¼Ü¹¹**·½·¨£¬½â¾öTransformerÄ£ÐÍµÄ**ÍÆÀí**È±ÏÝ¡£
-- ÂÛÎÄµØÖ·£º[Transformers meet Neural Algorithmic Reasoners](https://arxiv.org/abs/2406.09308)
+ã€?2024-6-19ã€‘DeepMind è®ºæ–‡æå‡ºç”?**æ··åˆæž¶æž„**æ–¹æ³•ï¼Œè§£å†³Transformeræ¨¡åž‹çš?**æŽ¨ç†**ç¼ºé™·ã€?
+- è®ºæ–‡åœ°å€ï¼š[Transformers meet Neural Algorithmic Reasoners](https://arxiv.org/abs/2406.09308)
 
-½«TransformerµÄNLU¼¼ÄÜÓë»ùÓÚGNNµÄÉñ¾­Ëã·¨ÍÆÀíÆ÷£¨NAR£©µÄÇ¿´óËã·¨ÍÆÀíÄÜÁ¦Ïà½áºÏ£¬¿ÉÒÔÊµÏÖ¸ü¼Ó·º»¯¡¢ÎÈ½¡¡¢×¼È·µÄLLMÍÆÀí¡£
-- TransNAR£ºÓÃÔ¤ÑµÁ·NARÔöÇ¿Transformer
+å°†Transformerçš„NLUæŠ€èƒ½ä¸ŽåŸºäºŽGNNçš„ç¥žç»ç®—æ³•æŽ¨ç†å™¨ï¼ˆNARï¼‰çš„å¼ºå¤§ç®—æ³•æŽ¨ç†èƒ½åŠ›ç›¸ç»“åˆï¼Œå¯ä»¥å®žçŽ°æ›´åŠ æ³›åŒ–ã€ç¨³å¥ã€å‡†ç¡®çš„LLMæŽ¨ç†ã€?
+- TransNARï¼šç”¨é¢„è®­ç»ƒNARå¢žå¼ºTransformer
 - ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.05_879FCE72BC2CB9C3039E5FC2ADFE91C3.png)
 
-Éñ¾­Ëã·¨ÍÆÀí£¨NAR£©ÓÉ×÷ÕßÖ®Ò»Petar Veleckovic, 2021ÄêÓëÈËºÏÖøµÄÒ»ÆªÂÛÎÄÖÐÌá³ö£¬²¢±»½ÓÊÕÎªPatternsÆÚ¿¯µÄopinion paper¡£
-- ÂÛÎÄµØÖ·£º[Neural Algorithmic Reasoning](https://arxiv.org/abs/2105.02761)
+ç¥žç»ç®—æ³•æŽ¨ç†ï¼ˆNARï¼‰ç”±ä½œè€…ä¹‹ä¸€Petar Veleckovic, 2021å¹´ä¸Žäººåˆè‘—çš„ä¸€ç¯‡è®ºæ–‡ä¸­æå‡ºï¼Œå¹¶è¢«æŽ¥æ”¶ä¸ºPatternsæœŸåˆŠçš„opinion paperã€?
+- è®ºæ–‡åœ°å€ï¼š[Neural Algorithmic Reasoning](https://arxiv.org/abs/2105.02761)
 
-NAR±»³ÆÎª¡¸¹¹½¨ÄÜÖ´ÐÐËã·¨µÄÉñ¾­ÍøÂçµÄÒÕÊõ¡¹¡£Ëã·¨ÓëÉî¶ÈÑ§Ï°µÄ±¾ÖÊ²»Í¬£¬µ«Èç¹ûÉñ¾­ÍøÂçÄÜ¹»¸üºÃµØÄ£·ÂËã·¨£¬ËüÉõÖÁ¿ÉÄÜ¾ß±¸Ëã·¨µÄÇ¿·º»¯ÐÔ¡£
+NARè¢«ç§°ä¸ºã€Œæž„å»ºèƒ½æ‰§è¡Œç®—æ³•çš„ç¥žç»ç½‘ç»œçš„è‰ºæœ¯ã€ã€‚ç®—æ³•ä¸Žæ·±åº¦å­¦ä¹ çš„æœ¬è´¨ä¸åŒï¼Œä½†å¦‚æžœç¥žç»ç½‘ç»œèƒ½å¤Ÿæ›´å¥½åœ°æ¨¡ä»¿ç®—æ³•ï¼Œå®ƒç”šè‡³å¯èƒ½å…·å¤‡ç®—æ³•çš„å¼ºæ³›åŒ–æ€§ã€?
 
-NAR ÕûÌåÏë·¨: 
-- ÑµÁ·Ò»¸ö¸ßÎ¬Òþ¿Õ¼äÖÐµÄ´¦ÀíÆ÷ÍøÂçP£¨processor network£©£¬Ö¼ÔÚ²»¶Ï±Æ½üËã·¨µÄÔËÐÐ½á¹ûA(x)¡£
-- µ«ÓÉÓÚËã·¨µÄÊäÈëºÍÊä³öÒ»°ãÊÇÍ¼¡¢Ê÷¡¢¾ØÕóµÈ³éÏó¡¢½á¹¹»¯µÄÐÎÊ½£¬ÕâÓëÉî¶ÈÑ§Ï°Ä£ÐÍ¸ßÎ¬¡¢àÐÔÓÇÒ¶à±äµÄÊäÈëºÜ²»¼æÈÝ£¬Òò´Ë»¹ÐèÒªÑµÁ·±àÂëÆ÷fºÍ½âÂëÆ÷g£¬½«³éÏóÐÎÊ½×ª»»Îª×ÔÈ»ÐÎÊ½¡£
+NAR æ•´ä½“æƒ³æ³•: 
+- è®­ç»ƒä¸€ä¸ªé«˜ç»´éšç©ºé—´ä¸­çš„å¤„ç†å™¨ç½‘ç»œPï¼ˆprocessor networkï¼‰ï¼Œæ—¨åœ¨ä¸æ–­é€¼è¿‘ç®—æ³•çš„è¿è¡Œç»“æžœA(x)ã€?
+- ä½†ç”±äºŽç®—æ³•çš„è¾“å…¥å’Œè¾“å‡ºä¸€èˆ¬æ˜¯å›¾ã€æ ‘ã€çŸ©é˜µç­‰æŠ½è±¡ã€ç»“æž„åŒ–çš„å½¢å¼ï¼Œè¿™ä¸Žæ·±åº¦å­¦ä¹ æ¨¡åž‹é«˜ç»´ã€å˜ˆæ‚ä¸”å¤šå˜çš„è¾“å…¥å¾ˆä¸å…¼å®¹ï¼Œå› æ­¤è¿˜éœ€è¦è®­ç»ƒç¼–ç å™¨få’Œè§£ç å™¨gï¼Œå°†æŠ½è±¡å½¢å¼è½¬æ¢ä¸ºè‡ªç„¶å½¢å¼ã€?
 - ![](http://lib.ia.ac.cn:8003/ContentDelivery/20240619/06zc2.04_CDB708FC9A27BC289DDAB7A1F81FE99A.png)
 
-NAR ·º»¯ÄÜÁ¦ËÆºõÔ¶Ô¶ÓÅÓÚTransformer¼Ü¹¹
+NAR æ³›åŒ–èƒ½åŠ›ä¼¼ä¹Žè¿œè¿œä¼˜äºŽTransformeræž¶æž„
 
-Ïê¼û: [Õü¾ÈTransformerÍÆÀíÄÜÁ¦£¡DeepMindÐÂÑÐ¾¿TransNAR£º¸øÄ£ÐÍÇ¶Èë¡¸Ëã·¨ÍÆÀí´óÄÔ¡¹](http://lib.ia.ac.cn/news/newsdetail/68837)
+è¯¦è§: [æ‹¯æ•‘TransformeræŽ¨ç†èƒ½åŠ›ï¼DeepMindæ–°ç ”ç©¶TransNARï¼šç»™æ¨¡åž‹åµŒå…¥ã€Œç®—æ³•æŽ¨ç†å¤§è„‘ã€](http://lib.ia.ac.cn/news/newsdetail/68837)
 
-### ¼ÆËãÐ§ÂÊ
+### è®¡ç®—æ•ˆçŽ‡
 
-attention ´æÔÚ $n^2$ µÄ¼ÆËã¸´ÔÓ¶È£¬ÈçºÎÊµÏÖ¸ü³¤ÎÄ±¾µÄ¼ÆËã£¿
-- »ùÓÚ×´Ì¬µü´ú: TransformerXL RMT
-- »ùÓÚÎ»ÖÃ±àÂëÍâÍÆÄÜÁ¦: ALiBi xPos Unlimiformer
-- »ùÓÚ¹¤³ÌÓÅ»¯: FlashAttention
-- »ùÓÚ¸ßÐ§Attention: Reformer LinFormer Flash
-- ÆäËû£» S4, FLASH
+attention å­˜åœ¨ $n^2$ çš„è®¡ç®—å¤æ‚åº¦ï¼Œå¦‚ä½•å®žçŽ°æ›´é•¿æ–‡æœ¬çš„è®¡ç®—ï¼?
+- åŸºäºŽçŠ¶æ€è¿­ä»?: TransformerXL RMT
+- åŸºäºŽä½ç½®ç¼–ç å¤–æŽ¨èƒ½åŠ›: ALiBi xPos Unlimiformer
+- åŸºäºŽå·¥ç¨‹ä¼˜åŒ–: FlashAttention
+- åŸºäºŽé«˜æ•ˆAttention: Reformer LinFormer Flash
+- å…¶ä»–ï¼? S4, FLASH
 - ![](https://pic3.zhimg.com/80/v2-fae510edc3aff2863cca31bc0dcd2046_1440w.webp)
 
 #### 2023.6.14 FlashAttention
 
-¡¾2023-6-14¡¿[FlashAttention: ¸ü¿ìÑµÁ·¸ü³¤ÉÏÏÂÎÄµÄGPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
-- ½« transformer µÄ qkv ¼ÆËã¼ÓËÙ£¬·½·¨£ºÏòÁ¿·Ö¿é²¢ÐÐ
-- ÊÓÆµÓÐÌØÐ§¡£
-- [·ÉÊéºÏ¼¯ÎÄµµ](https://bytedance.feishu.cn/docx/doxcn3zm448MK9sK6pHuPsqtH8f)
+ã€?2023-6-14ã€‘[FlashAttention: æ›´å¿«è®­ç»ƒæ›´é•¿ä¸Šä¸‹æ–‡çš„GPT](https://www.bilibili.com/video/BV1SW4y1X7kh)
+- å°? transformer çš? qkv è®¡ç®—åŠ é€Ÿï¼Œæ–¹æ³•ï¼šå‘é‡åˆ†å—å¹¶è¡?
+- è§†é¢‘æœ‰ç‰¹æ•ˆã€?
+- [é£žä¹¦åˆé›†æ–‡æ¡£](https://bytedance.feishu.cn/docx/doxcn3zm448MK9sK6pHuPsqtH8f)
 - [FlashAttention](https://readpaper.feishu.cn/docx/AC7JdtLrhoKpgxxSRM8cfUounsh)
 - [GitHub CodeRepo](https://github.com/cauyxy/bilivideos/tree/master/flash-attn)
 
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
 
 
-#### 2023.6.24 PageAttention -- ¹ÜÀíqkv»º´æ
+#### 2023.6.24 PageAttention -- ç®¡ç†qkvç¼“å­˜
 
-¡¾2023-6-24¡¿UC Berkeley ÍÅ¶ÓÍÆ³öÒ»¸öÓÃÓÚ¼ÓËÙLLMÍÆÀíµÄ¿ªÔ´¿â`vLLM`£¬Vicuna ÔÚÏßÍÆÀí·þÎñµÄÄ»ºóÓ¢ÐÛ¡£
-- ÀûÓÃ PagedAttention ¼¼Êõ£¬ÓÐÐ§¹ÜÀíAttentionÄ£¿éÖÐµÄKeyºÍValueµÄCache£¬ÖØÐÂ¶¨ÒåÁËLLMµÄÍÆÀí·þÎñ¡£
-- ÎÞÐè¸ü¸ÄÈÎºÎÄ£ÐÍ¼Ü¹¹£¬ÍÌÍÂÁ¿±ÈÔ­Éú HF Transformers ¸ß³ö**24±¶**¡£
+ã€?2023-6-24ã€‘UC Berkeley å›¢é˜ŸæŽ¨å‡ºä¸€ä¸ªç”¨äºŽåŠ é€ŸLLMæŽ¨ç†çš„å¼€æºåº“`vLLM`ï¼ŒVicuna åœ¨çº¿æŽ¨ç†æœåŠ¡çš„å¹•åŽè‹±é›„ã€?
+- åˆ©ç”¨ PagedAttention æŠ€æœ¯ï¼Œæœ‰æ•ˆç®¡ç†Attentionæ¨¡å—ä¸­çš„Keyå’ŒValueçš„Cacheï¼Œé‡æ–°å®šä¹‰äº†LLMçš„æŽ¨ç†æœåŠ¡ã€?
+- æ— éœ€æ›´æ”¹ä»»ä½•æ¨¡åž‹æž¶æž„ï¼Œåžåé‡æ¯”åŽŸç”? HF Transformers é«˜å‡º**24å€?**ã€?
 
-KV Cache ºËÐÄË¼Ïë
-- »º´æ²¢ÖØÓÃÖ®Ç°¼ÆËã¹ýµÄKeyºÍValue, ±ÜÃâÖØ¸´¼ÆËã¡£
+KV Cache æ ¸å¿ƒæ€æƒ³
+- ç¼“å­˜å¹¶é‡ç”¨ä¹‹å‰è®¡ç®—è¿‡çš„Keyå’ŒValue, é¿å…é‡å¤è®¡ç®—ã€?
 
-ÏÖÓÐ Cache ÈÔ´æÔÚÒ»Ð©ÎÊÌâ£¬
-- Large ´ó£º¶ÔÓÚLLaMA-13BÖÐµÄµ¥¸öÐòÁÐ£¬ËüÕ¼ÓÃ¸ß´ï1.7GBµÄÄÚ´æ¡£
-- Dynamic ¶¯Ì¬£º´óÐ¡È¡¾öÓÚÐòÁÐ³¤¶È£¬¶øÐòÁÐ³¤¶È¾ßÓÐ¸ß¶È¿É±äºÍ²»¿ÉÔ¤²âµÄÌØµã¡£
+çŽ°æœ‰ Cache ä»å­˜åœ¨ä¸€äº›é—®é¢˜ï¼Œ
+- Large å¤§ï¼šå¯¹äºŽLLaMA-13Bä¸­çš„å•ä¸ªåºåˆ—ï¼Œå®ƒå ç”¨é«˜è¾¾1.7GBçš„å†…å­˜ã€?
+- Dynamic åŠ¨æ€ï¼šå¤§å°å–å†³äºŽåºåˆ—é•¿åº¦ï¼Œè€Œåºåˆ—é•¿åº¦å…·æœ‰é«˜åº¦å¯å˜å’Œä¸å¯é¢„æµ‹çš„ç‰¹ç‚¹ã€?
 
-Òò´Ë£¬¸ßÐ§µØ¹ÜÀí KV Cache ÊÇÖØ´óÌôÕ½¡£
-- ÏÖÓÐÏµÍ³£¨HuggingFace Ä¬ÈÏÊµÏÖÊÇpytorchµÄÄÚ´æ·ÖÅä²ßÂÔ£©ÓÉÓÚÄÚ´æËéÆ¬»¯ºÍ¹ý¶ÈÔ¤Áô¶øÀË·ÑÁË60%-80%µÄÄÚ´æ¡£
+å› æ­¤ï¼Œé«˜æ•ˆåœ°ç®¡ç† KV Cache æ˜¯é‡å¤§æŒ‘æˆ˜ã€?
+- çŽ°æœ‰ç³»ç»Ÿï¼ˆHuggingFace é»˜è®¤å®žçŽ°æ˜¯pytorchçš„å†…å­˜åˆ†é…ç­–ç•¥ï¼‰ç”±äºŽå†…å­˜ç¢Žç‰‡åŒ–å’Œè¿‡åº¦é¢„ç•™è€Œæµªè´¹äº†60%-80%çš„å†…å­˜ã€?
 
-ÎªÁË½â¾öÕâ¸öÎÊÌâ£¬ÒýÈëÁË PagedAttention£¬Ò»ÖÖÊÜ´«Í³²Ù×÷ÏµÍ³**ÐéÄâÄÚ´æ**ºÍ**·ÖÒ³**¸ÅÄîÆô·¢µÄ×¢ÒâÁ¦Ëã·¨¡£
-- Óë´«Í³×¢ÒâÁ¦Ëã·¨²»Í¬£¬PagedAttention ÔÊÐí½«**Á¬ÐøµÄ¼üºÍÖµ´æ´¢ÔÚ·ÇÁ¬ÐøµÄÄÚ´æ¿Õ¼ä**ÖÐ¡£
+ä¸ºäº†è§£å†³è¿™ä¸ªé—®é¢˜ï¼Œå¼•å…¥äº† PagedAttentionï¼Œä¸€ç§å—ä¼ ç»Ÿæ“ä½œç³»ç»Ÿ**è™šæ‹Ÿå†…å­˜**å’?**åˆ†é¡µ**æ¦‚å¿µå¯å‘çš„æ³¨æ„åŠ›ç®—æ³•ã€?
+- ä¸Žä¼ ç»Ÿæ³¨æ„åŠ›ç®—æ³•ä¸åŒï¼ŒPagedAttention å…è®¸å°?**è¿žç»­çš„é”®å’Œå€¼å­˜å‚¨åœ¨éžè¿žç»­çš„å†…å­˜ç©ºé—´**ä¸­ã€?
 
-PagedAttention ½«Ã¿¸öÐòÁÐµÄ KV »º´æ·Ö³É¶à¸ö¿é£¬Ã¿¸ö¿é°üº¬¹Ì¶¨ÊýÁ¿µÄ±ê¼ÇµÄ¼üºÍÖµ¡£
-- ÔÚ×¢ÒâÁ¦¼ÆËã¹ý³ÌÖÐ£¬PagedAttention Kernel¸ßÐ§µØÊ¶±ðºÍ»ñÈ¡ÕâÐ©¿é£¬²ÉÓÃ²¢ÐÐµÄ·½Ê½¼ÓËÙ¼ÆËã¡££¨ºÍByteTransformerµÄË¼ÏëÓÐµãÏñ£©
+PagedAttention å°†æ¯ä¸ªåºåˆ—çš„ KV ç¼“å­˜åˆ†æˆå¤šä¸ªå—ï¼Œæ¯ä¸ªå—åŒ…å«å›ºå®šæ•°é‡çš„æ ‡è®°çš„é”®å’Œå€¼ã€?
+- åœ¨æ³¨æ„åŠ›è®¡ç®—è¿‡ç¨‹ä¸­ï¼ŒPagedAttention Kernelé«˜æ•ˆåœ°è¯†åˆ«å’ŒèŽ·å–è¿™äº›å—ï¼Œé‡‡ç”¨å¹¶è¡Œçš„æ–¹å¼åŠ é€Ÿè®¡ç®—ã€‚ï¼ˆå’ŒByteTransformerçš„æ€æƒ³æœ‰ç‚¹åƒï¼‰
 
-[vLLM Ô­ÀíÏê½â](https://mp.weixin.qq.com/s/FFcZ1c_a3Ua0vLIj3DGaCQ)
+[vLLM åŽŸç†è¯¦è§£](https://mp.weixin.qq.com/s/FFcZ1c_a3Ua0vLIj3DGaCQ)
 
 
 #### 2023.7.4 FasterTransfomer
 
-¡¾2023-7-4¡¿[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) ÊÇ NVIDIA ¸ß¶ÈÓÅ»¯µÄ Transformer Ä£ÐÍ¿â£¬ÔÚÉú³ÉÊ±´ïµ½ **2.5±¶**µÄËÙ¶È£¬Ïê¼û [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
+ã€?2023-7-4ã€‘[FasterTransfomer](https://github.com/NVIDIA/FasterTransformer) æ˜? NVIDIA é«˜åº¦ä¼˜åŒ–çš? Transformer æ¨¡åž‹åº“ï¼Œåœ¨ç”Ÿæˆæ—¶è¾¾åˆ° **2.5å€?**çš„é€Ÿåº¦ï¼Œè¯¦è§? [Inference with FasterTransformer](https://github.com/THUDM/GLM-130B/blob/main/docs/inference-with-fastertransformer.md) 
 
 #### MHA -> DCMHA
 
 KAN
 
-¡¾2024-5-25¡¿[ICML2024¸ß·ÖÂÛÎÄ£¡´óÄ£ÐÍ¼ÆËãÐ§ÂÊ±©ÕÇÖÁ200%](https://mp.weixin.qq.com/s/8650CfLSSRUPfiYUTakkNQ)
+ã€?2024-5-25ã€‘[ICML2024é«˜åˆ†è®ºæ–‡ï¼å¤§æ¨¡åž‹è®¡ç®—æ•ˆçŽ‡æš´æ¶¨è‡?200%](https://mp.weixin.qq.com/s/8650CfLSSRUPfiYUTakkNQ)
 
-KANÍ»È»±¬»ð£¬³ÉÎª¿ÉÒÔÌæ´úMLPµÄÒ»ÖÖÈ«ÐÂÉñ¾­ÍøÂç¼Ü¹¹£¬200¸ö²ÎÊý¶¥30Íò²ÎÊý£»¶øÇÒ£¬GPT-4oµÄÉú³ÉËÙ¶ÈÒ²ÊÇ¾ªÑÞÁËÒ»ÖÚ´óÄ£ÐÍ°®ºÃÕß¡£
+KANçªç„¶çˆ†ç«ï¼Œæˆä¸ºå¯ä»¥æ›¿ä»£MLPçš„ä¸€ç§å…¨æ–°ç¥žç»ç½‘ç»œæž¶æž„ï¼Œ200ä¸ªå‚æ•°é¡¶30ä¸‡å‚æ•°ï¼›è€Œä¸”ï¼ŒGPT-4oçš„ç”Ÿæˆé€Ÿåº¦ä¹Ÿæ˜¯æƒŠè‰³äº†ä¸€ä¼—å¤§æ¨¡åž‹çˆ±å¥½è€…ã€?
 
-´óÄ£ÐÍµÄ¼ÆËãÐ§ÂÊºÜÖØÒª£¬ÌáÉý´óÄ£ÐÍµÄtokensÉú³ÉËÙ¶ÈÊÇºÜ¹Ø¼üµÄÒ»»·¡£
+å¤§æ¨¡åž‹çš„è®¡ç®—æ•ˆçŽ‡å¾ˆé‡è¦ï¼Œæå‡å¤§æ¨¡åž‹çš„tokensç”Ÿæˆé€Ÿåº¦æ˜¯å¾ˆå…³é”®çš„ä¸€çŽ¯ã€?
 
-¶øÌáÉý´óÄ£ÐÍµÄtokensÉú³ÉËÙ¶È£¬³ýÁË»¨Ç®Éý¼¶GPUÍâ£¬¸ü³¤Ð§µÄ×ö·¨ÊÇ¸ÄÉÆTransformerÄ£ÐÍ¼Ü¹¹µÄ¼ÆËãÐ§ÂÊ¡£
+è€Œæå‡å¤§æ¨¡åž‹çš„tokensç”Ÿæˆé€Ÿåº¦ï¼Œé™¤äº†èŠ±é’±å‡çº§GPUå¤–ï¼Œæ›´é•¿æ•ˆçš„åšæ³•æ˜¯æ”¹å–„Transformeræ¨¡åž‹æž¶æž„çš„è®¡ç®—æ•ˆçŽ‡ã€?
 
-²ÊÔÆ¿Æ¼¼ ¶ÔTransformer¼ÆËã×îºÄÊ±µÄºËÐÄ×é¼þ¡ª¡ª**¶àÍ·×¢ÒâÁ¦Ä£¿é**£¨MHA£©ÏÂÊÖ£¬½«Transformer¼ÆËãÐÔÄÜÌáÉýÁËÓÐ2±¶Ö®¸ß¡£
-- ÂÛÎÄ±êÌâ£º[Improving Transformers with Dynamically Composable Multi-Head Attention](https://arxiv.org/abs/2405.08553)
-- ¿ªÔ´ÏîÄ¿µØÖ·£º[DCFormer](https://github.com/Caiyun-AI/DCFormer)
+å½©äº‘ç§‘æŠ€ å¯¹Transformerè®¡ç®—æœ€è€—æ—¶çš„æ ¸å¿ƒç»„ä»¶â€”â€?**å¤šå¤´æ³¨æ„åŠ›æ¨¡å?**ï¼ˆMHAï¼‰ä¸‹æ‰‹ï¼Œå°†Transformerè®¡ç®—æ€§èƒ½æå‡äº†æœ‰2å€ä¹‹é«˜ã€?
+- è®ºæ–‡æ ‡é¢˜ï¼š[Improving Transformers with Dynamically Composable Multi-Head Attention](https://arxiv.org/abs/2405.08553)
+- å¼€æºé¡¹ç›®åœ°å€ï¼š[DCFormer](https://github.com/Caiyun-AI/DCFormer)
 
-GithubÉÏÒÑ¿ªÔ´ÕâÏî¹¤×÷µÄ´úÂë¡¢Ä£ÐÍºÍÑµÁ·Êý¾Ý¼¯¡£
+Githubä¸Šå·²å¼€æºè¿™é¡¹å·¥ä½œçš„ä»£ç ã€æ¨¡åž‹å’Œè®­ç»ƒæ•°æ®é›†ã€?
 
-³ÐÔØTransformer¼ÆËãÁ¿µÄºËÐÄÄ£¿éÊÇ**¶àÍ·×¢ÒâÁ¦**£¨MHA£©Ä£¿é£¬Î»ÖÃ£¨position=i£©ÉÏµÄÃ¿Ò»¸ö**×¢ÒâÁ¦Í·**£¨attention head£©»áÓëÈ«²¿Î»ÖÃÉÏµÄ×¢ÒâÁ¦Í·¼ÆËã³öÒ»¸ö×¢ÒâÁ¦·Ö²¼¾ØÕó¡£
-- Õâ¸ö¹ý³ÌÖÐ£¬Î»ÖÃ i ÉÏµÄ¸÷¸ö×¢ÒâÁ¦Í·¼ÆËã³öÀ´µÄ×¢ÒâÁ¦·Ö²¼¾ØÕóÊÇÏà»¥¶ÀÁ¢µÄ¡£
+æ‰¿è½½Transformerè®¡ç®—é‡çš„æ ¸å¿ƒæ¨¡å—æ˜?**å¤šå¤´æ³¨æ„åŠ?**ï¼ˆMHAï¼‰æ¨¡å—ï¼Œä½ç½®ï¼ˆposition=iï¼‰ä¸Šçš„æ¯ä¸€ä¸?**æ³¨æ„åŠ›å¤´**ï¼ˆattention headï¼‰ä¼šä¸Žå…¨éƒ¨ä½ç½®ä¸Šçš„æ³¨æ„åŠ›å¤´è®¡ç®—å‡ºä¸€ä¸ªæ³¨æ„åŠ›åˆ†å¸ƒçŸ©é˜µã€?
+- è¿™ä¸ªè¿‡ç¨‹ä¸­ï¼Œä½ç½® i ä¸Šçš„å„ä¸ªæ³¨æ„åŠ›å¤´è®¡ç®—å‡ºæ¥çš„æ³¨æ„åŠ›åˆ†å¸ƒçŸ©é˜µæ˜¯ç›¸äº’ç‹¬ç«‹çš„ã€?
 
-ÕâÖÖ¶àÍ·¶ÀÁ¢¼ÆËãµÄ»úÖÆ»á´øÀ´Á½´óÎÊÌâ£º
-- µÍÖÈÆ¿¾±£¨Low-rank Bottleneck£©£º×¢ÒâÁ¦¾ØÕóµÄÖÈ½ÏµÍ£¬Ä£ÐÍµÄ±í´ïÄÜÁ¦ÊÜÏÞ
-- Í·ÈßÓà£¨Head Redundancy£©£º²»Í¬µÄ×¢ÒâÁ¦Í·¿ÉÄÜ»áÑ§Ï°µ½ÏàËÆµÄÄ£Ê½£¬µ¼ÖÂÈßÓà
+è¿™ç§å¤šå¤´ç‹¬ç«‹è®¡ç®—çš„æœºåˆ¶ä¼šå¸¦æ¥ä¸¤å¤§é—®é¢˜ï¼?
+- ä½Žç§©ç“¶é¢ˆï¼ˆLow-rank Bottleneckï¼‰ï¼šæ³¨æ„åŠ›çŸ©é˜µçš„ç§©è¾ƒä½Žï¼Œæ¨¡åž‹çš„è¡¨è¾¾èƒ½åŠ›å—é™?
+- å¤´å†—ä½™ï¼ˆHead Redundancyï¼‰ï¼šä¸åŒçš„æ³¨æ„åŠ›å¤´å¯èƒ½ä¼šå­¦ä¹ åˆ°ç›¸ä¼¼çš„æ¨¡å¼ï¼Œå¯¼è‡´å†—ä½?
 
-Òò´Ë£¬²ÊÔÆ¿Æ¼¼Ìá³öÁËÒ»ÖÖ½Ð**¶¯Ì¬¿É×éºÏ**¶àÍ·×¢ÒâÁ¦£¨DCMHA£©µÄ»úÖÆ£¬DCMHA Í¨¹ýÒ»¸öºËÐÄµÄ×éºÏº¯Êý£¨Compose function£©£¬ÒÔÊäÈëÒÀÀµµÄ·½Ê½×ª»»×¢ÒâÁ¦µÃ·ÖºÍÈ¨ÖØ¾ØÕó£¬´Ó¶ø¶¯Ì¬µØ×éºÏ×¢ÒâÁ¦Í·£¬½â¾öÁË´«Í³MHAÄ£¿éÖÐ´æÔÚµÄÉÏÊöµÍÖÈÆ¿¾±ºÍÍ·ÈßÓàÎÊÌâ¡£
+å› æ­¤ï¼Œå½©äº‘ç§‘æŠ€æå‡ºäº†ä¸€ç§å«**åŠ¨æ€å¯ç»„åˆ**å¤šå¤´æ³¨æ„åŠ›ï¼ˆDCMHAï¼‰çš„æœºåˆ¶ï¼ŒDCMHA é€šè¿‡ä¸€ä¸ªæ ¸å¿ƒçš„ç»„åˆå‡½æ•°ï¼ˆCompose functionï¼‰ï¼Œä»¥è¾“å…¥ä¾èµ–çš„æ–¹å¼è½¬æ¢æ³¨æ„åŠ›å¾—åˆ†å’Œæƒé‡çŸ©é˜µï¼Œä»Žè€ŒåŠ¨æ€åœ°ç»„åˆæ³¨æ„åŠ›å¤´ï¼Œè§£å†³äº†ä¼ ç»ŸMHAæ¨¡å—ä¸­å­˜åœ¨çš„ä¸Šè¿°ä½Žç§©ç“¶é¢ˆå’Œå¤´å†—ä½™é—®é¢˜ã€?
 
-DCMHAÖ¼ÔÚÌá¸ßÄ£ÐÍµÄ±í´ïÄÜÁ¦£¬Í¬Ê±±£³Ö²ÎÊýºÍ¼ÆËãÐ§ÂÊ£¬¿ÉÒÔ×÷ÎªÈÎºÎTransformer¼Ü¹¹ÖÐMHAÄ£¿éµÄ¼´²å¼´ÓÃÌæ´úÆ·£¬ÒÔ»ñµÃÏàÓ¦µÄDCFormerÄ£ÐÍ¡£
+DCMHAæ—¨åœ¨æé«˜æ¨¡åž‹çš„è¡¨è¾¾èƒ½åŠ›ï¼ŒåŒæ—¶ä¿æŒå‚æ•°å’Œè®¡ç®—æ•ˆçŽ‡ï¼Œå¯ä»¥ä½œä¸ºä»»ä½•Transformeræž¶æž„ä¸­MHAæ¨¡å—çš„å³æ’å³ç”¨æ›¿ä»£å“ï¼Œä»¥èŽ·å¾—ç›¸åº”çš„DCFormeræ¨¡åž‹ã€?
 
-DCMHA»úÖÆµÄºËÐÄÊÇÒýÈëµÄComposeº¯Êý¡£Õâ¸öComposeº¯Êý¿ÉÒÔÊÓÎªÒ»¸ö¿ÉÑ§Ï°µÄ²ÎÊý£¬Ëü¿ÉÒÔ¶¯Ì¬µØ×éºÏ²»Í¬Í·µÄQK¾ØÕóºÍVO¾ØÕó£¬ÄÚ²¿Í¨¹ýÒ»ÏµÁÐ±ä»»À´·Ö½âºÍÖØ¹¹×¢ÒâÁ¦ÏòÁ¿¡£¿ÉÒÔ½üËÆÀí½âÎª£º¾­¹ý×éºÏÓ³Éäºó£¬H¸ö»ù´¡µÄ×¢ÒâÁ¦Í·¿É×éºÏ³É¶àÖÁH*H¸ö×¢ÒâÁ¦Í·¡£
+DCMHAæœºåˆ¶çš„æ ¸å¿ƒæ˜¯å¼•å…¥çš„Composeå‡½æ•°ã€‚è¿™ä¸ªComposeå‡½æ•°å¯ä»¥è§†ä¸ºä¸€ä¸ªå¯å­¦ä¹ çš„å‚æ•°ï¼Œå®ƒå¯ä»¥åŠ¨æ€åœ°ç»„åˆä¸åŒå¤´çš„QKçŸ©é˜µå’ŒVOçŸ©é˜µï¼Œå†…éƒ¨é€šè¿‡ä¸€ç³»åˆ—å˜æ¢æ¥åˆ†è§£å’Œé‡æž„æ³¨æ„åŠ›å‘é‡ã€‚å¯ä»¥è¿‘ä¼¼ç†è§£ä¸ºï¼šç»è¿‡ç»„åˆæ˜ å°„åŽï¼ŒHä¸ªåŸºç¡€çš„æ³¨æ„åŠ›å¤´å¯ç»„åˆæˆå¤šè‡³H*Hä¸ªæ³¨æ„åŠ›å¤´ã€?
 
-¸ù¾ÝÊäÈëÊý¾Ýµ÷ÕûÍ·Ö®¼äµÄ½»»¥·½Ê½
-- Ò»ÊÇ´òÆÆÍ·µÄ¶ÀÁ¢ÐÔ
-- ¶þÊÇ¿ÉÒÔ¸ù¾ÝÊäÈëÊý¾Ý¶¯Ì¬×éºÏ
+æ ¹æ®è¾“å…¥æ•°æ®è°ƒæ•´å¤´ä¹‹é—´çš„äº¤äº’æ–¹å¼
+- ä¸€æ˜¯æ‰“ç ´å¤´çš„ç‹¬ç«‹æ€?
+- äºŒæ˜¯å¯ä»¥æ ¹æ®è¾“å…¥æ•°æ®åŠ¨æ€ç»„å?
 
-´Ó¶ø¿ÉÒÔÔöÇ¿Ä£ÐÍµÄ±í´ïÄÜÁ¦¡£
+ä»Žè€Œå¯ä»¥å¢žå¼ºæ¨¡åž‹çš„è¡¨è¾¾èƒ½åŠ›ã€?
 
-Ð§¹û
+æ•ˆæžœ
 
-ÂÛÎÄÍ¨¹ýÊµÑé±íÃ÷£¬ `DCFormer` ÔÚ²»Í¬µÄ¼Ü¹¹ºÍÄ£ÐÍ¹æÄ£ÏÂ£¬ÔÚÓïÑÔ½¨Ä£·½ÃæÏÔÖøÓÅÓÚTransformer£¬Óë¼ÆËãÁ¿Ôö¼Ó1.7±¶ÖÁ2±¶µÄÄ£ÐÍÐÔÄÜÏàÆ¥Åä¡£
+è®ºæ–‡é€šè¿‡å®žéªŒè¡¨æ˜Žï¼? `DCFormer` åœ¨ä¸åŒçš„æž¶æž„å’Œæ¨¡åž‹è§„æ¨¡ä¸‹ï¼Œåœ¨è¯­è¨€å»ºæ¨¡æ–¹é¢æ˜¾è‘—ä¼˜äºŽTransformerï¼Œä¸Žè®¡ç®—é‡å¢žåŠ?1.7å€è‡³2å€çš„æ¨¡åž‹æ€§èƒ½ç›¸åŒ¹é…ã€?
 
-DCFormer¿ÉÌá¸ß70%~100%µÄÄ£ÐÍ¼ÆËãÐ§ÂÊ
-- DCFormer ÔÚ²»Í¬²ÎÊý¹æÄ£ÏÂ£¨405Mµ½6.9B²ÎÊý£©£¬¶Ô Transformer ºÍ Transformer++ Ä£ÐÍµÄÐÔÄÜÌáÉýÏÔÖø
-- DCPythia-6.9B ÔÚÔ¤ÑµÁ·À§»ó¶ÈºÍÏÂÓÎÈÎÎñÆÀ¹À·½ÃæÓÅÓÚ¿ªÔ´µÄPythia-12B¡£
-- ImageNet-1KÊý¾Ý¼¯ÉÏµÄÊµÑéÑéÖ¤ÁËDCMHAÔÚ·ÇÓïÑÔÈÎÎñÖÐÒ²ÊÇÓÐÐ§ÐÔµÄ¡£
+DCFormerå¯æé«?70%~100%çš„æ¨¡åž‹è®¡ç®—æ•ˆçŽ?
+- DCFormer åœ¨ä¸åŒå‚æ•°è§„æ¨¡ä¸‹ï¼?405Måˆ?6.9Bå‚æ•°ï¼‰ï¼Œå¯? Transformer å’? Transformer++ æ¨¡åž‹çš„æ€§èƒ½æå‡æ˜¾è‘—
+- DCPythia-6.9B åœ¨é¢„è®­ç»ƒå›°æƒ‘åº¦å’Œä¸‹æ¸¸ä»»åŠ¡è¯„ä¼°æ–¹é¢ä¼˜äºŽå¼€æºçš„Pythia-12Bã€?
+- ImageNet-1Kæ•°æ®é›†ä¸Šçš„å®žéªŒéªŒè¯äº†DCMHAåœ¨éžè¯­è¨€ä»»åŠ¡ä¸­ä¹Ÿæ˜¯æœ‰æ•ˆæ€§çš„ã€?
 
-ÏàÍ¬µÄ²ÎÊýÁ¿ÏÂ£¬Ê¹ÓÃDCFormer½«¾ß±¸¸üÇ¿µÄÄ£ÐÍ±í´ïÄÜÁ¦£»ÓÃ¸üÉÙµÄ²ÎÊýÁ¿£¬ÓµÓÐÏàÍ¬µÄÄ£ÐÍ±íÊ¾Ð§¹û¡£
+ç›¸åŒçš„å‚æ•°é‡ä¸‹ï¼Œä½¿ç”¨DCFormerå°†å…·å¤‡æ›´å¼ºçš„æ¨¡åž‹è¡¨è¾¾èƒ½åŠ›ï¼›ç”¨æ›´å°‘çš„å‚æ•°é‡ï¼Œæ‹¥æœ‰ç›¸åŒçš„æ¨¡åž‹è¡¨ç¤ºæ•ˆæžœã€?
 
-DCFormerÔÚ²»Í¬µÄ¼Ü¹¹ºÍÄ£ÐÍ¹æÄ£ÏÂ£¬ÔÚÓïÑÔ½¨Ä£·½ÃæÏÔÖøÓÅÓÚTransformer£¬Óë¼ÆËãÁ¿Ôö¼Ó1.7±¶ÖÁ2±¶µÄÄ£ÐÍÐÔÄÜÏàÆ¥Åä¡£
-
-
-### ³¤¶ÈÏÞÖÆ
-
-ÎÄ±¾³¤¶ÈÒ»Ö±ÊÇ transformer µÄÓ²ÉË¡£
-- ²»Í¬ÓÚ RNN£¬transformer ÔÚÑµÁ·Ê±±ØÐë¿¨ÔÚÒ»¸ö**×î´ó³¤¶È**ÉÏ£¬Õâ½«µ¼ÖÂÑµÁ·ºÃµÄÄ£ÐÍÎÞ·¨ÔÚÒ»¸öÓëÑµÁ·Ê±µÄ³¤¶ÈÏà²î½ÏÔ¶µÄ¾ä×ÓÉÏÈ¡µÃ½ÏºÃµÄÍÆÀí½á¹û¡£
-
-Transformer ÖÐ£¬ÓÉÓÚ token ºÍ token Ö®¼äÊÇÃ»ÓÐË³ÐòÖ®·ÖµÄ. Òò´Ë£¬Í¨³£ÔÚÊäÈëÌí¼Ó Position Embedding À´±íÕ÷Ã¿Ò»¸ö token ÔÚ¾ä×ÓÖÐµÄÎ»ÖÃ¡£
-
-Position Embedding µÄÈçºÎÑ¡ÔñÊµÔÚÊÇÒ»¸öÄÑÌâ£¬Í¨³£ÓÐÒÔÏÂ¼¸ÖÖ£º
-- ¿ÉÑ§Ï°µÄ²ÎÊý£ºÕâÖÖ±È½Ï³£¼û£¬BRET ÖÐ¾ÍÊÇÕâÃ´×öµÄ£¬µ«ÕâÖÖ·½Ê½±×¶ËºÜÃ÷ÏÔ£¬ÒòÎªÎ»ÖÃÐÅÏ¢ÊÇÑ§Ï°³öÀ´µÄ£¬ËùÒÔÈç¹ûÑµÁ·¼¯ÀïÃæÃ»ÓÐ¼û¹ý¸²¸ÇÄ³¸ö³¤¶È£¬ÍÆÀíµÄÐ§¹û¾ÍÎÞ·¨µÃµ½±£Ö¤¡£
-- ÕýÏÒÎ»ÖÃ±àÂë£ºÕâÊÇÔçÆÚ transformer Ê¹ÓÃµÄÎ»ÖÃ±àÂë£¬ÂÛÎÄÖÐÓÐ³¢ÊÔ×öÊµÑé£¬ÕâÖÖ±àÂë»áËæ×ÅÑµÁ·/Ô¤²âÊ±µÄÎÄ±¾³¤¶È²îÒìÔö´ó£¬£¨³¬¹ý 50 ¸ötoken ºó£©ÐÔÄÜÏÔÖøÏÂ½µ¡£
-- Ðý×ª±àÂë£ºÂÛÎÄÖÐÌáµ½ÕâÖÖ·½Ê½ÊÇ±È½Ï²»´íµÄ£¬Ö»²»¹ýÒòÆäÔÚÃ¿Ò»²ã¶¼Òª×öÒ»´ÎÏòÁ¿Ðý×ª£¬´Ó¶ø½µµÍÑµÁ·ºÍÍÆÀíµÄËÙ¶È¡£
-
-transformer ÕâÀàÄ£ÐÍµÄ Ê±¼ä¸´ÔÓ¶È¡¢ÄÚ´æÊ¹ÓÃ¸´ÔÓ¶È¶¼ÊÇ n^2£¨nÎªÐòÁÐ³¤¶È£©
-- µ±ÐòÁÐ³¤¶È³¬¹ý 512 Ê±£¬Ä£ÐÍ¶ÔËãÁ¦µÄÒªÇó½«»á´ó·ùÌá¸ß¡£
-
-×î½üÒ»Ð©ÎÄÕÂ Longformer, Performer, Reformer, Clustered attention ¶¼ÊÔÍ¼Í¨¹ý½üËÆÈ«×¢ÒâÁ¦»úÖÆ¸ÄÉÆ¸ÃÎÊÌâ¡£
-
-×¼BERT×¢ÒâÁ¦»úÖÆÊ±£¬ÎÊÌâ¿ÉÄÜÓÐ£º
-- Ã¿¸ö´ÊÓëÆäËûËùÓÐ´Ê¶¼ÓÐ¹ØÏµÂð£¿
-- ÎªÊ²Ã´Ã¿¸ö´ÊµÄ×¢ÒâÁ¦²»½ö½ö¼¯ÖÐÔÚ×îÖØÒªµÄ´Ê
-- ÈçºÎÖªµÀÄÄÐ©´ÊÊÇÖØÒªµÄ
-- ÈçºÎÓÐÐ§µÄÈÃ×¢ÒâÁ¦½ö¿¼ÂÇ¸ö±ðÒ»Ð©´Ê
+DCFormeråœ¨ä¸åŒçš„æž¶æž„å’Œæ¨¡åž‹è§„æ¨¡ä¸‹ï¼Œåœ¨è¯­è¨€å»ºæ¨¡æ–¹é¢æ˜¾è‘—ä¼˜äºŽTransformerï¼Œä¸Žè®¡ç®—é‡å¢žåŠ?1.7å€è‡³2å€çš„æ¨¡åž‹æ€§èƒ½ç›¸åŒ¹é…ã€?
 
 
+### é•¿åº¦é™åˆ¶
 
-#### ¡¾2020-12-2¡¿AllenAI Longformer
+æ–‡æœ¬é•¿åº¦ä¸€ç›´æ˜¯ transformer çš„ç¡¬ä¼¤ã€?
+- ä¸åŒäº? RNNï¼Œtransformer åœ¨è®­ç»ƒæ—¶å¿…é¡»å¡åœ¨ä¸€ä¸?**æœ€å¤§é•¿åº?**ä¸Šï¼Œè¿™å°†å¯¼è‡´è®­ç»ƒå¥½çš„æ¨¡åž‹æ— æ³•åœ¨ä¸€ä¸ªä¸Žè®­ç»ƒæ—¶çš„é•¿åº¦ç›¸å·®è¾ƒè¿œçš„å¥å­ä¸Šå–å¾—è¾ƒå¥½çš„æŽ¨ç†ç»“æžœã€?
 
-¡¾2020-12-2¡¿Allen AI ÍÆ³ö Longformer
-- ½éÉÜ [Longformer: Transformer ¸Ä½ø°æ£¬¿É´¦Àí½Ï³¤µÄÐòÁÐ](https://ai-scholar.tech/zh/articles/bert/longformer)
-- ÂÛÎÄ: [Longformer: The Long-Document Transformer](https://arxiv.org/pdf/2004.05150.pdf)
+Transformer ä¸­ï¼Œç”±äºŽ token å’? token ä¹‹é—´æ˜¯æ²¡æœ‰é¡ºåºä¹‹åˆ†çš„. å› æ­¤ï¼Œé€šå¸¸åœ¨è¾“å…¥æ·»åŠ? Position Embedding æ¥è¡¨å¾æ¯ä¸€ä¸? token åœ¨å¥å­ä¸­çš„ä½ç½®ã€?
+
+Position Embedding çš„å¦‚ä½•é€‰æ‹©å®žåœ¨æ˜¯ä¸€ä¸ªéš¾é¢˜ï¼Œé€šå¸¸æœ‰ä»¥ä¸‹å‡ ç§ï¼š
+- å¯å­¦ä¹ çš„å‚æ•°ï¼šè¿™ç§æ¯”è¾ƒå¸¸è§ï¼ŒBRET ä¸­å°±æ˜¯è¿™ä¹ˆåšçš„ï¼Œä½†è¿™ç§æ–¹å¼å¼Šç«¯å¾ˆæ˜Žæ˜¾ï¼Œå› ä¸ºä½ç½®ä¿¡æ¯æ˜¯å­¦ä¹ å‡ºæ¥çš„ï¼Œæ‰€ä»¥å¦‚æžœè®­ç»ƒé›†é‡Œé¢æ²¡æœ‰è§è¿‡è¦†ç›–æŸä¸ªé•¿åº¦ï¼ŒæŽ¨ç†çš„æ•ˆæžœå°±æ— æ³•å¾—åˆ°ä¿è¯ã€?
+- æ­£å¼¦ä½ç½®ç¼–ç ï¼šè¿™æ˜¯æ—©æœ? transformer ä½¿ç”¨çš„ä½ç½®ç¼–ç ï¼Œè®ºæ–‡ä¸­æœ‰å°è¯•åšå®žéªŒï¼Œè¿™ç§ç¼–ç ä¼šéšç€è®­ç»ƒ/é¢„æµ‹æ—¶çš„æ–‡æœ¬é•¿åº¦å·®å¼‚å¢žå¤§ï¼Œï¼ˆè¶…è¿‡ 50 ä¸ªtoken åŽï¼‰æ€§èƒ½æ˜¾è‘—ä¸‹é™ã€?
+- æ—‹è½¬ç¼–ç ï¼šè®ºæ–‡ä¸­æåˆ°è¿™ç§æ–¹å¼æ˜¯æ¯”è¾ƒä¸é”™çš„ï¼Œåªä¸è¿‡å› å…¶åœ¨æ¯ä¸€å±‚éƒ½è¦åšä¸€æ¬¡å‘é‡æ—‹è½¬ï¼Œä»Žè€Œé™ä½Žè®­ç»ƒå’ŒæŽ¨ç†çš„é€Ÿåº¦ã€?
+
+transformer è¿™ç±»æ¨¡åž‹çš? æ—¶é—´å¤æ‚åº¦ã€å†…å­˜ä½¿ç”¨å¤æ‚åº¦éƒ½æ˜¯ n^2ï¼ˆnä¸ºåºåˆ—é•¿åº¦ï¼‰
+- å½“åºåˆ—é•¿åº¦è¶…è¿? 512 æ—¶ï¼Œæ¨¡åž‹å¯¹ç®—åŠ›çš„è¦æ±‚å°†ä¼šå¤§å¹…æé«˜ã€?
+
+æœ€è¿‘ä¸€äº›æ–‡ç«? Longformer, Performer, Reformer, Clustered attention éƒ½è¯•å›¾é€šè¿‡è¿‘ä¼¼å…¨æ³¨æ„åŠ›æœºåˆ¶æ”¹å–„è¯¥é—®é¢˜ã€?
+
+å‡†BERTæ³¨æ„åŠ›æœºåˆ¶æ—¶ï¼Œé—®é¢˜å¯èƒ½æœ‰ï¼?
+- æ¯ä¸ªè¯ä¸Žå…¶ä»–æ‰€æœ‰è¯éƒ½æœ‰å…³ç³»å—ï¼Ÿ
+- ä¸ºä»€ä¹ˆæ¯ä¸ªè¯çš„æ³¨æ„åŠ›ä¸ä»…ä»…é›†ä¸­åœ¨æœ€é‡è¦çš„è¯
+- å¦‚ä½•çŸ¥é“å“ªäº›è¯æ˜¯é‡è¦çš?
+- å¦‚ä½•æœ‰æ•ˆçš„è®©æ³¨æ„åŠ›ä»…è€ƒè™‘ä¸ªåˆ«ä¸€äº›è¯
+
+
+
+#### ã€?2020-12-2ã€‘AllenAI Longformer
+
+ã€?2020-12-2ã€‘Allen AI æŽ¨å‡º Longformer
+- ä»‹ç» [Longformer: Transformer æ”¹è¿›ç‰ˆï¼Œå¯å¤„ç†è¾ƒé•¿çš„åºåˆ—](https://ai-scholar.tech/zh/articles/bert/longformer)
+- è®ºæ–‡: [Longformer: The Long-Document Transformer](https://arxiv.org/pdf/2004.05150.pdf)
 - huggingface [longformer](https://huggingface.co/docs/transformers/model_doc/longformer)
 
-Transformer ¼ÆËã¸´ÔÓ¶ÈËæÊäÈëÐòÁÐµÄÔö¼Ó¶ø³Ê¶þ´ÎÇúÏßÔö¼Ó, Ê±¼äºÍÄÚ´æÕ¼ÓÃ·Ç³£´ó
-- Ô­Òò£ºTransformer Ö÷Òª²¿·Ö -- **Ëõ·Åµã»ý×Ô×¢ÒâÁ¦**£¨Scaled Dot-Product Self-Attention£©
-- ×Ô×¢ÒâÁ¦µÄ¼ÆËã¸´ÔÓ¶ÈÎª `O(N^2)` £¬µ±°üº¬³¤¾äÊ±£¬ÄÚ´æÊ¹ÓÃÁ¿»áËæ×ÅÊäÈëÁ¿µÄÔö¼Ó¶ø³Ê4±¶Ôö³¤¡£
+Transformer è®¡ç®—å¤æ‚åº¦éšè¾“å…¥åºåˆ—çš„å¢žåŠ è€Œå‘ˆäºŒæ¬¡æ›²çº¿å¢žåŠ , æ—¶é—´å’Œå†…å­˜å ç”¨éžå¸¸å¤§
+- åŽŸå› ï¼šTransformer ä¸»è¦éƒ¨åˆ† -- **ç¼©æ”¾ç‚¹ç§¯è‡ªæ³¨æ„åŠ›**ï¼ˆScaled Dot-Product Self-Attentionï¼?
+- è‡ªæ³¨æ„åŠ›çš„è®¡ç®—å¤æ‚åº¦ä¸? `O(N^2)` ï¼Œå½“åŒ…å«é•¿å¥æ—¶ï¼Œå†…å­˜ä½¿ç”¨é‡ä¼šéšç€è¾“å…¥é‡çš„å¢žåŠ è€Œå‘ˆ4å€å¢žé•¿ã€?
 
-Longformer ÊÇ»ùÓÚ Transformer µÄ¿ÉÀ©Õ¹Ä£ÐÍ£¬ÓÃÓÚ´¦Àí**³¤ÎÄµµ**£¬¿ÉÇáËÉÖ´ÐÐ¸÷ÖÖÎÄµµ¼¶ NLP ÈÎÎñ£¬¶øÎÞÐè¶Ô³¤ÊäÈë½øÐÐ·Ö¿é»òËõ¶Ì£¬Ò²ÎÞÐèÊ¹ÓÃ¸´ÔÓµÄ¼Ü¹¹À´×éºÏ¸÷¿éÐÅÏ¢¡£
+Longformer æ˜¯åŸºäº? Transformer çš„å¯æ‰©å±•æ¨¡åž‹ï¼Œç”¨äºŽå¤„ç?**é•¿æ–‡æ¡?**ï¼Œå¯è½»æ¾æ‰§è¡Œå„ç§æ–‡æ¡£çº? NLP ä»»åŠ¡ï¼Œè€Œæ— éœ€å¯¹é•¿è¾“å…¥è¿›è¡Œåˆ†å—æˆ–ç¼©çŸ­ï¼Œä¹Ÿæ— éœ€ä½¿ç”¨å¤æ‚çš„æž¶æž„æ¥ç»„åˆå„å—ä¿¡æ¯ã€?
 
-Longformer ½áºÏ±¾µØºÍÈ«¾ÖÐÅÏ¢£¬ÒÔ¼°ÈýÖÖ×¢ÒâÁ¦£¨»¬¶¯´°¿Ú×¢ÒâÁ¦¡¢·Å´ó»¬¶¯´°¿Ú×¢ÒâÁ¦ºÍÈ«¾Ö×¢ÒâÁ¦£©¡£´°¿Ú×¢ÒâºÍÈ«¾Ö×¢Òâ£©¡£
+Longformer ç»“åˆæœ¬åœ°å’Œå…¨å±€ä¿¡æ¯ï¼Œä»¥åŠä¸‰ç§æ³¨æ„åŠ›ï¼ˆæ»‘åŠ¨çª—å£æ³¨æ„åŠ›ã€æ”¾å¤§æ»‘åŠ¨çª—å£æ³¨æ„åŠ›å’Œå…¨å±€æ³¨æ„åŠ›ï¼‰ã€‚çª—å£æ³¨æ„å’Œå…¨å±€æ³¨æ„ï¼‰ã€?
 - ![](https://aisholar.s3.ap-northeast-1.amazonaws.com/media/August2023/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88_2023-08-05_7.16.49.png)
 
-Ð§¹û
-- Longformer »¹ÔÚ text8 ºÍ enwik8 ÈÎÎñÖÐÈ¡µÃÁË×î¼ÑÐÔÄÜ¡£
-- Longformer ÔÚ³¤ÎÄµµ±íÏÖÒ»Ö±ÓÅÓÚ RoBERTa£¬²¢ÇÒÔÚÔ¤ÑµÁ·ºóµÄ WikiHop ºÍ TriviaQA ÈÎÎñÖÐ±íÏÖ×î¼Ñ¡£
+æ•ˆæžœ
+- Longformer è¿˜åœ¨ text8 å’? enwik8 ä»»åŠ¡ä¸­å–å¾—äº†æœ€ä½³æ€§èƒ½ã€?
+- Longformer åœ¨é•¿æ–‡æ¡£è¡¨çŽ°ä¸€ç›´ä¼˜äº? RoBERTaï¼Œå¹¶ä¸”åœ¨é¢„è®­ç»ƒåŽçš? WikiHop å’? TriviaQA ä»»åŠ¡ä¸­è¡¨çŽ°æœ€ä½³ã€?
 
-RoBERTa Ö»ÓÐ 512 ¸öÎ»ÖÃÇ¶Èë£¬Òò´ËÐèÒª¸´ÖÆ 8 ¸öÎ»ÖÃÇ¶ÈëÀ´ÈÝÄÉ 4096 ¸ö×Ö¡£¾¡¹ÜËüºÜ¼òµ¥£¬µ«¾Ý³ÆÈ´·Ç³£ÓÐÐ§£¬ÕâÏÔÈ»ÊÇÒòÎª¸´ÖÆÏû³ýÁË·ÖÇø±ß½ç¡£
+RoBERTa åªæœ‰ 512 ä¸ªä½ç½®åµŒå…¥ï¼Œå› æ­¤éœ€è¦å¤åˆ? 8 ä¸ªä½ç½®åµŒå…¥æ¥å®¹çº³ 4096 ä¸ªå­—ã€‚å°½ç®¡å®ƒå¾ˆç®€å•ï¼Œä½†æ®ç§°å´éžå¸¸æœ‰æ•ˆï¼Œè¿™æ˜¾ç„¶æ˜¯å› ä¸ºå¤åˆ¶æ¶ˆé™¤äº†åˆ†åŒºè¾¹ç•Œã€?
 
-#### ¡¾2021-1-8¡¿¹È¸è BigBird
-
-
-¡¾2021-1-8¡¿¹È¸èÍÆ³ö BigBird, »ùÓÚ**Ï¡Êè×¢ÒâÁ¦**µÄTransformer£¬½«»ùÓÚTransformerµÄÄ£ÐÍ£¨ÀýÈç BERT£©À©Õ¹µ½¸ü³¤µÄÐòÁÐ¡£
-- Æ½·½¼¶±ðµÄÒÀÀµ½µ³ÉÏßÐÔ
-- Í¬µÈÓ²¼þÌõ¼þÏÂ£¬³¤¶ÈÀ©³ä8±¶
-- ÂÛÎÄ£º[Big Bird: Transformers for Longer Sequences](https://arxiv.org/abs/2007.14062)
-- ´úÂë£º[bigbird](https://github.com/google-research/bigbird)
-
-¿ªÔ´ÖÐÎÄ bigbird Ô¤ÑµÁ·Ä£ÐÍ£¬´ÓtinyÖÁbase¹²5¸ö¼¶±ðÔ¤ÑµÁ·Ä£ÐÍ¡£¿É´Ó[huggingface hub](https://huggingface.co/models?language=zh&sort=downloads&search=bigbird)Ö±½ÓÏÂÔØÊ¹ÓÃ
-
-BigBird Ä£ÐÍÊµÏÖÁËÈýÖÖ×¢ÒâÁ¦»úÖÆ£º**Ëæ»ú×¢ÒâÁ¦**¡¢**´°¿Ú×¢ÒâÁ¦**ºÍ**È«¾Ö×¢ÒâÁ¦**£¬ÕâÓëLongFormer¼¸ºõÏàËÆ
-
-ÓëBERTÍ¬µÈ¼ÆËãÁ¦ÏÂ£¬¿É´¦ÀíÐòÁÐ³¤¶È´ïµ½4096¡£
-- ºÜ¶à³¤ÎÄ±¾ÐòÁÐµÄÈÎÎñÉÏ´ïµ½SOTAÐ§¹û£¬ÀýÈç£º³¤ÎÄ±¾ÕªÒª¡¢³¤ÎÄ±¾ÎÊ´ð¡£ 
-- BigBird RoBERTa Ä£ÐÍÔÚTransformers²Ö¿âÖÐÊ¹ÓÃ¡£
-
-BigBirdµÄ×¢ÒâÁ¦»úÖÆÊÇÒ»¸ö½üËÆBERTµÄ**È«×¢ÒâÁ¦»úÖÆ**£¬Òò´Ë²»ÊÇ±ÈBERTµÄ×¢ÒâÁ¦»úÖÆÐ§¹û¸üºÃ£¬¶øÊÇ**ÔËÐÐÐ§ÂÊ¸ü¸ß**¡£
-- BERTµÄ×¢ÒâÁ¦»úÖÆ´æ´¢ÓëÐòÁÐ³¤¶ÈÊÇ¶þ´Î·½¹ØÏµ£¬ÔÚ³¤ÎÄ±¾Çé¿öÏÂµÄ´æ´¢ÐèÇó¾ÍÒÑ¾­¿ªÊ¼ÁîÈËÄÑÒÔÈÌÊÜ
-- ¶ø BigBird µÄ block sparse attention ¾ÍÊÇÎªÁË½â¾öÕâ¸öÎÊÌâ¡£ÎÞÏÞ³¤³¤¶ÈÐòÁÐÉÏ£¬¼ÆËãÎÞÇî´Î ´ÎÊ±£¬°ÑBERTµÄÈ«×¢ÒâÁ¦»úÖÆ»»³É block sparse attention¡£ 
+#### ã€?2021-1-8ã€‘è°·æ­? BigBird
 
 
-BigBirdÓÐÁ½ÖÖ³¤³Ì×¢ÒâÁ¦·½Ê½£¬¿ÉÒÔÈÃ¼ÆËã±äµÄ¸üÓÐÐ§£º
-- È«¾Ö´Ê£¨Global token£©£ºÓÐÒ»Ð©´Ê£¬ÐèÒª¿¼ÂÇÆäËûËùÓÐ´Ê£¬ÆäËûËùÓÐ´ÊÒ²ÐèÒª¿¼ÂÇËü¡£ÀýÈç¡±HuggingFace is building nice libraries for easy NLP¡°¡£Èç¹û¡±building¡°ÊÇÒ»¸öÈ«¾Ö´Ê£¬Ä£ÐÍÔÚÓÐµÄÈËÎïÖÐÐèÒªÖªµÀ´Ê¡±NLP¡°ºÍ´Ê¡±HuggingFace¡°µÄ¹ØÏµ£¨ÕâÁ½¸ö´ÊÔÚ×î×ó±ßºÍ×îÓÒ±ß£©£¬ÄÇÃ´´Ê¡±building¡°ÐèÒª±»ÉèÖÃ³ÉÈ«¾Ö´Ê£¬´Ó¶ø´¦ÀíÓë¡±NLP¡°ºÍ¡±HuggingFace¡°µÄ¹ØÏµ¡£
-- Ëæ»ú´Ê£¨Random tokens£©£ºËæ»úÑ¡ÔñÒ»Ð©´Ê£¬°ÑÐÅÏ¢´«µÝ¸øÆäËû´Ê£¬Õâ¿ÉÒÔ½µµÍ´ÊÓë´ÊÖ®¼äµÄÐÅÏ¢½»»¥ÄÑ¶È¡£
+ã€?2021-1-8ã€‘è°·æ­ŒæŽ¨å‡? BigBird, åŸºäºŽ**ç¨€ç–æ³¨æ„åŠ›**çš„Transformerï¼Œå°†åŸºäºŽTransformerçš„æ¨¡åž‹ï¼ˆä¾‹å¦‚ BERTï¼‰æ‰©å±•åˆ°æ›´é•¿çš„åºåˆ—ã€?
+- å¹³æ–¹çº§åˆ«çš„ä¾èµ–é™æˆçº¿æ€?
+- åŒç­‰ç¡¬ä»¶æ¡ä»¶ä¸‹ï¼Œé•¿åº¦æ‰©å……8å€?
+- è®ºæ–‡ï¼š[Big Bird: Transformers for Longer Sequences](https://arxiv.org/abs/2007.14062)
+- ä»£ç ï¼š[bigbird](https://github.com/google-research/bigbird)
+
+å¼€æºä¸­æ–? bigbird é¢„è®­ç»ƒæ¨¡åž‹ï¼Œä»Žtinyè‡³baseå…?5ä¸ªçº§åˆ«é¢„è®­ç»ƒæ¨¡åž‹ã€‚å¯ä»Ž[huggingface hub](https://huggingface.co/models?language=zh&sort=downloads&search=bigbird)ç›´æŽ¥ä¸‹è½½ä½¿ç”¨
+
+BigBird æ¨¡åž‹å®žçŽ°äº†ä¸‰ç§æ³¨æ„åŠ›æœºåˆ¶ï¼?**éšæœºæ³¨æ„åŠ?**ã€?**çª—å£æ³¨æ„åŠ?**å’?**å…¨å±€æ³¨æ„åŠ?**ï¼Œè¿™ä¸ŽLongFormerå‡ ä¹Žç›¸ä¼¼
+
+ä¸ŽBERTåŒç­‰è®¡ç®—åŠ›ä¸‹ï¼Œå¯å¤„ç†åºåˆ—é•¿åº¦è¾¾åˆ°4096ã€?
+- å¾ˆå¤šé•¿æ–‡æœ¬åºåˆ—çš„ä»»åŠ¡ä¸Šè¾¾åˆ°SOTAæ•ˆæžœï¼Œä¾‹å¦‚ï¼šé•¿æ–‡æœ¬æ‘˜è¦ã€é•¿æ–‡æœ¬é—®ç­”ã€? 
+- BigBird RoBERTa æ¨¡åž‹åœ¨Transformersä»“åº“ä¸­ä½¿ç”¨ã€?
+
+BigBirdçš„æ³¨æ„åŠ›æœºåˆ¶æ˜¯ä¸€ä¸ªè¿‘ä¼¼BERTçš?**å…¨æ³¨æ„åŠ›æœºåˆ¶**ï¼Œå› æ­¤ä¸æ˜¯æ¯”BERTçš„æ³¨æ„åŠ›æœºåˆ¶æ•ˆæžœæ›´å¥½ï¼Œè€Œæ˜¯**è¿è¡Œæ•ˆçŽ‡æ›´é«˜**ã€?
+- BERTçš„æ³¨æ„åŠ›æœºåˆ¶å­˜å‚¨ä¸Žåºåˆ—é•¿åº¦æ˜¯äºŒæ¬¡æ–¹å…³ç³»ï¼Œåœ¨é•¿æ–‡æœ¬æƒ…å†µä¸‹çš„å­˜å‚¨éœ€æ±‚å°±å·²ç»å¼€å§‹ä»¤äººéš¾ä»¥å¿å?
+- è€? BigBird çš? block sparse attention å°±æ˜¯ä¸ºäº†è§£å†³è¿™ä¸ªé—®é¢˜ã€‚æ— é™é•¿é•¿åº¦åºåˆ—ä¸Šï¼Œè®¡ç®—æ— ç©·æ¬? æ¬¡æ—¶ï¼ŒæŠŠBERTçš„å…¨æ³¨æ„åŠ›æœºåˆ¶æ¢æˆ? block sparse attentionã€? 
+
+
+BigBirdæœ‰ä¸¤ç§é•¿ç¨‹æ³¨æ„åŠ›æ–¹å¼ï¼Œå¯ä»¥è®©è®¡ç®—å˜çš„æ›´æœ‰æ•ˆï¼š
+- å…¨å±€è¯ï¼ˆGlobal tokenï¼‰ï¼šæœ‰ä¸€äº›è¯ï¼Œéœ€è¦è€ƒè™‘å…¶ä»–æ‰€æœ‰è¯ï¼Œå…¶ä»–æ‰€æœ‰è¯ä¹Ÿéœ€è¦è€ƒè™‘å®ƒã€‚ä¾‹å¦‚â€HuggingFace is building nice libraries for easy NLPâ€œã€‚å¦‚æžœâ€buildingâ€œæ˜¯ä¸€ä¸ªå…¨å±€è¯ï¼Œæ¨¡åž‹åœ¨æœ‰çš„äººç‰©ä¸­éœ€è¦çŸ¥é“è¯â€NLPâ€œå’Œè¯â€HuggingFaceâ€œçš„å…³ç³»ï¼ˆè¿™ä¸¤ä¸ªè¯åœ¨æœ€å·¦è¾¹å’Œæœ€å³è¾¹ï¼‰ï¼Œé‚£ä¹ˆè¯â€buildingâ€œéœ€è¦è¢«è®¾ç½®æˆå…¨å±€è¯ï¼Œä»Žè€Œå¤„ç†ä¸Žâ€NLPâ€œå’Œâ€HuggingFaceâ€œçš„å…³ç³»ã€?
+- éšæœºè¯ï¼ˆRandom tokensï¼‰ï¼šéšæœºé€‰æ‹©ä¸€äº›è¯ï¼ŒæŠŠä¿¡æ¯ä¼ é€’ç»™å…¶ä»–è¯ï¼Œè¿™å¯ä»¥é™ä½Žè¯ä¸Žè¯ä¹‹é—´çš„ä¿¡æ¯äº¤äº’éš¾åº¦ã€?
 
 ```py
-# ÀýÈçµÚÒ»¸ö´ÊºÍ×îºóÒ»¸ö´ÊÊÇÈ«¾ÖµÄ
+# ä¾‹å¦‚ç¬¬ä¸€ä¸ªè¯å’Œæœ€åŽä¸€ä¸ªè¯æ˜¯å…¨å±€çš?
 global_tokens = ["BigBird", "answering"]
-# ½«È«¾Ö´Ê¼ÓÈëÖÁkey_tokens¼¯ºÏÖÐ
+# å°†å…¨å±€è¯åŠ å…¥è‡³key_tokensé›†åˆä¸?
 key_tokens.append(global_tokens)
-# ÏÖÔÚÓÃ´Ê¡±is¡°×öËæ»ú´Ê
+# çŽ°åœ¨ç”¨è¯â€isâ€œåšéšæœºè¯?
 random_tokens = ["is"]
 key_tokens.append(random_tokens)
 key_tokens # {'now', 'is', 'in', 'answering', 'available', 'BigBird'}
-# ÏÖÔÚ£¬´Ê¡±available¡°¿ÉÒÔÖ»ÓëÕâÐ©´Ê×ö×¢ÒâÁ¦¼ÆËã£¬¶ø²»ÊÇËùÓÐ´Ê
+# çŽ°åœ¨ï¼Œè¯â€availableâ€œå¯ä»¥åªä¸Žè¿™äº›è¯åšæ³¨æ„åŠ›è®¡ç®—ï¼Œè€Œä¸æ˜¯æ‰€æœ‰è¯
 ```
 
-²Î¿¼
-- [bigbird³¤ÎÄ±¾Ô¤ÑµÁ·Ä£ÐÍ½éÉÜ](https://zhuanlan.zhihu.com/p/444333724)
-- [BigBird£º´óÄñÄ£ÐÍÖÐÎÄÉú³ÉÊ½³¤ÎÄ±¾ÕªÒªÊµ¼ù](https://blog.csdn.net/yjh_SE007/article/details/129244755)
+å‚è€?
+- [bigbirdé•¿æ–‡æœ¬é¢„è®­ç»ƒæ¨¡åž‹ä»‹ç»](https://zhuanlan.zhihu.com/p/444333724)
+- [BigBirdï¼šå¤§é¸Ÿæ¨¡åž‹ä¸­æ–‡ç”Ÿæˆå¼é•¿æ–‡æœ¬æ‘˜è¦å®žè·µ](https://blog.csdn.net/yjh_SE007/article/details/129244755)
 
-#### 2022.*.* Attention with Linear Bias£¨ALiBi£©
+#### 2022.*.* Attention with Linear Biasï¼ˆALiBiï¼?
 
-ALiBi ÊÇ 2022 ÄêÌá³öµÄÒ»ÖÖ·½·¨£¬½â¾ö transformer **ÑµÁ·ºÍÍÆÀíÊ±ÎÄ±¾³¤¶È²»Ò»ÖÂ**µÄÄÑÌâ£¬
-- ÂÛÎÄÖÐÔÚÑµÁ·Ê±ºòÊ¹ÓÃ 1024 µÄ×î´ó³¤¶È£¬µ«ÔÚÍÆÀíÊ±ÓÃ 2048 µÄ×î´ó³¤¶ÈÍÆÀí£¬²¢ÇÒÔÚ PPL Ö¸±ê³ÖÆ½¡£
-- ALiBi ¶¼ÊÇÔÚ²âÊÔ¼¯µÄ¾ä×Ó×î´ó³¤¶ÈµÄ¡¸Ò»°ë³¤¶È¡¹ÉÏ½øÐÐÑµÁ·£¬¶ø Sinusoidal ÔòÊÇÕý³£ÔÚ¡¸²âÊÔ¼¯³¤¶È¡¹ÉÏ½øÐÐÑµÁ·£¬
+ALiBi æ˜? 2022 å¹´æå‡ºçš„ä¸€ç§æ–¹æ³•ï¼Œè§£å†³ transformer **è®­ç»ƒå’ŒæŽ¨ç†æ—¶æ–‡æœ¬é•¿åº¦ä¸ä¸€è‡?**çš„éš¾é¢˜ï¼Œ
+- è®ºæ–‡ä¸­åœ¨è®­ç»ƒæ—¶å€™ä½¿ç”? 1024 çš„æœ€å¤§é•¿åº¦ï¼Œä½†åœ¨æŽ¨ç†æ—¶ç”¨ 2048 çš„æœ€å¤§é•¿åº¦æŽ¨ç†ï¼Œå¹¶ä¸”åœ? PPL æŒ‡æ ‡æŒå¹³ã€?
+- ALiBi éƒ½æ˜¯åœ¨æµ‹è¯•é›†çš„å¥å­æœ€å¤§é•¿åº¦çš„ã€Œä¸€åŠé•¿åº¦ã€ä¸Šè¿›è¡Œè®­ç»ƒï¼Œè€? Sinusoidal åˆ™æ˜¯æ­£å¸¸åœ¨ã€Œæµ‹è¯•é›†é•¿åº¦ã€ä¸Šè¿›è¡Œè®­ç»ƒï¼?
 - [TRAIN SHORT, TEST LONG: ATTENTION WITH LINEAR BIASES ENABLES INPUT LENGTH EXTRAPOLATION](https://arxiv.org/pdf/2108.12409.pdf)
 
-ÈçºÎÊµÏÖ£¿
-- ALiBi ÊµÏÖË¼Â·ºÜÖ±¾õ£¬Ä£ÐÍÔÚ½ÓÊÕÊäÈëÊ±Ö±½ÓÈ¥µô Position Embedding ÏòÁ¿£¬¶øÊÇÔÚ Attention ÖÐ¼ÆËã query¡¤Key µÄÖµºóÃæ¼ÓÈëÒ»¸öÆ«ÖÃ³£Á¿£¨·ÇÑµÁ·±äÁ¿£©£¬À´´ïµ½×¢ÈëÎ»ÖÃÐÅÏ¢µÄÐ§¹û¡£Õâ¸ö³£Á¿ÊÇÒ»¸ö ÊÂÏÈ¼ÆËãºÃ µÄÊýÖµ£¬²¢ÇÒÃ¿¸öÍ·£¨head£©µÄÖµ¶¼ÓÐËù²»Í¬¡£
-- Í¨¹ý¡¸Ïà¶ÔÎ»ÖÃÐÅÏ¢¡¹¾ÍÄÜÔÚÒ»¶¨³Ì¶ÈÉÏ»º½â¡¸¾ø¶ÔÎ»ÖÃÐÅÏ¢¡¹Ôì³ÉµÄÑµÁ·ºÍÍÆÀí¹ý³ÌÖÐ³¤¶È±àÂë²»Ò»ÖÂµÄÎÊÌâ
+å¦‚ä½•å®žçŽ°ï¼?
+- ALiBi å®žçŽ°æ€è·¯å¾ˆç›´è§‰ï¼Œæ¨¡åž‹åœ¨æŽ¥æ”¶è¾“å…¥æ—¶ç›´æŽ¥åŽ»æŽ‰ Position Embedding å‘é‡ï¼Œè€Œæ˜¯åœ? Attention ä¸­è®¡ç®? queryÂ·Key çš„å€¼åŽé¢åŠ å…¥ä¸€ä¸ªåç½®å¸¸é‡ï¼ˆéžè®­ç»ƒå˜é‡ï¼‰ï¼Œæ¥è¾¾åˆ°æ³¨å…¥ä½ç½®ä¿¡æ¯çš„æ•ˆæžœã€‚è¿™ä¸ªå¸¸é‡æ˜¯ä¸€ä¸? äº‹å…ˆè®¡ç®—å¥? çš„æ•°å€¼ï¼Œå¹¶ä¸”æ¯ä¸ªå¤´ï¼ˆheadï¼‰çš„å€¼éƒ½æœ‰æ‰€ä¸åŒã€?
+- é€šè¿‡ã€Œç›¸å¯¹ä½ç½®ä¿¡æ¯ã€å°±èƒ½åœ¨ä¸€å®šç¨‹åº¦ä¸Šç¼“è§£ã€Œç»å¯¹ä½ç½®ä¿¡æ¯ã€é€ æˆçš„è®­ç»ƒå’ŒæŽ¨ç†è¿‡ç¨‹ä¸­é•¿åº¦ç¼–ç ä¸ä¸€è‡´çš„é—®é¢˜
 
-´úÂë¼û[Ô­ÎÄ](https://zhuanlan.zhihu.com/p/634236135)
+ä»£ç è§[åŽŸæ–‡](https://zhuanlan.zhihu.com/p/634236135)
 
 
 #### 2024.4.10 Infini-Transformer
 
-¡¾2024-4-11¡¿[Google Ìá³öInfini-Transformer¼Ü¹¹£¬¿ÉÈÃLLMs´¦ÀíÎÞÏÞ³¤ÉÏÏÂÎÄ£¬ÄÚ´æ½ÚÔ¼114±¶](https://mp.weixin.qq.com/s/factToEEJdWcs5WJG1Ljfg)
+ã€?2024-4-11ã€‘[Google æå‡ºInfini-Transformeræž¶æž„ï¼Œå¯è®©LLMså¤„ç†æ— é™é•¿ä¸Šä¸‹æ–‡ï¼Œå†…å­˜èŠ‚çº?114å€](https://mp.weixin.qq.com/s/factToEEJdWcs5WJG1Ljfg)
 - [Leave No Context Behind: Efficient Infinite Context Transformers with Infini-attention](https://arxiv.org/pdf/2404.07143.pdf)
 
-¶ÔÓÚÅúÁ¿´óÐ¡Îª 512¡¢ÉÏÏÂÎÄ³¤¶ÈÎª 2048 µÄ 500B Ä£ÐÍ£¬×¢ÒâÁ¦¼üÖµ (KV) ×´Ì¬µÄÄÚ´æÕ¼ÓÃÎª 3TB
+å¯¹äºŽæ‰¹é‡å¤§å°ä¸? 512ã€ä¸Šä¸‹æ–‡é•¿åº¦ä¸? 2048 çš? 500B æ¨¡åž‹ï¼Œæ³¨æ„åŠ›é”®å€? (KV) çŠ¶æ€çš„å†…å­˜å ç”¨ä¸? 3TB
 
-Ãæ¶Ô³¬³¤ÐòÁÐ£¬Ïà±È×¢ÒâÁ¦»úÖÆ£¬ÄÚ´æÑ¹Ëõ¼¼Êõ¸ü¾ßÀ©Õ¹ÐÔ¡£
-- ÄÚ´æÑ¹Ëõ²»Ê¹ÓÃËæÊäÈëÐòÁÐ³¤¶È¶øÔö³¤µÄÊý×é£¬¶øÊÇÔÚÓÐÏÞµÄÄÚ´æ×ÊÔ´ÉÏ£¬Î¬»¤¹Ì¶¨ÊýÁ¿µÄ²ÎÊýÀ´½øÐÐÐÅÏ¢µÄ´æ´¢ºÍ»Øµ÷¡£
-- È»¶ø£¬Ä¿Ç°µÄLLMsÉÐÎ´ÓÐÒ»ÖÖÓÐÐ§¡¢ÊµÓÃµÄÄÚ´æÑ¹Ëõ¼¼Êõ£¬¿ÉÒÔÔÚ¼òµ¥ÐÔÓëÖÊÁ¿Ö®¼äÈ¡µÃÆ½ºâ¡£
+é¢å¯¹è¶…é•¿åºåˆ—ï¼Œç›¸æ¯”æ³¨æ„åŠ›æœºåˆ¶ï¼Œå†…å­˜åŽ‹ç¼©æŠ€æœ¯æ›´å…·æ‰©å±•æ€§ã€?
+- å†…å­˜åŽ‹ç¼©ä¸ä½¿ç”¨éšè¾“å…¥åºåˆ—é•¿åº¦è€Œå¢žé•¿çš„æ•°ç»„ï¼Œè€Œæ˜¯åœ¨æœ‰é™çš„å†…å­˜èµ„æºä¸Šï¼Œç»´æŠ¤å›ºå®šæ•°é‡çš„å‚æ•°æ¥è¿›è¡Œä¿¡æ¯çš„å­˜å‚¨å’Œå›žè°ƒã€?
+- ç„¶è€Œï¼Œç›®å‰çš„LLMså°šæœªæœ‰ä¸€ç§æœ‰æ•ˆã€å®žç”¨çš„å†…å­˜åŽ‹ç¼©æŠ€æœ¯ï¼Œå¯ä»¥åœ¨ç®€å•æ€§ä¸Žè´¨é‡ä¹‹é—´å–å¾—å¹³è¡¡ã€?
 
-»ùÓÚÒÔÉÏ±³¾°£¬×÷ÕßÌá³öÁËÒ»ÖÖÐÂ¼Ü¹¹£ºInfini-Transformer£¬ÄÜ¹»ÈÃ»ùÓÚTransformerµÄ´óÄ£ÐÍÔÚÓÐÏÞÄÚ´æ¡¢¼ÆËã×ÊÔ´µÄÌõ¼þÏÂ£¬´¦ÀíÎÞÏÞ³¤µÄÉÏÏÂÎÄÊäÈë¡£
+åŸºäºŽä»¥ä¸ŠèƒŒæ™¯ï¼Œä½œè€…æå‡ºäº†ä¸€ç§æ–°æž¶æž„ï¼šInfini-Transformerï¼Œèƒ½å¤Ÿè®©åŸºäºŽTransformerçš„å¤§æ¨¡åž‹åœ¨æœ‰é™å†…å­˜ã€è®¡ç®—èµ„æºçš„æ¡ä»¶ä¸‹ï¼Œå¤„ç†æ— é™é•¿çš„ä¸Šä¸‹æ–‡è¾“å…¥ã€?
 
-Infini-Transformer ¿ÉÔÚÓÐÏÞÄÚ´æÌõ¼þÏÂ£¬ÈÃ»ùÓÚTransformerµÄ´óÓïÑÔÄ£ÐÍ£¨LLMs£©¸ßÐ§´¦ÀíÎÞÏÞ³¤µÄÊäÈëÐòÁÐ¡£
+Infini-Transformer å¯åœ¨æœ‰é™å†…å­˜æ¡ä»¶ä¸‹ï¼Œè®©åŸºäºŽTransformerçš„å¤§è¯­è¨€æ¨¡åž‹ï¼ˆLLMsï¼‰é«˜æ•ˆå¤„ç†æ— é™é•¿çš„è¾“å…¥åºåˆ—ã€?
 
-ÓëTransformer-XLÀàËÆ£¬Infini-Transformer´¦ÀíµÄÊÇÒ»ÏµÁÐÆ¬¶Î¡£
-- Ã¿¸öÆ¬¶ÎÄÚ ¼ÆËã standard causal µã»ýattention context£¨×¢ÒâÁ¦ÉÏÏÂÎÄ£©¡£Òò´Ë£¬µã»ý×¢ÒâÁ¦¼ÆËãÔÚÄ³ÖÖÒâÒåÉÏÊÇ**¾Ö²¿**µÄ£¬¸²¸ÇÁËË÷ÒýÎª S µÄµ±Ç°Æ¬¶ÎµÄ×Ü¹² N ¸ö±ê¼Ç¡£
-- È»¶ø£¬¾Ö²¿×¢ÒâÁ¦ÔÚ´¦ÀíÏÂÒ»¸öÆ¬¶ÎÊ±»á¶ªÆúÇ°Ò»¸öÆ¬¶ÎµÄ×¢ÒâÁ¦×´Ì¬¡£ÔÚInfini-TransformerÖÐ£¬²¢Ã»ÓÐºöÂÔ¾ÉµÄ¼üÖµ£¨KV£©×¢ÒâÁ¦×´Ì¬£¬¶øÊÇÍ¨¹ýÄÚ´æÑ¹Ëõ¼¼ÊõÖØÐÂÊ¹ÓÃËüÃÇÀ´±£³ÖÕû¸öÉÏÏÂÎÄÀúÊ·¡£
-- Òò´Ë£¬Infini-TransformerµÄÃ¿¸ö×¢ÒâÁ¦²ã¶¼¾ßÓÐ**È«¾Ö**Ñ¹ËõºÍ**¾Ö²¿**Ï¸Á£¶È×´Ì¬£¬Õâ¾ÍÊÇÇ°ÃæÌáµ½µÄÎÞÏÞ×¢ÒâÁ¦£¨Infini-attention£©¡£
+ä¸ŽTransformer-XLç±»ä¼¼ï¼ŒInfini-Transformerå¤„ç†çš„æ˜¯ä¸€ç³»åˆ—ç‰‡æ®µã€?
+- æ¯ä¸ªç‰‡æ®µå†? è®¡ç®— standard causal ç‚¹ç§¯attention contextï¼ˆæ³¨æ„åŠ›ä¸Šä¸‹æ–‡ï¼‰ã€‚å› æ­¤ï¼Œç‚¹ç§¯æ³¨æ„åŠ›è®¡ç®—åœ¨æŸç§æ„ä¹‰ä¸Šæ˜¯**å±€éƒ?**çš„ï¼Œè¦†ç›–äº†ç´¢å¼•ä¸º S çš„å½“å‰ç‰‡æ®µçš„æ€»å…± N ä¸ªæ ‡è®°ã€?
+- ç„¶è€Œï¼Œå±€éƒ¨æ³¨æ„åŠ›åœ¨å¤„ç†ä¸‹ä¸€ä¸ªç‰‡æ®µæ—¶ä¼šä¸¢å¼ƒå‰ä¸€ä¸ªç‰‡æ®µçš„æ³¨æ„åŠ›çŠ¶æ€ã€‚åœ¨Infini-Transformerä¸­ï¼Œå¹¶æ²¡æœ‰å¿½ç•¥æ—§çš„é”®å€¼ï¼ˆKVï¼‰æ³¨æ„åŠ›çŠ¶æ€ï¼Œè€Œæ˜¯é€šè¿‡å†…å­˜åŽ‹ç¼©æŠ€æœ¯é‡æ–°ä½¿ç”¨å®ƒä»¬æ¥ä¿æŒæ•´ä¸ªä¸Šä¸‹æ–‡åŽ†å²ã€?
+- å› æ­¤ï¼ŒInfini-Transformerçš„æ¯ä¸ªæ³¨æ„åŠ›å±‚éƒ½å…·æœ‰**å…¨å±€**åŽ‹ç¼©å’?**å±€éƒ?**ç»†ç²’åº¦çŠ¶æ€ï¼Œè¿™å°±æ˜¯å‰é¢æåˆ°çš„æ— é™æ³¨æ„åŠ›ï¼ˆInfini-attentionï¼‰ã€?
 
-ÊµÑé½á¹û±íÃ÷£º
-- Infini-TransformerÔÚ³¤ÉÏÏÂÎÄÓïÑÔ½¨Ä£ÈÎÎñÉÏ³¬Ô½ÁË»ùÏßÄ£ÐÍ£¬ÄÚ´æ×î¸ß¿É½ÚÔ¼114±¶¡£
+å®žéªŒç»“æžœè¡¨æ˜Žï¼?
+- Infini-Transformeråœ¨é•¿ä¸Šä¸‹æ–‡è¯­è¨€å»ºæ¨¡ä»»åŠ¡ä¸Šè¶…è¶Šäº†åŸºçº¿æ¨¡åž‹ï¼Œå†…å­˜æœ€é«˜å¯èŠ‚çº¦114å€ã€?
 
 
 
 ### TTT
 
-¡¾2024-7-20¡¿[³¹µ×¸Ä±äÓïÑÔÄ£ÐÍ£ºÈ«ÐÂ¼Ü¹¹TTT³¬Ô½Transformer£¬MLÄ£ÐÍ´úÌæRNNÒþ²Ø×´Ì¬](https://www.jiqizhixin.com/articles/2024-07-10-2)
+ã€?2024-7-20ã€‘[å½»åº•æ”¹å˜è¯­è¨€æ¨¡åž‹ï¼šå…¨æ–°æž¶æž„TTTè¶…è¶ŠTransformerï¼ŒMLæ¨¡åž‹ä»£æ›¿RNNéšè—çŠ¶æ€](https://www.jiqizhixin.com/articles/2024-07-10-2)
 
-ÎÊÌâ
-- ³¤ÉÏÏÂÎÄµÄÌôÕ½ÊÇ RNN ²ã±¾ÖÊÉÏËù¹ÌÓÐµÄ£ºÓë×Ô×¢ÒâÁ¦»úÖÆ²»Í¬£¬RNN ²ã±ØÐë½«ÉÏÏÂÎÄÑ¹ËõÎª¹Ì¶¨´óÐ¡µÄÒþ²Ø×´Ì¬£¬¸üÐÂ¹æÔòÐèÒª·¢ÏÖÊýÇ§ÉõÖÁÊý°ÙÍò¸ö token Ö®¼äµÄµ×²ã½á¹¹ºÍ¹ØÏµ¡£
+é—®é¢˜
+- é•¿ä¸Šä¸‹æ–‡çš„æŒ‘æˆ˜æ˜¯ RNN å±‚æœ¬è´¨ä¸Šæ‰€å›ºæœ‰çš„ï¼šä¸Žè‡ªæ³¨æ„åŠ›æœºåˆ¶ä¸åŒï¼ŒRNN å±‚å¿…é¡»å°†ä¸Šä¸‹æ–‡åŽ‹ç¼©ä¸ºå›ºå®šå¤§å°çš„éšè—çŠ¶æ€ï¼Œæ›´æ–°è§„åˆ™éœ€è¦å‘çŽ°æ•°åƒç”šè‡³æ•°ç™¾ä¸‡ä¸? token ä¹‹é—´çš„åº•å±‚ç»“æž„å’Œå…³ç³»ã€?
 
-Ë¹Ì¹¸£´óÑ§¡¢¼ÓÖÝ´óÑ§²®¿ËÀû·ÖÐ£¡¢¼ÓÖÝ´óÑ§Ê¥µü¸ê·ÖÐ£ºÍ Meta Éè¼ÆÁËÒ»ÖÖÐÂ¼Ü¹¹ TTT£¬ÓÃ**»úÆ÷Ñ§Ï°Ä£ÐÍ**È¡´úÁË **RNN Òþ²Ø×´Ì¬**¡£
-- ¸ÃÄ£ÐÍÍ¨¹ýÊäÈë token µÄÊµ¼ÊÌÝ¶ÈÏÂ½µÀ´Ñ¹ËõÉÏÏÂÎÄ¡£
-- ²âÊÔÊ±ÑµÁ·£¨Test-Time Training£©
-- TTT ²ãÖ±½ÓÈ¡´ú Attention£¬²¢Í¨¹ý±í´ïÐÔ¼ÇÒä½âËøÏßÐÔ¸´ÔÓÐÔ¼Ü¹¹£¬Ê¹ÎÒÃÇÄÜ¹»ÔÚÉÏÏÂÎÄÖÐÑµÁ·¾ßÓÐÊý°ÙÍò£¨ÓÐÊ±ÊÇÊýÊ®ÒÚ£©¸ö token µÄ LLM¡£ 
+æ–¯å¦ç¦å¤§å­¦ã€åŠ å·žå¤§å­¦ä¼¯å…‹åˆ©åˆ†æ ¡ã€åŠ å·žå¤§å­¦åœ£è¿­æˆˆåˆ†æ ¡å’? Meta è®¾è®¡äº†ä¸€ç§æ–°æž¶æž„ TTTï¼Œç”¨**æœºå™¨å­¦ä¹ æ¨¡åž‹**å–ä»£äº? **RNN éšè—çŠ¶æ€?**ã€?
+- è¯¥æ¨¡åž‹é€šè¿‡è¾“å…¥ token çš„å®žé™…æ¢¯åº¦ä¸‹é™æ¥åŽ‹ç¼©ä¸Šä¸‹æ–‡ã€?
+- æµ‹è¯•æ—¶è®­ç»ƒï¼ˆTest-Time Trainingï¼?
+- TTT å±‚ç›´æŽ¥å–ä»? Attentionï¼Œå¹¶é€šè¿‡è¡¨è¾¾æ€§è®°å¿†è§£é”çº¿æ€§å¤æ‚æ€§æž¶æž„ï¼Œä½¿æˆ‘ä»¬èƒ½å¤Ÿåœ¨ä¸Šä¸‹æ–‡ä¸­è®­ç»ƒå…·æœ‰æ•°ç™¾ä¸‡ï¼ˆæœ‰æ—¶æ˜¯æ•°åäº¿ï¼‰ä¸ª token çš? LLMã€? 
 
-TTT ²ã×÷ÎªÒ»ÖÖÐÂµÄÐÅÏ¢Ñ¹ËõºÍÄ£ÐÍ¼ÇÒä»úÖÆ£¬¿É¼òµ¥µØÖ±½ÓÌæ´ú Transformer ÖÐµÄ×Ô×¢ÒâÁ¦²ã¡£
-- Óë Mamba Ïà±È£¬TTT-Linear µÄÀ§»ó¶È¸üµÍ£¬FLOP ¸üÉÙ£¨×ó£©£¬¶Ô³¤ÉÏÏÂÎÄµÄÀûÓÃ¸üºÃ£¨ÓÒ£©£º
+TTT å±‚ä½œä¸ºä¸€ç§æ–°çš„ä¿¡æ¯åŽ‹ç¼©å’Œæ¨¡åž‹è®°å¿†æœºåˆ¶ï¼Œå¯ç®€å•åœ°ç›´æŽ¥æ›¿ä»£ Transformer ä¸­çš„è‡ªæ³¨æ„åŠ›å±‚ã€?
+- ä¸? Mamba ç›¸æ¯”ï¼ŒTTT-Linear çš„å›°æƒ‘åº¦æ›´ä½Žï¼ŒFLOP æ›´å°‘ï¼ˆå·¦ï¼‰ï¼Œå¯¹é•¿ä¸Šä¸‹æ–‡çš„åˆ©ç”¨æ›´å¥½ï¼ˆå³ï¼‰ï¼š
 
-È«ÐÂµÄ´óÓïÑÔÄ£ÐÍ£¨LLM£©¼Ü¹¹ÓÐÍû´úÌæÖÁ½ñÔÚ AI ÁìÓòÈçÈÕÖÐÌìµÄ Transformer£¬ÐÔÄÜÒ²±È Mamba ¸üºÃ¡£
-- ÂÛÎÄ£º[Learning to (Learn at Test Time): RNNs with Expressive Hidden States](https://arxiv.org/abs/2407.04620)
-- ´úÂëÓë jax ÑµÁ·ºÍ²âÊÔ£º[ttt-lm-jax](https://github.com/test-time-training/ttt-lm-jax)
-- PyTorch ÍÆÀí´úÂë£º[ttt-lm-pytorch](https://github.com/test-time-training/ttt-lm-pytorch)
+å…¨æ–°çš„å¤§è¯­è¨€æ¨¡åž‹ï¼ˆLLMï¼‰æž¶æž„æœ‰æœ›ä»£æ›¿è‡³ä»Šåœ¨ AI é¢†åŸŸå¦‚æ—¥ä¸­å¤©çš? Transformerï¼Œæ€§èƒ½ä¹Ÿæ¯” Mamba æ›´å¥½ã€?
+- è®ºæ–‡ï¼š[Learning to (Learn at Test Time): RNNs with Expressive Hidden States](https://arxiv.org/abs/2407.04620)
+- ä»£ç ä¸? jax è®­ç»ƒå’Œæµ‹è¯•ï¼š[ttt-lm-jax](https://github.com/test-time-training/ttt-lm-jax)
+- PyTorch æŽ¨ç†ä»£ç ï¼š[ttt-lm-pytorch](https://github.com/test-time-training/ttt-lm-pytorch)
 
-## Ï¡ÊèAttention
+## ç¨€ç–Attention
 
-### ÆðÒò
+### èµ·å› 
 
-transformerÄÜ²¶×½ÊäÈëÐòÁÐtokenÖ®¼äµÄ¹ØÏµ£¬¼´Ê¹ÊÇ³¤¾àÀë¡£
+transformerèƒ½æ•æ‰è¾“å…¥åºåˆ—tokenä¹‹é—´çš„å…³ç³»ï¼Œå³ä½¿æ˜¯é•¿è·ç¦»ã€?
 
-³¤ÐòÁÐÊäÈëÊÜµ½×¢ÒâÁ¦¼ÆËãºÍÄÚ´æ×ÊÔ´ÏÞÖÆ£¬Ëæ×ÅÐòÁÐ³¤¶Èn¶þ´ÎÔö³¤¡£
-- DeepSpeedÌá¹©ÁË **Ï¡Êè attention kernel** ¡ª¡ª Ö§³Ö**³¤ÐòÁÐ**Ä£ÐÍÊäÈë£¬°üÀ¨ÎÄ±¾ÊäÈë£¬Í¼ÏñÊäÈëºÍÓïÒôÊäÈë¡£
-- Í¨¹ý¿éÏ¡Êè¼ÆËã½«×¢ÒâÁ¦µÄ¼ÆËãºÍÄÚ´æÐèÇó½µµÍ¼¸¸öÊýÁ¿¼¶¡£
+é•¿åºåˆ—è¾“å…¥å—åˆ°æ³¨æ„åŠ›è®¡ç®—å’Œå†…å­˜èµ„æºé™åˆ¶ï¼Œéšç€åºåˆ—é•¿åº¦näºŒæ¬¡å¢žé•¿ã€?
+- DeepSpeedæä¾›äº? **ç¨€ç–? attention kernel** â€”â€? æ”¯æŒ**é•¿åºåˆ?**æ¨¡åž‹è¾“å…¥ï¼ŒåŒ…æ‹¬æ–‡æœ¬è¾“å…¥ï¼Œå›¾åƒè¾“å…¥å’Œè¯­éŸ³è¾“å…¥ã€?
+- é€šè¿‡å—ç¨€ç–è®¡ç®—å°†æ³¨æ„åŠ›çš„è®¡ç®—å’Œå†…å­˜éœ€æ±‚é™ä½Žå‡ ä¸ªæ•°é‡çº§ã€?
 
-¸Ã·½·¨²»½ö»º½âÁË×¢ÒâÁ¦¼ÆËãµÄÄÚ´æÆ¿¾±£¬¶øÇÒ¿ÉÒÔÓÐÐ§µØÖ´ÐÐÏ¡Êè¼ÆËã¡£
+è¯¥æ–¹æ³•ä¸ä»…ç¼“è§£äº†æ³¨æ„åŠ›è®¡ç®—çš„å†…å­˜ç“¶é¢ˆï¼Œè€Œä¸”å¯ä»¥æœ‰æ•ˆåœ°æ‰§è¡Œç¨€ç–è®¡ç®—ã€?
 
-³ýÁËÌá¹©¹ã·ºµÄÏ¡ÊèÐÔ½á¹¹Íâ£¬»¹¾ßÓÐ´¦ÀíÈÎºÎÓÃ»§¶¨ÒåµÄ¿éÏ¡Êè½á¹¹µÄÁé»îÐÔ¡£
+é™¤äº†æä¾›å¹¿æ³›çš„ç¨€ç–æ€§ç»“æž„å¤–ï¼Œè¿˜å…·æœ‰å¤„ç†ä»»ä½•ç”¨æˆ·å®šä¹‰çš„å—ç¨€ç–ç»“æž„çš„çµæ´»æ€§ã€?
 
-### ×Ü½á
+### æ€»ç»“
 
-Ï¡ÊèAttention
-- `Atrous Self Attention` ¿Õ¶´×Ô×¢ÒâÁ¦£¬Ö»¼ÆËãµÚk,2k,3k,4k...ÔªËØ
+ç¨€ç–Attention
+- `Atrous Self Attention` ç©ºæ´žè‡ªæ³¨æ„åŠ›ï¼Œåªè®¡ç®—ç¬¬k,2k,3k,4k...å…ƒç´ 
 - `Local Self Attention`
-- `Sparse Self Attention`: OpenAIÔÚimage transformerÖÐÒýÈëÁËSparse self-attention£¬°ÑÁ½Õß½áºÏÔÚÒ»¿é£¬¼È¿ÉÒÔÑ§Ï°µ½¾Ö²¿µÄÌØÐÔ£¬ÓÖ¿ÉÒÔÑ§Ï°µ½Ô¶³ÌÏ¡ÊèµÄÏà¹ØÐÔ
+- `Sparse Self Attention`: OpenAIåœ¨image transformerä¸­å¼•å…¥äº†Sparse self-attentionï¼ŒæŠŠä¸¤è€…ç»“åˆåœ¨ä¸€å—ï¼Œæ—¢å¯ä»¥å­¦ä¹ åˆ°å±€éƒ¨çš„ç‰¹æ€§ï¼Œåˆå¯ä»¥å­¦ä¹ åˆ°è¿œç¨‹ç¨€ç–çš„ç›¸å…³æ€?
 
-|Ï¡ÊèAttention|Ãû³Æ|ËµÃ÷||
+|ç¨€ç–Attention|åç§°|è¯´æ˜Ž||
 |---|---|---|---|
-|`Atrous Self Attention`|¿Õ¶´×Ô×¢ÒâÁ¦|![](https://pic2.zhimg.com/80/v2-a39db55945b1ae7c413572b22fbe4cd1_1440w.webp)||
-|`Local Self Attention`|¾Ö²¿×Ô×¢ÒâÁ¦|![](https://pic4.zhimg.com/80/v2-c2b46a79fb998e2030ecd8cea99100fb_1440w.webp)||
-|`Sparse Self Attention`|Ï¡Êè×Ô×¢ÒâÁ¦|![](https://pic4.zhimg.com/80/v2-a2f4cfa836abe8a6fc537048be262ab3_1440w.webp)|×ÛºÏÒÔÉÏÓÅµã|
+|`Atrous Self Attention`|ç©ºæ´žè‡ªæ³¨æ„åŠ›|![](https://pic2.zhimg.com/80/v2-a39db55945b1ae7c413572b22fbe4cd1_1440w.webp)||
+|`Local Self Attention`|å±€éƒ¨è‡ªæ³¨æ„åŠ›|![](https://pic4.zhimg.com/80/v2-c2b46a79fb998e2030ecd8cea99100fb_1440w.webp)||
+|`Sparse Self Attention`|ç¨€ç–è‡ªæ³¨æ„åŠ›|![](https://pic4.zhimg.com/80/v2-a2f4cfa836abe8a6fc537048be262ab3_1440w.webp)|ç»¼åˆä»¥ä¸Šä¼˜ç‚¹|
 
-¡¾2019-7-27¡¿ËÕ½£ÁÖ£¬[½ÚÔ¼¶øÉú£º´Ó±ê×¼Attentionµ½Ï¡ÊèAttention](https://spaces.ac.cn/archives/6853) ½ÚÔ¼Ê±¼ä¡¢ÏÔ´æ¡£
+ã€?2019-7-27ã€‘è‹å‰‘æž—ï¼Œ[èŠ‚çº¦è€Œç”Ÿï¼šä»Žæ ‡å‡†Attentionåˆ°ç¨€ç–Attention](https://spaces.ac.cn/archives/6853) èŠ‚çº¦æ—¶é—´ã€æ˜¾å­˜ã€?
 
-AttentionµÄºËÐÄÔÚÓÚQ,K,V Èý¸öÏòÁ¿ÐòÁÐµÄ½»»¥ºÍÈÚºÏ£¬ÆäÖÐQ,K µÄ½»»¥¸ø³öÁËÁ½Á½ÏòÁ¿Ö®¼äµÄÄ³ÖÖÏà¹Ø¶È£¨È¨ÖØ£©£¬¶ø×îºóµÄÊä³öÐòÁÐÔòÊÇ°ÑV°´ÕÕÈ¨ÖØÇóºÍµÃµ½µÄ
+Attentionçš„æ ¸å¿ƒåœ¨äºŽQ,K,V ä¸‰ä¸ªå‘é‡åºåˆ—çš„äº¤äº’å’Œèžåˆï¼Œå…¶ä¸­Q,K çš„äº¤äº’ç»™å‡ºäº†ä¸¤ä¸¤å‘é‡ä¹‹é—´çš„æŸç§ç›¸å…³åº¦ï¼ˆæƒé‡ï¼‰ï¼Œè€Œæœ€åŽçš„è¾“å‡ºåºåˆ—åˆ™æ˜¯æŠŠVæŒ‰ç…§æƒé‡æ±‚å’Œå¾—åˆ°çš?
 
-ÀíÂÛÉÏ£¬Self Attention **¼ÆËãÊ±¼ä**ºÍ**ÏÔ´æÕ¼ÓÃÁ¿**¶¼ÊÇ ?(n^2) ¼¶±ðµÄ£¨nÊÇÐòÁÐ³¤¶È£©
-- Èç¹ûÐòÁÐ³¤¶È±ä³ÉÔ­À´µÄ**2±¶**£¬ÏÔ´æÕ¼ÓÃÁ¿¾ÍÊÇÔ­À´µÄ**4±¶**£¬¼ÆËãÊ±¼äÒ²ÊÇÔ­À´µÄ**4±¶**¡£
-- µ±È»£¬¼ÙÉè²¢ÐÐºËÐÄÊý×ã¹»¶àµÄÇé¿öÏÂ£¬¼ÆËãÊ±¼äÎ´±Ø»áÔö¼Óµ½Ô­À´µÄ4±¶£¬µ«ÊÇÏÔ´æµÄ4±¶È´ÊÇÊµÊµÔÚÔÚµÄ£¬ÎÞ¿É±ÜÃâ£¬ÕâÒ²ÊÇÎ¢µ÷BertÊ±OOMµÄÔ­Òò¡£
+ç†è®ºä¸Šï¼ŒSelf Attention **è®¡ç®—æ—¶é—´**å’?**æ˜¾å­˜å ç”¨é‡?**éƒ½æ˜¯ ?(n^2) çº§åˆ«çš„ï¼ˆnæ˜¯åºåˆ—é•¿åº¦ï¼‰
+- å¦‚æžœåºåˆ—é•¿åº¦å˜æˆåŽŸæ¥çš?**2å€?**ï¼Œæ˜¾å­˜å ç”¨é‡å°±æ˜¯åŽŸæ¥çš?**4å€?**ï¼Œè®¡ç®—æ—¶é—´ä¹Ÿæ˜¯åŽŸæ¥çš„**4å€?**ã€?
+- å½“ç„¶ï¼Œå‡è®¾å¹¶è¡Œæ ¸å¿ƒæ•°è¶³å¤Ÿå¤šçš„æƒ…å†µä¸‹ï¼Œè®¡ç®—æ—¶é—´æœªå¿…ä¼šå¢žåŠ åˆ°åŽŸæ¥çš?4å€ï¼Œä½†æ˜¯æ˜¾å­˜çš?4å€å´æ˜¯å®žå®žåœ¨åœ¨çš„ï¼Œæ— å¯é¿å…ï¼Œè¿™ä¹Ÿæ˜¯å¾®è°ƒBertæ—¶OOMçš„åŽŸå› ã€?
 
-ÎªÊ²Ã´ÊÇ ?(n^2)£¿
-- Òª¶ÔÐòÁÐÖÐµÄÈÎÒâÁ½¸öÏòÁ¿¶¼Òª¼ÆËãÏà¹Ø¶È£¬µÃµ½Ò»¸ö$n^2$´óÐ¡µÄÏà¹Ø¶È¾ØÕó
+ä¸ºä»€ä¹ˆæ˜¯ ?(n^2)ï¼?
+- è¦å¯¹åºåˆ—ä¸­çš„ä»»æ„ä¸¤ä¸ªå‘é‡éƒ½è¦è®¡ç®—ç›¸å…³åº¦ï¼Œå¾—åˆ°ä¸€ä¸?$n^2$å¤§å°çš„ç›¸å…³åº¦çŸ©é˜µ
 - ![](https://spaces.ac.cn/usr/uploads/2019/07/775103900.png)
-- ×ó±ßÏÔÊ¾ÁË**×¢ÒâÁ¦¾ØÕó**£¬ÓÒ±äÏÔÊ¾ÁË**¹ØÁªÐÔ**£¬Õâ±íÃ÷Ã¿¸öÔªËØ¶¼¸úÐòÁÐÄÚËùÓÐÔªËØÓÐ¹ØÁª¡£
+- å·¦è¾¹æ˜¾ç¤ºäº?**æ³¨æ„åŠ›çŸ©é˜?**ï¼Œå³å˜æ˜¾ç¤ºäº†**å…³è”æ€?**ï¼Œè¿™è¡¨æ˜Žæ¯ä¸ªå…ƒç´ éƒ½è·Ÿåºåˆ—å†…æ‰€æœ‰å…ƒç´ æœ‰å…³è”ã€?
 
-ËùÒÔ£¬½ÚÊ¡ÏÔ´æ£¬¼Ó¿ì¼ÆËãËÙ¶È£¬Ò»¸ö½â·¨ÊÇ**¼õÉÙ¹ØÁªÐÔ¼ÆËã**
-- Ã¿¸öÔªËØÖ»¸úÐòÁÐÄÚµÄ**²¿·ÖÔªËØ**Ïà¹Ø£¬Õâ¾ÍÊÇÏ¡ÊèAttentionµÄ»ù±¾Ô­Àí¡£
-- Ô´ÓÚOpenAIµÄÂÛÎÄ¡¶[Generating Long Sequences with Sparse Transformers](https://arxiv.org/abs/1904.10509)¡·
+æ‰€ä»¥ï¼ŒèŠ‚çœæ˜¾å­˜ï¼ŒåŠ å¿«è®¡ç®—é€Ÿåº¦ï¼Œä¸€ä¸ªè§£æ³•æ˜¯**å‡å°‘å…³è”æ€§è®¡ç®?**
+- æ¯ä¸ªå…ƒç´ åªè·Ÿåºåˆ—å†…çš„**éƒ¨åˆ†å…ƒç´ **ç›¸å…³ï¼Œè¿™å°±æ˜¯ç¨€ç–Attentionçš„åŸºæœ¬åŽŸç†ã€?
+- æºäºŽOpenAIçš„è®ºæ–‡ã€Š[Generating Long Sequences with Sparse Transformers](https://arxiv.org/abs/1904.10509)ã€?
 
 
-### Atrous Self Attention ÅòÕÍ×¢ÒâÁ¦
+### Atrous Self Attention è†¨èƒ€æ³¨æ„åŠ?
 
-Atrous Self Attention£¬¡°**ÅòÕÍ**×Ô×¢ÒâÁ¦¡±¡¢¡°**¿Õ¶´**×Ô×¢ÒâÁ¦¡±¡¢¡°**´ø¿×**×Ô×¢ÒâÁ¦¡±µÈ¡£
-- Ãû³ÆÊÇ×Ô¶¨Òå, Ô­ÂÛÎÄ¡¶Generating Long Sequences with Sparse Transformers¡·Ã»ÓÐ³öÏÖ¹ýÕâÁ½¸ö¸ÅÄî
+Atrous Self Attentionï¼Œâ€?**è†¨èƒ€**è‡ªæ³¨æ„åŠ›â€ã€â€?**ç©ºæ´ž**è‡ªæ³¨æ„åŠ›â€ã€â€?**å¸¦å­”**è‡ªæ³¨æ„åŠ›â€ç­‰ã€?
+- åç§°æ˜¯è‡ªå®šä¹‰, åŽŸè®ºæ–‡ã€ŠGenerating Long Sequences with Sparse Transformersã€‹æ²¡æœ‰å‡ºçŽ°è¿‡è¿™ä¸¤ä¸ªæ¦‚å¿?
 
-Atrous Self Attention Æô·¢ÓÚ¡°**ÅòÕÍ¾í»ý**£¨Atrous Convolution£©¡±£¬ÈçÏÂÍ¼ËùÊ¾£¬Ëü¶ÔÏà¹ØÐÔ½øÐÐÁËÔ¼Êø£¬Ç¿ÐÐÒªÇóÃ¿¸öÔªËØÖ»¸úËüÏà¶Ô¾àÀëÎªk,2k,3k,¡­ µÄÔªËØ¹ØÁª£¬ÆäÖÐk>1ÊÇÔ¤ÏÈÉè¶¨µÄ³¬²ÎÊý¡£´ÓÏÂ×óµÄ×¢ÒâÁ¦¾ØÕó¿´£¬¾ÍÊÇÇ¿ÐÐÒªÇóÏà¶Ô¾àÀë²»ÊÇk
-µÄ±¶ÊýµÄ×¢ÒâÁ¦Îª0£¨°×É«´ú±í0£©£º
+Atrous Self Attention å¯å‘äºŽâ€?**è†¨èƒ€å·ç§¯**ï¼ˆAtrous Convolutionï¼‰â€ï¼Œå¦‚ä¸‹å›¾æ‰€ç¤ºï¼Œå®ƒå¯¹ç›¸å…³æ€§è¿›è¡Œäº†çº¦æŸï¼Œå¼ºè¡Œè¦æ±‚æ¯ä¸ªå…ƒç´ åªè·Ÿå®ƒç›¸å¯¹è·ç¦»ä¸ºk,2k,3k,â€? çš„å…ƒç´ å…³è”ï¼Œå…¶ä¸­k>1æ˜¯é¢„å…ˆè®¾å®šçš„è¶…å‚æ•°ã€‚ä»Žä¸‹å·¦çš„æ³¨æ„åŠ›çŸ©é˜µçœ‹ï¼Œå°±æ˜¯å¼ºè¡Œè¦æ±‚ç›¸å¯¹è·ç¦»ä¸æ˜¯k
+çš„å€æ•°çš„æ³¨æ„åŠ›ä¸?0ï¼ˆç™½è‰²ä»£è¡?0ï¼‰ï¼š
 - ![](https://spaces.ac.cn/usr/uploads/2019/07/4107095412.png)
-- Atrous Self AttentionµÄ×¢ÒâÁ¦¾ØÕó£¨×ó£©ºÍ¹ØÁªÍ¼Ê¾£¨ÓÒ£©
+- Atrous Self Attentionçš„æ³¨æ„åŠ›çŸ©é˜µï¼ˆå·¦ï¼‰å’Œå…³è”å›¾ç¤ºï¼ˆå³ï¼?
 
-ÓÉÓÚÏÖÔÚ¼ÆËã×¢ÒâÁ¦ÊÇ¡°Ìø×Å¡±À´ÁË£¬ËùÒÔÊµ¼ÊÉÏÃ¿¸öÔªËØÖ»¸ú´óÔ¼n/k¸öÔªËØËãÏà¹ØÐÔ£¬ÕâÑùÀíÏëÇé¿öÏÂÔËÐÐÐ§ÂÊºÍÏÔ´æÕ¼ÓÃ¶¼±ä³ÉÁË?(n^2/k)£¬Ò²¾ÍÊÇËµÄÜÖ±½Ó½µµÍµ½Ô­À´µÄ1/k¡£
+ç”±äºŽçŽ°åœ¨è®¡ç®—æ³¨æ„åŠ›æ˜¯â€œè·³ç€â€æ¥äº†ï¼Œæ‰€ä»¥å®žé™…ä¸Šæ¯ä¸ªå…ƒç´ åªè·Ÿå¤§çº¦n/kä¸ªå…ƒç´ ç®—ç›¸å…³æ€§ï¼Œè¿™æ ·ç†æƒ³æƒ…å†µä¸‹è¿è¡Œæ•ˆçŽ‡å’Œæ˜¾å­˜å ç”¨éƒ½å˜æˆäº†?(n^2/k)ï¼Œä¹Ÿå°±æ˜¯è¯´èƒ½ç›´æŽ¥é™ä½Žåˆ°åŽŸæ¥çš„1/kã€?
 
 
-### Local Self Attention ¾Ö²¿×Ô×¢ÒâÁ¦
+### Local Self Attention å±€éƒ¨è‡ªæ³¨æ„åŠ?
 
-Local Self Attention£¬ÖÐÎÄ³Æ¡°¾Ö²¿×Ô×¢ÒâÁ¦¡±¡£
-- **×Ô×¢ÒâÁ¦**»úÖÆÔÚCVÁìÓòÍ³³ÆÎª¡°Non Local¡±
-- ¶øLocal Self AttentionÔòÒª·ÅÆúÈ«¾Ö¹ØÁª£¬ÖØÐÂÒýÈë**¾Ö²¿¹ØÁª**¡£Ô¼ÊøÃ¿¸öÔªËØÖ»ÓëÇ°ºók¸öÔªËØÒÔ¼°×ÔÉíÓÐ¹ØÁª£¬ÈçÏÂÍ¼ËùÊ¾£º
+Local Self Attentionï¼Œä¸­æ–‡ç§°â€œå±€éƒ¨è‡ªæ³¨æ„åŠ›â€ã€?
+- **è‡ªæ³¨æ„åŠ›**æœºåˆ¶åœ¨CVé¢†åŸŸç»Ÿç§°ä¸ºâ€œNon Localâ€?
+- è€ŒLocal Self Attentionåˆ™è¦æ”¾å¼ƒå…¨å±€å…³è”ï¼Œé‡æ–°å¼•å…?**å±€éƒ¨å…³è?**ã€‚çº¦æŸæ¯ä¸ªå…ƒç´ åªä¸Žå‰åŽkä¸ªå…ƒç´ ä»¥åŠè‡ªèº«æœ‰å…³è”ï¼Œå¦‚ä¸‹å›¾æ‰€ç¤ºï¼š
 - ![](https://spaces.ac.cn/usr/uploads/2019/07/713126535.png)
-- Local Self AttentionµÄ×¢ÒâÁ¦¾ØÕó£¨×ó£©ºÍ¹ØÁªÍ¼Ê¾£¨ÓÒ£©
-- ´Ó×¢ÒâÁ¦¾ØÕóÀ´¿´£¬¾ÍÊÇÏà¶Ô¾àÀë³¬¹ýkµÄ×¢ÒâÁ¦¶¼Ö±½ÓÉèÎª0¡£
+- Local Self Attentionçš„æ³¨æ„åŠ›çŸ©é˜µï¼ˆå·¦ï¼‰å’Œå…³è”å›¾ç¤ºï¼ˆå³ï¼?
+- ä»Žæ³¨æ„åŠ›çŸ©é˜µæ¥çœ‹ï¼Œå°±æ˜¯ç›¸å¯¹è·ç¦»è¶…è¿‡kçš„æ³¨æ„åŠ›éƒ½ç›´æŽ¥è®¾ä¸?0ã€?
 
-ÆäÊµ Local Self Attention ¸úÆÕÍ¨¾í»ýºÜÏñÁË£¬¶¼ÊÇ±£ÁôÁËÒ»¸ö 2k+1 ´óÐ¡µÄ´°¿Ú£¬È»ºóÔÚ´°¿ÚÄÚ½øÐÐÒ»Ð©ÔËËã£¬²»Í¬µÄÊÇÆÕÍ¨¾í»ýÊÇ°Ñ´°¿ÚÕ¹Æ½È»ºó½ÓÒ»¸öÈ«Á¬½Ó²ãµÃµ½Êä³ö£¬¶øÏÖÔÚÊÇ´°¿ÚÄÚÍ¨¹ý×¢ÒâÁ¦À´¼ÓÈ¨Æ½¾ùµÃµ½Êä³ö¡£¶ÔÓÚLocal Self AttentionÀ´Ëµ£¬Ã¿¸öÔªËØÖ»¸ú 2k+1 ¸öÔªËØËãÏà¹ØÐÔ£¬ÕâÑùÒ»À´ÀíÏëÇé¿öÏÂÔËÐÐÐ§ÂÊºÍÏÔ´æÕ¼ÓÃ¶¼±ä³ÉÁË ?((2k+1)n)??(kn) ÁË£¬Ò²¾ÍÊÇËµËæ×Ån ¶øÏßÐÔÔö³¤£¬ÕâÊÇÒ»¸öºÜÀíÏëµÄÐÔÖÊ¡ª¡ªµ±È»Ò²Ö±½ÓÎþÉüÁË³¤³Ì¹ØÁªÐÔ¡£
+å…¶å®ž Local Self Attention è·Ÿæ™®é€šå·ç§¯å¾ˆåƒäº†ï¼Œéƒ½æ˜¯ä¿ç•™äº†ä¸€ä¸? 2k+1 å¤§å°çš„çª—å£ï¼Œç„¶åŽåœ¨çª—å£å†…è¿›è¡Œä¸€äº›è¿ç®—ï¼Œä¸åŒçš„æ˜¯æ™®é€šå·ç§¯æ˜¯æŠŠçª—å£å±•å¹³ç„¶åŽæŽ¥ä¸€ä¸ªå…¨è¿žæŽ¥å±‚å¾—åˆ°è¾“å‡ºï¼Œè€ŒçŽ°åœ¨æ˜¯çª—å£å†…é€šè¿‡æ³¨æ„åŠ›æ¥åŠ æƒå¹³å‡å¾—åˆ°è¾“å‡ºã€‚å¯¹äºŽLocal Self Attentionæ¥è¯´ï¼Œæ¯ä¸ªå…ƒç´ åªè·? 2k+1 ä¸ªå…ƒç´ ç®—ç›¸å…³æ€§ï¼Œè¿™æ ·ä¸€æ¥ç†æƒ³æƒ…å†µä¸‹è¿è¡Œæ•ˆçŽ‡å’Œæ˜¾å­˜å ç”¨éƒ½å˜æˆäº? ?((2k+1)n)??(kn) äº†ï¼Œä¹Ÿå°±æ˜¯è¯´éšç€n è€Œçº¿æ€§å¢žé•¿ï¼Œè¿™æ˜¯ä¸€ä¸ªå¾ˆç†æƒ³çš„æ€§è´¨â€”â€”å½“ç„¶ä¹Ÿç›´æŽ¥ç‰ºç‰²äº†é•¿ç¨‹å…³è”æ€§ã€?
 
-### Sparse Self Attention -- OpenAI¸Ä½ø£¬×ÛºÏÒÔÉÏÁ½ÖÖ
+### Sparse Self Attention -- OpenAIæ”¹è¿›ï¼Œç»¼åˆä»¥ä¸Šä¸¤ç§?
 
-ÏÖÔÚ¿ÉÒÔºÜ×ÔÈ»µØÒýÈëOpenAIµÄ Sparse Self AttentionÁË¡£
-- Atrous Self Attention ÓÐÒ»Ð©¶´£¬¶ø Local Self AttentionÕýºÃÌî²¹ÁËÕâÐ©¶´£¬ËùÒÔÒ»¸ö¼òµ¥·½Ê½¾ÍÊÇ½«Local Self AttentionºÍAtrous Self Attention ½»ÌæÊ¹ÓÃ£¬Á½ÕßÀÛ»ýÆðÀ´£¬ÀíÂÛÉÏÒ²¿ÉÒÔÑ§Ï°µ½È«¾Ö¹ØÁªÐÔ£¬Ò²Ê¡ÁËÏÔ´æ¡£
-- Ë¼Â·£ºµÚÒ»²ãÓÃLocal Self Attention£¬Êä³öµÄÃ¿¸öÏòÁ¿¶¼ÈÚºÏÁË¾Ö²¿¼¸¸öÊäÈëÏòÁ¿£¬È»ºóµÚ¶þ²ãÓÃAtrous Self Attention£¬ËäÈ»Ìø×ÅÀ´£¬µ«ÊÇÒòÎªµÚÒ»²ãµÄÊä³öÈÚºÏÁË¾Ö²¿µÄÊäÈëÏòÁ¿£¬ËùÒÔµÚ¶þ²ãµÄÊä³öÀíÂÛÉÏ¿ÉÒÔ¸úÈÎÒâµÄÊäÈëÏòÁ¿Ïà¹Ø£¬Ò²¾ÍÊÇËµÊµÏÖÁË**³¤³Ì¹ØÁª**¡£
-- µ«ÊÇOpenAIÖ±½Ó½«Á½¸öAtrous Self AttentionºÍLocal Self AttentionºÏ²¢ÎªÒ»¸ö£¬ÈçÏÂÍ¼£º
+çŽ°åœ¨å¯ä»¥å¾ˆè‡ªç„¶åœ°å¼•å…¥OpenAIçš? Sparse Self Attentionäº†ã€?
+- Atrous Self Attention æœ‰ä¸€äº›æ´žï¼Œè€? Local Self Attentionæ­£å¥½å¡«è¡¥äº†è¿™äº›æ´žï¼Œæ‰€ä»¥ä¸€ä¸ªç®€å•æ–¹å¼å°±æ˜¯å°†Local Self Attentionå’ŒAtrous Self Attention äº¤æ›¿ä½¿ç”¨ï¼Œä¸¤è€…ç´¯ç§¯èµ·æ¥ï¼Œç†è®ºä¸Šä¹Ÿå¯ä»¥å­¦ä¹ åˆ°å…¨å±€å…³è”æ€§ï¼Œä¹Ÿçœäº†æ˜¾å­˜ã€?
+- æ€è·¯ï¼šç¬¬ä¸€å±‚ç”¨Local Self Attentionï¼Œè¾“å‡ºçš„æ¯ä¸ªå‘é‡éƒ½èžåˆäº†å±€éƒ¨å‡ ä¸ªè¾“å…¥å‘é‡ï¼Œç„¶åŽç¬¬äºŒå±‚ç”¨Atrous Self Attentionï¼Œè™½ç„¶è·³ç€æ¥ï¼Œä½†æ˜¯å› ä¸ºç¬¬ä¸€å±‚çš„è¾“å‡ºèžåˆäº†å±€éƒ¨çš„è¾“å…¥å‘é‡ï¼Œæ‰€ä»¥ç¬¬äºŒå±‚çš„è¾“å‡ºç†è®ºä¸Šå¯ä»¥è·Ÿä»»æ„çš„è¾“å…¥å‘é‡ç›¸å…³ï¼Œä¹Ÿå°±æ˜¯è¯´å®žçŽ°äº†**é•¿ç¨‹å…³è”**ã€?
+- ä½†æ˜¯OpenAIç›´æŽ¥å°†ä¸¤ä¸ªAtrous Self Attentionå’ŒLocal Self Attentionåˆå¹¶ä¸ºä¸€ä¸ªï¼Œå¦‚ä¸‹å›¾ï¼š
 - ![](https://spaces.ac.cn/usr/uploads/2019/07/1199615308.png)
-- Sparse Self AttentionµÄ×¢ÒâÁ¦¾ØÕó£¨×ó£©ºÍ¹ØÁªÍ¼Ê¾£¨ÓÒ£©
+- Sparse Self Attentionçš„æ³¨æ„åŠ›çŸ©é˜µï¼ˆå·¦ï¼‰å’Œå…³è”å›¾ç¤ºï¼ˆå³ï¼?
 
-´Ó×¢ÒâÁ¦¾ØÕóÉÏ¿´¾ÍºÜÈÝÒ×Àí½âÁË£¬¾ÍÊÇ³ýÁËÏà¶Ô¾àÀë²»³¬¹ýkµÄ¡¢Ïà¶Ô¾àÀëÎªk,2k,3k,¡­ µÄ×¢ÒâÁ¦¶¼ÉèÎª0£¬ÕâÑùÒ»À´Attention¾Í¾ßÓÐ¡°¾Ö²¿½ôÃÜÏà¹ØºÍÔ¶³ÌÏ¡ÊèÏà¹Ø¡±µÄÌØÐÔ£¬Õâ¶ÔºÜ¶àÈÎÎñÀ´Ëµ¿ÉÄÜÊÇÒ»¸ö²»´íµÄÏÈÑé£¬ÒòÎªÕæÕýÐèÒªÃÜ¼¯µÄ³¤³Ì¹ØÁªµÄÈÎÎñÊÂÊµÉÏÊÇºÜÉÙµÄ¡£
+ä»Žæ³¨æ„åŠ›çŸ©é˜µä¸Šçœ‹å°±å¾ˆå®¹æ˜“ç†è§£äº†ï¼Œå°±æ˜¯é™¤äº†ç›¸å¯¹è·ç¦»ä¸è¶…è¿‡kçš„ã€ç›¸å¯¹è·ç¦»ä¸ºk,2k,3k,â€? çš„æ³¨æ„åŠ›éƒ½è®¾ä¸?0ï¼Œè¿™æ ·ä¸€æ¥Attentionå°±å…·æœ‰â€œå±€éƒ¨ç´§å¯†ç›¸å…³å’Œè¿œç¨‹ç¨€ç–ç›¸å…³â€çš„ç‰¹æ€§ï¼Œè¿™å¯¹å¾ˆå¤šä»»åŠ¡æ¥è¯´å¯èƒ½æ˜¯ä¸€ä¸ªä¸é”™çš„å…ˆéªŒï¼Œå› ä¸ºçœŸæ­£éœ€è¦å¯†é›†çš„é•¿ç¨‹å…³è”çš„ä»»åŠ¡äº‹å®žä¸Šæ˜¯å¾ˆå°‘çš„ã€?
 
-OpenAI ¿ªÔ´ÁË¹Ù·½ÊµÏÖ [sparse_attention](https://github.com/openai/sparse_attention)
+OpenAI å¼€æºäº†å®˜æ–¹å®žçŽ° [sparse_attention](https://github.com/openai/sparse_attention)
 
 ## Transformer-Decoder
 
-¡¾2021-4-19¡¿[https://zhuanlan.zhihu.com/p/179959751](https://zhuanlan.zhihu.com/p/79714797)
+ã€?2021-4-19ã€‘[https://zhuanlan.zhihu.com/p/179959751](https://zhuanlan.zhihu.com/p/79714797)
 
-Transformer Ô­Ê¼ÂÛÎÄ·¢±íÖ®ºó£¬¡¸Generating Wikipedia by Summarizing Long Sequences¡¹Ìá³öÓÃÁíÒ»ÖÖ transformer Ä£¿éµÄ**ÅÅÁÐ·½Ê½**À´½øÐÐÓïÑÔ½¨Ä£
-- Ö±½ÓÈÓµôÁËËùÓÐµÄ transformer ±àÂëÆ÷Ä£¿é¡­¡­¡¸Transformer-Decoder¡¹Ä£ÐÍ¡£
+Transformer åŽŸå§‹è®ºæ–‡å‘è¡¨ä¹‹åŽï¼Œã€ŒGenerating Wikipedia by Summarizing Long Sequencesã€æå‡ºç”¨å¦ä¸€ç§? transformer æ¨¡å—çš?**æŽ’åˆ—æ–¹å¼**æ¥è¿›è¡Œè¯­è¨€å»ºæ¨¡
+- ç›´æŽ¥æ‰”æŽ‰äº†æ‰€æœ‰çš„ transformer ç¼–ç å™¨æ¨¡å—â€¦â€¦ã€ŒTransformer-Decoderã€æ¨¡åž‹ã€?
 
-ÔçÆÚµÄ»ùÓÚ transformer µÄÄ£ÐÍÓÉ 6 ¸ö transformer ½âÂëÆ÷Ä£¿é¶Ñµþ¶ø³É£º
+æ—©æœŸçš„åŸºäº? transformer çš„æ¨¡åž‹ç”± 6 ä¸? transformer è§£ç å™¨æ¨¡å—å †å è€Œæˆï¼?
 - ![](https://pic3.zhimg.com/80/v2-19720b1c70a294558dc9456477156b06_1440w.webp)
 
-½âÂëÆ÷Ä£¿é
-- ºÍ transformer Ô­Ê¼½âÂëÆ÷Ä£¿éÏà±È£¬È¥µôÁËµÚ¶þ¸ö×Ô×¢ÒâÁ¦²ã¡£
+è§£ç å™¨æ¨¡å?
+- å’? transformer åŽŸå§‹è§£ç å™¨æ¨¡å—ç›¸æ¯”ï¼ŒåŽ»æŽ‰äº†ç¬¬äºŒä¸ªè‡ªæ³¨æ„åŠ›å±‚ã€?
 
-Ò»¸öÏàËÆµÄ¼Ü¹¹ÔÚ**×Ö·û**¼¶±ðµÄÓïÑÔ½¨Ä£ÖÐÒ²±»ÑéÖ¤ÓÐÐ§£¬Ê¹ÓÃ¸üÉîµÄ×Ô×¢ÒâÁ¦²ã¹¹½¨ÓïÑÔÄ£ÐÍ£¬Ò»´ÎÔ¤²âÒ»¸ö×ÖÄ¸/×Ö·û¡£
+ä¸€ä¸ªç›¸ä¼¼çš„æž¶æž„åœ?**å­—ç¬¦**çº§åˆ«çš„è¯­è¨€å»ºæ¨¡ä¸­ä¹Ÿè¢«éªŒè¯æœ‰æ•ˆï¼Œä½¿ç”¨æ›´æ·±çš„è‡ªæ³¨æ„åŠ›å±‚æž„å»ºè¯­è¨€æ¨¡åž‹ï¼Œä¸€æ¬¡é¢„æµ‹ä¸€ä¸ªå­—æ¯?/å­—ç¬¦ã€?
 
-ËùÓÐ½âÂëÆ÷Ä£¿é¶¼Ò»Ñù¡£Ê¹ÓÃ´øÑÚÄ£µÄ×Ô×¢ÒâÁ¦²ã¡£
-- ¸ÃÄ£ÐÍÔÚÄ³¸öÆ¬¶ÎÖÐ¿ÉÒÔÖ§³Ö×î³¤ **4000** ¸öµ¥´ÊµÄÐòÁÐ£¬Ïà½ÏÓÚ transformer Ô­Ê¼ÂÛÎÄÖÐ×î³¤ **512** µ¥´ÊµÄÏÞÖÆÓÐÁËºÜ´óµÄÌáÉý¡£
+æ‰€æœ‰è§£ç å™¨æ¨¡å—éƒ½ä¸€æ ·ã€‚ä½¿ç”¨å¸¦æŽ©æ¨¡çš„è‡ªæ³¨æ„åŠ›å±‚ã€?
+- è¯¥æ¨¡åž‹åœ¨æŸä¸ªç‰‡æ®µä¸­å¯ä»¥æ”¯æŒæœ€é•? **4000** ä¸ªå•è¯çš„åºåˆ—ï¼Œç›¸è¾ƒäºŽ transformer åŽŸå§‹è®ºæ–‡ä¸­æœ€é•? **512** å•è¯çš„é™åˆ¶æœ‰äº†å¾ˆå¤§çš„æå‡ã€?
 
 
-# ½áÊø
+# ç»“æŸ
