@@ -16,6 +16,7 @@ permalink: /llm_scaling_law
 # Scaling Law 缩放定律
 
 
+
 ## 思考
 
 [解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
@@ -154,15 +155,24 @@ plot_power_law(-0.5) # y = x^(-0.5)
 
 ## 什么是 Scaling Laws
 
+
+### 背景
+
+源自浙大书籍《大语言模型》[章节](https://github.com/ZJU-LLMs/Foundations-of-LLMs/blob/main/%E3%80%8A%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E3%80%8B%E6%95%99%E6%9D%90/%E3%80%8A%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E3%80%8B%E5%88%86%E7%AB%A0%E8%8A%82%E5%86%85%E5%AE%B9/%E7%AC%AC2%E7%AB%A0%20%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84.pdf)
+- 模型规模和训练数据的增长带来巨大的计算、存储成本，大力出奇迹难以为继。
+- 模型设计时，<span style='color:red'>如何在资源消耗、性能提升之间找到平衡点？</span>
+
+大语言模型的`扩展法则`（Scaling Laws）诞生, 揭示模型能力岁模型规模和数据规模的变化关系，为 LLM 设计和优化提供指导建议。
+
 Scaling Laws 意义: 
-- AI专业人士可以通过Scaling Laws预测大模型在`参数量`、`数据量`以及`训练计算量`这三个因素变动时，损失值的变化。
-- 这种预测能帮助一些关键的设计决策，比如在固定资源预算下，匹配模型的最佳大小和数据大小，而无需进行及其昂贵的试错。
+- AI专业人士可通过 Scaling Laws 预测大模型在`参数量`、`数据量`以及`训练计算量`这三个因素变动时，损失值的变化。
+- 为LLM设计提供决策支持，比如在固定资源预算下，匹配模型的最佳大小和数据大小，而无需进行及其昂贵的试错。
 
 规模化法则(`缩放法则`)（Scaling Law）指 **模型性能**与**模型大小**、**数据集大小**和**计算资源**等多种因素之间观察到的关系。
 
 随着模型的扩展，这些关系遵循**可预测**模式。
 
-规模化法则行为的关键因素如下：
+`扩展法则`行为的关键因素如下：
 - **模型大小**：随着模型中参数数量的增加，性能通常会按照幂律改善。
 - **数据集大小**：更大的训练数据集通常带来更好的性能，也遵循幂律关系。
 - **计算**：用于训练的计算资源（浮点运算次数）与性能改善相关。
@@ -176,9 +186,6 @@ Scaling Laws 意义:
 - 计算损失对w的梯度时，需要恰好2次FLOPs。
 - 用损失的梯度更新参数w时，需要恰好2次FLOPs。
 
-
-
-
 【2024-9-20】[AI can't cross this line and we don't know why](https://www.youtube.com/watch?v=5eqRuVp65eY)
 
 
@@ -187,14 +194,16 @@ Scaling Laws 意义:
 ### Scaling Law 定义
 
 
-主要有两个版本
-
-OpenAI V.S DeepMind
+主要有两个版本: OpenAI V.S DeepMind
+- OpenAI 提出的 `Kaplan-McCandlish` 扩展法则
+- Google DeepMind 提出的 `Chinchilla` 扩展法则
 
 更多见【2024-1-5】[OpenAI与DeepMind的Scaling Laws之争](https://hub.baai.ac.cn/view/34084)
 
 
-### 2020 OpenAI Scaling Law
+### 2020 Kaplan-McCandlish Scaling Law
+
+2020年, OpenAI 团队的 Jared Kaplan 和 Sam McCandlish 等人首次研究了神经网络性能与数据规模D、模型规模N之间的函数关系。 `Kaplan-McCandlish`
 
 OpenAI
 > “Our mission is to ensure that artificial general intelligence—AI systems that are generally smarter than humans—benefits all of humanity.”
@@ -213,10 +222,24 @@ OpenAI 发布
   - [解读](https://blog.csdn.net/CY19980216/article/details/125139643)
 - 【2020-11-6】第二篇文章 OpenAI Scaling Paper: [Scaling Laws for Autoregressive Generative Modeling](https://arxiv.org/pdf/2010.14701), [解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
 
+公式
+
+$L(D)=\left(\frac{D}{D_{c}}\right)^{\alpha_{D}}, \alpha_{D} \sim-0.095, D_{c} \sim 5.4 \times 10^{13}$
+
+$L(N)=\left(\frac{N}{N_{c}}\right)^{\alpha_{N}}, \alpha_{N} \sim-0.076, N_{c} \sim 8.8 \times 10^{13}$
+
+说明
+- L 值衡量模型拟合数据分布的准确性, 数值越小拟合越精确，对应学习能力就越强
+- 模型最终性能主要与计算量`C`，模型参数量`N`和数据大小`D`三者相关，而与**模型结构**(层数/深度/宽度)基本无关。
+- 模型性能与**模型规模**以及**数据规模**这两个因素高度正相关，而规模相同时，**模型架构**对性能影响相对较小。
+  - 启发: 要提升模型性能，重点考虑**扩大模型规模**、**丰富训练数据集**
+- L(N) 表示**数据**规模固定时, 不同**模型**规模下的交叉熵损失函数 —— **模型**规模对拟合能力的影响
+- L(D) 表示**模型**规模固定时, 不同**数据**规模下的交叉熵损失函数 —— **数据**规模对模型学习能力的影响
 
 核心结论
 - 对于 Decoder-only 模型，计算量`C`(Flops), 模型参数量`N`, 数据大小`D`(token数)，三者满足: `C ≈ 6ND`
-- 模型最终性能主要与计算量`C`，模型参数量`N`和数据大小`D`三者相关，而与模型结构(层数/深度/宽度)基本无关。
+  - 如果计算预算`C`增加, 模型要达到最优性能, 数据规模`D`、模型规模`N`, 应同步增加
+  - 但是, <span style='color:red'>模型规模增长速度应该略快于数据规模</span>, 最优配置比例 `Nopt ∝ C^0.73`, `Dopt ∝ C^0.27`, 即 如果总计算预算增加10倍, 模型规模 `N` 应扩大 5.37 倍, 而数据规模应扩大 1.86 倍
 - 计算量`C`，模型参数量`N`和数据大小`D`，当不受其他两个因素制约时，模型性能与每个因素都呈现**幂律**关系
   - ![](https://pic3.zhimg.com/80/v2-3aa5475bcadc607ea96f20136158f80a_1440w.webp)
 - 为了提升模型性能，模型参数量`N`和数据大小`D`需要**同步放大**，但模型和数据分别放大的比例还存在争议。
@@ -237,6 +260,7 @@ OpenAI 发布
 
 ### 2022 Chinchilla Scaling Law 数据不变
 
+
 DeepMind
 > We’re a team of scientists, engineers, ethicists and more, committed to solving intelligence, to advance science and benefit humanity.
 
@@ -250,9 +274,37 @@ DeepMind 在技术上取得了显著成就，包括
 - 开发`AlphaGo`，击败世界围棋冠军李世石的AI系统，展示了深度强化学习和神经网络的潜力，开启了一个AI时代。
 - `AlphaFold`，这是一个革命性的用于准确预测蛋白质折叠的工具，对生物信息学界产生了深远影响。DeepMind用AI进行蛋白质折叠预测的突破，将帮助我们更好地理解生命最根本的根基，并帮助研究人员应对新的和更难的难题，包括应对疾病和环境可持续发展。
 
-【2022-3-29】 DeepMind 发表论文
+OpenAI 说: 
+- <span style='color:red'>模型规模增长速度应该略快于数据规模</span> —— 真的吗？
+
+【2022-3-29】 DeepMind 探索了更大范围的模型（7000w~160b）+数据规模（5b~500b个token），提出了 `Chinchilla 扩展法则`, 发表论文
 - [Training Compute-Optimal Large Language Models](https://arxiv.org/pdf/2203.15556.pdf) 根据`Scaling Law`，给定计算量（FLOPS）训练出来的最优模型（达到最好模型效果）的训练数据集的token数和模型参数数目是确定的。
-- Gopher 模型计算量预算是 5.76 × 10^23 FLOPs，那么达到最优效果的参数量是 63B，数据集中Token数目为**1.4T**。
+
+Chinchilla 扩展法则是 OpenAI 扩展法则的补充和优化。
+- 强调 数据规模 对模型性能提升的重要性
+- 模型规模+数据规模应该同等比例增加
+
+开创了LLM发展新方向
+- 不再单纯追求扩大模型规模，而是<span style='color:green'>优化模型规模与数据规模比例</span> —— 别再“大力出奇迹”了！
+
+
+公式
+- `L(N,D) = E + A/Na + B/Db`
+- E=1.69, A=406.4, B=410.7, a=0.34, b=0.28
+- 指定计算量下的最优分配：数据集规模 D 与 模型规模 N
+  - `Nopt ∝ C^0.73` --> `Nopt ∝ C^0.46`
+  - `Dopt ∝ C^0.27` --> `Dopt ∝ C^0.54`
+- 数据集量 D 与模型规模同等重要
+  - 如果计算预算增加10倍，模型规模 和 数据规模 应该扩大约 3.16 倍
+  - 2023年5月，发布 PaLM2 技术报告，证实以上结论
+
+另外, 理想数据集大小应当是模型规模的**20倍**
+- 7b 模型最理想的训练数据为 140b 个token
+- 而 OpenAI的 `GPT-3` 模型最大版本175b, 但训练数据只有300b个token
+- 微软 `MT-NLG` 模型 530b, 训练数据只有 270b
+- 于是, `DeepMind` 推出符合20倍原则的模型: `Chinchilla`, 70b, 1.4 万亿个token, 性能上取得突破
+
+Gopher 模型计算量预算是 5.76 × 10^23 FLOPs，那么达到最优效果的参数量是 63B，数据集中Token数目为**1.4T**。
 - ![](https://pic1.zhimg.com/50/v2-2d9fd7904ce7c251767a82f586a53a27_720w.jpg)
 
 Deepmind 的 Hoffmann 等人团队提出与OpenAI**截然不同**的观点。
