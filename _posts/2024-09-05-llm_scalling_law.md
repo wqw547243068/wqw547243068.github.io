@@ -3,7 +3,7 @@ layout: post
 title:  规模法则 Scaling Law
 date:   2023-09-05 12:00:00
 categories: 大模型
-tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind
+tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind 类脑
 excerpt:  谈谈影响LLM发展的重要定律, 规模法则(Scaling Law)
 mathjax: true
 permalink: /llm_scaling_law
