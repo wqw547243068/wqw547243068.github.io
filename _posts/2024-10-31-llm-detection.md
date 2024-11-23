@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  AIGC内容检测与攻击
+title:  AIGC鍐呭妫€娴嬩笌鏀诲嚮
 date:   2024-10-31 22:08:00
-categories: 大模�?
-tags: gpt 文本生成 对抗 攻击 AIGC ChatGPT 水印
-excerpt: 如何检测AIGC内容？区分机器还是人工编写？怎么攻击AIGC/LLM内容�?
+categories: 澶фā鍨?
+tags: gpt 鏂囨湰鐢熸垚 瀵规�? 鏀诲嚮 AIGC ChatGPT 姘村�?
+excerpt: 濡備綍妫€娴婣IGC鍐呭锛熷尯鍒嗘満鍣ㄨ繕鏄汉宸ョ紪鍐欙紵鎬庝箞鏀诲嚮AIGC/LLM鍐呭锛?
 mathjax: true
 permalink: /aigc_detect
 ---
@@ -13,59 +13,59 @@ permalink: /aigc_detect
 {:toc}
 
 
-# 文本检�?
+# 鏂囨湰妫€娴?
 
 
-## 方法总结
+## 鏂规硶鎬荤粨
 
-�?2024-10-23】论�?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
+�??2024-10-23銆戣鏂?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
 
-检测方�?
-- (1) **检�?**(retrieval-based approach): 检查生成内容与库里存储的内容是否匹�?
-  - 问题: 需要预生成大量内容、隐私问题（因为要存储、评估）
-- (2) **事后即时检�?**(post hoc detection): 使用文本统计特征，或机器学习分类器来区分人工、AI生成内容
-  - 优点: 不需要保存记录、干预文本生成过�?
-  - 缺点: 计算开销�?, 场景受限（模型），oov问题, 依赖人工编写数据
-- (3) **文本水印**: 生成过程中植入水�?
-  - �? 编辑水印 Edit-based watermarking: 规则为主, �? 同义词替捀��插入特�? Unicode 字符
-  - �? 数据驱动水印 data-drived watermarking: 在特殊触发短语数据集上训练LLM
-  - �? 生成式水�?
+妫€娴嬫柟娉?
+- (1) **妫€�??**(retrieval-based approach): 妫€鏌ョ敓鎴愬唴瀹逛笌搴撻噷瀛樺偍鐨勫唴瀹规槸鍚﹀尮閰?
+  - 闂�?: 闇€瑕侀鐢熸垚澶ч噺鍐呭銆侀殣绉侀棶棰橈紙鍥犱负瑕佸瓨鍌ㄣ€佽瘎浼帮級
+- (2) **浜嬪悗鍗虫椂妫€�??**(post hoc detection): 浣跨敤鏂囨湰缁熻鐗瑰緛锛屾垨鏈哄櫒瀛︿範鍒嗙被鍣ㄦ潵鍖哄垎浜哄伐銆丄I鐢熸垚鍐呭
+  - 浼樼�?: 涓嶉渶瑕佷繚瀛樿褰曘€佸共棰勬枃鏈敓鎴愯繃绋?
+  - 缂虹�?: 璁＄畻寮€閿€澶?, 鍦烘櫙鍙楅檺锛堟ā鍨嬶級锛宱ov闂�?, 渚濊禆浜哄伐缂栧啓鏁版嵁
+- (3) **鏂囨湰姘村嵃**: 鐢熸垚杩囩▼涓鍏ユ按�??
+  - �?? 缂栬緫姘村嵃 Edit-based watermarking: 瑙勫垯涓轰富, �?? 鍚屼箟璇嶆浛鎹€€佹彃鍏ョ壒�?? Unicode 瀛楃�?
+  - �?? 鏁版嵁椹卞姩姘村�? data-drived watermarking: 鍦ㄧ壒娈婅Е鍙戠煭璇暟鎹泦涓婅缁僉LM
+  - �?? 鐢熸垚寮忔按�??
 
-①和②这两种方法都可能在文本中留下明显的伪影
-
-
+鈶犲拰鈶¤繖涓ょ鏂规硶閮藉彲鑳藉湪鏂囨湰涓暀涓嬫槑鏄剧殑浼�?
 
 
-## ChatGPT 打假
 
-最近一段时间，ChatGPT先是成为美国高中生的写作业利器，后面帮专业媒体写稿子，引发巨大恐慌。如Nature、纽约教育部等，都针对ChatGPT发布禁令�?
 
-OpenAI官方推出AI生成内容识别器，但成功率只有26% [公众号文章](https://mp.weixin.qq.com/s/etHIquIuN4VeSUuFjzBoyA) [英文原文](https://techcrunch.com/2023/01/31/OpenAI-releases-tool-to-detect-ai-generated-text-including-from-ChatGPT/)
-- ChatGPT 引发 AI 领域「是否要禁用」大讨论之后，OpenAI 的真假鉴别工具终于来了�? [AI Text Classifier](https://platform.OpenAI.com/ai-text-classifier)
-- 2023�?1�?31日，OpenAI 官宣了区分人类作品和 AI 生成文本的识别工具上线，该技术旨在识别自家的 ChatGPT、GPT-3 等模型生成的内容。然而分类器目前看起来准确性堪忧：OpenAI 在博客里指出 AI 识别 AI 高置信度正确率约�? 26%。但该机构认为，当它与其他方法结合使用时，可以有助于防止 AI 文本生成器被滥用�?
-- OpenAI 文本分类器不适用于所有类型的文本。被检测的内容至少需�? 1000 个字符，或大�? 150 �? 250 个单词。它没有论文检测平台那样的查重能力 —�? 考虑到文本生成人工智能已被证明会照抄训练集里的「正确答案」，这是一个非常难受的限制。OpenAI 表示，由于其英语前向数据集，它更有可能在儿童或非英语语言书写的文本上出错�?
+## ChatGPT 鎵撳�?
+
+鏈€杩戜竴娈垫椂闂达紝ChatGPT鍏堟槸鎴愪负缇庡浗楂樹腑鐢熺殑鍐欎綔涓氬埄鍣紝鍚庨潰甯笓涓氬獟浣撳啓绋垮瓙锛屽紩鍙戝法澶ф亹鎱屻€傚Nature銆佺航绾︽暀鑲查儴绛夛紝閮介拡瀵笴hatGPT鍙戝竷绂佷护�??
+
+OpenAI瀹樻柟鎺ㄥ嚭AI鐢熸垚鍐呭璇嗗埆鍣紝浣嗘垚鍔熺巼鍙�?26% [鍏紬鍙锋枃绔燷(https://mp.weixin.qq.com/s/etHIquIuN4VeSUuFjzBoyA) [鑻辨枃鍘熸枃](https://techcrunch.com/2023/01/31/OpenAI-releases-tool-to-detect-ai-generated-text-including-from-ChatGPT/)
+- ChatGPT 寮曞�? AI 棰嗗煙銆屾槸鍚﹁绂佺敤銆嶅ぇ璁ㄨ涔嬪悗锛孫penAI 鐨勭湡鍋囬壌鍒伐鍏风粓浜庢潵浜嗐€? [AI Text Classifier](https://platform.OpenAI.com/ai-text-classifier)
+- 2023�??1�??31鏃ワ紝OpenAI 瀹樺浜嗗尯鍒嗕汉绫讳綔鍝佸�? AI 鐢熸垚鏂囨湰鐨勮瘑鍒伐鍏蜂笂绾匡紝璇ユ妧鏈棬鍦ㄨ瘑鍒嚜瀹剁�? ChatGPT銆丟PT-3 绛夋ā鍨嬬敓鎴愮殑鍐呭銆傜劧鑰屽垎绫诲櫒鐩墠鐪嬭捣鏉ュ噯纭€у牚蹇э細OpenAI 鍦ㄥ崥瀹㈤噷鎸囧嚭 AI 璇嗗�? AI 楂樼疆淇″害姝ｇ‘鐜囩害�?? 26%銆備絾璇ユ満鏋勮涓猴紝褰撳畠涓庡叾浠栨柟娉曠粨鍚堜娇鐢ㄦ椂锛屽彲浠ユ湁鍔╀簬闃叉 AI 鏂囨湰鐢熸垚鍣ㄨ婊ョ敤�??
+- OpenAI 鏂囨湰鍒嗙被鍣ㄤ笉閫傜敤浜庢墍鏈夌被鍨嬬殑鏂囨湰銆傝妫€娴嬬殑鍐呭鑷冲皯闇€�?? 1000 涓瓧绗︼紝鎴栧ぇ绾? 150 �?? 250 涓崟璇嶃€傚畠娌℃湁璁烘枃妫€娴嬪钩鍙伴偅鏍风殑鏌ラ噸鑳藉�? 鈥斺�?? 鑰冭檻鍒版枃鏈敓鎴愪汉宸ユ櫤鑳藉凡琚瘉鏄庝細鐓ф妱璁粌闆嗛噷鐨勩€屾纭瓟妗堛€嶏紝杩欐槸涓€涓潪甯搁毦鍙楃殑闄愬埗銆侽penAI 琛ㄧず锛岀敱浜庡叾鑻辫鍓嶅悜鏁版嵁闆嗭紝瀹冩洿鏈夊彲鑳藉湪鍎跨鎴栭潪鑻辫璇█涔﹀啓鐨勬枃鏈笂鍑洪敊�??
 - Each document is labeled as either very unlikely, unlikely, unclear if it is, possibly, or likely AI-generated.
-- 在评估一段给定的文本是否�? AI 生成时，检测器不会正面回答是或否。根据其置信度，它会将文本标记为「非常不可能」由 AI 生成（小�? 10% 的可能性）、「不太可能」由 AI 生成（在 10% �? 45% 之间的可能性）、「不清楚它是否是」AI 生成�?45% �? 90% 的机会）、「可能」由 AI 生成�?90% �? 98% 的机会）或「很有可能」由 AI 生成（超�? 98% 的机会）�?
+- 鍦ㄨ瘎浼颁竴娈电粰瀹氱殑鏂囨湰鏄惁鐢? AI 鐢熸垚鏃讹紝妫€娴嬪櫒涓嶄細姝ｉ潰鍥炵瓟鏄垨鍚︺€傛牴鎹叾缃俊搴︼紝瀹冧細灏嗘枃鏈爣璁颁负銆岄潪甯镐笉鍙兘銆嶇敱 AI 鐢熸垚锛堝皬�?? 10% 鐨勫彲鑳芥€э級銆併€屼笉澶彲鑳姐€嶇敱 AI 鐢熸垚锛堝湪 10% �?? 45% 涔嬮棿鐨勫彲鑳芥€э級銆併€屼笉娓呮瀹冩槸鍚︽槸銆岮I 鐢熸垚锛?45% �?? 90% 鐨勬満浼氾級銆併€屽彲鑳姐€嶇�? AI 鐢熸垚锛?90% �?? 98% 鐨勬満浼氾級鎴栥€屽緢鏈夊彲鑳姐€嶇敱 AI 鐢熸垚锛堣秴�?? 98% 鐨勬満浼氾級銆?
 
-- 虽然效果不尽如人意，�? OpenAI AI 文本分类器（OpenAI AI Text Classifier）在架构上实现了�? GPT 系列的对标�?
+- 铏界劧鏁堟灉涓嶅敖濡備汉鎰忥紝浣? OpenAI AI 鏂囨湰鍒嗙被鍣紙OpenAI AI Text Classifier锛夊湪鏋舵瀯涓婂疄鐜颁簡鍜? GPT 绯诲垪鐨勫鏍囥�??
 
-知名 ML �? AI 研究人员 Sebastian Raschka 试用之后，给出了「It does not work」的评价。他使用�? 2015 年初版的 Python ML 书籍作为输入文本，结果显示如下�?
-- Randy Olson �? foreword 部分被识别为不清楚是否由 AI 生成（unclear�?
-- 他自己的 preface 部分被识别为可能�? AI 生成（possibly AI�?
-- 第一章的段落部分被识别为很可能由 AI 生成（likely AI�?
+鐭ュ�? ML �?? AI 鐮旂┒浜哄憳 Sebastian Raschka 璇曠敤涔嬪悗锛岀粰鍑轰簡銆孖t does not work銆嶇殑璇勪环銆備粬浣跨敤�?? 2015 骞村垵鐗堢殑 Python ML 涔︾睄浣滀负杈撳叆鏂囨湰锛岀粨鏋滄樉绀哄涓嬨�??
+- Randy Olson �?? foreword 閮ㄥ垎琚瘑鍒负涓嶆竻妤氭槸鍚︾敱 AI 鐢熸垚锛坲nclear�??
+- 浠栬嚜宸辩殑 preface 閮ㄥ垎琚瘑鍒负鍙兘�?? AI 鐢熸垚锛坧ossibly AI�??
+- 绗竴绔犵殑娈佃惤閮ㄥ垎琚瘑鍒负寰堝彲鑳界敱 AI 鐢熸垚锛坙ikely AI�??
 
 
 
 ## detect GPT
 
-DetectGPT Demo�?
-- 作者：[Chelsea Finn](https://twitter.com/chelseabfinn) 推出 [Detecting GPT-2 Generations with DetectGPT](https://detectgpt.ericmitchell.ai/)，只支持英文测试，可以显示详细检测结果，包含图表可视�?
+DetectGPT Demo�??
+- 浣滆€咃細[Chelsea Finn](https://twitter.com/chelseabfinn) 鎺ㄥ�? [Detecting GPT-2 Generations with DetectGPT](https://detectgpt.ericmitchell.ai/)锛屽彧鏀寔鑻辨枃娴嬭瘯锛屽彲浠ユ樉绀鸿缁嗘娴嬬粨鏋滐紝鍖呭惈鍥捐〃鍙�??
 
-�?2023-1-29】斯坦福，[DetectGPT：利用概率曲率检测文本是否大模型生成](https://hub.baai.ac.cn/view/23652)，仅用于检�? GPT-2
-- DetectGPT 的方法不需要训练单独的分类器、收集真实或生成的段落的数据集，或显式地为生成的文本加水印�? 它仅使用感兴趣模型计算的**对数概率**和来自另一个通用预训练语言模型（例�? T5）段落的**随机扰动**�? `DetectGPT` 比现有的模型样本检测零样本方法更具辨别力，�? 20B 参数 GPT-NeoX 生成的假新闻文章的检测从最强零样本基线�? 0.81 AUROC 显著提高�? `DetectGPT` �? 0.95 AUROC
-- 检测机器生成的文本方面优于其他零样本方法，或在未来的机器生成文本检查方面非常有前途。另外，他们也将尝试将这一方法用于 LLM 生成的音频、视频和图像的检测工作中�?
-- 局限�?
-  - 如果现有的掩模填充模型不能很好地表示有意义的改写空间，则某些域的性能可能会降低，从而降低曲率估计的质量；以�? DetectGPT 相比于其他检测方法需要更多的计算量等�?
+�??2023-1-29銆戞柉鍧︾锛孾DetectGPT锛氬埄鐢ㄦ鐜囨洸鐜囨娴嬫枃鏈槸鍚﹀ぇ妯″瀷鐢熸垚](https://hub.baai.ac.cn/view/23652)锛屼粎鐢ㄤ簬妫€�?? GPT-2
+- DetectGPT 鐨勬柟娉曚笉闇€瑕佽缁冨崟鐙殑鍒嗙被鍣ㄣ€佹敹闆嗙湡瀹炴垨鐢熸垚鐨勬钀界殑鏁版嵁闆嗭紝鎴栨樉寮忓湴涓虹敓鎴愮殑鏂囨湰鍔犳按鍗般�?? 瀹冧粎浣跨敤鎰熷叴瓒ｆā鍨嬭绠楃�?**瀵规暟姒傜巼**鍜屾潵鑷彟涓€涓€氱敤棰勮缁冭瑷€妯″瀷锛堜緥�?? T5锛夋钀界殑**闅忔満鎵板�?**�?? `DetectGPT` 姣旂幇鏈夌殑妯″瀷鏍锋湰妫€娴嬮浂鏍锋湰鏂规硶鏇村叿杈ㄥ埆鍔涳紝�?? 20B 鍙傛�? GPT-NeoX 鐢熸垚鐨勫亣鏂伴椈鏂囩珷鐨勬娴嬩粠鏈€寮洪浂鏍锋湰鍩虹嚎鐨? 0.81 AUROC 鏄捐憲鎻愰珮�?? `DetectGPT` �?? 0.95 AUROC
+- 妫€娴嬫満鍣ㄧ敓鎴愮殑鏂囨湰鏂归潰浼樹簬鍏朵粬闆舵牱鏈柟娉曪紝鎴栧湪鏈潵鐨勬満鍣ㄧ敓鎴愭枃鏈鏌ユ柟闈㈤潪甯告湁鍓嶉€斻€傚彟澶栵紝浠栦滑涔熷皢灏濊瘯灏嗚繖涓€鏂规硶鐢ㄤ簬 LLM 鐢熸垚鐨勯煶棰戙€佽棰戝拰鍥惧儚鐨勬娴嬪伐浣滀腑銆?
+- 灞€闄愭�??
+  - 濡傛灉鐜版湁鐨勬帺妯″～鍏呮ā鍨嬩笉鑳藉緢濂藉湴琛ㄧず鏈夋剰涔夌殑鏀瑰啓绌洪棿锛屽垯鏌愪簺鍩熺殑鎬ц兘鍙兘浼氶檷浣庯紝浠庤€岄檷浣庢洸鐜囦及璁＄殑璐ㄩ噺锛涗互鍙? DetectGPT 鐩告瘮浜庡叾浠栨娴嬫柟娉曢渶瑕佹洿澶氱殑璁＄畻閲忕瓑銆?
 - [DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature](https://ericmitchell.ai/detectgpt/)
 - The fluency and factual knowledge of large language models (LLMs) heightens the need for corresponding systems to detect whether a piece of text is machine-written. 
 - we first demonstrate that text sampled from an LLM tends to occupy negative curvature regions of the model's log probability function. 
@@ -74,72 +74,72 @@ DetectGPT Demo�?
 
 ## GPTZero
 
-一个检测ChatGPT的网站，名曰 [GPTZero](https://gptzero.me/) ，只需要把相应的内容粘进去，几秒内就能分析出结果�?
+涓€涓娴婥hatGPT鐨勭綉绔欙紝鍚嶆�? [GPTZero](https://gptzero.me/) 锛屽彧闇€瑕佹妸鐩稿簲鐨勫唴瀹圭矘杩涘幓锛屽嚑绉掑唴灏辫兘鍒嗘瀽鍑虹粨鏋溿�??
 
-检测原�? [论文地址](https://arxiv.org/abs/2301.10226), [再不能用ChatGPT写作业了！新算法给AI文本加水印，置信�?99.99%](https://www.toutiao.com/article/7196167767706403362)
-- 简介：给LLM中嵌入水印，再进行检测。其中，水印嵌入不会影响文本生成质量�?
-- 具体：大规模语言模型每次生成一个token，每个token将从包含大约5万个词汇的词汇表中进行选择�?
-  - 在新token生成之前，从基于最近已生成的token为随机数生成器（RNG）提供“种子”，以此来压一个水印�?
-  - 然后使用RNG将词汇表分为**黑名�?**�?**白名�?**，并要求LLM接下来只能从白名单中选择词汇。如果整段文本中，白名单中的词汇越多，就意味着越有可能是AI生成的。黑白名单的区分，基于一个原则：<span style='color:blue'>人类使用词汇的随机性更�?</span>。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
-  - 举例：在“美丽的”后面生成词汇，水印算法会将“花”列入白名单，将“兰花”列入黑名单。论文作者认为，AI更可能使用“花”这个词汇，而不是“兰花”�?
+妫€娴嬪師鐞? [璁烘枃鍦板潃](https://arxiv.org/abs/2301.10226), [鍐嶄笉鑳界敤ChatGPT鍐欎綔涓氫簡锛佹柊绠楁硶缁橝I鏂囨湰鍔犳按鍗帮紝缃俊�??99.99%](https://www.toutiao.com/article/7196167767706403362)
+- 绠€浠嬶細缁橪LM涓祵鍏ユ按鍗帮紝鍐嶈繘琛屾娴嬨€傚叾涓紝姘村嵃宓屽叆涓嶄細褰卞搷鏂囨湰鐢熸垚璐ㄩ噺�??
+- 鍏蜂綋锛氬ぇ瑙勬ā璇█妯″瀷姣忔鐢熸垚涓€涓猼oken锛屾瘡涓猼oken灏嗕粠鍖呭惈澶х害5涓囦釜璇嶆眹鐨勮瘝姹囪〃涓繘琛岄€夋嫨銆?
+  - 鍦ㄦ柊token鐢熸垚涔嬪墠锛屼粠鍩轰簬鏈€杩戝凡鐢熸垚鐨則oken涓洪殢鏈烘暟鐢熸垚鍣紙RNG锛夋彁渚涒€滅瀛愨€濓紝浠ユ鏉ュ帇涓€涓按鍗般�??
+  - 鐒跺悗浣跨敤RNG灏嗚瘝姹囪〃鍒嗕负**榛戝悕鍗?**�??**鐧藉悕鍗?**锛屽苟瑕佹眰LLM鎺ヤ笅鏉ュ彧鑳戒粠鐧藉悕鍗曚腑閫夋嫨璇嶆眹銆傚鏋滄暣娈垫枃鏈腑锛岀櫧鍚嶅崟涓殑璇嶆眹瓒婂锛屽氨鎰忓懗鐫€瓒婃湁鍙兘鏄疉I鐢熸垚鐨勩€傞粦鐧藉悕鍗曠殑鍖哄垎锛屽熀浜庝竴涓師鍒欙�?<span style='color:blue'>浜虹被浣跨敤璇嶆眹鐨勯殢鏈烘€ф洿�??</span>銆俒img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
+  - 涓句緥锛氬湪鈥滅編涓界殑鈥濆悗闈㈢敓鎴愯瘝姹囷紝姘村嵃绠楁硶浼氬皢鈥滆姳鈥濆垪鍏ョ櫧鍚嶅崟锛屽皢鈥滃叞鑺扁€濆垪鍏ラ粦鍚嶅崟銆傝鏂囦綔鑰呰涓猴紝AI鏇村彲鑳戒娇鐀��€滆姳鈥濊繖涓瘝姹囷紝鑰屼笉鏄€滃叞鑺扁€濄�??
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a2f60426905e49d6b71924c25fafcfd1~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=m0%2BKMn%2FMPPogTobIt2WTr%2FzIMmk%3D)
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8a41eab15ef149ddb60ead4bdf71802c~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=gP1dFkBYO0FZ6B7wLJMdsd62EQA%3D)
-  - 然后，就能通过计算整段文本中白名单token出现的情况，来检测水印。如果一共有生成了N个token，所有的token都使用了白名单词汇，那么这段文字只有2的N次方分之一概率是人类写的。即便这段文字只�?25个词组成，那么水印算法也能判断出它到底是不是AI生成的�?
-  - 但作者也表示，水印有时候也不一定完全靠谱。比如模型输出了“SpongeBob Square”，下一个单词一定会是“Pants”吧？但是Pants会被标记到黑名单里，即认为是只有人才会写的词。这种情况会严重影响算法的准确性，因此作者将其定义为**低熵token**，因为模型几乎不会有更好的选择�?
-  - 对应的，也会�?**高熵token**，比�? “海绵宝宝感觉____�? 这个句式里，能填入的词汇太多了。这时，作者选择针对高熵token制定更强的规则，同时保留低熵token，确保水印质量更好�?
-  - 同时，还添加�?**波束搜索**（Beam search），允许LLM能够排布一整个token序列，以避免黑名单词汇。这么做，他们能确保LLM使用白名单词汇的概率在大�?80%左右，而且不影响文本生成质量�?
-  - 举例：下面这段文字，水印算法认为它有99.999999999994%的可能是由AI生成的。因为这段文字包�?36个token。如果是人类写的，那么文本中应该包含9±2.6个白名单词汇（白名单词汇的概率约�?25%）。但这段文字中，包含�?28个白名单词汇，所以由人类写出的概率，仅有0.0000000000006% �?6乘以10�?-15次方）�?
+  - 鐒跺悗锛屽氨鑳介€氳繃璁＄畻鏁存鏂囨湰涓櫧鍚嶅崟token鍑虹幇鐨勬儏鍐碉紝鏉ユ娴嬫按鍗般€傚鏋滀竴鍏辨湁鐢熸垚浜哊涓猼oken锛屾墍鏈夌殑token閮戒娇鐢ㄤ簡鐧藉悕鍗曡瘝姹囷紝閭ｄ箞杩欐鏂囧瓧鍙�?2鐨凬娆℃柟鍒嗕箣涓€姒傜巼鏄汉绫诲啓鐨勩€傚嵆渚胯繖娈垫枃瀛楀彧鏈?25涓瘝缁勬垚锛岄偅涔堟按鍗扮畻娉曚篃鑳藉垽鏂嚭瀹冨埌搴曟槸涓嶆槸AI鐢熸垚鐨勩€?
+  - 浣嗕綔鑰呬篃琛ㄧず锛屾按鍗版湁鏃跺€欎篃涓嶄竴瀹氬畬鍏ㄩ潬璋便€傛瘮濡傛ā鍨嬭緭鍑轰簡鈥淪pongeBob Square鈥濓紝涓嬩竴涓崟璇嶄竴瀹氫細鏄€淧ants鈥濆惂锛熶絾鏄疨ants浼氳鏍囪鍒伴粦鍚嶅崟閲岋紝鍗宠涓烘槸鍙湁浜烘墠浼氬啓鐨勮瘝銆傝繖绉嶆儏鍐典細涓ラ噸褰卞搷绠楁硶鐨勫噯纭€э紝鍥犳浣滆€呭皢鍏跺畾涔変负**浣庣喌token**锛屽洜涓烘ā鍨嬪嚑涔庝笉浼氭湁鏇村ソ鐨勯€夋嫨�??
+  - 瀵瑰簲鐨勶紝涔熶細鏈?**楂樼喌token**锛屾瘮濡? 鈥滄捣缁靛疂瀹濇劅瑙塤___�?? 杩欎釜鍙ュ紡閲岋紝鑳藉～鍏ョ殑璇嶆眹澶浜嗐€傝繖鏃讹紝浣滆€呴€夋嫨閽堝楂樼喌token鍒跺畾鏇村己鐨勮鍒欙紝鍚屾椂淇濈暀浣庣喌token锛岀‘淇濇按鍗拌川閲忔洿濂姐�??
+  - 鍚屾椂锛岃繕娣诲姞浜?**娉㈡潫鎼滅储**锛圔eam search锛夛紝鍏佽LLM鑳藉鎺掑竷涓€鏁翠釜token搴忓垪锛屼互閬垮厤榛戝悕鍗曡瘝姹囥€傝繖涔堝仛锛屼粬浠兘纭繚LLM浣跨敤鐧藉悕鍗曡瘝姹囩殑姒傜巼鍦ㄥぇ�??80%宸﹀彸锛岃€屼笖涓嶅奖鍝嶆枃鏈敓鎴愯川閲忋�??
+  - 涓句緥锛氫笅闈㈣繖娈垫枃瀛楋紝姘村嵃绠楁硶璁や负瀹冩�?99.999999999994%鐨勫彲鑳芥槸鐢盇I鐢熸垚鐨勩€傚洜涓鸿繖娈垫枃瀛楀寘鍚?36涓猼oken銆傚鏋滄槸浜虹被鍐欑殑锛岄偅涔堟枃鏈腑搴旇鍖呭�?9�?2.6涓櫧鍚嶅崟璇嶆眹锛堢櫧鍚嶅崟璇嶆眹鐨勬鐜囩害�??25%锛夈€備絾杩欐鏂囧瓧涓紝鍖呭惈浜?28涓櫧鍚嶅崟璇嶆眹锛屾墍浠ョ敱浜虹被鍐欏嚭鐨勬鐜囷紝浠呮湁0.0000000000006% �??6涔樹�?10�??-15娆℃柟锛夈€?
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/fff66e02c95e4052936e8d5a0db25a03~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=Os3XRxAj0y9q3iJhA2MtdnHeNRA%3D)
-  - 如下标注的是文本中的黑名单token�?
+  - 濡備笅鏍囨敞鐨勬槸鏂囨湰涓殑榛戝悕鍗晅oken�??
   - ![img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/e35bc57cb8404f62892cabb461d2ca15~noop.image?_iz=58558&from=article.pc_detail&x-expires=1676111204&x-signature=sOUXPb%2FCgTV%2FAGNbC9WzO5YbDQA%3D)
 
-注意
-- 如果想要水印正常发挥作用并不受到攻击，就必须对文本进行一些标准化处理，并且需要检测某些类型的对抗性提示�?
+娉ㄦ�?
+- 濡傛灉鎯宠姘村嵃姝ｅ父鍙戞尌浣滅敤骞朵笉鍙楀埌鏀诲嚮锛屽氨蹇呴』瀵规枃鏈繘琛屼竴浜涙爣鍑嗗寲澶勭悊锛屽苟涓旈渶瑕佹娴嬫煇浜涚被鍨嬬殑瀵规姉鎬ф彁绀恒€?
 
-加一个随机秘钥，也能变成保密模式并且托管到API上，这能保证水印不会被篡改�?
-- 论文中使用的模型是Meta开源的OPT-1.3B模型�?
-- 由于不用访问底层模型，所以该检测方法的速度很快，成本也不会很高。而且可以使用标准语言模型生成带水印的文本，不用再重新训练。将�?2�?15日开源代码�?
+鍔犱竴涓殢鏈虹閽ワ紝涔熻兘鍙樻垚淇濆瘑妯″紡骞朵笖鎵樼鍒癆PI涓婏紝杩欒兘淇濊瘉姘村嵃涓嶄細琚鏀广€?
+- 璁烘枃涓娇鐀��殑妯″瀷鏄疢eta寮€婧愮殑OPT-1.3B妯″瀷銆?
+- 鐢变簬涓嶇敤璁块棶搴曞眰妯″瀷锛屾墍浠ヨ妫€娴嬫柟娉曠殑閫熷害寰堝揩锛屾垚鏈篃涓嶄細寰堥珮銆傝€屼笖鍙互浣跨敤鏍囧噯璇█妯″瀷鐢熸垚甯︽按鍗扮殑鏂囨湰锛屼笉鐀��啀閲嶆柊璁粌銆傚皢鍦?2�??15鏃ュ紑婧愪唬鐮併�??
 
-质疑1
-- 如果我在AI生成的文字基础上，修改几个词，还能被查出来吗？那在替换成近义词后，检测准确率会下降多少？毕竟大家往往不会一字不改、直接用AI生成的内容�?
+璐ㄧ�?1
+- 濡傛灉鎴戝湪AI鐢熸垚鐨勬枃瀛楀熀纭€涓婏紝淇敼鍑犱釜璇嶏紝杩樿兘琚煡鍑烘潵鍚楋紵閭ｅ湪鏇挎崲鎴愯繎涔夎瘝鍚庯紝妫€娴嬪噯纭巼浼氫笅闄嶅灏戯紵姣曠珶澶у寰€寰€涓嶄細涓€瀛椾笉鏀广€佺洿鎺ョ敤AI鐢熸垚鐨勫唴瀹广�??
 
-作者、马里兰大学副教授Tom Goldstein回答称：
-- 对于一段自带水印的文字，至少得修改40%-75%的token，才可能成功去除水印。（如果用其他程序修改内容话），为发生同义词攻击，导致生成内容的质量很低�?
-- 想要通过换近义词来消除水印，得大篇幅修改，而且若不是人亲自手动修改的话，效果会很拉胯�?
+浣滆€呫€侀┈閲屽叞澶у鍓暀鎺圱om Goldstein鍥炵瓟绉帮細
+- 瀵逛簬涓€娈佃嚜甯︽按鍗扮殑鏂囧瓧锛岃嚦灏戝緱淇�?40%-75%鐨則oken锛屾墠鍙兘鎴愬姛鍘婚櫎姘村嵃銆傦紙濡傛灉鐢ㄥ叾浠栫▼搴忎慨鏀瑰唴瀹硅瘽锛夛紝涓哄彂鐢熷悓涔夎瘝鏀诲嚮锛屽鑷寸敓鎴愬唴瀹圭殑璐ㄩ噺寰堜綆銆?
+- 鎯宠閫氳繃鎹㈣繎涔夎瘝鏉ユ秷闄ゆ按鍗帮紝寰楀ぇ绡囧箙淇敼锛岃€屼笖鑻ヤ笉鏄汉浜茶嚜鎵嬪姩淇敼鐨勮瘽锛屾晥鏋滀細寰堟媺鑳�??
 
-质疑2
-- 对于专门设计过的低熵token序列，应该能检测出水印。但是，长度和检测率之间（存在一些矛盾），它们的优先级应该如何权衡？
+璐ㄧ�?2
+- 瀵逛簬涓撻棬璁捐杩囩殑浣庣喌token搴忓垪锛屽簲璇ヨ兘妫€娴嬪嚭姘村嵃銆備絾鏄紝闀垮害鍜屾娴嬬巼涔嬮棿锛堝瓨鍦ㄤ竴浜涚煕鐩撅級锛屽畠浠殑浼樺厛绾у簲璇ュ浣曟潈琛★�?
 
-Tom教授表示�?
-- 根据设定，使用波束搜索时，绝大多数（通常�?90%）的token在白名单上，即使是低熵token，也会被列入白名单�?
-- 所以，至少得修改一半以上的token，才能删除水印，而这需要一个超级强大的LLM模型才行，一般人很难接触到�?
+Tom鏁欐巿琛ㄧず�??
+- 鏍规嵁璁惧畾锛屼娇鐢ㄦ尝鏉熸悳绱㈡椂锛岀粷澶у鏁帮紙閫氬父鏄?90%锛夌殑token鍦ㄧ櫧鍚嶅崟涓婏紝鍗充娇鏄綆鐔祎oken锛屼篃浼氳鍒楀叆鐧藉悕鍗曘�??
+- 鎵€浠ワ紝鑷冲皯寰椾慨鏀逛竴鍗婁互涓婄殑token锛屾墠鑳藉垹闄ゆ按鍗帮紝鑰岃繖闇€瑕佷竴涓秴绾у己澶х殑LLM妯″瀷鎵嶈锛屼竴鑸汉寰堥毦鎺ヨЕ鍒般€?
 
-这种方法确实存在一些局限性�?
-- 检测水印的z统计量，只取决于白名单大小参数γ和生成白名单的哈希函数，和其他不少重要的参数并没有什么相关性�?
-- 这就让他人可以在下游水印检测器上做手脚，可以改变水印采样算法，重新部署水印，最终让原本生成的水印失效�?
+杩欑鏂规硶纭疄瀛樺湪涓€浜涘眬闄愭€с€?
+- 妫€娴嬫按鍗扮殑z缁熻閲忥紝鍙彇鍐充簬鐧藉悕鍗曞ぇ灏忓弬鏁拔冲拰鐢熸垚鐧藉悕鍗曠殑鍝堝笇鍑芥暟锛屽拰鍏朵粬涓嶅皯閲嶈鐨勫弬鏁板苟娌℃湁浠€涔堢浉鍏虫€с€?
+- 杩欏氨璁╀粬浜哄彲浠ュ湪涓嬫父姘村嵃妫€娴嬪櫒涓婂仛鎵嬭剼锛屽彲浠ユ敼鍙樻按鍗伴噰鏍风畻娉曪紝閲嶆柊閮ㄧ讲姘村嵃锛屾渶缁堣鍘熸湰鐢熸垚鐨勬按鍗板け鏁堛�??
 
-就连OpenAI CEO Sam Altman也表示：创造完美检测AI抄袭的工具，从根本上来说是不可能的�?
+灏辫繛OpenAI CEO Sam Altman涔熻〃绀猴細鍒涢€犲畬缇庢娴婣I鎶勮鐨勫伐鍏凤紝浠庢牴鏈笂鏉ヨ鏄笉鍙兘鐨勩�??
 
-## 多尺�? PU 学习
+## 澶氬昂搴? PU 瀛︿�?
 
-�?2023-6-2】[识别ChatGPT造假,效果超越OpenAI：北大、华为的AI生成检测器来了](https://www.toutiao.com/article/7239952116775764520)
-- 北大、华为的研究者们提出了一种识别各�? AI 生成语料的可靠文本检测器。根据长短文本的不同特性，提出了一种基�? PU 学习的多尺度 AI 生成文本检测器训练方法。通过对检测器训练过程的改进，在同等条件下能取得在长、短 ChatGPT 语料上检测能力的可观提升，解决了目前检测器对于短文本识别精度低的痛点�?
-- 论文地址: [paper](https://arxiv.org/abs/2305.18149)
-- 代码地址 (MindSpore)：[detect_chatgpt](https://github.com/mindspore-lab/mindone/tree/master/examples/detect_chatgpt)
-- 代码地址 (PyTorch)：[AIGC_text_detector](https://github.com/YuchuanTian/AIGC_text_detector)
+�??2023-6-2銆慬璇嗗埆ChatGPT閫犲�?,鏁堟灉瓒呰秺OpenAI锛氬寳澶с€佸崕涓虹殑AI鐢熸垚妫€娴嬪櫒鏉ヤ簡](https://www.toutiao.com/article/7239952116775764520)
+- 鍖楀ぇ銆佸崕涓虹殑鐮旂┒鑰呬滑鎻愬嚭浜嗕竴绉嶈瘑鍒悇寮? AI 鐢熸垚璇枡鐨勫彲闈犳枃鏈娴嬪櫒銆傛牴鎹暱鐭枃鏈殑涓嶅悓鐗规€э紝鎻愬嚭浜嗕竴绉嶅熀�?? PU 瀛︿範鐨勫灏哄�? AI 鐢熸垚鏂囨湰妫€娴嬪櫒璁粌鏂规硶銆傞€氳繃瀵规娴嬪櫒璁粌杩囩▼鐨勬敼杩涳紝鍦ㄥ悓绛夋潯浠朵笅鑳藉彇寰楀湪闀裤€佺煭 ChatGPT 璇枡涓婃娴嬭兘鍔涚殑鍙鎻愬崌锛岃В鍐充簡鐩墠妫€娴嬪櫒瀵逛簬鐭枃鏈瘑鍒簿搴︿綆鐨勭棝鐐广€?
+- 璁烘枃鍦板潃: [paper](https://arxiv.org/abs/2305.18149)
+- 浠ｇ爜鍦板潃 (MindSpore)锛歔detect_chatgpt](https://github.com/mindspore-lab/mindone/tree/master/examples/detect_chatgpt)
+- 浠ｇ爜鍦板潃 (PyTorch)锛歔AIGC_text_detector](https://github.com/YuchuanTian/AIGC_text_detector)
 
-由于AI生成的语料与人的区别过小，很难严格判断其真实属性。因此，将短文本简单标注为人类 / AI 并按照传统的二分类问题进行文本检测是不合适的�?
+鐢变簬AI鐢熸垚鐨勮鏂欎笌浜虹殑鍖哄埆杩囧皬锛屽緢闅句弗鏍煎垽鏂叾鐪熷疄灞炴€с€傚洜姝わ紝灏嗙煭鏂囨湰绠€鍗曟爣娉ㄤ负浜虹�? / AI 骞舵寜鐓т紶缁熺殑浜屽垎绫婚棶棰樿繘琛屾枃鏈娴嬫槸涓嶅悎閫傜殑�??
 
-针对这个问题，本研究将人�? / AI 的二分类检测部分转化为了一个部�? `PU`（Positive-Unlabeled）学习问题，即在较短的句子中，人的语言为正类（Positive），机器语言为无标记类（Unlabeled），以此对训练的损失函数进行了改进。此改进可观地提升了检测器在各式语料上的分类效果�?
+閽堝杩欎釜闂锛屾湰鐮旂┒灏嗕汉�?? / AI 鐨勪簩鍒嗙被妫€娴嬮儴鍒嗚浆鍖栦负浜嗕竴涓儴鍒? `PU`锛圥ositive-Unlabeled锛夊涔犻棶棰橈紝鍗冲湪杈冪煭鐨勫彞瀛愪腑锛屼汉鐨勮瑷€涓烘绫伙紙Positive锛夛紝鏈哄櫒璇█涓烘棤鏍囪绫伙紙Unlabeled锛夛紝浠ユ瀵硅缁冪殑鎹熷け鍑芥暟杩涜浜嗘敼杩涖€傛鏀硅繘鍙鍦版彁鍗囦簡妫€娴嬪櫒鍦ㄥ悇寮忚鏂欎笂鐨勫垎绫绘晥鏋溿€?
 
-基于多尺�? PU 学习的方案，解决了文本检测器对于短句识别的难题，随着未来 AIGC 生成模型的泛滥，对于这类内容的检测将会越来越重要�?
+鍩轰簬澶氬昂�?? PU 瀛︿範鐨勬柟妗堬紝瑙ｅ喅浜嗘枃鏈娴嬪櫒瀵逛簬鐭彞璇嗗埆鐨勯毦棰橈紝闅忕潃鏈潵 AIGC 鐢熸垚妯″瀷鐨勬硾婊ワ紝瀵逛簬杩欑被鍐呭鐨勬娴嬪皢浼氳秺鏉ヨ秺閲嶈銆?
 
 
-## 一句话检�?
+## 涓€鍙ヨ瘽妫€娴?
 
-�?2023-5-15�?
+�??2023-5-15�??
 - [Bot or Human? Detecting ChatGPT Imposters with A Single Question](https://huggingface.co/papers/2305.06424)
-- 代码：[FLAIR](https://github.com/hongwang600/FLAIR)
+- 浠ｇ爜锛歔FLAIR](https://github.com/hongwang600/FLAIR)
 
 The questions are divided into two categories:
 - Questions that are easy for humans but difficult for bots (e.g., counting, substitution, positioning, noise filtering, and ASCII art)
@@ -158,32 +158,32 @@ Below are the description for each FLAIR question:
 
 ## Ghostbuster
 
-�?2023-12-4】Ghostbuster：检测大型语言模型生成的文�?
-- 论文链接：[paper](https://arxiv.org/pdf/2305.15047.pdf)
+�??2023-12-4銆慓hostbuster锛氭娴嬪ぇ鍨嬭瑷€妯″瀷鐢熸垚鐨勬枃鏈?
+- 璁烘枃閾炬帴锛歔paper](https://arxiv.org/pdf/2305.15047.pdf)
 
-主要亮点�?
-- 创新的检测方法：Ghostbuster通过分析各种语言模型中每个token的生成概率，能够检测AI生成的文本，而无需识别特定的模型。这使其能够有效地应对像ChatGPT和Claude这样的模型�?
-- 高精度和泛化能力：Ghostbuster在不同领域取得了高F1分数，超越了当前的工具。它能够娴熟地处理包括多种写作风格和提示在内的各种文本生成情况�?
-- 适应性强：Ghostbuster对编辑过的AI生成文本仍然有效，并且在非英语母语的写作上表现可靠，使其非常适合现实世界中的文本分析�?
-- 训练方法：将文档通过一系列较弱的语言模型，然后对它们的特征进行结构化搜索，最后在选定的特征上训练分类器来预测文档是否由AI生成�?
+涓昏浜偣�??
+- 鍒涙柊鐨勬娴嬫柟娉曪細Ghostbuster閫氳繃鍒嗘瀽鍚勭璇█妯″瀷涓瘡涓猼oken鐨勭敓鎴愭鐜囷紝鑳藉妫€娴婣I鐢熸垚鐨勬枃鏈紝鑰屾棤闇€璇嗗埆鐗瑰畾鐨勬ā鍨嬨€傝繖浣垮叾鑳藉鏈夋晥鍦板簲瀵瑰儚ChatGPT鍜孋laude杩欐牱鐨勬ā鍨嬨€?
+- 楂樼簿搴﹀拰娉涘寲鑳藉姏锛欸hostbuster鍦ㄤ笉鍚岄鍩熷彇寰椾簡楂楩1鍒嗘暟锛岃秴瓒婁簡褰撳墠鐨勫伐鍏枫€傚畠鑳藉濞寸啛鍦板鐞嗗寘鎷绉嶅啓浣滈鏍煎拰鎻愮ず鍦ㄥ唴鐨勫悇绉嶆枃鏈敓鎴愭儏鍐点�??
+- 閫傚簲鎬у己锛欸hostbuster瀵圭紪杈戣繃鐨凙I鐢熸垚鏂囨湰浠嶇劧鏈夋晥锛屽苟涓斿湪闈炶嫳璇瘝璇殑鍐欎綔涓婅〃鐜板彲闈狅紝浣垮叾闈炲父閫傚悎鐜板疄涓栫晫涓殑鏂囨湰鍒嗘瀽銆?
+- 璁粌鏂规硶锛氬皢鏂囨。閫氳繃涓€绯诲垪杈冨急鐨勮瑷€妯″瀷锛岀劧鍚庡瀹冧滑鐨勭壒寰佽繘琛岀粨鏋勫寲鎼滅储锛屾渶鍚庡湪閫夊畾鐨勭壒寰佷笂璁粌鍒嗙被鍣ㄦ潵棰勬祴鏂囨。鏄惁鐢盇I鐢熸垚銆?
 
 
-## 大模型水�?
+## 澶фā鍨嬫按�??
 
 
 
 ### SynthID
 
-�?2024-10-31】《Nature》封面惊爆！Google DeepMind 给AI大模型加“隐形指纹”，这是AI发展新走向还是另有深意？是安全保障还是新的操控？
-- [SynthID](https://deepmind.google/technologies/synthid/) 已集成到谷歌AI工具�?, Gemini
-- huggingface 地址: [synthid-text](https://huggingface.co/spaces/google/synthid-text)
-- �?2024-10-23】论�?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
-- [解说](https://hub.baai.ac.cn/view/30219)
-- 官网介绍：[identifying-ai-generated-images-with-synthid](https://www.deepmind.com/blog/identifying-ai-generated-images-with-synthid) 
-- 数字水印植入文本、音频、图像和视频
-- 官方原理演示: [视频](https://deepmind.google/api/blob/website/media/Fig_1.mp4)
+�??2024-10-31銆戙€奛ature銆嬪皝闈㈡儕鐖嗭紒Google DeepMind 缁橝I澶фā鍨嬪姞鈥滈殣褰㈡寚绾光€濓紝杩欐槸AI鍙戝睍鏂拌蛋鍚戣繕鏄彟鏈夋繁鎰忥紵鏄畨鍏ㄤ繚闅滆繕鏄柊鐨勬搷鎺э�?
+- [SynthID](https://deepmind.google/technologies/synthid/) 宸查泦鎴愬埌璋锋瓕AI宸ュ叿鍖?, Gemini
+- huggingface 鍦板�?: [synthid-text](https://huggingface.co/spaces/google/synthid-text)
+- �??2024-10-23銆戣鏂?: [Scalable watermarking for identifying large language model outputs](https://www.nature.com/articles/s41586-024-08025-4)
+- [瑙ｈ](https://hub.baai.ac.cn/view/30219)
+- 瀹樼綉浠嬬粛锛歔identifying-ai-generated-images-with-synthid](https://www.deepmind.com/blog/identifying-ai-generated-images-with-synthid) 
+- 鏁板瓧姘村嵃妞嶅叆鏂囨湰銆侀煶棰戙€佸浘鍍忓拰瑙嗛
+- 瀹樻柟鍘熺悊婕旂�?: [瑙嗛](https://deepmind.google/api/blob/website/media/Fig_1.mp4)
 
-二者概率累加，依然保持原始分布, 不影响输出的质量、准确性和创造力
+浜岃€呮鐜囩疮鍔狅紝渚濈劧淇濇寔鍘熷鍒嗗�?, 涓嶅奖鍝嶈緭鍑虹殑璐ㄩ噺銆佸噯纭€у拰鍒涢€犲姏
 - ![](https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41586-024-08025-4/MediaObjects/41586_2024_8025_Fig1_HTML.png?as=webp)
 - Top: LLM text generation typically involves generating text from left to right by repeatedly sampling from the LLM distribution. 
 - Bottom: a **generative watermarking scheme** typically consists of the three components, in the blue boxes: **random seed generator**, **sampling algorithm** and **scoring function**. 
@@ -194,119 +194,119 @@ Below are the description for each FLAIR question:
 
 
 ```sh
-# 推理环节
+# 鎺ㄧ悊鐜妭
 My favorite tropical fruits are __
-# LLM 候�? tokens: “mango,�? “lychee,�? “papaya,�? “durian�?, 带概率�?
-# SynthID 同步生成额外的概率分�?
-# 二者概率累加，依然保持原始分布, 不影响输出的质量、准确性和创造力
+# LLM 鍊欓�?? tokens: 鈥渕ango,�?? 鈥渓ychee,�?? 鈥減apaya,�?? 鈥渄urian�??, 甯︽鐜囧€?
+# SynthID 鍚屾鐢熸垚棰濆鐨勬鐜囧垎甯?
+# 浜岃€呮鐜囩疮鍔狅紝渚濈劧淇濇寔鍘熷鍒嗗�?, 涓嶅奖鍝嶈緭鍑虹殑璐ㄩ噺銆佸噯纭€у拰鍒涢€犲姏
 
 ```
 
 
-Watermarking 水印
+Watermarking 姘村�?
 - SynthID embeds a **digital watermark** directly into AI-generated content, without compromising the original content.
-- SynthID 直接嵌入数字水印到原始AI生成内容，而不影响原内�?
+- SynthID 鐩存帴宓屽叆鏁板瓧姘村嵃鍒板師濮婣I鐢熸垚鍐呭锛岃€屼笉褰卞搷鍘熷唴�??
 
-Identification 鉴别
-- SynthID can scan images, audio, text or video for digital watermarks, helping users determine if content, or part of it, was generated by Google’s AI tools.
-- SynthID 可鉴别内�?
+Identification 閴村�?
+- SynthID can scan images, audio, text or video for digital watermarks, helping users determine if content, or part of it, was generated by Google鈥檚 AI tools.
+- SynthID 鍙壌鍒唴�??
 
 SynthID-Text does not affect LLM training and modifies only the sampling procedure; watermark detection is computationally efficient, without using the underlying LLM
 
-SynthID可直接嵌入到，谷歌的文本生成图片模型Imagen合成的图片中�?
-- 人肉眼无法觉察到水印，不受更改颜色、添加滤镜等破坏操作影响�?
-- SynthID 也可以识别图片中的水印。SynthID相当于钱币中的防伪标识，同时又能充当“验钞机”的作用，识别图片的真假，极大提升了生成式AI产品的安全性�?
+SynthID鍙洿鎺ュ祵鍏ュ埌锛岃胺姝岀殑鏂囨湰鐢熸垚鍥剧墖妯″瀷Imagen鍚堟垚鐨勫浘鐗囦腑銆?
+- 浜鸿倝鐪兼棤娉曡瀵熷埌姘村嵃锛屼笉鍙楁洿鏀归鑹层€佹坊鍔犳护闀滅瓑鐮村潖鎿嶄綔褰卞搷锛?
+- SynthID 涔熷彲浠ヨ瘑鍒浘鐗囦腑鐨勬按鍗般€係ynthID鐩稿綋浜庨挶甯佷腑鐨勯槻浼爣璇嗭紝鍚屾椂鍙堣兘鍏呭綋鈥滈獙閽炴満鈥濈殑浣滅敤锛岃瘑鍒浘鐗囩殑鐪熷亣锛屾瀬澶ф彁鍗囦簡鐢熸垚寮廇I浜у搧鐨勫畨鍏ㄦ€с�??
 
-SynthID 由两种深度模型组成而成: **添加水印**�?**识别水印**。这两个模型分别在不同的图像数据集上进行了大规模训练、优化，以提升水印的准确率�?
+SynthID 鐢变袱绉嶆繁搴︽ā鍨嬬粍鎴愯€屾垚: **娣诲姞姘村嵃**�??**璇嗗埆姘村嵃**銆傝繖涓や釜妯″瀷鍒嗗埆鍦ㄤ笉鍚岀殑鍥惧儚鏁版嵁闆嗕笂杩涜浜嗗ぇ瑙勬ā璁粌銆佷紭鍖栵紝浠ユ彁鍗囨按鍗扮殑鍑嗙‘鐜囥€?
 
-SynthID 工作原理介绍
-- 1）添加水印：SynthID 可直接将水印嵌入到图片中，人肉眼无法察觉到，同时也不受滤镜、更改颜色、压缩体积、更改亮度等操作影响�?
-- 2）识别水印：SynthID 可识别图片中的水印，并告诉用户该图片�? Imagen模型生成的，还是人工设计。当图片遭遇严重破坏时，例如，更改亮度、删除部分内容等，SynthID可以基于图片的元数据，仍然可以检测到图片中的水印�?
-
-
-# 文本对抗攻击
-
-ChatGPT爆火后，一旦进入商业应用，一定会出现对抗识别的需求�?
-- �?2023-7-19】[ChatGPT检测攻与守：我们该如何应对AI以假乱真?](https://mp.weixin.qq.com/s/_00COmzPmUCqgbyVkw_H6g)
+SynthID 宸ヤ綔鍘熺悊浠嬬�?
+- 1锛夋坊鍔犳按鍗帮細SynthID 鍙洿鎺ュ皢姘村嵃宓屽叆鍒板浘鐗囦腑锛屼汉鑲夌溂鏃犳硶瀵熻鍒帮紝鍚屾椂涔熶笉鍙楁护闀溿€佹洿鏀归鑹层€佸帇缂╀綋绉€佹洿鏀逛寒搴︾瓑鎿嶄綔褰卞搷銆?
+- 2锛夎瘑鍒按鍗帮細SynthID 鍙瘑鍒浘鐗囦腑鐨勬按鍗帮紝骞跺憡璇夌敤鎴疯鍥剧墖鏄? Imagen妯″瀷鐢熸垚鐨勶紝杩樻槸浜哄伐璁捐銆傚綋鍥剧墖閬亣涓ラ噸鐮村潖鏃讹紝渚嬪锛屾洿鏀逛寒搴︺€佸垹闄ら儴鍒嗗唴瀹圭瓑锛孲ynthID鍙互鍩轰簬鍥剧墖鐨勫厓鏁版嵁锛屼粛鐒跺彲浠ユ娴嬪埌鍥剧墖涓殑姘村嵃�??
 
 
-## 什么是对抗攻击
+# 鏂囨湰瀵规姉鏀诲嚮
 
-`对抗攻击`（adversarial attack）旨在利用`对抗样本`（adversarial example）来欺骗`受害模型`（victim model）�?
-- `攻击模型`（attack model）通过对原样本进行轻微的扰动来生成对抗样本，其真实的分类标签与原样本保持一致，但是受害模型的判断却会出错�?
-- 对抗攻击被认为可以暴露受害模型的弱点，同时也有助于提高其鲁棒性和可解释性�?
+ChatGPT鐖嗙伀鍚庯紝涓€鏃﹁繘鍏ュ晢涓氬簲鐢紝涓€瀹氫細鍑虹幇瀵规姉璇嗗埆鐨勯渶姹傘€?
+- �??2023-7-19銆慬ChatGPT妫€娴嬫敾涓庡畧锛氭垜浠濡備綍搴斿AI浠ュ亣涔辩湡?](https://mp.weixin.qq.com/s/_00COmzPmUCqgbyVkw_H6g)
 
-图像领域已有 CleverHans、Foolbox、Adversarial Robustness Toolbox (ART)等多个对抗攻击工具包，将图像领域的对抗攻击模型整合在一起，大大减少了模型复现的时间和难度，提高了对比评测的标准化程度，推动了图像领域对抗攻击的发展�?
 
-文本领域鲜有类似的工具包，目前仅�? TextAttack 这一个文本对抗攻击工具包。然而所覆盖的攻击类型十分有限（仅支持gradient-/score-based类型的攻击以及字/词级别的扰动），其可扩展性也有待提高。相比之下OpenAttack支持所有的攻击类型，且具有很高的可扩展性�?
+## 浠€涔堟槸瀵规姉鏀诲嚮
 
-OpenAttack有丰富的应用场景，例如：
-- 提供各种类型的经典文本对抗攻击基线模型，大大减少实验对比时复现基线模型的时间和难度�?
-- 提供了全面的评测指标，可以对自己的攻击模型进行系统地评测�?
-- 包含了常用的攻击模型要素（如替换词的生成），可以辅助进行新的攻击模型的迅速设计和开发�?
-- 评测自己的分类模型面对各种类型的攻击时的鲁棒性�?
-- 进行对抗训练以提高分类模型鲁棒性�?
+`瀵规姉鏀诲嚮`锛坅dversarial attack锛夋棬鍦ㄥ埄鐢╜瀵规姉鏍锋湰`锛坅dversarial example锛夋潵娆洪獥`鍙楀妯″瀷`锛坴ictim model锛夈�??
+- `鏀诲嚮妯″瀷`锛坅ttack model锛夐€氳繃瀵瑰師鏍锋湰杩涜杞诲井鐨勬壈鍔ㄦ潵鐢熸垚瀵规姉鏍锋湰锛屽叾鐪熷疄鐨勫垎绫绘爣绛句笌鍘熸牱鏈繚鎸佷竴鑷达紝浣嗘槸鍙楀妯″瀷鐨勫垽鏂嵈浼氬嚭閿欍�??
+- 瀵规姉鏀诲嚮琚涓哄彲浠ユ毚闇插彈瀹虫ā鍨嬬殑寮辩偣锛屽悓鏃朵篃鏈夊姪浜庢彁楂樺叾椴佹鎬у拰鍙В閲婃€с€?
 
-## 设计思路
+鍥惧儚棰嗗煙宸叉�? CleverHans銆丗oolbox銆丄dversarial Robustness Toolbox (ART)绛夊涓鎶楁敾鍑诲伐鍏峰寘锛屽皢鍥惧儚棰嗗煙鐨勫鎶楁敾鍑绘ā鍨嬫暣鍚堝湪涓€璧凤紝澶уぇ鍑忓皯浜嗘ā鍨嬪鐜扮殑鏃堕棿鍜岄毦搴︼紝鎻愰珮浜嗗姣旇瘎娴嬬殑鏍囧噯鍖栫▼搴︼紝鎺ㄥ姩浜嗗浘鍍忛鍩熷鎶楁敾鍑荤殑鍙戝睍銆?
 
-考虑到文本对抗攻击模型之间有较大差别，在攻击模型的架构方面留出了较大的设计自由度，相反更加关注提供攻击模型中常见的要素，以便用户可以容易地组装新的攻击模型�?
+鏂囨湰棰嗗煙椴滄湁绫讳技鐨勫伐鍏峰寘锛岀洰鍓嶄粎�?? TextAttack 杩欎竴涓枃鏈鎶楁敾鍑诲伐鍏峰寘銆傜劧鑰屾墍瑕嗙洊鐨勬敾鍑荤被鍨嬪崄鍒嗘湁闄愶紙浠呮敮鎸乬radient-/score-based绫诲瀷鐨勬敾鍑讳互鍙婂瓧/璇嶇骇鍒殑鎵板姩锛夛紝鍏跺彲鎵╁睍鎬т篃鏈夊緟鎻愰珮銆傜浉姣斾箣涓婳penAttack鏀寔鎵€鏈夌殑鏀诲嚮绫诲瀷锛屼笖鍏锋湁寰堥珮鐨勫彲鎵╁睍鎬с€?
 
-OpenAttack有如�?7个模块：
-- TextProcessor：提供tokenization、lemmatization、词义消歧、命名实体识别等文本预处理的功能，以便攻击模型对原样本进行扰动；
-- Classifier：受害分类模型的基类�?
-- Attacker：包含各种攻击模型；
-- Substitute：包含各种词、字替换方法（如基于义原的词替换、同义词替换、形近字替换），这些方法被广泛应用于�?/字级别的攻击模型中；
-- Metric：提供各类对抗样本质量评测模块（例如句子向量相似度、语言模型困惑度），这些评测指标既可以用作攻击时对候选对抗样本的约束条件，也可以作为对抗攻击评测指标�?
-- AttackEval：从不同方面评测文本对抗攻击�?
-- DataManager：管理其他模块中用到的所有的数据、预训练好的模型等�?
-- OpenAttack各个模块.jpg
+OpenAttack鏈変赴瀵岀殑搴旂敤鍦烘櫙锛屼緥濡傦�?
+- 鎻愪緵鍚勭绫诲瀷鐨勭粡鍏告枃鏈鎶楁敾鍑诲熀绾挎ā鍨嬶紝澶уぇ鍑忓皯瀹為獙瀵规瘮鏃跺鐜板熀绾挎ā鍨嬬殑鏃堕棿鍜岄毦搴︺€?
+- 鎻愪緵浜嗗叏闈㈢殑璇勬祴鎸囨爣锛屽彲浠ュ鑷繁鐨勬敾鍑绘ā鍨嬭繘琛岀郴缁熷湴璇勬祴銆?
+- 鍖呭惈浜嗗父鐀��殑鏀诲嚮妯″瀷瑕佺礌锛堝鏇挎崲璇嶇殑鐢熸垚锛夛紝鍙互杈呭姪杩涜鏂扮殑鏀诲嚮妯″瀷鐨勮繀閫熻璁″拰寮€鍙戙�??
+- 璇勬祴鑷繁鐨勫垎绫绘ā鍨嬮潰瀵瑰悇绉嶇被鍨嬬殑鏀诲嚮鏃剁殑椴佹鎬с€?
+- 杩涜瀵规姉璁粌浠ユ彁楂樺垎绫绘ā鍨嬮瞾妫掓€с�??
 
-OpenAttack的各个模�? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
+## 璁捐鎬濊矾
+
+鑰冭檻鍒版枃鏈鎶楁敾鍑绘ā鍨嬩箣闂存湁杈冨ぇ宸埆锛屽湪鏀诲嚮妯″瀷鐨勬灦鏋勬柟闈㈢暀鍑轰簡杈冨ぇ鐨勮璁¤嚜鐢卞害锛岀浉鍙嶆洿鍔犲叧娉ㄦ彁渚涙敾鍑绘ā鍨嬩腑甯歌鐨勮绱狅紝浠ヤ究鐀��埛鍙互瀹规槗鍦扮粍瑁呮柊鐨勬敾鍑绘ā鍨嬨�??
+
+OpenAttack鏈夊涓?7涓ā鍧楋�?
+- TextProcessor锛氭彁渚泃okenization銆乴emmatization銆佽瘝涔夋秷姝с€佸懡鍚嶅疄浣撹瘑鍒瓑鏂囨湰棰勫鐞嗙殑鍔熻兘锛屼互渚挎敾鍑绘ā鍨嬪鍘熸牱鏈繘琛屾壈鍔紱
+- Classifier锛氬彈瀹冲垎绫绘ā鍨嬬殑鍩虹被锛?
+- Attacker锛氬寘鍚悇绉嶆敾鍑绘ā鍨嬶紱
+- Substitute锛氬寘鍚悇绉嶈瘝銆佸瓧鏇挎崲鏂规硶锛堝鍩轰簬涔夊師鐨勮瘝鏇挎崲銆佸悓涔夎瘝鏇挎崲銆佸舰杩戝瓧鏇挎崲锛夛紝杩欎簺鏂规硶琚箍娉涘簲鐀��簬璇?/瀛楃骇鍒殑鏀诲嚮妯″瀷涓紱
+- Metric锛氭彁渚涘悇绫诲鎶楁牱鏈川閲忚瘎娴嬫ā鍧楋紙渚嬪鍙ュ瓙鍚戦噺鐩镐技搴︺€佽瑷€妯″瀷鍥版儜搴︼級锛岃繖浜涜瘎娴嬫寚鏍囨棦鍙互鐀��綔鏀诲嚮鏃跺鍊欓€夊鎶楁牱鏈殑绾︽潫鏉′欢锛屼篃鍙互浣滀负瀵规姉鏀诲嚮璇勬祴鎸囨爣�??
+- AttackEval锛氫粠涓嶅悓鏂归潰璇勬祴鏂囨湰瀵规姉鏀诲嚮�??
+- DataManager锛氱鐞嗗叾浠栨ā鍧椾腑鐢ㄥ埌鐨勬墍鏈夌殑鏁版嵁銆侀璁粌濂界殑妯″瀷绛夈€?
+- OpenAttack鍚勪釜妯″潡.jpg
+
+OpenAttack鐨勫悇涓ā鍧? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
 - ![img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenAttackGe_Ge_Mo_Kuai_.width-640.jpg)
 
-[OpenAttack](https://github.com/thunlp/OpenAttack) 基于Python开发，用于**文本对抗攻击**的全过程，包括文�?**预处�?**�?**受害模型访问**�?**对抗样本生成**�?**对抗攻击评测**以及**对抗训练**等。对抗攻击能够帮助暴露受害模型的弱点，有助于提高模型的鲁棒性和可解释性，具有重要的研究意义和应用价值�?
+[OpenAttack](https://github.com/thunlp/OpenAttack) 鍩轰簬Python寮€鍙戯紝鐢ㄤ簬**鏂囨湰瀵规姉鏀诲嚮**鐨勫叏杩囩▼锛屽寘鎷枃�??**棰勫鐞?**�??**鍙楀妯″瀷璁块棶**�??**瀵规姉鏍锋湰鐢熸�?**�??**瀵规姉鏀诲嚮璇勬�?**浠ュ�?**瀵规姉璁粌**绛夈€傚鎶楁敾鍑昏兘澶熷府鍔╂毚闇插彈瀹虫ā鍨嬬殑寮辩偣锛屾湁鍔╀簬鎻愰珮妯″瀷鐨勯瞾妫掓€у拰鍙В閲婃€э紝鍏锋湁閲嶈鐨勭爺绌舵剰涔夊拰搴旂敤浠峰€笺�??
 
-OpenAttack具有如下特点�?
-- 高可用性。OpenAttack提供了一系列的易用的API，支持文本对抗攻击的各个流程�?
-- 攻击类型全覆盖。OpenAttack是首个支持所有攻击类型的文本对抗攻击工具包，覆盖了所有扰动粒度：**�?**�?**�?**�?**�?**级别，以及所有的受害模型可见度：gradient-based、score-based、decision-based以及blind�?
-- 高可扩展性。除了很多内置的攻击模型以及经典的受害模型，可以使用OpenAttack容易地对自己的受害模型进行攻击，也可以设计开发新的攻击模型�?
-- 全面的评测指标。OpenAttack支持对文本对抗攻击进行全面而系统的评测，具体包括攻击成功率、对抗样本质量、攻击效�?3个方面共�?8种不同的评测指标。此外用户还可以自己设计新的评测指标�?
+OpenAttack鍏锋湁濡備笅鐗圭偣锛?
+- 楂樺彲鐢ㄦ€с€侽penAttack鎻愪緵浜嗕竴绯诲垪鐨勬槗鐀��殑API锛屾敮鎸佹枃鏈鎶楁敾鍑荤殑鍚勪釜娴佺▼銆?
+- 鏀诲嚮绫诲瀷鍏ㄨ鐩栥€侽penAttack鏄涓敮鎸佹墍鏈夋敾鍑荤被鍨嬬殑鏂囨湰瀵规姉鏀诲嚮宸ュ叿鍖咃紝瑕嗙洊浜嗘墍鏈夋壈鍔ㄧ矑搴︼�?**�??**�??**�??**�??**�??**绾у埆锛屼互鍙婃墍鏈夌殑鍙楀妯″瀷鍙搴︼細gradient-based銆乻core-based銆乨ecision-based浠ュ強blind�??
+- 楂樺彲鎵╁睍鎬с€傞櫎浜嗗緢澶氬唴缃殑鏀诲嚮妯″瀷浠ュ強缁忓吀鐨勫彈瀹虫ā鍨嬶紝鍙互浣跨敤OpenAttack瀹规槗鍦板鑷繁鐨勫彈瀹虫ā鍨嬭繘琛屾敾鍑伙紝涔熷彲浠ヨ璁″紑鍙戞柊鐨勬敾鍑绘ā鍨嬨�??
+- 鍏ㄩ潰鐨勮瘎娴嬫寚鏍囥€侽penAttack鏀寔瀵规枃鏈鎶楁敾鍑昏繘琛屽叏闈㈣€岀郴缁熺殑璇勬祴锛屽叿浣撳寘鎷敾鍑绘垚鍔熺巼銆佸鎶楁牱鏈川閲忋€佹敾鍑绘晥鐜?3涓柟闈㈠叡�??8绉嶄笉鍚岀殑璇勬祴鎸囨爣銆傛澶栫敤鎴疯繕鍙互鑷繁璁捐鏂扮殑璇勬祴鎸囨爣�??
 
-OpenAttack内置了很多常用的分类模型（如LSTM和BERT）以及经典的分类数据集（例如SST，SNLI，AG’s News）。用户可以很方便地对这些内置的模型进行对抗攻击�?
+OpenAttack鍐呯疆浜嗗緢澶氬父鐢ㄧ殑鍒嗙被妯″瀷锛堝LSTM鍜孊ERT锛変互鍙婄粡鍏哥殑鍒嗙被鏁版嵁闆嗭紙渚嬪SST锛孲NLI锛孉G鈥檚 News锛夈€傜敤鎴峰彲浠ュ緢鏂逛究鍦板杩欎簺鍐呯疆鐨勬ā鍨嬭繘琛屽鎶楁敾鍑汇�??
 
 
-## 攻击模型
+## 鏀诲嚮妯″�?
 
-现有的文本对抗攻击分�?
-- 根据对原始样本的**扰动粒度**分为: **�?**�?**�?**�?**�?**级别的攻�?
-- 根据**受害模型可见�?**分为�?
-  - gradient-based（受害模型对攻击模型**完全**可见�?
-  - score-based（受害模型的输出分类**分数**可见�?
-  - decision-based（仅受害模型的分�?**结果**可见�?
-  - blind（受害模�?**完全�?**可见�?
+鐜版湁鐨勬枃鏈鎶楁敾鍑诲垎绫?
+- 鏍规嵁瀵瑰師濮嬫牱鏈�?**鎵板姩绮掑害**鍒嗕�?: **�??**�??**�??**�??**�??**绾у埆鐨勬敾鍑?
+- 鏍规�?**鍙楀妯″瀷鍙�??**鍒嗕负锛?
+  - gradient-based锛堝彈瀹虫ā鍨嬪鏀诲嚮妯″�?**瀹屽�?**鍙锛?
+  - score-based锛堝彈瀹虫ā鍨嬬殑杈撳嚭鍒嗙�?**鍒嗘�?**鍙锛?
+  - decision-based锛堜粎鍙楀妯″瀷鐨勫垎�??**缁撴�?**鍙锛?
+  - blind锛堝彈瀹虫ā�??**瀹屽叏涓?**鍙锛?
 
-OpenAttack目前包含�?13种攻击模型，覆盖了所有类型的扰动粒度以及受害模型可见�? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
+OpenAttack鐩墠鍖呭惈�??13绉嶆敾鍑绘ā鍨嬶紝瑕嗙洊浜嗘墍鏈夌被鍨嬬殑鎵板姩绮掑害浠ュ強鍙楀妯″瀷鍙�?? [img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
 - ![img](https://nlp.csai.tsinghua.edu.cn/media/images/OpenattackGong_Ji_Mo_Xing_.width-640.png)
 
-参�?
-- THUNLP 开源了**文本对抗攻击和防�?**必读论文列表：TAADPapers，覆盖了几乎全部的文本对抗攻击和防御领域的已发表论文、综述等，欢迎搭配使用�?
-  - [TAADPapers论文列表地址](https://github.com/thunlp/TAADpapers)
-- �?2023-1-10】清�? [OpenAttack：文本对抗攻击工具包](https://nlp.csai.tsinghua.edu.cn/project/openattack/)
+鍙傝�??
+- THUNLP 寮€婧愪�?**鏂囨湰瀵规姉鏀诲嚮鍜岄槻寰?**蹇呰璁烘枃鍒楄〃锛歍AADPapers锛岃鐩栦簡鍑犱箮鍏ㄩ儴鐨勬枃鏈鎶楁敾鍑诲拰闃插尽棰嗗煙鐨勫凡鍙戣〃璁烘枃銆佺患杩扮瓑锛屾杩庢惌閰嶄娇鐢ㄣ€?
+  - [TAADPapers璁烘枃鍒楄〃鍦板潃](https://github.com/thunlp/TAADpapers)
+- �??2023-1-10銆戞竻鍗? [OpenAttack锛氭枃鏈鎶楁敾鍑诲伐鍏峰寘](https://nlp.csai.tsinghua.edu.cn/project/openattack/)
 
-## 攻击案例
+## 鏀诲嚮妗堜�?
 
-### 空格攻击�?
+### 绌烘牸鏀诲嚮�??
 
-�?2023-7-18】上海财经大学崔万云研究团队的发现挑战了关于分布差异的传统理解。空格字符攻击方法，用以规避 AI 内容检测器�?
+�??2023-7-18銆戜笂娴疯储缁忓ぇ瀛﹀磾涓囦簯鐮旂┒鍥㈤槦鐨勫彂鐜版寫鎴樹簡鍏充簬鍒嗗竷宸紓鐨勪紶缁熺悊瑙ｃ€傜┖鏍煎瓧绗︽敾鍑绘柟娉曪紝鐢ㄤ互瑙勯�? AI 鍐呭妫€娴嬪櫒�??
 - [Evade ChatGPT Detector via A Single Space](https://arxiv.org/pdf/2307.02599)
-- 检测器并非主要依赖**语义和风�?**方面的差异。研究者揭示，检测器实际依赖细微的内容差异，如额外的空格�?'charge,' 变成�? 'charge?,'
-- 论文提出了一个简单的规避检测策略：�? AI 生成的内容中，随机在一个逗号前添加一个空格字符）。这一策略显著降低�?**白盒**�?**黑盒**检测器的检测率。对�? GPTZero（白盒）�? HelloSimpleAI（黑盒）检测器，AI 生成内容的检测率从约 60%-80% 降至几乎 0%�?
+- 妫€娴嬪櫒骞堕潪涓昏渚濊禆**璇箟鍜岄�??**鏂归潰鐨勫樊寮傘€傜爺绌惰€呮彮绀猴紝妫€娴嬪櫒瀹為檯渚濊禆缁嗗井鐨勫唴瀹瑰樊寮傦紝濡傞澶栫殑绌烘牸銆?'charge,' 鍙樻垚浜? 'charge?,'
+- 璁烘枃鎻愬嚭浜嗕竴涓畝鍗曠殑瑙勯伩妫€娴嬬瓥鐣ワ細�?? AI 鐢熸垚鐨勫唴瀹逛腑锛岄殢鏈哄湪涓€涓€楀彿鍓嶆坊鍔犱竴涓┖鏍煎瓧绗︼級銆傝繖涓€绛栫暐鏄捐憲闄嶄綆�??**鐧界�?**�??**榛戠�?**妫€娴嬪櫒鐨勬娴嬬巼銆傚�?? GPTZero锛堢櫧鐩掞級�?? HelloSimpleAI锛堥粦鐩掞級妫€娴嬪櫒锛孉I 鐢熸垚鍐呭鐨勬娴嬬巼浠庣�? 60%-80% 闄嶈嚦鍑犱箮 0%�??
 
-方法特性：
-- �?1）免费，无需额外成本�?
-- �?2）无质量损失，不易被察觉。新的文本具有与原始文本相同的质量。由于修改只涉及增加一个空格，因此不易被人类察觉，因而不降低质量�?
-- �?3）攻击与模型无关，不需要知�? LLMs 或检测器的内部状态。在论文中，这种策略被称�? SpaceInfi�?
+鏂规硶鐗规€э�?
+- �??1锛夊厤璐癸紝鏃犻渶棰濆鎴愭湰锛?
+- �??2锛夋棤璐ㄩ噺鎹熷け锛屼笉鏄撹瀵熻銆傛柊鐨勬枃鏈叿鏈変笌鍘熷鏂囨湰鐩稿悓鐨勮川閲忋€傜敱浜庝慨鏀瑰彧娑夊強澧炲姞涓€涓┖鏍硷紝鍥犳涓嶆槗琚汉绫诲療瑙夛紝鍥犺€屼笉闄嶄綆璐ㄩ噺�??
+- �??3锛夋敾鍑讳笌妯″瀷鏃犲叧锛屼笉闇€瑕佺煡�?? LLMs 鎴栨娴嬪櫒鐨勫唴閮ㄧ姸鎬併€傚湪璁烘枃涓紝杩欑绛栫暐琚О涓? SpaceInfi�??
 
 
 
-# 结束
+# 缁撴�?
