@@ -3,7 +3,7 @@ layout: post
 title:  规模法则 Scaling Law
 date:   2023-09-05 12:00:00
 categories: 大模型
-tags: LLM ilya 缩放定律 ttt
+tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind
 excerpt:  谈谈影响LLM发展的重要定律, 规模法则(Scaling Law)
 mathjax: true
 permalink: /llm_scaling_law
@@ -367,6 +367,17 @@ Deepmind 的 Hoffmann 等人团队提出与OpenAI**截然不同**的观点。
 ## Scaling Law 观点
 
 
+Chomsky （乔姆斯基） 认为
+- 尽管模型可以做到句法分析，但仍然无法理解语义
+
+观点
+- 句子可以有意义，但还不能让段落连贯起来。
+
+最新质疑
+- 数据马上就要耗尽了
+- 数据质量不够高
+- 模型不能进行推理等等
+
 ### 量化不管用
 
 【2024-11-13】 [Scaling Law终结，量化也不管用，AI大佬都在审视这篇论文](https://www.huxiu.com/article/3679706.html)
@@ -396,6 +407,27 @@ OpenAI 下一代旗舰模型的质量提升幅度不及前两款旗舰模型之�
 
 但有关推理的 Scaling Law 还未被充分挖掘，OpenAI o1 的发布就证明了这一点。它从后训练阶段入手，借助**强化学习**、原生的**思维链**和更长的**推理时间**，把大模型能力又往前推了一步。
 - 这种范式被称为「`测试时计算`」，相关方法包括**思维链提示**、**多数投票采样**（self-consistency）、**代码执行**和**搜索**等。
+
+
+### 扩展法则还没到上限
+
+【2024-11-21】[Dario Amodei：Scaling Law 还没遇到上限](https://mp.weixin.qq.com/s/OMEh6exeYmF48Pl4rb-8hg)
+
+Anthropic CEO `Dario Amodei` 在 "**Machines of Loving Grace**" 里, AGI 对世界的影响进行了预言：
+- Powerful AI 预计会在 **2026 年**实现，足够强大的 AI 也能够将把一个世纪的科研进展压缩到 5-10 年实现（“Compressed 21st Century”）
+
+和 Lex Fridman 的最新访谈中，Dario 解释了自己对于 Powerful AI 可能带来的机会的理解，以及 scaling law、RL、Compute Use 等模型训练和产品的细节进行了分享：
+- • <span style='color:red'>Scaling law 目前尚未见顶</span>， **合成数据**和 **reasoning models** 可能是解决数据限制的方案
+- • 未来 post-training 环节的成本可能会超过 pre-training，只靠人类很难提高模型质量，需要更 scalable 的**监督**方法
+- • Anthropic 的优势之一就是 RL，并且可能是做 RL 做得最好的，
+- • Anthropic 内部工程师认为 `Sonnet 3.5` 是第一个能节省时间的模型，但团队目前并不打算开发自己的 IDE，
+- • 出于安全性的考虑，Computer Use 目前不会直接面向 to C 开放，而是以 API 的形式发布 ，
+- • “Compressed 21st Century” 的愿景下，AGI 可以在生物学和医学领域推动突破性进展，因为监管、伦理以及生物系统本身的复杂性，AI 建模生物系统的难度很高，但 AI 系统至少可以帮助改进临床试验系统，提高临床试验的效率和成功率
+- • 今天科学家带领科研团队的模式在未来会变成科学家和 AI 系统一起工作，这些 AI 系统可以像研究助理一样被分配到具体研究任务中，
+- • LLMs 领域还有很多问题值得研究，比如机制可解释性和 Long Horizon 是很值得关注的领域，
+
+
+
 
 
 ### Ilya
