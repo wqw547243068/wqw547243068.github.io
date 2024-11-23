@@ -2009,7 +2009,9 @@ To use retry middleware with Faraday v2.0+, install `faraday-retry` gem
 ```
 
 解决：
-- windows 上, 进入 _posts 目录, 右键用 `记事本` 打开, 菜单选 "另存为", 对话框中编码格式选"UTF-8"
+- windows 上, 进入 _posts 目录
+- 【失败】右键用 `记事本` 打开, 菜单选 "另存为", 对话框中编码格式选"UTF-8" —— 会导致中文乱码！
+- 【成功】复制已有正常编码文件，更名，替换内容
 
 
 ### 页面无法加载（模板语言冲突）
