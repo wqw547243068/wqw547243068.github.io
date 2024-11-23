@@ -18,6 +18,8 @@ permalink: /image
 
 ## 基础知识
 
+### 书籍
+
 《数字图像处理》，冈萨雷斯第三版，MATLAB实践
 - 《数字图像处理》冈萨雷斯（第四版）[读书笔记目录](https://zhuanlan.zhihu.com/p/569167720)
 - [北大ppt课件](https://wenku.baidu.com/view/055297b327fff705cc1755270722192e45365883.html?_wkts_=1672129716473), 百度文库版
