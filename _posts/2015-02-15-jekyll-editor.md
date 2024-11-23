@@ -1967,6 +1967,9 @@ watch为了检测文件夹内的变化，即修改后不需要重新启动jekyll
 
 ### 个别文章不显示
 
+
+#### 文章日期早于发布时间
+
 【2022-8-31】新增一篇文章，部署正常，但是迟迟不显示，[My Github page failed to deploy fully](https://github.com/orgs/community/discussions/31491#discussioncomment-3523380)
 - Today, I extracted some paragraphs from one post, and merged into a new post
   - The original page: [dm-note](https://github.com/wqw547243068/wqw547243068.github.io/blob/master/_posts/2013-07-31-dm-note.md)
@@ -1977,6 +1980,36 @@ watch为了检测文件夹内的变化，即修改后不需要重新启动jekyll
   - The [build log](https://github.com/wqw547243068/wqw547243068.github.io/runs/8114786643?check_suite_focus=true#step:4:187) tells you why: Indeed the date listed in the file metadata is over 2h from now (2022-08-31 14:40 UTC):
   - date: 2022-08-31 17:02:00
   - Adjust the date to one that's in the past, or redeploy after the time has passed.
+
+
+#### 文件编码问题
+
+【2024-11-23】win 10 上使用 vs code 新建 markdown 文件, push 到GitHub成功，但文章无法显示
+
+原因
+- vs code windows版，新建文件时，默认编码是 ANSI，不是 UTF-8, 服务端 jekyll 部署时，Ruby 无法读取 ANSI 编码文件
+-  
+
+Build 环节[错误信息](https://github.com/wqw547243068/wqw547243068.github.io/actions/runs/11988159233/job/33423124159)
+- <span style='color:red'> Error: could not read file /github/workspace/_posts/2008-09-01-colledge.md: invalid byte sequence in UTF-8 </span>
+
+```
+To use retry middleware with Faraday v2.0+, install `faraday-retry` gem
+             Error: could not read file /github/workspace/_posts/2008-09-01-colledge.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2019-11-01-image-process.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2019-11-05-ocr.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2020-01-10-solo.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2020-10-20-smart-device.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2020-10-23-sensor.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2023-05-01-short-video.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2024-10-31-llm-detection.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2024-11-01-transformer-evolution.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2024-11-08-end-voice.md: invalid byte sequence in UTF-8
+             Error: could not read file /github/workspace/_posts/2024-11-20-llm-direction.md: invalid byte sequence in UTF-8
+```
+
+解决：
+- windows 上, 进入 _posts 目录, 右键用 `记事本` 打开, 菜单选 "另存为", 对话框中编码格式选"UTF-8"
 
 
 ### 页面无法加载（模板语言冲突）
