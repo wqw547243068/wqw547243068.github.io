@@ -6,7 +6,7 @@ categories: 大模型
 tags: gpt 文本生成 对抗 攻击 AIGC ChatGPT 水印
 excerpt: 如何检测AIGC内容？区分机器还是人工编写？怎么攻击AIGC/LLM内容？
 mathjax: true
-permalink: /aigc_detection
+permalink: /aigc_detect
 ---
 
 * content

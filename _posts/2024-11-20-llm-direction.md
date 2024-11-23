@@ -6,7 +6,7 @@ categories: 大模型
 tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释   norm 大脑 json 缩放定律 鹦鹉 意识 o1 ttt
 excerpt: 大模型会往哪个方向发展？
 mathjax: true
-permalink: /llm_direction
+permalink: /llm_new
 ---
 
 * content

@@ -6,7 +6,7 @@ categories: 深度学习
 tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕
 excerpt: Attention is all you need!
 mathjax: true
-permalink: /transformer_evolution
+permalink: /trans_new
 ---
 
 * content
