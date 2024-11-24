@@ -3,7 +3,7 @@ layout: post
 title:  "文本分类-Text Classification"
 date:   2020-09-25 14:52:00
 categories: 深度学习
-tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert
+tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert idf bm25
 excerpt: NLP子领域文本分类知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -225,6 +225,10 @@ GenCo 的核心在于两次基于 Alpaca 的数据增强，出发点都是提升
 
 ## TF-IDF
 
+TF-IDF 通过**高词频**和**低文档频率**产生高权重，倾向于过滤常见词语，保留重要词语。
+
+TF-IDF 基于`词频`（TF）和`逆文档频率`（IDF）来衡量词语在文档或语料库中的重要性，然后用此重要性对文本进行编码。
+
 - tf-idf在nlp的比赛中仍然是一个强特征，合理使用就可以提分
 
 ### 代码
@@ -278,6 +282,13 @@ print("this is the recall:")
 print(recall_score(y_predict, y_test))
 print(classification_report(y_predict, y_test))
 ```
+
+## BM25
+
+BM25 是一种**改进**的文本检索算法，在 TF-IDF 基础上, 通过**文档长度归一化**和**词项饱和度调整**，更精确地评估词项重要性，优化了词频和逆文档频率的计算，并考虑了文档长度对评分的影响。
+
+虽然不涉及词项上下文，但是 BM25 在处理大规模数据时表现优异，广泛应用于搜索引擎和信息检索系
+
 
 ## N-Gram
 
