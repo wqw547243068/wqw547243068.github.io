@@ -3,7 +3,7 @@ layout: post
 title:  "文本生成&评价-Text Generation and Evaluation"
 date:   2019-11-28 21:39:00
 categories: 自然语言处理
-tags: 深度学习 NLP GAN rnn lstm Seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性 注意力 transformer 解码
+tags: 深度学习 NLP gan rnn lstm seq2seq 对话系统 文本评价 BLEU 多模态 好未来 paraphrase 复述 gpt VAE vae 扩散 chatgpt 编码器 各项同性 各项异性 注意力 transformer 解码
 excerpt: 深度学习在NLP子领域——文本生成的应用汇总，如seq2seq、GAN系列
 author: 鹤啸九天
 mathjax: true
@@ -1026,7 +1026,7 @@ encoder = Encoder(english_vocab_size, embedding_dim, hidden_units)
 
 ### 解码器Decoder
 
-注意:在本节中，我们将了解解码器的情况下，不涉及注意力机制。这对于理解稍后与解码器一起使用的注意力的作用非常重要。
+了解解码器的情况下，不涉及注意力机制。这对于理解稍后与解码器一起使用的注意力的作用非常重要。
 
 解码器GRU网络是生成目标句的语言模型。最终的编码器隐藏状态作为解码器GRU的初始隐藏状态。第一个给解码器GRU单元来预测下一个的单词是一个像"sentencestart"这样的开始标记。这个标记用于预测所有num_words数量的单词出现的概率。训练时使用预测的概率张量和实际单词的一热编码来计算损失。这种损失被反向传播以优化编码器和解码器的参数。同时，概率最大的单词成为下一个GRU单元的输入。重复上述步骤，直到出现像"sentenceend"这样的结束标记。
 - ![](https://p1-tt.byteimg.com/origin/pgc-image/0b2d43e2c52047e48ab4eead9f3f6b84?from=pc)
@@ -1034,6 +1034,9 @@ encoder = Encoder(english_vocab_size, embedding_dim, hidden_units)
 这种方法的问题是:
 - **信息瓶颈**: 编码器的最终隐藏状态成为解码器的初始隐藏状态。这就造成了信息瓶颈，因为源句的所有信息都需要压缩到最后的状态，这也可能会偏向于句子末尾的信息，而不是句子中很久以前看到的信息。
 - 解决方案:我们解决了上述问题，不仅依靠编码器的最终状态来获取源句的信息，还使用了编码器所有输出的加权和。那么，哪个编码器的输出比另一个更重要?注意力机制就是为了解决这个问题。
+
+
+详见站内专题: [文本生成之解码专题](text_decoding)
 
 ### 注意力机制
 
@@ -1313,7 +1316,7 @@ NVidia K80 GPU Kaggle，在上面的代码。100个epoch，需要70分钟的训�
 
 #### 1、Teacher Forcing
 
-Teacher Forcing 用于**训练**阶段，预测过程是都是一样的。
+Teacher Forcing 用于**训练**阶段，预测过程是都一样。
 
 训练时：如果不使用 Teacher Forcing，输入包括了上一个神经元的输出 **y'**。如果上一个神经元的输出是错误的，则下一个神经元的输出也很容易错误，导致错误会一直传递下去。
 - ![img](https://gitee.com/summerrat/images/raw/master/img/20030902-a7cf394b2d40a052.png)
@@ -1843,6 +1846,7 @@ Diffusion的本质
 - VAE本质是一个基于**梯度**的 <span style='color=blue'>encoder-decoder架构</span>，encoder用来学**高斯分布**的均值和方差，decoder用**变分后验**来学习生成能力，而将标准高斯映射到数据样本是自己定义的。
 - 而扩散模型本质是一个 <span style='color=blue'>SDE/Markov架构</span>，虽然也借鉴了神经网络的前向传播/反向传播概念，但是并不基于可微的梯度，属于数学层面上的创新。两者都定义了高斯分布 $Z$ 作为隐变量，但是VAE将 $Z$ 作为先验条件（变分先验），而diffusion将 $Z$ 作为类似于变分后验的**马尔可夫链的平稳分布**。
 
+详见站内专题: [扩散生成模型](ddpm)
 
 # GAN
 
