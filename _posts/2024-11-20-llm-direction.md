@@ -495,6 +495,8 @@ Transformer 构建灵活、易并行、易扩展等优势, 但问题是
 
 transformer 架构不是唯一
 
+【2024-11-24】详见：浙大《[大模型基础](https://github.com/ZJU-LLMs/Foundations-of-LLMs/blob/main/readme.md)》
+
 两类现代RNN 变体，分别为
 - 状态空间模型（State Space Model，SSM）
 - 测试时训练（Test-Time Training，TTT）
