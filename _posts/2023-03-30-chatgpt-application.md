@@ -755,6 +755,8 @@ AI 根据需求，画一了各个国家的 GDP 条形图。
 
 text2sql(NL2SQL) 是NLP诸多任务中较难的任务，即便发展迅速的LLM，也没有完全解决text2sql中复杂查询问题
 
+FinSQL 金融领域 Text2SQL 训练框架，包含提示构造、peft和输出校准
+
 【2024-5-29】[DB-GPT：蚂蚁开源的Text-to-SQL利器](https://mp.weixin.qq.com/s/tP1iLkI5-tcUwmtUqelBKQ)
 - 代码 [DB-GPT](https://github.com/eosphoros-ai/DB-GPT)
 
