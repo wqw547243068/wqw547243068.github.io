@@ -3,7 +3,7 @@ layout: post
 title:  "算法竞赛知识点汇总-Algo-Competition-Note"
 date:   2020-08-08 11:27:00
 categories: 机器学习 数据挖掘
-tags: Kaggle XGBoot 天池 KDD 特征工程 oov 大模型
+tags: kaggle xgboot 天池 kdd 特征工程 oov 大模型 金融 agent
 author : 鹤啸九天
 excerpt: 机器学习类竞赛知识点总结
 mathjax: true
