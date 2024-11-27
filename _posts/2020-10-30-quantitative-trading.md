@@ -3,7 +3,7 @@ layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
 categories: 技术工具
-tags: 股票 预测 量化交易 时间序列 LLM
+tags: 股票 预测 量化交易 时间序列 LLM kaggle 大模型
 author : 鹤啸九天
 excerpt: 用技术来辅助炒股，优化交易
 mathjax: true
@@ -900,8 +900,12 @@ Agent 架构分两种
 ### (1) Trader
 
 
-2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
+#### GPT-4o
+
+【2024-9-7】[30 天 52% 回报：GPT-4o 量化交易机器人](https://mp.weixin.qq.com/s/nRSTqguLVK7qTcLUg5Lv8w)
 - 原文 [52% Returns in 30 Days: Your GPT-4o Quant Trading Bot Strategy](https://readmedium.com/52-returns-in-30-days-your-gpt-4o-quant-trading-bot-strategy-2eb98e9f360b)
+
+#### ChatGPT 交易策略
 
 用 ChatGPT 创建交易策略。文章：
 - [Use This ChatGPT Trading Bot to Beat 99% of Wall Street Investors!](https://medium.datadriveninvestor.com/use-this-chatgpt-trading-bot-to-beat-99-of-wall-street-investors-cb924ee38d99)
@@ -928,6 +932,22 @@ TradingView 测试AI交易策略。
   - 回测中，GPT-4o 创建的策略产生了非常令人印象深刻的结果
   - 1 个月的时间里，该策略在交易以太坊（ETH/USD）时创造了 52% 的惊人回报。
 
+#### 预测股票回报
+
+【2024-11-26】瑞士日内瓦 RAM Active Investments的Systematic Equities Team。如何对大型语言模型（LLMs）进行微调，用财经新闻流来预测股票回报。
+- 股票回报预测对于量化投资任务，如投资组合构建和优化，是基础且重要的。
+- 论文 [Fine-Tuning Large Language Models for Stock Return Prediction Using Newsflow](https://aclanthology.org/2024.emnlp-industry.77.pdf)
+- 解读: [LLM做量化](https://mp.weixin.qq.com/s/3pB7krED2NPKNsi6kJmGzw)
+
+问题建模
+- **投资宇宙**：假设由一组股票 `U=s1,s2,...,ss` 组成的投资宇宙，其中 si 代表股票索引。在量化投资中，股票选择过程基于定量标准从宇宙中选择一个子集作为投资组合。
+- **股票选择**过程：随着市场条件和各种信息的变化，股票选择过程会定期（例如，每周、每月等）重复执行，以更新或重新平衡投资组合。
+- LLMs基础**回报预测**模型：模型包括文本表示模块和预测模块。
+  - 目标: 通过联合微调预训练的LLM g 和训练一个密集层 f 来实现方程 $ \hat{r}{s,t+\ell} = f \circ g(X{s,<t}) $ ，其中 $X_{s,<t}$ 是在回顾时间窗口 $ W $ 内可用的新闻文本。
+
+仅编码器 LLM DeBERTa 和两种仅解码器 LLMs，`Mistral-7B`和`Llama3-8B`基础模型，并使用**均方误差**（MSE）作为损失函数 
+
+从LLMs的文本表示中派生的回报预测是构建投资组合的强信号，表现优于传统情感分数
 
 ### (2) Alpha Miner
 
