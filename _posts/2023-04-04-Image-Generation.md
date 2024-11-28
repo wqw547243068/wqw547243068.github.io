@@ -14,6 +14,74 @@ permalink: /image-generation
 
 # 图像生成
 
+
+## 文生图
+
+[图像生成模型综述](https://jiechu520.github.io/2024/02/09/%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E7%BB%BC%E8%BF%B0/#2-1-%E6%97%A0%E6%9D%A1%E4%BB%B6%E7%94%9F%E6%88%90)
+
+
+任务场景
+- 无条件生成
+- 有条件生成
+
+### 无条件生成
+
+生成模型在生成图像时，**不受任何额外条件或约束**的影响。模型从学习的数据分布中生成图像，而不需要关注输入条件。
+
+无条件适用于不需要额外信息或上下文的场景。
+- 针对人脸数据训练，输入随机噪声，然后生成逼真的人脸图像，而不用考虑任何特定属性或描述。
+- CelebA-HQ（人脸）、FFHQ（人脸）、LSUN-Churches（教堂） 和 LSUN-Bedrooms（卧室） 都是常见的无条件评估任务。
+
+### 有条件生成
+
+有条件生成可通过 cross attention 方式引入各式各样的条件控制图像生成。
+
+分类
+- 类别条件生成
+- 文本条件生成
+- 位置条件
+- 图像扩充 (Outpainting)
+- 图像内编辑 (inpainting)
+- 图像内文字生成
+- 多种条件生成
+
+#### 类别条件生成
+
+类别条件生成是常见场景
+- ImageNet 是最常见的一种，ImageNet 常用于图像分类任务，每个图像都有一个类别标签，总共有 1000 个类别。
+- 图像生成领域，可以指定对应的类别标签，然后让模型按照类别生成图像。
+
+#### 文本条件生成
+
+最常见的图像生成范式，输入自然语言描述，模型即可生成相应的图像。
+
+#### 位置条件
+
+有些时候会对图像中物体布局，或主体位置有特殊要求，此时，可以结合上述的**类别条件**和**文本条件**来约束模型。
+- 左侧图中指定了图片中物体的位置关系（以边界框坐标表示），最终模型按要求生成了对应的图像（图片来自 LDM，模型基于 COCO 数据集训练）
+
+
+#### 图像扩充 (Outpainting) and 图像内编辑 (inpainting)
+
+给定图像，将其扩展为更大的图片；市面上比较火的应用，如 ai扩图，商品图背景生成，基本上都是基于outpainting 的方式。
+
+inpaint 和 outpaint 模型的训练方式基本相同，都是用文生图模型的权重进行初始化，然后改变 Unet 输入的 channels（5 additional input channels ，4 for the encoded masked-image and 1 for the mask itself）,新增的channels zero-initialized。
+
+但是需要注意的是 inpaint 和 outpaint 训练时的mask方式根据推理时mask的特点而有所不同，二者可以混合在一起训练。
+
+#### 图像内文字生成
+
+要图片包含特定的文本内容，以条件形式输入。但是当前大部分文生图的模型直接生成文字效果都不太好 (Dalle3 生成文字比较准确，文字不易变形)
+
+Meta文生图模型Emu 采用 channel数更大的VAE可以改善生成文字畸变的情况。
+
+对于文字概念，需要训练数据中的caption描述更加准确和详细。
+
+#### 多种条件生成
+
+有些场景会包含多种条件，比如：给定图像、文本等多种条件，模型综合考量这些条件才能生成满足要求的图像。
+
+
 ## 图像生成技术演变
 
 - 【2023-4-4】[从VAE到扩散模型：一文解读以文生图新范式](https://zhuanlan.zhihu.com/p/519415802)
@@ -129,6 +197,11 @@ permalink: /image-generation
 采取扩散模型方式的多模态图像生成做法，主要是通过带条件引导的扩散模型学习文本特征到图像特征的映射，并对图像特征进行解码得到最终生成图像
 
 
+[DALL·E 2（内含扩散模型介绍）【论文精读】](https://www.bilibili.com/video/BV17r4y1u77B/)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=770625648&bvid=BV17r4y1u77B&cid=766807720&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="600"></iframe>
+
+
 ## AE 自编码器
 
 `自编码器`（Auto Encoder，`AE`）是早期较为简单的生成模型
@@ -152,16 +225,38 @@ permalink: /image-generation
 - 固定特征然后还原的实现方式导致 AE 容易**过拟合**。
 - 当模型遇到没有出现过的新样本时，有时得不到有意义的生成结果。
 
+
+### AE 变体
+
+AE:
+- 原始图像X通过encoder后，得到较小维度的特征（bottleneck）
+- 再从bottleneck开始，经过decoder后得到新的X'
+- 希望X‘尽可能重建原始X
+
+AutoEncoder 变种：AE/DAE/VAE/VQ-VAE
+
+### DAE：Denoising AutoEncoder
+
+
+原始图像经过扰乱后得到 Xc（X corrupt），再将Xc传给encoder，后续和AE的步骤一致，目标也是希望X’能够尽可能地重建X（而不是扰乱之后的Xc）
+
+分析
+- 优点：训练出来的结果非常稳健，不容易过拟合（原因：图像这边的冗余太高了，参考MAE,masked AutoEncoder,masked 75%）
+- 不足
+  - AE/DAE/MAE 目标都是生成中间的bottleneck，可以用这个embedding做下游的分类任务，但是这里的bottleneck不是一个**概率分布**，没法对其进行采样，所以**无法做生成任务**。
+
+
+
 ## VAE 变分自编码器 -- AE改进
 
 `变分自编码器`（Variational Autoencoder）是AE的一种变体
 
-为了构建一个有规律的隐层空间，使得在不同潜在属性上随机地采样和平滑地插值，最后通过解码器生成有意义的图像，研究者们在2014年提出了`变分自编码器`。
+为了构建有规律的隐层空间，使得在不同潜在属性上随机采样和平滑插值，最后通过解码器生成有意义的图像，研究者2014年提出了`变分自编码器`。
 
-变分自动编码器（Variational Auto Encoder，VAE）在 AE 的基础上，对隐变量 z 施加限制，使其符合一个标准正态分布。
-- 好处是，当隐变量 z 是趋向于一个分布时，对隐变量进行采样，其生成结果与输入样本类似但不完全一样。这样避免了 AE 容易过拟合的问题。
+变分自动编码器（Variational Auto Encoder，VAE）在 AE 基础上，对隐变量 z 施加限制，使其符合一个标准正态分布。
+- 好处：当隐变量 z 是趋向于一个分布时，对隐变量进行采样，其生成结果与输入样本类似但不完全一样。这样避免了 AE 容易过拟合的问题。
 
-通过变分推断这一数学方法将 p(z) 和 p(z\∣X) 后验概率设置为**标准高斯分布**，同时约束生成的样本尽量与输入样本相似。这样通过神经网络可以学习出解码器，也就是 p(X\∣z) 。
+通过变分推断这一数学方法将 p(z) 和 `p(z∣X)` 后验概率设置为**标准高斯分布**，同时约束生成的样本尽量与输入样本相似。这样通过神经网络可以学习出解码器，也就是 `p(X∣z)` 。
 
 通过这样的约束训练后，可以使得隐变量 z 符合标准高斯分布。需要生成新样本时，通过采样隐变量 z 让变分自动编码机生成多样且可用的样本。
 
@@ -176,9 +271,35 @@ VAE 通常用于**数据生成**，一个典型的应用场景就是通过修改
 - ![](https://pic2.zhimg.com/80/v2-1a167ddb7d42fe7c6665f561331971d9_1440w.webp)
 
 
+### VQ-VAE
+
+VQ-VAE（Vector Quantization）在 VAE 基础上引入离散、可量化的隐空间表示，有助于模型理解数据中的离散结构和语义信息，同时可避免过拟合。
+- VQ-VAE 与 VAE 的结构非常相似，只是中间部分不是学习**概率分布**，而是换成 VQ 来学习 **Codebook**。
+- codebook：可理解为**聚类中心** ，用离散 codebook替代distribution，效果更好（类比分类比回归效果好）
+
+图片通过`编码器`得到特征图f后，在codebook中找到和特征图最接近的**聚类中心**，将聚类中心编码记录到Z中，将index对应的特征取出，作为fa，完成后续流程。
+
+额外训练了一个pixel-CNN，当做prior网络，从而利用已经训练好的codebook去做图像的生成。
+
 ## GAN 对抗生成网络
 
-GAN的全称是Generative Adversarial Networks，从名称不难读出“对抗（Adversarial）”是其成功之精髓。
+
+GAN 左右手互搏，生成器（G）和判别器（D）
+- 生成器：给定随机噪声，生成图像X’，希望X’尽可能的接近真实图像。
+- 判别器：给定X’和真实图像X，判别图片真假。
+
+目标函数：
+
+通过训练，生成器和判别器不断迭代，最终生成器可以生成比较逼真的图像。
+
+分析
+- 优点：生成的图像比较逼真，需要的数据量不那么多，可以在各个场景下使用
+- 缺点：训练不稳定，容易模型坍塌。
+  - 图片真实但是多样性不足。
+  - 非概率模型，隐式生成图像，在数学上的可解释性不如VAE
+
+
+GAN 全称 Generative Adversarial Networks，从名称不难读出“对抗（Adversarial）”是其成功之精髓。
 - 对抗的思想受博弈论启发，在训练`生成器`（Generator）的同时，训练一个`判别器`（Discriminator）来判断输入是真实图像还是生成图像，两者在一个极小极大游戏中相互博弈不断变强。
 - 当从随机噪声生成足以“骗”过的图像时，我们认为较好地拟合出了真实图像的数据分布，通过采样可以生成大量逼真的图像。
 - ![](https://pic2.zhimg.com/80/v2-bc26dc0b7c15463ceb44641f78c47849_1440w.webp)
@@ -189,6 +310,36 @@ GAN的全称是Generative Adversarial Networks，从名称不难读出“对抗�
 对抗生成网络（`GAN`）与 `VAE` 和 `AE` 的“编码器-解码器”结构不同。GAN 没有 encoder 这一模块, 直接通过**生成网络**（理解为 decoder）和一个**判别网络**（discriminator）的对抗博弈，使得生成网络具有较强的样本生成能力。GAN 可以从随机噪声生成样本，随机噪声按照 VAE 中的隐变量理解。
 
 GAN是生成式模型中应用最广泛的技术，在图像、视频、语音和NLP等众多数据合成场景大放异彩。除了直接从随机噪声生成内容外，我们还可以将条件（例如分类标签）作为输入加入生成器和判别器，使得生成结果符合条件输入的属性，让生成内容得以控制。虽然GAN效果出众，但由于博弈机制的存在，其训练稳定性差且容易出现模式崩溃（Mode collapse），如何让模型平稳地达到博弈均衡点，也是GAN的热点研究话题。
+
+
+### VQ-GAN
+
+
+#### VQ-GAN vs VQ-VAE
+
+VQ-GAN 相比 VQ-VAE改变：
+- 引入 GAN 思想，将 VQ-VAE 当作生成器（Generator），并加入判别器（Discriminator），以对生成图像的质量进行判断、监督，以及加入感知重建损失（不只是约束像素的差异，还约束 feature map 的差异），以此来重建更具有保真度的图片，也就学习了更丰富的 codebook。
+- 将 PixelCNN 替换为性能更强大的自回归 GPT2 模型（针对不同的任务可以选择不同的规格）。
+- 引入滑动窗口自注意力机制，以降低计算负载，生成更大分辨率的图像。
+
+
+### ViT-VQGAN
+
+ViT-VQGAN 模型结构与 VQGAN 基本一致，主要是将 Encoder 和 Decoder 从 CNN 结构替换为 ViT 模型。
+- Encoder：对应 Patch 大小为 8x8，没有重叠，因此 256x256 的图像会生成 32x32=1024 个 Token 序列。推理阶段不再需要。
+- Quantization：将 1024 个 Token 序列映射到 Codebook 空间，Codebook 的大小为 8192。
+- Decoder：从 1024 个离散 Latent code 中恢复原始图像。
+- Autoregressive Transformer：用于生成离散 Latent code。训练中可以直接利用 Encoder 生成好的离线 Latent code 作为 Target，计算交叉熵损失。
+
+
+### Parti
+
+相比原始的 VQ-GAN 和 ViT-VQGAN 中使用 Decoder Only 的 Transformer 来生成离散 latent code，Parti 扩展为 Encoder + Decoder 的 Transformer，这样可以使用 Encoder 来对文本编码，生成文本 embedding，然后文本 embedding 作为条件在 Transformer Decoder 中作为 K 和 V 通过 Cross Attention 与视觉 Token 交叉。
+
+
+### MaskGIT
+
+MaskGIT 采用 VQGAN 模型范式，与 VQGAN 不同的是，VQGAN 中的 Transformer 采用序列生成的方式，在推理阶段其图像 Token 要一个一个预测，性能比较差，而 MaskGIT 中，Transformer 生成模型采用 Masked Visual Token Modeling 方式来训练（采用类似 Bert 的双向 Transformer 模型），也就是随机遮挡部分图像 Token，模型训练的目标是预测这些遮挡的 Token。以此方式训练的 Transformer 可以充分利用并行解码（Parallel Decoding）方式加速生成效率。
 
 
 ## Flow-Based
@@ -1044,6 +1195,12 @@ python convert_original_stable_diffusion_to_diffusers.py \
 - **画家/画风**：成图更接近哪位画家的风格，此处可以输入不止一位画家，如「Van Gogh:3」and「Monet:2」，即作品三分像梵高，两分像莫奈；或直接描述风格种类，如 very coherent symmetrical artwork，将作品结构设为连贯对称的。
 - **配色**：yellow color scheme 指整个画面的主色调为黄色。
 - **画面描述**：除了对主题进行描述，还可以添加多个画面元素，如 beautiful background, forest, octane render, night；添加画面质量描述，如 highly detailed, digital painting, Trending on artstation, concept art, smooth, sharp focus, illustration,8k。
+
+
+
+#### 作品修复
+
+【2024-6-14】[AI绘画Stable Diffusion【手部修复】](https://blog.csdn.net/cxyxx12/article/details/139647347)
 
 
 #### 本地部署
