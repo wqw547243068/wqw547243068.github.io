@@ -1010,6 +1010,14 @@ Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo 
 
 ### 币圈工作
 
+比特币怎么买卖? 虚拟货币交易所
+
+全球交易所[排名](https://www.coinpaihang.com/exchangetop20/)
+- 币安 Binance: 加拿大，华人赵长鹏创立
+- CoinBase:
+- 欧易 OKX: 
+- 火币 Huobi: 
+- 拜比特 Bybit: 
 
 【2024-11-29】 Web 3 公司: 币安、Bitget
 

@@ -961,6 +961,18 @@ DECO还可以用来创建[去中心化身份认证（DID）](https://blog.chain.
    - 用手机就可以免费挖矿，零投资，只需要间隔24小时打开一次领取收益，不需要在线挂机，激活之后关闭程序后台即可。
 ![](https://pic3.zhimg.com/80/v2-a2aecb7f88e7f80f114ae434c60222de_hd.jpg)
 
+## 交易所
+
+比特币怎么买卖? 虚拟货币交易所
+
+全球交易所[排名](https://www.coinpaihang.com/exchangetop20/)
+- 币安 Binance: 加拿大，华人赵长鹏创立
+- CoinBase:
+- 欧易 OKX: 
+- 火币 Huobi: 
+- 拜比特 Bybit: 
+
+
 # 结束
 
 
