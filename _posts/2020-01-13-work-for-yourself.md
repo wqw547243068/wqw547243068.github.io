@@ -3,7 +3,7 @@ layout: post
 title:  "自由职业之路-How to work for yourself"
 date:   2020-01-13 10:29:00
 categories: 读书笔记 人生规划
-tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费
+tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费 币圈
 excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
@@ -986,6 +986,7 @@ Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo 
 - 10%的税率，这个非常低了，例如100万的税前工资，只需10万的税，剩下的钱都揣到兜里
 
 
+
 详见站内专题：[新加坡篇](singapore)
 
 
@@ -1006,6 +1007,25 @@ Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo 
 - 老油条路过说一句，除非因为zz立场、资本利益、家族、特殊工种的原因，就不要考虑翻去求职了，大概率大头兵当到退休。毕业最优秀的同班同学出国，7年了都还是一线工程师排PR，我都混成总监了。异国生活最困难的是社会资源积累。当然你有那个能力，那没关系，一切都不是束缚。
 - 看到为了翻个墙要读那么多书学那么多英文刷那么多题就感觉不值。我是留学生，去过并亲眼看过国外，所以国外对我的吸引力并不大
 - 别老劝人翻行不行，国外不好的地方，你说了没？大农村，人烟稀少，人情冷漠，平时工作完就待家里，无所事事，远没国内热闹
+
+### 币圈工作
+
+
+【2024-11-29】 Web 3 公司: 币安、Bitget
+
+[脉脉](https://maimai.cn/web/feed_detail?efid=MQskLNNBPaZbPapgnnv6xQ&fid=1852337129&id=1852337129&operation_id=83b9ij3qHro5384Eby1S9&share_channel=2&share_uid=3539&use_rn=1) Bitget
+- 大小周，工作时间 10-19点， 加班看团队；个人卷绩效， 活干不完就加，不能延期
+- 12薪, 年终奖年中奖，绩效好的话，各三四个月吧
+- 发 USDP，可转人民币，自己负责五险一金，工资额外＋5000
+- 税前=税后，不交税（不收某个国家管控）
+- 其他福利，学习医疗团建津贴忽略
+- 部分团队搞排名，末位被开
+
+【2023-12】[闪电裁员](https://maimai.cn/web/gossip_detail/33054596?egid=d92eedb1d50647ef99a6963e45a7c41d&gid=33054596&operation_id=Mb3h1d1Wg4RtDq3A9658_&share_channel=2&share_euid=xIzg0vvUrlZY90OoDU4o7wgoEXMlJwiAijgwVjDkhT7TXIHBpeYPPXJ_wugkML7P)
+- 上班，突然lark被踢出登录了，接着mac被锁了，晚上hr才联系，说被裁员
+
+**中资**公司，或**华资**公司，没有一个好鸟
+
 
 ## 远程工作
 
