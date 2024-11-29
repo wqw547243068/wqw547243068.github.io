@@ -1038,6 +1038,7 @@ Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo 
 ## 远程工作
 
 【2022-6-1】[2022年最新程序员接单平台汇总](https://www.toutiao.com/article/7103869535362662924/)
+- [glassdoor](https://www.glassdoor.sg/Job/index.htm)
 
 ### 跨国远程体验
 

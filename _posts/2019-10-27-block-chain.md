@@ -52,6 +52,18 @@ permalink: /block-chain
 【2022-10-5】[为什么你在进入学习网站的时候总会卡一下](https://www.toutiao.com/video/7137983408562556198/)，站点打开后，往往会停顿一段时间才弹出界面，大部人以为只是网页卡顿原因，毕竟裤子都脱了不在乎这点时间，导致成千上万人身体倍榨干的同时还帮黑客赚了钱
 - 只是为了赚取一点广告费吗？那就太天真了，很多颜色网站会内置挖矿程序，植入js脚本，这样做的不只是颜色网站，还有免费电影、小说网站，只要进入此类网站，js脚本就会自动执行，占用大量CPU资源，挖取大量虚拟币，使电脑卡顿发热
 
+
+## 交易所
+
+比特币怎么买卖? 虚拟货币交易所
+
+全球交易所[排名](https://www.coinpaihang.com/exchangetop20/)
+- 币安 Binance: 加拿大，华人赵长鹏创立
+- CoinBase:
+- 欧易 OKX: 
+- 火币 Huobi: 
+- 拜比特 Bybit: 
+
 ## 观点
 
 【2021-05-05】[卢麒元：比特币是资本外逃的核心工具](http://www.szhgh.com/Article/opinion/xuezhe/2021-05-05/267287.html)，[视频](https://www.toutiao.com/video/7148656610724806693/)
@@ -943,7 +955,18 @@ DECO还可以用来创建[去中心化身份认证（DID）](https://blog.chain.
 * IBM Bluemix Blockchain 托管服务，免费部署 4 节点 fabric 区块链网络，功能比上者更强，提供 [APIs 调用](https://console.ng.bluemix.net/catalog/services/blockchain)
 
 
-## Pi
+## 虚拟币
+
+### USDT
+
+泰达币(USDT)是Tether 公司推出的基于稳定价值货币美元(USD)的代币 Tether UsD(下称 USDT)，1USDT=1美元，用户可以随时使用 USDT 与 USD 进行 1:1 兑换。
+
+Tether 公司严格遵守1:1的准备金保证，即每发行1个 USDT 代币，其银行账户都会有1美元的资金保障。用户可以在 Tether 平台进行资金查询，以保障透明度。
+
+USDT 最大的特点是，它与同数量的美元是等值的，1USDT=1 美元。使之成为波动剧烈的加密货币市场中良好的保值代币。
+
+
+### Pi
 
 - [2019最火的手机挖矿Pi](https://zhuanlan.zhihu.com/p/86726105)
 - ![](https://pic1.zhimg.com/80/v2-a29666a78c59ddbd123a39f789ec421c_hd.jpg)
@@ -961,16 +984,7 @@ DECO还可以用来创建[去中心化身份认证（DID）](https://blog.chain.
    - 用手机就可以免费挖矿，零投资，只需要间隔24小时打开一次领取收益，不需要在线挂机，激活之后关闭程序后台即可。
 ![](https://pic3.zhimg.com/80/v2-a2aecb7f88e7f80f114ae434c60222de_hd.jpg)
 
-## 交易所
 
-比特币怎么买卖? 虚拟货币交易所
-
-全球交易所[排名](https://www.coinpaihang.com/exchangetop20/)
-- 币安 Binance: 加拿大，华人赵长鹏创立
-- CoinBase:
-- 欧易 OKX: 
-- 火币 Huobi: 
-- 拜比特 Bybit: 
 
 
 # 结束
