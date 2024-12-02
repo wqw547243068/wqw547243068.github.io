@@ -3,7 +3,7 @@ layout: post
 title:  "移动设备知识"
 date:   2020-10-01 20:30:00
 categories: 技术工具
-tags: adb otg 手机 内存 闪存 rom ram 手机 接码
+tags: adb otg 手机 内存 闪存 rom ram 手机 接码 华为
 author : 鹤啸九天 
 excerpt: 移动端知识及开发
 mathjax: true
@@ -569,6 +569,27 @@ OTG有哪些应用场景
 
 
 ## 华为
+
+
+### 手机操作
+
+
+#### 手机录屏
+
+方法
+- 下拉框，选择“华为录屏”
+- 默认不录环境音，需要的话，启动录屏后，点击麦克风
+
+
+#### 文件传输
+
+华为手机文件共享至电脑
+- USB 数据线
+- 华为分享
+
+文件路径
+- 相机拍的图片、视频文件: `\\Mate30-wqw\内部存储\DCIM\Camera`
+- 录屏文件: `\\Mate30-wqw\内部存储\Pictures\Screenshots`
 
 
 ### 华为智选手机
