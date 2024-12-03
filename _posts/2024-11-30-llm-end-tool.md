@@ -252,6 +252,8 @@ if __name__ == '__main__':
 - open-webui
 - chatbox
 
+#### Open-WebUI
+
 [open webui程序官网](https://openwebui.com/)
 - Open WebUI 是一个可扩展、功能丰富且用户友好的**自托管** WebUI，旨在完全离线操作。
 - 支持各种 LLM 运行程序，包括 Ollama 和 OpenAI 兼容的 API。
@@ -314,6 +316,10 @@ if __name__ == '__main__':
 
 llama 自带控制台对话界面体验总归是不太好，部署 Web 可视化聊天界面：
 
+
+##### 源码安装
+
+
 - 下载并安装 [Node.js](https://nodejs.org/zh-cn) 工具
 - 下载 ollama-webui 工程代码：`git clone https://github.com/ollama-webui/ollama-webui-lite ollama-webui`
 - 切换 ollama-webui 代码目录：`cd ollama-webui`
@@ -325,6 +331,16 @@ llama 自带控制台对话界面体验总归是不太好，部署 Web 可视化聊天界面：
 - web settings 中填入合适的端口, 如 http://localhost:11434/api
 
 
+##### pip 安装
+
+注意
+- windows 10下，Python 版本必须是 3.11, 否则无法执行 pip install命令
+- Python [3.11 下载地址](https://www.python.org/downloads/release/python-3110/)
+- 安装文件，右键“以管理员方式运行”，否则会出现权限问题
+
+```sh
+pip install open-webui
+```
 
 
 ### 模型量化
