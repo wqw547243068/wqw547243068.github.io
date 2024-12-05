@@ -3,7 +3,7 @@ layout: post
 title:  "数字图像处理-Image Processing"
 date:   2019-11-01 16:52:00
 categories: 计算机视觉
-tags: 计算机视觉  opencv 数字图像 滤波 三维 水印 sam 马赛克
+tags: 计算机视觉  opencv 数字图像 滤波 三维 水印 sam 马赛克 gradio
 excerpt: 图像处理技术总结
 mathjax: true
 permalink: /image
@@ -545,7 +545,7 @@ plt.show()
 
 opencv 是用于快速处理图像处理、计算机视觉问题的工具，支持多种语言进行开发如c++、python、java等
 
-### Python opencv安装
+### Python opencv
 
 环境：
 - 1、 python3
@@ -560,13 +560,13 @@ pip install opencv-python
 ```
 
 测试：
-- 执行 import cv2
+- 执行 `import cv2`
 
 ### 图像读取
 
-（1）imread函数：读取数字图像
+（1）imread 函数：读取数字图像
 
-cv2.imread(path_of_image, intflag)
+`cv2.imread(path_of_image, intflag)`
 - 参数一： 需要读入图像的完整路径
 - 参数二： 标志以什么形式读入图像，可以选择一下方式：
   - · cv2.IMREAD_COLOR： 加载彩色图像。任何图像的透明度都将被忽略。它是默认标志
@@ -624,7 +624,7 @@ if k == 27: # ESC键
 - 不同尺寸、不同颜色（RGB和灰度）不能放在一个窗体中 -- 黑屏
 
 解决办法
-- 使用matplotlib
+- 使用 matplotlib
 
 ```py
 import cv2
@@ -696,10 +696,14 @@ print(gray_img[0, 0])    #100
 
 因此(0, 0, 0)便是代表一个黑色像素，(255, 255, 255)便是代表一个白色像素。这么想，B=0, G=0, R=0相当于关闭了颜色通道也就相当于无光照进入，所以图像整个是黑的，而(255, 255, 255)即B=255, G=255, R=255， 相当于打开了B、G、R所有通道光线全部进入，因此便是白色。
 
-#### 图像绘制方法
+### 图像绘制
 
 各种绘制方法
-- 直线cv2.line、长方形cv2.rectangle、圆cv2.circle、椭圆cv2.ellipse、多边形cv2.polylines等集合图像绘制函数
+- 直线 cv2.line
+- 长方形 cv2.rectangle
+- 圆 cv2.circle
+- 椭圆 cv2.ellipse
+- 多边形 cv2.polylines 等集合图像绘制函数
 
 公共参数：
 - · img： 表示需要进行绘制的图像对象ndarray
@@ -707,26 +711,26 @@ print(gray_img[0, 0])    #100
 - · thickness： 表示绘制几何图形中线的粗细，默认为1，对于圆、椭圆等封闭图像取-1时是填充图形内部
 - · lineType ： 表示绘制几何图形线的类型，默认8-connected线是光滑的，当取cv2.LINE_AA时线呈现锯齿状
 
-##### (1) cv2.line函数
+#### (1) cv2.line函数
 
 直线绘制函数， 函数官方定义为：
 - cv2.line(image, starting, ending, color, thickness, lineType)
 - 参数image、color、thickness、lineType分别是上述公共定义，参数starting、ending分别表示线的起点像素坐标、终点像素坐标
 
-##### (2) cv2.rectangle函数
+#### (2) cv2.rectangle函数
 
 长方形绘制函数，函数官方定义：
 - cv2.rectangle(image, top-left, bottom-right, color, thickness, lineType)
 - 参数image、color、thickness、lineType分别是上述公共定义，参数top-left、bottom-right分别表示长方形的左上角像素坐标、右下角像素坐标
 
 
-##### (3) cv2.circle函数
+#### (3) cv2.circle函数
 圆形绘制函数，官方定义函数为：
 - cv2.circle(image, center, radius, color, thickness, lineType)
 - 参数image、color、thickness、lineType分别是上述公共定义，参数center、radius分别表示圆的圆心像素坐标、圆的半径长度，圆绘制函数中当参数thickness = -1 时绘制的是实心圆，当thickness >= 0 时绘制的是空心圆
 
 
-##### (4) cv2.ellipse函数
+#### (4) cv2.ellipse函数
 
 椭圆绘制函数，官方定义为：
 - cv2.circle(image, center, (major-axis-length, minor-axis-length), angle, startAngle, endAngle, color, thickness, lineType)
@@ -739,7 +743,7 @@ print(gray_img[0, 0])    #100
   - · endAngle： 表示椭圆从主轴向顺时针方向测量的椭圆弧的终止时角度
 
 
-##### (5) cv2.polylines函数
+#### (5) cv2.polylines函数
 
 多边形绘制函数，官方定义函数为：
 - cv2.polylines(image, \[point-set], flag, color, thickness, lineType)
@@ -747,6 +751,42 @@ print(gray_img[0, 0])    #100
   - · \[point-set]： 表示多边形点的集合，如果多边形有m个点，则便是一个m*1*2的数组，表示共m个点
   - · flag： 当flag = True 时，则多边形是封闭的，当flag = False 时，则多边形只是从第一个到最后一个点连线组成的图像，没有封闭
 
+#### 文字
+
+【2024-12-5】显示文字
+
+```py
+text = "选中目标区域增强后的\n空间频率是%s,\n信息熵是%s" % (spatialF(gray_overlay_img), imageEn(gray_overlay_img))
+cv2.putText(img2, text, (min_x, min_y + height + 30), cv2.FONT_HERSHEY_COMPLEX, 0.6, (0, 0, 255), 2)
+```
+
+问题
+- 直接显示中文，出现乱码: "????"
+
+解决
+- 使用 pillow 库显示中文
+
+```py
+from PIL import Image, ImageDraw, ImageFont
+
+def cv2ImgAddText(img, text, left, top, textColor=(0, 255, 0), textSize=20):
+    if (isinstance(img, np.ndarray)):  # 判断是否OpenCV图片类型
+        img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    # 创建一个可以在给定图像上绘图的对象
+    draw = ImageDraw.Draw(img)
+    # 字体的格式
+    fontStyle = ImageFont.truetype("STSONG.TTF", textSize, encoding="utf-8")
+    # 绘制文本
+    draw.text((left, top), text, textColor, font=fontStyle)
+    # 转换回OpenCV格式
+    return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+
+text = "选中目标区域增强后的\n峰值信噪比是%s,\n相似度是%s" % (0, 0)
+#text = "选中目标区域增强后的\n空间频率是%s,\n信息熵是%s" % (spatialF(gray_overlay_img), imageEn(gray_overlay_img))
+#cv2.putText(img2, text, (min_x, min_y + height + 30), cv2.FONT_HERSHEY_COMPLEX, 0.6, (0, 0, 255), 2)
+img2 = cv2ImgAddText(img2, text, min_x, min_y + height + 30, (255, 0, 0), 30)  #添加
+# cv2ImgAddText(图像, 文字内容, 字体左边开始位置, 字体上面开始位置, (R, G, B), 字体大小)
+```
 
 #### 图像绘制示例
 
