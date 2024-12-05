@@ -770,7 +770,7 @@ echo "$cmd" && eval $cmd
 
 ### yolov8 功能
 
-v8版本不局限于目标检测，更像是一个AI视觉处理平台，不但可以做检测，还可以做**分类、分割、跟踪，甚至姿态估计**。
+v8版本不局限于目标检测，更像是一个**AI视觉处理平台**，不但可以做检测，还可以做**分类、分割、跟踪，甚至姿态估计**。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6fbc01d3d14f438ea9aa6b8ce86fbf68~tplv-tt-origin-asy2:5aS05p2hQElURueUt-WtqQ==.image?_iz=58558&from=article.pc_detail&x-expires=1695564568&x-signature=fWs9kU8VRfPoVHMKh8r0N%2FPnU88%3D)
 - ![](https://raw.githubusercontent.com/ultralytics/assets/main/im/banner-tasks.png)
 
@@ -812,6 +812,7 @@ YOLOv8针对COCO数据集（一个很好的计算机视觉数据集）训练生�
 
 ### yolov8 实践
 
+【2024-12-5】[gradio+flask构建yolov8检测demo](https://blog.csdn.net/weixin_37647148/article/details/139463488)
 
 #### 安装
 
