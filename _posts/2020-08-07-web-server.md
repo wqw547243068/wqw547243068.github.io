@@ -3,7 +3,7 @@ layout: post
 title:  "Web前端服务知识-Web-Serving"
 date:   2020-08-07 19:17:00
 categories: 技术工具 编程语言
-tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML node.js vue 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流
+tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML node.js vue 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流 vite
 author : 鹤啸九天
 excerpt: Web开发相关技术知识点
 mathjax: true
@@ -887,6 +887,19 @@ node.js、npm、vue、webpack之间的关系
 ## bootstrap
 
 [bootstrap模板集合](http://www.cssmoban.com/cssthemes/houtaimoban/)
+
+
+## Vite
+
+
+Vite 利用生态系统中的新进展解决 JavaScript 开发工具性能瓶颈问题
+- [官方文档](https://vitejs.cn/vite3-cn/guide/why.html)
+
+Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两类，改进了开发服务器启动时间。
+- `依赖` 大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式（例如 ESM 或者 CommonJS）。
+  - Vite 将会使用 esbuild 预构建依赖。esbuild 使用 Go 编写，并且比以 JavaScript 编写的打包器预构建依赖快 10-100 倍。
+- `源码` 通常包含一些并非直接是 JavaScript 的文件，需要转换（例如 JSX，CSS 或者 Vue/Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
+  - Vite 以 原生 ESM 方式提供源码。这实际上是让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器请求源码时进行转换并按需提供源码。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
 
 
 ## vue
