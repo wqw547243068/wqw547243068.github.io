@@ -892,8 +892,12 @@ node.js、npm、vue、webpack之间的关系
 ## Vite
 
 
+webpack、Rollup 和 Parcel 等js开发工具极大地改善了前端开发者的开发体验。
+
 Vite 利用生态系统中的新进展解决 JavaScript 开发工具性能瓶颈问题
 - [官方文档](https://vitejs.cn/vite3-cn/guide/why.html)
+
+
 
 Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两类，改进了开发服务器启动时间。
 - `依赖` 大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式（例如 ESM 或者 CommonJS）。
