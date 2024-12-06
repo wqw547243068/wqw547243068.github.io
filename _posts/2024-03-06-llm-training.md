@@ -2325,6 +2325,30 @@ Qwen2.5-Coder的数据收集来自多个渠道，包括但不限于Pull Requests
 训练策略
 - `QWen 2.5` -> **File-Level** Pretrain -> **Repo-Level** Pretrain -> `QWen 2.5-Code-Base` -> Code SFT -> `QWen 2.5-Code-Instructed`
 
+### QWen-VL
+
+Qwen-VL 是阿里云研发的大规模视觉语言模型（Large Vision Language Model, LVLM）。
+
+Qwen-VL 可以以**图像**、文本、**检测框**作为输入，并以文本和检测框作为输出。
+- `Qwen-VL-Chat` = `大语言模型`(Qwen-7B) + `视觉图片特征编码器`(Openclip ViT-bigG) + `位置感知视觉语言适配器`(可训练Adapter)+ 1.5B的图文数据 + 多轮训练 + 对齐机制(Chat)
+
+Qwen-VL 系列模型特点：
+- **多语言**对话模型：天然支持英文、中文等多语言对话，端到端支持图片里中英双语的长文本识别；
+- **多图交错**对话：支持多图输入和比较，指定图片问答，多图文学创作等；
+- **开放域**目标定位：通过中文开放域语言表达进行检测框标注；
+- 细粒度识别和理解：448分辨率可以提升细粒度的文字识别、文档问答和检测框标注。
+
+
+硬件要求
+- A100、H100、RTX3060、RTX3070等显卡建议启用bf16精度以节省显存
+- V100、P100、T4等显卡建议启用fp16精度以节省显存
+- 使用CPU进行推理，需要约32GB内存，默认GPU进行推理，需要约24GB显存
+
+
+【2024-6-12】[Qwen-VL多模态大模型的微调与部署](https://zhuanlan.zhihu.com/p/701818093)
+
+
+
 ### 数据
 
 
