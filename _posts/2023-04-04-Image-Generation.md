@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -822,6 +822,18 @@ image = pipe(
     ip_adapter_scale=0.8,
 ).images[0]
 ```
+
+
+### TextHarmony
+
+
+【2024-10-16】华东师范+字节跳动推出首个OCR领域**大一统**多模态文字理解与生成大模型，即 TextHarmony
+- TextHarmony 不仅精通视觉文本的**感知**（文字检测识别等）、**理解**（KIE、VQA等）和**生成**（视觉文字生成、编辑、抹除等），而且在单一模型中实现了视觉与语言模态生成的和谐统一
+- NeurIPS 2024 录用论文：“[Harmonizing Visual Text Comprehension and Generation](https://arxiv.org/abs/2407.16364)”。
+- 代码开源: [TextHarmony](https://github.com/bytedance/TextHarmony)
+
+详见站内专题: [OCR](ocr#TextHarmony)
+
 
 
 ## AI 作画
