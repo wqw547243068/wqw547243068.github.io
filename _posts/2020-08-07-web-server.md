@@ -929,7 +929,7 @@ Yarn 是为了弥补 npm 的一些缺陷而出现的：
 
 Yarn 没想要完全替代 npm，它只是一个新的 CLI 工具，拉取的 packages 依然来自 npm 仓库。仓库本身不会变，所以获取或者发布模块的时候和原来一样。
 
-### vue安装
+### vue 安装
 
 1. 安装nodejs，命令行输入 node –v检测安装是否成功
 2. 安装vue-cli脚手架：npm i -g @vue/cli-init,命令行输入 vue –v检测安装是否成功
@@ -993,7 +993,26 @@ Vue.js 的核心是一个允许采用简洁的**模板语法**来声明式地将
 - 数据和 DOM 已经被建立了**关联**，所有东西都是**响应式**的。浏览器控制台修改message变量，可以看到页面取值随时变化
 - 开发者不再和 HTML 直接交互了。一个 Vue 应用会将其挂载到一个 DOM 元素上（即示例中的app）
 
-### vue目录结构
+
+### vue 部署
+
+vue 离线部署
+- 安装 node.js 工具包
+- 有网的机器上，安装vue环境依赖包，npm install
+- 复制缓存目录
+  - 查看 缓存目录: `npm config get cache`, 一般是 npm-cache
+  - 复制 npm-cache
+  - vue初始化，包括 `node_modules` 依赖包一起拷贝到内网
+- U盘复制到内网电脑
+- 双击运行 nodejs 安装包
+- 安装依赖
+  - `npm install --cache ./npm-cache --optional --cache-min 99999999999 --shrinkwrap false jquery`
+- 运行项目: npm run dev
+
+详见[内网/离线搭建前端vue环境，没网络安装vue-cli运行项目](https://segmentfault.com/a/1190000022486924)
+
+
+### vue 目录结构
 
 Vue项目结构：
 - ![](https://p26.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/a82831d256f94bea8bcaaa301a4470b6~tplv-obj:1067:1858.image?from=post)
@@ -1087,7 +1106,7 @@ MVVM架构是指：
 
 ![](https://p9.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/b963a949aab044f8acd8a2bc50f8d3f0~tplv-obj:2002:2009.image?from=post)
 
-### vue实例
+### vue 实例
 
 每个 Vue 应用都是通过用 Vue 函数创建一个新的 Vue 实例开始；虽然没有完全遵循 MVVM 模型，但是 Vue 的设计也受到了它的启发。因此经常用 vm (ViewModel 的缩写) 这个变量名表示 Vue 实例
 - 一个**Vue 应用**由 一个通过 new Vue 创建的**根 Vue 实例**，以及可选的嵌套的、可复用的**组件树**组成
