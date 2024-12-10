@@ -1914,6 +1914,7 @@ label c:system #设置C盘的卷标为 system
 注释行不执行操作
 
 17 date 和 time
+
 日期和时间
 date #显示当前日期，并提示输入新日期，按"回车"略过输入
 date/t #只显示当前日期，不提示输入新日期
@@ -1921,11 +1922,13 @@ time #显示当前时间，并提示输入新时间，按"回车"略过输入
 time/t #只显示当前时间，不提示输入新时间
 
 18 goto 和 :
+
 跳转命令
 :label #行首为:表示该行是标签行，标签行不执行操作
 goto label #跳转到指定的标签那一行
 
 19 find (外部命令)
+
 查找命令
 find "abc" c:test.txt
 在 c:test.txt 文件里查找含 abc 字符串的行
@@ -1936,7 +1939,9 @@ find /c "abc" c:test.txt
 显示含 abc 的行的行数
 
 20 more (外部命令)
+
 逐屏显示
+
 more c:test.txt #逐屏显示 c:test.txt 的文件内容
 
 21 tree
@@ -1956,18 +1961,18 @@ find "ok" c:test.txt && echo 成功
 find "ok" c:test.txt || echo 不成功
 如果找不到"ok"字样，就显示"不成功"，找到了就不显示
 
-25 |
-管道命令
+25 | 管道命令
 dir *.* /s/a | find /c ".exe"
 管道命令表示先执行 dir 命令，对其输出的结果执行后面的 find 命令
 该命令行结果：输出当前文件夹及所有子文件夹里的.exe文件的个数
 type c:test.txt|more
 这个和 more c:test.txt 的效果是一样的
 
-26 > 和 >>
-输出重定向命令
+26 > 和 >> 输出重定向命令
+
 > 清除文件中原有的内容后再写入
 >> 追加内容到文件末尾，而不会清除原有的内容
+
 主要将本来显示在屏幕上的内容输出到指定文件中
 指定文件如果不存在，则自动生成该文件
 type c:test.txt >prn
@@ -1983,6 +1988,7 @@ echo ^^W ^> ^W>c:test.txt
 ^ 和 > 是控制命令，要把它们输出到文件，必须在前面加个 ^ 符号
 
 27 <
+
 从文件中获得输入信息，而不是从屏幕上
 一般用于 date time label 等需要等待输入的命令
 @echo off
@@ -1992,6 +1998,7 @@ del temp.txt
 这样就可以不等待输入直接修改当前日期
 
 28 %0 %1 %2 %3 %4 %5 %6 %7 %8 %9 %*
+
 命令行传递给批处理的参数
 %0 批处理文件本身
 %1 第一个参数
@@ -2023,21 +2030,25 @@ echo load "%%1" "%%2">c:test.txt
 生成的文件内容为 load "%1"  "%2"
 批处理文件里，用这个格式把命令行参数输出到文件
 
-29 if
-判断命令
+29 if 判断命令
+
 if "%1"=="/a" echo 第一个参数是/a
 if /i "%1" equ "/a" echo 第一个参数是/a
 /i 表示不区分大小写，equ 和 == 是一样的，其它运算符参见 if/?
-if exist c:test.bat echo 存在c:test.bat文件
+if exist c:test.bat 
+  echo 存在c:test.bat文件
 if not exist c:windows (
-echo 不存在c:windows文件夹
+  echo 不存在c:windows文件夹
 )
+
 if exist c:test.bat (
-echo 存在c:test.bat
+  echo 存在c:test.bat
 ) else (
-echo 不存在c:test.bat
+  echo 不存在c:test.bat
 )
+
 30 setlocal 和 endlocal
+
 设置”命令扩展名”和”延缓环境变量扩充”
 SETLOCAL ENABLEEXTENSIONS #启用"命令扩展名"
 SETLOCAL DISABLEEXTENSIONS #停用"命令扩展名"
@@ -2052,8 +2063,8 @@ ENDLOCAL #恢复到使用SETLOCAL语句以前的状态
 保程序能在其它系统上正确运行
 "延缓环境变量扩充"主要用于 if 和 for 的符合语句，在 set 的说明里有其实用例程
 
-31 set
-设置变量
+31 set 设置变量
+
 引用变量可在变量名前后加 % ，即 %变量名%
 set #显示目前所有可用的变量，包括系统变量和自定义的变量
 echo %SystemDrive% #显示系统盘盘符。系统变量可以直接引用
@@ -2085,9 +2096,11 @@ echo %p%
 set p=bbb
 echo %p%
 )
+
 结果将显示
 aaa
 aaa
+
 因为在读取 if 语句时已经将所有 %p% 替换为aaa
 这里的"替换"，在 /? 帮助里就是指"扩充"、"环境变量扩充"
 可以启用”延缓环境变量扩充”，用 ! 来引用变量，即 !变量名!
@@ -2100,9 +2113,11 @@ set p=bbb
 echo !p!
 )
 ENDLOCAL
+
 结果将显示
 aaa
 bbb
+
 还有几个动态变量，运行 set 看不到
 %CD% #代表当前目录的字符串
 %DATE% #当前日期
@@ -2115,13 +2130,16 @@ bbb
 注意 %time% 精确到毫秒，在批处理需要延时处理时可以用到
 
 32 start
+
 批处理中调用外部程序的命令，否则等外部程序完成后才继续执行剩下的指令
 
 33 call
+
 批处理中调用另外一个批处理的命令，否则剩下的批处理指令将不会被执行
 有时有的应用程序用start调用出错的，也可以call调用
 
 34 choice (外部命令)
+
 选择命令
 让用户输入一个字符，从而选择运行不同的命令，返回码errorlevel为1234……
 win98里是choice.com
@@ -2131,6 +2149,7 @@ choice /N /C y /T 5 /D y>nul
 延时5秒
 
 35 assoc 和 ftype
+
 文件关联
 assoc 设置'文件扩展名'关联，关联到'文件类型'
 ftype 设置'文件类型'关联，关联到'执行程序和参数'
@@ -2153,6 +2172,7 @@ ftype exefile="%1" %*
 如果该关联已经被破坏，可以运行 command.com ，再输入这条命令
 
 36 pushd 和 popd
+
 切换当前目录
 @echo off
 c: & cd & md mp3 #在 C: 建立 mp3 文件夹
@@ -2162,6 +2182,7 @@ pushd c:mp3 #保存当前目录，并切换当前目录为 c:mp3
 popd #恢复当前目录为刚才保存的 d:mp4
 
 37 for
+
 循环命令
 这个比较复杂，请对照 for/? 来看
 for %%i in (c: d: e: f:) do echo %%i
@@ -2222,6 +2243,50 @@ xcopy d:mp3 e:mp3 /s/e/i/y
 - [Bash to Bat Converter](https://daniel-sc.github.io/bash-shell-to-bat-converter/)
 
 
+Shell 脚本
+
+```sh
+SOME_VAR="/c/cygwin/path"
+rm -rf $SOME_VAR || echo "file not found"
+cp /c/some/file /to/another/file
+
+if [ $SOME_VAR == "" ]; then
+  echo "SOME_VAR is empty"
+else
+  echo "SOME_VAR not empty"
+fi
+
+my_function () {
+  echo "hello from my_function: $1"
+}
+# call the function:
+my_function
+# call the function with param:
+my_function "some param"
+```
+
+对应的 BAT 脚本
+
+```bat
+SET "SOME_VAR=c:\cygwin\path"
+DEL /S "%SOME_VAR%" || echo "file not found"
+COPY  "c:\some\file" "\to\another\file"
+IF "%SOME_VAR%" == "" (
+  echo "SOME_VAR is empty"
+) ELSE (
+  echo "SOME_VAR not empty"
+)
+CALL :my_function
+CALL :my_function "some param"
+
+EXIT /B %ERRORLEVEL%
+
+:my_function
+echo "hello from my_function: %~1"
+EXIT /B 0
+```
+
+
 ### 问题
 
 常见问题
@@ -2231,6 +2296,7 @@ xcopy d:mp3 e:mp3 /s/e/i/y
 2. 批处理 `.bat` 文件中输出中文乱码
   - 原因：记事本新建的文件，编码不是 utf-8
   - 解决方法：用【记事本】打开>【另存为】>【修改编码为：utf-8】
+  - 【2024-12-10】编码保存为 utf-8 依然乱码, 改成 ansi 才行
 
 
 ## linux进程
