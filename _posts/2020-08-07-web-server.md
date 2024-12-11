@@ -889,22 +889,6 @@ node.js、npm、vue、webpack之间的关系
 [bootstrap模板集合](http://www.cssmoban.com/cssthemes/houtaimoban/)
 
 
-## Vite
-
-
-webpack、Rollup 和 Parcel 等js开发工具极大地改善了前端开发者的开发体验。
-
-Vite 利用生态系统中的新进展解决 JavaScript 开发工具性能瓶颈问题
-- [官方文档](https://vitejs.cn/vite3-cn/guide/why.html)
-
-
-
-Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两类，改进了开发服务器启动时间。
-- `依赖` 大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式（例如 ESM 或者 CommonJS）。
-  - Vite 将会使用 esbuild 预构建依赖。esbuild 使用 Go 编写，并且比以 JavaScript 编写的打包器预构建依赖快 10-100 倍。
-- `源码` 通常包含一些并非直接是 JavaScript 的文件，需要转换（例如 JSX，CSS 或者 Vue/Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
-  - Vite 以 原生 ESM 方式提供源码。这实际上是让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器请求源码时进行转换并按需提供源码。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
-
 
 ## vue
 
@@ -917,6 +901,34 @@ Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两�
 ### vue介绍
 
 Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。Vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与现代化的工具链以及各种支持类库结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
+
+### Vue CLI
+
+Vue CLI 是 Vue 2 最棒的前端构建工具，Vue CLI 基于 Webpack 之上，是 Webpack 的超集。
+- Vue CLI 基于 Webpack 构建，配置好了打包规则
+- 内置热模块重载的开发服务器
+- 有丰富的官方插件合集，站在 webpack 庞大的社区资源上
+- 友好的图形化创建和管理 Vue 项目界面
+
+Vue cli 在服务启动之前，要把所有代码打包成 `Bundle` 再启动**服务**。这就是为什么启动一些大型项目时，特别慢的原因。
+
+这一点上 Vite 做了大幅改善。
+
+### Vite
+
+Vite 是 Vue 团队开发的新一代前端**开发与构建**工具
+
+webpack、Rollup 和 Parcel 等js开发工具极大地改善了前端开发者的开发体验。
+
+Vite 利用生态系统中的新进展解决 JavaScript 开发工具性能瓶颈问题
+- [官方文档](https://vitejs.cn/vite3-cn/guide/why.html)
+
+Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两类，改进了开发服务器启动时间。
+- `依赖` 大多为在开发时不会变动的纯 JavaScript。一些较大的依赖（例如有上百个模块的组件库）处理的代价也很高。依赖也通常会存在多种模块化格式（例如 ESM 或者 CommonJS）。
+  - Vite 将会使用 esbuild 预构建依赖。esbuild 使用 Go 编写，并且比以 JavaScript 编写的打包器预构建依赖快 10-100 倍。
+- `源码` 通常包含一些并非直接是 JavaScript 的文件，需要转换（例如 JSX，CSS 或者 Vue/Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
+  - Vite 以 原生 ESM 方式提供源码。这实际上是让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器请求源码时进行转换并按需提供源码。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
+
 
 
 ### npm与yarn
@@ -1951,6 +1963,8 @@ const { answer } = await cursive.ask({
     prompt: 'What is the meaning of life?',
 })
 ```
+
+
 
 
 ## 低代码平台
