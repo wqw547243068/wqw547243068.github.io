@@ -910,6 +910,12 @@ YOLO-NAS 是一款基于YOLO系列的全新对象检测模型，采用NAS技术�
 
 # 应用
 
+
+## Demo 体验
+
+飞桨 PaddlePaddle AI Studio 里的目标检测体验
+- [目标检测](https://aistudio.baidu.com/community/app/70230/webUI)
+
 ![](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xTXRuQXhtV1N3TnBlWHVvOFAyd1ZpY2lhVkswdEEzcXBQMmliRHp2anRpY0N0NU1WSllzUFVCb2liZXU0TjZxbUxSZTJrTG13SWljRHNXY2hNRFE4aWJZam9jb1EvNjQw?x-oss-process=image/format,png)
 
 - 【2021-5-18】[4种YOLO目标检测的C++和Python两种版本实现](https://www.toutiao.com/i6963503613297689102/)
