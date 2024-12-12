@@ -3,7 +3,7 @@ layout: post
 title:  "Web前端服务知识-Web-Serving"
 date:   2020-08-07 19:17:00
 categories: 技术工具 编程语言
-tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML node.js vue 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流 vite
+tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML node.js vue 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流 vite npm yarn
 author : 鹤啸九天
 excerpt: Web开发相关技术知识点
 mathjax: true
@@ -884,6 +884,65 @@ node.js、npm、vue、webpack之间的关系
 - **WebPack** webpack能够把.vue后缀名的文件打包成浏览器能够识别的js，而这个.vue文件装换需要打包器vue-loader→npm下载→node包管理工具
   - 可以看做是模块打包机，它做的事情：分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其转换和打包为合适的格式供浏览器使用。
 
+
+每个项目都有个 package.json 文件，其中包含称为`依赖项`的对象，这些对象包含项目中使用的所有包及其版本。
+
+包管理器包括**元数据**，即有关软件的所有信息、运行软件所需的配置文件和一些软件二进制文件。
+
+包管理器的一些功能包括：
+- 诚信与信任
+- 易于管理
+- 包分组
+- 避免依赖地狱
+
+`Node.js` 默认包管理器 `NPM` 和 Facebook 开发的 `Yarn`
+
+
+### npm
+
+NPM 代表 Node Package Manager，是 Node.js 的默认包管理器。它是一个在线存储库，包含数百万个用于发布Node.js开源项目的包，以及用于与存储库交互的命令行工具，并帮助进行包安装、版本控制和依赖项管理。
+
+NPM 由三个主要部分组成：
+- **在线仓库**：npm 的官方网站允许您查找 javascript 包、查看文档以及发布和共享包。
+-` CLI`（命令行界面）：它是一个命令行工具，可帮助您与 npm 交互以安装、更新、删除和发布包。
+- **NPM 注册表**：npm 注册表是一个大型数据库，其中包含可从世界各地访问的公开可用库。
+
+更直观的解释是将 npmjs.com 存储库视为一个中心枢纽，它从卖家（npm 包作者）接收产品包，并将这些产品分发给买家（npm 包用户）。
+
+为了促进向开发人员分发的过程，npmjs.com 中心雇用了勤奋的员工 （npm CLI），他们充当 npmjs.com 客户的私人助理
+
+原文链接：https://blog.csdn.net/mzgxinhua/article/details/136142059
+
+
+### yarn
+
+纱线（Yarn） 是由 Facebook 发起的包管理器，旨在解决 NPM 的缺点，并提供更高级的包管理工具来促进整体开发工作流程。
+
+Yet Another Resource Negotiator 或 Yarn 是 Facebook 于 2016 年 10 月发起的包管理器，现在得到了 Google、Exponent 和 Tilde 等公司的支持。它的创建是为了解决 npm 的缺点，并提供更高级的包管理工具，以促进整体开发工作流程。
+
+开发者选择 npm 而不是 yarn 的主要原因是易用性、稳定性和可用性。
+
+Yarn 特点：
+1. 离线模式或零安装功能：如果软件包已经安装，Yarn 会在内部缓存中提供它，以便可以在没有互联网连接的情况下安装它。此内置缓存功能可加快安装过程。
+2. 改进的网络性能和弹性：Yarn 将所有请求排队，以防止请求级联并最大限度地提高网络利用率。
+3. 兼容性：Yarn 与 npm 和 bower 注册表兼容。
+4. 确定性安装算法：Yarn 使用锁定文件来确保 node_modules 目录在所有开发环境中具有完全相同的结构。
+5. 安全性和稳定性：每次安装后都会检查软件包的完整性，以防止软件包损坏。
+
+[原文](https://blog.csdn.net/mzgxinhua/article/details/13614205)9
+
+Yarn 和 NPM 之间的主要区别: 如何处理包管理以及性能和安全性方法。
+- Yarn 主要优势在于“即插即用”和“零安装”等高级功能，可增强性能并增强安全性。
+- Yarn 还擅长在包装管理过程中提供更清洁的输出和更少的噪音。
+- 与 NPM 不同，Yarn 并行安装软件包，大大加快了该过程。虽然两个包管理器共享相似的命令和易用性，但 Yarn 使用校验和验证包，确保其完整性。
+- 此外，Yarn 以简洁有序的树格式呈现其输出日志，这与 NPM 更杂乱的命令堆栈形成鲜明对比。
+
+yarn 以 npm 包的形式提供。因此，在终端中运行以下命令安装：
+
+```js
+npm install -g yarn
+```
+
 ## bootstrap
 
 [bootstrap模板集合](http://www.cssmoban.com/cssthemes/houtaimoban/)
@@ -951,6 +1010,8 @@ npx create-vite
 //   cd vite_wqw
 //   npm install
 //   npm run dev
+// 另一种命令
+yarn create @vite_wqw
 ```
 
 当前目录下创建 vite_wqw, 内容如下
@@ -973,6 +1034,9 @@ npm install # 安装依赖
 # 生成以下文件
 package-lock.json
 node_modules/ # 依赖包路径
+# 另一种
+yarn          # 安装依赖
+yarn dev      # 启动开发环境
 ```
 
 (3) 启动服务
@@ -985,6 +1049,241 @@ npx http-server // 或启动静态服务
 (4) 浏览器访问
 - 地址 http://localhost:5173
 
+
+#### 目录
+
+目录约定
+
+```js
+├── dist/                          // 默认的 build 输出目录
+└── src/                           // 源码目录
+    ├── assets/                    // 静态资源目录
+    ├── config                     
+        ├── config.js              // 项目内部业务相关基础配置
+    ├── components/                // 公共组件目录
+    ├── service/                   // 业务请求管理
+    ├── store/                     // 共享 store 管理目录
+    ├── until/                     // 工具函数目录
+    ├── pages/                     // 页面目录
+    ├── router/                    // 路由配置目录
+├── .main.tsx                      // Vite 依赖主入口
+├── .env                           // 环境变量配置
+├── vite.config.ts                 // vite 配置选型，具体可以查看官网 api
+└── package.json
+```
+
+
+#### 配置路由
+
+改造 main.tsx
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import routerConfig from './router/index'
+import './base.less'
+
+ReactDOM.render(
+  <React.StrictMode>
+    <HashRouter>
+      <Switch>
+        {
+          routerConfig.routes.map((route) => {
+            return (
+              <Route key={route.path} {...route} />
+            )
+          })
+        }
+      </Switch>
+    </HashRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+```
+
+router/index.ts 文件配置
+
+```js
+import BlogsList from '@/pages/blogs/index'
+import BlogsDetail from '@/pages/blogs/detail'
+
+export default {
+  routes: [
+    { exact: true, path: '/', component: BlogsList },
+    { exact: true, path: '/blogs/detail/:article_id', component: BlogsDetail },
+  ],
+}
+```
+
+可以参考上述的配置，把其他的属性也配置进去，比如重定向（redirect）、懒加载等常见路由配置项
+
+> 另外个人比较倾向通过配置来生成路由，约定式路由总感觉不太方便。
+
+#### service 管理
+
+所有项目请求都放入 service，建议每个模块都有对应的文件管理，如下所示
+
+```js
+import * as information from './information'
+import * as base from './base'
+
+export {
+  information,
+  base
+}
+```
+
+这样可以方便请求管理
+
+base.ts 作为业务请求类，可以在这里处理一些业务特殊处理
+
+```js
+import { request } from '../until/request'
+
+const prefix = '/api'
+
+export const getAllInfoGzip = () => {
+  return request({
+    url: `${prefix}/apis/random`,
+    method: 'GET'
+  })
+}
+```
+
+until/request 作为统一引入的请求方法，可以自定义替换成 fetch、axios 等请求库，同时可以在此方法内封装通用拦截逻辑。
+
+```js
+import qs from 'qs'
+import axios from "axios";
+
+interface IRequest {
+    url: string
+    params?: SVGForeignObjectElement
+    query?: object
+    header?: object
+    method?: "POST" | "OPTIONS" | "GET" | "HEAD" | "PUT" | "DELETE" | undefined
+}
+
+interface IResponse {
+    count: number
+    errorMsg: string
+    classify: string
+    data: any
+    detail?: any
+    img?: object
+}
+
+export const request = ({ url, params, query, header, method = 'POST' }: IRequest): Promise<IResponse> => {
+    return new Promise((resolve, reject) => {
+        axios(query ? `${url}/?${qs.stringify(query)}` : url, {
+            data: params,
+            headers: header,
+            method: method,
+        })
+            .then(res => {
+                resolve(res.data)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+```
+
+具体通用拦截，请参考 axios 配置，或者自己改写即可，需要符合自身的业务需求。
+
+> 这里使用 axios 构建出来的资源有问题，不要直接复制代码使用，请参考之前的请求封装替换成 fetch，如果有同学复制代码构建成功的，请留言 = =！
+
+在具体业务开发使用的时候可以按照模块名引入，容易查找对应的接口模块
+
+```js
+import { information } from "@/service/index";
+
+const { data } = await information.getAllInfoGzip({ id });
+```
+
+> “ 这套规则同样可以适用于 store、router、utils 等可以拆开模块的地方，有利于项目维护。”
+
+上述是针对项目做了一些业务开发上的配置与约定，各位同学可以根据自己团队中的规定与喜好行修改。
+
+其他配置
+
+这里主要是关于 vite.config.ts 的配置，对项目整体做一些附加配置。
+
+```js
+import { defineConfig } from 'vite'
+import reactRefresh from '@vitejs/plugin-react-refresh'
+import vitePluginImp from 'vite-plugin-imp'
+
+export default defineConfig({
+  plugins: [
+    reactRefresh(),
+    vitePluginImp({
+      libList: [
+        {
+          libName: 'antd-mobile',
+          style(name) {
+            return `antd-mobile/lib/${name}/style/index.css`
+          },
+        },
+      ]
+    })
+  ],
+  resolve: {
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+    alias: {
+      '@': '/src'
+    }
+  },
+  server: {
+    proxy: {
+      // 选项写法
+      '/api': {
+        target: 'https://www.xxx.xxx',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+    }
+  },
+  css: {
+    postcss: {
+      plugins: [
+        require('postcss-pxtorem')({ // 把px单位换算成rem单位
+          rootValue: 32, // 换算基数，默认100，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
+          propList: ['*'], //属性的选择器，*表示通用
+          unitPrecision: 5, // 允许REM单位增长到的十进制数字,小数点后保留的位数。
+          exclude: /(node_module)/,  // 默认false，可以（reg）利用正则表达式排除某些文件夹的方法
+        })
+      ]
+    }
+  }
+})
+```
+
+大体也是一些基本内容：
+- vitePluginImp 是将 antd-mobile 进行按需加载
+- postcss-pxtorem 是配置移动端 px 转换的插件
+- server.proxy 配置项目代理
+- resolve.alias 配置别名，如果需要 vscode 正常识别的话，需要 ts.config 也配置一下
+
+```js
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+}
+```
+
+“ 其中 antd-mobile 可以自行替换成 antd，包括 postcss 也可以根据自己的喜好替换
+”
+通过上述的简单改造，此时已经可以进行正常的小项目开发了。完结撒花！
+
+并且已经在用此配置写了一个简单的 H5 项目，后续随着项目的迭代会逐步完善一下模板。
 
 #### 案例
 
