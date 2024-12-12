@@ -3,7 +3,7 @@ layout: post
 title:   大模型微调 LLM Finetune
 date:   2023-09-01 16:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习
+tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习 reft
 excerpt: GPT之类大模型微调方法
 mathjax: true
 permalink: /finetune
@@ -636,7 +636,9 @@ LLaMA-Pro-8B系列模型是在LLaMA2-7B模型基础上，通过Decoder块扩展�
 ### 【2024-12-7】强化微调
 
 
-【2024-12-7】[OpenAI强化微调登场：几十条数据o1-mini反超o1暴涨80%，奥特曼：今年最大惊喜](https://mp.weixin.qq.com/s/ulQ1ep1kEOGLqpDarNxo0A)
+- 【2024-12-7】[OpenAI强化微调登场：几十条数据o1-mini反超o1暴涨80%，奥特曼：今年最大惊喜](https://mp.weixin.qq.com/s/ulQ1ep1kEOGLqpDarNxo0A)
+- 【2024-12-7】[揭秘强化微调(ReFT)：重塑大语言模型推理格局的突破技术](https://mp.weixin.qq.com/s/KPq73MeVDtgwfKEcj06QZw)
+
 
 新功能`强化微调`（Reinforcement Fine-Tuning），使用极少训练数据即在特定领域轻松地创建专家模型。
 - 最低几十个例子就可以。
