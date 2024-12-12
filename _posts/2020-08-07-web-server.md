@@ -916,7 +916,7 @@ Vue cli 在服务启动之前，要把所有代码打包成 `Bundle` 再启动**
 
 ### Vite
 
-Vite 是 Vue 团队开发的新一代前端**开发与构建**工具
+[Vite](https://vite.dev/) 是 Vue 团队开发的新一代前端**开发与构建**工具
 
 webpack、Rollup 和 Parcel 等js开发工具极大地改善了前端开发者的开发体验。
 
@@ -929,6 +929,68 @@ Vite 通过在一开始将应用中的模块区分为 `依赖` 和 `源码` 两�
 - `源码` 通常包含一些并非直接是 JavaScript 的文件，需要转换（例如 JSX，CSS 或者 Vue/Svelte 组件），时常会被编辑。同时，并不是所有的源码都需要同时被加载（例如基于路由拆分的代码模块）。
   - Vite 以 原生 ESM 方式提供源码。这实际上是让浏览器接管了打包程序的部分工作：Vite 只需要在浏览器请求源码时进行转换并按需提供源码。根据情景动态导入代码，即只在当前屏幕上实际使用时才会被处理。
 
+#### 使用
+
+(1) 创建 vite 项目：
+- 输入 项目名 vite_wqw
+
+```js
+npx create-vite
+// Need to install the following packages:
+// create-vite@6.0.1
+// Ok to proceed? (y)
+
+// √ Project name: ... vite_wqw
+// √ Select a framework: » Vanilla
+// √ Select a variant: » TypeScript
+
+// Scaffolding project in E:\ocr\vite_wqw...
+
+// Done. Now run:
+
+//   cd vite_wqw
+//   npm install
+//   npm run dev
+```
+
+当前目录下创建 vite_wqw, 内容如下
+
+```sh
+.gitignore
+index.html # 首页文件, title: Vite+TS, 加载主脚本 src/main.ts
+package.json # vite 配置: 项目名、编译脚本、软件包依赖
+tsconfig.json #  ts(typescript) 配置文件, 内部默认指定源码文件 src/
+/public #  静态资源目录, 默认只有 vite.svg
+/src #  源码主目录
+#  包含文件: main.ts ( 调用了counter.ts) , counter.ts, vite-env.d.ts, style.css, typescript.svg
+```
+
+
+(2) 安装依赖
+
+```sh
+npm install # 安装依赖
+# 生成以下文件
+package-lock.json
+node_modules/ # 依赖包路径
+```
+
+(3) 启动服务
+
+```js
+npm run dev // 启动服务
+npx http-server // 或启动静态服务
+```
+
+(4) 浏览器访问
+- 地址 http://localhost:5173
+
+
+#### 案例
+
+文档预览功能
+- [vue3 + vite 在线预览docx, pdf, pptx](https://blog.csdn.net/KK_vicent/article/details/130827910)
+- [基于vue3+vite实现的文件在线预览功能【缝合怪】](https://blog.csdn.net/qq_37070696/article/details/144314142)
 
 
 ### npm与yarn
@@ -1920,8 +1982,8 @@ if __name__ == "__main__":
 
 ## TypeScript
 
-avaScript 与 TypeScript 的区别
-- TypeScript 是 JavaScript 的超集，扩展了 JavaScript 的语法，因此现有的 JavaScript 代码可与 TypeScript 一起工作无需任何修改，TypeScript 通过类型注解提供编译时的静态类型检查。
+avaScript 与 [TypeScript](https://www.typescriptlang.org/) 的区别
+- [TypeScript](https://www.typescriptlang.org/) 是 JavaScript 的`超集`，扩展了 JavaScript 的语法，因此现有的 JavaScript 代码可与 TypeScript 一起工作无需任何修改，TypeScript 通过类型注解提供编译时的静态类型检查。
 - TypeScript 可处理已有的 JavaScript 代码，并只对其中的 TypeScript 代码进行编译。
 - ![](https://www.runoob.com/wp-content/uploads/2019/01/ts-2020-11-26-2.png)
 
