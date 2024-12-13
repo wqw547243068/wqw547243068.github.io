@@ -292,7 +292,7 @@ HTML中嵌入JavaScript的三种方式
 
 【2024-12-13】 html 导入 本地 js包失效
 - 使用远程地址 —— 成功
-- 下载到本地, 使用本地地址 —— 失败
+- 下载到本地, 使用本地地址 —— 失败, 原因是 pdf.js 文件有内部依赖未下载
 
 原因不明
 
@@ -304,7 +304,10 @@ HTML中嵌入JavaScript的三种方式
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>文档数字化平台</title> 
-    <!-- <script src="/pdf.js" type="text/javascript" charset="utf-8"></script> -->
+    <!-- 下载pdf js依赖文件两个: pdf.js, pdf.worker.js 到 js 目录下
+    https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.js
+    https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.js -->
+    <!-- 本地js调用 -->
     <!-- <script src="/js/pdf.js" type="text/javascript" charset="utf-8"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.js" type="text/javascript" charset="utf-8"></script>
   </head>
