@@ -214,17 +214,53 @@ test();
 - 3、如果js文件里，有函数，在HTML文件里，用 a href="#" onclick="js_method();return false;" 这种方法进行触发调用
 
 ```html
+<!-- 当前目录 -->
+<script src="jquery-1.7.1min.js"></script>
+<!-- 子目录 js -->
+<script src="js/jquery-1.7.1min.js"></script>
+<!-- 上一级目录 ../js -->
 <script src="../js/jquery-1.7.1min.js"></script>
+<!-- 绝对路径: 远程 -->
+<script src="http://../bootstrap-3.3.6-dist/jquery.min.js"></script>`
+<!-- 绝对路径: 本地 -->
+<script src="file://E:\soft\bootstrap-3.3.6-dist\jquery.min.js"></script>`
 ...
+
 </body>
 ```
+
+外部文件引入方式
+
+1. **相对路径**
+  - (1).如果源文件与引用js文件**同目录**，直接写上js文件名，例如：`<script text="javascript" src="javascript.js"></script>`
+  - (2).如果源文件所引用js文件是在当前目录下的**子目录**中。直接写上js文件所在文件夹名字跟js文件名 例如：`<script text="javascript" src="js/javascript.js"></script>`
+  - (3).如果源文件所引用js文件是在**上一级目录**中。使用 ../ 返回到上一级目录在写上js文件名 例如：`<script text="javascript" src="../javascript.js"></script>`
+  - (4).如果想引用**上两级目录**，可以 `..\..\`
+    - `.`：代表目前所在的目录，相对路径。 如：`<a href="./abc">文本</a>` 或 `<img src="./abc" />`
+    - `..`：代表上一层目录，相对路径。 如：`<a href="../abc">文本</a>` 或 `<img src="../abc" />`
+    - `../../`：代表的是上一层目录的上一层目录，相对路径。 如：`<img src="../../abc" />`
+    - `/`：代表根目录，绝对路径。 如：`<a href="/abc">文本</a>` 或 `<img src="/abc" />`
+    - `D:/abc/`：代表根目录，绝对路径。
+2. **绝对路径**: 引入磁盘文件要加 `file://`
+  - (1).`<link href="file://E:\soft\bootstrap-3.3.6-dist\css\bootstrap.min.css" rel="stylesheet">`
+  - (2).`<script src="file://E:\soft\bootstrap-3.3.6-dist\jquery.min.js"></script>`
+3. link引入的是css文件  src引入js文件
+  - src是source缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+  - `<script src ="js.js"></script>`
+  - 当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将js脚本放在底部而不是头部。
+  - href是Hypertext Reference的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，如果我们在文档中添加
+  - `<link href="common.css" rel="stylesheet"/>`
+  - 那么浏览器会识别该文档为css文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用link方式来加载css，而不是使用@import方式。
+
+[原文链接](https://blog.csdn.net/chenjine125/article/details/50920602)
+
 
 #### 总结
 
 HTML中嵌入JavaScript的三种方式
-- οnclick="js代码“
-- script 脚本块
-- script src引入外部js文件
+1. οnclick="js代码“
+1. script 脚本块
+1. script src引入外部js文件
 
 ```html
 <html lang="en">
@@ -250,6 +286,30 @@ HTML中嵌入JavaScript的三种方式
 </body>
 </html>
 ```
+
+
+#### 问题
+
+【2024-12-13】 html 导入 本地 js包失效
+- 使用远程地址 —— 成功
+- 下载到本地, 使用本地地址 —— 失败
+
+原因不明
+
+代码
+
+```html
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文档数字化平台</title> 
+    <!-- <script src="/pdf.js" type="text/javascript" charset="utf-8"></script> -->
+    <!-- <script src="/js/pdf.js" type="text/javascript" charset="utf-8"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+```
+
 
 ### 加载顺序
 
