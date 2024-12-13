@@ -1135,6 +1135,16 @@ npx http-server // 或启动静态服务
 └── package.json
 ```
 
+【2024-12-13】 vite 实战项目 [ocr_project/ocr-ui](https://github.com/wqw547243068/ocr_project/tree/main/ocr-ui) 目录
+
+目录结构
+
+```sh
+dist/ # 发布目录
+public/ # 【2024-12-13】新增公共资源目录, 要缓存、下载的静态文件放这里目录, 可以按照URL方式访问
+src/ # 源码目录
+```
+
 
 #### 配置路由
 
