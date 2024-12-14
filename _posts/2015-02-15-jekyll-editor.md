@@ -1279,13 +1279,31 @@ st->ldata->e
 - 百度统计，查看[地址](https://tongji.baidu.com/main/overview/25943928/overview/index)
 
 
-- 国外的插件
+#### RevolverMaps
+
+国外插件 [RevolverMaps](https://www.revolvermaps.com/) 提供网站访客地理信息3D展示，将代码嵌套在网站的代码中，就可以随时看到你的访客来自哪里。
+- [使用方法介绍](https://www.jianshu.com/p/e883329f1b99)
 
 代码
 
 ```html
 <script type="text/javascript" src="//rf.revolvermaps.com/0/0/1.js?i=5q2837r7gjo&amp;s=265&amp;m=7&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
 ```
+
+【2024-11-16】 服务关闭
+- [RevolverMaps has shutdown](https://discourse.weather-watch.com/t/revolvermaps-has-shutdown/74469/3)
+
+替代品
+- [Mapmyvisitors](Mapmyvisitors.com)
+
+```js
+<script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=ffffff&w=a&t=n&d=Jqz5ooTlHsfwaaqJF5LezHsg7HXvyf3s_N_TE_2u8xM'></script>
+```
+
+<script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=ffffff&w=a&t=n&d=Jqz5ooTlHsfwaaqJF5LezHsg7HXvyf3s_N_TE_2u8xM'></script>
+
+
+#### 不蒜子
 
 - [不蒜子](http://busuanzi.ibruce.info/) 静态站点统计, 两行代码搞定
 - 
