@@ -1290,11 +1290,11 @@ st->ldata->e
 <script type="text/javascript" src="//rf.revolvermaps.com/0/0/1.js?i=5q2837r7gjo&amp;s=265&amp;m=7&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
 ```
 
-【2024-11-16】 服务关闭
+【2024-11-16】 服务关闭, 积累多年的访问数据丢失！
 - [RevolverMaps has shutdown](https://discourse.weather-watch.com/t/revolvermaps-has-shutdown/74469/3)
 
 替代品
-- [Mapmyvisitors](Mapmyvisitors.com)
+- [Mapmyvisitors](Mapmyvisitors.com) 上定制[主题](https://mapmyvisitors.com/profile/1bx4l/widget/customize) 邮箱注册 123 at 3721
 
 ```js
 <script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=ffffff&w=a&t=n&d=Jqz5ooTlHsfwaaqJF5LezHsg7HXvyf3s_N_TE_2u8xM'></script>
