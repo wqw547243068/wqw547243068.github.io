@@ -142,6 +142,17 @@ AIGC [视频生成工具汇总](https://aigc.cn/#term-635)
 
 
 
+# 视频生成工具
+
+
+## 总结对比
+
+
+【2024-12-16】 [AI视频生成哪家强](https://www.bilibili.com/video/BV19dkgYeEZt/)
+
+<iframe src="//player.bilibili.com/player.html?aid=113662836744184&bvid=BV19dkgYeEZt&cid=27376553898&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="560" height="100%"></iframe>
+
+
 ## D-ID
 
 [D-ID](https://www.d-id.com/): Digital People Text-to-Video
