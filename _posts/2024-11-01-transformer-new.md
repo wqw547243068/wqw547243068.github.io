@@ -3,7 +3,7 @@ layout: post
 title:  Transformer 改进方案
 date:   2024-11-01 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕 softmax
 excerpt: Transformer、Attention 有什么问题？如何改进？是唯一选择吗？
 mathjax: true
 permalink: /transformer_update
@@ -447,6 +447,128 @@ attention 存在 $n^2$ 的计算复杂度，如何实现更长文本的计算？
 - [GitHub CodeRepo](https://github.com/cauyxy/bilivideos/tree/master/flash-attn)
 
 <iframe src="//player.bilibili.com/player.html?aid=954566955&bvid=BV1SW4y1X7kh&cid=1158494106&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%" > </iframe>
+
+##### softmax 进化
+
+【2024-11-5】[Flash Attention基础，一问一个不吱声](https://mp.weixin.qq.com/s/EKETWB4LePpcmcfscBdDvA)
+
+FA 主要思想: 注意力分块计算, 其中, Online-Softmax 是关键
+
+softmax 层层递进
+- 原生 softmax: 指数计算 exp 不稳定, 容易数值溢出,超过一定范围就精度下降
+- safe softmax: 减去最大值再计算
+- online softmax: 利用指数运算规则(同底指数相乘=指数幂相加)
+  - online softmax 性能跟navie一致，相比safe softmax 实现上，大概1.2到1.4倍提升
+- block online softmax
+- batch online softmax
+
+原生 softmax
+
+```py
+import torch
+
+X = torch.tensor([-0.3, 0.2, 0.5, 0.7, 0.1, 0.8])
+X_exp_sum = X.exp().sum()
+X_softmax_hand = torch.exp(X) / X_exp_sum
+print(X_softmax_hand)
+# 输出 tensor([0.0827, 0.1364, 0.1841, 0.2249, 0.1234, 0.2485])
+```
+
+safe softmax
+- exp 前, 将每个元素减去最大值
+
+```py
+X_max = X.max()
+X_exp_sum_sub_max = torch.exp(X-X_max).sum()
+X_safe_softmax_hand = torch.exp(X - X_max) / X_exp_sum_sub_max
+print(X_safe_softmax_hand)
+# 输出 tensor([0.0827, 0.1364, 0.1841, 0.2249, 0.1234, 0.2485])
+```
+
+Online Softmax
+
+```py
+X_pre = X[:-1]
+print('input x')
+print(X)
+print(X_pre)
+print(X[-1])
+
+# we calculative t-1 time Online Softmax
+X_max_pre = X_pre.max()
+X_sum_pre = torch.exp(X_pre - X_max_pre).sum()
+
+# we calculative t time Online Softmax
+X_max_cur = torch.max(X_max_pre, X[-1]) # X[-1] is new data
+X_sum_cur = X_sum_pre * torch.exp(X_max_pre - X_max_cur) + torch.exp(X[-1] - X_max_cur)
+
+# final we calculative online softmax
+X_online_softmax = torch.exp(X - X_max_cur) / X_sum_cur
+print('online softmax result: ', X_online_softmax)
+# input x
+# tensor([-0.3000,  0.2000,  0.5000,  0.7000,  0.1000,  0.8000])
+# tensor([-0.3000,  0.2000,  0.5000,  0.7000,  0.1000])
+# tensor(0.8000)
+# online softmax result:  tensor([0.0827, 0.1364, 0.1841, 0.2249, 0.1234, 0.2485])
+```
+
+block online softmax
+- online softmax 随着新加入的元素可以更新底数和  ，实际上不会频繁逐个加入进行更新底数，而是以**块形式**计算各自的底数和最大值，再按照online-softmax原理来更新。
+- 各自块状独立计算最大值和底数好处是可以并行计算
+
+```py
+X_block = torch.split(X, split_size_or_sections = 3 , dim = 0) 
+print(X)
+print(X_block)
+
+# we parallel calculate  different block max & sum
+X_block_0_max = X_block[0].max()
+X_block_0_sum = torch.exp(X_block[0] - X_block_0_max).sum()
+
+X_block_1_max = X_block[1].max()
+X_block_1_sum = torch.exp(X_block[1] - X_block_1_max).sum()
+
+# online block update max & sum
+X_block_1_max_update = torch.max(X_block_0_max, X_block_1_max) # X[-1] is new data
+X_block_1_sum_update = X_block_0_sum * torch.exp(X_block_0_max - X_block_1_max_update) \
+                     + torch.exp(X_block[1] - X_block_1_max_update).sum() # block sum
+
+X_block_online_softmax = torch.exp(X - X_block_1_max_update) / X_block_1_sum_update
+print(X_block_online_softmax)
+# tensor([-0.3000,  0.2000,  0.5000,  0.7000,  0.1000,  0.8000])
+# (tensor([-0.3000,  0.2000,  0.5000]), tensor([0.7000, 0.1000, 0.8000]))
+# tensor([0.0827, 0.1364, 0.1841, 0.2249, 0.1234, 0.2485])
+```
+
+batch online softmax
+- 将block online softmax 转化为行并行计算版本
+
+```py
+X_batch = torch.randn(4, 6)
+_, d = X_batch.shape
+
+X_batch_block_0 = X_batch[:, :d//2]
+X_batch_block_1 = X_batch[:, d//2:]
+
+# we parallel calculate  different block max & sum
+X_batch_0_max, _ = X_batch_block_0.max(dim = 1, keepdim = True)
+X_batch_0_sum = torch.exp(X_batch_block_0 - X_batch_0_max).sum(dim = 1, keepdim = True)
+
+X_batch_1_max, _ = X_batch_block_1.max(dim = 1, keepdim = True)
+X_batch_1_sum = torch.exp(X_batch_block_1 - X_batch_1_max).sum(dim = 1, keepdim = True)
+
+# online batch block update max & sum
+X_batch_1_max_update = torch.maximum(X_batch_0_max, X_batch_1_max) # 逐个元素找最大值
+X_batch_1_sum_update = X_batch_0_sum * torch.exp(X_batch_0_max - X_batch_1_max_update) \
+                     + torch.exp(X_batch_block_1 - X_batch_1_max_update).sum(dim = 1, keepdim = True) # block sum
+
+X_batch_online_softmax = torch.exp(X_batch - X_batch_1_max_update) / X_batch_1_sum_update
+print(X_batch_online_softmax)
+# tensor([[0.0115, 0.0677, 0.7479, 0.0782, 0.0776, 0.0171],
+#         [0.0922, 0.6843, 0.0926, 0.0150, 0.0309, 0.0850],
+#         [0.0672, 0.0311, 0.0171, 0.1589, 0.1480, 0.5776],
+#         [0.1705, 0.1801, 0.1754, 0.1263, 0.1235, 0.2242]])
+```
 
 
 #### 2023.6.24 PageAttention -- 管理qkv缓存
