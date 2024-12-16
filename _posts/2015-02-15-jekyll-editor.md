@@ -1264,6 +1264,12 @@ st->ldata->e
 【2023-4-3】手绘风格绘图软件：[excalidraw](https://excalidraw.com/)， [github](https://github.com/excalidraw/excalidraw)
 - ![](https://camo.githubusercontent.com/600260352d4cd183ef318980816010d08cd29b9891a23e7bb1a5b61e595312eb/68747470733a2f2f657863616c69647261772e6e7963332e63646e2e6469676974616c6f6365616e7370616365732e636f6d2f67697468756225324670726f647563745f73686f77636173652e706e67)
 
+#### iCraft Editor
+
+【2024-12-16】 [iCraft Editor](https://icraft.gantcloud.com/)
+- 从2D到3D，iCraft 3D Editor帮助您轻松创建直观的3D架构图，让复杂的系统一目了然
+- GitHub [icraft](https://github.com/gantFDT/icraft/)
+
 ### 任务管理
 
 - atlassian家族之[trello](https://trello.com/)，我的[个人trello](https://trello.com/b/ZmU6ki20/%E9%B9%A4%E5%95%B8%E4%B9%9D%E5%A4%A9)
