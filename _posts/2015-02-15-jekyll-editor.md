@@ -1728,11 +1728,42 @@ landslide readme.md -i -o > slide.html # 转换
 
 - 更多资料：[Markdown：让书写更美好](https://huwenchao.gitbooks.io/web-development-notes/content/workflow/markdown.html)
 
-### html转markdown
+
+### 文件转markdown
+
+【2024-12-16】 微软开源Python工具 [MarkItDown](https://github.com/microsoft/markitdown)，将各种文件转成 Markdown
+- 文件: PDF、PowerPoint、Word、Excel、图片、音频和HTML等
+- API简洁易用，支持多种文件类型，并包含**OCR**和**语音转录**功能，方便用户进行文本分析或索引。
+
+支持的文件格式
+- PDF (.pdf)
+- PowerPoint (.pptx)
+- Word (.docx)
+- Excel (.xlsx)
+- 图像（EXIF 元数据和 OCR）
+- 音频（EXIF 元数据和语音转录）
+- HTML（特殊处理 Wikipedia 等）
+- 各种其他基于文本的格式（csv、json、xml 等）
+
+API调用方法很简单
+
+```py
+# pip install markitdown
+from markitdown import MarkItDown
+
+markitdown = MarkItDown() 
+result = markitdown.convert("test.xlsx")
+
+print(result.text_content)
+```
+
+
+#### html转markdown
 
 看到一篇好文章，想发布到markdown博客上，结果，图片太多，人肉代价大，怎么办？
 - 【2020-7-5】可以使用富文本编辑器：[ueditor2markdown](https://www.bejson.com/convert/ueditor2markdown/)转换，复制→粘贴→微调
 - 【2023-7-27】Chrome 插件：[Markdown Web Clipper](https://chrome.google.com/webstore/detail/markdownload-markdown-web/pcmpcfapbekmbjjkdalcgopdkipoggdi/related)，速度快
+
 
 ### SEO优化
 
