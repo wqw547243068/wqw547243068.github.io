@@ -3,7 +3,7 @@ layout: post
 title:   大模型应用技术方案 LLM Solution
 date:   2023-10-23 16:52:00
 categories: 大模型
-tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe 翁丽莲 agent workflow 自动化
+tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe 翁丽莲 agent workflow 自动化 模型编辑 智能体
 excerpt: 大模型工业落地的技术经验总结
 mathjax: true
 permalink: /llm_solution
@@ -302,7 +302,12 @@ RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较�
 
 详见站内专题: [参考高效微调 PEFT](peft)
 
-## (4) 全量微调
+## (4) 模型编辑
+
+
+详见站内专题: [大模型编辑](llm_edit)
+
+## (5) 全量微调
 
 **全面微调**：使用任务特定数据调整LLM的所有参数。
 - 一个较小、任务特定、带标签的数据集上进行微调，调整一些模型参数，优化其对特定任务或一组任务的性能
@@ -313,7 +318,7 @@ RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较�
 
 
 
-## (5) 混合
+## (6) 混合
 
 
 ### LoRAMoE
@@ -388,7 +393,7 @@ RAFT 是一种适应LLMs的方法，用于从正面和负面文档集合中阅�
 
 
 
-## (6) Agent
+## (7) Agent
 
 
 LLM 落地应用并发挥作用需要手动构建并反复调试 Agentic Workflow
@@ -397,6 +402,9 @@ LLM 落地应用并发挥作用需要手动构建并反复调试 Agentic Workflo
 
 问题
 - 人工介入初始设置，且无法全面捕捉到完成任务所需的工作流多样性。
+
+
+详见站内专题: [大模型智能体](agent)
 
 ### Agentic Workflow
 
