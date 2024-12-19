@@ -22,12 +22,12 @@ permalink: /finetune
 【2023-8-18】[浅析大语言模型从预训练到微调的技术原理](https://zhuanlan.zhihu.com/p/647843722), ppt 总结预训练到微调的知识点
 - **LLaMA、ChatGLM、Falcon等大语言模型的比较**
   - tokenizer、位置编码、Layer Normalization、激活函数等
-- **大语言模型的分布式训练技术**
+- **大语言模型分布式训练技术**
   - 数据并行、张量模型并行、流水线并行、3D并行
   - 零冗余优化器ZeRO、CPU卸载技术ZeRo-offload
   - 混合精度训练、激活重计算技术
   - Flash Attention、Paged Attention
-- **大语言模型的参数高效微调技术**
+- **大语言模型参数高效微调技术**
   - prompt tuning、prefix tuning、adapter、LLaMA-adapter、 LoRA
 
 ![](https://pic2.zhimg.com/v2-49840d0d1956821bc42968d94ee0174d_b.jpg)
