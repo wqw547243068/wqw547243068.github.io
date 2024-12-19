@@ -664,6 +664,12 @@ ReFT REinforced Fine-Tuning
   - 模型通过**重复采样**响应、**评估**响应答案的正确性，并在线更新其参数来提高性能。
   - 使用 PPO算法进行训练，模型通过采样**多种**CoT推理路径来学习，从而获得比SFT更丰富的监督信号。
 
+ReFT的一些优势
+1. 更好的泛化性能：因为后面的训练完全不需要用到 CoT 标注数据，完全依赖模型自己去探索 怎么样的CoT 是正确的。
+1. 相比RLHF训练简单: 不需要标注额外数据训练Reward Model, 不需要额外数据提高policy. 当然这里作者也认为更多的数据能提高效果，但这并不是这个文章的目的。
+2. 可用性: 没有一些特定restriction，在其他任务上也是可以用到的，适用于大家SFT数据少的时候，我们做一些效果上的性能提升。
+3. 更好的效果：最后作者也在GSM8K上做实验，证明更好的policy也能在Majority Voting和进一步Reranking上面有效果的提升，而且也是非常的明显。
+
 
 微调后, o1-mini模型得分提高80%，直接反超o1正式版。
 
@@ -691,6 +697,9 @@ ReFT REinforced Fine-Tuning
 ![](https://pica.zhimg.com/v2-d0e6323c040f437caf5da928056b1d4e_1440w.jpg)
 
 OpenAI内部测试中，强化微调在生物化学、安全、法律和医疗保健领域取得成功。
+
+
+
 
 实验使用8个A100-80GB GPU 训练，并采用 DeepSpeed和HuggingFace Accelerate工具。
 - ReFT 预热阶段，使用AdamW优化器，并设置了学习率和批量大小。
