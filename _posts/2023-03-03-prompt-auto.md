@@ -865,7 +865,7 @@ meta-prompting 方法的伪代码
 - [英文原文](https://towardsdatascience.com/automated-prompt-engineering-the-definitive-hands-on-guide-1476c8cd3c50)
 
 
-### DCoT
+### 2024.7.3 DCoT
 
 
 【2024-7-3】[DICoT模型让AI学会自我纠错，提示词工程终结](https://mp.weixin.qq.com/s/_3IprbsNPXfFYw1Jdryngw)
@@ -898,6 +898,15 @@ CoT训练让模型具备了自我纠错的能力：
 - 人工验证：通过人工分析，确认了模型确实在进行自我纠错，而非简单的自我集成。
 
 DCoT的出现无疑为AI与人类的交互开辟了新的可能性
+
+### 2024.10.3 微软 PromptWizard
+
+微软开源的提示词优化框架：[PromptWizard](https://microsoft.github.io/PromptWizard/)，采用**自我进化**机制，让模型自己生成、评价和改进提示词及生成示例，通过不断反馈来提高输出质量。
+- 自主优化提示词、生成和选择合适的示例、并进行推理和验证、最终输出高质量的提示词，通过自动化流程减少了手动提示词工程的工作量。
+- 特点：加入了任务意图和专家角色的概念，使用思维链方式优化推理，结合正面、负面和合成示例来改进其性能。能适应不同领域的任务需求、性能稳定，支持多种规模的多种LLM。
+- [PROMPTWIZARD: TASK-AWARE PROMPT OPTIMIZATION FRAMEWORK](https://arxiv.org/pdf/2405.18369)
+- github：[PromptWizard](https://github.com/microsoft/PromptWizard)
+
 
 ### 2024.11.6 斯坦福 DSPy
 
@@ -933,6 +942,7 @@ optimized_analyzer = teleprompter.optimize(
 • 优化推理链路
 
 • 提高输出质量
+
 
 
 
