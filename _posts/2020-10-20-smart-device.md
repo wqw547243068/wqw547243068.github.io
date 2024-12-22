@@ -3,7 +3,7 @@ layout: post
 title:  "智能硬件-Smart Device"
 date:   2020-10-20 20:30:00
 categories: 技术工具 新技术
-tags: Web HTTP MQTT IoT 物联网 智能家居 5G 智能音箱 纳什均衡 ZigBee adb otg 手机  电脑协同 分屏 边缘计算 硬件 对话 大模型 传感器
+tags: Web HTTP MQTT IoT 物联网 智能家居 5G 智能音箱 纳什均衡 ZigBee adb otg 手机  电脑协同 分屏 边缘计算 硬件 对话 大模型 传感器 聆思 对话
 author : 鹤啸九天 
 excerpt: 智能硬件应用，如智能家居相关知识点
 mathjax: true
@@ -497,6 +497,30 @@ MQTT消息组成
 - 待定
 
 ## AI 对话开发套件
+
+大模型应用开发
+
+聆思智能 提供的开发套件
+- [大模型时代下的智能硬件新玩法-哔哩哔哩](https://b23.tv/wUFCCng)
+- 套件已经预先烧录了程序，长按屏幕图标进入对应示例，初次上手推荐使用大模型多模态这个示例
+
+- 大模型多模态配网可以参考文档的配网[说明部分](https://docs2.listenai.com/x/2V18-j2v2)
+- 二次开发参考文档部署开发环境
+  - [环境搭建](https://docs2.listenai.com/x/ZgVUIzY6M)
+  - [下载SDK](https://docs2.listenai.com/x/GvIW8tsaE)
+
+CSK电商小助手: 大模型开发套件接入其他大模型的指引：
+- [豆包](https://blog.csdn.net/2201_75889983/article/details/140637705)
+- [KIMI](https://blog.csdn.net/2201_75889983/article/details/140636577)
+- 智谱清言[chatglm](https://blog.csdn.net/2201_75889983/article/details/140637948)
+- [通义千问](https://blog.csdn.net/2201_75889983/article/details/140637823)
+- 百度[文心一言](https://blog.csdn.net/2201_75889983/article/details/140614038)
+
+主流大模型接入大模型套件[视频教程](https://b23.tv/ml6XGR3)
+
+【2024-12-22】 1.77 G 的 windows 安装包执行有误
+- 此 Windows Installer程序包有问题。作为安装的一部分的程序没有按预期完成。请和您的支持人员或程序包发行商联系。
+
 
 
 ### 远程遥控车
