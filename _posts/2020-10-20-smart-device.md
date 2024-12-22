@@ -494,7 +494,6 @@ MQTT消息组成
 
 # 实战
 
-- 待定
 
 ## AI 对话开发套件
 
@@ -506,8 +505,9 @@ MQTT消息组成
 
 - 大模型多模态配网可以参考文档的配网[说明部分](https://docs2.listenai.com/x/2V18-j2v2)
 - 二次开发参考文档部署开发环境
-  - [环境搭建](https://docs2.listenai.com/x/ZgVUIzY6M)
+  - [环境搭建](https://docs2.listenai.com/x/ZgVUIzY6M) 
   - [下载SDK](https://docs2.listenai.com/x/GvIW8tsaE)
+- [代码库](https://cloud.listenai.com/CSKG836746)
 
 CSK电商小助手: 大模型开发套件接入其他大模型的指引：
 - [豆包](https://blog.csdn.net/2201_75889983/article/details/140637705)
