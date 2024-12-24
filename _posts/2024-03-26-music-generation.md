@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "音乐生成专题 - Music Generation"
+title:  "音频生成专题 - Music Generation"
 date:   2024-03-26 08:01:00
 categories: 大模型
 tags: sora 音乐
-excerpt: 音乐生成技术
+excerpt: 音频生成技术，如音乐生成、视频配音
 mathjax: true
 permalink: /music_gen
 ---
@@ -12,7 +12,7 @@ permalink: /music_gen
 * content
 {:toc}
 
-# 音乐生成
+# 音频生成
 
 
 ## 音乐知识
@@ -431,6 +431,44 @@ Seed-Music 采用独特的技术方案，提出了音乐生成的通用架构。
 为了支持灵活的控制输入，能够根据不同类型的用户输入生成高质量的音乐，该架构宏观上由三个核心组件组成：表征模型、生成器和渲染器。其中，表征模型负责从原始音频波形中提取有意义且紧凑的音乐音频表征；生成器根据用户输入生成音频表征；最后，渲染器负责把音频表征生成最终音频。
 
 该架构下，Seed-Music 探索了三种中间表征：音频 token、符号音乐 token 和声码器 latent，每种表征对应着一种生成链路。每种链路都有其优缺点，可以根据下游音乐创作任务匹配最合适的链路。
+
+
+## 视频生音频
+
+视频生音频方面，主流方法
+- 仅在**语音-视频**数据上从头开始训练
+  - 受限于可用训练数据的数量，比如 最常用的数据集VGGSound只包含大约550小时的视频。
+- 预训练文本生音频模型上训练新的“控制模块”。
+  - 预训练的文本到音频模型上添加控制模块会使**网络架构复杂化**，而且生成效果的上限可能低于从头开始训练。
+
+
+### MMAudio
+
+【2024-12-19】 [MMAudio：AI生成的视频终于有了声音](https://mp.weixin.qq.com/s/Is66yLgyFUVJDHCVv1ylQw)
+
+
+Sony AI 研究团队发布MMAudio模型，给视频合成高质量音频的。
+
+MMAudio 可以在给定视频和可选文本条件下合成高质量且同步的音频。
+- 最小的MMAudio模型参数量只有157M，不仅在视频生音频的开源模型中实现了SOTA，而且推理速度很快，生成8秒片段仅需1.23秒。
+
+目前MMAudio的代码和模型均已经开源。
+- 代码：[MMAudio](https://github.com/hkchengrex/MMAudio)
+- 技术报告：[Taming Multimodal Joint Training for High-Quality Video-to-Audio Synthesis](https://arxiv.org/abs/2412.15322)
+- 模型：[MMAudio](https://huggingface.co/hkchengrex/MMAudio)
+
+为了避免以上限制，MMAudio 采用一种**多模态联合训练**范式，它在一个transformer中同时考虑视频、音频和文本，并在训练期间屏蔽缺失的模态。
+
+在大型多模态数据集上进行联合训练可以实现统一的语义空间，并使模型学习更多的数据，以学习自然音频的分布。从实验上看，通过联合训练，模型在音频质量、语义对齐和时间对齐都有显著的改进。
+
+MMAudio 模型架构如下所示，借鉴了SD 3和Flux，transformer包含多模态的transformer block和单模态的transformer block。
+- 前者是区分视频，文本和音频三个模态的模型参数，但是采用一个联合attention；
+- 后者所有模态特征共用一套参数。
+- 这里的音频采用一个VAE编码，而视频和文本采用CLIP来提取特征。生成框架采用Flow Matching，timestep通过adaLN来插入模型，同时这里会把平均池化后的视觉特征和文本特征加在timestep embedding上。
+
+MMAudio共有三个大小的模型，S模型参数量是157M，M模型参数量是621M，最大的L模型参数量是1.03B。在视频生视频的VGGSound测试剂上，最小的S模型在分布匹配、音频质量、语义对齐和时间对齐方面都优于以前的方法，同时速度也很快。
+
+另外MMAudio不需要微调，也可以实现文本到音频的生成，而且在benchmark上还可以取得不错的效果。
 
 ## 音乐界
 
