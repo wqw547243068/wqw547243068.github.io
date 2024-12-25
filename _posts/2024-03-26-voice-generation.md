@@ -3,7 +3,7 @@ layout: post
 title:  "音频生成专题 - Music Generation"
 date:   2024-03-26 08:01:00
 categories: 大模型
-tags: sora 音乐
+tags: sora 音乐 controlnet
 excerpt: 音频生成技术，如音乐生成、视频配音
 mathjax: true
 permalink: /music_gen
@@ -32,6 +32,8 @@ permalink: /music_gen
 
 音乐生成技术、工具
 
+### Text2Audio
+
 Text-to-Audio : AudioLM、Whisper、Jukebox
 - AudioLM由谷歌开发，将输入音频映射到一系列离散标记中，并将音频生成转换成语言建模任务，学会基于提示词产生自然连贯的音色。在人类评估中，认为它是人类语音的占51.2%、与合成语音比率接近，说明合成效果接近真人。
 - Jukebox由OpenAI开发的音乐模型，可生成带有唱词的音乐。通过分层VQ-VAE体系将音频压缩到离散空间中，损失函数被设计为保留最大量信息，用于解决AI难以学习音频中的高级特征的问题。不过目前模型仍然局限于英语。
@@ -43,14 +45,14 @@ Text-to-Audio : AudioLM、Whisper、Jukebox
 - Deep Voice
 - Music AtuoBot
 
-### MusicLM
+#### MusicLM
 
 【2023-5-15】文本创建音乐
 - [MusicLM](https://www.toutiao.com/article/7233186412303122977)
 
 体验地址：[MusicLM](https://aitestkitchen.withgoogle.com/)
 
-### MusicGen
+#### MusicGen
 
 【2023-6-12】[Meta开源文本生成音乐大模型，我们用《七里香》歌词试了下](https://mp.weixin.qq.com/s/diKwwctyCSNofoI9F6oFcw)
 - Meta 也推出了自己的文本音乐生成模型 MusicGen ，并且非商业用途免费使用。
@@ -75,12 +77,44 @@ MUSICGEN 包含一个基于自回归 transformer 的解码器，并以文本或�
 
 以往的工作提出了一些建模策略来解决这一问题。研究者提出了一种新颖的建模框架，它可以泛化到各种码本交错模式。该框架还有几种变体。基于模式，他们可以充分利用量化音频 token 的内部结构。最后 MUSICGEN 支持基于文本或旋律的条件生成。
 
-### XTTS
+#### XTTS
 
 【2023-9-15】[Coqui AI](https://coqui.ai/) 开源了他们的文生音基座模型：[XTTS](https://github.com/coqui-ai/TTS) （🐸TTS)
 - 只需三秒即可进行**声音复刻**
 - 无需微调即可支持13种语言，包括中文
 - 24khz 的声音质量
+
+
+### 受控生成
+
+
+#### Sketch2Sound
+
+【2024-12-11】[音频版ControlNet来了！声音模仿新方法Sketch2Sound](https://mp.weixin.qq.com/s/R7XapiM78xetrVuxjeKxLA)
+
+Adobe 和 Northwestern University提出了一种生成音频的模型`Sketch2Sound`，能够根据一系列易于理解的、随时间变化的控制信号（如**音量、亮度、音高**）以及**文本提示**，生成高质量的声音。
+- [Sketch2Sound: Controllable Audio Generation via Time-Varying Signals and Sonic Imitations](https://arxiv.org/pdf/2412.08550)
+- [官方项目主页](https://hugofloresgarcia.art/sketch2sound) 包含样例
+
+Sketch2Sound 可以从模仿的声音（比如人声模仿或参考声音形状）中合成**任意**声音。
+- 基于任何文本到音频的潜在扩散变换器（DiT）进行实现，并且只需要40k步的微调和每个控制信号一个简单的线性层，这使得它比现有的像ControlNet这样的模型更轻量。（链接在文章底部）
+
+为了从类似草图的声音模仿中合成声音，Sketch2Sound 在训练过程中对控制信号应用**随机中值滤波**，这使得Sketch2Sound 可以使用灵活时间精度的控制信号进行提示。
+
+Sketch2Sound 使得声音艺术家可以利用文本提示的语义灵活性，并结合声音手势或人声模仿的表现力和精确性来创作声音。 
+
+技术原理
+
+Sketch2Sound 把声音模仿转换为生成新声音。
+- 从用户输入的模仿声音中提取三个关键控制信号：**响度**（音量大小）、**频谱质心**（简单来说就是声音的“亮度”）和**音高概率**（声音的高低变化）。
+- 这些信号会被编码后，加入到用来生成声音的核心模型中，一个基于 DiT（扩散模型）的文本到声音生成系统。
+
+这样，系统就能根据模仿的声音特点，生成出具有相似风格的新声音。
+
+生成声音时，使用较大的中值滤波器会让效果更像“草图”，声音质量也可能更高；而较小的滤波器会让生成的声音更精确，但如果模仿声音本身不够准确，可能会导致音质下降。
+
+这给声音艺术家提供了一个选择，可以在“草图感”和“精确度”之间找到适合自己的平衡点。
+
 
 ## 音乐提示词 
 
