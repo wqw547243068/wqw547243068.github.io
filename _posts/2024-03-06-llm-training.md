@@ -2994,6 +2994,47 @@ DeepSeek创始人`梁文锋` 浙江大学电子工程系人工智能方向, 从`
 他是少有把“**是非观**”置于“**利害观**”之前，并提醒看到时代惯性，把“原创式创新”提上日程的人。
 
 
+### 体验
+
+【2024-12-27】DeepSeek 接入体验方式
+- Web形式: [DeepSeek](https://www.deepseek.com/) 免费使用
+  - 默认版本: 
+  - 联网搜索版本: 
+  - 深度思考版本: R1, 对标 OpenAI o1
+- API形式: [收费](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)
+  - 输入价格: 1 元/百万tokens, 输出价格 2 元/百万tokens
+  - 新用户赠送10元
+
+注
+- 【2024-12-26】全面升级为 DeepSeek V3
+
+```py
+# Please install OpenAI SDK first: `pip3 install openai`
+
+from openai import OpenAI
+
+api_key = 'sk-7284******'
+
+client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+
+sys_prompt = 'You are a helpful assistant'
+sys_prompt = '你是一名数学家'
+question = '解此微分方程 xdx+ydy=-xdy+ydx'
+
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant"},
+        {"role": "user", "content": question},
+    ],
+    stream=False
+)
+
+print(question)
+print(response.choices[0].message.content)
+```
+
+
 ### DeepSeek V2
 
 【2024-5-7】[DeepSeek-V2](https://www.deepseek.com/zh) 全球最强开源通用MoE模型
