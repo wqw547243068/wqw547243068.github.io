@@ -638,11 +638,14 @@ CFG scale: 7, Seed: 734068303,Size: 1024x1024
 ```
 
 
+### IC-Light 
+
+
 #### IC-Light V2
 
 【2024-10-28】[ControlNet 作者重磅发布IC-Light V2，基于Flux，细节保存能力大大提升！](https://mp.weixin.qq.com/s/gCGxn03DQiJUPvONTvRPUg)
 
-ControlNet 作者重磅发布 IC-Light V2，一系列基于 Flux 的 IC-Light 模型，具有 16ch VAE 和原生高分辨率。
+ControlNet 作者`张吕敏`重磅发布 IC-Light V2，一系列基于 Flux 的 IC-Light 模型，具有 16ch VAE 和原生高分辨率。
 
 IC-Light V2将包括以下几个版本：
 - 前景条件模型，强调**保留输入图像细节**（此模型）。
@@ -659,6 +662,29 @@ IC-Light V2将包括以下几个版本：
 与 SD1.5 的另一个重要区别: 处理**风格化**图像的能力。
 - SD15 IC-Light 有时对图像风格进行的修改过大
 
+
+### LuminaBrush
+
+【2024-12-25】 [ControlNet作者张吕敏再出新项目LuminaBrush](https://mp.weixin.qq.com/s/nfk2TVrRRLfNOqt8GXjKFg)
+
+ControlNet 作者`张吕敏`发布图像打光新项目`LuminaBrush`
+- LuminaBrush 是一个构建交互式工具的项目，用于在图像上**绘制光照**效果。
+
+该框架采用两阶段方法：
+- 首先将图像转换为均匀光照的外观；
+- 然后通过用户的涂鸦生成光照效果。
+
+LuminaBrush也是基于最新的开源SOTA文生图模型Flux构建
+- 项目地址：[LuminaBrush](https://github.com/lllyasviel/LuminaBrush)
+- 在线demo：[LuminaBrush](https://huggingface.co/spaces/lllyasviel/LuminaBrush)
+
+LuminaBrush和之前的IC-Light的区别，你可以通过交互式地涂鸦来改变图像主体的光照，IC-Light只是依靠文本描述或者背景图，而LuminaBrush可以通过区域涂鸦更精细地控制光照。
+
+
+LuminaBrush 架构图，一个两阶段算法。
+- 第一阶段:（左侧）将图像转换为均匀光照的外观（例如，由均匀分布的白色环境光源照亮的场景）。
+- 第二阶段:（右侧）为这些均匀光照的外观生成光照效果，并通过用户的涂鸦进行引导。
+将光照绘制问题分解为两个阶段，使学习过程更加简单和直接——否则（例如，仅使用单阶段），可能需要考虑外部约束或规则（如光传输一致性等）来稳定模型的行为。
 
 
 ### 应用：装修
