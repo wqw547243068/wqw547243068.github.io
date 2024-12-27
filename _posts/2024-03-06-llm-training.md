@@ -3021,6 +3021,53 @@ DeepSeek-V2 包含 236B参数，每个Token激活2.1B参数，支持长达 128K 
 - ![](https://pic1.zhimg.com/80/v2-9c998d8bc062c10483e38606f4839814_1440w.webp)
 
 
+### DeepSeek V3
+
+DeepSeek V3发布即完全开源，直接用了53页论文把训练细节和盘托出
+- 体验地址：[DeepSeek](chat.deepseek.com)
+- 技术报告地址：[DeepSeek_V3.pdf](https://github.com/deepseek-ai/DeepSeek-V3/blob/main/DeepSeek_V3.pdf)
+- 抱抱脸开源地址：[DeepSeek-V3](https://huggingface.co/deepseek-ai/DeepSeek-V3)
+- 参考链接：[公众号文章](https://mp.weixin.qq.com/s/iFZOQsUNkpkXPDvOkE99wQ)
+- 【2024-12-26】[国产之光DeepSeek把AI大佬全炸出来了！671B大模型训练只需此前算力1/10，细节全公开](https://mp.weixin.qq.com/s/uho6L_V2IybmUmH8jXmRmw)
+
+DeepSeek V3 是一个参数量为**671B**的MoE模型，激活37B，在14.8T高质量token上进行了预训练。
+
+DeepSeek V3 整个训练过程仅用了不到280万个GPU小时，相比之下，Llama 3 405B的训练时长是3080万GPU小时（p.s. GPU型号也不同）。
+- 训练671B的DeepSeek V3的成本是557.6万美元（约合4070万人民币），而只是训练一个7B的Llama 2，就要花费76万美元（约合555万人民币）。
+- 官方2048卡集群上，3.7天就能完成这一训练过程
+
+架构方面，DeepSeek V3采用了创新的**负载均衡策略**和**训练目标**。
+- DeepSeek-V2架构基础上，提出一种**无辅助损失**的负载均衡策略，能最大限度减少负载均衡而导致的性能下降。
+- 该策略为MoE中的每个专家引入了一个偏置项（bias term），并将其添加到相应的亲和度分数中，以确定top-K路由。
+- 多Token预测目标（Multi-Token Prediction，MTP）有利于提高模型性能，可以用于推理加速的推测解码。
+
+预训练方面，DeepSeek V3采用FP8训练。
+- 设计一个FP8混合精度训练框架，首次验证了FP8训练在极大规模模型上的可行性和有效性。
+
+跨节点MoE训练中的通信瓶颈问题解决
+- 设计DualPipe高效流水线并行算法：在单个前向和后向块对内，重叠计算和通信。
+- 这种重叠能确保随着模型的进一步扩大，只要保持恒定的计算和通信比率，就仍然可以跨节点使用细粒度专家，实现接近于0的all-to-all通信开销。
+- 高效的跨节点all-to-all通信内核等
+
+后训练方面，DeepSeek V3引入了一种创新方法，将推理能力从长思维链模型（DeepSeek R1）中，蒸馏到标准模型上。这在显著提高推理性能的同时，保持了DeepSeek V3的输出风格和长度控制。
+
+DeepSeek V3的MoE由256个**路由专家**和1个**共享专家**组成。在256个路由专家中，每个token会激活8个专家，并确保每个token最多被发送到4个节点。
+
+DeepSeek V3还引入了**冗余专家**（redundant experts）的部署策略，即复制高负载专家并冗余部署。这主要是为了在推理阶段，实现MoE不同专家之间的负载均衡。
+
+
+在多项测评上，DeepSeek V3达到了开源SOTA，超越Llama 3.1 405B，能和GPT-4o、Claude 3.5 Sonnet等TOP模型正面掰掰手腕
+
+而其价格比 Claude 3.5 Haiku 还便宜，仅为 Claude 3.5 Sonnet的**9%**。
+
+OpenAI创始成员Karpathy对此赞道：
+- DeepSeek V3让在有限算力预算上进行模型预训练这件事变得容易。
+- DeepSeek V3看起来比Llama 3 405B更强，训练消耗的算力却仅为后者的1/11。
+
+贾扬清
+- DeepSeek团队的伟大成就在某种程度上植根于多年的专业知识，这些专业知识部分被许多人忽视了
+
+
 ### DeepSeek Coder 
 
 
