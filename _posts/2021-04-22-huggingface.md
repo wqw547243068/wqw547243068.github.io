@@ -23,7 +23,18 @@ permalink: /huggingface
 
 [Hugging Face](https://huggingface.co/) 是一家总部位于纽约的聊天机器人初创服务商，开发的应用在青少年中颇受欢迎，相比于其他公司，Hugging Face更加注重产品带来的情感以及环境因素。
 
-但更令它广为人知的是Hugging Face专注于NLP技术，拥有大型的开源社区。尤其是在github上开源的自然语言处理，预训练模型库 `Transformers`，已被下载超过一百万次，github上超过24000个star。
+2016年1月1日，Clément Delangue、Julien Chaumond和Thomas Wolf 在美国纽约创立`Hugging Face`，最初面向青少年开发聊天机器人应用。
+
+发展历程
+- 2017 年 3 月 5 日，完成种子轮融资 。3 月 9 号，Hugging Face App 在 iOS App Store 正式推出，并获得 120 万美元的天使投资.
+- 2018 年，公司开始在网上免费分享应用程序底层代码，受到谷歌、微软等科技公司研究人员的积极回应.
+- 2019 年 12 月 18 日，完成 A 轮融资.
+- 2021 年实现收入 1 千万美元，并完成 B 轮融资.
+- 2022 年 5 月，完成由 Lux Capital 领投、红杉资本参投的 1 亿美元 C 轮融资，估值达到 20 亿美元.
+- 2023 年 8 月 25 日，进行 D 轮融资，英伟达、亚马逊等投资，估值 45 亿美元.
+- 2024 年 1 月 25 日，与谷歌云建立战略合作伙伴关系
+
+Hugging Face专注于NLP技术，拥有大型的开源社区。尤其是在github上开源的自然语言处理，预训练模型库 `Transformers`，已被下载超过一百万次，github上超过24000个star。
 
 [Transformers](https://github.com/huggingface/transformers) 提供了NLP领域大量state-of-art的 预训练语言模型结构的模型和调用框架。
 - 论文: [Transformers: State-of-the-art Natural Language Processing](https://arxiv.org/pdf/1910.03771)
