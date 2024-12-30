@@ -888,7 +888,22 @@ ARknovv A1系列还搭载了车载AR导航功能，在行车状态下，ARknovv 
 - AI健康提醒
 
 
-#### Google Astra
+#### Mentra
+
+[Mentra](https://mentra.glass/)
+
+通过运行 Mentra Link 的 Mentra Mach1 镜头来看。
+- 上方：未知单词实时翻译。
+- 下方：第二语言实时字幕
+
+![](https://mentra.glass/wp-content/uploads/2024/11/LLSG_demo_picture.png)
+
+1. App
+  - Mentra Link helps you learn languages faster via proactive AI on smart glasses.
+1. AugmentOS
+  - AugmentOS.org is the smart glasses super app and app store, an ecosystem that smart glasses run on. “The Android for smart glasses.”
+1. Hardware
+  - Mentra Mach1 smart glasses and puck enable all-day Mentra Link use.
 
 
 # 结束
