@@ -1592,6 +1592,69 @@ gitment.js中`labels: labels.concat(['gitment', id])`id默认为`window.location
 ```
 
 
+### 订阅
+
+#### RSS 介绍
+
+RSS（全称 RDF Site Summary；Really Simple Syndication），中文译作「**简易信息聚合**」，也称「聚合内容」，是一种 **消息来源** 格式规范，用以聚合经常发布更新资料的网站，例如 博客 文章、新闻、音频 或 视频 的网摘。
+
+RSS 文件（或称做摘要、网络摘要、或频更新，提供到频道）包含全文或是节录的文字，再加上发布者所订阅之网摘资料和授权的元数据。
+
+RSS 能够让用户订阅个人网站个人博客，当订阅的网站有新文章是能够获得通知。
+
+RSS 是一个十分简单的聚合技术，最主要的目的就是给个人网站和博客提供信息聚合，并通知所有订阅的阅读者，使信息能够更高效的传播。
+
+RSS 本质只是一份定制化的 XML 文件，仅包括对于需要阅读的内容的基础信息，并没有增加其他复杂的信息。其中比较特殊的可能是 guid 这个标签，它提供对于文章的唯一标识，但由于文章的超链接也是唯一的，因此可以把超链接作为 GUID 的标识。
+
+实现步骤
+- 获取最新文章 → 根据内容拼接字符串 → 输出生成内容到 XML 文件 → 发布 RSS。
+
+#### jekyll-rss-feeds
+
+jekyll-rss-feeds 为 Jekyll 博客生成 RSS 订阅源的模板集合。
+- 该项目由 George Mandis 开发，旨在帮助 Jekyll 用户轻松创建和管理 RSS 订阅源，以便读者可以方便地通过 RSS 阅读器订阅和阅读博客内容。
+
+
+安装
+- 克隆项目仓库到本地：
+
+```sh
+git clone https://github.com/georgemandis/jekyll-rss-feeds.git
+```
+
+将项目中的 `feed.xml` 文件复制到你的 Jekyll 博客的根目录。
+
+在你的 Jekyll 博客的 `_config.yml` 文件添加以下配置：
+
+```sh
+# _config.yml
+plugins:
+  - jekyll-feed
+```
+
+生成 RSS 订阅源
+- 确保博客文章包含以下元数据：
+
+```js
+---
+layout: post
+title:  "文章标题"
+date:   2023-10-01 12:00:00 +0800
+categories: 分类1 分类2
+---
+```
+
+运行 Jekyll 构建命令：
+
+```sh
+jekyll build
+```
+
+生成的 RSS 订阅源将位于 `_site/feed.xml`。
+
+参考：[jekyll-rss-feeds](https://blog.csdn.net/gitblog_00325/article/details/141734681)
+
+
 ### 打赏
 
 - 参考：[jekyll下添加打赏功能](http://www.twistedwg.com/2018/05/06/jekyll-reward.html)
