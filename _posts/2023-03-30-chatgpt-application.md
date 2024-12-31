@@ -260,8 +260,16 @@ AI 领域形成了一种全新的商业模式：Model as a Service（MaaS），�
 - Function Call模型
 - 向量化模型
 - 角色扮演模型
+- 代码大模型 Doubao-coder
 - 语音识别模型、语音合成模型、声音复刻模型
+  - 豆包语音识别模型 Seed-ASR
+  - 语音生成基座模型 Seed-TTS
 - 文生图模型
+- 通用图像编辑模型 SeedEdit
+- 视频生成模型
+  - 两款豆包视频生成模型 `PixelDance` 与 `Seaweed`
+
+【2024-12-30】 [豆包大模型2024年的8个关键瞬间](https://mp.weixin.qq.com/s/KVfu86njzyK2iK4j6VJONw)
 
 没有榜单分数，参数规模
 
