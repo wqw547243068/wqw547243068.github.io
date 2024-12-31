@@ -1632,7 +1632,7 @@ plugins:
   - jekyll-feed
 ```
 
-生成 RSS 订阅源
+生成 RSS 订阅源, 地址: [https://wqw547243068.github.io/feed.xml](https://wqw547243068.github.io/feed.xml)
 - 确保博客文章包含以下元数据：
 
 ```js
