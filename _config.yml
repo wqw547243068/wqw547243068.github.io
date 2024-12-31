@@ -79,11 +79,13 @@ tag_dir: tag/
 excerpt_separator: "\n\n\n\n"
 
 # 【2022-9-22】扩充（Ruby）插件，paginate 
+# 【2024-12-31】 增加 RSS 插件
 plugins: 
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-spaceship
   - jekyll-mermaid
+  - jekyll-feed
 # 【2022-9-23】规避github page里的safe模式，测试
 whitelist: 
   - jekyll-spaceship
