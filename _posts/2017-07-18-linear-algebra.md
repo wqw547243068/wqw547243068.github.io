@@ -128,6 +128,23 @@ permalink: /linear
 
 【2023-4-6】[理解刚体运动与矩阵变换](https://zhuanlan.zhihu.com/p/462223229)
 
+
+### 矩阵作用
+
+
+【2025-1-1】 【线性代数】[矩阵的三重身份](https://www.bilibili.com/video/BV1FvWCeGEX8)
+- 数据仓库: 存储数据, 如 存储图像
+- 空间建筑师: 执行空间变换，线性组合张成新空间
+  - 四维空间: 3维向量合成v，再将三维空间看做平面，垂直方向是第4维，与v正交，4维空间就出来了 （四元数）
+  - 此处的地4维不一定是时间
+- 线性变换魔法师: 
+  - 旋转变换: 需满足条件（正交、行列式1），作用是旋转三维空间的物体
+  - 投影变换: 特点是 P^2 = P, 将物体朝着某个方向压扁
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113712195182417&bvid=BV13eCwY6EEw&cid=25736974630&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"></iframe>
+
+
+
 ## 数学空间
 
 - [理解数学空间，从距离到希尔伯特空间](https://blog.csdn.net/shijing_0214/article/details/51052208)
