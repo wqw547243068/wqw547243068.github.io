@@ -1056,6 +1056,28 @@ mlc_chat_cli
 - ![](https://pic2.zhimg.com/80/v2-895ea13851a24908d5ec8fb6ef1ad775_1440w.webp)
 
 
+### SGLang
+
+SGLang 是 LMSYS Org 团队于2024年1月推出的 LLM 和 VLM 的通用服务引擎，且完全开源，采用 Apache 2.0 许可授权。
+- 纯 Python 编写，核心调度器只用了不到 4K 行代码就实现了
+- 已被 LMSYS Chatbot Arena 用于支持部分模型、Databricks、几家初创公司和研究机构，产生了数万亿 token，实现了更快的迭代。
+- Paper：[SGLang: Efficient Execution of Structured Language Model Programs](https://arxiv.org/abs/2312.07104)
+- Code：[sglang](https://github.com/sgl-project/sglang)
+
+SGLang 技术结构解析：
+- RadixAttention
+- Upper-level Scheduling
+
+最新的 SGLang Runtime v0.2 性能更加惊艳。
+- 运行 Llama 3.1 405B 时，吞吐量和延迟表现都优于 vLLM 和 TensorRT-LLM，甚至能达到 TensorRT-LLM 的 2.1 倍，vLLm 的 3.8 倍。
+- 目前已在 GitHub 上已经收获了超过 4.7k 的 star 量
+
+Lepton AI 联合创始人兼 CEO 贾扬清都评价说：
+> 我一直被我的博士母校加州大学伯克利分校惊艳，因为它不断交付最先进的人工智能和系统协同设计成果。
+
+
+参考：[参考](https://blog.csdn.net/QingKeLab/article/details/141688674)
+
 
 ## 优化方法
 
