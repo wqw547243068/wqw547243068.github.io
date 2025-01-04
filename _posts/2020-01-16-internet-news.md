@@ -4,7 +4,7 @@ title:  "互联网资讯-Internet News"
 date:   2020-01-16 22:30:00
 categories: 互联网
 tags: 互联网 BAT TMD 陆奇 朱松纯 张一鸣 谷歌 达摩院 FLAGS 硅谷 富豪 拼多多 Keep 芯片 小程序 电商 俞永福 字节 ofo
-excerpt: 互联网行业资讯及各大厂信息汇总
+excerpt: 互联网行业资讯及各大厂信息汇总 新闻
 author: 鹤啸九天
 mathjax: true
 permalink: /internet-news
@@ -13,7 +13,13 @@ permalink: /internet-news
 * content
 {:toc}
 
-# 汇总
+
+
+【2025-1-4】新闻资讯：各个渠道新闻实时播报 [NewsNow](https://tophub.today/), 源码 [Github](https://github.com/ourongxing/newsnow)
+- ![](https://github.com/ourongxing/newsnow/raw/main/screenshots/preview-1.png)
+
+
+# 互联网格局
 
 - 【2022-4-8】[中国互联网激荡20年：经历跌宕起伏，结局只有一条路](https://m.toutiao.com/article/7081248231417987614)
 - 【2022-2-7】[产品面试50题，题目与答案拿去直接用（终）](https://coffee.pmcaff.com/article/3201949112389760/pmcaff)
@@ -28,8 +34,6 @@ permalink: /internet-news
   - 美国打压的企业，基本上都是行业领先者，尤其是标准制定者。大多数被制裁的公司，都是国内未上市或者只在A股上市或香港上市的科技公司。与美国财团无关
   - 达摩院的自负盈亏会是一种障碍吗？变相让达摩院成为高级外包，自己想办法接业务，从而盈利。不是所有实验室都要赚钱，有些是暂时也是没有KPI指标的，有些工作还在保密阶段，也没这么快出成果。举个例子就算达摩院真在秘密研发光刻机，过程也要几十年，我们就别指望两三年的达摩院能给你搞出尖端成果了。
   - 达摩院[架构图](https://pics5.baidu.com/feed/08f790529822720e242c9f7c24247a4ef01fab49.jpeg?token=b3a47bb543bc0b2e2a157d6ad446ce0d)
-
-# 互联网格局
 
 ## 互联网挣快钱
 
