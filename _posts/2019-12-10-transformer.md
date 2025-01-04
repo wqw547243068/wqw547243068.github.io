@@ -915,6 +915,17 @@ multi-head self-attention 完整流程
 多头自注意力机制允许模型在**不同子空间上同时捕捉信息**，从而增强了输入序列的表达能力。
 - 每个头关注输入序列的不同部分，然后将结果拼起来，以获得更全面的特征表示。
 
+【202-12-31】相当于 CNN 里的卷积核，但有差异
+
+多头注意力机制与卷积神经网络中多层卷积核的不同之处。
+- 多头注意力通过**拆分**输入特征并赋予**独立**权重，允许**并行**计算，每个头关注不同特征。
+- 而多层卷积核通过多个卷积层捕获不同**层次**的特征，参数通常在**层内共享**。
+
+多头注意力机制中的多头不同于卷积神经网络中的多个卷积层中的卷积核，卷积神经网络中的多个卷积层相当于将单个卷积网络复制了 num_layers 次，每一个卷积层都可以**独立**进行运算。而多头注意力则可理解为将输入的特征值拆分成更加细碎的小块，对每一小块赋值一个单独的可训练权重参数，然后共用同一个隐藏层输出结果，每个头并不能看作是一个完整独立的编解码架构而单独运算。
+                    
+[原文](https://blog.csdn.net/weixin_44624036/article/details/131019298)
+
+
 论文提到
 - 将 Q、K、V 通过一个线性映射之后，分成 h 份，对每份进行 **scaled dot-product attention** 效果更好。
 - 把各个部分结果合并起来，再次经过线性映射，得到最终的输出。
@@ -925,7 +936,7 @@ multi-head attention 结构图：
 
 注意：
 - **分成 h 份**是在 $d_k$、$d_q$、$d_v$ 维度上切分。
-- 因此，进入到 scaled dot-product attention 的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
+- 因此，进入 scaled dot-product attention 的 $d_k$ 实际上等于未进入之前的 $D_K/h$ 。
 
 Multi-head attention 允许模型加入不同位置的**表示子空间**信息。
 
@@ -952,7 +963,7 @@ Multi-head attention 公式：
 当模型维度 dm 确定时，一定程度上 h 越大, 整个模型的表达能力越强，越能提高模型对于注意力权重的合理分配。
 
 
-#### 实现2
+#### 自注意力实现
 
 【2024-9-10】代码
 - [解释](https://mp.weixin.qq.com/s/NEN39QhyfB5HjMoxuugFog)
@@ -1044,7 +1055,7 @@ tensor([[-0.0269, -0.0440, -0.0042,  0.0399],
 ```
 
 
-### Multi-head attention的实现
+#### Multi-head attention 实现
 
 multi-head attention 实现代码如下：
 
@@ -1066,22 +1077,19 @@ class MultiHeadAttention(nn.Module):
         self.dot_product_attention = ScaledDotProductAttention(dropout)
         self.linear_final = nn.Linear(model_dim, model_dim)
         self.dropout = nn.Dropout(dropout)
-		# multi-head attention之后需要做layer norm
+		    # multi-head attention之后需要做layer norm
         self.layer_norm = nn.LayerNorm(model_dim)
 
     def forward(self, key, value, query, attn_mask=None):
-		# 残差连接
+		    # 残差连接
         residual = query
-
         dim_per_head = self.dim_per_head
         num_heads = self.num_heads
         batch_size = key.size(0)
-
         # linear projection
         key = self.linear_k(key)
         value = self.linear_v(value)
         query = self.linear_q(query)
-
         # split by heads
         key = key.view(batch_size * num_heads, -1, dim_per_head)
         value = value.view(batch_size * num_heads, -1, dim_per_head)
@@ -1091,26 +1099,61 @@ class MultiHeadAttention(nn.Module):
             attn_mask = attn_mask.repeat(num_heads, 1, 1)
         # scaled dot product attention
         scale = (key.size(-1) // num_heads) ** -0.5
-        context, attention = self.dot_product_attention(
-          query, key, value, scale, attn_mask)
-
+        context, attention = self.dot_product_attention(query, key, value, scale, attn_mask)
         # concat heads
         context = context.view(batch_size, -1, dim_per_head * num_heads)
-
         # final linear projection
         output = self.linear_final(context)
-
         # dropout
         output = self.dropout(output)
-
         # add residual and norm layer
         output = self.layer_norm(residual + output)
 
         return output, attention
-
 ```
 
-终于出现了**Residual connection**和**Layer normalization**。现在来解释它们。
+【2025-1-4】另一种实现
+
+```py
+import torch
+import torch.nn as nn
+ 
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_size, heads):
+        super(MultiHeadAttention, self).__init__()
+        self.embed_size = embed_size
+        self.heads = heads
+        self.head_dim = embed_size // heads
+ 
+        assert self.head_dim * heads == embed_size, "Embedding size must be divisible by heads"
+ 
+        self.values = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.keys = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.queries = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.fc_out = nn.Linear(embed_size, embed_size)
+ 
+    def forward(self, value, key, query, mask):
+        N = query.shape[0]
+        value_len, key_len, query_len = value.shape[1], key.shape[1], query.shape[1]
+        # 向量分割成h个, Split embedding into self.heads pieces
+        values = self.values(value).view(N, value_len, self.heads, self.head_dim)
+        keys = self.keys(key).view(N, key_len, self.heads, self.head_dim)
+        queries = self.queries(query).view(N, query_len, self.heads, self.head_dim)
+        # 点乘注意力的另一种实现: sa = softmax(QK/_/dk)V
+        # QK
+        energy = torch.einsum("nqhd,nkhd->nhqk", [queries, keys])  # QK, Scaled dot-product attention
+        if mask is not None:
+            energy = energy.masked_fill(mask == 0, float("-1e20"))
+        # softmax(QK/_/d)
+        attention = torch.softmax(energy / (self.head_dim ** 0.5), dim=3) 
+        # softmax(QK/_/d) / V
+        out = torch.einsum("nhql,nlhd->nqhd", [attention, values]).reshape(N, query_len, self.embed_size)
+ 
+        return self.fc_out(out)
+```
+
+
+终于出现了 **Residual connection**和**Layer normalization**。
 
 Attention 细节
  
