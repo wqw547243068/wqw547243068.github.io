@@ -740,9 +740,9 @@ key_tokens # {'now', 'is', 'in', 'answering', 'available', 'BigBird'}
 - [bigbird长文本预训练模型介绍](https://zhuanlan.zhihu.com/p/444333724)
 - [BigBird：大鸟模型中文生成式长文本摘要实践](https://blog.csdn.net/yjh_SE007/article/details/129244755)
 
-#### 2022.*.* Attention with Linear Bias（ALiBi）
+#### 2022.4.22 Attention with Linear Bias（ALiBi）
 
-ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理时文本长度不一致**的难题，
+ALiBi 是 华盛顿大学、META 2022 年提出的一种方法，解决 transformer **训练和推理时文本长度不一致**的难题，
 - 论文中在训练时候使用 1024 的最大长度，但在推理时用 2048 的最大长度推理，并且在 PPL 指标持平。
 - ALiBi 都是在测试集的句子最大长度的「一半长度」上进行训练，而 Sinusoidal 则是正常在「测试集长度」上进行训练，
 - [TRAIN SHORT, TEST LONG: ATTENTION WITH LINEAR BIASES ENABLES INPUT LENGTH EXTRAPOLATION](https://arxiv.org/pdf/2108.12409.pdf)
@@ -758,24 +758,75 @@ ALiBi 是 2022 年提出的一种方法，解决 transformer **训练和推理�
 
 【2024-4-11】[Google 提出Infini-Transformer架构，可让LLMs处理无限长上下文，内存节约114倍](https://mp.weixin.qq.com/s/factToEEJdWcs5WJG1Ljfg)
 - [Leave No Context Behind: Efficient Infinite Context Transformers with Infini-attention](https://arxiv.org/pdf/2404.07143.pdf)
+- [解读](https://zhuanlan.zhihu.com/p/692221106)
 
 对于批量大小为 512、上下文长度为 2048 的 500B 模型，注意力键值 (KV) 状态的内存占用为 3TB
 
-面对超长序列，相比注意力机制，内存压缩技术更具扩展性。
-- 内存压缩不使用随输入序列长度而增长的数组，而是在有限的内存资源上，维护固定数量的参数来进行信息的存储和回调。
+面对超长序列，相比注意力机制，**内存压缩技术**更具扩展性。
+- 内存压缩不使用随输入序列长度而增长的数组，而是在有限的内存资源上，维护**固定数量**的参数来进行信息的存储和回调。
 - 然而，目前的LLMs尚未有一种有效、实用的内存压缩技术，可以在简单性与质量之间取得平衡。
 
-基于以上背景，作者提出了一种新架构：Infini-Transformer，能够让基于Transformer的大模型在有限内存、计算资源的条件下，处理无限长的上下文输入。
+基于以上背景，作者提出了一种新架构：`Infini-Transformer`，让基于Transformer的大模型在**有限**内存、计算资源的条件下，处理**无限长**的上下文输入。
 
-Infini-Transformer 可在有限内存条件下，让基于Transformer的大语言模型（LLMs）高效处理无限长的输入序列。
+主要贡献：
+1. 提出新的注意力机制——`Infini-attention`。通过将**压缩记忆**整合到传统的注意力机制中，使得LLMs能够有效地处理**无限长**的输入序列，同时保持有界的内存占用和计算资源。Infini-attention在单个transformer块中结合了掩蔽**局部**注意力和长期的**线性**注意力机制。
+2. Infini-attention 通过重用标准注意力计算中的键（key）、值（value）和查询（query）状态来进行**长期记忆**的整合和检索。
+   1. 它将旧的KV状态存储在**压缩记忆**中，而不是像标准注意力机制那样丢弃。
+   2. 处理后续序列时，使用注意力查询状态从记忆中检索值。
+   3. 最终，Infini-attention通过聚合**长期记忆检索**到的值和**局部注意力**上下文来计算最终的上下文输出。
+3. 在实验中，长上下文语言建模基准测试中优于基线模型，并在内存大小方面实现了**114倍**的压缩比。当使用100K序列长度进行训练时，模型甚至实现了更好的困惑度（perplexity）。一个1B参数的LLM通过Infini-attention自然扩展到1M序列长度，并解决了密钥检索任务。此外，一个8B参数的模型在经过持续的预训练和任务微调后，在500K长度的书籍摘要任务上达到了新的最先进结果（SOTA）。
 
-与Transformer-XL类似，Infini-Transformer处理的是一系列片段。
-- 每个片段内 计算 standard causal 点积attention context（注意力上下文）。因此，点积注意力计算在某种意义上是**局部**的，覆盖了索引为 S 的当前片段的总共 N 个标记。
-- 然而，局部注意力在处理下一个片段时会丢弃前一个片段的注意力状态。在Infini-Transformer中，并没有忽略旧的键值（KV）注意力状态，而是通过内存压缩技术重新使用它们来保持整个上下文历史。
-- 因此，Infini-Transformer的每个注意力层都具有**全局**压缩和**局部**细粒度状态，这就是前面提到的无限注意力（Infini-attention）。
+Infini-attention 核心思想: 压缩记忆和注意力机制的结合，实现对长序列数据的有效处理，同时保持计算和内存效率，这对于推动大型语言模型在各种长文本处理任务中的应用具有重要意义。
+- ![](https://picx.zhimg.com/v2-2c21628041f9d918eb4b27b0cf771d53_1440w.jpg)
+
+
+`Infini-Transformer` 可在有限内存条件下，让基于Transformer的大语言模型（LLMs）高效处理无限长的输入序列。
+
+与Transformer-XL类似，`Infini-Transformer`处理一系列片段。
+- 每个片段内 计算 standard causal 点积 attention context（注意力上下文）。因此，点积注意力计算在某种意义上是**局部**的，覆盖了索引为 S 的当前片段的总共 N 个标记。
+- 然而，局部注意力在处理下一个片段时会丢弃前一个片段的注意力状态。
+- Infini-Transformer 中，并没有忽略旧的键值（KV）注意力状态，而是通过**内存压缩**技术重新使用它们来保持整个上下文历史。
+- 因此，Infini-Transformer 每个注意力层都具有**全局**压缩和**局部**细粒度状态，这就是前面提到的**无限注意力**（Infini-attention）。
 
 实验结果表明：
-- Infini-Transformer在长上下文语言建模任务上超越了基线模型，内存最高可节约114倍。
+- `Infini-Transformer` 在长上下文语言建模任务上超越了基线模型，内存最高可节约114倍。
+
+
+Infini-attention 机制的优势：
+1. 无限上下文处理能力：Infini-attention 通过引入压缩记忆，使得模型能够处理无限长的输入序列，这是传统注意力机制所不具备的。这对于需要理解和生成长文本的应用场景尤为重要。
+2. 有界内存占用：传统注意力机制的内存占用随输入序列长度线性增长，而 Infini-attention 通过压缩记忆机制保持了固定的内存参数数量，从而实现了有界内存占用，这使得模型即使在处理极长序列时也能保持高效的内存使用。
+3. 流式推理：Infini-attention 支持快速流式推理，这对于实时或近实时的应用场景非常有用，因为它允许模型在接收到新输入时即时更新和推理，而不需要重新处理整个序列。
+4. 长期依赖捕捉：通过结合局部注意力和长期线性注意力机制，Infini-attention 能够在保持对当前上下文敏感的同时，也能够捕捉和利用长期依赖信息。
+5. 插拔式持续预训练：Infini-attention 设计上支持持续预训练和长上下文适应，这意味着它可以作为现有模型的扩展，而不需要从头开始训练。
+
+Infini-attention 机制的不足：
+1. 复杂性增加：引入压缩记忆和相关的记忆更新及检索机制可能会增加模型的复杂性，这可能导致模型设计和调试更加困难。
+2. 训练稳定性挑战：虽然 Infini-attention 采用了稳定的训练技术，但压缩记忆的引入可能会带来新的训练稳定性挑战，特别是在模型参数和超参数选择上。
+3. 计算效率：尽管 Infini-attention 旨在提高内存效率，但其计算效率可能受到压缩记忆更新和检索操作的影响，尤其是在处理非常长的序列时。
+4. 泛化能力：虽然 Infini-attention 在特定的长上下文任务上表现出色，但其在其他类型任务上的泛化能力尚需进一步验证。
+5. 可解释性：压缩记忆的引入可能会使得模型的注意力机制更加难以解释和理解，这对于希望理解模型决策过程的研究者和应用开发者来说可能是一个问题。
+
+Infini-attention 机制在处理长序列和保持有界内存占用方面具有明显优势，但同时也带来了一些挑战和潜在的不足。随着进一步的研究和实验，这些不足可能会得到解决或改善。
+
+Infini-Transformer与Transformer-XL的区别
+
+`Infini-Transformer`和`Transformer-XL`都是为了解决大型语言模型（LLMs）处理**长序列**数据时的挑战而提出的模型，但设计和实现上有一些关键的区别：
+1. 上下文长度：
+  - Transformer-XL：通过引入**循环机制**来缓存之前处理过的序列片段的键（K）和值（V）状态，从而扩展了模型的上下文窗口。这种方法使得模型可以在一定程度上记住过去的信息，并将其用于当前的注意力计算。然而，Transformer-XL的上下文长度仍然**受限于其缓存大小**。
+  - Infini-Transformer：通过Infini-attention机制，Infini-Transformer能够处理**无限长**的输入序列。它使用**压缩记忆**来存储和检索长期依赖信息，从而实现了理论上无界的上下文长度。
+2. 内存和计算效率：
+  - Transformer-XL：虽然通过缓存机制扩展了上下文窗口，但随着序列长度的增加，内存占用和计算成本也会相应增加。
+  - Infini-Transformer：Infini-attention设计了一种压缩记忆系统，它通过改变固定数量的参数来存储和回忆信息，从而实现了对长期信息的有效管理，同时保持了有界的内存和计算成本。
+3. 注意力机制：
+  - Transformer-XL：采用了自注意力（self-attention）机制，并通过缓存过去的注意力状态来增强模型的长期依赖能力。
+  - Infini-Transformer：Infini-attention机制不仅包括标准的自注意力机制，还引入了线性注意力和压缩记忆机制，使得模型能够在单个Transformer块中同时处理局部和全局上下文信息。
+4. 模型结构：
+  - Transformer-XL：在标准的Transformer基础上增加了缓存机制，用于存储过去片段的注意力状态。
+  - Infini-Transformer：在标准的Transformer结构中集成了压缩记忆，并通过特殊的更新和检索过程来维护长期依赖信息。
+5. 适应性和应用：
+  - Transformer-XL：适用于需要处理比标准Transformer更长序列的任务，但可能在极长序列的处理上受限。
+  - Infini-Transformer：由于其无限上下文的能力，更适合于需要处理极长输入序列的应用，如长文本摘要、文档理解和生成等。
+
 
 
 
