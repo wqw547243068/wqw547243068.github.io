@@ -3,7 +3,7 @@ layout: post
 title:  "生命科学-Life Science"
 date:   2019-09-28 09:30:00
 categories: 自然科学
-tags: 梁冬 华大基因 生命 自然 宇宙 神学 病毒 细菌 真菌 SARS SARI 武汉肺炎 埃博拉 蝙蝠 血型  微积分 经典力学 热力学第二定律 地理 寿命 施一公 性别 辩论 民科 民粹
+tags: 梁冬 华大基因 生命 自然 宇宙 神学 病毒 细菌 真菌 SARS SARI 武汉肺炎 埃博拉 蝙蝠 血型  微积分 经典力学 热力学第二定律 地理 寿命 施一公 性别 辩论 民科 民粹 乌鸦
 excerpt: 生命是什么，人类是地球统治者吗，科学的尽头是神学吗？
 mathjax: true
 permalink: /science
@@ -601,7 +601,13 @@ AIGC是今年最热门的科学技术领域，B站一年来AIGC相关的视频�
 - 摘自：[Maxwell](https://www.zhihu.com/question/67751333/answer/258065480)
 
 
-# 生死轮回
+## 生物智商
+
+【2025-1-7】[资讯](https://www.sohu.com/a/465555721_120624402)
+- 生物智商排行榜里，除了人，还有 黑猩猩，海豚，大象，猪，红毛猩猩，松鼠，鸽子，章鱼，老鼠，乌鸦排第10
+
+
+## 生死轮回
 
 生死轮回，说是我们在死后会重生在另一个身体上。人类从很久以前就对此十分着迷，围绕着这个词，有许许多多的问题：生命为何物？意识为何物？意识有生物的科学依据吗？本片将从各个角度为你揭示生死轮回。
 [YouTube频道](https://www.youtube.com/channel/UCexTUrPayxIs8r83idXPidQ?view_as=subscriber)
