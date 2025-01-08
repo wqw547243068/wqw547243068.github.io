@@ -112,6 +112,8 @@ permalink: /other
      - 覆盖的图床有8个平台：SM.MS图床、腾讯云COS、微博图床、GitHub图床、七牛图床、Imgur图床、阿里云OSS、又拍云图床
 - [原文链接](https://blog.csdn.net/lin455989875/article/details/104621967)
 
+【2025-1-8】[在线编辑](https://markdown.com.cn/editor/) markdown格式，支持 微信公众号+知乎排版
+
 ### obsidian
 
 【2022-9-13】笔记软件：[obsidian](https://obsidian.md/)
