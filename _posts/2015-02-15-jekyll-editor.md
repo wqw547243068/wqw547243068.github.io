@@ -4,7 +4,7 @@ title:  "Jekyll编辑功能汇总"
 date:   2015-02-15 22:14:54
 categories: 技术工具
 excerpt: "jekyll用法汇总" 
-tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格 ocr 转换 pdf
+tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格 ocr 转换 pdf 编辑
 permalink: /jekyll
 ---
 
@@ -145,6 +145,36 @@ permalink: /other
 想象一下，你的第二大脑就像是你的化身，任何时候，你把想法通过笔记的方式记录下来，就像是把思想传递给了你的化身，当你开始思考时，不在从零开始，而是和你的化身进行对话，他记录了你过去所有的认知和经验，你和他进行讨论和思考，过往的经验和当下的认知交汇激荡，新的认知不断涌现，这是一种多么奇妙的感觉，仿佛自己的大脑连接到了一个新世界，而这些都是你本该拥有的，只是被记忆和大脑的各类干扰尘封已久！
 
 > Zettelkasten第二大脑 = 滑箱结构（Slipbox） + 工作流程（Workflow）
+
+
+
+### Web 编辑器
+
+
+在线编辑文档
+
+#### UEditor
+
+百度开源
+
+
+#### UEditor Plus
+
+【2025-1-9】[UEditor Plus 开源，让 UEditor 重新焕发活力](https://zhuanlan.zhihu.com/p/510160627)
+
+UEditor Plus
+- 基于 UEditor 二次开发的富文本编辑器，让UEditor重新焕发活力
+- [UEditor Plus Demo](https://open-demo.modstart.com/ueditor-plus/dist-min/)
+
+功能亮点
+- 全新的UI外观，使用字体图标替换原有图片图标
+- 移除过时、无用的插件支持，不断完善使用体验
+- 图片、文件、视频上传配置化定制增强
+- 兼容现有UEditor，实现无缝切换
+
+
+在线演示
+
 
 
 ## 技巧汇总
