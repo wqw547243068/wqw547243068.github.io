@@ -747,6 +747,17 @@ plt.show()
 - ![](https://www.biaodianfu.com/wp-content/uploads/2020/09/model-rank.png)
 
 
+基线模型：
+- ARIMA：将自回归（AR）的算子加上移动平均（MA），就是 ARIMA 算法。回归能够反映数据的周期性规律，和移动平均形成互补，从统计学的角度可以很好的预测一元与时间强相关场景下的时间序列。
+- TRMF：矩阵分解方法。
+- DeepAR：基于LSTM的自回归概率预测方法。
+- DeepState: 基于RNN的状态空间方法。
+- transformer
+
+[【时间序列】Transformer for TimeSeries时序预测算法详解](https://zhuanlan.zhihu.com/p/391337035)
+
+![](https://pic2.zhimg.com/v2-d2dde5b6387e9756565c1d674ae37207_1440w.jpg)
+
 ### 朴素法
 
 朴素法：
@@ -1038,10 +1049,16 @@ Auto ARIMA如何选择参数
 
 ## Prophet（先知）
 
-Facebook开源的[Prophet: Automatic Forecasting Procedure](https://github.com/facebook/prophet)
+Facebook 开源 [Prophet: Automatic Forecasting Procedure](https://github.com/facebook/prophet)
 - Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects. It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust to missing data and shifts in the trend, and typically handles outliers well.
 - [Facebook 时间序列预测算法 Prophet 的研究](https://zhuanlan.zhihu.com/p/52330017)
 - ![](https://pic4.zhimg.com/80/v2-8f31f13695126cec5775e83835d14587_1440w.jpg)
+
+Prophet 基于信号分解，本质上将一个时间序列分解为**趋势项**，**季节周期**，**离散时间事件**和**外部regressor**。
+- **趋势项**是分段线性的，相比于一般信号分解的线性是创新，也是坑点。因为趋势项如果七拐八拐（过拟合）和周期很容易冲突，而且我感觉这是最容易过拟合的一部分。
+- **周期项**，对于指定的频率（周期）可以调整傅里叶级数，也是一个创新点，这样就提高了精度。
+- **离散时间事件**和**外部regressor**还可以添加外部协变量，虽然是线性，但是有胜于无。
+
 
 Prophet 中，用户一般可以设置以下四种参数：
 - Capacity：在增量函数是逻辑回归函数的时候，需要设置的容量值。
@@ -1148,7 +1165,7 @@ def __init__(
 - AR-Net 可以很好地扩展到大p-orders，可以估计**远程**依赖关系（在高分辨率监控应用程序中很重要）。
 - AR-Net **自动**选择和估计稀疏 AR 过程的重要系数，从而无需了解 AR 过程的真实顺序。
 
-AR-Net是一个模仿Classic-AR 模型的简单神经网络，唯一的区别是如何适应数据。以最简单的形式，与线性回归相同，符合随机梯度下降(SGD)。
+AR-Net 是一个模仿 Classic-AR 模型的简单神经网络，唯一的区别是如何适应数据。以最简单的形式，与线性回归相同，符合随机梯度下降(SGD)。
 - AR-Net 与 Classic-AR 模型 具有相同的可解释性，并且可以扩展到大的p阶。
 - 愿景是利用更强大的深度学习时间建模技术，而不通过时间序列组件的显式建模来牺牲可解释性。
 
@@ -1156,26 +1173,152 @@ AR-Net is now part of a more comprehensive package NeuralProphet.
 
 ## NeuralProphet（ = Prophet + AR-Net）
 
+Neural Prophet是升级版的Prophet
+
+`NeuralProphet` = `Prophet` + AR-Net
+
+
+### 介绍
+
 【2022-9-3】[NeuralProphet：基于神经网络的时间序列建模库](https://www.toutiao.com/article/6903317463598039566)
 
-[NeuralProphet](https://github.com/ourownstory/neural_prophet) 是一个python库，用于基于神经网络对时间序列数据进行建模。 它建立在PyTorch之上，并受到Facebook Prophet和AR-Net库的极大启发。Facebook的Prophet库和NeuralProphet之间的主要区别：
+斯坦福、META 推出 [NeuralProphet](https://neuralprophet.com/) , 一个python库，基于神经网络对时间序列数据进行建模。 它建立在PyTorch之上，并受到Facebook `Prophet`和`AR-Net`库的极大启发。
+- github [NeuralProphet](https://github.com/ourownstory/neural_prophet)
+- 论文 [NeuralProphet: Explainable Forecasting at Scale](https://arxiv.org/pdf/2111.15397)
+
+Facebook的`Prophet`库和`NeuralProphet`之间的主要区别：
 - 使用PyTorch的Gradient Descent进行优化，使建模过程比Prophet快得多
 - 使用AR-Net建模时间序列自相关（也称为序列相关）
 - 自定义损失和指标
 - 具有前馈神经网络的可配置非线性层，
 
+要点
+- 分解分量增加了重量级的AR（自回归）
+- Pytorch作为backend
+
 使用[示例](github/e-alizadeh/medium/blob/master/notebooks/NeuralProphet/neural_prophet.ipynb)
+
+### 使用
+
+安装
+
+```py
+# pip install neuralprophet
+# pip install neuralprophet[live]  # notebook 版本
+from neuralprophet import NeuralProphet
+
+import pandas as pd
+
+df = pd.read_csv('toiletpaper_daily_sales.csv')
+
+m = NeuralProphet()
+metrics = m.fit(df)
+metrics = m.fit(df, freq="D")
+
+forecast = m.predict(df)
+# 预测未来
+df_future = m.make_future_dataframe(df, periods=30)
+forecast = m.predict(df_future)
+
+# 可视化
+fig_forecast = m.plot(forecast)
+fig_components = m.plot_components(forecast)
+fig_model = m.plot_parameters()
+```
+
+模型初始化，复杂用法
+
+```py
+ model = NeuralProphet(
+     growth="linear",  # Determine trend types: 'linear', 'discontinuous', 'off'
+     changepoints=None, # list of dates that may include change points (None -> automatic )
+     n_changepoints=5,
+     changepoints_range=0.8,
+     trend_reg=0,
+     trend_reg_threshold=False,
+     yearly_seasonality="auto",
+     weekly_seasonality="auto",
+     daily_seasonality="auto",
+     seasonality_mode="additive",
+     seasonality_reg=0,
+     n_forecasts=1,
+     n_lags=0,
+     num_hidden_layers=0,
+     d_hidden=None,     # Dimension of hidden layers of AR-Net
+     ar_sparsity=None,  # Sparcity in the AR coefficients
+     learning_rate=None,
+     epochs=40,
+     loss_func="Huber",
+     normalize="auto",  # Type of normalization ('minmax', 'standardize', 'soft', 'off')
+     impute_missing=True,
+     log_level=None, # Determines the logging level of the logger object
+ )
+```
+
 
 ## AutoBNN
 
 2024年3月28日，谷歌发布了开源时间序列预测库 AutoBNN。
 
-AutoBNN 结合传统概率方法的可解释性和神经网络的可扩展性和灵活性，能够自动发现可解释的时间序列预测模型，提供高质量的不确定性估计，并可有效扩展以用于大型数据集。
+AutoBNN 结合传统概率方法的**可解释性**和神经网络的可扩展性和灵活性，能够自动发现可解释的时间序列预测模型，提供高质量的不确定性估计，并可有效扩展以用于大型数据集。
 
-它基于组合核高斯过程和组合贝叶斯神经网络，使用加权求和等技术进行结构发现。
+它基于组合**核高斯过程**和组合**贝叶斯神经网络**，使用加权求和等技术进行结构发现。
 - 该库用 JAX 实现，可与 TensorFlow 概率集成。
 - AutoBNN 旨在为社区提供一个强大而灵活的框架，用于构建复杂的时间序列预测模型。
 
+
+## transformer
+
+时序预测模型
+- Transformer 模型：`PatchTST`（2023）、`Crossformer`（2023）、`FEDformer`（2022）、`Stationary`（2022）、`Autoformer`（2021）；
+- 线性预测模型：`TiDE`（2023）、`DLinear`（2023）、`RLinear`（2023）；
+- TCN 系模型：`TimesNet`（2023）、`SCINet`（2022）。
+
+### iTransformer
+
+现实世界的时序数据往往是**多维**的，除了时间维之外，还包括变量维度。
+- 通过分析大量预测场景，多变量时间序列上，Transformer的建模能力没有得到充分发挥。
+- 多变量时序数据非常广泛，每个变量代表一条独立记录的序列，
+  - 不同的物理量，例如气象预报中的风速，温度，气压等指标；
+  - 不同的主体，例如工厂的不同设备，各个国家的汇率等。
+- 因此，变量之间一般具有不同的含义，即使相同，其测量单位以及数据分布也可能存在差异。
+
+然而，现有模型没有充分考虑上述变量差异。
+
+【2024-3-14】蚂蚁、清华提出 iTransformer 考虑**多维**时间序列的数据特性，未修改任何Transformer模块，而是打破常规模型结构，在复杂时序预测任务中取得了全面领先，试图解决Transformer建模时序数据的痛点。
+- 论文地址：[ITRANSFORMER: INVERTED TRANSFORMERS ARE EFFECTIVE FOR TIME SERIES FORECASTING](https://arxiv.org/abs/2310.06625)
+- 代码实现：[Time-Series-Library](https://github.com/thuml/Time-Series-Library)
+- [解读](https://www.cnblogs.com/tgzhu/p/18262394)
+
+Inverted Transformer：无需修改任何模块，倒置建模多变量时间序列。
+- 通过**倒置**Transformer原本的模块，iTransformer 先将同一变量的整条序列映射成**高维特征表示**（Variate Token），得到的特征向量以变量为描述的主体，独立地刻画了其反映的历史过程。
+- 此后，注意力模块可天然地建模变量之间的**相关性**（Mulitivariate Correlation），前馈网络则在时间维上逐层编码历史观测的特征，并且将学到的特征映射为未来的预测结果。
+- 相比之下，以往没有在时序数据上深入探究的层归一化（LayerNorm），也将在消除变量之间分布差异上发挥至关重要的作用。
+
+多变量时序数据
+
+基于 Transformer 进行时序分析，重新考虑词的构建方式：
+- (1) `Temporal Token`: 以往模型的主流做法，将所有变量**同一时刻的时间点表示为词**，获得以时间点为单位的词序列。
+- (2) `Patch Token`：在时间维度上对序列进行**分块**，扩大的感受野包含局部序列变化，从而获得语义性更强的词。
+
+iTransformer 着眼于变量的整体性，提出 `Variate Token`，关注以变量为主体的**关联建模**，适合变量较多且互相关联的**多维时序数据**。
+- ![多维时序预测](https://img2024.cnblogs.com/blog/1004194/202406/1004194-20240622160729168-80288103.png)
+
+iTransformer基于仅编码器（Encoder-only）结构，包括嵌入层（Embedding），映射层（Projector）和若干Transformer模块（TrmBlock），可堆叠深度来建模多变量时序数据。
+
+iTransformer 在**多维时序预测**基准上实验，部署在蚂蚁线上服务负载预测场景，涵盖19个数据集，76种不同的预测设置。
+
+对比10种深度预测模型，包含领域代表性
+- Transformer 模型：PatchTST（2023）、Crossformer（2023）、FEDformer（2022）、Stationary（2022）、Autoformer（2021）；
+- 线性预测模型：TiDE（2023）、DLinear（2023）、RLinear（2023）；
+- TCN 系模型：TimesNet（2023）、SCINet（2022）。
+
+iTransformer 在基准比较中显著超过此前领域最优效果
+
+iTransformer 是建模多变量时序数据的通用框架。 
+- 提升预测效果：在预测效果上，每个模型相较倒置前均取得了大幅度的提升，也证明iTransformer可以受益于高效注意力组件的相关研究。
+- 受益于变长观测：以往Transformer模型的效果不一定随着输入的历史观测的变长而提升，在使用倒置框架后，模型随着历史观测长度的增加，呈现明显的预测误差降低趋势。
+- 泛化到未知变量：通过倒置，模型在推理时可以输入不同于训练时的变量数，结果表明该框架在仅使用部分变量训练时能够取得较低的误差，证明证明倒置结构在变量特征学习上的泛化性。 
 
 ## 应用
 
