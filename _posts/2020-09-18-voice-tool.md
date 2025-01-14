@@ -1612,6 +1612,17 @@ Seed-TTS模型在实际应用中展现出了广泛的潜力和多样性，以下
 10. 辅助残障人士：可以为有语言障碍的人士提供语音合成服务，帮助他们更好地进行沟通。
 
 
+
+### Kokoro-82M
+
+【2025-1-13】[一个开源的TTS模型火了，参数只有82M，但榜单第一](https://mp.weixin.qq.com/s/XP8X4iaRNxWWRxbQZa4ANA)
+- Kokoro-82M 参数量只有82M的TTS（Text-to-Speech）模型, 非大模型系列。虽然模型不大，但是Kokoro-82M在TTS Arena榜单上排行第一
+- Kokoro-82M只在不到 100 小时音频上进行训练，开源协议为可商用的,Apache 2.0 许可，支持多语种：英、法、日、韩、中。
+- 开源地址：[Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M)
+- 在线体验链接：[Kokoro-TTS](https://huggingface.co/spaces/hexgrad/Kokoro-TTS)
+
+
+
 ### LLM 语音交互
 
 详见站内专题: [大模型语音交互](/llm_ds)
