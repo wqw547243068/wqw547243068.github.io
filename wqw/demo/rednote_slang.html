@@ -1,0 +1,92 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            padding: 20px;
+            margin: 0;
+        }
+        .title {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            padding: 20px;
+            width: calc(33.33% - 40px);
+            box-sizing: border-box;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .card div:nth-child(1) {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .card div:nth-child(2) {
+            color: #4ecdc4;
+        }
+        .card div:nth-child(3) {
+            color: #6b5b95;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">RedNote Slangs for TiktokRefugee</div>
+    <script>
+        //const a = [['a', '甲', '你好'], ['b', '乙', '世界'], ['b', '乙', '世界'], ['b', '乙', '世界'], ['b', '乙', '世界']];
+        const a = [
+    ["躺平", "Lie Flat", "To give up on striving and accept a minimalist lifestyle."],
+    ["内卷", "Involution", "Excessive competition leading to diminishing returns."],
+    ["凡尔赛", "Humblebrag", "To show off in a disguised or modest way."],
+    ["打工人", "Laborer", "A term for office workers or laborers, often used humorously."],
+    ["社恐", "Social Anxiety", "Fear or discomfort in social situations."],
+    ["社牛", "Social Butterfly", "Someone who is very outgoing and sociable."],
+    ["破防", "Emotionally Overwhelmed", "To be emotionally affected or broken down."],
+    ["真香", "Really Fragrant", "Ironic acceptance after initially rejecting something."],
+    ["吃瓜", "Watch Drama", "To be a spectator or watch events unfold."],
+    ["佛系", "Buddha-like", "A laid-back or indifferent attitude."],
+    ["杠精", "Contrarian", "Someone who argues for the sake of arguing."],
+    ["舔狗", "Simp", "Someone who fawns over others excessively."],
+    ["摸鱼", "Slack Off", "To laze around or avoid work."],
+    ["硬核", "Hardcore", "Intense, extreme, or highly dedicated."],
+    ["上头", "Obsessed", "To be deeply engrossed or addicted to something."],
+    ["下头", "Turned Off", "To feel disillusioned or lose interest."],
+    ["摆烂", "Let Things Rot", "To give up or let things deteriorate."],
+    ["扎心", "Heart-wrenching", "Emotionally painful or distressing."],
+    ["种草", "Plant Grass", "To be influenced to want or buy something."],
+    ["拔草", "Remove Grass", "To remove something from a wishlist or lose interest."]
+];
+        a.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            item.forEach((text, index) => {
+                const div = document.createElement('div');
+                div.textContent = text;
+                card.appendChild(div);
+            });
+            document.body.appendChild(card);
+        });
+    </script>
+</body>
+</html>
