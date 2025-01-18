@@ -329,5 +329,26 @@ tiktok 变现方式
 - ![](https://picx.zhimg.com/80/v2-b349242875a01bf568be31d8e9491fe6_1440w.webp?source=2c26e567)
 
 
+## AIGC
+
+
+借助 AIGC 生成自媒体内容
+
+### 前端卡片
+
+【2025-1-18】使用 LLM 生成前端卡片样式
+- 如 DeepSeek
+
+prompt 样例
+
+```md
+生成一段html,js代码，实现功能：逐项卡片展示数组a里的项目，布局要求：第一行加粗展示“RedNote Slangs for TiktokRefugee”，其次再展示卡片，每行3个卡片，超过后另起一行，每个卡片浅蓝色背景，卡片是云朵颜色，3个字段字体颜色依次是红色、绿色、紫色，点击卡片后自动放大，要求简洁、美观、立体效果、配色好看；数据：国内常用网络用语，每个短语包含字段：中文短语、英文短语、英文解释；以 javascript list 输出, 示例 [['a', 'a', 'a']]；注意：只输出代码，不要解释
+```
+
+效果展示
+- [rednote_slang.html](https://wqw547243068.github.io/wqw/demo/rednote_slang.html)
+
+
+
 # 结束
 
