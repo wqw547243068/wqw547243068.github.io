@@ -1056,7 +1056,24 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 ### IPTV
 
 - [IPTV资源汇总](https://github.com/Meroser/IPTV)
-- 各国 IPTV [电视直播入口](https://iptv-org.github.io/)
+- 各国 IPTV [电视直播入口](https://iptv-org.github.io/), [GitHub](https://github.com/iptv-org/iptv)
+
+多个维度划分
+
+```sh
+# 类目
+https://iptv-org.github.io/iptv/index.category.m3u
+# 语言
+https://iptv-org.github.io/iptv/index.language.m3u
+# 国家
+https://iptv-org.github.io/iptv/index.country.m3u
+# 区域
+https://iptv-org.github.io/iptv/index.region.m3u
+```
+
+VLC 配置
+- Media -> Open Network Stream -> paste the M3U URL -> Play
+
 
 电子节目指南（electrical program guide，简称EPG）
 - Electronic Program Guide的英文缩写，意思是电子节目菜单，即节目预告。
@@ -1091,7 +1108,7 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 - [ibert](https://m3u.ibert.me/o_all.m3u)
 
 【2024-4-5】最新iptv源，每两小时自动更新一次，含有超过 1w+ 数量的 IPTV 列表，丰富且全面！
-- GitHub：[iptv-sources](github.com/HerbertHe/iptv-sources)
+- GitHub：[iptv-sources](http://github.com/HerbertHe/iptv-sources)
 
 
 #### Android 环境
