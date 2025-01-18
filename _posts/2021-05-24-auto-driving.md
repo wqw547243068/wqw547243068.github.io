@@ -1182,7 +1182,49 @@ Waymo与滴滴路测里程的对比：
 
 ## Tesla
 
+
+2003年7月1日，马丁·艾伯哈德和马克·塔彭宁创立特斯拉汽车公司(Tesla Motors)，创始人将公司命名为“特斯拉汽车(Tesla Motors)”，以纪念物理学家尼古拉·特斯拉。工程师莱特(Ian Wright)加入成为公司的第3号员工。
+
+特斯拉汽车的创立初期以台湾新北市为重要生产基地，公司人数一路由20人增至150人，于2008年2月方正式生产出7辆“创始人系列”，2008年10月第一批TeslaRoadster投线生产，2009年响应奥巴马补贴政策，特斯拉正式关闭台湾分公司，将产线移回加州费利蒙市的新工厂。
+
+2004年，伊隆·马斯克以A轮投资人的身份加入这家公司，并且雇用了锂电池专家史特劳贝尔(JB Straubel)而组成公司早期的团队。
+
+2007年8月，时任公司CEO的创始人艾伯哈德宣布辞职，11月，艾伯哈德被逐出董事会，转由Michael Marks接任临时首席执行官（第二任）。
+
+2007年11月末，Ze'ev Drori 接任成为新的首席执行官（第三任）。另一位创始人塔彭宁则先后担任公司的首席财务官、副总裁等职位直到2008年，二位创始人先后离开特斯拉，2008年10月马斯克成为特斯拉CEO（第四任）。
+
+特斯拉车型概览
+- 2008 第一款车 Tesla Roadster 
+- 2012 第二款车 Tesla Model S
+- 2015 第三款车 Tesla Model X 
+- 2017 第四款车 Tesla Model 3
+- 2020 第五款车 Tesla Model Y 
+- 2022 第六款车 Tesla Cybertruck 
+- 2023 第七款车 Tesla Semi Truck
+- 2023 第八款车 新版Roadster 
+- 2023-2024 第九款车 Model Q 
+
+| 时间  | 车型 | 类型 | 价格(美金) | 图 |
+| ---  | --- | --- | --- | ---- |
+| 2008  | 第一款车 Tesla Roadster  | 跑车 | 10w | ![](https://pic4.zhimg.com/v2-b74eff01f73d109e965928c6448aef2d_1440w.jpg) |
+| 2012  | 第二款车 Tesla Model S | 轿车 | | ![](https://pica.zhimg.com/v2-00dd79a65b59529f013e12b202b24922_1440w.jpg) |
+| 2015  | 第三款车 Tesla Model X  | 轿车 | | ![](https://picx.zhimg.com/v2-77c9adc87c7b1d5254258e05ce15ec8b_1440w.jpg) |
+| 2017  | 第四款车 Tesla Model 3 | 轿车 | 25-34w | ![](https://pica.zhimg.com/v2-bffcc4df3ddae4bb62b2bc609a48715a_1440w.jpg) |
+| 2020  | 第五款车 Tesla Model Y  | 轿车 | 30-40w | ![](https://pic2.zhimg.com/v2-613f76c65ac37bcd06cdd333816fa969_1440w.jpg) |
+| 2022  | 第六款车 Tesla Cybertruck  | 卡车 | | ![](https://pic3.zhimg.com/v2-aa36d854a16450d5e65a87d66e9b38b8_1440w.jpg) |
+| 2023  | 第七款车 Tesla Semi Truck | 重型卡车 | 15w  | ![](https://picx.zhimg.com/v2-66922d1ef5a1349609f1f24b74be774f_1440w.jpg) |
+| 2023  | 第八款车 新版Roadster  | 跑车 | 20w | ![](https://pica.zhimg.com/v2-cf95a62519544f7baa527b55e7f1d2e4_1440w.jpg) |
+| 2023-2024 | 第九款车 Model Q  | 轿车 | 2.5w | ![](https://pica.zhimg.com/v2-01c79dca9d53462b0a4523e3af28ddcc_1440w.jpg) |
+
+
 【2023-1-11】[HydraNet——特斯拉自动驾驶强大的人工智能神经网络模型](https://zhuanlan.zhihu.com/p/563378333)
+
+### Tesla 车型
+
+
+[特斯拉2008-2023的产品路线图是什么样](https://zhuanlan.zhihu.com/p/459765406)
+
+
 
 ### Tesla Vision
 
