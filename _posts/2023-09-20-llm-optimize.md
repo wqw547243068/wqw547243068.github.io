@@ -1261,6 +1261,7 @@ Sparse VS Dense GEMM
 - [关于大模型推理的量化算法总结](https://zhuanlan.zhihu.com/p/645308698)
 - [大语言模型的模型量化(INT8/INT4)技术](https://zhuanlan.zhihu.com/p/627436535)
 
+
 【2024-8-22】 [「模型量化技术」可视化指南：A Visual Guide to Quantization](https://mp.weixin.qq.com/s/dgS-yRVpGe_w1uzbcVctXg), 可视化图解各种模型量化技术的原理和实现方法
 
 目录
@@ -1295,6 +1296,7 @@ Sparse VS Dense GEMM
 -         4.5.2 Quantization 量化过程
 - 05 Conclusion
 
+【2024-8-28】天津大学大模型量化报告 [https://blog.csdn.net/2401_85327249/article/details/144079053](https://blog.csdn.net/2401_85327249/article/details/144079053)
 
 `量化`(Quantization)可以很好地通过将**float**模型表征为**低位宽模型**实现减小模型存储空间, 加速模型推理的目标. 
 
