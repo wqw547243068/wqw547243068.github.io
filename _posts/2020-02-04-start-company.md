@@ -1175,4 +1175,27 @@ permalink: /start_company
 
 
 
+## 网页
+
+
+### 主页搭建
+
+
+【2025-1-18】 快速搭建公司主页
+
+GitHub 上的开原模板代码
+- 
+
+|模板|功能|分析|Demo|
+|---|---|---|---|
+|[Huong-Hua-Co-Website](https://github.com/hoangsonww/Huong-Hua-Co-Website)|装修公司英文网站|Django, React, and Vue.js|[huonghuacoltd](https://huonghuacoltd.com/)|
+|[company-website-reactjs](https://github.com/darkleas/company-website-reactjs)||||
+|[business-website-template](https://github.com/itsDaiton/business-website-template)|银行网站HooBank|react, vite|[business-website-template.onrender.com](https://business-website-template.onrender.com/)|
+|||||
+
+
+
+
+
+
 # 结束
