@@ -971,7 +971,7 @@ print(response)
 完整代码见[原文](https://www.toutiao.com/article/7230786095158690362)
 
 ```sh
-!python -m pip install openai streamlit llama-index langchain youtube-transcript-api html2image
+python -m pip install openai streamlit llama-index langchain youtube-transcript-api html2image
 ```
 
 #### 机器翻译
@@ -1153,6 +1153,15 @@ Arc Search 的巧妙之处
 - AI 生成回答前，先通过传统搜索引擎进行了一层「过滤」，筛选出内容质量较高的相关网页，再基于这些内容生成答案，可以在一定程度上降低大模型「幻觉」带来的影响，在回答质量、准确性上也更多一些保证。
 
 虽然 The Browser Company 没有明确指出 Arc Search 背后调用的大模型，但按照 Arc Browser 的相关报道，Arc Search 应该也是通过 API 调用了包括 GPT-4 在内的混合模型。
+
+#### Ask.py
+
+【2025-1-20】[Ask.py](http://github.com/pengfeng/ask.py)：一个简单的Python程序，实现了 搜索-提取-总结 流程
+- Demo: [leettools](https://svc.leettools.com/)
+
+命令行或通过 GradIO UI 运行，控制输出行为，比如提取结构化数据或改变输出语言，还能控制搜索行为，比如限制特定网站或日期，或仅抓取指定URL列表的内容。
+- ![](https://private-user-images.githubusercontent.com/882734/379039848-0483e6a2-75d7-4fbd-813f-bfa13839c836.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzczODc4MjEsIm5iZiI6MTczNzM4NzUyMSwicGF0aCI6Ii84ODI3MzQvMzc5MDM5ODQ4LTA0ODNlNmEyLTc1ZDctNGZiZC04MTNmLWJmYTEzODM5YzgzNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyMFQxNTM4NDFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNjA0NmIwM2UyZWM0NGMyZjg0NWMxNmZhMGE2MDM5ZWE0NTNmNWY5M2JjNTI5OGZiMzE1NjFhN2E4OWZkODJmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.myY8mEl7DObJUVfgLkkmnWYZPYPTwv53tTo_Lm1A5U4)
+
 
 
 ### 招聘
