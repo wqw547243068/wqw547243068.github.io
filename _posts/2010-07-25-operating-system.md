@@ -3,7 +3,7 @@ layout: post
 title:  "操作系统-Operating System"
 date:   2010-07-25 15:09:00
 categories: 计算机基础
-tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果
+tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果 windows
 excerpt: 计算机操作系统知识点
 mathjax: true
 permalink: /os
@@ -51,6 +51,9 @@ permalink: /os
 
 ## Windows
 
+
+### 进化史
+
 【2022-10-7】【进化编年史】[万物皆有其进化史~Windows操作系统进化历程](https://www.bilibili.com/video/BV1EY4y1r7oS)
 
 <iframe src="//player.bilibili.com/player.html?aid=638965781&bvid=BV1EY4y1r7oS&cid=716461078&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
@@ -60,6 +63,26 @@ permalink: /os
 - 视频盘点了从最初的Windows1.0、Windows2.0、Windows3.0系统，是微软对于图形化系统探索的起点；90年代的WindowsNT、Windows95、Windows98系统，是Windows系统概念的发源地；之后便是Windows2000、WindowsME、WindowsXP这几个经典的诞生；再到现在的WindowsVista、Windows7、Windows8、Windows10、Window11
 
 <iframe src="//player.bilibili.com/player.html?aid=758974733&bvid=BV1C64y1Q7N1&cid=363244221&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+### windows 操作
+
+
+#### 磁盘空间清理
+
+C 盘空间不足，发现 AppData 文件夹占用空间很大，如何清理？
+
+AppData 里面三个文件含义
+- locallow：共享数据存放文件，一般都可以清理一些无用的共享文件。
+- `Local`：本地保存文件，其中本地临时文件，AppData\Local\Temp\下面的文件可以删除(注意是Temp)。
+- `Roaming`：保存应用程序运行后的数据信息，如果删除应用程序运行配置数据会丢失。
+
+后两者占用空间较大，可以清理或移动
+- 移动: 选择 Roaming 目录, 右键属性->位置->移动到其他位置->选择D盘文件夹。
+- 清理: 
+
+原文链接：https://blog.csdn.net/qq_49973861/article/details/142360934
+
 
 ## Linux
 
