@@ -1409,7 +1409,7 @@ Cline支持配置多种API key，包括Open Router、Open AI和Ollama等。
 > Command failed with exit code 1: powershell (Get-CimInstance -ClassName Win32_OperatingSystem).caption
 'powershell' 
 
-更换目录
+提交问题官方 [issue](https://github.com/cline/cline/issues/1334)
 
 
 
