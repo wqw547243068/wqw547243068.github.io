@@ -363,6 +363,18 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 [DeepSpeed 官方文档](https://www.deepspeed.ai/getting-started/)
 
 
+#### 可视化解读
+
+分布式计算可视化解读
+- [Distributed Training and DeepSpeed](https://tinkerd.net/blog/machine-learning/distributed-training/)
+
+内存开销
+- **模型**内存：存储模型权重所需的内存。
+- **梯度**内存：存储每个模型权重梯度所需的内存。
+- **优化器**内存：存储优化器所需的任何额外状态所需的内存。
+- **激活**内存：存储在前向传递期间计算的中间值所需的内存。
+
+
 ## DeepSpeed 框架
 
 [DeepSpeed](https://www.deepspeed.ai/getting-started/) 主要分成以下四个板块，包括：`Training`、`Inference`、`Compression`、`Science`
@@ -1407,6 +1419,11 @@ sampler 主要用来设置数据采样顺序。
 
 
 #### 模型
+
+
+##### 计算模型显存
+
+计算 Transformer 模型**内存需求**的脚本：distributed-training-and-deepspeed/estimate_transformer_memory.py
 
 
 ##### 模型初始化
