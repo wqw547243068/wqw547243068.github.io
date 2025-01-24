@@ -67,6 +67,30 @@ permalink: /os
 
 ### windows 操作
 
+#### 版本查看
+
+powershell 命令
+
+```sh
+$PSVersionTable
+# Name                           Value
+# ----                           -----
+# PSVersion                      5.1.19041.5247
+# PSEdition                      Desktop
+# PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0...}
+# BuildVersion                   10.0.19041.5247
+# CLRVersion                     4.0.30319.42000
+# WSManStackVersion              3.0
+# PSRemotingProtocolVersion      2.3
+# SerializationVersion           1.1.0.1
+```
+
+版本号 5.* 低，升级新版（PowerShell 7.4.6）
+
+更新 powershell
+- 直接从GitHub上[下载链接](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4#msi)
+- windows 应用[商店](https://apps.microsoft.com/detail/9mz1snwt0n5d)
+
 
 #### 磁盘空间清理
 
