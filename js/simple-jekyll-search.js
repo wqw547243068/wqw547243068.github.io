@@ -302,7 +302,8 @@ var _$src_8 = {};
     resultsContainer: null,
     json: [],
     success: Function.prototype,
-    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    // searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
+    searchResultTemplate: '<li><a href="{url}?query={query}&date={date}" title="{desc}">{title}</a></li>',
     templateMiddleware: Function.prototype,
     sortMiddleware: function () {
       return 0
