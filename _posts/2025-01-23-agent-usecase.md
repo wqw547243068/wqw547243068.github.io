@@ -192,8 +192,50 @@ MusicAgent 系统整合了众多与音乐相关的工具，并拥有一个**自�
 - 代码:[CogVLM](https://github.com/THUDM/CogVLM)
 
 模型:
-* Huggingface:https://huggingface.co/THUDM/cogagent-chat-hf
-* 魔搭社区:https://modelscope.cn/models/ZhipuAI/cogagent-chat
+* Huggingface: [cogagent-chat-hf](https://huggingface.co/THUDM/cogagent-chat-hf)
+* 魔搭社区: [cogagent-chat](https://modelscope.cn/models/ZhipuAI/cogagent-chat)
+
+
+### Eko
+
+【2025-1-22】[截胡OpenAI！清华复旦等抢先开源智能体框架Eko，一句话打造「虚拟员工」]()
+
+清华、复旦和斯坦福的研究者联合提出了名为`Eko`的 Agent开发框架，开发者可以通过简洁的代码和自然语言，快速构建可用于生产的「**虚拟员工**」。AI智能体能够接管用户的**电脑**和**浏览器**，代替人类完成各种任务，为工作流程提供自动化支持。
+- Github [eko](https://github.com/FellouAI/eko)
+
+[Eko](https://eko.fellou.ai) 是一个强大的Agent开发框架，开发者能用自然语言和简单代码快速构建「虚拟员工」，完成从简单指令到复杂工作流的任务，如股票分析、自动化测试等；通过混合智能体表示、跨平台架构和生产级干预机制等创新技术，实现高效、灵活且安全的自动化工作流程。
+
+核心创新点：
+- 混合智能体表示：提出了Mixed Agentic representation，通过无缝结合表达高层次设计的自然语言（Natural Language）与开发者低层次实现的程序语言（Programming Language）。
+- 跨平台Agent框架：提出环境感知架构，实现同一套框架和编程语言，同时支持浏览器使用、电脑使用、作为浏览器插件使用。
+- 生产级干预机制：现有Agent框架普遍强调自治性（Autonomous），即无需人类干预，而Eko框架提供了显性的生产级干预机制，确保智能体工作流可以随时被中断和调整，从而保障人类对生产级智能体工作流的有效监管和治理。
+- ![](https://pic1.zhimg.com/v2-703dcbed3919518575079df0192eb758_1440w.jpg)
+
+Eko的跨平台开发是通过其环境感知架构（Environment-Aware Architecture）实现的，架构由三个关键层次构成：通用核心（Universal Core）、环境特定工具（Environment-Specific Tools）和环境桥接（Environment Bridge）。
+
+通用核心：这一层提供了与环境无关的基本功能，如工作流管理、工具注册管理、LLM（大语言模型）集成和钩子系统。
+环境特定工具：每种环境（如浏览器扩展、Web环境、Node.js环境）都提供了优化的工具集。
+环境桥接：这一层负责环境的检测、工具注册、资源管理和安全控制，确保不同平台之间能够顺利互动和通信。
+安全性和访问控制：Eko针对不同环境实施了适当的安全措施。浏览器扩展和Web环境都采用了严格的权限控制和API密钥管理，而Node.js环境则允许更广泛的系统级访问，基于用户权限进行文件操作和命令执行，在需要时会在执行前请求用户确认。
+
+自动工具注册：通过 loadTools() 等工具，Eko 自动注册适用于当前环境的工具，这使得开发者可以在多个环境中无缝地切换，并确保工具的正确加载。
+
+层次化规划（Hierachical planning）
+
+研究人员提出层次化感知框架，将任务的拆解分为两层，包括Planning layer 和 Execution layer。其中Planning layer负责将用户的需求（自然语言或代码语言表示）和现有工具集拆解成一个有领域特定语言（Domain-specific language）表示的任务图（Task graph）。
+
+任务图是一个有向无环图，描述了子任务之间的依赖关系。该任务图由LLM一次性合成。在Execution layer中，根据每个任务调用LLM来合成具体的执行行为和工具调用。
+
+多步合并优化：当Eko检测到两次执行都是对LLM的调用时，会触发框架的自动合并机制，将两次调用的system prompt自动整合，合并成一次调用。从而加快推理速度。
+
+视觉-交互要素联合感知（Visual-Interactive Element Perception）
+
+视觉-交互要素联合感知框架（VIEP）是一种先进的浏览器自动化解决方案，通过将视觉识别与元素上下文信息相结合，显著提升了在复杂网页环境中自动化任务的准确性和效率。该技术的核心在于提取网页中的交互元素和相关数据，优化了自动化过程，极大地提高了任务执行的成功率。
+
+具体来说，首先VIEP通过识别网页上的关键交互元素——如按钮、输入框、链接等——来聚焦用户可能进行操作的核心区域。
+
+接着，每个可交互的元素都被分配唯一的标识符，并通过彩色框标记，确保精确定位。随后，系统通过结合截图和伪HTML的方式构建元素信息，利用文本和视觉数据的结合，帮助自动化模型更好地识别和操作这些元素，尤其在复杂网页结构中尤为重要。
+
 
 
 ## 设备操控
