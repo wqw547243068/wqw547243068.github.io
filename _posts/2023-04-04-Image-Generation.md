@@ -1252,6 +1252,159 @@ python convert_original_stable_diffusion_to_diffusers.py \
 
 运行完该命令，会生成Diffusers格式的模型，再利用Diffusers格式转CoreML格式的步骤，将模型转换为CoreML格式。
 
+#### 训练方法
+
+[stable diffusion 常用训练方式](https://zhuanlan.zhihu.com/p/20330409353)：Dreambooth、textual inversion、LORA 和 Hypernetworks
+- 1 Dreambooth 2022年谷歌发布，向模型注入自定义主题来 fine-tune diffusion model 的技术。
+  - 论文: 【2023-3-15】[DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation](https://arxiv.org/pdf/2208.12242)
+  - 主页: [dreambooth](https://dreambooth.github.io/)
+  - 仅使用三张图片作为输入，就能在不同的prompt下生成对应的图片
+- 2 Textual Inversion
+- 3 LORA
+- 4 Hypernetworks
+
+##### Dreambooth
+
+2022年谷歌发布，向模型注入自定义主题来 fine-tune diffusion model 的技术。
+- 论文: 【2023-3-15】[DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation](https://arxiv.org/pdf/2208.12242)
+- 主页: [dreambooth](https://dreambooth.github.io/)
+- 仅使用三张图片作为输入，就能在不同的prompt下生成对应的图片
+- ![](https://picx.zhimg.com/v2-b15b6b7d19b0fe2f0d667c8a79cd7ea9_1440w.jpg)
+
+训练自己数据最直观的方法: 把自己的图片加入模型迭代时一起训练。
+
+但是有两个问题：`过拟合`，`语言漂移`(language drift)。
+
+而 Dreambooth 能避免上述两个问题
+- 用一个罕见词来代表图片含义，保证新加入的图片对应的词在模型中没有太多的意义
+- 为了保留类别的含义，例如图中的“狗”，模型会在狗的类别基础上微调，并保留对应词的语义，例如给这只狗取名为"Devora", 那么生成的"Devora"就会特指这只狗。
+
+区别于 textual inversion 方法
+- Dreambooth 使用罕见词, 而 textual inversion 使用新词。
+- Dreambooth 对整个模型做微调，而 textual inversion 只会对text embedding部分调整
+
+训练 dreambooth
+
+数据
+- 3-10张图片, 最好是不同角度，且背景有变化的图片
+- 独特的标识符(unique identifier)
+- 类的名字(class name) 先了解下几个prompt: instance prompt: a photo of [unique identifier] [class name] class prompt: a photo of [class name]
+
+webui 上依次点击"Extensions"->"Available"->"Load from"。会搜索出非常多的插件，选择"Dreambooth"并"Install"
+
+安装完成后依次点击"Extensions"->"Installed"->"Apply and restart UI"
+
+创建一个空的模型，设定好Name和原始的Checkpoint就行
+
+![](https://pic4.zhimg.com/v2-77d795479c00ebaf8bfb7f5188fb9523_1440w.jpg)
+
+#### Textual Inversion
+
+【2022-8-2】以色列特拉维夫大学+Nvidia 推出 Textual Inversion
+- 论文 [An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion](https://arxiv.org/pdf/2208.01618)
+
+Textual Inversion 是一种在 Stable Diffusion 等文本到图像生成模型中使用的**轻量级**训练方法。
+- 主要目的: 让模型能够学习并生成具有**特定风格或对象**的新图像，而无需对整个模型进行重新训练。
+- 用户可以在原有预训练模型的基础上，仅针对特定概念（如特定的艺术风格、某个物体或者某个人的外观）进行微调。
+
+
+embedding 是 textual inversion 的结果，因此 textual inversion 也可以称为 embedding。
+
+该方法只需要3-5张图像，通过定义新的关键词，就能生成和训练图像相似的风格。
+
+扩散模型中有很多可以定义模型的方法，例如像 LoRA，Dreambooth，Hypernetworks。但textual inversion方法很不一样的地方在于: **不用改变模型**。
+
+工作原理
+- 定义一个在现有模型中没有的关键词，新的关键词会和其他的关键词一样，生成Tokenizer(用不同的数字表示)；
+- 然后, 将其转换为embedding；
+- text transformer会映射出对于新给的关键词最好的embedding向量。
+- 不用改变模型，可以看作在模型中寻找新的表征来表示新的关键字
+
+![](https://pica.zhimg.com/v2-3783f69651f18694848171eb426662a4_1440w.jpg)
+
+textual inversion可以用来训练新的object，示例是在模型中注入玩具猫
+- ![](https://pic3.zhimg.com/v2-905ed9b82acb05d6b3e5519fb7da5014_1440w.jpg)
+
+textual inversion 也可以用来训练画风，示例是学习模版图的画风，迁移到其他图片
+- ![](https://pic2.zhimg.com/v2-95c0e44c0e5de829153f8d03d854a1c1_1440w.jpg)
+
+训练方法
+- webui上点击"Train"->"Create embedding"
+  - "Name"处为需要学习的目标设置一个新的名字;
+  - "Initialization text"无需更改;
+  - "Number of vectors per token"表示新建立的"Name"占几个prompt，理论上越大越好，但stable diffusion只支持75个prompt, 会导致可以设置的其他prompt变小，一般设置2-8即可。
+- 接着点击创建，则会生成模型文件
+- 训练设置：prompt template
+  - style_filewords.txt: 表示训练画风
+  - subject_filewords.txt: 表示训练人物或物体
+
+风格的训练和人物的方式基本一样，可以找些比较有特点的画风数据。周末逛一家拼图店看到了一些很有趣的画风，在网上爬了些数据，首先还是将数据缩放成512*512
+
+
+#### LoRA
+
+【2021-10-16】微软推出 LoRA, 全称 Low-Rank Adaptation，中文叫"低秩适应"。
+- 论文 [LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS](https://arxiv.org/pdf/2106.09685)
+- 代码 [LoRA](https://github.com/microsoft/LoRA)
+
+LoRA 是一种fine tune扩散模型的训练技术。通过对标准的checkpoint模型做微小的修改，可以比checkpoint模型小10到100倍。区别于Dreambooth和textual inversion技术，Dreambooth训练得到的模型很强大，但模型也很大(2-7GB)；而textual inversion生成的模型很小(大约100KB)，但模型效果一般。而LoRA则在模型大小(大约200MB)和效果上达到了平衡。
+
+和textual inversion一样，不能直接使用LoRA模型，需要和checkpoint文件一起使用。
+
+工作原理
+
+LoRA通过在checkpoint上做小的修改替换风格，具体而言修改的地方是UNet中的cross-attention层。该层是图像和文本prompt交界的层。LORA的作者们发现微调该部分足以实现良好的性能。
+
+cross attention层的权重是一个矩阵，LoRA fine tune这些权重来微调模型。那么LoRA是怎么做到模型文件如此小？LoRA的做法是将一个权重矩阵分解为两个矩阵存储，能起到的作用可以用下图表示，参数量由(1000* 2000)减少到(1000* 2+2000*2), 大概300多倍
+
+cross-attention是扩散模型中关键的技术之一，在LoRA中通过微调该模块，即可微调生成图片的样式，而在Hypernetwork中使用两个带有dropout和激活函数的全链接层，分别修改cross attention中的key和value，也可以定制想要的生成风格。可见cross attention的重要性。
+
+LoRA 是一种训练技巧，可以和其他的方法结合
+- 例如在Dreambooth中，训练的时候可以选择LoRA的方式。
+- 在之前Dreambooth的篇章中，介绍了人物的训练，这篇填上风格训练的坑。
+- 数据的处理方式和之前的处理一样，训练数据改用特定风格的图片，Concepts中选用Training Wizard (Object/Style)。
+
+#### Hypernetworks
+
+hypernetworks 是一种fine tune的技术，最开始由novel AI开发。
+
+hypernetworks 是一个附加到stable diffusion model上的小型网络，用于修改扩散模型的风格。
+
+工作原理
+
+既然 Hypernetworks会附加到diffusion model上，那么会附加到哪一部分呢？答案仍然是UNet的cross-attention模块，Lora模型修改的也是这一部分，不过方法略有不同。
+
+hypernetworks 是一个很常见的神经网络结构，具体而言，是一个带有dropout和激活函数的全连接层。通过插入两个网络转换key和query向量，下面的两张图是添加Hypernetworks之前和之后的网络图
+- ![](https://pic2.zhimg.com/v2-0ed00b14ccd863a4a664d618e9be6ce9_1440w.jpg)
+
+和 embedding(Textual Inversion)比较类似, 训练在同一个tag下，首先第一步需要创建Hypernetworks模型
+
+创建完模型后，就可以开始训练了，训练的参数设置也和Textual Inversion十分相似
+
+设置完后，选择底部的Train Hypernetworks就可以开始训练
+
+#### ControlNet
+
+ControlNet 可以从提供的参考图中获取布局或者姿势等信息, 并引导 diffusion model 生成和参考图类似的图片。
+
+扩散模型中会需要使用text作为条件引导模型生成, 而ControlNet在引导的时候会增加一个条件实现更加可控的text-to-image生成.
+
+diffusion model进展非常迅速, 针对diffusion model的一些痛点, 作者提出了几个问题和训练扩散模型时的限制, 并着手用ControlNet解决:
+- 基于prompt的控制是否能满足我们的需求?
+- 在图像处理中, 有许多有明确定义的长期任务, 是否可以用大模型来使这些任务达到新的高度?
+- 应该用什么样的框架处理用户想要的各种各样条件？
+- 在特定场景, 新提出的框架怎么能继承大模型(diffusion model)的能力.
+
+ControlNet具有以下的特点:
+- end2end
+- control large im age diffusion model(例如stable diffusion)
+- learn task-specific input conditions
+
+三点限制:
+- 特定场景的数据量少, 在较少的数据量上很容易出现过拟合
+- 大的计算集群很奢侈, (stable diffusion base模型需要15万个A100显卡小时)
+- end2end是必要的, 一些特定场景需要将原始的输入转为更高语义的表达, 手工处理的方式不太可行
+
 #### 如何画出好作品？
 
 官方文档描述文字的要素和标准。
