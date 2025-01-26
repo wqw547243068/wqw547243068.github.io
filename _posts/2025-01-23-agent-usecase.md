@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体应用
 date:   2025-01-23 08:26:00
 categories: 大模型
-tags: Agent 角色模拟 多模态 kaggle 操作系统
+tags: Agent 角色模拟 多模态 kaggle 操作系统 agi
 excerpt: 大模型 LLM 驱动的智能体如何应用？
 mathjax: true
 permalink: /agent_usecase
