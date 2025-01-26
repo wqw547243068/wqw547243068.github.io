@@ -1413,7 +1413,6 @@ Cline支持配置多种API key，包括Open Router、Open AI和Ollama等。
 
 #### Trae
 
-
 【2025-1-20】[字节全新AI编程软件：Trae！免费无限量使用Claude](https://zhuanlan.zhihu.com/p/19573922437)
 
 [Trae](https://www.trae.ai/) 是字节跳动推出的免费中文 AI IDE，通过 AI 技术提升开发效率。
