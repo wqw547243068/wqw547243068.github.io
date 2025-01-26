@@ -3,7 +3,7 @@ layout: post
 title:  "目标检测--Obeject Detection"
 date:   2020-03-08 18:30:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 大模型 sam 无人机 gcn st-gcn
+tags: 深度学习 计算机视觉 GAN  yolo cv 卡尔曼 滤波器 目标跟踪 大模型 sam 无人机 gcn st-gcn 骨骼
 excerpt: 计算机视觉之目标检测知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -1456,6 +1456,12 @@ STGCN简单的网络结构如下所示
                         
 参考
 - [原文](https://blog.csdn.net/qq_42980908/article/details/143606847)
+
+
+### 骨骼化
+
+[poloclub](https://poloclub.github.io/) 网站多种神经网络可视化
+- 可视化 [skeleton-vis](https://poloclub.github.io/skeleton-vis/)
 
 
 
