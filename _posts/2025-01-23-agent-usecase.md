@@ -22,6 +22,15 @@ Agent项目:
 - 代码仓库:[Math-Multi-Agent](https://github.com/isaacJinyu/Math-Multi-Agent)
 - 特工宇宙 GitHub 组织:‍‍‍‍‍[Agent-Universe](https://github.com/Agent-Universe）
 
+
+【2024-1-25】这几天agent操控设备成为热点：
+- 智谱昨天推出 glm-pc 1.1，注重长程推理，与年前的autoglm互补，分别占据pc和mobile设备
+  - 智谱agent手机端 [AutoGLM](https://agent.aminer.cn/)
+  - [GLM-PC](https://cogagent.aminer.cn/home) 
+- openai 的 operator 也涉足pc操控
+
+大家都在布局3级别agi
+
 ## Agent 项目实例
 
 【2024-9-15】[一个包含15种大模型Agent技巧的项目开源](https://mp.weixin.qq.com/s/_0-xyd7zX1W5tlaGAdT_PA)
