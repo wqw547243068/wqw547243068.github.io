@@ -350,8 +350,8 @@ prompt 样例
 
 直接展示
 
-{% include wqw/demo/rednote_slang.html %}
 
+<iframe src="https://wqw547243068.github.io/wqw/demo/rednote_slang.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
 
