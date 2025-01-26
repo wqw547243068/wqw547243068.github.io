@@ -199,6 +199,13 @@ transformer 结构分成：
 - ![](https://jalammar.github.io/images/t/transformer_decoding_2.gif)
 
 
+站点 [poloclub](https://poloclub.github.io/) 提供多种模型原理可视化
+
+包含提供 transformer 交互式可视化
+- [Demo](https://poloclub.github.io/transformer-explainer/)
+- ![](https://poloclub.github.io/transformer-explainer/article_assets/attention.png)
+
+
 ## Transformer架构
 
 transformer 结构图：  

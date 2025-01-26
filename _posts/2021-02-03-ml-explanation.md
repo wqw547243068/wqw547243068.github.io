@@ -54,7 +54,7 @@ ChatGPT等大语言模型经常出现幻觉、歧视、虚假等信息的情况�
 
 如果从物理学家的角度来处理这个问题，核心是通过在「有限宽度」上建立一个有效的 DNN 理论，从而改进这个无限宽度限制。传统上，物理学家的目标是创造最简单和最理想的模型，同时也包含了描述现实世界所需的最小复杂性。在这里，这需要取消无限宽度限制，并系统地纳入所有必要的修正，以解释有限宽度的影响。在物理学语言中，这意味着对单层和跨层神经元之间的微小相互作用进行建模。
 
-## “机器学习解除术”（machine unlearning）
+## 机器学习解除术（machine unlearning）
 
 【2022-4-4】[机器学习的重新思考：人工智能如何学习“失忆”？](https://mp.weixin.qq.com/s/uhZLDRjuDd6O4sG3LjFiKA)
 
@@ -288,6 +288,12 @@ Patchscopes统一并扩展了现有的可解释性技术，能够让模型回答
 - 【2022-1-12】Awesome Explanatory Supervision [![Awesome](figures/awesome.svg)](https://github.com/stefanoteso/awesome-explanatory-supervision)，包含各种可解释性论文
 - [机器学习模型可解释性的6种Python工具包，总有一款适合你！](https://zhuanlan.zhihu.com/p/385424638)
 - [4 款算法模型可解释性工具包，总有一款适合你](https://zhuanlan.zhihu.com/p/374520737)
+
+### 交互可视化
+
+站点 [poloclub](https://poloclub.github.io/) 提供多种模型原理可视化，包含
+- [WebSHAP](https://poloclub.github.io/webshap/) 包含多个示例: 回归分析、文本异常检测、图像分类
+
 
 
 ### 1、Yellowbrick——侧重于特征和模型性能解释
