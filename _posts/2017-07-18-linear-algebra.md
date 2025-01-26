@@ -18,6 +18,9 @@ permalink: /linear
 
 为什么会有矩阵，矩阵的乘法运算为什么是这个样子，矩阵的意义到底是什么？
 
+
+
+
 ## 历史
 
 
@@ -244,9 +247,11 @@ permalink: /linear
 - ![](http://songcy.net/posts/story-of-basis-and-kernel-part-2/example1.PNG)
 
 
-## 矩阵的本质
+## 矩阵本质
 
 ### 矩阵理解
+
+【2025-1-26】国外`Gilbert Strang`线性代数精简笔记 [中文版](https://github.com/kenjihiranabe/The-Art-of-Linear-Algebra/blob/main/README-zh-CN.md)
 
 - [如何通俗讲解放射变换？](https://www.zhihu.com/question/20666664)
 _ [在线几何作图GeoGebra](https://www.geogebra.org/apps/)（源自 [马同学高等数学](http://www.matongxue.com/madocs/244.html)）
