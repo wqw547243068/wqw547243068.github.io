@@ -1411,8 +1411,39 @@ Cline支持配置多种API key，包括Open Router、Open AI和Ollama等。
 
 提交问题官方 [issue](https://github.com/cline/cline/issues/1334)
 
+#### Trae
 
 
+【2025-1-20】[字节全新AI编程软件：Trae！免费无限量使用Claude](https://zhuanlan.zhihu.com/p/19573922437)
+
+[Trae](https://www.trae.ai/) 是字节跳动推出的免费中文 AI IDE，通过 AI 技术提升开发效率。
+- 支持原生中文，集成了 Claude 3.5 和 GPT-4o 等主流 AI 模型，完全免费使用。
+
+Trae 主要功能: Builder 模式和 Chat 模式
+- Builder 模式可帮助开发者从**零**开始构建项目
+- Chat 模式支持对代码库或编程问题进行提问和优化。
+
+Chat 模式
+- 快捷键：使用 Cmd + i 或 Cmd + u 调用 Chat 功能。
+- 交互方式：在对话框中输入问题或代码需求，Trae 会基于 AI 模型生成代码建议或解答。
+- 代码更新：Trae 会显示原始代码和优化后的代码对比，开发者可以选择接受或拒绝。
+
+Builder 模式
+- 项目生成：通过简单描述（如“生成一个图片压缩工具”），Trae 可以自动生成项目代码。
+- 交互执行：在生成过程中，Trae 可能会征求用户意见（如是否执行命令），需要手动确认。
+- 代码预览与调试：Trae 提供 Webview 功能，可以直接在 IDE 内预览 Web 页面，方便前端开发。如果遇到错误，可以通过点击命令行中的“Add To Chat”按钮，将错误信息复制到 Chat 中，让 AI 帮助解决。
+- 上下文引用：在 Chat 中可以引用代码块、文件、文件夹或整个项目。
+- 命令行工具：支持在本地终端安装 Trae 的命令行工具。
+
+注意事项：
+- Trae 的 AI 功能目前不支持直接读取外网链接。
+- 使用 Builder 生成项目时，建议提前手动创建虚拟环境（如 Python 的 venv 或 Conda），避免环境变量问题。
+
+Trae 具备友好的交互设计，如代码预览、Webview 功能，以及强大的代码生成能力。
+
+作为一款直接对标 Cursor 和 Windsurf 的全新 AI IDE，Trae 的目标不仅是与这些工具竞争，更是要弥补它们在中文开发者体验上的短板。现在 Trae IDE 的 Claude 3.5 和 GPT-4o 都是限时免费用
+
+![](https://pic1.zhimg.com/v2-3935e23284e2f3c7368af9396a839084_1440w.jpg)
 
 ### Document QA
 
