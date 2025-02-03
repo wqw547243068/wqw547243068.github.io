@@ -1110,6 +1110,14 @@ VLC 配置
 【2024-4-5】最新iptv源，每两小时自动更新一次，含有超过 1w+ 数量的 IPTV 列表，丰富且全面！
 - GitHub：[iptv-sources](http://github.com/HerbertHe/iptv-sources)
 
+比如
+- [fmml_ipv6.m3u](https://iptv.b2og.com/fmml_ipv6.m3u)
+- [all.m3u](https://iptv.b2og.com/all.m3u)
+
+VLC 播放器设置方法
+- Media -> Open Network Stream -> paste the M3U URL -> Play
+- 打开VLC，点击“媒体”->“打开网络流”，然后在“网络流URL”中输入M3U文件的URL，点击“播放”即可开始播放。
+
 
 #### Android 环境
 
@@ -1118,7 +1126,7 @@ Android 如何观看
 软件
 - `Smarters Player`: [IPTV Smarters Player & M3U Player](https://www.androidfreeware.mobi/download-apk-com-iptv-smart-player.html)
 - `TiviMate`: [TiviMate IPTV Player for Android  V 4.7.0](https://en.softonic.com/download/tivimate-iptv-video-player-ott/android/post-download)
-- 【2024-4-5】开源免费的安卓电视直播软件 [My TV](lyrics.run/my-tv.html)
+- 【2024-4-5】开源免费的安卓电视直播软件 [My TV](http://lyrics.run/my-tv.html) —— 【2024-10】无法播放，意思跑路
   - 内置直播源，直接安装即可使用，具有稳定、快速、免费和无广告等特点。
   - GitHub：[My TV](http://www.github.com/lizongying/my-tv)，直接点击 [链接](https://github.com/lizongying/my-tv/releases/download/v1.7.3/my-tv-v1.7.3.apk) 下载即可
 
@@ -1131,13 +1139,13 @@ Android 如何观看
 
 | Name | Best For | Fees  | Ratings | Website |
 | --- | --- | --- | --- | --- |
-| **[Xtreme HD IPTV](https://softwaretesthelp.com/Xtreme-HD)** | Access to thousands of premium channels across the globe. | Starts at $15.99 per month | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://xtremehdiptv.org/billing/aff.php?aff=429) |
-| **[IPTV Trends](https://iptvtrends.com/billing/aff.php?aff=19)** | 4K Video Quality Support | Starts at $18.99 | ![Star_rating_4.5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_4.5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_4.5_of_5.png) | [Visit](https://iptvtrends.com/billing/aff.php?aff=19) |
-| **[Tubi](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US)** | Free Movie, TV Show, and Anime Streaming | Free |  ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US) |
-| **[Red Bull TV](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US)** | Watch extreme sports events live with AR | Free | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US) |
-| **[Pluto TV](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US)** | Access Library of  Cult Movies and  Spanish Language support | Free |![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US) |
-| **[IPTV](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US)** | Extended Playlists History | Free | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US) |
-| **[IPTV Smarters Pro](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US)** | Fully Customizable OTT Experience | Free.  $1.62 for the premium version allows streaming on upto 5 devices. | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png)](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US) |
+| **[Xtreme HD IPTV](https://softwaretesthelp.com/Xtreme-HD)** | Access to thousands of premium channels across the globe. | Starts at $15.99 per month | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://xtremehdiptv.org/billing/aff.php?aff=429) |
+| **[IPTV Trends](https://iptvtrends.com/billing/aff.php?aff=19)** | 4K Video Quality Support | Starts at $18.99 | ![Star_rating_4.5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_4.5_of_5.png) | [Visit](https://iptvtrends.com/billing/aff.php?aff=19) |
+| **[Tubi](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US)** | Free Movie, TV Show, and Anime Streaming | Free |  ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.tubitv&hl=en_US&gl=US) |
+| **[Red Bull TV](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US)** | Watch extreme sports events live with AR | Free | ![Star_rating_5_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/04/Star_rating_5_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nousguide.android.rbtv&hl=en_US&gl=US) |
+| **[Pluto TV](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US)** | Access Library of  Cult Movies and  Spanish Language support | Free |![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en_US&gl=US) |
+| **[IPTV](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US)** | Extended Playlists History | Free | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=ru.iptvremote.android.iptv&hl=en_IN&gl=US) |
+| **[IPTV Smarters Pro](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US)** | Fully Customizable OTT Experience | Free.  $1.62 for the premium version allows streaming on upto 5 devices. | ![Star_rating_4_of_5](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/07/Star_rating_4_of_5.png) | [Visit](https://play.google.com/store/apps/details?id=com.nst.iptvsmarterstvbox&hl=en_IN&gl=US) |
 
 
 #### Mac 环境
