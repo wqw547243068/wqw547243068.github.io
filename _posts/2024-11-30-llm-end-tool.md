@@ -20,10 +20,47 @@ permalink: /llm_end_tool
 - 离线状态下进行大模型应用开发调试
 - 开发一些不依赖于网络的本地化大模型应用。
 
+## 大模型服务平台
+
+
+### huggingface
+
+详见站内: [huggingface](huggingface)
+
+
+### 魔搭
+
+阿里云魔搭社区（modelscope)
+
+
+### MindSpore
+
+华为昇思
+
+### 硅基流动
+
+清华主导的大模型服务平台 [硅基流动](https://cloud.siliconflow.cn/)
+
+一站式云服务平台，SiliconCloud 为开发者提供更快、更便宜、更全面、体验更丝滑的模型API。
+- SiliconCloud已上架包括Qwen2.5-72B、DeepSeek-V2.5、Qwen2、InternLM2.5-20B-Chat、BCE、BGE、SenseVoice-Small、Llama-3.1、FLUX.1、DeepSeek-Coder-V2、SD3 Medium、GLM-4-9B-Chat、InstantID在内的多种开源大语言模型、图片生成模型、代码生成模型、向量与重排序模型以及多模态大模型。
+- 其中，Qwen2.5（7B）、Llama3.1（8B）等多个大模型API免费使用，让开发者与产品经理无需担心研发阶段和大规模推广所带来的算力成本，实现“Token 自由”。
+- 提供开箱即用的大模型推理加速服务，为您的 GenAI 应用带来更高效的用户体验。
+
+【2025-2-6】搭载 华为昇腾版 DeepSeek
+- 付费才能使用
+- 人脸验证通过支付宝，失败
+
+[DeepSeek部署在云端，1分钟配置完成](https://mp.weixin.qq.com/s/DKwUOk8HuCMzea93PhKwUA)
+- 新用户有14元奖励
+- 充值需要人脸验证
 
 ## 总结
 
 当前比较出名的有两个产品`Ollama`和`LMstudio`。
+- ollama 问题
+  - 强制安装在C盘
+  - 终端操作
+
 
 ### Ollama vs LMStudio
 
@@ -59,11 +96,101 @@ LMstudio
 
 ## LM Studio
 
-[LM Studio](https://lmstudio.ai/) 一款低门槛产品，整个模型运行管理都界面化操作。
+[LM Studio](https://lmstudio.ai/) 一款低门槛产品，整个模型运行管理都**界面化**操作。
 - 相较于 ollama，LMStudio 定位是一个功能全面的**闭源**平台
 - 拥有一系列强大的特性和简单易用的操作界面，提供了一套完整的工具组合，用于训练、评估和部署模型，既适合科研也适合实际应用环境。
 
 适合大部分人，特别是初学者或者非技术人员使用。
+
+
+### 安装
+
+[LM Studio](https://lmstudio.ai/) 官网下载 Windows 版本
+
+#### 终端服务
+
+终端启动服务
+
+```sh
+lms server start
+```
+
+#### api 
+
+
+本地主机上运行的API服务器访问LM Studio中的LLM。请求和响应格式均遵循OpenAI的API标准。要使用本地服务器，用户需首先安装LM Studio，然后从应用程序中搜索并下载所需的LLM模型。
+
+支持的端点
+- GET /v1/models
+- POST /v1/chat/completions
+- POST /v1/embeddings
+- POST /v1/completions
+
+其中，POST /v1/embeddings是LM Studio 0.2.19中的新功能。
+
+示例
+
+```sh
+# 检查当前加载的模型
+curl http://localhost:1234/v1/models
+
+# 本地服务器上发起推断请求，需使用OpenAI的“Chat Completions”格式。
+curl http://localhost:1234/v1/chat/completions \
+-H "Content-Type: application/json" \
+-d '{ 
+  "messages": [
+    { "role": "system", "content": "You are a helpful coding assistant." },
+    { "role": "user", "content": "How do I init and update a git submodule?" }
+  ],
+  "temperature": 0.7,
+  "max_tokens": -1,
+  "stream": true
+}'
+
+```
+
+文本嵌入
+
+```sh
+curl http://localhost:1234/v1/embeddings \
+-H "Content-Type: application/json" \
+-d '{
+    "input": "Your text string goes here",
+  "model": "model-identifier-here"
+}'
+```
+
+#### 问题:国内受限
+
+问题:
+- 国内模型下载受限
+
+解决
+- `huggingface.co` -> `hf-mirror.com`
+- 找到两个文件，路径如下：(这两个文件较大,10+m, sublime text打开受阻，改用 vs code)
+  - `\resources\app\.webpack\main\index.js`
+  - `\resources\app\.webpack\renderer\main_window.js`
+- 批量替换: 将两文件内的`huggingface.co`替换为`hf-mirror.com`, 以vscode为例：
+  - ctrl+shift+h 调出批量替换（若同时打开两文件，可同时替换）
+  - ctrl+alt+enter 应用替换
+
+#### 问题:文件无法保存
+
+【2025-2-6】实践问题: 文件无法保存
+
+win10 修改文件读写权限（管理员权限）
+- 右键 -> 属性 -> `安全` -> `编辑`
+- 找到你的用户
+- 在下方修改此用户对该文件的读写权限
+
+参考
+- [无法修改后无法保存](https://blog.csdn.net/Gu_fCSDN/article/details/104327423)
+- 原文链接：https://blog.csdn.net/qq_45361790/article/details/145384771
+
+### 功能
+
+LM Studio 核心功能包括
+- 发现、下载和运行本地LLMs。用户可以通过直观的图形界面轻松下载并加载各种模型。其广泛支持的模型库包括HuggingFace上的ggml Llama、MPT和StarCoder模型（如Llama 2、Orca、Vicuna等）。
 
 
 
@@ -371,6 +498,20 @@ ollama 模型转换，量化
 
 ollama rag方案
 - [知乎](https://zhuanlan.zhihu.com/p/699837647)
+
+
+
+## 国产
+
+
+
+### CherryStudio
+
+[CherryStudio](https://cherry-ai.com/) 是一个支持多平台的AI客户端，支持 Win、macOS、Linux平台,未来也会支持移动端。
+- 集成了超过 300 多个大语言模型
+
+项目自24年7月至今已迭代数百个版本
+
 
 
 
