@@ -700,6 +700,57 @@ OTA的快速发展，对ECU刷写提出了更高的要求，要能适应各种�
 
 只需要几年时间，人们的观念可能会发生颠覆性的改变。全球每年死于车祸的人数超过百万。尽管汽车行业在过去几十年中不断的追求更加安全，但收效甚微，因为最大的不安全因素就是人本身。由机器代替人来驾驶，会让车祸概率大幅减小。无人驾驶每出现一起车祸，都会成为天下尽知的新闻。
 
+
+## 方案
+
+目前量产并产品化的车端自动驾驶方案
+- 基于**纯视觉环视**自动驾驶方案: 特斯拉, 
+- 纯相机方案 + 雷达与激光雷达方案: 如 Mobileye 的 True Redundancy方案，形成一冗余的自动驾驶方案。
+
+这两种方案对移动平台的算力要求不容忽视，就 Tesla 2021 AI DAY 公布的FSD chip就达到144TOPS，Mobileye面向L4级自动驾驶推出的EyeQ Ultra，其AI算力更是能够达到176TOPS。虽然两者在TOPS上面都不是最出彩的，但拼算力的背后，也道出了算法模型复杂度不断攀升的原因。
+
+另外，还有经济实用且性价比超高的**自动驾驶外装产品**
+- 来自 Comma.ai 的 Openpilot，仅仅用一款乐视手机以及高通骁龙821芯片，搭载openpilot software，就能实现L2+自动驾驶。
+
+### 效果
+
+
+2020年基于消费者使用评价进行统计出来的评测报告
+- ![](https://pic4.zhimg.com/v2-256149c40aa535fcedecc8cb9ddf9d53_1440w.jpg)
+- 源自 报告 [consumer-reports-active-driving-assistance-systems-november-16-2020.pdf](https://data.consumerreports.org/wp-content/uploads/2020/11/consumer-reports-active-driving-assistance-systems-november-16-2020.pdf)
+
+
+### 纯视觉
+
+Tesla
+
+### 雷达
+
+视觉+雷达（激光）
+
+
+
+### Openpilot
+
+Openpilot 整体产品表现还是比较惊艳
+- 首款开源的基于端到端（Perception to Planning）的辅助驾驶系统
+- 采用自标定模块，相机安装简单
+- 整体算法思路很新奇
+  - 将感知+规划放到一个model
+  - 引入时序信息
+  - 关注最危险的几个目标/输出速度
+- 数据体系/生态体系完善
+  - 积累了大量数据
+  - 用户可以自行上传数据
+  - 开源社区共同服务
+
+系统架构
+
+![](https://pic4.zhimg.com/v2-d69648e7815d2661078639f703317ecb_1440w.jpg)
+
+【2022-6-7】[Openpilot EP1：Openpilot开源项目深度解析](https://zhuanlan.zhihu.com/p/497686355)
+
+
 ## 问题
 
 ### 数据
@@ -1358,6 +1409,34 @@ Waymo 与 FSD V12 选择相同路线, 但因为 **Waymo 没有能力处理环岛
 V12 可以丝滑处理环岛所以先到达，领先一个环岛的时间
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1305379797&bvid=BV1RM4m1z7vd&cid=1566435380&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+
+## 油车智驾
+
+
+### Openpilot
+
+【2025-2-7】[Openpilot](https://github.com/commaai/openpilot) 开源系统，l2级别的**辅助驾驶**，美国加州的创业公司 [comma.ai](https://comma.ai/shop/comma-3x)
+- [一个43.8k star的自动驾驶系统开源项目：Openpilot](https://zhuanlan.zhihu.com/p/667555493)
+
+该系统通常需要汽车具备`ACC`主动式定速巡航系统和辅助转向或相似系统，以实现对汽车油门、刹车及方向盘的控制。
+
+软件可安装在安卓手机上，如红米手机
+
+openpilot 为受支持的汽车品牌、车型和车型年份执行`自适应巡航控制`（ACC）、`自动车道保持`（ALC）、`前向碰撞警告`（FCW）和`车道偏离警告`（LDW）功能。
+
+此外，当 openpilot 启动时，基于 camera 的驾驶员监控（DM）功能会提醒分心和打瞌睡的驾驶员。
+
+Openpilot 官方版本支持 车道保持 、ACC巡航、自动辅助变道。
+- 车道保持：控制方向盘，使车辆保持在左右两车道正中间。
+- ACC巡航：检测前车、障碍物，根据前车速度调节车速（油门、刹车），与前车保持安全距离。
+- 自动辅助变道：当驾驶员需要切换车道时，需要打开转向灯（常亮），确认变向车道安全后，然后朝变道方向轻推方向盘，车辆将驶向旁边车道，变道完成后，需要驾驶员关闭转向灯。
+
+0.6.4 之后的版本在测试过程中发现，如果没有车道线情况下，会跟随前车轨迹行驶
+
+Openpilot 软件本身暂时不支持 AEB 刹车，只能在激活自动驾驶的时候，检测到前方车辆或障碍物距离太近，提示用户或刹车减速。
+
+![](https://pic2.zhimg.com/v2-4f96529833b01b1cebb70336e2c10def_1440w.jpg)
 
 
 # 结束
