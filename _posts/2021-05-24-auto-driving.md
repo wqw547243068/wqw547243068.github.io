@@ -1341,6 +1341,24 @@ Transformer模型作为NLP与图片视频领域中，最重要的模型构架，
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yMS1frAMqkE?si=0FNd0nssGymS135n" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
+## Waymo
+
+世界最强无人驾驶汽车 Waymo
+
+美国洛杉矶无人驾驶体验视频  google waymo
+- [视频](https://www.douyin.com/video/7467322155127065871)
+
+
+### waymo vs tesla
+
+[Waymo vs FSD V12](https://www.bilibili.com/video/av1305379797)
+
+Waymo 与 FSD V12 选择相同路线, 但因为 **Waymo 没有能力处理环岛**，导致目的地附近的环岛 Waymo 选择直行通过再下一个路口调头回来再环岛右转
+
+V12 可以丝滑处理环岛所以先到达，领先一个环岛的时间
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=1305379797&bvid=BV1RM4m1z7vd&cid=1566435380&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
 
 # 结束
 
