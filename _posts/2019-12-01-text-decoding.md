@@ -22,7 +22,7 @@ permalink: /text_decoding
 - ![](https://uploads-ssl.webflow.com/5fdc17d51dc102ed1cf87c05/60adb96dd09ceb13f5d35c3f_sequence.png)
 - Seq2Seq模型中，RNN Encoder对输入句子进行编码，生成一个大小固定的 hidden state $h_c$
 - 结合先前生成的第1到t-1个词 $x_{1~t-1}$, RNN Decoder会生成当前第t个词的 hidden state $h_t$
-- 最后通过softmax函数得到第t个词 $x_t$ 的 词汇概率分布 vocabulary probability distribution $P(x|x_{1:t-1})$
+- 最后通过softmax函数得到第t个词 $x_t$ 的 词汇概率分布 vocabulary probability distribution $P(x\|x_{1:t-1})$
 
 生成时模型一个时间步一个时间步依次输出，前面时间步的结果影响后面时间步的结果。即每一个时间步，模型给出的都是<font color='blue'>基于历史生成结果的条件概率</font>。
 - 生成完整的句子，需要一个称为`解码`的额外动作来融合模型多个时间步的输出，使得最终序列的每一步条件概率连乘起来最大。
