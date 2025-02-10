@@ -40,8 +40,6 @@ jobs:
         #uses: actions/upload-pages-artifact@v1
         if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'webapp'
 
   # Deployment job
   deploy:
