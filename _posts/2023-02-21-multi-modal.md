@@ -1843,5 +1843,11 @@ Emu3 是在语言、图像和视频**混合数据模态**上从头开始训练�
 Emu3 保留了主流大语言模型（即 Llama-2）的网络架构。不同点在于，其扩展了 Llama-2 架构中的嵌入层，以容纳离散的视觉token。网络中使用RMSNorm进行归一化。其还使用了GQA注意力机制、SwiGLU激活函数和一维旋转位置编码（RoPE）等技术，并并去除了注意力模块中QKV层和线性投影层中的偏置。此外，还采用了0.1的dropout率来提高训练的稳定性，使用QwenTokenizer对多语言文本进行编码。详细架构配置表。
 
 
+#### Janus-Pro-7B
+
+
+【2025-2-7】 DeepSeek Janus-Pro-7B，详见站内专题 [DeepSeek 专题](deepseek#janus)
+
+
 # 结束
 
