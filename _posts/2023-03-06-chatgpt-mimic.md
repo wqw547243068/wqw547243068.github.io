@@ -3,7 +3,7 @@ layout: post
 title:  ChatGPT复现之路
 date:   2023-03-06 12:00:00
 categories: 大模型
-tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议 mamba jamba ttt
+tags: gpt 文本生成 ChatGPT 评测 蒸馏 llama 开源 协议 mamba jamba ttt mistral moe
 excerpt: ChatGPT复现笔记
 mathjax: true
 permalink: /chatgpt_mimic
@@ -3062,7 +3062,7 @@ WebCPM 成功实践了 BMTools, 中文领域首个基于交互式网页搜索的
 - “金色摔倒”，不出意外的话，机翻成了“golden fall”，也就是“金色的秋天”。
 - “中国论文”，它画了一幅山水画，为啥？因为论文是“paper”，但“chinese paper”是宣纸，所以它画了一幅水墨画象征宣纸。作为佐证。
 - 真正输入“中国纸”画出来的结果。
--n“法国粉笔”，它画了个法国人的“炭笔素描”（chalk）。
+- “法国粉笔”，它画了个法国人的“炭笔素描”（chalk）。
 - 树叶封面苹果，“封面”就是“cover”，“cover”就是“覆盖”，很明白吧？
 - 画菜名，什么鱼香肉丝、松鼠鳜鱼、红烧狮子头，画出来的莫名其妙的东西，并不是人工智能天真可爱，而是汉译英的功夫不到家，难为了羊皮里的外国程序。
 
@@ -3505,6 +3505,113 @@ GPT-4在评测记录中，55%的评测记录是优于BLOOMChat的
 BLOOMChat 是一个新的、开放的、多语言的聊天 LLM。
 - SambaNova 和 Together 使用 SambaNova 独特的可重构数据流架构在 SambaNova DataScale 系统上训练了 BLOOMChat；
 - 建立在 BigScience 组织的 BLOOM 之上，并在 OpenChatKit、Dolly 2.0 和 OASST1 的 OIG 上进行了微调。
+
+### Mistral
+
+
+#### Mistral AI
+
+法国的AI初创公司 [Mistral AI](https://mistral.ai/news/mixtral-of-experts/) 发布了首个开源MoE大模型。87GB的种子，8x7B的MoE架构，像一款mini版「开源GPT-4」
+- 2023年6月，[Mistral AI](https://mistral.ai/news/mixtral-of-experts/)上线。7页PPT，获得欧洲历史上最大的种子轮融资, 1.13亿美元。
+- 2023年9月，`Mistral 7B`发布，号称是当时最强的70亿参数开源模型。
+- 2023年12月，类GPT-4架构的开源版本`Mistral 8x7B`发布。几天后，外媒金融时报公布Mistral AI最新一轮融资4.15亿美元，估值高达20亿美元，翻了8倍。
+
+如果 Mistral 内部训练了**34B**×8E或者甚至**100B+**×8E级别的模型，那他们的能力很有可能已经无限接近GPT-4了
+
+Mistral 从诞生之初就充满传奇光环。成立4周，6人团队，7页PPT，8亿融资（1.05亿欧元）
+- 创始人 Arthur Mensch 是1993年出生的法国小伙，在谷歌工作3年后，在自己31岁时离开谷歌，拉拢了两位Llama模型的开发者，一起创立了这个日后可以和OpenAI、Anthropic分庭抗礼的公司。
+- Mensch 于2020年初加入了谷歌，成为DeepMind的研究员，他的研究方向是提高AI和机器学习系统的效率。那时他27岁。
+
+#### 模型时间线
+
+关键模型
+
+| 时间       | 模型      | 链接    | 特点       |
+| ---------- | --------------- | -------------- | ----------- |
+| 2023年9月27日 | `Mistral 7B`      | [Mistral 7B](https://www.datalearner.com/ai-models/pretrained-models/Mistral-7B) | 拥有 73 亿参数，使用变换器架构和分组查询注意力（GQA）机制，在多个基准测试中表现出色，超越了 LLaMA2-13B 模型，代码能力接近 CodeLlama 7B，以 Apache 2.0 协议开源，商用友好。 |
+| 2023年12月11日 | `Mixtral 8x7B`    | [Mixtral 8x7B](https://developer.aliyun.com/article/1395351)         | 首个 MoE 开源模型，采用 8 个专家模型组成的集成系统，性能优于 Llama 2 70B，推理速度更快，在 Apache 2.0 许可证下可商用。 |
+| 2024年2月26日  | `Mistral Large`   | [Mistral Large](https://sspai.com/post/86727)                        | 上下文窗口包含 32,000 个 token，稳定性和快速输出速度，执行具体指令精准，允许定制内容审查政策。 |
+| 2024年7月  | `Mistral Large 2` | [Mistral Large 2](https://www.jiqizhixin.com/articles/2024-07-25)    | 更大的 128,000 个上下文窗口，增强推理能力，减少产生「幻觉」或不相关信息的倾向，确保可靠和准确的输出。 |
+| 2024年11月 | `Pixtral-Large`   | [Pixtral-Large](https://news.qq.com/rain/a/20241120A00YYR00)         | 拥有 1230 亿参数，在多个基准测试中表现优秀，成为目前最强的开源大模型。 |
+
+
+#### Le Chat
+
+
+##### Web 端
+
+【2024-2-26】法国人工智能公司 Mistral AI 推出聊天机器人 [Le Chat](https://chat.mistral.ai/chat) ，背后接入多款模型
+- Le Chat can use `Mistral Large` or `Mistral Small`, `Mistral Next`
+
+Le Chat APP 是AI对话助手应用。
+- 支持自然语言对话、实时网页搜索、文档分析和图像生成等功能。
+
+Le Chat采取"免费基础版+企业定制付费"策略，但如何平衡开源生态与商业变现仍是难题。
+
+##### 客户端
+
+【2025-2-6】[Le Chat](https://chat.mistral.ai/chat)升级, App Store 上架 ios客户端，仅支持 iPhone / iPad
+- 功能之一：响应速度全球最快，详见 [Flash Answers](https://help.mistral.ai/en/articles/268659-flash-answers)
+
+[速度超越DeepSeek！Le Chat 1100tok/s闪电回答，ChatGPT 4o和DeepSeek R1被秒杀？](https://mp.weixin.qq.com/s/iXsYGiHNE7gqrreKo25SYw)
+
+以"比ChatGPT快10倍"的惊人宣言震动业界
+
+巴黎第十区一栋不起眼的办公楼里，Mistral团队用9个月时间创造了令硅谷侧目的奇迹。这家由前DeepMind、Meta工程师组建的初创公司，凭借Le Chat实现了对行业巨头的弯道超车。其核心突破在于：
+1. "减法哲学"模型架构 
+  - 采用参数效率优化技术，在保持1750亿参数规模下，通过动态稀疏激活机制，使推理速度提升83%。这种"关键路径优先"的思维方式，颠覆了传统大模型盲目堆参数的研发逻辑。
+2. 硬件-算法协同革命 
+  - 与欧洲超算中心合作开发的NeuroSync加速芯片，通过脉冲神经网络架构将内存带宽利用率提升至92%，配合定制化模型蒸馏技术，实现端到端延迟降低至0.12秒。
+3. 文化基因的降维打击  
+  - 团队将法国哲学中的"结构主义"思想注入AI训练，采用"概念拓扑映射"方法重构知识图谱，使逻辑推理效率较Transformer架构提升37%。这种人文与科技的跨界融合，正在重塑AI的认知范式。
+
+速度对比：Le Chat vs ChatGPT 4o vs DeepSeek R1
+- `ChatGPT 4o`：作为OpenAI的旗舰产品，ChatGPT 4o 以其强大的语言理解和生成能力著称。然而，其响应速度一直受诟病。  
+  - ChatGPT 4o 平均处理速度约为 **300**tok/s，处理复杂任务时可能会让用户感到等待时间较长。
+- `DeepSeek R1`：作为新兴的AI产品，DeepSeek R1在功能上与ChatGPT 4o不相上下，但在**速度上也未能取得突破**。
+  - 处理速度约为**500**tok/s，比ChatGPT 4o快一些
+- `Le Chat`：`Le Chat` 处理速度达到了惊人的**1100**tok/s，几乎是ChatGPT 4o的**4倍**，DeepSeek R1的**2倍多**。
+  - 同样任务下，Le Chat 能够以**闪电般**的速度给出回答，极大地提升了用户体验。
+
+#### Mistral-MoE
+
+- 论文 [LLaMA: Open and Efficient Foundation Language Models](https://arxiv.org/pdf/2302.13971.pdf), 作者中两人是 [Mistral AI](https://mistral.ai/news/mixtral-of-experts/) 创始人
+- [文档](https://docs.mistral.ai/)
+- [api](https://docs.mistral.ai/api/), 提供三种接口: Chat, Embedding, Models
+
+- Jupiter Notebook：[demo.ipynb](https://github.com/dvmazur/mixtral-offloading/blob/master/notebooks/demo.ipynb)
+- 项目地址：[mixtral-offloading](https://github.com/dvmazur/mixtral-offloading/tree/master?tab=readme-ov-file)
+
+huggingface： [mistralai](https://huggingface.co/mistralai)
+- [mistralai/Mixtral-8x7B-v0.1](https://huggingface.co/mistralai/Mixtral-8x7B-v0.1)
+- [mistralai/Mixtral-8x7B-Instruct-v0.1](https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1)
+- [mistralai/Mistral-7B-Instruct-v0.1](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1)
+- [mistralai/Mistral-7B-v0.1](https://huggingface.co/mistralai/Mistral-7B-v0.1)
+
+详见 站内 [MoE 专题](moe)
+
+
+#### Mistral Large
+
+【2024-2-26】开源 8x7B Mistral 模型而名声大噪的 Mistral AI 推出新旗舰大语言模型 `Mistral Large`。在推理能力方面，与 GPT-4 和 Claude 2 等其他顶级模型相媲美, 仅次于 GPT-4
+- [官方介绍](https://mistral.ai/news/mistral-large/)
+- ![](https://mistral.ai/images/news/mistral-large/mistral-large-bar-plot.png)
+
+Mistral AI 还推出基于 Mistral Large 的新服务 [Le Chat](https://chat.mistral.ai/chat)，作为 ChatGPT，Claude 2 以及 Gemini 的竞品，目前只需邮箱注册即可**免费**使用
+
+Mistral Large 特点：
+- 母语是流利的英语、法语、西班牙语、德语和意大利语，对语法和文化背景有细致入微理解。
+- **32K** token上下文窗口允许从大型文档中精确调用信息。
+- 精确**指令遵循**（Instruction-following）能力：开发人员能够设计审核策略 —— le Chat 的系统级审核的基础。
+- 支持**函数调用**。与在 la Plateforme 上实施的受限输出模式一起，实现了大规模应用程序开发和技术堆栈现代化。
+
+Mistral 宣布与微软进行合作，Azure 上提供服务，以下方式获得模型：
+- **La Plateforme**：开发人员能够在该平台上接触到所有模型并创建应用程序和服务。
+- **Azure**：Mistral Large 可通过Azure AI Studio 和 Azure Machine Learning 使用，并提供与 API 一样丝滑的用户体验。
+- **自己部署**：Mistral 模型可以部署在本地环境中，用于私人化应用，并可以访问模型权重
+
+
+
 
 ### 360智脑
 
