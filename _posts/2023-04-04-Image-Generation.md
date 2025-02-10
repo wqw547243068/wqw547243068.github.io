@@ -920,6 +920,9 @@ Midjourney 的内容限制确实比其他竞争对手（例如 OpenAI 的 DALL-E
 可使用的AI作画平台
 - github: [awesome-ai-painting](https://github.com/hua1995116/awesome-ai-painting)
 
+文生图: [flux](https://www.blinkshot.io/)
+
+
 #### 📪 国外
 
 |Name                   | Tags   |URL                |
