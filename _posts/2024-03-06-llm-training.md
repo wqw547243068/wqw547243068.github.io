@@ -2352,6 +2352,50 @@ Qwen-VL 系列模型特点：
 ### 数据
 
 
+#### 数据格式
+
+【2025-2-13】模板
+- 单轮template为：bos + system + sep + query
+- 多轮template为：bos + system + sep + query_1 + response_1 + ... + query_n-1 + response_n-1 + query_n
+
+其中,qwen 里特殊字符取值
+
+|符号|取值|备注|
+|---|---|---|
+| bos | 空 | |
+| system message | `You are a helpful assistant.` | |
+| sep | `\n` | |
+| query | <`|im_start|`>user\n`{query}`<`|im_end|`>\n<`|im_start|`>assistant\n | |
+
+示例
+
+```py
+query="<|im_start|>system\n{system}<|im_end|>".format(system="You are a helpful assistant.")
+
+# 单轮的模版
+"""<|im_start|>system\n{system}<|im_end|>\n \
+<|im_start|>user\n{query}<|im_end|>\n \ 
+<|im_start|>assistant\n""".format(
+    system="You are a helpful assistant.", 
+    query="用户的输入"
+)
+
+# 多轮的模版
+"""<|im_start|>system\n{system}<|im_end|>\n \
+<|im_start|>user\n{query1}<|im_end|>\n<|im_start|> \
+assistant\n{response1}<|im_end|>\n \
+<|im_start|>user\n{query2}<|im_end|>\n \
+<|im_start|>assistant\n""".format(
+                                system="You are a helpful assistant.", 
+                                query1="用户的第一次输入", 
+                                response1="智能助手的第一次回复", 
+                                query2="用户的第二次输入"
+)
+
+```
+
+[参考](https://zhuanlan.zhihu.com/p/678611154)
+
 #### Tokenizer
 
 词表大小影响者模型的训练效率和下游任务效果，Qwen采用开源快速`BPE`分词器-`tiktoken`，以cl100k为基础词库，增加了常用的中文字词以及其他语言的词汇，并把数字字符串拆成单个数字，最终词表大小为152K。
