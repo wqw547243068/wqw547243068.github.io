@@ -2391,10 +2391,11 @@ assistant\n{response1}<|im_end|>\n \
                                 response1="智能助手的第一次回复", 
                                 query2="用户的第二次输入"
 )
-
 ```
 
 [参考](https://zhuanlan.zhihu.com/p/678611154)
+
+
 
 #### Tokenizer
 
