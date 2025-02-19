@@ -3,7 +3,7 @@ layout: post
 title:  LLM 大模型训练之路
 date:   2024-03-06 12:00:00
 categories: 大模型
-tags: ChatGPT 训练 罗福莉
+tags: ChatGPT 训练 罗福莉 数据集
 excerpt: 大模型训练原理，如何训练，有什么经验？
 mathjax: true
 permalink: /llm_train
@@ -556,6 +556,23 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 数据集进行预处理时引入  "system"、"input" 和 "output" 三个字段
 - "system"、"input" 字段用于保存<span style='color:red'>不需要计算 loss 的文本</span>，如 系统或用户指令
 - 而 "output" 字段则用于保存 需要计算 loss 的文本，如 输入指令对应的 GroundTruth 回答。
+
+
+### 数据集
+
+
+公开数据集
+- [openbayes](https://openbayes.com/console/public/datasets) 包含大模型各类公开数据集
+
+
+|数据集|功能|大小|来源|分析|备注|
+|---|---|---|---|---|---|
+|[OpenO1-SFT](https://openbayes.com/console/public/datasets/qWrfbTlLLgk/1/overview)|OpenO1-SFT 监督微调 CoT 数据集|881m|[openbayes](https://openbayes.com/console/public/datasets)|链式思维 (Chain-of-Thought) ，增强模型生成连贯逻辑推理序列能力||
+|[Dolphin-R1](https://openbayes.com/console/public/datasets/cEUOmW7arLz/1/overview)|R1 推理数据集|训练类似 DeepSeek-R1 的推理模型提供高质量的样本|2.2g|[openbayes](https://openbayes.com/console/public/datasets)||
+|||||||
+|||||||
+|||||||
+|||||||
 
 
 
