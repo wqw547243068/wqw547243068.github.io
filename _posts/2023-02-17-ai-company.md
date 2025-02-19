@@ -1119,7 +1119,8 @@ OpenAI
 - 2024年2月，Andrej Karpathy 离职, 创立 Eureka Labs
 - 2024年5月, 首席科学家 `Ilya Sutskever` 2023年底与公司董事会一起投票罢免Altman，“政变”六个月后，离开OpenAI，创立安全超级智能公司 `SSI`
 - 2024年8月, 联合创始人、总裁`布罗克曼` (`Greg Brockman`) 开始休假, 至2024年年底
-- 2024年8月, 模型对齐关键人物 John Schulman 离职， 加入 Anthropic, 深入关注AI对齐问题的愿望，同时开启职业生涯的新篇章
+- 2024年8月, 模型对齐关键人物 `John Schulman` 离职， 加入 Anthropic, 深入关注AI对齐问题的愿望，同时开启职业生涯的新篇章
+  - PPO 算法发明人，OpenAI 的创始人之一，曾共同领导过 ChatGPT 和 OpenAI 后训练团队
 - 2024年9月26日, 公司CTO，“宫斗”风波中暂代CEO一职的`穆拉蒂`离开。
 - 2025年2月19日, 穆拉蒂 宣布创业
 
