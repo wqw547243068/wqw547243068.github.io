@@ -909,6 +909,9 @@ OpenAI 在生成式大模型贡献很大，没有 OpenAI 就不会有现在的 g
 
 ### 团队成员
 
+
+#### 创始团队
+
 【2023-2-23】[揭秘ChatGPT背后的AI“梦之队”](https://www.huxiu.com/article/801616.html)
 
 OpenAI 官网显示，为 ChatGPT 项目做出贡献的人员共 87 人 (总人数 350人)。现就该团队成员职务构成、年龄分布、教育背景、人员流动、华人成员、成员贡献、性别分布等数据进行统计分析，并总结归纳其特征。
@@ -1109,6 +1112,28 @@ OpenAI LP 当时拥有约 100 名员工，主要分为三个领域：**能力**�
 - Olah 参与的 OpenAI 多模态神经元论文：多年以前有研究者发现，大脑中的一些神经元可以对模态不同但概念相同的触发条件产生反应，比如当提到“哈莉·贝瑞”的名字、照片、简笔画像的时候，同一个神经元都可以产生反应。
 - OpenAI 的多模态神经元研究，基于该机构今年发布的 CLIP 泛用性视觉系统。论文作者发现在 CLIP 的神经网络倒数第二层也存在这样的一颗“神经元” （Neuron 244）。这项研究预示着，“抽象”这一自然视觉领域的概念，很可能在计算机合成视觉领域同样存在。
 
+#### OpenAI 团队散伙
+
+OpenAI 
+- 联合创始人、前首席科学家伊尔亚·苏茨克韦（`Ilya Sutskever`）早已离开并成立AI安全公司SSI（safe superintelligence，安全超级智能）
+- 2024年2月，Andrej Karpathy 离职, 创立 Eureka Labs
+- 2024年5月, 首席科学家 `Ilya Sutskever` 2023年底与公司董事会一起投票罢免Altman，“政变”六个月后，离开OpenAI，创立安全超级智能公司 `SSI`
+- 2024年8月, 联合创始人、总裁`布罗克曼` (`Greg Brockman`) 开始休假, 至2024年年底
+- 2024年8月, 模型对齐关键人物 John Schulman 离职， 加入 Anthropic, 深入关注AI对齐问题的愿望，同时开启职业生涯的新篇章
+- 2024年9月26日, 公司CTO，“宫斗”风波中暂代CEO一职的`穆拉蒂`离开。
+- 2025年2月19日, 穆拉蒂 宣布创业
+
+此前，OpenAI联合创始人`约翰·舒尔曼`（John Schulman）、OpenAI原“超级对齐”团队负责人`杨·莱克`（Jan Leike）也已离开OpenAI加入其竞争对手公司`Anthropic`，OpenAI联合创始人`安德烈·卡帕西`（Andrej Karpathy）离职, 并成立教育初创公司，OpenAI的副总裁、ChatGPT负责人`Peter Deng`也已被曝离职。
+
+[图](https://imagecloud.thepaper.cn/thepaper/image/323/711/518.png)
+- ![](https://imagecloud.thepaper.cn/thepaper/image/323/711/518.png)
+
+参考
+- 【2024-8-11】[11人走了9人，OpenAI创始团队“分崩离析”](https://news.qq.com/rain/a/20240811A03U4900)
+- 【2024-9-26】[OpenAI首席技术官宣布离职，或取消非营利性董事会控制权，奥特曼有望获股权](https://www.thepaper.cn/newsDetail_forward_28860466)
+- 【2025-2-19】[官宣：Mira Murati 的创业公司，顶级团队打造开放的 OpenAI](https://mp.weixin.qq.com/s/RP2mzuO6-ebubKe4aOeWTg)
+
+
 #### Elon Musk
 
 2018年2月底，马斯克却突然在上周宣布辞任OpenAI董事会职务，当然原因并不是“自己付不起钱了”，而是“为了避特斯拉的嫌”。
@@ -1298,6 +1323,19 @@ Alignment 是 OpenAI  区别于 Google 等大厂的重要能力，Jan Leike 带�
 Mira Murati：OpenAI 新晋 CTO ，引领了 OpenAI 在 AI 安全上的探索。
 
 Mira 的背景十分有趣，在加入 OpenAI 之前，Mira 在 Leap Motion 负责产品和工程（Leap Motion  是 MidJourney  CEO 的上一个创业项目），Mira 在职业生涯早期还曾在 Tesla 担任产品。我们认为 Mira 可能是人机交互领域最重要的 PM 之一。
+
+
+##### 离职
+
+
+2024年9月26日，OpenAI CTO（首席技术官）米拉·穆拉蒂（Mira Murati）离职。
+
+离职“进行自己的探索”，而现在的首要任务是尽自己所能确保平稳过渡，保持OpenAI已经建立起来的势头。
+
+OpenAI 四位“核心人物”合照也再次被网友翻出，并表示已经从最开始的四人变成了现在的奥特曼一人。
+
+
+##### 创业
 
 【2025-2-19】 [Mira Murati 的创业公司，顶级团队打造开放的 OpenAI](https://mp.weixin.qq.com/s/RP2mzuO6-ebubKe4aOeWTg)
 
