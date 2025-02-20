@@ -159,17 +159,87 @@ MLOps 和 LLMOps 有许多相似之处，但是，它们之间的差异取决于
 ### ML模型部署方式
 
 【2023-7-2】 机器学习模型部署四种方式 [链接](https://www.toutiao.com/w/1770309546056711)
-- Batch 批处理部署
-- Stream 流式部署
-- Real Time 实时部署
-- Edge 边缘部署
+- (1) Batch 批处理部署
+- (2) Stream 流式部署
+- (3) Real Time 实时部署
+- (4) Edge 边缘部署
+
 - ![图解](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/72d049b3fb99406f97ec318a589f4743~tplv-obj:1117:1215.image?_iz=97245&from=post&x-expires=1696204800&x-signature=4UD2E%2Bt7imiB%2BP03TntHk1Dep34%3D)
+
+
+#### 批处理部署
+
+
+
+#### 流式部署
+
+
+
+
+#### 实时部署
+
+
+
+#### 端侧部署
+
+
+xgb 部署在端侧设备
+
+js 库
+- xgboost [参考](https://www.javascriptcn.com/post/6005664381e8991b448e252c)
+- [mljs/xgboost](https://github.com/mljs/xgboost)
+
+```sh
+npm install xgboost # ①
+npm install ml-xgboost # ②
+```
+
+方法②使用
+
+```js
+import IrisDataset from 'ml-dataset-iris';
+
+require('ml-xgboost').then(XGBoost => {
+    var booster = new XGBoost({
+        booster: 'gbtree',
+        objective: 'multi:softmax',
+        max_depth: 5,
+        eta: 0.1,
+        min_child_weight: 1,
+        subsample: 0.5,
+        colsample_bytree: 1,
+        silent: 1,
+        iterations: 200
+    });
+
+    var trainingSet = IrisDataset.getNumbers();
+    var predictions = IrisDataset.getClasses().map(
+        (elem) => IrisDataset.getDistinctClasses().indexOf(elem)
+    );
+
+    booster.train(dataset, trueLabels);
+    var predictDataset = /* something to predict */
+    var predictions = booster.predict(predictDataset);
+
+    // don't forget to free your model
+    booster.free()
+
+    // you can save your model in this way
+    var model = JSON.stringify(booster); // string
+    // or
+    var model = booster.toJSON(); // object
+
+    // and load it
+    var anotherBooster = XGBoost.load(model); // model is an object, not a string
+});
+```
+
 
 ### 模型部署对比
 
 【2023-2-3】[AI模型部署落地综述（ONNX/NCNN/TensorRT等](https://www.toutiao.com/article/7189079539149144579)
 
-实际应用场景往往需要模型速度与精度能达到一个较好的平衡。因此这就需要在算法（剪枝，压缩等）与底层（手写加速算作）去优化模型。
+实际应用场景往往需要模型速度与精度能达到平衡。因此这就需要在算法（剪枝，压缩等）与底层（手写加速算作）去优化模型。
 - ONNX、NCNN、OpenVINO、 TensorRT、Mediapipe
 
 对比，详见[原文](https://www.toutiao.com/article/7189079539149144579)
@@ -221,7 +291,7 @@ Model Serving的主要方法: 文章[如何解决推荐系统工程难题——�
   - 结果：每个服务节点在 500 QPS(Queries Per Second， 每秒查询次数)的压力下，DIEN 模型的预估时间从 200 毫秒降至 19 毫秒。
 ![](https://pic2.zhimg.com/80/v2-8409fd79a63ce2b0231b670f8c2bfb2d_720w.jpg)
 
-### 推荐系统serving
+### 推荐系统 serving
 
 【2021-11-12】[推荐系统Serving架构分析](https://zhuanlan.zhihu.com/p/335116835)
 
@@ -233,7 +303,7 @@ NSDI 2017年发表的Clipper
 - 统一的RPC/Http接口，搭配插件化的框架。统一抽象的接口基本能适配主流场景的Tensor-In/Tensor-Out需求。同时又能统一抽象封装不同的计算框架，满足用户使用TensorFlow, Pytorch, TensorRT等不同框架的需求。
 
 推荐系统Serving
-- 在大规模推荐场景，整个系统呈现一种**漏斗**架构。不同阶段的数据量，计算量，精确度需求都不一样，是一个绝佳的思考系统设计trade-off的场景。很多时候需要考虑易用性、性能、成本和业务场景，综合作出判断。
+- 在大规模推荐场景，整个系统呈现一种**漏斗**架构。不同阶段的数据量，计算量，精确度需求都不一样，是一个绝佳的思考系统设计trade-off 场景。很多时候需要考虑易用性、性能、成本和业务场景，综合作出判断。
 
 #### 召回
 
@@ -480,7 +550,7 @@ Embedding store
  
 因此最近几年，MLOps也逐渐成为了一个热门话题。有了好的MLOps实践，算法工程师一方面能更专注于擅长的模型构建过程，减少对模型`部署运维`等方面的“感知”，另一方面也让模型开发迭代的方向更加清晰明确，切实为业务产生价值。就像今日的软件工程师很少需要关注运行环境，测试集成，发布流程等细节，但却做到了一天数次发布的敏捷高效，未来算法工程师应该也能更专注于数据insights获取方面，让模型发布成为几乎无感又快速的自动化流程。
  
-## 二、MLOps的各个步骤
+## 二、MLOps 步骤
  
 从大的方面看，MLOps分3个步骤：
 1.  项目设计，包括需求收集，场景设计，数据可用性检查等。
@@ -499,7 +569,7 @@ MLOps的核心要解决的问题之一是缩短模型开发部署的迭代周期
  
 ![image.png](https://segmentfault.com/img/bVcROQ2 "image.png")
  
-## 三、MLOps的原则
+## 三、MLOps 原则
 
  
 ### Automation
@@ -530,7 +600,7 @@ MLOps的核心要解决的问题之一是缩短模型开发部署的迭代周期
  
 与传统软件系统的确定性行为不同，机器学习中带有不少“随机化”的成分，这对各种问题的排查，版本回滚，输出效果的确定性都提出了一定的挑战。因此我们在开发过程中也需要时刻将可复现原则放在心上，设计相应的最佳实践（如设定随机数种子，运行环境等各类依赖的版本化等）。
  
-## 四、MLOps流程细节
+## 四、MLOps 流程细节
  
 我们来看下具体的机器学习项目流程，并对每一个模块中MLOps需要提供的支持进行详细的展开。
  
