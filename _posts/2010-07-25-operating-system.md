@@ -3,7 +3,7 @@ layout: post
 title:  "操作系统-Operating System"
 date:   2010-07-25 15:09:00
 categories: 计算机基础
-tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果 windows
+tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果 windows word pdf
 excerpt: 计算机操作系统知识点
 mathjax: true
 permalink: /os
@@ -106,6 +106,21 @@ AppData 里面三个文件含义
 - 清理: 
 
 原文链接：https://blog.csdn.net/qq_49973861/article/details/142360934
+
+
+#### 文档编辑
+
+
+【2025-2-20】 文档签名
+- word 文档如何在勾选方框？
+  - 方框内打“√”: 选中方框，输入2611，再选中2611，按“Alt+X”键
+  - 方框内打“×”: 选中方框，输入2612，再选中2612，按“Alt+X”键
+  - 以上方法不是普通字体，改进：
+  - 方框内打“√”: 选中方框，输入“R”，再选中"R"，将字体改为“wingdings 2”
+  - 方框内打“×”: 选中方框，输入“T”，再选中"T"，将字体改为“wingdings 2”
+  - [参考](https://zhuanlan.zhihu.com/p/663128607)
+- pdf 文档如何添加文本内容？
+  - 在线编辑工具: [smallpdf](smallpdf.com)
 
 
 ## Linux
