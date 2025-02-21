@@ -3,7 +3,7 @@ layout: post
 title:  "计算机网络-Computer Network"
 date:   2010-08-01 23:42:00
 categories: 计算机基础
-tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星 地面波 广播 蓝牙 耳机 wifi 内网穿透 
+tags: 网络 OSI 路由器 交换器 调制解调器 猫 lan wan wlan ap tcp udp 下载 种子 磁力 电视 卫星 地面波 广播 蓝牙 耳机 wifi 内网穿透 云盘
 excerpt: 计算机网络知识点
 mathjax: true
 permalink: /network
@@ -809,6 +809,41 @@ iOS 系统 / iPhone 上有什么好用的 BT / 磁力链接下载工具吗？
 - 没有。由于苹果公司的政策不允许BT / 磁力链接下载工具上架，所以你目前能看到宣称iOS版BT / 磁力链接下载工具毫无例外都涉及虚假宣传。
 - iOS 迅雷测试版和袋鼠下载，同样如此，仅仅只是虚假宣传而已，不要再去下载他们的软件以及关注他们的公众号，浪费自己的时间。
 - iOS 用户想要使用磁力链接下载只能使用“曲线救国”的方案，例如通过 [PikPak 在线网盘](https://kejileida.net/4700)进行，或者其他第三方在线网站 Bitport 等网站进行，再保存到本地。
+
+### 云盘
+
+【2025-2-21】 [油小猴](https://www.youxiaohou.com/zh-cn/assistant.html)
+
+云盘下载受限，怎么办？
+- 百度云盘，网页版下载时，60m文件必须安装百度云客户端才行
+- 客户端安装后，非会员还会限制下载速度
+
+如何突破限制？
+- 浏览器安装扩展工具: 
+  - 如 [纂改猴](https://www.crxsoso.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo), 即原来的油猴,
+  - [纂改猴测试版](https://www.crxsoso.com/webstore/detail/gcalenpjmijncebpfijmoaglllgpjagf)
+  - 各个浏览器对应的油猴插件[地址](https://www.youxiaohou.com/zh-cn/windows.html#_1-%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC%E7%AE%A1%E7%90%86%E5%99%A8)
+- 安装[网盘直链下载助手](https://www.youxiaohou.com/install.html)
+- 刷新网盘文件页面，出现新的“下载助手”
+- 点击其中1个下载选项，如 “API下载”
+  - 初次使用时，会弹窗，提示关注微信公众号，获取开源协议码 （如 AGPL3 ），输入即可
+  - 提示要将文件转存到自己的网盘
+- API 下载: 适用于 IDM，NDM 以及浏览器自带下载
+- 安装 [IDM](https://www.youxiaohou.com/zh-cn/idm.html) 插件 (多线程下载工具)
+  - 故障: 未发现IDM，使用自带浏览器下载
+  - 解决: [idm无法集成到谷歌浏览器怎么解决](https://zhuanlan.zhihu.com/p/451594614)
+
+实践：
+- Chrome 插件下载失败
+- IDM 客户端下载部分失败
+- 提交官方 [IDM无法唤起，无法下载](https://github.com/syhyz1990/baiduyun/issues/447)
+
+
+#### 油猴
+
+Tampermonkey，俗称“油猴”，中文名“篡改猴”，是一款免费的浏览器扩展和最为流行的用户脚本管理器。
+
+
 
 # 网络协议
 
