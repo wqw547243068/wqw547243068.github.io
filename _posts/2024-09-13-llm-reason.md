@@ -1611,4 +1611,35 @@ R1推出后不久，Gemini-2 Flash Thinking成新霸主，现在Grok-3后来居�
 )
 
 
+### 【2025-2-15】VLM-R1
+
+【2025-2-15】[Om AI Lab](https://github.com/om-ai-lab) VLM-R1 团队将R1方法成功地应用于**视觉语言模型**，为多模态 AI 的研究开辟了新天地。
+- [VLM-R1](https://github.com/om-ai-lab/VLM-R1)
+- Qwen2.5-VL 上同时用 R1 和 SFT
+  - 域内: RL 略优于 SFT 
+  - 域外: 随着迭代步数增加, RL 大幅领先 SFT
+
+VLM-R1 表现令人惊艳。
+- 首先，R1方法在复杂场景下展现出了极高的稳定性，这在实际应用中显得尤为重要。
+- 其次，该模型在**泛化能力**方面表现卓越。
+
+对比实验中
+- 传统 SFT（Supervised Fine-Tuning）模型在领域外的测试数据上随着训练步数的增加，其性能却逐渐下滑，而 R1模型则能在训练中不断提升。
+- 这表明，R1方法使得模型真正掌握了理解视觉内容的能力，而非仅仅依赖于记忆。
+
+VLM-R1 的成功推出不仅证明了 R1方法的通用性，也为多模态模型的训练提供了新思路，预示着一种全新的视觉语言模型训练潮流的到来。
+
+### 【2025-2-25】Sonnet
+
+
+【2025-2-25】[全球首个混合推理模型：Claude 3.7 Sonnet来袭，真实编码力压一切对手](https://mp.weixin.qq.com/s/RzdrxKbHKKqtN-FvbOQsZw)
+
+Anthropic 发布最智能的模型以及市面上首款混合推理模型 —— Claude 3.7 Sonnet
+
+Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思考。
+- 「一个模型，两种思考方式」（One model, two ways to think.），即**标准**和**扩展**思考模式。
+- API 用户还可以对模型思考时间进行细粒度控制。
+
+
+
 # 结束
