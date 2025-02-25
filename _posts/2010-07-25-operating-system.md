@@ -96,6 +96,24 @@ $PSVersionTable
 
 C 盘空间不足，发现 AppData 文件夹占用空间很大，如何清理？
 
+windows 目录下 prefetch/temp/download/ system32/logfiles
+
+删除4个文件夹，每日一清，防止C盘爆满以及电脑卡顿
+
+4个文件夹为：temp Download LogFiles Prefetch
+
+| 文件夹 | 功能 | 路径 | 分析 |
+| --- | --- | --- | -- |
+| temp | 临时存储文件 | `C:\Windows\temp` ||
+| Download | 系统升级补丁及日志 | `C:\Windows\SoftwareDistribution\Download` | 腾出空间最多 |
+| LogFiles  | 日常应用文件 |`C:\Windows\System32\LogFiles` | |
+| Prefetch | 访问过的文件阅读信息 | `C:\Windows\Prefetch` | |
+| Backup | 装机/系统更新时自动备份 | `C:\Windows\winsxs\backup` | |
+
+以上文件夹可以清空，但不能删除！
+
+另外，还有 C:\Users\wqw 下
+
 AppData 里面三个文件含义
 - locallow：共享数据存放文件，一般都可以清理一些无用的共享文件。
 - `Local`：本地保存文件，其中本地临时文件，AppData\Local\Temp\下面的文件可以删除(注意是Temp)。
@@ -105,7 +123,9 @@ AppData 里面三个文件含义
 - 移动: 选择 Roaming 目录, 右键属性->位置->移动到其他位置->选择D盘文件夹。
 - 清理: 
 
-原文链接：https://blog.csdn.net/qq_49973861/article/details/142360934
+[原文链接](https://blog.csdn.net/qq_49973861/article/details/142360934)
+
+
 
 
 #### 文档编辑
