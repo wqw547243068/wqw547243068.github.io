@@ -426,6 +426,24 @@ TencentPretrain 是一个用于对文本、图像、语音等模态数据进行�
 DeepSpeed 官方文档
 - [中文](https://docs.deepspeed.org.cn/en/latest/index.html)
 
+#### deepspeed shell
+
+【2024-4-22】将 Python 文件当做 shell  命令
+
+- deepspeed 工具包安装完后，自动增加 shell 命令
+  - `deepspeed` -> `/usr/local/bin/deepspeed`
+- 直接输入 **deepspeed** 即可启用 `deepspeed`
+
+
+```py
+# cat /usr/local/bin/deepspeed6
+
+#!/usr/bin/python3
+from deepspeed.launcher.runner import main
+if __name__ == '__main__':
+    main()
+```
+
 #### deepspeed ft 流程
 
 模型微调完整流程：
