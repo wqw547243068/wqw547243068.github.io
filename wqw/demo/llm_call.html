@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙界点名系统</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #87CEEB, #ADD8E6);
+            font-family: '黑体', cursive;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #8B0000;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float 10s infinite linear;
+        }
+
+        .cloud1 {
+            top: 10%;
+            left: 10%;
+        }
+
+        .cloud2 {
+            top: 30%;
+            right: 10%;
+            animation-duration: 12s;
+        }
+
+        .cloud3 {
+            top: 50%;
+            left: 20%;
+            animation-duration: 8s;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
+
+        .card-container {
+            position: relative;
+            margin-top: 100px;
+        }
+
+        .card {
+            display: inline-block;
+            width: 300px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .card-name {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: #8B0000;
+        }
+
+        .button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: #FFD700;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight {
+            animation: glow 1s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #FFD700; }
+            100% { box-shadow: 0 0 20px #FFD700; }
+        }
+    </style>
+</head>
+<body>
+    <h1>仙界点名系统(DeepSeek实现)</h1>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-name" id="name">哪吒</div>
+            <img id="avatar" src="https://img1.baidu.com/it/u=816177519,2096346908&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=1082" alt="人物头像">
+        </div>
+    </div>
+    <button class="button" id="startBtn">开始点名</button>
+    <button class="button" id="stopBtn" style="display: none;">停止</button>
+
+    <script>
+        const characters = [
+            { name: "哪吒", url: "https://img1.baidu.com/it/u=816177519,2096346908&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=1082" },
+            { name: "敖丙", url: "https://pic.baike.soso.com/ugc/baikepic2/22392/cut-20190722122350-1907341985_jpg_458_611_88198.jpg" },
+            { name: "李靖", url: "https://pic.baike.soso.com/ugc/baikepic2/22145/cut-20190722122454-1500359777_jpg_463_617_84360.jpg" },
+            { name: "申公豹", url: "https://pic.baike.soso.com/ugc/baikepic2/7598/cut-20190722122847-318422421_jpg_462_616_81879.jpg" },
+            { name: "无量仙翁", url: "https://bkimg.cdn.bcebos.com/pic/dbb44aed2e738bd4b31cdc633cd290d6277f9e2f5315" },
+            { name: "鹤童", url: "https://bkimg.cdn.bcebos.com/pic/d043ad4bd11373f082026f3f04565cfbfbedab64ae40" },
+            { name: "鹿童", url: "https://bkimg.cdn.bcebos.com/pic/6f061d950a7b02087bf464b0f980e5d3572c11df6212" },
+            { name: "元始天尊", url: "https://bkimg.cdn.bcebos.com/pic/3c6d55fbb2fb43166d2277ffc6f0512309f7915275a3" },
+            { name: "太乙真人", url: "https://pic.baike.soso.com/ugc/baikepic2/26393/cut-20190722122706-2053673570_jpg_461_615_76551.jpg/300" },
+            { name: "殷夫人", url: "https://pic.baike.soso.com/ugc/baikepic2/27515/cut-20190722122609-359349214_jpg_461_615_68439.jpg/300" },
+            { name: "申小豹", url: "https://bkimg.cdn.bcebos.com/pic/b2de9c82d158ccbf6c8178158181ab3eb13533faebd0" },
+            { name: "石矶娘娘", url: "https://bkimg.cdn.bcebos.com/pic/8601a18b87d6277f9e2f5817b6610830e924b89956d0" },
+            { name: "敖光", url: "https://img1.baidu.com/it/u=3829481347,2790893230&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=901" },
+            { name: "敖闰", url: "https://img2.baidu.com/it/u=2250743248,2538369063&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=736" },
+            { name: "结界兽", url: "https://img0.baidu.com/it/u=4197844407,822835059&fm=253&fmt=auto&app=120&f=JPEG?w=456&h=810" },
+            { name: "海夜叉", url: "https://img0.baidu.com/it/u=1711171176,1203192647&fm=253&fmt=auto&app=120&f=JPEG?w=667&h=500" }
+        ];
+
+        let interval;
+        const startBtn = document.getElementById("startBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const nameElement = document.getElementById("name");
+        const avatarElement = document.getElementById("avatar");
+        const card = document.querySelector(".card");
+
+        startBtn.addEventListener("click", () => {
+            startBtn.style.display = "none";
+            stopBtn.style.display = "block";
+            interval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                nameElement.textContent = characters[randomIndex].name;
+                avatarElement.src = characters[randomIndex].url;
+            }, 100);
+        });
+
+        stopBtn.addEventListener("click", () => {
+            clearInterval(interval);
+            startBtn.style.display = "block";
+            stopBtn.style.display = "none";
+            card.classList.add("highlight");
+        });
+    </script>
+</body>
+</html>
