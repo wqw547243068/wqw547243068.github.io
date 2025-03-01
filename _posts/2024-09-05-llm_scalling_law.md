@@ -19,6 +19,15 @@ permalink: /llm_law
 
 ## 思考
 
+
+### Scaling Law 尽头
+
+
+2024年2月末, `唐杰`教授表示: Scaling Law的尽头不一定是AGI，从人脑的认知角度改进未来的AGI系统，使它变得更加智能，这是我们未来要思考的问题。
+
+
+### LLM 为什么都是 6b/13b/52b...
+
 [解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
 
 需求：
@@ -28,9 +37,6 @@ permalink: /llm_law
 - 10B模型不满意，扩大到100B模型，效果能提升到多少？
 
 以上这些问题都可以基于 Scaling Law 理论进行回答。
-
-
-### LLM 为什么都是 6b/13b/52b...
 
 总结
 > scaling law 指导下，匹配当前的显卡资源和数据资源
