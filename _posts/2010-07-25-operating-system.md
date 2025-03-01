@@ -143,6 +143,19 @@ AppData 里面三个文件含义
   - 在线编辑工具: [smallpdf](smallpdf.com)
 
 
+### 文档
+
+
+
+#### 免费 ppt 模版
+
+大模型生成的ppt格式有问题
+
+[7个完全免费的PPT模板下载网站](https://zhuanlan.zhihu.com/p/675256493)
+- [微软官方 ppt 模版](https://create.microsoft.com/zh-cn/search)
+- [第一ppt](https://www.1ppt.com/)
+
+
 ## Linux
 
 
