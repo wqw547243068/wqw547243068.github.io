@@ -515,6 +515,8 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 ## 训练数据
 
 
+### 数据源
+
 【2024-9-11】[大模型数据基础：预训练阶段数据详解](https://zhuanlan.zhihu.com/p/716331881)
 
 - 预训练数据集组成
@@ -574,6 +576,81 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 |||||||
 |||||||
 
+
+### 数据格式
+
+
+LLaMA-Factory 支持 alpaca 格式和 sharegpt 格式的数据集。
+
+
+#### Alpaca
+
+
+Alpaca 格式
+- `instruction` 和 `input`
+  - 指令监督微调时, `instruction` 内容会与 `input` 内容拼接后作为人类指令，`instruction\n input`。
+- `output` 列对应的内容为模型回答。
+- `system`: 如果指定，system 内容将被作为`系统提示词`。
+- `history`: 多个字符串二元组构成的列表，分别代表历史消息中每轮对话的指令和回答。
+
+注意
+- 指令监督微调时，历史消息也会被用于模型学习
+
+示例
+
+```json
+[
+  {
+    "instruction": "人类指令（必填）",
+    "input": "人类输入（选填）",
+    "output": "模型回答（必填）",
+    "system": "系统提示词（选填）",
+    "history": [
+      ["第一轮指令（选填）", "第一轮回答（选填）"],
+      ["第二轮指令（选填）", "第二轮回答（选填）"]
+    ]
+  }
+]
+```
+
+
+
+#### sharegpt
+
+
+相比 alpaca，sharegpt 格式支持更多**角色种类**，
+- 如 `human`、`gpt`、`observation`、`function` 等等。
+- `human` 和 `observation` 必须出现在**奇数**位置，`gpt` 和 `function` 必须出现在**偶数**位置。
+- 构成一个对象列表呈现在 conversations 列中。
+
+sharegpt 格式如下：
+
+```json
+[
+  {
+    "conversations": [
+      {
+        "from": "human",
+        "value": "人类指令"
+      },
+      {
+        "from": "function_call",
+        "value": "工具参数"
+      },
+      {
+        "from": "observation",
+        "value": "工具结果"
+      },
+      {
+        "from": "gpt",
+        "value": "模型回答"
+      }
+    ],
+    "system": "系统提示词（选填）",
+    "tools": "工具描述（选填）"
+  }
+]
+```
 
 
 ### 数据量
