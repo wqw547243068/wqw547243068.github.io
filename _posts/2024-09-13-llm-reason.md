@@ -1769,7 +1769,10 @@ R1推出后不久，Gemini-2 Flash Thinking成新霸主，现在Grok-3后来居�
 )
 
 
-### 【2025-2-15】VLM-R1
+### 多模态
+
+
+#### 【2025-2-15】VLM-R1
 
 【2025-2-15】浙江大学博导赵天成博士与[Om AI Lab](https://github.com/om-ai-lab)团队成功把DeepSeek R1从纯文本领域成功迁移到了视觉语言领域，这是DeepSeek R1模型首次突破到视觉推理层面。 
 
@@ -1789,6 +1792,43 @@ VLM-R1 表现令人惊艳。
 - R1方法使得模型真正掌握了理解视觉内容的能力，而非仅仅依赖于记忆。
 
 VLM-R1 的成功推出不仅证明了 R1方法的通用性，也为多模态模型的训练提供了新思路，预示着一种全新的视觉语言模型训练潮流的到来。
+
+
+#### 【2025-3-3】Visual-RFT
+
+
+【2025-3-4】 [DeepSeek R1迁移多模态，已开源](https://mp.weixin.qq.com/s/T7nc3Y_tZJH4YiI6coUdpw)
+
+DeepSeek-R1 继文本、数学推理、代码等领域大放异彩后，其基于**规则奖励**的强化学习方法首次成功迁移到**多模态**领域
+
+【2025-3-3】上海较大、AI实验室等推出 `Visual-RFT`（Visual Reinforcement Fine-Tuning），全面开源。
+
+这一突破性技术使得视觉语言大模型具备更强的泛化能力，能以极少的样本完成高质量微调，在目标检测、分类、推理定位等任务中取得显著提升，甚至超越传统指令微调（SFT）方法。
+- 论文地址： [Visual-RFT: Visual Reinforcement Fine-Tuning](https://arxiv.org/pdf/2503.01785) 
+- 开源代码： [Visual-RFT](https://github.com/Liuziyu77/Visual-RFT)
+
+Visual-RFT (Visual Reinforcement Fine-Tuning) 在**视觉感知**任务中采用强化学习方法的模型微调技术，并借鉴 DeepSeek-R1 的强化学习策略（GPRO），为多模态任务引入**可验证奖励**（Verifiable Rewards） 机制，以增强大视觉语言模型（LVLMs, Large Vision-Language Models） 在不同任务上的推理能力。
+
+主要创新点：
+- 强化学习迁移至视觉领域：突破传统认知，首次在多模态视觉大模型中验证基于规则奖励的有效性。
+- 极少样本高效微调：相比传统 SFT 方法，Visual-RFT 仅需少量数据（10～1000 条样本）即可实现显著提升。
+- 任务广泛：适用于 目标检测、开放目标检测、少样本分类和推理定位等任务。
+- 推理能力增强：能够分析问题，进行 “think” 推理，从而实现更精准的视觉理解。
+
+核心奖励函数
+- 目标检测：采用 IoU 奖励（Intersection-over-Union, IoU Reward），通过计算预测边界框与真实边界框的重叠程度，确保模型不仅能识别目标，还能精准定位，提高检测的准确性和稳定性。
+- 图像分类：采用分类准确性奖励（Classification Accuracy Reward, CLS Reward），通过对比模型预测类别与真实类别是否一致进行奖励，引导模型在有限数据下仍能精准区分细粒度类别，提升分类泛化能力。
+- 推理定位：采用推理一致性奖励（Reasoning Consistency Reward），分析模型的推理逻辑是否符合指令，并结合 IoU 计算目标定位的准确性，确保模型不仅能回答问题，还能给出合理的思考过程，提高视觉推理能力。
+
+Visual-RFT VS 传统 SFT：
+
+|方法|数据需求|泛化能力|推理能力|
+| ---- | ---- | ---- | ---- |
+|SFT（监督微调）|需要大量数据|泛化能力有限|仅依赖已有数据|
+|Visual-RFT|仅需10～1000条数据|泛化能力强|能推理&解释| 
+
+实验基于Qwen2-VL-2B/7B视觉语言模型，Visual-RFT 在以下任务中均大幅超越传统 SFT 方法
+
 
 ### 【2025-2-25】Sonnet
 
