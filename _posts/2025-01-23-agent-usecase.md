@@ -448,6 +448,9 @@ PC Agent 也能轻松对标类似 Claude 3.5 Sonnet 的演示任务 —— 展�
 - 自动查询航班信息
 - Hugging Face 上搜索和保存模型信息
 
+
+#### 使用
+
 pip:
 
 ```sh
@@ -462,7 +465,6 @@ playwright install
 from langchain_openai import ChatOpenAI
 from browser_use import Agent
 import asyncio
-
 
 async def main():
     agent = Agent(
@@ -482,6 +484,58 @@ asyncio.run(main())
 OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
 ```
+
+
+【2025-3-3】 实践
+
+官方示例无法运行，浏览器一直卡在空白页，无法动弹
+- [issue](https://github.com/browser-use/browser-use/issues/839#issuecomment-2689881272) 里提到原因是 deepseek 模型不支持多模态问答，导致页面卡主
+- 解法: Agent 初始化参数里，增加参数，关闭视觉交互功能
+
+修正后的代码
+
+```py
+# pip install browser-use
+# #（可选）安装剧作家：
+# pip install playwright -i https://pypi.tuna.tsinghua.edu.cn/simple/
+# playwright install
+# pip install langchain_openai langchain
+
+from langchain_openai import ChatOpenAI
+from browser_use import Agent
+import asyncio
+
+API_KEY='sk-d9c612ac9d3d460eb78f865d3674f862'
+
+chat = ChatOpenAI(
+    model='deepseek-chat',
+    openai_api_key=API_KEY,
+    openai_api_base='https://api.deepseek.com',
+    max_tokens=1024
+)
+
+res = chat.predict('你好')
+print(f'[Debug] 大模型接口有效性验证, 返回结果: {res}')
+
+task_desc="Find a one-way flight from Bali to Oman on 12 January 2025 on Google Flights. Return me the cheapest option."
+task_desc = """
+打开网易, 找出热门新闻，按照主题汇总，返回5条国际政治新闻
+"""
+# task_desc = "打开财联社https://www.cls.cn/telegraph，获取前十条资讯"
+
+async def main():
+    agent = Agent(
+        task=task_desc,
+        llm=chat,
+        use_vision=False, # ds 不支持视觉模型, 导致 浏览器卡主,一直空白
+        max_failures=2,
+    )
+    result = await agent.run()
+    print(result)
+
+asyncio.run(main())
+```
+
 
 ### GLM-PC
 
