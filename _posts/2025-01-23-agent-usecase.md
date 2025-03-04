@@ -666,6 +666,29 @@ Each response is separated into three parts:
 | `Runner H` | H Company|67%| 
 
 
+### 【2025-3-4】Pokee AI
+
+【2025-3-4】[比 OpenAI Operator 准确率高10倍的AI Agent - Pokee AI](https://zhuanlan.zhihu.com/p/27831108136)
+
+Pokee AI 无需编码或复杂集成，即可无缝使用数百种互联网工具，不仅能检索信息，还能代替你执行任务 —— 只需一个自然语言指令！
+
+Pokee AI 核心技术：基于最新的强化学习（RL）智能体研究与小型语言模型（LLM）相结合，智能性不断进化
+
+[Pokee AI](pokee.ai) 最新通用智能体的演示视频
+- 比 OpenAI 的 `Operator` 和 Anthropic `Computer Use` 快10倍，可靠性高10倍
+
+所有三个应用场景中全面碾压 OpenAI Operator：
+- **数据科学**：从 Google Cloud Database 读取原始销售数据，自动生成 Google Sheets 和 Slides 详细分析报告。
+  - ✅ Pokee 67秒完成 —— Operator 失败 ❌
+- **社交媒体 & 广告**：通过模糊搜索，自动在 Shopify 商店 查找商品，并结合亚马逊用户评价生成完整的 Facebook & Instagram 广告。
+  - ✅ Pokee 在 110 秒内完成 —— Operator 失败 ❌
+- **会议管理**：基于一封邮件，自动安排投资人会议，附上 Zoom 会议链接和商业计划书。
+  - ✅ Pokee 速度比Operator快8 倍 —— Operator 任务完成但存在关键错误 ⚠️
+
+
+
+
+
 ## 阅读 Readagent
 
 阅读能力超强的Agent模型——Readagent
