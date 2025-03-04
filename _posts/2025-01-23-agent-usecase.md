@@ -279,14 +279,14 @@ Eko的跨平台开发是通过其环境感知架构（Environment-Aware Architec
 - 质量评估：使用GPT-4o评分每个指令的流畅性和多样性，确保数据质量。
 
 
-### 实在 Agent
+### 【2023-8】实在 Agent
 
 2023 年 8 月，国人团队“实在智能”，就已率先推出国内外首个“实在 Agent”智能体。
 
 该智能体借助垂直大语言模型 TARS，调用 RPA 和 ISSUT 来完成点击、输入、下载等任务。它无需 API，能够为企业员工配备全能业务专家，实现超自动化执行以及自然对话式交互，堪称智能办公的“AI 个人助理”。用户可以通过实在智能官网下载 AI 产品“实在 Agent 智能体”。
 
 
-### AppAgent
+### 【2023-12-21】AppAgent
 
 【2023-12-21】AI能模仿人类在手机上操作APP了
 
@@ -318,17 +318,17 @@ AppAgent在50 个任务上进行了广泛测试，涵盖了10种不同的应用�
 - [体验地址](https://github.com/niuzaisheng/ScreenAgent)
 
 产品信息:
-- ScreenAgent是一款由吉林大学人工智能学院开发、视觉语言大模型驱动的计算机控制代理。
+- ScreenAgent 是一款由吉林大学人工智能学院开发、视觉语言大模型驱动的计算机控制代理。
 
 产品功能:
-- ScreenAgent可帮助用户在无需辅助定位标签的情况下，通过VLM Agent控制电脑鼠标和键盘，实现大模型直接操控电脑的功能。
+- ScreenAgent 可帮助用户在无需辅助定位标签的情况下，通过VLM Agent控制电脑鼠标和键盘，实现大模型直接操控电脑的功能。
 
-ScreenAgent可根据用户的文本描述查找并播放指定的视频
+ScreenAgent 可根据用户的文本描述查找并播放指定的视频
 
-例如，ScreenAgent可根据用户的文本描述查找并播放指定的视频，或根据用户要求调整视频播放速度。ScreenAgent还能帮用户打开Windows系统的事件查看器，使用office办公软件，例如根据用户文本描述，删除指定的PPT内容。
+例如，ScreenAgent 可根据用户的文本描述查找并播放指定的视频，或根据用户要求调整视频播放速度。ScreenAgent还能帮用户打开Windows系统的事件查看器，使用office办公软件，例如根据用户文本描述，删除指定的PPT内容。
 
 
-### Mobile-Agent
+### 【2024-6-18】Mobile-Agent
 
 [Mobile-Agent-v2问世:AI手机助手全面升级](https://zhuanlan.zhihu.com/p/704115822?utm_psn=1786674594259718145)
 
@@ -369,7 +369,7 @@ Mobile-Agent-v2 引入了创新的**多代理协作架构**。
 Mobile-Agent-v2在多项指标上，无论在英文还是非英文场景，都表现出了全面的提升。此外，通过人为增加操作知识（Mobile-Agent-v2 + Know.），性能得到了进一步的增强。
 
 
-### TinyAgent
+### 【2024-9-7】TinyAgent
 
 【2024-9-7】[边缘智能革命：TinyAgent实现端侧复杂功能调用智能体](https://mp.weixin.qq.com/s/KLjy6RQ1yN_JgpHghM2iGw)
 - UC Berkeley [TinyAgent: Function Calling at the Edge](https://arxiv.org/pdf/2409.00608)
@@ -404,7 +404,7 @@ Mobile-Agent-v2在多项指标上，无论在英文还是非英文场景，都�
 最终模型在这项任务上实现了80.06%和84.95%的TinyAgent1.1.B和7B模型，超过了GPT-4-Turbo的79.08%的成功率。
 
 
-### ComputerUse
+### 【2024-10-23】ComputerUse
 
 【2024-10-23】Claude 推出 [ComputerUse](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) ，可以像人类一样使用计算机了？查看屏幕、移动光标、点击按钮、输入文本，还能查找代码错误、自动搜集信息填表，并向开发者提供了API
 
@@ -412,7 +412,7 @@ Mobile-Agent-v2在多项指标上，无论在英文还是非英文场景，都�
 
 基准测试中，Claude 在 OSWorld 电脑操作评估测试中获得了 14.9% 的成绩，远超其他 AI 模型的 7.8% 最高分，但与人类的 70 - 75% 的水平相比仍有相当大的差距。当用户提供更多完成任务所需的步骤时，Claude 的得分可以提升到 22.0%。
 
-### PC Agent
+### 【2024-12-23】PC Agent
 
 【2024-12-23】 [刘鹏飞老师组研发PC Agent，让 AI 替你熬夜做 PPT](https://mp.weixin.qq.com/s/4QObP5fUxmKf5m74ZF1vSw)
 
@@ -438,10 +438,8 @@ PC Agent 也能轻松对标类似 Claude 3.5 Sonnet 的演示任务 —— 展�
 - 能够记录和重复执行特定操作
 - 支持自定义动作（如保存文件、推送数据库等）
 
-
-
 评测
-- Browser Use 大幅领先 Web Voyager, Computer Use, AgentE, Runner H 0.1
+- `Browser Use` 大幅领先 `Web Voyager`, `Computer Use`, `AgentE`, `Runner H 0.1`
 
 实际应用案例：
 - 自动搜索和申请工作机会
@@ -537,7 +535,7 @@ asyncio.run(main())
 ```
 
 
-### GLM-PC
+### 【2024-11-29】GLM-PC
 
 【2024-1-23】[智谱Agent抢跑OpenAI，GLM-PC一句话搞定一切！网友：有AGI那味了](https://news.qq.com/rain/a/20250123A082TM00)
 
@@ -572,7 +570,7 @@ GLM-PC
 智谱AGI
 - AI实现L3之后，通过不断优化工具使用能力，正为L4阶段——自主学习发明创新奠定了扎实的技术基础。
 
-### Operator
+### 【2025-1-24】Operator
 
 2024年7月，OpenAI 发布了“从AI到AGI的五步过程”：
 - Level 1：Chatbots，AI可以以对话的方式与人互动。
@@ -581,7 +579,7 @@ GLM-PC
 - Level 4：Innovators，AI可以开发创新性的AI。
 - Level 5：Organizations，AI可以完成一个组织完成的工作。
 
-OpenAI表示自己还只处于 Level 1 阶段，正在靠近 Level 2。
+OpenAI 表示自己还只处于 Level 1 阶段，正在靠近 Level 2。
 
 而现在，随着Operator的发布，奥特曼宣布：进入 Level 3 的开始。
 
@@ -625,6 +623,47 @@ Operator 可以看到网页界面内容，使用鼠标、键盘允许的所有�
 如果遇到问题或者出现错误，Operator 可以利用推理能力自我纠错。并在它卡住需要帮助时，将控制权交还给用户。
 
 CUA 在 WebArena 和 WebVoyager两个基准测试中都取得了SOTA。
+
+
+### 【2025-2-25】Proxy-lite
+
+
+【2025-2-25】 Convergence AI 发布轻量级网页自动化助手模型 `Proxy-lite`。
+- 基于 `Qwen 2.5-VL-3B-Instruct` 微调的 3B 参数视觉语言模型 (VLM)，能够自主完成网页浏览和操作任务。
+
+Proxy Lite：轻量级（只有3B参数）、开源、能使用电脑的代理助手。
+
+Proxy Lite 是3B参数的视觉语言模型(VLM)，为开源社区带来了最先进的网络自动化能力。
+
+WebVoyager 结果，Proxy Lite 在网络自动化任务中表现出色，资源占用也非常低。
+1. Proxy Lite 提供全面的**VLM-浏览器交互框架**，给予企业级浏览器控制能力。
+2. Proxy Lite 响应通过三个独特步骤完成，实现了比传统的**提示-预测**模型更好的泛化能力： 
+  - 观察：评估上一步的成功情况。 
+  - 思考：推理出下一步该做什么。 
+  - 工具调用：决定在浏览器中采取哪种行动。
+3. 借助类似 DeepSeek R1 执行反馈，Proxy Lite 学会了观察和推理，使其能够在广泛的任务上取得进展。
+
+Each response is separated into three parts:
+- `Observation`: assesses the success of the previous step
+- `thinking`: reasons through what to do next
+- `tool_call`: decides what action to take in the browser
+
+资料
+- 项目：[proxy-lite](github.com/convergence-ai/proxy-lite), 含演示视频
+- 模型：[proxy-lite-3b](huggingface.co/convergence-ai/proxy-lite-3b)
+- Blog：[proxy_lite](convergence.ai/proxy_lite/)
+
+
+效果评测
+- ![](https://convergence.ai/wp-content/uploads/2025/02/Proxy_Launch_Blog_Post_Chart_Large-1-1536x1028.png)
+
+|产品|公司|数字|
+| ---- | --- | ---- |
+|`Proxy` | Convergence |88%|
+| `Operator` | OpenAi |87%|
+|`Agent E` | Emergence |73.1%|
+|`Proxy Lite` | Convergence |72%|
+| `Runner H` | H Company|67%| 
 
 
 ## 阅读 Readagent
