@@ -31,31 +31,6 @@ LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，�
 
 LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
 
-## 功能
-
-LangChain 构建的有趣应用程序包括（但不限于）：
-- 聊天机器人
-- 特定领域的总结和问答
-- 查询数据库以获取信息然后处理它们的应用程序
-- 解决特定问题的代理，例如数学和推理难题
-
-垂直领域知识库问答架构变化
-- 【2023-7-20】[LangChain+LLM大模型问答能力搭建与思考](https://zhuanlan.zhihu.com/p/644740531)
-
-|架构图|BERT时代|LLM时代|
-|---|---|---|
-|图解|![](https://pic3.zhimg.com/80/v2-5131febf61f6359b0b8ca0d4bfe8e47e_720w.webp)|![](https://pic2.zhimg.com/80/v2-bf954fc376f7fe41aee068b32bab6919_1440w.webp)|
-|分析|query理解异常重要|LLMs直接把模块的工作包揽了下来，原本的query分词、分类、纠错、关键词等工作变成了制定合适的Prompt|
-
-
-
-### 文档介绍
-
-- [官方文档](https://python.langchain.com/en/latest/index.html), [中文文档](https://python.langchain.com.cn/docs/get_started/quickstart)
-- [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
-- Github: [python版本](https://github.com/hwchase17/langchain )(已经有4W多的star), [go语言版](https://github.com/tmc/langchaingo)
-- [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
-- 【2023-8-2】[京东云LangChain简介](https://www.zhihu.com/question/609483833/answer/3146379316)
 
 
 ## LangChain 生态
@@ -267,6 +242,71 @@ conversation.predict(input="Hi there!") # -> 'Hello! How can I assist you today?
 conversation.predict(input="I'm doing well! Just having a conversation with an AI.") # -> "That sounds like fun! I'm happy to chat with you. Is there anything specific you'd like to talk about?"
 conversation.predict(input="Tell me about yourself.")
 ```
+
+## 功能
+
+LangChain 构建的有趣应用程序包括（但不限于）：
+- 聊天机器人
+- 特定领域的总结和问答
+- 查询数据库以获取信息然后处理它们的应用程序
+- 解决特定问题的代理，例如数学和推理难题
+
+垂直领域知识库问答架构变化
+- 【2023-7-20】[LangChain+LLM大模型问答能力搭建与思考](https://zhuanlan.zhihu.com/p/644740531)
+
+|架构图|BERT时代|LLM时代|
+|---|---|---|
+|图解|![](https://pic3.zhimg.com/80/v2-5131febf61f6359b0b8ca0d4bfe8e47e_720w.webp)|![](https://pic2.zhimg.com/80/v2-bf954fc376f7fe41aee068b32bab6919_1440w.webp)|
+|分析|query理解异常重要|LLMs直接把模块的工作包揽了下来，原本的query分词、分类、纠错、关键词等工作变成了制定合适的Prompt|
+
+
+
+### 文档介绍
+
+- [官方文档](https://python.langchain.com/en/latest/index.html), [中文文档](https://python.langchain.com.cn/docs/get_started/quickstart)
+- [GPT开发利器LangChain指北](https://mp.weixin.qq.com/s/VGtjETMC-hRTAiL6hp5gyg)
+- Github: [python版本](https://github.com/hwchase17/langchain )(已经有4W多的star), [go语言版](https://github.com/tmc/langchaingo)
+- [基于LangChain从零实现Auto-GPT完全指南](https://aitechtogether.com/python/105086.html)
+- 【2023-8-2】[京东云LangChain简介](https://www.zhihu.com/question/609483833/answer/3146379316)
+
+
+### 示例
+
+LangChain组件：
+- LLM：语言模型抽象层
+- PromptTemplate：提示词模板
+- LLMChain：将LLM和提示词模板串联起来
+
+简易问答系统代码
+
+```py
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
+import os
+
+# 加载环境变量
+load_dotenv()
+
+# 初始化LLM
+llm = OpenAI(temperature=0.7)
+
+# 创建提示模板
+prompt = PromptTemplate(
+    input_variables=["question"],
+    template="请回答下面的问题：{question}"
+)
+
+# 创建chain
+chain = LLMChain(llm=llm, prompt=prompt)
+
+# 测试运行
+response = chain.run("什么是人工智能？")
+print(response)
+```
+
+
 
 
 ## LangChain 组件
@@ -1458,7 +1498,7 @@ agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbos
 agent.run("Ask a question related to the documents")
 ```
 
-#### Agent 的类型
+#### Agent 类型
 
 Agent Type
 - zero-shot-react-description: 只考虑当前的操作，不会记录以及参考之前的操作。react 表明通过 ReAct 框架进行推理，description 表明通过工具的 description 进行是否使用的决策。
@@ -1489,8 +1529,10 @@ Agents可以调用那些工具完成任务？
 | Wolfram-Alpha | WA 搜索插件——可以回答复杂的数学、物理或任何查询，将搜索查询作为输入。 |
 | Python REPL | 用于评估和执行 Python 命令的 Python shell。它以 python 代码作为输入并输出结果。输入的 python 代码可以从 LangChain 中的另一个工具生成 |
 
-Agent通过调用wikipedia工具，对用户提出的问题回答。尽管gpt-3.5功能强大，但是其知识库截止到2021年9月，因此，agent调用wikipedia外部知识库对用户问题回答。回答过程如下：
-- a. 分析用户输入问题，采取的Action为通过Wikipedia实现，并给出了Action的输入
+Agent 通过调用 wikipedia 工具，对用户提出的问题回答。尽管gpt-3.5功能强大，但是其知识库截止到2021年9月，因此，agent调用wikipedia外部知识库对用户问题回答。
+
+回答过程如下：
+- a. 分析用户输入问题，采取的 Action 为通过 Wikipedia 实现，并给出了Action的输入
 - b. 根据分析得到了最相关的两页，并进行了总结
 - c. 对最后的内容进一步提炼，得到最终答案
 
@@ -1499,16 +1541,28 @@ import os
 from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.llms import OpenAI
+# from langchain.agents import AgentType
 
 openai_api_key = 'sk-F9xxxxxxx55q8YgXb6s5dJ1A4LjA'
 os.environ['OPENAI_API_KEY'] = openai_api_key
 llm = OpenAI(temperature=0)
-tools = load_tools(["wikipedia","llm-math"], llm=llm)
-agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
+
+tools = load_tools(["wikipedia","llm-math",'serpapi'], llm=llm)
+
+agent = initialize_agent(
+        tools, 
+        llm, 
+        agent="zero-shot-react-description", 
+        # agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, # 或
+        verbose=True
+)
+
 print(agent.run("列举spaceX星舰在2022年后的发射记录?"))
+print(agent.run("今天的日期是多少？2024年有多少天？"))
 ```
 
-多种方式可以自定义 Tool，最简单的方式是通过 @tool 装饰器，将一个函数转为 Tool。注意函数必须得有 docString，其为 Tool 的描述。
+
+多种方式可以**自定义** Tool，最简单的方式是通过 @tool 装饰器，将一个函数转为 Tool。注意函数必须得有 docString，其为 Tool 的描述。
 
 ```py
 from azure_chat_llm import llm
@@ -1550,7 +1604,7 @@ LangChain 使用 Memory 组件保存和管理历史消息，这样可以跨多�
 - 2）ConversationBufferWindowMemory：以原始形式保存最新的 n 条记录
 - 3）ConversationBufferMemory：以原始形式保存所有记录通过查看 chain 的 prompt，可以发现 {history} 变量传递了从 memory 获取的会话上下文。下面的示例演示了 Memory 的使用方式，可以很明细看到，答案是从之前的问题里获取的。
 
-langchain提供不同的Memory组件完成内容记忆，下面列举四种：
+langchain 提供不同的Memory组件完成内容记忆，下面列举四种：
 - `ConversationBufferMemory`：记住**全部对话内容**。这是最简单的内存记忆组件，它的功能是直接将用户和机器人之间的聊天内容记录在内存中。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8b04d8cc8c8f462bafa21bc473066efc~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=ljnOnmukL7V9UH5OzY4l%2BpwkfpU%3D)
 - `ConversationBufferWindowMemory`：记住**最近k轮**的聊天内容。与之前的ConversationBufferMemory组件的差别是它增加了一个窗口参数，它的作用是可以指定保存多轮对话的数量。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a830075b33094ef38f3aea87010fdd58~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=BbNKPeRu0j9knJWw02kEPUOu1uI%3D)
   - ​在该例子中设置了对话轮数k=2，即只能记住前两轮的内容，“我的名字”是在前3轮中的Answer中回答的，因此其没有对其进行记忆，所以无法回答出正确答案。
@@ -1559,6 +1613,7 @@ langchain提供不同的Memory组件完成内容记忆，下面列举四种：
   - ConversationSummaryMemory[第二轮对话](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/ab4fbe8ad6cb4286a1e8f9e10141d2ef~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=tf%2FsfV5MF%2BIK7yWow48%2BvO%2FV%2BqY%3D): 你叫什么名字
   - 在第一轮对话完成后，Memory对第一轮对话的内容进行了总结，放到了摘要中。在第二轮对话中，LLM基于摘要与该轮的问题进行回答。
 - `VectorStored-Backed Memory`: 将所有之前的对话通过**向量**的方式存储到VectorDB（向量数据库）中，在每一轮新的对话中，会根据用户的输入信息，匹配向量数据库中**最相似的K组**对话。
+
 
 
 ```py
@@ -1575,9 +1630,14 @@ print(conversation.predict(input="1+1=?"))
 print(conversation.predict(input="我的姓名是什么"))
 ```
 
+注
+- `ConversationBufferMemory` 会存储**所有**对话历史，对于长对话可能会**消耗较多token**。
+- `ConversationBufferWindowMemory` 只保留**最近几轮**对话。实际项目中使用
+
+
 国内不少LLm团队采用langChain，集成llm本地化知识库
-- langChain，babyAGI 想做AGI生态，这个就有些力不从心了。autoGPT好一点，相对简单。
-- langChain，babyAGI的子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
+- langChain，babyAGI 想做AGI生态，=力不从心。autoGPT好一点，相对简单。
+- langChain，babyAGI 子模块，都是几百个。特别是langChain，模块库居然有600多张子模块map架构图
 
 [无需OpenAI API Key，构建个人化知识库的终极指南](https://mp.weixin.qq.com/s/ponKZ1OaHXX2nzuSxXg8-Q)
 
