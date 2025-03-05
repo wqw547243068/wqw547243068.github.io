@@ -503,7 +503,7 @@ from langchain_openai import ChatOpenAI
 from browser_use import Agent
 import asyncio
 
-API_KEY='sk-d9c612ac9d3d460eb78f865d3674f862'
+API_KEY='sk-******'
 
 chat = ChatOpenAI(
     model='deepseek-chat',
