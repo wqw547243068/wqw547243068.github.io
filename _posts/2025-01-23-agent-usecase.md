@@ -319,9 +319,15 @@ Manus 更想做的，是你在数字世界中，字面意义上的「代理人�
 
 ### 【2023-8】实在 Agent
 
-2023 年 8 月，国人团队“实在智能”，就已率先推出国内外首个“实在 Agent”智能体。
+2023 年 8 月，国内团队 [实在智能](https://www.ai-indeed.com/)，率先推出国内外首个“实在 Agent”智能体。
 
-该智能体借助垂直大语言模型 TARS，调用 RPA 和 ISSUT 来完成点击、输入、下载等任务。它无需 API，能够为企业员工配备全能业务专家，实现超自动化执行以及自然对话式交互，堪称智能办公的“AI 个人助理”。用户可以通过实在智能官网下载 AI 产品“实在 Agent 智能体”。
+该智能体借助垂直大语言模型 `TARS`，调用 RPA 和 ISSUT 来完成点击、输入、下载等任务。
+- 无需 API，能够为企业员工配备全能业务专家，实现超自动化执行以及自然对话式交互，堪称智能办公的“AI 个人助理”。
+- 用户可以通过[实在智能](https://www.ai-indeed.com/)官网下载 AI 产品“实在 Agent 智能体”。
+
+实在Agent（智能体）是全球首款具备“大脑和手脚”、能够自主规划执行任务，自动操作软件的智能体产品。作为企业级的AI智能办公助理，它将助力企业迈入高效、智能的未来办公新时代。
+
+基于自研的塔斯大模型，实在Agent能够精准理解用户意图，将用户的口语化描述拆解为具体的流程和步骤。这使得传统的大模型不再只是“说说而已”，而是真正能够自动操作电脑、手机以及车载屏幕上的各种软件和APP的超级AI智能体，让用户实现“一句话完成工作”。
 
 
 ### 【2023-12-21】AppAgent
@@ -478,6 +484,44 @@ PC Agent 也能轻松对标类似 Claude 3.5 Sonnet 的演示任务 —— 展�
 
 评测
 - `Browser Use` 大幅领先 `Web Voyager`, `Computer Use`, `AgentE`, `Runner H 0.1`
+
+#### webui
+
+【2025-1-6】 Browser-Use WebUI 是基于Gradio构建的用户界面，简化与浏览器代理的交互，允许用户通过图形界面与AI模型进行对话。
+- [browser-use/web-ui](https://github.com/browser-use/web-ui)
+
+该工具主要功能：
+- 自动化浏览器操作：Browser-Use WebUI能够模拟人类用户的行为，自动执行各种浏览器操作，如填写表单、点击链接和抓取数据。这使得用户可以高效地完成重复性任务。
+- 支持多种大型语言模型：该工具支持多种AI模型，包括OpenAI、Anthropic、Gemini和DeepSeek等，用户可以根据需要选择合适的模型进行任务处理
+- 自定义浏览器支持：用户可以使用自己的浏览器，无需重复登录或处理认证问题。这一功能使得用户能够保持浏览器会话的持续性，方便查看AI交互的历史记录和状态
+- 高质量屏幕录制：借助Playwright的功能，Browser-Use WebUI支持高质量的屏幕录制，用户可以记录操作过程，便于后续分析和回顾
+- 简化的环境配置：用户只需安装Python 3.11或更高版本，并按照简单的步骤安装依赖和配置环境，即可快速启动WebUI
+
+安装
+
+```sh
+git clone https://github.com/browser-use/web-ui.git # 拉取项目
+cd web-ui # 进到这个项目里
+pip install -r requirements.txt
+pip install MainContentExtractor # 官方遗漏的依赖库
+```
+
+配置
+
+```sh
+# 启动
+python webui.py --ip 127.0.0.1 --port 7788
+```
+
+详情见[原文](https://juejin.cn/post/7457565532625321995)
+
+【2025-3-6】安装报错
+- [issue](https://github.com/browser-use/web-ui/issues/213)
+
+
+
+#### 案例
+
 
 实际应用案例：
 - 自动搜索和申请工作机会
