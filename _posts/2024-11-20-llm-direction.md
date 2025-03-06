@@ -3,7 +3,7 @@ layout: post
 title:  LLM 发展方向
 date:   2024-11-20 12:00:00
 categories: 大模型
-tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲
+tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲 自学习
 excerpt: 大模型会往哪个方向发展？
 mathjax: true
 permalink: /llm_direction
@@ -480,6 +480,74 @@ EasyEdit 还提供了五个评估编辑方法性能的关键指标，包括`可�
 
 详见 [LLM 架构代码详解](llm_code)
 
+
+### 自学习
+
+
+
+#### 【2025-3-4】MIT PRefLexOR
+
+
+解决什么问题
+- 面对**跨领域**难题，AI输出像**碎片拼图**毫无逻辑
+- 模型遇到新场景就“**痴呆**”，需要反复调教
+- 重要决策时，AI推理过程**不可信**…
+
+【2025-3-4】MIT Markus 教授团队 全新自学习AI框架 [PRefLexOR](https://github.com/lamm-mit/PRefLexOR) （Preference-based Recursive Language Modeling for Exploratory Optimization of Reasoning）, 让AI像人类一样，进行深度思考和自主进化。
+- MIT 新AI**自主进化**出`思维链`：动态`知识图谱`+**跨域推理**黑科技
+- 融合`强化学习`与偏好优化的「自进化大脑」，通过递归推理和多步反思，动态生成知识图谱。
+- 不仅能动态构建知识图谱，还会像人类一样通过「**反思令牌**」迭代优化推理路径。
+- GitHub: [PRefLexOR](https://github.com/lamm-mit/PRefLexOR)
+
+![](https://pica.zhimg.com/v2-d309250b24c40d4bcda0a4d0c1dcb5fc_1440w.jpg)
+
+核心功能：动态知识图谱构建、跨领域推理能力、自主学习与进化。
+
+PRefLexOR 主要功能
+- **动态**知识图谱构建：框架不依赖预生成的数据集，通过动态生成任务和推理步骤，实时构建知识图谱，使模型能不断适应新任务，在推理过程中动态扩展知识。
+- 跨领域推理能力：PRefLexOR 能够将不同领域的知识进行整合和推理，例如在材料科学中，模型可以通过递归推理和知识图谱生成新的设计原则。
+- 自主学习与进化：通过递归优化和实时反馈，PRefLexOR 能够在训练过程中自我教学，不断改进推理策略，展现出类似人类的深度思考和自主进化能力。
+
+技术原理：递归推理与反思、偏好优化、多阶段训练。
+- **优势比**偏好优化（ORPO），模型通过优化**偏好响应**和**非偏好响应**之间的**对数几率**来对齐推理路径。
+- 同时，集成了直接偏好优化（DPO），通过**拒绝采样**进一步提升推理质量。
+- 这种混合方法类似于 RL 中的策略细化，模型通过实时反馈和递归处理不断改进。
+
+技术原理
+- **递归推理与反思**：PRefLexOR 引入“思考令牌”和“反思令牌”，明确标记推理过程中的中间步骤和反思阶段。模型在推理过程中会生成初始响应，然后通过反思逐步改进，最终生成更准确的答案。
+- **偏好优化**：PRefLexOR 基于优势比偏好优化（ORPO）和直接偏好优化（DPO）。模型通过优化偏好响应和非偏好响应之间的对数优势比，使推理路径与人类偏好决策路径一致。DPO 进一步通过拒绝采样调整推理质量，确保偏好对齐的细微差别。
+- **多阶段训练**：PRefLexOR 的训练分为多个阶段：首先通过 ORPO 对齐推理路径，然后通过 DPO 进一步优化推理质量。这种混合方法类似于 RL 中的策略细化，模型通过实时反馈和递归处理不断改进。
+
+
+训练基于**图结构**的原生AI，自主推理数天，构建动态关系世界模型，而这一过程也不需要预先编程。
+
+这个模型涌现出的**枢纽节点**、**小世界**特性、模块化和**无标度结构**都是自然形成。
+
+随后，该模型通过组合式推理，从深度合成中发现了未被编码的特性，即具有记忆的材料、微生物修复能力和**自进化**系统。
+
+如果你给AI一堆乐高积木，也不告诉它怎么搭，它自己研究几天后，不仅搭出了城堡，还发明了会变形的积木、能自动修复裂痕的胶水，甚至让城堡长出“腿”自己移动，整个过程完全超出你的预期
+
+
+安装
+
+```sh
+pip install git+https://github.com/lamm-mit/PRefLexOR.git
+```
+
+或：
+
+```sh
+git clone https://github.com/lamm-mit/PRefLexOR.git
+cd PRefLexOR
+pip install -r requirements.txt
+pip install -e .
+```
+
+使用 Flash Attention，可以安装：
+
+```sh
+MAX_JOBS=4 pip install flash-attn --no-build-isolation
+```
 
 ### Transformer 改进
 
