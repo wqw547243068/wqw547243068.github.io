@@ -252,18 +252,23 @@ DSPy 优化流程需要: 准备数据集、程序主体、优化器以及衡量�
 
 ### 总结
 
-Prompt 用来提升模型输出效果的前缀序列（sequence of prefix tokens）, 详见 翁丽莲博客[smart-prompt-design](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/#smart-prompt-design)
-- (1) 当做可训练参数，在embedding空间上通过梯度下降直接优化
+Prompt 是提升模型输出效果的**前缀序列**（sequence of prefix tokens）, 详见 翁丽莲博客[smart-prompt-design](https://lilianweng.github.io/posts/2021-01-02-controllable-text-generation/#smart-prompt-design)
+
+提示词自动化方案
+- (1) 当可训练参数，在embedding空间上通过梯度下降直接优化
   - 2020, [AutoPrompt](https://arxiv.org/abs/2010.15980)
   - 2021, [Prefix-Tuning](https://arxiv.org/abs/2101.00190)
   - 2021, [P-tuning](https://arxiv.org/abs/2103.10385)
   - 2021, [Prompt-Tuning](https://arxiv.org/abs/2104.08691)
 - (2) LLM 生成候选指令，继续用LLM打分，选择最高的作为最佳Prompt
   - 2022, `APE` (Automatic Prompt Engineer)
-    - 基于一批示例让LLM生成候选指令集: Prompt LLM to generate instruction candidates based on a small set of demonstrations in the form of input-output pairs. 
+    - 仿照 self-instruct 思路，利用LLM生成prompt
+    - 基于一批**示例**让LLM生成**候选指令集**: Prompt LLM to generate instruction candidates based on a small set of demonstrations in the form of input-output pairs. 
     - Given a dataset, we would like to find an instruction P , where F is a per-sample score function, such as execution accuracy or log probability: 
-    - 使用迭代蒙特卡洛搜索找到语义相近的 Use an iterative Monte Carlo search method to improve the best candidates by proposing semantically similar variants via prompts
-
+    - 使用迭代`蒙特卡洛搜索`找到语义相近的 Use an iterative Monte Carlo search method to improve the best candidates by proposing semantically similar variants via prompts
+  - 2023.5.4 APO 微软: APE 的改进, 引入 梯度下降优化器
+    - 错误集上使用梯度下降，接着用APE，同时借助蒙特卡洛树搜索，提升效率
+  - 
 
 ```s
 # 示例
@@ -384,22 +389,22 @@ APO：gradient descent in language space
 - [Automatic Prompt Optimization with 'Gradient Descent' and Beam Search](https://arxiv.org/abs/2305.03495)
 - 提出方法 Prompt Optimization with Textual Gradients (ProTeGi),
 
-核心思路: 在文本空间实现gradient descent过程。
-- APO本质: 构建一个optimizer，其框架是参照gradient decent来设计
+核心思路: 在文本空间实现 gradient descent 过程。
+- APO本质: 构建一个 optimizer，其框架是参照 gradient decent 来设计
 
 APO 分为以下3个步骤。
 - 第1步：得到**当前prompt的“gradient”**
-  - 给定一批error samples（当前prompt无法预测正确的），让LLM给出当前prompt预测错误的原因，这一原因即文本形式的“gradient”。
-  - 生成gradient的prompt如下。
-- 第2步：**应用“gradient”**，得到new prompt. 这一步还分为2个子步骤：
-  - 2.1：使用LLM来edit原来的prompt，目标是修复“gradient”。给到LLM的prompt如下。
+  - 给定一批 error samples（当前prompt无法预测），让LLM给出当前prompt预测错误的原因，这一原因即文本形式的“gradient”。
+  - 生成 gradient 的 prompt如下。
+- 第2步：**应用“gradient”**，得到new prompt. 2个子步骤：
+  - 2.1：使用LLM来编辑原prompt，目标是修复“gradient”。
   - 2.2：和APE一样，进行resample，扩充相似语义的prompt。
 - 第3步：**挑选出好的prompt**，进入下一轮迭代
-  - 面临的问题和APE一样：如果在全量训练集上评估各个prompt，花销太大。挑选prompt的过程就是多臂老虎机问题。
-  - n arms对应n个prompt candidates
+  - 面临的问题和APE一样：如果在全量训练集上评估各个prompt，花销太大。挑选prompt的过程就是**多臂老虎机**问题。
+  - n arms 对应 n个prompt candidates
   - 任务数据集上的表现是这个arm的hidden value
-  - pulling这个动作对应在随机采样的数据上评估prompt的效果
-  - 试验了3种bandit selection技术：UCB、UCB-E和Successive Rejects。实验表明，UCB和UCB-E的效果比较好。
+  - pulling 这个动作对应在随机采样的数据上评估prompt效果
+  - 试验了3种 bandit selection 技术：`UCB`、`UCB-E`和`Successive Rejects`。实验表明，`UCB`和`UCB-E`效果比较好。
   - 补充: APO在每轮迭代中，最外层包含一个beam search过程，以便强化探索。
 
 ```json
@@ -433,7 +438,7 @@ Based on the above information, I wrote
 【2023-9-9】[大模型靠“深呼吸”数学再涨8分！AI自己设计提示词效果胜人类](https://www.toutiao.com/article/7276684599718085159)
 - 谷歌 DeepMind 团队最新发现，用新“咒语” “**深呼吸**”（Take a deep breath）结合熟悉的“**一步一步地想**”（Let’s think step by step），大模型在GSM8K数据集上的成绩就从71.8提高到80.2分。
 - 论文： [Large Language Models as optimizers](https://arxiv.org/abs/2309.03409)
-- 大模型自己设计的提示词在Big-Bench Hard数据集上最高提升50%
+- 大模型自己设计的提示词在 Big-Bench Hard 数据集上最高提升50%
 - 不同模型的最佳提示词不一样
   - 不光不同模型设计出的提示词风格不同，适用的提示词风格也不同
   - GPT系列: AI设计出的最优提示词是“`Let’s work this out in a step by step way to be sure we have the right answer.`”
@@ -447,7 +452,7 @@ Based on the above information, I wrote
 
 优化问题无处不在，一般用基于导数和梯度的算法，但经常遇到**梯度不适用**的情况。
 
-于是, 团队开发了新方法`OPRO`，也就是通过提示词优化（Optimization by PROmpting）。不是**形式化**定义优化问题然后用程序求解，而是用**自然语言描述**优化问题，并要求大模型生成新的解决方案。一张图总结，对大模型的一种递归调用。
+于是, 团队开发了新方法`OPRO`，也就是通过**提示词优化**（Optimization by PROmpting）。不是**形式化**定义优化问题然后用程序求解，而是用**自然语言描述**优化问题，并要求大模型生成新的解决方案。一张图总结，对大模型的一种递归调用。
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/1c5074918ccd4064a96df6b3be0631d5~tplv-tt-origin-asy2:5aS05p2hQOmHj-WtkOS9jQ==.image?_iz=58558&from=article.pc_detail&x-expires=1694921090&x-signature=gOzT0qYS9ljDr8gHAZQzcq3uspA%3D)
 - 每步优化中，之前生成的**解决方案**和**评分**作为输入，大模型生成新的方案并评分，再将其添加到提示词中，供下一步优化使用。
 - 谷歌的`PaLM 2`和Bard中的`text-bison`版本作为评测模型, 再加上`GPT-3.5`和`GPT-4`，共4种模型作为优化器。
@@ -456,13 +461,11 @@ Based on the above information, I wrote
 方向
 - 结合关于错误案例的更丰富的反馈，并总结优化轨迹中高质量和低质量生成提示的关键特征差异。这些信息可能帮助优化器模型更高效地改进过去生成的提示，并可能进一步减少提示优化所需的样本数量。
 
-OPRO框架
+OPRO 框架
 - 使用 meta-prompt，让LLM成为 Optimizer LLM。
-- meta-prompt包含两个核心部分：
+- meta-prompt 包含两个核心部分：
   - 一个是 solution-score pairs，即以往的迭代路径，包括 solution（即prompt） + 分数（任务表现），实践中按照分数大小，从低到高排列top20的结果；
   - 另一个是 task description，包含一些任务的examples、优化的目标等
-
-
 - 基于对过往迭代规律的理解，Optimizer LLM生成新的solution。即将meta-prompt给到Optimizer LLM，生成的内容即为新的solution。在实践中，为了提升优化的稳定性，这一步重复了8次。
 - 在Scorer LLM上应用prompt（即新的solution），评估效果并记录到meta-prompt中，然后继续下一轮迭代。注意，这里的Scorer LLM是实际使用prompt的LLM，与Optimizer LLM可以是不同的。
 - 当效果无法再提升、或者到达预先给定的step上限，整个迭代过程停止。返回得分最高的prompt作为优化结果。
