@@ -445,7 +445,7 @@ Reference-based的指标有两类：
 
 
 
-###  亚马逊 RefChecker
+### 【2024-12-10】 亚马逊 RefChecker
 
 Definition of Hallucinations.
 - ![](https://github.com/amazon-science/RefChecker/raw/main/imgs/venn.png)
@@ -476,6 +476,57 @@ BSChecker 具有模块化的工作流程，分为三个可配置的模块：**�
 - 项目地址: [RefChecker for Fine-grained Hallucination Detection](https://github.com/amazon-science/bschecker-for-fine-grained-hallucination-detection)
 - 排行榜地址：[BSChecker-Leaderboard](https://huggingface.co/spaces/xiangkun/BSChecker-Leaderboard), 已经404
 - ![](https://s.secrss.com/anquanneican/6e7d9020af031887c6e86afffcb6104e.gif)
+
+
+### 【2025-3-5】LettuceDetect
+
+
+【2025-3-5】[LettuceDetect：一款高效的RAG系统幻觉检测工具](https://mp.weixin.qq.com/s/rDwsTgMque4f5gnAK6IY4Q)
+
+LettuceDetect 是一个用于 RAG 系统的幻觉检测工具。
+- 代码 [LettuceDetect](https://github.com/KRLabsOrg/LettuceDetect)
+
+通过将生成的答案与提供的上下文进行比较，识别答案中不受支持的部分。该工具在 RAGTruth 数据集上进行了训练和评估，利用 ModernBERT 进行长上下文处理，非常适合需要广泛上下文窗口的任务。
+
+LettuceDetect 解决了现有幻觉检测模型的两个关键限制：
+- 传统基于编码器方法的上下文窗口限制
+- 基于 LLM 方法的计算效率低下
+
+
+亮点
+- 🔹 Token 级精确度：精确检测幻觉内容的具体范围
+- ⚡ 优化推理性能：更小的模型尺寸，更快的推理速度
+- 🧠 4K 上下文窗口：基于 ModernBERT 处理长文本
+- ⚖️ MIT 许可：模型和代码自由使用
+- 🤖 Hugging Face 集成：一行代码加载模型
+- 📦 简便 Python API：可通过 pip 安装，并用少量代码集成到 RAG 系统中
+
+`lettucedetect-large-v1`, achieves an overall F1 score of **79.22%**, outperforming prompt-based methods like `GPT-4` (63.4%) and encoder-based models like `Luna` (65.4%). It also surpasses fine-tuned `LLAMA-2-13B` (78.7%) (presented in RAGTruth) and is competitive with the SOTA fine-tuned LLAMA-3-8B (83.9%)
+
+支持微调
+
+
+代码调用
+
+```py
+from lettucedetect.models.inference import HallucinationDetector
+
+# For a transformer-based approach:
+detector = HallucinationDetector(
+    method="transformer", model_path="KRLabsOrg/lettucedect-base-modernbert-en-v1"
+)
+
+contexts = ["France is a country in Europe. The capital of France is Paris. The population of France is 67 million.",]
+question = "What is the capital of France? What is the population of France?"
+answer = "The capital of France is Paris. The population of France is 69 million."
+
+# Get span-level predictions indicating which parts of the answer are considered hallucinated.
+predictions = detector.predict(context=contexts, question=question, answer=answer, output_format="spans")
+print("Predictions:", predictions)
+
+# Predictions: [{'start': 31, 'end': 71, 'confidence': 0.9944414496421814, 'text': ' The population of France is 69 million.'}]
+```
+
 
 ## 幻觉缓解
 
