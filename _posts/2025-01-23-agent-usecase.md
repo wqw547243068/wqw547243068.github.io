@@ -768,7 +768,110 @@ Pokee AI 核心技术：基于最新的强化学习（RL）智能体研究与小
   - ✅ Pokee 速度比Operator快8 倍 —— Operator 任务完成但存在关键错误 ⚠️
 
 
+### 【2025-3-4】 Mobile Use
 
+【2025-3-4】 Mobile Use​: Your AI assistant for mobile - Any app, any task.
+
+Web 界面输入自然语言指令，Mobile Use 的 GUI 智能体自动操作手机并完成任务
+
+#### 功能
+
+特性
+- 自动操作手机：基于用户输入任务描述，自动操作UI完成任务
+- 智能元素识别：解析GUI布局并定位操作目标
+- 复杂任务处理：支持复杂指令分解和多步操作
+
+#### 原理
+
+受 browser use 启发，多模态大模型是基于 Qwen2.5-VL，Web UI 是基于 Gradio
+
+操作方法
+- Web UI 输入自然语言指令
+- 手机截屏，获取图像，传给Agent
+- Agent 借助 多模态大模型，理解当前状态，并执行下一步动作
+- 操控手机
+
+框架
+- ![](https://github.com/MadeAgents/mobile-use/raw/main/docs/assets/framework.png)
+
+支持的手机动作
+- 代码配置 [mobile_use/action.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/action.py)
+
+|动作名称|描述|参数|
+| ---- | ---- | ---- |
+|`click`|在给定位置**点击屏幕**|point（坐标点位置，数组类型，如[230, 560]）|
+|`long_press`|在给定位置**长按屏幕**|point（坐标点位置，数组类型，如[230, 560]）|
+|`type`|在屏幕上**输入文本**|text（要输入的文本，字符串类型）|
+|`scroll`|指定方向从起始点到结束点**滚动**|start_point（滚动起始点坐标，数组类型，如[230, 560]），end_point（滚动结束点坐标，数组类型，如[230, 560]）|
+|`press_home`|按下**主页**按钮|无|
+|`press_back`|按下**返回按**钮|无|
+|`wait`|**等待**片刻|无|
+|`finished`|表示任务已**完成**的特殊标志|answer（任务目标的最终答案，字符串类型）|
+|`call_user`|向**人类**寻求帮助|无| 
+
+
+代码
+- 整体控制
+  - [mobile_use/vlm.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/vlm.py) 定义多模态大模型类 VLM, 指定次数(`max_retry`)内不断调用openai接口, 预测(`predict`方法)下一个动作
+  - [mobile_use/environ.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/environ.py) python 通过adb操控手机，执行各类指令
+    - `Environment` 类: `execute_action`方法实现手机指令， `os.system`方法执行adb指令
+  - [mobile_use/webui.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/webui.py) gradio 框架实现 Web UI
+- Agent 实现
+  - [agents/agent_qwen.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/agents/agent_qwen.py) qwen 模型执行 Function Call, 调用指定函数
+  - [agents/agent_qwen_with_summary.py](https://github.com/MadeAgents/mobile-use/blob/main/mobile_use/agents/agent_qwen_with_summary.py) 感知、规划
+
+#### 效果
+
+效果
+- [AndroidWord](https://github.com/google-research/android_world) 动态测评环境中评估 Mobile Use 智能体方案（模型用 Qwen2.5-VL-72B-Instruct），获得 38% 的成功率
+
+|模型名称|得分|
+| ---- | ---- |
+|GPT-4(SoM)|34.5|
+|Gemini-Pro-1.5(SoM)|22.8|
+|Gemini-2.0(SoM)|26|
+|Claude|27.9|
+|Aguvis-72B|26.1|
+|Qwen2.5-VL-72B|35|
+|Mobile-Use (Qwen2.5-VL-72B)|38| 
+
+
+#### 使用
+
+mobile-use 需要使用 adb 来控制手机，需要预先安装相关工具并使用USB连接手机和电脑。
+
+代码调用
+
+```py
+import os
+from dotenv import load_dotenv
+from mobile_use.scheme import AgentState
+from mobile_use import Environment, VLMWrapper, Agent
+from mobile_use.logger import setup_logger
+
+load_dotenv()
+setup_logger(name='mobile_use')
+
+# Create environment controller
+env = Environment(serial_no='a22d0110')
+vlm = VLMWrapper(
+    model_name="qwen2.5-vl-72b-instruct", 
+    api_key=os.getenv('VLM_API_KEY'),
+    base_url=os.getenv('VLM_BASE_URL'),
+    max_tokens=128,
+    max_retry=1,
+    temperature=0.0
+)
+
+agent = Agent.from_params(dict(type='default', env=env, vlm=vlm, max_steps=3))
+
+going = True
+input_content = goal
+while going:
+    going = False
+    for step_data in agent.iter_run(input_content=input_content):
+        print(step_data.action, step_data.thought)
+```
 
 
 ## 阅读 Readagent
