@@ -403,5 +403,14 @@ HyperWriteAI CEO 在推特上分享的开源方案—— OpenDeepResearcher。
 基于OpenAI 的 Deep Research 概念，与openAI低，中，高的深度研究档次类似，使用简单的架构，允许用户调整研究广度（breadth）和深度（depth），运行时间可从 5 分钟到 5 小时自动调整。它可以并行运行多个研究线程，并根据新发现不断迭代，直到达到你的研究目标。
 
 
+## Manus
+
+【2025-3-5】 Monica.im 研发的全球首款 AI Agent 产品「Manus」
+- [Manus](https://manus.im/)，名字取自拉丁语中的“手”，寓意着将思想转化为行动。
+- [Manus](https://manus.im/) 不仅仅是一个 AI，更是一个能帮你完成实际任务的**通用型 Agent**。无论是工作还是生活，Manus 都能成为你的得力助手
+- GAIA 基准测试中取得了 SOTA（State-of-the-Art），远远甩开了 OpenAI。在解决现实世界问题方面表现卓越。
+
+详见站内专题: [Agent应用](agent_usecase)
+
 
 # 结束
