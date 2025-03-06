@@ -689,6 +689,38 @@ OpenAI 下一代旗舰模型的质量提升幅度不及前两款旗舰模型之�
 详见站内: [transformer 专题](transformer#ttt)
 
 
+#### Titans
+
+【2025-1-15】[近8年后，谷歌Transformer继任者「Titans」来了，上下文记忆瓶颈被打破](https://www.jiqizhixin.com/articles/2025-01-15-15)
+
+2017 年推出影响 AI 行业长达 8 年的 Transformer 架构之后，谷歌带来了全新的架构 Titans。
+- 论文标题：[Titans: Learning to Memorize at Test Time](https://arxiv.org/pdf/2501.00663v1)
+- 代码
+  - 非官方实现 [titans-pytorch](https://github.com/lucidrains/titans-pytorch)
+
+谷歌重点将推理领域非常重要的测试时（test-time）计算用在了**记忆**（memory）层面。
+
+[Ali Behrouz](https://x.com/behrouz_ali/status/1878859086227255347) 表示
+- 注意力机制一直是大多数 LLM 进展的重要组成部分，不过它无法扩展到长上下文。
+- Titans 是一种同时具备**注意力机制**和**元上下文记忆**的结构，可以在**测试时**学习记忆。
+
+该架构可以将上下文窗口扩展到 200 万 tokens。
+
+谷歌提出新的**长期神经记忆**模块（neural memory module），学习记忆历史上下文，并帮助注意力机制在利用过去已久信息的同时处理当前上下文。
+- 结果表明，这种神经记忆具有快速并行化训练的优势，同时还能保持快速推理。
+
+从记忆的角度来看，谷歌认为
+- **注意力机制虽然受限于上下文**但可以更准确地**建模依赖关系**，因此可以起到**短期记忆**的作用；
+- 而神经记忆能够对数据进行记忆，起到了**长期、更持久**的记忆作用。
+
+基于这两个模块，谷歌引入了一个全新的系列架构 —— `Titans`，通过三种变体有效地将记忆融合到该系统架构中，分别是: 
+- `记忆作为上下文`（Memory as a Context，MAC）
+- `记忆作为门`（Memory as a Gate，MAG）
+- `记忆作为层`（Memory as a Layer，MAL）
+
+Titans 架构比 Transformer 和近年来的现代线性循环模型更有效。另外，在大海捞针（needle-in-haystack）中，Titans 架构能够有效地扩展到超过 200 万 tokens 的上下文窗口，并且比基准模型实现了更高的准确性。
+
+
 ### 类脑
 
 #### 2024.7.11 Yan
