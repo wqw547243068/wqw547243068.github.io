@@ -31,6 +31,32 @@ Agent项目:
 
 大家都在布局3级别agi
 
+## 数据集
+
+
+### GAIA
+
+【2023-11-23】 FAIR, Meta, HuggingFace, AutoGPT, GenAI 联合推出评测集
+- 466 个问题及作答, 覆盖生活中实际问题，涉及 推理、多模态操控、网页浏览、写代码、通用工具使用
+- 其中 300 个问题开源出来, 不含答案，用来维护 排名榜 Leader Board
+- 问题难度: 人类简单(92%)，但模型难(含插件的 GPT-4 15%)
+
+资源
+- [gaia-benchmark](https://huggingface.co/gaia-benchmark), 文件内容 [main/2023](https://huggingface.co/datasets/gaia-benchmark/GAIA/tree/main/2023)
+- 论文 [GAIA: A Benchmark for General AI Assistants](https://arxiv.org/pdf/2311.12983)
+- [解读](https://blog.csdn.net/HERODING23/article/details/134934184)
+
+问题分级
+- 一级问题: 不需要工具，或最用1种工具，且步骤不超过 5 步。
+- 二级问题: 涉及更多步骤，大致在 5-10 步，并且需要综合运用不同工具。
+- 三级问题: 近乎完美的通用助手, 执行任意长系列行动，任意数量工具，总体上通用水平
+
+示例
+- `Question`: What was the actual enrollment count of the clinical trial on H. pylori in acne vulgaris patients from Jan-May 2018 as listed on the NIH website?
+- `Ground truth`: 90
+```
+
+
 ## Agent 项目实例
 
 【2024-9-15】[一个包含15种大模型Agent技巧的项目开源](https://mp.weixin.qq.com/s/_0-xyd7zX1W5tlaGAdT_PA)
@@ -282,9 +308,18 @@ Manus 背后的公司 —— Monica.im，其实是个“缝合怪”高手。
 
 Manus 核心能力 = `Compute Use` + `虚拟机` + `Artifacts` + 内置多个 `Agent`，更像是一个**高度整合**的 **AI 工作流工具**，而<span style='color:red'>非真正的通用 AI Agent</span>。
 
-Andrej Karpathy 在2023微软Bulid大会上做了个主题分享：State of GPT，其中提到了Prompt的重要性：Prompt 弥补了人类大脑和LLM大脑两种认知架构的差异　
+Manus 传播堪称移动互联网的经典模版复现：饥饿营销 + KOL尖叫体测评 + 借势明星产品
+- 邀请码**饥饿营销**（“动用我的人脉才搞到”）
+- **KOL尖叫体测评**（“人类一败涂地”“浑身发麻”）
+- 借势**明星产品**（这次是绑定 DeepSeek）。
 
-人类要用自然语言进行编程, 也需要深入理解模型的行为和反应　
+然而当人们打开海外科技论坛和社交媒体，关于 Manus 的讨论却近乎真空。
+
+
+Andrej Karpathy 在2023微软Bulid大会上做了个主题分享：[State of GPT]()，提到 Prompt的重要性：
+- Prompt 弥补了**人类大脑**和**LLM大脑**认知架构的差异　
+
+人类要用**自然语言**进行编程, 也需要深入理解模型的行为和反应　
 
 Artifacts 是 Claude 模型能力的很好的外化表现形式
 > 光靠Prompt优化，模型输出，Artifacts，都不能输出很漂亮的内容，一定是这三者的结合
@@ -323,7 +358,50 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 cp config/config.example.toml config/config.toml
 ```
 
+#### OWL
 
+[OWL：0天复刻Manus通用智能体，完全开源！GAIA Benchmark最强性能](https://mp.weixin.qq.com/s/0AWaSNynyjjY5TpdtKN-3w)
+
+
+🦉[OWL](https://github.com/camel-ai/owl) 项目直接做到开源界GAIA性能天花板，达到了57.7%，超越Huggingface 提出的Open Deep Research 55.15%的表现。
+- 项目地址：GitHub：[owl](https://github.com/camel-ai/owl) 不但免费白嫖，还能参与贡献
+
+Demo 示例
+- 自动查找当日伦敦电影有什么！
+- 调研总结GitHub仓库里都有什么
+
+Manus核心工作流拆成6步 
+- 启动一个Ubuntu容器（Agent远程工位就位）
+- 知识召回（把之前学过的内容捡起来用）
+- 连接数据源（数据库、网盘、云存储全覆盖）
+- 把数据挂载到Ubuntu（Agent的搬砖时刻）
+- 自动生成todo.md（规划任务+写待办清单）
+- Ubuntu工具链+外接工具组合拳，执行全流程任务🔗
+
+工具集
+- 终端命令执行（运维、部署全搞定）
+- 文件解析：PDF转Markdown、网页爬取
+- 自动创建、编辑文件，生成todo.md
+- 浏览器操作：滚动、点击、输入全会
+- 在线搜索+实时信息检索，一秒找到关键资料自动生成报告、代码、文档，直接交付成果
+- 一键把服务部署到公网，输出报告直接上线
+
+Memory Toolkit：复刻还得加点记忆buff 
+- 每次任务执行，Manus 都会把新学到的知识点存下来。
+- 给🦉加上记仇功能（哦不，是记忆）。下次遇到类似任务，直接召回过往经验！
+- 新知识实时存储，持续进化任务中
+- 随时召回过往经验，灵活调度
+
+🔗 相关 Memory模块（已开源）：
+- [agent_memories.py](https://github.com/camel-ai/camel/blob/master/camel/memories/agent_memories.py)
+
+🦀️CRAB+🦉OWL：跨平台掌控力直接拉满 
+- 早在Manus爆火之前，其实已经开发过一套强大的**跨平台操作系统**的通用智能体——`CRAB`。🔗[crabCRAB](https://github.com/camel-ai/crabCRAB) , 操控Ubuntu容器，还能控制手机和电脑里任何应用，覆盖比Manus展示的终端和浏览器多得多。
+
+复刻计划
+- Worklfow: [issue](https://github.com/camel-ai/camel/issues/1723)
+- Ubuntu Toolkit: [Issue](https://github.com/camel-ai/camel/issues/1724)
+- Memory Toolkit [Issue](https://github.com/camel-ai/camel/issues/1725) 
 
 ## 设备操控
 
