@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体应用
 date:   2025-01-23 08:26:00
 categories: 大模型
-tags: Agent 角色模拟 多模态 kaggle 操作系统 agi
+tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化
 excerpt: 大模型 LLM 驱动的智能体如何应用？
 mathjax: true
 permalink: /agent_usecase
@@ -1155,6 +1155,22 @@ AgentClinic：一个多模式基准，用于评估LLMs在**模拟临床环境**�
 
 综合实验表明，与最先进的开源方法甚至闭源模型 GPT-4o 相比，MMedAgent 在各种医疗任务中实现了卓越的性能。此外，MMedAgent 在更新和集成新医疗工具方面表现出效率。
 
+
+## 教育
+
+
+### TheoremExplainAgent
+
+【2025-3-5】 加拿大滑铁卢大学用 Manim + Agent 制作5分钟以上的数学教学视频
+- 并提出评测集 TheoremExplainBench, 覆盖 240 个理论知识点
+- 主页 [TheoremExplainAgent: Towards Multimodal Explanations for LLM Theorem Understanding](https://tiger-ai-lab.github.io/TheoremExplainAgent/)
+- 【2025-2-26】论文 [TheoremExplainAgent: Towards Multimodal Explanations for LLM Theorem Understanding](https://arxiv.org/pdf/2502.19400)
+
+o3-mini agent 成功率 93.8%, 总分 0.77
+
+实现方法
+- 两个 Agent: 规划 + 写代码
+- ![](https://tiger-ai-lab.github.io/TheoremExplainAgent/static/images/method.png)
 
 
 # 结束
