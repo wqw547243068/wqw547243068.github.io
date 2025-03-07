@@ -276,6 +276,54 @@ GAIA 基准测试中取得了 SOTA（State-of-the-Art），远远甩开了 OpenA
 
 Manus 更想做的，是你在数字世界中，字面意义上的「代理人」。而它做到了。
 
+#### 评论
+
+Manus 背后的公司 —— Monica.im，其实是个“缝合怪”高手。
+
+Manus 核心能力 = `Compute Use` + `虚拟机` + `Artifacts` + 内置多个 `Agent`，更像是一个**高度整合**的 **AI 工作流工具**，而<span style='color:red'>非真正的通用 AI Agent</span>。
+
+Andrej Karpathy 在2023微软Bulid大会上做了个主题分享：State of GPT，其中提到了Prompt的重要性：Prompt 弥补了人类大脑和LLM大脑两种认知架构的差异　
+
+人类要用自然语言进行编程, 也需要深入理解模型的行为和反应　
+
+Artifacts 是 Claude 模型能力的很好的外化表现形式
+> 光靠Prompt优化，模型输出，Artifacts，都不能输出很漂亮的内容，一定是这三者的结合
+
+Claude 官方发布的视频《How we built Artifacts with Claude》
+- 直接在 Claude 内输入Prompt，合适的条件下，Artifacts 直接渲染出效果供你检查
+
+
+#### OpenManus
+
+【2025-3-7】[OpenManus：MetaGPT推出的开源版Manus](https://www.aisharenet.com/openmanus/)
+
+
+开源项目 OpenManus ，帮用户通过简单配置在本地运行智能体，实现各种创意想法。
+- MetaGPT 社区成员 @mannaandpoem、@XiangJinyu、@MoshiQAQ 和 @didiforgithub 在短短 **3 小时内**开发完成，他们还开发了自动化编程项目 MGX 。
+- 相比需要邀请码的 Manus，`OpenManus` 无需任何准入门槛，用户只需克隆代码、配置 LLM API 即可快速上手。
+
+核心目标：
+- 通过复刻`MCP`（模型上下文协议）和`虚拟机`操作环境，在代理和模型层面提高AI调用和执行操作的准确率。
+
+功能列表
+- **本地**智能体运行：终端输入任务，利用配置的 LLM API 在本地执行自动化操作。
+- 支持**主流 LLM 模型**：默认集成 GPT-4o，用户可根据需要调整模型配置。
+- **一键启动**：运行 `python main.py` 即可快速进入任务输入模式。
+- 实验性版本：提供 `python run_flow.py` 用于测试开发中的新功能。
+- 社区协作：支持通过 GitHub 提交问题或代码，参与项目开发。
+
+安装
+
+```sh
+git clone https://github.com/mannaandpoem/OpenManus.git
+cd OpenManus
+# pip install -r requirements.txt
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 更新配置
+cp config/config.example.toml config/config.toml
+```
+
+
 
 ## 设备操控
 
@@ -327,7 +375,7 @@ Manus 更想做的，是你在数字世界中，字面意义上的「代理人�
 
 实在Agent（智能体）是全球首款具备“大脑和手脚”、能够自主规划执行任务，自动操作软件的智能体产品。作为企业级的AI智能办公助理，它将助力企业迈入高效、智能的未来办公新时代。
 
-基于自研的塔斯大模型，实在Agent能够精准理解用户意图，将用户的口语化描述拆解为具体的流程和步骤。这使得传统的大模型不再只是“说说而已”，而是真正能够自动操作电脑、手机以及车载屏幕上的各种软件和APP的超级AI智能体，让用户实现“一句话完成工作”。
+基于自研的塔斯大模型，实在Agent 能够精准理解用户意图，将用户的口语化描述拆解为具体的流程和步骤。这使得传统的大模型不再只是“说说而已”，而是真正能够自动操作电脑、手机以及车载屏幕上的各种软件和APP的超级AI智能体，让用户实现“一句话完成工作”。
 
 
 ### 【2023-12-21】AppAgent
@@ -340,29 +388,29 @@ AppAgent可以通过**自主学习**和**模仿**人类的点击和滑动手势�
 
 AppAgent在50 个任务上进行了广泛测试，涵盖了10种不同的应用程序。
 
-该项目由腾讯和德州大学达拉斯分校的研究团开发。
+该项目由`腾讯`和`德州大学`达拉斯分校的研究团开发。
 
 主要功能特点:
-- 多模态代理:AppAgent 是一个基于大语言模型的多模态代理，它能够处理和理解多种类型的信息（如文本、图像、触控操作等）。这使得它能够理解复杂的任务并在各种不同的应用程序中执行这些任务。
+- 多模态代理: AppAgent 是一个基于大语言模型的多模态代理，它能够处理和理解多种类型的信息（如文本、图像、触控操作等）。这使得它能够理解复杂的任务并在各种不同的应用程序中执行这些任务。
 - 直观交互:它能通过模仿人类的直观动作（如点击和滑动屏幕）来与智能手机应用程序交互。就像一个真人用户一样。
 - 自主学习:AppAgent 通过观察和分析不同应用程序中的用户界面交互。并学习这些交互模式，并将所获得的知识编译成文档。
 - 构建知识库:通过这些交互，AppAgent 构建了一个知识库，记录了不同应用程序的操作方法和界面布局。这个知识库随后用于指导代理在不同应用程序中执行任务。
 - 执行复杂任务:一旦学习了应用程序的操作方式，AppAgent 就能够执行跨应用程序的复杂任务，如发送电子邮件、编辑图片或进行在线购物。
 
 - [项目及演示](appagent-official.github.io)
-- 论文:[AppAgent: Multimodal Agents as Smartphone Users](http://t.cn/A6lKlXC7)
+- 论文: [AppAgent: Multimodal Agents as Smartphone Users](http://t.cn/A6lKlXC7)
 - GitHub:[AppAgent](github.com/mnotgod96/AppAgent)
 - ![](https://appagent-official.github.io/static/teaser.png)
 - ![](https://appagent-official.github.io/static/pipline.png)
 
 
-### ScreenAgent
+### 【2024-2-9】ScreenAgent
 
-大模型直接操控电脑——ScreenAgent
+大模型直接操控**电脑** —— ScreenAgent
 - [体验地址](https://github.com/niuzaisheng/ScreenAgent)
 
 产品信息:
-- ScreenAgent 是一款由吉林大学人工智能学院开发、视觉语言大模型驱动的计算机控制代理。
+- ScreenAgent 是一款由`吉林大学`人工智能学院开发、视觉语言大模型驱动的计算机控制代理。
 
 产品功能:
 - ScreenAgent 可帮助用户在无需辅助定位标签的情况下，通过VLM Agent控制电脑鼠标和键盘，实现大模型直接操控电脑的功能。
@@ -448,9 +496,9 @@ Mobile-Agent-v2在多项指标上，无论在英文还是非英文场景，都�
 最终模型在这项任务上实现了80.06%和84.95%的TinyAgent1.1.B和7B模型，超过了GPT-4-Turbo的79.08%的成功率。
 
 
-### 【2024-10-23】ComputerUse
+### 【2024-10-23】Computer Use
 
-【2024-10-23】Claude 推出 [ComputerUse](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) ，可以像人类一样使用计算机了？查看屏幕、移动光标、点击按钮、输入文本，还能查找代码错误、自动搜集信息填表，并向开发者提供了API
+【2024-10-23】Claude 推出 [Computer Use](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) ，可以像人类一样使用计算机了？查看屏幕、移动光标、点击按钮、输入文本，还能查找代码错误、自动搜集信息填表，并向开发者提供了API
 
 通过 API，开发者可以让 Claude 将指令翻译成计算机指令，从而解放一些枯燥的重复性流程任务。
 
@@ -631,7 +679,7 @@ GLM-PC
 - 2024年11月29日, 正式发布并开放内测
 - 2025年1月23日， 最新的v1.0版本引入了“深度思考”模式，该模式在逻辑推理和代码生成方面进行了针对性的优化，尤其支持Windows系统的无缝操作。
 - 逻辑推理和代码生成方面进行了针对性的优化，尤其支持Windows系统的无缝操作。
-- GLM-PC Window和Mac客户端已经同步上线
+- GLM-PC Window 和 Mac 客户端已经同步上线
 
 ![](https://inews.gtimg.com/om_bt/OBsgDKoFX5zIaS-Ey_bfVlihYoaWKh0jUUdG7LEQkr8_0AA/641)
 
@@ -749,6 +797,8 @@ Each response is separated into three parts:
 
 
 ### 【2025-3-4】Pokee AI
+
+【2024-11-21】[作者知乎](https://zhuanlan.zhihu.com/p/8112813296) Meta E7 员工 `朱哲清` 创立 [Pokee AI](pokee.ai)
 
 【2025-3-4】[比 OpenAI Operator 准确率高10倍的AI Agent - Pokee AI](https://zhuanlan.zhihu.com/p/27831108136)
 
