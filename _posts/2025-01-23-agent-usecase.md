@@ -54,7 +54,6 @@ Agent项目:
 示例
 - `Question`: What was the actual enrollment count of the clinical trial on H. pylori in acne vulgaris patients from Jan-May 2018 as listed on the NIH website?
 - `Ground truth`: 90
-```
 
 
 ## Agent 项目实例
@@ -269,10 +268,14 @@ Eko的跨平台开发是通过其环境感知架构（Environment-Aware Architec
 资讯
 - 【2025-3-6】[AI Agent的“GPT时刻”，Manus炸醒整个AI圈](https://tech.ifeng.com/c/8hUaacvUjTK)
 
+北京的人工智能公司`蝴蝶科技`，创始人来自华中科技大学的90后毕业生`肖弘`
+
 【2025-3-5】 Monica.im 研发的全球首款 AI Agent 产品「Manus」
 - [Manus](https://manus.im/)，名字取自拉丁语中的“手”，寓意着将思想转化为行动。
 - [Manus](https://manus.im/) 不仅仅是一个 AI，更是一个能帮你完成实际任务的**通用型 Agent**。无论是工作还是生活，Manus 都能成为你的得力助手
 - GAIA 基准测试中取得了 SOTA（State-of-the-Art），远远甩开了 OpenAI。在解决现实世界问题方面表现卓越。
+
+#### 功能
 
 「Manus」是一个真正自主的 AI 代理，能够解决各类复杂多变的任务。与传统 AI 助手不同，Manus 不仅能提供建议或答案，还能直接交付完整的任务成果。
 
@@ -289,6 +292,8 @@ GAIA 基准测试中取得了 SOTA（State-of-the-Art），远远甩开了 OpenA
 - GAIA 是评估通用 AI 助手解决现实世界问题能力的基准。
 - Manus 在这个测试的所有三个难度级别上都表现出色。
 
+#### 应用
+
 示例
 - 旅行规划：不仅整合旅行信息，还为用户创建定制旅行手册。例如，为用户规划日本四月旅行，提供个性化的旅行建议和详细手册。
 - 股票分析：进行深入的股票分析，设计视觉上吸引人的仪表盘展示全面的股票洞察。例如，对特斯拉股票进行深度分析，创建可视化仪表盘。
@@ -302,9 +307,25 @@ GAIA 基准测试中取得了 SOTA（State-of-the-Art），远远甩开了 OpenA
 
 Manus 更想做的，是你在数字世界中，字面意义上的「代理人」。而它做到了。
 
+#### 原理
+
+
+Manus到底有啥“黑科技”？
+
+【2025-3-7】[本以为DeepSeek天下无敌了，没想到Manus更猛](https://mp.weixin.qq.com/s/VncWbfZYUti5-S_X_dlbcw)
+
+设计思路相当巧妙，融合了好多厉害的技术。
+
+核心架构: `按键精灵`+`DeepSeek推理`+`虚拟机`+`Claude`
+- **按键精灵**思路：用过按键精灵的小伙伴都知道，它能模拟鼠标点击，实现电脑操作自动化，以前在站长圈可火了。Manus借鉴了这个思路，用脚本控制电脑和手机处理各种工作。以前制作脚本特别麻烦，普通人根本搞不定，Manus却把这个难题轻松解决了。
+- **DeepSeek 推理**能力：DeepSeek理解人类问题的能力超强，Manus借助它，能精准领会你的意图，给出超靠谱的回应。
+- **虚拟机**技术：Manus通过在服务器里装各种虚拟机，模拟不同软件的运行环境，不管你要用啥软件，它都能轻松应对。
+- **生成模型**：Manus采用美国Anthropic公司的Claude 3.5版本作为生成模型，保证输出的内容又专业又优质。
+
+
 #### 评论
 
-Manus 背后的公司 —— Monica.im，其实是个“缝合怪”高手。
+Manus 背后的公司 —— [Monica.im]()，其实是个“缝合怪”高手。
 
 Manus 核心能力 = `Compute Use` + `虚拟机` + `Artifacts` + 内置多个 `Agent`，更像是一个**高度整合**的 **AI 工作流工具**，而<span style='color:red'>非真正的通用 AI Agent</span>。
 
@@ -314,6 +335,27 @@ Manus 传播堪称移动互联网的经典模版复现：饥饿营销 + KOL尖�
 - 借势**明星产品**（这次是绑定 DeepSeek）。
 
 然而当人们打开海外科技论坛和社交媒体，关于 Manus 的讨论却近乎真空。
+
+[复盘一下这波 Manus 中的营销方法](https://zhuanlan.zhihu.com/p/28726052540)
+- 3月5日晚上10点, 最早在 X 上发布视频，介绍产品
+  - 宣传时间选在周三和周四，视频形式发布，是业界惯例
+  - 第一个通用 AI 智能体，并演示几个示例，通用 AI 智能体是产品的终极目标，但视频让人感觉第一个完成了终极目标的产品。
+- 当天晚上大家都睡了，真正出现高潮是在第二天早上。
+- 3月6日，早上6点开始，出现大量媒体文章
+  - 经验: 宣传文章一定要在早上8点前发，而且一起发，大家一觉醒来变天了，全世界都在提，这个初始动能会吸引更多媒体，得到更大的关注，甚至还有官媒赶在当天下班前发了
+  - 蹭流量: **爱国**和 **DeepSeek**
+    - 热词: AI Agent, AGI, 感叹号, 家国情怀
+  - 邀请码: 人为制造的稀缺性也是营销成功的原因之一
+
+|时间|地点|自媒体|标题|分析|
+|---|---|---|---|---|
+|0点|浙江|`泛函`|真正的通用 Al Agent 来了!是中国团队做的!我们离 AGI 不远了!|标题夸张，没啥反响|
+|6:03|北京|`数字生命卡兹克`|一手体验首款通用Agent产品Manus-唯有惊叹。|这么早就起来了？|
+|6:07|广东|`APPSO`|这个中国 AI 产品一夜刷屏!全网都在要邀请码，可能是 DeepSeek 后最大惊喜|全网都在找邀请码？|
+|6:25|北京|`极客公园`|Al Agent 的「GPT 时刻」，Manus 炸醒整个 AI 圏!|依然浮夸|
+|7:06|北京|`赛博禅心`|实测 Manus:首个真干活 A，中国造(附50个用例 +拆解)||
+|17:06|北京|`央视网`|一夜之间火爆全网!又一个中国AI产品刷屏|央媒也憋不住了|
+||||||
 
 
 Andrej Karpathy 在2023微软Bulid大会上做了个主题分享：[State of GPT]()，提到 Prompt的重要性：
@@ -360,7 +402,7 @@ cp config/config.example.toml config/config.toml
 
 #### OWL
 
-[OWL：0天复刻Manus通用智能体，完全开源！GAIA Benchmark最强性能](https://mp.weixin.qq.com/s/0AWaSNynyjjY5TpdtKN-3w)
+【2025-3-7】[OWL：0天复刻Manus通用智能体，完全开源！GAIA Benchmark最强性能](https://mp.weixin.qq.com/s/0AWaSNynyjjY5TpdtKN-3w)
 
 
 🦉[OWL](https://github.com/camel-ai/owl) 项目直接做到开源界GAIA性能天花板，达到了57.7%，超越Huggingface 提出的Open Deep Research 55.15%的表现。
