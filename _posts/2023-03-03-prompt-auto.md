@@ -3,7 +3,7 @@ layout: post
 title:  提示词自动化 Prompt Automation
 date:   2023-03-02 16:52:00
 categories: 大模型
-tags: ChatGPT prompt 大模型 controlnet o1
+tags: ChatGPT prompt 大模型 controlnet o1 逆向工程
 excerpt: 提示词如何自动化？
 mathjax: true
 permalink: /prompt_auto
@@ -1081,6 +1081,20 @@ optimized_analyzer = teleprompter.optimize(
 
 - 【2023-7-18】[Image Prompting](https://learnprompting.org/docs/category/%EF%B8%8F-image-prompting)
 - 【2023-12-12】[阿里巴巴StableDiffusion提示词指南](https://zhuanlan.zhihu.com/p/668727775?utm_psn=1717852489863344129)
+
+### 逆向工程
+
+根据图片**一键反推**提示词工具，完全免费
+
+
+#### Image Prompt
+
+
+【2025-3-9】工具 [Image Prompt](https://imageprompt.org/zh/image-to-prompt) 
+- 根据图片**一键反推**提示词工具，完全免费
+- 支持多种 文生图模型, Flux, Midjourney, Stable Diffusion
+- 文本转提示词
+
 
 
 ### 文生图提示词
