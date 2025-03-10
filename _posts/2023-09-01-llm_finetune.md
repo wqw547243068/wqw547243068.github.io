@@ -408,7 +408,7 @@ def wise_ft(model, dataset, zeroshot_checkpoint, alpha, hparams):
 多个分支, 分别指向通用基座、特定场景的LLM
 
 
-## 微调经验
+## 微调方法
 
 【2023-9-21】[大模型二次训练避坑指南](https://mp.weixin.qq.com/s/DuKBGPUKXEvqCNNBjpX-kw)
 
@@ -712,6 +712,34 @@ OpenAI内部测试中，强化微调在生物化学、安全、法律和医疗�
 ReFT 在**所有**数据集上均优于SFT和其他自训练方法。
 - 特别是在CodeLLAMA模型上，ReFT在GSM8K数据集上的N-CoT和P-CoT任务中分别取得了9点和8点以上的提升。
 - 此外，ReFT还表现出对多数投票和奖励模型重新排名技术的兼容性，进一步提升了性能。
+
+### 【2025-2-5】CFT 批判式微调
+
+【2025-3-9】[让SFT重新伟大！CMU等华人学者提出全新「批判式微调」，媲美复刻版DeepSeek](https://mp.weixin.qq.com/s/l1DdkoHp36g05dRm2a3gDg)
+
+复杂推理任务里，SFT 往往让大模型显得力不从心。
+
+SFT 过程中，模型要模仿人类标注或合成的高质量回复，以增强通用指令遵循能力。
+
+这类 SFT 数据集通常使用 `Self-Instruct` 和 `Evol-Instruct` 等方法进行构建。
+
+局限性
+- 随着数据集规模和质量的提升，SFT 面临着**边际收益递减**的问题，尤其是在训练本身效果就不错的基础模型时，使用SFT甚至可能会导致性能下降。
+
+【2025-2-5】CMU、滑铁卢大学等机构3名华人论文，针对SFT做出了更进一步的改进，提出`批判式监督微调`方法（`CFT`，Critique Fine-Tuning），让模型更有效地模仿模仿数据集
+- 论文 [Critique Fine-Tuning: Learning to Critique is More Effective than Learning to Imitate](https://arxiv.org/pdf/2501.17703)
+- 主页 [CritiqueFineTuning](https://tiger-ai-lab.github.io/CritiqueFineTuning/)
+
+「批判性微调」（`CFT`）方法，仅在 **50K** 样本上训练，就在大多数基准测试中优于使用超过 **200万** 个样本的**强化学习**方法
+
+CFT 将重点从**简单模仿**转向**批判学习**
+
+核心思想: 让模型学会批判，而不是简单地模仿，其灵感来源于人类的学习过程。
+- 学霸们在学习过程中，不仅仅是复制提供的答案，而是分析、批判和改进它们。
+- CFT数据集中为错误响应提供相应的批评供模型学习，让LLM能够识别响应中存在的缺陷，进而提出改进建议并验证正确性。
+
+这种方法不仅能够提升推理能力，还能使模型在面对复杂任务时表现出更强的适应性和灵活性。
+
 
 ## 微调模型使用 
 
