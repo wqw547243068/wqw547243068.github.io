@@ -3,7 +3,7 @@ layout: post
 title:  LangChain 学习笔记
 date:   2023-05-24 22:46:00
 categories: 大模型
-tags: gpt ChatGPT langchain
+tags: gpt ChatGPT langchain go
 excerpt: 大模型 LLM 驱动的智能体 Agent 
 mathjax: true
 permalink: /langchain
@@ -57,6 +57,9 @@ LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美
 ### 安装
 
 
+#### Python 版
+
+
 ```py
 pip install langchain # 工具包
 pip install -e . # 源码安装
@@ -69,6 +72,84 @@ pip install "langserve[all]" # langserve
 # 将LangChain可运行文件和链作为REST API部署
 pip install langchain-cli # 包含 langserve
 pip install langsmith
+```
+
+
+#### Go 版
+
+
+【2025-3-5】[LangChainGo 提示词工程（Prompt Engineering）](https://mp.weixin.qq.com/s/hWkJ9e2j0xy4lVXPF4cv9g)
+
+
+示例
+
+解析
+- `ollama.New`：初始化 Ollama LLM，使用 WithModel 方法传入对应的llama模型名称。
+- `llm.Call(ctx, prompt)`：将提示词传递给LLM，获取AI生成的文本。
+
+`prompts.NewPromptTemplate()`：创建一个带有变量的提示词模板。
+- `Format(map[string]string{"topic": "nim-lang这门语言"})`：动态填充 topic 变量。
+
+`NewChatPromptTemplate` 创建对话模板，包含多个 MessageFormatter。
+- `NewSystemMessagePromptTemplate` 定义系统角色（如客服助手）。
+- `NewHumanMessagePromptTemplate` 定义用户输入模板，`{{.question}}`等变量为占位符
+
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    
+    "github.com/tmc/langchaingo/llms/ollama"
+    "github.com/tmc/langchaingo/prompts"
+)
+
+func main() {
+    llm, err := ollama.New( ollama.WithModel("qwen2:7b"), )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // 定义prompt: ① template提示词模板
+    // promptTemplate := prompts.NewPromptTemplate(
+    //     "请使用一句话描述 {{.topic}}",
+    //     []string{"topic"},
+    // )
+    // // 输出模板
+    // fmt.Println(promptTemplate.Template)
+    // // 渲染模板
+    // prompt, err := promptTemplate.Format(map[string]any{
+    //     "topic": "nim-lang这门语言",
+    // })
+
+    // 定义prompt: ② 创建一个新的聊天提示模板
+    prompt := prompts.NewChatPromptTemplate([]prompts.MessageFormatter{
+        prompts.NewSystemMessagePromptTemplate("你是一个智能翻译助手", []string{}),
+        prompts.NewHumanMessagePromptTemplate("将这段文本从{{.input}}翻译成{{.output}}:\n{{.question}}",
+            []string{"input", "output", "question"}),
+    })
+    // 模版解析
+    val, err := prompt.FormatPrompt(map[string]any{
+        "input":    "中文",
+        "output":   "英文",
+        "question": "你好，世界",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(prompt)
+    // 调用llm
+    ctx := context.Background()
+    res, err := llm.Call(ctx, prompt)
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    fmt.Println(res)
+}
 ```
 
 
@@ -462,10 +543,11 @@ doc_result = embeddings.embed_documents([text])
 LangChain 本身不提供 LLM，提供通用的接口访问 LLM，可以很方便的更换底层的 LLM 以及自定义自己的 LLM。
 
 `Models`（模型）: 可选择不同的LLM与Embedding模型。可以直接调用 API 工作，也可以运行本地模型。
-- `LLMs`（大语言模型）: 接收文本字符作为输入，返回的也是文本字符，类似 OpenAI 的 text-davinci-003
-- `Chat Models` 聊天模型: 由语言模型支持但将聊天消息列表作为输入并返回聊天消息的模型。一般使用的 ChatGPT 以及 Claude 为 Chat Models。
-  - 聊天模型基于LLMs，不同的是它接收聊天消息作为输入，返回的也是聊天消息
-  - 聊天消息是一种特定格式的数据，LangChain中支持四种消息: `AIMessage`,` HumanMessage`,` SystemMessage` ,`ChatMessage` ，需要按照角色把数据传递给模型，这部分在后面文章里再详细解释。
+- `LLMs`（大语言模型）: 接收**文本字符**作为输入，返回**文本字符**，类似 OpenAI 的 `text-davinci-003`
+- `Chat Models` 聊天模型: 由语言模型支持但将**聊天消息列表**作为输入并返回聊天消息的模型。
+  - 一般使用的 ChatGPT 以及 Claude 为 Chat Models。
+  - 聊天模型基于LLMs，不同: 接收聊天消息作为输入，返回聊天消息
+  - 聊天消息是一种特定格式数据，LangChain中支持四种消息: `AIMessage`,` HumanMessage`,` SystemMessage` ,`ChatMessage` ，需要按照角色把数据传递给模型，这部分在后面文章里再详细解释。
 - `Text Embedding`：用于文本的向量化表示。文本嵌入模型接收文本作为输入，返回的是浮点数列表. 设计用于与嵌入交互的类
   - 用于实现基于知识库的问答和semantic search，相比 fine-tuning 最大的优势：不用进行训练，并且可以实时添加新的内容，而不用加一次新的内容就训练一次，并且各方面成本要比 fine-tuning 低很多。
   - 例如，可调用OpenAI、Cohere、HuggingFace等Embedding标准接口，对文本向量化。
@@ -473,7 +555,18 @@ LangChain 本身不提供 LLM，提供通用的接口访问 LLM，可以很方�
   - 文本嵌入模型集成了如下的源：AzureOpenAI、Hugging Face Hub、InstructEmbeddings、Llama-cpp、OpenAI 等
 - HuggingFace Models
 
-大语言模型（LLMs）是Models的核心，也是LangChain的基础组成部分，LLMs本质上是一个大型语言模型的包装器，通过该接口与各种大模型进行交互。
+总结：
+- `OpenAI` 属于LLMs，其输入是字符串，输出也是字符串；
+- `ChatOpenAI` 属于聊天模型，其输入是消息列表，输出是消息列表。
+
+怎么选择？
+- ChatOpenAI 侧重于模型被给与一组消息来构成会话，模型基于这组会话会进行后续的响应。
+  - 实时对话交流的聊天机器人，用于与用户进行自然语言交互和提供实时的响应。
+- OpenAI 基于问与答，没有会话概念。
+  - 开发和训练各种类型的机器学习模型，如图像识别、自然语言处理、语音识别等
+
+
+大语言模型（LLMs）是 Models 核心，也是 LangChain 基础组成部分，LLMs本质上是一个大型语言模型的包装器，通过该接口与各种大模型进行交互。
 - 这些模型包括OpenAI的GPT-3.5/4、谷歌的LaMDA/PaLM，Meta AI的LLaMA等。
 
 LLMs 类的功能如下：
@@ -483,7 +576,7 @@ LLMs 类的功能如下：
 - 用量记录
 - 支持流模式（就是一个字一个字的返回，类似打字效果）
 
-LangChain调用OpenAI的gpt-3.5-turbo大语言模型的简单示例
+LangChain 调用 OpenAI 的 gpt-3.5-turbo 大语言模型的简单示例
 
 ```py
 import os
