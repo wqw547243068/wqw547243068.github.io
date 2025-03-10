@@ -369,6 +369,18 @@ Artifacts 是 Claude 模型能力的很好的外化表现形式
 Claude 官方发布的视频《How we built Artifacts with Claude》
 - 直接在 Claude 内输入Prompt，合适的条件下，Artifacts 直接渲染出效果供你检查
 
+【2025-3-10】提示词泄露
+- github [jlia0](https://gist.github.com/jlia0/db0a9695b3ca7609c9b1a08dcbf872c9) 包含提示词、工具列表
+- 29个工具
+  - 浏览器: 12个, 浏览、导航、重启、点击、输入、移动鼠标、按键、选择、上划、下划
+  - 文件操作: 5个, 读文件、写文件、字符串替换、内容查找、按名字查找
+  - Sehll命令: 5个, 执行、查看、等待、写入进程、杀死进程
+  - 部署: 2个, 部署端口、部署应用
+  - 等待: 1个, 任务完成,开始等待
+  - 搜索: 1个, Web搜索
+  - 创建: 1个, 创建 Manus 页面
+
+
 
 #### OpenManus
 
