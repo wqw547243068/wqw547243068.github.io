@@ -339,6 +339,7 @@ Manus 工作原理
 - `Self-build Tools`: 由于预定义工具非常有限，但又要实现更多的输出选项，那怎么办？所以 Manus 让 LLM 临时生成一些用于完成该任务的工具
 
 
+
 #### 评论
 
 Manus 背后的公司 —— [Monica.im]()，其实是个“缝合怪”高手。
@@ -427,6 +428,14 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 更新配置
 cp config/config.example.toml config/config.toml
 ```
+
+代码分析
+- 【2025-3-11】[如何评价OpenManus这个开源项目？](https://www.zhihu.com/question/14322364598/answer/120275203788)
+
+图解: [如何评价OpenManus这个开源项目？ - 流水无情的回答](https://www.zhihu.com/question/14322364598/answer/120275203788)
+- ![工作流程](https://pic1.zhimg.com/80/v2-c446c513b2afeeda8d282083b8cbfadc_720w.webp?source=2c26e567)
+- ![](https://picx.zhimg.com/80/v2-49e5eeb62f7a23ea86e69750a1e6714d_720w.webp?source=2c26e567)
+- ![执行流程](https://picx.zhimg.com/80/v2-8c2ef568bde90525bd46c074421d8ea2_720w.webp?source=2c26e567)
 
 #### OWL
 
