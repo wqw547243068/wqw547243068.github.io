@@ -323,6 +323,22 @@ Manus到底有啥“黑科技”？
 - **生成模型**：Manus采用美国Anthropic公司的Claude 3.5版本作为生成模型，保证输出的内容又专业又优质。
 
 
+Manus 工作原理
+
+与 Deep Research 单纯**文本报告**生成不同，Manus 通过外接多种工具，实现输出形式的**多样化**。
+- 同样遵循 “`计划` → `执行` → `结果合成`”流程，但第二步除了联网搜索，还执行了更多复杂任务。
+
+主要技术环节包括：
+- `Planner`: 和 Deep Research 不同，收到用户请求后不再单纯生成一个报告章节，而是拆成多个任务，每个任务还会有更细致的子任务。
+- `Steiner` 模型: 计划阶段，猜想用了 Steiner 模型，由 Manus 的开发者`季逸超`基于 `qwen2.5-32b` 模型开发的一款擅长"长期思考"（long horizon thinking）和"逐步执行"（step-by-step execution）模型，这个模型主要是启发自 `o1`.
+- `MCP Server`: MCP Server 是 Anthropic 提出, 模型外接其他工具或者能力的协议，判断每一个子任务应该用什么 Agent 来完成。
+- `Search Agent`/`Compute use`（Browser-use）: Search Agent 主要用搜索互联网的信息，跟 Deep Research 单纯的调用搜索 API 不一样，用了 Compute use，设计之初是来让 AI 控制整个电脑的交互，但这里只用到了**浏览器交互**的功能 -- 所以离“通用” Agent 还有一段距离
+- `Coding Agent`/Doc Agent: 负责写代码和文档的基本处理，coding 能力用 Claude 基座模型。
+- `Deploy Agent` Manus: 让生成结果部署在一个云服务器上，用到 Artifact 概念, 把生成的网页代码运行在浏览器上。
+- `Linux Shell Executor` Manus: 用到 Linux Sandbox 技术，远端生成迷你 Linux 环境，用 AI 生成命名行来控制这个 Linux 环境，所以很多生成的文档代码文件都在文件系统里。
+- `Self-build Tools`: 由于预定义工具非常有限，但又要实现更多的输出选项，那怎么办？所以 Manus 让 LLM 临时生成一些用于完成该任务的工具
+
+
 #### 评论
 
 Manus 背后的公司 —— [Monica.im]()，其实是个“缝合怪”高手。
