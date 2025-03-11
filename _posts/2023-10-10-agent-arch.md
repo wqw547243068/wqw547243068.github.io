@@ -1,18 +1,315 @@
 ---
 layout: post
-title:  AutoGen 使用经验
+title:  Agent 开发框架
 date:   2023-10-10 22:46:00
 categories: 大模型
 tags:  Agent 微软 智能体
-excerpt: 微软 AutoGen 使用方法及经验总结 
+excerpt: 智能体开发框架汇总, 如 AutoGen
 mathjax: true
-permalink: /autogen
+permalink: /agent_arch
 ---
 
 * content
 {:toc}
 
-# AutoGen
+
+# Agent 框架
+
+
+## 总结
+
+AI框架
+- 🔹 𝗟𝗮𝗻𝗴𝗖𝗵𝗮𝗶𝗻 - AI 工作流、RAG 和智能代理的首选 𝗟𝗟𝗠 𝗮𝗽𝗽 𝗳𝗿𝗮𝗺𝗲𝘄𝗼𝗿𝗸。
+-	🔹 𝗟𝗹𝗮𝗺𝗮𝗜𝗻𝗱𝗲𝘅 - 优化了 𝗱𝗼𝗰𝘂𝗺𝗲𝗻𝘁 𝘀𝗲𝗮𝗿𝗰𝗵 和聊天机器人内存，有𝗲𝗮𝘀𝘆 𝗱𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝘁𝗶𝗼𝗻。
+-	🔹 𝗖𝗿𝗲𝘄𝗔𝗜 - 一个 𝗺𝘂𝗹𝘁𝗶-𝗮𝗴𝗲𝗻𝘁 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 框架，可简化人工智能团队工作和自动化。
+-	🔹 𝗦𝘄𝗮𝗿𝗺 - 用于𝘀𝗲𝗹𝗳-𝗼𝗿𝗴𝗮𝗻𝗶𝘇𝗶𝗻𝗴 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 系统 𝗻𝗲𝘁𝘄𝗼𝗿𝗸𝘀。
+-	🔹 𝗣𝘆𝗱𝗮𝗻𝘁𝗶𝗰𝗔𝗜 - 𝘀𝘁𝗿𝘂𝗰𝘁𝘂𝗿𝗲𝗱 𝗔𝗜 𝗱𝗮𝘁𝗮 𝘃𝗮𝗹𝗶𝗱𝗮𝘁𝗶𝗼𝗻 和 𝗲𝗻𝗳𝗼𝗿𝗰𝗶𝗻𝗴 𝗰𝗼𝗻𝘀𝗶𝘀𝘁𝗲𝗻𝘁 𝗟𝗟𝗠 𝗼𝘂𝘁𝗽𝘂𝘁𝘀 的常用框架。
+-	🔹 𝗟𝗮𝗻𝗴𝗚𝗿𝗮𝗽𝗵 - A 𝗴𝗿𝗮𝗽𝗵-𝗯𝗮𝘀𝗲𝗱 𝗔𝗜 𝘄𝗼𝗿𝗸𝗳𝗹𝗼𝘄 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗰𝗼𝗺𝗽𝗹𝗲𝘅 𝗟𝗟𝗠 𝗽𝗶𝗽𝗲𝗹𝗶𝗻𝗲𝘀 的框架。
+-	🔹 𝗔𝘂𝘁𝗼𝗴𝗲𝗻𝗔𝗜 - 最强大的 𝗮𝘂𝘁𝗼𝗻𝗼𝗺𝗼𝘂𝘀 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 𝘀𝗲𝗹𝗳-𝗶𝗺𝗽𝗿𝗼𝘃𝗶𝗻𝗴 𝘀𝘆𝘀𝘁𝗲𝗺𝘀 𝗮𝗻𝗱 𝘁𝗮𝘀𝗸 𝗮𝘂𝘁𝗼𝗺𝗮𝘁𝗶𝗼𝗻。
+
+
+### 选什么框架
+
+总结
+- 软件开发：`AutoGen`（微软） 最适合处理代码生成和复杂 multi-agent 编码工作流任务。
+- 初学者：OpenAI `Swarm` 和 `CrewAI`操作简便，非常适合刚接触 multi-agent AI 且没有复杂配置需求的新手使用。
+- 复杂任务首选：`LangGraph` —— 极高的灵活性，为高级用户设计，支持自定义逻辑和智能体编排（orchestration）。
+- 开源 LLMs 兼容程度：`LangGraph` —— 与开源 LLMs 的兼容性极佳，支持多种 API 接口，这是其他一些框架所不具备的。`CrewAI` 在这方面也表现不俗。
+- 技术社区：`AutoGen` 拥有相当不错的技术社区支持，能够帮助用户解决一些难题。
+- 即开即用：`CrewAI` —— 配置快捷、操作直观，非常适合用于演示或是需要迅速创建智能体的任务。`Swarm` 和 `Magentic-One` 表现也相当不错，但社区支持相对较弱。
+- 性价比之王：`Magentic-One` —— 它提供了一套预配置的解决方案，采用了通用框架的设计方法，可能在初期能够节省成本。`Swarm` 和 `CrewAI` 在成本效益方面也值得关注。
+
+
+
+### 框架分析
+
+【2024-12-20】[五大多智能体 ( Multi-AI Agent) 框架对比](https://zhuanlan.zhihu.com/p/10171636983)
+- AutoGen (Microsoft)
+- LangGraph (LangChain)
+- CrewAI
+- OpenAI Swarm (OpenAI)
+- Magentic-One (Microsoft)
+
+|框架|时间|公司|特点|优点|缺点||
+|----|----|----|----|----|----|----|
+|`AutoGen`|2023-10-10|微软|用户智能体（提出编程需求/编写提示词）+助手智能体（生成/执行代码）|代码任务这类多智能体编排<br>允许人工指导<br>微软社区支持|需要代码背景<br>本地LLMs配置繁琐，需要代理服务器<br>非软件开发领域，表现不够出色||
+|`CrewAI`|||初学者首选方案，主要编码提示词|界面操作直观,配置方便<br>智能体创建便利,适合非技术背景用户<br>与LangChain结合，适合本地LLM|灵活性不足<br>复杂编程任务不理想<br>智能体交互偶尔故障<br>社区支持不足||
+|`LangGraph`||LangChain|基于 LangChain 开发, 核心是有向循环图(DAG)|灵活可定制<br>能与开源LLM无缝衔接<br>LangChain延伸，技术社区较好|文档资料不足<br>需要编程背景,尤其是图/逻辑流程||
+|`Swarm`||OpenAI|简化智能体创建过程,上下文切换|适合新手|只支持OpenAI API<br>不适合生产环境<br>不够灵活<br>社区支持较弱||
+|`Magentic`||微软|AutoGen的简化版,预设5个智能体|操作便捷，适合小白<br>附带AutoGenBench,评估功能|开源LLMs支持不佳<br>不够灵活,更像是应用，非框架<br>文档社区支持几乎为零||
+||||||||
+
+
+
+## MetaGPT
+
+【2023-7-5】[MetaGPT](https://github.com/geekan/MetaGPT)
+- [MetaGPT: Multi-Agent Meta Programming Framework]() 多智能体编程框架
+- MetaGPT takes a one line requirement as input and outputs user stories / competitive analysis / requirements / data structures / APIs / documents, etc.
+- Internally, MetaGPT includes product managers / architects / project managers / engineers. It provides the entire process of a software company along with carefully orchestrated SOPs.
+- Code = SOP(Team) is the core philosophy. We materialize SOP and apply it to teams composed of LLMs.
+- ![](https://github.com/geekan/MetaGPT/raw/main/docs/resources/software_company_cd.jpeg)
+
+
+
+## Magentic-One
+
+【2024-11-4】微软推出 `Magnetic-One`（第二个框架），对现有的 `AutoGen` 框架进行简化。
+- [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://www.microsoft.com/en-us/research/publication/magentic-one-a-generalist-multi-agent-system-for-solving-complex-tasks/)
+
+Magentic-One 的工作流程基于一个双循环机制：
+- ● 外循环 (Outer Loop)：协调者更新任务日志，制定和调整计划。
+- ● 内循环 (Inner Loop)：协调者更新进度日志，分配子任务给专业智能体，并监控执行情况。 如果进度停滞，则返回外循环重新规划。
+
+功能特点：
+- 与 Swarm 相似，Magnetic-One 同样适用于编程经验较少的用户，操作起来简便快捷。
+- 系统预设了五个智能体，包括1个**管理**智能体和另外4个**专用**智能体：
+  - WebSurfer 负责在浏览器中浏览网页,以及与网页进行互动，
+  - FileSurfer 负责本地文件管理与导航，
+  - Coder 专注于代码编写与分析，
+  - ComputerTerminal 控制台访问权限，运行程序和安装库文件。
+- 该框架基于 AutoGen 打造，是一个通用框架。
+- 附带了 AutoGenBench 工具，专门用于评估智能体的性能。
+
+不足之处：
+- 对开源 LLMs 的支持较为复杂，不易实现。
+- 灵活性有待提高；从某种程度上看，它更像是一款应用，而非一个框架。
+- 目前文档资料和技术社区支持力度几乎为零，尚需加强。
+
+架构
+- ![](https://www.microsoft.com/en-us/research/uploads/prod/2024/11/magentic_orchestrator.png)
+
+## AgentUniverse
+
+【2024-6-16】蚂蚁金服推出 AgentUniverse:大模型多智能体框架。
+
+核心提供多智能体协作**编排组件**，其相当于一个模式工厂（pattern factory），允许开发者对多智能体协作模式进行开发定制，同时附带了搭建单一智能体的全部关键组件。开发者可以基于本框架轻松构建多智能体应用，并通过社区对不同领域的pattern实践进行交流共享】
+- 'agentUniverse - Your LLM Powered Multi-Agent Framework' GitHub: [agentUniverse](github.com/alipay/agentUniverse)
+
+核心特性
+- 单智能体的全部关键组件
+- 丰富的**多智能体协同模式**: 提供 `PEER`（Plan/Execute/Express/Review）、`DOE`（Data-fining/Opinion-inject/Express）等产业中验证有效的协同模式，同时支持用户自定义编排新模式，让多个智能体有机合作；
+- 所有组件均**可定制**: LLM、知识、工具、记忆等所有框架组件均提供自定义能力，供用户来增强专属智能体；
+- 轻松融入**领域**经验: 提供领域prompt、知识构建与管理的能力，同时支持领域级SOP编排与注入，将智能体对齐至领域专家级别；
+
+模式组件包括:
+- PEER 模式组件: 该pattern通过计划（Plan）、执行（Execute）、表达（Express）、评价（Review）四个不同职责的智能体，实现对复杂问题的多步拆解、分步执行，并基于评价反馈进行自主迭代，最终提升推理分析类任务表现。典型适用场景:事件解读、行业分析
+- DOE 模式组件: 该pattern通过数据精制（Data-fining）、观点注入（Opinion-inject）、表达（Express）三个智能体，实现对数据密集、高计算精度、融合专家观点的生成任务的效果提升。典型适用场景:财报生成
+
+**使用案例**
+
+[使用指南](https://github.com/alipay/agentUniverse/blob/master/docs/guidebook/zh/0_%E7%9B%AE%E5%BD%95.md)
+
+-   6.1 RAG类Agent案例
+  -   6.1.1 [法律咨询Agent](https://github.com/alipay/agentUniverse/blob/master/docs/guidebook/zh/7_1_1_%E6%B3%95%E5%BE%8B%E5%92%A8%E8%AF%A2%E6%A1%88%E4%BE%8B.md)
+-   6.2 ReAct类Agent案例
+  -   6.2.1 [Python代码生成与执行Agent](https://github.com/alipay/agentUniverse/blob/master/docs/guidebook/zh/7_1_1_Python%E8%87%AA%E5%8A%A8%E6%89%A7%E8%A1%8C%E6%A1%88%E4%BE%8B.md)
+-   6.3 [基于多轮多Agent的讨论小组](https://github.com/alipay/agentUniverse/blob/master/docs/guidebook/zh/6_2_1_%E8%AE%A8%E8%AE%BA%E7%BB%84.md)
+-   6.4 PEER多Agent协作案例
+  -   6.4.1 [金融事件分析案例](https://github.com/alipay/agentUniverse/blob/master/docs/guidebook/zh/6_4_1_%E9%87%91%E8%9E%8D%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90%E6%A1%88%E4%BE%8B.md)
+
+![](https://agentuniverse.readthedocs.io/en/latest/_picture/agent_universe_framework_resize.jpg)
+
+## AgentStudio
+
+【2024-6-29】[AgentStudio :联合国际顶尖高校 昆仑万维开源智能体研发工具包，从0到1，轻松构建Agent](https://mp.weixin.qq.com/s/qelnmhohf8w_dkxNSGNRwQ)
+
+[AgentStudio](https://skyworkai.github.io/agent-studio/) 模拟真实的多模式环境，从环境设置到数据收集、代理评估和可视化的整个过程。包括智能体**观察与动作**空间、**跨平台**的在线环境支持、**交互式**数据收集与评估、可扩展的任务套件、以及相应的图形界面。
+- 观察和操作空间非常通用，支持函数调用和人机界面操作。
+- 任何设备上运行任何软件的智能体助手
+- [AgentStudio: A Toolkit for Building General Virtual Agents](https://arxiv.org/abs/2403.17918)
+- [agent-studio](https://github.com/SkyworkAI/agent-studio)
+- ![](https://skyworkai.github.io/agent-studio/main_page_resources/annotation_example.jpg)
+
+AgentStudio 环境和工具包涵盖了构建可与数字世界中的一切交互的计算机代理的整个生命周期。
+1. 环境 (Env)
+  - • **跨设备** (Cross-Device):AgentStudio 可以在不同设备上运行，包括 Docker 容器、物理机器和虚拟机。这意味着无论你是在云端还是本地运行代理，AgentStudio 都能适应。
+  - • 跨**操作系统** (Cross-OS):支持多种操作系统，如 Linux、MacOS 和 Windows。无论你使用哪个系统，AgentStudio 都能工作。
+2. 代理 (Agent)
+  - • **通用行动空间** (Universal Action Space):代理可以使用键盘、鼠标和 API 工具进行操作。这就像人类使用电脑的方式，代理可以模拟这些操作。
+  - • **多模态观察空间** (Multimodal Observation Space):代理可以通过截图、录屏和代码输出观察环境。这类似于人类通过眼睛和日志查看屏幕上的内容。
+  - • 开放性 (Open-Endedness):支持工具的创建和检索，这意味着代理可以学习并使用新的工具来完成任务。
+3. 数据 (Data)
+  - • **GUI 定位** (GUI Grounding):收集用户界面上的数据，帮助代理理解界面布局。
+  - • 人类轨迹 (Human Trajectories) 和 代理轨迹 (Agent Trajectories):记录人类和代理在界面上的操作路径，为代理的学习提供数据。
+  - • 人类/AI 反馈 (Human/AI Feedback) 和 **视频演示 (Video Demonstration)**:提供反馈和示范，帮助代理改进操作。
+4. 评估 (Eval)
+  - • 基本代理能力 (Fundamental Agent Abilities):评估代理的自我评估、自我纠正和准确定位能力。
+  - • 开放域任务套件 (Open-Domain Task Suite):评估代理在低级指令执行和复杂任务组合上的能力。
+5. 界面 (Interface)
+  - • 互动注释管道 (Interactive Annotation Pipeline):允许用户实时标注数据，帮助代理学习。
+  - • VNC 远程桌面 (VNC Remote Desktop):支持远程操作和测试。
+  - • 野外测试 (In-the-Wild Testing) 和 自动评估 (Auto-Evaluation):在真实环境中测试代理，并自动评估其表现。
+  - • 安全检查 (Safety Check):确保代理操作的安全性。
+
+
+
+## Swarm
+
+【2024-10-12】[OpenAI今天Open了一下：开源多智能体框架Swarm](https://mp.weixin.qq.com/s/3-iKztrTuRURUGtles4-xA)
+
+多智能体是 OpenAI 未来重要的研究方向之一，前些天 OpenAI 著名研究科学家 Noam Brown 还在 X 上为 OpenAI 正在组建的一个新的多智能体研究团队
+
+这个团队开源了一项重量级研究成果：Swarm。一个实验性质的**多智能体编排框架**，主打特征是**工效**（ergonomic）与**轻量**（lightweight）。
+- 项目地址：[swarm](https://github.com/openai/swarm)
+
+重点：让智能体协作和执行变得轻量、高度可控且易于测试。
+
+为此，使用了两种原语抽象：**智能体**（agent）和**交接**（handoff）。
+- 其中，智能体包含指令和工具，并且在任何时间都可以选择将对话交接给另一个智能体。
+- Swarm 智能体与 Assistants API 中的 Assistants 无关。
+- Swarm 完全由 Chat Completions API 提供支持，因此在调用之间是无状态的。
+
+Swarm 的核心组件包括 `client`（客户端）、`Agent`（智能体）、`Function`（函数）。
+- `client`（客户端）: 运行 Swarm 就是从实例化一个 client 开始
+  - Swarm 的 run() 函数: 类似于 Chat Completions API 中的 chat.completions.create() 函数——接收消息并返回消息，并且在调用之间不保存任何状态。但重点在于，它还处理 Agent 函数执行、交接、上下文变量引用，并且可以在返回给用户之前进行多轮执行。
+  - client.run() 完成后（可能进行过多次智能体和工具调用），会返回一个响应，其中包含所有相关的已更新状态。具体来说，即包含新消息、最后调用的智能体、最新的上下文变量。你可以将这些值（加上新的用户消息）传递给 client.run() 的下一次执行，以继续上次的交互——就像是 chat.completions.create()
+- `Agent`（智能体）: 将一组指令与一组函数封装在一起（再加上一些额外的设置），并且其有能力将执行过程交接给另一个 Agent。
+- `Function`（函数）: Swarm Agent 可以直接调用 Python 函数。
+  - 函数通常应返回一个字符串（数值会被转换为字符串）。
+  - 如果一个函数返回了一个 Agent，则执行过程将转交给该 Agent。
+  - 如果函数定义了 context_variables 参数，则它将由传递到 client.run() 的 context_variables 填充。
+
+Swarm 的 client.run() 是实现以下循环：
+- 先让当前智能体完成一个结果
+- 执行工具调用并附加结果
+- 如有必要，切换智能体
+- 如有必要，更新上下文变量
+- 如果没有新的函数调用，则返回
+
+选择
+- 如果开发者想要寻求**完全托管**的线程以及内置的内存管理和检索，那么 Assistants API
+- 但如果开发者想要**完全透明度**，并且能够**细粒度地控制上下文、步骤和工具调用**，那么 Swarm 才是最佳选择。
+- Swarm （几乎）完全运行在客户端，与 Chat Completions API 非常相似，不会在调用之间存储状态。
+
+
+应用案例
+- 天气查询智能体
+- 用于在航空公司环境中处理不同客户服务请求的多智能体设置
+- 客服机器人
+- 可以帮助销售和退款的个人智能体等。
+
+
+安装
+
+```sh
+pip install git+ssh://git@github.com/openai/swarm.git
+```
+
+使用
+
+```py
+from swarm import Swarm, Agent
+
+client = Swarm()
+
+def transfer_to_agent_b():
+  return agent_b
+
+agent_a = Agent(
+  name="Agent A",
+  instructions="You are a helpful agent.",
+  functions=[transfer_to_agent_b],
+)
+
+agent_b = Agent(
+  name="Agent B",
+  instructions="Only speak in Haikus.",
+)
+
+response = client.run(
+  agent=agent_a,
+  messages=[{"role": "user", "content": "I want to talk to agent B."}],
+)
+
+print(response.messages[-1]["content"])
+```
+
+
+## LangGraph
+
+2023 年 1 月推出 LangGraph，低级编排框架，用于构建代理应用。
+- 开源的，并提供 Python 和 JavaScript 两种版本
+
+LangGraph Studio 提供专门环境来简化 LLM（大语言模型）应用开发过程，用于可视化、交互和调试代理应用。
+
+与传统软件开发不同，构建 LLM 应用需要标准代码编辑器之外的独特工具。
+- LangGraph Studio 通过允许开发人员可视化代理图、修改代理结果以及随时与代理状态交互来增强开发体验。
+
+2024 年 6 月发布了稳定的 0.1 版本
+
+[LangGraph](https://www.langchain.com/langgraph) 适用于各种 Multi-AI Agent 任务，并且具有极高的灵活性。
+
+功能特点：
+- LangGraph 基于 LangChain 开发，其核心思想是“有向循环图（Directed Cyclic Graph）”。
+- 它不仅仅是一个 Multi-AI agent 框架，功能远超于此。
+- 高度灵活，可定制性强，几乎能够满足所有多智能体协作应用的需求。
+- 作为 LangChain 的延伸，它得到了技术社区的大力支持。
+- 能够与开源的 LLMs（大语言模型）以及各种 API 无缝协作。
+
+不足之处：
+- 文档资料不够详尽。对于编程经验较少的用户来说，上手难度较大。
+- 需要具备一定的编程能力，特别是在图（graphs）和逻辑流程的理解上。
+
+安装
+
+```sh
+pip install langgraph
+```
+
+
+
+## CrewAI
+
+[CrewAI](https://www.crewai.com/) 是快速搭建 Multi-AI Agent 任务演示的首选工具，因为操作直观，配置起来也十分简便。
+- GitHub [crewAI](https://github.com/joaomdmoura/crewAI)
+
+CrewAI 核心特征
+1. 角色定制代理：可以根据不同的角色、目标和工具来量身定制代理。
+2. 自动任务委派：代理之间能够自主地分配任务和进行交流，有效提升解题效率。
+3. 任务管理灵活性：可以根据需要自定义任务和工具，并灵活地指派给不同代理。
+4. 流程导向：目前系统仅支持按顺序执行任务，但更加复杂的如基于共识和层级的流程正在研发中。
+
+功能特点：
+- 操作界面直观，主要依靠编写提示词。
+- 创建新智能体并将其融入系统非常简单，几分钟内就能生成上百个智能体。
+- 即便是非技术背景的用户也能轻松上手。
+- 得益于与 LangChain 的集成，它能够与多数 LLM 服务提供商和本地 LLM 配合使用。
+
+不足之处：
+- 在灵活性和定制化方面有所限制。
+- 更适合处理基础场景，对于复杂的编程任务则不太理想。
+- 智能体间的交互偶尔会出现一些故障。
+- 技术社区的支持力度相对较弱。
+
+安装
+
+```sh
+pip install crewai
+```
+
+
+## AutoGen
 
 【2023-10-10】微软发布[AutoGen](https://microsoft.github.io/autogen/), [github](https://microsoft.github.io/autogen/)，多代理（Agent）任务框架，完成各种场景的复杂工作流任务，从GPT大语言模型近几个月高速迭代以来，最近这个概念很火。
 - 论文：[AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155)
@@ -25,14 +322,14 @@ permalink: /autogen
 如果要做 multi-Agent，那么 AutoGen 架构一定是最正确的
 
 
-## AutoGen 介绍
+### AutoGen 介绍
 
 微软公司发布了开源Python库AutoGen。
 - AutoGen是“一个简化大语言模型工作流编排、优化和自动化的框架。AutoGen背后的基本概念是“代理”（agents）的创建，即由大语言模型（如GPT-4）提供支持的编程模块。这些智能体（agents）通过自然语言信息相互作用，完成各种任务。
 - 【2024-2-8】[AutoGen框架学习](https://bytedance.larkoffice.com/docx/VgIsdadfCoHQy3x9lKYc0NkYnwe) 飞书文档
 
 
-## AutoGen 设计
+### AutoGen 设计
 
 借助AutoGen，开发人员可以创建一个由代理（agents）组成的生态系统，这些代理专注于不同的任务并相互合作。
 - AutoGen使用**多代理**（multi-agent）对话支持复杂的基于大语言模型的工作流。
@@ -97,13 +394,13 @@ user_proxy.initiate_chat(assistant, ....)
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
-## 代码理解
+### 代码理解
 
 AutoGen 中的代理具有以下功能：
 - 可**对话**：AutoGen 没有隔离代理，任何代理都可发送和接收来自其他代理的消息以启动或继续对话
 - 可**定制**：AutoGen 代理可自定义, 集成 LLM、人员、工具或组合。
 
-### 框架解析
+#### 框架解析
 
 [autogen/agentchat/__init__.py](https://github.com/microsoft/autogen/blob/main/autogen/agentchat/__init__.py) 中定义多种智能体
 - "`Agent`" **抽象类**，定义了 name属性方法, reset,send/a_send,receive/a_reveive,generate_reply/a_generate_reply
@@ -123,7 +420,7 @@ AutoGen 中的代理具有以下功能：
 用户代理和助手代理之间的聊天被自动化，同时允许人工反馈或干预，实现了高效和灵活的任务完成方式。
 
 
-### 图解
+#### 图解
 
 <div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-02-04T10:45:31.223Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\&quot; etag=\&quot;7GD5o47741kSuT2bhq81\&quot; version=\&quot;22.1.21\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1138\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-22\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-13\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-21\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;260\&quot; y=\&quot;470\&quot; width=\&quot;220\&quot; height=\&quot;230\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;AutoGen源码\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;619.5\&quot; y=\&quot;340\&quot; width=\&quot;150\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-2\&quot; value=\&quot;autogen/autogen目录\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;637\&quot; y=\&quot;370\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-3\&quot; value=\&quot;agentchat/agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;365\&quot; y=\&quot;440\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-25\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-4\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-4\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;510\&quot; width=\&quot;75\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-5\&quot; value=\&quot;send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;540\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-6\&quot; value=\&quot;a_send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;355\&quot; y=\&quot;540\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-7\&quot; value=\&quot;receive\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;580\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-8\&quot; value=\&quot;a_receive\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;355\&quot; y=\&quot;580\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-9\&quot; value=\&quot;reset\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;395\&quot; y=\&quot;620\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-10\&quot; value=\&quot;generate_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;620\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-12\&quot; value=\&quot;a_generate_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;660\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-15\&quot; value=\&quot;Agent抽象类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;450\&quot; width=\&quot;85\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-16\&quot; value=\&quot;属性方法\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;480\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-17\&quot; value=\&quot;异步方法\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0000FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;420\&quot; y=\&quot;540\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-54\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;680\&quot; y=\&quot;910\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-18\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;257.5\&quot; y=\&quot;760\&quot; width=\&quot;422.5\&quot; height=\&quot;310\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-19\&quot; value=\&quot;agentchat/conversable_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;301.25\&quot; y=\&quot;760\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-21\&quot; value=\&quot;ConversableAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;301.25\&quot; y=\&quot;730\&quot; width=\&quot;137.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-23\&quot; value=\&quot;_name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;381\&quot; y=\&quot;510\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-24\&quot; value=\&quot;智能体名称\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380.25\&quot; y=\&quot;484\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-26\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;790\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-27\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;820\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-28\&quot; value=\&quot;is_termination_msg\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;850\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-29\&quot; value=\&quot;max_consecutive_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;880\&quot; width=\&quot;185\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-30\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;910\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-31\&quot; value=\&quot;function_map\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;940\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-32\&quot; value=\&quot;code_execution_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;970\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-33\&quot; value=\&quot;llm_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;1000\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-34\&quot; value=\&quot;default_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;1030\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-35\&quot; value=\&quot;description\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;365\&quot; y=\&quot;790\&quot; width=\&quot;75\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-36\&quot; value=\&quot;智能体描述\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;438.75\&quot; y=\&quot;785\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-37\&quot; value=\&quot;系统提示语\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;411\&quot; y=\&quot;813\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-38\&quot; value=\&quot;终止消息\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;404\&quot; y=\&quot;836\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-39\&quot; value=\&quot;自动回复最大次数\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;416.5\&quot; y=\&quot;855\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-40\&quot; value=\&quot;人工询问模式: &amp;lt;br&amp;gt;ALWAYS,TERMINATE(中止),NEVER(自动)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;417.5\&quot; y=\&quot;905\&quot; width=\&quot;245\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-41\&quot; value=\&quot;函数名映射,用于工具调用&amp;lt;br&amp;gt;- Flase(关闭),work_dir(本地代码目录)&amp;lt;br&amp;gt;- user_docker(docker),timeout(执行超时),&amp;lt;br&amp;gt;- last_n_message(执行最近几条消息的代码)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;446\&quot; y=\&quot;960\&quot; width=\&quot;280\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-42\&quot; value=\&quot;llm推理配置\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;997\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-43\&quot; value=\&quot;没有代码/回复时的自动回复\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;429\&quot; y=\&quot;1025\&quot; width=\&quot;161\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-44\&quot; value=\&quot;类实现\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;373.5\&quot; y=\&quot;700\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-45\&quot; value=\&quot;send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;790\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-47\&quot; value=\&quot;initiate_chat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;830\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-48\&quot; value=\&quot;a_initiate_chat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;866\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-49\&quot; value=\&quot;智能体启动\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;619.5\&quot; y=\&quot;836\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-50\&quot; value=\&quot;。。。\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;602.5\&quot; y=\&quot;790\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-14\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-89\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;790\&quot; y=\&quot;830\&quot; width=\&quot;220\&quot; height=\&quot;152.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-52\&quot; value=\&quot;agentchat/assistant_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;833.25\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-53\&quot; value=\&quot;AssistantAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;815\&quot; y=\&quot;808.25\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-55\&quot; value=\&quot;继承\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;704.5\&quot; y=\&quot;880\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-56\&quot; value=\&quot;执行具体任务,与LLM打交道\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;809\&quot; y=\&quot;778.25\&quot; width=\&quot;157\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-57\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;600\&quot; y=\&quot;485\&quot; width=\&quot;220\&quot; height=\&quot;215\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-58\&quot; value=\&quot;agentchat/group_chat.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;637\&quot; y=\&quot;487.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-59\&quot; value=\&quot;GroupChat类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;625\&quot; y=\&quot;462.5\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-60\&quot; value=\&quot;群聊\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;434\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-61\&quot; value=\&quot;agent\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;517.5\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-62\&quot; value=\&quot;messages\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;545\&quot; width=\&quot;70\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-63\&quot; value=\&quot;max_round\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;570\&quot; width=\&quot;80\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-64\&quot; value=\&quot;admin_name\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;622\&quot; y=\&quot;597\&quot; width=\&quot;80\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-65\&quot; value=\&quot;func_call_filter\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;622\&quot; y=\&quot;623\&quot; width=\&quot;98\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-66\&quot; value=\&quot;speaker_selection_method\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;623\&quot; y=\&quot;649\&quot; width=\&quot;177\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-67\&quot; value=\&quot;allow_repeat_speaker\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;623\&quot; y=\&quot;675\&quot; width=\&quot;177\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-68\&quot; value=\&quot;智能体列表\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;680\&quot; y=\&quot;510\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-69\&quot; value=\&quot;群聊信息\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;684\&quot; y=\&quot;540\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-70\&quot; value=\&quot;最大轮数\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;690\&quot; y=\&quot;567\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-71\&quot; value=\&quot;管理员智能体名字\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;700\&quot; y=\&quot;592\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-72\&quot; value=\&quot;函数调用过滤\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;720\&quot; y=\&quot;617\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-73\&quot; value=\&quot;下一个发言人选择模式&amp;lt;br&amp;gt;auto(llm指定)&amp;lt;br&amp;gt;manual(用户指定)&amp;lt;br&amp;gt;random(随机)&amp;lt;br&amp;gt;round_robin(预设)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;497\&quot; y=\&quot;649\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-74\&quot; value=\&quot;是否可以重复发言\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;640\&quot; y=\&quot;695\&quot; width=\&quot;124\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;890\&quot; y=\&quot;490\&quot; width=\&quot;220\&quot; height=\&quot;195\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-76\&quot; value=\&quot;agentchat/assistant_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;927\&quot; y=\&quot;492.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-77\&quot; value=\&quot;GroupChatManager类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;915\&quot; y=\&quot;467.5\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-78\&quot; value=\&quot;经理\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;945.5\&quot; y=\&quot;440\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-79\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;680\&quot; y=\&quot;910\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;800\&quot; y=\&quot;925\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-80\&quot; value=\&quot;groupchat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;990\&quot; y=\&quot;522.5\&quot; width=\&quot;70\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-81\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;521\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-82\&quot; value=\&quot;max_consecutive_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;550\&quot; width=\&quot;190\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-83\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;578.5\&quot; width=\&quot;130\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-84\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;610\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-85\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=-0.014;exitY=0.467;exitDx=0;exitDy=0;entryX=1.009;entryY=0.447;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-57\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;915\&quot; y=\&quot;695\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-86\&quot; value=\&quot;管理\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;840\&quot; y=\&quot;555\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;790\&quot; y=\&quot;1080\&quot; width=\&quot;220\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-88\&quot; value=\&quot;agentchat/user_proxy_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;1082.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-89\&quot; value=\&quot;UserProxyAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;1055\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-90\&quot; value=\&quot;接收用户消息，执行本地代码、工具\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;815\&quot; y=\&quot;1020\&quot; width=\&quot;203\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-91\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-18\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;800\&quot; y=\&quot;925\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-92\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;1112.5\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-93\&quot; value=\&quot;ALWAYS\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;937\&quot; y=\&quot;1107.5\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-94\&quot; value=\&quot;llm_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;802\&quot; y=\&quot;1137.5\&quot; width=\&quot;78\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-95\&quot; value=\&quot;False\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;886\&quot; y=\&quot;1132.5\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-96\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;863.25\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-97\&quot; value=\&quot;默认取值:写代码并调试\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;930.5\&quot; y=\&quot;858.25\&quot; width=\&quot;129.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-98\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;898.25\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-99\&quot; value=\&quot;NEVER\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;930.5\&quot; y=\&quot;893.25\&quot; width=\&quot;59.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-100\&quot; value=\&quot;code_execution_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;800\&quot; y=\&quot;933.25\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-101\&quot; value=\&quot;False\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;947\&quot; y=\&quot;928.25\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-1\&quot; value=\&quot;LLM大模型\&quot; style=\&quot;ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1140\&quot; y=\&quot;863.25\&quot; width=\&quot;120\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-5\&quot; value=\&quot;任务示例：&amp;lt;br&amp;gt;- 回答问题&amp;lt;br&amp;gt;- 代码优化&amp;lt;br&amp;gt;- 工具调用\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;967\&quot; y=\&quot;778.25\&quot; width=\&quot;93\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-6\&quot; value=\&quot;Memory &amp;lt;br&amp;gt;记忆\&quot; style=\&quot;shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#e1d5e7;strokeColor=#9673a6;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1130\&quot; y=\&quot;690\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-7\&quot; value=\&quot;Agent与其他Agent交互历史&amp;lt;br&amp;gt;- 信息隔离：没有对话过的agent看不到彼此信息&amp;lt;br&amp;gt;-&amp;amp;nbsp;ChatManager拥有所有agent聊天记录，消息广播给所有agent&amp;lt;span class=&amp;quot;lark-record-clipboard&amp;quot; data-lark-record-format=&amp;quot;docx/text&amp;quot; data-lark-record-data=&amp;quot;{&amp;amp;quot;rootId&amp;amp;quot;:&amp;amp;quot;Yu5Zd7e1ToyV0Cx8kg7cHBQ8nBK&amp;amp;quot;,&amp;amp;quot;text&amp;amp;quot;:{&amp;amp;quot;initialAttributedTexts&amp;amp;quot;:{&amp;amp;quot;text&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:&amp;amp;quot;ChatManager&amp;amp;quot;},&amp;amp;quot;attribs&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:&amp;amp;quot;*0+b&amp;amp;quot;}},&amp;amp;quot;apool&amp;amp;quot;:{&amp;amp;quot;numToAttrib&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:[&amp;amp;quot;author&amp;amp;quot;,&amp;amp;quot;6622794874074710286&amp;amp;quot;]},&amp;amp;quot;nextNum&amp;amp;quot;:1}},&amp;amp;quot;type&amp;amp;quot;:&amp;amp;quot;text&amp;amp;quot;,&amp;amp;quot;referenceRecordMap&amp;amp;quot;:{},&amp;amp;quot;extra&amp;amp;quot;:{&amp;amp;quot;mention_page_title&amp;amp;quot;:{},&amp;amp;quot;external_mention_url&amp;amp;quot;:{}},&amp;amp;quot;isKeepQuoteContainer&amp;amp;quot;:false,&amp;amp;quot;isFromCode&amp;amp;quot;:false,&amp;amp;quot;selection&amp;amp;quot;:[{&amp;amp;quot;id&amp;amp;quot;:17,&amp;amp;quot;type&amp;amp;quot;:&amp;amp;quot;text&amp;amp;quot;,&amp;amp;quot;selection&amp;amp;quot;:{&amp;amp;quot;start&amp;amp;quot;:0,&amp;amp;quot;end&amp;amp;quot;:11},&amp;amp;quot;recordId&amp;amp;quot;:&amp;amp;quot;UWFidMhmtowKBvx5UXVcm6iKnib&amp;amp;quot;}],&amp;amp;quot;payloadMap&amp;amp;quot;:{},&amp;amp;quot;isCut&amp;amp;quot;:false}&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1100\&quot; y=\&quot;778.25\&quot; width=\&quot;268.75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; value=\&quot;Tools 工具集\&quot; style=\&quot;shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1150\&quot; y=\&quot;997\&quot; width=\&quot;120\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-9\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0;exitY=0;exitDx=0;exitDy=30;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;798\&quot; y=\&quot;1144\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-10\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0;exitY=0;exitDx=0;exitDy=30;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;1160\&quot; y=\&quot;1037\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;1020\&quot; y=\&quot;1120\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-11\&quot; value=\&quot;register_for_llm\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#994C00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1030\&quot; y=\&quot;960\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-12\&quot; value=\&quot;register_for_excution\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#994C00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1029.5\&quot; y=\&quot;1052.5\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; target=\&quot;z17qGNcBpyHAHbg1JJl0-1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;798\&quot; y=\&quot;1144\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
@@ -222,11 +519,11 @@ Autogen系列
 - ![](http://www.limoncc.com/images/Autogen%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png)
 - ![](https://pic2.zhimg.com/v2-8fb21d82d21d8b18b97a56b82c415b1d_r.jpg)
 
-## 应用场景
+### 应用场景
 
 
 
-### 应用领域
+#### 应用领域
 
 【2024-1-14】[Autogen 新手指南：基础概念和应用](https://zhuanlan.zhihu.com/p/664937747)
 
@@ -282,7 +579,7 @@ AutoGen 构建的六个应用程序示例，包括数学问题解决、多智能
 
 
 
-### 基本配置
+#### 基本配置
 
 新建 `OAI_CONFIG_LIST` 文件，内容如下，并且将开发密钥填入<>后，保存文件。
 - 配置列表的样子，可有多个API端点，所以可用多个模型。
@@ -349,7 +646,7 @@ python test/twoagent.py
 4. AssistantAgent 随后为UserProxyAgent生成进一步的回应。
   - 用户代理随后可以决定是否终止对话。如果不终止，则重复步骤3和4。
 
-### 简易案例
+#### 简易案例
 
 简单Agent示例
 - 比 LangChain 简单的多
@@ -399,7 +696,7 @@ task1 = """今天是星期几？,还有几天周末？请告诉我答案。"""
 user_proxy.initiate_chat(assistant,message=task1)
 ```
 
-### 复杂案例
+#### 复杂案例
 
 需求
 > 今天是什么日期，比较Meta和Tesla的年初至今收益
@@ -613,9 +910,9 @@ user_proxy.initiate_chat(
 )
 ```
 
-## AutoGen 生态
+### AutoGen 生态
 
-### AutoGen Studio
+#### AutoGen Studio
 
 【2023-12-1】微软 [AutoGen Studio: Interactively Explore Multi-Agent Workflows](https://microsoft.github.io/autogen/blog/2023/12/01/AutoGenStudio/)
 - [体验 AutoGen Studio - 微软推出的友好多智能体协作框架](https://zhuanlan.zhihu.com/p/678244812)
@@ -661,11 +958,11 @@ autogenstudio ui --port 8081 --host 10.92.186.159 # 其它域内机器可访问
 ```
 
 
-## AutoGen 问题
+### AutoGen 问题
 
 
 
-### 功能局限
+#### 功能局限
 
 案例都是**单层调用**，一层树结构，user_proxy调weather或traval；
 
