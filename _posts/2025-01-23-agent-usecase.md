@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体应用
 date:   2025-01-23 08:26:00
 categories: 大模型
-tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习
+tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习 自学习 进化
 excerpt: 大模型 LLM 驱动的智能体如何应用？
 mathjax: true
 permalink: /agent_usecase
@@ -512,9 +512,13 @@ Memory Toolkit：复刻还得加点记忆buff 
 
 ### 【2023-12-21】AppAgent
 
+西湖大学、河南大学等
+
+#### 【2023-12-21】AppAgent 初版
+
 【2023-12-21】AI能模仿人类在手机上操作APP了
 
-AppAgent可以通过**自主学习**和**模仿**人类的点击和滑动手势，能够在手机上执行各种任务。
+AppAgent 可以通过**自主学习**和**模仿**人类的点击和滑动手势，能够在手机上执行各种任务。
 
 它可以在社交媒体上发帖、帮你撰写和发送邮件 、使用地图、在线购物，甚至进行复杂的图像编辑...
 
@@ -534,6 +538,26 @@ AppAgent在50 个任务上进行了广泛测试，涵盖了10种不同的应用�
 - GitHub:[AppAgent](github.com/mnotgod96/AppAgent)
 - ![](https://appagent-official.github.io/static/teaser.png)
 - ![](https://appagent-official.github.io/static/pipline.png)
+
+
+#### 【2025-3-8】AppAgentX 进化
+
+【2025-3-8】西湖大学 推出自学习能力的Agent
+- 项目 [AppAgentX: Evolving GUI Agents as Proficient Smartphone Users](https://appagentx.github.io/)
+
+进化框架，提高运营效率，同时保持智能和灵活性
+
+每个步骤，Agent 都会
+- 捕获设备的**当前屏幕**并分析，从预定义的作空间中选择合适的作。
+- 执行所选作，与 GUI 交互。
+- 任务执行轨迹被分解为多个**重叠**三元组。基于这些三元组，生成LLM页面和 UI 元素的功能描述。
+- 将合并重复生成的页面描述。
+- 整个交互历史记录使用节点链进行记录。
+
+进化机制可识别**重复序列**并创建高级快捷方式，从而显著减少常见任务所需的步骤数和推理。
+
+AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方法。
+- 与 GPT-4o 相比, AppAgentX 执行步数、耗时、token花销大幅降低，而准确率最高
 
 
 ### 【2024-2-9】ScreenAgent
