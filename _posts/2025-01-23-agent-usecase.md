@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体应用
 date:   2025-01-23 08:26:00
 categories: 大模型
-tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习 自学习 进化
+tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习 自学习 进化 俄罗斯方块
 excerpt: 大模型 LLM 驱动的智能体如何应用？
 mathjax: true
 permalink: /agent_usecase
@@ -1203,6 +1203,27 @@ LLM新的涌现策略行为:信任、对抗、伪装和领导
 
 消融实验结果表明，其中Q和C对的玩家发言合理性(由人工进行评判)的影响最大。
 
+### 俄罗斯方块
+
+【2022-3-31】[基于深度强化学习的完全AI自动的俄罗斯方块游戏](https://zhuanlan.zhihu.com/p/490710496)
+
+DQN是如何运算的？
+- （1）通过 Q-Learning 使用 reward 来构造标签
+- （2）通过 experience replay（经验池）解决相关性及非静态分布问题
+- （3）使用一个 CNN（MainNet）产生当前Q值，使用另外一个CNN（Target）产生Target Q值
+
+网络模型
+- ![](https://pic3.zhimg.com/v2-e2762a059730b9772f366f8b7dc3d184_1440w.jpg)
+
+
+环境
+- OS: Windows10
+- Python: Python3.8(have installed necessary dependencies)
+- PyQT：PyQt5 是Qt v5的Python版本，功能强大复杂，提供 QT Designer 设计UI（版本无限制）
+
+![](https://pic1.zhimg.com/v2-cdbacdbb28fcfed83b9bfa3f62b1c102_720w.webp?source=d16d100b)
+
+
 ### GamingAgent
 
 【2025-3-10】[GPT-4o举步维艰、Claude 3.7险胜，《超级马里奥》成为了检验大模型的新试金石？](https://www.51cto.com/article/810217.html)
@@ -1226,23 +1247,6 @@ AI 模型试验场
 - 平台游戏:《超级马里奥兄弟》等
 - 益智游戏: 《2048》、《俄罗斯方块》等
 
-【2022-3-31】[基于深度强化学习的完全AI自动的俄罗斯方块游戏](https://zhuanlan.zhihu.com/p/490710496)
-
-DQN是如何运算的？
-- （1）通过Q-Learning使用reward来构造标签
-- （2）通过experience replay（经验池）的方法来解决相关性及非静态分布问题
-- （3）使用一个CNN（MainNet）产生当前Q值，使用另外一个CNN（Target）产生Target Q值
-
-网络模型
-- ![](https://pic3.zhimg.com/v2-e2762a059730b9772f366f8b7dc3d184_1440w.jpg)
-
-
-环境
-- OS: Windows10
-- Python: Python3.8(have installed necessary dependencies)
-- PyQT：PyQt5是Qt v5的Python版本，功能强大复杂，提供QT Designer设计UI（版本无限制）
-
-![](https://pic1.zhimg.com/v2-cdbacdbb28fcfed83b9bfa3f62b1c102_720w.webp?source=d16d100b)
 
 #### 效果
 
