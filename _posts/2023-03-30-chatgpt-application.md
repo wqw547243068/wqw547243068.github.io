@@ -557,6 +557,11 @@ MarsCode不仅仅是一个编程工具，它是一个全方位的AI助手，集�
   - ppt 样式编辑: 点击“一键生成ppt”，选择 模版、设计风格，实时生成ppt
   - ppt 在线编辑、下载
 
+##### Coze Bot
+
+- 【2025-3-14】 Coze [ppt制作](https://www.coze.cn/template/project/7442652749113622568?)
+
+
 
 #### AutoAgent
 
