@@ -377,6 +377,26 @@ Embedding 模型的选择很大程度上受**任务复杂程度**影响。
 - 多任务: 用不同任务不同来源的数据进行训练，一个batch内如何组织数据也有优化空间。
   - instruction-based fine-tuning 可以在训练时帮助模型拿到任务上的线索
 
+
+#### 总结
+
+
+
+
+【2025-3-17】[资料](https://mp.weixin.qq.com/s/_aKwgleutxPq0IQ2wLOKtg)
+
+
+| 模型名称    | 开发团队  | 核心特点      | 适用场景    | 性能指标（MTEB/MIRACL） |
+|----------------------|----------------|----------------|--------------------|-----------|
+| BGE-M3               | 智源研究院     | 支持 100+ 语言，集成稠密/稀疏/多向量混合检索，8192 tokens 长文本处理能力    | 企业级多语言知识库、复杂格式文档检索（表格/图表解析） | MIRACL平均召回率89.2% | 
+| Gemini Embedding     | Google AI      | 基于动态稀疏注意力机制，支持 8K 上下文，Matryoshka 降维技术减少 83% 存储需求  | 多模态检索、金融/法律领域长文档分析、跨语言知识库   | MMTEB多语言Borda分数最高 |
+| mxbai-embed-large    | Mixed Bread AI | 1024 维高精度向量，短文本优化，模型体积仅为 OpenAI text-embedding-3-large 的 60% | 中小团队快速部署、实时语义搜索（电商/客服场景）     | MTEB平均得分72.1 |
+| nomic-embed-text     | Nomic AI       | 768 维平衡设计，短文本相似度计算效率领先，支持动态分块策略                | 社交媒体内容分析、竞品监控、短问答系统             | 短文本检索F1值78.5% |
+| Jina Embedding       | Jina AI        | 基于 3.8 亿高质量句对训练，35M 参数量推理速度极快                           | 移动端轻量化应用、边缘计算场景（如物联网设备日志分析） | 推理速度比同类快3倍 |
+| GTE                  | 阿里巴巴达摩院 | 基于 BERT 框架优化，直接处理代码无需微调，适配技术文档检索                  | 开发者文档检索（如 API 手册查询）、编程问答社区     | 代码检索准确率92.7% |
+
+
+
 #### open-retrievals
 
 [Open-Retrievals](https://github.com/LongxingTan/open-retrievals/tree/master) 是一个统一文本向量、检索、重排的工具，使信息检索、RAG等更加便捷
