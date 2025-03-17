@@ -3,7 +3,7 @@ layout: post
 title:  "未来会变成什么样 - Future life"
 date:   2022-08-10 19:30:00
 categories: 人文科学
-tags: 经济 房产 金融 互联网 gdp 未来 kfk 智囊团 制造 产业 玩具 川普 中国 博弈 美国
+tags: 经济 房产 金融 互联网 gdp 未来 kfk 智囊团 制造 产业 玩具 川普 中国 博弈 美国 银发经济
 author : 鹤啸九天
 excerpt: 经济不景气，后面会变好吗？未来社会、经济等会朝着什么方向发展？
 mathjax: true
@@ -649,6 +649,24 @@ GDP 数据有水分，并不能体现真正的经济实力
 ### O2O的未来
 
 社区团购的异军突起吸引了整个资本市场的目光，但是社区团购不是O2O的全部。很多人至今还没搞清楚，“生鲜电商”不等于“社区团购”，而且社区团购不仅有“微信群+团长”这一种模式。从今往后，我们会看到O2O与传统电商日益融合，例如日用标品将越来越多的走社区团购，而电商平台会通过新零售渗透到线下。
+
+
+### 银发经济
+
+
+【2025-3-17】 [表哥聊银发经济](https://www.douyin.com/user/MS4wLjABAAAArNgYa2cKuMmYLqHn1NsaqJA9eKCJdexpti5LJ2d-bRFr8iF831yXk4McxmyX3Wwm): [银发经济不是开养老院](https://www.douyin.com/user/MS4wLjABAAAArNgYa2cKuMmYLqHn1NsaqJA9eKCJdexpti5LJ2d-bRFr8iF831yXk4McxmyX3Wwm)
+
+认知
+- 银发经济 ≠ 开养老院、卖保健品！
+- 上海养老院入住率不到 50%
+- 银发人群真正的需求: 不想被照顾,不想等死，想被尊重、理解、更快乐
+
+点子
+- 线上社区交流
+- 线下建立圈子：五好生活圈（吃喝玩住旅），康养、保健、旅游、社交、文娱
+
+人群
+- 62-73年的阿姨（中国大妈）, 有钱有闲，掌握三代人经济命脉
 
 
 ## 引言
