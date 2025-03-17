@@ -158,6 +158,8 @@ func main() {
 
 #### LangFlow
 
+
+
 【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif) 是 `LangChain` 的一种图形用户界面（`GUI`），为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
 
 无需编码/低代码的 LangChain 扩展
@@ -171,6 +173,10 @@ LangFlow 是 LangChain 可视化扩展。
 - 快速原型制作的理想选择：LangFlow 非常适合快速 原型化想法 或构建概念验证应用程序。
 - 适合初学者：很好的入门点，适合那些对编码不太熟悉但想要创建语言模型工作流的用户。
 
+【2025-3-17】[Langflow 实现本地知识库](https://zhuanlan.zhihu.com/p/30644357077?utm_psn=1884913562536883833) 带对话记忆功能的知识库, 实现代码检查
+- 文档向量化后，存入向量数据库中，然后用 deepseek-r1:1.5b 模型，整合 RAG 取回的内容后输出回答。
+- 代码 [langflow-rag-app](https://github.com/luochang212/langflow-rag-app)
+- ![](https://picx.zhimg.com/v2-9c8da57abc55232e5827312ca909273b_r.jpg)
 
 
 [LogSpace](https://logspace.ai/) 出品，LangFlow [github](https://github.com/logspace-ai/langflow) 的主要功能包括：
