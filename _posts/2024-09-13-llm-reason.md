@@ -1574,9 +1574,12 @@ ReasonFlux 通过引入结构化的思维模板，将搜索空间从 “**原始
 
 ### 【2025-2-10】清华: 最优TTS
 
-【2025-2-12】[清华一作1B暴打405B巨无霸，7B逆袭DeepSeek R1！测试Scaling封神](https://www.toutiao.com/article/7470409302235169295)
+【2025-2-10】[清华一作1B暴打405B巨无霸，7B逆袭DeepSeek R1！测试Scaling封神](https://www.toutiao.com/article/7470409302235169295)
 
-仅凭**测试时Scaling**，1B模型竟完胜405B！多机构联手巧妙应用计算最优TTS策略，不仅0.5B模型在数学任务上碾压GPT-4o，7B模型更是力压o1、DeepSeek R1这样的顶尖选手。
+"以算力换性能"的**测试时拓展**（Test Time Scaling TTS）技术迎来革命性突破
+- 仅凭**测试时Scaling**，1B模型竟完胜405B
+
+多机构联手巧妙应用计算最优TTS策略，不仅0.5B模型在数学任务上碾压GPT-4o，7B模型更是力压o1、DeepSeek R1这样的顶尖选手。
 
 测试时计算，也成为了当前提升大模型性能的最新范式。
 
@@ -1586,7 +1589,13 @@ ReasonFlux 通过引入结构化的思维模板，将搜索空间从 “**原始
 
 上海AI实验室、清华、哈工大、北邮等研究人员发现，使用计算最优TTS策略，**极小策略模型也可以超越更大的模型**——
 - MATH-500和AIME24上，0.5B模型的表现优于`GPT-4o`；3B模型超越了405B模型；7B模型直接胜过o1和`DeepSeek-R1`，还具有更高的推理性能。
+上海AI Lab 联合 清华、哈工大等机构，通过计算最优TTS策略
+- MATH-500 基准上，**1B**参数的"小模型"竟能在数学推理任务上完胜**405B**参数的"巨无霸"模型
+- 在 MATH-500 和 AIME24 基准中
+  - **0.5B**模型表现碾压`GPT-4o`
+  - **7B**模型直接击败业界顶尖的`o1`和`DeepSeek-R1`。
 - 【2025-2-10】论文地址：[Can 1B LLM Surpass 405B LLM? Rethinking Compute-Optimal Test-Time Scaling](https://arxiv.org/pdf/2502.06703)
+- 项目链接：[compute-optimal-tts](https://ryanliu112.github.io/compute-optimal-tts)
 
 TTS是增强LLM推理能力的一种极有前途的方法。
 
@@ -1859,8 +1868,8 @@ AIME 2025性能测试中
 
 R1推出后不久，Gemini-2 Flash Thinking成新霸主，现在Grok-3后来居上。
 
-[参考](https://mp.weixin.qq.com/s/RVlqPUqLStq00aNfNZtRpg
-)
+[参考](https://mp.weixin.qq.com/s/RVlqPUqLStq00aNfNZtRpg)
+
 
 
 ### 多模态
