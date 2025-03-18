@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 技能总结"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 
+tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理
 excerpt: Linux 使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -2820,6 +2820,28 @@ vscode 中更改文件名后, 右下角进度条显示:
   - Text Editors -> Files
 - 将 Timeout 时间 改为 0
 
+
+#### 代理
+
+
+github 库同步时，时常失败
+
+原因
+- 国内 github 访问不畅
+
+解决
+- 设置 vs code 代理
+
+操作:
+- 左下角齿轮 → Settings -> settings.json
+- 增加一下代码
+
+```json
+    // [2025-3-18]
+    "http.proxy": "http://127.0.0.1:2080",
+    "https.proxy": "https://127.0.0.1:2080",
+    "http.proxyStrictSSL": false,
+```
 
 
 ## Vim技能
