@@ -2825,6 +2825,7 @@ vscode 中更改文件名后, 右下角进度条显示:
 
 
 github 库同步时，时常失败
+- 参考 [VSCode设置代理模式](https://zhuanlan.zhihu.com/p/17864898987)
 
 原因
 - 国内 github 访问不畅
