@@ -15,7 +15,7 @@
         searchInput: document.getElementById('search-input'),
         resultsContainer: document.getElementById('results-container'),
         json: '{{ site.baseurl }}/search.json',
-        searchResultTemplate: '<li><a href="{url}?query={query}&date={day}" title="{day}">{title}</a></li>',
+        searchResultTemplate: '<li><a href="{url}?query={query}&date='+day+' title='+day+'>{title}</a></li>',
         noResultsText: 'No results found <br> 暂无结果,请更换检索词...',
         limit: 10,
         fuzzy: false,
