@@ -126,6 +126,19 @@ AppData 里面三个文件含义
 [原文链接](https://blog.csdn.net/qq_49973861/article/details/142360934)
 
 
+Roaming 目录移动
+- 属性 → 查看 → 位置
+
+报错
+
+```sh
+无法将文件从"C:\Users\wqwAppData\Roaming"复制到"E:\ProgramData"。
+这可能是因为源文件夹或目标文件夹中一个或多个文件的完全限定文件名超过了 256 个字符。
+操作已被用户取消。
+```
+
+
+
 
 
 #### 文档编辑
@@ -174,6 +187,18 @@ AppData 里面三个文件含义
 [Mac OS发展史(实机演示)](https://www.bilibili.com/video/BV1Xi4y1w7np)
 
 <iframe src="//player.bilibili.com/player.html?aid=545025905&bvid=BV1Xi4y1w7np&cid=322975564&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+### 设备id
+
+
+如何获取 iphone 的 duid ?
+
+方法
+- ① iPhone与Mac用数据线连接，打开Xcode，顶部菜单选择 `Windows`——`Devices and Simulators` ，找到Connected的手机名，右边的 Identifier 就是 udid
+- ② 登录 [pgyer](https://www.pgyer.com/tools/udid)
+  - 手机/平板扫码， 或 手机浏览器登录地址
+  - 按照提示安装一个工具（描述文件）, 即可显示 duid
 
 
 ### 软件安装
