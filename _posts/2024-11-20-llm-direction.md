@@ -549,6 +549,43 @@ pip install -e .
 MAX_JOBS=4 pip install flash-attn --no-build-isolation
 ```
 
+
+#### 【2025-2-18】港大 AutoAgent
+
+【2025-2-18】 [港大开源全自动且高度自我进化的零代码AI Agent框架：AutoAgent](https://mp.weixin.qq.com/s/CQ28CRhCLN3wtdcMCWEzug)
+
+[AutoAgent](https://github.com/HKUDS/AutoAgent) 是**全自动**且**高度自我进化**的框架，用户仅需自然语言即可创建并部署 LLM Agent。
+- 论文 [AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework](https://arxiv.org/pdf/2502.05957)
+
+核心特性
+- 🏆 GAIA 基准测试冠军
+  - AutoAgent 在开源方法中排名 #1，性能媲美 OpenAI 的 `Deep Research`。
+- 📚 Agentic-RAG，内置**自管理**向量数据库
+  - AutoAgent 配备原生自管理向量数据库，超越 LangChain 等行业领先方案。
+- ✨ 轻松创建 Agent 和工作流
+  - AutoAgent 利用自然语言轻松构建可直接使用的工具、Agent 和工作流 —— 无需编码。
+- 🌐 广泛兼容 LLM
+  - AutoAgent 无缝集成多种 LLM（如 OpenAI、Anthropic、DeepSeek、vLLM、Grok、Huggingface...）。
+- 🔀 灵活交互模式
+  - 支持函数调用（Function-Calling） 和 ReAct 交互模式。
+- 🤖 动态、可扩展、轻量级
+  - AutoAgent 是你的个人 AI 助手，具备动态、可扩展、可定制、轻量级的特性。
+
+使用方法  
+1. 用户模式（SOTA 🏆 对标 OpenAI Deep Research）
+  - AutoAgent 内置多智能体（Agent）系统，你可以在启动页面选择用户模式直接使用。这个多智能体系统是一个通用 AI 助手，具备与 OpenAI Deep Research 相同的功能，并在 GAIA 基准测试中实现了可媲美的性能。
+  - 🚀 高性能：基于 Claude 3.5 实现 Deep Research 级别的表现，而非 OpenAI 的 o3 模型。
+  - 🔄 模型灵活性：兼容任何 LLM（包括 DeepSeek-R1、Grok、Gemini 等）。
+  - 💰 高性价比：开源替代方案，无需支付 Deep Research $200/月 的订阅费用。
+  - 🎯 用户友好：提供易部署 CLI 界面，交互流畅无阻。
+  - 📁 文件支持：支持文件上传，实现更强的数据交互能力。
+  - 🎥 Deep Research（即用户模式）
+2. Agent 编辑器（无工作流的 Agent 创建）
+  - AutoAgent 最具特色的功能是自然语言定制能力。不同于其他 Agent 框架，AutoAgent 允许你仅通过自然语言创建工具、Agent 和工作流。只需选择 Agent 编辑器或工作流编辑器模式，即可开启对话式构建 Agent 之旅。
+3. 工作流编辑器（使用工作流创建 Agent）
+  - 通过工作流编辑器模式，使用自然语言描述创建代理工作流，如下图所示。（提示：此模式暂时不支持工具创建。）
+
+
 ### Transformer 改进
 
 详见站内: [transformer 改进专题](transformer_evolution)

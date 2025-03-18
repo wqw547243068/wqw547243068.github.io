@@ -164,8 +164,69 @@ Agent项目:
 
 详见站内专题：[数据竞赛之智能体](kaggle#智能体)
 
+## 进化
 
-## MusicAgent
+自学习，不断进化
+
+
+### 【2025-2-18】港大 AutoAgent
+
+【2025-2-18】 [港大开源全自动且高度自我进化的零代码AI Agent框架：AutoAgent](https://mp.weixin.qq.com/s/CQ28CRhCLN3wtdcMCWEzug)
+
+[AutoAgent](https://github.com/HKUDS/AutoAgent) 是**全自动**且**高度自我进化**的框架，用户仅需自然语言即可创建并部署 LLM Agent。
+- 论文 [AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework](https://arxiv.org/pdf/2502.05957)
+
+核心特性
+- 🏆 GAIA 基准测试冠军
+  - AutoAgent 在开源方法中排名 #1，性能媲美 OpenAI 的 `Deep Research`。
+- 📚 Agentic-RAG，内置**自管理**向量数据库
+  - AutoAgent 配备原生自管理向量数据库，超越 LangChain 等行业领先方案。
+- ✨ 轻松创建 Agent 和工作流
+  - AutoAgent 利用自然语言轻松构建可直接使用的工具、Agent 和工作流 —— 无需编码。
+- 🌐 广泛兼容 LLM
+  - AutoAgent 无缝集成多种 LLM（如 OpenAI、Anthropic、DeepSeek、vLLM、Grok、Huggingface...）。
+- 🔀 灵活交互模式
+  - 支持函数调用（Function-Calling） 和 ReAct 交互模式。
+- 🤖 动态、可扩展、轻量级
+  - AutoAgent 是你的个人 AI 助手，具备动态、可扩展、可定制、轻量级的特性。
+
+使用方法  
+1. 用户模式（SOTA 🏆 对标 OpenAI Deep Research）
+  - AutoAgent 内置多智能体（Agent）系统，你可以在启动页面选择用户模式直接使用。这个多智能体系统是一个通用 AI 助手，具备与 OpenAI Deep Research 相同的功能，并在 GAIA 基准测试中实现了可媲美的性能。
+  - 🚀 高性能：基于 Claude 3.5 实现 Deep Research 级别的表现，而非 OpenAI 的 o3 模型。
+  - 🔄 模型灵活性：兼容任何 LLM（包括 DeepSeek-R1、Grok、Gemini 等）。
+  - 💰 高性价比：开源替代方案，无需支付 Deep Research $200/月 的订阅费用。
+  - 🎯 用户友好：提供易部署 CLI 界面，交互流畅无阻。
+  - 📁 文件支持：支持文件上传，实现更强的数据交互能力。
+  - 🎥 Deep Research（即用户模式）
+2. Agent 编辑器（无工作流的 Agent 创建）
+  - AutoAgent 最具特色的功能是自然语言定制能力。不同于其他 Agent 框架，AutoAgent 允许你仅通过自然语言创建工具、Agent 和工作流。只需选择 Agent 编辑器或工作流编辑器模式，即可开启对话式构建 Agent 之旅。
+3. 工作流编辑器（使用工作流创建 Agent）
+  - 通过工作流编辑器模式，使用自然语言描述创建代理工作流，如下图所示。（提示：此模式暂时不支持工具创建。）
+
+### 【2025-3-8】AppAgentX 进化
+
+【2025-3-8】西湖大学 推出自学习能力 Agent
+- 项目 [AppAgentX: Evolving GUI Agents as Proficient Smartphone Users](https://appagentx.github.io/)
+
+进化框架，提高运营效率，同时保持智能和灵活性
+
+每个步骤，Agent 都会
+- 捕获设备的**当前屏幕**并分析，从预定义的作空间中选择合适的作。
+- 执行所选作，与 GUI 交互。
+- 任务执行轨迹被分解为多个**重叠**三元组。基于这些三元组，生成LLM页面和 UI 元素的功能描述。
+- 将合并重复生成的页面描述。
+- 整个交互历史记录使用节点链进行记录。
+
+进化机制可识别**重复序列**并创建高级快捷方式，从而显著减少常见任务所需的步骤数和推理。
+
+AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方法。
+- 与 GPT-4o 相比, AppAgentX 执行步数、耗时、token花销大幅降低，而准确率最高
+
+
+## 娱乐
+
+### MusicAgent
 
 【2023-10-20】[MusicAgent:基于大语言模型的音乐理解和生成AI agent](https://mp.weixin.qq.com/s/TImnvhCC8EkRzvau1J5D_g)
 - [MusicAgent: An AI Agent for Music Understanding and Generation with Large Language Models](https://arxiv.org/abs/2310.11954)
@@ -567,22 +628,7 @@ AppAgent在50 个任务上进行了广泛测试，涵盖了10种不同的应用�
 
 #### 【2025-3-8】AppAgentX 进化
 
-【2025-3-8】西湖大学 推出自学习能力的Agent
-- 项目 [AppAgentX: Evolving GUI Agents as Proficient Smartphone Users](https://appagentx.github.io/)
-
-进化框架，提高运营效率，同时保持智能和灵活性
-
-每个步骤，Agent 都会
-- 捕获设备的**当前屏幕**并分析，从预定义的作空间中选择合适的作。
-- 执行所选作，与 GUI 交互。
-- 任务执行轨迹被分解为多个**重叠**三元组。基于这些三元组，生成LLM页面和 UI 元素的功能描述。
-- 将合并重复生成的页面描述。
-- 整个交互历史记录使用节点链进行记录。
-
-进化机制可识别**重复序列**并创建高级快捷方式，从而显著减少常见任务所需的步骤数和推理。
-
-AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方法。
-- 与 GPT-4o 相比, AppAgentX 执行步数、耗时、token花销大幅降低，而准确率最高
+【2025-3-8】AppAgentX 进化, 详见[进化专题](#进化)
 
 
 ### 【2024-2-9】ScreenAgent
