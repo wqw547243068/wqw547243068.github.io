@@ -3,7 +3,7 @@ layout: post
 title:   大模型推理思考
 date:   2024-09-13 10:15:00
 categories: 大模型
-tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉
+tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用
 excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
 mathjax: true
 permalink: /o1
@@ -1253,7 +1253,7 @@ DeepSeek 团队提到 R1 模型的局限性
 #### R1 Bad Case
 
 
-#### 重复输出
+##### 重复输出
 
 【2025-2-11】 deepseek 模型输出内容大面积重复
 
@@ -1268,7 +1268,7 @@ DeepSeek 团队提到 R1 模型的局限性
 ||||
 
 
-#### 幻觉
+##### 幻觉
 
 [Vectara](https://github.com/vectara/hallucination-leaderboard) 团队做了对比测试，数据集 HHEM-2.1-Open
 - DeepSeek R1 存在非常严重的**幻觉**问题
@@ -1286,6 +1286,27 @@ DeepSeek 团队提到 R1 模型的局限性
 
 Prompt Used
 > You are a chat bot answering questions using data. You must stick to the answers provided solely by the text in the passage provided. You are asked the question 'Provide a concise summary of the following passage, covering the core pieces of information described.'< PASSAGE >'
+
+##### 不支持 Function Call
+
+【2205-3-18】 [Deepseek-R1不支持Function Call？不能搭建智能体？](https://mp.weixin.qq.com/s/gTyeueJG2CcKxMA3Dpe3ng)
+
+DeepSeek-R1 不具备 Function Call 能力，不能使用 DeepSeek-R1 搭建智能体
+
+官方 API 中默认模型是"deepseek-chat"，即 DeepSeek-V3，如果用 DeepSeek-R1，会报类似错误
+- "function call is not supported for this model."
+
+具备 Function Call 底层逻辑是兼容 openai 接口支持 tools 参数
+
+解决
+- 1、**定制化微调**：
+  - 若对 DeepSeek-R1 进行微调，可训练其输出特定格式的函数调用指令（类似 GPT Function Calling 微调），但需自行构建训练数据和接口。（资源、数据不是一般人能搞定的）
+- 2、**外部集成**：
+  - DeepSeek-R1 可通过输出**结构化指令**（如JSON），再编写代码解析并调用外部工具，再将结果返回模型生成最终回答。（最常用，但 Langchain 这种还需要兼容openai的模型接口）
+
+实现
+- 开源项目：[deepseek-r1-structured-outputs](https://github.com/cameronking4/deepseek-r1-structured-outputs)
+- 字节扣子支持 Deepseek-R1 工具调用，是什么方案？
 
 
 ### 【2024-11-22】阿里 Marco-o1
