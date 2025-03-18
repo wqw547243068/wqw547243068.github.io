@@ -94,7 +94,7 @@ Function call 完整调用流程
 - 3️⃣ User根据LLM返回信息在本地执行Tool工具，获取执行结果。
 - 4️⃣ 将返回结果重新组织成指令P1，让LLM决定下次应该怎么执行和参数是什么
 
-优化的方向有两个：
+优化方向有两个：
 - 提升functions参数的**编写效率**
 - 优化不断**拼接**messages的过程。
 
@@ -128,10 +128,9 @@ openai.createChatCompletion({
     # ...
   ]
 })
-
 ```
 
-functions参数支持以数组形式录入多组函数信息，其中：
+functions 参数支持以**数组**形式录入多组函数信息，其中：
 - `name`：**函数名称**。后续模型会在需要调用函数时返回此名称。
 - `description`：**函数功能描述**。模型通过该描述理解函数能力，并判断是否需要调用该函数。
 - `parameters`.`properties`：**函数所需参数**。以对象的形式描述函数所需的参数，其中对象的key即为参数名。
@@ -140,10 +139,12 @@ functions参数支持以数组形式录入多组函数信息，其中：
 - `required`：必填参数的参数名列表。
 
 
-控制模型应该如何响应函数调换。支持几种输入：
-- "none"：模型不调用函数，直接返回内容。没有提供可调用函数时的默认值。
-- "auto"：模型根据用户输入自行决定是否调用函数以及调用哪个函数。提供可调用函数时的默认值。
-- {"name": "function_name"}：强制模型调用指定的函数。
+控制模型应该如何响应函数调换。
+
+支持几种输入：
+- "`none`"：模型不调用函数，直接返回内容。没有提供可调用函数时的默认值。
+- "`auto`"：模型根据用户输入自行决定是否调用函数以及调用哪个函数。提供可调用函数时的默认值。
+- `{"name": "function_name"}`：强制模型调用指定的函数。
 
 添加对话角色，向消息列表中添加函数返回值
 - 函数执行完成后，将函数的返回内容**追加**到消息列表中，并携带完整的消息列表再次请求聊天API，以获得GPT的后续响应。
@@ -245,7 +246,7 @@ second_response
 ```
 
 
-## Function call 实例
+### Function call 实例
 
 用户问题: 
 > 帮我给小美发一封邮件，告诉她我晚上不回去吃了。
@@ -542,7 +543,16 @@ You get both functions called.
 It is not calling the function_call twice, but it emulates it.
 
 
-## LangChain 实现
+
+## Function Call 实现
+
+[开源模型 Function Call 方案梳理](https://zhuanlan.zhihu.com/p/713937194)
+
+开源模型 Function Calling 能力的相关信息，包括采用的 chat template，function call 训练方案等。
+
+涉及模型: LlaMa 3.1， Mistral Large 2，glm-4-9b-chat，Qwen 2。
+
+### LangChain 实现
 
 LangChain 中如何使用 Function call？
 - message.additional_kwargs
@@ -568,7 +578,7 @@ print_version("langchain")
 The version of the langchain library is 0.0.205.
 ```
 
-### LangChain additional_kwargs
+#### LangChain additional_kwargs
 
 如何与 LangChain 一起使用?
 - 首先导入 ChatOpenAI 类和 HumanMessage、AIMessage，还有 ChatMessage 类，这些类可以帮助我们创建这种功能，包括用户角色等。
@@ -618,7 +628,7 @@ second_response = llm.predict_messages(
 # second_response
 ```
 
-### LangChain tools
+#### LangChain tools
 
 LangChain 提供了与外部世界交互的另一种标准化方法，进行请求或其他操作，这些称为工具 tools
 
@@ -694,7 +704,7 @@ AIMessage(content='', additional_kwargs={'function_call': {'name': 'StupidJokeTo
 AIMessage(content='', additional_kwargs={'function_call': {'name': 'StupidJokeTool', 'arguments': '{\n  "__arg1": "To get to the other side"\n}'}}, example=False)
 ```
 
-### LangChain Agent
+#### LangChain Agent
 
 Langchain Agent 如何实现 Function Calling ？
 
@@ -764,15 +774,6 @@ Answer: 4.0
 ```
 
 所以对于代理 Langchain Agent 来说，工作非常流畅，会与其他的 llm 链一起工作。
-
-
-## Function Call 训练
-
-[开源模型 Function Call 方案梳理](https://zhuanlan.zhihu.com/p/713937194)
-
-开源模型 Function Calling 能力的相关信息，包括采用的 chat template，function call 训练方案等。
-
-涉及模型: LlaMa 3.1， Mistral Large 2，glm-4-9b-chat，Qwen 2。
 
 
 ### ChatGLM3 Function Call
