@@ -1223,7 +1223,7 @@ GRPO 使用计算出的优势来更新策略模型 (DeepSeek-V3-Base)，以增�
 流程图
 - ![](https://pic3.zhimg.com/v2-4478015338a7e7ec230dcab14d1cb132_1440w.jpg)
 - ![](https://pic2.zhimg.com/v2-a49bd9cf8eb0ff07c6ad3007efc6e48b_1440w.jpg)
-
+- ![](https://picx.zhimg.com/v2-164c1a282f7118a55d3e93e4f8b729a7_1440w.jpg)
 
 #### R1 不足
 
@@ -1952,6 +1952,29 @@ Visual-RFT VS 传统 SFT：
 |Visual-RFT|仅需10～1000条数据|泛化能力强|能推理&解释| 
 
 实验基于Qwen2-VL-2B/7B视觉语言模型，Visual-RFT 在以下任务中均大幅超越传统 SFT 方法
+
+#### 【2025-3-18】Skywork R1V
+
+昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V
+
+2025年3月18日，昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V（简称「R1V」）
+
+R1V高效地将R1文本推理能力无缝推广到视觉模态，实现了多模态领域领先效果(非sota)，并开源。
+
+R1V三大亮点。
+1. 全球第一个工业界开源多模态+推理模型
+2. 性能接近甚至超越了规模大两倍的开源模型
+3. 通过开源让技术可以惠及到更多人
+
+效果：
+- 1️⃣ 视觉问答任务中，R1V直接对标Claude 3.5 Sonnet、GPT-4o等闭源模型，同时保留顶级文本推理能力。
+- 2️⃣ MMMU基准测试中，R1V以69分创下同等规模新高，在MathVista上拿下67.5分，达到领先的开源模型水平。
+
+参考：
+- GitHub：[Skywork-R1V](https://github.com/SkyworkAI/Skywork-R1V)
+- Hugging Face：[Skywork-R1V-38B](https://huggingface.co/Skywork/Skywork-R1V-38B)
+- 技术报告：[Skywork_R1V.pdf](https://github.com/SkyworkAI/Skywork-R1V/blob/main/Skywork_R1V.pdf)
+- 信息源：[新智源](https://mp.weixin.qq.com/s/CYNce3oHoDrsOJSv5Pj6Nw)
 
 
 ### 【2025-2-25】Sonnet 混合
