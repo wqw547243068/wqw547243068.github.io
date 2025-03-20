@@ -463,6 +463,118 @@ CoT-Valve 方法通过**动态控制推理链条的长度**，让模型在简单
 还有更多takeaway都在paper和twitter thread里。
 
 
+## cot 过时
+
+
+### 【2025-3-5】 ARQ
+
+资料
+- 【2025-3-5】 论文 [Attentive Reasoning Queries: A Systematic Method for Optimizing Instruction-Following in Large Language Models](https://arxiv.org/pdf/2503.03669v1)
+- [Parlant 主页](https://www.parlant.io)
+- 代码 [arqs-a-systematic-method-for-optimizing-instruction-following-in-llms](https://github.com/emcie-co/parlant/tree/arqs-a-systematic-method-for-optimizing-instruction-following-in-llms)
+
+#### 分析
+
+场景：
+- 想找个地方吃饭。人多，打车不便，也没车。小王想吃汉堡，但现在不在这里。而小李是素食主义者。
+
+三种不同的AI响应方式：
+- 左边 `No Reasoning`：直接回答（没脑子系列）
+  - 结果: 我推荐附近的**汉堡王
+- 中间 `CoT`：思维链（CoT）推理
+  - 推理: 找附近餐馆，菜单上有素食、汉堡的；一共有餐厅 A/B/C...
+  - 结果: 我推荐餐厅**汉堡王
+- 右边 `ARQ`：注意力推理查询（ARQ）。
+  - 信息结构化: 餐厅限制条件、偏好、可选项、最终结果等
+
+虽然三种方法最后都推荐了"Bob's Burgers"，但推理过程天差地别
+- ![](https://pica.zhimg.com/80/v2-82a2b3b3900f9384c66856d58fdf1588_720w.webp?source=2c26e567)
+
+以色列公司 Emcie 的 NLP研究团队发现
+- 多轮对话中，LLMs 经常会"**失忆**"，产生幻觉，或提供未经授权的服务。
+- 高风险场景问题大，比如 **银行客服**，一不小心造成严重后果。
+
+ARQ 源于人类的决策过程。
+- 人们选餐厅时，会综合考虑**饮食偏好**、**预算**和**位置**
+
+ARQ 也为AI提供了**结构化**的**推理蓝图**。
+
+ARQ 通过预定义的JSON模式引导大模型进行**系统性**的推理步骤。
+- **键**是预定义的、有针对性的查询，引导模型的注意力到相关信息上 
+- **值**则由LLM在响应过程中填充
+
+示例
+
+```json
+{
+  "dietary_restrictions": ["Jane is vegetarian"],
+  "preferences": ["John wants a burger"],
+  "options": [
+    {
+      "name": "Bob's Burgers",
+      "evaluation": "has burgers, is 0.6km from the group's location, offers vegetarian options (mushroom burger)"
+    },
+    {
+      "name": "Banana Shack",
+      "evaluation": "is 0.2km from the group's location, offers vegetarian options but not burgers"
+    }
+  ],
+  "final_response": "I recommend Bob's Burgers"
+}
+```
+
+结构化方法不仅让模型推理过程更透明，也让提取最终答案简单，因为结论就在特定的查询响应中，不用从一大堆文字里找了。
+
+#### ARQ 原理
+
+ARQ 工作过程：
+- 引导ARQ阶段：LLM处理一系列预先确定的**引导问题**，三个关键功能：
+  - 重申**关键指令**（防止模型"失忆"）
+  - 重申来自提示的**重要上下文信息** 
+  - 促进逐步推理和中间计算 
+- 响应生成：基于引导查询阶段的推理，LLM生成响应。 
+- （可选）响应验证：LLM评估其建议的响应是否满足所有要求，如果不满足，则生成并验证新的响应候选。
+- ![](https://picx.zhimg.com/80/v2-3584407296988cd113a2cc92c9cfcf40_720w.webp?source=2c26e567)
+
+团队推出 [Parlant](https://www.parlant.io) 框架，每个代理都用四个关键组件初始化：
+- 代理资料：简洁的自然语言描述，定义代理的目的和操作范围。
+- 行为准则：以"当时，执行"形式的条件指令集合。
+- 工具套件：通过结构化API方法访问的外部功能集。
+- 领域词汇：代理操作环境中必不可少的领域特定术语的词汇表。
+
+
+#### ARQ vs CoT
+
+两者在结构和实现上有根本的不同。
+- CoT 提示：鼓励模型以**自由形式**生成中间推理步骤，几乎没有外部指导。
+- 而 ARQ 通过预定义查询提供明确的**结构脚手架**，引导模型在推理过程中关注特定对象。
+
+ARQ 优势： 
+1. 领域特定指导：ARQ 纳入**领域知识**来解决特定于任务的挑战和已知的失败模式。 
+2. 增强可调试性：ARQ 结构化格式让系统设计者更容易检查和调试推理过程。 
+3. 注意力保存：ARQ 战略性地在关键决策点**重申关键指令和约束**，解决了"迷失在中间"现象。
+
+
+
+#### 效果
+
+效果: ARQ 完胜
+
+候选对比
+- ARQ实现：采用结构化查询推理方法
+- 思维链（CoT）实现：在生成最终输出之前纳入自由形式的推理
+- 控制实现：基于指令生成直接响应，没有任何明确的推理过程
+
+ARQ在所有测试中取得了最高的成功率（90.17%），优于思维链（86.05%）和无推理的控制设置（81.54%）。
+
+两类测试中，ARQ 优势尤为明显： 
+1. 准则重新应用：对代理先前回应中已遵循的准则的重新激活做出微妙决策的测试。 
+1. 幻觉预防：专门设计用于检测代理是否提供其可用工具或上下文不支持的幻觉事实或服务的测试。这两种失败情况恰恰代表了基于LLM系统最具挑战性的遵循问题
+
+
+作者：[windinrain](https://www.zhihu.com/question/11667247329/answer/120297805134)
+
+
 ### LLM 不会推理
 
 LLM 不会 推理
