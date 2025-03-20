@@ -3,7 +3,7 @@ layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
 categories: 技术工具
-tags: 股票 预测 量化交易 时间序列 LLM kaggle 大模型
+tags: 股票 预测 量化交易 时间序列 LLM kaggle 大模型 agent
 author : 鹤啸九天
 excerpt: 用技术来辅助炒股，优化交易
 mathjax: true
@@ -1029,7 +1029,7 @@ TradingView 测试AI交易策略。
 
 ### TradExpert
 
-【2024-10-16】TradExpert：一种基于大型模型的股票交易新方法，实现了高达 **49.79%** 年回报率
+【2024-10-16】TradExpert：一种基于大型模型的**股票交易**新方法，实现了高达 **49.79%** 年回报率
 - 论文地址：[TradExpert: Revolutionizing Trading with Mixture of Expert LLMs](https://arxiv.org/pdf/2411.00782)
 
 TradeExpert 创新框架采用**混合专家**（MoE）系统，整合了四个专门设计的语言模型（LLM），用于解析各类金融信息来源，包括新闻报道、市场动态、阿尔法因子以及公司基本面数据。
@@ -1051,6 +1051,81 @@ TradeExpert 具备切换**预测**与**排名**两种模式的能力，适用于
 
 实验表明，无论在哪种交易情境下，TradeExpert均展现出色的表现。
 
+
+### TradingAgents
+
+[TradingAgents: 基于Multi-Agent的金融交易框架](https://mp.weixin.qq.com/s/Kv__pr3NPLvFLyyxNts6lA)
+
+加州洛杉矶分校和MIT Yijia Xiao、Edward Sun、Di Luo 和 Wei Wang 发表于 AAAI'2025
+- 【2025-3-2】论文 “[TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/pdf/2412.20138)” 
+- 项目主页见 [TradingAgents: Multi-Agents LLM Financial Trading Framework](https://tradingagents-ai.github.io/)
+
+提出了一种创新框架，利用**多智能体系统**模拟真实交易公司的**协作决策**过程，通过增强数据分析和决策能力提升交易表现。
+- ![](https://tradingagents-ai.github.io/static/images/schema.png)
+
+#### 动机
+
+传统算法交易系统依赖**量化模型**，难以对复杂的市场影响因素， 如**基本面**、**市场情绪**、**技术指标**和**宏观经济**事件等之间的复杂交互关系进行建模。
+
+相比之下，LLMs 擅长处理自然语言数据，特别适合分析新闻、财务报告和社交媒体情绪，这对市场分析至关重要。
+
+然而，现有金融领域 LLM 应用面临两大挑战：
+- 缺乏现实**组织建模**：许多框架没有考虑模拟现实交易公司结构的Agent间的复杂互动，而是专注于特定任务表现，脱离了实际组织工作流程。
+  - 例如，Li 等（2023a）、Wang 等（2024b）和 Yu 等（2024）的研究指出，这种局限性限制了框架复制真实交易实践的能力。
+- **通信效率低**：大多数系统使用自然语言作为主要通信媒介，依赖消息历史或非结构化信息池，易导致“`电话效应`”(telephone effect)，即细节信息在长对话中丢失，状态被破坏。
+  - Agent在处理复杂动态任务时, 难以维持上下文和过滤无关信息，影响决策有效性。
+
+TradingAgents 通过模拟交易公司的多智能体决策过程，解决这些问题。其设计灵感来源于真实交易公司的组织结构，强调协作和结构化通信。
+
+
+Agent 分工与协作
+
+TrandingAgents 将 Agent 分为多个团队: 
+- `分析师`团队：包括**基本面**分析师、**情绪**分析师、**新闻**分析师和**技术**分析师，负责收集和分析市场数据，提供全面市场视图。
+  - 例如，基本面分析师评估公司财务报表，情绪分析师处理社交媒体数据，技术分析师预测价格走势。
+- `研究`团队：由**看多**和**看空**研究者组成，通过辩论评估投资潜力与风险。
+  - 看多研究者关注增长机会，构造支持投资的论点；
+  - 看空研究者则关注潜在下行风险，提供警示性见解。
+- `交易员`：评估分析师和研究者的分析和辩论报告，决定交易时机和规模，执行买卖订单，以及基于市场反馈调整投资组合。
+- `风险管理`团队：基于交易员的决策结果和相关报告， 从风险约束的视角调整交易计划。
+  - 内部在一个协调员的组织下进行 n 轮讨论， 得到讨论结果。
+- `基金经理`：审核风险管理团队的讨论结果， 调整风险策略， 并更新交易员的决策结果和报告状态。
+
+通信与协作
+
+为了提高效率，TradingAgents 采用**混合通信**方式：
+- 自然语言对话：智能体通过对话分享见解、辩论观点，探索复杂想法。
+- 结构化输出：对于需要精确数据的任务，智能体生成可解析的结构化输出，如 结构化的分析报告或辩论报告，确保每个Agent都可以准确获取与自身任务相关的信息， 建立可靠的决策依据。
+
+LLM 选择
+
+基于任务场景和模型特长来针对性选择 LLM。
+- 对于涉及文本总结、信息获取和数据转换的场景， 采用**非推理**模型， 如 gpt-4o-mini 和 gpt-4o
+- 对于数据分析、辩论、交易决策等场景， 采用更慢但准确性更高的**推理**模型， 如 o1-preview。
+
+所有的 Agent 均采用 ReAct 提示词框架， 同时共享全局的环境状态， 用于消息交换。 
+
+基准模型包括: 
+- 买入并持有（Buy and Hold）
+  - 在整个投资周期内，将资金平均分配到选定的股票中并长期持有，不进行频繁买卖。
+- MACD动量策略（MACD: Momentum strategy based on MACD crossovers）
+  - 基于MACD（异同移动平均线）指标的金叉（买入信号）和死叉（卖出信号）进行趋势交易的动量策略。
+- KDJ与RSI双指标策略（KDJ & RSI: Combined momentum indicators for trading signals）
+  - 同时结合KDJ（随机指标）和RSI（相对强弱指数）的超买/超卖信号，通过两者共振产生交易决策。
+- 均值回归策略（ZMR: Mean reversion strategy based on price deviations）
+  - 当资产价格偏离其长期均值时（如Z-Score模型），押注价格会回归均值，通过反向操作获利。
+- 移动平均线趋势策略（SMA: Trend-following strategy using moving average crossovers）
+  - 通过短期和长期简单移动平均线（SMA）的交叉（如黄金交叉/死亡交叉）判断趋势方向，追随趋势交易
+
+性能指标
+- 累计回报及年化收益(盈利能力)：投资组合价值总百分比变化。
+- 夏普比率(风险收益平衡能力)：风险调整后回报，计算每单位波动率超过无风险利率的平均回报。
+- 最大回撤(抗风险能力)：从峰值到谷值的最大损失。
+
+结果为 TradingAgent 在 AAPL, GOOGL, and AMZN三支股票上的回测数据表现
+- 苹果公司股票上的累计回报高达 26.62%, 远超其他交易策略
+- 谷歌股票上回报率 16%
+- 亚马逊gu票的回报率 4%
 
 
 ## 工程实践
