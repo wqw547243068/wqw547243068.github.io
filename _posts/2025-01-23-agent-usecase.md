@@ -1392,5 +1392,12 @@ o3-mini agent 成功率 93.8%, 总分 0.77
 - 两个 Agent: 规划 + 写代码
 - ![](https://tiger-ai-lab.github.io/TheoremExplainAgent/static/images/method.png)
 
+## 金融
+
+金融交易智能体
+
+详见站内 [大模型与量化](quant#大模型与量化)
+
+
 
 # 结束
