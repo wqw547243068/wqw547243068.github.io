@@ -3,7 +3,7 @@ layout: post
 title:  "计算机图形学 - Computer Graphic"
 date:   2022-09-28 09:03:00
 categories: 计算机基础 计算机视觉
-tags: 图形学 opengl webgl three.js 游戏 vtk
+tags: 图形学 opengl webgl three.js 游戏 vtk slam 大模型
 excerpt: 计算机图形学及相关应用
 mathjax: true
 permalink: /graphic
@@ -824,6 +824,30 @@ three.js不足之处
 演示视频：
 - 【2021-6-3】[如何快速将2D图像转为3D模型](https://www.toutiao.com/video/6969358547238781477)
 - [monstermash demo](https://monstermash.zone/)
+
+
+### SLAM
+
+场景三维重构
+
+#### SpatialLM
+
+【2025-3-17】Manycore Research Team 推出 [SpatialLM](https://manycore-research.github.io/SpatialLM/) 精准空间感知, 利用 LLM 处理 3D 点云计算、重绘
+- 论文 [SpatialLM: Large Language Model for Spatial Understanding]()
+- 
+- 代码：[SpatialLM](https://github.com/manycore-research/SpatialLM), 模型 [SpatialLM-Llama-1B](https://huggingface.co/manycore-research/SpatialLM-Llama-1B)
+- 视频演示 [teaser.mp4](https://manycore-research-azure.kujiale.com/manycore-research/SpatialLM/teaser.mp4)
+
+原理
+- 基本流程
+- 用 MASt3R-SLAM 获取点云数据, 然后 用 [SpatialLM](https://manycore-research.github.io/SpatialLM/) 构建空间物体
+- ![](https://manycore-research.github.io/SpatialLM/static/images/pipeline.png)
+
+多种输出格式
+- 3D oriented bounding boxes, 2D floorplans, and industry-standard formats such as IFC (Industry Foundation Classes)
+- ![](https://manycore-research.github.io/SpatialLM/static/images/compatibility.png)
+
+
 
 
 ## Three.js
