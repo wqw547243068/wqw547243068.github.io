@@ -1051,18 +1051,23 @@ swanlab_run_name: test_run # 可选
 
 [参考](https://zhuanlan.zhihu.com/p/718263213?utm_psn=1815334840821751808)
 
+微调类型: full, freeze, lora
+
 #### 指令监督微调
+
+
 
 sft lora
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 llamafactory-cli train \ 
+# CUDA_VISIBLE_DEVICES=0 nohup python src/train_bash.py # 另一个启动选项
     --stage sft \        # 训练阶段 “sft”,"pt","rm","ppo"
     --do_train \         # 是否训练模式
     --model_name_or_path /media/codingma/LLM/llama3/Meta-Llama-3-8B-Instruct \ 
     --dataset alpaca_gpt4_zh,identity,adgen_local \ # 数据集列表, 多个数据集逗号分隔
     --dataset_dir ./data \  # 数据集目录，自带的data
-    --template llama3 \ 
+    --template llama3 \  # 可以是 qwen
     --finetuning_type lora \  # 微调类型: full, freeze, lora
     --output_dir ./saves/LLaMA3-8B/lora/sft \  # 模型保存目录
     --overwrite_cache \ 
@@ -1232,6 +1237,44 @@ deepspeed --num_gpus 2   src/train.py \
 
 #### 奖励模型训练
 
+示例
+- finetune_type = lora
+
+```sh
+CUDA_VISIBLE_DEVICES=0 python src/train_bash.py \   
+  --stage rm \
+  --do_train \
+  --model_name_or_path /data/models/sft_qwen/
+  --create_new_adapter \
+  --dataset comparison_gpt4_zh \
+  --template qwen \
+  --finetuning_type lora \
+  --lora_target c_attn \
+  --output_dir /data/models/rm_qwen \
+  --per_device_train_batch_size 2 \
+  --gradient_accumulation_steps 4 \
+  --lr_scheduler_type cosine \
+  --logging_steps 10 \
+  --save_steps 1000 \
+  --learning_rate 1e-6 \
+  --num_train_epochs 1.0 \
+  --plot_loss \
+  --fp16
+```
+
+lora 合并
+
+```sh
+合并：
+
+python src/export_model.py 
+  --model_name_or_path /data/models/Qwen-1_8B-Chat 
+  --adapter_name_or_path /data/models/sft_qwen 
+  --template qwen 
+  --finetuning_type lora 
+  --export_dir /data/models/export_qwen/
+```
+
 Accelerate
 
 ```sh
@@ -1284,6 +1327,35 @@ deepspeed --num_gpus 2   src/train.py \
 ```
 
 #### ppo 训练
+
+示例
+
+```sh
+CUDA_VISIBLE_DEVICES=0 nohup python src/train_bash.py 
+  --stage ppo 
+  --do_train 
+  --model_name_or_path /data/models/export_qwen 
+  --create_new_adapter 
+  --dataset alpaca_gpt4_zh 
+  --template qwen 
+  --finetuning_type lora 
+  --lora_target c_attn 
+  --reward_model /data/models/rm_qwen 
+  --output_dir /data/models/ppo_qwen 
+  --per_device_train_batch_size 2 
+  --gradient_accumulation_steps 4 
+  --lr_scheduler_type cosine 
+  --top_k 0 
+  --top_p 0.9 
+  --logging_steps 10 
+  --save_steps 1000 
+  --learning_rate 1e-5 
+  --num_train_epochs 1.0 
+  --plot_loss 
+  --overwrite_output_dir 
+  --fp16 >>log &
+```
+
 
 Accelerate
 
@@ -1345,6 +1417,32 @@ deepspeed --num_gpus 2  src/train.py \
 
 
 #### dpo 训练
+
+DPO算法不依赖RM阶段，不需要RM模型。
+
+```sh
+nohup deepspeed --include="localhost:1,2,3,4,5,6,7" --master_port=9901  src/train_bash.py 
+  --deepspeed ds_config.json 
+  --stage dpo 
+  --do_train 
+  --model_name_or_path /data/models/chatglm3-6b/ 
+  --adapter_name_or_path /data/models/lora_chatglm 
+  --create_new_adapter 
+  --dataset comparison_gpt4_zh 
+  --template chatglm3 
+  --finetuning_type lora 
+  --lora_target query_key_value 
+  --output_dir /data/models/chatglm3_dpo 
+  --per_device_train_batch_size 1 
+  --gradient_accumulation_steps 4 
+  --lr_scheduler_type cosine 
+  --logging_steps 10 
+  --save_steps 2000 
+  --learning_rate 1e-5 
+  --num_train_epochs 1.0 
+  --plot_loss 
+  --fp16 >> log&
+```
 
 Accelerate
 
