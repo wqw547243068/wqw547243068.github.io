@@ -609,6 +609,13 @@ Key findings:
 
 #### 数据抓取
 
+以前可以用网络爬虫技术（如Python的`Scrapy`或`BeautifulSoup`） 从目标新闻网站提取结构化数据，包括标题、正文、发布时间、作者等信息。
+- 还需处理**反爬虫**机制，如 模拟用户行为、使用代理IP等。 
+
+最后，将获取的数据进行清洗、去重和存储，以便在App中展示。
+
+
+
 ExtractGPT
 - 一款浏览器扩展程序，可从结构化和非结构化页面中获取数据
 
@@ -630,6 +637,16 @@ ExtractGPT
 [AutoCrawler](https://github.com/EZ-hwh/AutoCrawler) 通过分两个阶段、利用HTML的层次结构进行渐进式理解，从错误行动中学习并持续优化HTML，从而更好地生成抓取操作。
 
 实验证明，该框架可有效提高网页爬虫在多样化和动态网络环境中的性能。
+
+#### FireCrawl
+
+【2025-3-25】如果是静态数据（如新闻），可以直接把url给爬虫产品 Firecrawl 。
+
+[FireCrawl](https://www.firecrawl.dev/) 是一款创新的爬虫工具，无需站点地图，抓取**任何**网站的**所有**可访问子页面。
+- 与传统爬虫工具相比，FireCrawl 特别擅长处理使用JavaScript动态生成内容的网站，并且可以转换为LLM-ready的数据。
+- 只需要填URL，firecrawl 会抓取到相关的内容，通过LLM来提取信息。
+- 使用firecrawl的在线服务是需要付费的，免费的只有500credit
+- Dify 内置, 提供 api, 也可以本地部署，[github](https://github.com/mendableai/firecrawl)
 
 
 #### 语料扩充
