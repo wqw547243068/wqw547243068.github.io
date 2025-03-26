@@ -14,6 +14,7 @@ permalink: /meta
 {:toc}
 
 
+
 - 【2022-1-13】[北大出品，最强元宇宙报告，200页干货](https://mp.weixin.qq.com/s/OuHXv30PCf_RoxHfdLCAzw)
 - 【2021-10-31】[清华大学：2021元宇宙研究报告](https://www.163.com/dy/article/GNL04QMN0519KHAT.html)
 - 【2022-1-28】Meta: You will own nothing, and you will be happy... 元宇宙：让你一无所有却难以自拔
@@ -72,6 +73,19 @@ permalink: /meta
 
 
 ### 案例
+
+
+#### 方案
+
+【2025-3-26】用大模型创建指定IP数字人视频，如 李白
+- [DeepSeek](https://chat.deepseek.com/) 生成指定IP的提问
+- 即梦创建数字人图像: 「即梦 AI」，[网页版](https://jimeng.jianying.com/ai-tool/image/generate)
+- 讯飞星火创建数字分身
+  - 讯飞星火点击“+”创建数字分身
+  - 上传IP人物照片
+- 发布智能体
+
+更多[参考](https://mp.weixin.qq.com/s/-J6hGv82h0L5eKZDZ6Hijw)
 
 #### nick 个人
 
@@ -275,6 +289,12 @@ cd EchoMimic
 同时，提出了一种半解耦结构，旨在捕捉嘴唇、表情和姿态特征之间的关系。这种集成不仅提高了信息的利用效率，还加快了推理速度，提升了 14.3%。
 
 JoyHallo 在生成英语视频方面依然表现出色，显示了其优秀的跨语言生成能力。
+
+
+### HeyGem
+
+
+[](heygem.ai)
 
 
 ### 虚拟人创建工具
