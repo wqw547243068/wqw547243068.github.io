@@ -31,6 +31,17 @@ Agent项目:
 
 大家都在布局3级别agi
 
+2025 是智能体之年
+
+
+## Agent 效果
+
+
+【2025-3-26】俄亥俄州立大学、加州伯克利推出 Web助理效果评测 [An Illusion of Progress? Assessing the Current State of Web Agents](https://tiancixue.notion.site/An-Illusion-of-Progress-Assessing-the-Current-State-of-Web-Agents-1ac6cd2b9aac80719cd6f68374aaf4b4)
+- 榜单 [Online-Mind2Web benchmark](https://huggingface.co/spaces/osunlp/Online_Mind2Web_Leaderboard)
+- ![](https://tiancixue.notion.site/image/attachment%3A5f3fa326-9834-4542-8fad-bc441764d055%3Aacc_gap_enhanced.jpg?table=block&id=1c06cd2b-9aac-80d6-be12-e5557d9ca999&spaceId=6c7d6ca8-3d8a-4491-b0be-7c81741893a4&width=1420&userId=&cache=v2)
+
+
 ## 数据集
 
 
