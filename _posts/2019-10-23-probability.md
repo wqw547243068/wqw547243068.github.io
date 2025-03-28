@@ -3,7 +3,7 @@ layout: post
 title:  "数学基础：概率统计 - Probability and statistics"
 date:   2019-10-23 16:53:00
 categories: 数学基础
-tags: 概率 统计 幂律分布 正态分布 长尾分布 样本数 置信度 赌博 香农 凯利 庄家 机器学习 回归 分类 定理 定律
+tags: 概率 统计 幂律分布 正态分布 长尾分布 样本数 置信度 赌博 香农 凯利 庄家 机器学习 回归 分类 定理 定律 级数
 excerpt: 概率统计相关知识
 permalink: /probability
 mathjax: true
@@ -642,7 +642,7 @@ plt.ylabel('Probability')
 plt.title('binom n:{};p:{}'.format(n,p))
 ```
 
-### 泊松分布（二项分布的极限）
+### 泊松分布（二项分布极限）
 
 问题背景: 二项分布 n → + ∞ 的极限。
 - 每天应该供应多少馒头。
@@ -687,6 +687,28 @@ plt.title('poisson, lambda:{}'.format(lam))
 概率质量函数
 - $p(k)=P(X=k)=(1-p)^{k-1} p, k=1,2, \cdots$
 - 期望、方差：$E(X)=\frac{1}{p}, \operatorname{Var}(X)=\frac{1-p}{p^{2}}$
+
+#### 公式推导
+
+【2025-3-28】面试题: 扔硬币，首次出现连续两个正面时，平均要扔多少次？
+
+期望推导过程
+- ![](https://pic1.zhimg.com/80/v2-c699bda951875c745ee2849bd99090c3_720w.webp?source=1def8aca)
+
+数学知识点
+- 幂级数求和 [概要](https://ky.tqkhn.love/math/gaoshu/c16/16.4.html)
+
+4个数学公式：
+1. $\frac{1}{1 - x}=\sum_{n = 0}^{\infty}x^{n}$
+2. $\frac{1}{(1 - x)^{2}}=\sum_{n = 1}^{\infty}nx^{n - 1}$
+3. $\frac{2}{(1 - x)^{3}}=\sum_{n = 2}^{\infty}n(n - 1)x^{n - 2}$
+4. $\frac{6}{(1 - x)^{4}}=\sum_{n = 3}^{\infty}n(n - 1)(n - 2)x^{n - 3}$ 
+
+
+
+
+#### 可视化
+
 
 ```python
 import numpy as np #数组包
