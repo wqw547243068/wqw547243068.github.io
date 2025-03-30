@@ -3,7 +3,7 @@ layout: post
 title:  "文本分类-Text Classification"
 date:   2020-09-25 14:52:00
 categories: 深度学习
-tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert idf bm25
+tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert idf bm25 意图识别
 excerpt: NLP子领域文本分类知识汇总
 author: 鹤啸九天
 mathjax: true
@@ -13,7 +13,11 @@ permalink: /cls
 * content
 {:toc}
 
-# 总结
+
+# 文本分类 Text Classification
+
+
+## 总结
 
 - 文本分类是自然语言处理的一个基本任务，试图推断出给定的文本（句子、文档等）的标签或标签集合。
 - 文本分类算是NLP比较简单的任务之一，并且目前由于预训练语言模型的出现，现在文本分类直接上bert效果就挺好。
@@ -56,7 +60,7 @@ permalink: /cls
 |+数据增强(同义词替换)|	0.8945|	0.5742|
 |+FGM对抗训练	|0.8970	|0.5873|
 
-## 数据集
+### 数据集
 
 两个公开数据集：
 - 今日头条的**短**文本分类
@@ -76,7 +80,7 @@ permalink: /cls
 - 短文本样本**充足**，20多W条训练数据只需分成15个类
 - 长文本分类属于样本**不足**，1W条训练数据要分成119个类，其中数据集还有标签不平衡的问题。
 
-### 短文本-头条
+#### 短文本-头条
 
 今日头条的短文本数据示例如下，通过新闻的标题对新闻进行分类
 
@@ -86,7 +90,7 @@ permalink: /cls
 
 短文本分类的大部分数据都是很短的，经过EDA，发现99%以上的数据在40个字符以下
 
-### 长文本-科大讯飞
+#### 长文本-科大讯飞
 
 长文本数据示例如下，通过APP的简介对APP进行类别分类，大部分数据长度在512以上，超过了Bert等模型的最大输入长度
 
@@ -95,7 +99,7 @@ permalink: /cls
 |16|射击游戏|星际激斗战斗重燃，《星空要塞》是一个基于未来科学背景的策略游戏。。。。|
 
 
-### THUCNews-清华
+#### THUCNews-清华
 
 [中文文本分类数据集THUCNews](http://thuctc.thunlp.org/#%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86THUCNews)
 - THUCNews是根据新浪新闻RSS订阅频道2005~2011年间的历史数据筛选过滤生成，包含**74万**篇新闻文档（2.19 GB），均为 UTF-8 纯文本格式。
@@ -103,12 +107,12 @@ permalink: /cls
 - 使用THUCTC工具包在此数据集上进行评测，准确率可以达到**88.6%**。
 
 
-## 不均衡问题
+### 不均衡问题
 
 详见站内专题: [不均衡问题解法](imbalance)
 
 
-### 文本增强
+#### 文本增强
 
 【2022-8-5】
 
@@ -129,14 +133,14 @@ pip install nlpcda
 
 经过细节特殊处理，比如不改变年月日数字，尽量保证不改变原文语义。即使改变也能被猜出来、能被猜出来、能被踩出来、能被菜粗来、被菜粗、能菜粗来。
 
-## 资料
+### 资料
 
 - [文本分类-基础算法](https://zhuanlan.zhihu.com/p/93322804)
 - [深度学习在文本分类中的应用](https://zhuanlan.zhihu.com/p/34383508)
 - 【2021-2-2】文本分类方法[表格汇总](https://github.com/leerumor/nlp_tutorial/blob/main/README.md#para2cls)
 
 
-## 评估方法
+### 评估方法
 
 不同类型的文本分类往往有不同的评价指标，具体如下：
 - **二**分类：accuracy，precision，recall，f1-score，...
@@ -144,7 +148,7 @@ pip install nlpcda
 - **多标签**分类：Jaccard相似系数, ... 
   - 为什么是jaccard？各类别不互（正交），不能用传统指标
 
-### 实践经验
+#### 实践经验
 
 【2023-1-11】公司的数据集上
 - BERT fine tune，精度82%，训练：30小时fune tune。serving：单GPU 5000词每秒；
@@ -161,9 +165,11 @@ ChatGPT 式的生成模型是目前阶段效果最好的 `zero-shot` 范式了�
 
 但是大模型再美好，在**部署成本**和**结果优化**方面有些门槛。对于普通业务，<span style='color:blue'>用 LLM（Large Language Model）辅助小模型训练</span> 是**短期内**更便于执行的落地方案。
 
-模型**冷启动**阶段，由于缺乏标注数据，提升 zero-shot 方案的核心路线: 构造“伪样本”，构造尽可能多、尽可能准的伪样本。这里又分两种情况
-- 第一种: llm生成标签。手边有足量的**未标注**真实数据，那么只需打上“伪标签”。
-- 第二种: llm生成语料。哪怕是**无标注数据**也不太够，在伪标签之外，还需要用数据增强来构造“**伪语料**”。
+模型**冷启动**阶段，由于缺乏标注数据，提升 zero-shot 方案的核心路线: 构造“伪样本”，构造尽可能多、尽可能准的伪样本。
+
+两种情况
+- 第一种: llm生成**标签**。有足量**未标注**数据，只需打上“伪标签”。
+- 第二种: llm生成**语料**。**无标注数据**也不太够，在伪标签之外，还要用**数据增强**来构造“**伪语料**”。
 
 ### zero-shot 分类
 
@@ -177,13 +183,13 @@ zero-shot 分类 本质上这是一种`迁移学习`，用一个监督训练得�
 
 #### 2022 EMNLP
 
-论文采用不同的 zero-shot 基座模型。。都开源。
+论文采用不同的 zero-shot 基座模型, 都开源。
 - 2022 EMNLP, 传统优化路线
   - [Zero-Shot Text Classification with Self-Training](https://arxiv.org/abs/2210.17541)
   - 代码: [Zero-shot Classification Boost with Self-training](https://github.com/IBM/zero-shot-classification-boost-with-self-training)
 
 流程方法
-- 取 1w 条无标注数据，用基座 NLI 模型打上伪标签。由于未经迭代的模型准确度有限，只取分类置信度最高的 1% 样本（100条左右）。在各个目标分类之上，top1 得分和 top2 得分的差距越大，此次预测的置信度越高。
+- 取 1w 条无标注数据，用基座 NLI 模型打上**伪标签**。由于未经迭代的模型准确度有限，只取分类置信度最高的 1% 样本（100条左右）。在各个目标分类之上，top1 得分和 top2 得分的差距越大，此次预测的置信度越高。
 - ![](https://pic3.zhimg.com/80/v2-aa005cb1e614805afd9953f5a40c5b22_1440w.webp)
 
 #### GenCo
@@ -193,7 +199,7 @@ zero-shot 分类 本质上这是一种`迁移学习`，用一个监督训练得�
 - [Generation-driven Contrastive Self-training for Zero-shot TextClassification with Instruction-tuned GPT](https://arxiv.org/abs/2304.11872)
 - code：[GenCo](https://github.com/RifleZhang/GenCo)
 
-自训练的一个核心问题: 伪数据的筛选构造。
+自训练的核心问题: 伪数据的筛选构造。
 - 预测分数高的样本，准确度越高，噪声小，但是过于简单，引入的有效信息也很少；
 - 预测分数低的样本，极有可能被打上错误的伪标签，但是往往是这类分类难度大的样本，更具备学习价值。
 
@@ -221,9 +227,42 @@ GenCo 的核心在于两次基于 Alpaca 的数据增强，出发点都是提升
 详见原文：
 - [使用 ChatGPT 进行 zero-shot 模型的自监督训练](https://zhuanlan.zhihu.com/p/625983199)
 
-# 常规分类方法
+### LLM 意图识别
 
-## TF-IDF
+
+【2024-8-19】[怎样进行大模型应用程序中的意图识别](https://zhuanlan.zhihu.com/p/679040557)
+
+RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控制流程，创建更有用、更强大的 RAG 应用程序
+- 数据源多样性: query 路由到
+  - 非结构化文档: 语义检索，召回相关文档(图片/文本/pdf/word等)
+  - 结构化文档: Text2SQL, query转sql语句，从关系型数据库中查找相关信息，如 MySQL, PostgreSQL, Oracle, SQL Lite 等。
+  - API: 通过 Function Call 调用 Restful API
+- 组件多样性: 相同数据用不同的向量存储, query 路由到:
+  - 向量库
+  - LLM
+  - Agent
+- 提示模版多样性: 根据用户问题使用不同提示模版 Prompt Template
+  - query --(Router)--> Prompt1, Prompt2, ..., Promptn ----> LLM ----> Response
+  - LLM 存在不确定性, 不可能100%稳定正确
+
+路由 Router 分类
+- 逻辑路由 Logical Router
+- **自然语言路由** (Natural Language Router) 由不同 RAG 和 LLM 应用开发框架和库实现。
+  - LLM 路由 (LLM Router)
+    - LLM **补全**路由 (LLM Completion Router): 从 prompt 里候选单词选择最佳, 作为 if/else条件控制流程, 案例 LlamaIndex Selector 原理 （LangChain 路由）
+    - LLM **函数调用**路由 (LLM Function Calling Router): LLM 判断 query 对应哪个函数, 即路由，案例 LlamaIndex 中 Pydantic Router 原理，大多数 agent 工具选择方式
+  - **语义**路由 (Semantic Routers): 利用 embedding 和 相似性搜索确定意图, 选择最佳
+  - **零样本分类**路由 (Zero Shot Classification Routers): prompt 中指定分类集合, 直接进行分类
+  - **语言分类**路由 (Language Classification Routers): 语种路由, langdetect python 包（朴素贝叶斯） 检测文本语种
+  - **关键字**路由: query 匹配路由表中的关键字来路由
+
+
+路由 Router vs 智能体 Agent
+- 二者相似点多，Agent 将 Router 作为流程的一部分执行。
+
+## 常规分类方法
+
+### TF-IDF
 
 TF-IDF 通过**高词频**和**低文档频率**产生高权重，倾向于过滤常见词语，保留重要词语。
 
@@ -231,7 +270,7 @@ TF-IDF 基于`词频`（TF）和`逆文档频率`（IDF）来衡量词语在文�
 
 - tf-idf在nlp的比赛中仍然是一个强特征，合理使用就可以提分
 
-### 代码
+#### 代码
 
 ```python
 import warnings
@@ -256,13 +295,13 @@ def pre_process(df):
     df['real_path'] = df['real_path'].apply(lambda x:" ".join(x))
     return df
 
-train_data = pre_process(train_data) # 训练集
-test_data = pre_process(test_data) # 测试集
-data = train_data.append(test_data) # 全集
+train_data = pre_process(train_data) ## 训练集
+test_data = pre_process(test_data) ## 测试集
+data = train_data.append(test_data) ## 全集
 #vectorizer = CountVectorizer()
 #transformer = TfidfTransformer()
 #tfidf = transformer.fit_transform(vectorizer.fit_transform(data['real_path']))
-# add ngram feature
+## add ngram feature
 tfidf = TfidfVectorizer(ngram_range=(1,3), max_features=5000)
 tfidf = tfidf.fit_transform(data['real_path'])
 
@@ -283,14 +322,14 @@ print(recall_score(y_predict, y_test))
 print(classification_report(y_predict, y_test))
 ```
 
-## BM25
+### BM25
 
 BM25 是一种**改进**的文本检索算法，在 TF-IDF 基础上, 通过**文档长度归一化**和**词项饱和度调整**，更精确地评估词项重要性，优化了词频和逆文档频率的计算，并考虑了文档长度对评分的影响。
 
 虽然不涉及词项上下文，但是 BM25 在处理大规模数据时表现优异，广泛应用于搜索引擎和信息检索系
 
 
-## N-Gram
+### N-Gram
 
 - 单纯的char embedding所提供的特征比较单一，所以一般会加别的特征，n-gram就是其中的一个，可以通过字符级别的n-gram来。
 - n-gram的优点：
@@ -298,7 +337,7 @@ BM25 是一种**改进**的文本检索算法，在 TF-IDF 基础上, 通过**�
   - 在测试集上，即使单词没有出现在训练语料库中（OOV)，仍然可以从字符级n-gram中构造单词的词向量，即字符级n-gram利用了单词的形态学信息。这个在形态学丰富的语言中挺有用。
   - n-gram可以让模型学习到局部词序信息, 如果不考虑n-gram则便是取每个单词，这样无法考虑到词序所包含的信息，即也可理解为上下文信息，因此通过n-gram的方式关联相邻的几个词，这样会让模型在训练的时候保持词序信息
 
-## Word2vec
+### Word2vec
 
 - [一篇浅显易懂的word2vec原理讲解](https://zhuanlan.zhihu.com/p/44599645)
 - ![](https://pic4.zhimg.com/v2-fbe57ddc79d2ac16b849a82672cfb5ff_1440w.jpg)
@@ -307,17 +346,17 @@ BM25 是一种**改进**的文本检索算法，在 TF-IDF 基础上, 通过**�
   - ![](https://pic3.zhimg.com/80/v2-aa216beff36d2ba6bff68aaf8f620d8e_720w.jpg)
 - 神经网络语言模型包含两个非线性层，求解起来复杂度很高，于是出现了两种更高效的神经网络模型CBOW和Skip-Gram
 
-### CBOW
+#### CBOW
 
 - CBOW 是 Continuous Bag-of-Words 的缩写，与神经网络语言模型不同的是，CBOW去掉了最耗时的非线性隐藏层
 ![](https://pic3.zhimg.com/80/v2-da1f96a4a4e8981528a2281c790e98dd_720w.jpg)
 
-### Skip-Gram
+#### Skip-Gram
 
 Skip-Gram的模型图与CBOW恰好相反
 - ![](https://pic2.zhimg.com/80/v2-ec71505b54d3419e74dc28e4cdb28dbc_720w.jpg)
 
-### 层次softmax
+#### 层次softmax
 
 word2vec在预测词语并进行梯度传播时，最后一层是个**多分类**，会计算整个词典中每个词的概率。但这个词表往往是很大的，所以softmax本身的**计算量非常大**，但在反向传播时大部分参数的**梯度都是0**，造成了很大的**资源浪费**，间接降低了训练的速度。
 
@@ -352,7 +391,7 @@ Hierarchical Softmax的**核心思想**就是**将一次多分类，分解为多
 
 [Pytorch实现FastText模型对AG_news数据集进行四分类预测（torchtext实现数据预处理）](https://blog.csdn.net/kingsonyoung/article/details/90757879)
 
-### 负采样
+#### 负采样
 
 **负采样**实际上是采样负例来帮助训练的手段，与层次softmax一样，用来提升模型的训练速度。
 - 模型对正例的预测概率是越大越好，模型对负例的预测概率是越小越好。由于正例的数量少，很容易保证每个正例的预测概率尽可能大，而负例的数量特别多，所以负采样的思路就是根据某种负采样的策略随机挑选一些负例，然后保证挑选的这部分负例的预测概率尽可能小。
@@ -404,17 +443,17 @@ import torch
 import torch.nn.functional as F
 
 a = torch.tensor([1,2,3,4.])
-# （1）退火采样
+## （1）退火采样
 F.softmax(a, dim=0)
-# tensor([0.0321, 0.0871, 0.2369, 0.6439])
+## tensor([0.0321, 0.0871, 0.2369, 0.6439])
 F.softmax(a/.5, dim=0)
-# tensor([0.0021, 0.0158, 0.1171, 0.8650])
+## tensor([0.0021, 0.0158, 0.1171, 0.8650])
 F.softmax(a/1.5, dim=0)
-# tensor([0.0708, 0.1378, 0.2685, 0.5229])
+## tensor([0.0708, 0.1378, 0.2685, 0.5229])
 F.softmax(a/1e-6, dim=0)
-# tensor([0., 0., 0., 1.])
+## tensor([0., 0., 0., 1.])
 
-# （2）top k/p采样计算
+## （2）top k/p采样计算
 
 def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
     
@@ -433,7 +472,7 @@ def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')
         logits[indices_to_remove] = filter_value
     return logits
 
-# 超参搜索
+## 超参搜索
 def best_k_p(logits, golden, verbose=False):
     sorted_logits, sorted_indices = torch.sort(logits, descending=True)
     cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
@@ -444,9 +483,9 @@ def best_k_p(logits, golden, verbose=False):
 ```
 
 
-## FastText —— 适合长文本
+### FastText —— 适合长文本
 
-### 介绍
+#### 介绍
 
 - 【2021-5-27】fasttext, [简介](https://blog.csdn.net/qq_32023541/article/details/80839800?spm=1001.2014.3001.5501) ,Library for efficient text classification and representation learning
 
@@ -470,7 +509,7 @@ fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征
   - 注意：分层softmax是完全softmax的一个**近似**，分层softmax在大数据集上高效的建立模型，但通常会以**损失精度**的几个百分点为代价
 - **N-gram特征**: fastText 可以用于文本分类和句子分类。不管是文本分类还是句子分类，我们常用的特征是词袋模型。但词袋模型不能考虑词之间的顺序，因此 fastText 还加入了 N-gram 特征。
 
-### 安装
+#### 安装
 
 [安装使用](https://blog.csdn.net/qq_32023541/article/details/80844036)，[官方模型集合](https://fasttext.cc/docs/en/crawl-vectors.html), [中文版](http://fasttext.apachecn.org/#/doc/zh/pretrained-vectors), 支持 294 种语言
 - fasttext 是一个有效的学习字词表达和句子分类的库。建立在现代 Mac OS 和 Linux 发行版上。因为它使用了 C++11 的特性，所以需要一个支持 C++11 的编译器，这些包括：gcc-4.8 或更高版本, clang-3.3 或更高版本；
@@ -485,23 +524,23 @@ fastText 方法包含三部分：模型架构、层次 Softmax 和 N-gram 特征
   - [fastText原理和文本分类实战，看这一篇就够了](https://blog.csdn.net/feilong_csdn/article/details/88655927)，源自[fasttext中文文档](http://fasttext.apachecn.org/)
 
 ```shell
-# 下载后安装
+## 下载后安装
 pip install fasttext
-# 直接安装（可能失败）
+## 直接安装（可能失败）
 git clone https://github.com/facebookresearch/fastText.git
 cd fastText
 pip install .
 
-# 编译安装
+## 编译安装
 wget https://github.com/facebookresearch/fastText/archive/v0.1.0.zip
 unzip v0.1.0.zip
 cd fastText-0.1.0
 make
-# 测试
+## 测试
 ./fasttext
 ```
 
-### 使用
+#### 使用
 
 上述的命令包括：
 - supervised： 训练一个监督分类器
@@ -519,25 +558,25 @@ make
 代码：
 
 ```python
-# ----- 官方版本 -------
+## ----- 官方版本 -------
 import fastText
-# and call:
+## and call:
 fastText.train_supervised
 fastText.train_unsupervised
-# ----- 非官方版本 -------
+## ----- 非官方版本 -------
 import fasttext
-# and call:
+## and call:
 fasttext.cbow
 fasttext.skipgram
 fasttext.supervised
-# ----- 官方融合版本 -------
+## ----- 官方融合版本 -------
 import fasttext
-# and call:
+## and call:
 fasttext.train_supervised
 fasttext.train_unsupervised
 ```
 
-### 分类示例
+#### 分类示例
 
 fasttext在进行文本分类时，huffmax树叶子节点处是每一个类别标签的词向量。在训练过程中，训练语料的每一个词也会得到响应的词向量。输入为一个window 内的词对应的词向量，隐藏层为这几个词的线性相加。相加的结果作为该文档的向量。再通过softmax层得到预测标签。结合文档真实标签计算 loss，梯度与迭代更新词向量（优化词向量的表达）。
 
@@ -559,130 +598,130 @@ fasttext在进行文本分类时，huffmax树叶子节点处是每一个类别�
 - 在默认情况下，单词向量将会考虑到 n-grams 的3 到 6 个字符。
 在优化结束时，程序将保存 2 个文件： model.bin 和 model.vec
 
-#### C++版本
+##### C++版本
 
 编译成二进制文件，当做命令行使用
 
 ```sh
-# 数据准备
-# 无监督语料——wiki百科
+## 数据准备
+## 无监督语料——wiki百科
 wget https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
-# wiki百科部分数据
+## wiki百科部分数据
 mkdir data
 wget -c http://mattmahoney.net/dc/enwik9.zip -P data
 unzip data/enwik9.zip -d data
 
-# 有监督语料——分类
+## 有监督语料——分类
 wget https://dl.fbaipublicfiles.com/fasttext/data/cooking.stackexchange.tar.gz
 tar xvzf cooking.stackexchange.tar.gz
 head cooking.stackexchange.txt
-# 数据集划分
-head -n 12404 cooking.stackexchange.txt > cooking.train # 训练集
-tail -n 3000 cooking.stackexchange.txt > cooking.valid # 验证集
+## 数据集划分
+head -n 12404 cooking.stackexchange.txt > cooking.train ## 训练集
+tail -n 3000 cooking.stackexchange.txt > cooking.valid ## 验证集
 
-# （1）训练
-# -input命令选项指示训练数据
-# -output选项指示的是保存的模型的位置
-# （1.1）------- 无监督训练 --------
-# skip-gram/cbow模型
+## （1）训练
+## -input命令选项指示训练数据
+## -output选项指示的是保存的模型的位置
+## （1.1）------- 无监督训练 --------
+## skip-gram/cbow模型
 mkdir result
 ./fasttext skipgram -input data/fil9 -output result/fil9
 ./fasttext cbow -input data/fil9 -output result/fil9
-# 输出两个文件：
-#   ① fil9.bin是模型文件
-#   ② fil9.vec是词向量文件，每一行对应词汇表中的每个单词（按照词频降序排列）
-# 218316 100 # 第一行是单词数/向量维度
-# the -0.10363 -0.063669 0.032436 -0.040798 0.53749 0.00097867 0.10083 0.24829 ...
-# of -0.0083724 0.0059414 -0.046618 -0.072735 0.83007 0.038895 -0.13634 0.60063 ...
-# one 0.32731 0.044409 -0.46484 0.14716 0.7431 0.24684 -0.11301 0.51721 0.73262 ...
+## 输出两个文件：
+##   ① fil9.bin是模型文件
+##   ② fil9.vec是词向量文件，每一行对应词汇表中的每个单词（按照词频降序排列）
+## 218316 100 ## 第一行是单词数/向量维度
+## the -0.10363 -0.063669 0.032436 -0.040798 0.53749 0.00097867 0.10083 0.24829 ...
+## of -0.0083724 0.0059414 -0.046618 -0.072735 0.83007 0.038895 -0.13634 0.60063 ...
+## one 0.32731 0.044409 -0.46484 0.14716 0.7431 0.24684 -0.11301 0.51721 0.73262 ...
 
-# 模型量化压缩
+## 模型量化压缩
 ./fasttext quantize -output model
 
-# 打印词向量
+## 打印词向量
 echo "asparagus pidgey yellow" | ./fasttext print-word-vectors result/fil9.bin
-# asparagus 0.46826 -0.20187 -0.29122 -0.17918 0.31289 -0.31679 0.17828 -0.04418 ...
-# pidgey -0.16065 -0.45867 0.10565 0.036952 -0.11482 0.030053 0.12115 0.39725 ...
-# 或，文件形式批量转换向量
+## asparagus 0.46826 -0.20187 -0.29122 -0.17918 0.31289 -0.31679 0.17828 -0.04418 ...
+## pidgey -0.16065 -0.45867 0.10565 0.036952 -0.11482 0.030053 0.12115 0.39725 ...
+## 或，文件形式批量转换向量
 ./fasttext print-sentence-vectors model.bin < text.txt
 
-# 查询单词
+## 查询单词
 echo "enviroment" | ./fasttext print-word-vectors result/fil9.bin
 
-# 最临近词向量查询，通过fastText提供的nn功能来实现，余弦相似度去衡量两个单词之间的相似度
-$ ./fasttext nn result/fil9.bin # 启动服务
-# Pre-computing word vectors... done.
-# 交互查询
-# Query word? asparagus
-# beetroot 0.812384
-# tomato 0.806688
-# horseradish 0.805928
-# spinach 0.801483
-# licorice 0.791697
-# lingonberries 0.781507
-# asparagales 0.780756
-# lingonberry 0.778534
-# celery 0.774529
-# beets 0.773984
+## 最临近词向量查询，通过fastText提供的nn功能来实现，余弦相似度去衡量两个单词之间的相似度
+$ ./fasttext nn result/fil9.bin ## 启动服务
+## Pre-computing word vectors... done.
+## 交互查询
+## Query word? asparagus
+## beetroot 0.812384
+## tomato 0.806688
+## horseradish 0.805928
+## spinach 0.801483
+## licorice 0.791697
+## lingonberries 0.781507
+## asparagales 0.780756
+## lingonberry 0.778534
+## celery 0.774529
+## beets 0.773984
 
-# 单词类比， analogies，柏林与德国的关系，类比到法国与巴黎
+## 单词类比， analogies，柏林与德国的关系，类比到法国与巴黎
 $ ./fasttext analogies result/fil9.bin
-# Pre-computing word vectors... done.
-# Query triplet (A - B + C)? berlin germany france
-# paris 0.896462
-# bourges 0.768954
-# louveciennes 0.765569
-# toulouse 0.761916
-# valenciennes 0.760251
-# montpellier 0.752747
-# strasbourg 0.744487
-# meudon 0.74143
-# bordeaux 0.740635
-# pigneaux 0.736122
+## Pre-computing word vectors... done.
+## Query triplet (A - B + C)? berlin germany france
+## paris 0.896462
+## bourges 0.768954
+## louveciennes 0.765569
+## toulouse 0.761916
+## valenciennes 0.760251
+## montpellier 0.752747
+## strasbourg 0.744487
+## meudon 0.74143
+## bordeaux 0.740635
+## pigneaux 0.736122
 
-# 模型调优
-# ① 模型中最重要的两个参数是：词向量大小维度、subwords范围的大小，词向量维度越大，便能获得更多的信息但同时也需要更多的训练数据，同时如果它们过大，模型也就更难训练速度更慢，默认情况下使用的是100维的向量，但在100-300维都是常用到的调参范围。subwords是一个单词序列中包含最小(minn)到最大(maxn)之间的所有字符串(也即是n-grams)，默认情况下我们接受3-6个字符串中间的所有子单词，但不同的语言可能有不同的合适范围
+## 模型调优
+## ① 模型中最重要的两个参数是：词向量大小维度、subwords范围的大小，词向量维度越大，便能获得更多的信息但同时也需要更多的训练数据，同时如果它们过大，模型也就更难训练速度更慢，默认情况下使用的是100维的向量，但在100-300维都是常用到的调参范围。subwords是一个单词序列中包含最小(minn)到最大(maxn)之间的所有字符串(也即是n-grams)，默认情况下我们接受3-6个字符串中间的所有子单词，但不同的语言可能有不同的合适范围
 ./fasttext skipgram -input data/fil9 -output result/fil9 -minn 2 -maxn 5 -dim 300
-# ② 另外两个参数：epoch、learning rate、epoch根据训练数据量的不同，可以进行更改，epoch参数即是控制训练时在数据集上循环的次数，默认情况下在数据集上循环5次，但当数据集非常大时，我们也可以适当减少训练的次数，另一个参数学习率，学习率越高模型收敛的速度就越快，但存在对数据集过度拟合的风险，默认值时0.05，这是一个很好的折中，当然在训练过程中，也可以对其进行调参，可调范围是[0.01, 1]
+## ② 另外两个参数：epoch、learning rate、epoch根据训练数据量的不同，可以进行更改，epoch参数即是控制训练时在数据集上循环的次数，默认情况下在数据集上循环5次，但当数据集非常大时，我们也可以适当减少训练的次数，另一个参数学习率，学习率越高模型收敛的速度就越快，但存在对数据集过度拟合的风险，默认值时0.05，这是一个很好的折中，当然在训练过程中，也可以对其进行调参，可调范围是[0.01, 1]
 ./fasttext skipgram -input data/fil9 -output result/fil9 -epoch 1 -lr 0.5
-# ③ fastText是多线程的，默认情况下使用12个线程，如果你的机器只有更少的CPU核数，也可以通过如下参数对使用的CPU核数进行调整
+## ③ fastText是多线程的，默认情况下使用12个线程，如果你的机器只有更少的CPU核数，也可以通过如下参数对使用的CPU核数进行调整
 ./fasttext skipgram -input data/fil9 -output result/fil9 -thread 4
 
-# （1.2）----- 有监督训练 -------
+## （1.2）----- 有监督训练 -------
 ./fasttext supervised -input cooking.train -output model_cooking
-# 在训练结束后，文件model_cooking.bin是在当前目录中创建的，model_cooking.bin便是我们保存训练模型的文件
-# （1.2.1） 模型优化：模型精准率从 12.4% 提升到了 59.9%
-# ① 数据预处理：如 大小写统一，缩小词表规模
-# 增加迭代次数
+## 在训练结束后，文件model_cooking.bin是在当前目录中创建的，model_cooking.bin便是我们保存训练模型的文件
+## （1.2.1） 模型优化：模型精准率从 12.4% 提升到了 59.9%
+## ① 数据预处理：如 大小写统一，缩小词表规模
+## 增加迭代次数
 ./fasttext supervised -input cooking.train -output model_cooking -epoch 25
-# ② 设置学习率，一般 0.1~1.0
+## ② 设置学习率，一般 0.1~1.0
 ./fasttext supervised -input cooking.train -output model_cooking -lr 1.0 
-# 组合使用
+## 组合使用
 ./fasttext supervised -input cooking.train -output model_cooking -lr 1.0 -epoch 25
-# ③ 使用n-gram语言模型：上面默认使用uni-gram，丢失了词序信息，改成bi-gram重新训练
-# 句子：Last donut of the night
-# unigrams：last,donut,of,the,night
-# bigrams：last donut,donut of,of the,the night
+## ③ 使用n-gram语言模型：上面默认使用uni-gram，丢失了词序信息，改成bi-gram重新训练
+## 句子：Last donut of the night
+## unigrams：last,donut,of,the,night
+## bigrams：last donut,donut of,of the,the night
 ./fasttext supervised -input cooking.train -output model_cooking -lr 1.0 -epoch 25 -wordNgrams 2
-# ④ 训练提速：层次softmax，参数-loss 
+## ④ 训练提速：层次softmax，参数-loss 
 ./fasttext supervised -input cooking.train -output model_cooking -lr 1.0 -epoch 25 -wordNgrams 2 -bucket 200000 -dim 50 -loss hs
-# Read 0M words
-# Number of words:  9012
-# Number of labels: 734
-# Progress: 100.0%  words/sec/thread: 2199406  lr: 0.000000  loss: 1.718807  eta: 0h0m 
+## Read 0M words
+## Number of words:  9012
+## Number of labels: 734
+## Progress: 100.0%  words/sec/thread: 2199406  lr: 0.000000  loss: 1.718807  eta: 0h0m 
 
-# （2）测试：
-# 交互式测试，一次一句
-# 输入：Which baking dish is best to bake a banana bread ?
-# 结果：baking
+## （2）测试：
+## 交互式测试，一次一句
+## 输入：Which baking dish is best to bake a banana bread ?
+## 结果：baking
 ./fasttext predict model_cooking.bin -
-# 批量测试
+## 批量测试
 ./fasttext test model_cooking.bin cooking.valid
-# N  3000
-# P@1  0.124
-# R@1  0.0541
-# Number of examples: 3000
-# 带概率的结果
+## N  3000
+## P@1  0.124
+## R@1  0.0541
+## Number of examples: 3000
+## 带概率的结果
 ./fasttext predict-prob model.bin test.txt k
 ```
 
@@ -731,72 +770,72 @@ int main(int argc, char** argv) {
 ```
 
 
-#### Python版本
+##### Python版本
 
 ```python
 import fasttext
 
-# ------- 无监督训练 -------
-# ① skipgram model
+## ------- 无监督训练 -------
+## ① skipgram model
 model = fasttext.train_unsupervised('data.txt', model = 'skipgram')
-#model = fasttext.skipgram('data.txt','model') # 旧版非官方版本调用方法
-# ② CBOW model
+#model = fasttext.skipgram('data.txt','model') ## 旧版非官方版本调用方法
+## ② CBOW model
 model = fasttext.train_unsupervised('data.txt', model = 'cbow')
-#model = fasttext.cbow('data.txt','model')  # 旧版非官方版本调用方法
-print(model)   # 存储位置
-print(model.get_words())   # 词表
-print(model.words) # 字典中的词汇列表
-# 单词 'king' 的词向量
+#model = fasttext.cbow('data.txt','model')  ## 旧版非官方版本调用方法
+print(model)   ## 存储位置
+print(model.get_words())   ## 词表
+print(model.words) ## 字典中的词汇列表
+## 单词 'king' 的词向量
 print(model['king'])
-print(model.get_word_vector('to'))    #  对应词向量 
-# 保存模型
+print(model.get_word_vector('to'))    ##  对应词向量 
+## 保存模型
 model.save_model('model.bin')
 
-# 加载前面训练好的模型 model.bin
+## 加载前面训练好的模型 model.bin
 model = fasttext.load_model("model.bin")
-# ---- 文本分类 ----
-# 训练文本分类器
+## ---- 文本分类 ----
+## 训练文本分类器
 classifier = fasttext.train_supervised('data.train.txt','model')
-# 还可以用 label_prefix 指定标签前缀
+## 还可以用 label_prefix 指定标签前缀
 classifier = fasttext.train_supervised('data.train.txt','model',label_prefix = '__label__')
-# 输出两个文件: model.bin 和 model.vec
+## 输出两个文件: model.bin 和 model.vec
 
-# 量化压缩模型
-model.quantize(input='data.train.txt',retrain=True)   # 数据集太小会报错 ！！！
+## 量化压缩模型
+model.quantize(input='data.train.txt',retrain=True)   ## 数据集太小会报错 ！！！
 #接下来展示结果和存储新模型
 print_result(*model.test(valid_data))
-model.save_model("model.ftz") # model.ftz 比model.bin 的大小 要小很多
+model.save_model("model.ftz") ## model.ftz 比model.bin 的大小 要小很多
 
-# 加载模型
+## 加载模型
 classifier = fasttext.load_model("model.bin",label_prefix = "__label__")
 print(classifier.labels)
-#  ------ 预测 -------
-# （1）单例预测
-# model.predict(self,
-#  text, utf-8 字符串文本
-#  k=1, 返回标签的个数，可以理解为最大K项
-#  threshord=0.0) 概率阈值，大于才返回
+##  ------ 预测 -------
+## （1）单例预测
+## model.predict(self,
+##  text, utf-8 字符串文本
+##  k=1, 返回标签的个数，可以理解为最大K项
+##  threshord=0.0) 概率阈值，大于才返回
 texts = ["example very long text 1","example very longtext 2"]
-labels = classifier.predict(texts[0]) # 单词预测
-labels = classifier.predict(texts) # 并行预测
-labels = classifier.predict(texts,k = 3) # top k的预测结果
-labels = classifier.predict_proba(texts) # 含概率, 无效！
+labels = classifier.predict(texts[0]) ## 单词预测
+labels = classifier.predict(texts) ## 并行预测
+labels = classifier.predict(texts,k = 3) ## top k的预测结果
+labels = classifier.predict_proba(texts) ## 含概率, 无效！
 print(labels)
-# (2) 模型批量预测
-# model.test(self,
-#  path, 文件路径
-#  k=1) 最大k项
-# 返回：[N，p，r] 样本个数，精确率，召回率
+## (2) 模型批量预测
+## model.test(self,
+##  path, 文件路径
+##  k=1) 最大k项
+## 返回：[N，p，r] 样本个数，精确率，召回率
 
-# 使用 classifier.test 方法在测试数据集上评估模型
-result = classifier.test("test.txt") # 迭代输出返回内容
+## 使用 classifier.test 方法在测试数据集上评估模型
+result = classifier.test("test.txt") ## 迭代输出返回内容
 print("准确率：" , result.precision)
 print("召回率：" , result.recall)
 print("Number of examples:", result.nexamples)
 
 ```
 
-### 论文及案例
+#### 论文及案例
 
 - 论文Bag of Tricks for Efficient Text Classification提出一个快速进行文本分类的模型和一些trick。
 - fastText模型架构
@@ -845,7 +884,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import classification_report
 
-# 转换为FastText需要的格式
+## 转换为FastText需要的格式
 train_df = pd.read_csv(sys.argv[1], sep='\t', names=["label","text"])
 train_df = shuffle(train_df)
 test_df = pd.read_csv(sys.argv[2], sep='\t', names=["label","text"])
@@ -872,14 +911,14 @@ print(classification_report(test_df['label'].values,val_pred))
 
 [Pytorch实现FastText模型对AG_news数据集进行四分类预测（torchtext实现数据预处理）](https://blog.csdn.net/kingsonyoung/article/details/90757879)
 
-### 训练
+#### 训练
 
 pytorch实现fastText: 
 - [model.py](https://github.com/jasoncao11/nlp-notebook/blob/master/2-2.FastText/model.py)
 - [train_val.py](https://github.com/jasoncao11/nlp-notebook/blob/master/2-2.FastText/train_eval.py)
 
 ```py
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 import torch.nn as nn
 from torch.nn import functional as F
 
@@ -907,13 +946,13 @@ class FastText(nn.Module):
 ```
 
 
-# 深度学习文本分类
+## 深度学习文本分类
 
 - 汇总文本分类众多方法
 
-## CNN文本分类
+### CNN文本分类
 
-### TextCNN —— 适合中短文本
+#### TextCNN —— 适合中短文本
 
 [textcnn结构图](https://pic1.zhimg.com/80/v2-a4c1ce1360613599af01d4266734618c_720w.jpg)
 - ![textcnn结构图](https://pic1.zhimg.com/80/v2-a4c1ce1360613599af01d4266734618c_720w.jpg)
@@ -979,7 +1018,7 @@ test = pd.read_csv(sys.argv[2],sep='|',names=["a","b","c","label"])
 dtype = torch.FloatTensor
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# 3 words sentences (=sequence_length is 3)
+## 3 words sentences (=sequence_length is 3)
 train = shuffle(train)
 word2idx = {}
 sentences = list(train['c'].apply(lambda x:" ".join(x.split("\\"))))
@@ -987,10 +1026,10 @@ labels = list(train['label'])
 test_sentences = list(test['c'].apply(lambda x:" ".join(x.split("\\"))))
 test_labels = list(test['label'])
 
-# TextCNN Parameter
+## TextCNN Parameter
 embedding_size = 300
-sequence_length = max([len(each.split()) for each in sentences]) # every sentences contains sequence_length(=3) words
-num_classes = 2  # 0 or 1
+sequence_length = max([len(each.split()) for each in sentences]) ## every sentences contains sequence_length(=3) words
+num_classes = 2  ## 0 or 1
 batch_size = 128
 
 word_list = " ".join(sentences).split()
@@ -1014,7 +1053,7 @@ def make_data(sentences, labels):
         #inputs.append([word2idx[n] for n in sen.split()])
     targets = []
     for out in labels:
-        targets.append(out) # To using Torch Softmax Loss function
+        targets.append(out) ## To using Torch Softmax Loss function
     pad_token = 0
     padded_X = np.ones((len(inputs), sequence_length)) * pad_token
     for i, x_len in enumerate([len(each) for each in inputs]):
@@ -1037,7 +1076,7 @@ class TextCNN(nn.Module):
         self.conv2 = nn.Conv2d(1, 1, (2, embedding_size))
         self.conv3 = nn.Conv2d(1, 1, (3, embedding_size))
         self.conv4 = nn.Conv2d(1, 1, (4, embedding_size))
-        # fc
+        ## fc
         #self.fc = nn.Linear(3 * output_channel, num_classes)
         self.Max2_pool = nn.MaxPool2d((sequence_length-2+1, 1))
         self.Max3_pool = nn.MaxPool2d((sequence_length-3+1, 1))
@@ -1050,14 +1089,14 @@ class TextCNN(nn.Module):
       #X: [batch_size, sequence_length]
       #'''
       #batch_size = X.shape[0]
-      #embedding_X1 = self.W(X) # [batch_size, sequence_length, embedding_size]
-      #embedding_X = embedding_X.unsqueeze(1) # add channel(=1) [batch, channel(=1), sequence_length, embedding_size]
-      #conved = self.conv(embedding_X) # [batch_size, output_channel, 1, 1]
-      #flatten = conved.view(batch_size, -1) # [batch_size, output_channel*1*1]
+      #embedding_X1 = self.W(X) ## [batch_size, sequence_length, embedding_size]
+      #embedding_X = embedding_X.unsqueeze(1) ## add channel(=1) [batch, channel(=1), sequence_length, embedding_size]
+      #conved = self.conv(embedding_X) ## [batch_size, output_channel, 1, 1]
+      #flatten = conved.view(batch_size, -1) ## [batch_size, output_channel*1*1]
       #output = self.fc(flatten)
       #return output
         batch = x.shape[0]
-        # Convolution
+        ## Convolution
         x = self.W(x)
         x = x.unsqueeze(1)
         x11 = F.relu(self.conv2(x))
@@ -1067,18 +1106,18 @@ class TextCNN(nn.Module):
         x31 = F.relu(self.conv4(x))
         x32 = F.relu(self.conv4(x))
         
-        # Pooling
+        ## Pooling
         x11 = self.Max2_pool(x11)
         x12 = self.Max2_pool(x12)
         x21 = self.Max3_pool(x21)
         x22 = self.Max3_pool(x22)
         x31 = self.Max4_pool(x31)
         x32 = self.Max4_pool(x32)
-        # capture and concatenate the features
+        ## capture and concatenate the features
         x = torch.cat((x11, x12, x21, x22, x31, x32), -1)
         x = x.view(batch, 1, -1)
 
-        # project the features to the labels
+        ## project the features to the labels
         x = self.linear1(x)
         x = x.view(-1, 2)
         return x
@@ -1087,22 +1126,22 @@ model = TextCNN().to(device)
 criterion = nn.CrossEntropyLoss().to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-# Training
+## Training
 for epoch in range(2):
   for i,(batch_x, batch_y) in enumerate(loader):
     batch_x, batch_y = batch_x.to(device), batch_y.to(device)
     pred = model(batch_x)
     loss = criterion(pred, batch_y)
     if (i + 1) % 100 == 0:
-    #    print('Epoch:', '%04d' % (epoch + 1), 'loss =', '{:.6f}'.format(loss))
+    ##    print('Epoch:', '%04d' % (epoch + 1), 'loss =', '{:.6f}'.format(loss))
         print('Epoch:', '%03d' % (epoch + 1), "data_batch:",i, 'loss =', '{:.6f}'.format(loss))
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
     
-# test eval
-## Test
-## Predict
+## test eval
+### Test
+### Predict
 model = model.eval()
 predict = model(input_batch_test).data.max(1, keepdim=True)[1]
 print("this is the precision:")
@@ -1115,7 +1154,7 @@ print(classification_report(test_labels,predict))
 [2-1.TextCNN](https://github.com/jasoncao11/nlp-notebook/blob/master/2-1.TextCNN/model.py)
 
 
-### DPCNN——TextCNN改进
+#### DPCNN——TextCNN改进
 
 - [论文](https://ai.tencent.com/ailab/media/publications/ACL3-Brady.pdf)，[代码](https://github.com/649453932/Chinese-Text-Classification-Pytorch)
 - TextCNN有**太浅和长距离依赖**的问题，那直接多堆几层CNN是否可以呢？事情没想象的那么简单。
@@ -1125,7 +1164,7 @@ print(classification_report(test_labels,predict))
   - 残差链接，参考ResNet，减缓梯度弥散问题
 - 凭借以上一些精妙的改进，DPCNN相比TextCNN有1-2个百分点的提升。
 
-## RNN文本分类
+### RNN文本分类
 
 - 思想：以双向LSTM 或GRU来获取句子的信息表征， 以最后一时刻的 h 作为句子特征输入到 softmax 中进行预测
 - RNN用于文本分类
@@ -1134,7 +1173,7 @@ print(classification_report(test_labels,predict))
   - 策略3：将所有RNN单元的输出向量的均值pooling或者max-pooling作为文本特征
   - 策略4：层次RNN+Attention, Hierarchical Attention Networks
 
-### TextRNN
+#### TextRNN
 
 ```python
 import sys
@@ -1157,7 +1196,7 @@ test = pd.read_csv(sys.argv[2],sep='|',names=["a","b","c","label"])
 dtype = torch.FloatTensor
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# 3 words sentences (=sequence_length is 3)
+## 3 words sentences (=sequence_length is 3)
 train = shuffle(train)
 word2idx = {}
 sentences = list(train['c'].apply(lambda x:" ".join(x.split("\\"))))
@@ -1165,10 +1204,10 @@ labels = list(train['label'])
 test_sentences = list(test['c'].apply(lambda x:" ".join(x.split("\\"))))
 test_labels = list(test['label'])
 
-# TextRNN Parameter
+## TextRNN Parameter
 embedding_size = 300
-sequence_length = max([len(each.split()) for each in sentences]) # every sentences contains sequence_length(=3) words
-num_classes = 2  # 0 or 1
+sequence_length = max([len(each.split()) for each in sentences]) ## every sentences contains sequence_length(=3) words
+num_classes = 2  ## 0 or 1
 batch_size = 128
 
 word_list = " ".join(sentences).split()
@@ -1192,7 +1231,7 @@ def make_data(sentences, labels):
         #inputs.append([word2idx[n] for n in sen.split()])
     targets = []
     for out in labels:
-        targets.append(out) # To using Torch Softmax Loss function
+        targets.append(out) ## To using Torch Softmax Loss function
     pad_token = 0
     padded_X = np.ones((len(inputs), sequence_length)) * pad_token
     for i, x_len in enumerate([len(each) for each in inputs]):
@@ -1212,7 +1251,7 @@ class TextRNN(nn.Module):
         super(TextRNN, self).__init__()
         self.W = nn.Embedding(vocab_size, embedding_size)
         self.lstm = nn.LSTM(300, 128, 2,bidirectional=True, batch_first=True)
-        # fc
+        ## fc
         self.fc = nn.Linear(128 * 2, 2)
       
     def forward(self, X):
@@ -1220,7 +1259,7 @@ class TextRNN(nn.Module):
       X: [batch_size, sequence_length]
       '''
       batch_size = X.shape[0]
-      out = self.W(X) # [batch_size, sequence_length, embedding_size]
+      out = self.W(X) ## [batch_size, sequence_length, embedding_size]
       out, _ = self.lstm(out)
       out = self.fc(out[:, -1, :]) 
       return out
@@ -1229,7 +1268,7 @@ model = TextRNN().to(device)
 criterion = nn.CrossEntropyLoss().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# Training
+## Training
 for epoch in range(2):
   for i,(batch_x, batch_y) in enumerate(loader):
     batch_x, batch_y = batch_x.to(device), batch_y.to(device)
@@ -1242,9 +1281,9 @@ for epoch in range(2):
     loss.backward()
     optimizer.step()
     
-# test eval
-## Test
-## Predict
+## test eval
+### Test
+### Predict
 model = model.eval()
 predict = model(input_batch_test).data.max(1, keepdim=True)[1]
 print("this is the precision:")
@@ -1254,7 +1293,7 @@ print(recall_score(test_labels,predict))
 print(classification_report(test_labels,predict))
 ```
 
-### Text-RCNN（RNN+CNN）用于文本分类
+#### Text-RCNN（RNN+CNN）用于文本分类
 
 TextRCNN：一种结合RNN和CNN的模型，通过RNN捕获长依赖特性，通过CNN来对捕获文本中的重要部分，防止RNN有偏特点。
 
@@ -1272,7 +1311,7 @@ TextRCNN：一种结合RNN和CNN的模型，通过RNN捕获长依赖特性，通
   - RCNNs使用循环结构捕获广泛的上下文信息
 - 通过加入RNN，比纯CNN提升了1-2个百分点。
 
-### TextBiLSTM+Attention
+#### TextBiLSTM+Attention
 
 - [论文](https://www.aclweb.org/anthology/P16-2034.pdf)，[代码](https://github.com/649453932/Chinese-Text-Classification-Pytorch)
 - 文本分类的框架，就是
@@ -1280,19 +1319,19 @@ TextRCNN：一种结合RNN和CNN的模型，通过RNN捕获长依赖特性，通
   - 在最终池化时，max-pooling通常表现更好，因为文本分类经常是主题上的分类，从句子中一两个主要的词就可以得到结论，其他大多是噪声，对分类没有意义。而到更细粒度的分析时，max-pooling可能又把有用的特征去掉了，这时便可以用attention进行句子表示的融合
 - 加attention的套路用到CNN编码器之后代替pooling也是可以的，从实验结果来看attention的加入可以提高2个点。如果是情感分析这种由句子整体决定分类结果的任务首选RNN。
 
-## 一定要CNN/RNN吗
+### 一定要CNN/RNN吗
 
 - 上述的深度学习方法通过引入CNN或RNN进行特征提取，可以达到比较好的效果，但是也存在一些问题，如参数较多导致训练时间过长，超参数较多模型调整麻烦等。下面两篇论文提出了一些简单的模型用于文本分类，并且在简单的模型上采用了一些优化策略。
 
-### 深层无序组合方法
+#### 深层无序组合方法
 
 - 论文Deep Unordered Composition Rivals Syntactic Methods for Text Classification提出了NBOW(Neural Bag-of-Words)模型和DAN(Deep Averaging Networks)模型。对比了深层无序组合方法(Deep Unordered Composition)和句法方法(Syntactic Methods)应用在文本分类任务中的优缺点，强调深层无序组合方法的有效性、效率以及灵活性。
 
-#### Neural Bag-of-Words Models
+##### Neural Bag-of-Words Models
 
 - 论文首先提出了一个最简单的无序模型Neural Bag-of-Words Models (NBOW model)。该模型直接将文本中所有词向量的平均值作为文本的表示，然后输入到softmax 层
 
-#### Considering Syntax for Composition
+##### Considering Syntax for Composition
 
 - 一些考虑语法的方法：
   - Recursive neural networks (RecNNs)
@@ -1301,15 +1340,15 @@ TextRCNN：一种结合RNN和CNN的模型，通过RNN捕获长依赖特性，通
   - 需要更多的训练时间
   - Using a convolutional network instead of a RecNN
   - 时间复杂度同样比较大，甚至更大（通过实验结果得出的结论，这取决于filter大小、个数等超参数的设置）
-####  Deep Averaging Networks
+#####  Deep Averaging Networks
 
 - Deep Averaging Networks (DAN)是在NBOW model的基础上，通过增加多个隐藏层，增加网络的深度(Deep)。下图为带有两层隐藏层的DAN与RecNN模型的对比。
 
-#### Word Dropout Improves Robustness
+##### Word Dropout Improves Robustness
 
 - 针对DAN模型，论文提出一种word dropout策略：在求平均词向量前，随机使得文本中的某些单词(token)失效。
 
-## HAN 注意力机制 (长文本【篇章级别】分类）
+### HAN 注意力机制 (长文本【篇章级别】分类）
 
 HAN：一种采用了attention机制的用于文本分类的分层注意力模型，attention机制让模型基于不同的单词和句子给予不同的注意力权重。模型主要有一个词序列编码器，一个词级注意力层，一个句子编码器和一个句子层注意力层，词和句上的结构基本类似。字编码阶段GRU将词向量通过隐层形式表征，再拼接前向和后向的隐藏表征，作为注意力层的输入，在注意力层选取一个query向量分别计算不同单词的权重，作为词的attention权重。结果作为句子表征阶段的输入，句子表征重复单词阶段的两个步骤，最后的句子的表征能用来做下游的分类任务。该模型在长文本有相对不错的效果，且因为attention的存在，能对词和句子有着相对不错的解释。
 
@@ -1327,19 +1366,19 @@ HAN：一种采用了attention机制的用于文本分类的分层注意力模�
   - 最后，用Softmax做分类。
 - 方法很符合直觉，不过实验结果来看比起avg、max池化只高了不到1个点（狗头，真要是很大的doc分类，好好清洗下，fasttext其实也能顶的
 
-## transformer
+### transformer
 
-### BERT
+#### BERT
 
 BERT：Pre-training of Deep Bidirectional Transformers for Language Understanding，双向的Transformers的Encoder，是谷歌于2018年10月提出的。主要是一种预训练的模型，通过双向transformer实现的，通过mask的机制，随机遮挡部分的单词进行词向量的预训练，同时在每个位置token表征的时候引入了token向量，segment向量和position向量相结合的方式，能更全面的语义进行表征，同时通过mask的机制使得单次的训练中，词向量的学习过程能同时引入前后文的信息，而不是通过双向RNN那种生硬拼接的方式，从结果上来说，该模型的效果在很多任务上表现显著。
 
-#### BERT分类
+##### BERT分类
 
 【2022-10-26】[How to Fine-Tune BERT for Text Classification?](https://arxiv.org/abs/1905.05583), [code](https://github.com/xuyige/BERT4doc-Classification)
 - 单任务：[run_classifier.py](https://github.com/xuyige/BERT4doc-Classification/blob/master/codes/fine-tuning/run_classifier.py)
 - 多任务：[run_classifier_multitask.py](https://github.com/xuyige/BERT4doc-Classification/blob/master/codes/fine-tuning/run_classifier_multitask.py)
 
-#### BERT加速
+##### BERT加速
 
 【2022-10-26】[BERT文本分类最佳解决方案](https://zhuanlan.zhihu.com/p/464711536)
 - BERT文本分类指的是在\[CLS\]后面接一个 FFN + softmax，然后用标记数据微调BERT参数。
@@ -1365,20 +1404,20 @@ BERT分类模型推理的代码库是[bert-classification-inference-trt](https:/
 对比
 - fasttex 训练好的模型在测试集上的准确率是92.9%，比TensorRT预测结果小2个百分点，比BERT微调训练小3个百分点
 
-### XLNet
+#### XLNet
 
 XLNet：是一种通用化自动回归 BERT 式预训练语言模型，可通过最大限度地提高针对因式分解顺序的所有排列的预期可能性，实现学习双向上下文，乱排序可以不用显现mask来学习到双向上下文的信息，防止类似mask操作导致的finetune数据和预训练数据分布不一致，和mask的token之间存在相互依赖关系。为了防止训练过程中标签泄露的问题，引入了Two-Stream Self-Attention机制，XLNet在Pre-train時分為兩個stream，Content stream負責學習上下文，而Query stream這個角色就是用來代替< Mask>token，其負責把Content stream產生的representation拿來做預測，且引入了Transformer-XL，该方法能克服Transformer中长依赖的学习问题。
 
-## GNN 图神经网络
+### GNN 图神经网络
 
-### TextGCN
+#### TextGCN
 
 TextGCN：一种文本分类的图神经网络方法。第一次将整个语料库建模为异构图，并研究用图形神经网络联合学习词和文档嵌入。
 
 
 通过图表征的方式进行建模，将文档和单词通过异构图的形式进行构建，边的权重是单词在文档中的TFIDF值，最后将文档表征作为下游的分类应用。
 
-## 最新研究
+### 最新研究
 
 - 根据github repo: state-of-the-art-result-for-machine-learning-problems ，下面两篇论文提出的模型可以在文本分类取得最优的结果(让AI当法官比赛第一名使用了论文Learning Structured Text Representations中的模型)：
   - Learning Structured Text Representations
@@ -1389,10 +1428,10 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
   - Capsule Network被证明在多标签迁移的任务上性能远超CNN和LSTM，但这方面的研究在18年以后就很少了。
   - TextGCN 则可以学到更多的global信息，用在半监督场景中，但碰到较长的需要序列信息的文本表现就会差些
 
-## 层次分类 HTC
+### 层次分类 HTC
 
 
-### 什么是层次分类
+#### 什么是层次分类
 
 【2023-11-1】
 - [层次多标签文本分类介绍](https://zhuanlan.zhihu.com/p/587526803?utm_psn=1702820326717726720)
@@ -1419,7 +1458,7 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
   - 如何学习和利用这些不同层级的关系、并对分类结果从层级关系遵循性的角度进行评价成为了层次多标签分类问题的难点和挑战。
 
 
-### 多标签分类
+#### 多标签分类
 
 多标签分类见站内专题: [albert-多标签实践](bert#albert-多标签实践)
 
@@ -1432,7 +1471,7 @@ TextGCN：一种文本分类的图神经网络方法。第一次将整个语料�
 - ![](https://pic3.zhimg.com/80/v2-d0e019b7596cf3c9dc237861c2c3f5ae_1440w.webp)
 
 
-#### 多标签分类评估指标
+##### 多标签分类评估指标
 
 【2024-5-17】[sklearn中多标签分类场景下的常见的模型评估指标](https://zhuanlan.zhihu.com/p/420436876)
 
@@ -1468,14 +1507,14 @@ y_pred = np.array([[0, 1, 1, 0],
                    [0, 1, 1, 0],
                    [0, 1, 0, 1]])
 
-# 绝对匹配率
+## 绝对匹配率
 from sklearn.metrics import accuracy_score
-print(accuracy_score(y_true,y_pred)) # 0.33333333
-print(accuracy_score(np.array([[0, 1], [1, 1]]), np.ones((2, 2)))) # 0.5
+print(accuracy_score(y_true,y_pred)) ## 0.33333333
+print(accuracy_score(np.array([[0, 1], [1, 1]]), np.ones((2, 2)))) ## 0.5
 
-# 0-1 损失
+## 0-1 损失
 from sklearn.metrics import zero_one_loss
-print(zero_one_loss(y_true,y_pred)) # 0.66666
+print(zero_one_loss(y_true,y_pred)) ## 0.66666
 ```
 
 Hamming Score
@@ -1508,7 +1547,7 @@ y_pred = np.array([[0, 1, 1, 0],
                    [0, 1, 1, 0],
                    [0, 1, 0, 1]])
 
-print('Hamming score: {0}'.format(hamming_score(y_true, y_pred))) # 0.5277
+print('Hamming score: {0}'.format(hamming_score(y_true, y_pred))) ## 0.5277
 ```
 
 海明距离（Hamming Loss）
@@ -1520,16 +1559,16 @@ Hamming Loss 衡量所有样本中，预测错的标签数在整个标签标签�
 def Hamming_Loss(y_true, y_pred):
     count = 0
     for i in range(y_true.shape[0]):
-        # 单个样本的标签数
+        ## 单个样本的标签数
         p = np.size(y_true[i] == y_pred[i])
-        # np.count_nonzero用于统计数组中非零元素的个数
-        # 单个样本中预测正确的样本数
+        ## np.count_nonzero用于统计数组中非零元素的个数
+        ## 单个样本中预测正确的样本数
         q = np.count_nonzero(y_true[i] == y_pred[i])
         print(f"{p}-->{q}")
         count += p - q
-    print(f"样本数：{y_true.shape[0]}, 标签数：{y_true.shape[1]}") # 样本数：3, 标签数：4
+    print(f"样本数：{y_true.shape[0]}, 标签数：{y_true.shape[1]}") ## 样本数：3, 标签数：4
     return count / (y_true.shape[0] * y_true.shape[1])
-print(Hamming_Loss(y_true, y_pred)) # 0.4166
+print(Hamming_Loss(y_true, y_pred)) ## 0.4166
 ```
 
 sklearn中的实现方法如下：
@@ -1537,13 +1576,13 @@ sklearn中的实现方法如下：
 ```py
 from sklearn.metrics import hamming_loss
 
-print(hamming_loss(y_true, y_pred))# 0.4166
-print(hamming_loss(np.array([[0, 1], [1, 1]]), np.zeros((2, 2)))) # 0.75
+print(hamming_loss(y_true, y_pred))## 0.4166
+print(hamming_loss(np.array([[0, 1], [1, 1]]), np.zeros((2, 2)))) ## 0.75
 ```
 
 
 
-#### tensorflow 实现
+##### tensorflow 实现
 
 
 常规文本分类中的交叉熵为 `tf.nn.softmax_cross_entropy_with_logits`；
@@ -1558,7 +1597,7 @@ print(hamming_loss(np.array([[0, 1], [1, 1]]), np.zeros((2, 2)))) # 0.75
 - [classifier_multi_label](https://github.com/hellonlp/classifier-multi-label/tree/master/classifier_multi_label)
 
 
-#### pytorch 实现
+##### pytorch 实现
 
 【2024-5-9】对应的pytorch实现 [MultiLabelSoftMarginLoss](https://pytorch.org/docs/stable/generated/torch.nn.MultiLabelSoftMarginLoss.html)
 - `BCEWithLogitsLoss` = `MultiLabelSoftMarginLoss`
@@ -1573,9 +1612,9 @@ MultiLabelSoftMargin 计算方法跟 BCEWithLogitsLoss 一样
 x = Variable(torch.randn(10, 3))
 y = Variable(torch.FloatTensor(10, 3).random_(2))
 
-# double the loss for class 1
+## double the loss for class 1
 class_weight = torch.FloatTensor([1.0, 2.0, 1.0])
-# double the loss for last sample
+## double the loss for last sample
 element_weight = torch.FloatTensor([1.0]*9 + [2.0]).view(-1, 1)
 element_weight = element_weight.repeat(1, 3)
 
@@ -1646,7 +1685,7 @@ BCEWithLogitsLoss（自带sigmoid)
 
     target_bce = target
 
-    # inputs = torch.sigmoid(inputs)
+    ## inputs = torch.sigmoid(inputs)
 
     weights = torch.tensor([1, 1], dtype=torch.float)
 
@@ -1654,7 +1693,7 @@ BCEWithLogitsLoss（自带sigmoid)
     loss_f_sum = nn.BCEWithLogitsLoss(weight=weights, reduction='sum')
     loss_f_mean = nn.BCEWithLogitsLoss(weight=weights, reduction='mean')
 
-    # forward
+    ## forward
     loss_none_w = loss_f_none_w(inputs, target_bce)
     loss_sum = loss_f_sum(inputs, target_bce)
     loss_mean = loss_f_mean(inputs, target_bce)
@@ -1686,15 +1725,15 @@ print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0]))
 ```
 
 
-### 层次多标签任务
+#### 层次多标签任务
 
-#### 任务简介：
+##### 任务简介：
 
 与多标签分类类似，给定一个文档样本可以有一个或者多个类标签与之对应，不同的是这些标签是以**层次结构**存储的
 - 层次结构中低的标签受到层级较高的标签的约束
 - 层次结构在带来类标签之间层次关系的同时，也带来了计算复杂等更具有挑战性的特点。
 
-#### 处理流程：
+##### 处理流程：
 
 一般来说，**层次多标签任务**涉及到**数据集获取、文本预处理、文本表示、特征降维、层次结构标签表示、分类器设计、结果输出**等工作，其中文本预处理、文本表示、特征降维、层次结构标签表示、分类器设计比较重要，流程如下图所示。
 - ![](https://pic2.zhimg.com/v2-b57d3f43de854f5c81f2d0f0d985e3b9_b.jpg)
@@ -1725,7 +1764,7 @@ print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0]))
 由于层次结构标签体系下，标签之间具有结构关系语义，因此，其分类器的设计也与一般的分类器不同，本次分享也将重点对分类器的设计进行讨论。
 
 
-#### 评估指标
+##### 评估指标
 
 层次多标签评估指标
 
@@ -1741,7 +1780,7 @@ print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0]))
   - 一般将β取为１，表示将hP和hR赋予同等重要的权重
 
 
-#### 难点
+##### 难点
 
 挑战：
 - （1）合适的文本表示方式
@@ -1754,12 +1793,12 @@ print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0]))
   - 分类器不仅要关注于文本的层次关系，而且要关注不同层次不同标签和文本的关系，分类器如何利用文本的层次关系以及文本和标签之间的关系，利用的程度有多深，这些都是需要研究的难点，当然这也取决于具体的任务。
 
 
-### 层次多标签解法
+#### 层次多标签解法
 
 根据是否利用层次类标签信息以及如何利用层次信息，可以将层次多标签分类算法主要分**为非层次方法**和**层次方法**，其中**非层次方法又可以叫做平面方法**；而**层次方法**主要可以分为３种，分别是**局部方法、全局方法**以及它们的组合，即**混合方法**，如下图所示：
 - ![](https://pic4.zhimg.com/v2-0cd77c1d5229d13cb055a3221ed84e4f_b.jpg)
 
-#### 非层次方法
+##### 非层次方法
 
 **（1）平面方法**
 
@@ -1767,7 +1806,7 @@ print(-(target[0]*math.log(lossinput[0])+(1-target[0])*math.log(1-lossinput[0]))
 
 在平面方法中，**最重要的不是分类器设计，而是文本表示**，在[文本分类（一）](https://zhuanlan.zhihu.com/p/581334056)和[文本分类（二）](https://zhuanlan.zhihu.com/p/582769443)中从技术演化过程详细分析了文本表示方法，但是需要注意的是将层次多标签问题转换为平面多标签任务是最差的方法，因为它**忽略了层次分类中各类别之间的依赖关系**，这种依赖关系不仅存在于不同层级之间，也存在于同一层级的不同类之间，平面方法没有考虑这些特点，那么我们来看看层次方法是如何解决这些问题的。
 
-#### 层次方法
+##### 层次方法
 
 分为
 - 局部、全局和混合
@@ -1861,7 +1900,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 ![](https://pic2.zhimg.com/v2-c562b5ee867d0ce5e4b36bef4002213d_b.jpg)
 
 
-### Seq2Tree
+#### Seq2Tree
 
 【2022-9-19】[层次文本分类 Seq2Tree：用seq2seq方式解决HTC问题](https://zhuanlan.zhihu.com/p/558718402)
 - 论文：[Constrained Sequence-to-Tree Generation for Hierarchical Text Classification](https://arxiv.org/abs/2204.00811)
@@ -1873,7 +1912,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 - 「Seq2Tree with Constrained Decoding」: 就是在decoding的时候，利用层次标签体系和当前步预测出来的label「对下一步的label的值域进行限制」，避免下一个预测出来的label不在可能的路径上。
 
 
-### HFT-CNN
+#### HFT-CNN
 
 论文
 - HFT-CNN: Learning Hierarchical Category Structure for Multi-label Short Text Categorization
@@ -1884,7 +1923,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 - 二级标签上训练textcnn模型，记为model2，其中model2的embedding laber和convolutional layer用了model1的这些参数，在上面做finetune，其他参数随机初始化进行训练。如果有更多的下级标签，就继续往下这样做。
 - ![](https://pic3.zhimg.com/80/v2-78b1b9001d1d8e59966f6702d8c84002_1440w.webp)
 
-### HGCLR -- ACL 2022
+#### HGCLR -- ACL 2022
 
 [HGCLR：将层次标签结构注入到文本编码器](https://zhuanlan.zhihu.com/p/553756007?utm_psn=1702819181299535872)
 - 论文：[Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification](https://arxiv.org/abs/2203.03825)
@@ -1897,13 +1936,13 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 - 「把层次标签结构融入到 Text Encoder中，最终学到的就是一个 Text Encoder」，直接用 Text Encoder的结果进行多标签文本分类预测。
 - ![](https://pic1.zhimg.com/80/v2-9a435ea82344568dba072da32c28d59c_1440w.webp)
 
-# 经验总结
+## 经验总结
 
-## 一、问题拆解和数据
+### 一、问题拆解和数据
 
 参考：[工业界文本分类避坑指南](https://zhuanlan.zhihu.com/p/201239352)
 
-### Q1 构建文本分类标签体系有哪些坑？
+#### Q1 构建文本分类标签体系有哪些坑？
  
 在我们在做真实的业务问题的时候，不像给定一个数据集，标签就是定死的。如何确定一个合理的分类标签体现其实是十分关键的。这个阶段一定要做数据充分的探索性分析。图省事吃大亏。
  
@@ -1913,13 +1952,13 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 *   类间可分，类内聚集。 不要搞一些分不开的类，最后发现学出来的两个结果，置信度都不高，对我们没有什么意义的。
 *   标签的关系明确。 是多分类问题呢，还是多类别问题呢，还是层级分类呢？不同的问题有对应不同的方法，尤其是层级分类，坑比较多，这里先不展开了。
  
-### Q2 初期监督数据不够？
+#### Q2 初期监督数据不够？
  
 标注数据总需要一定的时间，这时候除了用规则，词典之类的方法外，或者fewshot learnig的一些思路解决问题，大体的思路是两种。
 *   Fewshot Learning 把分类问题转化为匹配或者相似度学习的问题，减小分类空间学习的难度，问一个小孩这个水果是啥比，总要比，选择一个最像的水果要简单。
 *   迁移学习 Bert在小数据上表现其实挺出色的，除了慢一点，似乎没有其他毛病了。 上两个阶段大概只需要几千条数据就可以跑起来了。
  
-### Q3 如何高效地积累标注数据？
+#### Q3 如何高效地积累标注数据？
  
 有了前面起步的baseline，我们至少可以扔到线上把模型跑着了，然后人工标注数据怎么积累又是一个问题，不同的样本对于我们当前的价值是不一样的，类别空间会扩充以及长尾标注样本数量不足是两个最常见的问题。大体的原则是通过不确定性度量和多样性度量两个角度，来选取对当前模型增量送训样本最优价值的样本。
 *   不确定的样本 典型的特点是模型输出的置信度不高，没有把握判断是哪一个类别，这种样本需要人工给出真实的类别，指导学习。 baseline可以用熵来度量。  
@@ -1927,7 +1966,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
  
 [https://paperswithcode.com/paper/adversarial-validation-approach-to-conceptpaperswithcode.com](https://link.zhihu.com/?target=https%3A//paperswithcode.com/paper/adversarial-validation-approach-to-concept)
  
-### Q4 如何发现新的类别，扩充类别空间？
+#### Q4 如何发现新的类别，扩充类别空间？
  
 有一些方法还挺不错的，推荐ACL2019的那个论文 Deep Unknown Intent Detection with Margin Loss
  
@@ -1939,9 +1978,9 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
  
 本质上都是找出，与已知类别不相似（分布差异较大）的样本，其实用前面的adversrial validation也可以解决，实测margin softmax效果更好一点。
  
-## 二、算法抽象和选型
+### 二、算法抽象和选型
 
-### Q5 文本分类任务有哪些难点？
+#### Q5 文本分类任务有哪些难点？
  
 ![](https://pic2.zhimg.com/80/v2-23cd88a1d113b4e99feee352a61bd6ba_720w.jpg)
  
@@ -1952,7 +1991,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 *   上下文：美食论坛苹果小米黑莓 VS手机论坛苹果小米黑莓
     
  
-### Q6 如何定义一个文本分类问题的难度？
+#### Q6 如何定义一个文本分类问题的难度？
  
 典型难度排序：主题分类-情感分类-意图识别-细粒度情感识别-复杂语义识别（如阴阳怪气）
 *   数据量 典型的例子：one/zero shot VS 海量
@@ -1960,7 +1999,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 *   类间距离 典型的例子： 细粒度的情感分类 VS 正负情感倾向
     
  
-### Q7 文本分类的算法选型推荐？
+#### Q7 文本分类的算法选型推荐？
  
 算法选型的出发点就是权衡各种约束，考虑模型的天花板能力，选择合适的模型。一般对应任务的难度，权衡计算时效，选择合适的模型。除了忽略一些比千分点的场景，比如竞赛和论文，一般这块在确定算法选型后，就没啥油水了，建议少花精力。有经验的算法工程师，一定能人脑搜索出一个当前选型下的最优结构。一个特别经典的建议大家试一下，concat_emb-> spartial dropout(0.2)->LSTM ->LSTM->concat(maxpool,meanpool)->FC。
  
@@ -1970,7 +2009,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 *   LSTM（情感分类/意图识别） 稍微复杂的任务
 *   Bert（细粒度情感/阴阳怪气/小样本识别）难任务
  
-### Q8 如何确定验证集和评价方法？
+#### Q8 如何确定验证集和评价方法？
  
 这是个老大难的问题，特别是实际应用中，由于文本分类符合一个长尾分布，常见类别的识别能力其实一般比较ok，长尾识别的稀烂，如果单纯看准确度的话，是个还不错的模型，但你不能说他好吧。对应着指标就是acc很高，macro-f1很低。
  
@@ -1978,15 +2017,15 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 *   合理采样的验证集 真实的标签分布可能过于不均衡，建议掐头补尾，这样的验证集评价往往更有区分度。  
 *   模型语义压测 各种花里胡哨的变体输入，未纠错的文本都来一套，实在不行，上adversrial attack 攻击一下。
     
-## 三、细节策略和实现
+### 三、细节策略和实现
  
-### Q9 如何处理溢出词表词（OOV）？
+#### Q9 如何处理溢出词表词（OOV）？
  
 这个在前Bert时代是一个挺关键的问题，以前回答过，还可以参考。从数据中来到数据中去， 要么想办法还原次干，找到可以替换的词向量。要么从sub-word的层次学习出语义，参考Bert BPE的方法。很早很早念书的时候，还没有Bert做过一些文本分类的比赛，在一些任务上搞定OOV提分还是很大的。给之前回答过的一个前Bert时代方法的链接。
  
 [Word Embedding 如何处理未登录词？www.zhihu.com![图标](https://zhstatic.zhihu.com/assets/zhihu/editor/zhihu-card-default.svg)](https://www.zhihu.com/question/308543084/answer/604729983)
  
-### Q10 文本分类模型演进的明线和暗线？
+#### Q10 文本分类模型演进的明线和暗线？
  
 针对上文提出来的文本分类的难点，其演进路径大概也是从统计机器学习，词向量+深度学习，预训练语言模型的发展。
 *   明线：统计-机器学习-深度学习-更深的深度学习
@@ -2005,19 +2044,19 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
  
 [ppt | ProcessOn免费在线作图,在线流程图,在线思维导图www.processon.com![图标](https://picb.zhimg.com/v2-5fa7b25809091f3e2b20a39e51c46a45_ipico.jpg)](https://link.zhihu.com/?target=https%3A//www.processon.com/view/link/566249a3e4b026a7ca234a71%23map)
  
-### Q11 策略和算法怎么结合？
+#### Q11 策略和算法怎么结合？
  
 算法工程师不能老鄙视规则，
 *   串行式 典型的代表是，规则捕捉-分类-匹配兜底，大概这样的流程会比较合理，规则部分负责解决高频，和bad/hard case,分类负责解决长尾中的头部， 匹配负责解决长尾。这样的优点是，效率很高，往往大部分case很快就过完了。  
 *   并行式 规则，分类，匹配都过，然后进行归一化后的置信度进行PK，有点类似于广告竞价，这样的好处是能充分融合多重策略，结果更可靠。  
  
-### Q12 有哪些可以刷分的奇技淫巧？
+#### Q12 有哪些可以刷分的奇技淫巧？
  
 可以尝试的点还蛮多的，搜索空间特别大，感兴趣的可以试试，不保证都有效。这部分的方法大多需要在算法选型敲定后，在模型结构上下功夫，需要遍历一些搜索空间。不建议花太大的经理，具体可以参照之前的回答，而且有了bert之后，他们越来越不重要了，也就没有补充Bert上面的一些操作了：
  
 [在文本分类任务中，有哪些论文中很少提及却对性能有重要影响的tricks？www.zhihu.com![图标](https://zhstatic.zhihu.com/assets/zhihu/editor/zhihu-card-default.svg)](https://www.zhihu.com/question/265357659/answer/582711744)
  
-### Q13 模型inference资源限制下，如何挑战算法选型的天花板
+#### Q13 模型inference资源限制下，如何挑战算法选型的天花板
  
 玩比赛的经常遇到过这个问题，典型的场景Kaggle上要求提交模型，更换测试数据，只给两个小时的推断时间。
  
@@ -2030,9 +2069,9 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 ![](https://picb.zhimg.com/80/v2-d23b71afed7cf7fd2a947cd1fe5e237d_720w.jpg)
 
 
-## 比赛经验
+### 比赛经验
 
-###  Google QUEST Q&A Labeling
+####  Google QUEST Q&A Labeling
 
 [Google QUEST Q&A Labeling](https://www.kaggle.com/c/google-quest-challenge)
 
@@ -2040,7 +2079,7 @@ HMCN模型在标签层级结构的每一层都会输出局部预测以及最后�
 - 最初是跟着教程跑入门赛 [Bag of Words Meets Bags of Popcorn](https://www.kaggle.com/c/word2vec-nlp-tutorial) 入坑 kaggle NLP 类比赛, 被一步步的**文本预处理**搞得心累
 - 后来 BERT 横空出世，文本预处理已不再重要，NLP 类比赛变得像传统挖掘类比赛一样简单，现成的开源框架加上 kaggle 平台上免费的 GPU 资源，似乎已经没什么障碍了
 
-#### BERT家族
+##### BERT家族
 
 BERT 类模型的使用方法是**预训练** + **finetune**
 - ![](https://pic1.zhimg.com/80/v2-4c71018820a9b70236f2398c3548ec68_1440w.jpg)
@@ -2070,13 +2109,13 @@ BERT家族
 
 这些模型的性能在不同的数据集上有差异，需要试了才知道哪个表现更好，但总体而言 `XLNet` 和 `Roberta` 会比 `Bert` 效果略好，large 会比 base 略好，更多情况下，它们会被一起使用，最后做 ensemble。
 
-#### Encoder
+##### Encoder
 
 Encoder 都是基于 transformer 结构的预训练语言模型，包括了 Bert 及其后继者 Bert-WWM()、Roberta、XLNet、Albert 等，统称为 **BERT 家族**。
 
 它们不仅在结构上很相似，而且在使用方法上更是高度一致，可以在 [huggingface/transformers](https://github.com/huggingface/transformers) 全家桶中直接调用
 
-#### 硬负采样 Hard negative sampling
+##### 硬负采样 Hard negative sampling
 
 在 NLP 问答任务中，需要从一篇文章中寻找答案，一种常用的建模方法是将文章分割成多个 segment，分别与问题构成句子对，然后做**二分类**。这时候只有一个正样本，其他都是负样本，如果不对负样本做**下采样**的话，数据集会非常庞大，并且模型看到的多数都是负例。下采样可以减小数据集规模，从而节省模型训练的时间和资源消耗，这样才有可能尝试更多的模型和策略。
 
@@ -2086,7 +2125,7 @@ Encoder 都是基于 transformer 结构的预训练语言模型，包括了 Bert
 - 与正样本比较接近的可能更有迷惑性，因此可以通过定义**句子间距离**，保留那些与正样本“距离”比较近的负样本。
 - 再比如可以先用一个简单、运算量小的模型对训练集做预测，把那些容易预测错的负样本作为“难”的保留下来。
 
-#### 伪标签 Pseudo-labeling
+##### 伪标签 Pseudo-labeling
 
 **伪标注**是一种**半监督**方法，在众多比赛中被验证有效而广泛使用，步骤如下：
 1. 训练集上训练得到 model1；
@@ -2095,7 +2134,7 @@ Encoder 都是基于 transformer 结构的预训练语言模型，包括了 Bert
 
 伪标签数据可以作为训练数据而被加入到训练集中，是因为神经网络模型有一定的容错能力。需要注意的是伪标签数据质量可能会很差，在使用过程中要多加小心，比如不要用在 validation set 中。
 
-#### Ensemble
+##### Ensemble
 
 打比赛的小伙伴对 Ensemble 应该不会陌生，在经验分享中看到有人只靠从 Public Kernal 中筛选一些得分高的模型，稍做修改后融合在一起就能拿到铜牌，足见 Ensemble 的威力。
 
@@ -2108,16 +2147,16 @@ Encoder 都是基于 transformer 结构的预训练语言模型，包括了 Bert
 - Checkpoint / Seed / Fold average
   - 因为深度模型的随机性，同样的模型结构，使用不同的随机种子、KFold 分割、训练过程中的检查点，都可以做 average 提升模型的泛化能力。
 
-## 情感分析
+### 情感分析
 
-### 情感分析方法
+#### 情感分析方法
 
 - 目前舆情分析还是处于初级阶段。目前舆情分析还停留在以表层计量为主，配以浅层句子级情感分析和主题挖掘技术的分析。对于深层次事件演化以及对象级情感分析依旧还处于初级阶段。
   - 【2021-3-14】情感分析五要素：（entity，aspect，opinion，holder，time）, entity + aspect -> target
     - 示例：我觉得华为手机拍照非常牛逼。 → （华为手机，拍照，正面，我，\）
     - ![](https://p1.pstatp.com/large/tos-cn-i-0022/8bd0117028624224811facc091b2ded2)
 
-### 情感分析进阶
+#### 情感分析进阶
 
 - 【2022-12-4】[脉脉](https://maimai.cn/web/gossip_detail/31331554?src=app&webid=&gid=31331554&egid=acd7b22790eb499cb467b3e9c6868f59&share_channel=2&share_euid=xIzg0vvUrlZY90OoDU4o75jIOi7hvHqNKywbUXdztGQWH8JKeRPJVyMW3Qynf0Hm&operation_id=98f6eaa0-e5d3-4755-878c-03b7ff3229c0&content_type=gossip) NLP中的情感分析是不是有点low啊？就是个sentence分类问题，再具体就是token classification，分为3类，positive，neu，negative，这情感分析是不是简单了点？
 - 情感分析主要还是针对业务场景看case设计策略+标注。这玩意儿模型真没啥好做的，随便一个文本分类模型都大差不差，剩下的讽刺、多重否定的难case，靠模型讲故事还行，真上线提升很有限
@@ -2125,36 +2164,36 @@ Encoder 都是基于 transformer 结构的预训练语言模型，包括了 Bert
 - （2）再者，情感分类只是最开始的一部分工作，紧接着后面还有情感归因，接着情绪安抚，结合安抚的对话生成等等。
 - 深入点：情感词抽取、三元组抽取、情感原因抽取
 
-### 情感分析实践
+#### 情感分析实践
 
 - 【2020-11-23】大连理工工具包cncenti，[github地址](https://github.com/thunderhit/cnsenti)
 
 ```python
-# [github地址](https://github.com/thunderhit/cnsenti)
-# !pip install cnsenti -i https://pypi.tuna.tsinghua.edu.cn/simple/
+## [github地址](https://github.com/thunderhit/cnsenti)
+## !pip install cnsenti -i https://pypi.tuna.tsinghua.edu.cn/simple/
 from cnsenti import Sentiment
 
 senti = Sentiment()
-# 使用字典
-# senti = Sentiment(pos='正面词自定义.txt',  
-#                   neg='负面词自定义.txt', 
-#                   merge=True,  
-#                   encoding='utf-8')
+## 使用字典
+## senti = Sentiment(pos='正面词自定义.txt',  
+##                   neg='负面词自定义.txt', 
+##                   merge=True,  
+##                   encoding='utf-8')
 test_text= '我好开心啊，非常非常非常高兴！今天我得了一百分，我很兴奋开心，愉快，开心'
 print('句子：', test_text)
-# 情感词统计,默认使用Hownet词典
+## 情感词统计,默认使用Hownet词典
 result = senti.sentiment_count(test_text)
 print('情感词统计：', result)
-# 精准的计算文本的情感信息。相比于sentiment_count只统计文本正负情感词个数，sentiment_calculate还考虑了
-#   情感词前是否有强度副词的修饰作用
-#   情感词前是否有否定词的情感语义反转作用
+## 精准的计算文本的情感信息。相比于sentiment_count只统计文本正负情感词个数，sentiment_calculate还考虑了
+##   情感词前是否有强度副词的修饰作用
+##   情感词前是否有否定词的情感语义反转作用
 result2 = senti.sentiment_calculate(test_text)
 print('情感词统计-精准：', result2)
 from cnsenti import Emotion
 
 emotion = Emotion()
 test_text = '我好开心啊，非常非常非常高兴！今天我得了一百分，我很兴奋开心，愉快，开心'
-# 情绪统计
+## 情绪统计
 result3 = emotion.emotion_count(test_text)
 print('情感计算：', result3)
 
@@ -2167,7 +2206,7 @@ import requests
 import json
 
 url = f'http://test.speech.analysis.ke.com/inspections/capability'
-## headers中添加上content-type这个参数，指定为json格式
+### headers中添加上content-type这个参数，指定为json格式
 headers = {'Content-Type': 'application/json'}
 text = "测！！"
 data = {"biz_id":"utopia","app_id":"utopia","create_time":"2021-07-29 15:51:06",
@@ -2182,17 +2221,17 @@ data = {"biz_id":"utopia","app_id":"utopia","create_time":"2021-07-29 15:51:06",
         ],
         "capability_id":"new_zhuangxiu_emotion_capability",
         "audio_key":"","extend":{"context":[]}}
-## post的时候，将data字典形式的参数用json包转换成json格式。 
+### post的时候，将data字典形式的参数用json包转换成json格式。 
 response = requests.post(url=url,data=json.dumps(data),headers=headers)
 print(data)
-# 接口说明：http://weapons.ke.com/project/6424/interface/api/632026
-# 表扬＞交流＞中性＞抱怨＞不满＞愤怒
-# pos_appr 应该是 positive_appraisal   
-# pos_comm 应该是 positive_communication  
-# neu_neut 应该是neutral_neutral    
-# neg_comp 应该是 negative_complaint    
-# neg_dis 应该是negative_disappointed      
-# neg_angr 应该是negative_angry
+## 接口说明：http://weapons.ke.com/project/6424/interface/api/632026
+## 表扬＞交流＞中性＞抱怨＞不满＞愤怒
+## pos_appr 应该是 positive_appraisal   
+## pos_comm 应该是 positive_communication  
+## neu_neut 应该是neutral_neutral    
+## neg_comp 应该是 negative_complaint    
+## neg_dis 应该是negative_disappointed      
+## neg_angr 应该是negative_angry
 type_info = {"pos_appr":"（正向）表扬型",
  "pos_comm":"（正向）交流型",
  "neu_neut":"中性型",
@@ -2210,6 +2249,6 @@ print('\n'.join(['%s\t%s\t%s\t%s'%(i['result'][0]['text'],i['result'][0]['type']
 
 
 
-# 结束
+## 结束
 
 
