@@ -554,6 +554,35 @@ Memory Toolkit：复刻还得加点记忆buff 
 - Ubuntu Toolkit: [Issue](https://github.com/camel-ai/camel/issues/1724)
 - Memory Toolkit [Issue](https://github.com/camel-ai/camel/issues/1725) 
 
+
+### Genspark
+
+
+2025年4月2日，Genspark 推出通用 Super Agent，官方宣称超越Manus
+- [体验地址](https://www.genspark.ai/) —— 国内无法访问
+- 无法验证码，有一定免费积分
+
+背景：
+- Genspark 是前百度小度的 CEO 景鲲和 CTO 朱凯华创业推出的 Agent 产品
+
+差异化功能：(与manus相比)
+1. 更丰富的 Tool Use 能力，比如让 AI 打电话和视频生成
+2. Agent 规划和执行的速度更快，因为没用Browser Use、Computer Use
+
+评测：
+- Genspark 在GAIA Benchmark 上超越 Manus。
+
+然而，Manus 合伙人、产品经理 hidecloud表示质疑🧐
+
+
+信息源：
+- [超越 Manus？华人创业产品 Genspark 推出通用 Agent（附实测效果）](https://mp.weixin.qq.com/s/S2NCd3ySZyaRtjwC6BSG6Q)
+
+
+写留言
+
+
+
 ## 设备操控
 
 当前的多模态大型语言模型 （MLLM） 受制于其训练数据，缺乏有效发挥操作助手功能的能力
