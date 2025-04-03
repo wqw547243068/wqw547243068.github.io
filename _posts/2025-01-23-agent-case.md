@@ -555,7 +555,7 @@ Memory Toolkit：复刻还得加点记忆buff 
 - Memory Toolkit [Issue](https://github.com/camel-ai/camel/issues/1725) 
 
 
-### Genspark
+### Genspark super agent
 
 
 2025年4月2日，Genspark 推出通用 Super Agent，官方宣称超越Manus
@@ -577,10 +577,6 @@ Memory Toolkit：复刻还得加点记忆buff 
 
 信息源：
 - [超越 Manus？华人创业产品 Genspark 推出通用 Agent（附实测效果）](https://mp.weixin.qq.com/s/S2NCd3ySZyaRtjwC6BSG6Q)
-
-
-写留言
-
 
 
 ## 设备操控
