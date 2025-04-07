@@ -2552,6 +2552,47 @@ print(text)
 
 8B base 接近原来的 70B，然后 instruction tuned 的 8B 远超原来的 70B。场景化 fine tune 变成更可行
 
+### Llama 4
+
+
+Llama 4 深夜开源击败 DeepSeek V3
+
+【2025-4-6】[刚刚，Llama 4深夜开源击败DeepSeek V3！2万亿多模态巨兽抢回王座](https://mp.weixin.qq.com/s/jXFPNym3iR7M6AauLlHwwg)
+
+【2025-4-6】Meta 开源首个原生**多模态** Llama 4，首次采用 MoE架构，支持**12种**语言
+- Llama 4 原生多模态模型，采用**早期融合**技术，把文本和视觉token无缝整合到统一的模型框架里
+
+Meta 重新设计**后训练**流程，全新方法：轻量级监督微调（`SFT`）> 在线强化学习（`RL`）> 轻量级直接偏好优化（`DPO`）。
+- SFT 和 DPO 可能会过度限制模型，在线RL阶段限制了探索，导致推理、编程和数学领域的准确性不理想。
+- 于是，用Llama模型作为评判者，移除了超过50% 被标记为「简单」的数据，并对剩余更难数据进行轻量级SFT。
+- 多模态在线RL阶段，精心选择了更难的提示，成功实现性能飞跃。
+- 持续在线RL策略，交替进行模型训练和数据筛选，只保留中等到高难度的提示。这种策略在计算成本和准确性之间取得了很好的平衡。
+- 最后，进行了轻量级的DPO来处理与模型响应质量相关的特殊情况，有效地在模型的智能性和对话能力之间达成了良好的平衡。
+
+首批发布一共两款：
+- `Llama 4 Scout`：共有**1090亿**参数，**17B**活跃参数，**16**个专家，**1000万**上下文
+- `Llama 4 Maverick`：共有**4000亿**参数，**17B**活跃参数，**128**个专家，**100万**上下文
+- `Llama 4 Behemoth`: **2万亿**参数, 教师模型，未来几个月面世，**288B**活跃参数，**16个**专家。
+  - 图像精准理解和创意写作方面表现突出，特别适合通用助手、聊天类应用场景。
+
+迄今为止开源最强，多模态能力最好的模型之一
+
+`Llama 4 Scout` 最大亮点在于支持**1000万**上下文，相当于处理**20+小时**的视频，仅在单个H100 GPU（Int4 量化后）上就能跑。
+- 基准测试中，性能超越 `Gemma 3`、`Gemini 2.0 Flash-Lite`、`Mistral 3.1`。
+
+LMSYS排行榜上，`Llama 4 Maverick` 冲上**第二**（ ELO得分1417），仅次于闭源 `Gemini 2.5 Pro`。
+- 仅用一半参数，Maverick 推理编码能力与 `DeepSeek-v3-0324` 实力相当。
+- `Llama 4 Maverick` 在**硬提示**（hard prompt）、编程、数学、创意写作、长查询和多轮对话中，并列第一。仅在样式控制下，排名第五。
+- 1000万上下文 `Llama 4 Scout` 还击败了 OpenAI 模型
+- Llama 4 Maverick 可轻松部署在一台NVIDIA H100 DGX主机上运行，或者通过分布式推理来实现最高效率
+
+即将面世的 `Llama 4 Behemoth`（仍在训练），是 `Maverick` 协同蒸馏的**教师模型**，使用30T多模态token在32K个GPU上进行预训练（FP8）。
+- STEM基准测试中，超越了 `GPT-4.5`、`Claude Sonnet 3.7`、`Gemini 2.0 Pro`。
+
+体验方式
+- WhatsApp、Messenger、Instagram Direct和网页
+
+
 ### 猎鹰 Falcon -- 唯一免费商用
 
 【2023-6-5】[碾压LLaMA，「猎鹰」彻底开源！400亿参数，万亿token训练，霸榜Hugging Face](https://zhuanlan.zhihu.com/p/634189977)
