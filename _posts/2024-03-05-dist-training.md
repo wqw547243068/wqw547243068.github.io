@@ -515,6 +515,11 @@ channel log格式
 - 优化器相关并行（如：ZeRO（零冗余优化器，在执行的逻辑上是数据并行，但可以达到模型并行的显存优化效果）、PyTorch FSDP）
 
 
+【2025-4-6】并行技术图解，[gif 动图](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa02acc26-b1bf-48df-93e4-672d790a77ff_1022x1138.gif)显示各种方法区别
+- [4 Strategies for Multi-GPU Training](https://blog.dailydoseofds.com/p/4-strategies-for-multi-gpu-training-f92?utm_source=publication-search)
+- ![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa02acc26-b1bf-48df-93e4-672d790a77ff_1022x1138.gif)
+
+
 【2023-12-15】MIT 端侧模型训练课程: [TinyML and Efficient Deep Learning Computing](https://hanlab.mit.edu/courses/2023-fall-65940), 含 ppt 和 视频
 - powerful deep learning applications on resource-constrained devices.
 - Topics include model compression, pruning, quantization, neural architecture search, distributed training, data/model parallelism, gradient compression, and on-device fine-tuning. application-specific acceleration techniques
