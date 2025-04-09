@@ -195,107 +195,6 @@ B站爆火数字人ip `柳叶熙`
 【2024-5-7】日本数字人[imma](https://aww.tokyo/vhuman/imma/), 覆盖各个主流平台 
 
 
-#### EchoMimic
-
-【2024-7-11】蚂蚁金服 退出数字人 [EchoMimic](https://github.com/BadToBest/EchoMimic) 
-- 论文 [EchoMimic: Lifelike Audio-Driven Portrait Animations through Editable Landmark Conditioning]()
-
-Python Environment Setup
-- Tested System Environment: Centos 7.2/Ubuntu 22.04, Cuda >= 11.7
-- Tested GPUs: A100(80G) / RTX4090D (24G) / V100(16G)
-- Tested Python Version: 3.8 / 3.10 / 3.11
-
-测试
-
-```sh
-# Download the Codes
-git clone https://github.com/BadToBest/EchoMimic
-cd EchoMimic
-```
-
-
-#### MetaStudio
-
-
-【2023-8-11】[华为云MetaStudio多模态数字人进展及挑战介绍](https://mp.weixin.qq.com/s/0H6QKa1H8SN3TfABDhjNSw)
-
-华为云 [MetaStudio](https://activity.huaweicloud.com/metastudio-szr.html) 在数字人领域当前的主要进展，包括： 2D数字人驱动、3D数字人建模、绑定、驱动、情感数字人生成等，同时介绍数字人领域的一些挑战。
-- 真人形象1:1复刻，原声克隆，支持中英文，让每个人都拥有个性化的数字人
-
-华为云在媒体领域的架构：
-- 底层算力算子包括昇腾芯片，同时也兼容N卡；CPU有鲲鹏，也兼容x86。
-- AI框架平台包括训练平台 ModelArts、深度学习框架MindSpore以及TensorFlow和Pytorch等。
-- 基于ModelArts，我们有训练加速引擎和推理加速引擎等。
-- 再往上一层是媒体引擎和盘古基础大模型。接着是媒体服务，包括云桌面、远程写作平台、数字人生产线等。
-
-总体来讲，华为云可以提供数字人领域从底层到上层全栈服务。
-
-三大服务：
-- 数字人视频**制作**：无需拍摄，通过输入文字生成视频。
-- 数字人视频**直播**：一天24小时不停直播带货，用算力换人力并超越人力，真正实现不受地域限制、不受模特资源限制的、不受语种限制的全球全天候直播。
-- 数字人视频**交互**：结合ChatGPT等对话机器人，可以实现实时智能交互，通用问答、垂直知识库等都能解决，可用于虚拟讲师辅导等。
-
-华为云提供全栈的数字人解决方案。主要包括`IP型数字人`和`服务型分身数字人`全方位的解决方案。在底层会提供包括建模、驱动、仿真、渲染等能力，并基于这些能力开放一些API，让联合伙伴可以根据行业进行应用。
-- IP型3D数字人的照片建模、语音驱动、视频驱动等
-- 分身数字人的形象训练、视频制作等；
-- 同时还包括数字人资产管理相关的服务。
-
-文本生成数字人，避免了绿幕录制的繁琐以及肖像权的争议，同时还可以随时通过文本进行数字人形象调整。
-
-语音驱动单照片分身数字人的原理。
-- 输入一张照片和语音，输出视频，首先通过`wav2lip`做预训练基础，再通过动作迁移的方式，把后台预制的视频迁移到照片上。
-
-语音驱动分身情感数字人。除了中性表情之外，实现数字人积极和消极表情的输出。
-- 整体逻辑是首先生成中性表情的数字人，再逐帧进行情绪编辑，另外引入牙齿生成模块控制牙齿清晰度。
-
-华为3D数字人目前可实现单照片美型建模、单照片卡通建模以及光笼扫描写实数字人建模。
-- 美型建模的技术流程是：输入人像图片后，会进行人像证件化的预处理，然后进行形状建模，再进行配件组装和皮肤生成，最终输出完整的3D模型。
-- 传统超写实3D数字人建模，即3D分身。其成本非常高，传统方法需要光笼扫描，再进行几何重建，需要大量的人工参与，所以华为云在探索如何进行通过AI的方式加速这一流程。
-
-目的就是为了让伙伴和开发者可以快速集成华为云的底层API接口
-
-不同场景下数字人效果：
-- 和真人对比，真假难辨；
-- 同时支持移动场景，即可实现可走动的分身数字人；
-- 基于分身数字人可以制作数字人名片，更加亲切。
-- 一次训练，实现多语种驱动。通过录制5分钟中文演讲视频，就可以生成分身数字人，用于多语种的视频生成。
-
-
-#### Ultralight
-
-【2024-10-29】[Ultralight Digital Human： 第一款完全开源的实时视频数字人](https://mp.weixin.qq.com/s/ZjytjhNOS6cmalqHA9-0VQ)
-- 源码地址：[Ultralight-Digital-Human](https://github.com/anliyuan/Ultralight-Digital-Human)
-
-一个能在移动设备上实时运行的数字人模型，第一个开源的如此**轻量级**的数字人模型
-
-
-#### 京东 JoyHallo
-
-【2024-10-14】[京东开源普通话数字人JoyHallo，一口流利标准普通话还会讲英语](https://mp.weixin.qq.com/s/nkuTPr4HWJJq2opiBwg09A)
-
-音频驱动的视频生成领域，制作普通话视频面临着许多挑战。
-- 首先，收集全面的普通话数据集非常困难；
-- 其次，普通话的复杂口型动作使得模型训练比英语更具挑战性。
-
-为了解决这个问题，JoyHallo 收集了来自`京东健康`国际公司员工的29小时普通话语音视频，形成了 `jdh-Hallo` 数据集。
-- 这个数据集中包含了不同年龄和说话风格的人，涵盖了日常对话和专业医疗主题。
-
-现有模型如 AnimateAnyone 和 Hallo 在英语视频生成方面表现优异，但由于缺乏高质量的**普通话数据集**以及普通话复杂的**唇部动作**，它们在普通话生成中表现不佳。
-
-为了解决这一问题，引入了 JoyHallo 模型
-- 采用了半解耦结构，以提高普通话唇部动作预测的准确性。
-- 为了让 JoyHallo 模型适应普通话，采用了中文的 wav2vec2 模型来提取音频特征。
-
-同时，提出了一种半解耦结构，旨在捕捉嘴唇、表情和姿态特征之间的关系。这种集成不仅提高了信息的利用效率，还加快了推理速度，提升了 14.3%。
-
-JoyHallo 在生成英语视频方面依然表现出色，显示了其优秀的跨语言生成能力。
-
-
-### HeyGem
-
-
-[](heygem.ai)
-
 
 ### 虚拟人创建工具
 
@@ -596,6 +495,158 @@ DUIX.ai
 - ![](https://guanjz20.github.io/projects/ReSyncer/pipeline.png)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ayyJSmv4Nzo?si=0dCmv0xKIdF9ebfl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+#### EchoMimic
+
+【2024-7-11】蚂蚁金服 推出数字人 [EchoMimic](https://github.com/BadToBest/EchoMimic) 
+- 论文 [EchoMimic: Lifelike Audio-Driven Portrait Animations through Editable Landmark Conditioning]()
+
+Python Environment Setup
+- Tested System Environment: Centos 7.2/Ubuntu 22.04, Cuda >= 11.7
+- Tested GPUs: A100(80G) / RTX4090D (24G) / V100(16G)
+- Tested Python Version: 3.8 / 3.10 / 3.11
+
+测试
+
+```sh
+# Download the Codes
+git clone https://github.com/BadToBest/EchoMimic
+cd EchoMimic
+```
+
+
+#### MetaStudio
+
+
+【2023-8-11】[华为云MetaStudio多模态数字人进展及挑战介绍](https://mp.weixin.qq.com/s/0H6QKa1H8SN3TfABDhjNSw)
+
+华为云 [MetaStudio](https://activity.huaweicloud.com/metastudio-szr.html) 在数字人领域当前的主要进展，包括： 2D数字人驱动、3D数字人建模、绑定、驱动、情感数字人生成等，同时介绍数字人领域的一些挑战。
+- 真人形象1:1复刻，原声克隆，支持中英文，让每个人都拥有个性化的数字人
+
+华为云在媒体领域的架构：
+- 底层算力算子包括昇腾芯片，同时也兼容N卡；CPU有鲲鹏，也兼容x86。
+- AI框架平台包括训练平台 ModelArts、深度学习框架MindSpore以及TensorFlow和Pytorch等。
+- 基于ModelArts，我们有训练加速引擎和推理加速引擎等。
+- 再往上一层是媒体引擎和盘古基础大模型。接着是媒体服务，包括云桌面、远程写作平台、数字人生产线等。
+
+总体来讲，华为云可以提供数字人领域从底层到上层全栈服务。
+
+三大服务：
+- 数字人视频**制作**：无需拍摄，通过输入文字生成视频。
+- 数字人视频**直播**：一天24小时不停直播带货，用算力换人力并超越人力，真正实现不受地域限制、不受模特资源限制的、不受语种限制的全球全天候直播。
+- 数字人视频**交互**：结合ChatGPT等对话机器人，可以实现实时智能交互，通用问答、垂直知识库等都能解决，可用于虚拟讲师辅导等。
+
+华为云提供全栈的数字人解决方案。主要包括`IP型数字人`和`服务型分身数字人`全方位的解决方案。在底层会提供包括建模、驱动、仿真、渲染等能力，并基于这些能力开放一些API，让联合伙伴可以根据行业进行应用。
+- IP型3D数字人的照片建模、语音驱动、视频驱动等
+- 分身数字人的形象训练、视频制作等；
+- 同时还包括数字人资产管理相关的服务。
+
+文本生成数字人，避免了绿幕录制的繁琐以及肖像权的争议，同时还可以随时通过文本进行数字人形象调整。
+
+语音驱动单照片分身数字人的原理。
+- 输入一张照片和语音，输出视频，首先通过`wav2lip`做预训练基础，再通过动作迁移的方式，把后台预制的视频迁移到照片上。
+
+语音驱动分身情感数字人。除了中性表情之外，实现数字人积极和消极表情的输出。
+- 整体逻辑是首先生成中性表情的数字人，再逐帧进行情绪编辑，另外引入牙齿生成模块控制牙齿清晰度。
+
+华为3D数字人目前可实现单照片美型建模、单照片卡通建模以及光笼扫描写实数字人建模。
+- 美型建模的技术流程是：输入人像图片后，会进行人像证件化的预处理，然后进行形状建模，再进行配件组装和皮肤生成，最终输出完整的3D模型。
+- 传统超写实3D数字人建模，即3D分身。其成本非常高，传统方法需要光笼扫描，再进行几何重建，需要大量的人工参与，所以华为云在探索如何进行通过AI的方式加速这一流程。
+
+目的就是为了让伙伴和开发者可以快速集成华为云的底层API接口
+
+不同场景下数字人效果：
+- 和真人对比，真假难辨；
+- 同时支持移动场景，即可实现可走动的分身数字人；
+- 基于分身数字人可以制作数字人名片，更加亲切。
+- 一次训练，实现多语种驱动。通过录制5分钟中文演讲视频，就可以生成分身数字人，用于多语种的视频生成。
+
+
+#### Ultralight
+
+【2024-10-29】[Ultralight Digital Human： 第一款完全开源的实时视频数字人](https://mp.weixin.qq.com/s/ZjytjhNOS6cmalqHA9-0VQ)
+- 源码地址：[Ultralight-Digital-Human](https://github.com/anliyuan/Ultralight-Digital-Human)
+
+一个能在移动设备上实时运行的数字人模型，第一个开源的如此**轻量级**的数字人模型
+
+
+#### 京东 JoyHallo
+
+【2024-10-14】[京东开源普通话数字人JoyHallo，一口流利标准普通话还会讲英语](https://mp.weixin.qq.com/s/nkuTPr4HWJJq2opiBwg09A)
+
+音频驱动的视频生成领域，制作普通话视频面临着许多挑战。
+- 首先，收集全面的普通话数据集非常困难；
+- 其次，普通话的复杂口型动作使得模型训练比英语更具挑战性。
+
+为了解决这个问题，JoyHallo 收集了来自`京东健康`国际公司员工的29小时普通话语音视频，形成了 `jdh-Hallo` 数据集。
+- 这个数据集中包含了不同年龄和说话风格的人，涵盖了日常对话和专业医疗主题。
+
+现有模型如 AnimateAnyone 和 Hallo 在英语视频生成方面表现优异，但由于缺乏高质量的**普通话数据集**以及普通话复杂的**唇部动作**，它们在普通话生成中表现不佳。
+
+为了解决这一问题，引入了 JoyHallo 模型
+- 采用了半解耦结构，以提高普通话唇部动作预测的准确性。
+- 为了让 JoyHallo 模型适应普通话，采用了中文的 wav2vec2 模型来提取音频特征。
+
+同时，提出了一种半解耦结构，旨在捕捉嘴唇、表情和姿态特征之间的关系。这种集成不仅提高了信息的利用效率，还加快了推理速度，提升了 14.3%。
+
+JoyHallo 在生成英语视频方面依然表现出色，显示了其优秀的跨语言生成能力。
+
+
+#### HeyGem
+
+
+[](heygem.ai)
+
+
+#### OmniTalker
+
+【2025-4-9】[阿里 OmniTalker 开源：让文本『一开口』就声情并茂](https://zhuanlan.zhihu.com/p/1893081112558950019)
+
+只需输入一段文字，就能立刻生成一个数字人，不仅口型与声音完美同步，连说话的风格、面部表情都能模仿得惟妙惟肖
+
+现有方法
+- 先把文字转成语音（TTS）
+- 再根据语音驱动数字人的口型和表情。
+
+这种“分步走”方式像一个蹩脚的翻译，不仅效率低、延迟高，还常常导致声音和画面对不上号（音画不同步），或者说话的语气和脸上的表情完全不搭（风格不匹配）。
+
+这让生成的数字人看起来总有点“假”，缺乏灵魂。
+
+阿里推出的 开源项目 OmniTalker 解决方案，最大的亮点在于采用了**端到端**的统一框架。
+- 【2025-4-3】论文 [OmniTalker: Real-Time Text-Driven Talking Head Generation with In-Context Audio-Visual Style Replication](https://arxiv.org/pdf/2504.02433)
+- Project Page: [omnitalker](https://humanaigc.github.io/omnitalker)
+- 不再搞“分工合作”那一套，而是用一个更强大的“大脑”同时处理文本、生成语音、驱动视频。
+- 当 OmniTalker “阅读”文本时，同时构思“该怎么说”（生成语音特征）和“该做什么表情、口型”（生成面部动态和头部姿态）。通过一个巧妙设计的音视频融合模块，声音和画面的信息还能相互“沟通”，确保最终输出时，口型对得上声音，表情配得上语气。
+- ![](https://pica.zhimg.com/v2-9678816d6bc799de764e9b2a02cc0d12_1440w.jpg)
+
+OmniTalker 另一个让人惊艳的功能是风格复制
+- 只需要看小段目标人物说话的视频（参考视频），就能“学”会这个人的语音风格（比如语速、音调、口音）和面部风格（比如习惯性的微表情、头部动作）。而且，这是零样本（Zero-Shot）
+- ![](https://pica.zhimg.com/v2-249939786b5e1074e220ca6db749fbda_1440w.jpg)
+
+实验对比
+
+tts 方法
+- CosyVoice
+- MaskGCT
+- F5-TTS
+
+声音驱动的数字人方法对比
+- SadTalker
+- AniTalker
+- StyleTalk
+- EchoMimic
+- Hallo
+
+
+效果: 快、轻、稳、准
+- 速度够快：OmniTalker 的推理速度达到了 25 帧/秒 (FPS)，这意味着它可以实时生成视频内容，满足直播、实时交互等场景的需求。
+- 模型轻巧：整个模型的参数量大约在 0.8B (8亿) 左右，这在当今动辄百亿参数的大模型时代，算得上是相对“轻量级”了，部署起来也更方便。
+- 多语言、多情感：目前支持中英文的文本输入和转换，并且能够生成带有不同情感（如平静、开心、悲伤、愤怒等）的视频，让数字人的表达更丰富、更真实。
+- 长视频也没问题：它还能生成较长时间的连续视频，对于虚拟主播、在线教育课程制作这类需要持续输出内容的场景非常友好。
+- ![](https://pic4.zhimg.com/v2-95f4417e4461683ca23a0fe0898dcd73_1440w.jpg)
+
+
 
 ### 表情迁移
 
