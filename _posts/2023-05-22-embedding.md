@@ -120,6 +120,9 @@ query = "2022年腾讯营收多少"
 print(qa.run(query))
 ```
 
+
+
+
 ## 向量化原理
 
 基础模型大多基于 Transformer Encoder 预训练语言模型: `BERT`, `RoBERTa`，`Ernie`等
@@ -315,6 +318,18 @@ print(new_output)
 3. PrefixTraining: 只训练**前缀**tokens对应的embedding参数。通过additional_special_tokens指定前缀tokens,并只训练这些tokens的embedding。
 
 这些策略可以平衡语料大小与模型大小,降低过拟合风险,帮助模型快速适应下游任务。通常先做全参数训练预热一下,再使用部分固定或前缀训练等策略微调到特定下游任务。
+
+
+## 向量化类型
+
+【2025-4-11】6 种嵌入类型及适用场景：
+- • **稀疏**嵌入：[bm25](https://weaviate.io/developers/weaviate/search/bm25)
+- • **密集**嵌入：[similarity](https://weaviate.io/developers/weaviate/search/similarity)
+- • **量化**嵌入：[vector-quantization](https://weaviate.io/developers/weaviate/concepts/vector-quantization)
+- • **二进制**嵌入：[vector-quantization#binary-quantization](https://weaviate.io/developers/weaviate/concepts/vector-quantization#binary-quantization)
+- • **可变**尺寸：[openais-matryoshka-embeddings-in-weaviate](https://weaviate.io/blog/openais-matryoshka-embeddings-in-weaviate)
+- • **多向量**嵌入：[multi-vector-embeddings](https://weaviate.io/developers/weaviate/tutorials/multi-vector-embeddings)
+
 
 ## 向量化方案
 
