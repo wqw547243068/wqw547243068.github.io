@@ -28,6 +28,16 @@ permalink: /pe
 
 - 【2023-7-26】OpenAI 专家 Lili Weng 翁丽莲 博客专题 [Prompt Engineering](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
 - 【2024-6-6】马里兰、OpenAI、斯坦福微软等合著的 Prompt 综述报告 [The Prompt Report: A Systematic Survey of Prompting Techniques](https://arxiv.org/pdf/2406.06608)
+- 【2025-4-11】Google 发布了一份长达 69 页的白皮书，介绍 Prompt Engineering 及其最佳实践⚡️
+  - [Google提示工程白皮书](https://www.kaggle.com/whitepaper-prompt-engineering)
+
+在生产环境中编写 Prompt 时，强烈建议阅读这份白皮书：
+- 零次、一次、少量 
+- 系统提示 
+- 思路链（CoT） 
+- 反应 
+- 代码提示 
+- 最佳实践
 
 ### OpenAI 自定义指令
 
