@@ -113,6 +113,27 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 - WebCPM 对标的是 WebGPT ， WebGPT 也正是微软近期推出的 New Bing 背后的新一代搜索技术。同 WebGPT一样，WebCPM 克服了传统的 LFQA（ Long-form Question Answering）长文本开放问答范式的缺陷：依赖于非交互式的检索方法，即仅使用原始问题作为查询语句来检索信息。
 
 
+### search agent
+
+【2025-4-9】 rl 和 search agent 结合。
+
+没法互相比较算法或框架策略上的优劣、评估方法上不一致。 multihop 数据集，急需统一 leaderboard。
+
+实验来看 纯 deep seekr1+prompt 或者 sf t在multihop上可以达到很高的指标。
+
+- search + RL
+  - 人大 [r1-seacher](https://arxiv.org/pdf/2503.05592) 
+- University of Illinois at Urbana-Champaign [search-r1 paper](https://arxiv.org/pdf/2503.09516)  
+- baichuan research 
+  - [paper](https://arxiv.org/pdf/2503.19470) 
+- search & browse + RL
+  - DeepResearcher: 上海交大 [paper](https://arxiv.org/pdf/2504.03160)
+- search + offline rl
+  - stanford deep mind: [Synthetic Data Generation & Multi-Step RL for Reasoning & Tool Use](https://arxiv.org/pdf/2504.04736)  
+- search +SFT + RL
+  - 北京交通大学 AutoCoa [paper](https://arxiv.org/pdf/2503.06580)
+
+
 ## 搜索产品
 
 
