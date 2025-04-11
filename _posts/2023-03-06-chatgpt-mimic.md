@@ -842,6 +842,22 @@ colossalai 训练多个大模型，提升效率，参考：[是否有更高效�
 
 trlx上完成三步流程训练，抽样效果 +5-10%
 
+
+### 跨语言大模型 MLLM
+
+多语言大型语言模型领域的最新进展和新兴趋势。
+
+【2024-4-7】哈工大 [跨语言大模型综述](https://baijiahao.baidu.com/s?id=1798503505026499090&wfr=spider&for=pc)
+- 论文 [Multilingual Large Language Model: A Survey of Resources, Taxonomy and Frontiers](https://arxiv.org/pdf/2404.04925.pdf)
+- GitHub地址 [Awesome-Multilingual-LLM](https://github.com/LightChen233/Awesome-Multilingual-LLM)
+
+分类
+- 预训练对齐
+- 指令微调对齐
+- RLHF对齐
+- 下游任务微调对齐
+- ![](https://simg.baai.ac.cn/hub-detail/df4469ca6c8ac2d5eead2fe7b8cfe5f11713869401060.webp)
+
 ### OPT
 
 2022年5月，Meta AI 开源了 Open Pretrained Transformer (`OPT`-175B)，一个拥有 1750 亿个参数的语言模型，使用了 5 个公开数据集的 **800GB** 数据进行训练；旨在刺激大型语言模型 (LLM) 的使用。
