@@ -113,7 +113,53 @@ WebGPT 的训练是在 pre-trained GPT 的基础上进行 finetune，finetune �
 - WebCPM 对标的是 WebGPT ， WebGPT 也正是微软近期推出的 New Bing 背后的新一代搜索技术。同 WebGPT一样，WebCPM 克服了传统的 LFQA（ Long-form Question Answering）长文本开放问答范式的缺陷：依赖于非交互式的检索方法，即仅使用原始问题作为查询语句来检索信息。
 
 
-### search agent
+### Search Agent
+
+
+#### Multi-Agent
+
+论文
+- 【2025-2-6】同济、新加坡南洋理工 提出 MaAS
+  - 论文 [Multi-agent Architecture Search via Agentic Supernet](https://arxiv.org/pdf/2502.04180)
+  - 代码 [MaAS](https://github.com/bingreeky/MaAS)
+
+早期多智能体系统提供专业能力，但严重依赖手动配置
+- 如 `CAMEL`（Li et al.， 2023）、`AutoGen`（Wu et al.， 2023）和 `MetaGPT`（Hong et al.， 2023）
+- 手工配置：提示工程、智能体分析和智能体间通信流水线（Qian et al.， 2024）。
+- 这种依赖限制了多智能体系统对不同领域和应用场景的快速适应
+
+多智能体系统设计自动化
+- 优化**Agent间通信**: `DsPy`（Khattab et al.， 2023）和 `EvoPrompting` （Guo et al.， 2023） 自动提示优化，`GPTSwarm`（Zog et al.，2024）和 `G-Designer`（Zhang et al.，2024b）
+- **自我进化**Agent分析: `EvoAgent`（Yuan et al.，2024）和 `AutoAgents`（Chen et al.，2023a）
+
+然而，专注于自动化系统的**特定**方面。
+
+随后，`ADAS`（胡等人，2024a）、`AgentSqure`（Shang 等人，2024）和 `AFlow`（Zhang 等人，2024c）拓宽了设计搜索空间 --- SOTA 方法
+ ODS 通过不同的**搜索范式**为给定数据集优化单个复杂（多）代理工作流程，例如: **启发式**搜索（胡 et al.， 2024a）、**蒙特卡洛树**搜索（Zhang et al.， 2024c）和**进化**（Shang et al.， 2024），超越了手动设计系统的性能
+问题
+- 性能受资源限制，例如令牌成本、LLM调用和推理延迟。现代方法倾向于针对复杂和资源密集型的 agen 进行优化
+
+We introduce MaAS, an automated framework that samples query-dependent agentic systems from the supernet, delivering high-quality solutions and tailored resource allocation (e.g., LLM calls, tool calls, token cost). Comprehensive evaluation across six benchmarks demonstrates that MaAS (I) requires only 6 ∼ 45% of the inference costs of existing handcrafted or automated multi-agent systems, (II) surpasses them by 0.54% ∼ 11.82%, and (III) enjoys superior cross-dataset and cross-LLM-backbone transferability. 
+
+MaAS 自动化框架从超网中采样query相关的智能体系统，提供高质量的解决方案和定制的资源分配（大语言模型调用、工具调用、令牌成本）。
+
+Agent超网是一个**级联**的**多层**工作流，包括 
+- ❶ 多个Agent算子: CoT （Wei et al.， 2022）、Multi-agent Debate （Du et al.， 2023）、ReAct （Yao et al.， 2023）），以及
+- ❷ 算子跨层的**参数化概率分布**。
+- 训练期间，MaAS 利用**控制器网络**对以query为条件的多代理架构进行采样。分布参数和运算符根据环境反馈共同更新，前者的梯度通过蒙特卡洛采样近似，后者梯度通过文本梯度估计。
+- 推理过程，对于不同query，MaAS 对合适的多智能体系统进行采样，提供令人满意的分辨率和适当的推理资源，从而实现任务定制的集体智慧
+
+六个基准综合评估: MaAS
+- ❶ MaAS 高性能，比现有的**手工**或**自动化**多智能体系统高出 0.54% ∼ 11.82%;
+- ❷ 节省token，在 MATh 基准上优于 SOTA 基线 AFlow，训练成本为 15%，推理成本为 25%;
+- ❸ 可迁移: 跨数据集和 LLM-backbone;
+- ❹ 归纳式: 对看不见的Agent运算符泛化性强
+
+- （I）仅需现有手工制作或自动化多智能体系统推理成本的 6% - 45%
+- （II）高出 0.54% - 11.82%，并且
+- （III）具有卓越的跨数据集和跨大语言模型骨干的可转移性。
+
+#### RL + Agent
 
 【2025-4-9】 rl 和 search agent 结合。
 
