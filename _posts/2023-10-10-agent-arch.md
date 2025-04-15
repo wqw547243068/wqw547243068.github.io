@@ -43,6 +43,37 @@ AI框架
 
 图见[小红书原文](https://www.xiaohongshu.com/explore/67ce7b36000000002901a8d4)
 
+
+【2025-4-4】[Top 9 AI Agent Frameworks as of April 2025](https://www.shakudo.io/blog/top-9-ai-agent-frameworks#1-langchain)
+
+好的AI框架特性：
+- Agent 架构: 决策引擎精心设计，包含 记忆管理、高级交互协议
+- 环境集成：实际系统集成API、虚拟环境适配器、安全访问控制、性能监控接口
+- 任务编排：自动化工作流管理，基于优先级执行系统、资源分配控制
+- 通信基础设施：人机交互协议、API集成能力、数据交换系统、多代理通信
+- 性能优化：机器学习模型，持续学习能力，迭代框架, 错误处理和恢复：应急机制，审计跟踪，系统健康诊断
+
+A well-designed AI framework typically includes:
+- `Agent Architecture`: Sophisticated decision-making engines with persistent memory management systems and advanced interaction protocols. 
+- `Environmental Integration Layer`: APIs for real-world system integration, virtual environment adapters and robust security and access controls with performance monitoring interfaces. 
+- `Task Orchestration Framework`: Automated workflow management with priority-based execution systems and resource allocation controls. Error handling and recovery mechanisms for emergencies.
+- `Communication Infrastructure`: Human-AI interaction protocols, API integration capabilities, data exchange systems, and inter-agent communication channels to facilitate internal collaborations. 
+- `Performance Optimization`: Machine learning models with continuous learning capabilities and iteration frameworks. Audit trail capabilities and system health diagnostics for future optimization. 
+
+1. LangChain
+2. AutoGen
+3. Semantic Kernel
+4. Atomic Agents
+5. CrewAl
+6. RASA
+7. Hugging Face Transformers Agents
+8. Langflow
+9. Lyzer
+
+
+
+
+
 ### LangChain vs AutoGen
 
 
@@ -114,18 +145,6 @@ AutoGen
 - 医疗保健和房地产 AI 助手。
 
 
-### 选什么框架
-
-总结
-- 软件开发：`AutoGen`（微软） 最适合处理代码生成和复杂 multi-agent 编码工作流任务。
-- 初学者：OpenAI `Swarm` 和 `CrewAI`操作简便，非常适合刚接触 multi-agent AI 且没有复杂配置需求的新手使用。
-- 复杂任务首选：`LangGraph` —— 极高的灵活性，为高级用户设计，支持自定义逻辑和智能体编排（orchestration）。
-- 开源 LLMs 兼容程度：`LangGraph` —— 与开源 LLMs 的兼容性极佳，支持多种 API 接口，这是其他一些框架所不具备的。`CrewAI` 在这方面也表现不俗。
-- 技术社区：`AutoGen` 拥有相当不错的技术社区支持，能够帮助用户解决一些难题。
-- 即开即用：`CrewAI` —— 配置快捷、操作直观，非常适合用于演示或是需要迅速创建智能体的任务。`Swarm` 和 `Magentic-One` 表现也相当不错，但社区支持相对较弱。
-- 性价比之王：`Magentic-One` —— 它提供了一套预配置的解决方案，采用了通用框架的设计方法，可能在初期能够节省成本。`Swarm` 和 `CrewAI` 在成本效益方面也值得关注。
-
-
 
 ### 框架分析
 
@@ -146,17 +165,350 @@ AutoGen
 ||||||||
 
 
+| 框架 | 技术特点 | 应用场景 | 社区活跃度 | 学习曲线 | 部署难度 |
+| --- | --- | --- | --- | --- | --- |
+| `LangGraph` | 循环控制、状态管理、人机交互 | 复杂工作流程、多轮对话 | ⭐⭐⭐⭐ | 中等 | 中等 |
+| `AutoGen` | 多智能体协作、模块化设计 | 团队协作、复杂任务分解 | ⭐⭐⭐⭐⭐ | 高 | 中等 |
+| `MetaGPT` | 角色划分、软件开发流程 | 软件开发、项目管理 | ⭐⭐⭐⭐⭐ | 高 | 困难 |
+| `ChatDev` | 开发流程自动化、多角色协作 | 软件开发、团队协作 | ⭐⭐⭐⭐ | 中等 | 中等 |
+| `Swarm` | 轻量级、高度可控 | 独立功能开发、原型验证 | ⭐⭐⭐⭐ | 低 | 容易 |
+| `uagents` | 去中心化、轻量级 | 分布式应用、物联网 | ⭐⭐⭐ | 低 | 容易 | 
+
+原表格
+
+| Framework | Technical Features | Use Cases | Community Activity | Learning Curve | Deployment Difficulty |
+| --- | --- | --- | --- | --- | --- |
+| LangGraph | Loop control, state management, human-machine interaction | Complex workflows, multi-round dialogues | ⭐⭐⭐⭐ | Medium | Medium |
+| AutoGen | Multi-agent collaboration, modular design | Team collaboration, complex task decomposition | ⭐⭐⭐⭐⭐ | High | Medium |
+| MetaGPT | Role division, software development process | Software development, project management | ⭐⭐⭐⭐⭐ | High | Difficult |
+| ChatDev | Development process automation, multi-role collaboration | Software development, team collaboration | ⭐⭐⭐⭐ | Medium | Medium |
+| Swarm | Lightweight, highly controllable | Independent function development, prototype verification | ⭐⭐⭐⭐ | Low | Easy |
+| uagents | Decentralized, lightweight | Distributed applications, IoT | ⭐⭐⭐ | Low | Easy |
+
+参考
+- [In-Depth Comparison and Selection Guide for Global Open-Source AI Agent Frameworks (langgraph, AutoGen, MetaGPT, ChatDev, Swarm, uagents)](https://stable-learn.com/en/global-open-source-ai-agents-introduction-and-selection/)
+
+【2025-1-2】[主流Agent框架2024盘点: LangGraph、CrewAI、AutoGen、Dify、MetaGPT、OmAgent深度横评](https://zhuanlan.zhihu.com/p/15978194840)
+
+![](https://pic2.zhimg.com/v2-4b45eaf7a14b5b21f501f108e8a3f451_1440w.jpg)
+
+
+
+| 框架 | 核心定位 | 优势 | 试用场景 |
+| ---- | ---- | ---- | ---- |
+| LangGraph | 有状态多智能体系统 | 基于图的工作流、智能体协作 | 多步骤工作流、协作式系统 |
+| CrewAI | 基于角色的智能体编排 | 协作式问题解决、团队动态 | 组织建模、基于角色的模拟 |
+| Microsoft Semantic Kernel | 将AI集成到企业应用中 | 轻量化、安全性高、面向企业需求 | 增强企业应用 |
+| Microsoft AutoGen | 多智能体对话系统 | 鲁棒性，模块化设计强、对话管理能力突出 | 高级对话式AI应用 |
+| Dify | LLM应用开发 | 界面直观、内置丰富工具 | 快速开发LLM应用 |
+| MetaGPT | 多智能体协作 | SOP（标准操作流程）编码、任务分解 | 需要协作的复杂现实场景应用 |
+| OmAgent | 设备为中心的多模态智能体框架 | 实时响应、多模态处理、硬件集成 | 面向行业与研究的设备端AI智能体应用 | 
+
+
+为什么选择 OmAgent？
+- 示例代码支持：提供针对行业从业者和 AI 研究人员的预构建示例代码，支持真实场景应用和最新 AI 算法。
+- 领先的多模态能力：原生支持视频理解、视觉问答（VQA）等多模态任务。
+- 设备集成：简化 AI 与智能设备的集成，是硬件为中心的 AI 应用的首选框架。
+- 创新算法：包含前沿工作流，如 ReAct 和 Divide-and-Conquer 等算法。
+- 实时性能：针对实时、低延迟交互进行优化，提供流畅体验。
+
+OmAgent 是 AI 智能体开发领域的一次全新变革，具备卓越的能力，专注于构建以设备为核心的多模态智能体。相比 LangGraph、CrewAI 和 AutoGen 等框架在特定领域的优势，OmAgent 凭借其在硬件集成、多模态支持以及前沿研究上的独特表现，成为最灵活、最全面的选择。
+
+无论是在实际应用中实现落地，还是在学术研究中探索创新，OmAgent 都为开发者和研究人员提供了强大的工具、灵活的架构和持续的创新动力。
+
+OmAgent 开源地址：
+- GitHub - om-ai-lab/OmAgent: A Multimodal Language Agent Framework for Problem Solving and More
+
+
+### 选什么框架
+
+
+选择建议：
+- 初学者：从 `Swarm` 或 `uagents` 开始，轻量级且易学习。
+- 企业应用：`AutoGen` 或 `langgraph` 更合适，提供完整的企业级功能。
+- 软件开发：`MetaGPT` 或 `ChatDev` 是理想选择，尤其适用于自动化软件开发流程。
+- 原型验证：`Swarm` 轻量级特性使其非常适合快速验证想法。
+- 分布式应用：`uagents` 去中心化特性使其在这些场景中具有独特优势。
+
+Selection Recommendations:
+- Beginners: Start with Swarm or uagents, as these frameworks are lightweight and easy to learn
+- Enterprise Applications: AutoGen or langgraph are more suitable, providing complete enterprise-level functionality
+- Software Development: MetaGPT or ChatDev are ideal choices, especially suitable for automated software development processes
+- Prototype Verification: Swarm’s lightweight nature makes it ideal for quickly validating ideas
+- Distributed Applications: uagents’ decentralized nature gives it unique advantages in these scenarios
+
+
+总结
+- 软件开发：`AutoGen`（微软） 最适合处理代码生成和复杂 multi-agent 编码工作流任务。
+- 初学者：OpenAI `Swarm` 和 `CrewAI`操作简便，非常适合刚接触 multi-agent AI 且没有复杂配置需求的新手使用。
+- 复杂任务首选：`LangGraph` —— 极高的灵活性，为高级用户设计，支持自定义逻辑和智能体编排（orchestration）。
+- 开源 LLMs 兼容程度：`LangGraph` —— 与开源 LLMs 的兼容性极佳，支持多种 API 接口，这是其他一些框架所不具备的。`CrewAI` 在这方面也表现不俗。
+- 技术社区：`AutoGen` 拥有相当不错的技术社区支持，能够帮助用户解决一些难题。
+- 即开即用：`CrewAI` —— 配置快捷、操作直观，非常适合用于演示或是需要迅速创建智能体的任务。`Swarm` 和 `Magentic-One` 表现也相当不错，但社区支持相对较弱。
+- 性价比之王：`Magentic-One` —— 它提供了一套预配置的解决方案，采用了通用框架的设计方法，可能在初期能够节省成本。`Swarm` 和 `CrewAI` 在成本效益方面也值得关注。
+
+## 决策模型
+
+Agent 主流决策模型是 ReAct框架 和 ReAct的变种框架。
+
+### ReAct框架
+
+ReAct = 少样本prompt + Thought + Action + Observation 是调用工具、推理和规划时常用的prompt结构，先推理再执行，根据环境来执行具体的action，并给出思考过程Thought。
+
+
+### ReAct 变种
+
+#### Plan-and-Execute ReAct
+
+类BabyAgi 执行流程：通过优化规划和任务执行的流程来完成复杂任务的拆解，将复杂的任务拆解成多个子任务，再依次/批量执行。
+
+优点是对于解决复杂任务、需要调用多个工具时，也只需要调用三次大模型，而不是每次工具调用都要调大模型。
+
+#### LLmCompiler
+
+LLmCompiler：并行执行任务，规划时生成一个DAG图来执行action，可以理解成将多个工具聚合成一个工具执行图，用图的方式执行某一个action。
+- paper：[LLmCompiler](https://arxiv.org/abs/2312.04511?ref=blog.langchain.dev)
+
+原文链接：https://blog.csdn.net/m0_68116052/article/details/143197176
+
+
+
+
+
+## 框架
+
+分析
+- 单智能体 = 大语言模型（LLM） + 观察（obs） + 思考（thought） + 行动（act） + 记忆（mem）
+- 多智能体 = 智能体 + 环境 + SOP + 评审 + 通信 + 成本
+
+
+### 单智能体
+
+Single Agent 框架
+- 执行架构优化：论文数据支撑CoT to XoT，从一个thought一步act到一个thought多个act，从链式的思考方式到多维度思考；
+- 长期记忆的优化：具备个性化能力的agent，模拟人的回想过程，将长期记忆加入agent中；
+- 多模态能力建设：agent能观察到的不仅限于用户输入的问题，可以加入包括触觉、视觉、对周围环境的感知等；
+- 自我思考能力：主动提出问题，自我优化；
+
+### 多智能体
+
+多agent应该像人脑一样，分工明确、又能一起协作
+- 比如，大脑有负责视觉、味觉、触觉、行走、平衡，甚至控制四肢行走的区域都不一样。
+
+参考MetaGPT和AutoGen生态最完善的两个Multi-Agent框架：
+- 环境&通讯：Agent间的交互，消息传递、共同记忆、执行顺序，分布式agent，OS-agent
+- SOP：定义SOP，编排自定义Agent
+- 评审：Agent健壮性保证，输入输出结果解析
+- 成本：Agent间的资源分配
+- Proxy：自定义proxy，可编程、执行大小模型
+
+
+优点：
+- 多视角分析问题：虽然LLM可以扮演很多视角，但会随着system prompt或者前几轮的对话快速坍缩到某个具体的视角上；
+- 复杂问题拆解：每个子agent负责解决特定领域的问题，降低对记忆和prompt长度的要求；
+- 可操控性强：可以自主的选择需要的视角和人设；
+- 开闭原则：通过增加子agent来扩展功能，新增功能无需修改之前的agent；
+- （可能）更快的解决问题：解决单agent并发的问题；
+
+缺点：
+- 成本和耗时的增加；
+- 交互更复杂、定制开发成本高；
+- 简单的问题single Agent也能解决；
+
+多智能体能解决的问题：
+- 解决复杂问题；
+- 生成多角色交互的剧情；
+
+[原文](https://blog.csdn.net/m0_68116052/article/details/143197176)
+
+
+### 主流Agent框架
+
+Single-Agent
+- BabyAGI
+- AutoGPT
+- HuggingGPT
+- GPT-Engineer
+- Samantha
+- AppAgent
+- OS-Copilot
+- Langgraph
+
+Multi-Agent
+- 斯坦福虚拟小镇
+- MetaGPT
+- AutoGen
+- ChatDEV
+- GPTeam
+- GPT Researcher
+- TaskWeaver
+- 微软UFO
+- CrewAI
+- AgentScope
+- Camel
+
+
+## Single-Agent
+
+### BabyAGI
+
+BabyAGI
+- git：GitHub - yoheinakajima/babyagi  
+- doc：[doc](https://yoheinakajima.com/birth-of-babyagi/)
+
+babyAGI决策流程：
+- 1）根据需求分解任务；
+- 2）对任务排列优先级；
+- 3）执行任务并整合结果；
+
+亮点：
+- BabyAGI框架比较简单使用
+- 任务优先级队列比较独特
+
+##  斯坦福虚拟小镇
+
+斯坦福虚拟小镇
+- git：[generative_agents](https://github.com/joonspk-research/generative_agents)
+- paper：[PAPER](https://arxiv.org/pdf/2304.03442)
+
+虚拟小镇作为早期 multi-agent 项目，很多设计也影响到了其他multi-agent框架，里面的**反思**和**记忆检索**模拟人类的思考方式。
+- 代理（Agents）感知环境，当前代理所有的感知（完整的经历记录）都被保存在一个名为"记忆流"（memory stream）中。
+- 基于代理的感知，系统检索相关的记忆，然后使用这些检索到的行为来决定下一个行为。
+- 这些检索到的记忆也被用来形成长期计划，并创造出更高级的反思，这些都被输入到记忆流中以供未来使用。
+
+记忆流记录代理的所有经历，检索从记忆流中根据近期性（Recency）、重要性（Importance）和相关性（Relevance）检索出一部分记忆流，以传递给语言模型。
+
+反思是由代理生成的更高级别、更抽象的思考。因为反思也是一种记忆，所以在检索时，它们会与其他观察结果一起被包含在内，反思是周期性生成的。
+
+
+## AutoGPT
+
+AutoGPT
+- git：[AutoGPT](https://github.com/Significant-Gravitas/AutoGPT)
+
+AutoGPT 定位类似个人助理，帮助用户完成指定的任务，如调研某个课题。AutoGPT比较强调对外部工具的使用，如搜索引擎、页面浏览等。
+
+作为早期agent，autoGPT麻雀虽小五脏俱全，虽然也有很多缺点，比如无法控制迭代次数、工具有限。
+
+但是后续的模仿者非常多，基于此演变出了非常多的框架。
+
+
+
+## Langchain 生态
+
+
+### GPT-Engineer
+
+GPT-Engineer
+- git: [GPT-Engineer](https://github.com/AntonOsika/gpt-engineer)
+
+基于 langchain 开发，单一工程师agent，解决编码场景的问题。
+
+目的是创建一个完整的代码仓库，在需要时要求用户额外输入补充信息。
+
+亮点：code-copilot的自动化升级版
+
+### LangGraph
+
+Langgraph
+- doc：[Langgraph](https://python.langchain.com/docs/langgraph)
+
+langchain 组件，允许开发者通过图的方式重构单个agent内部的执行流程，增加一些灵活性，并且可与langSmith等工具结合。
+
+核心定位：**有状态**多智能体系统。
+
+特点：
+- 基于**图**的工作流，用于复杂操作。
+- 支持具有循环和非循环流程的多智能体协作。
+- 提供任务与智能体交互的可视化表示。
+- 适用场景：多步骤工作流、自适应 AI 应用、协作式问题解决。
+- 局限性：需要专业知识，对多模态或设备为中心的使用场景没有本质优化。
+
+
+## HuggingGPT
+
+HuggingGPT
+- git: [JARVIS](https://github.com/microsoft/JARVIS)  
+- paper: [paper](https://arxiv.org/pdf/2303.17580)
+
+HuggingGPT 任务分为四个部分：
+- 任务规划：将任务规划成不同的步骤，这一步比较容易理解。
+- 模型选择：在一个任务中，可能需要调用不同的模型来完成。例如，在写作任务中，首先写一句话，然后希望模型能够帮助补充文本，接着希望生成一个图片。这涉及到调用到不同的模型。
+- 执行任务：根据任务的不同选择不同的模型进行执行。
+- 响应汇总和反馈：将执行的结果反馈给用户。
+
+HuggingGPT的亮点：
+- HuggingGPT与AutoGPT的不同之处在于，可调用HuggingFace上不同的模型来完成更复杂的任务，从而提高了每个任务的精确度和准确率。
+- 然而，总体成本并没有降低太多。
+
+
+## GPT Researcher
+
+GPT Researcher
+- git：[GPT Researcher](https://github.com/assafelovic/gpt-researcher)
+
+串行的 Multi-Agent，框架可以适配内容生产
+
+GPT Researcher 架构主要通过运行两个代理来进行，一个是“规划者”，一个是“执行者”；
+- 规划者负责生成研究问题，而执行者则是根据规划者生成的研究问题寻找相关的信息
+- 最后再通过规划者对所有相关信息进行过滤与汇总，然后生成研究报告；
+
+
+## Camel
+
+[Camel](https://www.camel-ai.org) 早期Multi-Agent项目，实现agent间的一对一对话，文档较少。
+- github: [camel](https://github.com/camel-ai/camel)
+
+
+### ChatDev
+
+ChatDev
+- git：[ChatDev](https://github.com/OpenBMB/ChatDev)  
+- doc：[ChatDev](https://chatdev.modelbest.cn/introduce)
+
+ChatDev（2023.9）不是普通的MultiAgent框架，基于Camel，内部流程都是2个Agent之间多次沟通，整体上的不同Agent角色的沟通关系和顺序都是由开发者配置，不太像是个全功能的MultiAgent框架的实现。
+
+ChatDev 项目本身没有太多和复用性，依赖的旧版本Camel也是该抛弃的东西。
+
+这个项目本身更多是为了支撑论文的学术性原型，并不是为了让别人在上面开发而设计的。
+
 
 ## MetaGPT
 
+
+核心定位：多智能体协作。
+
+主要特点：
+- 将标准操作流程（SOP）编码为协作提示。
+- 为智能体分配专业化角色，优化任务分解效率。
+
+适用场景：复杂任务分解、多智能体系统的现实场景应用。
+
+局限性：专注于程序化知识编码，对多模态或设备特定任务的支持较少。
+
 【2023-7-5】[MetaGPT](https://github.com/geekan/MetaGPT)
+- git：[MetaGPT](https://github.com/geekan/MetaGPT)
+- doc：[doc](https://docs.deepwisdom.ai/main/zh/guide/get_started/introduction.html)
 - [MetaGPT: Multi-Agent Meta Programming Framework]() 多智能体编程框架
 - MetaGPT takes a one line requirement as input and outputs user stories / competitive analysis / requirements / data structures / APIs / documents, etc.
 - Internally, MetaGPT includes product managers / architects / project managers / engineers. It provides the entire process of a software company along with carefully orchestrated SOPs.
 - Code = SOP(Team) is the core philosophy. We materialize SOP and apply it to teams composed of LLMs.
 - ![](https://github.com/geekan/MetaGPT/raw/main/docs/resources/software_company_cd.jpeg)
 
+metaGPT 国内开源 Multi-Agent 框架，目前整体社区活跃度较高和也不断有新feature出来，中文文档支持的很好。
 
+metaGPT 以软件公司方式组成，目的是完成一个软件需求，输入一句话的老板需求，输出用户故事 / 竞品分析 / 需求 / 数据结构 / APIs / 文件等。
+
+MetaGPT内部包括产品经理 / 架构师 / 项目经理 / 工程师，它提供了一个软件公司的全过程与精心调配的SOP。
+
+整体代码精简,主要包括:  
+- actions:智能体行为  
+- documents: 智能体输出文档  
+- learn:智能体学习新技能  
+- memory:智能体记忆  
+- prompts:提示词  
+- providers:第三方服务  
+- utils:工具函数等
 
 ## Magentic-One
 
@@ -369,6 +721,17 @@ pip install langgraph
 
 [CrewAI](https://www.crewai.com/) 是快速搭建 Multi-AI Agent 任务演示的首选工具，因为操作直观，配置起来也十分简便。
 - GitHub [crewAI](https://github.com/joaomdmoura/crewAI)
+- 基于 LangChain 的 Multi-agent 框架
+
+核心定位：基于**角色**的智能体协作编排。
+主要特点：
+- 动态任务分配，支持智能体之间的高效通信。
+- 模拟人类团队协作，通过角色分工实现专业化（通过角色分工模拟人类团队协作）。
+- 适用场景：组织化建模、协作式模拟、高级团队 AI 应用。
+
+局限性：
+- 聚焦于协作场景，对**多模态处理**的支持较弱。
+
 
 CrewAI 核心特征
 1. 角色定制代理：可以根据不同的角色、目标和工具来量身定制代理。
@@ -395,7 +758,119 @@ pip install crewai
 ```
 
 
+## AgentScope
+
+AgentScope
+- github: [AgentScope](https://github.com/modelscope/agentscope/blob/main/README_ZH.md)
+
+阿里开源 Multi-agent 框架，亮点是支持分布式框架，并且做了工程链路上的优化及监控。
+
+
+## UFO
+
+微软UFO
+- git：[UFO](https://github.com/microsoft/UFO)
+
+UFO 面向Windows系统的Agent，结合自然语言和视觉操作Windows GUI
+
+UFO（UI-Focused Agent）工作原理
+- 基于先进的视觉语言模型技术，特别是GPT-Vision，以及一个独特的双代理框架，使其能够理解和执行**Windows操作系统**中的图形用户界面（GUI）任务。
+
+UFO工作原理的详细解释：
+- 双代理框架
+  - 双代理架构：UFO由两个主要代理组成，AppAgent和ActAgent，分别负责应用程序的选择与切换，以及在这些应用程序内执行具体动作。
+  - 应用程序选择代理（AppAgent）：负责决定为了完成用户请求需要启动或切换到哪个应用程序。它通过分析用户的自然语言指令和当前桌面的屏幕截图来做出选择。一旦确定了最适合的应用程序，AppAgent会制定一个全局计划来指导任务的执行。
+  - 动作选择代理（ActAgent）：一旦选择了应用程序，ActAgent就会在该应用程序中执行具体的操作，如点击按钮、输入文本等。ActAgent利用应用程序的屏幕截图和控件信息来决定下一步最合适的操作，并通过控制交互模块将这些操作转化为对应用程序控件的实际动作。
+- 控制交互模块 
+  - UFO的控制交互模块是将代理识别的动作转换为应用程序中实际执行的关键组成部分。
+  - 这个模块使UFO能够直接与应用程序的GUI元素进行交互，执行如点击、拖动、文本输入等操作，而无需人工干预。
+- 多模态输入处理 
+  - UFO能够处理多种类型的输入，包括文本（用户的自然语言指令）和图像（应用程序的屏幕截图）。这使UFO能够理解当前GUI的状态、可用控件和它们的属性，从而做出准确的操作决策。
+- 用户请求解析 
+  - 当接收到用户的自然语言指令时，UFO首先解析这些指令，以确定用户的意图和所需完成的任务。然后，它将这个任务分解成一系列子任务或操作步骤，这些步骤被AppAgent和ActAgent按顺序执行。
+- 应用程序间的无缝切换 
+  - 如果完成用户请求需要多个应用程序的操作，UFO能够在这些应用程序之间无缝切换。它通过AppAgent来决定何时以及如何切换应用程序，并通过ActAgent在每个应用程序中执行具体的操作。
+- 自然语言命令到GUI操作的映射 
+  - UFO的核心功能之一是将用户的自然语言命令映射到具体的GUI操作上。这一过程涉及到理解命令的意图，识别相关的GUI元素，以及生成和执行操作这些元素的动作。通过这种方式，UFO可以自动完成从文档编辑和信息提取到电子邮件撰写和发送等一系列复杂的任务，大大提高用户在Windows操作系统中工作的效率和便捷性。
+
+
+## TaskWeaver
+
+TaskWeaver
+- git：[TaskWeaver](https://github.com/microsoft/TaskWeaver)
+- doc：[TaskWeaver](https://microsoft.github.io/TaskWeaver/docs/overview)
+
+TaskWeaver 面向**数据分析**任务，通过编码片段解释用户请求，并以函数的形式有效协调各种插件来执行数据分析任务。
+
+TaskWeaver不仅仅是一个工具，更是一个复杂的系统，能够解释命令，将它们转换为代码，并精确地执行任务。
+
+TaskWeaver 工作流程涉及几个关键组件和过程, 三个关键组件组成：`规划器`（Planner）、`代码生成器`（CG）和`代码执行器`（CE）。代码生成器和代码执行器由代码解释器（CI）组成。
+
+
+## OmAgent
+
+OmAgent **开源**框架，专为轻松构建 设备端多模态智能体 而设计，具备高度灵活性和实时优化能力。
+
+不仅限于传统框架，更进一步实现了 AI 与智能手机、可穿戴设备以及摄像头等硬件设备的无缝集成。 
+
+OmAgent 提供两种独特的示例代码：
+- 行业实用应用：快速开发实际 AI 智能体的示例代码，适用于视频理解、物体识别、任务规划等真实场景。
+- 研究导向实现：展示最新 AI 算法的实现，包括 ReAct、ToT 和 Divide-and-Conquer (DnC) 等，在顶级 AI 会议中发表，助力研究人员探索智能体的新能力。（诸如 ReAct、ToT 和 Divide-and-Conquer (DnC) 等在 AI 顶会中发表的前沿算法的复现示例，用于支持研究人员探索新智能体结构的能力）
+
+核心功能
+
+设备为中心：
+- 原生支持智能设备，简化与手机、智能眼镜、IP 摄像头等硬件的集成。
+- 后端流程优化，方便移动应用程序的无缝集成。
+
+原生多模态支持：
+- 内置先进的多模态模型，支持文本、音频、视频和图像的处理。
+- 优化设备与用户之间自然、实时的交互体验。
+
+工作流编排：
+- 基于图结构的工作流引擎，支持高级任务管理。
+- 实现前沿算法的应用，如 ReAct 和 Divide-and-Conquer (DnC)。
+
+可扩展性与灵活性：
+- 提供直观的界面，支持构建多角色、多场景的智能体。
+- 支持动态工作流、长期记忆以及与 Milvus 等向量数据库的集成。
+
+实时优化：
+- 低延迟的端到端优化，确保即时反馈与卓越的用户体验。
+
+
+##  Semantic Kernel
+
+Microsoft 出品
+
+核心定位：将 AI 集成到企业应用中。
+
+主要特点：
+- 轻量级 SDK，支持多种编程语言。
+- 提供安全性、合规性以及多步骤 AI 任务管理的协调器。
+
+适用场景：
+- 为企业软件提供 AI 能力增强（使用 AI 能力增强企业软件）。
+
+局限性：
+- 对研究导向或多模态应用支持较为有限。
+
 ## AutoGen
+
+微软出品
+
+核心定位：
+- 高级多智能体对话系统。
+
+主要特点：
+- 强大的模块化设计，支持自定义智能体角色和任务恢复机制。
+- 支持多智能体通信及外部工具集成。
+
+适用场景：
+- 对话式 AI、协作式决策系统。
+
+局限性：
+- 对多模态任务和硬件集成的原生支持有限。
 
 【2023-10-10】微软发布[AutoGen](https://microsoft.github.io/autogen/), [github](https://microsoft.github.io/autogen/)，多代理（Agent）任务框架，完成各种场景的复杂工作流任务，从GPT大语言模型近几个月高速迭代以来，最近这个概念很火。
 - 论文：[AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155)
@@ -407,6 +882,7 @@ pip install crewai
 
 如果要做 multi-Agent，那么 AutoGen 架构一定是最正确的
 
+活跃度top级别的Multi-Agent框架，与MetaGPT“不相上下”
 
 ### AutoGen 介绍
 
@@ -1071,6 +1547,25 @@ System prompt中如何引用？
 单次调用，如果是批量请求，每次都需要initiate_chat? 如何获取中途所有agent的消息？
 - 如果是用户批量消息, 每次都 initiate_chat。 agent 消息可以看上面的memory相关，每个agent都拥有和其他agent的消息历史
 
+
+
+## GUI 系统
+
+
+### Dify
+
+核心定位：专注于基于大语言模型（LLM）的应用开发与 AI
+
+主要特点：
+- 直观的界面，支持快速原型设计和生产级部署。
+- 内置超过 50 种工具（如 Google Search、DALL·E、Stable Diffusion）。
+- 支持 RAG（检索增强生成）管道和 ReAct 框架。
+
+适用场景：
+- 跨行业构建基于 LLM 的应用程序。
+
+局限性：
+- 对硬件或设备为中心的使用场景关注较少。
 
 
 # 结束
