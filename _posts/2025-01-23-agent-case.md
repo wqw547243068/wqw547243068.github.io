@@ -581,6 +581,15 @@ Memory Toolkit：复刻还得加点记忆buff 
 
 ## 设备操控
 
+
+Huawei London `邵坤`主题演讲，介绍面向通用型 GUI Agent 的模型和优化。
+- 《Towards generalist GUl Agents: model and optimization》
+- 【2025-3-18】[AI Agent进化：RL到大模型，绝了](https://blog.csdn.net/m0_37733448/article/details/146354646)
+
+GUI Agent成为新趋势
+- 手机、电脑广泛使用，提供大量开放域端侧任务，更能触达智能边界
+
+
 当前的多模态大型语言模型 （MLLM） 受制于其训练数据，缺乏有效发挥操作助手功能的能力
 - 角色模拟上见站内专题 [agent-角色模拟](simulator#agent-角色模拟)
 
