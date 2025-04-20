@@ -20,14 +20,23 @@ Agent 框架 旨在 简化 LLM-powered 应用开发过程
 
 ## 总结
 
+大模型 Agent 开发框架概览
+
+|Agent框架类型|分析|热门框架|分析|
+|---|---|---|---|
+|**低代码**框架|无需代码即可完成|Coze、Dify、LangFlow||
+|**基础**框架|大模型原生能力进行Agent开发|function calling、tools use||
+|**代码**框架|借助代码完成Agent开发| LangChain、LangGraph、Llamalndex||
+|**Multi-Agent**框架|多智能体|CrewAl、Swarm、Assistant API<br>AutoGen、MetaGPT||
+
 AI框架
-- 🔹 𝗟𝗮𝗻𝗴𝗖𝗵𝗮𝗶𝗻 - AI 工作流、RAG 和智能代理的首选 𝗟𝗟𝗠 𝗮𝗽𝗽 𝗳𝗿𝗮𝗺𝗲𝘄𝗼𝗿𝗸。
--	🔹 𝗟𝗹𝗮𝗺𝗮𝗜𝗻𝗱𝗲𝘅 - 优化了 𝗱𝗼𝗰𝘂𝗺𝗲𝗻𝘁 𝘀𝗲𝗮𝗿𝗰𝗵 和聊天机器人内存，有𝗲𝗮𝘀𝘆 𝗱𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝘁𝗶𝗼𝗻。
--	🔹 𝗖𝗿𝗲𝘄𝗔𝗜 - 一个 𝗺𝘂𝗹𝘁𝗶-𝗮𝗴𝗲𝗻𝘁 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 框架，可简化人工智能团队工作和自动化。
--	🔹 𝗦𝘄𝗮𝗿𝗺 - 用于𝘀𝗲𝗹𝗳-𝗼𝗿𝗴𝗮𝗻𝗶𝘇𝗶𝗻𝗴 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 系统 𝗻𝗲𝘁𝘄𝗼𝗿𝗸𝘀。
--	🔹 𝗣𝘆𝗱𝗮𝗻𝘁𝗶𝗰𝗔𝗜 - 𝘀𝘁𝗿𝘂𝗰𝘁𝘂𝗿𝗲𝗱 𝗔𝗜 𝗱𝗮𝘁𝗮 𝘃𝗮𝗹𝗶𝗱𝗮𝘁𝗶𝗼𝗻 和 𝗲𝗻𝗳𝗼𝗿𝗰𝗶𝗻𝗴 𝗰𝗼𝗻𝘀𝗶𝘀𝘁𝗲𝗻𝘁 𝗟𝗟𝗠 𝗼𝘂𝘁𝗽𝘂𝘁𝘀 的常用框架。
--	🔹 𝗟𝗮𝗻𝗴𝗚𝗿𝗮𝗽𝗵 - A 𝗴𝗿𝗮𝗽𝗵-𝗯𝗮𝘀𝗲𝗱 𝗔𝗜 𝘄𝗼𝗿𝗸𝗳𝗹𝗼𝘄 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗰𝗼𝗺𝗽𝗹𝗲𝘅 𝗟𝗟𝗠 𝗽𝗶𝗽𝗲𝗹𝗶𝗻𝗲𝘀 的框架。
--	🔹 𝗔𝘂𝘁𝗼𝗴𝗲𝗻𝗔𝗜 - 最强大的 𝗮𝘂𝘁𝗼𝗻𝗼𝗺𝗼𝘂𝘀 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 𝘀𝗲𝗹𝗳-𝗶𝗺𝗽𝗿𝗼𝘃𝗶𝗻𝗴 𝘀𝘆𝘀𝘁𝗲𝗺𝘀 𝗮𝗻𝗱 𝘁𝗮𝘀𝗸 𝗮𝘂𝘁𝗼𝗺𝗮𝘁𝗶𝗼𝗻。
+- `𝗟𝗮𝗻𝗴𝗖𝗵𝗮𝗶𝗻` - AI 工作流、RAG 和智能代理的首选 𝗟𝗟𝗠 𝗮𝗽𝗽 𝗳𝗿𝗮𝗺𝗲𝘄𝗼𝗿𝗸。
+- `𝗟𝗹𝗮𝗺𝗮𝗜𝗻𝗱𝗲𝘅` - 优化了 𝗱𝗼𝗰𝘂𝗺𝗲𝗻𝘁 𝘀𝗲𝗮𝗿𝗰𝗵 和聊天机器人内存，有𝗲𝗮𝘀𝘆 𝗱𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝘁𝗶𝗼𝗻。
+- `𝗖𝗿𝗲𝘄𝗔𝗜` - 一个 𝗺𝘂𝗹𝘁𝗶-𝗮𝗴𝗲𝗻𝘁 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 框架，可简化人工智能团队工作和自动化。
+- `𝗦𝘄𝗮𝗿𝗺` - 用于𝘀𝗲𝗹𝗳-𝗼𝗿𝗴𝗮𝗻𝗶𝘇𝗶𝗻𝗴 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 系统 𝗻𝗲𝘁𝘄𝗼𝗿𝗸𝘀。
+- `𝗣𝘆𝗱𝗮𝗻𝘁𝗶𝗰𝗔𝗜` - 𝘀𝘁𝗿𝘂𝗰𝘁𝘂𝗿𝗲𝗱 𝗔𝗜 𝗱𝗮𝘁𝗮 𝘃𝗮𝗹𝗶𝗱𝗮𝘁𝗶𝗼𝗻 和 𝗲𝗻𝗳𝗼𝗿𝗰𝗶𝗻𝗴 𝗰𝗼𝗻𝘀𝗶𝘀𝘁𝗲𝗻𝘁 𝗟𝗟𝗠 𝗼𝘂𝘁𝗽𝘂𝘁𝘀 的常用框架。
+- `𝗟𝗮𝗻𝗴𝗚𝗿𝗮𝗽𝗵` - A 𝗴𝗿𝗮𝗽𝗵-𝗯𝗮𝘀𝗲𝗱 𝗔𝗜 𝘄𝗼𝗿𝗸𝗳𝗹𝗼𝘄 𝗼𝗿𝗰𝗵𝗲𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗰𝗼𝗺𝗽𝗹𝗲𝘅 𝗟𝗟𝗠 𝗽𝗶𝗽𝗲𝗹𝗶𝗻𝗲𝘀 的框架。
+- `𝗔𝘂𝘁𝗼𝗴𝗲𝗻𝗔𝗜` - 最强大的 𝗮𝘂𝘁𝗼𝗻𝗼𝗺𝗼𝘂𝘀 𝗔𝗜 𝗮𝗴𝗲𝗻𝘁 𝘀𝗲𝗹𝗳-𝗶𝗺𝗽𝗿𝗼𝘃𝗶𝗻𝗴 𝘀𝘆𝘀𝘁𝗲𝗺𝘀 𝗮𝗻𝗱 𝘁𝗮𝘀𝗸 𝗮𝘂𝘁𝗼𝗺𝗮𝘁𝗶𝗼𝗻。
 
 
 |框架名称|用途|优势|劣势|最适合场景|
@@ -71,9 +80,6 @@ A well-designed AI framework typically includes:
 9. Lyzer
 
 
-
-
-
 ### LangChain vs AutoGen
 
 
@@ -81,7 +87,7 @@ A well-designed AI framework typically includes:
 - 用 LangChain 设计原型，业务复杂时，升级到 AutoGen
 
 分析
-- AutoGen 专注于**Agent AI**，支持创建**多个Agent**交互协作系统，解决任务。
+- AutoGen 专注于 **Agent AI**，支持创建 **多个Agent**交互协作系统，解决任务。
   - 生态: AutoGen Studio (GUI原型设计), AutoGen Bench(测试套件)
 - LangChain 强调**可组合性**，提供**模块化**构建，链接在一起, 创建**自定义LLM工作流**。
   - 生态: LangServe, LandSmith, LangGraph
@@ -144,8 +150,6 @@ AutoGen
 - 辅导系统：使用多项选择工具对用户进行测验。
 - 医疗保健和房地产 AI 助手。
 
-
-
 ### 框架分析
 
 【2024-12-20】[五大多智能体 ( Multi-AI Agent) 框架对比](https://zhuanlan.zhihu.com/p/10171636983)
@@ -194,16 +198,15 @@ AutoGen
 
 
 
-| 框架 | 核心定位 | 优势 | 试用场景 |
-| ---- | ---- | ---- | ---- |
-| LangGraph | 有状态多智能体系统 | 基于图的工作流、智能体协作 | 多步骤工作流、协作式系统 |
-| CrewAI | 基于角色的智能体编排 | 协作式问题解决、团队动态 | 组织建模、基于角色的模拟 |
-| Microsoft Semantic Kernel | 将AI集成到企业应用中 | 轻量化、安全性高、面向企业需求 | 增强企业应用 |
-| Microsoft AutoGen | 多智能体对话系统 | 鲁棒性，模块化设计强、对话管理能力突出 | 高级对话式AI应用 |
-| Dify | LLM应用开发 | 界面直观、内置丰富工具 | 快速开发LLM应用 |
-| MetaGPT | 多智能体协作 | SOP（标准操作流程）编码、任务分解 | 需要协作的复杂现实场景应用 |
-| OmAgent | 设备为中心的多模态智能体框架 | 实时响应、多模态处理、硬件集成 | 面向行业与研究的设备端AI智能体应用 | 
-
+| 框架 | 核心定位 | 优势 | 试用场景 | 不足 |
+| ---- | ---- | ---- | ---- | --- |
+| `LangGraph` | **有状态**多智能体系统 | 基于图的工作流、循环/非循环的多智能体协作、交互可视化 | 多步工作流、自适应、协作式系统 | 依赖专业知识，对多模态、设备支持弱 |
+| `CrewAI` | 基于**角色**的智能体编排 | 动态分配任务、模拟人类协作/角色分工、智能体高效通信 | 组织化建模、协作式模拟、高级AI应用 | 聚焦协作场景，对多模态支持较弱 |
+| `Semantic Kernel` | **企业应用**集成 | 轻量化SDK、多种编程语言、安全性高、多步骤AI任务管理 | 增强企业应用 | 研究导向、多模态应用不足 |
+| `AutoGen` | **多智能体对话**系统 | 鲁棒性，强大的模块化设计、对话管理能力突出；<br>自定义智能体、任务恢复；<br>多智能体通信、外部工具集成 | 高级对话式AI应用、协作式决策 | 多模态、硬件集成缺乏 |
+| `MetaGPT` | 多智能体协作 | SOP（标准操作流程）编码、任务分解 | 需要协作的复杂现实场景应用 |
+| `OmAgent` | 设备为中心的多模态智能体框架 | 实时响应、多模态处理、硬件集成 | 面向行业与研究的设备端AI智能体应用 | 
+| `Dify` | LLM应用开发 | 界面直观、内置丰富工具（50种）、RAG、ReACT | 快速开发LLM应用 | 不支持硬件、设备 |
 
 为什么选择 OmAgent？
 - 示例代码支持：提供针对行业从业者和 AI 研究人员的预构建示例代码，支持真实场景应用和最新 AI 算法。
@@ -220,7 +223,7 @@ OmAgent 开源地址：
 - GitHub - om-ai-lab/OmAgent: A Multimodal Language Agent Framework for Problem Solving and More
 
 
-### 选什么框架
+### 框架选型
 
 
 选择建议：
@@ -247,22 +250,30 @@ Selection Recommendations:
 - 即开即用：`CrewAI` —— 配置快捷、操作直观，非常适合用于演示或是需要迅速创建智能体的任务。`Swarm` 和 `Magentic-One` 表现也相当不错，但社区支持相对较弱。
 - 性价比之王：`Magentic-One` —— 它提供了一套预配置的解决方案，采用了通用框架的设计方法，可能在初期能够节省成本。`Swarm` 和 `CrewAI` 在成本效益方面也值得关注。
 
+Agent 架构设计见站内专题：[Agent 设计](agent_design)
+
+
 ## 决策模型
 
-Agent 主流决策模型是 ReAct框架 和 ReAct的变种框架。
+Agent 主流决策模型是 `ReAct`框架 和 **ReAct变种** 框架。
 
-### ReAct框架
+### ReAct 框架
 
-ReAct = 少样本prompt + Thought + Action + Observation 是调用工具、推理和规划时常用的prompt结构，先推理再执行，根据环境来执行具体的action，并给出思考过程Thought。
+ReAct 是调用工具、推理和规划时常用的prompt结构
+- 先推理再执行，根据环境来执行具体的action，并给出思考过程Thought。
+
+`ReAct` = 少样本`prompt` + `Thought` + `Action` + `Observation` 
 
 
 ### ReAct 变种
 
 #### Plan-and-Execute ReAct
 
-类BabyAgi 执行流程：通过优化规划和任务执行的流程来完成复杂任务的拆解，将复杂的任务拆解成多个子任务，再依次/批量执行。
+类 BabyAgi 执行流程：
+- 通过优化规划和任务执行的流程来完成复杂任务的拆解，将复杂的任务拆解成多个子任务，再依次/批量执行。
 
-优点是对于解决复杂任务、需要调用多个工具时，也只需要调用三次大模型，而不是每次工具调用都要调大模型。
+优点
+- 对于解决复杂任务、需要调用多个工具时，也只需要调用三次大模型，而不是每次工具调用都要调大模型。
 
 #### LLmCompiler
 
@@ -273,13 +284,22 @@ LLmCompiler：并行执行任务，规划时生成一个DAG图来执行action，
 
 
 
-
-
 ## 框架
 
 分析
-- 单智能体 = 大语言模型（LLM） + 观察（obs） + 思考（thought） + 行动（act） + 记忆（mem）
-- 多智能体 = 智能体 + 环境 + SOP + 评审 + 通信 + 成本
+- `单智能体` = `大语言模型`（LLM） + `观察`（obs） + `思考`（thought） + `行动`（act） + `记忆`（mem）
+- `多智能体` = 多个`智能体` + `环境` + `SOP` + `评审` + `通信` + `成本`
+
+业界各种最新的智能体
+
+【2023-7-14】[构建你的第一个 LLM APP 所需了解的一切](https://zhuanlan.zhihu.com/p/643233392)
+
+通过上下文注入构建你自己的聊天机器人
+- ![](https://pic2.zhimg.com/80/v2-2117b4f8b6ec27c5396603b53203ec21_1440w.webp)
+
+智能体分类
+- 单智能体: AutoGPT, ChatGPT(code+plugin), Langchain Agent, Transformers Agent
+- 多智能体: BabyAGI, CAMEL, Multi-Agent Debate, MetaGPT, AutoGenß
 
 
 ### 单智能体
@@ -290,18 +310,20 @@ Single Agent 框架
 - 多模态能力建设：agent能观察到的不仅限于用户输入的问题，可以加入包括触觉、视觉、对周围环境的感知等；
 - 自我思考能力：主动提出问题，自我优化；
 
+
 ### 多智能体
 
 多agent应该像人脑一样，分工明确、又能一起协作
 - 比如，大脑有负责视觉、味觉、触觉、行走、平衡，甚至控制四肢行走的区域都不一样。
 
-参考MetaGPT和AutoGen生态最完善的两个Multi-Agent框架：
+单一Agent 已经无法满足日益增长的需求。而多Agent让多个AI代理能够协同工作，共同完成复杂的任务
+
+参考 MetaGPT 和 AutoGen 生态最完善的两个Multi-Agent框架：
 - 环境&通讯：Agent间的交互，消息传递、共同记忆、执行顺序，分布式agent，OS-agent
 - SOP：定义SOP，编排自定义Agent
 - 评审：Agent健壮性保证，输入输出结果解析
 - 成本：Agent间的资源分配
 - Proxy：自定义proxy，可编程、执行大小模型
-
 
 优点：
 - 多视角分析问题：虽然LLM可以扮演很多视角，但会随着system prompt或者前几轮的对话快速坍缩到某个具体的视角上；
@@ -322,9 +344,12 @@ Single Agent 框架
 [原文](https://blog.csdn.net/m0_68116052/article/details/143197176)
 
 
-### 主流Agent框架
 
-Single-Agent
+## Single-Agent
+
+### 总结
+
+Single-Agent 主流框架
 - BabyAGI
 - AutoGPT
 - HuggingGPT
@@ -334,54 +359,49 @@ Single-Agent
 - OS-Copilot
 - Langgraph
 
-Multi-Agent
-- 斯坦福虚拟小镇
-- MetaGPT
-- AutoGen
-- ChatDEV
-- GPTeam
-- GPT Researcher
-- TaskWeaver
-- 微软UFO
-- CrewAI
-- AgentScope
-- Camel
-
-
-## Single-Agent
-
 ### BabyAGI
 
-BabyAGI
+【2023-4】 BabyAGI
 - git：GitHub - yoheinakajima/babyagi  
 - doc：[doc](https://yoheinakajima.com/birth-of-babyagi/)
 
-babyAGI决策流程：
+babyAGI 决策流程：
 - 1）根据需求分解任务；
 - 2）对任务排列优先级；
 - 3）执行任务并整合结果；
 
 亮点：
-- BabyAGI框架比较简单使用
+- BabyAGI 框架比较简单使用
 - 任务优先级队列比较独特
 
-##  斯坦福虚拟小镇
-
-斯坦福虚拟小镇
-- git：[generative_agents](https://github.com/joonspk-research/generative_agents)
-- paper：[PAPER](https://arxiv.org/pdf/2304.03442)
-
-虚拟小镇作为早期 multi-agent 项目，很多设计也影响到了其他multi-agent框架，里面的**反思**和**记忆检索**模拟人类的思考方式。
-- 代理（Agents）感知环境，当前代理所有的感知（完整的经历记录）都被保存在一个名为"记忆流"（memory stream）中。
-- 基于代理的感知，系统检索相关的记忆，然后使用这些检索到的行为来决定下一个行为。
-- 这些检索到的记忆也被用来形成长期计划，并创造出更高级的反思，这些都被输入到记忆流中以供未来使用。
-
-记忆流记录代理的所有经历，检索从记忆流中根据近期性（Recency）、重要性（Importance）和相关性（Relevance）检索出一部分记忆流，以传递给语言模型。
-
-反思是由代理生成的更高级别、更抽象的思考。因为反思也是一种记忆，所以在检索时，它们会与其他观察结果一起被包含在内，反思是周期性生成的。
+相对于 AutoGPT ，BabyAGI 更聚焦在“思维流程”方面尝试的项目，并**没有**添加对各种外部工具利用的支持。
 
 
-## AutoGPT
+#### BabyAGI 原理
+
+其核心逻辑:
+- 从任务列表中获取排在第一位的任务。
+- 获取任务相关的“记忆”信息，由任务执行 agent 来执行这个任务，获取结果。目前这个执行就是一个简单的 LLM 调用，不涉及外部工具。
+- 将返回结果再存放到**记忆存储**中。基于当前信息，如整体目标，最近一次执行结果，任务描述，还未执行的任务列表等，生成**新任务**。
+- 将新任务添加到任务列表中，再判断所有任务的优先级，重新排序。
+- ![](https://user-images.githubusercontent.com/21254008/235015461-543a897f-70cc-4b63-941a-2ae3c9172b11.png)
+
+这个过程就是在模拟作者一天真实的工作流程。
+- 早上起来看下有哪些任务要做，白天做任务拿反馈，晚上再看下基于反馈有没有新的任务要加进来，然后重新排下优先级。
+- ![](https://picx.zhimg.com/80/v2-fc665ce2bae6d064e16ae444a5096ff0_1440w.webp?source=1940ef5c)
+
+整个项目的代码量很少，相关的 prompts 也比较简单易懂
+- ![](https://picx.zhimg.com/80/v2-a6a493784c7c41d553390551e64f9f4d_1440w.webp?source=1940ef5c)
+
+#### BabyAGI 进化
+
+进化版本
+- BabyASI 借鉴了 AutoGPT 添加了对 search，代码执行等工具的支持。理论上，如果这个 ASI（Artificial Super Intelligence）真的足够聪明，甚至可以产生代码给自己做 prompt 优化，流程改造，甚至持续的模型训练等，让 GPT 自己开发未来的 GPT，想想是不是很带感 。
+
+
+
+
+### AutoGPT
 
 AutoGPT
 - git：[AutoGPT](https://github.com/Significant-Gravitas/AutoGPT)
@@ -394,21 +414,78 @@ AutoGPT 定位类似个人助理，帮助用户完成指定的任务，如调研
 
 
 
-## Langchain 生态
+### HuggingGPT
+
+HuggingGPT
+- git: [JARVIS](https://github.com/microsoft/JARVIS)  
+- paper: [paper](https://arxiv.org/pdf/2303.17580)
+
+HuggingGPT 任务分为四个部分：
+- 任务规划：将任务规划成不同的步骤，这一步比较容易理解。
+- 模型选择：在一个任务中，可能需要调用不同的模型来完成。例如，在写作任务中，首先写一句话，然后希望模型能够帮助补充文本，接着希望生成一个图片。这涉及到调用到不同的模型。
+- 执行任务：根据任务的不同选择不同的模型进行执行。
+- 响应汇总和反馈：将执行的结果反馈给用户。
+
+HuggingGPT的亮点：
+- HuggingGPT与AutoGPT的不同之处在于，可调用HuggingFace上不同的模型来完成更复杂的任务，从而提高了每个任务的精确度和准确率。
+- 然而，总体成本并没有降低太多。
+
+#### 【2023-4-3】HuggingGPT
 
 
-### GPT-Engineer
+##### 简介
+
+【2023-4-3】[HuggingGPT:一个ChatGPT控制所有AI模型，自动帮人完成AI任务](https://www.toutiao.com/article/7217680526839202307),浙大与微软亚研院的合作成果. 
+- [paper](https://arxiv.org/abs/2303.17580)
+- 项目已开源，名叫「贾维斯」,钢铁侠里的AI管家贾维斯（[JARVIS](https://github.com/microsoft/JARVIS)）。
+- 和3月份刚发布的Visual ChatGPT的思想非常像:后者HuggingGPT，主要是可调用的模型范围扩展到了更多，包括数量和类型。
+
+##### 原理
+
+如果说 BabyAGI 更多的是探索了 plan & execution 这个应用 LLM 的模式，那么 HuggingGPT 相对早一些的工作更多地展示了在“外部工具”这个层面的想象空间。
+
+核心运作逻辑也是**计划加上执行**，只不过在执行工具层面，可利用丰富的“领域专业模型”来协助 LLM 更好地完成复杂任务
+- ![](https://picx.zhimg.com/80/v2-512ef42cf0d983c518d3d47d2638dbbe_1440w.webp?source=1940ef5c)
+
+语言是通用的接口。
+
+工程流程分为四步:
+- 首先，任务规划。ChatGPT将用户的需求解析为任务列表，并确定任务之间的执行顺序和资源依赖关系。
+- 其次，模型选择。ChatGPT根据HuggingFace上托管的各专家模型的描述，为任务分配合适的模型。
+- 接着，任务执行。混合端点（包括本地推理和HuggingFace推理）上被选定的专家模型根据任务顺序和依赖关系执行分配的任务，并将执行信息和结果给到ChatGPT。
+- 最后，输出结果。由ChatGPT总结各模型的执行过程日志和推理结果，给出最终的输出。
+
+请求:
+> 请生成一个女孩正在看书的图片，她的姿势与example.jpg中的男孩相同。然后请用你的声音描述新图片。
+
+可以看到HuggingGPT是如何将它拆解为6个子任务，并分别选定模型执行得到最终结果的。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/cef09fd55855447c80ebe387c3376566~noop.image?_iz=58558&from=article.pc_detail&x-expires=1681185700&x-signature=gCXw63eEBk%2FqSX6NUbCm2SAJLQo%3D)
+
+用gpt-3.5-turbo和text-davinci-003这俩可以通过OpenAI API公开访问的变体，进行了实测。如下图所示:
+- 在任务之间存在资源依赖关系的情况下，HuggingGPT可以根据用户的抽象请求正确解析出具体任务，完成图片转换。
+
+在音频和视频任务中，它也展现了组织模型之间合作的能力，通过分别并行和串行执行两个模型的方式，完了一段“宇航员在太空行走”的视频和配音作品。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/e6db6415cbd348d19d0ddaa6cd25ec3a~noop.image?_iz=58558&from=article.pc_detail&x-expires=1681185700&x-signature=5kpy%2Bz12gyq1MjUpDM2ewDVw4pU%3D)
+
+还可以集成多个用户的输入资源执行简单的推理，比如在以下三张图片中，数出其中有多少匹斑马。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/809148f403f3486eae6f7e1f9c172116~noop.image?_iz=58558&from=article.pc_detail&x-expires=1681185700&x-signature=x8aBJK6pJiGy309RKsS%2Bm52Kw2w%3D)
+
+
+### Langchain 生态
+
+
+#### GPT-Engineer
 
 GPT-Engineer
 - git: [GPT-Engineer](https://github.com/AntonOsika/gpt-engineer)
 
-基于 langchain 开发，单一工程师agent，解决编码场景的问题。
+基于 langchain 开发，单一工程师 agent，解决编码场景的问题。
 
 目的是创建一个完整的代码仓库，在需要时要求用户额外输入补充信息。
 
-亮点：code-copilot的自动化升级版
+亮点：code-copilot 自动化升级版
 
-### LangGraph
+#### LangGraph
 
 Langgraph
 - doc：[Langgraph](https://python.langchain.com/docs/langgraph)
@@ -425,58 +502,295 @@ langchain 组件，允许开发者通过图的方式重构单个agent内部的�
 - 局限性：需要专业知识，对多模态或设备为中心的使用场景没有本质优化。
 
 
-## HuggingGPT
+### 【2023-3-30】AutoGPT
 
-HuggingGPT
-- git: [JARVIS](https://github.com/microsoft/JARVIS)  
-- paper: [paper](https://arxiv.org/pdf/2303.17580)
+【2023-4-12】
+- [AutoGPT 太火了，无需人类插手自主完成任务](https://mp.weixin.qq.com/s/bV1tPc7hNn2z06YOpzyanw)
+- [拥有自我意识的AI:AutoGPT](https://juejin.cn/post/7236594708301840441)
 
-HuggingGPT 任务分为四个部分：
-- 任务规划：将任务规划成不同的步骤，这一步比较容易理解。
-- 模型选择：在一个任务中，可能需要调用不同的模型来完成。例如，在写作任务中，首先写一句话，然后希望模型能够帮助补充文本，接着希望生成一个图片。这涉及到调用到不同的模型。
-- 执行任务：根据任务的不同选择不同的模型进行执行。
-- 响应汇总和反馈：将执行的结果反馈给用户。
+#### AutoGPT 介绍
 
-HuggingGPT的亮点：
-- HuggingGPT与AutoGPT的不同之处在于，可调用HuggingFace上不同的模型来完成更复杂的任务，从而提高了每个任务的精确度和准确率。
-- 然而，总体成本并没有降低太多。
+[AutoGPT](https://news.agpt.co/) 的研究开始走进大众视野。
+-  2023年3月30日，Toran Bruce Richards 发行 `AutoGPT`，实验性开源应用程序，利用 OpenAI 的GPT-4语言模型来创建**完全**自主和可定制的 AI 代理
+  - Toran 是一名游戏开发商，并创立了一家名为 Significant Gravitas 的游戏公司
+- AutoGPT 相当于给基于 GPT 的模型一个内存和一个身体。
+  - 可以把一项任务交给 AI 智能体，自主地提出一个计划，然后执行计划。
+  - 此外其还具有互联网访问、长期和短期内存管理、用于文本生成的 GPT-4 实例以及使用 GPT-3.5 进行文件存储和生成摘要等功能。
+- AutoGPT 从根本上改变了 AI 与人类之间的交互方式，人类不再需要发挥积极作用，同时仍然保持与 ChatGPT 等其他 AI 应用程序相同或更好的结果质量。
+
+AutoGPT 用处很多，可用来分析市场并提出交易策略、提供客户服务、进行营销等其他需要持续更新的任务。
+- [GitHub 地址](https://github.com/torantulino/auto-gpt)
+
+#### AutoGPT 工作原理
+
+AutoGPT 如何工作？
+
+AutoGPT 基于自主 AI 机制工作，其中 AI 系统创建不同的 AI 代理来满足特定任务，其中包括:
+- **任务创建**代理: 在 AutoGPT 上输入目标时，第一个与任务创建代理交互的 AI 代理。根据目标创建一个任务列表以及实现这些目标的步骤，并将其发送给优先级代理。
+- 任务**优先级**代理: 收到任务列表后，优先级 AI 代理会确保顺序正确且符合逻辑，然后再将其发送给执行代理。
+- 任务**执行**代理: 完成优先级排序后，执行代理将一个接一个地完成任务。这涉及利用 GPT-4、互联网和其他资源来获得结果。
+- ![架构图](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba630117cd6408bb1fb8a1265fdf520~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+
+当执行代理完成所有任务，结果不理想时，它可以与**任务创建代理**通信，创建新的任务列表。三个代理之间的迭代循环，直到完成所有用户定义的目标。
+
+AI 代理的行为也显示在用户界面上，将它们分为四组:思想、推理、计划、评判。
+- `思想`（THOUGHTS） :AI 代理分享它对目标的想法。
+- `推理`（REASONING） :AI 代理推理如何开展并实现它的想法。
+- `计划`（PLAN） :AI代理通过分析，列举了所要完成任务的计划。
+- `评判`（CRITICISM） :AI进行自我评判，纠正错误并克服任何限制问题。
+
+通过共享此计算流程，AutoGPT 可以进行反复尝试论证，并进行针对性的优化处理，可以在没有任何用户干预的情况下克服所遇到的所有问题。
+
+模块图, 源自 [AGI-MAP](https://github.com/ziwang-com/AGI-MAP)
+- ![arch](https://user-images.githubusercontent.com/11691791/236591588-3aaa6a6e-bbf5-42cd-84c3-a21f76e8f2a7.png)
+
+特斯拉前 AI 总监、刚刚回归 OpenAI 的 Andrej Karpathy 也为其大力宣传，并在推特赞扬:「AutoGPT 是 prompt 工程的下一个前沿。」
+
+#### AutoGPT 局限性
+
+一些关键限制
+1. **成本高昂**
+  - 虽然功能令人惊叹，但 AutoGPT 的实用性可能会让你失望。由于 `AutoGPT` 使用昂贵的 `GPT-4` 模型，因此即使是小任务，完成每个任务的成本也可能很高。这主要是因为 AutoGPT 在特定任务的步骤中会多次使用 `GPT-4`。
+2. 经常陷入**循环**
+  - 用户在使用 AutoGPT 时面临的最常见问题是它陷入循环。如果这种情况持续超过几分钟，则可能意味着你必须重新启动该过程。发生这种情况是因为 AutoGPT 依赖 GPT-4 来正确定义和分解任务。因此，如果底层LLM返回结果不足以让 AutoGPT 采取任何行动就会出现反复尝试的问题。
+3. 数据**安全性**
+  - 由于AutoGPT经过充分授权，能自主运行并访问你的系统和互联网，例如使用twitter账号，登录github，使用搜索引擎等，因此你的数据可能会被泄露。
+  - AutoGPT没有安全代理，所以使用 AutoGPT 时必须小心，如果没有给出正确的说明和安全指南，你不能让模型继续运行。
+
+#### 使用
 
 
-## GPT Researcher
-
-GPT Researcher
-- git：[GPT Researcher](https://github.com/assafelovic/gpt-researcher)
-
-串行的 Multi-Agent，框架可以适配内容生产
-
-GPT Researcher 架构主要通过运行两个代理来进行，一个是“规划者”，一个是“执行者”；
-- 规划者负责生成研究问题，而执行者则是根据规划者生成的研究问题寻找相关的信息
-- 最后再通过规划者对所有相关信息进行过滤与汇总，然后生成研究报告；
+AutoGPT配置
+- 为AI取一个名字 \[Name]，一个角色定位\[Role]，同时你可以为它制定目标\[Goals]（最多5个目标，如果你仅有一个目标就直接回车）。
+- 制定完成目标以后，AutoGPT会进行自主思考并分析你的目标\[THOUGHTS]，思考完成后开始理解并推理如何去完成这个目标\[REASONING]，然后开始自主拆解成具体的计划\[PLAN]，最后会提出评判\[CRITICISM] 用以保证 AI 代理纠正错误并作出正确的决断。
+- 完成以上的行为规划后，AutoGPT会提示它将要作出的指令和动作[NEXT ACTION]， 里面包含具体执行的命令\[COMMAND]和参数\[ARGUMENTS]，用户可以在此时可以对风险命令进行识别，避免出现数据泄露等预期外的风险，这里可以通过y或者n进行授权或者拒绝AutoGPT接下来的指令动作。
+- ![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/23d2ddb5b3ab4638af1aa22913f29142~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
+- AutoGPT会通过以上步骤，进行多次循环，由于AutoGPT可以存储上下文和历史经验，所以每一次都会根据反馈结果进行更深入的思考，制定出更优的方案，最后列举他要执行的计划，反复尝试和补充，直到达到你预期的目标。
+- AutoGPT会通过以上步骤，进行多次循环，由于AutoGPT可以存储上下文和历史经验，所以每一次都会根据反馈结果进行更深入的思考，制定出更优的方案，最后列举他要执行的计划，反复尝试和补充，直到达到你预期的目标。
 
 
-## Camel
-
-[Camel](https://www.camel-ai.org) 早期Multi-Agent项目，实现agent间的一对一对话，文档较少。
-- github: [camel](https://github.com/camel-ai/camel)
+效果
+- ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4ac14513a95c49b5a7bb87f2050ee170~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
 
 
-### ChatDev
+实践
+- [AUTOGPT INSTALLATION AND FEATURES](https://autogpt.net/autogpt-installation-and-features/)
 
-ChatDev
-- git：[ChatDev](https://github.com/OpenBMB/ChatDev)  
-- doc：[ChatDev](https://chatdev.modelbest.cn/introduce)
+```sh
+# 准备Python 3.8以上的环境, 安装minicoda
+# source  ~/.bash_profile
+conda create -n py310 python=3.10 # 创建 3.10环境
+conda activate py310 # 激活环境
+# 下载autogpt代码
+git clone https://github.com/Torantulino/Auto-GPT.git
+cd 'Auto-GPT'
+pip install -r requirements.txt
+# 配置文件
+mv .env.template .env
+vim .env # 填入 openai key 到变量 OPENAI_API_KEY
+# python scripts/main.py
+# python scripts/main.py --debug # 调试模式
+# python scripts/main.py --speak # use TTS for Auto-GPT
+python3 scripts/main.py # 多个虚拟环境时，为了避免干扰
+python -m autogpt
+```
 
-ChatDev（2023.9）不是普通的MultiAgent框架，基于Camel，内部流程都是2个Agent之间多次沟通，整体上的不同Agent角色的沟通关系和顺序都是由开发者配置，不太像是个全功能的MultiAgent框架的实现。
+【2023-7-7】
+- 复制 默认的 env文件，只更新里面的openai_api_key
 
-ChatDev 项目本身没有太多和复用性，依赖的旧版本Camel也是该抛弃的东西。
+```sh
+cp .env.template .env
+```
 
-这个项目本身更多是为了支撑论文的学术性原型，并不是为了让别人在上面开发而设计的。
+命令，详见[指南](https://docs.agpt.co/)
+
+```sh
+./run.sh --help     # on Linux / macOS
+./run.sh --debug # 打印日志
+# Run Auto-GPT with a different AI Settings file shell
+./run.sh --ai-settings <filename>
+# Run Auto-GPT with a different Prompt Settings file shell
+./run.sh --prompt-settings <filename>
+# Specify a memory backend
+./run.sh --use-memory  <memory-backend>
+./run.sh --speak # 启动tts 语音播报
+./run.sh --continuous # 100% 自动化，无需手动确认，有一定风险
+./run.sh --gpt3only # 只用 gpt3
+./run.sh --gpt4only # 只用 gpt4 ，更贵
+
+```
 
 
-## MetaGPT
 
 
-核心定位：多智能体协作。
+#### AutoGPT 改进
+
+
+##### COA
+
+【2023-5-18】从 COT 到 COA
+- `COT`(Chain of Thought，思维链) 
+- `COA`(Chain of Action，行为链): AutoGPT为代表，将自然语言表达的目标分解 为子任务，并利用互联网和其他工具自动迭代地尝试实现这些目标。
+
+特点
+- 自主化决策，任务链自动化
+- 知行一体，参数外挂，泛化学习，
+- 动态适应和灵活反应
+- AI从模拟人类思维到模拟人类行为， 人主要负责设定目标、审批预算、 调整关键行动链
+
+优点
+- •自主任务分解  
+- •上下文适应性
+- •泛化多功能优化 
+- •智能响应 
+- •协同学习 
+- •动态知识整合
+
+缺点
+- 语义鸿沟
+- 依赖风险 
+- 计算成本过高
+- 透明度缺失
+
+##### CoVe
+
+【2023-9-20】META AI提出CoVe
+- [Chain-of-Verification Reduces Hallucination in Large Language Models](https://arxiv.org/abs/2309.11495)
+
+一种CoVe(链式验证)的方式来减少大模型的幻觉
+
+该论文研究了大语言模型在解决‘幻觉’问题上的能力，提出了一种链式验证（CoVe）方法，通过该方法模型首先起草初始回答，然后计划验证问题来核实起草结果，独立回答这些问题以避免受到其他回答的影响，最终生成验证后的回答。实验证明CoVe方法降低了在各种任务中出现的幻觉，包括基于Wikidata的列表问题，闭书型MultiSpanQA和长文本生成等。
+
+按照这种Prompt模板
+1. Generate baseline response
+2. Generate a verification plan (set of questions)
+3. Execute plan (answer questions)
+4. Generate Final Verified Response (using answers)
+
+##### AgentGPT
+
+`AgentGPT`:浏览器中直接部署自主 AI 智能体
+- [项目主页](https://agentgpt.reworkd.ai)
+- [GitHub 地址](https://github.com/reworkd/AgentGPT)
+
+近日，又有开发者对 AutoGPT 展开了新的探索尝试，创建了一个可以在浏览器中组装、配置和部署自主 AI 智能体的项目 ——`AgentGPT`。项目主要贡献者之一为亚马逊软件工程师 Asim Shrestha
+
+`AgentGPT` 允许自定义 AI 命名，执行任何想要达成的目标。自定义 AI 会思考要完成的任务、执行任务并从结果中学习，试图达成目标。
+- 如下为 demo 示例:HustleGPT，设置目标为创立一个只有 100 美元资金的初创公司。
+
+用户在使用该工具时，同样需要输入自己的 OpenAI API 密钥。AgentGPT 目前处于 beta 阶段，并正致力于长期记忆、网页浏览、网站与用户之间的交互。
+
+```sh
+git clone https://github.com/reworkd/AgentGPT.git
+cd AgentGPT
+./setup.sh
+```
+
+【2023-4-15】[免费的AutoGPT替代网站](https://zhuanlan.zhihu.com/p/622083666)
+- 第一个是最火的AutoGPT，性能最强的，但是安装起来也挺麻烦的，并且还需要各种API的权限，小白不建议。
+- 第二个AgentGPT，需要OpenAI的API，操作简单，在网页输入key就可以用。
+- 第三个和第四个暂时是免费的，想体验的可以赶紧了。
+
+| 名称 | 方案 | 特点 | 链接 |
+| --- | --- | --- | --- |
+| [AutoGPT](https://github.com/Torantulino/Auto-GPT) | 最复杂 | 需要安装开源代码 |  |
+| [AgentGPT](https://agentgpt.reworkd.ai/) | 需要Token | 通过简单的网页访问易于使用，具有相对简单的功能 | |
+| [Cognosys](http://cognosys.ai/) | 不需要Token | 性能不错，具有明确的任务组织 | |
+| [Godmode](https://godmode.space/) | 不需要Token | 操作更加直观，每个步骤需要用户权限 | |
+
+
+##### Generative Agents
+
+参考：[如何看本周最火的AutoGPT？](https://www.zhihu.com/question/595382995/answer/2989954125)
+
+将多个 agent 组成一个团队，分别扮演不同的角色，是否能更好地解决一些复杂问题，甚至让这个小的“社群”演化出一些更复杂的行为模式甚至新知识的发现
+
+[Generative Agents](https://arxiv.org/pdf/2304.03442) 将 25 个拥有身份设定的模型 agent 组成了一个**虚拟小镇社群**，每个 agent 都具有记忆系统，并通过做计划，行动应答，自我反思等机制来让他们自由活动，真正来模拟一个社群的运作。从模拟过程来看这个社群也“涌现”了不少真实社会中的现象。
+
+几个 agent 行为的设定值得学习:
+- 每个 agent 的**记忆获取**做得更加细致，会结合**时效性，重要度和相关度**来做相关记忆的召回。相比简单的**向量相似度搜索**来说效果会好很多。
+- 记忆**存储**方面也添加了 reflection 步骤，定期对记忆进行**反思总结**，保持 agent 的“目标感”。
+- 在 plan 生成方面也做了**多层级递归**，由粗到细生成接下来的行动计划，跟我们的日常思考模式也更接近。
+- 通过“**人物采访**”的方式来评估这些行为设定的效果，消融实验中都能发现明显的提升。
+- ![](https://picx.zhimg.com/80/v2-4d785241de1d097d8c5ba10b2666fba2_1440w.webp?source=1940ef5c)
+
+一整套 identity，plan， act/react，reflect，memory stream 逻辑挺合理的，与 AutoGPT 的做法可以进行一些互补。当然局限性应该也有不少，比如
+- 模拟过程中 agent 之间都是一对一的谈话，而没有会议/广播这种设定。
+- 目前模拟运行的时长也有限，比较难确保长时间的运行下 agent 的记忆、行为模式的演化，社群整体目标的探索与推进等方面的效果。
+
+从应用角度来看，目前好像也主要集中在社会活动模拟，游戏应用等。是否能拓展到任务处理，知识探索等更广阔的领域，还有待进一步探索。
+
+
+### Adept
+
+Adept 和 Inflection 这两家早期团队想以自然语言为基础，为用户打造新的 **LUI** （语言为基础的 UI）方式。
+
+### Inflection
+
+待定
+
+### 【2023-5-4】GPT4Free
+
+【2023-5-4】[GPT4Free](https://github.com/xtekky/gpt4free) ([discord](https://discord.com/invite/gpt4free)地址) 通过You.com、Quora和CoCalc等网站（OpenAI付费用户）提供的各种API地址，免费使用GPT-4和GPT-3.5模型。
+- GPT4Free 脚本会先访问 https://you.com/api/streamingSearch，并传送各种参数过去，然后获取返回的JSON并对其进行格式化。
+- GPT4Free仓库还有从Quora、Forefront和TheB等其他网站获取数据的脚本，任何开发者都可以基于这些脚本制作自己的聊天机器人。
+
+实测:
+- 安装
+  - 要求 Python 3.8以上
+  - 修改 requirements.txt 文件
+- [The requirements.txt need to be updated](https://github.com/xtekky/gpt4free/issues/419)
+
+```yml
+# pypasser # 原始
+pypasser>=0.0.5 # 指定版本，否则 pip install -r requirements.txt 提示冲突
+```
+
+UI部署正常，但点击“Think”后，出现新的[错误](https://github.com/xtekky/gpt4free/issues/406):
+- Please make sure you are using a valid cloudflare clearance token and user agent.
+
+
+安装
+
+```sh
+pip install gpt4free
+```
+
+程序调用
+
+```py
+import gpt4free
+from gpt4free import Provider, quora, forefront
+
+# usage You
+response = gpt4free.Completion.create(Provider.You, prompt='Write a poem on Lionel Messi')
+print(response)
+# usage Poe
+token = quora.Account.create(logging=False)
+response = gpt4free.Completion.create(Provider.Poe, prompt='Write a poem on Lionel Messi', token=token, model='ChatGPT')
+print(response)
+# usage forefront
+token = forefront.Account.create(logging=False)
+response = gpt4free.Completion.create(
+    Provider.ForeFront, prompt='Write a poem on Lionel Messi', model='gpt-4', token=token
+)
+print(response)
+print(f'END')
+# usage theb
+response = gpt4free.Completion.create(Provider.Theb, prompt='Write a poem on Lionel Messi')
+print(response)
+# usage cocalc
+response = gpt4free.Completion.create(Provider.CoCalc, prompt='Write a poem on Lionel Messi', cookie_input='')
+print(response)
+```
+
+错误信息
+> tls_client.exceptions.TLSClientExeption: failed to do request: Get "https://you.com/api/streamingSearch?q=Write+a+poem+on+Lionel+Messi&page=1&count=10&safeSearch=Moderate&onShoppingPage=False&mkt=&responseFilter=WebPages%2CTranslations%2CTimeZone%2CComputation%2CRelatedSearches&domain=youchat&queryTraceId=77ebaf4c-ba0c-4035-bad6-1dafc27fdc14&chat=%5B%5D": dial tcp 192.133.77.59:443: i/o timeout (Client.Timeout exceeded while awaiting headers)
+
+### 【2023-7-5】MetaGPT
+
+
+核心定位：多智能体**协作**。
 
 主要特点：
 - 将标准操作流程（SOP）编码为协作提示。
@@ -499,7 +813,7 @@ metaGPT 国内开源 Multi-Agent 框架，目前整体社区活跃度较高和�
 
 metaGPT 以软件公司方式组成，目的是完成一个软件需求，输入一句话的老板需求，输出用户故事 / 竞品分析 / 需求 / 数据结构 / APIs / 文件等。
 
-MetaGPT内部包括产品经理 / 架构师 / 项目经理 / 工程师，它提供了一个软件公司的全过程与精心调配的SOP。
+MetaGPT 内部包括产品经理 / 架构师 / 项目经理 / 工程师，它提供了一个软件公司的全过程与精心调配的SOP。
 
 整体代码精简,主要包括:  
 - actions:智能体行为  
@@ -510,34 +824,466 @@ MetaGPT内部包括产品经理 / 架构师 / 项目经理 / 工程师，它提�
 - providers:第三方服务  
 - utils:工具函数等
 
-## Magentic-One
+### 【2023-8-9】OlaGPT
 
-【2024-11-4】微软推出 `Magnetic-One`（第二个框架），对现有的 `AutoGen` 框架进行简化。
-- [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://www.microsoft.com/en-us/research/publication/magentic-one-a-generalist-multi-agent-system-for-solving-complex-tasks/)
+【2023-8-9】[首个模拟人类认知的思维框架OlaGPT:推理能力最高提升85%](https://www.toutiao.com/article/7241109327501689381)
 
-Magentic-One 的工作流程基于一个双循环机制：
-- ● 外循环 (Outer Loop)：协调者更新任务日志，制定和调整计划。
-- ● 内循环 (Inner Loop)：协调者更新进度日志，分配子任务给专业智能体，并监控执行情况。 如果进度停滞，则返回外循环重新规划。
+模型在对话上的表现实在是太像人类了，以至于产生了语言模型具有「思维能力」的错觉。基于高概率语言模式的再现与期望中的「通用人工智能」还有很大差距。
+1. 某些情况下**生成内容毫无意义**，或者偏离了人类的价值偏好，甚至会给出一些非常危险的建议，目前的解决方案是引入人类反馈的强化学习（RLHF）对模型输出进行排序。
+2. 语言模型的**知识仅限于**在训练数据中明确提到的概念和事实。
+
+面对复杂问题时，语言模型也无法像人类一样适应变化的环境、利用现有的知识或工具、反思历史教训、分解问题，以及使用人类在长期进化中总结出的思维模式（如类比、归纳推理和演绎推理等）来解决问题。
+
+当前大多数研究中，大模型主要是在**特定提示**的引导下生成**思维链**来执行推理任务，没有考虑**人类认知框架**，使得语言模型解决复杂推理问题的能力与人类之间仍然存在着显着的差距。
+
+让语言模型模拟人脑处理问题的过程还有许多系统难题:
+1. 如何系统地**模仿和编码**人类认知框架中的主要模块，同时以可实现的方式根据人类的通用推理模式进行调度？
+2. 如何引导语言模型像人类一样进行**主动学习**，即从历史错误或专家对困难问题的解决方案中学习和发展？虽然重新训练模型对纠正后的答案进行编码可能是可行的，但显然成本很高而且不灵活。
+3. 如何让语言模型灵活地利用人类进化出的各种思维模式，从而提高其推理性能？
+
+一个**固定的、通用的**思维模式很难适应不同问题，就像人类在面对不同类型的问题时，通常会灵活地选择不同的思维方式，如类比推理、演绎推理等。
+
+人类在面对复杂的推理难题时，通常会使用各种认知能力，并且需要与工具、知识和外部环境信息的各个方面进行交互，那语言模型能不能模拟人类的思维流程来解决复杂问题呢？
+- 论文:[OlaGPT](https://arxiv.org/abs/2305.16334)
+- 代码:[OlaGPT](https://github.com/oladata-team/OlaGPT)
+
+OlaGPT 包括多个认知模块，包括注意力、记忆、推理、学习，以及相应的调度和决策机制；受人类主动学习启发，框架中还包括一个**学习单元**来记录之前的错误和专家意见，并动态参考来提升解决类似问题的能力。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/6ab3a339e2854a0b85402d6e3d8c9790~noop.image)
+
+OlaGPT借鉴了认知架构（cognitive architecture）理论，把认知框架的核心能力建模为`注意力`（attention）、`记忆`（memory）、`学习`（learning）、`推理`（reasoning）、`行动选择`（action selction）。
+
+提出一个适合语言模型解决复杂问题的流程，具体包括六个模块:意图增强模块（注意力）、记忆模块（记忆）、主动学习模块（学习）、推理模块（推理）、控制器模块（行动选择）和**投票**模块。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/5738c24560624a158d92bf58ccb36fc2~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=cw3fQ0rc6LC1ii9%2Bif6aTp%2FIKH4%3D)
+
+人类解决问题的常见有效推理框架，并设计了思维链（CoT）模板；还提出了一个全面的决策机制，可以最大限度地提高模型的准确性。
+
+**意图增强（Intention Enhance）**
+
+注意力是人类认知的一个重要组成部分，识别出相关的信息并过滤掉不相关的数据。
+
+同样地，研究人员为语言模型设计了相应的注意力模块，即意图增强，旨在提取最相关的信息，并在用户输入和模型的语言模式之间建立更强的关联，可以被看作是一个从用户表达习惯到模型表达习惯的优化转换器。
+
+首先通过特定的提示词提前获得LLMs的问题类型，然后重构提问的方式。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a658e25c9adf4339ab99921399a28946~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=t0lMLBJ%2FWobByPHC6LOKnzWvWos%3D)
+
+比如在问题的开头加上一句「Now give you the XX（问题类型），question and choices:」；为了便于分析，提示中还需要加入「The answer must end with JSON format: Answer: one of options\[A,B,C,D,E\].」
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/3b4f507cfb4f4a7090385d6b7b8bb9a4~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=FPipJqSH%2BL0HIv5XWcLNxLBxt3k%3D)
+
+**记忆（Memory）**
+
+记忆模块在存储各种知识库信息方面起着至关重要的作用，已经有研究证明了当下语言模型在理解最新事实数据方面的局限性，而记忆模块着重于巩固模型尚未内化的知识，并将其作为长期记忆储存在外部库中。
+
+研究人员使用langchain提供的记忆功能进行短期记忆，长期记忆则由基于Faiss的矢量数据库实现。
+
+在查询过程中，其检索功能可以从库中提取相关知识，涵盖了四种类型的记忆库:事实、工具、笔记和思维（thinking），其中事实是现实世界的信息，如常识等；工具包括搜索引擎、计算器和维基百科，可以协助语言模型完成一些无需为条的工作；笔记主要记录一些疑难案例和解决问题的步骤；思考库主要存储由专家编写的人类解决问题的思考模板，专家可以是人类，也可以是模型。
+
+**学习（Learning）**
+
+学习的能力对于人类不断提升自我表现来说至关重要，从本质上讲，所有形式的学习都依赖于经验，语言模型可以从之前的错误中学习，从而实现快速提高推理能力。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/a3f6f32f8f1948cb832072c7e011bb11~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=9TRyX31yvOs2CVuIaPqwCkCFvnQ%3D)
+
+首先，研究人员找出语言模型无法解决的问题；然后在笔记库中记录专家提供的见解和解释；最后选择相关的笔记来促进语言模型的学习，从而可以更有效地处理类似问题。
+
+**推理（Reasoning）**
+
+推理模块的目的是创建基于人类推理过程的多个智能体，从而激发语言模型的潜在思维能力，进而解决推理问题。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/4a36eb80ce674580a272882f74f066ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=%2BlQkkOMvaD3ue%2FUy6XcrfQGMgdw%3D)
+
+该模块结合了多种思维模板，参考特定的思维类型，如横向思维、顺序思维、批判性思维和整合性思维，以促进推理任务。
+
+**控制器（Controller）**
+
+控制器模块主要用来处理相关的行动选择，具体包括模型的内部规划任务（如选择某些模块来执行）以及从事实、工具、笔记和思维库中选择。
+- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/93e2d936c4e84a42a4e530ba72b73825~noop.image?_iz=58558&from=article.pc_detail&x-expires=1692155129&x-signature=l6%2BacGSVoICV0Nc%2FnibV4pLQCig%3D)
+
+首先检索和匹配相关的库，检索到的内容随后被整合到一个模板智能体中，要求语言模型以异步的方式在一个模板下提供回复，就像人类在推理之初可能难以识别所有的相关信息一样，同样很难期望语言模型一开始就做到这一点。
+
+因此，动态检索是根据用户的问题和中间的推理进度来实现的，使用Faiss方法为上述四个库创建嵌入索引，其中各个库的检索策略略有不同。
+
+**投票（voting）**
+
+由于不同的思维模板可能更适合不同类型的问题，研究人员设计了投票模块来提升多个思维模板之间的集成校准能力，并多种投票策略来生成最佳答案以提高性能。
+
+具体的投票方法包括:
+1. 语言模型投票:引导语言模型在多个给定的选项中选择最一致的答案，并提供一个理由。
+2. regex投票:用正则表达式精确匹配抽取答案以获取投票结果。
+
+
+在多个推理数据集上进行了严格评估后得到的实验结果表明，OlaGPT超越了此前最先进的基准，证明了其有效性。
+1. SC（self-consistency）的性能优于GPT-3.5-turbo，表明在一定程度上采用集成方法确实有助于提高大规模模型的有效性。
+2. 文中提出方法的性能超过了SC，在一定程度上证明了思维模板策略的有效性。
+  - 不同思维模板的答案表现出相当大的差异，在不同的思维模板下进行投票，最终会比简单地进行多轮投票产生更好的结果。
+3. 不同思维模板的效果是不同的，循序渐进的解决方案可能更适合推理型问题。
+4. 主动学习模块的性能明显优于零样本方法。
+  - 具体来说，随机、检索和组合列表现出更高的性能，即将具有挑战性的案例作为笔记库纳入其中是一种可行的策略。
+5. 不同的检索方案在不同的数据集上有不同的效果，总的来说，组合（combine）策略的效果更好。
+6. 文中方法明显优于其他方案，这得益于整体框架的合理设计，包括主动学习模块的有效设计；思维模板实现了对不同模型的适应，不同思维模板下的结果是不同的；控制器模块起到了很好的控制作用，选择了与所需内容比较匹配的内容；投票模块设计的不同思维模板的集成方式是有效的。
+
+
+### SuperAGI
+
+[SuperAGI](https://superagi.com/)
+
+[SuperAGI](https://github.com/TransformerOptimus/SuperAGI)
+- ![](https://camo.githubusercontent.com/91e90c90adbeb243ae9e8c43f310d626db758037d323c18726b66297dbbcf6ea/68747470733a2f2f73757065726167692e636f6d2f77702d636f6e74656e742f75706c6f6164732f323032332f30352f4c696768742d64617368626f6172642e706e67)
+
+SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
+
+
+### 【2023-10-17】XAgent
+
+【2023-10-17】[全面超越AutoGPT，面壁智能联合清华 NLP实验室打造大模型“超级英雄”—— XAgent](https://mp.weixin.qq.com/s/uFt-0F4d-4_xY1zkIOJ83Q)
+
+国内领先的人工智能大模型公司 面壁智能 又放大招，联合 清华大学 NLP 实验室 共同研发并推出 大模型 “超级英雄”——XAgent。
+通过任务测试，XAgent在真实复杂任务的处理能力已 全面超越 AutoGPT。
+
+GitHub 正式开源:
+- ➤  [地址](https://github.com/OpenBMB/XAgent)
+- ➤  [案例展示地址](https://x-agent.net)
+- ➤  [博客地址](https://blog.x-agent.net)
+
+XAgent 是一个可以实现自主解决复杂任务的全新 AI 智能体，以 LLM 为核心，能够理解人类指令、制定复杂计划并自主采取行动。
+- 传统智能体通常受到**人类定制规则**的限制，只能在限定范围内解决问题。更像是为人类所用的“工具”，而不是真正的“自主智能体”，难以自主解决复杂问题。
+- XAgent 被赋予了 **自主规划和决策** 的能力，使它能够独立运行，发现新的策略和解决方案，不受人类预设的束缚。
+
+(1) “左右脑”协同，双循环机制 
+- 正如人类具备“左脑”和“右脑”，在处理复杂任务时通常从“宏观”和“微观”两个视角进行考虑，既要针对全局进行统筹和规划，也要从执行层面来考量。
+
+面壁智能和清华大学在 XAgent 的设计中创新地引入了一种 “双循环机制”:
+- 外循环:负责全局任务规划，将复杂任务分解为可操作的简单任务。
+- 内循环:负责局部任务执行，专注于细节。
+
+(2) 人机协作:智能体交互新范式
+
+- 虽然 AutoGPT 在一定程度上突破了传统 GPT 模型的局限性，但它仍然存在死循环、错误调用等执行出错的现象，需要人工干预才能解决。
+- 而 XAgent 在设计之初就针对相关问题进行了考量，并引入了专为增强人机协作的交互机制:它可以自主与用户进行交互，并向人类发出干预和指导的请求。
+
+对于一个智能体而言，“是否能够与人类协作” 也是体现其智能程度的重要指标。
+- 首先，XAgent 具备 直观的界面，用户可以直接覆盖或修改它提出的建议，从而将AI效率与人类的直觉和专业知识有效结合。
+- 其次，在面临陌生挑战的情况下，XAgent 具备“向人类寻求帮助”能力，它会向用户征求实时反馈、建议或指导，确保即使在不确定的领域，智能体也能发挥出最佳作用。
+
+(3) 高效通信语言，超强工具调用
+
+无论“双循环”的运转机制，还是“人机协作”的交互能力，在 XAgent 的总体设计中，面壁智能和清华团队着重考虑的是智能体的稳定、高效和安全等核心特性。
+而 结构化的通信方式 同样是建立强大、稳定智能体的重要因素之一。
+XAgent 采用 Function Call 作为其内部的通信语言，具备结构化、标准化、统一化等优势。
+- 结构化:Function Call 具备清晰且严谨的格式，可以明确表述所需内容，从而最小化了潜在的错误。
+- 标准化:Function Call 可以将与外部工具的交互过程标准化，提供一种通用语言，使智能体具备使用和整合多种工具的能力，解决复杂任务。
+- 统一化:通过将信息摘要、任务规划、工具执行等所有环节转化为特定的 Function Call 形式，确保每个环节均以统一的方式进行处理，从而简化系统设计。
+
+此外，工具调用也是评价 AI Agent 是否具备解决复杂问题的重要能力之一。
+XAgent 在设计中原创了工具执行引擎 ToolServer，可以实现更安全、高效、可扩展的工具执行能力。
+
+
+经过在一系列任务中的测试可以看到（如下图a、b所示），基于 GPT-4 的 XAgent 表现效果在所有基准测试中都超过了原始的 GPT-4，并全面超越了 AutoGPT。
+
+这些任务需要 Agent 推理规划和使用外部工具的能力，包括:用搜索引擎回答问题的能力（FreshQA+HotpotQA）、Python 编程能力（MBPP）、数学推理能力（MATH）、交互式编程能力（InterCode）、具身推理能力（ALFWorld）、真实复杂任务等。
+
+
+## Multi-Agent
+
+2024年，EMNLP 收录港科大论文，研究社会游戏（如Avalon）里的Agent行为
+- 论文 [LLM-Based Agent Society Investigation: Collaboration and Confrontation in Avalon Gameplay](https://aclanthology.org/2024.emnlp-main.7.pdf)
+- 代码 [LLM-Game-Agent](https://github.com/3DAgentWorld/LLM-Game-Agent)
+
+
+### 总结
+
+Multi-Agent 主流框架
+- 斯坦福虚拟小镇
+- MetaGPT
+- AutoGen
+- ChatDEV
+- GPTeam
+- GPT Researcher
+- TaskWeaver
+- 微软UFO
+- CrewAI
+- AgentScope
+- Camel
+
+总结对比
+
+|维度|`AutoGen`|`Multi-Agent Debate`|`CAMEL`|`BabyAGI`|`MetaGPT`|
+|---|---|---|---|---|---|
+|架构通用性|✅|❌|✅|❌|❌|
+|对话模式|静态/动态|静态|静态|静态|静态|
+|执行LLM代码|✅|❌|❌|❌|✅|
+|人工介入|✅|❌|❌|❌|❌|
+
+
+### 问题
+
+第一篇 MAS 失败原因分析综述
+- 【2025-3-17】伯克利 [Why Do Multi-Agent LLM Systems Fail?](https://export.arxiv.org/pdf/2503.13657)
+- [multi-agent-systems-failuretaxonomy](https://github.com/multi-agent-systems-failuretaxonomy/MASFT)
+- 解读 [三个Agent没水喝](https://mp.weixin.qq.com/s/qbilxmgrEqZfzUoMIz4f2Q)
+
+
+鉴于llm处理复杂、多步骤任务以及与不同环境实时互动的能力，由大语言模型（LLM）驱动的 agent 系统，尤其是多 agent 系统（MAS），被认为非常适合用来解决现实世界中的问题，越来越多地应用在各个领域中，如软件工程、药物发现、科学模拟，以及通用 agent 系统。
+
+Multi-Agent Systems (MAS) 多智能体系统通过多个LLM驱动的智能体相互协作完成任务，MAS 广受关注，热度越来越高，但与单智能体相比，在流行的评测集上取得的成绩相对有限。
+- 多 agent 系统却在处理实际问题时，相对于单Agent更易出错。AppWorld 故障率可高达 86.7%。
+
+有必要深入分析下 MAS 的失败原因
+
+- 选用5个热门MAS系统，150多个任务上评测
+- 6个人工专家来标注评测结果
+- ![](https://arxiv.org/html/2503.13657/x1.png)
+
+
+|MAS|Agentic Architecture|Purpose of the System|
+| ---- | ---- | ---- |
+|MetaGPT (Hong et al., 2023)|Assembly Line|Simulating the SOPs of different roles in Software Companies to create open - ended software applications|
+|ChatDev (Qian et al., 2023)|Hierarchical Workflow|Simulating different Software Engineering phases like (design, code, QA) through simulated roles in a software engineering company|
+|HyperAgent (Phan et al., 2024)|Hierarchical Workflow|Simulating a software engineering team with a central Planner agent coordinating with specialized child agents (Navigator, Editor, and Executor)|
+|AppWorld (Trivedi et al., 2024)|Star Topology|Tool - calling agents specialized to utility services (ex: Gmail, Spotify, etc.) being orchestrated by a supervisor to achieve cross - service tasks|
+|AG2 (Wu et al., 2024a)|N/A - Agentic Framework|An open - source programming framework for building agents and managing their interactions| 
+
+
+|MAS名称（测试环境）|成功率|失败率|
+| ---- | ---- | ---- |
+|MetaGPT (ProgramDev)|66.0%|34.0%|
+|ChatDev (ProgramDev)|25.0%|75.0%|
+|HyperAgent (SWE-Bench Lite)|25.3%|74.7%|
+|AppWorld (Test-C)|13.3%|86.7%|
+|AG2 (GSM-Plus)|84.8%|15.2%| 
+
+
+提炼出MAS的14种失败模式
+- 流程规划、任务划分: 
+- 智能体协作: 
+  - 智能体在讨论没意义的内容，效率低
+  - 忽略关键信息
+- 任务验证: 不少系统里验证机制失效
+  - manus 能协作漂亮的文档，但内容很容易出错 -- 使用低质量内容，错误进一步放大
+
+14 种故障模式，划分为 3 大类：
+- （1）规范和系统设计故障；
+- （2）Agent 间错位；
+- （3）任务验证和终止。
+
+
+
+反思
+- 智能体不该简单模仿人类工作方式
+- MAS 使用场景: 群体智慧场景，如 Google 的 Co-Scientist, Agent之间相互辩论、启发、对抗，更有价值
+
+论文贡献
+- 提出首个基于经验的多 agent 系统**故障分类法**——MASFT，理解和缓解多 agent 系统故障提供了一个结构化框架。
+  - MASFT 将多 agent 系统的执行划分为 3 个阶段：**执行前**、**执行中**和**执行后**，确定每个细粒度故障模式可能发生的多 agent 系统执行阶段。
+- 同时，开发可扩展的 “LLM-as-a-judge” **评估管道**，用于分析新的多 agent 系统性能和诊断故障模式。
+- 针对 agent 规范、对话管理和验证策略，进行干预研究，尽管将任务完成率提高了 14%，但仍未能完全解决多 agent 系统故障问题，这凸显了结构性多 agent 系统重新设计的必要性。
+
+开源：
+- 150 多个标注的多 agent 系统会话轨迹；
+- 可扩展的 LLM-as-a-judge 评估管道和 150 多个轨迹的 LLM 标注；
+- 15 个选定轨迹的详细专家标注。
+
+
+### 发展趋势
+
+
+论文: 多智能体协作机制综述
+- 【2025-1-10】爱尔兰科克大学 [Multi-Agent Collaboration Mechanisms: A Survey of LLMs](https://arxiv.org/pdf/2501.06322)
+- [解说](https://mp.weixin.qq.com/s/_igFqVXtlrdQzNfhZcrorA)
+
+协作机制：**参与者**（涉及Agent）、**类型**（例如，合作、竞争或合作竞争）、**结构**（例如，点对点、集中式或分布式）、**策略**（例如，基于角色或基于模型）和**协调协议**。
+
+未来 5 年内多Agent平台的两大发展趋势：
+- （1）多Agent 平台的技术架构演进
+- （2）模型能力的提升
+
+多 Agent 架构正从**简单设置**演变为更加**分布式、分层和混合**框架，以协调大量Agent。
+
+近期研究将这些架构分类为 `扁平式`（点对点）、`分层式`（树状监督）、`团队式`、`社会式` 或 `混合式`
+
+每种架构在可扩展性、灵活性和效率上各有权衡。未来的平台可能会结合这些模式，使Agent能够根据不同任务进行自组织。新框架展示了如何将Agent组织成动态网络或专业化小组，以提升集体问题求解能力。随着系统规模扩大，这种分布式方法预计将增强系统的鲁棒性和性能。
+
+多Agent协作的核心是高效通信。当前研究正推动Agent间通信协议向更**自适应、稳健且高效**利用带宽的方向发展，特别是在Agent数量增长的情况下。
+
+关于基于 LLM 的**多智能体系统**（MAS）的研究强调，系统级设计（即Agent如何通信以及它们共享哪些目标）和内部通信策略必须进行优化，以实现真正的集体智能。
+
+结构化消息传递、共享“黑板”记忆，甚至隐式信号都可以被利用，以减少误解并提高协作效率。
+
+**多智能体强化学习**（MARL）将继续成为训练Agent群体，使其通过经验不断改进的关键技术。
+
+MARL 在可扩展性和鲁棒性方面的优势，使Agent能够在**共享环境**中**共同学习协调**策略。
+
+未来，研究人员正致力于使 MARL Agent 在部署后变得更自适应和自我优化。
+
+一个值得关注的趋势是将 基于 LLM 推理 整合到强化学习（RL）循环中 —— Agent 可在训练过程中交换信息或学习通信协议，以提升协作能力。
+- 例如，语言条件 MARL 正在被探索，使Agent能够发展出一种共享的“语言”来协调策略，结合深度强化学习（Deep RL）与类人通信的优势。
+
+未来五年内，预计会出现以下重要进展：
+- 多智能体**自博弈**（Self-Play）技术：Agent 通过相互对抗或协作来提升自身能力；
+- **元学习**（Meta-Learning）：Agent 学会优化自己的学习算法，提高学习效率；
+- **终身学习**（Lifelong Learning）：Agent 团队能够在多Agent环境中动态适应新任务。
+
+这些自我优化能力将由将 MAS 视为一个不断进化的生态系统的新型架构所支持，可能引领我们迈向人工集体智能（Artificial Collective Intelligence），即Agent群体整体的学习能力超越个体能力的总和。
+
+增强推理、自主性与适应性
+
+多Agent平台将更深层次的推理能力和更高的自主性。
+
+大型语言模型（LLMs）已被用于自主Agent的“大脑”，支持其执行复杂的规划和决策任务。
+
+将 LLM 与**长期记忆**和**规划**模块结合，可打造出能够规划、记忆并进行类人适应的Agent。
+- 例如，近期的生成式Agent实验表明，多个基于 LLM 的Agent在沙盒环境中可以自主模拟可信的**社交行为**（如仅凭初始提示就共同组织一场聚会），展现出涌现的协作能力与适应性。
+- 在未来几年将看到Agent在理解上下文、推理多步问题和动态调整行为方面的能力进一步提升。
+
+当前，LLM 驱动的Agent已经能够推理目标并做出情境决策，而这些能力将通过更优的认知架构进一步优化。
+
+以下技术将得到更广泛应用：
+- 链式思维提示：增强推理能力，使Agent能够进行更复杂的逻辑推导；
+- 逻辑推理增强：提升Agent在推理问题上的准确性；
+- 外部工具调用：让Agent可以调用计算器、代码解释器等外部工具，以提升执行能力。
+
+这些技术的结合将进一步提升多Agent系统的自主性，减少对人类干预的依赖，使Agent能够主动判断任务需求并协作完成任务。多Agent系统中 LLM 的演进大型语言模型（LLMs）自身也在不断发展，以更好地支持多Agent环境。
+
+当前趋势表明，与其使用单一的大型通用模型，更倾向于部署多个专门化的 LLM Agent进行交互。基于 LLM 的Agent协作使其能够解决单个模型难以独立完成的任务，利用多样化的专业知识和集体问题求解能力。
+
+当前 LLM 在多Agent环境中的局限性，将Agent视为一种**数字物种**，可能需要新的训练方法。
+
+一个关键挑战是，通用 LLM 设计初衷并非针对多Agent交互，因此可能导致：
+- 产生错误信息或不一致性（**幻觉**），这些错误会在Agent间**级联放大**；
+- 缺乏共识构建机制，导致决策不稳定或Agent之间难以达成一致。
+
+未来的发展方向可能包括专为多Agent协作优化的 **LLM 变体**或**微调**模型，提升其在与其他 AI 交互时的可靠性。
+- 例如，正在探索能考虑其他Agent观点、维护一致的共享世界状态的 LLM。通过调整模型架构和训练方法，AI 研究社区正努力打造更加协作透明、团队意识更强、适应性更高的 AI “团队成员”。
+
+与“通用型”Agent不同，当前的发展方向是 **Agent专精化**
+- 每个Agent通过微调或提示配置，被设计为擅长完成某一特定职能，并在一个协调框架中协同工作。
+
+Agent角色的自动分配方法
+- 2024 年的一项研究提出了一种“自动Agent生成”框架，可以在一个大任务中自动生成处理子任务的专用Agent。
+
+
+
+###  【2023-8-10】斯坦福虚拟小镇
+
+【2023-8-10】斯坦福25个AI智能体「小镇」终于开源，《西部世界》来了！斯坦福爆火「小镇」开源，25个AI智能体恋爱交友
+- 项目地址:[generative_agents](https://github.com/joonspk-research/generative_agents)
+
+
+斯坦福虚拟小镇
+- git：[generative_agents](https://github.com/joonspk-research/generative_agents)
+- paper：[PAPER](https://arxiv.org/pdf/2304.03442)
+
+
+
+#### 原理
+
+Smallville 沙盒世界小镇中，区域会被标记。根节点描述整个世界，子节点描述区域（房屋、咖啡馆、商店），叶节点描述对象（桌子、书架）。
+智能体会记住一个子图，这个子图反映了他们所看到的世界的各个部分。
+
+25个AI智能体不仅能在这里上班、闲聊、social、交友，甚至还能谈恋爱，而且每个Agent都有自己的个性和背景故事。
+
+智能体 John Lin 种子记忆就是这样的——
+- John Lin是一名药店店主，十分乐于助人，一直在寻找使客户更容易获得药物的方法。
+- John Lin的妻子Mei Lin是大学教授，儿子Eddy Lin正在学习音乐理论，他们住在一起，John Lin非常爱他的家人。
+- John Lin认识隔壁的老夫妇Sam Moore和Jennifer Moore几年了，John Lin觉得Sam Moore是一个善良的人。
+- John Lin和他的邻居山本百合子很熟。John Lin知道他的邻居TamaraTaylor和Carmen Ortiz，但从未见过他们。
+- John Lin和Tom Moreno是药店同事，也是朋友，喜欢一起讨论地方政治等等。
+
+John Lin度过的一天早晨:6点醒来，开始刷牙、洗澡、吃早餐，在出门工作前，他会见一见自己的妻子Mei和儿子Eddy。
+
+这些智能体相互之间会发生社会行为。当他们注意到彼此时，可能会进行对话。随着时间推移，这些智能体会形成新的关系，并且会记住自己与其他智能体的互动。
+
+一个有趣的故事是，在模拟开始时，一个智能体的初始化设定是自己需要组织一个情人节派对。
+随后发生的一系列事情，都可能存在失败点，智能体可能不会继续坚持这个意图，或者会忘记告诉他人，甚至可能忘了出现。
+
+#### 分析
+
+虚拟小镇作为早期 multi-agent 项目，很多设计也影响到了其他multi-agent框架，里面的**反思**和**记忆检索**模拟人类的思考方式。
+- 代理（Agents）感知环境，当前代理所有的感知（完整的经历记录）都被保存在一个名为"记忆流"（memory stream）中。
+- 基于代理的感知，系统检索相关的记忆，然后使用这些检索到的行为来决定下一个行为。
+- 这些检索到的记忆也被用来形成长期计划，并创造出更高级的反思，这些都被输入到记忆流中以供未来使用。
+
+记忆流记录代理的所有经历，检索从记忆流中根据近期性（Recency）、重要性（Importance）和相关性（Relevance）检索出一部分记忆流，以传递给语言模型。
+
+反思是由代理生成的更高级别、更抽象的思考。因为反思也是一种记忆，所以在检索时，它们会与其他观察结果一起被包含在内，反思是周期性生成的。
+
+英伟达高级科学家Jim Fan评论：
+> 斯坦福智能体小镇是2023年最激动人心的AI Agent实验之一。
+> 常常讨论单个大语言模型的新兴能力，但是现在有了多个AI智能体，情况会更复杂、更引人入胜。
+> 一群AI，可以演绎出整个文明的演化进程。
+
+
+### GPT Researcher
+
+GPT Researcher
+- git：[GPT Researcher](https://github.com/assafelovic/gpt-researcher)
+
+串行 Multi-Agent，框架可适配内容生产
+
+GPT Researcher 架构主要通过运行两个Agent来进行，一个是“规划者”，一个是“执行者”；
+- 规划者负责生成研究问题，而执行者则是根据规划者生成的研究问题寻找相关的信息
+- 最后再通过规划者对所有相关信息进行过滤与汇总，然后生成研究报告；
+
+
+### Camel
+
+[Camel](https://www.camel-ai.org) 早期 Multi-Agent 项目，实现agent间的一对一对话
+- github: [camel](https://github.com/camel-ai/camel)
+
+[Camel](https://www.camel-ai.org/) 通过 LLM 来模拟用户和 AI 助手，让两个 agent 进行**角色扮演**（例如一个是业务专家，一个是程序员），然后自主沟通协作来完成具体任务。
+
+prompt 设计重要，否则会出现：**角色转换**，**重复指令**，**消息无限循环**，瑕疵回复，**对话终止**等等问题。
+- 具体看项目代码中给出的 prompt 设定，添加了非常多的明确指令来让 agent 按照预想的设定来沟通协作。
+- ![](https://pic1.zhimg.com/80/v2-0f871ff3f5b1af49a74d56caa39a785b_1440w.webp?source=1940ef5c)
+
+除了 agent prompt 和运作模式的设计优化外，还设计了 prompt 来**自动**生成各种角色，场景诉求等内容。
+
+这些内容在自动组成各种角色扮演的场景，就能收集到各个场景下 agent 的交互情况，便于后续做进一步的挖掘分析。[这个网站](https://data.camel-ai.org/) 来探索已经生成的各种 agent 组合之间的对话记录。
+- ![](https://pic1.zhimg.com/80/v2-3dbb028cb33164d20aaff5ba6b0c1a65_1440w.webp?source=1940ef5c)
+
+#### 【2023-9】ChatDev
+
+ChatDev
+- git：[ChatDev](https://github.com/OpenBMB/ChatDev)  
+- doc：[ChatDev](https://chatdev.modelbest.cn/introduce)
+
+ChatDev（2023.9）不是普通 MultiAgent框架，基于Camel，内部流程都是2个Agent之间多次沟通，整体上的不同Agent角色的沟通关系和顺序都是由开发者配置，不太像是个全功能的 MultiAgent 框架的实现。
+
+ChatDev 项目本身没有太多和复用性，依赖的旧版本Camel也是该抛弃的东西。
+
+这个项目本身更多是为了支撑论文的学术性原型，并不是为了让别人在上面开发而设计的。
+
+
+### 【2024-6】LangGraph
+
+2023 年 1 月推出 LangGraph，低级编排框架，用于构建代理应用。
+- 开源的，并提供 Python 和 JavaScript 两种版本
+
+LangGraph Studio 提供专门环境来简化 LLM（大语言模型）应用开发过程，用于可视化、交互和调试代理应用。
+
+与传统软件开发不同，构建 LLM 应用需要标准代码编辑器之外的独特工具。
+- LangGraph Studio 通过允许开发人员可视化代理图、修改代理结果以及随时与agent状态交互来增强开发体验。
+
+2024 年 6 月，发布稳定的 0.1 版本
+
+[LangGraph](https://www.langchain.com/langgraph) 适用于各种 Multi-AI Agent 任务，并且具有极高的灵活性。
 
 功能特点：
-- 与 Swarm 相似，Magnetic-One 同样适用于编程经验较少的用户，操作起来简便快捷。
-- 系统预设了五个智能体，包括1个**管理**智能体和另外4个**专用**智能体：
-  - WebSurfer 负责在浏览器中浏览网页,以及与网页进行互动，
-  - FileSurfer 负责本地文件管理与导航，
-  - Coder 专注于代码编写与分析，
-  - ComputerTerminal 控制台访问权限，运行程序和安装库文件。
-- 该框架基于 AutoGen 打造，是一个通用框架。
-- 附带了 AutoGenBench 工具，专门用于评估智能体的性能。
+- LangGraph 基于 LangChain 开发，其核心思想是“有向循环图（Directed Cyclic Graph）”。
+- 它不仅仅是一个 Multi-AI agent 框架，功能远超于此。
+- 高度灵活，可定制性强，几乎能够满足所有多智能体协作应用的需求。
+- 作为 LangChain 的延伸，它得到了技术社区的大力支持。
+- 能够与开源的 LLMs（大语言模型）以及各种 API 无缝协作。
 
 不足之处：
-- 对开源 LLMs 的支持较为复杂，不易实现。
-- 灵活性有待提高；从某种程度上看，它更像是一款应用，而非一个框架。
-- 目前文档资料和技术社区支持力度几乎为零，尚需加强。
+- 文档资料不够详尽。对于编程经验较少的用户来说，上手难度较大。
+- 需要具备一定的编程能力，特别是在图（graphs）和逻辑流程的理解上。
 
-架构
-- ![](https://www.microsoft.com/en-us/research/uploads/prod/2024/11/magentic_orchestrator.png)
+安装
 
-## AgentUniverse
+```sh
+pip install langgraph
+```
+
+
+### 【2024-6-16】AgentUniverse
 
 【2024-6-16】蚂蚁金服推出 AgentUniverse:大模型多智能体框架。
 
@@ -568,7 +1314,7 @@ Magentic-One 的工作流程基于一个双循环机制：
 
 ![](https://agentuniverse.readthedocs.io/en/latest/_picture/agent_universe_framework_resize.jpg)
 
-## AgentStudio
+### 【2024-6-29】AgentStudio
 
 【2024-6-29】[AgentStudio :联合国际顶尖高校 昆仑万维开源智能体研发工具包，从0到1，轻松构建Agent](https://mp.weixin.qq.com/s/qelnmhohf8w_dkxNSGNRwQ)
 
@@ -602,13 +1348,13 @@ AgentStudio 环境和工具包涵盖了构建可与数字世界中的一切交�
 
 
 
-## Swarm
+### 【2024-10-12】Swarm
 
 【2024-10-12】[OpenAI今天Open了一下：开源多智能体框架Swarm](https://mp.weixin.qq.com/s/3-iKztrTuRURUGtles4-xA)
 
-多智能体是 OpenAI 未来重要的研究方向之一，前些天 OpenAI 著名研究科学家 Noam Brown 还在 X 上为 OpenAI 正在组建的一个新的多智能体研究团队
+多智能体是 OpenAI 未来重要的研究方向之一， OpenAI 著名研究科学家 Noam Brown 在 X 上为 OpenAI 正在组建的一个新的多智能体研究团队
 
-这个团队开源了一项重量级研究成果：Swarm。一个实验性质的**多智能体编排框架**，主打特征是**工效**（ergonomic）与**轻量**（lightweight）。
+这个团队开源了一项重量级研究成果：`Swarm`, 实验性质的**多智能体编排框架**，主打特征是**工效**（ergonomic）与**轻量**（lightweight）。
 - 项目地址：[swarm](https://github.com/openai/swarm)
 
 重点：让智能体协作和执行变得轻量、高度可控且易于测试。
@@ -618,7 +1364,7 @@ AgentStudio 环境和工具包涵盖了构建可与数字世界中的一切交�
 - Swarm 智能体与 Assistants API 中的 Assistants 无关。
 - Swarm 完全由 Chat Completions API 提供支持，因此在调用之间是无状态的。
 
-Swarm 的核心组件包括 `client`（客户端）、`Agent`（智能体）、`Function`（函数）。
+Swarm 核心组件包括 `client`（客户端）、`Agent`（智能体）、`Function`（函数）。
 - `client`（客户端）: 运行 Swarm 就是从实例化一个 client 开始
   - Swarm 的 run() 函数: 类似于 Chat Completions API 中的 chat.completions.create() 函数——接收消息并返回消息，并且在调用之间不保存任何状态。但重点在于，它还处理 Agent 函数执行、交接、上下文变量引用，并且可以在返回给用户之前进行多轮执行。
   - client.run() 完成后（可能进行过多次智能体和工具调用），会返回一个响应，其中包含所有相关的已更新状态。具体来说，即包含新消息、最后调用的智能体、最新的上下文变量。你可以将这些值（加上新的用户消息）传递给 client.run() 的下一次执行，以继续上次的交互——就像是 chat.completions.create()
@@ -628,7 +1374,7 @@ Swarm 的核心组件包括 `client`（客户端）、`Agent`（智能体）、`
   - 如果一个函数返回了一个 Agent，则执行过程将转交给该 Agent。
   - 如果函数定义了 context_variables 参数，则它将由传递到 client.run() 的 context_variables 填充。
 
-Swarm 的 client.run() 是实现以下循环：
+Swarm 的 `client.run()` 是实现以下循环：
 - 先让当前智能体完成一个结果
 - 执行工具调用并附加结果
 - 如有必要，切换智能体
@@ -684,40 +1430,8 @@ print(response.messages[-1]["content"])
 ```
 
 
-## LangGraph
 
-2023 年 1 月推出 LangGraph，低级编排框架，用于构建代理应用。
-- 开源的，并提供 Python 和 JavaScript 两种版本
-
-LangGraph Studio 提供专门环境来简化 LLM（大语言模型）应用开发过程，用于可视化、交互和调试代理应用。
-
-与传统软件开发不同，构建 LLM 应用需要标准代码编辑器之外的独特工具。
-- LangGraph Studio 通过允许开发人员可视化代理图、修改代理结果以及随时与代理状态交互来增强开发体验。
-
-2024 年 6 月发布了稳定的 0.1 版本
-
-[LangGraph](https://www.langchain.com/langgraph) 适用于各种 Multi-AI Agent 任务，并且具有极高的灵活性。
-
-功能特点：
-- LangGraph 基于 LangChain 开发，其核心思想是“有向循环图（Directed Cyclic Graph）”。
-- 它不仅仅是一个 Multi-AI agent 框架，功能远超于此。
-- 高度灵活，可定制性强，几乎能够满足所有多智能体协作应用的需求。
-- 作为 LangChain 的延伸，它得到了技术社区的大力支持。
-- 能够与开源的 LLMs（大语言模型）以及各种 API 无缝协作。
-
-不足之处：
-- 文档资料不够详尽。对于编程经验较少的用户来说，上手难度较大。
-- 需要具备一定的编程能力，特别是在图（graphs）和逻辑流程的理解上。
-
-安装
-
-```sh
-pip install langgraph
-```
-
-
-
-## CrewAI
+### CrewAI -- LangChain
 
 [CrewAI](https://www.crewai.com/) 是快速搭建 Multi-AI Agent 任务演示的首选工具，因为操作直观，配置起来也十分简便。
 - GitHub [crewAI](https://github.com/joaomdmoura/crewAI)
@@ -731,7 +1445,6 @@ pip install langgraph
 
 局限性：
 - 聚焦于协作场景，对**多模态处理**的支持较弱。
-
 
 CrewAI 核心特征
 1. 角色定制代理：可以根据不同的角色、目标和工具来量身定制代理。
@@ -758,7 +1471,7 @@ pip install crewai
 ```
 
 
-## AgentScope
+### AgentScope
 
 AgentScope
 - github: [AgentScope](https://github.com/modelscope/agentscope/blob/main/README_ZH.md)
@@ -766,7 +1479,7 @@ AgentScope
 阿里开源 Multi-agent 框架，亮点是支持分布式框架，并且做了工程链路上的优化及监控。
 
 
-## UFO
+### UFO
 
 微软UFO
 - git：[UFO](https://github.com/microsoft/UFO)
@@ -794,7 +1507,7 @@ UFO工作原理的详细解释：
   - UFO的核心功能之一是将用户的自然语言命令映射到具体的GUI操作上。这一过程涉及到理解命令的意图，识别相关的GUI元素，以及生成和执行操作这些元素的动作。通过这种方式，UFO可以自动完成从文档编辑和信息提取到电子邮件撰写和发送等一系列复杂的任务，大大提高用户在Windows操作系统中工作的效率和便捷性。
 
 
-## TaskWeaver
+### TaskWeaver
 
 TaskWeaver
 - git：[TaskWeaver](https://github.com/microsoft/TaskWeaver)
@@ -807,39 +1520,10 @@ TaskWeaver不仅仅是一个工具，更是一个复杂的系统，能够解释�
 TaskWeaver 工作流程涉及几个关键组件和过程, 三个关键组件组成：`规划器`（Planner）、`代码生成器`（CG）和`代码执行器`（CE）。代码生成器和代码执行器由代码解释器（CI）组成。
 
 
-## OmAgent
-
-OmAgent **开源**框架，专为轻松构建 设备端多模态智能体 而设计，具备高度灵活性和实时优化能力。
-
-不仅限于传统框架，更进一步实现了 AI 与智能手机、可穿戴设备以及摄像头等硬件设备的无缝集成。 
-
-OmAgent 提供两种独特的示例代码：
-- 行业实用应用：快速开发实际 AI 智能体的示例代码，适用于视频理解、物体识别、任务规划等真实场景。
-- 研究导向实现：展示最新 AI 算法的实现，包括 ReAct、ToT 和 Divide-and-Conquer (DnC) 等，在顶级 AI 会议中发表，助力研究人员探索智能体的新能力。（诸如 ReAct、ToT 和 Divide-and-Conquer (DnC) 等在 AI 顶会中发表的前沿算法的复现示例，用于支持研究人员探索新智能体结构的能力）
-
-核心功能
-
-设备为中心：
-- 原生支持智能设备，简化与手机、智能眼镜、IP 摄像头等硬件的集成。
-- 后端流程优化，方便移动应用程序的无缝集成。
-
-原生多模态支持：
-- 内置先进的多模态模型，支持文本、音频、视频和图像的处理。
-- 优化设备与用户之间自然、实时的交互体验。
-
-工作流编排：
-- 基于图结构的工作流引擎，支持高级任务管理。
-- 实现前沿算法的应用，如 ReAct 和 Divide-and-Conquer (DnC)。
-
-可扩展性与灵活性：
-- 提供直观的界面，支持构建多角色、多场景的智能体。
-- 支持动态工作流、长期记忆以及与 Milvus 等向量数据库的集成。
-
-实时优化：
-- 低延迟的端到端优化，确保即时反馈与卓越的用户体验。
 
 
-##  Semantic Kernel
+
+###  Semantic Kernel
 
 Microsoft 出品
 
@@ -855,7 +1539,7 @@ Microsoft 出品
 局限性：
 - 对研究导向或多模态应用支持较为有限。
 
-## AutoGen
+### 【2023-10-10】AutoGen
 
 微软出品
 
@@ -884,14 +1568,57 @@ Microsoft 出品
 
 活跃度top级别的Multi-Agent框架，与MetaGPT“不相上下”
 
-### AutoGen 介绍
+#### AutoGen 介绍
 
 微软公司发布了开源Python库AutoGen。
 - AutoGen是“一个简化大语言模型工作流编排、优化和自动化的框架。AutoGen背后的基本概念是“代理”（agents）的创建，即由大语言模型（如GPT-4）提供支持的编程模块。这些智能体（agents）通过自然语言信息相互作用，完成各种任务。
 - 【2024-2-8】[AutoGen框架学习](https://bytedance.larkoffice.com/docx/VgIsdadfCoHQy3x9lKYc0NkYnwe) 飞书文档
 
+#### AutoGen Studio
 
-### AutoGen 设计
+【2023-12-1】微软 [AutoGen Studio: Interactively Explore Multi-Agent Workflows](https://microsoft.github.io/autogen/blog/2023/12/01/AutoGenStudio/)
+- [体验 AutoGen Studio - 微软推出的友好多智能体协作框架](https://zhuanlan.zhihu.com/p/678244812)
+- [autogen-studio](https://github.com/microsoft/autogen/tree/main/samples/apps/autogen-studio)
+
+AutoGen Studio 提供了一个更直观的用户界面，使得用户可以更容易地使用AutoGen框架来创建和管理AI智能体。
+- 与CrewAI和MetaGPT相比，AutoGen Studio提供了可视化界面，对新手更友好
+- ![](https://microsoft.github.io/autogen/assets/images/autogenstudio_home-cce78dc150d1bb0073620754df73d863.png)
+
+特性
+- 智能体和工作流定义修改：用户可以在界面上定义和修改智能体的参数，以及通信方式。
+- 与智能体的互动：通过UI创建聊天会话，与指定的智能体交互。
+- 增加智能体技能：用户可以显式地为他们的智能体添加技能，以完成更多任务。
+- 发布会话：用户可以将他们的会话发布到本地画廊。
+
+
+AutoGen Studio的组成
+- 构建部分（Build）：定义智能体属性和工作流。
+  - 默认的三个Skill是生成图片、获取个人网页正文、找Arxiv的论文。
+- 游乐场（Playground）：与在构建部分定义的智能体工作流进行互动。
+- 画廊（Gallery）：分享和重用工作流配置和会话。
+- ![](https://pic4.zhimg.com/80/v2-eb9290a6bd639bf2a4bee4fbb69767d7_1440w.webp)
+
+
+CrewAI、MetaGPT v0.6、Autogen Studio 区别
+- ![](https://pic2.zhimg.com/80/v2-ea8601d23c5e47b0b77d2f45a09fe6d5_1440w.webp)
+
+实践
+- 背后通过 fastapi、uvicorn 启动Web并行服务, 详见[代码](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/web/app.py)
+- sqlite3 本地数据库存储会话数据，详见[代码](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/utils/dbutils.py)
+  - 重置数据库 —— 删除 `database.sqlite`
+  - 删除用户信息 —— 删除文件夹 `autogenstudio/web/files/user/<user_id_md5hash>`
+- 切换LLM、agent配置、skill信息 —— 修改默认配置文件 [dbdefaults.json](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/utils/dbdefaults.json)
+- 查看中间信息 —— Web UI调试窗口，或 `database.sqlite` 文件
+
+```sh
+pip install autogenstudio # 安装
+# Mac电脑需要 export OPENAI_API_KEY=<your_api_key>
+#参数 host, port, workers, reload
+autogenstudio ui --port 8081 # 启动Web UI
+autogenstudio ui --port 8081 --host 10.92.186.159 # 其它域内机器可访问
+```
+
+#### AutoGen 设计
 
 借助AutoGen，开发人员可以创建一个由代理（agents）组成的生态系统，这些代理专注于不同的任务并相互合作。
 - AutoGen使用**多代理**（multi-agent）对话支持复杂的基于大语言模型的工作流。
@@ -956,13 +1683,13 @@ user_proxy.initiate_chat(assistant, ....)
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
 
 
-### 代码理解
+#### 代码理解
 
 AutoGen 中的代理具有以下功能：
 - 可**对话**：AutoGen 没有隔离代理，任何代理都可发送和接收来自其他代理的消息以启动或继续对话
 - 可**定制**：AutoGen 代理可自定义, 集成 LLM、人员、工具或组合。
 
-#### 框架解析
+##### 框架解析
 
 [autogen/agentchat/__init__.py](https://github.com/microsoft/autogen/blob/main/autogen/agentchat/__init__.py) 中定义多种智能体
 - "`Agent`" **抽象类**，定义了 name属性方法, reset,send/a_send,receive/a_reveive,generate_reply/a_generate_reply
@@ -982,7 +1709,7 @@ AutoGen 中的代理具有以下功能：
 用户代理和助手代理之间的聊天被自动化，同时允许人工反馈或干预，实现了高效和灵活的任务完成方式。
 
 
-#### 图解
+##### 图解
 
 <div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; modified=\&quot;2024-02-04T10:45:31.223Z\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\&quot; etag=\&quot;7GD5o47741kSuT2bhq81\&quot; version=\&quot;22.1.21\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;VC8KsEmwTz_4FKU3JA4y\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1138\&quot; dy=\&quot;785\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-22\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-13\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-21\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;260\&quot; y=\&quot;470\&quot; width=\&quot;220\&quot; height=\&quot;230\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;8V-hR4rmnCvxMIKz6rSl-7\&quot; value=\&quot;AutoGen源码\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;strokeWidth=2;fontFamily=Verdana;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;619.5\&quot; y=\&quot;340\&quot; width=\&quot;150\&quot; height=\&quot;40\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-2\&quot; value=\&quot;autogen/autogen目录\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;637\&quot; y=\&quot;370\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-3\&quot; value=\&quot;agentchat/agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;365\&quot; y=\&quot;440\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-25\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-4\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-23\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-4\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;510\&quot; width=\&quot;75\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-5\&quot; value=\&quot;send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;540\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-6\&quot; value=\&quot;a_send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;355\&quot; y=\&quot;540\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-7\&quot; value=\&quot;receive\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;580\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-8\&quot; value=\&quot;a_receive\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;355\&quot; y=\&quot;580\&quot; width=\&quot;70\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-9\&quot; value=\&quot;reset\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;395\&quot; y=\&quot;620\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-10\&quot; value=\&quot;generate_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;620\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-12\&quot; value=\&quot;a_generate_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;660\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-15\&quot; value=\&quot;Agent抽象类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;450\&quot; width=\&quot;85\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-16\&quot; value=\&quot;属性方法\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;300\&quot; y=\&quot;480\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-17\&quot; value=\&quot;异步方法\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0000FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;420\&quot; y=\&quot;540\&quot; width=\&quot;50\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-54\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;680\&quot; y=\&quot;910\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-18\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;257.5\&quot; y=\&quot;760\&quot; width=\&quot;422.5\&quot; height=\&quot;310\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-19\&quot; value=\&quot;agentchat/conversable_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;301.25\&quot; y=\&quot;760\&quot; width=\&quot;150\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-21\&quot; value=\&quot;ConversableAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;301.25\&quot; y=\&quot;730\&quot; width=\&quot;137.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-23\&quot; value=\&quot;_name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;381\&quot; y=\&quot;510\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-24\&quot; value=\&quot;智能体名称\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380.25\&quot; y=\&quot;484\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-26\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;790\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-27\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;820\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-28\&quot; value=\&quot;is_termination_msg\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;850\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-29\&quot; value=\&quot;max_consecutive_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;880\&quot; width=\&quot;185\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-30\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;910\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-31\&quot; value=\&quot;function_map\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;940\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-32\&quot; value=\&quot;code_execution_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;970\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-33\&quot; value=\&quot;llm_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;1000\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-34\&quot; value=\&quot;default_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;285\&quot; y=\&quot;1030\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-35\&quot; value=\&quot;description\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;365\&quot; y=\&quot;790\&quot; width=\&quot;75\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-36\&quot; value=\&quot;智能体描述\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;438.75\&quot; y=\&quot;785\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-37\&quot; value=\&quot;系统提示语\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;411\&quot; y=\&quot;813\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-38\&quot; value=\&quot;终止消息\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;404\&quot; y=\&quot;836\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-39\&quot; value=\&quot;自动回复最大次数\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;416.5\&quot; y=\&quot;855\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-40\&quot; value=\&quot;人工询问模式: &amp;lt;br&amp;gt;ALWAYS,TERMINATE(中止),NEVER(自动)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;417.5\&quot; y=\&quot;905\&quot; width=\&quot;245\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-41\&quot; value=\&quot;函数名映射,用于工具调用&amp;lt;br&amp;gt;- Flase(关闭),work_dir(本地代码目录)&amp;lt;br&amp;gt;- user_docker(docker),timeout(执行超时),&amp;lt;br&amp;gt;- last_n_message(执行最近几条消息的代码)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;446\&quot; y=\&quot;960\&quot; width=\&quot;280\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-42\&quot; value=\&quot;llm推理配置\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;997\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-43\&quot; value=\&quot;没有代码/回复时的自动回复\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;429\&quot; y=\&quot;1025\&quot; width=\&quot;161\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-44\&quot; value=\&quot;类实现\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;373.5\&quot; y=\&quot;700\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-45\&quot; value=\&quot;send\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;790\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-47\&quot; value=\&quot;initiate_chat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;830\&quot; width=\&quot;90\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-48\&quot; value=\&quot;a_initiate_chat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;866\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-49\&quot; value=\&quot;智能体启动\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;619.5\&quot; y=\&quot;836\&quot; width=\&quot;71\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-50\&quot; value=\&quot;。。。\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;602.5\&quot; y=\&quot;790\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-14\&quot; value=\&quot;\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-89\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;790\&quot; y=\&quot;830\&quot; width=\&quot;220\&quot; height=\&quot;152.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-52\&quot; value=\&quot;agentchat/assistant_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;833.25\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-53\&quot; value=\&quot;AssistantAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;815\&quot; y=\&quot;808.25\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-55\&quot; value=\&quot;继承\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;704.5\&quot; y=\&quot;880\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-56\&quot; value=\&quot;执行具体任务,与LLM打交道\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;809\&quot; y=\&quot;778.25\&quot; width=\&quot;157\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-57\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;600\&quot; y=\&quot;485\&quot; width=\&quot;220\&quot; height=\&quot;215\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-58\&quot; value=\&quot;agentchat/group_chat.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;637\&quot; y=\&quot;487.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-59\&quot; value=\&quot;GroupChat类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;625\&quot; y=\&quot;462.5\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-60\&quot; value=\&quot;群聊\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;434\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-61\&quot; value=\&quot;agent\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;517.5\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-62\&quot; value=\&quot;messages\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;545\&quot; width=\&quot;70\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-63\&quot; value=\&quot;max_round\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;620\&quot; y=\&quot;570\&quot; width=\&quot;80\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-64\&quot; value=\&quot;admin_name\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;622\&quot; y=\&quot;597\&quot; width=\&quot;80\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-65\&quot; value=\&quot;func_call_filter\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;622\&quot; y=\&quot;623\&quot; width=\&quot;98\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-66\&quot; value=\&quot;speaker_selection_method\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;623\&quot; y=\&quot;649\&quot; width=\&quot;177\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-67\&quot; value=\&quot;allow_repeat_speaker\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;623\&quot; y=\&quot;675\&quot; width=\&quot;177\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-68\&quot; value=\&quot;智能体列表\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;680\&quot; y=\&quot;510\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-69\&quot; value=\&quot;群聊信息\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;684\&quot; y=\&quot;540\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-70\&quot; value=\&quot;最大轮数\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;690\&quot; y=\&quot;567\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-71\&quot; value=\&quot;管理员智能体名字\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;700\&quot; y=\&quot;592\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-72\&quot; value=\&quot;函数调用过滤\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;720\&quot; y=\&quot;617\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-73\&quot; value=\&quot;下一个发言人选择模式&amp;lt;br&amp;gt;auto(llm指定)&amp;lt;br&amp;gt;manual(用户指定)&amp;lt;br&amp;gt;random(随机)&amp;lt;br&amp;gt;round_robin(预设)\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;497\&quot; y=\&quot;649\&quot; width=\&quot;140\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-74\&quot; value=\&quot;是否可以重复发言\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;640\&quot; y=\&quot;695\&quot; width=\&quot;124\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;890\&quot; y=\&quot;490\&quot; width=\&quot;220\&quot; height=\&quot;195\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-76\&quot; value=\&quot;agentchat/assistant_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;927\&quot; y=\&quot;492.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-77\&quot; value=\&quot;GroupChatManager类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;915\&quot; y=\&quot;467.5\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-78\&quot; value=\&quot;经理\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;945.5\&quot; y=\&quot;440\&quot; width=\&quot;84\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-79\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;\&quot; parent=\&quot;1\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;680\&quot; y=\&quot;910\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;800\&quot; y=\&quot;925\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-80\&quot; value=\&quot;groupchat\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;990\&quot; y=\&quot;522.5\&quot; width=\&quot;70\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-81\&quot; value=\&quot;name&amp;amp;nbsp;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;521\&quot; width=\&quot;65\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-82\&quot; value=\&quot;max_consecutive_auto_reply\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;550\&quot; width=\&quot;190\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-83\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;578.5\&quot; width=\&quot;130\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-84\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;910\&quot; y=\&quot;610\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-85\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=-0.014;exitY=0.467;exitDx=0;exitDy=0;entryX=1.009;entryY=0.447;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;dashed=1;dashPattern=1 2;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-75\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-57\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;915\&quot; y=\&quot;695\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-86\&quot; value=\&quot;管理\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;840\&quot; y=\&quot;555\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot; value=\&quot;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;dashed=1;dashPattern=1 1;strokeWidth=2;fontColor=#333333;strokeColor=#666666;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;790\&quot; y=\&quot;1080\&quot; width=\&quot;220\&quot; height=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-88\&quot; value=\&quot;agentchat/user_proxy_agent.py\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#3333FF;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;1082.5\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-89\&quot; value=\&quot;UserProxyAgent类\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;827\&quot; y=\&quot;1055\&quot; width=\&quot;145\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-90\&quot; value=\&quot;接收用户消息，执行本地代码、工具\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;815\&quot; y=\&quot;1020\&quot; width=\&quot;203\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-91\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.451;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-18\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot; edge=\&quot;1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;800\&quot; y=\&quot;925\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-92\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;1112.5\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-93\&quot; value=\&quot;ALWAYS\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;937\&quot; y=\&quot;1107.5\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-94\&quot; value=\&quot;llm_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;802\&quot; y=\&quot;1137.5\&quot; width=\&quot;78\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-95\&quot; value=\&quot;False\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;886\&quot; y=\&quot;1132.5\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-96\&quot; value=\&quot;system_message\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;863.25\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-97\&quot; value=\&quot;默认取值:写代码并调试\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;930.5\&quot; y=\&quot;858.25\&quot; width=\&quot;129.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-98\&quot; value=\&quot;human_input_mode\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;804\&quot; y=\&quot;898.25\&quot; width=\&quot;125\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-99\&quot; value=\&quot;NEVER\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;930.5\&quot; y=\&quot;893.25\&quot; width=\&quot;59.5\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-100\&quot; value=\&quot;code_execution_config\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;shadow=1;fontSize=14;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;800\&quot; y=\&quot;933.25\&quot; width=\&quot;145\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KqnMbKhnpt-NfbrPkSTS-101\&quot; value=\&quot;False\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; parent=\&quot;1\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;947\&quot; y=\&quot;928.25\&quot; width=\&quot;43\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-1\&quot; value=\&quot;LLM大模型\&quot; style=\&quot;ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1140\&quot; y=\&quot;863.25\&quot; width=\&quot;120\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-5\&quot; value=\&quot;任务示例：&amp;lt;br&amp;gt;- 回答问题&amp;lt;br&amp;gt;- 代码优化&amp;lt;br&amp;gt;- 工具调用\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;967\&quot; y=\&quot;778.25\&quot; width=\&quot;93\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-6\&quot; value=\&quot;Memory &amp;lt;br&amp;gt;记忆\&quot; style=\&quot;shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#e1d5e7;strokeColor=#9673a6;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1130\&quot; y=\&quot;690\&quot; width=\&quot;120\&quot; height=\&quot;60\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-7\&quot; value=\&quot;Agent与其他Agent交互历史&amp;lt;br&amp;gt;- 信息隔离：没有对话过的agent看不到彼此信息&amp;lt;br&amp;gt;-&amp;amp;nbsp;ChatManager拥有所有agent聊天记录，消息广播给所有agent&amp;lt;span class=&amp;quot;lark-record-clipboard&amp;quot; data-lark-record-format=&amp;quot;docx/text&amp;quot; data-lark-record-data=&amp;quot;{&amp;amp;quot;rootId&amp;amp;quot;:&amp;amp;quot;Yu5Zd7e1ToyV0Cx8kg7cHBQ8nBK&amp;amp;quot;,&amp;amp;quot;text&amp;amp;quot;:{&amp;amp;quot;initialAttributedTexts&amp;amp;quot;:{&amp;amp;quot;text&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:&amp;amp;quot;ChatManager&amp;amp;quot;},&amp;amp;quot;attribs&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:&amp;amp;quot;*0+b&amp;amp;quot;}},&amp;amp;quot;apool&amp;amp;quot;:{&amp;amp;quot;numToAttrib&amp;amp;quot;:{&amp;amp;quot;0&amp;amp;quot;:[&amp;amp;quot;author&amp;amp;quot;,&amp;amp;quot;6622794874074710286&amp;amp;quot;]},&amp;amp;quot;nextNum&amp;amp;quot;:1}},&amp;amp;quot;type&amp;amp;quot;:&amp;amp;quot;text&amp;amp;quot;,&amp;amp;quot;referenceRecordMap&amp;amp;quot;:{},&amp;amp;quot;extra&amp;amp;quot;:{&amp;amp;quot;mention_page_title&amp;amp;quot;:{},&amp;amp;quot;external_mention_url&amp;amp;quot;:{}},&amp;amp;quot;isKeepQuoteContainer&amp;amp;quot;:false,&amp;amp;quot;isFromCode&amp;amp;quot;:false,&amp;amp;quot;selection&amp;amp;quot;:[{&amp;amp;quot;id&amp;amp;quot;:17,&amp;amp;quot;type&amp;amp;quot;:&amp;amp;quot;text&amp;amp;quot;,&amp;amp;quot;selection&amp;amp;quot;:{&amp;amp;quot;start&amp;amp;quot;:0,&amp;amp;quot;end&amp;amp;quot;:11},&amp;amp;quot;recordId&amp;amp;quot;:&amp;amp;quot;UWFidMhmtowKBvx5UXVcm6iKnib&amp;amp;quot;}],&amp;amp;quot;payloadMap&amp;amp;quot;:{},&amp;amp;quot;isCut&amp;amp;quot;:false}&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1100\&quot; y=\&quot;778.25\&quot; width=\&quot;268.75\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; value=\&quot;Tools 工具集\&quot; style=\&quot;shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1150\&quot; y=\&quot;997\&quot; width=\&quot;120\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-9\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0;exitY=0;exitDx=0;exitDy=30;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-87\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;798\&quot; y=\&quot;1144\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-10\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=0;exitY=0;exitDx=0;exitDy=30;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;z17qGNcBpyHAHbg1JJl0-8\&quot; target=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;1160\&quot; y=\&quot;1037\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;1020\&quot; y=\&quot;1120\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-11\&quot; value=\&quot;register_for_llm\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#994C00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1030\&quot; y=\&quot;960\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-12\&quot; value=\&quot;register_for_excution\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#994C00;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;1029.5\&quot; y=\&quot;1052.5\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;z17qGNcBpyHAHbg1JJl0-15\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#B3B3B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;KqnMbKhnpt-NfbrPkSTS-51\&quot; target=\&quot;z17qGNcBpyHAHbg1JJl0-1\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;690\&quot; y=\&quot;925\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;798\&quot; y=\&quot;1144\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
@@ -1081,11 +1808,11 @@ Autogen系列
 - ![](http://www.limoncc.com/images/Autogen%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6.png)
 - ![](https://pic2.zhimg.com/v2-8fb21d82d21d8b18b97a56b82c415b1d_r.jpg)
 
-### 应用场景
+#### 应用场景
 
 
 
-#### 应用领域
+##### 应用领域
 
 【2024-1-14】[Autogen 新手指南：基础概念和应用](https://zhuanlan.zhihu.com/p/664937747)
 
@@ -1141,7 +1868,7 @@ AutoGen 构建的六个应用程序示例，包括数学问题解决、多智能
 
 
 
-#### 基本配置
+##### 基本配置
 
 新建 `OAI_CONFIG_LIST` 文件，内容如下，并且将开发密钥填入<>后，保存文件。
 - 配置列表的样子，可有多个API端点，所以可用多个模型。
@@ -1208,7 +1935,7 @@ python test/twoagent.py
 4. AssistantAgent 随后为UserProxyAgent生成进一步的回应。
   - 用户代理随后可以决定是否终止对话。如果不终止，则重复步骤3和4。
 
-#### 简易案例
+##### 简易案例
 
 简单Agent示例
 - 比 LangChain 简单的多
@@ -1258,7 +1985,7 @@ task1 = """今天是星期几？,还有几天周末？请告诉我答案。"""
 user_proxy.initiate_chat(assistant,message=task1)
 ```
 
-#### 复杂案例
+##### 复杂案例
 
 需求
 > 今天是什么日期，比较Meta和Tesla的年初至今收益
@@ -1472,59 +2199,13 @@ user_proxy.initiate_chat(
 )
 ```
 
-### AutoGen 生态
-
-#### AutoGen Studio
-
-【2023-12-1】微软 [AutoGen Studio: Interactively Explore Multi-Agent Workflows](https://microsoft.github.io/autogen/blog/2023/12/01/AutoGenStudio/)
-- [体验 AutoGen Studio - 微软推出的友好多智能体协作框架](https://zhuanlan.zhihu.com/p/678244812)
-- [autogen-studio](https://github.com/microsoft/autogen/tree/main/samples/apps/autogen-studio)
-
-
-AutoGen Studio 提供了一个更直观的用户界面，使得用户可以更容易地使用AutoGen框架来创建和管理AI智能体。
-- 与CrewAI和MetaGPT相比，AutoGen Studio提供了可视化界面，对新手更友好
-- ![](https://microsoft.github.io/autogen/assets/images/autogenstudio_home-cce78dc150d1bb0073620754df73d863.png)
-
-特性
-- 智能体和工作流定义修改：用户可以在界面上定义和修改智能体的参数，以及通信方式。
-- 与智能体的互动：通过UI创建聊天会话，与指定的智能体交互。
-- 增加智能体技能：用户可以显式地为他们的智能体添加技能，以完成更多任务。
-- 发布会话：用户可以将他们的会话发布到本地画廊。
-
-
-AutoGen Studio的组成
-- 构建部分（Build）：定义智能体属性和工作流。
-  - 默认的三个Skill是生成图片、获取个人网页正文、找Arxiv的论文。
-- 游乐场（Playground）：与在构建部分定义的智能体工作流进行互动。
-- 画廊（Gallery）：分享和重用工作流配置和会话。
-- ![](https://pic4.zhimg.com/80/v2-eb9290a6bd639bf2a4bee4fbb69767d7_1440w.webp)
-
-
-CrewAI、MetaGPT v0.6、Autogen Studio 区别
-- ![](https://pic2.zhimg.com/80/v2-ea8601d23c5e47b0b77d2f45a09fe6d5_1440w.webp)
-
-实践
-- 背后通过 fastapi、uvicorn 启动Web并行服务, 详见[代码](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/web/app.py)
-- sqlite3 本地数据库存储会话数据，详见[代码](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/utils/dbutils.py)
-  - 重置数据库 —— 删除 `database.sqlite`
-  - 删除用户信息 —— 删除文件夹 `autogenstudio/web/files/user/<user_id_md5hash>`
-- 切换LLM、agent配置、skill信息 —— 修改默认配置文件 [dbdefaults.json](https://github.com/microsoft/autogen/blob/main/samples/apps/autogen-studio/autogenstudio/utils/dbdefaults.json)
-- 查看中间信息 —— Web UI调试窗口，或 `database.sqlite` 文件
-
-```sh
-pip install autogenstudio # 安装
-# Mac电脑需要 export OPENAI_API_KEY=<your_api_key>
-#参数 host, port, workers, reload
-autogenstudio ui --port 8081 # 启动Web UI
-autogenstudio ui --port 8081 --host 10.92.186.159 # 其它域内机器可访问
-```
-
-
-### AutoGen 问题
 
 
 
-#### 功能局限
+
+#### AutoGen 问题
+
+功能局限
 
 案例都是**单层调用**，一层树结构，user_proxy调weather或traval；
 
@@ -1548,8 +2229,36 @@ System prompt中如何引用？
 - 如果是用户批量消息, 每次都 initiate_chat。 agent 消息可以看上面的memory相关，每个agent都拥有和其他agent的消息历史
 
 
+### 【2024-11-4】Magentic-One
 
-## GUI 系统
+【2024-11-4】微软推出 `Magnetic-One`（第二个框架），对现有的 `AutoGen` 框架进行简化。
+- [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://www.microsoft.com/en-us/research/publication/magentic-one-a-generalist-multi-agent-system-for-solving-complex-tasks/)
+
+Magentic-One 工作流程基于一个双循环机制：
+- ● 外循环 (Outer Loop)：协调者更新任务日志，制定和调整计划。
+- ● 内循环 (Inner Loop)：协调者更新进度日志，分配子任务给专业智能体，并监控执行情况。 如果进度停滞，则返回外循环重新规划。
+
+功能特点：
+- 与 Swarm 相似，Magnetic-One 同样适用于编程经验较少的用户，操作起来简便快捷。
+- 系统预设了五个智能体，包括1个**管理**智能体和另外4个**专用**智能体：
+  - WebSurfer 负责在浏览器中浏览网页,以及与网页进行互动，
+  - FileSurfer 负责本地文件管理与导航，
+  - Coder 专注于代码编写与分析，
+  - ComputerTerminal 控制台访问权限，运行程序和安装库文件。
+- 该框架基于 AutoGen 打造，是一个通用框架。
+- 附带了 AutoGenBench 工具，专门用于评估智能体的性能。
+
+不足之处：
+- 对开源 LLMs 的支持较为复杂，不易实现。
+- 灵活性有待提高；从某种程度上看，它更像是一款应用，而非一个框架。
+- 目前文档资料和技术社区支持力度几乎为零，尚需加强。
+
+架构
+- ![](https://www.microsoft.com/en-us/research/uploads/prod/2024/11/magentic_orchestrator.png)
+
+
+
+## GUI Agent
 
 
 ### Dify
@@ -1566,6 +2275,38 @@ System prompt中如何引用？
 
 局限性：
 - 对硬件或设备为中心的使用场景关注较少。
+
+
+### OmAgent
+
+OmAgent **开源**框架，专为轻松构建 **设备端**多模态智能体 而设计，具备高度灵活性和实时优化能力。
+
+不仅限于传统框架，更进一步实现了 AI 与智能手机、可穿戴设备以及摄像头等硬件设备的无缝集成。 
+
+OmAgent 提供两种独特的示例代码：
+- 行业实用应用：快速开发实际 AI 智能体的示例代码，适用于视频理解、物体识别、任务规划等真实场景。
+- 研究导向实现：展示最新 AI 算法的实现，包括 ReAct、ToT 和 Divide-and-Conquer (DnC) 等，在顶级 AI 会议中发表，助力研究人员探索智能体的新能力。（诸如 ReAct、ToT 和 Divide-and-Conquer (DnC) 等在 AI 顶会中发表的前沿算法的复现示例，用于支持研究人员探索新智能体结构的能力）
+
+核心功能
+
+设备为中心：
+- 原生支持智能设备，简化与手机、智能眼镜、IP 摄像头等硬件的集成。
+- 后端流程优化，方便移动应用程序的无缝集成。
+
+原生多模态支持：
+- 内置先进的多模态模型，支持文本、音频、视频和图像的处理。
+- 优化设备与用户之间自然、实时的交互体验。
+
+工作流编排：
+- 基于图结构的工作流引擎，支持高级任务管理。
+- 实现前沿算法的应用，如 ReAct 和 Divide-and-Conquer (DnC)。
+
+可扩展性与灵活性：
+- 提供直观的界面，支持构建多角色、多场景的智能体。
+- 支持动态工作流、长期记忆以及与 Milvus 等向量数据库的集成。
+
+实时优化：
+- 低延迟的端到端优化，确保即时反馈与卓越的用户体验。
 
 
 # 结束
