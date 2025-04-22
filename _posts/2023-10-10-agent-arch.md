@@ -223,6 +223,10 @@ OmAgent 开源地址：
 - GitHub - om-ai-lab/OmAgent: A Multimodal Language Agent Framework for Problem Solving and More
 
 
+Agents SDK， Google 的 ADK， LangChain， Crew AI， LlamaIndex， Agno AI， Mastra， Pydantic AI， AutoGen， Temporal， SmolAgents， DSPy
+- [Google Doc](https://docs.google.com/spreadsheets/d/1B37VxTBuGLeTSPVWtz7UMsCdtXrqV5hCjWkbHN8tfAo/edit?ref=blog.langchain.dev&gid=0#gid=0)
+
+
 ### 框架选型
 
 
