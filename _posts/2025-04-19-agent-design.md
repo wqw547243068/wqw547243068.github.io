@@ -275,6 +275,103 @@ Agent代表**工作流自动化**的新时代，系统能够处理模糊情况�
 构建可靠的Agent需要强大基础、合适的编排模式和严格的护栏，同时采用迭代方法才能在生产环境中取得成功。
 
 
+### LangChain -- 精华
+
+【2025-4-21】精华 [Agents和Workflows孰好孰坏，LangChain创始人和OpenAI杠上了](https://mp.weixin.qq.com/s/hWON23L4WD_1vRZGbTgKbw)
+- 原文 【2025-4-20】[how-to-think-about-agent-frameworks](https://blog.langchain.dev/how-to-think-about-agent-frameworks/)
+
+LangChain 创始人 `Harrison Chase` 对于 OpenAI 一些观点持有异议，尤其是「**通过 LLMs 来主导 Agent**」的路线。
+
+Harrison Chase 认为
+- 并非要通过严格的「**二元论**」来区分 Agent，目前大多数的「Agentic 系统」都是 `Workflows` 和 `Agents` 的结合。
+- 理想的 Agent 框架应允许从「结构化`工作流`」逐步过渡到「**由模型驱动**」，并在两者之间灵活切换。
+
+OpenAI 观点建立在一些错误的**二分法**上，混淆了「Agentic 框架」的不同维度，从而夸大了单一封装的价值。
+- 混淆了「`声明式` vs `命令式`」与「`Agent 封装`」，以及「`Workflows` vs `Agents`」。
+
+观点: LLMs 越来越强, 最终都会变成 Agents, 而不是 Workflows？
+
+事实：
+- 调用工具的 Agents 的性能继续提升
+- 控制输入给 LLM 的内容依然会非常重要（垃圾进，垃圾出）
+- 一些应用，简单工具调用循环足够了
+- 另一些应用，Workflows 更简单、更便宜、更快、也更好
+- 对于大多数应用，生产环境 Agentic 系统将是 Workflows 和 Agents 结合。
+
+Harrison Chase 更认同 Anthropic 此前发布的如何构建高效 Agents 的文章
+- 对于 Agent 定义，Anthropic 提出了「`Agentic 系统`」的概念，并且把 Workflows 和 Agents 都看作是其不同表现形式。
+
+`大模型派`（Big Model）和`工作流派`（Big Workflow）的又一次争锋
+- 前者认为每次模型升级都可能让精心设计的工作流**瞬间过时**，这种「苦涩的教训」让他们更倾向于构建通用型、结构最少的**智能体系统**。
+- 而以 LangGraph 为代表的后者，强调通过**显式代码**、**模块化**工作流来构建智能体系统。结构化的流程更可控、更易调试，也更适合复杂任务。
+
+资料：
+- OpenAI 的[构建 Agents 指南](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)（写得不太行）：
+- Anthropic [构建高效 Agents 指南](https://www.anthropic.com/engineering/building-effective-agents?ref=blog.langchain.dev)
+- [LangGraph](https://www.langchain.com/langgraph)（构建可靠 Agents 的框架）
+
+要点
+- 构建可靠的 Agentic 系统，其核心难点在于确保 LLM 在每一步都能拿到恰当的上下文信息。这既包括精准控制输入给 LLM 的具体内容，也包括执行正确的步骤来生成那些有用的内容。
+- `Agentic 系统`包含 Workflows 和 Agents（以及介于两者之间的一切）。
+- 大多数的 Agentic 框架，既不是**声明式**也不是**命令式**的编排工具，而是提供了一套 **Agent 封装能力**的集合。
+- Agent 封装使入门变得更加容易，但常常把底层细节隐藏起来，反而增加了确保 LLM 在每一步都能获得恰当上下文的难度。
+- 无论 Agentic 系统是大是小，是 Agents 主导还是 Workflows 驱动，都能从同一套通用的实用功能中获益。这些功能可以由框架提供，也可以完全自己从头搭建。
+- 把 LangGraph 理解成一个编排框架（它同时提供了声明式和命令式的 API），然后在它之上构建了一系列 Agent 封装，这样想是最恰当的。
+
+问卷调查：「在将更多 Agents 投入生产时，你们遇到的最大障碍是什么？」
+- 排名第一的回答：「performance quality」。
+
+让 Agents 稳定可靠地工作，依然是个巨大的挑战。
+
+|类别|占比|
+| ---- | ---- |
+|Performance quality|41%|
+|Cost|18.4%|
+|Safety concerns|18.4%|
+|Latency|15.1%|
+|Other|7%|
+
+为什么 LLM 会出错？
+- 一是模型**本身能力**还不够；
+- 二是传递给模型的**上下文信息**不对或者不完整。
+
+第二种情况更常见。
+
+什么原因导致上下文信息传递出问题？
+- System Message 不完整或写得太短
+- 用户的输入太模糊
+- 没有给 LLM 提供正确的工具
+- 工具描述写得不好
+- 没有传入恰当的上下文信息
+- 工具返回的响应格式不对
+
+构建可靠的 Agentic 系统，难点在于：如何确保 LLM 每步都能拿到最合适的上下文信息。
+- 一是精准控制到底把**哪些具体内容**喂给 LLM
+- 二是执行正确步骤来生成那些有用的内容。
+
+「workflow」 到 「agent」 范围内构建应用程序时，要考虑两件事：
+- **可预测性**（Predictability） vs **自主性**（agency）
+  - 可靠性并不等同于可预测性, 但密切相关
+  - 系统越偏向 Agentic，其可预测性就越低
+- **低门槛**（low floor），**高上限**（high ceiling）
+  - Workflow 框架**高上限**，但**门槛也高**，但需要自己编写很多 Agent 逻辑。
+  - Agent 框架则是**低门槛**，但**上限也低** —— 虽然容易上手，但不足以应对复杂用例。
+  - LangGraph 目标: 兼具**低门槛**（提供内置的 Agent 封装，方便快速启动）和**高上限**（提供低层功能，支持实现高级用例）。
+
+LangGraph 最常见的方式主要有两种：
+- 一种是通过声明式的、基于图（Graph）的语法
+- 另一种是利用构建在底层框架之上的 Agent 封装
+
+此外，LangGraph 还支持函数式 API 以及底层的事件驱动 API，并提供了 Python 和 Typescript 两个版本。
+
+LangGraph 内置了一个持久化层，这使得其具备**容错**能力、**短期记忆**以及**长期记忆**。
+
+这个持久化层还支持「人工参与决策」（human-in-the-loop）和「人工监督流程」（human-on-the-loop）的模式，比如中断、批准、恢复以及时间回溯（time travel）等功能。
+
+LangGraph 内建支持多种流式传输，包括 tokens 的流式输出、节点状态的更新和任意事件的流式推送。同时，LangGraph 可以与 LangSmith 无缝集成，方便进行调试、评估和可观测性分析。
+
+生产环境中大多数的 Agentic 系统都是 Workflows 和 Agents 的组合。一个成熟的生产级框架必须同时支持 workflow 和 agent 两种模式。
+
 ### 其他
 
 智能体时代的设计模式 
