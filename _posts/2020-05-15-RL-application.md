@@ -99,6 +99,94 @@ env.close()     # 关闭窗口
 ```
 
 
+### Gymnasium
+
+Gymnasium 是 OpenAI Gym库后续维护版本，还提供了与旧版Gym环境兼容的封装层。
+- 界面简洁、易于使用，能够表示一般的强化学习问题，是一个集成了多样化单智能体参考环境的强化学习的API标准。
+- [参考](https://zhuanlan.zhihu.com/p/876047971)
+
+Gymnasium 是为所有单智能体环境提供API的项目，包括常见的环境
+- 如 cartpole, pendulum, mountain-car, mujoco, atari 等等。
+
+Gymnasium 核心是`Env`，高级Python类用来代表强化学习理论中的`马尔科夫决策过程`（MDP）。
+
+Env提供了生成初始化状态、转移到新状态并执行动作、可视化等方法（类内的函数）。
+
+每个环境都通过 action_space 和 observation_space 属性来指定有效的动作和观察值的格式
+
+Env.action_space 和 Env.observation_space 都是类Space的实例， 两个重要的方法：
+- `Space.contains()`（检验一个元素是否在空间内）
+- `Space.sample()`（生成空间的随机采样的一个元素）。
+
+#### Env 类型
+
+
+空间：
+- `Box`: 指定上下限（可以为无穷）的连续n维空间，如 小杆角度。
+- `Discrete`: 由有限个元素组成的**离散**空间，如 小车动作 `{左，右}`。
+- `MultiBinary`: n维的**二进制**空间，即二进制数组。
+- `MultiDiscrete`: 由一系列离散动作空间组成，每个元素中有不同数量的动作。
+- `Text`: 具有最小和最大长度的**字符串**空间。
+- `Dict`: 由简单空间组成的**字典**，如 `{"position": Box(-1,1, shape=(2,)), "color": Discrete(3)}`。
+- `Tuple`: 由简单空间组成的**元组**。
+- `Graph`: 由相互连接的节点和边构成的数学**图像**（网络）。
+- `Sequence`: 简单空间元素的可变长度的**序列**。
+
+包装器，例如：
+- `TimeLimit`: 如果达到最大步数（或基础环境发出了截断信号），则发出截断信号。
+- `ClipAction`: 将传递给step的任何动作“裁剪”，使其位于基础环境的动作空间内。
+- `RescaleAction`: 对动作应用线性变换，将环境放缩到新的上下界内。
+- `TimeAwareObservation`: 为观测值附加时间步长的信息。在某些情况下，这有助于确保状态转移是马尔可夫的。
+
+```py
+wrapped_env # 包装后环境信息
+wrapped_env.unwrapped # 原始信息
+```
+
+
+#### 安装
+
+安装 Gymnasium
+
+```sh
+pip install gymnasium
+```
+
+初始化环境
+- Gymnasium 初始化环境非常简单，只需要使用make()函数：
+
+```py
+import gymnasium as gym
+env = gym.make('CartPole-v1')
+```
+
+示例
+
+```py
+import gymnasium as gym
+
+# 初始化环境
+env = gym.make("CartPole-v1", render_mode="human")
+
+# 重置环境并获取第一次的观测
+observation, info = env.reset(seed=42)
+
+episode_over = False
+while not episode_over:
+    # 在这里插入你自己的策略
+    action = env.action_space.sample()
+    # 执行动作使环境运行一个时间步（状态转移）
+    # 接收下一个观测，奖励，以及是否结束或者截断
+    observation, reward, terminated, truncated, info = env.step(action)
+    episode_over = terminated or truncated  # 如果回合结束，跳出循环。多回合则注释掉。
+    # 如果回合结束，重置环境以开始新的回合
+    if terminated or truncated:
+        observation, info = env.reset()
+
+env.close()
+```
+
+
 ### pygame
 
 【2025-4-24】win 11 上调试pygame做的俄罗斯方块游戏，按 E/R/T 无反应
@@ -192,11 +280,37 @@ A2C 和 PPO 继承自 `BaseAlgorithm` 类。
 
 ##### DQN
 
+DQN
+- 【2013-12-19】DeepMind 论文 [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602)
+- sb3 官方文档 [dqn](https://stable-baselines3.readthedocs.io/en/master/modules/dqn.html)
+
+```py
+import gymnasium as gym
+
+from stable_baselines3 import DQN
+
+env = gym.make("CartPole-v1", render_mode="human")
+
+model = DQN("MlpPolicy", env, verbose=1)
+model.learn(total_timesteps=10000, log_interval=4)
+model.save("dqn_cartpole")
+
+del model # remove to demonstrate saving and loading
+
+model = DQN.load("dqn_cartpole")
+
+obs, info = env.reset()
+while True:
+    action, _states = model.predict(obs, deterministic=True)
+    obs, reward, terminated, truncated, info = env.step(action)
+    if terminated or truncated:
+        obs, info = env.reset()
+```
 
 ##### PPO
 
 PPO 版本
-- [原版 ppo]()
+- [原版 ppo](https://sb3-contrib.readthedocs.io/en/master/modules/qrdqn.html#qr-dqn-policies)
 - [Maskable PPO](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html): action 空间剔除无效部分，效率更高
   - 【2022-5-31】论文 [A Closer Look at Invalid Action Masking in Policy Gradient Algorithms](https://arxiv.org/pdf/2006.14171)
 
@@ -549,6 +663,12 @@ BlockBlast reimplementation + RL agents
 |6|15/192|67|Shape 1, Row 0, Col 3|True|0.50|3.00|
 |7|34/192|139|Shape 2, Row 1, Col 3|True|-0.50|2.50|
 |8|34/192|139|Shape 2, Row 1, Col 3|True|-0.50|2.00| 
+
+
+作者回复还在开发：
+- 非mask版 DQN/PPO 确实难以收敛
+- DQN没有mask版，开发成本大
+- PPO mask版没问题
 
 
 依赖包
