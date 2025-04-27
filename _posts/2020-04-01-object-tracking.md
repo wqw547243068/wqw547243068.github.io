@@ -748,7 +748,7 @@ int main()
 }
 ```
 
-### 最新案例
+### 工具
 
 
 #### CoTracker
@@ -756,6 +756,17 @@ int main()
 【2024-10-4】CoTracker：同时准确跟踪视频中的多个点  
 - 代码：CoTracker 同时准确跟踪视频中的**多个点**  
 - 主页：[CoTracker](https://co-tracker.github.io/)
+
+
+#### motrackers
+
+【2025-4-27】
+- [multi-object-tracker](https://github.com/adipandas/multi-object-tracker)
+- 文档 [multi-object-tracker](https://adipandas.github.io/multi-object-tracker/)
+
+```sh
+pip install motrackers
+```
 
 
 # 结束
