@@ -2261,6 +2261,62 @@ Magentic-One 工作流程基于一个双循环机制：
 - ![](https://www.microsoft.com/en-us/research/uploads/prod/2024/11/magentic_orchestrator.png)
 
 
+### 【2025.4.23】cooragent
+
+
+【2025-4-23】[清华LeapLab开源cooragent框架：一句话构建您的本地智能体服务群](https://www.aitntnews.com/newDetail.html)
+
+清华大模型团队 LeapLab 发布了一款面向 Agent 协作的开源框架：Cooragent。
+- 项目链接：[cooragent](https://github.com/LeapLabTHU/cooragent)
+
+人机协同的AGI
+
+Cooragent 通过**对话**生成**可协作**的智能体，可编辑的 AGI - 让智能体通过 AGI 方式产生，但同时可以随时保持其**可编辑性**，与人协作，让智能体真正落地到每个人的生活和工作中。
+
+Agent 技术层面
+- Cooragent 基于 Agent 的协作框架, 通过**动态上下文理解与自主归纳**能力，Cooragent 彻底摒弃了传统 Agent 框架对人工设计 Prompt 的依赖。
+- 系统利用**深度记忆扩展**和**实时环境分析**，自动生成高精度任务指令，显著降低使用门槛并提升智能体的适应性。
+
+通过一句话创建一个具备强大功能的智能体，并与其他智能体协作完成复杂任务。
+
+Cooragent 由两种工作模式：`Agent Factory` 和 `Agent Workflow`。
+- `Agent Factory` 模式下，只需对智能体做出描述
+  - Cooragent 就会根据需求生成智能体，自动分析用户需求，通过记忆和扩展深入理解用户，省去纷繁复杂 Prompt 设计。
+  - Planner 会在深入理解用户需求的基础上，挑选合适的工具，自动打磨 Prompt，逐步完成智能体构建。
+  - 智能体构建完成后，可以立即投入使用，但仍然可以对智能体进行编辑，优化其行为和功能。
+- `Agent Workflow` 模式下, 只需描述要完成的目标任务
+  - Cooragent 自动分析任务需求，挑选合适智能体进行协作。
+  - Planner 根据各个智能体擅长的领域，对其进行组合并规划任务步骤和完成顺序，随后交由任务分发节点 publish 发布任务。
+  - 各个智能领取自身任务，并协作完成任务。
+
+
+Cooragent 在两种模式下不断演进，创造出无限可能。
+
+Prompt-Free 设计
+- Prompt 越来越成为负担。
+- Prompt 设计需要考虑的因素太多，用户很难在短时间设计出合适的 Prompt。
+- Cooragent 采用 **Prompt-Free** 设计，通过 Agent 的协作，深入理解上下文，自主归纳环境因素，自动生成 Prompt，从而省去 Prompt 设计。
+
+快速安装
+
+
+```sh
+# 克隆仓库
+git clone https://github.com/SeamLessAI-Inc/cooragent
+cd cooragent
+# 用uv创建并激活虚拟环境
+uv python install 3.12
+uv venv --python 3.12
+source .venv/bin/activate # Windows系统使用: .venv\Scripts\activate
+uv run src/service/app.py  
+# 安装依赖
+uv sync
+# 配置环境
+cp .env.example .env
+# 编辑 .env 文件，填入你的 API 密钥
+# 运行项目
+uv run cli.py
+```
 
 ## GUI Agent
 
