@@ -16,6 +16,62 @@ permalink: /agent_design
 # Agent 智能体设计
 
 
+## Agent 发展
+
+【2025-4-23】[从 Manus 看 AI Agent 演进之路](https://mp.weixin.qq.com/s/vqDLCse7EPBfkSaxLPMERQ)
+
+AI Agent 技术发展中的**逻辑推理**能力、**上下文记忆**能力和**工具调用**能力还属于Single Agent（单独智能体）迭代过程。
+
+让 AI Agent 真正发展起来，既要做到主流化**规模化**，要实现 多个智能体 Multi-Agent 之间通信互联。
+
+当不同的 AI Agent 在不同的设备、机房之间去做计算和联动，才有机会能够推动上亿级别用户的应用。
+
+而存在一个难点：通用的标准化协议适配范式。
+
+### Agent 阶段
+
+Agent 发展阶段
+- 第一阶段：Single Agent（单独智能体）—— 已实现
+  - AI Agent 拥有 Planning、Memory、Tools，中间有大模型 LLM 的驱动。
+- 第二阶段：Multi-agent（单机）—— 已实现
+  - Agent 中的 Planning 部分拥有逻辑推理和调度能力，比如：要实现一个复杂任务，用户可以写很多 prompt，把复杂任务拆成很多个子任务，让各个 Agent 之间去通信，但此时的复杂仍是在一个单进程内完成的。像 LangGraph、CrewAI和微软推出的 AutoGen 都已实现多个 Agent 在一个单机上的库之间通信。
+- 第三阶段：Agent实现不同设备、不同机房之间联动（MCP协议）—— 探索中
+  - 如果要支持上亿级别用户的应用，要在不同设备、不同机房间数据联动和流通的架构，目前依然处在尝试中的 Agent 第三阶段架构。
+  - 解决的问题：很多网站或者工具并不支持AI Agent 的调用（目前很多网站和服务都会有“反机器人/anti-bot”的设置）。
+  - 2024年11月初，Antropic 推出“模型上下文协议”（Model Context Protocol 简称`MCP`）协议，统一大语言模型与外部数据源和工具之间的通信协议，MCP 主要目的在于解决当前 AI 模型因数据孤岛限制而无法充分发挥潜力的难题。
+  - Antropic 将 MCP 协议称之为“AI 应用的USB-C端口”，支持将大模型直接连到数据源。此前，企业和开发者要把不同数据接入 AI 系统，都得单独开发对接方案，而MCP做的就是提供一个「通用协议」来解决这个问题。
+- 第四阶段：端云一体化的分布式 Agent 网络与互联协议 —— 待突破
+  - 还有最后一个问题：目前 AI Agent 应用大规模爆发的壁垒，是真正统一的 Agent 和 Agent 间的协议通信标准与分布式计算，就像如今的安卓与iOS一样，也需要一个全球大家承认且通用的 AI OS。
+
+### Agent 进化事件
+
+GPT 进化
+- (1) 推理 `Planning`：让 AI 能“**思考**”和“**行动**”
+  - 2022年10月, 普林斯顿与 Google Brain 合作的团队提出了 ReAct 框架论文, 通过提示工程让LLM具备一定推理、工具执行能力
+    - 所有 AI Agent 整体构架都从这篇论文开始。
+    - 然而当时最先进模型 `GPT-3.5` 能力相对有限，使得 AI Agent 逻辑推理能力并不出彩，错误率非常高
+  - 2023年3月14号，GPT-4 大模型上线，比 3.5版本模型更强，理解能力、推理能力、回答质量都大幅度提升。
+  - 2023年3月23日：ChatGPT 插件功能 Plugin 发布, 允许大模型 LLM 调用外部工具并且开发 APP, 搜索互联网、连接不同的数据库
+  - AI Agent 技术的三大要素中的 Planning 搭建成型
+- (2) 记忆 `Memory`：让 Al 有更强的“**记忆**”能力
+  - GPT-4 刚开始只有 4096 个token, 容纳3000多个英文单词
+  - 2023年5月11日：竞争对手 Anthropic 公司发布 Claude 大模型支持 **100K** token（上下文窗口），技术史上里程碑式进步。
+  - 2023年6月13日：OpenAI 发布 `Function Calling` 函数调用，引入 json 模式 & GPT 大模型支持 **16k** token
+  - AI Agent 更加可靠的调用外部API，比如说查天气、自动填表等等任务。
+  - 2023年11月21号，Anthropic Claude 2.1 版本又进一步把上下文窗口扩展到 20 万个 token，相当于 AI 可以一次性记住一整本教科书的内容，思考能力也出现大大的提升，进一步扩大大模型的记忆能力，优化推理和决策过程。
+  - 2024年2月：Google 发布 Gemini 1.5 大模型支持百万级 token
+  - AI Agent 发展必备的第二个技术壁垒  Memory 的限制也完全的被打破了，对于开发者来说就不是大问题
+- (3) 工具 `Tools`：让 AI 开始“**动手**”
+  - 2023年12月：Simular AI 发布AI Agent Demo, 首次在发布会上让大模型操控电脑
+  - 2024月10月：Claude 大模型增加 Computer use功能，进一步支持 AI Agent 对电脑的控制，让 AI 更像可以行动起来的智能助手。
+  - 2024年底：吴恩达教授公开主题演讲 AI, Agents and Applications
+  - 开发者社区或初创社区的行动都比大公司要早很多。
+  - 媒体头版开始出现：“2025年将成为 AI Agent 应用的元年的预测”
+
+
+
+
+
 ## Agent 选型
 
 Agent 落地路线图
@@ -90,6 +146,1147 @@ agent和copilot的区别主要体现在:**交互方式**、**任务执行**和**
 
 资料
 - 麦吉尔大学学者`Keheliya Gallaba`总结的agent设计方案: ppt [Agentic architectures and workflows](https://www.aiwarebootcamp.io/slides/2024_aiwarebootcamp_gallaba_keheliya_agents.pdf)
+
+
+### 总结
+
+【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
+
+总结
+- ReAct: ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
+- Plan and Solve 模式
+- Reason without Observation 模式
+- LLMCompiler 模式
+- Basic Reflection 模式
+- Reflexion 模式
+- Language Agent Tree Search 模式
+- Self-Discover 模式
+- Storm 模式
+
+### ReAct
+
+ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
+- 每次行动后立即进行观察（Observation），并将观察结果反馈到下一次推理过程，使 Agent 能够更好地适应环境变化，维持短期记忆，从而实现更加灵活和智能的行为。
+
+#### 流程
+
+ReAct 模式的核心在于其独特的交互流程：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 推理（Thought）：Agent 根据当前的任务和已有的知识进行推理，生成初步的行动计划。
+- 行动（Action）：Agent 执行推理得出的行动。
+- 观察（Observation）：Agent 对行动的结果进行观察，获取反馈信息。
+- 循环迭代：将观察结果反馈到推理过程中，Agent 根据新的信息重新进行推理，生成新的行动计划，并继续执行行动和观察，直到任务完成。
+
+```sh
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+|     推理（Thought）|
++-------------------+
+           |
+           v
++-------------------+
+|     行动（Action）  |
++-------------------+
+           |
+           v
++-------------------+
+|     观察（Observation）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+
+优势：
+- 适应性强：Agent 能够根据环境的变化及时调整自己的行为，适应动态环境。
+- 维持短期记忆：通过观察和反馈，Agent 能够记住之前的行动和结果，避免重复错误或遗漏重要信息。
+- 提高效率：减少了不必要的行动，提高了任务完成的效率。
+
+#### 示例
+
+Agent 去厨房拿胡椒粉的任务：
+
+```py
+class ReActAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "locations": ["台面上", "灶台底下抽屉", "油烟机左边吊柜"]
+        }
+
+    def think(self, task):
+        # 推理：根据任务生成行动计划
+        for location in self.knowledge_base["locations"]:
+            yieldf"检查 {location} 是否有胡椒粉"
+
+    def act(self, action):
+        # 行动：执行具体的行动
+        if action == "检查 台面上 是否有胡椒粉":
+            return"台面上没有胡椒粉"
+        elif action == "检查 灶台底下抽屉 是否有胡椒粉":
+            return"灶台底下抽屉有胡椒粉"
+        elif action == "检查 油烟机左边吊柜 是否有胡椒粉":
+            return"油烟机左边吊柜没有胡椒粉"
+
+    def observe(self, action_result):
+        # 观察：记录行动的结果
+        return action_result
+
+    def run(self, task):
+        # 主循环：推理 -> 行动 -> 观察 -> 循环迭代
+        for action in self.think(task):
+            action_result = self.act(action)
+            observation = self.observe(action_result)
+            print(f"Action: {action}")
+            print(f"Observation: {observation}")
+            if"有胡椒粉"in observation:
+                print("任务完成：找到胡椒粉")
+                break
+
+
+# 示例运行
+agent = ReActAgent()
+agent.run("去厨房拿胡椒粉")
+```
+
+输出结果
+
+```sh
+Action: 检查 台面上 是否有胡椒粉
+Observation: 台面上没有胡椒粉
+Action: 检查 灶台底下抽屉 是否有胡椒粉
+Observation: 灶台底下抽屉有胡椒粉
+任务完成：找到胡椒粉
+```
+
+通过这个代码示例，我们可以看到 ReAct 模式如何通过推理、行动和观察的循环迭代来完成任务。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如智能客服、自动化任务处理等，通过不断优化 Agent 的推理和行动策略，实现更加智能和高效的任务执行。
+
+### Plan and Solve
+
+Plan and Solve 模式原理
+Plan and Solve 模式是一种先规划再执行的 Agent 设计模式，适用于复杂任务的处理。在这种模式下，Agent 首先会根据任务目标生成一个多步计划，然后逐步执行计划中的每个步骤。如果在执行过程中发现计划不可行或需要调整，Agent 会重新规划，从而确保任务能够顺利进行。
+
+Plan and Solve 模式的交互流程如下：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 规划（Plan）：Agent 根据任务目标生成一个多步计划，明确每个步骤的具体内容和顺序。
+- 执行（Solve）：Agent 按照计划逐步执行每个步骤。
+- 观察（Observation）：Agent 对执行结果进行观察，判断是否需要重新规划。
+- 重新规划（Replan）：如果发现计划不可行或需要调整，Agent 会根据当前状态重新生成计划，并继续执行。
+- 循环迭代：重复执行、观察和重新规划的过程，直到任务完成。
+
+Plan and Solve 模式的交互流程可以用以下图示来表示：
+
+```
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+|     规划（Plan）   |
++-------------------+
+           |
+           v
++-------------------+
+|     执行（Solve）  |
++-------------------+
+           |
+           v
++-------------------+
+|     观察（Observation）|
++-------------------+
+           |
+           v
++-------------------+
+|     重新规划（Replan）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+优势在于：
+- 适应性强：Agent 能够根据任务的复杂性和环境的变化灵活调整计划。
+- 任务导向：通过明确的计划，Agent 能够更高效地完成任务，避免盲目行动。
+- 可扩展性：适用于复杂任务和多步骤任务，能够有效管理任务的各个阶段。
+
+#### 示例
+
+为了更好地理解 Plan and Solve 模式，我们可以通过图解和代码示例来展示其具体实现。
+
+
+
+
+#### 示例
+
+实现一个 Agent 制作西红柿炒鸡蛋的任务：
+
+```py
+class PlanAndSolveAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "steps": [
+                "检查冰箱是否有西红柿和鸡蛋",
+                "如果没有西红柿，购买西红柿",
+                "准备食材：切西红柿、打鸡蛋",
+                "热锅加油，炒鸡蛋",
+                "加入西红柿，翻炒",
+                "调味，出锅"
+            ]
+        }
+
+    def plan(self, task):
+        # 规划：根据任务生成多步计划
+        return self.knowledge_base["steps"]
+
+    def solve(self, step):
+        # 执行：执行具体的步骤
+        if step == "检查冰箱是否有西红柿和鸡蛋":
+            return"冰箱里有鸡蛋，但没有西红柿"
+        elif step == "如果没有西红柿，购买西红柿":
+            return"购买了西红柿"
+        elif step == "准备食材：切西红柿、打鸡蛋":
+            return"食材准备完毕"
+        elif step == "热锅加油，炒鸡蛋":
+            return"鸡蛋炒好了"
+        elif step == "加入西红柿，翻炒":
+            return"西红柿炒好了"
+        elif step == "调味，出锅":
+            return"西红柿炒鸡蛋完成"
+
+    def observe(self, step_result):
+        # 观察：记录执行结果
+        return step_result
+
+    def replan(self, current_plan, observation):
+        # 重新规划：根据观察结果调整计划
+        if"没有西红柿"in observation:
+            current_plan.insert(1, "如果没有西红柿，购买西红柿")
+        return current_plan
+
+    def run(self, task):
+        # 主循环：规划 -> 执行 -> 观察 -> 重新规划 -> 循环迭代
+        plan = self.plan(task)
+        for step in plan:
+            step_result = self.solve(step)
+            observation = self.observe(step_result)
+            print(f"Step: {step}")
+            print(f"Observation: {observation}")
+            if"没有西红柿"in observation:
+                plan = self.replan(plan, observation)
+            if"完成"in observation:
+                print("任务完成：西红柿炒鸡蛋制作完成")
+                break
+# 示例运行
+agent = PlanAndSolveAgent()
+agent.run("制作西红柿炒鸡蛋")
+```
+
+
+输出结果
+
+```
+Step: 检查冰箱是否有西红柿和鸡蛋
+Observation: 冰箱里有鸡蛋，但没有西红柿
+Step: 如果没有西红柿，购买西红柿
+Observation: 购买了西红柿
+Step: 准备食材：切西红柿、打鸡蛋
+Observation: 食材准备完毕
+Step: 热锅加油，炒鸡蛋
+Observation: 鸡蛋炒好了
+Step: 加入西红柿，翻炒
+Observation: 西红柿炒好了
+Step: 调味，出锅
+Observation: 西红柿炒鸡蛋完成
+任务完成：西红柿炒鸡蛋制作完成
+```
+
+Plan and Solve 模式如何通过规划、执行、观察和重新规划的循环迭代来完成任务。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如项目管理、自动化工作流程等，通过不断优化 Agent 的规划和执行策略，实现更加智能和高效的任务执行。
+
+### Reason without Observation
+
+Reason without Observation 模式原理
+
+Reason without Observation（REWOO）模式是一种创新的 Agent 设计模式，在传统 ReAct 模式的基础上进行了优化，去掉了显式观察（Observation）步骤，而是将观察结果隐式地嵌入到下一步的执行中。这种模式的核心在于通过推理（Reasoning）和行动（Action）的紧密协作，实现更加高效和连贯的任务执行。
+
+#### 流程
+
+REWOO 模式中，Agent 交互流程：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 推理（Reasoning）：Agent 根据当前的任务和已有的知识进行推理，生成初步的行动计划。
+- 行动（Action）：Agent 执行推理得出的行动。
+- 隐式观察（Implicit Observation）：Agent 在执行行动的过程中，自动将结果反馈到下一步的推理中，而不是显式地进行观察。
+- 循环迭代：Agent 根据新的信息重新进行推理，生成新的行动计划，并继续执行行动，直到任务完成。
+
+优势在于：
+- 高效性：去掉了显式的观察步骤，减少了交互的复杂性，提高了任务执行的效率。
+- 连贯性：通过隐式观察，Agent 的行动更加连贯，避免了不必要的重复操作。
+- 适应性：Agent 能够根据任务的复杂性和环境的变化灵活调整行动策略。
+
+
+REWOO 模式的交互流程可以用以下图示来表示：
+
+```sh
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+|     推理（Reasoning）|
++-------------------+
+           |
+           v
++-------------------+
+|     行动（Action）  |
++-------------------+
+           |
+           v
++-------------------+
+|     隐式观察（Implicit Observation）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+Agent 完成审批流程的任务：
+
+```py
+class REWOOAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "steps": [
+                "从部门 A 获取文件 a",
+                "拿着文件 a 去部门 B 办理文件 b",
+                "拿着文件 b 去部门 C 办理文件 c"
+            ]
+        }
+
+    def reason(self, task, current_step):
+        # 推理：根据任务和当前步骤生成行动计划
+        if current_step == 0:
+            return"从部门 A 获取文件 a"
+        elif current_step == 1:
+            return"拿着文件 a 去部门 B 办理文件 b"
+        elif current_step == 2:
+            return"拿着文件 b 去部门 C 办理文件 c"
+
+    def act(self, action):
+        # 行动：执行具体的行动
+        if action == "从部门 A 获取文件 a":
+            return"文件 a 已获取"
+        elif action == "拿着文件 a 去部门 B 办理文件 b":
+            return"文件 b 已办理"
+        elif action == "拿着文件 b 去部门 C 办理文件 c":
+            return"文件 c 已办理"
+
+    def run(self, task):
+        # 主循环：推理 -> 行动 -> 隐式观察 -> 循环迭代
+        steps = self.knowledge_base["steps"]
+        for current_step in range(len(steps)):
+            action = self.reason(task, current_step)
+            action_result = self.act(action)
+            print(f"Action: {action}")
+            print(f"Result: {action_result}")
+            if"文件 c 已办理"in action_result:
+                print("任务完成：审批流程完成")
+                break
+# 示例运行
+agent = REWOOAgent()
+agent.run("完成审批流程")
+```
+
+输出结果
+
+```
+Action: 从部门 A 获取文件 a
+Result: 文件 a 已获取
+Action: 拿着文件 a 去部门 B 办理文件 b
+Result: 文件 b 已办理
+Action: 拿着文件 b 去部门 C 办理文件 c
+Result: 文件 c 已办理
+任务完成：审批流程完成
+```
+
+REWOO 模式如何通过推理和行动的紧密协作，实现高效的任务执行。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如工作流程自动化、多步骤任务处理等，通过不断优化 Agent 的推理和行动策略，实现更加智能和高效的任务执行。
+
+
+### LLMCompiler 模式
+
+LLMCompiler 模式原理
+
+LLMCompiler 模式是一种通过并行函数调用提高效率的 Agent 设计模式。该模式的核心在于优化任务的编排，使得 Agent 能够同时处理多个任务，从而显著提升任务处理的速度和效率。这种模式特别适用于需要同时处理多个子任务的复杂任务场景，例如多任务查询、数据并行处理等。
+
+#### 流程
+
+LLMCompiler 模式的交互流程：
+- 接收任务：Agent 接收到用户或系统的任务指令，任务可能包含多个子任务。
+- 任务分解（Task Decomposition）：Agent 将复杂任务分解为多个子任务，并确定这些子任务之间的依赖关系。
+- 并行执行（Parallel Execution）：Agent 根据子任务之间的依赖关系，将可以并行处理的子任务同时发送给多个执行器进行处理。
+- 结果合并（Result Merging）：各个执行器完成子任务后，Agent 将结果合并，形成最终的输出。
+- 循环迭代（Iteration）：如果任务需要进一步处理或调整，Agent 会根据当前结果重新分解任务，并继续并行执行和结果合并，直到任务完成。
+
+优势在于：
+- 高效率：通过并行处理多个子任务，显著减少了任务完成的总时间。
+- 灵活性：能够根据任务的复杂性和子任务之间的依赖关系动态调整任务分解和执行策略。
+- 可扩展性：适用于大规模任务和复杂任务场景，能够有效利用多核处理器和分布式计算资源。
+
+
+LLMCompiler 模式的交互流程可以用以下图示来表示：
+
+```sh
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+| 任务分解（Task Decomposition）|
++-------------------+
+           |
+           v
++-------------------+
+| 并行执行（Parallel Execution）|
++-------------------+
+           |
+           v
++-------------------+
+| 结果合并（Result Merging）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+Agent 同时查询两个人的年龄并计算年龄差的任务：
+
+```py
+import concurrent.futures
+
+class LLMCompilerAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "person_age": {
+                "张译": 40,
+                "吴京": 48
+            }
+        }
+
+    def query_age(self, name):
+        # 查询年龄
+        return self.knowledge_base["person_age"].get(name, "未知")
+
+    def calculate_age_difference(self, age1, age2):
+        # 计算年龄差
+        try:
+            return abs(int(age1) - int(age2))
+        except ValueError:
+            return"无法计算年龄差"
+
+    def run(self, task):
+        # 主流程：任务分解 -> 并行执行 -> 结果合并 -> 循环迭代
+        if task == "查询张译和吴京的年龄差":
+            # 任务分解
+            tasks = ["查询张译的年龄", "查询吴京的年龄"]
+            results = {}
+
+            # 并行执行
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {executor.submit(self.query_age, name): name for name in ["张译", "吴京"]}
+                for future in concurrent.futures.as_completed(futures):
+                    name = futures[future]
+                    try:
+                        results[name] = future.result()
+                    except Exception as e:
+                        results[name] = f"查询失败: {e}"
+
+            # 结果合并
+            age_difference = self.calculate_age_difference(results["张译"], results["吴京"])
+            print(f"张译的年龄: {results['张译']}")
+            print(f"吴京的年龄: {results['吴京']}")
+            print(f"年龄差: {age_difference}")
+
+# 示例运行
+agent = LLMCompilerAgent()
+agent.run("查询张译和吴京的年龄差")
+```
+
+输出结果
+
+```
+张译的年龄: 40
+吴京的年龄: 48
+年龄差: 8
+```
+
+LLMCompiler 模式如何通过任务分解、并行执行和结果合并来高效完成任务。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如多任务查询、数据并行处理等，通过不断优化 Agent 的任务分解和并行执行策略，实现更加智能和高效的任务执行。
+
+
+### Basic Reflection 模式
+
+Basic Reflection 模式原理
+
+Basic Reflection 模式是一种通过反思和修正来优化 Agent 行为的设计模式。在这种模式下，Agent 的行为可以分为两个阶段：生成初始响应和对初始响应进行反思与修正。这种模式的核心在于通过不断的自我评估和改进，使 Agent 的输出更加准确和可靠。
+
+Basic Reflection 模式的交互流程如下：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 生成初始响应（Initial Response）：Agent 根据任务生成一个初步的回答或解决方案。
+- 反思（Reflection）：Agent 对初始响应进行评估，检查是否存在错误、遗漏或可以改进的地方。
+- 修正（Revision）：根据反思的结果，Agent 对初始响应进行修正，生成最终的输出。
+- 循环迭代（Iteration）：如果任务需要进一步优化，Agent 会重复反思和修正的过程，直到输出满足要求。
+
+优势在于：
+- 提高准确性：通过反思和修正，Agent 能够减少错误和遗漏，提高输出的准确性。
+- 增强适应性：Agent 能够根据不同的任务和环境调整自己的行为策略，增强适应性。
+- 提升用户体验：通过不断优化输出，Agent 能够提供更高质量的服务，提升用户体验。
+
+
+Basic Reflection 模式的交互流程可以用以下图示来表示：
+
+```py
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+| 生成初始响应（Initial Response）|
++-------------------+
+           |
+           v
++-------------------+
+|     反思（Reflection）|
++-------------------+
+           |
+           v
++-------------------+
+|     修正（Revision）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+Agent 回答数学问题的任务：
+
+```py
+class BasicReflectionAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "math_problems": {
+                "1+1": 2,
+                "2*2": 4,
+                "3*3": 9
+            }
+        }
+
+    def initial_response(self, task):
+        # 生成初始响应：根据任务生成初步回答
+        return self.knowledge_base["math_problems"].get(task, "未知")
+
+    def reflect(self, response):
+        # 反思：检查初始响应是否准确
+        if response == "未知":
+            return"需要进一步查找答案"
+        else:
+            return"答案正确"
+
+    def revise(self, response, reflection):
+        # 修正：根据反思结果调整响应
+        if reflection == "需要进一步查找答案":
+            return"抱歉，我没有找到答案"
+        else:
+            return response
+
+    def run(self, task):
+        # 主流程：生成初始响应 -> 反思 -> 修正 -> 循环迭代
+        initial_response = self.initial_response(task)
+        reflection = self.reflect(initial_response)
+        final_response = self.revise(initial_response, reflection)
+        print(f"Initial Response: {initial_response}")
+        print(f"Reflection: {reflection}")
+        print(f"Final Response: {final_response}")
+
+# 示例运行
+agent = BasicReflectionAgent()
+agent.run("1+1")
+agent.run("5*5")
+```
+
+输出结果
+
+```
+Initial Response: 2
+Reflection: 答案正确
+Final Response: 2
+Initial Response: 未知
+Reflection: 需要进一步查找答案
+Final Response: 抱歉，我没有找到答案
+```
+
+Basic Reflection 模式如何通过生成初始响应、反思和修正的过程来优化 Agent 的行为。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如智能客服、自动问答系统等，通过不断优化 Agent 的反思和修正策略，实现更加智能和高效的任务执行。
+
+### Reflexion 模式
+
+Reflexion 模式原理
+
+Reflexion 模式是一种基于强化学习的 Agent 设计模式，旨在通过引入外部数据评估和自我反思机制，进一步优化 Agent 的行为和输出。与 Basic Reflection 模式相比，Reflexion 模式不仅对初始响应进行反思和修正，还通过外部数据来评估回答的准确性和完整性，从而生成更具建设性的修正建议。
+
+Reflexion 模式的交互流程如下：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 生成初始响应（Initial Response）：Agent 根据任务生成一个初步的回答或解决方案。
+- 外部评估（External Evaluation）：引入外部数据或标准，对初始响应进行评估，检查是否存在错误、遗漏或可以改进的地方。
+- 反思（Reflection）：Agent 根据外部评估的结果，对初始响应进行自我反思，识别问题所在。
+- 修正（Revision）：根据反思的结果，Agent 对初始响应进行修正，生成最终的输出。
+- 循环迭代（Iteration）：如果任务需要进一步优化，Agent 会重复外部评估、反思和修正的过程，直到输出满足要求。
+
+优势在于：
+- 提高准确性：通过外部数据评估和自我反思，Agent 能够更准确地识别错误和遗漏，从而提高输出的准确性。
+- 增强适应性：Agent 能够根据不同的任务和环境调整自己的行为策略，增强适应性。
+- 提升用户体验：通过不断优化输出，Agent 能够提供更高质量的服务，提升用户体验。
+- 强化学习：引入外部数据评估机制，使 Agent 的学习过程更加科学和有效，能够更好地适应复杂任务和动态环境。
+
+
+Reflexion 模式的交互流程可以用以下图示来表示：
+
+```sh
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+| 生成初始响应（Initial Response）|
++-------------------+
+           |
+           v
++-------------------+
+| 外部评估（External Evaluation）|
++-------------------+
+           |
+           v
++-------------------+
+|     反思（Reflection）|
++-------------------+
+           |
+           v
++-------------------+
+|     修正（Revision）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+Agent 回答数学问题的任务：
+
+```py
+class ReflexionAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "math_problems": {
+                "1+1": 2,
+                "2*2": 4,
+                "3*3": 9
+            }
+        }
+        self.external_data = {
+            "1+1": 2,
+            "2*2": 4,
+            "3*3": 9,
+            "5*5": 25
+        }
+
+    def initial_response(self, task):
+        # 生成初始响应：根据任务生成初步回答
+        return self.knowledge_base["math_problems"].get(task, "未知")
+
+    def external_evaluation(self, response, task):
+        # 外部评估：检查初始响应是否准确
+        correct_answer = self.external_data.get(task, "未知")
+        if response == correct_answer:
+            return"答案正确"
+        else:
+            returnf"答案错误，正确答案是 {correct_answer}"
+
+    def reflect(self, evaluation):
+        # 反思：根据外部评估的结果进行自我反思
+        if"答案错误"in evaluation:
+            return"需要修正答案"
+        else:
+            return"无需修正"
+
+    def revise(self, response, reflection, evaluation):
+        # 修正：根据反思结果调整响应
+        if reflection == "需要修正答案":
+            correct_answer = evaluation.split("正确答案是 ")[1]
+            return correct_answer
+        else:
+            return response
+
+    def run(self, task):
+        # 主流程：生成初始响应 -> 外部评估 -> 反思 -> 修正 -> 循环迭代
+        initial_response = self.initial_response(task)
+        evaluation = self.external_evaluation(initial_response, task)
+        reflection = self.reflect(evaluation)
+        final_response = self.revise(initial_response, reflection, evaluation)
+        print(f"Initial Response: {initial_response}")
+        print(f"External Evaluation: {evaluation}")
+        print(f"Reflection: {reflection}")
+        print(f"Final Response: {final_response}")
+
+# 示例运行
+agent = ReflexionAgent()
+agent.run("1+1")
+agent.run("5*5")
+```
+
+输出结果
+
+```
+Initial Response: 2
+External Evaluation: 答案正确
+Reflection: 无需修正
+Final Response: 2
+Initial Response: 未知
+External Evaluation: 答案错误，正确答案是 25
+Reflection: 需要修正答案
+Final Response: 25
+```
+
+Reflexion 模式如何通过生成初始响应、外部评估、反思和修正的过程来优化 Agent 的行为。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如智能客服、自动问答系统等，通过不断优化 Agent 的反思和修正策略，实现更加智能和高效的任务执行。
+
+### Language Agent Tree Search 模式
+
+Language Agent Tree Search 模式原理
+
+Language Agent Tree Search（LATS）模式是一种融合了树搜索、ReAct、Plan & Solve 以及反思机制的 Agent 设计模式。它通过多轮迭代和树搜索的方式，对可能的解决方案进行探索和评估，从而找到最优解。这种模式特别适用于复杂任务的解决，尤其是在需要对多种可能性进行评估和选择的场景中。
+
+#### 流程
+
+LATS 模式的交互流程如下：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 树搜索（Tree Search）：Agent 构建一个搜索树，将任务分解为多个子任务，并探索所有可能的解决方案路径。
+- ReAct 交互：在树搜索的过程中，Agent 使用 ReAct 模式对每个子任务进行推理和行动，获取反馈信息。
+- Plan & Solve 执行：Agent 根据树搜索的结果，生成一个多步计划，并逐步执行计划中的每个步骤。
+- 反思与修正（Reflection & Revision）：Agent 对执行结果进行反思，评估每个步骤的正确性和效率，根据反思结果对计划进行修正。
+- 循环迭代（Iteration）：Agent 重复树搜索、ReAct 交互、Plan & Solve 执行和反思修正的过程，直到找到最优解或任务完成。
+
+
+优势在于：
+- 全局优化：通过树搜索，Agent 能够全面探索所有可能的解决方案，找到最优路径。
+- 灵活性：结合 ReAct 和 Plan & Solve 模式，Agent 能够灵活应对任务中的动态变化。
+- 准确性：通过反思机制，Agent 能够不断优化自己的行为，提高任务完成的准确性。
+- 适应性：适用于复杂任务和多步骤任务，能够有效管理任务的各个阶段。
+
+LATS 模式的交互流程可以用以下图示来表示：
+
+```py
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+|     树搜索（Tree Search）|
++-------------------+
+           |
+           v
++-------------------+
+| ReAct 交互（ReAct Interaction）|
++-------------------+
+           |
+           v
++-------------------+
+| Plan & Solve 执行（Plan & Solve Execution）|
++-------------------+
+           |
+           v
++-------------------+
+| 反思与修正（Reflection & Revision）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+Agent 解决一个复杂的任务，例如规划一条旅行路线并优化行程：
+
+```py
+class LATSNode:
+    def __init__(self, state, parent=None, action=None):
+        self.state = state
+        self.parent = parent
+        self.action = action
+
+class LATSAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "cities": ["北京", "上海", "广州", "深圳"],
+            "distances": {
+                ("北京", "上海"): 1300,
+                ("北京", "广州"): 2000,
+                ("北京", "深圳"): 2200,
+                ("上海", "广州"): 1200,
+                ("上海", "深圳"): 1500,
+                ("广州", "深圳"): 100
+            }
+        }
+
+    def tree_search(self, start, goal):
+        # 树搜索：构建搜索树并找到最优路径
+        open_list = [LATSNode(start)]
+        while open_list:
+            current_node = open_list.pop(0)
+            if current_node.state == goal:
+                return self.get_path(current_node)
+            for city in self.knowledge_base["cities"]:
+                if city != current_node.state:
+                    new_node = LATSNode(city, current_node, f"前往 {city}")
+                    open_list.append(new_node)
+        returnNone
+
+    def get_path(self, node):
+        # 获取路径
+        path = []
+        while node:
+            path.append(node.state)
+            node = node.parent
+        return path[::-1]
+
+    def react_interaction(self, path):
+        # ReAct 交互：对每个步骤进行推理和行动
+        observations = []
+        for i in range(len(path) - 1):
+            start = path[i]
+            end = path[i + 1]
+            distance = self.knowledge_base["distances"].get((start, end), 0)
+            observations.append(f"从 {start} 到 {end} 的距离是 {distance} 公里")
+        return observations
+
+    def plan_and_solve(self, observations):
+        # Plan & Solve 执行：根据观察结果生成计划并执行
+        plan = []
+        for observation in observations:
+            plan.append(f"根据 {observation}，调整行程")
+        return plan
+
+    def reflect_and_revise(self, plan):
+        # 反思与修正：评估计划并进行修正
+        revised_plan = []
+        for step in plan:
+            if"调整行程"in step:
+                revised_plan.append("优化行程")
+        return revised_plan
+
+    def run(self, start, goal):
+        # 主流程：树搜索 -> ReAct 交互 -> Plan & Solve 执行 -> 反思与修正 -> 循环迭代
+        path = self.tree_search(start, goal)
+        if path:
+            observations = self.react_interaction(path)
+            plan = self.plan_and_solve(observations)
+            revised_plan = self.reflect_and_revise(plan)
+            print(f"路径: {path}")
+            print(f"观察结果: {observations}")
+            print(f"初始计划: {plan}")
+            print(f"修正后的计划: {revised_plan}")
+        else:
+            print("未找到路径")
+
+# 示例运行
+agent = LATSAgent()
+agent.run("北京", "深圳")
+```
+
+输出结果
+
+```
+路径: ['北京', '上海', '深圳']
+观察结果: ['从 北京 到 上海 的距离是 1300 公里', '从 上海 到 深圳 的距离是 1500 公里']
+初始计划: ['根据 从 北京 到 上海 的距离是 1300 公里，调整行程', '根据 从 上海 到 深圳 的距离是 1500 公里，调整行程']
+修正后的计划: ['优化行程', '优化行程']
+```
+
+
+
+LATS 模式如何通过树搜索、ReAct 交互、Plan & Solve 执行和反思修正的多轮迭代来优化 Agent 的行为。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如路径规划、资源优化等，通过不断优化 Agent 的行为策略，实现更加智能和高效的任务执行。
+
+### Self-Discover 模式
+
+Self-Discover 模式原理
+
+Self-Discover 模式是一种让 Agent 在更小粒度上对任务本身进行反思的设计模式。这种模式的核心在于通过自我发现和自我调整，使 Agent 能够更深入地理解任务的本质和需求，从而优化行为和输出。与 Reflexion 模式相比，Self-Discover 模式不仅关注任务的执行结果，还注重任务本身的逻辑和结构，通过自我发现潜在问题和改进点，实现更深层次的优化。
+
+#### 流程
+
+Self-Discover 模式的交互流程如下：
+- 接收任务：Agent 接收到用户或系统的任务指令。
+- 任务分析（Task Analysis）：Agent 对任务进行初步分析，识别任务的关键要素和目标。
+- 自我发现（Self-Discovery）：Agent 对任务本身进行反思，发现潜在的问题、遗漏或可以改进的地方。这一步骤包括对任务逻辑、数据需求和目标的深入分析。
+- 调整策略（Strategy Adjustment）：根据自我发现的结果，Agent 调整任务执行策略，优化行为路径。
+- 执行与反馈（Execution & Feedback）：Agent 按照调整后的策略执行任务，并收集反馈信息，进一步优化行为。
+- 循环迭代（Iteration）：Agent 重复自我发现、调整策略和执行任务的过程，直到任务完成且达到最优解。
+
+优势在于：
+- 深度优化：通过自我发现和调整策略，Agent 能够深入理解任务的本质，实现更深层次的优化。
+- 适应性强：Agent 能够根据任务的变化和复杂性灵活调整行为策略，增强适应性。
+- 提高效率：通过不断优化任务执行路径，Agent 能够减少不必要的操作，提高任务完成的效率。
+- 提升用户体验：通过提供更高质量的服务，Agent 能够更好地满足用户需求，提升用户体验。
+
+
+Self-Discover 模式的交互流程可以用以下图示来表示：
+
+```
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+|     任务分析（Task Analysis）|
++-------------------+
+           |
+           v
++-------------------+
+|     自我发现（Self-Discovery）|
++-------------------+
+           |
+           v
++-------------------+
+|     调整策略（Strategy Adjustment）|
++-------------------+
+           |
+           v
++-------------------+
+| 执行与反馈（Execution & Feedback）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+#### 示例
+
+
+Self-Discover 模式代码示例，用于实现一个 Agent 优化一个简单的数据分类任务：
+
+```py
+class SelfDiscoverAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "data": [
+                {"feature1": 1, "feature2": 2, "label": "A"},
+                {"feature1": 2, "feature2": 3, "label": "B"},
+                {"feature1": 3, "feature2": 4, "label": "A"},
+                {"feature1": 4, "feature2": 5, "label": "B"}
+            ],
+            "initial_strategy": "simple_threshold"
+        }
+
+    def task_analysis(self, task):
+        # 任务分析：识别任务的关键要素和目标
+        returnf"任务分析：{task}"
+
+    def self_discovery(self, analysis):
+        # 自我发现：发现潜在的问题和改进点
+        if self.knowledge_base["initial_strategy"] == "simple_threshold":
+            return"发现：初始策略过于简单，可能无法准确分类"
+        else:
+            return"无需改进"
+
+    def strategy_adjustment(self, discovery):
+        # 调整策略：根据自我发现的结果优化行为路径
+        if"过于简单"in discovery:
+            return"调整策略：采用更复杂的分类算法"
+        else:
+            return"保持原策略"
+
+    def execute_and_feedback(self, strategy):
+        # 执行与反馈：执行任务并收集反馈信息
+        if strategy == "调整策略：采用更复杂的分类算法":
+            # 假设新策略提高了分类准确率
+            return"执行结果：分类准确率提高到90%"
+        else:
+            return"执行结果：分类准确率60%"
+
+    def run(self, task):
+        # 主流程：任务分析 -> 自我发现 -> 调整策略 -> 执行与反馈 -> 循环迭代
+        analysis = self.task_analysis(task)
+        discovery = self.self_discovery(analysis)
+        strategy = self.strategy_adjustment(discovery)
+        feedback = self.execute_and_feedback(strategy)
+        print(f"Task Analysis: {analysis}")
+        print(f"Self-Discovery: {discovery}")
+        print(f"Strategy Adjustment: {strategy}")
+        print(f"Execution & Feedback: {feedback}")
+
+# 示例运行
+agent = SelfDiscoverAgent()
+agent.run("数据分类任务")
+```
+
+输出结果
+
+```
+Task Analysis: 任务分析：数据分类任务
+Self-Discovery: 发现：初始策略过于简单，可能无法准确分类
+Strategy Adjustment: 调整策略：采用更复杂的分类算法
+Execution & Feedback: 执行结果：分类准确率提高到90%
+```
+
+Self-Discover 模式如何通过任务分析、自我发现、调整策略和执行反馈的多轮迭代来优化 Agent 的行为。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如机器学习模型优化、智能决策系统等，通过不断优化 Agent 的行为策略，实现更加智能和高效的任务执行。
+
+### Storm 模式
+
+Storm 模式原理
+
+Storm 模式是一种专注于从零开始生成复杂内容的 Agent 设计模式，特别适用于需要系统化构建和优化内容生成的任务，例如生成类似维基百科的文章、报告或知识库。其核心在于通过逐步构建大纲，并根据大纲逐步丰富内容，从而生成高质量、结构化的文本。
+
+Storm 模式的交互流程：
+- 接收任务：Agent 接收到用户或系统的任务指令，明确需要生成的内容主题。
+- 构建大纲（Outline Construction）：Agent 根据任务主题生成一个详细的大纲，明确内容的结构和各个部分的主题。
+- 内容生成（Content Generation）：Agent 根据大纲逐步生成每个部分的具体内容，确保内容的连贯性和准确性。
+- 内容优化（Content Optimization）：Agent 对生成的内容进行优化，包括语言润色、逻辑调整和信息补充，以提高内容的质量。
+- 循环迭代（Iteration）：Agent 重复内容生成和优化的过程，直到内容满足用户需求或达到预设的质量标准。
+
+优势在于：
+- 系统化生成：通过构建大纲和逐步填充内容，确保生成内容的结构化和系统性。
+- 高质量输出：通过多轮优化，Agent 能够生成高质量、连贯且准确的内容。
+- 适应性强：适用于多种内容生成任务，包括但不限于文章、报告、知识库等。
+- 可扩展性：可以根据任务的复杂性和需求灵活调整大纲和内容生成策略。
+
+
+Storm 模式的交互流程可以用以下图示来表示：
+
+```sh
++-------------------+
+|     接收任务      |
++-------------------+
+           |
+           v
++-------------------+
+| 构建大纲（Outline Construction）|
++-------------------+
+           |
+           v
++-------------------+
+| 内容生成（Content Generation）|
++-------------------+
+           |
+           v
++-------------------+
+| 内容优化（Content Optimization）|
++-------------------+
+           |
+           v
++-------------------+
+|     循环迭代      |
++-------------------+
+```
+
+### 示例
+
+Storm 模式代码示例，用于实现一个 Agent 生成一篇关于“人工智能”的维基百科风格文章：
+
+```py
+class StormAgent:
+    def __init__(self):
+        self.knowledge_base = {
+            "topics": {
+                "人工智能": {
+                    "定义": "人工智能（Artificial Intelligence, AI）是计算机科学的一个分支，旨在创建能够执行复杂任务的智能机器。",
+                    "历史": "人工智能的发展可以追溯到20世纪40年代，当时科学家们开始探索如何使计算机模拟人类智能。",
+                    "应用": "人工智能在医疗、金融、教育、交通等多个领域都有广泛的应用。",
+                    "未来": "未来，人工智能有望在更多领域实现突破，推动社会的智能化发展。"
+                }
+            }
+        }
+
+    def outline_construction(self, topic):
+        # 构建大纲：根据主题生成大纲
+        outline = [
+            "定义",
+            "历史",
+            "应用",
+            "未来"
+        ]
+        return outline
+
+    def content_generation(self, topic, section):
+        # 内容生成：根据大纲部分生成具体内容
+        return self.knowledge_base["topics"][topic][section]
+
+    def content_optimization(self, content):
+        # 内容优化：对生成的内容进行润色和调整
+        optimized_content = content.replace("有望", "有巨大潜力")
+        return optimized_content
+
+    def run(self, topic):
+        # 主流程：构建大纲 -> 内容生成 -> 内容优化 -> 循环迭代
+        outline = self.outline_construction(topic)
+        article = {}
+        for section in outline:
+            content = self.content_generation(topic, section)
+            optimized_content = self.content_optimization(content)
+            article[section] = optimized_content
+        return article
+
+# 示例运行
+agent = StormAgent()
+article = agent.run("人工智能")
+for section, content in article.items():
+    print(f"### {section}")
+    print(content)
+```
+
+输出结果
+
+```
+### 定义
+人工智能（Artificial Intelligence, AI）是计算机科学的一个分支，旨在创建能够执行复杂任务的智能机器。
+### 历史
+人工智能的发展可以追溯到20世纪40年代，当时科学家们开始探索如何使计算机模拟人类智能。
+### 应用
+人工智能在医疗、金融、教育、交通等多个领域都有广泛的应用。
+### 未来
+未来，人工智能有巨大潜力在更多领域实现突破，推动社会的智能化发展。
+```
+
+Storm 模式如何通过构建大纲、内容生成和内容优化的多轮迭代来生成高质量的文章。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如生成研究报告、知识库条目等，通过不断优化 Agent 的内容生成和优化策略，实现更加智能和高效的任务执行。
+
+
+## 思考
 
 
 ### RL
