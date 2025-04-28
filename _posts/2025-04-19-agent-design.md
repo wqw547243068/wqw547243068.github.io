@@ -16,6 +16,10 @@ permalink: /agent_design
 # Agent 智能体设计
 
 
+资料
+- 【2025-3-31】MetaGPT、蒙特利尔大学等联合出品 [ADVANCES AND CHALLENGES IN FOUNDATION AGENTS](https://arxiv.org/pdf/2504.01990)
+
+
 ## Agent 发展
 
 【2025-4-23】[从 Manus 看 AI Agent 演进之路](https://mp.weixin.qq.com/s/vqDLCse7EPBfkSaxLPMERQ)
