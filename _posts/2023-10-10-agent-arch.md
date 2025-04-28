@@ -493,6 +493,7 @@ GPT-Engineer
 
 Langgraph
 - doc：[Langgraph](https://python.langchain.com/docs/langgraph)
+- [LangGraph Studio](https://studio.langchain.com/)
 
 langchain 组件，允许开发者通过图的方式重构单个agent内部的执行流程，增加一些灵活性，并且可与langSmith等工具结合。
 
@@ -505,6 +506,14 @@ langchain 组件，允许开发者通过图的方式重构单个agent内部的�
 - 适用场景：多步骤工作流、自适应 AI 应用、协作式问题解决。
 - 局限性：需要专业知识，对多模态或设备为中心的使用场景没有本质优化。
 
+
+安装
+
+```sh
+pip install "langgraph"
+# 安装 langgraph studio
+pip install "langgraph-cli[inmem]"
+```
 
 ### 【2023-3-30】AutoGPT
 
