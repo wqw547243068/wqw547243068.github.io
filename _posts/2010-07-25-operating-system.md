@@ -92,6 +92,17 @@ $PSVersionTable
 - windows 应用[商店](https://apps.microsoft.com/detail/9mz1snwt0n5d)
 
 
+#### 快捷键
+
+关键功能
+- win + R: 打开“运行”
+- win + L: 锁屏
+- win + E: 打开“文件管理器”
+- win + D: 打开“桌面”
+- win + 1/2/3: 窗口切换
+- win + G: 打开录屏工具
+
+
 #### 用户权限
 
 提示：文件权限受阻
