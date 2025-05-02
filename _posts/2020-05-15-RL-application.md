@@ -219,15 +219,38 @@ while running:
   pygame.quit()
 ```
 
+### OpenAI Baseline
+
+`TensorFlow 1.*` 实现的强化学习库
+
+### Stable Baselines
+
+
+[Stable Baselines](https://github.com/hill-a/stable-baselines)
+- 基于 OpenAI Baselines 改进版本，使用 `TensorFlow 1.*`
+- 实现了 100 多种 RL 算法: Baselines 重构，或 新增实现（如 Soft Actor-Critic (SAC) and Twin Delayed DDPG (TD3)）
+  - A2C, Acer, ACKtr, DDPG, DQN, GAIL, HER, PPO1, PPO2, SAC, TD3, TRPO
+
+
+安装
+
+```sh
+pip install stable-baselines[mpi]
+```
+
+问题
+- 依赖 OpenAI Baselines
+- 使用 `TensorFlow 1.*`, 新版  `TensorFlow 2.*` 出来后，之前不少代码废弃
+
 
 ### Stable Baselines3
 
 德国 German Aerospace Center (DLR) 研究员 [Antonin Raffin](https://araffin.github.io/#contact) 开发  [Stable Baselines3](https://araffin.github.io/post/sb3/) 强化学习算法工具包
 
-Stable Baselines3 建立在PyTorch之上，提供清晰、简单且高效的强化学习算法实现。
-- 该库是 Stable Baselines 库的延续，采用了更为现代和标准的编程实践
+Stable Baselines3 用 PyTorch 重写，提供清晰、简单且高效的强化学习算法实现。
+- 该库是 Stable Baselines 库的延续，采用更为现代和标准的编程实践
 
-stable_baselines3 能够快速完成强化学习算法的搭建训练和评估，包括保存，录视频等
+stable_baselines3 快速完成强化学习算法的搭建训练和评估，包括保存，录视频等
 - [官方文档](https://stable-baselines3.readthedocs.io/en/master/)
 - [使用Stable Baselines3进行强化学习实验示例](https://zhuanlan.zhihu.com/p/551082373)
 
@@ -611,122 +634,7 @@ for i in range(1000):
 
 ## 游戏
 
-
-### 俄罗斯方块
-
-#### 经典俄罗斯方块
-
-【2025-3-12】经典俄罗斯方块
-
-DQN玩俄罗斯方块
-- Tensorflow 代码: 
-  - 【2019】 [Tetris-DQN](https://github.com/michiel-cox/Tetris-DQN)
-  - 【2023】[DQN_tetris](https://github.com/bruce8866/DQN_tetris) 含动图、特征
-- pytorch 代码
-  - 【2020】[Deep Q-learning for playing Tetris](https://github.com/vietnh1009/Tetris-deep-Q-learning-pytorch/tree/master)
-  - 【2021】[Tetris_DQN_PyTorch](https://github.com/treejw/Tetris_DQN_PyTorch) 韩国人, 包含奖励函数、原理、demo动图
-  - 【2024】[Tetris-DQN-NEAT](https://github.com/CarlSvejstrup/Tetris-DQN-NEAT/) DQN 和 NEAT,包含多个奖励机制,
-    - Neat 算法论文《Evolving Neural Networks through Augmenting Topologies》,整体框架可分为三部分：交叉、变异与适应度。
-
-Features
-- Cleared Lines
-- Bumpiness (Sum of height difference between each column)
-- Holes (Space with block on top of it)
-- Sum of heights
-
-
-Reward system 1 (NES Tetris)
-- 0 lines cleared = number of soft drops
-- 1 lines cleared = 40 + number of soft drops
-- 2 lines cleared = 100 + number of soft drops
-- 3 lines cleared = 300 + number of soft drops
-- 4 lines cleared = 1200 + number of soft drops
-- temination = -25
-
-#### 二维俄罗斯方块
-
-改进版：二维俄罗斯方块
-- [BlockBlast](https://blockblast.org/) 体验地址
-
-BlockBlast reimplementation + RL agents
-- GitHub：[BlockBlast-Game-AI-Agent](https://github.com/RisticDjordje/BlockBlast-Game-AI-Agent/tree/main)
-- 【2025-4-24】故障：[动作卡死](https://github.com/RisticDjordje/BlockBlast-Game-AI-Agent/issues/1)
-
-
-|序号|Valid actions|Selected action|Action details|Action valid|Reward|Total reward|
-|----|----|----|----|----|----|----|
-|1|139/192|128|Shape 2, Row 0, Col 0|True|0.50|0.50|
-|2|85/192|81|Shape 1, Row 2, Col 1|True|0.50|1.00|
-|3|35/192|48|Shape 0, Row 6, Col 0|True|0.50|1.50|
-|4|81/192|42|Shape 0, Row 5, Col 2|True|0.50|2.00|
-|5|37/192|157|Shape 2, Row 3, Col 5|True|0.50|2.50|
-|6|15/192|67|Shape 1, Row 0, Col 3|True|0.50|3.00|
-|7|34/192|139|Shape 2, Row 1, Col 3|True|-0.50|2.50|
-|8|34/192|139|Shape 2, Row 1, Col 3|True|-0.50|2.00| 
-
-
-作者回复还在开发：
-- 非mask版 DQN/PPO 确实难以收敛
-- DQN没有mask版，开发成本大
-- PPO mask版没问题
-
-
-依赖包
-
-```sh
-pip install pygame gymnasium stable_baselines3
-```
-
-
-### 雅达利（吃豆子）
-
-DeepMind开发出过一个能在57款雅达利游戏上都超越人类玩家的智能体，背后依靠的同样是强化学习算法。
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/18aa479e3b6f4d6196905e8cc3636d6d~noop.image)
-
-### 赛车
-
-【2022-9-7】[怎样从零开始训练一个AI车手？](https://www.toutiao.com/article/7138644640294683172)
-- 一个智能体（你的猫）在与环境（有你的你家）互动的过程中，在奖励（猫条）和惩罚（咬头）机制的刺激下，逐渐学会了一套能够最大化自身收益的行为模式（安静，躺平）
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c5cf85edc3544651833d93825813ed15~noop.image)
-- 如何训练AI司机
-- 借用一个道具：来自亚马逊云科技的Amazon DeepRacer。一辆看上去很概念的小车，跟真车的比例是1比18。车上安装了处理器、摄像头，甚至还可以配置激光雷达，为的就是实现自动驾驶——当然，前提就是我们先在车上部署训练好的强化学习算法。算法的训练需要在虚拟环境中进行，为此Amazon DeepRacer配套了一个管理控制台，里面包含一个3D赛车模拟器，能让人更直观地看到模型的训练效果。
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/65cd202b74434959b401da2ede132212~noop.image)
-- ![](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c22635fcd5694544839c34d230c468c0~noop.image)
-
-### 混沌球
-
-[混沌球背后的核心技术](https://rct.ai/zh-hans/blog/the-key-technology-behind-morpheus-engine)
-- [视频地址](https://rct.ai/static/images/395a257365304e399533516544b18b3c.mp4)
-
-<video width="620" height="440" controls="controls" autoplay="autoplay">
-  <source src="https://rct.ai/static/images/395a257365304e399533516544b18b3c.mp4" type="video/mp4" />
-</video>
-
-<iframe src="https://rct.ai/static/images/395a257365304e399533516544b18b3c.mp4&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
-
-混沌球算法提升游戏交互体验
-- 传统的叙事，无论是单线的故事，还是现在几乎所有的所谓 “交互式电影”，都仍然是基于 “**事件**” 作为叙事的基本单元，也就是什么事情发生了，然后什么事情发生了。传统的交互式数字娱乐内容，无非是让用户可以自由的从给定的两到三个选项中，选择不同的接下来会发生的事件，整个叙事仍然是基于预先定义好的路径来往前推进的。
-- 而混沌球与传统的叙事方式完全不同，我们将 “事件” 替换为一个又一个明确定义了入口和出口的**黑盒**，在每一个切片的混沌球里，开始和结局（一个或者多个）是确定的，但是玩家每一次如何从开始到达结局，则是**混沌**的，是路径不明确的。这个路径只有当玩家不断的和虚拟世界里的虚拟人物 NPC 作出交互，这些 NPC 根据深度强化学习训练后的模型作出动态且实时的反应来推动剧情发展之后，才会被确定下来。这也是我们为什么命名为**混沌球**算法的原因。因此，做到真正的交互式叙事的关键，在于将叙事的中心，从故事本身，转移到故事里的所有可能参与者身上，由所有可能参与者的逻辑来共同推动和串联不同的剧情可能性。
-- ![](https://rct.ai/static/images/88e5ceea1dd64e12803b3e411adf6e23.png)
-
-仿真引擎工作方式
-- ![](https://rct.ai/static/images/af5afdef214a4fe18d1a96f1dfea50b7.png)
-
-### 公园散步
-
-机器人的公园漫步
-- 并非是在实验室的模拟环境，而是在真实的室内外地形中，作者采用强化学习和机器人控制器相结合的方法，在短短20分钟内成功让机器人学会四足行走
-- [项目地址](https://github.com/ikostrikov/walk_in_the_park)
-- [论文地址](https://arxiv.org/abs/2208.07860)
-- [A Walk in the Park: Learning to Walk in 20 Minutes With Model-Free Reinforcement Learning](https://sites.google.com/berkeley.edu/walk-in-the-park)，含机器狗的演示[视频](https://www.youtube.com/embed/YO1USfn6sHY)
-- <iframe width="560" height="315" src="https://www.youtube.com/embed/YO1USfn6sHY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-### 围棋
-
-
-待定
-
+详见站内专题: [AI游戏策略](ai_game)
 
 
 # 结束
