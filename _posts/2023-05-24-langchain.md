@@ -16,13 +16,16 @@ permalink: /langchain
 
 ## LangChain 介绍
 
-LangChain, 语言链条，也称：`兰链`，Harrison Chase 2022年10月创建的一个 Python 库，一种LLM语言大模型开发工具
-- LangChain多语言实现：Python、node.js以及第三方提供的Go
+LangChain, 语言链条，也称：`兰链`
+
+2022年10月底，哈佛大学 `Harrison Chase` 开发, 基于开源大语言模型的AI工程开发框架
+- LangChain 中的 “Lang” 指大语言模型，“Chain”即“链”，将大模型与其他组件连接成链，借此构建AI工程应用
+- LangChain 多语言实现：Python、node.js 以及第三方提供的Go
 - 几分钟内构建 GPT 驱动的应用程序。
 
 Harrison Chase 于 2022 年 10 月底首次提交 LangChain。在被卷入 LLM 浪潮之前，只有短短几个月的开发时间
 
-LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
+LangChain 帮助开发者将LLM与其他计算或知识源结合起来，创建更强大的应用程序。
 - ![img](https://aitechtogether.com/wp-content/uploads/2023/05/c8538d73-3b21-4a6e-8e83-845477d3f275.webp)
 - ![](https://picx.zhimg.com/v2-b048e039fd396b131767f58b9c97a37b_1440w.jpg?source=172ae18b)
 
@@ -31,6 +34,17 @@ LangChain 可以帮助开发者将LLM与其他计算或知识源结合起来，�
 
 LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美元的种子轮融资和 2000-2500 万美元的 A 轮融资，估值达到 2 亿美元左右。
 
+【2024-3-15】[从API到Agent：万字长文洞悉LangChain工程化设计](https://www.cnblogs.com/fanzhidongyzby/p/18075179/langchain)
+
+文本生成模型的实际输入和输出都是字符串
+- 直接调用LLM的问题：输入格式化和输出结果解析上，要做大量重复文本处理工作。
+- LangChain 提供 `Prompt` 和 `OutputParser` 抽象，用户根据需求选择具体实现类型。
+
+整体流程示例
+- ![](https://pica.zhimg.com/80/v2-cf91ecc5f16e56781ca47aee521a1626_1440w.png)
+
+LangChain 以“工作流”形式将LLM与IO组件有序连接，从而具备构建复杂AI工程流程的能力
+- ![](https://picx.zhimg.com/80/v2-2ab8dadbe6e271b02ceec0c785d9fc2e_1440w.png)
 
 
 ## LangChain 生态
@@ -46,6 +60,7 @@ LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美
 - **开发**：在 `LangChain`/`LangChain.js` 中编写应用程序。使用模板作为参考，快速开始。
 - **生产化**：使用 `LangSmith` 来检查、测试和监控链，这样可不断改进并有信心地部署。
 - **部署**：使用 `LangServe` 将任何链转换为 API。
+
 
 
 <!-- draw.io diagram -->
@@ -208,6 +223,8 @@ flow("Hey, have you heard of LangFlow?")
 
 
 #### LangGraph
+
+基于LCEL确实能描述复杂 LangChain计算图结构，但依然有DAG天然的设计限制，即不能支持“循环”。
 
 LangGraph：可视化**复杂**工作流
 
@@ -390,6 +407,8 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 
 
 
+
+
 ### 文档介绍
 
 - [官方文档](https://python.langchain.com/en/latest/index.html), [中文文档](https://python.langchain.com.cn/docs/get_started/quickstart)
@@ -440,10 +459,16 @@ print(response)
 
 ## LangChain 组件
 
+LangChain 架构
+- 【2024-3-15】[从API到Agent：万字长文洞悉LangChain工程化设计](https://www.cnblogs.com/fanzhidongyzby/p/18075179/langchain)
+- 官方文档: [Towards LangChain 0.1: LangChain-Core and LangChain-Community](https://blog.langchain.dev/the-new-langchain-architecture-langchain-core-v0-1-langchain-community-and-a-path-to-langchain-v0-1/)
+- ![](https://blog.langchain.dev/content/images/size/w1000/2023/12/LangChain-Stack---split---V3.png)
+- ![](https://js.langchain.com/v0.1/assets/images/langchain_stack_feb_2024-101939844004a99c1b676723fc0ee5e9.webp)
+
 LangChain 库本身由几个不同的包组成。
-- `langchain-core`：基础抽象和 LangChain 表达式语言。
-- `langchain-community`：第三方集成。
-- `langchain`：构成应用程序认知架构的链、代理和检索策略。
+- `langchain-core`：基础抽象和 LangChain 表达式语言(`LCEL`)。
+- `langchain-community`：包含所有第三方集成, Model i/o, Retrieval, Agent Tooling。
+- `langchain`：构成应用程序认知架构的链、代理和检索策略。Chain/Agent/Advanced Retrieval
 
 2 个核心功能为：
 - 1）LLM 模型与**外部数据源**进行连接。
@@ -463,6 +488,9 @@ LangChain主要支持6种组件：
 - ![](https://picx.zhimg.com/80/v2-c4e822ce46f7f9c77ce6797047e6d2a2_1440w.webp?source=1940ef5c)
 
 ### 框架
+
+
+
 
 
 LangChain 框架示意图
