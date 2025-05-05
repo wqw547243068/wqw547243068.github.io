@@ -494,6 +494,7 @@ GPT-Engineer
 Langgraph
 - doc：[Langgraph](https://python.langchain.com/docs/langgraph)
 - [LangGraph Studio](https://studio.langchain.com/)
+- LangGraph + DeepSeek 实现[案例](https://zhuanlan.zhihu.com/p/684847526)
 
 langchain 组件，允许开发者通过图的方式重构单个agent内部的执行流程，增加一些灵活性，并且可与langSmith等工具结合。
 
