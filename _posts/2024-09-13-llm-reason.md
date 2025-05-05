@@ -2089,6 +2089,31 @@ R1V三大亮点。
 - 信息源：[新智源](https://mp.weixin.qq.com/s/CYNce3oHoDrsOJSv5Pj6Nw)
 
 
+#### 多模态思维链
+
+
+【2025-3-25】[一文看懂多模态思维链](https://zhuanlan.zhihu.com/p/32534496465)
+
+新加坡国立大学、香港中文大学、新加坡南洋理工大学、罗切斯特大学的研究人员联合推出 多模态思维链综述, 提出 六大技术支柱
+- [Multimodal Chain-of-Thought Reasoning: A Comprehensive Survey](https://arxiv.org/pdf/2503.12605)
+- [Awesome-MCoT](https://github.com/yaotingwangofficial/Awesome-MCoT)
+- ![](https://pic2.zhimg.com/v2-cf7f471f04bc918fc40e26849ecffbd1_1440w.jpg)
+
+![](https://pica.zhimg.com/v2-0e1223bb2d290d2095e92c62cab6e93e_1440w.jpg)
+
+传统思维链（CoT）已经让AI在文字推理上变得更聪明，比如一步步推导数学题的答案。
+
+但现实世界远比单一文字复杂得多——人能看图说话、听声辨情、摸物识形。
+- ![](https://picx.zhimg.com/v2-5ad7c7bb091adfd9cabdd2fcfe4d2b09_1440w.jpg)
+
+MCoT 给AI装上了“多感官大脑”，同时处理图像、视频、音频、3D模型、表格等多种信息。
+
+比如，输入一张CT影像和患者的病史，AI就能输出诊断报告，还能标注出病灶位置。
+
+这种跨越模态的推理能力，让AI更接近人类的思考方式。
+- ![](https://pic3.zhimg.com/v2-b996b26c1e544b4f8ac6fc077c0f802a_1440w.jpg)
+
+
 ### 【2025-2-25】Sonnet 混合
 
 
