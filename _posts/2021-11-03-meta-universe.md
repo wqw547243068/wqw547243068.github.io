@@ -596,7 +596,7 @@ JoyHallo 在生成英语视频方面依然表现出色，显示了其优秀的�
 #### HeyGem
 
 
-[](heygem.ai)
+[HeyGem](heygem.ai)
 
 
 #### OmniTalker
