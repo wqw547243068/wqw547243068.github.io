@@ -481,16 +481,22 @@ BSChecker 具有模块化的工作流程，分为三个可配置的模块：**�
 ### 【2025-3-5】LettuceDetect
 
 
+LettuceDetect 解决了现有幻觉检测模型的两个关键限制：
+- 传统基于**编码器**方法的**上下文窗口限制**
+- 基于 LLM 方法的**计算效率低下**
+
 【2025-3-5】[LettuceDetect：一款高效的RAG系统幻觉检测工具](https://mp.weixin.qq.com/s/rDwsTgMque4f5gnAK6IY4Q)
 
-LettuceDetect 是一个用于 RAG 系统的幻觉检测工具。
+LettuceDetect 是一个轻量级、高效的RAG幻觉检测工具
 - 代码 [LettuceDetect](https://github.com/KRLabsOrg/LettuceDetect)
 
-通过将生成的答案与提供的上下文进行比较，识别答案中不受支持的部分。该工具在 RAGTruth 数据集上进行了训练和评估，利用 ModernBERT 进行长上下文处理，非常适合需要广泛上下文窗口的任务。
+通过将生成的答案与提供的上下文进行比较，识别答案中不受支持的部分。
 
-LettuceDetect 解决了现有幻觉检测模型的两个关键限制：
-- 传统基于编码器方法的上下文窗口限制
-- 基于 LLM 方法的计算效率低下
+#### 原理
+
+该工具受[Luna](https://aclanthology.org/2025.coling-industry.34/)启发
+- [RAGTruth](https://aclanthology.org/2024.acl-long.585/) 数据集上进行了训练和评估
+- 利用 [ModernBERT](https://github.com/AnswerDotAI/ModernBERT) 进行长上下文处理，非常适合需要广泛上下文窗口的任务。
 
 
 亮点
