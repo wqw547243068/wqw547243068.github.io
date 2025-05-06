@@ -3,7 +3,7 @@ layout: post
 title:  大模型函数调用 LLM Function Call 
 date:   2023-09-26 16:52:00
 categories: 大模型
-tags: gpt openai 函数调用 插件 plugin tool
+tags: gpt openai 函数调用 插件 plugin tool mcp
 excerpt: OpenAI Function call 开发、函数调用知识总结
 mathjax: true
 permalink: /function
@@ -444,6 +444,235 @@ if(message.get("function_call")):
 
 效果
 - ![](https://pic2.zhimg.com/80/v2-32ed80648cd0b5ceb381ce1a5de1561d_1440w.webp)
+
+
+## Function Call 训练
+
+【2025-5-6】[大模型算法面经：Function Call、MCP、A2A](https://zhuanlan.zhihu.com/p/1898326676087223572)
+
+将 Function Calling 能力赋予 LLM 主要通过**监督微调** (Supervised Fine-tuning, SFT) 实现，而不是**预训练阶段**从零开始专门训练。
+
+基础模型需要先具备良好的**指令遵循**和**代码/结构化数据生成**能力。
+
+### 训练/微调核心思想
+
+教会模型两件事：
+- **识别意图** (Intent Recognition): 理解用户请求, 是否借助外部工具/函数来完成，而不是直接生成文本回答。
+- **参数提取**与**格式化** (Argument Extraction & Formatting): 如果要调用函数，正确地从用户请求中抽取出所需参数，并按照预先定义的格式（通常是 JSON）生成函数调用的指令。
+
+示意图
+- ![](https://pic4.zhimg.com/v2-64b247d195ca4ce1e2b4de14246745ad_b.webp)
+
+### 训练/微调过程
+
+训练/微调过程:
+- (1) 准备数据集: 最关键的一步。
+- (2) 选择基础模型: 
+- (3) 格式化训练数据: 
+- (4) 进行微调: 
+
+
+#### 数据集
+
+构建包含 Function Calling 场景的**指令微调数据集**。
+
+每条数据样本通常包含：
+- 用户输入 (Input/Query): 一个**可能**需要调用函数的用户请求。
+  - 例如：“查询北京今天的天气怎么样？” 或 “给我写一首关于春天的诗”。
+- 可用**函数/工具描述** (Available Functions/Tools Description): 一个结构化的描述，告知模型当前有哪些函数可用，每个函数的用途、所需参数及其类型和描述。这个描述本身就是文本，需要设计一种清晰的格式（见下一个问题）。
+- 期望的输出 (Desired Output):
+
+如果**需要**调用函数: 一个特定格式的字符串，包含函数名和提取出的参数的 JSON 对象。
+
+例如:
+
+```json
+{
+  "name": "get_weather",
+  "arguments": {
+    "city": "北京",
+    "date": "今天"
+  }
+}
+```
+
+如果**不需要**调用函数: 模型应该生成的直接文本回答。
+- 例如：“好的，这是一首关于春天的诗：...”
+
+#### 训练数据样例
+
+数据集, [huggingface 数据集](https://huggingface.co/datasets?search=function-calling) 
+- [hermes-function-calling-v1](https://huggingface.co/datasets/NousResearch/hermes-function-calling-v1)
+- ![](https://pic1.zhimg.com/v2-8f1a460629b91fdd0445f839a553d6ce_r.jpg)
+
+通常遵循以下结构，特殊提示词（Prompting）或模板来实现：
+
+```json
+基本结构:
+[系统提示/全局指令]  (可选，设定角色、能力边界等)
+
+[可用函数/工具描述区]
+(这里详细列出每个可用函数的结构化描述)
+
+[对话历史] (可选，对于多轮对话很重要)
+User: ...
+Assistant: ...
+User: ... (当前用户请求)
+
+[触发指令/分隔符] (提示模型开始思考或生成)
+Assistant:
+```
+
+可用函数/工具描述区的格式: 这是核心部分，需要清晰地传达每个函数的信息。常见做法是使用 JSON 列表或类似的结构化文本：
+
+Functions available:
+
+```json
+[
+  {
+    "name": "get_weather",
+    "description": "查询指定城市和日期的天气信息。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string",
+          "description": "需要查询天气的城市名称，例如：北京"
+        },
+        "date": {
+          "type": "string",
+          "description": "需要查询的日期，例如：今天、明天、2023-10-26"
+        }
+      },
+      "required": ["city", "date"] // 指明哪些参数是必须的
+    }
+  },
+  {
+    "name": "send_email",
+    "description": "发送邮件给指定的收件人。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "recipient": {
+          "type": "string",
+          "description": "收件人的邮箱地址"
+        },
+        "subject": {
+          "type": "string",
+          "description": "邮件主题"
+        },
+        "body": {
+          "type": "string",
+          "description": "邮件正文内容"
+        }
+      },
+      "required": ["recipient", "subject", "body"]
+    }
+  }
+  // ... 可以有更多函数描述
+]
+```
+
+关键要素:
+- name: 函数的唯一标识符。
+- description: 用自然语言清晰描述函数的功能和适用场景，这是模型理解何时调用该函数的关键。
+- parameters: 定义函数接受的参数。
+- type: 通常是 "object"。
+- properties: 一个对象，列出每个参数的名称、类型 (string, integer, boolean, enum 等) 和描述 (解释参数的含义和格式)。
+- required: 一个列表，包含必须提供的参数名称。
+
+
+对话流程中的格式:
+- 1 用户请求: 用户发出请求，例如 "帮我查一下明天上海的天气，然后给张三发邮件告诉他结果"。
+- 2 模型首次响应 (Function Call): 模型识别到需要调用 get_weather，生成 JSON:
+
+```json
+{
+  "name": "get_weather",
+  "arguments": {
+    "city": "上海",
+    "date": "明天"
+  }
+}
+```
+
+#### 推理数据
+
+对话流程格式:
+- 1 用户请求: 用户发出请求，例如 "帮我查一下明天上海的天气，然后给张三发邮件告诉他结果"。
+- 2 模型首次响应 (Function Call): 模型识别到需要调用 get_weather，生成 JSON:
+
+```json
+{
+  "name": "get_weather",
+  "arguments": {
+    "city": "上海",
+    "date": "明天"
+  }
+}
+```
+
+- 3 外部执行: 应用程序捕获这个 JSON，调用实际的天气 API。
+- 4 将结果喂回模型: 将 API 返回的天气结果格式化后，作为新的输入信息提供给模型。例如：
+
+```json
+Function Result for get_weather:
+{
+  "temperature": "25°C",
+  "condition": "晴朗"
+}
+```
+
+- 5 模型再次响应 (可能再次 Function Call 或最终回答): 模型看到天气结果，现在需要执行邮件发送任务，生成 JSON：
+
+```json
+{
+  "name": "send_email",
+  "arguments": {
+    "recipient": "张三", // 可能需要澄清张三的邮箱
+    "subject": "明天上海天气",
+    "body": "明天上海的天气是 25°C，天气晴朗。"
+  }
+}
+```
+
+- 6 外部执行: 应用程序调用邮件发送服务。
+- 7 将结果喂回模型: 告知邮件发送成功。
+- 8 模型最终回答: 模型生成最终的自然语言回复给用户：“我已经查询到明天上海天气是25°C，晴朗，并且已经发邮件告诉张三了。”
+
+#### 基座模型
+
+
+选择一个具备强大**指令遵循**能力的预训练 LLM 
+
+例如 Llama, GPT, ChatGLM 等
+
+#### 格式化
+
+格式化训练数据: 
+- 将每条数据样本组合成模型可以理解的格式。
+
+通常是将“用户输入”和“可用函数描述”拼接起来作为模型输入 (Prompt)，将“期望的输出”（无论是 JSON 函数调用还是文本回答）作为目标输出 (Completion/Target)。
+
+需要使用特定的分隔符或模板来区分不同部分。
+
+#### 微调
+
+进行微调: 
+
+使用标准 SFT 方法（全参数微调或 PEFT 如 LoRA）在准备好的数据集上训练模型。
+
+模型的优化目标: 最小化预测输出和期望输出之间的差异（例如，使用交叉熵损失）。
+
+模型通过学习这些样本，学会根据用户输入和可用函数描述，决定是直接回答还是生成特定格式的函数调用 JSON。
+
+
+#### 关键挑战
+
+- 数据集质量: 需要足够多、覆盖各种场景（需要/不需要调用、不同函数、参数变化、模糊表达）的高质量数据。
+- 函数描述清晰度: 函数描述的质量直接影响模型能否正确理解和使用函数。
+- 负样本: 需要包含足够多明确不需要调用函数的样本，防止模型“过度触发”函数调用。
+
 
 ## Function Call 评测
 
