@@ -29,6 +29,8 @@ mathjax: true
 - 2. 天不会努力: 天地不仁，以万物为刍狗。所以万物才会正态分布
 - ![](https://p6.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/dd0e076c87af46f0affec72cc177d90b~tplv-obj:750:419.image?from=post)
 
+社会的本质就是**人吃人**，公平是讲给**弱者**听的。不信你看“利益”这两个字多现实，一个带着刀，一个沾着血
+
 
 ## 社会发展五大问题
 
