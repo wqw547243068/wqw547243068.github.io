@@ -19,6 +19,9 @@ permalink: /llm_search
 ## 大模型搜索
 
 
+【2025-5-10】图灵奖得主、Meta首席AI科学家杨立昆近日在Flatiron Institute 演讲中表示
+- AI系统今后将基本上通过**推理**进行搜索，而不是让多层神经网络来预测tokens
+
 ### RAG -> Graph RAG -> DeepSearcher
 
 【2025-4-22】[别搞Graph RAG了，拥抱新一代RAG范式DeepSearcher](https://zhuanlan.zhihu.com/p/1897694329532810299)
