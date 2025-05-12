@@ -529,5 +529,17 @@ HyperWriteAI CEO 在推特上分享的开源方案—— OpenDeepResearcher。
 
 详见站内专题: [Agent应用](agent_usecase)
 
+## DeerFlow
+
+【2025-5-9】字节开源全新的 Deep Research 项目——DeerFlow 
+
+DeerFlow 是一个基于 LangChain 全家桶的开源 **Multi-Agent** 应用
+- 支持动态任务迭代、MCP 无缝集成、Meta Prompt 自动生成、Human-in-the-loop 协作，以及播客和PPT内容生成。
+- DeerFlow 仓库：[deer-flow](https://github.com/bytedance/deer-flow)
+- DeerFlow 官网：[deerflow](https://deerflow.tech/)
+- DeerFlow 专栏：我们开源了一款全新的 Deep Rese...
+
+
+
 
 # 结束
