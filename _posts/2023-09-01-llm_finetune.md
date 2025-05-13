@@ -3,7 +3,7 @@ layout: post
 title:   大模型微调 LLM Finetune
 date:   2023-09-01 16:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习 reft
+tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习 rft
 excerpt: GPT之类大模型微调方法
 mathjax: true
 permalink: /finetune
@@ -633,7 +633,7 @@ LLaMA-Pro-8B系列模型是在LLaMA2-7B模型基础上，通过Decoder块扩展�
 - 在原始的每个块中加入一个恒等映射块（identity block），即输入和输出相同，确保扩展后的模型和扩展前相同的输出。
 
 
-### 【2024-12-7】强化微调
+### 【2024-12-7】RFT 强化微调
 
 ReFT REinforced Fine-Tuning
 - 论文 [REFT: Reasoning with REinforced Fine-Tuning](https://arxiv.org/pdf/2401.08967)
@@ -642,7 +642,7 @@ ReFT REinforced Fine-Tuning
 
 - 【2024-12-7】[OpenAI强化微调登场：几十条数据o1-mini反超o1暴涨80%，奥特曼：今年最大惊喜](https://mp.weixin.qq.com/s/ulQ1ep1kEOGLqpDarNxo0A)
 - 【2024-12-7】[揭秘强化微调(ReFT)：重塑大语言模型推理格局的突破技术](https://mp.weixin.qq.com/s/KPq73MeVDtgwfKEcj06QZw)
-
+- 【2025-5-9】[OpenAI强化微调终于上线了：几十个样本就可轻松打造AI专家](https://mp.weixin.qq.com/s/c7RfeoWNwh3NZDeuTCXXLw) 强化微调（Reinforcement Fine-Tuning, RFT）正式登陆 OpenAI o4-mini 模型，RFT 用思维链推理和任务专属的评分机制提升模型在特定复杂领域的表现，可以将AI模型从高中学生水平轻松提升到了专家博士水平。  通过强化微调，轻松将模型某个领域的专业能力迅速提升，打造出各种AI专家
 
 如何提升LLM推理能力? 
 - 监督微调（SFT）和链式思考（CoT）注释, 来增强模型的推理能力
@@ -651,10 +651,23 @@ ReFT REinforced Fine-Tuning
 问题
 - 泛化能力有限, SFT效果依赖标注的推理语料, 如数学问题上应该有多种解法,语料只有1种
 
-
 `强化微调`（Reinforcement Fine-Tuning）结合在线RL和SFT提升模型泛化能力
 使用**极少**训练数据即在特定领域轻松地创建专家模型。
 - 最低几十个例子就可以。
+
+RFT 场景：
+1. 指令变代码：把开放式指令转换成**结构化**代码、配置或模板，并且这些产出必须通过确定性的测试。
+2. 杂乱文本**提炼**精华：从非结构化文本中提取可验证的事实和摘要，并以JSON或其他结构化模式输出。
+3. **复杂规则**精准应用：当信息细微、量大、层级复杂或事关重大时，进行精细的标签或策略决策。
+
+OpenAI Cookbook 官方文档
+- • [模型介绍](https://platform.openai.com/docs/models)
+- • [强化微调指南](https://platform.openai.com/docs/guides/reinforcement-fine-tuning)
+- • [评分器](https://platform.openai.com/docs/guides/graders)
+- • [模型优化概览](https://platform.openai.com/docs/guides/model-optimization)
+
+参考：[rft-use-cases](https://platform.openai.com/docs/guides/rft-use-cases?chipstack=use-case)
+
 
 过程
 - (1) 预热: 先用 SFT 预热(warmup)
@@ -666,9 +679,9 @@ ReFT REinforced Fine-Tuning
 
 ReFT的一些优势
 1. 更好的泛化性能：因为后面的训练完全不需要用到 CoT 标注数据，完全依赖模型自己去探索 怎么样的CoT 是正确的。
-1. 相比RLHF训练简单: 不需要标注额外数据训练Reward Model, 不需要额外数据提高policy. 当然这里作者也认为更多的数据能提高效果，但这并不是这个文章的目的。
-2. 可用性: 没有一些特定restriction，在其他任务上也是可以用到的，适用于大家SFT数据少的时候，我们做一些效果上的性能提升。
-3. 更好的效果：最后作者也在GSM8K上做实验，证明更好的policy也能在Majority Voting和进一步Reranking上面有效果的提升，而且也是非常的明显。
+2. 相比RLHF训练简单: 不需要标注额外数据训练Reward Model, 不需要额外数据提高policy. 当然这里作者也认为更多的数据能提高效果，但这并不是这个文章的目的。
+3. 可用性: 没有一些特定restriction，在其他任务上也是可以用到的，适用于大家SFT数据少的时候，我们做一些效果上的性能提升。
+4. 更好的效果：最后作者也在GSM8K上做实验，证明更好的policy也能在Majority Voting和进一步Reranking上面有效果的提升，而且也是非常的明显。
 
 
 微调后, o1-mini模型得分提高80%，直接反超o1正式版。
