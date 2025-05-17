@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet agent 设计
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -2084,6 +2084,31 @@ GPT-4o在多个方面相较于过去的模型进行了改进：
 - 完成设计后，用户可以将图像文件导出为透明的PNG或向量文件，以便在线无缝使用。
 
 无论是需要迅速创建标志、寻找设计灵感，还是希望以低成本更新品牌形象的个人和组织，都会发现Logo Diffusion是一个非常有价值的工具。
+
+
+#### Lovart
+
+【2025-5-13】[Lovart 全球首个设计 Agent,炸裂到起飞](https://mp.weixin.qq.com/s/lmXpZo1mgmFEIWF-UycWaw)
+
+[Lovart AI](https://www.lovart.ai) 开放测试
+- 全球首个专业设计类Agent，能完成从创意拆解到专业交付的整条视觉流程。
+
+功能
+- 把【深度思考】理念引入到了AI图像生成领域
+
+只需描述需求，它会逐步推理和思考，分解任务需求，然后调用合适的模型工具进行创作。
+
+- 一个展开的画布中直接呈现，还能随时修改
+- 集成 GPT image-1、Flux Pro、OpenAI-o3、Gemini Imagen 3、Kling AI、Tripo AI、Suno AI 等市面上主流的多模态工具
+- 一站式调用，无需来回切换工具和跳来跳去，一个画布内即可完成你的所有图像、视频生成和设计需求。
+
+示例:
+- Please help me design a bag. I hope the shape is very avant-garde and fashionable. Refer to the latest design language of brands such as Balenciaga and Jaquemus for our brand Pupu.
+- 请帮我设计一款包包。我希望它的造型非常前卫时尚。我们品牌Pupu可以参考Balenciaga、Jaquemus等品牌的最新设计语言。
+
+示例2:
+- I am starting a pet treat brands called Billy, please help me design the whole VI system. Let's start with the logo, I want to use my dog as the logo inspiration, she was a curly hair poodle, please turn her figure into  a Playful line art illustration, hand-drawn doodle aesthetic and preserve the brush strokes.
+- 我正在创办一个名为Billy的宠物零食品牌，请帮我设计整个VI系统。首先从logo开始，我想用我的狗狗作为logo的灵感，它是一只卷毛贵宾犬。请将她的形象转化为俏皮的线条艺术插画，手绘涂鸦的美感，并保留其笔触
 
 
 ### 如何鉴别生成图像
