@@ -15,13 +15,6 @@ permalink: /meta
 
 
 
-- 【2022-1-13】[北大出品，最强元宇宙报告，200页干货](https://mp.weixin.qq.com/s/OuHXv30PCf_RoxHfdLCAzw)
-- 【2021-10-31】[清华大学：2021元宇宙研究报告](https://www.163.com/dy/article/GNL04QMN0519KHAT.html)
-- 【2022-1-28】Meta: You will own nothing, and you will be happy... 元宇宙：让你一无所有却难以自拔
-  - ![](https://p3.toutiaoimg.com/large/tos-cn-i-qvj2lq49k0/cbd33023b2d342ab96037fa934106cb6)
-- 【2022-10-26】[可视化数字人技术在 Soul 的应用](https://mp.weixin.qq.com/s/79toed_WdjFhdP6Enb0ITA),凭借自己的虚拟化身，基于自己的信息图谱或推荐，体验多样的沉浸式社交场景，在接近真实的体验中去交流娱乐，最终找到与自己志同道合的朋友建立社交关系。
-- 【2023-5-9】周杰伦官宣数智人「周同学」，未来将举办元宇宙[演唱会](https://www.toutiao.com/w/1765376057469960), 周杰伦现身中国移动咪咕元宇宙总部，与中国移动达成元宇宙领域系列合作。在现场，周杰伦发布了中国移动与好莱坞特效团队 WETA 为其打造的超写实数智人「周同学」，并宣布「周同学」成为中国移动动感星推官、5G 元宇宙星际开拓官和 5G 视频彩铃推广大使。
-
 # 元宇宙
 
 - [元宇宙是什么？以及我们对元宇宙未来的展望](https://www.bilibili.com/video/BV1BQ4y1f72i)
@@ -30,6 +23,14 @@ permalink: /meta
 - 【2021.10.29】[Facebook 在 11 分钟内透露了有关 元宇宙 的所有内容](https://www.bilibili.com/video/BV1Wu411o7Ee) CNET ，[youtube原视频](https://youtu.be/gElfIo6uw4g): 元宇宙确实有可能成为未来的一个趋势，代表着web3.0时代的一个符号，贯穿全文的核心就是Connection with people，人与人之间的联系。
 
 <iframe src="//player.bilibili.com/player.html?aid=506352450&bvid=BV1Wu411o7Ee&cid=432560295&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
+
+
+- 【2022-1-13】[北大出品，最强元宇宙报告，200页干货](https://mp.weixin.qq.com/s/OuHXv30PCf_RoxHfdLCAzw)
+- 【2021-10-31】[清华大学：2021元宇宙研究报告](https://www.163.com/dy/article/GNL04QMN0519KHAT.html)
+- 【2022-1-28】Meta: You will own nothing, and you will be happy... 元宇宙：让你一无所有却难以自拔
+  - ![](https://p3.toutiaoimg.com/large/tos-cn-i-qvj2lq49k0/cbd33023b2d342ab96037fa934106cb6)
+- 【2022-10-26】[可视化数字人技术在 Soul 的应用](https://mp.weixin.qq.com/s/79toed_WdjFhdP6Enb0ITA),凭借自己的虚拟化身，基于自己的信息图谱或推荐，体验多样的沉浸式社交场景，在接近真实的体验中去交流娱乐，最终找到与自己志同道合的朋友建立社交关系。
+- 【2023-5-9】周杰伦官宣数智人「周同学」，未来将举办元宇宙[演唱会](https://www.toutiao.com/w/1765376057469960), 周杰伦现身中国移动咪咕元宇宙总部，与中国移动达成元宇宙领域系列合作。在现场，周杰伦发布了中国移动与好莱坞特效团队 WETA 为其打造的超写实数智人「周同学」，并宣布「周同学」成为中国移动动感星推官、5G 元宇宙星际开拓官和 5G 视频彩铃推广大使。
 
 ## 数字人
 
@@ -196,7 +197,27 @@ B站爆火数字人ip `柳叶熙`
 
 
 
-### 虚拟人创建工具
+### 数字人工具
+
+
+### 汇总
+
+
+数字人工具对比：
+- 【2025-5-20】参考 [好用的Github开源AI数字人项目推荐](https://promptchoose.com/ai-tools/github-open-sources-ai-digital-human/)
+
+| **项目名称** | **技术特点** | **应用场景** | **社区支持** | **学习门槛** | **多语言支持** | **性能需求** | **优点** | **缺点** |
+|--------------|--------------------------------------------------------------------------|--------------------------------------|--------------|--------------|----------------|--------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| **[EchoMimicV2](https://github.com/antgroup/echomimic_v2)** | 半身人体动画、音频-姿势同步、支持中英文、加速推理（9倍提速） | 虚拟主播、跨语言内容创作、影视动画 | 有（Gradio demo、Hugging Face模型） | 中（需CUDA 11.7+、手动配置环境） | 支持中英 | 高（A100/RTX4090D等高端GPU） | 画面质量高、跨语言兼容好、推理速度快，适合专业级半身动画生成 | 仅支持半身动画，对硬件要求较高 |
+| **[hallo](https://github.com/fudan-generative-vision/hallo)** | 实时对话、 hierarchical 音频驱动合成、支持多模态输入 | 虚拟助手、虚拟偶像、实时交互场景 | 活跃（社区贡献Windows/ComfyUI支持） | 中（需手动下载多模型，依赖FFmpeg） | 仅英文（训练数据限制） | 中（A100 GPU） | 支持自定义训练、集成多种工具（如Whisper音频处理），适合个性化虚拟人搭建 | 暂不支持中文音频驱动，需科学上网下载模型 |
+| **[AniPortrait](https://github.com/Zejun-Yang/AniPortrait)** | 单图生成动态头像、音频驱动表情、支持vid2vid面部重现 | 游戏角色、虚拟主播、社交媒体动态头像 | 有（Gradio demo、Hugging Face空间） | 中（需配置PyTorch 3D、多模型路径管理） | 未明确提及 | 中（CUDA 11.7+，支持A100） | 擅长面部表情细节还原，提供pose控制和加速推理选项，适合精细化表情动画 | 对输入图片角度要求高（需正面人脸），中文文档较少 |
+| **[MOFA-Video](https://github.com/MyNiuuu/MOFA-Video)** | 3D人脸重建、轨迹+关键点混合控制、基于扩散模型 | 影视特效、VR/AR虚拟人、可控动画生成 | 有（ECCV 2024论文支持、Gradio demo） | 高（需理解扩散模型原理、复杂参数调节） | 未明确提及 | 高（CUDA 11.7+，依赖SVD_Xtend等模型） | 支持多模态控制（轨迹+音频+视频驱动），适合高保真面部动画 | 代码结构复杂，新手难以快速上手 |
+| **[Fay](https://github.com/xszyou/Fay)** | 全栈开源框架、支持2.5D/3D数字人、多终端适配（单片机/App/网页） | 直播带货、在线教育、企业服务机器人 | 有（飞书文档、QQ群） | 中（需配置多模块，支持Docker部署） | 支持中文（自定义知识库） | 灵活（可部署于CPU/GPU，依赖LLM性能） | 低耦合设计，可自由替换ASR/TTS/LLM模块，适合企业级集成 | 核心功能需二次开发，界面交互较简陋 |
+| **[duix.ai](https://github.com/GuijiAI/duix.ai)** | 移动端轻量级SDK、实时交互、低资源占用 | 手机应用、智能屏、移动客服机器人 | 有限（文档较简略，依赖官方支持） | 低（提供Android/iOS SDK，一键集成） | 支持中文（预设中文虚拟人模型） | 低（普通智能手机/边缘设备） | 专为移动端优化，支持离线运行，适合非技术用户快速部署 | 功能较基础，高度定制需付费服务 |
+| **[Thin-Plate-Spline-Motion-Model](https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model)** | 薄板样条变换、关键点插值、支持视频重建 | 学术研究、趣味动画生成、图像动态化实验 | 有（CVPR 2022论文支持、Colab demo） | 中（需理解数学模型，依赖PyTorch） | 未明确提及 | 中（Python 3.9+，支持GPU加速） | 原理透明，适合研究人员复现经典算法，提供详细训练流程 | 动画效果偏基础，缺乏实时交互功能 |
+| **[FaceSwap](https://github.com/deepfakes/faceswap)** | 高精度人脸替换、支持视频/图像批量处理、多模型可选 | 影视特效、深度伪造检测研究、趣味换脸 | 活跃（论坛、Discord、大量第三方教程） | 高（需训练自定义模型，依赖TensorFlow） | 未明确提及 | 中高（需现代GPU，支持CUDA/ROCm） | 社区资源丰富，提供GUI工具，适合专业换脸需求 | 伦理争议大，官方强调禁止非授权使用 |
+| **[DeepFaceLive](https://github.com/iperov/DeepFaceLive)** | 实时人脸替换、低延迟、支持直播/视频会议 | 实时直播、虚拟会议、娱乐化换脸 | 有（Discord、QQ群、预训练模型库） | 低（提供一键安装包，支持Windows/Linux） | 未明确提及 | 中（DirectX 12兼容显卡，推荐RTX 2070+） | 实时性强，对硬件要求友好，适合快速部署虚拟形象 | 换脸效果偏娱乐化，缺乏精细化控制选项 |
+| **[Avatarify](https://github.com/alievk/avatarify)** | 实时面部表情迁移、StyleGAN生成虚拟头像、支持视频流输入 | 视频会议、虚拟主播、实时表情互动 | 有（Slack社区、Colab在线 demo） | 中（需配置Python环境，依赖PyTorch） | 未明确提及 | 中（需GPU支持，推荐NVIDIA显卡） | 表情捕捉细腻，支持生成不存在的虚拟人物，适合创意场景 | 对网络要求高（部分功能需联网下载模型），中文支持不足 |
 
 
 #### 国外MetaHuman
