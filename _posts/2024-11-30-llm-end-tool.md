@@ -512,7 +512,41 @@ ollama rag方案
 
 项目自24年7月至今已迭代数百个版本
 
+### MMN
 
+阿里发布 [MMN](www.mnn.zone/)
+- 一个高效、轻量的深度学习框架，专注于在端侧设备（手机、嵌入式设备）上实现高性能的模型推理与训练，让大模型也能在各类设备中都能高效运行。
+- GitHub [MMN](https://github.com/alibaba/MNN)
+- Android APK [MMN](https://github.com/alibaba/MNN/blob/master/apps/Android/MnnLlmChat/README_CN.md)
+
+
+
+轻量级高性能推理引擎 MMN
+- 通用性 - 支持 TensorFlow、Caffe、ONNX 等主流模型格式，支持CNN、RNN、GAN等常用网络。
+- 高性能 - 极致优化算子性能，全面支持CPU、GPU、NPU，充分发挥设备算力。
+- 易用性 - 转换、可视化、调试工具齐全，能方便地部署到移动设备和各种嵌入式设备中。
+
+MNN-LLM：基于 MNN 引擎打造的大型语言模型运行时解决方案，能让大语言模型（LLM）更好落地于手机、PC 和物联网等终端设备。
+
+
+
+#### 部署 QWen
+
+
+【2025-5-22】[手机也能跑 Qwen3？手把手教你部署](https://mp.weixin.qq.com/s/VSC7Bkcq-w991CodHFIfyw)
+
+全球开源模型冠军 Qwen3、端到端全模态模型 Qwen2.5-Omni，现已成功在手机上跑通！
+
+在 MNN 的支持下，Qwen3 系列模型已适配 Android、iOS 及桌面端，实现低延迟、本地化、高安全的 AI 体验。同时，Qwen2.5-Omni 的语音理解、图像分析等多模态能力也在移动端得到完整释放。
+
+
+
+图片
+Qwen3：全球领先的开源大语言模型，具备强大的语言理解、逻辑推理、代码生成等能力，是一款“全能型 AI 大脑”。现已开源 0.6B 至 235B 共 8 个尺寸版本，无论是企业级服务器还是手机、手表等小型设备，都能灵活部署、高效运行。
+
+Qwen2.5-Omni：端到端全模态模型，体积小、易部署，支持语音、图像、文本等多种输入方式，真正实现“听懂你说的、看懂你给的、写出你需要的。”
+
+图片
 
 
 # 结束
