@@ -3,7 +3,7 @@ layout: post
 title:  "强化学工具及应用"
 date:   2020-05-15 17:34:00
 categories: 深度学习
-tags: 强化学习 增强学习 量化交易 游戏  俄罗斯方块
+tags: 强化学习 增强学习 量化交易 游戏  俄罗斯方块 pytorch
 excerpt: RL工具包，及应用场景案例
 author: 鹤啸九天
 mathjax: true
@@ -23,16 +23,20 @@ permalink: /rl_application
 ## 工具
 
 
+### 环境
+
+模拟后端
+- 如 gym (GymEnv)、Brax (BraxEnv) 或 DeepMind Control Suite (DMControlEnv)）
 
 
-### gym
+#### gym
 
 
 OpenAI开发了用于研发和比较强化学习算法的工具包 gym库。
 
 gym 提供方便快捷的**模拟器**接口，一行代码构建能够于强化学习算法交互的模拟器
 
-#### 函数
+##### 函数
 
 step() 方法 非常核心，负责推进环境（模拟器或游戏）状态，并返回一些有用信息。
 - 每一步，算法会传入一个动作到 step() 方法，然后返回新的状态、奖励等信息。
@@ -67,11 +71,11 @@ action = choose_action(observation)  # 算法选择的动作
 observation, reward, done, info = env.step(action)
 ```
 
-#### 示例
+##### 示例
 
 
 
-##### 月球车
+###### 月球车
 
 
 代码
@@ -99,7 +103,7 @@ env.close()     # 关闭窗口
 ```
 
 
-### Gymnasium
+#### Gymnasium
 
 Gymnasium 是 OpenAI Gym库后续维护版本，还提供了与旧版Gym环境兼容的封装层。
 - 界面简洁、易于使用，能够表示一般的强化学习问题，是一个集成了多样化单智能体参考环境的强化学习的API标准。
@@ -118,7 +122,7 @@ Env.action_space 和 Env.observation_space 都是类Space的实例， 两个重�
 - `Space.contains()`（检验一个元素是否在空间内）
 - `Space.sample()`（生成空间的随机采样的一个元素）。
 
-#### Env 类型
+##### Env 类型
 
 
 空间：
@@ -144,7 +148,7 @@ wrapped_env.unwrapped # 原始信息
 ```
 
 
-#### 安装
+##### 安装
 
 安装 Gymnasium
 
@@ -187,7 +191,7 @@ env.close()
 ```
 
 
-### pygame
+#### pygame
 
 【2025-4-24】win 11 上调试pygame做的俄罗斯方块游戏，按 E/R/T 无反应
 
@@ -218,6 +222,27 @@ while running:
         print("你按下了q键")
   pygame.quit()
 ```
+
+
+### TorchRL
+
+Pytorch [TorchRL](https://docs.pytorch.org/rl/main/)  是一个用于 PyTorch 的开源强化学习 (RL) 库
+- 中文文档 [TorchRL](https://pytorch.ac.cn/rl/stable/tutorials/getting-started-0.html)
+
+![](https://docs.pytorch.org/rl/main/_images/logo.png)
+
+torchrl 输入和输出都是 tensordict 类
+- torchrl直接强制要求输入是一个字典。
+
+这个方法增加了灵活性,可以使得模块可以更好的重用。
+
+
+安装
+
+```sh
+pip install torchrl
+```
+
 
 ### OpenAI Baseline
 
