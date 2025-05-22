@@ -897,6 +897,15 @@ pie title 影响寿命的几大因素
 - （3）**酒精**
   - 饮酒后，酒精（**乙醇**）会先进入口腔、胃，主要在肝脏进行分解，产生**乙醛**。乙醛是一种明确的致癌物，可导致肝细胞生长速度异常，损害细胞DNA，发生基因突变，最终导致胃癌、口腔癌、肝癌等癌症的发生。尤其是东亚人，由于**乙醛脱氢酶**基因缺陷更普遍，因此饮酒更容易致癌。
 
+## 身体
+
+
+### 人体结构
+
+【2025-5-22】[biodigital](https://www.biodigital.com/) 提供人体组织 3D 交互可视化
+- [human.biodigital](https://human.biodigital.com/viewer/), [3D 交互](https://human.biodigital.com/explore)
+- ![](https://d8m06gjwz59rp.cloudfront.net/assets/biodigital-multi-device.png)
+
 ## 心脏
 
 
