@@ -3,7 +3,7 @@ layout: post
 title:   大模型应用技术方案 LLM Solution
 date:   2023-10-23 16:52:00
 categories: 大模型
-tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe 翁丽莲 agent workflow 自动化 模型编辑 智能体
+tags: 微调 RAG lora prompt 陈丹琦 知识图谱 moe 翁丽莲 agent workflow 自动化 模型编辑 智能体 raft
 excerpt: 大模型工业落地的技术经验总结
 mathjax: true
 permalink: /llm_solution
@@ -22,7 +22,6 @@ permalink: /llm_solution
 
 建议
 - 微调之前先尝试RAG
-
 
 
 ## 方法分析
@@ -357,21 +356,26 @@ ReFT通过定义一个干预函数，修改模型的**一小部分表示**，而
 
 ### RAFT 
 
+RAFT 是一种“特定领域开卷考试”的新方式。
+
+#### 伯克利论文
+
 【2024-3-15】UC Berkeley 提出新方法 `RAFT` = `RAG` + `FT`
 - [RAFT——针对特定领域的问答的微调和 RAG 方法](https://www.unite.ai/zh-CN/raft-a-fine-tuning-and-rag-approach-to-domain-specific-question-answering/)
-- 介绍 [UC伯克利:提出索增强微调(RAFT)，只需少量微调，就能大幅提升模型领域QA能力](https://cloud.tencent.com/developer/article/2400661)
+- 介绍 
+  - [UC伯克利:提出索增强微调(RAFT)，只需少量微调，就能大幅提升模型领域QA能力](https://cloud.tencent.com/developer/article/2400661)
 - 论文: [RAFT: Adapting Language Model to Domain Specific RAG](https://arxiv.org/pdf/2403.10131.pdf)
 - 代码 [gorilla](https://github.com/ShishirPatil/gorilla)
 
-将LLMs适应特定领域时两个候选方案：
-- 1、通过RAG利用上下文学习
-- 2、有监督的微调
+将 LLMs 适应特定领域时两个候选方案：
+- 1、通过 RAG 利用上下文学习
+- 2、有监督微调
 
 分析: 当前微调方法要么测试期间不利用文档，要么忽略训练期间检索中的不完美之处。
-- RAG允许模型回答问题时参考文档，但错过了从固定领域设置中学习和提前访问测试文档的机会。
+- RAG 允许模型回答问题时参考文档，但错过了从固定领域设置中学习和提前访问测试文档的机会。
 - 有监督微调允许从文档中学习更广泛的模式，更好地与终端任务和用户偏好对齐。
 
-因此，RAFT 将微调与RAG结合起来。通过RAFT，在有监督的情况下，可以为微调收集最佳结果。
+因此，RAFT 将微调与RAG结合起来。通过RAFT，在有监督情况下，可以为微调收集最佳结果。
 - 同时具备 **闭卷考试** + **开卷考试**的能力
 - ![](https://www.unite.ai/wp-content/uploads/2024/03/RAFT.png)
 
@@ -391,6 +395,38 @@ RAFT 是一种适应LLMs的方法，用于从正面和负面文档集合中阅�
 
 这与标准的RAG设置形成对比，在标准的RAG设置中，模型是使用检索器输出进行训练的，包括记忆和阅读。
 
+#### 解读
+
+【2024-4-4】[RAFT：将 RAG 与fine-tuning结合起来](https://zhuanlan.zhihu.com/p/691410523), 原文 [RAFT: Combining RAG with fine-tuning](https://www.superannotate.com/blog/raft-retrieval-augmented-fine-tuning)
+
+检索增强微调（RAFT）巧妙地结合检索增强生成（RAG）和微调(fine-tuning)两种技术，以显着改善语言模型处理特定主题的方式。
+- 提升识别 RAG 中不相关文档能力
+
+检索感知微调 (RAFT) 提供为模型**设置训练数据**的新方法，特别是对于域内 RAG 的特定领域的开卷场景。
+
+在 RAFT 中，创建训练数据，其中包括**问题** (Q)、一些**文档** (Dk) 以及基于某个文档 (D*) 的信息的相应**思路** (CoT)**答案** (A*) 。
+
+区分两种类型的文档：包含答案所需信息的“oracle”文档（D*）和对答案没有帮助的“distractor”文档（Di）。
+- 一些训练涉及拥有正确的文档以及干扰因素
+- 而其他时候，只包含干扰因素文档，以鼓励模型依赖其记忆而不仅仅是提供的文档。
+
+示例
+- 训练：模型学习从问题到答案（Q→A）。
+- 无需额外信息的测试（0-shot 推理）：它使用学到的知识来回答新问题 (Q → A)。
+- 使用 RAG 进行测试（RAG 推理）：它获取额外的文档来帮助回答问题（Q+D → A）。
+
+图解
+- ![](https://pica.zhimg.com/v2-1c59558201b766dc6f57fc1dd4504d14_r.jpg)
+
+过程
+- 对于某些数据，问题+正确的文档+导致答案的干扰（Q+D*+D2+...+Dk → A*）。
+- 对于其他数据，问题+干扰，仍然会得出答案（Q+D1+D2+...+Dk → A*）。
+
+测试时，模型收到问题以及 RAG 设置找到的顶级文档，但无论使用哪种工具查找这些文档，RAFT 都会起作用。
+
+训练关键部分：教模型建立**推理链**来解释其答案，就像写出数学作业的步骤一样。
+
+这种方法包括为模型提供所需的所有上下文和信息，然后要求模型逐步解释其答案，并链接回原始文档。对于论文中提到的所有数据集，研究人员使用这种方法来创建包含推理的答案。一些数据集，例如 Gorilla APIBench，已经包含了合理的答案。实验证明，添加这些详细的解释有助于模型表现得更好。
 
 
 ## (7) Agent
