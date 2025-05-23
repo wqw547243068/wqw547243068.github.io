@@ -314,6 +314,48 @@ o1 整个训练和推理过程应与 GPT 4 这类典型LLM有较大区别。
 详见原文 [Reverse-o1:OpenAI o1原理逆向工程图解](https://zhuanlan.zhihu.com/p/721952915)
 
 
+### 混合推理
+
+Claude3.7、Qwen3 模型是混合推理模型
+
+怎么实现的？
+- 通过开关控制，人来判断哪些使用推理、哪些不使用推理，而不是模型自主根据用户问题难度来进行判断的。
+
+#### AdaptThink
+
+【2025-5-22】[推理or不推理？AdaptThink实现思维模式的自动切换](https://zhuanlan.zhihu.com/p/1908813901048571237)
+
+【2025-5-19】清华KEG实验室 论文 paper 让推理模型学会何时推理、何时不推理，并自行决策。
+- 《[AdaptThink: Reasoning Models Can Learn When to Think](https://arxiv.org/abs/2505.13417)》
+
+实验
+- 让 DeepSeek-R1-Distill-Qwen-7B 模型使用 NoThinking 和 Thinking 两种模式，预测5个难度等级的MATH500问题
+
+结果
+- 在1-3级问题上，NoThinking 和 Thinking 效果相当
+- 甚至在1级上NoThinking效果还更优，但回答长度明显变短。
+- ![](https://pic2.zhimg.com/v2-88b568b66babe921d096a59feafc8c29_r.jpg)
+
+基座模型选择 DeepSeek-R1-Distill-Qwen-1.5B 和 DeepSeek-R1-Distill-Qwen-7B，训练框架为VeRL。
+
+训练上下文长度、batch size 和学习率分别为 16K、128 和 2e-6。AdaptThink 中的超参数K、 δ和 ϵ 分别为 16、0.05 和 0.2。
+
+在GSM8K、MATH500和AIME 2024上进行评测，如下表所示，与原始的1.5B和7B模型相比，AdaptThink平均响应长度分别降低了53.0%和40.1%，，同时平均准确率分别提高了2.4%和2.3%。
+
+AdaptThink 核心优化：
+- 约束优化目标：在保证整体性能不下降的情况下，鼓励模型选择NoThinking模式。
+- 重要性采样策略：在在线策略训练期间，平衡 Thinking 和 NoThinking 样本，探索和利用两种思考模式。
+
+
+附录
+- 模型 DeepSeek-R1-Distill-Qwen-1.5B
+- 代码 [THU-KEG/AdaptThink](https://github.com/THU-KEG/AdaptThink)
+- 数据 [AdaptThink-1.5B-delta](https://huggingface.co/THU-KEG/AdaptThink-1.5B-delta0) 系列
+- 训练框架 [VeRL](https://github.com/volcengine/verl)
+
+- ![](https://picx.zhimg.com/v2-44f913b168a877851bca26bba073851f_1440w.jpg)
+
+
 ## 思考
 
 【2024-9-14】[OpenAI o1惊现自我意识？陶哲轩实测大受震撼，门萨智商100夺模型榜首](https://mp.weixin.qq.com/s/ZODF593CcNmb0_4092nOIw)
