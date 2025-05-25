@@ -3,7 +3,7 @@ layout: post
 title:  "个人认知提升-How to level up inner skill"
 date:   2019-06-26 19:00:00
 categories: 人文科学
-tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 黑天鹅 反脆弱 情绪 一元论 二元论 事实 观点 人性 阶层 事实 观点 情绪
+tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 黑天鹅 反脆弱 情绪 一元论 二元论 事实 观点 人性 阶层 事实 观点 情绪 时间管理
 excerpt: 人性认知，自我修炼，如何提升自己？
 author: 鹤啸九天
 mathjax: true
@@ -998,7 +998,9 @@ permalink: /skill
 
 - 【2020-4-18】世界著名心理学教授Jordan Peterson分析男女性格差异及其本质原因,[男女性格差异的本质原因](https://weibo.com/tv/v/IDUyc9gAw?fid=1034:4495117424197653)
 
-# [为什么大多数人永远不会真正成功？](https://www.bilibili.com/video/av68876841)
+## 多少人永远不会成功 
+
+[为什么大多数人永远不会真正成功？](https://www.bilibili.com/video/av68876841)
 
 - 每天用一定时间真实的思考，要有行动力，才能成功（也要劳逸结合，注意分配比例，不能娱乐过度）
 - 选择学习而不是娱乐，坚持下去，过一阵子，你会远远甩开身边的人，不要害怕失败，拒绝，不要害怕“丢脸”，不敢尝试才是最大的失败，永远没有进步的可能
@@ -1008,7 +1010,12 @@ permalink: /skill
 <iframe src="//player.bilibili.com/player.html?aid=68876841&cid=119369944&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 
 
-# 人为什么会拖延
+## 拖延症
+
+【2025-5-25】刷手机导致的时间黑洞
+- ![](https://picx.zhimg.com/v2-9da88baafdcee6856750f4f9942fe98c_r.jpg?source=1def8aca)
+
+### 人为什么会拖延
 
 - 【2021-1-20】斯金纳定律: 如果不想在某事上拖延，你只有两个选择: 
    - 1、让不做的痛苦大于做的痛苦；
@@ -1025,7 +1032,7 @@ permalink: /skill
 
 - ![](https://28oa9i1t08037ue3m1l0i861-wpengine.netdna-ssl.com/wp-content/uploads/2015/03/Logo-sometimes-Pixelmator-577.png)
 
-## 什么是拖延症
+### 什么是拖延症
 
 ![](https://pic3.zhimg.com/80/v2-b8eb78393b259514a3b2bd2d9786fc5d_hd.jpg)
 
@@ -1108,7 +1115,7 @@ permalink: /skill
 
 所以，拖延症患者如何才能战胜拖延，获得更高的幸福感呢？请看`如何击败拖延症`。
 
-# 如何打败拖延症
+### 如何打败拖延症
 
 释义：一种没有任何理由毁掉你自己人生的行为。
 
@@ -1136,7 +1143,8 @@ permalink: /skill
 
 完成一件事， 开始：计划。
 
-## 计划
+### 计划
+
 拖延症患者最喜欢计划了！为什么？很简单，因为计划不需要你去真正的做什么事情，而做事就是拖延症患者的死穴。
 
 但是在拖延症患者做计划的时候，他们喜欢用一种模糊而且不考虑现实和细节的方式来计划，所以他们的计划最后导致他们什么都做不成。拖延症患者的计划就是行动者的噩梦：
@@ -1181,7 +1189,8 @@ permalink: /skill
 
 好了，现在你已经学会了如何进行有效的计划，那么就让我们开始考虑如何继续”行动“：
 
-## 行动
+### 行动
+
 并不是拖延症患者不喜欢“行动”这个概念。他们看着自己日历上面搬砖的计划，心里想着“太好了，一定很有意思”。他们这么想，完全是因为他们在心中描绘未来完成任务的情景的时候，完全忘记了吧即时奖励猴子这个元素加入他们的考虑之中。拖延症患者的未来愿景中似乎从来都没有猴子。
 
 但是当日历上需要搬砖垒砖的时刻真正到来了，拖延症患者就开始做他们最擅长的事情了——把控制权拱手交给猴子，然后让猴子把一切都玩坏。
@@ -1292,7 +1301,7 @@ Dark woods pro 1
 
 ![](https://28oa9i1t08037ue3m1l0i861-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/fmuafMrTh62aDFGZv940_dark-woods.jpg)
 
-## 附录
+### 附录
 
 - TED的演讲：[如何战胜拖延症](https://www.bilibili.com/video/av4190492/)，文字版见[waitbutwhy](https://waitbutwhy.com/)
    - 拖延症者的内心是怎么想的？他们的大脑是怎样运作的? 本次TED演讲者Tim Urban先生将用诙谐的语言，贴切的比喻和贴近你我生活的故事来为我们剖析这些问题的答案。这是一个令所有人都会感同身受又倍受启发的TED演讲，不容错过。
