@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet agent 设计
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet agent 设计 多模态
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -2053,7 +2053,11 @@ GPT-4o在多个方面相较于过去的模型进行了改进：
 
 详见站内 [Openai进化](openai#openai进化)
 
-### Mogao
+
+### 字节
+
+
+#### Mogao
 
 【2025-5-9】字节发布和GPT-4o类似的**图像理解**与**生成**的统一模型 Mogao
 - 融合了多项关键架构改进：深度融合设计、双视觉编码器、交错旋转位置编码以及多模态无分类器引导，使其能同时发挥自回归模型在文本生成和扩散模型在高质量图像合成的优势。
@@ -2063,6 +2067,37 @@ GPT-4o在多个方面相较于过去的模型进行了改进：
 大量实验表明，Mogao不仅在多模态理解和文生图任务上达到最优性能，更能生成高质量、连贯的交错模态内容。其涌现的零样本图像编辑与组合生成能力，标志着 Mogao 已成为实用的全能模态基础模型，为统一多模态系统的未来发展与规模化奠定了基础。
 
 技术报告：[05472](https://arxiv.org/abs/2505.05472)
+
+#### BAGEL
+
+【2025-5-20】[BAGEL](https://bagel-ai.org/)：新的**统一多模态**基础模型，支持文本、图像、视频的端到端理解与生成
+- BAGEL: The Open-Source Unified Multimodal Model
+- 论文 [Emerging Properties in Unified Multimodal Pretraining](https://arxiv.org/pdf/2505.14683)
+- 代码 [BAGEL](https://github.com/bytedance-seed/BAGEL)
+- 技术报告和demo [BAGEL-Technical-Report.pdf](https://github.com/ByteDance-Seed/BAGEL/blob/main/BAGEL-Technical-Report.pdf) 
+- 讲解 [BAGEL: 更聪明的统一生成理解模型](https://zhuanlan.zhihu.com/p/1908306219678012787)
+
+功能
+- 图像编辑 Editing
+- 图像导航 Navigation
+- 图像推理 Thinking
+- 风格迁移 Style Transfer
+- 图文聊天 Chat
+- 图像生成 Generation
+- 图像合成 Composition
+
+![](https://pic3.zhimg.com/v2-19cf087c7e23ef5394ae2bf0775fff08_1440w.jpg)
+
+在标准基准测试中显著超越现有开源模型，并展现一系列复杂推理能力，包括：自由图像操控、未来帧预测、3D空间操作、世界导航等。
+
+统一模型在增加参数与训练量的过程中，处理不同任务的智能逐渐涌现，从基础的图文理解和文生图，到多样化的editing，再到复杂的manipulation 详细的评测，模型的智能程度不断提升
+
+模型结构
+- ![](https://lf3-static.bytednsdoc.com/obj/eden-cn/slnhi/ljhwZthlaukjlkulzlp/likunchang/tmp/method/input_1.webp)
+
+BAGEL adopts a Mixture-of-Transformer-Experts (MoT) architecture to maximize the model’s capacity to learn from richly diverse multimodal information. Following the same principle of capacity maximization, it utilizes two separate encoders to capture pixel-level and semantic-level features of an image. The overall framework follows a Next Group of Token Prediction paradigm, where the model is trained to predict the next group of language or visual tokens as a compression target.
+
+BAGEL scales MoT’s capacity through Pre-training, Continued Training, and Supervised Finetuning on trillions of interleaved multimodal tokens spanning language, image, video, and web data. It surpasses open models on standard understanding and generation benchmarks and demonstrates advanced in-context multimodal abilities like free-form image editing, future frame prediction, 3D manipulation, world navigation, and sequential reasoning.
 
 
 ## 应用
