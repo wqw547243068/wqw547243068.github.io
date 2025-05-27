@@ -471,6 +471,21 @@ if(message.get("function_call")):
 - (3) 格式化训练数据: 
 - (4) 进行微调: 
 
+根据 Llama 技术报告，大模型工具调用能力在 post training 时添加，包含多个 SFT 和 DPO 迭代过程。
+
+Llama3 使用 tool 流程大致和 GPT4 tool call 差不多：
+
+Llama3 对 SFT Tool 数据集的描述：
+- 标注员只对 **assistant 信息**进行排名打分，通常模型对当前问题的推理能力越强，打分越高，而**不对 tool 信息**进行排名打分。
+- 其次，不用 rejection sampling，因为 Llama 团队在后期的 tool 测评中，没有收益。
+
+为了加快标注过程，Llama 团队首先通过在之前的 Llama 3 检查点生成的合成数据上进行微调，以此来引导基本的工具使用能力。因此标注员需要进行的改动较少。
+
+同样地，随着 Llama 3 在训练过程中逐渐改进，逐步复杂化人类标注协议：
+- 从标注单轮 tool use 的对话数据开始
+- 逐步过渡到标注对话中包含了 tool use 的数据
+- 最后到标注对话中包含了多步 tool use 以及数据分析的训练数据。
+
 
 #### 数据集
 
@@ -498,6 +513,9 @@ if(message.get("function_call")):
 
 如果**不需要**调用函数: 模型应该生成的直接文本回答。
 - 例如：“好的，这是一首关于春天的诗：...”
+
+
+
 
 #### 训练数据样例
 
@@ -595,6 +613,91 @@ Functions available:
   }
 }
 ```
+
+知名 function call 数据集有 glaive-function-calling-v2-sharegpt，其输入格式为：
+
+tools：
+
+```json
+[
+  {
+    "name":"generate_password",
+    "description":"Generate a random password with specified criteria",
+    "parameters":{
+      "type":"object",
+      "properties":{
+        "length":{
+          "type":"integer",
+          "description":"The length of the password"
+        },
+        "include_numbers":{
+          "type":"boolean",
+          "description":"Include numbers in the password"
+        },
+        "include_special_characters":{
+          "type":"boolean",
+          "description":"Include special characters in the password"
+        }
+      },
+      "required":[
+        "length"
+      ]
+    }
+  }
+]
+```
+
+tools 会像 system prompt 一样，一起放到输入的 prompt 里。
+
+组织好的对话数据：
+
+```json
+[
+  {
+    "from":"human",
+    "value":"I need a new password. Can you generate one for me?"
+  },
+  {
+    "from":"gpt",
+    "value":"Of course! How long would you like your password to be? And do you want it to include numbers and special characters?"
+  },
+  {
+    "from":"human",
+    "value":"I want it to be 12 characters long and yes, it should include both numbers and special characters."
+  },
+  {
+    "from":"function_call",
+    "value":"{\"name\": \"generate_password\", \"arguments\": {\"length\": 12, \"include_numbers\": true, \"include_special_characters\": true}}"
+  },
+  {
+    "from":"observation",
+    "value":"{\"password\": \"4#7gB6&9L1!0\"}"
+  },
+  {
+    "from":"gpt",
+    "value":"Here is your new password: 4#7gB6&9L1!0. Please make sure to save it in a secure place."
+  }
+]
+```
+
+把 tool 的函数名，工具描述，变量名，变量类型打包成 prompt 的一部分。
+
+然后再全局设计这样的指令模版
+
+qwen-agent 里设置了这样的包含工具的对话模版：
+
+```md
+# 工具
+你拥有如下工具：
+{tool_descs}
+你可以在回复中插入零次、一次或多次以下命令以调用工具：
+#FUNCTION#: 工具名称，必须是[{tool_names}]之一。
+#ARGS#: 工具输入
+#RESULT#: 工具结果
+#RETURN#: 根据工具结果进行回复
+```
+
+然后通过 post-training 或者微调，可以让模型理解工具的含义。当然实际在定义所使用的工具时，前面提到的这些必要的工具信息需要含义清楚，定义清晰，否则实际使用的效果也会大打折扣。
 
 #### 推理数据
 
