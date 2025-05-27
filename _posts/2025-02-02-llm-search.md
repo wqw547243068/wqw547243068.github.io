@@ -665,6 +665,10 @@ bootstrap.bat -d
 
 浏览器输 localhost:3000 进行访问
 
+【2025-5-27】win 11 实测通过
+- 地址: http://localhost:3000/chat
+- 注意: 不是 8000 !
+
 
 ### 分析
 
@@ -684,7 +688,7 @@ DeerFlow 适合场景
 【2025-4-28】[r1-reasoning-rag：一种新的 RAG 思路](https://zhuanlan.zhihu.com/p/1900207784156460087)
 
 将 DeepSeek-R1 推理能力结合 Agentic Workflow 应用于 RAG 检索。
-- 代码 [r1-reasoning-rag](https://github.com/deansaco/r1-reasoning-rag)
+- 代码 【2025-2-5】[r1-reasoning-rag](https://github.com/deansaco/r1-reasoning-rag)
 
 #### RAG 问题
 
