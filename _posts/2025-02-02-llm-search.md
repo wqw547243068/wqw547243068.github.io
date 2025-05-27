@@ -529,17 +529,149 @@ HyperWriteAI CEO 在推特上分享的开源方案—— OpenDeepResearcher。
 
 详见站内专题: [Agent应用](agent_usecase)
 
+
+## Gemini Deep Research
+
+Gemini Deep Research 是一款AI研究助理。
+
+将复杂问题拆解，自动浏览海量网站，分析信息并生成详尽报告。
+
+特点包括：
+- 自主规划、深度搜索、智能推理、快速生成多页报告。
+
+
 ## DeerFlow
 
-【2025-5-9】字节开源全新的 Deep Research 项目——DeerFlow 
+【2025-5-9】字节开源全新的 Deep Research 项目 —— [DeerFlow](https://deerflow.net/) 
+
+DeerFlow（Deep Exploration and Efficient Research Flow）是社区驱动的深度研究框架，建立在开源社区的杰出工作基础之上。
+
+目标
+- 将语言模型与专业工具（如网络搜索、爬虫和Python代码执行）相结合，同时回馈使这一切成为可能的社区。
 
 DeerFlow 是一个基于 LangChain 全家桶的开源 **Multi-Agent** 应用
 - 支持动态任务迭代、MCP 无缝集成、Meta Prompt 自动生成、Human-in-the-loop 协作，以及播客和PPT内容生成。
 - DeerFlow 仓库：[deer-flow](https://github.com/bytedance/deer-flow)
 - DeerFlow 官网：[deerflow](https://deerflow.tech/)
-- DeerFlow 专栏：我们开源了一款全新的 Deep Rese...
+- DeerFlow 解读：
+  - 【2025-5-12】[字节跳动重磅开源DeerFlow：对标Gemini Deep Research，AI深度研究框架来了](https://zhuanlan.zhihu.com/p/1905196919527014613)
+  - 源码分析: 【2025-5-25】[字节开源Deerflow项目体验与分析](https://spacetimelab.cn/post/deerflow-project-read-locally/)
+
+### 核心特性
+
+特性
+- 高效多智能体架构
+  - 创新的 "Research Team" 机制支持高效的**多轮对话、决策与任务执行**。
+  - 相比传统方法，显著降低Token消耗和API调用，并通过**动态任务重规划**（Re-planning）灵活应对复杂场景。
+- 基于LangStack，易学易用
+  - 构建于 LangChain 和 LangGraph 之上，代码结构清晰简洁，学习门槛低。
+- MCP无缝集成
+  - 作为 MCP Host（类似Cursor、Claude Desktop），可轻松通过MCP扩展私域搜索、内部知识库访问、设备控制（Computer/Phone/Browser Use）等高级功能。
+- AI赋能 Prompt工程
+  - 采用Meta Prompt模式，让大模型（基于OpenAI官方Meta Prompt）**自动生成**高质量Prompt，大幅降低Prompt工程难度和门槛。
+- 人机协作优化
+  - 支持通过自然语言**实时修改和优化**AI生成的计划与报告。
+  - 用户可轻松调整细节、补充信息或重定义方向，确保最终结果符合预期。
+- 多媒体内容生成
+  - 支持从报告一键生成双人主持播客（集成火山引擎语音技术，音色自然丰富）及多种形式的PPT（包括图文和纯文字版）。
+
+### 架构
+
+DeerFlow 实现了模块化的**多智能体**系统架构，专为自动化研究和代码分析而设计。
+
+该系统基于 LangGraph 构建，实现了灵活的基于状态的工作流，其中组件通过定义良好的消息传递系统进行通信。
+
+架构图
+- ![](https://spacetimelab.cn/post/deerflow-project-read-locally/images/architect/multi-agent_hudb016c56e25ef5b08913096fe888827a_241243_1200x1200_fit_q75_h2_lanczos_3.webp)
+
+多Agent工作流（核心亮点）
+
+过 src/graph/builder.py 构建 StateGraph，定义了如下节点：
+- `coordinator`（协调者）：与用户交互，决定是否需要规划。
+- `background_investigator`（背景调查）：调用搜索工具进行信息检索。
+- `planner`（规划者）：生成任务计划。
+- `human_feedback`（人工反馈）：支持用户对计划的中断、编辑、接受。
+- `research_team`（研究团队）：分发任务给 researcher/coder。
+- `researcher`（研究员）：负责信息检索、资料收集。
+- `coder`（程序员）：负责代码实现、数据处理。
+- `reporter`（报告员）：撰写最终报告。
 
 
+模块分析
+
+src/
+- agents/: 智能代理模块
+- llms/: 大语言模型相关实现
+- tools/: 工具集
+- crawler/: 爬虫模块
+- utils/: 通用工具函数
+- prompts/: 提示词模板
+- graph/: 图相关功能
+- config/: 配置文件
+- server/: 服务器相关代码
+- podcast/: 播客相关功能
+- prose/: 文本处理相关
+- ppt/: PPT 相关功能
+
+
+### 安装
+
+```sh
+# 克隆仓库
+git clone https://github.com/bytedance/deer-flow.git
+cd deer-flow
+
+# 安装依赖，uv将负责Python解释器和虚拟环境的创建，并安装所需的包
+uv sync
+
+# 使用您的API密钥配置.env
+# Tavily: [https://app.tavily.com/home](https://app.tavily.com/home)
+# Brave_SEARCH: [https://brave.com/search/api/](https://brave.com/search/api/)
+# 火山引擎TTS: 如果您有TTS凭证，请添加
+cp .env.example .env
+
+# 查看下方的"支持的搜索引擎"和"文本转语音集成"部分了解所有可用选项
+
+# 为您的LLM模型和API密钥配置conf.yaml
+# 请参阅'docs/configuration_guide.md'获取更多详情
+cp conf.yaml.example conf.yaml
+
+# 安装marp用于PPT生成
+# [https://github.com/marp-team/marp-cli?tab=readme-ov-file#use-package-manager](https://github.com/marp-team/marp-cli?tab=readme-ov-file#use-package-manager)
+brew install marp-cli
+```
+
+启动服务
+
+```sh
+# 控制台UI 运行项目的最快方法是使用控制台UI。
+# 在类bash的shell中运行项目
+uv run main.py
+# Web UI 本项目还包括一个Web UI，提供更加动态和引人入胜的交互体验。
+
+# 注意： 您需要先安装Web UI的依赖。
+npm install -g pnpm
+npm install next
+
+# 在开发模式下同时运行后端和前端服务器
+# 在macOS/Linux上
+./bootstrap.sh -d
+
+# 在Windows上
+
+bootstrap.bat -d
+```
+
+浏览器输 localhost:3000 进行访问
+
+
+### 分析
+
+DeerFlow 适合场景
+- 需要查找大量资料的**复杂任务**，比如产业研究报告、学术文献梳理和分析等。
+
+缺点
+- token 消耗巨大，比如跑两个任务，就消耗了十万token。
 
 
 # 结束
