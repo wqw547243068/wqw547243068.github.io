@@ -109,6 +109,13 @@ OpenAI
 
 ### 微调本质
 
+
+【2001-11-15】Rich Sutton: Verification, the key to AI
+
+【2025-5-26】谷歌 DeepMind 首席科学家 [Denny Zhou](https://dennyzhou.github.io/) 在斯坦福CS25中表示
+- SFT不能很好地泛化且推理不行，盲目扩展没有太大帮助。
+- RL 微调最关键的是可靠的验证器，而不是RL算法
+
 【2024-8-30】
 - [SFT局限性](https://zhuanlan.zhihu.com/p/717275921)
 - [对SFT与RLHF两种训练方式的一些个人理解与问题](https://zhuanlan.zhihu.com/p/29191363988)
