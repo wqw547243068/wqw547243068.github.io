@@ -47,6 +47,42 @@ LangChain 以“工作流”形式将LLM与IO组件有序连接，从而具备�
 - ![](https://picx.zhimg.com/80/v2-2ab8dadbe6e271b02ceec0c785d9fc2e_1440w.png)
 
 
+## 为什么有 LangChain
+
+
+### 解决什么问题
+
+构建大模型应用需要考虑这些问题：
+- **Prompt 管理**：不同场景需要手写不同的`提示词`（Prompt），还要维护多个 prompt 的**版本**和结构，很容易混乱。
+- **调用逻辑**的组织：如果你想让模型先问用户问题，然后再去查资料，再回答——你得自己写一整套逻辑流程。
+- **多模型**集成：假如不想用OpenAI的大模型，想尝试下HuggingFace其他大模型，就要自己封装和管理接口。
+- 与**外部工具**对接：想要模型查数据库、搜索引擎、文件系统？自己写代码去连接、格式化、处理这些数据。
+- **内存管理**（聊天上下文）：如让 AI 记住用户之前说过什么，你要自己存储这些对话记录，并加到 prompt 里。
+- **调试 & 追踪**：如果模型表现不对，很难知道是哪一步出了问题。没有自动化的 trace 系统。
+
+例如，基于LLM开发一个问答系统，几行代码就可以完成最内核的功能：
+
+```py
+from langchain_community.chat_models import ChatOllama
+from langchain_core.messages import HumanMessage
+
+# 初始化模型
+model = ChatOllama(
+    model="qwen2.5:1.5b",
+    base_url="http://localhost:11434"# Ollama 服务地址
+)
+
+# 发送请求
+response = model.invoke([
+    HumanMessage(content="用中文写一首关于秋天的短诗")
+])
+
+print(response.content)
+```
+
+
+
+
 ## LangChain 生态
 
 
@@ -465,10 +501,26 @@ LangChain 架构
 - ![](https://blog.langchain.dev/content/images/size/w1000/2023/12/LangChain-Stack---split---V3.png)
 - ![](https://js.langchain.com/v0.1/assets/images/langchain_stack_feb_2024-101939844004a99c1b676723fc0ee5e9.webp)
 
-LangChain 库本身由几个不同的包组成。
-- `langchain-core`：基础抽象和 LangChain 表达式语言(`LCEL`)。
-- `langchain-community`：包含所有第三方集成, Model i/o, Retrieval, Agent Tooling。
+
+### 技术栈
+
+LangChain 是一个用于开发由大型语言模型 (LLMs) 驱动的应用程序的框架。
+
+LLM 技术栈主要由四个部分组成：
+- **数据预处理**（data preprocessing pipeline）：主要包括数据源连接、数据转化、下游连接器（如向量数据库），特别是对于繁杂的数据源，如数千个PDF、PPTX、聊天记录、抓取的HTML等大量数据提取、清理、转换工作，跟大数据分析任务的前期步骤很类似，不同的是大模型的数据处理可能会用到OCR模型、Python脚本和正则表达式等方式，并以API方式向外部提供JSON数据，以便嵌入终端和存储在向量数据库中。
+- **嵌入与向量存储**（embeddings +vector store ）：以往嵌入主要用于如文档聚类之类的特定任务，新架构中，直接将文档及其嵌入存储在向量数据库中，可以通过LLM端点实现关键的交互模式。直接存储原始嵌入，意味着数据可以以其自然格式存储，从而实现更快的处理时间和更高效的数据检索。
+- **LLM 终端**（LLM endpoints）：LLM终端负责管理模型的资源，包括内存和计算资源，并提供可扩展和容错的接口，用于向下游应用程序提供LLM输出。
+- **LLM 编程框架**（LLM programming framework）：LLM编程框架提供了一套工具和抽象，用于使用语言模型构建应用程序。在现代技术栈中出现了各种类型的组件，包括：LLM提供商、嵌入模型、向量存储、文档加载器、其他外部工具（谷歌搜索等），这些框架的一个重要功能是协调各种组件。
+
+### 模块
+
+LangChain 库本身由几个不同包组成。
+- `langchain-core`：聊天模型和其他组件的基础抽象，基础抽象和 LangChain 表达式语言(`LCEL`)。
+- `langchain-community`：由社区维护的第三方集成工具, Model i/o, Retrieval, Agent Tooling。
 - `langchain`：构成应用程序认知架构的链、代理和检索策略。Chain/Agent/Advanced Retrieval
+- `Integration packages`：负责维护不同厂家的大模型，由轻量级的包组成，例如 langchain-openai、langchain-anthropic 等。
+- `LangGraph`：基于 LangChain 的扩展库，用于构建有状态、多角色的智能体（Agents）应用。通过将任务流程建模为状态图（StateGraph），实现对复杂任务的精细控制和管理。
+- `LangSmith`：用于开发、调试、测试和监控基于大语言模型（LLM）应用的平台，它有点像你写 LLM 应用时的 “全能开发调试仪表盘”。
 
 2 个核心功能为：
 - 1）LLM 模型与**外部数据源**进行连接。
@@ -487,10 +539,9 @@ LangChain主要支持6种组件：
 - `Agents`：**代理**，决定模型采取哪些行动，执行并且观察流程，直到完成为止
 - ![](https://picx.zhimg.com/80/v2-c4e822ce46f7f9c77ce6797047e6d2a2_1440w.webp?source=1940ef5c)
 
+
+
 ### 框架
-
-
-
 
 
 LangChain 框架示意图
