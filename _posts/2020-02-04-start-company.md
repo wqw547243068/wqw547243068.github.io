@@ -3,7 +3,7 @@ layout: post
 title:  "如何开公司 - How to start you own campany"
 date:   2020-02-04 10:29:00
 categories: 读书笔记
-tags: 创业 自由职业 财务自由 公司注册 远程 外包 五险一金 社保 众包 创业 天眼查 法律 仲裁 社保 股权 廿面体
+tags: 创业 自由职业 财务自由 公司注册 远程 外包 五险一金 社保 众包 创业 天眼查 法律 仲裁 社保 股权 廿面体 管理
 excerpt: 怎么开公司，有哪些注意事项？
 author: 鹤啸九天
 mathjax: true
@@ -111,6 +111,12 @@ permalink: /start_company
 - 示例: [北京廿面体科技有限公司](https://www.tianyancha.com/company/5540271924)
 - 廿面体公司介绍 [在线 ppt](https://www.yunzhan365.com/basic/70144638.html)
 - [亿灵尔斯](https://www.tianyancha.com/company/7275218423)
+
+
+### 团队管理
+
+【2025-5-28】创业想成功，要避开**民主集中**，有适度独裁，**权责利对等**，不承担责任的人不能参与决策
+- 民主的结果是四不像，大家还都委屈，为什么不听我的
 
 
 ## 公司注册
