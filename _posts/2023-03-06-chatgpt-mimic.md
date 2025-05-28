@@ -3300,11 +3300,13 @@ python train.py --actor-model facebook/opt-66b --reward-model facebook/opt-350m 
 【2023-4-13】知乎发布大模型「知海图 AI」并内测「热榜摘要」，知乎发现大会介绍的 “知海图AI”大模型
 - “知海图AI”的训练基于`面壁智能`自主研发的 `CPM`企业级大模型 与 `ModelForce`大模型系统。
 
-### Claude
+### Anthropic
 
 [Claude AI](https://claude.ai/)（克劳德人工智能）是一款面向各种规模任务的下一代人工智能助手，为部分客户和研究人员提供支持。
 - Anthropic成立于2021年，是一家人工智能安全和研究公司，致力于建立可靠的、可解释的、可操纵的人工智能系统，公司的创始团队来自于OpenAI
 - 功能包括文本摘要、信息查询等多个方面，通过其免费接入选项（AI Playground和网站演示），用户可以体验其强大的功能。
+
+Claude 模型家族[汇总](https://docs.anthropic.com/zh-CN/docs/about-claude/models/overview)
 
 三个大的模型版本：
 1. `Claude+`
@@ -3350,7 +3352,7 @@ Anthropic正式推出Claude Pro版本来对标ChatGPT Plus版本。
 Claude是GPT3.5的国内最佳替代
 
 
-#### Claude 2.1
+#### 【2023-11-23】Claude 2.1
 
 【2023-11-23】Claude 2.1 版本支持输入20万个Token超GPT-4 Turbo
 
@@ -3361,7 +3363,7 @@ Claude 2.0 单次回话只支持 10 万个 Token，而 Claude 2.1 支持输入�
 - Claude 2.1 号称准确率是 Claude 2.0 两倍，此外该模型也改善了对于文本内容的理解能力，特别是对法律文件、财报与技术规格等更高准确度的文档进行了优化，号称“出现错误答案的比例减少了 30%”
 
 
-#### 【2024-3-4】 Claude 3
+#### 【2024-03-04】 Claude 3
 
 【2024-3-4】Anthropic 发布了一组 Claude 3 系列大模型，称其功能最强大的模型在各种基准测试中均优于 OpenAI 的 GPT-4 和 Google 的 Gemini 1.0 Ultra。
 - Claude3 优化了**准确性**和**长文本窗口**能力。
@@ -3405,6 +3407,35 @@ Anthropic 访问
 参考
 - [刚刚曝光的 Claude3，直击 OpenAI 最大弱点](https://www.geekpark.net/news/331955)
 - [GPT-4时代已过？全球网友实测Claude 3，只有震撼](https://www.jiqizhixin.com/articles/2024-03-05-4)
+
+#### 【2024-10-22】 Claude 3.5
+
+Claude Haiku 3.5
+
+#### 【2025-2-19】 Claude 3.7
+
+Claude Sonnet 3.7
+
+#### 【2025-5-23】Claude 4
+
+
+【2025-5-23】[Anthropic 发布最强代码模型 Claude 4](https://zhuanlan.zhihu.com/p/1909357883172303692)
+
+5 月 23 日凌晨，Anthropic 在首届开发者大会“Code with Claude”上推出新一代语言模型 `Claude Opus 4` 和 `Claude Sonnet 4` ，在结构化推理、软件工程和自主代理行为等领域实现重大进步。
+
+两款新模型 `Claude Opus 4` 和 `Claude Sonnet 4` 进一步丰富了 Claude 4 家族
+
+同步发布 Claude Code。
+
+支持功能：
+- VS Code和JetBrains原生集成
+- GitHub Actions后台任务
+- 实时文件编辑显示
+- 可扩展SDK
+
+同时，集成github，可直接在PR中@Claude Code，修复CI代码。
+
+
 
 ### TruthGPT
 
@@ -3989,7 +4020,13 @@ Web LLM 是一个可将大型语言模型和基于 LLM 的聊天机器人引入 
 
 ### 【谷歌】Gemini
 
-【2023-12-6】Google 正式推出了原生多模态的大型语言模型Gemini，可以同时支持文字、图片和声音的输入。
+Gemini 全家桶
+- ![](https://picx.zhimg.com/v2-aca4b78f13a596923e8d0878e206ecc3_1440w.jpg)
+
+
+#### 【2023-12-6】Gemini 1
+
+【2023-12-6】Google 正式推出了原生多模态的大型语言模型 Gemini，可以同时支持文字、图片和声音的输入。
 - [gemini](https://deepmind.google/technologies/gemini/#introduction)
 
 在32项AI测试中，有30项的评分超越了OpenAI的GPT-4。Google CEO Sundar Pichai强调，Gemini是Google有史以来最强大也是最通用的模型。
@@ -4001,6 +4038,37 @@ Gemini模型经过海量数据训练，可以很好识别和理解文本、图�
 【2023-12-14】谷歌宣布，**免费**开放`Gemini Pro`和`Gemini Pro Vision`的**API**，支持中文。每分钟可发出**60**个请求，将比其他免费产品高20倍。
 - [bard体验地址](https://bard.google.com)，gemini加持的是英文版的bard，用中文就不是gemini
 - [api](https://makersuite.google.com/app/apikey)
+
+#### 【2024-5-*】Gemini 1.5
+
+Gemini 1.5 Flash
+
+#### 【2024-12-*】Gemini 2
+
+Gemini 2 Flash
+
+
+#### 【2025-5-21】Gemini 2.5
+
+【2025-5-21】[2025谷歌I/O大会：大模型应用全面开花](https://zhuanlan.zhihu.com/p/1908848032109291500)
+
+概括如下：
+- （1）`Gemini 2.5` 更快、更聪明、理论能力更强，Gemini 2.5 Pro Deep Think 模式
+- （2）内容生成工具：Veo、Imagen 和 Flow，下一代创作利器
+  - Veo 3：支持音频提示生成，如城市街道噪音、公园鸟鸣、角色对话等，增强视频真实感。
+  - Flow：AI 电影制作工具，可自定义视频镜头、动作、演员和场景等。
+  - Imagen 4：图像细节更清晰，表现力更强，支持多种画幅和最高 2K 分辨率。
+- （3）谷歌搜索全新 AI 模式
+- （4）Android XR：多模态 AI 助手，能够通过摄像头进行实时交互
+- （5）谷歌生态远景：将科幻场景的“世界模型”变成现实
+
+新版本：
+- ① Gemini 2.5 Pro Deep Think：强化推理能力，专为数学、编程等高复杂度任务设计。在美国数学奥林匹克（USAMO）上拿下40.4%高分，表现超过GPT-4 Turbo。
+- ② Gemini 2.5 Flash：强调效率和成本，保持多模态理解的同时，toen使用减少30%，更适合高频日常调用。
+- ③ Gemini Diffusion：全新的扩散式文本生成模型，文本生成速度比以往快5倍，每秒可生成超过10,000 token，特别适合编辑和快速创作。
+
+
+轻量级多模态AI模型——`Gemma3n`，并同时宣布Gemma模型家族迎来新成员，包括: 专为医疗领域设计的`MedGemma`和为无障碍沟通打造的`SignGemma`。
 
 ### NexusRaven
 
