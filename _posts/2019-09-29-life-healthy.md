@@ -3,7 +3,7 @@ layout: post
 title:  "健康生活指南- Healthy Life"
 date:   2019-09-29 14:30:00
 categories: 自然科学
-tags: 血型 甲醛 癌症 果壳 饮酒 地理 寿命 病毒 新冠 奥密克戎 化妆 激素 心脏
+tags: 血型 甲醛 癌症 果壳 饮酒 地理 寿命 病毒 新冠 奥密克戎 化妆 激素 心脏 做饭
 excerpt: 什么样的饮食习惯是健康的、如何保持健康的生活方式
 mathjax: true
 permalink: /healthy
@@ -55,6 +55,10 @@ permalink: /healthy
 
 
 中餐「减盐减油增纤维」
+
+### 做饭
+
+【2025-6-3】程序员做饭指南 [how to cook](https://cook.aiursoft.cn/)
 
 ## 三大营养物质
 
