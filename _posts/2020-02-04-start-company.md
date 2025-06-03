@@ -226,7 +226,7 @@ permalink: /start_company
 
 
 <div class="mermaid">
-    flowchart TB
+    flowchart LR
     %% 节点颜色
     classDef red fill:#f02;
     classDef green fill:#5CF77B;
