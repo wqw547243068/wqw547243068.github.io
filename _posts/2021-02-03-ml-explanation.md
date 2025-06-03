@@ -219,9 +219,12 @@ OpenAI 承认目前 GPT-4 生成的解释并不完美，尤其在解释比 GPT-2
 
 ### Anthropic 可解释性
 
+
+#### 高维特征空间
+
 【2023-12-1】[Anthropic训练AI拆解LLM黑箱，意外看到了大模型的"灵魂"](https://www.toutiao.com/article/7307507246940914191)
 
-Anthropic可解释性团队论文讲述了通过训练一个新模型去理解一个简单模型的方法。
+Anthropic 可解释性团队论文讲述了通过训练一个**新模型**去理解一个**简单模型**的方法。
 - [Towards Monosemanticity: Decomposing Language Models With Dictionary Learning](https://transformer-circuits.pub/2023/monosemantic-features/index.html#phenomenology-fsa), 包含交互可视化
 
 新模型能准确地预测和理解原本模型中神经元的工作原理和组成机制。
@@ -230,7 +233,26 @@ Anthropic可解释性团队论文讲述了通过训练一个新模型去理解�
   - 自动编码器被要求构建一组特征(对应更高维度AI中的神经元数量)，并预测这些特征如何映射到真实AI中的神经元。
 - 尽管原始AI中的神经元本身不易理解，但是新的AI中的这些模拟神经元(也就是「特征」)是单义的，每特征都表示一个指定的概念或功能。
 
-Anthropic发表的一项研究声称能够看到了人工智能的灵魂: 成功分解了一个模拟AI系统中的抽象高维特征空间。
+Anthropic 研究声称能够看到了人工智能的灵魂: 成功分解了一个模拟AI系统中的**抽象高维特征空间**。
+
+#### 电路追踪
+
+【2025-5-30】[Claude团队打开大模型「脑回路」，开源LLM思维可视化工具来了]()
+
+Claude 推出“**电路追踪**”（circuit tracing）工具，读懂大模型“脑回路”，追踪其思维过程。
+
+核心：生成**归因图**（attribution graphs），其作用类似于大脑的神经网络示意图，通过可视化模型内部超节点及其连接关系，呈现LLM处理信息的路径。
+- ![](https://pic2.zhimg.com/v2-85c4ac1ac056f712b942fec79479a9c3_1440w.jpg)
+
+研究人员通过干预节点激活值，观察模型行为变化，从而验证各节点的功能分工，解码LLM的“决策逻辑”。
+
+开源库支持在主流开源权重模型上**快速生成归因图**，而Neuronpedia托管的前端界面则进一步允许用户交互式探索。
+- 通过生成自有归因图，在支持的模型上进行电路追踪；
+- 在交互式前端中可视化、注释和分享图表；
+- 通过修改特征值并观察模型输出变化来验证假设。
+
+![](https://pic2.zhimg.com/v2-b3909620d9db1c4ab942c645b01678f7_1440w.jpg)
+
 
 ### OpenAI: Transformer Debugger
 
