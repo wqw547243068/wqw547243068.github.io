@@ -171,13 +171,26 @@ GPT等大模型的出现提供了新思路——已有不少研究者尝试将�
 
 谷歌、微软的AI团队走在前列，试图以大模型为机器人注入灵魂。
 
-Sim2Real
+#### Sim2Real
 
 训练具身智能的一种直接方法是将它们直接放置在物理世界中。这很有价值，但在现实世界中训练机器人速度慢、危险（机器人可能会摔倒并摔坏）、资源密集型（机器人和环境需要资源和时间）并且难以重现（尤其是罕见的边缘情况）。另一种方法是在逼真的模拟器中训练具身代理，然后将学到的技能转移到现实中。模拟器可以帮助克服物理世界的一些挑战。模拟器可以比实时运行快几个数量级，并且可以在集群上并行化；模拟培训安全、便宜。一旦在模拟中开发和测试了一种方法，就可以将其转移到在现实世界中运行的物理平台。
 
 很大概率，具身智能是通向通用人工智能的更Promising的一条路。
 
 【2023-10-25】[具身智能 (Embodied AI)概述](https://zhuanlan.zhihu.com/p/620342675)
+
+
+#### VLA
+
+【2025-6-7】银河通用机器人 CTO `王鹤`: End-to-End VLA Model for Generalist Robots 具身端到端VLA大模型实现通用
+
+Vision-Language-Action (VLA) Model from Google
+- Input : language, vision, other proprioceptive/ sensor signals
+- Output: action
+
+具身数据难题：
+- 真实数据采集贵，难以Scal Up到大模型充分泛化所需的量
+
 
 ## 其它视角
 
