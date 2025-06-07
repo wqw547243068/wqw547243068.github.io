@@ -3,7 +3,7 @@ layout: post
 title:  Transformer 知识点汇总
 date:   2019-12-10 16:52:00
 categories: 深度学习 
-tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕
+tags: 深度学习 NLP Transformer BERT GPT Attention BeamSearch seq2seq 杨植麟 XLNet 循环智能 roformer rwkv 苏剑林 检索 芯片 序列化 注意力 三蓝一棕 帕累托 retnet yoco kan 通用逼近定理 叠加定理 样条 可视化 ttt 三蓝一棕 大脑
 excerpt: Attention is all you need!
 mathjax: true
 permalink: /transformer
@@ -138,6 +138,28 @@ Google 2017年发的一篇论文，标题叫《Attention Is All You Need》，�
 - 多头注意力（Multi-head Attention）
   - 多头注意力--Multi-head Attention 通过融合几个相同的注意力计算，使注意力计算具有更强大的分辨能力
 - 掩码
+
+
+### transformer 与 大脑
+
+【2025-6-7】香港浸会大学助理教授 `吴郁杰`: Transformer 与人脑结构相似
+
+Transformer Architecture vs. Hippocampal-Cortical Interaction
+- Self-attention mechanism vs. Hopfield model + Hebbian learning
+- Position coding vs. Recurrent,position encodings
+- Transformer vs. Modern Hopfield network + Grandmother Cell Theory
+
+参考
+- 2016年，Dense associative memory for pattern recoanition
+- 2021年, Relating transformers to models and neural representations of the hippocampal formation
+
+AI vs Biology:
+- AI learning: 错误信息逐层累计，propagated error signals layer by layer to optimize weights (global)
+- Bio learning: operate by multiple synaptic plasticity rules, decentralized and adaptive learning (local)
+
+Methods for hybrid learning models 混合学习模型
+>- Two cues about neuromodulation: modulation mechanisms and independent learning circuits
+>- Hybrid spiking learning unit: slow weight (wcp) and fast weight (w.p)
 
 
 ## Transformer 模型
