@@ -350,6 +350,10 @@ Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
 - ![](https://picx.zhimg.com/80/v2-abfd4f5f382c016569924092857c9275_1440w.webp)
 
 
+【2025-6-7】METB最新排名：
+- Qwen3-Embedding全家挤占了2-4名
+- 第一名还是Gemini，与自家测试结果有些差异
+
 ### 方案选型
 
 一般默认使用 OpenAI 的 Embedding 接口来生成向量。
@@ -1295,7 +1299,7 @@ print(scores.tolist())
 
 起因
 - embedding 效果对 RAG 效果至关重要
-- 当前embedding优化主要通过`对比学习`来改进, 即 在预处理阶段, 挖掘使用**硬负样本**
+- 当前 embedding 优化主要通过`对比学习`来改进, 即 在预处理阶段, 挖掘使用**硬负样本**
 
 思路
 - 训练过程中, 动态挖掘负样本, 充分利用负样本
@@ -1335,6 +1339,59 @@ print(scores.tolist())
 CMTEB结果:
 - Conan-Embedding 模型在CMTEB基准测试中的平均性能为**72.62**，超过了之前的最先进模型。
 - 在检索和重排序任务中，Conan-Embedding 模型表现出显著的性能提升，表明增加的负样本数量和质量使模型能够看到更具挑战性的负样本，从而增强了其召回能力。
+
+
+### 阿里 Qwen
+
+
+#### Qwen-2
+
+gte-Qwen2-7b-instruct 
+
+#### Qwen3-Embedding
+
+【2025-6-6】[阿里Qwen3 新模型 Embedding 及 Reranker霸榜（Top2）](https://mp.weixin.qq.com/s/SVF2bf1cdJtlNOK20iLtSA)
+
+2025年6月6日凌晨，阿里开源 Qwen3 新模型 Embedding 及 Reranker，支持多语言。
+
+Qwen3-Embedding系列模型：
+- 文本嵌入：Qwen3-Embedding，型号有0.6B、4B和8B
+- 文本排序：Qwen3-Reranker，型号有0.6B、4B和8B
+
+技术报告：
+- [qwen3_embedding_technical_report](https://github.com/QwenLM/Qwen3-Embedding/blob/main/qwen3_embedding_technical_report.pdf)
+
+ModelScope：
+- [qwen3-embedding](https://modelscope.cn/collections/Qwen3-Embedding-3edc3762d50f48)
+- [qwen3-reranker](https://modelscope.cn/collections/Qwen3-Reranker-6316e71b146c4f)
+
+Hugging Face：
+- [qwen3-embedding](https://huggingface.co/collections/Qwen/qwen3-embedding-6841b2055b99c44d9a4c371f)
+- [qwen3-reranker](https://huggingface.co/collections/Qwen/qwen3-reranker-6841b22d0192d7ade9cdefea)
+
+GitHub：
+- [Qwen3-Embedding](https://github.com/QwenLM/Qwen3-Embedding)
+
+多项基准测试中，Qwen3-Embedding 系列在文本表征和排序任务中，表现优异。
+- Qwen3-Embedding 4B和8B效果超过Gemini Embedding（实验组最佳）
+
+METB最新排名：
+- Qwen3-Embedding全家挤占了2-4名
+- 第一名还是Gemini，与自家测试结果有些差异
+
+特点：
+
+① **泛化性好**：Qwen3-Embedding 系列在多个下游任务评估中领先。其中，8B 参数的 Embedding 模型在 MTEB 多语言 Leaderboard 榜单中位列第一（截至 2025 年 6 月 6 日，得分 70.58），超越众多商业 API 服务。此外，排序模型在各类文本检索场景中表现出色，显著提升了搜索结果的相关性。
+
+② **模型架构灵活**：Qwen3-Embedding 系列提供从 0.6B 到 8B 多种参数规模，以满足不同场景下的性能与效率需求。
+
+此外，模型支持定制化：
+- 表征维度自定义：允许用户根据实际需求调整表征维度，有效降低应用成本；
+- 指令适配优化：支持用户自定义指令模板，以提升特定任务、语言或场景下的性能表现。
+
+③ **多语言**支持：Qwen3-Embedding 系列支持超过 100 种语言，涵盖主流自然语言及多种编程语言。具备强大的多语言、跨语言及代码检索能力，能够有效应对多语言场景下的数据处理需求。
+
+
 
 
 ## 向量评估
