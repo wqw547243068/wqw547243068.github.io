@@ -70,6 +70,13 @@ permalink: /llm_direction
 论文：[A PhD Student’s Perspective on Research in NLP in the Era of Very Large Language Models](https://arxiv.org/pdf/2305.12544.pdf)
 
 
+【2025-6-15】Scaling What？堆数据/规模 → 拉长思维链 → context 情景智能
+
+邱锡鹏教授：该Context了
+- 第一阶段，靠“堆数据、加参数”，让模型变聪明；
+- 第二阶段，拉长“思维链”提升推理能力。
+- 第三阶段正在上演。新概念——Contextual Intelligence（情境智能）。场景、具身等信息
+
 ## 模型融合
 
 【2024-8-8】[模型融合来袭！ChatGPT和Claude 杂交能变聪明10倍？](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
