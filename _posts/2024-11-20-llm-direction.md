@@ -483,12 +483,32 @@ EasyEdit 还提供了五个评估编辑方法性能的关键指标，包括`可�
 
 
 
+
 ## 模型结构
 
 详见 [LLM 架构代码详解](llm_code)
 
 
 ### 自学习
+
+AI 自我演进/进化
+
+#### 总结
+
+研究进展
+- Sakana AI 与不列颠哥伦比亚大学等机构合作的「达尔文-哥德尔机（DGM）」
+- CMU 的「自我奖励训练（SRT）」
+- 上海交通大学等机构提出的多模态大模型的持续自我改进框架「MM-UPT」
+- 香港中文大学联合 vivo 等机构的自改进框架「UI-Genie」
+- MIT 发布的《Self-Adapting Language Models》提出让 LLM 更新自己的权重的方法：SEAL🦭，即 Self-Adapting LLMs。
+
+参阅文章《[LSTM 之父 22 年前构想将成真？一周内 AI「自我进化」论文集中发布，新趋势涌现？](https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650971628&idx=1&sn=1f3baa09a3d3953449c96f91b1e4b205&scene=21#wechat_redirect)》
+
+
+OpenAI CEO、著名 𝕏 大 v 山姆・奥特曼在其博客《[温和的奇点（The Gentle Singularity）]()》中更是畅想了一个 AI/智能机器人实现自我改进后的未来。
+- 「我们必须以传统方式制造出第一批百万数量级的人形机器人，但之后它们能够操作整个供应链来制造更多机器人，而这些机器人又可以建造更多的芯片制造设施、数据中心等等。」
+
+不久之后，就有 𝕏 用户 [@VraserX 爆料](https://x.com/VraserX/status/1932842095359737921)称有 OpenAI 内部人士表示，该公司已经在内部运行能够递归式自我改进的 AI。
 
 
 
@@ -592,6 +612,27 @@ MAX_JOBS=4 pip install flash-attn --no-build-isolation
 3. 工作流编辑器（使用工作流创建 Agent）
   - 通过工作流编辑器模式，使用自然语言描述创建代理工作流，如下图所示。（提示：此模式暂时不支持工具创建。）
 
+#### 【2025-6-14】MIT SEAL
+
+【2025-6-14】[LLM已能自我更新权重，自适应、知识整合能力大幅提升，AI醒了？](https://mp.weixin.qq.com/s/WvC7kX1_XfNO218YBsAa8g)
+
+MIT 昨日发布的《Self-Adapting Language Models》提出让 LLM 更新自己的权重的方法：SEAL🦭，即 Self-Adapting LLMs。
+
+该框架中，LLM 可以生成自己的训练数据（自编辑 /self-editing），并根据新输入对权重进行更新。而这个自编辑可通过强化学习学习实现，使用的奖励是更新后的模型的下游性能。
+- 论文标题：[Self-Adapting Language Models](https://arxiv.org/pdf/2506.10943)
+- 项目页面：[seal](https://jyopari.github.io/posts/seal)
+- 代码地址：[seal](https://github.com/Continual-Intelligence/SEAL)
+
+自适应语言模型（SEAL）
+
+SEAL 框架可以让语言模型在遇到新数据时，通过生成自己的合成数据并优化参数（自编辑），进而实现自我提升。
+
+该模型训练目标：
+- 使用模型上下文中提供的数据，通过生成 token 来直接生成这些自编辑（SE）。
+
+自编辑生成需要通过强化学习来学习实现，其中当模型生成的自编辑在应用后可以提升模型在目标任务上的性能时，就会给予模型奖励。
+
+因此，可以将 SEAL 理解为一个包含两个嵌套循环的算法：一个外部 RL 循环，用于优化自编辑生成；以及一个内部更新循环，它使用生成的自编辑通过梯度下降更新模型。
 
 ### Transformer 改进
 
