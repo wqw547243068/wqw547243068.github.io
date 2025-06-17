@@ -319,6 +319,19 @@ RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较�
 
 ## (6) 混合
 
+【2025-6-17】RAG和Fine-tuning 并不排斥
+
+通过RAG利用外部知识，再微调，实现对特定领域的适应
+
+RAG和微调结合优点：
+- 检索器能够快速访问广泛和最新的外部数据；
+- 微调能够深度定制模型，以适应专业领域；
+- 生成器则结合外部上下文和微调后的领域知识来生成响应。
+
+方法
+- Retriever Fine-tuning
+- Collaborative Fine-tuning
+- Generator Fine-tuning
 
 ### LoRAMoE
 
