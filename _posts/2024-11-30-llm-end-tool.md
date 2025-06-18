@@ -304,7 +304,16 @@ Ollama安装成功以后，就建立了11434端口
 
 ### api
 
-Ollama 默认提供了 generate 和 chat 这 2 个原始的 API 接口，使用方式如下：
+Ollama 默认提供了 generate 和 chat 这 2 个原始的 API 接口
+
+Dify 中 安装 ollama 
+- 模型名称：qwen3:30b-a3b
+- 基础 URL：http://172.35.xx.xx:11434
+- 模型类型：对话
+- 模型上下文长度：32768
+- 最大 token 上限：32768
+
+使用方式如下：
 
 generate接口使用样例：
 
@@ -518,16 +527,20 @@ ollama rag方案
 - 一个高效、轻量的深度学习框架，专注于在端侧设备（手机、嵌入式设备）上实现高性能的模型推理与训练，让大模型也能在各类设备中都能高效运行。
 - GitHub [MMN](https://github.com/alibaba/MNN)
 - Android APK [MMN](https://github.com/alibaba/MNN/blob/master/apps/Android/MnnLlmChat/README_CN.md)
+- ![](https://github.com/alibaba/MNN/raw/master/apps/Android/MnnLlmChat/assets/image_image_new.jpg)
 
-
+MNN-LLM：基于 MNN 引擎打造的大型语言模型运行时解决方案，能让大语言模型（LLM）更好落地于手机、PC 和物联网等终端设备。
 
 轻量级高性能推理引擎 MMN
 - 通用性 - 支持 TensorFlow、Caffe、ONNX 等主流模型格式，支持CNN、RNN、GAN等常用网络。
 - 高性能 - 极致优化算子性能，全面支持CPU、GPU、NPU，充分发挥设备算力。
 - 易用性 - 转换、可视化、调试工具齐全，能方便地部署到移动设备和各种嵌入式设备中。
 
-MNN-LLM：基于 MNN 引擎打造的大型语言模型运行时解决方案，能让大语言模型（LLM）更好落地于手机、PC 和物联网等终端设备。
-
+功能亮点
+- 多模态支持： 提供多种任务功能，包括文本生成文本、图像生成文本、音频转文本及文本生成图像（基于扩散模型）。
+- CPU推理优化： 在安卓平台上，MNN-LLM展现了卓越的CPU性能，预填充速度相较于llama.cpp提高了8.6倍，相较于fastllm提升了20.5倍，解码速度分别快了2.3倍和8.9倍。下图为 llama.cpp 与 MNN-LLM 与 llama.cpp 的比较。
+- 广泛的模型兼容性： 支持多种领先的模型提供商，包括Qwen、Gemma、Llama（涵盖TinyLlama与MobileLLM）、Baichuan、Yi、DeepSeek、InternLM、Phi、ReaderLM和Smolm。
+- 本地运行： 完全在设备本地运行，确保数据隐私，无需将信息上传至外部服务器。
 
 
 #### 部署 QWen
