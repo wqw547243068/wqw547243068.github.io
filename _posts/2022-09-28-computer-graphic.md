@@ -825,6 +825,17 @@ three.js不足之处
 - 【2021-6-3】[如何快速将2D图像转为3D模型](https://www.toutiao.com/video/6969358547238781477)
 - [monstermash demo](https://monstermash.zone/)
 
+#### Trellis
+
+[Trellis 3D](https://trellis3d.net/)：超高质量、角色一致性、多图像参考。
+
+【2025-6-18】微软推出的图像3D建模工具 [Trellis](https://trellis3d.github.io/)
+- GitHub [TRELLIS](https://github.com/microsoft/TRELLIS)
+- Demo [trellis3d](https://trellis3d.net/zh/models/trellis3d)
+
+大规模预训练模型
+- 利用 Trellis 3D 的庞大模型，最多可达 20 亿参数，经过 50 万个对象的数据集训练，提供无与伦比的覆盖率
+
 
 ### SLAM
 
