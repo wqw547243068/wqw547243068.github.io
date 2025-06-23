@@ -240,6 +240,7 @@ Anthropic 研究声称能够看到了人工智能的灵魂: 成功分解了一�
 【2025-5-30】[Claude团队打开大模型「脑回路」，开源LLM思维可视化工具来了]()
 
 Claude 推出“**电路追踪**”（circuit tracing）工具，读懂大模型“脑回路”，追踪其思维过程。
+- 电路追踪方法原始论文《[On the Biology of a Large Language Model]()》
 
 核心：生成**归因图**（attribution graphs），其作用类似于大脑的神经网络示意图，通过可视化模型内部超节点及其连接关系，呈现LLM处理信息的路径。
 - ![](https://pic2.zhimg.com/v2-85c4ac1ac056f712b942fec79479a9c3_1440w.jpg)
