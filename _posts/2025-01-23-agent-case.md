@@ -820,11 +820,71 @@ Mobile-Agent-v2在多项指标上，无论在英文还是非英文场景，都�
 
 ### 【2024-10-23】Computer Use
 
+#### Claude
+
 【2024-10-23】Claude 推出 [Computer Use](https://docs.anthropic.com/en/docs/build-with-claude/computer-use) ，可以像人类一样使用计算机了？查看屏幕、移动光标、点击按钮、输入文本，还能查找代码错误、自动搜集信息填表，并向开发者提供了API
 
 通过 API，开发者可以让 Claude 将指令翻译成计算机指令，从而解放一些枯燥的重复性流程任务。
 
 基准测试中，Claude 在 OSWorld 电脑操作评估测试中获得了 14.9% 的成绩，远超其他 AI 模型的 7.8% 最高分，但与人类的 70 - 75% 的水平相比仍有相当大的差距。当用户提供更多完成任务所需的步骤时，Claude 的得分可以提升到 22.0%。
+
+
+#### 字节版
+
+【2025-6-21】[让远程电脑成为你的AI助手 - Computer Use Agent 实践](https://mp.weixin.qq.com/s/YKelF9piI6RLvKQMZOU3Gg)
+
+字节跳动自研 Doubao-1.5-thinking-vision-pro /Doubao-1.5-UI-TARS  模型的 AI 产品，依托 AI 云原生 AgentKit 套件，以强化学习融合视觉能力与高级推理，无需特定 API 即可直连图形用户界面（GUI）。
+
+从视频剪辑到 PPT 制作，从自媒体运营到复杂桌面操作，它凭借智能感知、自主推理的行动式 AI 架构，将用户指令转化为精准的自动化任务执行，正引领从 “对话式 AI” 到 “行动式 AI” 的技术变革。
+- **感知**：CUA 截取计算机屏幕图像，旨在对数字环境中的内容进行情境化处理。这些视觉输入成为决策的依据。
+- **推理**：CUA 借助思维链推理对其观察结果进行评估，并跟踪中间步骤的进展。通过分析过往和当前的屏幕截图，该系统能够动态适应新的挑战和不可预见的变化。
+- **行动**：CUA 利用虚拟鼠标和键盘执行键入、点击和滚动等操作
+
+同时 Computer Use 已经在社区内部开源
+- 仓库详情：[computer_use](https://github.com/volcengine/ai-app-lab/tree/main/demohouse/computer_use)
+
+让 Agent 像人一样操作电脑
+
+技术底座的四大核心能力
+- 强大的自研模型：字节跳动自主研发的 Doubao-1.5-thinking-vision-pro 核心模型，通过自然语言处理与计算机视觉技术的深度融合，实现对用户指令的多维度语义解析，精准捕捉业务需求背后的场景意图，为复杂任务执行提供底层智能支撑。
+- 多种操作系统支持：提供 Windows 与 Linux 双系统支持，Windows具有无可比拟的传统软件生态，Linux更加轻量与灵活，可以满足企业级计算环境的多元化需求。。
+- 极致拉起速度：依托字节跳动分布式架构的底层技术积累，通过资源池化管理、热迁移变配等核心能力，实现云主机实例的秒级启动响应。动态负载均衡机制可根据业务流量实时调整资源分配，构建从资源申请到服务就绪的极致弹性链路，显著提升用户操作的实时性体验。
+- 灵活服务组合：采用高内聚低耦合的微服务架构设计，支持火山 computer-use 方案的全栈式部署与组件化调用，对于大型互联网客户，支持按需编排Agent Planner、MCP Server、Sandbox Manager等服务，对于小型客户，提供全栈式的一体化的解决方案。
+
+| 组件           | 技术实现                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
+| Web UI         | 实时展示远程桌面状态，可视化任务执行步骤                                 |
+| Agent Planner  | 简易的 Agent 服务（Client），提供与 Web UI、模型、MCP Server Tool 交互能力 |
+| Sandbox Manager| 秒级创建/销毁 ECS 沙箱实例，管理 VNC/RDP 连接                             |
+| MCP Server     | 封装 Tool-Server 能力，向大模型暴露标准化工具协议                         |
+| Tool Server    | 部署于沙箱内部，提供原子级操作能力（截屏/键鼠事件）                       |
+| VNC Proxy      | 安全转发桌面流，支持前端实时渲染                                         | 
+
+
+场景实战演示
+- 视频演示见原文
+
+智能AI操作场景汇总表
+
+| **场景编号** | **场景名称**       | **用户指令**       | **AI操作流程**    | **特殊功能支持**  |
+|--------------|--------------|--------------------|-----------------|-----------------|
+| 场景1        | 智能订机票         | “订北京→法兰克福6月3日航班，乘机人张三”   | 自动打开航司官网→输入地点日期→智能选择经济舱→跳过广告弹窗→完成乘机人认证   | 系统提示词确保关键步骤零失误              |
+| 场景2        | 文件信息整理       | “把照片按拍摄国家分类”      | 识别埃菲尔铁塔→创建“法国”文件夹→移动相关图片    | 支持100+国家地标图片识别   |
+| 场景3        | 全球发票处理       | “识别小票消费地，换算人民币记入Excel”  | 调用汇率API→自动填充“地点/金额/汇率”三栏→生成财务报表     | -  |
+| 场景4        | 海外酒店预订       | “订法兰克福五星酒店，需健身房+浴缸”    | 筛选携程酒店→识别浴室图片→完成支付    | -    |
+| 场景5        | 电商购物           | “打开值得买，帮我买一部小米15丁香紫”     | 打开电商网站→选择指定手机商品→完成支付      | 支持Human-in-loop，需人工操作时移交控制权 |
+| 场景6        | 购买车票           | “在浏览器上搜索12306,帮我订一张明天北京到上海的高铁票。” | 打开12306→搜索车票→选择车次→提交订单→完成支付   | -      |
+| 场景7        | 软件下载           | “请帮我下载一个汽水音乐客户端，并且安装到主机上 | 搜索客户端→点击下载→点击安装→完成安装    | -    |
+| 场景8        | 玩网页游戏         | “你来玩一局愤怒的小鸟。”       | 进入游戏网站→打开游戏→攻克第一关→攻克第二关→...        | -      |
+
+在线尝鲜
+- AI 体验中心入口：https://exp.volcengine.com/ai-cloud-native-agentkit
+- FaaS 应用中心：https://console.volcengine.com/vefaas/region:vefaas+cn-beijing/market/computer
+- 方舟应用中心：https://console.volcengine.com/ark/region:ark+cn-beijing/application/detail?id=bot-20250304115020-abcde-procode-preset&prev=application
+- 一键部署：租户专属版部署https://console.volcengine.com/vefaas/region:vefaas+cn-beijing/application/create?templateId=680b0a890e881f000862d9f0
+- 开发者资源：https://github.com/volcengine/ai-app-lab/tree/main/demohouse/computer_use
+
+[火山体验地址](https://exp.volcengine.com/ai-cloud-native-agentkit) 
 
 ### 【2024-12-23】PC Agent
 
