@@ -1562,6 +1562,10 @@ Lilian 是前沿技术和应用研究的桥梁，通过设计 API 拓宽了 GPT 
 
 ![](https://inews.gtimg.com/news_bt/OJeGHsgPeuDkQnhLoi2NqLbzXywLk2axMt_cLEsGaejxwAA/641)
 
+【2025-5-26】[刚刚，北大校友Lilian Weng自曝公司首个产品？一篇论文未发，估值却已90亿](https://mp.weixin.qq.com/s/mzL3odoyQhP-wdqK0kNirQ)
+
+OpenAI前研究员大佬、如今的 Thinking Machines Lab 联创Lilian Weng，刚刚转发了一个神秘产品——一台专为AI训练打造的「**手动调参仪表盘**」
+
 
 #### Jakub Pachocki -- 预训练专家
 
