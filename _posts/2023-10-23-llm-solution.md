@@ -493,7 +493,7 @@ MCTS 的四个主要步骤进行迭代：选择（Selection）、扩展（Expans
 - 简单链路保证**性能**，复杂链路保证**效果**
 
 
-## GPT 使用方法
+GPT 使用方法
 
 OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的本质。
 
@@ -509,6 +509,7 @@ OpenAI 的接口名就叫「completion」，也证明了其只会「生成」的
 |Agent + Function Calling|Agent：AI 主动提要求<br>Function Calling：AI 要求执行某个函数<br>场景举例：你问过年去哪玩，ta 先反问你有几天假|<img src="https://pic2.zhimg.com/80/v2-7f79119cec8a74043bbe0c9a1af40d7d_1440w.webp" height="100%" width="100" />|
 |Embeddings + 向量数据库|Embeddings：把文字转换为更易于相似度计算的编码。这种编码叫向量<br>向量数据库：把向量存起来，方便查找<br>向量搜索：根据输入向量，找到最相似的向量<br>场景举例：考试时，看到一道题，到书上找相关内容，再结合题目组成答案。然后，就都忘了|<img src="https://pic2.zhimg.com/80/v2-db7f589f134ca9fb8d08f80f1539f095_1440w.webp" height="100%" width="100" />|
 |Fine-tuning|模型微调|<img src="https://pic2.zhimg.com/80/v2-29f966de529981aa7e221960afedb971_1440w.webp" height="100%" width="100" />|
+
 
 
 # 结束
