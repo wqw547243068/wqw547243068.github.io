@@ -791,6 +791,48 @@ GraphRAG 里用 LLM 构建知识图谱
 
 
 
+#### 浏览器
+
+
+##### Google Project Astra
+
+待定
+
+##### Comet
+
+【2025-6-23】Perplexity 首席执行官Aravind Srinivas近日在社交媒体平台X上宣布AI浏览器Comet的Windows版本已准备就绪，早期测试人员已经开始收到邀请。
+
+2025年5月，Perplexity 为搭载Apple Silicon的Mac用户推出了浏览器 beta 测试版，为不同硬件平台用户提供服务。
+
+而此次Windows版本的推出，无疑将使更多用户有机会体验Comet浏览器的独特功能。
+
+Comet 是一款“智能体搜索”浏览器，集成了强大的人工智能功能，极大地拓展了传统浏览器的边界。
+
+用户在使用 Comet 浏览器时，不仅可以像在普通搜索引擎中那样提问，还能利用其独特功能进行更多操作。
+- 用户能够轻松**搜索电子邮件**，这对于需要频繁处理邮件的商务人士来说，将大大提高工作效率；
+- 购物时，自动在购物车中查找可用折扣，帮助用户节省开支。
+- 引人注目的功能是“试穿”。用户只需上传自拍照，就能通过Comet浏览器查看不同服装的效果。这一创新功能不仅为在线购物增添了趣味性和互动性，还能帮助用户更好地做出购买决策，避免因无法直观感受服装上身效果而产生的购买失误。
+
+智能体服务栈
+- **学术研究**场景：跨文献库向量相似度检索（使用Cohere的Embedding模型），节省研究者67%时间（来源：Nature Index 2024）。
+- **开发者**场景：支持GitHub仓库AST级分析，结合DeepSeek代码生成模型，实现API自动化补全。
+- **企业级联邦搜索**：使用NVIDIA的NeMo Guardrails 框架，在混合数据源中保持97.3%的数据隔离。
+
+浏览器原生AI功能
+- **网络威胁**检测：利用Graphcore的IPU芯片加速图神经网络，钓鱼网站识别准确率达到99.2%。
+- **标签管理**系统：采用Google DeepMind的AlphaDev[5]算法，内存占用减少40%，响应时间毫秒级。
+- **无障碍引擎**：集成Microsoft的AI字幕技术，支持83种语言翻译，延迟低于300ms。
+
+关键技术组件
+• **多模态指令解析器**：支持文本、语音、屏幕截图输入，使用Meta开源的SeamlessM4T技术。
+• **任务分解**模块：基于斯坦福AI Lab的LLM任务规划框架，分解复杂查询为子任务。
+• **安全沙箱**：集成OWASP Top 10威胁检测模型，零日攻击防护时延小于200ms（来源：Black Hat 2023报告）。
+
+omet 核心在于浏览器即AI计算平台的设计：
+- 使用WebGPU加速本地推理，使70亿参数模型达到每秒45token速度。
+- 利用Mozilla的Federated Learning of Cohorts[6]保护隐私同时建模用户行为。
+- 内置AI效能评估模块基于Anthropic提出的指标，优化资源分配。
+
 
 #### BI
 
@@ -1537,6 +1579,8 @@ NotebookLM 是一款 AI 赋能的研究和撰写**助理**，最适合与您上�
 
 笔记应用
 
+##### Obsidian
+
 【2024-3-15】[Obsidian - 本地AI助手](https://mp.weixin.qq.com/s/8vU10cY-e1dAqIT2bZRElA): 
 
 Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本地用Ollama，跑了个llama2 7B模型，实现笔记的LLM问答
@@ -1545,12 +1589,28 @@ Obsidian Copilot这款插件能支持本地LLM, 通过Smart Connection插件+本
 - 安装设置Obsidian Copilot
 - 运行Ollama和使用Copilot
 
+##### AudioNotes
+
 【2024-7-31】快速将音视频转结构化笔记的开源免费工具 AudioNotes。
 
 基于 FunASR 和 Qwen2 构建，可快速提取音视频内容，并利用大模型能力整理成一份结构化的 Markdown 笔记，方便快速阅读。
 - GitHub：[AudioNotes](github.com/harry0703/AudioNotes)
 
 工具支持搭配 Ollama 使用本地模型，并提供了 Docker 快速部署方式。
+
+
+##### Granola
+
+【2025-6-26】硅谷VC最爱的AI笔记Granola，估值 2.5亿美金
+
+产品思路非常清晰：认知合伙人
+- 不做自己的模型，而是给人和模型分工
+- 应用层创业，从高频场景切入
+  - 低频用通用产品
+  - 高频用细分产品
+- 不做模型未来会的事情
+- 大厂的边际成本就是机会
+  - 每增加一个用户带来模型成本增加，大厂也无法盲目扩展用户，对创业者是机会
 
 
 #### 办公工具
