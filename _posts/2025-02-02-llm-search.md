@@ -89,6 +89,13 @@ Planner, Executor and Writer) ，覆盖简单知识问答和复杂多步推理
 - 随后，Executor 按图索骥，调用搜索和计算工具完成任务
 - 最后由Writer综合信息，生成最终答案。
 
+引入 MCP，面对海量工具，Planner **并非全部加载**，而是引入了**动态能力边界**（Dynamic Capability Boundary）。具体做法：
+- 先通过 DRAFT 自动化框架，通过“经验收集-经验学习-文档重写”的循环，迭代优化工具的API文档，使其对LLM更友好；
+- 然后，利用 k-means++ 算法对工具进行功能聚类，形成“工具包”以备不时之需（如同一个工具坏了，可以从同类工具包中找替代品）；
+- 最后，通过 COLT 先进检索方法，该方法不仅看重查询与工具的语义相似性，更通过图学习捕捉工具间的“协作关系”（例如，解决一个复杂问题需要计算器、汇率查询、股价查询三个工具协同工作），从而为当前任务检索出一个功能完备的工具集。
+
+拥有了合适的工具后，Planner 会利用**思维链**和**结构化草图**提示策略，基于用户复杂查询生成一个基于DAG（有向无环图）的**全局任务计划**
+
 这个流程与传统RAG系统一次性检索或简单的“思考-行动”循环相比，展现了更强的**逻辑性、鲁棒性和解决复杂问题**的能力。
 
 ![](https://www.xiaoqiedun.com/posts/2025-06-24-ai-search/images/image-20250624085453290.png)
@@ -376,7 +383,28 @@ Arc Search 的巧妙之处
 
 
 
-## 【2025-2-2】Deep Research
+## 技术实现
+
+### 概要
+
+【2025-6-22】利物浦大学、华为诺亚方舟和牛津大学等联合发布  Deep Research Agents 系统性综述。
+- 论文 [DEEP RESEARCH AGENTS: A SYSTEMATIC EXAMINATION AND ROADMAP](https://arxiv.org/pdf/2506.18096)
+- GitHub仓库：[awesome-deep-research-agent](https://github.com/ai-agents-2030/awesome-deep-research-agent)
+
+Deep Research 最全面的技术路线与案例 
+- 1️⃣搜索引擎：API vs 浏览器
+- 2️⃣调用工具：代码解释器、数据分析、多模态处理
+- 3️⃣架构与工作流：
+  - 1）静态工作流 vs 动态工作流
+  - 2）规划策略：Planning-Only、Intent-to-Planning、Unified Intent-Planning
+  - 3）单代理 vs 多代理：Kimi是端到端单代理，Manus是典型多代理
+  - 4）长上下文记忆：扩展上下文窗口长度；压缩中间步骤；利用外部结构化存储用于临时结果（比如向量数据库）
+- 4️⃣参数调优：SFT vs 强化学习
+- 5️⃣非参数化持续学习
+	
+
+
+### 【2025-2-2】Deep Research
 
 参考
 - 【2025-2-2】[Introducing deep research](https://openai.com/index/introducing-deep-research/)
