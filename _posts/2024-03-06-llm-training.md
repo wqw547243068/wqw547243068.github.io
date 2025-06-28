@@ -178,6 +178,8 @@ RLHF 负反馈是基于reward模型动态得到的，模型能够在训练过程
 微调方法
 - 微调方法分为**全参数微调**（Full Fine-tuning）、**部分参数微调**（Repurposing）
 - 全微调方法：SFT
+  - 作用: 领域价值对齐
+  - 作用: Function Call 工具调用、推理模式适配 (thinking/no_thinking)
 - 部分微调方法：LoRA、Adapter、Prefix-tuning、P-tuning、Prompt-tuning 、Freeze-tuning 等。
 
 受GPT论文影响，大模型通用训练模式是**三阶段**训练模式：第一阶段 `pre-train`，第二阶段 `SFT`，第三阶段 `RLHF`。
@@ -716,6 +718,21 @@ SFT 和 pretrain 在训练方式上没有任何区别，主要区别在于**数�
 
 SFT 数据集通常使用 `Self-Instruct` 和 `Evol-Instruct` 等方法进行构建。
 
+示例
+- 源自 [自我认知微调数据集](https://www.modelscope.cn/datasets/swift/self-cognition/dataPeview)
+- answer 中嵌入变量 name 和 author
+
+```sh
+Q:
+
+你好，介绍下自己
+
+A:
+
+您好！我是一个 AI 助手，名叫{{NAME}}，由{{AUTHOR}}开发。我旨在提供信息、回答问题和满足用户需求。无论您有什么疑问或需要帮助，都可以随时向我提问。我擅长回答各种主题的问题，涵盖了常见知识、新闻、娱乐、科技等方面。我会竭尽所能为您提供准确和有用的答案。请告诉我有什么我可以帮助您的吗？
+```
+
+
 详见站内专题: [llm_data](llm_data#Self-Instruct)
 
 
@@ -986,6 +1003,7 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 - [openbayes](https://openbayes.com/console/public/datasets) 包含大模型各类公开数据集
 
 
+
 |数据集|功能|大小|来源|分析|备注|
 |---|---|---|---|---|---|
 |[OpenO1-SFT](https://openbayes.com/console/public/datasets/qWrfbTlLLgk/1/overview)|OpenO1-SFT 监督微调 CoT 数据集|881m|[openbayes](https://openbayes.com/console/public/datasets)|链式思维 (Chain-of-Thought) ，增强模型生成连贯逻辑推理序列能力||
@@ -1070,6 +1088,40 @@ sharegpt 格式如下：
   }
 ]
 ```
+
+### 推理数据集
+
+推理 LLMs 数据集
+
+#### DeepSeek-R1蒸馏
+
+示例
+- 源自 ModelScope [中文基于满血DeepSeek-R1蒸馏数据集-110k-SFT版本](https://www.modelscope.cn/datasets/liucong/Chinese-DeepSeek-R1-Distill-data-110k-SFT/dataPeview)
+
+中文数据集中的数据分布如下：
+- Math：共计36568个样本，
+- Exam：共计2432个样本，
+- STEM：共计12648个样本，
+- General：共计58352，包含弱智吧、逻辑推理、小红书、知乎、Chat等。
+
+```sh
+Q:
+绿豆稀饭是什么颜色
+
+A: 
+<think> 
+嗯，用户问的是绿豆稀饭的颜色是怎样的。首先，我需要确认自己对绿豆稀饭的了解。绿豆稀饭主要是用绿豆和大米一起煮的粥，对吧？那绿豆本身是绿色的，但煮过之后颜色会不会有变化呢？ 然后想到绿豆在烹饪过程中可能会褪色。比如煮绿豆汤的时候，有时候汤会变成红色，尤其是在水质偏碱性的地区。这是因为绿豆皮中的多酚类物质在碱性条件下氧化，导致颜色变红。不过绿豆稀饭通常用的是大米，可能和绿豆汤的情况不同。 接下来要考虑的是烹饪时间和方法。如果绿豆和大米一起长时间熬煮，绿豆的绿色外皮可能会破裂，释放出内部的颜色，而大米是白色的，所以混合后的颜色可能偏向黄绿色或浅绿色。不过如果煮得时间不长，可能还能保持一些绿色。  总结一下，绿豆稀饭的颜色通常是浅黄绿色或浅褐色，具体取决于绿豆的烹饪程度、水质和烹饪方法。如果煮得时间短或用酸性水，可能更绿；长时间熬煮或碱性水则可能变红或褐色。需要以简明的方式解释这些因素，同时保持回答准确易懂。 
+</think> 
+
+绿豆稀饭的颜色通常呈现为**浅黄绿色或浅褐色**，具体取决于以下几个因素： 
+
+1. **绿豆的烹饪程度**： 
+- 若绿豆煮得较久，外皮破裂，内部淀粉溶出，颜色会逐渐变浅，偏向浅黄或米黄色。 
+- 如果保留绿豆皮且火候适中，可能会保留少许绿色调。 
+2. **水质的影响**： 
+- 在碱性水质（如北方部分地区）中，绿豆皮中的多酚类物质氧化，可能导致稀饭颜色偏红或棕褐色（类似绿豆汤变红的原理）。
+```
+
 
 
 ### 数据量
@@ -1318,6 +1370,8 @@ Assistant3: You are welcome.
 ```
 
 数据集中的 "conversation" 键对应的值是一个列表，用于保存每一轮对话的指令和实际回答（GroundTruth）。为了保持格式统一，增量预训练数据集和单轮对话数据集中的 "conversation" 键也对应一个列表，只不过该列表的长度为 1。而在多轮对话数据集中，"conversation" 列表的长度为 n，以容纳 n 轮的对话内容。
+
+
 
 
 ### LLMs 数据格式汇总
