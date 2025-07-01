@@ -2866,7 +2866,18 @@ Character.ai 行业启发在于：随着高性能大模型的使用门槛进一�
 - <iframe width="720" height="405" frameborder="0" src="https://www.ixigua.com/iframe/7218122615469113894?autoplay=0" referrerpolicy="unsafe-url" allowfullscreen></iframe>
 
 
+#### stylellm
 
+【2024-*-*】[stylellm](https://github.com/stylellm/stylellm_models/tree/main)
+
+stylellm 基于大语言模型（llm）的文本风格迁移（text style transfer）项目。
+
+利用大语言模型来学习指定文学作品的写作风格（惯用词汇、句式结构、修辞手法、人物对话等），形成了一系列特定风格的模型。
+
+利用stylellm模型可将学习到的风格移植至其他通用文本上，即：
+- 输入一段原始文本，模型可对其改写，输出带有该风格特色的文本，达到文字修饰、润色或风格模仿的效果。
+
+stylellm-中国四大名著系列 包括基于Yi-6b微调的四个模型，分别采用《三国演义》、《西游记》、《水浒传》、《红楼梦》四本中国古典长篇小说训练而成
 
 #### AI 女友
 
