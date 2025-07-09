@@ -77,6 +77,15 @@ permalink: /llm_direction
 - 第二阶段，拉长“思维链”提升推理能力。
 - 第三阶段正在上演。新概念——Contextual Intelligence（情境智能）。场景、具身等信息
 
+
+【2025-7-10】AGI实现的可能方向：
+- 推理LLM（已经很多人批了，自回归可能行不通）
+- 世界模型（yann lecun强推，难度大，处于早期）
+- 其他非transformer模型（如ssm状态空间模型、snn脉冲神经网络等）
+- 符号主义（因果推理、GNN图神经网络）、类脑（仿生）等。
+
+openai的成功“破坏”了整个世界的技术认知，就像书籍《伟大不能被计划》一样，技术创新难以被精确预测
+
 ## 模型融合
 
 【2024-8-8】[模型融合来袭！ChatGPT和Claude 杂交能变聪明10倍？](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
@@ -482,7 +491,11 @@ EasyEdit 还提供了五个评估编辑方法性能的关键指标，包括`可�
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-tjoges91tu/Tn4iCiL5n53x88~tplv-tt-origin-asy2:5aS05p2hQOWkp-aVsOaNruaWh-aRmA==.image?_iz=58558&from=article.pc_detail&x-expires=1693797824&x-signature=wQPBTjiUF%2FX%2BszdxJIiTV%2FbPDe8%3D)
 
 
+## 窗口扩大
 
+
+
+详见站内专题: [长文本](long_text#窗口扩大)
 
 ## 模型结构
 
