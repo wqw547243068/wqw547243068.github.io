@@ -505,6 +505,42 @@ CoT-Valve 方法通过**动态控制推理链条的长度**，让模型在简单
 还有更多takeaway都在paper和twitter thread里。
 
 
+### 推理进度
+
+
+【2025-7-8】推理进度条
+
+以色列`特拉维夫大学`开发出新方法，可以监控和控制LLM中的思考路径长度。给LLM的推理任务装上**进度条**，还能控制推理的深度、调整推理速度。
+- 加速后的模型和原模型相比，使用的token数减少了近6倍，且都得出了正确答案。
+- 参考 [DeepSeek推理最高提速6倍！开源研究：加装「思维进度条」，计算量减少30%](https://zhuanlan.zhihu.com/p/1925920556538115717)
+- [Overclocking LLM Reasoning: Monitoring and Controlling Thinking Path Lengths in LLMs](https://royeisen.github.io/OverclockingLLMReasoning-paper/)
+- 代码 [reasoning_loading_bar](https://github.com/royeisen/reasoning_loading_bar)
+- ![](https://royeisen.github.io/assets/figures/new_teaser.jpg)
+
+LLMs 显示结构化推理时，会隐式跟踪其在思考阶段的相对位置，并通过隐藏状态编码这一信息。
+
+而论文提出“**思维进度向量**”（Thinking Progress Vector, TPV），用于实时预测模型在推理阶段的相对位置，并通过可视化进度条展示模型的推理动态。
+
+过干预TPV，可以加速或减速模型的推理过程，实现“超频”（overclocking）和“降频”（downclocking）。
+
+超频能够减少不必要的推理步骤，使模型更快地得出结论，同时避免因过度推理导致的性能下降。
+
+方法：实时监控并控制推理深度
+
+有效推理学习过程中，模型必须隐式地学习跟踪其思考阶段进度，并保持对例如距离最终答案有多近的估计。
+
+由于进度跟踪依赖于输入，这类信息不能存储在模型的静态权重中，而必须动态编码在层间传递的隐藏表示中。
+
+为此，论文的研究团队选择从最终隐藏层提取信息。
+
+研究团队专注于执行显式结构化推理的模型，这种模型的特点是具有一个由<think>和</think>标记明确界定且连续的推理阶段，如DeepSeek-R1。
+
+由此可以通过根据每个标记的相对位置精确地用介于零和一之间的插值值进行标记，来量化模型在推理阶段的进展。
+
+效果：最高提速近6倍，准确率不降反升
+- DeepSeek-R1-Qwen-32B和DeepSeek-R1-LLaMA-8B上测量TPV的有效性，
+
+
 ## cot 过时
 
 
