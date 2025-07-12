@@ -174,6 +174,89 @@ GPT 进化
 - 缺乏动态调整能力，错误恢复机制不完善，无法像人类一样从失败中学习
 
 
+### Agent 设计经验
+
+知乎专题：[如何评价当前的 AI Agent 落地效果普遍不佳的问题？](https://www.zhihu.com/question/13476251758/answer/1925895987169322278)
+
+大部分人对 Agent 落地效果不佳的理解一开始就跑偏了
+- 根源不在于**模型不够聪明**，而在于Agent 构建方式与模型能力**不够匹配/契合**
+- 理想范式: 一个提示 + 一堆工具 + 一个循环搞定一切 —— 错误！
+
+多数 Agent 团队落地路线
+- 第一站：用 LangChain 或 CrewAI 等框架，快速搭个原型，看起来很美。
+- 但很快就会掉进“80% 陷阱”：Demo 效果能到 80 分，可想从 80 分优化到能上生产的 99 分，会发现比推倒重来还难。
+  - 因为被框架高度抽象的 Prompt、内存管理、工具调用给绑死了，想精细控制都不知道从哪下手。
+
+怎么办？
+
+开源项目 [12-factor-agents](https://github.com/humanlayer/12-factor-agents) （Agents构建的12个原则），加上一些优秀 Coding Agent 的源码，共识越来越清晰：
+- 别再执着于构建“全自动”的超级 Agent，而是要把 Agent 当作一个“**微智能体**”，嵌入到由传统代码**主导**的、**确定性**的`工作流`（DAG）中。
+- 因为基座LLM 还不够强...即使claude 4依然有不低的失败率
+
+#### 12-factor-agents
+
+[LLM 12-Factor Agents 总结](https://zhuanlan.zhihu.com/p/1925932254204495305)
+
+[12-factor-agents](https://github.com/humanlayer/12-factor-agents) 工程实践：
+- How We Got Here: A Brief History of Software
+- Factor 1: Natural Language to Tool Calls
+- Factor 2: Own your prompts
+- Factor 3: Own your context window
+- Factor 4: Tools are just structured outputs
+- Factor 5: Unify execution state and business state
+- Factor 6: Launch/Pause/Resume with simple APIs
+- Factor 7: Contact humans with tool calls
+- Factor 8: Own your control flow
+- Factor 9: Compact Errors into Context Window
+- Factor 10: Small, Focused Agents
+- Factor 11: Trigger from anywhere, meet users where they are
+- Factor 12: Make your agent a stateless reducer
+- Factor 13: Pre-fetch all the context you might need
+
+
+背景与定位
+- 从 DAG 到“去 DAG 化”
+  - 传统工作流（Workflow）往往用 DAG（有向无环图）来组织任务——每个节点做特定工作，然后按顺序依赖执行。
+  - 12-factor-agents 主张：让每个“子任务”成为一个微 Agent（micro agent），Agent 既能在 Loop 里自主决定下一步，也能作为更大 DAG 的节点。
+- Agent Loop ≠ 完全取代 DAG
+  - 不是让整条流程彻底无序，而是把可动态决策的部分交给 Agent Loop，把静态依赖的部分仍用 DAG 控制，两者配合能兼顾灵活与可控。
+
+核心设计因素（Factors）
+- 自定义 Prompts
+  - 完全掌控模型行为：用不同 Prompt 模板驱动 Agent 执行“提取”、“决策”、“规划”等子任务。
+  - 灵活性高：对同一份原始上下文，可在不同环节用不同风格/粒度的 Prompt。
+- 自定义上下文窗口
+  - 强调“错误压缩”到有限窗口：把模型执行结果与失败反馈一起保留在上下文，方便下次从中自我修复。
+  - 通过滑动窗口或分段策略，既能保证模型只看到最必要的信息，又让关键状态得以持续。
+- 工具调用 = 结构化输出触发确定性代码
+  - LLM 负责“说”要做什么（输出 JSON/函数签名），后端有专门的代码真正去“做”——承担外部 API、文件操作、计算等。
+  - 分工明确：模型不再直接做高风险操作，一切副作用都由可测试的 deterministic code 完成。
+- 错误自愈与持久性
+  - 当 Agent 调用失败或结果不符合预期，框架会把错误信息（stack trace、返回值）反馈回模型上下文，让它判断“要重试”、“要绕过”还是“要转人工”。
+  - 这样一个 Agent Loop 中的子任务就像带“断点恢复”的微服务，既能自动重试，也能记录失败状态以便后续审计。
+- 预取所有可能需要的上下文（工具依赖）
+  - 进入执行阶段前，把已知会用到的工具输入/外部数据一次性 fetch 进来，避免中途再去网络/数据库查询导致的额外延迟或上下文丢失。
+如果工具调用路径可确定，就直接“硬触发”工具，剩下的只让模型把结果拼接和解释即可。
+
+12-factor-agents 把“**微服务**”思想嫁接到 LLM Agent 上，以**可控**、**可调**、**可恢复**为设计核心，既保留了 **DAG 流程管理**，又让模型在子任务中有充足的**自主决策空间**。
+
+
+| 价值点   | 具体收益         |
+| ---- | --------------------- |
+| 可靠性   | 错误有反馈、可自动重试，减少 “LLM 掉链子” 带来的任务中断            |
+| 可审计性  | 所有工具调用、错误信息都保存在 Agent Loop 里，方便回溯和合规检查    |
+| 扩展性   | 随着需求增加，只要加新的微 Agent 或工具，就能平滑接入现有 DAG       |
+| 效率    | 预取上下文、明确分工，让单次执行延迟更低，整体吞吐量更高             
+
+典型应用场景
+- 智能客服：对话转接、知识检索、工单处理等步骤各自封装成 Agent。
+- 自动化运维：监控→告警→诊断→修复，每步都可用微 Agent 实现闭环。
+- 数据 ETL：数据抓取、清洗、校验、报告生成都能用 Agent Loop 串联。
+
+特别适合那种既要保证业务严谨度，又要兼顾灵活交互的复杂系统，如智能客服、运维自动化、知识处理流水线等。
+
+
+
 
 ## Agent 设计模式
 
