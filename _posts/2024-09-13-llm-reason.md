@@ -659,7 +659,7 @@ ARQ在所有测试中取得了最高的成功率（90.17%），优于思维链�
 Bengio 最新论文戳穿了**CoT神话**——我们所看到的推理步骤，并不真实。不仅如此，LLM在推理时会悄然纠正错误，却在CoT中只字未提。
 
 牛津、谷歌DeepMind、Mila多家机构联手论文指出——思维链并非可解释性。
-- 论文 [Chain-of-Thought Is Not Explainability](https://www.alphaxiv.org/pdf/2025.02)
+- 论文 [Chain-of-Thought Is Not Explainability](https://www.alphaxiv.org/abs/2025.02)
 
 这一观点彻底打破了许多人的认知：
 - CoT看似一步步给出答案，实际并非真实推理过程。
@@ -671,6 +671,7 @@ CoT 最早源于谷歌研究院Jason Wei，多步骤推理，提升模型准确�
 
 近期，约25% AI论文将CoT错误标榜为「可解释性技术」
 - 约 38% 医疗 AI、25% 法律AI、63% 自动驾驶汽车相关论文，都盲目地将CoT视为可解释性方法。
+- ![](https://picx.zhimg.com/v2-6ac034de0b7a98d447cfcce4c2366e45_1440w.jpg)
 
 但事实远非如此，尤其是高风险领域，这个误解的代价可能是致命
 
