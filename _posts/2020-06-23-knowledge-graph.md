@@ -3,7 +3,7 @@ layout: post
 title:  "知识图谱-Knowledge-Graph"
 date:   2020-06-23 21:14:00
 categories: 自然语言处理
-tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j 
+tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j LLM
 excerpt: 知识图谱（Knowledge Graph）发展历史，主要类型，前沿研究及应用场景等
 author: 鹤啸九天
 mathjax: true
@@ -1171,7 +1171,84 @@ def get_movie_actor_list(self):
 
 ```
 
+## LLM 构建 KG
 
+
+### Graph Maker
+
+【2025-6-8】[如何使用 Graph Maker 简化文本到知识图谱的构建](https://mp.weixin.qq.com/s/c2R0tF2YCdEmWSzSPxvG7w)
+
+Python 库 —— `Graph Maker`，根据指定的`本体`（Ontology），从一组文本语料中自动生成知识图谱。
+
+Graph Maker 用开源大语言模型（LLM），如 Llama 3，Mistral， Mixtral，Gemma。这些模型被用于从文本中提取出知识图谱（KG）。
+
+构建知识图谱（KG），需要两类关键信息：
+1. 知识库（Knowledge Base）：这可以是一个文本语料库、代码库、一组文章等。
+2. 本体（Ontology）：也就是我们关心的实体类别，以及它们之间的关系类型。 我在这里对“本体”的定义可能有些简化，但对于我们的目的来说足够用了。
+
+示例本体如下：
+- 实体（Entities）： `Person`，`Place`
+- 关系（Relationships）：
+  - `Person` — related to → `Person`（人物关联人物）
+  - `Person` — lives in → `Place`（人物居住在某地）
+  - `Person` — visits → `Place`（人物访问某地）
+
+问题
+- 有意义的**实体识别**（Meaningful Entities）
+  - 没有人为干预时，LLM 所提取的实体在类别上可能过于**分散或随意**。它往往会错误地把**抽象概念**当作实体来提取。
+- 实体的**一致性**（Consistent Entities）
+  - LLM 还可能在不同语境下将同一个实体识别为不同的实体
+- 解析鲁棒性（Resilience in Parsing）
+  - LLM 的输出天生具有**不确定性**。要从一份大型文档中提取知识图谱，通常 将语料拆分成小段文本，为每段文本生成子图，将多个子图合并为一个完整图谱。这就要求 LLM 在处理每段文本时，始终按照指定的 JSON schema 输出结果。一旦有某一段缺失或格式不正确，就可能影响整个图谱的连通性。
+- 实体分类（Categorisation of the Entities）
+  - LLM 在识别实体时可能会严重误判，特别是在上下文较为专业、术语特殊，实体不是标准英文命名，涉及领域知识较深的内容时。
+  - 虽然命名实体识别模型（NER）在这方面表现更稳定，但它们也受限于自身的训练数据，且不能理解实体之间的关系。
+  -  LLM 在分类时保持一致性，更多依赖的是“提示词工程（prompt engineering）”的技巧与艺术
+- 隐含关系（Implied Relations）
+  - 实体之间的关系有时是明确表达的，有时则是由上下文推断出来的。
+
+Graph Maker 在严谨性与易用性之间取得了平衡，在结构化与非结构化之间找到了中间地带。在大多数前面提到的挑战中，表现都显著优于旧方案。
+
+与“让 LLM 自行发现本体”不同，Graph Maker 的策略是引导（coerce）LLM 使用**用户预定义**的`本体`（ontology）
+
+使用
+
+```sh
+pip install knowledge-graph-maker
+```
+
+本体定义: 
+
+步骤
+1. 定义图谱的本体（Ontology）
+1. 文本分块（Split the text into chunks）
+2. 转为 Document 对象
+3. 运行 Graph Maker，逐个处理生成子图。最终输出是所有文档组成的完整图谱。
+4. 保存到 Neo4j（Save to Neo4j）
+5. 图谱可视化 networkx 和 pyvis 库
+
+本体定义，底层采用的是 Pydantic 模型。
+
+```py
+ontology =Ontology(
+# 要提取的实体标签，可以是字符串或字典对象，如下所示：
+    labels=[
+{"Person":"不要添加任何形容词，仅使用人名。注意人物可能以代词或名字出现"},
+{"Object":"不要在对象名称前加定冠词 'the'"},
+{"Event":"事件应为涉及多人的事件，不包含 'gives'、'leaves'、'works' 等动词"},
+"Place",
+"Document",
+"Organisation",
+"Action",
+{"Miscellaneous":"无法归入上述类别的其他重要概念"},
+],
+# 与应用场景相关的重要关系类型
+# 实际上是提示模型关注特定关系，不能保证仅提取这些关系，但多数模型表现良好
+    relationships=[
+"Relation between any pair of Entities",
+],
+)
+```
 
 
 # 结束
