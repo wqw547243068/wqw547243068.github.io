@@ -80,6 +80,18 @@ response = model.invoke([
 print(response.content)
 ```
 
+### 总结
+
+LangChain = 「Prompt + 模型 + 工具 + 记忆 + 检索」的组件化框架，用来构建多轮对话、文档问答、Agent 应用的乐高积木库。
+
+| 传统方式          | LangChain 提供了什么?                     |
+|-------------------|-------------------------------------------|
+| 手工拼接 prompt   | ✅ PromptTemplate，统一管理变量、格式      |
+| 大模型 API 混乱   | ✅ LLM 模块封装 ChatGPT、通义、GLM         |
+| 多轮记忆难实现    | ✅ Memory 自动管理上下文                   |
+| 工具调用太繁琐    | ✅ Tool + Agent 模块自动调度工具           |
+| RAG 链构建复杂    | ✅ Retriever + QAChain 一键搞定            |
+| 多智能体交互难    | ✅ LangGraph、AgentType 支持多智能体流程   |
 
 
 
@@ -921,6 +933,16 @@ print(llm_chain.run(question))
 
 ### （2）Prompts（提示语）: 模板化
 
+能力总结：
+- 把 `你是一个{角色}` 变成变量模板
+- 搭配 RAG / 角色扮演 / 多轮对话，提示词更清晰
+- LLMChain、Agent 等模块的基础组件
+
+```py
+template = "你是{domain}专家，请回答问题：{question}"
+prompt = PromptTemplate.from_template(template)
+```
+
 通常作为输入传递给模型的信息被称为`提示`
 - 提示可以是**文本字符**，也可以是**文件**、**图片**甚至**视频**
 - LangChain目前只支持字符形式的提示。
@@ -1293,6 +1315,7 @@ LangChain中，主要有下面几种链，`LLMChain`、`Sequential Chain` 以及
 - `提示选择器`
   - 为不同模型生成不同的提示
 
+
 LLM与其他组件结合，创建不同应用，一些例子：
 - 将LLM与**提示模板**相结合
 - 第一个 LLM 的输出作为第二个 LLM 的输入, **顺序组合**多个 LLM
@@ -1314,6 +1337,21 @@ LLMChain 由 PromptTemplate、LLM 和 OutputParser 组成。
 
 LLM 的输出一般为文本，OutputParser 用于让 LLM 结构化输出并进行结果解析，方便后续的调用。
 - ![](https://picx.zhimg.com/80/v2-774b73df8d40ecc40ea265c5f15fd40d_1440w.webp?source=1940ef5c)
+
+
+`LLMChain` = `prompt` + `LLM` + 一行 `.run()`。
+
+🧠 能力总结：
+- 把 prompt 和大模型绑定起来
+- 自动格式化输入 → 请求模型 → 输出结果
+- 可复用、可组合、可插入到 Agent 或流水线中
+
+示例：
+
+```py
+chain = LLMChain(prompt=prompt, llm=llm)
+chain.run({"question": "LangChain 是什么？"})
+```
 
 
 ##### LLM
@@ -1820,9 +1858,18 @@ print(agent_math("今天是哪天？"))
 - ![memory示意图](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/c64ff3021d1a4ba68c3a6a5dd470cdc6~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=M2fWwrITBkva%2BXT%2BiQINk6VD54M%3D)
 
 LangChain 使用 Memory 组件保存和管理历史消息，这样可以跨多轮进行对话，在当前会话中保留历史会话的上下文。Memory 组件支持多种存储介质，可以与 Monogo、Redis、SQLite 等进行集成，以及简单直接形式就是 Buffer Memory。常用的 Buffer Memory 有
-- 1）ConversationSummaryMemory ：以摘要的信息保存记录
-- 2）ConversationBufferWindowMemory：以原始形式保存最新的 n 条记录
-- 3）ConversationBufferMemory：以原始形式保存所有记录通过查看 chain 的 prompt，可以发现 {history} 变量传递了从 memory 获取的会话上下文。下面的示例演示了 Memory 的使用方式，可以很明细看到，答案是从之前的问题里获取的。
+- 1）`ConversationSummaryMemory` ：以摘要的信息保存记录
+- 2）`ConversationBufferWindowMemory`：以原始形式保存最新的 n 条记录
+- 3）`ConversationBufferMemory`：以原始形式保存所有记录通过查看 chain 的 prompt，可以发现 {history} 变量传递了从 memory 获取的会话上下文。下面的示例演示了 Memory 的使用方式，可以很明细看到，答案是从之前的问题里获取的。
+
+
+| 类型           | 特点                 |
+|----------------|----------------------|
+| `BufferMemory`   | 存整段历史           |
+| `SummaryMemory`  | 自动总结上下文       |
+| `TokenMemory`    | 控制上下文 token 数量 |
+| `WindowMemory`   | 只记 N 轮            |
+
 
 langchain 提供不同的Memory组件完成内容记忆，下面列举四种：
 - `ConversationBufferMemory`：记住**全部对话内容**。这是最简单的内存记忆组件，它的功能是直接将用户和机器人之间的聊天内容记录在内存中。[img](https://p3-sign.toutiaoimg.com/tos-cn-i-qvj2lq49k0/8b04d8cc8c8f462bafa21bc473066efc~noop.image?_iz=58558&from=article.pc_detail&x-expires=1686034275&x-signature=ljnOnmukL7V9UH5OzY4l%2BpwkfpU%3D)
