@@ -1148,6 +1148,128 @@ sharegpt 格式如下：
 
 推理 LLMs 数据集
 
+#### CoT
+
+
+【2025-7-14】[COT (链式推理) 数据提取方法综述](https://zhuanlan.zhihu.com/p/1927740021550606048)
+
+后训练时代”，模型能力的提升不再依赖于庞大的预训练资源，而是趋向更精细化的任务定向、思维导向和推理资源进行强化训练。
+
+**链式推理数据**（Chain-of-Thought, CoT）是这个转型过程中的核心资产，能够显式化地表达人类的观察、分析和推理过程，帮助模型学习“怎样思考”而不是简单记得答案。
+
+CoT 提取方法
+- ![](https://pic4.zhimg.com/v2-b8695cca2581a1a73a73bb25f7f93771_1440w.jpg)
+
+主流CoT数据提取方法
+- 1. Q2A（Question → Answer → Chain-of-Thought）：直接提取法
+- 2. A2Q（Answer → Counterfactual Question → Chain-of-Thought）：反事实扰动法
+- 3. T2Q（Text → Inferred Question + Answer + Chain-of-Thought）：隐含推理提取法
+
+其他CoT数据构建方法
+- **自我对话生成**（Self-Dialogue / Self-Consistency）
+  - 通过让模型自身生成多条不同推理路径，然后融合或筛选合理思路，形成高质量推理链样本。典型代表有Self-Consistency（Wang et al., 2022）和Self-Ask（Press et al., 2022）。这种方法能降低人工标注成本，挖掘模型内部潜力，但推理链质量波动较大。
+- **专家注释/人类反馈**（Human-in-the-loop / RLHF）
+  - 通过专家对模型生成的推理链进行修正和完善，确保推理质量和逻辑严谨性。广泛应用于法律、医疗等高风险领域。优点是数据质量最高，缺点是成本高、扩展性差。
+- **推理链压缩与蒸馏**（CoT Distillation）
+  - 将长且复杂的推理链压缩提炼，生成简洁的推理摘要，兼顾推理深度和表达效率。代表性工作有Prompt Distillation（Chen et al., 2023）。适合在实际应用中降低推理时延，但可能丢失部分细节。
+- **多模态推理链构建**
+  - 结合图像、表格、视频等多模态信息构建更丰富的推理链，增强模型对复杂场景的理解。典型研究包括Visual CoT（Zhu et al., 2023）。优点是理解能力强，缺点是数据和模型设计复杂。
+- **基于图谱和知识库的推理链生成**
+  - 利用知识图谱中的实体关系和因果链路自动构造推理步骤，形成结构化的CoT样本。Semantic Graph-based CoT Mining（ACL 2023）是相关代表。逻辑严谨但依赖知识库质量。
+- **自动化评测与筛选机制**
+  - 通过设计自动化评分器（如基于GPT的评估模型）筛选高质量推理链，保证训练数据的准确性和多样性。提升数据质量控制，减少人工审核成本。
+
+
+##### Q2A: 直接提取法
+
+Q2A（Question → Answer → Chain-of-Thought）：直接提取法
+
+最基础, 最常用的CoT提取路径。
+- 基于已知**问题**（Question）和**答案**（Answer），加入合理的**思考路径**，形成完整的三元组。
+- 该方法多用于任务定向的指令形式训练，例如数学题、逻辑问答和常识推理。
+
+示例：
+
+```sh
+Q: Mary has 5 apples and buys 3 more. How many apples does she have now?
+A: 8
+CoT: Mary starts with 5 apples. She buys 3 more. So, 5 + 3 = 8.
+```
+
+优势：
+- 构造模式简单，适合大规模自动生成和模板化采样。
+- 有利于模型学会清晰的表达和标准化解题路径。
+
+缺点：
+- 类似于事后推理，较少包含真实的认知歧义与探索过程。
+- 如果答案本身错误，推理链易受误导。
+
+关联研究与技术：
+- Auto-CoT（Zhou et al., 2022）
+- CoT-KA（Wu et al., 2023）
+- Prompt Distillation + CoT 融合
+
+##### A2Q：反事实扰动法
+
+A2Q（Answer → Counterfactual Question → Chain-of-Thought）：反事实扰动法
+
+基于已有答案或推理结果，通过语义否定、前提修改、对抗样本构造等手段，生成新的**反事实问题**。
+
+这种“反向构造”的方式强调因果密度与错误路径识别，提升模型鲁棒性与多元认知能力。
+
+示例：
+
+```sh
+原问题: Mary has 5 apples and buys 3 more. 答案: 8
+反事实问题: Mary had 8 apples but gave away some and now has 5. How many did she give away?
+CoT: Mary had 8 apples and ended with 5. So she gave away 8 - 5 = 3.
+```
+
+优势：
+- 增强模型因果结构建模能力与“非正确答案路径”的辨识能力。
+- 适合用于构建对比数据集和对抗性训练样本。
+
+缺点：
+- 自动化构造困难，需精细语义扰动生成器与合理性验证机制。
+- 容易引入逻辑错链或非自然问题，增加训练干扰噪声。
+
+关联研究与技术：
+- Contrastive CoT（Shim et al., 2024）
+- CoTAM（Peng et al., 2024）
+- Logit-based Answer Perturbation（ACL 2023）
+
+##### T2Q：隐含推理提取法
+
+T2Q（Text → Inferred Question + Answer + Chain-of-Thought）：隐含推理提取法
+
+T2Q 最接近人类认知过程的链式提取路径，从一段语篇或知识背景出发，通过建模推理链隐含结构，生成问题与解题过程。
+
+适用于阅读理解、多跳问答、多轮规划等任务，尤其强调涌现性知识点与中间步骤识别。
+
+示例：
+
+```SH
+文本: Mary went to the store and bought 3 apples and 2 bananas. She already had 5 apples at home.
+生成问题: How many apples does she have now?
+CoT: She had 5 apples. She bought 3 more at the store. 5 + 3 = 8 apples.
+A: 8
+```
+
+优势：
+- 强化模型对上下文意图与因果线索的感知与重组能力。
+- 更贴合人类思维风格与任务生成机制。
+
+缺点：
+- 需要多模态或图结构辅助理解，如语义图谱、事件链、矩阵推理结构。
+- 自动化采样难度高，构造复杂、成本较高。
+
+关联研究与技术：
+- Visual CoT（Zhu et al., 2023）
+- Semantic Graph CoT Mining（ACL 2023）
+- Self-Ask with Search（Press et al., 2022）
+
+
+
 #### DeepSeek-R1蒸馏
 
 示例
