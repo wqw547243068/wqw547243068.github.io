@@ -2337,7 +2337,17 @@ Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思�
 - API 用户还可以对模型思考时间进行细粒度控制。
 
 
+## 小模型推理
 
+小模型也能学会推理
+
+### Easy-to-Hard Reasoner
+
+表明：1.5B-3B 的小模型，也能通过强化学习掌握复杂推理能力！
+- 论文 Texas A&M University [「Curriculum Reinforcement Learning from Easy to Hard Tasks Improves LLM Reasoning」](https://arxiv.org/pdf/2506.06632)
+- 💡  Easy-to-Hard Reasoner —— 一种模拟人类学习方式的**课程式强化学习**（Curriculum RL）：从简单任务学起，逐步挑战更难的题目，帮助模型建立稳固的推理基础，再向复杂问题泛化！
+- 📈 在数学解题（MATH、GSM8K、AQuA）和规划任务（Countdown、Blocksworld）等多个 benchmark 上，我们的方法显著提升小模型在高难度和OOD任务中的表现，甚至让原本“连简单题都做不对”的模型学会了解题思路！
+- 📚 更难得的是，我们不仅有实验，还理论上证明：循序渐进式学习更高效、收敛更快、所需样本更少！
 
 
 # 结束
