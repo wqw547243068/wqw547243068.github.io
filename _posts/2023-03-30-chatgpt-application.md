@@ -793,6 +793,7 @@ GraphRAG 里用 LLM 构建知识图谱
 
 #### 浏览器
 
+Agentic Browser 代表一种以浏览器为载体的通用智能体，不仅能访问互联网，更能够理解用户的需求，并自动拆解复杂的任务。其设计初衷是为了让智能体在拥有用户完整上下文的前提下为用户交付更好的结果，我们希望彻底改变用户与网络和计算机互动的方式。
 
 ##### Google Project Astra
 
@@ -833,6 +834,25 @@ omet 核心在于浏览器即AI计算平台的设计：
 - 利用Mozilla的Federated Learning of Cohorts[6]保护隐私同时建模用户行为。
 - 内置AI效能评估模块基于Anthropic提出的指标，优化资源分配。
 
+##### Fellou
+
+
+【2025-6-6】[Fellou AI 浏览器 2.0：唯一可比的，是昨天的 Fellou](https://zhuanlan.zhihu.com/p/1914407296429197286)
+
+[Fellou](https://fellou.ai/) Fellou: The World's First Agentic Browser,Beyond browsing, into fellouAction.
+- [下载](https://fellou.ai/download)
+
+Fellou 依赖其独特的 Browser + Workflow + Agent 架构，开创了 Agentic Browser 这一新品类，打造了一个像「自动驾驶汽车」一样可以「自动冲浪」的浏览器智能体。
+
+
+Fellou Browser 2.0：开启 AI 的批量化生产
+
+Fellou 2.0 在速度上取得了突破性进展，相比 Fellou 1.x 的版本，Fellou 在不同任务的执行速度上提升了 1.3 - 1.5 倍，相比较某些通用 Agent，我们在不同任务上皆有非常大的速度优势
+
+总结下 2.0 的升级概要为：
+- 更快：减少等待，多任务并行，交付更多；
+- 更惊人：多样任务交付，7 * 24 全天候执行；
+- 更可靠：生产级多样化场景覆盖，成功率大幅提升，从 31% 到 80%；
 
 #### BI
 
