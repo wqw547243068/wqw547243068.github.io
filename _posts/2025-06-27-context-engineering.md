@@ -20,6 +20,9 @@ permalink: /context
 
 - LangChain 官方博客文章《[The Rise of "context engineering"](https://blog.langchain.com/the-rise-of-context-engineering/)》
 - 【2025-6-24】解读 [LangChain官方分享LLM的“上下文工程”技巧](https://zhuanlan.zhihu.com/p/1920981931920693117)
+- 【2025-7-16】[图解+详解：上下文工程](https://zhuanlan.zhihu.com/p/1928964561953862931)
+
+> 上下文负责铺路，而提示工程教你怎么走，提示工程是上下文工程的子集。
 
 
 ## 背景
@@ -101,6 +104,7 @@ LLM应用早期，开发者专注于通过**巧妙措辞**诱导模型给出更�
 - 向AI提供**完整和结构化的上下文**，远比任何“魔法般”的措辞都重要。
 
 `提示工程`是`上下文工程`的子集。
+- ![](https://pic3.zhimg.com/v2-0fef2458e35d4c0ee8360a010b74b86c_1440w.jpg)
 
 即使有全部上下文信息，提示词组织、编排方式，仍然至关重要——提示工程范畴。
 
@@ -113,6 +117,23 @@ LLM应用早期，开发者专注于通过**巧妙措辞**诱导模型给出更�
 - 强调：在复杂交互和多智能体协作中，如何为每个 Agent 构建精准、独立、可持续的任务背景，是系统能否稳定运行的关键。
 
 
+|维度 | 提示词工程(Prompting engineering) | 上下文工程(Context engineering) |
+|---|---|---|
+|目标|写出清晰、明确的指令|准备好一切AI该知道的信息|
+|本质|提示词本质是布置任务的指令，让AI按预期方式回答问题、执行任务|告诉AI当前的「需要什么」、「能做什么」，就像游戏的任务设定一样，提供所需要的信息、工具和历史记忆，然后交给AI来思考和执行|
+|比喻|怎么走路|铺路|
+|图解|![](https://pic2.zhimg.com/v2-85c82c5037e0cba303592c5af00b5f75_1440w.jpg)|![](https://pica.zhimg.com/v2-3094cf7939a3f49189910727eb992656_1440w.jpg)|
+
+
+总结：
+- 提示词工程依赖精细指令，不仅难以复用，还容易因措辞差异导致结果波动，对写Prompts的人要求也更高
+- 上下文工程让AI具备持续理解和应变能力，不仅能适应新任务，还能保持输出稳定、不易“翻车”
+- ![](https://picx.zhimg.com/v2-f764bfad2dc20a6524133844a8651ffb_1440w.jpg)
+
+漫画来自: [小红书博主“机器坏人（AI版）”](https://www.xiaohongshu.com/explore/68778c21000000000d01a610)
+
+更多对比
+- ![](https://pic3.zhimg.com/v2-b32ed07d813de9f06ebf47e0b2805a92_1440w.jpg)
 
 ## 构成
 
@@ -120,6 +141,8 @@ LLM应用早期，开发者专注于通过**巧妙措辞**诱导模型给出更�
 上下文系统由多个关键部分组成
 - ![](https://picx.zhimg.com/v2-a7f4161b98afb00462a67c37cffa4117_1440w.jpg)
 
+上下文工程 = 提示词 + 用户画像 + 记忆 + 检索信息 + RAG信息 + MCP信息
+- ![](https://pica.zhimg.com/v2-0480fa41f60cb70263161bd6b4eec140_1440w.jpg)
 
 上下文工程是一个动态系统
 
