@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化 
+tags: Agent 多模态 agi 自学习 进化  自动化
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
@@ -2108,7 +2108,131 @@ MCP 过于复杂，开发者自己设置 MCP 服务器，声明如何设置参�
 - No Code: Pokee 直接跑一个 prompt，得到工作流后，直接复制粘贴给无数个场景下面；
 - Low Code: 别人通过接口把想要解决的问题以 Prompt 形式传过来，从而把问题解决了，也不用告诉要用什么工具。
 
+## Agent 自动化
 
+
+Agent 自动化
+
+
+### 问题
+
+问题
+- 手动设计智能体系统**效率低下**： 
+  - 当前 Foundation Models (FMs) 虽强大，但解决复杂问题时往往需要将其作为模块构建成多组件的智能体系统（如 Chain-of-Thought, Self-Reflection）。
+  - 这些系统以及各种构建块（如思维链推理、记忆结构、工具使用、自反思等）的开发和组合，通常需要研究人员和工程师付出大量手动调优和精力，且容易受限于领域特定知识。
+- 长期来看**自动化**解决方案最终取代手动设计： 
+  - 机器学习的历史表明，手动设计的解决方案最终会被更高效的学习型解决方案所取代（例如，计算机视觉中手动设计的 HOG 特征被 CNN 学习到的特征取代，以及 AutoML、AI-GA 等方法在自动设计神经网络、生成环境方面的成功）。这暗示着智能体系统设计也应走向自动化。
+
+
+### ZeroGraph
+
+【2025-7-16】ZeroGraph: 让 Al Agent 构建 AI Agent.
+- 未找到官方信息
+
+还在手动拖拽n8n、Dify的工作流，或在ComfyUI 的节点迷宫里挣扎？是不是觉得，这种方式不够"AI"?
+
+未来，属于Agentic Programming, 让 Al Agent 自己理解任务、分解问题，甚至动态生成和优化工作流
+
+
+### 【2025-3-2】ADAS
+
+【2025-3-2】加拿大 不列颠哥伦比亚大学 提出 ADAS (Automated Design of Agentic Systems)方法，并实施案例 Meta Agent Search
+- ICLR25 文章：[AUTOMATED DESIGN OF AGENTIC SYSTEMS](https://arxiv.org/pdf/2408.08435)（自动化Agent设计系统）。
+- Github - [ADAS](https://github.com/ShengranHu/ADAS)
+- 【2025-7-11】[ICLR25-告别手搓workflow！AI 能自己设计更强智能体吗?](https://mp.weixin.qq.com/s/a7ZfS6aw7KWlMu3LELV4Sw)
+
+
+ADAS 将 Agent 框架设计自动化
+- 发现新的架构模块
+- 已有模块按照新的方式组织
+
+
+如何自动化设计强大的Agent系统（ADAS系统），其通过一种元智能体（meta-agent）来自动编写和迭代优化Agent，让他自动化去发明新颖的构建模块和组合方式。同时通过一个名为 元智能体搜索（Meta Agent Search） 迭代地编程新颖智能体，并根据其性能进行评估和优化。
+
+该方法特点：
+1. 自动化Agent设计系统： 自动发明新颖的构建模块并设计强大的智能体系统。
+2. 代码空间搜索： 在代码空间中定义和搜索智能体的方法，理论上允许发现任何可能的智能体系统（包括提示、工具使用、工作流等），并利用大模型的编程能力来实现自动化发现。
+3. 元智能体搜索算法： 引入了 Meta Agent Search 算法，通过让元智能体迭代地编程新颖智能体，并根据其性能进行评估和优化，从而实现性能的持续提升和泛化能力的增强。
+
+
+方法
+- 1 搜索空间 (Search Space): 定义了 ADAS 方法能够表示和发现的智能体系统类型。提出在 代码空间 中定义整个智能体系统。选择 Python 等图灵完备的编程语言作为搜索空间，可以尝试各种提示、工具使用逻辑、工作流和它们的任意组合。
+- 2 搜索算法 (Search Algorithm): 元智能体（基于 GPT-4等强大的LLM）迭代地编程新颖的智能体。元智能体根据一个不断增长的、包含先前发现的智能体及其性能的档案来生成新的智能体。相当于迭代去探索（新颖或有价值）的可能结果。
+  - 为元智能体提供一个包含基本功能（如 FM 查询 API、提示格式化）的简单框架（少于 100 行代码）。
+  - 元智能体只需编写一个 forward 函数来定义新智能体的功能。
+  - 可以可选地用基线智能体（如 Chain-of-Thought, Self-Refine）初始化档案。
+- 3 评估函数 (Evaluation Function): 以智能体在任务验证数据上的 准确率或 F1 分数 作为性能指标来优化。
+
+结论
+- 结论1: 自动化Agent系统设计可能代表着智能体开发的新范式。 手动设计智能体系统所面临的效率低下和创新局限性。利用LLM的强大编程能力在代码空间中进行搜索，可能能够自动发明新颖、高效的智能体构建块和组合方式，可以加速了智能体系统的发展。
+- 结论2: 元智能体搜索算法能够持续发现超越 SOTA 手动设计的智能体。 本文提出的 Meta Agent Search 算法在多个领域（包括逻辑推理、阅读理解、数学、多任务和科学问题解决）的实验中表现出色，在未见过的领域也有强大的泛化和迁移能力。一定程度证明了自动化设计智能体系统是可行的。
+- 结论3: 代码空间搜索是实现通用智能体设计和 AI 进步的关键。 理论上这种方法能发现任何可能的智能体系统——包括提示、工具使用、工作流和它们的任意组合。
+
+Automated agent design significantly surpasses manual approaches in performance and generalizability.
+- • Introduces Automated Design of Agentic Systems (`ADAS`), a new research area for automatic creation of powerful agentic system designs
+- • Represents agents in code, enabling a **meta agent** to program increasingly better agents
+- • Proposes `Meta Agent Search` algorithm:
+  - Iteratively generates new agents based on an evolving archive of previous discoveries
+  - Uses Foundation Models to create agents, evaluate performance, and refine designs
+- • Encompasses a **search space** including all possible components of agentic systems:
+  - Prompts
+  - Tool use
+  - Control flows
+- • Theoretically enables discovery of any possible agentic system
+
+Results📊:
+
+- • Outperforms state-of-the-art hand-designed agents across multiple domains
+- • Improves F1 scores on reading comprehension (DROP) by 13.6/100
+- • Increases accuracy on math tasks (MGSM) by 14.4%
+- • Demonstrates strong transferability:
+  - 25.9% accuracy improvement on GSM8K after domain transfer
+  - 13.2% accuracy improvement on GSM-Hard after domain transfer
+- • Maintains superior performance when transferred across dissimilar domains and models
+
+
+### 【2025-2-6】MaAS
+
+论文
+- 【2025-2-6】同济、新加坡南洋理工 提出 `MaAS`
+  - 论文 [Multi-agent Architecture Search via Agentic Supernet](https://arxiv.org/pdf/2502.04180)
+  - 代码 [MaAS](https://github.com/bingreeky/MaAS)
+
+早期多智能体系统提供专业能力，但严重依赖手动配置
+- 如 `CAMEL`（Li et al.， 2023）、`AutoGen`（Wu et al.， 2023）和 `MetaGPT`（Hong et al.， 2023）
+- 手工配置：提示工程、智能体分析和智能体间通信流水线（Qian et al.， 2024）。
+- 这种依赖限制了多智能体系统对不同领域和应用场景的快速适应
+
+多智能体系统设计自动化
+- 优化**Agent间通信**: `DsPy`（Khattab et al.， 2023）和 `EvoPrompting` （Guo et al.， 2023） 自动提示优化，`GPTSwarm`（Zog et al.，2024）和 `G-Designer`（Zhang et al.，2024b）
+- **自我进化**Agent分析: `EvoAgent`（Yuan et al.，2024）和 `AutoAgents`（Chen et al.，2023a）
+
+然而，专注于自动化系统的**特定**方面。
+
+随后，`ADAS`（胡等人，2024a）、`AgentSqure`（Shang 等人，2024）和 `AFlow`（Zhang 等人，2024c）拓宽了设计搜索空间 --- SOTA 方法
+ ODS 通过不同的**搜索范式**为给定数据集优化单个复杂（多）代理工作流程，例如: **启发式**搜索（胡 et al.， 2024a）、**蒙特卡洛树**搜索（Zhang et al.， 2024c）和**进化**（Shang et al.， 2024），超越了手动设计系统的性能
+问题
+- 性能受资源限制，例如令牌成本、LLM调用和推理延迟。现代方法倾向于针对复杂和资源密集型的 agen 进行优化
+
+We introduce MaAS, an automated framework that samples query-dependent agentic systems from the supernet, delivering high-quality solutions and tailored resource allocation (e.g., LLM calls, tool calls, token cost). Comprehensive evaluation across six benchmarks demonstrates that MaAS (I) requires only 6 ∼ 45% of the inference costs of existing handcrafted or automated multi-agent systems, (II) surpasses them by 0.54% ∼ 11.82%, and (III) enjoys superior cross-dataset and cross-LLM-backbone transferability. 
+
+MaAS 自动化框架从超网中采样query相关的智能体系统，提供高质量的解决方案和定制的资源分配（大语言模型调用、工具调用、令牌成本）。
+
+Agent超网是一个**级联**的**多层**工作流，包括 
+- ❶ 多个Agent算子: CoT （Wei et al.， 2022）、Multi-agent Debate （Du et al.， 2023）、ReAct （Yao et al.， 2023）），以及
+- ❷ 算子跨层的**参数化概率分布**。
+- 训练期间，MaAS 利用**控制器网络**对以query为条件的多代理架构进行采样。分布参数和运算符根据环境反馈共同更新，前者的梯度通过蒙特卡洛采样近似，后者梯度通过文本梯度估计。
+- 推理过程，对于不同query，MaAS 对合适的多智能体系统进行采样，提供令人满意的分辨率和适当的推理资源，从而实现任务定制的集体智慧
+
+六个基准综合评估: MaAS
+- ❶ MaAS 高性能，比现有的**手工**或**自动化**多智能体系统高出 0.54% ∼ 11.82%;
+- ❷ 节省token，在 MATh 基准上优于 SOTA 基线 AFlow，训练成本为 15%，推理成本为 25%;
+- ❸ 可迁移: 跨数据集和 LLM-backbone;
+- ❹ 归纳式: 对看不见的Agent运算符泛化性强
+
+- （I）仅需现有手工制作或自动化多智能体系统推理成本的 6% - 45%
+- （II）高出 0.54% - 11.82%，并且
+- （III）具有卓越的跨数据集和跨大语言模型骨干的可转移性。
 
 
 # 结束
