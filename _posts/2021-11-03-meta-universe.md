@@ -700,6 +700,15 @@ tts 方法
 - ![](https://pic4.zhimg.com/v2-95f4417e4461683ca23a0fe0898dcd73_1440w.jpg)
 
 
+#### Grok ani
+
+【2025-7-16】复刻老马 Grok ani 
+
+Github 开源贝拉 (Bella)：你的数字伴侣，正在唤醒
+- 地址：[Bella](github.com/Jackywine/Bella)
+
+项目作者@jackywine ，Bella 形象由豆包生成，演示视频由 Demoget （demoget.com/?atp=xGLCA4）制作
+
 
 ### 表情迁移
 
