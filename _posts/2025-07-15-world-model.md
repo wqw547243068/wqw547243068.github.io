@@ -15,6 +15,11 @@ permalink: /world_model
 
 # 世界模型
 
+
+通用智能目前存在两个流派
+- Transformer学派（如GPT系列）侧重于大数据驱动的自回归学习，最近发布的Sora体现的涌现能力初步隐含着通用人工智能的韵味。
+- 杨立昆（Yann LeCun）为代表的世界模型学派。世界模型学派则认为需要通过构建对世界的内在理解，强调常识性知识和环境交互
+
 ## 双系统：快思考 & 慢思考
 
 人脑思维双系统模型理论（Dual Process Theory）
@@ -42,14 +47,14 @@ permalink: /world_model
 AI领域提到 **世界**/world、**环境**/environment 这个词时，通常是为了与 **智能体**/agent 加以区分。
 
 研究智能体最多领域，一个是`强化学习`，一个是`机器人`领域。
-- 因此，world models、world modeling最早常出现在**机器人**领域的论文中。
+- 因此，world models、world modeling 最早常出现在**机器人**领域的论文中。
 
-而world models这个词影响最大的可能是Jurgen 2018年放到arxiv的论文, 以“world models”命名，该文章最终以 “Recurrent World Models Facilitate Policy Evolution”的title发表在NeurIPS‘18。
+而 world models 这个词影响最大的可能是 Jurgen 2018年放到arxiv的论文, 以“world models”命名，该文章最终以 “Recurrent World Models Facilitate Policy Evolution”的title发表在NeurIPS‘18。
 - 论文没有定义什么是World models，而是类比了认知科学中人脑的mental model，引用了1971年的文献
 - Wikipedia中介绍mental model是很明确的指出其可能参与认知、推理、决策过程。
   - mental model 主要包含 mental representations 和 mental simulation 两部分。
 
-论文里的截图
+论文截图
 - ![](https://pic1.zhimg.com/80/v2-c842083297df6e7c578ecc3c45680d84_1440w.webp)
 - 纵向 V->z: 观测的低维表征，用VAE实现
 - 水平的M->h->M->h: 序列预测下一个时刻的表征，用RNN实现
@@ -89,7 +94,7 @@ AI研究人员对world model的追求，是试图超越数据，进行反事实�
 
 A Cognitive Architecture capable of reasoning & planning
 
-LeCun 提出了构建「世界」模型的想法，并在一篇题为《A path towards autonomous machine intelligence》的论文中进行了详细阐述
+LeCun 提出了构建「世界模型」想法，并在一篇题为《A path towards autonomous machine intelligence》论文中进行了详细阐述
 - [原视频链接](https://www.youtube.com/watch?v=DokLw1tILlw)
 - [PPT 链接](https://drive.google.com/file/d/1Txb9ykr03Lda-oTLXbnlQsEe46V8mGzi/view)
 
@@ -332,7 +337,7 @@ PAN架构严格遵循以下五大设计准则：
 
 ### 阿里 WorldVLA
 
-【2025-7-16】全球首个融合世界模型与动作模型的自回归系统：WorldVLA，由阿里巴巴达摩院联合浙江大学等团队推出，使机器人既能理解环境又能精准执行动作
+【2025-6-26】全球首个融合世界模型与动作模型的自回归系统：WorldVLA，由阿里巴巴达摩院联合浙江大学等团队推出，使机器人既能理解环境又能精准执行动作
 - 【论文题目】[WorldVLA: Towards Autoregressive Action World Model](https://arxiv.org/pdf/2506.21539)
 - 代码 [WorldVLA](https://github.com/alibaba-damo-academy/WorldVLA)
 - 解读 [WorldVLA：世界模型实现视觉-动作双向增强，抓取精度显著提升](https://zhuanlan.zhihu.com/p/1923190049685640753)
