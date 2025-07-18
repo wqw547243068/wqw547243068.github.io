@@ -2,7 +2,7 @@
 layout: post
 title:  "用户模拟器-User Simulator"
 date:   2020-08-12 20:46:00
-categories: 深度学习
+categories: 深度学习 大模型
 tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体
 excerpt: 对话系统之用户模拟器专题
 author: 鹤啸九天
@@ -622,6 +622,19 @@ choosing which items to talk about, expressing binary preferences, expressing op
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y7QAfPOs-bc?si=YHrmqoLok1s1Lrkg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+### AgentSociety
+
+【2025-2-24】[AgentSociety：清华大学的社会模拟器如何重塑社会科学研究？](https://chattools.cn/article/2153)
+- [项目官网](https://agentsociety.readthedocs.io/en/latest/)
+- Github仓库：[agentsociety](https://github.com/tsinghua-fib-lab/agentsociety/)
+- arXiv技术论文：[paper](https://arxiv.org/pdf/2502.08691)
+
+
+社会模拟器——AgentSociety。这款工具并非简单的游戏或娱乐应用，而是基于大型语言模型（LLM）构建的**复杂社会行为**模拟平台。
+
+通过创造具有“类人心智”的智能体，旨在模拟和分析真实的社会现象，为政策制定、危机预警和社会科学研究提供新的视角和实验平台。
+
+智能体并非简单的程序化角色，而是被赋予了情感、需求、动机和认知能力。每个智能体都有其独特的“心理画像”，包括性格、年龄、性别等，以及动态的个人状态，如情感、经济状况和社会关系。这种设计使得智能体的行为模式更加个性化和真实，能够模拟人类在复杂社会环境中的各种行为，例如移动、就业、消费和社交互动。
 
 
 # 结束
