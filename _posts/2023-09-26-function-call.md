@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  大模型函数调用 LLM Function Call 
+title:  大模型工具调用 LLM Function Call 
 date:   2023-09-26 16:52:00
 categories: 大模型
-tags: gpt openai 函数调用 插件 plugin tool mcp
+tags: gpt openai 函数调用 插件 plugin tool mcp 工具
 excerpt: OpenAI Function call 开发、函数调用知识总结
 mathjax: true
 permalink: /function
@@ -1451,6 +1451,30 @@ inputs = tokenizer.apply_chat_template(messages,
 ```
 
 详见 [开源模型 Function Call 方案梳理](https://zhuanlan.zhihu.com/p/713937194)
+
+
+## LLM 工具优化
+
+
+### ReTool
+
+【2025-4】字节推出新颖的强化学习框架`ReTool`，将代码解释器的执行集成到LLM的推理循环中。
+- [ReTool: Reinforcement Learning for Strategic Tool Use in LLMs](https://arxiv.org/pdf/2504.11536)
+- 主页 [ReTool](https://retool-rl.github.io/)
+- 解读：[知乎](https://zhuanlan.zhihu.com/p/1928448178346231670), [公众号](https://mp.weixin.qq.com/s/9-mo3luNiIdDFo0wdLecVQ)
+
+通过强化学习（RL）训练的**推理模型**（例如DeepSeek R1）在文本推理方面表现出色，但在需要**结构化**问题解决能力的场景中，例如几何推理、简洁计算或复杂方程求解，却表现不佳——而这些正是像代码解释器（CI）这样的计算工具具有明显优势的领域。
+
+字节提出 ReTool，通过**工具集成学习**增强了长形式推理：
+- （1）在自然语言推理过程中动态插入实时代码执行；
+- （2）一种自动化的RL范式，允许进行多轮实时代码执行的策略展开，并基于结果反馈教授模型何时以及如何调用工具。
+
+ReTool 采用系统的训练框架，从合成冷启动数据生成开始，生成用于微调基础模型的代码增强型长形式推理轨迹。
+- 冷启动监督微调：构建包含代码增强的长形式推理轨迹的数据集DCI
+- 监督微调（SFT）：使用DCI数据集对模型进行监督微调，使模型学会何时以及如何调用代码解释器，增强模型对计算工具的使用能力。
+
+随后的RL训练利用任务结果作为奖励，迭代优化模型的工具使用策略，使其能够在没有人类先验知识的情况下自主发现最优的工具调用模式。
+- 训练算法：基于PPO（Proximal Policy Optimization）算法进行训练，修改PPO以适应工具集成推理。在训练过程中，策略LLM与代码沙箱协作，生成包含多轮实时代码执行的rollout，用于解决给定问题。
 
 
 # 结束
