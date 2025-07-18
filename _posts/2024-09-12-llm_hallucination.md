@@ -227,6 +227,15 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
 
 ## 幻觉原因
 
+### 学术研究
+
+斯坦福最新论文，大模型幻觉根本原因：**计算复杂度**。
+- 《[Hallucination Stations On Some Basic Limitations of Transformer-Based Language Models]()》
+- 任何计算任务的解决都无法快于其固有的计算复杂度。
+
+通过比较任务的内在复杂度与LLM的计算能力上限，可预判LLM在处理该任务时是否会“碰壁”，从而产生幻觉。
+
+
 ### 为什么会有幻觉？
 
 【2024-7-14】 [OpenAI Lilian Weng万字长文解读LLM幻觉：从理解到克服](https://zhuanlan.zhihu.com/p/708743656?utm_psn=1795846986416652288)，OpenAI 翁丽莲
