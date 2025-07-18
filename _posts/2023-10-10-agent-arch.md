@@ -491,6 +491,8 @@ GPT-Engineer
 
 #### LangGraph
 
+弥补了传统 LangChain 在**动态**流程控制（如循环、分支）上的不足，支持更灵活的 Agent 协作与状态管理：通过**有向图**（Graph） 组织工作流，将任务拆分为 节点（Nodes） 和 边（Edges），实现非线性的执行逻辑（如循环、条件分支），更贴近真实业务场景。
+
 Langgraph
 - doc：[Langgraph](https://python.langchain.com/docs/langgraph)
 - [LangGraph Studio](https://studio.langchain.com/)
