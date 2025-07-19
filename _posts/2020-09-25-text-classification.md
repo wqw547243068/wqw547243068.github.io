@@ -3,7 +3,7 @@ layout: post
 title:  "文本分类-Text Classification"
 date:   2020-09-25 14:52:00
 categories: 深度学习
-tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert idf bm25 意图识别 对话系统 agent
+tags: 文本分类 负采样 fasttext kaggle 增强 层次分类 bert tensorrt albert idf bm25 意图识别 对话系统 agent 评估
 excerpt: NLP子领域文本分类知识汇总
 author: 鹤啸九天
 mathjax: true
