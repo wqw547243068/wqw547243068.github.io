@@ -86,6 +86,12 @@ permalink: /llm_direction
 
 openai的成功“破坏”了整个世界的技术认知，就像书籍《伟大不能被计划》一样，技术创新难以被精确预测
 
+张钹院士在2024年8月初的ISC.AI 2024 人工智能峰会上，指出大模型的四个发展方向：
+- 1、与人类对齐；
+- 2、多模态生成；
+- 3、AI Agent；
+- 4、具身智能。
+
 ## 模型融合
 
 【2024-8-8】[模型融合来袭！ChatGPT和Claude 杂交能变聪明10倍？](https://mp.weixin.qq.com/s/zUtQrKuQgyNivaxxrHX1hg)
