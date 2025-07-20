@@ -206,7 +206,9 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 
 ### 总结
 
-【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
+参考
+- 【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
+- [Agent的九种设计模式(图解+代码)](https://zhuanlan.zhihu.com/p/692971105)，[飞书文档](https://agijuejin.feishu.cn/wiki/Kke1wcqYOiYxD2kd1Dwcsu02ngc)
 
 总结
 - ReAct: ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
@@ -219,14 +221,26 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 - Self-Discover 模式
 - Storm 模式
 
+从ReAct出发，有两条发展路线：
+- 侧重**规划**能力，包括：REWOO、Plan & Execute、LLM Compiler。
+- 侧重**反思**能力，包括：Basic Reflection、Reflexion、Self Discover、LATS。
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36\&quot; version=\&quot;28.0.6\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;a6q5Juv5Ep0f4zLuJXTj\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;784\&quot; dy=\&quot;608\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-26\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;215\&quot; y=\&quot;100\&quot; width=\&quot;460\&quot; height=\&quot;155\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-25\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;215\&quot; y=\&quot;260\&quot; width=\&quot;460\&quot; height=\&quot;150\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-1\&quot; value=\&quot;Agent设计模式\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=17;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;350\&quot; y=\&quot;50\&quot; width=\&quot;146\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-6\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-2\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-3\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-2\&quot; value=\&quot;ReAct\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;70\&quot; y=\&quot;240\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-3\&quot; value=\&quot;ReAct\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;230\&quot; y=\&quot;180\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-4\&quot; value=\&quot;ReAct\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;230\&quot; y=\&quot;290\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-5\&quot; value=\&quot;首个Agent设计模式\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;50\&quot; y=\&quot;270\&quot; width=\&quot;120\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-7\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-2\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-4\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;190\&quot; y=\&quot;275\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;230\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-8\&quot; value=\&quot;重计划，减少token\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;215\&quot; y=\&quot;210\&quot; width=\&quot;110\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-9\&quot; value=\&quot;Plan&amp;amp;amp;Execute\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;370\&quot; y=\&quot;130\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-10\&quot; value=\&quot;Replan机制，更新计划，效果更好\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;340\&quot; y=\&quot;100\&quot; width=\&quot;190\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-11\&quot; value=\&quot;LLM Compiler\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;180\&quot; width=\&quot;100\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-12\&quot; value=\&quot;计划并执行,减少时间\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;530\&quot; y=\&quot;210\&quot; width=\&quot;190\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-13\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-3\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-9\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;240\&quot; y=\&quot;280\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;320\&quot; y=\&quot;220\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-14\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-9\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-11\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;570\&quot; y=\&quot;180\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;650\&quot; y=\&quot;120\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-15\&quot; value=\&quot;左右互搏\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;230\&quot; y=\&quot;320\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-16\&quot; value=\&quot;Reflextion\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;383\&quot; y=\&quot;290\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-17\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-4\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-16\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;330\&quot; y=\&quot;270\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;410\&quot; y=\&quot;320\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-18\&quot; value=\&quot;引入强化学习\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;380\&quot; y=\&quot;260\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-19\&quot; value=\&quot;LATS\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;290\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-20\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-16\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-19\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;420\&quot; y=\&quot;320\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;493\&quot; y=\&quot;320\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-21\&quot; value=\&quot;引入树搜索/Plan+Execute\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;550\&quot; y=\&quot;260\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-22\&quot; value=\&quot;Self-Discover\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;383\&quot; y=\&quot;370\&quot; width=\&quot;97\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-23\&quot; value=\&quot;\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#CCCCCC;exitX=1;exitY=0.5;exitDx=0;exitDy=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;cVtJUXSD2_Wb8tJbFD3m-4\&quot; target=\&quot;cVtJUXSD2_Wb8tJbFD3m-22\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;350\&quot; y=\&quot;330\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;423\&quot; y=\&quot;330\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-24\&quot; value=\&quot;边推理边执行\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;383\&quot; y=\&quot;340\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-27\&quot; value=\&quot;重规划\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;fontColor=#CC0066;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;215\&quot; y=\&quot;100\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-28\&quot; value=\&quot;重反思\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;fontColor=#CC0066;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;214\&quot; y=\&quot;255\&quot; width=\&quot;60\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-29\&quot; value=\&quot;【2025-7-20】wangqiwen\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=12;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;580\&quot; y=\&quot;430\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;cVtJUXSD2_Wb8tJbFD3m-30\&quot; value=\&quot;Storm\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=none;shadow=1;fontStyle=1;fontSize=14;\&quot; vertex=\&quot;1\&quot; parent=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;381.5\&quot; y=\&quot;190\&quot; width=\&quot;77\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+
 ### ReAct
+
+2022 年 10 月，发布 ReAct 模式，此时 ChatGPT 还未面世
 
 ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
 - 每次行动后立即进行观察（Observation），并将观察结果反馈到下一次推理过程，使 Agent 能够更好地适应环境变化，维持短期记忆，从而实现更加灵活和智能的行为。
 
 #### 流程
 
-ReAct 模式的核心在于其独特的交互流程：
+ReAct 模式核心在于交互流程：
 - 接收任务：Agent 接收到用户或系统的任务指令。
 - 推理（Thought）：Agent 根据当前的任务和已有的知识进行推理，生成初步的行动计划。
 - 行动（Action）：Agent 执行推理得出的行动。
@@ -321,12 +335,24 @@ Observation: 灶台底下抽屉有胡椒粉
 任务完成：找到胡椒粉
 ```
 
-通过这个代码示例，我们可以看到 ReAct 模式如何通过推理、行动和观察的循环迭代来完成任务。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如智能客服、自动化任务处理等，通过不断优化 Agent 的推理和行动策略，实现更加智能和高效的任务执行。
+ReAct 模式如何通过**推理**、**行动**和**观察**的**循环迭代**来完成任务。
+
+这种模式在实际应用中可以扩展到更复杂的任务和场景，例如智能客服、自动化任务处理等，通过不断优化 Agent 的推理和行动策略，实现更加智能和高效的任务执行。
 
 ### Plan and Solve
 
 Plan and Solve 模式原理
-Plan and Solve 模式是一种先规划再执行的 Agent 设计模式，适用于复杂任务的处理。在这种模式下，Agent 首先会根据任务目标生成一个多步计划，然后逐步执行计划中的每个步骤。如果在执行过程中发现计划不可行或需要调整，Agent 会重新规划，从而确保任务能够顺利进行。
+
+Plan and Solve 模式是一种**先规划再执行**的 Agent 设计模式，适用于复杂任务的处理。
+- 论文 [《Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models》]()
+
+如果说 ReAct 更适合 完成“厨房拿胡椒粉”的任务，那么 Plan & solve 更适合完成“西红柿炒鸡蛋”的任务：
+- 需要计划，并且过程中计划可能会变化（比如你打开冰箱发现没有西红柿时，你将购买西红柿作为新的步骤加入计划)。
+
+这种模式下，Agent 首先会根据任务目标生成一个多步计划，然后逐步执行计划中的每个步骤。
+
+如果在执行过程中发现计划不可行或需要调整，Agent 会重新规划，从而确保任务能够顺利进行。
+- ![](https://pic1.zhimg.com/v2-5ffeed3f6e32fb813c4b006583303306_1440w.jpg)
 
 Plan and Solve 模式的交互流程如下：
 - 接收任务：Agent 接收到用户或系统的任务指令。
@@ -473,14 +499,28 @@ Reason without Observation 模式原理
 
 Reason without Observation（REWOO）模式是一种创新的 Agent 设计模式，在传统 ReAct 模式的基础上进行了优化，去掉了显式观察（Observation）步骤，而是将观察结果隐式地嵌入到下一步的执行中。这种模式的核心在于通过推理（Reasoning）和行动（Action）的紧密协作，实现更加高效和连贯的任务执行。
 
+REWOO(Reason without Observation) 相对 ReAct中的Observation
+- ReAct 提示词结构是 Thought→ Action→ Observation
+- 而 REWOO 把 Observation 去掉了。
+
+但实际上，REWOO 只是将 Observation 隐式地嵌入到下一步的执行单元中了，即由下一步骤的执行器自动去 observe 上一步执行器的输出。
+
+
+
 #### 流程
 
 REWOO 模式中，Agent 交互流程：
 - 接收任务：Agent 接收到用户或系统的任务指令。
 - 推理（Reasoning）：Agent 根据当前的任务和已有的知识进行推理，生成初步的行动计划。
 - 行动（Action）：Agent 执行推理得出的行动。
-- 隐式观察（Implicit Observation）：Agent 在执行行动的过程中，自动将结果反馈到下一步的推理中，而不是显式地进行观察。
+- **隐式**观察（Implicit Observation）：Agent 在执行行动的过程中，自动将结果反馈到下一步的推理中，而不是显式地进行观察。
 - 循环迭代：Agent 根据新的信息重新进行推理，生成新的行动计划，并继续执行行动，直到任务完成。
+
+![](https://pica.zhimg.com/v2-beee7d3a742aa5dbc7070f74cfe5f0ec_1440w.jpg)
+
+- Planner：负责生成相互依赖的“链式计划”，定义每步所依赖的上一步的输出。
+- Worker：循环遍历每个任务，并将任务输出分配给相应的变量。当调用后续调用时，它还会用变量的结果替换变量。
+- Solver：求解器将所有这些输出整合为最终答案。
 
 优势在于：
 - 高效性：去掉了显式的观察步骤，减少了交互的复杂性，提高了任务执行的效率。
@@ -584,6 +624,10 @@ REWOO 模式如何通过推理和行动的紧密协作，实现高效的任务�
 
 LLMCompiler 模式原理
 
+Compiler-编译含义：如何进行任务编排使得计算更有效率
+- 原论文题目是《An LLM Compiler for Parallel Function Calling》
+- 通过并行Function calling来提高效率，比如用户提问张译和吴京差几岁，planner 搜索张译年龄和搜索吴京年龄同时进行，最后合并即可。
+
 LLMCompiler 模式是一种通过并行函数调用提高效率的 Agent 设计模式。该模式的核心在于优化任务的编排，使得 Agent 能够同时处理多个任务，从而显著提升任务处理的速度和效率。这种模式特别适用于需要同时处理多个子任务的复杂任务场景，例如多任务查询、数据并行处理等。
 
 #### 流程
@@ -600,6 +644,8 @@ LLMCompiler 模式的交互流程：
 - 灵活性：能够根据任务的复杂性和子任务之间的依赖关系动态调整任务分解和执行策略。
 - 可扩展性：适用于大规模任务和复杂任务场景，能够有效利用多核处理器和分布式计算资源。
 
+架构上有一个 Planner(规划器)，有一个 Jointer(合并器)
+- ![](https://pic4.zhimg.com/v2-e7a5b27ed5b68e8bedfe3906b2f2e0f5_1440w.jpg)
 
 LLMCompiler 模式的交互流程可以用以下图示来表示：
 
@@ -699,7 +745,13 @@ LLMCompiler 模式如何通过任务分解、并行执行和结果合并来高�
 
 Basic Reflection 模式原理
 
-Basic Reflection 模式是一种通过反思和修正来优化 Agent 行为的设计模式。在这种模式下，Agent 的行为可以分为两个阶段：生成初始响应和对初始响应进行反思与修正。这种模式的核心在于通过不断的自我评估和改进，使 Agent 的输出更加准确和可靠。
+Basic Reflection 类比学生(Generator)写作业，老师(Reflector)来批改建议，学生根据批改建议来修改，如此反复。
+
+Basic Reflection 模式是一种通过反思和修正来优化 Agent 行为的设计模式。在这种模式下，Agent 的行为可以分为两个阶段：生成初始响应和对初始响应进行反思与修正。
+
+这种模式的核心在于通过不断的自我评估和改进，使 Agent 的输出更加准确和可靠。
+
+#### 流程
 
 Basic Reflection 模式的交互流程如下：
 - 接收任务：Agent 接收到用户或系统的任务指令。
@@ -713,6 +765,8 @@ Basic Reflection 模式的交互流程如下：
 - 增强适应性：Agent 能够根据不同的任务和环境调整自己的行为策略，增强适应性。
 - 提升用户体验：通过不断优化输出，Agent 能够提供更高质量的服务，提升用户体验。
 
+架构上有一个 Generator，一个 Reflector
+- ![](https://pic4.zhimg.com/v2-8951d60f9c23f5802c34de3e75f1d8fb_1440w.jpg)
 
 Basic Reflection 模式的交互流程可以用以下图示来表示：
 
@@ -805,7 +859,10 @@ Basic Reflection 模式如何通过生成初始响应、反思和修正的过程
 
 ### Reflexion 模式
 
-Reflexion 模式原理
+Reflexion 模式是 Basic Reflection 的升级版
+- 论文《Reflexion: Language Agents with Verbal Reinforcement Learning》
+- 本质上是强化学习的思路。
+- 和 Basic reflection 相比，引入了外部数据来评估回答是否准确，并强制生成响应中多余和缺失的方面，这使得反思的内容更具建设性。
 
 Reflexion 模式是一种基于强化学习的 Agent 设计模式，旨在通过引入外部数据评估和自我反思机制，进一步优化 Agent 的行为和输出。与 Basic Reflection 模式相比，Reflexion 模式不仅对初始响应进行反思和修正，还通过外部数据来评估回答的准确性和完整性，从而生成更具建设性的修正建议。
 
@@ -822,6 +879,11 @@ Reflexion 模式的交互流程如下：
 - 增强适应性：Agent 能够根据不同的任务和环境调整自己的行为策略，增强适应性。
 - 提升用户体验：通过不断优化输出，Agent 能够提供更高质量的服务，提升用户体验。
 - 强化学习：引入外部数据评估机制，使 Agent 的学习过程更加科学和有效，能够更好地适应复杂任务和动态环境。
+
+架构上
+- Responder：自带批判式思考的陈述 Critique；
+- Revisor：以 Responder 中的批判式思考作为上下文参考对初始回答做修改。
+- ![](https://pic1.zhimg.com/v2-c578ff5f09cc983a45598b08d966f702_1440w.jpg)
 
 
 Reflexion 模式的交互流程可以用以下图示来表示：
@@ -941,7 +1003,16 @@ Reflexion 模式如何通过生成初始响应、外部评估、反思和修正�
 
 Language Agent Tree Search 模式原理
 
-Language Agent Tree Search（LATS）模式是一种融合了树搜索、ReAct、Plan & Solve 以及反思机制的 Agent 设计模式。它通过多轮迭代和树搜索的方式，对可能的解决方案进行探索和评估，从而找到最优解。这种模式特别适用于复杂任务的解决，尤其是在需要对多种可能性进行评估和选择的场景中。
+Language Agent Tree Search（LATS）模式是一种融合了树搜索、ReAct、Plan & Solve 以及反思机制的 Agent 设计模式。它通过多轮迭代和树搜索的方式，对可能的解决方案进行探索和评估，从而找到最优解。
+- LATS 论文《Language Agent Tree Search Unifies Reasoning Acting and Planning in Language Models》
+- Tree search + ReAct+Plan&solve 的融合体。在原作的图中，LATS 中通过树搜索的方式进行 Reward(强化学习的思路)，同时还会融入 Reflection，从而拿到最佳结果。
+
+`LATS` = `Tree search` + `ReAct`+`Plan`&`solve` + `Reflection` + `强化学习`
+
+这种模式特别适用于复杂任务的解决，尤其是在需要对多种可能性进行评估和选择的场景中。
+
+
+
 
 #### 流程
 
@@ -960,7 +1031,11 @@ LATS 模式的交互流程如下：
 - 准确性：通过反思机制，Agent 能够不断优化自己的行为，提高任务完成的准确性。
 - 适应性：适用于复杂任务和多步骤任务，能够有效管理任务的各个阶段。
 
-LATS 模式的交互流程可以用以下图示来表示：
+
+架构上，就是多轮的 Basic Reflection， 多个 Generator 和 Reflector。
+- ![](https://pic2.zhimg.com/v2-273fe2a04a27ec50a7dfe354bd860ff1_1440w.jpg)
+
+LATS 模式的交互流程：
 
 ```py
 +-------------------+
@@ -1100,7 +1175,10 @@ LATS 模式如何通过树搜索、ReAct 交互、Plan & Solve 执行和反思�
 
 Self-Discover 模式原理
 
-Self-Discover 模式是一种让 Agent 在更小粒度上对任务本身进行反思的设计模式。这种模式的核心在于通过自我发现和自我调整，使 Agent 能够更深入地理解任务的本质和需求，从而优化行为和输出。与 Reflexion 模式相比，Self-Discover 模式不仅关注任务的执行结果，还注重任务本身的逻辑和结构，通过自我发现潜在问题和改进点，实现更深层次的优化。
+Self-Discover 模式是一种让 Agent 在更小粒度上对任务本身进行反思的设计模式。
+
+这种模式的核心在于通过自我发现和自我调整，使 Agent 能够更深入地理解任务的本质和需求，从而优化行为和输出。
+- 与 Reflexion 模式相比，Self-Discover 模式不仅关注任务的执行结果，还注重任务本身的逻辑和结构，通过自我发现潜在问题和改进点，实现更深层次的优化。
 
 #### 流程
 
@@ -1119,7 +1197,15 @@ Self-Discover 模式的交互流程如下：
 - 提升用户体验：通过提供更高质量的服务，Agent 能够更好地满足用户需求，提升用户体验。
 
 
-Self-Discover 模式的交互流程可以用以下图示来表示：
+Self-discover 的核心是让大模型在更小粒度上 task 本身进行反思，比如前文中的 Plan&Slove 是反思 task 是不是需要补充，而 Self-discover 是对 task 本身进行反思
+
+![](https://pic4.zhimg.com/v2-b5d6cd93dd99183b0905cd25e31dc683_1440w.jpg)
+
+- Selector: 从众多反省方式中选择合适的反省方式；
+- Adaptor: 使用选择的反省方式进行反省；
+- Implementor: 反省后进行重新 Reasoning;
+
+Self-Discover 模式的交互流程：
 
 ```
 +-------------------+
@@ -1229,6 +1315,12 @@ Storm 模式原理
 
 Storm 模式是一种专注于从零开始生成复杂内容的 Agent 设计模式，特别适用于需要系统化构建和优化内容生成的任务，例如生成类似维基百科的文章、报告或知识库。其核心在于通过逐步构建大纲，并根据大纲逐步丰富内容，从而生成高质量、结构化的文本。
 
+Storm 论文《 Assisting in Writing Wikipedia-like Articles From Scratch with Large Language Models》
+
+从零生成一篇像维基百科的文章。主要思路是先让 agent 利用外部工具搜索生成大纲，然后再生成大纲里的每部分内容
+
+#### 流程
+
 Storm 模式的交互流程：
 - 接收任务：Agent 接收到用户或系统的任务指令，明确需要生成的内容主题。
 - 构建大纲（Outline Construction）：Agent 根据任务主题生成一个详细的大纲，明确内容的结构和各个部分的主题。
@@ -1242,6 +1334,7 @@ Storm 模式的交互流程：
 - 适应性强：适用于多种内容生成任务，包括但不限于文章、报告、知识库等。
 - 可扩展性：可以根据任务的复杂性和需求灵活调整大纲和内容生成策略。
 
+![](https://pic2.zhimg.com/v2-508de3c38ebf39b82286542ebb431ff9_1440w.jpg)
 
 Storm 模式的交互流程可以用以下图示来表示：
 
@@ -1911,6 +2004,27 @@ sam altman：[youtube](https://www.youtube.com/watch?v=qhnJDDX2hhU)
 > 一个非常小的模型，拥有超人类的推理能力，运行速度极快，有1 万亿 token 的上下文窗口，并能调用你能想到的所有工具。
 > 在这个设定下，问题是什么、模型有没有现成知识或数据，其实都不重要"
 
+
+##### Google
+
+多智能体系统（MAS：multi-agent systems）中，设计有效的**提示**和**拓扑结构**面临挑战，因为单个智能体可能对提示敏感，且手动设计拓扑结构需要大量实验
+
+【2025-2-4】[Google研究发现：Multi-Agent的核心竟然是Prompt设计](https://zhuanlan.zhihu.com/p/1914960829683590066)
+- [Multi-Agent Design: Optimizing Agents with Better Prompts and Topologies](https://arxiv.org/pdf/2502.02533)
+
+
+Google&剑桥大学, 对设计空间进行了深入分析，了解构建有效MAS的因素。
+- 提示设计对下游性能有**显著**影响，而有效的**拓扑结构**只占整个搜索空间的一小部分。
+
+数学问题上
+- Gemini 1.5 Pro 对比仅使用自我一致性（SC）、自我细化（reflect）和多智能体辩论（debate）进行扩展的智能体，展示了每个问题的提示优化智能体的准确率与总标记数的关系。误差条表示1个标准差。
+- 通过更有效的提示，利用更多的计算资源可以获得更高的准确率。
+
+Gemini 1.5 Pro 不同拓扑结构的性能与基础智能体相比，每个拓扑结构都通过 `APO` 优化，其中“Sum.”（总结）和“Exe.”（执行器）是任务特定拓扑结构。并非所有拓扑结构都对多智能体系统（MAS）设计有积极影响。
+
+提出 自动化框架 Maas，详见本文章节 [Agent自动化](#agent自动化)
+
+
 ### 知乎专题
 
 知乎专题：[如何评价当前的 AI Agent 落地效果普遍不佳的问题？](https://www.zhihu.com/question/13476251758/answer/1925895987169322278)
@@ -2116,12 +2230,26 @@ Agent 自动化
 
 ### 问题
 
+LLMs 在解决多样化的复杂任务方面表现出色，但构建其工作流需要大量人力，限制了扩展性。
+
 问题
 - 手动设计智能体系统**效率低下**： 
   - 当前 Foundation Models (FMs) 虽强大，但解决复杂问题时往往需要将其作为模块构建成多组件的智能体系统（如 Chain-of-Thought, Self-Reflection）。
   - 这些系统以及各种构建块（如思维链推理、记忆结构、工具使用、自反思等）的开发和组合，通常需要研究人员和工程师付出大量手动调优和精力，且容易受限于领域特定知识。
 - 长期来看**自动化**解决方案最终取代手动设计： 
   - 机器学习的历史表明，手动设计的解决方案最终会被更高效的学习型解决方案所取代（例如，计算机视觉中手动设计的 HOG 特征被 CNN 学习到的特征取代，以及 AutoML、AI-GA 等方法在自动设计神经网络、生成环境方面的成功）。这暗示着智能体系统设计也应走向自动化。
+
+### 总结
+
+案例
+- `DSPy` (Khattab et al., 2024) 提示工程提供自动化样例 automates the process of designing exemplars for improved prompt programming. 
+- `MAS` Li et al. (2024a) 多数投票机制，借助多个agent来提升效果 proposes to optimize MAS by scaling up the number of agents in majority voting. 
+- `ADAS` (Hu et al., 2024a) 提出元智能体概念, 拓扑结构 programs new topologies expressed in code via an LLM-based meta-agent. 
+- `AFlow` (Zhang et al., 2024b) 通过MCTS在预定义算子集合中找到更好的拓扑结构 searches better topologies using Monte Carlo Tree Search within a set of predefined operators. 
+- `Maas` Google, Multi-Agent System Search 多阶段优化框架
+
+However, the interplay between multiple design spaces, including prompts and topologies, remains unclear.
+
 
 
 ### ZeroGraph
@@ -2134,10 +2262,10 @@ Agent 自动化
 未来，属于Agentic Programming, 让 Al Agent 自己理解任务、分解问题，甚至动态生成和优化工作流
 
 
-### 【2025-3-2】ADAS
+### 【2024-8-15】ADAS
 
-【2025-3-2】加拿大 不列颠哥伦比亚大学 提出 ADAS (Automated Design of Agentic Systems)方法，并实施案例 Meta Agent Search
-- ICLR25 文章：[AUTOMATED DESIGN OF AGENTIC SYSTEMS](https://arxiv.org/pdf/2408.08435)（自动化Agent设计系统）。
+【2024-8-15】加拿大 不列颠哥伦比亚大学 提出 ADAS (Automated Design of Agentic Systems)方法，并实施案例 Meta Agent Search
+- ICLR 25 文章：[AUTOMATED DESIGN OF AGENTIC SYSTEMS](https://arxiv.org/pdf/2408.08435)（自动化Agent设计系统）。
 - Github - [ADAS](https://github.com/ShengranHu/ADAS)
 - 【2025-7-11】[ICLR25-告别手搓workflow！AI 能自己设计更强智能体吗?](https://mp.weixin.qq.com/s/a7ZfS6aw7KWlMu3LELV4Sw)
 
@@ -2191,10 +2319,65 @@ Results📊:
 - • Maintains superior performance when transferred across dissimilar domains and models
 
 
+### 【2024-10-14】AFlow
+
+AFLOW 自动化框架通过工作流优化视为搜索问题，并利用MCTS（蒙特卡洛树搜索）技术自动探索和优化代码表示的工作流。
+
+【2024-10-14】DeepWisdom和香港科技大学 提出`AFlow` (Zhang et al., 2024b) 通过MCTS在预定义算子集合中找到更好的拓扑结构 searches better topologies using Monte Carlo Tree Search within a set of predefined operators.
+- 【2025-4-15】ICLR 论文 [AFLOW:AUTOMATING AGENTIC WORKFLOW GENERATION](https://arxiv.org/pdf/2410.10762)
+- 代码 [AFlow](https://github.com/FoundationAgents/AFlow)
+- 【解读】[AFlow：Automating Agentic Workflow Generatio 工作流生成](https://zhuanlan.zhihu.com/p/1896575959894849080) 
+- 效果超过 ADAS
+
+AFLOW 将工作流建模为由代码连接的节点和边，表示操作间的逻辑、依赖关系和流程，形成一个庞大的搜索空间。
+- ![](https://pic1.zhimg.com/v2-42d3787dd19c50272e1d3292d472f5e0_1440w.jpg)
+
+该框架使用预定义的操作符作为构建块，并结合多种创新技术（如软混合概率选择、LLM驱动的节点扩展、执行评估和经验反向传播）来高效探索这一空间，自动创建优化的工作流，以最大化任务性能并减少人工干预。
+
+![](https://pica.zhimg.com/v2-b51bdc9c8337d578ebf35b36ed78cc7a_1440w.jpg)
+
+AFLOW通过自动化技术提升工作流生成效率，适应多样化的任务需求，从而提高整体任务执行效率并降低人力需求。
+
+关键贡献：
+- (1) 问题形式化：将工作流优化问题进行了形式化定义，将以往的方法概括为特定案例。这为未来在节点和工作流优化层面的研究提供了一个统一的框架。
+- (2) AFLOW：提出了AFLOW，一种基于蒙特卡洛树搜索（MCTS）的方法，该方法能够以最少的人工干预自动发现跨多个领域的高效工作流。
+- (3) 广泛评估：六个基准数据集上对AFLOW进行了评估，这些数据集包括HumanEval、MBPP、MATH、GSM8K、HotPotQA和DROP。结果表明，AFLOW的表现比人工设计的方法高出5.7%，比现有的自动化方法高出19.5%。值得注意的是，由AFLOW生成的工作流使较小的大型语言模型（LLMs）能够超越更大的模型，在成本效益上表现出显著优势，这对实际应用具有重要意义。
+
+
+### 【2025-2-4】Google Maas
+
+
+【2025-2-4】[Google研究发现：Multi-Agent的核心竟然是Prompt设计](https://zhuanlan.zhihu.com/p/1914960829683590066)
+- [Multi-Agent Design: Optimizing Agents with Better Prompts and Topologies](https://arxiv.org/pdf/2502.02533)
+- 效果达到 SOTA
+
+Google&剑桥大学提出 Mass 框架, Multi-Agent System Search(Mass)，三个阶段优化MAS：
+- **块级**（局部）提示优化：对每个拓扑块中的智能体进行提示优化。
+- 工作流**拓扑**优化：在修剪过的拓扑空间中优化工作流拓扑结构。
+- **工作流**级（全局）提示优化：在找到的最佳拓扑结构上进行全局提示优化。
+
+阶段
+1)  block-level (local) prompt ‘warm-up’ for each topology block; 
+2)  workflow topology optimization in a pruned set of topology space; 
+3)  workflow-level (global) prompt optimization given the best-found topology.
+
+
+![](https://pica.zhimg.com/v2-d39a4760156789c83fc86ce1fea9e026_1440w.jpg)
+
+多智能体系统搜索（Mass）框架通过在可定制的多智能体设计空间中交错进行提示优化和拓扑优化，发现了有效的多智能体系统设计（右侧为经过优化的拓扑结构和优化的提示）
+
+比较,包括: 链式思考（CoT）、自我一致性（SC）、自我细化（Self-Refine）、多智能体辩论（Multi-Agent Debate）、`ADAS`和`AFlow`。
+- 性能提升：Mass在多个任务上显著优于现有方法，平均性能提升约10%以上。
+- 优化阶段的重要性：通过分阶段优化，Mass在每个阶段都取得了性能提升，证明了从局部到全局优化的必要性。
+- 提示和拓扑结构的协同优化：Mass通过同时优化提示和拓扑结构，实现了比单独优化更好的性能。
+- 成本效益：Mass在优化过程中表现出稳定且有效的性能提升，与现有自动设计方法相比，具有更高的样本效率和成本效益。
+
+
+
 ### 【2025-2-6】MaAS
 
 论文
-- 【2025-2-6】同济、新加坡南洋理工 提出 `MaAS`
+- 【2025-2-6】新加坡国立、南洋理工 提出 `MaAS`
   - 论文 [Multi-agent Architecture Search via Agentic Supernet](https://arxiv.org/pdf/2502.04180)
   - 代码 [MaAS](https://github.com/bingreeky/MaAS)
 
