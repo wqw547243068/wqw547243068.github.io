@@ -360,6 +360,37 @@ Eko的跨平台开发是通过其环境感知架构（Environment-Aware Architec
 
 接着，每个可交互的元素都被分配唯一的标识符，并通过彩色框标记，确保精确定位。随后，系统通过结合截图和伪HTML的方式构建元素信息，利用文本和视觉数据的结合，帮助自动化模型更好地识别和操作这些元素，尤其在复杂网页结构中尤为重要。
 
+## 通用智能体
+
+
+### 总结
+
+分析
+- 【2025-6-3】[4大通用智能体（manus、genspark、skywork、扣子空间）复杂任务PK报告](https://zhuanlan.zhihu.com/p/1913273897475901249)
+
+|产品|发布时间|公司|优点|缺点|分析|
+|---|---|---|---|---|---|
+|`Manus`|2025.3.5|Monica|埋头苦干,产出多|效率一般,审美有待提高|勤奋但朴实的技术实习生|
+|`Genspark Super Agent`|2025.4.2|Mainfunc|基础扎实(搜索/图表/ppt),可视化效果最好|急于交差,规划不足,内容深度浅|能力强但耍小聪明的员工|
+|`Coze Space`|2025.4.19|字节||表现不理想,可能是国内基座LLM限制|发挥欠佳|
+|`Skywork Super Agent`|2025.5.22|天工|搜索/整理,报告质量与Genspark看齐|特定领域有待创新|能力均衡,令人惊喜的潜力股|
+|`MiniMax Agent`|2025.6.19|字节||表现不理想,可能是国内基座LLM限制|发挥欠佳|
+
+![](https://pic3.zhimg.com/v2-7c0b4147cfc719942c098aa283e913b8_1440w.jpg)
+
+
+【2025-6-13】[Manus、Genspark、Coze空间、Minimax横评，谁是最强Agent？](https://zhuanlan.zhihu.com/p/1916812614463382819)
+
+测试结论：
+- ① 当前参测 Agent 产品均未达到完全可用状态(测试平均分 1.23~2.20，仅处于部分可用状态，距离直接可用状态对应的3分仍有距离）。
+- ② 整体梯队对比：Manus（高投入）>Manus（标准）= Minimax（深度） > Genspark > Coze空间（探索）（平均得分 2.20/1.89/1.89/1.65/1.23分）。
+- ③ Manus（高投入）更全面和稳定，在环评产品中表现最优；Manus（标准）不及Manus（高投入），但整体表现均衡。
+- ④ Minimax（深度）擅长信息检索、软件开发、文件和数据处理类任务，在交付网页等Coding场景中表现突出，但 PDF 输出的稳定性不足。
+- ⑤ Genspark 擅长信息检索、软件开发类任务，但支持的输入类型有限，不支持监控反馈类任务，并且GUI交互表现较弱。
+- ⑥ Coze空间（探索）相比之下明显掉队。
+
+![](https://pic1.zhimg.com/v2-611e40f3b2c903bc5c92ef364ab1ac6a_1440w.jpg)
+
 
 ### 【2025-3-5】Manus
 
@@ -581,15 +612,31 @@ Memory Toolkit：复刻还得加点记忆buff 
 - Memory Toolkit [Issue](https://github.com/camel-ai/camel/issues/1725) 
 
 
-### Genspark super agent
+### 【2025-4-2】Genspark 
 
 
-2025年4月2日，Genspark 推出通用 Super Agent，官方宣称超越Manus
+Genspark 是 MainFunc 推出的 AI Agent 产品。
+
+以自研 Super Agent 引擎为基础，采用多智能体协同架构，能理解用户意图，自主规划执行任务。
+
+其产品矩阵丰富，通过生成 Sparkpages 提供优质搜索体验。
+
+产品
+- `Super Agent` 对标 Manus
+- `Agentic Deep Research` 对标 O3 Deep research
+
+
+2025年4月2日，Genspark 推出通用 Super Agent，官方宣称超越 Manus
 - [体验地址](https://www.genspark.ai/) —— 国内无法访问
 - 无法验证码，有一定免费积分
 
+Genspark
+- 核心定位：搜索 + 浏览器 + 智能体集成平台
+- 核心技术：Mixture-of-Agents 系统
+- 典型应用场景：知识深度挖掘、实时任务自动化
+
 背景：
-- Genspark 是前百度小度的 CEO 景鲲和 CTO 朱凯华创业推出的 Agent 产品
+- Genspark 是前百度小度的 CEO 景鲲 和 CTO 朱凯华创业推出的 Agent 产品
 
 差异化功能：(与manus相比)
 1. 更丰富的 Tool Use 能力，比如让 AI 打电话和视频生成
@@ -601,8 +648,52 @@ Memory Toolkit：复刻还得加点记忆buff 
 然而，Manus 合伙人、产品经理 hidecloud表示质疑🧐
 
 
+![](https://pic2.zhimg.com/v2-ea4365db47fb0c8fd40ccbf4d1de4277_b.jpg)
+
 信息源：
 - [超越 Manus？华人创业产品 Genspark 推出通用 Agent（附实测效果）](https://mp.weixin.qq.com/s/S2NCd3ySZyaRtjwC6BSG6Q)
+
+
+### 【2025-4-19】Coze Space
+
+【2025-4-19】字节发布AI智能体平台“扣子空间”（Coze Space），定位为“与AI Agent协同办公的最佳场所”。 
+
+该产品对标全球爆款AI Agent工具 `Manus`，通过整合大模型能力、自动化工具链和开放生态，实现从需求输入到成果输出的全流程自动化。
+
+[Coze空间](https://www.coze.cn/space-preview) 是 AI Bot 开发旗舰平台，致力于赋能开发者，在智能体编排工具成熟度、插件广泛性、兼容大模型种类多样性以及发布渠道全面覆盖等方面均展现出非凡实力。
+
+
+
+
+### 【2025-5-22】Skywork Super Agents
+
+【2025-5-22】
+
+Skywork Super Agents 
+- 解读 [Skywork Super Agents 深度解析：AI办公新纪元，还是又一个效率工具的空谈？](https://zhuanlan.zhihu.com/p/1909699757003212576)
+- ![](https://pic4.zhimg.com/v2-aa60b631d655d8740aceb912fdc00c87_1440w.jpg)
+
+
+Skywork Super Agents 没有走传统AI工具“大而全但不够精”的老路，而是采用了“5个专家智能体 + 1个通用智能体”的垂直专业化架构。这种设计理念，就是想为特定的任务提供深度优化的解决方案，而不是只给一些浅尝辄止的通用功能。
+
+五大专家智能体：
+- 文档智能体 (Docs Agent)：专攻各种专业文档、报告和写作任务。
+- 幻灯片智能体 (Slides Agent)：帮你快速创建结构清晰、颜值在线的演示文稿。
+- 表格智能体 (Sheets Agent)：数据分析、表格处理、图表生成，统统不在话下。
+- 播客智能体 (Podcasts Agent)：能把文字内容变成高质量的播客音频，解放你的双眼。
+- 网页智能体 (Webpages Agent)：快速搭建专业、可交互的网站页面，小白也能上手。
+
+所有用户都可以直接注册，不需要什么邀请码就能马上体验。而且，初期版本就已经支持英语和日语，看来是铁了心要走向国际。
+- [国际版地址](https://skywork.ai/home)
+- [国内版地址](https://www.tiangong.cn/)
+
+
+### 【2025-6-19】MiniMax Agent
+
+【2025-6-19】MiniMax 正式推出 [MiniMax Agent](https://agent.minimax.io/)，一款 AI 智能助手，基于深度学习与自然语言处理等核心技术，融合先进的算法优化和大规模数据训练，为用户提供多种功能。
+- 解读 [MiniMax Agent正式发布！能极大提升工作效率](https://zhuanlan.zhihu.com/p/1919075719075561948)
+
+功能全面，包括：排版配色、模型架构介绍、Lightning Attention、训练流程、数据指标等，考虑的很全面
 
 
 ## 设备操控
