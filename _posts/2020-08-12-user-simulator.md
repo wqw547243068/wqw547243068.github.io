@@ -3,7 +3,7 @@ layout: post
 title:  "用户模拟器-User Simulator"
 date:   2020-08-12 20:46:00
 categories: 深度学习 大模型
-tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体 数字分身
+tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体 数字分身 评测
 excerpt: 对话系统之用户模拟器专题
 author: 鹤啸九天
 mathjax: true
@@ -743,6 +743,121 @@ Second Me会去使用Agent Model、Reasoning Model、Human Experts从而提前�
 
 如果我有足够多关于我的数据，比如声音、视频等，我是不是就可以克隆一个我呢？让我的意识形态永生？
 
+
+
+## 模拟评测
+
+
+### scenario
+
+【2025-7-22】Agent 测试框架 [scenario](scenario.langwatch.ai)，测试设计的 Agent
+- 模拟用户行为来进行测试，并且能在对话中进行评估和判断，多轮对话中测试也没问题。
+- 可视化展示测评结果
+
+集成到现有项目也很简单，使用 call 方法调用 agent 入口即可。
+- 主页 [scenario](scenario.langwatch.ai)
+- [scenario](https://github.com/langwatch/scenario)
+
+
+Scenario is an Agent Testing Framework based on simulations, it can:
+- Test real agent behavior by **simulating users** in different scenarios and edge cases
+- **Evaluate and judge** at any point of the conversation, powerful **multi-turn** control
+- Combine it with any LLM eval framework or custom evals, agnostic by design
+- Integrate your Agent by implementing just one `call()` method
+- Available in Python, TypeScript and Go 支持 typescript 和 python
+
+
+安装
+
+```sh
+uv add langwatch-scenario pytest
+```
+
+使用
+
+```sh
+pytest -s tests/test_vegetarian_recipe_agent.py
+pytest -s tests/test_vegetarian_recipe_agent.py --debug
+```
+
+代码调用
+- Save it as tests/test_vegetarian_recipe_agent.py:
+
+```py
+import pytest
+import scenario
+import litellm
+
+scenario.configure(default_model="openai/gpt-4.1")
+
+
+@pytest.mark.agent_test
+@pytest.mark.asyncio
+async def test_vegetarian_recipe_agent():
+    class Agent(scenario.AgentAdapter):
+        async def call(self, input: scenario.AgentInput) -> scenario.AgentReturnTypes:
+            return vegetarian_recipe_agent(input.messages)
+
+    # Run a simulation scenario
+    result = await scenario.run(
+        name="dinner idea",
+        description="""
+            It's saturday evening, the user is very hungry and tired,
+            but have no money to order out, so they are looking for a recipe.
+        """,
+        agents=[
+            Agent(),
+            scenario.UserSimulatorAgent(),
+            scenario.JudgeAgent(
+                criteria=[
+                    "Agent should not ask more than two follow-up questions",
+                    "Agent should generate a recipe",
+                    "Recipe should include a list of ingredients",
+                    "Recipe should include step-by-step cooking instructions",
+                    "Recipe should be vegetarian and not include any sort of meat",
+                ]
+            ),
+        ],
+        set_id="python-examples",
+    )
+
+    # Assert for pytest to know whether the test passed
+    assert result.success
+
+
+# Example agent implementation
+import litellm
+
+
+@scenario.cache()
+def vegetarian_recipe_agent(messages) -> scenario.AgentReturnTypes:
+    response = litellm.completion(
+        model="openai/gpt-4.1",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+                    You are a vegetarian recipe agent.
+                    Given the user request, ask AT MOST ONE follow-up question,
+                    then provide a complete recipe. Keep your responses concise and focused.
+                """,
+            },
+            *messages,
+        ],
+    )
+
+    return response.choices[0].message  # type: ignore
+```
+
+可视化
+
+Set your LangWatch API key to visualize the scenarios in real-time, as they run, for a much better debugging experience and team collaboration:
+
+```py
+LANGWATCH_API_KEY="your-api-key"
+```
+
+![](https://github.com/langwatch/scenario/raw/main/assets/langwatch-visualization.webp)
 
 
 # 结束
