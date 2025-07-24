@@ -36,6 +36,17 @@ permalink: /dist_tool
 ||||||
 
 
+LLM 四大训练/微调工具
+
+| 工具名称 | 定位 | 核心优势/技术亮点 | 适用场景/典型用户 |
+| --- | --- | --- | --- |
+| `Unsloth` | 面向**个人开发者**的**轻量化**微调工具 | - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）<br>- 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）<br>- 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集 | - 个人开发者快速微调中小模型（支持到14B参数）<br>- 资源受限环境（低VRAM显卡） |
+| `Axolotl` | **全流程**后训练解决方案 | - 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务<br>- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署<br>- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程 | - 需要定制化训练策略的研究团队<br>- 企业级多GPU/多节点训练场景 |
+| `LLaMA-Factory` | **工业级**微调平台 | - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）<br>- 生态整合：支持HuggingFace模型库，内置warp等辅助工具<br>- 社区活跃：GitHub高星项目，持续更新 | - 企业需要稳定、可扩展的微调框架<br>- 希望快速复现论文方案的团队 |
+| `DeepSpeed` | **超大规模**训练基础设施 | - 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型<br>- 四大创新支柱：<br>  - 训练优化：MoE模型/RLHF/长序列支持<br>  - 推理加速：超低延迟部署方案<br>  - 模型压缩：极致量化技术<br>  - 科研支持：分布式科学计算 | - 千亿参数级大模型训练<br>- 需要跨GPU集群扩展的场景 |
+
+
+
 ## LLM 复现选择
 
 如何选择分布式训练框架？ [参考](https://mp.weixin.qq.com/s/7wtwsNhf27YzALnSFXTmkA)
@@ -167,6 +178,21 @@ DeepSpeed 是 Microsoft 基于 PyTorch 研发的开源深度学习优化库。
 | PPO 训练 | | | ✅ | ✅ | 
 | DPO 训练 | ✅ | | ✅ | ✅ |
 
+DeepSpeed
+- 定位：超大规模训练基础设施
+
+技术突破：
+- 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型
+
+四大创新支柱：
+- 训练优化：MoE模型/RLHF/长序列支持
+- 推理加速：超低延迟部署方案
+- 模型压缩：极致量化技术
+- 科研支持：分布式科学计算
+
+适用领域：
+- 千亿参数级大模型训练
+- 需要跨GPU集群扩展的场景
 
 ## trl
 
@@ -753,6 +779,17 @@ Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大�
 资料
 - 【2024-7-18】[LLaMA-Factory QuickStart](https://zhuanlan.zhihu.com/p/695287607)
 - [官方文档](https://llamafactory.readthedocs.io/zh-cn/latest/index.html)
+
+
+LLaMA-Factory
+- 定位：工业级微调平台
+- 核心能力：
+  - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）
+  - 生态整合：支持HuggingFace模型库，内置warp等辅助工具
+  - 社区活跃：GitHub高星项目，持续更新
+- 推荐场景：
+  - 企业需要稳定、可扩展的微调框架
+  - 希望快速复现论文方案的团队
 
 ### LLaMA-Factory 介绍
 
@@ -1657,7 +1694,15 @@ SWIFT支持300+ LLM和50+ MLLM（多模态大模型）的训练(预训练、微�
 
 【2025-3-4】 开源工具 Unsloth 加速大型语言模型（LLMs）微调过程，具备诸多实用功能与显著优势。
 
-
+Unsloth
+- 定位：面向个人开发者的轻量化微调工具
+- 核心优势：
+  - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）
+  - 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）
+  - 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集
+- 适用场景：
+  - 个人开发者快速微调中小模型（支持到14B参数）
+  - 资源受限环境（低VRAM显卡）
 
 ### 特点
 
@@ -1705,6 +1750,21 @@ Unsloth 将 GRPO 的 VRAM 使用量相较于标准实现降低了 **90%** 以上
 
 字节开源的框架
 
+
+## Axolotl
+
+Axolotl
+
+定位：全流程后训练解决方案
+
+技术亮点：
+- 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务
+- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署
+- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程
+
+典型用户：
+- 需要定制化训练策略的研究团队
+- 企业级多GPU/多节点训练场景
 
 
 # 结束
