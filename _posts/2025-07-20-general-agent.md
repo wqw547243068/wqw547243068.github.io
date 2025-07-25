@@ -418,11 +418,33 @@ GAIA (General AI Agent benchmark) 基准测试中，Skywork **深度研究**智�
 - 体验地址 [MiniMax Agent](https://agent.minimax.io/)
 
 
+### 【2025-7-24】JoyAgent-JDGenie
 
+【2025-7-24】[京东开源轻量化通用Agent产品 jdgenie，开箱即用！二次开发及踩坑指南](https://mp.weixin.qq.com/s/RYymGzJpsbar4d9y83ijHg)
 
+京东开源的端到端多智能体系统（Multi-Agent System） JoyAgent-JDGenie。
 
+与传统仅提供SDK或框架的智能体方案不同，它定位为**产品级**的多智能体协同系统，**开箱即用**且支持**轻量化本地**部署 。
 
+用户只需输入自然语言的任务描述，系统就能自动组织多个子智能体协同工作并输出结果（如分析报告、代码片段或PPT文档），打通从任务输入到结果输出的“最后一公里” 。你可以在其基础上进行二次开发与扩展，形成自己的定制化智能体产品。
 
+主要组成如下：
+- 前端交互层（UI ）：基于 React 实现的人机交互界面，支持用户输入自然语言请求，并实时展示任务过程与结果 。用户可以通过网页直接与智能体系统对话，获取报告、答案等输出。
+- 后端智能体层（Backend）：Java构建，负责接收前端请求、调用多智能体引擎以及整合使用后端的各类工具，并协调处理工具与各智能体的响应。
+- 工具层（Tools）：用来给智能体提供各种工具。在本项目中工具层统一以FastAPI的方式提供，可以通过FastAPI的docs查看工具列表和规格。工具分两种：
+  - 本地工具：目前预置code（写代码）、deepsearch（深度搜索）、report（报告）、file（文件管理）等，涵盖了从文本处理、信息检索到格式化输出的常见需要。
+  - MCP工具：支持连接到配置好的MCP Servers，加载其开放的工具；并仍然以FastAPI方式公开给智能体层使用。（Agent不直接访问MCP Server）
+
+要点
+- 每个Agent配备必要的工具（Tools），比如规划、文件管理、搜索、报告、编码。
+- 支持直接的ReAct （边想边做）和 Plan-and-Executor（想好再做）的智能体工作范式；事实上两者也是协作的：规划（Plan）的某个任务步骤在执行（Execute）时可能又是ReAct的模式。
+- 所有Agent共享上下文，包括Memory（任务历史）、Files（中间文件结果）、Tools（工具）、Config（配置）等；任务与工具支持并发方式执行，以最大化智能体的能力并提高响应性能。
+
+```sh
+# 克隆项目代码： java + node.js
+git clone https://github.com/jd-opensource/joyagent-jdgenie.git
+cd joyagent-jdgenie
+```
 
 # 结束
 
