@@ -3,7 +3,7 @@ layout: post
 title:  LLM 发展方向
 date:   2024-11-20 12:00:00
 categories: 大模型
-tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲 自学习
+tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲 自学习 符号主义
 excerpt: 大模型会往哪个方向发展？
 mathjax: true
 permalink: /llm_direction
@@ -823,6 +823,43 @@ OpenAI 下一代旗舰模型的质量提升幅度不及前两款旗舰模型之�
 - `记忆作为层`（Memory as a Layer，MAL）
 
 Titans 架构比 Transformer 和近年来的现代线性循环模型更有效。另外，在大海捞针（needle-in-haystack）中，Titans 架构能够有效地扩展到超过 200 万 tokens 的上下文窗口，并且比基准模型实现了更高的准确性。
+
+## 符号主义
+
+问题：
+- LLM 在执行抽象规则归纳（abstract rule induction）时，到底是“黑箱式”地拼统计特征，还是内部出现了可辨识的“符号机制”，如同经典 AI 中的抽象变量和符号推理？
+
+
+### LLM 三段式
+
+LLM 内部学会符号机制来做抽象reasoning
+
+【2025-6-6】普林斯顿
+- 论文 [Emergent Symbolic Mechanisms SupportAbstract Reasoning in Large Language Models]()
+
+
+选 Llama3-70B，设计抽象模式延伸、逻辑归纳等任务, 通过 causal mediation、attention pattern、RSA 等分析，发现模型内部竟然自发形成了**三段式**符号处理流水线：
+1. Symbol Abstraction Heads：把**文字 token** 抽象成**符号变量**；
+2. Symbolic Induction Heads：在符号上做**序列归纳**；
+3. Retrieval Heads：根据推断的符号去检索下一个 token。
+	
+消融实验验证，少了任何一段都不行
+- 禁用符号抽象头会立刻毁掉所有归纳能力；
+- 停用归纳头则模型无法继续延伸模式；
+- 禁用检索头则知道模式也没法生成答案。
+	
+结论：
+- Emergent Symbolic Architecture
+- LLM 在训练过程中自发形成了**三段式**符号化电路：`抽象`→`归纳`→`检索`，这一结构与经典符号推理模型高度对应。
+	
+抽象推理依赖性
+- 抽象推理能力并非纯粹“大量参数+统计”得来，而是要依靠内部符号机制的阶段化协作。
+
+符号与神经桥梁
+- 研究结果在“符号主义 vs. 连接主义”争论中给出了折中答案：神经网络可以在无预设符号模块的情况下，通过学习自动构造类似符号处理的子网络。
+	
+未来方向
+- 可据此设计更高效的符号-神经混合架构，显式增强这三大机制；
 
 
 ### 类脑
