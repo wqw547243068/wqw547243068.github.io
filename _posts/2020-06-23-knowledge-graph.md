@@ -2,8 +2,8 @@
 layout: post
 title:  "知识图谱-Knowledge-Graph"
 date:   2020-06-23 21:14:00
-categories: 自然语言处理
-tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j LLM
+categories: 自然语言处理 大模型
+tags: 深度学习 NLP KG KB-QA 知识图谱 表示学习 jena neo4j LLM 
 excerpt: 知识图谱（Knowledge Graph）发展历史，主要类型，前沿研究及应用场景等
 author: 鹤啸九天
 mathjax: true
@@ -1174,6 +1174,7 @@ def get_movie_actor_list(self):
 
 ## LLM 构建 KG
 
+知识图谱（Knowledge Graph，KG）与大型语言模型（Large Language Model，LLM）的结合是一种强大的技术融合，旨在通过将知识图谱的结构化知识与LLM的语言生成和理解能力相结合，提升模型的性能和可解释性，同时为各种应用提供更智能、更精准的解决方案
 
 ### KG 实践
 
@@ -1278,6 +1279,19 @@ ontology =Ontology(
 )
 ```
 
+
+### knowledge-graph-llms
+
+
+【2025-5-*】基于 GPT-4 快速构建知识图谱
+- github：[knowledge-graph-llms](https://github.com/thu-vu92/knowledge-graph-llms)
+
+**可交互**的知识图谱可视化工具：[Knowledge Graph Generator]()
+
+基于AI从文本中提取知识图谱，帮你迅速图谱化
+- 支持上传 .txt 文件，或直接输入文本两种输入方式
+- 图谱可互动，可以拖动节点，放大或缩小，鼠标悬停在节点或连接线上查看更多的信息等
+- 图谱的布局和样式可自定义
 
 # 结束
 
