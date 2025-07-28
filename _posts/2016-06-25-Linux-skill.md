@@ -352,6 +352,8 @@ find /mnt/bn/flow-algo-intl/wangqiwen -type d -size +256k
 - 红色闪烁：链接的文件有问题
 - 灰色：其它文件
 
+#### linux 颜色设置
+
 如果遇到linux系统上，文件夹与文件颜色无区分，非蓝色，可以这么做：
 
 ```shell
@@ -382,6 +384,32 @@ alias ls='ls $LS_OPTIONS'
 source /etc/bash.bashrc; source ~/.bashrc
 ```
 
+#### MacOS颜色设置
+
+macos terminal 颜色设置
+
+编辑本地文件 `.profile`, `.bashrc`, 或 `/etc/profile`
+
+
+```sh
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+```
+
+#### vim 颜色设置
+
+vim 颜色套餐
+
+```sh
+syntax on
+colorscheme desert
+```
+
+或者
+
+```sh
+echo "syntax on" >> ~/.vimrc
+```
 
 ### 时间戳
 
@@ -981,6 +1009,19 @@ Mac下安装MD5工具
 
 ```sh
 brew install md5sha1sum
+```
+
+### 代理
+
+terminal 设置代理
+
+```sh
+# Set HTTP and HTTPS proxies
+export http_proxy="http://proxy.server.com:8080"
+export https_proxy="https://proxy.server.com:8080"
+
+# Exclude local addresses from proxy
+export no_proxy="localhost,127.0.0.1,*.local"
 ```
 
 
