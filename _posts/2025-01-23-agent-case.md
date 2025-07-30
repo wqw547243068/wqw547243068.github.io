@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体应用
 date:   2025-01-23 08:26:00
 categories: 大模型
-tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习 自学习 进化 俄罗斯方块
+tags: Agent 角色模拟 多模态 kaggle 操作系统 agi manim 可视化 dqn 强化学习 自学习 进化 俄罗斯方块 字节 电商
 excerpt: 大模型 LLM 驱动的智能体如何应用？
 mathjax: true
 permalink: /agent_usecase
@@ -503,6 +503,36 @@ o3-mini agent 成功率 93.8%, 总分 0.77
 ### 携程
 
 携程+腾讯云 推出旅行规划助手 DeepTrip
+
+
+## 电商
+
+
+### CRMAgent
+
+【2025-7-11】[字节跳动：如何用多智能体提升电商CRM？](https://www.xiaohongshu.com/explore/6887a90000000000250203a1)
+
+大多数电商商家在**私域渠道**（如IM、邮件）中进行`客户关系管理`（CRM）时，缺乏高效、专业的消息模板创作能力，导致营销效果不理想。
+
+Georgia Institute of Technology 和 字节跳动的研究团队提出了`CRMAgent`系统，用多智能体大语言模型自动生成高质量CRM消息模板，帮助商家提升用户留存与转化。
+- [CRMAgent: A Multi-Agent LLM System for E-Commerce CRM Message Template Generation]()
+	
+`CRMAgent` 由四个分工明确的智能体组成：
+1. `ContentAgent`：分析同一受众群体下表现优劣的模板，总结成功要素。
+2. `RetrievalAgent`：跨商家检索与当前活动受众、产品和优惠券类型相近的优质模板，作为参考。
+3. `TemplateAgent`：结合诊断和优质范例，重新生成更具说服力的消息模板。
+4. `EvaluateAgent`：对新旧模板在受众契合度和营销有效性上进行评分和偏好对比，实现自动化质量评估。
+	
+效果
+
+用GPT-4o等模型在11大典型用户分群上进行了全面评测。新生成的模板在受众契合度和营销评分上分别提升了**9.09%**和**38.44%**，在盲测对比中有78.44%的概率被评为更优！尤其对“潜在新客户”和“放弃购物车用户”，通过增加紧迫感和明确利益点，极大提升了转化可能。更厉害的是，生成的内容在语义和风格上与原文高度一致，既有创新又不跑题。
+	
+创新
+
+CRMAgent 不仅分工细致，支持多种数据场景，还通过“组内学习+检索迁移+规则兜底”三重策略，让每个商家都能低成本获得像头部商家一样专业的推送消息，极大降低了营销门槛。该系统为大模型在实际商业场景落地提供了范例，也展现了多智能体协作的巨大潜力。
+	
+作者信息：Yinzhu Quan（Georgia Institute of Technology）、Xinrui Li（ByteDance Inc.）等人
+
 
 
 # 结束
