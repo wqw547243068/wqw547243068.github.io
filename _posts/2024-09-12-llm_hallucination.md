@@ -229,8 +229,8 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
 
 ### 学术研究
 
-斯坦福最新论文，大模型幻觉根本原因：**计算复杂度**。
-- 《[Hallucination Stations On Some Basic Limitations of Transformer-Based Language Models]()》
+【2025-7-10】斯坦福最新论文，大模型幻觉根本原因：**计算复杂度**。
+- 《[Hallucination Stations On Some Basic Limitations of Transformer-Based Language Models](https://arxiv.org/pdf/2507.07505)》
 - 任何计算任务的解决都无法快于其固有的计算复杂度。
 
 通过比较任务的内在复杂度与LLM的计算能力上限，可预判LLM在处理该任务时是否会“碰壁”，从而产生幻觉。
@@ -805,9 +805,10 @@ OpenAI 安全系统团队负责人 Lilian Weng 介绍了近年来在理解、检
 
 真的无法根治吗？
 
-【2024-5-6】原文Exclusive: Alembic debuts hallucination-free AI for enterprise data analysis and decision support
+【2024-5-6】原文
+- [Exclusive: Alembic debuts hallucination-free AI for enterprise data analysis and decision support]()
 
-AI初创公司Alembic首次宣布，一种全新AI系统，用于企业数据分析和决策支持，完全解决了LLM虚假信息生成问题, 饱受诟病的LLM幻觉，被彻底攻破
+AI初创公司 Alembic 首次宣布，一种全新AI系统，用于企业数据分析和决策支持，完全解决了LLM虚假信息生成问题, 饱受诟病的LLM幻觉，被彻底攻破
 
 新型图神经网络充当因果推理引擎获取数据，组织成一个复杂节点和连接网络，捕捉事件和数据点随着时间推移形成的关联。
 
@@ -1246,6 +1247,23 @@ AI初创公司 [Alembic](https://getalembic.com/) 首次宣布，一种全新AI�
 【2024-9-15】[360视角：大模型幻觉问题及其解决方案的深度探索与实践](https://mp.weixin.qq.com/s/OzI5PLmHSn7iYpoAEMKhXw)
 
 根据不同问题可以利用不同解决办法，包括预训练、微调、对齐、解码策略、RAG、知识编辑等技术。
+
+### 亚马逊
+
+电商场景下的对话大语言模型（LLM）如何避免“幻觉”（即生成虚假或无依据的信息），并提升模型回答时的信息可溯源性。
+
+当前，许多电商智能客服虽然能高效对答，但时常会生成不准确的产品信息，导致用户信任度下降。当客服不能给出信息出处，用户很难验证AI给出的答案是否可靠。
+
+【2025-5-13】亚马逊团队提出易于部署的“**引用体验**”解决方案，让AI在回答时直接**标注信息来源**（比如产品描述、用户评价、问答记录等），用户可以一键跳转查看原始证据。
+- 论文 [CITE BEFORE YOU SPEAK: ENHANCING CONTEXT-RESPONSE GROUNDING IN E-COMMERCE CONVERSATIONAL LLM-AGENTS](https://arxiv.org/pdf/2503.04830)
+
+这一方案基于 In-context Learning（ICL），并结合了多视角信息供模型参考，还提出了 Multi-UX-Inference 系统，保证引用功能不会影响其他用户体验
+
+#### 效果
+
+实际电商对话数据上，引用机制让AI回答的“事实支撑率”提升了13.83%，并显著减少了幻觉。
+
+此外，用户参与度提升了3%到10%！特别是在获取不到足够产品信息时，AI会主动给出“暂无信息”的拒绝信号，而不是胡编乱造，极大提升了回答的可靠性和用户信任。
 
 
 # 结束
