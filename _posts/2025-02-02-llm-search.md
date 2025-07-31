@@ -596,8 +596,9 @@ HyperWriteAI CEO 在推特上分享的开源方案—— OpenDeepResearcher。
 
 基于OpenAI 的 Deep Research 概念，与openAI低，中，高的深度研究档次类似，使用简单的架构，允许用户调整研究广度（breadth）和深度（depth），运行时间可从 5 分钟到 5 小时自动调整。它可以并行运行多个研究线程，并根据新发现不断迭代，直到达到你的研究目标。
 
+## 案例
 
-## Manus
+### Manus
 
 【2025-3-5】 Monica.im 研发的全球首款 AI Agent 产品「Manus」
 - [Manus](https://manus.im/)，名字取自拉丁语中的“手”，寓意着将思想转化为行动。
@@ -607,7 +608,7 @@ HyperWriteAI CEO 在推特上分享的开源方案—— OpenDeepResearcher。
 详见站内专题: [Agent应用](agent_usecase)
 
 
-## Gemini Deep Research
+### Gemini Deep Research
 
 Gemini Deep Research 是一款AI研究助理。
 
@@ -617,7 +618,7 @@ Gemini Deep Research 是一款AI研究助理。
 - 自主规划、深度搜索、智能推理、快速生成多页报告。
 
 
-## DeerFlow
+### DeerFlow
 
 【2025-5-9】字节开源全新的 Deep Research 项目 —— [DeerFlow](https://deerflow.net/) 
 
@@ -634,7 +635,7 @@ DeerFlow 是一个基于 LangChain 全家桶的开源 **Multi-Agent** 应用
   - 【2025-5-12】[字节跳动重磅开源DeerFlow：对标Gemini Deep Research，AI深度研究框架来了](https://zhuanlan.zhihu.com/p/1905196919527014613)
   - 源码分析: 【2025-5-25】[字节开源Deerflow项目体验与分析](https://spacetimelab.cn/post/deerflow-project-read-locally/)
 
-### 核心特性
+#### 核心特性
 
 特性
 - 高效多智能体架构
@@ -652,7 +653,7 @@ DeerFlow 是一个基于 LangChain 全家桶的开源 **Multi-Agent** 应用
 - 多媒体内容生成
   - 支持从报告一键生成双人主持播客（集成火山引擎语音技术，音色自然丰富）及多种形式的PPT（包括图文和纯文字版）。
 
-### 架构
+#### 架构
 
 DeerFlow 实现了模块化的**多智能体**系统架构，专为自动化研究和代码分析而设计。
 
@@ -691,7 +692,7 @@ src/
 - ppt/: PPT 相关功能
 
 
-### 安装
+#### 安装
 
 ```sh
 # 克隆仓库
@@ -746,13 +747,45 @@ bootstrap.bat -d
 - 注意: 不是 8000 !
 
 
-### 分析
+#### 分析
 
 DeerFlow 适合场景
 - 需要查找大量资料的**复杂任务**，比如产业研究报告、学术文献梳理和分析等。
 
 缺点
 - token 消耗巨大，比如跑两个任务，就消耗了十万token。
+
+
+### 【2025-1-14】WebWalker
+
+
+目前的 RAG 多为“水平检索”，仅通过搜索关键词查找页面，没有深入到网页内部的层级结构获取复杂信息。
+
+阿里通义实验室提出测评集和方法来评估**网页浏览**多步推理能力。
+- 论文 [WebWalker: Benchmarking LLMs in Web Traversal](https://arxiv.org/pdf/2501.07572)
+
+数据构建
+- 首先搜集一些会议、组织、教育、游戏领域的官网（可以理解为首页，可以点到很多页面上）
+- 然后根据网页上的链接一直点到二级网页、三级网页、四级网页。（学校官网->学院网页->计算机系主页->某个教师主页）
+- 然后把这些网页组合成多源（需要阅读多个页面信息，可以是不同级网页）和单源（只需要阅读一个页面信息，可以任一级别网页），用 gpt-4o 去生成一些初始的 QA 对
+- 人工标注问题与答案，可以重写问题与答案，确保前后一致
+
+框架
+
+包括两个智能体：
+
+1. Explorer Agent
+
+- 基于页面 HTML 信息（Markdown 格式 + 可点击按钮）；
+- 每步选择一个子链接点击；
+- 最多可执行 15 步操作；
+- 与环境互动后产出“观察”。
+
+2. Critic Agent
+
+- 接收 Explorer 每步的信息；
+- 判断是否获得足够信息回答问题；
+- 若是，则输出答案；否则继续遍历。
 
 
 ## 新技术
