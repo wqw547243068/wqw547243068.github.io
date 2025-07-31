@@ -507,7 +507,7 @@ channel log格式
   - `流水线并行` `pp`: 模型按层分发
     - 内存开销小，通信量中等，实施难度大
     - 如：GPipe、PipeDream、PipeDream-2BW、PipeDream Flush（1F1B）
-- **多维混合**并行（如：3D并行（数据并行、模型并行、流水线并行））
+- **多维混合**并行，如：3D并行（数据并行、模型并行、流水线并行）
   - 2D 并行: dp+pp, tp+pp
   - 3D 并行: dp+tp+pp
 - **自动**并行: 自动搜索并行空间
@@ -537,10 +537,9 @@ channel log格式
 详见: [分布式训练优化--进阶篇](https://zhuanlan.zhihu.com/p/699372131?utm_psn=1777577429458386944)
 
 
-
 常见多GPU训练方法：
-1. **模型并行**：如果**模型特别大**，GPU显存不够，无法将一个显存放在GPU上，需要把网络的不同模块放在不同GPU上，这样可以训练比较大的网络。（下图左半部分）
-2. **数据并行**：将整个模型放在一块GPU里，再复制到每一块GPU上，同时进行**正向传播**和**反向误差传播**。相当于加大了batch_size。（下图右半部分）
+1. **模型并行**：如果**模型特别大**，GPU显存不够，无法将模型放在GPU上，需要把网络的不同模块放在不同GPU上，这样可以训练比较大的网络。（下图左半部分）
+2. **数据并行**：将整个模型放在一块GPU里，再复制到每块GPU上，同时进行**正向传播**和**反向误差传播**。相当于加大了batch_size。（下图右半部分）
 - ![](https://pic4.zhimg.com/80/v2-92e93b9f002b3782abec2a9f8a9a6153_1440w.webp)
 
 大规模深度学习模型训练中有几个主要范式：
@@ -549,7 +548,7 @@ channel log格式
   - ![](https://pic4.zhimg.com/80/v2-b508d84ba9c6a9c6ae2c5be70526da43_1440w.webp)
   - 数据并行通过在 N 台机器上复制模型来实现。拆分 minibatch ，分成 N 个块，让每台机器处理一个块。
   - ![](https://pic3.zhimg.com/80/v2-678f7d2c116f7528be27d6445b6c091a_1440w.webp)
-- `模型并行`：当单个 GPU无法容纳模型尺寸时，**模型并行性**变得必要，有必要将模型拆分到多个 GPU 上进行训练。实现模型尺寸超过单个GPU显存的深度学习模型训练。 
+- `模型并行`：当单个 GPU无法容纳模型尺寸时，**模型并行性**变得必要，将模型拆分到多个 GPU 上进行训练。实现模型尺寸超过单个GPU显存的深度学习模型训练。 
   - 这种方法的问题是计算使用效率不高，因为在任何时间点只有一个 GPU 正在使用，而其他 GPU 处于空闲状态。
   - ![](https://pic3.zhimg.com/80/v2-6a4304b529130e86e4552b3d4ed58a4e_720w.webp)
   - 相对于流水线并行和数据并行，模型并行具有以下优点：
@@ -557,9 +556,9 @@ channel log格式
     - 减少通信开销：流水线并行的模型划分通常会导致模型层之间的通信，而模型并行只需在每个子模型之间进行通信。相对于数据并行，模型并行在执行过程中通信量更少，因为每个 GPU 只需传递模型的一部分而不是全部。
     - 灵活的模型分配：模型并行可以更灵活地将模型分配给不同的 GPU 或计算节点，这意味着可以在不同的 GPU 上运行不同的模型子集，从而实现更好的负载平衡和性能优化。
 - `流水线并行` (PP)
-  - 朴素流水线并行（Naive Pipeline Parallelism）是将一组模型层分布在多个 GPU 上，并简单地将数据从 GPU 移动到 GPU，就好像它是一个大型复合 GPU 一样。
-  - 流水线并行 (PP) 与上述朴素流水线并行几乎相同，但它解决了 GPU 闲置问题，方法是将传入的 batch 为 micro-batches 并人工创建流水线，从而允许不同的 GPU 同时参与计算过程。
-  - 流水并行是将一个大型计算任务拆分成多个小的**子任务**，并将子任务在多个处理单元上同时执行。不同于数据并行和模型并行，流水并行不是将数据或模型分割成多个部分并在处理单元间并行处理，而是将一系列计算步骤分解成多个流水阶段，并在多个处理单元上同时执行，以减少总体计算时间。
+  - `朴素流水线并行`（Naive Pipeline Parallelism）是将一组模型层分布在多个 GPU 上，并简单地将数据从 GPU 移动到 GPU，大型复合 GPU 一样。
+  - `流水线并行` (PP) 与上述`朴素流水线并行`几乎相同，但解决了 **GPU 闲置**问题，方法是将传入 batch 为 micro-batches 并人工创建流水线，从而允许不同的 GPU 同时参与计算过程。
+  - 流水并行是将大型计算任务拆分成多个小的**子任务**，并将子任务在多个处理单元上同时执行。不同于数据并行和模型并行，流水并行不是将数据或模型分割成多个部分并在处理单元间并行处理，而是将一系列计算步骤分解成多个流水阶段，并在多个处理单元上同时执行，以减少总体计算时间。
 
 通俗理解
 - `Data Parallelism`：模型1台设备装得下，所以同模型用多份数据分开训练
@@ -568,8 +567,8 @@ channel log格式
 
 ### 数据并行
 
-数据并行性（Data parallelism (DP)）最简单的方法是：将相同的**模型权重**复制到多个worker中，并将一部分数据分配给每个worker以同时进行处理。
-- 如果模型规模大于单个GPU的内存，Naive DP无法正常工作时。GeePS（Cui 等人，2016 年）之类的方法将暂时未使用的参数卸载回 CPU，以使用有限的 GPU 内存。数据交换传输在后端进行，且不干扰训练计算。
+数据并行性（Data parallelism (DP)）最简单的方法：将相同**模型权重**复制到多个worker中，并将一部分数据分配给每个worker以同时进行处理。
+- 如果模型规模大于单个GPU内存，Naive DP无法正常工作时。GeePS（Cui 等人，2016 年）之类的方法将暂时未使用的参数卸载回 CPU，以使用有限的 GPU 内存。数据交换传输在后端进行，且不干扰训练计算。
  
 在每个小批量结束时，workers需要同步梯度或权重，以替换旧参数。常见有两种主要的同步方法，它们都有明确的优缺点：
 - 1）大容量**同步**并行（ Bulk synchronous parallels (BSP)）：workers在每个小批量结束时同步数据。这种方法可以防止模型权重过时，同时获得良好的学习效率，但每台机器都必须停止并**等待**其他机器发送梯度。
@@ -588,13 +587,13 @@ channel log格式
 
 【2023-8-28】[模型并行最佳实践（PyTorch）](https://zhuanlan.zhihu.com/p/87596314)
 
-DataParallel的优缺点如下：
+DataParallel 优缺点如下：
 - 优点：将模型**复制**到所有GPU，其中每个GPU消耗输入数据的不同分区，可以极大地加快训练过程。
 - 缺点：不适用于某些**模型太大**而无法容纳单个GPU的用例。
 
-模型并行性（Model parallelism: MP）目的是解决**模型权重不能适应单个节点**的情况，通过将计算和模型参数分布在多台机器上进行训练。
+模型并行性（Model parallelism: MP）目的: 解决**模型权重不能适应单个节点**的情况，通过将计算和模型参数分布在多台机器上进行训练。
 - 数据并行中，每个worker承载整个模型的**完整副本**
-- 而模型并行中，每个worker上只分配模型参数的一小部分，从而减少了内存使用和计算。
+- 而模型并行中，每个worker上只分配模型参数一部分，从而减少了内存使用和计算。
 
 原理
 >- 将单个模型拆分到不同GPU上，而不是在每个GPU上复制整个模型
@@ -619,7 +618,10 @@ DataParallel的优缺点如下：
 通道并行（Pipeline parallelism: PP）将`模型并行`与`数据并行`相结合，以减少部分训练过程中出现的空闲时间。
 
 主要思想
-- 将一个小批量拆分为多个**微批次**，并使worker在每个阶段中能够同时处理一个微批次。需要注意的是，每个微批次需要**两次传递**，一次向前，一次向后。worker之间的通信仅传输激活（向前）和梯度（向后）。这些通道的调度方式以及梯度的聚合方式在不同的方法中有所不同。分区（workers）的数量也称为通道深度。
+- 将小批量拆分为多个**微批次**，并使worker在每个阶段中能够同时处理一个微批次。
+- 注意: 每个微批次需要**两次传递**，一次向前，一次向后。
+- worker之间的通信仅传输**激活**（向前）和**梯度**（向后）。
+- 这些通道调度方式以及梯度的聚合方式在不同的方法中有所不同。分区（workers）的数量也称为通道深度。
 
 模型按层分割成若干块，每块都交给一个设备。
 - 前向传播: 每个设备将中间激活传递给下一个阶段。
@@ -637,12 +639,14 @@ DataParallel的优缺点如下：
 
 #### 张量并行（水平分割）
 
-模型并行和流水线并行都将一个模型垂直分割，可以将一个张量操作的计算水平分割到多个设备上，称为**张量并行**（tensor parallelism，TP）。
+`模型并行`和`流水线并行`都将一个模型**垂直**分割，将张量操作的计算**水平**分割到多个设备上，称为**张量并行**（tensor parallelism，TP）。
 - 张量并行将张量沿特定维度分成 N 块，每个设备只持有整个张量的 1/N，同时不影响计算图的正确性。
 - 这需要额外的通信来确保结果的正确性。
 - ![](https://mmbiz.qpic.cn/mmbiz_png/J0mLianhFicBHEDwE5nPHZKaicqsXBVgES53FR1KDRnTBHAKwRtd9rEo3TOxgrKA5ZaqBVYZ3QIKGwU2OTW7AklIQ/640?wx_fmt=png&tp=wxpic&wxfrom=5&wx_lazy=1&wx_co=1)
 
-以当下比较流行的transformer为例，transformer模型主要由多层MLP和自我注意块组成。Megatron-LM（Shoeybi et al.2020）等人采用了一种简单的方法来并行多层计算MLP和自我注意。变压器中的MLP层包含GEMM（通用矩阵乘法）和非线性GeLU传输，按列拆分权重矩阵A
+以当下比较流行的transformer为例，transformer 模型主要由**多层MLP**和**自注意力**组成。
+
+Megatron-LM（Shoeybi et al.2020）等人采用了一种简单的方法来并行多层计算MLP和自我注意。transformer 中的MLP层包含GEMM（通用矩阵乘法）和非线性GeLU传输，按列拆分权重矩阵A
 
 典型的张量并行实现：
 - Megatron-LM（1D）
@@ -664,7 +668,6 @@ DataParallel的优缺点如下：
   - ![](https://pic1.zhimg.com/80/v2-aed6e288293f97bfc17ed0b3c9087290_1440w.webp)
 - Tensor 并行 + pipeline
   - ![](https://pic1.zhimg.com/80/v2-af38ecbaa5ccb7059c97e8774e484370_1440w.webp)
-
 
 
 #### 3D 并行
@@ -736,10 +739,10 @@ UCB博士 `郑怜悯` 的工作， 他还参加过其他项目 Ansor，TVM， vL
 【2023-8-30】大模型要占你多少内存？[这个神器一键测量，误差低至0.5MB，免费可用](https://mp.weixin.qq.com/s/U4VpmHuKvHKu3AuwXM3PYw)
 
 大模型训练推理要用多少内存？
-- HuggingFace Space上的最新火起来工具——[Model Memory Calculator](https://huggingface.co/spaces/hf-accelerate/model-memory-usage)，模型内存测量器，在网页端人人可体验。
+- HuggingFace Space 最新火起来工具——[Model Memory Calculator](https://huggingface.co/spaces/hf-accelerate/model-memory-usage)，模型内存测量器，在网页端人人可体验。
 - 比如模型bert-base-case Int8估计占用413.18 MB内存，实际占用为413.68MB，相差0.5MB，误差仅有0.1%。
 
-实际推理过程，EleutherAI 发现需要在预测数据基础上，预留20%的内存
+实际推理过程，EleutherAI 发现需要在预测数据基础上，预留 20% 内存
 
 【2023-8-30】[baichuan-7b](https://huggingface.co/baichuan-inc/Baichuan-7B/tree/main) （14G） 部署失败，空间不够
 - GPU: A30, 24G 显存
@@ -889,23 +892,23 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 - **fp16**精度，一个参数需要 16 bits, **2** bytes.
 - **int8**精度，一个参数需要 8 bits, **1** byte.
 
-模型需要的RAM大致分三个部分：
+模型需要的 RAM 大致分三个部分：
 - **模型参数**： 参数量*每个参数所需内存
-  - 对于fp32，LLaMA-6B需要 6B*4 bytes = 24GB 内存
-  - 对于int8，LLaMA-6B需要 6B*1 byte = 6GB 内存
+  - 对于`fp32`，LLaMA-6B需要 6B*4 bytes = **24GB** 内存
+  - 对于`int8`，LLaMA-6B需要 6B*1 byte = **6GB** 内存
 - **梯度**： 参数量*每个梯度参数所需内存
-- **优化器**参数： 不同的优化器所储存的参数量不同。
-  - 对于常用的AdamW，需要储存**两倍**的模型参数（用来储存一阶和二阶momentum）。
-  - fp32 的 LLaMA-6B，AdamW需要 6B*8 bytes = 48 GB
-  - int8 的 LLaMA-6B，AdamW需要 6B*2 bytes = 12 GB
+- **优化器**参数： 不同优化器所储存的参数量不同。
+  - 对于常用的`AdamW`，需要**两倍**模型参数（用来储存一阶和二阶momentum）。
+  - `fp32` 的 LLaMA-6B，AdamW 需要 6B*8 bytes = 48 GB
+  - `int8` 的 LLaMA-6B，AdamW 需要 6B*2 bytes = 12 GB
 - 其它
-  - CUDA kernel也会占据一些RAM，大概1.3GB左右
+  - CUDA kernel 也会占据一些RAM，大概 1.3GB 左右
 
-综上，int8 精度的 LLaMA-6B 模型部分大致需要 6GB + 6GB + 12GB + 1.3GB = 25.3GB 左右。
+综上，int8 精度的 LLaMA-6B 模型部分大致需要 6GB + 6GB + 12GB + 1.3GB = **25.3GB** 左右。
 
 再根据LLaMA的架构(hidden_size= 4096, intermediate_size= 11008, num_hidden_layers= 32, context_length = 2048)计算中间变量内存。每个instance需要： ( 4096+11008 ) * 2048 * 32 * 1 byte = 990 MB
 
-所以，一张 A100（**80GB** RAM）大概可以在int8精度，batch_size = 50 的设定下进行全参数训练。
+所以，一张 A100（**80GB** RAM）大概可以在`int8`精度，`batch_size = 50` 的设定下进行**全参数**训练。
 
 附
 - 消费级显卡内存和算力查询: [2023 GPU Benchmark and Graphics Card Comparison Chart](https://www.gpucheck.com/gpu-benchmark-graphics-card-comparison-chart)
@@ -914,19 +917,21 @@ PyTorch中，当执行完 model=MyGreatModel().cuda() 后就会占用相应的�
 
 一个**7B**规模大模型（如LLaMA-2 7B），基于**16-bit**混合精度训练时
 - 仅考虑模型参数、梯度、优化器情况下，显存占用就有**112GB**
-  - 参数占 GPU 显存近 **14GB**（每个参数2字节）。
-  - 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
-  - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数copy、一个momentum和一个variance，这三个都是float32）
-    - 2byte 模型**静态**参数权重（以16bit存储） = 14G
-    - 2byte 模型**更新**参数权重 （以16bit存储）= 14G
-    - 2byte **梯度**（以16bit存储）= 14G
-    - 2byte **梯度更新**（以16bit存储）= 14G
-    - 4byte **一阶动量**优化器更新（以32bit存储）= 28G
-    - 4byte **二阶方差**优化器更新（以32bit存储）= 28G
-  - 目前，合计 112GB
-  - 还有：前向传播时激活值，各种临时变量
-  - 还与sequence length, hidden size、batch size都有关系。
-- 目前<span style='color:red'>A100、H100这样主流显卡单张是放不下</span>，更别提国内中小厂喜欢用的A6000/5000、甚至消费级显卡。
+- 参数占 GPU 显存近 **14GB**（每个参数2字节）。
+- 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
+- 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数copy、一个momentum和一个variance，这三个都是float32）
+  - 2byte 模型**静态**参数权重（以16bit存储） = 14G
+  - 2byte 模型**更新**参数权重 （以16bit存储）= 14G
+  - 2byte **梯度**（以16bit存储）= 14G
+  - 2byte **梯度更新**（以16bit存储）= 14G
+  - 4byte **一阶动量**优化器更新（以32bit存储）= 28G
+  - 4byte **二阶方差**优化器更新（以32bit存储）= 28G
+- 目前，合计 112GB
+- 还有：前向传播时激活值，各种临时变量
+- 还与sequence length, hidden size、batch size都有关系。
+
+目前<span style='color:red'>A100、H100这样主流显卡单张是放不下</span>，更别提国内中小厂喜欢用的`A6000`/`5000`、甚至消费级显卡。
+
 
 #### Adam + fp16 混合精度预估
 
@@ -960,6 +965,34 @@ Adam + fp16混合精度训练
   - [0, 1B) 市面上绝大多数卡都可以直接硬train一发
   - [1B, 5B] 大多数卡在这个区间的某个值上触发模型容量上限，具体触发值和显存大小有关
   - (5B, ~) 目前没有卡能裸训
+
+
+#### PPO 显存预估
+
+【2025-8-1】用 `verl` 进行 PPO 训练，4张**80G**显存的`A800`能调起来14B模型? 
+
+rollout用vllm，训练用FSDP, 需要同时在显存中维护 3个14B规模的模型（Actor, Critic, Reference）以及 2份优化器状态
+- 模型权重 (全部经过**分片**)
+  - Actor (14B, TP=4): ~7 G
+  - Critic (14B, FSDP): ~7 G
+  - Reference (14B, TP=4): ~7 G
+- 小计: 21 G
+
+优化器状态 (Actor 和 Critic, 经过分片)
+- Actor 优化器: ~28 G
+- Critic 优化器: ~28 G
+- 小计: 56 G
+
+梯度 (Actor 和 Critic, 经过分片)
+- Actor 梯度: ~7 G
+- Critic 梯度: ~7 G
+- 小计: 14 G
+
+静态占用总计: 21 GB (权重) + 56 GB (优化器) + 14 GB (梯度) = 91 G
+
+这个估算出的 91 GB 静态占用已经超过了单张 80GB 卡的物理上限。
+
+甚至还没有计算几十GB的激活值和 vLLM KV Cache 的空间！
 
 
 ### LLM 推理显存开销
