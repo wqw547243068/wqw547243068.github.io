@@ -3,7 +3,7 @@ layout: post
 title:  世界模型 World Model
 date:   2025-07-15 12:00:00
 categories: 大模型
-tags: LLM AGI 世界模型 系统 快思考 慢思考
+tags: LLM AGI 世界模型 系统 快思考 慢思考 因果
 excerpt: 世界模型专题笔记
 mathjax: true
 permalink: /world_model
@@ -19,6 +19,22 @@ permalink: /world_model
 通用智能目前存在两个流派
 - Transformer学派（如GPT系列）侧重于大数据驱动的自回归学习，最近发布的Sora体现的涌现能力初步隐含着通用人工智能的韵味。
 - 杨立昆（Yann LeCun）为代表的世界模型学派。世界模型学派则认为需要通过构建对世界的内在理解，强调常识性知识和环境交互
+
+
+## 因果推理
+
+理想中的 World Model 是**事实**及其**支撑逻辑**的合集。但现实中，World Model 往往为隐性，并呈碎片化 - 事实散布于各类数据、分析和专家的脑袋中
+
+基于因果分析构建 World Model 工具链
+
+例如，对于利润率问题，人类专家可以基于先验知识、私有数据、Causal-learn和DoWhy等工具构建一个具有统计学意义的“利润率World Model”
+
+Causal AI 长时间在商业领域裹足不前的主因: Causal Modeling 过程**非常依赖于人类专家**的知识和干预，难以完全自动化。
+
+但利用大模型替代或辅助人类专家进行 Causal Modeling 研究有了不错的进展。
+详见站内专题：[因果推理](casual)
+
+
 
 ## 双系统：快思考 & 慢思考
 

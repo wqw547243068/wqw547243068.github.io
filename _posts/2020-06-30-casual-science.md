@@ -2,7 +2,7 @@
 layout: post
 title:  "因果科学-Casual-Science"
 date:   2020-06-30 16:03:00
-categories: 自然语言处理 深度学习
+categories: 自然语言处理 深度学习 大模型
 tags: 深度学习 NLP KG 知识图谱 表示学习 因果科学 集智俱乐部 广告预估 亚里士多德
 excerpt: 如何让AI系统具备真正的推理能力？图灵奖得主、贝叶斯网络之父 Judea Pearl 的解法——因果科学
 author: 鹤啸九天
@@ -2346,6 +2346,25 @@ Matching 的问题就是如何去评估两个个体的相似度，并需要设�
 
 - [贝叶斯网络之父Judea Pearl：新因果科学与数据科学、人工智能的思考](https://www.toutiao.com/i6840890758732448270/)
 - 更多[Demo地址](http://wqw547243068.github.io/demo)
+
+
+## 大模型
+
+Causal AI 长时间在商业领域裹足不前的主因: Causal Modeling 过程**非常依赖于人类专家**的知识和干预，难以完全自动化。
+但利用大模型替代或辅助人类专家进行 Causal Modeling 研究有了不错的进展。
+
+
+### 微软
+
+- 【2023-4-28】微软论文《[Causal Reasoning and Large Language Models](https://arxiv.org/pdf/2305.00050)》展示了大模型在“点对点”和“整图”级别的因果关系识别都超越了传统算法
+- [解读](https://zhuanlan.zhihu.com/p/660941845)
+
+基于大语言模型的方法在多个因果基准测试任务上表现出最高的准确性。
+
+大语言模型引入一种基于文本和元数据（变量名）新推理方式来实现这一目标，**基于知识的因果推理**（knowledge-based causal reasoning），
+
+基于GPT-3.5/4的算法在多项因果推理任务中胜过现有算法，包括成对**因果发现**任务（97%，提高13个百分点），**反事实推理**任务（92%，提高20个百分点），和**实际因果关系**（在确定事件的必要和充分原因方面具有86%的准确性）。
+
 
 # 结束
 
