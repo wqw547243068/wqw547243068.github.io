@@ -97,6 +97,25 @@ Agent项目:
 (3) 复杂系统
 - 用于复杂 RAG 任务🤖的复杂可控Agent：[Controllable-RAG-Agent](https://github.com/NirDiamant/Controllable-RAG-Agent)
 
+## 数据库
+
+
+### genai-toolbox
+
+【2025-7-13】谷歌开源为Agent设计的数据库工具箱 [genai-toolbox]()
+
+真正为 LLM 设计的数据工具中间层，帮大语言模型（LLM）或 Agent 快速、安全、标准化地调用数据库或 HTTP 接口等外部工具
+- 支持 MCP 协议，兼容 LangChain、LlamaIndex、多语言 SDK，特别适合做 AI Agent、数据库助手、数据中台等场景。
+
+核心设计：
+- Go语言开发，工具和数据源完全解耦，采用注册表和插件机制，通过 init 注册 kind，实现声明式扩展，无需改核心代码。
+- 参数系统支持默认值、类型校验、模板注入，还能从 JWT 自动注入字段，实现了安全性和灵活性的平衡。
+- 双协议设计也很有参考价值，既支持传统 REST，也支持面向 LLM 的 MCP 接口，调用流程标准化，支持 tool 列表发现、schema 推理、参数验证等。
+- 整个系统从 prebuilt YAML 配置到运行时动态加载，再到 OpenTelemetry 级别的日志与追踪，具备了生产级能力。
+- 适合 AI 工程师、数据平台开发者、Agent 系统开发者研究。Go 工程师也可以借此学习如何设计一套模块清晰、热插拔、面向未来的 AI 中间件系统。
+
+
+
 
 ## 操作系统
 
