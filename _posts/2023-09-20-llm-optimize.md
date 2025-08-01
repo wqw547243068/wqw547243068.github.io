@@ -251,6 +251,41 @@ PyTorch 编写注意力
 ## 加速框架
 
 
+### 总结
+
+【2025-5-8】韩国 [25种LLM部署框架你知道多少？](https://zhuanlan.zhihu.com/p/1933217002698306629)
+- 论文：《[A Survey on Inference Engines for Large Language Models: Perspectives on Optimization and Efficiency](https://arxiv.org/pdf/2505.01658)》  
+
+总结了目前市面上的 LLM 的推理框架，总共有 25 个，我们来看看它们之间的优劣。
+
+技术分类：
+- 批处理（动态批、连续批、nano批等）
+- 并行策略（数据并行、流水线并行等）
+- 模型压缩（量化、剪枝、稀疏优化）
+- 缓存机制（KV缓存、Prefix缓存等）
+- 注意力机制优化（FlashAttention等）
+- 推理采样与结构化输出（Speculative decoding、格式约束）
+
+实践意义：
+- 对25种开源及商业推理引擎进行了详尽比较，涵盖如 vLLM、TensorRT-LLM、GroqCloud 等。
+- 提供持续更新的公共资源库：[Awesome LLM Inference Engine](https://github.com/sihyeong/Awesome-LLM-Inference-Engine)
+- 指出未来方向，如更复杂服务支持、多硬件适配、安全性增强等。
+
+
+总结
+- star数：ollama、llama.cpp、vllm（低代码低成本部署还是广受大众喜欢）。
+- 综合角度：vllm 遥遥领先。
+- 文档完整性：vllm、Deepspeed-fastgen、tensorrt-llm比较完备
+- 硬件支持度：Ollama、LLaMA.cpp、MAX、MLC-LLM
+- 多级部署：vllm、sglang、lmdeploy
+- 优化技巧全面度：vLLM、DeepSpeed-FastGen、SGLang、TensorRT-LLM
+
+决策
+- 生产环境，推荐vllm和sglang，支持的模型多，社区活跃，文档也详细。
+- 自己玩且资源不够的话，推荐 ollama、llama.cpp、ktransformer。
+- 不想自己部署，直接用各大公司的在线版本完事。
+
+
 ### LLM 本地部署
 
 【2024-7-15】本地部署运行私有的开源大型语言模型（LLMs）的方法
