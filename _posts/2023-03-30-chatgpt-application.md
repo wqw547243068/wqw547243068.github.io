@@ -2573,6 +2573,23 @@ Flow 自言是字节跳动旗下 AI 创新业务团队，目前已经在国内�
 - 可根据医疗问诊、查办公积金、买机票找厕所、推荐上映电影等办事指令。
 - 根据需求推荐支付宝的相应功能或直连小程序，起到App内的智能导航作用。
 
+##### 蚂蚁 Agentar-Fin-R1
+
+【2025-7-26】蚂蚁集团发表 Agentar-Fin-R1，金融领域专用**推理大模型**，赋能金融智能化演进
+- [Agentar-Fin-R1: Enhancing Financial Intelligence through Domain Expertise, Training Efficiency, and Advanced Reasoning]()
+
+Agentar-Fin-R1 系列金融大语言模型（8B和32B参数）基于Qwen3模型，提升金融应用中的推理能力、可靠性和领域专业化。
+
+同时本文提出Finova评估基准，专注于金融推理和合规验证。
+
+实验结果显示
+- Agentar-Fin-R1-32B 模型在金融和通用领域表现优越，平均得分83.11，超越所有竞争基线。
+- 在金融评估基准中，Agentar-Fin-R1-32B在Fineva（92.38）、FinEval（87.70）、FinanceIQ（86.79）和Finova（69.82）上表现最佳，Agentar-Fin-R1-8B则在计算效率上表现出色。Agentar-Fin-R1-32B在安全和合规任务中表现优异，得分87.00，远超其他模型。
+
+核心创新：
+- 专业标签引导框架，细分金融任务，优化数据处理和训练。
+- 多维可信度保障，通过源可信度、合成可信度和治理可信度确保数据质量。
+- 高效训练优化，提升数据利用率和模型能力。
 
 
 #### 佛学问答
