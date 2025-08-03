@@ -359,14 +359,14 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 - A-Mem
 
 
-### MEMORYLLM
+### 【2024-2-7】MEMORYLLM
 
 记忆自动更新
 
 [MEMORYLLM：可自我更新的大语言模型](https://zhuanlan.zhihu.com/p/706065398)
 
-2024年5月，Amazon、UC SD、UC LA
-- 论文 [MEMORYLLM: Towards Self-Updatable Large Language Models]()
+【2024-2-7】 Amazon、UC SD、UC LA
+- 论文 [MEMORYLLM: Towards Self-Updatable Large Language Models](https://arxiv.org/pdf/2402.04624)
 
 LLM 部署后通常保持**静态**，难以注入新知识。
 
@@ -385,7 +385,7 @@ MEMORYLLM 可以使用文本知识进行**自我更新并记忆**先前注入的
 代码和模型已开源
 - wangyu-ustc/MemoryLLM: The official implementation of the ICML 2024 paper "MemoryLLM: Towards Self-Updatable Large Language Models"
 
-### Mem0
+### 【2025-5-18】Mem0
 
 自适应衰减
 
@@ -495,7 +495,49 @@ config = {
 m = Memory.from_config(config)  # 支持多数据库联动
 ```
 
-### MemAgent
+### 【2025-6-9】G-Memory
+
+现有多智能体系统的问题
+- 现有LLM多智能体系统（MAS）大多靠“一次性”流程或人工SOP，缺乏“自我进化”能力：本质是因为缺一套能跨任务、跨角色沉淀协作经验的记忆架构。
+
+
+【2025-6-9】NUS、Tongji University、UCLA 等发布 G-Memory：LLM多智能体的"集体记忆"机制
+- 论文标题：[G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems](https://arxiv.org/pdf/2506.07398)
+- 代码 [GMemory](https://github.com/bingreeky/GMemory)
+
+G-Memory 作为多智能体系统的“**集体记忆**”插件，结构化组织多智能体复杂记忆，让智能体从单任务执行者进化为跨任务专家。
+	
+
+即插即用
+- 无需改现有框架，一行代码即可把AutoGen/DyLAN/MacNet升级为“会成长的团队”
+
+#### 原理
+
+G-Memory核心洞察
+
+受“组织记忆理论”启发，把冗长的多智能体交互拆成三层图：
+- Insight Graph：可迁移的高层策略
+- Query Graph：任务之间的语义脉络
+- Interaction Graph：细粒度对话轨迹
+
+像公司知识库一样，既存“最佳实践”，也留“踩坑记录”。
+	
+双向往返记忆检索
+
+收到新任务后：
+- ① 向上遍历→提取通用经验（Insight）
+- ② 向下遍历→找到相似任务的关键对话片段（Interaction）
+- ③ 按角色个性化投喂，避免上下文爆炸。
+
+#### 效果
+
+核心实验简介
+- 在5大基准+3类LLM+3个MAS框架上测试
+- 具象任务成功率↑20.89%，知识问答准确率↑10.12%
+- 额外token仅增加1.4M，远低于SOTA的2.2M
+	
+
+### 【2024-7-4】MemAgent
 
 【2024-7-4】从 “记不住” 到 “忘不了”，MemAgent 可能不是简单地扩大内存，而是让 LLM 学会像人类一样 “管理记忆”。
 
@@ -542,24 +584,74 @@ m = Memory.from_config(config)  # 支持多数据库联动
   - 比如半年前跟 AI 说过 “不爱吃香菜”，这个信息会被存在库里，下次点外卖时，AI 能立刻从库里找到这个偏好。
 - 学会 “**总结**和**关联**”：面对海量信息，它可能会像人类一样做笔记 —— 把连续的对话提炼成**要点**，把分散的信息串联起来（比如 “用户提到孩子 3 岁 + 喜欢恐龙，上周说想周末去博物馆”，会关联成 “推荐恐龙主题博物馆”）。
 
+### 【2025-2-17】A-Mem
 
-### MEMOS
+现有记忆系统主要支持基本的存储与检索功能，缺乏对记忆的**高级组织能力**。
+
+即使有些系统引入图数据库进行结构化存储，这些系统的操作和结构通常是固定的，缺乏适应多样任务的灵活性。
+
+【2025-2-17】美国罗格斯大学和公司AIOS Foundation 推出 `A-MEM` —— 一种新的 Agentic Memory 系统，以智能体的方式动态组织记忆。
+- 论文 [A-MEM: Agentic Memory for LLM Agents](https://arxiv.org/pdf/2502.12110)
+- 代码 [A-mem-sys](https://github.com/WujiangXu/A-mem-sys)
+- 已集成到 [AIOS]([aios.foundation](https://aios.foundation/)): AI Agent Operating System
+- 解读 [A-MEM -- Agentic Memory(动态的组织记忆)](https://zhuanlan.zhihu.com/p/1919431846237823495)
+
+
+借鉴 Zettelkasten 方法：通过动态索引与链接，构建一个互联的知识网络。
+
+#### 原理
+
+系统机制概述
+- 当添加一条新记忆时，系统会生成一条包含多个结构化属性的“笔记”，包括：
+  - 上下文描述（contextual descriptions）
+  - 关键词（keywords）
+  - 标签（tags）
+- 系统分析历史记忆，识别相关连接并建立链接。
+- 新记忆还可能触发历史记忆的上下文更新与属性变化，实现记忆的持续演化。
+
+关键机制优势
+
+A-MEM 将 Zettelkasten 结构化理念与 LLM 智能体的自主决策能力结合，具备：
+- 自主构建上下文表示
+- 动态建立记忆之间的联系
+- 实现旧记忆的智能演化更新
+- 支持更强的适应性与上下文感知能力
+
+#### 效果
+
+A-MEM 在多个基准任务上相较于现有 SOTA 方法具有显著性能提升。
+
+
+
+### 【2025-7-15】MEMOS
 
 【2025-7-15】[RAG已死，请停止给LLM打“短期记忆补丁”！](https://x.com/ShenHuang_/status/1944540933275693137?s=19)
 
-讲个内幕：现在市面上绝大多数所谓LLM“**长期记忆**”方案，包括RAG，本质都是**临时工**。
+讲个内幕：
+- 现在市面上绝大多数所谓LLM“**长期记忆**”方案，包括RAG，本质都是**临时工**。
 
 解决了“**知识获取**”问题，但没解决“**记忆管理**”的根本难题，导致AI依然健忘、无法个性化，数据被困在各个应用里形成“记忆孤岛” 。
 
 一直在给漏水的坝打补丁，而不是建一个真正的水库。
 
-直到我看到了最近的一个关于LLM内存的论文： MEMOS，一个真正的AI“内存操作系统” 。
+核心短板：**缺乏持久记忆机制**，导致AI无法像人类一样长期学习和积累经验。
+
+关于LLM内存的论文： MEMOS，一个真正的AI“内存操作系统” 。
+
+【2025-7-4】上交、同济、浙大、中科大、人大联手发布
+- MemOS：全球首个赋予AI类人记忆的操作系统
+- 论文 [MemOS: A Memory OS for Al System](https://arxiv.org/pdf/2507.03724)
+- 项目[官网](https://memos.openmem.net) 
+- 项目[论文](https://memos.openmem.net/paper_memos_v2 )
+- 代码仓库：[MemOS Discord](https://github.com/MemTensor/MemOS Discord) 
 
 它的思想完全是降维打击：
 1. 统一管理: 创造了一个叫 MemCube 的标准单元 ，把参数 (固有知识)、KV缓存 (工作记忆)、外部明文 (瞬时知识) 三种形态的记忆全部统一管理 。
 2. OS级调度: 像Windows/Linux调度硬件一样，MEMOS调度、融合、迁移这些MemCube，让LLM第一次拥有了可控、可塑、可持续进化的记忆 。
 
-效果惊人： 在LOCOMO基准上，性能全面碾压LangMem, Zep, OpenAI Memory等一众对手 。更恐怖的是，它的KV缓存加速技术，能把TTFT（首字输出时间）缩短最高 91.4% ！
+效果惊人： 
+- 在LOCOMO基准上，性能全面碾压LangMem, Zep, OpenAI Memory等一众对手 。
+- KV缓存加速技术，能把TTFT（首字输出时间）缩短最高 91.4% ！
 
 这已经不是简单的技术优化，而是迈向“记忆训练” (Mem-training) 的范式革命 。
 
@@ -568,7 +660,7 @@ m = Memory.from_config(config)  # 支持多数据库联动
 无状态AI的时代大概率要结束了。
 
 
-### MIRIX
+### 【2025-7-16】MIRIX
 
 当前的大模型记忆系统，有几个比较明显的**局限性**：
 - 一是分类太少。所有记忆都存到一起，不好检索
@@ -600,9 +692,47 @@ MIRIX，模块化、多智能体协作的记忆系统。
 MIRIX 为 LLM 智能体的记忆能力树立了新标准，并提供了实际应用。
 
 
-### A-Mem
 
-待定
+
+### 【2025-7-25】LVMM
+
+
+【2025-7-25】前Meta研究员、剑桥大学计算机科学博士创立的AI研究实验室[Memories AI]()正式发布，推出了全球首个人工智能大型视觉记忆模型（Large Visual Memory Model，简称`LVMM`）。
+
+这一突破性技术旨在赋予AI类人般的**视觉记忆能力**，让机器能够像人类一样“看到、理解并记住”视觉信息。
+
+同时，Memories AI宣布完成由Susa Ventures领投的800万美元种子轮融资，标志着其在AI视觉记忆领域的雄心壮志。
+
+#### 原理
+
+Memories AI 核心技术
+- 独创的大型视觉记忆模型（LVMM）
+
+业内首个能够持续捕获、存储和回忆**视觉信息**的AI架构。 
+
+与现有AI系统不同，传统模型通常只能处理**短时视频片段** (15-60分钟)，在长时间视频分析中会丢失上下文，导致无法回答“之前是否见过这个?”或“昨天发生了什么变化?”等问题。 
+
+而 LVMM 通过**模拟**人类记忆机制，能够处理长达数百万小时的视频数据，构建持久、可搜索的视觉记忆库。
+
+通过三层架构实现:
+- 首先对视频进行降噪和压缩，提取关键信息;
+- 其次创建可搜索的**索引层**，支持自然语言查询;
+- 最后通过**聚合层**将视觉数据结构化，使AI能够识别模式、保留上下文并进行跨时间比较。
+
+这使得 Memories AI 在处理大规模视频数据时，展现出前所未有的效率和准确性，号称比现有技术高出100倍的视频记忆容量。
+
+#### 应用场景
+
+涵盖以下场景:
+- 物理安全:为安防公司提供异常检测功能，通过分析长时间监控视频，快速发现潜在威胁。
+- 媒体与营销:帮助营销团队分析社交媒体上的海量视频内容，识别品牌提及、消费者趋势和情感倾向。例如，某社交媒体平台已利用Memories AI技术洞察TikTok等平台的长期趋势，保持竞争优势。
+- 机器人与自动驾驶:通过赋予AI长期视觉记忆，支持机器人执行复杂任务，或帮助自动驾驶汽车记住不同路线的视觉信息。
+
+Memories AI的平台支持通过API或聊天机器人网页应用访问，用户可以上传视频或连接自己的视频库，通过自然语言查询视频内容。这种灵活的交互方式使其适用于从企业级解决方案到个人化应用的广泛场景。
+
+
+
+
 
 
 # 结束
