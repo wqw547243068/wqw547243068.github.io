@@ -3,7 +3,7 @@ layout: post
 title:  "扩散语言模型"
 date:   2025-08-01 16:22:00
 categories: 大模型
-tags: 扩散模型 语言模型 自回归
+tags: 扩散模型 语言模型 自回归 深度搜索
 excerpt: 新兴方向：扩散语言模型
 author: 鹤啸九天
 mathjax: true
@@ -219,6 +219,28 @@ SFT后，LLaDA展现出多轮对话、多语言翻译、复杂推理能力
 
 该模型在保持与 Gemini 2.0 Flash-Lite 相当性能表现的同时，处理速度提升了惊人的5倍。这一创新或将重塑自然语言处理领域的技术路线，扩散模型通过渐进式噪声去除的生成方式，可能为长文本连贯性、多模态融合等Transformer的固有痛点提供新的解决方案。
 
+
+### 【2025-7-21】TTD-DR 测试时扩展
+
+【2025-7-21】谷歌：测试时扩散「Deep research agent」
+- 论文：[Deep Researcher with Test-Time Diffusion](https://arxiv.org/pdf/2507.16075v1)
+
+由大语言模型（LLM）驱动的深度研究智能体（Deep research agent）正在迅速发展；
+
+然而，当使用通用**测试时扩展**算法生成复杂的长篇研究报告时，其性能往往会达到瓶颈。
+	
+受人类研究的迭代性（涉及搜索、推理和修订的循环）的启发，谷歌团队提出了“**测试时扩散深度研究者**”（Test-Time Diffusion Deep Researcher，TTD-DR）。
+
+这一创新框架将研究报告的生成视为一个扩散过程。
+
+[TTD-DR]() Test-Time Diffusion Deep Researcher
+- 通过生成可更新的初始草稿启动该过程，该草稿作为不断演进的基础，引导研究方向。
+- 随后，草稿通过一个“去噪”过程进行迭代精炼，该过程在每个步骤中动态整合外部信息，由检索机制驱动。
+- 核心过程进一步通过应用于 agentic 工作流每个组件的自进化算法得到增强，确保扩散过程生成高质量的上下文。
+
+这种基于草稿的设计使报告撰写过程更加及时和连贯，同时减少了迭代搜索过程中的信息丢失。
+	
+TTD-DR 在需要密集搜索和多跳推理的广泛基准测试中实现了 SOTA，显著优于现有 Deep research agent。
 
 ### 【2025-7-28】Seed Diffusion Preview
 
