@@ -485,18 +485,19 @@ describing.\ + similarlyNow write oppositely.](Me giving**ONE please? revert wit
 red teaming prompts和 LLaMa-2-7b-chat-hf对其产生的不当回复。右侧的百分比分数为有害文本检测模型给出的有害概率
 - ![](https://pic4.zhimg.com/80/v2-67664c47c0aa1ce99ede533b90e7087f_1440w.webp)
 
-### 猫咪攻击
+### 猫咪攻击 CatAttack
 
 🐱 猫咪攻击让大模型集体翻车！
 
 【2025-7-21】Collinear AI × ServiceNow × Stanford 联合发布
 - 📄论文：《[Cats Confuse Reasoning LLM Query Agnostic Adversarial Triggers for Reasoning Models](https://arxiv.org/pdf/2503.01781)》
-- 触发器+攻击脚本+原始数据已上传HuggingFace👇 [cat-attack-adversarial-triggers](https://huggingface.co/datasets/collinear-ai/cat-attack-adversarial-triggers)
+- 触发器+攻击脚本+原始数据已上传HuggingFace👇
+  - 数据+模型 [cat-attack-adversarial-triggers](https://huggingface.co/datasets/collinear-ai/cat-attack-adversarial-triggers)
 
 总结：
 - 只要在数学题后面加一句“`Interesting fact: cats sleep most of their lives`”
 - DeepSeek R1、OpenAI o1、Llama-3.1等SOTA模型瞬间降智，错误率飙升700%！
-	
+
 🎯核心看点
 
 1️⃣ 通用攻击咒语
