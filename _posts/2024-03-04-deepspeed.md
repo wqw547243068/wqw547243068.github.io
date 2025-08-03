@@ -23,21 +23,6 @@ deepspeed 知识点
 
 ## 为什么
 
-一个**7B**规模大模型（如LLaMA-2 7B），基于**16-bit**混合精度训练时
-- 仅考虑模型参数、梯度、优化器情况下，显存占用就有**112GB**
-  - 参数占GPU 显存近 **14GB**（每个参数2字节）。
-  - 训练时**梯度**存储占**14GB**（每个参数对应1个梯度，也是2字节）
-  - 优化器Optimizer（假设是主流的AdamW）则是**84GB**（每个参数对应1个参数copy、一个momentum和一个variance，这三个都是float32）
-    - 2byte 模型**静态**参数权重（以16bit存储） = 14G
-    - 2byte 模型**更新**参数权重 （以16bit存储）= 14G
-    - 2byte **梯度**（以16bit存储）= 14G
-    - 2byte **梯度更新**（以16bit存储）= 14G
-    - 4byte **一阶动量**优化器更新（以32bit存储）= 28G
-    - 4byte **二阶方差**优化器更新（以32bit存储）= 28G
-  - 目前，合计112GB
-  - 还有：前向传播时激活值，各种临时变量
-  - 还与sequence length, hidden size、batch size都有关系。
-- 目前A100、H100这样主流显卡单张是放不下，更别提国内中小厂喜欢用的A6000/5000、甚至消费级显卡。
 
 混合精度训练的迭代流程
 - ![](https://pic1.zhimg.com/80/v2-8aed207b50089e0f6598974edfaeabc8_1440w.webp)
@@ -47,7 +32,7 @@ PyTorch 里的 DataParallel 无法满足
 
 模型并行和流水线并行实现相对复杂，需要模型拆分、卡间通讯等。以及优化显存占用门槛高。
 
-这也是DeepSpeed被设计的初衷。
+这也是 DeepSpeed 设计初衷。
 
 
 ## DeepSpeed 框架演进
@@ -66,7 +51,9 @@ PyTorch 里的 DataParallel 无法满足
 
 ### Megatron-LM 介绍
 
-【2020-3-13】Megatron 是超大规模 Transformer 模型 **分布式训练**解决方案。字节、阿里和快手等公司都将其作为大模型训练框架。
+【2020-3-13】Megatron 是超大规模 Transformer 模型 **分布式训练**解决方案。
+
+字节、阿里和快手等公司都将其作为大模型训练框架。
 - 论文: [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/pdf/1909.08053.pdf)
 - 中文解读: [Megatron论文和代码详细分析](https://zhuanlan.zhihu.com/p/366906920)
   - intra-layer and inter-layer: **层间**并行和**层内**并行
@@ -94,7 +81,7 @@ Megatron-LM
 
 ### Megatron-LM-1
 
-利用了`张量并行`和`数据并行`
+利用 `张量并行`和`数据并行`
 
 ### Megatron-LM-2
 
@@ -194,16 +181,16 @@ Checkpointing Skipping
 
 ## Megatron-DeepSpeed
 
-`Megatron-DeepSpeed` 结合了两种主要技术：
+`Megatron-DeepSpeed` 结合两种主要技术：
 - `DeepSpeed` 是微软开发的深度学习**优化库**，分布式训练变得简单、高效和有效。
 - `Megatron-LM` 是由 `NVIDIA` 的应用深度学习研究团队开发的大型、强大的 **Transformer 模型框架**。
 
 DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）和`管道并行`（pipeline parallelism）与 `Megatron-LM` 中的`张量并行`（Tensor Parallelism）相结合，开发了一种基于 **3D 并行**的实现。
 
 `Megatron-DeepSpeed` 实施 3D 并行, 让大型模型训练更加高效。
-- `DataParallel` (DP) - 相同的初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
-- `TensorParallel` (TP) - 每个张量都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同的 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作横向并行。
-- `PipelineParallel` (PP) - 模型在多个 GPU 上垂直（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
+- `DataParallel` (DP) - 初始化模型被复制多次，并且每次都被馈送 minibatch 的一部分。处理是并行完成的，所有设置在每个训练步骤结束时进行同步。
+- `TensorParallel` (TP) - 每个`张量`都被分成多个块，因此不是让整个张量驻留在单个 GPU 上，而是张量每个分片都驻留在其指定的 GPU 上。在处理过程中，每个分片在不同 GPU 上分别并行处理，最终结果在步骤结束时同步。这也被称作`横向并行`。
+- `PipelineParallel` (PP) - **模型**在多个 GPU 上**垂直**（层级）拆分，因此只有模型的一个或多个层放置在单个 GPU 上。每个 GPU 并行处理管道的不同阶段，并处理一小部分批处理。
 - `零冗余优化器` (ZeRO) - 也执行与 TP 有点类似的张量分片，除了整个张量会及时重建以进行前向或反向计算，因此不需要修改模型。它还支持各种卸载技术以补偿有限的 GPU 内存。
 
 各个技术细节参考：[大型语言模型(LLM)训练指南](https://zhuanlan.zhihu.com/p/611325149)
@@ -211,10 +198,9 @@ DeepSpeed 团队通过将 `DeepSpeed` 库中的 `ZeRO 分片`（ZeRO sharding）
 
 ## DeepSpeed 介绍
 
-GPT-3把LLM参数量推到了**175B**，训练所需参数大小更是到达了万亿规模
+GPT-3把LLM参数量推到 **175B**，训练所需参数大小更是到达了万亿规模
 - Megatron 开始变得无能为力
-- 而DeepSpeed ZeRO方法问世, 解决了这个问题
-
+- 而 DeepSpeed ZeRO 方法问世, 解决了这个问题
 
 ## DeepSpeed 安装
 
@@ -245,14 +231,14 @@ ds_report
 
 ### HuggingFace
 
-Transformers中，`Trainer`集成核心的DeepSpeed功能
+Transformers中，`Trainer` 集成核心 DeepSpeed 功能
 
 HuggingFace 提供 DeepSpeed 集成，所需参数都可以由Transformer的`Trainer`自动指定。
 - DeepSpeed 在 HuggingFace Transformer 上更为便捷（DeepSpeed 可独立使用，并不依赖于Transformer）。
                         
 [原文](https://blog.csdn.net/weixin_43301333/article/details/127237122)
 
-作为Transformer的附属包安装
+作为 Transformer 附属包安装
 
 ```sh
 pip install transformers[deepspeed]
@@ -260,7 +246,7 @@ pip install transformers[deepspeed]
 
 ### 如何使用
 
-使用DeepSpeed之后，你的命令行看起来就会像下面这样：
+使用 DeepSpeed 后，命令行：
 
 ```sh
 deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
@@ -270,11 +256,10 @@ deepspeed --master_port 29500 --num_gpus=2 run_s2s.py \
 --deepspeed # 提供的config文件，用来指定许多DeepSpeed的重要参数。
 ```
 
-使用DeepSpeed的核心要点: 写一个config文件（.json，或json格式的配置文件）
+使用 DeepSpeed 核心要点: 写一个config文件（.json，或json格式的配置文件）
 - 指定想要的参数，例如，权衡时间和显存 (前文所提到的，这是一个很重要的权衡)。
 
 因此，最重要的是 `--deepspeed`，即提供的config文件，即ZeRO。
-
 
 【2023-9-16】[DeepSpeed：炼丹小白居家旅行必备](https://www.bilibili.com/video/BV1mN411n7eg)
 - 代码：[](https://github.com/OvJat/DeepSpeedTutorial)
@@ -296,7 +281,7 @@ deepspeed \
 
 ## DeepSpeed 原理
 
-DeepSpeed的核心思想: 
+DeepSpeed 核心思想: 
 > <span style='color:red'>GPU显存不够，CPU内存来凑</span>
 
 deepspeed 底层依赖 `torch.distribution` 、 `cuda` 等等. 
@@ -321,23 +306,27 @@ DeepSpeed 仅适用于:
   - i.e., 模型大到 `batch_size == 1`也跑不了
 - 用DeepSpped节省下来的显存，刚好够支持更大的batch_size。
 
-否则，使用DeepSpeed只会增加时间开销，并没有其他益处。
-- stage3 速度极其缓慢。
-  - 原先需要6h的训练过程，用 DeepSpeed stage3之后，运行了2天2夜，也没有结束的迹象。
+否则，使用 DeepSpeed 只会增加时间开销，并没有其他益处。
+- stage3 速度**极其缓慢**。6h -> 48h
+  - 原先需要**6h**的训练过程，用 DeepSpeed stage3之后，运行了**2天2夜**，也没有结束的迹象。
 - stage2 由于分配了模型参数到**多个设备**上，console 看不到任何输出信息（但是GPU还是在呼呼响，utility也为100%），不知道程序的运行进度，不友好。
 
-由于 DeepSpeed 通过占用CPU内存来减缓GPU的开销，当系统CPU不够的时候，DeepSpeed 进程就会自动被系统停止，造成没有任何报错，DeepSpeed无法启动的现象。
-- 建议用estimation估计一下CPU内存占用，然后用`free -h`查看一下机器的CPU内存空余量，来判断能否使用DeepSpeed。
+由于 DeepSpeed 通过占用CPU内存来减缓GPU的开销，当系统CPU不够时，DeepSpeed 进程就会自动被系统停止，造成**没有任何报错**，DeepSpeed无法启动的现象。
+- 建议用 estimation 估计一下CPU内存占用，然后用`free -h`查看一下机器的CPU内存空余量，来判断能否使用DeepSpeed。
 
 ### DeepSpeed 功能
 
-[DeepSpeed](https://www.deepspeed.ai/) 支持多种训练优化策略。包括：
-- 3D并行：数据并行、模型并行、流水线并行以及三者的混合使用
+[DeepSpeed](https://www.deepspeed.ai/) 支持多种训练优化策略：
+- 3D并行：`数据并行`、`模型并行`、`流水线并行`以及三者的**混合**使用
 - Zero Redundancy Optimizer（零冗余优化器）：ZeRO-0、ZeRO-1、ZeRO-2、ZeRO-3、ZeRO-Infinity
 - ZeRO-Offload ：卸载，支持将数据、梯度、优化器状态等下沉到 CPU 和 NVMe
 - 自定义混合精度训练训练：动态精度缩放（Dynamic Loss Scaling）和混合精度优化器（Mixed Precision Optimizer） 
 
-此外, [DeepSpeed](https://www.deepspeed.ai) 还提供许多大模型相关的工具，如分布式训练管理、内存优化和模型压缩等，以帮助开发者更好地管理和优化大规模深度学习训练任务。DeepSpeed在自然语言处理（NLP）和多模态等领域有许多成功的应用案例。DeepSpeed可以极大提升大模型的训练速度、降低训练门槛以及训练成本，并因具备完整健康的社区生态，提升大模型的可用性。让中小公司、独立研究人员解锁了训练具有超过1000亿个参数的模型的能力。
+此外, [DeepSpeed](https://www.deepspeed.ai) 还提供许多大模型相关的工具，如分布式训练管理、内存优化和模型压缩等，以帮助开发者更好地管理和优化大规模深度学习训练任务。
+
+DeepSpeed在自然语言处理（NLP）和多模态等领域有许多成功的应用案例。
+
+DeepSpeed可以极大提升大模型的训练速度、降低训练门槛以及训练成本，并因具备完整健康的社区生态，提升大模型的可用性。让中小公司、独立研究人员解锁了训练具有超过1000亿个参数的模型的能力。
 - 参考：[LAM](https://zhuanlan.zhihu.com/p/685472786)
 
 >- [DeepSpeed](https://www.deepspeed.ai/) is a deep learning optimization library that makes distributed training and inference easy, efficient, and effective.
@@ -351,11 +340,11 @@ DeepSpeed 仅适用于:
 
 `NVIDIA` 的 `Megatron` 和 微软的 `DeepSpeed`：
 
-DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span style='color:blue'>数据并行的优化版</span>。
-- DeepSpeed 假设了单层参数量可以在单张显卡上放得下，如果不满足这个假设，那么仍然需要使用模型并行，而且 DeepSpeed 的模型并行是通过调用 Megatron 来实现的。
-- 根据 NVIDIA 最新的那篇[论文](https://arxiv.org/abs/2104.04473)，`Megatron` 在大规模训练的效率是超过 `DeepSpeed` 不少的。
-- DeepSpeed 的论文一直强调：可以用更少机器训练更大的模型，但没有突出过在效率上的优势。
-- DeepSpeed 后来又出了一篇论文：[ZeRO-Infinity](https://arxiv.org/abs/2104.07857)，当单层参数量在单张显卡上放不下的时候，它通过对这一层算子切片，一片一片来执行，使得单卡也能跑起来一个巨大的层，可以理解成一种 “时间”轴上展开的模型并行。
+DeepSpeed 本质是“节省显存”的`数据并行`，即：<span style='color:blue'>数据并行的优化版</span>。
+- DeepSpeed 假设了**单层参数量在单张显卡上放得下**，如果不满足这个假设，那么仍然需要使用`模型并行`，而且 DeepSpeed 的`模型并行`是通过调用 Megatron 来实现的。
+- 根据 NVIDIA [论文](https://arxiv.org/abs/2104.04473)，`Megatron` 在大规模训练的效率是超过 `DeepSpeed` 不少的。
+- DeepSpeed 论文一直强调：用更少机器训练更大的模型，但没有突出过在效率上的优势。
+- DeepSpeed 又一篇论文：[ZeRO-Infinity](https://arxiv.org/abs/2104.07857)，当单层参数量在单张显卡上放不下的时候，它通过对这一层算子切片，一片一片来执行，使得单卡也能跑起来一个巨大的层，可以理解成一种 “时间”轴上展开的模型并行。
 
 
 ### DeepSpeed 文档
@@ -374,15 +363,16 @@ DeepSpeed 本质上是一种“节省显存”的数据并行，即：<span styl
 - **优化器**内存：存储优化器所需的任何额外状态所需的内存。
 - **激活**内存：存储在前向传递期间计算的中间值所需的内存。
 
+详见站内专题：[GPU显存分析](cpu_cost)
 
 ## DeepSpeed 框架
 
-[DeepSpeed](https://www.deepspeed.ai/getting-started/) 主要分成以下四个板块，包括：`Training`、`Inference`、`Compression`、`Science`
+[DeepSpeed](https://www.deepspeed.ai/getting-started/) 分成四个板块，包括：`Training`、`Inference`、`Compression`、`Science`
 - ![](https://pic1.zhimg.com/v2-a9ac939ec325cf859c282511ddd90f2c_b.jpg)
 
-DeepSpedd-Training 提供一套端到端大模型训练框架，核心板块。
-- 因为DeepSpeed 基于PyTorch搭建，且兼容 Transformers，新用户学习成本较低，可快速上手，快速实现自有工程的搭建。
-- 并且DeepSpeed在DeepSpeedExamples项目中提供了`DeepSpeed-chat`模块 ，完美复刻`InstructGPT`论文中RLHF训练方式，可以一键式完成大模型的SFT、Reward Model Finetuning、RLHF
+DeepSpeed-Training 提供一套**端到端**大模型训练框架，核心板块。
+- 因为 DeepSpeed 基于PyTorch搭建，且兼容 Transformers，新用户学习成本较低，可快速上手，快速实现自有工程的搭建。
+- 并且 DeepSpeed 在 DeepSpeedExamples项目中提供了`DeepSpeed-chat`模块 ，完美复刻`InstructGPT`论文中RLHF训练方式，可以一键式完成大模型的SFT、Reward Model Finetuning、RLHF
 - ![](https://pic3.zhimg.com/v2-28ace0f70b557dc6b6394171daeab912_b.jpg)
 
 [DeepSpeedExamples](https://github.com/microsoft/DeepSpeedExamples) 也提供 bert、gan、Stable Diffusion 微调案列，更方便的学习应用DeepSpeed。
@@ -397,9 +387,9 @@ DeepSpeed-Trianing 介绍
 通信策略优化
 - 为更好支持GPU、CPU上分布式训练及混合训练。DeepSpeed支持 `mpi`、`gloo` 和 `nccl` 等通信策略
 - Open MPI: 整合高性能计算社区中所有专家，技术和资源，以构建可用的最佳MPI库。
-- `Gloo`: facebook开源的一套集体通信库，提供对机器学习中有用的一些集合通信算法如：barrier, broadcast, allreduce
-- `nccl`: NVIDIA集体通信库（NCCL）实现NVIDIA GPU性能优化的多GPU和多节点**集体通信原语**。NCCL提供了诸如all-gather, all-reduce, broadcast, reduce, reduce-scatter等实现，优化后可以通过PCIe和NVLink等高速互联，高带宽和低延迟。 
-  - 因为NCCL则是NVIDIA基于自身硬件定制，能做到更有针对性且更方便优化，故在英伟达硬件上，NCCL的效果往往比其它通信库更好。
+- `Gloo`: facebook开源的集体通信库，提供对机器学习中有用的一些集合通信算法如：barrier, broadcast, allreduce
+- `nccl`: `NVIDIA集体通信库`（NCCL）实现NVIDIA GPU性能优化的多GPU和多节点**集体通信原语**。NCCL提供了诸如all-gather, all-reduce, broadcast, reduce, reduce-scatter等实现，优化后可以通过PCIe和NVLink等高速互联，高带宽和低延迟。 
+  - 因为 NCCL 则是NVIDIA基于自身硬件定制，能做到更有针对性且更方便优化，故在英伟达硬件上，NCCL的效果往往比其它通信库更好。
 - 选择策略: 
   - 如果在 CPU 集群上分布式训练，选择 `mpi` 和 `gloo`；
   - 如果在 GPU 上进行分布式训练，可以选择 `nccl`。
@@ -418,7 +408,6 @@ TencentPretrain 是一个用于对文本、图像、语音等模态数据进行�
 
 
 ## deepspeed 使用
-
 
 
 ### deepspeed 命令
@@ -2261,7 +2250,7 @@ python chat.py --path output/step3-models/1.3b/actor
 ## DeepSpeed 用法
 
 DeepSpeed 用法
-- 【2023-5-19】huggingface的[DeepSpeed文档](https://huggingface.co/docs/transformers/main/main_classes/deepspeed)的笔记：[DeepSpeed 入门教程](https://zhuanlan.zhihu.com/p/630734624?utm_psn=1751727518502281216)
+- 【2023-5-19】huggingface [DeepSpeed文档](https://huggingface.co/docs/transformers/main/main_classes/deepspeed)的笔记：[DeepSpeed 入门教程](https://zhuanlan.zhihu.com/p/630734624?utm_psn=1751727518502281216)
 
 DeepSpeed 支持功能
 - Optimizer state partitioning (ZeRO stage 1)
@@ -2279,7 +2268,7 @@ DeepSpeed 支持功能
 
 DeepSpeed 的 ZeRO config文件可分为几类：<span style='color:red'>优化器 → 梯度 → 参数 → offload</span>
 - `ZeRO Stage 1`: 划分optimizer states。
-  - 优化器参数被划分到多个memory上，每个momoey上的进程只负责更新自己那部分参数。
+  - 优化器参数被划分到多个memory上，每个momory 进程只负责更新自己那部分参数。
 - `ZeRO Stage 2`: 划分gradient。
   - 每个memory，只保留它分配到的optimizer state所对应的梯度。
   - 这很合理，因为梯度和optimizer是紧密联系在一起的。只知道梯度，不知道optimizer state，是没有办法优化模型参数的。
@@ -2293,9 +2282,9 @@ ZeRO 级别：
 | 级别 | 特点 | 作用 |
 | --- | --- | --- |
 | `Zero-0` |  | 不使用所有类型分片，仅使用DeepSpeed作为DDP |
-| `Zero-1` | 优化器状态 | 分割 Optimizer States， 减少4倍内存，通信容量和数据并行性相同 |
-| `Zero-2` | 梯度 | 分割 Optimizer States和Gradients，减少8倍内存，通信容量和数据并行性相同 |
-| `Zero-3` | 参数 | 分割 Optimizer States、gradients、Parametes，内存减少与数据并行度呈线性关系。例如，在64个GPU（Nd=64）之间进行拆分将产生64倍的内存缩减。通信量有50%的适度增长 |
+| `Zero-1` | 优化器状态 | 分割 Optimizer States， 减少**4倍**内存，通信容量和数据并行性相同 |
+| `Zero-2` | 梯度 | 分割 Optimizer States和Gradients，减少**8倍**内存，通信容量和数据并行性相同 |
+| `Zero-3` | 参数 | 分割 Optimizer States、gradients、Parameters，内存减少与数据并行度呈线性关系。例如，在64个GPU（Nd=64）之间进行拆分将产生64倍的内存缩减。通信量有50%的适度增长 |
 | `Zero-Infinity` | 参数+offload | Zero-Infinity是 Zero-3 扩展，通过使用 NVMe **固态硬盘**扩展 GPU 和 CPU 内存来训练大型模型 |
 
 Zero stage和offload
