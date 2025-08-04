@@ -33,6 +33,15 @@ permalink: /context
 
 > 上下文负责铺路，而提示工程教你怎么走，提示工程是上下文工程的子集。
 
+综述
+- 【2025-7-21】论文 [Title: A Survey of Context Engineering for Large Language Models](https://arxiv.org/pdf/2507.13334)
+- 代码 [Code Repository](https://github.com/Meirtz/Awesome-Context-Engineering)
+
+上下文工程（Context Engineering）是一门生成、获取、处理与管理语言模型智能体上下文信息的艺术。
+
+本文对该领域进行了系统梳理与分类，总结了其核心构成要素及典型应用场景。将现有研究划分为三类基础能力组件（Context Retrieval and Generation、Context Processing、Context Management）和四种系统实现（RAG、Memory Systems、Tool-Augmented Reasoning、多智能体系统），并分析其在Prompt Engineering、Memory机制、Agent通信与调度等方面的具体应用。
+
+此外，重点讨论当前大模型在“context scaling”层面的发展瓶颈与挑战，指出真正的上下文扩展不仅涉及长度问题，更包括对信息类型、结构与动态处理机制的扩展。我们进一步总结了LLM在处理复杂关系型和结构化数据方面的最新进展与未来方向。
 
 ## 背景
 
