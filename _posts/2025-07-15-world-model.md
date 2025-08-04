@@ -3,7 +3,7 @@ layout: post
 title:  世界模型 World Model
 date:   2025-07-15 12:00:00
 categories: 大模型
-tags: LLM AGI 世界模型 系统 快思考 慢思考 因果
+tags: LLM AGI 世界模型 系统 快思考 慢思考 因果 模拟器
 excerpt: 世界模型专题笔记
 mathjax: true
 permalink: /world_model
@@ -58,14 +58,14 @@ Causal AI 长时间在商业领域裹足不前的主因: Causal Modeling 过程*
 ## 什么是世界模型
 
 【2024-2-22】[什么是world models/世界模型](https://zhuanlan.zhihu.com/p/661768957)
-- OpenAI的介绍材料中称Sora是 “world simulator”
+- OpenAI 介绍材料中称 Sora 是 “world simulator”
 
 AI领域提到 **世界**/world、**环境**/environment 这个词时，通常是为了与 **智能体**/agent 加以区分。
 
 研究智能体最多领域，一个是`强化学习`，一个是`机器人`领域。
 - 因此，world models、world modeling 最早常出现在**机器人**领域的论文中。
 
-而 world models 这个词影响最大的可能是 Jurgen 2018年放到arxiv的论文, 以“world models”命名，该文章最终以 “Recurrent World Models Facilitate Policy Evolution”的title发表在NeurIPS‘18。
+而 world models 这个词影响最大的可能是 Jurgen 2018 年放到arxiv的论文, 以“world models”命名，该文章最终以 “Recurrent World Models Facilitate Policy Evolution”的title发表在NeurIPS‘18。
 - 论文没有定义什么是World models，而是类比了认知科学中人脑的mental model，引用了1971年的文献
 - Wikipedia中介绍mental model是很明确的指出其可能参与认知、推理、决策过程。
   - mental model 主要包含 mental representations 和 mental simulation 两部分。
@@ -75,6 +75,8 @@ AI领域提到 **世界**/world、**环境**/environment 这个词时，通常�
 - 纵向 V->z: 观测的低维表征，用VAE实现
 - 水平的M->h->M->h: 序列预测下一个时刻的表征，用RNN实现
 - 这两部分加起来就是World Model。
+
+
 
 World model 主要包含**状态表征**和**转移模型**，正好对应mental representations 和 mental simulation。
 
@@ -123,6 +125,24 @@ LeCun 提出了构建「世界模型」想法，并在一篇题为《A path towa
 - 短期记忆模块（Short-term memory module）。
 
 这些模块的具体信息参考：[图灵奖获得者 Yann LeCun：未来几十年 AI 研究的最大挑战是「预测世界模型」](https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650839081&idx=1&sn=f014b639541de68d7a115aa1ad96b33f&chksm=84e55c57b392d54104e20026682164235cc95892c7313c12bc7219ca0010982de9d3afb6a9db&scene=21#wechat_redirect), 文章中包含视频讲解
+
+
+### 世界模型 vs 模拟器
+
+【2025-7-28】 [从视频生成到世界模型](https://www.xiaohongshu.com/explore/6887136d000000000b02dc15)
+- 刘威 前腾讯杰出科学家、混元大模型技术负责人：现在为Video Rebirth首席执行官
+
+`世界模型` = `世界模拟器` + `世界预测器`
+
+模拟器主题见站内专题：[用户模拟器](user_simulator)
+
+世界模型需要解决的关键问题
+- 因果推理: 生成遵循时间单向性，过去状态决定未来演化，不违反因果关系
+- 物理准确: 生成内容符合真实物理规律和常识逻辑
+- 持续一致: 连续生成长时段视频内容，整个序列中保持人物、物体、背景的前后一致性
+- 实时交互: 实时响应用户lAgent输入，低延迟地动态生成
+
+
 
 ## 如何构建世界模型
 
