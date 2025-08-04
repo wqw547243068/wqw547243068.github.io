@@ -3,7 +3,7 @@ layout: post
 title:  LLM 发展方向
 date:   2024-11-20 12:00:00
 categories: 大模型
-tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲 自学习 符号主义
+tags: gpt LLM 大模型 AGI 世界模型 系统 快思考 慢思考 灾难 遗忘 幻觉 推理  可解释  norm 大脑 类脑 json 缩放定律 鹦鹉 意识 o1 ttt ssm mamba 脉冲 自学习 符号主义 周志华
 excerpt: 大模型会往哪个方向发展？
 mathjax: true
 permalink: /llm_direction
@@ -873,9 +873,22 @@ LLM 内部学会符号机制来做抽象reasoning
 - 可据此设计更高效的符号-神经混合架构，显式增强这三大机制；
 
 
-### 类脑
+### ABL-Refl
 
-#### 2024.7.11 Yan
+【2025-2-8】周志华团队[ABL-Refl]()革新 神经符号推理 Neuro-Symbolic (NeSy) AI
+- [Efficient Rectification of Neuro-Symbolic Reasoning Inconsistencies by Abductive Reflection](https://arxiv.org/pdf/2412.08457)
+- Abductive Reflection (ABL-Refl) based on the Abductive Learning (ABL) framework
+
+神经符号人工智能类比人类双过程认知，但复杂任务中常出现与领域知识不一致的输出，纠正困难。
+	
+受人类认知反思启发，研究在溯因学习框架上提出`溯因反思`（ABL-Refl），利用领域知识生成反思向量，标记并纠正神经网络输出错误，生成一致结果。
+	
+其效率远高于以往溯因学习实现，实验显示性能优于主流神经符号方法，能以更少训练资源获高准确率，且效率提升。
+
+
+## 类脑
+
+### 2024.7.11 Yan
 
 
 【2024-7-11】 RockAI 推出 Yan 模型，放弃transformer架构, 探索类脑思路
@@ -933,7 +946,7 @@ OpenAI GPT 在attention路上深耕，并非唯一出路。
 机器人
 - 宇树科技、智源，机器人行业还需要5年沉淀
 
-#### 2024.8.25 内生复杂性类脑网络
+### 2024.8.25 内生复杂性类脑网络
 
 【2024-8-25】[放弃Scaling Law！中科院、清北提出内生复杂性类脑网络：让AI像人脑一样“小而强”](https://mp.weixin.qq.com/s/BiR9DQcCdXVbN7L1SoEbXg)
 
@@ -970,7 +983,7 @@ AI 中内部与外部复杂性之争仍然开放，两种方法在未来发展�
 - 此外，由于神经元**非线性**和**脉冲机制**的局限性，本研究仅在小型网络中进行了，未来将研究更大规模的网络和单个网络中多种神经元模型的影响。
 
 
-#### 【2024-12-17】天琴
+### 【2024-12-17】天琴
 
 【2024-12-17】[全球首台100亿神经元类脑异构融合智算在横琴诞生](https://pc.nfnews.com/38828/10354522.html)
 
