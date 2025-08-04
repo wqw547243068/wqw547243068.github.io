@@ -546,6 +546,22 @@ LLMs 显示结构化推理时，会隐式跟踪其在思考阶段的相对位置
 详见站内专题：[大模型+因果推断=？](llm_casual)
 
 
+### 图神经网络
+
+图神经网络与LLM结合提升推理能力
+	
+【2023-11-21】港科大、港中文 GNN 与 LLM 结合，在知识图谱问答中优化图结构的建模，使得模型不仅能生成自然语言答案，还能从图谱中进行推理。
+- 论文 [A Survey of Graph Meets Large Language Model: Progress and Future Directions](https://arxiv.org/pdf/2311.12399v1.pdf)
+
+通过对齐技术将GNNs和LLMs语义上融合在一起。这类方法可以进一步细分为对称对齐和非对称对齐
+- 对称对齐方法将GNNs和LLMs映射到相同的向量空间，从而引入文本知识；
+- 而非对称对齐方法则通过不同的方式将GNNs和LLMs结合在一起。
+
+通过改进图神经网络的训练方式，提升模型在复杂知识图谱上的推理效果。
+
+- 模型参考：GAT
+- 数据集：ConceptNet
+
 
 ## cot 过时
 
