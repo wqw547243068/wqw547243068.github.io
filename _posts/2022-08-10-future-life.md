@@ -7,7 +7,7 @@ tags: 经济 房产 金融 互联网 gdp 未来 kfk 智囊团 制造 产业 玩�
 author : 鹤啸九天
 excerpt: 经济不景气，后面会变好吗？未来社会、经济等会朝着什么方向发展？
 mathjax: true
-permalink: /future
+permalink: /future_life
 ---
 
 * content
