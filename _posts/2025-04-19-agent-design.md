@@ -2252,15 +2252,6 @@ However, the interplay between multiple design spaces, including prompts and top
 
 
 
-### ZeroGraph
-
-【2025-7-16】ZeroGraph: 让 Al Agent 构建 AI Agent.
-- 未找到官方信息
-
-还在手动拖拽n8n、Dify的工作流，或在ComfyUI 的节点迷宫里挣扎？是不是觉得，这种方式不够"AI"?
-
-未来，属于Agentic Programming, 让 Al Agent 自己理解任务、分解问题，甚至动态生成和优化工作流
-
 
 ### 【2024-8-15】ADAS
 
@@ -2416,6 +2407,54 @@ Agent超网是一个**级联**的**多层**工作流，包括
 - （I）仅需现有手工制作或自动化多智能体系统推理成本的 6% - 45%
 - （II）高出 0.54% - 11.82%，并且
 - （III）具有卓越的跨数据集和跨大语言模型骨干的可转移性。
+
+### 【2025-7-16】ZeroGraph
+
+【2025-7-16】ZeroGraph: 让 Al Agent 构建 AI Agent.
+- 未找到官方信息
+
+还在手动拖拽n8n、Dify的工作流，或在ComfyUI 的节点迷宫里挣扎？是不是觉得，这种方式不够"AI"?
+
+未来，属于Agentic Programming, 让 Al Agent 自己理解任务、分解问题，甚至动态生成和优化工作流
+
+
+
+
+### 【2025-7-30】MetaAgent
+
+
+【2025-7-30】威斯康星大学：自动构建多智能体系统
+- [MetaAgent: Automatically Constructing Multi-Agent Systems Based on Finite State Machines](https://arxiv.org/pdf/2507.22606v1)
+- 代码 [MetaAgent](https://github.com/SafeFoLab-WISC/MetaAgent)
+
+#### MetaAgent 介绍
+
+MetaAgent 是基于`有限状态机`（FSM）的自动化多智能体系统构建框架。
+
+只需输入任务描述，系统就能自动设计合适的多智能体结构，并通过优化算法完善每个环节，无需繁琐的人工编写和调试。
+
+#### 特点
+
+和现有方法有何不同？
+
+相比传统人工设计或自动化方法，MetaAgent 支持**工具集成**、无需外部训练数据，并能灵活实现“状态回溯”——发现错误可自动回到前一步修正。
+
+通过状态机机制，让每个 Agent 明确分工并动态协作，极大提升了系统的通用性和鲁棒性。
+
+创新和意义
+
+MetaAgent 主要创新在于用有限状态机框架统一了多智能体系统的设计，支持“工具赋能”和“状态回溯”，让系统能自动调优、动态修正，适应更广泛的实际场景。
+
+对于AI研究者和工程师来说，这意味着可以低成本、高效率地开发和部署更强大的多智能体系统，推动智能体技术的产业落地。
+	
+
+#### 效果
+
+文本生成、机器学习、软件开发等多种任务上，MetaAgent 自动生成的多智能体系统不仅超越了目前主流的自动化设计方法，在部分任务上还能达到与顶尖人工系统相当的效果。
+
+比如，在文本任务中，MetaAgent 比最强的 prompt-based 方法高出9%，在机器学习任务的多个数据集上也达到或接近最佳表现。
+	
+
 
 
 ## Agent 进化
