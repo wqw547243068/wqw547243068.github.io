@@ -2427,11 +2427,16 @@ Agent超网是一个**级联**的**多层**工作流，包括
 - [MetaAgent: Automatically Constructing Multi-Agent Systems Based on Finite State Machines](https://arxiv.org/pdf/2507.22606v1)
 - 代码 [MetaAgent](https://github.com/SafeFoLab-WISC/MetaAgent)
 
+#### 起因
+
+现有人工设计的多智能体框架通常局限于少量预定义任务，缺乏通用性，还存在工具集成不足、依赖外部训练数据、通信结构僵化等问题 。
+
+
 #### MetaAgent 介绍
 
-MetaAgent 是基于`有限状态机`（FSM）的自动化多智能体系统构建框架。
 
-只需输入任务描述，系统就能自动设计合适的多智能体结构，并通过优化算法完善每个环节，无需繁琐的人工编写和调试。
+MetaAgent，这是一个基于`有限状态机`（FSM）的框架，可针对给定任务描述，自动生成多智能体系统。
+- 给定任务的大致描述后，MetaAgent 会先设计多个智能体以解决任务，再基于解决任务时可能涉及的场景，对这些智能体所需执行的行动进行总结和梳理，每个状态包含对应的任务解决步骤 。
 
 #### 特点
 
