@@ -20,6 +20,7 @@ permalink: /world_model
 - Transformer学派（如GPT系列）侧重于大数据驱动的自回归学习，最近发布的Sora体现的涌现能力初步隐含着通用人工智能的韵味。
 - 杨立昆（Yann LeCun）为代表的世界模型学派。世界模型学派则认为需要通过构建对世界的内在理解，强调常识性知识和环境交互
 
+「世界模型」被业界看作是通往AGI道路上的关键基石，让AI智能体在无限丰富的模拟环境中接受训练。
 
 ## 因果推理
 
@@ -386,6 +387,41 @@ PAN架构严格遵循以下五大设计准则：
 
 两者形成双向增强循环，这种协同改变了传统机器人“盲目执行指令”的局限。
 - ![](https://pic2.zhimg.com/v2-594de454510707939eb7c508d4d147c7_1440w.jpg)
+
+
+### Genie
+
+#### Genie 1/2
+
+2024年，谷歌 `DeepMind` 首次放出世界模型——`Genie 1`和G`enie 2`，为AI智能体生成全新环境。
+
+#### Genie 3
+
+
+Genie 3是首个支持「实时交互」的世界模型，相较于Genie 2，一致性和真实感均有提升，而且时间更长，几分钟，内容还能保持连贯性。
+
+【2025-8-5】Genie 3，一句话生成动态世界。
+- DeepMind 官网:[Genie 3: A new frontier for world models](https://deepmind.google/discove)
+
+功能
+- 每秒20-24帧速度，实时生成720p画面
+- 还能持续数分钟一致性
+
+![](https://picx.zhimg.com/80/v2-852cc4be9bbb8b23eefb3afa4165023e_1440w.webp?source=2c26e567)
+
+Genie 3升级点
+- 生成时长史诗级加强——一口气能搞定长达数分钟，且内容连贯的可交互世界。
+
+原理：
+- 通过自回归方式逐帧生成，Genie 3 能在几分钟内保持环境物体和细节的一致性，视觉记忆最长可达一分钟。
+- Genie 3一致性是涌现能力。NeRFs和高斯溅射（Gaussian Splatting）也能实现一致的可导航3D环境，但依赖显式3D表征。相比之下，Genie 3 生成的世界则远为动态和丰富，因为模型根据世界描述和用户行为逐帧创造
+
+Genie 3 问世，标志着世界模拟AI迈向了全新高度，加速了人类通向AGI/ASI的终极目标
+
+![](https://pic1.zhimg.com/80/v2-060df672ed57b04e9b95a8dcdebb6b7b_1440w.webp?source=2c26e567)
+
+![](https://pic1.zhimg.com/80/v2-50a9b7ef0fe3a7e22bd8ebfac35358a2_1440w.webp?source=2c26e567)
+
 
 
 
