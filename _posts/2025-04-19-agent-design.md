@@ -2408,6 +2408,44 @@ Agent超网是一个**级联**的**多层**工作流，包括
 - （II）高出 0.54% - 11.82%，并且
 - （III）具有卓越的跨数据集和跨大语言模型骨干的可转移性。
 
+### 【2025-5-29】MermaidFlow
+
+
+【2025-7-28】[告别脆弱Agent系统：一图读懂MermaidFlow，下一代多智能体LLM工作流演化引擎](https://mp.weixin.qq.com/s/aVAG4Up5D8uAJ-_3Wcm1Yg)
+
+MermaidFlow通过引入声明式、有类型的workflow表示与约束演化算法，为多智能体LLM系统的生成计划与执行带来了前所未有的可解释性、安全性与泛化能力。
+
+它不再让LLM“盲写代码”，而是在一个编译器友好、结构可控、可调试的图空间中优化任务规划 —— 开启了Agentic Workflow进化的“结构纪元”。
+
+当前多智能体系统为何频繁掉点？不是模型不行，而是工作流设计太脆弱、太混乱
+
+workflow往往以Python代码或JSON等形式隐式表达，**缺乏结构化表达与验证机制**，导致生成结果常常不可执行、不可复用、难以调试。这种不安全、不健壮的生成方式成为多智能体系统的主要瓶颈。
+
+A*STAR 与 NTU 论文 MermaidFlow 提出解决方案 —— 用**声明式**图语言`Mermaid`重构Agent工作流表达，并引入**进化式**优化机制，让每一个任务规划既长得美又能执行。
+- 论文：【ICML 2025】2025.05.29_[MermaidFlow: Redefining Agentic Workflow Generation via Safety-Constrained Evolutionary Programming](https://arxiv.org/abs/2505.22967)
+- 官方代码：[MermaidFlow](https://github.com/chengqiArchy/MermaidFlow)
+
+
+新框架：MermaidFlow 核心创新包括：
+1. Mermaid 声明式工作流表示法
+  - 使用类 DSL语言 Mermaid 描述 agentic workflow，使得每个节点和边都具备明确的类型、角色语义与连接逻辑。
+  - 工作流表示为有向图 `G(V[τ, α], E[ρ])`，支持静态类型检查和图可视化。
+2. 安全约束的演化式编程
+  - 定义结构安全的图操作：如节点替换、子图变换、交叉、插入与删除，确保变异后的workflow依旧合法（闭合于合法空间 S）。
+  - 基于历史工作流构建优化过程，提升搜索效率与泛化能力。
+3. “LLM作为裁判”与“编译器检查器”
+  - 用LLM评价workflow语义有效性，同时配合Mermaid parser进行语法检查，避免不合法或非结构化的结果。
+
+所有任务上, MermaidFlow 均优于13个现有基线方法，如: MaAS、AutoAgents、AFlow等。
+- 平均精度达80.75%，超越最强基线`MaAS`的79.35%。
+- 结构复杂、基准分数低的任务（如MATH、MBPP）上，改进尤为显著。
+
+优势：
+- 提高了可执行性与结构健壮性；
+- 显著加快了收敛速度；
+- 构建出更可视、可复用、可验证的workflow空间。
+
+
 ### 【2025-7-16】ZeroGraph
 
 【2025-7-16】ZeroGraph: 让 Al Agent 构建 AI Agent.
