@@ -523,8 +523,56 @@ CRMAgent 不仅分工细致，支持多种数据场景，还通过“组内学�
 京东电商agent方案：
 - 有memory，将agent决策抽象成四维空间，包括直接回复，意图识别，工具召回，工具调用，结合用户数据整体联合训练
 
-【2025-6-24】韩艾
+【2024-5-22】[京东商家智能助手：Multi-Agents 在电商垂域的探索与创新](https://news.qq.com/rain/a/20240522A05F9300)
+- 《京东商家智能助手：AI 多智能体系统在电商垂域的探索与创新》演讲阐述了 Multi-Agents 如何模拟真实的商家经营，并介绍 ReAct 范式的 Multi-Agent 在线推理架构，以及 Agent 落地垂域的样本、训练与评估监控的方法
+
+京东零售基于 Multi-Agents 理念搭建了商家助手大模型在线推理服务架构，这一系统的核心是算法层基于 ReAct 范式定制多个 LLM AI Agents，每个 Agent 都有专门业务角色和服务功能，可以调用不同的工具或多 Agent 协同工作来解决相应的问题。
+
+平台向商家传递各种各样的信息，包括新的玩法、新的规则条款，以及可能的惩罚通知等。面对平台的各种消息和随之而来的疑问，商家需要一个经营助手协助，他通常扮演着一个专门提供平台知识百科的咨询顾问角色。
+
+当商家提出赔付、运费等与业务相关的复杂问题，需要先理解需求，然后从长篇的业务文本中抽取出问题解决的大方向或目标。定位问题后，形成逐步的解题思路，再灵活调用各种资源和工具来解决问题，其中包括调用知识库、进行搜索和检索，以及使用人脑进行总结和筛选重点内容。经过这一系列操作后将问题的最终答案返还给商家。
+
+从商家的需求出发：无论谁在回答问题，对商家来说都只有一个人帮助他们解答问题。因此，构建一个 Agent 即可，它映射到为商家提供专属咨询服务的多个业务岗位的人。
+
+商家提出问题：“最近我的店铺经营得怎么样？”
+
+【2025-6-24】京东集团算法总监 韩艾
 - 论文 [NaviAgent: Bilevel Planning on Tool Dependency Graphs for Function Calling](https://arxiv.org/pdf/2506.19500)
+
+NaviAgent, a graph-navigated bilevel planning architecture for robust function calling, comprising a Multi-Path Decider and GraphEncoded Navigator
+- the Multi-Path Decider defines a four-dimensional decision space and continuously perceives environmental states, dynamically selecting the optimal action to fully cover all tool invocation scenarios. 
+- The Graph-Encoded Navigator constructs a Tool Dependency Heterogeneous Graph (TDHG), where node embeddings explicitly fuse API schema structure with historical invocation behavior
+
+Experiments show that NaviAgent consistently achieves the highest task success rate (TSR) across all foundation models and task complexities, outperforming the average baselines (ReAct, ToolLLM, α-UMI) by 13.5%, 16.4%, and 19.0% on Qwen2.5-14B, Qwen2.5-32B, and Deepseek-V3, respectively. 
+
+Its execution steps are typically within one step of the most efficient baseline, ensuring a strong balance between quality and efficiency. Notably, a finetuned Qwen2.5-14B model achieves a TSR of 49.5%, surpassing the much larger 32B model (44.9%) under our architecture. Incorporating the Graph-Encoded Navigator further boosts TSR by an average of 2.4 points, with gains up over 9 points on complex tasks for larger models (Deepseek-V3 and GPT-4o), highlighting its essential role in toolchain orchestration.
+
+
+#### JDAgents-R1
+
+【2025-6-24】京东集团算法总监 韩艾
+- 讲座 [JDAgents-R1：基于强化学习的异构多智能体联合进化算法](https://aicon.infoq.cn/2025/beijing/presentation/6527)
+
+多智能体强化学习（MARL）已成为处理日益复杂任务的重要范式。然而，**异构智能体**之间的联合进化, 仍面临合作效率低与训练不稳定等挑战。
+
+京东提出了一种面向 MARL 的联合进化算法框架 [JDAgents-R1]()，该方法首次将`组相对策略优化`（GRPO）应用于异构多智能体的联合训练中。
+- 通过迭代优化智能体的大语言模型（LLMs）与自适应记忆机制，`JDAgents-R1`实现了**决策**能力与**记忆**能力的动态均衡，并能有效减少重复推理、加快训练收敛。
+- 在通用场景以及商家定制化场景中的实验表明，JDAgents-R1 在基于更小规模开源模型的情况下，依然能够达到与大规模语言模型相媲美的性能表现。
+
+大纲
+- JDAgents-R1: 联合进化算法方案
+  - 多智能体协作
+  - GRPO联合训练算法技术
+- Memory更新技术
+- 电商领域落地实战
+  - 通用与垂直领域任务
+  - 商家多智能体联合进化
+
+
+
+#### NaviAgent
+
+
 
 
 
