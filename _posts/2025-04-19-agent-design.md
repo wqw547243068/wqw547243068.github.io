@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化  自动化
+tags: Agent 多模态 agi 自学习 进化  自动化 训练
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
@@ -2602,6 +2602,28 @@ AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方�
 
 
 
+
+## Agent 训练
+
+
+### 【2025-8-5】微软 Agent Lightning
+
+
+【2025-8-5】
+- 论文 [Agent Lightning: Train ANY AI Agents with Reinforcement Learning](https://arxiv.org/pdf/2508.03680)
+- 代码 [agent-lightning](https://github.com/microsoft/agent-lightning)
+
+微软提出 Agent Lightning，灵活且可扩展的**框架**，支持基于`强化学习`（RL）的`大模型`（LLMs）训练，适用于**任何**AI 智能体。
+
+与现有方法将**RL 训练与智能体紧密耦合或依赖序列拼接与掩码**不同，Agent Lightning 实现了**智能体执行与训练的完全解耦**，使得与通过多种方式开发的现有智能体（如使用LangChain、OpenAI Agents SDK、AutoGen 等框架，或从零构建）几乎无需代码修改即可无缝集成。
+
+通过将智能体执行建模为`马尔可夫决策过程`，定义统一的数据接口，并提出了一种分层RL 算法——LightningRL，其包含信用分配模块，将任何智能体生成的轨迹分解为训练转移。
+
+这使得RL能够处理复杂的交互逻辑，如多智能体场景和动态工作流。
+
+在系统设计上，引入了**训练-智能体分离**架构，并将智能体可观测性框架融入智能体运行时，提供了标准化的智能体微调接口。
+
+在文本到SQL、检索增强生成和数学工具使用等任务上的实验展示了稳定、持续的改进，证明了该框架在实际智能体训练与部署中的潜力。
 
 
 # 结束
