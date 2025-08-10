@@ -63,6 +63,33 @@ Hinton：智力在于学习, 而不是推理
 推理LLMs 时间表：6个路线上进化过程
 - ![](https://pic1.zhimg.com/80/v2-928b5332cde0d440bdfbd5cb484f9bd0_720w.webp)
 
+
+## CoT RL
+
+【2025-1-25】[新智能引擎：基于思维链的强化学习](https://thekaiway.com/2025/01/25/reasoning-model/)
+
+RLHF vs CoT RL 
+- RLHF：通常用人工标注或人工反馈打分，数据昂贵且容易产生“对齐税”；
+- CoT RL：利用客观题（如数学、编程）自判正误，极大提升训练规模与深度，同时使模型在思维链生成和自我纠错方面更为主动。这种自由思考被认为是真正的“推理能力”的培养，而不只是对齐。
+
+CoT RL 崛起脉络：
+- 2024年7月15日，OpenAI “`Strawberry`” 传闻流出，被认为是对 CoT RL 实验成功的内部代号。
+- 2024年9月12日，OpenAI 发布 `o1-preview` 与 `o1-mini`（后者通常被视作蒸馏版本）。
+- 2024年11月20日，DeepSeek 发布 `R1-Lite`，暗示其在高级推理方面也有进展；
+- 2024年11月21日，阿里巴巴发布 `Macro-o1`，Qwen 发布 `QwQ-32B-Preview` 等。
+- 2024年12月5日，OpenAI 用 o1 替换 o1-preview 并推出 `o1 Pro`，已准备好模型可运行在“更长推理时间”模式。
+- 2024年12月14日，Ilya（OpenAI 联合创始人）在演讲中说：“Pre-Training as we know it will end”，此时主流媒体解读为模型性能已经到达瓶颈点。
+- 2024年12月20日，OpenAI 宣布性能远超 o1 的 `o3` 模型，并开放早期使用申请；
+- 同日，Google 发布 `Gemini 2.0 Flash Thinking`（外界猜测是其内部“大模型推理蒸馏”版本）。
+- 2025年1月20日，DeepSeek 发布 `R1`，Kimi 也发布了 `kimi-1.5`。这两家机构的技术报告明确展示如何在“大模型+CoT+RL”上实现自我迭代训练，标志着 reasoning model 重现方法 已几乎“被说明白”。
+
+从这一连串事件可见：
+- 大型研究机构与顶尖公司几乎在同一时期转向“`CoT RL`”。
+- OpenAI 的 o1、o1-pro 以及后续的 o3 都在强化“长推理”和“推理时间可调”的理念，Google 的 Gemini 2.0 Flash 系列也被认为采用了类似技术，只是未公开细节。
+
+
+![](https://thekaiway.com/images/reasoning-model-diagram.png)
+
 ## OpenAI 推理模型
 
 
@@ -674,13 +701,13 @@ ARQ在所有测试中取得了最高的成功率（90.17%），优于思维链�
 
 作者：[windinrain](https://www.zhihu.com/question/11667247329/answer/120297805134)
 
-### CoT 假象
+### 【2025-7-2】CoT 假象
 
 【2025-7-2】[Bengio亲手戳穿CoT神话！LLM推理是假象，25％顶会论文遭打脸](https://zhuanlan.zhihu.com/p/1923792976229954144)
 
-Bengio 最新论文戳穿了**CoT神话**——我们所看到的推理步骤，并不真实。不仅如此，LLM在推理时会悄然纠正错误，却在CoT中只字未提。
+Bengio 最新论文戳穿了**CoT神话**——我们所看到的推理步骤并不真实。不仅如此，LLM在推理时会悄然纠正错误，却在CoT中只字未提。
 
-牛津、谷歌DeepMind、Mila多家机构联手论文指出——思维链并非可解释性。
+牛津、谷歌 DeepMind、Mila 多家机构联手论文指出——**思维链并非可解释性**。
 - 论文 [Chain-of-Thought Is Not Explainability](https://www.alphaxiv.org/abs/2025.02)
 
 这一观点彻底打破了许多人的认知：
@@ -766,6 +793,24 @@ LLM 往往通过多条冗余计算路径得出相同结论。
 3. 借鉴**认知科学**：模仿人类的错误监控、自我修正叙事和双重过程推理（直觉+反思），让AI的解释更接近真实。
 4. 强化**人工监督**：开发更强大的工具，让人类专家能够审查和验证AI的推理过程，确保其可信度。
 
+### 【2025-8-5】CoT 不是真思考
+
+CoT仍不是真思考，仍是**文本模拟器**！
+- 【2025-8-5】亚利桑那州立大学 论文：[Is Chain-of-Thought Reasoning of LLMs a Mirage? A Data Distribution Lens](https://www.alphaxiv.org/abs/2508.01191v2)
+- GitHub: [DataAlchemy](https://github.com/ChengshuaiZhao0/DataAlchemy).
+
+结论
+1. CoT推理如同虚幻的海市蜃楼，一旦超出训练分布便会烟消云散。
+2. 这项研究对CoT推理失败的原因和时间提供了更深入的理解，并强调了实现真正且可推广的推理的持续挑战。
+3. 研究结果表明，CoT 推理在应用于**分布内**或**近分布**时有效。但即使在适度分布变化下，分布数据也会变得脆弱并容易失败。
+
+某些情况下， (LLM) 会生成流畅但逻辑上不一致的推理步骤。
+
+结果表明
+- 看似结构化的推理可能只是幻象，源于训练数据中记忆或插入的模式，而非逻辑推理。
+
+这些发现表明
+- <span style='color:red'>llm不是原则性推理者，而是复杂的推理文本模拟器</span>。
 
 
 ### LLM 不会推理
