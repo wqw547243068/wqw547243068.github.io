@@ -37,6 +37,11 @@ Qwen2.5-Omni 在保持全能的同时，并没有牺牲在各个垂直领域的�
 - 中文介绍: [Qwen2.5-Omni](https://github.com/QwenLM/Qwen2.5-Omni/blob/main/README_CN.md)
 - 视频介绍: [Video](https://www.youtube.com/watch?v=UF55yM67EH0)
 
+
+Qwen2.5-Omni 和 VL 区别
+- 🔸Qwen2.5-Omni：能听懂、看懂、读懂你，还能实时语音回应你的全能选手
+- 🔸Qwen2.5-VL：专注于图像解析、内容识别、视觉逻辑推导的视觉语言专家
+
 #### 特点
 
 特点
