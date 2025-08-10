@@ -3,7 +3,7 @@ layout: post
 title:   大模型微调 LLM Finetune
 date:   2023-09-01 16:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习 rft
+tags: OpenAI ChatGPT AI 微调 吴恩达 灾难遗忘 正则 蒸馏 peft lora 罗福莉 强化学习 rft gptoss
 excerpt: GPT之类大模型微调方法
 mathjax: true
 permalink: /finetune
@@ -2027,6 +2027,29 @@ Answer
 
 
 简单微调过后不用写prompt也能让gpt-3.5-turbo-0613有更加专业的回复
+
+
+### GPT-oss
+
+
+【2025-8-10】GPT-OSS 微调指南：免费Colab notebooks实战
+- [小红书](https://www.xiaohongshu.com/explore/68970ad20000000022022374)
+
+用 unsloth 笔记本免费微调 OpenAI gpt-oss
+- Unsloth训练速度提升**1.5倍**，显存占用减少**70%**，支持10倍更长的上下文且无精度损失。
+- 20B参数模型仅需14GB显存，120B参数模型仅需65GB GPU。
+
+unsloth 还分享了针对 gpt-oss 实现的修复方案和调研成果，以及如何让20B参数模型在仅14GB显存上运行。
+
+unsloth为OpenAI的gpt-oss模型修复了一些问题：
+1. Jinja模板包含多余的换行符，无法正确解析思考部分，工具调用渲染也不正确
+2. 某些版本缺少<|channel|>final标签——这是必需的！
+3. F16数值溢出问题：建议使用F32+BF16组合！
+	
+unsloth 还发布了了几个免费的Colab笔记本：
+1. 通过Tesla T4运行MXFP4 (20B) - 展示如何使用低/中/高推理模式，推理速度令人印象深刻！使用了OpenAI的Triton内核库
+2. 在免费的16GB Tesla T4上微调gpt-oss 20B - 配合Unsloth完美适配，运行稳定无数值溢出！120B参数模型仅需不到65GB显存！
+3. MXFP4 MoE内核适配尝试 - notebooks尝试让其支持反向传播，需要计算X * transpose(W)，虽然W_TRANSPOSE标志存在，但尚未实现完整功能——unsloth正在努力完善中！
 
 
 
