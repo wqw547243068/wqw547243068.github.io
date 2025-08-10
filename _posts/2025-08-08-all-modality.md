@@ -20,18 +20,43 @@ permalink: /all_modality
 
 ## 阿里
 
-### Qwen2.5-Omni
+### 【2025-3-27】Qwen2.5-Omni
 
 
 【2025-3-27】阿里巴巴发布 Qwen2.5-Omni，全球首个**端到端全模态**大模型，为多模态信息流**实时交互**提供了新技术框架。
 
 Qwen2.5-Omni 整合了文本、图像、音频和视频的跨模态理解能力，实现**流式**文本与自然语音的双向同步生成。
+- ![](https://picx.zhimg.com/v2-7df9b0935ac5619cf348f1939ce9f04d_1440w.jpg)
+
+Qwen2.5-Omni 在保持全能的同时，并没有牺牲在各个垂直领域的能力
+
+资料：
+- [体验 Qwen Chat 新功能](https://chat.qwenlm.ai)
+- [Qwen2.5-Omni技术报告](https://github.com/QwenLM/Qwen2.5-Omni/blob/main/assets/Qwen2.5_Omni.pdf)
+- 代码 Code: [Qwen2.5-Omni](https://github.com/QwenLM/Qwen2.5-Omni)
+- 中文介绍: [Qwen2.5-Omni](https://github.com/QwenLM/Qwen2.5-Omni/blob/main/README_CN.md)
+- 视频介绍: [Video](https://www.youtube.com/watch?v=UF55yM67EH0)
+
+#### 特点
+
+特点
+- Omni 和 架构：Thinker-Talker 架构，端到端的多模态模型，感知不同的模态，包括文本、图像、音频和视频，同时以**流式**方式生成文本和自然语音响应。提出了一种名为 `TMRoPE` （Time-aligned Multimodal RoPE） 的新型位置嵌入，以将视频输入的时间戳与音频同步。
+- **实时语音和视频**聊天 ：专为完全实时交互而设计的架构，支持分块输入和即时输出。
+- 自然而稳健的**语音生成** ：超越许多现有的流媒体和非流媒体替代方案，在语音生成方面表现出卓越的稳健性和自然性。
+- **跨模态**的强劲性能 ：与类似大小的单模态模型进行基准测试时，在所有模态中都表现出卓越的性能。
+  - Qwen2.5-Omni 在音频功能上优于同等尺寸的 Qwen2-Audio，并实现了与 Qwen2.5-VL-7B 相当的性能。
+- 出色的端到端语音教学： Qwen2.5-Omni 在端到端语音教学跟踪方面的性能可与文本输入的有效性相媲美，MMLU 和 GSM8K 等基准测试证明了这一点。
+
+
+#### 原理
 
 关键技术：
 - 1）采用分块处理策略解耦长序列多模态数据，由多模态编码器负责感知、语言模型承担序列建模，通过共享注意力机制强化模态融合；
 - 2）提出时间对齐的位置编码方法TMRoPE，通过音视频交错排列实现时间戳同步；
 - 3）首创`Thinker-Talker`架构，分离文本生成（Thinker语言模型）与语音合成（基于隐藏表征的双轨自回归Talker模型），避免模态间干扰；
 - 4）引入滑动窗口DiT解码器降低音频流初始延迟。
+
+![](https://pic4.zhimg.com/v2-c2de76bf71d503c577ada48a3b9f4bf9_1440w.jpg)
 
 效果分析：
 - Omni-Bench 等多模态基准上达到SOTA，语音指令跟随能力与纯文本输入（MMLU/GSM8K）表现相当，流式语音生成在鲁棒性和自然度上超越主流流式/非流式方案。
@@ -41,6 +66,26 @@ Qwen2.5-Omni 整合了文本、图像、音频和视频的跨模态理解能力�
 2. `Talker` (说话者): 担当嘴巴的功能。它以流式（streaming）方式接收 Thinker 生成的高层表示和文本，并采用一种双轨自回归 Transformer 解码器架构，流畅地合成并输出离散的语音单元（tokens）。
 
 关键点: Talker 并非独立工作，直接获取 Thinker 产生的**高维表示**，并且 共享 Thinker 全部历史上下文信息。这使得 Thinker 和 Talker 构成了一个紧密协作的单一整体模型，可以进行端到端的训练和推理。这种设计是实现低延迟、高流畅度语音交互的核心
+
+#### Qwen2.5-Omni-7B
+
+Qwen2.5-Omni-7B 模型是 Omni（全能）模型。
+- 一个模型能同时理解 文本、音频、图像、视频 多种输入，并且能输出 文本和音频
+
+
+#### Qwen2.5-Omni-3B
+
+全模态 Qwen2.5-Omni-7B 模型推出后，开发者反馈更小尺寸的Qwen2.5-Omni，以便更方便地适配
+
+2025年4月30日，开源 Qwen2.5-Omni-3B 版本，较之前 7B 相比，代码运行时的推理时间减少，响应开发者轻量级GPU适配需求的新模型。
+- 🔹 与Qwen2.5-Omni-7B相比，3B版本在长上下文序列处理（约25k tokens）中显存消耗减少超50% 🚀，并可在普通24GB的消费级GPU上支持长达30秒的音视频交互 。
+- 🔹 3B版本模型保留7B模型90%以上的多模态理解能力 ，语音输出自然度与稳定性与7B版本性能一致 💪🏻。
+
+新的Omni模型已在魔搭社区和HuggingFace上开源
+
+
+
+#### 效果
 
 Qwen2.5-Omni全面评估：
 - **跨模态能力** SOTA: 在需要整合多种模态信息的任务上（如 OmniBench 基准测试），Qwen2.5-Omni 达到了当前最佳水平（State-of-the-Art）
@@ -52,18 +97,23 @@ Qwen2.5-Omni全面评估：
   - * 视频理解:MVBench
   - * 语音生成: Seed-tts-eval 及主观自然度评估
 
-Qwen2.5-Omni 在保持全能的同时，并没有牺牲在各个垂直领域的能力
+#### 实践
 
+消费级显卡也能运行 Qwen2.5-Omni 本地部署
+- conda 创建虚拟环境，并激活
+- 安装第三方库：transformers、accelerate、qwen-omni-utils-decord、modelscope
+- 使用 modelscope 下载 qwen-2.5-omni 代码
+- 创建 python 脚本，写脚本
 
-资料：
-- [体验 Qwen Chat 新功能](https://chat.qwenlm.ai)
-- [Qwen2.5-Omni技术报告](https://github.com/QwenLM/Qwen2.5-Omni/blob/main/assets/Qwen2.5_Omni.pdf)
-- 代码 Code: [Qwen2.5-Omni](https://github.com/QwenLM/Qwen2.5-Omni)
-- 中文介绍: [Qwen2.5-Omni](https://github.com/QwenLM/Qwen2.5-Omni/blob/main/README_CN.md)
-- 视频介绍: [Video](https://www.youtube.com/watch?v=UF55yM67EH0)
+#### 问题
 
-Qwen2.5-Omni-7B 模型是 Omni（全能）模型。
-- 一个模型能同时理解 文本、音频、图像、视频 多种输入，并且能输出 文本和音频
+Qwen-2.5-Omni-7B 问题——目前还没有更普适的**量化版本**
+- 当前量化版本只有 `GPTQ`，没有 `gguf`/`mlx`. 导致大部分使用 `ollama`, `llama.cpp`, `mlx` 的用户根本没办法用。
+- 而原版 7B 大小达到了**20GB+**，使用小显存显卡的用户完全没办法单卡部署。
+	
+而 `GPTQ` 量化理论上能用在 `vLLM`/`SGLang` 上。
+
+但是这俩框架目前也不支持, 为纯本文模型准备的。
 
 
 ### 【2025-6-11】蚂蚁 Ming-Omni
