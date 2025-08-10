@@ -26,6 +26,8 @@ permalink: /multimodal_case
 >多模态基础模型已经从**专用**走向**通用**。
 
 
+全模态LLM见站内专题：[全模态大模型](all_modality)
+
 ### 排行榜
 
 [多模态模型排行榜](https://rank.opencompass.org.cn/leaderboard-multimodal) OpenCampass
