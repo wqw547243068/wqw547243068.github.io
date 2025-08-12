@@ -49,6 +49,8 @@ ARM存在两大固有缺陷：
 - 【2025-2-18】论文 [Large Language Diffusion Models](https://arxiv.org/pdf/2502.09992)
 - Demo [LLaDA-demo](https://ml-gsai.github.io/LLaDA-demo/)
 
+### DLM 原理
+
 DLM 工作原理
 - 根据问题直接生成一个回答草稿
 - 然后一次次的修改和润色草稿，最终输出回答。
@@ -189,7 +191,50 @@ CMU 团队在数据重复使用的受限场景中，对比了AR模型和掩码�
 - 临界计算量与数据集大小成幂律关系，为数据稀缺场景提供了明确的模型选择依据。
 
 
-## DLM 案例
+## DLM 实现
+
+
+### 综述
+
+#### 【2025-7-5】新加坡国立
+
+【2025-7-5】新加坡国立大学 离散扩散语言模型综述
+- 论文：[Discrete Diffusion in Large Language and Multimodal Models: A Survey](https://arxiv.org/pdf/2506.13759)
+- GitHub 仓库：[DLLM-Survey](https://github.com/LiQiiiii/DLLM-Survey)
+- 解读 [舍弃自回归，离散扩散语言模型如何演化？NUS综述解构技术图谱与应用前沿]()
+
+自 GPT 引爆大语言模型热潮以来，**自回归**大语言模型（LLMs）与**多模态模型**（MLLMs）已成为智能系统的基石。
+
+然而，当人们着眼于更快、更可控、更智能的生成范式时，一条新兴路径悄然浮现：`离散扩散`（Discrete Diffusion）。
+
+传统大模型采用`自回归`（Autoregressive, AR）架构，从左至右逐词生成方式虽然自然，但存在显著的性能瓶颈：
+- 无法并行解码、难以精确控制输出、局限于对输入的静态感知、对补全和逆向推理的建模能力差。
+- 这使其在需要结构化控制与动态感知的复杂场景中表现受限。
+
+离散扩散模型打破了这一范式, 不再逐词预测，而是将生成视为一个「**掩码 - 去噪**」迭代过程，并行处理所有 Token，并借助全局注意力机制实现动态感知。
+
+这种设计带来了三大核心优势：
+- 推理**并行**性（Parallel Decoding）: 并行推理是离散扩散模型最大的特点和优势。并行推理使得离散扩散每次迭代都可以解码出多个 Token，从而带来解码速度上的提升。
+- 输出**可控性**（Controllability）与补全能力（Infilling）: 掩码 - 去噪的解码机制，使得每一次回答都可以预设回答的长度、格式、结构，为回答设定一个模板。
+- **动态感知能力**（Dynamic Perception）: 全局注意力机制下模型对左侧 Token 的处理受到右侧 Token 的影响；多轮迭代的解码机制使得对所有 Token 的处理都可以反复多次进行。这使得 dLLM 和 dMLLM 可以对长语料和多模态输入进行多轮、有条件的动态感知，而不是如单向注意力一样仅仅能够感知一次。
+
+自回归模型与典型离散扩散模型的对比
+
+![](https://inews.gtimg.com/om_bt/OWl6RQcgY7tVYRwnhPxSq_aGm-Ibr4GqS68Egy0pt8kQ8AA/641)
+
+本综述系统梳理了离散扩散方向的研究图谱，呈现了离散扩散语言模型（dLLMs）与离散扩散多模态语言模型（dMLLMs）的理论基础、代表模型、训练与推理技术，以及在推理、视觉、生物等多个领域的应用进展。
+
+离散扩散语言模型（dLLMs）生态，分四类：
+1. **轻量级**模型：早期的离散扩散模型参数量往往不超过 1B，代表作包括 D3PM、DiffusionBERT、RDM、Diffusion-NAT、TESS、SEDD、MDLM、MD4 等。这些模型重点在于探索基础的建模机制与去噪策略，验证离散扩散在文本和多模态生成任务上的可行性。
+2. **大规模** dLLM：随着技术成熟，多个工作开始将扩散架构拓展至 10 亿以上参数量，构建具备完整语言理解与生成能力的「非自回归大模型」，代表模型包括：LLaDA 系列、DiffuGPT / DiffuLLaMA 和 DREAM 等。这些工作从规模上拓展了扩散语言模型的边界，系统性地探索了其工程可行性。
+3. **多模态**扩展（dMLLM）：在语言能力日趋完善之后，研究者开始探索 dLLMs 在多模态任务中的适应性，典型代表有：Dimple、LaViDa 和 LLaDA-V。
+4. **统一生成**模型：离散扩散在图片生成中的可行性很早就被验证了，随着语言生成能力的完善，MMaDA、FUDOKI 和 Muddit 等模型给出了一种统一的架构，使用离散扩散模型在一个神经网络中同时建模文本和视觉的生成。
+- ![](https://inews.gtimg.com/om_bt/Ovn9Wg0wriJz8_WqkACC5TVCzgojc9i3ucGg62m4nyo8cAA/641)
+
+模型结构
+- ![](https://inews.gtimg.com/om_bt/O5jYxQ2vEeVSpJm2Tju6sO1kHnI_-3o5NTX0cLe6Be-f8AA/641)
+
+
 
 
 ### 【2025-2-18】 LLaDA
