@@ -3,7 +3,7 @@ layout: post
 title:  "分布式训练框架"
 date:   2025-01-10 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山
+tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -17,34 +17,38 @@ permalink: /dist_tool
 
 ## 常见框架
 
-常见的分布式训练框架：
+常见分布式训练框架：
 - 第一类：深度学习框架**自带**分布式训练功能。如：TensorFlow、PyTorch、MindSpore、Oneflow、PaddlePaddle等。
 - 第二类：基于现有深度学习框架（如：PyTorch、Flax）进行**扩展和优化**，从而进行分布式训练。
   - 如：`Megatron-LM`（张量并行）、`DeepSpeed`（Zero-DP）、`Colossal-AI`（高维模型并行，如2D、2.5D、3D）、`Alpa`（自动并行）等
 
 
-|训练框架|诞生时间|作者|功能|分析|
-|---|---|---|---|---|
-|DeepSpeed|||||
-|LLama-Factory|2023-6-3|北航博士生|多种模型快捷微调|必须依赖: torch/transformers/datasets/trl/accelerate/peft<br>可选依赖: CUDA/deepspeed/bitsandbytes/vllm/flash-attn|
-|TorchTune|||||
-|trl|||||
-|trlx|||||
-|Firefly|||||
-|Xtuner|||||
-|SWIFT|||||
-||||||
+LLM 训练/微调工具
 
+| 工具名称 | 作者 | 时间 | 定位 | 核心优势/技术亮点 | 适用场景/典型用户 |
+| --- | --- | --- | --- | --- | ---- |
+| `Unsloth` | | | 面向**个人**的**轻量化**微调工具，API简洁且文档详细，新手友好 | - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）<br>- 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）<br>- 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集 | - 个人开发者快速微调中小模型（支持到14B参数）<br>- 资源受限环境（低VRAM显卡） |
+| `LLaMA-Factory` | 北航博士生 | 2023-6-3|  图形界面（Gradio UI）和命令行工具，**工业级**微调平台 | - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）<br>- 生态整合：支持HuggingFace模型库，内置warp等辅助工具<br>- 社区活跃：GitHub高星项目，持续更新 | - 企业需要稳定、可扩展的微调框架<br>- 希望快速复现论文方案的团队 |
+| `DeepSpeed` | | |  **超大规模**训练基础设施 | - 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型<br>- 四大创新支柱：<br>  - 训练优化：MoE模型/RLHF/长序列支持<br>  - 推理加速：超低延迟部署方案<br>  - 模型压缩：极致量化技术<br>  - 科研支持：分布式科学计算 | - 千亿参数级大模型训练<br>- 需要跨GPU集群扩展的场景 |
+| `Axolotl` |  | | **全流程**后训练解决方案 | - 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务<br>- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署<br>- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程 | - 需要定制化训练策略的研究团队<br>- 企业级多GPU/多节点训练场景 |
+| `ms-SWIFT` |  | | 依赖ModelScope生态，需熟悉框架集成技术，但官方文档可能提供支持 | 流程 | -  |
 
-LLM 四大训练/微调工具
+总结
+- LLaMA-Factory：适合需要多模态支持、分布式训练或自定义复杂任务（如PPO/DPO）的场景，尤其在多硬件环境中表现优异。
+- Unsloth：资源受限或追求极致效率的首选，大数据量微调速度显著领先，适合快速迭代和单卡优化。
+- ms-SWIFT：适用于ModelScope生态用户，依赖官方集成技术，可能在参数高效微调场景中表现突出
 
-| 工具名称 | 定位 | 核心优势/技术亮点 | 适用场景/典型用户 |
-| --- | --- | --- | --- |
-| `Unsloth` | 面向**个人开发者**的**轻量化**微调工具 | - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）<br>- 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）<br>- 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集 | - 个人开发者快速微调中小模型（支持到14B参数）<br>- 资源受限环境（低VRAM显卡） |
-| `Axolotl` | **全流程**后训练解决方案 | - 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务<br>- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署<br>- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程 | - 需要定制化训练策略的研究团队<br>- 企业级多GPU/多节点训练场景 |
-| `LLaMA-Factory` | **工业级**微调平台 | - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）<br>- 生态整合：支持HuggingFace模型库，内置warp等辅助工具<br>- 社区活跃：GitHub高星项目，持续更新 | - 企业需要稳定、可扩展的微调框架<br>- 希望快速复现论文方案的团队 |
-| `DeepSpeed` | **超大规模**训练基础设施 | - 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型<br>- 四大创新支柱：<br>  - 训练优化：MoE模型/RLHF/长序列支持<br>  - 推理加速：超低延迟部署方案<br>  - 模型压缩：极致量化技术<br>  - 科研支持：分布式科学计算 | - 千亿参数级大模型训练<br>- 需要跨GPU集群扩展的场景 |
+作者：[zjp](https://juejin.cn/post/7493052429229850662)
 
+| 维度       | LLaMA-Factory         | Unsloth                   | ms-SWIFT                       |
+|------------|------------------|--------------------------------|----------------------------------|
+| 上手难度   | 中等，提供图形界面（Gradio UI）和命令行工具，适合不同层次用户。                | 低，API简洁且文档详细，新手友好，支持快速上手。                        | 中等，依赖ModelScope生态，需熟悉框架集成技术，但官方文档可能提供支持。  |
+| 资源需求   | 支持多硬件（NVIDIA/AMD GPU、Ascend NPU），量化技术降低内存占用，全参微调显存要求高。 | 显存占用优化显著，手动优化GPU内核，资源效率高，适合有限硬件环境。        | 集成PEFT技术，可能降低显存需求，具体资源优化依赖ModelScope底层实现。    |
+| 性能表现   | 灵活支持多种算法（LoRA、DPO等）和优化技术（FlashAttention），但速度较Unsloth慢。 | 微调速度最快（快2.5-10倍），尤其大数据量场景，计算图优化显著提升效率。  | 未知，依赖PEFT技术，可能在特定任务中表现高效，但缺乏直接对比数据。      |
+| 训练成本   | 支持量化（4/8位）和分布式训练，全参微调成本高，但灵活性高。                  | 显存和时间成本低，适合快速迭代，尤其适合资源受限场景。                  | 参数高效微调（PEFT）减少可调参数量，可能降低训练成本，但生态依赖性强。  |
+| 模型支持   | 广泛（100+模型），包括多模态（LLaVA）和MoE架构（Mixtral），社区活跃。         | 主流模型兼容（Llama、Mistral等），但覆盖范围略少于LLaMA-Factory。      | 支持多架构和训练范式，依赖ModelScope生态，可能针对特定模型优化。        |
+| 分布式训练 | 支持多GPU/多节点分布式训练，适合大规模任务。                                  | 未明确支持，侧重单卡优化，可能依赖外部工具扩展。                        | 未明确说明，可能依赖ModelScope基础设施。                              |
+| 适用场景   | 多硬件环境、复杂任务（多模态/RLHF）、需灵活配置的场景。                        | 资源有限、追求快速微调、单卡高效运行的场景。                            | ModelScope生态内任务、参数高效微调需求、特定领域模型适配。              |
 
 
 ## LLM 复现选择
