@@ -1801,10 +1801,133 @@ HybridFlow 采用**混合编程**模型，融合**单控制器**（Single-Contro
 `VeRL`和`OpenRLHF`都依托`Ray`管理RL中复杂的Roles（比如PPO需要四个模型）和分配资源
 
 
+### 对比
+
+
+LLaMA-Factory、trl和verl，三个框架
+- trl: 基于transformers, 完全封闭，没有太多可操作空间
+- LLaMA-Facotry 和 verl 可操作性比较强，自定义很多东西。
+
+verl和trl主要是针对强化学习设计，但也可以实现SFT
+
+二者目前都实现了主流的RL算法。
+
+verl还具备与现有LLM基础设施无缝集成的能力，无论是PyTorch FSDP、Megatron-LM还是vLLM，veRL都能轻松对接，实现高效的资源利用与扩展。
+
+
+### 功能
+
+
 ### 效果
 
 实验结果
 - HybridFlow 在运行各种 RL(HF) 算法时，吞吐量相较 SOTA 基线提升了 1.5-20 倍。
+
+
+### 部署
+
+工具包依赖
+
+```yaml
+flash-attn==2.5.9.post1
+numpy==1.26.4
+pandas==2.2.3
+peft==0.14.0
+ray=2.42.1
+torch=2.4.0+cu124
+transformers=4.47.1
+vllm==0.5.4
+```
+
+### 示例
+
+
+#### GRPO
+
+
+```py
+python3 -m verl.trainer.main_ppo \
+    algorithm.adv_estimator=grpo \
+    data.train_files=$HOME/data/gsm8k/train.parquet \
+    data.val_files=$HOME/data/gsm8k/test.parquet \
+    data.train_batch_size=1024 \
+    data.max_prompt_length=512 \
+    data.max_response_length=1024 \
+    data.filter_overlong_prompts=True \
+    data.truncation='error' \
+    actor_rollout_ref.model.path=Qwen/Qwen3-8B \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    actor_rollout_ref.model.use_remove_padding=True \
+    actor_rollout_ref.actor.ppo_mini_batch_size=256 \
+    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.actor.use_kl_loss=True \
+    actor_rollout_ref.actor.kl_loss_coef=0.001 \
+    actor_rollout_ref.actor.kl_loss_type=low_var_kl \
+    actor_rollout_ref.actor.entropy_coeff=0 \
+    actor_rollout_ref.model.enable_gradient_checkpointing=True \
+    actor_rollout_ref.actor.fsdp_config.param_offload=False \
+    actor_rollout_ref.actor.fsdp_config.optimizer_offload=False \
+    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.rollout.tensor_model_parallel_size=2 \
+    actor_rollout_ref.rollout.name=vllm \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
+    actor_rollout_ref.rollout.n=5 \
+    actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.ref.fsdp_config.param_offload=True \
+    algorithm.use_kl_in_reward=False \
+    trainer.critic_warmup=0 \
+    trainer.logger=['console','wandb'] \
+    trainer.project_name='verl_grpo_example_gsm8k' \
+    trainer.experiment_name='qwen3_8b_function_rm' \
+    trainer.n_gpus_per_node=8 \
+    trainer.nnodes=1 \
+    trainer.save_freq=20 \
+    trainer.test_freq=5 \
+    trainer.total_epochs=15
+```
+
+#### RLOO
+
+```PY
+python3 -m verl.trainer.main_ppo \
+    algorithm.adv_estimator=rloo \
+    data.train_files=$HOME/data/gsm8k/train.parquet \
+    data.val_files=$HOME/data/gsm8k/test.parquet \
+    data.train_batch_size=1024 \
+    data.max_prompt_length=512 \
+    data.max_response_length=1024 \
+    data.filter_overlong_prompts=True \
+    data.truncation='error' \
+    actor_rollout_ref.model.path=Qwen/Qwen2-7B-Instruct \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    actor_rollout_ref.model.use_remove_padding=True \
+    actor_rollout_ref.actor.ppo_mini_batch_size=256 \
+    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=80 \
+    actor_rollout_ref.actor.use_kl_loss=False \
+    actor_rollout_ref.model.enable_gradient_checkpointing=True \
+    actor_rollout_ref.actor.fsdp_config.param_offload=False \
+    actor_rollout_ref.actor.fsdp_config.optimizer_offload=False \
+    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=160 \
+    actor_rollout_ref.rollout.tensor_model_parallel_size=2 \
+    actor_rollout_ref.rollout.name=vllm \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
+    actor_rollout_ref.rollout.n=5 \
+    actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=160 \
+    actor_rollout_ref.ref.fsdp_config.param_offload=True \
+    algorithm.use_kl_in_reward=True \
+    algorithm.kl_penalty=kl \
+    algorithm.kl_ctrl.kl_coef=0.001 \
+    trainer.critic_warmup=0 \
+    trainer.logger=['console','wandb'] \
+    trainer.project_name='verl_rloo_example_gsm8k' \
+    trainer.experiment_name='qwen2_7b_function_rm' \
+    trainer.n_gpus_per_node=8 \
+    trainer.nnodes=1 \
+    trainer.save_freq=-1 \
+    trainer.test_freq=5 \
+    trainer.total_epochs=15
+```
+
 
 ## Axolotl
 
