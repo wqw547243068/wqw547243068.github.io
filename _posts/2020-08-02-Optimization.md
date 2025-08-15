@@ -3,7 +3,7 @@ layout: post
 title:  "优化算法笔记-optimization"
 date:   2020-08-02 00:23:00
 categories: 机器学习 数学基础
-tags: 最优化 梯度下降 牛顿法 斯坦福 凸函数 凸优化 KKT 损失函数 距离计算 相似度 Pareto 帕累托 编辑距离 运筹 滴滴
+tags: 最优化 梯度下降 牛顿法 斯坦福 凸函数 凸优化 KKT 损失函数 距离计算 相似度 Pareto 帕累托 编辑距离 运筹 滴滴 大模型
 excerpt: 机器学习中常见的优化算法
 author: 鹤啸九天
 mathjax: true
@@ -13,7 +13,11 @@ permalink: /optimization
 * content
 {:toc}
 
-# 总结
+
+# 优化算法
+
+
+## 总结
 
 【2022-5-19】[关于神经网络，一个学术界搞错了很多年的问题](https://mp.weixin.qq.com/s/i_tldPMzYDUZwdXDCJTjPw)
 - 比较各种优化算法的性质，包括传统的 SGD，Momentum SGD，AdaGrad，RMSProp 和 Adam 等;可视化分析
@@ -64,10 +68,10 @@ permalink: /optimization
     - ![](https://ask.qcloudimg.com/http-save/yehe-1622140/6jigyrmzvj.gif)
 
 
-# 最优化
+## 最优化
 
 
-## 简介
+### 简介
 
 运筹学是研究优化理论的学科（包括`凸优化`），而人工智能模型最后几乎都能化简成求解一个能量/损失函数的优化问题。
 
@@ -78,7 +82,7 @@ permalink: /optimization
 
 - 最古老的优化问题：邮差送信
 
-## 距离度量
+### 距离度量
 
 【2021-7-15】[NLP 语义相似度计算 整理总结](https://www.cnblogs.com/shona/p/11971310.html)
 
@@ -94,7 +98,7 @@ permalink: /optimization
 向量空间模型
 - `向量空间模型`简称 `VSM`，是 Vector Space Model 的缩写。在此模型中，文本被看作是由一系列相互独立的词语组成的，若文档 D 中包含词语 t1,t2,…,tN，则文档表示为D（t1,t2,…,tN）。由于文档中词语对文档的重要程度不同，并且词语的重要程度对文本相似度的计算有很大的影响，因而可对文档中的每个词语赋以一个权值 w，以表示该词的权重，其表示如下：D（t1,w1；t2,w2；…,tN，wN），可简记为 D（w1,w2,…,wN），此时的 wk 即为词语 tk的权重，1≤k≤N。关于权重的设置，我们可以考虑的方面：词语在文本中的出现频率（tf），词语的文档频率（df，即含有该词的文档数量，log N/n。很多相似性计算方法都是基于向量空间模型的。
 
-### 总结
+#### 总结
 
 <div class="mermaid">
     flowchart LR
@@ -112,7 +116,7 @@ permalink: /optimization
 </div>
 
 
-### 余弦相似度（Cosine）
+#### 余弦相似度（Cosine）
 
 余弦相似性通过测量两个向量的**夹角余弦值**来度量相似性。
 - [img](https://img-blog.csdn.net/20170411164251296) ![](https://img-blog.csdn.net/20170411164251296)
@@ -121,12 +125,12 @@ permalink: /optimization
 - 表示方向上的差异，但**对距离不敏感**。
 - 关心距离上的差异时，会对计算出的每个（相似度）值都减去一个均值，称为**调整**余弦相似度。
 
-### 欧式距离
+#### 欧式距离
 
 考虑的是点的空间距离，各对应元素做差取平方求和后开方。能体现数值的**绝对差异**。
 - [img](https://img-blog.csdn.net/20170411163336409) ![](https://img-blog.csdn.net/20170411163336409)
 
-### 曼哈顿距离（Manhattan Distance）
+#### 曼哈顿距离（Manhattan Distance）
 
 向量各坐标的绝对值做查后求和。
 - `d(i,j)=|X1-X2|+|Y1-Y2|`
@@ -134,7 +138,7 @@ permalink: /optimization
 - [img](https://img-blog.csdn.net/20170411163529421) 
 - ![](https://img-blog.csdn.net/20170411163529421)
 
-### 明可夫斯基距离（Minkowski distance）
+#### 明可夫斯基距离（Minkowski distance）
 
 `明氏距离`是`曼哈顿距离`、`欧氏距离`的推广，是对多个距离度量公式的概括性的表述。
 - [img](https://img-blog.csdn.net/20170411192555236) ![](https://img-blog.csdn.net/20170411192555236)
@@ -145,7 +149,7 @@ permalink: /optimization
 - 当 p=2, “明可夫斯基距离”变成“**欧几里得**距离”
 - 当 p=∞, “明可夫斯基距离”变成“**切比雪夫**距离”
 
-### Jaccard 相似系数（Jaccard Coefficient）
+#### Jaccard 相似系数（Jaccard Coefficient）
 
 `Jaccard系数`主要用于计算**符号**度量或**布尔值**度量的向量的相似性。即，**无需比较差异大小，只关注是否相同**。Jaccard系数只关心特征是否一致（共有特征的比例）。
 - [img](https://img-blog.csdn.net/20170411164412676) ![](https://img-blog.csdn.net/20170411164412676)
@@ -155,7 +159,7 @@ permalink: /optimization
 然后利用公式进行计算:
 - [img](https://img-blog.csdn.net/20170411164535504) ![](https://img-blog.csdn.net/20170411164535504)
 
-### 皮尔森相关系数(Pearson Correlation Coefficient)
+#### 皮尔森相关系数(Pearson Correlation Coefficient)
  
 皮尔森相关系数又称为**相关**相似性。
 - [img](https://img-blog.csdn.net/20170411200323838) ![这里写图片描述](https://img-blog.csdn.net/20170411200323838)
@@ -167,14 +171,14 @@ permalink: /optimization
 
 针对线性相关情况，可用于比较因变量和自变量间相关性如何。
  
-### SimHash + 汉明距离（Hamming Distance）
+#### SimHash + 汉明距离（Hamming Distance）
  
 - `Simhash`：谷歌发明，根据文本转为64位的字节，计算汉明距离判断相似性。
 - `汉明距离`：在信息论中，两个等长字符串的汉明距离是两者间对应位置的不同字符的个数。换句话说，它就是将一个字符串变换成另外一个字符串所需要替换的字符个数。例如：
   - “10110110”和“10011111”的汉明距离为3；
   - “abcde”和“adcaf”的汉明距离为3.
  
-### 斯皮尔曼（等级）相关系数（SRC :Spearman Rank Correlation）
+#### 斯皮尔曼（等级）相关系数（SRC :Spearman Rank Correlation）
  
 和上述类似，不同的是将对于样本中的原始数据Xi,Yi转换成等级数据xi,yi，即xi等级和yi等级。并非考虑原始数据值，而是按照一定方式（通常按照大小）对数据进行排名，取数据的不同排名结果代入公式。
 - [img](https://img-blog.csdn.net/20180516165942943) ![](https://img-blog.csdn.net/20180516165942943)
@@ -182,7 +186,7 @@ permalink: /optimization
 实际上，可通过简单的方式进行计算，n表示样本容量，di表示两向量X和Y内对应元素的等级的差值，等级di = xi - yi，则：
 - [img](https://img-blog.csdn.net/20180516170606465) ![](https://img-blog.csdn.net/20180516170606465)
 
-### BM25算法 
+#### BM25算法 
 
 原理
 - BM25算法，通常用来作搜索相关性平分：对Query进行语素解析，生成语素qi；然后，对于每个搜索结果D，计算每个语素qi与D的相关性得分，最后，将qi相对于D的相关性得分进行加权求和，从而得到Query与D的相关性得分。
@@ -266,11 +270,11 @@ if __name__ == '__main__':
     print(s.simall(['自然语言', '计算机科学', '领域', '人工智能', '领域']))
 ```
 
-### Dice 系数法（DiceCoefficient）
+#### Dice 系数法（DiceCoefficient）
 
 - todo
 
-### 编辑距离
+#### 编辑距离
 
 字符串的相似性比较应用场合很多，像拼写**纠错**、文本**去重**、上下文**相似性**等。
 
@@ -1016,11 +1020,11 @@ beale函数
 
 
 
-# 算法类型
+## 算法类型
 
 各类算法在 TensorFlow/PyTorch 中的实践，详见站内专题：[神经网络调参技巧](tune)
 
-## 优化算法总结
+### 优化算法总结
 
 【2022-1-12】
 - [An overview of gradient descent optimization algorithms](http://ruder.io/optimizing-gradient-descent/)
@@ -1032,7 +1036,7 @@ beale函数
 
 
 
-## 梯度下降 GD
+### 梯度下降 GD
 
 通过迭代地沿着梯度的负方向来寻找最优解
 
@@ -1049,7 +1053,7 @@ beale函数
 Delta是算法每次迭代后theta的变化量； 希望随着每个这样的变化，θ逐渐接近最佳值。
 - ![](https://p3.toutiaoimg.com/origin/pgc-image/e5527a9c5c2b436ab50a11fb9b0fb4b9)
 
-### Vanilla SGD
+#### Vanilla SGD
 
 随机梯度下降法（Stochastic Gradient Descent, SGD）
 - 随机梯度下降在算法效率上做了优化，不使用全量样本计算当前的梯度，而是使用小批量（mini-batch）样本来估计梯度，大大提高了效率
@@ -1078,7 +1082,7 @@ Vannilla梯度下降法是普通的，因为仅对**梯度**起作用
 - 如何合理的选择学习率是 SGD 的一大难点。
 
 
-### 代码实现
+#### 代码实现
 
 ```py
 import numpy as np  
@@ -1103,7 +1107,7 @@ def sgd(X, y, learning_rate=0.01, epochs=100):
     return w
 ```
 
-## 动量 Momentum
+### 动量 Momentum
 
 SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，加速 SGD 在正确方向的下降并抑制震荡。
 - 动量算法（或简称为动量）的梯度下降借鉴了物理学的思想。 想象一下，将球滚动到无摩擦碗内。 累积的动量并没有停止在底部，而是将其向前推动，并且球不断来回滚动。
@@ -1122,7 +1126,7 @@ SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，
 - 动量只是移动得**更快**（因为它累积了所有动量）
 - 动量有逃避**局部最小值**的作用（因为动量可能将其推离局部最小值），或更好地通过**高原**地区。
 
-### 动量法（Momentum）
+#### 动量法（Momentum）
 
 动量法（Momentum）和 Nesterov 动量法
 - 动量法通过引入一个动量项来加速梯度下降法的收敛速度。
@@ -1131,7 +1135,7 @@ SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，
 动量法和Nesterov 动量法适用于**非凸优化**问题，能够跳出局部最优解并加速收敛。
 
 
-### Nesterov Accelerated Gradient
+#### Nesterov Accelerated Gradient
 
 - 人们希望下降的过程更加智能：算法能够在目标函数有增高趋势之前，减缓更新速率。
 - NAG 即是为此而设计的，其在 SGD-M 的基础上进一步改进了步骤 1 中的梯度计算公式
@@ -1140,7 +1144,7 @@ SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，
 
 
 
-## 学习率优化
+### 学习率优化
 
 
 机器学习中，稀疏特征的平均梯度通常很小，因此这些特征的训练速度慢。
@@ -1148,7 +1152,7 @@ SGD 在遇到沟壑时容易陷入震荡。为此，引入**动量** Momentum，
 解决方法之一： 为每个特征设置不同的学习率，但这会很快变得混乱。
 
 
-### AdaGrad
+#### AdaGrad
 
 AdaGrad解决思路：
 - 当前更新的特征越多，将来更新的特征就越少，从而为其他特征（例如稀疏功能）提供了赶超的机会。
@@ -1168,7 +1172,7 @@ AdaGrad解决思路：
 - AdaGrad和RMSprop适用于处理稀疏数据集和具有非平稳目标函数的优化问题。
 
 
-### RMSprop —— 给劲AdaGrad
+#### RMSprop —— 给劲AdaGrad
 
 AdaGrad的问题在于它的运行速度非常慢
 - 在 Adagrad 中，Vt 单调递增，使得学习率逐渐递减至0，可能导致训练过程提前结束。
@@ -1180,11 +1184,11 @@ AdaGrad的问题在于它的运行速度非常慢
 在计算二阶动量时不累积全部历史梯度，而只关注最近某一时间窗口内的下降梯度。根据此思想有了 RMSprop
   - ![](https://www.zhihu.com/equation?tex=v_t+%3D+%5Cgamma+v_%7Bt-1%7D+%2B+%281-%5Cgamma%29+%5Ccdot+%5Ctext%7Bdiag%7D%28g_t%5E2%29)
 
-## Adadelta
+### Adadelta
 
 - 待补充
 
-## Adam——深度学习默认首选，融合动量+RMSProp
+### Adam——深度学习默认首选，融合动量+RMSProp
 
 Adam 优化器之旅可以说是过山车（roller-coaster）式的。
 - 2014 年推出，直觉的简单想法：既然明确地知道某些参数需要移动得更快、更远，那么为什么每个参数还要遵循相同的学习率？因为最近梯度的平方每一个权重可以得到多少信号，所以可以除以这个，以确保即使是最迟钝的权重也有机会发光。
@@ -1203,7 +1207,7 @@ Adam（自适应矩估计的缩写）兼具**动量**和**RMSProp**的优点，A
 Adam在经验上表现良好，因此近年来是深度学习问题的首选。
 
 
-### Pytorch Adam
+#### Pytorch Adam
 
 Adam 算法
 - [Adam: A Method for Stochastic Optimization](https://arxiv.org/pdf/1412.6980.pdf)
@@ -1264,12 +1268,12 @@ optimizer.step()  # 更新权重（这里使用了PyTorch的step方法）
 ```
 
 
-## NAdam
+### NAdam
 
 - NAdam在 Adam 之上融合了 NAG 的思想。
 
 
-## AdamW
+### AdamW
 
 【2017】[当前训练神经网络最快的方式：AdamW优化算法+超级收敛](https://zhuanlan.zhihu.com/p/38945390)
 
@@ -1278,7 +1282,7 @@ optimizer.step()  # 更新权重（这里使用了PyTorch的step方法）
 
 AdanW：权重衰减与 L2 正则化
 
-## Sophia
+### Sophia
 
 【2023-5-27】Adam该换了！[斯坦福最新Sophia优化器](https://zhuanlan.zhihu.com/p/632522937)，比Adam快2倍，几行代码即可实现
 - 论文：[](https://arxiv.org/abs/2305.14342)
@@ -1295,9 +1299,9 @@ AdanW：权重衰减与 L2 正则化
 - Sophia具有比Adam更激进的预调节器：相比平坦维度（Hessian较小），Sophia对尖锐维度（Hessian较大）的更新具有更强的惩罚力度，以确保所有参数维度的损失均匀减少。相比之下，Adam的更新在所有参数维度上基本一致，导致平面维度的损失减少较慢，这些使得Sophia可以在更少的迭代中收敛。
 - ![](https://pic4.zhimg.com/80/v2-4113c8fece6437c7e468f42eae76868f_1440w.webp)
 
-# 理论基础
+## 理论基础
 
-## 优化算法
+### 优化算法
 
 
 要点
@@ -1313,16 +1317,16 @@ AdanW：权重衰减与 L2 正则化
 - 粒子群优化算法：优点是简单、收敛快、计算复杂度低；缺点是多样性丢失、容易陷入局部最优，实现较为复杂。
 
 
-### Hesse 矩阵
+#### Hesse 矩阵
 
 Hesse 矩阵常被应用于牛顿法解决的大规模优化问题
 
-### Jacobi 矩阵
+#### Jacobi 矩阵
 
 
 Jacobi 矩阵是向量值函数的**梯度矩阵**，假设F:Rn→Rm 是一个从n维欧氏空间转换到m维欧氏空间的函数。
 
-### 梯度
+#### 梯度
 
 某点的梯度信息
 - 梯度方向：该点坡度最陡的方向
@@ -1332,7 +1336,7 @@ Jacobi 矩阵是向量值函数的**梯度矩阵**，假设F:Rn→Rm 是一个�
 - 梯度也提供了其他方向的变化速度（二维情况下，按照梯度方向倾斜的圆在平面上投影成一个椭圆）。
 
 
-### 牛顿法（Newton's Method）和拟牛顿法（Quasi-Newton Methods）
+#### 牛顿法（Newton's Method）和拟牛顿法（Quasi-Newton Methods）
 
 总结
 - 牛顿法是一种基于目标函数的**二阶导数信息**的优化算法，通过构建二阶导数矩阵并对其进行求解来逼近最优解。
@@ -1362,7 +1366,7 @@ def newton(X, y, learning_rate=0.01, epochs=100):
     return w
 ```
 
-### 共轭梯度法（Conjugate Gradient）
+#### 共轭梯度法（Conjugate Gradient）
 
 共轭梯度法是介于梯度下降法和牛顿法之间的一种方法，利用共轭方向进行搜索。
 
@@ -1372,7 +1376,7 @@ def newton(X, y, learning_rate=0.01, epochs=100):
 该方法适用于大规模问题，尤其是稀疏矩阵和对称正定的问题。
 
 
-### LBFGS（Limited-memory Broyden–Fletcher–Goldfarb–Shanno）
+#### LBFGS（Limited-memory Broyden–Fletcher–Goldfarb–Shanno）
 
 一种有限内存的Broyden-Fletcher-Goldfarb-Shanno（BFGS）算法，主要用于解决大规模优化问题。
 
@@ -1394,7 +1398,7 @@ x_min = result.x
 print(f"L-BFGS的最小值为：{objective_function(x_min)}")
 ```
 
-### SA（Simulated Annealing）
+#### SA（Simulated Annealing）
 
 一种随机搜索算法，其灵感来源于物理退火过程。
 
@@ -1416,13 +1420,13 @@ x_min = result.x
 print(f"SA的最小值为：{objective_function(x_min)}")
 ```
 
-### AC-SA（Adaptive Clustering-based Simulated Annealing）
+#### AC-SA（Adaptive Clustering-based Simulated Annealing）
 
 一种基于自适应聚类的模拟退火算法。通过模拟物理退火过程，利用聚类技术来组织解空间并控制解的移动。该方法适用于处理大规模、高维度的优化问题，尤其适用于那些具有多个局部最优解的问题。
 
 遗传算法是一种基于自然选择和遗传学机理的生物进化过程的模拟算法，适用于解决优化问题，特别是组合优化问题。该算法通过数学的方式，利用计算机仿真运算，将问题的求解过程转换成类似生物进化中的染色体基因的交叉、变异等过程。在求解较为复杂的组合优化问题时，相对一些常规的优化算法，通常能够较快地获得较好的优化结果。
 
-### PSO（Particle Swarm Optimization）
+#### PSO（Particle Swarm Optimization）
 
 PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为（吐槽下，智能优化算法的领域真是卷麻了！！！）。粒子群算法模仿昆虫、兽群、鸟群和鱼群等的群集行为，这些群体按照一种合作的方式寻找食物，群体中的每个成员通过学习它自身的经验和其他成员的经验来不断改变其搜索模式。PSO算法适用于处理多峰函数和离散优化问题，具有简单、灵活和容易实现的特点。
 
@@ -1509,12 +1513,12 @@ PSO是一种基于种群的随机优化技术，模拟了鸟群觅食的行为�
 - 左图的设计空间的红色点，就是其对应的**Pareto最优解集**
 - 所以现在的一些多目标优化算法主要就是求解问题的Pareto前沿或者近似前沿。从目标空间来看，就是他的边界了。
 
-### Pareto帕累托最优解
+#### Pareto帕累托最优解
 
 假设两个目标函数，对于解A而言，在 变量空间 中找不到其他的解能够优于解A（注意这里的优于一定要两个目标函数值都优于A对应的函数值），那么解A就是帕累托最优解 [图](https://pic3.zhimg.com/80/v2-c382e9c5cb731635191c8c18927f0da2_720w.jpg)
 
 
-### Pareto帕累托最优前沿
+#### Pareto帕累托最优前沿
 
 帕累托最优解，实心点表示的解都是帕累托最优解，所有的帕累托最优解构成帕累托最优解集，这些解经目标函数映射构成了该问题的Pareto最优前沿或Pareto前沿面，说人话，即帕累托最优解对应的目标函数值就是帕累托最优前沿。[图](https://pic3.zhimg.com/80/v2-450e1a916081a206ab18fd2073708d3a_720w.jpg)
 - ![](https://pic3.zhimg.com/80/v2-450e1a916081a206ab18fd2073708d3a_720w.jpg)
@@ -1634,6 +1638,59 @@ Features
 Unified: LibMTL provides a unified code base to implement and a consistent evaluation procedure including data processing, metric objectives, and hyper-parameters on several representative MTL benchmark datasets, which allows quantitative, fair, and consistent comparisons between different MTL algorithms.
 Comprehensive: LibMTL supports many state-of-the-art MTL methods including 8 architectures and 16 optimization strategies. Meanwhile, LibMTL provides a fair comparison of several benchmark datasets covering different fields.
 Extensible: LibMTL follows the modular design principles, which allows users to flexibly and conveniently add customized components or make personalized modifications. Therefore, users can easily and fast develop novel optimization strategies and architectures or apply the existing MTL algorithms to new application scenarios with the support of LibMTL.
+
+
+## 组合优化
+
+
+### 大模型优化
+
+
+#### HeurAgenix
+
+【2025-8-14】 [HeurAgenix：大语言模型驱动的组合优化“全能教练”](https://zhuanlan.zhihu.com/p/1939732977492923065)
+
+在物流规划、生产排程、能源调度等行业应用场景中，**组合优化**问题往往规模庞大、约束复杂，长期依赖专家手工调参的启发式算法已难以应对动态多变的现实需求。
+
+微软亚洲研究院最新提出的 HeurAgenix 框架，将大语言模型视作“全能教练”，为启发式算法带来了自进化与自适应的能力，并通过蒸馏压缩实现快速响应。
+
+HeurAgenix 不仅全面超越了现有 LLMs 超启发式方法，在多数任务中甚至优于专业求解器，为组合优化的通用化、智能化和实际落地开辟了新路径。
+
+许多关键的决策问题都可以抽象为`组合优化`（combinatorial optimization）。
+- 物流公司需要在海量路线中选择最优的运输路径；
+- 制造企业要在紧张的时间和资源约束下排定生产计划；
+- 电网运营商则需在不断变化的供需中优化能源调度。
+
+这类问题往往规模庞大、约束复杂，精确求解在计算上难以承受，因此产业界和学术界长期以来都依赖启发式算法来寻找近似最优解。
+
+**启发式**方法以求解效率高见长，但也存在明显短板——需要依赖专家不断调参来适配不同问题，泛化性差，且性能表现不够稳定。
+- 依赖专家经验：算法设计与调参往往依赖专家经验，耗费较多时间；
+- 泛化性差：传统启发式算法往往“一场景一写法”，适配新问题时需要重新调整，开发和维护成本极高；
+- 效果受限：由于组合优化问题的复杂性，单一启发式算法通常力不从心，难以稳定高效求解。
+
+这些大大限制了动态、多变的实际场景中的应用潜力。
+
+【2025-6-18】为突破这些瓶颈，微软亚洲研究院的研究员们提出 HeurAgenix
+- 论文地址：[HeurAgenix: Leveraging LLMs for Solving Complex Combinatorial Optimization Challenges](https://arxiv.org/abs/2506.15196)
+- 代码开源链接：https://github.com/microsoft/He
+
+
+HeurAgenix 将大语言模型（LLMs）视作“总教练”
+- 平时对启发式算法这群“球员”进行持续“训练”，让其自动发现弱点并自我进化，且过程中无需专家干预；
+- 求解阶段实时“排兵布阵”，灵活切换最优策略，确保解的稳定性与高效性；
+- 同时，研究员们将大模型的决策洞见蒸馏至**轻量化**模型，使得系统能够实现毫秒级响应，显著降低计算成本。
+
+多个经典问题实验表明
+- HeurAgenix 不仅能超越现有的、基于 LLMs 的超启发式方法，还在多数场景下超过了手工调参的专业求解器，展现出强大的通用性与实用价值。
+
+
+HeurAgenix 的创新体现在三个方面：
+- 自进化框架：提出数据驱动的启发式进化框架，无需先验知识和人工调参；
+- 自适应调度：利用 LLMs 的状态感知能力，结合测试时缩放（TTS）技术，动态选出最优算法，在求解速度与解质量间取得较好的平衡；
+- 轻量化蒸馏：提出“结果偏好＋状态感知”双重奖励机制，高效地将高阶模型的选择能力蒸馏到轻量级模型，提高响应速度。
+
+主要流程
+- ![](https://picx.zhimg.com/v2-db3ff0f8494bc667048fb4b395b035d5_r.jpg)
 
 
 ## 资料
