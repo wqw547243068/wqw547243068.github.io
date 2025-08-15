@@ -240,7 +240,7 @@ Stream-Omni
 - DIT 模型蒸馏需要大量的资源消耗，但是缺少高效的训练 infra 支持来提升效率……
 
 【2025-8-14】字节跳动 Seed 团队开源全模态 PyTorch 原生训练框架—— VeOmni 。
-- GitHub：[KowVNx](https://taou.cn/a/KowVNx)
+- GitHub：[VeOmni](https://github.com/ByteDance-Seed/VeOmni)
 - 解读 [字节跳动 VeOmni 框架开源：统一多模态训练效率飞跃](https://zhuanlan.zhihu.com/p/1939325697580601916)
 
 VeOmni 采用以模型为中心的分布式训练方案，将复杂的分布式并行逻辑与模型计算解耦，让研究员像搭积木一样，为全模态模型组合设置高效的并行训练方案。
