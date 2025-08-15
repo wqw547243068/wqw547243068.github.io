@@ -3,7 +3,7 @@ layout: post
 title:  "分布式训练框架"
 date:   2025-01-10 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山
+tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -17,34 +17,38 @@ permalink: /dist_tool
 
 ## 常见框架
 
-常见的分布式训练框架：
+常见分布式训练框架：
 - 第一类：深度学习框架**自带**分布式训练功能。如：TensorFlow、PyTorch、MindSpore、Oneflow、PaddlePaddle等。
 - 第二类：基于现有深度学习框架（如：PyTorch、Flax）进行**扩展和优化**，从而进行分布式训练。
   - 如：`Megatron-LM`（张量并行）、`DeepSpeed`（Zero-DP）、`Colossal-AI`（高维模型并行，如2D、2.5D、3D）、`Alpa`（自动并行）等
 
 
-|训练框架|诞生时间|作者|功能|分析|
-|---|---|---|---|---|
-|DeepSpeed|||||
-|LLama-Factory|2023-6-3|北航博士生|多种模型快捷微调|必须依赖: torch/transformers/datasets/trl/accelerate/peft<br>可选依赖: CUDA/deepspeed/bitsandbytes/vllm/flash-attn|
-|TorchTune|||||
-|trl|||||
-|trlx|||||
-|Firefly|||||
-|Xtuner|||||
-|SWIFT|||||
-||||||
+LLM 训练/微调工具
 
+| 工具名称 | 作者 | 时间 | 定位 | 核心优势/技术亮点 | 适用场景/典型用户 |
+| --- | --- | --- | --- | --- | ---- |
+| `Unsloth` | | | 面向**个人**的**轻量化**微调工具，API简洁且文档详细，新手友好 | - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）<br>- 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）<br>- 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集 | - 个人开发者快速微调中小模型（支持到14B参数）<br>- 资源受限环境（低VRAM显卡） |
+| `LLaMA-Factory` | 北航博士生 | 2023-6-3|  图形界面（Gradio UI）和命令行工具，**工业级**微调平台 | - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）<br>- 生态整合：支持HuggingFace模型库，内置warp等辅助工具<br>- 社区活跃：GitHub高星项目，持续更新 | - 企业需要稳定、可扩展的微调框架<br>- 希望快速复现论文方案的团队 |
+| `DeepSpeed` | | |  **超大规模**训练基础设施 | - 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型<br>- 四大创新支柱：<br>  - 训练优化：MoE模型/RLHF/长序列支持<br>  - 推理加速：超低延迟部署方案<br>  - 模型压缩：极致量化技术<br>  - 科研支持：分布式科学计算 | - 千亿参数级大模型训练<br>- 需要跨GPU集群扩展的场景 |
+| `Axolotl` |  | | **全流程**后训练解决方案 | - 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务<br>- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署<br>- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程 | - 需要定制化训练策略的研究团队<br>- 企业级多GPU/多节点训练场景 |
+| `ms-SWIFT` |  | | 依赖ModelScope生态，需熟悉框架集成技术，但官方文档可能提供支持 | 流程 | -  |
 
-LLM 四大训练/微调工具
+总结
+- LLaMA-Factory：适合需要多模态支持、分布式训练或自定义复杂任务（如PPO/DPO）的场景，尤其在多硬件环境中表现优异。
+- Unsloth：资源受限或追求极致效率的首选，大数据量微调速度显著领先，适合快速迭代和单卡优化。
+- ms-SWIFT：适用于ModelScope生态用户，依赖官方集成技术，可能在参数高效微调场景中表现突出
 
-| 工具名称 | 定位 | 核心优势/技术亮点 | 适用场景/典型用户 |
-| --- | --- | --- | --- |
-| `Unsloth` | 面向**个人开发者**的**轻量化**微调工具 | - 极简操作：提供开箱即用的Colab Notebook，支持"Run All"一键完成数据加载、训练、模型导出（GGUF/Ollama格式）<br>- 性能优化：宣称比传统方法快2倍，显存节省最高80%（如Qwen3 4B版本）<br>- 免费支持：开放所有Notebook，覆盖Kaggle/GRPO/TTS/Vision等场景，与Meta合作提供合成数据集 | - 个人开发者快速微调中小模型（支持到14B参数）<br>- 资源受限环境（低VRAM显卡） |
-| `Axolotl` | **全流程**后训练解决方案 | - 全面训练方法：支持LoRA/QLoRA/DPO/RLHF等前沿技术，兼容多模态任务<br>- 企业级扩展：支持云存储(S3/Azure)、多节点训练(FSDP/DeepSpeed)、Docker部署<br>- 配置复用：通过YAML文件统一管理数据预处理、训练、量化全流程 | - 需要定制化训练策略的研究团队<br>- 企业级多GPU/多节点训练场景 |
-| `LLaMA-Factory` | **工业级**微调平台 | - 企业背书：被Amazon/NVIDIA等公司采用，提供生产级工具链（含Colab集成）<br>- 生态整合：支持HuggingFace模型库，内置warp等辅助工具<br>- 社区活跃：GitHub高星项目，持续更新 | - 企业需要稳定、可扩展的微调框架<br>- 希望快速复现论文方案的团队 |
-| `DeepSpeed` | **超大规模**训练基础设施 | - 万亿参数支持：曾赋能MT-530B/BLOOM等顶级模型<br>- 四大创新支柱：<br>  - 训练优化：MoE模型/RLHF/长序列支持<br>  - 推理加速：超低延迟部署方案<br>  - 模型压缩：极致量化技术<br>  - 科研支持：分布式科学计算 | - 千亿参数级大模型训练<br>- 需要跨GPU集群扩展的场景 |
+作者：[zjp](https://juejin.cn/post/7493052429229850662)
 
+| 维度       | LLaMA-Factory         | Unsloth                   | ms-SWIFT                       |
+|------------|------------------|--------------------------------|----------------------------------|
+| 上手难度   | 中等，提供图形界面（Gradio UI）和命令行工具，适合不同层次用户。                | 低，API简洁且文档详细，新手友好，支持快速上手。                        | 中等，依赖ModelScope生态，需熟悉框架集成技术，但官方文档可能提供支持。  |
+| 资源需求   | 支持多硬件（NVIDIA/AMD GPU、Ascend NPU），量化技术降低内存占用，全参微调显存要求高。 | 显存占用优化显著，手动优化GPU内核，资源效率高，适合有限硬件环境。        | 集成PEFT技术，可能降低显存需求，具体资源优化依赖ModelScope底层实现。    |
+| 性能表现   | 灵活支持多种算法（LoRA、DPO等）和优化技术（FlashAttention），但速度较Unsloth慢。 | 微调速度最快（快2.5-10倍），尤其大数据量场景，计算图优化显著提升效率。  | 未知，依赖PEFT技术，可能在特定任务中表现高效，但缺乏直接对比数据。      |
+| 训练成本   | 支持量化（4/8位）和分布式训练，全参微调成本高，但灵活性高。                  | 显存和时间成本低，适合快速迭代，尤其适合资源受限场景。                  | 参数高效微调（PEFT）减少可调参数量，可能降低训练成本，但生态依赖性强。  |
+| 模型支持   | 广泛（100+模型），包括多模态（LLaVA）和MoE架构（Mixtral），社区活跃。         | 主流模型兼容（Llama、Mistral等），但覆盖范围略少于LLaMA-Factory。      | 支持多架构和训练范式，依赖ModelScope生态，可能针对特定模型优化。        |
+| 分布式训练 | 支持多GPU/多节点分布式训练，适合大规模任务。                                  | 未明确支持，侧重单卡优化，可能依赖外部工具扩展。                        | 未明确说明，可能依赖ModelScope基础设施。                              |
+| 适用场景   | 多硬件环境、复杂任务（多模态/RLHF）、需灵活配置的场景。                        | 资源有限、追求快速微调、单卡高效运行的场景。                            | ModelScope生态内任务、参数高效微调需求、特定领域模型适配。              |
 
 
 ## LLM 复现选择
@@ -1746,9 +1750,183 @@ Unsloth 将 GRPO 的 VRAM 使用量相较于标准实现降低了 **90%** 以上
 待定
 
 
-## Verl
+## VeRL
 
 字节开源的框架
+
+### 起因
+
+RL 复杂的计算流程以及现有系统局限性，也给训练和部署带来了挑战。
+
+大模型 RL 的计算流程比传统神经网络更为复杂。
+
+RLHF 中，需要同时训练多个模型，如 Actor 、Critic 、参考策略（Reference Policy）和奖励模型（Reward Model），并在传递大量数据。
+
+这些模型涉及不同的计算类型（前向反向传播、优化器更新、自回归生成等），可能采用不同的并行策略。
+
+传统分布式 RL 通常假设模型可在**单个 GPU** 上训练，或使用**数据并行**方式，将控制流和计算流合并在同一进程中。
+- 这在处理小规模模型时效果良好，但面对大模型训练需要复杂的多维并行，涉及大量分布式计算，传统方法难以应对。
+
+传统的 RL/RLHF 系统在**灵活性**和**效率**方面存在不足，难以适应不断涌现的新算法需求，无法充分发挥大模型潜力。
+
+开发一个**高效且灵活**的大模型 RL 训练框架显得尤为重要。
+
+这不仅需要高效地执行复杂的分布式计算流程，还要具备适应不同 RL 算法的灵活性，以满足不断发展的研究需求。
+
+大模型 RL 本质上是一个二维的 DataFlow 问题：`high-level` 的控制流（描述 RL 算法的流程）+ `low-level` 的计算流（描述分布式神经网络计算）。
+
+近期开源的 RLHF 框架，如: `DeepSpeed-Chat`、`OpenRLHF`  和 `NeMo-Aligner`，采用统一的**多控制器**（Multi-Controller）架构, 各计算节点独立管理计算和通信，降低了控制调度的开销。
+
+然而，**控制流**和**计算流**高度耦合，当设计新的 RL 算法，组合相同的计算流和不同的控制流时，需要重写计算流代码，修改所有相关模型，增加了开发难度。
+
+
+### VeRL 介绍
+
+VeRL是`字节跳动`seed团队和`香港大学`开发的强化学习仓库。
+
+【2024-11-1】[最高提升20倍吞吐量！豆包大模型团队发布全新 RLHF 框架，现已开源！](https://mp.weixin.qq.com/s/JYQQs2vqnhRz82rtDI-1OQ)
+
+字节跳动豆包大模型团队与香港大学近期公开联合研究成果—— `HybridFlow` ，一个灵活且高效的大模型 **RL 训练**框架，兼容多种训练和推理框架，支持灵活的模型部署和多种 RL 算法实现。
+- 论文 [HybridFlow: A Flexible and Efficient RLHF Framework](https://team.doubao.com/zh/publication/hybridflow-a-flexible-and-efficient-rlhf-framework?)
+- 论文已被 EuroSys 2025 接收，代码仓库也对外公开。
+- 代码链接：[veRL](https://github.com/volcengine/veRL)
+- 文档地址 [文档](https://verl.readthedocs.io/en/)
+
+HybridFlow 采用**混合编程**模型，融合**单控制器**（Single-Controller）的灵活性和**多控制器**（Multi-Controller），解耦了控制流和计算流，可更好实现和执行多种RL算法，显著提升训练吞吐量，降低开发和维护复杂度。
+
+尽管相比纯粹的多控制器架构，这可能带来一定的控制调度开销，但 HybridFlow 通过优化数据传输，降低了控制流与计算流之间的传输量，兼顾了灵活性和高效性。
+
+基于Ray的动态计算图、异构调度能力，通过封装单模型的分布式计算、统一模型间的数据切分，以及支持异步 RL 控制流，HybridFlow 能够高效地实现和执行各种 RL 算法，复用计算模块和支持不同的模型部署方式，大大提升了系统的灵活性和开发效率。
+
+`VeRL`和`OpenRLHF`都依托`Ray`管理RL中复杂的Roles（比如PPO需要四个模型）和分配资源
+
+
+### 对比
+
+
+LLaMA-Factory、trl和verl，三个框架
+- trl: 基于transformers, 完全封闭，没有太多可操作空间
+- LLaMA-Facotry 和 verl 可操作性比较强，自定义很多东西。
+
+verl和trl主要是针对强化学习设计，但也可以实现SFT
+
+二者目前都实现了主流的RL算法。
+
+verl还具备与现有LLM基础设施无缝集成的能力，无论是PyTorch FSDP、Megatron-LM还是vLLM，veRL都能轻松对接，实现高效的资源利用与扩展。
+
+
+### 功能
+
+
+### 效果
+
+实验结果
+- HybridFlow 在运行各种 RL(HF) 算法时，吞吐量相较 SOTA 基线提升了 1.5-20 倍。
+
+
+### 部署
+
+工具包依赖
+
+```yaml
+flash-attn==2.5.9.post1
+numpy==1.26.4
+pandas==2.2.3
+peft==0.14.0
+ray=2.42.1
+torch=2.4.0+cu124
+transformers=4.47.1
+vllm==0.5.4
+```
+
+### 示例
+
+
+#### GRPO
+
+
+```py
+python3 -m verl.trainer.main_ppo \
+    algorithm.adv_estimator=grpo \
+    data.train_files=$HOME/data/gsm8k/train.parquet \
+    data.val_files=$HOME/data/gsm8k/test.parquet \
+    data.train_batch_size=1024 \
+    data.max_prompt_length=512 \
+    data.max_response_length=1024 \
+    data.filter_overlong_prompts=True \
+    data.truncation='error' \
+    actor_rollout_ref.model.path=Qwen/Qwen3-8B \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    actor_rollout_ref.model.use_remove_padding=True \
+    actor_rollout_ref.actor.ppo_mini_batch_size=256 \
+    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.actor.use_kl_loss=True \
+    actor_rollout_ref.actor.kl_loss_coef=0.001 \
+    actor_rollout_ref.actor.kl_loss_type=low_var_kl \
+    actor_rollout_ref.actor.entropy_coeff=0 \
+    actor_rollout_ref.model.enable_gradient_checkpointing=True \
+    actor_rollout_ref.actor.fsdp_config.param_offload=False \
+    actor_rollout_ref.actor.fsdp_config.optimizer_offload=False \
+    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.rollout.tensor_model_parallel_size=2 \
+    actor_rollout_ref.rollout.name=vllm \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
+    actor_rollout_ref.rollout.n=5 \
+    actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=32 \
+    actor_rollout_ref.ref.fsdp_config.param_offload=True \
+    algorithm.use_kl_in_reward=False \
+    trainer.critic_warmup=0 \
+    trainer.logger=['console','wandb'] \
+    trainer.project_name='verl_grpo_example_gsm8k' \
+    trainer.experiment_name='qwen3_8b_function_rm' \
+    trainer.n_gpus_per_node=8 \
+    trainer.nnodes=1 \
+    trainer.save_freq=20 \
+    trainer.test_freq=5 \
+    trainer.total_epochs=15
+```
+
+#### RLOO
+
+```PY
+python3 -m verl.trainer.main_ppo \
+    algorithm.adv_estimator=rloo \
+    data.train_files=$HOME/data/gsm8k/train.parquet \
+    data.val_files=$HOME/data/gsm8k/test.parquet \
+    data.train_batch_size=1024 \
+    data.max_prompt_length=512 \
+    data.max_response_length=1024 \
+    data.filter_overlong_prompts=True \
+    data.truncation='error' \
+    actor_rollout_ref.model.path=Qwen/Qwen2-7B-Instruct \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    actor_rollout_ref.model.use_remove_padding=True \
+    actor_rollout_ref.actor.ppo_mini_batch_size=256 \
+    actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=80 \
+    actor_rollout_ref.actor.use_kl_loss=False \
+    actor_rollout_ref.model.enable_gradient_checkpointing=True \
+    actor_rollout_ref.actor.fsdp_config.param_offload=False \
+    actor_rollout_ref.actor.fsdp_config.optimizer_offload=False \
+    actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=160 \
+    actor_rollout_ref.rollout.tensor_model_parallel_size=2 \
+    actor_rollout_ref.rollout.name=vllm \
+    actor_rollout_ref.rollout.gpu_memory_utilization=0.6 \
+    actor_rollout_ref.rollout.n=5 \
+    actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=160 \
+    actor_rollout_ref.ref.fsdp_config.param_offload=True \
+    algorithm.use_kl_in_reward=True \
+    algorithm.kl_penalty=kl \
+    algorithm.kl_ctrl.kl_coef=0.001 \
+    trainer.critic_warmup=0 \
+    trainer.logger=['console','wandb'] \
+    trainer.project_name='verl_rloo_example_gsm8k' \
+    trainer.experiment_name='qwen2_7b_function_rm' \
+    trainer.n_gpus_per_node=8 \
+    trainer.nnodes=1 \
+    trainer.save_freq=-1 \
+    trainer.test_freq=5 \
+    trainer.total_epochs=15
+```
 
 
 ## Axolotl
