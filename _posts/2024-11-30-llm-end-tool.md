@@ -3,7 +3,7 @@ layout: post
 title:  大模型端侧部署工具
 date:   2024-11-30 22:46:00
 categories: 大模型
-tags:  ollama llm 量化 web
+tags:  ollama llm 量化 web lm_studio
 excerpt: 大模型LLM部署工具，如 Ollama
 mathjax: true
 permalink: /llm_end_tool
@@ -118,7 +118,13 @@ lms server start
 #### api 
 
 
-本地主机上运行的API服务器访问LM Studio中的LLM。请求和响应格式均遵循OpenAI的API标准。要使用本地服务器，用户需首先安装LM Studio，然后从应用程序中搜索并下载所需的LLM模型。
+本地主机上运行的API服务器访问`LM Studio`中的LLM。
+
+请求和响应格式均遵循OpenAI的API标准。要使用本地服务器，用户需首先安装LM Studio，然后从应用程序中搜索并下载所需的LLM模型。
+
+【2025-8-18】本地客户端开启
+- 左侧“终端”图标 → Status 开启
+- 关闭思考模式：右侧 Inference → Enable Thinking
 
 支持的端点
 - GET /v1/models
@@ -127,6 +133,52 @@ lms server start
 - POST /v1/completions
 
 其中，POST /v1/embeddings是LM Studio 0.2.19中的新功能。
+
+Python调用
+
+```py
+import requests
+import json
+
+def requestLLM_local(question):
+    """
+        请求 LLM
+        输入: quesiton 输出：reply
+    """
+    if not question:
+        return '问题为空'
+    url = 'http://127.0.0.1:1234/v1/chat/completions'
+    data_info = {
+        "model": "qwen/qwen3-1.7b",
+        "messages":[
+            {
+                "role": "user",
+                "content": "你是谁？"
+            }
+        ],
+        "max_tokens": 520,
+        "temperature": 0.3,
+        "top_k": 50,
+        "top_p": 0.8,
+        "repetition_penalty": 1.2,
+        "stream": False,
+        "chat_template_kwargs": {"enable_thinking": False}
+    }
+    data_info['messages'][0]['content'] = question
+    r = requests.post(url, json=data_info)
+    reply = r.text
+    try:
+        res = json.loads(r.text)
+        reply =  res['choices'][0]['message']['content']
+    except Exception as err:
+        print(f'json解析有误: [{r.text}]')
+
+    return reply
+
+question = '怎么还没来'
+res = requestLLM_local(question)
+print(res)
+```
 
 示例
 
