@@ -5,6 +5,7 @@ date:   2025-08-10 11:47:00
 categories: 大模型 对话系统 agent mermaid 
 excerpt : 大模型如何实现任务型多轮会话？
 tags: 多轮
+permalink: /multi-turn
 mathjax: true
 ---
 
