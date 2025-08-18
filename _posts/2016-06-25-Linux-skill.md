@@ -1200,6 +1200,14 @@ ssh-add ~/.ssh/id_rsa
 # 服务器上查询~/.ssh/目录下多了一个文件:authorized_keys
 ```
 
+【2025-8-18】实践
+- 本机 → 服务器
+- 使用方法
+  - 本地创建 ssh-keygen
+  - 复制 公钥密码 ids.pub
+  - 登录远程服务器
+  - 添加 公钥密码到认证文件: `vim ~/.ssh/authorized_keys`
+
 【2024-1-29】 网页版（Github/GitLab）上添加key，网页地址：
 - `user settings` → `user profile` → `SSH Keys`
 
