@@ -19,6 +19,29 @@ permalink: /llm_judge
 
 ## LLM-as-a-Judge
 
+### 思考
+
+
+#### 说话人难以识别
+
+
+大模型从**工具**进化为“**裁判**”（LLM-as-a-judge），开始大规模地评判由AI自己生成的内容。
+
+这种高效的评估范式，其可靠性与人类判断的一致性，却很少被深入验证。
+
+【2025-8-17】[大模型给自己当裁判并不靠谱！上海交通大学新研究揭示LLM-as-a-judge机制缺陷](https://zhuanlan.zhihu.com/p/1940396309635916889)
+
+评判模型是否“入戏”之前，AI裁判能准确识别出对话中到底是谁在说话吗？
+
+【2025-8-6】上海交大王德泉课题组，当前大模型评判能力不足，识别角色任务上，最好的模型（Gemini-2.5-pro）正确率才69%，而人类达到91%
+- [PersonaEval: Are LLM Evaluators Human Enough to Judge Role-Play?](https://arxiv.org/pdf/2508.10014)
+- github [PersonaEval](https://github.com/maple-zhou/PersonaEval) 识别角色，专为LLM裁判打造的“照妖镜”
+
+![](https://pic3.zhimg.com/v2-13ba520638abf287e0517309543dedb2_r.jpg)
+
+大模型更关注**表层的语言风格**（听起来像谁），而人类则首先观察真实的**对话意图和上下文**（在那个情境下，谁会这么说）
+
+
 
 ### ChatEval
 
