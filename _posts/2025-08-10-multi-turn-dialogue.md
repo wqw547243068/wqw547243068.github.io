@@ -30,6 +30,39 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 尽管这些系统能够灵活的表达工作流，但在自动化搜索工作流的过程中，存在：**合理性难以保证**、**可验证性不足**、 **难以直观表达**等突出挑战，严重制约了多智能体系统的可靠落地与规模化部署。
 
 
+## 论文
+
+论文合集: 大模型多轮交互相关的数据、论文、代码
+- 【2025-4-7】CMU 综述论文 [Beyond Single-Turn: A Survey on Multi-Turn Interactions with Large Language Models](https://arxiv.org/pdf/2504.04717)，涉及多个场景的多轮会话，roleplay, healthcare, education, and even adversarial jailbreak settings
+- [Awesome-Multi-Turn-LLMs](https://github.com/yubol-bobo/Awesome-Multi-Turn-LLMs)
+
+此外，多轮对话场景下增强方法：
+- **模型中心策略**: 上下文学习、监督微调、强化学习及新型架构；
+- **外部集成方法**: 记忆增强、基于检索的方法及知识图谱；
+- 用于协作交互的**基于智能体的技术**。
+
+
+### Google
+
+【2025-7-17】[Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)
+
+
+用人类反馈优化大模型（LLMs）已成为智能对话助手的主流范式。
+
+然而，基于LLM的智能体在**对话技能**方面仍有欠缺
+- 歧义消除能力——信息模糊时，往往含糊其辞或暗自猜测用户的真实意图，而非主动提出澄清问题。
+- 在特定任务场景中，**高质量的对话样本数量有限**
+
+这成为限制LLMs学习最优对话行动策略的瓶颈。
+
+**基于行动的对比自训练（ACT）** 算法，基于直接偏好优化（DPO）的准在线偏好优化算法，在多轮对话建模中实现数据高效的对话策略学习。
+
+通过真实对话任务验证ACT在数据高效调优场景中的有效性，即使在没有行动标签的情况下依然表现优异，这些任务包括：表格驱动的问答、机器阅读理解，以及AmbigSQL（一种面向数据分析智能体的新型任务，用于消除复杂SQL生成中信息查询请求的歧义）。
+
+此外，还提出评估LLMs作为对话智能体能力的方法
+- 通过检验能否在对话中隐性识别并推理歧义信息。
+- 结果表明，与监督微调、DPO等标准调优方法相比，ACT在对话建模方面有显著提升。
+
 
 ## 【2025-5-29】MermaidFlow
 
