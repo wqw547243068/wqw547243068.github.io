@@ -1,4 +1,4 @@
-<img width="1839" height="597" alt="image" src="https://github.com/user-attachments/assets/322cc97f-5058-4316-9ec3-9f337c29cc88" />---
+---
 layout: post
 title:  "知识图谱-Knowledge-Graph"
 date:   2020-06-23 21:14:00
