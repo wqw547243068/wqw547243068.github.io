@@ -3,7 +3,7 @@ layout: post
 title:   AIGC 顶级机构、公司
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面
+tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面 META
 excerpt: 世界顶级AI机构/公司（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -2002,6 +2002,30 @@ GitHub 中星数前 10 名的 LLM 开源项目中，和开源模型相关有第�
 - `美国`的如意算盘: 用`中东`的**钱**、`印度`的**人才**、`加拿大`的**电**，帮助`美国`发展AI，并在这个领域和`中国`打持久战。
 - 中美互相博弈未来: 或许所有不具备自主发展实力的国家，都要在中美之间“选边站”。
 - 如今的AI就像200年前的电力，是新一轮的工业革命，谁能从中胜出，谁就能掌控未来全球的主导权！
+
+
+## META
+
+
+### Yann Lecun
+
+FAIR 实验室负责人
+
+### Alexandr Wang
+
+【2025-8-23】上任仅数月，Meta「新人」执掌 AI 部门大权
+
+扎克伯格 对 Meta 进行大调整，上任数月的超级智能实验室（MSL）负责人 Alexandr Wang 发布内部信。
+
+MSL 将被拆分为四个专业团队，其中多个 AI 团队都向其进行工作汇报：
+- `TBD 实验室`：专注于训练大型 AI 模型，探索如「全能（Omni）」模型等新方向。
+- `FAIR`：作为创新引擎，推动将 FAIR 的研究成果应用于 TBD 实验室的大规模训练。`Rob Fergus` 将继续领导 FAIR，而 Yann LeCun 将继续担任 FAIR 首席科学家，但两人均向 Wang 汇报。
+- `产品与应用研究`：加强产品导向的研究与开发，整合 AI 技术至 Meta 产品中。Nat Friedman 领导该团队，并向 Wang 汇报。
+- `基础设施团队`：整合基础设施资源，支持大规模 AI 模型的训练和部署。Aparna Ramani 负责，并且该团队并入 Aparna 的组织，并且依然向 Wang 汇报。值得一提的是，在本次调整中，通用人工智能基础（AGI Foundations）团队被解散，并且成员将被安排到其他合适的团队、岗位中。
+
+Wang 表示：我深知组织架构的调整会带来阵痛，但我坚信，此刻花时间理顺组织架构，从长远来看，将能让我们以更快的步伐迈向超级智能。
+
+
 
 ## 清华大学
 
