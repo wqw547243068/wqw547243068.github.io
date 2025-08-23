@@ -446,5 +446,53 @@ git clone https://github.com/jd-opensource/joyagent-jdgenie.git
 cd joyagent-jdgenie
 ```
 
+### 【2025-8-6】Chain-of-Agents
+
+
+【2025-8-23】[Chain-of-Agents: OPPO推出通用智能体模型新范式，多榜单SOTA，模型代码数据全开源](https://mp.weixin.qq.com/s/G3IhYP8M9vyihExVoKlh2A)
+- 【2025-8-6】[Chain-of-Agents: End-to-End Agent Foundation Models via Multi-Agent Distillation and Agentic RL](https://www.arxiv.org/abs/2508.13167)
+- 主页：[project](https://chain-of-agents-afm.github.io/)
+- 代码：[Agent_Foundation_Models](https://github.com/OPPO-PersonalAI/Agent_Foundation_Models)
+- 模型：[afm-models-689200e11d0b21a67c015ba8](https://huggingface.co/collections/PersonalAILab/afm-models-689200e11d0b21a67c015ba8)
+- 数据：[afm-datasets-6892140eaad360ea5ccdcde1](https://huggingface.co/collections/PersonalAILab/afm-datasets-6892140eaad360ea5ccdcde1)
+
+
+
+现阶段 MAS 依然面临一些关键限制：
+- 计算开销高：智能体之间频繁冗余的通信和复杂的工作流设计导致效率不高。
+- 泛化能力有限：面对新领域或新任务时，需要大量的 prompt 设计与工作流配置。
+- 缺乏数据驱动的学习能力：难以通过智能体任务数据实现持续提升性能。
+- 底层的大语言模型（LLMs）未原生支持多轮、多智能体、多工具交互，仍依赖 prompt 工程实现。
+
+近期兴起的**工具融合推理**（TIR）模型，通过显式地将工具使用融入推理过程，显著提升了单智能体框架（如 ReAct）在信息检索任务中的表现。然而，传统的 TIR 模型，无法直接支持**多智能体系统**的原生训练与协作。
+
+VIVO 提出全新的智能体推理范式——Chain-of-Agents（CoA）。
+- 与传统的 TIR 模型仅支持单一智能体的「思考-行动-观察」模式不同，CoA 框架能够灵活定义多个角色和工具的智能体，在单一模型内动态激活，实现端到端的多智能体协作。
+
+CoA 无需复杂的 prompt 和工作流设计，降低了智能体间的通信开销，并支持端到端训练，显著提升了系统的效率和泛化能力。
+
+经过训练后，具备原生 CoA 问题求解能力的模型称为 Agent Foundation Model（AFM）。
+
+#### 原理
+
+CoA 采用了一种层次化的智能体架构，包括两个核心组成部分：
+- 角色型智能体（Role-playing Agents）：进行推理和协调的智能体，包括：思考智能体（Thinking Agent）、计划智能体（Plan Agent）、反思智能体（Reflection Agent）和验证智能体（Verification Agent）。
+- 工具型智能体（Tool Agents）：执行特定任务的智能体，包括：搜索智能体（Search Agent）、爬取智能体（Crawl Agent）和代码智能体（Code Agent）。
+
+CoA 范式下，模型可以支持更多类型的智能体的推理和调用。
+
+CoA 微调框架，用于构建 AFM，该方法具体包括以下流程：
+- 任务数据采集，生成与筛选：从公开数据集中采集不同类型的任务数据，以及采用自动化的方式（如 TaskCraft）自动生成高质量智能体任务，并进行有效过滤。
+- 多智能体能力蒸馏：利用先进的多智能体框架（如 OAgents）完成任务，将成功轨迹转换为 CoA 兼容的形式。
+- 监督微调与强化学习：利用生成的 CoA 轨迹进行模型微调，并通过可验证的智能体任务进行强化学习，进一步提升性能。
+
+#### 效果
+
+AFM 展示了卓越的性能和高效的推理能力，在近 20 项复杂任务和基准测试中全面刷新记录：
+- 在 Agentic 任务中，其在 GAIA 基准上以 32B 模型实现了 55.4% 的 Pass@1 成功率；
+- 在代码推理方面，AFM 在 LiveCodeBench v5 上的 47.9% 准确率和在 CodeContests 上的 32.7% 成绩均显著超越现有 TIR 方法。
+- 同时，它将推理成本（token 消耗）减少高达 85.5%，在保持领先性能的同时大幅提升效率。
+
+
 # 结束
 
