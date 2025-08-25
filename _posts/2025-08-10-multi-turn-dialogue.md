@@ -25,7 +25,9 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 
 ## 背景
 
-【2024-2-28】中山大学综述论文 [A Survey on Recent Advances in LLM-Based Multi-turn Dialogue Systems](https://arxiv.org/pdf/2402.18013v1)
+【2024-2-28】中山大学综述
+- 论文 [A Survey on Recent Advances in LLM-Based Multi-turn Dialogue Systems](https://arxiv.org/pdf/2402.18013v1)
+- 解读 [基于LLM的多轮对话系统的最新进展综述](https://zhuanlan.zhihu.com/p/686232892)
 
 多轮对话任务是序列到序列任务
 - 从用户消息 `U = (u1, u2, ...ut)` 生成系统响应 `S = (s1, s2, ...st)`
@@ -53,11 +55,20 @@ TOD 分为基于**流水线**的TOD和**端到端**TOD
   - 模块端到端 modularly end-to-end TOD systems, 同时训练、优化多个模块 —— 主流
   - 全端到端 fully end-to-end TOD systems, LLM再OOD上进步显著，但由于缺乏大量TOD数据，全端到端TOD进展有限
 
+![](https://pica.zhimg.com/v2-fc11c2ced0078baaa889810aa1bae106_1440w.jpg)
+
 案例
-- 阿里达摩院 Semi-supervised Pre-trAined Conversation ModEl (SPACE)
-  - GALAXY (SPACE-1) 是模块化TOD
-  - SPACE-2 是树结构的对话模型，语义树(STS)
-  - SPACE-3 是最先进的模块化TOD对话系统
+- Peng等人提出了Soloist，这是一种使用迁移学习和机器教学来构建端到端TOD系统的方法。Soloist的训练过程与SimpleTOD非常相似。然而，Soloist细化了每个对话回合的数据格式，不再需要对话动作A。训练数据中的每个对话回合可以表示为 = `[H, B, D, S]`，Soloist的完整预训练目标分为信念预测、响应生成。
+- UBAR，以前的模块化端到端TOD方法在回合级别序列中进行训练和评估
+  - 其中基于对话历史 `Ht = (u1,s1), (u2,s2),..., (ut-1,st-1)`，ut是轮次t生成的响应。而UBAR在上下文中集成了中间信息B、D和A。
+  - 因此，UBAR的训练序列依次被定义为：`[H0, B0, D0, A0, S0, . . ., Ht, Bt, Dt, At, St ]`，然后用于微调大型预训练模型GPT-2。
+- Su等人提出了一种即插即用的面向任务的对话模型（PPTOD），这是一种模块化的端到端的TOD模型。
+  - PPTOD使用四个与TOD相关的任务进行预训练，并使用提示词来提高语言模型的性能。
+  - PPTOD的学习框架允许它使用部分注释的数据进行训练，这大大降低了手动创建数据集的成本。
+- 阿里达摩院 Semi-supervised Pre-trAined Conversation ModEl (SPACE) 半监督式预训练会话模型
+  - GALAXY (SPACE-1) 是模块化TOD,通过应用半监督学习，从有限的标记对话和广泛的未标记对话语料库的组合中显式获取对话策略。
+  - SPACE-2 是树结构的对话模型，语义树(STS),在有限的标记对话和大规模未标记对话语料库上预先训练的树结构对话模型。
+  - SPACE-3 是最先进的模块化TOD对话系统,整合了SPACE-1和SPACE-2的工作，结合STS来统一不同数据集之间不一致的注释模式，并为每个组件设计了一个专用的预训练目标。
 
 基于LLM的多轮对话系统的两个主要类别：基于LLM的TOD系统和基于LLM的ODD系统。
 
