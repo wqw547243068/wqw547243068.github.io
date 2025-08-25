@@ -1981,6 +1981,10 @@ Transformer vs Llama
 - 论文: "[A Survey of Large Language Models](https://arxiv.org/abs/2303.18223)", github: [LLMSurvey](https://github.com/RUCAIBox/LLMSurvey/tree/main)
 - ![llama](https://github.com/RUCAIBox/LLMSurvey/blob/main/assets/llama-0628-final.png?raw=true)
 
+
+中山大学论文解读 [基于LLM的多轮对话系统的最新进展综述](https://zhuanlan.zhihu.com/p/686232892)
+- ![](https://pic3.zhimg.com/v2-150d925d2856a092b394ddac6cae3774_r.jpg)
+
 ### LLaMA 扩展
 
 #### LLaMA 分词问题
