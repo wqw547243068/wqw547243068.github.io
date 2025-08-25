@@ -14,14 +14,54 @@ mathjax: true
 
 # 多轮对话
 
+人工智能（AI）的长期目标
+- 生成自然且有意义的响应以与人类通信的多轮对话系统
+
+LLMs的出现显著提高了多轮对话系统的性能
+
 AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系统（Multi-Agent Systems, MAS）成为学术和产业界聚焦的新前沿。
 
 这一背景下，「Agentic Workflow」作为面向智能体自主决策与协作流程自动生成的技术理念，正成为多智能体系统研究和应用的探索热点。
 
 ## 背景
 
-多轮对话知识见站内专题：[对话管理器](dialogue-manager)
+【2024-2-28】中山大学综述论文 [A Survey on Recent Advances in LLM-Based Multi-turn Dialogue Systems](https://arxiv.org/pdf/2402.18013v1)
 
+多轮对话任务是序列到序列任务
+- 从用户消息 `U = (u1, u2, ...ut)` 生成系统响应 `S = (s1, s2, ...st)`
+- 其中ut和st分别是第t轮的用户消息和系统响应。
+
+多轮对话系统可以分为: 基于LLM的`开放领域对话`（`ODD`）和`任务导向对话`（`TOD`）系统
+- TOD系统帮助用户处理特定领域内的任务，如酒店预订、餐厅推荐等
+- 而ODD系统则在没有领域限制的情况下与用户聊天。
+
+TOD任务和ODD任务并不完全独立，一旦对话系统检测到特定用户需求，一个ODD任务可以转换为TOD任务。
+
+ODD主要分为三种方法：
+- 基于检索的方法，从预定义的集合中选择响应；
+- 基于生成的方法，动态生成响应；
+- 以及混合方法，结合检索和生成以优化对话结果。
+
+TOD 分为基于**流水线**的TOD和**端到端**TOD
+- 基于流水线的TOD系统包括四个相连的模块：
+  - (1) 自然语言理解（NLU），用于提取用户意图和填充槽位；
+  - (2) 对话状态跟踪（DST），基于流水线的TOD中的一个关键模块，用于根据NLU模块的输出和对话的历史输入来跟踪当前轮次的对话状态；
+  - (3) 策略学习（PL），根据DST模块生成的对话状态确定后续行动；
+  - (4) 自然语言生成（NLG），基于流水线的TOD系统中的最后一个模块，将PL模块生成的对话行动转换为易于理解的自然语言。
+  - 对话管理器（DM）是基于流水线的TOD系统的中心控制器，由DST模块和PL模块组成。
+- 基于端到端的TOD:
+  - 模块端到端 modularly end-to-end TOD systems, 同时训练、优化多个模块 —— 主流
+  - 全端到端 fully end-to-end TOD systems, LLM再OOD上进步显著，但由于缺乏大量TOD数据，全端到端TOD进展有限
+
+案例
+- 阿里达摩院 Semi-supervised Pre-trAined Conversation ModEl (SPACE)
+  - GALAXY (SPACE-1) 是模块化TOD
+  - SPACE-2 是树结构的对话模型，语义树(STS)
+  - SPACE-3 是最先进的模块化TOD对话系统
+
+基于LLM的多轮对话系统的两个主要类别：基于LLM的TOD系统和基于LLM的ODD系统。
+
+多轮对话知识见站内专题：[对话管理器](dialogue-manager)
 
 ### workflow 自动化
 
@@ -30,7 +70,7 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 尽管这些系统能够灵活的表达工作流，但在自动化搜索工作流的过程中，存在：**合理性难以保证**、**可验证性不足**、 **难以直观表达**等突出挑战，严重制约了多智能体系统的可靠落地与规模化部署。
 
 
-## 论文
+## LLM 多轮对话
 
 论文合集: 大模型多轮交互相关的数据、论文、代码
 - 【2025-4-7】CMU 综述论文 [Beyond Single-Turn: A Survey on Multi-Turn Interactions with Large Language Models](https://arxiv.org/pdf/2504.04717)，涉及多个场景的多轮会话，roleplay, healthcare, education, and even adversarial jailbreak settings
@@ -45,7 +85,6 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 ### Google
 
 【2025-7-17】[Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)
-
 
 用人类反馈优化大模型（LLMs）已成为智能对话助手的主流范式。
 
