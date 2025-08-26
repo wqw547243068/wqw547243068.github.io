@@ -1359,11 +1359,12 @@ OpenAI
 
 #### Andrej Karpathy -- cv大牛
 
-`Andrej Karpathy` （江湖人称 `AK-47`）
-- 师从Google AI首席科学家的`李飞飞`，与`Ilya Sutskever`同样是OpenAI成立初期10人团队中的一员，且同样曾在`Google Brain`项目实习。
+[Andrej Karpathy](https://karpathy.ai/) （江湖人称 `AK-47`）
+- 斯坦福博士，师从Google AI首席科学家的`李飞飞`，与`Ilya Sutskever`同样是OpenAI成立初期10人团队中的一员，且同样曾在`Google Brain`项目实习。
 - 目前，在 Google Scholar 上，Karpathy 的论文引用数达到了 53360。其中，引用第二多、他作为一作的论文《Large-scale Video Classification with Convolutional Neural Networks》被收录为 CVPR 2014 Oral。
+- 前特斯拉自动驾驶总监，openai，接着创业做 AI教育 [Eureka Labs](https://eurekalabs.ai/)
 
-Andrej Karpathy履历
+Andrej Karpathy 履历
 - 2005-2009 年，Andrej Karpathy 本科就读于加拿大多伦多大学，主修计算机科学与物理，辅修数学。在这里，他第一次接触到深度学习，聆听 Hinton 的课程。
 - 2009 -2011 年，Karpathy 硕士就读于加拿大不列颠哥伦比亚大学，其导师为计算机科学系教授 Michiel van de Panne，主要研究物理模拟中用于敏捷机器人的机器学习。
 - 2011-2016 年，Karpathy 博士就读于斯坦福大学，师从著名 AI 学者李飞飞，专注于研究卷积 / 循环神经网络以及它们在计算机视觉、自然语言处理和交叉领域的应用。期间，他设计并担任斯坦福首个深度学习课程《CS231n：卷积神经网络与视觉识别》的主要讲师。
