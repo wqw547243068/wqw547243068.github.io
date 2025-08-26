@@ -3,7 +3,7 @@ layout: post
 title:  "元宇宙-Meta-Universe"
 date:   2021-11-03 09:10:00
 categories: 新技术
-tags: 元宇宙 扎克伯格 游戏 互联网 虚拟人 数字人 智能客服 强化学习 多模态 大模型
+tags: 元宇宙 扎克伯格 游戏 互联网 虚拟人 数字人 智能客服 强化学习 多模态 大模型 AR VR
 author : 鹤啸九天
 excerpt: 元宇宙到底是个啥？2021年真的是元宇宙元年吗？
 mathjax: true
@@ -1126,6 +1126,53 @@ ARknovv A1系列还搭载了车载AR导航功能，在行车状态下，ARknovv 
   - AugmentOS.org is the smart glasses super app and app store, an ecosystem that smart glasses run on. “The Android for smart glasses.”
 1. Hardware
   - Mentra Mach1 smart glasses and puck enable all-day Mentra Link use.
+
+#### 隐形眼镜
+
+##### 【2022-8-22】Mojo Lens
+
+【2022-8-22】[AR隐形眼镜来了，一部手机的价格，正式开启人体佩戴测试](https://www.36kr.com/p/1882279877020803)
+
+Mojo Vision 由德鲁-帕金斯在2015年创立，总部位于加州萨拉托加，是一家AR眼镜制造商。
+
+2012年，帕金斯患上白内障，为了拯救自己的视觉，成立 Mojo Vision。
+
+2020年，初代产品首次亮相，彼时这款AR隐形眼镜功能还比较单一，主要是在提升视力方面有所应用
+
+2022年3月，发布原型机 Mojo Lens, 改变了VR眼镜的佩戴方式，舍弃眼镜式的“外挂”模式，可以
+- 像隐形眼镜那样直接覆盖在眼球表面。
+- 还具常规AR眼镜功能,比如运动状态监测，可以显示心率、血压等身体状态,出行导航,随时随地查询资料，无感阅读
+
+AR隐形眼镜有三大亮点：
+- 世界上最小
+- 像素点最密集的Micro LED显示屏
+- 适用AR设备的低延迟通信技术（Low Latency Communication），以及超精准的眼动追踪系统。
+
+![](https://imagepphcloud.thepaper.cn/pph/image/188/329/354.gif)
+
+如何将AR眼镜复杂的软硬件系统，集成到一个隐形眼镜大小的镜片中？
+
+5大黑科技：
+- 超高像素显示屏：
+  - Mojo Lens的核心，是一块每英寸14000像素的MicroLED显示屏，直径小于0.5毫米，像素间距为1.8微米，是世界上最小、最密集的动态内容显示屏。
+- 底层处理硬件。
+  - Mojo Vision专门为这款隐形AR眼镜定制开发的，包括一个5GHz无线电和ARM Core M0处理器，可以将传感器数据从镜头上传输下来，同时把增强现实（AR）内容上传到显示屏上。
+- 专门的电池系统。
+  - 电池采用的是一块医疗级的微形电池，分布于眼镜外圈，电池容量官方并未透露，但Mojo Vision曾表示，产品的最终版本，可以保证眼镜运行一整天。
+- 电源充电：Mojo Lens还搭载了电源管理电路和一个无线充电系统。
+  - 为了保证画面的稳定性，Mojo Lens还内置了专门的加速器、陀螺仪和磁力计，这样界面就可以随时跟踪眼镜的运动。
+- 运动感应算法
+  - 通过这个感应算法，佩戴者就可以通过眼球实现对界面的控制，比如开启/关闭应用、切换界面等等。
+
+#####  Lens Air
+
+
+美国 Motion Vision 公司研发的 Lens Air 是**全球首款**可控AR隐形眼镜
+
+将显示技术集成在直径仅0.48毫米的微型电路板中（比沙粒更小），内含14000PPI超清显示屏、眼球追踪传感器和医用电池。
+
+
+
 
 
 # 结束
