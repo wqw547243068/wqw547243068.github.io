@@ -75,6 +75,18 @@ AI机构分布
 
 视频地址：[凤凰网](https://i.ifeng.com/c/8Utr11NGHEZ)
 
+### 中美AI对比
+
+中美AI竞赛，远非你想象的那么简单，这部视频深度拆-解这场竞争的“六层金字塔”模型。 
+
+从顶层AI应用，到最底层的光刻机，美国正试图通过“卡脖子”战术，在根基上限制对手。 
+
+但面对封锁，中国AI如何“以巧破力”？这场关乎未来的终极博弈，真正的战场究竟在哪里？答案，就在金字塔之巅。
+
+【2025-8-25】[10分钟讲透中美AI竞争格局](https://www.bilibili.com/video/BV1ejeWzbEkz/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+- Design -> Production -> Supply -> Infrastructure -> LLM -> Applications
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115086702216655&bvid=BV1ejeWzbEkz&cid=31926257662&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
 ### 中国大模型实力
