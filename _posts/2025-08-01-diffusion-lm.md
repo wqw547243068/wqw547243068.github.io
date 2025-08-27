@@ -48,6 +48,17 @@ ARM存在两大固有缺陷：
 【2025-5-29】[DLM（扩散语言模型）会成为2025年的Mamba吗？](https://www.zhihu.com/question/1910751738811638609/answer/1911481698606122125)
 - 【2025-2-18】论文 [Large Language Diffusion Models](https://arxiv.org/pdf/2502.09992)
 - Demo [LLaDA-demo](https://ml-gsai.github.io/LLaDA-demo/)
+- 【2025-4-14】[What are Diffusion Language Models?](https://spacehunterinf.github.io/blog/2025/diffusion-language-models/)
+
+两种范式对比
+- ![](https://spacehunterinf.github.io/assets/img/diffusionlm_blog/diffusion_vs_ar-1400.webp)
+
+【2025-8-27】人大、清华提出 DPT 对偶伪训练器, 基于扩散模型+半监督
+- [Diffusion Models and Semi-Supervised Learners Benefit Mutually with Few Labels](https://proceedings.neurips.cc/paper_files/paper/2023/file/8735753cc18f6baa92d1f069fd8b14a0-Paper-Conference.pdf)
+- 步骤：标注数据训练分类器 → 伪标签训练条件生成模型 → 真假数据再次训练分类器
+- 代码 [DPT](https://github.com/ML-GSAI/DPT)
+- 【2025-7-21】[Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/pdf/2507.15857v1)
+- Github [Diffusion Language Models are Super Data Learners](https://github.com/JinjieNi/dlms-are-super-data-learners)
 
 ### DLM 原理
 
