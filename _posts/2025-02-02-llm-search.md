@@ -3,7 +3,7 @@ layout: post
 title:  "大模型应用: 搜索"
 date:   2025-02-02 10:55:00
 categories: 大模型
-tags: 大模型 搜索 deepseek
+tags: 大模型 搜索 deepseek agent
 excerpt: 大模型搜索专题
 author: 鹤啸九天
 mathjax: true
@@ -452,6 +452,8 @@ Deep Research 跟 ChatGPT 普通功能最大的区别：能自己干活。
 
 
 
+
+
 ## 开源复现
 
 总结
@@ -834,6 +836,43 @@ LangGraph 递归检索（Recursive Retrieval）
 - 第四步过滤不相关的内容，只保留有效的资讯
 
 这样的 递归式 检索机制，确保大模型能够不断优化查询结果，使得过滤后的资讯更加完整与准确
+
+
+### 【2025-8-27】Atom-Searcher
+
+【2025-8-27】 [Agentic Deep Research新范式，推理能力再突破，可信度增加，蚂蚁安全团队出品](https://mp.weixin.qq.com/s/-tpIs5rXuw0TGhyESD0Q6A)
+
+LLM在复杂任务上的表现仍**受限于静态内部知识**。
+
+#### Agentic Deep Research
+
+为从根本上解决这一限制，突破 AI 能力界限，业界研究者们提出 `Agentic Deep Research` 系统
+- 基于 LLM 的 Agent 通过自主推理、调用搜索引擎和迭代地整合信息来给出全面、有深度且正确性有保障的解决方案。
+
+OpenAI 和 Google 总结了 Agentic Deep Researcher 的几大优势：
+- （1）深入的问题理解能力（Comprehensive Understanding）：能够处理复杂、多跳的用户提问；
+- （2）强大的信息整合能力（Enhanced Synthesis）：能够将广泛甚至冲突的信息源整合为合理的输出；
+- （3）减轻用户的认知负担（Reduced User Effort）：整个 research 过程完全自主，不需要用户的过多干预。
+
+#### Agentic Deep Research 问题
+
+现存最先进的 Agentic Deep Research 系统往往基于由**可验证结果奖励**指导的强化学习训练，尽管该训练范式带来了显著的性能收益，但仍存在以下核心问题：
+- **梯度冲突**（Gradients Conflicts）：在基于可验证结果奖励的强化学习范式中，即使中间的推理过程或研究策略是有效的，只要最终答案错误，整个推理轨迹都会受到惩罚。这种粗粒度的奖励设计在中间推理步骤与最终答案之间引入了潜在的梯度冲突，阻碍了模型发现更优的推理能力和研究策略，从而限制了其泛化能力
+- **奖励稀疏**（Reward sparsity）：基于结果的强化学习仅依赖最终答案生成奖励，导致每个训练样本只能提供稀疏的反馈信号。这严重限制了策略优化的效率，因为它增加了对更大规模训练数据和更长训练周期的依赖。
+
+#### Atom-Searcher
+
+以上两个限制限制了 Agentic Deep Research 系统的性能上线，为决解这两大限制，蚂蚁安全与智能实验室团队提出 Atom-Searcher，进一步推动了 Agentic Deep Research 系统的性能边界。
+- 论文标题：[Atom-Searcher: Enhancing Agentic Deep Research via Fine-Grained Atomic Thought Reward](https://arxiv.org/pdf/2508.12800)
+- Github: [Research-Venus](https://github.com/antgroup/Research-Venus)
+- Huggingface: [Atom-Searcher](https://huggingface.co/dikw/Atom-Searcher)
+
+Atom-Searcher 结合监督微调（SFT）与基于细粒度奖励的强化学习构建强大的 Agentic Deep Research 系统。
+
+与现存 Agentic Deep Research 训练框架相比
+- Atom-Searcher 创新地提出了 Atomic Thought 推理范式，引导 LLM 进行更加深入、可信和可解释的推理
+- 然后引入 Reasoning Reward Model（RRM）对 Atomic Thought 式的推理过程进行监督，构建细粒度的 Atomic Thought Reward（ATR）；
+- 进而提出一种课程学习启发的奖励融合策略将 ATR 与可验证结果奖励进行聚合；最后基于聚合奖励进行强化学习训练。
 
 
 
