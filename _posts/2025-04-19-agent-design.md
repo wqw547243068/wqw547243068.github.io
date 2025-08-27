@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化  自动化 训练
+tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
