@@ -506,6 +506,19 @@ Jekyll 都会通过 Liquid 模板工具来生成一系列的数据。
 
 [原文链接](https://blog.csdn.net/sunxboy/article/details/84693928)
 
+### 标签系统
+
+#### 词云
+
+博客里添加文章标签，系统自动统计，可视化成词云
+
+#### 图谱
+
+【2025-8-28】[Quartz](https://quartz.jzhao.xyz/) 交互式知识图谱
+- 安装 npm
+- 暂无 jekyll 插件
+
+
 ### 表格编辑
 
 
