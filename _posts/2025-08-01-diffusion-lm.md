@@ -60,6 +60,11 @@ ARM存在两大固有缺陷：
 - 【2025-7-21】[Diffusion Beats Autoregressive in Data-Constrained Settings](https://arxiv.org/pdf/2507.15857v1)
 - Github [Diffusion Language Models are Super Data Learners](https://github.com/JinjieNi/dlms-are-super-data-learners)
 
+李宏毅教程
+- [笔记](https://emisaber.github.io/White_Box/Notes/%E6%9D%8E%E5%AE%8F%E6%AF%85-Diffusion-Model)
+- ![](https://raw.githubusercontent.com/Emisaber/pic_obsidian/main/Pasted%20image%2020240709152149.png)
+
+
 ### DLM 原理
 
 DLM 工作原理
@@ -100,8 +105,6 @@ DLM 核心技术原理很直观，不同于LLM next token prediction，DLM 做 m
 核心公式: 根据前面的所有内容预测下个字符。
 - ![](https://picx.zhimg.com/80/v2-f657f3fe9c7db7187c5152e0790e1ab5_720w.webp)
 
-
-## DM 启示
 
 语言模型（自回归）
 
