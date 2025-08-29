@@ -20,6 +20,17 @@ permalink: /all_modality
 
 ## 阿里
 
+【2025-8-29】阿里云（小云）实时交互形态
+- AI电话通话：电话呼出、电话呼入
+  - 电话呼出: 填入自己的号码, 默认选择智能打断、多种音色可选
+  - 电话呼入: 拨打号码 02566040232 即可
+- 智能体通话：消息对话、语音通话、视觉理解通话、数字人通话、视频通话
+
+体验
+- [APP](https://alivc-demo-cms.alicdn.com/versionProduct/installPackage/AUI_Kits/AITalk/installPackage-AITalk.html)
+- [Web](https://video.aliyuncs.com/aicall/desktop)
+
+
 ### 【2025-3-27】Qwen2.5-Omni
 
 
