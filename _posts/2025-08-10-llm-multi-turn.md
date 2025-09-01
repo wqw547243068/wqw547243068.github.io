@@ -23,7 +23,23 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 
 这一背景下，「Agentic Workflow」作为面向智能体自主决策与协作流程自动生成的技术理念，正成为多智能体系统研究和应用的探索热点。
 
-## 背景
+## LLM 多轮
+
+
+
+### CMU
+
+论文合集: 大模型多轮交互相关的数据、论文、代码
+- 【2025-4-7】CMU 综述论文 [Beyond Single-Turn: A Survey on Multi-Turn Interactions with Large Language Models](https://arxiv.org/pdf/2504.04717)，涉及多个场景的多轮会话，roleplay, healthcare, education, and even adversarial jailbreak settings
+- [Awesome-Multi-Turn-LLMs](https://github.com/yubol-bobo/Awesome-Multi-Turn-LLMs)
+
+此外，多轮对话场景下增强方法：
+- **模型中心策略**: 上下文学习、监督微调、强化学习及新型架构；
+- **外部集成方法**: 记忆增强、基于检索的方法及知识图谱；
+- 用于协作交互的**基于智能体的技术**。
+
+
+### 中山大学
 
 【2024-2-28】中山大学综述
 - 论文 [A Survey on Recent Advances in LLM-Based Multi-turn Dialogue Systems](https://arxiv.org/pdf/2402.18013v1)
@@ -111,20 +127,20 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 - 实例：Cursor（代码助手）用户发现 “频繁开启新对话” 能提升效果，印证了多轮对话的局限性。
 
 
+## 数据
 
-## LLM 多轮对话
 
+### 多轮对话数据合成
 
-### 综述
+【2025-4-24】[APIGen-MT：高效生成多轮人机交互Agent数据的两阶段框架](https://developer.volcengine.com/articles/7496711945006481418)
 
-论文合集: 大模型多轮交互相关的数据、论文、代码
-- 【2025-4-7】CMU 综述论文 [Beyond Single-Turn: A Survey on Multi-Turn Interactions with Large Language Models](https://arxiv.org/pdf/2504.04717)，涉及多个场景的多轮会话，roleplay, healthcare, education, and even adversarial jailbreak settings
-- [Awesome-Multi-Turn-LLMs](https://github.com/yubol-bobo/Awesome-Multi-Turn-LLMs)
+APIGen-MT：高效生成多轮人机交互数据的两阶段框架
+- 第一阶段：任务配置和验证
+  - 生成详细的任务蓝图（blueprint），包括用户意图、可验证的地面真实动作（groundtruth actions）和预期的最终输出
+- 第二阶段：人机环境交互轨迹收集
+  - 基于第一阶段生成的验证任务配置，这一阶段通过模拟人机交互来生成完整的多轮交互轨迹
 
-此外，多轮对话场景下增强方法：
-- **模型中心策略**: 上下文学习、监督微调、强化学习及新型架构；
-- **外部集成方法**: 记忆增强、基于检索的方法及知识图谱；
-- 用于协作交互的**基于智能体的技术**。
+## LLM 多轮对话案例
 
 
 ### Google
