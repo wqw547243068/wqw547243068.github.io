@@ -1034,6 +1034,35 @@ Magi-1 在以下几个方面表现出色：
 虽然 Magi-1 尚未与 Sora 等国际顶尖模型在质量与时长上完全对标，但其“产品可用性 + 开源策略”组合，为中国视频生成模型赛道注入新活力。特别是在跨帧物理一致性、场景构图稳定性方面，Magi-1 已达到全球领先水平。
 
 
+## Apple
+
+### FastVLM
+
+【2025-9-2】FastVLM：实时视频理解
+
+苹果在 Hugging Face 平台上开源 FastVLM 视觉语言模型的浏览器试用版。[资讯](https://www.163.com/dy/article/K8EFIIEM0511B8LM.html)
+- [FastVLM](https://fastvlm.net/zh)
+- 模型：[FastVLM-0.5B](https://huggingface.co/apple/FastVLM-0.5B)
+- 浏览器实时运行，速度↑85x，体积↓3.4x
+
+FastVLM 以其“闪电般”的视频字幕生成速度著称，只要用户拥有搭载 Apple Silicon 芯片的 Mac 设备，即可轻松上手体验这一前沿技术。
+
+![](https://raw.githubusercontent.com/apple/ml-fastvlm/main/docs/fastvlm-handwriting.gif)
+
+核心优势
+- 极速响应:首 Token 输出速度惊人！FastVLM-0.5B 比 LLaVA-OneVision 快 85 倍。FastVLM-7B (结合 Qwen2) 比 Cambrian-1-8B 快 7.9 倍 (同等精度)。
+- 小巧高效: 模型体积小，部署更轻松。FastVLM-0.5B 比 LLaVA-OneVision 小 3.4 倍。非常适合 iPhone、iPad、Mac 等端侧设备。
+- 端侧智能: 无需依赖云端，直接在您的苹果设备上运行，保护隐私，响应更快。完美适配 iOS/Mac 生态，赋能边缘 AI 应用。
+
+FastVLM 模型的核心优势在于其卓越的速度和效率。该模型利用苹果自研的开源机器学习框架 MLX 进行优化，专为 Apple Silicon 芯片设计。与同类模型相比，FastVLM 模型体积仅为三分之一左右，不过在视频字幕生成速度上却能提升 85 倍。
+
+苹果此次发布的 FastVLM-0.5B 轻量版，可在浏览器内直接加载运行。
+- 根据该媒体实测，在 16GB M2 Pro MacBook Pro 上，首次加载模型需数分钟，不过在启动后，便能精准描述画面中的人物、环境、表情及各种物体。
+- 该模型支持本地运行，所有数据均在设备端处理，无需上传至云端，从而保障了用户的数据隐私。
+
+FastVLM 的本地运行能力及其低延迟特性，让其在可穿戴设备和辅助技术领域展现出巨大潜力。例如，在虚拟摄像头应用中，该工具能即时详细描述多场景内容，FastVLM 未来有望成为这些设备的核心技术，为用户提供更智能、更便捷的交互体验。
+
+
 ## 应用
 
 
@@ -1055,8 +1084,6 @@ SkyReels-V1 不仅支持文生视频、还能支持图生视频，是开源视�
 SkyReels-A1 能够基于任意人体比例（包括肖像、半身及全身构图）生成高度逼真的人物动态视频，其真实感源自对人物表情变化和情绪的精准模拟、皮肤肌理、身体动作跟随等多维度细节的深度还原。
 
 ### 营销
-
-
 
 
 【2025-6-19】灵犀深智推出 [ClipClap](https://www.clipclapai.com/) 营销短视频生成
