@@ -1036,12 +1036,19 @@ Magi-1 在以下几个方面表现出色：
 
 ## Apple
 
-### FastVLM
+### FastVLM 介绍
+
+FastVLM 是苹果发布的**视觉语言模型**，可以在iPhone和Mac上离线运行，能够理解图像内容并回答问题。所有预测都在设备本地处理，确保隐私和安全
+- 【2024-12-17】CVPR 2025 [FastVLM: Efficient Vision Encoding for Vision Language Models](https://www.arxiv.org/pdf/2412.13303)
+- GitHub [ml-fastvlm](https://github.com/apple/ml-fastvlm)
+
+
+### 实时理解
 
 【2025-9-2】FastVLM：实时视频理解
 
 苹果在 Hugging Face 平台上开源 FastVLM 视觉语言模型的浏览器试用版。[资讯](https://www.163.com/dy/article/K8EFIIEM0511B8LM.html)
-- [FastVLM](https://fastvlm.net/zh)
+- [FastVLM](https://fastvlm.net) 基于 LLaVA 和 qwen2
 - 模型：[FastVLM-0.5B](https://huggingface.co/apple/FastVLM-0.5B)
 - 浏览器实时运行，速度↑85x，体积↓3.4x
 
