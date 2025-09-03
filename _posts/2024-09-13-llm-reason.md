@@ -492,6 +492,30 @@ CoT-Valve 方法通过**动态控制推理链条的长度**，让模型在简单
 - 2、在更复杂的AIME数据集上，CoT-Valve同样表现出色。QwQ-32B-Preview模型的推理链条长度从6827个token减少到4629个token，同时仅增加了一个错误答案。
 - 3、CoT-Valve不仅适用于大型模型，还能够显著提升小型模型的推理效率。例如，在LLaMA-3.2-1B-Instruct模型上，CoT-Valve将推理链条长度从759.3个token减少到267.0个token，同时将准确率从52.69%提升到55.50%。
 
+#### 【2025-9-3】SABER 多种推理模式
+
+【2025-8-8】`SABER`（Switchable and Balanced Training for Efficient LLM Reasoning）是 BiliBili 大模型团队提出的RL训练范式，解决大语言模型（LLMs）推理时存在的 “过度思考” 问题，实现用户可控的token预算推理；
+- Paper：[SABER: Switchable and Balanced Training for Efficient LLM Reasoning](https://arxiv.org/abs/2508.10026)
+- 该框架支持 `NoThink`、`FastThink`、`CoreThink`、`DeepThink` 四种**离散推理模式**
+- 数学推理（MATH、GSM8K）、代码生成（MBPP）和逻辑推理（LiveBench-Reasoning）任务中表现优异，如 1.5B 模型的 SABER-FastThink 在 MATH 基准上推理长度减少 65.4% 且准确率提升 3.6%，还具备良好的跨规模（1.5B 到 7B 模型）和跨领域泛化能力，且无需监督微调（SFT）预热即可直接通过强化学习优化。
+	
+SABER 框架核心设计
+
+思考收集与预算分类
+- 数据预处理逻辑：按token数将样本分为三个难度层级并分配目标预算。
+- 模式提示模板：为不同推理模式设计专属系统提示，明确推理token约束。
+
+稳定模式转换的保障机制
+- 基于准确率的训练数据划分：筛选基础模型回答正确的样本（约 60%），对其执行预算降级，使其接受长度惩罚，学习模式切换。基础模型回答错误的样本（约 40%）：一半保留原预算，另一半无目标预算，避免难样本因惩罚导致性能崩溃。
+- 下限比例约束：为防止模型 “过度缩短推理” 以规避惩罚，强制约束生成的token数。
+ 用户可控的 NoThink 模式设计
+- 在训练集中加入人工构造的 NoThink 样本，每个样本添加最小推理块，明确指令模型跳过推理环节直接输出答案；仅需少量 NoThink 样本（与核心样本重叠），即可让模型在该模式下保持高准确率。
+
+RL优化方案
+- 无 SFT 预热：区别于多数需先进行监督微调（SFT）的 RL 方法，SABER 可直接从蒸馏基础模型开始 RL 优化，简化流程并降低计算开销。
+- 优化算法：采用Group Relative Policy Optimization（GRPO） 算法，通过结构化奖励信号微调模型。
+- 复合奖励函数：奖励由四部分组成，确保推理合规、准确且符合预算。
+
 
 ### 顿悟时刻
 
@@ -514,7 +538,9 @@ CoT-Valve 方法通过**动态控制推理链条的长度**，让模型在简单
 
 ### long cot
 
-清华 用 openrlhf 包 long cot 研究工作。尽可能 Demystifying Long Chain-of-Thought Reasoning in LLMs，通过严格的ablation study得出了11个major takeaway。
+清华 用 openrlhf 包 long cot 研究工作。
+
+尽可能 Demystifying Long Chain-of-Thought Reasoning in LLMs，通过严格的ablation study得出了11个major takeaway。
 - 详情 [twitter](https://x.com/xiangyue96/status/1887332772198371514) 
 - 或paper [](https://arxiv.org/pdf/2502.03373)
 
@@ -566,6 +592,8 @@ LLMs 显示结构化推理时，会隐式跟踪其在思考阶段的相对位置
 
 效果：最高提速近6倍，准确率不降反升
 - DeepSeek-R1-Qwen-32B和DeepSeek-R1-LLaMA-8B上测量TPV的有效性，
+
+
 
 ### 因果推断
 
