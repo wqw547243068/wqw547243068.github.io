@@ -454,6 +454,31 @@ Mirage 2 和 Genie 3相比，控制的类别更加丰富，生成时长可以长
 - 视觉稳定性：快速的场景转换可能会引入意外的细节变化，不过通过策略性的提示工程可以帮助在较长时间内保持一致性。
 
 
+### HunyuanWorld-Voyager
+
+谷歌Genie3等支持实时交互视频生成世界模型不足
+- 纯2D输出难以满足虚拟现实和物理仿真等应用的3D交互需求。
+- 直接生成3D场景虽具备空间结构优势，却面临训练数据稀缺和内存效率低下的挑战，无法泛化到更大场景。
+
+【2025-9-2】腾讯发布业界首个支持原生3D重建的超长漫游世界模型，HunyuanWorld-Voyager（简称混元Voyager）。
+- 项目[主页](https://3d-models.hunyuan.tencent.com/world/)
+- Github：[HunyuanWorld-Voyager](https://github.com/Tencent-Hunyuan/HunyuanWorld-Voyager)
+- Hugging Face：[HunyuanWorld-Voyager](https://huggingface.co/tencent/HunyuanWorld-Voyager)
+- 技术报告：[HYWorld_Voyager.pdf](https://3d-models.hunyuan.tencent.com/Voyager/Voyager_en/assets/HYWorld_Voyager.pdf)
+- 参考资讯 [腾讯混元开源超长漫游世界模型Voyager：首创支持原生3D重建](https://news.qq.com/rain/a/20250902A06UWL00)
+
+该模型聚焦于AI在空间智能领域的应用扩展，将为虚拟现实、物理仿真、游戏开发等领域提供高保真的3D场景漫游能力。
+
+混元Voyager突破了传统视频生成在空间一致性和探索范围上的局限，能够生成长距离、世界一致的漫游场景，支持将视频直接导出为3D格式。
+
+混元Voyager 3D输入-3D输出的特性，与此前已开源的混元世界模型1.0 高度适配，可进一步扩展 1.0 模型漫游范围，提升复杂场景的生成质量，并可对生成的场景做风格化控制和编辑。
+
+不仅如此，混元Voyager 还可支持视频场景重建、3D物体纹理生成、视频风格定制化生成、视频深度估计等多种3D理解与生成应用，展现出空间智能的潜力。该模型现已正式上线，相关技术报告已公开，源代码在GitHub和Hugging Face上免费开放，供全球开发者下载和使用。
+
+用户可通过键盘或者摇杆即可控制生成对应的视频画面，并可以通过3D空间记忆保持画面的高度一致性，实现Genie3相同的能力。同时，Voyager还支持将生成视频无损导出3D点云，无需依赖COLMAP等额外重建工具。
+
+
+该模型在斯坦福大学李飞飞团队发布的世界模型基准测试 [WorldScore](https://huggingface.co/spaces/Howieeeee/WorldScore_Leaderboard) 上位居综合能力首位，超越现有开源方法，在视频生成和3D重建任务中均表现出色。在视频生成和视频3D重建两个任务上，Voyager也均取得更好的结果。
 
 # 结束
 
