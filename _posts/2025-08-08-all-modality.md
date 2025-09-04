@@ -139,13 +139,13 @@ Qwen2.5-Omni 采用 `Thinker-Talker` 双核架构。
 #### 模型
 
 
-#### Qwen2.5-Omni-7B
+##### Qwen2.5-Omni-7B
 
 Qwen2.5-Omni-7B 模型是 Omni（全能）模型。
 - 一个模型能同时理解 文本、音频、图像、视频 多种输入，并且能输出 文本和音频
 
 
-#### Qwen2.5-Omni-3B
+##### Qwen2.5-Omni-3B
 
 全模态 Qwen2.5-Omni-7B 模型推出后，开发者反馈更小尺寸的Qwen2.5-Omni，以便更方便地适配
 
