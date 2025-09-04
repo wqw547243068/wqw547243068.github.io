@@ -77,6 +77,7 @@ Qwen2.5-Omni 和 VL 区别
 Qwen2.5-Omni-7B 特点：原生支持视频、图片、语音、文字等多模态输入，并能原生生成语音及文字等多模态输出。
 - 一个模型就能通过“看”、“听”、“阅读”等多种方式来综合思考。
 
+
 #### 原理
 
 Qwen2.5-Omni 采用 `Thinker-Talker` 双核架构。
@@ -95,8 +96,13 @@ Qwen2.5-Omni 采用 `Thinker-Talker` 双核架构。
 
 ![](https://pic4.zhimg.com/v2-c2de76bf71d503c577ada48a3b9f4bf9_1440w.jpg)
 
+
 效果分析：
 - Omni-Bench 等多模态基准上达到SOTA，语音指令跟随能力与纯文本输入（MMLU/GSM8K）表现相当，流式语音生成在鲁棒性和自然度上超越主流流式/非流式方案。
+
+评测
+- 多模态任务 OmniBench，Qwen2.5-Omni 达到了SOTA的表现。（超过 Gemini 1.5-Pro）
+- 单模态任务中，Qwen2.5-Omni 在多个领域中表现优异，包括：语音识别（Common Voice）、翻译（CoVoST2）、音频理解（MMAU）、图像推理（MMMU、MMStar）、视频理解（MVBench）以及语音生成（Seed-tts-eval和主观自然听感）。
 
 「Thinker-Talker」（思考者-说话者） 架构。这个设计非常巧妙，让模型能 同时思考和说话：
 1. `Thinker` (思考者): 扮演大脑的角色。它负责处理来自文本、音频、视频等多种模态的输入，通过专门的音视频编码器提取信息，再利用一个 Transformer 解码器进行理解和处理，最终生成高层语义表示和相应的文本内容
@@ -104,11 +110,9 @@ Qwen2.5-Omni 采用 `Thinker-Talker` 双核架构。
 
 关键点: Talker 并非独立工作，直接获取 Thinker 产生的**高维表示**，并且 共享 Thinker 全部历史上下文信息。这使得 Thinker 和 Talker 构成了一个紧密协作的单一整体模型，可以进行端到端的训练和推理。这种设计是实现低延迟、高流畅度语音交互的核心
 
-#### 效果
 
-评测
-- 多模态任务 OmniBench，Qwen2.5-Omni 达到了SOTA的表现。（超过 Gemini 1.5-Pro）
-- 单模态任务中，Qwen2.5-Omni 在多个领域中表现优异，包括：语音识别（Common Voice）、翻译（CoVoST2）、音频理解（MMAU）、图像推理（MMMU、MMStar）、视频理解（MVBench）以及语音生成（Seed-tts-eval和主观自然听感）。
+
+#### 模型
 
 
 
@@ -141,6 +145,10 @@ Qwen2.5-Omni全面评估：
   - * 图像推理:MMMU, MMStar
   - * 视频理解:MVBench
   - * 语音生成: Seed-tts-eval 及主观自然度评估
+
+评测
+- 多模态任务 OmniBench，Qwen2.5-Omni 达到了SOTA的表现。（超过 Gemini 1.5-Pro）
+- 单模态任务中，Qwen2.5-Omni 在多个领域中表现优异，包括：语音识别（Common Voice）、翻译（CoVoST2）、音频理解（MMAU）、图像推理（MMMU、MMStar）、视频理解（MVBench）以及语音生成（Seed-tts-eval和主观自然听感）。
 
 #### 实践
 
