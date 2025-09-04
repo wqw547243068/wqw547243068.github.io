@@ -3,18 +3,26 @@ layout: post
 title:  "神经网络理解-Neural Network"
 date:   2018-12-09 22:44:00
 categories: 深度学习
-tags: 神经网络 人工智能 AI 机器学习  ML  表示学习 周志华 戴海琼 hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化 希尔伯特 叠加定理 通用逼近定理 万能逼近定理 哈密顿 kan 样条 hopfield
+tags: 神经网络 人工智能 AI 机器学习  ML  表示学习 周志华 戴海琼 hinton 反向传播 BP 雅各比 sigmoid 激活函数 三棕一蓝 记忆 泛化 可视化 希尔伯特 叠加定理 通用逼近定理 万能逼近定理 哈密顿 kan 样条 hopfield transformer
 excerpt: 整理神经网络的点点滴滴，思考背后的关联。
 mathjax: true
 permalink: /ann
 ---
 
-# 资料
+# 神经网络理解
+
+
+## 神经网络原理
 
 - 【2020-7-28】[The Next Generation of Neural Networks](https://www.bilibili.com/video/BV18A411Y7N4), Geoffrey Hinton，对下一代神经网络，比学习的来龙去脉，以及现在的SOTA模型 SimCLR
 <iframe src="//player.bilibili.com/player.html?aid=329101147&bvid=BV18A411Y7N4&cid=217768758&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 - 【2021-3-15】[伯克利CS 182《深度学习：深度神经网络设计、可视化与理解》课程 2021](https://www.bilibili.com/video/BV1PK4y1U751)，课程主页地址,[Designing, Visualizing and Understanding Deep Neural Networks](https://cs182sp21.github.io/)
 
+【2025-7-21】神经网络工作原理讲解: 符号主义 → 联结主义
+- [一小时从函数到Transformer！一路大白话彻底理解AI原理](https://www.bilibili.com/video/BV1NCgVzoEG9)
+- 文字版笔记 [一小时从函数到Transformer](https://www.bilibili.com/opus/1092343954475581442?spm_id_from=333.1387.0.0)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114890442280099&bvid=BV1NCgVzoEG9&cid=31183339916&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
 ## 神经网络结构
