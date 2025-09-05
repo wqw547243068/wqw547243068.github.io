@@ -204,11 +204,52 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 - 麦吉尔大学学者`Keheliya Gallaba`总结的agent设计方案: ppt [Agentic architectures and workflows](https://www.aiwarebootcamp.io/slides/2024_aiwarebootcamp_gallaba_keheliya_agents.pdf)
 
 
+
 ### 总结
 
 参考
 - 【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
 - [Agent的九种设计模式(图解+代码)](https://zhuanlan.zhihu.com/p/692971105)，[飞书文档](https://agijuejin.feishu.cn/wiki/Kke1wcqYOiYxD2kd1Dwcsu02ngc)
+
+
+【2025-9-5】Agentic Design Patterns（智能体设计模式）
+- 谷歌高级工程师 `Antonio Gulli` 400 页免费文档
+- 动手实践的智能系统构建指南
+- 资料 [google doc](docs.google.com/document/u/0/d/1rsaK53T3Lg5KoGwvf8ukOUvbELRtH-V0LnOIFDxBryE/mobilebasic)
+
+什么让一个 AI 系统成为“智能体”？ – 9 页
+
+第一部分（共 103 页）
+1. 第 1 章：提示链（Prompt Chaining） – 12 页
+2. 第 2 章：路由（Routing） – 13 页
+3. 第 3 章：并行化（Parallelization） – 15 页
+4. 第 4 章：反思（Reflection） – 13 页
+5. 第 5 章：工具使用（Tool Use） – 20 页
+6. 第 6 章：规划（Planning） – 13 页
+7. 第 7 章：多智能体（Multi-Agent） – 17 页
+
+第二部分（共 61 页）
+8. 第 8 章：记忆管理（Memory Management） – 21 页
+9. 第 9 章：学习与适应（Learning and Adaptation） – 12 页
+10. 第 10 章：模型上下文协议（Model Context Protocol, MCP） – 16 页
+11. 第 11 章：目标设定与监控（Goal Setting and Monitoring） – 12 页
+
+第三部分（共 34 页）
+12. 第 12 章：异常处理与恢复（Exception Handling and Recovery） – 8 页
+13. 第 13 章：人类参与环节（Human-in-the-Loop） – 9 页
+14. 第 14 章：知识检索（RAG, Retrieval-Augmented Generation） – 17 页
+
+第四部分（共 114 页）
+15. 第 15 章：智能体间通信（Agent-to-Agent, A2A） – 15 页
+16. 第 16 章：资源感知优化（Resource-Aware Optimization） – 15 页
+17. 第 17 章：推理技术（Reasoning Techniques） – 24 页
+18. 第 18 章：护栏与安全模式（Guardrails / Safety Patterns） – 60 页
+
+后续章节（共 83 页）
+
+第 19 章 – 第 21 章（未完全展开，但预计涵盖高级主题、案例研究和未来展望）
+
+
 
 总结
 - ReAct: ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
