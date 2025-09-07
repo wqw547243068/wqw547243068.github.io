@@ -1406,6 +1406,48 @@ Qwen3-Embedding 直接用 Qwen3 dense 做骨干。
 - Reranker则把相关性判定写成“yes/no”二分类提示，只看下一token的两项概率即可得到打分，接口简单，延迟低。
 
 
+### Embedding Gemma
+
+【2025-9-5】Google  发布嵌入模型 [Embedding Gemma](https://deepmind.google/models/gemma/embeddinggemma/), 闭源
+- [huggingface](https://huggingface.co/blog/embeddinggemma)
+
+基于 Gemma 3 架构的开源文本嵌入模型 EmbeddingGemma，拥有 308M 参数，支持超过 100 种语言，量化后可在 200 MB 以内的 RAM 上运行，在 MTEB 排行榜上位列 500 M 以下参数模型第一名
+
+EmbeddingGemma 已在多个主流工具框架中获得支持，包括 sentence-transformers、llama.cpp、MLX、Ollama、LiteRT、transformers.js、LMStudio、Weaviate、Cloudflare Workers AI、LlamaIndex 和 LangChain 等。
+
+Gemma-Embeddings-v1.0 核心任务: 
+- 将文本转化为768维或1024维的高精度向量，捕捉词汇、句法和语义的复杂关系。
+
+技术优势：
+- **长上下文建模**：支持8K token的上下文窗口，通过动态稀疏注意力机制（Dynamic Sparse Attention）优化长文本处理。
+  - 该机制在序列长度超过2K时自动切换至块稀疏模式，将注意力计算复杂度从O(n²)降至O(n√n)，同时保持98%的语义连贯性。
+  - 在技术文档理解测试中，对跨段落指代消解的准确率达89%（对比BERT的72%）。
+- **多语言**适配：
+  - 基于Unicode语义单元分词（Unicode-aware Tokenization），支持英语、中文、阿拉伯语等28种语言的混合输入。采用语言对抗训练（Language Adversarial Training），在跨语言检索任务中将Mean Reciprocal Rank（MRR）提升40%。
+  - 例如，中英跨语言检索在Tatoeba基准测试中达到92.3%的Top-1准确率。
+- **轻量化推理**：
+  - 2B/7B参数版本支持**分组线性投影**（Grouped Linear Projections），将矩阵乘法的计算量减少30%。结合FlashAttention-2优化，在NVIDIA T4 GPU上实现每秒2000 tokens的吞吐量。
+  - 通过动态量化（Dynamic Quantization）技术，7B模型在移动端（如iPhone 14 Pro）的推理延迟低于**50ms**。
+
+模型参数量 308M, 上下文是 2K, 最亮眼的是这个新模型在 MTEB 榜单中 500M 以下的嵌入模型性能霸榜, 有需要将数据进行嵌入的同学可以试一试了
+
+```py
+# 使用Hugging Face快速调用示例
+from transformers import AutoModel, AutoTokenizer
+import torch
+
+model = AutoModel.from_pretrained("google/gemma-embeddings-v1", torch_dtype=torch.bfloat16)
+tokenizer = AutoTokenizer.from_pretrained("google/gemma-embeddings-v1")
+
+text = "谷歌发布新一代文本嵌入模型"
+inputs = tokenizer(text, return_tensors="pt", max_length=8192, truncation=True)
+with torch.no_grad():
+    outputs = model(**inputs)
+embeddings = outputs.last_hidden_state.mean(dim=1)  # 采用平均池化生成句向量
+
+print(f"Embedding维度: {embeddings.shape[-1]}")  # 输出: Embedding维度: 1024
+```
+
 ## 向量评估
 
 ChatGPT记忆模块搜索优化——文本语义向量相似M3E模型微调实战
