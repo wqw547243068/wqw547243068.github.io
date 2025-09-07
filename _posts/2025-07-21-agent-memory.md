@@ -909,6 +909,35 @@ Memento 核心思想可以概括为：冻结 LLM 的参数，将学习的焦点�
 
 Memento 将这一思想形式化，并构建了一个完整的学习闭环。
 
+### 【2025-8-27】Memory-R1
+
+
+【2025-9-4】[Memory-R1：通过RL优化记忆管理](https://mp.weixin.qq.com/s/ZuWcdW0whd0jU7Ddg7Bl_g)
+- 【2025-8-27】慕尼黑大学 论文 [Memory-R1: Enhancing Large Language Model Agents to Manage and Utilize Memories via Reinforcement Learning](https://arxiv.org/pdf/2508.19828)
+
+Memory-R1 并没有对长期记忆框架做更新，而是提出了对其中的“记忆管理”部分做优化。
+
+用强化学习 (RL) 来主动管理与利用长期记忆的框架。
+
+怎么理解？
+
+之前 Mem0等类似项目都设计一个“记忆管理”模块涉及新增记忆的“增删改查”。
+
+问题: 这些项目都通过LLM + prompt 实现。
+- 当然能够做到对于记忆的增删改查，但是Prompt engineer 弊端显而易见：Prompt的设计是有限的，在遇到新的长尾行为或需要权衡历史信息时，通常需要人工调整提示/规则。
+
+而 Memory-R1 通过强化学习，把记忆管理当作可训练的policy（单独的“小模型”/agent），从根本上解决了场景长尾问题，使得agent能学到长尾场景里更合理的“何时忘记/合并/存储”的策略；对复杂跨会话权衡更敏感。
+- ![](https://pic1.zhimg.com/v2-fc8c184279278a06a4701cb08bb7c99e_r.jpg)
+
+
+示例
+- 当用户和Agent 对话，提到领养了一只叫Buddy的小狗，在几天后，又提到又忍不住领养了另一只小狗叫斯科特。
+- 传统长期记忆框架里，LLM + Prompt将第⼆次收养误解为⽭盾，并发出 DELETE+ADD 指令，导致记忆碎⽚化和偏移。
+- 基于RL框架的新框架里，经过 RL 训练的记忆管理器则准确地发出单个 UPDATE 指令来整合记忆。
+
+![](https://pica.zhimg.com/v2-b65c8132b44f70fce222f3222c58d8bc_r.jpg)
+
+Memory-R1 在 LOCOMO 等基准上相对先前最强基线（如 Mem0）有显著提升（例如报道引用的度量显示在 F1、BLEU、LLM-as-a-Judge 等指标上有明显增益），但要注意：学术基准的改进不必然等同于在你特定生产场景中的实际收益（实际收益会受检索延迟、成本、数据分布等影响）
 
 
 
