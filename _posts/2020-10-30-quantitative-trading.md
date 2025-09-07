@@ -1128,6 +1128,27 @@ LLM 选择
 - 亚马逊gu票的回报率 4%
 
 
+### FinSphere
+
+【2025-7-9】哥伦比亚大学 股票分析 agent `FinSphere`，基于**实时**数据库**定量**工具的**对话式**股票分析代理
+- Introducing FinSphere: A real-time stock analysis agent
+- 论文 [FinSphere, a Real-Time Stock Analysis Agent Powered by Instruction-Tuned LLMs and Domain Tools](https://arxiv.org/pdf/2501.12399v2)
+- [解读](https://zhuanlan.zhihu.com/p/23163273066)
+
+金融领域大语言模型面临两个主要限制：
+- 一是股票分析的深度不足
+- 二是缺乏有效的客观评估标准。
+
+FinSphere 对话型股票分析代理，由三个关键组件构成：
+- Stocksis，经过行业专家精心策划的数据集，旨在提升LLM进行股票分析的能力；
+- AnalyScore，用于系统化评估股票分析质量的框架；
+- FinSphere，作为一款能够生成高质量股票分析报告的人工智能代理。
+
+即使其他通用或特定领域的LLM以及现有的代理系统拥有实时数据访问权限和一定程度的指导，FinSphere在分析精度和实际运用效果上依然表现得更为出色。
+
+![](https://pic4.zhimg.com/v2-2965a72a9454875e1f851e185bb6cf21_1440w.jpg)
+
+
 ## 工程实践
 
 [关于高频量化交易的代码项目](https://zhuanlan.zhihu.com/p/558902211)
