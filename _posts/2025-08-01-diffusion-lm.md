@@ -50,8 +50,28 @@ ARM存在两大固有缺陷：
 - Demo [LLaDA-demo](https://ml-gsai.github.io/LLaDA-demo/)
 - 【2025-4-14】[What are Diffusion Language Models?](https://spacehunterinf.github.io/blog/2025/diffusion-language-models/)
 
+
+### AR vs DLM
+
 两种范式对比
 - ![](https://spacehunterinf.github.io/assets/img/diffusionlm_blog/diffusion_vs_ar-1400.webp)
+
+
+【2025-9-7】[火的一塌糊涂的「扩散语言模型」是啥](https://mp.weixin.qq.com/s/U9kmYoFLG_SK5nqOE-NyZA) 漫画讲解
+- 【2025-8-14】参考论文 [A Survey on Diffusion Language Models](https://arxiv.org/pdf/2508.10875) 包含扩散模型发展进化图
+- 自回归模型（AR）像传统厨师，一个字一个词慢慢“下锅”，整个句子串起来才能出锅。
+- 扩散语言模型（DLM）不讲究“先放什么”，它把原材料全下锅，通过迭代调整，逐渐生成通顺句子。
+
+总结
+- DLM 支持**并行预测**与**修改**多个词位，推理速度**远超**传统AR模型，特别适合“高峰时段”。
+- DLM 通过“置信度判断”，留下靠谱的词，不对的就换，直到句子自然流畅。
+- DLM **推理速度**上领先，但仍在提升稳定性与理解力。就像一个新派厨师，掌握了快手绝技，仍在追求完美味道。
+
+
+|模式|原理|分析|图解|
+|---|---|---|---|
+|`ARM`|逐字输出|简单，但慢|![](https://picx.zhimg.com/80/v2-0b1dcbb000780efe43010d2f97d0421f_720w.webp?source=2c26e567)|
+|`DLM`|更符合人类直觉|复杂，但快，更容易扩展|![](https://picx.zhimg.com/80/v2-b4da3a641d34f970b9d39bdd0887052f_720w.webp?source=2c26e567)|
 
 【2025-8-27】人大、清华提出 DPT 对偶伪训练器, 基于扩散模型+半监督
 - [Diffusion Models and Semi-Supervised Learners Benefit Mutually with Few Labels](https://proceedings.neurips.cc/paper_files/paper/2023/file/8735753cc18f6baa92d1f069fd8b14a0-Paper-Conference.pdf)
@@ -86,10 +106,6 @@ DLM（Diffusion Large language model）与ARM差异很大，但更符合人类�
     - Google Gemini 2.5 推出 扩散语言模型
   - ![](https://picx.zhimg.com/80/v2-b4da3a641d34f970b9d39bdd0887052f_720w.webp?source=2c26e567)
 
-|模式|原理|分析|图解|
-|---|---|---|---|
-|`ARM`|逐字输出|简单，但慢|![](https://picx.zhimg.com/80/v2-0b1dcbb000780efe43010d2f97d0421f_720w.webp?source=2c26e567)|
-|`DLM`|更符合人类直觉|复杂，但快，更容易扩展|![](https://picx.zhimg.com/80/v2-b4da3a641d34f970b9d39bdd0887052f_720w.webp?source=2c26e567)|
 
 
 DLM 只不过是把脱胎于图像生成的技术应用到了文字生成
@@ -105,10 +121,6 @@ DLM 核心技术原理很直观，不同于LLM next token prediction，DLM 做 m
 核心公式: 根据前面的所有内容预测下个字符。
 - ![](https://picx.zhimg.com/80/v2-f657f3fe9c7db7187c5152e0790e1ab5_720w.webp)
 
-
-语言模型（自回归）
-
-ARM 自回归 vs DLM 扩散模型
 
 在图像、音频等连续信号领域，近年兴起的`扩散模型` (Diffusion Models)为生成建模提供了新的可能。
 
