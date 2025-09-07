@@ -37,6 +37,15 @@ ChatGPT生成的内容中，高达19.5%的回复无法验证是否幻觉，涉�
 - 许多大模型都在幻觉问题上苦苦挣扎
 - 幻觉发生率上：ChatGPT、Claude 处于第一梯队，较少发生
 
+【2025-9-6】LLM 发展到今天, hallucination 已经不能准确的表达它错误生成的现象。 
+- 第一种， Hallucinate，幻觉。LLM 不确定真相，但回答的动机是诚实的，只是事实错误。  
+- 第二种，Lie，谎言。LLM知道真相，但要完成某种目的，故意误导，编造谎言。  
+- 第三种，Bullshit，胡扯。 LLM 根本不在乎真相是什么，对真相漠视，只是完成输出。  
+
+要理解这三种现象，看这三篇论文：  
+- 幻觉： Why Language Models Hallucinate  
+- 谎言： Can LLMs Lie? Investigation beyond Hallucination  
+- 胡扯： Machine Bullshit: Characterizing the Emergent Disregard for Truth in Large Language Models
 
 ## 什么是幻觉
 
@@ -229,11 +238,54 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
 
 ### 学术研究
 
+
+#### 斯坦福
+
 【2025-7-10】斯坦福最新论文，大模型幻觉根本原因：**计算复杂度**。
 - 《[Hallucination Stations On Some Basic Limitations of Transformer-Based Language Models](https://arxiv.org/pdf/2507.07505)》
 - 任何计算任务的解决都无法快于其固有的计算复杂度。
 
 通过比较任务的内在复杂度与LLM的计算能力上限，可预判LLM在处理该任务时是否会“碰壁”，从而产生幻觉。
+
+
+#### OpenAI
+
+【2025-9-6】OpenAI 论文首次系统揭示：
+- 语言模型出现幻觉的根本原因：训练和评估过程奖励猜测，而不是承认不确定性
+- 论文 [Why Language Models Hallucinate](https://cdn.openai.com/pdf/d04913be-3f6f-4d2b-b283-ff432ef4aaa5/why-language-models-hallucinate.pdf) 
+- 主页 [Why Language Models Hallucinate](https://openai.com/index/why-language-models-hallucinate/)
+- 解读 [OpenAI发长篇论文：大模型幻觉的原因找到了](https://mp.weixin.qq.com/s/HEZnGHPT8Vkq_MhLeTudyg)
+
+Hallucination（幻觉）——语言模型生成看起来合理，实则错误离谱。
+
+案例
+- "Adam Tauman Kalai 生日是哪天？知道的话直接给 DD-MM。"
+- OpenAI(2025a)三次回答分别是 03-07、15-06、01-01，没一次对
+
+(1) 预训练阶段就埋下幻觉种子
+- 统计必然性: 把生成问题等价到二分类“Is-It-Valid？”——只要分类器会犯错，生成就会出错（定理 1）。图片
+- 数据稀缺性: 训练语料里只出现一次的“冷知识”（singleton）注定会被模型记错，错误率 ≥ singleton 占比（定理 2）。
+- 模型表达能力不足: 如果模型族本身就无法学到规律（如 trigram 数不对字母），幻觉率下限直接拉满（定理 3）。
+
+| 阶段 | 核心发现 | 类比 |
+| --- | ------- | ---- |
+| 预训练	| 就算训练数据100%正确，密度估计目标也会迫使模型生成错误 | 老师只教你对的，但期末要你把不会的也填满 |
+| 后训练	| 二元评分（对1分/错0分）让模型不敢"交白卷" | 选择题不会也得蒙，空着直接0分 |
+
+(2) 后训练阶段“考试机制”强化幻觉
+
+10个主流评测做了元评测，发现清一色惩罚不确定性：
+
+
+(3) 解法
+
+解法：把"交白卷"变成可选项
+
+不需要新benchmark，只要改评分规则：
+- 1 明示信心阈值
+  - 在prompt里直接写："只有在你`置信度>t`时才回答；答错扣`t/(1-t)`分，IDK得0分。"
+- 2 让"弃权"成为最优策略
+  - 当模型真实`置信度<t` 时，说"我不知道"的期望得分最高，说谎反而吃亏。
 
 
 ### 为什么会有幻觉？
