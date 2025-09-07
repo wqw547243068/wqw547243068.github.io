@@ -205,12 +205,30 @@ RAG和微调结合优点：
 - 大模型在指定任务上进行微调后效果不错，但可能带来模型原有能力的下降
 - 特定任务微调后, 模型遵循通用指令能力变弱
 
+### 分析
+
 灾难性遗忘因为:
 - 完整微调过程修改了**原始LLM权重**。
 - 虽然这会在单个微调任务上带来出色的性能，但它可能会降低其他任务的性能；
 
 主要原因
 - **信息分布不同**: 任务数据集信息分布与原始LLM信息分布之间存在差距。
+
+#### RL 低于 SFT
+
+【2025-9-4】MIT 研究: 
+- 幻觉程度由分布漂移程度决定，靠新任务上基座LLM与微调模型之间的KL散度衡量
+- RL 相对于 SFT, 更能降低灾难遗忘
+- [RL's Razor: Why On-Policy Reinforcement Learning Forgets Less](https://jyopari.github.io/posts/rl_razor)
+- 代码: jyopari.github.io/posts/rl_razor
+- RL’s Razor: On-policy RL forgets less than SFT.
+
+Even at matched accuracy, RL shows less catastrophic forgetting
+- Key factor: RL’s on-policy updates bias toward KL-minimal solutions
+- Theory + LLM & toy experiments confirm RL stays closer to base model
+
+可视化[图](https://jyopari.github.io/posts/RL's%20Razor%20Why%20On-Policy%20Reinforcement%20Learning%20Fo%202573b66e4cf580cdb414d25c1f346f0c/Screenshot_2025-08-22_at_6.12.34_PM.png)
+- ![](https://jyopari.github.io/posts/RL's%20Razor%20Why%20On-Policy%20Reinforcement%20Learning%20Fo%202573b66e4cf580cdb414d25c1f346f0c/Screenshot_2025-08-22_at_6.12.34_PM.png)
 
 ### 解法
 
