@@ -253,16 +253,18 @@ hybrid system that combines SetFit and LLM by conditionally routing queries to L
 论文的方法在某些情况下**显著降低了成本**——超过2倍——同时不牺牲响应质量。
 
 
-### 腾讯PCG RL
+### 腾讯PCG+哈工大 RL
 
-【2025-5-16】[腾讯研究团队提出意图检测新范式：强化学习+奖励机制，泛化能力显著提升](https://www.xinfinite.net/t/topic/12214) （暴涨47%）
+
+【2025-4-18】腾讯+哈工大提出 组相对策略优化（GRPO）和奖励驱动的课程采样（RCS）
+- 解读：[腾讯研究团队提出意图检测新范式：强化学习+奖励机制，泛化能力显著提升](https://www.xinfinite.net/t/topic/12214) （暴涨47%）
 
 AI 智能助手准确理解用户的意图（Intent Detection）并路由至下游工具链是实现这些功能的第一步, 而工具的快速迭代、多样化、工具之间关系的复杂化，给意图识别带来新的挑战
 - 模型在应对**新意图**时普遍存在性能衰减问题。
 - 如何在开源的轻量级 LLMs 上训练泛化性更好、鲁棒性更强的意图识别模型，使得模型能够更准确理解未见场景的意图至关重要。
 
-【2025-4-18】腾讯 PCG 社交线的研究团队，针对 AI 智能助手在意图识别方面临的泛化性难题，创新性地采用强化学习（RL）训练方法，结合分组相对策略优化（GRPO）算法和基于奖励的**课程采样**策略（Reward-based Curriculum Sampling, RCS）， 将其创新性地应用在意图识别任务上，显著提升模型在未知意图上的泛化能力，攻克了工具爆炸引发的意图泛化难题，推动大模型在意图识别任务上达到新高度。
-- 论文标题：[Improving Generalization in Intent Detection: GRPO with Reward-Based Curriculum Sampling](https://www.arxiv.org/pdf/2504.13592)
+腾讯 PCG 社交线的研究团队，针对 AI 智能助手在意图识别方面临的泛化性难题，创新性地采用强化学习（RL）训练方法，结合分组相对策略优化（GRPO）算法和基于奖励的**课程采样**策略（Reward-based Curriculum Sampling, RCS）， 将其创新性地应用在意图识别任务上，显著提升模型在未知意图上的泛化能力，攻克了工具爆炸引发的意图泛化难题，推动大模型在意图识别任务上达到新高度。
+- 论文：[Improving Generalization in Intent Detection: GRPO with Reward-Based Curriculum Sampling](https://www.arxiv.org/pdf/2504.13592)
 
 实验表明，相比于传统的监督微调（SFT）方法，该方法在未见意图和跨语言能力上表现更佳。除了完全新的未见意图，该工作还比较了对已知意图进行拆分、合并等实际产品场景会遇到的真实问题
 
@@ -276,17 +278,6 @@ AI 智能助手准确理解用户的意图（Intent Detection）并路由至下�
 4. 在意图识别任务中，无论选择预训练模型（Pretrain）还是指令（Instruct）微调模型作为基础，经过相同轮次的 GRPO 训练后，两者性能相近。这一结果与传统训练经验有所不同。
 
 该研究为解决工具爆炸背景下的意图识别难题提供了新思路。
-
-展望
-1. 在线数据筛选方法：现如今该团队的 RCS 数据筛选方法仍然是离线的，在后续的工作中将探索更高效的在线筛选方法。
-2. 多意图识别：该研究团队针对意图识别的实验目前主要针对单意图场景，在后续工作中将继续探索多意图的识别。
-3. 任务型对话相关任务扩展：目前该团队的实验都是在意图识别任务上进行，在未来的工作中将继续在更复杂的任务型对话相关任务上进行尝试。
-
-### 哈工大 RL
-
-【2025-4-18】哈工大提出 组相对策略优化（GRPO）和奖励驱动的课程采样（RCS）
-- 论文 [Improving Generalization in Intent Detection: GRPO with Reward-Based Curriculum Sampling](https://arxiv.org/pdf/2504.13592)
-
 
 #### 方法
 
