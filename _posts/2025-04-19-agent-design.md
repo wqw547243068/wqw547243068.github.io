@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆
+tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆 Human
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
@@ -127,7 +127,37 @@ GPT 进化
   - 媒体头版开始出现：“2025年将成为 AI Agent 应用的元年的预测”
 
 
+### Human 参与模式
 
+决策过程中，人与AI协作关系分两种：
+- 「`人工参与决策`」（human-in-the-loop）模式 `HITL`：人工直接接入决策
+- 「`人工监督流程`」（human-on-the-loop）模式 `HOTL`：监督自动化系统
+
+【2025-2-12】[Humans on the Loop vs. In the Loop: Striking the Balance in Decision-Making](https://www.trackmind.com/humans-in-the-loop-vs-on-the-loop/)
+
+【2025-6-11】[Human in the Loop vs. Human on the Loop: Navigating the Future of AI](https://www.serco.com/na/media-and-news/2025/human-in-the-loop-vs-human-on-the-loop-navigating-the-future-of-ai?utm_source=chatgpt.com)
+- `human-in-the-loop`: system where human judgment is directly involved in the decision making
+- `human-on-the-loop`: a little different. It's where the system can operate autonomously, but there's a human monitoring the process and able to intervene if needed.
+
+#### human-in-the-loop
+
+`HITL`: Supervising Automated Systems
+
+`human-in-the-loop`: 人工直接参与决策制定
+- system where human judgment is directly involved in the decision making
+
+
+#### human-on-the-loop
+
+`HOTL`
+
+`human-on-the-loop`: 
+- 略有不同，系统自动运行，人工监视整个流程，并且能随时干预
+- a little different. It's where the system can operate autonomously, but there's a human monitoring the process and able to intervene if needed.
+
+#### 如何选择
+
+Deciding between humans in the loop vs. humans on the loop depends on several factors, including the complexity of decisions, the stakes involved, and the maturity of the system.
 
 
 ## Agent 选型
@@ -1803,7 +1833,7 @@ LangGraph 最常见的方式主要有两种：
 
 LangGraph 内置了一个持久化层，这使得其具备**容错**能力、**短期记忆**以及**长期记忆**。
 
-这个持久化层还支持「人工参与决策」（human-in-the-loop）和「人工监督流程」（human-on-the-loop）的模式，比如中断、批准、恢复以及时间回溯（time travel）等功能。
+这个持久化层还支持「`人工参与决策`」（human-in-the-loop）和「`人工监督流程`」（human-on-the-loop）模式，比如: 中断、批准、恢复以及时间回溯（time travel）等功能。
 
 LangGraph 内建支持多种流式传输，包括 tokens 的流式输出、节点状态的更新和任意事件的流式推送。同时，LangGraph 可以与 LangSmith 无缝集成，方便进行调试、评估和可观测性分析。
 
