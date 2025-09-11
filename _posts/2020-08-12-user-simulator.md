@@ -13,7 +13,7 @@ permalink: /simulator
 * content
 {:toc}
 
-# 总结
+# 用户模拟器
 
 
 ## 资料
@@ -33,11 +33,13 @@ permalink: /simulator
 <iframe src="//player.bilibili.com/player.html?aid=47805723&bvid=BV1Rb411W7PG&cid=83737221&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
-# 用户模拟器
 
-## 用户模拟器产生背景
+## 背景
 
-- 近几年来，强化学习在任务导向型对话系统中得到了广泛的应用，对话系统通常被统计建模成为一个**马尔科夫决策过程**（Markov Decision Process）模型，通过随机优化的方法来学习对话策略。
+
+### 任务型对话
+
+近几年来，强化学习在任务导向型对话系统中得到了广泛的应用，对话系统通常被统计建模成为一个**马尔科夫决策过程**（Markov Decision Process）模型，通过随机优化的方法来学习对话策略。
 - 任务导向型对话系统用于帮助用户完成某个任务如查电影、找餐馆等，它一般由四个模块组成：
   - **自然语言理解**模块（Natural Language Understanding, NLU）
   - **对话状态跟踪**模块（Dialog State Tracking, DST）
@@ -66,9 +68,20 @@ permalink: /simulator
 - 任务目标：Agent通过与用户模拟器进行多轮对话，洞察用户模拟器所提出的条件(约束)以及请求，并尽所能及提供同时满足所有条件的请求内容
 - 用户模拟器需要具备在沟通过程中改变自己条件的能力(可视为妥协)，agent力争做到满足用户需求(如：找房/约带看/询问房屋信息)，但在无能为力时，要尽可能收集用户需求
 
+### 角色模拟任务
+
+相关任务场景
+- 基于角色的对话（Character-based Dialogue）：即角色扮演对话，用 LLM 模仿特定角色的行为和表达风格。
+  - 比如，Shao 等人从 Wikipedia 收集角色信息，通过提示 ChatGPT 生成基于这些角色的对话；Wang 等人使用 GPT-4 创建角色描述，并制定详细提示规则来生成角色对话。不过，这些方法多依赖 ChatGPT 的生成能力，可能无法精准展现角色真实性格。
+  - 相比之下，Li 等人从小说、剧本和游戏中提取角色扮演对话，更利于保留角色原始特征，但该方法缺乏人工干预导致数据质量不高，且数据集中多轮对话数量较少，难以全面评估 RPCA。
+- 知识型对话系统（Knowledge-based Dialogue）： 整合外部知识资源，像知识图谱或非结构化文档等，让对话系统能依据这些知识进行交流。
+  - 比如，Xue 等人提出的 K-DIAL，通过在 Transformer 中增加额外的前馈网络（FFN）模块，来增强对话中事实知识的表达和一致性。
+  - 其重点在于提升模型对知识的理解与运用，但主要针对通用知识，而角色扮演对话还需要涉及更复杂的个性化知识、风格和行为等。
+- 个性化对话系统（Personalized Dialogue）：依据特定人物特征生成回复。
+  - Zheng 等人创建了首个大规模带人物标签的个性化对话数据集，推动了该领域发展。这些研究虽开始探索对话中的个性化特征，但所用的人物信息多局限于短期的个人相关简单信息，如姓名、年龄、地点等，本质上属于个性化知识范畴，与角色扮演对话中对角色复杂性格和行为的模拟要求有所差异。
 
 
-## 组成结构
+## 模拟器结构
 
 典型的用户模拟器和对话系统的结构比较相似，包含以下 4 个基本组成部分：
 1. **用户目标**（User Goal）：用户模拟的第一步是生成一个用户对话的目标，对话系统对此是不可知的，但它需要通过多轮对话交互来帮助用户完成该目标。
@@ -154,13 +167,13 @@ Collaboration-based User Simulation for Goal-oriented Dialog Systems——在有
 2. 对话行为**多样性**（Diversity）：模拟用户群的行为特性，需要建模这个群体的行为分布。例如某用户群是健谈的还是寡言的，是犹豫的还是果断的，各部分占比多少，这里引入用户群体画像特征，使得用户模拟器的行为更加丰富多样，贴近目标用户群体。这个方向学术界有一些研究进展，值得继续深入研究。
 3. 对话行为的**泛化性**（Generalization）：目前来看，无论是基于规则方法还是基于模型学习的用户模拟器，在遇到语料中未曾出现的对话上下文时，表现出的泛化能力依旧比较有限。对话行为的泛化性直接体现了用户模拟器是否表现得如同真实用户一样处理更多未见的复杂的对话场景。这个方向有待学界更深入的探索。
 
-## 模拟器评价方式
+## 评测
 
-- 一个好的用户模拟器的评价方式需要满足以下几点要求：
-  - 能够衡量生成的对话动作的一致性；
+- 好的用户模拟器的评价方式要满足：
+  - 能够衡量生成的对话动作的**一致性**；
   - 评价方式和具体的任务无关；
-  - 可以从目标信息中自动化地计算出一个标量值，而无需人工干预。
-- 通常用户模拟器的评价指标可以分为**单轮**级别度量 (turn-level metrics) 和**对话**级别度量 (dialog-level metrics)。 
+  - 从目标信息中自动化地计算出一个标量值，而无需人工干预。
+- 评价指标分为**单轮**度量 (turn-level metrics) 和**对话**度量 (dialog-level metrics)。 
   - **单轮**级别度量：主要针对用户动作的语义标签，最常见度量是精确率，召回率和 F1 得分，对于每一轮可以计算：
     - ![](https://pic2.zhimg.com/80/v2-0aabe4f159c1cf7462e3e7cb02b3138d_1440w.jpg)
     - 以上的度量不能评估用户模型泛化能力，例如某个用户动作是合理的但因为在对话数据中并未出现，如果预测了就会导致得分低。因此还可以将用户动作的预测概率分布P和真实概率分布 Q 之间的 KL 距离作为度量，从概率分布上评估用户预测模型的合理性。
@@ -169,166 +182,128 @@ Collaboration-based User Simulation for Goal-oriented Dialog Systems——在有
   - **对话**级别的度量：最常用的是**任务完成率**和**平均对话轮数**。
     - 将用户模型和对话系统进行真实交互，完成训练后的对话系统所能达到的任务完成率（通过记录对话系统是否完成用户目标得到）和平均每个对话的轮数可以作为评价与用户模型整体效果的有效指标。
 
+【2025-6-25】[万字长文梳理 2025 最新 LLM 角色扮演评测方法](https://zhuanlan.zhihu.com/p/1921215652938614303)
+- 角色类型 ：包含 135 个不同角色，分为名人（35 个）、虚构角色（70 个）、日常生活（17 个）、情感陪伴（13 个）四类。
+- 对话数据 ：共有 1350 组对话，其中短对话 1080 组、长对话 270 组；总 utterance 数为 40518 个，短对话平均 21.22 个轮次，长对话平均 65.18 个轮次
 
-## 工程实现
+### 评价维度
 
-- 【2021-2-23】[user-simulator](https://github.com/wyshi/user-simulator)，Codebase for [How to Build User Simulators to Train RL-based Dialog Systems](https://arxiv.org/pdf/1909.01388.pdf), published as a long paper in EMNLP 2019. The sequicity part is developed based on [Sequicity: Simplifying Task-oriented Dialogue Systems with Single Sequence-to-Sequence Architectures](https://github.com/WING-NUS/sequicity).
-  - RL training with agenda-based simulator: python run_mydata_new.py
-  - RL training with supervised-learning-based simulator: python run_mydata_seq_new.py
-  - Interacting with trained policies: policies are under simulator/policy/
+评价维度是对模型性能进行细分的标准，在角色扮演中，通常关注：
+- 角色一致性：模型生成的响应是否与角色设定一致
+- 情感表达：模型是否能够正确表达角色的情感
+- 上下文理解：模型是否能够理解对话上下文并做出合适的回应
+- 创造性：模型生成的内容是否具有创新性和趣味性
 
-### TC-Bot
+### 评价指标
 
-- 台大的TC-Bot框架提供了一种开发和比较不同算法和模型的方法。 
-- 对话系统由两部分组成：代理和用户模拟器。
-- 通过一些示例来展示如何构建自己的代理和用户模拟器。
+评价指标是模型在具体维度上性能的量化标准，常见于人工评价、自动评价，和模型评估三种形式：
+- 人工评价：人类评估员在与模型对聊后（或基于模型生成的对话），对模型的性能进行打分（比较主观）
+- 客观指标（自动评价，客观）：基于模型生成的对话，设计可使用公式直接计算的客观指标对模型性能进行评估（比较客观，但依赖指标制定的合理性）
+- 模型评估（自动评价，主观）：使用高性能大模型（比如 GPT-4）对模型生成的对话进行打分（比较主观，并且依赖评价模型本身的性能、提示词的质量等因素）
 
-- [End-to-End Task-Completion Neural Dialogue Systems](https://github.com/MiuLab/TC-Bot), [代码](https://github.com/MiuLab/TC-Bot)
-
-#### 代码结构
-
-【2022-9-24】类依赖图，待更新
-
-<div class="mermaid">
-classDiagram
-    Animal <|-- Duck
-    Animal <|-- Fish
-    Animal <|-- Zebra
-    Animal : +int age
-    Animal : +String gender
-    Animal: +isMammal()
-    Animal: +mate()
-    class Duck{
-        +String beakColor
-        +swim()
-        +quack()
-    }
-    class Fish{
-        -int sizeInFeet
-        -canEat()
-    }
-    class Zebra{
-        +bool is_wild
-        +run()
-    }
-</div>
-
-#### 如何构建自己的代理？
-
-- 对于所有代理，它们都从Agent类（agent.py）继承，该类为用户提供了一些实现其代理的通用接口。 在agent_baseline.py文件中，实现了五个基于规则的基本代理：
-  - InformAgent：每次依次通知所有槽位； 它不请求任何信息/槽位。
-  - RequestAllAgent：依次请求所有槽位； 它不能告知任何信息/槽位。
-  - RandomAgent：每次都会随机请求槽位； 它不能告知任何信息/槽位
-  - EchoAgent：通知请求槽位中的最后一个用户动作； 它不能请求任何信息/槽位。
-  - RequestBasicsAgent：逐个请求子集中的所有基本槽位，然后在最后一轮选择notify（任务完成）； 它不能告知任何信息/槽位。
-
-所有代理仅重新实现两个函数：initialize_episode（）和state_to_action（）。 这里的state_to_action（）函数不要求代理的结构，实现的是从状态到动作的映射，这是代理的核心部分。下面是RequestBasicsAgent的示例：
-
-
-当然agent.py中还包含三个函数:
-- set_nlg_model():设置nlg模型，nlg主要作用是根据动作信息和状态信息，生成自然语言。
-- set_nlu_model():设置nlu模型，nlu的主要作用是从自然语言中生成具体动作。
-- add_nl_to_action():通过动作信息生成自然语言。
-
-register_experience_replay_tuple():将来自环境的反馈，存储作为以后的训练数据。
-所有基于规则的代理只支持通知或请求操作，当然也可以实现更复杂的基于规则的代理，该代理可以支持多种操作，包括通知，请求，确定问题，确定答案，拒绝等。
-
-agent_dqn.py提供了RL代理（agt = 9），该代理包装了DQN模型。 除了以上两个函数外，RL代理中还有两个主要函数：run_policy（）和train（）。 run_policy（）实现 e-greedy策略，train()调用DQN的批训练函数。
-
-agent_cmd.py提供了命令行代理（agt = 0），作为代理可以与用户模拟器进行交互。 命令行代理支持两种类型的输入：自然语言（cmd_input_mode = 0）和对话框动作（cmd_input_mode = 1）。 清单3展示了一个命令行代理通过自然语言与用户模拟器交互的示例； 清单4展示了一个命令行代理通过对话框与用户模拟器进行交互的示例。
-
-注意：
-- 当上个用户回合是请求动作时，系统将在数据库中为代理显示一行建议可用答案，如列表4中的回合0所示。 基于规则的代理和RL代理都将使用数据库中的槽位值来回答用户。 此处，命令行代理的一种特殊情况是，人工（作为命令行代理）可以输入用户请求的任何随机答案，当输入的答案不在数据库中时，状态跟踪器将对其进行纠正，并强制代理使用代理数据库中的值作为回复。 例如，在列表4的第1回合中，如果您输入notify（theater = amc pacific），那么用户收到的实际答案就是notify（theater = carmike summit 16），因为数据库中不存在amc pacific， 为了避免代理通知用户不可用值的这种在线操作，我们限制代理要使用建议列表中的值。
-- 代理的倒数第二轮通常是采用通知形式（taskcomplete）或类似于“好的，您的票已预订。”的自然语言，其目的是为了通知用户模拟器代理已经完成了任务，并且准备预订电影票。
-- 为了结束对话，代理的最后一个回合通常是对话通知形式的thank（）或自然语言中的“感谢”。
-
-
-#### 如何构建自己的用户模拟器？
-        
-- 有一个用户模拟器类（usersim.py），它提供了一些通用接口来实现其用户模拟器。 所有用户模拟器都是从此类继承的，并且应该重新实现以下两个函数：initialize_episode（）和next（）。 usersim_rule.py文件实现了基于规则的用户模拟器。 这里的next（）函数实现了所有规则和根据上一个代理动作来发出下一个用户动作。这是例子usersim_rule.py：
-
-
-#### 如何构建一个对话管理器
-
-- dialog_manager.py类中包含的主要函数介绍：
-- 根据历史的对话状态，生成当前论的对话
-  - initialize_episode（）：每一个epoch开始之前的初始工作，主要包括初始化用户模拟器和代理，以及对话状态追踪器。
-  - next_turn（）：主要分为两个主要步骤，第一步通过状态跟踪器获得当前状态，代理根据当前状态，得到动作类型。根绝动作类型来生成自然语言。用户模拟器是通过历史对话字典，生成下一轮的对话、对话中止标记和对话对话奖励，并且更新用户模拟器的动作到状态追踪器里里面。
-  - reward_function（）:通过对话状态来计算奖励，奖励有正有负。
-  - reward_function_without_penalty():通过对话状态来计算奖励，奖励只有正的，其中失败的奖励为0。
-  - print_function():打印用户模拟器和代理的当前状态
-
- kb_helper.py文件包含的主要函数介绍：
-
-这个文件功能主要是将current_slots填充到inform_slots中
-- fill_inform_slots（）：将current_slots填充到inform_slots中
-- available_slot_values（）：根据当前约束返回可用于该槽位的一组值
-- available_results_from_kb（）：返回current_slots中所有的可用槽位
-- available_results_from_kb_for_slots（）：返回inform_slots中每个约束的统计信息
-- database_results_for_agent（）：返回当前约束匹配的结果字典
-- suggest_slot_values（）：根据目前槽位，返回建议的槽位值
-
- state_tracker.py类包含的主要函数介绍：
-
-主要功能是更新用户模拟器和代理的状态。
-- dialog_history_vectors（）：返回用向量表示的对话历史信息
-- dialog_history_dictionaries（）：返回用字典保存的对话历史信息
-- kb_results_for_state（）：根据当前通知的槽位返回有关数据库结果的信息
-- get_state_for_agent（）：获取状态表示以发送给代理
-- get_suggest_slots_values（）：获取请求槽位的建议值
-- get_current_kb_results（）：获取当前状态的kb_results
-- update（）：根据最新动作更新状态
-
-#### 如何构建一个自然语言生成模块
-
-nlu.py主要函数介绍：主要是讲自然语言解析成Dia-Act
-- generate_dia_act（）： generate the Dia-Act with NLU model通过NLU模型生成Dia-Act
-- load_nlu_model（）：加载NLU模型
-- parse_str_to_vector（）：将字符串用向量来表示
-- parse_nlu_to_diaact（）：将BIO和意图解析以后放入到dia_act中
-- refine_diaact_by_rules（）：通过规则细化dia_act
-
-#### 如何构建一个自然语言理解模块
-
-nlg.py主要函数介绍：主要功能是将动作转换成自然语言。
-- post_process（）：填充模板语句中的空的槽位
-- convert_diaact_to_nl（）：通过规则加模型将Dia_Act转换成自然语言
-- translate_diaact（）：将dia_act用向量表示出来，然后通过模型生成句子。 
-- load_nlg_model（）：加载训练好的nlg模型。
-- diaact_to_nl_slot_filling（）：用槽位的真实值去填充槽位信息。
-- load_predefine_act_nl_pairs（）：加载预定义好的 Dia_Act&NL键值对。
-
-#### 如何构建一个用户模拟器的DQN模型
-
-dqn.py主要函数介绍：DQN主要是训练一个强化学习的对话过程。
-- getStruct（）：返回模型的其他参数
-- fwdPass(): DQN的前向传播过程
-- bwdPass():DQN的反向传播过程
-- batchForward():批量的前向传播过程
-- batchDoubleForward():双批量的前向传播过程
-- batchBackward():批量的反向传播
-- costFunc():代价函数计算
-- singleBatch():单批次整个模型的计算过程
-- predict():预测
-
-#### 如何构建用户模拟器的数据结构
-
-
-#### 训练时注意事项
-
-- 为了训练RL代理，需要从一些规则策略经历（用户和代理的一个完整对话过程）元组开始初始化一个经历重放缓冲池，也可以从一个空的经历重放缓冲池开始。 建议使用某些规则或监督策略来初始化经历重放缓冲池，很多相关研究已经证明了这种方式的优势处，例如，良好的初始化策略可以加快RL训练的速度。 在这里，我们使用非常简单的基于规则的策略来初始化经历重放缓冲池。
-
-- RL代理是DQN网络。 在训练中，我们使用e-greedy策略和动态经历重放缓冲池。 经历重放缓冲池的大小是动态变化的。 一个重要的DQN的技巧是通过引入目标网络，这样网络会缓慢更新和计算目标网络短期内达到的目标值。
-
-- 训练过程可以这样定义：在每个epoch中，我们模拟N个对话，并将这些状态转换元组（st，at，rt，st + 1）添加到经历重放缓冲池中，训练和更新当前的DQN网络。在一个epoch中，当前DQN网络将在批次结束时进行多次更新，具体取决于批次大小和经历重放缓冲池的当前大小。 在一个模拟epoch中，目标网络将被当前DQN网络取代，目标DQN网络仅在一个epoch中更新一次。经历重放缓冲池更新策略如下：首先，我们将从模拟中累积所有经验元组，并刷新经历重放缓冲池，直到当前RL代理达到成功率阈值（即，success_rate_threshold = 0.30），然后使用当前RL代理的经验元组重新填充缓冲区。一般而言DQN的初始性能不好，无法生成足够好的经历重放元组，因此，在当前的RL代理可以达到一定成功率之前，我们不会刷新经历重放缓冲池。接下来的训练过程，在每个epoch中，我们都会估算当前DQN代理的成功率，如果当前DQN代理足够好（即比目标网络更好），则将刷新并将经历重播缓冲区进行轮询-填充。图1显示了没有NLU的RL代理的学习曲线和NLG，图2是带有NLU和NLG的RL代理的学习曲线，训练RL代理以适应NLU和NLG的错误和噪声需要花费更长的时间。
-- 表1显示了由基于规则的代理和RL代理与电影订票中的用户模拟器交互生成的一个成功和一个失败对话示例。 为了提供信息，我们还在对话的开头明确显示用户目标，但是代理对用户目标一无所知，其目标是帮助用户实现此目标并预订正确的电影票。
-- 表2是用户模拟器与SimpleRL-SoftKB和End2End-RL代理之间的对话。Critic_rating槽位值是用户模拟器中常见的错误源，因此，所有学习到的策略都倾向于多次请求该值。
-- 图1：没有NLU和NLG的策略训练学习曲线：绿线是规则代理，我们使用它来初始化体验重播缓冲池； 蓝线是RL代理； 橙色线是最佳上限，它是通过代理数据库中可达到的用户目标数与用户目标总数的比。
-- 图2：使用NLU和NLG进行的端到端策略训练的学习曲线：绿线是规则我们用来初始化经历重放缓冲池的代理； 蓝线是学习RL代理的曲线； 橙色线是最佳上限，由代理程序数据库中可达到的用户目标数与用户目标总数之比。
-- 表1：基于规则的代理和RL代理与用户模拟器生成的两个示例对话：左列显示规则和RL代理均成功； 右列显示基于规则的代理失败，而RL代理成功。
-- 表2：用户模拟器与SimpleRL-SoftKB和End2End-RL代理之间的对话示例。 在每次对话结束时，代理会告知KB后验的前5个结果。 已经通知的用户目标以粗体显示。
 
 ## 数据集
+
+数据源
+- **角色原型**数据 ：从百度百科等平台收集 135 个角色的基本信息，涵盖娱乐明星、历史人物、行业名人、影视及动漫角色等，同时参考了游戏、电影、小说等的粉丝群体意见，选取富有代表性和知名度的角色。
+- **对话数据** ：通过众包工人模拟用户与角色进行对话生成数据，利用大型语言模型（LLM）辅助生成对话草案，再由人工进行标注和修正。
+- **角色档案**收集 ：针对不同类型的常见角色，手动筛选和验证角色信息，生成基本属性，再进行细致调整，包括性格特点、兴趣爱好、人物经历等。
+
+| 名称 | 作者 | 发表 | 地址 | 说明 |
+| --- | --- | --- | --- | --- |
+| [CharacterEval](https://arxiv.org/pdf/2401.01275) | 人大高瓴、北邮等 | ACL 2024 | GitHub：[CharacterEval](https://GitHub.com/morecry/CharacterEval) | 人物角色扮演对话智能体（RPCA）评估基准，包含 1,785 多轮角色扮演对话，涵盖 11,376 示例和 77 个中文小说及剧本中的角色 |
+| [SocialBench](http://arxiv.org/pdf/2403.13679) | 中山大学+阿里巴巴 | --- | [SocialBench](https://github.com/X-PLUG/SocialBench) | |
+| [EmoCharacter](http://aclanthology.org/2025.naacl-long.316) | 复旦大学 | NAACL 2025 | --- | 情感保真度 |
+| [DMT-RoleBench](://doi.org/10.1609/aaai.v39i24.34768) |  复旦大学| AAAI 2025 | [DMT-RoleBench](https://GitHub.com/DMT-RoleBench/DMT-RoleBench)| |
+| [RAIDEN Benchmark](https://aclanthology.org/2025.coling-main.735) | 北大软微+腾讯 | Coling 2025 | [RAIDEN](http://GitHub.com/FrontierLabs/RAIDEN) | --- |
+
+
+
+
+### CharacterEval
+
+CharacterEval 是一个人物角色扮演对话智能体（RPCA）评估基准，包含 1,785 多轮角色扮演对话，涵盖 11,376 示例和 77 个中文小说及剧本中的角色。 它通过多维度的评估方式，包括对话能力、角色一致性、角色扮演吸引力和人格回测四大维度共十三项指标，全面衡量 RPCA 的表现。其中，对话能力关注流畅性、连贯性和一致性，角色一致性涵盖知识和人格两个层面，角色扮演吸引力从用户角度评估人类相似度等要素，人格回测则通过 MBTI 评估模型的角色扮演能力。 为方便评估主观指标，还开发了基于人工标注的角色扮演奖励模型 CharacterRM，其与人类判断的相关性优于 GPT-4。
+
+对话能力、角色一致性、角色扮演吸引力和人格测评
+- ![](https://pic2.zhimg.com/v2-95d3f5860b2bc8d60893793f5e585e79_1440w.jpg)
+
+评价方法
+- 客观指标：如流畅性、连贯性等，可通过预训练的神经模型进行评估，基于模型的输出判断语句是否通顺、是否符合语法规范，以及回应与上下文主题的相关性。
+- 主观指标：如人格一致性和角色扮演吸引力等，采用人工标注的方式进行打分，邀请 12 名标注者对模型生成的回应进行评分，基于这些评分开发了角色扮演奖励模型 CharacterRM，通过训练使其与人类判断具有更高的相关性，以实现对主观指标的量化评估。
+
+
+
+### SocialBench
+
+SocialBench 是一个用于系统评估角色扮演对话智能体在个体和群体层面上社交智能的基准测试工具。 它涵盖了 500 个角色，超过 6000 个问题提示和 30800 个多轮对话话语。 该基准从个体水平（包括自我认知、情感感知和长期对话记忆）和群体水平（社会偏好）两个层面，通过多种评价指标（如单选题准确率、多选题准确率和关键词覆盖率）来全面衡量智能体的社交能力。 SocialBench 为角色扮演对话智能体的社交智能评估提供了一个全面且详细的框架。
+
+Focus：角色扮演对话智能体在个体和群体层面上的社交智能
+
+评价维度分为个体水平和群体水平：
+- 个体水平：包括自我认知、情感感知，以及长期对话记忆等方面。
+- 自我认知（Self-Awareness）：包括角色风格认知（SA Style）和角色知识认知（SA Know.）。评估智能体对角色风格和知识的理解和保持能力。
+- 情感感知（Emotional Perception）：包括情境理解（EP Situ.）和情感检测（EP Emo.）。评估智能体对情感的理解和感知能力。
+- 长期对话记忆（Conversation Memory）：包括短期记忆（CM Short）和长期记忆（CM Long）。评估智能体在对话中记忆和引用之前内容的能力。
+- 群体水平：即社会偏好（Social Preference）：包括积极偏好（Pos.）、中性偏好（Neu.）和消极偏好（Neg.）。评估智能体在群体互动中表现出的社会偏好和行为。
+
+评价指标
+- 单选题准确率
+- 多选题准确率
+- 关键词准确率
+
+### EmoCharacter
+
+EmoCharacter 是用于评估角色扮演智能体（RPAs）在对话中情感保真度的基准测试。 它包含两个基准数据集（单轮和多轮对话数据集）、三种评估设置和六个评估指标。 EmoCharacter 通过系统化地评估情感保真度，帮助研究人员更好地理解和改进 RPAs 的情感智能。
+
+Focus：大模型在角色扮演对话中情感保真度
+
+EmoCharacter 的数据来源于经典美剧《老友记》的剧本。该剧本提供了丰富的对话场景和角色情感表达，适合作为评估 RPAs 情感保真度的基础数据。
+
+评价维度
+- 微观情感保真度：关注 RPAs 在对话中每个话语所附情感与原始角色的一致性。
+- 宏观情感保真度：关注 RPAs 在对话中的情感转换分布是否与原始角色一致，同时捕捉不同角色之间的情感差异。
+
+评价指标
+- EmoCharacter 提出了 7 种评估指标，全部采用自动评价的方式，用于全面衡量角色扮演智能体（RPAs）的情感保真度。这些指标从微观和宏观两个层面进行评估
+
+### DMT-RoleBench
+
+DMT-RoleBench 是一个基于动态多轮对话的角色扮演能力评估基准，用于系统且全面地评估大型语言模型和智能体在真实交互场景下的角色扮演能力。 它包含 996 个样本的多轮种子数据集，涵盖 6 种角色类型、7 种评估意图及多种系统提示格式，通过动态生成多轮对话并结合 DMT-RM 评价模型和 DMT-Score 评分方法，从基本能力、对话能力和模仿能力三个维度的 14 个子指标对模型进行评估，以量化模型的角色扮演性能。
+
+Focus：通过动态生成多主题、多类型的对话来评价模型的角色扮演能力。
+
+6 种不同的角色类型的来源：
+- 角色原型数据来源 ：主要从影视、小说、电视剧、历史人物、专业职业、情感陪伴角色、工具类助手和互动游戏非玩家角色中获取灵感。其中，影视、小说、电视剧角色主要来源于豆瓣 Top 排行榜的华语影视和经典文学作品，利用百度百科、豆瓣和 OpenKG 等数据仓库，收集角色的个性特征、人际关系和主要生活事件等属性，形成综合的角色档案。
+- 历史人物数据来源 ：从中国历史中选取不同时期和学科领域的杰出代表人物，借助百度百科和 OpenKG 等平台类似的数据聚合技术，丰富其个人资料。
+- 互动游戏角色及其他角色数据来源 ：主要由高度定制的设置构成，在构建这些角色档案时，首先参考角色扮演游戏应用中的分类，然后利用 GPT-4 等最新模型进行数据合成和增强。
+
+DMT-RoleBench 从三个维度（基本能力、对话能力、模仿能力）评价模型的 14 种具体性能
+- 基本能力（Basic Ability） ：
+  - 角色体现（Role Embodying, RE） ：评估模型是否能有效体现角色，如同影视角色和历史人物，若模型暴露 AI 身份或以第三人称描述角色则表现不佳。
+  - 指令遵循（Instruction Following, IF） ：考察模型是否能遵循系统提示。
+- 对话能力（Conversational Ability） ：
+  - 流畅性（Fluency, Flu.） ：与 CharacterEval 一致，评估对话的自然流畅程度。
+  - 连贯性（Coherence, Coh.） ：与 CharacterEval 一致，考察对话内容的连贯性。
+  - 一致性（Consistency, Cons.） ：与 CharacterEval 一致，判断模型在对话中保持信息和立场一致性的能力。
+  - 多样性（Diversity, Div.） ：与 CharacterEval 一致，衡量对话内容的丰富多样性。
+  - 人类相似度（Human Likeness, HL） ：与 CharacterEval 一致，评价对话是否像人类的表达方式。
+- 模仿能力（Imitation Ability） ：
+  - 知识准确性（Knowledge Accuracy, KA） ：与 CharacterEval 一致，确保模型提供信息的准确性。
+  - 知识幻觉（Knowledge Hallucination, KH） ：与 CharacterEval 一致，判断模型是否产生不真实或不相关的信息。
+  - 知识暴露（Knowledge Exposure, KE） ：与 CharacterEval 一致，关注模型在对话中适当展示知识的能力。
+  - 共情（Empathy, Emp.） ：与 CharacterEval 一致，考察模型对用户情感的理解和回应能力。
+  - 个性特质（Personality Trait, PT） ：评估模型模仿角色语言风格和个性特质的能力。
+  - 互动性（Interactivity, Inte.） ：评价模型主动互动的能力，能否推动对话进行、维持参与度和促进协作对话体验。
+  - 游戏完成度（Game Completion Degree, GCD） ：评估模型在游戏场景中组织和推动游戏进程的能力。
+
+### RAIDEN Benchmark
+
+
+RAIDEN Benchmark 是一个专为角色扮演对话代理（RPCA）评估而设计的基准测试，旨在通过测量驱动的定制对话来评估模型的表现。 它包含一个全面的数据集，涵盖 135 个角色和超过 40,000 个对话轮次，重点评估模型的自我认知和对话能力。 该基准通过模型与标注者之间的交互进行评估，以减少对话评估中的主观性。 此外，RAIDEN Benchmark 还引入了 RPCAJudger，一个专门用于自动 RPCA 评估的判断模型，其评估结果与人工判断高度一致，且无需 API 即可防止潜在的数据泄露。
+
+Focus：评估模型在角色扮演对话中的自我认知和对话能力
+
+### google-research-datasets
 
 google-research-datasets [simulated-dialogue](https://github.com/google-research-datasets/simulated-dialogue)
 
@@ -345,6 +320,7 @@ We are releasing two datasets containing dialogues for **booking a restaurant ta
 | Sim-GEN (Movie)    | theatre\_name, movie, date, time,<br>num\_people                               | 100K  | 10K | 10K  |
 
 源自：[Dialogue Learning with Human Teaching and Feedback in End-to-End Trainable Task-Oriented Dialogue Systems](https://arxiv.org/pdf/1804.06512.pdf) uses Sim-GEN
+
 
 ### Sim-GEN
 
@@ -511,6 +487,13 @@ The possible values of user intents are:
 *   RESERVE\_RESTAURANT
 
 
+### 多模态评测集
+
+【2025-1-13】人大高瓴人工智能学院陈旭团队构建包含**多模态信息**的角色扮演能力数据集，其中包括 85 个角色、11000 张图片和 14000 段对话数据。
+- [MMRole：A COMPREHENSIVE FRAMEWORK FOR DEVELOPING AND EVALUATING MULTIMODAL ROLE-PLAYING AGENTS](https://arxiv.org/pdf/2408.04203)。
+- MMRole：开发和评估多模态角色扮演代理的完整框架
+
+角色扮演能力评测指标，包括**图文匹配准确度**和**回复精准度**等。
 
 ## 论文解读
 
@@ -858,6 +841,165 @@ LANGWATCH_API_KEY="your-api-key"
 ```
 
 ![](https://github.com/langwatch/scenario/raw/main/assets/langwatch-visualization.webp)
+
+
+## 工程实现
+
+- 【2021-2-23】[user-simulator](https://github.com/wyshi/user-simulator)，Codebase for [How to Build User Simulators to Train RL-based Dialog Systems](https://arxiv.org/pdf/1909.01388.pdf), published as a long paper in EMNLP 2019. The sequicity part is developed based on [Sequicity: Simplifying Task-oriented Dialogue Systems with Single Sequence-to-Sequence Architectures](https://github.com/WING-NUS/sequicity).
+  - RL training with agenda-based simulator: python run_mydata_new.py
+  - RL training with supervised-learning-based simulator: python run_mydata_seq_new.py
+  - Interacting with trained policies: policies are under simulator/policy/
+
+### TC-Bot
+
+- 台大的TC-Bot框架提供了一种开发和比较不同算法和模型的方法。 
+- 对话系统由两部分组成：代理和用户模拟器。
+- 通过一些示例来展示如何构建自己的代理和用户模拟器。
+
+- [End-to-End Task-Completion Neural Dialogue Systems](https://github.com/MiuLab/TC-Bot), [代码](https://github.com/MiuLab/TC-Bot)
+
+#### 代码结构
+
+【2022-9-24】类依赖图，待更新
+
+<div class="mermaid">
+classDiagram
+    Animal <|-- Duck
+    Animal <|-- Fish
+    Animal <|-- Zebra
+    Animal : +int age
+    Animal : +String gender
+    Animal: +isMammal()
+    Animal: +mate()
+    class Duck{
+        +String beakColor
+        +swim()
+        +quack()
+    }
+    class Fish{
+        -int sizeInFeet
+        -canEat()
+    }
+    class Zebra{
+        +bool is_wild
+        +run()
+    }
+</div>
+
+#### 如何构建自己的代理？
+
+- 对于所有代理，它们都从Agent类（agent.py）继承，该类为用户提供了一些实现其代理的通用接口。 在agent_baseline.py文件中，实现了五个基于规则的基本代理：
+  - InformAgent：每次依次通知所有槽位； 它不请求任何信息/槽位。
+  - RequestAllAgent：依次请求所有槽位； 它不能告知任何信息/槽位。
+  - RandomAgent：每次都会随机请求槽位； 它不能告知任何信息/槽位
+  - EchoAgent：通知请求槽位中的最后一个用户动作； 它不能请求任何信息/槽位。
+  - RequestBasicsAgent：逐个请求子集中的所有基本槽位，然后在最后一轮选择notify（任务完成）； 它不能告知任何信息/槽位。
+
+所有代理仅重新实现两个函数：initialize_episode（）和state_to_action（）。 这里的state_to_action（）函数不要求代理的结构，实现的是从状态到动作的映射，这是代理的核心部分。下面是RequestBasicsAgent的示例：
+
+
+当然agent.py中还包含三个函数:
+- set_nlg_model():设置nlg模型，nlg主要作用是根据动作信息和状态信息，生成自然语言。
+- set_nlu_model():设置nlu模型，nlu的主要作用是从自然语言中生成具体动作。
+- add_nl_to_action():通过动作信息生成自然语言。
+
+register_experience_replay_tuple():将来自环境的反馈，存储作为以后的训练数据。
+所有基于规则的代理只支持通知或请求操作，当然也可以实现更复杂的基于规则的代理，该代理可以支持多种操作，包括通知，请求，确定问题，确定答案，拒绝等。
+
+agent_dqn.py提供了RL代理（agt = 9），该代理包装了DQN模型。 除了以上两个函数外，RL代理中还有两个主要函数：run_policy（）和train（）。 run_policy（）实现 e-greedy策略，train()调用DQN的批训练函数。
+
+agent_cmd.py提供了命令行代理（agt = 0），作为代理可以与用户模拟器进行交互。 命令行代理支持两种类型的输入：自然语言（cmd_input_mode = 0）和对话框动作（cmd_input_mode = 1）。 清单3展示了一个命令行代理通过自然语言与用户模拟器交互的示例； 清单4展示了一个命令行代理通过对话框与用户模拟器进行交互的示例。
+
+注意：
+- 当上个用户回合是请求动作时，系统将在数据库中为代理显示一行建议可用答案，如列表4中的回合0所示。 基于规则的代理和RL代理都将使用数据库中的槽位值来回答用户。 此处，命令行代理的一种特殊情况是，人工（作为命令行代理）可以输入用户请求的任何随机答案，当输入的答案不在数据库中时，状态跟踪器将对其进行纠正，并强制代理使用代理数据库中的值作为回复。 例如，在列表4的第1回合中，如果您输入notify（theater = amc pacific），那么用户收到的实际答案就是notify（theater = carmike summit 16），因为数据库中不存在amc pacific， 为了避免代理通知用户不可用值的这种在线操作，我们限制代理要使用建议列表中的值。
+- 代理的倒数第二轮通常是采用通知形式（taskcomplete）或类似于“好的，您的票已预订。”的自然语言，其目的是为了通知用户模拟器代理已经完成了任务，并且准备预订电影票。
+- 为了结束对话，代理的最后一个回合通常是对话通知形式的thank（）或自然语言中的“感谢”。
+
+
+#### 如何构建自己的用户模拟器？
+        
+- 有一个用户模拟器类（usersim.py），它提供了一些通用接口来实现其用户模拟器。 所有用户模拟器都是从此类继承的，并且应该重新实现以下两个函数：initialize_episode（）和next（）。 usersim_rule.py文件实现了基于规则的用户模拟器。 这里的next（）函数实现了所有规则和根据上一个代理动作来发出下一个用户动作。这是例子usersim_rule.py：
+
+
+#### 如何构建一个对话管理器
+
+- dialog_manager.py类中包含的主要函数介绍：
+- 根据历史的对话状态，生成当前论的对话
+  - initialize_episode（）：每一个epoch开始之前的初始工作，主要包括初始化用户模拟器和代理，以及对话状态追踪器。
+  - next_turn（）：主要分为两个主要步骤，第一步通过状态跟踪器获得当前状态，代理根据当前状态，得到动作类型。根绝动作类型来生成自然语言。用户模拟器是通过历史对话字典，生成下一轮的对话、对话中止标记和对话对话奖励，并且更新用户模拟器的动作到状态追踪器里里面。
+  - reward_function（）:通过对话状态来计算奖励，奖励有正有负。
+  - reward_function_without_penalty():通过对话状态来计算奖励，奖励只有正的，其中失败的奖励为0。
+  - print_function():打印用户模拟器和代理的当前状态
+
+ kb_helper.py文件包含的主要函数介绍：
+
+这个文件功能主要是将current_slots填充到inform_slots中
+- fill_inform_slots（）：将current_slots填充到inform_slots中
+- available_slot_values（）：根据当前约束返回可用于该槽位的一组值
+- available_results_from_kb（）：返回current_slots中所有的可用槽位
+- available_results_from_kb_for_slots（）：返回inform_slots中每个约束的统计信息
+- database_results_for_agent（）：返回当前约束匹配的结果字典
+- suggest_slot_values（）：根据目前槽位，返回建议的槽位值
+
+ state_tracker.py类包含的主要函数介绍：
+
+主要功能是更新用户模拟器和代理的状态。
+- dialog_history_vectors（）：返回用向量表示的对话历史信息
+- dialog_history_dictionaries（）：返回用字典保存的对话历史信息
+- kb_results_for_state（）：根据当前通知的槽位返回有关数据库结果的信息
+- get_state_for_agent（）：获取状态表示以发送给代理
+- get_suggest_slots_values（）：获取请求槽位的建议值
+- get_current_kb_results（）：获取当前状态的kb_results
+- update（）：根据最新动作更新状态
+
+#### 如何构建一个自然语言生成模块
+
+nlu.py主要函数介绍：主要是讲自然语言解析成Dia-Act
+- generate_dia_act（）： generate the Dia-Act with NLU model通过NLU模型生成Dia-Act
+- load_nlu_model（）：加载NLU模型
+- parse_str_to_vector（）：将字符串用向量来表示
+- parse_nlu_to_diaact（）：将BIO和意图解析以后放入到dia_act中
+- refine_diaact_by_rules（）：通过规则细化dia_act
+
+#### 如何构建一个自然语言理解模块
+
+nlg.py主要函数介绍：主要功能是将动作转换成自然语言。
+- post_process（）：填充模板语句中的空的槽位
+- convert_diaact_to_nl（）：通过规则加模型将Dia_Act转换成自然语言
+- translate_diaact（）：将dia_act用向量表示出来，然后通过模型生成句子。 
+- load_nlg_model（）：加载训练好的nlg模型。
+- diaact_to_nl_slot_filling（）：用槽位的真实值去填充槽位信息。
+- load_predefine_act_nl_pairs（）：加载预定义好的 Dia_Act&NL键值对。
+
+#### 如何构建一个用户模拟器的DQN模型
+
+dqn.py主要函数介绍：DQN主要是训练一个强化学习的对话过程。
+- getStruct（）：返回模型的其他参数
+- fwdPass(): DQN的前向传播过程
+- bwdPass():DQN的反向传播过程
+- batchForward():批量的前向传播过程
+- batchDoubleForward():双批量的前向传播过程
+- batchBackward():批量的反向传播
+- costFunc():代价函数计算
+- singleBatch():单批次整个模型的计算过程
+- predict():预测
+
+#### 如何构建用户模拟器的数据结构
+
+
+#### 训练时注意事项
+
+- 为了训练RL代理，需要从一些规则策略经历（用户和代理的一个完整对话过程）元组开始初始化一个经历重放缓冲池，也可以从一个空的经历重放缓冲池开始。 建议使用某些规则或监督策略来初始化经历重放缓冲池，很多相关研究已经证明了这种方式的优势处，例如，良好的初始化策略可以加快RL训练的速度。 在这里，我们使用非常简单的基于规则的策略来初始化经历重放缓冲池。
+
+- RL代理是DQN网络。 在训练中，我们使用e-greedy策略和动态经历重放缓冲池。 经历重放缓冲池的大小是动态变化的。 一个重要的DQN的技巧是通过引入目标网络，这样网络会缓慢更新和计算目标网络短期内达到的目标值。
+
+- 训练过程可以这样定义：在每个epoch中，我们模拟N个对话，并将这些状态转换元组（st，at，rt，st + 1）添加到经历重放缓冲池中，训练和更新当前的DQN网络。在一个epoch中，当前DQN网络将在批次结束时进行多次更新，具体取决于批次大小和经历重放缓冲池的当前大小。 在一个模拟epoch中，目标网络将被当前DQN网络取代，目标DQN网络仅在一个epoch中更新一次。经历重放缓冲池更新策略如下：首先，我们将从模拟中累积所有经验元组，并刷新经历重放缓冲池，直到当前RL代理达到成功率阈值（即，success_rate_threshold = 0.30），然后使用当前RL代理的经验元组重新填充缓冲区。一般而言DQN的初始性能不好，无法生成足够好的经历重放元组，因此，在当前的RL代理可以达到一定成功率之前，我们不会刷新经历重放缓冲池。接下来的训练过程，在每个epoch中，我们都会估算当前DQN代理的成功率，如果当前DQN代理足够好（即比目标网络更好），则将刷新并将经历重播缓冲区进行轮询-填充。图1显示了没有NLU的RL代理的学习曲线和NLG，图2是带有NLU和NLG的RL代理的学习曲线，训练RL代理以适应NLU和NLG的错误和噪声需要花费更长的时间。
+- 表1显示了由基于规则的代理和RL代理与电影订票中的用户模拟器交互生成的一个成功和一个失败对话示例。 为了提供信息，我们还在对话的开头明确显示用户目标，但是代理对用户目标一无所知，其目标是帮助用户实现此目标并预订正确的电影票。
+- 表2是用户模拟器与SimpleRL-SoftKB和End2End-RL代理之间的对话。Critic_rating槽位值是用户模拟器中常见的错误源，因此，所有学习到的策略都倾向于多次请求该值。
+- 图1：没有NLU和NLG的策略训练学习曲线：绿线是规则代理，我们使用它来初始化体验重播缓冲池； 蓝线是RL代理； 橙色线是最佳上限，它是通过代理数据库中可达到的用户目标数与用户目标总数的比。
+- 图2：使用NLU和NLG进行的端到端策略训练的学习曲线：绿线是规则我们用来初始化经历重放缓冲池的代理； 蓝线是学习RL代理的曲线； 橙色线是最佳上限，由代理程序数据库中可达到的用户目标数与用户目标总数之比。
+- 表1：基于规则的代理和RL代理与用户模拟器生成的两个示例对话：左列显示规则和RL代理均成功； 右列显示基于规则的代理失败，而RL代理成功。
+- 表2：用户模拟器与SimpleRL-SoftKB和End2End-RL代理之间的对话示例。 在每次对话结束时，代理会告知KB后验的前5个结果。 已经通知的用户目标以粗体显示。
 
 
 # 结束
