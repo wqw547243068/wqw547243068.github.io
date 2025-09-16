@@ -225,6 +225,15 @@ LLM 的可控性、稳定性、事实性、安全性等问题是推进企业级�
 
 ### 输出稳定性
 
+【2025-2-6】[【ICLR 2025】不确定性uncertainty相关论文汇总](https://zhuanlan.zhihu.com/p/21587790793)
+- ICLR 2025中关于不确定分析、不确定性量化、不确定性+下游任务等相关的论文简单汇总
+- 哈佛大学 [Provable Uncertainty Decomposition via Higher-Order Calibration](), 将模型预测不确定性分解为具有明确语义的随机和认知成分，这些成分与现实世界的数据分布相关联。
+- [Credal Wrapper of Model Averaging for Uncertainty Estimation in Classification](https://openreview.net/pdf?id=cv2iMNWCsh) 提出 “credal wrapper”的创新方法，为贝叶斯神经网络 (BNN) 和深度集成 (DE) 制定模型平均的“credal set”表示，能够改善分类任务中的不确定性估计。
+- [From Risk to Uncertainty: Generating Predictive Uncertainty Measures via Bayesian Estimation]() 逐点风险分解为与不同预测不确定性来源相关的成分：即随机不确定性（固有数据变异性）和认知不确定性（与模型相关的不确定性）。结合作为近似值的贝叶斯方法，我们构建了一个框架，允许生成不同的预测不确定性度量。
+-  [DeLLMa: Decision Making Under Uncertainty with Large Language Models]() DeLLMa（决策大型语言模型助手），这是一个旨在提高不确定环境中决策准确性的框架。多步骤推理过程，该过程整合了扩展推理时间推理的最新最佳实践，借鉴了决策理论和效用理论的原理，以提供准确且可人工审核的决策过程。
+-  复旦 [An Empirical Analysis of Uncertainty in Large Language Model Evaluations](https://openreview.net/pdf?id=J4xLuCt2kg) 2 种不同的评估设置中对 9 种广泛使用的 LLM 评估者进行了广泛的实验，LLM 评估者根据模型系列和大小表现出不同的不确定性, 采用特殊的提示策略（无论是在推理期间还是在训练后）可以在一定程度上缓解评估不确定性。通过利用不确定性来增强 LLM 在分布外 (OOD) 数据中的可靠性和检测能力，我们使用人工注释的微调集进一步微调了一个名为 ConfiLM 的不确定性感知 LLM 评估器
+- 剑桥 [Do LLMs estimate uncertainty well in instruction-following?](https://openreview.net/pdf?id=IHp3vOVQO2) 首次系统地评估了 LLM 在指令遵循方面的不确定性估计能力
+
 【2025-9-10】LLM技术论文：《如何解决LLM推理中的非确定性问题》
 
 2025年2月, OpenAI前CTO `Mira Murati`成立公司 `Thinking Machines Lab`
