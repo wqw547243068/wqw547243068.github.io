@@ -24,6 +24,10 @@ permalink: /block-chain
   - <iframe src="//player.bilibili.com/player.html?aid=842054725&bvid=BV1D54y1C7vd&cid=234432929&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"  height="600" width="100%"> </iframe>
 - 【2022-9-8】2018年拍摄的纪录片[区块链之新](https://www.ixigua.com/6911550712887378446)，6集
 
+[animagraffs](https://animagraffs.com/) 网站： 加密货币原理可视化讲解
+- 网址 [How Crypto-currency Works](https://animagraffs.com/how-cryptocurrency-works/), 含视频
+
+
 ## 什么是区块链
 
 - 区块链是如何工作的呢？最近区块链技术走红，你是否也对它充满了好奇？那么不妨看看这个视频。本视频用漫画方式介绍了区块链的底层技术，内容简洁明了，相信看后你能更深入了解它。
