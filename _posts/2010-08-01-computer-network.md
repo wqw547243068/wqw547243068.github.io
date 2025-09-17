@@ -1039,6 +1039,18 @@ ARP ：全称是地址解析协议，通过目的 IP 地址解析目的设备 MA
 
 ### 国际电视
 
+
+【2025-9-17】[TV Garden](https://tvgarden.org/) 拖拽地球，点击跳转到对应国家的电视台
+- [apk下载](https://archive.org/download/tv-garden-official_202505/TV_Garden%20%28Official%29.apk)
+
+示例
+- [美国电视台](https://tv.garden/us/BTtTvg520N96K8)
+
+
+注意：需要开启 vpn 
+
+
+
 各个国家都在用哪种电视（模拟/数字）？
 
 ![](https://pica.zhimg.com/80/v2-4a654ade5feef8d81413e6ae99b04db0_1440w.webp)
