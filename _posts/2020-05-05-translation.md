@@ -85,6 +85,10 @@ Offine-Text-Translate
   - 英语→阿拉伯/中文/日语/西班牙上
   - ![](https://www.welocalize.com/wp-content/uploads/2024/04/Screenshot-2023-07-31-at-12.17-1.png)
 
+【2025-9-17】翻译效果
+- 24年初有篇论文比较系统的比较了大模型的翻译和NMT翻译专有模型的翻译
+- 当时大模型在小语种上比NMT模型普遍好，在中、英等大语种上NMT因为专门做过优化还是要好些。
+
 ### SeamlessM4T
 
 
