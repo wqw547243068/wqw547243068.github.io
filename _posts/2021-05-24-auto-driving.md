@@ -21,6 +21,9 @@ permalink: /drving
   - 华人/中国无人车玩家Nuro、Pony.ai和百度，拿下了第四、第五和第七交椅。意料之外的是垫底的公司——Uber倒数第一，苹果倒数第二。但无论如何，这都是自动驾驶技术实力的最真实反映。
 - 【2020-5-8】无人驾驶科研笔记 [My Bibliography for Research on Autonomous Driving](https://github.com/chauvinSimon/My_Bibliography_for_Research_on_Autonomous_Driving)
 
+【2025-9-17】[animagraffs](https://animagraffs.com/) 网站：电动汽车工作原理可视化
+- Most electric cars are Battery Electric Vehicles (BEVs), which are a subset of Electric Vehicles (EVs). BEVs use a battery-powered electric motor for propulsion.
+- [How electric car works](https://animagraffs.com/electric-car/)
 
 ## 汽车品牌
 
