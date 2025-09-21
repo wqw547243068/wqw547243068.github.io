@@ -433,10 +433,13 @@ PAIR -- 受社会工程攻击的启发,使用攻击者LLM自动为单独的目�
 
 
 源自：
-- 上海交大 [动手学大模型：大模型越狱攻击]()
-- 第6章杜巍 [github](https://github.com/Lordog/dive-into-llms/tree/main/documents/chapter6)
+- 上海交大 [动手学大模型](https://github.com/Lordog/dive-into-llms/tree/main)
+- 第6章杜巍:大模型越狱攻击 [github](https://github.com/Lordog/dive-into-llms/tree/main/documents/chapter6)
 
 参考论文 [Jailbreaking ChatGPT via Prompt Engineering: An Empirical Study]()
+
+
+
 
 #### EasyJailbreak
 
