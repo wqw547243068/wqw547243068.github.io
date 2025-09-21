@@ -192,6 +192,38 @@ Qwen-2.5-Omni-7B 问题——目前还没有更普适的**量化版本**
 但是这俩框架目前也不支持, 为纯本文模型准备的。
 
 
+### 【2025-9-21】阿里 Qwen3 Omni
+
+【2025-9-21】Qwen3-Omni 全模态正式登场，当前还看不到太多的相关信息。
+
+仅从代码层面分析来看，相比 Qwen2.5-Omni，Qwen3-Omni 的主要升级点在于采用了**MoE 架构**，而Qwen2.5-Omni 的 Talker`模块在其标准实现中采用的是dense结构。
+
+主要组成部分
+
+1. Thinker 模块：
+- 功能：负责理解和处理多模态输入（文本、图像、视频、音频），并生成相应的文本输出。
+- 子模块：
+  - Audio Encoder：将音频信号编码为连续的嵌入向量。
+  - Vision Encoder：将图像或视频帧编码为视觉嵌入向量。
+  - Text Model：基于 MoE 架构的文本模型，处理文本和视觉/音频嵌入，并生成文本输出。
+	
+2. Talker 模块：
+- 功能：负责将文本输出转换为语音输出。
+- 子模块：
+  - Code Predictor：预测语音的残差码（residual codes）。
+  - Text Model：生成语音的文本表示，这个模型是基于 MoE 结构的
+  - Codec Head：将文本表示转换为语音码。
+  - Hidden Projection 和 Text Projection：用于将 Thinker 模块的隐藏状态投影到 Talker 模块的维度。
+	
+3. Code2Wav 模块：
+- 功能：将 Talker 模块生成的语音码转换为最终的音频波形。
+	
+关键特性
+- 多模态支持：能够同时处理文本、图像、视频和音频输入。
+- MoE 架构：通过稀疏激活专家网络，提高模型效率和性能。
+- MRoPE (Multi-Dimensional Rotary Position Embedding)：支持处理不同维度的输入（如时间、高度、宽度），用于视觉和音频任务。
+- DeepStack：在视觉编码器中使用 DeepStack 技术，以增强视觉特征的表示能力。
+
 ### 【2025-6-11】蚂蚁 Ming-Omni
 
 
