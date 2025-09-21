@@ -200,7 +200,20 @@ MDIR 在避免假阳性的同时，能准确识别经过增量预训练、剪枝
 
 ## 大模型水印
 
+源自：
+- 上海交大 [动手学大模型](https://github.com/Lordog/dive-into-llms/tree/main)
 
+第五章 [大模型水印](https://github.com/Lordog/dive-into-llms/blob/main/documents/chapter5/README.md)
+- 水印嵌入：在语言模型生成内容时嵌入水印
+- 水印检测：检测给定文本的水印强度
+- 水印评估：评估水印方法的检测性能
+- 评估水印的鲁棒性（可选）
+
+### X-SIR
+
+[X-SIR](https://github.com/zwhe99/X-SIR) 仓库包含以下内容的实现
+- 三种文本水印算法：X-SIR, SIR和KGW
+- 两种水印去除攻击方法：paraphrase和translation
 
 ### SynthID
 
