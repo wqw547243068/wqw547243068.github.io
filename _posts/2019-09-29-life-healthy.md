@@ -56,9 +56,13 @@ permalink: /healthy
 
 中餐「减盐减油增纤维」
 
-### 做饭
+### 菜谱
 
 【2025-6-3】程序员做饭指南 [how to cook](https://cook.aiursoft.cn/)
+
+【2025-9-18】像老乡鸡🐔那样做饭。主要部分于2024年完工，非老乡鸡官方仓库。文字来自《[老乡鸡菜品溯源报告](https://www.lxjchina.com.cn/display.asp?id=4226)》，并做归纳、编辑与整理。
+- 菜谱主页 [CookLikeHOC](https://cooklikehoc.soilzhu.su/)
+- GitHub 地址 [CookLikeHOC](https://github.com/Gar-b-age/CookLikeHOC)
 
 ## 三大营养物质
 
