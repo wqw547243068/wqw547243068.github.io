@@ -1,4 +1,4 @@
-<img width="693" height="39" alt="image" src="https://github.com/user-attachments/assets/5a44cdf4-a5b0-4ce5-b3bf-a60cc2fd3417" /><img width="744" height="82" alt="image" src="https://github.com/user-attachments/assets/8f9a88b0-c41d-4bfc-8061-fb500e56b559" />---
+---
 layout: post
 title:  "车联网&自动驾驶-V2X & Auto Driving"
 date:   2021-05-24 10:30:00
