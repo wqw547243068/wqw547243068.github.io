@@ -22,6 +22,13 @@ permalink: /llm_train
 - 【2024-9-12】[llm 论文淘金](https://zhuanlan.zhihu.com/p/719626313?utm_psn=1885030923797525376)
 - 项目地址：[awesome-llm-pretraining](https://github.com/RUCAIBox/awesome-llm-pretraining) 大模型训练资源
 
+LIMA 等论文
+- CPT `预训练`学**知识**
+- SFT `指令微调`学**格式**
+- RL `强化学习`**对齐人类偏好**
+
+要想大模型有**领域知识**，得`增量预训练`。`指令微调`记知识不靠谱，不是几十 w 条数据能做到的
+
 开源模型
 - 国外 llama、mistral 最大方
 - 国内 deepseek、minicpm 最大方
