@@ -16,16 +16,6 @@ permalink: /dist
 # 分布式
 
 
-【2021-10-13】[OpenAI 研究员最新博客：如何在多GPU上训练真正的大模型？](https://mp.weixin.qq.com/s?__biz=MzU5ODg0MTAwMw==&mid=2247504041&idx=1&sn=a6a8ceaf1cb091d7832351bcddae6ffb&chksm=febc936dc9cb1a7bbcdeef42f304107d7fe221e7999f2a1a508c6164267dc12dd12ee29ad0eb&mpshare=1&scene=23&srcid=1013pNjTo5fSHOxkjfW5JoFs)，[原文链接](lilianweng.github.io/lil-log/2021/09/24/train-large-neural-networks.html)
-- 单个GPU卡的内存有限，许多大模型的大小已经超过了单个GPU，训练深且大的神经网络的主要方法有训练**并行**加速、各种模型**架构**以及内存**节省**设计等。
-  - （1）并行加速方法有以下几种：
-    - **数据**并行性：将相同的模型权重复制到多个worker中，并将一部分数据分配给每个worker以同时进行处理。
-    - **模型**并行性
-    - **流水线**并行
-    - **张量**并行
-  - （2）模型架构方面主要有专家混合（MoE）方法。
-  - （3）节省内存的设计方法，如：CPU卸载、激活重新计算、混合精度训练、压缩以及内存高效优化器等等。
-
 
 ## 为什么要 多GPU
 
@@ -33,26 +23,36 @@ permalink: /dist
 - 第一种：模型在**一块GPU上放不下**，多块GPU上就能运行完整的模型（如早期的AlexNet）。
 - 第二种：多块GPU并行计算可达到**加速训练**的效果。
 
+【2021-10-13】[OpenAI 研究员最新博客：如何在多GPU上训练真正的大模型？](https://mp.weixin.qq.com/s?__biz=MzU5ODg0MTAwMw==&mid=2247504041&idx=1&sn=a6a8ceaf1cb091d7832351bcddae6ffb&chksm=febc936dc9cb1a7bbcdeef42f304107d7fe221e7999f2a1a508c6164267dc12dd12ee29ad0eb&mpshare=1&scene=23&srcid=1013pNjTo5fSHOxkjfW5JoFs)，[原文链接](lilianweng.github.io/lil-log/2021/09/24/train-large-neural-networks.html)
+- 单个GPU卡的内存有限，许多大模型的大小已经超过了单个GPU，训练深且大的神经网络的主要方法有训练**并行**加速、各种模型**架构**以及内存**节省**设计等。
+  - （1）并行加速方法：
+    - **数据**并行性：将相同的模型权重复制到多个worker中，并将一部分数据分配给每个worker以同时进行处理。
+    - **模型**并行性：按切分方向又分
+      - **流水线**并行：纵向
+      - **张量**并行：横向
+  - （2）模型架构：专家混合（MoE）方法。
+  - （3）节省内存方法，如：CPU卸载、激活重新计算、混合精度训练、压缩以及内存高效优化器等等。
+
 
 ### 语言模型发展
 
-设计分布式训练系统的一个最重要的原因
+设计分布式训练系统的最重要原因
 - 单个计算设备的算力已经不足以支撑模型训练。
 
 机器学习模型快速发展
-- 从2013年AlexNet开始，到2022年拥有5400亿参数的PalM模型，机器学习模型以**每18个月增长56倍**的速度发展。
-- 模型参数规模增大的同时，对训练数据量的要求也指数级增长，这更加剧了对算力的需求。
+- 从2013年`AlexNet`开始，到2022年拥有**5400亿**参数的`PalM`模型，机器学习模型以**每18个月增长56倍**的速度发展。
+- 模型参数规模增大的同时，对训练数据量的要求也**指数级**增长，这更加剧了对算力的需求。
 
-近几年CPU算力增加已经**远低于** `摩尔定律`（Moore's Law）
-- 虽然计算加速设备（如GPU、TPU等）为机器学习模型提供了大量的算力，但是其增长速度仍然没有突破每18个月翻倍的`摩尔定律`。
+近几年, CPU算力增加已经**远低于** `摩尔定律`（Moore's Law）
+- 虽然计算加速设备（如GPU、TPU等）为机器学习模型提供大量算力，但是其增长速度仍然没有突破每18个月翻倍的`摩尔定律`。
 
 为了能够满足机器学习模型发展，只有通过**分布式训练**系统才可以匹配模型不断增长的算力需求。
 
-大语言模型参数量和数据量非常巨大，因此都采用了分布式训练架构完成训练。
-- `OPT`模型训练用了**992块**NVIDIA A100 80G GPU，采用`全分片数据并行`（Fully Sharded Data Parallel）以及Megatron-LM `张量并行`（Tensor Parallelism），整体训练时间将近2个月。
-- `BLOOM`模型在硬件和所采用的系统架构方面的细节。训练一共花费3.5个月，使用48个计算节点。
-  - 每个节点包含8块NVIDIA A100 80G GPU（总计384个GPU）
-  - 并且使用 4*NVLink 用于节点内部GPU之间通信。节点之间采用四个 Omni-Path 100 Gbps网卡构建的增强8维超立方体全局拓扑网络进行通信。
+大语言模型参数量和数据量非常巨大，因此都采用了**分布式训练架构**完成训练。
+- `OPT`模型训练用了**992块**NVIDIA A100 80G GPU，采用`全分片数据并行` (FSDP)（Fully Sharded Data Parallel）以及 Megatron-LM `张量并行`（Tensor Parallelism），整体训练时间将近2个月。
+- `BLOOM`模型在硬件和系统架构方面, 训练一共花费3.5个月，使用48个计算节点, 总计**384个**GPU
+  - 每个节点包含8块NVIDIA A100 80G GPU
+  - 并用 4*NVLink 用于节点内部GPU之间通信。节点之间采用四个 Omni-Path 100 Gbps网卡构建的增强8维超立方体全局拓扑网络进行通信。
 - `LLaMA`模型训练采用 NVIDIA A100 80GB GPU
   - LLaMA-7B 模型训练需要 82432 GPU小时
   - LLaMA-13B 模型训练需要 135168 GPU小时
@@ -63,40 +63,40 @@ permalink: /dist
 |---|---|---|---|---|
 |`OPT`|A100|992|2个月|FSDP+TP|
 |`BLOOM`|A100|384|3.5个月||
-|`LLaMA`|A100||||
+|`LLaMA`|A100|*|*||
 
 
 ### 性能提速
 
-在 pytorch1.7 + cuda10 + TeslaV100的环境下，使用ResNet34，batch_size=16, SGD对花草数据集训练的情况如下：
-- 1块 GPU需要9s一个epoch
-- 2块 GPU是5.5s
-- 8块 是2s。
+在 pytorch1.7 + cuda10 + TeslaV100 环境下，用 ResNet34，batch_size=16, SGD 对花草数据集训练：
+- 1块 GPU, 一个epoch需要**9s**
+- 2块 GPU 要 **5.5s**
+- 8块 是**2s**。
 
 问题
 - 为什么运行时间不是 9/8≈1.1s ? 
-- 因为使用GPU数量越多，设备之间的通讯会越来越复杂，所以随着GPU数量的增加，训练速度的提升也是递减的。
+- 因为 GPU 数量越多，设备间通讯越复杂，训练速度提升也递减。
 - ![](https://pic1.zhimg.com/80/v2-aac042e783410385f791b8a0f70e6d6c_1440w.webp)
 
-误差梯度如何在不同设备之间通信？
-- 在每个GPU训练step结束后，将每块GPU的**损失梯度**求**平均**，而不是每块GPU各计算各的。
+**误差梯度**如何在不同设备间通信？
+- 每个GPU训练step结束后，将每块GPU的**损失梯度**求**平均**，而不是GPU各算各的。
 
-BN如何在不同设备之间同步？
+BN 如何在不同设备间同步？
 - 假设 batch_size=2，每个GPU计算的均值和方差都针对这两个样本而言的。
-- 而BN的特性是：batch_size 越大，均值和方差越接近与整个数据集的均值和方差，效果越好。
-- 使用多块GPU时，会计算每个BN层在所有设备上输入的**均值**和**方差**。如果GPU1和GPU2都分别得到两个特征层，那么两块GPU一共计算4个特征层的均值和方差，可以认为batch_size=4。
-- 注意：如果不用**同步BN**，而是每个设备计算自己的批次数据的均值方差，效果与单GPU一致，仅仅能提升**训练**速度；
-- 如果使用**同步BN**，效果会有一定提升，但是会损失一部分**并行**速度。
+- BN 特性：batch_size 越大，均值和方差越接近与整个数据集的均值和方差，效果越好。
+- 多块GPU时，会计算每个BN层在所有设备上输入的**均值**和**方差**。
+  - 如果GPU1和GPU2都分别得到两个特征层，那么两块GPU一共计算4个特征层的均值和方差，即 batch_size=4
+- 注意：
+  - 如果不用**同步BN**，而是每个设备计算自己的批次数据的均值方差，<span style='color:red'>效果与单GPU一致</span>，仅仅能提升**训练**速度；
+  - 如果使用**同步BN**，效果有一定提升，但是会损失部分**并行**速度。
 - ![](https://pic4.zhimg.com/80/v2-176db548da9befc70385eee0f45abdd3_1440w.webp)
 
-单GPU、是否使用同步BN训练的三种情况，可以看到
-- 使用**同步BN**（橙线）比不使用同步BN（蓝线）总体效果要好一些，不过训练时间也会更长。
-- 使用单GPU（黑线）和不使用同步BN的效果是差不多的。
+单GPU 是否使用**同步BN**训练的三种情况，可以看到
+- 使用**同步BN**（橙线）比异步BN（蓝线）总体效果要好，不过训练时间更长。
+- 使用单GPU（黑线）和异步BN的效果差不多。
 - ![](https://pic1.zhimg.com/80/v2-0fbd4fd5cf062876b9c50779fe0b05a8_1440w.webp)
 
-两种GPU训练方法：`DataParallel`和`DistributedDataParallel`：
-- DataParallel是**单进程多线程**的，仅仅能工作在**单机**中。而DistributedDataParallel是**多进程**的，可以工作在单机或多机器中。
-- DataParallel通常会慢于DistributedDataParallel。所以目前主流的方法是DistributedDataParallel。
+
 
 |维度|DP|DDP|
 |---|---|---|
@@ -816,8 +816,8 @@ GPT 就是这样一个典型的网络结构：
 |并行模式||图解|
 |---|---|---|
 |数据并行|单机多卡用DP（PS），多级多可用DDP（Ring Allreduce）|![](https://pic3.zhimg.com/v2-f10be44bff31f5412b3398cc0cfbce96_b.jpg)|
-|模型并行||![](https://pic2.zhimg.com/v2-37b26149c568865d5112fadb9b1ec9ad_b.jpg)|
-|流水线并行|||
+|模型并行|按切分方式<br>- 横向：张量并行<br>- 纵向：流水线并行|![](https://pic2.zhimg.com/v2-37b26149c568865d5112fadb9b1ec9ad_b.jpg)|
+|其他并行|||
 
 
 ### 数据并行（DP&DDP）
@@ -1268,6 +1268,100 @@ Gradient Accumulation 解决了很多问题：
 - (2) `GPU` + `PyTorch` + `Megatron-LM` + `DeepSpeed`: NVIDIA、Meta、MS大厂加持，社区氛围活跃
 
 (1) 对于非Googler 只可远观而不可把玩，(2) 更受到群众欢迎。
+
+
+### 分布式模式
+
+几种模式
+- 单进程单线程
+- 单进程多线程
+- 多进程单线程
+- 多进程多线程
+
+进程是资源调度的最小单位，线程是程序运行单位
+
+### Pytorch 训练方法
+
+两种GPU训练方法：`DataParallel`和`DistributedDataParallel`：
+- DataParallel **单进程多线程**，仅工作在**单机**中。
+- 而DistributedDataParallel是**多进程**的，可以工作在单机或多机器中。
+
+DataParallel 通常慢于 DistributedDataParallel。所以主流方法是 DistributedDataParallel。
+
+#### DataParallel 单机
+
+DataParallel 是 Pytorch 提供的一种数据并行方法，用于单机多GPU环境下的模型训练
+
+过程
+- 将数据划分成多个部分（mini-batches），分配给不同GPU，实现并行计算
+- 前向传播时，数据划分成多个副本，平均分配到不同设备（device）上，分别计算，每个设备都有独立的模型（或副本）
+  - 注意: batch_size > gpu_num !
+- 反向传播时，每个副本的梯度汇总、累加到原始模型中（host），取平均后，得到最新梯度
+- 梯度再分发给各个设备，更新模型
+
+DataParallel 自动将数据切分并加载到相应GPU上，将模型复制到每个GPU上，进行正向传播以计算梯度并汇总。
+
+代码
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# 定义模型
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super(SimpleModel, self).__init__()
+        self.fc = nn.Linear(10, 1)
+
+    def forward(self, x):
+        return self.fc(x)
+
+# 初始化模型
+model = SimpleModel()
+
+# 使用 DataParallel 将模型分布到多个 GPU 上
+model = nn.DataParallel(model)
+```
+
+
+#### DistributedDataParallel 多机
+
+DistributedDataParallel (DDP) 是 PyTorch 用于分布式数据并行训练的模块，适用于**单机多卡**和**多机多卡**场景。
+- 相比于 DataParallel，DDP 更加高效和灵活，能在多个 GPU 和多个节点上进行并行训练。
+
+DistributedDataParallel 多进程，可工作在单机或多机器中。
+- DataParallel 通常慢于 DistributedDataParallel。
+
+所以，主流方法是 DistributedDataParallel。
+
+
+封装示例：
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+
+def main(rank, world_size):
+    # 初始化进程组
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    # 创建模型并移动到GPU
+    model = SimpleModel().to(rank)
+    # 包装模型为DDP模型
+    ddp_model = DDP(model, device_ids=[rank])
+
+if __name__ == "__main__":
+    import os
+    import torch.multiprocessing as mp
+    # 世界大小：总共的进程数
+    world_size = 4
+    # 使用mp.spawn启动多个进程
+    mp.spawn(main, args=(world_size,), nprocs=world_size, join=True)
+```
+
 
 ### TF分布式训练方法
 
