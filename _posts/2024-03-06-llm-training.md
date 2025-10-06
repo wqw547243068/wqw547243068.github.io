@@ -602,6 +602,93 @@ SFT-训练参数
 - SFT 目标：教会模型怎么说话，学习任务格式、回答风格、基础能力，让模型从“会说话”变成“会回答问题”
 - DPO 目标：教会模型说的更好，学习人类偏好，优化回答质量，让模型从会回答变成回答得更好。
 
+#### SFT
+
+SFT 问题：
+- SFT 死记硬背
+- SFT 灾难遗忘
+
+【2025-8-7】东南大学、上海较大等 [SFT=暴力死记？DFT：给大模型一个更聪明的学习方法](https://mp.weixin.qq.com/s/G1ZsI8gjAvJt6kS5O1uD5g)
+- 论文地址：[ON THE GENERALIZATION OF SFT: A REINFORCEMENT LEARNING PERSPECTIVE WITH REWARD RECTIFICATION](https://arxiv.org/abs/2508.05629)
+- 作者提供的代码: [DFT](https://github.com/yongliang-wu/DFT)
+- 非 verl 代码：[DFT](https://github.com/Lauorie/DFT)
+
+核心思想：
+> 修改 SFT 损失函数，学习“标准答案”时，根据自身“理解程度”**动态调整学习力度**，避免因“死记硬背”导致模型能力下降。
+
+SFT 损失函数
+
+<img width="686" height="84" alt="image" src="https://github.com/user-attachments/assets/50715f50-fd16-4d61-94c8-cb2d192fd83f" />
+
+SFT 梯度
+
+<img width="706" height="80" alt="image" src="https://github.com/user-attachments/assets/ad13c275-3fb9-4658-99c2-0a3bac4d14e8" />
+
+
+让模型(小明)学习写作文，两种方法：
+1. 监督微调 (`SFT`)： <span style='color:blue'>让模型觉得范文很合理</span>。找来很多范文（专家答案），让小明一篇篇“背诵”。
+  - 任务：“这篇范文是 100 分作文，你要学得跟它一模一样！”
+  - 小明每写一个字，就拿范文对比，如果写错了，就纠正他。
+2. 强化学习 (`RL`)：<span style='color:blue'>多写高分文章</span>
+  - 不给范文，只给作文题目。自由发挥。
+  - 写完后请老师来打分（奖励）。
+  - 如果写得好，就奖励他（比如给他点赞 👍）；
+  - 如果写得差，就不奖励。
+  - 通过不断地试错和争取奖励，小明会慢慢学会写好作文。
+
+核心思想：
+- “背范文”这种学习方式 (SFT)，是一种非常特殊的“打分”学习法 (RL)。
+
+RL 策略梯度（目标：多做能得高分的事）
+- 每次除了梯度，还乘以奖励 r(x,y)
+
+<img width="814" height="98" alt="image" src="https://github.com/user-attachments/assets/6b0c9369-3e51-4538-85b2-ea051bd7a3b8" />
+
+用 RL 视角看 SFT 梯度（奖励苛刻，且带一个不稳定的扩音器）
+
+<img width="944" height="132" alt="image" src="https://github.com/user-attachments/assets/468c32d5-5f9f-47f5-b95c-541a3ba9e3ed" />
+
+
+但这种“打分”法存在问题，SFT 学习方式等价于 RL 场景：
+- 奖励规则 (Implicit Reward)
+  - 如果作文和范文一字不差，奖励为 1 分。只要错一个字，奖励就是 0 分。
+  - 非常苛刻！
+- 奇怪的权重: 奖励还要乘以权重 `1/π(y|x)`
+
+> `学习信号` = 1 * 1/`π(y'|x)` * theta ( 调整方向 )
+
+权重波动很大：当小明
+- 作文较好，写出范文的概率较高，即 `π(y'|x)`=0.8, 权重是 1/0.8=1.25, 比较温和
+- 作文较差，写出范文的概率很低，即 `π(y'|x)`=0.0001, 权重是 1/0.0001=10000, 很夸张！
+
+SFT 问题根源：对“意外”的正确答案惩罚过重
+
+小明蒙对了一道难题（写出范文），老师不仅表扬他，还拿着扩音器大声喊，导致小明只会死记硬背答案（范文），不会举一反三，泛化能力变差，训练不稳定
+
+怎么办？
+- 动态微调 Dynamic Fine-Tuning (DFT): 关掉扩音器(权重)，额外乘上 `π(y'|x)`即可抵消
+
+对比
+- SFT：“不管你懂不懂，都必须给我一字不差地学！”
+- DFT：“对于本来就觉得很合理、很有可能写对的词（高），正常学。对于完全不合理、不可能写对的词（低），降低学习权重，不强迫一步登天。”
+
+DFT 损失（关掉扩音器，让学习更平滑）
+- sg() 像开关，确保只用概率值作为权重，而不会让权重本身影响学习方向。
+
+<img width="1042" height="156" alt="image" src="https://github.com/user-attachments/assets/528c3ba3-b74c-4546-881b-e48a2c82247d" />
+
+效果
+- Qwen2.5-Math-1.5B 上对比 DFT 和 SFT, 遍历多组 learning_rate 和 batch_size
+- DFT 总是优于 标准 SFT, 包括各种模型、数学推理评测集
+- 用 DFT 更新离线RL配置，也超过在线、离线RL算法
+
+DFT 只需改动一行代码，让 SFT 过程更稳定、泛化能力更强
+
+受限
+- 只在数学推理任务上实验
+- 未测试更大规模模型，如 13b 以上
+- 仅限文本场景
+
 
 ## 新技术
 
