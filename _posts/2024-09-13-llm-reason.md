@@ -3,7 +3,7 @@ layout: post
 title:   大模型推理思考
 date:   2024-09-13 10:15:00
 categories: 大模型
-tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义
+tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer
 excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
 mathjax: true
 permalink: /o1
@@ -11,6 +11,7 @@ permalink: /o1
 
 * content
 {:toc}
+
 
 # 大模型推理思考 
 
@@ -976,7 +977,7 @@ Gary Marcus 认为:
 ### 推理能力来源
 
 
-#### 【2025-2-18】伯克利
+#### 【2025-2-18】伯克利 推理能力关键是示例结构
 
 【2025-2-18】加州伯克利 大模型学会推理的秘密竟然不在**内容**里？最新研究表明：**演示案例的结构**才是关键！
 - 论文 [LLMs Can Easily Learn to Reason from DemonstrationsStructure, not content, is what matters!](https://arxiv.org/pdf/2502.07374)
@@ -986,7 +987,7 @@ Gary Marcus 认为:
 
 然而，引发 Long CoT 训练技术和数据要求仍然知之甚少。
 
-我们发现大语言模型 LLM 可通过数据高效`监督微调` （SFT） 和参数高效的低秩适应 （LoRA） 有效地学习 Long CoT 推理。
+大语言模型 LLM 可通过数据高效`监督微调` （SFT） 和参数高效的低秩适应 （LoRA） 有效地学习 Long CoT 推理。
 
 Qwen2.5-32B-Instruct 模型仅用 17k 长的 CoT 训练样本，就在各种数学和编码基准上取得了显著改进，包括 
 - AIME 2024 的 56.7% （+40.0%）
@@ -1001,13 +1002,13 @@ Qwen2.5-32B-Instruct 模型仅用 17k 长的 CoT 训练样本，就在各种数�
 - 模型像搭积木一样通过结构模板学习推理，而内容只是可替换的填充物。
 - 这对算法工程师的启示很明确——该把注意力从数据量转向数据结构的优化了！
 
-#### 【2025-9-26】DeepMind
+#### 【2025-9-26】DeepMind 推理能力在预训练模型中，需要正确解码
 
 费曼说过： "真相，往往比你想象的要简单！" 
 
 DeepMind 推理团队创始人 `Denny Zhou` 在斯坦福大学 CS25 课程上分享，深刻透析了大语言模型推理的本质
 - 👀 LLMs 只是概率模型，不是人类！
-- 推理能力早已蕴藏在预训练模型中，我们缺少的不是能力本身，而是发现它的正确解码策略🤔
+- 推理能力早已蕴藏在预训练模型中，我们缺少的不是能力本身，而是正确解码策略🤔
 
 - Stanford CS25: V5 I Large Language Model Reasoning, [课程完整视频](https://m.youtube.com/watch?v=ebnX5Ur1hBk&pp=0gcJCRsBo7VqN5tD), Denny Zhou of Google Deepmind 
 - [文字版](https://t.co/KwPrHXZFIi)
@@ -1030,6 +1031,32 @@ Denny 坦诚当前挑战和未来的机遇：
 这，或许就是 AI 时代最迷人的悖论：最像人类智能的表现，恰恰来自于最不像人类的过程。而理解这个悖论，正是我们真正理解和发展 AI 的开始。
 
 
+### 【2025-9-27】田渊栋 叠加涌现
+
+【2025-10-7】伯克利、`田渊栋`与`Russell`团队联手证明 Transformer能在训练中自然学会叠加推理
+- [资讯](https://finance.sina.com.cn/tech/roll/2025-10-07/doc-infsztus4723347.shtml)
+
+大模型生成更长、更复杂的**推理链**，意味着巨大的计算成本。
+- 2024 年，田渊栋团队提出「**连续思维链**」 (Coconut) ，全新范式将**推理轨迹保留在连续的隐空间**中，而非离散的文字符号。
+- 这次又与 Stuart Russell 团队从理论上回答核心问题：这种高效的推理范式是如何在训练中自发产生的？答案指向了一种关键机制——**叠加的涌现** 。
+
+【2025-9-27】论文《叠加的涌现》
+- [Emergence of Superposition: Unveiling the Training Dynamics of Chain of Continuous Thought](https://arxiv.org/abs/2509.23365v1)
+
+
+2025 年研究《Reasoning by superposition: A theoretical perspective on chain of continuous thought》已从理论上指出
+- 连续思维链的关键优势在于它能使模型在**叠加**（superposition）状态下进行推理：当模型面对多个可能的推理路径而无法确定哪一个是正确时，它可以在连续空间中并行地保留所有可能的路径，而不像离散 token 那样必须选择单一路径。
+
+只需一个两层 Transformer，经过 O(n) 次连续思维解码（其中 n 为图中节点数量），即可通过特定参数构造有效地解决该问题。
+
+通过对思维生成阶段进行分析，该团队揭示了重要现象：即便每个训练样本只包含一个演示样例，叠加（superposition）仍然会在训练中自发涌现。
+
+当采用**连续思维训练**（Coconut 方法）时，索引匹配 logit（index-matching logit）（衡量模型局部搜索能力强度的一个关键指标）在温和假设下保持有界（bounded）。这与传统 Transformer 分析截然不同 —— 后者在无连续思维的情况下，logit 会呈对数增长并趋于无界。
+
+一个有界的索引匹配 logit，能在「探索」与「利用」之间维持动态平衡：
+- 若 logit 过小，模型无法有效进行局部搜索，下一步几乎只能随机猜测；
+- 若 logit 过大，模型则会过度自信地锁定某一条局部路径（例如仅凭节点入度等局部特征），从而过早排除真正正确的路径。
+- 而当 logit 保持在适度范围内时，模型既能利用局部结构，又能为多条合理路径分配相近的权重，这便自然形成了**叠加式推理**（superposition reasoning）。这也回答了之前论文未能解答的问题 —— 为何叠加态会在训练中自发涌现。
 
 
 ## 复现
