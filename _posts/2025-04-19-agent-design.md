@@ -246,6 +246,7 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 - 谷歌高级工程师 `Antonio Gulli` 400 页免费文档
 - 动手实践的智能系统构建指南
 - 资料 [google doc](docs.google.com/document/u/0/d/1rsaK53T3Lg5KoGwvf8ukOUvbELRtH-V0LnOIFDxBryE/mobilebasic)
+- 翻译: [agentic-design-patterns](https://github.com/xindoo/agentic-design-patterns), [中文版主页](http://github.xindoo.xyz/agentic-design-patterns/)
 
 什么让一个 AI 系统成为“智能体”？ – 9 页
 
