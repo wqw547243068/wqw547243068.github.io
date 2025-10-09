@@ -23,9 +23,10 @@ permalink: /pytorch_dist
 
 ## 分布式模式
 
-PyTorch 原生支持的并行模式：
-- **完全**分片数据并行（full sharded data parallel，`FSDP`）
-- **混合**分片数据并行（hybrid sharding data parallel，`HSDP`）
+PyTorch 支持的并行模式：
+- 数据并行（data parallel）
+  - **完全**分片数据并行（full sharded data parallel，`FSDP`）
+  - **混合**分片数据并行（hybrid sharding data parallel，`HSDP`）
 - 张量并行（tensor parallel，`TP`）
 - 流水线并行（pipeline parallel，`PP`）
 - 序列并行（sequence parallel，`SP`）
@@ -57,9 +58,11 @@ PyTorch 原生支持的并行模式：
 
 分布式训练的场景很多，单机多卡，多机多卡，模型并行，数据并行等等。接下来就以常见的单机多卡的情况进行记录。
 
-PyTorch 使用 DDP（Distributed Data Parallel） 实现了**真正**的分布式`数据并行`，两个场景下都可使用 DDP 实现模型的分布式训练：
+PyTorch 使用 `DDP`（Distributed Data Parallel） 实现了**真正**的分布式`数据并行`
+
+两个场景下都可使用 DDP 实现模型的分布式训练：
 - (1) 单机、多 GPU（单进程多线程的**伪**分布式）
-- (2) 多机、多 GPU（多机多进程的**真正**分布式）
+- (2) 多机、多 GPU（多机多进程的**真**分布式）
 
 方法(1)类似简单 DP 数据并行模式
 - DP 使用**单进程**、多线程范式来实现；
@@ -71,6 +74,362 @@ DDP 基于**集合通信**（Collective Communications）实现分布式训练�
 
 反向传播过程中，DDP 使用 AllReduce 来实现分布式梯度计算和同步。
 
+【2024-8-8】[pytorch多GPU训练简明教程](https://mp.weixin.qq.com/s/-c-FpCT79Ic1LtKh2AiG3Q)
+
+### 多GPU训练
+
+多GPU训练的三种架构组织方式
+- (1) **数据拆分，模型不拆分**（Data Parallelism）
+- (2) **数据不拆分，模型拆分**（Model Parallelism）
+  - 模型并行（Model Parallelism）将模型拆分成多个部分，并分配给不同的 GPU。
+  - 输入数据不拆分，但需要通过不同的 GPU 处理模型的不同部分。
+  - 这种方式适用于模型非常大，单个 GPU 无法容纳完整模型的场景。
+- (3) **数据拆分，模型拆分**（Pipeline Parallelism）
+  - 流水线并行（Pipeline Parallelism）结合数据并行和模型并行。
+  - 输入数据和模型都被拆分成多个部分，每个 GPU 处理部分数据和部分模型。
+  - 这种方式适用于需要平衡计算和内存需求的大规模深度学习任务。
+
+
+(1) 数据并行
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.multiprocessing as mp
+
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super(SimpleModel, self).__init__()
+        self.fc = nn.Linear(10, 1)
+
+    def forward(self, x):
+        return self.fc(x)
+
+def train(rank, world_size):
+    dist.init_process_group(backend='nccl', init_method='tcp://127.0.0.1:29500', rank=rank, world_size=world_size)
+
+    model = SimpleModel().to(rank)
+    ddp_model = DDP(model, device_ids=[rank])
+
+    criterion = nn.MSELoss().to(rank)
+    optimizer = optim.SGD(ddp_model.parameters(), lr=0.01)
+
+    inputs = torch.randn(64, 10).to(rank)
+    targets = torch.randn(64, 1).to(rank)
+
+    outputs = ddp_model(inputs)
+    loss = criterion(outputs, targets)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    dist.destroy_process_group()
+
+if __name__ == "__main__":
+    world_size = 4
+    mp.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+```
+
+
+(2) 模型并行
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.multiprocessing as mp
+
+class ModelParallelModel(nn.Module):
+    def __init__(self):
+        super(ModelParallelModel, self).__init__()
+        self.fc1 = nn.Linear(10, 10).to('cuda:0')
+        self.fc2 = nn.Linear(10, 1).to('cuda:1')
+
+    def forward(self, x):
+        x = x.to('cuda:0')
+        x = self.fc1(x)
+        x = x.to('cuda:1')
+        x = self.fc2(x)
+        return x
+
+def train(rank, world_size):
+    dist.init_process_group(backend='nccl', init_method='tcp://127.0.0.1:29500', rank=rank, world_size=world_size)
+
+    model = ModelParallelModel()
+    ddp_model = DDP(model, device_ids=[rank])
+
+    criterion = nn.MSELoss().to('cuda:1')
+    optimizer = optim.SGD(ddp_model.parameters(), lr=0.01)
+
+    inputs = torch.randn(64, 10).to('cuda:0')
+    targets = torch.randn(64, 1).to('cuda:1')
+
+    outputs = ddp_model(inputs)
+    loss = criterion(outputs, targets)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    dist.destroy_process_group()
+
+if __name__ == "__main__":
+    world_size = 2
+    mp.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+```
+
+(3) 流水线并行
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+import torch.multiprocessing as mp
+
+class PipelineParallelModel(nn.Module):
+    def __init__(self):
+        super(PipelineParallelModel, self).__init__()
+        self.fc1 = nn.Linear(10, 10)
+        self.fc2 = nn.Linear(10, 1)
+
+    def forward(self, x):
+        if self.fc1.weight.device != x.device:
+            x = x.to(self.fc1.weight.device)
+        x = self.fc1(x)
+        if self.fc2.weight.device != x.device:
+            x = x.to(self.fc2.weight.device)
+        x = self.fc2(x)
+        return x
+
+def train(rank, world_size):
+    dist.init_process_group(backend='nccl', init_method='tcp://127.0.0.1:29500', rank=rank, world_size=world_size)
+
+    model = PipelineParallelModel()
+    model.fc1.to('cuda:0')
+    model.fc2.to('cuda:1')
+
+    ddp_model = DDP(model)
+
+    criterion = nn.MSELoss().to('cuda:1')
+    optimizer = optim.SGD(ddp_model.parameters(), lr=0.01)
+
+    inputs = torch.randn(64, 10).to('cuda:0')
+    targets = torch.randn(64, 1).to('cuda:1')
+
+    outputs = ddp_model(inputs)
+    loss = criterion(outputs, targets)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    dist.destroy_process_group()
+
+if __name__ == "__main__":
+    world_size = 2
+    mp.spawn(train, args=(world_size,), nprocs=world_size, join=True)
+```
+
+
+### sampler
+
+数据采样器
+- DistributedSampler
+- BatchSampler
+
+DistributedSampler 原理：
+- 假设当前数据集有0~10共11个样本，使用2块GPU计算。
+- 首先打乱数据顺序，然后用 11/2 =6（向上取整）
+- 然后6乘以GPU个数2 = 12，因为只有11个数据，所以再把第一个数据（索引为6的数据）补到末尾，现在就有12个数据可以均匀分到每块GPU。
+- 然后分配数据：间隔将数据分配到不同的GPU中。
+
+
+BatchSampler原理: 
+- DistributedSmpler 将数据分配到两个GPU上，以第一个GPU为例，分到的数据是6，9，10，1，8，7，假设batch_size=2，就按顺序把数据两两一组
+- 在训练时，每次获取一个batch的数据，就从组织好的一个个batch中取到。
+- 注意：只对训练集处理，验证集不使用BatchSampler。
+
+```py
+train_dset = NBADataset(
+    obs_len=self.cfg.past_frames,
+    pred_len=self.cfg.future_frames,
+    training=True)
+
+self.train_sampler = torch.utils.data.distributed.DistributedSampler(train_dset)
+self.train_loader = DataLoader(train_dset, batch_size=self.cfg.train_batch_size, sampler=self.train_sampler,
+                               num_workers=4, collate_fn=seq_collate)
+```
+
+【2024-8-8】图解见[pytorch多GPU训练简明教程](https://mp.weixin.qq.com/s/-c-FpCT79Ic1LtKh2AiG3Q)
+
+
+### 多卡启动
+
+多卡训练启动有两种方式
+- pytorch 自带的 torchrun
+- 自行设计多进程程序
+
+```py
+# 直接运行
+torchrun --nproc_per_node=4 test.py
+# 实际上运行的是 /usr/local/mambaforge/envs/led/lib/python3.7/site-packages/torch/distributed/launch.py
+
+# 等价方式
+python -m torch.distributed.launch --nproc_per_node=4 test.py
+# python -m torch.distributed.launch 也会找到这个程序的python文件执行，这个命令帮助设置一些环境变量启动backend，否则需要自行设置环境变量。
+```
+
+完整代码
+
+```py
+
+import torch
+import torch.distributed as dist
+import torch.multiprocessing as mp
+import torch.nn as nn
+import torch.optim as optim
+from torch.nn.parallel import DistributedDataParallel as DDP
+import os
+
+
+def example(rank, world_size):
+    # create default process group
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    # create local model
+    model = nn.Linear(10, 10).to(rank)
+    # construct DDP model
+    ddp_model = DDP(model, device_ids=[rank])
+    # define loss function and optimizer
+    loss_fn = nn.MSELoss()
+    optimizer = optim.SGD(ddp_model.parameters(), lr=0.001)
+
+    # forward pass
+    outputs = ddp_model(torch.randn(20, 10).to(rank))
+    labels = torch.randn(20, 10).to(rank)
+    # backward pass
+    loss_fn(outputs, labels).backward()
+    # update parameters
+    optimizer.step()
+
+def main():
+    world_size = 2
+    mp.spawn(example,
+        args=(world_size,),
+        nprocs=world_size,
+        join=True)
+
+if __name__=="__main__":
+    # Environment variables which need to be
+    # set when using c10d's default "env"
+    # initialization mode.
+    os.environ["MASTER_ADDR"] = "localhost"
+    os.environ["MASTER_PORT"] = "10086"
+    main()
+```
+
+以下为multiprocessing的设计demo
+
+```py
+import torch
+import torch.distributed as dist
+import torch.multiprocessing as mp
+from torch.nn.parallel import DistributedDataParallel as DDP
+
+def setup(rank, world_size):
+    dist.init_process_group(
+        backend='nccl',
+        init_method='tcp://localhost:12355',
+        rank=rank,
+        world_size=world_size
+    )
+    torch.cuda.set_device(rank)
+    dist.barrier()
+
+def cleanup():
+    dist.destroy_process_group()
+
+def demo_basic(rank, world_size):
+    setup(rank, world_size)
+
+    model = torch.nn.Linear(10, 10).to(rank)
+    ddp_model = DDP(model, device_ids=[rank])
+
+    inputs = torch.randn(20, 10).to(rank)
+    outputs = ddp_model(inputs)
+    print(f"Rank {rank} outputs: {outputs}")
+
+    cleanup()
+
+def main():
+    world_size = torch.cuda.device_count()
+    mp.spawn(demo_basic, args=(world_size,), nprocs=world_size, join=True)
+
+if __name__ == "__main__":
+    main()
+```
+
+
+多卡训练多进程调试
+- multiprocessing 方式: 直接用本地工具运行和调试即可
+- torchrun 方式: 手动配置 Run/Debug Configurations，找到原型文件launch.py，launch文件在 /usr/local/mambaforge/envs/led/lib/python3.7/site-packages/torch/distributed/launch.py，添加一个配置，命名为torchrun，在Script path一列选择launch.py，参数
+
+```py
+import time
+
+import torch
+import torch.distributed as dist
+import torch.nn as nn
+import torch.optim as optim
+
+from torch.nn.parallel import DistributedDataParallel as DDP
+
+class ToyModel(nn.Module):
+    def __init__(self):
+        super(ToyModel, self).__init__()
+        self.net1 = nn.Linear(10, 10)
+        self.relu = nn.ReLU()
+        self.net2 = nn.Linear(10, 5)
+
+    def forward(self, x):
+        return self.net2(self.relu(self.net1(x)))
+
+
+def demo_basic():
+    dist.init_process_group("nccl")
+    rank = dist.get_rank()
+    print(f"Start running basic DDP example on rank {rank}.")
+
+    # create model and move it to GPU with id rank
+    device_id = rank % torch.cuda.device_count()
+    model = ToyModel().to(device_id)
+    time.sleep(10)
+    print("DDP model init start...")
+    ddp_model = DDP(model, device_ids=[device_id])
+    print("DDP model init end...")
+
+    loss_fn = nn.MSELoss()
+    optimizer = optim.SGD(ddp_model.parameters(), lr=0.001)
+
+    optimizer.zero_grad()
+    outputs = ddp_model(torch.randn(20, 10))
+    labels = torch.randn(20, 5).to(device_id)
+    loss_fn(outputs, labels).backward()
+    optimizer.step()
+
+if __name__ == "__main__":
+    demo_basic()
+```
+
+注意：
+- 强制终止DDP的程序可能会使得显存占用未释放，此时需要找出nccl监听的端口
 
 ### 1、DataParallel
 
@@ -160,28 +519,51 @@ for data in rand_loader:
 
 ### 2、DDP（官方建议）
 
+DistributedDataParallel (DDP) 是 PyTorch 分布式数据并行训练的模块，适用于**单机多卡**和**多机多卡**场景。
+
+相比于 DataParallel，DDP 更加高效和灵活，能够在多个 GPU 和多个节点上进行并行训练。
+
+DistributedDataParallel 是多进程，可工作在单机或多机器中。
+
+DataParallel 通常慢于 DistributedDataParallel, DDP 是目前主流方法
+
 
 #### DP 问题
 
 
-为什么要引入DDP（DistributedDataParallel）？DP 存在问题
+为什么要引入DDP（DistributedDataParallel）？
 
+DP 存在问题
 - 1、DP 每个训练批次（batch）中，一个进程上先算出模型权重, 然后再分发到每个GPU上
-  - 网络通信就成为了瓶颈，而GPU使用率也通常很低。
-  - 显存浪费, 多存储了 n-1 份 模型副本
-- 2、每次前向传播时把模型也复制了（即每次更新都复制一遍模型），并且**单进程多线程**会造成`GIL` contention （全局解释器锁争用） 这里进程计算权重使通信成为瓶颈造成了大量的时间浪费，因此引入了DDP。
+  - <span style='color:red'>网络通信就成为了瓶颈</span>，而GPU使用率也通常很低。
+  - <span style='color:red'>显存浪费</span>, 多存储了 n-1 份 模型副本
+- 2、每次前向传播把模型也复制了（即每次更新都复制一遍模型），并且**单进程多线程**会造成`GIL` contention （`全局解释器锁争用`）
+- 进程计算权重使通信成为瓶颈造成了大量的时间浪费，因此引入了DDP。
 
 dp 两个问题：
 - 1️⃣ 显存浪费严重。
   - 以单机八卡为例，把模型复制8份放在8张卡上同时推理，因此多付出了**7个**模型（副本）的显存开销；
 - 2️⃣ 大模型不适用。
-  - 以最新提出的Llama 3.1为例，不经量化（FP16数据类型）的情况下，容纳70B的模型需要140GB的显存，即使是40G一张的A100也无法承受。
-  - 而这才仅仅是容纳模型，还没有考虑存放数据，以及训练的话存放梯度数据等。因此数据并行并不适用于70B级别大模型的推理和训练。
+  - 以最新提出的Llama 3.1为例，不经量化（FP16数据类型）的情况下，容纳70B的模型需要140G显存，即使是40G一张的A100也无法承受。
+  - 而这才仅仅是容纳模型，还没有考虑存放数据，以及训练梯度数据等。
+  - 因此数据并行并不适用于70B级别大模型的推理和训练。
 
-DDP采用**多进程**控制多GPU，共同训练模型，一份代码会被pytorch自动分配到n个进程并在n个GPU上运行。 
-- DDP运用 `Ring-Reduce`通信算法在每个GPU间对梯度进行通讯，交换彼此的梯度，从而获得所有GPU的梯度。
 
-对比DP，不需要在进行模型本体的通信，因此可以加速训练。
+
+#### torch.nn.DataParallel
+
+DataParallel 是 PyTorch 一种数据并行方法，单台机器上的多个 GPU 上进行模型训练。
+
+将输入数据划分成多个子部分（mini-batches），并分配给不同 GPU，以实现并行计算。
+- 前向传播过程中，输入数据会被划分成多个副本, 并发送到不同设备（device）上进行计算。
+  - 模型（module）会被复制到每个设备上，输入的批次（batch）会被平均分配到每个设备，但模型会在每个设备上有个副本。每个模型副本只需要处理对应的子部分。
+  - 注意: 批次大小应大于GPU数量。
+- 反向传播过程中，每个副本的梯度会被累加到原始模型中。
+
+总结来说，DataParallel 会自动将数据切分并加载到相应的GPU上，将模型复制到每个GPU上，进行正向传播以计算梯度并汇总。
+
+注意：
+- <span style='color:red'>DataParallel 是单进程多线程的，仅仅能工作在单机中</span>。
 
 torch.nn.DataParallel
 - DataParallel 全程维护一个 optimizer，对各 GPU 上梯度进行求和，而在主 GPU 进行参数更新，之后再将模型参数 broadcast 到其他 GPU
@@ -191,13 +573,72 @@ torch.nn.DataParallel
 - 2、要告诉每个进程自己的id，即使用哪一块GPU。
 - 3、如果需要做BatchNormalization，需要对数据进行同步（还待研究，挖坑）
 
-DDP采用All-Reduce架构，单机多卡、多机多卡都能用。
+示例
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# 定义模型
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super(SimpleModel, self).__init__()
+        self.fc = nn.Linear(10, 1)
+
+    def forward(self, x):
+        return self.fc(x)
+
+# 初始化模型
+model = SimpleModel()
+
+# 使用 DataParallel 将模型分布到多个 GPU 上
+model = nn.DataParallel(model)
+```
+
+#### 示例
+
+DDP采用**多进程**控制多GPU，共同训练模型，一份代码会被pytorch自动分配到n个进程并在n个GPU上运行。 
+- DDP运用 `Ring-Reduce`通信算法在每个GPU间对梯度进行通讯，交换彼此梯度，从而获得所有GPU梯度。
+
+对比DP，不需要在进行模型本体通信，因此可以加速训练。
+
+```py
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+
+def main(rank, world_size):
+    # 初始化进程组
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+
+    # 创建模型并移动到GPU
+    model = SimpleModel().to(rank)
+
+    # 包装模型为DDP模型
+    ddp_model = DDP(model, device_ids=[rank])
+
+
+if __name__ == "__main__":
+    import os
+    import torch.multiprocessing as mp
+
+    # 世界大小：总共的进程数
+    world_size = 4
+
+    # 使用mp.spawn启动多个进程
+    mp.spawn(main, args=(world_size,), nprocs=world_size, join=True)
+```
+
+#### torch.distributed 介绍
+
+DDP采用 All-Reduce 架构，单机多卡、多机多卡都能用。
 
 注意：DDP并不会自动shard数据
 1. 如果自己写数据流，得根据`torch.distributed.get_rank()`去shard数据，获取自己应用的一份
 2. 如果用 Dataset API，则需要在定义Dataloader的时候用 DistributedSampler 去shard
-
-#### torch.distributed 介绍
 
 torch.nn.DataParallel 支持数据并行，但不支持**多机**分布式训练，且底层实现相较于 distributed 的接口，有些许不足。
 
