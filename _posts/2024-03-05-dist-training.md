@@ -401,6 +401,16 @@ torch.distributed 对 gloo 提供原生支持，无需进行额外操作。
 
 #### NCCL 通信原语
 
+NCCL 是 Nvidia专门为多GPU提供集合通讯的通讯库，多GPU卡通讯框架，具有一定程度拓扑感知能力，提供了包括：
+- 集合通讯API: AllReduce、Broadcast、Reduce、AllGather、ReduceScatter等
+- 支持用户点对点通讯:  ncclSend()、ncclRecv() 来实现各种复杂通信，如 One-to-all、All-to-one、All-to-all等
+- 在绝大多数情况下都可以通过服务器内的PCIe、NVLink、NVSwitch等和服务器间的RoCEv2、IB、TCP网络实现高带宽和低延迟。
+
+nccl 解决了GPU间拓补识别、GPU间集合通信优化的问题。NCCL屏蔽了底层复杂的细节，向上提供API供训练框架调用，向下连接机内机间的GPU以完成模型参数的高效传输。
+
+<img width="823" height="571" alt="image" src="https://github.com/user-attachments/assets/b68be6a4-a16b-4ab7-9e59-fcc1e9a1e169" />
+
+
 【2023-7-27】[大模型-LLM分布式训练框架总结](https://zhuanlan.zhihu.com/p/623746805)
 
 NCCL 的全称为 Nvidia 聚合通信库（NVIDIA Collective Communications Library），是一个可以实现多个 GPU、多个结点间聚合通信的库，在 PCIe、Nvlink、InfiniBand 上可以实现较高的通信速度。
@@ -414,6 +424,33 @@ NCCL 对 CPU 和 GPU 均有较好支持，且 torch.distributed 对其也提供�
 NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - 专为英伟达的计算卡和网络优化，能带来更低的延迟和更高的带宽。
 
+常用参数
+
+修改环境变量或在 nccl.conf 中修改相关参数选项。可以改变通信特点，进而起到影响通行性能的作用。
+- NCCL_P2P_DISABLE 默认是开启P2P通信的，这样一般会更高效，用到点对点通信延迟会有所改善，带宽也是。
+- NCCL_P2P_LEVEL 开启P2P后可以设置P2P的级别，比如在那些特定条件下可以开启点对点通信，具体的可以参看文档（0-5）
+- NCCL_SOCKET_NTHREADS 增加它的数量可以提高socker传输的效率，但是会增加CPU的负担
+- NCCL_BUFFLE_SIZE 缓存数据量，缓存越大一次ring传输的数据就越大自然对带宽的压力最大，但是相应的总延迟次数会少。缺省值是4M（4194304），注意设置的时候使用bytes（字节大小）
+- NCCL_MAX/MIN_NCHANNELS 最小和最大的rings，rings越多对GPU的显存、带宽的压力都越大，也会影响计算性能
+- NCCL_CHECKS_DISABLE 在每次集合通信进行前对参数检验校对，这会增加延迟时间，在生产环境中可以设为1.缺省是0
+- NCCL_CHECK_POINTERS 在每次集合通信进行前对CUDA内存 指针进行校验，这会增加延迟时间，在生产环境中可以设为1.缺省是0
+- NCCL_NET_GDR_LEVEL GDR触发的条件，默认是当GPU和NIC挂载一个swith上面时使用GDR
+- NCCL_IGNORE_CPU_AFFINITY 忽略CPU与应用的亲和性使用GPU与nic的亲和性为主
+- NCCL_ALGO 通信使用的算法，ring Tree Collnet
+- NCCL_IB_HCA 代表IB使用的设备：Mellanox mlx5系列的HCA设备
+
+```
+A40（GPU3-A40:596:596 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB ; OOB ib0:66.66.66.211<0>），
+V100（gpu196-v100:786:786 [5] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB ; OOB ib0:66.66.66.110<0>），
+A100（GPU6-A100:686:686 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]mlx5_2:1/IB [2]mlx5_3:1/IB ; OOB ib0:66.66.66.128<0>），
+```
+
+- NCCL_IB_HCA=mlx5 会默认轮询所有的设备。
+- NCCL_IB_HCA=mlx5_0:1 指定其中一台设备。
+
+a100有两个口，如果都开的话，会出现训练的浮动；如果指定只使用一个口，训练速度会下降。
+
+
 原语
 - `Broadcast`： 一对多的通信原语，一个数据发送者，多个数据接收者，可以在集群内把一个节点自身的数据广播到其他节点上。
 - `Scatter`： 一对多的通信原语，也是一个数据发送者，多个数据接收者，可以在集群内把一个节点自身的数据发散到其他节点上。与Broadcast不同的是，Broadcast把主节点0的数据发送给所有节点，而Scatter则是将数据进行切片再分发给集群内所有的节点。
@@ -422,6 +459,8 @@ NCCL 英伟达集合通信库专用于多个 GPU 乃至多个节点间通信。
 - `Reduce`： 多对一的通信原语，具有多个数据发送者，一个数据接收者，可以在集群内把多个节点的数据规约运算到一个主节点上，常用的规约操作符有：求累加和SUM、求累乘积PROD、求最大值MAX、求最小值MIN、逻辑与LAND、按位与BAND、逻辑或LOR、按位或BOR、逻辑异或LXOR、按位异或BOXR、求最大值和最小大的位置MAXLOC、求最小值和最小值的位置MINLOC等，这些规约运算也需要加速卡支持对应的算子才能生效。
 - `ReduceScatter`： 多对多的通信原语，具有多个数据发送者，多个数据接收者，在集群内的所有节点上都按维度执行相同的Reduce规约运算，再将结果发散到集群内所有的节点上。Reduce-scatter等价于节点个数次的reduce规约运算操作，再后面执行节点个数的scatter次操作。其反向操作是AllGather。
 - `AllReduce`： 多对多的通信原语，具有多个数据发送者，多个数据接收者，在集群内的所有节点上都执行相同的Reduce操作，可以将集群内所有节点的数据规约运算得到的结果发送到所有的节点上。
+
+【2024-8-8】图解见[pytorch多GPU训练简明教程](https://mp.weixin.qq.com/s/-c-FpCT79Ic1LtKh2AiG3Q)
 
 
 通信原语汇总
