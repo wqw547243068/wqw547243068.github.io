@@ -21,6 +21,15 @@ permalink: /pytorch_dist
 
 理论知识见站内专题：[分布式训练](dist)
 
+并行化方式
+- 单进程单线程
+- 单进程多线程
+- 多进程单线程
+- 多进程多线程
+
+<img width="637" height="386" alt="image" src="https://github.com/user-attachments/assets/29f0d6b0-1d19-43a1-90fe-aa93432386c2" />
+
+
 ## 分布式模式
 
 PyTorch 支持的并行模式：
@@ -88,6 +97,34 @@ DDP 基于**集合通信**（Collective Communications）实现分布式训练�
   - 流水线并行（Pipeline Parallelism）结合数据并行和模型并行。
   - 输入数据和模型都被拆分成多个部分，每个 GPU 处理部分数据和部分模型。
   - 这种方式适用于需要平衡计算和内存需求的大规模深度学习任务。
+
+<img width="691" height="255" alt="image" src="https://github.com/user-attachments/assets/024c7f6f-f608-4638-b697-fff685a668de" />
+
+超参
+
+Rank
+- rank 是整数，标识当前进程在整个分布式训练中的身份。每个进程都有一个唯一的 rank。rank 的范围是 0 ~ world_size - 1, 用于区分不同进程。
+- 可以根据 rank 来分配不同的数据和模型部分。
+
+World Size
+- world_size 是整数，表示参与分布式训练的所有进程的总数。
+- 确定分布式训练中所有进程的数量。
+- 用于初始化通信组，确保所有进程能够正确地进行通信和同步。
+
+Backend
+- backend 指定了用于进程间通信的后端库。
+- 常用的后端有 nccl（适用于 GPU）、gloo（适用于 CPU 和 GPU）和 mpi（适用于多种设备）。
+- 决定了进程间通信的具体实现方式,影响训练的效率和性能。
+
+Init Method
+- init_method 指定了初始化分布式环境的方法。常用的初始化方法有 TCP、共享文件系统和环境变量。
+- 用于设置进程间通信的初始化方式，确保所有进程能够正确加入到分布式训练中。
+
+Local Rank
+- local_rank 是每个进程在其所在节点（机器）上的本地标识。不同节点上的进程可能会有相同的 local_rank。
+- 用于将每个进程绑定到特定的 GPU 或 CPU。
+
+<img width="528" height="560" alt="image" src="https://github.com/user-attachments/assets/afb5f256-ae1c-42e4-a1cb-c0b323eea824" />
 
 
 (1) 数据并行
@@ -251,11 +288,16 @@ DistributedSampler 原理：
 - 然后6乘以GPU个数2 = 12，因为只有11个数据，所以再把第一个数据（索引为6的数据）补到末尾，现在就有12个数据可以均匀分到每块GPU。
 - 然后分配数据：间隔将数据分配到不同的GPU中。
 
+<img width="720" height="310" alt="image" src="https://github.com/user-attachments/assets/85c5e931-edca-4b48-8084-1ccbbb731a2a" />
+
 
 BatchSampler原理: 
 - DistributedSmpler 将数据分配到两个GPU上，以第一个GPU为例，分到的数据是6，9，10，1，8，7，假设batch_size=2，就按顺序把数据两两一组
 - 在训练时，每次获取一个batch的数据，就从组织好的一个个batch中取到。
 - 注意：只对训练集处理，验证集不使用BatchSampler。
+
+<img width="501" height="403" alt="image" src="https://github.com/user-attachments/assets/cee5cf0c-5174-4e97-9ee2-91e81212927a" />
+
 
 ```py
 train_dset = NBADataset(
@@ -276,6 +318,10 @@ self.train_loader = DataLoader(train_dset, batch_size=self.cfg.train_batch_size,
 多卡训练启动有两种方式
 - pytorch 自带的 torchrun
 - 自行设计多进程程序
+
+
+<img width="662" height="93" alt="image" src="https://github.com/user-attachments/assets/7bdc789c-de64-43a7-908c-3b69b36cccd0" />
+
 
 ```py
 # 直接运行
@@ -430,6 +476,9 @@ if __name__ == "__main__":
 
 注意：
 - 强制终止DDP的程序可能会使得显存占用未释放，此时需要找出nccl监听的端口
+
+【2024-8-8】图解见[pytorch多GPU训练简明教程](https://mp.weixin.qq.com/s/-c-FpCT79Ic1LtKh2AiG3Q)
+
 
 ### 1、DataParallel
 
