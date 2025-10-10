@@ -3,7 +3,7 @@ layout: post
 title:   大模型推理思考
 date:   2024-09-13 10:15:00
 categories: 大模型
-tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer
+tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer 课程学习
 excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
 mathjax: true
 permalink: /o1
@@ -1031,7 +1031,7 @@ Denny 坦诚当前挑战和未来的机遇：
 这，或许就是 AI 时代最迷人的悖论：最像人类智能的表现，恰恰来自于最不像人类的过程。而理解这个悖论，正是我们真正理解和发展 AI 的开始。
 
 
-### 【2025-9-27】田渊栋 叠加涌现
+#### 【2025-9-27】田渊栋 叠加涌现
 
 【2025-10-7】伯克利、`田渊栋`与`Russell`团队联手证明 Transformer能在训练中自然学会叠加推理
 - [资讯](https://finance.sina.com.cn/tech/roll/2025-10-07/doc-infsztus4723347.shtml)
@@ -2586,13 +2586,64 @@ Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思�
 
 小模型也能学会推理
 
-### Easy-to-Hard Reasoner
+### 【2025-6-7】Easy-to-Hard Reasoner
 
-表明：1.5B-3B 的小模型，也能通过强化学习掌握复杂推理能力！
-- 论文 Texas A&M University [「Curriculum Reinforcement Learning from Easy to Hard Tasks Improves LLM Reasoning」](https://arxiv.org/pdf/2506.06632)
+表明：1.5B-3B 小模型，也能通过强化学习掌握复杂推理能力！课程学习(Curriculum Learning)+RL（Reinforcement Learning）
+- 【2025-6-7】Texas A&M University [「Curriculum Reinforcement Learning from Easy to Hard Tasks Improves LLM Reasoning」](https://arxiv.org/pdf/2506.06632)
 - 💡  Easy-to-Hard Reasoner —— 一种模拟人类学习方式的**课程式强化学习**（Curriculum RL）：从简单任务学起，逐步挑战更难的题目，帮助模型建立稳固的推理基础，再向复杂问题泛化！
 - 📈 在数学解题（MATH、GSM8K、AQuA）和规划任务（Countdown、Blocksworld）等多个 benchmark 上，我们的方法显著提升小模型在高难度和OOD任务中的表现，甚至让原本“连简单题都做不对”的模型学会了解题思路！
 - 📚 更难得的是，我们不仅有实验，还理论上证明：循序渐进式学习更高效、收敛更快、所需样本更少！
+
+
+### 【2025-7-17】QuestA
+
+【2025-10-4】[1.5B推理模型新SOTA，RL训练新解法打破「简单题过拟合、难题学不动」的魔咒](https://zhuanlan.zhihu.com/p/1957890437797879988)
+
+#### 问题
+
+RL 训练存在数据平衡问题：简单任务导致模型过度自信，而难任务提高推理能力，但由于样本效率低下，学习速度变慢。
+- 简单任务倾向于使模型过拟合，使其在特定、更简单的问题上非常准确。然而，这导致模型变得过度自信，从而妨碍了其泛化能力，难以解决更复杂的任务。
+- 难任务提高了模型的推理能力，但具有低样本效率，需要更长的时间来学习和进展。稀疏的奖励和任务的难度使得在困难问题上的训练变得缓慢，限制了整体的学习速度。
+
+两难：
+> 简单任务导致熵坍缩 vs. 难任务减缓学习效率
+
+#### QuestA 介绍
+
+【2025-7-17】清华大学、上海期智研究院、Amazon 和斯坦福大学等机构提出 `QuestA`。
+- 通过在训练困难任务时引入部分解决方案提示，QuestA 帮助模型更快地学习，同时不牺牲在简单任务上的表现。
+- 这确保了模型能够从简单任务和难任务中获益，提升其推理能力，同时避免过拟合或学习缓慢。
+
+- 论文标题：[QuestA: Expanding Reasoning Capacity in LLMs via Question Augmentation](https://www.arxiv.org/abs/2507.13266)
+- HF 模型地址：[QuestA-Nemotron-1.5B](https://huggingface.co/foreverlasting1202/QuestA-Nemotron-1.5B)
+- GitHub 地址：[foreverlasti](https://github.com/foreverlasting1202/QuestA)
+
+结论
+- 强化学习可以提升模型能力
+- 强化学习可在不牺牲效率与泛化能力的前提下，持续拓展模型的能力边界。
+
+#### QuestA 方法
+
+QuestA 通过「数据增强 + 迭代课程学习」的组合设计，实现对 RL 训练的高效改进
+
+核心逻辑：
+- **聚焦高难度问题**：采用两阶段过滤流程筛选训练数据
+  - 首先以 DeepSeek-R1-Distill-1.5B 为筛选模型，从 OpenR1-Math-220K 数据集中选出仅 0-1 次正确（8 次采样）的 26K 高难度样本；
+  - 再对增强后的提示词进行二次筛选，保留模型仍难以正确解答（0-4 次正确）的样本
+  - 最终聚焦不超过 10K 的核心困难任务，确保训练资源用在能力突破点上。
+- **动态调整提示比例**：为避免模型依赖提示，QuestA 设计迭代式`课程学习`
+  - 先以 50% 比例的部分解决方案作为提示（p=50%）训练至性能饱和
+  - 再将提示比例降至 25%（p=25%）继续训练，逐步引导模型从「依赖提示」过渡到 “自主推理”，实现能力的真实迁移。
+- **轻量化集成 RL**：QuestA 无需修改 RL 算法核心或奖励函数，仅通过替换训练数据（用增强提示词替代原始提示词）即可集成至现有 RL pipeline（如 GRPO、DAPO），具备「即插即用」的灵活性。
+
+![](https://pic2.zhimg.com/v2-ddb9078894647d6184dd9a58a99d6c69_1440w.jpg)
+
+#### 效果
+
+QuestA（问题增强）: 训练过程中注入部分解题提示，QuestA 实现两项重大成果
+- Pass@1 的 SOTA 性能：在 1.5B 模型上实现了sota，甚至在关键基准测试中超越了早期的 32B 模型。
+- 提升 Pass@k：在提高 Pass@1 的同时，QuestA 不会降低 Pass@k 性能 —— 事实上，它通过让模型在多次尝试中进行更有效的推理，从而提升了模型能力。
+
 
 
 # 结束
