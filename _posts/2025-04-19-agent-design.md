@@ -241,45 +241,63 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 - 【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
 - [Agent的九种设计模式(图解+代码)](https://zhuanlan.zhihu.com/p/692971105)，[飞书文档](https://agijuejin.feishu.cn/wiki/Kke1wcqYOiYxD2kd1Dwcsu02ngc)
 
-
 【2025-9-5】Agentic Design Patterns（智能体设计模式）
 - 谷歌高级工程师 `Antonio Gulli` 400 页免费文档
 - 动手实践的智能系统构建指南
 - 资料 [google doc](docs.google.com/document/u/0/d/1rsaK53T3Lg5KoGwvf8ukOUvbELRtH-V0LnOIFDxBryE/mobilebasic)
 - 翻译: [agentic-design-patterns](https://github.com/xindoo/agentic-design-patterns), [中文版主页](http://github.xindoo.xyz/agentic-design-patterns/)
 
-什么让一个 AI 系统成为“智能体”？ – 9 页
+什么让 AI 系统成为“智能体”？ – 9 页
 
 第一部分（共 103 页）
-1. 第 1 章：提示链（Prompt Chaining） – 12 页
-2. 第 2 章：路由（Routing） – 13 页
-3. 第 3 章：并行化（Parallelization） – 15 页
-4. 第 4 章：反思（Reflection） – 13 页
-5. 第 5 章：工具使用（Tool Use） – 20 页
-6. 第 6 章：规划（Planning） – 13 页
-7. 第 7 章：多智能体（Multi-Agent） – 17 页
+- 第 1 章：提示链（Prompt Chaining） – 12 页：又称`管道模式`（Pipeline pattern）
+  - 核心思想是分而治之，将原始复杂问题分解为一系列更小、更易管理的子问题，模块化串行，形成依赖链；提示链还支持外部知识、工具集成
+  - agent 工作流是人类思维过程的简单模拟，实现与复杂领域的自然交互，解决的问题：
+  - ①单一提示词的局限性：单一复杂提示词效率低，导致模型可能出现指令忽略、上下文漂移、错误传播、上下文窗口受限、幻觉
+  - ② 顺序分解增强可靠性：复杂任务分解为顺序工作流，每步简单、清晰，更加聚焦，减少模型的认知负荷，显著提升可靠性、控制力
+  - 注意：提示词链的可靠性高度依赖于步骤之间传递的数据完整性 → 结构化输出，输出限定为特定格式（json或xml），机器可读，可精确解析并插入到下一个提示词中，而不会产生歧义，最大限度减少自然语言解析错误，构建健壮的多步骤 LLM 系统的关键部分
+  - ![](http://github.xindoo.xyz/agentic-design-patterns/images/chapter-1/image2.png)
+  - 案例：
+    - 信息处理工作流：原始信息需要多次加工、转换，如：总结文档、提取关键词、查数据库、生成报告
+    - 数据提取转换：非结构化文本转换为结构化格式，顺序修改提高准确性、完整性，如 发票提取特定字段→字段检测/矫正→验证结果→输出；LLM不适合精确计算，改成工具调用
+    - 复杂知识问答：多步推理、信息检索，如 “1929年股市崩盘的主要原因及政府应对策略” → 识别用户问题中的核心子问题（崩盘/政府响应）+分别查询子问题信息（并行）+总结输出
+    - 内容生成工作流：复杂内容创作（创意叙事/技术文档）分解为不同阶段，构思、结构大纲、起草、修订等
+    - 有状态对话agent：提示链能保持对话连续性，将多轮对话构建成新提示词，维护上下文。如 识别用户q1中的意图/实体→生成下一轮状态提示语→循环
+    - 代码生成和完善：代码生成是多阶段过程，用户需求拆解成多步执行的离散逻辑操作序列，如 用户需求理解 →生成大纲/伪代码→初始代码→错误检测（静态分析工具）→优化完善→添加文档/测试用例
+    - 多模态与多步推理：分析不同模态数据集时，需要拆解问题。
+  - 进化：
+    - `上下文工程`是在 token 生成之前系统地设计、构建和向 AI 模型提供完整信息环境的学科; 传统提示工程的重大演进
+    - 相比模型架构，`上下文工程`更加依赖于上下文丰富程度
+    - 工具：LangChain/LangGraph 和 Google ADK 框架提供了强大的工具来定义、管理和执行这些多步序列
+- 第 2 章：路由（Routing） – 13 页
+  - 问题：提示词链顺序处理是执行确定性、线性工作流的基础技术，但不够灵活，无法动态决策，不适合需要根据上下文自适应的系统
+  - 路由：将条件逻辑引入 Agent 框架，从固定执行路径升级为：Agent 动态评估特定标准以从一组可能的后续行动中进行选择。
+- 第 3 章：并行化（Parallelization） – 15 页
+- 第 4 章：反思（Reflection） – 13 页
+- 第 5 章：工具使用（Tool Use） – 20 页
+- 第 6 章：规划（Planning） – 13 页
+- 第 7 章：多智能体（Multi-Agent） – 17 页
 
 第二部分（共 61 页）
-8. 第 8 章：记忆管理（Memory Management） – 21 页
-9. 第 9 章：学习与适应（Learning and Adaptation） – 12 页
-10. 第 10 章：模型上下文协议（Model Context Protocol, MCP） – 16 页
-11. 第 11 章：目标设定与监控（Goal Setting and Monitoring） – 12 页
+- 第 8 章：记忆管理（Memory Management） – 21 页
+- 第 9 章：学习与适应（Learning and Adaptation） – 12 页
+- 第 10 章：模型上下文协议（Model Context Protocol, MCP） – 16 页
+- 第 11 章：目标设定与监控（Goal Setting and Monitoring） – 12 页
 
 第三部分（共 34 页）
-12. 第 12 章：异常处理与恢复（Exception Handling and Recovery） – 8 页
-13. 第 13 章：人类参与环节（Human-in-the-Loop） – 9 页
-14. 第 14 章：知识检索（RAG, Retrieval-Augmented Generation） – 17 页
+- 第 12 章：异常处理与恢复（Exception Handling and Recovery） – 8 页
+- 第 13 章：人类参与环节（Human-in-the-Loop） – 9 页
+- 第 14 章：知识检索（RAG, Retrieval-Augmented Generation） – 17 页
 
 第四部分（共 114 页）
-15. 第 15 章：智能体间通信（Agent-to-Agent, A2A） – 15 页
-16. 第 16 章：资源感知优化（Resource-Aware Optimization） – 15 页
-17. 第 17 章：推理技术（Reasoning Techniques） – 24 页
-18. 第 18 章：护栏与安全模式（Guardrails / Safety Patterns） – 60 页
+- 第 15 章：智能体间通信（Agent-to-Agent, A2A） – 15 页
+- 第 16 章：资源感知优化（Resource-Aware Optimization） – 15 页
+- 第 17 章：推理技术（Reasoning Techniques） – 24 页
+- 第 18 章：护栏与安全模式（Guardrails / Safety Patterns） – 60 页
 
 后续章节（共 83 页）
 
 第 19 章 – 第 21 章（未完全展开，但预计涵盖高级主题、案例研究和未来展望）
-
 
 
 总结
@@ -1700,9 +1718,8 @@ Agent 系统演进
 OpenAI AI Agent 使用建议
 - 【2025-4-17】[A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 
-
 一句话总结：**可靠性是核心**
-	
+
 Agent 定义与特征
 
 OpenAI将Agent定义为"能够独立完成任务的系统"。
@@ -2374,7 +2391,6 @@ Automated agent design significantly surpasses manual approaches in performance 
 - • Theoretically enables discovery of any possible agentic system
 
 Results📊:
-
 - • Outperforms state-of-the-art hand-designed agents across multiple domains
 - • Improves F1 scores on reading comprehension (DROP) by 13.6/100
 - • Increases accuracy on math tasks (MGSM) by 14.4%
