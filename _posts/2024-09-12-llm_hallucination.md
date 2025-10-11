@@ -27,7 +27,6 @@ permalink: /hallucination
 - [Survey of Hallucination in Natural Language Generationarxiv.org/abs/2202.03629](https://arxiv.org/abs/2202.03629)
 - 仓库：[Reading list of hallucination in LLMs.github.com/HillZhang1999/llm-hallucination-survey](https://github.com/HillZhang1999/llm-hallucination-survey)
 
-
 【2024-4-24】 [斯坦福AI（大模型）指数2024年度报告](https://zhuanlan.zhihu.com/p/699687555)
 - 大模型容易产生幻觉，尤其是法律、医学领域广泛存在。
 - 当前研究主要集中在幻觉产生原因上，如何识别幻觉易发领域、评估幻觉程度的研究却很少。
@@ -46,6 +45,10 @@ ChatGPT生成的内容中，高达19.5%的回复无法验证是否幻觉，涉�
 - 幻觉： Why Language Models Hallucinate  
 - 谎言： Can LLMs Lie? Investigation beyond Hallucination  
 - 胡扯： Machine Bullshit: Characterizing the Emergent Disregard for Truth in Large Language Models
+
+【2025-9-16】[万字解析从根本解决大模型幻觉问题，附企业级实践解决方案](https://developer.aliyun.com/article/1682017)
+
+
 
 ## 什么是幻觉
 
@@ -110,8 +113,8 @@ Treatment  治疗
 - `Faithfulness`(诚实): 是否**遵循输入**内容。
 - `Factualness`(事实): 是否符合**世界知识**。
 
-
 ![](https://pic1.zhimg.com/v2-373ce3b45a43142644c59265561abfae_b.jpg)
+
 
 幻觉分为两类：`内在幻觉` 和 `外在幻觉`
 - `内在幻觉`: 是否遵循输入内容, 生成的输出与源内容**相矛盾**。
@@ -120,6 +123,8 @@ Treatment  治疗
   - 但是，对于另一些严格需要根据源材料生成的任务，这样的幻觉就是有害的，而且很难发现。
 
 内在幻觉和外在幻觉都可能是模型根据相似性泛化出来的，可能对，可能错，还有可能根本没办法判断对错。
+
+
 
 用大模型做对于幻觉的容忍度比较低的任务时，需要想办法做验证。
 - 比如摘要和翻译这样的任务，就需要小心。
@@ -155,6 +160,22 @@ Treatment  治疗
 - ![](https://p3-sign.toutiaoimg.com/tos-cn-i-6w9my0ksvp/1c3fae47b1dc4696b52021b37264cf4e~tplv-tt-origin-asy2:5aS05p2hQOaWsOaZuuWFgw==.image)
 - 参考: [baichuan如何解决幻觉问题](https://www.toutiao.com/article/7283012199466140223)
 
+​​定义​​：
+- 大模型生成与事实不符、虚构或误导性信息。
+
+分类
+- 事实冲突：称“亚马逊河位于非洲”（实际在南美洲）
+- 无中生有：虚构房源楼层信息（如“4楼，共7层”）
+- 指令误解：将翻译指令误答为事实提问
+- 逻辑错误：解方程 2x+3=11 时得出错误结果 x=3
+
+| 类型   | 特征               | 示例                     |
+| ------ | ------------------ | ------------------------ |
+| 事实冲突 | 与客观知识矛盾     | “亚马逊河位于非洲”       |
+| 无中生有 | 虚构无法验证的内容 | 补充未提供的房源楼层信息 |
+| 指令误解 | 偏离用户意图       | 将翻译指令回答为事实陈述 |
+| 逻辑错误 | 推理过程漏洞       | 解方程步骤正确但结果错误 |
+
 
 ### 事实型+忠实度
 
@@ -165,7 +186,6 @@ LLM幻觉分为两种：
 
 
 ![](https://pic1.zhimg.com/80/v2-e6f4cc8dbea2d54a6e43211b1cb0a6e9_1440w.webp?source=2c26e567)
-
 
 【2023-11-9】哈工大 [A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions](https://arxiv.org/abs/2311.05232)
 1. 事实幻觉：指事实类错误，又根据生成的事实内容是否可以根据可靠来源进行验证，进一步分为两种主要类型：
@@ -237,6 +257,14 @@ LLMs幻觉分为三种：输入冲突幻觉、上下文冲突幻觉和事实冲�
 ## 幻觉原因
 
 ### 学术研究
+
+阶段	核心问题
+​​- 预训练​​：	数据噪声、领域知识稀疏、事实性验证能力缺失
+​​- 有监督微调（SFT）：​​	标注错误、过拟合导致对错误知识过度自信
+​​- RLHF对齐​​：	奖励设计缺陷使模型为迎合目标牺牲真实性
+​​- 推理部署​​：	Token级生成无法修正早期错误；随机采样增加风险
+
+<img width="1400" height="640" alt="image" src="https://github.com/user-attachments/assets/b215f0e7-4fd0-4885-97ab-7ac9ce7f1bcb" />
 
 
 #### 斯坦福
@@ -423,6 +451,44 @@ LLM产生幻觉的根本原因分为三个关键方面：数据、训练和推�
 
 ### 检测方法
 
+**先验检测**
+
+**检索增强生成**（RAG）​​
+​​
+原理​​：
+- 将“闭卷考试”转为“开卷考试”，通过外部知识库（数据库/文档）提供实时依据。 ​​
+
+价值​​：
+- 突破模型参数化知识边界
+- 提升时效性与领域适应性（如企业内部政策库）
+
+<img width="1080" height="679" alt="image" src="https://github.com/user-attachments/assets/853cbf94-c08d-4e8c-a0bf-121b88729319" />
+
+**后验幻觉检测​​**
+
+（1）白盒方案（需模型访问权限）​​
+
+​​- 不确定性度量​​：提取生成内容关键概念，计算token概率（概率越低风险越高）
+​​- 注意力机制分析​​： Lookback Ratio=对新生成内容的注意力对上下文的注意力​ 比值越低表明幻觉风险越高
+- 隐藏状态分析​​：正确内容对应低熵值激活模式，错误内容呈现高熵值模糊模式
+
+​​（2）黑盒方案（仅API调用）​​
+
+​​采样一致性检测​​：同一问题多次生成，输出不一致则标识幻觉风险
+
+​​规则引擎​​：
+- ROUGE/BLEU指标对比生成内容与知识源重叠度
+- 命名实体验证（未出现在知识源中的实体视为风险）
+​​
+工具增强验证​​：
+- 拆解回答为原子陈述
+- 调用搜索引擎/知识库验证
+- 集成计算器、代码执行器等工具实现多模态校验[12-14]
+
+专家模型检测​​：
+- 训练AlignScore模型评估生成内容与知识源对齐度
+- 幻觉批判模型（Critique Model）提供可解释性证据
+
 【2024-7-14】 [OpenAI Lilian Weng万字长文解读LLM幻觉：从理解到克服](https://zhuanlan.zhihu.com/p/708743656?utm_psn=1795846986416652288)，OpenAI 翁丽莲
 
 幻觉检测
@@ -502,8 +568,6 @@ Reference-based的指标有两类：
   - GPT-4在没有外部信息指导情况下，纠错能力堪忧。通过纠错实现内在幻觉矫正的路子行不通
 
 提到：LLMs并不能判断自己的推理结果是否正确，如果强行让其纠错，反而会引导模型选择其他选项，降低准确率。
-
-
 
 
 ### 【2024-12-10】 亚马逊 RefChecker
@@ -603,6 +667,10 @@ print("Predictions:", predictions)
 【2025-6-7】人大高瓴学院 窦志成
 - 幻觉问题不可避免，只要还是自回归模式
 - 幻觉率与训练数据中**出现一次**占比正相关
+
+总结
+
+
 
 如何缓解大模型幻觉问题？
 1. 预训练阶段缓解: 清洗预训练语料，尽可能减少无法验证和不可靠的数据。可以看下答主的另一篇回答，怎么清洗预训练语料
