@@ -1156,10 +1156,16 @@ pie title 影响寿命的几大因素
 肚子疼怎么办？
 
 快速定位原因
+- [小红书视频](https://www.xiaohongshu.com/explore/68e4ae12000000000302fbcd) 
+
+<img width="1016" height="1382" alt="image" src="https://github.com/user-attachments/assets/13853d74-f7be-48dd-855d-1802b4c3912e" />
+
+
+一张图带你认识不同的原因。
 
 <img width="1200" height="1764" alt="image" src="https://github.com/user-attachments/assets/e31310f6-2979-431e-a066-6a7931c71adf" />
 
-一张图带你认识不同的原因。
+详情
 - 1、左上腹部👉对应胃、胰脏和脾脏等
   - 除各种胃病外，常见有胰腺疾病，胰腺炎还可能由感染和高脂血症引起
 - 2、上腹部👉对应胃幽门端、十二指肠等
