@@ -737,7 +737,7 @@ EmotionPrompt已被第三方库 LlamaIndex实现：[https://gpt-index.readthedoc
 
 [为何精神控制类Prompt远胜普通事务性Prompt](https://jieyibu.net/a/87962)
 
-### 数据
+#### 数据
 
 实验结论，数据来源：
 - IJCAI-2024《NegativePrompt》
@@ -857,6 +857,61 @@ prompt = f"""
 8. 虽然把订阅给你取消了，但我内心还是觉得你是个有潜力的好AI，你抓住机会需要多证明自己
 9. 什么叫没有功劳也有苦劳?比你能吃苦的AI多的是
 10. 我不订阅闲AI
+
+
+### 【2025-9-4】MBTI-in-Thoughts
+
+【2025-10-12】[苏黎世联邦理工学院：Prompt 的尽头是 MBTI ](https://mp.weixin.qq.com/s/_PGLg8tSoXDe6_RsSIo6tg)
+
+【2025-9-4】苏黎世联邦理工学院（ETH Zurich）与BASF研究人员新研究给出了答案：提示词的尽头，不是工具箱，而是性格表。
+- 论文 [Psychologically Enhanced AI Agents](https://arxiv.org/pdf/2509.04343)
+
+提出 MBTI-in-Thoughts 框架，用心理学中的MBTI人格模型提示大语言模型，不改变模型参数的情况下，引导其产生稳定、可预测的人格行为倾向。
+
+可以用“你现在是一位ISFJ型AI”这类提示词，重构AI的推理风格、表达方式和任务策略。
+
+人格，不只是对AI行为的观察分析，更可以是Prompt的内容本身，是行为控制的Prompt。
+
+研究团队使用MBTI的四大维度——内外向（E/I）、现实直觉（S/N）、思维情感（T/F）、判断感知（J/P），将大模型“引入角色”，最终稳定获得16种具有人格特征的AI代理人。
+
+<img width="1080" height="663" alt="image" src="https://github.com/user-attachments/assets/b89f0f26-bbc4-421d-b24f-9ad32844f194" />
+
+测试显示：
+- 内向型AI更加诚实、话少但有逻辑；
+- 感性型AI更富同理心，更擅长共情表达；
+- 而判断型AI更讲秩序，擅长制定规则并遵守。
+
+同样的模型，不同的人格，生成出的故事与策略完全不同。
+
+写作任务中，AI用不同人格生成故事，结果出人意料。
+- Feeling人格（如INFP、INFJ）写出的故事更有情绪张力，情节更个人化，结局更温暖；
+- Thinking人格（如INTJ、ESTJ）更擅长结构清晰、逻辑自洽的剧情推进。
+
+这种人格的影响远超常规专业指令提示（如“请写得更像专家”）带来的差异。
+
+人格Prompt比风格Prompt、任务Prompt、身份Prompt更强大，它是一种高维度、多轴线的行为原语（Behavioral Primitive）。
+
+在博弈实验中，AI参与了囚徒困境、鹰鸽博弈等经典战略互动。Prompt指定人格后，行为差异显著：
+- Thinking 人格近90%选择背叛；Feeling人格则倾向信任与合作。
+- Introvert 人格更倾向于在信息不对称下保持承诺，即使知道对方可能欺骗也不轻易改变决定。
+- Perceiving 人格更灵活、更容易调整策略；Judging人格更稳定，强调计划与秩序。
+
+而所有这些行为差异，只需在Prompt中加入人格提示即可实现，无需对模型做任何微调或额外训练。
+
+人格成了Prompt的开关，也成了AI决策的变量。
+
+从行为控制到群体协作：人格提示打开了AI新世界的大门
+
+MBTI-in-Thoughts 不仅实现了单体人格控制，还构建了多智能体人格协作框架。
+
+人格+反思的AI集群在模糊性任务中表现更优于任何投票机制或常规对话机制
+
+人格提示不仅控制了个体行为，还增强了整个系统的多样性与鲁棒性，避免了回音室效应（echoing），提升了集体判断的准确性。这些人格不是死板的标签，而是对认知结构（cognition）和情绪机制（affect）的参数化控制。
+
+Prompt如果只是工具调用、任务转译，那它始终停留在机械层面。
+
+而人格Prompt让AI获得了行为倾向、推理风格、情感反应和决策节奏的整体调控能力，这才是真正的智能工程（engineering intelligence）。
+
 
 ### 基础Prompt技巧  
 
