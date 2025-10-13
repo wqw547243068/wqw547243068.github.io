@@ -3,7 +3,7 @@ layout: post
 title:  大模型工具调用 LLM Function Call 
 date:   2023-09-26 16:52:00
 categories: 大模型
-tags: gpt openai 函数调用 插件 plugin tool mcp 工具
+tags: gpt openai 函数调用 插件 plugin tool mcp 工具 rl
 excerpt: OpenAI Function call 开发、函数调用知识总结
 mathjax: true
 permalink: /function
@@ -1455,6 +1455,12 @@ inputs = tokenizer.apply_chat_template(messages,
 
 ## LLM 工具优化
 
+现有TIR RL工作多依赖SFT，与SimpleTIR的Zero RL范式不同：
+- Search-R1/R1-Search（2025）：用RL训练LLM调用搜索引擎，但仅支持单轮，且依赖SFT；
+- ReTool（2025）：先SFT学习工具调用格式，再RL优化，性能高但缺乏推理多样性；
+- ToRL/Effective CIR（2025）：针对数学TIR，但基于指令微调模型（如Qwen2.5-Math），非基础模型；
+- ZeroTIR（2025）：唯一的Zero TIR工作，但未解决梯度爆炸问题，性能低于SimpleTIR；
+- SimpleTIR：首次实现多轮Zero TIR的稳定训练，且性能超越有SFT的基线。
 
 ### ReTool
 
@@ -1476,5 +1482,65 @@ ReTool 采用系统的训练框架，从合成冷启动数据生成开始，生�
 随后的RL训练利用任务结果作为奖励，迭代优化模型的工具使用策略，使其能够在没有人类先验知识的情况下自主发现最优的工具调用模式。
 - 训练算法：基于PPO（Proximal Policy Optimization）算法进行训练，修改PPO以适应工具集成推理。在训练过程中，策略LLM与代码沙箱协作，生成包含多轮实时代码执行的rollout，用于解决给定问题。
 
+
+### 【2025-09-03】SimpleTIR
+
+【2025-09-03】[SimpleTIR：用RL端到端训练Agent多轮工具调用推理](https://mp.weixin.qq.com/s/soW7o6TDRCGtqDNEuN6EtQ)
+
+南洋理工、tiktok 推出 SimpleTIR：面向多轮工具集成推理的端到端强化学习
+- 标题：[SimpleTIR: End-to-End Reinforcement Learning for Multi-Turn Tool-Integrated Reasoning](https://arxiv.org/pdf/2509.02479)
+- 代码：[SimpleTIR](https://github.com/ltzheng/SimpleTIR)
+
+LLMs 推理任务中存在固有缺陷：
+- 计算准确性差：无法精确完成复杂数学运算（如积分、矩阵运算）；
+- 知识截止问题：无法获取训练数据之后的新信息；
+- 推理链条断裂：长任务中易出现逻辑跳跃或错误累积。
+
+TIR 核心价值在多轮交互（如复杂数学题需分步骤调用工具验证），但用RL训练多轮TIR时面临两大核心挑战：
+- 挑战1：训练不稳定性与梯度爆炸
+  - 根本原因：外部工具反馈导致的分布偏移（Distributional Drift）
+- 挑战2：信用分配错位（Misaligned Credit Assignment），多轮TIR的奖励是终点的稀疏奖励（仅最终轨迹成功/失败有奖励，中间轮次无即时奖励）。若轨迹后期因低概率token失败，整个轨迹会被赋予负奖励，导致：
+  - 早期轮次的“正确高概率推理”被错误惩罚；
+  - 模型为规避风险，倾向于“单轮生成”（放弃多轮交互的优势），与多轮TIR的设计目标相悖。
+
+为缓解不稳定性，现有工作常采用“冷启动SFT”（先通过监督微调让模型学习基础工具调用格式），但该方案存在明显缺陷：
+- 限制推理多样性：SFT数据中的工具调用模式固定（如“先写代码再输出答案”），模型难以发现新的推理策略（如自我修正、交叉验证）；
+- 依赖标注数据：SFT需要大量人工标注的“工具调用-推理”样本，成本高且泛化性差；
+- 无法根治分布偏移：SFT仅能缓解初始轮次的偏移，多轮累积后仍会出现低概率token。
+
+设计一种端到端Zero RL方案（从基础模型直接训练，无SFT），满足：
+1. 稳定多轮TIR训练，避免梯度爆炸和性能崩溃；
+2. 保留Zero RL的优势，让模型自主涌现多样化推理模式；
+3. 即插即用，兼容现有RL框架（如PPO、GRPO），无额外成本。
+
+工具集成推理（TIR） 是解决上述问题的关键范式：LLM通过与外部工具（如Python解释器、搜索引擎、数据库）交互，迭代完成“推理→生成工具调用代码→执行工具→利用反馈优化后续推理”的闭环。例如：
+- 用Python解释器计算数学公式结果；
+- 用搜索引擎获取实时数据（如股票价格、天气）；
+- 用代码验证推理中间步骤的正确性。
+
+现有TIR RL工作多依赖SFT，与SimpleTIR的Zero RL范式不同：
+- Search-R1/R1-Search（2025）：用RL训练LLM调用搜索引擎，但仅支持单轮，且依赖SFT；
+- ReTool（2025）：先SFT学习工具调用格式，再RL优化，性能高但缺乏推理多样性；
+- ToRL/Effective CIR（2025）：针对数学TIR，但基于指令微调模型（如Qwen2.5-Math），非基础模型；
+- ZeroTIR（2025）：唯一的Zero TIR工作，但未解决梯度爆炸问题，性能低于SimpleTIR；
+- SimpleTIR：首次实现多轮Zero TIR的稳定训练，且性能超越有SFT的基线。
+
+
+核心问题解决：
+- 提出SimpleTIR算法，首次针对性解决**多轮工具集成推理**（Multi-Turn Tool-Integrated Reasoning, TIR）中强化学习（RL）训练的不稳定性与梯度爆炸问题，根源是过滤含“无效轮次”（void turns）的训练轨迹。
+
+SimpleTIR 基于多层马尔可夫决策过程（Hierarchical MDP） 和Group Relative Policy Optimization（GRPO）
+
+性能突破：
+- Qwen2.5-7B基础模型上，将数学推理基准AIME24的分数从纯文本基线（22.1）提升至50.5，刷新Zero RL（无监督微调）范式下多轮TIR的SOTA；Qwen2.5-32B版本更将AIME24分数提升至59.9。
+
+无需监督微调（SFT）：
+- 规避传统“冷启动SFT”的约束，允许模型自主发现多样化推理模式，包括交叉验证（Cross Validation）、渐进推理（Progressive Reasoning）和自我修正（Error Correction）。
+
+通用性与高效性：
+- SimpleTIR是“即插即用”模块，无需修改现有RL框架，仅通过轨迹过滤即可稳定训练，几乎无额外计算成本。
+
+理论支撑：
+- 通过数学推导证明低概率token是梯度爆炸的核心诱因，并量化其对梯度 norm 的影响（命题3.1），为方案提供理论依据。
 
 # 结束
