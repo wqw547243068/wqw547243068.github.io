@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "强化学工具及应用"
+title:  "强化学习工具及应用"
 date:   2020-05-15 17:34:00
 categories: 深度学习
 tags: 强化学习 增强学习 量化交易 游戏  俄罗斯方块 pytorch
