@@ -242,10 +242,19 @@ MermaidFlow 在结构化表示下的进化过程示例。得益于每个节点�
 
 ## 【2025-7-27】Google ACT
 
-- 【2025-7-27】google,哥伦比亚大学 用Action-Based Contrastive Self-Training (ACT)做多轮训练（用了DPO）
+- 【2025-7-27】google,哥伦比亚大学 用 Action-Based Contrastive Self-Training (ACT)做多轮训练（用了DPO）
 - 论文 [Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)，
 
 
+## 【2025-9-14】MIT PDDL-Instruct
+
+2025年9月14日，大模型学会符号推理 pddl-instruct方法
+
+大模型执行结构化符号规划的能力仍存在局限，尤其在需要规划领域定义语言（PDDL）这类形式化表示的领域中表现更为明显。
+
+新颖的指令微调框架—— PDDL-Instruct，通过逻辑思维链推理，增强大型语言模型的符号规划能力。
+
+详见站内 [MIT PDDL-Instruct](o1#2025-9-14mit-pddl-instruct)
 
 
 
