@@ -1058,6 +1058,9 @@ MIT 研究者从一个直观的想法出发：
 - 博客文章：[RLM](https://alexzhang13.github.io/blog/2025/rlm/)
 - 总结见[推文](https://x.com/a1zhang/status/1978469116542337259)
 
+<img width="1080" height="823" alt="image" src="https://github.com/user-attachments/assets/133c23da-7b0c-4c56-a0af-96ac8463d1cd" />
+
+
 做法
 - 将上下文视为一个可操作的「变量」：主模型（root LM）在一个类似 Jupyter Notebook 的编程环境（REPL）中工作，完整的上下文只是一个它能用代码访问的变量，而不是直接的输入。
 - 递归调用自身或小模型：主模型可以编写代码来查看、切分、过滤（比如用 grep）这个巨大的上下文变量，然后把小块的任务外包给一个个小的、临时的 LLM 调用（递归调用）。
