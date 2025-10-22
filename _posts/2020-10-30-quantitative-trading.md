@@ -1021,6 +1021,27 @@ TradingView 测试AI交易策略。
 
 从LLMs的文本表示中派生的回报预测是构建投资组合的强信号，表现优于传统情感分数
 
+#### 大模型实时炒股比赛
+
+【2025-10-21】[谁家AI用一万美元赚翻了？DeepSeek第一，GPT-5垫底](https://news.qq.com/rain/a/20251021A07EDI00)
+
+初创公司Nof1发起的“Alpha Arena”基准测试，并非模拟交易。
+
+主办方为了衡量AI投资能力，给每个模型账户发放一万美元启动资金，在真实市场自主交易数字货币。
+
+Alpha Arena 直播整个过程，价格会实时波动，并对实时收益进行排名，还可以看到每个模型的交易思路。
+
+按目前盈利能力排名，参与这次比赛：DeepSeek chat v3.1、Claude Sonnet 4.5、Grok 4、Qwen3 Max、Gemini 2.5 pro、GPT 5六个AI模型，有三家海外头部模型和国内两家模型。
+
+这一投资交易竞赛开始于美东时间10月18日，持续两周，于11月3日结束。
+
+真实市场交易有趣的地方在于，市场永远有波动，是不可预测，即便最先进的AI也无法保持稳定的收益。正如官方所说的那样，“市场是智力的终极考验”。
+- 前三天，排名第一 DeepSeek 收益率还一度接近40%，盈利超过4000美元
+- 但10月21日随着大盘下跌，也回吐了部分收益，DeepSeek收益率稳定在10%左右，不过仍然是第一。
+
+<img width="960" height="507" alt="image" src="https://github.com/user-attachments/assets/27077f85-1f1f-4c2b-b459-ae69d973052c" />
+
+
 ### (2) Alpha Miner
 
 【2024-9-15】[基于大模型的量化交易股票投资框架，实现自动化策略发现](https://mp.weixin.qq.com/s/bpM0pLlTYLg4Bx4Luw8LOw)
