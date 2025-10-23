@@ -130,6 +130,12 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 
 #### 文本转图像
 
+人脑 工作机制
+
+<img width="907" height="342" alt="image" src="https://github.com/user-attachments/assets/071d0012-6e1c-466c-b9ec-2437e5e1114d" />
+
+
+
 <img width="499" height="691" alt="image" src="https://github.com/user-attachments/assets/0ff2cf0c-db7d-4d9b-a816-9facba2262be" />
 
 DeepSeek OCR 发布，详见站内专题 [OCR-DeepSeek-OCR](ocr#DeepSeek-OCR)
