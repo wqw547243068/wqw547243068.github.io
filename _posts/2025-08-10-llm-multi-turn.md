@@ -158,7 +158,7 @@ Glyph 从输入端出发，把长文本“画”成图像，让模型以视觉�
 
 #### 长文压缩
 
-【2025-10-17】韩国科学技术学院、微剑桥， 压缩 Agent 多轮交互历史
+【2025-10-17】韩国科学技术学院（KAIST）、微软、剑桥， 压缩 Agent 多轮交互历史
 - 【2025-10-1】发表，【2025-10-17】修改 [ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
 - 代码 [Acon](https://github.com/microsoft/acon)
 
