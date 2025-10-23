@@ -152,18 +152,20 @@ Glyph 从输入端出发，把长文本“画”成图像，让模型以视觉�
 
 #### 长文压缩
 
-微软 压缩 Agent 多轮交互历史
-- 【2025-10-1】[ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
+【2025-10-17】韩国科学技术学院、微剑桥， 压缩 Agent 多轮交互历史
+- 【2025-10-1】发表，【2025-10-17】修改 [ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
+- 代码 [Acon](https://github.com/microsoft/acon)
 
 背景 
 - LLM agents 在执行如工作流自动化等长时程 (long-horizon) 任务时, 需要不断累积历史交互信息, 导致上下文 (context) 长度爆炸式增长, 从而带来了高昂的计算成本和效率问题。现有的上下文压缩技术大多针对单步或特定领域的任务, 无法很好地适用于复杂、动态的 agent 场景。
-	
+
 方法 🛠️
 
-Agent Context Optimization (ACON) 统一框架, 系统性压缩 LLM agent 的交互历史和环境观测。
-- 首先在训练任务上运行 agent, 分别使用完整上下文和经过压缩的上下文。
-- 通过对比两种情况下 agent 的表现, 筛选出那些在完整上下文中成功, 但在压缩上下文中失败的 "contrastive" 轨迹。
-- 针对失败轨迹, 用强大的 "optimizer LLM" 来分析完整上下文和压缩上下文之间的差异, 从而生成自然语言形式的 "feedback"。这个 feedback 指出了压缩过程中丢失了哪些关键信息。接着, 将多条轨迹生成的 feedback 聚合起来, 交给 optimizer LLM 来更新和优化最初的压缩指令。
+Agent Context Optimization (ACON) 统一框架, 系统性**压缩** LLM agent 的交互历史和环境观测。
+- 首先，训练任务上运行 agent, 分别使用**完整上下文**和经过**压缩上下文**。
+- 对比两种情况下 agent 表现, 筛选出完整上下文中成功, 但在压缩上下文中失败的 "contrastive" 轨迹。
+- 针对**失败轨迹**, 用强大"optimizer LLM" 来分析完整上下文和压缩上下文差异, 生成自然语言形式的 "feedback"。这个 feedback 指出了压缩过程中丢失了哪些关键信息。
+- 接着, 将多条轨迹生成 feedback 聚合起来, 交给 optimizer LLM 来更新和优化最初的压缩指令。
 
 为了进一步降低成本, 还引入了一个 "compression maximization" step。这一步只分析那些使用压缩上下文成功的轨迹, 让 LLM 判断哪些信息在执行过程中是真正必要的。
 
@@ -171,7 +173,8 @@ Agent Context Optimization (ACON) 统一框架, 系统性压缩 LLM agent 的交
 	
 实验结果 📊
 
-AppWorld, OfficeBench 和 Multi-objective QA 等多个长时程 agent benchmark 上验证了 ACON 的有效性: ACON 可以在基本保持任务性能的同时, 将峰值内存使用 (peak tokens) 降低 26-54%, 显著优于 FIFO, Retrieval 等基线方法。
+AppWorld, OfficeBench 和 Multi-objective QA 等多个长时程 agent benchmark 验证 ACON 有效性: 
+- ACON 基本保持任务性能, 将峰值内存使用 (peak tokens) 降低 26-54%, 显著优于 FIFO, Retrieval 等基线方法。
 
 
 ## 数据
