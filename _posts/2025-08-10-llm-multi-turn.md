@@ -3,8 +3,8 @@ layout: post
 title:  大模型多轮会话
 date:   2025-08-10 11:47:00
 categories: 大模型 对话系统 agent mermaid 
-excerpt : 大模型如何实现任务型多轮会话？
-tags: 多轮
+excerpt : 大模型如何实现任务型多轮会话？如何处理长文本？
+tags: 多轮 长文本 压缩
 permalink: /multi-turn
 mathjax: true
 ---
@@ -24,7 +24,6 @@ AI 智能体正从**单点能力**迈向**复杂系统协作**，多智能体系
 这一背景下，「Agentic Workflow」作为面向智能体自主决策与协作流程自动生成的技术理念，正成为多智能体系统研究和应用的探索热点。
 
 ## LLM 多轮
-
 
 
 ### CMU
@@ -125,6 +124,54 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 - 重启对话：若当前对话陷入僵局，重启并重复信息可能比继续修正更有效（因模型难以纠正早期错误）。
 - 整合需求为单轮指令：将多轮需求汇总为完整指令（如让 LLM “总结之前所有信息”），利用单轮对话的高可靠性（如 CONCAT 场景）。
 - 实例：Cursor（代码助手）用户发现 “频繁开启新对话” 能提升效果，印证了多轮对话的局限性。
+
+
+### 长文本
+
+#### 文本转图像
+
+<img width="499" height="691" alt="image" src="https://github.com/user-attachments/assets/0ff2cf0c-db7d-4d9b-a816-9facba2262be" />
+
+DeepSeek OCR 发布，详见站内专题 [OCR-DeepSeek-OCR](ocr#DeepSeek-OCR)
+
+DeepSeek OCR 同期工作
+- 【2025-10-21】南京理工、中南大学 [See the Text: From Tokenization to Visual Readin](https://arxiv.org/abs/2510.18840)
+- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
+- 【2025-10-22】AI^2 和 芝加哥大学，EMNLP 2025 Findings，[Text or Pixels? It Takes Half: On the Token Efficiency of Visual Text Inputs in Multimodal LLMs](https://arxiv.org/abs/2510.18279) 
+  - 代码 [text_or_pixels](https://github.com/yanhong-lbh/text_or_pixels)
+
+总结：让大模型“看”文本，而不是“读”文本。
+- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
+
+Glyph 从输入端出发，把长文本“画”成图像，让模型以视觉方式理解语义。这样就能用图像输入取代传统的文本 token，在不改变模型结构的前提下处理更长的上下文，轻松突破计算与显存的瓶颈。
+
+在 LongBench、MRCR 等基准上，Glyph 在 3–4× 压缩 下依然表现强劲；在极致压缩下，128K 模型也能处理百万级 token，展示出巨大的上下文扩展潜力！
+
+用 VLM 扩展长上下文确实是一条可行且潜力巨大的路径，希望未来能构建出千万token的模型
+
+
+#### 长文压缩
+
+微软 压缩 Agent 多轮交互历史
+- 【2025-10-1】[ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
+
+背景 
+- LLM agents 在执行如工作流自动化等长时程 (long-horizon) 任务时, 需要不断累积历史交互信息, 导致上下文 (context) 长度爆炸式增长, 从而带来了高昂的计算成本和效率问题。现有的上下文压缩技术大多针对单步或特定领域的任务, 无法很好地适用于复杂、动态的 agent 场景。
+	
+方法 🛠️
+
+Agent Context Optimization (ACON) 统一框架, 系统性压缩 LLM agent 的交互历史和环境观测。
+- 首先在训练任务上运行 agent, 分别使用完整上下文和经过压缩的上下文。
+- 通过对比两种情况下 agent 的表现, 筛选出那些在完整上下文中成功, 但在压缩上下文中失败的 "contrastive" 轨迹。
+- 针对失败轨迹, 用强大的 "optimizer LLM" 来分析完整上下文和压缩上下文之间的差异, 从而生成自然语言形式的 "feedback"。这个 feedback 指出了压缩过程中丢失了哪些关键信息。接着, 将多条轨迹生成的 feedback 聚合起来, 交给 optimizer LLM 来更新和优化最初的压缩指令。
+
+为了进一步降低成本, 还引入了一个 "compression maximization" step。这一步只分析那些使用压缩上下文成功的轨迹, 让 LLM 判断哪些信息在执行过程中是真正必要的。
+
+为了降低使用大型 LLM 作为 compressor 带来的推理开销, 将优化好的大型 compressor (teacher) 的能力 "distill" (蒸馏) 到一个更小的模型 (student) 中, 从而实现高效部署。
+	
+实验结果 📊
+
+AppWorld, OfficeBench 和 Multi-objective QA 等多个长时程 agent benchmark 上验证了 ACON 的有效性: ACON 可以在基本保持任务性能的同时, 将峰值内存使用 (peak tokens) 降低 26-54%, 显著优于 FIFO, Retrieval 等基线方法。
 
 
 ## 数据
