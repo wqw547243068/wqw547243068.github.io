@@ -12,6 +12,8 @@ mathjax: true
 * content
 {:toc}
 
+
+
 # 多轮对话
 
 人工智能（AI）的长期目标
@@ -89,11 +91,6 @@ TOD 分为基于**流水线**的TOD和**端到端**TOD
 
 多轮对话知识见站内专题：[对话管理器](dialogue-manager)
 
-### workflow 自动化
-
-为了提升智能体系统的自主化与智能化，谷歌、上海 AI Lab 等国内外领先团队陆续推出了 `Meta-GPT`、`ADAS`、`AFlow` 等创新性 Agentic Workflow 工作，大力推动利用大模型实现任务规划、分工协作与流程优化的自动化进程。
-
-尽管这些系统能够灵活的表达工作流，但在自动化搜索工作流的过程中，存在：**合理性难以保证**、**可验证性不足**、 **难以直观表达**等突出挑战，严重制约了多智能体系统的可靠落地与规模化部署。
 
 ## 问题
 
@@ -128,59 +125,7 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 
 ### 长文本
 
-#### 文本转图像
-
-人脑 工作机制
-
-<img width="907" height="342" alt="image" src="https://github.com/user-attachments/assets/071d0012-6e1c-466c-b9ec-2437e5e1114d" />
-
-
-
-<img width="499" height="691" alt="image" src="https://github.com/user-attachments/assets/0ff2cf0c-db7d-4d9b-a816-9facba2262be" />
-
-DeepSeek OCR 发布，详见站内专题 [OCR-DeepSeek-OCR](ocr#DeepSeek-OCR)
-
-DeepSeek OCR 同期工作
-- 【2025-10-21】南京理工、中南大学 [See the Text: From Tokenization to Visual Readin](https://arxiv.org/abs/2510.18840)
-- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
-- 【2025-10-22】AI^2 和 芝加哥大学，EMNLP 2025 Findings，[Text or Pixels? It Takes Half: On the Token Efficiency of Visual Text Inputs in Multimodal LLMs](https://arxiv.org/abs/2510.18279) 
-  - 代码 [text_or_pixels](https://github.com/yanhong-lbh/text_or_pixels)
-
-总结：让大模型“看”文本，而不是“读”文本。
-- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
-
-Glyph 从输入端出发，把长文本“画”成图像，让模型以视觉方式理解语义。这样就能用图像输入取代传统的文本 token，在不改变模型结构的前提下处理更长的上下文，轻松突破计算与显存的瓶颈。
-
-在 LongBench、MRCR 等基准上，Glyph 在 3–4× 压缩 下依然表现强劲；在极致压缩下，128K 模型也能处理百万级 token，展示出巨大的上下文扩展潜力！
-
-用 VLM 扩展长上下文确实是一条可行且潜力巨大的路径，希望未来能构建出千万token的模型
-
-
-#### 长文压缩
-
-【2025-10-17】韩国科学技术学院（KAIST）、微软、剑桥， 压缩 Agent 多轮交互历史
-- 【2025-10-1】发表，【2025-10-17】修改 [ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
-- 代码 [Acon](https://github.com/microsoft/acon)
-
-背景 
-- LLM agents 在执行如工作流自动化等长时程 (long-horizon) 任务时, 需要不断累积历史交互信息, 导致上下文 (context) 长度爆炸式增长, 从而带来了高昂的计算成本和效率问题。现有的上下文压缩技术大多针对单步或特定领域的任务, 无法很好地适用于复杂、动态的 agent 场景。
-
-方法 🛠️
-
-Agent Context Optimization (ACON) 统一框架, 系统性**压缩** LLM agent 的交互历史和环境观测。
-- 首先，训练任务上运行 agent, 分别使用**完整上下文**和经过**压缩上下文**。
-- 对比两种情况下 agent 表现, 筛选出完整上下文中成功, 但在压缩上下文中失败的 "contrastive" 轨迹。
-- 针对**失败轨迹**, 用强大"optimizer LLM" 来分析完整上下文和压缩上下文差异, 生成自然语言形式的 "feedback"。这个 feedback 指出了压缩过程中丢失了哪些关键信息。
-- 接着, 将多条轨迹生成 feedback 聚合起来, 交给 optimizer LLM 来更新和优化最初的压缩指令。
-
-为了进一步降低成本, 还引入了一个 "compression maximization" step。这一步只分析那些使用压缩上下文成功的轨迹, 让 LLM 判断哪些信息在执行过程中是真正必要的。
-
-为了降低使用大型 LLM 作为 compressor 带来的推理开销, 将优化好的大型 compressor (teacher) 的能力 "distill" (蒸馏) 到一个更小的模型 (student) 中, 从而实现高效部署。
-	
-实验结果 📊
-
-AppWorld, OfficeBench 和 Multi-objective QA 等多个长时程 agent benchmark 验证 ACON 有效性: 
-- ACON 基本保持任务性能, 将峰值内存使用 (peak tokens) 降低 26-54%, 显著优于 FIFO, Retrieval 等基线方法。
+详见站内[意图识别专题](llm_intent)
 
 
 ## 数据
@@ -196,31 +141,12 @@ APIGen-MT：高效生成多轮人机交互数据的两阶段框架
 - 第二阶段：人机环境交互轨迹收集
   - 基于第一阶段生成的验证任务配置，这一阶段通过模拟人机交互来生成完整的多轮交互轨迹
 
-## LLM 多轮对话案例
+
+## workflow 提效
 
 
-### Google
 
-【2025-7-17】[Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)
-
-用人类反馈优化大模型（LLMs）已成为智能对话助手的主流范式。
-
-然而，基于LLM的智能体在**对话技能**方面仍有欠缺
-- 歧义消除能力——信息模糊时，往往含糊其辞或暗自猜测用户的真实意图，而非主动提出澄清问题。
-- 在特定任务场景中，**高质量的对话样本数量有限**
-
-这成为限制LLMs学习最优对话行动策略的瓶颈。
-
-**基于行动的对比自训练（ACT）** 算法，基于直接偏好优化（DPO）的准在线偏好优化算法，在多轮对话建模中实现数据高效的对话策略学习。
-
-通过真实对话任务验证ACT在数据高效调优场景中的有效性，即使在没有行动标签的情况下依然表现优异，这些任务包括：表格驱动的问答、机器阅读理解，以及AmbigSQL（一种面向数据分析智能体的新型任务，用于消除复杂SQL生成中信息查询请求的歧义）。
-
-此外，还提出评估LLMs作为对话智能体能力的方法
-- 通过检验能否在对话中隐性识别并推理歧义信息。
-- 结果表明，与监督微调、DPO等标准调优方法相比，ACT在对话建模方面有显著提升。
-
-
-## 【2025-5-29】MermaidFlow
+### 【2025-5-29】MermaidFlow
 
 【2025-7-24】[如何实现可验证的Agentic Workflow？MermaidFlow开启安全、稳健的智能体流程新范式](https://zhuanlan.zhihu.com/p/1931767220997981459)
 
@@ -231,7 +157,7 @@ APIGen-MT：高效生成多轮人机交互数据的两阶段框架
 MermaidFlow 提出的结构化可验证工作流表达方式，为智能体系统实现高效、可控的协作流程提供了基础支撑。未来的 AI 协作，也许正需要这样一套 「看得见、查得清、能进化」 的流程底座。
 
 
-### 起因
+#### 起因
 
 传统瓶颈：命令式脚本使工作流频频 「翻车」
 
@@ -243,7 +169,7 @@ MermaidFlow 提出的结构化可验证工作流表达方式，为智能体系�
 - 合理性难验证：流程逻辑与实现细节高度耦合，缺乏静态检查和自动验证机制，容易隐藏致命漏洞。
 - 调试与优化困难：错误往往只有在实际运行时才暴露，流程复现、问题定位和后续优化极为低效。
 
-### MermaidFlow 方法
+#### MermaidFlow 方法
 
 MermaidFlow: 引领结构化与可验证工作流表达
 
@@ -280,7 +206,7 @@ MermaidFlow 基于 Mermaid 语言对智能体工作流进行显式建模，使�
 - ![](https://pica.zhimg.com/v2-0dcdd85c9cc30680a79aa730528d961e_1440w.jpg)
 
 
-### 效果
+#### 效果
 
 MermaidFlow 不再依赖具备强**编程能力**的大语言模型，也能生成高质量的工作流。
 
@@ -295,14 +221,7 @@ MermaidFlow 在结构化表示下的进化过程示例。得益于每个节点�
 - ![](https://pic2.zhimg.com/v2-57d56b3172e881415ead8f91e526a663_1440w.jpg)
 
 
-
-## 【2025-7-27】Google ACT
-
-- 【2025-7-27】google,哥伦比亚大学 用 Action-Based Contrastive Self-Training (ACT)做多轮训练（用了DPO）
-- 论文 [Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)，
-
-
-## 【2025-9-14】MIT PDDL-Instruct
+### 【2025-9-14】MIT PDDL-Instruct
 
 2025年9月14日，大模型学会符号推理 pddl-instruct方法
 
@@ -311,6 +230,13 @@ MermaidFlow 在结构化表示下的进化过程示例。得益于每个节点�
 新颖的指令微调框架—— PDDL-Instruct，通过逻辑思维链推理，增强大型语言模型的符号规划能力。
 
 详见站内 [MIT PDDL-Instruct](o1#2025-9-14mit-pddl-instruct)
+
+
+### workflow自动化
+
+为了提升智能体系统的自主化与智能化，谷歌、上海 AI Lab 等国内外领先团队陆续推出了 `Meta-GPT`、`ADAS`、`AFlow` 等创新性 Agentic Workflow 工作，大力推动利用大模型实现任务规划、分工协作与流程优化的自动化进程。
+
+尽管这些系统能够灵活的表达工作流，但在自动化搜索工作流的过程中，存在：**合理性难以保证**、**可验证性不足**、 **难以直观表达**等突出挑战，严重制约了多智能体系统的可靠落地与规模化部署。
 
 
 
