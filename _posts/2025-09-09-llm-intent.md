@@ -3,7 +3,7 @@ layout: post
 title:  "大模型意图识别-Intent Detection on LLM"
 date:   2025-09-09 14:52:00
 categories: 深度学习
-tags: 文本分类 意图识别 对话系统 agent 评估 智能客服
+tags: 文本分类 意图识别 对话系统 agent 评估 智能客服 ood
 excerpt: 大模型/Agent 如何助理意图识别？
 author: 鹤啸九天
 mathjax: true
@@ -21,41 +21,8 @@ permalink: /llm_intent
 详见站内专题：[文本分类](cls)
 
 
-## LLM 意图识别
 
-【2024-8-19】[怎样进行大模型应用程序中的意图识别](https://zhuanlan.zhihu.com/p/679040557)
-
-RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控制流程，创建更有用、更强大的 RAG 应用程序
-- 数据源多样性: query 路由到
-  - 非结构化文档: 语义检索，召回相关文档(图片/文本/pdf/word等)
-  - 结构化文档: Text2SQL, query转sql语句，从关系型数据库中查找相关信息，如 MySQL, PostgreSQL, Oracle, SQL Lite 等。
-  - API: 通过 Function Call 调用 Restful API
-- 组件多样性: 相同数据用不同的向量存储, query 路由到:
-  - 向量库
-  - LLM
-  - Agent
-- 提示模版多样性: 根据用户问题使用不同提示模版 Prompt Template
-  - query --(Router)--> Prompt1, Prompt2, ..., Promptn ----> LLM ----> Response
-  - LLM 存在不确定性, 不可能100%稳定正确
-
-路由 Router 分类
-- 逻辑路由 Logical Router
-- **自然语言路由** (Natural Language Router) 由不同 RAG 和 LLM 应用开发框架和库实现。
-  - LLM 路由 (LLM Router)
-    - LLM **补全**路由 (LLM Completion Router): 从 prompt 里候选单词选择最佳, 作为 if/else条件控制流程, 案例 LlamaIndex Selector 原理 （LangChain 路由）
-    - LLM **函数调用**路由 (LLM Function Calling Router): LLM 判断 query 对应哪个函数, 即路由，案例 LlamaIndex 中 Pydantic Router 原理，大多数 agent 工具选择方式
-  - **语义**路由 (Semantic Routers): 利用 embedding 和 相似性搜索确定意图, 选择最佳
-  - **零样本分类**路由 (Zero Shot Classification Routers): prompt 中指定分类集合, 直接进行分类
-  - **语言分类**路由 (Language Classification Routers): 语种路由, langdetect python 包（朴素贝叶斯） 检测文本语种
-  - **关键字**路由: query 匹配路由表中的关键字来路由
-
-
-路由 Router vs 智能体 Agent
-- 二者相似点多，Agent 将 Router 作为流程的一部分执行。
-
-
-
-### 评估指标
+## 评估指标
 
 【2025-7-20】衡量 AI Agent 意图识别效果，不只是“识别对不对”，还要看“是不是有用”“能不能解决问题”
 
@@ -94,32 +61,45 @@ RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控
 - 意义：体现意图识别是否“贴心懂人话”，用户感知强。
 
 
-## 对话意图识别
+## LLM 意图识别
 
-【2025-3-21】[大模型对话系统中的意图识别](https://liuyaowen.cn/posts/default/202503211) 含图解、代码
 
-意图识别相关技术：基于规则、向量检索、深度学习、大模型等多种方法，以及处理多轮对话的上下文窗口法和对话状态追踪法。
+### 总结
 
-以酒店预订对话为例展示了多轮意图识别的实际应用。
+【2024-8-19】[怎样进行大模型应用程序中的意图识别](https://zhuanlan.zhihu.com/p/679040557)
 
-较小规模的模型在处理长对话时表现欠佳：
-- 当对话超过3轮且每轮内容较多时，模型容易混淆上下文关系
-- 对话长度增加，语义理解负担加重，回复质量明显下降
-- 多意图交织的复杂对话场景下，准确率显著降低
+RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控制流程，创建更有用、更强大的 RAG 应用程序
+- 数据源多样性: query 路由到
+  - 非结构化文档: 语义检索，召回相关文档(图片/文本/pdf/word等)
+  - 结构化文档: Text2SQL, query转sql语句，从关系型数据库中查找相关信息，如 MySQL, PostgreSQL, Oracle, SQL Lite 等。
+  - API: 通过 Function Call 调用 Restful API
+- 组件多样性: 相同数据用不同的向量存储, query 路由到:
+  - 向量库
+  - LLM
+  - Agent
+- 提示模版多样性: 根据用户问题使用不同提示模版 Prompt Template
+  - query --(Router)--> Prompt1, Prompt2, ..., Promptn ----> LLM ----> Response
+  - LLM 存在不确定性, 不可能100%稳定正确
 
-解决思路
-- 思路1：截断历史对话
-  - 最简单的方法是保留最近几轮对话，舍弃更早的内容。这种方法虽然直接，但会导致上下文连贯性断裂，影响对话体验。
-- 思路2：上下文语义分割和槽位关联
-  - 将对话分解为不同的语义单元，并建立关联关系，保留关键信息：
-    - 上下文语义分割：识别对话中的主题段落，保留关键信息
-    - 槽位关联：跟踪对话中出现的实体信息（如产品名称、数量等），便于后续使用
-- 思路3：基于多路多轮数据的微调
-  - 针对大模型进行特定任务的微调，提升模型在多轮对话中的表现
+路由 Router 分类
+- 逻辑路由 Logical Router
+- **自然语言路由** (Natural Language Router) 由不同 RAG 和 LLM 应用开发框架和库实现。
+  - LLM 路由 (LLM Router)
+    - LLM **补全**路由 (LLM Completion Router): 从 prompt 里候选单词选择最佳, 作为 if/else条件控制流程, 案例 LlamaIndex Selector 原理 （LangChain 路由）
+    - LLM **函数调用**路由 (LLM Function Calling Router): LLM 判断 query 对应哪个函数, 即路由，案例 LlamaIndex 中 Pydantic Router 原理，大多数 agent 工具选择方式
+  - **语义**路由 (Semantic Routers): 利用 embedding 和 相似性搜索确定意图, 选择最佳
+  - **零样本分类**路由 (Zero Shot Classification Routers): prompt 中指定分类集合, 直接进行分类
+  - **语言分类**路由 (Language Classification Routers): 语种路由, langdetect python 包（朴素贝叶斯） 检测文本语种
+  - **关键字**路由: query 匹配路由表中的关键字来路由
+
+路由 Router vs 智能体 Agent
+- 二者相似点多，Agent 将 Router 作为流程的一部分执行。
+
+
 
 ### 单轮
 
-单轮意图识别是指仅基于用户的单一输入判断其意图，不考虑历史对话内容。
+单轮意图识别指仅基于用户的单一输入判断其意图，<span style='color:red'>不考虑历史对话内容</span>。
 
 技术方案
 - 规则
@@ -135,6 +115,14 @@ RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控
   - 缺点：响应延迟较高，成本较高，黑盒特性不便于调试
 - 混合方案
   - 结合多种方法的优势，构建更强大的意图识别系统。
+
+|方案|描述|优点|缺点|
+|---|---|---|---|
+|规则|专家经验，规则匹配|实现简单，可解释性强 |缺乏灵活性，难以覆盖表达的多样性|
+|向量检索|将用户输入与预先准备的意图示例转换为向量，通过计算相似度确定最接近的意图|捕捉语义相似性，不局限于关键词匹配 |依赖于示例的质量和数量，需要维护向量库|
+|大模型|预训练大模型的强大语义理解能力|语义理解能力强，部署简单，可处理复杂表述|响应延迟较高，成本较高，黑盒特性不便于调试|
+|混合|结合多种方法的优势，构建更强大的意图识别系统|-|-|
+
 
 ### 多轮
 
@@ -153,6 +141,75 @@ RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控
   - 维护对话状态，跟踪意图变化和槽位填充情况。
 - (3) 多轮对话意图识别的大模型方法
   - 利用大模型的强大上下文理解能力，直接处理复杂多轮对话。
+
+
+## 专题
+
+### 长上文
+
+【2025-3-21】[大模型对话系统中的意图识别](https://liuyaowen.cn/posts/default/202503211) 含图解、代码
+
+意图识别相关技术：基于规则、向量检索、深度学习、大模型等多种方法，以及处理多轮对话的上下文窗口法和对话状态追踪法。
+
+以酒店预订对话为例展示了多轮意图识别的实际应用。
+
+较小规模的模型在处理**长对话**时表现欠佳：
+- 当对话超过3轮且每轮内容较多时，模型容易混淆上下文关系
+- 对话长度增加，语义理解负担加重，回复质量明显下降
+- 多意图交织的复杂对话场景下，准确率显著降低
+
+解决思路
+- 思路1：截断历史对话
+  - 最简单的方法是保留最近几轮对话，舍弃更早的内容。这种方法虽然直接，但会导致上下文连贯性断裂，影响对话体验。
+- 思路2：上下文语义分割和槽位关联
+  - 将对话分解为不同的语义单元，并建立关联关系，保留关键信息：
+    - 上下文语义分割：识别对话中的主题段落，保留关键信息
+    - 槽位关联：跟踪对话中出现的实体信息（如产品名称、数量等），便于后续使用
+- 思路3：基于多路多轮数据的微调
+  - 针对大模型进行特定任务的微调，提升模型在多轮对话中的表现
+
+
+### OOD
+
+【2024-7-14】[域外意图检测——解决“没见过”的问题](https://developer.volcengine.com/articles/7389832463356428299)
+
+开放域意图识别时，模型总会遇到“没见过”样本，分类不可控，可能被关键词迷惑，也可能停留在阈值上下摇摆不定，而样本层面很难覆盖所有情况
+
+这类问题叫“out-of-Scope intent detection”，域外意图检测，也叫 OOD（out of domain），更像是“拒识”，识别目前系统未覆盖的功能。
+
+- 一般把意图内样本作为**正类**，例如，要做天气的意图识别，那就是把天气相关的句子作为正类，例如“今天天气如何”、“北京的天气”
+- 而其他类目算作**负类**，如“周杰伦最近有什么新歌”、“深度学习入门”等，然后把他当做一个二分类问题做就好了。
+
+问题
+- 负类是无底洞，无法把“不是天气意图”的句子都梳理出来作为负样本
+
+文本分类旨在把两个类目区分开，而域外意图识别更像拒绝，聚焦负类，把“不是正类”的找出来。
+
+域外意图识别，用于做拒识
+- 搜索、对话场景，未覆盖、无法解决的问题给拒绝掉
+- 特点: 被拒识样本无法全覆盖
+
+域外检测常见方法
+- （1）样本空间的度量
+  - 邱锡鹏论文: [KNN-Contrastive Learning for Out-of-Domain Intent Classification]() 用对比学习常用的NT-Xent，还用了ArcFace相似的加入margin 损失函数；实现：以搜代分
+  - 把域外意图强行融成团或划分区域，非常不现实，应该用类似KNN的手段，只要落到正类比较密集的区域内，就可能是正类，否则是负类，这样更加符合域外意图的空间实际分布。
+  - <img width="640" height="298" alt="image" src="https://github.com/user-attachments/assets/54c500d0-6c60-4f0e-af80-656b66794e8f" />
+  - 论文：[Enhancing the generalization for Intent Classification and Out-of-Domain Detection in SLU]() 预测阶段增加了一个DRM（domain-regularized module）,只需正样本，马氏距离能有效把IND和OOD的空间给拉开的更加明显。
+  - <img width="640" height="421" alt="image" src="https://github.com/user-attachments/assets/803c0711-14e0-4e8a-b068-1aa81075e42f" />
+- （2）对抗和扰动
+  - 简单问题，通过样本层面的增强，挖掘对抗样本；复杂的通过embedding层面的增强，甚至训练策略上的对抗来实现，让正类的空间更加内聚稳定，此时域外检测就会更加精准。
+  - 论文[GOLD: Improving Out-of-Scope Detection in Dialogues using Data Augmentation]() 通过增强样本模型, 强化对OOD数据识别
+    - ① 用OOD样本在无标签样本中召回与之最接近的几个作为OOD数据
+    - ② 通过对话中的同话题多轮数据中挖掘，这种方案其实对标注数据的数量和质量都是有一定要求。
+  - 采用对抗学习，论文 [Modeling Discriminative Representations for Out-of-Domain Detection with Supervised Contrastive Learning]()
+    - 通过对抗，压缩正类的空间提升正类空间的密度和准度
+    - <img width="640" height="249" alt="image" src="https://github.com/user-attachments/assets/21230201-fa5f-477b-875d-5d734eae0ee4" />
+
+解决方法：
+- 空间层面，把**正类**转化为样本层面的**封闭**空间，而把**负类**放在空间之外。只有命中这个空间以内，才能认为是正类。
+- 强调表征的重要性
+  - 一方面通过数据样本、embedding交叉还是训练策略的对抗和增强，来让表征朝着更有利于空间划分的方向走
+  - 另一方面通过特定距离计算，把两类或者多类样本空间尽可能分离。
 
 
 ### RL 意图识别
@@ -207,7 +264,7 @@ RCS方法在训练过程中优先选择更具信息量的训练实例，有效�
 - 深入研究“顿悟时刻”现象的深层次原因，逐步增加更加贴近复杂场景的意图识别、Function Call等问题，探索在任务型对话模型的自我反思、自我纠正和自我指导能力。
 
 
-### 客服意图识别
+## 客服意图识别
 
 面试题：智能客服中意图识别怎么优化？
 
@@ -240,7 +297,6 @@ RCS方法在训练过程中优先选择更具信息量的训练实例，有效�
 
 
 ## Agent 意图识别难题
-
 
 【2025-8-6】[Agent意图识别有哪些挑战?深度解析8大难题](https://www.xiaohongshu.com/explore/6891834a00000000040004d0)
 
