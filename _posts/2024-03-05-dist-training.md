@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "分布式训练"
+title:  "分布式训练理论知识"
 date:   2024-03-05 19:25:00
 categories: 大模型
 tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface
@@ -13,7 +13,7 @@ permalink: /dist
 * content
 {:toc}
 
-# 分布式
+# 分布式理论知识
 
 
 
