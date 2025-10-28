@@ -16,6 +16,11 @@ permalink: /pytorch_dist
 
 # Pytorch 分布式训练
 
+torch.distributed 支持四种内置后端：gloo、mpi、nccl、xccl
+
+Pytorch 官方资料
+- [分布式通信包 torch.distributed](https://docs.pytorch.ac.cn/docs/stable/distributed.html)
+- [FSDP](https://docs.pytorch.ac.cn/docs/stable/fsdp.html)
 
 ## 分布式基础
 
