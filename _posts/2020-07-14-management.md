@@ -3,7 +3,7 @@ layout: post
 title:  "管理之路-Path to Management"
 date:   2020-07-14 12:00:00
 categories: 人生规划
-tags: KPI OKR 孙子兵法 三十六计 创新扩散曲线 情商 人脉 招聘 嫡系
+tags: KPI OKR 孙子兵法 三十六计 创新扩散曲线 情商 人脉 招聘 嫡系 阿里
 excerpt: 为什么有的人虽然工作十年，但实际上只有一年经验？
 author: 鹤啸九天
 mathjax: true
@@ -41,6 +41,7 @@ permalink: /management
 - 2、中层：定策略、做导演、搭班子 
 - 3、高层：定战略、断事用人、造土壤
 
+<img width="1940" height="1100" alt="image" src="https://github.com/user-attachments/assets/29afaa45-77c5-4e42-b5a8-fb560e77a8b8" />
 
 
 
