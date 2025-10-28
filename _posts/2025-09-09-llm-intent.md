@@ -21,7 +21,6 @@ permalink: /llm_intent
 详见站内专题：[文本分类](cls)
 
 
-
 ## 评估指标
 
 【2025-7-20】衡量 AI Agent 意图识别效果，不只是“识别对不对”，还要看“是不是有用”“能不能解决问题”
@@ -158,6 +157,8 @@ RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控
 - 对话长度增加，语义理解负担加重，回复质量明显下降
 - 多意图交织的复杂对话场景下，准确率显著降低
 
+#### 常规做法
+
 解决思路
 - 思路1：截断历史对话
   - 最简单的方法是保留最近几轮对话，舍弃更早的内容。这种方法虽然直接，但会导致上下文连贯性断裂，影响对话体验。
@@ -167,6 +168,101 @@ RAG 实际落地时，往往需要根据理解query意图。在 RAG 中路由控
     - 槽位关联：跟踪对话中出现的实体信息（如产品名称、数量等），便于后续使用
 - 思路3：基于多路多轮数据的微调
   - 针对大模型进行特定任务的微调，提升模型在多轮对话中的表现
+
+#### 文本转图像
+
+人脑 工作机制
+
+<img width="907" height="342" alt="image" src="https://github.com/user-attachments/assets/071d0012-6e1c-466c-b9ec-2437e5e1114d" />
+
+
+<img width="499" height="691" alt="image" src="https://github.com/user-attachments/assets/0ff2cf0c-db7d-4d9b-a816-9facba2262be" />
+
+DeepSeek OCR 发布，详见站内专题 [OCR-DeepSeek-OCR](ocr#DeepSeek-OCR)
+
+DeepSeek OCR 同期工作
+- 【2025-10-21】南京理工、中南大学 [See the Text: From Tokenization to Visual Readin](https://arxiv.org/abs/2510.18840)
+- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
+- 【2025-10-22】AI^2 和 芝加哥大学，EMNLP 2025 Findings，[Text or Pixels? It Takes Half: On the Token Efficiency of Visual Text Inputs in Multimodal LLMs](https://arxiv.org/abs/2510.18279) 
+  - 代码 [text_or_pixels](https://github.com/yanhong-lbh/text_or_pixels)
+
+总结：让大模型“看”文本，而不是“读”文本。
+- 【2025-10-20】清华：[Glyph —— Scaling Context Windows via Visual-Text Compression](https://arxiv.org/abs/2510.17800)
+
+Glyph 从输入端出发，把长文本“画”成图像，让模型以视觉方式理解语义。这样就能用图像输入取代传统的文本 token，在不改变模型结构的前提下处理更长的上下文，轻松突破计算与显存的瓶颈。
+
+在 LongBench、MRCR 等基准上，Glyph 在 3–4× 压缩 下依然表现强劲；在极致压缩下，128K 模型也能处理百万级 token，展示出巨大的上下文扩展潜力！
+
+用 VLM 扩展长上下文确实是一条可行且潜力巨大的路径，希望未来能构建出千万token的模型
+
+
+#### 长文压缩
+
+【2025-10-17】韩国科学技术学院（KAIST）、微软、剑桥， 压缩 Agent 多轮交互历史
+- 【2025-10-1】发表，【2025-10-17】修改 [ACON: Optimizing Context Compression for Long-horizon LLM Agents](https://arxiv.org/abs/2510.00615)
+- 代码 [Acon](https://github.com/microsoft/acon)
+
+背景 
+- LLM agents 在执行如工作流自动化等长时程 (long-horizon) 任务时, 需要不断累积历史交互信息, 导致上下文 (context) 长度爆炸式增长, 从而带来了高昂的计算成本和效率问题。现有的上下文压缩技术大多针对单步或特定领域的任务, 无法很好地适用于复杂、动态的 agent 场景。
+
+方法 🛠️
+
+Agent Context Optimization (ACON) 统一框架, 系统性**压缩** LLM agent 的交互历史和环境观测。
+- 首先，训练任务上运行 agent, 分别使用**完整上下文**和经过**压缩上下文**。
+- 对比两种情况下 agent 表现, 筛选出完整上下文中成功, 但在压缩上下文中失败的 "contrastive" 轨迹。
+- 针对**失败轨迹**, 用强大"optimizer LLM" 来分析完整上下文和压缩上下文差异, 生成自然语言形式的 "feedback"。这个 feedback 指出了压缩过程中丢失了哪些关键信息。
+- 接着, 将多条轨迹生成 feedback 聚合起来, 交给 optimizer LLM 来更新和优化最初的压缩指令。
+
+为了进一步降低成本, 还引入了一个 "compression maximization" step。这一步只分析那些使用压缩上下文成功的轨迹, 让 LLM 判断哪些信息在执行过程中是真正必要的。
+
+为了降低使用大型 LLM 作为 compressor 带来的推理开销, 将优化好的大型 compressor (teacher) 的能力 "distill" (蒸馏) 到一个更小的模型 (student) 中, 从而实现高效部署。
+	
+实验结果 📊
+
+AppWorld, OfficeBench 和 Multi-objective QA 等多个长时程 agent benchmark 验证 ACON 有效性: 
+- ACON 基本保持任务性能, 将峰值内存使用 (peak tokens) 降低 26-54%, 显著优于 FIFO, Retrieval 等基线方法。
+
+
+### 澄清
+
+意图不明时，引入澄清机制，浅多轮，如 反问、澄清
+
+### Google ACT 多轮澄清
+
+- 【2025-7-27】google,哥伦比亚大学 用 Action-Based Contrastive Self-Training (ACT) 做多轮训练（DPO），学会澄清
+- 论文 [Learning to Clarify: Multi-turn Conversations with Action-Based Contrastive Self-Training](https://arxiv.org/pdf/2406.00222)，
+- 含代码
+
+用人类反馈优化大模型（LLMs）已成为智能对话助手主流范式。
+
+然而，基于LLM的智能体在**对话技能**方面仍有欠缺
+- **歧义消除能力**——信息模糊时，往往含糊其辞或暗自猜测用户的真实意图，而非主动提出**澄清**问题。
+- 特定任务场景中，**高质量的对话样本数量有限**
+
+这成为限制LLMs学习最优对话行动策略的瓶颈。
+
+**基于行动的对比自训练（ACT）** 算法，基于直接偏好优化（DPO）的**准在线**偏好优化算法，在多轮对话建模中实现数据高效的对话策略学习。
+
+<img width="1051" height="277" alt="image" src="https://github.com/user-attachments/assets/ec45cebf-d94e-45a4-965f-20d1a12bab06" />
+
+ACT 训练过程
+
+<img width="1192" height="469" alt="image" src="https://github.com/user-attachments/assets/cd976762-cf50-462f-a303-6acbfd08eb94" />
+
+
+通过真实对话任务验证ACT在数据高效调优场景中的有效性，即使在没有行动标签的情况下依然表现优异，这些任务包括：
+- 表格驱动的问答
+- 机器阅读理解
+- AmbigSQL（一种面向数据分析智能体的新型任务，用于消除复杂SQL生成中信息查询请求的歧义）。
+
+ACT 显著优于 PE和SFT
+
+<img width="789" height="550" alt="image" src="https://github.com/user-attachments/assets/91be53fe-909d-4d67-8462-be133512edff" />
+
+
+此外，还提出评估LLMs作为对话智能体能力的方法
+- 通过检验能否在对话中隐性识别并推理歧义信息。
+- 结果表明，与监督微调、DPO等标准调优方法相比，ACT在对话建模方面有显著提升
 
 
 ### OOD
