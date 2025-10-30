@@ -3,7 +3,7 @@ layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
 categories: 技术工具
-tags: 股票 预测 量化交易 时间序列 LLM kaggle 大模型 agent
+tags: 股票 预测 量化交易 时间序列 LLM kaggle 大模型 agent 炒股
 author : 鹤啸九天
 excerpt: 用技术来辅助炒股，优化交易
 mathjax: true
@@ -12,6 +12,7 @@ permalink: /quant
 
 * content
 {:toc}
+
 
 # 量化交易
 
@@ -1026,6 +1027,7 @@ TradingView 测试AI交易策略。
 【2025-10-21】[谁家AI用一万美元赚翻了？DeepSeek第一，GPT-5垫底](https://news.qq.com/rain/a/20251021A07EDI00)
 
 初创公司Nof1发起的“Alpha Arena”基准测试，并非模拟交易。
+- [nof1.ai](https://nof1.ai/)
 
 主办方为了衡量AI投资能力，给每个模型账户发放一万美元启动资金，在真实市场自主交易数字货币。
 
