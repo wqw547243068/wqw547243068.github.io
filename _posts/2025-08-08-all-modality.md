@@ -351,7 +351,7 @@ Stream-Omni
 - 车载交互领域，可以作为智能驾驶的“超级大脑”，不仅能听懂你的语音指令，还能实时分析车辆周围的视觉场景，提供最精准的导航和辅助驾驶建议
 
 
-### 字节 VeOmni 框架
+### 【2025-8-4】字节 VeOmni 框架
 
 
 大模型从单一语言向文本 + 图像 + 视频的多模态进化时，训练流程却陷入了 “碎片化困境”：
@@ -391,6 +391,42 @@ VeOmni 是什么？一套框架搞定所有多模态训练
 基于 VeOmni 框架，一个 300 亿参数的全模态 MoE 模型（支持文本、语音、图片、视频的理解和生成）， 在 128 张卡上训练吞吐量可超过 2800 tokens/sec/GPU，并能轻松扩展至 160K 超长上下文序列。
 
 目前，VeOmni 的相关论文和代码仓库均已对外公开，GitHub Star 数超过 500。
+
+
+### 【2025-10-27】NVIDIA OmniVinci
+
+【2025-10-27】NVIDIA 开源全模态大型语言模型 OmniVinci ，架构革新和数据优化，解决多模态模型中的**模态割裂**问题。
+- 项目官网：[OmniVinci](https://nvlabs.github.io/OmniVinci/)
+- Github仓库：[OmniVinci](https://github.com/NVlabs/OmniVinci)
+- HuggingFace模型库：[OmniVinci](https://huggingface.co/nvidia/omnivinci)
+- arXiv技术论文：[OmniVinci: Enhancing Architecture and Data for Omni-Modal Understanding LLM](https://arxiv.org/pdf/2510.15870)
+
+#### 功能
+
+要点
+- 通过 OmniAlignNet 加强视觉和音频嵌入的对齐，利用时间嵌入分组捕捉相对时间对齐信息，采用约束旋转时间嵌入编码绝对时间信息。
+- 通过数据合成和精心设计的数据分布策略，生成大量单模态和全模态对话样本进行训练。
+- 两阶段训练策略先进行单模态训练，再进行全模态联合训练，有效整合多模态理解能力。
+
+OmniVinci的功能特色
+- 多模态理解：能同时处理视觉、音频和文本信息，实现跨模态的理解和推理，例如可以根据视频内容生成详细的描述，包括视觉和音频信息。
+- 模型架构创新：通过 OmniAlignNet 加强视觉和音频嵌入的对齐，利用时间嵌入分组捕捉视觉和音频信号的相对时间对齐信息，并采用约束旋转时间嵌入编码绝对时间信息，提升模型对多模态信号的理解能力。
+- 数据合成与优化：通过数据合成和精心设计的数据分布策略，生成大量单模态和全模态对话样本，优化训练数据，提高模型的泛化能力和性能。
+- 两阶段训练策略：采用单模态训练和全模态联合训练的两阶段策略，先分别开发视觉和音频理解能力，再整合这些能力实现跨模态理解，有效提升模型的多模态推理能力。
+- 高效训练：在训练过程中，OmniVinci 使用较少的训练标记量（0.2 万亿）就能达到优异的性能，相比其他模型大幅减少了训练资源的消耗
+
+#### 网络结构
+
+通过 OmniAlignNet 加强视觉和音频嵌入的对齐，利用时间嵌入分组捕捉视觉和音频信号的相对时间对齐信息，并采用约束旋转时间嵌入编码绝对时间信息，提升模型对多模态信号的理解能力
+
+<img width="1366" height="609" alt="image" src="https://github.com/user-attachments/assets/98b452a1-6892-4c7a-9e21-689e9f560ecf" />
+
+
+#### 效果
+
+`OmniVinci` 在多个基准测试中表现优异，如在 DailyOmni 上评分比 `Qwen2.5-Omni` 高出 19.05 分，且训练标记量大幅减少。已应用于医疗 CT 影像解读、半导体器件检测等领域，展现出强大的多模态理解能力
+
+<img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/87d5a61b-b091-4124-9a20-aeaa67baeda2" />
 
 
 
