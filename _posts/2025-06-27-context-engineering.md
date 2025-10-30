@@ -3,7 +3,7 @@ layout: post
 title:  上下文工程指南
 date:   2025-06-27 16:52:00
 categories: 大模型
-tags: prompt 大模型 context cpu
+tags: prompt 大模型 context cpu manus langchain
 excerpt: 提示工程、Agent不管用？试试 上下文工程
 mathjax: true
 permalink: /context
@@ -13,6 +13,12 @@ permalink: /context
 {:toc}
 
 # 上下文工程
+
+发展
+- 2022年, 大家谈论“提示词工程”（Prompt Engineering），解决**单次交互**。
+- 2024年, 谈 “上下文工程”（Context Engineering），解决Agent（智能体）的**长序列、多轮工具调用**。
+
+![](https://pic1.zhimg.com/v2-b9ed5689719b243822220f47b42b8152_1440w.jpg)
 
 早期`提示工程`（Prompt Engineering），即如何巧妙地向模型提问，迅速转向一个更进阶的领域——`上下文工程`（Context Engineering）。
 
@@ -32,6 +38,8 @@ permalink: /context
   - 原文 [Context-Engineering-for-Agents](https://mirror-feeling-d80.notion.site/Context-Engineering-for-Agents-21f808527b17802db4b1c84a068a0976?pvs=143)
 
 > 上下文负责铺路，而提示工程教你怎么走，提示工程是上下文工程的子集。
+
+【2025-10-27】[Manus血泪教训：为什么上下文工程才是护城河](https://zhuanlan.zhihu.com/p/1966873003041220144)
 
 综述
 - 【2025-7-21】论文 [Title: A Survey of Context Engineering for Large Language Models](https://arxiv.org/pdf/2507.13334)
@@ -70,11 +78,9 @@ Cognition 团队核心观点
 
 随着模型能力的飞速发展，第二点正成为更普遍的瓶颈。
 
-上下文供给不足主要体现在：
+上下文供给不足体现在：
 - 信息缺失：模型完成任务所依赖的关键信息未被提供。
 - 格式混乱：信息虽然存在，但其组织和呈现方式不佳，阻碍了模型的有效理解。
-
-Agent 任务往往是 **多轮对话** 和 **工具调用** 的组合，导致上下文越来越长。
 
 两个问题：
 - 成本与效率： 长上下文会增加模型的计算成本和延迟，并可能导致模型性能下降
@@ -87,6 +93,17 @@ Agent 任务往往是 **多轮对话** 和 **工具调用** 的组合，导致�
 因此，仅依靠扩大上下文窗口并不能解决问题，反而会引入新的风险。
 
 上下文工程旨在通过合理整理、压缩和隔离信息，避免上述失败模式。
+
+### 上下文悖论
+
+Agent 任务往往是 **多轮对话** 和 **工具调用** 的组合，导致上下文越来越长。
+
+LangChain 创始人 Lance指出“上下文悖论”：Agent要完成复杂任务，必须大量调用工具（典型任务约50次）来获取上下文。
+- 即使 100万Token上下文窗口，模型在处理到200K（约20万）时，性能就开始“**腐烂**”（Context Rot），出现重复、缓慢和质量下降。
+- “上下文腐烂”阈值 大约128K-200K之间
+- ![](https://pic1.zhimg.com/v2-56f5485b0e984c8eb0259475ebde7b0a_1440w.jpg)
+
+Agent又慢又笨，不是模型不行，是“上下文工程”没做好
 
 
 ### 提示词 → 上下文
@@ -186,56 +203,119 @@ LLM应用早期，开发者专注于通过**巧妙措辞**诱导模型给出更�
 
 ## 策略
 
-上下文工程的四种策略
+解决上下文悖论的常见方法
+- ①.Context Offloading (上下文`卸载`)：将信息从核心对话历史中移出，存放到**外部**系统（如文件系统），只在上下文中保留一个轻量级引用
+- ②.Reducing Context (上下文`精简`)：通过总结/压缩减少信息量，例如修剪旧的工具调用记录
+- ③.Retrieving Context (上下文`检索`)：按需从外部系统将信息取回。实现方式包括基于**索引**的语义搜索，或更简单的基于**文件系统**的搜索工具（如 glob 和 grep）
+- ④.Context Isolation (上下文`隔离`)：将任务分解给多个子代理（sub-agents），每个子代理拥有独立、更小的上下文窗口，从而实现**关注点分离**和**上下文管理**
+- ⑤.Caching Context (上下文`缓存`)：对上下文信息进行缓存，以提高效率（这一点在 Manus 的实践中被特别提及）
 
-LangChain 将常见的上下文工程策略分为： `写入`（Write）、`选择`（Select）、`压缩`（Compress）和`隔离`（Isolate）
+这些策略并非孤立存在，而是相互关联、协同工作，共同构成了现代 AI Agents 架构的基石
 
-这些策略并不是孤立的，而是在复杂代理中相互配合使用
 
-### 写入
+LangChain Lance  总结 上下文工程的四种策略： `写入`（Write）、`选择`（Select）、`压缩`（Compress）和`隔离`（Isolate）
 
-写入（Write）——在上下文之外持久化信息
+业内顶尖团队（包括Manus）都在使用的4大工程支柱：
+- ![](https://pic1.zhimg.com/v2-d7f286ed2578b714197bc1088fd4a112_1440w.jpg)
 
-写入策略指将信息存储在上下文窗口之外，供未来检索。例如：
+|                | Offload     | Reduce       | Retrieve     | Isolate      | Cache        |
+|----------------|-------------|--------------|--------------|--------------|--------------|
+| Drew’s Post    | Discussed   | Discussed    | Discussed    | Discussed    | Not discussed|
+| Manus          | Used        | Discouraged [1] | Not discussed| Not discussed| Used         |
+| Anthropic–researcher | Used        | Used         | Used         | Used         | Not discussed|
+| Cognition      | Not discussed| Used         | Not discussed| Discouraged [2] | Not discussed|
+| LC open–deep–research | Used        | Used         | Used         | Used         | Not discussed|
+
+
+### 写入（卸载, Offload）
+
+又叫 上下文卸载 (Offloading)
+
+写入（Write）——在上下文之外**持久化**信息
+
+写入策略指将信息存储在上下文窗口之外，供未来检索。
+
+做法：不把所有信息都塞进上下文。
+
+比如，一个万字的网络搜索结果，只在上下文中返回一个文件路径（file.txt），Agent需要时自己去读。
+
+例如：
 - Scratchpad（草稿本）： 类似人类做笔记，代理通过工具调用将临时信息写入文件或状态对象，在任务过程中随时访问。Anthropic 的多代理研究系统会在计划开始前将研究计划写入记忆，以防上下文超过 20 万个 token 时被截断anthropic.com。LangGraph 为代理提供了 short‑term memory（检查点）来在会话内保存状态blog.langchain.com。
 - 长期记忆（Memory）： 有些信息需要跨会话保存，例如用户偏好或历史反馈。生成式代理（Generative Agents）通过定期汇总过去的反馈构建长期记忆。现在的一些产品如 ChatGPT、Cursor 和 Windsurf 也自动生成长期记忆
 
-### 选择
+Manus 经验：层次动作空间，3个抽象级别，每层在容量、成本和缓存稳定性之间权衡
+- 函数调用 FC
+- 沙盒工具
+- 工具包和API
+
+场景：处理大文件、大输出
+
+
+### 选择（检索, Retrieving）
 
 选择（Select）——从记忆中提取相关信息
 
 选择策略是将外部记忆、文件或工具调用结果拉入当前上下文。
+
+把信息（如记忆）存储在外部（如向量数据库），需要时通过RAG或简单grep命令检索回来。
 
 常见做法包括：
 - 小样本示例（Few‑shot examples）： 作为 **情景记忆**（episodic memory） 帮助代理模仿预期行为
 - 指令/规则（Procedural memory）： 用于指导代理行为，如 Claude Code 中的 CLAUDE.md 规则文件
 - 事实（Semantic memory）： 存储知识、实体信息，供检索调用
 
-
 LangGraph 中，开发者可以在每个节点按需检索状态或长期记忆，并通过嵌入检索等方式选取最相关的记忆。
 
 对于工具选择，一些研究表明，使用 RAG 技术对工具说明进行检索可以使选择准确率提高 3 倍
 
+场景：长时记忆、知识库。
 
 ### 压缩
 
-压缩（Compress）——保留必要的信息
+压缩（Compress）——保留必要的信息, 又叫 上下文缩减 (Reducing)
 
-压缩策略通过 摘要（summarization） 或 修剪（trimming） 减少上下文长度：
+最核心也最精妙的一步，即在上下文“腐烂”之前，主动对其进行“瘦身”。
 
-摘要： 
+压缩策略通过 `摘要`（summarization） 或 `修剪`（trimming） 减少上下文长度：
+
+(1) 摘要： 
 - 通过 LLM 压缩对话历史，只保留关键决策。
 - Claude Code 会在上下文超过 95% 时运行 “auto‑compact” 自动摘要。
 - 在 Cognition 的代理中，还使用专门微调的小模型来压缩代理间的交互，以减少知识传递时的 token 数
 
-修剪：
+(2) 修剪：
 - 通过启发式方法删掉旧消息，例如只保留最近的几轮对话；也可以用训练出的 Provence 模型对检索内容进行句子级别的剪枝，它将上下文剪枝任务视为序列标注问题，在多领域问答中几乎不损失性能
 
-压缩并不是万能的：过度摘要可能遗漏关键细节，修剪也有风险，因此需要结合任务特点谨慎使用。
+压缩并非万能：过度摘要可能遗漏关键细节，修剪也有风险，因此需要结合任务特点谨慎使用。
 
-### 隔离
+而Manus团队，正是在“上下文缩减”上，做到了极致。
+
+Peak团队将“缩减”分为两种截然不同的操作：
+1. 压缩 (Compaction)：可逆“瘦身”
+  - 定义：删除那些可以从外部（如文件系统）重建的信息。
+  - 例子：一个工具调用，完整信息是{path: "file.txt", content: "..."}。在“压缩”后，只保留{path: "file.txt"}。
+  - 优势：信息“零”丢失，只是被“外置”了。
+2. 摘要 (Summarization)：不可逆“遗忘”
+  - 定义：对历史信息进行总结，彻底丢弃原文。
+  - 优势：大幅度释放上下文空间。
+
+Manus 策略堪称精妙：
+- 先“压缩”，后“摘要”：当上下文达到128K时，系统首先触发“压缩”。只在“压缩”收益也变小时，才万不得已触发“摘要”。
+- “压缩”艺术：执行“压缩”时，只压缩最老的50%历史，并保留最新的50%工具调用的完整信息。这能确保模型有足够的新鲜“样例”来模仿，防止其行为错乱。
+- “摘要”技巧：执行“摘要”时，会使用原始的、未经压缩的数据来总结，以保证信息保真度。并且，同样会保留最后几个工具调用的全量信息，防止模型“忘记自己刚刚在干什么”。
+
+设置“腐烂”闹钟，“腐烂阈值”，128K。
+- ![](https://pic3.zhimg.com/v2-d62c79bea971ea86efe683708b3e727e_1440w.jpg)
+
+注意：
+- 不要过度，上文不是越多越好，简洁胜过膨胀，最大的收益来自删减而非添加，保持边界清晰
+
+
+### 隔离（Isolation）
 
 隔离（Isolate）——拆分上下文以并行处理
+
+使用多智能体（Multi-Agent）架构，每个子Agent只处理自己的小上下文窗口，互不干扰。
 
 隔离策略通过 分工合作 减少单个上下文窗口的压力。例如：
 - 多代理架构： Anthropic 的 Research 系统采用 主代理 + 子代理 模式，主代理制定研究计划并将任务分配给多个子代理并行搜索，子代理拥有自己的上下文窗口，并在完成后将结果返回，由主代理汇总。该系统在广度优先查询中比单代理效果提升 90% 以上，但使用的 token 约是对话模式的 15 倍，因此只适用于价值高且可并行的任务
@@ -247,6 +327,11 @@ Cognition 指出，多代理架构容易出现上下文缺乏共享、决策冲�
 - 原则 2：决策隐含偏好，冲突会产生坏结果
 
 因此在实际应用中，应谨慎使用多代理，必要时更倾向于线性单代理配合压缩技术。
+
+场景：复杂任务拆解。
+
+![](https://pic4.zhimg.com/v2-ddec944cdc1aba24c801e88d6c693f87_1440w.jpg)
+
 
 ## 构成
 
@@ -388,6 +473,51 @@ LangChain 生态两个核心工具——`LangGraph`和`LangSmith`——为实践
 
 
 待定
+
+
+### Manus
+
+【2025-10-27】
+- [Manus血泪教训：为什么上下文工程才是护城河](https://zhuanlan.zhihu.com/p/1966873003041220144)
+- [LangChain 与 Manus 内部关于 Agent 上下文工程的讨论会实录](https://mp.weixin.qq.com/s/lAl-hZGy7i-b53m5SLFyWA)
+
+Manus联创 Peak 最近与LangChain创始人分享: Agent 上下文工程。
+
+LangChain 团队首先介绍了上下文工程的背景与挑战，随后系统讲解了五种核心策略：卸载（Offloading）、缩减（Reducing）、检索（Retrieving）、隔离（Isolating） 与 缓存（Caching）。
+
+Manus 分享了他们在实践中的深入经验，尤其是在上下文缩减、隔离与卸载方面，Manus 展示了独特做法，如可逆“压缩”与不可逆“总结”的区别、两种代理隔离模式，以及用于“工具卸载”的分层动作空间等
+
+“血泪教训”：上一个产品，迭代速度被长达1-2周的模型训练周期活活拖死。
+- 产品还没找到PMF（市场契合点）的阶段，他们却在花费大量时间“提升那些可能根本不重要的基准测试”
+- 最大的“陷阱”还不是时间，而是“僵化”。“微调模型时，通常会固定一个‘行动空间’（Action Space）。” Manus 曾被MCP的发布彻底改变
+
+划清界限：AI应用层的真正边界
+
+经历“痛苦”领悟后，Peak为Manus找到清晰无比的战略边界:“上下文工程”
+- 目前应用和模型之间最清晰、最实用的边界。
+- 创业公司应该“尽可能久地”依赖通用大模型，而不是试图在模型层与巨头竞争。巨头的护城河是“模型”，而应用层的护城河，就是“使用”模型的能力——即“上下文工程”
+
+这次把赌注压在“上下文工程”（Context Engineering），团队短短几个月内，将产品重构了整整5次。
+
+Manus 心得：所有方法综合使用
+- Offload 卸载 + Retrieve 检索 → enable Reduction 实现瘦身.
+- Reliable Retrieve 可信检索 → enables Isolation 实现隔离
+- Isolation 隔离 → reduces frequency of Reduction 减少瘦身频率
+- All under Cache optimiztion 所有方法都用缓存优化
+
+|                | Offload     | Reduce       | Retrieve     | Isolate      | Cache        |
+|----------------|-------------|--------------|--------------|--------------|--------------|
+| Drew’s Post    | Discussed   | Discussed    | Discussed    | Discussed    | Not discussed|
+| Manus          | Used        | Discouraged [1] | Not discussed| Not discussed| Used         |
+| Anthropic–researcher | Used        | Used         | Used         | Used         | Not discussed|
+| Cognition      | Not discussed| Used         | Not discussed| Discouraged [2] | Not discussed|
+| LC open–deep–research | Used        | Used         | Used         | Used         | Not discussed|
+
+最深刻的领悟：
+> “我们最大的飞跃，不是来自添加了更花哨的上下文管理技巧，而是来自‘简化’和‘移除不必要的层’。”
+
+<img width="2394" height="6264" alt="image" src="https://github.com/user-attachments/assets/58f5f4a8-e1ee-40a3-a539-5c39a1369150" />
+
 
 
 ## 进化
