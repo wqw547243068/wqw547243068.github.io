@@ -297,15 +297,35 @@ LangGraph 为开发者设计的新框架，适合那些偏好 可视化方法 �
 
 
 
-### LangSmith
+### LangSmith 闭源
+
+LLM 大模型应用可观测性工具最有名的是 Langsmith
+
+<img width="818" height="440" alt="image" src="https://github.com/user-attachments/assets/f559ab10-1cdb-4eed-91ce-6f8e01f7b046" />
 
 
-LangSmith 是 LangChain 官方推出的 **生产级**LLM应用程序**构建平台**。
-- 可以调试、测试、评估和监控任何LLM框架上构建的链和智能代理，并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
+LangSmith 是 LangChain 官方 **生产级**LLM应用程序**构建平台**。
+- 调试、测试、评估和监控任何LLM框架上构建的链和智能代理
+- 并与 LangChain 无缝集成，LangChain 是构建LLM的首选开源框架。
 - langchain 执行过程中的数据可视化展示，用于观察 chain tool llm 之前的嵌套关系、执行耗时、token 消耗等指标
 - [官方文档](https://docs.smith.langchain.com/)
 
-LangSmith由LangChain开发，LangChain是开源LangChain框架背后的公司。
+LangChain无缝衔接的LangSmith平台，可以跟踪程序运行步骤，提供详细调试信息，同时支持数据集收集和自动化测试评估等功能，极大方便了AI大模型应用程序的开发过程。
+
+
+### LangFuse 开源
+
+LangSmith 缺点: 云平台，不能本地部署，对国内不友好
+
+Langfuse 开源项目，而 LangSmith 闭源项目
+
+
+开源生产级AI应用维护平台：[LangFuse](https://langfuse.com/)，LangSmith 平替，可集成 LangChain，也可直接对接 OpenAI API。
+- 与 LangChain 没关系
+
+Langfuse 支持
+- 在线数据标注和收集
+- 从本地导入数据集。
 
 
 ## LangChain 观点
