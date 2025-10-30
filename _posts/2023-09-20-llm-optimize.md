@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 llm deepspeed 推理 推测解码
+tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_opt
@@ -286,7 +286,32 @@ PyTorch 编写注意力
 - 不想自己部署，直接用各大公司的在线版本完事。
 
 
-### LLM 本地部署
+## 推理框架
+
+
+### LLM 推理
+
+大模型训好了，如何部署到线上？如何支持多用户高并发调用+快速响应？
+
+方法
+- （1）直接上 Hugging Face 的 transformers + FastAPI 写个demo
+  - 实战时，要实现 batching、kv-cache、流式输出，简陋方案立马崩溃。
+  - vLLM 和 SGLang，正是为了解决这些痛点而生。
+- （2）vLLM
+- （3）SGLang
+
+如果 vLLM 是“高性能、低干预”的自动化服务员，那 SGLang 是“懂编程的服务机器人”
+
+选型
+- ToC AI 应用开发者，做对话助手、智能客服、内容生成平台之类，SGLang 灵活性省掉不少“拼 prompt、加钩子、加中间件”的麻烦。
+- 模型 API 服务、对标 OpenAI SaaS 接口，vLLM 绝对是业内“吞吐率/稳定性”数一数二。
+
+没有最好，只有合适，一切都要以公司业务为主
+
+作者：[Trancy Wang](https://www.zhihu.com/question/666943660/answer/1914348903668651349)
+
+
+### LLM 推理框架
 
 【2024-7-15】本地部署运行私有的开源大型语言模型（LLMs）的方法
 - Hugging Face 的 `Transformers` 
@@ -380,6 +405,19 @@ We leverage a breadth of optimizations including:
 
 ### vLLM
 
+Meta 前 PyTorch 团队推出 vLLM，最大特色“PagedAttention”。
+
+PagedAttention 本质是灵活管理 KV Cache（注意力缓存）的方式。
+- 传统 transformer 推理时，每个 token 都带上历史上下文，缓存爆炸。
+- vLLM 通过类似虚拟内存分页方式，优化性能。像会打麻将的高效服务员，记牌记得巨快
+
+好处
+- API 设计接近 OpenAI 标准接口，部署友好，尤其对做“OpenAI替代”的场景特别合适。
+- 高并发时不掉链子，响应速度几乎线性增长。
+
+前提：GPU A100 起步。
+
+
 
 #### vLLM 源码解析
 
@@ -404,6 +442,39 @@ We leverage a breadth of optimizations including:
 
 'qwen-vllm - 通义千问VLLM推理部署DEMO' 
 - GitHub: [qwen-vllm](github.com/owenliang/qwen-vllm)
+
+
+### SGLang
+
+vLLM 虽好，但难以自定义推理逻辑，比如控制 prompt 动态拼接、多轮上下文窗口滚动、token 前缀约束，操作麻烦。
+
+vLLM 设计思想：“底层最优”，更适合请求独立、按 token 走流水线的场景。 
+
+SkyWork 团队推出 SGLang，最开始为了服务 InternLM 这种国产大模型开发的，但最近社区动静很大。
+
+SGLang 更像“推理框架+推理DSL（领域特定语言）”结合体。鼓励用“Python+模板语言”写法描述推理逻辑，if else 控制输出、循环生成、模板格式化、系统指令，都能 prompt 模板里直接操作
+
+SGLang 把“prompt +推理流程”统一封装成“程序单元”，像写代码那样写推理逻辑，还能自动在多个用户、多个请求之间搞调度优化。
+
+SGLang 是 LMSYS Org 团队于2024年1月推出的 LLM 和 VLM 的通用服务引擎，且完全开源，采用 Apache 2.0 许可授权。
+- 纯 Python 编写，核心调度器只用了不到 4K 行代码就实现了
+- 已被 LMSYS Chatbot Arena 用于支持部分模型、Databricks、几家初创公司和研究机构，产生了数万亿 token，实现了更快的迭代。
+- Paper：[SGLang: Efficient Execution of Structured Language Model Programs](https://arxiv.org/abs/2312.07104)
+- Code：[sglang](https://github.com/sgl-project/sglang)
+
+SGLang 技术结构解析：
+- RadixAttention
+- Upper-level Scheduling
+
+最新的 SGLang Runtime v0.2 性能更加惊艳。
+- 运行 Llama 3.1 405B 时，吞吐量和延迟表现都优于 vLLM 和 TensorRT-LLM，甚至能达到 TensorRT-LLM 的 2.1 倍，vLLm 的 3.8 倍。
+- 目前已在 GitHub 上已经收获了超过 4.7k 的 star 量
+
+Lepton AI 联合创始人兼 CEO 贾扬清都评价说：
+> 我一直被我的博士母校加州大学伯克利分校惊艳，因为它不断交付最先进的人工智能和系统协同设计成果。
+
+
+参考：[参考](https://blog.csdn.net/QingKeLab/article/details/141688674)
 
 
 ### MLC-LLM
@@ -1096,29 +1167,6 @@ mlc_chat_cli
 
 3、Web Stable Diffusion
 - ![](https://pic2.zhimg.com/80/v2-895ea13851a24908d5ec8fb6ef1ad775_1440w.webp)
-
-
-### SGLang
-
-SGLang 是 LMSYS Org 团队于2024年1月推出的 LLM 和 VLM 的通用服务引擎，且完全开源，采用 Apache 2.0 许可授权。
-- 纯 Python 编写，核心调度器只用了不到 4K 行代码就实现了
-- 已被 LMSYS Chatbot Arena 用于支持部分模型、Databricks、几家初创公司和研究机构，产生了数万亿 token，实现了更快的迭代。
-- Paper：[SGLang: Efficient Execution of Structured Language Model Programs](https://arxiv.org/abs/2312.07104)
-- Code：[sglang](https://github.com/sgl-project/sglang)
-
-SGLang 技术结构解析：
-- RadixAttention
-- Upper-level Scheduling
-
-最新的 SGLang Runtime v0.2 性能更加惊艳。
-- 运行 Llama 3.1 405B 时，吞吐量和延迟表现都优于 vLLM 和 TensorRT-LLM，甚至能达到 TensorRT-LLM 的 2.1 倍，vLLm 的 3.8 倍。
-- 目前已在 GitHub 上已经收获了超过 4.7k 的 star 量
-
-Lepton AI 联合创始人兼 CEO 贾扬清都评价说：
-> 我一直被我的博士母校加州大学伯克利分校惊艳，因为它不断交付最先进的人工智能和系统协同设计成果。
-
-
-参考：[参考](https://blog.csdn.net/QingKeLab/article/details/141688674)
 
 
 ## 优化方法
