@@ -313,9 +313,17 @@ LangSmith 是 LangChain 官方 **生产级**LLM应用程序**构建平台**。
 LangChain无缝衔接的LangSmith平台，可以跟踪程序运行步骤，提供详细调试信息，同时支持数据集收集和自动化测试评估等功能，极大方便了AI大模型应用程序的开发过程。
 
 
-### LangFuse 开源
+### 第三方
 
 LangSmith 缺点: 云平台，不能本地部署，对国内不友好
+
+#### 总结
+
+对比分析
+- [LangWatch vs LangSmith vs LangFuse](https://langwatch.ai/comparison)
+
+#### LangFuse 开源
+
 
 Langfuse 开源项目，而 LangSmith 闭源项目
 
@@ -326,6 +334,17 @@ Langfuse 开源项目，而 LangSmith 闭源项目
 Langfuse 支持
 - 在线数据标注和收集
 - 从本地导入数据集。
+
+#### LangWatch
+
+[LangWatch](https://langwatch.ai/) 全面的LLM运维平台，帮助AI团队管理大语言模型（LLM）应用的全生命周期。
+- GitHub [LangWatch](https://github.com/langwatch/langwatch)
+
+要点
+- 平台可无缝集成任意技术栈，提供监控、评估与优化工具，确保AI质量、安全与性能。
+- 通过自动化质量检查、引入人工闭环评估和详尽分析，LangWatch帮助企业降低幻觉、数据泄露等AI风险，加速从概念验证到生产部署。
+- 平台支持可视化实验追踪、定制化评估和告警系统，助力团队打造可靠合规的AI产品，实现持续优化。
+
 
 
 ## LangChain 观点
