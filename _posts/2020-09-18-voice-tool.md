@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "语音处理工具-Voice Detection"
+title:  "语音处理工具"
 date:   2020-09-18 19:43:00
 categories: 深度学习
 tags: 语音识别 NLP ASR TTS 情感计算 声纹识别 说话人识别  直播 webrtc 手语合成 全双工 通信 paddle 音箱 纠错 ffmpeg
