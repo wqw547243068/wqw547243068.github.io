@@ -1365,9 +1365,9 @@ Gradient Accumulation 解决了很多问题：
 
 内容：
 - 分布式训练的基本原理
-- TensorFlow的分布式训练
-- PyTorch的分布式训练框架
-- Horovod分布式训练
+- TensorFlow 分布式训练
+- PyTorch 分布式训练框架
+- Horovod 分布式训练
 
 ## 分布式实现
 
@@ -1379,11 +1379,6 @@ Gradient Accumulation 解决了很多问题：
 
 详见站内专题：[Pytorch 分布式实践](pytorch_dist)
 
-超大规模语言模型主要有两条技术路线：
-- (1) `TPU` + `XLA` + `TensorFlow`/`JAX` : Google主导，由于TPU和自家云平台GCP深度绑定
-- (2) `GPU` + `PyTorch` + `Megatron-LM` + `DeepSpeed`: NVIDIA、Meta、MS大厂加持，社区氛围活跃
-
-(1) 对于非Googler 只可远观而不可把玩，(2) 更受到群众欢迎。
 
 ### 分布式模式
 
@@ -1503,6 +1498,38 @@ TensorFlow主要的分布式训练的方法有三种：
 
 TF_CONFIG的配置如下
 - ![](https://pic2.zhimg.com/80/v2-dc8c2f647b9e359661e2a6f288ac1525_1440w.jpg)
+
+### Horovod 分布式
+
+Uber 开源的分布式训练框架 Horovod。
+
+Uber 内部认为 
+- （1）MPI 模型比以前的解决方案（例如带有参数服务器的分布式 TensorFlow）更简单，并且代码更改要少得多。
+  - 一旦使用 Horovod 编写了可扩展训练脚本，可在单 GPU、多 GPU 甚至多台主机上运行，而无需任何进一步的代码更改。
+- （2）Horovod 速度很快。 128 台服务器上测试，每台服务器上都配备了4张 Pascal GPU卡， 并通过支持 RoCE（RDMA over Converged Ethernet 的缩写 ，RoCE是在InfiniBand Trade Association（IBTA）标准中定义的网络协议，允许通过以太网络使用RDMA。
+  - RDMA技术在超融合数据中心、云、存储和虚拟化环境中的应用） 的 25 Gbit/s 网络连接
+
+Horovod 在 Inception V3 和 ResNet-101 上实现了 90% 的理想扩展吞吐效率上限，在 VGG-16 上实现了 68% 的理想扩展吞吐效率上限。
+
+<img width="1028" height="442" alt="image" src="https://github.com/user-attachments/assets/93d3a933-d56d-469a-b38a-20017f64aae4" />
+
+Horovod 核心卖点：
+- 对单机训练脚本尽量少的改动前提下进行并行训练，并且能够尽量提高训练效率。
+
+支持
+- 不同前端训练框架和底层通信库（英伟达的NCCL以及Intel的oneCCL）
+- 运行在Spark/Ray集群上
+
+Horovod 核心概念取至 MPI 领域
+- 概念 size、rank、local rank、allreduce、allgather、broadcast 和 alltoall。
+- size将是进程数，在本例中为 16。
+- rank 将是从 0 到 15（大小 - 1）的唯一进程 ID。
+- local rank将是服务器内从 0 到 3 的唯一进程 ID。
+- Allreduce 是一种在多个进程之间聚合数据并将结果分发回它们的操作
+
+
+【2022-2-27】[分布式训练框架Horovod（一）：基本概念和核心卖点](https://zhuanlan.zhihu.com/p/468380798)
+
 
 ### 单机单卡
 
