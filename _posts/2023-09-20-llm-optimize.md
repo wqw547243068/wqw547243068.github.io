@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang
+tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_opt
@@ -205,6 +205,19 @@ GPT-2 生成下一个词元的情况：
 ![](https://image.jiqizhixin.com/uploads/editor/ef2cb6fe-34aa-4097-92cd-af28c83a1ba6/640.png)
 
 详见站内专题: [文本生成之序列解码](text_decoding)
+
+
+### 多模态
+
+相较于普通语言模型，多模态模型会
+- 输入的 token list里把多模态数据空出来，正常embedding变成token feature
+- 同时把原始图像pixel 数据经过 VisionTransformer模型（通常说的VIT模型）转化为image feature
+- 最后把 token feature和image feature拼接起来，变成普通的LLM模型输入。
+
+图解
+- ![](https://pic3.zhimg.com/v2-7a6dfe0828694fba1116a9986c9f566c_r.jpg)
+
+[vllm 实现细节](https://zhuanlan.zhihu.com/p/1934611930389147672)
 
 ### 优化
 
