@@ -431,6 +431,32 @@ PagedAttention 本质是灵活管理 KV Cache（注意力缓存）的方式。
 前提：GPU A100 起步。
 
 
+#### vllm部署方式
+
+vllm 两种模型部署方式：
+- **在线**服务形式（Online Serving）
+  - 在线服务是通过指令来启动一个vllm服务，将模型以服务的形式完成部署，之后可以通过openai格式的api来访问模型
+- **离线**推理形式 （Offline Inference）
+  - 离线推理的形式是通过类的方式初始化一个模型，之后传入提示词即可访问模型
+
+
+#### vllm 使用
+
+服务开启和各参数作用
+
+vllm 服务启动指令如下
+
+```sh
+vllm serve deepseek-ai/deepseek-vl2-tiny  \
+ --hf_overrides '{"architectures": ["DeepseekVLV2ForCausalLM"]}' \
+ --dtype float16   --trust_remote_code \
+ --host 0.0.0.0 --port 8080 \
+ --chat_template template_deepseek_vl2.jinja \
+ --gpu-memory-utilization 0.7 \
+ --limit-mm-per-prompt "image=8"
+```
+
+详见[地址](https://zhuanlan.zhihu.com/p/1895409091192537734)
 
 #### vLLM 源码解析
 
