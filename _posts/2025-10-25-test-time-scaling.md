@@ -20,6 +20,8 @@ permalink: /test_time
 
 ## 背景知识
 
+
+
 ### Train Time Scaling Law
 
 详见站内：[规模法则](llm_law)
@@ -92,6 +94,78 @@ Scaling Law排序
 
 ## 测试时扩展 TTS
 
+大模型**训练**阶段的「暴力堆算力」已经逐渐触及天花板。随着大模型训练成本急剧攀升、优质数据逐渐枯竭，**推理**阶段扩展（Test-Time Scaling, TTS） 迅速成为后预训练时代的关键突破口。
+
+与传统「堆数据、堆参数」不同，TTS 通过在推理阶段动态分配算力，使同一模型变得更高效、更智能 —— 这一技术路径在 OpenAI-o1 和 DeepSeek-R1 的实践中已初显威力。
+
+<img width="1080" height="382" alt="image" src="https://github.com/user-attachments/assets/9d363111-c4a2-4d7e-a303-2243bfe3483e" />
+
+数学、编程等硬核任务上，TTS 表现亮眼；而在开放问答、多模态理解乃至复杂规划等场景中，它同样展现出巨大潜力。
+
+目前，研究者已探索了多种 TTS 策略，如 Chain-of-Thought (CoT)、Self-Consistency、Search 和 Verification，但该领域仍缺乏统一的研究视角与评估框架。
+
+### 综述
+
+【2025-5-4】香港城市大学、麦吉尔大学（McGill）、蒙特利尔人工智能实验室（MILA）、人大高瓴人工智能学院、Salesforce AI Research、斯坦福大学、UCSB、香港中文大学等机构的多位研究者联合发布了首篇系统性的 Test-Time Scaling 领域综述。该文首次提出「What-How-Where-How Well」四维分类框架，系统拆解推理优化技术，为 AI「深思」绘制全景路线图。
+- 论文：[A Survey on Test-Time Scaling in Large Language Models：What, How, Where, and How Well](https://arxiv.org/pdf/2503.24235)
+- 项目：[page](https://testtimescaling.github.io/)
+- GitHub：[testtimescal](https://github.com/testtimescal)
+
+全面、多层次、可扩展的四维正交分析框架：
+- What to scale：扩什么？CoT 长度、样本数、路径深度还是内在状态？
+- How to scale：怎么扩？Prompt、Search、RL，还是 Mixture-of-Models？
+- Where to scale：在哪扩？数学、代码、开放问答、多模态……
+- How well to scale：扩得怎样？准确率、效率、控制性、可扩展性……
+
+当前的主流 TTS 技术路线，包括：
+- **并行**策略：即同时生成多个答案，并选出最优解（如 Self-Consistency / Best-of-N）
+- **逐步**演化(序列)：即通过迭代修正逐步优化答案（如 STaR / Self-Refine）
+- 搜索推理：结合并行与序列策略，探索**树状**推理路径（如 Tree-of-Thought / MCTS）
+- 内在优化：模型自主控制推理步长（如 DeepSeek-R1 / OpenAI-o1）
+
+<img width="1080" height="817" alt="image" src="https://github.com/user-attachments/assets/f02ebcbf-ebbf-4f6a-8d1e-cb10feb8364e" />
+
+
+#### 扩什么
+
+What to Scale（扩展什么）- 界定推理过程中需要扩展的具体对象，包括：
+- Parallel Scaling（**并行**扩展）：并行生成多个输出，然后将其汇总为最终答案，从而提高测试时间性能；
+- Sequential Scaling（**序列**扩展）：根据**中间**步骤明确指导后面的计算；
+- Hybrid Scaling（**混合**扩展）：综合并行和顺序扩展的**互补**优势；
+- Internal Scaling（**内生**扩展）：模型内部参数范围内，**自主**决定分配多少计算量进行推理，在推理时并不外部人类指导策略。
+
+每个扩展形式都进行经典工作的介绍，丰富了对于扩展策略的外延描述
+
+<img width="886" height="361" alt="image" src="https://github.com/user-attachments/assets/128c664d-e2d1-4b54-bde9-e7d8fb51fbc9" />
+
+
+例如：在并行扩展中作者根据得到覆盖性的来源分为两个更小的类别，在单个模型上的反复采样和多个模型的采样。
+
+#### 怎么扩
+
+How to Scale（怎么扩展）- 归纳实现扩展的核心技术路径：
+- 训练阶段方法：监督微调（SFT）、强化学习（RL）等
+- 推理阶段技术：刺激策略（Stimulation）、验证技术（Verification）、搜索方法（Search）、集成技术（Aggregation）
+
+大量经典的和最前沿技术，例如在训练阶段中的强化学习技术，伴随 R1 而大火，因此在短短两个月内涌现出大量的工作，同时分成基于奖励模型和不需奖励模型两类；
+- 对于刺激策略，作者分成了提示（Prompt），解码（Decode）、自重复（Self-Repetition）、模型混合（mixture-of-model）四类。
+
+
+#### 扩哪里
+
+Where to Scale（在哪里扩展）- 明确技术适用的任务场景与数据集特性。
+
+作者在这里提出尽管 TTS 的推出和验证是在某一类特定的推理任务上得到成功的，可是已经有足够多的工作开始显现出 TTS 是一种通用地能够提升在多样任务的策略，由此作者以推理（Reasoning）和通用 (General Purpose) 两类进行分类，一方面强调了 TTS 在越来越多样、越来越先进的推理任务中有很明显的效果，另一方面也不断跟踪 TTS 在更多通用任务上应用的效果。值得注意的是，作者整理出一个评测基准的表格，方便更多研究者直接从中去选择合适自己的基准。
+
+
+
+#### 效果如何
+
+How Well to Scale（效果怎么样）- 建立多维评估体系：
+
+在当下，TTS 已经不仅是一个提高任务准确率的策略，当它成为一个新的值得被研究的核心策略时，对 TTS 的要求会更加多元化，这也是未来研究的主题。作者认为之后对 TTS 的优化重点将不仅仅局限在准确率的提升，是在于如何提高效率、增强鲁棒性和消除偏见等。
+
+<img width="1080" height="1784" alt="image" src="https://github.com/user-attachments/assets/aed489aa-1b5a-4b95-ba34-c28a45778cdd" />
 
 
 ### o1 引出 TTS
