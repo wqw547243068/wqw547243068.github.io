@@ -230,6 +230,35 @@ Even at matched accuracy, RL shows less catastrophic forgetting
 可视化[图](https://jyopari.github.io/posts/RL's%20Razor%20Why%20On-Policy%20Reinforcement%20Learning%20Fo%202573b66e4cf580cdb414d25c1f346f0c/Screenshot_2025-08-22_at_6.12.34_PM.png)
 - ![](https://jyopari.github.io/posts/RL's%20Razor%20Why%20On-Policy%20Reinforcement%20Learning%20Fo%202573b66e4cf580cdb414d25c1f346f0c/Screenshot_2025-08-22_at_6.12.34_PM.png)
 
+#### 【2025-9-25】UIUC 更小学习率缓解遗忘
+
+【2025-10-21】[大模型微调范式认知再被颠覆？UIUC、Amazon团队最新研究指出SFT灾难性遗忘问题或被误解](https://mp.weixin.qq.com/s/29pDMmX821Z10yFPFZ-5Ng)
+
+SFT 是否会让模型 “遗忘” 原本的通用能力？ 
+
+不少文献指出，领域微调固然能带来专用性能的提升，但代价是模型在数学推理、代码生成、指令跟随等通用 benchmark 上出现显著退化。这种现象被广泛称为 “灾难性遗忘”。
+
+然而，这种看法值得重新审视。
+
+【2025-9-25】伊利亚诺香槟分校 UIUC、Amazon、UT Austin 以及 University at Buffalo 团队给出不同答案。
+- 论文：[SFT Doesn't Always Hurt General Capabilities: Revisiting Domain-Specific Fine-Tuning in LLMs](https://arxiv.org/pdf/2509.20758)
+
+一句话概括：稍微更小的学习率能大幅度缓解遗忘，TALR 则是进一步平衡的利器。
+
+领域特定的 SFT 并不总是会严重削弱模型的通用能力。相反，在训练中采用**更小的学习率**，模型就可能在两方面取得平衡：(但不能完全消除)
+- 通用任务上的能力遗忘被大幅缓解；
+- 目标领域上的表现依然与大学习率相当。
+
+遗忘问题可能更多源于**训练策略**的选择，而不是单单 SFT 这一范式本身。
+
+更小的学习率（在这里 5e-6) 能够在保持数学领域性能的同时（相比于大学习率 2e-5)，显著缓解模型在原来擅长的 Coding 能力的退化。论文中提出的发现是同样适用于大规模任务与模型的普适规律。
+
+关键结论：
+- 较小的学习率能够严格收紧通用性能下降的上界
+
+解释：
+- 当训练目标只包含最终标签时，模型在每个样本中遇到的 “难 token” 数量减少，从而拓宽了可接受的学习率范围。
+
 ### 解法
 
 灾难性遗忘主要有两种方法：
