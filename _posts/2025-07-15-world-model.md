@@ -454,7 +454,7 @@ Mirage 2 和 Genie 3相比，控制的类别更加丰富，生成时长可以长
 - 视觉稳定性：快速的场景转换可能会引入意外的细节变化，不过通过策略性的提示工程可以帮助在较长时间内保持一致性。
 
 
-### HunyuanWorld-Voyager
+### 【2025-9-2】HunyuanWorld-Voyager
 
 谷歌Genie3等支持实时交互视频生成世界模型不足
 - 纯2D输出难以满足虚拟现实和物理仿真等应用的3D交互需求。
@@ -479,6 +479,54 @@ Mirage 2 和 Genie 3相比，控制的类别更加丰富，生成时长可以长
 
 
 该模型在斯坦福大学李飞飞团队发布的世界模型基准测试 [WorldScore](https://huggingface.co/spaces/Howieeeee/WorldScore_Leaderboard) 上位居综合能力首位，超越现有开源方法，在视频生成和3D重建任务中均表现出色。在视频生成和视频3D重建两个任务上，Voyager也均取得更好的结果。
+
+
+### 【2025-10-30】Emu3.5
+
+【2025-10-30】[世界模型有了开源基座Emu3.5！拿下多模态SOTA，性能超越Nano Banana]()
+
+北京智源人工智能研究院（BAAI）发布 悟界·Emu3.5 
+- 图、文、视频任务一网打尽，不仅能画图改图，还能生成图文教程，视频任务更是增加了物理真实性。
+- 体验链接：[体验报名入口](https://jwolpxeehx.feishu.cn/share/base/form/shrcn0dzwo2ZkN2Q0dveDBSfR3b)
+- 项目主页：[landingPage](https://zh.emu.world/pages/web/landingPage)
+- 技术报告：[Emu35_tech_report.pdf](https://zh.emu.world/Emu35_tech_report.pdf)
+
+
+像一个智能体（Agent）一样，理解长时序、空间一致的序列，模拟在虚拟世界中的探索和操作
+
+Emu3.5 生成的作品展现出极强的连贯性、逻辑性，让AI模拟动态物理世界的能力又增强了，以第一人称视角进入所构建的虚拟世界。
+
+也支持多图、多轮指令的复杂图像编辑，主体一致性、风格保持能力达到业界顶尖水平
+
+给 Emu3.5 一张狐狸草图，并指令“把它变成3D模型、3D打印出来、再上色”，Emu3.5 直接一步步生成了从草图到最终手办形态的完整视觉流程
+
+<img width="1079" height="606" alt="image" src="https://github.com/user-attachments/assets/2fec2850-18f3-4c58-97e9-ab2d2b1a8b08" />
+
+
+
+#### 原理
+
+Emu3.5 参数量仅**34B**，整个模型以标准 Decoder-only Transformer 为框架，单一模型能够同时完成视觉叙事、视觉引导、图像编辑、世界探索、具身操作等多种任务。
+
+将所有任务都统一为**下一State预测**（Next-State Prediction）任务，无论是文本还是图像，都被一个强大的**多模态分词器**（Tokenizer）转换成离散的Token序列。
+- 海量视频数据预训练
+  - 模型在超过10万亿Token的多模态数据上进行训练，其中主力是来自互联网视频的连续帧和转录文本。这使得模型从一开始就沉浸式学习时空连续性和因果关系。
+- 强大的分词器
+  - 视觉分词器（Tokenizer）基于IBQ框架，拥有13万的视觉词汇表，并集成了扩散解码器，能实现高达2K分辨率的高保真图像重建。
+- 多阶段对齐
+  - 在预训练之后，模型经过了大规模的有监督微调（SFT）和大规模多模态强化学习（RL），使用一个包含通用指标（如美学、图文对齐）和任务特定指标（如故事连贯性、文本渲染准确率）的复杂奖励系统进行优化。
+- 推理加速黑科技
+  - 为了解决自回归模型生成图像慢，团队提出离散扩散适配（DiDA）技术，将逐个Token的生成方式转变为并行的双向预测，在不牺牲性能的前提下，使每张图像的推理速度提升近20倍。
+
+
+#### 效果
+
+项权威基准上，性能媲美甚至超越了 Gemini-2.5-Flash-Image，即 Nano Banana，在文本渲染和多模态交错生成任务上优势尤其显著。
+
+<img width="1080" height="469" alt="image" src="https://github.com/user-attachments/assets/bfdd0d4c-9cd5-4fac-bbf0-37d3613da99f" />
+
+
+
 
 # 结束
 
