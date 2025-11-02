@@ -2476,40 +2476,15 @@ HRM 核心设计灵感来源于大脑：分层结构 + 多时间尺度处理。
 
 #### 【2025-9-14】MIT PDDL-Instruct
 
-2025年9月14日，大模型学会符号推理 pddl-instruct方法，[twitter](https://x.com/mdancho84/status/1970509799130325223?s=19)
+2025年9月14日，大模型学会符号推理 pddl-instruct方法，[twitter](https://x.com/mdancho84/status/1970509799130325223)
 - 论文 [Teaching LLMs to Plan: Logical Chain-of-Thought Instruction Tuning for Symbolic Planning](https://arxiv.org/abs/2509.13351)
 
 PDDL 方法
 - PDDL（Planning Domain Definition Language）即“规划领域定义语言”，描述规划问题的标准化形式语言，常用于定义任务目标、环境状态及可行动作规则；
 - “invariant preservation”译为“不变量保持”，指在规划过程中，某些关键属性或约束条件始终保持不变，是确保规划逻辑一致性的重要准则。
 
-大模型执行结构化符号规划的能力仍存在局限，尤其在需要规划领域定义语言（PDDL）这类形式化表示的领域中表现更为明显。
+详见转内专题：[大模型多轮会话](multi-turn)
 
-新颖的指令微调框架—— PDDL-Instruct，通过逻辑思维链推理，增强大型语言模型的符号规划能力。
-- 教会模型利用明确的逻辑推理步骤，严谨地对动作适用性、状态转移及规划有效性进行推理。
-- 通过设计指令提示，引导模型完成在特定状态下判断动作能否执行所需的精确逻辑推理，使大型语言模型能够通过结构化反思实现规划过程的自我修正。
-- 该框架将规划过程分解为关于“前提条件满足”“效果应用”和“不变量保持”的明确推理链，从而系统性地培养模型的验证能力。
-
-在多个规划领域开展的实验结果表明，基于思维链推理的指令微调模型在规划任务上的表现显著更优：
-- 标准基准测试中，其规划准确率最高可达94%，相较于基线模型实现了66%的绝对性能提升。
-
-此项研究填补了大型语言模型的通用推理能力与自动规划所需的逻辑精度之间的差距，为开发更优的人工智能规划系统提供了极具前景的方向。
-
-（注：1. PDDL（Planning Domain Definition Language）即“规划领域定义语言”，是人工智能规划领域用于描述规划问题的标准化形式语言，常用于定义任务目标、环境状态及可行动作规则；2. “invariant preservation”译为“不变量保持”，指在规划过程中，某些关键属性或约束条件始终保持不变，是确保规划逻辑一致性的重要准则。）
-
-MIT researchers discover how to enable LLMs to do real logical reasoning. 
-- Step 1: Train the LLM with correct and incorrect plans with explanations. This is obvious. Basic training of LLMs.
-- Step 2 is where the innovation is:
-
-Step 2: External Verification
-
-The LLM generates reasoning. Then there's an external verification process to check if each step in the LLMs logical reasoning is sound. 
-
-The results are wild.
-
-Benchmarks:
-- Llama-3-8B jumped from 28% to 94% accuracy on planning benchmarks. 
-- That's not incremental improvement - that's a completely different capability emerging.
 
 
 
