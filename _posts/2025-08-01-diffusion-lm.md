@@ -261,8 +261,6 @@ CMU 团队在数据重复使用的受限场景中，对比了AR模型和掩码�
 - ![](https://inews.gtimg.com/om_bt/O5jYxQ2vEeVSpJm2Tju6sO1kHnI_-3o5NTX0cLe6Be-f8AA/641)
 
 
-
-
 ### 【2025-2-18】 LLaDA
 
 
@@ -421,6 +419,60 @@ DAEDAL 能够提升计算资源利用率。在取得优越准确率的同时，D
 总结
 
 DAEDAL 通过其初始长度调整（Initial Length Adjustment）和迭代式掩码插入（Iterative Mask Insertion）机制，不仅在多个基准上取得了与精心调优的固定长度基线相当甚至更优的性能，还能为每个任务自适应地分配合适的长度。这使得模型在性能和计算效率上都取得了实质性的提升。DAEDA 弥补了扩散大语言模型与自回归大语言模型在核心能力上的一个关键差距，为更灵活、高效、强大的扩散大语言模型打下了基石。
+
+
+### 加速
+
+分析
+- 自回归（AR）大语言模型逐 token 顺序解码的范式限制了推理效率；
+- 扩散 LLM（dLLM）以并行生成见长，但过去难以稳定跑赢自回归（AR）模型，尤其是在 KV Cache 复用、和 可变长度 支持上仍存挑战。
+
+
+#### 【2025-9-30】港大 Fast-dLLM
+
+【2025-10-26】[NVIDIA港大MIT联合推出Fast-dLLM v2：端到端吞吐量提升2.5倍](https://mp.weixin.qq.com/s/ttg0Bd5BPSoNd_vVYRtweg)
+
+【2025-9-30】HKU、NVIDIA、MIT 推出 Fast-dLLM v2
+- 论文：[FAST-DLLM V2: Efficient Block-Diffusion LLM](https://arxiv.org/pdf/2509.26328)
+- 项目：[Fast-dLLM](https://nvlabs.github.io/Fast-dLLM/v2/)
+- 代码：[Fast-dLLM](https://github.com/NVlabs/Fast-dLLM)
+
+Fast-dLLM v2 给出务实路线：
+- 将预训练 AR 模型适配为适配为能并行解码的 Block-dLLM—— 且只需～1B tokens 量级的微调即可达到 “无损” 迁移，不必训练数百 B tokens（如 Dream 需～580B tokens）。
+
+A100/H100 上，它在保持精度的同时，将端到端吞吐显著拉高，最高可达 2.5×。
+
+特点
+- 少量数据适配（~1B tokens）：已有的 AR 模型（如 Qwen2.5-Instruct 1.5B/7B）用约 1B tokens 的微调就能适配成 Block Diffusion LLM，不必训练数百 B tokens（如 Dream 需～580B tokens）。 
+- 架构上 “AR 友好”： 设计上 块内双向、块间因果；配合互补掩码与 token-shift，让模型既保留 AR 的语义组织与可变长度能力，又获得块内并行带来的效率增益。迁移过程更自然、数据效率高。
+- 层级缓存 + 并行解码：块级 KV Cache + 子块 DualCache，配合置信度阈值的并行解码，端到端最高 2.5× 提速。 
+- 大模型验证：在 7B 规模上保持与 AR 相当的生成质量下，吞吐对比 Qwen2.5-7B-Instruct 提升 2.54×。
+
+原理与做法：从 AR 到 Block Diffusion 
+
+<img width="1080" height="285" alt="image" src="https://github.com/user-attachments/assets/21d9be11-076b-4402-b106-d1b2873ddb39" />
+
+
+ 1）块式扩散与 AR - 友好注意力
+
+Fast-dLLM v2 按固定块大小把序列切成若干块：块内双向注意力以并行去噪，块间保持左到右的因果关系，从而既能并行、又能沿用 AR 的语义组织、可变长度和 KV Cache；配合互补掩码（complementary masking）与 token-shift，保证每个 token 都在 “可见 / 被遮” 两种视角下学习，稳定恢复 AR 语义表征。
+
+2）层级缓存（Hierarchical Cache）
+
+- 块级缓存：已解码块的 KV 直接复用，天然支持 KV Cache。
+- 子块缓存（DualCache）：在部分解码的当前块内部，同时缓存前缀与后缀的 KV 激活，减少迭代去噪揭示 / 复原时的重复计算，贴合并行细化流程。
+
+3）置信度感知的并行解码
+
+延续 v1 的思路：当某位置的预测置信度超过阈值（如 0.9），即可并行确定多个 token，其余不确定位置保留待后续细化。在 GSM8K 上，阈值 0.9 时吞吐从 39.1→101.7 tokens/s，提速约 2.6×，精度影响可忽略。
+
+性能结果
+- 端到端加速：综合实验显示，对标准 AR 解码最高 2.5× 提速，同时维持生成质量。
+- 7B 规模吞吐与精度：在 A100 上，Fast-dLLM v2（7B）吞吐为 Qwen2.5-7B-Instruct 的 2.54×；同时对比 Fast-dLLM-LLaDA 还有 +5.2% 的准确率提升（GSM8K）。
+- Batch / 硬件可扩展性：在 A100/H100 上随 batch 增大，扩散解码的并行优势更明显；A100 上可达～1.5× 吞吐加速，H100 上最高可达～1.8× 加速
+
+<img width="1080" height="801" alt="image" src="https://github.com/user-attachments/assets/1a2ed57b-4167-4f98-a74f-a7ea957a4961" />
+
 
 
 # 结束
