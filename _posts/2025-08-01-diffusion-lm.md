@@ -459,6 +459,39 @@ DLM 训练问题，scaling 效率相对低于 AR 模型。
 - 自回归（AR）大语言模型逐 token 顺序解码的范式限制了推理效率；
 - 扩散 LLM（dLLM）以并行生成见长，但过去难以稳定跑赢自回归（AR）模型，尤其是在 KV Cache 复用、和 可变长度 支持上仍存挑战。
 
+#### 【2025-9-29】普渡 DiDi-Instruct
+
+【2025-10-27】[推理效率狂飙60倍：DiDi-Instruct让扩散大模型16步超越千步GPT](https://mp.weixin.qq.com/s/0mGHnVtgxmazwxeu0nPjOw)
+
+自回归模型逐词串行生成的固有瓶颈，使其在长文本生成时面临难以逾越的延迟 “天花板”，即使强大的并行计算硬件也无计可施 。
+
+扩散语言模型（ dLLM ）将文本生成重塑为从完全噪声（或掩码）序列中迭代去噪、恢复出完整文本的过程 。这一模式天然支持并行化语言段落生成，相较于自回归模型生成速度更快。
+
+然而现有最好的 dLLM 在同等模型尺寸下为了达到与 GPT-2 相当的性能，仍然需要多达上百次模型迭代。
+
+这个困境不禁让人疑惑：
+> 是否存在模型在极端少的迭代次数下（如 8-16 次迭代）下能显著超越 1024 次迭代的 GPT 模型？
+
+
+【2025-9-29】普渡大学、德克萨斯大学、新加坡国立大学、摩根士丹利机器学习研究、小红书 hi-lab 的研究者联合提出对离散扩散大语言模型的后训练方法 —— Discrete Diffusion Divergence Instruct (DiDi-Instruct)。
+- 论文标题：[Ultra-Fast Language Generation via Discrete Diffusion Divergence Instruct]([www.arxiv.org/abs/2509.25035](https://www.arxiv.org/abs/2509.25035))
+- 代码仓库：[didi-instruct](github.com/haoyangzheng-ai/didi-instruct)
+- 项目地址：[didi-instruct](haoyangzheng.github.io/research/didi-instruct)
+
+经过 DiDi-Instruct 后训练的扩散大语言模型可以以 60 倍的加速超越传统的 GPT 模型和扩散大语言模型。
+
+DiDi-Instruct 独创概率分布匹配的后训练策略，将原本需要 500 步以上的昂贵的扩散语言 “教师”（diffusion Large Language Model, dLLM）模型，**蒸馏**成仅需 8-16 步生成整个文本段落的 “学生” 模型。
+
+DiDi-Instruct 是 dLLM 后训练算法。dLLM 通过 DiDi-Instruct 算法训练蒸馏之后，可以将原本的 1024 次推理次数压缩至 8 到 16 步，同时可以显著提升的 dLLM 的建模效果。
+
+DiDi-Instruct 理论源于连续扩散模型中的一个经典单步蒸馏算法：Diff-Instruct。
+- DiDi-Instruct 训练算法核心思想: 最小化一个少采样步数的 “学生” 模型与多采样步数的 “教师” dLLM 模型在整个离散 Token 去噪轨迹上分布的积分 KL 散度（Integral Kullback-Leibler Divergence）。
+- 该目标把不同时间的 KL 以权重积分汇总，避免只对齐末端样本而训练不稳的问题，从而让学生以一种全局、全过程匹配的方式，高效 “学习” 教师的精髓。一旦积分 KL 散度被优化至收敛（接近 0 值），少步生成的 “学生” 模型便在概率意义上吸收了 "教师 dLLM" 的知识。
+
+在 OpenWebText 标准数据集上，DiDi-Instruct 语言模型既实现了超过 64 倍以上的推理加速，又在性能上同时显著超越了被蒸馏的教师扩散语言模型（dLLM，1024 步生成）和自回归的 GPT2 模型（1024 步生成）。
+
+DiDi-Instruct 算法同时提升了大语言模型的推理效率和推理效果。为极端高效的大语言模型落地提供了新的方案。
+
 
 #### 【2025-9-30】港大 Fast-dLLM
 
