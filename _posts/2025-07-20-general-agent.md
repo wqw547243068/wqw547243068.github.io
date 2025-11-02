@@ -3,7 +3,7 @@ layout: post
 title:  通用智能体 Agent
 date:   2025-07-20 12:00:00
 categories: 大模型
-tags: LLM agent 智能体 manus genspark
+tags: LLM agent 智能体 manus genspark langchain
 excerpt: 通用智能体专题
 mathjax: true
 permalink: /general_agent
@@ -456,8 +456,6 @@ cd joyagent-jdgenie
 - 模型：[afm-models-689200e11d0b21a67c015ba8](https://huggingface.co/collections/PersonalAILab/afm-models-689200e11d0b21a67c015ba8)
 - 数据：[afm-datasets-6892140eaad360ea5ccdcde1](https://huggingface.co/collections/PersonalAILab/afm-datasets-6892140eaad360ea5ccdcde1)
 
-
-
 现阶段 MAS 依然面临一些关键限制：
 - 计算开销高：智能体之间频繁冗余的通信和复杂的工作流设计导致效率不高。
 - 泛化能力有限：面对新领域或新任务时，需要大量的 prompt 设计与工作流配置。
@@ -492,6 +490,13 @@ AFM 展示了卓越的性能和高效的推理能力，在近 20 项复杂任务
 - 在 Agentic 任务中，其在 GAIA 基准上以 32B 模型实现了 55.4% 的 Pass@1 成功率；
 - 在代码推理方面，AFM 在 LiveCodeBench v5 上的 47.9% 准确率和在 CodeContests 上的 32.7% 成绩均显著超越现有 TIR 方法。
 - 同时，它将推理成本（token 消耗）减少高达 85.5%，在保持领先性能的同时大幅提升效率。
+
+### 【2025-7-30】Deep Agents
+
+【2025-7-30】LangChain AI开发 Python 工具包 Deep Agents.
+
+详见站内专题：[LangChain学习笔记](langchain)
+
 
 
 # 结束
