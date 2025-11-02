@@ -30,9 +30,12 @@ permalink: /diffusion_lm
 - 上下文限制：未来信息智能纳入隐式表示，无法条件影响后续词；BERT双向，但非生成模型
 
 ARM存在两大固有缺陷： 
-1. 顺序生成瓶颈：逐token生成导致计算效率低下 
+1. 顺序生成瓶颈：逐token生成导致计算效率低下
+  - 推理速度瓶颈：完全串行机制导致推理延迟高、服务成本居高不下，模型规模越大，问题越严峻
 1. 推理方向受限：左到右的单向建模难以处理反向任务（如“反转诅咒”现象）—— LLaDA因双向建模特性实现突破
-
+  - 局部视野与不可逆生成的双重缺陷：AR模型线性的生成路径不仅带来局部视野局限，难以整体理解化学分子式等结构化知识；更致命的是缺乏自我修正（Self-Correction）能力。
+  - 每个词元的生成都是一个不可逆的「最终决策」，一旦出错便无法挽回，导致错误累积。
+  - 这与扩散模型等范式形成了鲜明对比，后者理论上支持迭代优化和全局修正。
 
 
 ## DLM 介绍
@@ -105,8 +108,6 @@ DLM（Diffusion Large language model）与ARM差异很大，但更符合人类�
     - LLaDA，同等模型大小的前提下，在大多数任务上表现并不比其他的模型差多少
     - Google Gemini 2.5 推出 扩散语言模型
   - ![](https://picx.zhimg.com/80/v2-b4da3a641d34f970b9d39bdd0887052f_720w.webp?source=2c26e567)
-
-
 
 DLM 只不过是把脱胎于图像生成的技术应用到了文字生成
 - ![](https://pic1.zhimg.com/50/v2-55f71e9e697d794f053748643ad67dc6_720w.webp?source=2c26e567)
@@ -191,6 +192,14 @@ DLM 核心技术原理很直观，不同于LLM next token prediction，DLM 做 m
 - 其次，用户研究表明，其压缩质量超过了 MAGVIT 和当前的视频压缩标准 HEVC。
 - 此外，它与下一代视频编解码器 VVC 相当。
 - 最后，研究者表明，与 MAGVIT 相比，他们的新 token 在两个设置和三个数据集的视频理解任务中表现更强。
+
+
+### DLM 问题
+
+MDLM（掩码扩散语言模型） 面临两大难题：
+- 训练效率低下：其 ELBO 优化目标相比标准 NLL 收敛更慢，导致性能不佳。该工作首次对二者的训练效率进行了公平对比，实验证实，在同等算力下，MDLM 与 AR 模型的性能存在显著差距。
+- 推理成本高昂：由于缺乏类似 AR 模型的 KV 缓存机制，MDLM 在推理时每一步都需要处理整个序列，导致计算复杂度高，实际部署依然昂贵。
+
 
 
 ## DLM 适用场景
@@ -459,7 +468,9 @@ DLM 训练问题，scaling 效率相对低于 AR 模型。
 - 自回归（AR）大语言模型逐 token 顺序解码的范式限制了推理效率；
 - 扩散 LLM（dLLM）以并行生成见长，但过去难以稳定跑赢自回归（AR）模型，尤其是在 KV Cache 复用、和 可变长度 支持上仍存挑战。
 
-#### 【2025-9-29】普渡 DiDi-Instruct
+#### 蒸馏
+
+##### 【2025-9-29】普渡 DiDi-Instruct
 
 【2025-10-27】[推理效率狂飙60倍：DiDi-Instruct让扩散大模型16步超越千步GPT](https://mp.weixin.qq.com/s/0mGHnVtgxmazwxeu0nPjOw)
 
@@ -492,8 +503,9 @@ DiDi-Instruct 理论源于连续扩散模型中的一个经典单步蒸馏算法
 
 DiDi-Instruct 算法同时提升了大语言模型的推理效率和推理效果。为极端高效的大语言模型落地提供了新的方案。
 
+#### 并行解码
 
-#### 【2025-9-30】港大 Fast-dLLM
+##### 【2025-9-30】港大 Fast-dLLM
 
 【2025-10-26】[NVIDIA港大MIT联合推出Fast-dLLM v2：端到端吞吐量提升2.5倍](https://mp.weixin.qq.com/s/ttg0Bd5BPSoNd_vVYRtweg)
 
@@ -503,7 +515,7 @@ DiDi-Instruct 算法同时提升了大语言模型的推理效率和推理效果
 - 代码：[Fast-dLLM](https://github.com/NVlabs/Fast-dLLM)
 
 Fast-dLLM v2 给出务实路线：
-- 将预训练 AR 模型适配为适配为能并行解码的 Block-dLLM—— 且只需～1B tokens 量级的微调即可达到 “无损” 迁移，不必训练数百 B tokens（如 Dream 需～580B tokens）。
+- 将预训练 AR 模型适配为适配为能**并行解码**的 Block-dLLM—— 且只需～1B tokens 量级的微调即可达到 “无损” 迁移，不必训练数百 B tokens（如 Dream 需～580B tokens）。
 
 A100/H100 上，它在保持精度的同时，将端到端吞吐显著拉高，最高可达 2.5×。
 
@@ -537,6 +549,33 @@ Fast-dLLM v2 按固定块大小把序列切成若干块：块内双向注意力�
 - Batch / 硬件可扩展性：在 A100/H100 上随 batch 增大，扩散解码的并行优势更明显；A100 上可达～1.5× 吞吐加速，H100 上最高可达～1.8× 加速
 
 <img width="1080" height="801" alt="image" src="https://github.com/user-attachments/assets/1a2ed57b-4167-4f98-a74f-a7ea957a4961" />
+
+##### 【2025-10-7】上海AI Lab SDAR
+
+【2025-11-1】[上海AI Lab发布混合扩散语言模型SDAR：首个突破6600 tgs的开源扩散语言模型](https://mp.weixin.qq.com/s/4tsKIXSSuNE8Q0VzIQ-70Q)
+
+混合模型尝试结合二者（自回归于掩码扩散语言模型），块内并行、块间自回归，但其特殊的训练目标函数依赖复杂的注意力掩码，导致训练开销几乎翻倍，令人望而却步。
+
+【2025-10-7】上海人工智能实验室针对该难题提出全新范式 SDAR (Synergistic Diffusion-AutoRegression)。
+
+颠覆性的思路：
+> 为什么要在同一个阶段解决所有问题？SDAR 范式的核心就是「解耦」（Decoupling）：
+
+SDAR 范式
+- 训练阶段：拥抱高效的 AR 范式。完全沿用成熟、稳定、高效的 AR 模型进行预训练。这确保了模型在一个强大的基础上起步，拥有与顶尖 AR 模型同等水平的知识和能力。
+- 推理阶段：轻量级适配，解锁并行解码。在 AR 预训练后，引入一个短暂且成本极低的「适配」阶段，教会模型以「块」为单位进行并行扩散式生成。
+
+通过「训练-推理解耦」的巧妙设计，无缝融合了 AR 模型的高性能与扩散模型的并行推理优势，能以极低成本将任意 AR 模型「改造」为并行解码模型。
+- 论文：[SDAR: A Synergistic Diffusion-AutoRegression Paradigm for Scalable Sequence Generation](https://arxiv.org/pdf/2510.06303)
+- 代码地址：[SDAR](https://github.com/JetAstra/SDAR)
+- 推理引擎：[lmdeploy](https://github.com/InternLM/lmdeploy)
+- 模型地址：[sdar](https://huggingface.co/collections/JetLM/sdar)
+
+
+SDAR 不仅在多个基准上与原版 AR 模型性能持平甚至超越，还能带来数倍的真实推理加速。更令人惊喜的是，SDAR 在复杂的科学推理任务上展现出巨大潜力。在与采用相同配置训练的 AR 基线模型进行公平对比时，SDAR 在 ChemBench 等基准上最高取得了 12.3 个百分点的性能优势。
+
+该团队已全面开源从 1.7B 到 30B 的全系列 SDAR 模型、高效推理引擎及迄今最强的开源扩散类推理模型 SDAR-30B-A3B-Sci
+
 
 
 
