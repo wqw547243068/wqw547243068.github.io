@@ -953,6 +953,50 @@ text2sql(NL2SQL) 是NLP诸多任务中较难的任务，即便发展迅速的LLM
 
 详见站内专题: [NL2SQL](nl2sql)
 
+##### 【2025-10-19】人大 DeepAnalyze
+
+【2025-10-19】[人大、清华DeepAnalyze，让LLM化身数据科学家](https://mp.weixin.qq.com/s/3PObdzM7d8gaQcoVpZbLHg)
+
+LLM 数据科学方法分为两类：
+- 领域特定的 LLM：面向数据科学的代码生成 LLM、结构化数据理解 LLM...
+- 基于 workflow 的智能体：人为设计 workflow，通过 prompt 调用闭源 LLM 完成任务
+
+现有工作面临两方面局限性：
+- 仅支持单点任务（例如数据分析、数据建模），无法端到端完成数据科学全流程。
+- 闭源模型未在真实环境中的数据科学任务上训练过，难以编排和优化各种复杂操作。
+
+DeepAnalyze 推动基于 LLM 的数据科学系统从 workflow-based agent 范式转变到可训练的 agentic LLM 范式。
+
+数据科学的复杂性为训练 agentic LLM 提出挑战：
+- 奖励稀疏：数据科学的复杂性使得 LLMs 在训练的早期阶段基本无法成功完成任务，难以获得正向奖励信号，从而导致 agentic LLM 训练过程崩溃。
+- 路径稀缺：数据科学的解决过程通常依赖长链推理，求解轨迹的稀缺使得 LLMs 缺少足够的指导，导致其在庞大的搜索空间中进行低效且盲目的试错式探索。
+
+人大和清华的研究团队发布了 DeepAnalyze，首个面向自主数据科学的 agentic LLM
+- 论文：[](https://arxiv.org/pdf/2510.16872)
+- 代码、Demo链接：[DeepAnalyze](https://github.com/ruc-datalab/DeepAnalyze)
+- 模型链接：[DeepAnalyze-8B](https://huggingface.co/RUC-DataLab/DeepAnalyze-8B)
+- 数据链接：[DataScience-Instruct-500K](https://huggingface.co/datasets/RUC-DataLab/DataScience-Instruct-500K)
+
+关键能力：自主编排（autonomous orchestration）和 自适应优化（adaptive optimization）。
+
+DeepAnalyze 引入了：
+- Curriculum-based Agentic Training：在真实环境中从单一任务到符合任务渐进式训练 LLM，让大模型逐步提升能力，避免在复杂任务上奖励信号为 0 导致的强化学习失效
+- Data-grounded Trajectory Synthesis：自动化合成 500K 数据科学的推理、环境交互数据，在庞大的搜索空间中提供正确路径的指导
+
+通过在真实环境中的 agentic 训练，DeepAnalyze 具备了自动编排和自适应优化操作的能力，能端到端地完成数据科学全流程，包括具体的数据任务和开放式的数据研究。
+
+DeepAnalyze-8B 能够模拟数据科学家的行为，在真实环境中主动编排、优化操作，最终完成复杂的数据科学任务。支持各种以数据为核心的任务：
+- 数据任务：自动化数据准备、数据分析、数据建模、数据可视化、数据洞察、报告生成；
+- 数据研究：可在任意数量的结构化数据（数据库、CSV、Excel）、半结构化数据（JSON、XML、YAML）、非结构化数据（TXT、Markdown）中进行开放式深度研究，生成分析师级别的研究报告；
+
+效果
+- DeepAnalyze-8B 在 DataSciBench（端到端数据科学 Benchmark）优于所有开源模型，和 GPT-4o 相媲美
+- DeepAnalyze 在 DSBench 数据分析和数据建模任务上由于基于 workflow 的智能体
+- DeepAnalyze 在面向数据的深度研究中取得最佳表现，能生成分析师级别的分析报告
+
+
+
+
 ### 内容管理/营销
 
 CRM 记录姓名、电话等结构化数据
