@@ -20,9 +20,38 @@ permalink: /test_time
 
 ## 背景知识
 
-### Scaling Law
+### Train Time Scaling Law
 
 详见站内：[规模法则](llm_law)
+
+### Test-Time Scaling Law
+
+【2025-10-14】[斯坦福、英伟达和伯克利提出具身Test-Time Scaling Law](https://mp.weixin.qq.com/s/rwItQC4P5cA3VYiqSPtoow)
+
+Vision-Language-Action（VLA）模型在视觉运动控制中展现出了卓越能力，但如何在复杂的真实世界中保持鲁棒性仍是一个长期挑战。
+
+【2025-6-21】斯坦福、英伟达和伯克利研究团队关键发现：
+- 推理阶段，结合「生成 - 验证」（generate-and-verify）范式从而增加计算量（test-time compute）可以显著提升 VLA 模型的泛化能力与可靠性。
+
+同时，系统性探讨了具身智能中的 Test-Time Scaling Law：
+> 随着推理阶段的采样与验证规模增长，VLA 模型在任务成功率和稳定性方面呈现出可预测的提升规律。
+
+- 论文标题：[RoboMonkey: Scaling Test-Time Sampling and Verification for Vision-Language-Action Models](https://arxiv.org/pdf/2506.17811)
+- 主页：[page](http://robomonkey-vla.github.io)
+
+<img width="967" height="408" alt="QQ_1762074906093" src="https://github.com/user-attachments/assets/30eddeeb-fd2f-4e3b-9f01-ab876a356f20" />
+
+
+实验发现：
+- 当在推理阶段增加候选动作的生成数量时，VLA 的动作误差会持续下降。
+  - 无论是反复从机器人策略模型中采样动作、对部分采样动作施加高斯扰动，还是在离散动作空间中进行随机采样，这些方法在有「理想验证器」（oracle verifier）的前提下，都能显著优于单次推理的 OpenVLA 基线。
+- 幂律规律（power law）：多种主流 VLA 模型（包括 CogACT、Octo、OpenVLA 和 SpatialVLA）中，动作误差与高斯扰动采样数量之间呈现出稳定的幂律关系。
+  - 机器人控制问题不应仅仅被视为一个「生成」任务；相反，生成候选动作 + 验证筛选的范式，能在不改动训练模型的前提下显著提升性能。
+  - 研究者希望这一发现能够推动动作验证器（scalable action verifiers）的发展，为通用机器人模型提供更稳健的落地路径。
+
+<img width="1080" height="341" alt="image" src="https://github.com/user-attachments/assets/1dbfad10-36a5-4c20-8df8-411c182884a5" />
+
+
 
 ### 模型训练
 
