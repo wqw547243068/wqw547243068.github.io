@@ -3,7 +3,7 @@ layout: post
 title:  LangChain 学习笔记
 date:   2023-05-24 22:46:00
 categories: 大模型
-tags: gpt ChatGPT langchain go
+tags: gpt ChatGPT langchain go manus 
 excerpt: 大模型 LLM 驱动的智能体 Agent 
 mathjax: true
 permalink: /langchain
@@ -546,6 +546,109 @@ print(response)
 
 
 
+### DeepAgent
+
+如何构建“深度”思考和执行复杂任务的 Agent？ 
+
+“浅层”Agent 局限性
+
+主流 Agent 架构在循环中运行，不断调用工具。
+- 无法进行长远规划，也难以胜任需要多步骤、深度思考的复杂任务。
+- 擅长处理单一、直接的指令，但在面对需要持续数小时甚至数天的研究或编码项目时，往往会迷失方向或过早地认为任务已完成。
+
+借鉴 OpenAI 的 “Deep Research”、Manus 以及 Anthropic 的 “Claude Code” 等前沿应用的实践，剖析共同要素。
+
+【2025-7-30】LangChainAI开发 Python 工具包 [Deep Agents](https://blog.langchain.com/deep-agents/)，快速构建能够处理复杂任务的AI代理。
+- [官方中文文档](https://langchain-doc.cn/v1/python/deepagents/overview.html)
+- 基于LangGraph 框架，提供内置的规划工具、子代理、虚拟文件系统和详细的系统提示。
+- 用户可以通过简单的安装和配置，快速创建支持**长时**任务和**复杂工作流**的智能代理。
+
+Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者，强调开箱即用和灵活定制。
+
+项目采用MIT许可证，代码开源，社区活跃，持续更新。
+
+2025年8月13日，又发布更易上手的交互界面，Deep Agents UI。
+
+
+#### 架构
+
+通过四大支柱解决**浅层**智能体的局限性：
+- （1）详细的系统提示：(Detailed system prompt)
+  - 通过精心设计的提示模板（如 few-shot 示例），为智能体提供清晰的行为规范和上下文，确保一致性。
+- （2）规划工具：(Planning tool)
+  - 引入 Todo List 等工具，让智能体在任务开始前制定全局计划，并在每一步动态调整，避免偏离目标。
+- （3）子智能体协作：(Sub agents)
+  - 通过任务协调器将复杂任务分解为子任务，分配给专门的子智能体（如数据检索 Agent、分析 Agent），实现高效分工。
+- （4）文件系统：(File system)
+  - 虚拟文件系统用于存储中间结果、笔记和输出，突破 LLM 上下文窗口限制，支持长期任务和多智能体协作。
+
+<img width="724" height="848" alt="image" src="https://github.com/user-attachments/assets/9492b0c0-1b19-41fa-a070-a611cda9a2f2" />
+
+
+工作流程
+- 系统提示：定义任务目标（如分析特斯拉和丰田的产能）和行为规范。
+- 规划：Planner 生成任务列表（如“检索产能数据 → 分析趋势 → 生成报告”）。
+- 子智能体协作：各子智能体分别执行数据检索（从行业数据库和新闻）、数据分析（生成趋势图）和报告生成。
+- 文件系统：中间结果（如 CSV 数据、趋势图）存储在文件系统中，最终输出整合为 Markdown 报告。
+
+主Agent派生出多个子Agent的两大好处：
+- 任务分解：将复杂问题拆解，让每个子 Agent 专注于特定领域，从而实现对该领域的“深度”探索。
+- 上下文管理：通过创建拥有独立上下文的子 Agent，可以有效管理信息流，避免主 Agent 的上下文窗口被无关信息淹没。这也被称为“上下文管理和提示快捷方式”。
+
+<img width="684" height="784" alt="image" src="https://github.com/user-attachments/assets/cb9d10ac-2a72-4265-b908-5925e1b61425" />
+
+
+文件系统不仅用来完成最终任务（如保存代码），还扮演着角色：
+- 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
+- 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
+
+
+#### 使用
+
+DeepAgent 依赖基础：
+- LangGraph - 提供底层的图执行和状态管理
+- LangChain - 工具和模型集成与深度Agent无缝协作
+- LangSmith - 通过 LangGraph 平台实现可观察性和部署
+
+DeepAgent应用程序通过 LangSmith 部署，并使用 LangSmith 可观察性 进行监控。
+
+
+安装
+
+```sh
+pip install deepagents
+git clone https://github.com/langchain-ai/deep-agents-ui
+```
+
+本地 Web 界面 http://localhost:3000
+
+示例: Deep Agents 分析汽车行业竞争对手的产能数据：
+
+```py
+from deepagents import DeepAgent, Planner, FileSystem, SubAgent
+
+# 初始化文件系统用于存储中间结果
+fs = FileSystem(directory="./agent_workspace")
+
+# 定义子智能体
+data_agent = SubAgent(name="DataRetriever", tools=["industry_api", "web_scraper"]) # 数据检索
+analysis_agent = SubAgent(name="DataAnalyzer", tools=["pandas", "matplotlib"]) # 数据分析
+report_agent = SubAgent(name="ReportWriter", tools=["markdown_generator"]) # 报告生成
+
+# 配置规划器
+planner = Planner(strategy="todo_list", agents=[data_agent, analysis_agent, report_agent])
+
+# 初始化 Deep Agent
+deep_agent = DeepAgent(
+    system_prompt="Generate a competitive capacity analysis report for Tesla and Toyota, including data, trend charts, and strategic recommendations.",
+    planner=planner,
+    filesystem=fs
+)
+
+# 执行任务
+result = deep_agent.run("Analyze Tesla and Toyota's production capacity for 2023-2025.")
+print(result)
+```
 
 ## LangChain 组件
 
