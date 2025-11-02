@@ -2420,6 +2420,163 @@ R1推出后不久，Gemini-2 Flash Thinking成新霸主，现在Grok-3后来居�
 [参考](https://mp.weixin.qq.com/s/RVlqPUqLStq00aNfNZtRpg)
 
 
+### 【2025-10-14】蚂蚁 Ring-1T
+
+【2025-10-14】[蚂蚁Ring-1T正式登场，万亿参数思考模型，数学能力对标IMO银牌]()
+
+- 2025年9月30日，蚂蚁就放出 Ring-1T-preview 版本。多项榜单上崭露头角，展现出出色的自然语言推理与思考能力，也率先把开源思考模型的「天花板」推至万亿级。
+- 2025年10月9日，蚂蚁开源通用语言大模型 Ling-1T：迄今为止参数规模最大的语言模型。
+- 2025年10月14 日凌晨，万亿级思考模型 Ring-1T 又正式登场，全球首个开源的万亿参数思考模型
+
+Ring-1T 完成了完整训练流程，包括继续通过大规模可验证奖励强化学习（RLVR）进一步增强推理能力，并结合人类反馈强化学习（RLHF）提升通用表现，模型整体能力更均衡。
+
+高难度 IMO 测试中，Ring-1T 接入多智能体框架 AWorld，首次尝试便解出第1、3、4、5 题—— 4 题全对，达到 IMO 银牌水平，成为首个在国际奥数赛题上取得获奖级成绩的开源系统。
+
+
+
+## 大模型符号推理
+
+
+### 【2025-9-14】MIT PDDL-Instruct
+
+2025年9月14日，大模型学会符号推理 pddl-instruct方法，[twitter](https://x.com/mdancho84/status/1970509799130325223)
+- 论文 [Teaching LLMs to Plan: Logical Chain-of-Thought Instruction Tuning for Symbolic Planning](https://arxiv.org/abs/2509.13351)
+
+PDDL 方法
+- PDDL（Planning Domain Definition Language）即“规划领域定义语言”，描述规划问题的标准化形式语言，常用于定义任务目标、环境状态及可行动作规则；
+- “invariant preservation”译为“不变量保持”，指在规划过程中，某些关键属性或约束条件始终保持不变，是确保规划逻辑一致性的重要准则。
+
+详见转内专题：[大模型多轮会话](multi-turn)
+
+
+
+
+## 多模态
+
+
+### 【2025-2-15】VLM-R1
+
+【2025-2-15】浙江大学博导赵天成博士与[Om AI Lab](https://github.com/om-ai-lab)团队成功把DeepSeek R1从纯文本领域成功迁移到了视觉语言领域，这是DeepSeek R1模型首次突破到视觉推理层面。 
+
+VLM-R1 将R1方法成功地应用于**视觉语言模型**，为多模态 AI 的研究开辟了新天地。
+- [VLM-R1](https://github.com/om-ai-lab/VLM-R1)
+
+
+VLM-R1 表现令人惊艳。
+- 首先，R1方法在复杂场景下展现出了极高的稳定性，这在实际应用中显得尤为重要。
+- 其次，该模型在**泛化能力**方面表现卓越。
+
+对比实验中
+- Qwen2.5-VL 上同时用 R1 和 SFT
+  - 域内: RL 略优于 SFT 
+  - 域外: 随着迭代步数增加, RL 大幅领先 SFT
+- 传统 SFT（Supervised Fine-Tuning）模型在领域外的测试数据上随着训练步数的增加，其性能却逐渐下滑，而 R1模型则能在训练中不断提升。
+- R1方法使得模型真正掌握了理解视觉内容的能力，而非仅仅依赖于记忆。
+
+VLM-R1 的成功推出不仅证明了 R1方法的通用性，也为多模态模型的训练提供了新思路，预示着一种全新的视觉语言模型训练潮流的到来。
+
+
+### 【2025-3-3】Visual-RFT
+
+
+【2025-3-4】 [DeepSeek R1迁移多模态，已开源](https://mp.weixin.qq.com/s/T7nc3Y_tZJH4YiI6coUdpw)
+
+DeepSeek-R1 继文本、数学推理、代码等领域大放异彩后，其基于**规则奖励**的强化学习方法首次成功迁移到**多模态**领域
+
+【2025-3-3】上海较大、AI实验室等推出 `Visual-RFT`（Visual Reinforcement Fine-Tuning），全面开源。
+
+这一突破性技术使得视觉语言大模型具备更强的泛化能力，能以极少的样本完成高质量微调，在目标检测、分类、推理定位等任务中取得显著提升，甚至超越传统指令微调（SFT）方法。
+- 论文地址： [Visual-RFT: Visual Reinforcement Fine-Tuning](https://arxiv.org/pdf/2503.01785) 
+- 开源代码： [Visual-RFT](https://github.com/Liuziyu77/Visual-RFT)
+
+Visual-RFT (Visual Reinforcement Fine-Tuning) 在**视觉感知**任务中采用强化学习方法的模型微调技术，并借鉴 DeepSeek-R1 的强化学习策略（GPRO），为多模态任务引入**可验证奖励**（Verifiable Rewards） 机制，以增强大视觉语言模型（LVLMs, Large Vision-Language Models） 在不同任务上的推理能力。
+
+主要创新点：
+- 强化学习迁移至视觉领域：突破传统认知，首次在多模态视觉大模型中验证基于规则奖励的有效性。
+- 极少样本高效微调：相比传统 SFT 方法，Visual-RFT 仅需少量数据（10～1000 条样本）即可实现显著提升。
+- 任务广泛：适用于 目标检测、开放目标检测、少样本分类和推理定位等任务。
+- 推理能力增强：能够分析问题，进行 “think” 推理，从而实现更精准的视觉理解。
+
+核心奖励函数
+- 目标检测：采用 IoU 奖励（Intersection-over-Union, IoU Reward），通过计算预测边界框与真实边界框的重叠程度，确保模型不仅能识别目标，还能精准定位，提高检测的准确性和稳定性。
+- 图像分类：采用分类准确性奖励（Classification Accuracy Reward, CLS Reward），通过对比模型预测类别与真实类别是否一致进行奖励，引导模型在有限数据下仍能精准区分细粒度类别，提升分类泛化能力。
+- 推理定位：采用推理一致性奖励（Reasoning Consistency Reward），分析模型的推理逻辑是否符合指令，并结合 IoU 计算目标定位的准确性，确保模型不仅能回答问题，还能给出合理的思考过程，提高视觉推理能力。
+
+Visual-RFT VS 传统 SFT：
+
+|方法|数据需求|泛化能力|推理能力|
+| ---- | ---- | ---- | ---- |
+|SFT（监督微调）|需要大量数据|泛化能力有限|仅依赖已有数据|
+|Visual-RFT|仅需10～1000条数据|泛化能力强|能推理&解释| 
+
+实验基于Qwen2-VL-2B/7B视觉语言模型，Visual-RFT 在以下任务中均大幅超越传统 SFT 方法
+
+### 【2025-3-18】Skywork R1V
+
+昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V
+
+2025年3月18日，昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V（简称「R1V」）
+
+R1V高效地将R1文本推理能力无缝推广到视觉模态，实现了多模态领域领先效果(非sota)，并开源。
+
+R1V三大亮点。
+1. 全球第一个工业界开源多模态+推理模型
+2. 性能接近甚至超越了规模大两倍的开源模型
+3. 通过开源让技术可以惠及到更多人
+
+效果：
+- 1️⃣ 视觉问答任务中，R1V直接对标Claude 3.5 Sonnet、GPT-4o等闭源模型，同时保留顶级文本推理能力。
+- 2️⃣ MMMU基准测试中，R1V以69分创下同等规模新高，在MathVista上拿下67.5分，达到领先的开源模型水平。
+
+参考：
+- GitHub：[Skywork-R1V](https://github.com/SkyworkAI/Skywork-R1V)
+- Hugging Face：[Skywork-R1V-38B](https://huggingface.co/Skywork/Skywork-R1V-38B)
+- 技术报告：[Skywork_R1V.pdf](https://github.com/SkyworkAI/Skywork-R1V/blob/main/Skywork_R1V.pdf)
+- 信息源：[新智源](https://mp.weixin.qq.com/s/CYNce3oHoDrsOJSv5Pj6Nw)
+
+
+### 多模态思维链
+
+
+【2025-3-25】[一文看懂多模态思维链](https://zhuanlan.zhihu.com/p/32534496465)
+
+新加坡国立大学、香港中文大学、新加坡南洋理工大学、罗切斯特大学的研究人员联合推出 多模态思维链综述, 提出 六大技术支柱
+- [Multimodal Chain-of-Thought Reasoning: A Comprehensive Survey](https://arxiv.org/pdf/2503.12605)
+- [Awesome-MCoT](https://github.com/yaotingwangofficial/Awesome-MCoT)
+- ![](https://pic2.zhimg.com/v2-cf7f471f04bc918fc40e26849ecffbd1_1440w.jpg)
+
+![](https://pica.zhimg.com/v2-0e1223bb2d290d2095e92c62cab6e93e_1440w.jpg)
+
+传统思维链（CoT）已经让AI在文字推理上变得更聪明，比如一步步推导数学题的答案。
+
+但现实世界远比单一文字复杂得多——人能看图说话、听声辨情、摸物识形。
+- ![](https://picx.zhimg.com/v2-5ad7c7bb091adfd9cabdd2fcfe4d2b09_1440w.jpg)
+
+MCoT 给AI装上了“多感官大脑”，同时处理图像、视频、音频、3D模型、表格等多种信息。
+
+比如，输入一张CT影像和患者的病史，AI就能输出诊断报告，还能标注出病灶位置。
+
+这种跨越模态的推理能力，让AI更接近人类的思考方式。
+- ![](https://pic3.zhimg.com/v2-b996b26c1e544b4f8ac6fc077c0f802a_1440w.jpg)
+
+
+### 【2025-2-25】Sonnet 混合
+
+
+【2025-2-25】[全球首个混合推理模型：Claude 3.7 Sonnet来袭，真实编码力压一切对手](https://mp.weixin.qq.com/s/RzdrxKbHKKqtN-FvbOQsZw)
+
+Anthropic 发布最智能的模型以及市面上首款混合推理模型 —— Claude 3.7 Sonnet
+
+Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思考。
+- 「一个模型，两种思考方式」（One model, two ways to think.），即**标准**和**扩展**思考模式。
+- API 用户还可以对模型思考时间进行细粒度控制。
+
+
+## 小模型推理
+
+小模型也能学会推理
+
+
 ### 【2025-6-26】HRM 小模型
 
 当前LLM推理主要靠CoT，缺陷:任务分解复杂、数据需求大以及高延迟等问题。
@@ -2469,149 +2626,6 @@ HRM 核心设计灵感来源于大脑：分层结构 + 多时间尺度处理。
 论文没有讨论 HRM 架构的局限性，其扩展性未知
 	
 也期待与在相同数据上训练的小型 Transformer 模型进行对比！
-
-
-### 大模型符号推理
-
-
-#### 【2025-9-14】MIT PDDL-Instruct
-
-2025年9月14日，大模型学会符号推理 pddl-instruct方法，[twitter](https://x.com/mdancho84/status/1970509799130325223)
-- 论文 [Teaching LLMs to Plan: Logical Chain-of-Thought Instruction Tuning for Symbolic Planning](https://arxiv.org/abs/2509.13351)
-
-PDDL 方法
-- PDDL（Planning Domain Definition Language）即“规划领域定义语言”，描述规划问题的标准化形式语言，常用于定义任务目标、环境状态及可行动作规则；
-- “invariant preservation”译为“不变量保持”，指在规划过程中，某些关键属性或约束条件始终保持不变，是确保规划逻辑一致性的重要准则。
-
-详见转内专题：[大模型多轮会话](multi-turn)
-
-
-
-
-### 多模态
-
-
-#### 【2025-2-15】VLM-R1
-
-【2025-2-15】浙江大学博导赵天成博士与[Om AI Lab](https://github.com/om-ai-lab)团队成功把DeepSeek R1从纯文本领域成功迁移到了视觉语言领域，这是DeepSeek R1模型首次突破到视觉推理层面。 
-
-VLM-R1 将R1方法成功地应用于**视觉语言模型**，为多模态 AI 的研究开辟了新天地。
-- [VLM-R1](https://github.com/om-ai-lab/VLM-R1)
-
-
-VLM-R1 表现令人惊艳。
-- 首先，R1方法在复杂场景下展现出了极高的稳定性，这在实际应用中显得尤为重要。
-- 其次，该模型在**泛化能力**方面表现卓越。
-
-对比实验中
-- Qwen2.5-VL 上同时用 R1 和 SFT
-  - 域内: RL 略优于 SFT 
-  - 域外: 随着迭代步数增加, RL 大幅领先 SFT
-- 传统 SFT（Supervised Fine-Tuning）模型在领域外的测试数据上随着训练步数的增加，其性能却逐渐下滑，而 R1模型则能在训练中不断提升。
-- R1方法使得模型真正掌握了理解视觉内容的能力，而非仅仅依赖于记忆。
-
-VLM-R1 的成功推出不仅证明了 R1方法的通用性，也为多模态模型的训练提供了新思路，预示着一种全新的视觉语言模型训练潮流的到来。
-
-
-#### 【2025-3-3】Visual-RFT
-
-
-【2025-3-4】 [DeepSeek R1迁移多模态，已开源](https://mp.weixin.qq.com/s/T7nc3Y_tZJH4YiI6coUdpw)
-
-DeepSeek-R1 继文本、数学推理、代码等领域大放异彩后，其基于**规则奖励**的强化学习方法首次成功迁移到**多模态**领域
-
-【2025-3-3】上海较大、AI实验室等推出 `Visual-RFT`（Visual Reinforcement Fine-Tuning），全面开源。
-
-这一突破性技术使得视觉语言大模型具备更强的泛化能力，能以极少的样本完成高质量微调，在目标检测、分类、推理定位等任务中取得显著提升，甚至超越传统指令微调（SFT）方法。
-- 论文地址： [Visual-RFT: Visual Reinforcement Fine-Tuning](https://arxiv.org/pdf/2503.01785) 
-- 开源代码： [Visual-RFT](https://github.com/Liuziyu77/Visual-RFT)
-
-Visual-RFT (Visual Reinforcement Fine-Tuning) 在**视觉感知**任务中采用强化学习方法的模型微调技术，并借鉴 DeepSeek-R1 的强化学习策略（GPRO），为多模态任务引入**可验证奖励**（Verifiable Rewards） 机制，以增强大视觉语言模型（LVLMs, Large Vision-Language Models） 在不同任务上的推理能力。
-
-主要创新点：
-- 强化学习迁移至视觉领域：突破传统认知，首次在多模态视觉大模型中验证基于规则奖励的有效性。
-- 极少样本高效微调：相比传统 SFT 方法，Visual-RFT 仅需少量数据（10～1000 条样本）即可实现显著提升。
-- 任务广泛：适用于 目标检测、开放目标检测、少样本分类和推理定位等任务。
-- 推理能力增强：能够分析问题，进行 “think” 推理，从而实现更精准的视觉理解。
-
-核心奖励函数
-- 目标检测：采用 IoU 奖励（Intersection-over-Union, IoU Reward），通过计算预测边界框与真实边界框的重叠程度，确保模型不仅能识别目标，还能精准定位，提高检测的准确性和稳定性。
-- 图像分类：采用分类准确性奖励（Classification Accuracy Reward, CLS Reward），通过对比模型预测类别与真实类别是否一致进行奖励，引导模型在有限数据下仍能精准区分细粒度类别，提升分类泛化能力。
-- 推理定位：采用推理一致性奖励（Reasoning Consistency Reward），分析模型的推理逻辑是否符合指令，并结合 IoU 计算目标定位的准确性，确保模型不仅能回答问题，还能给出合理的思考过程，提高视觉推理能力。
-
-Visual-RFT VS 传统 SFT：
-
-|方法|数据需求|泛化能力|推理能力|
-| ---- | ---- | ---- | ---- |
-|SFT（监督微调）|需要大量数据|泛化能力有限|仅依赖已有数据|
-|Visual-RFT|仅需10～1000条数据|泛化能力强|能推理&解释| 
-
-实验基于Qwen2-VL-2B/7B视觉语言模型，Visual-RFT 在以下任务中均大幅超越传统 SFT 方法
-
-#### 【2025-3-18】Skywork R1V
-
-昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V
-
-2025年3月18日，昆仑万维开源全球首个工业界多模态推理模型 Skywork R1V（简称「R1V」）
-
-R1V高效地将R1文本推理能力无缝推广到视觉模态，实现了多模态领域领先效果(非sota)，并开源。
-
-R1V三大亮点。
-1. 全球第一个工业界开源多模态+推理模型
-2. 性能接近甚至超越了规模大两倍的开源模型
-3. 通过开源让技术可以惠及到更多人
-
-效果：
-- 1️⃣ 视觉问答任务中，R1V直接对标Claude 3.5 Sonnet、GPT-4o等闭源模型，同时保留顶级文本推理能力。
-- 2️⃣ MMMU基准测试中，R1V以69分创下同等规模新高，在MathVista上拿下67.5分，达到领先的开源模型水平。
-
-参考：
-- GitHub：[Skywork-R1V](https://github.com/SkyworkAI/Skywork-R1V)
-- Hugging Face：[Skywork-R1V-38B](https://huggingface.co/Skywork/Skywork-R1V-38B)
-- 技术报告：[Skywork_R1V.pdf](https://github.com/SkyworkAI/Skywork-R1V/blob/main/Skywork_R1V.pdf)
-- 信息源：[新智源](https://mp.weixin.qq.com/s/CYNce3oHoDrsOJSv5Pj6Nw)
-
-
-#### 多模态思维链
-
-
-【2025-3-25】[一文看懂多模态思维链](https://zhuanlan.zhihu.com/p/32534496465)
-
-新加坡国立大学、香港中文大学、新加坡南洋理工大学、罗切斯特大学的研究人员联合推出 多模态思维链综述, 提出 六大技术支柱
-- [Multimodal Chain-of-Thought Reasoning: A Comprehensive Survey](https://arxiv.org/pdf/2503.12605)
-- [Awesome-MCoT](https://github.com/yaotingwangofficial/Awesome-MCoT)
-- ![](https://pic2.zhimg.com/v2-cf7f471f04bc918fc40e26849ecffbd1_1440w.jpg)
-
-![](https://pica.zhimg.com/v2-0e1223bb2d290d2095e92c62cab6e93e_1440w.jpg)
-
-传统思维链（CoT）已经让AI在文字推理上变得更聪明，比如一步步推导数学题的答案。
-
-但现实世界远比单一文字复杂得多——人能看图说话、听声辨情、摸物识形。
-- ![](https://picx.zhimg.com/v2-5ad7c7bb091adfd9cabdd2fcfe4d2b09_1440w.jpg)
-
-MCoT 给AI装上了“多感官大脑”，同时处理图像、视频、音频、3D模型、表格等多种信息。
-
-比如，输入一张CT影像和患者的病史，AI就能输出诊断报告，还能标注出病灶位置。
-
-这种跨越模态的推理能力，让AI更接近人类的思考方式。
-- ![](https://pic3.zhimg.com/v2-b996b26c1e544b4f8ac6fc077c0f802a_1440w.jpg)
-
-
-### 【2025-2-25】Sonnet 混合
-
-
-【2025-2-25】[全球首个混合推理模型：Claude 3.7 Sonnet来袭，真实编码力压一切对手](https://mp.weixin.qq.com/s/RzdrxKbHKKqtN-FvbOQsZw)
-
-Anthropic 发布最智能的模型以及市面上首款混合推理模型 —— Claude 3.7 Sonnet
-
-Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思考。
-- 「一个模型，两种思考方式」（One model, two ways to think.），即**标准**和**扩展**思考模式。
-- API 用户还可以对模型思考时间进行细粒度控制。
-
-
-## 小模型推理
-
-小模型也能学会推理
 
 
 ### 【2025-6-7】Easy-to-Hard Reasoner
