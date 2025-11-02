@@ -421,6 +421,38 @@ DAEDAL 能够提升计算资源利用率。在取得优越准确率的同时，D
 DAEDAL 通过其初始长度调整（Initial Length Adjustment）和迭代式掩码插入（Iterative Mask Insertion）机制，不仅在多个基准上取得了与精心调优的固定长度基线相当甚至更优的性能，还能为每个任务自适应地分配合适的长度。这使得模型在性能和计算效率上都取得了实质性的提升。DAEDA 弥补了扩散大语言模型与自回归大语言模型在核心能力上的一个关键差距，为更灵活、高效、强大的扩散大语言模型打下了基石。
 
 
+### 泛化
+
+#### 【2025-10-13】RND1
+
+【2025-10-13】[Qwen3 变身扩散语言模型？不从零训练也能跑，30B参数创纪录](https://mp.weixin.qq.com/s/MwZ8tQamTMsUkxUJC_Nuiw)
+
+DLM 训练问题，scaling 效率相对低于 AR 模型。
+- 直接训练 DLM 需要在有限数据集上更多次迭代，才能超越直接训练的 AR 模型。
+- AR 模型还拥有显著的「先发优势」—— 包括成熟的训练基础设施、稳定的训练配方以及广泛的从业者经验积累。
+
+为了克服这些难点， Radical Numerics（AI 初创）研究团队选择另一条路：
+- A2D: 现有自回归模型改造成扩散语言模型，具备扩散语言模型的能力。
+
+发布 RND1-Base（Radical Numerics Diffusion，迄今为止**规模最大**的开源扩散语言模型。
+
+30B 参数稀疏 MoE 模型，其中有 3B 激活参数，由预训练 AR 模型（Qwen3-30BA3B）转换而来，并在持续预训练中累积训练 500B 个 token，以实现完整的扩散行为。
+
+同步开源了模型、训练配方、推理代码以及样例输出。
+- 技术报告：[Training Diffusion Language Models at Scale using Autoregressive Models](https://www.radicalnumerics.ai/assets/rnd1_report.pdf)
+- 代码链接：[RND1](https://github.com/RadicalNumerics/RND1)
+- HuggingFace 链接：[RND1-Base-0910](https://huggingface.co/radicalnumerics/RND1-Base-0910)
+
+主要贡献：
+- 系统性研究了大规模 A2D（Autoregressive-to-Diffusion）转换过程中的关键因素，如初始化策略、层级学习率和临界批大小。
+- 识别出能够实现可扩展性与稳定性的关键因素，并证明当这些因素与成熟的自回归预训练方法结合时，简单的技术组合也能催生可扩展的 DLM。
+- 推出了迄今为止最大的基础扩散语言模型 RND1-30B，展示了将自回归预训练经验科学化转换后可在多项基准测试中取得卓越表现。
+
+在推理（MMLU、ARC-C、RACE、BBH）、STEM（GSM8K）以及代码生成（MBPP）等通用基准测试中测试了 RND1。结果显示，所有评测中均稳定超越现有 Dream-7B 和 LLaDA-8B，同时保持了其自回归基础模型的强大性能
+
+将扩散语言模型规模扩展到 80 亿参数以上不仅可行，而且切实有效。A2D 转换可能是训练 DLM 更优的策略。RND1 也是首个在此规模上成功展示扩散模型训练的开源项目。
+
+
 ### 加速
 
 分析
