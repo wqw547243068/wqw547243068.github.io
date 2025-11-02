@@ -526,6 +526,38 @@ Emu3.5 参数量仅**34B**，整个模型以标准 Decoder-only Transformer 为�
 <img width="1080" height="469" alt="image" src="https://github.com/user-attachments/assets/bfdd0d4c-9cd5-4fac-bbf0-37d3613da99f" />
 
 
+### 【2025-10-15】腾讯开源FlashWorld
+
+【2025-10-30】[世界模型可单GPU秒级生成？腾讯开源FlashWorld，效果惊艳]()
+
+【2025-10-15】厦门大学和腾讯开源世界模型 FlashWorld
+- 论文[FlashWorld: High-quality 3D Scene Generation within Seconds](https://arxiv.org/pdf/2510.13678)
+- 主页：[FlashWorld-Project-Page](https://github.com/imlixinyang/FlashWorld-Project-Page)
+- Github：[FlashWorld](https://github.com/imlixinyang/FlashWorld)
+- Huggingface Demo：[FlashWorld-Demo-Spark](https://huggingface.co/spaces/imlixinyang/FlashWorld-Demo-Spark)
+
+FlashWorld 不仅将三维场景的生成在**单卡**上做到了 5～10 秒（相比之前方法提速百倍），更统一支持了单张图片或文本输入，生成场景可在网页用户端实时渲染，同时质量还胜过其他同类闭源模型。
+
+<img width="1080" height="398" alt="image" src="https://github.com/user-attachments/assets/87f820b1-1dd9-4ac6-a075-b9aff2158ede" />
+
+#### 原理
+
+FlashWorld 包含了两个训练流程：
+1. 双模式预训练：基于视频扩散先验，训练一个同时支持 以多视角为中心（MV）/ 以三维为中心（3D） 双模式输出的多视图扩散模型。
+2. 跨模式后训练：以 MV 模式为教师、3D 模式为学生，进行分布匹配蒸馏，兼顾高保真与 3D 一致。
+
+<img width="1080" height="453" alt="image" src="https://github.com/user-attachments/assets/e11f47da-15c0-4bc1-82df-0c1a3668734a" />
+
+
+FlashWorld 还利用了分布匹配蒸馏不需要 Ground Truth 的特性，将随机的图像、文本和轨迹组合成分布外的输入进行训练，进一步提升学生模型对各种场景、风格、轨迹的泛化能力。
+
+
+#### 效果
+
+FlashWorld，Marble，RTFM 对比
+
+FlashWorld 在预设轨迹下产生非常稳定、完整且高质量的渲染结果，生成速度比 Marble 的快速模式快 5 倍，而且完全通过前端渲染，不需要像 RTFM 一样需要等待连接后端 GPU 才能使用。
+
 
 
 # 结束
