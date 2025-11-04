@@ -3,7 +3,7 @@ layout: post
 title:  智能体记忆设计 Agent Memory
 date:   2025-07-21 12:00:00
 categories: 大模型
-tags: LLM agent 智能体 记忆 强化学习
+tags: LLM agent 智能体 记忆 强化学习 graphrag rag 知识图谱
 excerpt: 智能体记忆设计专题
 mathjax: true
 permalink: /agent_memory/
@@ -497,9 +497,8 @@ m = Memory.from_config(config)  # 支持多数据库联动
 
 ### 【2025-6-9】G-Memory
 
-现有多智能体系统的问题
+现有多智能体系统问题
 - 现有LLM多智能体系统（MAS）大多靠“一次性”流程或人工SOP，缺乏“自我进化”能力：本质是因为缺一套能跨任务、跨角色沉淀协作经验的记忆架构。
-
 
 【2025-6-9】NUS、Tongji University、UCLA 等发布 G-Memory：LLM多智能体的"集体记忆"机制
 - 论文标题：[G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems](https://arxiv.org/pdf/2506.07398)
@@ -507,7 +506,6 @@ m = Memory.from_config(config)  # 支持多数据库联动
 
 G-Memory 作为多智能体系统的“**集体记忆**”插件，结构化组织多智能体复杂记忆，让智能体从单任务执行者进化为跨任务专家。
 	
-
 即插即用
 - 无需改现有框架，一行代码即可把AutoGen/DyLAN/MacNet升级为“会成长的团队”
 
@@ -746,8 +744,6 @@ MIRIX，模块化、多智能体协作的记忆系统。
 MIRIX 为 LLM 智能体的记忆能力树立了新标准，并提供了实际应用。
 
 
-
-
 ### 【2025-7-25】LVMM
 
 
@@ -939,6 +935,104 @@ Memory-R1 并没有对长期记忆框架做更新，而是提出了对其中的�
 
 Memory-R1 在 LOCOMO 等基准上相对先前最强基线（如 Mem0）有显著提升（例如报道引用的度量显示在 F1、BLEU、LLM-as-a-Judge 等指标上有明显增益），但要注意：学术基准的改进不必然等同于在你特定生产场景中的实际收益（实际收益会受检索延迟、成本、数据分布等影响）
 
+### 【2025-7-18】Graphiti
+
+【2025-7-18】Agent实时知识图谱工具,动态知识图谱构建与时间感知能力
+
+Graphiti 构建和查询时间感知知识图谱的框架，专为在动态环境中运行的 AI 智能体设计。
+- 项目地址：[Graphiti](https://github.com/getzep/graphiti)
+
+与传统检索增强生成（RAG）方法不同，Graphiti 能够持续整合用户交互、结构化与非结构化企业数据，以及外部信息，构建成一个连贯且可查询的图谱。
+
+该框架支持增量数据更新、高效检索与精准的历史查询，且无需整体重新计算图谱，非常适合开发交互式、上下文感知型 AI 应用。
+
+<img width="608" height="720" alt="image" src="https://github.com/user-attachments/assets/2d836dff-0e38-4234-a99d-a3a6267dd7c2" />
+
+
+#### 功能
+
+Graphiti 功能：
+- 整合并维护动态的用户交互和业务数据。
+- 支持智能体基于状态的推理和任务自动化。
+- 通过语义搜索、关键词搜索、图遍历等方式，查询复杂、不断演化的数据。
+
+Graphiti 独特之处
+- 自主构建知识图谱，同时处理关系变化并保持历史上下文。
+
+Graphiti 驱动着 Zep 的 AI 智能体记忆核心。
+
+通过 Graphiti，证明了：Zep 是当前智能体记忆领域的最先进方案。
+
+优势：
+- 实时增量更新：新数据片段能够即时整合，无需批量重计算。
+- 双时间数据模型：明确记录事件的发生时间和接收时间，支持精准的时点查询。
+- 高效的混合检索：结合了语义嵌入、关键词检索（BM25）和图遍历，实现了低延迟查询，且无需依赖大型语言模型（LLM）摘要。
+- 自定义实体定义：通过直观简单的 Pydantic 模型，开发者可以灵活创建本体论和自定义实体。
+- 优异的可扩展性：支持并行处理，能够高效管理大规模数据集，适用于企业级应用场景。
+
+#### 知识图谱
+
+知识图谱是由互相关联的事实组成的网络，例如：“Kendra 喜爱 Adidas 鞋子。” 每条事实是一个“三元组”，由两个实体（或称节点，如“Kendra”和“Adidas 鞋子”）以及关系（或称边，如“喜爱”）表示。
+
+Graphiti采用分层设计构建知识图谱，模拟人类记忆模式：
+1. 情节子图（Episode Subgraph）: 存储原始输入数据（如对话文本、JSON文档），保留完整上下文。通过情节边连接到语义实体，确保可追溯数据来源。
+2.语义实体子图（Semantic Entity Subgraph）: 利用LLM从情节中提取实体（如人物、产品）和关系（如“喜欢”“属于”），形成结构化知识网络。实体节点包含属性摘要，支持快速检索。
+3.社区子图（Community Subgraph）: 通过标签传播算法对实体进行聚类，形成高层次概念（如“运动品牌”）。社区边连接语义实体与社区，支持抽象推理（如“Adidas属于运动品牌社区”）。
+分层架构既保留细节信息，又支持从具体事件到抽象概念的多层次查询。
+
+#### RAG 分析
+
+Graphiti 颠覆 RAG 静态模式。 
+- Instant updates：新数据进来就能即时更新
+- Bi-temporal tracking：既知道事情发生的时间，也知道被记录的时间
+- Hybrid retrieval：融合 semantic search（看语义）、keyword search（看精准关键词）和 graph traversal（看关系结构）
+
+#### Zep 分析
+
+| 方面                     | Zep                                      | Graphiti                                  |
+|--------------------------|------------------------------------------|-------------------------------------------|
+| What they are            | 用于AI记忆的完整托管平台                 | 开源图框架                                |
+| User & conversation management | 内置用户、对话线程和消息存储             | 需自行构建                                |
+| Retrieval & performance  | 预配置、可用于生产环境的检索，大规模下性能亚200毫秒 | 需自定义实现；性能取决于自身配置          |
+| Developer tools          | 带图可视化的仪表盘、调试日志、API日志；支持Python、TypeScript、Go的SDK | 需自行构建工具                            |
+| Enterprise features      | 服务等级协议（SLAs）、支持、安全保障      | 自管理                                    |
+| Deployment               | 完全托管或部署在自有云环境               | 仅支持自托管                              |
+
+**分析**：该表格对比了Zep和Graphiti两个工具在多个维度的差异。Zep是一个托管平台，提供了从用户对话管理到检索、开发工具等全链路的成熟解决方案，适合需要快速落地且注重企业级保障的场景；而Graphiti是开源图框架，灵活性高，但需要用户自行完成大部分构建工作，更适合有定制化需求且具备技术能力的团队。
+
+
+
+#### Graphiti 与 GraphRAG 对比
+
+Graphiti MCP is an open-source temporal knowledge graph
+
+| 方面               | GraphRAG                          | Graphiti                                  |
+|--------------------|-----------------------------------|-------------------------------------------|
+| **Primary Use**    | 静态文档摘要                      | 动态数据管理                              |
+| **Data Handling**  | 面向批量的处理                    | 持续、增量更新                            |
+| **Knowledge Structure** | 实体集群 & 社区摘要               | 情景数据、语义实体、社区                  |
+| **Retrieval Method** | 序列式大语言模型摘要               | 混合语义、关键词和基于图的搜索            |
+| **Adaptability**   | 低                                | 高                                        |
+| **Temporal Handling** | 基础时间戳跟踪                    | 显式双时态跟踪                            |
+| **Contradiction Handling** | 大语言模型驱动的摘要判断       | 时态边失效                                |
+| **Query Latency**  | 几秒到几十秒                      | 通常亚秒级延迟                            |
+| **Custom Entity Types** | 不支持                            | 支持，可自定义                            |
+| **Scalability**    | 中等                              | 高，针对大型数据集优化                    |
+
+
+
+#### 使用
+
+环境要求：
+- Python 3.10 或更高版本
+- Neo4j 5.26 或更高版本（用作嵌入存储后端）
+- OpenAI API 密钥（用于 LLM 推理与嵌入生成）
+
+命令
+
+```sh
+pip install graphiti-core
+```
 
 
 # 结束
