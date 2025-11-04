@@ -1196,9 +1196,24 @@ Model Merge将多个不同的模型合并为一个统一的模型，无需要额
 
 ### Mid-training
 
+
+mid-training 到底是什么？既不是pre-training（预训练），也不是post-training（后训练），而是模糊地介于两者之间
+
+- 2024年7月起, OpenAI设立“mid-training”部门，其主要贡献“包括GPT4-Turbo和GPT-4o”。
+  - mid-training 团队从事跨领域研究、工程和执行工作，包括传统上与pre-training和post-training相关联的活动
+- xAI也在筹建类似部门。
+
 【2025-7-1】[首创Mid-training范式破解RL奥秘，Llama终于追平Qwen](https://mp.weixin.qq.com/s/25wERcyTi79GOBpytujEWA)
 
+
 #### 背景
+
+mid-training 兴起传递出两种并行趋势：
+- 基础训练与指令训练的界限模糊。
+  - 调度和退火现已成为训练标准方法。在接近预期用途时引入类似指令的数据或过滤数据，已反复证明能提升性能。专门预训练上花费大量时间后，Chinchilla缩放法则依然适用。通过提交更多任务示例或更优质的推理示例，大幅提升模型在特定任务上的性能。或者在强化学习（RL）方面，设计一个让模型无限“玩”任务的场景，直到达到某种饱和点。
+- Post-training规模扩大。 计算计划、数据集和组织架构在许多机构中重新平衡。
+  - 一些新的推理模型（如O3）甚至可能仅经过“post-training”——快速迭代发布暗示了这一点。
+  - post-training 成为新pre-training，甚至pre-training可能将终结。尽管有传言称大实验室（如Anthropic和xAI）面临数据壁垒和失败的大型运行，但性能提升似乎主要通过基础模型训练实现，包括推理缩放、合成数据、强化学习、内部模型操作（SAE）和logits优化。
 
 将大规模强化学习（RL）引入语言模型显著提升了**复杂推理**能力，尤其数学竞赛题解等高难度任务上。
 
@@ -1214,6 +1229,15 @@ Model Merge将多个不同的模型合并为一个统一的模型，无需要额
 - Mid-training 能否作为可控干预手段，弥合不同基座在 RL 中的表现鸿沟？
 
 #### Mid-training 诞生
+
+文章：[What's the deal with mid-training?](https://vintagedata.org/blog/posts/what-is-mid-training)
+- 知乎[解读](https://zhuanlan.zhihu.com/p/30084062219)
+
+Mid-training 补充能力
+- 领域知识：中等规模语料
+- 多语言：更改模型内部结构，尤其是tokenizer
+- 长上文窗口：模糊了pre/mid/post训练之间的界限
+- 推理能力
 
 上海创智学院、上海交通大学的前沿研究论文深入探讨不同基础语言模型家族（如 Llama 和 Qwen）在强化学习（RL）训练中迥异表现的背后原因，并提出创新性的`中期训练`（mid-training）策略，成功地将 Llama 模型改造成**高度适配**强化学习的推理基础模型，显著缩小了其与天生擅长 RL 扩展的 Qwen 模型之间的性能差距，为下一代 reasoning 能力 AI 系统的开发提供了关键的科学基础和技术路径。
 - 论文链接：[OctoThinker: Mid-training Incentivizes Reinforcement Learning Scaling](https://arxiv.org/pdf/2506.20512)
