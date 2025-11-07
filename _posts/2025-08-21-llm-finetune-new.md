@@ -463,13 +463,14 @@ SFT-then-RL 范式
 - RFT 则鼓励模型进行“探索性思考”。它不直接提供标准答案，而是让模型自己尝试解决问题，并根据最终结果的好坏给予奖励或惩罚。
 
 趋势：
-- 单一的微调范式, 可能已无法满足我们对通用人工智能推理能力的极致追求。
+- 单一微调范式, 可能已无法满足我们对通用人工智能推理能力的极致追求。
 - 案例: Qwen 推出 CHORD
 
 【2025-5-22】麻省理工学院 (MIT) 研究团队提出 Unified Fine-Tuning (`UFT`) ，将 SFT 和 RFT 无缝统一到单一集成过程中的新型后训练框架。
 - 论文：[UFT: Unifying Supervised and Reinforcement Fine-Tuning](https://arxiv.org/pdf/2505.16984)
 - 引用论语：“学而不思则罔，思而不学则殆。”
 - 代码 [UFT](https://github.com/liumy2010/UFT)
+
 
 #### 原理
 
@@ -479,6 +480,9 @@ UFT 核心思想
 UFT 设计哲学：“在指导下探索，在探索中学习”。
 
 它并非简单地将 SFT 和 RFT 两个阶段**串联**起来（即先 SFT 再 RFT，论文中称为 SFT-RFT 模式），而是在一个统一的框架内，**动态地、平滑**地融合二者。
+
+<img width="697" height="613" alt="image" src="https://github.com/user-attachments/assets/aa490f5c-c643-49e2-8fe4-f69919a49434" />
+
 
 UFT 的实现依赖于两大核心支柱：**提示引导的探索** (Exploration with Hint) 和 **混合目标函数** (Hybrid Training Objective) 。
 
