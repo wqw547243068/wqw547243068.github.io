@@ -454,7 +454,7 @@ SFT-then-RL 范式
 
 
 
-### 【2025-5-22】UTF
+### 【2025-5-22】UFT
 
 【2025-8-24】[MIT：UFT 统一监督微调（SFT）和强化微调（RFT）](https://mp.weixin.qq.com/s/Xj0q9gMcxTGhvJmdcfn1DQ)
 
@@ -482,7 +482,7 @@ UFT 设计哲学：“在指导下探索，在探索中学习”。
 
 UFT 的实现依赖于两大核心支柱：**提示引导的探索** (Exploration with Hint) 和 **混合目标函数** (Hybrid Training Objective) 。
 
-四种微调范式的区别
+四种微调范式区别
 - SFT 从头到尾都在使用完整的标准答案。
 - RFT 则完全不使用答案，纯靠自己探索。
 - SFT-RFT 是先用 SFT 训练，然后完全切换到 RFT。
