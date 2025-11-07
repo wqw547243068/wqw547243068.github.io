@@ -420,6 +420,10 @@ We leverage a breadth of optimizations including:
 
 Meta 前 PyTorch 团队推出 vLLM，最大特色“PagedAttention”。
 
+vLLM（Very Large Language Model）专为大语言模型（LLM）优化的高效推理框架
+
+其核心：PagedAttention、动态批处理pd并行、多LoRA动态加载等
+
 PagedAttention 本质是灵活管理 KV Cache（注意力缓存）的方式。
 - 传统 transformer 推理时，每个 token 都带上历史上下文，缓存爆炸。
 - vLLM 通过类似虚拟内存分页方式，优化性能。像会打麻将的高效服务员，记牌记得巨快
@@ -430,8 +434,61 @@ PagedAttention 本质是灵活管理 KV Cache（注意力缓存）的方式。
 
 前提：GPU A100 起步。
 
+#### vllm和sglang
 
-#### vllm部署方式
+【2025-09-27】[vllm:pd并行、多LoRA动态加载](https://zhuanlan.zhihu.com/p/1896895671711285497)
+
+vllm和sglang 部署分别：
+- vLLM 在高并发和低延迟场景下表现优异，尤其擅长快速生成第一个词（TTFT低）。
+- SGLang 在多轮对话这类前缀复用率高的场景中，吞吐量优势明显，测试显示其在Llama-7B上的吞吐量可比vLLM高5倍。
+
+#### 框架
+
+核心架构是LLMEngine：包含调度器（Scheduler）和推理工作器（Worker）
+
+- 调度器（Scheduler）：
+  - 调度策略（policy）：
+    - 请求的连续批处理(Continuous Batching）
+    - 请求队列维护：waiting（待处理）、running（正在处理）、swapped（因显存不足被挂起)
+  - 空间“调度指挥官”（BlockSpaceManager）：负责逻辑资源规划与分配策略；
+    - 计算kv cache需要的块数量
+    - 判断是否需要为新token分配新的空间（如需则通知cacheengine）
+    - 内存共享：例如在并行采样时，多个输出序列可共享同一prompt的KV缓存块
+- 推理工作器（Worker）：
+  - 模型运行：包括多GPU分布式计算（张量并行、流水线并行）
+  - 空间“后勤执行者”（CacheEngine）：负责物理显存的具体操作与数据存取。
+- 性能效果：
+  - 吞吐：提升高达24倍
+  - 耗时：提升1.2倍。
+
+
+#### 多LoRA动态加载 
+
+- 无延迟切换：单基础模型（如Llama 3-8B）同时挂载多个LoRA适配器（如聊天/函数调用），请求时通过lora_request参数指定，切换延迟低于1ms。
+- 资源复用：基础模型参数仅加载一次，适配器共享显存，支持5+适配器并行服务。
+
+与stable diffusion类似，vllm 也支持在请求调用时指定调用某个lora；但有两点差异：
+- vllm中的lora是一开始全部就加载进模型的，（sd是请求时才加载）
+- vllm中每次请求只能指定一个lora
+
+```sh
+# 同时加载两个适配器
+vllm serve meta-llama/Meta-Llama-3-8B \
+  --enable-lora \
+  --lora-modules \
+    oasst=/path/to/oasst_adapter \  # 名称 oasst
+    xlam=/path/to/xlam_adapter     # 名称 xlam
+```
+
+#### PagedAttention 动态分页机制
+
+- 分块管理KV缓存：将注意力键值（Key-Value Cache）划分为固定大小的块（如4-16 tokens/块），按需动态分配GPU显存，避免传统连续分配导致的碎片问题。
+- 显存复用与共享：短序列推理时仅占用必要块，释放空间供其他请求使用；支持跨请求的缓存共享（如相同前缀提示词），显存利用率提升最高达25%。
+- 写时复制（Copy-on-Write）：共享块标记为只读，修改时创建新副本，减少重复计算
+
+
+
+#### vllm 部署方式
 
 vllm 两种模型部署方式：
 - **在线**服务形式（Online Serving）
@@ -441,6 +498,23 @@ vllm 两种模型部署方式：
 
 
 #### vllm 使用
+
+```py
+# 安装vLLM
+# pip install vllm
+
+# 示例代码：生成文本
+from vllm import LLM, SamplingParams
+
+prompts = ["什么是vLLM？", "vLLM的优势是什么？"]
+sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+llm = LLM(model="meta-llama/Llama-2-7b-chat-hf")  # 可限制最大并发：max_num_seqs=2，使用FP16：dtype="float16"
+
+outputs = llm.generate(prompts, sampling_params)  # 批量推理
+
+for output in outputs:
+    print(f"输入：{output.prompt}\n输出：{output.outputs[0].text}\n"2
+```
 
 服务开启和各参数作用
 
