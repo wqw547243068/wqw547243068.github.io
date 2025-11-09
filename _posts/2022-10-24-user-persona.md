@@ -3,7 +3,7 @@ layout: post
 title:  "用户画像 User Persona"
 date:   2022-10-24 13:30:00
 categories: 数据挖掘
-tags: 用户画像 标签 互联网 营销 增长 骚扰电话 分布式 id 雪花
+tags: 用户画像 标签 互联网 营销 增长 骚扰电话 分布式 id 雪花 session 用户建模
 excerpt: 如何刻画用户特征？用户画像有哪些类别，标签如何构建，怎么使用画像？
 author: 鹤啸九天
 mathjax: true
@@ -419,7 +419,251 @@ User Portrait 是指用户信息`标签化`，通过收集用户多维度的信�
 - Leaf: 美团开源的分布式ID生成器，能保证全局唯一，趋势递增，但需要依赖关系数据库、Zookeeper等中间件。 具体参考：[MT_Leaf](https://tech.meituan.com/MT_Leaf.html)
 
 
+### Session 分析意义
 
+用户行为事件往往以“点”的方式呈现： 
+- 某人在什么时间什么地点干了一件什么样的事
+- 即熟知的 4W1H 模型：Who、When、Where、How、What
+
+>- 小明昨天下午在i百联通过个性化推送买了一双 NIKE 球鞋
+>- 张小花今天十点在融 360 上注册后领取了新人基金
+>- 某白领晚上六点在五道口区域扫码一辆 ofo 小黄车并报修了它 ……
+
+基于这样用户角度的行为记录，产品方可以知道用户都具体干了什么事情。并对自己的产品做出精细化运营，但是，还有一些需求，是不能通过“点”来描述的，比如：
+- 用户平均会来几次？
+- 每次平均逛了几个页面？
+- 每次来平均待多久？
+- 某个具体页面用户平均停留多长时间？
+
+这些需要把用户单点行为串联起来形成一个整体，并在此基础上进行计算后才能得到的数据分析需求，更像是一条“线”。而 Session 分析的最大意义是解决用户分析中的“线”型难题，从不同角度指导精细化运营与商业决策。
+
+### 什么是 Session
+
+- 【2017-6-28】[数据分析方法论：你真的懂 Session（会话） 分析吗？](https://www.woshipm.com/data-analysis/700390.html)
+- 【2021-12-7】[Session 分析的妙用](https://www.woshipm.com/data-analysis/5239785.html)
+
+Session 翻译过来是“会话”，用户在APP/小程序/官网等平台上进行浏览/点击/滑动等行为聚合成的序列
+
+Session指用户在产品上的一次连续使用行为，便于追溯分析用户使用效果（使用时长/交互深度/跳出率/用户路径/转化漏斗等）。
+- 用户带着需求来，初始意图随着交互的进行，中途会细化、延伸、发散到相关需求上，大部分都围绕一个主意图。
+- Session有长有短，意图有多有少
+
+Session 的关键点：多长时间内用户做了什么事。
+
+电商平台购物场景
+- 点击/打开客服聊天框时，就进入了和客服的 “会话”
+- 用户向客服询问产品的情况或投诉
+- 只有用户主动结束和客服的沟通，或在一段时间内我们没有继续向客服发消息时，客服才会发来 “满意度邀请”
+
+此次 “会话” 就结束了。
+
+用户启动 APP 后在 APP 上的一系列操作和互动，也可以看作是用户和 APP 的 “会话”，即使是用户短暂放下手机去做别的事，只要在后面又重新打开 APP 进行操作，此次 “会话” 就没有结束，除非用户离开的时间超过了阈值，“会话” 就会自动结束。
+
+
+### Session 指标
+
+
+1. “会话” 个数
+2. “会话” 深度
+  - [img](https://image.woshipm.com/wp-files/2021/12/KepOkAddPJbjDYY2lQwC.png)
+3. “会话” 跳出率
+  - [img](https://image.woshipm.com/wp-files/2021/12/SuCcAtyyZeKSKYjPnFLL.png)
+4. “会话” 内部各事件的属性
+
+### Session 切分
+
+如何切分session？多个角度判断session是否结束
+- 百度搜索以25min无操作为界，分割行为序列
+- 高德地图以显性终止行为（发起导航/退出等）+无操作时间窗（最长5min）综合分割行为序列
+
+一般经验：
+- Web产品30min为界
+- APP产品1min为界
+- ![](https://image.woshipm.com/wp-files/2017/06/T4IKlAAG415UXL2S54gf.png)
+
+参考：
+- 显性终止行为：回到主页、退出app、新建回话
+- 无操作时间窗：5min为界（具体窗口需要统计分析,看窗口分布,意图覆盖）
+
+
+![](https://image.woshipm.com/wp-files/2021/12/8gtLoXwfbOhdv4XOGjzf.png)
+
+上图中，这个用户
+- 上班路上打开了 APP，逛了一会后就退出了 APP。
+- 下班回家后打开了 APP，逛了一会后放下手机，用一分钟倒了一杯水，接着回来又打开了 APP 继续浏览，直到最后退出了 APP。
+
+如果简单使用 “打开-退出APP” 作为**行为序列**的切割标准，该用户在上班路上使用 APP 的深度比回家后高
+- 可以计算图中从打开 APP 到退出 APP 中出现的 “圆圈” 的个数计算用户从打开到退出过程中与 APP 的互动深度。
+
+但是实际上并不是如此，用户在第一次退出 APP 后只是起身倒了一杯水，并没有结束与 APP 的互动。
+
+如果轻易得出了 “上班时段的使用深度高于回家之后” 的错误结论，将会误导业务同事，严重的话可能会导致其做出错误的决策。
+
+反之，Session 可以将回家后的两段貌似 “割裂的” 行为序列进行合并，从而揭开用户在一段时间内所做的行为和背后的动机。
+
+“切割时间” 概念
+- “除非用户离开 APP 的时间超过了阈值，‘会话’ 就会自动结束”，这个 “阈值” 便是 “切割时间”。
+
+例子
+- 假设设定切割时间为 5 分钟，那么就代表着如果用户在做了某个行为 5 分钟后没有任何其他动作，前面的 “会话” 便会被 “切割” 并结束。
+- 在某些情况下，也可以设置特定的 “会话” 开始和结束事件，一旦用户做了某个操作就会自动开始/结束 “会话”。
+
+
+### Session 实践
+
+用户行为序列按照id切分，连续行为按时间间隔（如30min）分割，提取关键序列
+
+```python
+import datetime
+import pandas as pd
+import time
+import json
+
+def diff_time(a, b):
+    """
+        计算时间差
+    """
+    userStart=datetime.datetime.strptime(a,'%Y-%m-%d %H:%M:%S')
+    userEnd=datetime.datetime.strptime(b,'%Y-%m-%d %H:%M:%S')
+    delta = (userEnd-userStart).seconds
+    #print ((userEnd-userStart).days) # 0 天数
+    # print (end-start).seconds # 30 秒数
+    return delta
+
+def path_result(p):
+    """
+        路径转化结果
+    """ 
+    result = '未知'
+    # 异常路径矫正
+    if p.endswith('命中知识=>识别失败'):
+        p = p.strip('=>识别失败')
+    # 开始判断
+    if p == '进入IM=>初始faq':
+        result = '进线无交互'
+    elif p.endswith('点击faq=>初始faq'):
+        result = '智能解决-FAQ点击'
+    elif p.endswith('闲聊'):
+        result = '智能解决-闲聊'
+    elif p.endswith('答案点赞'):
+        result = '智能解决-点赞'
+    else:
+        result = '其它'
+    return result
+
+def print_session(last_info):
+    """
+        session 输出
+    """
+    # 计算时间差
+    delta = diff_time(last_info['start_time'], last_info['end_time'])
+    last_info['duration'] = delta
+    #print('\t','\n\t'.join(['\t'.join(map(str,i)) for i in last_info['path']]))
+    # 计算全局统计信息
+    steps = len(last_info['path'])
+    turns = len([i for i in last_info['path'] if i[0]=='用户'])
+    # 关键路径
+    path_long = '=>'.join([i[4] for i in last_info['path']]) # 完整路径
+    path_short = '=>'.join([i[4].split('(')[0] for i in last_info['path']]) # 精简路径
+    result = path_result(path_short) # 转化结果
+    #output_format = ['会话id','人工会话id','sessionid','开始时间','结束时间', '持续时长','总步数','用户发言数','关键路径-精简','关键路径-完整','转化结果']
+    cur_list = [last_info['conversationid'], last_info['dialogid'], last_info['bot_dialogid'], last_info['human_dialogid'], 
+                last_info['start_time'], last_info['end_time'], last_info['duration'],
+                steps, turns, path_short, path_long, result]
+    #print('\t'.join(map(str, cur_list)))
+    output_list.append(cur_list)
+    #print('-'*100)
+
+type_info = {
+    10001:'普通文本', # im_cloud_text
+    10006:'语音', # im_cloud_audio
+    10007:'定位', # im_cloud_location
+    10008:'系统', # im_cloud_system
+    10009:'链接', # im_cloud_link
+    20000:'消息隐藏', # fe_hidden_message
+    40001:'会话开始', # start_conversation_type
+    40002:'会话结束', # end_conversation_type
+}
+# 数据读取
+raw_pd = pd.read_excel('data.xlsx')
+
+guess_dict = {}
+output_list = []
+faq_click = {}
+output_format = ['cur_dialogid','bot_dialogid','human_dialogid','start_time','end_time', 'duration','total_steps','utterance_num','path_short','path_long','result']
+last_info = {'dialogid':'-','path':[],'start_time':'-','end_time':'-', 'duration':0, 'turns':0, 'guess_dict':[]}
+debug = False #True
+cnt_info = {'line':0, 'dialogid':0}
+#for i,r in df.iloc[:100,:].iterrows():
+for i,r in raw_pd.iterrows(): # 务必排序，否则出现个别顺序混乱; type排序为了保证意图识别
+    if debug: # 调试信息
+        if r['type'] == 41001:
+            print(r['dialogid'],r['角色'],r['type'],r['time'],r['发送方'],r['接收方'],r['fromuserid'],'省略')
+        else:
+            print(r['dialogid'],r['角色'],r['type'],r['time'],r['发送方'],r['接收方'],r['fromuserid'],r['content'])
+    cnt_info['line'] += 1
+    # 以 dialogueid 为准，切分会话序列
+    if r['dialogid'] != last_info['dialogid']:
+        # session 分割条件：dialogid变化，且，当前非接通人工会话
+        cnt_info['dialogid'] += 1
+        # session切换，输出上一个列表
+        if last_info['dialogid'] != '-': # 非第一个session
+            print_session(last_info)
+        last_info = {'dialogid':r['dialogid'],'bot_dialogid':r['dialogid'], 'human_dialogid':'-','path':[],'start_time':'-','end_time':'-', 'duration':0, 'turns':0, 'guess_dict':[]}
+    # 同一个session：添加session序列
+    if last_info['start_time'] == '-':
+        last_info['start_time'] = r['time']
+    if r['time'] > last_info['end_time']:
+        last_info['end_time'] = r['time']
+    # type识别，得到关键动作action机器参数信息（括号里面）
+    action = '-'
+    if r['type'] == 10001:
+        pass
+    elif r['type'] == 10003: 
+        action = '输入图片消息'
+        tmp_info = json.loads(r['content'])
+    elif r['type'] == 43001: # 用户发视频
+        action = '输入视频消息'
+    elif r['type'] == 40008: # 【高置信度】机器人请求知识点答案
+        action = '命中知识'
+        content_info = json.loads(r['content'])
+        action += '{}-{}-{})'.format(knowledge_id, knowledge_name, '内容省略')
+    elif r['type'] == 41001: # 初始推荐faq
+        action = '初始faq'
+        faq_info = json.loads(r['content'])
+        faq_dict = {} # 初始化FAQ列表
+        for idx, item in enumerate(faq_info['faqList']):
+            faq_dict[item['question']] = [idx, 'B', item['id'], item['knowledgeId'], item.get('answer','null')]
+    else:
+        action = type_info.get(r['type'], '未知-{}'.format(r['type']))
+    # 追加动作序列
+    last_info['path'].append([r['角色'], r['type'], r['time'], r['发送方'], action, r['content'],r['extmap']])
+# 最后一个session
+print_session(last_info)
+```
+
+
+### 行为建模
+
+【2025-3-29】 用户行为建模（`UBM`）广泛应用于推荐系统（`RS`），在用户兴趣学习中占据着
+- 推荐系统研究的主要痛点在于缺乏用户偏好的显式反馈。用户兴趣偏好更多隐含记录在粗糙且有噪音的行为日志中
+
+通过挖掘用户与物品之间的关键交互模式，能够在推荐任务中带来较大的提升。
+- 论文：[A Survey on User Behavior Modeling in Recommender Systems]()
+
+UBM分类体系分为四个方向：
+- **传统**用户行为建模（Conventional UBM）
+  - 从简单历史行为序列中学习**用户兴趣表征**， 单一行为类型 single type (如点击，下载)历史。
+  - 首先将用户行为历史Hu处理为固定长度的**时序物品序列**(一般进行padding，然后sequence_mask)，随后从多个维度分析用户复杂行为模式，包括session结构、行为粒度(粗粒度，marco-behavior，micro-behavior)与影响范围 以及物品间的依赖关系(比如i2i相似度计算，就是通过)。
+- **长序列**用户行为建模（Long-Sequence UBM）
+  - 通过学习**更长**的用户行为序列（至少千级规模）保留更多行为记录，使模型能够挖掘更丰富的长期用户兴趣，但深度模型处理超长序列面临计算瓶颈。为此，研究者提出两种解决方案：
+    - 采用存储增强方法来存储长距离行为依赖
+    - 行为检索方法筛选与目标相关的行为历史，也就是GSU，有hard-GSU和soft-GSU；
+- **多类型**用户行为建模（Multi-Type UBM）， 用户行为的多样性
+  - 在统一推荐模型中**显式建模**不同行为类型（如点击、购买），为细粒度理解行为模式和关联关系提供新视角，比如ESSM2就是通过分析不同的用户行为，并找到不同行为之间的转化率；
+- **带辅助信息**的用户行为建模（UBM with Side Information）： 把itemId 泛化到属性序列上
+
+更多: [用户行为序列建模汇总](https://mp.weixin.qq.com/s/dcBLx6dRxGYFQHzO6uAlWQ)
 
 
 
