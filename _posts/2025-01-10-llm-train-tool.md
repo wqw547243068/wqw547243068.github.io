@@ -3,7 +3,7 @@ layout: post
 title:  "分布式训练框架"
 date:   2025-01-10 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory
+tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory vllm FSDP
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -1816,6 +1816,40 @@ verl还具备与现有LLM基础设施无缝集成的能力，无论是PyTorch FS
 
 
 ### 功能
+
+强化学习三个步骤: 
+- (1) Rollout ->
+- (2) Actor / Critic / Reward / Ref 计算**梯度更新**所需数据 ->
+- (3) Actor / Critic 做 **update**
+
+​ verl 使用 vllm、sglang 等推理引擎来优化rollout过程
+
+以 vllm(<=0.6.3)为例，解析verl中涉及rollout的部分
+
+场景：
+- 假设有4张GPU，actor采用fsdp方式将参数均匀分布在各个GPU上。
+- 当前，actor经过前一轮训练后，进入rollout阶段。
+- 为了提高rollout阶段的吞吐，不对模型参数进行切分，即dp=4,tp=1。
+
+<img width="2600" height="898" alt="image" src="https://github.com/user-attachments/assets/16ea8c1d-fa5f-48a5-a1ea-ed64e0e46522" />
+
+
+【2025-09-07】[利用 vLLM 进行 rollout](https://zhuanlan.zhihu.com/p/1943606938769295200)
+
+vLLM 允许设置 PP 和 DP
+
+```py
+llm = LLM(
+    model=str(model_dir),
+    dtype='bfloat16',
+    gpu_memory_utilization=0.4,
+    tensor_parallel_size=2, 
+    pipeline_parallel_size = 2, 
+    data_parallel_size = 2 
+)
+```
+
+TP 和 PP 很好理解，而DP 的意思应该是，例如你有4张卡，设置 TP = 2 ， PP = 1 ，此时 vLLM 内部会启动“两份模型”, 进行并行的数据处理
 
 
 ### 效果
