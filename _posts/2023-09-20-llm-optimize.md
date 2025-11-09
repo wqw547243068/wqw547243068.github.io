@@ -532,6 +532,26 @@ vllm serve deepseek-ai/deepseek-vl2-tiny  \
 
 详见[地址](https://zhuanlan.zhihu.com/p/1895409091192537734)
 
+#### vLLM 分布式
+
+【2025-09-07】[利用 vLLM 进行 rollout](https://zhuanlan.zhihu.com/p/1943606938769295200)
+
+vLLM 允许设置 PP 和 DP
+
+```py
+llm = LLM(
+    model=str(model_dir),
+    dtype='bfloat16',
+    gpu_memory_utilization=0.4,
+    tensor_parallel_size=2, 
+    pipeline_parallel_size = 2, 
+    data_parallel_size = 2 
+)
+```
+
+TP 和 PP 很好理解，而DP 的意思应该是，例如你有4张卡，设置 TP = 2 ， PP = 1 ，此时 vLLM 内部会启动“两份模型”, 进行并行的数据处理
+
+
 #### vLLM 源码解析
 
 【2024-4-12】[图解大模型计算加速系列：vLLM源码解析2，调度器策略(Scheduler)](https://mp.weixin.qq.com/s/N2tsOD-XdaNcodf-CKWVhQ)
