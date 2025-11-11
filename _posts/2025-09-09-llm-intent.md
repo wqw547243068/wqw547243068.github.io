@@ -3,7 +3,7 @@ layout: post
 title:  "大模型意图识别-Intent Detection on LLM"
 date:   2025-09-09 14:52:00
 categories: 深度学习
-tags: 文本分类 意图识别 对话系统 agent 评估 智能客服 ood
+tags: 文本分类 意图识别 对话系统 agent 评估 智能客服 ood 阿里小蜜
 excerpt: 大模型/Agent 如何助理意图识别？
 author: 鹤啸九天
 mathjax: true
@@ -392,7 +392,7 @@ RCS方法在训练过程中优先选择更具信息量的训练实例，有效�
 👉比如在一个智能客服对话场景下，用户先问 “我买的商品坏了怎么办？”，客服回答后，用户又问 “那维修需要多长时间？”。
 
 
-## Agent 意图识别难题
+## 意图识别难题
 
 【2025-8-6】[Agent意图识别有哪些挑战?深度解析8大难题](https://www.xiaohongshu.com/explore/6891834a00000000040004d0)
 
@@ -458,7 +458,6 @@ hybrid system that combines SetFit and LLM by conditionally routing queries to L
   - 例如，在电子商务平台上，用户可能会表达“我收到的商品有瑕疵，我想要退货”。
   - 这里，基于LLM的意图识别系统要能够迅速捕捉到用户的意图是“退货”，并且自动触发退货流程，进一步引导用户完成后续操作。
 
-
 基于LLM的意图识别解决方案
 - 准备训练数据
   - 参照数据格式要求和数据准备策略并针对特定的业务场景准备相应的训练数据集。您也可以参照数据准备策略准备业务数据，然后通过智能标注（iTAG）进行原始数据标注。导出标注结果，并转换为PAI-QuickStart支持的数据格式，用于后续的模型训练。
@@ -469,6 +468,41 @@ hybrid system that combines SetFit and LLM by conditionally routing queries to L
 
 流程图
 - ![](https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/9307599371/CAEQQhiBgMDtyPGk_RgiIDU4MjI0NDc5MzExYTRkZjRiOGNlMDM1N2QxMzgzNzRk3963382_20230830144006.372.svg)
+
+
+### 阿里小蜜
+
+2024年05月，Multi-Agent 智能对话链路  
+
+项目背景：
+- 原小蜜对话链路存在**理解能力差**、**无法对方案进行解释**等问题，导致用户对机器人**不信任**（无交互指令人工高），交互后**即时解决率低**，**转人工率高**；
+
+新链路采用多智能体协同方案，每个Agent中采用`ReAct模式`进行**推理**、**工具调用**和**回复**。
+
+项目内容：
+- `首问Agent`：通过用户行为轨迹（与商家、人工客服、机器人的历史语聊），对用户本次进线问题进行预测
+- `方案前Agent`：引导用户表达自己遇到的问题和诉求，给用户提供解决方案
+- `工具调用`：知识诉求定位工具，意图识别工具，轨迹总结工具等工具
+
+项目成果：
+- **业务**指标：用户无交互指令人工 下降7w/每日，进线即时解决率提升7pt，转人工率下降6pt
+- **算法**指标：首问Agent和方案前Agent对话合理率85%，轨迹总结工具准确率93%，知识诉求定位工具准确率94%，意图识别工具准召双90%
+
+2025年04月,Multi-Agent 降RT专项  
+
+项目背景：
+- 针对大模型Cot推理**高延迟**（均值12s，10%超过20s）进行全链路优化
+
+项目内容：
+- 应用DeepSearch方法：从`ReAct模式`改成`DeepSearch模式`，降低**循环**调用LLM推理时间
+- 动态召回提示词：基于用户query动态召回服务策略，降低prompt token数，提升指令跟随能力
+- 投机采样：训练小参数蒸馏模型辅助大模型推理，有效降低大模型推理时间
+- 强化学习：利用rule-base lcpo 方式训练qwq-32B，保持准确率的前提下, 控制生成的token长度
+
+项目成果：
+- 平均响应时间降至 10s（12s->10s），长尾请求（>20s）占比从10%降至0.1%。
+- LLM prompt平均token数降低30%
+
 
 ### 伯克利 RouteLLM
 
