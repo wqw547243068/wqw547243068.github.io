@@ -1454,6 +1454,25 @@ MLC LLM 的主要工作流基于 Apache TVM Unity，通过扩展 TVM 后端使�
 
 模型压缩的基本动机在于当前的模型是冗余的，可以在精度损失很小的情况下实现模型小型化，主要包括3类方法：稀疏(Sparsity)、量化(Quantization)、蒸馏(Distillation)。
 
+2025年11月13日，Compression techniques I’d study if I wanted small but smart LLMs.
+
+1.Quantization
+2.Distillation
+3.Low-Rank Adaptation
+4.Weight Sharing
+5.Sparse Matrices
+6.Layer Dropping
+7.Knowledge Transfer
+8.Embedding Compression
+9.Mixed Sparsity
+10. Progressive Shrinking
+11.Structured Pruning
+12.AutoML Compression
+
+Follow @asmah2107  to update your game on LLM optimisations.
+
+
+
 #### 2.1 稀疏(Sparsity)
 
 实现稀疏(Sparsity)的一个重要方法是剪枝(Pruning)。剪枝是在保留模型容量的情况下，通过修剪不重要的模型权重或连接来减小模型大小。 它可能需要也可能不需要重新培训。 修剪可以是非结构化的或结构化的。
