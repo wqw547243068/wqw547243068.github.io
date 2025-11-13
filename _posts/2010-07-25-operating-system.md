@@ -233,6 +233,32 @@ Roaming 目录移动
 ### 软件安装
 
 
+#### Homebrew
+
+安装方法
+- 参考 [MacBook使用笔记：安装Homebrew](https://zhuanlan.zhihu.com/p/372576355)
+
+Homebrew官方安装
+
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+遇到vpn问题，报错
+
+> curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused
+
+改用国内源
+- gitee上某大神的自动安装脚本，使用清华源
+- 【2025-11-13】实测通过
+
+```sh
+
+# 国内源
+/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
+```
+
+
 #### 第三方软件安装失败
 
 错误提示
