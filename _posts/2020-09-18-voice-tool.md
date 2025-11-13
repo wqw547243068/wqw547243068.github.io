@@ -1017,6 +1017,39 @@ print(result["text"])
 
 ### 优化
 
+
+#### ASR 纠错
+
+ASR（自动语音识别）里“专有名词老认错”问题。
+- “ChatGPT”“长江白鲟”这种领域特定的命名实体，ASR（比如Whisper）在通用场景里挺准，但遇到这些词常转错，后续用这些转录文本做任务就全乱了。
+- 又叫 (NEC)
+
+【2025-10-24】[ASR纠错迎来新方法：华为提出SS+GL方案，大幅提升命名实体识别准确率](https://zhuanlan.zhihu.com/p/1971208720374559706)
+- 论文题目：《[Generative Annotation for ASR Named Entity Correction](https://arxiv.org/pdf/2508.20700)》
+
+主流的NEC（命名实体纠正）方法分两类：
+- 一类是“边生成边纠正”，得改ASR系统本身，第三方云服务（比如讯飞、亚马逊的ASR）根本用不了；
+- 另一类是“生成后再纠正”，更通用，其中最常见的是 PED-NEC（基于语音编辑距离的方法）。
+
+
+<img width="632" height="288" alt="image" src="https://github.com/user-attachments/assets/f8c41b96-9ab8-4925-9112-e9b592c17dc3" />
+
+PED-NEC 有个大毛病——如果错的文本和真实实体“长得太不一样”，就彻底歇菜。比如：
+- “大语言模型”被ASR转成“大原模型”，俩词字面差挺多；
+- “Midjourney”转成“米德仲尼”（英文变中文音译）；
+- “灵耀X”转成“01X”（汉字变数字）；
+- “ChatGPT”转成“Check GPT”（拼写差一截）。
+
+新方法叫“生成式标注NEC”，核心是两步：SS（语音特征检索候选实体）+ GL（生成式标注错误文本）。
+
+不依赖文本长得像不像，而是靠语音特征找候选，再让模型“智能标出”错词，最后替换——完美解决“长得不一样”的问题。
+
+方法
+
+<img width="1369" height="446" alt="image" src="https://github.com/user-attachments/assets/c4e13e5a-9791-44f4-87ef-773cba844f25" />
+
+
+
 #### 实时 ASR
 
 [Really Real Time Speech To Text #608](https://github.com/openai/whisper/discussions/608)
