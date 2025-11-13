@@ -269,7 +269,7 @@ PyTorch 编写注意力
 【2025-5-8】韩国 [25种LLM部署框架你知道多少？](https://zhuanlan.zhihu.com/p/1933217002698306629)
 - 论文：《[A Survey on Inference Engines for Large Language Models: Perspectives on Optimization and Efficiency](https://arxiv.org/pdf/2505.01658)》  
 
-总结了目前市面上的 LLM 的推理框架，总共有 25 个，我们来看看它们之间的优劣。
+总结了目前市面上的 LLM 的推理框架，总共有 25 个。
 
 技术分类：
 - 批处理（动态批、连续批、nano批等）
@@ -485,8 +485,6 @@ vllm serve meta-llama/Meta-Llama-3-8B \
 - 分块管理KV缓存：将注意力键值（Key-Value Cache）划分为固定大小的块（如4-16 tokens/块），按需动态分配GPU显存，避免传统连续分配导致的碎片问题。
 - 显存复用与共享：短序列推理时仅占用必要块，释放空间供其他请求使用；支持跨请求的缓存共享（如相同前缀提示词），显存利用率提升最高达25%。
 - 写时复制（Copy-on-Write）：共享块标记为只读，修改时创建新副本，减少重复计算
-
-
 
 #### vllm 部署方式
 
@@ -1454,22 +1452,22 @@ MLC LLM 的主要工作流基于 Apache TVM Unity，通过扩展 TVM 后端使�
 
 模型压缩的基本动机在于当前的模型是冗余的，可以在精度损失很小的情况下实现模型小型化，主要包括3类方法：稀疏(Sparsity)、量化(Quantization)、蒸馏(Distillation)。
 
-2025年11月13日，Compression techniques I’d study if I wanted small but smart LLMs.
+2025年11月13日，Compression techniques if you wanted small but smart LLMs.
+1. 量化 Quantization
+2. 蒸馏 Distillation
+3. 地址适配 Low-Rank Adaptation
+4. 权重分享 Weight Sharing
+5. 稀疏矩阵 Sparse Matrices
+6. 层丢弃 Layer Dropping
+7. 知识迁移 Knowledge Transfer
+8. 嵌入压缩 Embedding Compression
+9. 混合稀疏 Mixed Sparsity
+10. 进度压缩 Progressive Shrinking
+11. 结构裁剪 Structured Pruning
+12. 自动压缩 AutoML Compression
 
-1.Quantization
-2.Distillation
-3.Low-Rank Adaptation
-4.Weight Sharing
-5.Sparse Matrices
-6.Layer Dropping
-7.Knowledge Transfer
-8.Embedding Compression
-9.Mixed Sparsity
-10. Progressive Shrinking
-11.Structured Pruning
-12.AutoML Compression
+<img width="848" height="717" alt="image" src="https://github.com/user-attachments/assets/031a12bc-2511-4aac-9468-0f7c799a16be" />
 
-Follow @asmah2107  to update your game on LLM optimisations.
 
 
 
