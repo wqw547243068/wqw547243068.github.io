@@ -453,7 +453,19 @@ OmniVinci的功能特色
 <img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/87d5a61b-b091-4124-9a20-aeaa67baeda2" />
 
 
+### 【2025-11-03】LongCat-Flash-Omni
 
+【2025-11-03】[LongCat-Flash-Omni正式发布并开源：开启全模态实时交互时代](https://tech.meituan.com/2025/11/03/longcat-flash-omni.html)
+
+ 美团 LongCat-Flash 系列再升级，正式发布全新家族成员——LongCat-Flash-Omni。
+
+ LongCat-Flash-Omni 以 LongCat-Flash 系列的高效架构设计为基础（ Shortcut-Connected MoE，含零计算专家），同时创新性集成了高效多模态感知模块与语音重建模块。即便在总参数 5600 亿（激活参数 270 亿）的庞大参数规模下，仍实现了低延迟的实时音视频交互能力，为开发者的多模态应用场景提供了更高效的技术选择。
+
+综合评估结果表明，LongCat-Flash-Omni 在全模态基准测试中达到开源最先进水平（SOTA），同时在文本、图像、视频理解及语音感知与生成等关键单模态任务中，均展现出极强的竞争力。LongCat-Flash-Omni 是业界首个实现 “全模态覆盖、端到端架构、大参数量高效推理” 于一体的开源大语言模型，首次在开源范畴内实现了全模态能力对闭源模型的对标，并凭借创新的架构设计与工程优化，让大参数模型在多模态任务中也能实现毫秒级响应，解决了行业内推理延迟的痛点。
+
+模型已同步开源，欢迎体验：
+- Hugging Face：[LongCat-Flash-Omni](https://huggingface.co/meituan-longcat/LongCat-Flash-Omni)
+- Github：[LongCat-Flash-Omni](https://github.com/meituan-longcat/LongCat-Flash-Omni)
 
 
 # 结束
