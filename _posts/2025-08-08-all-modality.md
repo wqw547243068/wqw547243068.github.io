@@ -28,7 +28,7 @@ permalink: /all_modality
 
 ## 案例
 
-### Google Gemini 1.5 Pro
+### 【2024-3-11】Google Gemini 1.5 Pro
 
 【2024-3-11】 Google Gemini 团队开发多模态混合专家模型Gemini 1.5 Pro，标志着人工智能领域的一次重大进步。
 
@@ -62,6 +62,21 @@ permalink: /all_modality
 体验
 - [APP](https://alivc-demo-cms.alicdn.com/versionProduct/installPackage/AUI_Kits/AITalk/installPackage-AITalk.html)
 - [Web](https://video.aliyuncs.com/aicall/desktop)
+
+
+### 【2024-9-10】LLaMA-Omni
+
+【2024-9-10】中国科学院大学的研究人员推出了LLaMA-Omni，这是一种创新的模型架构，旨在克服实现与大型语言模型进行低延迟、高质量语音交互的挑战，该模型集成了语音编码器、语音适配器、LLM和流式语音解码器，可以直接处理语音输入并同时生成文本和语音响应，显著减少了响应延迟。
+- [LLaMA-Omni：基于LLM的低延迟高质量语音交互模型](https://zhuanlan.zhihu.com/p/720378432)
+
+LLaMA-Omni 的架构由四个主要组件组成：语音编码器、语音适配器、LLM 和语音解码器。
+- 语音编码器基于 Whisper-large-v3，从用户的语音输入中提取有意义的表示。
+- 然后，这些表示由语音适配器进行处理，该适配器通过下采样和两层感知器将它们映射到 LLM 的嵌入空间。
+- LLM 基于 Llama-3.1-8B-Instruct，直接从语音指令生成文本响应。语音解码器是一种非自回归流式 Transformer，它接收 LLM 的输出隐藏状态，并使用连接主义时间分类 (CTC) 来预测与语音响应相对应的离散单元。
+
+
+<img width="1190" height="668" alt="image" src="https://github.com/user-attachments/assets/a80e5c58-2c2a-4bd1-aa32-89f94c4ad0f3" />
+
 
 
 ### 【2025-3-27】阿里 Qwen2.5-Omni
@@ -292,6 +307,14 @@ Ming-lite-omni 超越了传统多模态模型，支持音频和图像生成。�
 - 集成了语言、视觉和语音三种模态
 - 论文 [Stream-Omni: Simultaneous Multimodal Interactions with Large Language-Vision-Speech Model](https://arxiv.org/pdf/2506.13642)
 - [解读](https://zhuanlan.zhihu.com/p/1925569029306840227)
+- GitHub项目页面 [Stream-Omni](https://github.com/ictnlp/Stream-Omni)
+- Hugging Face 模型页面 [stream-omni-8b](https://huggingface.co/ICTNLP/stream-omni-8b)
+
+【2025-6-23】[中科院发布Stream-Omni：AI同时“看懂”“听懂”“说话”的全能聊天助手诞生了](https://news.qq.com/rain/a/20250623A04CDF00)
+
+
+Stream-Omni模型就像一个全能的聊天伙伴，不仅能同时处理图片、语音和文字，还能在你说话的同时实时给出回应，就像GPT-4o那样自然流畅
+
 
 技术亮点
 - 采用了视觉-语音双路径对齐策略
@@ -391,6 +414,7 @@ VeOmni 是什么？一套框架搞定所有多模态训练
 基于 VeOmni 框架，一个 300 亿参数的全模态 MoE 模型（支持文本、语音、图片、视频的理解和生成）， 在 128 张卡上训练吞吐量可超过 2800 tokens/sec/GPU，并能轻松扩展至 160K 超长上下文序列。
 
 目前，VeOmni 的相关论文和代码仓库均已对外公开，GitHub Star 数超过 500。
+
 
 
 ### 【2025-10-27】NVIDIA OmniVinci
