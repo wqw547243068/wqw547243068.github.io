@@ -1101,6 +1101,27 @@ fine-tune 实践
 ![](https://storage.googleapis.com/lablab-static-eu/images/tutorials/result.jpg)
 
 
+#### 【2025-11-10】Omnilingual ASR
+
+语音识别长期集中于英语、中文、西班牙语等**高资源**语言，依赖大量人工标注数据，使得全球许多弱势语言在数字化过程中持续被排除。
+
+Meta指出，此落差造成语音AI的全球普及性大幅受限，而Omnilingual ASR正是针对该根本问题所设计。
+
+【2025-11-10】META FAIR 发布 Omnilingual ASR, 全语言自动语音识别系统 ，[资讯](https://www.msn.cn/zh-cn/%E6%8A%80%E6%9C%AF/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/meta%E6%8E%A8%E5%87%BAomnilingual-asr-%E6%94%AF%E6%8C%811600-%E8%AF%AD%E8%A8%80%E7%9A%84%E5%85%A8%E7%90%83%E8%AF%AD%E9%9F%B3ai%E8%BF%9B%E5%85%A5%E6%96%B0%E6%97%B6%E4%BB%A3/ar-AA1QheWZ?ocid=BingNewsSerp)
+- META 官方[博客](https://ai.meta.com/blog/omnilingu)
+- Twitter [介绍](https://x.com/Gorden_Sun/status/1988073755617489237?t=L7QlL96Kn3MLVf_Xh-mBnA&s=19)
+- huggingface 地址 [omniasr-transcriptions](https://huggingface.co/spaces/facebook/omniasr-transcriptions)
+- github [omnilingual-asr](https://github.com/facebookresearch/omnilingual-asr)
+
+要点
+- 错误率别比 Whisper v3 更低
+- 支持1600种语言（包括几种中国方言，粤语、闽南语等）, 249种高资源语言（每语言至少50小时语料）、881种中资源语言（10至50小时），以及546种低资源语言（少于10小时）
+- 模型包括300M、1B、3B、7B四个大小，7B大小为目前开源最佳，运行大约需要15G显存，同时开源了数据集。
+
+Meta 将语音基础模型 wav2vec 2.0 扩展至70亿参数（7B），并提供`CTC`（Connectionist Temporal Classification）与基于Transformer架构的大型语言模形式解码器（LLM-ASR）等两种解码架构。后者特别强化长尾语言表现，使模型能在极少语料下依然保持可用准确度。
+
+另一项关键突破: “Bring Your Own Language（自带语言）”能力。用户只需提供少量音频与文本配对样本，即可扩展至未支持语言，依靠的正是大型语言模型的**场景式学习**能力，让语音识别能以极低门槛覆盖更多语言社交媒体。
+
 
 
 ## TTS 工具
