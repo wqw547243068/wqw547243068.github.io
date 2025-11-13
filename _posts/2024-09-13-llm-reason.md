@@ -2576,7 +2576,6 @@ Claude 3.7 Sonnet 可产生近实时响应或向用户展示扩展的逐步思�
 
 小模型也能学会推理
 
-
 ### 【2025-6-26】HRM 小模型
 
 当前LLM推理主要靠CoT，缺陷:任务分解复杂、数据需求大以及高延迟等问题。
@@ -2725,6 +2724,35 @@ QuestA（问题增强）: 训练过程中注入部分解题提示，QuestA 实�
 	
 总之，与其疯狂堆参数，不如教模型一个好的思考模式。对于追求高效能、高性价比模型训练的我们来说，绝对是必读佳作！
 
+
+### 【2025-11-09】VibeThinker-1.5B
+
+【2025-11-09】新浪微博AI推出开源大型语言模型（LLM）——`VibeThinker-1.5B`。
+
+该模型拥有15亿参数，在数学推理与代码生成任务中却展现出超越 6710亿 参数竞品的性能。
+
+VibeThinker-1.5B 模型在数学和代码任务上表现出色，达到行业领先的推理性能，甚至超越了体量达 6710亿 参数的竞争对手 DeepSeek的R1模型。该模型还能与Mistral AI的Magistral Medium、Anthropic的Claude Opus4和OpenAI的gpt-oss-20B Medium等多个大型模型抗衡
+
+<img width="997" height="545" alt="image" src="https://github.com/user-attachments/assets/541c72e6-4633-4a33-ac8e-f97f4a28410c" />
+
+<img width="1119" height="365" alt="image" src="https://github.com/user-attachments/assets/19e3f909-0688-4577-8585-cbffaf3ce428" />
+
+
+VibeThinker-1.5B 可通过 Hugging Face、GitHub 及 ModelScope 平台免费开放下载，供开发者与研究机构使用。
+- ⭐ VibeThinker-1.5B — SOTA reasoning in a tiny model.
+- 🚀 Performance: Highly competitive on AIME24/25 & HMMT25 — surpasses DeepSeek R1-0120 on math, and outperforms same-size models in competitive coding.
+- ⚡ Efficiency: Only 1.5B params — 100-600× smaller than giants like Kimi K2 & DeepSeek R1.
+- 💰 Cost: Full post-training for just $7.8K — 30-60× cheaper than DeepSeek R1 or MiniMax-M1.
+- 🧠 Innovation: Powered by our Spectrum-to-Signal Principle (SSP) and MGPO framework.
+
+- Github: [VibeThinker](https://github.com/WeiboAI/VibeThinker)
+- Arxiv : [Tiny Model, Big Logic: Diversity-Driven Optimization Elicits Large-Model Reasoning Ability in VibeThinker-1.5B](https://arxiv.org/abs/2511.06221)
+
+VibeThinker-1.5B 采用名为“谱-信号原则”（Spectrum-to-Signal Principle，SSP）训练框架，将监督微调和强化学习分为两个阶段。
+- 第一个阶段注重多样性
+- 第二个阶段则通过强化学习优化最优路径，使得小模型也能有效探索推理空间，从而实现信号放大
+
+<img width="995" height="382" alt="image" src="https://github.com/user-attachments/assets/acaf2cb9-9e42-41a7-ba2c-af7d1f874a12" />
 
 
 
