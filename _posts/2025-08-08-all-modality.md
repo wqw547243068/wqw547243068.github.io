@@ -467,5 +467,8 @@ OmniVinci的功能特色
 - Hugging Face：[LongCat-Flash-Omni](https://huggingface.co/meituan-longcat/LongCat-Flash-Omni)
 - Github：[LongCat-Flash-Omni](https://github.com/meituan-longcat/LongCat-Flash-Omni)
 
+<img width="1005" height="755" alt="image" src="https://github.com/user-attachments/assets/e3e135a2-f5c4-4246-a92f-e39ec03fcafc" />
+
+
 
 # 结束
