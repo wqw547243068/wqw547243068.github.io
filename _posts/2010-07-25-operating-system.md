@@ -167,9 +167,6 @@ Roaming 目录移动
 ```
 
 
-
-
-
 #### 文档编辑
 
 
@@ -298,6 +295,16 @@ mac terminal如何更改默认主题？
 
 Mac 中文字体包括: 华文黑体 STHeiti、Hei、苹果丽黑 Apple LiGothic、Arial Unicode MS 和 AppleGothic
 - ![](https://www.thetype.com/wp-content/uploads/2009/01/mac_ch_2.jpg)
+
+
+【2025-11-14】Mac版PowerPoint总是出现不可用字体，导致保存时弹窗提示
+
+解决方法 [参考](https://blog.csdn.net/ww2011/article/details/128025879)
+- 顶部菜单栏 —— 格式 —— 替换字体
+
+<img width="1046" height="830" alt="image" src="https://github.com/user-attachments/assets/c18027cd-c5e6-4eb6-877d-cad92652e6b8" />
+
+
 
 ### 如何查看显存
 
