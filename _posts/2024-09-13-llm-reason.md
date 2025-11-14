@@ -747,6 +747,20 @@ Okay, I think I have finished thinking.
   - 策略一：多数投票 (Majority Voting)。提取 N 个答案的最终结果（比如数学题的数字），选出现次数最多的那个。
   - 策略二：基于置信度的选择 (Confidence-based Selection)。利用模型自己对答案的「信心」（通常可以通过分析模型输出概率分布得到），选择信心最高的答案，或者结合投票机制（比如给高置信度答案更高权重）。
 
+#### 【2025-4-24】纽约大学-无意义的token替代思考过程
+
+【2025-4-24】纽约大学
+- 论文 [Let's Think Dot by Dot: Hidden Computation in Transformer Language Models](https://arxiv.org/pdf/2404.15758)
+
+thinking 过程为什么能提升模型效果？原因不明
+
+利用一堆固定的 "..." 填充令牌（filler token）来增加了计算量，但没有像 chain-of-thought 那样的 “中间步骤”。用填充令牌能拿到的好处基本就和"数据集共鸣" 及“问题 divide-and-conquer”无关了。这里 “...” 也完全可以换成“。。。”甚至 " "。
+
+论文发现，用无意义的token（如.）替代思考过程，能解决复杂问题
+
+<img width="629" height="541" alt="image" src="https://github.com/user-attachments/assets/19d8b54d-42be-4b3c-be3c-49ea0e1a7ece" />
+
+
 
 ### 因果推断
 
