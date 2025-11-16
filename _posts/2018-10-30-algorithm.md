@@ -12,7 +12,8 @@ permalink: /algorithm
 * content
 {:toc}
 
-- 本栏目汇总各类经典的基础算法
+
+汇总各类经典的基础算法
 
 # 总结
 
@@ -122,6 +123,26 @@ permalink: /algorithm
   - Trie 
 - ELse 
   - Map / Set for 0(1) time & 0( n ) space - Sort input for 0( nlogn ) time and 0(1) space 
+
+
+【2025-11-16】LeetCode was HARD until I Learned these 15 Patterns:
+1. Prefix Sum
+2. Two Pointers
+3. Sliding Window
+4. Fast & Slow Pointers
+5. LinkedList In-place Reversal
+6. Monotonic Stack
+7. Top ‘K’ Elements
+8. Overlapping Intervals
+9. Modified Binary Search
+10. Binary Tree Traversal
+11. Depth-First Search (DFS)
+12. Breadth-First Search (BFS)
+13. Matrix Traversal
+14. Backtracking
+15. Dynamic Programming Patterns
+
+<img width="800" height="1000" alt="image" src="https://github.com/user-attachments/assets/f1e1c0ff-3670-4ac3-a922-d52ece7ad972" />
 
 
 【2024-8-29】 含各种模式解题思路及代码
