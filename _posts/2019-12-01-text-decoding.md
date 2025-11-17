@@ -3,7 +3,7 @@ layout: post
 title:  "文本生成之序列解码专题 - Decoding Strategy in Text Generation"
 date:   2019-12-01 21:39:00
 categories: 大模型
-tags: gpt 解码 贪心 推测解码 集束搜索 温度 采样 多项式 对比 moe 自回归
+tags: gpt 解码 贪心 推测解码 集束搜索 温度 采样 多项式 对比 moe 自回归 投机采样
 excerpt: 文本生成里的序列解码专题笔记
 author: 鹤啸九天
 mathjax: true
@@ -1093,6 +1093,65 @@ beam search算法的改进，叫做 Diverse Beam Search (`DBS`)，核心就是**
 
 论文图解
 - ![](https://pic1.zhimg.com/80/v2-86e01c651cac143e5e734df48f78dae0_1440w.webp)
+
+
+### 投机采样
+
+2022年, Google DeepMind 推出大模型推理加速方法: `投机采样`（Speculative Decoding）。
+- deepmind 论文 [Accelerating Large Language Model Decoding with Speculative Sampling](https://arxiv.org/abs/2302.01318)
+- google 论文 [Fast Inference from Transformers via Speculative Decoding](https://proceedings.mlr.press/v202/leviathan23a/leviathan23a.pdf)
+- github [LLMSpeculativeSampling](https://github.com/feifeibear/LLMSpeculativeSampling)
+
+不损失生成效果前提下，获得**3x**以上加速比。GPT-4泄密报告也提到OpenAI线上模型推理使用了投机采样。
+
+LLM 将模型输出logits的转换成概率，几种常用的采样方法，包括: argmax、top-k和top-n等
+
+投机采样（Speculative Sampling）是一种推理加速策略
+- 并行预测多个可能token，然后快速验证并采纳正确部分
+
+
+解读
+- [LLM 笔记：Speculative Decoding 投机采样](https://jishuzhan.net/article/1931488266112512001)
+
+作用
+- 不牺牲输出质量的前提下，减少语言模型生成 token 所需的时间
+
+分析
+- 传统语言模型，自回归生成是 串行，必须生成一个，再输入到模型中，才能生成下一个
+- 投机采样核心思想：<span style='color:red'>用"小模型"提前生成多个候选 token（投机结果），然后用"大模型"一起验证这批候选，并行加速</span>。
+
+使用两个模型：大模型 + 小模型
+- 简单 token 生成交给**小型模型**处理，而困难的token则交给**大型模型**处理。
+- 小型模型可采用与原始模型相同的结构，但参数更少，或者干脆使用n-gram模型。小型模型不仅计算量较小，还减少了内存访问需求。
+
+投机采样过程：
+- (1) 用小模型Mq做自回归采样连续生成 a 个tokens。
+- (2) 把生成的a个tokens和前缀拼接一起送进大模Mp执行一次forwards。
+- (3) 使用大、小模型logits结果做比对
+  - 如果发现某个token小模型生成的不好，重新采样这个token。重复步骤1。
+  - 如果小模型生成结果都满意，则用大模型采样下一个token。重复步骤1。
+
+(2)中，过程和自回归相比，尽管计算量一样，但是a个tokens 同时参与计算，计算访存比显著提升。
+
+示例
+- prompt 是："<span style='color:blue'>The weather today is</span>"
+- 小模型（Draft Model）快速生成多个候选 token
+  - 例如预测出："<span style='color:blue'>The weather today is [sunny, and, warm, with, ...]</span>" 共 5 个 token
+- 大模型（Target Model）验证这些 token
+  - 大模型并行地计算这 5 个 token 概率；
+  - 如果小模型结果和大模型前几个 token 一致（大模型在这个token上概率小于小模型的，即小模型"更有把握"），就"采纳"它；
+  - 如果中途发现不一致，就在那个位置停止，用大模型重新生成。
+
+| 位置 | Token  | 小模型预测 | 大模型验证 | 是否匹配 |
+|------|--------|------------|------------|----------|
+| 1    | sunny  | ✅          | ✅          | ✅        |
+| 2    | and    | ✅          | ✅          | ✅        |
+| 3    | warm   | ✅          | ✅          | ✅        |
+| 4    | with   | ✅          | ❌          | ❌        |
+
+第4个token被大模型拒绝。
+
+下一轮 prompt 是: "<span style='color:blue'>The weather today is sunny and warm</span>", 循环往复
 
 
 ## 解码参数
