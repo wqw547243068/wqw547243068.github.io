@@ -266,6 +266,57 @@ LLM 幻觉的根本原因: <span style='color:red'>训练和评估流程奖励�
 - 即使在自有硬件上使用`vLLM`或`SGLang`等开源推理库运行推理，采样过程依然不是确定性的。
 
 
+#### 为什么不稳定
+
+【2025-11-17】[同一个prompt重复多次输入进 LLM，为啥得到的输出都不一样？](https://www.zhihu.com/question/1935362750470656960/answer/1973707413392754459)
+
+原因汇总
+- 概率本质：LLM生成机制，大模型本质是复杂的概率预测系统，生成过程中的不确定性是内生的，非外来
+- 解码策略：temperature=0 的真相
+  - temperature=0 输出完全缺点？错误，temperature控制采样随机性，值越小概率分布越尖锐，高概率token更容易选中，理论上，temperature=0 可以完全消除随机性，只选择概率最高的token。但实际实现中，并不能绝对保证。不同推理框架对参数处理存在差异，有些框架中0对应一个极小的非0数值，如 1e-8，导致仍然有一定概率选择次优token
+  - 不同解码策略会影响输出稳定性：贪心解码、束搜索、采样等
+  - 案例：100次输入中，5-15%次结果不同，尤其是输出较长，复杂推理任务尤其明显
+- 浮点数精度：被忽视的罪魁祸首，浮点数运算本质非确定，不满足结合律，(a + b) + c ≠ a + (b + c)，尤其是多gpu推理，运算顺序的微小差异导致结果不同，大模型中，误差被逐级放大，产生不同序列
+- 模型架构：MoE额外变数
+  - 专家激活本身有一定随机性，路由机制可能因为浮点精度问题、并行计算顺序不同而选择不同专家组合
+- 系统层面的不确定性
+  - cuda内核非确定性执行顺序、原子操作的时序不确定性、多线程调度的随机性、gpu缓存效应
+- KV Cache实现：推理优化的双刃剑。
+  - kv cache 在不同框架中实现细节差异大，缓存管理中引入不确定性
+- 量化效应：精度与效率的均衡
+  - int4和int8量化过程中，引入舍入误差，多次推理中以不同方式累积
+  - 有些框架还有动态量化策略
+- 随机种子：被遗忘的控制变量
+  - 框架某些组件依赖随机数生成器，如果没显示设置种子，每次运行结果不同
+- 批处理效应：并行推理的隐性影响
+  - 单个输入可能与不同请求一起处理，导致输出结果不同
+
+<img width="1328" height="1328" alt="image" src="https://github.com/user-attachments/assets/cf61bdf4-2c8a-45e4-a7ed-4ecebbca64af" />
+
+
+如何获取真正的确定性输出？
+- 固定随机种子：推理前设置所有随机源的种子
+- 使用单一设备：避免多gpu/分布式推理
+- 提高计算精度：float32提到float16】bfloat16
+- 禁用所有非必要优化：关闭框架自动混合精度、内存优化
+- 选择确定性框架：onnx runtime 确定性更有保障
+- 验证模型架构：避免随机性模型架构，如某些变体moe
+
+```py
+import torch
+import random
+import numpy as np
+
+seed = 42
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+random.seed(seed)
+np.random.seed(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+```
+
+
 #### 并发+浮点数
 
 为什么LLM推理引擎不具备确定性呢？
