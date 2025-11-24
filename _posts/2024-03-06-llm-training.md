@@ -29,6 +29,17 @@ LIMA 等论文
 
 要想大模型有**领域知识**，得`增量预训练`。`指令微调`记知识不靠谱，不是几十 w 条数据能做到的
 
+训练模式图解 [知乎](https://zhuanlan.zhihu.com/p/24868371543)
+
+Andrej Karpathy 对各阶段的形象比喻
+- 1️⃣ Background information / exposition。教科书核心内容，用于解释概念。当你关注这些信息时，大脑正在对这些数据进行训练。这等同于Pre-training，即模型正在阅读互联网并积累背景知识。
+- 2️⃣ Worked problems with solutions。专家解决问题的具体示例，要被模仿的演示。等同于有监督微调，即模型在由人类编写的 “ideal responses” 上进行微调。
+- 3️⃣ Practice problems。给学生的提示，没有解决方案，但总是有最终答案。通常在每章的末尾有很多很多这样的练习题。促使学生通过试错来学习 ，他们必须尝试很多东西才能得到正确答案。这等同于RL。
+
+
+<img width="1200" height="853" alt="image" src="https://github.com/user-attachments/assets/b6f948f6-da99-4311-922f-485a091c26a1" />
+
+
 开源模型
 - 国外 llama、mistral 最大方
 - 国内 deepseek、minicpm 最大方
@@ -113,6 +124,7 @@ OpenAI
 
 
 ### 模型阶段
+
 
 
 各个阶段产出的模型区别
