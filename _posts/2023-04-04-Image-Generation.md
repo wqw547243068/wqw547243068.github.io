@@ -783,6 +783,18 @@ ControlNet 模型将可控性推上了新的高峰。同一时间，来自阿里
 
 将Latent Consistency Model (LCM)和ControlNet集成到高级PIXART-α模型中的文本到图像合成框架。PIXART-α因其能够通过非常高效的训练过程生成1024px分辨率的高质量图像而受到认可。将LCM集成到PIXART-δ中，可以显著加速推理速度，使生产高质量图像只需要2-4步。值得注意的是，PIXART-δ在生成1024×1024像素的图像时只需要0.5秒，比PIXART-α快了7倍。此外，PIXART-δ被设计为在32GB V100 GPU上能够进行高效的训练，并在一天内完成。凭借其8位推理能力（来自Von Platen等人，2023），PIXART-δ可以在8GB GPU内存限制下合成1024px的图像，大大提高了其可用性和可访问性。此外，通过结合ControlNet-like模块，可以对文本到图像的扩散模型进行精细控制。我们引入了一种专门为Transformer设计的ControlNet-Transformer架构，实现了明确的可控制性和高质量的图像生成。作为最先进的开源图像生成模型之一，PIXART-δ为Stable Diffusion系列模型提供了一个有前途的替代方案，为文本到图像的合成做出了重大贡献。
 
+
+### Google Nano Banana
+
+2025年8月，谷歌发布Nano Banana，强大的AI图像生成能力备受粉丝青睐
+- [Nano Banana](https://www.nano-banana.com/zh/nanobananapro#generator)
+
+Nano Banana Pro的核心就在于“Pro”。谷歌称Gemini 3与Nano Banana Pro能以“工作室级别的精度和控制”生成或编辑图像。通俗地说，它基本上会做Nano Banana已经会做的事，但因为使用了Gemini 3，而非常规Nano Banana所采用的Gemini 2.5 Flash Image模型，所以效果更佳。
+
+
+
+
+
 ### 图片编辑
 
 #### AnyText
