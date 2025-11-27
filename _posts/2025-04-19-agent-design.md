@@ -2751,6 +2751,42 @@ AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方�
 - R-Zero 显著提升了不同基础 LLM 的推理能力，例如在数学推理基准测试中使 Qwen3-4B-Base 的性能提升 6.49，在通用领域推理基准测试中提升 7.54。
 
 
+### 【2025-11-20】斯坦福 agent0 
+
+【2025-11-20】斯坦福 agent0 
+- 论文：[Agent0: Unleashing Self-Evolving Agents from Zero Data via Tool-Integrated Reasoning](https://arxiv.org/abs/2511.16043)
+- 代码 [Agent0](https://github.com/aiming-lab/Agent0)
+
+已有自我进化框架：受限于模型能力和单轮交互，难以实现包含工具使用、动态推理的复杂模式进化
+
+
+Agent0 全自主的智能体进化框架，通过多步协同进化、无缝工具集成，无需外部数据即可培育出高性能智能体
+
+Agent0 让两个基于相同 LLM 初始化的智能体形成共生竞争关系：
+- 一个是课程智能体，负责提出难度逐步提升的前沿任务；
+- 另一个是执行智能体，专注于学习解决这些任务。
+
+框架集成外部工具以增强执行智能体的问题解决能力，反过来促使课程智能体设计更复杂、且能适配工具使用的任务。
+
+通过这一迭代过程，Agent0 构建起自我强化的循环，持续生成高质量的训练课程。
+
+
+核心思想：
+- Agent0 从同一个基础LLM创建两个智能体，并迫使它们进入竞争性的反馈循环。
+- 一个发明任务，一个试图生存。这种持续的推拉产生的前沿难度问题是任何静态数据集都无法比拟的。
+
+解决了自进化智能体的最大失败模式：停滞。
+
+大多数智能体只生成比他们当前水平稍微难一点的问题。Agent0使用不确定性、采样答案之间的分歧和工具调用频率来检测执行智能体的弱点。
+
+<img width="894" height="471" alt="image" src="https://github.com/user-attachments/assets/39c41bb2-45b7-41be-9d5b-55518f54c0ed" />
+
+<img width="901" height="393" alt="image" src="https://github.com/user-attachments/assets/b50b3dce-2f66-48d7-a3ae-8752fbb230f6" />
+
+
+实证结果表明
+- Agent0 显著提升了模型的推理能力：在数学推理基准测试中，Qwen3-8B-Base 模型性能提升 18%；在通用推理基准测试中，性能提升 24%。
+
 
 ## Agent 训练
 
