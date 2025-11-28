@@ -259,6 +259,22 @@ DSPy 优化流程需要: 准备数据集、程序主体、优化器以及衡量�
 
 使用方法见[原文](https://mp.weixin.qq.com/s/X_vbUNFY1JeY9Ph8h8pYRw)
 
+### YPrompt
+
+【2025-11-28】聊天式提示词工程工具：YPrompt，用对话挖掘需求，然后自动生成、优化、管理提示词
+- github [YPrompt](https://github.com/fish2018/YPrompt)
+
+AI通过对话挖掘用户需求，并自动生成专业的提示词，支持系统/用户提示词优化、效果对比，版本管理和支持即时渲染的操练场
+
+并且支持多种输出类型即时渲染、看效果。对于不会写 Prompt，或需要经常调Prompt的人比较实用
+
+它通过场景、目标、格式等询问交互，自动出专业Prompt，相当于一个会梳理需求的产品经理
+
+
+<img width="1665" height="952" alt="image" src="https://github.com/user-attachments/assets/8a402133-1d66-4c4f-8a03-44946d9c8cf3" />
+
+
+
 ## 文本提示自动化
 
 ### 动机
