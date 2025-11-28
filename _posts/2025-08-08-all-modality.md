@@ -149,18 +149,13 @@ Qwen2.5-Omni 采用 `Thinker-Talker` 双核架构。
 
 关键点: Talker 并非独立工作，直接获取 Thinker 产生的**高维表示**，并且 共享 Thinker 全部历史上下文信息。这使得 Thinker 和 Talker 构成了一个紧密协作的单一整体模型，可以进行端到端的训练和推理。这种设计是实现低延迟、高流畅度语音交互的核心
 
+#### Qwen2.5-Omni
 
 
-#### 模型
-
-
-##### Qwen2.5-Omni-7B
+Qwen2.5-Omni-7B
 
 Qwen2.5-Omni-7B 模型是 Omni（全能）模型。
 - 一个模型能同时理解 文本、音频、图像、视频 多种输入，并且能输出 文本和音频
-
-
-##### Qwen2.5-Omni-3B
 
 全模态 Qwen2.5-Omni-7B 模型推出后，开发者反馈更小尺寸的Qwen2.5-Omni，以便更方便地适配
 
@@ -172,7 +167,7 @@ Qwen2.5-Omni-7B 模型是 Omni（全能）模型。
 
 
 
-#### 效果
+##### 效果
 
 Qwen2.5-Omni全面评估：
 - **跨模态能力** SOTA: 在需要整合多种模态信息的任务上（如 OmniBench 基准测试），Qwen2.5-Omni 达到了当前最佳水平（State-of-the-Art）
@@ -188,7 +183,7 @@ Qwen2.5-Omni全面评估：
 - 多模态任务 OmniBench，Qwen2.5-Omni 达到了SOTA的表现。（超过 Gemini 1.5-Pro）
 - 单模态任务中，Qwen2.5-Omni 在多个领域中表现优异，包括：语音识别（Common Voice）、翻译（CoVoST2）、音频理解（MMAU）、图像推理（MMMU、MMStar）、视频理解（MVBench）以及语音生成（Seed-tts-eval和主观自然听感）。
 
-#### 实践
+##### 实践
 
 消费级显卡也能运行 Qwen2.5-Omni 本地部署
 - conda 创建虚拟环境，并激活
@@ -196,7 +191,7 @@ Qwen2.5-Omni全面评估：
 - 使用 modelscope 下载 qwen-2.5-omni 代码
 - 创建 python 脚本，写脚本
 
-#### 问题
+##### 问题
 
 Qwen-2.5-Omni-7B 问题——目前还没有更普适的**量化版本**
 - 当前量化版本只有 `GPTQ`，没有 `gguf`/`mlx`. 导致大部分使用 `ollama`, `llama.cpp`, `mlx` 的用户根本没办法用。
@@ -207,7 +202,7 @@ Qwen-2.5-Omni-7B 问题——目前还没有更普适的**量化版本**
 但是这俩框架目前也不支持, 为纯本文模型准备的。
 
 
-### 【2025-9-21】阿里 Qwen3 Omni
+#### 【2025-9-21】阿里 Qwen3 Omni
 
 【2025-9-21】Qwen3-Omni 全模态正式登场，当前还看不到太多的相关信息。
 
@@ -257,6 +252,30 @@ Qwen3-Omni 是原生端到端多语言全模态基础模型。它处理文本、
 - `Qwen3-Omni-30B-A3B-Thinking`：Qwen3-Omni-30B-A3B 的**思考**模型，包含`思考者`组件，具备链式思维推理能力，支持音频、视频和文本输入，输出文本。更多信息请阅读 Qwen3-Omni 技术报告。
 - `Qwen3-Omni-30B-A3B-Captioner`：从 `Qwen3-Omni-30B-A3B-Instruct` 微调而来的下游音频细粒度字幕模型，为任意音频输入生成详细且低幻觉的字幕。它包含思考者组件，支持音频输入和文本输出。更多信息可以参考该模型的 cookbook。
 
+
+### 哈工大 
+
+2023 年研发的「立知」大语言模型基础上（工信部和网信办双认证）
+
+#### 【2025-5-*】Uni-MoE
+
+2024 年 5 月提出原创 Uni-MoE 全模态大模型架构
+
+#### 【2025-11-16】Uni-MoE-2.0-Omni
+
+【2025-11-16】[哈工大深圳团队推出Uni-MoE-2.0-Omni：全模态理解、推理及生成新SOTA](https://zhuanlan.zhihu.com/p/1976959264405866066)
+
+哈工大深圳计算与智能研究院 Lychee 大模型团队，在 2023 年研发的「立知」大语言模型基础上（工信部和网信办双认证），基于 2024 年 5 月提出的原创 Uni-MoE 全模态大模型架构，正式发布第二代「立知」全模态大模型 Uni-MoE-2.0-Omni。
+- 论文 [Uni-MoE-2.0-Omni: Scaling Language-Centric Omnimodal Large Model with Advanced MoE, Training and Data](https://arxiv.org/abs/2511.12609)
+- 项目地址 [Uni-MoE-2.0-Omni](https://idealistxy.github.io/Uni-MoE-v2.github.io)
+- 代码 [Uni-MoE](https://github.com/HITsz-TMG/Uni-MoE)
+
+以大语言模型为核心，通过**渐进式**模型架构演进与训练策略优化，将**稠密**大语言模型拓展为**混合专家**架构驱动的高效全模态大模型，实现从「语言理解」到「多模态理解」，再到「理解与生成兼备」的跨越式升级！团队围绕以语言为核心的通用人工智能，通过引入全模态 3D RoPE 位置编码、设计动态容量 MoE 架构以及全模态生成器等关键技术，有效打破了不同模态之间的壁垒，在维持高效计算性能的同时，实现了对图像、视频、文本与语音的统一理解、推理与生成。
+
+<img width="1080" height="855" alt="image" src="https://github.com/user-attachments/assets/5baaa4d9-7b87-400a-9841-a36ab0d7b067" />
+
+
+Uni-MoE-2.0-Omni 在图像理解、视频推理、音频理解、语音生成、图像生成与编辑等 85 项基准上取得高度竞争性或领先的表现，在 76 项可对比评测中，Uni-MoE-2.0-Omni（75B Tokens）超越 Qwen2.5-Omni（1.2T Tokens）逾 50 项任务，不仅在视频理解和全模态交互上取得显著突破，更在长语音生成、多模态语音交互和可控图像生成与编辑方面树立了新标杆。
 
 
 ### 【2025-6-11】蚂蚁 Ming-Omni
