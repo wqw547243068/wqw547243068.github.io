@@ -3,7 +3,7 @@ layout: post
 title:  大模型时代的对话系统 Dialogue System in the Era of LLM
 date:   2023-10-16 10:00:00
 categories: 大模型
-tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清 小爱 cui gui 意图识别
+tags: llm 对话系统 coze dm prompt rasa 全双工 tts 语音 贾扬清 小爱 cui gui 意图识别 lui
 excerpt: 大模型时代对话何去何从？LLM时代，如何改造智能对话？
 mathjax: true
 permalink: /llm_ds
@@ -304,6 +304,20 @@ CLI（命令行界面）、GUI（图形用户界面）和CUI（对话式用户�
 | GUI	| 鼠标、键盘、触摸等| 	图形、文本等| 	可视化操作| 	中等| 	高| 	直观、直接 | 
 | CUI	| 自然语言、语音等| 	文本、语音等| 	对话式、上下文记忆| 	低| 	中等| 	个性化、智能化 | 
 
+【2023-7-27】[AIGC时代下的GUI与LUI该何去何从](https://www.woshipm.com/ai/5874963.html)
+
+纯LUI与纯GUI共同解决的问题是如何让能力更容易被充分表达。
+- GUI：GUI 像操作一台机器，什么交互和功能都是**固定**的，很不灵活，但约束和指引清晰
+- LUI：LUI 更像和顾问或者助理在沟通，**约束和指引模糊**，但非常灵活。
+
+GUI和LUI不会相互替代，一定要做融合；且场景区分其实很明确。
+
+那么，CUI就此出现，CUI包含两种情况，即GUI包含LUI的，以及LUI包含GUI的设计方向。而对话式的交互方式可以被理解为是CUI的表现。
+
+LUI 特点：
+- 非标、灵活、能力边界无限远
+- 成本低，解放劳动力
+- 沟通成本高，输出质量不稳定
 
 
 2016年，Mingke的文章《[为什么现在的人工智能助理都像人工智障]()》里详细解释了CUI的特点。
