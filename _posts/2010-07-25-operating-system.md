@@ -324,6 +324,16 @@ Mac 中文字体包括: 华文黑体 STHeiti、Hei、苹果丽黑 Apple LiGothic
 ### 文件管理
 
 
+#### 文件剪切
+
+分情况
+
+|情形|操作||
+|---|---|---|
+|普通文件|Command+X||
+|文件夹||Command+C -> Command+Option+V|
+
+
 #### Finder找不到文件
 
 【2023-11-19】[Mac上明明有这个文件，却搜索不出来？](https://www.zhihu.com/question/399576211)
