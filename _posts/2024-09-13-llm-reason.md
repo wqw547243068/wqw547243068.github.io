@@ -97,12 +97,13 @@ CoT RL 崛起脉络：
 
 <img width="800" height="349" alt="QQ_1765117873529" src="https://github.com/user-attachments/assets/0dcc5ce5-97da-477e-aef4-9218d9171acc" />
 
+<img width="1500" height="750" alt="image" src="https://github.com/user-attachments/assets/d9534297-9cc0-4929-8761-11d35b1635e0" />
+
 
 【2025-4-10】DeepThink vs DeepResearch 区别
 - [Grok-3 DeepSearch与Think模式全面对比：哪种更值得使用？](https://www.cursor-ide.com/blog/grok3-deepsearch-think-mode)
 
 <img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/4434784a-f28e-4e77-9359-963ea4fd9229" />
-
 
 以 grok 为例，对比分析
 
@@ -114,7 +115,12 @@ CoT RL 崛起脉络：
 | 最适合   | 研究、实时信息获取、多源比较     | 数学计算、编程、逐步问题求解|
 | 解题方法 | 收集和综合**外部**信息               | 通过逻辑步骤分解问题        |
 
-适用场景
+工作模式
+
+<img width="1500" height="938" alt="image" src="https://github.com/user-attachments/assets/2786005b-6061-4de8-abbb-dba32f285520" />
+
+
+### 适用场景
 
 Grok-3 DeepSearch与Think模式功能对比
 
@@ -135,6 +141,7 @@ Grok-3 DeepSearch与Think模式功能对比
 - 而Think 则专注于深度分析和推理**已有**知识。
 
 <img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/2f3a445c-5468-492c-9c15-852cdb2e9d1d" />
+
 
 
 ### Think
