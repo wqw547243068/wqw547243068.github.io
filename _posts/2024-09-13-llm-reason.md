@@ -3,7 +3,7 @@ layout: post
 title:   大模型推理思考
 date:   2024-09-13 10:15:00
 categories: 大模型
-tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer 课程学习
+tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer 课程学习 search think
 excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
 mathjax: true
 permalink: /o1
@@ -91,6 +91,79 @@ CoT RL 崛起脉络：
 
 
 ![](https://thekaiway.com/images/reasoning-model-diagram.png)
+
+
+## DeepThink vs DeepResearch
+
+<img width="800" height="349" alt="QQ_1765117873529" src="https://github.com/user-attachments/assets/0dcc5ce5-97da-477e-aef4-9218d9171acc" />
+
+
+【2025-4-10】DeepThink vs DeepResearch 区别
+- [Grok-3 DeepSearch与Think模式全面对比：哪种更值得使用？](https://www.cursor-ide.com/blog/grok3-deepsearch-think-mode)
+
+<img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/4434784a-f28e-4e77-9359-963ea4fd9229" />
+
+
+以 grok 为例，对比分析
+
+| 特性     | Grok DeepSearch                  | Grok Think                  |
+|----------|----------------------------------|-----------------------------|
+| 主要功能 | 信息检索与综合                   | 逻辑推理与分析              |
+| 数据来源 | 外部网站和互联网内容             | **内部**知识库和推理能力        |
+| 处理时间 | 相对较慢（可能超过一分钟）| 分析任务通常更快            |
+| 最适合   | 研究、实时信息获取、多源比较     | 数学计算、编程、逐步问题求解|
+| 解题方法 | 收集和综合**外部**信息               | 通过逻辑步骤分解问题        |
+
+适用场景
+
+Grok-3 DeepSearch与Think模式功能对比
+
+| 对比维度     | DeepSearch模式                          | Think模式                              | 最佳使用场景                     |
+|--------------|----------------------------------------|----------------------------------------|----------------------------------|
+| 信息获取     | **实时**互联网数据，及时更新                | 预训练知识库，**无实时**更新        | 最新资讯时选择DeepSearch     |
+| 分析深度     | 注重**事实**呈现，简洁直接                  | 逐步**推理**，深度思考              | 复杂问题分析时选择Think          |
+| 引用来源     | 提供具体**来源**链接                        | 无外部链接，基于预训练知识              | 引用出处时选择DeepSearch     |
+| 创意能力     | 基于现有资源，整合能力强                | **原创**思维，想象力丰富                    | 创意生成更适合使用Think          |
+| 交互体验     | 简洁直接，提供链接，借助外部搜索，3-5s     | 详细思考过程，2-4s           | 日常查询用DeepSearch，学习用Think|
+| 最佳应用领域 | 新闻、市场趋势、竞争分析                | 学术分析、哲学问题、创意生成            | 综合建议：复杂任务交替使用效果最佳 |
+
+
+<img width="923" height="520" alt="QQ_1765117929439" src="https://github.com/user-attachments/assets/aafb5225-f88b-41b0-92bb-7c20d4c3bb60" />
+
+这两种模式的根本区别在于信息处理方式：
+- DeepSearch 侧重于广泛收集和整合最新信息
+- 而Think 则专注于深度分析和推理**已有**知识。
+
+<img width="1200" height="675" alt="image" src="https://github.com/user-attachments/assets/2f3a445c-5468-492c-9c15-852cdb2e9d1d" />
+
+
+### Think
+
+
+
+Think模式：深度推理的思考大师
+
+Think模式则代表另一种AI交互范式，专注于**深度思考和逻辑推理**。官方描述为"一种先进的推理系统，能够逐步解决复杂问题"。
+
+其主要特点有：
+- 逐步思考：以类似人类思考的方式分解复杂问题
+- 自我修正：能够识别和纠正自己的推理错误
+- 深度分析：对信息进行全面分析而非简单总结
+- 知识局限性：基于训练截止日期的知识，不具备实时信息
+
+
+### Research
+
+DeepSearch模式：实时搜索引擎的进化
+
+DeepSearch 是Grok-3的亮点功能，本质是增强型实时搜索引擎。xAI官方介绍，设计为"一个闪电般快速的AI代理，跨越整个人类知识库不懈地寻求真相"。
+
+其核心特点包括：
+- 实时网络访问：能够访问并处理最新的互联网信息
+- 多源信息整合：从多个来源获取信息，综合分析后提供答案
+- 引用来源透明：提供信息来源链接，便于用户核验
+- 快速直接响应：简洁明了地提供答案，减少不必要的解释
+
 
 ## OpenAI 推理模型
 
