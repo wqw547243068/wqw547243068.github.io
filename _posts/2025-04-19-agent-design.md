@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆 Human
+tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆 Human 斯坦福
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
@@ -298,6 +298,41 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 后续章节（共 83 页）
 
 第 19 章 – 第 21 章（未完全展开，但预计涵盖高级主题、案例研究和未来展望）
+
+
+【2025-12-7】斯坦福agent课程，视频[youtube](youtu.be/h-7S6HNq0Vg) Stanford's 2-Hour Lecture on AI Agents, LLM & RAG is a Joy to Watch. I Pulled 𝟯𝟭 Advanced Techniques You Won't Find Explained Elsewhere ⬇️
+𝟭. Knowledge cutoff is your LLM's biggest limitation—RAG fixes it without retraining.
+𝟮. Never dump everything into context—retrieve only relevant chunks.
+𝟯. Chunk size matters: ~500 tokens balances context preservation and embedding quality.
+𝟰. Two-stage retrieval: candidate retrieval (maximize recall) → ranking (maximize precision).
+𝟱. Bi-encoders (SBERT) power fast semantic similarity search via cosine similarity.
+𝟲. BM25 ensures keyword matching when exact terms matter.
+𝟳. Hybrid retrieval (embeddings + BM25) beats either method alone.
+𝟴. HyDE: generate a hypothetical document first, then embed it for better retrieval.
+𝟵. Contextual retrieval: prepend chunk summaries to preserve meaning.
+𝟭𝟎. Prompt caching slashes costs by 10x when processing multiple chunks.
+𝟭𝟭. Cross-encoders for re-ranking: feed query + chunk together for accurate relevance.
+𝟭𝟮. Evaluate with NDCG, MRR, Precision@k, Recall@k—not just vibes.
+𝟭𝟯. Tool calling = LLMs completing tasks by accessing external resources dynamically.
+𝟭𝟰. Define tools with clear APIs: function name, args, documentation—no implementation.
+𝟭𝟱. Three-stage flow: LLM predicts tool + args → execute → LLM synthesizes response.
+𝟭𝟲. Train with two SFT pairs: query→tool call AND tool result→natural language.
+𝟭𝟳. For code-fluent models, skip SFT—use detailed prompts with reasoning chains.
+𝟭𝟴. Iterate prompts using evaluation sets: let reasoning models debug instructions.
+𝟭𝟵. Tool categories: information retrieval, computation, action execution.
+𝟮𝟬. Tool selection/routing is critical when you have 10+ tools—avoid context overload.
+𝟮𝟭. Use an LLM-based tool selector to filter from hundreds to ~5 relevant ones.
+𝟮𝟮. Standardize with MCP (Model Context Protocol) to avoid reimplementing tools per LLM.
+𝟮𝟯. Agent = autonomous system that pursues goals through reasoning + tool use loops.
+𝟮𝟰. ReAct pattern: Observe → Plan → Act, repeat until goal achieved.
+𝟮𝟱. Observe translates user intent into actionable state.
+𝟮𝟲. Plan decides next action based on current state.
+𝟮𝟳. Act executes the tool call and feeds results back into the loop.
+𝟮𝟴. Multi-agent systems need standardized communication—see Agent2Agent protocol.
+𝟮𝟵. Safety is critical: guard against data exfiltration, harmful actions, jailbreaks.
+𝟯𝟬. Use training-time safeguards (harmlessness SFT/RL) + inference classifiers.
+𝟯𝟭. Start small, start smart: prototype with simple tools on capable models, then optimize.
+
 
 
 总结
