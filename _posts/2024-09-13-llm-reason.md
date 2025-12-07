@@ -95,6 +95,8 @@ CoT RL 崛起脉络：
 
 ## DeepThink vs DeepResearch
 
+【2025-5-21】[全面对比](https://help.apiyi.com/grok-deepsearch-vs-think-comparison.html)
+
 <img width="800" height="349" alt="QQ_1765117873529" src="https://github.com/user-attachments/assets/0dcc5ce5-97da-477e-aef4-9218d9171acc" />
 
 <img width="1500" height="750" alt="image" src="https://github.com/user-attachments/assets/d9534297-9cc0-4929-8761-11d35b1635e0" />
