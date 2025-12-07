@@ -95,6 +95,21 @@ CoT RL 崛起脉络：
 
 ## DeepThink vs DeepResearch
 
+
+Deep Think (DT)、Gemini Deep Research (GDR) 和 ChatGPT Deep Research (CDR) 是完全不同的三个产品。
+- [twitter文地址](https://x.com/LipuAIX/status/1997149059799568497)
+
+| 对比维度       | Deep Think (DT)                              | Deep Research              |
+|----------------|----------------------------------------------|-------------------------------|
+| 核心定位       | 强化**推理**模式                                 | AI Agent（**智能体**）                      | 
+| 关键词         | 深度、逻辑链                                 | 广度、信息差                              | 
+| 核心架构       | 并行思考架构（支持16条推理路径）             | 搜索-阅读-整理一体化架构                     |
+| 核心任务       | 验证逻辑、解决难题、发现盲区                 | 海量信息搜索、多文档阅读、报告整理生成       | 
+| 信息来源依赖   | 侧重内部逻辑推理，弱化外部搜索               | 强依赖外部搜索+文档解析                      |
+| 核心优势       | 逻辑深度深、盲区识别能力强                   | 信息覆盖广、信息时效性高                     |
+| 主要痛点       | 不擅长海量信息整合、无实时信息获取能力       | 易忽视核心文档、逻辑深度有限                 |
+
+
 【2025-5-21】[全面对比](https://help.apiyi.com/grok-deepsearch-vs-think-comparison.html)
 
 <img width="800" height="349" alt="QQ_1765117873529" src="https://github.com/user-attachments/assets/0dcc5ce5-97da-477e-aef4-9218d9171acc" />
