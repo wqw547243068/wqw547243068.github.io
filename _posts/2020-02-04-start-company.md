@@ -40,6 +40,18 @@ permalink: /start_company
 
 普通人和高等人的区别：普通人会使用工具，而高等人使用工具人
 
+
+### 盈利模式
+
+【2025-12-7】国外知名公司的利润分配
+- [https://www.appeconomyinsights.com/](https://www.appeconomyinsights.com/)
+
+阿里巴巴利润分布
+
+<img width="1456" height="818" alt="image" src="https://github.com/user-attachments/assets/3b062dd3-3574-45c9-8d79-729b08e156e9" />
+
+
+
 ### 合理避税
 
 类似企业高管这些高收入人群，往往会成立一家个独，来进行税务筹划，降低个税。
