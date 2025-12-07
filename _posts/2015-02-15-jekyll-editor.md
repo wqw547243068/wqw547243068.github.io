@@ -4,7 +4,7 @@ title:  "Jekyll编辑功能汇总"
 date:   2015-02-15 22:14:54
 categories: 技术工具
 excerpt: "jekyll用法汇总" 
-tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格 ocr 转换 pdf 编辑
+tags: jekyll markdown 插件 github gitee 码云 latex 公式 表格 ocr 转换 pdf 编辑 画图 draw
 permalink: /jekyll
 ---
 
@@ -981,6 +981,19 @@ pdf文件直接显示，800px不能省略px，否则高度低
 - 【2020-8-21】[如何绘制泳道图](https://www.jianshu.com/p/787d918c0120)，[processon泳道图示例](https://v3.processon.com/view/559632e3e4b018f0e50364a7)
 - [visual-paradigm](https://online.visual-paradigm.com/cn/)
 
+【2025-12-07】 Draw.io 大模型插件 [Next AI Draw.io](https://next-ai-drawio.jiang.jp/)， AI驱动的图表创建工具 - 对话、绘制、可视化
+- github [next-ai-draw-io](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/README_CN.md)
+- 在线演示  [Next AI Draw.io](https://next-ai-drawio.jiang.jp/)
+
+集成AI功能的Next.js网页应用，与draw.io图表无缝结合。通过自然语言命令和AI辅助可视化来创建、修改和增强图表。
+
+功能特性
+- LLM驱动的图表创建：利用大语言模型通过自然语言命令直接创建和操作draw.io图表
+- 基于图像的图表复制：上传现有图表或图像，让AI自动复制和增强
+- 图表历史记录：全面的版本控制，跟踪所有更改，允许您查看和恢复AI编辑前的图表版本
+- 交互式聊天界面：与AI实时对话来完善您的图表
+- AWS架构图支持：专门支持生成AWS架构图
+- 动画连接器：在图表元素之间创建动态动画连接器，实现更好的可视化效果
 
 如何嵌入markdown？用draw.io绘制图后
 - （1）直接当做html文件include到md页面 —— 每次都需要新增文件，复杂
