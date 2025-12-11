@@ -19,7 +19,6 @@ permalink: /llm_solution
 
 ## 如何选择优化方法
 
-
 建议
 - 微调之前先尝试RAG
 
@@ -73,7 +72,9 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
 
 ### 四种方法对比
 
-【2023-10-17】[如何选择最适合你的LLM优化方法：全面微调、PEFT、提示工程和RAG对比分析](https://zhuanlan.zhihu.com/p/661830285?utm_psn=1697685536221999105)
+【2023-10-17】
+- 原文 [Full Fine-Tuning, PEFT, Prompt Engineering, or RAG?](https://medium.com/@nnabwani/full-fine-tuning-peft-prompt-engineering-or-rag-69689ba58a52)
+- 译文 [如何选择最适合你的LLM优化方法：全面微调、PEFT、提示工程和RAG对比分析](https://zhuanlan.zhihu.com/p/661830285?utm_psn=1697685536221999105)
 - [RAG vs Finetuning — Which Is the Best Tool to Boost Your LLM Application?](https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)
 - 【2023-12-4】英文原文：[Full Fine-Tuning, PEFT, Prompt Engineering, and RAG: Which One Is Right for You?](https://deci.ai/blog/fine-tuning-peft-prompt-engineering-and-rag-which-one-is-right-for-you/)
 
@@ -81,12 +82,12 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
 - **全面微调**：使用任务特定数据调整LLM的所有参数。
   - 一个较小、任务特定、带标签的数据集上进行微调，调整一些模型参数，优化其对特定任务或一组任务的性能
   - 全面微调： 所有模型参数都被更新，使其类似于预训练，只不过是在一个**带标签**且**规模较小**的数据集上进行。
-  - ![](https://pic2.zhimg.com/80/v2-e8c7286930eb81b57aaf109fe92ac58d_1440w.webp)
+  - <img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/f51da89b-665d-4ac6-a6b2-7b1e6ced44c0" />
   - 优点: 训练数据集更少、提高精度、增加鲁棒性
   - 缺点: 高计算成本、内存需求高、时间/专业知识密集
 - **参数高效精细调整**（PEFT）：修改选定参数以实现更高效的适应。进一步调整预训练模型，只更新其总参数的一小部分
   - PEFT 方法可训练的部分不同。一些技术优先训练原始模型参数的**选定部分**。其他方法集成并训练较小的**附加组件**，如适配器层，而不修改原始结构
-  - ![](https://pic2.zhimg.com/80/v2-1d62f9b57373a592407db8aedd90b681_1440w.webp)
+  - <img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d9256e32-af71-448a-a20f-52fd5a5141d5" />
   - LoRA是最常用的 PEFT 方法，使用重参数化，这种技术通过执行低秩近似来缩小可训练参数的集合。
   - LoRA优点：
     - 任务切换效率 - 创建模型的不同版本以适应特定任务变得更容易。你可以简单地存储预训练权重的单个副本，并构建许多小 LoRA 模块。当你从任务切换到任务时，你只替换矩阵 A 和 B，并保留 LLM。这显著减少了存储需求。
@@ -98,7 +99,7 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
 - **提示工程**：改进模型输入以指导其输出。
   - 在新数据集和任务上训练模型参数，使用所有预训练权重（如全面微调）或一组独立权重（如 LoRA）。
   - 相比之下，提示工程根本不涉及训练网络权重
-  - ![](https://pic3.zhimg.com/80/v2-4e5ddc95da8e4945cf30c65e1593050e_1440w.webp)
+  - <img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d29a9e60-b308-4bd7-8d5c-fafde10d46bf" />
   - 基础提示: 零样本提示、少样本提示、链式思考引导
   - ![](https://pic4.zhimg.com/80/v2-857d925cf7adc11d94a2fbd9aca37213_1440w.webp)
 - **RAG**（检索增强生成）：将提示工程与数据库查询结合，以获得丰富的上下文答案。
@@ -111,7 +112,7 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
     - 检索组件：一旦接收到用户查询，检索组件扫描向量数据库以识别与查询语义相似的信息块。然后使用这些相关片段为 LLM 提供额外上下文，使其能够生成更准确和上下文感知的响应。
     - 串联：将检索到的文档与原始查询串联成一个提供生成响应所需额外上下文的提示。
     - 文本生成：将包含串联查询和检索文档的提示馈送到 LLM 以产生最终输出。
-    - ![](https://pic1.zhimg.com/80/v2-63c902a479d54ff27917dd94d3c65174_1440w.webp)
+    - <img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/60bf1120-74ca-40c6-8ddb-1131d86e24a0" />
     - 开源应用框架: 
       - OpenAI [chatgpt-retrieval-plugin](https://github.com/openai/chatgpt-retrieval-plugin)
       - [langchain](https://github.com/langchain-ai/langchain)
@@ -133,6 +134,17 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
 - ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/common.svg)
 - ![](https://www.maartengrootendorst.com/assets/images/posts/2023-12-09-improving-llms/overview.svg)
 
+
+|方法|图解|分析|
+|---|---|---|
+|PE|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d29a9e60-b308-4bd7-8d5c-fafde10d46bf" />||
+|RAG|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/60bf1120-74ca-40c6-8ddb-1131d86e24a0" />||
+|PEFT|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d9256e32-af71-448a-a20f-52fd5a5141d5" />||
+|Full Fine-tune|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/f51da89b-665d-4ac6-a6b2-7b1e6ced44c0" />||
+||||
+
+
+
 四个重要指标上进行比较：复杂性、成本、准确性和灵活性。
 - **成本**： PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning
 - **复杂性**：PE ＜ RAG ＜ PEFT = Full Fine-tuning
@@ -148,6 +160,22 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
     - 要求特定领域风格 → 全面微调 和 PEFT
     - 两者都要 → 微调 和 RAG
 - **灵活性**： Full Fine-tuning < PEFT < PE < RAG
+
+详情：
+
+|维度|子维度|分析|图解|
+|---|---|---|---|
+|成本|无|PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning |<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/bb05e7a5-51f4-4430-b8c1-1e6a2e6534f3" />|
+|复杂性|无|PE ＜ RAG ＜ PEFT = Full Fine-tuning|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/25f5b84a-7a09-48eb-ba5a-39df59755ae9" />|
+|准确性|领域术语|PE ＜ RAG ＜ PEFT ＜ Full Fine-tuning|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/281a889b-1af2-424c-997d-2a83ccb4d011" />|
+|准确性|时效性|PEFT = Full Fine-tuning < PE < RAG|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/49deea33-e7a4-49ef-95bf-f94f97967156" />|
+|准确性|可解释性|PE = PEFT = Full Fine-tuning < RAG|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d5ab214b-e899-442f-8e4b-2f415fde5842" />|
+|准确性|幻觉|PE < PEFT < Full Fine-tuning < RAG|<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/184257fb-c0a5-4f2c-a6fc-06c6240c41f6" />|
+|灵活性|Full Fine-tuning < PEFT < PE < RAG|||
+|||||
+
+
+
 
 
 ### PE vs finetune
@@ -235,7 +263,7 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
 **提示工程**：改进模型输入以指导其输出。
 - 在新数据集和任务上训练模型参数，使用所有预训练权重（如全面微调）或一组独立权重（如 LoRA）。
 - 相比之下，提示工程根本不涉及训练网络权重
-- ![](https://pic3.zhimg.com/80/v2-4e5ddc95da8e4945cf30c65e1593050e_1440w.webp)
+- <img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d29a9e60-b308-4bd7-8d5c-fafde10d46bf" />
 - 基础提示: 零样本提示、少样本提示、链式思考引导
 - ![](https://pic4.zhimg.com/80/v2-857d925cf7adc11d94a2fbd9aca37213_1440w.webp)
 
@@ -261,7 +289,9 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
 
 检索增强生成（RAG）结合了语言模型与知识库的功能。当模型需要回答问题时，它先从知识库中检索相关信息，再根据这些信息来作答。这就像模型查阅资料库以确保答案的准确性。
 
-RAG适合需要最新信息或超出模型原有知识范围的情况。它的成本和设置介于简单提示和全面微调之间，有助于提供新颖且详细的答案。不过，RAG同样需要额外工具和信息支持。
+<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/60bf1120-74ca-40c6-8ddb-1131d86e24a0" />
+
+RAG适合需要最新信息或超出模型原有知识范围的情况。成本和设置介于简单提示和全面微调之间，有助于提供新颖且详细的答案。不过，RAG同样需要额外工具和信息支持。
 
 RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较低但性能较高的解决方案。MyScale不仅费用更低，而且性能更优，并且可以通过简单的SQL语法访问，方便开发者使用。
 
@@ -283,6 +313,8 @@ RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较�
 ## (3) PEFT 参数高效微调
 
 微调是**更新**和**特化**语言模型的过程，就像为手机应用添加新功能。这需要给模型提供大量新数据并花费时间让其学习，如同送模型回学校进修。
+
+<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/d9256e32-af71-448a-a20f-52fd5a5141d5" />
 
 虽然微调耗资且耗时，但如果需要模型深入了解特定主题，则值得这样做。微调后，模型能提供更精确的答案。
 
@@ -314,6 +346,10 @@ RAG系统的性能依赖于向量数据库，如MyScale，这是一种成本较�
 - ![](https://pic2.zhimg.com/80/v2-e8c7286930eb81b57aaf109fe92ac58d_1440w.webp)
 - 优点: 训练数据集更少、提高精度、增加鲁棒性
 - 缺点: 高计算成本、内存需求高、时间/专业知识密集
+
+Full Fine-tune
+
+<img width="1400" height="788" alt="image" src="https://github.com/user-attachments/assets/f51da89b-665d-4ac6-a6b2-7b1e6ced44c0" />
 
 
 
