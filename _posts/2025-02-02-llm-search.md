@@ -790,6 +790,34 @@ DeerFlow 适合场景
 - 若是，则输出答案；否则继续遍历。
 
 
+
+### 【2025-10-22】OneSearch
+
+ 快手 OneSearch 端到端生成式检索框架，解决传统电商搜索系统（多阶段级联架构，MCA）固有局限性。
+ - 论文 [OneSearch: A Preliminary Exploration of the Unified End-to-End Generative Framework for E-commerce Search](https://arxiv.org/pdf/2509.03236)
+ 
+ 该框架通过将分散召回、预排序和排序流程统一为一个生成模型，克服传统MCA中存在的计算碎片化和目标冲突等问题。
+
+<img width="812" height="528" alt="QQ_1765382622058" src="https://github.com/user-attachments/assets/32212c6e-4d55-4d9f-ad43-11373cba7899" />
+
+ 
+ 核心技术
+ - 关键词增强的分层量化编码 模块，用于精确地表征商品的关键属性
+ - 多视图用户行为序列注入 策略，以建模用户的短期和长期偏好。
+ - 此外，模型还采用了 偏好感知奖励系统，通过多阶段监督微调和自适应奖励机制来增强个性化排序能力。
+
+经过快手电商平台的离线和在线测试，OneSearch不仅在点击率、转化率和订单量等关键业务指标上实现了 显著提升，还极大地降低了运营成本。
+
+<img width="704" height="296" alt="QQ_1765382658584" src="https://github.com/user-attachments/assets/23fa5785-70a3-410d-b4be-0cf7633f2ab5" />
+
+
+该成果标志着业界 首个工业落地的端到端生成式搜索框架 的成功部署。
+
+<img width="406" height="722" alt="QQ_1765382552563" src="https://github.com/user-attachments/assets/0755e346-b649-411f-b5f0-d531d394db42" />
+
+
+
+
 ## 新技术
 
 
