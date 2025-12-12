@@ -3,7 +3,7 @@ layout: post
 title:  "互联网公司-Internet Company"
 date:   2020-02-01 22:30:00
 categories: 互联网
-tags: 互联网 BAT TMD 张一鸣 谷歌 达摩院 FLAGS 硅谷 拼多多 Keep 俞永福 字节 ofo 百度 小度 滴滴 美团 外卖 吴恩达 贾磊 李彦宏
+tags: 互联网 BAT TMD 张一鸣 谷歌 达摩院 FLAGS 硅谷 拼多多 Keep 俞永福 字节 ofo 百度 小度 滴滴 美团 外卖 吴恩达 贾磊 李彦宏 黑话
 excerpt: 互联网公司信息
 author: 鹤啸九天
 mathjax: true
@@ -21,6 +21,12 @@ permalink: /internet_company
 - `华为`地处深圳龙岗区，据说华为在龙岗法院打官司基本没有输过，所以人送外号“`龙岗无敌手`”。
 - `腾讯`位于深圳南山区，有报道称腾讯在南山区法院的一审胜诉率超过88%，史称“`南山必胜客`”。
 - `字节跳动`位于北京海淀区，经常打官司的海淀法院一审胜诉率高达98%，被喻为“`海淀不倒翁`”。
+
+
+### 黑话
+
+
+<img width="1280" height="904" alt="image" src="https://github.com/user-attachments/assets/13855d60-5741-43e4-a11c-0c0c25285275" />
 
 
 ## 时间线 
