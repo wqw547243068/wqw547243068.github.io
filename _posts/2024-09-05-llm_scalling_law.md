@@ -3,7 +3,7 @@ layout: post
 title:  规模法则 Scaling Law
 date:   2024-09-05 12:00:00
 categories: 大模型
-tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind
+tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind agent
 excerpt:  谈谈影响LLM发展的重要定律, 规模法则(Scaling Law)
 mathjax: true
 permalink: /llm_law
@@ -603,6 +603,45 @@ Scaling Law 再次被 OpenAI带火，人们坚信：“模型越大，效果越�
 - 然后打开 OpenAI 的 Scaling Law的paper，再把paper中OpenAI引用自己的更早的paper都详细的读几十遍"。
 
 更多见【2024-1-5】[OpenAI与DeepMind的Scaling Laws之争](https://hub.baai.ac.cn/view/34084)
+
+
+
+### 【2025-12-9】谷歌 Agent Scaling Law
+
+【2025-12-12】[谷歌发布智能体Scaling Law：180组实验打破传统炼金术](https://mp.weixin.qq.com/s/ZV6ZQJm8mHoQwISYLF0_Aw)
+
+尽管Agent已被广泛采用，但决定其性能的原则仍未被充分探索，导致从业者只能依赖启发式经验，而非有原理依托的设计选择
+
+【2025-12-9】谷歌通过大量实验找到了智能体的 Scaling Law，称为 quantitative scaling principles，即`定量扩展原则`。
+- 论文标题：[Towards a Science of Scaling Agent Systems](https://arxiv.org/pdf/2512.08296)
+
+定义
+- 智能体数量、协作结构、模型能力和任务属性之间的相互作用。
+
+在四个不同的基准测试中对此进行了评估：Finance-Agent（金融推理）、BrowseComp-Plus（网络导航）、PlanCraft（游戏规划）和 Workbench（工作流执行）。
+
+利用五种典型的智能体架构（单智能体系统以及四种多智能体系统：独立型、中心化、去中心化、混合型），并在三个 LLM 家族（OpenAI, Google, Anthropic）中进行实例化，谷歌这个团队对 180 种配置进行了受控评估，标准化了工具、提示结构和 token 预算，以将架构效应从实施混杂因素中隔离出来。
+
+实验与结果：打破「人多力量大」的迷思
+
+- 红榜（适合组团）：
+  - 金融分析（Finance-Agent）任务中，多智能体协作是大杀器。中心化架构（有一个「指挥官」分派任务）能让性能暴涨 80.9%。为什么？因为这类任务可以拆分 —— 你查财报，我算汇率，他做总结，大家并行工作，效率极高。
+- 黑榜（切忌组团）：
+  - 游戏规划（PlanCraft）任务中，所有多智能体架构都翻车了，性能惨跌 39% 到 70%。原因在于这类任务环环相扣（必须先砍树，才能做木板），强行把流程拆给不同的人，光是沟通成本就把推理能力消耗殆尽了。
+
+阻碍智能体扩展的三大核心因素：
+- 第一，<span style='color:red'>工具越多，协作越难（工具-协作权衡）</span>：
+  - 如果任务需要用到大量工具（比如 16 个以上的 API），再引入多智能体协作就是一场灾难。
+  - 实验数据显示，工具密集的任务会因巨大的沟通开销而不仅没变快，反而变慢、变笨。
+- 第二，<span style='color:red'>能力有天花板（能力饱和效应）</span>
+  - 最反直觉：如果单个智能体已经够聪明了，就别再找帮手了。
+  - 数据表明，当单智能体的基线准确率超过 45% 时，再增加智能体进行协作，收益往往是负的。
+  - 所谓「帮倒忙」，在 AI 世界里是真实存在的。
+- 第三，<span style='color:red'>没有指挥官，错误会指数级放大</span>
+  - 如果你让一群智能体各自为战（独立型架构），错误会被放大 17.2 倍, 因为没人检查，一个人的错会传给所有人。
+  - 但如果引入一个「指挥官」进行中心化管理，错误放大率能被控制在 4.4 倍。
+  - 这证明了在多智能体系统中，**架构设计比单纯堆人数更重要**。
+
 
 
 ## 应用
