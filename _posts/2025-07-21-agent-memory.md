@@ -1058,6 +1058,8 @@ pip install graphiti-core
 
 AI的进化，不是在学习做得更多，而是学习做得更对。
 
+<img width="1600" height="2385" alt="image" src="https://github.com/user-attachments/assets/f2a91b2c-8b21-40e0-ab62-8e3c89ff9dea" />
+
 
 #### （1）第一件事：让AI学会智能遗忘。
 
