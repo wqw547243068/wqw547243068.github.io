@@ -15,6 +15,13 @@ permalink: /agent_design
 
 # Agent 智能体设计
 
+LLM在多步骤推理、实时信息获取和动态决策的任务时，面临的挑战：
+- 事实幻觉：模型可能生成看似合理但不准确的信息；
+- 缺乏实时信息：模型训练数据截止后的新信息无法获取；
+- 规划能力不足：面对复杂任务时难以分解和制定有效策略；
+- 错误传播：单个错误推理可能导致整个任务失败；
+
+于是，诞生了多种提示技术框架，如 `ReAct`（Reasoning + Acting）和 `Reflexion`（Self-Reflection）作为两个关键创新，通过将推理、行动和反思机制融入模型行为中，显著提升了LLM在知识密集型、决策型和编程任务上的表现。
 
 资料
 - 【2025-3-31】MetaGPT、蒙特利尔大学等联合出品 [ADVANCES AND CHALLENGES IN FOUNDATION AGENTS](https://arxiv.org/pdf/2504.01990)
@@ -241,6 +248,9 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 - 【2025-4-25】[掌握Agent设计的九大模式](https://mp.weixin.qq.com/s/WxuhGLg7JRCa4aJYY210Ew)
 - [Agent的九种设计模式(图解+代码)](https://zhuanlan.zhihu.com/p/692971105)，[飞书文档](https://agijuejin.feishu.cn/wiki/Kke1wcqYOiYxD2kd1Dwcsu02ngc)
 
+
+#### 谷歌智能体设计模式
+
 【2025-9-5】Agentic Design Patterns（智能体设计模式）
 - 谷歌高级工程师 `Antonio Gulli` 400 页免费文档
 - 动手实践的智能系统构建指南
@@ -299,41 +309,42 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 
 第 19 章 – 第 21 章（未完全展开，但预计涵盖高级主题、案例研究和未来展望）
 
+#### 斯坦福agent课程
 
 【2025-12-7】斯坦福agent课程，视频[youtube](youtu.be/h-7S6HNq0Vg) Stanford's 2-Hour Lecture on AI Agents, LLM & RAG is a Joy to Watch. I Pulled 𝟯𝟭 Advanced Techniques You Won't Find Explained Elsewhere ⬇️
-𝟭. Knowledge cutoff is your LLM's biggest limitation—RAG fixes it without retraining.
-𝟮. Never dump everything into context—retrieve only relevant chunks.
-𝟯. Chunk size matters: ~500 tokens balances context preservation and embedding quality.
-𝟰. Two-stage retrieval: candidate retrieval (maximize recall) → ranking (maximize precision).
-𝟱. Bi-encoders (SBERT) power fast semantic similarity search via cosine similarity.
-𝟲. BM25 ensures keyword matching when exact terms matter.
-𝟳. Hybrid retrieval (embeddings + BM25) beats either method alone.
-𝟴. HyDE: generate a hypothetical document first, then embed it for better retrieval.
-𝟵. Contextual retrieval: prepend chunk summaries to preserve meaning.
-𝟭𝟎. Prompt caching slashes costs by 10x when processing multiple chunks.
-𝟭𝟭. Cross-encoders for re-ranking: feed query + chunk together for accurate relevance.
-𝟭𝟮. Evaluate with NDCG, MRR, Precision@k, Recall@k—not just vibes.
-𝟭𝟯. Tool calling = LLMs completing tasks by accessing external resources dynamically.
-𝟭𝟰. Define tools with clear APIs: function name, args, documentation—no implementation.
-𝟭𝟱. Three-stage flow: LLM predicts tool + args → execute → LLM synthesizes response.
-𝟭𝟲. Train with two SFT pairs: query→tool call AND tool result→natural language.
-𝟭𝟳. For code-fluent models, skip SFT—use detailed prompts with reasoning chains.
-𝟭𝟴. Iterate prompts using evaluation sets: let reasoning models debug instructions.
-𝟭𝟵. Tool categories: information retrieval, computation, action execution.
-𝟮𝟬. Tool selection/routing is critical when you have 10+ tools—avoid context overload.
-𝟮𝟭. Use an LLM-based tool selector to filter from hundreds to ~5 relevant ones.
-𝟮𝟮. Standardize with MCP (Model Context Protocol) to avoid reimplementing tools per LLM.
-𝟮𝟯. Agent = autonomous system that pursues goals through reasoning + tool use loops.
-𝟮𝟰. ReAct pattern: Observe → Plan → Act, repeat until goal achieved.
-𝟮𝟱. Observe translates user intent into actionable state.
-𝟮𝟲. Plan decides next action based on current state.
-𝟮𝟳. Act executes the tool call and feeds results back into the loop.
-𝟮𝟴. Multi-agent systems need standardized communication—see Agent2Agent protocol.
-𝟮𝟵. Safety is critical: guard against data exfiltration, harmful actions, jailbreaks.
-𝟯𝟬. Use training-time safeguards (harmlessness SFT/RL) + inference classifiers.
-𝟯𝟭. Start small, start smart: prototype with simple tools on capable models, then optimize.
+1. Knowledge cutoff is your LLM's biggest limitation—RAG fixes it without retraining.
+2. Never dump everything into context—retrieve only relevant chunks.
+3. Chunk size matters: ~500 tokens balances context preservation and embedding quality.
+4. Two-stage retrieval: candidate retrieval (maximize recall) → ranking (maximize precision).
+5. Bi-encoders (SBERT) power fast semantic similarity search via cosine similarity.
+6. BM25 ensures keyword matching when exact terms matter.
+7. Hybrid retrieval (embeddings + BM25) beats either method alone.
+8. HyDE: generate a hypothetical document first, then embed it for better retrieval.
+9. Contextual retrieval: prepend chunk summaries to preserve meaning.
+10. Prompt caching slashes costs by 10x when processing multiple chunks.
+11. Cross-encoders for re-ranking: feed query + chunk together for accurate relevance.
+12. Evaluate with NDCG, MRR, Precision@k, Recall@k—not just vibes.
+13. Tool calling = LLMs completing tasks by accessing external resources dynamically.
+14. Define tools with clear APIs: function name, args, documentation—no implementation.
+15. Three-stage flow: LLM predicts tool + args → execute → LLM synthesizes response.
+16. Train with two SFT pairs: query→tool call AND tool result→natural language.
+17. For code-fluent models, skip SFT—use detailed prompts with reasoning chains.
+18. Iterate prompts using evaluation sets: let reasoning models debug instructions.
+19. Tool categories: information retrieval, computation, action execution.
+20. Tool selection/routing is critical when you have 10+ tools—avoid context overload.
+21. Use an LLM-based tool selector to filter from hundreds to ~5 relevant ones.
+22. Standardize with MCP (Model Context Protocol) to avoid reimplementing tools per LLM.
+23. Agent = autonomous system that pursues goals through reasoning + tool use loops.
+24. ReAct pattern: Observe → Plan → Act, repeat until goal achieved.
+25. Observe translates user intent into actionable state.
+26. Plan decides next action based on current state.
+27. Act executes the tool call and feeds results back into the loop.
+28. Multi-agent systems need standardized communication—see Agent2Agent protocol.
+29. Safety is critical: guard against data exfiltration, harmful actions, jailbreaks.
+30. Use training-time safeguards (harmlessness SFT/RL) + inference classifiers.
+31. Start small, start smart: prototype with simple tools on capable models, then optimize.
 
-
+#### 模式总结
 
 总结
 - ReAct: ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
@@ -360,10 +371,33 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 
 ### ReAct
 
-2022 年 10 月，发布 ReAct 模式，此时 ChatGPT 还未面世
+
+#### 背景
+
+传统方法存在明显短板：
+- 链式思考（CoT）：无法与外部世界互动，容易导致事实幻觉（Fact Hallucination）和错误传播。
+- 仅行动（Act-Only）：缺乏规划能力，在多步骤任务中表现不佳。
+
+#### 定义
+
+2022 年 10 月，Yao等人提出 ReAct 模式，此时 ChatGPT 还未面世
+
+灵感源于人类决策过程：
+> 我们不只是被动思考，而是通过思考制定计划、执行行动、观察结果，并据此调整策略。
+
+ReAct将这一过程应用到LLM中，使模型能够动态处理复杂任务。
+- 推理（Reasoning）：模型生成内部思考轨迹，例如"我需要先做什么，再做什么"，类似于链式思考（Chain-of-Thought, CoT）。这有助于分解任务、制定计划和处理异常。
+- 行动（Acting）：模型生成可执行的操作，例如"搜索[关键词]"或"计算[表达式]"，以调用外部工具（如搜索引擎或计算器）获取实时信息。
+
+通过"思考 → 行动 → 观察 → 再思考"的循环，ReAct使LLM能够融入外部知识，避免纯内部推理的局限性。
 
 ReAct 模式将**推理**（Reasoning）和**行动**（Act）紧密结合
 - 每次行动后立即进行观察（Observation），并将观察结果反馈到下一次推理过程，使 Agent 能够更好地适应环境变化，维持短期记忆，从而实现更加灵活和智能的行为。
+
+ReAct 通过行动步骤验证信息、减少幻觉，并通过推理步骤分解复杂问题。
+- **知识密集型**任务（如问答和事实验证）中，ReAct优于Act-Only，并与CoT结合时效果最佳。
+- **决策型**任务（如文字游戏）中，显著提升性能，尽管与人类专家仍有差距。
+
 
 #### 流程
 
@@ -374,31 +408,10 @@ ReAct 模式核心在于交互流程：
 - 观察（Observation）：Agent 对行动的结果进行观察，获取反馈信息。
 - 循环迭代：将观察结果反馈到推理过程中，Agent 根据新的信息重新进行推理，生成新的行动计划，并继续执行行动和观察，直到任务完成。
 
-```sh
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-|     推理（Thought）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     行动（Action）  |
-+-------------------+
-           |
-           v
-+-------------------+
-|     观察（Observation）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
+
+
+
+#### 分析
 
 
 优势：
@@ -446,7 +459,6 @@ class ReActAgent:
                 print("任务完成：找到胡椒粉")
                 break
 
-
 # 示例运行
 agent = ReActAgent()
 agent.run("去厨房拿胡椒粉")
@@ -489,39 +501,6 @@ Plan and Solve 模式的交互流程如下：
 - 重新规划（Replan）：如果发现计划不可行或需要调整，Agent 会根据当前状态重新生成计划，并继续执行。
 - 循环迭代：重复执行、观察和重新规划的过程，直到任务完成。
 
-Plan and Solve 模式的交互流程可以用以下图示来表示：
-
-```
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-|     规划（Plan）   |
-+-------------------+
-           |
-           v
-+-------------------+
-|     执行（Solve）  |
-+-------------------+
-           |
-           v
-+-------------------+
-|     观察（Observation）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     重新规划（Replan）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
-
 优势在于：
 - 适应性强：Agent 能够根据任务的复杂性和环境的变化灵活调整计划。
 - 任务导向：通过明确的计划，Agent 能够更高效地完成任务，避免盲目行动。
@@ -530,11 +509,6 @@ Plan and Solve 模式的交互流程可以用以下图示来表示：
 #### 示例
 
 为了更好地理解 Plan and Solve 模式，我们可以通过图解和代码示例来展示其具体实现。
-
-
-
-
-#### 示例
 
 实现一个 Agent 制作西红柿炒鸡蛋的任务：
 
@@ -655,33 +629,7 @@ REWOO 模式中，Agent 交互流程：
 - 适应性：Agent 能够根据任务的复杂性和环境的变化灵活调整行动策略。
 
 
-REWOO 模式的交互流程可以用以下图示来表示：
 
-```sh
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-|     推理（Reasoning）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     行动（Action）  |
-+-------------------+
-           |
-           v
-+-------------------+
-|     隐式观察（Implicit Observation）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
 
 #### 示例
 
@@ -774,33 +722,6 @@ LLMCompiler 模式的交互流程：
 架构上有一个 Planner(规划器)，有一个 Jointer(合并器)
 - ![](https://pic4.zhimg.com/v2-e7a5b27ed5b68e8bedfe3906b2f2e0f5_1440w.jpg)
 
-LLMCompiler 模式的交互流程可以用以下图示来表示：
-
-```sh
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-| 任务分解（Task Decomposition）|
-+-------------------+
-           |
-           v
-+-------------------+
-| 并行执行（Parallel Execution）|
-+-------------------+
-           |
-           v
-+-------------------+
-| 结果合并（Result Merging）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
 
 #### 示例
 
@@ -895,33 +816,7 @@ Basic Reflection 模式的交互流程如下：
 架构上有一个 Generator，一个 Reflector
 - ![](https://pic4.zhimg.com/v2-8951d60f9c23f5802c34de3e75f1d8fb_1440w.jpg)
 
-Basic Reflection 模式的交互流程可以用以下图示来表示：
 
-```py
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-| 生成初始响应（Initial Response）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     反思（Reflection）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     修正（Revision）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
 
 #### 示例
 
@@ -986,12 +881,25 @@ Basic Reflection 模式如何通过生成初始响应、反思和修正的过程
 
 ### Reflexion 模式
 
-Reflexion 模式是 Basic Reflection 的升级版
+Reflexion 模式是 Basic Reflection 升级版
 - 论文《Reflexion: Language Agents with Verbal Reinforcement Learning》
-- 本质上是强化学习的思路。
 - 和 Basic reflection 相比，引入了外部数据来评估回答是否准确，并强制生成响应中多余和缺失的方面，这使得反思的内容更具建设性。
 
-Reflexion 模式是一种基于强化学习的 Agent 设计模式，旨在通过引入外部数据评估和自我反思机制，进一步优化 Agent 的行为和输出。与 Basic Reflection 模式相比，Reflexion 模式不仅对初始响应进行反思和修正，还通过外部数据来评估回答的准确性和完整性，从而生成更具建设性的修正建议。
+Reflexion 是强化学习框架，由Shinn等人提出，通过生成语言反馈（口头强化）帮助智能体从错误中学习，而非传统标量奖励。Reflexion 模仿人类反思过程，让模型在尝试后获得具体改进建议，如"上次搜索范围太宽，下次更具体"。
+
+Reflexion 模式是一种基于强化学习的 Agent 设计模式，旨在通过引入外部数据评估和自我反思机制，进一步优化 Agent 的行为和输出。
+
+与 Basic Reflection 模式相比，Reflexion 模式不仅对初始响应进行反思和修正，还通过外部数据来评估回答的准确性和完整性，从而生成更具建设性的修正建议。
+
+Reflexion构建在ReAct基础上，添加评估和反思机制，形成闭环：
+- 参与者（Actor）：基于ReAct或CoT生成行动轨迹。
+- 评估者（Evaluator）：对轨迹打分，判断成功或失败。
+- 自我反思（Self-Reflection）：核心组件，生成语言反馈并存入长期记忆，指导下次行动。
+
+工作流程：行动 → 评估 → 反思 → 迭代。
+
+通过滑动窗口记忆，Reflexion保留反思内容，实现持续优化。
+
 
 Reflexion 模式的交互流程如下：
 - 接收任务：Agent 接收到用户或系统的任务指令。
@@ -1000,6 +908,14 @@ Reflexion 模式的交互流程如下：
 - 反思（Reflection）：Agent 根据外部评估的结果，对初始响应进行自我反思，识别问题所在。
 - 修正（Revision）：根据反思的结果，Agent 对初始响应进行修正，生成最终的输出。
 - 循环迭代（Iteration）：如果任务需要进一步优化，Agent 会重复外部评估、反思和修正的过程，直到输出满足要求。
+
+#### 分析
+
+适用场景与局限性
+
+Reflexion适合需要**试错学习**的任务，如决策、推理和编程。
+- 计算效率高，无需模型微调，提供详细反馈和高可解释性。
+- 但局限：依赖评估准确性、简单记忆机制，以及在非确定性编程任务中的挑战
 
 优势在于：
 - 提高准确性：通过外部数据评估和自我反思，Agent 能够更准确地识别错误和遗漏，从而提高输出的准确性。
@@ -1012,39 +928,11 @@ Reflexion 模式的交互流程如下：
 - Revisor：以 Responder 中的批判式思考作为上下文参考对初始回答做修改。
 - ![](https://pic1.zhimg.com/v2-c578ff5f09cc983a45598b08d966f702_1440w.jpg)
 
+ReAct与Reflexion的比较与结合
+- ReAct聚焦于即时推理-行动循环，适合实时任务；
+- Reflexion扩展为学习闭环，强调从失败中迭代，适用于需要优化的场景。
+- 两者结合（如在Reflexion中使用ReAct作为Actor）可发挥最大潜力：ReAct提供基础机制，Reflexion添加反思层，提升长期性能。
 
-Reflexion 模式的交互流程可以用以下图示来表示：
-
-```sh
-+-------------------+
-|     接收任务      |
-+-------------------+
-           |
-           v
-+-------------------+
-| 生成初始响应（Initial Response）|
-+-------------------+
-           |
-           v
-+-------------------+
-| 外部评估（External Evaluation）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     反思（Reflection）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     修正（Revision）|
-+-------------------+
-           |
-           v
-+-------------------+
-|     循环迭代      |
-+-------------------+
-```
 
 #### 示例
 
