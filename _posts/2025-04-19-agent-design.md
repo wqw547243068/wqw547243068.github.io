@@ -1506,6 +1506,13 @@ Agent 发展过程分为六个阶段：
 
 详见站内专题: [LLM应用范式](llm_dev)
 
+从2025年2月发布"如何构建有效 Agent"的指南，到推出 Model Context Protocol（MCP），再到 Claude Code 和最新 Claude Agents SDK
+
+Anthropic 在 2024 年走完了"Agents 之年"。但现在，他们却要告诉你一个完全不同的故事。
+
+
+#### 【2025-2-】Building Effective Agents
+
 `Anthropic` 工程师 `Barry Zhang` 在 AI Engineer 工作坊分享: “如何构建有效的 Agent”
 - 【2024-12-19】Anthropic 官方 [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
 - 【2025-4-5】[How We Build Effective Agents: Barry Zhang, Anthropic](https://www.youtube.com/watch?v=D7_ipDqhtwk)
@@ -1595,6 +1602,85 @@ Agent 系统演进
 - **多 Agent 协作** (Multi-agent Collaboration)： 预计2025年底将出现更多**多 Agent 系统**。
   - 其优势包括**并行化**、**关注点分离**、保护**主 Agent 上下文窗口**等。
   - 关键挑战：Agent 间通信方式，如何实现异步通信，超越当前的用户-助手轮流模式。
+
+
+#### 【2025-12-10】Agent→Skills
+
+【2025-12-10】[别折腾造 Agent 了，Anthropic 说你该造 Skills](https://zhuanlan.zhihu.com/p/1982541366262257012)
+- AI/Code大会演讲:
+  - Youtube [Don't Build Agents, Build Skills Instead](https://www.youtube.com/watch?v=CEvIs9y1uog)
+  - B站 [Don't Build Agents, Build Skills Instead](https://www.bilibili.com/video/BV1qdmHB3EPo/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+- [译文](https://zhuanlan.zhihu.com/p/1982541366262257012)
+
+Anthropic 核心工程师 Barry Zhang 和 Mahesh Murag 专场分享，主题很直接：
+> 别再折腾造Agent了，你应该去造Skills。
+
+<img width="1132" height="415" alt="image" src="https://github.com/user-attachments/assets/d6fc561c-808e-4feb-98dd-6c1467e39c27" />
+
+问题："谁来帮你报税？"
+- 选项 A：Mahesh，一个智商 300 的数学天才
+- 选项 B：Barry，一个经验丰富的税务专业人士
+
+答案很明显——当然选 B。不希望数学天才从第一性原理去推导 2025 年的税法。要的是有经验的专家，按套路办事，稳稳当当搞定。
+
+这就是AI Agent 的核心问题："很聪明，但缺专业知识。"
+
+什么是 Skills ？文件夹。
+- 官方定义 [What are Skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
+
+名为"anthropic_brand"的 Skills 文件夹，包含：
+- SKILL.md - 核心指令文件
+- docs.md - 参考文档
+- slide-decks.md - 演示模板
+- apply_template.py - 可执行脚本
+
+![](https://pic3.zhimg.com/v2-972cdb84e044318160ac35884fe40766_r.jpg)
+
+Skills 和 MCP
+
+互补关系：
+- MCP Servers（如MCP server 1/2/3），提供各种外部连接能力。
+- 中间是Agent核心，负责协调和执行。
+- 右侧是 Filesystem 中的Skills，提供专业知识和流程指导。
+
+分析
+- MCP 提供"连接"：让 Claude 访问外部世界，读数据库、调 API、操作软件
+- Skills 提供"知识"：告诉 Claude 该怎么用这些连接，怎么完成特定任务
+
+MCP 提供钥匙，Skills 告诉你钥匙该怎么用、用在哪扇门上。
+- BrowserBase 公司做了个 Skill，配合开源浏览器自动化工具 StageHand。有了这个 Skill，Claude 就知道怎么用 StageHand 来操作浏览器、完成各种网页任务。
+- Notion 出了一套 Skills，让 Claude 理解 Notion 工作区，做深度研究和整理。
+
+Skills 正在被非技术人员创建，财务、招聘、会计、法务
+- 第 1 天：没有 Skills，但很聪明（Intelligent）
+- 第 5 天：有了几个 Skills，开始变得有能力（Capable）
+- 第 30 天：拥有众多 Skills，真正变得有用（Useful）
+
+Skills 功能才五周，就已经出现了数千个 Skills
+
+Skills 门槛很低——最简单的 Skill 就是一个 Markdown 文件，写几条指令就行，不需要会编程
+
+Anthropic 目标：让 Skills 成为持续学习的机制。
+- 用 Claude 干活，发现某个地方总是做不好，就把正确做法写下来，保存成 Skill。
+- 下次再遇到类似任务，Claude 就知道该怎么做了。
+- 而且可共享——创建的 Skill，可以分享给团队、公司，甚至全世界
+
+另外：Skills 可以被 Claude 自己创建
+
+![](https://pic4.zhimg.com/v2-120e7fd76e9755edcf94405e5ce18555_1440w.jpg)
+
+技术栈对比，同心圆完美诠释三者关系：
+- 最内层 - Models（模型）= Processors（处理器）: 需要巨大投资，潜力无限但单独用处有限，只有少数公司能造。
+- 中间层 - Agents（代理）= Operating Systems（操作系统）: 协调模型周围的进程、资源和数据，让模型更有价值，同样只有少数公司在做。
+- 最外层 - Skills（技能）= Applications（应用程序）: 真正创造价值的地方，人人都能参与，这才是生态爆发的关键。
+
+Skills 扮演"应用程序"角色: 人人都能参与、人人都能创造价值。
+
+Anthropic 抓住了本质：
+> AI 的瓶颈不在智能，在**专业知识**。
+
+知识管理方式：
+- 把组织的最佳实践、工作流程、机构知识打包成 Skills，让整个团队的 AI 都变得更专业。
 
 
 ### Andrew NG
