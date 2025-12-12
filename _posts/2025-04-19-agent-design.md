@@ -2682,7 +2682,6 @@ AppAgentX 在多个基准任务中的效率和成功率都明显优于现有方�
 
 已有自我进化框架：受限于模型能力和单轮交互，难以实现包含工具使用、动态推理的复杂模式进化
 
-
 Agent0 全自主的智能体进化框架，通过多步协同进化、无缝工具集成，无需外部数据即可培育出高性能智能体
 
 Agent0 让两个基于相同 LLM 初始化的智能体形成共生竞争关系：
@@ -2709,6 +2708,35 @@ Agent0 让两个基于相同 LLM 初始化的智能体形成共生竞争关系�
 
 实证结果表明
 - Agent0 显著提升了模型的推理能力：在数学推理基准测试中，Qwen3-8B-Base 模型性能提升 18%；在通用推理基准测试中，性能提升 24%。
+
+### 【2025-11-13】AgentEvolver
+
+【2025-11-13】通义实验室开源新框架 AgentEvolver，通过「自我提问」「自我导航」「自我归因」三大机制，系统性解决智能体强化学习中的任务稀缺、探索低效和样本利用率低等瓶颈。
+- 技术报告 [AgentEvolver: Towards Efficient Self-Evolving Agent System](https://arxiv.org/pdf/2511.10395)
+- github [AgentEvolver](https://github.com/modelscope/AgentEvolver)
+
+大多数智能体系统仍停留在“按照指令完成任务”的层面——**缺乏持续学习、适应变化**的能力。
+
+三大瓶颈：
+- 任务构建成本高：新的环境往往需要重新定义任务与目标，人工成本高、覆盖面有限。
+- 探索效率低：强化学习依赖大量交互采样，训练成本与时间消耗巨大。
+- 样本利用不充分：奖励稀疏且模糊，模型难以判断哪些中间步骤真正起作用。
+
+AgentEvolver 推动智能体从“被训练”迈向“自进化”的新范式
+
+
+AgentEvolver 核心是由三大机制驱动的动态学习闭环。让智能体不再是被动执行任务的“工具”，而是一个能不断学习、总结、改进的动态系统
+
+三大机制的协同作用，驱动智能体在复杂环境中持续优化和演化：
+- 自我任务生成（Self-Questioning）：自主生成探索任务，摆脱对人工数据集的依赖。
+- 自我经验导航（Self-Navigating）：高效复用历史经验，提升探索效率。
+- 自我反思归因（Self-Attributing）：精细评估步骤级奖励，提升样本利用率。
+
+<img width="1080" height="646" alt="image" src="https://github.com/user-attachments/assets/162cbec1-891b-49e1-8980-2cbecee53e77" />
+
+自我任务生成
+
+<img width="1080" height="437" alt="image" src="https://github.com/user-attachments/assets/a5aeec62-887f-446d-afaf-d70d2de0bc5f" />
 
 
 ## Agent 训练
