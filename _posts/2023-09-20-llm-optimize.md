@@ -420,6 +420,14 @@ We leverage a breadth of optimizations including:
 
 Meta 前 PyTorch 团队推出 vLLM，最大特色“PagedAttention”。
 
+【2025-12-13】[DeepSeek倒逼vLLM升级！芯片内卷、MoE横扫千模，vLLM核心维护者独家回应：如何凭PyTorch坐稳推理“铁王座”](https://mp.weixin.qq.com/s/v4yn185XVoso9HtnWB_4_w)
+
+2023 年, 加州大学伯克利分校 Sky Computing Lab 学生与研究员开源核心的 PagedAttention 技术，vLLM 
+
+短短一年多, GitHub Star 数突破 4 万，并迅速增长至如今的 6.5 万，如今已成为全球科技公司首选的推理引擎。
+
+2024 年 11 月，红帽正式收购 Neural Magic，并将包括 vLLM 核心维护者 Michael Goin 在内的核心团队纳入旗下。
+
 vLLM（Very Large Language Model）专为大语言模型（LLM）优化的高效推理框架
 
 其核心：PagedAttention、动态批处理pd并行、多LoRA动态加载等
