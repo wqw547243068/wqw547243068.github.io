@@ -1034,6 +1034,42 @@ Graphiti MCP is an open-source temporal knowledge graph
 pip install graphiti-core
 ```
 
+### 【2025-12-9】Titans+MIRAS 
+
+【2025-12-9】[Titans+MIRAS：帮助人工智能拥有长期记忆](https://zhuanlan.zhihu.com/p/1981683068566778745)
+- 【2024-12-31】论文 [itans: Learning to Memorize at Test Time](https://arxiv.org/abs/2501.00663)
+- 谷歌 官方博客 [titans-miras-helping-ai-have-long-term-memor](https://research.google/blog/titans-miras-helping-ai-have-long-term-memory/)
+
+Transformer架构引入了注意力机制，彻底革新了序列建模。注意力机制使模型能够回顾早期输入，从而优先处理相关的输入数据。然而，计算成本会随着序列长度的增加而急剧上升，这限制了基于Transformer的模型扩展到超长上下文的能力，例如全文档理解或基因组分析所需的上下文。
+
+Transformer 长序列处理存在着严重缺陷，难以扩展到更长的上下文。
+
+已有多种解决方案，如高效的线性循环神经网络（RNN）和状态空间模型（SSM），如Mamba-2，通过将上下文压缩到固定大小来实现快速线性扩展。
+
+然而，这种固定大小的压缩无法充分捕捉超长序列中丰富的信息。
+
+Titans + MIRAS：帮助人工智能拥有长期记忆
+
+谷歌提出新架构，Titans，引入了**神经长期记忆**模块，有望解决Transformer的长序列处理难题。
+
+NeurIPS 2025上，Google推出 Titans 架构和 MIRAS 框架两项研究成果。核心解决Transformer架构在处理超长上下文时的根本局限。
+
+允许 AI 模型在运行过程中更新其核心内存，从而更快地工作并处理海量上下文。
+- Titans：兼具RNN速度和Transformer性能的全新架构；
+- MIRAS：Titans背后的核心理论框架。
+
+MIRAS 框架实现了向**实时自适应**的重要转变。该架构并非将信息压缩成静态状态，而是随着数据流的流入主动学习并更新自身参数。
+
+Titans 并非被动地存储数据,主动学习如何识别并保留连接整个输入数据中各个标记的重要关系和概念主题。这种能力的关键在于“意外指标 surprise metric”。在人类心理学中，很容易忘记那些例行的、预期的事件，但却会记住那些打破常规的事情 —— 意料之外的、令人惊讶的或情绪激动的事件。
+
+
+Titans 融入两个关键要素来改进机制：
+- 动量：该模型同时考虑“瞬时意外”（当前输入）和“过去意外”（近期上下文流）。这确保了即使后续信息本身并不令人意外，也能被捕捉到相关的后续信息。
+- 遗忘（权重衰减）：为了在处理极长序列时管理有限的内存容量，Titan 模型采用了一种自适应权重衰减机制。该机制如同一个遗忘门，允许模型丢弃不再需要的信息。
+
+![](https://picx.zhimg.com/v2-f9fa6c8077d8bc5eda7e111853afe8e5_1440w.jpg)
+
+
 ### 【2025-12-3】MindLab 智能遗忘
 
 【2025-12-3】Mind Lab团队两篇论文智能遗忘
@@ -1061,7 +1097,7 @@ AI的进化，不是在学习做得更多，而是学习做得更对。
 <img width="1600" height="2385" alt="image" src="https://github.com/user-attachments/assets/f2a91b2c-8b21-40e0-ab62-8e3c89ff9dea" />
 
 
-#### （1）第一件事：让AI学会智能遗忘。
+#### （1）第一件事：让AI学会智能遗忘
 
 Memory Diffusion(记忆扩散)颠覆了传统思路。不是记住更多，而是像人类一样**智能遗忘**。
 - 开车时你会自动忽略路边广告牌，但记住重要路标，这才是真正的智能。
@@ -1080,7 +1116,7 @@ Memory Diffusion(记忆扩散)颠覆了传统思路。不是记住更多，而�
 
 Locomo 基准测试93%准确率(SOTA)，目前最佳成绩。
 
-#### （2）第二件事：用10%的GPU训练万亿参数模型。
+#### （2）第二件事：用10% GPU训练万亿参数模型
 
 LoRA技术相比传统全参数强化学习，只需要用10%的GPU资源，就在万亿参数(1.04T)的Kimi K2模型上完成了强化学习训练。这不只是省钱。
 
