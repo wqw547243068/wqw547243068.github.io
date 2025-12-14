@@ -303,9 +303,12 @@ Agent 定义：
 
 五步问题求解循环：Mission(拿到问题) → Scene（感知场景） → Think（推理规划） → Act（调用工具） → Observe（观测迭代）
 
-<img width="1080" height="685" alt="image" src="https://github.com/user-attachments/assets/59cd6c57-c325-42ec-8b1d-0c89ef6cbcea" />
+
+<img width="915" height="563" alt="image" src="https://github.com/user-attachments/assets/a6d3938e-1d10-45cb-b8ad-09a00f10132e" />
+
 
 Agentic 系统能力分层：从 Level 0 到 Level 4
+
 
 <img width="1080" height="521" alt="image" src="https://github.com/user-attachments/assets/199be094-011c-4d88-8b2a-4c946eeb2164" />
 
