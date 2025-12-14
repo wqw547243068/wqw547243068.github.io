@@ -253,6 +253,7 @@ agent和copilot 区别主要体现在:**交互方式**、**任务执行**和**�
 
 【2025-11-17】
 - 解读 [Google Agent 白皮书解析](https://mp.weixin.qq.com/s/w-srG98JoAsMSd_Ii6NJWA)
+- [Agent 白皮书解读](https://www.cnblogs.com/lusuo/p/18663007)
 
 Google 联合 Kaggle 发布AI Agent 五天课程 5-Day AI Agents Intensive Course with Google
 
@@ -267,6 +268,9 @@ Agent 定义：
 > Agent = `模型` + `工具` + `编排层` + `部署运行时`
 
 比主流 AI Agent 定义（LLM + Tool + Memory）多了一层**部署运行时**
+
+<img width="929" height="548" alt="image" src="https://github.com/user-attachments/assets/400c764b-48a6-435c-bc41-e3a754be8766" />
+
 
 类比
 - `Model`（大脑）
@@ -324,6 +328,20 @@ Level 1：接入**工具**的连通问题求解者
 
 这是大多数实际项目的起点，也是最容易落地的阶段。
 
+如何赋予模型与外部系统进行实时、上下文感知的互动能力呢？ 
+
+工具是将基础模型与外部世界连接起来的桥梁
+
+虽然名称各异，但都统称为工具（tools）。 
+
+几种方式：
+- Functions 使 Agent 能够生成可以在客户端执行的函数代码，为开发人员提供了更精细的控制。
+- Extensions 为 Agent 与外部 API 之间提供了一个桥梁，使 Agent 能完成实时 API 调用和实时信息检索。
+- Data Stores 为 Agent 提供了访问结构化或非结构化数据的能力，使数据驱动的应用程序成为可能
+- Plugins
+
+
+
 Level 2：具备**上下文工程**的战略问题**求解者**
 - 能够围绕复杂目标做多步规划与上下文裁剪
 
@@ -359,6 +377,13 @@ Level 4：**自我进化系统**
 - 把人类反馈固化为规则、Prompt 模板或工具升级
 
 这类系统仍处在前沿探索阶段，但白皮书认为它代表了 Agentic 系统的长期方向。
+
+知识获取、工具使用能力加强几种方法：
+- In-context learning：如 ReACT，提供提示词、工具和示例，通用模型“即时学习”领域知识+工具使用方法
+- Retrieval-based in-context learning：如 RAG，从外部存储中检索相关信息、工具和示例来动态填充模型提示词
+- Fine-tuning based learning：如 Finetune，用大量特定示例对模型进行训练（微调/精调），然后用微调过的模型进行推理
+
+
 
 
 设计要点
