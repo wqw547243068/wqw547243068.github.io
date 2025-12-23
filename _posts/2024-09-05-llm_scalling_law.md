@@ -16,6 +16,38 @@ permalink: /llm_law
 # Scaling Law 缩放定律
 
 
+## Scaling Law 类型
+
+(1) 世上没有永远持续的增长，只有S型曲线式增长
+- 不存在无限增长的事情是个定则，即使把目光拉长放到宇宙级视野里，宇宙中最大速度也不可能超过光速，宇宙它再大也总有个边界
+
+![](https://pic1.zhimg.com/80/v2-726038b716aee3db9153d9fb8d2a1430_720w.webp?source=2c26e567)
+
+(2) S型智能曲线的叠加仍然是S型曲线
+
+
+(3) 三种 Scaling Law: Pre-train、RL、Test Time
+
+大模型训练有三个阶段：预训练、后训练和在线推理（inference）。
+- 24年9月前，大模型领域只有一个Scaling Law，预训练阶段的Scaling Law，之前炒的比较热的“Scaling Law撞墙说”就是这个阶段。
+- OpenAI  o1推出后，另外两个阶段不再孤单，也各自拥有了姓名，产生了各自的Scaling Law，对应**后训练**阶段的强化学习Scaling Law(RL Scaling Law)和**在线推理**阶段的Inference Scaling Law(也叫Test Time Scaling Law)。
+
+
+核心思想一样：本阶段，如果增加算力，则大模型效果会持续提升。
+
+<img width="2788" height="1084" alt="image" src="https://github.com/user-attachments/assets/71dca7c8-5dd4-4a86-943c-8531446e6765" />
+
+三阶段Scaling Law智能叠加
+- 预训练阶段 Scaling Law 普遍认为已经走缓（绿色曲线，对应Sigmoid的K数值相对应该较低）；
+- 而O1/R1类模型开启了RL和Test Time阶段的新型Scaling Law。
+- 很明显，这两个阶段Scaling Law对应Sigmoid函数K数值应该比较大，因为只需增加较少的算力，大模型的智力水平就得到了剧烈的增长，说明对应的走势是比较陡峭的（RL阶段比Test Time阶段应更陡峭些）。
+- RL和Test Time Scaling law并不应和预训练阶段Scaling Law等效，它们增强的主要是逻辑推理能力
+
+
+<img width="720" height="388" alt="image" src="https://github.com/user-attachments/assets/c9dac0ee-897b-42d2-81ca-18da5fd6bddf" />
+
+
+【2025-2-10】[张俊林](https://www.zhihu.com/question/8584644469/answer/97056859008)
 
 ## 思考
 
