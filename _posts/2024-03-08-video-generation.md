@@ -1091,6 +1091,45 @@ Sora App
 Sora 2 仅限受邀用户使用，iOS端应用可下载，安卓端可访问网页使用，将在美国和加拿大进行初步推广，并扩展至更多国家。
 
 
+## 提速
+
+### 【2025-12-23】清华 TurboDiffusion
+
+【2025-12-23】[清华系DeepSeek时刻来了，硅谷沸腾！单卡200倍加速，视频进入秒级时代](https://mp.weixin.qq.com/s/JmHwMsCYr9M39JLy1jAb7A)
+
+顶配GPU，如H100，在不加速的情况下生成短视频，仍需数分钟，这严重影响了落地应用的体验。更何况大多数创作者只有RTX 5090或4090这种消费级显卡。
+
+清华大学TSAIL实验室携手生数科技，重磅发布视频生成加速框架 TurboDiffusion，将AI视频生成从「分钟级」硬生生拉进「秒级」实时时代，单卡200倍加速让普通显卡也能跑出大片！
+- Github: [TurboDiffusion](https://github.com/thu-ml/TurboDiffusion)
+- 技术报告: [TurboDiffusion_Technical_Report](https://jt-zhang.github.io/files/TurboDiffusion_Technical_Report.pdf)
+
+
+总结：在几乎不影响生成质量的前提下，让视频生成的速度直接飙升了100–200倍！
+- RTX 5090显卡上，就能实现100-200倍的速度提升
+
+<img width="1080" height="625" alt="image" src="https://github.com/user-attachments/assets/4841cd75-26a7-495b-bebf-5e76943679d0" />
+
+黑科技加持：
+
+1. SageAttention：低比特量化注意力加速
+  - 传统Transformer注意力层在高分辨率视频场景中，计算开销巨大。TurboDiffusion采用清华自主研发的SageAttention技术，进行了低比特量化注意力加速，充分压榨了显卡性能，极致提速。
+  - GitHub链接：[SageAttention](https://github.com/thu-ml/SageAttention)
+2. Sparse-Linear Attention（SLA）：稀疏注意力加速
+  - 在稀疏计算方面，TurboDiffusion引入了SLA（Sparse-Linear Attention）。
+  - 由于稀疏计算与低比特Tensor Core加速是正交的，SLA可以构建在SageAttention之上，显著减少了全连接矩阵乘法的冗余计算，在推理过程中进一步获得数倍的额外加速。
+  - GitHub链接：[SLA](https://github.com/thu-ml/SLA)
+3. rCM步数蒸馏加速：更少步生成
+  - NVIDIA开源实验室的rCM，是一种先进的步数蒸馏方法。它通过训练，让少量的采样步骤也能恢复与原模型一致的质量。这种方法能进行步数蒸馏加速，减少推理过程中的「扩散步数」，降低延迟而不损失画质。比如，原始Diffusion需要50–100步，rCM可压缩到4-8步。
+  - GitHub链接：[RCM](https://github.com/NVlabs/rcm)
+4. W8A8 INT8量化：线性层加速
+  - TurboDiffusion在线性层采用了W8A8的INT8量化策略，这样，就将模型权重和激活映射到8位整数空间，并在128×128的块粒度上进行分块量化，兼顾了速度与精度，而且还显著降低了推理功耗与内存占用。
+
+这4项核心技术均由清华大学TSAIL团队联合生数科技自主研发，对AI多模态大模型的技术突破与产业落地具有里程碑式的价值与深远影响力。其中，SageAttention更是全球首个实现注意力计算量化加速的技术方案，已被工业界大规模部署应用。
+
+例如，SageAttention已成功集成至NVIDIA推理引擎Tensor RT，同时完成在华为昇腾、摩尔线程S6000等主流GPU平台的部署与落地。此外，腾讯混元、字节豆包、阿里Tora、生数Vidu、智谱清影、百度飞桨、昆仑万维、Google Veo3、商汤、vLLM等国内外头部科技企业及团队，均已在核心产品中应用该技术，凭借其卓越性能创造了可观的经济效益。
+
+
+
 ## 应用
 
 
