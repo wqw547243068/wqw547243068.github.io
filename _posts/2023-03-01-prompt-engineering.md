@@ -632,6 +632,38 @@ Prompt 公式是提示的特定格式，通常由三个主要元素组成：
 
 论文通过严谨实验，**首次**系统量化了DPP偏差的规模、规律与成因，并为开发者和研究者提供了实用指南。
 
+#### 腰部消失
+
+【2023-7-6】斯坦福、伯克利 [大模型的“Lost in the middle”现象探究](https://zhuanlan.zhihu.com/p/678614880)
+- 论文 [Lost in the middle: How language models use long contexts](https://arxiv.org/pdf/2307.03172)
+
+Agent Memory 核心痛点：
+- 目前 LLM 哪怕上下文窗口（Context Window）干到了 1M token，依然存在“Lost in the Middle”现象。
+
+“Lost in the middle”现象
+- 在处理需要识别相关上下文的信息的任务时，大模型对相关信息的**位置**很敏感
+- 当相关的信息在输入prompt的**开头**或者**结尾**时，能够取得较好的效果
+- 而当相关的信息在prompt**中间**部分时，性能会显著下降。
+
+多文档问答
+- 总文档数分别为10、20、30，对应token数约为2K、4K、6K时，均发现
+- 相关文档位于prompt的开始或者结尾时，能够取得更好的效果，而相关文档位于中间时，性能下降。
+
+更长上下文模型并未改进（如 gpt-3.5-turbo-16K-0613的效果就与gpt-3.5-turbo-0613的效果十分接近）
+
+
+实验结论：
+- 优秀模型，如claude-1.3-100k、claude-1.3，在4k、8k、16k的上下文长度下，不管目标key在哪个位置，都能取得接近100%的准确率；
+- 差模型，目标key位于中间位置时，取得较差的结果。
+
+原因：
+- 和LLM模型架构无关：Decoder-only/Encoder-Decoder等架构的LLM都一样
+- query和参考context信息的相对位置影响不大，放前面轻微上涨
+- context更长，会改进吗？更长context，塞入更多内容，召回的多余文档对于回答问题并没有太大作用
+- 跟是否微调无关：基座LLM+指令遵循微调成Chat模型 都有
+- 模型越大越明显：13B和70B的“Lost in the middle”的现象更加明显，而7B模型相对没这么明显。
+
+
 #### 提示词位置
 
 基于主流聊天式提示结构（System + User）定义：
