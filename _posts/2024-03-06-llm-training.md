@@ -53,9 +53,6 @@ Andrej Karpathy 对各阶段的形象比喻，教科书三种信息
 <img width="644" height="458" alt="image" src="https://github.com/user-attachments/assets/928bfdc9-e7e2-4b27-b8bd-1b79e8ff50b6" />
 
 
-<img width="1200" height="853" alt="image" src="https://github.com/user-attachments/assets/b6f948f6-da99-4311-922f-485a091c26a1" />
-
-
 开源模型
 - 国外 llama、mistral 最大方
 - 国内 deepseek、minicpm 最大方
