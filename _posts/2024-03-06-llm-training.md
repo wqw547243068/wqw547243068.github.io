@@ -31,10 +31,26 @@ LIMA 等论文
 
 训练模式图解 [知乎](https://zhuanlan.zhihu.com/p/24868371543)
 
-Andrej Karpathy 对各阶段的形象比喻
-- 1️⃣ Background information / exposition。教科书核心内容，用于解释概念。当你关注这些信息时，大脑正在对这些数据进行训练。这等同于Pre-training，即模型正在阅读互联网并积累背景知识。
-- 2️⃣ Worked problems with solutions。专家解决问题的具体示例，要被模仿的演示。等同于有监督微调，即模型在由人类编写的 “ideal responses” 上进行微调。
-- 3️⃣ Practice problems。给学生的提示，没有解决方案，但总是有最终答案。通常在每章的末尾有很多很多这样的练习题。促使学生通过试错来学习 ，他们必须尝试很多东西才能得到正确答案。这等同于RL。
+【2025-2-4】[AI大神Andrej Karpathy的通俗解释：预训练、监督式微调、强化学习](https://www.sohu.com/a/855601550_122105141)
+
+Andrej Karpathy 对各阶段的形象比喻，教科书三种信息
+- 大量背景知识 (Background information)： 对应预训练，让模型积累广泛的知识。
+- 示范例题 (Worked problems)：对应监督式微调，让模型学习高质量的输出。
+- 大量练习题 (Practice problems)： 对应强化学习，让模型在实践中学习，通过试错和反馈不断改进。
+
+详解
+- 1️⃣ 背景信息/阐述 Background information / exposition。
+  - 教科书核心内容，用于解释概念。关注这些信息时，大脑正在对这些数据进行训练。
+  - 等同于Pre-training，模型通过阅读海量的互联网文本，学习语言的规律、世界的知识，积累广泛的背景知识，为后续的学习打下基础
+- 2️⃣ 示例演示 Worked problems with solutions。教科书提供的具体例题，展示如何解答问题。示范引导学生模仿学习
+  - 等同于有监督微调，模型在由人类编写的 “ideal responses” 上进行微调。
+  - 监督式微调 (supervised finetuning) 阶段相对应。微调阶段，模型学习人类专家提供的“理想答案”，学习如何生成高质量、符合人类期望的回复，例如助手类应用的“理想回答”。
+- 3️⃣ 练习题 Practice problems。通常在每章的末尾有很多很多这样的练习题。促使学生通过试错来学习 ，必须尝试很多东西才能得到正确答案。
+  - 给学生提示，没有解决方案，但有最终答案，引导学生通过 试错 (trial & error) 的方式进行学习
+  - 这等同于RL。
+
+
+<img width="644" height="458" alt="image" src="https://github.com/user-attachments/assets/928bfdc9-e7e2-4b27-b8bd-1b79e8ff50b6" />
 
 
 <img width="1200" height="853" alt="image" src="https://github.com/user-attachments/assets/b6f948f6-da99-4311-922f-485a091c26a1" />
