@@ -1206,6 +1206,45 @@ pip install funasr modelscope
 ## TTS 工具
 
 
+### KittenTTS
+
+【2025-8-5】超微型语音模型 KittenTTS：大小不到 25MB
+
+Stellon Labs 专注于微型前沿模型（tiny frontier models）的 AI 研究实验室，由 YC 孵化。
+
+首个模型是 KittenTTS，超小型的开源文本转语音（TTS）模型，其大小不到 25MB。
+- github [KittenTTS](https://github.com/KittenML/KittenTTS)
+
+该模型在发布后短短三周内便获得了巨大的关注，在 GitHub 上斩获 8000 多个星标，模型下载量超过 4.5 万次。
+
+功能亮点：
+- 超轻量级： 模型大小不到 25MB；
+- CPU 优化： 无需 GPU，可在任何设备上运行；
+- 高质量音色： 提供多种优质语音选项；
+- 快速推理： 专为实时语音合成而优化。
+
+Stellon Labs 的目标是构建覆盖语音、语言和视频智能领域的微型前沿模型，最终让 AI 技术能够在每一个设备上运行。
+
+```sh
+pip install https://github.com/KittenML/KittenTTS/releases/download/0.1/kittentts-0.1.0-py3-none-any.whl
+```
+
+使用
+
+```py
+from kittentts import KittenTTS
+m = KittenTTS("KittenML/kitten-tts-nano-0.2")
+
+audio = m.generate("This high quality TTS model works without a GPU", voice='expr-voice-2-f' )
+
+# available_voices : [  'expr-voice-2-m', 'expr-voice-2-f', 'expr-voice-3-m', 'expr-voice-3-f',  'expr-voice-4-m', 'expr-voice-4-f', 'expr-voice-5-m', 'expr-voice-5-f' ]
+
+# Save the audio
+import soundfile as sf
+sf.write('output.wav', audio, 24000)
+```
+
+
 ### 各大tts平台总结
 
 - 市场的TTS平台：讯飞语音，百度智能语音开放平台，阿里云，腾讯云，思必驰，捷通华声(灵云)等。
