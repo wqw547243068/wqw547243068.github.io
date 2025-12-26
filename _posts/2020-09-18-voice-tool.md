@@ -1134,7 +1134,7 @@ fine-tune 实践
 ![](https://storage.googleapis.com/lablab-static-eu/images/tutorials/result.jpg)
 
 
-#### 【2025-11-10】Omnilingual ASR
+### 【2025-11-10】Omnilingual ASR
 
 语音识别长期集中于英语、中文、西班牙语等**高资源**语言，依赖大量人工标注数据，使得全球许多弱势语言在数字化过程中持续被排除。
 
@@ -1155,6 +1155,52 @@ Meta 将语音基础模型 wav2vec 2.0 扩展至70亿参数（7B），并提供`
 
 另一项关键突破: “Bring Your Own Language（自带语言）”能力。用户只需提供少量音频与文本配对样本，即可扩展至未支持语言，依靠的正是大型语言模型的**场景式学习**能力，让语音识别能以极低门槛覆盖更多语言社交媒体。
 
+
+### 【2025-12-15】Fun-ASR-Nano
+
+【2025-12-15】[Fun-ASR-Nano 技术指南：端到端实时语音识别大模型](https://stable-learn.com/zh/fun-asr-tech-guide/)
+
+2025年12月15日，FunAudioLLM 团队推出 Fun-ASR-Nano-2512。
+- [技术报告](https://modelscope.cn/papers/2509.12508)
+- 模型地址 [Fun-ASR-Nano-2512](https://modelscope.cn/models/FunAudioLLM/Fun-ASR-Nano-2512)，含评测数据
+
+Fun-ASR 是通义实验室推出的**端到端**语音识别大模型。
+- 基于数千万小时的真实语音数据训练而成，具备强大的上下文理解能力和行业适应性。
+- 支持低延迟实时转写，覆盖31种语言。
+- 在教育、金融等垂直领域表现出色，能够精准识别专业术语和行业表达，有效解决“幻觉”生成和语言混淆等问题，实现“听得清、懂得意、写得准”。
+
+经过千万小时级真实语音数据训练的端到端语音识别（ASR）大模型，专为高精度、低延迟场景设计。
+
+亮点
+- 极致性能：支持低延迟实时转写，具备强大的上下文理解能力。
+- 全能覆盖：
+  - 31 种语言：重点优化东亚、东南亚语言，支持中英日韩等混合识别。
+  - 7 大方言：吴语、粤语、闽南语、客家话、赣语、湘语、晋语。
+  - 26 种口音：覆盖河南、陕西、四川、重庆、云贵广等 20+ 地区口音。
+- 抗噪能力：针对远场、高噪环境（会议室、车载、工业现场）深度优化，识别率高达 93%。
+- 音乐歌词识别：即使在背景音乐干扰下，也能准确识别歌词内容。
+
+<img width="1701" height="906" alt="image" src="https://github.com/user-attachments/assets/b182d795-3960-4cea-8ef9-b47bcf0c4227" />
+
+版本
+- Fun-ASR 0.8B
+- Fun-ASR-nano 0.2B
+- 1-2GB
+- 有4bit、8bit量化版
+
+Fun-ASR 部署非常简洁，建议 
+- Python 3.8+ 环境
+- GPU 进行推理，请确保安装了与 CUDA 版本匹配
+
+```sh
+# 1. 克隆代码或直接安装依赖
+pip install -r requirements.txt
+
+# 或者手动安装核心库 (FunASR)
+pip install funasr modelscope
+```
+
+调用代码，省略
 
 
 ## TTS 工具
