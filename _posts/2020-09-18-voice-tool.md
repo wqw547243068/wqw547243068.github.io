@@ -3,7 +3,7 @@ layout: post
 title:  "语音处理工具"
 date:   2020-09-18 19:43:00
 categories: 深度学习
-tags: 语音识别 NLP ASR TTS 情感计算 声纹识别 说话人识别  直播 webrtc 手语合成 全双工 通信 paddle 音箱 纠错 ffmpeg
+tags: 语音识别 NLP ASR TTS 情感计算 声纹识别 说话人识别  直播 webrtc 手语合成 全双工 通信 paddle 音箱 纠错 ffmpeg 智谱 通义千问
 excerpt: 语音识别技术工具
 author: 鹤啸九天
 mathjax: true
@@ -421,6 +421,8 @@ gr.Interface(
 
 ## ASR 工具
 
+[轻量级ASR合集](https://model.aibase.com/zh/tag/%E8%BD%BB%E9%87%8F%E7%BA%A7ASR)
+
 ### openai whisper
 
 #### whisper 介绍
@@ -685,7 +687,7 @@ Whisper's performance varies widely depending on the language. The figure below 
 
 #### 使用方法
 
-ASR的shell调用
+ASR shell 调用
 
 ```shell
 whisper "audio.mp3" --task transcribe --model base # 执行转写任务
@@ -1107,7 +1109,6 @@ ffmpeg 分割音频文件为左声道、右声道，分别调用whisper转写，
 Steps 1 - 3 on a four hour long audio file completed in under 20 seconds for me.
 
 
-
 （3）方法三
 
 [Transcription and diarization (speaker identification) #264](https://github.com/openai/whisper/discussions/264)
@@ -1201,6 +1202,19 @@ pip install funasr modelscope
 ```
 
 调用代码，省略
+
+### 【2025-12-21】GLM-ASR
+
+【2025-12-21】[GLM-ASR开源，1.5B参数刷新端侧语音识别SOTA](https://www.163.com/dy/article/KHAQMGK6055673VY.html)
+
+智谱正式发布并开源GLM-ASR系列语音识别模型，并推出基于该系列模型打造的桌面端智谱AI输入法。
+- GLM-ASR-2512：全球领先的云端语音识别模型；
+- [GLM-ASR-Nano-2512](https://wisemodel.cn/models/ZhipuAI/GLM-ASR-Nano-2512)：参数量仅1.5B的开源SOTA端侧语音模型；
+- 智谱AI输入法：将语音识别与大模型深度融合的桌面端效率工具。
+
+GLM-ASR-Nano-2512 1.5B参数的端侧模型，取得了当前开源语音识别方向的SOTA表现，并在部分测试中优于若干闭源模型。该模型将识别能力压缩到本地运行，在保证高精度的同时，实现更强的隐私保护与更低的交互延迟。
+
+传统输入法只负责打字，而智谱AI输入法直接调用底层GLM模型帮助用户翻译、扩写、精简屏幕上的任意一段文字，同时完成智能润色，让输出更加自然、通顺。整个过程在输入框内完成，实现“理解-执行-替换”一体化，无需在多个应用间反复切换。
 
 
 ## TTS 工具
