@@ -19,6 +19,8 @@ permalink: /prompt_auto
 
 随着大语言模型(LLMs)的快速发展，提示词正成为激发模型效果的**关键要素**。
 
+
+
 提示词质量直接影响 LLM 输出效果和用户体验。
 - 一方面，设计有效的提示词是一项**劳动密集且领域相关**的任务，需要具有提示词的相关经验和业务上下文知识。
 - 另一方面，随着模型的演进和完成任务中存在的 BadCase，需要**持续**对提示词优化。
@@ -26,17 +28,36 @@ permalink: /prompt_auto
 Prompt Engineering from manual to automatic [kaggle](https://www.kaggle.com/code/nlpquant/automatic-prompt-engineering)
 - Talking to LLMs is important to elicit(引起) the right response/improved performance without updating the parameters of the models [karpathy](https://twitter.com/karpathy/status/1617979122625712128?lang=en)
 
+## 手工提示词
+
+手动调试到底哪里不行？
+- 1 没法复现
+  - 哪句话让模型回答变准的吗？或哪版 Prompt 提升了召回率？没有版本控制和结构化流程，每一次优化都像在玩俄罗斯轮盘赌。
+- 2 无从追责
+  - 有时候一句话被改了，但没记录是谁、什么时候、为了什么改的。回滚？审计？几乎不可能。
+- 3 输出太脆弱
+  - 改一个字，结果天差地别。A/B 测试全靠猜，结果上线后“翻车”还不知道错在哪。
+- 4 成本持续飙升
+  - 每改一次 Prompt，就要做一轮验证。API 成本+人力时间，成了产品上线的隐形杀手。
+
+
+## 什么时候自动化？
+
+当你遇到以下情况，自动化优化必须提上日程：
+- 输出不一致：改了一个字，模型反应像换了脑子；
+- 调试耗时：找一个问题 Prompt，排查几个小时甚至几天；
+- 上线节奏慢：每次调试都得打全套回归，版本频繁卡在 Prompt 上；
+- 幻觉问题反复出现：哪怕数据完美，还是输出离谱。
+
+这些现象都是系统性问题，不靠“勤奋”能解决，只能靠工程手段破局。
+
 【2023-10-25】[自动优化Prompt：Automatic Prompt Engineering的3种方法](https://mp.weixin.qq.com/s/kbZZUoTjLGyU59B3strwVg)
-
-## 资讯
-
-
-### o1
 
 - o1 本质是 **CoT等复杂Prompt的 自动化**: 
   - CoT 背后的树形搜索空间，组合爆炸, 人工编写CoT不可行, 需要仿照AlphaGo的MCTS（蒙特卡洛树搜索）+强化学习, 让LLM快速找到CoT路径
   - 复杂问题上, 推理时间成本不是问题, 总会解决, 真正的问题是效果
 - **Prompt 工程会消失**: 后面不需要用户构造复杂prompt, 反人性, 大趋势是所有复杂环节自动化
+
 
 
 ## 方法分析
