@@ -1,6 +1,6 @@
 ---
 layout: post
-title:   大模型推理思考
+title:   大模型混合推理
 date:   2025-12-24 20:47:00
 categories: 大模型
 tags: 推理 think 帕累托
