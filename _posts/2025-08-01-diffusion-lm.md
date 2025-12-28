@@ -17,6 +17,24 @@ permalink: /diffusion_lm
 # 扩散语言模型
 
 
+## AR vs Diffusion
+
+
+【2025-6-8】[Thinking with Multimodal：开启视觉深度推理与多模态认知的新范式](https://zhuanlan.zhihu.com/p/1915000937279382067)
+
+自回归·AR与扩散·Diffusion做一下梳理：
+1. 自回归·AR模型：**逐步构建**认知的“乐高积木”
+  - 自回归模型通过逐 token 生成，模拟人类逐步构建认知的过程。在“Thinking with Generated Images”中，自回归 LMMs 仍能够在推理过程中动态生成视觉与文本 token，这使其具备了处理长序列多模态思维链的能力。
+  - 然而，自回归模型问题：其生成过程的顺序性可能导致**早期错误累积**，影响后续推理结果。
+2.扩散·Diffusion模型：从噪声中**雕琢**认知的“雕塑家”
+  - 扩散模型则通过逐步去噪过程生成数据，这一特性使其在图像生成任务中表现出色。
+  - 然而，将其应用于视觉推理时，需要解决如何在去噪过程中**保留中间推理信息**的问题。
+  - 尽管如此，扩散模型的并行生成特性为其在多模态推理中的应用提供了新可能，尤其是在需要同时处理多个模态信息的场景中。
+3. AR与Diffusion的回归与统一 · Latent Space Reasoning
+  - AR、Diffusion还有更为关键的对于模型内Latent Space Reasoning的完备建模，而AR和Diffusion是对其Latent Space的下游联合概率计算（AR），还是以时间步数为核心的的扩散或流匹配升降噪表征（Diffusion&Flow）也罢的流形分布计算到呈现的不同路径或方式。
+  - 而transformer或其他诸如Titan或TTT等架构，亦对部分核心Latent Space的未来持续探索起着核心的作用。
+
+
 ## ARM 问题
 
 
