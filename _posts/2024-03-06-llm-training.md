@@ -304,6 +304,15 @@ AI 模型是否真正理解人类的指令与意图？
 
 但对那些强时效性知识、复杂学科的逻辑体系、大规模常识体系等则难以注入，只能靠预训练阶段构建
 
+#### 路线图
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36\&quot; version=\&quot;29.2.9\&quot;&gt;\n  &lt;diagram id=\&quot;xdYpP7w1t2VaaceZiyqw\&quot; name=\&quot;第 1 页\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;949\&quot; dy=\&quot;-514\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;CKtsSkHedHjP4OW8E3n--20\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=default;dashed=1;dashPattern=1 1;\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;386\&quot; width=\&quot;270\&quot; x=\&quot;673\&quot; y=\&quot;1537\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;KTwht3HF3Dpf_-XckZrt-1\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;rotation=0;strokeWidth=3;\&quot; value=\&quot;LLM(大模型)训练方式选择\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;33\&quot; width=\&quot;264.5\&quot; x=\&quot;390\&quot; y=\&quot;1450\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CKtsSkHedHjP4OW8E3n--22\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;是\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;430\&quot; y=\&quot;1562.5\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;5\&quot; y=\&quot;6\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CKtsSkHedHjP4OW8E3n--23\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;是\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;436\&quot; y=\&quot;1720\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;3\&quot; y=\&quot;-3\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;CKtsSkHedHjP4OW8E3n--47\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=left;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=0;fontColor=#808080;fontSize=12;\&quot; value=\&quot;【2025-12-29】wangqiwen\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;330\&quot; y=\&quot;1890\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-1\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;shadow=1;fontSize=17;\&quot; value=\&quot;需求场景\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; width=\&quot;99.15\&quot; x=\&quot;80\&quot; y=\&quot;1630\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-2\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;rounded=0;shadow=1;fontSize=14;fontStyle=1;fontColor=#99004D;\&quot; value=\&quot;实时数据更新？\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;130\&quot; x=\&quot;284\&quot; y=\&quot;1550\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-3\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;rounded=0;shadow=1;fontSize=14;fontStyle=1;fontColor=#99004D;\&quot; value=\&quot;知识深度高？\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;130\&quot; x=\&quot;284\&quot; y=\&quot;1700\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-4\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-1\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-2\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;220\&quot; y=\&quot;1655\&quot; /&gt;\n              &lt;mxPoint x=\&quot;220\&quot; y=\&quot;1580\&quot; /&gt;\n            &lt;/Array&gt;\n            &lt;mxPoint x=\&quot;309\&quot; y=\&quot;1560\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;360\&quot; y=\&quot;1560\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-5\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-1\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-3\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;220\&quot; y=\&quot;1655\&quot; /&gt;\n              &lt;mxPoint x=\&quot;220\&quot; y=\&quot;1730\&quot; /&gt;\n            &lt;/Array&gt;\n            &lt;mxPoint x=\&quot;370\&quot; y=\&quot;1570\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;421\&quot; y=\&quot;1570\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-8\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;shadow=1;fontSize=17;fontColor=#ffffff;\&quot; value=\&quot;领域RAG\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;35\&quot; width=\&quot;114.85\&quot; x=\&quot;696\&quot; y=\&quot;1562.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-9\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-2\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=0.954;exitY=0.475;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-8\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;615\&quot; y=\&quot;1580\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;541\&quot; y=\&quot;1590\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-10\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-3\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-11\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;420\&quot; y=\&quot;1730\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;481.5\&quot; y=\&quot;1680\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-11\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;rounded=0;shadow=1;fontSize=14;fontStyle=1;fontColor=#99004D;\&quot; value=\&quot;资源受限？\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;130\&quot; x=\&quot;491\&quot; y=\&quot;1700\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-12\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;shadow=1;fontSize=17;fontColor=#ffffff;\&quot; value=\&quot;LoRA-CPT+Fact-based SFT\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;35\&quot; width=\&quot;224\&quot; x=\&quot;696\&quot; y=\&quot;1712.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-13\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-11\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-12\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;476\&quot; y=\&quot;1740\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;547\&quot; y=\&quot;1740\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-14\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-3\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-15\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;420\&quot; y=\&quot;1820\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;481.5\&quot; y=\&quot;1770\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-15\&quot; parent=\&quot;1\&quot; style=\&quot;rhombus;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;rounded=0;shadow=1;fontSize=14;fontStyle=1;fontColor=#99004D;\&quot; value=\&quot;资源受限？\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;130\&quot; x=\&quot;491\&quot; y=\&quot;1810\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-16\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;shadow=1;fontSize=17;fontColor=#ffffff;\&quot; value=\&quot;LoRA-FT\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;35\&quot; width=\&quot;114\&quot; x=\&quot;696\&quot; y=\&quot;1822.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-17\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-15\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-16\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;476\&quot; y=\&quot;1850\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;547\&quot; y=\&quot;1850\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-18\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;否\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;360\&quot; y=\&quot;1780\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint y=\&quot;5\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-19\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;shadow=1;fontSize=17;fontColor=#ffffff;\&quot; value=\&quot;全参 CPT+Fact-based SFT\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;35\&quot; width=\&quot;224\&quot; x=\&quot;696\&quot; y=\&quot;1762.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-20\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-11\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-19\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;620\&quot; y=\&quot;1771.5\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;546\&quot; y=\&quot;1781.5\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-21\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;是\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;640\&quot; y=\&quot;1720\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;3\&quot; y=\&quot;-3\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-24\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;否\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;563\&quot; y=\&quot;1767\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;2\&quot; y=\&quot;2\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-25\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;shadow=1;fontSize=17;fontColor=#ffffff;\&quot; value=\&quot;全参-FT\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;35\&quot; width=\&quot;114\&quot; x=\&quot;696\&quot; y=\&quot;1880\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-26\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;hK1oHzIBLq9t15zctzZD-15\&quot; style=\&quot;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#999999;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;\&quot; target=\&quot;hK1oHzIBLq9t15zctzZD-25\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;621\&quot; y=\&quot;1897.5\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;547\&quot; y=\&quot;1907.5\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-27\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;是\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;643\&quot; y=\&quot;1830\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;3\&quot; y=\&quot;-3\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;hK1oHzIBLq9t15zctzZD-28\&quot; connectable=\&quot;0\&quot; parent=\&quot;1\&quot; style=\&quot;edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontStyle=1;fontColor=#808080;fontSize=15;\&quot; value=\&quot;否\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;566\&quot; y=\&quot;1877\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;2\&quot; y=\&quot;2\&quot; as=\&quot;offset\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+#### 方法总结
+
 可注入的知识类型
 
 | 类型                   | 示例                     | 技术方案              | 局限性                 |
@@ -349,6 +358,7 @@ AI 模型是否真正理解人类的指令与意图？
 | 时效性知识支持     | 可注入最新领域知识（如2025年政策）| 依赖预训练知识截止时间，无法更新动态知识 |
 | 计算资源消耗       | 需数万GPU小时（如医疗模型训练）| 仅需百级GPU小时（如LoRA微调）|
 | 零样本/少样本能力  | 零样本视觉定位准确率75.1%（RefCOCO）| 零样本任务准确率通常<40%|
+
 
 分析
 - 知识注入深度与类型
@@ -417,7 +427,6 @@ AI 模型是否真正理解人类的指令与意图？
 各方向研究热度
 
 <img width="1039" height="547" alt="image" src="https://github.com/user-attachments/assets/7d24a6ee-0d62-42d4-906d-450a1ccf6050" />
-
 
 
 知识注入范式
@@ -495,8 +504,6 @@ LoRA 要与 FullFT 接近，必须满足两个条件：
 在强化学习任务中，即使 LoRA 的秩（rank）极低，其性能仍可接近 FullFT 。这与基于信息论的推断一致：强化学习对模型容量的需求相对较低。
 
 
-
-
 #### 全参数 CPT（Full-parameter CPT）
 
 - 原理：解冻模型全部参数，用领域数据（如医学文献、法律条文）重新预训练，重构底层知识表示。
@@ -517,7 +524,7 @@ LoRA 要与 FullFT 接近，必须满足两个条件：
 
 LoRA如何在CPT中实现有限知识注入
 
-尽管LoRA不改变原模型权重，但在CPT中仍能实现有限知识注入，原因如下：
+尽管LoRA不改变原模型权重，但在CPT中仍能实现**有限知识注入**，原因如下：
 - 表示空间的重构
   - CPT使用领域文本（如法律条文）继续预训练任务（如掩码语言建模），模型需预测被掩盖的领域术语（如“不可抗力”）。
   - LoRA的增量矩阵（A、B）在训练中捕捉领域词汇共现关系，间接重构词嵌入空间。
@@ -530,15 +537,50 @@ LoRA如何在CPT中实现有限知识注入
   - 对比：全参数CPT需混合20%通用数据维持基础能力，而LoRA-CPT无需此操作
 
 总结
-- 在SFT中：LoRA是行为调节器，仅优化输出模式而不扩展知识边界。
-- 在CPT中：LoRA成为知识压缩器，通过低秩矩阵编码领域术语与浅层逻辑，但受限于秩的大小，无法承载复杂知识体系。
+- SFT中：LoRA是**行为调节器**，仅优化输出模式而不扩展知识边界。
+- CPT中：LoRA成为**知识压缩器**，通过低秩矩阵编码领域术语与浅层逻辑，但受限于秩的大小，无法承载复杂知识体系。
 - 核心取舍：
-  - 若追求深度知识注入（如医疗诊断逻辑），需全参数CPT；
-  - 若需快速轻量适配（如客服话术更新），LoRA-CPT是资源最优解
+  - 若追求**深度知识注入**（如医疗诊断逻辑），需全参数CPT；
+  - 若需**快速轻量适配**（如客服话术更新），LoRA-CPT是资源最优解
 
-![](https://pic2.zhimg.com/v2-9b37ad7ae2df9fac2968aa4e9e1080d1_1440w.jpg)
 
-### SFT VS RLHF
+### SFT
+
+大模型面临知识更新问题，特别是对于发生在模型知识截止日期之后的事件
+
+RAG 让大模型具备外部知识的能力，但规避了将新知识直接整合到模型本身的核心问题
+
+如何从文档中构建训练数据集，通过简单的SFT技术促进新知识学习？
+
+
+
+#### Fact-based SFT
+
+[利用监督式微调（SFT），向大模型注入新知识，无需检索增强生成(RAG)](https://zhuanlan.zhihu.com/p/692706105)
+
+【2024-4-2】微软提出新型数据生成方法：Fact-based 生成方法，通过监督式微调（SFT）实现了大模型新知识的有效注入
+- [INJECTING NEW KNOWLEDGE INTO LARGE LANGUAGE MODELS VIA SUPERVISED FINE-TUNING](https://arxiv.org/pdf/2404.00213)
+
+点评
+- 论文重点是数据生成方法，然后LoRA微调。“注入知识”确实不大合适
+
+两种生成策略：基于标记（token-based）和基于事实（fact-based）。
+- 基于**标记**的数据集生成策略：
+  - 首先创建由手动编写的问答对组成的初始问题库。
+  - 随后，通过计算文档各部分的标记数量，并用GPT-4生成足够的问答对，直到生成的标记数量超过源部分的十倍。
+  - 这种方法生成了1倍、5倍和10倍规模的数据集，以及评估集。
+  - 然而，这种方法可能无法确保新知识在文档中的均匀覆盖。
+- 基于**事实**的数据集生成策略
+  - 首先查询GPT-4从文档中提取出**原子事实**列表。
+  - 然后，为每个事实生成10个独特的问答对，确保这些问答对不重复，并在问题库中是唯一的。
+  - 这种方法允许模型更均匀地关注每个事实，从而提高了知识吸收的效率。基于事实的数据集同样生成了1倍、5倍和10倍规模的数据集，以及相应的评估集。
+
+另外，在生成数据集时，也注重多样性和覆盖率，以避免过拟合，并通过GPT-4对生成的问题和答案进行二元评估来确定其正确性。
+
+基于事实的数据集进行SFT，模型在问答任务中的表现有**显著**提升。这验证了SFT方法在提高模型处理超出领域、超出知识截止日期的知识方面的有效性。尽管SFT模型在所有情况下都没有超过RAG模型的性能，但在缩小与RAG性能差距方面取得了进展，尤其是在10x数据集规模下。
+
+
+#### SFT VS RLHF
 
 
 【2001-11-15】Rich Sutton: Verification, the key to AI
