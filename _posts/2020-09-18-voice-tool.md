@@ -3,7 +3,7 @@ layout: post
 title:  "语音处理工具"
 date:   2020-09-18 19:43:00
 categories: 深度学习
-tags: 语音识别 NLP ASR TTS 情感计算 声纹识别 说话人识别  直播 webrtc 手语合成 全双工 通信 paddle 音箱 纠错 ffmpeg 智谱 通义千问
+tags: 语音识别 NLP ASR TTS 情感计算 声纹识别 说话人识别  直播 webrtc 手语合成 全双工 通信 paddle 音箱 纠错 ffmpeg 智谱 通义千问 端侧
 excerpt: 语音识别技术工具
 author: 鹤啸九天
 mathjax: true
@@ -449,6 +449,32 @@ Vosk是言语识别工具包。
 - OpenAI 认为使用这样一个庞大而多样的数据集，可以提高对口音、背景噪音和技术术语的识别能力。除了可以用于语音识别，Whisper 还能实现多种语言的转录，以及将这些语言翻译成英语。OpenAI 开放模型和推理代码，希望开发者可以将 Whisper 作为建立有用的应用程序和进一步研究语音处理技术的基础。
 
 相比目前市面上的其他现有方法通常使用较小的、更紧密配对的「音频 - 文本」训练数据集，或使用广泛但无监督的音频预训练集。因为 Whisper 是在一个大型和多样化的数据集上训练的，而<span style='color:red'>没有针对任何特定的数据集进行微调</span>，虽然它没有击败专攻 LibriSpeech 性能的模型（著名的语音识别基准测试），然而在许多不同的数据集上测量 Whisper 的 `Zero-shot`（不需要对新数据集重新训练，就能得到很好的结果）性能时，研究人员发现它比那些模型要稳健得多，犯的错误要少 50%。
+
+#### 端侧部署
+
+
+##### TF Lite
+
+【2025-2-*】离线语音识别+翻译，TF Lite
+- github 地址：[whisper_android](https://github.com/vilassn/whisper_android)
+- 演示视频 [youtube](https://www.youtube.com/watch?v=w9pohi9NQrg)
+
+```sh
+pip install tensorflow
+pip install kivy # 跨平台python库，开发多触摸app
+https://github.com/vilassn/whisper_android
+```
+
+##### llama.cpp
+
+llama.cpp 主要目标是在本地和云中的各种硬件上，以最小的设置和最先进的性能实现LLM推理。
+- 无任何依赖关系的纯C/C++实现
+- 苹果硅是一流的公民-通过ARM NEON、Accelerate和Metal框架进行优化
+- 支持x86架构的AVX、AVX2和AVX512
+- 1.5位、2位、3位、4位、5位、6位和8位整数量化，用于更快的推理和减少内存使用
+- 用于在NVIDIA GPU上运行LLM的自定义CUDA内核（通过HIP支持AMD GPU）
+- Vulkan、SYCL和（部分）OpenCL后端支持
+- CPU+GPU混合推理，部分加速大于VRAM总容量的模型
 
 #### Distil-Whisper
 
