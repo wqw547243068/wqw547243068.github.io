@@ -1,10 +1,10 @@
 ---
 layout: post
-title:   大模型推理思考
+title:   大模型混合推理
 date:   2025-12-24 20:47:00
 categories: 大模型
 tags: 推理 think 帕累托
-excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
+excerpt: 大模型混合推理，兼容快思考+慢思考
 mathjax: true
 permalink: /reason_mix
 ---
