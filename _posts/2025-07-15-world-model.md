@@ -77,7 +77,24 @@ AI领域提到 **世界**/world、**环境**/environment 这个词时，通常�
 - 水平的M->h->M->h: 序列预测下一个时刻的表征，用RNN实现
 - 这两部分加起来就是World Model。
 
+【2025-11-25】[🌍世界模型，真的很Awesome](https://zhuanlan.zhihu.com/p/1976761169453803419)
 
+github 项目库
+- [Awesome-World-Models](https://github.com/knightnemo/Awesome-World-Models)
+- [World-Models-Autonomous-Driving-Latest-Survey](https://github.com/HaoranZhuExplorer/World-Models-Autonomous-Driving-Latest-Survey)
+
+要点
+- 着重梳理世界模型的定义，与当前的主流研究思路。从错综复杂的已有工作中抽丝剥茧，对于世界模型的定义进行了囊括性的分类。
+- 系统性地整理了从基础到前沿的世界模型研究，创新性的按领域、研究范式与时间线将已有论文、数据集、综述分门别类，倒车入库。
+- 打通入门到精通，让所有世界模型爱好者都有所收获。除了领域差异，同时也考虑到阅读者的处于的不同阶段
+
+Meta FAIR 在做，Google Deepmind在做，Elon Musk的xAI的做，Jensen Huang的Nvidia在做，Dr. Feifei Li的World Lab在做。
+- ![](https://pica.zhimg.com/v2-200700773826fa3f3613306c236989aa_1440w.jpg)
+
+经常看到World Model的初创公司获得几亿的融资，World Model的学界研究收获广泛关注。
+
+
+### 世界模型构成
 
 World model 主要包含**状态表征**和**转移模型**，正好对应mental representations 和 mental simulation。
 
