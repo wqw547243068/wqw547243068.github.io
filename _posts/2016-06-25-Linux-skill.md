@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 技能总结"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux
+tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux ip
 excerpt: Linux 使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -921,6 +921,8 @@ perf既然这么强大，那它的实现原理是什么呢？
   - tac语法：tac 文件名。
 
 
+
+
 ### 终端访问
 
 终端客户端工具
@@ -973,6 +975,34 @@ interact
 ```shell
  sudo ntpdate cn.pool.ntp.org # 矫正系统时间
  ```
+
+###  IP 地址
+
+获取 IP 地址方法
+
+Linux下
+- ifconfig：要确保已安装
+  - ifconfig 命令可以获取本机网卡的配置信息，包括 IP 地址。可以通过 grep 命令过滤出 IP 地址信息，再使用 awk 命令提取出具体的 IP 地址
+- hostname 无需安装
+- ip：ifconfig 命令的替代品，可以获取本机网卡的配置信息，包括 IP 地址。使用 ip addr show 命令可以获取所有网卡的信息，再使用 grep 命令过滤出 IP 地址信息，最后使用 awk 命令提取出具体的 IP 地址
+
+```sh
+# （1）ifconfig
+ip=$(ifconfig | grep -E 'inet [0-9]' | awk '{print $2}')
+# （2）hostname
+hostname # 获取本机的主机名
+hostname -I # 获取ip地址
+ip=$(hostname -I)
+# （3）ip
+ip=$(ip addr show | grep -E 'inet [0-9]' | awk '{print $2}' | awk -F '/' '{print $1}')
+
+# 127.0.0.1
+# 10.191.61.23
+echo "本机 IP 地址为：$ip"
+
+hostname -I # 直接输出地址
+```
+
 
 ### 任务启动
 
