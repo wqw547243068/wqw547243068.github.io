@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 技能总结"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理
+tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux
 excerpt: Linux 使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -2901,6 +2901,9 @@ tmux 有 session（会话）, window（窗口）, pane（窗格）三个粒度�
 - session 是 tmux 最大的一个粒度，session 下可以创建多个 window
 - window 可以分割成多个 pane。
 
+<img width="899"  alt="image" src="https://github.com/user-attachments/assets/7a3f5882-ae19-4909-922d-acd4f40b5c96" />
+
+
 大部分 Linux 发行版都提供 tmux 包
 
 ```sh
@@ -2908,9 +2911,24 @@ tmux 有 session（会话）, window（窗口）, pane（窗格）三个粒度�
 tmux ls # 或 tmux list-sessions
 # 链接第一个会话
 tmux a  # 或 tmux attach
-
 tmux list-keys # 查看 tmux 所有快捷键绑定
+tmux source-file ~/.tmux.conf` 重新加载配置文件。
+tmux list-keys # 列出所有绑定的快捷键。
+tmux capture-pane #  捕获当前窗格内容到缓冲区或文件。
+tmux display-message #  在状态栏显示消息。
 
+# 附加到会话
+tmux attach -t <session-name>  重新连接到指定会话。
+tmux a -t <session-name> attach 简写
+
+# 默认创建未命名的会话
+tmux # 或 tmux new-session 
+# 后台进程 nohup替代方案
+tmux new -s my_session # 创建进程，关掉终端
+tmux attach -t my_session # 事后查看，重新连接到会话
+# 结束会话
+tmux kill-server # 结束所有会话
+tmux kill-session -t my_session # 直接杀死指定会话
 ```
 
 窗口操作
@@ -2946,6 +2964,11 @@ Ctrl-B 方向键      # 方向键上下左右
 Ctrl-B [hjkl]     # 使用 vi 风格的 hjkl 键切换，分别对应左上下右
 
 Ctrl-B z      #  切换全屏
+# 翻页
+先：Ctrl + b  ，再fn + up
+先：Ctrl + b  ，再fn + down
+
+退出翻页：q
 ```
 
 tmux 像 vim 一样支持高度定制化，可以通过修改 `~/.tmux.conf` 配置各种快捷键，网络上也有 oh-my-tmux 这样的项目来帮你做一些配置
