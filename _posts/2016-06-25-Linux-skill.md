@@ -2835,18 +2835,122 @@ typedef union epoll_data {
 - 【2021-5-10】[terminus](https://eugeny.github.io/terminus/)，[下载地址](https://github.com/Eugeny/terminus/releases/tag/v1.0.138)
 ![](https://gitee.com/mirrors/terminus/raw/master/docs/readme.png)
 
-- 【2020-9-1】[tmux](https://www.ruanyifeng.com/blog/2019/10/tmux.html)
-- Tmux 就是会话与窗口的"解绑"工具，将它们彻底分离。
-  - （1）它允许在单个窗口中，同时访问多个会话。这对于同时运行多个命令行程序很有用。
-  - （2） 它可以让新窗口"接入"已经存在的会话。
-  - （3）它允许每个会话有多个连接窗口，因此可以多人实时共享会话。
-  - （4）它还支持窗口任意的垂直和水平拆分。
 
 【2020-9-2】[Linux：在终端中查看图片和电影](https://blog.csdn.net/weixin_34072159/article/details/92473531)
 - 安装工具(cacaview)：yum install caca-utils -y
 - 查看图片：cacaview test.jpg
 - 按d改变图片配色
 - ![](https://static.xjh.me/wp-content/uploads/2017/11/www.xjh.me-2017-11-04_17-18-14_961742-2.png)
+
+
+## 进程管理
+
+需求
+- 退出当前终端后，程序保持运行
+
+### nohup
+
+当终端退出时（如关闭终端窗口，或者 ssh 网络中断），shell 进程会给所有子进程发送一个 SIGHUP 信号，从而导致进程结束。
+
+而 nohup 可以让进程忽略掉 SIGHUP 信号，从而在后台保持运行。
+
+nohup 加让程序后台运行的方式
+
+```sh
+nohup ping 127.0.0.1 &
+```
+
+断开终端连接后，重新登陆到服务器，ping 进程仍然在运行。
+
+nohup 默认将程序输出追加到 nohup.out 文件中
+
+
+### tmux
+
+nohup 简单场景有用，但不适用更复杂场景。
+
+比如
+- 用户无法再对**后台进程**进行**输入**操作，并且同时维护多个进程也很不方便。
+
+解法：tmux
+
+【2025--7-6】[提升命令行使用体验──tmux 终端复用](https://lug.ustc.edu.cn/planet/2025/07/how-to-use-tmux/)
+
+tmux 是终端复用器（Terminal MUltipleXer）。
+- 一个终端里创建多个窗口，并且将窗口分割成多个窗格，每个窗格都运行独立的 shell 进程。
+- 让多个应用程序同时运行，而无需打开多个终端模拟器窗口（terminal emulator，如 Xshell、PuTTY、Windows Terminal 等）。
+
+下图展示了使用 tmux 创建了一个窗口，并将窗口上下分屏成两个窗格，每个窗格都运行一个 zsh。
+- ![](https://lug.ustc.edu.cn/static/planet/20250705151056.png)
+
+tmux 将终端和会话（session）进行了分离。把创建的窗口和窗格（和其中创建的所有 shell 进程及子进程）看成一个会话，用户可以随时退出（detach）当前会话，会话会在服务器后台保持运行。在之后，用户可以重新连接上（attach）这些会话，从而继续之前的工作。
+
+tmux 采用客户端和服务器分离的架构（C/S 架构）。
+- 用户看到和交互的是 tmux client，tmux client 中创建的窗口（和 shell 进程）连接在 tmux server 进程上。
+- 因此，当用户退出 tmux client 后，会话内容可以在后台运行。 通过 pstree 命令，可以看到上图中运行的两个 zsh 的父进程是 tmux: server。
+- 而和用户交互的其实是 tmux: client，其下面并无其他子进程。
+
+【2020-9-1】[tmux](https://www.ruanyifeng.com/blog/2019/10/tmux.html)
+- Tmux 是会话与窗口的"解绑"工具，彻底分离。
+  - （1）单个窗口中同时访问多个会话。这对于同时运行多个命令行程序很有用。
+  - （2） 让新窗口"接入"已经存在的会话。
+  - （3）每个会话有多个连接窗口，因此可以多人实时共享会话。
+  - （4）支持窗口任意的垂直和水平拆分。
+
+tmux 有 session（会话）, window（窗口）, pane（窗格）三个粒度。
+- session 是 tmux 最大的一个粒度，session 下可以创建多个 window
+- window 可以分割成多个 pane。
+
+大部分 Linux 发行版都提供 tmux 包
+
+```sh
+# 查看当前所有的会话信息
+tmux ls # 或 tmux list-sessions
+# 链接第一个会话
+tmux a  # 或 tmux attach
+
+tmux list-keys # 查看 tmux 所有快捷键绑定
+
+```
+
+窗口操作
+
+```sh
+# 创建
+Ctrl-B c # 创建新的窗口
+Ctrl-B & # 删除当前窗口
+
+# 切換
+Ctrl-B Tab        # 切换到刚刚的窗口
+Ctrl-B p          # 切换上一个
+Ctrl-B n          # 切换下一个
+Ctrl-B 数字编号    # 切换到指定一个窗口
+
+# 修改窗口名字
+Ctrl-B ,          # 修改当前窗口名字
+
+# 垂直划分窗格
+tmux split-window -v
+```
+
+窗格操作
+
+```sh
+# 创建
+Ctrl-B \"     # 上下切分
+Ctrl-B %      # 左右切分
+Ctrl-B x      # 删除
+
+# 切换
+Ctrl-B 方向键      # 方向键上下左右
+Ctrl-B [hjkl]     # 使用 vi 风格的 hjkl 键切换，分别对应左上下右
+
+Ctrl-B z      #  切换全屏
+```
+
+tmux 像 vim 一样支持高度定制化，可以通过修改 `~/.tmux.conf` 配置各种快捷键，网络上也有 oh-my-tmux 这样的项目来帮你做一些配置
+
+在 `~/.bashrc` 或 `~/.zshrc` 中设置 `alias t="tmux"，tmux attach` 效率立刻提升 300%
 
 
 ## Visual Studio Code
