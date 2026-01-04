@@ -13,6 +13,7 @@ permalink: /dist_tool
 * content
 {:toc}
 
+
 # 分布式训练库
 
 ## 常见框架
@@ -1922,7 +1923,7 @@ python3 -m verl.trainer.main_ppo \
 
 #### RLOO
 
-```PY
+```sh
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=rloo \
     data.train_files=$HOME/data/gsm8k/train.parquet \
