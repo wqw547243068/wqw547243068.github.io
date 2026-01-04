@@ -1792,6 +1792,12 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 
 ## 训练数据
 
+数据集格式几种：
+- 原始语料：比如从维基百科抓取的纯文本，适合继续预训练（CPT）。
+- 指令格式：包含任务指令、输入和期望输出，适合监督微调（SFT）。
+- 对话格式：模拟用户和AI的多次对话，适合打造聊天机器人。
+- RLHF格式：对话加上人类或模型的评分，用于强化学习（RL）。
+
 
 ### 数据源
 
@@ -1821,8 +1827,6 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 
 预处理通常包括五个步骤：
 - ![](https://pic1.zhimg.com/80/v2-65b4e84d0e842fa0d4fe11d09f9085ec_1440w.webp)
-
-
 
 
 【2024-5-23】[再聊多轮对话微调训练格式与长序列训练](https://www.53ai.com/news/qianyanjishu/2024052324781.html)
@@ -1861,9 +1865,25 @@ PPO RLHF 面临的挑战主要分为算法、系统和数据三个方面：
 
 LLaMA-Factory 支持 alpaca 格式和 sharegpt 格式的数据集。
 
+选择格式时，优先考虑任务类型：
+- 单轮任务用Alpaca
+- 多轮对话用ChatML或ShareGPT。
 
-#### Alpaca
+#### 原始语料
 
+原始语料（Raw Corpus）
+- 适合继续**预训练**，数据就是纯文本，没有特定结构。模型通过这种格式学习语言的自然流动。
+
+```json
+{
+  "text": "北京烤鸭是一道传统的中国菜肴，以其酥脆的皮和嫩滑的肉闻名。制作过程包括将鸭子腌制、风干，然后在特制的烤炉中烤制。传统的北京烤鸭通常搭配薄饼、甜面酱和葱丝食用……"
+}
+```
+
+
+#### 指令格式 Alpaca风格
+
+指令格式（Alpaca风格）
 
 Alpaca 格式
 - `instruction` 和 `input`
@@ -1894,8 +1914,9 @@ Alpaca 格式
 
 
 
-#### sharegpt
+#### 对话格式 ShareGPT
 
+适合多轮对话场景，模拟用户和AI的交互。格式记录了“谁说啥”
 
 相比 alpaca，sharegpt 格式支持更多**角色种类**，
 - 如 `human`、`gpt`、`observation`、`function` 等等。
@@ -1930,6 +1951,32 @@ sharegpt 格式如下：
   }
 ]
 ```
+
+#### ChatML格式
+
+ChatML格式（Hugging Face默认）
+
+目前最常用的对话格式，结构简洁，适合多轮对话。
+
+```JSON
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "1+1等于多少？"
+    },
+    {
+      "role": "assistant",
+      "content": "等于2！"
+    }
+  ]
+}
+```
+
+ShareGPT格式 转 ChatML格式，用 Unsloth standardize_sharegpt函数转换。
+
+
+
 
 ### 推理数据集
 
