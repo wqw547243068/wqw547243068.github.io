@@ -14,6 +14,49 @@ permalink: /langchain
 
 # LangChain
 
+【2025-12-26】[LangChain 三年回顾：从框架演进看 Agent 开发的本质与未来](https://zhuanlan.zhihu.com/p/1987961895190290867)
+
+三年前，Harrison Chase 把 800 行代码推送到 GitHub。那只是个 side project，没有公司，没有宏大计划。
+- 一个月后，ChatGPT 发布，一切都变了。
+- 2022 年底，LangChain 发布，主打”易用”。核心理念：为 LLM 应用提供抽象层
+- 2023 年夏天，LangChain 收到大量负面反馈。有些问题可以修：防止破坏性变更、让隐藏的 prompt 显式化、减少包体积、修复文档。但有个反馈最难解决：人们想要更多控制。LangChain 很容易上手，但很难定制和扩展。
+- 2024 年1月，LangGraph 发布，主打”控制”。 LangChain 的 Chains 是 DAG（有向无环图），而 Agent 天然需要循环。Agent 调用搜索工具，发现结果不够好，想再搜一次
+  - LangGraph 的核心突破：支持循环图（Cyclical Graphs）
+  - LangGraph 只假设一件事：LLM 是慢的、不稳定的、开放式的。基于这个假设，LangGraph 聚焦两大支柱：1. 可控性（Controllability）2. 运行时（Runtime）
+  - 2024 年中，Harrison Chase 在 Sequoia AI Ascent 大会上提出了 Agent 的三大限制：Planning、UX、Memory。
+- 2025 年7月，DeepAgents 发布，主打”深度”。
+  - 新术语开始流行：Context Engineering—— Agent 失败，通常不是模型问题，是上下文问题。
+  - Context Engineering 有四大策略：Write、Select、Compress和Isolate
+  - Deep Agents 有四大特征：1. 详细的系统提示词 2. 规划工具 3. 子智能体 4. 文件系统
+- 2025 年10月，LangChain 1.0 发布，回归本质。
+  - LangChain 决定从头重写 LangChain，三个目标：让上手尽可能简单、允许比以前更多的定制、提供生产级运行时
+
+如何实现？
+- 聚焦核心：专注于工具调用循环——这已经成为”Agent”的代名词。
+- 引入中间件：一个新概念，让开发者能在需要的地方精确控制”上下文工程”的生命周期。
+- 基于 LangGraph：站在巨人的肩膀上，获得流式、持久执行、human-in-the-loop 等能力。
+
+三层架构 — Framework、Runtime、Harness
+
+2025 年 10 月，LangChain 明确了三个层次的定位：
+- ![](https://pic1.zhimg.com/v2-f29d9500105a76d23be7fbdffc2887c4_1440w.jpg)
+
+需要
+- 完全控制 → LangGraph
+- 快速上手 → LangChain
+- 开箱即用 → DeepAgents
+
+DeepAgents 建立在 LangChain 之上，LangChain 建立在 LangGraph 之上。
+
+2025 年 12 月，LangChain 提出新概念：Agent Engineering——把非确定性的 LLM 系统打磨成可靠的生产体验。
+
+
+三年，三次重写，四个版本。
+
+这不是技术债务的堆积，而是整个行业对”什么是好的 Agent”认知的演进。
+
+
+
 ## LangChain 介绍
 
 LangChain, 语言链条，也称：`兰链`
@@ -45,6 +88,8 @@ LangChain 在没有任何收入/创收计划的情况下，获得了 1000 万美
 
 LangChain 以“工作流”形式将LLM与IO组件有序连接，从而具备构建复杂AI工程流程的能力
 - ![](https://picx.zhimg.com/80/v2-2ab8dadbe6e271b02ceec0c785d9fc2e_1440w.png)
+
+
 
 
 ## 为什么有 LangChain
@@ -276,6 +321,23 @@ flow("Hey, have you heard of LangFlow?")
 #### LangGraph
 
 基于LCEL确实能描述复杂 LangChain计算图结构，但依然有DAG天然的设计限制，即不能支持“循环”。
+
+LangGraph 只假设一件事：LLM 是慢、不稳定、开放式。
+
+基于这个假设，LangGraph 聚焦两大支柱：
+
+1. 可控性（Controllability）
+  - 没有隐藏的 prompt，没有隐藏的上下文工程。你完全控制你的系统——无论是 workflow、agent 还是介于两者之间的任何东西。
+2. 运行时（Runtime）
+  - 把生产环境需要的一切都内置进来：流式输出、状态管理、human-in-the-loop、持久执行。
+
+这两大支柱带来了六个生产特性：
+- 实际延迟高：	并行化
+- 感知延迟高：	流式输出
+- 重试次数多：	任务队列
+- 重试代价大：	检查点
+- 行为不可控：	Human-in-the-loop
+- 黑盒难调试：	追踪
 
 LangGraph：可视化**复杂**工作流
 
