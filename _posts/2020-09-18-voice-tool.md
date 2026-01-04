@@ -1090,7 +1090,7 @@ PED-NEC 有个大毛病——如果错的文本和真实实体“长得太不一
 
 方法
 
-<img width="1369" height="446" alt="image" src="https://github.com/user-attachments/assets/c4e13e5a-9791-44f4-87ef-773cba844f25" />
+<img width="1369" alt="image" src="https://github.com/user-attachments/assets/c4e13e5a-9791-44f4-87ef-773cba844f25" />
 
 
 
@@ -1223,7 +1223,7 @@ Fun-ASR 是通义实验室推出的**端到端**语音识别大模型。
 - 抗噪能力：针对远场、高噪环境（会议室、车载、工业现场）深度优化，识别率高达 93%。
 - 音乐歌词识别：即使在背景音乐干扰下，也能准确识别歌词内容。
 
-<img width="1701" height="906" alt="image" src="https://github.com/user-attachments/assets/b182d795-3960-4cea-8ef9-b47bcf0c4227" />
+<img width="1701" alt="image" src="https://github.com/user-attachments/assets/b182d795-3960-4cea-8ef9-b47bcf0c4227" />
 
 版本
 - Fun-ASR 0.8B
