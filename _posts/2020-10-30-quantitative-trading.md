@@ -1172,6 +1172,15 @@ FinSphere 对话型股票分析代理，由三个关键组件构成：
 ![](https://pic4.zhimg.com/v2-2965a72a9454875e1f851e185bb6cf21_1440w.jpg)
 
 
+### QuantAgent
+
+2026年1月6日，QuantAgent: 面向高频交易的多智能体框架，代码开源
+- 论文链接：https://arxiv.org/pdf/2509.09995
+- 代码链接：https://github.com/Y-Research-SBU/QuantAgent
+
+“近年来大语言模型（LLMs）在金融推理和市场理解中展现出强大能力，如TradingAgent和FINMEM等多智能体框架已应用于长期投资任务。然而，这些系统无法满足高频交易（HFT）对高速、高精度决策的需求——HFT依赖技术指标、图表模式和趋势特征等结构化短周期信号，而非传统LLM依赖的长期语义推理。为此，本文提出QuantAgent，首个专为高频算法交易设计的多智能体LLM框架。系统将交易分解为指标代理（IndicatorAgent）、模式代理（PatternAgent）、趋势代理（TrendAgent）和风险代理（RiskAgent），各代理通过领域工具和结构化推理捕捉市场动态。在比特币、纳斯达克期货等10种金融工具的零样本评估中，QuantAgent在4小时交易窗口内的预测准确率显著优于随机基线，验证了结构化金融先验与语言推理结合的潜力。”
+
+
 ## 工程实践
 
 [关于高频量化交易的代码项目](https://zhuanlan.zhihu.com/p/558902211)
