@@ -278,7 +278,6 @@ with open("./train.txt", "r", encoding="utf-8") as f:
         line = json.loads(i)
         data.append(line)
 
-
 def preprocess_conversation(data):
     sep_id = tokenizerOne.sep_token_id
     cls_id = tokenizerOne.cls_token_id
@@ -373,13 +372,12 @@ Trainer 封装了 PyTorch 训练过程，包括：**前向传播**、**反向传
 
 高级的 Trainer 加上了各种功能，比如：**日志记录**，**断点重训**，**训练方式**与**精度**，支持各种分布式训练框架像原生、Apex、Deepspeed和Fairscale，支持自定的回调函数等等
 
-Lightning 官网的一张gif还是比较生动形象
+Lightning 官网gif比较生动形象
 
 
 ### Trainer 定义
 
 [trainer.py](https://github.com/huggingface/transformers/blob/v4.34.1/src/transformers/trainer.py#L236)
-
 
 do_train,do_eval,do_predict 这三个参数和trainer没什么关系
 
@@ -478,8 +476,6 @@ Transformers Trainer类 参数：
 - `preprocess_logits_for_metrics` (Callable[[torch.Tensor, torch.Tensor], torch.Tensor], 可选)：指定函数，每次评估步骤（evaluation step）前，进入compute_metrics函数前对模型的输出 logits 进行**预处理**。
   - 接受两个张量（tensors）作为参数，一个是模型的输出 logits，另一个是**真实标签**（labels）。
   - 然后返回一个经过预处理后的 logits 张量，给到compute_metrics函数作为参数。
-
-
 
 #### TrainingArguments 参数
 
@@ -891,21 +887,39 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 
 ### 训练模式
 
-| 方法                   |     全参数训练      |    部分参数训练     |       LoRA         |       QLoRA        |
-| ---------------------- | ------------------ | ------------------ | ------------------ | ------------------ |
-| 预训练                 | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| 指令监督微调            | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| 奖励模型训练            | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| PPO 训练               | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| DPO 训练               | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| KTO 训练               | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| ORPO 训练              | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| SimPO 训练             | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+支持多种训练方法
+- OFT正交微调
+
+| Approach               | Full-tuning | Freeze-tuning | LoRA | QLoRA | OFT  | QOFT |
+|------------------------|-------------|---------------|------|-------|------|------|
+| Pre-Training           | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| Supervised Fine-Tuning | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| Reward Modeling        | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| PPO Training           | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| DPO Training           | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| KTO Training           | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| ORPO Training          | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+| SimPO Training         | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+
 
 
 
 ### LLaMA-Factory 命令行
 
+llamafactory-cli 命令行工具接口是 LLaMA-Factory v3 版本引入的新特性，用于简化常用操作（训练、推理、导出等）
+
+命令	说明
+- env	显示环境信息（PyTorch、CUDA、transformers 等）
+- train	启动模型训练（封装了 src/train_bash.py）
+- merge	合并 LoRA 模型权重为 HuggingFace 模型
+- cli	启动命令行交互测试
+- webui	启动 Web UI 推理界面
+- export	导出模型为 GGUF 或 Safetensors
+- convert	转换数据格式为标准训练集
+- validate	验证数据集格式是否正确
+- chat	在命令行中与模型多轮对话
+- clean	清理缓存、训练中间结果
+- build	构建 tokenizer/config 结构
 
 #### 常用命令
 
@@ -914,12 +928,53 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 ```sh
 llamafactory-cli version  # 显示版本
 llamafactory-cli help  # 帮助信息
+llamafactory-cli train --help   # 某个命令的详细参数说明
 
+llamafactory-cli env # 查看环境
+llamafactory-cli build --model_type llama --output_dir ./model # 构建 tokenizer 和 config（高级用法）
+
+llamafactory-cli train --config xxx.yaml # 训练模型
+llamafactory-cli train --config ./configs/sft.yaml
+
+llamafactory-cli cli/web/chat # 推理测试
+llamafactory-cli cli --model_name_or_path path_to_model # 命令行对话
+llamafactory-cli merge  # 合并模型
+# 合并 LoRA 模型
+llamafactory-cli merge \
+  --base_model base_model_path \
+  --lora_model lora_adapter_path \
+  --output_dir merged_model_path
+
+llamafactory-cli export --format gguf # 导出模型
+# 导出为 GGUF（用于 llama.cpp）
+llamafactory-cli export \
+  --model_name_or_path merged_model_path \
+  --format gguf \
+  --quantization q4_0 \
+  --output_dir ./gguf_model
+
+llamafactory-cli chat --model_name_or_path path_to_model # 多轮对话测试（Chat 模式）
+# convert, validate # 数据工具
+llamafactory-cli validate --input_file ./data/converted.json # 验证数据格式是否正确
+# 数据集格式转换：数据集转换为 Alpaca / ChatML 等格式
+llamafactory-cli convert \
+  --input_file ./data/raw.json \
+  --output_file ./data/converted.json \
+  --format alpaca 
+
+
+llamafactory-cli clean # 清理缓存
+```
+
+浏览器打开图形界面测试模型，可选择 `--share` 开公网链接
+
+```sh
 # Web UI 使用
 llamafactory-cli webui    # 启动网页端
 CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
 CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
 set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
+llamafactory-cli web --model_name_or_path path_to_model --share
 ```
 
 对 Llama3-8B-Instruct 模型进行 LoRA 微调、推理和合并。
@@ -1743,7 +1798,11 @@ Unsloth 将 GRPO 的 VRAM 使用量相较于标准实现降低了 **90%** 以上
 | 总内存使用量 | 54.33GB (少 90%) | 510.8GB | 
 
 
+### 安装
 
+```sh
+pip install unsloth
+```
 
 
 ## OpenRLHF
@@ -1832,7 +1891,7 @@ verl还具备与现有LLM基础设施无缝集成的能力，无论是PyTorch FS
 - 当前，actor经过前一轮训练后，进入rollout阶段。
 - 为了提高rollout阶段的吞吐，不对模型参数进行切分，即dp=4,tp=1。
 
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/16ea8c1d-fa5f-48a5-a1ea-ed64e0e46522" />
+<img height="600" alt="image" src="https://github.com/user-attachments/assets/16ea8c1d-fa5f-48a5-a1ea-ed64e0e46522" />
 
 
 【2025-09-07】[利用 vLLM 进行 rollout](https://zhuanlan.zhihu.com/p/1943606938769295200)
@@ -1859,7 +1918,7 @@ TP 和 PP 很好理解，而DP 的意思应该是，例如你有4张卡，设置
 - HybridFlow 在运行各种 RL(HF) 算法时，吞吐量相较 SOTA 基线提升了 1.5-20 倍。
 
 
-### 部署
+### 安装
 
 工具包依赖
 
@@ -1873,6 +1932,24 @@ torch=2.4.0+cu124
 transformers=4.47.1
 vllm==0.5.4
 ```
+
+安装
+
+```sh
+# 克隆项目仓库
+git clone https://gitcode.com/GitHub_Trending/ve/verl
+# 进入项目目录
+cd verl
+# 创建虚拟环境
+python -m venv verl_env
+source verl_env/bin/activate
+ 
+# 安装基础依赖
+pip install -r requirements.txt
+# 安装verl本体
+pip install --no-deps -e .
+```
+
 
 ### 示例
 
