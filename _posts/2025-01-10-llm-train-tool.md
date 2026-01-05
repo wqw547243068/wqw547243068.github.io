@@ -7,7 +7,7 @@ tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
-permalink: /dist_tool
+permalink: /train_tool
 ---
 
 * content
@@ -1832,7 +1832,7 @@ verl还具备与现有LLM基础设施无缝集成的能力，无论是PyTorch FS
 - 当前，actor经过前一轮训练后，进入rollout阶段。
 - 为了提高rollout阶段的吞吐，不对模型参数进行切分，即dp=4,tp=1。
 
-<img width="2600" height="898" alt="image" src="https://github.com/user-attachments/assets/16ea8c1d-fa5f-48a5-a1ea-ed64e0e46522" />
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/16ea8c1d-fa5f-48a5-a1ea-ed64e0e46522" />
 
 
 【2025-09-07】[利用 vLLM 进行 rollout](https://zhuanlan.zhihu.com/p/1943606938769295200)
