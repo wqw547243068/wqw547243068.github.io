@@ -1769,6 +1769,63 @@ TF32 也是深度学习时代诞生的一种新类型。
 -   **TensorFloat-32(TF32)** 。使用 19 位表示，结合了 BF16 的范围和 FP16 的精度，是计算数据类型而不是存储数据类型。目前使用范围较小。
 - ![](https://pic2.zhimg.com/80/v2-500915ea5b15c798bdc00d679fdeb229_1440w.webp)
 
+[llama-factory 教程](https://llamafactory.readthedocs.io/zh-cn/latest/advanced/quantization.html)
+- 浮点数由3部分组成：符号位、指数位和尾数位。
+- 指数位越大，可表示的数字范围越大。尾数位越大、数字的精度越高。
+
+![](https://llamafactory.readthedocs.io/zh-cn/latest/_images/quantization_0.png)
+
+量化分类
+- 可根据何时量化分为：**后训练**量化和**训练感知**量化
+- 也可根据量化参数的确定方式分为：**静态**量化和**动态**量化。
+
+（1）PTQ 后训练
+
+后训练量化（PTQ, Post-Training Quantization）：模型预训练完成后，基于校准数据集（calibration dataset）确定量化参数进而对模型进行量化
+
+① GPTQ(Group-wise Precision Tuning Quantization)是静态的后训练量化技术。
+- ”静态”指预训练模型一旦确定,经过量化后量化参数不再更改。
+- GPTQ 量化技术将 fp16 精度的模型量化为 4-bit ,在节省了约 75% 的显存的同时大幅提高了推理速度。
+- 为了使用GPTQ量化模型，需要指定量化模型名称或路径，例如 model_name_or_path: TechxGenus/Meta-Llama-3-8B-Instruct-GPTQ
+
+② AQLM
+
+AQLM（Additive Quantization of Language Models）作为一种只对模型权重进行量化的PTQ方法，在 2-bit 量化下达到了当时的最佳表现，并且在 3-bit 和 4-bit 量化下也展示了性能的提升。 尽管 AQLM 在模型推理速度方面的提升并不是最显著的，但其在 2-bit 量化下的优异表现意味着您可以以极低的显存占用来部署大模型
+
+
+(2) QAT 训练阶段
+
+训练感知量化（QAT, Quantization-Aware Training）中，模型在预训练过程中被量化，然后又在训练数据上再次微调，得到最后的量化模型。
+
+AWQ（Activation-Aware Layer Quantization）是静态的后训练量化技术。
+
+思想基于：有很小一部分的权重十分重要，为了保持性能这些权重不会被量化。 
+
+AWQ 优势:需要的校准数据集更小，且在指令微调和多模态模型上表现良好。 
+
+为了使用 AWQ 量化模型,您需要指定量化模型名称或路径，例如 model_name_or_path: TechxGenus/Meta-Llama-3-8B-Instruct-AWQ
+
+（3）OFTQ 推理阶段
+
+OFTQ(On-the-fly Quantization)是模型无需校准数据集，直接在推理阶段进行量化。OFTQ是一种动态的后训练量化技术. OFTQ在保持性能的同时。 因此，在使用OFTQ量化方法时，您需要指定预训练模型、指定量化方法 quantization_method 和指定量化位数 quantization_bit 
+
+① bitsandbytes
+
+区别于 GPTQ, bitsandbytes 是动态的后训练量化技术。
+
+bitsandbytes 使得大于 1B 的语言模型也能在 8-bit 量化后不过多地损失性能。 经过bitsandbytes 8-bit 量化的模型能够在保持性能的情况下节省约50%的显存
+
+② HQQ
+
+依赖校准数据集的方法往往准确度较高，不依赖校准数据集的方法往往速度较快。HQQ（Half-Quadratic Quantization）希望能在准确度和速度之间取得较好的平衡。作为一种动态的后训练量化方法，HQQ无需校准阶段， 但能够取得与需要校准数据集的方法相当的准确度，并且有着极快的推理速度。
+
+③ EETQ
+
+EETQ(Easy and Efficient Quantization for Transformers)是一种只对模型权重进行量化的PTQ方法。具有较快的速度和简单易用的特性。
+
+
+
+
 模型训练
 - 训练时为保证精度，主权重始终为 `FP32`。
 - 而推理时，`FP16` 权重通常能提供与 `FP32` 相似的精度
