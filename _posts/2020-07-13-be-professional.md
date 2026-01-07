@@ -66,7 +66,7 @@ permalink: /career
 
 马斯诺需求层次
 
-<img width="1961" height="943" alt="image" src="https://github.com/user-attachments/assets/af3c5cca-7f34-4c4c-a85c-d7e139ab1167" />
+<img height="943" alt="image" src="https://github.com/user-attachments/assets/af3c5cca-7f34-4c4c-a85c-d7e139ab1167" />
 
 
 
