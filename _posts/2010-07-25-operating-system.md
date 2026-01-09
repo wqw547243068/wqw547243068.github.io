@@ -299,6 +299,21 @@ export https_proxy=127.0.0.1:2080
 curl -fsSL https://opencode.ai/install | bash
 ```
 
+更好的脚本
+- 包含生效、取消
+
+```sh
+proxy_ip="127.0.0.1:2080"
+
+alias proxy="
+export http_proxy=$proxy_ip
+export https_proxy=$proxy_ip"
+
+alias unproxy="
+unset http_proxy
+unset https_proxy"
+```
+
 
 ### 字体
 
