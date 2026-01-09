@@ -296,13 +296,15 @@ mac terminal如何更改默认主题？
 
 ```sh
 # 设置本地代理
-export http_proxy=127.0.0.1:2080
-export https_proxy=127.0.0.1:2080
+export http_proxy=http://127.0.0.1:2080
+export https_proxy=https://127.0.0.1:2080
+
 # 安装 opencode
 curl -fsSL https://opencode.ai/install | bash
 ```
 
-例行更新
+正式用法
+- 分别导入 http_proxy、https_proxy、sockes_proxy 三个环竟变量
 
 打开 ~/.zshrc/~/.bash_profile 后，滑至末尾另起一行
 
@@ -318,12 +320,14 @@ vi ~/.bash_profile # 或
 proxy_ip="127.0.0.1:2080"
 
 alias proxy="
-export http_proxy=$proxy_ip
-export https_proxy=$proxy_ip"
+export http_proxy=http://$proxy_ip
+export https_proxy=https://$proxy_ip"
+export socks_proxy=socks://$proxy_url
 
 alias unproxy="
 unset http_proxy
 unset https_proxy"
+unset socks_proxy
 ```
 
 保存，更新
@@ -336,6 +340,7 @@ source ~/.bash_profile # 或
 测试
 
 ```sh
+curl ipinfo.io # 返回json串
 curl https://ip.cn
 #  {"country": "广东省深圳市", "city": "电信"}
 # 更改后
@@ -349,13 +354,15 @@ curl -I google.com
 ```sh
 cat >> ~/.bash_profile << EOF
 function proxy_on() {
-    export http_proxy=http://127.0.0.1:7890
-    export https_proxy=\$http_proxy
+    proxy_url=127.0.0.1:2080
+    export http_proxy=http://$proxy_url
+    export https_proxy=https://$proxy_url
+    export socks_proxy=socks://$proxy_url
     echo -e "终端代理已开启。"
 }
 
 function proxy_off(){
-    unset http_proxy https_proxy
+    unset http_proxy https_proxy socks_proxy
     echo -e "终端代理已关闭。"
 }
 EOF
