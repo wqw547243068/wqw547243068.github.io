@@ -3,7 +3,7 @@ layout: post
 title:  "操作系统-Operating System"
 date:   2010-07-25 15:09:00
 categories: 计算机基础
-tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果 windows word pdf
+tags: 操作系统 进程 线程 协程 回调 异步 mac 苹果 windows word pdf 代理
 excerpt: 计算机操作系统知识点
 mathjax: true
 permalink: /os
@@ -285,6 +285,19 @@ mac terminal如何更改默认主题？
 - 打开Terminal终端，右击鼠标，选择“显示检查器”。
 - 选择主题（如homebrew），在颜色与效果处，把透明度调到最大，背景就全黑了。
 - 点击“默认”，即完成设置
+
+
+#### 代理
+
+【2026-1-9】开启代理能力
+
+```sh
+# 设置本地代理
+export http_proxy=127.0.0.1:2080
+export https_proxy=127.0.0.1:2080
+# 安装 opencode
+curl -fsSL https://opencode.ai/install | bash
+```
 
 
 ### 字体
