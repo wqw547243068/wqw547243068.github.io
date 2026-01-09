@@ -290,6 +290,9 @@ mac terminal如何更改默认主题？
 #### 代理
 
 【2026-1-9】开启代理能力
+- [macOS terminal - 让终端使用代理的方法（以ClashX配合举例）](https://zhuanlanjia.com/post/238)
+
+一次性
 
 ```sh
 # 设置本地代理
@@ -299,7 +302,16 @@ export https_proxy=127.0.0.1:2080
 curl -fsSL https://opencode.ai/install | bash
 ```
 
-更好的脚本
+例行更新
+
+打开 ~/.zshrc/~/.bash_profile 后，滑至末尾另起一行
+
+```sh
+vi ~/.zshrc 
+vi ~/.bash_profile # 或
+```
+
+粘贴如下代码
 - 包含生效、取消
 
 ```sh
@@ -312,6 +324,47 @@ export https_proxy=$proxy_ip"
 alias unproxy="
 unset http_proxy
 unset https_proxy"
+```
+
+保存，更新
+
+```sh
+source ~/.zshrc
+source ~/.bash_profile # 或
+```
+
+测试
+
+```sh
+curl https://ip.cn
+#  {"country": "广东省深圳市", "city": "电信"}
+# 更改后
+curl https://ip.cn # 注意不要 sudo
+# {"country": "美国", "city": "Choopa"}
+curl -I google.com
+```
+
+其他
+
+```sh
+cat >> ~/.bash_profile << EOF
+function proxy_on() {
+    export http_proxy=http://127.0.0.1:7890
+    export https_proxy=\$http_proxy
+    echo -e "终端代理已开启。"
+}
+
+function proxy_off(){
+    unset http_proxy https_proxy
+    echo -e "终端代理已关闭。"
+}
+EOF
+# 生效
+source ~/.bash_profile
+# 启用
+proxy_on
+# 取消
+proxy_off
 ```
 
 
