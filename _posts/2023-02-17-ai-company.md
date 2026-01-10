@@ -3,7 +3,7 @@ layout: post
 title:   AIGC 顶级机构、公司
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面 META 杨红霞
+tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面 上市 ipo META 杨红霞
 excerpt: 世界顶级AI机构/公司（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -121,6 +121,15 @@ AI机构分布
 
 
 ### 六小龙
+
+上市信息
+- 2026-1-8 智谱上市，走 to B路线
+- 2026-1-9 Minimax 上市，走 to C路线
+
+【2026-1-10】MiniMax上市破千亿的秘密：没走智谱B端技术路线，而是用"Talkie"虚拟陪伴应用快速验证商业模式。
+- 2024年该应用贡献63.7%营收，靠情绪价值单季度收入超3600万。
+- 核心逻辑：用C端高频场景打磨多模态技术（如全球领先的TTS），让技术在真实需求中变现。
+- 95后团队敢抛弃移动互联网思维，证明在AI时代，能解决情感刚需、找到真实场景的公司才能活下来。
 
 2023年，国内AI行业发生的投融资事件就有815起，融资总金额达2631亿元。而AI大模型“吞金兽”们经过大量的资金喂养，也得到了很好的发展。
 
@@ -286,6 +295,8 @@ C端，大模型公司面临的竞争压力就更直接了：字节。
 
 
 #### MiniMax
+
+[Minimax融资故事：4 年 7 轮，谁在推动中国 AI 第一场资本盛宴](https://mp.weixin.qq.com/s/sQ-bCzERr_IrFolQvAcNFA)
 
 [MiniMax](https://www.minimaxi.com/) 成立于2021 年12月，是领先的通用人工智能科技公司，致力于与用户共创智能。
 - MiniMax自主研发了多模态的通用大模型，其中包括国内首个将Linear Attention架构与MoE结合的开源模型MiniMax-01系列、语音&音乐大模型、图像大模型以及视频大模型。
