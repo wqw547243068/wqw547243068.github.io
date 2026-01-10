@@ -30,6 +30,7 @@ permalink: /llm_opt
 
 【2024-3-30】[图解大模型计算加速系列之：vLLM核心技术PagedAttention原理](https://mp.weixin.qq.com/s/oCGENfMwTNmfr1nGeCZz2g)
 
+
 LLM 推理过程分两个阶段: `prefill` 和 `decode`, 通常用 KV cache 技术加速推理
 - `Prefill`: **预填充**阶段, 把整段 prompt 喂给模型, 做forward计算。
   - 如果采用 `KV cache` 技术，会把prompt过 Wk,Wv 后得到的 Xk,Xv 保存在 cache_k 和 cache_v中。对后面的token计算attention时，就不需要对前面的token重复计算,节省推理时间。
@@ -43,6 +44,18 @@ LLM 推理过程分两个阶段: `prefill` 和 `decode`, 通常用 KV cache 技�
 Prefill与Decode两个阶段的**输入特性**和**计算方式**本质不同，拆成两个阶段可以精准优化每步计算路径
 - Prefill可用 `Flash Attention` 等并行技术提升性能
 - Decode可用`KV Cache`、`speculative decoding`等加速
+
+【2026-1-6】[Speculative Decoding: 从Padding 的视角重新理解投机解码](https://zhuanlan.zhihu.com/p/1991904699117490479)
+
+LLM inference 优化两个基本事实：
+- 事实一：Decode 阶段是 memory-bandwidth bound
+  - Prefill 阶段矩阵-矩阵乘（GEMM），计算量大，是 compute-bound；
+  - 而 decode 阶段每次只生成一个token，做矩阵-向量乘（GEMV），瓶颈在于读取 KV Cache，是 memory-bandwidth bound。
+- 事实二：Batch size 和 Context length 对资源的影响方向相反
+  - Batch size 增大：算力需求增长得比带宽需求快 → 系统往 compute-bound 方向走
+  - Context length 增大：带宽需求增长得比算力需求快 → 系统往 memory-bound 方向走
+
+小 batch 的时候算力闲着，长 context 的时候带宽不够用.
 
 推理过程里，Prefill和Decode阶段不仅在结构式不同，在性能瓶颈上也大相径庭
 
@@ -1326,13 +1339,14 @@ mlc_chat_cli
 
 #### 【2022】投机采样
 
-2022年, Google DeepMind 推出大模型推理加速方法: Speculative Decoding，投机采样，或推测解码
+
+2022年, Google DeepMind 推出大模型推理加速方法: Speculative Decoding，投机采样或推测解码
 
 利用蒸馏学习中小模型近似大模型，不损失生成效果前提下，获得 3x 以上加速比
 
 vllm 框架支持投机采样（Speculative Decoding）, 见 spec_decode
 
-投机采样核心思想：许多常见的单词和句子都是很容易预测。
+核心思想：许多常见的单词和句子都是很容易预测。
 
 <img width="872" height="395" alt="image" src="https://github.com/user-attachments/assets/be24aed8-1e73-471b-9803-7fdeb16e55a2" />
 
@@ -1341,8 +1355,7 @@ vllm 框架支持投机采样（Speculative Decoding）, 见 spec_decode
 
 <img width="874" height="496" alt="image" src="https://github.com/user-attachments/assets/789be669-979c-44f3-8399-57089bcdfc4f" />
 
-
-与传统的自回归推理方法不同，投机采样采用了草稿模型（draft model），通常是规模更小的模型，进行自回归推理。而原始的大模型则会根据小模型推理的结果进行判断，决定是否接受小模型推理出的多字
+与传统的自回归推理方法不同，投机采样采用了**草稿模型**（draft model），通常是规模更小的模型，进行自回归推理。而原始的大模型则会根据小模型推理的结果进行判断，决定是否接受小模型推理出的多字
 
 推测解码是一种推理优化技术，生成当前 Token 时，对未来 Token 进行有根据猜测，这一切都在一次前向传播中完成。
 
