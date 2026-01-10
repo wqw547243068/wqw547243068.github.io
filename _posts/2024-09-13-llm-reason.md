@@ -3,7 +3,7 @@ layout: post
 title:   大模型推理思考
 date:   2024-09-13 10:15:00
 categories: 大模型
-tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer 课程学习 search think
+tags: gpt openai deepseek kimi r1 李飞飞 蒸馏 强化学习 伯克利 幻觉 函数调用 cot 波将金 图神经网络 符号主义 田渊栋 transformer 课程学习 search think 顿悟
 excerpt: 大模型推理能力专题，包含openai o系列、deepseek r1等长程思考模型
 mathjax: true
 permalink: /o1
@@ -11,7 +11,6 @@ permalink: /o1
 
 * content
 {:toc}
-
 
 
 # 大模型推理思考 
@@ -586,6 +585,31 @@ RL优化方案
 
 
 ### 顿悟时刻
+
+2022年，研究人员在训练模型做简单数学题时发现了一个奇怪的现象：
+- 模型训练了上万轮，验证准确率一直停在50%，毫无希望。
+- 然后在第12000轮，准确率突然跃升到99%。
+
+<img width="1000"  alt="image" src="https://github.com/user-attachments/assets/153080a2-b446-4a64-ab97-0a40cf57cb75" />
+
+这个现象称为"Grokking"（顿悟）。
+
+Grokking揭示深刻事实：理解不是**线性**的，而是**跳跃式**。模型不会逐渐变聪明，会在漫长的平台期后突然"开窍"。
+
+平台期之后是突破，耐心之后是洞见，神经网络最像人类的地方。
+
+<img width="1000" alt="image" src="https://github.com/user-attachments/assets/55ef70cb-5022-45ae-a2b7-faa202b714b0" />
+
+
+触发Grokking的关键条件：
+- 权重衰减、数据稀缺（反直觉地，这迫使模型寻找真正的规律）、过参数化、足够的耐心、以及AdamW优化器。
+- 缺少这些，模型会永远停留在死记硬背的阶段。
+
+"多训练一会儿"实验，本质是在大规模诱导Grokking。RLHF训练、领域适配、推理模型的突破，背后都有它的影子。
+
+推理阶段的应用：如果模型能在训练时顿悟，能否在推理时也诱导顿悟？延长思维链、多路径采样、验证循环——这些技术本质上是在教模型按需顿悟。
+
+Grokking揭示了一个深刻的事实：理解不是线性的，而是跳跃式的。模型不会逐渐变聪明，它们会在漫长的平台期后突然"开窍"。
 
 
 【2025-2-6】[Andrej Karpathy 最新视频盛赞 DeepSeek：R1 正在发现人类思考的逻辑并进行复现](https://mp.weixin.qq.com/s/thTwdVgc4lfYRj6WWpKBwA)
