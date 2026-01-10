@@ -3,7 +3,7 @@ layout: post
 title:  "自由职业之路-How to work for yourself"
 date:   2020-01-13 10:29:00
 categories: 读书笔记 人生规划
-tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费 币圈 硅谷 牛马
+tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费 币圈 硅谷 牛马 独立开发
 excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
@@ -841,6 +841,25 @@ Tiktok的变现方式有很多种，目前我主要运营的是**短视频带货
 
 ### 独立开发
 
+#### MKSaaS
+
+【2026-1-2】独立开发挣钱[年度总结](https://mksaas.com/blog/2025): 独立开发两年，挣够10w美金
+
+2024年2月份开始，利用业余时间接触独立开发，到4月份走通了整个产品出海的流程，前后花了大概2个月业余时间
+
+自己开发产品，不止面向国内用户，转而面向全球用户提供服务，所谓的产品出海
+- 2024年4月，公司团建期间用手机读完了Astro的官方文档，回来后不久，用Astro写了第一个网站，海棠诗社，一个古诗词学习网站。
+- 2024年7月，我将海棠诗社网站开源，现在这个开源项目快有1K星了
+
+优秀的国内外独立开发者
+- [Marc](https://x.com/marclou)的[Shipfast](https://shipfa.st/)的技术栈
+- 学习[Tibo](https://x.com/tibo_maker)的教程《[在Product Hunt上打榜成为第1名的终极指南](https://www.tmaker.io/blog/sharing-my-product-hunt-guide)》，包括做什么和怎么做。
+- 热衷于搞新技术的[面条](https://x.com/miantiao)
+- 热衷于分享开源项目的[Geek](https://x.com/geekbb)
+- 前端技术实力很强的[猫哥](https://x.com/nextify2024)
+- 还有LobeChat创始人[空谷Arvin](https://x.com/arvin17x)等等
+
+更多[关注列表](https://x.com/indie_maker_fox/following)
 
 #### BuiltWith
 
@@ -947,6 +966,7 @@ Pieter 上了 `Lex Fridman` 播客，梳理了开发过的项目，包括 Photo 
 谷歌多年前就开发了 Transformers 和很多 AI 技术，但一直没发布产品。
 - 他们本可以在 2019 年发布跟 ChatGPT 相似的东西，但因为公司内部的官僚主义，拖了很久。
 - 明明有条件，有数据、有技术、有工程师，但就是没做。
+
 
 
 ## 肉身fan墙
