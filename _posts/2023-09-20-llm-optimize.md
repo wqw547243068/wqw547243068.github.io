@@ -502,6 +502,16 @@ vllm和sglang 部署分别：
 - vLLM 在高并发和低延迟场景下表现优异，尤其擅长快速生成第一个词（TTFT低）。
 - SGLang 在多轮对话这类前缀复用率高的场景中，吞吐量优势明显，测试显示其在Llama-7B上的吞吐量可比vLLM高5倍。
 
+
+#### 问题
+
+【2025-2-4】vllm 不支持 embedding的lora功能！
+- issue [Embedding model with Lora doesn't work](https://github.com/vllm-project/vllm/issues/12808)
+
+> It's not supported yet according to the [compatibility matrix](https://docs.vllm.ai/en/latest/features/compatibility_matrix.html). Let me update the supported models page to avoid this confusion. cc @jeejeelee
+
+[14953](https://github.com/vllm-project/vllm/pull/14935)
+
 #### 框架
 
 核心架构是LLMEngine：包含调度器（Scheduler）和推理工作器（Worker）
