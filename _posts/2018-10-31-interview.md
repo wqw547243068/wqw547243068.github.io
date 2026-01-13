@@ -318,6 +318,17 @@ AI 驱动的求职工具, 见站内专题 [大模型在求职上应用](chatgpt_
 
 ### 大模型面试题
 
+【2026-1-4】[大模型面试100问：从基础到实战](https://www.80aj.com/2026/01/04/llm-interview-guide/)
+- ├─ Cluster 01：基础概念与架构篇（12问）：Transformer架构、注意力机制、位置编码
+- ├─ Cluster 02：训练与优化篇（10问）：预训练、微调、RLHF、参数高效微调
+- ├─ Cluster 03：推理与部署篇（10问）：KV Cache、量化、Flash Attention、部署框架
+- ├─ Cluster 04：Prompt工程篇（8问）：提示词设计、思维链、安全防御,CoT、TOT
+- ├─ Cluster 05：RAG与Agent篇（8问）：检索增强生成、智能体架构
+- ├─ Cluster 06：评估与安全篇（8问）: 评估指标、幻觉检测、安全防御
+- ├─ Cluster 07：特殊架构篇（6问）: MoE、多模态、Diffusion、代码生成
+- └─ Cluster 08：开源生态篇（5问）: 开源模型选型、性能对比
+
+
 大模型题目
 
 | 题目 | 类型 | 考察点 | 合格标准 | 优秀标准 |
