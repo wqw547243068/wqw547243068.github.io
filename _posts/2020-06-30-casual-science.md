@@ -3,7 +3,7 @@ layout: post
 title:  "因果科学-Casual-Science"
 date:   2020-06-30 16:03:00
 categories: 自然语言处理 深度学习 大模型
-tags: 深度学习 NLP KG 知识图谱 表示学习 因果科学 集智俱乐部 广告预估 亚里士多德
+tags: 深度学习 NLP KG 知识图谱 表示学习 因果科学 集智俱乐部 广告预估 亚里士多德 uplift
 excerpt: 如何让AI系统具备真正的推理能力？图灵奖得主、贝叶斯网络之父 Judea Pearl 的解法——因果科学
 author: 鹤啸九天
 mathjax: true
@@ -2188,7 +2188,9 @@ Matching 的问题就是如何去评估两个个体的相似度，并需要设�
 - ![](https://p1.pstatp.com/large/tos-cn-i-0022/87e5e67231594ca8937681135ccc3b8c)
 - ![](https://p1.pstatp.com/large/tos-cn-i-0022/43a127d581bf4a6f85be14f27e214eea)
 
-## [快手因果推断与实验设计](https://zhuanlan.zhihu.com/p/399274589)
+## 快手因果推断
+
+[快手因果推断与实验设计](https://zhuanlan.zhihu.com/p/399274589)
 
 
 ## 滴滴因果推理森林
@@ -2198,15 +2200,33 @@ Matching 的问题就是如何去评估两个个体的相似度，并需要设�
 
 <iframe frameborder="0" style="width:100%;height:811px;" src="https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Untitled%20Diagram.drawio#R1ZdNb9swDIZ%2Fja%2BDLclfxyRrux16WQfsrNmKLVQWA0X52q8fHcuJE7lAgaaB60vMlyJFPXSYOKCLZv9k%2BKp%2BhlKogITlPqDfA0KikGb40SqHTmF53gmVkaVbdBZe5D%2FRRzp1I0uxvlhoAZSVq0uxAK1FYS80bgzsLpctQV3uuuKV8ISXgitf%2FSNLWzs1SvKz44eQVe22zkjaOf7y4rUysNFuv4DQ5fHq3A3vc7mDrmtewm4g0YeALgyA7e6a%2FUKolm2PrYt7fMN7qtsIbd8TQKKYuqAtVxvRV32szR56HhiE6NGYL6VSC1Bgjg76GGZpGKMOK15I27Y7CdFcWwOvol%2BoQbextW0UWlGbBrQdpjleqPv199UJY8V%2BILnzPAlohDUHXOK8lObf4i7IPX00zHpld%2B5mHLoe1INGnkTunqDqlP9MEW8cyLehkg9AjchsNp8W1Ci9hhrdnyn9AFORxQkjk2LKsgkwZR7Tn3qLZ5KgPbh4LuuQuJFNGNpcyUqjUWCYQE7zFoHEYTpzjkaWpbofV5Jfc8UBPQI2ykfApjfiGntcf4ktqM1XBptMAWzigf1teCm%2FMlfmcY3ju3NNPa7PUknLXaYRrB7Gd9AatCJKbkMvTrwxmo%2FRYyPw2I3gZR68BeilkvjXdNrwGLuGx0Z%2FhD4TXu7DqzmsJ07OH4Z3J9enGZBDOlwXYuLs%2FK8sZZ%2FIDs3zG9XRN3htpQ%2F%2FAQ%3D%3D"></iframe>
 
-【2021-5-12】滴滴[连续因果森林模型的构造与实践](https://mp.weixin.qq.com/s/u7sCeNTSfHtmaW51Me2CQg)：**增益模型**（Uplift Model）作为工业界因果推断与机器学习结合最成熟的算法之一，在智能营销中有着广泛的应用。目前大多数增益模型仅讨论了**二元**处理变量情况下的处理效应估计，然而在网约车市场中存在大量多维、连续的处理变量。针对这一困境，我们构造了**连续因果森林模型**，并成功地应用在了网约车交易市场策略上，量化价格对网约车供需关系的影响，这对于精细化定价补贴策略的制定和优化有着重要的意义。
-- 在业界，我们称针对某个**处理变量**(Treatment)，衡量其**处理效应**(Treatment Effect)的一类模型为**增益模型**(Uplift Modeling)。与传统的监督学习模型关注于准确估计响应变量(Y)不同， 增益模型专注于估计处理变量(W)对响应变量(Y)的影响。因此这类问题通常被放在因果推断(Causal Inference)的框架下进行讨论。大多数流行的**增益**模型框架(如CausalML, pylift, grf)，都很好地支持了**二元**处理变量(如发券或不发券，吃药或不吃药)的效应估计。但在**多元**/**连续**处理变量方面，尚未有很好的支持。而在广大应用场景中，<font color='red'>多元或连续的处理变量更为普遍。</font> 例如，价格就是一个连续变量，存在理论上无限多的可能值。那是否可以在因果推断的框架下实现对多元或连续处理变量的效应估计？经过一段时间的开发和测试，在二元因果森林的基础上，我们扩展研发了连续因果森林，初步解决了部分场景下连续变量处理效应的估计问题。
-- **因果森林**(Causal Forest)是由Susan Athey、Stefan Wager等人开发，专门估计异质处理效应的机器学习模型，是当前增益模型领域最为流行的算法之一。目前，官方有基于C++/R语言的[算法实现](https://grf-labs.github.io/grf)。与其他**增益树模型**(Tree-based Uplift Model)类似，因果森林以随机森林为基础，通过对特征空间进行**重复划分**(Recursive Partitioning)，以达到局部特征空间的数据同质/无混淆。在一定的假设下，我们就可以得到各个维度上**异质处理效应**(Heterogeneous Treatment Effect)的无偏估计
+
+### Uplift+因果森林
+
+【2021-5-12】滴滴[连续因果森林模型的构造与实践](https://mp.weixin.qq.com/s/u7sCeNTSfHtmaW51Me2CQg)：
+
+**增益模型**（Uplift Model）作为工业界`因果推断`与`机器学习`结合最成熟的算法之一，在智能营销中有着广泛的应用。
+
+目前大多数增益模型仅讨论**二元**处理变量情况下的处理效应估计，然而在网约车市场中存在大量多维、连续的处理变量。针对这一困境，构造了**连续因果森林模型**，并成功地应用在了网约车交易市场策略上，量化价格对网约车供需关系的影响，这对于精细化定价补贴策略的制定和优化有着重要的意义。
+
+在业界，针对某个**处理变量**(Treatment)，衡量其**处理效应**(Treatment Effect)的一类模型称为`增益模型`(Uplift Modeling)。
+- 与传统监督学习模型关注于准确估计`响应变量`(Y)不同， `增益模型`专注于估计`处理变量`(W)对`响应变量`(Y)的影响。
+
+因此这类问题通常被放在`因果推断`(Causal Inference)框架下进行讨论。大多数流行的**增益**模型框架(如CausalML, pylift, grf)，都很好地支持了**二元**处理变量(如发券或不发券，吃药或不吃药)的效应估计。
+
+但在**多元**/**连续**处理变量方面，尚无很好的支持。而在广大应用场景中，<font color='red'>多元或连续处理变量更为普遍。</font> 
+- 例如，价格就是一个连续变量，存在理论上无限多的可能值。
+
+那是否可以在`因果推断`框架下实现对**多元**或**连续**处理变量的效应估计？经过一段时间的开发和测试，在二元因果森林的基础上，扩展研发了**连续因果森林**，初步解决了部分场景下连续变量处理效应的估计问题。
+- **因果森林**(Causal Forest)是由Susan Athey、Stefan Wager等人开发，专门估计异质处理效应的机器学习模型，是当前增益模型领域最为流行的算法之一。
+- 目前，官方有基于C++/R语言的[算法实现](https://grf-labs.github.io/grf)。与其他**增益树模型**(Tree-based Uplift Model)类似，因果森林以随机森林为基础，通过对特征空间进行**重复划分**(Recursive Partitioning)，以达到局部特征空间的数据同质/无混淆。在一定的假设下，可以得到各个维度上**异质处理效应**(Heterogeneous Treatment Effect)的无偏估计
 - ![](https://img-blog.csdnimg.cn/img_convert/638b37ccca73bb68eab19e4bbea15c02.png)
 - ![](https://img-blog.csdnimg.cn/img_convert/0aeb5d19db1a44f2652a4af62a7c06be.png)
 - 目前连续因果森林仍处于早期的开发阶段，存在大量的优化空间。例如:
   - 可否使用非线性假设
   - 如何处理无单调关系的处理变量(如不同套餐)
   - 如何估计多维处理效应(如多个产品线价格间的相互影响)
+
 
 # 因果表示学习
 
