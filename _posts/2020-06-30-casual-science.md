@@ -2201,16 +2201,156 @@ Matching 的问题就是如何去评估两个个体的相似度，并需要设�
 <iframe frameborder="0" style="width:100%;height:811px;" src="https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Untitled%20Diagram.drawio#R1ZdNb9swDIZ%2Fja%2BDLclfxyRrux16WQfsrNmKLVQWA0X52q8fHcuJE7lAgaaB60vMlyJFPXSYOKCLZv9k%2BKp%2BhlKogITlPqDfA0KikGb40SqHTmF53gmVkaVbdBZe5D%2FRRzp1I0uxvlhoAZSVq0uxAK1FYS80bgzsLpctQV3uuuKV8ISXgitf%2FSNLWzs1SvKz44eQVe22zkjaOf7y4rUysNFuv4DQ5fHq3A3vc7mDrmtewm4g0YeALgyA7e6a%2FUKolm2PrYt7fMN7qtsIbd8TQKKYuqAtVxvRV32szR56HhiE6NGYL6VSC1Bgjg76GGZpGKMOK15I27Y7CdFcWwOvol%2BoQbextW0UWlGbBrQdpjleqPv199UJY8V%2BILnzPAlohDUHXOK8lObf4i7IPX00zHpld%2B5mHLoe1INGnkTunqDqlP9MEW8cyLehkg9AjchsNp8W1Ci9hhrdnyn9AFORxQkjk2LKsgkwZR7Tn3qLZ5KgPbh4LuuQuJFNGNpcyUqjUWCYQE7zFoHEYTpzjkaWpbofV5Jfc8UBPQI2ykfApjfiGntcf4ktqM1XBptMAWzigf1teCm%2FMlfmcY3ju3NNPa7PUknLXaYRrB7Gd9AatCJKbkMvTrwxmo%2FRYyPw2I3gZR68BeilkvjXdNrwGLuGx0Z%2FhD4TXu7DqzmsJ07OH4Z3J9enGZBDOlwXYuLs%2FK8sZZ%2FIDs3zG9XRN3htpQ%2F%2FAQ%3D%3D"></iframe>
 
 
+### 增益模型 Uplift
+
+【2024-8-20】[营销算法炼丹笔记：一文读懂增益模型Uplift Model](https://zhuanlan.zhihu.com/p/599355166)
+
+![](https://pic1.zhimg.com/v2-91e1ea8820181d0b11bc984b34b877fe_1440w.jpg)
+
+传统模型通常直接预测目标：`Outcome =  P(buy|tratment) `
+
+而 Uplift models预测增量值，也就是lift部分：`Lift =  P(buy|tratment) -  P(buy|no tratment)`
+
+目的: 预测某种干预对于个体状态或行为的因果效应。在数学上可以表达为两个条件概率的差值形式
+
+![](https://pic1.zhimg.com/v2-c64c0942ead6ba0c0d83290386bdfe24_1440w.jpg)
+
+Uplift建模对样本的要求比较高，要服从`CIA` ( Conditional Independence Assumption ) **条件独立假设**，要求X与T是相互独立。
+
+随机化实验是Uplift Model建模过程中非常重要的基础设施，可以为Uplift Model提供无偏的样本
+
+两个群体对广告投放的转化率分别是0.8%和2%，假如只有一次广告曝光的机会，应该向哪类用户投放广告？
+
+![](https://pic2.zhimg.com/v2-25e4415b1bb3ad8bdda839ce99e80347_1440w.jpg)
+
+按照经验和直觉，会向第二类用户群投放广告，因为其转换率是最高，但这个结论是对的吗？经过进一步分析，除了广告曝光转化率之外，还能知道这两类用户群体在没有广告触达情况下的自然转化率，从而推算出广告所带来的增量。
+
+Response Model 可能会误导做出错误决策，Uplift Model和Response Model之所以有差异，主要在于两个模型的预测目标不一样。
+- Response Model 目标是估计用户看过广告之后转化的概率，这本身是一个相关性，但这个相关性会导致我们没有办法区分出自然转化人群；
+- Uplift Model 估计用户因为广告而购买的概率，这是一个因果推断的问题，帮助锁定对营销敏感的人群。
+
+所以 Uplift Model是整个智能营销中非常关键的技术，预知每个用户的营销敏感程度，从而帮助我们制定营销策略，促成整个营销的效用最大化。
+
+
+**增益模型**（Uplift Model）作为工业界`因果推断`与`机器学习`结合最成熟的算法之一，在智能营销中有着广泛的应用。
+
+业界针对某个**处理变量**(Treatment)，衡量其**处理效应**(Treatment Effect)的一类模型称为`增益模型`(Uplift Modeling)。
+- 传统监督学习模型关注准确估计`响应变量`(Y)
+- 而`增益模型`专注于估计`处理变量`(W)对`响应变量`(Y)的影响。
+
+增益模型常用于估算`CATE`/`ITE`，基础 uplift model 有三种：
+- `Two-Model`：建立两个对于outcome的预测模型，一个实验组数据、一个对照组数据。
+  - 双模型 Two-Model Approach 通常作为baseline模型
+- `One-Model`：Class Variable Transformation：响应结果为二元变量时可用。
+- 对uplift直接建模：对现有ML模型（树、RF、SVM）的改造
+
+|方法|简介|优点|缺点|
+|---|---|---|---|
+|`Two-Model`|两个预测模型，分别实验组+对照组|简单易用，常用回归/分类模型|不是对uplift直接建模，可能会错失一些uplift相关的信号、导致表现较差|
+|`One-Model`||||
+|直接见面||||
+
+
+#### Two-Model
+
+用户通过两个模型预测，并对结果**取差**，则得到预估的uplift值：
+- 优点：简单易用，可以使用常用的回归/分类模型
+- 缺点：不是对uplift直接建模，可能会错失一些uplift相关的信号、导致表现较差
+
+最简单的Uplift建模方法是基于Two Model的差分响应模型，形式和前面介绍的Uplift Model的定义非常相似，包含了两个响应模型，其中一个模型G用来估计用户在有干预情况下的响应，另外一个模型G'是用来学习用户在没有干预情况下的响应，之后将两个模型的输出做差，就得到我们想要的uplift。
+
+![](https://pic4.zhimg.com/v2-8368ed92af5ad9bf890d4479d40db55b_1440w.jpg)
+
+这种建模方法
+- 优点：比较简单容易理解，同时它可以套用我们常见的机器学习模型，如LR，GBDT，NN等，所以该模型的落地成本是比较低的
+- 但是该模型最大的缺点是精度有限，这一方面是因为独立的构建了两个模型，这两个模型在打分上面的误差容易产生累积效应，第二是建模目标其实是response而不是uplift，因此对uplift的识别能力比较有限。
+
+
+#### One-Model
+
+One Model：The Class Transformation Method
+
+缺点：需要满足两个假设
+1. 二分类场景
+2. 数据在实验/对照组的分布一致，较为严格
+
+还有基于One Model的差分响应模型，和上一个模型最大差别点: 在模型层面做了打通，同时底层的样本也是共享的，之所以能实现这种模型层面的打通，是因为在样本的维度上做了一个扩展，除了user feature之外，还引入了与treatment相关的变量T ( T如果是0，1的取值可以建模single treatment，T也可以扩展为0到N，建模multiple treatment，比如不同红包的面额，或者不同广告的素材 )。
+
+![](https://pic4.zhimg.com/v2-ffa35face29d176e01cbd7b3c08d4397_1440w.jpg)
+
+One Model版本和Two Model版本相比
+
+最大优点: 
+- 训练样本的共享可以使模型学习的更加充分，同时通过模型的学习也可以有效的避免双模型打分误差累积的问题
+- 从模型的层面可以支持multiple treatment的建模，具有比较强的实用性。
+
+同时和Two Model版本类似，缺点:
+- 依然是其在本质上还是在对response建模，因此对uplift的建模还是比较间接，有一定提升的空间。
+
+
+#### 直接建模
+
+直接对Uplift进行建模
+
+通过对现有机器学习算法的改造直接对增益效果建模，最流行的是树模型，本文主要讨论树的分裂标准（二叉树）。
+
+后续也有相关研究提出了第三种建模方法，通过对现有的模型内部进行深层次的改造来直接刻画uplift，其中研究较多的是基于树模型的uplift建模。
+
+思想
+- 传统决策树构建中，最重要的环节是分裂特征的选择，常用指标是**信息增益**或者**信息增益比**
+- 其背后含义还是希望通过特征分裂之后下游节点的正负样本的分布能够更加的悬殊，也就代表类的纯度变得更高。
+
+这种思想也可以引入到Uplift Model的建模过程中，虽然并没有用户个体的uplift直接的label，但是可以通过treatment组和control组转化率的差异来刻画这个uplift
+
+![](https://pic4.zhimg.com/v2-e4fac587cda78abfc3a63a2a4f0fa16d_1440w.jpg)
+
+以图中左下角的图为例，有T和C两组样本，绿色的样本代表正样本，红色的代表负样本，在分裂之前T和C两组正负样本的比例比较接近，但是经过一轮特征分裂之后，T和C组内正负样本的比例发生了较大的变化，左子树中T组全是正样本，C组全是负样本，右子树正好相反，C组的正样本居多，意味着左子树的uplift比右子树的uplift更高，即该特征能够很好的把uplift更高和更低的两群人做一个区分。
+
+Uplift建模核心问题
+
+（1）混杂因素偏置 Confounding Bias
+
+干预机制导致选择偏差，引起干预样本和不干预样本的特征分布不一致，产生了混杂因素。
+
+这一类混杂因素一方面会影响干预，也会影响结果。由于混杂因素的存在，无法得到一个干净的因果效应。具体案例比如：
+- 流行度偏差：曝光集中在热门干预；
+- 选择偏差：不同人群物品曝光差异。
+
+基于这样的样本去建模大概率置信度不高的结论。
+
+主要解决方法：
+- 在 loss 引入倾向分正则项；
+- 在模型结构引入倾向分链式、对抗结构；
+- 倾向分逆加权采样；
+- 解离表征：试图将混杂因素项解离到一个向量中。
+
+（2）归纳偏置 Inductive Bias
+
+当样本/个体分别在干预/不干预的模型下进行打分后的分布不一致时，对干预打分-非干预打分差值（CATE）进行分布统计时会发现抖动很厉害，不同个体/群体之间的 UPLIFT 差别很难分辨，这说明 UPLIFT 模型预测基本是失效的。
+
+归纳偏置（Inductive Bias）问题：
+- 从模型架构角度，预估反事实结果无监督信号，或潜在结果预估正则化程度不一致，导致最终 Uplift 预估不稳定。
+
+回到 Neyman-Rubin 潜在结果框架，对于不同的个体我们只知道干预的结果或者不干预的结果，不可能同时知道干预和不干预的结果，这导致了两个潜在结果预估的分布不一致；而且我们的深度模型建模目标往往是 CTR 或者 CVR ，他们本身不可能直接得到一个增益得分（uplift），这就导致我们的建模目标和最终评估的指标是不一致的。在图中我们可以看到 CATE 的分布与潜在结果预估得分分布完全不一致。这一系列的问题我们都总结为归纳偏置问题。归纳偏执问题是 UPLIFT 模型的一个核心问题，目前学界大概提出了以下四种解决方法：
+- 反事实输出向量一致性，MMD 等分布对齐方法；
+- 设计合理的共享参数架构，FlexTENet、S-Net；
+- 反事实参数差异限制；
+- 在模型结构引入重参结构（reparametrization），EUEN。
+
+![](https://pic1.zhimg.com/v2-1ec61931a732527971535fa70b9d1f8e_1440w.jpg)
+
+UPLIFT 模型的两大核心问题——混杂因质偏置和归纳偏置，学界和工业界提出了很多解决方案。
+- 首先,最基本 Meta-Learner，代表建模方案有 S-Learner 和 T-Learner
+- 随后, 进入深度学习后就演化出来以解决混杂偏置为代表的 DragonNet、DESCN、S-Net、CFRNet 等，和以解决归纳偏置为代表的 FlexTENet、S-Net、EUEN、DESCN、GANITE、CFRNet 等。
+
+
 ### Uplift+因果森林
 
 【2021-5-12】滴滴[连续因果森林模型的构造与实践](https://mp.weixin.qq.com/s/u7sCeNTSfHtmaW51Me2CQg)：
 
-**增益模型**（Uplift Model）作为工业界`因果推断`与`机器学习`结合最成熟的算法之一，在智能营销中有着广泛的应用。
-
 目前大多数增益模型仅讨论**二元**处理变量情况下的处理效应估计，然而在网约车市场中存在大量多维、连续的处理变量。针对这一困境，构造了**连续因果森林模型**，并成功地应用在了网约车交易市场策略上，量化价格对网约车供需关系的影响，这对于精细化定价补贴策略的制定和优化有着重要的意义。
 
-在业界，针对某个**处理变量**(Treatment)，衡量其**处理效应**(Treatment Effect)的一类模型称为`增益模型`(Uplift Modeling)。
-- 与传统监督学习模型关注于准确估计`响应变量`(Y)不同， `增益模型`专注于估计`处理变量`(W)对`响应变量`(Y)的影响。
+
 
 因此这类问题通常被放在`因果推断`(Causal Inference)框架下进行讨论。大多数流行的**增益**模型框架(如CausalML, pylift, grf)，都很好地支持了**二元**处理变量(如发券或不发券，吃药或不吃药)的效应估计。
 
