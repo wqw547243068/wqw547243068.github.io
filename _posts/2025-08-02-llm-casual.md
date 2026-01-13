@@ -25,6 +25,12 @@ permalink: /llm_casual
 
 大语言模型 × 因果推断：谁在因果谁?
 
+因果推断和大模型结合主要有如下4个方向：
+- Causality in Large Models：看下大模型里因果性是什么
+- Causality for Large Models：用因果推断理论改造大模型，更有理论性
+- Causality with Large Models：用大模型解决因果问题
+- Causality of Large Models：用大模型运作的因果结构，让其更有可解释性
+
 随着 ChatGPT、Claude、Gemini 等大语言模型（LLM）日益强大，学界开始探索其在因果推断 中的潜力与挑战：
 - 一方面，想利用`因果推断`提升语言模型的**鲁棒性、解释性与可靠性**；
 - 另一方面，借助 LLMs 强大的知识能力辅助`因果结构发现`、`反事实生成`与`干预决策`。
@@ -34,18 +40,109 @@ permalink: /llm_casual
 如何让LLM真正理解事物间的**因果联系**，而非仅仅是**模式匹配**，一直是行业面临的重大挑战。
 
 
+#### 大模型中的因果推断
+
+大模型中存在一些偏差，比如说LLM过度依赖Prompt中的某些文本，或者出现的虚假相关
+
+Causal Prompting
+
+【2024-3-5】《因果提示：基于前门调整的大型语言模型提示去偏》
+- 论文[Causal Prompting: Debiasing Large Language Model Prompting based on Front-Door Adjustment](https://arxiv.org/abs/2403.02738)
+
+核心思想：
+- 大模型内部有因果性，通过某些方法加强其因果性，输出更有逻辑的结果。其实就是结合`前门`调整，将CoT作为中介变量
+
+具体方案：
+- 论文首先通过`结构因果模型`（Structural Causal Model, SCM）揭示提示方法背后的因果关系。
+- 输入提示（X）与模型生成的答案（A）之间的关系受到不可观察的混杂变量（U）的影响，导致了偏见的存在。
+- 研究者们提出，使用“后门调整”无法有效计算X与A之间的因果效应。相反，论文利用链式思维（Chain-of-Thought, CoT）作为中介变量（R），使得可以通过前门调整有效估计X与A之间的因果关系。
+
+通过COT的方式进行前门调整，加强大模型推理的因果性，从而缓解大模型推理的偏差。
+
+
 ### LLM → 因果
 
 传统因果发现方法在面对数据扰动时，往往容易**过拟合**，表现近乎随机。
 
+【2025-6-20】[十）大模型+因果推断如何结合？](https://zhuanlan.zhihu.com/p/1919447555906971260)
+
+#### E2E 因果效果预估
+
+用 LLM从自然语言文本中推断因果效应，也算是充分发挥了LLM的自然语言理解能力
+
+【2024-10-28】多伦多大学论文 [NATURAL：End-To-End Causal Effect Estimation from Unstructured Natural Language Data](https://arxiv.org/pdf/2407.07018)
+
+- 收集Reddit帖子（文本），并根据关键词等数据清洗过滤数据，并用LLM判断与问题是否相关；
+- 再用LLM抽取treatment、outcome和协变量；
+- 再用LLM实现数据增强，补充缺失值等；
+- 用LLM计算倾向值得分，并根据IPW计算ATE。
+
+#### Causal Copilot
+
+用LLM作为Copilot完成因果推断、因果发现、结果解释等任务全流程。通过LLM串联各个环节，实现end2end的分析。
+- 【2025-4-21】论文 [Causal-Copilot: An Autonomous Causal Analysis Agent](https://arxiv.org/pdf/2504.13263)
+
+
+#### LLM4Causal
+
+- 【2024-10-28】北卡州立大学 [LLM4Causal: Democratized Causal Tools for Everyone via Large Language Model](https://arxiv.org/abs/2312.17122)
+
+总结：流程自动化（任务分类—>工具调用—>结果解释），而非替代传统的因果方法。这里微调大模型只是能让大模型识别出来做什么任务，即根据自然语言识别对应的任务分类。
+
+因果推断几类任务：
+- CGL (Causal Graph Learning)：因果图学习
+- ATE (Average Treatment Effect Estimation)：平均处理效应估计
+- HTE (Heterogeneous Treatment Effect Estimation)
+- MA (Mediation Effect Analysis)：中介效应分析
+- OPO (Optimal Policy Optimization)：最优策略优化
+
+现有方案的缺陷：
+- 图a）：当希望做因果分析的时候，提供相关性分析的结果
+- 图b）：无法提供端到端的结果
+- 图c）：一些前沿的方法没法使用
+
+提出端到端的用户友好框架
+
+三个主要步骤组成：
+1. 用户请求解释
+2. 因果工具分配和
+3. 执行
+4. 输出解释。
+
+接收到用户查询和上传的数据文件后，初始步骤识别相关的因果任务并提取查询详细信息——包括数据集名称、任务类型和感兴趣的变量，以及其他变量——到结构化JSON摘要中。
+
+LLM4Causal模型通过在 causal - retrieve - bench 数据集上对预训练的LLM进行微调，获得了将自然语言用户查询转换为JSON摘要的能力。提出设计良好的数据生成管道，以保证因果检索台架在数据多样性和准确性方面的质量。
+- 第二步，系统根据结构化JSON数据中详细的任务类型自动选择因果学习算法，执行选择的算法对数据集进行分析，并收集算法的输出。
+- 然后，在第三步中，使用llm4因果模型将输出翻译成易于理解的语言，该模型已与cause - interpret - bench数据集进一步微调，以生成高质量的解释。
+
+![](https://pic1.zhimg.com/v2-8633d3a7a6de3b122687516ae71db05a_r.jpg)
+
+
+#### SD-SCMs
+
+
+【2024-11-12】标题：Language Models as Causal Effect Generators：LLM作为因果效应生成器
+- [SD-SCMs：Language Models as Causal Effect Generators](https://arxiv.org/abs/2411.08019)
+
+基于大型语言模型（LLM）的数据生成框架，具有可控的因果结构。
+
+定义一种将任何语言模型和任何`有向无环图`（DAG）转换为**序列驱动**`结构因果模型`（sequence-driven structural causal models：SD-SCM）的流程。
+
+SD-SCM 是一种具有用户定义结构和 LLM 定义的结构方程的因果模型。描述了 SD-SCM 如何根据所需的因果结构从观测、干预和反事实分布中进行采样。然后，利用这一流程提出了一种新的因果推断方法基准测试类型，能够生成个体层面的反事实数据，而无需手动指定变量之间的函数关系。
+
+创建了一个包含数千个数据集的示例基准，并在这些数据集上测试了一系列流行的估计方法，包括ATE、CATE和ITE估计，同时考虑了存在和不存在隐藏混杂因素的情况。除了生成数据之外，同样的流程还允许测试 LLM 中可能编码的因果效应是否存在。此程序能够为检测大型语言模型中的错误信息、歧视或其他不良行为提供支撑。
+
+SD-SCM 可以在任何需要可控因果结构的序列数据的应用中发挥有用工具的作用。
+
+
+#### 因果发现
+
 【2025-7-31】荷兰 莱顿大学计算机学院 [LAICS](https://liacs.leidenuniv.nl/) 
 - 论文 [Causal Reasoning in Pieces: Modular In-Context Learning for Causal Discovery](https://arxiv.org/pdf/2507.23488)
 
-因果推断仍然是大型语言模型面临的基本挑战。
+因果推断仍然是大型语言模型面临的基本挑战。当前最好的推理模型能否稳健因果发现？
 
-当前最好的推理模型能否稳健因果发现？
-
-传统模型通常会因数据扰动而出现严重的过拟合和近乎随机的性能。
+传统模型通常会因数据扰动而出现严重的**过拟合**和近乎随机的性能。
 
 用 Corr2Cause 基准测试，研究了 OpenAI 的 o 系列和 DeepSeek-R 模型家族在因果发现中的表现
 - 这些以推理优先的架构相比先前方法取得了显著性能提升。
@@ -60,7 +157,7 @@ permalink: /llm_casual
 - 这标志着LLM不再只是文本生成器，而是开始具备了更深层次的逻辑推理能力，能够理解“为什么”而不是“是什么”。
 
 创新
-- 借鉴了“思维之树”（Tree-of-Thoughts）和“思维链”（Chain-of-Thoughts）的思路，提出了一种模块化的上下文学习（in-context learning）流水线。
+- 借鉴“思维树”（Tree-of-Thoughts）和“思维链”（Chain-of-Thoughts）的思路，提出了一种模块化的上下文学习（in-context learning）流水线。
 - 将复杂的**因果推理任务**分解成一系列可管理的步骤，让LLM能够逐步构建因果关系。
 
 实验结果
