@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习
+tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习 可视化
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -120,12 +120,20 @@ query = "2022年腾讯营收多少"
 print(qa.run(query))
 ```
 
+## 向量可视化
+
+### Project Golem
+
+向量可视化开源工具：将768维向量降维可视化的3D诊断工具，可用于RAG系统分析。
+- [Project Golem](https://github.com/CyberMagician/Project_Golem)。
+
 
 
 
 ## 向量化原理
 
 基础模型大多基于 Transformer Encoder 预训练语言模型: `BERT`, `RoBERTa`，`Ernie`等
+
 
 
 ### nn.Embedding
