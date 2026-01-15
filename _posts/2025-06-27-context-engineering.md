@@ -119,6 +119,10 @@ Agent又慢又笨，不是模型不行，是“上下文工程”没做好
 
 ## 定义
 
+2025年6月，Shopify CEO `Tobi Lütke` 和 AI 大神 `Andrej Karpathy` 在 X 上提出新概念——`上下文工程`。
+
+Karpathy 将其定义为"一门微妙的艺术与科学，旨在填入恰到好处的信息，为下一步推理做准备。"
+
 上下文工程
 - 构建动态系统，以正确格式提供合适的信息和工具，使 LLM 能够合理地完成任务。
 
@@ -150,8 +154,14 @@ LangChain 在博客中将 `上下文工程`（context engineering） 定义为�
 - 强调**格式规范**：与 LLM 的“沟通方式”跟人一样关键。简洁明了的错误信息远胜于一个庞杂 JSON 数据块。工具的参数设计、数据的呈现格式，都会显著影响 LLM 的理解和使用效率。
 - **任务可行性**：设计系统时，应反复自问：“在当前提供的上下文和工具下，LLM 是否真的有可能完成任务？” 便于归因分析，上下文不足，还是模型本身的执行失误，从而采取不同的优化策略。
 
+【2025-7-21】中科院论文 [A Survey of Context Engineering for Large Language Models](https://arxiv.org/pdf/2507.13334)
 
-### 本质
+
+<img width="1038" alt="image" src="https://github.com/user-attachments/assets/2c075f8b-ed2b-4071-85f0-8f8f95627b81" />
+
+
+<img width="1055"  alt="image" src="https://github.com/user-attachments/assets/e6eb04be-a2f6-43d6-a89a-18260d27b3b1" />
+
 
 【2025-10-30】上海交通大学刘鹏飞团队和 GAIR 实验室这篇关于《上下文工程 2.0》论文，系统回答了上下文工程的本质、基础构件和未来发展。
 - 论文 [Context Engineering 2.0: The Context of Context Engineering](https://arxiv.org/pdf/2510.26493)
