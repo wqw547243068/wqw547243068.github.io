@@ -14,56 +14,156 @@ permalink: /casual
 {:toc}
 
 
-# 总结
+# 因果科学
 
-- 【2021-3-3】yoshua bengio发表的论文[Towards Causal Representation Learning](https://arxiv.org/abs/2102.11107), 
-  - 深度学习仍有许多问题亟待解决，例如将知识迁移到新问题上的能力。许多关键问题都可以归结为OOD(out-of-distribution)问题。因为统计学习模型需要满足独立同分布(i.i.d.)假设，而很多情形下，这个假设不成立，这时候就需要因果推断了：如何学习一个可以在**不同分布**下工作、蕴含因果机制的**因果模型**(Causal Model)，并使用因果模型进行干预或反事实推断。
-  - 然而，因果模型往往处理的是**结构化**数据，并不能处理机器学习中常见的高维的低层次的原始数据，如图像。为此，回到最初的问题，**因果表征**即可理解为可以用于因果模型的表征，因果表征学习即为将图像这样的原始数据转化为可用于因果模型的结构化变量。因果表征学习就是连接因果科学与机器学习的桥梁，解决这一及相关问题，就可以很好的将因果推断与机器学习结合起来，构建下一代更强大的AI。
-- 【2021-10-11】[因果推断研究获2021诺贝尔经济学奖](https://github.com/ZhangNanBei/Interview-all-in-one)，北京时间10月11日下午，2021年诺贝尔经济学奖揭晓，颁发给三位学者。其中Joshua D. Angrist和Guido W. Imbens因“对因果关系分析的方法学贡献”而获奖。
+
+【2021-10-11】[因果推断研究获2021诺贝尔经济学奖](https://github.com/ZhangNanBei/Interview-all-in-one)，北京时间10月11日下午，2021年诺贝尔经济学奖揭晓，颁发给三位学者。其中Joshua D. Angrist和Guido W. Imbens因“对因果关系分析的方法学贡献”而获奖。
 - Causal Inference in Educational Systems: A Graphical Modeling Approach
-  - 标题：教育系统中的因果推理：一种图形化建模方法
-  - [链接](https://arxiv.org/abs/2108.00654)
-- 【2021-7-8】对比《思考：快与慢》书籍中的人脑的快系统和慢系统，他最近提出了一个类似人脑慢系统的 [System 2 Deep Learning](https://drive.google.com/file/d/1UT118pX3DzePaEEwj1tlaznqwHICSzhG/view)，做为一个目标为人类水平智能的范式，将因果推理能力的内容作为其核心组件。Bengio指出人的认知系统包含两个子系统：
-  - System1是**直觉**系统，主要负责快速、无意识、非语言的认知，这是目前深度学习主要做的事情；
-  - System2是**逻辑**分析系统，是有意识的、带逻辑、规划、推理以及可以语言表达的系统，这是未来深度学习需要着重考虑的。
-- 【2020-9-2】[Bengio讲授因果表示学习，Mila博士因果推理导论开课了](https://www.toutiao.com/i6867722568795685387)，从机器学习的角度编写的《Introduction to Causal Inference》秋季[课程](https://www.bradyneal.com/causal-inference-course#course-textbook)，[教材地址](https://www.bradyneal.com/Introduction_to_Causal_Inference-Aug27_2020-Neal.pdf)，[YouTube地址](https://www.youtube.com/watch?v=CfzO4IEMVUk&list=PLoazKTcS0Rzb6bb9L508cyJ1z-U9iWkA0&index=1)，由 Yoshua Bengio 高徒 Brady Neal 主讲，主要讲述因果推理相关知识。此外，该课程整合了来自许多不同领域的见解，如流行病学、经济学、政治学和机器学习等，这些领域都利用到了因果推理。
-  - ![](https://p3-tt.byteimg.com/origin/pgc-image/50a7c51c7b664c4d97c6ffce404790e2?from=pc)
-  - 内容：
-    - 图模型、后门调整和因果模型结构；
-    - 随机化实验、前门调整、do-calculus 和通用识别；
-    - 估值和条件平均处理效应（Conditional Average Treatment Effects）；
-    - 未观察到的的混淆、边界以及敏感性分析；
-    - 工具变量、断点回归、双重差分和合成控制法；
-    - 有实验的因果关系发现；
-    - 无实验的因果关系发现；
-    - 可移植性和迁移学习；
-    - 反事实推理以及中介和特定路径效应（Mediation and Path-Specific Effects）。
-- **乌鸦智能** ＞ **鹦鹉智能**
-  - [因果观念新革命？万字长文，解读复杂系统背后的暗因果](https://swarma.org/?p=19906)，[集智俱乐部因果科学专题Github](https://github.com/CausalAI/clubjizhi)，集智[因果科学与Causal AI系列读书会](https://www.sohu.com/a/415039730_741733)
-    - 【2020-12-9】中科院计算所在读博士李奉治 [因果阶梯与Do-演算：怎样完美地证明吸烟致癌？](https://mp.weixin.qq.com/s/SLBXgf8rkJaQwVzZhD_yAQ)，[视频地址](https://campus.swarma.org/course/1986)有向图中的路径，只会有这三种基础结构，对应了“因果流”的三种模式：
-      1. A→B→C ：`链` (Chain) 接合，其中B被称作“中介变量” (Mediator). 如果控制了中介变量B，A与C之间的因果关系传递就会被阻断。
-      2. A←B→C ：`叉` (Fork) 接合，其中B被称作“混杂因子” (Confounder). 如果控制了混杂因子B，A与C之间就失去了相关性。
-      3. A→B←C ：`对撞` (Collider) 接合，其中B被称作“对撞因子” (Collider). 原本A和C之间就是独立的，但如果控制了对撞因子B，根据辩解效应 (Pearl, 1988) 的存在，<font color='red'>反而会打开A与C之间的因果关系传递通道。</font>
-    - 上方的三种接合模式都有对应的控制因果流的传递方法。对于更大的因果图，如何阻断某两个结点之间的因果信息流呢？这里就提供了一个判据，被称为**d-分离**。强制干预一个变量，就是do-演算框架中的 **do算子**。为了算出直接干预一个变量后其他变量变化的结果，2011年图灵奖得主 Judea Pearl 提出了一个do-演算的公理体系，包含三条公理，对**观察项**和**干预项**进行转换。
-    - 中科大统计学在读博士生龚鹤扬 [因果科学：连接统计学、机器学习与自动推理的新兴交叉领域](https://mp.weixin.qq.com/s/l-05jRYabGI-JoXedU-PLA)， 哲学中关于因果关系讨论中，其因果的分类方法非常有启发性，把因果分成了两类，一类是 Type causality（**因推果**） ，另一类是 Actual causality（**果推因**）。
-      - Type causality 关注的是某个原因会导致什么样的结果，例如吸烟是否导致肺癌，可理解成由**因推果**（Forward-looking），是一种**干预**思维，能帮助科学家进行预测；
-      - 而 Actual causality 关注某个事件发生的具体原因是什么，例如恐龙灭亡的原因是六千万年的小行星撞地球导致的吗，它是由**果推因**（Backward-looking），与反事实思维思维密切相关。
-  - 【2020-10-22】[如何在观测数据下进行因果效应评估](https://www.sohu.com/a/426630014_741733)：
-  - 相关性相比因果，更缺乏 **可解释性**（Explainability）、**稳定性**（Stability）（漂移）
+- 标题：[教育系统中的因果推理：一种图形化建模方法](https://arxiv.org/abs/2108.00654)
+
+## 快思考 vs 慢思考
+
+【2021-7-8】对比《思考：快与慢》书籍中的人脑的快系统和慢系统，提出类似人脑慢系统的 [System 2 Deep Learning](https://drive.google.com/file/d/1UT118pX3DzePaEEwj1tlaznqwHICSzhG/view)，做为一个目标为人类水平智能的范式，将因果推理能力的内容作为其核心组件。Bengio指出人的认知系统包含两个子系统：
+- System1是**直觉**系统，主要负责快速、无意识、非语言的认知，这是目前深度学习主要做的事情；
+- System2是**逻辑**分析系统，是有意识的、带逻辑、规划、推理以及可以语言表达的系统，这是未来深度学习需要着重考虑的。
+
+
+## AI路线错了
+
+当前AI方法论错了
+- 自从AlphaGo一鸣惊人后，人工智能似乎一下子遍地开了花。智能音箱、智能导航、智能医疗——恍惚间，我们似乎已昂首阔步、意气风发走进了AI新时代。
+
+然而有个人却说：
+- ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/28bb22de858749fa92db4d67ed55bcaf.jpeg)
+- <font color='red'>你们的方向都错了，现在的人工智能连“智能”的门还没摸到。</font>
+- <font color='blue'>所有深度学习的成果，都只是曲线拟合。复杂而平庸。</font>
+- 目前的大数据和人工智能都只是停留在相关性的层面，其算法的核心都是基于过往的数据，来预测/产生新的东西
+
+尤瓦尔·赫拉利在《人类简史》中说，**想象**和**虚构**的能力，让智人走上了食物链的顶端。同样，机器要想真的“智能”，也必须能想象和虚构。
+- ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/314be42d51e74f28bccf2c37c26316bb.jpeg)
+- 也就是朱迪亚·珀尔强调的，真正的人工智能，光知道“相关”远远不够，而要懂得“因果”。
+
+
+## 相关 vs 因果
+
+相关≠因果
+- 因果→相关
+- 相关不一定是因果
+
+### 相关性来源
+
+**相关性**有三种来源：**因果**、**混淆**和**样本选择**。
+- ① 因果关联例子就是天下雨地面会湿，这种关系是能够被人类所理解的、是可解释的、稳定的（无论在任何国家或城市，天下雨地都会湿）。
+- ② 混淆关联是由**混淆偏差**（Confounding Bias）造成的。比如图中X是T和Y的共同原因（**叉**），但如果不对X进行观察，就会发现T和Y是具有相关性的，但T和Y之间是没有直接因果效应的，这就是产生了虚假相关。
+- ③ **样本选择**偏差（Selection Bias）也会产生相关性，比如之前的例子中，如果数据集中的狗都出现在沙滩上，而没有狗的图片都是草地，那么训练出的模型就会发现草地与狗之间是负相关的，这也产生了虚假相关。
+
+虚假相关与因果关联相比，缺乏可解释性，且容易随着环境变化。在工业界和学术界中，都希望能判断两个变量之间的相关究竟是因果关联还是虚假相关。如果是虚假相关的话，可能会给实际的系统带来风险。
+
+所以恢复因果可以提高可解释性，帮助决策，并在未来的数据集中做出稳定而鲁棒的预测，防止算法产生的偏差。无论数据集中有什么样的偏差，我们都希望能挖掘出没有偏差的因果关系，来指导算法。
+- ![](https://swarma.org/wp-content/uploads/2020/05/wxsync-2020-05-381c31fa5614d7d4df7ae1b27e0d393c.png)
+
+【2020-10-22】[如何在观测数据下进行因果效应评估](https://www.sohu.com/a/426630014_741733)：
+- 相关性相比因果，更缺乏 **可解释性**（Explainability）、**稳定性**（Stability）（漂移）
   - **可行动性**（Actionability）：这些虚假相关是由混淆变量产生的**混杂偏倚**（Confounding Bias），这种决策问题实际上是反事实问题，而不是预测问题。
   - **公平性**（Fairness）：通过因果评估的框架，可以用**Do-演算**（Do-Calculus）等工具，干预收入的多少，来计算肤色与犯罪率之间真正的因果效应大小。
-  - **相关性**有三种来源：**因果**、**混淆**和**样本选择**。
-    - ① 因果关联例子就是天下雨地面会湿，这种关系是能够被人类所理解的、是可解释的、稳定的（无论在任何国家或城市，天下雨地都会湿）。
-    - ② 混淆关联是由**混淆偏差**（Confounding Bias）造成的。比如图中X是T和Y的共同原因（**叉**），但如果不对X进行观察，就会发现T和Y是具有相关性的，但T和Y之间是没有直接因果效应的，这就是产生了虚假相关。
-    - ③ **样本选择**偏差（Selection Bias）也会产生相关性，比如之前的例子中，如果数据集中的狗都出现在沙滩上，而没有狗的图片都是草地，那么训练出的模型就会发现草地与狗之间是负相关的，这也产生了虚假相关。
-  - 虚假相关与因果关联相比，缺乏可解释性，且容易随着环境变化。在工业界和学术界中，都希望能判断两个变量之间的相关究竟是因果关联还是虚假相关。如果是虚假相关的话，可能会给实际的系统带来风险。
-  - 所以恢复因果可以提高可解释性，帮助决策，并在未来的数据集中做出稳定而鲁棒的预测，防止算法产生的偏差。无论数据集中有什么样的偏差，我们都希望能挖掘出没有偏差的因果关系，来指导算法。
-  - ![](https://swarma.org/wp-content/uploads/2020/05/wxsync-2020-05-381c31fa5614d7d4df7ae1b27e0d393c.png)
 
-- 【2020-9-23】[Introduction to Causal Inference](https://www.bradyneal.com/causal-inference-course)
-  - [A Brief Introduction to Causal Inference](https://www.bradyneal.com/slides/1%20-%20A%20Brief%20Introduction%20to%20Causal%20Inference.pdf)
-  - [The Flow of Association and Causation in Graphs](https://www.bradyneal.com/slides/3%20-%20The%20Flow%20of%20Association%20and%20Causation%20in%20Graphs.pdf)
-- 【2021-1-1】文库资料：
+## 机器学习理论缺陷
+
+2019年图灵奖得主Yoshua Bengio认为：“深度学习已经走到了瓶颈期，将因果关系整合到AI当中已经成为目前的头等大事“。
+
+2011年图灵奖得主的Judea Pearl则提到：
+> “目前有太多深度学习项目都单纯关注缺少因果关系的粗糙关联性，这常常导致深度学习系统在真实条件下（明显不同于训练场景的条件下）进行测试时，往往拿不出良好的实际表现。”
+
+- [图灵奖得主Judea Pearl：机器学习的理论局限性与因果推理的七大特性](https://cloud.tencent.com/developer/article/1119926)
+- 【2018-5-10】近日，有越来越多的学者正在探讨机器学习（和深度学习）的局限性，并试图为人工智能的未来探路
+  - [纽约大学教授 Gary Marcus 就对深度学习展开了系统性的批判](http://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650735630&idx=1&sn=5840c3e9bed487da3a9080d482fcc58e&chksm=871ac070b06d496638d47dbdaac75fdec06c5e81a3afaee1e1ce2ea37e86d92ba61de8b2b7c9&scene=21#wechat_redirect)
+  - 图灵奖获得者，UCLA 教授 Judea Pearl 题为《[Theoretical Impediments to Machine Learning with Seven Sparks from the Causal Revolution](http://ftp.cs.ucla.edu/pub/stat_ser/r475.pdf)》的论文中，作者就已探讨了当前机器学习存在的理论局限性，并给出了面向解决这些问题，来自因果推理的七个启发。
+  - 当前的机器学习几乎完全是统计学或**黑箱**的形式，从而为其性能带来了严重的理论局限性。这样的系统不能推断干预和反思，因此不能作为**强人工智能**的基础。
+
+### 因果推理
+
+为了达到人类级别的智能，学习机器需要现实模型（类似于因果推理的模型）的引导。为了展示此类模型的关键性，总结 7 种当前机器学习系统无法完成的任务，并使用因果推理的工具完成。
+
+![](https://ask.qcloudimg.com/http-save/yehe-1754229/e245kls6qs.jpeg?imageView2/2/w/1620)
+
+| Level (Symbol) | Typical  Activity | Typical Questions | Examples |
+|---|---|---|---|
+| 1. <font color='green'>关联</font> **Association** P(y\|x) | Seeing | ①What is? <br>②How would seeing X change my belief inY ? | ①What does a symptom tell me about a disease?<br>②What does a survey tell us about the election results? |
+| 2. <font color='green'>干预</font> **Intervention** P(y\|do(x), z) | Doing Intervening | ①What if? <br>②What if I do X? | ① What if I take aspirin, will my headache be cured?<br>②What if we ban cigarettes? |
+| 3. <font color='green'>反事实</font> **Counterfactuals** P(yx\|x', y') |  Imagining, Retrospection | ① Why? <br>②Was it X that caused Y ? <br>③What if I had acted differently? | ①Was it the aspirin that stopped my headache?<br>②Would Kennedy be alive had Oswald not shot him? <br>③What if I had not been smoking the past 2 years? |
+
+- 【2021-3-31】[厘清因果逻辑后的机器学习可以脱胎换骨吗？](https://www.toutiao.com/i6945642299799896607/xs)
+- 人类与机器学习的一大不同即人类理解因果逻辑容易，机器学习理解因果却难如登天。机器学习算法，尤其是深度神经网络，擅长从大量数据中找出微妙的模式，但它们很难做出简单的因果推论，主要涉及的难题是独立和恒等分布数据（i.i.d）。
+- （1）为什么机器学习模型不能超越其狭窄的领域和训练数据?
+  - “**机器学习经常忽略动物大量使用的信息：自然环境中的干预、域的转化、时间结构**——总的来说，这些因素是讨厌的并试图把它们处理掉，与此相一致的是，目前机器学习的大多数成功都归结为对**独立和恒等分布**数据(i.i.d)进行的大规模模式识别。”
+  - i.i.d.假设问题是空间中的随机观测不相互**依赖**，且有**恒定**的发生概率。最简单的例子就是抛硬币或掷骰子。每一次新的投掷结果都是独立于之前的，并且每个结果的概率保持不变。
+  - 计算机视觉等更复杂领域中，机器学习工程师试图通过在大样本集上训练模型，将问题转变为i.i.d.领域问题。假设有足够多的例子，机器学习模型将问题的一般分布编码到它的参数中。但在现实世界中，由于训练数据中无法考虑和控制的因素，**分布往往会发生变化**。例如，当物体的光照条件、角度或背景改变时，在数百万张图像上训练后的卷积神经网络仍然可能会失败。
+  - 随着外界变得越来越复杂，通过**增加更多的训练示例来覆盖整个分布变得不再可能**。在人工智能必须与外界互动的领域，如机器人和自动驾驶汽车领域情况尤其如此。缺乏对因果关系的理解使我们很难做出预测，也很难处理新情况。这就是为什么自动驾驶汽车在经过数百万英里的训练后仍然会犯一些奇怪和危险的错误。“要在i.i.d.环境之外很好地进行概括不仅需要学习变量之间的统计关联，还需要学习一个潜在的因果模型。”因果模型还允许人们将获得的知识用于新的领域
+- （2）为什么尽管i.i.d.有明显的弱点，它仍然是机器学习的主导形式呢？
+  - 纯粹基于观察的方法容易扩展。可以通过添加更多的训练数据来继续实现精度的提高，还可以通过提高计算能力来加速训练过程。事实上，最近深度学习取得成功的关键因素就是更多可用数据和更强大的处理器。
+  - 基于i.i.d.的模型易于评估，将一个大型数据集拆分为训练集和测试集，在训练集上调整模型，并通过测量其在测试集上的预测精度来验证其性能。这个过程可以不断反复直到达到所需的精度。已经有很多公共数据集提供了这样的基准测试，比如ImageNet、CIFAR-10和MNIST，还有特定任务的数据集如用于COVID-19诊断的COVIDx数据集和威斯康星州乳腺癌诊断数据集。
+- 精确的预测往往不足以为决策提供准确信息。例如在疫情期间，许多机器学习系统失灵了，因为它们训练的是统计规律而不是因果关系。随着生活模式的改变，模型的准确性逐渐下降。
+  - 统计分布改变时，因果模型仍然是稳健
+  - 因果模型还允许我们对我们之前没见过的情况做出反应，并思考反向事实，如我们不需要把车开下悬崖才知道会发生什么。反向事实在减少机器学习模型所需的训练实例数量方面发挥重要作用。
+  - 因果关系在处理对抗性攻击时也有关键作用。“这些攻击显然违反了作为统计机器学习基础的i.i.d.假设，”论文作者写道，并补充说，对抗性漏洞证明了人类智能和机器学习算法的鲁棒性机制存在差异。研究人员还指出，因果关系可能是对抗对抗性攻击的一种可能防御。**对抗性攻击的目标是机器学习对i.id的敏感性**。给这张熊猫图片添加了一层难以察觉的噪点，导致卷积神经网络误以为它是长臂猿。
+- 从广义上讲，**因果关系可以解决机器学习缺乏泛化**的问题。研究人员写道:“公平地说，大多数当前的实践(解决i.i.d.基准问题)和大多数理论结果(关于在i.i.d.设置中的泛化)都未能解决跨问题泛化的严峻挑战。”
+- 因果关系添加到机器学习：两个概念是“`结构因果模型`”和“`独立因果机制`”。总的来说该原则表明，AI系统应该能够识别因果变量，并分离它们对环境的影响，而不是寻找表面的统计相关性。
+  - 因果人工智能模型不需要庞大的训练数据集。
+  - 因果推理允许它对干预、反事实和潜在结果的效果得出结论
+  - 因果结构可以优化强化学习的训练
+- 结合结构因果建模和表达学习，我们应该努力将SCM嵌入更大的机器学习模型，其输入和输出可以高维非结构化，但其内部运作至少部分由SCM(也可以用神经网络参数化)控制。其结果可能是一个模块化的架构，不同的模块可以单独调整并用于新的任务
+- 实现这些概念需要面对以下几个挑战：
+  - (a)在许多情况下，我们需要从可用的低级输入特征中推断出抽象的因果变量；
+  - (b)对于数据的哪些方面显示了因果关系没有达成共识；
+  - (c)普通的测试集、实验方案不足以根据现有数据集推断和评价因果关系，可能需要建立新的基准；
+  - (d)缺乏可扩展的、在数值上合理的算法。
+- 参考：[Towards Causal Representation Learning](https://www.aminer.cn/pub/6034f37491e01122c046f9a2/towards-causal-representation-learning)论文中，马克斯普朗克研究所、蒙特利尔研究所学习算法(米拉)和谷歌的研究人员认为对于机器学习因果推论的挑战源自于机器学习模型**缺乏因果关系的表达**，在论文中他们为可以学习因果表达的人工智能系统提示了方向。
+
+### 反事实改进深度学习
+
+【2021-3-30】[ICLR 2020 反事实因果理论如何帮助深度学习？](https://zhuanlan.zhihu.com/p/136937643)
+- 一个巨大的问题是深度神经网络的**黑箱**问题和**不稳定性**问题。其中的一个根本原因，基于**相关性**的统计模型容易学习到数据中的“**伪关系**(spurious relation)”，而非因果关系，从而降低了泛化能力和对抗攻击的能力。
+  - 一个潜在方向是采用从90年代以来以Judea Pearl为代表的研究者们提出的**因果推断理论**来改进现有的表示学习技术。
+  - 然而<font color='blue'>因果分析框架和表示学习并非天生相容</font>。
+    - **因果分析**通常是基于抽象的、高层次的统计特征来构建结构**因果图**；
+    - 而**表示学习**则基于海量数据提取具体的、低层次的表示特征来辅助下游任务。
+  - 为了结合这两者，MILA的Yoshua Bengio提出了**System 2**框架，Max Planck Institute的Bernhard Schölkopf提出的因果表示学习框架。这两者实际上的思考是一致的。ICLR 2020上因果表示学习的2项有代表性的工作：如何利用因果理论中的**反事实**（counterfactual）框架来提高算法的**稳定性**和**可解释性**。
+  - [Learning the Difference That Makes A Difference with Counterfactually-Augmented Data](https://www.aminer.cn/pub/5e5e18a393d709897ce222b4/learning-the-difference-that-makes-a-difference-with-counterfactually-augmented-data)
+    - 深度学习容易学到语言数据集上**伪关系**（spurious relation）的问题一直没有得到解决。因果推断理论告诉我们，这是由于**混杂因子**（confounding）造成的。
+    - 然而，将因果推断方法应用到自然语言处理面临着巨大的困难：什么是自然语言当中的随机变量？如何从表示中找出混杂因子？如何让学习结果更加稳定，避免受训练集中的伪关系影响？其中最大的困难，在于如何定义自然语言中的因果关系。
+    - 作者设计巧妙方法，绕开了随机变量的定义问题，转而采用因果理论中的另一个重要概念——**反事实**——来进行**human in the loop**的数据增强以避免伪关系的干扰。
+    - ![](https://pic2.zhimg.com/80/v2-4e65ed79cfe3785eb17a8a23c40bb711_1440w.jpg)
+    - 在情感分析的一个3分类数据集上，利用Amazon’s Mechanical Turk众包平台，要求人类对句子做轻微的修改。这些修改包括：
+      * 将**事实变为希望**：比如加入supposed to be表示**虚拟**语气
+      * **反讽**语气：如加入引号修饰、改为反问句表示反讽
+      * 插入/替换**修饰词**：将interesting替换为boring
+      * 插入**短语**，修改**评分**等
+    - 使评论的情感分类发生变化（如从正面变为负面）来进行数据增强。实验证明，对于支持向量机，朴素贝叶斯，随机森林，Bi-LSTM和BERT：
+      - a) 在原有数据集上训练后，相比原测试集，**反事实**数据集上的测试结果要差许多。反之亦然。
+      - b) 在结合了反事实增强过的训练集上训练，模型性能相比原来有着巨大的提升。
+      - c) BERT不但在通常情况下表现最好，而且在反事实干扰的数据集上表现也降低得最少
+        - [台湾国立成功大学一篇论文把 BERT 拉下神坛！NLP 神话缺了数据集还不如随机](https://zhuanlan.zhihu.com/p/74652696)，曾经狂扫 11 项记录的谷歌 NLP 模型BERT在一些基准测试中的成功仅仅是因为利用了数据集中的**虚假统计线索**(Spurious Statistical Cues)，如若不然，还没有随机的结果好。
+        - 鉴于 R∧A→¬C，通过否定 claim 并反转每个数据点的标签来产生对抗性示例，将对抗性示例与原始数据进行组合，构建对抗测试集
+          - ![](https://pic2.zhimg.com/80/v2-75a3014d062de4707616e048a820568d_1440w.jpg)
+        - 实验表明：BERT准确率就从77%降到53%，几乎等同于随机猜。BERT 并不能做出正确 “理解”，只能利用**虚假统计线索**(Spurious Statistical Cues)
+  - [Counterfactuals Uncover the Modular Structure of Deep Generative Models](https://www.aminer.cn/pub/5c2c7a9217c44a4e7cf314de/counterfactuals-uncover-the-modular-structure-of-deep-generative-models)
+    - 有监督的视觉模型很容易会被伪关系干扰从而学出带有偏见的结果。比如，一个典型的例子是有监督CNN模型在识别狼和狗的图片时，实际上使用的统计特征是狼一般在雪中而狗在草地上。也就是说，模型认为“背景（草或雪）”与“目标（狗和狼）”之间存在某种关系。而实际上，这两种特征是解耦合的。我们希望能找到某些能学会解耦合的特征表示的模型。
+    - 检验模型能否推理反事实情况（比如狗在雪中，狼崽草上）。这样的反事实推理能力也是人类智能的一个重要标志，即推理未发生事件的结果的能力，属于因果学习的一个重要分支。反事实理论在计量经济学和公共卫生领域得到了广泛的应用，然而对于机器学习，这套理论的应用方法仍然是一片空白。将因果学习应用在表示学习上的一个重要改进的方向，就是来自Max Planck Institute的Scho ̈lkopf和MILA的Bengio目前倡议的causal representation learning. 本文即是Scho ̈lkopf在ICLR2020上的一篇尝试性的工作：通过验证模型推断反事实的能力，来验证生成式模型（BigGAN）可以学习到解耦合的模块化结构。提出了**因果生成模型**（Causal Generative Model）的分析框架来解耦合生成式模型的模块化结构
+
+
+
+## 因果推理资料
+
+
+### 因果推理简介
+
+【2020-9-23】[Introduction to Causal Inference](https://www.bradyneal.com/causal-inference-course)
+- [A Brief Introduction to Causal Inference](https://www.bradyneal.com/slides/1%20-%20A%20Brief%20Introduction%20to%20Causal%20Inference.pdf)
+- [The Flow of Association and Causation in Graphs](https://www.bradyneal.com/slides/3%20-%20The%20Flow%20of%20Association%20and%20Causation%20in%20Graphs.pdf)
+
+### 因果推理总结
+
+【2021-1-1】文库资料：
 - [因果推理](https://wenku.baidu.com/view/60e4478ccd1755270722192e453610661ed95af5.html)
   - 因果推理的分类：
     - 由因推果：没有复习，所以考不好
@@ -101,7 +201,8 @@ permalink: /casual
     - 关联的特异性：因果一一对应关系
     - 关联的分布一致性
     - 关联的一致性：多个研究结果的一致性/可重复性增强了因果关联的可能性
-- [观察性研究中的因果推断方法(三)30分钟.ppt](https://max.book118.com/html/2017/0930/135243899.shtm)， [百度文库](https://wenku.baidu.com/view/f945a4e8370cba1aa8114431b90d6c85ec3a8823.html)
+
+[观察性研究中的因果推断方法(三)30分钟.ppt](https://max.book118.com/html/2017/0930/135243899.shtm)， [百度文库](https://wenku.baidu.com/view/f945a4e8370cba1aa8114431b90d6c85ec3a8823.html)
 - [因果作用评价与因果网络学习及其结合](https://mp.weixin.qq.com/s/eQbKE3hMVx6B-sQ3oF0F_w?notreplace=true)
   - 该报告介绍Pearl提出的因果推断的三个层级，综述因果推断的两个主要模型：潜在结果模型、因果网络。探讨因果作用和因果关系的可识别性，因果作用的可传递性，因果网络结构的学习算法，以及因果作用与因果网络结合的因果推断方法。
   - 【2021-1-6】May 10, 2017, MIT Machine learning expert Jonas Peters of the University of Copenhagen presents “Four Lectures on Causality”.
@@ -124,16 +225,46 @@ permalink: /casual
 
 【2024-3-2】[A-Survey-of-Deep-Causal-Models-and-Their-Industrial-Applications](https://hub.nuaa.cf/alwaysmodest/A-Survey-of-Deep-Causal-Models-and-Their-Industrial-Applications/blob/main/paper/Dragonnet.pdf)
 
+【2021-3-3】yoshua bengio发表论文[Towards Causal Representation Learning](https://arxiv.org/abs/2102.11107), 
+- 深度学习仍有许多问题亟待解决，例如将知识迁移到新问题上的能力。许多关键问题都可以归结为OOD(out-of-distribution)问题。因为统计学习模型需要满足独立同分布(i.i.d.)假设，而很多情形下，这个假设不成立，这时候就需要因果推断了：如何学习一个可以在**不同分布**下工作、蕴含因果机制的**因果模型**(Causal Model)，并使用因果模型进行干预或反事实推断。
+- 然而，因果模型往往处理的是**结构化**数据，并不能处理机器学习中常见的高维的低层次的原始数据，如图像。为此，回到最初的问题，**因果表征**即可理解为可以用于因果模型的表征，因果表征学习即为将图像这样的原始数据转化为可用于因果模型的结构化变量。因果表征学习就是连接因果科学与机器学习的桥梁，解决这一及相关问题，就可以很好的将因果推断与机器学习结合起来，构建下一代更强大AI。
 
-# 因果推理书籍
+【2020-9-2】[Bengio讲授因果表示学习，Mila博士因果推理导论开课了](https://www.toutiao.com/i6867722568795685387)，从机器学习的角度编写的《Introduction to Causal Inference》秋季[课程](https://www.bradyneal.com/causal-inference-course#course-textbook)，[教材地址](https://www.bradyneal.com/Introduction_to_Causal_Inference-Aug27_2020-Neal.pdf)，[YouTube地址](https://www.youtube.com/watch?v=CfzO4IEMVUk&list=PLoazKTcS0Rzb6bb9L508cyJ1z-U9iWkA0&index=1)，由 Yoshua Bengio 高徒 Brady Neal 主讲，主要讲述因果推理相关知识。此外，该课程整合了来自许多不同领域的见解，如流行病学、经济学、政治学和机器学习等，这些领域都利用到了因果推理。
+- ![](https://p3-tt.byteimg.com/origin/pgc-image/50a7c51c7b664c4d97c6ffce404790e2?from=pc)
 
+内容：
+- 图模型、后门调整和因果模型结构；
+- 随机化实验、前门调整、do-calculus 和通用识别；
+- 估值和条件平均处理效应（Conditional Average Treatment Effects）；
+- 未观察到的的混淆、边界以及敏感性分析；
+- 工具变量、断点回归、双重差分和合成控制法；
+- 有实验的因果关系发现；
+- 无实验的因果关系发现；
+- 可移植性和迁移学习；
+- 反事实推理以及中介和特定路径效应（Mediation and Path-Specific Effects）。
 
-## （1）The book of why
-- 【2020-12-04】因果推理书籍索引，[Which causal inference book you should read](https://www.bradyneal.com/which-causal-inference-book)
+**乌鸦智能** ＞ **鹦鹉智能**
+- [因果观念新革命？万字长文，解读复杂系统背后的暗因果](https://swarma.org/?p=19906)，[集智俱乐部因果科学专题Github](https://github.com/CausalAI/clubjizhi)，集智[因果科学与Causal AI系列读书会](https://www.sohu.com/a/415039730_741733)
+
+【2020-12-9】中科院计算所在读博士李奉治 [因果阶梯与Do-演算：怎样完美地证明吸烟致癌？](https://mp.weixin.qq.com/s/SLBXgf8rkJaQwVzZhD_yAQ)，[视频地址](https://campus.swarma.org/course/1986)有向图中的路径，只会有这三种基础结构，对应了“因果流”的三种模式：
+1. A→B→C ：`链` (Chain) 接合，其中B被称作“中介变量” (Mediator). 如果控制了中介变量B，A与C之间的因果关系传递就会被阻断。
+2. A←B→C ：`叉` (Fork) 接合，其中B被称作“混杂因子” (Confounder). 如果控制了混杂因子B，A与C之间就失去了相关性。
+3. A→B←C ：`对撞` (Collider) 接合，其中B被称作“对撞因子” (Collider). 原本A和C之间就是独立的，但如果控制了对撞因子B，根据辩解效应 (Pearl, 1988) 的存在，<font color='red'>反而会打开A与C之间的因果关系传递通道。</font>
+
+上方三种接合模式都有对应的控制因果流的传递方法。对于更大的因果图，如何阻断某两个结点之间的因果信息流呢？这里就提供了一个判据，被称为**d-分离**。强制干预一个变量，就是do-演算框架中的 **do算子**。为了算出直接干预一个变量后其他变量变化的结果，2011年图灵奖得主 Judea Pearl 提出了一个do-演算的公理体系，包含三条公理，对**观察项**和**干预项**进行转换。
+
+中科大统计学在读博士生龚鹤扬 [因果科学：连接统计学、机器学习与自动推理的新兴交叉领域](https://mp.weixin.qq.com/s/l-05jRYabGI-JoXedU-PLA)， 哲学中关于因果关系讨论中，其因果的分类方法非常有启发性，把因果分成了两类，一类是 Type causality（**因推果**） ，另一类是 Actual causality（**果推因**）。
+- Type causality 关注的是某个原因会导致什么样的结果，例如吸烟是否导致肺癌，可理解成由**因推果**（Forward-looking），是一种**干预**思维，能帮助科学家进行预测；
+- 而 Actual causality 关注某个事件发生的具体原因是什么，例如恐龙灭亡的原因是六千万年的小行星撞地球导致的吗，它是由**果推因**（Backward-looking），与反事实思维思维密切相关。
+     
+
+### （1）The book of why
+
+【2020-12-04】因果推理书籍索引，[Which causal inference book you should read](https://www.bradyneal.com/which-causal-inference-book)
 - ![](https://www.bradyneal.com/img/books_flowchart.svg)
-- 书籍：
-  - ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/935359c273384228b196eac31077b762.jpeg)
-- 《The book of Why》，豆瓣高达9.5分。其中文版《为什么：关于因果关系的新科学》由中信出版社推出
+- ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/935359c273384228b196eac31077b762.jpeg)
+
+《The book of Why》，豆瓣高达9.5分。其中文版《为什么：关于因果关系的新科学》由中信出版社推出
 - 因果推理和贝叶斯网络的创始人，图灵奖得主`Judea Peral`（朱迪亚·珀尔，贝叶斯网络之父）和科普作家 Mackenzie, Dana合作写的一本因果推理的入门书。
   - 朱迪亚•珀尓（Judea Pearl），加州大学洛杉矶分校计算机科学教授，“贝叶斯网络”之父。2011年，珀尔因“通过发展概率和因果推理对人工智能的奠基性贡献”获得了计算机科学的最高荣誉图灵奖；他的孩子，一名记者在巴以冲突的死亡，他为了纪念他的孩子还设立了一个基金。[初读Judea Pearl的书，有什么感觉？](https://www.zhihu.com/question/67715905)
   - ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/7cee9f86eaea4b12af02c573bac064ed.jpeg)
@@ -155,7 +286,8 @@ permalink: /casual
   - 第八章：**反事实**：挖掘关于假如的世界
   - 第九章：**中介**：寻找隐藏的作用机制
   - 第十章：大数据，人工智能和大问题
-- 【2021-3-29】[《为什么：关于因果关系的新科学》思维导图](https://zhuanlan.zhihu.com/p/144562779)
+
+【2021-3-29】[《为什么：关于因果关系的新科学》思维导图](https://zhuanlan.zhihu.com/p/144562779)
 - 1、 文章结构
   - 人类创造出了我们今天所享有的科技文明。所有这一切都源于我们的祖先提出了这样一个简单的问题：<font color='blue'>为什么？</font>
   - 因果推断正是关于这个问题的严肃思考。因果革命背后有数学工具上的发展作为支撑，这种数学工具最恰当的名称应该是“**因果关系演算**法”。其一为**因果图**（causal diagrams），用以表达我们已知的事物，其二为类似代数的**符号语言**，用以表达我们想知道的事物。
@@ -180,198 +312,64 @@ permalink: /casual
 
 ## （2）因果关系：模型、论证与推断
 
-- 2011 年图灵奖得主 Judea Pearl 的 《[Causality : Models, Reasoning and Inference](http://bayes.cs.ucla.edu/BOOK-2K/)》（第二版）
+2011 年图灵奖得主 Judea Pearl 的 《[Causality : Models, Reasoning and Inference](http://bayes.cs.ucla.edu/BOOK-2K/)》（第二版）
 - 作者：Judea Pearl
-- 目录
-  - 1 概率、图表和因果模型简介
-  - 2 推论因果关系理论
-  - 3 **因果图**和**因果效应**的识别
-  - 4 行动、计划和直接影响
-  - 5 社会科学和经济学中的因果关系和结构模型
-  - 6 辛普森悖论、混乱与崩溃
-  - 7 基于结构的**反事实**逻辑
-  - 8 个不完善实验：边界效应与反事实
-  - 9 因果关系的可能性：解释与识别
-  - 10 实际原因
-  - 11 与读者的思考、阐述和讨论
+
+年度必读书，原因：
+- 提出全新科学方法论——因果关系模型，其应用范围涉及众多领域。借助因果关系的视角，作者重新阐述了人类认知和科学文明的发展史。
+- 因果推理将对人工智能产生革命性的跃迁，引领人工智能的未来发展，并赋予人工智能以真正的人类智慧甚至道德意识，让人工智能与人类能在彼此合作的基础上打造一个更好的未来世界。
+
+目录
+- 1 概率、图表和因果模型简介
+- 2 推论因果关系理论
+- 3 **因果图**和**因果效应**的识别
+- 4 行动、计划和直接影响
+- 5 社会科学和经济学中的因果关系和结构模型
+- 6 辛普森悖论、混乱与崩溃
+- 7 基于结构的**反事实**逻辑
+- 8 个不完善实验：边界效应与反事实
+- 9 因果关系的可能性：解释与识别
+- 10 实际原因
+- 11 与读者的思考、阐述和讨论
 
 - Judea Pearl的《Causality》
   - ![](https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2426721436,1889448037&fm=15&gp=0.jpg)
-- 主要内容：
-  - 第一章——前言：用通俗的语言介绍「什么是因果关系？」这一问题的讨论背景，并概括若干个传统的哲学观点，以及和下文的统计因果模型相比，这些传统定义存在的缺陷。
-  - 第二章——事件性因果
-    - 2.1. 随机对照试验
-    - 2.2. **介入主义**的因果观
-    - 2.3. **虚拟事实模型**（RCM）
-    - 2.4. 贝叶斯网络
-    - 2.5. **结构方程**（SEM）+ **结构因果模型**（SCM）
-    - 2.6. SCM的**反事实**推理
-  - 第三章——过程性因果：**因果环路图**（CLD）与微分方程
-  - 第四章——后记
-- 除前言外，本文其他部分默认读者已经理解基础概率论（概率、条件概率、贝叶斯定理、随机变量、期望值、相互独立事件）、基础图论（节点、边、有向无环图）、概率图模型初步（贝叶斯网络、d分隔）、统计学基础（随机对照试验）等知识。
+
+主要内容：
+- 第一章——前言：用通俗的语言介绍「什么是因果关系？」这一问题的讨论背景，并概括若干个传统的哲学观点，以及和下文的统计因果模型相比，这些传统定义存在的缺陷。
+- 第二章——事件性因果
+  - 2.1. 随机对照试验
+  - 2.2. **介入主义**的因果观
+  - 2.3. **虚拟事实模型**（RCM）
+  - 2.4. 贝叶斯网络
+  - 2.5. **结构方程**（SEM）+ **结构因果模型**（SCM）
+  - 2.6. SCM的**反事实**推理
+- 第三章——过程性因果：**因果环路图**（CLD）与微分方程
+- 第四章——后记
+
+除前言外，本文其他部分默认读者已经理解基础概率论（概率、条件概率、贝叶斯定理、随机变量、期望值、相互独立事件）、基础图论（节点、边、有向无环图）、概率图模型初步（贝叶斯网络、d分隔）、统计学基础（随机对照试验）等知识。
 - 【2021-3-29】源自书籍总结：[【综述长文】因果关系是什么？结构因果模型入门](https://zhuanlan.zhihu.com/p/33860572)，高二学生的杰作！
 
-## 为什么要读
-
-- 年度必读书，原因有二：
-  - 提出了一套全新的科学方法论——因果关系模型，其应用范围涉及众多领域。借助因果关系的视角，作者重新阐述了人类认知和科学文明的发展史。
-  - 因果推理将对人工智能产生革命性的跃迁，引领人工智能的未来发展，并赋予人工智能以真正的人类智慧甚至道德意识，让人工智能与人类能在彼此合作的基础上打造一个更好的未来世界。
-
-
-## 当前的AI方法论错了！
-
-- 自从AlphaGo一鸣惊人后，人工智能似乎一下子遍地开了花。智能音箱、智能导航、智能医疗——恍惚间，我们似乎已昂首阔步、意气风发走进了AI新时代。
-- 然而有个人却说：
-  - ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/28bb22de858749fa92db4d67ed55bcaf.jpeg)
-  - <font color='red'>你们的方向都错了，现在的人工智能连“智能”的门还没摸到。</font>
-  - <font color='blue'>所有深度学习的成果，都只是曲线拟合。复杂而平庸。</font>
-- 目前的大数据和人工智能都只是停留在相关性的层面，其算法的核心都是基于过往的数据，来预测/产生新的东西
-
-- 尤瓦尔·赫拉利在《人类简史》中说，**想象**和**虚构**的能力，让智人走上了食物链的顶端。同样，机器要想真的“智能”，也必须能想象和虚构。
-  - ![](http://5b0988e595225.cdn.sohucs.com/images/20190716/314be42d51e74f28bccf2c37c26316bb.jpeg)
-  - 也就是朱迪亚·珀尔强调的，真正的人工智能，光知道“相关”远远不够，而要懂得“因果”。
-
-
-# 机器学习理论的缺陷
-
-2019年图灵奖得主Yoshua Bengio认为：“深度学习已经走到了瓶颈期，将因果关系整合到AI当中已经成为目前的头等大事“。而2011年的图灵奖得主的Judea Pearl则提到：“目前有太多深度学习项目都单纯关注缺少因果关系的粗糙关联性，这常常导致深度学习系统在真实条件下（明显不同于训练场景的条件下）进行测试时，往往拿不出良好的实际表现。”
-
-- [图灵奖得主Judea Pearl：机器学习的理论局限性与因果推理的七大特性](https://cloud.tencent.com/developer/article/1119926)
-- 【2018-5-10】近日，有越来越多的学者正在探讨机器学习（和深度学习）的局限性，并试图为人工智能的未来探路
-  - [纽约大学教授 Gary Marcus 就对深度学习展开了系统性的批判](http://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650735630&idx=1&sn=5840c3e9bed487da3a9080d482fcc58e&chksm=871ac070b06d496638d47dbdaac75fdec06c5e81a3afaee1e1ce2ea37e86d92ba61de8b2b7c9&scene=21#wechat_redirect)
-  - 图灵奖获得者，UCLA 教授 Judea Pearl 题为《[Theoretical Impediments to Machine Learning with Seven Sparks from the Causal Revolution](http://ftp.cs.ucla.edu/pub/stat_ser/r475.pdf)》的论文中，作者就已探讨了当前机器学习存在的理论局限性，并给出了面向解决这些问题，来自因果推理的七个启发。
-  - 当前的机器学习几乎完全是统计学或**黑箱**的形式，从而为其性能带来了严重的理论局限性。这样的系统不能推断干预和反思，因此不能作为**强人工智能**的基础。为了达到人类级别的智能，学习机器需要现实模型（类似于因果推理的模型）的引导。为了展示此类模型的关键性，我将总结展示 7 种当前机器学习系统无法完成的任务，并使用因果推理的工具完成它们。
-
-![](https://ask.qcloudimg.com/http-save/yehe-1754229/e245kls6qs.jpeg?imageView2/2/w/1620)
-
-| Level (Symbol) | Typical  Activity | Typical Questions | Examples |
-|---|---|---|---|
-| 1. <font color='green'>关联</font> **Association** P(y\|x) | Seeing | ①What is? <br>②How would seeing X change my belief inY ? | ①What does a symptom tell me about a disease?<br>②What does a survey tell us about the election results? |
-| 2. <font color='green'>干预</font> **Intervention** P(y\|do(x), z) | Doing Intervening | ①What if? <br>②What if I do X? | ① What if I take aspirin, will my headache be cured?<br>②What if we ban cigarettes? |
-| 3. <font color='green'>反事实</font> **Counterfactuals** P(yx\|x', y') |  Imagining, Retrospection | ① Why? <br>②Was it X that caused Y ? <br>③What if I had acted differently? | ①Was it the aspirin that stopped my headache?<br>②Would Kennedy be alive had Oswald not shot him? <br>③What if I had not been smoking the past 2 years? |
-
-- 【2021-3-31】[厘清因果逻辑后的机器学习可以脱胎换骨吗？](https://www.toutiao.com/i6945642299799896607/xs)
-- 人类与机器学习的一大不同即人类理解因果逻辑容易，机器学习理解因果却难如登天。机器学习算法，尤其是深度神经网络，擅长从大量数据中找出微妙的模式，但它们很难做出简单的因果推论，主要涉及的难题是独立和恒等分布数据（i.i.d）。
-- （1）为什么机器学习模型不能超越其狭窄的领域和训练数据?
-  - “**机器学习经常忽略动物大量使用的信息：自然环境中的干预、域的转化、时间结构**——总的来说，这些因素是讨厌的并试图把它们处理掉，与此相一致的是，目前机器学习的大多数成功都归结为对**独立和恒等分布**数据(i.i.d)进行的大规模模式识别。”
-  - i.i.d.假设问题是空间中的随机观测不相互**依赖**，且有**恒定**的发生概率。最简单的例子就是抛硬币或掷骰子。每一次新的投掷结果都是独立于之前的，并且每个结果的概率保持不变。
-  - 计算机视觉等更复杂领域中，机器学习工程师试图通过在大样本集上训练模型，将问题转变为i.i.d.领域问题。假设有足够多的例子，机器学习模型将问题的一般分布编码到它的参数中。但在现实世界中，由于训练数据中无法考虑和控制的因素，**分布往往会发生变化**。例如，当物体的光照条件、角度或背景改变时，在数百万张图像上训练后的卷积神经网络仍然可能会失败。
-  - 随着外界变得越来越复杂，通过**增加更多的训练示例来覆盖整个分布变得不再可能**。在人工智能必须与外界互动的领域，如机器人和自动驾驶汽车领域情况尤其如此。缺乏对因果关系的理解使我们很难做出预测，也很难处理新情况。这就是为什么自动驾驶汽车在经过数百万英里的训练后仍然会犯一些奇怪和危险的错误。“要在i.i.d.环境之外很好地进行概括不仅需要学习变量之间的统计关联，还需要学习一个潜在的因果模型。”因果模型还允许人们将获得的知识用于新的领域
-- （2）为什么尽管i.i.d.有明显的弱点，它仍然是机器学习的主导形式呢？
-  - 纯粹基于观察的方法容易扩展。可以通过添加更多的训练数据来继续实现精度的提高，还可以通过提高计算能力来加速训练过程。事实上，最近深度学习取得成功的关键因素就是更多可用数据和更强大的处理器。
-  - 基于i.i.d.的模型易于评估，将一个大型数据集拆分为训练集和测试集，在训练集上调整模型，并通过测量其在测试集上的预测精度来验证其性能。这个过程可以不断反复直到达到所需的精度。已经有很多公共数据集提供了这样的基准测试，比如ImageNet、CIFAR-10和MNIST，还有特定任务的数据集如用于COVID-19诊断的COVIDx数据集和威斯康星州乳腺癌诊断数据集。
-- 精确的预测往往不足以为决策提供准确信息。例如在疫情期间，许多机器学习系统失灵了，因为它们训练的是统计规律而不是因果关系。随着生活模式的改变，模型的准确性逐渐下降。
-  - 统计分布改变时，因果模型仍然是稳健
-  - 因果模型还允许我们对我们之前没见过的情况做出反应，并思考反向事实，如我们不需要把车开下悬崖才知道会发生什么。反向事实在减少机器学习模型所需的训练实例数量方面发挥重要作用。
-  - 因果关系在处理对抗性攻击时也有关键作用。“这些攻击显然违反了作为统计机器学习基础的i.i.d.假设，”论文作者写道，并补充说，对抗性漏洞证明了人类智能和机器学习算法的鲁棒性机制存在差异。研究人员还指出，因果关系可能是对抗对抗性攻击的一种可能防御。**对抗性攻击的目标是机器学习对i.id的敏感性**。给这张熊猫图片添加了一层难以察觉的噪点，导致卷积神经网络误以为它是长臂猿。
-- 从广义上讲，**因果关系可以解决机器学习缺乏泛化**的问题。研究人员写道:“公平地说，大多数当前的实践(解决i.i.d.基准问题)和大多数理论结果(关于在i.i.d.设置中的泛化)都未能解决跨问题泛化的严峻挑战。”
-- 因果关系添加到机器学习：两个概念是“`结构因果模型`”和“`独立因果机制`”。总的来说该原则表明，AI系统应该能够识别因果变量，并分离它们对环境的影响，而不是寻找表面的统计相关性。
-  - 因果人工智能模型不需要庞大的训练数据集。
-  - 因果推理允许它对干预、反事实和潜在结果的效果得出结论
-  - 因果结构可以优化强化学习的训练
-- 结合结构因果建模和表达学习，我们应该努力将SCM嵌入更大的机器学习模型，其输入和输出可以高维非结构化，但其内部运作至少部分由SCM(也可以用神经网络参数化)控制。其结果可能是一个模块化的架构，不同的模块可以单独调整并用于新的任务
-- 实现这些概念需要面对以下几个挑战：
-  - (a)在许多情况下，我们需要从可用的低级输入特征中推断出抽象的因果变量；
-  - (b)对于数据的哪些方面显示了因果关系没有达成共识；
-  - (c)普通的测试集、实验方案不足以根据现有数据集推断和评价因果关系，可能需要建立新的基准；
-  - (d)缺乏可扩展的、在数值上合理的算法。
-- 参考：[Towards Causal Representation Learning](https://www.aminer.cn/pub/6034f37491e01122c046f9a2/towards-causal-representation-learning)论文中，马克斯普朗克研究所、蒙特利尔研究所学习算法(米拉)和谷歌的研究人员认为对于机器学习因果推论的挑战源自于机器学习模型**缺乏因果关系的表达**，在论文中他们为可以学习因果表达的人工智能系统提示了方向。
-
-## 解决缺陷
-
-- 【2021-3-30】[ICLR 2020 反事实因果理论如何帮助深度学习？](https://zhuanlan.zhihu.com/p/136937643)
-- 一个巨大的问题是深度神经网络的**黑箱**问题和**不稳定性**问题。其中的一个根本原因，基于**相关性**的统计模型容易学习到数据中的“**伪关系**(spurious relation)”，而非因果关系，从而降低了泛化能力和对抗攻击的能力。
-  - 一个潜在的方向，就是采用从90年代以来以Judea Pearl为代表的研究者们提出的**因果推断理论**来改进现有的表示学习技术。
-  - 然而<font color='blue'>因果分析框架和表示学习并非天生相容</font>。
-    - **因果分析**通常是基于抽象的、高层次的统计特征来构建结构**因果图**；
-    - 而**表示学习**则基于海量数据提取具体的、低层次的表示特征来辅助下游任务。
-  - 为了结合这两者，MILA的Yoshua Bengio提出了**System 2**框架，Max Planck Institute的Bernhard Schölkopf提出的因果表示学习框架。这两者实际上的思考是一致的。ICLR 2020上因果表示学习的2项有代表性的工作：如何利用因果理论中的**反事实**（counterfactual）框架来提高算法的**稳定性**和**可解释性**。
-  - [Learning the Difference That Makes A Difference with Counterfactually-Augmented Data](https://www.aminer.cn/pub/5e5e18a393d709897ce222b4/learning-the-difference-that-makes-a-difference-with-counterfactually-augmented-data)
-    - 深度学习容易学到语言数据集上**伪关系**（spurious relation）的问题一直没有得到解决。因果推断理论告诉我们，这是由于**混杂因子**（confounding）造成的。
-    - 然而，将因果推断方法应用到自然语言处理面临着巨大的困难：什么是自然语言当中的随机变量？如何从表示中找出混杂因子？如何让学习结果更加稳定，避免受训练集中的伪关系影响？其中最大的困难，在于如何定义自然语言中的因果关系。
-    - 作者设计了一种巧妙的方法，绕开了随机变量的定义问题，转而采用因果理论中的另一个重要概念——**反事实**——来进行**human in the loop**的数据增强以避免伪关系的干扰。
-    - ![](https://pic2.zhimg.com/80/v2-4e65ed79cfe3785eb17a8a23c40bb711_1440w.jpg)
-    - 在情感分析的一个3分类数据集上，利用Amazon’s Mechanical Turk众包平台，要求人类对句子做轻微的修改。这些修改包括：
-      * 将**事实变为希望**：比如加入supposed to be表示**虚拟**语气
-      * **反讽**语气：如加入引号修饰、改为反问句表示反讽
-      * 插入/替换**修饰词**：将interesting替换为boring
-      * 插入**短语**，修改**评分**等
-    - 使评论的情感分类发生变化（如从正面变为负面）来进行数据增强。实验证明，对于支持向量机，朴素贝叶斯，随机森林，Bi-LSTM和BERT：
-      - a) 在原有数据集上训练后，相比原测试集，**反事实**数据集上的测试结果要差许多。反之亦然。
-      - b) 在结合了反事实增强过的训练集上训练，模型性能相比原来有着巨大的提升。
-      - c) BERT不但在通常情况下表现最好，而且在反事实干扰的数据集上表现也降低得最少
-        - [台湾国立成功大学一篇论文把 BERT 拉下神坛！NLP 神话缺了数据集还不如随机](https://zhuanlan.zhihu.com/p/74652696)，曾经狂扫 11 项记录的谷歌 NLP 模型BERT在一些基准测试中的成功仅仅是因为利用了数据集中的**虚假统计线索**(Spurious Statistical Cues)，如若不然，还没有随机的结果好。
-        - 鉴于 R∧A→¬C，通过否定 claim 并反转每个数据点的标签来产生对抗性示例，将对抗性示例与原始数据进行组合，构建对抗测试集
-          - ![](https://pic2.zhimg.com/80/v2-75a3014d062de4707616e048a820568d_1440w.jpg)
-        - 实验表明：BERT准确率就从77%降到53%，几乎等同于随机猜。BERT 并不能做出正确 “理解”，只能利用**虚假统计线索**(Spurious Statistical Cues)
-  - [Counterfactuals Uncover the Modular Structure of Deep Generative Models](https://www.aminer.cn/pub/5c2c7a9217c44a4e7cf314de/counterfactuals-uncover-the-modular-structure-of-deep-generative-models)
-    - 有监督的视觉模型很容易会被伪关系干扰从而学出带有偏见的结果。比如，一个典型的例子是有监督CNN模型在识别狼和狗的图片时，实际上使用的统计特征是狼一般在雪中而狗在草地上。也就是说，模型认为“背景（草或雪）”与“目标（狗和狼）”之间存在某种关系。而实际上，这两种特征是解耦合的。我们希望能找到某些能学会解耦合的特征表示的模型。
-    - 检验模型能否推理反事实情况（比如狗在雪中，狼崽草上）。这样的反事实推理能力也是人类智能的一个重要标志，即推理未发生事件的结果的能力，属于因果学习的一个重要分支。反事实理论在计量经济学和公共卫生领域得到了广泛的应用，然而对于机器学习，这套理论的应用方法仍然是一片空白。将因果学习应用在表示学习上的一个重要改进的方向，就是来自Max Planck Institute的Scho ̈lkopf和MILA的Bengio目前倡议的causal representation learning. 本文即是Scho ̈lkopf在ICLR2020上的一篇尝试性的工作：通过验证模型推断反事实的能力，来验证生成式模型（BigGAN）可以学习到解耦合的模块化结构。提出了**因果生成模型**（Causal Generative Model）的分析框架来解耦合生成式模型的模块化结构
 
 # 因果推理
 
-- 【2021-3-31】[通俗解释因果推理 causal inference](https://zhuanlan.zhihu.com/p/109996301)
+【2021-3-31】[通俗解释因果推理 causal inference](https://zhuanlan.zhihu.com/p/109996301)
 - 推理（inference）是“使用离理智从某些前提产生结论”的行动。因果推理，也叫做反事实推理。**反事实推理**，就是解决 what if 之类的问题。举个例子，和家人的旅行之前，肯定会有一些疑问，这些疑问就叫做反事实疑问，获取反事实疑问的结果叫做因果推理。
   - ![](https://pic3.zhimg.com/80/v2-6505b93cc1a8df5a9370f01dc8c15d0a_1440w.jpg)
 
+
+## 什么是因果
 
 什么是causality（因果）
 - Formal Definition: Causality is a generic relationship between an effect and the cause that gives rise to it.
 
 causality和statistical association的区别（因果性和相关性区别）
 
-Two main questions
-- Causal discovery(**因果关系挖掘**): 比如研究温度升高是否是电费增加的原因？或者在商品价格，商品转化率，商品上市时间，商品成本等几个变量之间探究一个因果图，即变量两两之间是否有因果关系？如果有，谁是因谁是果？
-- Causal effect Estimation(**因果效应估计**): 比如我们已经知道温度升高是电费增加的原因，我们想知道温度从20度升至30度，会对电费带来多少增加？
-
-Two main frameworks
-- （1）Structural Causal Models(**SCM**) **结构因果模型**
-  - Judea Pearl: A causal model by SCMs consists of two components: the causal graph (causal diagram) and the structural equations. 即需要先得到一张**因果图**，然后对于因果图，使用Structural Equations来描述它。
-  - ![](https://pic2.zhimg.com/80/v2-154ef98f3dbc4d0a6ca8ac03690a3489_1440w.jpg)
-  - 比如对于这一张因果图，箭头由因指向果，X和E都是变量。然后右边的一系列方程就是Structural Equations来描述这个图，每一个方程f都表示着由因到果的一个映射或者说一个表达式，这个方程可以是linear也可以是nonlinear的，取决于他们的因果关系是否线性。
-- （2）Potential Outcome Framework **潜在结果框架**
-  - Donald Rubin: It is mainly applied to learning causal effect as it corresponds to a given treatment-outcome pair (D,Y). 简单来说，计算因果效应最直接的手段就是**控制住所有的变量不变，只变化cause**，比如把温度从20变到30度，然后直接看outcome变化，也就是直接用30度时的电费减去20度时的电费，既可以得到causal effect。HOWEVER，**easier said than done**！！！如果这个世界有两个平行时空，那么可以做这个实验，但是如果没有呢？温度不可能在同一个地方，同一个时间，即20度又30度，那么必然20度的时候，30度时的电费就叫potential outcome。而这个framework，就是相方设法从能观察到的数据中得到这个potential的结果，然后二者相减，就是我们想要的答案啦！
-
-## 简介
-
-因果科学的工作大致分为**基础因果假设及框架**（fundamental causal assumption and framework）、**因果学习**（causal learning）、**因果推断**（causal reasoning/inference）和**应用系统**，其中因果学习又可以分为**因果结构学习**（causal discovery/causal structure learning）和**因果表示学习**（causal representation learning）。
-
-## Rubin 因果模型(潜在结果框架)
-
-【2023-7-3】[一文读懂潜在结果框架(Rubin因果模型）的三个假设](https://zhuanlan.zhihu.com/p/484963104)
-
-Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果、稳定性假设和分配机制
-
-因果推断中，必须有干预，没有干预就没有因果。
-
-更多见原文
-
-
-## 结构因果模型（SCM）
-
-研究 𝑋 和 𝑌 的因果关系
-- 直接原因： 𝑌=𝑓(𝑥) 或 𝑌=𝑓(𝑥,𝑧,⋯)，𝑋→𝑌 或 𝑋→𝑌←𝑍
-- 间接原因： 𝑌=𝑓(𝑔(𝑥))，𝑋→𝑍→𝑌
-
-结构化因果模型包含两类变量以及函数集合
-- **外生**变量 —— 对应DAG图的结点，没有祖先
-- **内生**变量 —— 对应DAG图的节点，至少是一个外生变量的后代
-- 函数集合 —— 对应DAG图的边集合，每条边代表了一个变量之间的函数关系
-
-![](https://images.cnblogs.com/cnblogs_com/caoyusang/1830367/o_200818045950image-20200717143852394.png)
-
-上图的DAG图就对应一个结构因果模型：
-- 集合 𝑈={𝑋,𝑊} 为外生变量集合，集合 𝑉={𝑍,𝑌} 为内生变量集合，集合 𝐹={𝑓,𝑔} 为函数集合
-
-**潜在结果模型**
-
-潜在结果模型的主要贡献者是哈佛大学著名统计学家唐纳德·鲁宾(Donald B.Rubin)，因此该模型又被称为**鲁宾因果模型**(Rubin Causal Model)。其核心是比较同一个研究对象(Unit)在接受干预(Treatment)和不接受干预(对照/控制组)时结果差异，认为这一结果差异就是接受干预相对于不接受干预的效果。
-
-对于同一研究对象而言，通常我们不能够既观察其干预的结果，又观察其不干预的结果。对于接受干预的研究对象而言，不接受干预时的状态是一种“反事实”状态；对于不接受干预的研究对象而言，接受干预时的状态也是一种“反事实”状态；所以该模型又被某些研究者称之为**反事实框架**(Counter factual Framework)。
 
 ## 基本概念
 
-- **unit**: 单元，因果推理中的原子研究对象，可以是实物，也可以是概念，可以是一个或者多个。在一些框架下，不同时刻的同一对象被认为是不同的units。
+常见概念
+- **unit**: 单元，因果推理中原子研究对象，可以是实物，也可以是概念，可以是一个或者多个。在一些框架下，不同时刻的同一对象被认为是不同的units。
 - **treatment**：干预/治疗，施加给unit的操作。也叫做**干预**、**介入**等。在二元Treatment的情况下(即𝑊=0 或 1 )，Treatment组包含接受Treatment为 𝑊=1 的unit，而对照组包含接受Treatment为 𝑊=0 的unit。
 - **variables**: unit自带的一些属性，比如患者的年龄，性别，病史，血压等。在treatment过程中不受影响的variable叫做pre-treatment variables，比如患者的性别在多数情况下是不变的；对应的，收到影响的variable叫做post-treatment variables。多数情况下，variables指的是Pre-treatment variables。一些文献中也叫做context。
 - **Confounders**: 会影响treatment选择和结果的一些变量。比如同一剂量的药剂在不同年龄的人群的结果可能不一样，或者说不同年龄的药剂选择会不同。有一些文献中也叫做**协变量**，covariate。  
@@ -400,6 +398,67 @@ Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果
  
 年龄作为协变量对手术的影响
 
+
+## 因果分类
+
+因果科学工作大致分
+- **基础因果假设及框架**（fundamental causal assumption and framework）
+- **因果学习**（causal learning）: 因果学习又分**因果结构学习**和**因果表示学习**
+  - **因果结构学习**（causal discovery/causal structure learning）
+  - **因果表示学习**（causal representation learning）。
+- **因果推断**（causal reasoning/inference）
+- **应用系统**
+
+Two main questions
+- Causal discovery(**因果关系挖掘**): 比如研究温度升高是否是电费增加的原因？或者在商品价格，商品转化率，商品上市时间，商品成本等几个变量之间探究一个因果图，即变量两两之间是否有因果关系？如果有，谁是因谁是果？
+- Causal effect Estimation(**因果效应估计**): 比如我们已经知道温度升高是电费增加的原因，我们想知道温度从20度升至30度，会对电费带来多少增加？
+
+主要研究框架
+- （1）Structural Causal Models(**SCM**) **结构因果模型**
+  - `Judea Pearl`: A causal model by SCMs consists of two components: the causal graph (causal diagram) and the structural equations. 即需要先得到一张**因果图**，然后对于因果图，使用Structural Equations来描述它。
+  - ![](https://pic2.zhimg.com/80/v2-154ef98f3dbc4d0a6ca8ac03690a3489_1440w.jpg)
+  - 比如对于这一张因果图，箭头由因指向果，X和E都是变量。然后右边的一系列方程就是Structural Equations来描述这个图，每一个方程f都表示着由因到果的一个映射或者说一个表达式，这个方程可以是linear也可以是nonlinear的，取决于他们的因果关系是否线性。
+- （2）Potential Outcome Framework **潜在结果框架**
+  - `Donald Rubin`: It is mainly applied to learning causal effect as it corresponds to a given treatment-outcome pair (D,Y). 简单来说，计算因果效应最直接的手段就是**控制住所有的变量不变，只变化cause**，比如把温度从20变到30度，然后直接看outcome变化，也就是直接用30度时的电费减去20度时的电费，既可以得到causal effect。HOWEVER，**easier said than done**！如果这个世界有两个平行时空，那么可以做这个实验，但是如果没有呢？温度不可能在同一个地方，同一个时间，即20度又30度，那么必然20度的时候，30度时的电费就叫potential outcome。而这个framework，就是相方设法从能观察到的数据中得到这个potential的结果，然后二者相减，就是我们想要的答案啦！
+
+
+## （一）Rubin 因果模型(潜在结果框架)
+
+【2023-7-3】[一文读懂潜在结果框架(Rubin因果模型）的三个假设](https://zhuanlan.zhihu.com/p/484963104)
+
+**潜在结果模型**
+
+潜在结果模型是哈佛大学著名统计学家唐纳德·鲁宾(Donald B.Rubin)推出，因此又称**鲁宾因果模型**(Rubin Causal Model)。
+
+核心
+- 比较同一个研究对象(Unit)在接受干预(Treatment)和不接受干预(对照/控制组)时结果差异，认为这一结果差异就是接受干预相对于不接受干预的效果。
+- 对于同一研究对象而言，通常不能同时观察干预/不干预的结果。
+  - 对于接受干预的研究对象而言，不接受干预时是“反事实”状态；
+  - 对于不接受干预的研究对象而言，接受干预时的状态也是一种“反事实”状态；
+  - 所以该模型又被某些研究者称之为**反事实框架**(Counter factual Framework)。
+
+Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果、稳定性假设和分配机制
+
+因果推断中，必须有干预，没有干预就没有因果。
+
+
+## （二）Pearl 结构因果模型（SCM）
+
+研究 𝑋 和 𝑌 的因果关系
+- 直接原因： 𝑌=𝑓(𝑥) 或 𝑌=𝑓(𝑥,𝑧,⋯)，𝑋→𝑌 或 𝑋→𝑌←𝑍
+- 间接原因： 𝑌=𝑓(𝑔(𝑥))，𝑋→𝑍→𝑌
+
+结构化因果模型包含两类变量以及函数集合
+- **外生**变量 —— 对应DAG图的结点，没有祖先
+- **内生**变量 —— 对应DAG图的节点，至少是一个外生变量的后代
+- 函数集合 —— 对应DAG图的边集合，每条边代表了一个变量之间的函数关系
+
+![](https://images.cnblogs.com/cnblogs_com/caoyusang/1830367/o_200818045950image-20200717143852394.png)
+
+上图的DAG图就对应一个结构因果模型：
+- 集合 𝑈={𝑋,𝑊} 为外生变量集合，集合 𝑉={𝑍,𝑌} 为内生变量集合，集合 𝐹={𝑓,𝑔} 为函数集合
+
+
 ## （1）因果发现 causal discovery
 
 【2021-8-13】[大白话谈因果系列文章（一）：因果推断简介及论文介绍](https://zhuanlan.zhihu.com/p/397796913)
@@ -408,7 +467,7 @@ Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果
 
 ![](https://pic4.zhimg.com/80/v2-c910501231378cd35ba8811a52d99727_1440w.jpg)
 
-上图表达为P(A,B,C) = P(C|A,B)*P(B|A)*P(A)。因为C有AB两个变量指向他，而B同样只有A指向它。
+上图表达为 `P(A,B,C) = P(C|A,B)*P(B|A)*P(A)`。因为, C有AB两个变量指向他，而B同样只有A指向它。
 
 ### 因果发现总结
 
@@ -510,7 +569,7 @@ Rubin因果模型/`潜在结果框架`有三个基本构成要件：潜在结果
 - CAUSAL DISCOVERY WITH REINFORCEMENT LEARNING: 这篇文章来自华为的诺亚实验室，他利用Reinforcement Learning (RL)来寻找得分最高的DAG. Its encoder-decoder model takes observable data as input and generates graph adjacency matrices that are used to compute rewards. It uses RL as a search strategy and its final output would be the graph, among all graphs generated during training, that achieves the best reward, is the best DAG. 使用RL作为因果挖掘的思想非常straightforward，因为在RL里的每个action可以看作是一个treatment的改变，而reward就可以是图的分数，这个思想非常好
   - 详细可以看原论文：[https://arxiv.org/pdf/1906.0447](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1906.04477.pdf)
 
-## （2）Causal Effect Estimation 因果效应的估计
+## （2）Causal Effect Estimation 因果效应估计
 
 [大白话谈因果系列文章（二）因果效应估计及论文介绍](https://zhuanlan.zhihu.com/p/397974913)
 
@@ -536,9 +595,9 @@ treatment是我们感兴趣的那个因，比如研究给用户发优惠券对�
  
 评估效果的时候，我们可能需要AB的环境，对于某个样本做treatment=0和1的两次实验得到结果 ![[公式]](https://www.zhihu.com/equation?tex=y%5E0) 和 ![[公式]](https://www.zhihu.com/equation?tex=y%5E1) ，然后我们算一个MSE：![[公式]](https://www.zhihu.com/equation?tex=%5Cepsilon_%7BPEHE%7D%3D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5En%28y_i%5E1-y_i%5E0-%5Chat%7B%5Ctau%7D%28x_i%29%29%5E2)
  
-### 一个重要假设
+### 重要假设
  
-第一篇文章提到了，SCM这个结构中有一个重要假设叫sufficiency assumption，即我们没有unobserved confounder，confounder就是同时对t和y都有因果影响的变量，这里要求所有的confounder都在我们的数据特征X中。所以前期的很多方法都需要满足这个假设，不过大家也知道这个条件其实在现实生活中的假设是很难被满足的，这时候我们就会有一些方法可以relax这个假设。所以我们也可以把方法依据是否能在有unobserved confounder的情况下使用分成两类。
+SCM这个结构中有一个重要假设叫sufficiency assumption，即我们没有unobserved confounder，confounder就是同时对t和y都有因果影响的变量，这里要求所有的confounder都在我们的数据特征X中。所以前期的很多方法都需要满足这个假设，不过大家也知道这个条件其实在现实生活中的假设是很难被满足的，这时候我们就会有一些方法可以relax这个假设。所以我们也可以把方法依据是否能在有unobserved confounder的情况下使用分成两类。
  
 所以接下来的文章介绍其实就会根据用来估计ATE/ITE，是否要求no unobserved confounder这两方面去做分类。详见[原文](https://zhuanlan.zhihu.com/p/397974913)
 - 要求no unobserved confounder的方法
