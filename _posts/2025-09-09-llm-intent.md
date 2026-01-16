@@ -968,7 +968,7 @@ ACT 显著优于 PE和SFT
 
 2021年10月21日， 新加坡南洋理工大学（NTU）和美国威斯康星大学Madison分校
 - 论文 [Generalized Out-of-Distribution Detection: A Survey](https://arxiv.org/abs/2110.11334)
-
+- GitHub [OODSurvey](https://github.com/Jingkang50/OODSurvey)
 
 OOD 方法：
 - 基于分类方法 classification-based
