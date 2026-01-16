@@ -961,21 +961,117 @@ ACT 显著优于 PE和SFT
 - 搜索、对话场景，未覆盖、无法解决的问题给拒绝掉
 - 特点: 被拒识样本无法全覆盖
 
+
+#### OOD 综述
+
+【2023-12-14】[Out-of-Distribution Detection（OOD）入门综述！](https://zhuanlan.zhihu.com/p/619694109)
+
+2021年10月21日， 新加坡南洋理工大学（NTU）和美国威斯康星大学Madison分校
+- 论文 [Generalized Out-of-Distribution Detection: A Survey](https://arxiv.org/abs/2110.11334)
+
+
+OOD 方法：
+- 基于分类方法 classification-based
+- 基于密度方法 density-based
+- 基于距离方法 distance-based
+- 基于重建方法
+
+动机和方法论方面都与 OOD 检测密切相关
+- 异常检测 (AD，anomaly detection)
+- 新颖性检测 (ND，novelty detection)
+- 开放集识别 (OSR，open set recognition)
+- 异常值检测 (OD，outlier detection)
+
+![](https://pica.zhimg.com/v2-b0a89f17eb13d3e98bb88826e53a5322_r.jpg)
+
+![](https://pic1.zhimg.com/v2-4b0f346e396bd13a135c5f7fcfea09f2_r.jpg)
+
+OOD样本偏移包括两类
+- 第一类是 semantic shift （语义偏移），即OOD样本来自和ID（In-distribution）不同的类别。
+- 另一类是 covariate shift（协方差偏移），即OOD样本来自于和ID样本不同 domain
+
+上述方法主要是 semantic shift，即OOD样本和ID样本具有不同的类别
+
+共同点：都定义了某种特定 in-distribution，具有在open-world假设下检测out-of-distribution样本的共同目标。
+
+五种方法之间的区别和共同点。
+- 1）检测什么样的shift；
+- 2）ID的样本是单类还是多类；
+- 3）是否需要对ID样本进行分类；
+- 4）是否遵循train-test模式（是否为归纳问题）。
+
+OSR和OOD 概念可以互换。
+
+![](https://pica.zhimg.com/v2-a5249a565010be45abb0ab0f1aae463a_r.jpg)
+
+![](https://picx.zhimg.com/v2-6a1157b1e298fe75544f154509675047_r.jpg)
+
+Anomaly Detection（AD）
+关键是，要清晰的定义常态（正常）类样本，并且通常情况下，正常类下面没有子类（如将正常类定义为狗，下面不会再分泰迪、金毛或者德牧，都认为是一类）。目标是在某些特定的情境下，检测出所有可能的异常样本。
+
+省流：Anomaly Detection对于ID内样本的分类并不关心，都认为是一类，只关心如何把ID样本和OOD样本分开，检测出OOD样本。
+
+分为两类Sensory AD和Semantic AD，这里主要说一下后者，即检测属于新类的样本。现实的应用如犯罪监控、Active 图片爬虫。学术界一个标准，即使用MNIST中的某一类作为ID样本，其余9个类别作为OOD样本来检验模型的OOD检测能力。
+
+评价标准：AUROC，AUPR，or F-scores
+
+Novelty Detection（ND）
+通常情况下，Novelty Detection是可以和Anomaly Detection互换的。Novelty detection又称为Novel class detection，表明它主要专注于Semantic shift。检测到的新类，会被ND方法存储起来加以运用，用于增量学习或者特殊的分析。注意，一类ND和多类ND都被表述为二元分类问题，即ND只关心辨别新类样本和旧类样本。
+
+不考虑新类是恶意还是积极的，其实ND和Semantic AD是一样的。继续细究的话，ND是完全无监督的，AD有时候可能会有一些异常训练样本辅助训练。
+
+评价标准：AUROC，AUPR，or F-scores
+
+(1) Open Set Recognition（OSR）
+
+不仅要求能够检测未知类别，还要求正确分类已知的类别。
+
+评价标准：AUROC，AUPR，or F-scores，CCR@FPRx
+
+(2) Out-of-Distribution Detection（OOD）
+
+保证ID类测试样本的分类性能，拒绝OOD测试样本，ID样本往往具有多个类别，OOD的类别不能与ID的类别重合。
+
+经常使用CIFAR-10作为ID样本进行训练，其他数据集如SVHN等作为OOD测试样本。
+
+评价标准：AUROC，AUPR，or F-scores，FPR@TPRx，TNR@TPRx
+
+和OSR的区别：
+- 1）OSR常常用一个数据集，一部分类别作为ID一部分作为OOD。而OOD则是一个数据集作为ID样本，再用别的数据集作为OOD样本（仍要保证类别不重合）。
+- 2）OOD检测方法的范围更广，如多标签分类，解空间更大。
+
+OOD 检测主流 Detecting semantic shift。当然在一些领域中，也十分的关注covariate shift，即要拒绝和原本的ID样本具有不同分布的样本，即使类别可能一样。如医学图像或者隐私敏感的领域，就不能让模型对具有不同分布的样本进行泛化。
+
+(3) Outlier Detection（OD）
+
+AD、ND、OSR和OOD中的问题设置检测与训练数据分布不同的未见测试样本。相比之下，异常值检测直接处理所有观测数据，目的是从受污染的数据集中选择异常值。
+
+OD不遵循训练-测试的模式，可以访问所有的观测数据，他不是一个归纳问题。
+
+通常用于数据挖掘或者一些主任务的数据预处理。还可以通过主任务的效果检验OD方法的性能。
+
+
+![](https://pic1.zhimg.com/v2-a388d80b454851d6fadcb9b69da44d0c_r.jpg)
+
+#### OOD 常见方法
+
 域外检测常见方法
-- （1）样本空间的度量
-  - 邱锡鹏论文: [KNN-Contrastive Learning for Out-of-Domain Intent Classification]() 用对比学习常用的NT-Xent，还用了ArcFace相似的加入margin 损失函数；实现：以搜代分
-  - 把域外意图强行融成团或划分区域，非常不现实，应该用类似KNN的手段，只要落到正类比较密集的区域内，就可能是正类，否则是负类，这样更加符合域外意图的空间实际分布。
-  - <img width="640" height="298" alt="image" src="https://github.com/user-attachments/assets/54c500d0-6c60-4f0e-af80-656b66794e8f" />
-  - 论文：[Enhancing the generalization for Intent Classification and Out-of-Domain Detection in SLU]() 预测阶段增加了一个DRM（domain-regularized module）,只需正样本，马氏距离能有效把IND和OOD的空间给拉开的更加明显。
-  - <img width="640" height="421" alt="image" src="https://github.com/user-attachments/assets/803c0711-14e0-4e8a-b068-1aa81075e42f" />
-- （2）对抗和扰动
-  - 简单问题，通过样本层面的增强，挖掘对抗样本；复杂的通过embedding层面的增强，甚至训练策略上的对抗来实现，让正类的空间更加内聚稳定，此时域外检测就会更加精准。
-  - 论文[GOLD: Improving Out-of-Scope Detection in Dialogues using Data Augmentation]() 通过增强样本模型, 强化对OOD数据识别
-    - ① 用OOD样本在无标签样本中召回与之最接近的几个作为OOD数据
-    - ② 通过对话中的同话题多轮数据中挖掘，这种方案其实对标注数据的数量和质量都是有一定要求。
-  - 采用对抗学习，论文 [Modeling Discriminative Representations for Out-of-Domain Detection with Supervised Contrastive Learning]()
-    - 通过对抗，压缩正类的空间提升正类空间的密度和准度
-    - <img width="640" height="249" alt="image" src="https://github.com/user-attachments/assets/21230201-fa5f-477b-875d-5d734eae0ee4" />
+
+（1）样本空间度量
+- 邱锡鹏论文: [KNN-Contrastive Learning for Out-of-Domain Intent Classification]() 用对比学习常用的NT-Xent，还用了ArcFace相似的加入margin 损失函数；实现：以搜代分
+- 把域外意图强行融成团或划分区域，非常不现实，应该用类似KNN的手段，只要落到正类比较密集的区域内，就可能是正类，否则是负类，这样更加符合域外意图的空间实际分布。
+- <img width="640" height="298" alt="image" src="https://github.com/user-attachments/assets/54c500d0-6c60-4f0e-af80-656b66794e8f" />
+- 论文：[Enhancing the generalization for Intent Classification and Out-of-Domain Detection in SLU]() 预测阶段增加了一个DRM（domain-regularized module）,只需正样本，马氏距离能有效把IND和OOD的空间给拉开的更加明显。
+- <img width="640" height="421" alt="image" src="https://github.com/user-attachments/assets/803c0711-14e0-4e8a-b068-1aa81075e42f" />
+
+（2）对抗和扰动
+- 简单问题，通过样本层面的增强，挖掘对抗样本；复杂的通过embedding层面的增强，甚至训练策略上的对抗来实现，让正类的空间更加内聚稳定，此时域外检测就会更加精准。
+- 论文[GOLD: Improving Out-of-Scope Detection in Dialogues using Data Augmentation]() 通过增强样本模型, 强化对OOD数据识别
+- ① 用OOD样本在无标签样本中召回与之最接近的几个作为OOD数据
+- ② 通过对话中的同话题多轮数据中挖掘，这种方案其实对标注数据的数量和质量都是有一定要求。
+- 采用对抗学习，论文 [Modeling Discriminative Representations for Out-of-Domain Detection with Supervised Contrastive Learning]()
+- 通过对抗，压缩正类的空间提升正类空间的密度和准度
+- <img width="640" height="249" alt="image" src="https://github.com/user-attachments/assets/21230201-fa5f-477b-875d-5d734eae0ee4" />
 
 解决方法：
 - 空间层面，把**正类**转化为样本层面的**封闭**空间，而把**负类**放在空间之外。只有命中这个空间以内，才能认为是正类。
