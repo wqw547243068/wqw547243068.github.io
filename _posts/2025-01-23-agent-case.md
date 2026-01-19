@@ -322,7 +322,12 @@ Eko的跨平台开发是通过其环境感知架构（Environment-Aware Architec
 
 【2024-10-8】[新版桌面助手-如意（AI stick），新界面新体验](https://club.lenovo.com.cn/thread-7942184-1-1.html)
 
-10月10日，联想推出新版桌面助手-如意（AI stick）
+【2026-1-18】用户反馈
+- 联想管家里搜：豆包，系统偷偷安装 如意
+
+10月10日，联想推出新版桌面助手-`如意`（AI stick）
+
+![](https://picx.zhimg.com/v2-e479252ae7ede4ff1a3f458117666da9_1440w.jpg)
 
 ![](https://img2cdn.clubstatic.lenovo.com.cn/pic/36360222934192/0)
 
