@@ -49,6 +49,48 @@ permalink: /os
 - ChromeOS(FydeOS代替)
 
 
+### 操作系统安装
+
+
+#### Win 系统重装
+
+【2026-1-18】win10上制作U盘系统盘，重装系统
+- 电脑：联想 Thinkpad X1 Carbon
+- U盘：32G
+- 操作系统：win 10
+  - 官方 [win 11下载地址](https://www.microsoft.com/en-us/software-download/windows11)
+- 操作步骤
+  - win上准备iso文件
+  - 下载启动盘制作软件
+  - 使用软件制作U盘启动盘
+  - 电脑重启：多次按F1，进入BIOS，设置BooT顺序，把 USB HDD提到最前面
+  - 再次重启：按F12，选择 USB HDD，空格键自动
+  - 按要求选择配置，windows系统激活码
+  - 大概30min，结束
+
+问题：
+- 系统缺少 wifi 组件，无法联网
+
+
+启动盘制作工具
+- 总结 [2025年十大u盘启动盘制作工具推荐](https://zhuanlan.zhihu.com/p/17768826798)
+
+主流u盘启动盘制作工具: 微pe、小兵U盘启动、USM魔术师、老毛桃、U盘装机大师、大白菜、电脑店、U启动、U深度、Ventoy、Rufus 等
+- Windows系统：[Rufus](https://rufus.ie/zh/) —— 【2026-1-18】win 10上实践通过，无广告，老毛桃依赖多，删
+- [balenaEtcher](https://etcher.balena.io/#download-etcher)
+
+
+#### MacOS 重装
+
+步骤
+1. 插入 USB 启动盘，按下：
+  - 苹果M芯片：按电源键开机，持续按住电源键，不要松开。直到屏幕显示 “启动选项” 界面（会列出可用的启动设备），松开电源键。
+  - Intel芯片：按电源键开机，立即按住 Option 键不放，直到屏幕显示 “启动磁盘列表”（此时会看到 USB 启动盘的图标）。
+2. 选择系统安装
+
+详见：[如何在 Windows 系统下创建 macOS U盘启动盘？零门槛教程](https://zhuanlan.zhihu.com/p/1967586575845139816)
+
+
 ## Windows
 
 
