@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习 可视化
+tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习 可视化 qwen
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -17,27 +17,58 @@ permalink: /emb
 
 向量模型把人类世界里的语言转化为为计算机世界中的数字
 
-## 向量化用途
-
-向量化用途广泛，LLM时代的作用大
-
-[LLM-Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm_embedder), a unified embedding model to comprehensively support the retrieval augmentation needs of large language models, including knowledge retrieval, memory retrieval, examplar retrieval, and tool retrieval. It is fine-tuned over 6 tasks:
--   知识问答 _Question Answering (qa)_
--   对话检索 _Conversational Search (convsearch)_
--   聊天 _Long Conversation (chat)_
--   长程语言模型 _Long-Range Language Modeling (lrlm)_
--   情境学习 _In-Context Learning (icl)_
--   工具调用 _Tool Learning (tool)_
-- ![](https://github.com/FlagOpen/FlagEmbedding/raw/master/FlagEmbedding/llm_embedder/imgs/llm-embedder.png)
-
-文本向量用途除了**RAG检索**，还有 **信息检索**、**排序**、**分类**、**聚类**、**语义相似度**中。[IMG](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
-- Embedding: Point wise, Pair wise, List wise
-- Rerank: Cross-encoder, ColBERT, LLM
-- RAG: 
-- ![](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+## 向量化
 
 
-## 文本向量化
+### 多模态向量化
+
+【2026-1-17】[多模态Qwen3-VL-Embedding悄悄开源&技术剖析](https://www.toutiao.com/article/7596230356307673663/)
+
+互联网内容早已不只是文字——商品图、短视频、扫描件、直播切片……
+传统文本搜索引擎面对“以图搜文”“以视频搜商品”等跨模态需求时力不从心。
+CLIP 之后，社区一直在寻找一个模型、一套向量空间、端到端搞定所有模态检索的终极方案。
+
+核心挑战：如何构建一个统一、高精度的表示空间，使得来自不同模态（文本、图像、视频、文档图像）的数据能够被映射到同一语义平面上，从而实现跨模态的精准语义匹配与检索。
+- 模态鸿沟（Modality Gap）：不同模态的数据在原始特征空间中差异巨大，直接比较无意义。
+- 语义对齐（Semantic Alignment）：需要确保语义上相关的内容，无论其模态如何，在嵌入空间中距离相近，反之则远。
+- 效率与精度的权衡：工业级应用要求模型在保持高检索精度的同时，还需具备低存储开销和高推理速度。
+
+#### Qwen3-VL
+
+【2026-1-8】Qwen3-VL 系列两大杀器
+- Qwen3-VL-Embedding 与 Qwen3-VL-Reranker：迈向最先进的统一多模态检索与排序框架
+  -  论文 [Qwen3-VL-Embedding and Qwen3-VL-Reranker: A UnifiedFramework for State-of-the-Art Multimodal Retrieval and Ranking](https://arxiv.org/pdf/2601.04720)
+  -  解读 [从像素到向量：Qwen3-VL-Embedding和Rerank 的视觉语义密码](https://zhuanlan.zhihu.com/p/1993676712920237430)
+- [Qwen](https://huggingface.co/collections/Qwen)
+- [Qwen3-VL-Embedding](https://github.com/QwenLM/Qwen3-VL-Embedding)
+
+Embedding 负责“海选”，Reranker 负责“决赛”
+
+两个核心组件构成：
+- Qwen3-VL-Embedding：一个高效的双编码器（Bi-encoder）模型，负责将任意模态的输入快速编码为高维稠密向量。其核心目标是高召回率（Recall），即在海量候选集中快速筛选出与查询相关的Top-K结果。
+- Qwen3-VL-Reranker：一个精细的交叉编码器（Cross-encoder）模型，负责对Embedding阶段召回的Top-K候选结果进行精排（Fine-grained Re-ranking），以提升最终排序的准确性。
+
+双阶段架构
+- ![](https://pic3.zhimg.com/v2-db9ba631e794f21e34bbef935cea23a4_1440w.jpg)
+
+
+两者共同构成了一个经典的“检索-精排”（Retrieve-and-Rerank）工业级检索范式。
+
+Qwen3-VL-Embedding/Reranker 用“大模型+大数据+大工程”把多模态检索推向了新 SOTA，同时兼顾了部署友好（维度/量化可调）与文本能力不衰减。
+
+文本“urban architecture”与对应图像、视频、文档在同一流形中的位置示意
+- ![](https://picx.zhimg.com/70/v2-a9b6669756483c3a87c34ca22a9ef664_1440w.avis?source=172ae18b&biz_tag=Post)
+
+
+三阶段训练流程——对比预训练 → 多任务微调 → 蒸馏+模型融合
+- Stage-0 对比预训练：20 亿级合成图文对，warm-up 出基座
+- Stage-1 多任务微调：引入人工标注高质量数据，缓解任务失衡
+- Stage-2 知识蒸馏：用 Reranker 的细粒度信号反哺 Embedding，最终再与 Stage-1 做加权合并，得到“不偏科”的 Stage-3 模型
+
+![](https://pic4.zhimg.com/v2-f3ed5e7ecbd4195a9687a5ffa9e363e7_1440w.jpg)
+
+
+### 文本向量化
 
 `嵌入`（Embedding）是一种将**文本或对象**转换为**向量表示**的技术，将词语、句子或其他文本形式转换为固定长度的向量表示。
 - 嵌入向量是由一系列浮点数构成的**向量**。
@@ -48,7 +79,7 @@ permalink: /emb
 详见：
 - sklearn专题里的[文本向量化](sklearn#%E5%90%91%E9%87%8F%E5%8C%96)
 
-### 文档向量化
+#### 文档向量化
 
 自研框架选择
 - 基于 OpenAIEmbeddings，官方给出了基于embeddings检索来解决GPT无法处理长文本和最新数据的问题的实现方案。[参考](https://www.datalearner.com/blog/1051681543488862)
@@ -73,7 +104,7 @@ permalink: /emb
 
 更多：[ChatGPT相似度匹配笔记](https://github.com/datawhalechina/hugging-llm/blob/main/content/ChatGPT%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97%E2%80%94%E2%80%94%E7%9B%B8%E4%BC%BC%E5%8C%B9%E9%85%8D.ipynb)
 
-### 文本切分
+#### 文本切分
 
 LangChain 切分工具
 - [Text Splitters文档](https://python.langchain.com/en/latest/modules/indexes/text_splitters.html): 选择对应的文本切分器，如果是通用文本的话，建议选择 `RecursiveCharacterTextSplitter`
@@ -95,7 +126,7 @@ split_docs = text_splitter.split_documents(data)
 print("split_docs size:",len(split_docs))
 ```
 
-### 相似度
+#### 相似度
 
 相似度索引
 - 只用embedding来计算句子的相似度
@@ -119,6 +150,26 @@ qa = RetrievalQA.from_chain_type(llm=ChatGLM(temperature=0.1), chain_type="stuff
 query = "2022年腾讯营收多少"
 print(qa.run(query))
 ```
+
+### 用途
+
+向量化用途广泛，LLM时代的作用大
+
+[LLM-Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm_embedder), a unified embedding model to comprehensively support the retrieval augmentation needs of large language models, including knowledge retrieval, memory retrieval, examplar retrieval, and tool retrieval. It is fine-tuned over 6 tasks:
+-   知识问答 _Question Answering (qa)_
+-   对话检索 _Conversational Search (convsearch)_
+-   聊天 _Long Conversation (chat)_
+-   长程语言模型 _Long-Range Language Modeling (lrlm)_
+-   情境学习 _In-Context Learning (icl)_
+-   工具调用 _Tool Learning (tool)_
+- ![](https://github.com/FlagOpen/FlagEmbedding/raw/master/FlagEmbedding/llm_embedder/imgs/llm-embedder.png)
+
+文本向量用途除了**RAG检索**，还有 **信息检索**、**排序**、**分类**、**聚类**、**语义相似度**中。[IMG](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+- Embedding: Point wise, Pair wise, List wise
+- Rerank: Cross-encoder, ColBERT, LLM
+- RAG: 
+- ![](https://picx.zhimg.com/80/v2-5ba7904c3a3cde77c92fd37cb23de9dd_1440w.webp)
+
 
 ## 向量可视化
 
