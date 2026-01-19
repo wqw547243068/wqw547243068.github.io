@@ -1,4 +1,4 @@
-<img width="1218" height="384" alt="image" src="https://github.com/user-attachments/assets/3863fbbe-bb16-481c-9b68-36b4124ecc33" />---
+---
 layout: post
 title:  "量化交易-Quantitative Trading"
 date:   2020-10-30 11:04:00
