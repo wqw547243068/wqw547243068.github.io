@@ -461,7 +461,7 @@ Mac 中文字体包括: 华文黑体 STHeiti、Hei、苹果丽黑 Apple LiGothic
 |情形|操作||
 |---|---|---|
 |普通文件|Command+X||
-|文件夹||Command+C -> Command+Option+V|
+|文件夹|Command+C -> Command+Option+V||
 
 
 #### Finder找不到文件
