@@ -163,6 +163,19 @@ $PSVersionTable
 
 【2025-4-18】[修复 Windows 11 中“拒绝访问”错误的5种方法](https://zhuanlan.zhihu.com/p/699296111)
 
+
+#### 软件卸载
+
+
+流氓软件，无法卸载，怎么办？
+
+win10/11：安全模式下卸载联想电脑管家 --- [怎么卸载联想笔记本自带联想电脑管家](https://www.zhihu.com/question/276742104/answer/1168097479)
+- 1：按住 Shift 点击重启，电脑开启后会进入选择选项页面，选择【疑难解答】-【高级选项】-【启动设置】，在启动设置内，按 4 或 F4 就可以进入安全模式
+- 2：安全模式下，进入 C:\Program Files (x86)\Lenovo 删除 PCmanager 文件夹轻轻松松不恢复
+
+![](https://picx.zhimg.com/50/v2-91caa23224ea55aaa5cdb16475a129e1_720w.webp?source=1def8aca)
+
+
 #### 磁盘空间清理
 
 C 盘空间不足，发现 AppData 文件夹占用空间很大，如何清理？
