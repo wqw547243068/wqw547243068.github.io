@@ -188,6 +188,52 @@ Qwen3Guard-Stream 专为低延迟设计，可在模型逐词生成回复的过�
 
 ## 大模型安全
 
+
+### PurpleLlama
+
+PurpleLlama 采用"紫色团队"理念，结合攻击（红队）和防御（蓝队）的双重策略，为生成式AI开发提供全面的信任和安全工具。
+
+该框架包含多个核心组件：
+- Llama Guard - 输入输出内容审核模型
+- Prompt Guard - 防止恶意提示攻击
+- Code Shield - 不安全代码检测和过滤
+- CyberSec Eval - 网络安全评估基准
+
+```sh
+# 克隆项目仓库
+git clone https://gitcode.com/GitHub_Trending/pu/PurpleLlama
+ 
+# 进入项目目录
+cd PurpleLlama
+ 
+# 安装核心依赖
+pip install -r CybersecurityBenchmarks/requirements.txt
+pip install -r LlamaFirewall/requirements.txt
+```
+
+【2025-11-13】[PurpleLlama LLM安全防护：如何配置企业级AI防护系统](https://blog.csdn.net/gitblog_01194/article/details/154767632)
+
+### 提示词安全
+
+详见站内专题 [提示攻击 Prompt Attack](prompt_attack)
+
+### 文本安全检测
+
+CyberSecEval 用于评估大型语言模型（LLMs）安全风险的基准套件，其目标是解决随着 LLMs 的广泛使用而出现的新的网络安全风险。
+
+#### Llama Guard 3
+
+Llama Guard 3 通过输入输出检测，有效识别并分类**不安全内容**，保障了大模型在多语言环境下的内容安全。
+
+该工具能够对输入（Prompt）和响应（Response）进行分类，判断其是否安全，并列出违反的内容类别
+
+#### Code Shield
+
+Code Shield 使用静态分析工具（Insecure Code Detector, ICD）来检测不安全代码。ICD 支持对七种编程语言进行分析，并覆盖超过 50 种常见漏洞（CWE），包括使用正则表达式（Regex）和 Semgrep 等工具
+
+
+### 风控
+
 【2025-11-20】[融合风控知识的大模型体系建设与应用实践](https://www.infoq.cn/article/xJTe5bBq2bbQSMv9p7Gp)
 
 腾讯欧阳天雄分享《大模型驱动下的智能风控落地实践》，介绍
