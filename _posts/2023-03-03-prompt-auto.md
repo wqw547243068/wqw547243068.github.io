@@ -1306,8 +1306,44 @@ Prompt Optimizer 是专治**AI提示词编写困难**的「赛博老中医」�
 - 提升输出质量:	准确率 +61.3%
 - 部署灵活性:	本地/Docker 双方案支持
 
+### 【2026-1-23】Opik
+
+【2026-1-23】[OPIK：一个开源的自动提示词优化框架](https://zhuanlan.zhihu.com/p/1998120566998204578)
+
+Comet 推出 Opik, 构建、测试并优化生成式 AI 应用，使其从原型到生产环境运行得更好。开发者能够评估、测试、监控和优化模型及智能体系统
+- github [opik](https://github.com/comet-ml/opik/blob/main/readme_CN.md)
+
+从 RAG 聊天机器人到代码助手再到复杂的智能体系统，Opik 提供全面的跟踪、评估，以及自动化的提示与工具优化，消除 AI 开发中的猜测
+
+功能包括：
+- 全面可观测性：深度跟踪 LLM 调用、对话日志及智能体活动。
+- 高级评估：强大的提示评估、LLM-as-a-judge 及实验管理。
+- 生产就绪：可扩展的监控仪表板和在线评估规则。
+- Opik Agent Optimizer：用于提升提示和智能体的专用 SDK 与优化器。
+- Opik Guardrails：帮助您实施安全且负责任的 AI 实践。
 
 
+[OPIK](https://www.comet.com/docs/opik/) 的 MetaPromptOptimizer 让自动提示词变得很简单：
+- 拿一个勉强能用的提示词，半小时内就能把它调成接近 SOTA 水平的 one-shot Agent，省下原本要花几周手动迭代的时间。
+
+OPIK
+- 完全开源，Apache 2.0 协议，商用也不花钱；
+- 可以纯本地跑，Ollama、LM Studio、任何 OpenAI 兼容的接口都行；
+- 自带追踪仪表板，功能类似 LangSmith 但是确是免费；
+- API 设计简单，一个类就能搞定优化流程；评估指标随便你定义，只要能写成代码就行
+
+安装
+
+```sh
+pip install opik[all] datasets sentence-transformers
+```
+
+ollama 安装
+
+```sh
+ollama pull llama3.2:8b-instruct-qat  
+ollama serve
+```
 
 
 ## 图像提示词
