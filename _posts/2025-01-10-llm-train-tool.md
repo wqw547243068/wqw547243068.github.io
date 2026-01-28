@@ -971,6 +971,8 @@ llamafactory-cli clean # 清理缓存
 ```sh
 # Web UI 使用
 llamafactory-cli webui    # 启动网页端
+GRADIO_SERVER_PORT=7862 lmf webui
+GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
 CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
 CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
 set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
