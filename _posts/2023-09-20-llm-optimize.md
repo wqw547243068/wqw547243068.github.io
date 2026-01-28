@@ -552,9 +552,28 @@ vllm serve meta-llama/Meta-Llama-3-8B \
 
 #### PagedAttention 动态分页机制
 
+分页注意力机制（PagedAttention）是什么？
+- 分页注意力机制借鉴了计算机操作系统中的内存分页管理，通过动态分配和复用显存空间，显著提升大模型推理的效率和吞吐量。
+
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/992fcc08-31ac-46ab-bf19-c0fc0ff4f026" />
+
+传统大模型推理中，注意力机制（Transformer的自注意力层）为每个请求序列分配连续的显存块，存储以下数据：
+- （1）键值缓存（Key-Value Cache，KV Cache）：存储历史token的键值对，用于生成后续token。
+- （2）中间激活值：计算注意力权重时的中间结果。
+
+vLLM基于PyTorch构建，创新性地引入了PagedAttention技术。借鉴操作系统的虚拟内存分页机制，将注意力键值对（KV Cache）存储在**非连续**显存空间，显著提高了显存利用率。
+
+PagedAttention 通过**分块管理显存**、**动态按需分配**和**跨请求共享内存**，解决了传统方法中**显存碎片化**、**预留浪费**和**并发限制**三大瓶颈。
+
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/d56035ce-e2dc-4395-a002-de37bea0dce5" />
+
+特点
 - 分块管理KV缓存：将注意力键值（Key-Value Cache）划分为固定大小的块（如4-16 tokens/块），按需动态分配GPU显存，避免传统连续分配导致的碎片问题。
 - 显存复用与共享：短序列推理时仅占用必要块，释放空间供其他请求使用；支持跨请求的缓存共享（如相同前缀提示词），显存利用率提升最高达25%。
 - 写时复制（Copy-on-Write）：共享块标记为只读，修改时创建新副本，减少重复计算
+
+[原文](https://blog.csdn.net/bugyinyin/article/details/147140630)
+
 
 #### vllm 部署方式
 
