@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理优化 LLM Inference
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎
+tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎 bert
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_opt
@@ -494,7 +494,7 @@ PagedAttention 本质是灵活管理 KV Cache（注意力缓存）的方式。
 
 前提：GPU A100 起步。
 
-#### vllm和sglang
+#### vllm 和 sglang
 
 【2025-09-27】[vllm:pd并行、多LoRA动态加载](https://zhuanlan.zhihu.com/p/1896895671711285497)
 
@@ -532,7 +532,7 @@ vllm和sglang 部署分别：
   - 耗时：提升1.2倍。
 
 
-#### 多LoRA动态加载 
+#### 多 LoRA 动态加载 
 
 - 无延迟切换：单基础模型（如Llama 3-8B）同时挂载多个LoRA适配器（如聊天/函数调用），请求时通过lora_request参数指定，切换延迟低于1ms。
 - 资源复用：基础模型参数仅加载一次，适配器共享显存，支持5+适配器并行服务。
@@ -568,8 +568,7 @@ vllm 两种模型部署方式：
 #### vllm 使用
 
 ```py
-# 安装vLLM
-# pip install vllm
+# pip install vllm # 安装vLLM
 
 # 示例代码：生成文本
 from vllm import LLM, SamplingParams
@@ -599,6 +598,48 @@ vllm serve deepseek-ai/deepseek-vl2-tiny  \
 ```
 
 详见[地址](https://zhuanlan.zhihu.com/p/1895409091192537734)
+
+#### bert 模型
+
+除了生成式任务，但分类任务同样可以通过指定合适的任务类型实现。
+
+【2025-5-1】[vLLM项目中部署BERT](https://blog.gitcode.com/8b411e9cad4a5bc4b9c3a9c16c27c290.html)
+
+关键启动参数包括：
+
+```sh
+python -m vllm.entrypoints.api_server \
+    --model path/to/bert_model \
+    --tensor-parallel-size 1 \
+    --dtype float16 \
+    --max-model-len 512 \
+    --served-model-name bert-cls
+```
+
+注意：
+- 最大序列长度应设置为BERT标准配置（通常512）
+- 半精度(float16)可显著提升推理速度
+- 服务名称用于后续API调用标识
+
+分类任务可以采用以下调用方式：
+
+```py
+import openai
+
+client = openai.Client(base_url="http://localhost:8000/v1")
+response = client.completions.create(
+    model="bert-cls",
+    prompt="这是一条需要分类的文本",
+    max_tokens=1,  # 分类任务通常只需要1个token输出
+    temperature=0  # 确保确定性输出
+)
+```
+
+性能优化建议
+- 批处理优化：通过增大`--max-batch-size`参数提高吞吐量
+- 量化部署：尝试使用`--quantization bitsandbytes`进行8bit量化
+- 请求合并：客户端实现请求队列合并，减少小包传输
+- 监控集成：添加Prometheus监控指标采集
 
 #### vLLM 分布式
 
