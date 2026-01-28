@@ -924,11 +924,12 @@ llamafactory-cli 命令行工具接口是 LLaMA-Factory v3 版本引入的新特
 #### 常用命令
 
 主要命令
+- llamafactory-cli 可简化为 lmf
 
 ```sh
-llamafactory-cli version  # 显示版本
+llamafactory-cli version  # 显示版本 lmf version
 llamafactory-cli help  # 帮助信息
-llamafactory-cli train --help   # 某个命令的详细参数说明
+llamafactory-cli train --help   # 某个命令的详细参数说明 lmf train
 
 llamafactory-cli env # 查看环境
 llamafactory-cli build --model_type llama --output_dir ./model # 构建 tokenizer 和 config（高级用法）
@@ -961,7 +962,6 @@ llamafactory-cli convert \
   --input_file ./data/raw.json \
   --output_file ./data/converted.json \
   --format alpaca 
-
 
 llamafactory-cli clean # 清理缓存
 ```
