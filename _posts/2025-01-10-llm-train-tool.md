@@ -2107,5 +2107,16 @@ Axolotl
 - 需要定制化训练策略的研究团队
 - 企业级多GPU/多节点训练场景
 
+## ROOL
+
+[ROLL：生产级大规模强化学习框架](https://developer.aliyun.com/article/1672107)
+
+【2025-6-6】ROLL 是阿里淘天联合爱橙推出的面向agentic场景的生产级大规模强化学习框架
+- ROLL（Reinforcement Learning Optimization for Large-scale Learning）
+- 开源：[ROLL](https://github.com/alibaba/ROLL)
+- 报告：[Reinforcement Learning Optimization for Large-Scale Learning: An Efficient and User-Friendly Scaling Library](https://arxiv.org/abs/2506.06122)
+
+
+
 
 # 结束
