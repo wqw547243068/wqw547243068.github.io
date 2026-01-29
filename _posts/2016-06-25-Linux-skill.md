@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 技能总结"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux ip
+tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux ip nohup
 excerpt: Linux 使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -2884,6 +2884,8 @@ typedef union epoll_data {
 
 而 nohup 可以让进程忽略掉 SIGHUP 信号，从而在后台保持运行。
 
+#### 使用方法
+
 nohup 加让程序后台运行的方式
 
 ```sh
@@ -2893,6 +2895,22 @@ nohup ping 127.0.0.1 &
 断开终端连接后，重新登陆到服务器，ping 进程仍然在运行。
 
 nohup 默认将程序输出追加到 nohup.out 文件中
+
+
+#### 问题
+
+问题汇总
+- 不能直接使用命令别名，需要换成实际地址
+- 不能传变量
+
+【2026-1-29】示例
+
+```sh
+nohup GRADIO_SERVER_PORT=8080 lmf webui &>log_lmf.txt & # 报错，系统将GRADIO_SERVER_PORT当做命令执行
+# 更改
+# 将 GRADIO_SERVER_PORT=8080 lmf webui 写入shell文件(start.sh)，再执行 nohup
+nohup start.sh &>log_lmf.txt &
+```
 
 
 ### tmux
