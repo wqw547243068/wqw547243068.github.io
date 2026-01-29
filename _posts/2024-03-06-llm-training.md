@@ -731,8 +731,41 @@ RLHF 负反馈是基于reward模型动态得到的，模型能够在训练过程
 
 ### 持续学习
 
-【2024-2-14】[综述：大语言模型的持续学习](https://zhuanlan.zhihu.com/p/681583249)
-- 【2024-2-7】论文 [Continual Learning for Large Language Models: A Survey](https://arxiv.org/pdf/2402.01364.pdf)
+论文
+- 【2024-2-7】莫纳什大学 论文 [Continual Learning for Large Language Models: A Survey](https://arxiv.org/pdf/2402.01364.pdf)，【2024-2-14】[综述：大语言模型的持续学习](https://zhuanlan.zhihu.com/p/681583249)
+
+【2024-11-25】罗格斯大学+谷歌云AI研究院综述论文 [Continual Learning of Large Language Models: A Comprehensive Survey](https://arxiv.org/pdf/2404.16789), 引用 莫纳什大学论文，进一步将持续学习划分为：垂直持续学习、水平持续学习
+
+持续预训练（CPT）、持续指令调整（CIT）和持续对齐（CA）三个阶段
+
+|阶段|概念|目的|
+|---|---|---|
+| 增量预训练 (Continual Pre-Training, CPT)| 在供应商端，利用新收集的大规模无标签数据和现有数据对模型进行持续训练。| 应对时间偏移。大模型不再是死板的百科全书，通过CPT，它能吃掉最新的时政新闻、科技进展和语言演变。这是模型保持“活性”的基础。|
+| 领域自适应预训练 (Domain-Adaptive Pre-training, DAP)| 针对特定领域（如医疗、法律、代码）的无标签数据进行专项训练。| 应对空间迁移。这是赋予大模型“灵魂”的关键一步。它不再只是“泛泛而谈”，而是开始理解行业黑话、逻辑范式和专业知识。|
+| 持续微调 (Continual Fine-Tuning, CFT)| 在消费端（应用层），针对具体任务进行连续的指令微调（SFT）和对齐（RLHF）。| 提高任务成功率和输出质量。如果说 CPT 和 DAP 是在给大模型‘灌注海量知识’，那么CFT就是在规范它的‘表达方式’，让它知道如何把脑子里的东西转化成用户想要的答案。|
+
+持续学习分类
+- vertical continuity（持续性） 垂直持续学习：transition from large-scale general domains to smaller-scale specific domains 从大规模通用领域迁移到小规模特定领域
+  - 分为几个阶段，Continual Pre-Training (CPT), Domain-Adaptive Pre-training (DAP), and Continual Fine-Tuning (CFT)
+  - 示例：医疗机构会将通用大模型适配到特定医疗领域
+- Horizontal continuity 水平持续学习：在时间、领域之间继续适应  continual adaptation across time
+  - 示例：社交媒体最新趋势随时间变化，社交平台持续更新广告推荐模型
+and domains
+
+大语言模型持续预训练与微调的高层级概述，两个维度连续性：
+- 垂直连续性（垂直持续学习）：LLM 训练过程可垂直划分为三个阶段，即（1）持续预训练（CPT）、（2）领域适配预训练（DAP）、（3）持续微调（CFT）。该维度的核心关注点是保留模型的通用知识，即防止垂直遗忘。
+- 水平连续性（水平持续学习）：LLM 完成部署后，当新的数据集可用时，需对模型进行持续更新。该维度的首要目标是，在一系列连续的任务中防止水平遗忘
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/02bdfa6b-501e-43c0-8339-8047a73eb996" />
+
+同样，灾难遗忘也分：
+- Vertical Forgetting 垂直遗忘
+  - 挑战：任务异构（冻结参数/重塑下游任务）、上游数据无法获取（使用公开数据/生成伪样本）
+- Horizontal Forgetting 水平遗忘
+  - 挑战：长任务序列（数据分布随时间漂移→持续模型集成）、突发分布漂移（）
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/4c77b352-d7b8-4fe8-8da2-0d1896acea6b" />
+
 
 大模型的持续学习: LLM随时间推移从持续的数据流中学习。
 
