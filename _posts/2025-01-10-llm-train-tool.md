@@ -855,7 +855,6 @@ pip install -r requirements.txt
 
 【2025-1-11】 win 10 上实践
 
-
 ```sh
 pip install llamafactory # 一步安装
 
@@ -902,7 +901,54 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 | SimPO Training         | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
 
 
+### CLI 模式
 
+几种使用方法
+- ① 命令行直接指定
+- ② 在 YAML 配置文件中设置
+
+① 命令行直接指定
+
+```sh
+CUDA_VISIBLE_DEVICES=0 python src/train_bash.py \
+--stage sft \
+--do_train \
+--model_name_or_path path_to_llama_model \
+--dataset alpaca_gpt4_zh \
+--cache_dir /mnt/fast_cache \
+--output_dir path_to_sft_checkpoint
+```
+
+
+这样会将模型文件和数据集缓存到 /mnt/fast_cache，而不是默认的 ~/.cache/huggingface。
+
+② 在 YAML 配置文件中设置
+
+```yaml
+model_args:
+model_name_or_path: path_to_llama_model
+cache_dir: /mnt/fast_cache
+```
+
+然后运行：
+
+```sh
+python src/train_bash.py config.yaml
+```
+
+CACHE_DIR 是共享存储路径。
+
+```bash
+# 三个环境变量指定到共享存储路径。
+-e HF_DATASETS_CACHE=${CACHE_DIR}/HF_DATASETS_CACHE \
+-e HUGGINGFACE_HUB_CACHE=${CACHE_DIR}/HUGGINGFACE_HUB_CACHE \
+-e TRANSFORMERS_CACHE=${CACHE_DIR}/TRANSFORMERS_CACHE \
+# 2个训练参数指定到共享存储路径。
+--cache_dir ${CACHE_DIR}/cache_dir \
+--tokenized_path ${CACHE_DIR}/tokenized_cache \
+# 1个训练参数指定共享存储
+--data_shared_file_system true \
+```
 
 ### LLaMA-Factory 命令行
 
