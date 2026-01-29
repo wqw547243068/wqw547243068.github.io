@@ -777,7 +777,10 @@ Deepspeed 是微软的大规模分布式训练工具。专门用于训练超大�
 
 ## LLaMA-Factory
 
-资料
+北航博士生郑耀威，开发的大模型训练框架
+- 2022年开始北航博士学业
+- github [hiyouga](https://github.com/hiyouga)
+- 【2024-3-20】ACL 2024 论文 [LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models](https://arxiv.org/pdf/2403.13372)
 - 【2024-7-18】[LLaMA-Factory QuickStart](https://zhuanlan.zhihu.com/p/695287607)
 - [官方文档](https://llamafactory.readthedocs.io/zh-cn/latest/index.html)
 
