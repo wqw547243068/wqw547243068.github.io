@@ -939,7 +939,7 @@ cache_dir: /mnt/fast_cache
 python src/train_bash.py config.yaml
 ```
 
-CACHE_DIR 是共享存储路径。
+CACHE_DIR 是共享存储路径
 
 ```bash
 # 三个环境变量指定到共享存储路径。
@@ -952,6 +952,32 @@ CACHE_DIR 是共享存储路径。
 # 1个训练参数指定共享存储
 --data_shared_file_system true \
 ```
+
+
+### Web UI
+
+UI 点选操作转化为命令行
+
+【2026-2-2】实践
+
+```sh
+torchrun --nnodes 1 --node_rank 0 --nproc_per_node 2 --master_addr 127.0.0.1 --master_port 54547 /ofs/ese-llm-ssd/users/wangqiwen/envs/py312/lib/python3.12/site-packages/llamafactory/launcher.py saves/Qwen3-4B-Instruct-2507/lora/train_2026-02-02-20-26-27/training_args.yaml
+```
+
+
+浏览器打开图形界面测试模型，可选择 `--share` 开公网链接
+
+```sh
+# Web UI 使用
+llamafactory-cli webui    # 启动网页端
+GRADIO_SERVER_PORT=7862 lmf webui
+GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
+CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
+CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
+set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
+llamafactory-cli web --model_name_or_path path_to_model --share
+```
+
 
 ### LLaMA-Factory 命令行
 
@@ -1015,18 +1041,6 @@ llamafactory-cli convert \
 llamafactory-cli clean # 清理缓存
 ```
 
-浏览器打开图形界面测试模型，可选择 `--share` 开公网链接
-
-```sh
-# Web UI 使用
-llamafactory-cli webui    # 启动网页端
-GRADIO_SERVER_PORT=7862 lmf webui
-GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
-CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
-CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
-set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
-llamafactory-cli web --model_name_or_path path_to_model --share
-```
 
 对 Llama3-8B-Instruct 模型进行 LoRA 微调、推理和合并。
 
