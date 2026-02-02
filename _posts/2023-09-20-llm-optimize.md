@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  大模型推理优化 LLM Inference
+title:  大模型推理框架 LLM Inference Tool
 date:   2023-09-20 22:46:00
 categories: 大模型
 tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎 bert
@@ -13,7 +13,7 @@ permalink: /llm_opt
 {:toc}
 
 
-# LLM 推理优化
+# LLM 推理框架
 
 基于 Transformer 架构的大语言模型 (LLM) 在全球范围内引发了深度的技术关注，并取得了令人瞩目的成就。其强大的理解和生成能力，正在深刻改变对人工智能的认知和应用。
 
@@ -29,7 +29,6 @@ permalink: /llm_opt
 ## LLM 推理
 
 【2024-3-30】[图解大模型计算加速系列之：vLLM核心技术PagedAttention原理](https://mp.weixin.qq.com/s/oCGENfMwTNmfr1nGeCZz2g)
-
 
 LLM 推理过程分两个阶段: `prefill` 和 `decode`, 通常用 KV cache 技术加速推理
 - `Prefill`: **预填充**阶段, 把整段 prompt 喂给模型, 做forward计算。
@@ -281,8 +280,7 @@ PyTorch 编写注意力
 
 【2025-5-8】韩国 [25种LLM部署框架你知道多少？](https://zhuanlan.zhihu.com/p/1933217002698306629)
 - 论文：《[A Survey on Inference Engines for Large Language Models: Perspectives on Optimization and Efficiency](https://arxiv.org/pdf/2505.01658)》  
-
-总结了目前市面上的 LLM 的推理框架，总共有 25 个。
+LLM 的推理框架，总共有 25 个。
 
 技术分类：
 - 批处理（动态批、连续批、nano批等）
@@ -296,7 +294,6 @@ PyTorch 编写注意力
 - 对25种开源及商业推理引擎进行了详尽比较，涵盖如 vLLM、TensorRT-LLM、GroqCloud 等。
 - 提供持续更新的公共资源库：[Awesome LLM Inference Engine](https://github.com/sihyeong/Awesome-LLM-Inference-Engine)
 - 指出未来方向，如更复杂服务支持、多硬件适配、安全性增强等。
-
 
 总结
 - star数：ollama、llama.cpp、vllm（低代码低成本部署还是广受大众喜欢）。
@@ -314,9 +311,14 @@ PyTorch 编写注意力
 
 ## 推理框架
 
+大模型推理有多种方式
+- HuggingFace Transformers —— 最基础
+- TGI
+- vLLM —— 最流行
+- Triton + TensorRT-LLM
+- …
 
 【2206-1-8】[主流大模型推理部署框架：vLLM、SGLang、TensorRT-LLM、ollama、XInference](https://mp.weixin.qq.com/s/AymYCFgoet43ZY8W2b-5SQ)
-
 
 | 技术工具       | 技术优势                                                                 | 适用场景               |
 |----------------|--------------------------------------------------------------------------|------------------------|
@@ -329,7 +331,6 @@ PyTorch 编写注意力
 | LightLLM       | 轻量级设计，支持边缘设备部署，吞吐表现优异                               | 边缘设备部署           |
 | LMDepoly       | 针对昇腾等国产硬件深度优化，多模态支持能力强，适合视觉语言混合任务       | 国产硬件部署           |
 | 昇腾框架       | 支持Qwen2.5-Omni等全模态模型，扩展至3D、视频、传感信号等全模态场景       | 国产硬件部署           |
-
 
 
 大模型推理部署框架的选型需综合考量业务场景、硬件条件与长期演进路径。
@@ -685,19 +686,19 @@ TP 和 PP 很好理解，而DP 的意思应该是，例如你有4张卡，设置
 【2024-4-12】[图解大模型计算加速系列：vLLM源码解析2，调度器策略(Scheduler)](https://mp.weixin.qq.com/s/N2tsOD-XdaNcodf-CKWVhQ)
 - 一、入口函数
 - 二、SequenceGroup
-- 2.1 原生请求输入
-- 2.2 SequenceGroup的作用
-- 2.3 SequenceGroup的结构
+  - 2.1 原生请求输入
+  - 2.2 SequenceGroup的作用
+  - 2.3 SequenceGroup的结构
 - 三、add_request: 预处理请求
 - 四、step：调度器策略
-- 4.1 调度器结构
-- 4.2 整体调度流程
-- 4.3 _passed_delay：waiting队列调度时间阈值判断
-- 4.4 can_allocate：能否为seq_group分配物理块（prefill）
-- 4.5 can_append_slot: 能否为seq_group分配物理块（decode）
-- 4.6 allocate与append_slot：为seq_group实际分配物理块
-- 4.7 preempt：抢占策略
-- 4.8 调度器整体代码解读
+  - 4.1 调度器结构
+  - 4.2 整体调度流程
+  - 4.3 _passed_delay：waiting队列调度时间阈值判断
+  - 4.4 can_allocate：能否为seq_group分配物理块（prefill）
+  - 4.5 can_append_slot: 能否为seq_group分配物理块（decode）
+  - 4.6 allocate与append_slot：为seq_group实际分配物理块
+  - 4.7 preempt：抢占策略
+  - 4.8 调度器整体代码解读
 
 #### 案例
 
