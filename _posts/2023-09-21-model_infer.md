@@ -2,12 +2,12 @@
 layout: post
 title:  "模型推理加速"
 date:   2023-09-21 19:25:00
-categories: 大模型
+categories: 机器学习
 tags: gpu tensorflow pytorch 加速 tensorrt 推理 onnx zero lpu cuda gemm huggingface 评测 vllm cpu
 excerpt: 模型部署、推理知识点
 author: 鹤啸九天
 mathjax: true
-permalink: /infer
+permalink: /model_infer
 ---
 
 * content
@@ -23,7 +23,6 @@ permalink: /infer
 推理逐渐成为大模型进程，尤其是落地进程中的主旋律。
 
 ## LLM 部署
-
 
 
 ### gpu
