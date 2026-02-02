@@ -6,7 +6,7 @@ categories: 大模型
 tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎 bert
 excerpt: 如何提升LLM推理效率？
 mathjax: true
-permalink: /llm_opt
+permalink: /llm_infer
 ---
 
 * content
@@ -272,8 +272,46 @@ PyTorch 编写注意力
 类似 torch.compile 这样的工具是优化代码、提升硬件性能的绝佳选择，而无需使用CUDA以传统方式编写kernel。
 
 
+## 推理框架
 
-## 加速框架
+大模型推理有多种方式
+- HuggingFace Transformers —— 最基础
+- TGI
+- vLLM —— 最流行
+- Triton + TensorRT-LLM
+- …
+
+
+【2206-1-8】[主流大模型推理部署框架：vLLM、SGLang、TensorRT-LLM、ollama、XInference](https://mp.weixin.qq.com/s/AymYCFgoet43ZY8W2b-5SQ)
+
+| 技术工具       | 技术优势                                                                 | 适用场景               |
+|----------------|--------------------------------------------------------------------------|------------------------|
+| vLLM           | 适合动态批处理与多GPU扩展，TTFT表现优异，适合需要快速响应的场景         | 企业级高并发应用       |
+| TensorRT-LLM   | 在低延迟场景下表现最佳，适合对响应速度要求苛刻的生产级应用               | 企业级高并发应用       |
+| SGLang         | 在高并发稳定吞吐方面表现突出，适合需要持续高吞吐的场景                   | 企业级高并发应用       |
+| XInference     | 提供分离式部署和分布式能力，适合需要快速验证分布式场景的开发者           | 企业级高并发应用       |
+| Ollama         | 安装便捷，支持跨平台，冷启动速度快，适合轻量级实验                       | 个人开发与本地原型     |
+| Llama.cpp      | 零硬件门槛，适合无GPU环境下的基础推理，如物联网设备                       | 个人开发与本地原型     |
+| LightLLM       | 轻量级设计，支持边缘设备部署，吞吐表现优异                               | 边缘设备部署           |
+| LMDepoly       | 针对昇腾等国产硬件深度优化，多模态支持能力强，适合视觉语言混合任务       | 国产硬件部署           |
+| 昇腾框架       | 支持Qwen2.5-Omni等全模态模型，扩展至3D、视频、传感信号等全模态场景       | 国产硬件部署           |
+
+
+大模型推理部署框架的选型需综合考量业务场景、硬件条件与长期演进路径。
+- 企业级高并发需求下，vLLM与TensorRT-LLM具备最优性能；
+- SGLang则在高吞吐与多轮交互场景中优势突出；
+- Ollama适用于个人开发与敏捷原型验证；
+- XInference和LightLLM在分布式架构与边缘端部署中展现出广阔前景；
+- LMDeploy与昇腾框架则在国产化硬件生态适配方面具有不可替代性。
+
+
+
+| 工具 | PagedAttention | 连续批处理 | 多GPU推理 | 分布式推理 | OpenAI兼容API | 内存效率 | 易用性 |
+|---|---|---|---|---|---|---|---|
+| vLLM | ✅ | ✅ | ✅ | ✅ | ✅ | 高 | 高 |
+| HuggingFace Transformers+ | ❌ | ❌ | ✅ | ❌ | ❌ | 低 | 高 |
+| NVIDIA TensorRT-LLM | ❌ | ✅ | ✅ | ✅ | ❌ | 中 | 低 |
+| Text Generation Inference | ❌ | ✅ | ✅ | ✅ | ✅ | 中 | 中 |
 
 
 ### 总结
@@ -307,38 +345,6 @@ LLM 的推理框架，总共有 25 个。
 - 生产环境，推荐vllm和sglang，支持的模型多，社区活跃，文档也详细。
 - 自己玩且资源不够的话，推荐 ollama、llama.cpp、ktransformer。
 - 不想自己部署，直接用各大公司的在线版本完事。
-
-
-## 推理框架
-
-大模型推理有多种方式
-- HuggingFace Transformers —— 最基础
-- TGI
-- vLLM —— 最流行
-- Triton + TensorRT-LLM
-- …
-
-【2206-1-8】[主流大模型推理部署框架：vLLM、SGLang、TensorRT-LLM、ollama、XInference](https://mp.weixin.qq.com/s/AymYCFgoet43ZY8W2b-5SQ)
-
-| 技术工具       | 技术优势                                                                 | 适用场景               |
-|----------------|--------------------------------------------------------------------------|------------------------|
-| vLLM           | 适合动态批处理与多GPU扩展，TTFT表现优异，适合需要快速响应的场景         | 企业级高并发应用       |
-| TensorRT-LLM   | 在低延迟场景下表现最佳，适合对响应速度要求苛刻的生产级应用               | 企业级高并发应用       |
-| SGLang         | 在高并发稳定吞吐方面表现突出，适合需要持续高吞吐的场景                   | 企业级高并发应用       |
-| XInference     | 提供分离式部署和分布式能力，适合需要快速验证分布式场景的开发者           | 企业级高并发应用       |
-| Ollama         | 安装便捷，支持跨平台，冷启动速度快，适合轻量级实验                       | 个人开发与本地原型     |
-| Llama.cpp      | 零硬件门槛，适合无GPU环境下的基础推理，如物联网设备                       | 个人开发与本地原型     |
-| LightLLM       | 轻量级设计，支持边缘设备部署，吞吐表现优异                               | 边缘设备部署           |
-| LMDepoly       | 针对昇腾等国产硬件深度优化，多模态支持能力强，适合视觉语言混合任务       | 国产硬件部署           |
-| 昇腾框架       | 支持Qwen2.5-Omni等全模态模型，扩展至3D、视频、传感信号等全模态场景       | 国产硬件部署           |
-
-
-大模型推理部署框架的选型需综合考量业务场景、硬件条件与长期演进路径。
-- 企业级高并发需求下，vLLM与TensorRT-LLM具备最优性能；
-- SGLang则在高吞吐与多轮交互场景中优势突出；
-- Ollama适用于个人开发与敏捷原型验证；
-- XInference和LightLLM在分布式架构与边缘端部署中展现出广阔前景；
-- LMDeploy与昇腾框架则在国产化硬件生态适配方面具有不可替代性。
 
 ### LLM 推理
 
@@ -472,7 +478,6 @@ Continuous Batching‌：突破传统批量等待机制，支持新请求实时�
 
 量化优化支持‌：原生集成GPTQ、AWQ等先进量化算法，精准压缩模型参数规模，大幅提升GPU计算密度与推理效率，实现性能与资源消耗的最优平衡。
 
-
 【2025-12-13】[DeepSeek倒逼vLLM升级！芯片内卷、MoE横扫千模，vLLM核心维护者独家回应：如何凭PyTorch坐稳推理“铁王座”](https://mp.weixin.qq.com/s/v4yn185XVoso9HtnWB_4_w)
 
 2023 年, 加州大学伯克利分校 Sky Computing Lab 学生与研究员开源核心的 PagedAttention 技术，vLLM 
@@ -576,20 +581,32 @@ PagedAttention 通过**分块管理显存**、**动态按需分配**和**跨请�
 [原文](https://blog.csdn.net/bugyinyin/article/details/147140630)
 
 
-#### vllm 部署方式
+#### vllm 部署
+
+
+安装
+
+```sh
+# 安装基础版本
+pip install vllm
+
+# 安装支持CUDA的版本
+# pip install vllm-nightly # 无效，报错
+pip install -U vllm \
+    --torch-backend=auto \
+    --extra-index-url https://wheels.vllm.ai/nightly
+```
 
 vllm 两种模型部署方式：
 - **在线**服务形式（Online Serving）
-  - 在线服务是通过指令来启动一个vllm服务，将模型以服务的形式完成部署，之后可以通过openai格式的api来访问模型
+  - 在线服务: 通过指令启动vllm服务，将模型以服务的形式完成部署，之后可以通过openai格式的api来访问模型
 - **离线**推理形式 （Offline Inference）
-  - 离线推理的形式是通过类的方式初始化一个模型，之后传入提示词即可访问模型
+  - 离线推理: 通过类方式初始化一个模型，之后传入提示词即可访问模型
 
 
 #### vllm 使用
 
 ```py
-# pip install vllm # 安装vLLM
-
 # 示例代码：生成文本
 from vllm import LLM, SamplingParams
 
