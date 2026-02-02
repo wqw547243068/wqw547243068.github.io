@@ -972,6 +972,8 @@ torchrun --nnodes 1 --node_rank 0 --nproc_per_node 2 --master_addr 127.0.0.1 --m
 llamafactory-cli webui    # 启动网页端
 GRADIO_SERVER_PORT=7862 lmf webui
 GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
+GRADIO_SERVER_PORT=8080 CACHE_DIR=$cache_dir lmf webui # 【2026-2-2】制定 cache 目录，huggingface 下载模型不放默认目录 ~/.cache/huggingface
+
 CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
 CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
 set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
