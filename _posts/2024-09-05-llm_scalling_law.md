@@ -32,8 +32,7 @@ permalink: /llm_law
 - 24年9月前，大模型领域只有一个Scaling Law，预训练阶段的Scaling Law，之前炒的比较热的“Scaling Law撞墙说”就是这个阶段。
 - OpenAI  o1推出后，另外两个阶段不再孤单，也各自拥有了姓名，产生了各自的Scaling Law，对应**后训练**阶段的强化学习Scaling Law(RL Scaling Law)和**在线推理**阶段的Inference Scaling Law(也叫Test Time Scaling Law)。
 
-
-核心思想一样：本阶段，如果增加算力，则大模型效果会持续提升。
+核心思想：本阶段，如果增加算力，则大模型效果会持续提升。
 
 <img width="2788" height="1084" alt="image" src="https://github.com/user-attachments/assets/71dca7c8-5dd4-4a86-943c-8531446e6765" />
 
@@ -46,8 +45,24 @@ permalink: /llm_law
 
 <img width="720" height="388" alt="image" src="https://github.com/user-attachments/assets/c9dac0ee-897b-42d2-81ca-18da5fd6bddf" />
 
-
 【2025-2-10】[张俊林](https://www.zhihu.com/question/8584644469/answer/97056859008)
+
+
+### Pretrain Scaling Law
+
+中山大学 CMR  Critical Mixture Ratio
+- 【2024-7-25】[CMR Scaling Law: Predicting Critical Mixture Ratios for Continual Pre-training of Language Models](https://arxiv.org/pdf/2407.17467)
+
+持续预训练（CPT）在重放通用语料库的同时注入新领域特定或专有知识来增强LLM能力，以防止灾难性遗忘。
+
+然而，通用语料库和特定领域语料库的数据**混合比例**通常是根据经验选择，导致实际中训练效率不佳。
+
+尝试重新审视CPT下LLMs 缩放行为，并发现了损失、混合比例和训练令牌规模之间的幂律关系。形式化了通用和领域特定能力之间的权衡，导致了明确定义的通用和领域数据的关键混合比率（CMR）。
+
+通过平衡CMR，保持模型的通用能力并实现所需的领域转移，确保充分利用可用资源。
+
+因此，如果重视效率和效果之间的平衡，CMR可以被认为是最佳混合比率。通过广实验，确定CMR可预测性，并提出了CMR的缩放定律，并证实了其泛化性。这些发现为优化专业领域中LLM的训练提供了实用的指导，确保在高效管理训练资源的同时实现通用和领域特定的性能。
+
 
 ## 思考
 
