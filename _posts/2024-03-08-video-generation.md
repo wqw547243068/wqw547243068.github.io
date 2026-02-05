@@ -1153,6 +1153,9 @@ SkyReels-A1 能够基于任意人体比例（包括肖像、半身及全身构�
 【2026-1-29】[SkyReels-V3：登顶行业SOTA的开源多模态视频生成模型技术解析](https://zhuanlan.zhihu.com/p/2000271623689896590)
 
 昆仑天工（Skywork AI）开源最新多模态视频生成模型——SkyReels-V3。
+- github [SkyReels-V3](https://github.com/SkyworkAI/SkyReels-V3)
+- 在线[Demo](https://platform.skyreels.ai/)
+- 技术报告 [ SkyReels-Audio: Omni Audio-Conditioned Talking Portraits in Video Diffusion Transformers](https://arxiv.org/pdf/2506.00830)
 
 不仅在多项核心指标上超越主流闭源系统（如Kling、Vidu等），更以全功能开源、模块化设计、分钟级长视频生成能力三大亮点，成为当前AI视频生成领域的标杆之作。
 
