@@ -3,7 +3,7 @@ layout: post
 title:  "用户模拟器-User Simulator"
 date:   2020-08-12 20:46:00
 categories: 深度学习 大模型
-tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体 数字分身 评测
+tags: 对话系统 用户模拟器 性格模拟 角色模拟 论文 simulator agent 智能体 数字分身 评测 画像 个性化
 excerpt: 对话系统之用户模拟器专题
 author: 鹤啸九天
 mathjax: true
@@ -595,7 +595,7 @@ choosing which items to talk about, expressing binary preferences, expressing op
 
 
 
-### MultiOn
+### 【2024-6-13】MultiOn
 
 【2024-6-13】[MultiOn](https://app.multion.ai/playground)
 - 可在线体验
@@ -606,7 +606,7 @@ choosing which items to talk about, expressing binary preferences, expressing op
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y7QAfPOs-bc?si=YHrmqoLok1s1Lrkg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-### AgentSociety
+### 【2025-2-24】AgentSociety
 
 【2025-2-24】[AgentSociety：清华大学的社会模拟器如何重塑社会科学研究？](https://chattools.cn/article/2153)
 - [项目官网](https://agentsociety.readthedocs.io/en/latest/)
@@ -621,7 +621,7 @@ choosing which items to talk about, expressing binary preferences, expressing op
 智能体并非简单的程序化角色，而是被赋予了情感、需求、动机和认知能力。每个智能体都有其独特的“心理画像”，包括性格、年龄、性别等，以及动态的个人状态，如情感、经济状况和社会关系。这种设计使得智能体的行为模式更加个性化和真实，能够模拟人类在复杂社会环境中的各种行为，例如移动、就业、消费和社交互动。
 
 
-### Agent Hospital 
+### 【2024-5-5】Agent Hospital 
 
 医院模拟器 Agent Hospital
 
@@ -636,7 +636,7 @@ choosing which items to talk about, expressing binary preferences, expressing op
 
 
 
-### AgentClinic
+### 【2025-5-22】AgentClinic
 
 【2024-5-22】斯坦福、约翰霍普金斯推出 [AgentClinic](https://agentclinic.github.io/)
 - [AgentClinic: a multimodal agent benchmark to evaluate AI in simulated clinical environments](https://arxiv.org/pdf/2405.07960)
@@ -724,7 +724,62 @@ RL 训练了两种生成式奖励模型：
 - 团队首度提出了「共情的心理物理模型」（EPM），把玄学的「共情」变成了可计算的「物理做功」。
 
 
-### OpenSandbox
+### AlignXplore+ 大模型个性化模拟
+
+[蚂蚁集团东北大学，抛弃向量推荐！蚂蚁用8B小模型构建「用户“话”像」，实现跨任务跨模型通用并拿下SOTA](https://zhuanlan.zhihu.com/p/2001028982435492256)
+
+大模型时代应该怎么做个性化？
+- 传统推荐系统和对话模型往往依赖ID Embedding或特定参数（如LoRA）来表示用户偏好。这种不可解释、难以迁移的“黑盒”范式，正在成为桎梏。
+  - 1. **不可解释性**：用户无法理解、也无法修改被系统定义的“自己”，这在注重隐私和控制权的AI Agent时代是不可接受的。
+  - 2. **无法迁移**：更关键的是，向量和参数通常与特定的模型架构深度绑定。你在推荐系统里的长期兴趣，无法直接被聊天机器人复用；你在A模型里的画像，换了B模型就成了乱码。
+- 大模型强大的推理能力和生成能力为打破传统范式的局限性带来了机会，让个性化可以从“黑盒”走向“白盒”。
+
+蚂蚁和东北大学研究团队（后简称“团队”）推出 AlignXplore+，在大模型**个性化**上实现了**文本化**用户建模的新范式，让复杂用户偏好可以被人和机器同时理解，同时具备很好的扩展性和迁移性。
+> “文本是通用的接口，而向量是封闭的孤岛。”
+
+基于这样的底层思考，团队提出范式转移：
+> 摒弃隐空间中的向量，直接用自然语言来归纳和推理解析用户的偏好。
+
+这种基于文本的偏好归纳，不仅人眼可读、可控，还完全解耦了偏好推理与下游的模型和任务——无论是推荐、写作还是闲聊，无论是GPT、Llama还是Qwen，都可以无缝“读懂”这个用户。
+- 【2026-1-28】人大、东北大学、蚂蚁集团 [Text as a Universal Interface for Transferable Personalization](https://arxiv.org/pdf/2601.04963)
+- github [AlignXplorePlus](https://github.com/AntResearchNLP/AlignXplorePlus)
+- huggingface [AlignXplore-Plus](https://huggingface.co/VanillaH1/AlignXplore-Plus)
+
+AlignXplore+：三大核心特性，重构用户理解范式
+
+相比于现有的用户理解和对齐方法，AlignXplore+ 实现了三大跨越：
+1. **全域通用**：打破数据孤岛。
+  - AlignXplore+ 不再局限于单一交互形式。被设计用于处理真实世界中异构的数据源。无论是社交网络上的发帖、电商平台的点击，还是新闻流的浏览记录，AlignXplore+都能将其统一消化，提炼出高价值的偏好摘要。这使得它能够从碎片化的数字足迹中，拼凑出一个完整的用户全貌。
+2. **极致迁移**：一次画像，处处通用。
+  - 从“单一任务”到“全能应用”，打破任务边界，将能力从响应选择扩展到了推荐和生成等广泛的个性化应用中；从“特定模型”到“通用接口”，它真正实现了跨模型的迁移。AlignXplore+生成的画像，可以被任何下游大模型直接读取和使用。
+3. 实战适配：无惧真实世界数据噪点。
+  - 真实世界的交互是流式，也充满噪点。AlignXplore+不需要每次都重新“阅读”用户的一生，而是像人类记忆一样，基于旧的摘要和新的交互不断演化；而面对真实场景中常见的“不完美信号”（如缺乏明确负反馈的数据和跨平台混合数据），它依然能保持稳定的推理能力，免受噪音干扰。
+
+面向大模型个性化对齐的统一框架，核心目标只有一个：让大模型在不重训、不续训前提下，持续理解用户。
+- ![](https://pic2.zhimg.com/v2-e90a925ceca0f1cb93088fcd8749a9bd_1440w.jpg)
+
+将“用户偏好学习”拆解为两个核心步骤：
+1. SFT阶段：高质量数据的“生成-验证-融合”。为了解决文本化的偏好归纳“太泛”或“太偏”的问题，团队设计了一套Pipeline，让模型基于多种可能的未来交互行为来反推当前的偏好，并引入了“行为验证”机制，确保生成的用户偏好能准确预测用户行为。
+2. RL阶段：面向未来的“课程学习”仅有SFT是不够的。团队引入了强化学习（RL），并设计了两个关键机制：
+  - 课程剪枝（Curriculum Pruning）：筛选出那些“难但可解”的高推理价值样本，避免模型在简单或不可解的样本上空转；
+  - 累积奖励（Cumulative Reward）：让模型不仅关注当前的偏好有效性，更要关注生成的用户偏好在未来持续交互中的可演化性，适应流式更新。
+
+效果
+
+AlignXplore+ 在用户理解准确性、迁移能力和鲁棒性上实现了全面升级。
+1. 效果升级：8B模型超越20B/32B开源模型
+  - 在包含推荐（Recommendation）、回复选择（Response Selection）和回复生成（Response Generation）的九大基准测试中，仅有8B参数的AlignXplore+在平均分数上取得了SOTA的成绩。
+  - 平均得分75.10%，绝对提升幅度比GPT-OSS-20B高出4.2%。
+  - 在复杂任务上表现尤为突出（如AlignX），验证了显式推理比隐式向量更能捕捉深层意图。
+2. 迁移能力升级：真正实现“一次画像，处处通用”
+  - AlignXplore+生成的用户偏好，展现了惊人的Zero-shot迁移能力：
+  - 跨任务迁移（Cross-Task）：在对话任务中生成的偏好，直接拿去指导新闻推荐，依然有效。
+  - 跨模型迁移（Cross-Model）：这是文本接口的最大优势。AlignXplore+生成的偏好，直接给Qwen2.5-7B或GPT-OSS-20B等完全不同的下游模型使用，均能带来稳定的性能提升。这意味着你的用户偏好不再被单一模型锁定。
+3. 鲁棒性升级：适应真实世界的“不完美数据”
+  - 真实场景往往只有用户的点击记录（正样本），而缺乏明确的负反馈。实验表明，即便移除了所有的负样本，AlignXplore+依然保持了显著的性能优势，展现了强大的推理鲁棒性
+
+
+### 【2026-1-29】OpenSandbox
 
 【2026-1-29】[阿里重磅开源 OpenSandbox：专为 AI Agent 打造的下一代沙箱](https://mp.weixin.qq.com/s/zN8FidEku-a8rZ-DohPveQ)
 
