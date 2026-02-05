@@ -489,5 +489,28 @@ OmniVinci的功能特色
 <img width="1005" height="755" alt="image" src="https://github.com/user-attachments/assets/e3e135a2-f5c4-4246-a92f-e39ec03fcafc" />
 
 
+### 【2026-2-4】MiniCPM-o 4.5
+
+【2026-2-4】[面壁智能小钢炮开源进阶版「Her」，9B模型居然有了「活人感」](https://mp.weixin.qq.com/s/9rdsklv3I8mrFHaSRUGSzw)
+- 体验链接：[demo](https://minicpm-omni.openbmb.cn/)
+
+问题：
+- 为什么和 AI 对话，总觉得少了点「人味儿」?
+- 就像两个人在用对讲机聊天。按住通话键说话时，对方听不见；对方说话时，你也插不上嘴。一次只能一个方向传递信息。
+
+这不是产品设计问题，而是技术限制。因为绝大多数 AI 都在用**单工模式**运行，用起来感觉很死板。
+
+2026年2月4日，面壁开源行业首个**全双工**全模态大模型 MiniCPM-o 4.5，相比已有多模态模型，MiniCPM-o 4.5 **首次**实现了「边看边听边说」以及「自主交互」的全模态能力，模型不再只是把视觉、语音作为静态输入处理，而是能够在实时、多模态信息流中持续感知环境变化，并在输出的同时保持对外界的理解。
+
+目前，MiniCPM-o 4.5 已在 GitHub、Hugging Face 等平台开源：
+- 开源地址：[MiniCPM-o](https://github.com/OpenBMB/MiniCPM-o)
+- Hugging Face: [MiniCPM-o-4_5](https://huggingface.co/openbmb/MiniCPM-o-4_5)
+- 体验链接：[demo](https://minicpm-omni.openbmb.cn/)
+
+虽然参数量只有 9B，MiniCPM-o 4.5 却在全模态、视觉理解、文档解析、语音理解和生成、声音克隆等方面，均做到了全模态模型 SOTA 水平。在涵盖 8 个主流评测基准的 OpenCompass 综合评估中得分 77.6 。
+
+MiniCPM-o 4.5 在 MMBench（综合视觉理解）、MathVista（数学推理）及 OmniDocBench（文档解析）等关键任务上击败了顶级闭源模型 Gemini 2.5 Flash。
+
+MiniCPM-o 4.5 在提升能力密度的同时也在追求极致能效比：以更低显存占用、更快响应速度，在保持 SOTA 级多模态表现下，实现更高推理效率与更低推理成本
 
 # 结束
