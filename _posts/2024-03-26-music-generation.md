@@ -19,6 +19,7 @@ permalink: /music_gen
 
 更多音乐知识见[站内专题](music)
 
+
 ### 曲风
 
 到底什么是「古典(Classical)」风格？什么是「乡村(Country)」风格？
@@ -28,9 +29,50 @@ permalink: /music_gen
 - ![](https://pic3.zhimg.com/80/v2-c23d01c2e64ae461242774220bee9c46_1440w.webp)
 
 
+## 音乐提示词 
+
+### 提示词结构
+
+参考：
+- [Suno教程篇：音乐小白也能使用Suno AI零门槛创作音乐](https://zhuanlan.zhihu.com/p/688696210?utm_psn=1756068864734138368)
+
+提示词参考
+
+好的谱曲提示词包含以下要素，可以酌情增减，仅供参考
+> 风格 + 情感 + 乐器 + 节奏 + 人声
+
+说明
+- 1、风格：流行(Pop)，古典(Classical)，爵士(Jazz)，电子(Electronic)，摇滚(Rock)，乡村(Country)，民谣(Folk)，嘻哈(Hip-hop)，布鲁斯(Blues)，拉丁(Latin)
+- 2、情感：欢快(Cheerful)，悲伤(Sad)，浪漫(Romantic)，激昂(Passionate)，温柔(Gentle)，忧郁(Melancholic)，神秘(Mysterious)，紧张(Tense)，恐怖(Horrifying)，宁静(Peaceful)
+- 3、乐器：钢琴(Piano)，吉他(Guitar)，小提琴(Violin)，鼓(Drum)，贝斯(Bass)，长笛(Flute)，萨克斯(Saxophone)，小号(Trumpet)，大提琴(Cello)，口琴(Harmonica)
+- 4、节奏：快速(Fast)，慢速(Slow)，中等(Medium)，渐快(Accelerating)，渐慢(Decelerating)，自由(Free)，稳定(Steady)，跳跃(Jumpy)，拖延(Dragging)，犹豫(Hesitant)
+- 5、人声：男声(Male vocals)，女声(Female vocals)，童声(Children's vocals)，合唱(Choir)
+  - 纯音乐时，此项可省略
+
+### 提示词实例
+
+- 1、创作一首欢快的流行电子舞曲
+  - 提示词：upbeat, pop, electronic, dance, synthesizer, fast
+- 2、创作一首浪漫的古典钢琴曲
+  - 提示词：romantic, classical, piano, tender, slow
+- 3、创作一首悲伤的爵士萨克斯风曲
+  - 提示词：melancholic, jazz, saxophone, sentimental, improvisation, medium
+- 4、创作一首激昂的摇滚吉他曲
+  - 提示词：passionate, rock, electric guitar, powerful, fast
+- 5、创作一首温馨的民谣木吉他曲
+  - 提示词：warm, folk, acoustic guitar, fingerstyle, gentle
+
+
+
 ## 音乐生成技术
 
 音乐生成技术、工具
+
+随着 Diffusion Transformer、神经音频编码等技术的演进，AI文生歌曲工具正从"辅助创作"向"协同创新"跃迁：
+- 多模态交互：巨推管家AI的文本-视频联动生成、Mubert Pro的实时场景响应，预示着未来工具将具备更强的上下文理解能力。
+- 伦理框架建设：Suno AI的版权管理模块与Mubert的授权模式，为行业提供了可复制的合规化路径。AIVA与环球音乐集团建立的授权协议，确保所有生成作品可安全用于商业发行。
+- 开源生态繁荣：Hugging Face平台已涌现大量开源音乐生成模型，开发者可基于Stable Diffusion Music、Riffusion等项目进行二次开发。某独立开发者利用开源模型，仅用3周就构建出支持方言歌曲生成的垂直工具。
+
 
 
 ### 总结
@@ -43,6 +85,8 @@ permalink: /music_gen
 - 【2024-6-1】[海绵音乐](https://www.haimian.com/)， 北京颜选科技(字节跳动),一键创作你的 AI 音乐
   - 2024年6月内测，8月正式上线免费使用
 - 【2024-7-10】[天谱乐](https://www.tianpuyue.cn/): 不仅支持**文生音乐**、**音频生音乐**，还首创**图片/视频生音乐**功能，多模态输入能力超越 Suno
+
+【2025-8-12】[AI文生歌曲工具大比拼：从技术到场景的深度评测](https://www.sohu.com/a/923276321_122475824)
 
 
 
@@ -130,43 +174,31 @@ Sketch2Sound 把声音模仿转换为生成新声音。
 
 这给声音艺术家提供了一个选择，可以在“草图感”和“精确度”之间找到适合自己的平衡点。
 
+### 巨推管家AI
 
-## 音乐提示词 
+巨推管家AI：中文语境下的企业级音乐工厂
 
-### 提示词结构
+国内首款面向**B端**用户的AI音乐开发平台，巨推管家AI通过"多模态预训练模型+音乐知识图谱"的融合架构，在中文音乐生成领域构建起技术护城河。
 
-参考：
-- [Suno教程篇：音乐小白也能使用Suno AI零门槛创作音乐](https://zhuanlan.zhihu.com/p/688696210?utm_psn=1756068864734138368)
-
-提示词参考
-
-好的谱曲提示词包含以下要素，可以酌情增减，仅供参考
-> 风格 + 情感 + 乐器 + 节奏 + 人声
-
-说明
-- 1、风格：流行(Pop)，古典(Classical)，爵士(Jazz)，电子(Electronic)，摇滚(Rock)，乡村(Country)，民谣(Folk)，嘻哈(Hip-hop)，布鲁斯(Blues)，拉丁(Latin)
-- 2、情感：欢快(Cheerful)，悲伤(Sad)，浪漫(Romantic)，激昂(Passionate)，温柔(Gentle)，忧郁(Melancholic)，神秘(Mysterious)，紧张(Tense)，恐怖(Horrifying)，宁静(Peaceful)
-- 3、乐器：钢琴(Piano)，吉他(Guitar)，小提琴(Violin)，鼓(Drum)，贝斯(Bass)，长笛(Flute)，萨克斯(Saxophone)，小号(Trumpet)，大提琴(Cello)，口琴(Harmonica)
-- 4、节奏：快速(Fast)，慢速(Slow)，中等(Medium)，渐快(Accelerating)，渐慢(Decelerating)，自由(Free)，稳定(Steady)，跳跃(Jumpy)，拖延(Dragging)，犹豫(Hesitant)
-- 5、人声：男声(Male vocals)，女声(Female vocals)，童声(Children's vocals)，合唱(Choir)
-  - 纯音乐时，此项可省略
-
-### 提示词实例
-
-- 1、创作一首欢快的流行电子舞曲
-  - 提示词：upbeat, pop, electronic, dance, synthesizer, fast
-- 2、创作一首浪漫的古典钢琴曲
-  - 提示词：romantic, classical, piano, tender, slow
-- 3、创作一首悲伤的爵士萨克斯风曲
-  - 提示词：melancholic, jazz, saxophone, sentimental, improvisation, medium
-- 4、创作一首激昂的摇滚吉他曲
-  - 提示词：passionate, rock, electric guitar, powerful, fast
-- 5、创作一首温馨的民谣木吉他曲
-  - 提示词：warm, folk, acoustic guitar, fingerstyle, gentle
+其核心优势体现在三个层面：
+- 中文韵律引擎：基于千万级古风歌词、现代诗、戏曲唱词训练的BERT模型，可精准捕捉平仄对仗规则。当用户输入"大漠孤烟直"时，系统自动匹配五声音阶与苍凉音色，生成具有敦煌壁画质感的旋律。某短视频平台接入后，AI生成的国风背景音乐日均调用量突破300万次，版权纠纷率从行业平均的15%降至0.3%。
+- 动态情感映射：通过LSTM网络解析文本情感梯度，在《少年中国说》生成案例中，系统将"少年强则国强"的激昂段落转化为160BPM的鼓点节奏，而"红日初升"的抒情部分则生成钢琴与弦乐的渐强对话，情感曲线吻合度达92%。
+- 企业级开发套件：提供Python SDK与RESTful API，支持开发者自定义音色库、音乐风格模板及版权管理模块。某游戏公司利用该平台，将传统音乐制作周期从2周压缩至8小时，成本降低87%。
 
 
 
-## Suno AI
+
+### Suno AI
+
+OpenAI系创业公司 Suno AI，通过扩散模型与自回归Transformer的混合架构，实现从文本到完整歌曲（含人声、伴奏）的生成突破。其技术亮点包括：
+- 语义通道：将文本拆解为**场景**、**情感**、**乐器**等元数据，通过CLIP模型进行跨模态对齐。输入"赛博朋克风格电子乐，包含合成器脉冲与机械节奏"，系统可自动生成匹配未来感的旋律。
+- 音乐通道：采用 Hierarchical VQ-VAE 将音频压缩为离散token序列，结合Transformer生成连贯旋律。用户测试显示，该架构使生成歌曲的结构完整性提升40%，重复段落减少65%。
+- 多语言人声合成：集成 WaveNet 与 Tacotron2 改进版本，支持中、英、日等8种语言的TTS合成。其虚拟歌手"Luna"在专业盲测中，人声自然度评分（MOS）达4.2/5，接近真人演唱水平。
+
+某独立音乐人利用Suno的实时编辑协作平台，将AI初稿优化为Spotify热榜TOP50作品，耗时仅传统制作的1/5。但该工具在长时序生成（>3分钟）仍存在主题漂移问题，需结合人工干预确保一致性。
+
+
+#### 【2024-3-22】Suno AI V3
 
 【2024-3-22】Suno AI发布了V3版音乐生成模型
 
@@ -184,7 +216,7 @@ Sketch2Sound 把声音模仿转换为生成新声音。
 - [音乐生成：给Sora加上声音](https://mp.weixin.qq.com/s/HuREa4EcO79G-J2qWwAWkA)
 - [Suno教程篇：音乐小白也能使用Suno AI零门槛创作音乐](https://zhuanlan.zhihu.com/p/688696210?utm_psn=1756068864734138368)
 
-### Suno AI 功能
+#### Suno AI 功能
 
 
 特点 
@@ -210,7 +242,7 @@ Sketch2Sound 把声音模仿转换为生成新声音。
 
 
 
-### 歌词结构
+#### 歌词结构
 
 
 通过下面这些标记指示歌曲不同部分，帮助AI理解歌曲的结构和情感表达。
@@ -229,7 +261,7 @@ Sketch2Sound 把声音模仿转换为生成新声音。
 - `[Whisper]` - 耳语，耳语般的演唱
 
 
-### 案例
+#### 案例
 
 
 如梦令，音乐片段如下 
@@ -346,8 +378,22 @@ v3
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113384771029496&bvid=BV1U71LY1EWc&cid=26577274538&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
 
+### Mubert Pro
 
-## 【2024-4-11】Udio
+Mubert Pro：**实时**场景化音乐生成引擎
+
+区别于静态歌曲生成，Mubert Pro 聚焦游戏、直播等交互式场景，其核心技术围绕上下文感知模型与动态渲染引擎构建：
+- 情境感知生成系统：通过分析用户输入的场景标签（如"赛博朋克城市"）、情绪参数（能量值0-100）及实时事件（如游戏角色死亡），动态调整音乐的速度、和声复杂度与乐器组合。在《Cyberpunk 2077》模组测试中，系统响应延迟低于200ms，玩家沉浸感评分提升37%。
+- 模块化音乐组件库：预训练10万+个音乐片段（Loop），每个片段标注有调性、节奏型、情感标签等23维元数据。生成时，系统通过图神经网络（GNN）筛选并拼接组件，确保音乐过渡的自然性。某直播平台接入后，主播自定义BGM的使用率从12%提升至68%。
+- 低延迟渲染架构：采用WebAssembly技术将模型部署至浏览器端，支持在移动设备上实时生成44.1kHz采样率的音频，CPU占用率低于15%。这一特性使其成为Twitch、抖音等平台的首选技术合作伙伴。
+
+
+### 【2024-4-11】Udio
+
+
+小众工具黑马：Udio
+- Udio：谷歌 DeepMind 前研究员团队开发的工具，以"音乐混音"功能著称。用户可基于初始生成片段进行风格迁移，例如将乡村音乐改编为电子乐版本。其付费订阅模式提供4800积分/月，可生成约160首30秒歌曲，适合批量生产短视频配乐。
+
 
 【2024-4-11】[全新的音乐生成应用Udio正式亮相，比suno有质的提升，效果直逼人类](https://mp.weixin.qq.com/s/IHcg-awC9g4lCbMX3tnqJw)
 - 体验地址：[udio](https://www.udio.com)
@@ -357,7 +403,7 @@ v3
 - Udio采用先进的AI技术, 通过简单的文字输入, 生成各类风格的原创音乐作品。从抒情的福音音乐,到沧桑的蓝调,再到梦幻的流行电音,应有尽有。
 - Udio还支持多种语言,用户可以创作出日语流行、俄罗斯梦幻流行、拉丁节奏等多元化的音乐作品
 
-### Udio 特点
+#### Udio 特点
 
 Udio 特点
 - 生成的效果比前段时间大火的音乐生成应用suno 有了质的提升，大家感受一下
@@ -371,7 +417,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 虽然还存在一些粗糙的地方,但团队正在快速迭代优化,计划陆续推出更长音频、更高音质,以及更强大的可控性等新功能
 
 
-### 效果测试
+#### 效果测试
 
 直接使用 OpenAI Sora 视频生成提示词
 >A stylish woman walks down a Tokyo street filled with warm glowing neon and animated city signage.
@@ -383,8 +429,14 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 > 没有歌词、专辑画面，音乐质量也不如 Suno AI
 
 
+### AIVA
 
-## 【2024-4-2】SkyMusic
+小众工具
+
+AIVA 3.0：获得卢森堡政府文化基金支持的工具，正在重新定义AI在严肃音乐领域的可能性。其风格迁移引擎通过分析巴赫《哥德堡变奏曲》的对位法结构，可生成具有复调音乐特征的现代作品。在为某电影配乐时，系统将用户输入的"史诗感"转化为管风琴与定音鼓的宏大对话，同时保持奏鸣曲式的严谨结构。
+
+
+### 【2024-4-2】SkyMusic
 
 【2024-4-17】[首个国产音乐SOTA模型来了！专为中文优化，免费用，不限曲风](https://mp.weixin.qq.com/s/SrEAPjXBEXwdN1VYQjrL0g)
 
@@ -393,8 +445,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 
 有没有一个 AI 音乐生成模型专门针对中文做过优化？
 
-
-### 天工 SkyMusic
+#### 天工 SkyMusic
 
 昆仑万维：[天工 SkyMusic](https://music.tiangong.cn/)
 - SkyMusic 于 2024 年 4 月 2 日开启免费邀测，4 月 17 日正式开启公测
@@ -411,7 +462,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 天工 SkyMusic 全面开放，下载「天工」APP 就可以体验。
 - 国内目前唯一公开可用的 AI 音乐生成大模型，填补了国内 AIGC 工具在这一领域的空白。
 
-### 模型
+#### 模型
 
 天工 SkyMusic 的框架是类 Sora 的 DiT 技术路径，不过研发时间是在 Sora 问世之前，因此不可避免地要踩很多坑。
 
@@ -421,7 +472,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 
 这套模型架构在处理视频、音频和音乐时效果极佳。
 
-### 使用方法
+#### 使用方法
 
 天工 SkyMusic 生成歌曲：
 - 只需要输入歌名、歌词，选择参考曲目，就能生成风格、唱腔与之类似的歌。
@@ -431,7 +482,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 
 天工 SkyMusic 生成的音乐涵盖了说唱、民谣、放克、古风、电子等多种曲风。下一步还计划让用户根据哼出来的旋律生成歌曲，这将对专业人士有很大帮助。
 
-### 效果
+#### 效果
 
 和 Suno 比，天工 SkyMusic 表现如何呢？
 
@@ -441,7 +492,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 - MMBench 等多项权威多模态测评结果中，「天工 3.0」超越 GPT-4V，全球领先
 
 
-## 【2024-6-1】字节 海绵音乐
+### 【2024-6-1】字节 海绵音乐
 
 [海绵音乐](https://www.haimian.com/create) 于 2024 年 6 月开始内测，8 月正式上线免费使用。
 - 抖音账户登录，免费使用
@@ -450,7 +501,7 @@ Udio 创始团队出身于谷歌DeepMind等顶尖AI研究机构,在音乐和技�
 
 
 
-### 实践
+#### 实践
 
 【2206-1-31】音乐生成
 - 音乐[地址](https://www.haimian.com/share/Gk38k76jEN)
@@ -530,7 +581,7 @@ Bug 全退散
 ```
 
 
-## 【2024-7-10】天谱乐
+### 【2024-7-10】天谱乐
 
 
 【2024-7-10】 广州 `天谱乐`大模型不仅支持**文生音乐**、**音频生音乐**，还首创**图片/视频生音乐**功能，多模态输入能力超越 Suno
@@ -538,11 +589,11 @@ Bug 全退散
 用户仅需上传相册中的一张图片或一段不超过60秒的视频，即可生成与图像内容和基调高度适配的带人声唱词的完整歌曲，生成效果达到专业级水准，极大地满足用户多样化的视听创作需求。
 
 
-## 【2024-9-18】Seed-Music
+### 【2024-9-18】Seed-Music
 
 【2024-9-18】[Seed-Music 音乐大模型正式发布！生成编辑两开花，十种创作任务，满足多样化需求](https://mp.weixin.qq.com/s/0_XBQOH6G0Js2lJbKSDJyA)
 
-### 介绍
+#### 介绍
 
 【2024-9-18】字节跳动豆包大模型团队推出了 `Seed-Music`，助力音乐创作领域探索更多可能性。
 
@@ -552,7 +603,7 @@ Seed-Music 是一个端到端且能力全面的音乐生成框架。它既能从
 - 论文：《[Seed-Music: A Unified Framework for High Quality and Controlled Music Generation](https://arxiv.org/pdf/2409.09214)》
 - [Demo](https://team.doubao.com/seed-music)
 
-### 功能
+#### 功能
 
 Seed-Music 提供
 - 四大核心功能：**可控**音乐生成、**谱转曲**、**词曲编辑**、**零样本**人声克隆
@@ -568,7 +619,7 @@ Seed-Music 提供
     - 零样本人声克隆也是 Seed-Music 的一大创新，模型无需针对特定音色进行大规模训练。创作者只需要使用自己 10 秒的语音（支持清唱或者说话）作为输入，系统便可模仿指定音色生成完整的歌曲。
 - 具体涵盖十种创作任务，满足音乐小白、专业音乐人的不同场景需求。
 
-### 技术方案
+#### 技术方案
 
 Seed-Music 采用独特的技术方案，提出了音乐生成的通用架构。
 
