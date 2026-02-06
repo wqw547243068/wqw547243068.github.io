@@ -550,11 +550,167 @@ The possible values of user intents are:
            id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
 </object>
 
+## 评测
 
+### RPEval
+
+【2025-5-19】法国里尔大学 新型基准测试 `RPEval`，系统性地评估大语言模型（LLM）角色扮演能力
+- [Role-Playing Evaluation for Large Language Models](https://arxiv.org/pdf/2505.13157)
+
+单轮互动 (Single-turn Interactions): 评估不采用复杂的多轮对话，而是让模型根据一个角色设定和来自另一角色的单条信息进行回应 。
+
+四大评估维度: RPEval专注于四个可以在单轮互动中有效评估的核心维度 ：
+- 情绪理解 (Emotional Understanding): 评估模型能否准确解读并反映角色的情感状态 。
+- 决策制定 (Decision-Making): 评估模型的选择是否与其角色的目标和背景相符 。
+- 道德对齐 (Moral Alignment): 评估模型的行为是否与角色的道德价值观保持一致 。
+- 角色内一致性 (In-Character Consistency): 评估模型能否坚守角色设定，避免泄露其不应知道的“超游”知识（即上下文之外的知识） 。
+
+
+### CoSER
+
+【2025-2-13】
+- [CoSER: Coordinating LLM-Based Persona Simulation of Established Roles](https://arxiv.org/abs/2502.09082)
+
+基于小说书籍提取角色扮演数据，并提出给定情境表演 (Given-Circumstance Acting, GCA)的角色扮演评测方法
+
+COSER角色扮演数据集
+- 全球知名的读书社区Goodreads的771本人气书籍作为数据源
+- 内容分块 (Chunking)
+
+由于书籍全文很长，无法直接输入LLM，论文采用了一种结合静态与动态的策略对文本进行分块：
+- 静态分块：首先根据章节标题进行初步切分
+- 动态分块：为了避免故事情节或关键对话被截断，在后续数据提取过程中，LLM会判断当前区块的结尾是否存在未完结的情节，并将其与下一个区块内容合并，以保证情节的完整性
+
+GCA模型训练 (GCA Training)
+目标：利用COSER数据集对基础LLM（如LLAMA-3.1）进行微调，从而开发出专门用于角色扮演的COSER 8B和COSER 70B模型 。
+
+训练方式：
+- 从数据集中选取一段对话和一个特定角色，构建一个训练样本。
+- 为该角色生成一条详细的角色扮演指令，包含场景描述、角色自己的档案和动机、以及对话中其他角色的档案等，为模型提供充分的上下文。
+- 在对话历史作为输入的前提下，模型被训练来生成该角色在原著中的真实发言（包括内心想法和动作），而其他角色的发言则作为上下文输入。
+
+通过这种方式，模型学会在特定情境下，像“演员”一样说出符合角色身份的话。
+
+四大评估维度：为了进行全面评估，缺陷的识别会在四个独立的维度上进行。
+- 拟人化 (Anthropomorphism)：评估角色的行为是否像一个真正的人，包括是否有自我认同、情感深度和社交互动能力等 。
+- 角色保真度 (Character Fidelity)：评估模型扮演的角色是否忠于原著设定，包括语言风格、背景知识、性格行为是否一致 。
+- 故事线质量 (Storyline Quality)：评估模拟对话本身是否流畅、合乎逻辑，是否存在冗余、矛盾或不自然的进展 。
+- 故事线一致性 (Storyline Consistency)：将模拟对话与原著对话进行对比，评估角色的反应（情绪、态度、行为）是否与原始情境保持一致 。
+
+
+
+
+## 角色库合成
+
+
+### PersonaHub
+
+【2024-6-28】腾讯AI Lab PersonaHub 2406
+- [Scaling Synthetic Data Creation with 1,000,000,000 Personas](https://arxiv.org/pdf/2406.20094)
+
+全新、以“角色”（Persona）为驱动的合成数据生成方法，并为此构建了名为 Persona Hub 的庞大角色库（10亿+）
 
 ## LLM 角色模拟
 
 【2024-5-30】用 LLM 的 Agent 方案实现用户模拟器
+
+
+### LLM Roleplay
+
+LLM Roleplay 2410
+
+【2024-7-4】德国 UKP Lab
+- [LLM Roleplay: Simulating Human-Chatbot Interaction]()
+- [llm-roleplay](https://github.com/UKPLab/llm-roleplay)
+
+利用大型语言模型（LLM）扮演具有特定“角色”（persona）的用户，与另一个聊天机器人进行以完成特定“目标”（goal）为导向的对话
+
+
+
+### 【2024-12-7】CharacterBox
+
+【2024-12-7】人大、微软亚洲研究院、北大
+- [CharacterBox: Evaluating the Role-Playing Capabilities of LLMs in Text-Based Virtual Worlds]()
+
+专为评估LLM角色扮演能力而设计的动态、多智能体交互式虚拟世界（或称为模拟沙盒） 。
+
+核心思想
+- 通过模拟生成情景化、细粒度的角色行为轨迹，从而对模型的角色扮演能力进行更全面、更深入的评估 。
+
+核心组件
+- 角色代理 (Character Agent)：由被评估的LLM控制。它基于心理学和行为科学（特别是BDI模型：Belief-Desire-Intention）进行设计，拥有记忆模块，能够像人类一样在特定场景中进行思考和行动 。
+- 叙述者代理 (Narrator Agent)：它扮演着“世界模型”或“游戏主持人”的角色 。负责协调角色之间的互动、分析角色行为产生的影响，并实时更新环境状态和角色状态 。
+
+三阶段工作流程
+- 场景构建 (Scene Crafting)为了避免LLM直接复现其训练数据中已有的内容（即数据污染问题） ，CharacterBox强调生成原创的高质量场景。研究者设计了一个三阶段流程，让LLM扮演“编剧”、“导演”和“评估员”的角色，以确保生成的场景富有创意、逻辑连贯且细节丰富
+- 自主故事演绎 (Autonomous Story Play)
+
+CharacterBox 生成的高质量行为轨迹不仅可以用于评估，还可以反过来用于提升LLM的角色扮演能力 。论文提出了两种微调方法：
+- 引导式轨迹微调 (Guided Trajectory Fine-tuning)：从表现优异的“教师模型”（如GPT-4）中收集高质量的行为轨迹，然后用这些轨迹来微调“学生模型”（如一个7B参数量的模型）。实验证明，这种方法能显著提升学生模型的角色扮演能力 。
+- 反思式轨迹微调 (Reflective Trajectory Fine-tuning)：利用LLM自身的反思能力。模型首先生成自己的行为轨迹，然后分析这些轨迹中的不一致之处和可改进点，并对其进行重写和优化。最后，使用这些经过“反思”和改进的轨迹来微调模型自身。实验表明，这种方法的效果甚至优于引导式微调 。
+
+两个经过微调的、更小的开源模型来替代昂贵的大模型 GPT-4：
+- CharacterNR (Narrator)：研究者使用GPT-3.5生成的数据，在7B参数量的Qwen2.5模型上微调，得到了CharacterNR 。其表现可与GPT-3.5相媲美，甚至在某些方面更优 。
+- CharacterRM (Reward Model)：研究者使用GPT-4的评分作为标签，在6B参数量的ChatGLM3模型上微调，得到了CharacterRM 。其评分结果与人类专家的相关性（0.610）已非常接近GPT-4（0.688），证明了其可靠性。
+
+通过这两个组件，CharacterBox实现了一个成本效益高且自包含的评估流程，摆脱了对昂贵API的依赖
+
+
+### OpenCharacter
+
+【2025-2-18】腾讯AI Lab
+- [OpenCharacter: Training Customizable Role-Playing LLMs with Large-Scale Synthetic Personas](https://arxiv.org/pdf/2501.15427)
+
+让LLM学会Character Generalization 能力，扮演用户指定的、在训练中从未见过的任意角色的能力。
+
+认为需要用一个包含海量不同角色的高质量数据集来训练模型（LLM合成）
+
+基于已有数据集的prompt进行重新标注：
+- 第一步：使用LLM扩写 Persona Hub 人格数据库（2w+）
+- 第二步：结合扩写后的人设，对已有sft数据进行重新标注
+  - 策略1，输入：人设+prompt+response，输出：response
+  - 策略2，输入：人设+prompt，输出：response
+
+![](https://pic2.zhimg.com/v2-90161e3c1132bf1ec1f73a4ffb1e6f17_r.jpg)
+
+
+
+
+### 【2024-6-9】LD-Agent
+
+【2025-7-29】[万字分享大模型角色扮演2025最新工作 llm role-play](https://zhuanlan.zhihu.com/p/1933595417574080513)
+
+【2024-6-9】新加坡国立、中科大
+- 论文 [Hello Again! LLM-powered Personalized Agent for Long-term Dialogue](https://aclanthology.org/2025.naacl-long.272.pdf)
+- 代码 [LD-Agent](https://github.com/leolee99/LD-Agent)
+
+解决当前聊天机器人在长时间、多轮对话中的“金鱼记忆”和人格不一致的问题。
+
+主要涉及两个问题：
+- 长期事件记忆 (Long-term Event Memory)：机器人需要记住过去多次对话中发生的关键事件，以保持对话的连贯性
+- 人格一致性 (Persona Consistency)：机器人需要动态地理解和更新用户的人格特质，并保持自身人格的一致性，从而提供更个性化的回复
+
+LD-Agent：Long-term Dialogue Agent 长期对话智能体
+
+![](https://pica.zhimg.com/v2-ee2049fe9987c4a7a3bed52f1e0eb35a_1440w.jpg)
+
+1. 事件感知模块 (Event Perception Module): 负责处理对话历史，以确保对话的连贯性。它被巧妙地分为长期记忆和短期记忆两部分：
+  - 短期记忆 (Short-term Memory)：它像一个动态缓存，存储着当前正在进行的对话内容 。如果两次发言的时间间隔超过一个阈值（例如 600 秒），系统会认为一次会话结束 。
+  - 长期记忆 (Long-term Memory)：当短期记忆中的一次会话结束后，系统会调用一个事件摘要器 (Summarizer)，将这次会话的关键内容提炼成一个简短的摘要 。这个摘要会被编码成向量，并存入长期记忆库中。
+2. 动态人格提取模块 (Dynamic Personas Extraction Module): 维持对话双方（用户和智能体）的人格一致性 。
+  - 双向建模：它会从对话中动态提取用户和智能体各自的人格特质（例如，“我是一个学生”、“我喜欢骑行”等） 。
+  - 可调优的提取器：研究者们从 MSC 数据集构建了一个专门用于人格提取的语料库，并对提取器进行了指令微调 (instruction tuning)，使其能更准确地从话语中抓取人格信息 。如果一句话不包含人格信息，模块会输出“No Trait” 。
+  - 零样本能力：对于没有经过微调的模型，该模块也可以利用 LLM 的零样本能力，通过思维链 (Chain-of-Thought) 推理来直接提取人格 。
+3. 响应生成模块 (Response Generation Module): 最后一步，负责生成最终的回复。
+  - 信息整合：生成器会接收来自多个源头的信息，包括：
+  - 当前对话的上下文 。
+  - 从长期记忆中检索到的相关事件摘要 。
+  - 提取出的用户人格 。
+  - 智能体自身的人格 。
+  - 生成回复：基于这些全面的信息，生成器能够产生既符合当前话题、又与历史事件相关、并且体现了双方人格的、恰当且个性化的回复 
+
+
+
 
 ### AgentSims
 
