@@ -2,7 +2,7 @@
 layout: post
 title:  大模型多轮会话
 date:   2025-08-10 11:47:00
-categories: 大模型 对话系统 agent mermaid 推理
+categories: 大模型 对话系统 agent mermaid 推理 安全
 excerpt : 大模型如何实现任务型多轮会话？复杂推理，如何处理长文本？
 tags: 多轮 长文本 压缩
 permalink: /multi-turn
@@ -161,7 +161,7 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 详见站内[意图识别专题](llm_intent)
 
 
-## 数据
+## 多轮工具数据
 
 
 ### 多轮对话数据合成
@@ -251,6 +251,26 @@ Stage5：验证机制
 通过对 10K 条 GEM 高质量轨迹进行监督微调（SFT），训练出一个能直接将原始文本转化为端到端轨迹的专用模型 。
 
 实测显示，这个合成器在大幅降低推理成本的同时，生成的数据质量依然能打，在各维度性能上与完整流水线产出的数据几乎无异。
+
+
+### 工具调用风险
+
+【2026-2-10】[从“事后检测”到“过程引导”，北大联合上海AI Lab重塑智能体工具调用安全](https://mp.weixin.qq.com/s/Jle0hGptTG9bqaYWgWGEPg)
+
+智能体安全落地亟需解决的核心问题
+- 如何在每一次工具调用发生之前识别并约束潜在风险
+
+【2026-1-15】北京大学知识计算实验室联合上海人工智能实验室提出了 ToolSafe 框架，首次系统化地对 LLM 智能体的步骤级工具调用安全问题进行建模与防护。
+
+在此基础上，团队开发了 TS-Bench、TS-Guard 和 TS-Flow 三大组件：
+- TS-Bench 提供首个**步骤级**工具调用**安全检测评估**基准；
+- TS-Guard 是步骤级**护栏**模型，通过多任务强化学习优化，能通过归因分析提供可解释的安全反馈；
+- TS-Flow 则尝试将来自步骤级护栏的反馈信号融入智能体推理流程，显著减少有害工具调用并提升了提示注入攻击场景下的良性任务完成率。
+
+相关代码、数据与模型已全部开源，详细方法与实验结果可参考原始论文。
+- 论文 [ToolSafe: Enhancing Tool Invocation Safety of LLM-based agents via Proactive Step-level Guardrail and Feedback](https://arxiv.org/pdf/2601.10156)
+
+
 
 
 ## workflow 提效
