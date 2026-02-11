@@ -42,6 +42,26 @@ permalink: /ai_company
 - 2023年，`ChatGPT`惊艳登场。它背后最重要的人，不是大家炒作的`马斯克`和`阿尔特曼`（Sam Altman），而是OpenAI的联合创始人、首席科学家`伊利亚·萨特斯基弗`（Ilya Sutskever）。我管他叫“小萨”。小萨和`布林`一样，出生在苏联。
 
 
+## 公司架构
+
+【2012-3-6】[从组织结构图看Google、Facebook、微软等大公司的企业文化](https://blog.csdn.net/Snoopy7713/article/details/84163610)
+
+Web设计师Manu Cornet出品了一张六大科技公司的组织结构图
+
+亚马逊、Google、Facebook、微软、苹果、甲骨文等六家公司的组织结构图。
+- 亚马逊有着严格的等级制度；
+- Google也有清晰的等级，但是部门之间相互交错；产品和组织结构混乱，但这是施密特领导时期的写照，在佩奇担任CEO之后已大为改观。
+- Facebook就像是一张分布式网络；但其实应该更接近于Apple的情况，即以扎克伯格为核心。
+- 微软则是各自占山为王，军阀文化深入骨髓，跟当年的IBM并无二致。
+- 苹果是一个人说了算。乔布斯的核心效应非常明显。
+- 最具讽刺意义的是最后的甲骨文，法务部门远远大于工程部门。乱糟糟的法务要比技术“重要”得多。
+
+<img width="980" height="955" alt="image" src="https://github.com/user-attachments/assets/e2c2a06c-7f4b-4c3d-8629-62482e4bd94b" />
+
+加备注
+
+<img width="689" height="540" alt="image" src="https://github.com/user-attachments/assets/1bd3bbe8-0e23-49ac-99ec-e603061a69d2" />
+
 
 
 
