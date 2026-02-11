@@ -172,7 +172,26 @@ DLM 核心技术原理很直观，不同于LLM next token prediction，DLM 做 m
 因此，用不同于AR的方式来逼近语言分布，也有望学习到相似的能力
 
 
-### 语言模型首次击败扩散模型
+## AR+DLM比赛
+
+### DLM > AR
+
+【2026-2-6】[Stable-DiffCoder 超越自回归模型！扩散模型在代码生成取得新突破](https://mp.weixin.qq.com/s/-as_zat5cSR3pD9XsRn_zw)
+
+DLM 模型能力往往落后于同等规模的强力自回归（AR）模型。
+
+【2026-1-23】华中科技大学和字节跳动联合推出了 Stable-DiffCoder。这不仅仅是一个新的扩散代码模型，更是一次关于 「扩散训练能否提升模型能力上限」 的深度探索。
+- 论文标题：[Stable-DiffCoder: Pushing the Frontier of Code Diffusion Large Language Model](https://arxiv.org/pdf/2601.15892)
+- Github 链接: [Stable-DiffCoder](https://github.com/ByteDance-Seed/Stable-DiffCoder)
+- 模型链接: [stable-diffcoder](https://huggingface.co/collections/ByteDance-Seed/stable-diffcoder)
+
+Stable-DiffCoder 完全复用 Seed-Coder 架构、数据的条件下，通过引入 Block Diffusion 持续预训练（CPT）及一系列稳定性优化策略，成功实现了性能反超。
+
+在 多个 Code 主流榜单上（如 MBPP，BigCodeBench 等），它不仅击败了其 AR 原型，更在 8B 规模下超越了 Qwen2.5-Coder ，Qwen3，DeepSeek-Coder 等一众强力开源模型，证明了扩散训练范式本身就是一种强大的数据增强手段。
+
+
+
+### 视觉任务：AR首次击败DLM
 
 【2023-10-13】[资讯](https://www.toutiao.com/article/7288583411143459363), 图像、视频生成上，**语言模型**首次击败**扩散模型**，tokenizer是关键
 
@@ -212,7 +231,7 @@ DLM 核心技术原理很直观，不同于LLM next token prediction，DLM 做 m
 - 最后，研究者表明，与 MAGVIT 相比，他们的新 token 在两个设置和三个数据集的视频理解任务中表现更强。
 
 
-### DLM 问题
+## DLM 问题
 
 MDLM（掩码扩散语言模型） 面临两大难题：
 - 训练效率低下：其 ELBO 优化目标相比标准 NLL 收敛更慢，导致性能不佳。该工作首次对二者的训练效率进行了公平对比，实验证实，在同等算力下，MDLM 与 AR 模型的性能存在显著差距。
