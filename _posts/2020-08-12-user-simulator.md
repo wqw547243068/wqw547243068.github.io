@@ -979,7 +979,7 @@ OpenSandbox 支持将 Claude Code、Gemini CLI 等 Agent 实例封装在远程�
 
 【2026-2-12】[大模型桌游试玩员来了：用五大画像模拟「千人千面」，评分精准度超越GPT-5.1](https://mp.weixin.qq.com/s/2xs-rxR_5_wJA7DdIScTQA)
 
-盛大东京研究院、上海创智学院、南开大学、上海人工智能实验室的研究团队联合提出了MeepleLM，这是首个能模拟真实玩家视角，并基于动态游戏体验给出建设性批评的虚拟试玩模型。
+【2026-1-12】盛大东京研究院、上海创智学院、南开大学、上海人工智能实验室的研究团队联合提出了MeepleLM，这是首个能模拟真实玩家视角，并基于动态游戏体验给出建设性批评的虚拟试玩模型。
 - 论文：[MeepleLM:A Virtual Playtester Simulating Diverse Subjective Experiences](https://arxiv.org/abs/2601.07251)
 - 项目：[MeepleLM](https://github.com/leroy9472/MeepleLM)
 
