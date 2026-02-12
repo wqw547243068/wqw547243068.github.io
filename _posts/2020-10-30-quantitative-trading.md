@@ -1357,11 +1357,18 @@ TradeExpert 具备切换**预测**与**排名**两种模式的能力，适用于
 [TradingAgents: 基于Multi-Agent的金融交易框架](https://mp.weixin.qq.com/s/Kv__pr3NPLvFLyyxNts6lA)
 
 加州洛杉矶分校和MIT Yijia Xiao、Edward Sun、Di Luo 和 Wei Wang 发表于 AAAI'2025
-- 【2025-3-2】论文 “[TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/pdf/2412.20138)” 
-- 项目主页见 [TradingAgents: Multi-Agents LLM Financial Trading Framework](https://tradingagents-ai.github.io/)
 
-提出了一种创新框架，利用**多智能体系统**模拟真实交易公司的**协作决策**过程，通过增强数据分析和决策能力提升交易表现。
+国外团队 [TauricResearch](https://github.com/TauricResearch) 发布 TradingAgents 
+- 【2025-3-2】论文 “[TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/pdf/2412.20138)” 
+- 项目主页 [TradingAgents: Multi-Agents LLM Financial Trading Framework](https://tradingagents-ai.github.io/)
+- GitHub [TradingAgents](https://github.com/TauricResearch/TradingAgents)
+- 国内有人推出汉化版，并开源，【2026-1-12】[TradingAgents-CN](https://github.com/hsliuping/TradingAgents-CN) 基于多智能体LLM的中文金融交易框架 - TradingAgents中文增强版
+
+
+提出创新框架，利用**多智能体系统**模拟真实交易公司的**协作决策**过程，通过增强数据分析和决策能力提升交易表现。
 - ![](https://tradingagents-ai.github.io/static/images/schema.png)
+
+
 
 #### 动机
 
@@ -1376,7 +1383,6 @@ TradeExpert 具备切换**预测**与**排名**两种模式的能力，适用于
   - Agent在处理复杂动态任务时, 难以维持上下文和过滤无关信息，影响决策有效性。
 
 TradingAgents 通过模拟交易公司的多智能体决策过程，解决这些问题。其设计灵感来源于真实交易公司的组织结构，强调协作和结构化通信。
-
 
 Agent 分工与协作
 
@@ -1456,6 +1462,8 @@ FinSphere 对话型股票分析代理，由三个关键组件构成：
 - 代码链接：https://github.com/Y-Research-SBU/QuantAgent
 
 “近年来大语言模型（LLMs）在金融推理和市场理解中展现出强大能力，如TradingAgent和FINMEM等多智能体框架已应用于长期投资任务。然而，这些系统无法满足高频交易（HFT）对高速、高精度决策的需求——HFT依赖技术指标、图表模式和趋势特征等结构化短周期信号，而非传统LLM依赖的长期语义推理。为此，本文提出QuantAgent，首个专为高频算法交易设计的多智能体LLM框架。系统将交易分解为指标代理（IndicatorAgent）、模式代理（PatternAgent）、趋势代理（TrendAgent）和风险代理（RiskAgent），各代理通过领域工具和结构化推理捕捉市场动态。在比特币、纳斯达克期货等10种金融工具的零样本评估中，QuantAgent在4小时交易窗口内的预测准确率显著优于随机基线，验证了结构化金融先验与语言推理结合的潜力。”
+
+
 
 
 ## 工程实践
