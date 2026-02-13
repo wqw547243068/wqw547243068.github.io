@@ -29,7 +29,7 @@ permalink: /llm_solution
 
 
 |方法|说明|分析|图解|
-|---|---|---|
+|---|---|---|---|
 |`PE`|提示工程|提示工程不用训练网络权重|![](https://deci.ai/wp-content/uploads/2023/09/3-4.png.webp)|
 |`PEFT`|参数高效微调|- PEFT 相比全面微调的优势<br>更高效和更快的训练<br>保留预训练的知识|![](https://deci.ai/wp-content/uploads/2023/09/4-6.png.webp)|
 |`RAG`|检索增强生成|优点：成本低，最小化幻觉，易于扩展<br>缺点：<br>不在文档中的问题无法解决<br>窗口受限|![](https://deci.ai/wp-content/uploads/2023/09/2-5.png.webp)|
