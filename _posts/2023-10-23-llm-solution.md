@@ -42,7 +42,8 @@ RAG适合融合新知识，微调则提升模型性能和效率，优化内部�
 
 ### 图解
 
-【2024-12-16】主流范式对比分析
+【2024-3-27】同济大学、复旦大学 主流范式对比分析
+- 论文 [Retrieval-Augmented Generation for Large Language Models: A Survey](https://arxiv.org/pdf/2312.10997)
 - ![](https://pic1.zhimg.com/80/v2-f8d3acff0c2ce47b1240d7fc3278b641_1440w.png)
 
 <!-- draw.io diagram -->
