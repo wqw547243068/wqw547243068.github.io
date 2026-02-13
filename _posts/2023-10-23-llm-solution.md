@@ -240,7 +240,7 @@ RAG 和 微调之间的细微差别跨越了模型架构、数据需求、计算
   - RAG 透明性相对较高，检索+生成，用户可以洞察全过程
 
 |维度|解释|`RAG`|`FineTune`|
-|---|---|---|
+|---|---|---|---|
 |External knowledge read?|访问外部数据?|✅|❌|
 |Changing model behaviour read?|改变模型行为?|❌|✅|
 |Minimise hallucinations?|幻觉最小化?|✅|❌|
