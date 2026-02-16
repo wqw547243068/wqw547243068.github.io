@@ -3,7 +3,7 @@ layout: post
 title:  大模型自动评估
 date:   2025-08-05 16:52:00
 categories: 大模型
-tags: 评估 评测 agent
+tags: 评估 评测 agent 阿里
 excerpt: 大模型如何自动评估？LLM-as-a-judge 和 Agent-as-a-judge 是什么？
 mathjax: true
 permalink: /llm_judge
@@ -224,6 +224,42 @@ AlpacaEval有着拔群的效果：
 - 指令比较简单
 - 评分时可能更偏向于风格而非事实
 - 没有衡量模型可能造成的危害
+
+### OpenJudge
+
+【2026-1-27】[告别盲测，通义AutoRubric自动生成评测标准](https://www.zhihu.com/pin/1999209351597037208) 
+
+做 LLM 评测时，不想花大代价训 Reward Model?  只能让 LLM 当裁判（Judge）！
+
+通义实验室开源首个AI应用评测框架 [OpenJudge](https://openjudge.me/) 
+- OpenJudge 为 AI 评估提供完整的工作流支持：从收集测试数据 → 定义评估器 → 规模化评估 → 分析弱点 → 快速迭代，让 AI 质量保证更简单、更专业。
+
+这次提出 AutoRubric：
+- 把人类偏好背后的“隐性直觉”，变成模型可执行的“显性标准”。不再让模型临场发挥，而是先生成一套结构化的“评分细则”（Rubrics），让它按维度检查。
+- AutoRubric 开源在OpenJudge项目，路径：openjudge/generator/iterative_rubric/generator.py
+- 项目与论文：[OpenJudge](https://github.com/agentscope-ai/OpenJudge)
+- 论文：[OpenJudge: A Unified Framework for Holistic Evaluation and Quality Rewards](arXiv:2510.17314)
+
+😳评测结果往往很“玄学”：
+1. 凭感觉：说不清为什么 A 比 B 好，理由很泛。
+2.  位置偏见 (Position Bias)：A/B 互换位置，结论竟然变了。
+3.  大量 Tie：稍微难一点的任务就只会判平局。
+
+ AutoRubric “物理外挂”四部曲不用训模型，不用烧大钱，只需 4 步：
+ 1. 自动长标准：从少量人类偏好数据里，自动提取“为什么 A 比 B 好”的理由。
+ 2. 脱水去重：用数学逻辑（Coding Rate）干掉重复的废话，只留最有信息量的标准。
+ 3. 聚合提炼：把散乱的理由变成通用的 Theme-Tips（比如：语气真实度、逻辑连贯性）。
+ 4. 权重排序：给标准排座次，重要的先看！
+
+性能提升：
+
+从“玄学”到“工程”在复杂的角色扮演场景下进行了实测，数据提升非常直观：
+- AutoRubric较baseline准确率提升14%，位置偏见下降 19%。
+- 通过将隐性标准显性化，模型捕捉到了人类标注员更在意的细节，引入 Rubrics 后，模型从“盲目选择”转向“按项核对”，鲁棒性显著增强
+
+如果你也被“Judge 不稳/说不清凭啥选”折磨过，这套方法真的值得去跑一次！你会第一次看清：所谓的“模型好坏”，到底是由哪些具体的标准组成的。 
+
+
 
 
 ## Agent-as-a-Judge
