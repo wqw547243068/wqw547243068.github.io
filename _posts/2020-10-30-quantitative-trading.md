@@ -1383,7 +1383,7 @@ TradeExpert 具备切换**预测**与**排名**两种模式的能力，适用于
 加州洛杉矶分校和MIT Yijia Xiao、Edward Sun、Di Luo 和 Wei Wang 发表于 AAAI'2025
 
 国外团队 [TauricResearch](https://github.com/TauricResearch) 发布 TradingAgents 
-- 【2025-3-2】论文 “[TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/pdf/2412.20138)” 
+- 【2024-12-28】论文 “[TradingAgents: Multi-Agents LLM Financial Trading Framework](https://arxiv.org/pdf/2412.20138)” 
 - 项目主页 [TradingAgents: Multi-Agents LLM Financial Trading Framework](https://tradingagents-ai.github.io/)
 - GitHub [TradingAgents](https://github.com/TauricResearch/TradingAgents)
 - 国内有人推出汉化版，并开源，【2026-1-12】[TradingAgents-CN](https://github.com/hsliuping/TradingAgents-CN) 基于多智能体LLM的中文金融交易框架 - TradingAgents中文增强版
