@@ -182,13 +182,74 @@ LMstudio
 ### 安装
 
 [LM Studio](https://lmstudio.ai/) 官网下载 Windows 版本
+- [官方文档](https://lm-studio.cn/docs)
 
-#### 终端服务
+
+#### 身份认证
+
+- [身份认证](https://lm-studio.cn/docs/developer/core/authentication)：LM Studio 0.4.0 或更高版本才支持通过 API 令牌进行身份验证，为访问 LM Studio API 提供了一种安全且便捷的方式。
+- ![](https://lm-studio.cn/assets/docs/require-auth.png)
+
+#### 终端
+
 
 终端启动服务
+- 使用 lms 之前，您需要运行 LM Studio 至少一次。
+
+lms 是 LM Studio 用于管理模型、服务器和推理运行时的 CLI 工具。(v0.0.47)  
+- [官方文档](https://lm-studio.cn/docs/cli)
+
+用法: 
+- lms [选项] [命令]  本地模型
+- chat 与模型开始交互式对话
+- get 搜索并下载模型
+- load 加载模型
+- unload 卸载模型
+- ls 列出磁盘上可用的模型
+- ps 列出当前加载到内存中的模型
+- import 将模型文件导入LM Studio  服务
+- server 用于管理本地服务器的命令
+- log 记录传入和传出的消息
+- 运行时
+- runtime 管理和更新推理运行时  开发与发布 (Beta)
+- clone 从 LM Studio Hub 克隆工件到本地文件夹
+- push 将当前文件夹中的工件上传到 LM Studio Hub
+- dev 在当前文件夹中启动插件开发服务器
+- login 身份验证
+
+了解更多: [developer](https://lm-studio.cn/docs/developer)
+
 
 ```sh
+lms --help
+lms get # 下载模型
+lms get llama-3.1-8b
+lms get llama-3.1-8b@q4_k_m # 量化版
+lms get --mlx # 仅显示 MLX模型
+lms get --gguf # 仅显示 GGUF 模型
+lms get --limit 5 # 限制 5条
+
+lms load openai/gpt-oss-20b --identifier="my-model-name" # 加载模型
+lms load <model_key> --gpu 0.5 # GPU 加载
+lms unload *** # 卸载模型
+
+lms ls # 显示已下载模型
+lms ps # 显示已加载模型
+lms ps --json
+
 lms server start
+lms server stop
+
+lms chat # 终端聊天
+lms chat my-model -p "Summarize this release note"
+
+lms runtime # 管理推理运行时
+lms runtime ls
+lms runtime get
+lms runtime select
+
+lms log # 日志
+lms log stream # 流式日志
 ```
 
 #### api 
@@ -208,7 +269,7 @@ lms server start
 - POST /v1/embeddings
 - POST /v1/completions
 
-其中，POST /v1/embeddings是LM Studio 0.2.19中的新功能。
+其中，POST /v1/embeddings是 LM Studio 0.2.19 中的新功能。
 
 Python调用
 
