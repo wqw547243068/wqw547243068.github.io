@@ -3,8 +3,8 @@ layout: post
 title:  "模型推理加速"
 date:   2023-09-21 19:25:00
 categories: 机器学习
-tags: gpu tensorflow pytorch 加速 tensorrt 推理 onnx zero lpu cuda gemm huggingface 评测 vllm cpu
-excerpt: 模型部署、推理知识点
+tags: gpu tensorflow pytorch 加速 tensorrt 推理 onnx zero lpu cuda gemm huggingface 评测 vllm cpu gguf mlx
+excerpt: 模型部署、推理知识点，模型格式
 author: 鹤啸九天
 mathjax: true
 permalink: /model_infer
@@ -438,9 +438,9 @@ ONNXRuntime 与 CUDA[版本对应](https://blog.csdn.net/qq_38308388/article/det
 pip install onnxruntime-gpu==1.17.0
 ```
 
-## 模型文件转换
+## 模型文件
 
-ONNX的目的是“通用”，所以难免出现算子不兼容的情况。
+ONNX 目的是“通用”，所以难免出现算子不兼容的情况。
 - 当把某个框架（例如PyTorch）的模型转成ONNX后，再将ONNX转成另一框架模型（例如ncnn）时，可能会报错（xxx算子不支持）。
 
 解决方法：
@@ -450,7 +450,32 @@ ONNX的目的是“通用”，所以难免出现算子不兼容的情况。
   - 在一些Image to Image的任务中，可能会根据中间tensor的尺寸来对另一些tensor进行resize。这时我们的做法是先去获取中间tensor的尺寸H、W，然后将它们作为参数送给其它方法。当遇到这种运算时，ONNX似乎会创建两个与H、W相关的变量，但它们的值会绑定为用dummy_input去forward一次时得到的H、W。这个值一旦绑定就不会改变。所以后续当使用不同尺寸输入时极大概率会报错（这点没有仔细验证过，但看中间结果很像是这种情况）。
 - 另外, 强烈建议使用一些网络可视化工具。当遇到模型转换报错时可以用来方便定位出错的位置。个人比较喜欢的是[netron](https://github.com/lutzroeder/netron)
 
-### 1.1 pth文件(Pytorch)转onnx
+### 模型格式
+
+GGUF 和 MLX 用法
+
+GGUF 格式 vs MLX 格式 对比表
+
+| 维度 | GGUF 格式 | MLX 格式 |
+|------|-----------|----------|
+| 本质 | 模型权重/配置**文件格式** | 模型权重/配置**文件格式** |
+| 归属 | llama.cpp 社区 | Apple MLX 框架 |
+| 设计目标 | 通用、跨平台、统一量化模型存储 | 专为 Apple 芯片（M系列）高效加载/推理 |
+| 支持硬件 | 全平台：x86/ARM/Windows/Linux/macOS | 仅限 Apple 芯片（Mac/iOS） |
+| 主要生态 | llama.cpp、llama-cpp-python、Ollama 等 | mlx_lm、mlx 官方生态 |
+| 量化支持 | 内置丰富量化：Q4_0、Q5_0、Q8_0、IQ 等 | 支持 4bit/8bit 量化，格式与 GGUF 不互通 |
+| 文件结构 | 单文件，含权重、配置、Tokenizer | 多文件/目录结构：weights、config、tokenizer |
+| 加载速度 | 极快，专为本地推理优化 | 极快，针对 Apple GPU 直读优化 |
+| 通用性 | 极高，几乎所有本地推理工具都支持 | 低，仅限 MLX 生态使用 |
+| 互相转换 | 可转 MLX 格式 | 可转 GGUF（社区工具） |
+
+一句话总结：
+- **GGUF = 通用跨平台模型格式；MLX 格式 = Apple 芯片专用模型格式。**
+
+
+### 模型转换
+
+#### 1.1 pth文件(Pytorch)转onnx
  
 pytorch 集成了 **onnx模块**，属于官方支持，onnx 也覆盖了pytorch框架中的大部分算子。
 
@@ -563,7 +588,7 @@ def get_args():
     """    PYTHONPATH=. python3 inference/ulfd/pth_to_onnx.py --net RFB --batch 16    PYTHONPATH=. python inference/ulfd/pth_to_onnx.py --net RFB --batch 3    """
 ```
  
-#### 静态+动态
+##### 静态+动态
 
 Pytorch 将网络导出为 Onnx 模型格式时，可导出为**动态输入**和**静态输入**两种方式。
 - 动态输入: 模型输入数据的**部分维度**是**动态**的，可由用户使用模型时自主设定；
@@ -674,7 +699,7 @@ if __name__ == "__main__":
 
 
 
-### 1.2 pb文件(TensorFlow)转onnx
+#### 1.2 pb文件(TensorFlow)转onnx
  
 pb文件转onnx可以使用**tf2onnx**库，但必须说明的是，TensorFlow并没有官方支持onnx，tf2onnx是一个第三方库。格式转化onnx格式文件将tensorflow的pb文件转化为onnx格式的文件 安装tf2onnx。 
 - 参考：[tensorrt-cubelab-docs](https://dev.pandateacher.com/cube-lab/document/tutorial/tensorrt.html) tf2onnx安装
@@ -702,7 +727,7 @@ python -m tf2onnx.convert --input frozen_graph.pb  --inputs X:0,X1:0 --outputs o
 python -m tf2onnx.convert --checkpoint checkpoint.meta  --inputs X:0 --outputs output:0 --output model.onnx --fold_const
 ```
  
-### 1.3 onnx转pb文件(TensorFlow)
+#### 1.3 onnx转pb文件(TensorFlow)
  
 有时候，我们需要对模型进行**跨框架**的转换，比如用pytorch训练了一个模型，但需要集成到TensorFlow中以便和其他的模型保持一致，方便部署。
 
@@ -763,7 +788,7 @@ PYTHONPATH=. python3 onnx_to_pb.py
 """
 ```
  
-### 1.4 ONNX转ncnn
+#### 1.4 ONNX转ncnn
 
 [ncnn](https://github.com/Tencent/ncnn)是腾讯开源的轻量级推理框架, 简单易用, 但当功耗、时耗是主要考虑点的时候，需要多尝试其它框架，如TensorFlow Lite。
 
