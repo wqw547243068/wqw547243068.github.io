@@ -452,6 +452,16 @@ ONNX 目的是“通用”，所以难免出现算子不兼容的情况。
 
 ### 模型格式
 
+【2026-3-3】[文章](https://blog.csdn.net/CHNIM/article/details/136510888): 多种模型格式
+- bin: 通用二进制格式文件，用来存储任意类型的数据, 机器学习领域通用，非 pytorch 原生官方标准格式, 加载时需要额外处理
+- pth: PyTorch 保存模型状态的标准格式
+  - 保存模型的 `state_dict` 包含模型的所有可学习参数，或者整个模型（包括结构和参数）。
+  - 加载方式：使用 PyTorch 的 `torch.load()` 函数直接加载 `.pth` 文件，并通过调用 `model.load_state_dict()` 将加载的字典应用于模型实例
+- ckpt: PyTorch Lightning 框架采用的模型存储格式，包含模型参数，优化器状态以及训练元数据信息，用户无缝地恢复训练或执行推理。
+- safetensor: Hugging Face 推出的**新型**安全模型存储格式，特别关注模型安全性、隐私保护和快速加载
+- gguf: 用于量化和推理大语言模型的格式, 专为大模型**本地推理和量化部署**设计，支持**跨平台**运行（如 CPU、GPU、移动端）
+- mlx: Apple 开发, 专门为苹果设备（Mac、iPad、iPhone）设计的机器学习框架
+
 GGUF 是一种高效的模型存储格式（尤其是量化模型），而 MLX 是苹果开发的机器学习框架，两者可以结合使用，在苹果设备上实现高性能本地推理。
 
 GGUF 和 MLX 用法
@@ -481,13 +491,68 @@ GGUF 格式 vs MLX 格式 对比表
 
 这种组合可以在苹果设备上实现高性能、低内存占用的本地大模型推理。
 
+#### Safetensors
+
+safetensors 是 Hugging Face 推出的**新型**安全模型存储格式，特别关注模型安全性、隐私保护和快速加载。仅包含模型的权重参数，而不包括执行代码，减少模型文件大小，提高加载速度。
+
+Safetensors 专为**安全存储和快速加载张量数据**设计，替代传统模型权重存储格式（如 PyTorch 的 `.pt` 或 `.pth`）。
+
+核心特性：
+- 安全性：通过限制文件头大小和避免代码注入风险，提升文件安全性。
+- 高效加载：支持零拷贝和懒加载，CPU 加载速度比传统格式快 6-12 倍。
+- 轻量依赖：仅存储张量权重，不包含模型架构或训练代码，适合跨框架共享。
+
+safetensors 格式具有以下优势：
+- 安全性：避免了使用 pickle 可能带来的任意代码执行风险。
+- 零拷贝：在某些情况下，可以实现零拷贝加载，提高加载速度。
+- 延迟加载：可以在分布式环境中仅加载部分张量，减少内存占用。
+- 无文件大小限制：没有文件大小限制，可以处理大模型。
+
+safetensors 提供安全、高效的模型存储和加载方式，特别适合 Hugging Face 生态系统中使用。
+
+安装
+
+```sh
+pip install safetensors
+```
+
+使用
+- safetensors.torch.load_file 函数加载模型
+
+```py
+import torch
+# 加载模型
+from safetensors.torch import load_file
+
+file_path = "./my_folder/bert.safetensors"
+loaded = load_file(file_path)
+
+# 保存模型
+from safetensors.torch import save_file
+
+tensors = {
+    "embedding": torch.zeros((512, 1024)),
+    "attention": torch.zeros((256, 256))
+}
+save_file(tensors, "model.safetensors")
+```
+
+
+[原文](https://blog.csdn.net/a772304419/article/details/146599725)
+
 #### GGUF
 
 GGUF（原名 GGML）
 - 现称 GGUF（以前是 GGML），最初是一个用于量化和推理大语言模型的格式。
+- 专为大模型**本地推理和量化部署**设计，支持**跨平台**运行（如 CPU、GPU、移动端）。
 
 主要作用
 - 提供高效的模型存储格式，特别是支持量化模型（如4-bit、5-bit等低精度模型）。
+
+核心特性：
+- 内存映射（mmap）：直接从磁盘加载模型到内存，减少显存占用，支持混合硬件加速。
+- 单文件部署：整合模型权重、架构配置和量化参数，无需额外依赖文件。
+- 量化支持：支持 2-8 位混合精度量化，压缩模型体积至原始大小的 1/3-1/5。
 
 被广泛用于本地化部署小到中型的LLM（如 LLaMA 系列的轻量版本）。
 
@@ -519,7 +584,7 @@ MLX（Apple Machine Learning eXtension）
 
 #### 1.1 pth文件(Pytorch)转onnx
  
-pytorch 集成了 **onnx模块**，属于官方支持，onnx 也覆盖了pytorch框架中的大部分算子。
+pytorch 集成 **onnx模块**，属于官方支持，onnx 也覆盖了pytorch框架中的大部分算子。
 
 因此将pth模型文件转换为onnx文件简单。
 
