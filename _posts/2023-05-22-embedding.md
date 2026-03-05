@@ -1414,8 +1414,8 @@ gte-Qwen2-7b-instruct
 2025年6月6日凌晨，阿里开源 Qwen3 新模型 Embedding 及 Reranker，支持多语言。
 
 Qwen3-Embedding系列模型：
-- 文本嵌入：Qwen3-Embedding，型号有0.6B、4B和8B
-- 文本排序：Qwen3-Reranker，型号有0.6B、4B和8B
+- 文本嵌入：Qwen3-Embedding，型号有 0.6B、4B和8B
+- 文本排序：Qwen3-Reranker，型号有 0.6B、4B和8B
 
 技术报告：
 - [qwen3_embedding_technical_report](https://github.com/QwenLM/Qwen3-Embedding/blob/main/qwen3_embedding_technical_report.pdf)
@@ -1439,10 +1439,8 @@ METB最新排名：
 - 第一名还是Gemini，与自家测试结果有些差异
 
 特点：
-
-① **泛化性好**：Qwen3-Embedding 系列在多个下游任务评估中领先。其中，8B 参数的 Embedding 模型在 MTEB 多语言 Leaderboard 榜单中位列第一（截至 2025 年 6 月 6 日，得分 70.58），超越众多商业 API 服务。此外，排序模型在各类文本检索场景中表现出色，显著提升了搜索结果的相关性。
-
-② **模型架构灵活**：Qwen3-Embedding 系列提供从 0.6B 到 8B 多种参数规模，以满足不同场景下的性能与效率需求。
+- ① **泛化性好**：Qwen3-Embedding 系列在多个下游任务评估中领先。其中，8B 参数的 Embedding 模型在 MTEB 多语言 Leaderboard 榜单中位列第一（截至 2025 年 6 月 6 日，得分 70.58），超越众多商业 API 服务。此外，排序模型在各类文本检索场景中表现出色，显著提升了搜索结果的相关性。
+- ② **模型架构灵活**：Qwen3-Embedding 系列提供从 0.6B 到 8B 多种参数规模，以满足不同场景下的性能与效率需求。
 
 此外，模型支持定制化：
 - 表征维度自定义：允许用户根据实际需求调整表征维度，有效降低应用成本；
@@ -1463,6 +1461,86 @@ Qwen3-Embedding 直接用 Qwen3 dense 做骨干。
 - Embedding 向量取最后一层`[EOS]`位置的隐藏状态，没有额外池化头，推理路径更短。
 - 同一权重支持多分辨率向量(MRL）：768、1024、4096 等维度可动态裁剪，方便在边缘或服务器侧按需部署。
 - Reranker则把相关性判定写成“yes/no”二分类提示，只看下一token的两项概率即可得到打分，接口简单，延迟低。
+
+【2025-6-21】[Qwen3 Embedding模型架构、训练方法、数据策略](https://zhuanlan.zhihu.com/p/1919807089414505767)
+
+Qwen3 Embedding训练过程采用了多阶段训练pipline，结合了大规模无监督预训练和高质量数据集上的监督微调。
+
+![](https://pic1.zhimg.com/v2-9b51bd7a0861837aca2a30b7ae454b40_1440w.jpg)
+
+多阶段训练框架的基础上，Qwen3 Embedding系列引入了以下关键创新：
+- 大规模合成数据驱动的弱监督训练：与之前的工作（如GTE、E5、BGE模型）不同，这些模型主要从开源社区（如问答论坛或学术论文）收集弱监督训练数据，提出利用基础模型的文本理解和生成能力直接合成配对数据。这种方法允许任意定义所需配对数据的各种维度，如任务、语言、长度和难度，并在合成提示中进行定义。与从开放域源收集数据相比，基础模型驱动的数据合成提供了更大的可控性，能够精确管理生成数据的质量和多样性，特别是在低资源场景和语言中。
+- 高质量合成数据在监督微调中的利用：由于Qwen3基础模型的卓越性能，合成的数据质量非常高。因此，在监督训练的第二阶段，选择性地整合这些高质量合成数据进一步增强了整体模型性能和泛化能力。
+- 模型合并：受到先前工作的启发，在完成监督微调后，应用了基于球面线性插值(slerp)的模型合并技术。该技术涉及合并微调过程中保存的多个模型检查点。目的是提高模型在各种数据分布上的鲁棒性和泛化性能。
+
+huggingface embedding 使用方法
+
+```py
+# Requires transformers>=4.51.0
+
+import torch
+import torch.nn.functional as F
+
+from torch import Tensor
+from transformers import AutoTokenizer, AutoModel
+
+
+def last_token_pool(last_hidden_states: Tensor,
+                 attention_mask: Tensor) -> Tensor:
+    left_padding = (attention_mask[:, -1].sum() == attention_mask.shape[0])
+    if left_padding:
+        return last_hidden_states[:, -1]
+    else:
+        sequence_lengths = attention_mask.sum(dim=1) - 1
+        batch_size = last_hidden_states.shape[0]
+        return last_hidden_states[torch.arange(batch_size, device=last_hidden_states.device), sequence_lengths]
+
+
+def get_detailed_instruct(task_description: str, query: str) -> str:
+    return f'Instruct: {task_description}\nQuery:{query}'
+
+# Each query must come with a one-sentence instruction that describes the task
+task = 'Given a web search query, retrieve relevant passages that answer the query'
+
+queries = [
+    get_detailed_instruct(task, 'What is the capital of China?'),
+    get_detailed_instruct(task, 'Explain gravity')
+]
+# No need to add instruction for retrieval documents
+documents = [
+    "The capital of China is Beijing.",
+    "Gravity is a force that attracts two bodies towards each other. It gives weight to physical objects and is responsible for the movement of planets around the sun."
+]
+input_texts = queries + documents
+
+tokenizer = AutoTokenizer.from_pretrained('Qwen/Qwen3-Embedding-0.6B', padding_side='left')
+model = AutoModel.from_pretrained('Qwen/Qwen3-Embedding-0.6B')
+
+# We recommend enabling flash_attention_2 for better acceleration and memory saving.
+# model = AutoModel.from_pretrained('Qwen/Qwen3-Embedding-0.6B', attn_implementation="flash_attention_2", torch_dtype=torch.float16).cuda()
+
+max_length = 8192
+
+# Tokenize the input texts
+batch_dict = tokenizer(
+    input_texts,
+    padding=True,
+    truncation=True,
+    max_length=max_length,
+    return_tensors="pt",
+)
+batch_dict.to(model.device)
+with torch.no_grad():
+    outputs = model(**batch_dict)
+    embeddings = last_token_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
+
+    # normalize embeddings
+    embeddings = F.normalize(embeddings, p=2, dim=1)
+    scores = (embeddings[:2] @ embeddings[2:].T)
+
+print(scores.tolist())
+# [[0.7645568251609802, 0.14142508804798126], [0.13549736142158508, 0.5999549627304077]]
+```
 
 
 ### Embedding Gemma
