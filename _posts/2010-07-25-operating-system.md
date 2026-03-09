@@ -237,6 +237,32 @@ Roaming 目录移动
   - 在线编辑工具: [smallpdf](smallpdf.com)
 
 
+#### WSL
+
+Windows 子系统 (WSL) 允许开发人员在 Windows 计算机上运行 Linux 发行版，如 Ubuntu、OpenSUSE、Kali、Debian、Arch Linux 等。
+
+通过 WSL，用户可以直接在 Windows 上使用 Linux 应用程序、实用程序和 Bash 命令行工具，而无需虚拟机或双启动设置。
+
+安装方法
+- 官方：[如何使用 WSL 在 Windows 上安装 Linux](https://learn.microsoft.com/zh-cn/windows/wsl/install)
+
+前置条件
+- 必须 Windows 10 版本 2004 及更高版本或 Windows 11
+
+管理员身份打开 PowerShell 或 Windows 命令提示符
+
+```sh
+# 安装默认版，运行 WSL 并安装 Linux 的 Ubuntu 分发所需的功能
+wsl --install
+# 查看发行版有哪些
+wsl --list --online
+# 更改默认版本
+wsl --install -d <发行版名称>
+```
+
+设置用户信息：首次启动新安装的 Linux 发行版时，需要创建一个用户帐户和密码。
+
+
 ### 文档
 
 
