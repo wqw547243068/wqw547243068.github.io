@@ -574,6 +574,8 @@ python -c "try: import torch.distributed.fsdp; print('FSDP supported') except: p
 
 DDP：最简单，无需额外配置文件，直接用 torchrun 启动
 
+
+
 示例
 - --`nproc_per_node=4`: 单机4卡
 - --`fp16`: 开启混合精度，显存节省约 40%
@@ -581,6 +583,7 @@ DDP：最简单，无需额外配置文件，直接用 torchrun 启动
 
 
 ```sh
+# torchrun --standalone --nnodes=1 --nproc-per-node=8 src/train.py \ 
 torchrun --nproc_per_node=4 \
   src/train_bash.py \
   --stage sft \
@@ -596,6 +599,10 @@ torchrun --nproc_per_node=4 \
   --fp16 \
   --ddp_find_unused_parameters false \
   --plot_loss
+
+# llama-factory 启动，CUDA_VISIBLE_DEVICES 没有指定，则默认使用所有GPU
+FORCE_TORCHRUN=1 llamafactory-cli train examples/train_full/llama3_full_sft_ds3.yaml
+FORCE_TORCHRUN=1 CUDA_VISIBLE_DEVICES=0,1 llamafactory-cli train config/config1.yaml
 ```
 
 ### DeepSpeed：显存压缩之王
@@ -669,6 +676,13 @@ deepspeed --num_gpus=4 \
 
 FSDP 是 PyTorch 2.0 原生分片方案，不用引入 DeepSpeed 第三方依赖，更适合长期维护的生产系统
 
+PyTorch 全切片数据并行技术 FSDP （Fully Sharded Data Parallel）能处理更多更大的模型。LLaMA-Factory支持使用 FSDP 引擎进行分布式训练。
+
+FSDP 参数 ShardingStrategy 的不同取值决定了模型的划分方式：
+- FULL_SHARD: 将模型参数、梯度和优化器状态都切分到不同的GPU上，类似ZeRO-3。
+- SHARD_GRAD_OP: 将梯度、优化器状态切分到不同的GPU上，每个GPU仍各自保留一份完整的模型参数。类似ZeRO-2。
+- NO_SHARD: 不切分任何参数。类似ZeRO-0。
+
 注意 
 - PyTorch 版本需 ≥ 2.0，否则 torch.distributed.fsdp 模块将不可用
 
@@ -716,6 +730,20 @@ torchrun --nproc_per_node=4 \
 - 防火墙开放端口（默认 29500）；
 - 所有节点时间同步（建议启用 NTP）。
 
+#### llama-factory 多机多卡
+
+参数
+- NNODES 节点数，如 两台机器
+- RANK 各个节点的rank，编号
+- MASTER_ADDR 主节点地址
+- MASTER_PORT 主节点端口
+
+```sh
+FORCE_TORCHRUN=1 NNODES=2 RANK=0 MASTER_ADDR=192.168.0.1 MASTER_PORT=29500 \ llamafactory-cli train examples/train_lora/llama3_lora_sft.yaml FORCE_TORCHRUN=1 NNODES=2 RANK=1 MASTER_ADDR=192.168.0.1 MASTER_PORT=29500 \ llamafactory-cli train examples/train_lora/llama3_lora_sft.yaml
+```
+
+
+
 #### (1) DDP 多机训练：手动协调节点
 
 创建 hostfile 文件：
@@ -743,6 +771,11 @@ torchrun \
   --gradient_accumulation_steps 8 \
   --fp16 \
   --ddp_find_unused_parameters false
+
+# 或
+torchrun --master_port 29500 --nproc_per_node=8 --nnodes=2 --node_rank=0 \
+ --master_addr=192.168.0.1 train.py torchrun --master_port 29500 --nproc_per_node=8 --nnodes=2 --node_rank=1 \
+ --master_addr=192.168.0.1 train.py
 ```
 
 从节点执行相同命令，仅修改 --node_rank=1。
