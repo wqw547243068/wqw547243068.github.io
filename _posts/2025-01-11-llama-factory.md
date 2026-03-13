@@ -486,6 +486,8 @@ Ollama框架可以帮助用户快速使用本地的大型语言模型，那将LL
 
 ## 分布式
 
+【2025-12-15】[LLaMA-Factory分布式训练实战指南](https://blog.csdn.net/weixin_35516624/article/details/155976841)
+
 LLaMA-Factory 支持 DDP、DeepSpeed、FSDP 三种模式，各有侧重，具体看硬件条件和训练目标。
 
 | 引擎       | 显存效率                | 配置复杂度 | 多机支持 | 推荐场景                                   |
@@ -534,7 +536,18 @@ LLaMA-Factory 支持 DDP、DeepSpeed、FSDP 三种模式，各有侧重，具体
 - 显存极度紧张 → DeepSpeed ZeRO-3 + Offload 是唯一选择
 - 未来要扩展多机 → FSDP 更易维护
 
+### 依赖检查
 
+```sh
+# 检查 PyTorch 分布式能力
+python -c "import torch; print('Distributed available:', torch.distributed.is_available())"
+
+# 检查 DeepSpeed
+deepspeed --version
+
+# 检查 FSDP 支持
+python -c "try: import torch.distributed.fsdp; print('FSDP supported') except: print('FSDP not available')"
+```
 
 ### DDP 最简单
 
@@ -634,6 +647,9 @@ deepspeed --num_gpus=4 \
 ### FSDP：轻量级多机友好方案
 
 FSDP 是 PyTorch 2.0 原生分片方案，不用引入 DeepSpeed 第三方依赖，更适合长期维护的生产系统
+
+注意 
+- PyTorch 版本需 ≥ 2.0，否则 torch.distributed.fsdp 模块将不可用
 
 关键参数说明：
 - full_shard：对模型状态全面分片；
