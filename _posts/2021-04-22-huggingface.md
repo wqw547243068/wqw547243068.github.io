@@ -2015,6 +2015,39 @@ config = AutoConfig.from_pretrained("./your/path/bigscience_t0/config.json")
 
 #### (2) huggingface-cli 单文件下载
 
+【2026-3-13】错误信息
+
+```sh
+$ huggingface-cli login
+bash: huggingface-cli: command not found
+```
+
+这种情况通常出现在未安装 CLI、安装版本过旧或 PATH 未配置的情况下。
+
+解决
+- 直接安装新版 CLI 工具。
+- Hugging Face 已将 huggingface-cli 更名为 `hf` 或 `hf-cli`
+
+推荐使用以下命令安装：
+
+```sh
+pip install -U "huggingface_hub[cli]"
+# 或者
+pip install hf-cli
+```
+
+安装完成后，以下命令验证：
+
+```sh
+hf --help
+hf auth login # 登录
+# 输入在 Hugging Face 账户设置中生成的 Access Token 即可完成认证。
+
+# 正常使用 CLI，例如下载模型：
+hf download gpt2 config.json
+```
+
+
 huggingface-cli 命令直接从Hub下载文件。
 - 内部使用 `hf_hub_download()` 和 `snapshot_download()` 助手，并将返回路径打印到终端
 - 文件将被下载到由`HF_HOME`环境变量定义的缓存目录中（如果未指定，则为`~/.cache/huggingface/hub`）
