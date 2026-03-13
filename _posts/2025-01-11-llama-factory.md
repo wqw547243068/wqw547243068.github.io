@@ -3,7 +3,7 @@ layout: post
 title:  "LLaMA-Factory 使用指南"
 date:   2025-01-10 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory vllm FSDP
+tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory vllm FSDP deepspeed
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -492,11 +492,30 @@ Ollama框架可以帮助用户快速使用本地的大型语言模型，那将LL
 
 LLaMA-Factory 支持 DDP、DeepSpeed、FSDP 三种模式，各有侧重，具体看硬件条件和训练目标。
 
-| 引擎       | 显存效率                | 配置复杂度 | 多机支持 | 推荐场景                                   |
-|------------|-------------------------|------------|----------|--------------------------------------------|
-| **DDP**    | 中等                    | 极简       | 支持     | 快速验证、中小模型（<13B）、调试首选       |
-| **FSDP**   | 高                      | 中等       | 支持     | 多机部署、偏好原生 PyTorch 生态             |
-| **DeepSpeed** | 极高（ZeRO-3 + Offload） | 较高       | 支持     | 超大模型、显存紧张、极致显存压缩           |
+| 引擎       | 公司 | 要点 | 显存效率                | 配置复杂度 | 多机支持 | 推荐场景   | 问题         |
+|------------|-----| --------| ------------|------------|----------|-------------|-------------|
+| **DDP**    | pytorch | - |中等        | 极简       | 支持     | 快速验证、中小模型（<13B）、调试首选 |  -    |
+| **FSDP**   | pytorch | 原生，易用性；全参数分片（类似zero-3） |高       | 中等       | 支持  | 多机部署、偏好原生 PyTorch 生态 | 千亿级扩展效率低  |
+| **DeepSpeed** | 微软 | 显存优化+扩展性；zero系列 |极高（ZeRO-3 + Offload） | 较高    | 支持  | 超大模型、显存紧张、极致显存压缩  | 配置复杂，推理弱  |
+| **Megatron-LM** | 英伟达 | 极致计算性能；3D并行（tp/dp/pp） |极高（ZeRO-3 + Offload） | 较高  | 支持  | 超大模型、显存紧张、极致显存压缩 |  硬件锁定英伟达、改造成本高 |
+
+分析：DDP是pytorch初始模式，显存效率一般，微软推出deepspeed提升显存利用率，随后 pytorch 也推出自己的优化版 FSDP，NVIDIA也推出 Megatron-LM
+- DDP 中，每张 GPU 都各自保留一份完整的模型参数和优化器参数。
+- 而 FSDP 切分了模型参数、梯度与优化器参数，使得每张 GPU 只保留部分参数。
+- 除了并行技术之外，FSDP 还支持将模型参数**卸载**至CPU，进一步降低显存需求。
+- DeepSpeed 是微软开发的分布式训练引擎，并提供ZeRO（Zero Redundancy Optimizer）、offload、Sparse Attention、1 bit Adam、流水线并行等优化技术。 
+
+架构本质差异：
+- DeepSpeed = 显存扩展优先（让大模型跑在有限硬件上）
+- Megatron-LM = 计算性能优先（榨干 NVIDIA 集群算力）
+- FSDP = 易用性优先（PyTorch 用户开箱即用）
+
+DeepSpeed + Megatron-LM（最强性能组合）
+- 企业级训练：DeepSpeed + Megatron 组合（性能与扩展兼顾）；
+- 中小规模微调：FSDP（24GB 显卡跑 30B 模型）；
+- 国产化需求：DeepSpeed + 昇腾插件（已支持 910B 显存优化）。
+
+详见：【2025-7-18】[大模型推理框架对比（DeepSpeed、Megatron-LM 、FSDP）](https://www.toutiao.com/article/7528280419465282075/)
 
 ### 选型方法
 
