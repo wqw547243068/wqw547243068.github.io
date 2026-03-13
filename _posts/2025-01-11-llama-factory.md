@@ -100,7 +100,9 @@ pip install llamafactory # 一步安装
 
 ```
 
-## 模型下载
+## 模型
+
+### 模型下载
 
 项目支持通过模型名称直接从 huggingface 和 modelscope 下载模型，但不容易对模型文件统一管理，所以建议使用手动下载，然后使用绝对路径控制哪个模型。
 
@@ -139,6 +141,29 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 | KTO Training           | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
 | ORPO Training          | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
 | SimPO Training         | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
+
+
+## Web UI
+
+UI 点选操作转化为命令行
+
+浏览器打开图形界面测试模型，可选择 `--share` 开公网链接
+
+```sh
+# Web UI 使用
+llamafactory-cli webui    # 启动网页端
+GRADIO_SERVER_PORT=7862 lmf webui
+GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
+GRADIO_SERVER_PORT=8080 CACHE_DIR=$cache_dir lmf webui # 【2026-2-2】制定 cache 目录，huggingface 下载模型不放默认目录 ~/.cache/huggingface
+
+CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
+CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
+set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
+llamafactory-cli web --model_name_or_path path_to_model --share
+```
+
+其中
+- 模型候选集合在源码 LlamaFactory/src/llamafactory/extras/constants.py 中
 
 
 ## CLI 模式
@@ -207,7 +232,8 @@ llamafactory-cli train examples/train_lora/qwen3_lora_sft.yaml
 socket.cpp:764] [c10d] The client socket cannot be initialized to connect to [localhost]:54943 (errno: 97 - Address family not supported by protocol)
 subprocess.CalledProcessError: Command '['torchrun', '--nnodes', '1', '--node_rank', '0', '--nproc_per_node', '2', '--master_addr', '127.0.0.1', '--master_port', '51789', '/ofs/ese-llm-ssd/users/wangqiwen/code/LlamaFactory/src/llamafactory/launcher.py', 'examples/train_lora/qwen3_lora_sft.yaml']' returned non-zero exit status 1.
 # 更正后的命令
-CUDA_VISIBLE_DEVICES=0 lmf train examples/train_lora/qwen3_lora_sft.yaml
+CUDA_VISIBLE_DEVICES=0 lmf train examples/train_lora/qwen3_lora_sft.yaml # 改成单机单卡
+CUDA_VISIBLE_DEVICES=0,1 lmf train examples/train_lora/qwen3_lora_sft.yaml # 【2026-3-13】注明可用GPU即可
 ```
 
 原因：
@@ -219,40 +245,16 @@ CUDA_VISIBLE_DEVICES=0 lmf train examples/train_lora/qwen3_lora_sft.yaml
 ```
 
 解法
-- 使用单机单卡模式
-- 更改命令为单机多卡模式
+- 使用单机单卡模式：指定 CUDA_VISIBLE_DEVICES=0
+- 更改命令为单机多卡模式：指定 CUDA_VISIBLE_DEVICES=0,1
 
 注意
 - 尽量使用2的次方的卡数，如 2，4，8，否则不符合操作系统的规律，可能问题，如算力分配不均衡，2**n的张量无法拆分进行运算
 - 系统盘如果不够的话可以直接清空.cache文件
 
+### LLaMA-Factory 命令
 
-## Web UI
-
-UI 点选操作转化为命令行
-
-浏览器打开图形界面测试模型，可选择 `--share` 开公网链接
-
-```sh
-# Web UI 使用
-llamafactory-cli webui    # 启动网页端
-GRADIO_SERVER_PORT=7862 lmf webui
-GRADIO_SERVER_PORT=7862 llamafactory-cli webui # 制定端口，不是默认 7860
-GRADIO_SERVER_PORT=8080 CACHE_DIR=$cache_dir lmf webui # 【2026-2-2】制定 cache 目录，huggingface 下载模型不放默认目录 ~/.cache/huggingface
-
-CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
-CUDA_DEVICE_ORDER='cpu' && llamafactory-cli webui # cpu 上启动web ui
-set CUDA_DEVICE_ORDER='cpu';llamafactory-cli webui # windows terminal 命令
-llamafactory-cli web --model_name_or_path path_to_model --share
-```
-
-其中
-- 模型候选集合在源码 LlamaFactory/src/llamafactory/extras/constants.py 中
-
-
-## LLaMA-Factory 命令行
-
-llamafactory-cli 命令行工具接口是 LLaMA-Factory v3 版本引入的新特性，用于简化常用操作（训练、推理、导出等）
+llamafactory-cli 命令行工具接口是 LLaMA-Factory v3 版本引入的新特性，用于简化常用操作（训练、推理、导出等），简称 lmf
 
 命令	说明
 - env	显示环境信息（PyTorch、CUDA、transformers 等）
@@ -267,7 +269,7 @@ llamafactory-cli 命令行工具接口是 LLaMA-Factory v3 版本引入的新特
 - clean	清理缓存、训练中间结果
 - build	构建 tokenizer/config 结构
 
-#### 常用命令
+### 常用命令
 
 主要命令
 - llamafactory-cli 可简化为 lmf
