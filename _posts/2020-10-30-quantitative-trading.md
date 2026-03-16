@@ -71,6 +71,10 @@ permalink: /quant
 - 量化投资高速发展、多元化发展
   - 2013-2015年股指新政之前可以说是国内量化基金有史以来最风光的一段时期。国内量化投资机构成批涌现，国内量化投资高速发展。
 
+2019年，梁文锋预测的国内量化路线图
+
+<img width="682" height="878" alt="image" src="https://github.com/user-attachments/assets/6783083a-8aa1-4d74-a8a5-b679ad421b09" />
+
 
 
 ## 什么是量化交易
