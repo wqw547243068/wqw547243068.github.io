@@ -900,6 +900,26 @@ llama-factory 专注于“模型训练”框架，核心是三大核心模块（
 - Swift 框架广泛应用于多种场景，包括智能客服、内容生成、企业级软件定制、智能物联网和多模态任务（如图像识别与自然语言处理结合）。例如，在智能客服中，Swift 可通过 RLHF 技术训练模型，使其更好地理解用户意图并提供自然的回答。
 - SWIFT支持300+ LLM和50+ MLLM（多模态大模型）的训练(预训练、微调、对齐)、推理、评测和部署。开发者可以直接将我们的框架应用到自己的Research和生产环境中，实现模型训练评测到应用的完整链路。我们除支持了PEFT提供的轻量训练方案外，也提供了一个完整的Adapters库以支持最新的训练技术，如NEFTune、LoRA+、LLaMA-PRO等，这个适配器库可以脱离训练脚本直接使用在自己的自定流程中。
 
+### 架构
+
+ms-swift是“以训练为中心，上下游全链路整合”
+- `Models` 提供基础模型加载器，支持自定义配置, `ms-swift/swift/llm/model`
+- `Datasets` 支持 ModelScope 数据集、Hugging Face 数据集、自定义本地数据集（CSV/JSONL），统一转换为标准格式, `ms-swift/swift/llm/dataset`
+- `Trainer` 目录 `ms-swift/swift/trainers/trainers.py`
+  - 使用Transformers库中Trainer 用于 SFT / 预训练，使用 TRL 库用于 RLHF（DPO/ORPO/KTO 等）
+  - 使用 Megatron-LM库并行预训练，支持 Mamba 等非 Attention 结构模型
+- `Post-Traing Utilities`
+  - Inference：使用 PyTorch Native、vLLM、LMDeploy 三种后端
+  - Deployment：使用 FastAPI 库实现 OpenAI 兼容接口，支持工具调用
+  - Evaluator：使用基于 EvalScope 库，覆盖 100+ 纯文本和多模态评估集
+  - Exporter：支持 Transformers 格式与 Megatron 格式的双向转换，支持导出为 Ollama 兼容格式
+- `Post-Traing Utilities`
+
+![](https://pic2.zhimg.com/v2-6d57cfbeca091ae6795e1fb664e8565d_1440w.jpg)
+
+
+
+
 ### 安装
 
 安装
