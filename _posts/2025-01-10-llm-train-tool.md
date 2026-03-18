@@ -1114,6 +1114,17 @@ Unsloth 将 GRPO 的 VRAM 使用量相较于标准实现降低了 **90%** 以上
 pip install unsloth
 ```
 
+### Unsloth Web UI
+
+【2026-3-18】官方推出 Unsloth Studio ✨ 无需写代码即能训练和运行 LLMs 的开源 Web UI。
+- 在 Mac、Windows、Linux 上本地运行模型
+- 用 70%更少的 VRAM，将 500 多个模型训练速度提升 2 倍
+- 支持 GGUF、视觉、音频、嵌入模型
+- 从 PDF、CSV、DOCX 自动创建数据集
+- 支持可视化节点工作流编辑数据
+- 支持500+种模型，涵盖文本、视觉、音频、嵌入等类型，兼容GGUF格式；支持全量微调、预训练、4-bit、16-bit以及FP8训练
+- 可以实时监控训练过程，追踪损失值与GPU使用率，并可自定义图表
+
 
 ## OpenRLHF
 
