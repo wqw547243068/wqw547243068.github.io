@@ -1125,6 +1125,12 @@ pip install unsloth
 - 支持500+种模型，涵盖文本、视觉、音频、嵌入等类型，兼容GGUF格式；支持全量微调、预训练、4-bit、16-bit以及FP8训练
 - 可以实时监控训练过程，追踪损失值与GPU使用率，并可自定义图表
 
+```sh
+pip install --upgrade pip && pip install uv
+uv pip install unsloth --torch-backend=auto
+unsloth studio setup
+unsloth studio -H 0.0.0.0 -p 8888
+```
 
 ## OpenRLHF
 
