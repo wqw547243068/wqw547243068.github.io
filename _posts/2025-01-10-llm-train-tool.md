@@ -164,6 +164,138 @@ LLM 训练/微调工具
 | 学习率预热比例 | 0.005    |
 
 
+## 分布式框架
+
+底层分布式训练框架
+
+### 总结
+
+【2025-12-15】[LLaMA-Factory分布式训练实战指南](https://blog.csdn.net/weixin_35516624/article/details/155976841)
+
+LLaMA-Factory 支持 DDP、DeepSpeed、FSDP 三种模式，各有侧重，具体看硬件条件和训练目标。
+
+| 引擎       | 公司 | 要点 | 显存效率 | 并行策略  | 配置复杂度 | 多机支持 | 推荐场景   | 劣势        |
+|----------|-----| --------| -------|--------|----------|----------|-------------|-------------|
+| **DDP**    | pytorch | - |中等   |  ddp   | 极简       | 支持     | 快速验证、中小模型（<13B）、调试首选 |  -    |
+| **FSDP**   | pytorch | 原生，易用性；全参数分片（类似zero-3） |高  |     | 中等       | 支持  | 多机部署、偏好原生 PyTorch 生态 | 千亿级扩展效率低  |
+| **DeepSpeed** | 微软 | 显存优化+扩展性；zero系列 | 极高（ZeRO-3 + Offload）| DP（ZeRO-1/2/3/++） + 有限 TP | 较高    | 支持  | 中小模型、显存紧张、极致显存压缩、异构集群  | 配置复杂，推理弱  |
+| **Megatron-LM** | 英伟达 | 极致吞吐、细粒度张量并行（3D并行,tp/dp/pp）、Kernel 融合； |极高（ZeRO-3 + Offload） | DP+TP + PP（原生支持）+EP |较高  | 支持  | 超大模型、高带宽集群（（NVLink+RoCE））、显存紧张、极致显存压缩 |  硬件锁定英伟达、改造成本高 |
+| **Megatron-DeepSpeed** | 微软 | 兼顾吞吐与显存 | 极高（ZeRO分片） | TP（Megatron） + ZeRO-DP（DeepSpeed） |较高  | 支持  | 百亿~万亿级模型、高性能集群、生产级训练|  硬件锁定英伟达、改造成本高 |
+
+分析：DDP是pytorch初始模式，显存效率一般，微软推出 deepspeed 提升显存利用率，随后 pytorch 也推出自己的优化版 FSDP，NVIDIA 也推出 Megatron-LM
+- DDP 中，每张 GPU 都各自保留一份完整的模型参数和优化器参数。
+- 而 FSDP 切分了模型参数、梯度与优化器参数，使得每张 GPU 只保留部分参数。
+- 除了并行技术之外，FSDP 还支持将模型参数**卸载**至CPU，进一步降低显存需求。
+- DeepSpeed 是微软分布式训练引擎，并提供ZeRO（Zero Redundancy Optimizer）、offload、Sparse Attention、1 bit Adam、流水线并行等优化技术。 
+
+### 选型方法
+
+核心选型建议
+- **快速迭代/调试**：选 **DDP**，配置最简单，适合中小模型快速跑通流程。
+- **显存极度受限/超大模型**：选 **DeepSpeed**，通过 ZeRO-3 + Offload 能把显存占用压到极低，支持 100B+ 模型训练。
+  - 只有 2×A100 却要训 13B 模型
+- **多机生产部署/PyTorch 原生党**：选 **FSDP**，和 PyTorch 生态深度集成，适合稳定的多机分布式训练。
+  - 未来可能扩展到多机集群
+
+训练框架选型：
+- 追求**速度**和极致**吞吐**：选择 Megatron-LM。
+- **资源有限**、**显存优化**优先：选择 DeepSpeed。
+- 快速验证、易用性和 PyTorch 原生集成：选择 FSDP。
+三者也可组合使用，如在 Megatron-LM 模型并行基础上结合 DeepSpeed 数据并行和 ZeRO 优化，实现性能与显存的平衡
+
+[Megatron-DeepSpeed](https://github.com/deepspeedai/Megatron-DeepSpeed)，github 2023年后, 不再更新
+
+原则：
+- 新项目先用 DDP + LoRA 快速验证 pipeline；
+- 显存不够就上 DeepSpeed，尤其是 ZeRO-3；
+- 多机部署优先考虑 FSDP，减少外部依赖；
+- 所有场景下，QLoRA 都值得尝试，显存节省 70%+，收敛更快。
+
+| 引擎                     | 模型           | 显存/卡 | 速度（tokens/s） | 稳定性   |
+|--------------------------|----------------|---------|------------------|----------|
+| DDP                      | Qwen-7B        | ~18GB   | ~900             | ★★★★★    |
+| DeepSpeed (ZeRO-2)       | Baichuan2-13B  | ~14GB   | ~700             | ★★★★☆    |
+| DeepSpeed (ZeRO-3 + Offload) | Llama-2-13B | ~26GB   | ~550             | ★★★☆☆    |
+| FSDP (full_shard)        | ChatGLM3-6B    | ~10GB   | ~800             | ★★★★☆    |
+| FSDP + Offload           | Qwen-7B（多机）| ~12GB   | ~750             | ★★★★     |
+
+
+关键结论
+- **速度天花板**：**DDP** 最快（~900 tokens/s），稳定性拉满，适合中小模型快速训练。
+- **显存最优**：**FSDP (full_shard)** 单卡显存仅 ~10GB，适合显存有限的 6B/7B 级模型。
+- **超大模型妥协**：DeepSpeed ZeRO-3 + Offload 显存占用反而更高（~26GB），速度最慢（~550 tokens/s），稳定性也最差，更适合极端显存受限场景。
+- **多机平衡**：FSDP + Offload 在多机 Qwen-7B 上表现均衡，显存 ~12GB、速度 ~750 tokens/s，稳定性良好。
+
+ 🎯 选型建议
+- 如果 **Qwen-7B/ChatGLM3-6B** 这类中小模型，优先选 **DDP** 或 **FSDP (full_shard)**，兼顾速度和显存。
+- 如果训 **13B 级模型**，**DeepSpeed ZeRO-2** 是更均衡的选择，比 ZeRO-3 更快更稳。
+- 如果 **多机部署**，**FSDP + Offload** 是原生 PyTorch 生态下的优质方案。
+
+结论很清晰：
+- 稳定性优先 → 选 DDP
+- 显存极度紧张 → DeepSpeed ZeRO-3 + Offload 是唯一选择
+- 未来要扩展多机 → FSDP 更易维护
+
+### FSDP
+
+FSDP（Fully Sharded Data Parallel）
+- 定位：PyTorch 原生替代 ZeRO-3 的方案。
+- 优势：
+  - 无需额外依赖，API 简洁（torch.distributed.fsdp）。
+  - 自动分片参数、梯度、优化器状态，显存效率接近 ZeRO-3。
+  - 对 AMD GPU、AWS Trainium 等非 NVIDIA 硬件支持更好。
+- 劣势：
+  - 缺乏细粒度张量并行，无法像 Megatron 那样拆分单个 Attention 算子。
+  - 通信调度不如 Megatron 精细，在高带宽集群中吞吐落后 20%+ [³]。
+- 适用场景：适合研究者快速迭代模型，或在非 NVIDIA 生态中部署 LLM。
+
+### Megatron-LM
+
+Megatron-LM
+- 优势：
+  - 原生支持 算子级张量并行（Tensor Parallelism），将 QKV、FFN 等操作切分到多个 GPU。
+  - 深度定制 CUDA Kernel 融合（如 fused QKV、LayerNorm+残差），减少 kernel launch 开销。
+  - 通信与计算重叠设计优秀，通信占比仅 18%（vs DeepSpeed 32%）[¹]。
+- 劣势：
+  - 显存优化弱，依赖模型并行降低单卡负载。
+  - 仅支持 PyTorch，对非 NVIDIA 硬件（如 AMD、TPU）适配差。
+- 适用场景：“在具备充足 A100/H100 和 NVLink 的超算中心，Megatron 是吞吐优先的首选。” 
+
+### DeepSpeed
+
+DeepSpeed
+- 优势：
+  - ZeRO 系列（尤其是 ZeRO-3 和 ZeRO-Infinity）可将优化器、梯度、参数分片到所有 GPU，显存占用降低 10 倍以上。
+  - 支持 CPU/NVMe Offload，可在消费级 GPU 上训练百亿模型。
+  - 通用性强，兼容 TensorFlow、Horovod 等。
+- 劣势：
+  - 张量并行需额外集成（如与 Megatron 结合），原生不支持。
+  - 通信开销大，扩展效率在千卡级明显下降。
+- 适用场景：“资源受限或需要快速验证模型架构时，DeepSpeed 的 ZeRO 是最佳选择。” 
+
+### Megatron-DeepSpeed
+
+Megatron-DeepSpeed（融合方案）
+- 设计理念： 利用 Megatron 的 TP/PP 处理模型内并行，DeepSpeed 的 ZeRO-DP 处理跨节点数据并行。
+- 性能表现：
+  - 在 Megatron-Turing NLG 530B 模型训练中，该方案实现 SOTA 吞吐与扩展效率。
+  - 显存利用率高达 95%，通信占比降至 17%。
+- 工程复杂度： 需同时配置两套框架，调试难度高，但 NVIDIA 与 Microsoft 已提供联合示例（如 Megatron-DeepSpeed GitHub 仓库）[⁶]。
+- 适用场景：“工业级千亿模型训练的事实标准。”
+
+架构本质差异：
+- DeepSpeed = 显存扩展优先（让大模型跑在有限硬件上）
+- Megatron-LM = 计算性能优先（榨干 NVIDIA 集群算力）
+- FSDP = 易用性优先（PyTorch 用户开箱即用）
+
+DeepSpeed + Megatron-LM（最强性能组合）
+- 企业级训练：DeepSpeed + Megatron 组合（性能与扩展兼顾）；
+- 中小规模微调：FSDP（24GB 显卡跑 30B 模型）；
+- 国产化需求：DeepSpeed + 昇腾插件（已支持 910B 显存优化）。
+
+详见：【2025-7-18】[大模型推理框架对比（DeepSpeed、Megatron-LM 、FSDP）](https://www.toutiao.com/article/7528280419465282075/)
+
+
 
 
 ## DeepSpeed -- 微软
