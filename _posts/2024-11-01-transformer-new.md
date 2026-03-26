@@ -833,7 +833,42 @@ Infini-Transformer与Transformer-XL的区别
   - Transformer-XL：适用于需要处理比标准Transformer更长序列的任务，但可能在极长序列的处理上受限。
   - Infini-Transformer：由于其无限上下文的能力，更适合于需要处理极长输入序列的应用，如长文本摘要、文档理解和生成等。
 
+### 梯度稀释
 
+#### 【2026-3-17】Kimi Attention Residuals
+
+- 【2026-3-17】[Kimi新架构让马斯克叹服！17岁高中生作者一战成名](https://mp.weixin.qq.com/s/grWJ9EH_4RdeLymRetAT4w)
+
+残差链接问题
+- 传统：第N层的输出 = 第N层的计算结果 + 第N-1层的输出。一路累加下去，每层都能“记住”前面所有层的信息。
+- 问题：大模型 PreNorm 主流范式下，残差连接中所有层的贡献都是**等权**累加。贡献被逐步稀释，早期信息难以检索，且大量层可被剪枝而损失微小，称之为“PreNorm dilution problem”。隐藏状态范数会随着深度不断增长。深层网络中，这种unbounded growth会导致训练不稳定。
+
+月之暗面团队思路：既然问题出在“无差别累加”，那就让网络自己决定该回忆什么。
+
+Kimi 提出"注意力残差"技术 Attention Residuals，革新 Transformer架构中沿用十年的**残差连接**机制。
+- 不再简单累加各层输出，而是让模型有选择地关注重要信息，解决了"梯度稀释"问题。相当于把注意力机制也“旋转了90度”。
+- 模型在计算当前层时可以聪明地“回头看”，根据需要自由决定去提取前面哪一层的信息。
+
+Attention Residuals：
+- 当前层的可学习伪查询向量作为query（learnable pseudo-query）
+- 所有前层的输出作为key和value
+- 用注意力机制加权聚合
+
+这样，网络可以学会哪些层的信息对当前计算最重要，就多关注一点；不相关的层，权重自然降低。
+
+但新问题：计算量爆炸。
+- 如果一个100层的网络，每一层都要对前面99层做full attention residual，复杂度是O(L²)，根本跑不动。
+
+解决方案：Block AttnRes。
+- 把连续的若干层打包成一个block，对block内部的输出做压缩，只保留一个“摘要向量”。
+
+实验显示
+- 推理能力提升7.5个点，关键是将约25%的算力成本从"烧钱"转为"代码优化"，大幅降低创业公司门槛。
+- 新机制放到Kimi自家的Kimi Linear 48B大模型（3B激活参数）上验证，训练效率提升25%，推理延迟增加不到2%。
+
+观点
+- Karpathy：我们对Attention is All You Need这篇Transformer开山之作的理解还是不够。
+- 前OpenAI高管：这是"Deep Learning 2.0"的开端。
 
 
 ### TTT
