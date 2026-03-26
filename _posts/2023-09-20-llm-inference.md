@@ -511,12 +511,53 @@ vllm和sglang 部署分别：
 
 #### 问题
 
+##### vllm 默认占满显存
+
+【2026-3-26】案例
+- vllm 加载 qwen-7b 模型，显存占到40G左右，但关掉vllm时占用17G
+- vllm 加载 qwen3-4b 模型，A6000，显存占41G！
+
+显存计算公式: 
+- 显存占用 ≈ KV Cache + 模型参数 + 激活值 + 临时buffer
+
+$ [ \text{显存占用} \approx \text{KV Cache} + \text{模型参数} + \text{激活值} + \text{临时 buffer}] $
+
+详见站内专题：[GPU显存分析](#gpu_cost)
+
+gpu_memory_utilization 默认值为 0.9，GPU 内存的使用率为 90%。如果遇到显存不足的问题，可以降低该值。
+
+- KV 缓存：在自回归解码过程中，LLM 的所有输入标记会生成注意键和值张量，并保存在 GPU 内存中，这些缓存可能会占用大量显存。
+- vLLM 引入 PagedAttention 来有效管理 KV 缓存，这种机制允许在**不连续**内存空间中存储连续的键和值。
+
+通过合理调整 gpu_memory_utilization 参数，可以在保证模型性能的同时，优化显存的使用。
+
+调用代码
+
+```py
+import vllm
+
+model = vllm.LLM(
+  model_path="/data/models/Meta-Llama-3-8B-Instruct",
+  tensor_parallel_size=2,
+  gpu_memory_utilization=0.15, # 设置显存利用率为 15%
+  temperature=0.2,
+  top_p=0.95,
+  max_tokens=100
+)
+```
+
+
+##### vllm 不支持 embedding的lora
+
 【2025-2-4】vllm 不支持 embedding的lora功能！
 - issue [Embedding model with Lora doesn't work](https://github.com/vllm-project/vllm/issues/12808)
 
 > It's not supported yet according to the [compatibility matrix](https://docs.vllm.ai/en/latest/features/compatibility_matrix.html). Let me update the supported models page to avoid this confusion. cc @jeejeelee
 
 [14953](https://github.com/vllm-project/vllm/pull/14935)
+
+
+
 
 #### 框架
 
