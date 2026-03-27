@@ -1908,6 +1908,13 @@ model = AutoModelForSequenceClassification.from_pretrained(model_file, config=co
   - 问题：会下载仓库**所有**文件，大大延长模型下载时间
 - HuggingFace Hub: <span style='color:green'>精准下载</span>
 
+官方访问受限？使用国内镜像
+
+```sh
+# ~/.bashrc 添加，否则 每次下载时都需要先输入该命令
+export HF_ENDPOINT=https://hf-mirror.com
+```
+
 参考
 - 官方提供的下载[方法](https://huggingface.co/docs/hub/models-downloading)
 - [【Hugging Face】如何从hub中下载文件](https://automanbro.blog.csdn.net/article/details/133658587)
@@ -2045,6 +2052,9 @@ hf auth login # 登录
 
 # 正常使用 CLI，例如下载模型：
 hf download gpt2 config.json
+huggingface-cli download --resume-download Qwen/Qwen2.5-VL-7B-Instruct --local-dir ./model # 模型都下载在当前终端的地址下
+# [2026-3-27] 实践通过
+hf download  Qwen/Qwen3.5-0.8B --local-dir ./model
 ```
 
 
