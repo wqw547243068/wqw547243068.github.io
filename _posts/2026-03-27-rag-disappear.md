@@ -35,6 +35,24 @@ RAG 每个环节都藏着工程"暗伤"：
 - 文件检索：Google File Search、字节 OpenViking（依赖embedding）
 
 
+## 免嵌入 Embedding Free
+
+基于 Embedding 的 RAG 问题：
+- 基础设施复杂性和高昂成本。
+- 生成 Embeddings、维护向量数据库以及数据更新后的重新索引都需要大量的计算和存储资源。
+
+无 Embedding RAG 采用替代方案
+- 基于关键字的搜索（如 BM25）
+- LLM 驱动的迭代检索（如 ELITE）
+- 基于知识图谱的方法（如 GraphRAG）
+- 基于提示的检索（如 Prompt-RAG），以解决语义和操作上的限制。
+
+无 Embedding RAG 的优势
+- 更好的可解释性、更低的延迟、更少的存储需求和更强的领域适应性。
+
+这使其在医疗、法律、金融等专业领域以及需要透明度或跨文档推理的场景中极具价值。
+
+
 ## 文件检索
 
 ### Google File Search
