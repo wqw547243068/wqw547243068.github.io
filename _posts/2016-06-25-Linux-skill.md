@@ -2910,44 +2910,38 @@ typedef union epoll_data {
 - ![](https://static.xjh.me/wp-content/uploads/2017/11/www.xjh.me-2017-11-04_17-18-14_961742-2.png)
 
 
-## 进程管理
+### 总结
 
-需求
-- 退出当前终端后，程序保持运行
+下面是**Zellij / tmux / Byobu** 完整对比表格，包含**核心功能、体验、配置、生态**等维度，方便直接对比选择。
 
-### nohup
+# Zellij · tmux · Byobu 功能对比总表
 
-当终端退出时（如关闭终端窗口，或者 ssh 网络中断），shell 进程会给所有子进程发送一个 SIGHUP 信号，从而导致进程结束。
+| 对比项 | Zellij | tmux | Byobu |
+|---|---|---|---|
+| **本质** | 全新现代化终端复用器 | 经典底层终端复用引擎 | tmux/screen 封装增强工具 |
+| **开发语言** | Rust | C | Shell + Python |
+| **默认前缀键** | `Ctrl+g` | `Ctrl+b` | `F9` 菜单 / 同 tmux |
+| **适合人群** | 新手、现代终端爱好者 | 运维、重度命令行用户 | 不想折腾的服务器用户 |
+| **上手难度** | 极低（自带提示） | 中高（需记快捷键） | 低（F 键 + 菜单） |
+| **界面提示** | 底部常驻快捷键提示 | 无，需手动配置 | 顶部状态栏 + 提示 |
+| **系统状态栏** | 原生支持 | 需插件/配置 | 开箱即用（CPU/内存/时间） |
+| **窗格分割** | 支持水平/垂直/浮动 | 水平/垂直 | 同 tmux |
+| **浮动窗口** | ✅ 原生支持 | ❌ 需插件 | ❌ |
+| **鼠标支持** | ✅ 默认开启 | ✅ 需配置开启 | ✅ 默认开启 |
+| **会话持久化** | ✅ 自动保存 | ✅ 手动 detach | ✅ 自动后台 |
+| **多用户共享会话** | ✅ | ✅ | ✅ |
+| **布局保存/加载** | ✅ KDL 配置文件 | ✅ 插件/脚本 | ✅ 简单保存 |
+| **启动速度** | 稍慢 | 极快 | 同 tmux |
+| **资源占用** | 中等 | 极低 | 略高于 tmux |
+| **配置文件** | KDL 声明式 | `.tmux.conf` | 简单文本配置 |
+| **插件生态** | 年轻，Rust/Wasm | 极成熟（TPM 海量插件） | 依赖 tmux 插件 |
+| **跨平台** | Linux/macOS/Windows | Linux/macOS/BSD | 主要 Linux |
+| **默认预装** | 无 | 部分服务器自带 | Ubuntu/Debian 预装 |
 
-而 nohup 可以让进程忽略掉 SIGHUP 信号，从而在后台保持运行。
-
-#### 使用方法
-
-nohup 加让程序后台运行的方式
-
-```sh
-nohup ping 127.0.0.1 &
-```
-
-断开终端连接后，重新登陆到服务器，ping 进程仍然在运行。
-
-nohup 默认将程序输出追加到 nohup.out 文件中
-
-
-#### 问题
-
-问题汇总
-- 不能直接使用命令别名，需要换成实际地址
-- 不能传变量
-
-【2026-1-29】示例
-
-```sh
-nohup GRADIO_SERVER_PORT=8080 lmf webui &>log_lmf.txt & # 报错，系统将GRADIO_SERVER_PORT当做命令执行
-# 更改
-# 将 GRADIO_SERVER_PORT=8080 lmf webui 写入shell文件(start.sh)，再执行 nohup
-nohup start.sh &>log_lmf.txt &
-```
+选择建议
+- **想要现代、好看、不用记快捷键** → 选 **Zellij**
+- **服务器长期跑、追求稳定轻量、高度自定义** → 选 **tmux**
+- **Ubuntu 服务器、只想开箱即用带状态栏** → 选 **Byobu**
 
 
 ### tmux
@@ -3059,6 +3053,73 @@ Ctrl-B z      #  切换全屏
 tmux 像 vim 一样支持高度定制化，可以通过修改 `~/.tmux.conf` 配置各种快捷键，网络上也有 oh-my-tmux 这样的项目来帮你做一些配置
 
 在 `~/.bashrc` 或 `~/.zshrc` 中设置 `alias t="tmux"，tmux attach` 效率立刻提升 300%
+
+
+### Zellij
+
+- 官网 [](https://zellij.dev/)
+- github: [zellij](https://github.com/zellij-org/zellij)
+- B站视频讲解：[zellij - 比tmux更容易学习和上手的终端复用工具](https://www.bilibili.com/video/BV1NL411A77c)
+
+### Byobu
+
+Byobu 易于使用的tmux（或screen ）终端多路复用器包装器。轻松打开多个窗口并在单个终端连接中运行多个命令。
+
+安装
+
+```sh
+sudo apt-get install byobu # 命令安装byobu
+```
+
+登录启动
+- byobu-enable Byobu窗口管理器将在每次文本登录时自动启动
+- byobu-disable Byobu窗口管理器将不再在登录时自动启动
+
+色彩提示
+- byobu-enable-prompt 启动Byobu的彩色提示
+- byobu-disable-prompt 禁用Byobu的彩色提示
+
+
+## 进程管理
+
+需求
+- 退出当前终端后，程序保持运行
+
+### nohup
+
+当终端退出时（如关闭终端窗口，或者 ssh 网络中断），shell 进程会给所有子进程发送一个 SIGHUP 信号，从而导致进程结束。
+
+而 nohup 可以让进程忽略掉 SIGHUP 信号，从而在后台保持运行。
+
+#### 使用方法
+
+nohup 加让程序后台运行的方式
+
+```sh
+nohup ping 127.0.0.1 &
+```
+
+断开终端连接后，重新登陆到服务器，ping 进程仍然在运行。
+
+nohup 默认将程序输出追加到 nohup.out 文件中
+
+
+#### 问题
+
+问题汇总
+- 不能直接使用命令别名，需要换成实际地址
+- 不能传变量
+
+【2026-1-29】示例
+
+```sh
+nohup GRADIO_SERVER_PORT=8080 lmf webui &>log_lmf.txt & # 报错，系统将GRADIO_SERVER_PORT当做命令执行
+# 更改
+# 将 GRADIO_SERVER_PORT=8080 lmf webui 写入shell文件(start.sh)，再执行 nohup
+nohup start.sh &>log_lmf.txt &
+```
+
+
 
 
 ## Visual Studio Code
