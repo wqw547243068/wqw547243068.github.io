@@ -1062,7 +1062,10 @@ brew install md5sha1sum
 
 ### 代理
 
-terminal 设置代理
+
+#### 本地终端代理
+
+本地 Terminal 设置代理
 
 ```sh
 # Set HTTP and HTTPS proxies
@@ -1072,6 +1075,38 @@ export https_proxy="https://proxy.server.com:8080"
 # Exclude local addresses from proxy
 export no_proxy="localhost,127.0.0.1,*.local"
 ```
+
+#### 远程服务器转本地代理
+
+场景
+- 服务器端无法使用vpn，导致很多安装包无法正常使用，如 uv 安装
+
+【2026-3-28】解法：ssh 端口映射
+- ① 本地机器开启代理，记住本地端口 local_port
+- ② 服务器端设置代理
+- ③ 本地并启动 ssh 转发
+
+```sh
+# 服务器端设置代理 端口 7897（使用时自行更新）
+# 远程服务器
+host=10.191.60.224
+local_port=2080 # 本地端口
+remote_port=8022
+export https_proxy=http://127.0.0.1:$local_port http_proxy=http://127.0.0.1:$local_port all_proxy=socks5://127.0.0.1:$local_port 
+# 本地mac执行
+ssh -fCNR $local_port:localhost:$local_port  luban@$host -p $remote_port # 绑定本地代理服务
+```
+
+ssh 端口映射
+
+本机打开cmd，输入以下命令
+> ssh -vvv -N -R 7890:localhost:7890 -p <远程服务器端口号> <username>@<server_ip>
+
+参数说明
+- -vvv：输出调试信息；
+- -N：不执行远程命令，只建立 SSH 连接并进行端口转发；
+- -R 7890:localhost:7890：将远程服务器上的 7890 端口绑定到本地的 7890 端口；
+- -p：指定远程服务器ssh端口，若为默认的22可不写
 
 
 ### curl 网络请求
