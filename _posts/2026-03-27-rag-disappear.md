@@ -44,6 +44,14 @@ RAG 每个环节都藏着工程"暗伤"：
 - 基础设施复杂性和高昂成本。
 - 生成 Embeddings、维护向量数据库以及数据更新后的重新索引都需要大量的计算和存储资源。
 
+### 定义
+
+无 Embedding RAG（RAG without embeddings）指任何**不以向量嵌入作为主要检索手段**的 RAG 架构。
+- 省略了“向量化查询和文档，然后进行向量近邻搜索”这一经典步骤。
+
+论文
+- 【2025-11-*】苏州 [Embedding-Free RAG](https://aclanthology.org/2025.findings-emnlp.1360.pdf) 提出 Embedding-Free RAG 方案，应道在文档问答中，实时、问题驱动
+
 无 Embedding RAG 采用替代方案
 - 基于关键字的搜索（如 BM25）
 - LLM 驱动的迭代检索（如 ELITE）
