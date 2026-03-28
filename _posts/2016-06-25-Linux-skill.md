@@ -1629,7 +1629,9 @@ make
       - 客户端浏览器：http://uemc-train-srv00.gz01:8088/
       - 参考：[三种Shell脚本编程中避免SFTP输入密码的方法](http://blog.csdn.net/hereiskxm/article/details/7861759)
 - sftp服务
-- szrz命令
+- szrz命令：ubuntu下无法使用
+  - 【2026-3-28】故障：ubuntu tty终端里 输入 rz , 然后一直卡住，按 ctrl + C 不管用
+  - 解法：按住 Ctrl键, 再按五次x键 (强行终止)
 - nc命令
   - Linux网络工具中的“瑞士军刀”盛誉的netcat,能通过TCP和UDP在网络中读写数据
   - (1) 检测端口是否可用：
