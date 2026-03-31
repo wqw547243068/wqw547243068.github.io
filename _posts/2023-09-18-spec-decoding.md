@@ -76,15 +76,57 @@ GPT4 技术细节泄露后，对于**投机采样**【Speculative Decoding】策
 
 更多见站内专题：[投机采样](text_decoding#投机采样)
 
+## 改进
 
-## Google Medusa 美杜莎
+最早提出的`投机解码`（Speculative Decoding）算法使用 Target Model + Draft Model 范式，其加速效果很大程度上受到 Draft Model 对齐程度以及自身解码时延的影响。要得到高对齐同时低时延的 Draft Model 可能需要微调或蒸馏，成本高且不具有通用性。
+
+【2024-9-11】[最全LLM自投机算法汇总](https://zhuanlan.zhihu.com/p/706111755)
+
+因此，许多**自投机**（Self-Speculative Decoding）算法被提出作为原始投机解码的替代。
+- 让 Target Model 根据特定算法直接生成 draft tokens，不借助额外的 Draft Model。
+- 并且，简单修改 Target Model 结构，比如增加 LM Head 或者增加几层网络构成一个小型的 Draft Model，只要训练成本可接受，也可认为是自投机算法的一类。
+
+
+### 【2023-4-10】微软 Inference with Reference
+
+RAG、语法纠错、文档 QA 等任务场景中，LLM 生成结果往往与输入内容（reference）之间有**较多重合**。
+
+基于一定匹配规则，将 reference 中匹配当前已生成序列的部分直接作为 draft，而不用 Draft Model 生成，来提高 LLM 推理速度。
+
+【2023-4-10】微软推出 LLMA
+- 论文 [Inference with Reference: Lossless Acceleration of Large Language Models](https://arxiv.org/pdf/2304.04487)
+
+最简单匹配规则就是**前缀匹配**：
+- 以当前已生成序列的最后 n 个 tokens 作为前缀，在 reference 中匹配满足此前缀的连续 k 个 draft tokens。
+
+因此，该算法的两个重要超参是前缀匹配的长度 n 和 draft 长度 k。
+
+步骤
+- LLM 正常执行自回归解码；
+- 当已生成序列与 reference 中的某部分具有长度为 n 的**前缀匹配**时，选取后续 k 个 tokens 作为 draft 拼接到 output 中；
+- 下一解码步中并行地**验证**这些 draft tokens，抛弃第一个不匹配的 token 及其后续 tokens；
+- 存在不匹配时重新生成 token，进入到下一轮解码步。
+
+效果
+- 通过网格搜索最优的 n 和 k，该算法在特定场景下可以达到 2～3 倍的加速效果。
+
+分析
+- 使用场景限制了其通用性；RAG、语法纠错、文档 QA
+- 但因设计和实现简单、不需要额外训练而工程友好。
+
+
+### 【2024-1-14】Google Medusa 美杜莎
 
 投机采样虽好，但某些场景下，小模型选择棘手，如何同时部署大模型和小模型？
+
+Medusa 是**自投机**领域较早的一篇工作。
 
 【2023-9-18】[LLM推理加速-Medusa](https://zhuanlan.zhihu.com/p/655809033)
 - 项目主页: [medusa-llm](https://sites.google.com/view/medusa-llm)
 - Github [Medusa](https://github.com/FasterDecoding/Medusa)
-- 论文: [Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads](https://arxiv.org/abs/2401.10774)
+- 【2024-1-14】论文: [Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads](https://arxiv.org/abs/2401.10774)
+
+抛弃独立的 Draft Model，同时保留 Draft-then-Verify 范式，Medusa 在主干模型的最终隐藏层之后，添加若干 Medusa Heads，这些 Heads 具有预测对应位置 token 的能力，并且可以并行地执行，从而实现在一次前向中得到多个 draft tokens。
 
 Medusa: Simple Framework for Accelerating LLM Generation with Multiple Decoding Heads
 - ![](https://pic3.zhimg.com/80/v2-9de3ccb0b3107514b4fc71495ed78342_1440w.webp)
@@ -117,18 +159,168 @@ Medusa: Simple Framework for Accelerating LLM Generation with Multiple Decoding 
 <img width="925" height="353" alt="image" src="https://github.com/user-attachments/assets/6630a21a-75c5-4430-9796-1f31ae13dba6" />
 
 
+为了更高效地验证这些 draft tokens，Medusa 构造了 Tree Attention 结构。
+
+实现方法
+- 基于主干 Transformer 的最终隐藏层输出，原有的 LM Head 可以生成 next token，而 Medusa Heads 可以生成对应位置的后续 tokens（例如，有 3 个 Medusa Heads，一次前向一共可以生成后续的 4 个 tokens）；
+- Medusa Heads 是一个增强了残差连接的单层前馈网络，需要额外的训练。训练过程根据主干模型参数是否冻结可以分为 Medusa-1 和 Medusa-2：Medusa-1 仅对 Medusa Heads 进行微调，Medusa-2 会对主干模型也进行微调，计算量更大但能提升 Medusa Heads 的预测质量；
+- 使用 Top-K Sampling，每一个 Head 都会输出 k 个 tokens，对着 k 个 tokens 的验证需要构造 Tree Attention，以保证位置的对应性
+
+分析
+- 如果使用 Greedy Search 解码策略，draft tokens 正确率不够高，加速效果不够显著；
+- 如果采用 Top-K 解码，当取 k=5 时，draft tokens 正确率可以达到 80%。
+
+实验
+- Medusa-1 可以达到 2.2 倍的加速效果，Medusa-2 可以达到 2.3～2.8 倍的加速效果；
+- Medusa 增加了模型参数量，会增加显存占用；
+- Medusa 增加 Head 以及构造 Tree Attention 均对后续工作带来了启发。
+
 更多解读见[文章](https://zhuanlan.zhihu.com/p/655809033)
 
-## 自适应投机采样
+### 【2024-1-26】北大 EAGLE
 
-最早提出的`投机解码`（Speculative Decoding）算法使用 Target Model + Draft Model 范式，其加速效果很大程度上受到 Draft Model 对齐程度以及自身解码时延的影响。要得到高对齐同时低时延的 Draft Model 可能需要微调或蒸馏，成本高且不具有通用性。
+大部分投机解码方案都是在 token level 预测生成 draft，EAGLE 在 feature level (feature 即 LM head 前的 hidden states) 自回归地生成 draft 可能具有更好的效果，另外，采样过程的不确定性会对下一步 feature 的预测产生影响
 
-【2024-9-11】[最全LLM自投机算法汇总](https://zhuanlan.zhihu.com/p/706111755)
+因此，在 feature level 应用投机解码以获得更好的加速效果。
 
-因此，许多**自投机**（Self-Speculative Decoding）算法被提出作为原始投机解码的替代。
-- 让 Target Model 根据特定算法直接生成 draft tokens，不借助额外的 Draft Model。
-- 并且，简单修改 Target Model 结构，比如增加 LM Head 或者增加几层网络构成一个小型的 Draft Model，只要训练成本可接受，也可认为是自投机算法的一类。
+【2024-1-26】北大推出 EAGLE
+- 论文：[EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty](https://arxiv.org/pdf/2401.15077)， ICML 2024
 
+方法对比: 原生投机采样、lookahead、medusa和eagle
+- ![](https://pic4.zhimg.com/v2-a01db07dabc5f2c6709d26e775942603_1440w.jpg)
+
+实现方法
+
+EAGLE 引入结构简单的 Draft Model，包含一个 Embedding Layer，一个 LM Head 和一个 AR head。其中，只有 AR head 需要额外训练，Embedding Layer 和 LM Head 可以复用 Target Model 的参数。
+
+EAGLE 生成的 draft 过程如下所示：
+- Draft Model 接收两个输入：feature sequence of shape [bs, seq_len, hidden_dim] 和 token sequence of shape [bs, seq_len]，并将 token sequence 传入 Embedding Layer 得到 embedding sequence of shape [bs, seq_len, hidden_dim]；
+- AR Head 包含一个 FC Layer（用于降维）和一个 Decoder Layer ；将当前步 token 的 embedding 与上一时间步 token 的 feature 拼接后传入 AR Head，得到 draft token 的 feature；
+- 将 draft feature 传入 LM Head，通过采样得到多个 draft tokens；
+- 基于第二点发现，EAGLE 会采样不止一个 draft token，构造一棵 draft tree 供后续验证。
+
+EAGLE 的验证与 SpecInfer 类似，对 draft tree 中的每个结点递归地调用原始 Speculative Decoding 的验证算法。此外，还需记录被接受 token 的 feature 以进行下一次迭代。
+
+分析
+- 对应 7B/13B/33B/70B 的 Target Model，EAGLE 的 Draft Model 可训练参数量分别为 0.24B/0.37B/0.56B/0.99B；使用单卡 A100 40G 在 ShareGPT 数据集上训练 70B 模型的 AR Head 需要 1-2 天。
+- 论文在对话、代码以及数学等领域的进行了实验，结果表示 EAGLE 对 Llama-2-Chat 70B 推理有 2.7～3.5 倍的加速效果；
+- EAGLE 通过包含更多信息的 feature 来进行 token 预测，因此生成的 draft 质量相比 Medusa、Lookahead 等方法更高。
+
+
+### 【2024-2-3】谷歌 Lookahead Decoding
+
+【2024-2-3】UCSD、Google和伯克利推出 Lookahead Decoding
+- 论文 [Break the Sequential Dependency of LLM Inference Using Lookahead Decoding](https://arxiv.org/pdf/2402.02057)
+
+基于 Jacobi Decoding 过程中生成的 Jacobi Trajectory，可构造若干 N-grams。
+
+推理过程中进行前缀匹配：
+- 若当前步生成的 token 匹配了 N-gram pool 中的若干个元素，将这些候选 N-grams 作为 draft 拼接到输入中，并构造 Attention 得到前向结果，进行验证。
+
+实现
+
+关于 Lookahead Decoding 的具体技术细节参考文章，讲解得十分详细：Lookahead Decoding 图文详解。
+
+分析
+
+Lookahead Decoding
+- 在 MT-Bench、GSM8K、HumanEval 等多个不同任务数据集上取得了 1.5～2.3 倍推理加速；
+- 不需要额外训练，但是会引入额外的计算量，在计算能力强的设备上拥有更高的加速上限，应用在具体业务中应缓解这一问题。
+
+
+### 【2024-2-28】上海交大 CLLMs
+
+【2024-2-28】上海交大、加州大学推出 CLLMs
+- 论文 [CLLMs: Consistency Large Language Models](https://arxiv.org/pdf/2403.00835)
+
+如果想让模型在推理过程中一次生成多个 tokens，并且不增加显存占用，可以让模型在 Jacobi Decoding 过程中生成的 Jacobi Trajectory 上进行训练，使其能够从轨迹中任意一点仅通过一步解码就达到不动点，从而实现一步解码多个 tokens 的效果。
+
+该想法与 Consistency Models（CMs，diffusion model 加速技术）不谋而合，因此命名为 Consistency LLMs。
+
+实现
+
+CLLMs 的训练过程：
+- 对要加速的模型 M 及某一特定任务领域的数据集 D，令 M 在 D 上执行 Jacobi Decoding（每步解码的 draft 长度为 n），收集解码过程中产生的 Jacobi Trajectory ，构造原始数据集 D’；
+- 由于 D’ 中的数据均为“前面正确，后面错误”（由 Jacobi Decoding 的性质决定），对 D’ 进行数据增强，增加一些样本满足“前面正确，中间错误，后面正确”或更多模式，以提升模型在位于轨迹中任意点时的收敛能力；另外，删除 D’ 中出现重复 token 的样本，防止模型推理过程中出现重复；
+- 选择 Loss 进行训练，CLLMs 提供了两类可选的 Loss
+
+分析
+
+- CLLMs 可以做到一次解码得到 2～6 个 token，从而实现 2.4～3.4 倍的加速；
+- CLLMs 在推理过程中会出现两类 LLM 不具备的现象：
+  - 在一次 forward 中解码多个连续的 token（2～6 个）；
+  - 提前预测正确的 token。即如果位置 i 的 token t 是正确的，而小于 i 位置的 token 依然是错误的，那么在后续的 forward 过程中，t 将不会被替换掉。
+- CLLMs 代码仓库提供了 Llama-2-7B 和 Deepseek-coder-7B-instruct 的组网和训练代码；该算法的复现难度较大，具体应用到业务场景中的难度较大。
+
+
+### 【2024-3-14】苹果 ReDrafter -- 美杜莎改进
+
+【2024-3-14】苹果推出 ReDrafter
+- 论文 [Recurrent Drafter for Fast Speculative Decoding in Large Language Models](https://arxiv.org/pdf/2403.09919)
+
+受 Medusa 启发，在投机解码中使用 single-model strategy 更加工程友好，但是 Medusa 增加了**显存占用**，并且对 Tree Attention 构造需要在解码前提前固定。
+
+ReDrafter 用单个 RNN 代替 Medusa Head，并且应用 Beam Search 在解码过程中动态地构造 Attention。
+
+实现
+
+ReDrafter 使用标准 RNN 作为 Draft Model，根据当前步生成 token 的 embedding 更新 RNN 的 hidden state，并使用上一步解码时主干 Transformer 最后一层的输出来预测下一个 token；循环迭代上述步骤，持续生成 draft。
+
+另外，ReDrafter 使用了 Beam Search 作为解码策略，通过 tensor operations 在解码过程中动态构造前缀匹配，基于前缀匹配的结果构造 Attention，实现了高效的验证
+
+分析
+- ReDrafter 使用单个 RNN 生成 drafter，减少了显存占用，但是 draft 的生成是串行的；
+- ReDrafter 应用 Beam Search 的操作是高效的，且实现了解码过程中动态构造 Attention，更高效；
+- ReDrafter 与 EAGLE 均使用了 feature + embedding 作为 Draft Model 输入，说明这一设计具有一定的效果，或许可以应用在其他算法中。
+
+
+### 【2024-4-30】META Multi-Token Prediction
+
+【2024-4-30】META FAIR 推出 Multi-Token Prediction
+- 论文 [Better & Faster Large Language Models via Multi-token Prediction](https://arxiv.org/pdf/2404.19737)
+
+现有 LLM 训练大多基于自回归 Loss，推理时一次前向只能预测一个 next token。
+
+为了提高解码效率，新训练架构 Multi-Token Prediction，让 LLM 一次预测多个 token，同时不会造成显著显存占用增长和训练时间增加。
+
+一次预测 4 个 tokens 的模型结构
+- ![](https://pic1.zhimg.com/v2-15daba25eec30291c0e0cad78f0faad6_1440w.jpg)
+
+分析
+- 该方法使模型在代码问题上能力提升，且使用 4-tokens 预测能达到 3 倍加速；
+- 在大 batch size 下加速效果更好；并且在更大的模型上加速效果更显著；
+- Multi-Token Prediction
+  - 与 CLLMs 想法相近，但没有使用 Jacobi Trajectory；
+  - 与 Medusa 方法相近，但更适合用于训练 pretrained model。
+
+
+### 【2024-4-29】华为 Kangaroo
+
+【2024-4-29】Huawei Noah’s Ark Lab 华为诺亚方舟推出 Kangaroo
+- 论文 [Kangaroo: Lossless Self-Speculative Decoding via Double Early Exiting](https://arxiv.org/pdf/2404.18911), Apr 2024, .
+- 代码 [Kangaroo](https://github.com/Equationliu/Kangaroo)
+
+Kangaroo 试图解决两个问题：
+- 如何不依赖独立的 Draft Model 实现自投机，以缓解获取高对齐的 Draft Model 所需的成本？
+- 由于 draft 的生成难度因任务而异，如何根据任务困难程度动态地调整 draft 的生成策略？
+
+基于 Early Exit 的思想，Kangaroo 给出了解决方法：
+- 自投机：使用模型固定的浅层子网的 hidden states 来生成 draft（需要经过一个可训练的 Adapter）；由完整的模型自身进行验证。
+- 动态 draft 策略：为 draft 设置一个置信度阈值，当生成的某一个 draft token 低于该阈值时，结束生成 draft。
+
+Kangaroo 方案基于 Double Early Exit。
+- 从浅层子网中提取 hidden states（第一步 Early Exit），通过一个 Adapter 网络将这些 hidden states 直接映射到最终层的 hidden states；经过原本模型的 LM Head 输出得到 draft tokens。
+- 为 draft token 设置一个置信度阈值，当 draft logits 的最大值低于该阈值时，停止生成后续的 draft（第二步 Early Exit）
+
+分析
+
+- Kangaroo 在 Spec-Bench 上达到了 1.68 倍的加速，相比于 Medusa-1 减少了 88.7% 的显存占用；
+- Kangaroo 提出了衡量 draft token 接受率的新指标 Consistent Token Accept Rate，表示 w 个 draft tokens 全部被接收的概率
+- Kangaroo 还对浅层子网深度、Adapter 结构以及动态 draft 长度进行了探索
+
+## 应用
+
+### 自适应投机采样用于小模型
 
 【2026-3-27】[单张显卡跑出15倍推理速度，aiX-apply-4B小模型加速企业AI研发落地](https://mp.weixin.qq.com/s/Xzy19OoL-R-D2hh8ahOG8g)
 
