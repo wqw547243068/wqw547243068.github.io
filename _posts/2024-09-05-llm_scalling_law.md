@@ -34,16 +34,15 @@ permalink: /llm_law
 
 核心思想：本阶段，如果增加算力，则大模型效果会持续提升。
 
-<img width="2788" height="1084" alt="image" src="https://github.com/user-attachments/assets/71dca7c8-5dd4-4a86-943c-8531446e6765" />
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/71dca7c8-5dd4-4a86-943c-8531446e6765" />
 
 三阶段Scaling Law智能叠加
 - 预训练阶段 Scaling Law 普遍认为已经走缓（绿色曲线，对应Sigmoid的K数值相对应该较低）；
-- 而O1/R1类模型开启了RL和Test Time阶段的新型Scaling Law。
+- 而O1/R1类模型开启了 RL 和 Test Time 阶段的新型Scaling Law。
 - 很明显，这两个阶段Scaling Law对应Sigmoid函数K数值应该比较大，因为只需增加较少的算力，大模型的智力水平就得到了剧烈的增长，说明对应的走势是比较陡峭的（RL阶段比Test Time阶段应更陡峭些）。
 - RL和Test Time Scaling law并不应和预训练阶段Scaling Law等效，它们增强的主要是逻辑推理能力
 
-
-<img width="720" height="388" alt="image" src="https://github.com/user-attachments/assets/c9dac0ee-897b-42d2-81ca-18da5fd6bddf" />
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/c9dac0ee-897b-42d2-81ca-18da5fd6bddf" />
 
 【2025-2-10】[张俊林](https://www.zhihu.com/question/8584644469/answer/97056859008)
 
