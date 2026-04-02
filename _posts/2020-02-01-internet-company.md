@@ -2497,16 +2497,28 @@ tiktok营收对比
 ![](https://pic1.zhimg.com/80/v2-5f93c7c78580a0bdcef0daf9aeb54408_720w.jpg)
 
 
-## 谷歌Google
+## 谷歌 Google
 
 【2023-1-24】Google裁员，包含科学家[Dan Russell](https://www.linkedin.com/posts/dan-russell-6901a9_thejoyofsearch-google-activity-7022308252495319040-fXn2?utm_source=share&utm_medium=member_desktop)
 - Google最近裁了1.2w人，占6%员工，[资讯](https://www.businessinsider.com/google-layoffs-alphabet-jobs-pichai-email-slap-in-the-face-2023-1?utm_campaign=sf-insider-main&utm_medium=social&utm_source=facebook.com&fbclid=IwAR0oc8z2nofcP0T7s0JToppAJWixRgKdYxjKjzg77ZDw3uzkBbVRA_KTJVg)
 - Well... I'm also one of the 12,000 people laid off from Google today. I found out when I went to work at 4AM to finish up an important analysis, and my badge didn't work. After 17.5 years at Google, it was kind of a tough way to discover that I'd become a Xoogler. I still believe that Google's got a great mission. I still believe in #TheJoyOfSearch, but my enthusiasm was a little tempered this morning. #google We'll see what the days ahead bring.
 
-
 [ForTest](https://www.zhihu.com/question/24290336/answer/1852091010)
 
 吹 Google 的这么多，这里泼点冷水（自己 14-17 年在 Google，个人观感）
+
+### 谷歌中国
+
+【2026-4-2】Google 在 上海、北京 等地持续扩张，重点围绕 **Google Cloud**、**广告商业化**、**AI 相关研发支持** 等方向。
+
+面向25-28届留学生，英美澳加港新优先：
+- • Software Engineer（偏云基础设施/企业级解决方案）
+- • Customer Engineer / Cloud Consultant
+- • Data Analyst（广告与商业分析）
+- • Account Manager（Google Ads 方向）
+- • Product Solutions / Strategy 类岗位
+
+薪资待遇在科技外企里属于头部梯队，年包区间大约在 35-80w+，根据技术能力和面试表现浮动，晋升和调薪机制灵活且机会多
 
 ### Good parts
 
