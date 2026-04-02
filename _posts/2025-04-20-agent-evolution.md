@@ -3,7 +3,7 @@ layout: post
 title:  LLM/Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -14,6 +14,10 @@ permalink: /agent_evolution
 
 
 # LLM/Agent 自我进化
+
+## 观点
+
+【2026-3-27】小米 MiMo 大模型负责人罗福莉：大模型的自进化，对科学研究带来的指数级加速
 
 
 ## 静态问题
