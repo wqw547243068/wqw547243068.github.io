@@ -591,15 +591,34 @@ ACEBench数据分三类，评估不同能力：
 
 ### Kimi Agent 数据合成
 
+【2025-7-16】[Kimi K2智能体能力的技术突破：大规模数据合成 + 通用强化学习](https://developer.volcengine.com/articles/7527252545094631466)
+
 受ACEBench启发，月之暗面 Kimi K2 博客提出“[Large-Scale Agentic Data Synthesis]()”，通过系统化方法生成逼真、多样的Agent工具调用数据。
 
+Kimi K2 增强的智能体能力来自两个重要方面：大规模智能体数据合成和通用强化学习
+
 ACEBench 数据合成的核心思路
+
+<img width="1080" height="393" alt="image" src="https://github.com/user-attachments/assets/178a7c7f-a2c4-449d-aecf-017cf7743e72" />
+
+
+整个系统就像巨大的"智能体训练工厂"：
+- 左侧是原料准备 ：首先从各种领域（Domains）中收集工具（Tools），这些工具既包括真实的 MCP 工具，也有人工合成的工具。然后基于这些工具创建出不同的智能体（Agents）。
+- 中间是模拟环境 ：有一个工具模拟器（Tool Simulator）作为环境，让智能体可以在里面"练习"使用各种工具。同时还有用户智能体（User Agents）来模拟真实用户的行为和需求。
+- 右侧是质量控制 ：所有的任务都配有评分标准（Tasks w/rubrics），最后由评判员（Judge）来评估整个交互过程的质量。
+
+整个流程就是让智能体在这个模拟的"沙盒"环境中不断练习使用工具、与用户交互，然后通过评判员筛选出高质量的训练数据。这样就能大规模地生成真实、多样化的智能体训练素材，让 Kimi K2 学会如何在真实世界中灵活使用各种工具
 	
 为什么数据合成是LLM核心？
 
 工具调用让LLM能处理复杂任务，如查询天气、规划旅行等，背后靠的是高质量数据。真实数据成本高、覆盖有限，数据合成则能模拟多样场景，生成大规模训练数据。
 	
+### 【2024-12-17】CHIMERA
 
+【2024-12-17】CHIMERA 合成数据推理
+- 论文：[CHIMERA: Compact Synthetic Data for Generalizable LLM Reasoning](https://arxiv.org/abs/2501.03252)
+
+如何用9K条合成数据训练4B模型，逼近DeepSeek-R1的推理能力。核心是三阶段流水线构建高质量推理数据。
 
 
 # 结束
