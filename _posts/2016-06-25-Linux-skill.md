@@ -503,6 +503,103 @@ rm -rf file/ # 目录
 - ![](https://p1-tt.byteimg.com/origin/pgc-image/dba5dffe4dcd446987f9b252f0b21c50?from=pc)
 - ![](https://p1-tt.byteimg.com/origin/pgc-image/80d9bc3abcf34b3eb7efc9655698e6f6?from=pc)
 
+#### ls
+
+ls 默认没有颜色区分
+
+【2026-4-3】现代版 ls 工具：lsd、eza
+
+结论：
+- 日常使用推荐 eza（更活跃、兼容性强、默认更友好）；
+- 追求极致视觉与自定义选 lsd。
+
+
+| 维度 | **eza** | **lsd** |
+|---|---|---|
+| **维护状态** | 极活跃（社区驱动） | 稳定、更新较慢 |
+| **默认输出** | 简洁、清晰、接近 `ls -l` | 更花哨、图标多、排版密 |
+| **图标支持** | 良好（Nerd Font） | 更丰富、样式更统一 |
+| **Git 集成** | 内置、稳定 | 支持、略弱 |
+| **树形视图** | `--tree` 好用、层级可控 | 支持、样式不同 |
+| **性能** | 快、内存低 | 同样快、几乎无差别 |
+| **跨平台** | Linux/macOS/BSD/Windows 全支持 | 同上 |
+| **配置** | 环境变量 + 主题文件 | 完整 `lsd.yml` 配置、高度自定义 |
+
+
+最终建议
+- **日常主力：eza**（平衡、稳定、维护好、默认友好）
+- **美化/展示：lsd**（视觉更强、自定义更强）
+
+
+#### lsd
+
+lsd  是现代化的 ls 命令，Rust 语言开发，将文件和目录以更**美观**、**结构化**方式显示在终端中。
+
+与传统的 ls 命令不同，lsd 提供了丰富的**色彩**和**图形化**的信息展示，帮助用户更快地浏览和查找文件。
+
+![](https://pic1.zhimg.com/v2-da0a8e299e8d941e176dc97bcf776bde_b.webp)
+
+功能特点
+- 直观的输出:
+  - 使用丰富的颜色来显示不同类型的文件。
+  - 支持在文件名旁边显示标识图标。
+- 过滤和排序: 支持按照多种标准（如名称、大小、修改时间等）对文件和目录进行排序和过滤。
+- 详细信息显示: 提供详细的文件信息，包括权限、所有者、大小、时间戳等，让用户更好地了解文件属性。
+- 自定义配置: 用户可以通过配置文件自定义颜色、图标和其他显示选项。
+- 跨平台支持: lsd 可在 Linux、macOS 和 Windows 等多种平台上运行，方便用户在不同系统上使用。
+
+安装
+
+```sh
+sudo apt install lsd
+brew install lsd
+```
+
+
+命令
+
+```sh
+# 列出当前目录下的所有文件
+lsd
+# 以长格式列出所有文件和目录
+lsd -ltr
+# 仅列出目录
+lsd -d
+# 显示隐藏文件
+lsd -a
+```
+
+#### eza
+
+eza 是现代化的替代方案，取代 Unix 和 Linux 系统默认附带的 ls 命令+tree 命令，传统 ls 基础上，提供了更多功能、更优的默认输出、更现代的风格。
+
+支持颜色区分文件类型、权限、Git 状态等，还支持符号链接、扩展属性等内容。最重要的是，它是一个小巧的单一二进制文件，运行非常快，安装也方便。
+
+![](https://picx.zhimg.com/v2-604caa370398d6aeeb815c6f6e166443_1440w.jpg)
+
+安装
+
+```sh
+brew install eza
+eza
+# T 树状结构, L 目录层级, I 忽略文件
+eza -T -L 2 -I node_modules
+```
+
+eza 还支持在输出中显示图标，但需要单独安装字体  Nerd Fonts 
+- 下载地址 [font-downloads](https://www.nerdfonts.com/font-downloads)
+- 打开字体文件夹，找到 .ttf 或 .otf 的字体文件，双击安装即可
+- 终端配置, 选择新字体
+
+定义别名
+
+```sh
+# 推荐别名（~/.bashrc / ~/.zshrc）
+alias ls='eza --icons --git'
+alias ll='eza -l --icons --git'
+alias lt='eza --tree --level=2 --icons'
+```
+
 
 #### cp 
 
