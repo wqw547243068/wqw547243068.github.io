@@ -30,8 +30,11 @@ permalink: /spec_decoding
 <img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/ae2c7b1b-c059-4dfa-bdb3-4a15f14c97db" />
 
 
-## 【2022】投机采样
+【2026-4-*】Speculative decoding 机制解释：投机采样→美杜莎→MTP
+- [小红书](http://xhslink.com/o/7YnOxD6lnBe)
 
+
+## 【2022】投机采样
 
 2022年, Google DeepMind 推出大模型推理加速方法: Speculative Decoding，投机采样或推测解码
 
