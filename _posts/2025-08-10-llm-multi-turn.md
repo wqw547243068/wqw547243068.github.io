@@ -2,10 +2,10 @@
 layout: post
 title:  大模型多轮会话
 date:   2025-08-10 11:47:00
-categories: 大模型 对话系统 agent mermaid 推理 安全
-excerpt : 大模型如何实现任务型多轮会话？复杂推理，如何处理长文本？
+categories: 大模型 对话系统 agent mermaid 推理 安全 工具调用
+excerpt : 大模型如何实现任务型多轮会话？复杂推理，如何处理长文本？如何提升工具调用准确率？
 tags: 多轮 长文本 压缩
-permalink: /multi-turn
+permalink: /multi_turn
 mathjax: true
 ---
 
@@ -167,6 +167,132 @@ LLM 在多轮对话中的不可靠性，建议采取实用策略提升效果：
 ### 长文本
 
 详见站内[意图识别专题](llm_intent)
+
+## 工具调用
+
+LLM 工具优化
+- 函数调用见站内专题：[函数调用](function)
+
+现有TIR RL工作多依赖SFT，与SimpleTIR的Zero RL范式不同：
+- Search-R1/R1-Search（2025）：用RL训练LLM调用搜索引擎，但仅支持单轮，且依赖SFT；
+- ReTool（2025）：先SFT学习工具调用格式，再RL优化，性能高但缺乏推理多样性；
+- ToRL/Effective CIR（2025）：针对数学TIR，但基于指令微调模型（如Qwen2.5-Math），非基础模型；
+- ZeroTIR（2025）：唯一的Zero TIR工作，但未解决梯度爆炸问题，性能低于SimpleTIR；
+- SimpleTIR：首次实现多轮Zero TIR的稳定训练，且性能超越有SFT的基线。
+
+### ReTool
+
+【2025-4】字节推出新颖的强化学习框架`ReTool`，将代码解释器的执行集成到LLM的推理循环中。
+- [ReTool: Reinforcement Learning for Strategic Tool Use in LLMs](https://arxiv.org/pdf/2504.11536)
+- 主页 [ReTool](https://retool-rl.github.io/)
+- 解读：[知乎](https://zhuanlan.zhihu.com/p/1928448178346231670), [公众号](https://mp.weixin.qq.com/s/9-mo3luNiIdDFo0wdLecVQ)
+
+通过强化学习（RL）训练的**推理模型**（例如DeepSeek R1）在文本推理方面表现出色，但在需要**结构化**问题解决能力的场景中，例如几何推理、简洁计算或复杂方程求解，却表现不佳——而这些正是像代码解释器（CI）这样的计算工具具有明显优势的领域。
+
+字节提出 ReTool，通过**工具集成学习**增强了长形式推理：
+- （1）在自然语言推理过程中动态插入实时代码执行；
+- （2）一种自动化的RL范式，允许进行多轮实时代码执行的策略展开，并基于结果反馈教授模型何时以及如何调用工具。
+
+ReTool 采用系统的训练框架，从合成冷启动数据生成开始，生成用于微调基础模型的代码增强型长形式推理轨迹。
+- 冷启动监督微调：构建包含代码增强的长形式推理轨迹的数据集DCI
+- 监督微调（SFT）：使用DCI数据集对模型进行监督微调，使模型学会何时以及如何调用代码解释器，增强模型对计算工具的使用能力。
+
+随后的RL训练利用任务结果作为奖励，迭代优化模型的工具使用策略，使其能够在没有人类先验知识的情况下自主发现最优的工具调用模式。
+- 训练算法：基于PPO（Proximal Policy Optimization）算法进行训练，修改PPO以适应工具集成推理。在训练过程中，策略LLM与代码沙箱协作，生成包含多轮实时代码执行的rollout，用于解决给定问题。
+
+
+### 【2025-09-03】SimpleTIR
+
+【2025-09-03】[SimpleTIR：用RL端到端训练Agent多轮工具调用推理](https://mp.weixin.qq.com/s/soW7o6TDRCGtqDNEuN6EtQ)
+
+南洋理工、tiktok 推出 SimpleTIR：面向多轮工具集成推理的端到端强化学习
+- 标题：[SimpleTIR: End-to-End Reinforcement Learning for Multi-Turn Tool-Integrated Reasoning](https://arxiv.org/pdf/2509.02479)
+- 代码：[SimpleTIR](https://github.com/ltzheng/SimpleTIR)
+
+LLMs 推理任务中存在固有缺陷：
+- 计算准确性差：无法精确完成复杂数学运算（如积分、矩阵运算）；
+- 知识截止问题：无法获取训练数据之后的新信息；
+- 推理链条断裂：长任务中易出现逻辑跳跃或错误累积。
+
+TIR 核心价值在多轮交互（如复杂数学题需分步骤调用工具验证），但用RL训练多轮TIR时面临两大核心挑战：
+- 挑战1：训练不稳定性与梯度爆炸
+  - 根本原因：外部工具反馈导致的分布偏移（Distributional Drift）
+- 挑战2：信用分配错位（Misaligned Credit Assignment），多轮TIR的奖励是终点的稀疏奖励（仅最终轨迹成功/失败有奖励，中间轮次无即时奖励）。若轨迹后期因低概率token失败，整个轨迹会被赋予负奖励，导致：
+  - 早期轮次的“正确高概率推理”被错误惩罚；
+  - 模型为规避风险，倾向于“单轮生成”（放弃多轮交互的优势），与多轮TIR的设计目标相悖。
+
+为缓解不稳定性，现有工作常采用“冷启动SFT”（先通过监督微调让模型学习基础工具调用格式），但该方案存在明显缺陷：
+- 限制推理多样性：SFT数据中的工具调用模式固定（如“先写代码再输出答案”），模型难以发现新的推理策略（如自我修正、交叉验证）；
+- 依赖标注数据：SFT需要大量人工标注的“工具调用-推理”样本，成本高且泛化性差；
+- 无法根治分布偏移：SFT仅能缓解初始轮次的偏移，多轮累积后仍会出现低概率token。
+
+设计一种端到端Zero RL方案（从基础模型直接训练，无SFT），满足：
+1. 稳定多轮TIR训练，避免梯度爆炸和性能崩溃；
+2. 保留Zero RL的优势，让模型自主涌现多样化推理模式；
+3. 即插即用，兼容现有RL框架（如PPO、GRPO），无额外成本。
+
+工具集成推理（TIR） 是解决上述问题的关键范式：LLM通过与外部工具（如Python解释器、搜索引擎、数据库）交互，迭代完成“推理→生成工具调用代码→执行工具→利用反馈优化后续推理”的闭环。例如：
+- 用Python解释器计算数学公式结果；
+- 用搜索引擎获取实时数据（如股票价格、天气）；
+- 用代码验证推理中间步骤的正确性。
+
+现有TIR RL工作多依赖SFT，与SimpleTIR的Zero RL范式不同：
+- Search-R1/R1-Search（2025）：用RL训练LLM调用搜索引擎，但仅支持单轮，且依赖SFT；
+- ReTool（2025）：先SFT学习工具调用格式，再RL优化，性能高但缺乏推理多样性；
+- ToRL/Effective CIR（2025）：针对数学TIR，但基于指令微调模型（如Qwen2.5-Math），非基础模型；
+- ZeroTIR（2025）：唯一的Zero TIR工作，但未解决梯度爆炸问题，性能低于SimpleTIR；
+- SimpleTIR：首次实现多轮Zero TIR的稳定训练，且性能超越有SFT的基线。
+
+
+核心问题解决：
+- 提出SimpleTIR算法，首次针对性解决**多轮工具集成推理**（Multi-Turn Tool-Integrated Reasoning, TIR）中强化学习（RL）训练的不稳定性与梯度爆炸问题，根源是过滤含“无效轮次”（void turns）的训练轨迹。
+
+SimpleTIR 基于多层马尔可夫决策过程（Hierarchical MDP） 和Group Relative Policy Optimization（GRPO）
+
+性能突破：
+- Qwen2.5-7B基础模型上，将数学推理基准AIME24的分数从纯文本基线（22.1）提升至50.5，刷新Zero RL（无监督微调）范式下多轮TIR的SOTA；Qwen2.5-32B版本更将AIME24分数提升至59.9。
+
+无需监督微调（SFT）：
+- 规避传统“冷启动SFT”的约束，允许模型自主发现多样化推理模式，包括交叉验证（Cross Validation）、渐进推理（Progressive Reasoning）和自我修正（Error Correction）。
+
+通用性与高效性：
+- SimpleTIR是“即插即用”模块，无需修改现有RL框架，仅通过轨迹过滤即可稳定训练，几乎无额外计算成本。
+
+理论支撑：
+- 通过数学推导证明低概率token是梯度爆炸的核心诱因，并量化其对梯度 norm 的影响（命题3.1），为方案提供理论依据。
+
+
+### 【2026-02-10】解耦微调
+
+【2026-2-10】[工具调用准确率从60%飙到95%？我用这个‘解耦微调’把Qwen-7B救活了](https://mp.weixin.qq.com/s/MBQPFuTgrJ-7xHWkcgImCA)
+
+Qwen-7B 做 Agent，本来信心满满，结果MCP一跑，**选工具选不对、参数填得稀巴烂**，准确率惨不忍睹，最高也就 60% 徘徊。
+
+发现：<span style='color:red'>普通 LoRA 根本救不了复杂工具调用</span>。
+
+真正能救命的是2026年最火的`解耦微调`（Decoupled Fine-Tuning）。
+- 把“选工具”和“填参数”彻底拆开，分别训练两个LoRA，谁也别干扰谁。
+
+步骤
+- 第一步：拆任务，造数据不再一股脑丢给模型全部轨迹，而是切成两份干净的数据集：
+  - 数据集A（**工具选择**）：历史对话 → 只输出工具名字
+  - 数据集B（**参数生成**）：历史 + “已选工具：xxx” → 只输出JSON参数
+  - 用Claude/GPT批量生成，1个工具300-800条，10个工具也就几千条，成本不高。
+- 第二步：分别训两个LoRA
+  - 第一个LoRA：只负责选工具（共享一个适配器）
+  - 每个工具再训专属LoRA：只负责生成该工具的参数
+  - 用 QLoRA + LLaMA-Factory 或者 HuggingFace PEFT，单张4090或A100就能跑，3个epoch几小时搞定。
+- 第三步：推理时动态拼装对话来了 → 先加载选工具LoRA → 得到工具名 再加载对应工具的参生成LoRA → 拿到完美JSON 执行 → 循环
+  - 实测效果我之前MCP准确率60%出头，用解耦微调后直接冲到92-95%，幻觉和格式错误几乎消失，Agent终于能稳定干活了。
+
+最快路径：
+- 克隆 LLaMA-Factory 或用 unsloth 加速
+- 先把工具列表写成OpenAI schema
+- 用强模型批量生成拆分好的数据集
+- 分别训 selection 和 per-tool argument LoRA
+- vLLM + LoRAX 动态加载推理
+
+
 
 
 ## 多轮工具数据
