@@ -36,6 +36,25 @@ RAG 每个环节都藏着工程"暗伤"：
 - 文件检索：Google File Search、字节 OpenViking（依赖embedding）
 
 
+## 新结构
+
+### M-FLOW 倒锥图路由
+
+【2026-4-3】M-FLOW 由中国年轻团队开发，针对传统RAG仅做文本匹配、缺乏推理能力的短板。
+
+核心是"**倒锥图**路由架构"，通过FacetPoint（原子断言）、Entity（命名事物）和Facet（截面维度）三层结构，实现多跳推理与跨文档关联。
+
+M-FLOW 用倒锥图路由重构AI记忆。与知识图谱的扁平结构不同，它能2-3跳内完成多跳推理且不依赖LLM。
+
+本体定框架，图谱存关系，M-FLOW优化检索路径，实现真正的联想推理。
+
+M-FLOW用倒锥图架构替代传统图结构，让AI能真正进行多跳联想推理，而Graph RAG仍停留在节点匹配层面，缺乏跨文档的深层关联能力。
+
+搭建方式有两种：
+- 1) Docker一键部署：克隆GitHub仓库后运行quickstart脚本；
+- 2) 2) pip安装：使用pip install m_flow命令，并配置LLM API密钥。该方案在多项Benchmark测试中表现优异。
+
+
 ## 免嵌入 Embedding Free
 
 传统 RAG 架构中，“Embeddings + 向量搜索”构成了“检索”环节的核心
