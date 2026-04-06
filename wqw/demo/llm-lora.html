@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoRA 进化版本图谱</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e2e8f0;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 48px;
+    letter-spacing: 1px;
+  }
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #94a3b8;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .svg-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  svg.main-chart {
+    width: 100%;
+    display: block;
+    overflow: visible;
+  }
+  .node-group {
+    cursor: pointer;
+  }
+  .node-group:hover .node-box {
+    filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 20px currentColor);
+  }
+  .node-info {
+    font-size: 9px;
+    fill: #64748b;
+    pointer-events: none;
+  }
+  .node-info-org {
+    fill: #94a3b8;
+    font-weight: 600;
+  }
+  .node-info-effect {
+    fill: #86efac;
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #161b27;
+    border: 1px solid #2d3748;
+    border-radius: 16px;
+    max-width: 680px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    animation: modalIn 0.2s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .modal-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .modal-date {
+    font-size: 12px;
+    color: #64748b;
+    font-family: monospace;
+  }
+  .modal-close {
+    width: 32px; height: 32px;
+    border: none;
+    background: #1e293b;
+    border-radius: 8px;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: #334155; color: #e2e8f0; }
+  .modal-body { padding: 20px 24px; }
+  .modal-org {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .modal-section { margin-bottom: 16px; }
+  .modal-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .modal-section-content {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #cbd5e1;
+  }
+  .modal-section-content code {
+    background: #1e293b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'SF Mono', monospace;
+    font-size: 12px;
+    color: #a5b4fc;
+  }
+  .modal-paper {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 8px;
+  }
+  .modal-paper-title {
+    font-size: 13px;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .modal-paper-meta {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .modal-paper-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #60a5fa;
+    text-decoration: none;
+    padding: 6px 12px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .modal-paper-link:hover { background: rgba(59,130,246,0.25); }
+  .effect-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+  .effect-good {
+    background: rgba(34,197,94,0.15);
+    color: #86efac;
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+</style>
+</head>
+<body>
+
+<h1>LoRA 进化版本图谱</h1>
+<p class="subtitle">Low-Rank Adaptation · 2021 — 2024 · 点击节点查看详情</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#818cf8"></div><span>根节点</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div><span>量化压缩</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span>秩自适应</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div><span>内存优化</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div><span>结构改进</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div><span>优化器</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div><span>多LoRA优化</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div><span>多模态</span></div>
+</div>
+
+<div class="svg-container">
+<svg class="main-chart" viewBox="0 0 1560 1400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rootGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#312e81"/><stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="quantGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1c1917"/><stop offset="100%" style="stop-color:#292524"/>
+    </linearGradient>
+    <linearGradient id="rankGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c1a2e"/><stop offset="100%" style="stop-color:#0f2744"/>
+    </linearGradient>
+    <linearGradient id="memGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1f1a"/><stop offset="100%" style="stop-color:#0f2d22"/>
+    </linearGradient>
+    <linearGradient id="structGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0d2e"/><stop offset="100%" style="stop-color:#2d1b4e"/>
+    </linearGradient>
+    <linearGradient id="optimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f1a0d"/><stop offset="100%" style="stop-color:#2e2510"/>
+    </linearGradient>
+    <linearGradient id="multiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0d1a"/><stop offset="100%" style="stop-color:#2e1030"/>
+    </linearGradient>
+    <linearGradient id="multiLoraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#083344"/><stop offset="100%" style="stop-color:#0c4a6e"/>
+    </linearGradient>
+    <filter id="glow-purple">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-orange">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <line x1="90" y1="0" x2="90" y2="1160" stroke="#1e293b" stroke-width="2"/>
+  <rect x="0" y="60" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="220" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="380" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="540" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="700" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="860" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+  <rect x="0" y="1020" width="1400" height="80" fill="#0d1117" opacity="0.5"/>
+
+  <line x1="90" y1="140" x2="1500" y2="140" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="220" x2="1500" y2="220" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="300" x2="1500" y2="300" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="380" x2="1500" y2="380" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="460" x2="1500" y2="460" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="540" x2="1500" y2="540" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="620" x2="1500" y2="620" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="700" x2="1500" y2="700" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="780" x2="1500" y2="780" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="860" x2="1500" y2="860" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="940" x2="1500" y2="940" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="1020" x2="1500" y2="1020" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="1100" x2="1500" y2="1100" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="1180" x2="1500" y2="1180" stroke="#1e293b" stroke-width="1"/>
+  <line x1="90" y1="1260" x2="1500" y2="1260" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,6"/>
+  <line x1="90" y1="1340" x2="1500" y2="1340" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="82" y="105" text-anchor="end" fill="#6366f1" font-size="12" font-weight="700" font-family="monospace">2021.06</text>
+  <circle cx="90" cy="100" r="4" fill="#6366f1"/>
+  <text x="82" y="185" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2022.04</text>
+  <circle cx="90" cy="180" r="3" fill="#334155"/>
+  <text x="82" y="265" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2022.10</text>
+  <circle cx="90" cy="260" r="3" fill="#334155"/>
+  <text x="82" y="345" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2023.03</text>
+  <circle cx="90" cy="340" r="3" fill="#334155"/>
+  <text x="82" y="425" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2023.04</text>
+  <circle cx="90" cy="420" r="3" fill="#334155"/>
+  <text x="82" y="505" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2023.05</text>
+  <circle cx="90" cy="500" r="3" fill="#334155"/>
+  <text x="82" y="585" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2023.06</text>
+  <circle cx="90" cy="580" r="3" fill="#334155"/>
+  <text x="82" y="665" text-anchor="end" fill="#6366f1" font-size="12" font-weight="700" font-family="monospace">2023.08</text>
+  <circle cx="90" cy="660" r="4" fill="#6366f1"/>
+  <text x="82" y="745" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2023.10</text>
+  <circle cx="90" cy="740" r="3" fill="#334155"/>
+  <text x="82" y="825" text-anchor="end" fill="#6366f1" font-size="12" font-weight="700" font-family="monospace">2023.11</text>
+  <circle cx="90" cy="820" r="4" fill="#6366f1"/>
+  <text x="82" y="905" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2024.01</text>
+  <circle cx="90" cy="900" r="3" fill="#334155"/>
+  <text x="82" y="985" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2024.02</text>
+  <circle cx="90" cy="980" r="3" fill="#334155"/>
+  <text x="82" y="1065" text-anchor="end" fill="#475569" font-size="11" font-family="monospace">2024.04</text>
+  <circle cx="90" cy="1060" r="3" fill="#334155"/>
+  <text x="82" y="1145" text-anchor="end" fill="#6366f1" font-size="12" font-weight="700" font-family="monospace">2024.06</text>
+  <circle cx="90" cy="1140" r="4" fill="#6366f1"/>
+  <text x="82" y="1205" text-anchor="end" fill="#22c55e" font-size="10" font-family="monospace">Today</text>
+  <circle cx="90" cy="1200" r="4" fill="#22c55e"/>
+
+  <rect x="135" y="12" width="150" height="24" rx="5" fill="#1c1917" stroke="#f97316" stroke-width="1" opacity="0.8"/>
+  <text x="210" y="28" text-anchor="middle" fill="#f97316" font-size="11" font-weight="700" letter-spacing="1">量化压缩</text>
+  <rect x="330" y="12" width="150" height="24" rx="5" fill="#0c1a2e" stroke="#3b82f6" stroke-width="1" opacity="0.8"/>
+  <text x="405" y="28" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="700" letter-spacing="1">秩自适应</text>
+  <rect x="525" y="12" width="150" height="24" rx="5" fill="#0d1f1a" stroke="#10b981" stroke-width="1" opacity="0.8"/>
+  <text x="600" y="28" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700" letter-spacing="1">内存优化</text>
+  <rect x="720" y="12" width="150" height="24" rx="5" fill="#1a0d2e" stroke="#a855f7" stroke-width="1" opacity="0.8"/>
+  <text x="795" y="28" text-anchor="middle" fill="#a855f7" font-size="11" font-weight="700" letter-spacing="1">结构改进</text>
+  <rect x="915" y="12" width="150" height="24" rx="5" fill="#1f1a0d" stroke="#eab308" stroke-width="1" opacity="0.8"/>
+  <text x="990" y="28" text-anchor="middle" fill="#eab308" font-size="11" font-weight="700" letter-spacing="1">优化器</text>
+  <rect x="1110" y="12" width="150" height="24" rx="5" fill="#0d2d35" stroke="#06b6d4" stroke-width="1" opacity="0.8"/>
+  <text x="1185" y="28" text-anchor="middle" fill="#06b6d4" font-size="11" font-weight="700" letter-spacing="1">多LoRA优化</text>
+  <rect x="1305" y="12" width="150" height="24" rx="5" fill="#1a0d1a" stroke="#ec4899" stroke-width="1" opacity="0.8"/>
+  <text x="1380" y="28" text-anchor="middle" fill="#ec4899" font-size="11" font-weight="700" letter-spacing="1">多模态</text>
+
+  <path d="M 640,100 C 430,100 430,180 210,180" stroke="#f97316" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 650,100 C 530,100 530,180 405,180" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 670,100 C 640,100 640,180 600,180" stroke="#10b981" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 710,100 C 750,100 750,180 795,180" stroke="#a855f7" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 720,100 C 870,100 870,180 990,180" stroke="#eab308" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 730,100 C 1030,100 1030,180 1185,180" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+  <path d="M 730,100 C 1100,100 1100,180 1380,180" stroke="#ec4899" stroke-width="1.5" fill="none" stroke-dasharray="5,4" opacity="0.4"/>
+
+  <line x1="210" y1="200" x2="210" y2="1000" stroke="#f97316" stroke-width="1.5" opacity="0.25"/>
+  <line x1="405" y1="200" x2="405" y2="920" stroke="#3b82f6" stroke-width="1.5" opacity="0.25"/>
+  <line x1="600" y1="200" x2="600" y2="920" stroke="#10b981" stroke-width="1.5" opacity="0.25"/>
+  <line x1="795" y1="200" x2="795" y2="600" stroke="#a855f7" stroke-width="1.5" opacity="0.25"/>
+  <line x1="990" y1="200" x2="990" y2="1000" stroke="#eab308" stroke-width="1.5" opacity="0.25"/>
+  <line x1="1185" y1="200" x2="1185" y2="920" stroke="#06b6d4" stroke-width="1.5" opacity="0.25"/>
+  <line x1="1380" y1="200" x2="1380" y2="760" stroke="#ec4899" stroke-width="1.5" opacity="0.25"/>
+
+  <g class="node-group" data-id="lora" filter="url(#glow-purple)">
+    <rect class="node-box" x="660" y="82" width="120" height="36" rx="10" fill="url(#rootGrad)" stroke="#818cf8" stroke-width="2.5"/>
+    <text x="720" y="105" text-anchor="middle" fill="#e0e7ff" font-size="16" font-weight="800" letter-spacing="1">LoRA</text>
+    <text x="720" y="130" text-anchor="middle" class="node-info">2021.06</text>
+    <text x="720" y="142" text-anchor="middle" class="node-info node-info-org">Microsoft</text>
+    <text x="720" y="154" text-anchor="middle" class="node-info node-info-effect">低秩分解</text>
+  </g>
+  <g class="node-group" data-id="adalora">
+    <rect class="node-box" x="350" y="162" width="110" height="32" rx="8" fill="url(#rankGrad)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="405" y="182" text-anchor="middle" fill="#bfdbfe" font-size="13" font-weight="700">AdaLoRA</text>
+    <text x="405" y="200" text-anchor="middle" class="node-info">2022.04</text>
+    <text x="405" y="212" text-anchor="middle" class="node-info node-info-org">MS / GaTech</text>
+    <text x="405" y="224" text-anchor="middle" class="node-info node-info-effect">SVD秩分配</text>
+  </g>
+  <g class="node-group" data-id="ia3">
+    <rect class="node-box" x="740" y="242" width="110" height="32" rx="8" fill="url(#structGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="795" y="262" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="700">IA³</text>
+    <text x="795" y="280" text-anchor="middle" class="node-info">2022.10</text>
+    <text x="795" y="292" text-anchor="middle" class="node-info node-info-org">Google</text>
+    <text x="795" y="304" text-anchor="middle" class="node-info node-info-effect">缩放向量</text>
+  </g>
+  <g class="node-group" data-id="llama-adapter">
+    <rect class="node-box" x="725" y="322" width="140" height="32" rx="8" fill="url(#structGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="795" y="342" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="700">LLaMA-Adapter</text>
+    <text x="795" y="360" text-anchor="middle" class="node-info">2023.03</text>
+    <text x="795" y="372" text-anchor="middle" class="node-info node-info-org">Shanghai AI</text>
+    <text x="795" y="384" text-anchor="middle" class="node-info node-info-effect">零初始化提示</text>
+  </g>
+  <g class="node-group" data-id="loha">
+    <rect class="node-box" x="740" y="402" width="110" height="32" rx="8" fill="url(#structGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="795" y="422" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="700">LoHA</text>
+    <text x="795" y="440" text-anchor="middle" class="node-info">2023.04</text>
+    <text x="795" y="452" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="795" y="464" text-anchor="middle" class="node-info node-info-effect">Hadamard积</text>
+  </g>
+  <g class="node-group" data-id="qlora" filter="url(#glow-orange)">
+    <rect class="node-box" x="155" y="482" width="110" height="32" rx="8" fill="url(#quantGrad)" stroke="#f97316" stroke-width="2"/>
+    <text x="210" y="502" text-anchor="middle" fill="#fed7aa" font-size="13" font-weight="700">QLoRA</text>
+    <text x="210" y="520" text-anchor="middle" class="node-info">2023.05</text>
+    <text x="210" y="532" text-anchor="middle" class="node-info node-info-org">UW</text>
+    <text x="210" y="544" text-anchor="middle" class="node-info node-info-effect">4-bit量化</text>
+  </g>
+  <g class="node-group" data-id="oft">
+    <rect class="node-box" x="740" y="562" width="110" height="32" rx="8" fill="url(#structGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="795" y="582" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="700">OFT</text>
+    <text x="795" y="600" text-anchor="middle" class="node-info">2023.06</text>
+    <text x="795" y="612" text-anchor="middle" class="node-info node-info-org">Cambridge</text>
+    <text x="795" y="624" text-anchor="middle" class="node-info node-info-effect">正交变换</text>
+  </g>
+  <g class="node-group" data-id="lora-fa">
+    <rect class="node-box" x="545" y="642" width="110" height="32" rx="8" fill="url(#memGrad)" stroke="#10b981" stroke-width="2"/>
+    <text x="600" y="662" text-anchor="middle" fill="#a7f3d0" font-size="13" font-weight="700">LoRA-FA</text>
+    <text x="600" y="680" text-anchor="middle" class="node-info">2023.09</text>
+    <text x="600" y="692" text-anchor="middle" class="node-info node-info-org">PKU</text>
+    <text x="600" y="704" text-anchor="middle" class="node-info node-info-effect">冻结A矩阵</text>
+  </g>
+  <g class="node-group" data-id="vera">
+    <rect class="node-box" x="350" y="722" width="110" height="32" rx="8" fill="url(#rankGrad)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="405" y="742" text-anchor="middle" fill="#bfdbfe" font-size="13" font-weight="700">VeRA</text>
+    <text x="405" y="760" text-anchor="middle" class="node-info">2023.10</text>
+    <text x="405" y="772" text-anchor="middle" class="node-info node-info-org">EPFL</text>
+    <text x="405" y="784" text-anchor="middle" class="node-info node-info-effect">随机投影</text>
+  </g>
+  <g class="node-group" data-id="lokr">
+    <rect class="node-box" x="1325" y="722" width="110" height="32" rx="8" fill="url(#multiGrad)" stroke="#ec4899" stroke-width="2"/>
+    <text x="1380" y="742" text-anchor="middle" fill="#fbcfe8" font-size="13" font-weight="700">LoKr</text>
+    <text x="1380" y="760" text-anchor="middle" class="node-info">2023.10</text>
+    <text x="1380" y="772" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="1380" y="784" text-anchor="middle" class="node-info node-info-effect">Kronecker积</text>
+  </g>
+  <g class="node-group" data-id="lora-plus">
+    <rect class="node-box" x="935" y="802" width="110" height="32" rx="8" fill="url(#optimGrad)" stroke="#eab308" stroke-width="2"/>
+    <text x="990" y="822" text-anchor="middle" fill="#fef08a" font-size="13" font-weight="700">LoRA+</text>
+    <text x="990" y="840" text-anchor="middle" class="node-info">2024.01</text>
+    <text x="990" y="852" text-anchor="middle" class="node-info node-info-org">Stanford</text>
+    <text x="990" y="864" text-anchor="middle" class="node-info node-info-effect">异学习率</text>
+  </g>
+  <g class="node-group" data-id="dora">
+    <rect class="node-box" x="350" y="882" width="110" height="32" rx="8" fill="url(#rankGrad)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="405" y="902" text-anchor="middle" fill="#bfdbfe" font-size="13" font-weight="700">DoRA</text>
+    <text x="405" y="920" text-anchor="middle" class="node-info">2024.02</text>
+    <text x="405" y="932" text-anchor="middle" class="node-info node-info-org">NVIDIA</text>
+    <text x="405" y="944" text-anchor="middle" class="node-info node-info-effect">幅度+方向分解</text>
+  </g>
+  <g class="node-group" data-id="galore">
+    <rect class="node-box" x="545" y="882" width="110" height="32" rx="8" fill="url(#memGrad)" stroke="#10b981" stroke-width="2"/>
+    <text x="600" y="902" text-anchor="middle" fill="#a7f3d0" font-size="13" font-weight="700">GaLore</text>
+    <text x="600" y="920" text-anchor="middle" class="node-info">2024.02</text>
+    <text x="600" y="932" text-anchor="middle" class="node-info node-info-org">MIT/CMU</text>
+    <text x="600" y="944" text-anchor="middle" class="node-info node-info-effect">梯度低秩投影</text>
+  </g>
+  <g class="node-group" data-id="loftq">
+    <rect class="node-box" x="155" y="962" width="110" height="32" rx="8" fill="url(#quantGrad)" stroke="#f97316" stroke-width="2"/>
+    <text x="210" y="982" text-anchor="middle" fill="#fed7aa" font-size="13" font-weight="700">LoftQ</text>
+    <text x="210" y="1000" text-anchor="middle" class="node-info">2024.04</text>
+    <text x="210" y="1012" text-anchor="middle" class="node-info node-info-org">Microsoft</text>
+    <text x="210" y="1024" text-anchor="middle" class="node-info node-info-effect">联合量化初始化</text>
+  </g>
+  <g class="node-group" data-id="rslora">
+    <rect class="node-box" x="935" y="962" width="110" height="32" rx="8" fill="url(#optimGrad)" stroke="#eab308" stroke-width="2"/>
+    <text x="990" y="982" text-anchor="middle" fill="#fef08a" font-size="13" font-weight="700">RsLoRA</text>
+    <text x="990" y="1000" text-anchor="middle" class="node-info">2024.04</text>
+    <text x="990" y="1012" text-anchor="middle" class="node-info node-info-org">HF</text>
+    <text x="990" y="1024" text-anchor="middle" class="node-info node-info-effect">rank-stabilized</text>
+  </g>
+  <g class="node-group" data-id="relora">
+    <rect class="node-box" x="350" y="582" width="110" height="32" rx="8" fill="url(#rankGrad)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="405" y="602" text-anchor="middle" fill="#bfdbfe" font-size="13" font-weight="700">ReLoRA</text>
+    <text x="405" y="620" text-anchor="middle" class="node-info">2023.08</text>
+    <text x="405" y="632" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="405" y="644" text-anchor="middle" class="node-info node-info-effect">重启训练</text>
+  </g>
+  <g class="node-group" data-id="lisa">
+    <rect class="node-box" x="740" y="642" width="110" height="32" rx="8" fill="url(#structGrad)" stroke="#a855f7" stroke-width="2"/>
+    <text x="795" y="662" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="700">LISA</text>
+    <text x="795" y="680" text-anchor="middle" class="node-info">2023.11</text>
+    <text x="795" y="692" text-anchor="middle" class="node-info node-info-org">MIT</text>
+    <text x="795" y="704" text-anchor="middle" class="node-info node-info-effect">层间重要性</text>
+  </g>
+  <g class="node-group" data-id="pissa">
+    <rect class="node-box" x="350" y="1042" width="110" height="32" rx="8" fill="url(#rankGrad)" stroke="#3b82f6" stroke-width="2"/>
+    <text x="405" y="1062" text-anchor="middle" fill="#bfdbfe" font-size="13" font-weight="700">PiSSA</text>
+    <text x="405" y="1080" text-anchor="middle" class="node-info">2024.02</text>
+    <text x="405" y="1092" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="405" y="1104" text-anchor="middle" class="node-info node-info-effect">主奇异值分解</text>
+  </g>
+  <g class="node-group" data-id="multilora">
+    <rect class="node-box" x="1130" y="162" width="110" height="32" rx="8" fill="url(#multiLoraGrad)" stroke="#06b6d4" stroke-width="2"/>
+    <text x="1185" y="182" text-anchor="middle" fill="#67e8f9" font-size="13" font-weight="700">Multi-LoRA</text>
+    <text x="1185" y="200" text-anchor="middle" class="node-info">2023.08</text>
+    <text x="1185" y="212" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="1185" y="224" text-anchor="middle" class="node-info node-info-effect">多适配器并行</text>
+  </g>
+  <g class="node-group" data-id="lora-drop">
+    <rect class="node-box" x="1130" y="322" width="110" height="32" rx="8" fill="url(#multiLoraGrad)" stroke="#06b6d4" stroke-width="2"/>
+    <text x="1185" y="342" text-anchor="middle" fill="#67e8f9" font-size="13" font-weight="700">LoRA-Drop</text>
+    <text x="1185" y="360" text-anchor="middle" class="node-info">2023.11</text>
+    <text x="1185" y="372" text-anchor="middle" class="node-info node-info-org">KAIST</text>
+    <text x="1185" y="384" text-anchor="middle" class="node-info node-info-effect">重要层LoRA</text>
+  </g>
+  <g class="node-group" data-id="mora">
+    <rect class="node-box" x="1130" y="482" width="110" height="32" rx="8" fill="url(#multiLoraGrad)" stroke="#06b6d4" stroke-width="2"/>
+    <text x="1185" y="502" text-anchor="middle" fill="#67e8f9" font-size="13" font-weight="700">MoRA</text>
+    <text x="1185" y="520" text-anchor="middle" class="node-info">2024.02</text>
+    <text x="1185" y="532" text-anchor="middle" class="node-info node-info-org">社区</text>
+    <text x="1185" y="544" text-anchor="middle" class="node-info node-info-effect">MoE + LoRA</text>
+  </g>
+
+  <line x1="210" y1="514" x2="210" y2="962" stroke="#f97316" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="405" y1="194" x2="405" y2="722" stroke="#3b82f6" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="405" y1="754" x2="405" y2="882" stroke="#3b82f6" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="600" y1="674" x2="600" y2="882" stroke="#10b981" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="600" y1="706" x2="600" y2="882" stroke="#10b981" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="1380" y1="754" x2="1380" y2="882" stroke="#ec4899" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="795" y1="274" x2="795" y2="322" stroke="#a855f7" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="795" y1="354" x2="795" y2="402" stroke="#a855f7" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="795" y1="434" x2="795" y2="562" stroke="#a855f7" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="990" y1="834" x2="990" y2="962" stroke="#eab308" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+  <line x1="1185" y1="194" x2="1185" y2="580" stroke="#06b6d4" stroke-width="1.5" opacity="0.35" stroke-dasharray="4,4"/>
+</svg>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent">
+    <div class="modal-header">
+      <div class="modal-dot" id="modalDot"></div>
+      <span class="modal-title" id="modalTitle"></span>
+      <span class="modal-date" id="modalDate"></span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-org" id="modalOrg"></div>
+      <div class="modal-section">
+        <div class="modal-section-title">核心原理</div>
+        <div class="modal-section-content" id="modalPrinciple"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">改进效果</div>
+        <div id="modalEffects"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">论文</div>
+        <div class="modal-paper" id="modalPaper"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const nodeData = {
+  lora: {
+    name: 'LoRA', date: '2021.06', org: '🏢 Microsoft Research', color: '#818cf8',
+    principle: `LoRA（Low-Rank Adaptation）的核心思想是：预训练模型的权重矩阵在适应下游任务时，其更新量具有低秩特性。<br><br><code>W = W₀ + ΔW = W₀ + BA</code><br><br>其中 <code>W₀ ∈ ℝᵈˣᵏ</code> 是冻结的预训练权重，<code>B ∈ ℝᵈˣʳ</code> 和 <code>A ∈ ℝʳˣᵏ</code> 是可训练的低秩矩阵，<code>r ≪ min(d,k)</code>。训练时仅更新 B 和 A，推理时可将 BA 合并到 W₀ 中，无额外延迟。`,
+    effects: ['参数量减少 10000x', 'GPU 显存减少 3x', '性能与全量微调持平', '无推理延迟'],
+    paper: { title: 'Low-Rank Adaptation of Large Language Models', authors: 'Hu et al.', venue: 'NeurIPS 2022', arxiv: '2106.09685' }
+  },
+  adalora: {
+    name: 'AdaLoRA', date: '2022.04', org: '🏢 Microsoft / Georgia Tech', color: '#3b82f6',
+    principle: `AdaLoRA 动态调整各层的秩预算分配。通过奇异值分解（SVD）参数化：<br><br><code>ΔW = PΛQᵀ</code><br><br>其中 Λ 是可学习的对角矩阵（奇异值），P、Q 是正交矩阵。训练过程中根据奇异值重要性动态剪枝，重要层保留高秩，次要层降秩。`,
+    effects: ['自适应秩分配', '同参数量性能↑1-2%', '重要层高秩次要层低秩'],
+    paper: { title: 'Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning', authors: 'Zhang et al.', venue: 'ICLR 2023', arxiv: '2303.10512' }
+  },
+  ia3: {
+    name: 'IA³', date: '2022.10', org: '🏢 Google / UNC', color: '#a855f7',
+    principle: `IA³（Infused Adapter by Inhibiting and Amplifying Activations）仅注入可学习的缩放向量，无需矩阵乘法：<br><br><code>h = l * f(x) * i</code><br><br>其中 l 和 i 是可学习的缩放向量，分别用于放大和抑制激活。参数量极小，计算开销几乎为零。`,
+    effects: ['参数量仅 0.01%', 'Few-shot 性能强', '无矩阵乘法开销'],
+    paper: { title: 'Few-Shot Parameter-Efficient Fine-Tuning', authors: 'Liu et al.', venue: 'NeurIPS 2022', arxiv: '2205.05638' }
+  },
+  'llama-adapter': {
+    name: 'LLaMA-Adapter', date: '2023.03', org: '🏢 Shanghai AI Lab / CUHK', color: '#a855f7',
+    principle: `LLaMA-Adapter 在 LLaMA 顶层注入零初始化的可学习提示向量，配合门控机制：<br><br><code>h = h₀ + g ⊙ Adapter(h)</code><br><br>零初始化确保训练初期不破坏预训练知识，门控 g 逐渐放开。仅需 1.2M 参数即可实现高质量指令跟随。`,
+    effects: ['1.2M 参数', '1 小时微调', '指令跟随媲美 Alpaca'],
+    paper: { title: 'LLaMA-Adapter: Efficient Fine-tuning of LLaMA', authors: 'Zhang et al.', venue: '2023', arxiv: '2303.16199' }
+  },
+  loha: {
+    name: 'LoHA', date: '2023.04', org: '🏢 社区 (kohya-ss)', color: '#a855f7',
+    principle: `LoHA 使用 Hadamard 积替代矩阵乘法：<br><br><code>ΔW = (A₁ ⊗ A₂)(B₁ ⊗ B₂)</code><br><br>其中 ⊗ 是 Hadamard 积（逐元素乘法）。这种结构在扩散模型微调中表现优异，细节保留更好。`,
+    effects: ['扩散模型效果↑', '细节保留更好', '参数效率高'],
+    paper: { title: '基于 FedPara Kronecker 分解', authors: '社区实现', venue: 'kohya-ss/sd-scripts', arxiv: '2108.06098' }
+  },
+  qlora: {
+    name: 'QLoRA', date: '2023.05', org: '🏢 University of Washington', color: '#f97316',
+    principle: `QLoRA 将预训练模型量化为 4-bit，通过 LoRA 微调：<br><br>• <strong>4-bit NormalFloat (NF4)</strong>：正态分布最优量化<br>• <strong>双重量化</strong>：量化常数也量化<br>• <strong>分页优化器</strong>：防止内存峰值<br><br>梯度通过冻结的 4-bit 模型反传至 LoRA 适配器。`,
+    effects: ['65B 模型单卡可训', 'Guanaco 达 ChatGPT 99.3%', '显存需求大幅降低'],
+    paper: { title: 'Efficient Finetuning of Quantized LLMs', authors: 'Dettmers et al.', venue: 'NeurIPS 2023', arxiv: '2305.14314' }
+  },
+  oft: {
+    name: 'OFT', date: '2023.06', org: '🏢 Cambridge / MPI', color: '#a855f7',
+    principle: `OFT（Orthogonal Finetuning）使用正交矩阵微调，保持超球能量（hyperspherical energy）不变：<br><br><code>W = W₀R, RᵀR = I</code><br><br>正交变换保持神经元间的成对关系，对扩散模型的语义一致性特别重要。`,
+    effects: ['生成质量↑', '收敛更快', '语义一致性更好'],
+    paper: { title: 'Controlling Text-to-Image Diffusion by Orthogonal Finetuning', authors: 'Liu et al.', venue: 'NeurIPS 2023', arxiv: '2306.07280' }
+  },
+  'lora-fa': {
+    name: 'LoRA-FA', date: '2023.09', org: '🏢 Peking University', color: '#10b981',
+    principle: `LoRA-FA 冻结 A 矩阵（随机初始化），仅训练 B 矩阵：<br><br><code>ΔW = BA, A 固定</code><br><br>这样激活内存只需存储 B 的梯度，大幅减少内存占用。性能与标准 LoRA 相当。`,
+    effects: ['激活内存↓50%', '性能与 LoRA 持平', '支持更大 batch'],
+    paper: { title: 'LoRA-FA: Memory-Efficient Low-Rank Adaptation', authors: 'Zhang et al.', venue: '2023', arxiv: '2308.03303' }
+  },
+  vera: {
+    name: 'VeRA', date: '2023.10', org: '🏢 EPFL', color: '#3b82f6',
+    principle: `VeRA（Vectorized Random Projection）跨层共享冻结的随机矩阵 A、B，每层仅学习缩放向量 b 和 d：<br><br><code>ΔW = D_b B A D_d</code><br><br>其中 D_b、D_d 是对角缩放矩阵。参数量比 LoRA 再减 10 倍。`,
+    effects: ['参数量再减 10x', '1.8M 参数微调 65B', '性能接近 LoRA'],
+    paper: { title: 'VeRA: Vectorized Random Projection', authors: 'Kopiczko et al.', venue: 'ICLR 2024', arxiv: '2310.11453' }
+  },
+  lokr: {
+    name: 'LoKr', date: '2023.10', org: '🏢 社区 (kohya-ss)', color: '#ec4899',
+    principle: `LoKr 使用 Kronecker 积分解权重矩阵：<br><br><code>W ≈ A ⊗ B</code><br><br>Kronecker 积天然适合卷积层和扩散模型，参数效率更高。在 Stable Diffusion 微调中广泛使用。`,
+    effects: ['图像生成效果好', '风格迁移优秀', '卷积层适配强'],
+    paper: { title: 'Kronecker 分解适配器', authors: '社区实现', venue: 'kohya-ss/sd-scripts', arxiv: null }
+  },
+  'lora-plus': {
+    name: 'LoRA+', date: '2024.01', org: '🏢 Stanford', color: '#eab308',
+    principle: `LoRA+ 为 A、B 矩阵设置不同学习率：<br><br><code>η_B = λ · η_A, λ ≈ 16</code><br><br>理论证明原 LoRA 的学习率设置次优，A、B 应该以不同速度更新。收敛速度提升约 2 倍。`,
+    effects: ['收敛速度↑2x', '性能小幅提升', '理论最优设置'],
+    paper: { title: 'LoRA+: Efficient Low-Rank Adaptation', authors: 'Hayou et al.', venue: 'ICML 2024', arxiv: '2402.12354' }
+  },
+  dora: {
+    name: 'DoRA', date: '2024.02', org: '🏢 NVIDIA / UT Austin', color: '#3b82f6',
+    principle: `DoRA（Weight-Decomposed Low-Rank Adaptation）将权重分解为幅度和方向：<br><br><code>W = m · (W₀ + BA) / ||W₀ + BA||</code><br><br>幅度 m 单独学习，方向用 LoRA 更新。这种分解更接近全量微调的学习模式。`,
+    effects: ['多任务性能↑1-3%', '更接近全量微调', '方向幅度解耦'],
+    paper: { title: 'DoRA: Weight-Decomposed Low-Rank Adaptation', authors: 'Liu et al.', venue: 'ICML 2024', arxiv: '2402.09353' }
+  },
+  galore: {
+    name: 'GaLore', date: '2024.02', org: '🏢 MIT / CMU / Meta', color: '#10b981',
+    principle: `GaLore（Gradient Low-Rank Projection）不修改权重结构，而是对梯度做低秩投影：<br><br><code>grad_proj = P grad Pᵀ</code><br><br>支持全参数训练，但内存占用大幅降低。可与其他 PEFT 方法结合。`,
+    effects: ['7B 单卡 24GB 可训', '内存↓65%', '支持全参数优化'],
+    paper: { title: 'GaLore: Gradient Low-Rank Projection', authors: 'Zhao et al.', venue: 'ICML 2024', arxiv: '2403.03507' }
+  },
+  loftq: {
+    name: 'LoftQ', date: '2024.04', org: '🏢 Microsoft', color: '#f97316',
+    principle: `LoftQ 联合初始化量化和 LoRA，交替执行量化和 SVD 近似：<br><br><code>W₀ ≈ Q(W₀) + BA</code><br><br>弥补量化误差，初始化更优。比 QLoRA 的独立初始化性能更好。`,
+    effects: ['量化精度损失↓', '超越 QLoRA', '初始化更优'],
+    paper: { title: 'LoftQ: LoRA-Fine-Tuning-Aware Quantization', authors: 'Li et al.', venue: 'ICLR 2024', arxiv: '2310.08659' }
+  },
+  rslora: {
+    name: 'RsLoRA', date: '2024.04', org: '🏢 Hugging Face', color: '#eab308',
+    principle: `RsLoRA 修改缩放因子为 rank-stabilized：<br><br><code>scaling = α / √r</code><br><br>原 LoRA 用 α/r，在高 rank 时不稳定。新缩放因子使大 rank 训练更稳定。`,
+    effects: ['高 rank 训练稳定', '大 rank 性能↑', '理论更合理'],
+    paper: { title: 'Rank-Stabilized LoRA', authors: 'Kalajdzievski', venue: '2023', arxiv: '2312.03732' }
+  },
+  relora: {
+    name: 'ReLoRA', date: '2023.08', org: '🏢 社区', color: '#3b82f6',
+    principle: `ReLoRA 在训练过程中周期性地进行权重重置（restart）和低秩矩阵合并再重新初始化：<br><br><code>W = merge(BA) → reset → W = W₀ + B'A'</code><br><br>通过多轮重启，探索更多低秩子空间，缓解单次低秩近似的表达力限制。`,
+    effects: ['探索更多子空间', '表达力接近全量', '收敛更稳定'],
+    paper: { title: 'ReLoRA: High-Rank Training Through Low-Rank Updates', authors: 'Jelac et al.', venue: '2023', arxiv: '2307.05695' }
+  },
+  lisa: {
+    name: 'LISA', date: '2023.11', org: '🏢 MIT', color: '#a855f7',
+    principle: `LISA（Layer-wise Importance-based Scaled Adapter）根据层的重要性差异分配 LoRA 秩：<br><br><code>rank_i = f(importance(layer_i))</code><br><br>通过估计梯度方差或 Fisher 信息判断层的重要性，重要层用更大的 rank，减少不重要层的冗余参数。`,
+    effects: ['层间秩自适应', '性能↑同时参数量↓', '可解释性更强'],
+    paper: { title: 'LISA: Layerwise Importance Sampling for Memory-Efficient LLM Fine-Tuning', authors: 'Zeng et al.', venue: 'NeurIPS 2024', arxiv: '2311.18677' }
+  },
+  pissa: {
+    name: 'PiSSA', date: '2024.02', org: '🏢 社区', color: '#3b82f6',
+    principle: `PiSSA（Principal Singular Value Adaptation）与 QLoRA 初始化策略结合，对权重矩阵做截断奇异值分解，保留最大的 k 个奇异值对应的左右奇异向量：<br><br><code>W ≈ U_k Σ_k V_kᵀ + (W - U_k Σ_k V_kᵀ)</code><br><br>主奇异方向用 LoRA 精调，次要方向冻结或置零，初始化质量更高。`,
+    effects: ['主奇异方向精调', '初始化质量更高', '收敛更快'],
+    paper: { title: 'PiSSA: Principal Singular Value Adaptation', authors: 'Meng et al.', venue: '2024', arxiv: '2404.09548' }
+  },
+  multilora: {
+    name: 'Multi-LoRA', date: '2023.08', org: '🏢 社区', color: '#06b6d4',
+    principle: `Multi-LoRA 允许同时加载和切换多个 LoRA 适配器，多适配器并行推理：<br><br><code>h = h₀ + Σᵢ αᵢ · BᵢAᵢx</code><br><br>各 LoRA 可独立训练，用于多任务、多角色、多风格等场景，推理时无额外延迟（通过权重合并）。`,
+    effects: ['多适配器并行', '灵活切换', '无推理延迟'],
+    paper: { title: 'LoRAHub: Cross-Task Generalization via Learned LoRA Combinations', authors: 'Yang et al.', venue: '2023', arxiv: '2306.09344' }
+  },
+  'lora-drop': {
+    name: 'LoRA-Drop', date: '2023.11', org: '🏢 KAIST', color: '#06b6d4',
+    principle: `LoRA-Drop 提出并非所有层都需要 LoRA，通过重要性评估仅对重要层添加适配器：<br><br><code>drop rate = g(importance(layer))</code><br><br>利用 Fisher 信息或梯度范数判断层重要性，过滤掉贡献低的层，节省参数量同时保持性能。`,
+    effects: ['重要层才加LoRA', '参数量进一步↓', '性能几乎不降'],
+    paper: { title: 'LoRA-Drop: Efficient LoRA Tailoring', authors: 'Kwon et al.', venue: '2023', arxiv: '2312.09935' }
+  },
+  mora: {
+    name: 'MoRA', date: '2024.02', org: '🏢 社区', color: '#06b6d4',
+    principle: `MoRA 将 Mixture-of-Experts（MoE）思想引入 LoRA，每个专家是一个独立的 LoRA 适配器：<br><br><code>h = h₀ + Σₑ gₑ · Expertₑ(x)</code><br><br>路由机制动态选择激活哪些专家的 LoRA，提升表达能力的同时保持低参数量开销。`,
+    effects: ['MoE + LoRA 结合', '表达能力↑', '稀疏激活省参数'],
+    paper: { title: 'MoRA: Mixture of Sparse LoRA Experts', authors: '社区实现', venue: '2024', arxiv: null }
+  }
+};
+
+function openModal(id) {
+  const data = nodeData[id];
+  if (!data) return;
+  document.getElementById('modalDot').style.background = data.color;
+  document.getElementById('modalTitle').textContent = data.name;
+  document.getElementById('modalDate').textContent = data.date;
+  document.getElementById('modalOrg').textContent = data.org;
+  document.getElementById('modalPrinciple').innerHTML = data.principle;
+  const effectsHtml = data.effects.map(e => '<span class="effect-tag effect-good">' + e + '</span>').join('');
+  document.getElementById('modalEffects').innerHTML = effectsHtml;
+  const paper = data.paper;
+  const arxivLink = paper.arxiv ? '<a class="modal-paper-link" href="https://arxiv.org/abs/' + paper.arxiv + '" target="_blank">📄 arXiv:' + paper.arxiv + '</a>' : '';
+  document.getElementById('modalPaper').innerHTML = '<div class="modal-paper-title">' + paper.title + '</div><div class="modal-paper-meta">' + paper.authors + ' · ' + paper.venue + '</div>' + arxivLink;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+document.querySelectorAll('.node-group').forEach(function(node) {
+  node.addEventListener('click', function() { openModal(node.dataset.id); });
+});
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+</script>
+</body>
+</html>
