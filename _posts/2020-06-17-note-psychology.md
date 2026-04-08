@@ -945,6 +945,10 @@ MBTI人格类型在大家眼里的智力排名
 
 ### INTJ
 
+【2026-4-8】MBTI 适合的伴侣类型
+
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/4a60c0ca-ef43-4bd4-a344-e2a2a3cb1622" />
+
 
 #### 爱看什么书
 
