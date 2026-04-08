@@ -951,6 +951,12 @@ MBTI人格类型在大家眼里的智力排名
 
 【2026-4-8】MBTI 适合的伴侣类型
 
+抖音视频：[16型人格官配](https://www.douyin.com/search/mbti%E6%89%80%E6%9C%89cp%E7%BB%84%E5%90%88%E9%80%82%E9%85%8D%E8%A1%A8?modal_id=7438819698952637706)
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/fb7e14d7-772a-4ac5-9e15-2771b3d7c879" />
+
+部分
+
 <img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/4a60c0ca-ef43-4bd4-a344-e2a2a3cb1622" />
 
 
