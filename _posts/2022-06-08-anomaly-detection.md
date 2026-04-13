@@ -17,7 +17,7 @@ permalink: /anomaly
 # 异常检测
 
 - 【2022-6-8】[异常检测方法总结](https://zhuanlan.zhihu.com/p/521329756)
-- 【20222-12-20】[【机器学习】李宏毅——Anomaly Detection（异常检测）](https://www.cnblogs.com/FavoriteStar/p/16994931.html)
+- 【2022-12-20】[【机器学习】李宏毅——Anomaly Detection（异常检测）](https://www.cnblogs.com/FavoriteStar/p/16994931.html)
 
 
 ![](https://img-blog.csdnimg.cn/a02e6219d7804d2297cacc08b10cbba9.png#pic_center)
@@ -49,7 +49,7 @@ permalink: /anomaly
 - 有标签
 - 无标签
 
-详见【20222-12-20】[【机器学习】李宏毅——Anomaly Detection（异常检测）](https://www.cnblogs.com/FavoriteStar/p/16994931.html)
+详见【2022-12-20】[【机器学习】李宏毅——Anomaly Detection（异常检测）](https://www.cnblogs.com/FavoriteStar/p/16994931.html)
 
 
 ## 方法分类
