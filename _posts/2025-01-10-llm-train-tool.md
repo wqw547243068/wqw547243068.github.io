@@ -1307,5 +1307,12 @@ Axolotl
 
 
 
+## 【2026-4-15】Relax
+
+【2026-4-15】[小红书 Relax 开源发布：面向全模态 Agentic 的异步 RL 训练引擎](https://mp.weixin.qq.com/s/u0-tZEWTPX4Jh9y9EbVJ1g)
+
+小红书 AI 平台团队今日正式开源 Relax —— 一款面向全模态与 Agentic 场景设计的大模型强化学习训练引擎。Relax 基于 Megatron-LM 和 SGLang 高性能后端构建，以协同设计为核心理念，将全模态数据支持、服务化容错架构和异步训练流水线三个维度统一解决。在 Qwen3-Omni-30B 上，Relax 验证了图像、文本、音频和视频四种模态的 RL 训练稳定收敛；在 16xH800 多机下，训练全异步相比 Colocate 基线端到端提速 76%，相比 veRL 的全异步端到端提速 20%。
+- GitHub 项目主页：[Relax](https://github.com/redai-infra/Relax)
+- 论文地址：[paper](https://arxiv.org/abs/2604.11554)
 
 # 结束
