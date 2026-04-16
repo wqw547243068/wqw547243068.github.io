@@ -3,7 +3,7 @@ layout: post
 title:  "Web前端服务知识-Web-Serving"
 date:   2020-08-07 19:17:00
 categories: 技术工具 编程语言
-tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流
+tags: web python restful Swagger HTML JavaScript Session RPC 微服务 GraphQL UML 前端 低代码 拖拽 api 异步 celery 分布式 apache qps 性能 限流 浏览器
 author : 鹤啸九天
 excerpt: Web开发相关技术知识点
 mathjax: true
@@ -13,11 +13,11 @@ permalink: /web
 * content
 {:toc}
 
+
 # Web前端服务
 
 - [前端和后端区别](https://zhuanlan.zhihu.com/p/83515211)
 - [到底什么是前端、后端、后台啊？](https://www.zhihu.com/question/21923056)
-
 
 
 ## Web 3.0
@@ -26,6 +26,33 @@ permalink: /web
 
 所以，目前的web3.0忽悠居多，大都是玩币那波人在炒作。web3.0是未来，但不是目前炒币人所定义的那个未来。
 - 炒作web3.0概念的人还是17-18年炒币的那一波人，他们是玩金融的。利用区块链技术来回地玩金融，17-18年各种币层出不穷，被政府叫停后开始搞各种数字藏品和分布式APP。
+
+## 浏览器
+
+
+浏览器引擎
+- Trident：IE浏览器引擎
+- Gecko：Firefox浏览器引擎
+- Presto：Opera浏览器引擎
+- Webkit：Safari，Google Chrome浏览器引擎。
+
+### 工作原理
+
+【2026-4-16】
+- [图解浏览器的基本工作原理](https://zhuanlan.zhihu.com/p/47407398)
+- [万字详文：深入理解浏览器原理](https://zhuanlan.zhihu.com/p/96986818)
+
+![](https://picx.zhimg.com/v2-84b8d9a02a110a4533f9c4291d7504bf_r.jpg)
+
+
+### 插件
+
+tab-out 智能管理浏览器tab页
+
+```sh
+git clone https://github.com/zarazhangrui/tab-out.git
+```
+
 
 ## 前端、后端
 
