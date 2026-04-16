@@ -3,7 +3,7 @@ layout: post
 title:  LLM/Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -334,6 +334,36 @@ hermes claw migrate --dry-run    # Preview what would be migrated
 hermes claw migrate --preset user-data   # Migrate without secrets
 hermes claw migrate --overwrite  # Overwrite existing conflicts
 ```
+
+### 【2026-3-19】 HyperAgents
+
+【2026-4-15】[AI学会左脚踩右脚自进化？Meta华人新研究改写Agent法则](https://mp.weixin.qq.com/s/TA4U9_nH1qzZqFS8DGQ0vQ)
+
+【2026-3-19】华人学者 Jenny Zhang 在Meta实习期间，联合Meta AI、UBC、纽约大学等机构研究者，提出新智能体框架：HyperAgents（DGM-H）。
+- 论文 [Hyperagents](https://arxiv.org/pdf/2603.19461)
+
+重点不是再造一个更能干活的Agent，而是瞄准更高层问题：
+- 如果AI已经能够修改自己的任务解法，那能不能连「自己以后该怎么修改自己」这件事，也一并改掉？可以
+
+HyperAgents 把「执行任务的 agent」和「负责改进 agent 的 meta agent」合并进同一个可编辑程序里，作者将之称为 hyperagent。
+
+新框架下，系统不只会修改任务求解逻辑，还开始修改未来生成改进方案的机制本身，称为 metacognitive self-modification，元认知自我修改。
+
+过去行业竞争的是：谁的Agent更会干活。而HyperAgents 指向的下一阶段则可能是：谁的Agent更会变强，而且会越来越会变强。
+
+上一代自我进化路线的天花板。
+
+去年 Darwin Gödel Machine（DGM）已经很惊艳。在coding任务中不断自改代码、自我验证、把成功版本存进archive，再从这些「垫脚石」里继续往前长。
+
+但DGM 之所以能在coding里成立，是因为「评估」和「自我修改」本身也都是coding任务。一旦离开coding，这个对齐关系就断了。比如评审论文、设计机器人奖励函数、给IMO级数学解答打分，这些任务做得更好，不等于你就更会修改自己的元机制。
+
+HyperAgents 最核心的一招：直接把这个假设砍掉：
+> 既然任务能力和自我改进能力未必天然对齐，那就不要再把meta层写死。
+
+表面上看，HyperAgents只是多了一个meta agent。
+
+但真正值得注意的是，它把task agent和meta agent合成了同一个可编辑程序。HyperAgents 不是「再加一个Agent」，而是取消了「上层永远不变」这个默认前提。
+
 
 
 
