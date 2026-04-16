@@ -48,6 +48,11 @@ permalink: /web
 ### 插件
 
 tab-out 智能管理浏览器tab页
+- 作者：哈佛毕业生 [Zara](https://x.com/zarazhangrui/status/2044114136364397043?s=20)
+
+Tab Out 简化：
+- Tab Out 现在是一个纯粹的 Chrome 扩展。没有服务器，没有 Node.js，没有 npm
+- 保存的标签页存储在 http://chrome.storage .local；100%本地
 
 ```sh
 git clone https://github.com/zarazhangrui/tab-out.git
