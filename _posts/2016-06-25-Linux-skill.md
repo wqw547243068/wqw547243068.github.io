@@ -1042,11 +1042,11 @@ perf既然这么强大，那它的实现原理是什么呢？
 - XTerminal 是一个功能强大的远程终端管理平台，支持多平台支持、安全、终端控制、远程监控、远程协作、脚本自动化、插件icon扩展等功能。
 
 
-
 ### 自动登录
 
 - [2018-3-26]自动登录鲁班测试机
-- 方法一：
+
+方法一：
 
 ```shell
 #参考expect用法
@@ -1058,8 +1058,9 @@ expect -c "
     }
 "
 ```
-- 方法二：
-   - login.sh内容：
+
+方法二：
+- login.sh内容：
 
 ```shell
 #!/usr/bin/expect -f
@@ -1073,9 +1074,10 @@ expect "password:"
 send "$pwd\r"
 interact
 ```
-   - 执行：expect login.sh
-   - 自动登录, ~/.bash_profile里配置别名即可一直使用
-   - alias luban='expect ~/login.sh'
+
+- 执行：expect login.sh
+- 自动登录, ~/.bash_profile 里配置别名即可一直使用
+- alias luban='expect ~/login.sh'
 
 
 ### 日期
@@ -1348,6 +1350,67 @@ SSH提供了两种级别的安全验证：
 - 第二种级别是基于 Public-key cryptography (公开密匙加密）机制的安全验证，原理如下图所示：
   - 其优点在于无需共享的通用密钥，解密的私钥不发往任何用户。即使公钥在网上被截获，如果没有与其匹配的私钥，也无法解密，所截获的公钥是没有任何用处的。
   - ![ssh](http://zuyunfei.com/images/public_key_cryptography.png)
+
+#### 登录命令
+
+模版
+> ssh -t 用户名@IP "命令1; 命令2; 命令3; exec bash"
+
+用法
+- -l user：指定要登录的用户。
+- -p port：指定连接到远程主机的端口号，默认是22。
+- -i identity_file：指定身份验证文件（私钥文件）。
+- -v：详细模式，可以显示调试信息。
+- -C：启用压缩。
+- -N：不执行远程命令，只进行端口转发。
+- -f：后台运行。
+- -L local_port:remote_host:remote_port：本地端口转发。
+- -R remote_port:local_host:local_port：远程端口转发。
+- -D `[bind_address:]`port：动态应用程序级端口转发
+
+```sh
+# ssh -t 用户名@IP "命令1; 命令2; 命令3; exec bash"
+ssh wqw@10.1.2.3
+ssh wqw@10.1.2.3 -p 8000 # 指定端口
+# 执行远程命令，再退出——一次性
+ssh wqw@10.1.2.3 "ls" # 登录后执行命令，执行完毕后退出登录
+ssh wqw@10.1.2.3 ls -l # 登录后执行命令，执行完毕后退出登录
+ssh wqw@10.1.2.3 ls -l; pwd # 多个命令
+ssh wqw@10.1.2.3 < test.sh # 登录后，执行本地脚本
+# 执行命令后，不退出
+ssh -t wqw@10.1.2.3 "ls" # 执行完成后，不退出！
+ssh wqw@10.1.2.3 "ls; exec bash" 
+
+ssh -q wqw@10.1.2.3 # 静默模式
+ssh -v wqw@10.1.2.3 # 详细模式
+ssh -C wqw@10.1.2.3 # 启用压缩
+ssh -i ~/.ssh/id_rsa wqw@10.1.2.3 # 使用身份验证文件
+ssh -f -N test@runoob.com # 后台运行，不执行（只转发）
+ssh -L 8080:localhost:80 test@runoob.com # 本地端口转发
+ssh -R 8080:localhost:80 test@runoob.com # 远程端口转发
+ssh -D 1080 test@runoob.com # 动态端口转发
+ssh -A test@runoob.com # 代理转发
+```
+
+#### 配置
+
+配置文件
+
+SSH 客户端配置文件位于 ~/.ssh/config，可以在其中设置常用配置。
+
+示例：
+
+```sh
+Host example
+    HostName example.com
+    User john
+    Port 2222
+    IdentityFile ~/.ssh/id_rsa
+```
+
+使用时只需：ssh example
+
+
 
 #### sshkey-gen
 
