@@ -190,8 +190,34 @@ LMstudio
 - [身份认证](https://lm-studio.cn/docs/developer/core/authentication)：LM Studio 0.4.0 或更高版本才支持通过 API 令牌进行身份验证，为访问 LM Studio API 提供了一种安全且便捷的方式。
 - ![](https://lm-studio.cn/assets/docs/require-auth.png)
 
-#### 终端
 
+### 功能
+
+LM Studio 核心功能包括
+- 发现、下载和运行本地LLMs。用户可以通过直观的图形界面轻松下载并加载各种模型。其广泛支持的模型库包括HuggingFace上的ggml Llama、MPT和StarCoder模型（如Llama 2、Orca、Vicuna等）。
+
+#### 关闭推理
+
+LM Studio 启动本地模型（如 Qwen 3.5）时，默认开启推理模式，简单问题也推理，速度慢
+
+【2026-4-17】如何关闭？
+
+关闭所有模型的推理：
+- My models -> Inference -> 自定义字段有“enable thinking”开关
+
+关闭具体模型的推理功能
+- 1、进 LM Studio的 My Models 页面；
+- 2、选择 Qwen3.5模型，右侧找到 inference；
+- 3、修改下面的 jinja 模板；
+  - 模板开头位置添加： `{%- set enable_thinking = false %}` ；
+
+详见：B站视频[如何关闭Qwen3.5思维链](https://www.bilibili.com/video/BV1rAADzPEix/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+
+
+
+### 使用
+
+#### 终端
 
 终端启动服务
 - 使用 lms 之前，您需要运行 LM Studio 至少一次。
@@ -375,12 +401,6 @@ win10 修改文件读写权限（管理员权限）
 参考
 - [无法修改后无法保存](https://blog.csdn.net/Gu_fCSDN/article/details/104327423)
 - 原文链接：https://blog.csdn.net/qq_45361790/article/details/145384771
-
-### 功能
-
-LM Studio 核心功能包括
-- 发现、下载和运行本地LLMs。用户可以通过直观的图形界面轻松下载并加载各种模型。其广泛支持的模型库包括HuggingFace上的ggml Llama、MPT和StarCoder模型（如Llama 2、Orca、Vicuna等）。
-
 
 
 ## Ollama
