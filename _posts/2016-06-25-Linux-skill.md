@@ -3087,7 +3087,7 @@ typedef union epoll_data {
 
 下面是**Zellij / tmux / Byobu** 完整对比表格，包含**核心功能、体验、配置、生态**等维度，方便直接对比选择。
 
-# Zellij · tmux · Byobu 功能对比总表
+Zellij · tmux · Byobu 功能对比总表
 
 | 对比项 | Zellij | tmux | Byobu |
 |---|---|---|---|
