@@ -28,6 +28,8 @@ permalink: /llm_infer
 
 ## LLM 推理
 
+### 原理
+
 【2024-3-30】[图解大模型计算加速系列之：vLLM核心技术PagedAttention原理](https://mp.weixin.qq.com/s/oCGENfMwTNmfr1nGeCZz2g)
 
 LLM 推理过程分两个阶段: `prefill` 和 `decode`, 通常用 KV cache 技术加速推理
@@ -80,6 +82,49 @@ LLM inference 优化两个基本事实：
 直观感受到推理中 KV cache 对显存的占用。
 
 因此，如何优化KV cache，节省显存，提高推理吞吐量，就成了LLM推理框架需要解决的重点问题。
+
+
+### 新技术
+
+#### 【2026-4-16】 Kimi Prefill-as-a-Service
+
+【2026-4-19】【Kimi团队新作】Prefill-as-a-Service：跨数据中心KVCache，吞吐量提升54%
+- [小红书解读](https://www.xiaohongshu.com/explore/69e389ad000000002301166d)
+
+【2026-4-16】Moonshot AI（Kimi）& 清华大学 混合注意力模型的KVCache足够小，可以通过商用以太网跨数据中心传输，实现异构集群间的高效推理
+- 🔗 论文：arXiv:2604.15039 [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter
+](https://arxiv.org/abs/2604.15039)
+- 📌 核心思想：混合注意力模型的KVCache足够小，可以通过商用以太网跨数据中心传输，实现异构集群间的高效推理
+
+🔬 研究背景
+-  PD（Prefill-Decode）分离是大规模LLM推理的标准范式
+-  但KVCache传输将Prefill和Decode绑定在同一RDMA集群内
+-  异构部署（不同芯片做Prefill/Decode）难以跨集群实现
+
+|阶段|特点||
+|---|---|---|
+|prefill|计算密集型||
+|decode|访存密集型||
+||||
+
+核心瓶颈：KVCache 传输
+- 传统 Dense Attention 模型的KVCache体积巨大
+- Prefill/Decode 被迫绑定在同一RDMA集群
+- 异构部署（如不同芯片）难以跨集群实现
+
+💡 PrfaaS 核心设计
+-  选择性卸载：仅将长上下文请求卸载到远程计算密集型集群，短请求保留本地
+-  混合前缀缓存池：统一管理线性注意力状态和全注意力KVCache
+-  带宽感知调度：双时间尺度算法，短期调路由阈值，长期调资源分配
+-  吞吐量模型：解析建模三阶段流水线，网格搜索最优配置
+
+📊 实验结果（1T混合模型，Kimi Linear架构）
+-  对比同构PD基线：吞吐量提升 54%，P90 TTFT降低 64%
+-  对比朴素异构方案：吞吐量提升 32%
+-  PrfaaS集群出口带宽仅13 Gbps，占100G以太网链路的13%
+-  混合模型KV吞吐量比Dense模型低13倍（MiMo-V2 vs MiniMax @32K）
+
+
 
 
 ## 训练 vs 推理
