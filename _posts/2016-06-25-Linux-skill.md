@@ -3116,6 +3116,34 @@ Zellij · tmux · Byobu 功能对比总表
 - **服务器长期跑、追求稳定轻量、高度自定义** → 选 **tmux**
 - **Ubuntu 服务器、只想开箱即用带状态栏** → 选 **Byobu**
 
+### Superfile
+
+【2024-11-29】[Superfile：现代化终端文件管理器：简洁、美观、功能强大](https://cloud.tencent.com/developer/article/2472167)
+
+命令行界面（CLI）
+
+虽然命令行操作熟练后非常高效，但总感觉缺少一些直观和便捷性。
+- 例如，命令行界面的文件管理往往不如图形用户界面（GUI）直观，而在命令行中预览和编辑文件，也远不如GUI中那样方便。
+
+现有的Linux桌面GUI文件管理器往往显得过于沉重，使用起来有些”大炮打蚊子”的感觉。
+
+精美的终端文件管理器——Superfile 结合了命令行的高效性和图形界面的便捷性，提供了一种更加精致、轻量级的文件管理体验，解决了传统CLI文件管理的种种不足。
+- github 地址 [superfile](https://github.com/yorukot/superfile)
+- 项目地址 [superfile](https://superfile.netlify.app/)
+
+![](https://developer.qcloudimg.com/http-save/yehe-1844341/d599baf1d9c65faa960950b94470bb6f.png)
+
+安装
+
+```sh
+# linux 
+bash -c "$(curl -sLo- https://superfile.netlify.app/install.sh)" # 安装
+rm ~/.local/bin/spf # 卸载
+# windows
+powershell -ExecutionPolicy Bypass -Command "Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://superfile.netlify.app/install.ps1'))" # 安装
+powershell -ExecutionPolicy Bypass -Command "Invoke-Expression ((New-Object System.Net.WebClient).Downl # 卸载
+```
+
 
 ### tmux
 
