@@ -3,7 +3,7 @@ layout: post
 title:  "Linux 技能总结"
 date:   2016-06-25 23:35:00
 categories: 编程语言
-tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux ip nohup
+tags: linux shell yaml github 文件服务 vscode crontab curl post ssh 加密 mac 苹果 隧道 代理 tmux ip nohup 键盘
 excerpt: Linux 使用技能总结，持续更新
 mathjax: true
 permalink: /linux
@@ -12,11 +12,12 @@ permalink: /linux
 * content
 {:toc}
 
-- 汇总linux下开发知识
+汇总linux下开发知识
+
 
 # Linux系统
 
-- 良好的 Linux 素养会让你在日常的工作中如鱼得水，在命令行里体会流水般的畅快感。
+良好的 Linux 素养会让你在日常的工作中如鱼得水，在命令行里体会流水般的畅快感。
 
 ![](https://raw.githubusercontent.com/woaielf/woaielf.github.io/master/_posts/Pic/1709/170915-1.png)
 ![](https://raw.githubusercontent.com/woaielf/woaielf.github.io/master/_posts/Pic/1709/170915-2.png)
@@ -78,13 +79,13 @@ if [ -f ~/.bashrc ]; then
 fi
 ```
 
-大多数Linux发行版都使用`~/.profile`而不是`~/.bash_profile`。 所有Shell程序都读取~/.profile文件，而Bash仅读取~/.bash_profile文件。
+大多数Linux发行版都使用 `~/.profile` 而不是 `~/.bash_profile`。 所有Shell程序都读取 ~/.profile文件，而Bash仅读取 ~/.bash_profile 文件。
 
 如果系统上没有任何启动文件，则可以创建该文件。
 
 ### 登录顺序
 
-bash的运行模式
+bash 运行模式
 - “登陆shell”启动时会加载“profile”系列的startup文件
   - “profile”系列的代表文件为~/.bash_profile，它用于“登录shell”的环境加载，这个“登录shell”既可以是“交互式”的，也可以是“非交互式”的。
 - 而“交互式非登陆shell”启动时会加载“rc”系列的startup文件
@@ -3144,6 +3145,17 @@ powershell -ExecutionPolicy Bypass -Command "Invoke-Expression ((New-Object Syst
 powershell -ExecutionPolicy Bypass -Command "Invoke-Expression ((New-Object System.Net.WebClient).Downl # 卸载
 ```
 
+按键
+- [excalidraw 在线地址](https://excalidraw.com/#json=x9ZwZj4l-icEpxHhqrOrl,bW-kB5w8tIfJMmigVPWzQw)
+
+```sh
+spf # 启动
+spf pl # 配置文件路径
+```
+
+<img width="1155" height="100%" alt="image" src="https://github.com/user-attachments/assets/e383f7b9-f6b8-4819-917b-1e86df42b81e" />
+
+
 
 ### tmux
 
@@ -3387,29 +3399,47 @@ github 库同步时，时常失败
 ```
 
 
-## Vim技能
+## Vim 技能
 
-### vim介绍
+### vim 介绍
 
-vim编辑器好处
+vim 编辑器好处
 - 不使用鼠标，完全用键盘操作。
 - 系统资源占用小，打开大文件毫无压力。
 - 键盘命令变成肌肉记忆以后，操作速度极快。
 - 服务器默认都安装 Vi 或 Vim
 
-- vi / vim是Linux上最常用的文本编辑器而且功能非常强大。只有命令，没有菜单，下图表示vi命令的各种模式的切换图。
-  - ![](https://p3-tt.byteimg.com/origin/pgc-image/89e2d5d5a06e40d498f169c6bfde54fb?from=pc)
+vi / vim是Linux上最常用的文本编辑器而且功能非常强大。只有命令，没有菜单，下图表示vi命令的各种模式的切换图。
+- ![](https://p3-tt.byteimg.com/origin/pgc-image/89e2d5d5a06e40d498f169c6bfde54fb?from=pc)
 - 【2019-07-18】编辑器学习曲线:
   - ![](https://github.com/wqw547243068/wangqiwen/blob/master/other/figure/mmexport1563449034348.jpg?raw=true)
-- [如何使用VIM搭建IDE？](http://harttle.com/2015/11/04/vim-ide.html),[vim键盘图大全](http://www.cnblogs.com/yu-lang/p/5413279.html),[所见即所得，像IDE一样使用vim](https://github.com/yangyangwithgnu/use_vim_as_ide)，![VIM键盘图](http://harttle.com/assets/img/blog/vim-key.png)
+- [如何使用VIM搭建IDE？](http://harttle.com/2015/11/04/vim-ide.html)
+
+[vim键盘图大全](http://www.cnblogs.com/yu-lang/p/5413279.html), [所见即所得，像IDE一样使用vim](https://github.com/yangyangwithgnu/use_vim_as_ide)
+- ![VIM键盘图](http://harttle.com/assets/img/blog/vim-key.png)
 - ![vim命令图解](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1513414506184&di=5592bf051e8a3b337830632ac037b1c0&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3339508074%2C1265491893%26fm%3D214%26gp%3D0.jpg)
-- [台湾人总结的vim命令图解（pdf打印版）](http://img.my.csdn.net/uploads/201211/24/1353759337_6781.png)
+
+[台湾人总结的vim命令图解（pdf打印版）](http://img.my.csdn.net/uploads/201211/24/1353759337_6781.png)
 - 【2017-12-14】[awk思维导图](http://s1.51cto.com/wyfs02/M01/7D/18/wKiom1bf0R6wMA_sABZGEQxE4yg982.png)，[sed思维导图](http://scc.qibebt.cas.cn/docs/linux/script/sed%CB%BC%CE%AC%B5%BC%CD%BC.jpg),[更多linux工具总结](http://scc.qibebt.cas.cn/docs/doc-main.php?dir=linux)
 - pacvim，[vim学习游戏](https://linux.cn/article-9738-1.html)
   - 命令：git clone https://github.com/jmoon018/PacVim.git
   - ![](https://img.linux.net.cn/data/attachment/album/201806/12/104234m10a8uuhxh08kxx5.png)
 
-### vim主题
+键盘布局图
+
+### vim 工作模式
+
+三种模式
+- 命令模式
+- 输入模式
+- 底线命令模式
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot;&gt;\n  &lt;diagram name=\&quot;Vim/Vi工作模式\&quot; id=\&quot;jhgryM9-jo5U49ePlnmT\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;956\&quot; dy=\&quot;694\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-1\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=none;strokeWidth=2;shadow=1;shadowColor=#000000;shadowOpacity=0.3;shadowOffsetX=3;shadowOffsetY=3;fontSize=20;fontStyle=0;fontColor=#ffffff;\&quot; value=\&quot;命令模式\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;70\&quot; width=\&quot;140\&quot; x=\&quot;530\&quot; y=\&quot;460\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-2\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=none;strokeWidth=2;shadow=1;shadowColor=#000000;shadowOpacity=0.3;shadowOffsetX=3;shadowOffsetY=3;fontSize=20;fontStyle=0;fontColor=#ffffff;\&quot; value=\&quot;输入模式\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;70\&quot; width=\&quot;130\&quot; x=\&quot;380\&quot; y=\&quot;620\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-3\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;strokeColor=none;strokeWidth=2;shadow=1;shadowColor=#000000;shadowOpacity=0.3;shadowOffsetX=3;shadowOffsetY=3;fontSize=20;fontStyle=0;fontColor=#ffffff;\&quot; value=\&quot;底线命令模式\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;70\&quot; width=\&quot;140\&quot; x=\&quot;710\&quot; y=\&quot;620\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-4\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=25;\&quot; value=\&quot;Vim/Vi 工作模式\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;320\&quot; x=\&quot;450\&quot; y=\&quot;370\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-5\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; style=\&quot;shape=flexArrow;endArrow=classic;html=1;rounded=0;\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;387.25\&quot; y=\&quot;495\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;502.75\&quot; y=\&quot;494.5\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-6\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;进入 vi $file\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;80\&quot; x=\&quot;405\&quot; y=\&quot;460\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-7\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; style=\&quot;shape=flexArrow;endArrow=classic;html=1;rounded=0;\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;730\&quot; y=\&quot;489.5\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;845.5\&quot; y=\&quot;489\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-8\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;退出 :wq\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;80\&quot; x=\&quot;730\&quot; y=\&quot;454.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-9\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;v3NS109As7ar-MMxQYSb-2\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;fontStyle=1;fontSize=17;strokeWidth=3;strokeColor=#999999;\&quot; target=\&quot;v3NS109As7ar-MMxQYSb-1\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;470\&quot; y=\&quot;600\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;520\&quot; y=\&quot;550\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-10\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1\&quot; value=\&quot;Esc键\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;510\&quot; y=\&quot;570\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-11\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;v3NS109As7ar-MMxQYSb-1\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;fontStyle=1;fontSize=17;strokeWidth=3;strokeColor=#999999;entryX=0.5;entryY=0;entryDx=0;entryDy=0;\&quot; target=\&quot;v3NS109As7ar-MMxQYSb-2\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;540\&quot; y=\&quot;680\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;628\&quot; y=\&quot;590\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-12\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1\&quot; value=\&quot;输入 i a o\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;425\&quot; y=\&quot;555\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-13\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;v3NS109As7ar-MMxQYSb-1\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;fontStyle=1;fontSize=17;strokeWidth=3;strokeColor=#999999;entryX=0;entryY=0;entryDx=0;entryDy=0;\&quot; target=\&quot;v3NS109As7ar-MMxQYSb-3\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;620\&quot; y=\&quot;640\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;708\&quot; y=\&quot;550\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-14\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;v3NS109As7ar-MMxQYSb-3\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;fontStyle=1;fontSize=17;strokeWidth=3;strokeColor=#999999;entryX=1;entryY=1;entryDx=0;entryDy=0;\&quot; target=\&quot;v3NS109As7ar-MMxQYSb-1\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;720\&quot; y=\&quot;650\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;808\&quot; y=\&quot;560\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-15\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1\&quot; value=\&quot;:\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;30\&quot; x=\&quot;640\&quot; y=\&quot;570\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;v3NS109As7ar-MMxQYSb-16\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1\&quot; value=\&quot;回车\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;30\&quot; x=\&quot;710\&quot; y=\&quot;555\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+### vim 主题
 
 - 【2021-1-12】vim配色，[大全](http://vimcolors.com/)
 - 设置类似sublime的主题包：[vim-monokai](https://github.com/sickill/vim-monokai)
@@ -3559,7 +3589,7 @@ set smartcase " 如果同时打开了ignorecase，那么对于只有一个大写
 # */* vim: set expandtab ts=4 sw=4 sts=4 tw=400: */
 ```
 
-### vim技巧
+### vim 技巧
 
 |命令|说明|备注|
 |---|---|---|
