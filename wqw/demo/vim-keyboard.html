@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vim 快捷键指南 - 3D 交互键盘</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #e4e4e7;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #019733 0%, #00c853 50%, #64dd17 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(1, 151, 51, 0.3);
+        }
+
+        .header p {
+            color: #a1a1aa;
+            font-size: 1rem;
+        }
+
+        .vim-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #019733, #00c853);
+            color: #000;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* 模式指示器 */
+        .mode-indicator {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .mode-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .mode-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* 分类图例 */
+        .legend {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #d4d4d8;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* 键盘容器 */
+        .keyboard-container {
+            perspective: 1200px;
+            margin-bottom: 25px;
+        }
+
+        .keyboard {
+            background: linear-gradient(145deg, #1e1e2e 0%, #16162a 100%);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(255,255,255,0.08),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            transform-style: preserve-3d;
+            transform: rotateX(12deg);
+            transition: transform 0.3s ease;
+        }
+
+        .keyboard:hover {
+            transform: rotateX(8deg) rotateY(0deg);
+        }
+
+        /* 键盘行 */
+        .row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            justify-content: center;
+        }
+
+        .row:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 按键基础样式 */
+        .key {
+            position: relative;
+            min-width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            user-select: none;
+        }
+
+        /* 3D按键效果 */
+        .key::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            background: inherit;
+            transform: translateZ(-4px);
+            filter: brightness(0.6);
+            transition: transform 0.15s ease;
+        }
+
+        .key::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 4px;
+            right: 4px;
+            height: 4px;
+            background: inherit;
+            border-radius: 0 0 4px 4px;
+            filter: brightness(0.4);
+            transform: translateZ(-4px);
+            transition: all 0.15s ease;
+        }
+
+        /* 按键按下效果 */
+        .key:active {
+            transform: translateZ(-4px) translateY(4px);
+        }
+
+        .key:active::before {
+            transform: translateZ(0);
+        }
+
+        .key:active::after {
+            height: 0;
+        }
+
+        /* 悬停效果 */
+        .key:hover {
+            transform: translateZ(8px) scale(1.05);
+            z-index: 10;
+        }
+
+        .key:hover::before {
+            transform: translateZ(-8px);
+        }
+
+        /* 按键大小变体 */
+        .key.w-75 { min-width: 75px; }
+        .key.w-90 { min-width: 90px; }
+        .key.w-100 { min-width: 100px; }
+        .key.w-120 { min-width: 120px; }
+        .key.w-150 { min-width: 150px; }
+        .key.w-300 { min-width: 300px; }
+
+        /* ========== VIM 配色方案 ========== */
+        /* 1. 导航移动 - Vim绿 */
+        .key.nav {
+            background: linear-gradient(145deg, #019733 0%, #007a29 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(1, 151, 51, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 2. 插入模式 - 青色 */
+        .key.insert {
+            background: linear-gradient(145deg, #00b8d4 0%, #0097a7 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 184, 212, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 3. 删除修改 - 红色 */
+        .key.delete {
+            background: linear-gradient(145deg, #f44336 0%, #d32f2f 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 4. 复制粘贴 - 黄色 */
+        .key.yank {
+            background: linear-gradient(145deg, #ffc107 0%, #ffa000 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        /* 5. 搜索查找 - 橙色 */
+        .key.search {
+            background: linear-gradient(145deg, #ff9800 0%, #f57c00 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 6. 视觉模式 - 紫色 */
+        .key.visual {
+            background: linear-gradient(145deg, #9c27b0 0%, #7b1fa2 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 7. 命令模式 - 蓝色 */
+        .key.command {
+            background: linear-gradient(145deg, #2196f3 0%, #1976d2 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* 8. 普通键 - 深灰 */
+        .key.normal {
+            background: linear-gradient(145deg, #374151 0%, #1f2937 100%);
+            color: #9ca3af;
+            box-shadow: 0 4px 15px rgba(55, 65, 81, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        /* 9. 修饰键 */
+        .key.modifier {
+            background: linear-gradient(145deg, #4b5563 0%, #374151 100%);
+            color: #d1d5db;
+            font-size: 0.75rem;
+            box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* 特殊标记 */
+        .key.special {
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* 提示框 */
+        .tooltip {
+            position: fixed;
+            background: rgba(10, 10, 15, 0.98);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            min-width: 240px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tooltip-key {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .tooltip-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .tooltip-category.nav { background: rgba(1, 151, 51, 0.3); color: #4ade80; }
+        .tooltip-category.insert { background: rgba(0, 184, 212, 0.3); color: #67e8f9; }
+        .tooltip-category.delete { background: rgba(244, 67, 54, 0.3); color: #fca5a5; }
+        .tooltip-category.yank { background: rgba(255, 193, 7, 0.3); color: #fde047; }
+        .tooltip-category.search { background: rgba(255, 152, 0, 0.3); color: #fdba74; }
+        .tooltip-category.visual { background: rgba(156, 39, 176, 0.3); color: #e879f9; }
+        .tooltip-category.command { background: rgba(33, 150, 243, 0.3); color: #93c5fd; }
+
+        .tooltip-desc {
+            font-size: 0.9rem;
+            color: #e4e4e7;
+            line-height: 1.5;
+        }
+
+        .tooltip-detail {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #a1a1aa;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255,255,255,0.03);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        /* 快捷键列表 */
+        .shortcuts-list {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 15px;
+        }
+
+        .shortcuts-list h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .shortcut-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .shortcut-card:hover {
+            background: rgba(255,255,255,0.07);
+            transform: translateX(5px);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .shortcut-key {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.08);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .shortcut-info {
+            flex: 1;
+        }
+
+        .shortcut-name {
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 3px;
+            font-size: 0.95rem;
+        }
+
+        .shortcut-detail {
+            font-size: 0.8rem;
+            color: #a1a1aa;
+            line-height: 1.4;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .keyboard {
+                transform: rotateX(5deg) scale(0.8);
+                padding: 15px;
+            }
+            
+            .key {
+                min-width: 30px;
+                height: 30px;
+                font-size: 0.65rem;
+            }
+            
+            .key.w-75 { min-width: 45px; }
+            .key.w-90 { min-width: 55px; }
+            .key.w-100 { min-width: 65px; }
+            .key.w-120 { min-width: 80px; }
+            .key.w-150 { min-width: 95px; }
+            .key.w-300 { min-width: 170px; }
+        }
+
+        /* 动画 */
+        @keyframes vim-glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(1, 151, 51, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(0, 200, 83, 0.8); }
+        }
+
+        .header h1 {
+            animation: vim-glow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Vim 快捷键指南 <span class="vim-badge">VIM</span></h1>
+        <p>终极文本编辑器的完整键盘参考 | 鼠标悬停查看功能详情</p>
+    </div>
+
+    <!-- 模式指示 -->
+    <div class="mode-indicator">
+        <div class="mode-item">
+            <div class="mode-dot" style="background: #019733;"></div>
+            <span>普通模式 (Normal)</span>
+        </div>
+        <div class="mode-item">
+            <div class="mode-dot" style="background: #00b8d4;"></div>
+            <span>插入模式 (Insert)</span>
+        </div>
+        <div class="mode-item">
+            <div class="mode-dot" style="background: #9c27b0;"></div>
+            <span>可视模式 (Visual)</span>
+        </div>
+        <div class="mode-item">
+            <div class="mode-dot" style="background: #2196f3;"></div>
+            <span>命令模式 (Command)</span>
+        </div>
+    </div>
+
+    <!-- 分类图例 -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #019733, #007a29);"></div>
+            <span>导航移动</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #00b8d4, #0097a7);"></div>
+            <span>插入模式</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #f44336, #d32f2f);"></div>
+            <span>删除修改</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #ffc107, #ffa000);"></div>
+            <span>复制粘贴</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #ff9800, #f57c00);"></div>
+            <span>搜索查找</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);"></div>
+            <span>视觉模式</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #2196f3, #1976d2);"></div>
+            <span>命令操作</span>
+        </div>
+    </div>
+
+    <!-- 3D 键盘 -->
+    <div class="keyboard-container">
+        <div class="keyboard">
+            <!-- 第1行: Esc + 数字键 -->
+            <div class="row">
+                <div class="key insert w-75" data-key="Esc" data-category="insert" data-desc="返回普通模式" data-detail="从插入、可视或命令模式返回普通模式">
+                    <span>esc</span>
+                </div>
+                <div class="key normal" data-key="1" data-category="normal" data-desc="" data-detail="">
+                    <span>1</span>
+                </div>
+                <div class="key normal" data-key="2" data-category="normal" data-desc="" data-detail="">
+                    <span>2</span>
+                </div>
+                <div class="key normal" data-key="3" data-category="normal" data-desc="" data-detail="">
+                    <span>3</span>
+                </div>
+                <div class="key normal" data-key="4" data-category="normal" data-desc="" data-detail="">
+                    <span>4</span>
+                </div>
+                <div class="key normal" data-key="5" data-category="normal" data-desc="" data-detail="">
+                    <span>5</span>
+                </div>
+                <div class="key normal" data-key="6" data-category="normal" data-desc="" data-detail="">
+                    <span>6</span>
+                </div>
+                <div class="key normal" data-key="7" data-category="normal" data-desc="" data-detail="">
+                    <span>7</span>
+                </div>
+                <div class="key normal" data-key="8" data-category="normal" data-desc="" data-detail="">
+                    <span>8</span>
+                </div>
+                <div class="key normal" data-key="9" data-category="normal" data-desc="" data-detail="">
+                    <span>9</span>
+                </div>
+                <div class="key normal" data-key="0" data-category="normal" data-desc="行首" data-detail="跳转到行首（等同 ^）">
+                    <span>0</span>
+                </div>
+                <div class="key normal" data-key="-" data-category="normal" data-desc="" data-detail="">
+                    <span>-</span>
+                </div>
+                <div class="key normal" data-key="=" data-category="normal" data-desc="" data-detail="">
+                    <span>=</span>
+                </div>
+                <div class="key delete w-90" data-key="Backspace" data-category="delete" data-desc="向左删除" data-detail="删除光标左侧字符（等同 X）">
+                    <span>⌫</span>
+                </div>
+            </div>
+
+            <!-- 第2行: Tab + QWERTY -->
+            <div class="row">
+                <div class="key modifier w-90" data-key="Tab" data-category="modifier" data-desc="缩进" data-detail="当前行增加缩进">
+                    <span>tab</span>
+                </div>
+                <div class="key visual" data-key="q" data-category="visual" data-desc="录制宏 / 退出" data-detail="q<字符>: 录制宏; q: 退出录制">
+                    <span>Q</span>
+                </div>
+                <div class="key nav" data-key="w" data-category="nav" data-desc="向前词首" data-detail="跳转到下一个单词开始处（word）">
+                    <span>W</span>
+                </div>
+                <div class="key delete" data-key="e" data-category="delete" data-desc="删除至词末" data-detail="删除从当前位置到词末（不含空格）">
+                    <span>E</span>
+                </div>
+                <div class="key nav" data-key="r" data-category="nav" data-desc="向后搜索" data-detail="向后查找上次搜索内容">
+                    <span>R</span>
+                </div>
+                <div class="key nav" data-key="t" data-category="nav" data-desc="跳转到字符" data-detail="f<字符>的反向操作，跳转到字符前">
+                    <span>T</span>
+                </div>
+                <div class="key nav" data-key="y" data-category="nav" data-desc="粘贴" data-detail="在光标之后粘贴（等同 p）">
+                    <span>Y</span>
+                </div>
+                <div class="key nav" data-key="u" data-category="nav" data-desc="上半屏 / 撤销" data-detail="滚半屏向上 / Ctrl+u: 撤销上次操作">
+                    <span>U</span>
+                </div>
+                <div class="key nav" data-key="i" data-category="nav" data-desc="上半屏" data-detail="滚半屏向上（同 u）">
+                    <span>I</span>
+                </div>
+                <div class="key nav" data-key="o" data-category="nav" data-desc="下半屏" data-detail="滚半屏向下（同 d）">
+                    <span>O</span>
+                </div>
+                <div class="key nav" data-key="p" data-category="nav" data-desc="向下粘贴" data-detail="在光标之后粘贴缓冲区内容">
+                    <span>P</span>
+                </div>
+                <div class="key normal" data-key="[" data-category="normal" data-desc="上一段" data-detail="跳转到上一段落开始">
+                    <span>[</span>
+                </div>
+                <div class="key normal" data-key="]" data-category="normal" data-desc="下一段" data-detail="跳转到下一段落开始">
+                    <span>]</span>
+                </div>
+                <div class="key normal w-75" data-key="\\" data-category="normal" data-desc="" data-detail="">
+                    <span>\\</span>
+                </div>
+            </div>
+
+            <!-- 第3行: Caps + ASDFG (Vim 核心导航行) -->
+            <div class="row">
+                <div class="key modifier w-100" data-key="Caps" data-category="modifier" data-desc="" data-detail="">
+                    <span>caps</span>
+                </div>
+                <div class="key nav special" data-key="a" data-category="nav" data-desc="向左移动" data-detail="光标向左移动一个字符">
+                    <span>A</span>
+                </div>
+                <div class="key nav special" data-key="s" data-category="nav" data-desc="向下移动" data-detail="光标向下移动一行">
+                    <span>S</span>
+                </div>
+                <div class="key nav special" data-key="d" data-category="nav" data-desc="向下半屏" data-detail="滚半屏向下显示">
+                    <span>D</span>
+                </div>
+                <div class="key nav" data-key="f" data-category="nav" data-desc="跳转到字符" data-detail="f<字符>: 向前跳转到该字符处（find）">
+                    <span>F</span>
+                </div>
+                <div class="key nav" data-key="g" data-category="nav" data-desc="跳转行" data-detail="gg: 文件首行 | G: 文件末行 | 12G: 第12行">
+                    <span>G</span>
+                </div>
+                <div class="key nav special" data-key="h" data-category="nav" data-desc="向左移动" data-detail="光标向左移动一个字符（同 a）">
+                    <span>H</span>
+                </div>
+                <div class="key nav special" data-key="j" data-category="nav" data-desc="向下移动" data-detail="光标向下移动一行（同 s）">
+                    <span>J</span>
+                </div>
+                <div class="key nav special" data-key="k" data-category="nav" data-desc="向上移动" data-detail="光标向上移动一行">
+                    <span>K</span>
+                </div>
+                <div class="key nav special" data-key="l" data-category="nav" data-desc="向右移动" data-detail="光标向右移动一个字符">
+                    <span>L</span>
+                </div>
+                <div class="key insert" data-key=";" data-category="insert" data-desc="重复上次查找" data-detail="重复上次 f/F/t/T 查找操作">
+                    <span>;</span>
+                </div>
+                <div class="key insert" data-key="'" data-category="insert" data-desc="反向重复" data-detail="反向重复上次查找操作">
+                    <span>'</span>
+                </div>
+                <div class="key command w-120" data-key="Enter" data-category="command" data-desc="执行命令" data-detail="执行输入的命令或确认操作">
+                    <span>return</span>
+                </div>
+            </div>
+
+            <!-- 第4行: Shift + ZXCVB -->
+            <div class="row">
+                <div class="key modifier w-120" data-key="Shift" data-category="modifier" data-desc="修饰键" data-detail="与其他键组合使用，修改命令行为">
+                    <span>shift</span>
+                </div>
+                <div class="key nav" data-key="z" data-category="nav" data-desc="保存并退出" data-detail="ZZ: 保存并退出 | ZQ: 不保存退出">
+                    <span>Z</span>
+                </div>
+                <div class="key nav" data-key="x" data-category="nav" data-desc="向后词首" data-detail="跳转到上一个单词开始处（back）">
+                    <span>X</span>
+                </div>
+                <div class="key yank" data-key="c" data-category="yank" data-desc="修改命令" data-detail="c: 删除并进入插入 | cc: 删除整行并插入 | cw: 修改单词">
+                    <span>C</span>
+                </div>
+                <div class="key visual" data-key="v" data-category="visual" data-desc="可视模式" data-detail="进入字符可视模式 | V: 行可视模式 | Ctrl+v: 块可视模式">
+                    <span>V</span>
+                </div>
+                <div class="key nav" data-key="b" data-category="nav" data-desc="向后词首" data-detail="跳转到上一个单词开始处（backwards）">
+                    <span>B</span>
+                </div>
+                <div class="key nav" data-key="n" data-category="nav" data-desc="下一个匹配" data-detail="查找下一个匹配项 | N: 查找上一个匹配项">
+                    <span>N</span>
+                </div>
+                <div class="key nav" data-key="m" data-category="nav" data-desc="设置标记" data-detail="m<字母>: 设置书签标记 | '<字母>: 跳转到标记">
+                    <span>M</span>
+                </div>
+                <div class="key normal" data-key="," data-category="normal" data-desc="行首" data-detail="跳转到当前行的第一个非空白字符">
+                    <span>,</span>
+                </div>
+                <div class="key normal" data-key="." data-category="normal" data-desc="重复上次操作" data-detail="重复执行上一次的修改操作（强大！）">
+                    <span>.</span>
+                </div>
+                <div class="key search" data-key="/" data-category="search" data-desc="向前搜索" data-detail="向下搜索文本 | ?: 向上搜索 | n: 下一个 | N: 上一个">
+                    <span>/</span>
+                </div>
+                <div class="key modifier w-150" data-key="Shift" data-category="modifier" data-desc="修饰键" data-detail="与其他键组合使用">
+                    <span>shift</span>
+                </div>
+            </div>
+
+            <!-- 第5行: 底部修饰键 -->
+            <div class="row">
+                <div class="key modifier" data-key="Ctrl" data-category="modifier" data-desc="控制键" data-detail="Ctrl+r: 重做 | Ctrl+f: 下翻页 | Ctrl+b: 上翻页">
+                    <span>ctrl</span>
+                </div>
+                <div class="key modifier" data-key="Opt" data-category="modifier" data-desc="Option 键" data-detail="修饰键，组合使用">
+                    <span>opt</span>
+                </div>
+                <div class="key modifier" data-key="Cmd" data-category="modifier" data-desc="Command 键" data-detail="修饰键，组合使用">
+                    <span>cmd</span>
+                </div>
+                <div class="key command w-300" data-key=":" data-category="command" data-desc="进入命令模式" data-detail=":w 保存 | :q 退出 | :wq 保存并退出 | :q! 强制退出">
+                    <span>:</span>
+                </div>
+                <div class="key modifier" data-key="Cmd" data-category="modifier" data-desc="Command 键" data-detail="修饰键，组合使用">
+                    <span>cmd</span>
+                </div>
+                <div class="key modifier" data-key="Opt" data-category="modifier" data-desc="Option 键" data-detail="修饰键，组合使用">
+                    <span>opt</span>
+                </div>
+                <div class="key modifier" data-key="Ctrl" data-category="modifier" data-desc="控制键" data-detail="Ctrl+g: 显示文件信息">
+                    <span>ctrl</span>
+                </div>
+            </div>
+
+            <!-- 方向键行 -->
+            <div class="row" style="margin-top: 10px; justify-content: flex-end;">
+                <div class="key nav" data-key="←" data-category="nav" data-desc="向左移动" data-detail="光标向左移动一个字符（同h）">
+                    <span>←</span>
+                </div>
+                <div class="key nav" data-key="↓" data-category="nav" data-desc="向下移动" data-detail="光标向下移动一行（同j）">
+                    <span>↓</span>
+                </div>
+                <div class="key nav" data-key="↑" data-category="nav" data-desc="向上移动" data-detail="光标向上移动一行（同k）">
+                    <span>↑</span>
+                </div>
+                <div class="key nav" data-key="→" data-category="nav" data-desc="向右移动" data-detail="光标向右移动一个字符（同l）">
+                    <span>→</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快捷参考列表 -->
+    <div class="shortcuts-list">
+        <h2>📋 完整快捷键参考</h2>
+        <div class="shortcuts-grid">
+            <!-- 导航 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(1,151,51,0.3); color: #4ade80;">h j k l</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">基本移动</div>
+                    <div class="shortcut-detail">左/下/上/右移动光标</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(1,151,51,0.3); color: #4ade80;">w / b</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">单词跳转</div>
+                    <div class="shortcut-detail">w: 向前词首 | b: 向后词首</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(1,151,51,0.3); color: #4ade80;">gg / G</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">文件跳转</div>
+                    <div class="shortcut-detail">gg: 文件首行 | G: 文件末行 | 12G: 第12行</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(1,151,51,0.3); color: #4ade80;">0 / $</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">行内移动</div>
+                    <div class="shortcut-detail">0: 行首 | $: 行尾 | ^: 第一个非空字符</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(1,151,51,0.3); color: #4ade80;">Ctrl+f/b</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">翻页</div>
+                    <div class="shortcut-detail">Ctrl+f: 下翻页 | Ctrl+b: 上翻页</div>
+                </div>
+            </div>
+
+            <!-- 插入 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(0,184,212,0.3); color: #67e8f9;">i / a</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">插入模式</div>
+                    <div class="shortcut-detail">i: 光标前插入 | a: 光标后插入</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(0,184,212,0.3); color: #67e8f9;">I / A</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">行插入</div>
+                    <div class="shortcut-detail">I: 行首插入 | A: 行末追加</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(0,184,212,0.3); color: #67e8f9;">o / O</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">开新行</div>
+                    <div class="shortcut-detail">o: 下方开新行 | O: 上方开新行</div>
+                </div>
+            </div>
+
+            <!-- 删除 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(244,67,54,0.3); color: #fca5a5;">x / X</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">删除字符</div>
+                    <div class="shortcut-detail">x: 删除当前字符 | X: 删除前一个字符</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(244,67,54,0.3); color: #fca5a5;">dd</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">删除整行</div>
+                    <div class="shortcut-detail">dd: 删除当前行 | 5dd: 删除5行</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(244,67,54,0.3); color: #fca5a5;">dw / d$</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">删除到...</div>
+                    <div class="shortcut-detail">dw: 删除到词末 | d$: 删除到行末</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(244,67,54,0.3); color: #fca5a5;">r / R</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">替换</div>
+                    <div class="shortcut-detail">r: 替换单个字符 | R: 替换模式</div>
+                </div>
+            </div>
+
+            <!-- 复制 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(255,193,7,0.3); color: #fde047;">yy</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">复制行</div>
+                    <div class="shortcut-detail">yy: 复制当前行 | 5yy: 复制5行</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(255,193,7,0.3); color: #fde047;">p / P</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">粘贴</div>
+                    <div class="shortcut-detail">p: 光标后粘贴 | P: 光标前粘贴</div>
+                </div>
+            </div>
+
+            <!-- 搜索 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(255,152,0,0.3); color: #fdba74;">/pattern</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">搜索</div>
+                    <div class="shortcut-detail">/: 向下搜索 | ?: 向上搜索</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(255,152,0,0.3); color: #fdba74;">n / N</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">搜索导航</div>
+                    <div class="shortcut-detail">n: 下一个匹配 | N: 上一个匹配</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(255,152,0,0.3); color: #fdba74;">* / #</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">快速查找</div>
+                    <div class="shortcut-detail">*: 查找当前词向下 | #: 查找向上</div>
+                </div>
+            </div>
+
+            <!-- 命令 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(33,150,243,0.3); color: #93c5fd;">:w</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">保存</div>
+                    <div class="shortcut-detail">保存文件（write）</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(33,150,243,0.3); color: #93c5fd;">:q</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">退出</div>
+                    <div class="shortcut-detail">:q 退出 | :q! 强制退出（不保存）</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(33,150,243,0.3); color: #93c5fd;">:wq / ZZ</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">保存并退出</div>
+                    <div class="shortcut-detail">:wq 或 ZZ: 保存并退出</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(33,150,243,0.3); color: #93c5fd;">:set nu</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">设置行号</div>
+                    <div class="shortcut-detail">:set nu: 显示行号 | :set nonu: 隐藏行号</div>
+                </div>
+            </div>
+
+            <!-- 可视模式 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(156,39,176,0.3); color: #e879f9;">v / V</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">可视模式</div>
+                    <div class="shortcut-detail">v: 字符可视 | V: 行可视 | Ctrl+v: 块可视</div>
+                </div>
+            </div>
+
+            <!-- 撤销/重做 -->
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(128,128,128,0.3); color: #d4d4d8;">u / Ctrl+r</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">撤销/重做</div>
+                    <div class="shortcut-detail">u: 撤销 | Ctrl+r: 重做</div>
+                </div>
+            </div>
+            <div class="shortcut-card">
+                <div class="shortcut-key" style="background: rgba(128,128,128,0.3); color: #d4d4d8;">.</div>
+                <div class="shortcut-info">
+                    <div class="shortcut-name">重复</div>
+                    <div class="shortcut-detail">重复上次修改操作</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示框 -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-header">
+            <span class="tooltip-key" id="tooltip-key"></span>
+            <span class="tooltip-category" id="tooltip-category"></span>
+        </div>
+        <div class="tooltip-desc" id="tooltip-desc"></div>
+        <div class="tooltip-detail" id="tooltip-detail"></div>
+    </div>
+
+    <script>
+        const categoryNames = {
+            'nav': '导航移动',
+            'insert': '插入模式',
+            'delete': '删除修改',
+            'yank': '复制粘贴',
+            'search': '搜索查找',
+            'visual': '视觉模式',
+            'command': '命令操作',
+            'normal': '普通键',
+            'modifier': '修饰键'
+        };
+
+        const keys = document.querySelectorAll('.key');
+        const tooltip = document.getElementById('tooltip');
+        const tooltipKey = document.getElementById('tooltip-key');
+        const tooltipCategory = document.getElementById('tooltip-category');
+        const tooltipDesc = document.getElementById('tooltip-desc');
+        const tooltipDetail = document.getElementById('tooltip-detail');
+
+        keys.forEach(key => {
+            key.addEventListener('mouseenter', (e) => {
+                const keyName = key.dataset.key;
+                const category = key.dataset.category;
+                const desc = key.dataset.desc;
+                const detail = key.dataset.detail;
+
+                if (!desc) return;
+
+                tooltipKey.textContent = keyName;
+                tooltipCategory.textContent = categoryNames[category] || category;
+                tooltipCategory.className = 'tooltip-category ' + category;
+                tooltipDesc.textContent = desc;
+                tooltipDetail.textContent = detail;
+
+                tooltip.classList.add('visible');
+            });
+
+            key.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                const tooltipRect = tooltip.getBoundingClientRect();
+                let left = x + 15;
+                let top = y + 15;
+                
+                if (left + tooltipRect.width > window.innerWidth) {
+                    left = x - tooltipRect.width - 15;
+                }
+                if (top + tooltipRect.height > window.innerHeight) {
+                    top = y - tooltipRect.height - 15;
+                }
+                
+                tooltip.style.left = left + 'px';
+                tooltip.style.top = top + 'px';
+            });
+
+            key.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('visible');
+            });
+
+            key.addEventListener('click', () => {
+                key.style.transform = 'translateZ(-4px) translateY(4px) scale(0.95)';
+                setTimeout(() => {
+                    key.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
