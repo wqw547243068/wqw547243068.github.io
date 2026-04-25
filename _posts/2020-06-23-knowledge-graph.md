@@ -17,6 +17,17 @@ permalink: /kg
 
 ## 总结
 
+
+【2026-4-25】知识图谱新趋势
+
+知识图谱领域权威`肖仰华`在 DACCon 演讲中提出重大转向：<span style='color:red'>严格知识表示路线已不合时宜</span>。
+
+依据：
+- 知识不限于三元组形式；43% 知识会随时间失效，大而全图谱易过期；
+- 成功知识体系，如维基百科靠群体共建而非设计。未来应发展"自进化智能体"——不在事前灌输知识，而在任务中动态生长知识，精准补足大模型盲区。
+
+"智能不该是名词，而应是动词"，标志着知识工程从静态构建迈向动态演化的范式变革。
+
 - 【2021-2-14】[思知机器人](https://www.ownthink.com/)，开源中文知识图谱，[图谱可视化](https://www.ownthink.com/knowledge.html?word=%E9%92%9F%E5%8D%97%E5%B1%B1)，[Demo体验](https://www.ownthink.com/robot.html)，包含实时tts；OwnThink开源了史上最大规模（1.4亿）中文知识图谱，[地址](https://github.com/ownthink/KnowledgeGraphData)。[阿里云地址](https://nebula-graph.oss-accelerate.aliyuncs.com/ownthink/kg_v2.tar.gz)，百度云[地址](https://pan.baidu.com/s/1LZjs9Dsta0yD9NH-1y0sAw)，提取码: 3hpp 解压密码是：https://www.ownthink.com/，1.95G
   - ![](https://pic4.zhimg.com/80/v2-7bf5c629b7dcc923a6a92ce69dc0d0b7_720w.jpg)
   - [Neo4j导入思知OwnThink开源的知识图谱](https://zhuanlan.zhihu.com/p/113569382)
