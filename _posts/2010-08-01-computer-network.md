@@ -1403,8 +1403,43 @@ CNR-4都市之声、CNR-5中华之声、CNR-6神州之声、CNR-7华夏之声、
 |Tunnelblick|||基于 OpenVPN, 只能用于 MacOS|
 |Goproxy|√|√|跨平台，功能相对简单|
 |[tunnelto.dev](https://tunnelto.dev/)|付费, 4美元/月|×||
+|[RustDesk](https://rustdesk.com)||||
 |||||
-|||||
+
+### RustDesk
+
+【2026-4-25】[RustDesk](https://rustdesk.com) 工具，真正实现无论何时何地，通过手机或者电脑端完全控制家里或者办公室电脑，完全永久免费。
+- [GitHub下载地址]([https://mp.weixin.qq.com/s/lh7l6qFw0tnzZBhd4JUh3g](https://github.com/rustdesk/rustdesk/releases/tag/1.4.6))
+- 完全免费，无时间限制
+- 穿透能力	无需公网IP，NAT后面也能连
+- 控制方式	完整远程桌面，鼠标键盘屏幕全掌控
+- 支持平台	Windows / macOS / Linux / iOS / Android
+- 数据安全	默认走官方中继，可自建完全私有
+
+原理和 TeamViewer 一样，但 TeamViewer 免费版有时间限制、会被识别为商业用途强制断线，RustDesk 没有这些限制。
+
+两台电脑（被控端 + 控制端）都去官网下载[RustDesk](https://rustdesk.com)的客户端：
+- Windows 直接下载 .exe 安装
+- macOS 下载 .dmg
+- Linux 下载 .deb 或 .rpm
+- 手机在 App Store / Google Play 搜索 RustDesk。
+
+配置方法
+- 第一步：设置固定密码
+  - 打开 RustDesk → 右上角三点菜单 → 设置 → 安全 → 密码 → 改为"固定密码"，设置一个你记得住的密码。
+  - 不设固定密码的话，每次连接都需要有人在那台电脑旁边查看随机密码，失去了远程控制的意义。
+- 第二步：设置开机自启
+  - Windows：以管理员身份运行 PowerShell，执行：`` .\rustdesk --install-service `` 或者直接在任务管理器 → 启动项里找到 RustDesk 启用它。
+  - Linux：``bash sudo systemctl enable rustdesk sudo systemctl start rustdesk ``
+  - macOS：打开 RustDesk → 设置 → 常规 → 勾选"开机启动"。
+  - 设置完之后，这台电脑只要开着，不管有没有人在旁边，你都可以从外网连进来。
+- 第三步：记下 ID
+  - RustDesk 主界面会显示一串数字 ID，比如 123 456 789。把这个 ID 记下来或者拍照，连接时需要用到。
+
+在控制端（你出门带的笔记本或手机）打开 RustDesk
+- 在"远程桌面"输入框里填入刚才记下的 ID，点连接，输入固定密码，几秒钟之后对方的屏幕就出现了。
+- 手机端同样支持：下载 RustDesk 手机版，输入 ID 和密码，手指滑动控制鼠标，完全可以操作。出门在外临时处理文件、跑个脚本，手机就够了。
+
 
 ### FRP
 
