@@ -360,13 +360,22 @@ Homebrew官方安装
 
 ### 终端 Terminal
 
-mac terminal如何更改默认主题？
+
+#### 更改主题
+
+mac terminal 如何更改默认主题？
 
 设置背景主体
 - 打开Terminal终端，右击鼠标，选择“显示检查器”。
 - 选择主题（如homebrew），在颜色与效果处，把透明度调到最大，背景就全黑了。
 - 点击“默认”，即完成设置
 
+#### 当前位置打开终端
+
+操作
+- 选中文件夹→右键→服务→新建位于文件夹位置的终端标签页
+
+参考：[在 Mac 上打开新的“终端”窗口和标签页](https://support.apple.com/zh-cn/guide/terminal/trmlb20c7888/mac)
 
 #### 代理
 
