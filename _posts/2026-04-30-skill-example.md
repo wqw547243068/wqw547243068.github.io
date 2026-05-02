@@ -56,6 +56,14 @@ GitHub 上和 PPT 相关的 Skill 项目。
 
 ## 视频制作
 
+### video-use
+
+【2026-5-2】video-use 用"文本优先"思路革新视频剪辑：
+- 先逐词分析语音内容再针对性处理画面，自然语言指令就能完成去废话、调色、字幕全流程，还能三轮自检质量。
+- 开源地址：[video-use](github.com/browser-use/video-use)。
+- 中文用户建议替换Scribe为阿里FunASR并使用思源黑体。
+
+
 ### ppt2video
 
 [ppt2video](https://github.com/iburn78/ppt2video)
