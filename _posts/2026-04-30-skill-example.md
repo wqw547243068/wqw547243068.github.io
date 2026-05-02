@@ -54,5 +54,40 @@ GitHub 上和 PPT 相关的 Skill 项目。
 （5）想把 PDF、图片、论文转成演示，可以看：
 - glmv-pdf-to-ppt、image-to-pptx-skill、paper-slides 这类专用工具。        
 
+## 视频制作
+
+### ppt2video
+
+[ppt2video](https://github.com/iburn78/ppt2video)
+
+安装
+
+```sh
+pip install ppt2video
+```
+使用
+
+```py
+from ppt2video.tools import *
+
+meta = Meta(
+    ppt_file='your_ppt_slide.pptx',  # Name of your PPT file
+    google_application_credentials='/config/google_cloud.json'  # Location and filename of your Google Cloud service account key
+)
+
+# Run the conversion
+ppt_to_video(meta)
+```
+
+
+### slides2video
+
+
+[slides2video 在线体验](https://slide2video.app/) 上传pdf/ppt，自动生成脚本+视频
+
+开源神器 [slides2video](https://github.com/arpith/slides2video)
+- 一键将 HTML 幻灯片 / PNG 素材转为带 AI 配音的 MP4 视频，深度对接豆包 TTS，搭载海量音色库，支持方言、IP 仿音、多情感与客服专属音色。
+- 依托 ffmpeg + Playwright 实现无间隙音频合成，命令行极简操作，支持断点续跑、跳过重复环节，无需专业剪辑，快速产出教学、演示、自媒体视频，零基础也能批量生成高质量有声 PPT，办公与创作效率直接拉满！
+
 
 # 结束
