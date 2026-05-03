@@ -35,6 +35,7 @@ GitHub 上 开源项目
 ### Open Design
 
 [Open Design 项目](https://github.com/nexu-io/open-design)（作者：@Tom Huang）完全开源，Apache 2.0 协议，可自己部署，接自己的 API Key，可以改代码，可以二次开发。
+- [小红书帖子](https://www.xiaohongshu.com/explore/69f0d0cf000000003600274f)
 
 覆盖网页设计的方方面面
 - 31个技能
