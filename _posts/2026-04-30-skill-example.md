@@ -21,6 +21,25 @@ permalink: /skill_set
 详见站内专题：[Skill 技术专题](skill)
 
 
+## 网页设计
+
+Anthropic 发布 `Claude Design`，设计师圈子里刷屏了。
+- 专门给设计师用的 AI 工具，把设计思维和 AI 代码生成直接捏在一起，演示视频里随便聊几句就能出一个像样的设计稿，「这就是设计的未来」。
+	
+但闭源，只能通过官方 Claude 账号使用，而且额度少的可怜，用上原生 Claude design 对大多数人非常困难。
+	
+GitHub 上 开源项目
+- [Open Design 项目](https://github.com/nexu-io/open-design)（作者：@Tom Huang）完全开源，Apache 2.0 协议，可自己部署，接自己的 API Key，可以改代码，可以二次开发。
+- 其他
+
+### Open Design
+
+[Open Design 项目](https://github.com/nexu-io/open-design)（作者：@Tom Huang）完全开源，Apache 2.0 协议，可自己部署，接自己的 API Key，可以改代码，可以二次开发。
+
+覆盖网页设计的方方面面
+- 31个技能
+- 各种格式的设计原型
+
 
 ## ppt 制作
 
