@@ -24,6 +24,28 @@ permalink: /skill_set
 
 待定
 
+## 书籍转skill
+
+将技术书籍（PDF/EPUB）转化为 Claude Code 可加载的结构化 skill，让书中框架和知识点在工作时按需调用
+
+### book-to-skill
+
+【2026-5-6】book-to-skill 是 Claude Code skill，把技术书籍的 PDF 或 EPUB 自动提取并生成结构化 skill 文件，包括按章节加载的摘要、术语表、设计模式速查表。
+- GitHub [book-to-skill](https://github.com/virgiliojr94/book-to-skill)
+
+用法
+
+```sh
+/book-to-skill your-book.pdf
+
+# PDF — derive skill name from filename
+/book-to-skill ~/Downloads/designing-data-intensive-applications.pdf
+# EPUB — specify a custom slug
+/book-to-skill ~/books/clean-code.epub clean-code
+# Full path with explicit name
+/book-to-skill /tmp/ddd-evans.pdf domain-driven-design
+```
+
 
 ## 网页设计
 
