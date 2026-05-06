@@ -20,9 +20,125 @@ permalink: /skill_set
 
 详见站内专题：[Skill 技术专题](skill)
 
-## 网页浏览
 
-待定
+## 信息获取
+
+去网上找点东西，就抓瞎了：
+- 📺 "帮我看看这个 YouTube 教程讲了什么" → 看不了，拿不到字幕
+- 🐦 "帮我搜一下推特上大家怎么评价这个产品" → 搜不了，Twitter API 要付费
+- 📖 "去 Reddit 上看看有没有人遇到过同样的 bug" → 403 被封，服务器 IP 被拒
+- 📕 "帮我看看小红书上这个品的口碑" → 打不开，必须登录才能看
+- 📺 "B站上有个技术视频，帮我总结一下" → 连不上，海外/服务器 IP 被屏蔽
+- 🔍 "帮我在网上搜一下最新的 LLM 框架对比" → 没有好用的搜索，要么付费要么质量差
+- 🌐 "帮我看看这个网页写了啥" → 抓回来一堆 HTML 标签，根本没法读
+- 📦 "这个 GitHub 仓库是干嘛的？Issue 里说了什么？" → 能用，但认证配置很麻烦
+- 📡 "帮我订阅这几个 RSS 源，有更新告诉我" → 要自己装库写代码
+
+每个平台都有自己的门槛——要付费的 API、要绕过的封锁、要登录的账号、要清洗的数据。你要一个一个去踩坑、装工具、调配置，光是让 Agent 能读个推特就得折腾半天。
+
+### 总结
+
+- [Agent-reach](https://github.com/Panniantong/Agent-Reach) 各社媒平台数据获取
+- [opencli](https://opencli.info/) 浏览器自动化
+- [bb-browser](https://github.com/epiral/bb-browser) 浏览器 API: 坏孩子浏览器 BadBoy Browser, 不需要密钥，不需要爬虫，不需要模拟
+
+
+### 信息抓取
+
+#### 爬虫
+
+[MediaCrawler](https://nanmicoder.github.io/MediaCrawler/) - 自媒体平台爬虫 🕷️
+- GitHub [MediaCrawler](https://github.com/NanmiCoder/MediaCrawler)
+
+小红书、抖音视频、快手视频、B 站视频、微博帖子、百度贴吧帖子、知乎问答文章
+
+```sh
+# 依赖 playwright
+uv run playwright install
+# 运行
+# 项目默认未开启评论爬取，如需评论请在 config/base_config.py 中修改 ENABLE_GET_COMMENTS
+# 其他功能开关也可在 config/base_config.py 查看，均有中文注释
+
+# 从配置中读取关键词搜索并爬取帖子与评论
+uv run main.py --platform xhs --lt qrcode --type search
+
+# 从配置中读取指定帖子ID列表并爬取帖子与评论
+uv run main.py --platform xhs --lt qrcode --type detail
+
+# 使用 SQLite 数据库存储数据（推荐个人用户使用）
+uv run main.py --platform xhs --lt qrcode --type search --save_data_option sqlite
+
+# 使用 MySQL 数据库存储数据
+uv run main.py --platform xhs --lt qrcode --type search --save_data_option db
+
+# 其他平台示例
+uv run main.py --help
+```
+
+#### Agent-Reach
+
+[Agent-Reach](https://github.com/Panniantong/Agent-Reach)
+
+- 所有工具开源、所有 API 免费
+- Cookie 只存在你本地，不上传不外传。代码完全开源
+- 底层工具（yt-dlp、twitter-cli、rdt-cli、Jina Reader 等）定期追踪更新到最新版
+
+安装
+
+```sh
+# 安装
+帮我安装 Agent Reach：https://raw.githubusercontent.com/Panniantong/agent-reach/main/docs/install.md
+# 更新
+帮我更新 Agent Reach：https://raw.githubusercontent.com/Panniantong/agent-reach/main/docs/update.md
+```
+
+#### 公众号文章抓取
+
+[wechat_articles_spider](https://github.com/klin-h/wechat_articles_spider)
+
+
+### 浏览器操控
+
+
+#### bb-browser
+
+
+[bb-browser](https://github.com/epiral/bb-browser) 浏览器 API: 坏孩子浏览器 BadBoy Browser
+- 不需要密钥，不需要爬虫，不需要模拟
+
+已经登录了微博、知乎、B站、小红书、Twitter、GitHub、LinkedIn — bb-browser 让 AI Agent 直接用你的登录态
+
+```sh
+# 安装
+npm install -g bb-browser
+# 使用
+bb-browser site update        # 拉取社区适配器
+bb-browser site recommend     # 看看哪些和你的浏览习惯匹配
+bb-browser site zhihu/hot     # 开搞
+
+bb-browser site twitter/search "AI agent"       # 搜索推文
+bb-browser site zhihu/hot                        # 知乎热榜
+bb-browser site arxiv/search "transformer"       # 搜论文
+bb-browser site eastmoney/stock "茅台"            # 实时股票行情
+bb-browser site boss/search "AI 工程师"           # 搜职位
+bb-browser site wikipedia/summary "Python"       # 维基百科摘要
+bb-browser site youtube/transcript VIDEO_ID      # YouTube 字幕全文
+bb-browser site stackoverflow/search "async"     # 搜 StackOverflow
+```
+
+#### OpenCLI
+
+[OpenCLI](https://opencli.info/) 
+- [OpenCLI](https://github.com/jackwener/opencli)
+
+使用
+
+```sh
+npm install -g @jackwener/opencli
+opencli bilibili hot --limit 5
+opencli twitter trending
+```
+
 
 ## 书籍转skill
 
