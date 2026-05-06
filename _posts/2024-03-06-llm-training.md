@@ -60,10 +60,7 @@ Andrej Karpathy 对各阶段的形象比喻，教科书三种信息
   - 给学生提示，没有解决方案，但有最终答案，引导学生通过 试错 (trial & error) 的方式进行学习
   - 这等同于RL。
 
-
 <img width="644" height="458" alt="image" src="https://github.com/user-attachments/assets/928bfdc9-e7e2-4b27-b8bd-1b79e8ff50b6" />
-
-
 
 分析
 - RL并非万能，只在“能力边缘”生效
@@ -87,6 +84,102 @@ Andrej Karpathy 对各阶段的形象比喻，教科书三种信息
 - 通俗理解：指那些对模型来说有点难，但努力一下又能解决的任务。太简单的任务学不到新东西，太难的又会直接放弃。
 - 生活比喻：你健身时，选择一个重量，让你能标准地完成8-12次，最后几下比较吃力。这个重量就是你的“边缘”，最能有效增长肌肉。如果重量太轻（太简单）或太重（太难），效果都不好。
 
+### 斯坦福总结
+
+【2026-5-6】Stanford CS336 上，Tatsu 主讲 LLM 架构课，总结过去 3 年所有主流 LLM 共通模板
+- youtube 视频地址 [Stanford CS336 Lang. Modeling from Scratch - Spring 2025 | Lec. 3: Architectures, Hyperparameters
+](https://www.youtube.com/watch?v=ptFiH_bHnJw)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ptFiH_bHnJw?si=J63XrmOc6gyFyp9e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+结论挺爆：
+> 90% 架构选择已经收敛，随便挑一个开源大模型，跟其他模型在这些维度上几乎一模一样
+
+讲师的原话
+>- 2024 年, 大家都在 cosplay Llama2
+>- 2025 年, 主题是「怎么训得不崩」
+>- 2026 年, 主题是「怎么扛住长上下文」
+
+2026 年开源 LLM 的标准模板 训自己的模型可以直接抄
+
+(1) 架构层已经收敛的 7 件事
+- 1）Layer Norm 挪出残差流（pre-norm）
+  - 原版 Transformer 把 LN 放在残差里 几乎所有现代模型都挪到外面
+  - 原因：keep your residual stream clean 梯度反传更稳
+- 2）RMS Norm 替代 LayerNorm
+  - LayerNorm 的减均值 + 加 bias 那部分实际没怎么帮上忙
+  - 丢掉之后 flops 只省 0.17% 但运行时省到 25%
+  - （瓶颈在数据搬运 计算反而次要）
+- 3）所有 bias 项全删
+  - 跟 RMS Norm 一个道理 系统层省内存搬运
+- 4）激活函数用 SwiGLU 或 GeGLU
+  - gated linear unit 几乎所有现代模型都用
+  - Llama 系 / Qwen / Mistral 用 SwiGLU
+  - Google 系（Gemma / T5）用 GeGLU
+  - 区别极小 选哪个都行
+- 5）位置编码用 RoPE
+  - 2024 年之后基本统一了
+  - 原理：把每对维度按位置旋转一个角度 让 inner product 只依赖相对位置
+- 6）Transformer block 串联（不是并联）
+  - GPT-J / Palm 试过并联 现在基本被放弃
+  - 串联的实现优化得太好了 并联省的那点系统开销不值得损失表达力
+- 7）Layer norm 可以「撒」
+  - 哪儿不稳就在哪儿加 LN
+  - attention 之前能加 之后能加 两边都加（double norm）也可以
+  - 现代模型很多这样做
+
+(2) 超参数 已经收敛的 5 个数】
+- 1）feedforward 维度 / hidden 维度
+  - 非 GLU 模型：4 倍
+  - GLU 模型：8/3 ≈ 2.67 倍（因为 GLU 多一组矩阵 要保持总参数量）
+  - Llama 系：3.5 倍
+  - T5 1.0 试过 64 倍 后来 T5 1.1 改回标准 别学
+- 2）head 数 × head 维度 ≈ hidden 维度
+  - 几乎所有模型都遵守 T5 是为数不多的例外
+- 3）模型纵横比（hidden / 层数）≈ 100
+  - 太深 pipeline parallel 难做
+  - 太宽 表达力受限
+  - 100 这个数字是系统约束 + 表达力的平衡点
+- 4）vocab size
+  - 单语模型：30K 左右（早期 GPT-2 那种）
+  - 多语 / 通用模型：100K-200K（GPT-4 / Llama 3 / Gemma 都在这个范围）
+  - 现代基本都是后者
+- 5）weight decay
+  - 仍然普遍使用, 但研究发现在 LLM 里干的事其实是优化器干预 让你最终能收敛到更深的最优点
+  - 跟你想的「防过拟合」没什么关系
+  - 所以别因为「单 epoch 不会过拟合」就把它关掉
+
+(3) 【稳定性 三个救命 trick】
+- 训练大模型最怕中途 loss 突然飙升,然后 NaN 全军覆没
+
+现代模型用三个 trick 防这件事
+- 1）Z-loss
+  - output softmax 的 normalizer 容易爆
+  - 加一个 (log Z)² 的正则项 让 Z 始终接近 1
+  - DCLM / Olmo 都用
+- 2）QK norm
+  - attention 的 Q 和 K 在矩阵乘之前各加一个 LN
+  - 让 softmax 的输入永远是单位尺度
+  - multimodal 圈先用起来 现在所有大模型都加
+- 3）Logit soft cap（仅 Google 系）
+  - attention logit 用 tanh 硬封顶
+  - Gemma 2/3/4 都在用 但会损失一点点性能 慎用
+
+(4)【Attention 两个新趋势】
+
+1）GQA（Grouped Query Attention）几乎统一
+- 原版 multi-head 推理时 KV cache 会让算术强度崩到 1/h
+- GQA 共享 K 和 V 但保留多个 Q
+- 表达力几乎不损失 推理成本砍掉 80%
+- 现在所有要做生产部署的大模型 没有不用 GQA 的
+
+2）局部 + 全局 attention 交替
+- 处理长上下文的新方式
+- Cohere Command A 起头 现在 Llama 4 / Gemma 4 / Olmo 3 全在用
+- 比如每 4 层有 1 层 full attention 其他 3 层是 sliding window 只看附近的 token
+- 比纯 SSM 更稳 比纯 full attention 便宜得多
+
+（Qwen 3.5 做了变体 把 sliding window 那 3 层换成 SSM）
 
 
 ### 经验总结
