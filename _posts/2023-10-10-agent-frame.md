@@ -1445,7 +1445,157 @@ response = client.run(
 print(response.messages[-1]["content"])
 ```
 
+### 【2025-3-12】OpenAI Agents SDK（Swarm）
 
+2025 年 3 月 11 日（美国时间）/ 3 月 12 日（北京时间），OpenAI Agents SDK 随 Responses API 一同发布，开源、Python 优先。
+- 前身 Swarm：2023 年底–2024 年实验性发布，2025 年 3 月被 Agents SDK 取代。
+
+重要更新
+- 2025 年 6 月：发布 TypeScript 版本。
+- 2025 年 10 月 6 日（DevDay）：发布基于 Agents SDK 的 AgentKit（含 ChatKit 前端组件）。
+- 2026 年 4 月 15 日：重大架构更新，新增原生沙箱执行、MCP、AGENTS.md 等。
+
+OpenAI Agents SDK 核心： Agent（代理），由 LLM 驱动，通过 Runner 执行循环（Run Loop）协调工作流。
+
+流程如下：
+- 输入处理：用户输入经过 InputGuardrail 安全检查。
+- 决策生成：LLM 解析意图，决定调用工具、发起交接或直接回复。
+- 动作执行：
+  - 调用工具（如 API、函数）并返回结果；
+  - 通过 Handoff 转移控制权给其他代理；
+  - 生成文本回复。
+- 输出处理：结果经 OutputGuardrail 验证后返回用户。
+
+[参考](https://juejin.cn/post/7518982875988688907)
+
+应用场景与优势
+- 复杂任务处理：
+  - 单代理处理简单任务（如天气查询）；
+  - 多代理协作处理跨领域任务（如客服→技术支持的交接）。
+- 安全可控性：
+  - Guardrails 确保输入/输出合规；
+  - InputGuardrailTripwireTriggered 快速拦截风险。
+- 灵活扩展：
+  - 工具库可自定义（API、函数、其他代理）；
+  - 交接机制支持动态任务分配。
+
+设计思想
+- Agent Loop 自动化：
+  - Runner.run() 内部自动处理循环逻辑（调用 LLM → 解析响应 → 执行工具/交接 → 更新状态），开发者只需关注中间项的处理。
+- 上下文共享：
+  - context 参数确保跨代理的数据一致性（如用户 ID、会话历史）。
+- 模块化扩展：
+  - 通过 new_items 分离不同操作（工具调用、交接），便于添加自定义逻辑（如审计工具调用记录）。
+
+
+OpenAI Agents SDK 的核心操作层级：
+- Runner 是中枢，驱动代理执行；
+- 输出项类（如 MessageOutputItem、ToolCallItem）封装运行时数据；
+- Handoff 实现多代理协同；
+- InputGuardrailTripwireTriggered 强化安全边界；
+- ItemHelpers 提供数据处理支持。
+
+该框架通过解耦模型、工具、代理逻辑，大幅降低了构建复杂 AI 工作流的门槛，尤其适合客服系统、任务路由等场景。
+
+
+
+（1）Runner：执行引擎
+- 功能：管理代理运行循环，协调工具调用、交接、异常处理。
+- 核心方法：
+  - run_sync()：同步执行代理；
+  - run()：异步执行（推荐用于生产环境）。
+- 作用场景：贯穿整个代理生命周期，处理输入到输出的全流程。
+
+示例
+
+```py
+from agents import Runner, Agent
+
+agent = Agent(name="Assistant", instructions="Help users with queries.")
+result = Runner.run_sync(agent, "What's the weather today?")
+print(result.final_output)  # 输出代理的最终响应
+```
+
+（2） 输出项类型（Output Items）
+
+代理运行中可能生成多种输出类型，需通过 ItemHelpers 辅助操作：
+
+| 类名 | 功能说明 | 关联/补充说明 | 示例场景 |
+|------|----------|---------------|----------|
+| MessageOutputItem | 来自用户或代理的文本消息 | 通用文本消息封装载体 | 用户提问 `How to reset my password?` 被封装为此类 |
+| HandoffOutputItem | 触发代理之间的控制权转移 | 关联 `Handoff` 类，用于定义交接规则（目标代理、输入过滤等） | 路由代理将西班牙语请求转交给西语专精代理 |
+| ToolCallItem | 工具调用请求封装 | 代表发起一次工具调用动作（如接口、函数） | 发起调用天气 API 的请求 |
+| ToolCallOutputItem | 工具执行结果封装 | 承载工具调用完成后返回的结果数据 | 天气 API 返回的气象数据被封装为此类 |
+
+
+示例
+
+```py
+@function_tool
+def get_weather(city: str) -> str:
+    return f"Weather in {city}: Sunny"
+
+agent = Agent(tools=[get_weather])  # 工具绑定到代理
+```
+
+（3）异常项：InputGuardrailTripwireTriggered
+
+- 功能：表示输入触发防护栏（Guardrail），例如检测到违规内容（如暴力、隐私问题）。
+- 处理逻辑：Runner 会中断流程，返回预设的安全响应（如 "I can't answer that"）。
+
+示例：
+- 若输入含敏感词，生成此异常项并终止流程。
+
+```py
+@input_guardrail
+def content_filter(input: str) -> bool:
+    return "violence" in input  # 触发条件
+```
+
+（4）Handoff：代理间交接控制
+
+- 功能：定义代理间的任务转移规则，包括目标代理、输入预处理等。
+- 核心参数：
+  - to_agent：目标代理实例；
+  - input_mapping：输入数据的转换规则（如提取用户问题中的关键词）。
+
+```py
+handoff_to_spanish = Handoff(
+    to_agent=spanish_agent,
+    input_mapping=lambda x: {"query": x.split(":")[1]}  # 提取西语问题
+)
+```
+
+（5）ItemHelpers：输出项操作工具
+
+- 功能：提供辅助方法，用于：
+  - 过滤特定类型的输出项（如提取所有 ToolCallItem）；
+  - 转换输出格式（如将 MessageOutputItem 转为纯文本）。
+- 典型场景：在复杂工作流中解析代理的中间输出。
+
+多智能体示例：智能客服
+
+```py
+from agents import Agent, Runner, Handoff, function_tool
+
+# 定义工具：天气查询
+@function_tool
+def get_weather(city): ...
+
+# 定义代理：路由代理 & 天气专精代理
+triage_agent = Agent(name="Triage", instructions="Route questions.")
+weather_agent = Agent(name="Weather", tools=[get_weather], instructions="Answer weather queries.")
+
+# 定义交接：路由到天气代理
+handoff_to_weather = Handoff(to_agent=weather_agent, input_mapping=lambda x: x)
+
+# 配置路由代理的交接规则
+triage_agent.handoffs = {"weather": handoff_to_weather}
+
+# 运行流程
+result = Runner.run_sync(triage_agent, "What's the weather in Paris?")
+print(result.final_output)  # 输出天气代理的响应
+```
 
 ### CrewAI -- LangChain
 
