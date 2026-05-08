@@ -623,6 +623,44 @@ response = chain.run("什么是人工智能？")
 print(response)
 ```
 
+## LangChain 1.*
+
+
+### 模型接入
+
+【2026-5-8】接入各种模型
+
+```py
+from langchain.chat_models import init_chat_model
+
+# 初始化本地 Ollama 模型
+model = init_chat_model(
+    "qwen3-0.6b",                # 本地模型名称
+    model_provider="ollama", # 指定提供商
+    api_key='note-needed', # 本地模型，不需要 api key
+    base_url="http://localhost:11434/v1" # Ollama API 地址
+)
+
+# 初始化本地 LM Studio 模型
+# uv pip install langchain-openai
+model = init_chat_model(
+    "qwen3-0.6b",                # 本地模型名称
+    model_provider="openai", # 指定提供商
+    api_key='note-needed', # 本地模型，不需要 api key
+    base_url="http://localhost:1234/v1" # LM Studio API 地址
+)
+
+# 初始化远程 llm proxy 模型
+model = init_chat_model(
+    "minimax-m2.5-external",                # 本地模型名称
+    model_provider="openai", # 指定提供商
+    api_key='sk-YO9j--***', # api key
+    base_url="http://llm-***.intra.test.com" # remote API 地址
+)
+
+# 调用模型
+print(model.invoke("你好，你是谁？"))
+```
 
 
 ### DeepAgent
@@ -642,6 +680,8 @@ print(response)
 - 基于LangGraph 框架，提供内置的规划工具、子代理、虚拟文件系统和详细的系统提示。
 - 用户可以通过简单的安装和配置，快速创建支持**长时**任务和**复杂工作流**的智能代理。
 
+将任务规划、子代理管理、文件系统等通用能力封装为内置组件，开发者通过 create_deep_agent 函数仅需数行代码即可搭建复杂智能体，真正实现“搭积木式”开发
+
 Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者，强调开箱即用和灵活定制。
 
 项目采用MIT许可证，代码开源，社区活跃，持续更新。
@@ -649,7 +689,16 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 2025年8月13日，又发布更易上手的交互界面，Deep Agents UI。
 
 
+
 #### 架构
+
+DeepAgents 三大设计原则：封装通用能力、简化开发、模块化组合。
+- 封装通用能力：任务规划、子代理管理、文件系统等复杂逻辑全部隐藏在create_deep_agent内部，开发者无需编写任何LangGraph节点和边的代码。
+- 简化开发：原本需要数百行LangGraph代码才能实现的深度研究智能体，现在只需几十行配置即可完成。开发者只需关注提示词工程和工具定义。
+- 模块化组合：主智能体、子智能体、工具都是独立模块，可以像搭积木一样自由组合、复用。大家可以为其他领域（如数据分析、代码生成）定义不同的子代理，轻松扩展智能体的能力。
+
+LangChain 的 agent.get_graph().draw_mermaid_png() 展示DeepAgents 构造的 deepresearch 智能体的图结构
+- ReACT 经典结构，并通过 PathToolCallsMiddleware, SummarizationMiddleware 等中间件扩展了LangChain create_agent的能力。
 
 通过四大支柱解决**浅层**智能体的局限性：
 - （1）详细的系统提示：(Detailed system prompt)
@@ -689,7 +738,7 @@ DeepAgent 依赖基础：
 - LangChain - 工具和模型集成与深度Agent无缝协作
 - LangSmith - 通过 LangGraph 平台实现可观察性和部署
 
-DeepAgent应用程序通过 LangSmith 部署，并使用 LangSmith 可观察性 进行监控。
+DeepAgent 应用程序通过 LangSmith 部署，并使用 LangSmith 可观察性 进行监控。
 
 
 安装
@@ -728,6 +777,96 @@ deep_agent = DeepAgent(
 result = deep_agent.run("Analyze Tesla and Toyota's production capacity for 2023-2025.")
 print(result)
 ```
+
+##### create_deep_agent
+
+create_deep_agent：一切智能体的起点
+
+create_deep_agent 是 DeepAgents 框架提供的核心工厂函数。
+- 接受一个基础模型、工具列表、系统提示词和子智能体列表，返回一个开箱即用的深度智能体。
+
+这个智能体内部已经集成了：
+- 任务规划器：将复杂任务拆解为可执行的步骤。
+- 文件系统：管理中间结果和上下文，防止对话过长导致混乱。
+- 子智能体管理器：负责子智能体的创建、通信和结果汇总。
+- 长期记忆：跨对话保存重要信息。
+
+开发者完全不需要关心这些底层逻辑的实现，只需像搭积木一样传入配置即可。
+
+```py
+from datetime import datetime
+from langchain.chat_models import init_chat_model
+from langchain_google_genai import ChatGoogleGenerativeAI
+from deepagents import create_deep_agent
+
+from research_agent.prompts import (
+    RESEARCHER_INSTRUCTIONS,
+    RESEARCH_WORKFLOW_INSTRUCTIONS,
+    SUBAGENT_DELEGATION_INSTRUCTIONS,
+)
+from research_agent.tools import tavily_search, think_tool
+
+# 并发与迭代限制
+max_concurrent_research_units = 3
+max_researcher_iterations = 3
+
+# 当前日期（用于提示词中的时间信息）
+current_date = datetime.now().strftime("%Y-%m-%d")
+
+# 组合主智能体的系统提示词
+INSTRUCTIONS = (
+    RESEARCH_WORKFLOW_INSTRUCTIONS
+    + "\n\n"
+    + "=" * 80
+    + "\n\n"
+    + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
+        max_concurrent_research_units=max_concurrent_research_units,
+        max_researcher_iterations=max_researcher_iterations,
+    )
+)
+
+# 定义研究子代理
+research_sub_agent = {
+    "name": "research-agent",
+    "description": "Delegate research to the sub-agent researcher. Only give this researcher one topic at a time.",
+    "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
+    "tools": [tavily_search, think_tool],
+}
+
+# 选择底层大模型（此处使用 Claude 4.5，Gemini 3 备选）
+# model = ChatGoogleGenerativeAI(model="gemini-3-pro-preview", temperature=0.0)
+model = init_chat_model(model="anthropic:claude-sonnet-4-5-20250929", temperature=0.0)
+
+# 创建深度智能体
+agent = create_deep_agent(
+    model=model,
+    tools=[tavily_search, think_tool],
+    system_prompt=INSTRUCTIONS,
+    subagents=[research_sub_agent],
+)
+```
+
+##### DeepAgents Skills 使用说明
+
+
+Agent Skill 的工程化实现步骤：
+- 发现与识别 Skills: Agent 需要能够管理文件系统，在配置好的目录中发现 Skills 文件夹。系统会扫描每个子文件夹，读取其中的 SKILL.md，并提取文件头部的 YAML 元数据（即 name 和 description）。
+- 系统提示词注入: 将所有 Skill 的元数据（名称 + 描述）注入到系统提示词中，使得大模型在每一轮对话开始时都能清楚看到有哪些技能可用，以及各自的简要用途。
+- 渐进式加载: 当模型决定使用某个 Skill 时，系统才会进一步读取该 Skill 的完整说明（即 SKILL.md 的正文），将其加载到上下文中，使后续行动有据可依。
+- 任务执行与完成: 模型按照 SKILL.md 中的详细说明，调用必要的工具来访问附加资源，并最终完成任务。
+
+DeepAgents 作为 LangChain 团队的明星框架，对 Skill 的支持相当完善。
+- 框架内部已经封装好了 发现、激活、执行 这一完整流程
+- 因此开发者只需专注于定义 Skill，然后将 Skill 所在的目录路径传递给 DeepAgents 即可。例如：
+
+```py
+agent = create_deep_agent(  
+    model=llm,  
+    skills=["/skills"] ## 技能包所在目录  
+)  
+agent.invoke("你有哪些技能？")
+```
+
 
 ## LangChain 组件
 
