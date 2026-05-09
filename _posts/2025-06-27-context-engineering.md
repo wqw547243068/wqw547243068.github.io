@@ -736,8 +736,17 @@ Harness Engineering 有个独特的概念——「熵与垃圾回收」。
 
 ### DeepMind AutoHarness
 
-DeepMind 新论文解决了大语言模型做智能体的核心痛点，甚至让小模型直接吊打了大模型，思路简单又惊艳，非技术也能轻松看懂 AutoHarness。
+【2026-2-10】DeepMind 新论文解决了大语言模型做智能体的核心痛点，甚至让小模型直接吊打了大模型，思路简单又惊艳，非技术也能轻松看懂 AutoHarness。
 - 《[AutoHarness: improving LLM agents by automatically synthesizing a code harness](https://arxiv.org/pdf/2603.03329)》
+
+AutoHarness 最打动人的地方，不是又刷了 benchmark，而是给 Agent 工程提供很清晰的方向：
+- 不要把所有智能都塞进模型的一次输出里。让模型写代码，让代码守规则，让环境给反馈，让搜索来挑选可靠版本。
+	
+和做实际系统的经验非常一致。真正稳定的 Agent，往往不是“一个无所不能的大脑”，而是一个会把能力沉淀到工具、脚本、规则和测试里的系统。
+	
+AutoHarness 也许只是个开始，更有趣的问题：Agent 能不能不断把自己的失败经验固化成代码？能不能把这些代码迁移到新任务？能不能形成可审计、可复用、可演化的智能体操作层？
+
+如果答案是肯定的，那么未来的 Agent 可能不只是会调用工具，而是会慢慢学会给自己建工具、写规则、做测试，并把一次次失败变成下一次成功的基础设施
 
 
 ### 港大 OpenHarness
