@@ -28,18 +28,18 @@ LangChain / LangGraph / DeepAgents 演变
 
 | 序号 | 时间 | LangChain | LangGraph | DeepAgents | 核心事件备注 |
 |------|------|-----------|-----------|------------|--------------|
-| 1 | 2022-10-24 | v0.0.1 首发 | — | — | LangChain 初始开源，基础Chain/LLM抽象 |
-| 2 | 2024-01 | v0.1.0 稳定首版 | 初始开源版 | — | LangChain 进入生产可用；LangGraph 诞生 |
-| 3 | 2024-01-22 | — | 正式开源发布 | — | LangGraph 状态化循环Agent编排框架面世 |
-| 4 | 2024-05 | v0.2.0 | — | — | LangChain 架构分层、统一invoke，主推LangGraph做Agent |
-| 5 | 2024-06-27 | — | v0.1.0 稳定版 | — | LangGraph 首个正式稳定版，上线LangGraph Cloud |
-| 6 | 2024-09 | v0.3.0 | — | — | LangChain 适配Pydantic2、强类型重构，为v1.0铺路 |
-| 7 | 2025-07 | — | — | Alpha 初始版 | DeepAgents 首次发布，面向长周期复杂任务Agent |
-| 8 | 2025-10-22 | v1.0.0 正式版 | v1.0.0 正式版 | — | 双框架同步毕业；LangChain 重大重构，深度绑定 LangGraph |
-| 9 | 2025-10-28 | — | — | v0.2.0 | DeepAgents 可插拔后端、会话摘要、结果持久化 |
-| 10 | 2026-04-07 | — | — | v0.5.0 里程碑 | DeepAgents 异步子Agent、多模态PDF/音视频支持 |
-| 11 | 2026-04-15 | — | — | v0.5.3 | DeepAgents 小版本修复优化 |
-| 12 | 2026-04-29 | — | — | v0.5.4 | DeepAgents 新增模型专属配置Harness Profiles |
+| 1 | 2022-10-24 | v0.0.1初版，LLM抽象+Chains | — | — | LangChain 初始开源，基础Chain/LLM抽象 |
+| 2 | 2024-01 | v0.1.0 稳定版，聚焦生产稳定性 | 初始开源版 | — | LangChain 进入生产可用；LangGraph 诞生 |
+| 3 | 2024-01-22 | — | 初版，面向状态化、可循环 Agent 编排 | — | LangGraph 状态化循环Agent编排框架面世 |
+| 4 | 2024-05 | v0.2.0 包分层、统一 invoke 接口、推荐 LangGraph 构建 Agent | — | — | LangChain 架构分层、统一invoke，主推LangGraph做Agent |
+| 5 | 2024-06-27 | — | v0.1.0 稳定版，发布 LangGraph Cloud（托管） | — | LangGraph 首个正式稳定版，上线LangGraph Cloud |
+| 6 | 2024-09 | v0.3.0 Pydantic 2 升级、类型强化、为 1.0 铺路| — | — | LangChain 适配Pydantic2、强类型重构，为v1.0铺路 |
+| 7 | 2025-07 | — | — | Alpha 初版，面向长周期复杂任务 | DeepAgents 首次发布，面向长周期复杂任务Agent |
+| 8 | 2025-10-22 | v1.0.0 重大重构，统一 Agent API，基于 LangGraph | v1.0.0 正式版，持久化状态、人机交互、与 LangChain 1.0 同步发布 | — | 双框架同步毕业；LangChain 重大重构，深度绑定 LangGraph |
+| 9 | 2025-10-28 | — | — | v0.2.0 可插拔后端、大结果自动落盘、会话摘要 | DeepAgents 可插拔后端、会话摘要、结果持久化 |
+| 10 | 2026-04-07 | — | — | v0.5.0 里程碑：异步子 Agent、多模态（PDF / 音视频） | DeepAgents 异步子Agent、多模态PDF/音视频支持 |
+| 11 | 2026-04-15 | — | — | v0.5.3 小版本更新 | DeepAgents 小版本修复优化 |
+| 12 | 2026-04-29 | — | — | v0.5.4  支持模型专属配置（Harness Profiles）| DeepAgents 新增模型专属配置Harness Profiles |
 | 13 | 2026-05-01 | — | — | v0.5.6 最新版 | DeepAgents 当前最新稳定版本 |
 
 图解
@@ -321,8 +321,6 @@ func main() {
 
 #### LangFlow
 
-
-
 【2023-7-4】[LangFlow](https://github.com/logspace-ai/langflow/raw/main/img/langflow-demo.gif) 是 `LangChain` 的一种图形用户界面（`GUI`），为大型语言模型（LLM）提供了易用的**实验和原型设计**工具。通过使用 LangFlow，用户可以利用 react-flow 轻松构建LLM应用。
 
 无需编码/低代码的 LangChain 扩展
@@ -446,9 +444,7 @@ LangSmith 缺点: 云平台，不能本地部署，对国内不友好
 
 #### LangFuse 开源
 
-
 Langfuse 开源项目，而 LangSmith 闭源项目
-
 
 开源生产级AI应用维护平台：[LangFuse](https://langfuse.com/)，LangSmith 平替，可集成 LangChain，也可直接对接 OpenAI API。
 - 与 LangChain 没关系
@@ -466,7 +462,6 @@ Langfuse 支持
 - 平台可无缝集成任意技术栈，提供监控、评估与优化工具，确保AI质量、安全与性能。
 - 通过自动化质量检查、引入人工闭环评估和详尽分析，LangWatch帮助企业降低幻觉、数据泄露等AI风险，加速从概念验证到生产部署。
 - 平台支持可视化实验追踪、定制化评估和告警系统，助力团队打造可靠合规的AI产品，实现持续优化。
-
 
 
 ## LangChain 观点
@@ -615,9 +610,6 @@ LangChain 构建的有趣应用程序包括（但不限于）：
 |分析|query理解异常重要|LLMs直接把模块的工作包揽了下来，原本的query分词、分类、纠错、关键词等工作变成了制定合适的Prompt|
 
 
-
-
-
 ### 文档介绍
 
 - [官方文档](https://python.langchain.com/en/latest/index.html), [中文文档](https://python.langchain.com.cn/docs/get_started/quickstart)
@@ -703,7 +695,7 @@ print(model.invoke("你好，你是谁？"))
 ```
 
 
-### DeepAgent
+### DeepAgents
 
 如何构建“深度”思考和执行复杂任务的 Agent？ 
 
@@ -737,8 +729,8 @@ DeepAgents 三大设计原则：封装通用能力、简化开发、模块化组
 - 简化开发：原本需要数百行LangGraph代码才能实现的深度研究智能体，现在只需几十行配置即可完成。开发者只需关注提示词工程和工具定义。
 - 模块化组合：主智能体、子智能体、工具都是独立模块，可以像搭积木一样自由组合、复用。大家可以为其他领域（如数据分析、代码生成）定义不同的子代理，轻松扩展智能体的能力。
 
-LangChain 的 agent.get_graph().draw_mermaid_png() 展示DeepAgents 构造的 deepresearch 智能体的图结构
-- ReACT 经典结构，并通过 PathToolCallsMiddleware, SummarizationMiddleware 等中间件扩展了LangChain create_agent的能力。
+LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 deepresearch 智能体的图结构
+- ReACT 经典结构，并通过 `PathToolCallsMiddleware`, `SummarizationMiddleware` 等中间件扩展了LangChain create_agent 的能力。
 
 通过四大支柱解决**浅层**智能体的局限性：
 - （1）详细的系统提示：(Detailed system prompt)
@@ -765,7 +757,6 @@ LangChain 的 agent.get_graph().draw_mermaid_png() 展示DeepAgents 构造的 de
 
 <img width="684" height="784" alt="image" src="https://github.com/user-attachments/assets/cb9d10ac-2a72-4265-b908-5925e1b61425" />
 
-
 文件系统不仅用来完成最终任务（如保存代码），还扮演着角色：
 - 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
 - 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
@@ -773,13 +764,12 @@ LangChain 的 agent.get_graph().draw_mermaid_png() 展示DeepAgents 构造的 de
 
 #### 使用
 
-DeepAgent 依赖基础：
+DeepAgents 依赖基础：
 - LangGraph - 提供底层的图执行和状态管理
 - LangChain - 工具和模型集成与深度Agent无缝协作
 - LangSmith - 通过 LangGraph 平台实现可观察性和部署
 
 DeepAgent 应用程序通过 LangSmith 部署，并使用 LangSmith 可观察性 进行监控。
-
 
 安装
 
