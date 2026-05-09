@@ -22,6 +22,48 @@ permalink: /world_model
 
 「世界模型」被业界看作是通往AGI道路上的关键基石，让AI智能体在无限丰富的模拟环境中接受训练。
 
+## 视觉世界模型
+
+【2026-5-6】2026 最新世界模型综述：见视界，知世界
+
+面对从桌面掉落的杯子，LLM或许能秒答“杯子会碎”，却无法推演液体如何飞溅、杯身如何摔碎。
+	
+残酷现实：
+- 语言本质上是高度压缩的符号系统，它只能概括世界的状态。
+- 相比之下，视觉直接记录了物体的几何、运动以及背后的因果线索，是 AI 学习世界演化最直接完整的信息载体。
+
+越来越多研究者如 Yann LeCun，Fei-Fei Li 等开始重新思考：如果世界模型是通向通用智能的关键，那么起点不应该是语言，而应该是视觉。
+
+总结：
+- 视觉不应仅仅被视为一种输入模态，而应成为塑造世界模型表征方式、学习机制以及评估体系的核心驱动力。
+	
+为了理清视觉与世界模型之间的深层联系，联合新加坡国立大学、腾讯、字节等机构，重磅发布首篇视觉世界模型 (Vision World Models，VWM) 长篇综述,调研截至2026年4月，硬核梳理400+篇文献
+
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/9b72f5cc-de03-456f-ab35-ddbd24a11ff8" />
+
+
+核心：
+- 📚 全新定义框架(P2)
+  - 将世界模型研究统一为三大组件：
+  - 视觉编码 ：将原始视觉信号转化为利于建模世界变化的表征。
+  - 知识学习：模型到底该学什么？从表层的时空连贯性、物理动力学，到深层的因果机制。
+  - 可控模拟：如何基于交互条件精准推演未来状态。
+- 🛠️ 四大流派 & 七大细分路线(P3, P4, P5)
+  - 依据上述框架分析现有主流技术路线，一图看懂SOTA模型架构。
+- 📊 评估生态(P6, P7, P8)
+  - 将当前的评估方式梳理为三类指标和五大数据集/基准。
+- 🚀 未来之路：下一代世界模型(P9)
+  - Re-grounding： 走出简单物理，理解复杂形变与人类社会因果规则。
+  - Re-evaluation： 引入物理裁判官与反事实推理测试。
+  - Re-scaling： 借鉴LLM中scaling的成功之路，在pretraining和inference阶段均大有可为。
+- 📥 完整资源
+  - Paper：[From Seeing to Knowing the World: A Survey of Vision World Models](https://aiworldlab.github.io/survey/preprint.pdf)
+  - Awesome Repo：[Awesome-Vision-World-Model](https://github.com/AIWorldLab/Awesome-Vision-World-Model)
+
+<img width="1133" height="100%" alt="image" src="https://github.com/user-attachments/assets/1640226c-acb9-4371-bc3f-dca84d544327" />
+
+
+
 ## 因果推理
 
 理想中的 World Model 是**事实**及其**支撑逻辑**的合集。但现实中，World Model 往往为隐性，并呈碎片化 - 事实散布于各类数据、分析和专家的脑袋中
