@@ -658,6 +658,7 @@ print(response)
 ## LangChain 1.*
 
 
+
 ### 模型接入
 
 【2026-5-8】接入各种模型
@@ -692,6 +693,130 @@ model = init_chat_model(
 
 # 调用模型
 print(model.invoke("你好，你是谁？"))
+```
+
+
+### 工具使用
+
+【2026-5-9】[LangChain Tools 入门：让 LLM 拥有"手"](https://mp.weixin.qq.com/s/DCvWaYn4vcwQQBckT36iEA)
+
+LangChain 工具调用核心三环节
+
+| 核心环节 | 作用说明 | 通俗类比 |
+|---------|----------|----------|
+| `@tool` 装饰器 | 把普通 Python 函数变成 LLM 可调用的工具 | 给函数办一张**工具身份证** |
+| `bind_tools()` | 把一组工具注册给模型，告诉模型可以使用这些工具 | 给 LLM 发一个**工具箱** |
+| `tool_calls` | 模型返回的调用意图，包含工具名和参数 | LLM 写的**任务派遣单** |
+
+
+关键认知：
+> LLM 并不真正"执行"工具
+
+这是极其重要的认知：模型只负责"决定调用什么工具、传什么参数"，真正执行工具函数的，是代码或 Agent 框架的 runtime。
+
+LLM 想象成一位指挥官，工具是前线士兵。指挥官下达命令（tool_calls），士兵执行动作（实际函数），然后把结果回报给指挥官。指挥官再根据结果决定下一步。
+
+总结
+- 工具描述（docstring）就是 prompt, 直接决定了模型是否知道在什么时候调用工具、该传什么参数。写 docstring 要像写 prompt 一样认真。
+- 模型只"决定"，不"执行": 模型输出的是 tool_calls（调用意图），真正执行 Python 函数的是你的代码。两者必须协作，才能完成"有手"的 Agent。
+- bind_tools() 是"声明式", 不改变原模型，而是返回一个新对象。这种不可变设计让你可以在同一份代码中，为同一个模型绑定不同的工具组合。
+- temperature 对工具调用有影响: 工具调用需要精确匹配，建议把 temperature 设低（0 ~ 0.3），减少模型在"调不调工具"上的犹豫。
+- 工具的数量和质量决定 Agent 的天花板: 好的 Agent 不在于模型有多强，而在于它的工具箱有多丰富、工具描述有多精准。
+
+代码示例
+
+```py
+import os
+from langchain_deepseek import ChatDeepSeek
+from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage
+
+# ------------------------------
+# 1. 定义工具
+# ------------------------------
+# @tool 装饰器会自动:
+#   - 将函数名作为工具名
+#   - 将 docstring 作为工具描述（这个描述极其重要！）
+# 注意：docstring 就是 prompt 的一部分。描述越清晰、例子越具体，模型调用越准确。如果 docstring 写得太模糊，模型可能不知道该在什么时候调用这个工具，也不知道该传什么参数。
+#   - 从类型注解生成参数 schema
+
+@tool
+def get_weather(location: str) -> str:
+    """获取指定城市的当前天气。参数 location 是城市名称，例如：北京、上海。"""
+    # 实际项目中这里应该调用真实天气 API
+    return f"{location} 当前天气：晴朗，25°C。"
+
+@tool
+def calculate(expr: str) -> str:
+    """计算数学表达式。参数 expr 是数学表达式字符串，例如：2 + 2 * 3。"""
+    try:
+        result = eval(expr)  # 仅作演示，生产环境请用更安全的方式
+        return f"计算结果：{result}"
+    except Exception as e:
+        return f"计算出错：{e}"
+
+
+# ------------------------------
+# 2. 将工具绑定到 LLM
+# ------------------------------
+llm = ChatDeepSeek(
+    model="deepseek-chat",
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    temperature=0.1,  # 工具调用时温度低一些更稳定
+)
+
+# bind_tools() 告诉模型："你现在可以使用这些工具了"
+llm_with_tools = llm.bind_tools([get_weather, calculate])
+
+# ------------------------------
+# 3. 观察模型如何决定是否调用工具
+# ------------------------------
+
+test_inputs = [
+    "北京天气怎么样？",          # 应该触发 get_weather
+    "123 乘以 456 等于多少？",   # 应该触发 calculate
+    "讲一个关于程序员的笑话",     # 不应该触发任何工具
+]
+
+for user_input in test_inputs:
+    print(f"\n{'='*50}")
+    print(f"用户: {user_input}")
+    response = llm_with_tools.invoke([HumanMessage(user_input)])
+
+    # 检查 response.tool_calls —— 这就是模型决定调用工具的证据
+    if response.tool_calls:
+        print(f"AI 决定调用工具:")
+        for tc in response.tool_calls:
+            print(f"  - 工具名: {tc['name']}")
+            print(f"  - 参数:   {tc['args']}")
+    else:
+        print(f"AI 直接回答:")
+        print(f"  {response.content}")
+```
+
+运行结果
+
+```
+==================================================
+用户: 北京天气怎么样？
+AI 决定调用工具:
+  - 工具名: get_weather
+  - 参数:   {'location': '北京'}
+
+==================================================
+用户: 123 乘以 456 等于多少？
+AI 决定调用工具:
+  - 工具名: calculate
+  - 参数:   {'expr': '123 * 456'}
+
+==================================================
+用户: 讲一个关于程序员的笑话
+AI 直接回答:
+  一个程序员去面试。
+  面试官问："你有什么缺点？"
+  程序员说："我比较固执。"
+  面试官说："能举个例子吗？"
+  程序员说："不能。"
 ```
 
 
