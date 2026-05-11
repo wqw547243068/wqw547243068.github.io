@@ -406,5 +406,27 @@ async def main():
 asyncio.run(main())
 ```
 
+### 【2026-5-3】德克萨斯 DCI
+
+🌟 总结：
+- 随着大模型推理能力的增强，与其强行把文本压缩成向量去比对，不如直接把文件系统的控制权（grep/bash）交给 Agent。DCI 打开了智能体搜索全新的设计空间
+
+
+2026年5月3日，德克萨斯大学发布 DCI
+- 论文：[Beyond Semantic Similarity: Rethinking Retrieval for Agentic Search via Direct Corpus Interaction](https://arxiv.org/abs/2605.05242)
+- 得克萨斯A&M大学、滑铁卢大学、斯坦福大学、华盛顿大学等
+
+	
+💡 核心痛点：
+- 如今的 RAG 和 Agent 检索几乎都离不开 Embedding 模型和向量数据库（Top-k 相似度检索）。
+- 但这在复杂的 Agentic Search（智能体搜索）中成了瓶颈：难以处理精确的词汇约束、稀疏线索关联以及多步假设修正。
+	
+🚀 破局之法：直接语料库交互（DCI）
+- 极简而强大的新方法——直接让 Agent 像程序员一样操作底层工具！
+- 不需要任何 Embedding 模型！不需要向量索引！不需要离线预处理！
+- Agent 直接使用通用终端工具（如 grep、find、bash shell 脚本等）在原始文本文件中搜索。
+	
+
+
 
 # 结束
