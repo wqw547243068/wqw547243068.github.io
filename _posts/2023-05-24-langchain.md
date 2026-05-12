@@ -422,6 +422,23 @@ langgraph --help
 
 使用方法
 
+| 配置 | 含义 | 其他 |
+| --- | ---- | ---- |
+| -c | 指定配置文件 | --config, 默认 langgraph.json |
+| -host | 绑定ip | 默认 127.0.0.1 |
+| -port | 指定端口 | 绑定端口，默认 2024 |
+| --no-reload | 关闭自动加载 | false |
+| --n-jobs-per-worker | 启动worker数 | 默认 10 |
+| --debug-port | 调试监听端口 | - |
+| --wait-for-client | 是否等待监听客户端连接 | false |
+| --no-browser | 不弹出浏览器地址 | - |
+| --studio-url | langgraph studio 实例连接地址 | smith.langchain.com |
+| --allow-blocking | 异步阻塞时不触发错误 | false |
+| --tunnel | 暴露本地服务到外部渠道的前端页面，如 cloudflare | - |
+| --help | 帮助 | - |
+
+
+
 ```sh
 nohup langgraph dev --port 8011 --host 10.191.61.23 &>log.txt &
 
