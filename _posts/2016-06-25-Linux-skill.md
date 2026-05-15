@@ -3117,6 +3117,23 @@ Zellij · tmux · Byobu 功能对比总表
 - **服务器长期跑、追求稳定轻量、高度自定义** → 选 **tmux**
 - **Ubuntu 服务器、只想开箱即用带状态栏** → 选 **Byobu**
 
+### Terminal
+
+系统自带终端
+
+如何让终端开启时，自动执行某些脚本，如 颜色设置
+
+
+macOS Terminal 
+- 新窗口启动时，只读取 `~/.bash_profile`
+- 加一行 `source ~/.bashrc`，自动加载配置
+- 之后开新终端窗口，都会自动执行 `.bashrc`
+
+```sh
+echo "source ~/.bashrc" >> ~/.bash_profile
+```
+
+
 ### Superfile
 
 【2024-11-29】[Superfile：现代化终端文件管理器：简洁、美观、功能强大](https://cloud.tencent.com/developer/article/2472167)
