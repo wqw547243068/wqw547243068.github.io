@@ -637,6 +637,36 @@ Mitchell Hashimoto（Terraform 之父）将这一现象命名为 Harness Enginee
 - 传统 AI "一次性对话" —— 每次从零开始，用完即走。
 - Hermes "自我进化" —— 记住你，学习你，越用越懂你。
 
+总结
+- CMU / Yale / Amazon 等 9 个机构论文 [Agent Harness Engineering](https://arxiv.org/pdf/2604.25850)
+
+LLM agent 真正的瓶颈,可能不在模型 🔥
+
+CMU、Yale、Amazon 等 9 个机构联合发布的 agent 系统提出相当直接的观点: 
+> 决定一个 LLM agent 能否在生产环境可靠运行的,往往不是模型本身,而是包在模型外面那层基础设施。
+
+这层基础设施定义为 agent harness。
+
+<img width="1867" height="1080" alt="image" src="https://github.com/user-attachments/assets/e390fba6-ef0a-4355-8611-1f781a8944a0" />
+
+
+同一个模型, 完全不动权重,只改 harness:
+- coding benchmark 上 10× 提升
+- Terminal-Bench 2.0 上 +13.7 个点
+
+表现超过所有人工调过的 baseline
+
+核心贡献:
+- 1️⃣ 提出 ETCLOVG 七层 taxonomy,涵盖 Execution / Tool / Context / Lifecycle / Observability / Verification / Governance
+- 2️⃣ 系统梳理 170+ 个开源 agent 项目,看清各层生态密度
+- 3️⃣ 总结了 prompt → context → harness engineering 的三阶段演化
+- 4️⃣ 指出当前最薄弱的层(governance、observability)及未来研究方向
+
+🎯 适合谁看:
+- 做 coding agent、browser agent、long-running research agent,或者任何想把 agent 跑进生产的从业者。
+- 📄 论文 + project page + Awesome list 链接在评论区自取～
+
+
 ### 定义
 
 Harness Engineering（**驾驭**工程）是 OpenAI 在 2026 年初正式提出的一套面向 AI 时代的新型软件工程方法论。
