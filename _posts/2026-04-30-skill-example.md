@@ -97,10 +97,10 @@ uv run main.py --help
 [wechat_articles_spider](https://github.com/klin-h/wechat_articles_spider)
 
 
-### 浏览器操控
+## 浏览器操控
 
 
-#### bb-browser
+### bb-browser
 
 
 [bb-browser](https://github.com/epiral/bb-browser) 浏览器 API: 坏孩子浏览器 BadBoy Browser
@@ -126,7 +126,7 @@ bb-browser site youtube/transcript VIDEO_ID      # YouTube 字幕全文
 bb-browser site stackoverflow/search "async"     # 搜 StackOverflow
 ```
 
-#### OpenCLI
+### OpenCLI
 
 [OpenCLI](https://opencli.info/) 
 - [OpenCLI](https://github.com/jackwener/opencli)
@@ -138,6 +138,78 @@ npm install -g @jackwener/opencli
 opencli bilibili hot --limit 5
 opencli twitter trending
 ```
+
+## 垂类知识
+
+
+### 金融
+
+【2026-5-10】[Claude 的金融 Skills 开源](https://mp.weixin.qq.com/s/8_S8ynPyy7SHy_OW0lbYuA)
+
+Anthropic 把华尔街分析师每天干的活，拆成了一套 Claude 可以直接装的插件包
+- 替分析师起草工作底稿（模型、备忘录、研报、对账单）的，不做投资决策、不执行交易、不绑定风险、不批准开户，每一份产出都摆在那儿等人类签字
+- 边界划得很干净，金融行业最敏感的就是**责任**，能跑活但不背锅，反而是 To B 落地最现实的姿势
+
+Anthropic 官方仓库 claude-for-financial-services，把投行、股票研究、私募股权、财富管理这四条华尔街最贵的赛道全端了出来
+- 仓库地址：[financial-services](github.com/anthropics/financial-services)
+- Apache 2.0，全部 Markdown + YAML，没有 build step，fork 下来就能改
+
+安装方法
+
+```sh
+# 1. 添加 marketplace
+claude plugin marketplace add anthropics/claude-for-financial-services
+
+# 2. 先装核心包（带所有数据连接器）
+claude plugin install financial-analysis@claude-for-financial-services
+
+# 3. 按需挑 Agent
+claude plugin install pitch-agent@claude-for-financial-services
+claude plugin install gl-reconciler@claude-for-financial-services
+claude plugin install market-researcher@claude-for-financial-services
+
+# 4. 按需挑垂直行业包
+claude plugin install investment-banking@claude-for-financial-services
+claude plugin install equity-research@claude-for-financial-services
+```
+
+两层：
+- Agents（11 个）：端到端的工作流智能体，比如 Pitch Agent、Earnings Reviewer、GL Reconciler，每个都是自包含插件，装上就能跑一整条流水线
+- Vertical Plugins（7 个垂直行业包 + 2 个合作伙伴包）：底层的 Skill、斜杠命令、数据连接器，按金融子行业打包，你不想要完整 Agent，只装这些底层能力也行
+
+而且所有东西两种部署方式同源——既能在 Claude Cowork 里当插件用，也能通过 Claude Managed Agents API（/v1/agents）丢到自家工作流引擎后面跑无头模式，同一个 system prompt、同一组 skill，你选在哪儿落地
+
+| 业务方向 | Agent | 干什么活 |
+| ---- | ---- | ---- |
+| 客户与咨询 | Pitch Agent | 可比公司 + 先例交易 + LBO → 出一份带品牌的 pitch deck |
+|  | Meeting Prep Agent | 客户会议前自动出一份 briefing pack |
+| 研究与建模 | Market Researcher | 给一个赛道/主题 → 行业概览 + 竞争格局 + peer comps + 标的清单 |
+|  | Earnings Reviewer | 财报电话会 + 公告 → 更新模型 → 起草研报 |
+|  | Model Builder | DCF、LBO、三表模型、可比公司分析，直接在Excel里跑 |
+| 基金运营 | Valuation Reviewer | 接收GP报送包 → 跑估值模板 → 准备LP报告 |
+|  | GL Reconciler | 找总账break、追根溯源、走签字流程 |
+|  | Month-End Closer | 月末结账：计提、滚存、差异说明 |
+|  | Statement Auditor | LP报表分发前的审计 |
+| 运营与开户 | KYC Screener | 解析开户文档 + 跑规则引擎 + 标记缺口 |
+
+每个 Agent 都是独立打包的，bundle 了它要用的全部 skill，装一个就够，不用先装一堆依赖
+
+11 个 MCP 连接器
+- MCP 访问可能需要数据商的订阅或 API Key
+
+| 数据源 | 内容 |
+| ---- | ---- |
+| Daloopa | 标准化财务数据 |
+| Morningstar | 基金研究 |
+| S&P Global | 标普全球 + Capital IQ |
+| FactSet | 万得海外版 |
+| Moody's | 评级与信用数据 |
+| MT Newswires | 即时新闻 |
+| Aiera | 财报会议转写 |
+| LSEG | 伦交所/路孚特 |
+| PitchBook | 一级市场数据 |
+| Chronograph | PE 投后监控 |
+| Egnyte | 文档存储 |
 
 
 ## 书籍转skill
