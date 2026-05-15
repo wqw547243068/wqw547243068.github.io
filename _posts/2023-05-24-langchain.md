@@ -922,6 +922,71 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 - 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
 - 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
 
+#### Web UI
+
+方法
+- （1）[LangSmith](https://smith.langchain.com/studio)：
+  - 要注册langsmith账户才能使用云端web ui
+  - [Smith](https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024)
+- （2）官方还有本地页面 Deep Agents UI，无需访问外网
+  - [Deep Agents UI](https://github.com/langchain-ai/deep-agents-ui/tree/main)
+
+##### LangSmith
+
+启动 langgraph-cli，自动弹出 [LangSmith](https://smith.langchain.com/studio)
+- 可显示动态图、中间状态信息
+
+```sh
+cd deepagents-quickstarts/deep_research # 进入项目目录
+langgraph dev
+```
+显示
+
+```sh
+╦  ┌─┐┌┐┌┌─┐╔═╗┬─┐┌─┐┌─┐┬ ┬
+║  ├─┤││││ ┬║ ╦├┬┘├─┤├─┘├─┤
+╩═╝┴ ┴┘└┘└─┘╚═╝┴└─┴ ┴┴  ┴ ┴
+
+- 🚀 API: http://127.0.0.1:2024
+- 🎨 Studio UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+- 📚 API Docs: http://127.0.0.1:2024/docs
+...
+```
+
+前提
+- 要注册 [LangSmith](https://smith.langchain.com/studio) 账户才能使用云端web ui
+
+
+
+##### Deep Agents UI
+
+[Deep Agents UI](https://github.com/langchain-ai/deep-agents-ui/tree/main) 是官方提供的 DeepAgents定制UI
+
+安装使用方法
+
+```sh
+git clone https://github.com/langchain-ai/deep-agents-ui.git
+cd deep-agents-ui
+
+brew install yarn # 准备 yarn 工具包（npm替代品）
+yarn install # 编译部署, 本地多了900m文件
+yarn dev # 启动w eb 服务
+```
+
+弹出本地连接 [localhost:3000](http://localhost:3000)
+
+启动 langgraph
+
+记住部署URL和ID，打开地址 [localhost:3000](http://localhost:3000)，填写以下信息
+- URL: http://127.0.0.1:2024
+- id: `langgraph.json` 里的 id， 如 'agent'
+- langsmith key: *****
+
+进入聊天页面
+
+<img width="1813" height="100%" alt="image" src="https://github.com/user-attachments/assets/541da216-d7c0-4b5c-b0cf-39bdae97ae16" />
+
+
 
 #### 使用
 
@@ -941,7 +1006,10 @@ git clone https://github.com/langchain-ai/deep-agents-ui
 
 本地 Web 界面 http://localhost:3000
 
-示例: Deep Agents 分析汽车行业竞争对手的产能数据：
+示例: 
+- [官方示例](https://github.com/langchain-ai/deepagents/tree/main/examples)
+
+Deep Agents 分析汽车行业竞争对手的产能数据：
 
 ```py
 from deepagents import DeepAgent, Planner, FileSystem, SubAgent
