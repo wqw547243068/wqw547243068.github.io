@@ -42,6 +42,7 @@ AI中转站的性价比优势突出。
   - 花 456 万美元拍下巴菲特午餐又放鸽子的男人。
   - 币圈风口没有他落下过的——TRX、NFT、DeFi
 - `傅盛`，猎豹移动 CEO、360 早期核心、TikTok 早期投资人。推出 [Easy Router](https://easyrouter.io/)，聚合 40 多个全球模型，零平台费、零加价，打着"正版无兑水"的旗号。
+- `特朗普`家族搞了个 [WorldClaw](https://worldclaw.ai/)，最贵套餐 9999 美元，送 100 万 AI 积分加一台硬件设备，还有机会抽海湖庄园私人聚会门票一张。结算方式必须用他家的稳定币 USD1 或者锁仓 WLFI 代币。买 API 他赚一次，换 USD1 他赚一次，锁 WLFI 他再赚一次。这哥们说过”没有人比我更懂 token”，看来 crypto token 和 AI token 他都没落下。
 
 两个完全不同世界的人，同时盯上了同一个生意：把 OpenAI、Anthropic、Google 这些海外大厂的 AI 模型 API，拆开、打包、转卖。
 
@@ -118,7 +119,7 @@ AI中转站的性价比优势突出。
 
 ## 实现
 
-### 【2026-5-7】b.ai
+### 【2026-5-7】孙宇晨 b.ai
 
 `孙宇晨` [B.AI](https://b.ai/)小九九，五步：
 - 先用中转站做入口，补贴拉用户；
@@ -131,7 +132,7 @@ AI中转站的性价比优势突出。
 ![](https://pica.zhimg.com/v2-2863930024e9aad56474bbfc1fdc1cf0_1440w.jpg)
 
 
-### Easy Router
+### 傅盛 Easy Router
 
 `傅盛` 推出 [Easy Router](https://easyrouter.io/)，聚合 40 多个全球模型，零平台费、零加价，打着"正版无兑水"的旗号。
 
@@ -144,6 +145,10 @@ Easy Router 主打"零加价、正版无兑水"，瞄准愿意为稳定性付费
 
 卖 Token 赚快钱，截流海量用户的代码逻辑、技术选型、商业策略，才是真正值钱的东西。
 
+
+### 特朗普 WorldClaw
+
+特朗普家族搞了个 [WorldClaw](https://worldclaw.ai/)，最贵套餐 9999 美元，送 100 万 AI 积分加一台硬件设备，还有机会抽海湖庄园私人聚会门票一张。结算方式必须用他家的稳定币 USD1 或者锁仓 WLFI 代币。买 API 他赚一次，换 USD1 他赚一次，锁 WLFI 他再赚一次。这哥们说过”没有人比我更懂 token”，看来 crypto token 和 AI token 他都没落下。
 
 ### OpenRouter
 
