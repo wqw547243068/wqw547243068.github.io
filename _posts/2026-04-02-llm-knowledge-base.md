@@ -51,6 +51,11 @@ Karpathy 在AI领域的影响力毋庸置疑——他曾担任OpenAI联合创始
 卡帕西的 LLM Wiki 坑挖，自己不实现，全靠社区用户手搓。
 - LLM Wiki适合1k以下markdown文档
 
+架构图
+
+<img width="1024" height="100%" alt="image" src="https://github.com/user-attachments/assets/5b7f58de-0209-4531-a409-1cc75310499f" />
+
+
 ## 【2026-4-4】Graphify
 
 知识图谱（Knowledge Graph）并非新概念——谷歌于2012年正式引入这一术语，用于结构化表达实体及其相互关系。
