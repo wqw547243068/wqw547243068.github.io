@@ -3,7 +3,7 @@ layout: post
 title:  嵌入/向量化技术 Embedding Tech
 date:   2023-05-22 19:10:00
 categories: 自然语言处理
-tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习 可视化 qwen
+tags: 向量化 milvus vector embedding mistral pytorch 评估 对比学习 可视化 qwen 何恺明
 excerpt: 嵌入（Embedding）技术原理、案例
 mathjax: true
 permalink: /emb
@@ -16,6 +16,11 @@ permalink: /emb
 # 向量化
 
 向量模型把人类世界里的语言转化为为计算机世界中的数字
+
+人类语言是离散的, 所以需要通过 embedding 转化为连续数字
+
+语言必须是离散的？【2026-5-13】何恺明推出ELF（Embedded Language Flows，嵌入式语言流），详见转内专题：[扩散语言模型](diffusion_lm)
+
 
 ## 向量化
 
