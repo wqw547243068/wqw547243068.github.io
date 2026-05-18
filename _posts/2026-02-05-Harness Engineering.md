@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  护栏工程（Harness Engineering）指南
+title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
 tags: prompt 大模型 hermes context
-excerpt: 护栏工程
+excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
 ---
@@ -220,6 +220,45 @@ Harness Engineering 有个独特的概念——「熵与垃圾回收」。
 
 
 ## 实现
+
+
+### 总结
+
+【2026-5-3】[Harness 工程化框架拆解：OpenSpec、Superpowers、GSD、OMC、ECC、Trellis](https://zhuanlan.zhihu.com/p/2026095041966261373)
+
+逻辑分层：
+1. **上层（规范/结构层）**：OpenSpec、Trellis，偏向项目前期规划、长期协作治理；
+2. **中层（方法/执行层）**：Superpowers、Get Shit Done，聚焦个人开发习惯、复杂任务拆解；
+3. **下层（AI增强/编排层）**：Oh My ClaudeCode、Everything Claude Code，面向多代理并行开发、AI能力工程化落地。
+
+
+| 框架 | 更接近哪一层 | 核心关注点 | 更适合谁 |
+| ---- | ---- | ---- | ---- |
+| OpenSpec | 规范层 | 先把需求、设计、任务写清楚 | 需要先对齐再开工的个人/团队 |
+| Superpowers | 方法论与技能层 | 把 TDD、调试、review、worktree 等工程习惯变成默认动作 | 重视质量纪律和流程约束的开发者 |
+| Get Shit Done | 上下文工程 + 阶段化执行层 | 解决 context rot，把复杂任务拆成原子计划 | 长任务、复杂仓库、重构场景 |
+| Oh My ClaudeCode | 多代理编排层 | 围绕 Claude Code⁺ 做 team-first orchestration | Claude Code 重度用户、并行开发场景 |
+| Everything Claude Code | 增强层 | 用 skills、instincts、memory、安全、验证补全 Harness 能力 | 想把 AI workflow 长期工程化的人 |
+| Trellis | 结构层 | 用 specs / tasks / workspace 组织跨平台工作流和项目记忆 | 多工具团队、长期协作项目 |
+
+
+总结
+- OpenSpec 负责：先把“要做什么”说清楚
+- Superpowers 负责：让 agent 默认按工程纪律工作
+- GSD 负责：把复杂任务拆进干净上下文中执行
+- OMC 负责：把 Claude Code 组织成团队式执行系统
+- ECC 负责：给 Harness 补技能、记忆、安全、验证和学习能力
+- Trellis 负责：把 specs、tasks、workspace 变成统一工作流骨架
+
+差异：
+- OpenSpec、Superpowers、GSD 则更偏向单层补位：分别聚焦规范、工程技能、上下文与阶段执行
+- OMC、ECC、Trellis 更偏体系型方案，只是各自覆盖的主轴不同
+- ECC 更像在补 skills、memory、安全、验证、学习等能力，覆盖面更广，也更偏体系型增强系统
+- Trellis 在 specs / tasks / workspace / project memory 上更完整，更像长期工作流骨架
+- OMC 在 Claude Code 的 team-first orchestration 上更像一套成体系的编排套件
+
+![](https://pic4.zhimg.com/v2-c41aa0b68ebee3003bd1d94e4c6583dd_1440w.jpg)
+
 
 ### DeepMind AutoHarness
 
