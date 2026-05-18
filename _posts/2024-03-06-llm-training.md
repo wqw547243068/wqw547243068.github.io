@@ -939,6 +939,7 @@ RLHF 负反馈是基于reward模型动态得到的，模型能够在训练过程
 - DeepMind强化学习研究员Ronak Malde：2024是agent之年，2025是RL之年，2026将是持续学习的一年。
 - OpenAI O1 erry Tworek 创业，剑指「持续学习」。
 
+
 #### CPT 定义
 
 CPT（Continued Pre-Training，继续预训练）
@@ -1000,7 +1001,141 @@ CPT（Continued Pre-Training，继续预训练）
 - 智能体CPT阶段1：处理约200B token的智能体数据和知识推理语料库，使用32K上下文长度，遵循next token+交叉熵损失训练范式。该阶段实现智能体行为的初步获取，包括工具调用模式和多步推理链。
 - 智能体CPT阶段2：进一步使用100B token精心策划的高质量智能体数据完善这些能力，采用扩展的128K上下文窗口，使LLM能够深入理解复杂动作空间和长期规划策略
 
+#### CPT 难点
 
+CPT 核心挑战：`灾难性遗忘`（Catastrophic Forgetting）
+
+预训练好的基座模型，其权重 θ_base 处在通用数据分布 P_general 的宽阔、平坦的损失极小值区域, 平坦性赋予了模型良好的泛化能力。
+
+CPT 目标:
+- 找到一个新权重 θ_cpt，在混合数据分布 $ P_mix = (1-α)P_general + αP_new $ 上表现更优。
+- 然而，新领域数据 P_new 对应的损失曲面可能非常陡峭或与 $P_general$ 的极小值区域相距甚远。
+- 如果训练策略过于激进（如学习率过高、新数据比例过大），优化器会把模型权重 θ 猛地“拽”出 $P_general$ 的平坦区域，掉入一个只对 P_new 友好的狭窄深谷。
+- 模型在新领域上表现优异，但彻底忘记了如何在通用领域上泛化 ---- 这就是`灾难性遗忘`。
+
+CPT 所有策略都是为了让 θ 从 $θ_base$ 温和地移动到 $θ_cpt_good$，一个同时兼顾两个分布的新平衡点，而不是被拉到灾难性的 $θ_cpt_bad$。
+
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot; agent=\&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36\&quot;&gt;\n  &lt;diagram name=\&quot;第 1 页\&quot; id=\&quot;txOuDhmudcuYsCZPdjYh\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;940\&quot; dy=\&quot;694\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-12\&quot; parent=\&quot;1\&quot; style=\&quot;ellipse;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#ffe6cc;strokeColor=#d79b00;\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;115.5\&quot; width=\&quot;250\&quot; x=\&quot;260\&quot; y=\&quot;224.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-9\&quot; parent=\&quot;1\&quot; style=\&quot;ellipse;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 1;fillColor=#fff2cc;strokeColor=#d6b656;\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;207\&quot; width=\&quot;369\&quot; x=\&quot;201\&quot; y=\&quot;269\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;6tDSapDkqsDukddah2uA-1\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;\&quot; value=\&quot;CPT原理\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;200\&quot; x=\&quot;380\&quot; y=\&quot;70\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;LHoxQV5GDRPivXOBzXmJ-16\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#B3B3B3;\&quot; value=\&quot;【2026-5-18】wangqiwen\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;171\&quot; x=\&quot;360\&quot; y=\&quot;497\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-1\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;strokeColor=#808080;strokeWidth=2;\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;191\&quot; y=\&quot;490\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;681\&quot; y=\&quot;490\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-2\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; style=\&quot;endArrow=classic;html=1;rounded=0;strokeColor=#808080;strokeWidth=2;\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;191\&quot; y=\&quot;490\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;191\&quot; y=\&quot;130\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-3\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#999999;fontStyle=1\&quot; value=\&quot;权重空间&amp;lt;div&amp;gt;Weight Space&amp;lt;/div&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;90\&quot; x=\&quot;591\&quot; y=\&quot;497\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-4\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#999999;fontStyle=1\&quot; value=\&quot;损失函数&amp;lt;br&amp;gt;&amp;lt;div&amp;gt;Loss Landscape&amp;lt;/div&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;100\&quot; x=\&quot;191\&quot; y=\&quot;140\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-5\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; style=\&quot;curved=1;endArrow=classic;html=1;rounded=0;fontColor=#7F00FF;fontStyle=0;fontSize=14;strokeWidth=3;strokeColor=#9933FF;\&quot; value=\&quot;\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; relative=\&quot;1\&quot; width=\&quot;50\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;251\&quot; y=\&quot;340\&quot; /&gt;\n              &lt;mxPoint x=\&quot;311\&quot; y=\&quot;330\&quot; /&gt;\n              &lt;mxPoint x=\&quot;351\&quot; y=\&quot;400\&quot; /&gt;\n              &lt;mxPoint x=\&quot;421\&quot; y=\&quot;390\&quot; /&gt;\n              &lt;mxPoint x=\&quot;431\&quot; y=\&quot;300\&quot; /&gt;\n              &lt;mxPoint x=\&quot;461\&quot; y=\&quot;260\&quot; /&gt;\n              &lt;mxPoint x=\&quot;541\&quot; y=\&quot;270\&quot; /&gt;\n            &lt;/Array&gt;\n            &lt;mxPoint x=\&quot;221\&quot; y=\&quot;460\&quot; as=\&quot;sourcePoint\&quot; /&gt;\n            &lt;mxPoint x=\&quot;591\&quot; y=\&quot;340\&quot; as=\&quot;targetPoint\&quot; /&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-6\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;θ_base\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;351\&quot; y=\&quot;395\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-10\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#CC6600;\&quot; value=\&quot;通用领域&amp;lt;div&amp;gt;P_general&amp;lt;/div&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;251\&quot; y=\&quot;413\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-11\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;θ_cpt\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;591\&quot; y=\&quot;335\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-13\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#CC6600;\&quot; value=\&quot;特定领域&amp;lt;div&amp;gt;P_new&amp;lt;/div&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;291\&quot; y=\&quot;230\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-14\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;P_mix = (1-a)P_general + aP_new\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;240\&quot; x=\&quot;490\&quot; y=\&quot;370\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-15\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#6666FF;\&quot; value=\&quot;激进：只对特定领域友好\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;160\&quot; x=\&quot;461\&quot; y=\&quot;194.5\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-16\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#6666FF;\&quot; value=\&quot;初始：通用领域较好\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;160\&quot; x=\&quot;321\&quot; y=\&quot;420\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-17\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#FF3333;\&quot; value=\&quot;灾难遗忘\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;69\&quot; x=\&quot;513\&quot; y=\&quot;170\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-18\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;fontColor=#6666FF;\&quot; value=\&quot;CPT所有策略目标：让θ从θ_base温和移动到θ_cpt_good\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;399\&quot; x=\&quot;301.5\&quot; y=\&quot;120\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-19\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;θ_cpt_good\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;291\&quot; y=\&quot;280\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;ygFJ6w2p8Mq1xF3pJjwi-20\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1;fontSize=14;\&quot; value=\&quot;θ_cpt_bad\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;60\&quot; x=\&quot;430\&quot; y=\&quot;230\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+CPT 是介于预训练和微调之间的关键技术，扩展知识而非改变行为，其核心挑战是克服灾性遗忘。
+
+成功的 CPT 依赖于三大支柱的精细调校：
+- 数据策略：新旧数据混合是铁律，5%-20% 的新数据比例是常见区间。推荐使用动态采样以获得更平滑的训练过程。
+- 学习率与优化器：采用远低于原始训练的峰值学习率（如 1/10），配合短 warmup 和对齐新总步数的 Cosine Decay。必须重置优化器状态。
+- 监控体系：同时跟踪领域内和通用域的验证 PPL，是诊断 CPT 是否成功的“仪表盘”。
+
+CPT 是一场精细的平衡实验，需要耐心调参和细致观察，但其带来的模型能力提升和资源节约是巨大的。
+
+
+优化策略
+
+一、数据策略CPT 的灵魂与基石
+
+数据是 CPT 最关键的变量，直接决定学习效果和遗忘程度
+1. `混比策略`：**黄金比例**的探索
+2. `混比粒度`：**动态采样**的优越性
+3. 数据质量与序列长度
+
+（1）只使用新数据是 CPT 大忌，必须要混合数据
+- 混比比例（Mixing Ratio, α）：即新数据在新旧混合数据中的占比。
+  - 经验法则：α 通常设定在 5% 到 20% 之间。一个稳妥的起点是 10%。
+  - 权衡：
+    - 低 α（如 5%）：学习新知识较慢，需要更多训练步数，但遗忘风险极低，非常安全。适用于基座能力绝对不能受损的关键任务。
+    - 高 α（如 20%）：学习新知识速度快，但遗忘风险显著增高。适用于新领域与旧领域差异不大，或对基座泛化能力有一定容忍度的场景。
+- "Replay Buffer" 思想：作为旧数据的 P_general，不一定需要使用全部的原始预训练语料。可以精心挑选一个高质量、多样化的子集（例如 1T tokens 的原始数据中，精选 200B tokens），作为“记忆回放缓冲池”。这可以显著降低数据存储和 I/O 负担。
+
+（2）数据混合方式：
+- **静态**混合（预先混合）：在训练开始前，将新旧数据按比例混合并打乱，制作成新的训练数据集。
+  - 优点：实现简单，数据加载逻辑不变。
+  - 缺点：不够灵活，无法在训练中调整比例。可能出现连续多个 batch 来自同一数据源的“数据热点”问题。
+- **动态**混合（在线采样）：在训练时，数据加载器从不同的数据源（旧数据流、新数据流）中，按预设的概率或温度动态采样，实时组合成一个 batch。
+  - 优点：
+    - 均匀混合：确保每个 Global Batch 的数据构成都接近目标比例，训练过程更平滑。
+    - 灵活性：可以轻松实现课程学习（Curriculum Learning），例如在训练初期使用 10% 的新数据，后期逐步提升到 15%。
+  - 实现：在 PyTorch Lightning 中，可以通过自定义 DataModule 或 IterableDataset 来实现，根据设定的温度 τ 对不同数据集的采样概率进行加权。
+
+（3）数据质量与序列长度
+- 新数据质量：CPT 对新领域数据的质量极其敏感。低质量、噪声大的新数据会严重干扰模型的学习过程，甚至污染已有知识。必须进行严格的清洗、去重和过滤。
+- 序列长度分布：检查新旧数据的序列长度分布是否匹配。如果新领域（如法律文书）平均长度远超通用领域，可能会导致模型在长文本建模上产生偏向。此时，需要确保 Packer 能有效处理，并且在评估时也关注不同长度文本的表现。
+
+二、优化器与学习率：精细的手术刀
+
+如果数据是药物，那优化器和学习率就是控制剂量的手术刀。
+
+1. 学习率（LR：低、缓、稳）
+- 峰值学习率（Peak LR）：
+  - 核心法则：CPT 的峰值 LR 应显著低于从零预训练，通常是原始峰值 LR 的 1/10 到 1/5。例如，7B 模型从零训练的 peak LR 为 3e-4，CPT 时应选择 3e-5 到 6e-5。
+  - 原因：模型权重已处于良好状态，梯度更新应是微调而非重塑。过高的 LR 会产生巨大的梯度，将权重推出稳定区域。
+- 学习率调度器（LR Scheduler）：
+  - Warmup：可以非常短，甚至省略。一个几百步的 warmup 足以让重置后的优化器稳定下来。
+  - Decay 策略：Cosine Decay 依然是黄金标准。它能确保学习率在训练结束时平滑地降至接近零，有助于模型收敛到更稳定的点。
+  - 总步数（Total Steps）：LR 调度器的总步数必须根据 CPT 的总训练 tokens（例如 200B）重新计算，而不是沿用原始的 1T tokens 对应的步数。这是一个非常常见的错误。
+
+2. 优化器状态：必须从零开始
+
+非黑即白的规则：绝对不要加载 Checkpoint 中的优化器状态。
+- 技术解释：AdamW 等优化器维护着梯度的一阶矩（m，动量）和二阶矩（v，自适应学习率的分母）。这些状态编码了基于旧数据分布和旧学习率的梯度历史。
+  - 旧 m 会带来巨大的惯性，可能在 CPT 初期将模型推向错误的方向。
+  - 旧 v 适应了旧的梯度尺度，直接用于新的梯度可能会导致某些参数的学习率过大或过小，造成不稳定。
+- 正确操作：加载模型权重后，重新初始化一个全新的优化器实例。让它在新的数据混合和学习率下，从头开始累积梯度统计信息。
+
+3. 模型冻结策略：原则上不冻结
+- 主流选择：全参数训练。CPT 的目标是让知识渗透到模型的每一部分，从底层的词嵌入到高层的概念推理。冻结任何层都可能阻碍这种全局性的适应。
+- 实验性探索（高风险）：在极少数情况下，如果极端担心某些基础能力（如语法结构）受损，可以尝试冻结模型的最底层几层 Transformer Block。但这通常会牺牲在新领域上的学习效果，不推荐作为首选策略。
+
+三、监控与评估：CPT 的仪表盘
+
+CPT 的成功无法仅凭训练损失来判断，必须建立一个多维度的评估体系。
+
+核心监控指标：
+- 训练损失（Training Loss）：应平稳下降。若出现剧烈抖动，检查数据混合或学习率。
+- 领域内验证困惑度（In-Domain Val PPL）：使用一个 held-out 的新领域验证集。这是衡量 CPT 学习效果的核心指标，应持续下降。
+- 通用域验证困惑度（General Val PPL）：使用一个 held-out 的通用领域验证集（如 C4, Pile 的一部分）。这是衡量遗忘程度的核心“护栏”指标，应保持稳定或仅轻微上涨。
+
+从零预训练 vs CPT（持续预训练）配置对比表示例
+
+核心配置解读 💡
+1. **学习率调度器**：CPT训练步数大幅缩短，余弦衰减步数同步压缩，**必须重新计算调度器周期**，不能复用预训练的步数配置。
+2. **优化器重置**：**强制清空AdamW动量/方差状态**，旧梯度历史会干扰新领域适配，是CPT避免灾难性遗忘的关键约束。
+3. **正则化与参数更新**：Beta参数、权重衰减沿用预训练配置，不额外增加约束；采用**全参数微调**，让领域知识完整融入模型，优于冻结部分层的局部适配。
+
+
+| 参数项 | 从零预训练（参考基线） | CPT（推荐配置） | 理由与深度剖析 |
+| :--- | :--- | :--- | :--- |
+| 基座模型 | None（机初始化） | path/to/pretrained_7B_model.pt | CPT的基础是加载一个训练成熟的模型权重 |
+| 总训练Tokens | 1T | 200B | CPT是短程训练，目标是适应而非重塑。200B tokens通常足以在一个新领域达到不错的性能 |
+| 数据混比（α） | 100% 通用数据 | 90% 通用数据 + 10% 新领域数据 | CPT核心。10%是一个平衡的起点，在安全和效率之间取得平衡 |
+| 数据混合方式 | N/A | 动态采样 (Dynamic Sampling) | 保证每个batch的数据分布均匀，避免训练不稳，并为课程学习提供可能 |
+| Global Batch Size | 4M tokens | 2M‑4M tokens | 可以沿用，或适当减小。因为LR已经降低，过大的batch带来的梯度信噪比增益不再是首要矛盾 |
+| 峰值学习率(Peak LR) | 3.0e‑4 | 3.0e‑5 | CPT核心。1/10的原始LR是一个安全的起点，它以足够小的步长探索新的损失极小值区域 |
+| LR Warmup步数 | 2000 | 200 | 模型已处在稳定状态，一个非常短的warmup即可让新优化器适应梯度 |
+| LR Scheduler | Cosine Decay (over ~250k steps) | Cosine Decay (over ~50k steps) | 易错点：调度器的总步数必须基于新的、更短的训练计划重新计算 |
+| 优化器状态加载 | False | False (强制) | CPT核心。必须丢弃旧的 m 和 v 向量，它们包含着不适用于新任务的梯度历史 |
+| AdamW Betas | (0.9, 0.95) | (0.9, 0.95) | 通常无需更改。AdamW 的 betas 对 CPT 不如 LR 敏感 |
+| Weight Decay | 0.1 | 0.1 | 可以保持不变。过高的 weight decay 反而可能阻碍模型向新权重空间的适应 |
+| 模型层冻结 | 无 | 无（全参数训练） | 默认进行全参数更新，以实现知识在整个模型中的充分渗透 |
+
+
+CPT（持续预训练）四大陷阱
+
+| 陷阱类型 | 核心症状 | 诊断依据 | 修复方案 |
+| ---- | ---- | ---- | ---- |
+| 灾难性遗忘 | 通用域验证 PPL 急剧上升，通用任务性能大幅退化 | 模型丢失原有通用知识，仅记住新领域数据 | 1. 学习率减半<br>2. 降低新数据混合比例（15%→8%） |
+| 学习停滞 | 领域内验证 PPL 下降极慢/完全不下降 | 模型无法有效学习新领域知识 | 1. 检查新数据质量<br>2. 适度提高学习率/新数据比例<br>3. 增加总训练 Tokens |
+| 加载了优化器状态 | 训练初期 Loss 剧烈震荡、出现 NaN、不收敛 | 旧优化器动量干扰新任务训练 | 重置优化器：加载模型权重后**重新创建优化器**，不加载历史状态 |
+| Tokenizer 不匹配 | 新领域术语处理差、频繁 OOV、专有名词被切碎 | 词表无新领域专有词汇 | 1. 扩展 Tokenizer 词表<br>2. 扩容 token_embedding + lm_head 层<br>3. 初始化新旧 Embedding（超出标准CPT范畴） |
+| 隐蔽的能力衰退 | 通用 PPL 保持稳定，但模型在某些特定能力（如数学推理、代码生成）上表现变差 | PPL 是一个宏观指标。建立一个包含多种能力的评估基准测试集（Benchmark Suite），在 CPT 前后运行，以量化特定能力的损益。 | 如果发现关键能力受损，可能需要在“旧数据”的 replay buffer 中，有针对性地增加该能力对应的数据比例。 |
+
+总结
+1. **灾难性遗忘**是CPT最常见问题，核心是**学习率/新数据比例过高**，小幅度下调即可解决；
+2. **优化器必须重置**，严禁加载预训练的优化器状态；
+3. **Tokenizer 扩展**属于高阶操作，非必要不使用，优先保证标准CPT流程稳定。
+4. 隐蔽的能力衰退
+
+参考：[第十二章 端到端：CPT / 继续预训练](https://zsc.github.io/llm_train_tutorial/html/chapter12.html)
 
 
 ### 持续学习
