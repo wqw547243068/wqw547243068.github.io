@@ -861,6 +861,43 @@ three.js不足之处
 
 ### 高斯泼溅
 
+#### 实现
+
+##### ShapeR
+
+【2026-1-16】[Meta开源ShapeR：专为嘈杂环境设计的3D重建模型](https://zhuanlan.zhihu.com/p/1996873787090691565)
+
+Meta现实实验室研究院与西蒙菲莎大学推出 [ShapeR](https://facebookresearch.github.io/ShapeR/)，彻底改变现状。像一位经验丰富的“战地摄影师”，能从日常随手拍摄的杂乱视频（Casual Captures）中，稳健地重建出高质量、具有真实物理尺度的3D物体模型。
+- 论文标题: [ShapeR: Robust Conditional 3D Shape Generation from Casual Captures](https://arxiv.org/abs/2601.11514)
+- 代码 [ShapeR](https://github.com/facebookresearch/ShapeR)
+
+随手拍 三维重建难点：
+- 背景杂乱：沙发旁边的茶几、地上的玩具都入了镜。
+- 遮挡：抱枕挡住了沙发的一部分，或者走动时身体不小心挡住了镜头。
+- 视角不佳：有些角落可能没拍到，或者拍得模糊不清。
+- 传感器噪声：光线太暗或太亮，导致画面质量下降。
+
+![](https://pic3.zhimg.com/v2-ae06f1791db996dd47a2a15d1aa6561e_1440w.jpg)
+
+ShapeR 的“独门绝技”：多模态融合与隐式分割
+- 不依赖单一信息源，而是多面手侦探，巧妙地融合了三种不同类型的数据（即多模态输入），从一团乱麻中理出头绪。
+
+对于视频里的每一个物体，ShapeR会先通过现成的工具提取三样法宝：
+- 稀疏SLAM点云 (Sparse SLAM Points)：通过视觉惯性SLAM技术，从视频中重建出场景的稀疏3D点云。这些点云就像物体的“骨架”，为模型提供了最关键的几何结构和真实物理尺度信息。这是保证重建物体不大不小、位置正确的基石。
+- 带位姿的多视图图像 (Posed Multi-view Images)：视频中的一系列图像帧以及它们各自的相机位置。这些图像提供了物体的颜色、纹理和局部细节。
+- 机器生成的文本描述 (Machine-generated Captions)：利用大型视觉语言模型（VLM）自动为物体生成一句话描述，如“a red chair”。这为模型提供了语义先验，帮助它理解“我正在重建的是一把椅子”，从而生成更符合常理的形状。
+
+ShapeR的核心: 基于矫正流（Rectified Flow）的Transformer模型——便开始大展身手。
+
+工作流程：
+- 首先用3D变分自编码器（VAE）学习一套高效的“3D形状语言”
+- 然后用多模态条件的流模型学习如何“说”这种语言来生成新形状。
+
+
+
+
+#### 机器人训练
+
 【2026-5-16】[iPhone拍一圈就是训练场：3D高斯泼溅正在颠覆机器人训练](https://mp.weixin.qq.com/s/POoBVbiGblBxSb_pffpCWQ)
 
 如果想让人形机器人在客厅里端茶送水
