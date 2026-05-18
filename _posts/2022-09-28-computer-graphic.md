@@ -3,7 +3,7 @@ layout: post
 title:  "计算机图形学 - Computer Graphic"
 date:   2022-09-28 09:03:00
 categories: 计算机基础 计算机视觉
-tags: 图形学 opengl webgl three.js 游戏 vtk slam 大模型
+tags: 图形学 opengl webgl three.js 游戏 vtk slam 大模型 高斯泼溅 机器人
 excerpt: 计算机图形学及相关应用
 mathjax: true
 permalink: /graphic
@@ -857,6 +857,68 @@ three.js不足之处
 多种输出格式
 - 3D oriented bounding boxes, 2D floorplans, and industry-standard formats such as IFC (Industry Foundation Classes)
 - ![](https://manycore-research.github.io/SpatialLM/static/images/compatibility.png)
+
+
+### 高斯泼溅
+
+【2026-5-16】[iPhone拍一圈就是训练场：3D高斯泼溅正在颠覆机器人训练](https://mp.weixin.qq.com/s/POoBVbiGblBxSb_pffpCWQ)
+
+如果想让人形机器人在客厅里端茶送水
+- 过去得花几周时间，在真实场景里反复训练，每次撞到茶几都要重新来过。
+- 现在只要一部iPhone走一圈拍个视频，几分钟后客厅就变成了一个连光影、纹理都一模一样的虚拟训练场，机器人可以在里面狂奔10万步不伤一根手指头。
+
+机器人仿真训练历史：
+- 第一阶段（2010s）：纯手工建模仿真环境。慢、贵、假。
+- 第二阶段（2020-2024）：域随机化（Domain Randomization）+ 大规模并行仿真。效果提升了，但本质上还是在"游戏画面"上训练。
+- 第三阶段（2025-现在）：3DGS驱动的Real2Sim2Real。训练环境和真实世界视觉上几乎不可区分。
+
+这种范式转移的意义不亚于当年从"纯仿真"跳到"Sim2Real"。当一个iPhone扫描就能把任何房间变成机器人的训练场，当你不再需要担心视觉Sim2Real gap，机器人学会在你家里工作的速度会从"按月计"变成"按天计"。
+
+更关键的是，这个方向几乎不挑硬件。GaussGym跑在消费级GPU上，Habitat-GS不要RT Core，DISCOVERSE在RTX 3060笔记本上能跑240FPS。这不是只有NVIDIA DGX才玩得起的技术——任何有GPU的人都能参与。
+
+核心技术叫`3D高斯泼溅`（3D Gaussian Splatting，`3DGS`）。
+- 计算机视觉领域做"照片级场景重建"的技术——用几百万个带颜色的小椭球把真实世界"泼"进电脑里。
+- 但最近半年，全新方向正在爆发：把3DGS直接做成机器人的训练环境。
+
+<img width="1080" height="470" alt="image" src="https://github.com/user-attachments/assets/175359a8-cd76-4541-a8fb-10a3a83555bd" />
+
+
+问题：
+- 3DGS到底能不能给机器人做训练数据？3DGS 完全可以作为机器人训练环境，且已有多项研究证明了它比传统仿真器更好。
+- 如果能，现在做到了什么程度？
+
+| 指标 | 传统仿真器 | 3DGS训练环境 |
+| ---- | ---- | ---- |
+| 渲染帧率 | 30–60 FPS | 100K+ FPS（向量化并行） |
+| 视觉保真度 | 游戏画质，纹理模糊 | 照片级真，能保留材质高光 |
+| Sim2Real成功率 | 通常需域随机化补救 | 零样本迁移，成功率比真数据还高 |
+| 场景搭建时间 | 数周到数月手工建模 | iPhone拍一圈，几分钟重建 |
+| 成本 | 需专业3D建模师 | 一部手机 + 一张消费级显卡 |
+
+
+案例
+- UC Berkeley GaussGym：10万步/秒的"光速训练场"
+- RoboGSim：哈工大/中科院/旷视的"闭环练兵场"
+  - Real2Sim2Real闭环：真实场景→3DGS重建→物理引擎仿真→训练策略→部署真实机器人
+- NVIDIA Physically Embodied Gaussians：让机器人拥有"心智模型"
+- 清华DISCOVERSE：650FPS的国产超跑
+- 浙江大学Habitat-GS：让人群中的机器人学会穿行
+- EmbodiedSplat + GSWorld + UCL数字孪生：全场景覆盖
+
+路线图：3DGS+机器人的未来三个阶段
+
+3DGS具身智能技术演进路线
+
+| 阶段 | 状态 | 代表项目 | 核心做法 | 关键特点/局限 |
+| :--- | :--- | :--- | :--- | :--- |
+| 第一阶段<br>静态数字孪生 | 已完成 ✅ | EmbodiedSplat、UCL数字孪生 | iPhone扫描→3DGS重建→重建场景内训练 | 局限：环境物体静态，物理交互依赖预先标注 |
+| 第二阶段<br>动态物理仿真 | 正在进行 🔄 | RoboGSim、GaussGym、DISCOVERSE | 3DGS + IsaacGym/MuJoCo，支持物体交互、碰撞检测 | 突破：10万FPS渲染、零样本迁移、数据多样性优于真实数据 |
+| 第三阶段<br>实时闭环世界模型 | 前沿探索 🧪 | NVIDIA Physically Embodied Gaussians | 机器人内置心智模型，从视觉输入持续更新世界状态 | 愿景：可预判物理变化，实现虚实状态自动同步 |
+
+尚未解决的问题
+1. 移动物体的处理。 3DGS擅长重建静态场景，但机器人训练需要可移动、可抓取的物体。目前的方案是把"背景"用3DGS渲染、"可交互物体"用网格模型渲染，两套渲染对齐是个工程难题。
+2. 动态光照。 大部分3DGS重建场景的光照是"烘焙"进去的——换个方向、换个阴影角度就不对了。NVIDIA和清华的方案在用物理级重新布光尝试解决，但距离"完美的动态光影"还有距离。
+3. 大规模场景。 单个房间的3DGS重建已经成熟，但一整层楼、一整栋建筑的3DGS训练场景目前还在研究阶段。GaussGym的GrandTour和ARKit数据集是朝这个方向的重要一步。
 
 
 
