@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context
+tags: prompt 大模型 hermes context claude
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -42,6 +42,18 @@ Mitchell Hashimoto（Terraform 之父）将这一现象命名为 `Harness Engine
 - `工具调用幻觉`：API 一多（几十个起），调错、传错参数。
 - `开环`：每一步只管自己输出，不为下一步负责。
 - `过早停止`：自己觉得差不多了，就宣布任务完成。
+
+claude code 经验
+- 长对话会降智：claude opus支持1m上下文，但依旧得到反直觉结论，上下文越长（超过60%），模型表现越差，拐点式下降，重复读文件、验证、忘记规则
+- 跨session记忆：每次 /clear 或 开启新会话，claude就变成白纸。明确告诉读昨天历史时，依然读取了噪音，忽略了结论
+- 规则会被绕过：CLAUDE.md 里加粗的“绝不做***”，但 claude在卡住、多次尝试失败、上下文将满的压力下，重复权衡“守规则”和“跳出困境交付结果”，选择后者
+
+这几个问题的共同原因
+- prompt 和 CLAUDE.md 里的规则最终都是 context 里的 token，每个token要跟其他token竞争注意力
+
+怎么办？
+- 换一个更好的 prompt，并不能有效解决
+- 正确方向：把不相关内容拉出去，放在模型看不见的地方，做确定性约束 （即 harness）
 
 所以要在外面搭一套工程系统兜底。
 
