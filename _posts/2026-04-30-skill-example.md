@@ -3,7 +3,7 @@ layout: post
 title:   优质 Skills 汇总
 date:   2026-04-30 21:20:00
 categories: 大模型
-tags:  skill mcp 龙虾
+tags:  skill mcp 龙虾 markdown html
 excerpt: 总结各类实用 Skills 
 mathjax: true
 permalink: /skill_set
@@ -18,7 +18,45 @@ permalink: /skill_set
 
 ## Skill 原理
 
+
+### Skill 介绍
+
+目前，skill 都以 markdown 格式存在
+
+```
+pdf-to-markdown/
+├── SKILL.md                  # Skill说明文档（含元数据、使用指南、核心指令）
+├── scripts/                  # 自动化脚本（含各类可执行脚本）
+│   └── convert.py            # 转换pdf为md的自动化脚本
+└── evals/                    # 测试工具集
+    └── evals.json            # 3个典型的测试用例
+```
+
 详见站内专题：[Skill 技术专题](skill)
+
+
+### HTML
+
+2026年5月10日，Claude Code 工程师塔里克·希希帕尔（`Thariq Shihipar`）发文，标题 《在 Claude Code 工作流中，HTML 为何“不讲道理地好用”》。
+
+理由：
+> HTML 可以承载 Markdown 完全做不到的 8 种内容：表格、CSS、SVG、代码高亮、JS 交互、工作流程图、空间画布数据、真实图像，而且这一切，打开浏览器立刻能用 🔥
+
+生产场景用例：
+- ✅ 规格与规划文档
+- ✅ AI 代码审查
+- ✅ 设计与原型验证
+- ✅ 研究与报告
+- ✅ 定制化的一次性编辑界面
+
+🧐为什么偏偏是 Claude Code，而不是 Claude 聊天界面或者 Claude 设计工具？
+- 因为 Claude Code 有完整的上下文堆栈：文件系统访问权限、MCP 服务器、Chrome 浏览器内的 Claude，加上 Git 历史记录。
+- 这些能力凑在一起，才让“输出 HTML”这件事变得值钱——它不仅仅是好看，而是真正可运行、可交互、可继续被 AI 修改的功能块。
+
+⚠️但关键瓶颈依然现实：Token 成本。
+- HTML 比 Markdown 啰嗦得多，相同内容量可能要烧掉 2-4 倍的 Token。一旦上下文窗口紧张，这个开销会非常致命。
+- 所以问题：HTML 能否真正取代 Markdown 成为 AI 编码代理的默认格式？还是说它只会是特定高价值场景的“奢侈选择”？
+
 
 
 ## 信息获取
