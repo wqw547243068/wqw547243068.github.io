@@ -96,6 +96,10 @@ paginate: 25
 # useful websites
 useful_urls:
   - 
+    name : AI Hot
+    url : https://aihot.virxact.com/
+    desc : 全球大模型实时资讯
+  - 
     name : WaitButWhy
     url : https://waitbutwhy.com/
     desc : 国外知名科技博主
