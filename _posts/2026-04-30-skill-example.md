@@ -45,7 +45,7 @@ permalink: /skill_set
 
 ### 信息抓取
 
-#### 爬虫
+#### MediaCrawler
 
 [MediaCrawler](https://nanmicoder.github.io/MediaCrawler/) - 自媒体平台爬虫 🕷️
 - GitHub [MediaCrawler](https://github.com/NanmiCoder/MediaCrawler)
@@ -91,6 +91,31 @@ uv run main.py --help
 # 更新
 帮我更新 Agent Reach：https://raw.githubusercontent.com/Panniantong/agent-reach/main/docs/update.md
 ```
+
+#### 【2026-5-11】AnySearch
+
+【2026-5-11】[谷歌搜不到的80%互联网，AnySearch全打通了！开发者连夜接入](https://mp.weixin.qq.com/s/-pWdGGf4U4D5wCDnw9lawg)
+
+5月11日，[AnySearch](http://www.anysearch.com) 产品海外正式上线。
+- GitHub：[anysearch-ai](https://github.com/anysearch-ai)
+- 也可在ClawHub、SkillHub、Glama、skills.sh等插件商店直接获取
+
+定位：AI时代的「搜索基础设施」，专为AI Agent打造统一的高质量搜索入口。
+
+AnySearch 通过大模型获取 Reddit 论坛、代码仓库、股票市场等多种信息
+
+安装
+- 官网 [AnySearch](http://www.anysearch.com)，点击 Install/安装，复制安装教程直接输入Agent，部署完成。
+
+```sh
+Install the AnySearch SKILL according to 
+https://anysearch.com/install/skill-install.md
+```
+
+评测
+- AnySearch 与 Brave、Perplexity 做了对比，显然 AnySearch输出的结果更丰富。
+- 基准测试中，AnySearch在准确性和响应延迟两个维度，均优于同类AI搜索产品Parallel和Brave。
+- 与同类Brave Search测试对比，结果显示，AnySearch数据更完整、分析更深入、回答更全面
 
 #### 公众号文章抓取
 
