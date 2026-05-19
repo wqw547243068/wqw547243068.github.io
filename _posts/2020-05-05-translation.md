@@ -67,11 +67,40 @@ pip install unbabel-comet
 [原文:COMET翻译质量评估：从入门到精通的终极指南](https://blog.csdn.net/gitblog_00327/article/details/156038045)
 
 
-## 实时翻译
-
-
 
 ## 机器翻译工具
+
+
+### Web
+
+#### DeepL
+
+[DeepL](https://www.deepl.com)  创立于德国科隆，公认全球**最精准**、**最自然**的人工智能翻译平台之一。
+
+凭借专有的大语言模型与神经网络技术，不仅能完美处理文本、文件翻译，还能捕捉语言细微的差别，提供媲美专业译员的流畅译文。
+
+核心亮点
+- 超高精准度：在多项盲测中，其翻译准确率被证实远超传统科技巨头产品。译文更符合母语习惯，少有生硬的“机翻感”。
+- 专业术语定制：用户可自定义词汇表和专业术语，确保特定行业（如法律、医疗、科技）翻译的统一与准确。
+- 格式保留：支持直接上传 Word, PDF, PowerPoint 等文档进行翻译，完美保留原有的排版与格式。
+- 企业级安全：所有翻译数据在完成后立即删除，确保商业机密与隐私安全。
+
+主要产品 
+- DeepL 网页版与桌面端：提供直观的文本翻译界面，支持划词翻译及快捷键一键翻译，适合日常办公与阅读。
+- DeepL API：允许开发者和企业将世界顶级翻译能力无缝集成到自有软件、网站或工作流中。
+- DeepL Voice：支持实时语音翻译功能，方便跨国会议与现场交流。
+- DeepL Write：高水平协作
+
+适用设备与平台
+- 网页版：打开 DeepL 官方网站 即可直接免费使用基础翻译功能。
+- 客户端：提供适配 Windows 和 macOS 的桌面应用程序，支持全局快捷键调用。
+- 移动端：提供 iOS 和 Android App，支持拍照翻译与语音对话翻译。
+- 浏览器插件：提供 Chrome、Edge 等扩展程序，方便网页浏览时进行实时翻译
+
+
+【2026-5-19】评论
+> 大模型这么厉害的今天, DeepL翻译质量还是很优秀。
+> 淘宝上几块钱买个 API，配置到Bob翻译里，用了一年多了
 
 
 ### 插件
@@ -79,8 +108,6 @@ pip install unbabel-comet
 Chrome插件
 - 【2024-2-8】[沉浸式翻译](https://chrome.google.com/webstore/detail/immersive-translate-web-p/bpoadfkcbjbfhfodiogcnhhhpibjhbnh/related) 双语对照网页翻译 & PDF文档翻译，收费
 - [OpenAI Translator](https://chrome.google.com/webstore/detail/openai-translator/ogjibjphoadhljaoicdnjnmgokohngcc)，需要填写OpenAI key
-
-
 
 
 
