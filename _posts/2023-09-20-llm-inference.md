@@ -326,6 +326,15 @@ PyTorch 编写注意力
 - Triton + TensorRT-LLM
 - …
 
+【2026-5-21】选型
+
+| 使用场景 | 推荐工具/方案 | 核心优势 |
+| ---- | ---- | ---- |
+| 新手尝鲜 | Ollama | 一行命令启动，傻瓜式操作 |
+| 高并发API | vLLM | 吞吐量比原生Transformers高10-30倍 |
+| 纯CPU / 低功耗 | llama.cpp | 极致优化，笔记本也能跑 |
+| 企业生产 | vLLM+K8s | 稳定性强 |
+
 
 【2206-1-8】[主流大模型推理部署框架：vLLM、SGLang、TensorRT-LLM、ollama、XInference](https://mp.weixin.qq.com/s/AymYCFgoet43ZY8W2b-5SQ)
 
