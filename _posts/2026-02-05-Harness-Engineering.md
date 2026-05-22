@@ -369,9 +369,9 @@ harness 分成三类，从保守到激进依次：过滤、验证、直接生成
   - 测试时甚至可以不再调用 LLM。LLM只在训练阶段作为代码合成器出现，推理阶段运行纯 Python 策略。
   - 这就从“LLM+代码护栏”变成了“LLM 生成出来的代码策略”。
 
-### 港大 OpenHarness
+### 【2026-4-1】港大 OpenHarness
 
-港大开源的 Harness 系统 `OpenHarness` 在GitHub上迅速收获万颗星。
+【2026-4-1】港大开源的 Harness 系统 `OpenHarness` 在GitHub上迅速收获万颗星。
 
 这套万行代码构建的AI基础设施，如同给大模型装上了手脚和记忆
 - 43个工具是灵巧的手指，54条指令是清晰的指令集，10个子智能体是默契的团队。
@@ -386,7 +386,7 @@ harness 分成三类，从保守到激进依次：过滤、验证、直接生成
 一键启动的AI代理框架，让每个开发者都能拥有自己的"AI驾驶舱"。
 
 使用
-- GitHub项目：[OpenHarness](https://github.com/OpenHarness/OpenHarness)
+- GitHub项目：[OpenHarness](https://github.com/HKUDS/OpenHarness)
 
 ```sh
 # 安装系统：
@@ -398,5 +398,28 @@ oh（Windows用openh）
 # 设置个人代理：
 ohmo init → ohmo config → ohmo gateway start
 ```
+
+### 【2026-4-28】复旦 AHE
+
+复旦 Agentic Harness Engineering (AHE)
+
+【2026-4-28】
+- arXiv：[Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](https://arxiv.org/pdf/2604.25850)
+
+自动化框架工程面临三大难题
+- 可编辑组件构成异构动作空间
+- 海量运行轨迹掩盖有效信号
+- 修改带来的效果难以归因。
+
+智能体框架工程（Agentic Harness Engineering, AHE），通过闭环机制解决上述问题，依托三大配套可观测性支柱：
+1. 组件可观测性：为每一个可编辑框架组件提供文件级表示，让动作空间清晰可追溯、支持回滚；
+2. 经验可观测性：将数百万原始轨迹 Token 提炼为分层、可下钻的证据库，适配持续迭代的智能体直接使用；
+3. 决策可观测性：每一次修改都附带自我预测，后续通过下一轮任务级结果验证预测准确性。
+
+三大支柱共同将每一次修改转化为可证伪契约，让框架实现自主迭代，而非陷入盲目的试错模式。
+
+实验表明：
+- 经过 10 轮 AHE 迭代后，Terminal‑Bench 2 数据集的一次通过率（pass@1）从 69.7% 提升至 77.0%，超越人工设计框架 Codex（71.9%）以及自迭代基线模型 ACE、无训练 GRPO
+
 
 # 结束
