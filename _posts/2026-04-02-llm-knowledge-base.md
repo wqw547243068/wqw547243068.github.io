@@ -28,12 +28,43 @@ Agent 每次都像“临时翻书”，而不是真正把知识“记住”。
 
 Agent用得越久，反而越乱，始终停留在“一次性工具”的阶段。
 
+## 总结
+
+
+💡 总结：
+- Arkon = 企业级 AI 知识中台
+- LLM Wiki = 个人长期知识复利  
+- Graphify = 把文档变图谱查询
+- GBrain = 极客的个人 AI 外脑
+
+📊 四款工具对比
+
+| 产品        | 时间   | 作者   | 定位    | 核心思想  | 知识组织  | 适用场景      | 集成能力    | 部署方式  |
+|---------------|-------------|-----------------|-------------|-------------------|-------------|-----------|----------------|-------|
+| LLM Wiki    | 【2026-4-2】  | Andrej Karpathy | 个人知识积累      | 复利式维基     | 互连 Markdown | 个人研究沉淀    | ❌ 纯文档     | 本地文件  |
+| [Graphify](https://github.com/safishamsi/graphify)    | 【2026-4-4】  | captainkink07   | 知识图谱生成器     | 图优先    | 可遍历知识图谱     | 文档智能查询    | ⚠️ 有限                   | 本地工具  |
+| [GBrain](https://github.com/garrytan/gbrain)   | 【2026-4-14】 | Garry Tan  | 个人 AI 大脑    | Markdown+混合搜索    | 可搜索 AI 大脑   | 开发者工作流    | ✅ 30+ MCP      | 自托管   |
+| [Arkon](https://github.com/nduckmink/arkon) |   【2026-5-1】   |    | 企业级 AI 知识中枢 | MCP+Skill+Claude Code | 结构化+技能编排    | 企业落地、团队协作 | ✅ MCP、Skill、Claude Code | 开源自托管 |
+| OpenHuman    | 【2026-5-13】  | - | 全自动个人知识库      | -   | - | -    | -    | -  |
+
+
+
+📌 Arkon：企业级开源 AI 知识库
+
+🎯 核心价值
+- 支持 MCP、Skill、Claude Code 等 AI 工具集成
+- 比 LLM Wiki、Graphify、GBrain 更贴合企业落地场景
+- 完整的企业级知识管理解决方案
+
 
 ## 【2026-4-2】LLM Wiki
 
-2026年4月2日，著名AI研究员、前 OpenAI/Tesla 科学家 Andrej Karpathy 在其博客发布了一篇关于"/raw文件夹"的文章，末尾留下了一句意味深长的话：“我认为这里存在一款令人惊叹的全新产品的空间。”
+2026年4月2日，著名AI研究员、前 OpenAI/Tesla 科学家 Andrej Karpathy 发布关于"/raw文件夹"的文章，末尾留下了一句意味深长的话：
+> “我认为这里存在一款令人惊叹的全新产品的空间。”
 
-Karpathy 在AI领域的影响力毋庸置疑——他曾担任OpenAI联合创始人、Tesla AI总监，其公开发言和文章往往能在技术社区产生巨大的示范效应。这次，一句"产品空间已经存在"，直接催生了一个开源项目，并在两天内跻身热门仓库之列
+Karpathy 在AI领域的影响力毋庸置疑 —— 曾担任OpenAI联合创始人、Tesla AI总监，其公开发言和文章往往能在技术社区产生巨大的示范效应。
+
+这次，一句"产品空间已经存在"，直接催生了一个开源项目，并在两天内跻身热门仓库之列
 
 【2026-4-3】[Andrej Karpathy X上分享用LLM搭建个人知识库](https://x.com/karpathy/status/2039805659525644595)
 - 使用 LLM 构建个人知识库，涵盖各种研究兴趣主题。通过这种方式，我近期大部分的 token 处理量不再用于代码操作，而是用于知识操作（知识以 markdown 和图片形式存储）
@@ -56,7 +87,7 @@ Karpathy 在AI领域的影响力毋庸置疑——他曾担任OpenAI联合创始
 <img width="1024" height="100%" alt="image" src="https://github.com/user-attachments/assets/5b7f58de-0209-4531-a409-1cc75310499f" />
 
 
-## 【2026-4-4】Graphify
+## 【2026-4-4】Graphify 持久化知识图谱
 
 知识图谱（Knowledge Graph）并非新概念——谷歌于2012年正式引入这一术语，用于结构化表达实体及其相互关系。
 
@@ -101,7 +132,7 @@ Graphify 是 Python 工具，也是 Claude Code skill。
 
 ### 原理
 
-Graphify 核心价值主张：一条命令将任意本地文件夹转化为持久化知识图谱。
+Graphify 核心主张：一条命令将任意本地文件夹转化为持久化知识图谱。
 - 不仅是静态的代码分析工具，还能够在会话间持续存在、随代码库更新而自动演化的知识结构。
 
 工作流程分为两个阶段：
@@ -293,7 +324,7 @@ gbrain query "what themes show up across my notes?"
 - 每位员工手动粘贴文档，重复相同的背景，根据记得包含的内容而得到不同的答案。
 
 【2026-5-1】公司文档自动整理成知识 Wiki，通过 MCP 让每个员工的 AI 客户端拿到对口的上下文，不用再手动粘贴。
-- GitHub 仓库：[Arkon](github.com/nduckmink/arkon)
+- GitHub 仓库：[Arkon](http://github.com/nduckmink/arkon)
 
 Arkon 是可自部署的企业 AI 知识中枢。
 - 上传 SOP、政策、产品文档后，LLM Agent 编译成交叉链接的 Wiki。
