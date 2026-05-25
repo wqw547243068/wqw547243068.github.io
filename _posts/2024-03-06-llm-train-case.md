@@ -3320,4 +3320,56 @@ deepspeed --master_port 30001 ./llm/training/conversation_reward/main.py \
 --max_split_size_mb 32  # 无效
 ```
 
+## 南北阁
+
+
+【2025-12-16】BOSS直聘推出的南北阁模型
+- Boss 直聘`南北阁大模型实验室`（Nanbeige LLM Lab）发布令人瞩目的新成果：[Nanbeige4-3B]()。这款仅 30 亿参数的小模型，正在实践探索小规模参数下的能力上限。
+- 小语言模型（SLM）。参数量小、推理速度快、部署成本低，若能在能力上逼近大模型，无疑将成为推动 AI 普惠落地的关键力量。
+- [Nanbeige huggingface](https://huggingface.co/Nanbeige)
+- 【2026-2-13】南北阁 Nanbeige 4.1-3B 是仅有30亿参数的轻量级中文对话模型，保持较小体积的同时，提供了相当不错的对话质量和逻辑推理能力。
+  - 南北阁4.1-3B：一个具备推理、对齐与行动能力的小型通用模型，同时实现强大智能体行为、代码生成与通用推理能力的统一通用语言模型
+- 解读
+  - 【2025-12-16】[以小博大！Nanbeige4-3B重磅开源：硬刚Qwen3，挑战小模型能力新高度](https://hub.baai.ac.cn/view/51191)
+
+### 【2025-12-16Nanbeige4-3B
+
+Nanbeige4-3B 的 Base 模型、Thinking 模型、以及技术报告已完全开源，欢迎下载。
+- Base模型：[Nanbeige4-3B-Base](https://huggingface.co/Nanbeige/Nanbeige4-3B-Base)
+- Thinking模型：[Nanbeige4-3B-Thinking-2511](https://huggingface.co/Nanbeige/Nanbeige4-3B-Thinking-2511)
+- 技术报告：[Nanbeige4-3B Technical Report: Exploring the Frontier of Small Language Models](https://arxiv.org/pdf/2512.06266)
+- 作者团队：Nanbeige LLM Lab, Boss直聘
+
+训练策略
+- 预训练阶段，Nanbeige4-3B 使用 23T tokens 训练
+  - 通过设计 **Hybrid 数据筛选体系**实现精准的质量判别，并采用细粒度 WSD 调度器，使高质量数据发挥更大作用。
+  - Nanbeige4-3B 在构建预训练配方时，聚焦两个核心问题进行优化
+    - 如何科学、精准地**筛选高质量训练数据**，并有效剔除低质量内容。
+    - 如何设计合理的**数据配比策略与调度机制**，使高质量数据发挥最大效用。
+- 后训练中，Nanbeige4-3B 使用了 3000w + 高质量指令进行微调
+  - 四阶段递进式后训练流程: `Cold Start SFT` -> `Overall SFT` -> `Distillation` -> `RL`
+  - 从 Cold-Start SFT 建立基础推理能力，到 Overall SFT 拓展多任务泛化性；继而通过 Dual-Level Preference Distillation 注入强模型思维模式，缩小了小模型和大模型之间能力差距；最终以 Multi-Stage Reinforcement Learning进一步提升效果。
+  - 结合多阶段 RL 训练，从而在多个维度上都有良好表现。
+  - 在此基础上，结合思维链推敲进化、大规模工具调用环境合成、多粒度蒸馏算法等创新手段，来进一步拔高效果。
+  - ![](https://simg.baai.ac.cn/hub-detail/9af2156cb0b71f28c87d8b87c387a5cc1765896601813.webp)
+
+与通义千问 Qwen3 系列模型的横向对比中，Nanbeige4-3B 不仅显著超越同体量的 Qwen3-4B 和 Qwen3-8B，还在多项关键指标上媲美更大规模的 Qwen 系列模型。
+
+2025 年 11 月（2511）WritingBench 大模型写作能力榜单中，Nanbeige4-3B 在包含 54 个开源与闭源模型的激烈竞争中，凭借仅 3B 参数斩获第 11 名的成绩，多个场景的创作能力可比肩 DeepSeek-R1-0528 等千亿级大尺寸模型。
+
+### 【2026-2-13】南贝阁4.1-3B
+
+【2026-2-13】南北阁 Nanbeige 4.1-3B 是仅有30亿参数的轻量级中文对话模型，保持较小体积的同时，提供了相当不错的对话质量和逻辑推理能力。
+- 南北阁4.1-3B：一个具备推理、对齐与行动能力的小型通用模型，同时实现强大智能体行为、代码生成与通用推理能力的统一通用语言模型
+
+南贝阁4.1-3B模型是仅用30亿参数就同时实现强大智能体行为、代码生成与通用推理能力的统一通用语言模型。首个在单一模型中实现如此多功能的开源小语言模型（SLM）。
+- 为提升推理能力与偏好对齐，结合点对点和配对奖励建模技术，确保生成高质量且符合人类偏好的响应。
+- 代码生成方面，通过强化学习设计复杂度感知奖励机制，同步优化正确性与执行效率。
+- 针对深度搜索任务，实施复杂数据合成策略，并在训练阶段引入轮次级监督机制，使模型能够稳定进行长周期工具交互——南贝阁4.1-3B可可靠执行多达600轮工具调用以解决复杂问题。
+
+大量实验结果表明，南贝阁4.1-3B显著超越同规模先前模型（如Nanbeige4-3B-2511和Qwen3-4B），甚至在某些任务上优于参数量大得多的Qwen3-30B-A3B模型。我们的研究成果证明，小模型能够同时实现广泛能力与专业优势，重新定义了30亿参数级模型的发展潜力。
+
+
+
+
 # 结束
