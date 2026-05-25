@@ -580,6 +580,28 @@ DLM 训练问题，scaling 效率相对低于 AR 模型。
 - 自回归（AR）大语言模型逐 token 顺序解码的范式限制了推理效率；
 - 扩散 LLM（dLLM）以并行生成见长，但过去难以稳定跑赢自回归（AR）模型，尤其是在 KV Cache 复用、和 可变长度 支持上仍存挑战。
 
+
+#### 【2026-5-23】NVIDIA 光速级别生成速度
+
+【2026-5-23】Nemotron-Labs 扩散语言模型实现光速级文本生成
+NVIDIA 在 Hugging Face 发布关于 Nemotron-Labs 扩散语言模型的技术博客。
+- 通过扩散语言模型架构大幅提升文本生成速度，目标是逼近“**光速级**”生成效率。
+- 该模型在生成速度上的突破，以及相较于传统自回归模型在延迟和吞吐量方面的性能优势。
+
+[Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models](https://huggingface.co/blog/nvidia/nemotron-labs-diffusion)
+
+3 种生成模式对比
+
+![](https://cdn-uploads.huggingface.co/production/uploads/68fbf4dfb3a931deae49375f/luIrivJsY3wcROc4UpJtl.gif)
+
+
+demo 效果
+
+![](https://cdn-uploads.huggingface.co/production/uploads/68fbf4dfb3a931deae49375f/qvMqz8ohVx7_5oGkjaCI-.gif)
+
+
+
+
 #### 蒸馏
 
 ##### 【2025-9-29】普渡 DiDi-Instruct
