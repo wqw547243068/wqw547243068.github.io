@@ -293,6 +293,8 @@ vLLM 调节基座与 LoRA 比例 = `lora_scale` 参数
 - 0.3 = 弱 LoRA，保对话能力
 - 0.0 = 纯基座, lora 不起作用
 
+示例：
+- 官方源码地址: [vllm/lora/lora_weights.py](https://github.com/vllm-project/vllm/blob/main/vllm/lora/lora_weights.py)
 
 ```py
 response = client.completions.create(
