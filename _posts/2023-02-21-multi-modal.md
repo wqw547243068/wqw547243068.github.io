@@ -3,7 +3,7 @@ layout: post
 title:  "多模态专题 Multi-Modal"
 date:   2023-02-21 16:22:00
 categories: 大模型
-tags: 多模态 CLIP 柏拉图 
+tags: 多模态 CLIP 柏拉图 vit
 excerpt: 多模态相关知识以及各种新兴大模型
 author: 鹤啸九天
 mathjax: true
@@ -442,7 +442,41 @@ CLIP流程有三个阶段：
 
 
 
+### 改进
 
+#### 【2026-2-25】LaSt-ViT
+
+【2026-5-25】[视觉Transformer的「近视眼」手术——LaSt-ViT如何让机器真正「看懂」图像](https://blog.csdn.net/weixin_36829761/article/details/160224284)
+
+Vision Transformer (ViT) 已经成为当之无愧的基石模型。无论是图像分类、目标检测还是语义分割，ViT 都展现出了统治级的表现。
+
+然而，ViT 真的“看懂”图片了吗？
+
+场景：
+- 给模型看一张“猫坐在沙发上”的照片，模型准确地输出了“猫”。
+- 但当用可解释性工具查看模型的注意力（Attention）时，却发现它死死盯着沙发、地毯和背景墙，唯独没有看那只猫。
+
+ViT 过去几年的真实写照。
+
+【2026-2-25】CVPR 2026 上，香港大学和中山大学发表引人深思的论文。不仅揭示了这一反直觉现象的根源，还提出极其优雅的解决方案：LaSt-ViT (LazyStrike ViT)。
+- 《[Vision Transformers Need More Than Registers](https://arxiv.org/pdf/2602.22394v1)》
+
+问题：
+- CLS Token 错误地聚合了背景信息
+
+解决方案：
+- 强制 CLS Token 锚定在真正的前景区域上。
+
+LaSt-ViT (LazyStrike ViT) 摒弃标准 CLS Token 提取方式，引入极其巧妙的频域感知选择性聚合机制（Frequency-aware Selective Aggregation）。
+
+LaSt-ViT 的这种“微创手术” 立竿见影，三大监督范式（标签监督、文本监督 CLIP、自监督 DINO）下均表现出强大的通用性：
+- 彻底消除伪影：无论是 Patch Score 伪影还是高范数 Token（High-norm token）问题，都被 LaSt-ViT 完美消除，特征对齐变得极其精准。
+- 涌现出强大的零样本分割能力：在没有进行任何像素级标注训练的情况下，LaSt-ViT 展现出了惊人的涌现语义分割（Emergent Semantic Segmentation）能力。模型终于知道“猫”到底长在图片的哪个像素位置了。
+- 下游任务全面霸榜：在目标发现、语义/实例分割、开放词汇检测（Open-vocabulary detection）等 12 个主流基准测试中，LaSt-ViT 均实现了稳定且一致的性能提升。
+
+LaSt-ViT 不仅给 ViT 增加了一个即插即用的模块，还纠正了对大模型学习机制的认知偏差。
+
+过去认为，只要分类准确率高，模型就一定“理解”了图像。但 LaSt-ViT ：高准确率 ≠ 真正的理解，模型可能只是在利用意想不到的捷径。通过深入探究 Patch Score 和频域特征，程石团队找到了真正的病灶，并用最优雅的数学工具（FFT）完成了这台“近视眼手术”。
 
 
 ### 多模态模块
