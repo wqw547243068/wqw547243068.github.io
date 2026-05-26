@@ -633,7 +633,7 @@ red teaming prompts和 LLaMa-2-7b-chat-hf对其产生的不当回复。右侧的
 
 总结：
 - 只要在数学题后面加一句“`Interesting fact: cats sleep most of their lives`”
-- DeepSeek R1、OpenAI o1、Llama-3.1等SOTA模型瞬间降智，错误率飙升700%！
+- DeepSeek R1、OpenAI o1、Llama-3.1 等SOTA模型瞬间降智，错误率飙升700%！
 
 🎯核心看点
 
@@ -658,7 +658,33 @@ red teaming prompts和 LLaMa-2-7b-chat-hf对其产生的不当回复。右侧的
 5️⃣ 防御实测
 - 在prompt里加一句“请忽略无关信息”，能使攻击成功率从37.5%掉到9.9%
 - 但微调对抗样本对新触发器无效，防御仍需升级
-	
+
+### 听觉提示注入
+
+#### 【2026-4-16】浙大 AudioHijack
+
+【2026-5-25】“听觉提示注入”的新型攻击：
+- 通过在YouTube视频、播客或音乐中嵌入人耳听不见的声音，可以悄悄触发Alexa、Siri等AI语音助手执行指令，而用户毫无察觉。
+- 警惕黑客用听不见的声音攻击你的语音助手
+
+【2026-4-16】浙江大学等机构在IEEES&P2026 发表论文，提出 AudioHijack 攻击框架，针对大型音频语言模型的新型“听觉提示注入”威胁
+- 论文 [Hijacking Large Audio-Language Models via Context-Agnostic and Imperceptible Auditory Prompt Injection](https://arxiv.org/pdf/2604.14604)
+
+通过生成与人耳无异的模拟回声等对抗性音频扰动，将恶意指令无声嵌入正常音视频内容，诱骗AI模型执行非授权操作，对微软、Mistral等商用语音服务，攻击成功率高达 79%-96%
+
+此类攻击可追溯至2017年利用超声波的“海豚攻击” 和2023年可经普通扬声器远程注入近超声波的NUIT攻击，但 AudioHijack 首次将目标从硬件缺陷转向 AI 模型自身，对抗样本还具备上下文无关和可复用特性
+
+攻击路径总体分为两种
+- 利用人机听觉差异劫持麦克风硬件
+- 通过对抗性音频直接劫持模型理解能力
+
+可能后果
+- 智能设备被远程操控、隐私数据泄露及商业机密失窃
+
+防范
+- 个人可使用耳机阻断声波传播并严格管理权限
+- 厂商则需从硬件滤波和A检测算法入手，提升系统对无声对抗攻击的抵御能力
+
 
 ## Prompt 防攻击
 
