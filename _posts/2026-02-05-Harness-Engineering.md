@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context claude
+tags: prompt 大模型 hermes context claude 评测
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -420,6 +420,95 @@ ohmo init → ohmo config → ohmo gateway start
 
 实验表明：
 - 经过 10 轮 AHE 迭代后，Terminal‑Bench 2 数据集的一次通过率（pass@1）从 69.7% 提升至 77.0%，超越人工设计框架 Codex（71.9%）以及自迭代基线模型 ACE、无训练 GRPO
+
+
+### 【2026-5-25】评测 Harness思路
+
+【2026-5-25】[关于Agent Harness，我整理了一个最小版](https://mp.weixin.qq.com/s/yVFQej3dFk9KHv6J2u6Lew)
+
+评测 Agent 不能只看最终答案，还要看用了什么工具、拿到什么结果、有没有按任务要求完成。
+- 用户: “请判断这个项目是否支持插件系统”
+- Agent: “当前 README 没有插件系统相关说明，不能确认支持”。
+
+这句话看起来合理，但还要知道：
+- 它有没有真的读取 README？
+- 有没有读错文件？
+- 有没有调用无关工具？
+- 有没有把工具结果里没有的信息写进答案？
+
+那这些信息怎么稳定记录？harness。
+
+观点
+> Agent = model + harness
+
+harness 理解：
+- 把 Agentic model 放进可运行、可记录、可评分的小环境里。
+- 不一定一开始就很复杂，只要能把任务、工具、执行过程和评分结果串起来，就已经很有价值。
+
+Anthropic Agent Evals 文章把 eval harness 和 agent harness 分得很清楚：
+- eval harness 负责跑评测、记录步骤、评分和汇总结果；
+- agent harness 负责让模型作为 Agent 工作，比如处理输入、编排工具调用、返回结果。
+- 强调: 评估 Agent 时，评到的是模型和 harness 一起工作的效果。
+
+比如
+- SWE-agent 重点是 Agent-Computer Interface。说明 coding agent 的表现不只取决于模型，也取决于外部接口怎么设计。比如怎么查看文件、怎么编辑代码、怎么运行测试、怎么把错误信息反馈给模型，这些都会影响最终效果。
+- Terminal-Bench 任务结构也很适合参考。一个任务通常包含 instruction、隔离环境和测试脚本。harness 负责把模型接到终端环境里，让它执行命令、安装依赖、调试错误，最后用测试脚本验证任务是否完成。
+- SWE-bench 则展示了 coding agent 的典型评测流程：给一个真实 issue，让模型生成 patch，再把 patch 放进环境里运行测试。这里的 harness 负责准备环境、应用 patch、执行测试、汇总结果。
+
+
+mini harness 最少需要哪些模块
+- Task：任务输入
+- Environment：可操作环境
+- Tools：工具接口
+- Trace：执行记录
+- Grader：评分器
+
+评测case 基本点：任务目标明确，环境内容固定，工具范围清楚，评分规则也可检查。适合用来测试 Agent 是否会基于文件内容回答，而不是根据经验补结论。
+
+```json
+{
+  "id": "case_001",
+  "task": "判断项目是否支持插件系统",
+  "environment": {
+    "files": {
+      "README.md": "本项目支持本地启动、基础登录和配置管理。",
+      "config.md": "配置项包括 port、theme、log_level。"
+    }
+  },
+  "tools": ["list_files", "read_file"],
+  "grader": {
+    "must_read": ["README.md"],
+    "answer_should_include": "不能确认支持插件系统",
+    "answer_should_not_include": "支持插件系统"
+  }
+}
+```
+
+运行完毕后，harness 要记录的信息
+
+```json
+{
+  "case_id": "case_001",
+  "trace": [
+    {
+      "tool": "list_files",
+      "arguments": {"path": "."},
+      "result": ["README.md", "config.md"]
+    },
+    {
+      "tool": "read_file",
+      "arguments": {"path": "README.md"},
+      "result": "本项目支持本地启动、基础登录和配置管理。"
+    }
+  ],
+  "answer": "当前 README 没有插件系统相关说明，不能确认支持插件系统。",
+  "grade": {
+    "success": true,
+    "reason": "读取了 README，回答没有超出文件内容。"
+  }
+}
+```
+
 
 
 # 结束
