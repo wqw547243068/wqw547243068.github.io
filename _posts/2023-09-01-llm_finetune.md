@@ -287,6 +287,27 @@ SFT 是否会让模型 “遗忘” 原本的通用能力？
 - 推理时调低 LoRA alpha/scale：从默认 1.0 逐步降到 0.3~0.7 测试，兼顾风格和基础能力。
 - 多 LoRA 叠加时，只保留当前任务 LoRA，关闭其他 LoRA 冲突。
 
+vLLM 调节基座与 LoRA 比例 = lora_scale 参数
+- 1.0 = 纯 LoRA（容易崩）
+- 0.5 = 一半基座一半 LoRA（最适合你）
+- 0.3 = 弱 LoRA，保对话能力
+- 0.0 = 纯基座
+
+```py
+response = client.completions.create(
+    model="default",
+    prompt="你的指令",
+    temperature=0.2,
+    extra_body={
+        "lora_name": "your_lora",
+        "lora_scale": 0.5  # 👈 核心
+    }
+)
+```
+
+
+
+
 （2）训练范式优化
 - ① 加入通用保留数据（防遗忘）
   - 在微调集中混入少量原模型通用对话样本（保持格式统一），防止模型丢掉基础问答、理解能力。
