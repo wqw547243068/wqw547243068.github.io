@@ -287,11 +287,12 @@ SFT 是否会让模型 “遗忘” 原本的通用能力？
 - 推理时调低 LoRA alpha/scale：从默认 1.0 逐步降到 0.3~0.7 测试，兼顾风格和基础能力。
 - 多 LoRA 叠加时，只保留当前任务 LoRA，关闭其他 LoRA 冲突。
 
-vLLM 调节基座与 LoRA 比例 = lora_scale 参数
+vLLM 调节基座与 LoRA 比例 = `lora_scale` 参数
 - 1.0 = 纯 LoRA（容易崩）
-- 0.5 = 一半基座一半 LoRA（最适合你）
+- 0.5 = 一半基座一半 LoRA, 减弱 lora 影响
 - 0.3 = 弱 LoRA，保对话能力
-- 0.0 = 纯基座
+- 0.0 = 纯基座, lora 不起作用
+
 
 ```py
 response = client.completions.create(
@@ -305,7 +306,12 @@ response = client.completions.create(
 )
 ```
 
-
+注意
+- 性能开销：当请求频繁切换不同 lora_scale 时，vLLM 内部要重新计算和调度不同批次，可能导致缓存失效，从而轻微影响并发推理性能。
+- 与 Alpha 参数的区别：
+  - `lora_alpha` 是训练时设置的固定超参数
+  - 而 `lora_scale` 是推理时可以动态调整的乘数因子。
+  - 两者结合决定了最终应用的权重大小
 
 
 （2）训练范式优化
