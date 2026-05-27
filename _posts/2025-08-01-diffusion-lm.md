@@ -191,7 +191,9 @@ Stable-DiffCoder 完全复用 Seed-Coder 架构、数据的条件下，通过引
 
 
 
-### 视觉任务：AR首次击败DLM
+### AR > DLM
+
+视觉任务：AR首次击败DLM
 
 【2023-10-13】[资讯](https://www.toutiao.com/article/7288583411143459363), 图像、视频生成上，**语言模型**首次击败**扩散模型**，tokenizer是关键
 
