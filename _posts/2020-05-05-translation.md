@@ -150,8 +150,7 @@ Offine-Text-Translate
 - 24年初有篇论文比较系统的比较了大模型的翻译和NMT翻译专有模型的翻译
 - 当时大模型在小语种上比NMT模型普遍好，在中、英等大语种上NMT因为专门做过优化还是要好些。
 
-### SeamlessM4T
-
+### 【2023-8-23】Meta SeamlessM4T
 
 
 2023年8月23日，Meta（Facebook、Instagram等母公司）宣布开源**多语音**、语言，翻译、转录大模型 `SeamlessM4T`。
@@ -226,7 +225,7 @@ print(translated_text)
 '''
 ```
 
-### translation-agent
+### 【2024-6-13】吴恩达 translation-agent
 
 【2024-6-13】吴恩达开源 AI Agent 翻译工作流 Translation Agent。
 
@@ -278,7 +277,7 @@ prompt
 - 直接**短文本块处理**（给全部文本添加`<TRANSLATE_THIS>`标签）；
 - 也支持长文本下的单个文本块循环处理（给每次需要处理的文本块增加`<TRANSLATE_THIS>`标签）
 
-### LLaMAX
+### 【2024-7-18】AI lab LLaMAX
 
 【2024-7-18】 [上海AI lab开源LLaMAX，用3.5万小时的A100训练让大模型掌握上百种语言翻译](https://mp.weixin.qq.com/s/_UcBD-aD9Aky30X05qqzbA)
 - 论文：[LLaMAX: Scaling Linguistic Horizons of LLM by Enhancing Translation Capabilities Beyond 100 Languages](https://arxiv.org/pdf/2407.05975)
@@ -321,7 +320,7 @@ LLaMAX与GPT-4进行了对比
 - 但在低资源语言（如尼泊尔语、阿塞拜疆语、宿务语）的翻译任务上，LLaMAX展现出了与GPT-4不相上下甚至更优的性能。
 
 
-### Agent 同声翻译
+### 【2024-7-31】头条 Agent 同声翻译
 
 【2024-7-31】头条通过LLM Agent实现超强的同声翻译
 
@@ -337,8 +336,16 @@ LLaMAX与GPT-4进行了对比
 
 实验结果表明，我们的系统比其他系统好得多。与专业人工翻译保持一致，我们使用更好的人工评估指标——有效信息比例 (VIP) 来评估 CLASI，它衡量可以成功传达给听众的信息量。在现实场景中，由于语音通常不流畅、非正式且不清楚，CLASI 在中译英和英译中方向分别实现了 81.3% 和 78.0% 的 VIP。相比之下，最先进的商业或开源系统仅能达到 35.4% 和 41.6%。在极其困难的数据集上，其他系统的 VIP 低于 13%，而 CLASI 仍能达到 70% 的 VIP。
 
+### 【2026-5-27】腾讯混元 Hy-MT2
 
-### LLM 翻译实测
+【2026-5-27】腾讯混元发布翻译模型 Hy-MT2，在 Hugging Face 开源模型趋势排行榜上表现突出：
+- 1.8B 版本排名第一，30B-A3B（MoE）版本排名第四，下载量已超 7K。
+- 官方同步推出了基于该模型的“腾讯混译”微信小程序，支持语音输入与离线翻译，并可自定义翻译风格与指令
+
+
+### 案例
+
+#### LLM 翻译实测
 
 原文：
 > 翻译这段话:"人要是行,干一行行一行,一行行行行行。行行行干哪行都行。要是不行,干一行不行一行,一行不行行行不行,行行不行,干哪行都不行。要想行行,首先一行行。成为行业内的内行,行行成内行。行行行,你说我说得行不行。"
@@ -352,9 +359,6 @@ LLaMAX与GPT-4进行了对比
 
 GPT-4翻译
 > Translate this passage: "If a person is capable, they can excel in any profession they choose. If they're not capable, they won't succeed in any profession, no matter which one they choose. If you want to be successful, you must first become proficient in one field. Become an expert in your industry, and you'll achieve success. Is what I'm saying reasonable?"
-
-
-### 案例
 
 
 #### 小红书
