@@ -289,6 +289,23 @@ SFT训练
 - grpo 150条数据跑了一轮iteration2，9.5h，精确率更差了，召回有上升，但我这个任务要的就是精确率，召回可以少一些，所以也不行，现在在跑第二轮800条数据的，epoch2
 - sft<selekt<dpo 这三个有效果，dpo+selekt 是最好的，训练集85%精确率，召回75%
 
+#### GRPO → OPD
+
+【2026-5-27】后训练相关的研究正在从PPO、GRPO转向On-Policy Distillation。
+
+2026年以来
+- 学术界：arXiv上密集出现 OPSD、SRPO、SCOPE、Revisiting OPD一整批工作。
+- 工业界：
+  - DeepSeek V4用OPD替换了V3.2的混合RL合并阶段
+  - Qwen3报告里OPD的效率数据比GRPO好了近一个数量级。
+
+从PPO到GRPO再到OPD，后训练的演化主线：反馈信号粒度的逐级提升，不是方法论的偏好切换，而是Agent时代长链推理对训练范式的倒逼
+- 当rollout从几百token拉长到上万token，sequence-level RL梯度方差就从工程问题变成了物理约束。
+OPD的天花板在哪里？
+- teacher在student生成的长prefix上会逐渐失去可靠性，token-level低方差和sequence-level无偏之间的张力目前没有干净的解。
+- SRPO的分流、DeepSeek V4的multi-teacher、Revisiting OPD的truncated reverse-KL都是在不同维度上绕这个问题
+
+
 #### NeurIPS 2025 oral：LLM 训练全流程视角
 
 【2025-12-19】[NeurIPS 2025 oral：LLM 训练全流程视角](https://zhuanlan.zhihu.com/p/1985315562822332452)
