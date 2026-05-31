@@ -5,6 +5,21 @@
 
 autoresearch 专题详见飞书文档：[autoresearch](https://my.feishu.cn/wiki/TJXhwcj6wivSrLkdU9jc0Uren4f)
 
+
+## 发展史
+
+时间轴
+- 2025 年 10 月：nanochat 项目发布（初始 commit 10 月 13 日）。
+- 2026 年 1 月底：推出 “Time to GPT-2” leaderboard，初始记录约 3.04 小时。
+- 2026 年 2 月：手动调优（数据集、FP8 等），基准降至约 2 小时。
+- 2026 年 2 月 27 日：公开多代理实验尝试（8 agents，tmux 交互式），但当时未成功。
+- 2026 年 3 月 5 日：首次宣布 AI 代理已自主迭代 nanochat（12 小时内完成 110 次改动，val loss 从 0.862415 降至 0.858039），称“I'll just leave this running for a while, go relax a bit and enjoy the feeling of post-agi”。并指出新 meta 是“what is the research org agent code that produces improvements on nanochat the fastest?”
+- 2026 年 3 月 7 日：发布 autoresearch 极简仓库（单 GPU、单文件 ~630 行 train.py）。
+- 2026 年 3 月 6–8 日：启动首次正式实验，在 depth=12 模型上运行约 2 天（~650–700 次实验）。
+- 2026 年 3 月 8 日：初步确认改进可转移至 depth=24 模型。
+- 2026 年 3 月 9 日：手动验证所有改动并测量最终结果。
+
+
 ### AutoResearch
 
 【2026-3-15】[Autoresearch 深度解读：Karpathy 的"AI 自主科研"到底有没有戏？](https://zhuanlan.zhihu.com/p/2016489903790236699)
