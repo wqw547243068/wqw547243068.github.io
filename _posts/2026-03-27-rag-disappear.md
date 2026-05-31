@@ -3,7 +3,7 @@ layout: post
 title:   RAG 消失之路
 date:   2026-03-27 11:41:00
 categories: 大模型
-tags: llm RAG 
+tags: llm RAG claude
 excerpt: RAG 检索增强生成终将过时，有哪些新技术替代RAG？
 mathjax: true
 permalink: /no_rag
@@ -14,6 +14,9 @@ permalink: /no_rag
 
 
 # RAG 消失之路
+
+
+## 背景
 
 rag 终会消失
 
@@ -96,6 +99,58 @@ RAG 每个环节都藏着工程"暗伤"：
 详见：[超越向量数据库：探索无需 Embedding 的 RAG 新架构](https://blog.eimoon.com/p/beyond-vector-databases-rag-without-embeddings/)
 
 ## 文件检索
+
+
+### Claude Code
+
+2025年5月，Anthropic 工程师 Boris 在 Latent Space 播客里提到
+- Claude code 早期确实试过 RAG，标准方案--本地向量数据库加embedding检索，但效果不行，最终切换到叫“agentic search”的方式，让模型自己调用 grep、glob、find 这些 Linux 命令去实时搜索代码。
+
+<img width="906" height="100%" alt="image" src="https://github.com/user-attachments/assets/3d8993bf-3b8c-4fc0-adcf-6d34287058ba" />
+
+【2026-5-31】[丁师兄讲大模型](https://www.xiaohongshu.com/explore/6a16b3b00000000006023f80)
+
+Claude Code为什么放弃RAG？
+- Embedding 对代码标识符的语义理解失效。
+  - getUserById 和 deleteUserById 两个函数名在向量空间里的距离非常近，因为共享了大量重复 token。但功能完全相反，查询vs删除。
+  - <span style='color:red'>代码不是自然语言，是结构化的精确标识符</span>，函数名、类名、变量名本身就是最好的检索**关键词**。
+  - 这种场景下，精确匹配天然比语义匹配更可靠。grep 搜 processPayment 就是精确命中，不存在语义漂移的问题。
+- RAG 管线准确率**乘法效应**。
+  - 整个链路: 文档切分、embedding生成、向量检索、重排序、最终生成，每个环节哪怕做到90%的准确率，五个环节乘下来就只剩不到 60%。
+  - 而且这些环节出错时，调试是噩梦级 -- 不知道是 chunk切得不好、embedding质量问题、rerank 模型偏了。
+  - 但 grep 失败原因只有一个: 关键词没匹配上。这种确定性在工程上的价值是巨大的。
+- 索引**时效性**。
+  - 代码仓库变化极快，上午建的索引下午可能就过时了。索引就跟实际代码漂移。
+  - 要么频繁重建索引付出巨大的计算开销，要么忍受过时索引带来的错误检索。
+  - 而 grep 每次都是**实时搜索**，拿到的永远是当前最新的代码状态，根本不存在同步问题。
+
+更深一层: 架构哲学上的考量
+- Claude Code 遵循经典原则
+  - **无状态**设计。从 Unix 管道到 RESTAPI到 Serverless，在计算机科学里反复被验证过。
+    - 不建索引: 零配置，用户 clone 完代码就能直接用，不需要等几分钟构建 embedding。
+    - 不维护状态: 零运维负担，没有“索引卡住了”“缓存损坏了”这种问题。
+  - Anthropic内部原则 “everythingis the model” -- **尽量让模型驱动决策**，而不是在模型外面搭复杂的工程管线。模型每变强一分，整个系统就自动变好一分，这其实就是Rich Sutton 说的 Bitter Lesson 在工程上的体现。
+- 安全性。
+  - RAG 方案把代码做embedding存到某个地方，不管是本地还是云端，存在信息泄露的风险--学术上证明可从embedding反推原始内容。
+  - 而 grep 完全在本地执行，从架构上就杜绝了这个问题。
+
+辩证思考: 这种方案的不足
+
+ClaudeCode 方案也有代价，最大的是 token 消耗。
+- 每次搜索都是实时执行，模型要列目录、读文件、做多轮探索，token 用量远高于一次性的向量检索。
+  - Milvus 团队批评：这是“烧 token”。
+- 而且对于超大型代码库，纯 grep 方式在概念级搜索上确实有短板：想找“所有跟权限校验相关的逻辑”，**grep 不一定能覆盖所有变体写法**。
+
+业界共识：混合方案。
+- 精确搜索处理标识符级别查找，语义检索处理概念级别的探索，两者互补。
+
+Claude Code 选择极简方案，Cursor 选择 向量索引，未来大概率会在中间某个位置收敛。
+
+核心就是三层:
+- 技术事实层：embedding对代码的失效和管线复杂度
+- 架构哲学层：无状态设计和“everythingis the model”的理念
+- 辩证层：承认 token 成本和概念搜索的局限。
+
 
 ### Google File Search
 
