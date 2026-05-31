@@ -585,6 +585,10 @@ Dan Koe 书籍 [Purpose & Profit - A Guide ToDiscovering Your Life's Work](https
 
 ![](https://img.36krcdn.com/20210415/v2_fbc599fea70846a6981c1cee456d8cc9_img_000)
 
+### 炒股
+
+详见站内专题：[量化交易](quant)
+
 ## 打工还是创业
 
 上班与创业的区别
