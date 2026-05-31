@@ -346,7 +346,7 @@ _ROI 池化_
  
 ## 总结
  
-首先了解了基础的滑动窗口算法：
+基础的滑动窗口算法：
  
 ```python
 for window in windows
@@ -431,6 +431,27 @@ _每个位置做出 k 个预测，每个预测有 25 个参数。_
 单次检测器通常需要在准确率和实时处理速度之间进行权衡。它们在检测太近距离或太小的目标时容易出现问题。在下图中，左下角有 9 个圣诞老人，但某个单次检测器只检测出了 5 个。
  
 ![](https://image.jiqizhixin.com/uploads/editor/e4a52e23-2282-4859-a369-20fb309bceb5/1524810334979.jpg)
+
+## 大模型方案
+
+
+### LocateAnything
+
+【2026-5-26】英伟达开源最强3B「目标检测」大模型 LocateAnything
+- 论文 [LocateAnything: Fast and High-Quality Vision-Language Grounding with Parallel Box Decoding](https://arxiv.org/pdf/2605.27365)
+- 解读 [英伟达开源最强3B「目标检测」大模型LocateAnything](https://mp.weixin.qq.com/s/_rs3aARmF9WMrCWQD5l5QA)
+
+LocateAnything 是目前「最好」的目标检测大模型，相对于同级别的大模型，又「快」又「准」，没有之一
+- 一、**快**：LocateAnything 速度快, 源于并行框解码 PBD 范式革新。
+  - 传统 VLM 把 2D 检测框拆成多个坐标 Token，采用逐 Token 自回归串行解码，需要十几步才能完成一个框预测，存在严重推理瓶颈；
+  - 而本文 PBD 将整个检测框视为一个原子单元，单步前向即可一次性输出全套坐标，把解码步数从十余步压缩至 2 步。
+  - 实测单 H100 上吞吐量达 12.7 BPS，比传统 Qwen3-VL 快 10 倍，且目标数量越多，并行加速优势越明显，在48G显存的vGPU上也是取得了不错的运行速度。
+- 二、**准**：LocateAnything 精度高来自结构对齐解码 + 超大专业数据集两大支撑。
+  - 1，传统串行解码和通用 MTP 随意分块，破坏检测框四个坐标间天然几何耦合关系，易产生虚假关联与误差传播；
+  - 而 PBD 按检测框天然边界做块划分，训练时采用块内双向注意力、块间因果注意力，配合 NTP+MTP 双流联合训练，精准学习坐标内在关联，显著提升高 IoU 精细定位能力。
+  - 2，自建LocateAnything-Data 大规模数据集，一个庞大且多样化的训练语料库，包含 1.38 亿个语言查询和 7.85 亿个边界框，涵盖一般 OD、GUI 定位、指称理解、文本本地化和基于点的任务，还专门设计两阶段训练强化密集小目标检测，并加入海量负样本抑制幻觉。
+
+如果场景是可以使用大模型来进行目标检测的，可以优先考虑「LocateAnything」。
  
 ## SSD
  
