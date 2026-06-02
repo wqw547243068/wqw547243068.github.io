@@ -3,7 +3,7 @@ layout: post
 title:   AIGC 顶级机构、公司
 date:   2023-02-17 13:52:00
 categories: 大模型
-tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面 上市 ipo META 杨红霞
+tags: OpenAI ChatGPT AI 开源 aigc 协议 社区 清华 姚期智 人才 奇绩创坛 贾扬清 ilya altman 上海交大 李沐 陈天奇 商汤 公司 翁丽莲 翁荔 智谱 百川 月之暗面 上市 ipo META 杨红霞 mit apache
 excerpt: 世界顶级AI机构/公司（OpenAI/DeepMind/BostonDnymic等）的故事；LLM创业信息
 mathjax: true
 permalink: /ai_company
@@ -623,10 +623,50 @@ AI学者国家分布
 
 #### 开源协议总结
 
-当前GITHUB最常用的开源协议主要由`MIT`，`Apache 2.0`以及`GPLv3`。三种协议里面
+【2026-6-2】豆包：当前GITHUB最常用的开源协议主要由`MIT`，`Apache 2.0`以及`GPLv3`。三种协议里面
 - `MIT`协议最**宽松**，可以任意使用；
 - `Apache`协议对于企业**更友好**，不用担心涉及专利的事情；
 - `GPLv3`是**最严**的，它严格要求使用此协议组件的软件产品也必须按照GPLv3协议开源出来。
+
+总结
+- **MIT**：**最自由，闭源商用无压力，GLM 首选**；
+- **Apache**：**最安全，专利护体，Qwen 企业首选**；
+- **OpenRAIL**：**开放但受限，适合研究/低风险场景，DeepSeek 慎商用**。
+
+三大协议核心条款对比
+
+|对比维度|MIT|Apache 2.0|OpenRAIL（AI专用）|
+|---|---|---|---|
+|**全称**|MIT License|Apache License 2.0|Open Responsible AI License|
+|**核心定位**|极简宽松、商业最友好|企业级友好、专利保护|开放但受控、AI伦理约束|
+|**版权要求**|保留原始版权+许可声明|保留 NOTICE+LICENSE，修改需标注|保留版权+许可，衍生必须继承 OpenRAIL|
+|**商用权限**|✅ 完全免费商用，无门槛|✅ 完全免费商用，无门槛|✅ 允许商用，但**有场景/营收限制**|
+|**衍生作品**|可闭源、可再许可、无传染性|可闭源、无传染性、专利延续|**强传染性**：衍生模型必须同协议|
+|**专利授权**|❌ 无专利条款，有侵权风险|✅ 明确专利授权+反报复条款|❌ 一般无专利授权，需看具体版本|
+|**使用限制**|无任何场景限制|无任何场景限制|❌ 禁止军事、监控、歧视、非法内容等|
+|**免责条款**|作者无担保、无责任|作者无担保、无责任|作者无担保，但违规直接终止授权|
+|**典型适用**|个人项目、初创、基础库|企业级、云服务、专利敏感项目|大模型权重、AI产品、需合规场景|
+
+大模型商用选型结论（2026）
+
+优先选 **Apache 2.0（Qwen）**
+- ✅ 完全免费商用、无营收门槛、无场景限制；
+- ✅ 专利保护完善，企业法务无异议；
+- ✅ 可闭源、可微调后售卖、可云服务化；
+- **推荐**：Qwen3.5-9B/35B/122B 等全系。
+
+次选 **MIT（GLM）**
+- ✅ 极简合规、无任何限制、闭源自由；
+- ⚠️ 无专利保护，需自行评估风险；
+- **推荐**：GLM-4-9B/32B、GLM-5 等。
+
+谨慎选 **OpenRAIL（DeepSeek）**
+- ✅ 免费研究/低营收商用；
+- ❌ 高营收需付费、场景受限、衍生必须开源；
+- ❌ 无专利保护、合规成本高；
+- **推荐**：DeepSeek-R1（数学）、Coder（代码）用于非核心场景；**不推荐**用于核心商业产品、高毛利业务。
+
+
 
 【2023-3-7】[OpenRAIL 协议](https://www.licenses.ai/blog/2022/8/18/naming-convention-of-responsible-ai-licenses), 常用协议无法满足 AI 领域，于是诞生了 OpenRAIL
 - Open & Responsible AI licenses ("`OpenRAIL`") are AI-specific licenses enabling open access, use and distribution of AI artifacts while requiring a responsible use of the latter. 
