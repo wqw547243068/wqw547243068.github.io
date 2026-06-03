@@ -60,16 +60,16 @@ permalink: /finetune
 
 ### 总结
 
-Finetune 并非万能，会有**副作用**（牺牲`通用性`，换取`专业性`提升）
+Finetune 并非万能，会有**副作用**（<span font='color:red'>牺牲`通用性`，换取`专业性`提升</span>）
 
-[普林斯顿论文](https://arxiv.org/pdf/2310.03693.pdf)：除了**恶意样本**会破坏安全性，**良性样本**也会带来损伤
-- 由于机器学习模型本身的**灾难性遗忘**特性，如果微调时**任务数据分布跟原始数据集不同**（微调数据集很难跟原始数据集类似），就会跟原模型跑偏，即： 对**特定领域**（专业性）效果的追求可能导致模型**一般性**（通用性）的丧失，这与深度学习中的`灾难性遗忘`(CF)有关
+[普林斯顿论文](https://arxiv.org/pdf/2310.03693.pdf)：**恶意样本**破坏安全性，**良性样本** 也会带来损伤
+- 由于机器学习模型本身的**灾难性遗忘**特性，如果微调时, **任务数据分布跟原始数据集不同**（微调数据集很难跟原始数据集类似），就会跟原模型跑偏，即： 对**特定领域**（专业性）效果的追求可能导致模型**一般性**（通用性）的丧失，这与深度学习中的`灾难性遗忘`(CF)有关
 
 微调会不会降低多样性？
 
 两篇论文，一篇港科大，一篇uc 伯克利
-- 伯克利论文: 微调模型无法保持与预训练模型相似性能，多模态llm (MLLM)的固有问题
-- 港科大论文: 几种缓解办法 **持续学习**和**Wise-ft方法**都有效地减轻一般性的损失，其中 Wise-ft 在平衡特殊性和一般性方面表现更好
+- 伯克利论文: <span font='color:blue'>微调模型无法保持与预训练模型相似性能</span>，多模态llm (MLLM)的固有问题
+- 港科大论文: 几种缓解办法 **持续学习**和**Wise-ft方法**都有效地减轻一般性的损失，其中 `Wise-ft` 在平衡特殊性和一般性方面表现更好
 
 Finetune 接口背后原理是什么？lora、p-tuning、adapter？
 
@@ -79,8 +79,6 @@ Finetune 接口背后原理是什么？lora、p-tuning、adapter？
 
 怀疑模型微调导致稳定性和泛化能力下降
 - 【2023-10-23】OpenAI官方论坛提问: [What is the theory behind the Finetune interface?](https://community.openai.com/t/what-the-theory-of-gpt-finetune-the-result-looks-not-so-good/447655)
-
-
 
 
 ### 论文
@@ -1865,13 +1863,13 @@ unsloth 还分享了针对 gpt-oss 实现的修复方案和调研成果，以及
 
 unsloth为OpenAI的gpt-oss模型修复了一些问题：
 1. Jinja模板包含多余的换行符，无法正确解析思考部分，工具调用渲染也不正确
-2. 某些版本缺少<|channel|>final标签——这是必需的！
+2. 某些版本缺少`<|channel|>`final标签——这是必需的！
 3. F16数值溢出问题：建议使用F32+BF16组合！
-	
-unsloth 还发布了了几个免费的Colab笔记本：
-1. 通过Tesla T4运行MXFP4 (20B) - 展示如何使用低/中/高推理模式，推理速度令人印象深刻！使用了OpenAI的Triton内核库
-2. 在免费的16GB Tesla T4上微调gpt-oss 20B - 配合Unsloth完美适配，运行稳定无数值溢出！120B参数模型仅需不到65GB显存！
-3. MXFP4 MoE内核适配尝试 - notebooks尝试让其支持反向传播，需要计算X * transpose(W)，虽然W_TRANSPOSE标志存在，但尚未实现完整功能——unsloth正在努力完善中！
+
+unsloth 发布几个免费Colab笔记本：
+1. Tesla T4 运行 MXFP4 (20B) - 展示如何使用低/中/高推理模式，推理速度很快，使用 OpenAI Triton 内核库
+2. 免费 16GB Tesla T4上微调 `gpt-oss 20B` - 配合 Unsloth 完美适配，运行稳定无数值溢出, 120B参数模型仅需不到65GB显存
+3. MXFP4 MoE 内核适配尝试 - notebooks尝试让其支持反向传播，需要计算 X * transpose(W)，虽然 W_TRANSPOSE 标志存在，但尚未实现完整功能——unsloth正在努力完善中！
 
 
 
