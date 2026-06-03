@@ -968,6 +968,15 @@ pdf文件直接显示，800px不能省略px，否则高度低
 
 #### draw.io
 
+
+【2026-6-3】一句话绘制 drawio 流程图
+- 日本开发者提供 next-ai-draw-io: [demo](https://next-ai-drawio.jiang.jp/zh), [github](https://github.com/DayuanJiang/next-ai-draw-io)，[中文文档](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/docs/cn/README_CN.md)
+- Next.js网页应用，与draw.io图表无缝结合。通过自然语言命令和AI辅助可视化来创建、修改和增强图表
+
+```sh
+claude mcp add drawio -- npx @next-ai-drawio/mcp-server@latest
+```
+
 - 【2020-7-4】[draw.io](https://www.draw.io/)，[客户端版本下载](https://www.cnblogs.com/HGNET/p/11893280.html)，[Chrome APP插件](https://chrome.google.com/webstore/detail/drawio-desktop/pebppomjfocnoigkeepgbmcifnnlndla/related?hl=en-GB)
    - [使用drawio进行画图真的很方便(WEB版/Chrome APP版/桌面版)](https://blog.csdn.net/dog250/article/details/89272808)
    - ![](https://tukuimg.bdstatic.com/scrop/468c0e017cdff12b6a2413b2c82c88a2.gif)
