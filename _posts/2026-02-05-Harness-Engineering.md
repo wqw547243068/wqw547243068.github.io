@@ -361,7 +361,7 @@ Harness Engineering 有个独特的概念——「熵与垃圾回收」。
 ![](https://pic4.zhimg.com/v2-c41aa0b68ebee3003bd1d94e4c6583dd_1440w.jpg)
 
 
-### DeepMind AutoHarness
+### 【2026-2-10】DeepMind AutoHarness
 
 【2026-2-10】DeepMind 新论文解决了大语言模型做智能体的核心痛点，甚至让小模型直接吊打了大模型，思路简单又惊艳，非技术也能轻松看懂 AutoHarness。
 - 《[AutoHarness: improving LLM agents by automatically synthesizing a code harness](https://arxiv.org/pdf/2603.03329)》
