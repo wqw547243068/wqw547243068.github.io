@@ -351,6 +351,20 @@ GitHub 上和 PPT 相关的 Skill 项目。
 （5）想把 PDF、图片、论文转成演示，可以看：
 - glmv-pdf-to-ppt、image-to-pptx-skill、paper-slides 这类专用工具。        
 
+## 流程图
+
+
+### drawio 流程图
+
+【2026-6-3】一句话绘制 drawio 流程图
+- 日本开发者提供 next-ai-draw-io: [demo](https://next-ai-drawio.jiang.jp/zh), [github](https://github.com/DayuanJiang/next-ai-draw-io)，[中文文档](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/docs/cn/README_CN.md)
+- Next.js网页应用，与draw.io图表无缝结合。通过自然语言命令和AI辅助可视化来创建、修改和增强图表
+
+```sh
+claude mcp add drawio -- npx @next-ai-drawio/mcp-server@latest
+```
+
+
 ## 视频制作
 
 ### video-use
