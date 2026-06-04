@@ -3,7 +3,7 @@ layout: post
 title:  Agent 智能体设计
 date:   2025-04-19 11:30:00
 categories: 大模型
-tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆 Human 斯坦福 openclaw
+tags: Agent 多模态 agi 自学习 进化  自动化 训练 记忆 Human 斯坦福 openclaw loop claude
 excerpt: LLM Agent 落地时，如何抉择、如何设计架构？
 mathjax: true
 permalink: /agent_design
@@ -1848,6 +1848,7 @@ for section, content in article.items():
 Storm 模式如何通过构建大纲、内容生成和内容优化的多轮迭代来生成高质量的文章。这种模式在实际应用中可以扩展到更复杂的任务和场景，例如生成研究报告、知识库条目等，通过不断优化 Agent 的内容生成和优化策略，实现更加智能和高效的任务执行。
 
 
+
 ## 设计经验
 
 
@@ -2749,6 +2750,76 @@ LLMs 在解决多样化的复杂任务方面表现出色，但构建其工作流
 However, the interplay between multiple design spaces, including prompts and topologies, remains unclear.
 
 
+### 【2026-4-6】Agent Loop
+
+【2026-4-6】[Agent Loop：让 Agent 自己跑起来](https://zhuanlan.zhihu.com/p/2024513975312816009)
+
+Anthropic 在文章《Building effective agents》中，对 Agent 精辟定义：
+> Agents can handle sophisticated tasks, but their implementation is often straightforward. They are typically just LLMs using tools based on environmental feedback in a loop.
+> Agent 可以处理复杂的任务，但它们的实现往往很简单。本质上就是 LLM 在一个循环中，根据环境反馈来使用工具。
+
+注意关键词：`in a loop`（在一个循环中）。
+
+Agent 和 普通 LLM 应用最本质的区别
+- 普通 LLM 应用：问一句答一句，流程是预先写死的。
+- 而 Agent 是把**控制权交给 LLM**，由模型决定下一步做什么、调什么工具、什么时候停下来。
+
+![](https://pic3.zhimg.com/v2-1bcbd95a4ae82bf6afccd813d54949a0_1440w.jpg)
+
+Anthropic 强调：
+> Agent 的核心循环结构非常简单，关键在于模型的能力和工具的设计，而不是复杂的编排逻辑。
+
+Claude Code 就是这个理念的直接产物。如果用过 Claude Code，能感受到：给它一个任务，自己去读代码、改文件、跑命令，一步步推进，直到搞定。
+
+背后驱动这一切的，就是 `Agent Loop`。
+
+
+
+#### 对比
+
+【2026-1-27】[从 ReAct 到 Ralph Loop：AI Agent 的持续迭代范式](https://news.qq.com/rain/a/20260127A01SPM00)
+
+开发者语境中
+- "agent loop" 指智能体内部的 感知—决策—执行—反馈 循环（即典型的感知-推理-行动机制）。
+- 而 Ralph Loop 更侧重于迭代执行同一任务直至成功，与典型智能体循环在目的和设计上有所不同：
+
+结果表明：
+- 常规 Agent Loop 更通用：用于决策型 agent，根据多种状态和输入动态调整下一步操作。
+  - ReAct 模式适合需要动态适应的场景
+  - Plan-and-Execute 模式适合结构化任务分解。
+- Ralph Loop 更像是自动驱动的 refine-until-done 模式：重点是让模型在固定任务上不断修正输出直到满足完成条件。它通过外部强制控制避免了 LLM 自我评估的局限性。
+
+
+#### Ralph Loop
+
+Ralph 循环的“外部化”范式
+
+Claude Code 社区诞生了一种极简但有效的范式——Ralph Loop（也称 Ralph Wiggum Loop）：
+
+```sh
+while :; do
+  cat PROMPT.md | claude-code --continue
+done
+```
+
+核心思想：
+- **同一个提示**反复输入，让 AI 在文件系统和 Git 历史中看到自己之前的工作成果。
+- 这不是简单的“输出反馈为输入”，而是通过外部状态（代码、测试结果、提交记录）形成自我参照的迭代循环。
+- 其技术实现依赖于 Stop Hook 拦截机制。
+
+Ralph Loop 让大语言模型持续迭代、自动运行直到任务完成，而不在典型“一次性提示 → 结束”循环中退出。这种范式已经被集成到主流 AI 编程工具和框架中，被一些技术博主和开发者称作“AI 持续工作模式”。
+
+核心三要素：
+- 明确任务 + 完成条件：定义可验证的成功标准
+- Stop Hook 阻止提前退出：未达标时强制继续
+- max-iterations 安全阀：防止无限循环
+
+
+Ralph 循环打破了依赖 LLM 自我评估的局限性。
+
+实现机制采用**停止钩子**（Stop Hook）技术：
+- 当智能体试图退出当前会话（认为任务完成）时，系统会通过特定的退出代码（如退出码 2）截断退出信号。
+- 外部控制脚本会扫描输出结果，如果未发现预定义的“完成承诺”（Completion Promise），系统将重新加载原始提示词并开启新一轮迭代。
 
 
 ### 【2024-8-15】ADAS
