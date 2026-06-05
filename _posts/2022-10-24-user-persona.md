@@ -325,6 +325,73 @@ maigret user --ai
 maigret user --ai --ai-model gpt-4o-mini
 ```
 
+### 隐私安全
+
+问题
+- 把聊天记录、用户反馈或内部文档丢给大模型时，总担心里面夹杂着真实姓名、手机号、邮箱甚至 API key，只能手动一条条删
+- 团队在处理海量数据时，规则写的正则永远漏掉那些“藏在句子里的隐私”。
+
+
+#### 【2026-4-22】OpenAI Privacy Filter
+
+【2026-4-22】[OpenAI 官方](https://openai.com/zh-Hans-CN/index/introducing-openai-privacy-filter/) 开源 1.5B 参数的隐私过滤模型 `Privacy Filter`，用于脱敏文本中个人身份信息 (PII) 的前沿模型
+- 只用 50M 活跃参数就能精准标记姓名、电话、密码这些敏感信息
+- Hugging Face 上开源（Apache 2.0），带 CLI 和评估工具 [openai/privacy-filter](https://huggingface.co/openai/privacy-filter), [在线DEMO](https://huggingface.co/spaces/openai/privacy-filter)
+- 集成方式：先跑模型标记用户提交的内容，识别出隐私 spans，再用规则或另一个轻量模型清除，最后把干净文本喂给下游大模型。
+- 整个流程本地就能完成，不用把原始数据传出去。
+
+<img width="900" height="100%" alt="78bed06a752c78feee8486ead504a01e" src="https://github.com/user-attachments/assets/393d463c-1801-4d18-8dbd-8d0d5b65effe" />
+
+
+特性：
+- 快速高效：所有 Token 均在单次前向传播中完成标注。
+- 上下文感知：语言先验能力使其能够根据周围语境检测出 PII 片段。
+- 长上下文：发布的模型支持高达 128,000 个 Token 的上下文。
+- 可配置：开发者可以根据自己的工作流调整运行参数，从而平衡召回率 (recall) 和准确率 (precision)。
+
+**本地隐私清洗**变得可行，而不是每次都把原始数据甩到云端。 
+- 以前靠正则的方案，在复杂语境下经常漏网；
+- 现在用上下文理解的模型，准确率上了一个台阶，而且体积小到能在浏览器或普通笔记本上跑。
+
+模型本身不删内容，只负责标记，开发者再接规则或另一个模型去清理，最后把干净文本喂给大模型。
+
+
+局限
+- 模型只输出标记（spans），不会直接生成脱敏后的干净文本，开发者必须自己接规则批量删除或替换。
+- 边界条件：对抗性格式（故意变形隐私信息）可能失效，多语言支持目前较弱，基准测试里也用了 OpenAI 自己的模型来评测自家东西，社区有人指出这点有争议。
+- 实际部署时，要测试自己的数据集，不能全信官方 F1 分数。
+
+Privacy Filter 是**双向 token 分类**模型，带 span decoding，架构类似 GPT-OSS 但规模小得多。
+- 总参数 1.5B，推理时只有约 50M 活跃参数（用了 Sparse Mixture-of-Experts），单次前向传播里非常轻量。
+- 支持最高 128K 上下文窗口，吃下长文本，不用分 chunk，吞吐量高，准确率也更有保障。
+- 识别八类实体：<span style='color:blue'>姓名、地址、电话号码、邮箱、日期、账号、银行账号、URL、密码、API 凭证</span>等。
+- 通过上下文判断，而不是死板的正则，所以“张三的手机号是 138xxxxxxxx”这种自然句子也能准确定位。
+
+该模型具备极高的**适配效率**。即使只用少量数据进行微调，也能迅速提高其在特定领域任务中的准确性
+
+原以为小模型在隐私任务上会牺牲太多召回率，结果看到 1.5B + 50M 活跃的配置，还带 128K 上下文，认知被修正了
+
+效果
+- PII-Masking-300k⁠ 基准测试中，OpenAI Privacy Filter 达到了 96% 的F1分数（准确率 94.04%，召回率 98.04%）。
+- 在针对评估中发现的标注问题进行修正后的基准测试版本中，其 F1 分数提升至97.43%（准确率 96.79%，召回率 98.08%）。
+
+
+
+代码示例
+
+```py
+# 示例伪代码，目的：先用 Privacy Filter 标记，再清理
+from privacy_filter import detect_pii  # 假设加载方式
+
+text = "我的名字是李四，手机号 13800138000，邮箱 lisi@example.com。"
+spans = detect_pii(text)  # 返回需要遮蔽的 span 列表
+
+# 后续用规则替换
+clean_text = redact_spans(text, spans)  # 自定义函数，把识别到的替换成 [REDACTED]
+
+# 再喂给大模型
+response = big_model.generate(clean_text)
+```
 
 
 ### 标签化
