@@ -696,6 +696,26 @@ FlashWorld 在预设轨迹下产生非常稳定、完整且高质量的渲染结
 
 目前项目持续更新，支持本地部署，不用担心数据泄露，个人、小团队都能放心用。
 
+### 【2026-6-5】Kairos-Homeworld 房间模拟器
+
+【2026-6-5】[全球首个机器人训练楼盘开盘：30万套中国住宅，机器人拎包入住](https://mp.weixin.qq.com/s/eBi6n17c8Xo3iFl33FcQxg)
+
+大晓机器人联合港中文MMLab发布新项目 [Kairos-Homeworld]()，全球首个实现全屋三维生成与物体级全交互的统一框架。
+- [Kairos 3.0-4B](https://github.com/kairos-agi/kairos-sensenova)
+- [HomeWorld](https://kairos-homeworld.github.io)
+- 第一次把30万套中国真实住宅户型，搬进了数字世界。
+- Kairos-Homeworld 不是给「找房APP」看房的，而是给「具身智能机器人」训练的仿真环境。
+  - 从30平米一居室到200平米大平层，从南北通透到封闭式厨房，从干湿分离卫生间到独立生活阳台，统统变成了机器人用来训练的3D仿真环境。
+  - Kairos-Homeworld 并不单纯是一个数据集，还是能够自动“盖房子”的模拟器。
+
+大晓机器人开源过4B参数的世界模型 Kairos 3.0-4B。
+- Kairos-Homeworld 给机器人建造训练场
+- Kairos 3.0-4B 则是给机器人装上理解这个世界的大脑。
+
+具身智能最核心的两块拼图：环境和模型，训练场和大脑。
+
+
+
 
 # 结束
 
