@@ -1177,6 +1177,16 @@ Gary Marcus 认为:
 - 宣告了任何试图在**纯粹 LLM** 基础上构建 AGI 希望的终结。
 - 还 @了 Geoffrey Hinton，称后者要失败（checkmate）。
 
+#### 【2026-6-3】复旦 Caliper
+
+2026年6月3日，大模型因果推理 60-70%准确率，是真的在推理还是押中训练集词汇模式？
+
+Caliper 方法把问题中的“下雨”“打雷”替换成X、Y占位符后，准确率暴跌30个百分点。
+- 论文 [Caliper: Probing Lexical Anchors versus Causal Structure in LLMs](https://arxiv.org/abs/2606.04915)
+
+这暴露了当前LLM实际**依赖表层词汇锚点，而非因果结构**。
+
+论文在9个模型（3.8B–671B）和三个基准（CLadder、CRASS、e-CARE）上验证了这一差距，说明现有评估严重高估了模型的真实结构推理能力。
 
 
 ### 推理能力来源
