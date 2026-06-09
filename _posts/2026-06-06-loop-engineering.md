@@ -15,7 +15,7 @@ permalink: /loop
 # Loop Engineering
 
 
-## 起因
+## 浅层 Agent 不足
 
 如何构建“深度”思考和执行复杂任务的 Agent？ 
 
@@ -25,11 +25,13 @@ permalink: /loop
 - 无法进行长远规划，也难以胜任需要多步骤、深度思考的复杂任务。
 - 擅长处理单一、直接的指令，但在面对需要持续数小时甚至数天的研究或编码项目时，往往会迷失方向或过早地认为任务已完成。
 
-借鉴 OpenAI 的 “Deep Research”、Manus 以及 Anthropic 的 “Claude Code” 等前沿应用的实践，剖析共同要素。
+借鉴 OpenAI  “Deep Research”、Manus 以及 Anthropic 的 “Claude Code” 等前沿应用的实践，剖析共同要素。
 
 
 ## DeepAgents
 
+
+### 介绍
 
 【2025-7-30】LangChainAI开发 Python 工具包 [Deep Agents](https://blog.langchain.com/deep-agents/)，快速构建能够处理复杂任务的AI代理。
 - [官方中文文档](https://langchain-doc.cn/v1/python/deepagents/overview.html)
@@ -44,8 +46,29 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 
 2025年8月13日，又发布更易上手的交互界面，Deep Agents UI。
 
+教程
+- [deepagents-book](https://github.com/lingxingAI/deepagents-book) 从 Harness 工程角度系统拆解 deepagents 项目的中文技术书籍
+
 
 ### 架构
+
+DeepAgents 架构优势
+
+模块化设计：
+- 工具（Tools）：扩展 Agent 能力
+- 中间件（Middleware）：处理上下文管理
+- 技能（Skills）：实现特定领域功能
+- 后端（Backend）：支持本地执行
+
+记忆管理：
+- 通过 Checkpointer 实现状态持久化
+- 支持多线程对话
+- 中间件自动摘要优化上下文
+
+技能系统：
+- 基于 Markdown 文件定义
+- 触发词机制自动激活
+- 支持复杂的多轮交互流程
 
 DeepAgents 三大设计原则：封装通用能力、简化开发、模块化组合。
 - 封装通用能力：任务规划、子代理管理、文件系统等复杂逻辑全部隐藏在create_deep_agent内部，开发者无需编写任何LangGraph节点和边的代码。
