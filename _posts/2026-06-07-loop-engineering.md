@@ -1,4 +1,4 @@
-<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/fff2f5cc-e242-4c83-8a64-69e40683caf5" />---
+---
 layout: post
 title:  Loop Engineering 循环工程
 date:   2026-06-07 22:46:00
@@ -40,6 +40,7 @@ permalink: /loop
 
 <img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/0b18fbe2-79e5-41a9-aa8d-11597697c1af" />
 
+<img width="1280" height="100%" alt="image" src="https://github.com/user-attachments/assets/fff2f5cc-e242-4c83-8a64-69e40683caf5" />---
 
 
 
