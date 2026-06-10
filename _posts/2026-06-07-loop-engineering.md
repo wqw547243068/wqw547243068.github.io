@@ -38,16 +38,24 @@ permalink: /loop
 
 ![](https://pbs.twimg.com/media/HKYhsj-XsAAd3fr?format=jpg&name=large)
 
-<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/0b18fbe2-79e5-41a9-aa8d-11597697c1af" />
+<img width="1280" height="100%" alt="image" src="https://github.com/user-attachments/assets/fff2f5cc-e242-4c83-8a64-69e40683caf5" />
 
-<img width="1280" height="100%" alt="image" src="https://github.com/user-attachments/assets/fff2f5cc-e242-4c83-8a64-69e40683caf5" />---
+
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/0b18fbe2-79e5-41a9-aa8d-11597697c1af" />
 
 
 
 ### 起源
 
 loop 不是新词，真实血脉：
-- `ReAct`（2022）→ `AutoGPT`（2023）→ `ralph`（2025，Geoffrey Huntley 用一行 bash 反复喂同一个 prompt，约 297 美元造了一门编程语言）→ `/goal`（2026 春，Codex 和 Claude Code 都上了）→ 如今的`编排 loop`。
+- `ReAct`（2022）→ `AutoGPT`（2023）→ `ralph`（2025）→ `/goal`（2026 春）→ 2026年6月的`编排 loop`。
+
+详情
+- 2022 `ReAct`
+- 2023 `AutoGPT`
+- 2025 `ralph` Geoffrey Huntley 用一行 bash 反复喂同一个 prompt，约 297 美元造了一门编程语言
+- 2026 春 `/goal` Codex 和 Claude Code 都上了
+- 2026年6月 `编排 loop` Loop Engineering
 
 第五级新意在于四点：loop 成了工作单元、loop 开始监督别的 loop、调度取代人来启动、git 存状态且能崩溃恢复。 
 
