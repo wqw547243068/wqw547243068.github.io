@@ -1,10 +1,10 @@
----
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/fff2f5cc-e242-4c83-8a64-69e40683caf5" />---
 layout: post
-title:  Loop Engineering
+title:  Loop Engineering 循环工程
 date:   2026-06-07 22:46:00
 categories: 大模型
 tags: gpt ChatGPT langchain go manus 
-excerpt: 新一代Agent框架 Loop Agent实现
+excerpt: 硅谷新兴概念，新一代Agent框架 Loop Agent实现
 mathjax: true
 permalink: /loop
 ---
@@ -12,7 +12,7 @@ permalink: /loop
 * content
 {:toc}
 
-# Loop Engineering
+# Loop Engineering 
 
 
 ## 浅层 Agent 不足
@@ -34,8 +34,12 @@ permalink: /loop
 - 公众号文章：[Loop Engineering 循环工程又是什么鬼？](https://mp.weixin.qq.com/s/lfq0Kz1Ok68j99hfnmz2AA)
 - LE资源：
   - GitHub 资料总结：[loop-engineering](https://github.com/cobusgreyling/loop-engineering), 受 Addy Osmani and Boris Cherny / Anthropic 启发
+  - 【2026-6-10】[Loop engineering: the 14-step roadmap from prompter to loop designer](https://x.com/0xCodez/status/2064374643729773029)
+
+![](https://pbs.twimg.com/media/HKYhsj-XsAAd3fr?format=jpg&name=large)
 
 <img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/0b18fbe2-79e5-41a9-aa8d-11597697c1af" />
+
 
 
 
