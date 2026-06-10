@@ -31,6 +31,7 @@ permalink: /loop
 
 【2026-6-9】
 - 原文[Loop Engineering](https://addyosmani.com/blog/loop-engineering/), 译文 [循环工程](https://x.com/cellinlab/article/2064144608242679822)
+- 公众号文章：[Loop Engineering 循环工程又是什么鬼？](https://mp.weixin.qq.com/s/lfq0Kz1Ok68j99hfnmz2AA)
 
 <img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/0b18fbe2-79e5-41a9-aa8d-11597697c1af" />
 
