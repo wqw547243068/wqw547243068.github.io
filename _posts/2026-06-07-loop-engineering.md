@@ -3,7 +3,7 @@ layout: post
 title:  Loop Engineering 循环工程
 date:   2026-06-07 22:46:00
 categories: 大模型
-tags: gpt ChatGPT langchain go manus 
+tags: gpt ChatGPT langchain go manus claude openclaw deepagents
 excerpt: 硅谷新兴概念，新一代Agent框架 Loop Agent实现
 mathjax: true
 permalink: /loop
