@@ -1851,6 +1851,35 @@ RedisSearch 是一个Redis模块，提供了查询、二级索引，全文检索
 如果要使用RedisSearch，需要首先在Redis数据上声明索引
 
 
+#### RedisVL
+
+同时考虑 “高性能”、“实时性”、“生产环境可靠性”和“生态成熟度”这几个要求，Redis 往往会脱颖而出。
+
+而 RedisVL （Redis Vector Library）正是为了更顺畅地在 Python 里驾驭Redis的向量搜索能力。
+
+RedisVL 不是一个独立数据库，而是官方推出的、生产就绪的 Python客户端库
+- 目标很明确：成为构建AI应用时，连接业务逻辑与Redis向量存储层的那座最稳固的桥梁。
+
+当时用着某个纯向量数据库，单次检索虽然不慢，但一旦结合复杂的元数据过滤（比如按时间、按分类、按状态筛选），延迟就上来了，更别提想做实时缓存和会话管理还得额外引入组件，架构变得复杂。 
+
+RedisVL 直接把向量搜索、复杂过滤、**语义缓存**、LLM记忆管理这些AI应用的核心需求 用一套简洁的Python API封装了起来，背后是久经考验的Redis引擎。
+- “闪电般的向量搜索遇上了企业级的可靠性”
+
+RedisVL 架构：
+- 基础索引与检索层 ：基石，对应 SearchIndex 和各类 Query 对象。负责在Redis中创建和管理支持向量的搜索索引，并执行向量搜索、全文搜索、混合搜索以及复杂的多条件过滤。这部分功能直接对应Redis Search模块的能力，但 redisvl 通过Pythonic的API让其更易用。
+- 开发工具链层 ：提升开发效率，包括 Vectorizer （与OpenAI、Cohere等多家嵌入模型服务集成）、 Reranker （对搜索结果进行重排序以提升相关性）以及命令行工具 rvl 。特别是 Vectorizer ，它抽象了调用不同嵌入模型API的细节，让“文本变向量”这个过程变得标准化。
+- AI扩展模式层 ：这是 redisvl 的精华所在，封装了AI应用中的常见模式。 SemanticCache 用于缓存LLM的问答对以降低成本和延迟； EmbeddingsCache 专门缓存昂贵的嵌入向量； SemanticMessageHistory 为AI智能体（Agent）提供基于向量搜索的“记忆”能力； SemanticRouter 实现语义路由。这些不是简单的工具，而是经过验证的最佳实践设计模式，可以直接集成到你的AI应用架构中。
+
+安装
+
+```sh
+pip install redisvl
+pip install redisvl[mcp]
+```
+
+[资料](https://blog.csdn.net/weixin_42641869/article/details/160837421)
+
+
 ### Faiss
 
 
