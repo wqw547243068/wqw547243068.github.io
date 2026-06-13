@@ -4,7 +4,7 @@ title:  DeepAgents 框架介绍
 date:   2026-03-01 22:46:00
 categories: 大模型
 tags: langchain claude deepagents
-excerpt: 硅谷新兴概念，新一代Agent框架 Loop Agent实现
+excerpt: LangChain 新Agent框架 DeepAgent 介绍
 mathjax: true
 permalink: /deepagents
 ---
