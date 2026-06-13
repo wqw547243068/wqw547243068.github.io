@@ -3,7 +3,7 @@ layout: post
 title:  数据合成专题 AI Data-centric AI
 date:   2024-05-10 12:00:00
 categories: 大模型
-tags: gpt ChatGPT 数据集 persona 用户画像
+tags: gpt ChatGPT 数据集 persona 用户画像 开源 不可能三角
 excerpt: 数据质量直接决定模型上限，如何高效利用数据？
 mathjax: true
 permalink: /llm_data
@@ -17,12 +17,30 @@ permalink: /llm_data
 
 ## 认知
 
+
+### 不可能三角
+
+开源大模型开源的是什么？模型权重，模型架构代码，训练和推理的脚本和tokenizer，有诚意的团队会在技术报告中写训练**超参数**（炼丹的火候）和**数据配比**（丹方），但没有一家大模型厂家会开源他们的训练数据。
+
+开源数据集存在根本矛盾－－“不可能三角”
+- 开源数据集不可能同时做到：`大规模`，`高质量`，`安全可信`。
+
+<!-- draw.io diagram -->
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot;&gt;\n  &lt;diagram name=\&quot;开源数据集不可能三角\&quot; id=\&quot;FDYLudIObT2WzYFrVM5Z\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;940\&quot; dy=\&quot;694\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-2\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontStyle=1\&quot; value=\&quot;大规模\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; width=\&quot;120\&quot; x=\&quot;340\&quot; y=\&quot;410\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-3\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontStyle=1\&quot; value=\&quot;高质量\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; width=\&quot;120\&quot; x=\&quot;170\&quot; y=\&quot;630\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-4\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontStyle=1\&quot; value=\&quot;安全可信\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;50\&quot; width=\&quot;120\&quot; x=\&quot;500\&quot; y=\&quot;630\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-6\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;Ej4o6bd80fUxvOtR8VaC-2\&quot; style=\&quot;endArrow=none;html=1;strokeColor=#ff3333;strokeWidth=2;fontColor=#ff0000\&quot; target=\&quot;Ej4o6bd80fUxvOtR8VaC-3\&quot; value=\&quot;无法同时兼得\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-7\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;Ej4o6bd80fUxvOtR8VaC-3\&quot; style=\&quot;endArrow=none;html=1;strokeColor=#ff3333;strokeWidth=2;fontColor=#ff0000\&quot; target=\&quot;Ej4o6bd80fUxvOtR8VaC-4\&quot; value=\&quot;无法同时兼得\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-8\&quot; edge=\&quot;1\&quot; parent=\&quot;1\&quot; source=\&quot;Ej4o6bd80fUxvOtR8VaC-4\&quot; style=\&quot;endArrow=none;html=1;strokeColor=#ff3333;strokeWidth=2;fontColor=#ff0000\&quot; target=\&quot;Ej4o6bd80fUxvOtR8VaC-2\&quot; value=\&quot;无法同时兼得\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;Ej4o6bd80fUxvOtR8VaC-9\&quot; parent=\&quot;1\&quot; style=\&quot;text;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontSize=18;fontStyle=1\&quot; value=\&quot;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;开源数据集&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;color: rgb(0, 0, 0); font-family: Helvetica; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&amp;quot;&amp;gt;不可能三角&amp;lt;/span&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;30\&quot; width=\&quot;190\&quot; x=\&quot;330\&quot; y=\&quot;340\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+所以，唯一的方法构建**自研数据集**，用复杂数据流水线，从开源、自爬、购买的混合数据源中，清洗、过滤、去重、合成，构建出“规模足够大、质量足够高、足够安全”的专有混合配方。
+
+
 ### 数据 ＞ 模型
 
 数据在模型训练中非常重要。
 - 数据提升对于模型效果的提升至关重要，而模型的提升效果却不明显
 - 很多研究人员开始研究**以数据为中心**，想办法加强数据的质量和数量， 而不过多考虑模型或固定数据集
 - [img](http://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6eef698e52a64ce0ad3c23ceeab70042~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+
 
 
 ### 劣质数据影响很大
