@@ -862,8 +862,9 @@ LMDeploy是由上海人工智能实验室模型压缩和部署团队开发的部
 
 LLM 推理过程分两个阶段: `prefill` 和 `decode`, 通常用 KV cache 技术加速推理
 
-
 PagedAttention的设计灵感来自操作系统的虚拟内存分页管理技术
+
+线上推理真正绕不开的几件事：压测、PD 分离、长上下文、MoE、灰度、LoRA、KV Cache 量化和反馈闭环
 
 ### 总结
 
