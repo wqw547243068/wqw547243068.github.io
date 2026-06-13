@@ -741,15 +741,42 @@ model(input_ids=inputs, labels=inputs).loss.backward()  # training works as usua
 
 ### KV Cache
 
-大模型推理性能优化一个最常用技术就是 `KV Cache`，该技术可以在**不影响任何计算精度**的前提下，通过<span style='color:red'>空间换时间</span> 提高推理性能。
+大模型推理性能优化最常用技术： `KV Cache`，在**不影响任何计算精度**的前提下，通过<span style='color:red'>空间换时间</span> 提高推理性能。
 - 目前业界主流 LLM 推理框架均默认支持并开启了该功能。
 
-Transformer 模型具有`自回归推理`的特点
-- 每次推理只会预测输出一个 token，当前轮输出token 与历史输入 tokens 拼接，作为下一轮的输入 tokens，反复执行多次。
+Transformer 模型具有`自回归推理`特点
+- 每次推理只预测一个 token，当前轮输出token 与历史输入 tokens 拼接，作为下一轮的输入 tokens，反复执行多次。
   - 前i次的token会作为第i+1次的预测数据送入模型，拿到第i+1次的推理token
   - Transformer会执行**自注意力**操作，要给当前序列中的每个项目（无论是prompt/context还是生成的token）提取键值（kv）向量
   - 这些向量存储在一个矩阵中，通常被称为`kv cache`。
 - 该过程中，前后两轮的输入只相差一个 token，存在重复计算。
+
+不加KV Cache 会发生什么
+- 生成第1个token：计算token1的K/V
+- 生成第2个token：重新计算token1的K/V + 计算token2的K/V
+- 生成第3个token：重新计算token1、token2的K/V + 计算token3的K/V
+- 每步都重新计算所有历史token，计算量O(n²)。
+
+加KV Cache后
+- 生成第1个token：缓存K1、V1
+- 生成第2个token：复用K1、V1，只计算token2的K2/V2
+- 生成第3个token：复用K1、K2、V1、V2，只计算token3的K3/V3
+- 历史token的K/V只算一次。<span style='color:green'>计算量从O(n²)降为O(n)</span>。
+- 生成1000个token：无缓存需500k次K/V计算，有缓存只需1000次。速度差距数百倍。
+
+显存代价
+
+KV Cache需要显存存储。
+- 7B模型存1000个token的KV Cache约0.5-1GB。
+- 序列越长，显存线性增长。
+
+常用优化
+- 量化KV Cache：INT8存储，显存减半
+- 滑动窗口缓存：只保留最近N个token，适合无限长对话
+- PagedAttention（vLLM）：分页存储，减少显存碎片
+
+总结
+- KV Cache 用显存换计算，每个token的K/V只算一次，大模型推理的标配优化。
 
 `KV Cache` 技术实现了将**可复用**的键值向量结果保存下来，从而避免了重复计算。
 - ![](https://pic4.zhimg.com/80/v2-1201b9194f2a70641f1d50f92735b093_1440w.webp)
