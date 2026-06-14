@@ -3,7 +3,7 @@ layout: post
 title:  规模法则 Scaling Law
 date:   2024-09-05 12:00:00
 categories: 大模型
-tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind agent
+tags: LLM ilya 缩放定律 ttt 乔姆斯基 扩展法则 openai google deepmind agent 吴恩达 anthropic
 excerpt:  谈谈影响LLM发展的重要定律, 规模法则(Scaling Law)
 mathjax: true
 permalink: /llm_law
@@ -432,6 +432,33 @@ plot_power_law(-0.5) # y = x^(-0.5)
 
 ## 什么是 Scaling Laws
 
+Scaling Laws 解决问题: 
+- 小模型上找规律, 外推到大模型.
+- 旧范式像盲人摸象, 训一堆大模型调参. 新范式像用望远镜看地图, 训一堆小模型, 把规律外推. 成本差可达两个数量级.
+
+Scaling Laws 起源[很早](https://www.xiaohongshu.com/explore/6a2ae26f0000000020038d45?app_platform=android&ignoreEngage=true&app_version=9.33.4&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBUu9SO9vwoHHdISCuvew3UoW6Q2VnlXzceAwMTlg_tt8=&author_share=1&xhsshare=CopyLink&shareRedId=OD06NUlINT42NzUyOTgwNjY7OTpIOT5B&apptime=1781355791&share_id=1860dd35096244fd8272740170e518f9)
+- 1993年, Bell Labs 的 Cortes 和 Vapnik 等人发表第一篇 Scaling Law论文. 公式 `Error = E_irreducible + A * N~(-alpha)` 与现代
+形式惊人相似. 三十年前的理论家已经在思考: 能不能不训练完整模型, 就预测模型好坏?
+- 2001年, Banko和Brill证明: 单纯扩大数据量就能带来巨大性能提升, 甚至比算法改进更有效. 这个结论在二十年后仍然成立.
+- 2017年, Joel Hestness 等人在百度的实验, 是现代Scaling Law的开山之作, 展示了机器翻译,语音,视觉任务的误差率随数据量呈幂律下降.
+  - 【2017-12-1】论文 [DEEP LEARNING SCALING IS PREDICTABLE, EMPIRICALLY](https://arxiv.org/pdf/1712.00409) 首次展示了在机器翻译和语言建模等领域，深度学习性能随模型和数据规模的扩大而呈现出可预测的模式
+  - 曲线分为三个区域: 数据太少时模型随机猜测; 数据足够多进入幂律区,双对数坐标下呈直线; 最后逼近不可约误差,再堆数据也没用.
+  - 数据太少时，**随机猜测区**
+  - 数据足够时，**幂律区**
+  - 再堆数据也没用的**不可约误差区**.
+- 工程决策只关注中间的直线段. (经典某度,经典起大早赶晚集)
+
+![](https://developer.qcloudimg.com/http-save/yehe-1754229/246d7b175d0fddf916958b66dc5e7832.png)
+
+注:
+> Anthropic CEO Dario Amodei 曾在百度硅谷人工智能实验室工作。
+> 曾于2014至2015年, 在百度与吴恩达共事，期间他便观察到了数据与计算量增加会提升模型表现的现象，这为他后来在业内普及该定律奠定了基础
+
+直到2020年, OpenAI 论文正式提出, Scaling Laws 成型
+	
+Scaling并不万能,也有边界. 
+- Inverse Scaling Prize里有很多反例: 模型越大, 在复制检测和反事实推理等任务上反而越差.
+- 这说明Scaling在分布内有效, 在分布外可能翻车.
 
 ### 背景
 
@@ -465,11 +492,9 @@ Scaling Laws 意义:
 
 【2024-9-20】[AI can't cross this line and we don't know why](https://www.youtube.com/watch?v=5eqRuVp65eY)
 
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5eqRuVp65eY?si=dfoIUDqztuQOr8hx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Scaling Law 定义
-
 
 主要有两个版本: OpenAI V.S DeepMind
 - OpenAI 提出的 `Kaplan-McCandlish` 扩展法则
