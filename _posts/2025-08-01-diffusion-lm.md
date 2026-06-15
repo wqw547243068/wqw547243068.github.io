@@ -3,7 +3,7 @@ layout: post
 title:  "扩散语言模型"
 date:   2025-08-01 16:22:00
 categories: 大模型
-tags: 扩散模型 语言模型 自回归 深度搜索 agent 何恺明
+tags: 扩散模型 语言模型 自回归 深度搜索 agent 何恺明 田渊栋
 excerpt: 新兴方向：扩散语言模型
 author: 鹤啸九天
 mathjax: true
@@ -15,6 +15,29 @@ permalink: /diffusion_lm
 
 
 # 扩散语言模型
+
+
+LLM 大部分是 autoregressive类的生成模型，但 diffusion类 才是生成模型的未来。
+
+现在LLM生成的答案，一个token一个token ，生成出来后, 无法返回修改。
+
+diffusion 对整个答案的token都进行修改。准确预测下一个词太难了，而人类对答案都是多番修改的。
+
+例子
+- diffusion world model 论文，从 autoregressive transformer 切换为 diffusion transformer
+- 主要原因： diffusion 可以一并修改多个timestep的内容，而不是逐个timestep采样，结果也是diffusion的效果更好。
+
+
+
+
+## 观点
+
+【2026-6-13】`田渊栋`扩散模型观点 
+
+硅谷101：对于 Diffusion+LLM 路线，`田渊栋`谨慎乐观: 非常值得研究，尤其是**推理加速**和**训练效率**方面。
+- Meta 内部尝试通过Diffusion架构、强化学习等方式改进模型训练与解码过程，从而获得比传统自回归模型更快的生成速度。
+- 不过 Diffusion路线在**复杂推理、知识泛化和能力塑造**方面仍无法与顶级大语言模型相提并论，距离GPT这类模型展现出的综合能力还有明显差距。
+因此，Diffusion+LLM 是充满潜力的新方向，而非已经被验证能够取代现有大模型范式的成熟方案。
 
 
 ## AR vs Diffusion
@@ -37,20 +60,19 @@ permalink: /diffusion_lm
 
 ## ARM 问题
 
-
 问题：“难道只有自回归范式才能实现LLM的智能吗？”
 
 实践表明，自回归模型虽然有效，但并非完美无缺。
 
-自回归结构的一些局限性：
+自回归结构局限性：
 - 计算效率低：推理时无法并行生成
 - 长程依赖于逆向推理难题：缺乏从右向左的推理能力，导致无法反向推理，利用后文
 - 上下文限制：未来信息智能纳入隐式表示，无法条件影响后续词；BERT双向，但非生成模型
 
 ARM存在两大固有缺陷： 
-1. 顺序生成瓶颈：逐token生成导致计算效率低下
+1. **顺序生成**瓶颈：逐token生成导致计算效率低下
   - 推理速度瓶颈：完全串行机制导致推理延迟高、服务成本居高不下，模型规模越大，问题越严峻
-1. 推理方向受限：左到右的单向建模难以处理反向任务（如“反转诅咒”现象）—— LLaDA因双向建模特性实现突破
+1. **推理方向受限**：左到右的单向建模难以处理反向任务（如“反转诅咒”现象）—— LLaDA因双向建模特性实现突破
   - 局部视野与不可逆生成的双重缺陷：AR模型线性的生成路径不仅带来局部视野局限，难以整体理解化学分子式等结构化知识；更致命的是缺乏自我修正（Self-Correction）能力。
   - 每个词元的生成都是一个不可逆的「最终决策」，一旦出错便无法挽回，导致错误累积。
   - 这与扩散模型等范式形成了鲜明对比，后者理论上支持迭代优化和全局修正。
@@ -76,7 +98,6 @@ ARM存在两大固有缺陷：
 
 两种范式对比
 - ![](https://spacehunterinf.github.io/assets/img/diffusionlm_blog/diffusion_vs_ar-1400.webp)
-
 
 【2025-9-7】[火的一塌糊涂的「扩散语言模型」是啥](https://mp.weixin.qq.com/s/U9kmYoFLG_SK5nqOE-NyZA) 漫画讲解
 - 【2025-8-14】参考论文 [A Survey on Diffusion Language Models](https://arxiv.org/pdf/2508.10875) 包含扩散模型发展进化图
