@@ -477,11 +477,17 @@ AutoSci 是以记忆为核心的智能体系统，可实现从文献收录到审
 
 【2026-5-27】[DeepSeek陈德里开发自动研究Skill，写一篇论文人类只动脑2小时](https://zhuanlan.zhihu.com/p/2042892227588904782)
 
-DeepSeek 研究员陈德里在X上发布第二篇论文聚焦持续学习与自我迭代
+DeepSeek 研究员`陈德里`在X上发布第二篇论文聚焦持续学习与自我迭代
 
 DeliAutoResearch SKILL 系统从6分跃升至8分，人工干预大幅减少，自主性显著增强。
 - 论文共迭代6次（V1：4 次，V2：1 次，V3：1 次），总耗时6天，进行了约108轮Agent调用，消耗64.8万token，写了2234行LaTeX代码。
 - 103个参考文献，全部已验证。论文现为46页，538KB，含7个图表+4个表格。
+
+【2026-6-18】AutoResearch 开源，并发布Self-play综述论文。
+- [Deli_AutoResearch](https://victorchen96.github.io/auto_research/framework.html)
+- 同时， 发布第四篇综述论文——Self-play。 [auto_research](https://victorchen96.github.io/auto_research/paper.html)
+
+其AI智能体首次完全自主地在DeepSeek 285B模型上完成完整RL研究闭环——从实验设计、写代码、提交GPU任务、debug到结论总结，全程零人工干预。系统调用了GRPO工具，被视为持续学习研究的开端
 
 论文提出三轴统一框架、形式化收敛条件，并指出六大开放挑战，为AGI时代的学习范式指明方向。
 
