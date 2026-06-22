@@ -274,8 +274,28 @@ RL训练容易卡在奖励分配分配环节
 
 2026年折中方案是"双重裁判": 硬指标走规则验证，软指标上推理型RM(先推理解构答案再打分)，再叠人工抽检做校准。三管齐下是目前较稳的防 hack 组合
 
+### Agentic RL PPO > GRPO
 
-  
+智谱在 GLM-5.2 强化学习里又用上了PPO
+- 对长程任务来说，GRPO credit-assignment 颗粒度过粗可能确实会影响效果，不同rollout长度差异显著可能也会影响GRPO的效果。
+	
+UC Berkeley 的论文（VIMPO），介于 GRPO 和 PPO 之间的一种新尝试。
+- 通过构造出的token-level advantage，在不训练critic model的情况下，基于GRPO达到类似于PPO的效果，也在Qwen3-4B上得到了一些基础的实验验证。
+	
+不过 LLM论文都有这个问题：小模型上的实验到底有多大程度可以进一步scaling，Scaling以后无论是计算和infra复杂度还是实际效果，相比小模型可能都会有比较大的差异。
+
+
+【2026-6-22】Agentic 任务的复杂性（长轨迹、多轮工具交互、多维复合 Reward）导致**信用分配**（Credit Assignment）极度困难。 
+- 孤立的 Final Reward 无法辨析 Planner、Searcher 或 Verifier 在中间节点的功过，易引发 Reward Hacking。
+
+PPO 相比 GRPO 在 Agentic RL 中更具优势：
+- 解耦长程依赖： 依赖 Critic 网络，提供更自然的价值估计。
+- 细粒度对齐： 完美兼容 Process/Turn-level Reward，实现模块级的信号分配。
+
+结论： 
+> GRPO 虽是好 Reasoning 优化器，但在复杂 Agentic RL 场景下，PPO 依然是更稳健、更天然的选择。
+
+
 
 
 # 结束
