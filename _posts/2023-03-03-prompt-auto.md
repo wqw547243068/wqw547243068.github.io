@@ -1332,8 +1332,8 @@ prompt-optimizer 开源项目：
 【2025-3-2】[Prompt Optimizer：一个强大的提示词优化工具](https://mp.weixin.qq.com/s/uM1ro-yVJdEgnkIMU2_Gmg)
 
 [Prompt Optimizer](https://always200.com/)：一个强大的提示词优化工具，一键提升AI回复的准确度。
-- 官方体验 [prompt](https://prompt.always200.com/)
-- 代码 [prompt-optimizer](https://github.com/linshenkx/prompt-optimizer)
+- 官方体验 [prompt](https://prompt.always200.com/)，支持文本、图像提示词自动化
+- 代码 [prompt-optimizer](https://github.com/linshenkx/prompt-optimizer)，插件、软件下载地址 [prompt-optimizer](https://github.com/linshenkx/prompt-optimizer/releases)
 - [Chrome商店](https://chrome.google.com/webstore/detail/prompt-optimizer/your-extension-id)
 
 从来源到复用，一条闭环
