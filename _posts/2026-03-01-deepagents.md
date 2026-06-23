@@ -307,5 +307,39 @@ agent = create_deep_agent(
 agent.invoke("你有哪些技能？")
 ```
 
+## 代码解读
+
+
+### 整体结构
+
+【2026-6-23】代码结构
+- [第 1 章：项目概览与仓库结构](https://github.com/lingxingAI/deepagents-book/blob/main/01-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%A7%88%E4%B8%8E%E4%BB%93%E5%BA%93%E7%BB%93%E6%9E%84.md)
+
+Deep Agents 官方定位是 batteries-included agent harness（开箱即用的智能体「马具」/ harness）：
+- 不强迫使用者从零拼装提示词、工具与上下文管理，而是通过 **可组合**的默认能力 快速得到可运行的智能体，再按需裁剪与扩展。
+
+从工程上看，是 Python **单体仓库**（monorepo）
+- 内含多个 独立版本、独立锁文件 的发布包；
+- 根目录不设统一的 uv workspace，也没有根级 setup.py，每个包自成一体，由 make 与 libs/Makefile 聚合常见开发任务。
+
+```sh
+deepagents/
+├── .github/           # CI/CD、脚本、Issue/PR 模板、文档用图片等
+├── examples/          # 示例工程（各自 pyproject + uv.lock）
+├── libs/
+│   ├── deepagents/    # 核心 SDK
+│   ├── cli/           # 终端 CLI / TUI
+│   ├── acp/           # Agent Client Protocol 集成
+│   ├── evals/         # 评测套件与 Harbor 等集成
+│   ├── repl/          # REPL 中间件（langchain-repl）
+│   └── partners/      # 合作方沙箱/运行时集成（多子包）
+├── AGENTS.md          # 贡献者与 AI 辅助开发指南
+├── README.md          # 项目对外说明与快速开始
+└── release-please-config.json  # 发布与版本自动化配置
+```
+
+
+
+
 
 # 结束
