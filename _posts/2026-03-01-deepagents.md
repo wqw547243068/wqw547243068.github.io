@@ -3,7 +3,7 @@ layout: post
 title:  DeepAgents 框架介绍
 date:   2026-03-01 22:46:00
 categories: 大模型
-tags: langchain claude deepagents
+tags: langchain claude deepagents harness
 excerpt: LangChain 新Agent框架 DeepAgent 介绍
 mathjax: true
 permalink: /deepagents
@@ -35,9 +35,9 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 - [deepagents-book](https://github.com/lingxingAI/deepagents-book) 从 Harness 工程角度系统拆解 deepagents 项目的中文技术书籍
 
 
-## 架构
+## DeepAgents 架构
 
-DeepAgents 架构优势
+### 架构设计
 
 模块化设计：
 - 工具（Tools）：扩展 Agent 能力
@@ -91,6 +91,18 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 文件系统不仅用来完成最终任务（如保存代码），还扮演着角色：
 - 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
 - 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
+
+
+### Harness 设计
+
+Deep Agents 核心哲学是 Harness（马具）
+- 不从零实现一套 Agent 运行时，而是在 LangChain 提供的 create_agent 之上，通过 中间件（middleware）、后端（backend） 与 默认系统提示，把「规划、文件、子智能体、上下文压缩」等能力 层叠 上去。
+
+工程收益：
+- 复用 LangGraph 的 CompiledStateGraph 生态（流式、checkpoint、Studio 等，README.md 明确强调）。
+- 组合优于继承：行为主要通过 create_deep_agent(...) 的 参数（tools、middleware、backend、subagents、skills、memory、interrupt_on 等）声明，而非深继承树。
+- 边界清晰：存储与命令执行落在 Backend 协议；工具注入与提示增强落在 Middleware；最终执行图仍由 create_agent → CompiledStateGraph 承担。
+
 
 ## Web UI
 
