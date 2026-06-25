@@ -58,6 +58,44 @@ pdf-to-markdown/
 - 所以问题：HTML 能否真正取代 Markdown 成为 AI 编码代理的默认格式？还是说它只会是特定高价值场景的“奢侈选择”？
 
 
+## 总结
+
+【2026-6-25】[盘点16个把自己蒸馏成Skills的国民级App](https://mp.weixin.qq.com/s/08Z-Jk4nccaBAbh65aqtKA)
+
+16款国民级 App Skill/MCP/CLI能力汇总表
+
+|序号|产品名称|支持协议类型|官方入口|核心能力|支付/下单限制|所属行业|
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+|1|瑞幸咖啡|Skill、MCP、CLI| [lkcoffee](open.lkcoffee.com)|AI点咖啡、查询门店、商品检索、无咖啡因饮品推荐、到店下单、生成取餐码|仅支持到店自取，需网页扫码支付，不支持外卖|餐饮|
+|2|麦当劳|MCP|[麦当劳MCP](https://open.mcd.cn/mcp)|查询优惠活动日历、领券、AI点餐|最终支付需跳转麦当劳App|餐饮|
+|3|飞猪（FlyAI Skill）|Skill（底层MCP）|[flyai](https://flyai.open.fliggy.com/)|机票/酒店/门票/用车咨询、行程规划、航班对比、酒店筛选、预定跳转|体验版数据不全，完整能力需申请API Key|出行旅游|
+|4|滴滴出行|MCP、Skill|[滴滴mcp](https://mcp.didichuxing.com/)|实时叫车、预约用车、订单查询、司机位置实时查看、司机到店触发飞书通知|支付跳转滴滴App|出行打车|
+|5|高德地图|MCP、Skill市场|[高德lbs](https://lbs.amap.com/)|位置检索、路线规划、周边酒店/商户搜索、Android/iOS/RTOS地图能力|无支付链路，仅信息查询|地图位置服务|
+|6|腾讯地图|Skill、MCP|[qq mcp](https://lbs.qq.com)|地点搜索、路线规划、天气查询、3D/Three.js/GLTF前端地图开发|无支付链路，仅信息查询|地图位置服务|
+|7|美团跑腿|Skill| [MT-Paotui-For-Client](github.com/meituan/MT-Paotui-For-Client)|地址簿匹配、订单预览、跑腿下单|确认后跳转App完成支付|本地生活配送|
+|8|飞书|Skill、MCP、CLI|[飞书](https://open.feishu.cn/)|消息、日程、待办、审批、文档、团队协作全量自动化|无支付能力|企业办公|
+|9|钉钉|Skill、MCP、CLI|[钉钉](https://open.dingtalk.com/)|消息收发、待办、日程、审批流、团队协同操作|无支付能力|企业办公|
+|10|企业微信|Skill、MCP、CLI| [wecom-cli](github.com/WecomTeam/wecom-cli)|消息收发、通讯录管理、企业内部协作|无支付能力|企业办公|
+|11|腾讯文档|Skill、MCP|[docs](https://docs.qq.com/open/document/)|创建/编辑在线文档、知识库管理、AI生成PPT|无支付能力|云文档办公|
+|12|支付宝|支付MCP、支付Skill|[alipay](https://open.alipay.com/)|网页/手机支付、订单创建/查询、退款、收款链接生成，个人开发者可用|面向商户/开发者收款，不支持AI替用户付款|金融支付|
+|13|微信支付|MCP、Skill|[wechatpay-skills](https://github.com/wechatpay-apiv3/wechatpay-skills)|支付方案选型、代码生成、代码安全检测、券发放/核销/退券|面向开发者集成，非普通用户消费支付|金融支付|
+|14|微信读书|Skill|[weread-skills](weread.qq.com/r/weread-skills)|书架查询、阅读时长统计、笔记/划线检索、书籍检索、个性化推荐|无支付能力|数字阅读文娱|
+|15|网易云音乐|Skill、CLI|[NetEase skills](github.com/NetEase/skills)|歌曲搜索、播放、歌单管理、红心偏好分析|无支付能力|音乐文娱|
+|16|美图|Skill、CLI|[open-claw](https://www.miraclevision.com/open-claw)|图片编辑、文生图、文生视频、AI写真、换脸、虚拟换装、背景替换|无支付能力|图像视频工具|
+
+生态集成产品（非独立开放Skill平台）
+
+|产品|集成第三方Skill说明|
+| ---- | ---- |
+|千问|1月接入阿里生态（淘宝、支付宝、飞猪、高德）；6月开放第三方，首批接入肯德基、蜜雪冰城、东方航空|
+|豆包|6月22日灰度上线打车Skill，对接曹操出行|
+|WorkBuddy（腾讯）|内置腾讯全系Skill/MCP：微信支付、QQ邮箱、腾讯文档、腾讯问卷、微云等|
+
+总结
+1. **支付统一约束**：所有消费类App均不允许Agent自动完成支付，全部跳转App/网页扫码，由用户手动确认付款，信任与合规是核心限制；
+2. **办公赛道开放度最高**：飞书、钉钉、企业微信均同时开放Skill/MCP/CLI三种标准；
+3. **协议通俗理解**：MCP/CLI均可视为增强版Skill，统一供给Agent调用，接入方式标准化。
+
 
 ## 信息获取
 
