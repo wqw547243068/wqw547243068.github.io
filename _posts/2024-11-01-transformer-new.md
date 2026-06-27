@@ -973,6 +973,36 @@ Local Self Attention，中文称“局部自注意力”。
 
 OpenAI 开源了官方实现 [sparse_attention](https://github.com/openai/sparse_attention)
 
+### 【2026-6-12】MSA, 应用于 MiniMax-M3
+
+【2026-6-12】minimax 推出 MSA，GQA 基础上逐块稀疏注意力
+- 论文 [MiniMax Sparse Attention](https://arxiv.org/pdf/2606.13392)
+
+**超长上下文**能力正在成为前沿大语言模型不可或缺的核心能力：智能体工作流、仓库级代码推理、持久记忆场景，均要求模型同时处理数十万乃至上百万 Token。但 Softmax 注意力机制存在二次方复杂度开销，在工程落地规模下该方案完全不具备可行性。
+
+MiniMax 稀疏注意力（MSA）基于分组查询注意力（GQA）构建的**分块稀疏注意力**方案。包含**轻量索引分支**：对键值（KV）分块打分，为每个 GQA 分组独立筛选前 k 个高相关分块，实现分组专属稀疏检索，同时保证分块计算高效执行；主分支仅针对筛选后的分块执行精确分块稀疏注意力计算。
+
+MSA 以简洁、可扩展为核心设计原则，整体架构轻量化，可便捷、高效部署在各类 GPU 硬件上。为将稀疏特性转化为真实推理加速收益，同步配套设计 GPU 执行链路：采用无指数运算的 Top-k 筛选、KV 外侧稀疏注意力算子，提升分块粒度访存下的 Tensor Core 利用率。
+
+
+结构
+
+![](https://pic1.zhimg.com/v2-6ed5b4bf8751edf9af8d97051d961098_r.jpg)
+
+原生多模态 109B 参数模型上，MSA 精度与标准 GQA 持平；上下文长度 100 万 Token 场景下，单 Token 注意力计算量降低 28.4 倍。搭配自研配套算子内核后，在 H800 显卡上，Prefill 阶段实测提速 14.2 倍，解码阶段提速 7.6 倍。
+- 推理算子开源仓库：[MiniMax-AI/MSA](https://github.com/MiniMax-AI/MSA)
+- 基于 MSA 打造的商用级原生多模态大模型已公开发布：[MiniMax-M3](https://huggingface.co/MiniMaxAI/MiniMax-M3)
+
+MSA的核心思想：稀疏 + 分层
+
+M3 核心特性：
+- 顶尖的编码与智能体能力：M3 在编码和 Agent 评测中达到行业领先水平，具备自主任务拆解、工具调用和多步推理能力。它生成代码的目标不是“能跑就行”，而是尽可能达到可直接交付的标准。
+- 百万级上下文能力：基于自研 MiniMax Sparse Attention（MSA） 架构，M3 API 最高支持 1M tokens 上下文窗口，并保障至少 512K tokens 可用。百万级上下文是长程 Agent、长程 Coding 和长视频理解的重要基础设施。
+- 原生多模态能力：M3 从训练初期就进行多模态联合训练，使文本与视觉语义空间高度对齐。多模态不是后期外挂能力，而是模型原生能力的一部分。
+- 强大的自主浏览与检索能力：在 BrowseComp 智能体评测中，M3 取得 83.5 分，超过 Opus 4.7 的 79.3 分，展现出较强的自主浏览、信息检索与综合推理能力。
+- 开放模型中的 frontier 能力组合：此前，能够同时兼具前沿编码能力、百万级上下文和原生多模态能力的，主要是少数闭源模型。M3 则尝试将这一整套 frontier 能力带入开放模型生态。
+
+
 ## Transformer-Decoder
 
 【2021-4-19】[https://zhuanlan.zhihu.com/p/179959751](https://zhuanlan.zhihu.com/p/79714797)
