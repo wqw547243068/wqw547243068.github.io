@@ -363,6 +363,19 @@ MTP机制也被广泛用于 DeepSeek和Claude等版本中，核心：把原先NT
 
 这样子的好处就是可以直接预测出接下来的3-5个Token，生成10个Token句子就只需要前向传播2-4次，效率大大提升。
 
+#### 历史
+
+核心定位：现代大模型主流 MTP 训练 / 推理加速方案，首次标准化并行多头多 Token 预测架构，成为行业通用技术底座。
+- 早期雏形（同类并行预测思想）
+  - 2018 年 NIPS Google《Blockwise Parallel Decoding》，最早提出并行多 Token 解码思路，但未形成适配现代 LLM 的标准化 MTP 训练目标，不属于当前行业通用 MTP 体系。
+- 论文上线：
+  - 2024 年 4 月 30 日，Meta FAIR 提交论文《Better & Faster Large Language Models via Multi-token Prediction》至 arXiv（编号：2404.19737）
+- 产业落地关键节点
+  - 2024 年 12 月：DeepSeek-V3 大规模商用落地 MTP，将预测头复用为推测解码 Draft 模块；
+  - 2026 年：通义千问、Gemma 4、Step、小米 MIMO 等主流模型全面集成 MTP。
+
+#### DeepSeek MTP
+
 DeepSeek V3和R1
 - DeepSeek-V3 采用序列式 MTP，保持因果链，逐层递进预测
 
