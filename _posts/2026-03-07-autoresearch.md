@@ -505,5 +505,42 @@ Code Agent 导致计算机科学论文数量疯狂膨胀，同样的工作以前
 ![](https://pic4.zhimg.com/v2-72e564246c29e689e17439ab2c630c63_1440w.jpg)
 
 
+### 【2026-6-24】人大 Arbor 假设树做结构化搜索
+
+【2026-6-24】[AutoResearch卷到新阶段！人大×微软开源Arbor，Agent长出研究记忆](https://mp.weixin.qq.com/s/HXwGYpnXnHyvNSNPuGPyPw)
+
+问题
+- 大多数 Agent 系统更像强大的执行器。一次次改代码、跑评测、记日志，却很难稳定地把假设、证据、失败和经验，组织成一个持续演化的研究状态。
+- 任务一长，Agent 就容易退化成**线性的局部试错**：试一个方向，失败；换一个方向，再失败；偶尔成功了，也说不清成功背后的机制是什么，更别说把它沉淀下来去指导下一步。
+
+中国人民大学高瓴人工智能学院和 Microsoft Research 的研究者提出 Arbor：既通用又实用的自主科研框架与开源工具包。
+- 论文标题：[Toward Generalist Autonomous Research via Hypothesis-Tree Refinement](https://arxiv.org/pdf/2606.11926)
+- 项目主页：[Arbor](https://ruc-nlpir.github.io/Arbor/)
+- 代码链接：[Arbor](https://github.com/RUC-NLPIR/Arbor)
+
+
+核心思路
+- 不靠 test-time scaling 让 Agent 多试几个方向，而是用一棵 Hypothesis-Tree（假设树）对优化空间做结构化探索，再通过特有的 insight 回传机制，让每一次尝试都加深对问题本身的理解。
+
+Hypothesis-Tree Refinement（HTR，假设树优化）。
+
+把整个研究过程外化成一棵不断演化的假设树。树上的每个节点都是一个研究假设——注意，不是随口一句想法，而是一个可被验证或证伪的idea claim：如果我以某种方式改这个 artifact，目标指标会不会变好？
+
+每个节点都包含四样东西：
+- Hypothesis：这个节点想验证的研究主张；
+- Artifact version：该假设对应的代码、配置或数据 pipeline 改动；
+- Experimental evidence：开发集分数、运行日志、错误信息、执行状态，以及必要的 held-out 验证结果；
+- Distilled insight：这次实验沉淀下来的可复用经验——为什么成、为什么败、在什么条件下有效、哪些方向可能只是局部过拟合、后面该继承还是规避什么。
+
+每验证完一个假设，Arbor 都会观察结果、提炼出 distilled insight，再沿着父节点把它回写进整棵树，用这一次实验更新对全局的认识。
+
+所以后续的改进不是在空白上下文里重复试错，而是基于整棵树里已有的假设、证据和经验，动态决定下一步：扩展哪个节点、合并哪个改动、剪掉哪个方向，或者生成哪些新的后续假设——尽量让每一步都是当前理解下的最优解。
+
+这棵假设树就不只是一棵搜索树，也不是普通的实验日志，它同时扮演三个角色：
+- 搜索空间：记录哪些方向在探索、哪些已经失败、哪些值得继续展开；
+- 长期记忆：把成功和失败都变成结构化经验，而不是散落在对话历史和日志里；
+- 研究记录：把每次 artifact 改动和它背后的假设、证据、决策连起来，让整个过程可追踪、可审计。
+
+
 # 结束
 
