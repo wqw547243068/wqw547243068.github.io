@@ -889,6 +889,33 @@ CUDA_VISIBLE_DEVICES=0 GRADIO_SHARE=1 GRADIO_SERVER_PORT=7860 llamafactory-cli w
 
 训练完毕后, 点击“刷新适配器”，可找到该模型历史上使用webui训练的LoRA模型文件，后续再训练或者执行chat的时候，即会将此LoRA一起加载。
 
+
+#### 问题
+
+【2026-6-29】GPU（A6000）机器上启动 llama-factory web ui
+- 选择 模型（qwen3.5-0.8b），指向本地路径（/ofs/ese-llm-ssd/users/wangqiwen/model/qwen3.5-0.8b），huggingface来源
+- 选择数据集 alpaca_en_demo
+- 训练方式 SFT
+
+启动后多次报错，transformers库和numpy版本不适配导致
+
+```sh
+# （1）第一次错误
+错误信息 [rank0]: ValueError: The checkpoint you are trying to load has model type `qwen3_5` but Transformers does not recognize this architecture. This could be because of an issue with the checkpoint, or because your version of Transformers is out of date.
+# 解法：升级 transformers 库
+uv pip install transformers --upgrade
+
+# （2）第二次错误
+A module that was compiled using NumPy 1.x cannot be run in NumPy 2.5.0 as it may crash. To support both 1.x and 2.x versions of NumPy, modules must be compiled with NumPy 2.0. Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to downgrade to 'numpy<2' or try to upgrade the affected module. We expect that some modules will need time to support NumPy 2.
+# 解法：降级 numpy 版本
+uv pip install "numpy<2" --force-reinstall
+```
+
+解决后，web ui再次启动训练任务，正常。
+
+
 ### W&B
 
 Weights & Biases 记录实验数据，请在 yaml 文件中添加下面的参数。
