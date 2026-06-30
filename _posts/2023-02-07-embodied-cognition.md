@@ -191,6 +191,8 @@ Vision-Language-Action (VLA) Model from Google
 具身数据难题：
 - 真实数据采集贵，难以Scal Up到大模型充分泛化所需的量
 
+详见站内专题：[VLA](vla)
+
 
 ## 其它视角
 
