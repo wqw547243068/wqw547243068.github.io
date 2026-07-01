@@ -143,7 +143,9 @@ permalink: /llm_interview
 【2023-9-10】[大模型面试八股含答案](https://www.toutiao.com/article/7269690183216415267), [知乎原文](https://zhuanlan.zhihu.com/p/643560888)
 
 
-#### transformer原理
+
+
+### transformer原理
 
 跟RNN的区别，自注意力原理，多头注意力作用
 
@@ -153,18 +155,40 @@ permalink: /llm_interview
 
 
 
-#### GPT-3 与 ChatGPT（Instruct GPT）区别
+### GPT-3 与 ChatGPT（Instruct GPT）区别
 
 三步流程详解：
 - SFT
 - RM
 - PPO
 
-#### 涌现能力原理、原因、条件
+### 涌现能力原理、原因、条件
 
 Instruct GPT 论文：
 - 符尧：模型到一定规模，才会出现涌现能力
 - 问题：为什么 1.3b 的模型效果比 175b的GPT-3 好？
+
+
+## LLM 面试工具
+
+### TorchCode
+
+【2026-7-1】大模型算法岗面试窒息一幕：面试官递来一支笔，白板徒手写 Attention / Transformer。
+
+平时靠 PyTorch 封装 API 写得飞起，一离开框架就容易当场掉线：
+- 公式还记得，细节全没了；
+- 思路能讲清，实现却写不对。
+
+`TorchCode` 是 GitHub 上开源刷题平台，专为 PyTorch 面试场景设计，把“手写深度学习算子”做成 LeetCode 式训练：写得出来，才算真的会。
+- GitHub：[TorchCode](http://github.com/duoan/TorchCode)
+- 在线体验：[TorchCode](https://huggingface.co/spaces/duoan/TorchCode)
+
+基于 Jupyter，精选 40 道高频题，覆盖基础算子、注意力机制、完整架构、训练与优化等核心内容。
+- 每题自带自动评测：输出是否正确、梯度是否能回传、数值稳定性是否达标，一次跑完直接给彩色通过/失败反馈，哪里炸了立刻定位。
+- 卡住有提示；做完可对照参考实现学更优写法；还带进度追踪，刷到哪、短板在哪一目了然。
+- 部署也很省心：Docker 一键启动；支持 Hugging Face Spaces 在线跑；每题可一键在 Google Colab 打开，不用折腾环境。
+
+想把大模型底层真正啃透，或正在冲刺 AI 面试，这套题库值得从头刷到尾。
 
 
 
