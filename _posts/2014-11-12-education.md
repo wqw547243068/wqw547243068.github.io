@@ -170,6 +170,35 @@ Breakthrough Thinking from Inside the Box 跳出传统思维，突破限制
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/470kGrZnbpY?si=H5NTPZH2WpwLUnzC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+## 新式教育
+
+
+### 北京探月学校
+
+【2026-6-27】[探访北京探月学校：AI时代“超级高中生” 、大学外的第三种可能与中国创新教育](https://mp.weixin.qq.com/s/lccGB2t1R8p0WQ-rA32J_Q)
+
+北京探月学校位于北京国家网球中心内。这里完全不像学校，反而像“创客空间”：
+- 没有传统的教室，也没有固定的课表、成绩排名；
+- 学生在创业、在做产品、做设计、做手工。
+
+高考、上大学这些事对他们来说，不是终点，甚至不是必须经过的路。
+
+热点事件都和这所学校有关。
+- 探月学校的西方哲学史老师`江学勤`，在课堂上预言到了特朗普重返白宫、美伊战争等一系列事件火爆出圈，被西方主流媒体轮番专访。
+- 马斯克在推特上点赞了`月之暗面`的团队发表的论文《Attention Residuals》，共同一作是年仅17岁的`陈广宇`，出自于探月学校发起的AI黑客松项目。
+
+在“超级高中生”被疯狂追捧的AI时代，探月的学生们也被各大VC风投基金们紧盯着。
+
+每年高达二十多万元的学费，让它天然带着精英教育的标签。而在最被家长看重的升学结果上，探月却并不像一些顶尖国际学校那样，以名校录取率闻名。
+
+> AI时代来了，教育需要被改变
+
+如果把今天的教育体系比作一台为工业时代设计的机器，那么当AI开始重塑知识、工作乃至整个社会的时候，这台机器是否也需要发生改变？
+- 比起记住更多知识，更重要的是保持好奇；
+- 比起拥有标准答案，更重要的是学会提出问题；
+- 比起按照既定轨道前进，更重要的是找到自己真正想做的事情。
+
+他们希望培养的是在充满不确定性的时代里，依然能够持续学习、持续探索，并主动创造自己人生的人。
 
 
 # 世界各国教育
