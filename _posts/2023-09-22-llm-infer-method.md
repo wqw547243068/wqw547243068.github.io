@@ -266,6 +266,105 @@ Unsloth 团队 居然用 1-bit 压缩的极端技术，把顶级开源模型GLM 
 
 最震惊：本地模型竟然能与价值数十亿美元的服务器势均力敌，给出了非常智能且精准的回答，完全能媲美这些闭源巨头。
 
+#### GPTQ vs GGUF
+
+【2026-7-1】GGUF vs GPTQ 完整区别对比
+
+核心定位：
+- **GGUF**：**模型存储容器格式**，配套 llama.cpp K-quant 量化算法，主打**全平台兼容（CPU/NVIDIA GPU/Mac Silicon）、内存分层加载**
+- **GPTQ**：**纯GPU专用后训练量化算法**，配套 HuggingFace 多文件模型目录，只跑 NVIDIA CUDA，主打**单卡高吞吐、线上服务**
+
+底层本质与量化原理
+
+GGUF
+1. **文件格式**：单一 `.gguf` 二进制文件，内置权重、配置、分词器、元数据，支持 mmap 内存映射，打开即用无需配套文件
+2. **量化算法：K-quant**: 固定256权重为超级块，块内再细分块，**缩放因子本身也做量化**；提供多档预设（Q4_K_M / Q5_K_M / Q6_K），低比特画质更强
+3. 量化逻辑：静态块量化，无需校准数据集，量化速度快，适合本地一键转模型
+
+GPTQ 
+1. **存储形式**：标准 HuggingFace 文件夹，包含 pytorch_model.bin、config.json、quantize_config.json 多个文件，不能单文件分发
+2. **量化算法：二阶Hessian逐层优化**: 逐层贪心量化，用校准数据集计算Hessian矩阵，优先保护对输出影响大的权重，最小化推理误差；必须提供100+条校准文本才能量化
+3. 仅支持固定bit（3bit/4bit为主），无分级K-quant精细档位
+
+二、硬件兼容性
+
+| 硬件 | GGUF | GPTQ |
+|------|------|------|
+| CPU纯推理 | ✅ 原生支持，llama.cpp/Ollama流畅跑 | ❌ 完全不支持，只能CUDA |
+| NVIDIA显卡 | ✅ 支持，速度弱于GPTQ | ✅ 深度优化，ExLlamaV2/Marlin内核极速 |
+| Apple Silicon M系列 | ✅ Metal原生加速，笔记本首选 | ❌ 几乎无优化，基本不可用 |
+| 内存不足显卡 | ✅ 支持CPU/GPU分层卸载，显存不够用内存补 | ❌ 模型必须完整载入VRAM，显存不足直接报错 |
+| 边缘设备/无显卡电脑 | ✅ 可用 | ❌ 不可用 |
+
+三、速度与显存占用
+1. **纯NVIDIA GPU环境**: GPTQ（ExLlamaV2/Marlin）比GGUF快 **25%~35%**，多并发批量吞吐优势极大，vLLM连续批处理、PagedAttention只适配GPTQ/AWQ
+2. **CPU / Mac / 小显存显卡**: GGUF碾压GPTQ；7B Q4_K_M GGUF仅需4GB左右内存，可在8GB内存笔记本运行；GPTQ 4bit 7B至少需要6GB+显存且不能内存分摊
+3. 显存逻辑
+  - GGUF：mmap懒加载，不用的权重放RAM/硬盘，峰值显存更低
+  - GPTQ：全权重常驻显存，无内存卸载能力
+
+四、生态与常用工具
+
+GGUF 生态（本地单机玩家）
+- 推理框架：llama.cpp、Ollama、LM Studio、KoboldCpp
+- 特点：开箱即用、跨平台、一键量化、离线本地部署首选
+- 模型社区：TheBloke、Bartowski 大量GGUF模型，Ollama官方库全部GGUF
+
+GPTQ 生态（线上服务/高性能显卡）
+- 推理框架：vLLM、Text Generation WebUI、ExLlamaV2、TensorRT-LLM、AutoGPTQ
+- 特点：工业级并发、API服务、多卡张量并行，适合搭建公网AI接口
+- 模型社区：HuggingFace主流量化模型，生产服务器标配
+
+五、精度与量化质量
+
+1. **同等4bit下**
+  - 低资源本地场景：GGUF Q4_K_M 综合画质更好，K-quant分层压缩减少语义丢失
+  - 高显存GPU足量场景：GPTQ误差控制优秀，无明显劣化，配合Marlin速度更强
+2. 低比特（2/3bit）：GGUF K-quant优势巨大，GPTQ低比特退化严重
+
+六、优缺点总结
+
+GGUF 优点
+1. 全平台通用：CPU/Mac/NVIDIA通吃
+2. 显存友好，支持内存分层卸载，低配电脑也能跑大模型
+3. 单文件分发，导入简单，mmap秒加载
+4. 丰富量化档位（Q2_K ~ Q8_0），平衡体积与画质
+
+GGUF 缺点
+1. 纯NVIDIA显卡多并发吞吐不如GPTQ
+2. 不支持vLLM PagedAttention、批量并行等生产级特性
+
+GPTQ 优点
+1. NVIDIA GPU单卡速度天花板，多用户并发吞吐极高
+2. 成熟生产服务栈：vLLM、TGI、多卡分布式推理
+3. HuggingFace原生兼容，对接transformers生态简单
+
+GPTQ 缺点
+1. 仅支持NVIDIA CUDA，Mac/CPU完全无法运行
+2. 不支持内存卸载，小显存显卡无法跑大模型
+3. 量化必须校准数据集，量化耗时更长
+
+七、选型建议
+
+选 GGUF 如果你：
+- 用 Mac M1/M2/M3/M4 本地跑模型
+- 笔记本显存≤16GB，内存充足，需要显存/内存分摊
+- 无独立显卡，仅CPU离线使用
+- 本地单机聊天、本地知识库、Ollama一键部署
+- 追求简单分发、单文件模型管理
+
+选 GPTQ 如果你：
+- 有24GB+ NVIDIA高端显卡（3090/4090/A10等）
+- 搭建API服务、多用户并发、线上生产部署（vLLM）
+- 只在Windows/Linux NVIDIA主机运行，不需要CPU/Mac兼容
+- 追求单卡极限token生成速度
+
+补充：常见误区纠正
+1. 误区：GGUF是量化算法 → 错，GGUF是文件容器，内置K-quant量化；GPTQ本身就是量化算法
+2. 误区：GPTQ不能本地玩 → 能，但必须大显存N卡，低配电脑完全不友好
+3. 误区：GGUF精度差 → 同等4bit下Q4_K_M GGUF精度普遍优于普通4bit GPTQ，仅满显存GPU场景GPTQ速度占优
+
+
 
 #### 浮点数
 
