@@ -104,6 +104,10 @@ useful_urls:
     url : https://waitbutwhy.com/
     desc : 国外知名科技博主
   -
+    name: 科学空间
+    url: https://spaces.ac.cn/
+    desc: 苏剑林科学空间
+  -
     name : 3blue1brown
     url : http://www.3blue1brown.com/
     desc : 优质数学教学视频
