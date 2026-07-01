@@ -674,6 +674,30 @@ MiniCPM-o 4.5 的发布，首次让模型真正具备了基于语义的自主交
 
 基于联发科技天玑9500芯片NPU提供的强劲算力支撑，OPPO自研的端侧AI翻译与端侧AI补光功能已可媲美云端体验，并将于近期随ColorOS 16系统更新，正式推送至OPPO Find X9系列。另外，OPPO Find X9 Pro也成功入围本届MWC GLOMO Awards “最佳智能手机”奖项评选。
 
+### 【2026-6-22】京东 JoyAI-VL-Interaction
+
+京东JoyAI-VL-Interaction
+
+【2026-6-22】京东开源模型JoyAI-VL-Interaction，"边看边说"——持续在场，自己判断什么时候该开口。
+- 94 毫秒延迟，对 Gemini 视频通话助手胜率 87.9%。
+- 主页 Project page: [JoyAI-VL-Interaction](https://joyai-vl-video-future-academy-jd.github.io/JoyAI-VL-Interaction/)
+- GitHub：[JoyAI-VL-Interaction](https://github.com/jd-opensource/JoyAI-VL-Interaction)
+- 【2026-6-10】论文 [JoyAI-VL-Interaction: Real-Time Vision-Language Interaction Intelligence](https://arxiv.org/pdf/2606.14777v1)
+
+以前的多模态模型，交互方式是轮次——用户发一张图或一段视频，模型回答。一轮结束，等用户下一轮。
+
+JoyAI-VL-Interaction 思路完全不同：模型持续接收视频流，自己判断什么时候该回应、什么时候该沉默、什么时候把任务交给后台 Agent。
+
+不是"你问我答"，而是"我在看着，该我说的时候我会说"。
+
+全栈开源的交互模型和系统，获得了vLLM-Omni的原生支持。
+
+该模型支持持续的视觉观察与语言交互，开发者可基于其框架构建实景AI助手
+
+JoyAI-VL-Interaction 支持摄像头、直播流等多种视频输入方式，并具备语音输入输出、可视化界面、长期记忆、后台模型接口和vLLM部署方案等功能。
+
+其技术可应用于安防监控、老人小孩看护、直播讲解、电商导购、操作指导、AI眼镜、无障碍辅助等需要AI持续在场的场景
+
 
 ### 【2026-6-28】VLX系列 流式多模态→具身导航
 
