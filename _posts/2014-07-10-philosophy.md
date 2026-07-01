@@ -755,6 +755,22 @@ permalink: /philosophy
 <iframe src="//player.bilibili.com/player.html?aid=29880830&bvid=BV11W41197WU&cid=52042684&page=1&autoplay=0&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
 
+### 算命工具
+
+【2026-7-1】现在“万物皆可AI算命”，随便一个LLM都能编出命理分析，乍一听头头是道，实则全是幻觉，连最基础的日柱都能排错，后续分析更是空中楼阁。
+
+但开源项目名 [bazi-ziwei-skill](https://github.com/dzcmemory-web/bazi-ziwei-skill) 这款 Skill 直接让AI告别“瞎猜”。
+- 内核是 Yiqi 和 lunar-typescript 等开源算法库，在本地完成精准排盘，算完四柱、十二宫才把结构化数据交给AI分析，根基扎实，绝不靠猜。
+
+三种硬核玩法：
+- 1️⃣ 八字独立分析
+- 2️⃣ 紫微斗数独立分析
+- 3️⃣ 八字+紫微综合印证：让两套体系交叉对账，看结论是否一致，这是它最独特的增量价值。
+
+更赞的是，分析完还能一键生成水墨风HTML命盘海报，排版雅致，可直接截图分享。
+
+整个过程全程本地运行，无需联网，隐私保护做得非常到位。可以轻松装入 Claude Code、Codex 或 Cursor 等Agent中，通过自然语言对话即可使用。
+
 
 ## 财富
 
