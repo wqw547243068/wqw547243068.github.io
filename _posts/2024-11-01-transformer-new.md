@@ -1029,6 +1029,119 @@ M3 核心特性：
 - 强大的自主浏览与检索能力：在 BrowseComp 智能体评测中，M3 取得 83.5 分，超过 Opus 4.7 的 79.3 分，展现出较强的自主浏览、信息检索与综合推理能力。
 - 开放模型中的 frontier 能力组合：此前，能够同时兼具前沿编码能力、百万级上下文和原生多模态能力的，主要是少数闭源模型。M3 则尝试将这一整套 frontier 能力带入开放模型生态。
 
+### 【2026-6-30】LSA -- LongCat-2.0 改进DSA
+
+
+【2026-6-30】[LongCat-2.0 正式发布](https://longcat.chat/blog/longcat-2.0/)
+
+美团发布并开源 LongCat-2.0，总参数量达 1.6 万亿、每个 token 激活约 480 亿参数的 MoE 语言模型。
+
+LongCat-2.0 相比此前的 LongCat 系列引入了多项架构改进，实现了模型能力的显著跃升。
+- LongCat-2.0 完整训练流程与大规模部署均**全部使用国产算力集群**。
+- 预训练在5万余国产算力芯片上耗时月余完成，消费了超过 35 万亿 tokens，全程无回滚、无不可恢复的 loss 突刺。
+- 这一结果验证了有能力在国产算力平台上进行前沿级大规模模型训练。
+
+LongCat 稀疏注意力机制，并在数千亿 tokens 的百万上下文长度数据上训练 LongCat-2.0。结合专门的后训练，LongCat-2.0 在编程与智能体任务上表现强劲。
+
+为了让每个参数发挥更大价值，加入 N-gram Embedding 模块，通过 N-gram token 组合将 embedding 空间扩展超过 100 倍，以更充分地建模局部上下文信息，并提升 token 级表示能力。
+
+LongCat-2.0 深度适配 Claude Code、OpenClaw、Hermes 等主流 Harness，在代码理解、仓库级修改、自动化任务执行及 Agentic Workflow 等多元场景中表现出色，能够为开发者带来更稳定、更高效的智能协作体验。
+
+#### 国产GPU
+
+LongCat-2.0 训练与部署构建在超过 5 万张国产算力芯片组成的大规模集群之上。
+
+与成熟的 Nvidia GPU 生态相比，其配套的软件社区仍欠发达。为此，投入了大量精力来打造稳定、安全且可扩展的基础设施，训练吞吐提升超过 35%。
+
+国产算力芯片单片显存显著小于 H800 的 80GB，显存成为大规模训练的主要瓶颈。
+
+优化策略：
+- 6D 并行： 在常规 TP/CP/EP/DP/PP 之外，额外引入 EMBP 对 N-gram Embedding 做并行加速。
+- 超节点： 训练运行在物理超节点上，每个超节点最多 48 台机器，节点内全互联高带宽、节点间走 RoCE 网络。超节点把高带宽通信域扩展到数百张卡，支撑带宽敏感的并行策略（TP/CP/EP）。相比同规模下，超节点额外带来约 30% 的预训练吞吐提升。逻辑超节点同时是亲和调度的基本单元，在通信局部性与可调度性之间取得平衡。
+- 显存优化： 采用 ZeRO-1、选择性重计算、分配器层的显存超限（OOM）时自动卸载，并将填充词元路由至零计算专家等。
+- Muon 优化器： 在国产算力芯片上大规模部署 Muon 优化器，围绕 TP 并行、DP 状态去冗余及高效对称矩阵乘核函数等关键路径做专项优化。
+
+大规模长上下文训练：
+- LSA 算子与前向优化： 为 LSA 预热和稀疏两阶段训练自研确定性注意力算子及 KL 损失算子。LSA 预热采用 forward-only 训练策略，仅需一次前向即可同时得到 KL 损失与梯度，从而提升训练效率。
+- 百万上下文长度扩展： 采用 all-gather 的上下文并行方式，可将上下文并行扩展至 512 路以上，实现原生百万上下文长度数据的训练。数据在预取阶段重新打散，并采用均衡的序列切分策略以保持负载均衡。
+- 计算通信重叠： 我们精心设计了计算与通信的重叠，例如 ScMoE 结构使 MoE 通信与并行分支计算重叠，同时 LSA 的 top-k 索引计算与 KV all-gather 重叠，降低同步开销。
+
+显存容量、显存 I/O 带宽与互联带宽都较为受限的条件下，在万亿参数大模型上跑百万上下文的推理是一项不小的挑战。
+
+为此，在模型、设备与部署三个层面进行了一系列优化。
+- 模型层面优化
+  - Attention: 为了高效应对超长上下文带来的 I/O、计算及显存瓶颈，我们通过三种方式对系统进行了优化。
+  - (1) 引入 absorb 计算模式应用于 prefill 和 decode 阶段；
+  - (2) 将 indexer 与 MLA prolog 做了并行处理，使 indexer 的一部分开销可以被 MLA 计算所掩盖；
+  - (3) 借助 KV-cache 并行 (KVP) 将 KV-cache 切分到多片卡上。
+  - ScMoE: 基于 LongCat-Flash 中 dense 与 MoE 分支的计算-通信重叠机制，LongCat-2.0 利用国产计算芯片的控核能力做了进一步的调度优化——通过主动分配 dense 流和 MoE 流的核心数量，使得 dense 与 MoE 的执行可以完全并行，而不局限于计算与通信的并行。
+
+面向国产算力芯片的优化
+- Super Kernel: 开启图模式后，算子之间的空隙得以消除，但每个算子内部的启动开销依然存在。为此，引入 super kernel 来减小算子数量，从而降低算子的总启动开销。
+- Weight Prefetch: Longcat-2.0 使用的国产算力芯片的显存带宽有限，但 L2 cache 相对较大。正是利用这块较大的 L2 cache 提前预取权重，将 I/O 延迟隐藏在前一个算子的计算之中。
+- Scale Up 与 Scale Out: 国产算力芯片内置的 200 Gbps 网卡按 layer-wise 方式进行 prefill 与 decode 节点之间的 KV-cache 传输，KV-cache store 则构建在主机的 RDMA 网卡之上，TP/SP/KVP 则均在 scale-up 互联域内完成。
+
+部署与服务
+- 最优并行: LongCat-2.0 采用 prefill–decode (PD) 分离式部署来兼顾 TTFT 与 TPOT。
+  - Prefill 节点: Prefill 节点在处理长序列时主要受限于节点间通信带宽，MoE 的 dispatch/combine 耗时占比很高。为此，我们采用多节点 Chunked Pipeline Parallel (CPP) 来缩小 Expert-Parallel (EP) 域；在每个 pipeline stage 内，再以 Attention Sequence Parallelism (SP) 分担长序列的计算压力。
+  - Decode 节点: Decode 节点主要受限于显存与 KV-cache I/O。我们以 KVP 切分 KV-cache、降低单片显存占用，并辅以较大的 EP 并行度 (EP128)，同时压低单片的权重显存与 Expert I/O。
+
+这两个阶段中，上述并行方案 (CPP/SP 与 KVP) 均适配了 constrained decoding、multi-step scheduling、MTP 等推理优化特性，保证了推理性能。
+- Expert-Parallel 负载均衡: Decode 节点上较大的 EP 并行度更容易引发专家之间的负载不均，我们通过 Expert-Parallel Load Balancing (EPLB) 加以应对，并且将统计采集与分布计算的过程进行了异步化处理。
+
+
+#### LSA
+
+问题
+
+Agent兴起，对大模型高效长输入处理能力提出了极高要求
+
+尽管 DSA 细粒度稀疏注意力缓解了这一压力，但受限于**不连续的索引输出形式**和**二次方的索引评分开销**，DSA中的轻量索引器 (Lightning Indexer) 成为制约端到端延迟的核心瓶颈。
+
+
+LongCat 稀疏注意力 (LSA)：由 DeepSeek 稀疏注意力 (DSA) 演进而来，通过引入更轻量化的**索引器**（Indexer），在无损模型质量的前提下显著加速长上下文处理。
+
+
+LongCat 稀疏注意力（LSA）针对索引器引入三项相互正交的效率优化策略：
+- **流感知**索引（Streaming-aware Indexing, SI）：重塑了索引器选择 Token 的预算分配，将硬件对齐的连续访问与动态随机选择相结合。
+  - 该策略将部分原本碎片化的显存访问转化为可预知的顺序读取，从而实现合并的 HBM 访问并最大化有效带宽。
+- **跨层**索引（Cross-Layer Indexing, CLI）：利用注意力中重要 Token 在相邻层间分布的高度一致性来摊薄索引开销。
+  - 得益于训练阶段引入的跨层蒸馏，推理时单次索引计算可由多个连续的注意力层复用。
+- **层级化**索引（Hierarchical Indexing, HI）：采用由粗到细的两阶段打分机制，先通过 block 级近似打分进行粗召回，再在召回的候选中进行细粒度 token 选择，从而缩小索引器每次检索需处理的候选空间。
+  - LongCat-2.0 中，层级化索引（HI）以可插拔的组件形式在部分超长上下文任务上按需启用。
+
+三个组件在设计上相互正交，支持独立开启或关闭
+
+![](https://s3.meituan.net/static-prod01/com.sankuai.friday.longcat.next2/assets/lsaimage-CCkXmBaN.svg)
+
+三项策略扩展至用于`加速投机解码`（Speculative Decoding）的 3-step MTP 模块。
+- 跨层索引（CLI）在 Target 模型与 Draft 模型中的应用方式略有不同：在 Target 模型中，每两个连续层共享一次索引结果；
+- 而在多步 MTP中，全部三个 Draft 步的计算共用一次索引——具体而言，Step 2 与 Step 3 完全复用 Step 1 所生成的索引结果。
+
+#### N-gram Embedding
+
+LongCat-2.0 继承了 [LongCat-Flash-Lite](https://arxiv.org/abs/2601.21204) 的 N-gram Embedding，在同 MoE 正交的稀疏维度上扩展参数，从而提升参数利用效率。为适配 LongCat-2.0 的庞大规模，n-gram size 被设为 5；模型中包含 135B N-gram Embedding 参数，并遵循以下扩展原则：
+- MoE 的稀疏度已越过甜点区。 即便不考虑 N-gram Embedding，LongCat-2.0 的稀疏度就接近 97%，此时再增加 135B 专家参数所带来的性能收益较少。相比之下，增加同等参数量的 N-gram Embedding 所带来的收益远超标准MoE。
+- N-gram Embedding 的占比被约束在最优区间。 实验表明，当 N-gram Embedding 参数在总参中占比过高（超过 50%）时，其相对于扩增专家的优势会消失。在 LongCat-2.0 中，该占比被控制在 10% 以内，处于安全比例内。
+
+这两条原则保证了 N-gram Embedding 相较同等规模的纯 MoE 模型的稳健优势。
+
+除此之外，在推理阶段，将参数从专家转移到 N-gram Embedding 可降低大 batch 解码时的显存 I/O，从而加速解码过程。
+
+![](https://s3.meituan.net/static-prod01/com.sankuai.friday.longcat.next2/assets/ngram-emb-new.drawio-DtU8Umnl.svg)
+
+
+#### 多教师在线蒸馏
+
+为了全面提升模型的综合表现与应用边界，后训练架构上引入了高度专业化的专家组机制，将其系统性划分为三大核心阵列：**Agent能力专家组**、**推理能力专家组**以及**交互体验专家组**。
+- Agent能力专家组致力于在复杂真实场景下深化模型的自主执行能力。该组专家在代码、办公以及检索等细分垂直领域均已达到业界 SOTA 水平。在训练目标上，不仅关注端到端的任务成功率，更深度优化了决定系统鲁棒性的关键“原子能力”——例如复杂工具调用的精准度、多轮API交互中的参数解析能力，以及有效规避死循环或重复调用的自我纠错机制。
+- 推理能力专家组的核心愿景是拓展模型的逻辑演进深度，并实现基于问题难度的自适应推理计算。推理专家模型在数学、STEM学科复杂问题求解，以及多跳知识推理任务上，均稳居行业第一梯队。
+- 交互体验专家组则聚焦于人机对齐与底层用户感知的优化。交互专家主要负责攻克模型在多变应用场景下的细粒度指令遵循难题，通过先进的对齐技术显著抑制事实性幻觉，并构建了在不牺牲有用性的前提下、边界清晰的安全防御机制。
+
+最后，采用 MOPD 架构方案，在数万卡的国产算力集群上将上述三大维度的顶尖能力进行无缝融合，使得最终产出的模型不仅具备了极强的智能体思维能力，更能够精准解构并洞察用户的复杂需求，在各种极具挑战的真实场景中稳定、高效地执行并交付结果。
+
+![](https://s3.meituan.net/static-prod01/com.sankuai.friday.longcat.next2/assets/mopd-CIX9ZFo9.svg)
+
 
 ## Transformer-Decoder
 
