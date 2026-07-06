@@ -70,6 +70,19 @@ permalink: /cryptography
 
 #### VeraCrypt
 
+VeraCrypt 适用于 Windows、Mac OSX 和 Linux，免费开源磁盘加密软件。由 [AM Crypto](https://amcrypto.jp) 提供，基于 TrueCrypt 7.1a。
+
+VeraCrypt 主要功能：
+- 文件内创建一个虚拟加密磁盘，并将其挂载为真实磁盘。
+- 加密整个分区或存储设备（如 USB 闪存盘或硬盘）。
+- 加密Windows 安装所在的分区或磁盘（预启动身份验证）。
+- 自动、实时（即时）且透明地进行加密。
+- 通过并行处理和流水线处理，实现与未加密驱动器几乎相同的读写速度。
+- 在现代处理器上支持硬件加速。
+- 若遭遇胁迫，提供似是而非的否认功能：隐藏卷（隐写术）和隐藏操作系统。
+
+更多 VeraCrypt 特性请参阅[文档](https://veracrypt.jp/zh-cn/Documentation.html)。
+
 【2026-7-6】2008 年 7 月，巴西警察冲进银行家 Daniel Dantas 在里约的公寓，搜走 5 块硬盘。
 - 1️⃣ 巴西国家犯罪学研究所先上手，字典攻击搞了 5 个月，连根毛都没翻出来
 - 2️⃣ 2009 年初转交给 FBI，FBI 又啃了 12 个月，照样铩羽而归
