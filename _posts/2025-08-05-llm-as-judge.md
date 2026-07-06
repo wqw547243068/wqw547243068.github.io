@@ -131,6 +131,95 @@ LLM Judges 涵盖三大功能：
   - 应该努力建立适当的机制，以实现透明、有效和可靠的评估。这暗示着需要一个类似于其他高风险行业（如药品、航空）的独立第三方监督体系。
 
 
+## 评测工具
+
+
+### 总结
+
+【2026-7-6】评测工具
+
+| 工具名称 | 开发者 | 开源协议 | 任务数量 | 中文支持 | 安装复杂度 | 可视化能力 | 社区活跃度 | 适配场景 |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| lm-eval-harness | EleutherAI | MIT | 200+ | 有限 | 低 | 无 | 最高 | 快速评测/CI集成 |
+| OpenCompass | 上海AI实验室 | Apache 2.0 | 100+ | 强（原生中文） | 中 | 有Web UI | 中等 | 中文模型/学术报告 |
+| HELM | Stanford CRFM | Apache 2.0 | 100+ | 有限 | 高 | 有限 | 学术圈活跃 | 学术研究/全面审计 |
+
+选型指南
+- 选 `lm-eval-harness`：想快速验证一个模型，5 分钟出结果
+  - 需要集成到 CI/CD 流水线，每次代码提交自动跑评测- 要对比 HuggingFace Leaderboard 上的模型- 习惯命令行操作，不需要可视化界面
+- 选 `OpenCompass`：评测中文模型（C-Eval、CMMLU 等中文任务原生支持）
+  - 需要生成可视化报告（有 Web UI）
+  - 做国产模型评测（Baichuan、ChatGLM、DeepSeek 等适配更好）
+  - 需要主观评测（让 GPT-4 当裁判打分）
+- 选 `HELM`：做学术研究，需要最全面的能力审计
+  - 关注模型的安全性、公平性、偏见（不只是准确率）
+  - 有足够的 API 预算（全面评测需要大量调用）
+  - 需要生成标准化的学术报告
+
+【2026-5-13】[大模型评测不再拍脑袋：用 lm-evaluation-harness 给模型做"体检"](https://cloud.tencent.com/developer/article/2668215)
+
+### lm-evaluation-harness
+
+[lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 是 EleutherAI（开源 AI 研究组织）开发的大模型统一评测框架。"体检中心"
+- 把模型送进来，自动跑完 200 多项检查，输出一份详细的"体检报告"。
+
+核心特点：
+- 任务最全：支持 200+ 评测任务，覆盖知识、推理、数学、代码、安全等多个维度
+- 模型兼容广：HuggingFace 模型、OpenAI API、Claude、Gemini、本地 Ollama 部署的模型，都能接
+- 社区标准：HuggingFace Open LLM Leaderboard 的官方评测工具，跑出来的分数可以直接上排行榜对比
+- 安装简单：一条 pip 命令搞定
+
+```sh
+# 创建虚拟环境
+python3 -m venv ~/lm-harness-env
+source ~/lm-harness-env/bin/activate
+# 安装核心框架
+pip install lm-eval
+# 装本地模型依赖
+pip install transformers torch accelerate
+```
+
+启动评测
+
+```sh
+export OPENAI_API_KEY="你的API密钥"
+
+lm_eval \
+ --model openai-completions \
+ --model_args model=gpt-4o-mini \
+ --tasks mmlu_anatomy \
+# --tasks hellaswag,arc_easy,piqa,winogrande # 多任务测评
+ --limit 10 \
+ --output_path ./results/gpt4o-mini
+
+# 模型选择
+lm_eval \
+  # hf 上下载模型
+  --model hf \
+ --model_args pretrained=Qwen/Qwen2.5-0.5B-Instruct,dtype=float16 \
+ # 使用本地模型
+  --model_args pretrained=/path/to/your/model,dtype=float16
+ --tasks hellaswag \
+ --limit 20 \
+ --batch_size 4 \
+ --output_path ./results/qwen0.5b-hellaswag
+```
+
+原理
+1. 加载 gpt-4o-mini 模型
+2. 从 MMLU 解剖学子集抽 10 道题
+3. 模型答题、自动判卷、输出结果
+
+输出结果
+- 10 道解剖学题，GPT-4o-mini 答对了 7 道，准确率 70%
+
+```
+┌─────────────────┬──────────────────┐
+│ Task            │ Metric           │
+├─────────────────┼──────────────────┤
+│ mmlu_anatomy    │ acc,none: 0.7000 │
+└─────────────────┴──────────────────┘
+```
 
 ### ChatEval
 
