@@ -129,7 +129,7 @@ pdf-to-markdown/
 小红书、抖音视频、快手视频、B 站视频、微博帖子、百度贴吧帖子、知乎问答文章
 
 ```sh
-# 依赖 playwright
+# 依赖 playwright (openai产)
 uv run playwright install
 # 运行
 # 项目默认未开启评论爬取，如需评论请在 config/base_config.py 中修改 ENABLE_GET_COMMENTS
@@ -200,6 +200,10 @@ https://anysearch.com/install/skill-install.md
 
 ## 浏览器操控
 
+
+### playwright
+
+OpenAI 推出的 playwright
 
 ### bb-browser
 
@@ -336,7 +340,7 @@ claude plugin install equity-research@claude-for-financial-services
 ```
 
 
-## 网页设计
+## 页面设计
 
 
 ### 总结
@@ -344,6 +348,8 @@ claude plugin install equity-research@claude-for-financial-services
 【2026-7-7】UI设计总结
 
 基于42个产物与各变体的执行记录评估。第一轮（任务A-C）考察视觉表现，第二轮（任务D-G）考察交互、组件、创造性与多样性。
+- [同一个任务，装不装 设计 Skill，差别有多大？](https://designskill.qiaomu.ai/)
+- 从 skills.sh 与 skillsmp.com 两大 Skill 市场, 收集并安装全部**主流前端设计 Skill**， 选出 5 个设计哲学差异最大的，加上无 Skill 对照组，在完全相同的任务简报、相同技术约束 （单文件 HTML、仅允许 Google Fonts、禁用外部图片）下各自独立生成页面。 十个任务覆盖视觉表现、交互逻辑、组件合理性、创造性、多样性、电商、移动端与数据叙事
 
 第一轮 · 视觉表现（任务 A-C）
 
@@ -379,7 +385,43 @@ claude plugin install equity-research@claude-for-financial-services
   - frontend-design 产出了最惊艳的视觉（墨黑金落地页、构成主义作品集）
   - 但 web-design-guidelines 在源码层面全面领先：skip-link、aria-sort、tabular-nums、reduced-motion
 
+其他
+-  偏品牌官网/营销页：frontend-skill、frontend-design、brand-guidelines
+-  产品 UI/设计稿还原：figma-implement-design、react-best-practices、web-design-guidelines
+-  交互验证/可用性：playwright、webapp-testing
+-  创意探索：canvas-design
 
+
+
+### UI Ux Pro Max
+
+UI Ux Pro Max 是 nextlevelbuilder 的仓库
+- [UI Ux Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+### canvas-design
+
+
+Anthropic 推出，适合更自由的视觉探索、展示型页面、画布式交互或概念设计，不是每个项目都需要，但做创意产品页很有价值
+
+### Frontend Design
+
+【2026-1-6】[Vibe Coding - Frontend Design（Anthropic 官方）Skill 落地实战](https://blog.csdn.net/yangshangwei/article/details/156617372)
+
+Anthropic 官方推出的 Frontend Design Skill，正是为了用结构化能力和设计能力，填补“代码能跑”和“页面能用、看起来高级”之间的缺口。
+
+Frontend Design 被定义为：用于创建有辨识度、可用于生产环境的前端界面，重点强调“高设计质量”和“避免通用 AI 审美”。
+- 官方地址：[skills/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
+- [SKILL.md](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)
+
+面向对象：web 组件、完整页面、甚至小型前端应用。
+
+输出特点：
+- 代码可直接运行（而不是伪代码或零散片段）。
+- 有明确的设计语言，而不是无风格的“框架占位符页面”。
+
+设计目标：
+- 避免“千篇一律”的灰白布局。
+- 避免明显的“AI 生成痕迹”（同质化排版、过度留白、缺乏视觉层次等）
 
 ### Claude Design
 
@@ -391,6 +433,7 @@ Anthropic 发布 `Claude Design`，设计师圈子里刷屏了。
 GitHub 上 开源项目
 - [Open Design 项目](https://github.com/nexu-io/open-design)（作者：@Tom Huang）完全开源，Apache 2.0 协议，可自己部署，接自己的 API Key，可以改代码，可以二次开发。
 - 其他
+
 
 ### Open Design
 
