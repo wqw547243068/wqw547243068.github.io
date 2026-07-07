@@ -338,11 +338,56 @@ claude plugin install equity-research@claude-for-financial-services
 
 ## 网页设计
 
+
+### 总结
+
+【2026-7-7】UI设计总结
+
+基于42个产物与各变体的执行记录评估。第一轮（任务A-C）考察视觉表现，第二轮（任务D-G）考察交互、组件、创造性与多样性。
+
+第一轮 · 视觉表现（任务 A-C）
+
+评价维度：视觉个性、工程规范、动效工艺、三页一致性、一句话定位
+
+| 变体 | 一句话定位 |
+| ---- | ---- |
+| baseline | 干净、正确、但一眼「AI味」 |
+| frontend-design | 视觉冒险家，每页一个记忆点，但风格跨页跳跃 |
+| web-design-guidelines | 看不见的品质：a11y与排版规范全面碾压 |
+| ui-ux-pro-max | 数据库驱动的六边形战士，风格是「查」出来的 |
+| taste-skill | 最强反模板纪律：连文案用词都在管 |
+| emil-design-eng | 动效工匠：静态截图看不出，一交互就懂 |
+
+第二轮 · 交互 / 组件 / 创造性 / 多样性（任务 D-G）
+
+评价维度：交互完成度(D)、组件合理性(E)、创造性(F)、多样性(G)、第二轮结论
+
+| 变体 | 第二轮结论 |
+| ---- | ---- |
+| baseline | 功能常识扎实，短板在多样性：三个方向都逃不出赛博舒适区 |
+| frontend-design | 开放命题下断层领先：Art Deco向导、玻璃故障404、三方向彻底割裂 |
+| web-design-guidelines | 交互与组件双满分：焦点管理、aria语义、焦点陷阱全场唯一做全 |
+| ui-ux-pro-max | UX准则逐条可溯源；唯一系统考虑404错误恢复路径的变体 |
+| taste-skill | 会按任务性质自动调节冒险度；功能页收敛、404放开，纪律性最强 |
+| emil-design-eng | 交互密集任务的主场：shake校验、可中断toggle、快出慢进Toast |
+
+两大核心发现
+- 发现一 · Skill 的第一作用是「禁止」而非「教学」
+  - 对照组暴露了默认输出的收敛性：紫色系主色、Inter字体、居中Hero、三等分卡片。
+  - 效果最好的 Skill（frontend-design、taste-skill）核心手段都是负面清单——禁用AI惯用字
+- 发现二 ·「好看」和「合格」是两条赛道
+  - frontend-design 产出了最惊艳的视觉（墨黑金落地页、构成主义作品集）
+  - 但 web-design-guidelines 在源码层面全面领先：skip-link、aria-sort、tabular-nums、reduced-motion
+
+
+
+### Claude Design
+
 Anthropic 发布 `Claude Design`，设计师圈子里刷屏了。
 - 专门给设计师用的 AI 工具，把设计思维和 AI 代码生成直接捏在一起，演示视频里随便聊几句就能出一个像样的设计稿，「这就是设计的未来」。
 	
 但闭源，只能通过官方 Claude 账号使用，而且额度少的可怜，用上原生 Claude design 对大多数人非常困难。
-	
+
 GitHub 上 开源项目
 - [Open Design 项目](https://github.com/nexu-io/open-design)（作者：@Tom Huang）完全开源，Apache 2.0 协议，可自己部署，接自己的 API Key，可以改代码，可以二次开发。
 - 其他
