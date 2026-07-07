@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context claude 评测
+tags: prompt 大模型 hermes context claude 评测 翁荔 自进化
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -224,11 +224,14 @@ Agent 开发框架 与 AI Harness 运行框架
 
 ## 总结
 
-Thin Harness, Fat Skills
+
+
+### 【2026-4-11】Thin Harness, Fat Skills
+
+【2026-4-11】[Thin Harness, Fat Skills](https://x.com/garrytan/status/2042925773300908103)
 - [小红书图解](https://www.xiaohongshu.com/explore/6a05c343000000003700dcf1)
 
 <img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/7c8d2c52-a26f-4e54-8771-ea1035114bd3" />
-
 
 YC Combinator CEO [Garry Tan](https://x.com/garrytan) 发布文章 [Thin Harness, Fat Skills](https://x.com/garrytan/status/2042925773300908103)，不是“AI Agent 又要提效多少倍”，而是把 Agent 系统为什么会拉开差距讲清楚了。
 - 同一个模型，有人只能用出 2 倍效率，有人能用出 10 倍、100 倍，差别不一定在模型本身，而在模型外面的架构。
@@ -240,7 +243,7 @@ YC Combinator CEO [Garry Tan](https://x.com/garrytan) 发布文章 [Thin Harness
 - 需要查询、计算、排序、精确执行的事，交给确定性工具。
 - 很多 Agent 不稳定，不是模型不够强，而是把工作放错了地方
 
-Agent 设计准则 框架
+Agent 设计准则框架
 - 最上层: 大量的Agent Skills。Garry 称 `Fat Skills`，Agent软件中开发量最大的主体部分。
 - 每个SKILL就像一个函数，等待被Agent调用。其中既包括纯粹用英语描述的SKILL.md，也包括完成任务的程序脚本。
 
@@ -248,6 +251,32 @@ Agent 设计准则 框架
 - 前者在 Latent Space 工作，用文字驱动LLM的智能去做事情；
 - 后者是确定逻辑（Deterministic）的，用代码脚本完成工作。
 - ![](https://pica.zhimg.com/80/v2-03b0303aec714ae5a734d07a2653bee2_720w.webp?source=1def8aca)
+
+### 【2026-7-4】Lilian Weng：Harness 实现自进化
+
+【2026-7-4】Lilian Weng 翁荔的博客更新
+- 最新长文《[Harness Engineering for Self-Improvement](https://lilianweng.github.io/posts/2026-07-04-harness/)》
+- 信息量巨大，指明了下一阶段 AI Agent 和递归自我提升（RSI）的核心演进方向。
+
+很多人以为 AI 自我提升是“模型自己改自己的底层代码/权重”，翁荔指出，现阶段这不现实。真正的突破口在 `Harness`（外壳工程）。
+	
+如果把大模型比作“纯大脑”，Harness 就是包裹的系统。决定了 AI 怎么规划、怎么调工具、怎么管理内存、怎么开分身。像最近大火的 Claude Code 和 Cursor，强就强在拥有一套极其厉害的 Harness。
+	
+下一代 Agent 的三大标准系统设计
+- 🔷自动化闭环： 抛弃静态 Prompt，建立“规划-执行-测试-改进”的系统 Runtime（类似 Karpathy 的 autoresearch 项目）。
+- 🔷文件系统即记忆： 上下文再长也会爆。最高级的长文本管理，是让 AI 学会像人类一样用命令行读写本地文件，把文件系统当作持久化内存。
+- 🔷分身与进程管理： AI 遇到复杂任务，会自己 Spawn（孵化）多个子 Agent 并行跑任务，主 AI 当总指挥。
+	
+观点: Harness 本身正在变成 AI 的优化目标。
+- 以前是人类写死工具和规则
+- 现在最新的研究（如 ACE, MCE, Meta-Harness）：用外层的“代码 AI”去不断重写、优化底层 AI 的交互外壳和工具集。
+
+一旦 Harness 的设计空间变成**可搜索**的，顶尖的 Coding Agent 就会疯狂压榨这个空间，实现 AI 系统的“自我进化”
+	
+许多过去精妙的 Prompt 技巧最终会被模型本身消化（比如强化学习内化），但大模型与外部现实世界交互的“系统外壳（Harness）”永远不会消失。
+
+未来的方向是让系统本身具备“元方法论”的进化能力。
+
 
 ## 论文
 
