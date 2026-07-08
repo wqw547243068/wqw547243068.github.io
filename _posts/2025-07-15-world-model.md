@@ -3,7 +3,7 @@ layout: post
 title:  世界模型 World Model
 date:   2025-07-15 12:00:00
 categories: 大模型
-tags: LLM AGI 世界模型 系统 快思考 慢思考 因果 模拟器
+tags: LLM AGI 世界模型 系统 快思考 慢思考 因果 模拟器 具身智能
 excerpt: 世界模型专题笔记
 mathjax: true
 permalink: /world_model
@@ -814,7 +814,18 @@ FlashWorld 在预设轨迹下产生非常稳定、完整且高质量的渲染结
 
 具身智能最核心的两块拼图：环境和模型，训练场和大脑。
 
+### 【2026-6-8】MotionWAM
 
+【2026-6-8】Mondo 机器人与港科大推出 MotionWAM，面向人形机器人的单目视觉端到端世界行动模型，结合视觉 DiT 和动作 DiT
+
+人形机器人研究工作：
+- 通过高效的去噪特征提取设计（比Cosmos Policy快7倍），单4090显卡实现基于世界模型的WAM + SONIC底层控制的多任务丝滑推理
+
+🤖💪人形机器人做家务活已经成为可能，虽然还很慢，但是任劳任怨
+- Paper: [MotionWAM: Towards Foundation World Action Models for Real-Time Humanoid Loco-Manipulation](https://arxiv.org/abs/2606.09215)
+- Project Page: [MotionWAM](https://dit4dit.github.io/MotionWAM/)
+
+详见站内专题：[机器人vla模型](vla)
 
 
 # 结束
