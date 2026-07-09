@@ -1245,7 +1245,7 @@ Weibull Distribution是连续性的概率分布
 - 抽奖箱：搭配签到功能一起使用，现场抽奖产品，用户扫码签到后以抽奖箱的形式进行抽奖，后台可以设置奖项名称、数量等信息。
 
 vibe coding 制作的抽奖系统
-
+- [lottery_system](https://wqw547243068.github.io/wqw/demo/lottery_system.html)
 
 
 
