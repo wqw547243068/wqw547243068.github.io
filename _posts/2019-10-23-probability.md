@@ -3,7 +3,7 @@ layout: post
 title:  "数学基础：概率统计 - Probability and statistics"
 date:   2019-10-23 16:53:00
 categories: 数学基础
-tags: 概率 统计 幂律分布 正态分布 长尾分布 样本数 置信度 赌博 香农 凯利 庄家 机器学习 回归 分类 定理 定律 级数
+tags: 概率 统计 幂律分布 正态分布 长尾分布 样本数 置信度 赌博 香农 凯利 庄家 机器学习 回归 分类 定理 定律 级数 年会 抽奖
 excerpt: 概率统计相关知识
 permalink: /probability
 mathjax: true
@@ -1235,6 +1235,17 @@ Weibull Distribution是连续性的概率分布
 
 
 ## 应用
+
+
+### 抽奖系统
+
+【2026-7-9】年会抽奖系统
+- [抽奖吧](https://choujiangba.com/) 包含各种样式的抽奖系统、红包、签到系统
+- [3D抽奖](https://hd.pingqu.cn/screen/frame/index?hdid=xCwc1wUcUHDhhVv91jrVvW4cVC7AUu44&module=lottery)：用签到时的名单作为数据，屏幕上头像以动画效果的形式进行滚动。用户只需要扫签到的二维码完成签到，就可以直接参与抽奖，按空格键开始或者停止抽奖。
+- 抽奖箱：搭配签到功能一起使用，现场抽奖产品，用户扫码签到后以抽奖箱的形式进行抽奖，后台可以设置奖项名称、数量等信息。
+
+vibe coding 制作的抽奖系统
+
 
 
 
