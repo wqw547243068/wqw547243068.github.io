@@ -246,6 +246,31 @@ LLaMA-Factory 支持 DDP、DeepSpeed、FSDP 三种模式，各有侧重，具体
 - 显存极度紧张 → DeepSpeed ZeRO-3 + Offload 是唯一选择
 - 未来要扩展多机 → FSDP 更易维护
 
+### AI框架
+
+#### 【2026-6-9】面壁智能 ForgeTrain
+
+【2026-6-9】[ForgeTrain 开源：AI Agent 开始写大模型训练框架了](https://mp.weixin.qq.com/s/N9YB_6Caw77OAvGBURUJEA)
+
+OpenBMB 更激进的实践：高性能预训练框架，能不能由 AI Agent 自己写出来。
+
+ForgeTrain 是由 Autonomous Agent Loop 端到端生成的 LLM 预训练框架，强调 100% AI-authored、zero human edits。
+
+已经不是让 Coding Agent 写一个脚本、补一个接口、修一段业务逻辑，而是让 Agent 去碰训练框架、分布式任务、CUDA Graph、Triton fused kernels、通信计算重叠和算子优化这些更硬的工程层。
+
+传统大模型训练框架核心价值不只是“能跑起来”，还要在正确性、吞吐、显存、通信、断点恢复、日志、算子融合、分布式稳定性之间做平衡。
+
+更麻烦的是，很多问题只有在真实训练任务里才会暴露：
+- loss 对齐不对、kernel 快了但数值漂了、通信重叠看起来优雅但全局 step time 没降，都是训练工程里常见的坑。
+
+ForgeTrain 不是“AI 写出了一个能 import 的 Python 包”，而是让 Agent 在循环里读参考实现、写代码、启动训练任务、解析日志、定位根因、打补丁、过 gate、再提交。
+
+这个流程更接近训练团队里的工程闭环，而不是普通的代码补全。
+
+限定条件
+- ForgeTrain v1 当前聚焦 MiniCPM4-0.5B 的 DP-only 和 MiniCPM4-8B 的 TP=2 场景，而 Megatron-LM / Megatron Core 覆盖的模型家族、并行策略和生产生态更宽。
+
+
 ### FSDP
 
 FSDP（Fully Sharded Data Parallel）
