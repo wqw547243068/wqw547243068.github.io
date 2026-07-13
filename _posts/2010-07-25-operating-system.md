@@ -221,6 +221,11 @@ Roaming 目录移动
 操作已被用户取消。
 ```
 
+#### 进程清理
+
+【2026-7-10】optimizerDuck 免费开源的 Windows 优化工具，主打性能提升、隐私保护与简洁易用。
+- [](https://github.com/itsfatduck/optimizerDuck/blob/master/README.zh-CN.md)
+
 
 #### 文档编辑
 
