@@ -3,7 +3,7 @@ layout: post
 title:  "图像生成-Image Generation"
 date:   2023-04-04 08:01:00
 categories: 计算机视觉
-tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet agent 设计 多模态
+tags: 深度学习 计算机视觉 VAE GAN CVPR 论文 sota 数字图像 prompt stable sd 扩散  条件 控制 图片编辑 controlnet agent 设计 多模态 流匹配 flow
 excerpt: 图像生成技术概览，扩散生成模型原理及各类AI作画类应用
 mathjax: true
 permalink: /image-generation
@@ -374,11 +374,45 @@ ViT-VQGAN 模型结构与 VQGAN 基本一致，主要是将 Encoder 和 Decoder 
 MaskGIT 采用 VQGAN 模型范式，与 VQGAN 不同的是，VQGAN 中的 Transformer 采用序列生成的方式，在推理阶段其图像 Token 要一个一个预测，性能比较差，而 MaskGIT 中，Transformer 生成模型采用 Masked Visual Token Modeling 方式来训练（采用类似 Bert 的双向 Transformer 模型），也就是随机遮挡部分图像 Token，模型训练的目标是预测这些遮挡的 Token。以此方式训练的 Transformer 可以充分利用并行解码（Parallel Decoding）方式加速生成效率。
 
 
-## Flow-Based
+## Flow-Based 流匹配
 
 基于流的生成模型（Flow-based models）
 - ![](https://pic3.zhimg.com/80/v2-26c6df9df8ff419caff45e48532edb12_1440w.webp)
 - 假设原始数据分布可以通过一系列可逆的转化函数从已知分布获得，即通过雅各布矩阵行列式和变量变化规则，直接估计真实数据的概率密度函数（式(4)），最大化可计算的对数似然。
+
+### Flow 原理
+
+【2026-7-14】《Flow Matching for Generative Modeling》
+
+[帖子](https://www.xiaohongshu.com/explore/6a54bbd4000000001603d199?app_platform=android&ignoreEngage=true&app_version=9.35.1&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBlrpU7jGBJLoxFka0RdtpNb7jREpsrVeCmoan1BhB-Ts=&author_share=1&xhsshare=CopyLink&shareRedId=OD06NUlINT42NzUyOTgwNjY7OTpIOT5B&apptime=1783958027&share_id=32fa13cda9bf4b7a884cc92ad070500f&share_channel=copy_link) 图解
+
+扩散模型要"一步步加噪再去噪"，而 Flow Matching 直接让神经网络回归一个向量场，把噪声沿直线流成数据 —— 训练更稳、采样更快。
+
+😤 先讲痛点：两条路，各有死穴
+- CNF（连续归一化流）：理论上能建模任意路径，但训练要靠昂贵的 ODE 模拟，规模化极难
+- Diffusion：训练稳定，但被"固定扩散过程"框死，路径很窄，训练时间超长
+
+Flow Matching 的野心：
+- 既要 CNF 的"任意路径自由"，又要扩散的"稳定可扩展"，还要甩掉对扩散过程的依赖。
+
+💡 核心破局：CFM 条件流匹配
+- 理想目标（所有数据混合出的整体向量场）根本算不出来，怎么办？
+
+作者提出 Conditional Flow Matching (CFM) 的骚操作：
+- 化整为零：把"算不出的整体目标"拆成"每个样本自己的简单直线路径"
+- 关键定理：用条件目标训练，和用理想目标训练，网络参数的梯度完全相同！
+也就是说：不用碰那个不可解的整体，只需教会模型"每个样本怎么从噪声走到自己"，最优解却分毫不差。这才是 FM 能规模化训练的魔法✨
+
+🚀 为什么 OT 路径是精华？
+
+扩散路径弯弯曲曲还会"过冲"终点，而 Optimal Transport (OT) 让均值和方差随时间线性变化：
+- ✅ 直线轨迹、匀速运动、方向恒定
+- ✅ 回归任务更简单，训练更快、采样更省、泛化更好
+	
+📝 一句话记忆
+- FM 回归向量场，CFM 化整为零（梯度不变），OT 走直线 —— 又稳又快，撑起现代生成模型
+
+
 
 
 ## 扩散模型
