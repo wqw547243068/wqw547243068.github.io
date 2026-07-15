@@ -3,7 +3,7 @@ layout: post
 title:  智能体记忆设计 Agent Memory
 date:   2025-07-21 12:00:00
 categories: 大模型
-tags: LLM agent 智能体 记忆 强化学习 graphrag rag 知识图谱 遗忘
+tags: LLM agent 智能体 记忆 强化学习 graphrag rag 知识图谱 遗忘 评测
 excerpt: 智能体记忆设计专题
 mathjax: true
 permalink: /agent_memory/
@@ -383,6 +383,55 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 -   **[FAISS](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/faiss)**（Facebook AI Similarity Search）:它基于这样的假设，在高维空间中，节点之间的距离遵循高斯分布，因此应该存在数据点的聚类。FAISS通过将向量空间划分为聚类，并在聚类内部进行量化的方式来应用向量量化。搜索首先使用粗糙的量化方法寻找聚类候选项，然后再使用更精细的量化方法进一步查找每个聚类内的数据。
 -   **[ScaNN](https://link.zhihu.com/?target=https%3A//github.com/google-research/google-research/tree/master/scann)**（Scalable Nearest Neighbors）:ScaNN的主要创新在于各向异性向量量化。它将数据点 $x_i$ 量化为 $\tilde{x}_i$ ，使得内积 $\langle q, x_i \rangle$ 尽可能与原始距离 $\angle q, \tilde{x}_i$ 相似，而不是选择最接近的量化质心点。
 
+## 评测
+
+核心指标：
+- Recall@K —— 检索召回率。衡量从记忆库中找到正确信息的能力。
+- QA Accuracy / F1 —— 回答是否正确。最终看的是能否“说对话”。
+- Consistency Score —— 是否前后矛盾。可以人工或自动打分。
+- Rejection Rate —— 面对未知是否拒答，防止“假记忆”。
+- ROUGE / BLEU / FactScore —— 用于生成式摘要或事件回忆任务。
+
+长期记忆评测基准
+- [总结](https://zhuanlan.zhihu.com/p/1965106115856544233)
+
+| 评测基准 | 研发来源 | 发布时间 | 核心评测方向 | 关键信息 & 特点 | 适用场景 |
+|---|---|---|---|---|---|
+| LoCoMo | Snap Research | 2024年（ACL 2024） | 长周期真实多轮对话长期记忆 | 上百轮超长对话（平均300回合、跨最多35个会话），包含事实回忆、时间因果推理、多模态对话任务；官方结果GPT-4 F1仅32，人类均值88，凸显模型和真实长效记忆差距巨大 | 真实长时交互对话、通用型长记忆助手 |
+| LongMemEval | UCLA团队 | 2024年底预印本 / ICLR 2025 | 五大核心长效记忆能力 | 五项指标：信息提取、跨会话推理、时序推理、知识更新、拒答判断；共500道精心设计考题，可嵌入任意长度对话上下文，全面体检式评测长效交互记忆 | 任务型Agent（客服、知识问答、业务助手） |
+| MSC（Multi-Session Chat） | Facebook | 2022年 | 跨会话人设一致性记忆 | 多会话对话数据集，考察模型跨会话记住用户偏好、基础人设信息，检验角色记忆连贯性 | 陪伴型对话助手、人设对话模型基础评测 |
+| Persona-Long / DuLeMon | 百度 | 2022年（ACL 2022 Findings） | 长期人设一致性记忆 | 侧重长期角色设定、用户个性记忆，精准量化长期交互中的人格断层、人设崩塌问题 | 陪伴型、教育型、人设驱动型AI助手 |
+
+
+
+### 【2024-10-15】LongMemEval
+
+2024-10-15，由加州大学洛杉矶分校（UCLA）和腾讯AI实验室西雅图团队联合创建了LongMemEval，一个全面评估聊天助手在长期交互中的记忆力基准测试。
+
+【2025-3-4】ICLR 2025 UCLA 和 腾讯AI Lab发表的长程记忆测评论文
+- [LONGMEMEVAL: BENCHMARKING CHAT ASSISTANTS ON LONG-TERM INTERACTIVE MEMORY](https://arxiv.org/pdf/2410.10813)
+- 数据 [LongMemEval](https://github.com/xiaowu0162/LongMemEval)
+
+对话助手类系统在**长期持续交互**下的长效记忆能力，仍缺乏充分研究。
+
+LONGMEMEVAL 综合评测基准，用于评估对话助手5大核心长效记忆能力：信息提取、跨会话推理、时序推理、知识更新、拒答判断。
+
+该基准包含 500 条精心设计的测试问题，并可嵌入任意长度可扩展的人机对话上下文，对现有长效记忆系统构成显著考验：主流商用对话助手与长上下文大模型在跨长期交互信息记忆任务上，准确率下降幅度可达 30%。
+
+LongMemEval提供了两种标准设置以便进行一致的比较：
+- 1、LongMemEvalS：每个问题的聊天历史大约有115k个token。
+- 2、LongMemEvalM：包含大约500个会话，大约1.5百万个token。
+
+一套统一框架，将长效记忆架构拆解为索引构建、检索读取三大核心阶段。
+
+![](https://pica.zhimg.com/v2-b86e97a1988b83a4e4b3838618dbac94_1440w.jpg)
+
+
+基于大量实验结论，进一步提出多项记忆机制优化方案：基于会话拆分实现精细化记忆管理、事实增强的键扩展索引方法、以及时序感知查询扩展来精准缩小检索范围。
+
+大量对照实验证明，以上优化可显著提升模型在 LONGMEMEVAL 基准上的事实召回率与下游问答准确率。
+
+整体而言，本研究提供了评测基准与设计指导，用以提升大模型对话助手的长效记忆能力，为构建更个性化、高可靠的对话人工智能奠定基础。
 
 
 
