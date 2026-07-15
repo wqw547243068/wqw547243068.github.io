@@ -410,7 +410,16 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 
 【2025-3-4】ICLR 2025 UCLA 和 腾讯AI Lab发表的长程记忆测评论文
 - [LONGMEMEVAL: BENCHMARKING CHAT ASSISTANTS ON LONG-TERM INTERACTIVE MEMORY](https://arxiv.org/pdf/2410.10813)
-- 数据 [LongMemEval](https://github.com/xiaowu0162/LongMemEval)
+- 代码 [LongMemEval](https://github.com/xiaowu0162/LongMemEval)
+- 数据集 [longmemeval](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/tree/main)
+
+
+| 文件名 | 文件大小 | 用途说明 |
+|---|---|---|
+| longmemeval_m_cleaned.json | 2.74 GB | 主版完整版清洗数据集，包含完整可扩展长对话上下文，用于完整长效记忆评测 |
+| longmemeval_oracle.json | 15.4 MB | 标准答案/基准真值数据集，包含正确答案、标签，用于模型结果评估计算指标 |
+| longmemeval_s_cleaned.json | 277 MB | 轻量版/小样版清洗数据集，适合快速验证、调试代码与原型实验 |
+
 
 对话助手类系统在**长期持续交互**下的长效记忆能力，仍缺乏充分研究。
 
