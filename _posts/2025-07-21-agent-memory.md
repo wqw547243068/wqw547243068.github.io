@@ -414,12 +414,12 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 - 数据集 [longmemeval](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/tree/main)
 
 
-| 文件名 | 文件大小 | 用途说明 |
-|---|---|---|
-| longmemeval_m_cleaned.json | 2.74 GB | 主版完整版清洗数据集，包含完整可扩展长对话上下文，用于完整长效记忆评测 |
-| longmemeval_oracle.json | 15.4 MB | 标准答案/基准真值数据集，包含正确答案、标签，用于模型结果评估计算指标 |
-| longmemeval_s_cleaned.json | 277 MB | 轻量版/小样版清洗数据集，适合快速验证、调试代码与原型实验 |
 
+| 数据集版本 | 对应文件 | 核心参数 | 文件大小 | 核心用途 |
+|---|---|---|---|---|
+| LongMemEval-S（轻量版） | longmemeval_s_cleaned.json | 单题对话历史约115k token | 277 MB | 快速调试、原型验证、小批量实验 |
+| LongMemEval-M（完整版） | longmemeval_m_cleaned.json | 约500会话、总计150万 token | 2.74 GB | 全量正式评测、模型基准测试 |
+| LongMemEval-Oracle（真值集） | longmemeval_oracle.json | 全量测试题标准答案与评分基准 | 15.4 MB | 评测结果自动打分、指标计算 |
 
 对话助手类系统在**长期持续交互**下的长效记忆能力，仍缺乏充分研究。
 
