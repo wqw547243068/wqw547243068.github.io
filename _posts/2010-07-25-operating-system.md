@@ -106,6 +106,10 @@ permalink: /os
 
 <iframe src="//player.bilibili.com/player.html?aid=758974733&bvid=BV1C64y1Q7N1&cid=363244221&page=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="600" width="100%"> </iframe>
 
+【2026-7-17】Kimi 员工 Vibe Coding 实现的 Windows XP 模拟器，回到 2005年
+
+[Windows XP 模拟器](https://windows-xp.kimi.site/)
+
 
 ### windows 操作
 
