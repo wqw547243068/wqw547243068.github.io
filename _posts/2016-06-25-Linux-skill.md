@@ -1195,8 +1195,8 @@ export no_proxy="localhost,127.0.0.1,*.local"
 - 服务器端无法使用vpn，导致很多安装包无法正常使用，如 uv 安装
 
 【2026-3-28】解法：ssh 端口映射
-- ① 本地机器开启代理，记住本地端口 local_port
-- ② 服务器端设置代理
+- ① 本地机器开启代理，记住本地端口 local_port（如 2080）
+- ② 服务器端设置代理：几个shell变量（如 http_proxy）
 - ③ 本地并启动 ssh 转发
 
 ```sh
@@ -1206,8 +1206,15 @@ host=10.191.60.224
 local_port=2080 # 本地端口
 remote_port=8022
 export https_proxy=http://127.0.0.1:$local_port http_proxy=http://127.0.0.1:$local_port all_proxy=socks5://127.0.0.1:$local_port 
+
+
 # 本地mac执行
 ssh -fCNR $local_port:localhost:$local_port  luban@$host -p $remote_port # 绑定本地代理服务
+# 【2026-7-18】示例：测试通过
+# ① 远程服务器
+export https_proxy=http://127.0.0.1:2080 http_proxy=http://127.0.0.1:2080 all_proxy=socks5://127.0.0.1:208
+# ② 本地Mac，开启代理端口 2080
+ssh -fCNR 2080:localhost:2080  luban@10.191.61.23 -p 8022
 ```
 
 ssh 端口映射
