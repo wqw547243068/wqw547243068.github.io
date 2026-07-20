@@ -334,7 +334,9 @@ Qwen-2.5-Omni-7B 问题——目前还没有更普适的**量化版本**
 
 #### 【2025-9-21】阿里 Qwen3 Omni
 
-【2025-9-21】Qwen3-Omni 全模态正式登场，当前还看不到太多的相关信息。
+【2025-9-21】[Qwen3-Omni](https://qwen3omni.net/) 全模态正式登场。
+- Qwen Chat 窗口 在线体验 [Qwen Online](https://chat.qwen.ai/)
+- huggingface [Online Demo](https://huggingface.co/spaces/Qwen/Qwen3-Omni-Demo)
 
 仅从代码层面分析来看，相比 Qwen2.5-Omni，Qwen3-Omni 的主要升级点在于采用了**MoE 架构**，而Qwen2.5-Omni 的 Talker`模块在其标准实现中采用的是dense结构。
 
