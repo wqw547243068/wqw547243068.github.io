@@ -49,6 +49,8 @@ mathjax: true
 - 艰难时代造就**勇者**，勇者开创**安逸时代**，安逸时代产生**弱者**，弱者重返**艰难时代**！
 - tough time create strong man, strong man create easy times, easy time create weak man ,weak man create tough time .
 
+《盐铁论》：富在术数，不在劳身。利在局势，不在力耕。—— 生态位
+
 
 ### 为什么穷人难以翻身
 
