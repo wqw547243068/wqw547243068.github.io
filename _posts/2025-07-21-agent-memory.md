@@ -428,7 +428,7 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 - TR：理解时间戳、时间表达和有效期
 - ABS：无证据时拒答，避免幻觉
 
-问题二：样本构建
+问题二：样本构建, 本体 → 本体Q/A → Session → 引入干扰Session → 混排
 1. Question Construction
   - 属性本体 → 用户背景 → 候选 Q/A → 人工筛选改写 → Evidence Statements
 2. Evidence Session Construction
