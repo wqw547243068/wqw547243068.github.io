@@ -406,14 +406,12 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 
 ### 【2024-10-15】LongMemEval
 
-2024-10-15，由加州大学洛杉矶分校（UCLA）和腾讯AI实验室西雅图团队联合创建了LongMemEval，一个全面评估聊天助手在长期交互中的记忆力基准测试。
+2024-10-15，由加州大学洛杉矶分校（UCLA）和腾讯AI实验室西雅图团队联合创建了 LongMemEval，一个全面评估聊天助手在长期交互中的记忆力基准测试。
 
 【2025-3-4】ICLR 2025 UCLA 和 腾讯AI Lab发表的长程记忆测评论文
 - [LONGMEMEVAL: BENCHMARKING CHAT ASSISTANTS ON LONG-TERM INTERACTIVE MEMORY](https://arxiv.org/pdf/2410.10813)
 - 代码 [LongMemEval](https://github.com/xiaowu0162/LongMemEval)
 - 数据集 [longmemeval](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/tree/main)
-
-
 
 | 数据集版本 | 对应文件 | 核心参数 | 文件大小 | 核心用途 |
 |---|---|---|---|---|
@@ -422,6 +420,21 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 | LongMemEval-Oracle（真值集） | longmemeval_oracle.json | 全量测试题标准答案与评分基准 | 15.4 MB | 评测结果自动打分、指标计算 |
 
 对话助手类系统在**长期持续交互**下的长效记忆能力，仍缺乏充分研究。
+
+问题一：五类能力 ① 信息抽取+更新 ② 推理（时间+跨session） ③ 拒答
+- IE：记住用户/助手事实与偏好
+- MR：跨多个 Session 聚合和推理
+- KU：新信息更新旧信息
+- TR：理解时间戳、时间表达和有效期
+- ABS：无证据时拒答，避免幻觉
+
+问题二：样本构建
+1. Question Construction
+  - 属性本体 → 用户背景 → 候选 Q/A → 人工筛选改写 → Evidence Statements
+2. Evidence Session Construction
+  - 每条 Evidence → 自然任务型对话 → 间接透露 → 人工检查和编辑
+3. History Compilation
+  - Evidence Sessions + 干扰 Sessions → 混排 → 分配时间戳 → 115K / 1.5M 长历史
 
 LONGMEMEVAL 综合评测基准，用于评估对话助手5大核心长效记忆能力：信息提取、跨会话推理、时序推理、知识更新、拒答判断。
 
