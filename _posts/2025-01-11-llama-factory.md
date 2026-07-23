@@ -3,7 +3,7 @@ layout: post
 title:  "LLaMA-Factory 使用指南"
 date:   2025-01-10 19:25:00
 categories: 大模型
-tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory vllm FSDP deepspeed
+tags: GPU Tensorflow Pytorch 并行计算 分布式 huggingface 阿里云 火山 unsloth llama-factory vllm FSDP deepspeed skill
 excerpt: 分布式训练知识点
 author: 鹤啸九天
 mathjax: true
@@ -177,6 +177,17 @@ export USE_OPENMIND_HUB=1 # Windows 使用 `set USE_OPENMIND_HUB=1`
 | ORPO Training          | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
 | SimPO Training         | ✅           | ✅             | ✅    | ✅     | ✅    | ✅    |
 
+
+### llamafactory-sft Skill
+
+2026年6月26日 [llamafactory-sft Skill 进行 LlamaFactory 微调](https://blog.llamafactory.net/posts/llamafactory-sft-skill/)
+
+llamafactory-sft skill，让智能体辅助完成一次 LlamaFactory SFT 微调流程。
+- 基于 Qwen3.5-2B 模型，使用 LlamaFactory 内置数据集完成一次 LoRA SFT，并在训练后进行效果验证与模型导出。
+
+```SH
+.claude/skills/llamafactory-sft/SKILL.md
+```
 
 ## Web UI
 
