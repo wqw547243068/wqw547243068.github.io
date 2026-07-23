@@ -672,7 +672,24 @@ ppt_to_video(meta)
 - 依托 ffmpeg + Playwright 实现无间隙音频合成，命令行极简操作，支持断点续跑、跳过重复环节，无需专业剪辑，快速产出教学、演示、自媒体视频，零基础也能批量生成高质量有声 PPT，办公与创作效率直接拉满！
 
 
+## 模型训练
+
+
+### llamafactory-sft Skill
+
+2026年6月26日 [llamafactory-sft Skill 进行 LlamaFactory 微调](https://blog.llamafactory.net/posts/llamafactory-sft-skill/)
+
+llamafactory-sft skill，让智能体辅助完成一次 LlamaFactory SFT 微调流程。
+- 基于 Qwen3.5-2B 模型，使用 LlamaFactory 内置数据集完成一次 LoRA SFT，并在训练后进行效果验证与模型导出。
+
+```SH
+.claude/skills/llamafactory-sft/SKILL.md
+```
+
+
 ## 其他
+
+### 模型训练
 
 
 ### 算命
