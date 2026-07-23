@@ -482,6 +482,44 @@ GitHub 上和 PPT 相关的 Skill 项目。
 
 ### drawio 流程图
 
+drawio 以 XML 格式承载
+
+结构示例
+
+```xml
+<mxfile>
+  <diagram id="page-1" name="Page-1">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1"
+                  tooltips="1" connect="1" arrows="1" fold="1"
+                  page="1" pageScale="1" pageWidth="850" pageHeight="1100"
+                  math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Diagram elements go here with parent="1" -->
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+```
+
+支持嵌入网页
+
+```html
+<script src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+
+<div class="mxgraph" data-mxgraph='{"highlight":"#0000ff","nav":true,"resize":true,"toolbar":"zoom layers tags","xml":"DIAGRAM_XML_HERE"}'></div>
+```
+
+效果
+
+<script src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+
+<div class="mxgraph" data-mxgraph='{"highlight":"#0000ff","nav":true,"resize":true,"toolbar":"zoom layers tags","xml":"DIAGRAM_XML_HERE"}'></div>
+
+
+#### next-ai-draw-io
+
 【2026-6-3】一句话绘制 drawio 流程图
 - 日本开发者提供 next-ai-draw-io: [demo](https://next-ai-drawio.jiang.jp/zh), [github](https://github.com/DayuanJiang/next-ai-draw-io)，[中文文档](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/docs/cn/README_CN.md)
 - Next.js网页应用，与draw.io图表无缝结合。通过自然语言命令和AI辅助可视化来创建、修改和增强图表
@@ -489,6 +527,105 @@ GitHub 上和 PPT 相关的 Skill 项目。
 ```sh
 claude mcp add drawio -- npx @next-ai-drawio/mcp-server@latest
 ```
+
+#### drawio-skill
+
+[drawio-skill](https://agents365-ai.github.io/drawio-skill/) —— [从文字到专业图表](https://github.com/Agents365-ai/drawio-skill/blob/main/README_CN.md)
+
+把自然语言描述变成 .drawio XML，并通过 draw.io 桌面版原生 CLI 导出 PNG / SVG / PDF / JPG 的技能。
+
+- 还能把现有代码库（Python / JS-TS / Go / Rust）、Terraform / Kubernetes / docker-compose 基础设施或 SQL schema 转成自动布局的图表。
+- 支持 Claude Code、Cursor、Copilot、OpenClaw、Codex、Autohand Code、Hermes 等任何兼容 Agent Skills 规范的 agent。
+
+核心亮点
+- 11 种图表类型预设 —— ER 图、UML 类图、序列图、C4、架构图、ML/深度学习、流程图、SysML（BDD / IBD / 需求图 / 参数图）、BPMN、网络拓扑、跨职能泳道图
+- Mermaid → 原生 .drawio（draw.io ≥ 30）—— 28 种标准类型直接用 Mermaid 文本作图（mindmap、gantt、timeline、journey、pie、sankey、kanban……），CLI 原生转成已布局、可编辑的 .drawio —— 只管结构，布局白送
+- 可视化代码库 —— 提取并自动布局一个 Python / JS-TS / Go / Rust 项目的结构（导入关系图）或 Python 类继承层级 —— Graphviz 布点、传递约简、按子包嵌套的容器
+- IaC → 架构图 —— 把 Terraform 配置、Kubernetes manifest 或 docker-compose 文件直接变成架构图，每个资源渲染为官方 AWS / Azure / GCP / K8s 图标，连线来自真实引用（role ARN、selector、volume 挂载）
+- SQL DDL → ER 图 —— 解析 CREATE TABLE 语句，生成带 PK/FK 标记的表节点和鸦爪外键连线
+- 确定性时序图 —— 用 JSON 描述参与者 + 消息序列，lifeline、自动追踪的激活条、箭头几何全部计算得出，无需手摆坐标
+- C4 模型 + 下钻 —— 一条命令生成多页 System Context → Container → Component 全套，官方 C4 形状配色，父元素点击跳转到子层页面
+- 搜索 10,000+ 个官方形状 —— 直接拿到 AWS / Azure / GCP / Cisco / Kubernetes / UML / BPMN 图标的精确 style，不靠猜（杜绝 shape=mxgraph.* 拼错变空白框）
+- AI / LLM 品牌图标 —— 321 个 draw.io 自身没有的 logo（OpenAI、Claude、Gemini、Mistral、Llama、Ollama、LangChain……），外加 18 个数据存储品牌（Redis、Postgres、Qdrant、Milvus……），专为 LLM/RAG 应用架构图准备
+- 自检 + 自动修复 —— 读取自己导出的 PNG，自动修复重叠、截断标签、连线堆叠等问题（最多 2 轮）
+- 迭代反馈循环 —— 最多 5 轮定向优化
+- 样式预设 —— 用 .drawio 文件或图片"教会"Skill 你的风格，命名保存后随时复用
+- 整洁布局 —— 网格对齐，间距随图表规模缩放，连线避开节点
+- 多智能体、零配置 —— 从单个 SKILL.md 运行，无需 MCP、无后台 daemon（可选的 npx 安装器需要 Node，skill 本身不需要）
+
+
+安装
+
+```sh
+# 任意 Agent（Claude Code、Cursor、Copilot 等）
+npx skills add Agents365-ai/365-skills -g
+
+# Claude Code 插件市场
+> /plugin marketplace add Agents365-ai/365-skills
+> /plugin install drawio
+> /plugin update drawio # 更新
+
+# 手动安装
+git clone https://github.com/Agents365-ai/drawio-skill.git \
+  ~/.claude/skills/drawio-skill
+```
+
+
+
+### 代码仓库技术架构图
+
+
+#### fireworks-tech-graph
+
+fireworks-tech-graph 可在 Codex 和 Claude Code 里通用的 Agent Skill。
+- GitHub [fireworks-tech-graph](https://github.com/yizhiyanhua-ai/fireworks-tech-graph), [文档介绍](https://github.com/yizhiyanhua-ai/fireworks-tech-graph/blob/main/README.zh.md)
+
+fireworks-tech-graph 是 Codex 和 Claude Code 共用的 Agent Skill。
+- 将自然语言描述转化为经过几何校验的 SVG、高分辨率 PNG、经过媒体探测验证的 SVG 转 GIF 语义动效与离线交互 HTML。
+- 聚焦后的动效链路只接收生成器产出的语义 SVG，只输出一个紧凑、可验证的 GIF。
+- 项目内置 **11 种**生成器风格 + 1 种 AI 手绘风格（Dark Luxury）；新增的四种工程风格分别为 C4 评审、云部署、事件流和可靠性排查提供可执行语义契约，同时保留 AI/Agent Pattern 与全部 14 种 UML 图类型。
+
+用自然语言描述一个系统，生成经过几何校验的 SVG、高分辨率 PNG，还能输出语义化的 GIF 动效，以及一份可以离线打开、支持缩放平移的交互 HTML
+
+安装
+
+```sh
+npx -y skills@1.5.17 add \
+  yizhiyanhua-ai/fireworks-tech-graph/skills/fireworks-tech-graph \
+  --agent codex claude-code -g -y --copy
+```
+
+"画一张 Mem0 的架构图，生成 GIF" → 自动识别成 Memory Architecture Diagram，套上对应布局，输出带泳道、圆柱体、语义箭头的 SVG，再导出 PNG
+
+```
+用户: "画一张 Mem0 的架构图，暗黑风格"
+  → Skill 识别：Memory Architecture Diagram，Style 2
+  → 生成含泳道、圆柱体、语义箭头的 SVG
+  → 导出 1920px PNG
+  → 输出路径：mem0-architecture.svg / mem0-architecture.png
+```
+
+#### archify 
+
+开源项目 [Archify](https://tt-a1i.github.io/archify/) 适用于 Claude、Codex CLI 和 opencode 的 Agent Skill。
+- GitHub [https://github.com/tt-a1i/archify](Archify) [说明文档](https://github.com/tt-a1i/archify/blob/main/README_ZH.md)
+
+给 [https://github.com/tt-a1i/archify](Archify) 一段系统描述或代码仓库，就能得到可打开、可探索、可演示、可分享的专业技术图。
+- 打开就是成品 —— 五种技术图、三套视觉预设、深浅主题，以及显式启用的有限动态
+- 每次探索都有依据 —— 搜索节点、检查关系、追踪作者路径、对比角色、播放故事，但不编造拓扑
+- 一个文件即可放心交付 —— Typed JSON IR 和确定性校验生成独立 HTML，并支持 PNG、SVG、WebM 与 1200×630 分享卡片
+
+点击画面即可打开对应的可分享交互状态, 黑白两种主题
+
+安装方法
+
+```sh
+npx skills add tt-a1i/archify -g
+```
+
+然后告诉 Agent：
+> 使用 archify 梳理这个仓库的运行时架构。
+
 
 
 ## 视频制作
