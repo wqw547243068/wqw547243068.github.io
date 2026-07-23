@@ -27,17 +27,61 @@ permalink: /robot_control
 ## 机械臂
 
 
+### NERO 机械臂
+
+NERO 是松灵机器人在具身智能赛道上的重磅新品，一款专为科研、人形机器人开发及复杂任务场景打造的高自由度、高灵活性仿生臂。
+
+这款机械臂采用仿人七轴冗余构型，精准复刻人类手臂的7个自由度（肩3、肘1、腕3），不仅在结构上高度仿生，更在运动学层面实现了类人的冗余解空间。
+
+NERO自重仅4.8kg，末端负载达3kg，可稳定搭载RGB-D相机、灵巧手、力传感器等典型具身科研载荷。它原生支持CAN、TCP、HTTP通信协议，提供完整Python SDK，全面兼容ROS1与ROS2，无缝对接主流AI框架
+
 
 ### openclaw 操控
 
-2026-3-4 [养虾记|让小龙虾帮我控制七轴臂](https://cloud.tencent.com/developer/article/2633819) openclaw 操控机械臂，含演示视频
+2026-3-4 [让小龙虾帮我控制七轴臂](https://cloud.tencent.com/developer/article/2633819) openclaw 操控机械臂，含演示视频
 
 pyAgxArm 是 AgileX 机械臂与末端执行器的 Python SDK，支持 CAN 通信、状态读取、运动控制，以及 Piper、Nero、AgxGripper、Revo2 等设备的接口调用。
 - [pyAgxArm](https://github.com/agilexrobotics/pyAgxArm)
+- 使用[解说](https://mp.weixin.qq.com/s/ppBIbsA3cMIoIgVwabbT3Q)
+
+pyAgxArm 是 AgileX Robotics提供的官方Python SDK，专门用于控制其系列机械臂（包括NERO和Piper等）。
+
+该SDK提供了完整的控制接口：
+- 连接与配置：通过函数创建配置字典，指定机械臂型号、通信方式、通道等参数，然后使用AgxArmFactory创建机械臂实例并连接。
+- 运动模式：支持多种运动模式，每种模式对应不同的控制接口：
+- 关节位置速度模式（robot.MOTION_MODE.J）
+- 关节快速响应模式（robot.MOTION_MODE.JS）
+- 点到点模式（robot.MOTION_MODE.P）
+- 直线模式（robot.MOTION_MODE.L）
+- 圆弧模式（robot.MOTION_MODE.C）
+- 单位系统：关节角度使用弧度制，笛卡尔位姿的位置使用米制，姿态使用弧度制。
+
+整个控制流程遵循严格的安全协议和操作顺序：
+- 连接建立：首先通过CAN总线建立与机械臂的物理连接。
+- 模式切换：机械臂必须在使能前切换到正常模式，模式切换前后都需要1秒的延迟。
+- 使能操作：CRITICAL原则——机械臂在切换模式前必须处于使能状态。如果机械臂处于失能状态，无法切换模式。
+- 运动执行：所有运动命令都必须在正常模式下使用。
+- 运动完成检测：通过检查motion_status来判断运动是否完成。
+- 安全措施：每次机械臂操作后添加小延迟（0.01秒），运动完成等待使用较短超时（2-3秒）。
 
 实现 openclaw 指令与设备执行的全流程联动，大幅降低机械臂操控门槛。
 
+核心功能：
+- 根据用户自然语言描述，引导OpenClaw生成可执行的pyAgxArm控制代码（Python脚本）。
+
+技能文件定义了何时触发该技能——当用户说“写代码控制机械臂”、“根据我的描述生成控制脚本”或“让机械臂按顺序执行多个动作”时，OpenClaw便会启动代码生成流程。
+
 skill目录创建 agx_arm_codegen 目录，然后创建使用下面的skill文件
+
+当用户向 OpenClaw 描述机械臂动作时，如“帮我把东西从左边移到右边”，OpenClaw会：
+- 解析自然语言指令，理解用户的意图
+- 结合pyagxarm-api.md中的API参考和代码模板
+- 生成完整的、可运行的Python控制脚本
+- 提醒用户需要在已安装pyAgxArm和python-can的环境中运行，且CAN需已激活、机械臂已上电
+- 强调安全注意事项：执行前确认工作区域内无人员和障碍物；建议先小幅度、低速度测试
+
+生成的代码包含了连接配置、使能流程、运动命令序列以及安全检测逻辑，用户只需在准备好的环境中运行即可。
+
 
 ## 理论
 
