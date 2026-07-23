@@ -3,7 +3,7 @@ layout: post
 title:  "机器人控制"
 date:   2025-05-04 19:02:00
 categories: 人工智能
-tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角
+tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill
 excerpt: 机器人控制专题，ROS、感知、规划、行动
 author: 鹤啸九天
 mathjax: true
@@ -22,6 +22,22 @@ permalink: /robot_control
 站内专题
 - [具身智能](embodied)
 - [VLA专题](vla)
+
+
+## 机械臂
+
+
+
+### openclaw 操控
+
+2026-3-4 [养虾记|让小龙虾帮我控制七轴臂](https://cloud.tencent.com/developer/article/2633819) openclaw 操控机械臂，含演示视频
+
+pyAgxArm 是 AgileX 机械臂与末端执行器的 Python SDK，支持 CAN 通信、状态读取、运动控制，以及 Piper、Nero、AgxGripper、Revo2 等设备的接口调用。
+- [pyAgxArm](https://github.com/agilexrobotics/pyAgxArm)
+
+实现 openclaw 指令与设备执行的全流程联动，大幅降低机械臂操控门槛。
+
+skill目录创建 agx_arm_codegen 目录，然后创建使用下面的skill文件
 
 ## 理论
 
