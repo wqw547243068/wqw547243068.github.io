@@ -3,7 +3,7 @@ layout: post
 title:  "数学历史与知识-Maths History and Konwledge"
 date:   2019-09-06 10:29:00
 categories: 数学基础
-tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方 可视化
+tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方 可视化 菲尔兹
 excerpt: 人文与数学的前后关系；数学软件
 mathjax: true
 permalink: /math
@@ -472,7 +472,7 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 以上罗列的便是数学家所从事的研究，但绝对不是唯一的分类标准，而且我们也没能完整地罗列出所有的领域，比如数学家还研究量子代数（quantum algebra）、分形学（Fractal）、数学史以及数学教育等等。
 
 
-# 数学大师
+## 数学大师
 
 - [一张图让你读懂：为何他会成为数学系所有学生的噩梦](https://www.toutiao.com/a6756016099625550343/?timestamp=1573015520&app=news_article_lite&group_id=6756016099625550343&req_id=201911061245190100260770880BC2E150)
 
@@ -549,11 +549,11 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 而这个犹如上帝语言的e^iπ+1=0，是一个代表“潜心修炼，理性思索”的数学符号，将持续引领一批批优秀的数学科研工作者，继续前行。
 
 
-## 哈密尔顿
+### 哈密尔顿
 
 ![](https://p26.toutiaoimg.com/img/tos-cn-i-siecs4i2o7/02b7075af03948c098efd4cda8b2aa6d~tplv-obj:900:750.image)
 
-### 四元数
+#### 四元数
 
 - [四元数基本概念](https://zhuanlan.zhihu.com/p/27471300)
 
@@ -581,6 +581,11 @@ K理论是代数与几何的有趣结合。最初是为了拓扑空间（向量�
 所以哈密尔顿到死都没看到自己的研究成果被数学界认可。后来四元数是怎么突破历史的封印的呢？是由于**三维动画**的兴起。在三维动画中一个普通的模型上面的点线面的数量都可能达到几万，如果是好莱坞大片的话，甚至会达到亿。这就意味着当视线转动一个角度时，场景中所有模型上的点线面都得重新绘制，光影也要重新渲染。这其中的计算量可想而知。对于影视剧还算幸运，它们是先渲染完再放给观众看的。而3d游戏则需要**实时**渲染，游戏每运行一秒，背后都要进行海量的运算。所以从三维动画诞生之日起，计算机图形学家们就一直在寻找提升计算速度的办法，然后他们就发现了四元数这个香馍馍了。别看它一次计算只比矩阵算法快了一点点，几亿次运算下来，就真的是快了亿点点。所以我很反感“是金子总会发亮这句话”，一个数学公式想要发亮都那么难，何况人乎？也许是终有一天是会发亮，只不过那时候人已经不知道在哪了
 
 现代GPU在处理旋转（通常是在vertex shading阶段）并不是用四元数的，而是**矩阵**。刚体旋转需要3×3矩阵，不过GPU通常用4×4，同时处理三向伸缩和平移。因为3D引擎的基本模块就是**向量乘加器**，天生适合矩阵运算而不是四元数。但3D编程确实喜欢用4元数表示旋转，是因为其独特的数学特性。3D编程通常用四元数表示旋转，执行时再把四元数转换成矩阵交给GPU去运算。
+
+### 菲尔兹奖
+
+【2026-7-23】王虹、邓煜 菲尔兹奖
+- 挂谷猜想 [尹烨视频解答](xiaohongshu.com/discovery/item/6a651070000000001102e5e2?app_platform=android&ignoreEngage=true&app_version=9.39.1&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CB1MFprQ_TVM8kO_Xaf7W_2xwJQ72zFDYjd7u1Q-lvRCM%3D&author_share=1&xhsshare=WeixinSession&shareRedId=OD06NUlINT42NzUyOTgwNjY7OTpIOT5B&apptime=1785082522&share_id=0bbcf16f3e1247df86c670ecfeb18397&share_channel=wechat&xstag=1&code=2nqiDvBIiPS)
 
 
 # 为什么要学数学
