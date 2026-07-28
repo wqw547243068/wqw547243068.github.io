@@ -54,7 +54,9 @@ permalink: /graph
 
 ![](https://pic3.zhimg.com/v2-d5a455806e12c59255bcb13dcc12fdda_1440w.jpg)
 
-## 一、Graph Engineering诞生
+
+
+## 一、Graph Engineering 诞生
 
 
 2026 年 7 月 18 日凌晨，Peter Steinberger发了一条推，被浏览了 300万次
@@ -79,6 +81,21 @@ AI 圈又在造词？这次不太一样。
 分析
 - Loop Engineering 解决的是：一个 AI 怎么持续干活。
 - Graph Engineering 解决的是：一群 AI 怎么协作干活。
+
+【2026-7-19】Loop 工程已死，Graph 工程永生
+
+ - Loop Engineering（循环工程）核心是让 Agent 在循环中持续执行：规划、行动、观察、反思、再行动。它解决的是：如何让模型自主运行得更久，把一件事持续做下去。
+- 而 Graph Engineering（图工程）关注的不再只是单个 Agent 能循环多少轮，而是：如何用有向图组织多个 Agent、工具和任务节点，定义它们之间的依赖关系、信息流转路径和执行条件。
+	
+⏬️ 为什么 Graph Engineering 突然火了？
+- 因为真实世界中的复杂任务，很少是一条直线，也不是简单地让模型反复尝试就能解决。它们通常包含：任务拆解、角色分工、条件判断、并行执行、结果聚合、失败重试，以及人工审批。当 Agent 从单点工具走向复杂工作流，真正决定系统能力上限的，已经不只是模型能不能“持续思考”，而是整个系统能否被合理地组织和调度。
+- 所以，Loop 并没有真的消失。它更像是 Graph 中的一个基础结构。
+
+⬛️ 从 Loop 到 Graph，代表 Agent 工程正在从：“让模型自己多跑几轮”走向：“设计一套可以稳定解决复杂问题的协作系统。”
+
+更多介绍
+- [图解 Graph Engineering](https://zhuanlan.zhihu.com/p/2065181073781298761), [公众号](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&tempkey=MTM4NF9ydkVIcklIWFplcWptM0psa29OelY0b01PRzJOSXF5X3FoWElaQTZUY1pUSFpvLTdDRjhwMG5LcUlyYmsxa2d1WWhHUk5GMmZiWGJPdUpFNFJHc3ZHLTRIMlVXYUpmbm1IMFZRbFJ6WXV4ZE9CNXdNTTBFRm9JbXFwZ29NQ1phUGpKQy11WVZ2c2IyQkFkTEtfcjJXenVicmxNbWZrZzhfRlZCRVhnfn4%3D&chksm=bec3d24189b45b57a9838fd6011c0682769fc8d42ba5a2c1a83f8e7b58ca7f0648fc9326b3b2&token=1314339977&lang=zh_CN#rd)
+- [Andrej Kaparthy 实践指南](https://drive.google.com/file/d/1-GOg0kxcp8tx1BMUECMj2yJq6JYGmfhb/view?pli=1)，11页
 
 ## 二、Graph Engineering 是什么
 
