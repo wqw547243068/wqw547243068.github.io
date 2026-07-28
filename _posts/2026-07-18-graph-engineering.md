@@ -37,8 +37,10 @@ permalink: /graph
 
 <img src="https://pic3.zhimg.com/v2-c94055c641dce1c113e1d9572b6702d4_1440w.jpg" height="100%" width="600" />
 
+## 资料
 
-资料
+### 资讯
+
 - [小红书图解](https://www.xiaohongshu.com/explore/6a5e47cb00000000110042f1)
 - [Graph Engineering：从 0 到 1 小白完整教程](https://x.com/AdrianPunk115/status/2081268706483814605)
 - 图解 Graph Engineering [知乎](https://zhuanlan.zhihu.com/p/2065181073781298761)，[飞书](https://my.feishu.cn/wiki/R7nMwo9STi9Z5kkuIOjcUGRxnRb?from=from_copylink) 
@@ -54,6 +56,16 @@ Andrej Karpathy 12 页的 PDF 文档，多智能体系统中的“图结构工�
 - 步骤 6 → 代理忘记了。而图表并没有忘记。因此，每次会话时都不需要重新构建上下文了。
 
 Karpathy 使用了 1 个代理来处理 1 个方向的问题。Anthropic 图结构可以运行 1000 次，并且支持共享内存——同样的模型，只是架构有所不同。
+
+### 开源项目
+
+Graph Engineering 开源项目
+- [DeerWorkflow](https://deerwork-ai.github.io/deer-workflow/) , ts 代码， 构建可观察、可复用 Agent Graph 的开源 Dynamic Workflow Runtime
+  - GitHub [deer-workflow](https://github.com/deerwork-ai/deer-workflow)
+  - TypeScript 定义有效的执行路径，Coding Agent 则负责每个节点内部的语义工作。
+  - 代码即计划。 控制流、阶段、输入和失败处理都存在于可审阅的 TypeScript 中，而不是隐藏在不透明的 Agent 对话里。
+  - Agent 可替换。 Codex 是默认 Runtime，内置支持 Claude Code，而公共 Agent 接口保持厂商中立。
+  - 执行可观察。 交互式运行提供感知阶段状态的 TUI；自动化系统则可以消费 稳定的 JSONL Event Stream。
 
 
 
