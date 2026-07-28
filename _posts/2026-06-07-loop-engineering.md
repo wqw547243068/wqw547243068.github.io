@@ -123,9 +123,9 @@ Loop Engineering 似乎已经不够性感了。现在 AI Agent 圈子里最火�
 
 ⬛️ 从 Loop 到 Graph，代表 Agent 工程正在从：“让模型自己多跑几轮”走向：“设计一套可以稳定解决复杂问题的协作系统。”
 
-更多介绍
-- [图解 Graph Engineering](https://zhuanlan.zhihu.com/p/2065181073781298761), [公众号](https://mp.weixin.qq.com/s?__biz=MjM5ODY2OTQyNg==&tempkey=MTM4NF9ydkVIcklIWFplcWptM0psa29OelY0b01PRzJOSXF5X3FoWElaQTZUY1pUSFpvLTdDRjhwMG5LcUlyYmsxa2d1WWhHUk5GMmZiWGJPdUpFNFJHc3ZHLTRIMlVXYUpmbm1IMFZRbFJ6WXV4ZE9CNXdNTTBFRm9JbXFwZ29NQ1phUGpKQy11WVZ2c2IyQkFkTEtfcjJXenVicmxNbWZrZzhfRlZCRVhnfn4%3D&chksm=bec3d24189b45b57a9838fd6011c0682769fc8d42ba5a2c1a83f8e7b58ca7f0648fc9326b3b2&token=1314339977&lang=zh_CN#rd)
-- [Andrej Kaparthy 实践指南](https://drive.google.com/file/d/1-GOg0kxcp8tx1BMUECMj2yJq6JYGmfhb/view?pli=1)，11页
+详见站内专题：[Graph Engineering](graph)
+
+
 
 
 ### 架构
