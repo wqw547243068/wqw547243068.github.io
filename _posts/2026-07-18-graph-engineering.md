@@ -41,6 +41,8 @@ permalink: /graph
 
 ### 资讯
 
+【2026-7-28】[X文](https://x.com/Sprytixl/status/2078778799064584535) 微软、斯坦福大学和 Anthropic 里，Graph Engineering 取代了 RAG 技术。
+
 - [小红书图解](https://www.xiaohongshu.com/explore/6a5e47cb00000000110042f1)
 - [Graph Engineering：从 0 到 1 小白完整教程](https://x.com/AdrianPunk115/status/2081268706483814605)
 - 图解 Graph Engineering [知乎](https://zhuanlan.zhihu.com/p/2065181073781298761)，[飞书](https://my.feishu.cn/wiki/R7nMwo9STi9Z5kkuIOjcUGRxnRb?from=from_copylink) 
