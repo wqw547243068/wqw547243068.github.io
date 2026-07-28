@@ -341,8 +341,10 @@ Cognition 跑了一年之后得出的结论：
 
 
 资料
-- 小红书图解
-- Graph Engineering：从 0 到 1 小白完整教程
+- [小红书图解](https://www.xiaohongshu.com/explore/6a5e47cb00000000110042f1)
+- [Graph Engineering：从 0 到 1 小白完整教程](https://x.com/AdrianPunk115/status/2081268706483814605)
 - 图解 Graph Engineering [知乎](https://zhuanlan.zhihu.com/p/2065181073781298761)，[飞书](https://my.feishu.cn/wiki/R7nMwo9STi9Z5kkuIOjcUGRxnRb?from=from_copylink) 
+
+
 
 # 结束
