@@ -35,7 +35,8 @@ permalink: /graph
 - Loop Engineering 解决“如何持续推进”
 - 而 Graph Engineering 解决的是：多个 Agent 如何协同
 
-![](https://pic3.zhimg.com/v2-c94055c641dce1c113e1d9572b6702d4_1440w.jpg)
+<img src="https://pic3.zhimg.com/v2-c94055c641dce1c113e1d9572b6702d4_1440w.jpg" height="100%" width="600" />
+
 
 ## 介绍
 
@@ -114,9 +115,12 @@ Graph Engineering 把复杂任务拆成多个节点，用流程图方式定义�
 - `边`（Edges）——决定下一步跑什么。可以是顺序、并行，也可以按上一步的结果走不同分支。
 - `状态`（State）——节点之间流动的信息。每个节点都读它，也都写它。
 
-![](https://pica.zhimg.com/v2-11f61c99f14efb371cf2fb442986b788_1440w.jpg)
+<img src="https://pica.zhimg.com/v2-11f61c99f14efb371cf2fb442986b788_1440w.jpg" height="100%" width="600" />
 
-![](https://pic3.zhimg.com/v2-b1850b348a1791162cb4a59ac98d7e16_1440w.jpg)
+<img src="https://pic3.zhimg.com/v2-b1850b348a1791162cb4a59ac98d7e16_1440w.jpg" height="100%" width="600" />
+
+
+
 
 听起来抽象？看个具体例子。
 
@@ -143,7 +147,9 @@ Loop 是一个人转圈，Graph 是一群人接力。
 判断标准：
 > 一个 Loop 跑到第三轮还搞不定，就该考虑 Graph 了。
 
-![](https://pic3.zhimg.com/v2-73f14d8baad19cdcd46a19de1227756a_1440w.jpg)
+<img src="https://pic3.zhimg.com/v2-73f14d8baad19cdcd46a19de1227756a_1440w.jpg" height="100%" width="600" />
+
+
 
 ## 四、Loop 和 Graph 关系
 
@@ -193,18 +199,22 @@ Graph Engineering 不是取代 Loop，而是把Loop们 连起来，协调运作
 
 Graph不是DAG：有向，但不一定无环
 
-![](https://pic1.zhimg.com/v2-9cef653f2388704ff3b7c2772a3cac56_1440w.jpg)
+<img src="https://pic1.zhimg.com/v2-9cef653f2388704ff3b7c2772a3cac56_1440w.jpg" height="100%" width="600" />
+
+
 
 ## 六、Graph Engineering 核心模块
 
 
 多Agent如何在一张图里协作？
 
-![](https://pic4.zhimg.com/v2-bf3abc023c6eba179eb4873ac5da1af9_1440w.jpg)
+<img src="https://pic4.zhimg.com/v2-bf3abc023c6eba179eb4873ac5da1af9_1440w.jpg" height="100%" width="600" />
+
 
 Graph骨架：FSM
 
-![](https://pica.zhimg.com/v2-e2127d9eb9688c283af688edc376e608_1440w.jpg)
+<img src="https://pica.zhimg.com/v2-e2127d9eb9688c283af688edc376e608_1440w.jpg" height="100%" width="600" />
+
 
 ### 核心模块
 
@@ -262,7 +272,8 @@ Cognition 跑了一年之后得出的结论：
 
 ## 七、Graph 模板
 
-![](https://picx.zhimg.com/v2-4bcc771b5b576cbaf5241a4f04736077_1440w.jpg)
+<img src="https://picx.zhimg.com/v2-4bcc771b5b576cbaf5241a4f04736077_1440w.jpg" height="100%" width="600" />
+
 
 ### 写文章 Graph
 
