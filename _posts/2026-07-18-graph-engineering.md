@@ -38,6 +38,25 @@ permalink: /graph
 <img src="https://pic3.zhimg.com/v2-c94055c641dce1c113e1d9572b6702d4_1440w.jpg" height="100%" width="600" />
 
 
+资料
+- [小红书图解](https://www.xiaohongshu.com/explore/6a5e47cb00000000110042f1)
+- [Graph Engineering：从 0 到 1 小白完整教程](https://x.com/AdrianPunk115/status/2081268706483814605)
+- 图解 Graph Engineering [知乎](https://zhuanlan.zhihu.com/p/2065181073781298761)，[飞书](https://my.feishu.cn/wiki/R7nMwo9STi9Z5kkuIOjcUGRxnRb?from=from_copylink) 
+
+Andrej Karpathy 12 页的 PDF 文档，多智能体系统中的“图结构工程”技术。[X推文](https://x.com/Serantych/status/2081037322867363889)
+
+完整说明：
+- 步骤 1: 构建循环 —— 生成、批评、修正。48 小时内完成 630 行代码，进行 700 次实验。
+- 步骤 2: 并行处理：各个代理程序在独立的工作线程中运行，共享同一个仓库，但路径不同，不存在冲突。
+- 步骤 3: 添加知识图谱：提取实体，解决别名问题，构建类型化的边，通过子图进行查询。
+- 步骤 4 → 对评估者进行验证：这一步是通过图表来比对各种声明是否一致，而不是通过感官判断。
+- 步骤 5 → 将共享内存中的图表数据加载到内存中。工作者们写入该内存。评估者进行核实检查。这些循环结构会持续运行一整夜。
+- 步骤 6 → 代理忘记了。而图表并没有忘记。因此，每次会话时都不需要重新构建上下文了。
+
+Karpathy 使用了 1 个代理来处理 1 个方向的问题。Anthropic 图结构可以运行 1000 次，并且支持共享内存——同样的模型，只是架构有所不同。
+
+
+
 ## 介绍
 
 
@@ -336,14 +355,6 @@ Cognition 跑了一年之后得出的结论：
 - 重试 3 次仍失败 → 输出卡住原因
 
 
-
-## 附录
-
-
-资料
-- [小红书图解](https://www.xiaohongshu.com/explore/6a5e47cb00000000110042f1)
-- [Graph Engineering：从 0 到 1 小白完整教程](https://x.com/AdrianPunk115/status/2081268706483814605)
-- 图解 Graph Engineering [知乎](https://zhuanlan.zhihu.com/p/2065181073781298761)，[飞书](https://my.feishu.cn/wiki/R7nMwo9STi9Z5kkuIOjcUGRxnRb?from=from_copylink) 
 
 
 
