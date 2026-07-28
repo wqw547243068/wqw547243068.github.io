@@ -585,6 +585,57 @@ ohmo init → ohmo config → ohmo gateway start
 - 经过 10 轮 AHE 迭代后，Terminal‑Bench 2 数据集的一次通过率（pass@1）从 69.7% 提升至 77.0%，超越人工设计框架 Codex（71.9%）以及自迭代基线模型 ACE、无训练 GRPO
 
 
+### 【2026-4-30】HarnessX 模型与行为分离
+
+Darwin Agent 团队的 HarnessX。做了一件简单但有想象力的事：
+- 把 agent 模型和行为用一行代码表示。换行为和换模型从此不再互相拖累。
+
+`HarnessX`：可组合、自进化的 Agent Harness Foundry
+
+大多数 agent 框架解决了"换模型"的问题。
+
+"换行为"仍然昂贵——从 coding agent 切换到 research agent、加上记忆或护栏，意味着要重写 agent。
+
+HarnessX 用干净的分离解决：agent = model.agentic(harness)
+- ModelConfig：provider 路由、fallback、按角色的模型分配
+- HarnessConfig：完整的行为流水线（tools、memory、processors、trace、sandbox）
+- GitHub [HarnessX](https://github.com/Darwin-Agent/HarnessX)
+
+
+X = eXtensible Behavior Composition。 无需重写 agent 就能组合、适配、进化 harness。
+
+三重能力
+- 🧩 Compose：9 维行为流水线。任何行为 = 一个 Processor，用 | 操作符组合。13 个内置 processor 覆盖工具编排、上下文管理、错误恢复、护栏、记忆
+- ⚙️ Adapt：harness 观察自身表现，自动搜索最优配置。MetaHarness 分析轨迹→提议配置变更→沙箱验证→自动推广
+- 🚀 Evolve：两个独立的进化循环——
+  - • Harness Evolution：meta-harness 搜索更好的 processor 组合、prompt 策略、工具配置。不改模型
+  - • Model Evolution：每次运行产生奖励标注轨迹，喂给 SFT/RL 训练（集成 VERL）。改模型本身
+
+四个 Entry Point  
+- • hx "research AI trends"：一行 CLI
+- • hx lab：Web UI（localhost:8000）
+- • hx-gateway：IM 集成（飞书/Telegram/Slack/Discord/钉钉）
+- • Python SDK：model.agentic(harness) 一行嵌入任意应用
+- • hx “研究人工智能趋势”：仅一行文本
+- • hx 实验室：Web 界面（localhost:8000）
+- • hx-gateway：IM 集成功能（支持与飞书、Telegram、Slack、Discord 和钉钉等应用集成）
+- • Python SDK：model.agentic(harness) 可嵌入到任何应用中，只需一行代码即可实现功能。
+
+路线图
+
+| Phase | Focus | Status |
+| --- | --- | --- |
+| 1 | 核心：9 维流水线、13 processor、多 provider、SFT/RL 桥接、4 benchmark、Lab UI | ✅ |
+| 2 | Meta-opt：贝叶斯优化、MetaHarness、自动配置搜索 | 🔄 |
+| 3 | 自进化：闭环训练、HarnessHUB 社区市场 | 📋 |
+| 4 | Memory：多模态后端、第三方集成 | 📋 |
+
+当前 hx pull coding-agent@v1.2 的 HarnessHUB 还在路线图上——一旦上线，harness 就能像 docker image 一样被分享和复用。
+
+
+## 评测
+
+
 ### 【2026-5-25】评测 Harness思路
 
 【2026-5-25】[关于Agent Harness，我整理了一个最小版](https://mp.weixin.qq.com/s/yVFQej3dFk9KHv6J2u6Lew)
