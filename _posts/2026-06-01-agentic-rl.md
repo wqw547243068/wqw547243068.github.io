@@ -517,7 +517,7 @@ PPO 相比 GRPO 在 Agentic RL 中更具优势：
 2025 年 5 月，基于荣耀 yoyo 助手真实场景对话数据进行对话任务训练时就发现：
 > 带 Value 网络的 PPO 训练，相比其他方法具有更强的抗 Hacking 能力和训练鲁棒性。能有效减少模型崩溃，在长对话优化和真实交互中表现显著更优（参考后文的 VRPO 工作）。
 
-#### EVPO
+##### EVPO
 
 - 北大复旦【2026-4-21】[EVPO: Explained Variance Policy Optimization for Adaptive Critic Utilization in LLM Post-Training](https://arxiv.org/abs/2604.19485)
 
@@ -529,7 +529,7 @@ PPO 相比 GRPO 在 Agentic RL 中更具优势：
 《EVPO》提供新视角：**前期 GRPO 探索，后期 PPO 提纯**。
 - 前期利用 GRPO 高效的 RL 训练过程，顺带“预训练” Value Model，从而更高效地利用探索阶段产生的数据
 
-#### 伯克利 VIMPO
+##### 伯克利 VIMPO
 
 【2026-6-18】UC Berkeley 的论文（VIMPO），介于 GRPO 和 PPO 之间的新尝试。
 - 论文 [VIMPO: Value-Implicit Policy Optimization for LLMs](https://arxiv.org/pdf/2606.20008v1),
@@ -538,7 +538,48 @@ PPO 相比 GRPO 在 Agentic RL 中更具优势：
 	
 不过 LLM论文都有这个问题：小模型上的实验到底有多大程度可以进一步scaling，Scaling以后无论是计算和infra复杂度还是实际效果，相比小模型可能都会有比较大的差异。
 
-	
+
+##### 【2026-7-15】SAO
+
+【2026-7-15】清华 KEG实验室跟智谱提出 SAO
+
+长程Agent和coding任务中，提升强化学习（RL）效率是核心难题。
+
+现有LLM RL流水线效率提升受限
+- 多采用**同步**、**批量式**流程，效率提升受限
+- 异步RL也存在不足，GRPO 方法难以直接适配异步Agent训练。
+
+清华大学 KEG实验室的研究团队提出SAO方法，用单rollout采样替代GRPO的组式采样，每个输入任务只生成一条可立即用于训练的rollout，降低离策略影响并提升泛化能力。
+
+单轨迹异步优化（SAO）的核心原理：
+- 打破传统强化学习中必须等待整个批次（Batch）或整组（Group）回答全部生成的同步限制，改为每生成一条多轮交互轨迹就立即进行异步训练。
+
+长轨迹 Agent 强化学习中，不再为每个 Prompt 生成一组回答并等待最慢的 Rollout，而是每得到一条轨迹就立即训练；
+
+同时重新引入并强化 Critic，通过 Token 级离策略过滤、快速价值更新和 Skip-Observation GAE，让单轨迹异步 RL 能够稳定运行。
+
+`SAO` 全称为 Single-Rollout Asynchronous Optimization。将每个 Prompt 的采样数从一组改成一条：
+- **GRPO：**同一个 Prompt 生成多条轨迹，等待组内样本齐备后再训练；
+- **SAO：**每个 Prompt 只生成一条轨迹，完成后立即进入训练队列。
+
+这样做消除了组内等待，也更接近真实在线 Agent 与环境交互的方式。
+
+但单轨迹训练失去了 GRPO 的组内均值基线，梯度方差会明显增大。SAO 因此重新采用 Actor-Critic 路线，并围绕异步、长轨迹、多轮工具交互设计了四个关键模块：
+- Direct Double-Sided Importance Sampling（DIS）；
+- 单 Rollout + 更强的价值模型；
+- Skip-Observation Token-level GAE；
+- 更大规模的价值模型预训练。
+
+SAO 采用单rollout异步优化，为让流程平稳运行，设计了四大机制。
+- 直接双边重要性采样（DIS）用于减少异步训练中的离策略偏差，通过使用rollout阶段记录的token对数概率计算重要性采样比，超出设定区间的token不参与梯度更新。
+
+局限
+
+尽管SAO在多类Agent任务中表现稳定，但仍存在适用范围、部署基础设施和真实在线应用限制。未来需要验证其是否能迁移到更小模型、非Agent类型的RLHF场景，以及奖励更密集、rollout更短的任务环境中。
+
+实际部署需要训练基础设施在异步生成过程中可靠保存概率信息。用于真实用户场景还需要更强的安全防护、监控机制和隐私审查。同时，基于SAO的系统需要负责任的发布和持续监控，避免相关能力被用于优化有害目标。
+
+
 
 
 # 结束
