@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Self-Evolution Loop </title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: auto;
+    color: #1e293b;
+    padding-top: 12px;
+  }
+  h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 0.1rem; color: #1e293b; }
+  .subtitle { font-size: 0.72rem; color: #64748b; margin-bottom: 0.3rem; letter-spacing: 0.05em; font-weight: 600; }
+  #canvas-wrap { position: relative; width: 1500px; height: 1050px; }
+  canvas { display: block; width: 1500px; height: 1050px; }
+  .controls { display: flex; gap: 10px; margin-top: 0.4rem; margin-bottom: 0.3rem; }
+  .controls button {
+    background: #fff; border: 1px solid #cbd5e1; color: #1e293b;
+    padding: 6px 18px; border-radius: 7px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .controls button:hover { background: #f1f5f9; border-color: #6366f1; }
+  .controls button.active { background: #6366f1; border-color: #6366f1; color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>🧠 Skill Self-Evolution Loop</h1>
+
+<div class="controls">
+  <button id="btnPlay" class="active" onclick="togglePlay()">⏸ Pause</button>
+  <button onclick="resetAnim()">↺ Reset</button>
+  <button onclick="changeSpeed(-1)">🐢 Slower</button>
+  <button onclick="changeSpeed(1)">🐇 Faster</button>
+</div>
+
+<div id="canvas-wrap"><canvas id="c" width="1500" height="1050"></canvas></div>
+
+<script>
+const canvas = document.getElementById('c');
+const dpr = window.devicePixelRatio || 1;
+const W = 1500, H = 1050, CX = W/2, CY = H/2 + 30;
+const R = 300;
+const R2 = 130; // inner circle radius for DL/RL labels
+
+canvas.width = W * dpr; canvas.height = H * dpr;
+const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+
+// ── Nodes ─────────────────────────────────────────────────────
+const nodes = [
+  { id:0, label:'📄 Skill.md',       sub:'当前技能文档',      lines:['方案切换+转人工策略','验证通过后更新版本'], color:'#6366f1', glow:'rgba(99,102,241,0.16)', nw:150, nh:72, dl:'Policy π_θ' },
+  { id:1, label:'🎯 Forward',        sub:'推理 & 评估',       lines:['用当前skill执行任务','产出good/bad case'], color:'#3b82f6', glow:'rgba(59,130,246,0.16)', nw:150, nh:82, dl:'Rollout + Reward', badge:'model frozen', badgeColor:'#6b7280' },
+  { id:2, label:'🔍 Backward',       sub:'反思 & 生成Edits',  lines:['优化器分析bad case','生成技能补丁edits'], color:'#ea580c', glow:'rgba(234,88,12,0.16)', nw:156, nh:82, dl:'Gradient ∇L' },
+  { id:3, label:'✂️ Bounded Update', sub:'合并、排序 & 裁剪', lines:['聚合patches → merge','按budget裁剪edits'], color:'#0891b2', glow:'rgba(8,145,178,0.16)', nw:162, nh:82, dl:'Clipped Update' },
+  { id:4, label:'📝 Candidate',      sub:'应用Edits → 候选',  lines:['将edits应用到skill.md','→ candidate版本'], color:'#059669', glow:'rgba(5,150,105,0.16)', nw:156, nh:82, dl:'θ\' = θ + Δθ' },
+  { id:5, label:'🚦 Validation Gate', sub:'验证 → 接受/拒绝', lines:['held-out集上验证','→ ACCEPT / REJECT'], color:'#dc2626', glow:'rgba(220,38,38,0.16)', nw:165, nh:82, dl:'Evaluation / Early Stop' },
+];
+const N = nodes.length;
+
+nodes.forEach((n, i) => {
+  const a = -Math.PI/2 + (2*Math.PI*i)/N;
+  n.x = CX + R * Math.cos(a); n.y = CY + R * Math.sin(a); n.angle = a;
+  // DL/RL label position on inner circle (same angle)
+  n.dlx = CX + R2 * Math.cos(a); n.dly = CY + R2 * Math.sin(a);
+});
+
+const judgeNode = {
+  id:6, label:'⚖️ Judge', sub:'评测推理正确性',
+  lines:['1.线上真实数据','2.模拟合成对话数据'],
+  color:'#7c3aed', glow:'rgba(124,58,237,0.16)', nw:150, nh:72,
+  x: nodes[1].x + 36, y: nodes[1].y - 150,
+  badge: 'model training', badgeColor: '#f59e0b'
+};
+
+// ── Evolution Cycles ──────────────────────────────────────────
+const cycles = [
+  { // v0 → v1: 方案切换不灵活
+    skill: 'v0·方案切换: 灵活切换方案\n   1.口碑值较低低，建议提升口碑值\n2.打开全部听单少设置\n3.调整网络和定位(不感知用户已尝试过的方案)\n   转人工: 3次以上再转',
+    forward:
+      '✗ Bad #1 (方案切换不灵活):\n  司机:"听不到单"\n  客服:"口碑值较低,建议提升"\n  司机:"我口碑很好啊"\n  客服:"建议您提升口碑值"\n  → 重复推荐相同方案!\n\n' +
+      '✗ Bad #2:\n  司机:"听不到单"\n  客服:"听单模式是否全部开启?"\n  司机:"都开了"\n  客服:"建议检查听单设置是否开启"\n  → 司机已确认还重复!\n\n' +
+      '✓ Good:\n  司机:"听不到单"\n  客服:"口碑值较低建议提升"\n  司机:"我口碑很好"\n  客服:"听单模式是否都开了?"\n  → 感知反馈,切换方案 ✓',
+    backward:
+      'Edit① 方案切换-感知已尝试 [s=3]\n  INSERT after "方案切换:":\n  "如司机反馈已尝试/否认某方案,\n   立即标记并切换下一方案,\n   禁止重复推荐已确认方案"\n\n' +
+      'Edit② 方案切换-记录确认列表 [s=2]\n  INSERT after "诊断策略":\n  "维护已确认方案列表:\n   司机否定→加入已确认→\n   后续轮次跳过该方案"\n\n' +
+      'Edit③ 安抚-车头朝向 [s=1]\n  Edit④ PK-距离因素 [s=1]\n  Edit⑤ 转人工-情绪 [s=1]',
+    bounded:
+      'edit_budget = 2\n\n' +
+      '✓ 保留 Edit① 感知已尝试 (s=3)\n' +
+      '✓ 保留 Edit② 记录确认列表 (s=2)\n\n' +
+      '✗ 裁剪 Edit③④⑤ (s≤1)',
+    candidate:
+      '应用Edit①到方案切换段:\n  + "如司机反馈已尝试/否认,\n     立即标记并切换下一方案,\n     禁止重复推荐已确认方案"\n\n' +
+      '应用Edit②到诊断策略段:\n  + "维护已确认方案列表:\n     司机否定→加入→跳过"\n\n→ candidate v1',
+    gate:
+      'held-out验证:\n\n' +
+      '✓ 司机:"听不到单"\n  客服:"建议提升口碑值"\n  司机:"口碑很好啊"\n  客服:"那听单模式都开了吗?"\n  → 感知否认,切换方案 ✓\n\n' +
+      '✗ 司机:"我要找人工"\n  客服:"好的,帮您转人工"\n  → 就转,未挽留用户 ✗\n\n' +
+      '会话合格率: 50% → 75%  ✓ ACCEPT',
+    judge_fwd: 'Judge评测8条:\n真实4条 ✓2 ✗2\n合成4条 ✓2 ✗2',
+    judge_gate: 'Judge评测8条:\n真实4条 ✓3 ✗1\n合成4条 ✓3 ✗1',
+    score_before: 0.5, score_after: 0.75, accepted: true,
+  },
+  { // v1 → v2: 转人工识别优化
+    skill: 'v1·方案切换: #灵活切换方案\n   1.口碑值较低低，建议提升口碑值\n2.打开全部听单少设置\n3.调整网络和定位(不感知用户已尝试过的方案)\n  +如司机反馈已尝试/否认, 立即标记并切换下一方案,\n     +禁止重复推荐已确认方案 , 维护已确认方案列表:\n     +司机否定→加入→跳过 \n  #转人工: 3次以上再转',
+    forward:
+      '✗ Bad #1 (次数识别不准确):\n  司机:"我要找人工!破系统"\n  客服:"好的,帮您转人工"\n  → 就转,未挽留用户 ✗\n\n' +
+      '✗ Bad #2 (回复不当):\n  司机:"你是机器人吧"\n  客服:"我就是人工客服"\n  → 谎称人工,违反诚信 ✗\n\n' +
+      '✓ Good:\n  司机:"我要找人工"\n  客服:"您先别急,我也能帮您查"\n  → 第1次挽留,未转人工 ✓',
+    backward:
+      'Edit① 转人工次数识别 [s=3]\n  INSERT after "转人工判断":\n  "第1次有转人工诉求→挽留不转,\n   3次以上明确要求→才转人工;\n   情绪性表达不计入次数"\n\n' +
+      'Edit② 禁止谎称人工 [s=2]\n  INSERT after "身份规范":\n  "禁止说\'我就是人工客服\',\n   可说\'我也能帮您处理\'"\n\n' +
+      'Edit③ 严禁繁忙话术 [s=1]\n  Edit④ 安抚-不承诺 [s=1]',
+    bounded:
+      'edit_budget = 2\n\n' +
+      '✓ 保留 Edit① 转人工次数识别 (s=3)\n' +
+      '✓ 保留 Edit② 禁止谎称人工 (s=2)\n\n' +
+      '✗ 裁剪 Edit③④ (s≤1)',
+    candidate:
+      '应用Edit①到转人工段:\n  + "第1次有转人工诉求→挽留不转,\n     3次以上明确要求→才转人工;\n     情绪性表达不计入次数"\n\n' +
+      '应用Edit②到身份规范段:\n  + "禁止说\'我就是人工客服\',\n     可说\'我也能帮您处理\'"\n\n→ candidate v2',
+    gate:
+      'held-out验证:\n\n' +
+      '✓ 司机:"破系统!找人工"\n  客服:"理解您着急,我也能帮您查"\n  → 第1次诉求,挽留不转 ✓\n\n' +
+      '✓ 司机:"你是机器人吧"\n  客服:"我是智能助手,也能帮您处理"\n  → 不谎称人工 ✓\n\n' +
+      '✗ 司机:"我不要你!就要人工!"\n  客服:"好的,这就帮您转"\n  → 第3次才转,语气仍生硬 ✗\n\n' +
+      '会话合格率: 75% → 85%  ✓ ACCEPT',
+    judge_fwd: 'Judge评测8条:\n真实4条 ✓3 ✗1\n合成4条 ✓2 ✗2',
+    judge_gate: 'Judge评测8条:\n真实4条 ✓3 ✗1\n合成4条 ✓4 ✗0',
+    score_before: 0.75, score_after: 0.85, accepted: true,
+  },
+];
+
+// ── Helpers ───────────────────────────────────────────────────
+function lerpColor(a,b,t){const pa=hexToRgb(a),pb=hexToRgb(b);return`rgb(${Math.round(pa.r+(pb.r-pa.r)*t)},${Math.round(pa.g+(pb.g-pa.g)*t)},${Math.round(pa.b+(pb.b-pa.b)*t)})`;}
+function hexToRgb(hex){const v=parseInt(hex.slice(1),16);return{r:(v>>16)&255,g:(v>>8)&255,b:v&255};}
+function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.arcTo(x+w,y,x+w,y+r,r);c.lineTo(x+w,y+h-r);c.arcTo(x+w,y+h,x+w-r,y+h,r);c.lineTo(x+r,y+h);c.arcTo(x,y+h,x+r,y+h,r);c.lineTo(x,y+r);c.arcTo(x,y,x+r,y,r);c.closePath();}
+function edgeCtrl(f,t){const mx=(f.x+t.x)/2,my=(f.y+t.y)/2,dx=mx-CX,dy=my-CY,d=Math.max(Math.sqrt(dx*dx+dy*dy),1),s=(d+45)/d;return{cx:CX+dx*s,cy:CY+dy*s};}
+
+// ── Edge drawing ──────────────────────────────────────────────
+function drawEdge(f,t,hl){
+  const c=edgeCtrl(f,t);
+  ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.quadraticCurveTo(c.cx,c.cy,t.x,t.y);
+  ctx.strokeStyle=hl?'rgba(99,102,241,0.4)':'rgba(148,163,184,0.22)';ctx.lineWidth=hl?2.8:1.3;ctx.stroke();
+  const t1=.88,m1=1-t1,ax=m1*m1*f.x+2*m1*t1*c.cx+t1*t1*t.x,ay=m1*m1*f.y+2*m1*t1*c.cy+t1*t1*t.y;
+  const t2=.92,m2=1-t2,bx=m2*m2*f.x+2*m2*t2*c.cx+t2*t2*t.x,by=m2*m2*f.y+2*m2*t2*c.cy+t2*t2*t.y;
+  const ang=Math.atan2(by-ay,bx-ax),al=hl?13:8;
+  ctx.beginPath();ctx.moveTo(t.x+(bx-t.x)*.3,t.y+(by-t.y)*.3);
+  ctx.lineTo(t.x+(bx-t.x)*.3-al*Math.cos(ang-.35),t.y+(by-t.y)*.3-al*Math.sin(ang-.35));
+  ctx.lineTo(t.x+(bx-t.x)*.3-al*Math.cos(ang+.35),t.y+(by-t.y)*.3-al*Math.sin(ang+.35));
+  ctx.closePath();ctx.fillStyle=hl?'rgba(99,102,241,0.6)':'rgba(148,163,184,0.3)';ctx.fill();
+}
+function drawDashedEdge(fn,tn,hl){
+  const fx=fn.x,fy=fn.y,tx=tn.x,ty=tn.y,dx=tx-fx,dy=ty-fy,d=Math.max(Math.sqrt(dx*dx+dy*dy),1),so=24,eo=24;
+  ctx.beginPath();ctx.moveTo(fx+dx/d*so,fy+dy/d*so);ctx.lineTo(tx-dx/d*eo,ty-dy/d*eo);
+  ctx.setLineDash([7,5]);ctx.strokeStyle=hl?'rgba(124,58,237,0.45)':'rgba(148,163,184,0.22)';
+  ctx.lineWidth=hl?2.2:1.2;ctx.stroke();ctx.setLineDash([]);
+  const sx=fx+dx/d*so,sy=fy+dy/d*so,ex=tx-dx/d*eo,ey=ty-dy/d*eo,ang=Math.atan2(ey-sy,ex-sx),al=hl?11:7;
+  ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-al*Math.cos(ang-.35),ey-al*Math.sin(ang-.35));
+  ctx.lineTo(ex-al*Math.cos(ang+.35),ey-al*Math.sin(ang+.35));ctx.closePath();
+  ctx.fillStyle=hl?'rgba(124,58,237,0.55)':'rgba(148,163,184,0.28)';ctx.fill();
+}
+function drawSelfLoop(n,hl){
+  const lr=16,cx=n.x+n.nw/2+6,cy=n.y-12;
+  ctx.beginPath();ctx.arc(cx,cy,lr,-Math.PI*.8,Math.PI*.5,false);
+  ctx.setLineDash([5,4]);ctx.strokeStyle=hl?'rgba(124,58,237,0.5)':'rgba(148,163,184,0.22)';
+  ctx.lineWidth=hl?2:1.1;ctx.stroke();ctx.setLineDash([]);
+  const ea=Math.PI*.5,ax2=cx+lr*Math.cos(ea),ay2=cy+lr*Math.sin(ea),ta=ea+Math.PI/2,al=hl?8:5;
+  ctx.beginPath();ctx.moveTo(ax2,ay2);
+  ctx.lineTo(ax2-al*Math.cos(ta-.4),ay2-al*Math.sin(ta-.4));
+  ctx.lineTo(ax2-al*Math.cos(ta+.4),ay2-al*Math.sin(ta+.4));
+  ctx.closePath();ctx.fillStyle=hl?'rgba(124,58,237,0.5)':'rgba(148,163,184,0.28)';ctx.fill();
+}
+
+// ── Node drawing ──────────────────────────────────────────────
+function drawNode(node,isActive,progress){
+  const nw=node.nw,nh=node.nh,rad=10;
+  const x=node.x-nw/2,y=node.y-nh/2;
+  if(isActive){const g=ctx.createRadialGradient(node.x,node.y,nh*.3,node.x,node.y,nh*2);g.addColorStop(0,node.glow);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(node.x-nw*1.5,node.y-nh*1.5,nw*3,nh*3);}
+  let pe=0;if(isActive)pe=3+2*Math.sin(progress*Math.PI*4);
+  const px=x-pe,py=y-pe,pw=nw+pe*2,ph=nh+pe*2;
+  ctx.fillStyle='rgba(0,0,0,0.05)';roundRect(ctx,px+2,py+3,pw,ph,rad+2);ctx.fill();
+  const bg=ctx.createLinearGradient(px,py,px,py+ph);
+  bg.addColorStop(0,'#fff');bg.addColorStop(1,isActive?'#f8fafc':'#f1f5f9');
+  ctx.fillStyle=bg;roundRect(ctx,px,py,pw,ph,rad+2);ctx.fill();
+  ctx.strokeStyle=isActive?node.color:'#cbd5e1';ctx.lineWidth=isActive?2.8:1.3;roundRect(ctx,px,py,pw,ph,rad+2);ctx.stroke();
+  if(isActive){ctx.globalAlpha=.18+.12*Math.sin(progress*Math.PI*4);ctx.strokeStyle=node.color;ctx.lineWidth=2.2;roundRect(ctx,px-4,py-4,pw+8,ph+8,rad+6);ctx.stroke();ctx.globalAlpha=1;}
+  // Top color bar
+  ctx.save();ctx.beginPath();const br=rad+2;ctx.moveTo(px+br,py);ctx.lineTo(px+pw-br,py);ctx.arcTo(px+pw,py,px+pw,py+br,br);ctx.lineTo(px+pw,py+6);ctx.lineTo(px,py+6);ctx.lineTo(px,py+br);ctx.arcTo(px,py,px+br,py,br);ctx.closePath();ctx.fillStyle=isActive?node.color:(node.color+'55');ctx.fill();ctx.restore();
+  // Label
+  ctx.font='bold 15px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=isActive?node.color:'#334155';ctx.fillText(node.label,node.x,node.y-nh/2+20);
+  // Subtitle
+  ctx.font='600 11px sans-serif';ctx.fillStyle=isActive?'#475569':'#94a3b8';ctx.fillText(node.sub,node.x,node.y-nh/2+37);
+  // Lines
+  ctx.font='600 10px sans-serif';ctx.fillStyle='#64748b';const ls=node.y-nh/2+52;node.lines.forEach((l,i)=>ctx.fillText(l,node.x,ls+i*13));
+
+  // Badge (model frozen / model training)
+  if(node.badge){
+    ctx.font='bold 10px sans-serif';
+    const btw=ctx.measureText(node.badge).width+16;
+    const bth=20, bx2=node.x-btw/2, by2=node.y+nh/2+8;
+    roundRect(ctx,bx2,by2,btw,bth,6);
+    ctx.fillStyle=node.badgeColor+'20';ctx.fill();
+    ctx.strokeStyle=node.badgeColor;ctx.lineWidth=2;roundRect(ctx,bx2,by2,btw,bth,6);ctx.stroke();
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=node.badgeColor;ctx.font='bold 10px sans-serif';
+    ctx.fillText(node.badge,node.x,by2+bth/2);
+  }
+}
+
+// ── Detail card (radially outward) ────────────────────────────
+function drawDetailCard(node, text, isActive) {
+  if(!text) return;
+  const lines = text.split('\n');
+  const lineH = 15;
+  const cw = 290, ch = 26 + lines.length * lineH, cr = 8;
+
+  // Radial direction from center through node
+  const dx = node.x - CX, dy = node.y - CY;
+  const d = Math.max(Math.sqrt(dx*dx+dy*dy), 1);
+  const ux = dx/d, uy = dy/d;
+
+  // How far the node extends along the radial direction
+  const nodeHalfRadial = Math.abs(ux)*(node.nw/2) + Math.abs(uy)*(node.nh/2);
+  const gap = 18;
+  const cardDist = nodeHalfRadial + gap + ch/2 + 100;
+  let cardCX, cardCY;
+  if (node.id === 0) {
+    // Skill.md在正上方，卡片只水平右偏，不上下移动
+    cardCX = node.x + 100;
+    cardCY = node.y + uy * (nodeHalfRadial + gap + ch/2);
+  } else if (node.id === 3) {
+    // Bounded Update在正下方，卡片只水平右偏，不上下移动
+    cardCX = node.x + 100;
+    cardCY = node.y + uy * (nodeHalfRadial + gap + ch/2);
+  } else {
+    cardCX = node.x + ux * (cardDist - 30);
+    cardCY = node.y + uy * (cardDist - 30) + (node.id === 1 ? 100 : 0);
+  }
+
+  const bx = cardCX - cw/2, by = cardCY - ch/2;
+
+  // Connector line
+  const connSX = node.x + ux * (nodeHalfRadial + 3);
+  const connSY = node.y + uy * (nodeHalfRadial + 3);
+  const connEX = cardCX - ux * (Math.abs(ux) * cw/2 + Math.abs(uy) * ch/2);
+  const connEY = cardCY - uy * (Math.abs(uy) * ch/2 + Math.abs(ux) * cw/2);
+  ctx.beginPath();ctx.moveTo(connSX,connSY);ctx.lineTo(connEX,connEY);
+  ctx.strokeStyle=isActive?(node.color+'60'):'#e2e8f0';ctx.lineWidth=isActive?1.5:0.8;
+  ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.04)'; roundRect(ctx, bx+2, by+3, cw, ch, cr); ctx.fill();
+  // Background
+  ctx.fillStyle = isActive ? 'rgba(255,255,255,0.97)' : 'rgba(248,250,252,0.88)';
+  roundRect(ctx, bx, by, cw, ch, cr); ctx.fill();
+  // Border
+  ctx.strokeStyle = isActive ? node.color : '#e2e8f0';
+  ctx.lineWidth = isActive ? 1.6 : 0.8;
+  roundRect(ctx, bx, by, cw, ch, cr); ctx.stroke();
+  // Left accent
+  ctx.fillStyle = isActive ? node.color : (node.color + '33');
+  ctx.fillRect(bx, by + cr, 4, ch - cr*2);
+
+  // Text
+  ctx.font = isActive ? '600 11px sans-serif' : '500 9.5px sans-serif';
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  lines.forEach((l, i) => {
+    if (l.startsWith('✗') || l.startsWith('→ 重复') || l.startsWith('→ 司机已确认') || l.startsWith('✗ 裁剪') || l.startsWith('→ 说了') || l.startsWith('→ "破系统"')) {
+      ctx.fillStyle = isActive ? '#dc2626' : '#b91c1c88';
+    } else if (l.startsWith('✓') || l.startsWith('→ 感知') || l.startsWith('→ 正确') || l.startsWith('✓ 保留') || l.startsWith('→ 已确认') || l.startsWith('→ 第') || l.startsWith('→ 情绪') || l.startsWith('Score')) {
+      ctx.fillStyle = isActive ? '#059669' : '#05966988';
+    } else if (l.startsWith('Edit') || l.startsWith('应用Edit')) {
+      ctx.fillStyle = isActive ? '#0891b2' : '#0891b288';
+    } else {
+      ctx.fillStyle = isActive ? '#334155' : '#94a3b8';
+    }
+    ctx.fillText(l, bx + 10, by + 10 + i * lineH);
+  });
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+}
+
+// ── Particles ─────────────────────────────────────────────────
+let particles = [];
+function spawnParticles(){for(let i=0;i<N;i++)if(Math.random()<.07)particles.push({fi:i,ti:(i+1)%N,t:0,sp:.004+Math.random()*.003,sz:1.8+Math.random()*1.5,al:.5+Math.random()*.3});}
+function updateParticles(){for(let i=particles.length-1;i>=0;i--){particles[i].t+=particles[i].sp*speedMul;if(particles[i].t>1)particles.splice(i,1);}}
+function drawParticles(){for(const p of particles){const f=nodes[p.fi],t=nodes[p.ti],c=edgeCtrl(f,t),tt=p.t,mt=1-tt,px=mt*mt*f.x+2*mt*tt*c.cx+tt*tt*t.x,py=mt*mt*f.y+2*mt*tt*c.cy+tt*tt*t.y,isA=(p.fi===currentNode);ctx.beginPath();ctx.arc(px,py,p.sz*(isA?1.4:1),0,Math.PI*2);ctx.fillStyle=lerpColor(f.color,t.color,tt);ctx.globalAlpha=p.al*(isA?.8:.2);ctx.fill();ctx.globalAlpha=1;}}
+
+// ── Inner circle & DL/RL labels ──────────────────────────────
+function drawInnerCircle(){
+  // Dashed inner circle
+  ctx.beginPath(); ctx.arc(CX, CY, R2, 0, Math.PI*2);
+  ctx.setLineDash([8,6]); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.setLineDash([]);
+
+  // DL/RL label for each node
+  nodes.forEach((n, i) => {
+    const isActive = (i === currentNode);
+    // Small rounded rect background
+    const lw = ctx.measureText ? 0 : 0;
+    ctx.font = isActive ? 'bold 11px sans-serif' : '600 10px sans-serif';
+    const tw = ctx.measureText(n.dl).width + 14;
+    const th = 22;
+    const rx = n.dlx - tw/2, ry = n.dly - th/2;
+
+    // bg pill
+    ctx.fillStyle = isActive ? (n.color + '18') : 'rgba(241,245,249,0.7)';
+    roundRect(ctx, rx, ry, tw, th, 6); ctx.fill();
+    ctx.strokeStyle = isActive ? n.color : '#cbd5e1';
+    ctx.lineWidth = isActive ? 1.5 : 0.8;
+    roundRect(ctx, rx, ry, tw, th, 6); ctx.stroke();
+
+    // text
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = isActive ? n.color : '#64748b';
+    ctx.font = isActive ? 'bold 11px sans-serif' : '600 10px sans-serif';
+    ctx.fillText(n.dl, n.dlx, n.dly);
+
+    // thin radial line from inner label to outer node
+    ctx.beginPath();
+    ctx.moveTo(n.dlx + (n.x - n.dlx) * 0.15, n.dly + (n.y - n.dly) * 0.15);
+    ctx.lineTo(n.x - (n.x - n.dlx) * 0.22, n.y - (n.y - n.dly) * 0.22);
+    ctx.strokeStyle = isActive ? (n.color + '40') : '#e2e8f0';
+    ctx.lineWidth = isActive ? 1.2 : 0.6;
+    ctx.setLineDash([3,4]); ctx.stroke(); ctx.setLineDash([]);
+  });
+}
+
+// ── Top-left title ────────────────────────────────────────────
+function drawTopLeftTitle(){
+  ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.font='bold 17px sans-serif';ctx.fillStyle='#1e293b';
+  ctx.fillText('听单少场景skill进化过程演示',18,14);
+  ctx.font='600 13px sans-serif';ctx.fillStyle='#64748b';
+  ctx.fillText('任务优化：方案切换能力 + 转人工识别能力',18,38);
+  ctx.textAlign='center';ctx.textBaseline='middle';
+}
+
+// ── Center info (top of canvas) ───────────────────────────────
+function drawCenterInfo(){
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  const cyc=cycles[currentCycle%cycles.length];
+  const topY = 30;
+  const verIdx = currentCycle % cycles.length;
+  // good/bad: 8 total, derived from score
+  const good = Math.round(score * 8);
+  const bad = 8 - good;
+  ctx.font='bold 15px sans-serif';ctx.fillStyle='#334155';
+  ctx.fillText(`Epoch ${epoch} / ${totalEpochs}   Step ${step}   场景agent会话合格率: ${(score*100).toFixed(1)}% (${good}✓/${bad}✗)   当前skill版本: v${verIdx}`,CX,topY);
+
+}
+
+// ── Inner circle center label ────────────────────────────────
+function drawInnerCenterLabel(){
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font='bold 14px sans-serif';
+  ctx.fillStyle='#3b82f6';
+  ctx.fillText('skill-evol',CX,CY-8);
+  ctx.fillText('agent model',CX,CY+10);
+}
+
+function drawGateResult(){
+  if(currentNode!==5||nodeProgress<.7)return;
+  const cyc=cycles[currentCycle%cycles.length],n=nodes[5];
+  const tx=n.x-n.nw/2-55,ty=n.y-5;
+  ctx.font='bold 16px sans-serif';ctx.textAlign='right';
+  ctx.fillStyle=cyc.accepted?'#059669':'#dc2626';
+  ctx.fillText(cyc.accepted?'✓ ACCEPT':'✗ REJECT',tx,ty);
+  ctx.font='600 12px sans-serif';ctx.fillStyle='#475569';
+  ctx.fillText(`会话合格率 ${(cyc.score_before*100).toFixed(0)}%→${(cyc.score_after*100).toFixed(0)}%`,tx,ty+18);
+  ctx.textAlign='center';
+}
+
+// ── Animation state ───────────────────────────────────────────
+let playing=true,currentNode=-1,nodeProgress=0,globalTime=0,speedMul=.45;
+let epoch=1,step=1,totalEpochs=1,totalSteps=2,score=.5,currentCycle=0,cycleCount=0;
+
+function calcScoreBefore(cycleIdx){
+  // step1: cycle0 starts at 50%, step2: cycle1 starts at 75%
+  return [0.5, 0.75][cycleIdx % 2];
+}
+
+function resetAnim(){currentNode=0;nodeProgress=0;epoch=1;step=1;score=.5;currentCycle=0;cycleCount=0;particles=[];}
+function togglePlay(){playing=!playing;document.getElementById('btnPlay').textContent=playing?'⏸ Pause':'▶ Play';document.getElementById('btnPlay').classList.toggle('active',playing);}
+function changeSpeed(dir){speedMul=Math.max(.15,Math.min(3,speedMul+dir*.2));}
+
+function update(dt){
+  if(!playing)return;
+  globalTime+=dt;nodeProgress+=dt*.00042*speedMul;
+  if(nodeProgress>=1){
+    nodeProgress=0;currentNode=(currentNode+1)%N;
+    if(currentNode===0){
+      cycleCount++;
+      // one full loop done → next step/next cycle
+      currentCycle++;
+      step++;
+      if(step>totalSteps){
+        // all steps done → reset
+        step=1;epoch++;currentCycle=0;cycleCount=0;score=.5;
+        if(epoch>totalEpochs){epoch=1;}
+        return;
+      }
+      score=calcScoreBefore(currentCycle%cycles.length);
+    }
+  }
+  spawnParticles();updateParticles();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createRadialGradient(CX,CY,50,CX,CY,700);bg.addColorStop(0,'#f8fafc');bg.addColorStop(1,'#e2e8f0');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=.04;for(let dx=0;dx<W;dx+=28)for(let dy=0;dy<H;dy+=28){ctx.beginPath();ctx.arc(dx,dy,.8,0,Math.PI*2);ctx.fillStyle='#64748b';ctx.fill();}ctx.globalAlpha=1;
+
+  for(let i=0;i<N;i++)drawEdge(nodes[i],nodes[(i+1)%N],i===currentNode);
+  const ja=(currentNode===1||currentNode===5);
+  drawDashedEdge(judgeNode,nodes[1],ja);drawDashedEdge(judgeNode,nodes[5],ja);drawSelfLoop(judgeNode,ja);
+  drawParticles();
+  drawInnerCircle();
+  drawInnerCenterLabel();
+  for(let i=0;i<N;i++)drawNode(nodes[i],i===currentNode,nodeProgress);
+  drawNode(judgeNode,ja,nodeProgress);
+
+  // Detail cards
+  const cyc=cycles[currentCycle%cycles.length];
+  const dk=['skill','forward','backward','bounded','candidate','gate'];
+  for(let i=0;i<N;i++)drawDetailCard(nodes[i],cyc[dk[i]],i===currentNode);
+  const jd=currentNode===1?cyc.judge_fwd:(currentNode===5?cyc.judge_gate:null);
+  if(jd)drawDetailCard(judgeNode,jd,ja);
+
+  drawGateResult();drawCenterInfo();drawTopLeftTitle();
+  if(showJudgeInfo) drawJudgeInfoCard();
+}
+
+let lastTime=performance.now();
+function loop(now){const dt=now-lastTime;lastTime=now;update(dt);draw();requestAnimationFrame(loop);}
+resetAnim();currentNode=0;requestAnimationFrame(loop);
+
+// ── Judge info card (click to toggle) ────────────────────────
+let showJudgeInfo = false;
+
+function drawJudgeInfoCard(){
+  const px = W - 330, py = 16, pw = 310, ph = 160, pr = 10;
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.08)'; roundRect(ctx, px+2, py+3, pw, ph, pr); ctx.fill();
+  // Background
+  ctx.fillStyle = '#fff'; roundRect(ctx, px, py, pw, ph, pr); ctx.fill();
+  // Border
+  ctx.strokeStyle = '#7c3aed'; ctx.lineWidth = 2; roundRect(ctx, px, py, pw, ph, pr); ctx.stroke();
+  // Top color bar
+  ctx.save(); ctx.beginPath();
+  ctx.moveTo(px+pr, py); ctx.lineTo(px+pw-pr, py); ctx.arcTo(px+pw, py, px+pw, py+pr, pr);
+  ctx.lineTo(px+pw, py+28); ctx.lineTo(px, py+28); ctx.lineTo(px, py+pr); ctx.arcTo(px, py, px+pr, py, pr);
+  ctx.closePath(); ctx.fillStyle = '#7c3aed'; ctx.fill(); ctx.restore();
+  // Title
+  ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#fff'; ctx.fillText('⚖️ Judge 节点说明（相关方向和依赖）', px+pw/2, py+14);
+  // Content
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  const items = [
+    '1. 高逼真的模拟环境（动态工具仿真）',
+    '2. 用户模拟',
+    '3. 动态评测标准',
+    '4. 评测模型优化',
+  ];
+  ctx.font = '600 13px sans-serif'; ctx.fillStyle = '#334155';
+  items.forEach((item, i) => {
+    ctx.fillText(item, px+16, py+38 + i*28);
+  });
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+}
+
+// Click handler: toggle judge info card on judge node click
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (W / rect.width);
+  const my = (e.clientY - rect.top) * (H / rect.height);
+  const jx = judgeNode.x, jy = judgeNode.y;
+  const jhw = judgeNode.nw/2, jhh = judgeNode.nh/2;
+  if(mx >= jx-jhw && mx <= jx+jhw && my >= jy-jhh && my <= jy+jhh){
+    showJudgeInfo = !showJudgeInfo;
+  } else {
+    // Click outside judge node closes the card
+    if(showJudgeInfo) showJudgeInfo = false;
+  }
+});
+
+// Cursor change on hover over judge node
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (W / rect.width);
+  const my = (e.clientY - rect.top) * (H / rect.height);
+  const jx = judgeNode.x, jy = judgeNode.y;
+  const jhw = judgeNode.nw/2, jhh = judgeNode.nh/2;
+  canvas.style.cursor = (mx >= jx-jhw && mx <= jx+jhw && my >= jy-jhh && my <= jy+jhh) ? 'pointer' : 'default';
+});
+</script>
+</body>
+</html>
