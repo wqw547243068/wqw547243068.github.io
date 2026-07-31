@@ -242,6 +242,25 @@ python CV/1_camera_test.py       # 摄像头测试
 python examples/basic/hello_arm.py
 ```
 
+### AlohaMini
+
+具身智能的真机实验就必须动辄几十万么？
+	
+探索未来的工具，本不该高不可攀, 推动具身智能向前的，不只是少数实验室里的昂贵设备，更在于让每一位开发者、每一个课题组都能买得起、用得上、跑得通算法。
+
+【2025-11-23】[AlohaMini](https://www.alohamini.com/) 机器人正式发布, 全开源,可量产 
+- GitHub [AlohaMini](https://github.com/liyiteng/AlohaMini)
+
+AlohaMini 是一款支持电动升降臂的双臂移动机器人。设计精美、可完全3D打印且成本亲民，专为具身智能研究与真实世界场景操作而打造，组装大约60分钟即可完成，并能通过LeRobot系统进行训练与部署。
+- 💰 极具性价比：整机12999起！打破真机采购高门槛。
+- 🌐 100% 全栈开源：CAD、BOM 清单、LeRobot 算法代码全开源，拒绝黑盒。
+- 🏭 可稳定量产：已实现标准化组装，到手即用，告别手工攒机的不稳定。
+- 🦾 全能硬件形态：6+1 自由度双臂 + 电动升降主轴 + 全向移动底盘，完美适配 ACT / SmolVLA / GR00T 等主流端到端算法。
+
+
+<img src="https://www.alohamini.com/imgs/bg3.png" height="100%" width="100">
+
+
 
 ## 理论
 
