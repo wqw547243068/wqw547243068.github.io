@@ -31,6 +31,10 @@ permalink: /autoresearch
 ## 资讯
 
 
+### 大模型永远无法真正做科研
+
+2026 年上半年，`Demis Hassabis` 公开提出 `Einstein Test`，即用 1911 年之前的知识训练 AI，看它能不能独立发现广义相对论。
+
 【2026-7-9】Google deepmind 研究员 `Tom Zahavy` 大模型永远无法做真正的科学发现
 - ICML 论文 [Position: LLMs can’t jump](https://openreview.net/pdf?id=klU4737opt)
 
