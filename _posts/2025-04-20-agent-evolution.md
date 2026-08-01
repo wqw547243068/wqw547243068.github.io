@@ -13,7 +13,7 @@ permalink: /agent_evolution
 {:toc}
 
 
-# LLM/Agent 自我进化
+# Agent 自我进化
 
 ## 观点
 
