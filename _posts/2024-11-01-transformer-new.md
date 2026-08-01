@@ -17,7 +17,6 @@ permalink: /transformer_update
 
 ## Transformer 问题
 
-
 【2023-9-18】[RetNet：万众期待的 Transformers 杀手](https://mp.weixin.qq.com/s/HhRtxONjzkoOmSRqixX50g), [头条](https://www.toutiao.com/article/7304956621552501285/)
 
 Transformer 已成为大语言模型上的架构，因为它有效地克服了循环神经网络 (RNN) 的顺序训练问题。
@@ -35,6 +34,17 @@ Transformer 已成为大语言模型上的架构，因为它有效地克服了�
 
 【2025-8-13】Sun, Weigao, Jiaxi Hu, Yucheng Zhou, et al. 2025. 上海AI Lab等，Transformer计算量大导致LLM训练受限， 架构的优化综述，moe、稀疏序列模型、高效全注意力、混合架构、扩散语言模型、多模态
 - 论文 [Speed Always Wins: A Survey on Efficient Architectures for Large Language Models](https://arxiv.org/pdf/2508.09834), 
+
+### Transformer 进化史
+
+【2026-8-1】Transformer 进化史总结
+- 核心公式 `softmax(QKᵀ/√dk)V` 一个字符没改，但它周围的零件几乎换了个遍。
+
+新模型 config 里的 RoPE、RMSNorm、GQA、SwiGLU, 10 张图，每张都是〔2017 原版〕→〔现行〕→〔为什么换〕：拓扑 / 归一化 / 位置编码 / SwiGLU / MoE / KV 压缩 / FlashAttention / 上下文。
+
+<img width="1600" height="2000" alt="image" src="https://github.com/user-attachments/assets/b7563e39-ea80-4dcb-ab2b-7cf27fc91278" />
+
+详见：[小红书帖子](https://mp.weixin.qq.com/s/6_GM8zQOSUj4kyFpYJj02Q)，[飞书链接](https://my.feishu.cn/docx/MzIxdnjOPoHw3uxpypQc1MiOnkh)
 
 
 ## 可解释性
