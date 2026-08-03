@@ -556,6 +556,53 @@ Loop Engineering 20种设计模式，[帖子](http://xhslink.com/o/Ai0sCB0Rjun)
 - 五. 系统优化类——让AI自己改自己。
   - 自动测提示词的效果，自动调整工作流的步骤，哪儿慢哪儿贵就优化哪儿。这叫“自己给自己动手术，还能边动边愈合”。
 
+## 案例
+
+### 【2026-8-2】LoopX
+
+【2026-8-3】LoopX —— 字节跳动火山引擎 OpenViking 核心贡献者（清华 EE / ByteDance AML 的黄瑞腾 @huangruiteng）亲手打造的 Loop Engineering + Graph Engineering 开源项目。
+
+轻量级「状态内核」，专为超长程 AI Agent 设计：让 Agent 在无人干预下稳定运行 200+ 小时 而不漂移。
+
+核心把 Goal、Todo/Gate、Evidence、Authority、Handoff 等外置成可执行控制面，像一块「Agent 专属 Kanban」，既管 loop，又管状态图，支持 auto PR 修复、AutoML 实验、自进化能力升级等真实场景。
+
+已与 OpenViking 深度合作，开源仓库完整可跑。
+
+LLM 上下文有限，长程 Agent 需要外置状态，通过完备的状态管理、监督和规划，让 Agent 无人干预时跑得稳、持续有产出；有人干预时跑得更好，能吸收反馈继续演进。  
+
+两条真实 trajectory 分别跨越 220.7 / 272.9 小时，跨多轮执行、等待、人工决策、writeback 与 resume 后，整个 loop 仍能找回目标、证据和下一步。
+
+目前 LoopX 已有 3 个 showcase：`auto PR issue fix`、`AutoML experiment` 和 `auto coredump fix`。  
+
+以 OpenViking 开源仓库的 PR issue fix 为例，Agent 不只是循环写代码。需要持续理解 issue 的不同状态，判断何时开发、何时等待、何时请求 review，处理 CI、冲突和上游变化，并连续交付多个 PR。
+
+这对应 LoopX 的 domain state 管理：领域系统决定真实状态，LoopX 负责把状态投影成下一步可执行的工作。  
+
+Agent 还可以在干活过程中实现能力自进化。当发现现有系统缺少某项能力时，可提出 feature、完成开发与验证、发布新的离线或在线版本，再使用新能力继续原来的任务。
+
+长程 Agent 天然适合自进化，“完成工作”和“升级完成工作的系统”可以在同一条长程轨迹中发生。
+
+LoopX 把这些信息外置成结构化控制面：  
+- Goal / Vision：目标是什么，什么不能被局部优化牺牲
+- Todo / Gate：当前执行的 frontier，以及必须留给人的关键判断
+- Identity / Authority：谁能 claim、writeback、approve
+- Evidence / Receipt：每次推进留下什么可回读证据
+- Quota / Scheduler：何时继续执行，何时安静等待
+- Handoff / Recovery：换模型、换会话、换 host 后如何恢复
+
+理解为一块专门给 Agent 设计的可执行 Kanban。  
+- 普通看板只展示“谁在做什么”；
+- LoopX 的状态会直接约束和驱动下一次 bounded turn，让看板本身成为执行系统的一部分。
+
+这套系统最强的地方是通用性。不只可以修 PR，还可以做 auto research、长期实验、自媒体运营、复杂 feature 开发和办公任务。  
+
+Agent 不再只是一次性的回答机器，而可以围绕一个人的 vision，长期工作、等待、吸收反馈、积累证据并持续演进。
+
+LoopX 从一开始 build in public：状态协议、CLI、控制面实现和真实运行轨迹都进入了开源仓库；它也已经和 OpenViking、NoKV 等 agent infra 项目形成了开源合作伙伴关系。  
+
+ LoopX 最终能放大每个人的 vision 和想象力。只要有自己的目标、想法或技术主张，就能拥有一个全天候继续工作和探索的 Agent 系统，帮助你把愿景一点点变成现实。
+
+
 
 # 结束
 
