@@ -91,7 +91,7 @@ whitelist:
   - jekyll-spaceship
   - jekyll-mermaid
 
-paginate: 25
+paginate: 50
 
 # useful websites
 useful_urls:
