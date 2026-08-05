@@ -3,7 +3,7 @@ layout: post
 title:  "搜索引擎-Search-Engine"
 date:   2021-07-20 21:05:00
 categories: 技术工具
-tags: 搜索 索引 正排 倒排 pagerank 谷歌 Google 百度 ES es seo magi omnity
+tags: 搜索 索引 正排 倒排 pagerank 谷歌 Google 百度 ES es seo magi omnity geo
 excerpt: 搜索引擎技术汇总
 author: 鹤啸九天
 mathjax: true
@@ -182,6 +182,15 @@ SEO调整的提示和技巧
 
 传统谷歌/百度SEO 从业者的疑问：
 > “现在大家找答案都用ChatGPT、Claude或者Perplexity了，传统SEO是不是彻底死透了？这个AI时代搜索优化GEO到底是怎么回事？ ”
+
+从传统SEO到如今GEO，表面上是搜索引擎技术的演进，底层其实是**信任机制**的升级。
+- 过去靠买外链、堆词、搞黑帽就能骗过搜索引擎的机器算法；
+- 而AI时代，搜索不仅比拼谁写得规范，更比拼全网的**真实口碑**与**权威共识**。想靠单方面自嗨骗过AI，在多平台交叉验证面前根本行不通。
+
+GEO底层逻辑是做人的底层逻辑：
+- 不仅要自己有干货、说真话，还要经得起三方检验。
+- 少一点虚假包装，多一点硬核口碑，无论AI怎么变，你都是那个不可替代的源头。
+
 
 ### 什么是 SEO
 
