@@ -632,6 +632,17 @@ X = eXtensible Behavior Composition。 无需重写 agent 就能组合、适配�
 
 当前 hx pull coding-agent@v1.2 的 HarnessHUB 还在路线图上——一旦上线，harness 就能像 docker image 一样被分享和复用。
 
+### 【2026-8-4】PenguinHarness
+
+LlamaFactory 作者`郑耀威`最近开源新项目 PenguinHarness「企鹅驾驭师」自动完成Agent的构建、评测和持续改进，真正从「手动调优Agent」迈入「Agent自我迭代」。
+- PenguinHarness是原生支持自我进化的AgentHarness，主打轻量、开源、易用。
+- 基于原创的Agent内核，无论是GPT-5.6还是DeepSeekV4，这套框架都能稳稳驾驭。
+- 开源地址：https://github.com/Prism-Shadow/penguin-harness
+- 主页链接：https://penguin.ooo
+
+[解读](https://mp.weixin.qq.com/s/8XefjsJCn69KzxB6vVS0Nw)
+
+
 
 ## 评测
 
