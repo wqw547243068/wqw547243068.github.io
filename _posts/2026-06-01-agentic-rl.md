@@ -594,9 +594,9 @@ PPO 相比 GRPO 在 Agentic RL 中更具优势：
 - 多采用**同步**、**批量式**流程，效率提升受限
 - 异步RL也存在不足，GRPO 方法难以直接适配异步Agent训练。
 
-清华大学 KEG实验室的研究团队提出SAO方法，用单rollout采样替代GRPO的组式采样，每个输入任务只生成一条可立即用于训练的rollout，降低离策略影响并提升泛化能力。
+清华大学 KEG实验室的研究团队提出SAO方法，用单 rollout 采样替代GRPO的组式采样，每个输入任务只生成一条可立即用于训练的rollout，降低离策略影响并提升泛化能力。
 
-单轨迹异步优化（SAO）的核心原理：
+单轨迹异步优化（SAO）核心原理：
 - 打破传统强化学习中必须等待整个批次（Batch）或整组（Group）回答全部生成的同步限制，改为每生成一条多轮交互轨迹就立即进行异步训练。
 
 长轨迹 Agent 强化学习中，不再为每个 Prompt 生成一组回答并等待最慢的 Rollout，而是每得到一条轨迹就立即训练；
@@ -609,11 +609,19 @@ PPO 相比 GRPO 在 Agentic RL 中更具优势：
 
 这样做消除了组内等待，也更接近真实在线 Agent 与环境交互的方式。
 
-但单轨迹训练失去了 GRPO 的组内均值基线，梯度方差会明显增大。SAO 因此重新采用 Actor-Critic 路线，并围绕异步、长轨迹、多轮工具交互设计了四个关键模块：
+但单轨迹训练失去了 GRPO 的组内均值基线，梯度方差会明显增大。`SAO` 重新采用 Actor-Critic 路线，并围绕异步、长轨迹、多轮工具交互设计了四个关键模块：
 - Direct Double-Sided Importance Sampling（DIS）；
 - 单 Rollout + 更强的价值模型；
 - Skip-Observation Token-level GAE；
 - 更大规模的价值模型预训练。
+
+Direct Double-Sided Importance Sampling 梯度截断方式
+
+SAO Value Model 的四个技巧是什么？ 
+- （1）扩大价值预训练规模：先解决冷启动。
+- （2）Faster Value Update：critic 要比 actor 跑得快。
+- （3）Frozen Attention：价值模型只训一半。
+- （4）Skip-Observation GAE：跨越环境反馈的价值传递。
 
 SAO 采用单rollout异步优化，为让流程平稳运行，设计了四大机制。
 - 直接双边重要性采样（DIS）用于减少异步训练中的离策略偏差，通过使用rollout阶段记录的token对数概率计算重要性采样比，超出设定区间的token不参与梯度更新。
