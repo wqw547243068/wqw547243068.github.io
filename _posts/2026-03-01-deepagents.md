@@ -120,8 +120,33 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 Deep Agents 对模型的**唯一**要求：
 - 支持 tool calling（工具调用）。DeepSeek V3 和 DeepSeek R1 系列均支持，可放心使用。
 
+### 记忆检查点（Checkpointer）
 
-### 中间件
+大模型对话都是无状态的, LangChain 封装了一套方法来**维护对话状态**。
+- 如第一次对话问："来一首唐诗"，第二次对话追问："再来一首"，那么大模型会不知道到底再来一首啥。
+
+
+```py
+from langgraph.checkpoint.memory import InMemorySaver
+
+checkpointer1 = InMemorySaver()
+```
+
+
+代码讲解：
+- InMemorySaver 是 LangGraph 提供的内存检查点存储
+- 用于保存对话状态，实现多轮对话的记忆功能
+- 每次对话后自动保存状态，下次可以继续同一话题
+- 支持通过 thread_id 区分不同的对话线程
+
+
+### 中间件 (Middleware)
+
+LangChain 通过中间件方式，处理模型**对话历史过长**的问题
+
+处理的方法有很多，比如消息裁剪等。
+
+将历史对话进行大模型语义汇总的方式，基本方法是将指定久远之外的消息汇总成简短的摘要。
 
 Deep Agents 内置以下中间件，无需额外配置即可使用：
 
@@ -134,6 +159,34 @@ Deep Agents 内置以下中间件，无需额外配置即可使用：
 | Human‑in‑the‑loop | 在关键工具调用前暂停，等待人工审批 | HumanInTheLoopMiddleware |
 | 长期记忆 | 跨会话持久化记忆，基于 LangGraph Store | MemoryMiddleware |
 | Skills | 按需加载可复用的领域知识与指令集 | SkillsMiddleware |
+
+
+
+```py
+from langchain.agents.middleware import SummarizationMiddleware
+
+middleware=[
+    SummarizationMiddleware(
+        model="deepseek:deepseek-chat",
+        trigger=("tokens",1000),
+        keep=("messages",3)
+    )
+]
+```
+
+讲解：
+- `SummarizationMiddleware`：摘要中间件，用于优化长对话的上下文管理
+- 作用：当对话过长时，自动将早期对话摘要为简短总结，节省 token 并保持关键信息
+- 参数
+  - `model`：生成摘要的模型
+  - `trigger=("tokens",1000)`：当上下文达到 1000 tokens 时触发摘要
+  - `keep=("messages",3)`：保留3 条消息
+
+
+如果keep的messages设置为3，那么最近的两条message会被完整保留，第三条是根据以前的会话记录summaize下来的信息。
+
+本地 Shell 后端
+
 
 
 ### Harness 设计
