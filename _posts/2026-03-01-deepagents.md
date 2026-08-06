@@ -30,6 +30,24 @@ permalink: /deepagents
 Deep Agents 核心目标
 - 解决这些复杂任务场景下的工程化问题。
 
+## 应用场景
+
+如何判断选用 Deep Agents 还是直接用 LangChain/LangGraph？
+
+💡 选型总结
+1. **复杂多Agent项目**：优先 `Deep‑Agents`，内置虚拟文件系统、任务委派、记忆压缩、多种流式模式；
+2. **简单单次工具调用**：选用`create_agent`降低性能开销；
+3. **定制工作流逻辑**：底层使用`LangGraph`搭建自定义状态图；
+4. **大型复合项目**：采用混合架构，自定义`LangGraph`节点当作子代理交给`Deep‑Agents`调度。
+
+| 场景 | 推荐选择 | 理由 |
+| ---- | ---- | ---- |
+| 需要规划、文件读写、子 Agent、上下文压缩 | Deep Agents | 这些能力开箱即用，无需自行组装 |
+| 需要轻量封装，只要工具调用循环 | LangChain create_agent | 比 Deep Agents 更轻，没有内置中间件 |
+| 需要自定义图结构，循环不是标准的工具调用循环 | LangGraph | 完全自定义图节点和边的逻辑 |
+| LangGraph CompiledStateGraph 作为子 Agent | 混用 | 可以将自定义图作为 subagent 传入 Deep Agents |
+
+
 
 ## 介绍
 
@@ -48,6 +66,8 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 
 教程
 - [deepagents-book](https://github.com/lingxingAI/deepagents-book) 从 Harness 工程角度系统拆解 deepagents 项目的中文技术书籍
+
+
 
 
 ## 安装
@@ -152,6 +172,24 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 Deep Agents 对模型的**唯一**要求：
 - 支持 tool calling（工具调用）。DeepSeek V3 和 DeepSeek R1 系列均支持，可放心使用。
 
+### 提示词
+
+Agent 默认系统提示词和自定义提示词如何合并？
+
+Deep Agents 提示词由四部分按固定顺序拼接：
+> `USER`（system_prompt）→ `BASE`（SDK 默认提示词）→ `SUFFIX`（模型厂商特定调整）
+
+用户提示词永远在最前面，不会被覆盖。SDK 的默认提示词告诉模型如何使用规划和文件工具，所以大多数情况下不需要自己重写它
+
+易犯的错误
+- 错误 1：忘记传入 checkpointer。
+  - 使用 `Human-in-the-loop`（interrupt_on）或多轮对话时，必须传入 checkpointer，否则状态无法保存，Agent 会报错。
+- 错误 2：工具函数没有写 docstring。
+  - Deep Agents 用函数 docstring 作为工具描述，让模型知道什么时候调用这个工具。没有 docstring 的工具，模型可能不知道何时调用甚至拒绝使用。
+- 错误 3：在中间件中直接修改 self 的属性。
+  - Agent 的子 Agent 和并发操作可能同时运行，对中间件实例属性的直接修改会导致竞争条件（race condition）。需要保存状态时，应通过图的 state 来传递，而不是中间件实例变量。
+
+
 ### 记忆检查点（Checkpointer）
 
 大模型对话都是无状态的, LangChain 封装了一套方法来**维护对话状态**。
@@ -191,7 +229,6 @@ Deep Agents 内置以下中间件，无需额外配置即可使用：
 | Human‑in‑the‑loop | 在关键工具调用前暂停，等待人工审批 | HumanInTheLoopMiddleware |
 | 长期记忆 | 跨会话持久化记忆，基于 LangGraph Store | MemoryMiddleware |
 | Skills | 按需加载可复用的领域知识与指令集 | SkillsMiddleware |
-
 
 
 ```py
@@ -242,8 +279,32 @@ Deep Agents 提供多种后端，控制 Agent 如何读写文件。
 `FilesystemBackend` 和 `LocalShellBackend` 会让 Agent 直接操作本地文件系统，严格配置权限后再使用。
 
 
-本地 Shell 后端
+### 权限控制
 
+如何让 Agent 一次只能访问特定文件？
+
+使用 permissions 参数配置文件系统访问权限，精确控制 Agent 只能读写指定路径
+
+```py
+from deepagents import create_deep_agent
+from deepagents.permissions import FilesystemPermission
+from langchain_openai import ChatOpenAI
+import os
+
+model = ChatOpenAI(
+    model="deepseek-v4-flash",
+    api_key=os.environ["OPENAI_API_KEY"],
+    base_url="https://api.deepseek.com",
+)
+
+agent = create_deep_agent(
+    model=model,
+    permissions=[
+        FilesystemPermission(path="/workspace/", read=True, write=True),   # 允许读写工作目录
+        FilesystemPermission(path="/secrets/", read=False, write=False),    # 禁止访问敏感目录
+    ],
+)
+```
 
 
 ### Harness 设计
@@ -343,6 +404,8 @@ git clone https://github.com/langchain-ai/deep-agents-ui
 示例: 
 - [官方示例](https://github.com/langchain-ai/deepagents/tree/main/examples)
 
+### 示例
+
 Deep Agents 分析汽车行业竞争对手的产能数据：
 
 ```py
@@ -370,6 +433,132 @@ deep_agent = DeepAgent(
 result = deep_agent.run("Analyze Tesla and Toyota's production capacity for 2023-2025.")
 print(result)
 ```
+
+【2026-8-6】实践
+- [RUNOOB](https://www.runoob.com/ai-agent/deep-agents-usage.html)  上的流式输出案例无效，版本滞后
+
+配置文件 `.env`
+
+```
+OPENAI_BASE_URL='http://***.com'
+OPENAI_API_KEY='sk-***'
+MODEL_NAME='deepseek-v4-flash'
+TAVILY_API_KEY="tvly-dev-1oq1jS-***"
+```
+
+代码
+
+```py
+# coding:utf8
+
+import os
+from deepagents import create_deep_agent
+from langchain_openai import ChatOpenAI
+import json
+
+print(f"{'='*10} 环境变量{'='*10}")
+# 环境变量：① dotenv ② export
+from dotenv import load_dotenv
+# 加载 .env 文件中的环境变量
+load_dotenv()
+
+# ① 环境变量
+BASE_URL = os.environ.get("OPENAI_BASE_URL", "-")
+API_KEY = os.environ.get("OPENAI_API_KEY", "-")
+MODEL_NAME = os.environ.get("MODEL_NAME", "-")
+# ② dotenv
+API_URL = os.getenv("OPENAI_BASE_URL", "-")
+API_KEY = os.getenv("OPENAI_API_KEY", "-")
+MODEL_NAME = os.getenv("MODEL_NAME", "-")
+
+print(f"{'='*10} 模型初始化 {'='*10}")
+model_ds = ChatOpenAI(
+    model="deepseek-v4-flash",           # 必填：模型名称
+    api_key="sk-d641e51f740c4944a1bb36538f712628",   # 必填：DeepSeek API Key
+    base_url="https://api.deepseek.com",    # 必填：DeepSeek 的 OpenAI 兼容端点
+)
+
+model_didi = ChatOpenAI(
+    model = MODEL_NAME,   # 模型名称
+    api_key = API_KEY,   # API Key
+    base_url = BASE_URL,
+)
+
+model = model_ds
+# model = model_didi
+
+print(f"{'='*10} 工具定义 {'='*10}")
+# ======== 工具定义 =========
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
+
+from datetime import datetime
+
+def get_time() -> str:
+    """Get current time"""
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+print(f"{'='*10} Agent 初始化 {'='*10}")
+agent = create_deep_agent(
+    #model="openai:kimi-2.5",
+    #model="google_genai:gemini-3.6-flash",
+    #model='openrouter:deepseek/deepseek-v4-flash',
+    #model="google_genai:gemini-3.6-flash",
+    model=model,
+    tools=[get_weather, get_time],
+    system_prompt="You are a helpful assistant",
+)
+
+print(f"{'='*10} 批量输出 {'='*10}")
+# =========== 批式输出 ===========
+# Run the agent
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "现在几点，天气怎么样"}]}
+)
+
+# 打印 Agent 的最终回复
+print(result["messages"][-1].content)
+
+# =========== 流式输出 ===========
+# stream 方法返回生成器，每次 yield 一个事件块
+print(f"{'='*10} 流式输出 {'='*10}")
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "你好啊, 写个冒泡排序"}]},
+    stream_mode="messages",
+    version="v2",
+):
+    # chunk 是一个包含增量消息的字典
+    # if not hasattr(chunk, 'model'):
+    #if 'model' not in chunk:
+    #    continue
+    if "messages" == chunk['type']:
+        for msg in chunk["data"]:
+            if hasattr(msg, "content") and msg.content:
+                print(msg.content, end="", flush=True)
+    else:
+        print(f'未发现 messages {chunk=}')
+print()  # 最终换行
+
+"""
+print(f"{'='*10} 流式输出 {'='*10}")
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "请分析2026年4月3日伊朗和美国战事的情况(查询2条即可)，并撰写短篇报告分析为什么美国注定失败，500字以内的报告"}]},
+    stream_mode="updates",
+    subgraphs=True,
+    version="v2",
+):
+    if chunk["type"] == "updates":
+        if chunk["ns"]:
+            # 子 Agent 事件，命名空间标明来源
+            print(f"[subagent: {chunk['ns']}]")
+        else:
+            # 主 Agent 事件
+            print("[main agent]")
+        print(chunk["data"])
+"""
+```
+
 
 ### create_deep_agent
 
@@ -498,6 +687,53 @@ def query_weather(city:str) -> dict:
     """
     KEY = "你的key"
     return get_real_time_weather(city,KEY)
+```
+
+### 多轮对话（带检查点）
+
+配合 MemorySaver 检查点，可以实现跨轮次的有状态对话。
+- thread_id 作用：理解为"对话房间号", 同一个 thread_id 下所有调用共享同一段对话历史。不同的 thread_id 之间相互隔离，互不干扰。
+
+```py
+# 文件路径：multi_turn_agent.py
+
+import os
+from deepagents import create_deep_agent
+from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import MemorySaver  # 内存检查点，重启后数据会丢失
+
+model = ChatOpenAI(
+    model="deepseek-v4-flash",
+    api_key=os.environ["OPENAI_API_KEY"],
+    base_url="https://api.deepseek.com",
+)
+
+# MemorySaver 将对话状态保存在内存中，进程结束后丢失
+# 生产环境建议使用 SqliteSaver 或 PostgresSaver
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model=model,
+    system_prompt="你是一个乐于助人的编程助手。",
+    checkpointer=checkpointer,  # 必须传入，否则多轮对话无法记忆上下文
+)
+
+# thread_id 是对话线程的唯一标识，同一 thread_id 共享同一上下文
+config = {"configurable": {"thread_id": "runoob-session-001"}}
+
+# 第一轮
+result1 = agent.invoke(
+    {"messages": [{"role": "user", "content": "我叫 RUNOOB，我在学习 Python。"}]},
+    config=config,
+)
+print("第一轮回复：", result1["messages"][-1].content)
+
+# 第二轮：Agent 能记住上一轮的信息
+result2 = agent.invoke(
+    {"messages": [{"role": "user", "content": "我叫什么名字？我在学什么？"}]},
+    config=config,
+)
+print("第二轮回复：", result2["messages"][-1].content)
 ```
 
 
@@ -737,6 +973,83 @@ for chunk in agent.stream(
 print()
 ```
 
+
+### Human-in-the-loop
+
+对于敏感操作（例如删除文件、发送邮件），可配置 Agent 在执行前暂停等待人工确认。
+
+interrupt_on 的工作原理：
+- 当 Agent 即将调用被标记的工具时，LangGraph 会触发一个 interrupt，Agent 执行暂停。
+- 可通过 `Command(resume=...)` 传入审批结果来恢复执行。
+
+```py
+# 文件路径：hitl_agent.py
+# Human-in-the-loop：让 Agent 在执行危险操作前请求人工审批
+
+import os
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langchain_openai import ChatOpenAI
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import Command
+
+model = ChatOpenAI(
+    model="deepseek-v4-flash",
+    api_key=os.environ["OPENAI_API_KEY"],
+    base_url="https://api.deepseek.com",
+)
+
+# 使用 @tool 装饰器定义工具（需要 langchain 包）
+@tool
+def delete_file(path: str) -> str:
+    """删除指定路径的文件。"""
+    # 实际项目中这里会调用 os.remove(path)
+    return f"文件 {path} 已删除。"
+
+@tool
+def read_file(path: str) -> str:
+    """读取指定路径的文件内容。"""
+    return f"文件 {path} 的内容：（示例内容）"
+
+# interrupt_on 配置哪些工具需要人工审批
+# True 表示允许：审批、编辑参数、拒绝、发送自定义回复
+# False 表示不需要审批
+# dict 可以精细控制允许的操作类型
+checkpointer = MemorySaver()  # HITL 必须配合 checkpointer 使用
+
+agent = create_deep_agent(
+    model=model,
+    tools=[delete_file, read_file],
+    interrupt_on={
+        "delete_file": True,   # 删除操作：需要完整审批流程
+        "read_file": False,    # 读取操作：无需审批
+    },
+    checkpointer=checkpointer,
+)
+
+config = {"configurable": {"thread_id": "runoob-hitl-001"}}
+
+# 第一次调用：Agent 执行到 delete_file 时会暂停
+print("启动 Agent...")
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "请删除 /tmp/test.txt 文件。"}]},
+    config=config,
+)
+
+# 检查是否有待审批的中断
+for msg in result.get("messages", []):
+    print(f"Agent 消息: {msg.content if hasattr(msg, 'content') else msg}")
+
+# 恢复执行：传入审批决定
+# "approve" 表示批准执行该工具
+# "reject" 表示拒绝，Agent 将不执行该工具
+print("\n用户审批：批准删除操作")
+final_result = agent.invoke(
+    Command(resume={"decision": "approve"}),
+    config=config,
+)
+print("最终结果：", final_result["messages"][-1].content)
+```
 
 
 ## 代码解读
