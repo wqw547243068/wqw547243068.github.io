@@ -3,7 +3,7 @@ layout: post
 title:  DeepAgents 框架介绍
 date:   2026-03-01 22:46:00
 categories: 大模型
-tags: langchain claude deepagents harness
+tags: langchain claude deepagents harness 流式
 excerpt: LangChain 新Agent框架 DeepAgent 介绍
 mathjax: true
 permalink: /deepagents
@@ -50,7 +50,39 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 - [deepagents-book](https://github.com/lingxingAI/deepagents-book) 从 Harness 工程角度系统拆解 deepagents 项目的中文技术书籍
 
 
+## 安装
+
+deepagents 安装
+
+```sh
+# uv 安装
+uv init
+uv add deepagents tavily-python
+uv sync
+# pip 安装
+pip install deepagents tavily-python
+# 兼容OpenAI接口的模型厂商（如 deepseek），可以安装 langchain-openai
+pip install deepagents langchain-openai
+```
+
+Deep Agents 对模型的唯一要求：
+- 支持 tool calling（工具调用）。
+- DeepSeek V3 和 DeepSeek R1 系列均支持，可放心使用。
+
+
 ## DeepAgents 架构
+
+
+安装完即可获得以下能力，无需额外开发：
+- 自动任务规划（Planning）
+- 文件系统读写（Filesystem）
+- 子 Agent 协作（Sub Agents）
+- 上下文压缩与管理（Context Management）
+- 长任务执行（Long Running Tasks）
+- 人工审批（Human-in-the-Loop）
+- 持久化记忆（Memory）
+- 流式输出（Streaming）
+
 
 ### 架构设计
 
@@ -185,6 +217,31 @@ middleware=[
 
 如果keep的messages设置为3，那么最近的两条message会被完整保留，第三条是根据以前的会话记录summaize下来的信息。
 
+### 文件系统后端
+
+Deep Agents 提供多种后端，控制 Agent 如何读写文件。
+
+💡 后端选型解读
+1. **StateBackend**：**内存级**临时存储，线程销毁数据即丢失，适合快速调试Agent逻辑
+2. **FilesystemBackend**：**磁盘持久化**，Agent可读写本地文件，生产环境注意文件权限管控
+3. **StoreBackend**：LangGraph 官方持久组件，适配**多会话**、**多线程**的对话记忆场景
+4. **LocalShellBackend**：赋予 Agent调用终端的权限，**禁止部署在公网环境**，存在高危执行风险
+5. **CompositeBackend**：多路分发，可针对不同文件夹绑定不一样的存储后端，适合复杂项目
+
+
+| 后端 | 存储位置 | 跨会话持久化 | 适用场景 |
+| ---- | ---- | ---- | ---- |
+| `StateBackend` | LangGraph 图状态内 | 否（同线程内有效） | 默认，本地开发和简单场景 |
+| `FilesystemBackend` | 本机磁盘 | 是 | 需要真实读写本地文件，需谨慎使用 |
+| `StoreBackend` | LangGraph Store | 是 | 多轮对话持久化、跨 Thread 共享 |
+| `LocalShellBackend` | 本机磁盘 + Shell | 是 | 需要执行 Shell 命令，仅限受信任环境 |
+| `CompositeBackend` | 路由到多个后端 | 取决于子后端 | 精细控制不同目录的存储策略 |
+
+初学者直接用默认 StateBackend 即可。
+
+`FilesystemBackend` 和 `LocalShellBackend` 会让 Agent 直接操作本地文件系统，严格配置权限后再使用。
+
+
 本地 Shell 后端
 
 
@@ -318,16 +375,40 @@ print(result)
 
 create_deep_agent：一切智能体的起点
 
-create_deep_agent 是 DeepAgents 框架提供的核心工厂函数。
-- 接受一个基础模型、工具列表、系统提示词和子智能体列表，返回一个开箱即用的深度智能体。
+create_deep_agent 是 DeepAgents 框架提供的**核心**工厂函数。
+- 接受基础模型、工具列表、系统提示词和子智能体列表，返回一个开箱即用的深度智能体。
 
-这个智能体内部已经集成了：
+内部已经集成：
 - 任务规划器：将复杂任务拆解为可执行的步骤。
 - 文件系统：管理中间结果和上下文，防止对话过长导致混乱。
 - 子智能体管理器：负责子智能体的创建、通信和结果汇总。
 - 长期记忆：跨对话保存重要信息。
 
 开发者完全不需要关心这些底层逻辑的实现，只需像搭积木一样传入配置即可。
+
+#### 参数说明
+
+| 参数 | 类型 | 是否必填 | 说明 | 默认值 |
+| ---- | ---- | ---- | ---- | ---- |
+| model | str 或模型实例 | 否 | 模型字符串，格式为 provider:model‑name，或直接传入初始化好的模型对象 | anthropic:claude‑sonnet‑4‑6 |
+| tools | 列表 | 否 | 自定义工具函数或 LangChain Tool 对象的列表 | None |
+| system_prompt | str 或 SystemMessage | 否 | 自定义系统提示词，用于定义 Agent 角色和行为 | None |
+| `backend` | BackendProtocol | 否 | 虚拟文件系统后端，决定文件存储位置 | StateBackend |
+| `subagents` | 列表 | 否 | 子 Agent 定义列表，用于任务委派 | None |
+| `memory` | 列表 | 否 | 启动时加载的 `AGENTS.md` 文件路径列表 | None |
+| `skills` | 列表 | 否 | 按需加载的 Skills 目录路径列表 | None |
+| `permissions` | 列表 | 否 | 文件系统路径级别的访问权限控制规则 | None |
+| `interrupt_on` | dict | 否 | 指定哪些工具调用需要**人工审批**，需配合 checkpointer 使用 | None |
+| `checkpointer` | Checkpointer | 否 | 状态**持久化**检查点，多轮对话或 HITL 时必须设置 | None |
+| `store` | BaseStore | 否 | 跨会话的长期存储后端 | None |
+| response_format | ResponseFormat | 否 | 结构化输出的 Schema 定义 | None |
+| `middleware` | 列表 | 否 | 追加到默认中间件栈末尾的自定义中间件 | () |
+| debug | bool | 否 | 开启调试模式，输出详细日志 | False |
+
+
+#### 示例
+
+代码
 
 ```py
 from datetime import datetime
@@ -382,8 +463,7 @@ agent = create_deep_agent(
 )
 ```
 
-### DeepAgents Skills 使用说明
-
+### Skills 使用
 
 Agent Skill 的工程化实现步骤：
 - 发现与识别 Skills: Agent 需要能够管理文件系统，在配置好的目录中发现 Skills 文件夹。系统会扫描每个子文件夹，读取其中的 SKILL.md，并提取文件头部的 YAML 元数据（即 name 和 description）。
@@ -402,6 +482,262 @@ agent = create_deep_agent(
 )  
 agent.invoke("你有哪些技能？")
 ```
+
+### 工具
+
+自定义工具 可以注册到 langchain
+
+```py
+from langchain.tools import tool
+
+@tool
+def query_weather(city:str) -> dict:
+    """查询指定城市当前实时天气
+    Args:
+        city: 需要查询天气的城市名称，例如"北京"
+    """
+    KEY = "你的key"
+    return get_real_time_weather(city,KEY)
+```
+
+
+### 流式输出（Streaming）
+
+
+【2026-5-6】[LangChain DeepAgents 速通指南（八）—— DeepAgents流式输出详解](https://zhuanlan.zhihu.com/p/2035320007677232066)
+
+DeepAgents 在 LangGraph 的流式输出基础上，提供对`子 Agent` 的流式支持（毕竟多智能体协作也是DeepAgents的核心特性）。
+
+当主 Agent 通过 task 工具将任务委派给子 Agent 时，开发者可独立从每个子 Agent 中流式获取大模型输出和工具调用。
+
+这种多层次、可溯源的流式能力，正是 DeepAgents 区别于普通单 Agent 框架的核心特点。
+
+DeepAgents 底层采用`协调器`-`工作者`架构
+- 主 Agent 负责任务规划与委派，每个子 Agent 在自己隔离的沙箱中独立执行，彼此互不干扰。
+
+DeepAgents 流式输出建立在这套架构之上。通过调用 `agent.stream()` 方法驱动整个工作流，框架会源源不断地向外产出结构化的事件块（chunk） 。
+
+推荐 version='v2' 格式下, 每个 chunk 都是统一的 StreamPart 字典，包含三个字段：`type`（事件类型）、`ns`（命名空间）、`data`（主要数据部分）。
+- 旧版本输出内容太过复杂，饱受诟病，因此 DeepAgents 推出了 v2 版本的流式输出
+- LangGraph >= 1.1
+
+![](https://picx.zhimg.com/v2-3fa7691c7028ac1c31d2ae6d513b3525_1440w.jpg)
+
+有多种流式输出模式
+
+建议：
+- 只需要宏观进度追踪，不需要逐字输出？用 updates 足矣。
+- 构建打字机效果的聊天界面，并监控工具调用？选 messages。
+- 有领域特定的进度需求（如文件处理百分比）？在工具内写入自定义事件，配合 custom 模式。
+- 一套代码覆盖所有需求？直接上 组合模式 `["updates", "messages", "custom"]` ，但注意做好事件路由，避免日志混杂
+
+| 模式 | 粒度 | 输出内容 | 典型用途 |
+| ---- | ---- | ---- | ---- |
+| `updates` | 节点级别 | 每个节点完成后的状态快照 | 追踪执行进度、子Agent生命周期 |
+| `messages` | Token级别 | 逐Token文本 + 工具调用块 + 工具结果 | 聊天式UI、工具调用实时监控 |
+| `custom` | 自定义 | 开发者通过 get_stream_writer() 写入的任意数据 | 领域特定进度、阶段性通知 |
+| 多模式组合 | 混合 | 以上全部事件类型，按到达顺序交织 | 生产级应用、全维度可观测性 |
+
+最佳实践：
+- 始终用 version="v2" ：统一的 StreamPart 字典格式消除了不同流式模式下的结构差异，让事件处理代码更加一致。
+- 用`命名空间`精确路由事件：不要依赖全局变量或执行顺序来判断事件来源，始终检查 ns 字段，这是最可靠的事件溯源方式。
+- 按需组合流式模式：不要盲目开启所有模式，根据场景选择最小必要的模式组合，减少不必要的数据传输和计算开销。
+
+`agent.stream()` 中设置 `subgraphs=True` 时，就能同时接收主 Agent 和所有子 Agent 产生的事件。每个事件的源头由 ns 字段标识：
+
+命名空间	来源
+- `()`（空元组）	主 Agent
+- `("tools:abc123",)`	通过 task 工具调用 abc123 创建的子 Agent
+- `("tools:abc123", "model_request:def456")`	上述子 Agent 内部的 model_request 节点
+
+事件块的 ns 部分用于区分`主 Agent` 和`子 Agent`，而 data 部分主要用于区分不同类型的消息。
+
+data 数据类型是 LangChain 标准消息格式，如 `AIMessage`、`ToolMessage` 等。不同的 Message 类型包含不同的字段，代表不同的内容。
+
+#### updates: 节点级进度追踪
+
+`stream_mode="updates"`: 节点级进度追踪
+
+`stream_mode="updates"` 模式以`节点`（node）为粒度, 返回状态更新
+- 每次 Agent 图中的某个节点执行完毕，便会产出一个更新事件。
+- 非常适合用来向用户展示宏观层面的执行进度，比如“主 Agent 正在规划”、“子 Agent 正在调用工具”等。
+
+stream_mode='updates' 模式每次依然会等到信息积攒到一定量才输出，和常见的那种“逐字流式”体验还有差距。
+
+`stream_mode="updates"` 模式下，不但输出常规的`事件块`（chunk），还会输出中间件钩子（如 SkillsMiddleware），可以利用这些钩子判断一些特殊事件
+
+判断事件是否来自子 Agent 的规则很简单：
+- 只要命名空间（ns）的某一级以 `tools:` 开头，就说明由`主 Agent` 通过 task 工具调用生成的子 Agent 产生的事件。
+- 此外，tool_call_id 也可以直接从这段前缀中提取出来，方便后续关联。
+
+对于每个 Agent 中的工具调用情况，在 `stream_mode="updates"` 模式下，可通过分析 data 中的 tool_calls 列表获得。如果某个 tool_calls 列表项的 name 为 task，表示要调用子 Agent；否则表示在相应的 Agent 中调用了普通工具
+
+```py
+# stream = updates
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "请分析2026年4月3日伊朗和美国战事的情况(查询1条即可)，并撰写短篇报告分析为什么美国注定失败，500字以内的报告"}]},
+    stream_mode="updates",
+    subgraphs=True,
+    version="v2",
+):
+    if chunk["type"] == "updates":
+        # 主 Agent 更新（命名空间为空）
+        if not chunk["ns"]:
+            for node_name, data in chunk["data"].items():
+                if node_name == "tools":
+                    # 子 Agent 结果返回至主 Agent
+                    for msg in data.get("messages", []):
+                        if msg.type == "tool":
+                            print(f"\nSubagent complete: {msg.name}")
+                            print(f"  Result: {str(msg.content)[:200]}...")
+                else:
+                    print(f"[main agent] step: {node_name}")
+        # 子 Agent 更新（命名空间非空）
+        else:
+            for node_name, data in chunk["data"].items():
+                print(f"  [{chunk['ns'][0]}] step: {node_name}")
+```
+
+
+#### messages: Token 级流式输出与工具调用
+
+stream_mode="messages"：Token 级流式输出与工具调用
+
+聊天界面“逐字输出”几乎是必备。
+
+`stream_mode="messages"` 模式将生成的每个 Token 逐个流出，并且原生支持主 Agent 和所有子 Agent 同时输出。
+
+同时，工具调用相关事件也完全走这个通道，方便大家一并处理（这是构建系统应用的必备功能）。
+
+messages 模式下，`chunk["type"]` 为 "messages"，其 data 内容是一个二元组 (token, metadata)，其中 token 是 AIMessageChunk 对象（承载主要内容），metadata 包含额外信息。
+
+```py
+current_source = ""
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "请分析2026年4月3日伊朗和美国战事的情况(查询1条即可)，并撰写短篇报告分析为什么美国注定失败，500字以内的报告"}]},
+    stream_mode="messages",
+    subgraphs=True,
+    version="v2",
+):
+    if chunk["type"] == "messages":
+        token, metadata = chunk["data"]
+
+        # 判断是否来自子 Agent（命名空间包含 "tools:"）
+        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+        if is_subagent:
+            subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+            if subagent_ns != current_source:
+                print(f"\n\n--- [subagent: {subagent_ns}] ---")
+                current_source = subagent_ns
+            if token.content:
+                print(token.content, end="", flush=True)
+        else:
+            if "main" != current_source:
+                print("\n\n--- [main agent] ---")
+                current_source = "main"
+            if token.content:
+                print(token.content, end="", flush=True)
+print()
+```
+
+#### custom：自定义事件
+
+`stream_mode="custom"`：自定义事件
+
+有时要从`子 Agent` 的工具内部发送完全自定义的进度事件
+- 比如一个数据分析工具在处理大数据集时，每隔几秒汇报一次“已处理 30%”。
+
+自定义事件的内容完全由用户决定——进度百分比、状态描述、甚至富文本标记都可以，只要能被下游消费者正确解析。这为构建高度定制化的实时 UI 提供了极大的灵活性
+
+DeepAgents 通过 `get_stream_writer()` 优雅地支持了这一需求，同时使用 `stream_mode="custom"` 来接收这些事件。
+
+```py
+from langgraph.config import  get_stream_writer
+
+@tool
+def internet_search(
+        query: str,
+        max_results: int = 5,
+        topic: Literal["general", "news", "finance"] = "general",
+        include_raw_content: bool = False,
+):
+    """使用 Tavily API 执行互联网搜索，获取实时或最新的网络信息。
+
+    当需要回答需要当前新闻、最新数据或超出模型知识范围的外部信息时，
+    可以使用此工具进行联网搜索。支持普通网页搜索、新闻搜索和金融领域搜索。
+
+    Args:
+        query (str): 要搜索的问题或关键词，应清晰、具体地描述所需信息。
+        max_results (int, optional): 返回的最大搜索结果数量。默认为 5。
+        topic (Literal["general", "news", "finance"], optional): 搜索主题类型。
+            - "general"：通用网页搜索，适用于大部分事实性、常识性问题。
+            - "news"：新闻搜索，获取近期相关新闻报道。
+            - "finance"：金融领域搜索，适用于股票、经济、公司财务等信息。
+            默认为 "general"。
+        include_raw_content (bool, optional): 是否在结果中包含原始网页正文内容。
+            设为 True 会返回更详细的页面文本（可能较长），默认为 False。
+
+    Returns:
+        dict: Tavily API 返回的搜索结果对象。通常包含以下字段：
+            - "results": 列表，每个元素包含 title、url、content（摘要）等。
+            - "query": 原始查询字符串。
+            - 若 include_raw_content 为 True，还可能包含 raw_content 字段。
+    """
+    writer = get_stream_writer()
+    writer({"status": "starting", "topic": f'开始搜寻{query}'})
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+```
+
+然后修改流式输出代码，设置 stream_mode='custom'：
+
+```py
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "请分析2026年4月3日伊朗和美国战事的情况(查询1条即可)，并撰写短篇报告分析为什么美国注定失败，500字以内的报告"}]},
+    stream_mode="custom",
+    subgraphs=True,
+    version="v2",
+):
+    if chunk["type"] == "custom":
+        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+        if is_subagent:
+            subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+            print(f"[{subagent_ns}]", chunk["data"])
+        else:
+            print("[main]", chunk["data"])
+```
+
+#### 多模式组合：一次调用，全维可观测
+
+
+生产环境中，往往需要同时获取“节点更新 + Token + 自定义事件”多类信息，构建全维度可观测性。
+
+DeepAgents 原生支持在单次 `stream()` 调用中以列表形式组合多种模式：
+
+```py
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "请分析2026年4月3日伊朗和美国战事的情况(查询1条即可)，并撰写短篇报告分析为什么美国注定失败，500字以内的报告"}]},
+    stream_mode=["updates", "messages", "custom"],
+    subgraphs=True,
+    version="v2",
+):
+    is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+    source = "subagent" if is_subagent else "main"
+
+    if chunk["type"] == "updates":
+        pass
+    elif chunk["type"] == "messages":
+        pss
+    elif chunk["type"] == "custom":
+        pass
+print()
+```
+
+
 
 ## 代码解读
 
