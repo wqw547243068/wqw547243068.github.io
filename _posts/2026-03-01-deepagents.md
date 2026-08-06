@@ -15,12 +15,27 @@ permalink: /deepagents
 
 # DeepAgents
 
+传统 Agent 通常采用 `ReAct` 模式：
+> 用户输入 → LLM 推理 → 调用工具 → LLM 推理 → 调用工具 → 输出结果。
+
+当任务规模较小时，这种模式运行良好。但随着任务复杂度提升，例如自动生成市场调研报告、分析多家公司财报、编写完整项目代码
+
+就会逐渐暴露出问题：
+- 上下文窗口迅速膨胀，超出模型限制
+- 推理链过长导致性能下降
+- Agent 容易遗忘之前完成的工作
+- 多任务之间缺乏隔离，相互干扰
+- Tool 调用逻辑越来越复杂，难以维护
+
+Deep Agents 核心目标
+- 解决这些复杂任务场景下的工程化问题。
+
 
 ## 介绍
 
 【2025-7-30】LangChainAI开发 Python 工具包 [Deep Agents](https://blog.langchain.com/deep-agents/)，快速构建能够处理复杂任务的AI代理。
 - [官方中文文档](https://langchain-doc.cn/v1/python/deepagents/overview.html)
-- 基于LangGraph 框架，提供内置的规划工具、子代理、虚拟文件系统和详细的系统提示。
+- 基于`LangGraph` 框架，提供内置的规划工具、子代理、虚拟文件系统和详细的系统提示。
 - 用户可以通过简单的安装和配置，快速创建支持**长时**任务和**复杂工作流**的智能代理。
 
 将任务规划、子代理管理、文件系统等通用能力封装为内置组件，开发者通过 create_deep_agent 函数仅需数行代码即可搭建复杂智能体，真正实现“搭积木式”开发
@@ -29,7 +44,7 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 
 项目采用MIT许可证，代码开源，社区活跃，持续更新。
 
-2025年8月13日，又发布更易上手的交互界面，Deep Agents UI。
+2025年8月13日，又发布更易上手的交互界面，`Deep Agents UI`。
 
 教程
 - [deepagents-book](https://github.com/lingxingAI/deepagents-book) 从 Harness 工程角度系统拆解 deepagents 项目的中文技术书籍
@@ -39,11 +54,19 @@ Deepagents 适合需要自动化研究、编码或其他复杂任务的开发者
 
 ### 架构设计
 
+DeepAgents 全景图
+
+三者并非相互替代，而是可以协同使用：
+- LangChain 提供积木，LangGraph 是组织积木的工程框架，Deep Agents 是在此之上开箱即用的高级应用层。
+- 任何一个 LangGraph CompiledStateGraph 都可以作为 subagent 传入 Deep Agents，三层可以灵活混用。
+
+![](https://www.runoob.com/wp-content/uploads/2026/06/45542e2c-e404-47ef-a87c-e23ec7f594d4.webp)
+
 模块化设计：
-- 工具（Tools）：扩展 Agent 能力
-- 中间件（Middleware）：处理上下文管理
-- 技能（Skills）：实现特定领域功能
-- 后端（Backend）：支持本地执行
+- `工具`（Tools）：扩展 Agent 能力
+- `中间件`（Middleware）：处理上下文管理
+- `技能`（Skills）：实现特定领域功能
+- `后端`（Backend）：支持本地执行
 
 记忆管理：
 - 通过 Checkpointer 实现状态持久化
@@ -91,6 +114,26 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 文件系统不仅用来完成最终任务（如保存代码），还扮演着角色：
 - 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
 - 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
+
+### 模型
+
+Deep Agents 对模型的**唯一**要求：
+- 支持 tool calling（工具调用）。DeepSeek V3 和 DeepSeek R1 系列均支持，可放心使用。
+
+
+### 中间件
+
+Deep Agents 内置以下中间件，无需额外配置即可使用：
+
+| 能力 | 说明 | 核心组件 |
+| ---- | ---- | ---- |
+| 任务规划 | 用内置 write_todos 工具将复杂任务分解为有序步骤 | TodoListMiddleware |
+| 虚拟文件系统 | 读写文件、将大型工具输出卸载到磁盘，节省上下文窗口 | FilesystemMiddleware |
+| 子 Agent | 将子任务委派给独立上下文窗口的专用子 Agent | SubAgentMiddleware |
+| 上下文压缩 | 自动总结历史消息，避免超出模型上下文限制 | SummarizationMiddleware |
+| Human‑in‑the‑loop | 在关键工具调用前暂停，等待人工审批 | HumanInTheLoopMiddleware |
+| 长期记忆 | 跨会话持久化记忆，基于 LangGraph Store | MemoryMiddleware |
+| Skills | 按需加载可复用的领域知识与指令集 | SkillsMiddleware |
 
 
 ### Harness 设计
