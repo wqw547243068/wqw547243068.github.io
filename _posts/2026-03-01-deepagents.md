@@ -3,7 +3,7 @@ layout: post
 title:  DeepAgents 框架介绍
 date:   2026-03-01 22:46:00
 categories: 大模型
-tags: langchain claude deepagents harness 流式
+tags: langchain claude deepagents harness 流式 skill
 excerpt: LangChain 新Agent框架 DeepAgent 介绍
 mathjax: true
 permalink: /deepagents
@@ -104,6 +104,8 @@ Deep Agents 对模型的唯一要求：
 - 流式输出（Streaming）
 
 
+
+
 ### 架构设计
 
 DeepAgents 全景图
@@ -166,6 +168,29 @@ LangChain 的 `agent.get_graph().draw_mermaid_png()` 展示DeepAgents 构造的 
 文件系统不仅用来完成最终任务（如保存代码），还扮演着角色：
 - 长期记忆：Agent 可以将中间思考、发现和笔记记录到文件中，以便后续随时读取。这解决了 LLM 有限上下文窗口的问题。
 - 共享工作区：所有 Agent（包括主 Agent 和所有子 Agent）都可以访问这个共享空间，实现高效协作。例如，研究子 Agent 可以将发现写入报告，编码子 Agent 则可以读取该报告来指导其工作。
+
+```py
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(
+    model="deepseek:deepseek-chat",
+    system_prompt="你是于谦，捧话之王，说话坏简介明了直奔主题。",
+    tools=[get_time, get_location],
+    checkpointer=checkpointer1,
+    middleware=[
+        SummarizationMiddleware(
+            model="deepseek:deepseek-chat",
+            trigger=("tokens",1000),
+            keep=("messages",3)
+        )
+    ],
+    backend=LocalShellBackend(
+        root_dir=".",
+        virtual_mode=True
+    ),
+    skills=["./skills"],
+)
+```
 
 ### 模型
 
@@ -277,6 +302,22 @@ Deep Agents 提供多种后端，控制 Agent 如何读写文件。
 初学者直接用默认 StateBackend 即可。
 
 `FilesystemBackend` 和 `LocalShellBackend` 会让 Agent 直接操作本地文件系统，严格配置权限后再使用。
+
+#### 本地shell
+
+LocalShellBackend 允许 Agent 执行本地命令和脚本，扩展其能力范围
+
+确保agent能够读取到skills，并且能够运行里面的脚本。
+
+```py
+from deepagents.backends import LocalShellBackend
+
+# 本地 Shell 执行后端
+backend=LocalShellBackend( 
+    root_dir=".", # 工作目录根路径，设置为当前目录
+    virtual_mode=True # 虚拟模式，限制文件访问范围，提高安全性
+)
+```
 
 
 ### 权限控制
