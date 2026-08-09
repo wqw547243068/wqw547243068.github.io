@@ -330,8 +330,24 @@ DeepSpeed + Megatron-LM（最强性能组合）
 
 详见：【2025-7-18】[大模型推理框架对比（DeepSpeed、Megatron-LM 、FSDP）](https://www.toutiao.com/article/7528280419465282075/)
 
+## 【2026-8-8】pytrio
 
+【2026-8-8】pytrio 为研究者准备的LLM训练平台
 
+理念：
+1. 让研究者只需关注算法和数据，而非AI Infra 复杂性。
+2. 训练效率就是创新效率，让researcher能在单位时间做更多实验
+
+	
+pytrio 将GPU计算放在云端，而训练脚本运行在用户的PC，二者通过网络通信，交换数据、梯度和指标。
+	
+不再需要准备GPU机器与配置复杂的环境，只要有一台能联网的笔记本电脑，甚至手机平板，就可以启动LLM训练，且训练算法仍然由用户灵活定义，就像写pytorch脚本一样灵活。
+	
+- pytrio 目前上线了 qwen系列的27b/9b/4b模型，并将陆续上线百B～T级模型。
+- 这些模型支持通过API执行LoRA训练、采样与推理，支持多模态和OpenAI格式推理，支持cross_entropy、importance_sampling、ppo、cispo、dro等高度优化的内置损失函数，以及支持用户自定义损失函数，灵活实现算法。
+	
+pytrio 弹性架构让scale 实验变得简单，无需关心平台上有多少gpu，只管并行开实验，pytrio 做最优的调度来保证训练速度和体验。
+	
 
 ## DeepSpeed -- 微软
 
