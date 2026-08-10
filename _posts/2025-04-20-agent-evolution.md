@@ -3,7 +3,7 @@ layout: post
 title:  Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -123,9 +123,9 @@ What-When-How 框架系统地解构和理解所有关于「自进化」的研究
 
 ![](https://pic4.zhimg.com/v2-3d0bdc6e5d1c69f1ce9a3c0b42804e45_1440w.jpg)
 
-### Stanford 自进化 Agent课程
+### 斯坦福 自进化 Agent课程
 
-Stanford 研究生课程 
+【2026-8-10】Stanford 研究生课程 
 - 主页 [CS329A：Self-Improving AI Agents](https://cs329a.stanford.edu/)
 - [YouTube地址](https://www.youtube.com/playlist?list=PLangBM27OtEA) 一共 9 讲。
 
