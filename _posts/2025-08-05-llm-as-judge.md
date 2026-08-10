@@ -353,6 +353,21 @@ AlpacaEval有着拔群的效果：
 
 如果你也被“Judge 不稳/说不清凭啥选”折磨过，这套方法真的值得去跑一次！你会第一次看清：所谓的“模型好坏”，到底是由哪些具体的标准组成的。 
 
+### Ori Eval
+
+【2026-8-3】OpenRouter 推出 Ori Eval 简化评估流程
+
+编写首个评估的最简单方式。 
+- 没有绝对最好的模型，只有最适合每项任务的模型。
+
+Ori Eval 直接在编码工具中扫描代码库，找出哪些地方调用了模型，评估优劣（如成本、性能等），然后编写评估报告，并对每个模型候选方案进行测试。
+
+Ori Eval 利用 OpenRouter 的 API 处理代码库中的每项任务，然后评估结果。 
+
+```sh
+curl -fsSL https://openrouter.ai/skills/spawn-ori-eval
+```
+
 
 ## Agent-as-a-Judge
 
