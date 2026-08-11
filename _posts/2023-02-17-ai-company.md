@@ -1514,6 +1514,8 @@ Ilya Sutskever：
 - 2018年：Sutskever领导了GPT-1的开发，后来发展成了GPT-2、GPT-3和ChatGPT。
 - 2021年：Sutskever领导了DALL-E 1（图像生成模型）的开发。
 
+【2026-8-10】AI的大部分有价值信息都在这些论文里， [Deep learning reading list from Ilya Sutskever](https://github.com/dzyim/ilya-sutskever-recommended-reading)
+
 
 
 ##### OpenAI 政变
