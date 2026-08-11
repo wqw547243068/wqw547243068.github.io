@@ -3,7 +3,7 @@ layout: post
 title:  Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -65,6 +65,48 @@ Agent 自进化（Self-Evolving Agent）：
 要点
 - 第一 **可持久组件**——更新的对象必须能**跨任务留存**，单次会话里的临时纠错不算。
 - 第二 **提升未来表现**——改了之后下次要真的更好，"改了"本身不算进化。
+
+### 分类
+
+【2026-8-2】[什么是 Self-evolving / self-improving / RSI ？一篇文章搞懂自进化](https://mp.weixin.qq.com/s/iWh5x-SPxa-MhMq4OLLqpw)
+- 周星星 [自进化（Self-evolving／RSI），一篇就够了](https://zhuanlan.zhihu.com/p/2065227313973825752)
+
+热词: self-evolving、self-improving、recursive self-improvement（RSI）
+
+
+自进化分三个方向
+
+自我进化的优化对象是什么，就决定了属于哪个方向
+- 改产出物（代码/论文/算法…）是 Artifacts
+- 改脚手架（prompt/memory/tool/skill/hook…）是 Harness
+- 改模型参数本身是 Model。
+
+三者都算 RSI：
+- ![](https://pic2.zhimg.com/v2-f097a603306561d44f811a9f21388d47_1440w.jpg)
+
+详情
+- （1）Artifacts 层自进化：用强大的 LLM 反复”发现问题 → 生成产出 → 评估结果”，来优化具体的复杂问题产物（代码、论文、算法）。
+  - 比如任何一款 AI coding 工具，给定目标，就会写代码、自己编译、自己测试，有 bug 自己修，最终输出能达到要求的代码。
+  - 产出物一版比一版强，这就是 Artifacts 层面的自我进化，改的是产出物本身，不涉及模型权重，也不涉及 agent 自身的脚手架逻辑。
+  - 案例：
+    - Karpathy 的 Autoresearch：整夜自动改 train.py 迭代超参
+    - Google DeepMind 的 AlphaEvolve：进化算法筛选代码，成果反哺自身训练
+- （2）Harness 层自进化：不动模型权重，改部署后 Agent 本身的”脚手架”：prompt、memory、tool、skill、多 Agent 路由等等等等都是这一类。
+  - 翁荔博客 《Harness Engineering for Self-Improvement》 判断：RSI 近期不太可能从模型直接改写自己的权重开始，更现实的路径是先在 Harness 层爆发 
+  - 跟 Artifacts 层不一样：Artifacts 优化某次任务的产出物；Harness 优化 agent 下次执行任何任务时都会用到的那套”脚手架”，改一次，后面所有任务都受益。最直观的例子是 Agent 跑任务踩了坑，把错误总结成一条新 skill 或一段新 memory 存下来，下次碰到同类任务直接调用，不用再犯一次。agent 自己把自己的脚手架越改越顺手，这就是 Harness 层面的自我进化。
+  - 案例
+    - Hermes：踩坑自动写成 SKILL.md —— 一个任务用到5次以上工具调用，就自动写成 skill.md; Curator 后台维护机制，追踪每个技能被用了多少次、有没有被修改过，长期没用的技能会经历”活跃 → 陈旧 → 归档”的状态流转，还会定期叫一个小模型做审查、合并近似重复的技能，不是写完就无限堆量放着不管。
+    - MiniMax M2.7：自动跑评测迭代 scaffold，性能提升 30%; agent harness 自己收集反馈、给内部任务建评测集，再据此持续迭代自己的架构、技能/MCP 实现和记忆机制
+    - 陈天桥 Apodex-1.0：150 子 agent 协同检索，冲突/存疑时派发验证子团队
+    - Sakana 的 RHI：LLM 评估器打分驱动 harness 自我重写
+    - Ai2 的 Rethinking the Evaluation of Harness Evolution for Agents：预算对等后，harness 进化未必赢过简单 test-time scaling
+    - Weco AI 的 AIDE²：外层 agent 改内层 agent 代码，实测跑到 RSI Level 1
+- （3）模型层自进化：广义的角度，不需要人工标注答案、模型自己给自己当老师的训练都能算：自己筛出高置信度/前后一致的答案反过来当训练数据（self-training、TTRL）、把内部信号转成可验证奖励再用 RL 训练（DeepSeek-R1）、两个版本的自己互相对练（自对弈，例如 SPIN、Absolute Zero）、推理时当场再学一遍（测试时训练）。不靠人喂标注答案，模型自己给自己当老师，这就是 Model 层面的自我进化。狭义的层面，是模型能自己产出下一代的训练优化方向，一代代往上迭代——模型自己训练完 → 自己测试 → 自己找问题（架构瓶颈在哪、工程实现哪里有坑、训练数据有什么问题）→ 自己提出优化方向/实验（例如自己改训练代码，自己补充训练数据）→ 再训练，整个研发循环都由 AI 自己跑。
+  - 案例：把”改 harness”和”改权重”拧到同一个循环里联合优化的系统（SIA、Continual Harness）、不直接做 RSI、但研究”模型内部思考链、可解释性等
+    -  SIA：Feedback-Agent 决定该改 harness 还是改权重
+    -  Continual Harness：内层高频改 harness，外层用 PRM 蒸馏更新权重
+    -  可解释性代表工作：搞懂训练怎么塑造推理
+
 
 ### 易混淆概念
 
