@@ -3,7 +3,7 @@ layout: post
 title:  大模型自动评估
 date:   2025-08-05 16:52:00
 categories: 大模型
-tags: 评估 评测 agent 阿里
+tags: 评估 评测 agent 阿里 skill
 excerpt: 大模型如何自动评估？LLM-as-a-judge 和 Agent-as-a-judge 是什么？
 mathjax: true
 permalink: /llm_judge
@@ -376,10 +376,31 @@ ORI‑Eval 工作机制
 - Agent 采用什么编程语言、开发框架搭建
 - 本次优化对应的业务目标与使用场景
 
+安装
 
 ```sh
 curl -fsSL https://openrouter.ai/skills/spawn-ori-eval
 ```
+
+这个 skill
+- 推理后端默认 OpenRouter 云端
+- 评测引擎本地可运行；修改 `eval.ts` 接口地址即可对接本地 vLLM/Ollama，实现完整脱离 OpenRouter 生态；
+  - 运行 `bun run xxx.eval.ts`
+
+局限性
+- ori login、交互式初始化向导阶段仍需要登录 OpenRouter；初始化完成之后评测可完全脱离云端
+- 原生交互式问卷只能读取 OpenRouter 模型列表，本地模型需要手动修改评测代码
+- 自动对比多候选模型功能需要你自行在 ts 脚本配置多个本地推理端点
+
+
+```ts
+const openai = new OpenAI({
+  //baseURL:"https://openrouter.ai/api/v1",
+  baseURL:"http://127.0.0.1:8000/v1",
+  apiKey:"dummy"
+})
+```
+
 
 相关文章
 
