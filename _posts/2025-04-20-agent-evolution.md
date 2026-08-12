@@ -3,7 +3,7 @@ layout: post
 title:  Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 递归自进化
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -571,7 +571,48 @@ HyperAgents 最核心的一招：直接把这个假设砍掉：
 
 但真正值得注意的是，它把task agent和meta agent合成了同一个可编辑程序。HyperAgents 不是「再加一个Agent」，而是取消了「上层永远不变」这个默认前提。
 
-### 阿里巴巴
+### 【2026-6-30】POLARIS
+
+【2026-6-30】[7B模型也想实现递归自我进化？POLARIS 说没问题](https://mp.weixin.qq.com/s/uxHW6cCjdn-7qlzP6XfZzw)
+
+哥德尔智能体（Gödel Agent） 提出的“`递归自我改进`”概念虽然酷炫，但在 7B 等规模的模型（SLM）上落地时面临严重的资源瓶颈。
+
+常因上下文增长过快导致 OOM（内存溢出）或工具调用失范。
+
+其根源在于：
+- 验证集冗余：原框架需在内存中保留 20 个验证样本及其完整的推理链路；
+- 历史链条过长：保留过多的进化步骤和工具调用历史（通常为 10 步），挤占了 SLM 稀缺的上下文窗口。
+
+POLARIS 核心价值在于证明：递归自我改进并非大模型专属。
+
+通过将“学习”转化为“针对自身 Policy 代码的结构化修补”，SLM 同样能在部署后通过与环境的交互完成自我进化。
+
+核心方案：基于经验抽象的策略修复
+
+POLARIS 放弃了全量存储失败案例，转而采用一种类似“自动程序修复（APR）”的四阶段循环：
+- A. 失败分析（Failure Analysis）: 智能体调用 AnalyzeFailure 算子，对 N 个（通常取 3 或 5）失败样本进行反思，生成包含故障诊断、修正方案和预防规则的结构化记录 A_i。
+- B. 策略综合（Strategy Synthesis）通过 StrategySynthesis 算子，模型将零散的报错记录 A 压缩为通用指令集 delta（如任务分解、逻辑一致性检查等），从而实现跨任务的经验迁移。
+- C. 最小化补丁生成（Patch Generation）POLARIS 要求模型生成最小化代码补丁。
+  - 非参数化更新：不修改权重，而是通过修改执行策略代码 π 来实现进化。
+  - 局部修改：补丁仅涉及实现 delta 所需的必要代码行，确保了进化的可审计性和低内存占用。
+- D. 运行时变异与集成（Patch Integration）系统利用 Python 运行时的动态特性，通过 IntegratePatch 过程将代码注入；且集成前需经过语法检查和执行验证，若失败则启动有限次数（默认 3 次）的退避重试。
+
+
+POLARIS 框架如何通过 经验抽象（Experience Abstraction） 与 代码补丁（Code Patch） 技术，在受限算力下实现智能体策略的持续进化。
+
+为了在 Qwen2.5-7B 等模型上保持稳定运行，POLARIS 进行了以下深度调优：
+- 超参数 N 控制：将参与反思的失败样本数 N 严格限制在 3-5 个；
+- 历史步数收减：将工具调用消息历史 k 从 10 条缩减至 6 条，有效缓解了推理阶段的上下文压力；
+- 格式校验器：引入轻量级辅助 Agent 强制执行 JSON 格式验证，解决 SLM 工具调用不稳定的硬伤。
+
+实验结论：非单调性中的持续增益
+
+在 MGSM、GPQA 和 DROP 等硬核推理测试中，POLARIS 展现了显著的进化能力：
+- 性能提升：在 GPQA 研究生级难题上，准确率相对 COT-SC 基准提升了 9.0%；
+- 进化动力学：虽然进化曲线呈现非单调波动（由离散代码变异引入的随机性），但通过 “冠军-挑战者”模式（Champion–Challenger Pattern） 部署最佳策略，可确保实际性能的稳步增长。
+
+
+### 【2026-7-18】阿里巴巴
 
 【2026-7-18】阿里巴巴通义实验室 丁瑞雪，[垂域模型自进化：Agentic RL企业级落地生产实践](https://www.bilibili.com/video/BV16HKn6gEw5), 多个业务场景进化实践
 - 高德小高老师、1688 鳌虾、阿里云安全攻防Agent、盒马AI Agent
