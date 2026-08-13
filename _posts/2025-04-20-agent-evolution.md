@@ -23,6 +23,28 @@ permalink: /agent_evolution
 
 【2026-7-27】腾讯技术工程文章：[Agent开始“自我进化”：会出题、会反思，还会自己长出新技能](https://mp.weixin.qq.com/s/fsVJiorPBN4ylGjUYBcIPw)
 
+【2026-8-13】[Self-Evolving Agent: A Closed-Loop Post-Training Flywheel for Continually Learning LLM Agents](https://alloomi.ai/reports/sea.pdf)
+
+Agent 在真实任务里产生了大量轨迹和反馈，最后到底该学什么？
+
+现在很多 Agent 已经能跑很长的任务，也有 memory、skills、harness 去保存经验。但很多时候，这些经验依然停留在模型外面：存进向量库、写进 skill、塞回 context。
+
+Agent 能「记住过去」，和真正「从过去学会东西」，中间其实还有很长一段距离。
+
+@AlloomiAI 做的 Self-Evolving Agent 把真实工作里的上下文、专家修改、任务结果和反馈组织成完整轨迹，再经过质量筛选、专家锚定和后训练，让这些经验逐渐进入模型能力。
+
+整个闭环大概是：工作轨迹 → 筛选经验 → 专家锚定 → 后训练 → 评测准入 → 出问题可以回滚。
+
+在 CL-Bench 上，同一个 backbone 经过这套方法后，成绩从 24.5% 提升到了 47.6%。
+
+背后的方向：
+- 未来 Agent 的自进化，需要解决怎么获得真正有价值的经验，以及怎么安全地把这些经验变成下一次任务可以复用的能力。
+
+Alloomi 还把其中的上下文运行时 OpenContext 开源了，可以直接接进自己的 Agent。
+
+比起单次任务做得更强，我现在更关注它们能不能在长期使用中持续变得更熟练。
+
+
 
 ## 静态问题
 
