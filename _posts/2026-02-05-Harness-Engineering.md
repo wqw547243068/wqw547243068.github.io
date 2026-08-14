@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context claude 评测 翁荔 自进化
+tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -671,6 +671,24 @@ pnpm run build
 pnpm dsh web
 ```
 
+#### 桌面版
+
+【2026-8-14】DeepSeek Harness 桌面端
+- anywherelab 推出 [deepseek-harness-desktop](https://www.dshdesktop.cn/)，github [deepseek-harness-desktop](https://github.com/anywhere-labs/deepseek-harness-desktop)
+
+DeepSeek Harness 官方目前通过命令行启动本地 Web UI。本项目将服务启动、运行管理和桌面窗口整合为开箱即用的桌面体验，让用户无需配置 Node.js 或执行命令，即可直接使用
+
+为 DeepSeek Harness 生态打造的现代化桌面端体验
+
+主要功能
+- Desktop 把官方 DeepSeek Harness 的本地 Web UI 带到原生桌面。应用自动启动和管理本地 Harness 服务，集成系统托盘与桌面窗口，无需安装 Node.js 或执行命令。
+- 手机远程控制 即将推出：通过 iOS 和 Android 远程连接 Desktop，在手机上发起任务、查看 Agent 进度，并在需要时继续跟进。
+- 插件市场 即将推出：Harness 遵循“一切皆插件”的架构。桌面端插件市场将提供插件的发现、安装、更新和管理，让模型、工具、界面与工作流能力按需组合。
+- Channels 即将推出：接入微信、飞书、Discord、WhatsApp 等 IM 通道，直接在日常聊天工具中向 Agent 发起任务、接收进度并继续对话。
+
+基于官方 DeepSeek Harness 构建的桌面端，开箱即用
+
+![](https://www.dshdesktop.cn/images/desktop-screenshot.png)
 
 
 ## 评测
