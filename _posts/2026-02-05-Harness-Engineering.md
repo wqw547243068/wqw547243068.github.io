@@ -643,6 +643,35 @@ LlamaFactory 作者`郑耀威`最近开源新项目 PenguinHarness「企鹅驾�
 [解读](https://mp.weixin.qq.com/s/8XefjsJCn69KzxB6vVS0Nw)
 
 
+### 【2026-8-13】deepseek-harness
+
+【2026-8-13】 DeepSeek AI 开发的开源 agent harness（智能体框架）[DeepSeek Harness](https://www.deepseek.com/harness/)
+- 采用**一切皆插件**的架构，模型、工具、技能、会话、沙箱、存储、循环、调度、UI 等所有 Agent 能力均由插件组合而成，可以自由替换和灵活重组。
+- 并由 Cordis 驱动，其设计参见论文 [A Programming Paradigm for Spatiotemporal Composability](https://github.com/cordiverse/paper)。
+- [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness/tree/master)
+- [中文说明](https://github.com/deepseek-ai/deepseek-harness/blob/master/README.zh.md)
+
+安装
+
+```sh
+npx @deepseek-ai/dsh web
+```
+
+命令会启动 Web UI，默认地址为 `http://127.0.0.1:3080`
+
+源码安装
+
+```sh
+仓库源码运行：
+
+git clone https://github.com/deepseek-ai/deepseek-harness.git
+cd deepseek-harness
+pnpm install
+pnpm run build
+pnpm dsh web
+```
+
+
 
 ## 评测
 
