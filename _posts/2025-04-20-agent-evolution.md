@@ -901,5 +901,27 @@ Pointwise打分的致命问题：判别崩溃
 - N=8时，锚点排序7场 + 单败淘汰7场，合计14场。整体复杂度线性，用O(N)开销逼近O(N²)全量两两对比的排序效果。
 
 
+### 【2026-8-6】Discovery Loop
+
+硅谷程序员圈子传说：“当 Jeff Dean 提交代码时，编译器会反过来问他是否需要优化。”
+
+Jeff Dean 履历是一部浓缩的近代科技史：
+- 从定义大数据时代基础设施的 `MapReduce`、`BigTable`
+- 到一统深度学习江湖的 `TensorFlow`
+- 再到打破`摩尔定律`、支撑起 Google 算力霸权的 `TPU`。
+
+他不仅是 Google 搜索帝国的总架构师，更是过去十年全球 AI 工程化范式的“造物主”。
+
+Google 效力了 27 年，已经打造了分布式系统、深度学习框架、AI 专用芯片等无数顶级“工具”
+
+![](https://pic3.zhimg.com/v2-99db3041640fb586cef9a01d28f9c914_1440w.jpg)
+
+【2026-8-6】Jeff Dean 离开谷歌，辞去首席科学家，与Google 传奇工程师 Sanjay Ghemawat，以及大模型算法天才 Oriol Vinyals、AutoML 先驱 Quoc Le 一起，共同创办公益性质的 AI 初创公司 [Discovery Loop](https://www.discoveryloop.com/) 
+- 把科学发现变成自动迭代的Loop. [Discovery Loop](https://www.discoveryloop.com/) 目标：让模型拥有“20个博士”的科研能力
+- 递归自我改进，覆盖模型参数、训练数据、Eval，甚至模型架构本身。
+- 联合创始人`Quoc Le`很早就在做`Neural Architecture Search`：让模型自动生成模型架构，再根据学习速度、训练成本等指标不断获得反馈，逐渐找到更好的设计。还做了`Evolved Transformer`，通过进化算法重新组合Transformer组件，最终找到的架构效率比标准Transformer高了大约30%。
+- 递归自我改进真正要解决的问题是怎样让构建模型所需要的整套东西，都能够通过自动化方式持续变得更好。
+
+
 
 # 结束
