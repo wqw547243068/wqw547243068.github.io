@@ -3,7 +3,7 @@ layout: post
 title:  自动研究Agent（Auto Research）专题
 date:   2026-03-07 16:52:00
 categories: 大模型
-tags: autoresearch ak47 skill
+tags: autoresearch ak47 skill jeff 谷歌
 excerpt: 自研研究Agent：让Agent自己调参、训模型，找到最佳参数
 mathjax: true
 permalink: /autoresearch
@@ -54,6 +54,14 @@ permalink: /autoresearch
 现代大语言模型或许能够完成既定前提下证明定理的演绎步骤，但从底层架构上做不到完成提炼前提所需的溯因 “直觉跃迁”。
 - 将现实模拟转化为规范化公理是人工智能实现科学创新的核心瓶颈；
 - 具备**物理自洽性**的多模态世界模型，能够提供必需的感官落地依据，打通这一关键壁垒
+
+### 【2026-8-6】Jeff Dean 成立 Discovery Loop
+
+【2026-8-6】Jeff Dean 离开谷歌，辞去首席科学家，与Google 传奇工程师 `Sanjay Ghemawat`，以及大模型算法天才 `Oriol Vinyals`、AutoML 先驱 `Quoc Le` 一起，共同创办公益性质的 AI 初创公司 [Discovery Loop](https://www.discoveryloop.com/) 
+- 把科学发现变成自动迭代的Loop. [Discovery Loop](https://www.discoveryloop.com/) 目标：让模型拥有“20个博士”的科研能力
+- 递归自我改进，覆盖模型参数、训练数据、Eval，甚至模型架构本身。
+- 联合创始人`Quoc Le`很早就在做`Neural Architecture Search`：让模型自动生成模型架构，再根据学习速度、训练成本等指标不断获得反馈，逐渐找到更好的设计。还做了`Evolved Transformer`，通过进化算法重新组合Transformer组件，最终找到的架构效率比标准Transformer高了大约30%。
+- 递归自我改进真正要解决的问题是怎样让构建模型所需要的整套东西，都能够通过自动化方式持续变得更好。
 
 
 ### 【2026-8-14】斯坦福：autoresearch 缺乏元认知闭环
