@@ -3,7 +3,7 @@ layout: post
 title:  "Tensorflow 学习笔记"
 date:   2019-05-10 17:25:00
 categories: 编程语言
-tags: Tensorflow Python 深度学习
+tags: Tensorflow Python 深度学习 jeff 谷歌
 excerpt: Tensorflow 编程技能汇总
 author: 鹤啸九天
 mathjax: true
@@ -18,6 +18,14 @@ permalink: /tensorflow
 - 【2020-8-31】[30天吃掉那只TensorFlow2](https://github.com/lyhue1991/eat_tensorflow2_in_30_days)，[20天吃掉那只Pytorch](https://jackiexiao.github.io/eat_pytorch_in_20_days/)
 - [入门级解读：小白也能看懂的TensorFlow介绍](https://www.toutiao.com/a6389412632331419906/),日本东京 TensorFlow 聚会联合组织者 Hin Khor 所写的 TensorFlow 系列介绍
 - ![](https://pica.zhimg.com/v2-4722a5639a0dafc705be6199c5920a08_1440w.jpg)
+
+【2026-8-20】[Jeff Dean离职后首次公开访谈火力有点猛](https://mp.weixin.qq.com/s/XpeRZ6A_FBL7rS3JcyJbAg) 斯坦福 2026 Frontier&Pioneer Symposium 上，`Jeff Dean`一口气聊开了不少过去很少公开展开的话题 [YouTube](https://www.youtube.com/watch?v=0kC3xOZChdA&t=2s)
+
+TensorFlow 当年有两个很明确的失误
+- 第一，最开始没有加入 Eager Execution 模式。后来这种方式在`PyTorch`和`JAX`框架流行,TensorFlow 才加进来
+- 第二，contrib子目录允许很多外部开发者贡献各种辅助库和不同的实现方式。给社区带来困惑，因为变成同一件事情可能有十种不同的做法，到底该用哪一种，取决于用了contrib里的哪个子目录、哪个库。TensorFlow核心保持更简洁，把这些东西作为建立在核心之上的外部库。
+
+
 
 ## 深度学习框架
 
