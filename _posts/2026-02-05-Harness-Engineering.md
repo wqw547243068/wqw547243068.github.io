@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek
+tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek openai
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -689,6 +689,38 @@ DeepSeek Harness 官方目前通过命令行启动本地 Web UI。本项目将�
 基于官方 DeepSeek Harness 构建的桌面端，开箱即用
 
 ![](https://www.dshdesktop.cn/images/desktop-screenshot.png)
+
+
+### 【2026-8-19】Codex Harness
+
+【2026-8-19】OpenAI 开源内部核心运行基座 [Codex Harness](https://developers.openai.com/blog/codex-as-a-platform)！
+	
+GitHub仓库 [openai/codex](https://github.com/ganimjeong/Harness-for-codex) 完整开放, Apache‑2.0开源协议，支持免费商用、二次开发、私有化部署。
+- [Harness-for-codex](https://github.com/ganimjeong/Harness-for-codex) 
+
+OpenAI 总裁 `Greg Brockman` 直言：
+- Codex 能驱动的远不止编程工具，把AI智能体嵌入到大家正在使用的业务系统里，而不是让所有人迁移到聊天框中完成工作。
+	
+当下绝大多数AI Agent开发，都逃不开一种模式：做一个聊天窗口，把业务需求全部塞进对话框，靠写大量 Prompt 驱动大模型完成任务。
+
+市面上LangChain、LangGraph、CrewAI 等第三方框架，虽然降低了 Agent 上手门槛，但在超长任务稳定性、沙箱安全、任务续跑、权限管控上，距离企业级生产落地还有不小差距，大量项目停留在 Demo 原型阶段，很难大规模上线使用。
+
+OpenAI 在官方博客中提出反思：
+- 不应该要求所有团队把业务流程硬塞进通用聊天助手，而是要把 Agent 带进已经成熟的业务软件当中。
+- Codex Harness 的开源，正是这场 “反套壳” 变革的开始。
+
+OpenAI 放出极具说服力的基准数据：
+- ARC‑AGI‑3 测试集，仅对 Harness 做保留推理、上下文压缩两处优化，GPT‑5.6 Sol 得分从 13.3% 飙升至 38.3%，输出 Token 总量直接减少六倍。
+- 没有升级模型，仅仅优化底层运行框架，就实现能力跃升，同时大幅削减 API 成本。
+	
+开发者拿到三大控制权
+
+Codex Harness 带给开发者最核心的改变，是把三项关键权利交还给应用本身：
+- 界面控制权：告别强制聊天框 用户继续使用仪表盘、编辑器、业务列表等原有交互，AI 不抢占主界面，按需触发智能能力。
+- 上下文与工具控制权：企业内部文档、业务 API、私有数据，通过 MCP 协议安全开放给 Agent。AI 可以读懂企业内部制度，成为业务专家。
+- 安全运营控制权：宿主应用定义 Agent 运行环境、文件访问权限、高危操作审批规则，企业牢牢守住安全边界。
+
+Codex Harness 开源释放的信号十分清晰：Agent 的瓶颈，很多时候不在于模型能力，而在于运行时工程底座。
 
 
 ## 评测
