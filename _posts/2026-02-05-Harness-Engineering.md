@@ -745,6 +745,26 @@ Codex Harness 带给开发者最核心的改变，是把三项关键权利交还
 
 Codex Harness 开源释放的信号十分清晰：Agent 的瓶颈，很多时候不在于模型能力，而在于运行时工程底座。
 
+### 【2026-8-20】谷歌 EnvHarness
+
+【2026-8-20】[谷歌提出EnvHarness：让静态环境随Agent一起进化](https://mp.weixin.qq.com/s/CnJux4UTJlJ0IJZMcjzANg)
+
+[EnvRigger](https://envharness.com/) 将目标策略视为黑盒，从成功和失败轨迹中诊断能力缺陷，再编写和验证相应的 EnvHarness 组件。
+- 论文链接：[EnvHarness: Awakening Static Worlds for Agent Learning](https://arxiv.org/pdf/2608.19880)
+- 代码 [envharness](http://github.com/google-research/envharness)
+
+大语言模型智能体（LLM‑agents）通过与环境交互完成学习，但目前这类环境均为人工搭建的静态环境：无法感知智能体的短板，并且随着智能体能力提升，环境很快就不再适配。尽管近期一些环境生成方法试图解决该问题，但是这类方案需要搭建领域专属工作流、依赖成本高昂或结果不可靠的校验器，并且生成的环境依旧是静态的。
+
+为减轻从零重建环境带来的工程负担，本文提出**环境线束（Environment Harness，EnvHarness）**：一层由可插拔组件构成的可编程层，包裹静态环境，无需修改底层逻辑即可重塑环境行为。EnvHarness 通过标准接口运行，可适用于多个不同领域，同时保证经过改造后的环境保留原有校验器。
+
+为实现流程自动化，进一步提出 EnvRigger。将目标策略视作黑盒，观测智能体的执行轨迹，据此生成针对已诊断缺陷的 EnvHarness 组件，并通过全新的交互采样对组件效果进行验证。
+
+在4个领域、5项基准测试任务中，EnvHarness 的效果优于原始环境以及各类领域专用的环境生成流水线。在未见过的测试样本上最高取得9.0分的性能提升，同时执行步骤减少9.8%。除此之外，EnvHarness 能够为强化学习提供更优质的优化信号，实现策略与环境之间持续、定向的协同进化。
+
+涉及四个领域的五个基准上，EnvHarness 的性能优于原始环境和特定领域的环境生成流水线，在留出任务上最高提升 9.0 个百分点，且平均执行步数也减少 9.8%。
+
+此外，EnvHarness 还能为强化学习（RL）提供更优的优化信号，从而实现策略与环境的持续、有针对性的协同进化。
+
 
 ## 评测
 
