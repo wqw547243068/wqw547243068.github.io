@@ -3,7 +3,7 @@ layout: post
 title:  Agent 自我进化
 date:   2025-04-20 11:30:00
 categories: 大模型
-tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 递归自进化
+tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 递归自进化 谷歌 jeff
 excerpt: LLM/Agent 如何实现自我进化？
 mathjax: true
 permalink: /agent_evolution
@@ -44,7 +44,24 @@ Alloomi 还把其中的上下文运行时 OpenContext 开源了，可以直接�
 
 比起单次任务做得更强，我现在更关注它们能不能在长期使用中持续变得更熟练。
 
-
+【2026-8-20】[Jeff Dean离职后首次公开访谈火力有点猛](https://mp.weixin.qq.com/s/XpeRZ6A_FBL7rS3JcyJbAg) 斯坦福 2026 Frontier&Pioneer Symposium 上，`Jeff Dean`一口气聊开了不少过去很少公开展开的话题 [YouTube](https://www.youtube.com/watch?v=0kC3xOZChdA&t=2s)
+- 关于为啥离开谷歌：小团队可以极致聚焦
+  - 非常专注的小公司，所有人都围绕同一个使命工作，这种状态本身就很有吸引力。非常专注地去做科学和工程自动化。
+- TensorFlow 当年有两个很明确的失误
+  - 第一，最开始没有加入 Eager Execution 模式。后来这种方式在`PyTorch`和`JAX`框架流行,TensorFlow 才加进来
+  - 第二，contrib子目录允许很多外部开发者贡献各种辅助库和不同的实现方式。给社区带来困惑，因为变成同一件事情可能有十种不同的做法，到底该用哪一种，取决于用了contrib里的哪个子目录、哪个库。TensorFlow核心保持更简洁，把这些东西作为建立在核心之上的外部库。
+- Gemini为啥不行？
+  - Gemini 其实是Google内部几个更早研究项目最终汇合的结果——包括原来 DeepMind、Google Brain，以及Google Research其他团队的一些工作。
+  - 把Gemini的Coding能力真正做到惊艳，重视得稍微晚了一点
+- 自己的科研秘诀：
+  - 未来科学实验的一轮迭代，可能从一天、一周压缩到一分钟、一小时
+  - 在找重大研究方向时，与其精读1篇论文，不如先扫10篇，甚至100篇摘要
+  - 利用`第一性原理`和一些工程经验, 在脑子里快速判断不同解决方案大概是什么量级。
+- 新公司 [Discovery Loop](https://www.discoveryloop.com/) 接下来准备押注什么
+  - 把科学发现变成自动迭代的Loop. [Discovery Loop](https://www.discoveryloop.com/) 目标：让模型拥有“20个博士”的科研能力
+  - 递归自我改进，覆盖模型参数、训练数据、Eval，甚至模型架构本身。
+  - 联合创始人`Quoc Le`很早就在做`Neural Architecture Search`：让模型自动生成模型架构，再根据学习速度、训练成本等指标不断获得反馈，逐渐找到更好的设计。还做了`Evolved Transformer`，通过进化算法重新组合Transformer组件，最终找到的架构效率比标准Transformer高了大约30%。
+  - 递归自我改进真正要解决的问题是怎样让构建模型所需要的整套东西，都能够通过自动化方式持续变得更好。
 
 ## 静态问题
 
