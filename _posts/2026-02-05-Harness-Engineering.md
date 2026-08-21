@@ -3,7 +3,7 @@ layout: post
 title:  驾驭工程（Harness Engineering）指南
 date:   2026-02-05 16:52:00
 categories: 大模型
-tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek openai
+tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek openai 郑耀威 自进化
 excerpt: 驾驭工程、挽具工程
 mathjax: true
 permalink: /harness
@@ -634,13 +634,36 @@ X = eXtensible Behavior Composition。 无需重写 agent 就能组合、适配�
 
 ### 【2026-8-4】PenguinHarness
 
-LlamaFactory 作者`郑耀威`最近开源新项目 PenguinHarness「企鹅驾驭师」自动完成Agent的构建、评测和持续改进，真正从「手动调优Agent」迈入「Agent自我迭代」。
+LlamaFactory 作者`郑耀威`最近开源新项目 `PenguinHarness`「企鹅驾驭师」自动完成Agent的构建、评测和持续改进，真正从「手动调优Agent」迈入「Agent自我迭代」。用 Agent 造 Agent，而且造出来的 Agent 会自己进化（Harness for RSI），本地化部署
 - PenguinHarness是原生支持自我进化的AgentHarness，主打轻量、开源、易用。
 - 基于原创的Agent内核，无论是GPT-5.6还是DeepSeekV4，这套框架都能稳稳驾驭。
-- 开源地址：https://github.com/Prism-Shadow/penguin-harness
-- 主页链接：https://penguin.ooo
+- 开源地址：[PenguinHarness](https://github.com/Prism-Shadow/penguin-harness)
+- 主页链接：[PenguinHarness](https://penguin.ooo)
 
 [解读](https://mp.weixin.qq.com/s/8XefjsJCn69KzxB6vVS0Nw)
+	
+- LlamaFactory 把微调从「论文复现」降到「填个 YAML」；
+- PenguinHarness 是把搭 Agent 从「手写编排」降到「说一句话」。
+
+特点
+- 1️⃣ 一句话生成整个 Agent 应用：脚手架 + 代码 + 说明全给，demo 那个 RAG 应用只花了 0.2 元 token
+- 2️⃣ 刻意做小的工具集：工具少、接口干净 → 数据分析准确率第一，成本是 Claude Code 的 1/70
+- 3️⃣ 自进化 skill：内置 agent-creation / benchmark-design / agent-evaluation / agent-optimization 四件套，Agent 自己跑分自己迭代，每轮自动快照可回滚
+- 4️⃣ 对国产开源模型深度适配：DeepSeek V4、Kimi K3、GLM 5.2、混元 3、Qwen 3.8 Max，也支持 GPT / Gemini / Claude，任何 OpenAI 协议端点都能接
+
+国内团队在 Agent harness 这层的活儿，最近确实开始有东西了：
+- 对比之前的 OpenRSI 训练「改进者」模型本身，PenguinHarness 更容易上手、更产品化—— 桌面端 + skill 库 + 评估中心，一句话就能用。但跑分是自建的、口径混了模型与 harness。
+
+Apache-2.0 开源，1.4k star，macOS / Windows / Linux 三端都有。
+
+PenguinHarness 率先把「Agent 构建 Agent」与「`递归自我进化`」带入开源 Harness。
+- Agent 构建 Agent： 使用 LangChain，以 1 倍速度人工构建 Agent；使用 PenguinHarness，以 100 倍速度用 Agent 构建 Agent。
+- 多 Agent 协作，进化自动发生：Optimizer 组织多个 Evaluator 为 Target Agent 并行打分，依据分数与运行轨迹定位失分原因，把 Agent 从版本 N 优化到版本 N+1——每一轮都有快照，随时可回退。
+
+组件
+- `Penguin Message`: Simplest Is the Best 坚持最小化工具集与简洁的底层接口，以更少工具调用与 Token 消耗，高效完成复杂任务。
+- `Penguin SDK`: Harness for Building Agents, 通过 PenguinHarness SDK，让 Agent 从零自主完成 Agent 应用的构建。
+- `Penguin Skills`: Harness for Recursive Self-Improvement, 通过 PenguinHarness Skills，Agent 以**自我评估**与**自我优化**实现递归式自我提升。
 
 
 ### 【2026-8-13】deepseek-harness
