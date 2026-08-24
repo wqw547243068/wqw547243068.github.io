@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  Agent 自我进化
+title:  自我进化 RSI
 date:   2025-04-20 11:30:00
 categories: 大模型
 tags: Agent 自学习 进化 自动化 训练 openclaw 小米 罗福莉 hermes 斯坦福 递归自进化 谷歌 jeff
-excerpt: LLM/Agent 如何实现自我进化？
+excerpt: LLM/Agent 如何实现自我进化？递归自我改进 RSI (Recursive Self-Improvement)
 mathjax: true
 permalink: /agent_evolution
 ---
@@ -17,7 +17,56 @@ permalink: /agent_evolution
 
 一个完全自主、越用越强的 Agent，有可能实现吗？
 
+
+【2026-8-22】[什么是RSI](https://mp.weixin.qq.com/s/MS5Dzg1AjWiFAUE9aAFnzw)
+
+补丁
+- RAG: **开卷考试**, 发一本随时能翻的参考书。书天天换新，学生本人没变
+- 记忆: **便利贴**, 《记忆碎片》式贴满便条。能提醒你钥匙在哪，教不会你开锁
+- LoRA: **活页**, 不重印整本书，夹几页勘误。夹多了会互相打架
+- 模型编辑: **手术刀**, 精准改写一条记忆。刮一两处行，刮十几处书就烂了
+
+四类补丁各管一摊，共同点：要么不进脑子，要么不可持续。
+
+Karpathy：
+> 人睡着时，白天的经历被悄悄蒸馏进大脑；大模型里没有对应的东西。补上这场睡眠还要十年。而一旦补上，几百万个副本每晚把经验汇回同一个本体，就已经是最朴素的爆炸剧本。
+
+科幻里的 RSI 是 AI 改写自己的源代码。
+
+现实里能力全在权重：几千亿个数字，读不懂也改不了。
+
+所以工程上的路是：AI 参与写训练代码、造训练数据，造出更强的下一代。
+
+
+递归自我改进 `RSI`: Recursive Self-Improvement
+
+阶梯层级释义
+
+|层级|能力阶段说明|
+|---|---|
+|L0|当场改答案，表层输出修正|
+|L1|攒记忆技能，沉淀可复用技能库|
+|L2|改工具代码，自主修改底层工具实现|
+|L3|改「怎么改」，元能力，修改自我改进的方法论|
+|L4|研发飞轮，自我迭代进化闭环（目标终点）|
+
+<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot;&gt;\n  &lt;diagram name=\&quot;Agent能力进阶阶梯\&quot; id=\&quot;a3GhD3Q0ttFbz3U0i_h8\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;1592\&quot; dy=\&quot;1157\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-1\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=24;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;fontStyle=1\&quot; value=\&quot;L0&amp;lt;br&amp;gt;当场改答案\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;180\&quot; width=\&quot;160\&quot; x=\&quot;590\&quot; y=\&quot;820\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-2\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=24;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;fontStyle=1\&quot; value=\&quot;L1&amp;lt;br&amp;gt;攒记忆技能\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;360\&quot; width=\&quot;160\&quot; x=\&quot;750\&quot; y=\&quot;640\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-4\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=24;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;fontStyle=1\&quot; value=\&quot;L2&amp;lt;br&amp;gt;改工具代码\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;480\&quot; width=\&quot;160\&quot; x=\&quot;910\&quot; y=\&quot;520\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-5\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=24;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;fontStyle=1\&quot; value=\&quot;L3&amp;lt;br&amp;gt;改「怎么改」\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;600\&quot; width=\&quot;160\&quot; x=\&quot;1070\&quot; y=\&quot;400\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-6\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;dashed=1;strokeColor=#B20000;fontSize=24;fillColor=#e51400;fontColor=#ffffff;fontStyle=1\&quot; value=\&quot;L4&amp;lt;br&amp;gt;研发飞轮\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;780\&quot; width=\&quot;160\&quot; x=\&quot;1230\&quot; y=\&quot;220\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-8\&quot; parent=\&quot;1\&quot; style=\&quot;shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/icon-cache1/Octicons-2649/person-1338.svg\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;100\&quot; width=\&quot;50\&quot; x=\&quot;790\&quot; y=\&quot;530\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-9\&quot; parent=\&quot;1\&quot; style=\&quot;shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#008a00;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/material-symbols/1/Personal_Places.svg;fontColor=#ffffff;labelBorderColor=#005700;\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;96\&quot; width=\&quot;96\&quot; x=\&quot;1270\&quot; y=\&quot;124\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-10\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=33;fontStyle=1\&quot; value=\&quot;自进化五级阶梯\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;280\&quot; x=\&quot;740\&quot; y=\&quot;280\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-11\&quot; parent=\&quot;1\&quot; style=\&quot;text;whiteSpace=wrap;html=1;strokeColor=none;fillColor=default;fontColor=default;labelBackgroundColor=none;labelBorderColor=none;textShadow=1;fontSize=20;\&quot; value=\&quot;&amp;lt;strong style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; font-family: &amp;amp;quot;PingFang SC&amp;amp;quot;, -apple-system, BlinkMacSystemFont, &amp;amp;quot;Helvetica Neue&amp;amp;quot;, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.544px; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.85; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;OpenClaw&amp;lt;/span&amp;gt;&amp;lt;/strong&amp;gt;&amp;lt;div&amp;gt;&amp;lt;strong style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; font-family: &amp;amp;quot;PingFang SC&amp;amp;quot;, -apple-system, BlinkMacSystemFont, &amp;amp;quot;Helvetica Neue&amp;amp;quot;, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.544px; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.85; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;Hermes&amp;lt;/span&amp;gt;&amp;lt;/strong&amp;gt;&amp;lt;/div&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;90\&quot; width=\&quot;143\&quot; x=\&quot;710\&quot; y=\&quot;1010\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
+
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+
+
+OpenClaw、Hermes 已经会给自己写技能、记笔记，阶梯的第一级。但 `经验复利` ≠ `能力复利`：越用越顺手，不等于越用越聪明。
+
+Karpathy 的 autoresearch：让 agent 对着 630 行训练代码无限循环。挂机两天，找到 20 处可叠加的改进，有几处连他这个调了二十年参数的老手都漏了。他说：这是最终 boss 战。
+
+
 ## 观点
+
+业界布局, 最贵的人才、最高的薪资、最大的算力，都在往这RSI流动。
+- 2026 年 5 月到 8 月：Karpathy 进 Anthropic 用 Claude 训下一代 Claude；
+- 翁荔回 OpenAI 领导 RSI 方向；
+- Jeff Dean 创办 `Discovery Loop`。
+
 
 【2026-3-27】小米 MiMo 大模型负责人罗福莉：大模型的自进化，对科学研究带来的指数级加速
 
