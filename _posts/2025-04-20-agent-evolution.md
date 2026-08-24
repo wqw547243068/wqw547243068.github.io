@@ -18,6 +18,8 @@ permalink: /agent_evolution
 一个完全自主、越用越强的 Agent，有可能实现吗？
 
 
+## RSI
+
 【2026-8-22】[什么是RSI](https://mp.weixin.qq.com/s/MS5Dzg1AjWiFAUE9aAFnzw)
 
 补丁
@@ -37,6 +39,7 @@ Karpathy：
 
 所以工程上的路是：AI 参与写训练代码、造训练数据，造出更强的下一代。
 
+### RSI 定义
 
 递归自我改进 `RSI`: Recursive Self-Improvement
 
@@ -58,6 +61,40 @@ Karpathy：
 OpenClaw、Hermes 已经会给自己写技能、记笔记，阶梯的第一级。但 `经验复利` ≠ `能力复利`：越用越顺手，不等于越用越聪明。
 
 Karpathy 的 autoresearch：让 agent 对着 630 行训练代码无限循环。挂机两天，找到 20 处可叠加的改进，有几处连他这个调了二十年参数的老手都漏了。他说：这是最终 boss 战。
+
+### RSI 分类
+
+【2026-7-8】加州大学 [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/pdf/2607.07663)
+
+真正的 RSI 不只是模型把答案改好一点，也不是训练集里多放一些自生成样本，而是系统开始修改自己的改进机制，甚至修改判定标准本身。
+
+二维分类
+
+![](https://pic2.zhimg.com/v2-5b6c27d106be81ab16e446e9828960f7_1440w.jpg)
+
+（1）系统改进对象
+
+- Deployment-time self-evolution：部署阶段改进。包括冻结权重的输出修正（output refinement）、test-time training、harness、skill、memory 的积累。
+- Training-time self-iteration：训练阶段改进。系统生成数据、奖励或教师信号（teacher signal），再更新自己的权重。
+- Self-evaluation：evaluator 本身成为改进对象。系统设计、增强或共同进化 judge、verifier、奖励模型、rubric。
+- Auto Research：系统参与 AI 研究本身。提出假设、运行实验、发现算法。极限情况下，它会优化产生下一代 AI 系统的方法。
+
+（2）如何验证改进
+
+- Human-in-the-loop：人类逐次审查改动。
+- Human-on-the-loop：自动信号生成改进，人类审计结果或设置部署门槛。
+- Closed loop：系统自己生成、验证并应用改进，没有人类审查。
+
+现在, 绝大多数文献仍然落在 bounded self-refinement。
+- 最多的是 human-on-the-loop：自动信号已经进入循环，但人类仍然审计结果。
+- closed loop 的工作很少，尤其是 self-evaluation × closed loop 最少，但也最关键。因为一旦系统能改自己的 evaluator，并且自己判定这个 evaluator 更好，bounded self-refinement 就开始接近 open-ended RSI。
+
+这个分类的好处: 不让“self-X”词汇牵着读者走。Self-Refine、self-reward、self-play 都只是机制名。真正需要定位的是**改进对象**和**验证责任**。
+
+![](https://picx.zhimg.com/v2-f4d5f9db9410e8a42eb20ac8441adf39_1440w.jpg)
+
+【2026-8-9】更多解读：[RSI 是什么？这篇综述讲清楚了 RSI 的痛点](https://zhuanlan.zhihu.com/p/2069017868214220425)
+
 
 
 ## 观点
