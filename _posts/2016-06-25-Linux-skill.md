@@ -3124,6 +3124,16 @@ Zellij · tmux · Byobu 功能对比总表
 - **服务器长期跑、追求稳定轻量、高度自定义** → 选 **tmux**
 - **Ubuntu 服务器、只想开箱即用带状态栏** → 选 **Byobu**
 
+### 终端 hostname
+
+【2026-8-25】终端命令里，本地机器名称太长？
+
+```sh
+sudo vim /etc/hosts
+# 127.0.1.1   old-name
+# 127.0.1.1   new-name
+```
+
 ### Terminal
 
 系统自带终端
