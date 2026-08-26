@@ -17,11 +17,33 @@ permalink: /robot_control
 # 机器人控制
 
 
-## 资料
+## 学习教程
 
 站内专题
 - [具身智能](embodied)
 - [VLA专题](vla)
+
+系统教程
+
+[Every-Embodied](https://datawhalechina.github.io/every-embodied/zh-cn/)
+- GitHub [every-embodied](https://github.com/datawhalechina/every-embodied)
+- 从0构建自己的具身智能机器人；从0逐步构建VLA/OpenVLA/SmolVLA/Pi0， 深入理解具身智能
+- 从仿真入门、Pi0 部署、LeRobot 遥操作，到视觉感知、无人机导航和 LIBERO 基准。
+
+[embodied-ai-learning-handbook](https://github.com/zc-xzc/embodied-ai-learning-handbook) 具身智能学习手册 - 覆盖VLA模型、遥操作、Sim2Real、强化学习等完整知识体系的系统性学习指南
+- 具身智能基础理论（机器人学、深度学习、多模态融合）
+- 核心算法（模仿学习、强化学习、视觉感知、轨迹规划）
+- 前沿技术（VLA 模型、Diffusion Policy、Sim2Real、世界模型）
+- 仿真环境实战（MuJoCo、Isaac Lab、PyBullet、Genesis）
+- 数据飞轮与遥操作（ALOHA、UMI、数据采集与增强）
+- 顶会论文精选（CVPR / AAAI / ICLR / NeurIPS 2023-2025）
+- 行业研究与产业报告（人形机器人、灵巧手、传感器）
+- 本地项目技术讨论精华（VLA 闭环落地、方向选择、会议记录）
+
+[具身智能高频面试题库](https://winstonjq.github.io/embodied-interview-qa/)
+- 覆盖具身智能算法岗的 8 个方向：通识基础、RL 算法、VLA / 模仿学习、世界模型 / Sim2Real、工程落地、腿足机器人运动控制 / 全身控制 / 遥操作、3D 感知 / SLAM / VLN / 零样本 ObjectNav / Embodied VLM、通用工程 coding 与系统设计。 主表题来自牛客、知乎、小红书、一亩三分地等公开面经，同义题合并后频次 ≥3 才入卷；近期趋势题用 补充 标签，不伪造频次。 每题答案经独立审查后发布。
+
+
 
 
 ## 行动控制
