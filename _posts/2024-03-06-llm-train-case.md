@@ -3,7 +3,7 @@ layout: post
 title:  LLM 大模型训练资源及案例
 date:   2024-03-06 12:00:00
 categories: 大模型
-tags: ChatGPT 训练 数据集 lora 微调
+tags: ChatGPT 训练 数据集 lora 微调 
 excerpt: 大模型训练案例及经验
 mathjax: true
 permalink: /llm_train_case
@@ -17,6 +17,17 @@ permalink: /llm_train_case
 # 大模型训练资源及案例
 
 LLM 训练原理见[站内专题](llm_train)
+
+## 示例
+
+### MedicalMind
+
+MedicalMind——医疗大模型全链路实践全链路
+
+基于医疗领域构建端到端大语言模型训练系统，涵盖数据清洗、预训练、指令微调、人类偏好对齐的完整链路。以64M参数基座，对齐Qwen3架构设计，在医疗问答场景下验证全流程可行性与工程落地能力。
+- 数据清洗：纯文本约14GB /指令数据79万条/偏好对2万条，包括数据源预清洗（长度过滤/语言过滤/PPL过滤）、数据去重（hash精确去重/SimHash模糊去重）和基于向量化的语义相似度匹配筛选，清洗前后C-EVAL评分提升37%；
+- 训练微调对齐：基于全参PT采用QLoRA（4-bit + LoRA rank=8）完成医疗领域CPT/SFT；对齐阶段进行RM设计（格式奖励和准确性奖励）并比较PPO/RLOO/DPO/GRPO算法；训练侧使用DeepSpeed ZeRO-2、梯度累积与bf16；评测结合C-EVAL四项均分及PPL；
+
 
 ## 训练资源
 
