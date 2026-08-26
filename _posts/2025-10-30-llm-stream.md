@@ -232,7 +232,7 @@ Llama Guard 3 通过输入输出检测，有效识别并分类**不安全内容*
 Code Shield 使用静态分析工具（Insecure Code Detector, ICD）来检测不安全代码。ICD 支持对七种编程语言进行分析，并覆盖超过 50 种常见漏洞（CWE），包括使用正则表达式（Regex）和 Semgrep 等工具
 
 
-### 风控
+### 腾讯风控
 
 【2025-11-20】[融合风控知识的大模型体系建设与应用实践](https://www.infoq.cn/article/xJTe5bBq2bbQSMv9p7Gp)
 
@@ -297,6 +297,23 @@ Code Shield 使用静态分析工具（Insecure Code Detector, ICD）来检测�
 
 70MB 这个体积意味着它几乎可以在任何设备上跑，一台树莓派、一个边缘网关、甚至一个嵌入式的物联网终端。
 
+
+### 【2026-8-20】云知声 UniGuard
+
+云知声 UniSound
+
+【2026-8-20】UniGuard 文本安全审核系统：分为规则层、BGE-M3 与 Qwen3Guard 三层 
+- BGE 负责高置信低延迟分流
+- Qwen 负责复杂语义灰区复审， 实现 allow/block/review 决策及 SGLang 部署。
+
+Strict/Loose 双策略模型与 A/B 数据交叉判断 和 多 API 复审的数据构建体系，完成 Qwen3Guard 多版本 LoRA 微调对照实验。
+
+以 2,000 条人工开发集建立统一判定口径，基于用户意图、请求语境和数据内容，结合规则、TF-IDF 近邻、历史模型等多路证据，对冲突 数据进行重构，通过Hard Case回流和 FP/FN 分析持续平衡误杀与漏放。 
+
+人工开发集上表现，BGE 高置信拦截 Precision 达 99.50%，Qwen 最优到 89.60% Accuracy、94.19% Unsafe Recall。 
+
+ms-swift 开发 Qwen3.5-27B 病历质控模型：
+- 基于ms-swift开发Qwen3.5-27B病历质控模型，在8×A800环境下结合LoRA、BF16、 DeepSpeed ZeRO-3与vLL
 
 
 # 结束
