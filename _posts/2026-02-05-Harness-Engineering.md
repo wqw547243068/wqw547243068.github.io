@@ -29,6 +29,10 @@ Mitchell Hashimoto（Terraform 之父）将这一现象命名为 `Harness Engine
 - 传统 AI "一次性对话" —— 每次从零开始，用完即走。
 - Hermes "自我进化" —— 记住你，学习你，越用越懂你。
 
+<img width="2484" height="3002" alt="image" src="https://github.com/user-attachments/assets/1655ed80-3ce8-4d83-b585-ec2f706ce5c2" />
+
+
+
 ### Harness 终将消亡
 
 【2026-5-7】Claude Code之父：未来不靠 Harness，终将消亡
