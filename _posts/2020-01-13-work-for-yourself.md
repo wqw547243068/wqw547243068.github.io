@@ -178,6 +178,14 @@ Business Insider 统计数据显示，BAT 三家里，员工平均在职时长�
 - [知乎上有哪些自由职业者，你们的工作生活是怎么样的？](https://www.zhihu.com/question/21728466/answer/87389244)
 - [100个不上班的人]()，书籍：《[只工作不上班](https://book.douban.com/subject/34839849/)》林安把这20个人分别放在五个章节：开店，数字游民，斜杠生活，小众职业，新兴行业
 
+【2026-8-27】想搞副业、找远程工作，这两个 GitHub 仓库
+- 1）AI Money Maker Handbook —— AI 副业赚钱方案合集，整理了大量 AI 搞钱案例、工具、流量、产品和变现思路。 
+  - [ai-money-maker-handbook](https://github.com/XiaomingX/ai-money-maker-handbook)
+- 2）Awesome Remote Job —— 远程工作资源大全，收录远程招聘网站、Remote 公司、面试、社区、工具等，想找海外远程工作的很实用。 
+  - [awesome-remote-job](https://github.com/lukasz-madon/awesome-remote-job)
+
+
+
 ### 调研报告
 
 【2026-3-27】[裁员潮下，普通人最靠谱的副业是什么？我用1596条数据跑出了答案](https://mp.weixin.qq.com/s/g6XGVacaSetiIj6Ff3YrYQ)
