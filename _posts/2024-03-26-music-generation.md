@@ -62,6 +62,26 @@ permalink: /music_gen
 - 5、创作一首温馨的民谣木吉他曲
   - 提示词：warm, folk, acoustic guitar, fingerstyle, gentle
 
+## 音乐分析处理
+
+
+【2026-8-27】课程配套教材，含 ppt
+- 《Fundamentals of Music Processing》
+- 《音乐处理基础》 [Music Processing Analysis](https://audiolabs-erlangen.de/fau/professor/mueller/teaching/2026w-mpa) Winter Term 2026/2027
+
+大纲
+- 介绍
+- 音乐表征
+- 信号的傅里叶分析
+- 音频特征
+- 音乐同步技术
+- 音乐结构分析
+- 弦识别
+- 节奏与节拍跟踪
+- 基于内容的音频检索
+- 音频分解
+
+
 
 
 ## 音乐生成技术
