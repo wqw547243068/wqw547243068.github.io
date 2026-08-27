@@ -4,7 +4,7 @@ title:  "面试指南及算法工程师成长-The Guide for Interview"
 date:   2018-10-31 20:08:00
 categories: 人生规划
 excerpt : AI初学者不要过于迷信企业项目，忽略基本功的学习，不要mnist都没研究透彻就嫌简单，直奔难度更大的resnet，好高骛远，得不偿失，学东西请务必戒骄戒躁，一步一个脚印，才能越走越远。企业项目的事实跟你想象的大不一样
-tags: 实习 应届生 招聘 求职 AI 算法工程师 面试 工业界 学术界 简历 危机 能力 等级 调参 调包 软考 证书 最优停止 大模型 star ober 职级 薪资 待遇 996
+tags: 实习 应届生 招聘 求职 AI 算法工程师 面试 工业界 学术界 简历 危机 能力 等级 调参 调包 软考 证书 最优停止 大模型 star ober 职级 薪资 待遇 996 skill
 permalink: /interview
 ---
 
@@ -37,6 +37,16 @@ Facebook（Meta）[Investing in the Future: Introducing New Work Choices in EMEA
 
 
 ## 优秀候选人
+
+### 简历
+
+【2026-8-27】入选美团北斗计划拿到百万年薪的阿酥
+- 简历包装 skill [ASu-skills](https://github.com/Hisn00w/ASu-skills)
+
+<img width="1290" height="1817" alt="image" src="https://github.com/user-attachments/assets/6d7bba9b-bba1-45b4-88ea-7624398dc996" />
+
+
+### 晋级
 
 如何成为那20%？
 - 二八定律无处不在，20% 的候选人占据了市场上 80% 的offer，反之，另外 80% 的候选人只能苦哈哈的陷入那 20% offer中竞争
