@@ -119,7 +119,9 @@ pdf-to-markdown/
 - [bb-browser](https://github.com/epiral/bb-browser) 浏览器 API: 坏孩子浏览器 BadBoy Browser, 不需要密钥，不需要爬虫，不需要模拟
 
 
-### 信息抓取
+### 信息处理
+
+
 
 #### MediaCrawler
 
@@ -193,6 +195,22 @@ https://anysearch.com/install/skill-install.md
 - 基准测试中，AnySearch在准确性和响应延迟两个维度，均优于同类AI搜索产品Parallel和Brave。
 - 与同类Brave Search测试对比，结果显示，AnySearch数据更完整、分析更深入、回答更全面
 
+#### ExcelMcp
+
+Excel 最烦人的就是公式、透视表、Power Query这些功能一个一个点，点岔一步就得推倒重来。
+
+【2028-8-28】[ExcelMcp](https://excelmcpserver.dev/) 把本地Excel直接甩给AI助手管。只管说人话要啥，自己就在表格里给你搞定。
+- [mcp-server-excel](https://github.com/sbroenne/mcp-server-excel)
+
+驱动的是正儿八经的Excel应用，公式、透视表、图表、宏全都完好保留。31个工具覆盖325项操作，Power Query、DAX、VBA都能调。
+
+改完Excel窗口实时刷新，不满意再补一句接着调。
+
+支持 Claude Code、Codex、GitHub Copilot 这些Agent工具，需要Excel 2016以上版本。
+
+
+
+
 #### 公众号
 
 文章抓取
@@ -202,6 +220,8 @@ https://anysearch.com/install/skill-install.md
 文章撰写
 
 【2026-8-28】公众号 Skill 开源地址：[gzh-Skills](http://github.com/SpaceZephyr/creator-buddy/tree/main/gzh-Skills)
+
+更多见站内专题：[公众号编辑](solo)
 
 
 ## 浏览器操控
