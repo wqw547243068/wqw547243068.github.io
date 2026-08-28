@@ -3395,6 +3395,16 @@ LoveyDovey 为用户提供了两条主要路径创建虚拟 AI 角色：
 - 「For you」 里是平台已经创建好的虚拟 AI 角色
 - 「My」里则是用户根据自己喜好手动「捏」的角色。
 
+#### 宠物鸭 MicroDuck
+
+
+【2026-8-28】X上爆火的宠物鸭 [Microduck](https://pollen-robotics.com/microduck/)，有开源代码
+- GitHub [microduck](https://pollen-robotics.com/microduck/)
+- 硬件400美金
+- microduck_rl — MuJoCo and PPO, the sim2real recipe, and the export to ONNX that this repo loads.
+
+![](https://private-user-images.githubusercontent.com/6552564/641503621-c2f7c245-8217-46a1-8d1e-e0ba967cd969.webp?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODc5MDY1MTUsIm5iZiI6MTc4NzkwNjIxNSwicGF0aCI6Ii82NTUyNTY0LzY0MTUwMzYyMS1jMmY3YzI0NS04MjE3LTQ2YTEtOGQxZS1lMGJhOTY3Y2Q5Njkud2VicD9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA4MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwODI4VDA4MzY1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWVlNDM3NWRjN2U2ODgwYjEwYTNhM2U3ZmY1MjcxNjU4MDdmMTJjNjA2ZTQ2YWNkYTg2NTgwNjZlZWUwMTQ0NzkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRndlYnAifQ.IL9ccfnTL3Ca-KuXGlzSka2EJ3dyGFaCQFOHdi3xoUQ)
+
 
 ### 智能客服
 
