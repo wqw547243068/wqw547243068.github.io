@@ -226,11 +226,12 @@ Agent 开发框架 与 AI Harness 运行框架
 
 
 
-## 总结
+## 思考
 
 
 
 ### 【2026-4-11】Thin Harness, Fat Skills
+
 
 【2026-4-11】[Thin Harness, Fat Skills](https://x.com/garrytan/status/2042925773300908103)
 - [小红书图解](https://www.xiaohongshu.com/explore/6a05c343000000003700dcf1)
@@ -416,6 +417,38 @@ Harness Engineering 有个独特的概念——「熵与垃圾回收」。
 
 
 ## 实现
+
+【2026-8-23】[Agent Harness 三种范式：DSH、OpenCode、Pi](https://mp.weixin.qq.com/s/tshKjQrbxo1WtjBSTeagDA)
+
+Agent = Model + Harness 公式已是行业共识，但公式里的<span style="color:red">加号两侧并不对等</span>。
+- 模型是灵魂，负责推理、规划和生成。
+- Harness 是身体，决定模型能看到什么、能碰什么、做错了谁来拦。
+
+harness 决定了模型对世界的认知边界
+
+同一个模型套上不同的 harness，产出行为完全不同的 agent。
+- `dsh`: 「一切都是插件」—— 包括agent loop本身 —— 但这不是唯一答案。
+  - 模型适配器、工具注册表、会话存储、沙箱、调度器、UI，甚至驱动整个 agent 的主循环，全部是插件；
+  - 建立在 Cordis 内核之上，Cordis 论文称为「时空可组合性的编程范式」，核心思想：任何服务都可以在运行时被替换，插件之间通过注入和依赖关系解耦，系统保证插件移除和依赖变更在语义上是安全的。
+- `OpenCode` 把harness做成精心调校的开箱即用的产品。
+  - OpenCode 哲学：大多数用户要的不是理解 harness 的能力，而是开箱即用的性能。
+  - 把 agent 开发中最常见的最佳实践预置成默认值——Plan 模式限制修改、Build 模式放开全部权限、LSP 编译错误直接注入上下文、MCP 服务器即插即用
+  - 隐含限制：产品的上限由作者的设计直觉决定。当模型能力升级后，一个固定在核心里的循环策略可能需要调整，而这个调整只能等官方发版，不能由你在运行时决定。
+- 而 `Pi` 把核心砍到只剩四个工具，然后给你一把可以改造一切的钥匙。(最反直觉)
+  - 核心只有四个工具: read、write、edit、bash —— 系统提示不超过 1000 个 token。没有 MCP、没有子代理、没有计划模式、没有待办事项列表、没有权限弹窗。
+  - Pi 官网上有一节叫「What we did not build（我们没构建什么）」，那部分文字比大多数工具的 feature list 还长。
+  - 设计哲学：现代模型已经在海量代码和工具调用模式上训练过了，天生知道怎么做 coding agent。harness 不需要教模型如何干活，harness 只需要提供**最低限度的基础设施**，然后退到一边。
+
+我先搜索确认这三个项目（dsh、OpenCode、Pi）的官网和发布时间，避免凭印象填错。
+
+dsh 和 Pi 的信息已确认，我再核对一下 OpenCode 和 Pi 的发布时间，避免时间不准。
+
+| 项目 | 时间 | 关注点 | 核心架构 | 定制入口 | 内置工作流 | 安全边界 | 成熟度 |
+|---|---|---|---|---|---|---|---|
+| [dsh](http://deepseek.com/harness) | 2026-08-13 发布（v0.1） | 系统层面的可重构性 | 一切皆插件，loop 可替换 | 替换插件/组合 profile | 四种预设（标准/极简/PTC/创造） | 权限检查插件 | developer preview |
+| [OpenCode](http://opencode.ai) | 2025-06-19 发布 | 体验层面的开箱即用 | 固定 loop，边缘可扩展 | AGENTS.md/命令/插件 | Plan 与 Build 双模式 | 内置权限系统 | 生产级 |
+| [Pi](http://pi.dev) | 2025-08 初版（2025 Q3 首个发布） | 认知层面的可理解性 | 最小内核，运行时 hook | TypeScript 代码 | 无（由扩展提供） | 默认无，需自行添加 | 生产级（但核心极小） |
+
 
 
 ### 总结
@@ -677,6 +710,20 @@ PenguinHarness 率先把「Agent 构建 Agent」与「`递归自我进化`」带
 - 并由 Cordis 驱动，其设计参见论文 [A Programming Paradigm for Spatiotemporal Composability](https://github.com/cordiverse/paper)。
 - [deepseek-harness](https://github.com/deepseek-ai/deepseek-harness/tree/master)
 - [中文说明](https://github.com/deepseek-ai/deepseek-harness/blob/master/README.zh.md)
+
+dsh 核心主张：没有什么是不可替换的。
+- 模型适配器、工具注册表、会话存储、沙箱、调度器、UI，甚至驱动整个 agent 的主循环，全部是插件。
+- 这套架构建立在 Cordis 内核之上——一个从 Koishi 聊天机器人框架里走出来的插件运行时，后者已经在生产环境跑了四年、积累了超过四千个社区插件。
+
+这不是 DeepSeek 从零发明的编程模型。Cordis 论文把它称为「**时空可组合性**的编程范式」，核心思想：
+- 任何服务都可以在运行时被替换，插件之间通过注入和依赖关系解耦，系统保证插件移除和依赖变更在语义上是安全的。
+- 换句话说，dsh 是 Koishi 那套「在网页控制台里热插拔插件、保存即生效」的能力，被抽出来重铸成了一个 agent 运行时。
+
+「agent 预设」变成了一种组合物。dsh 官方预置了四种 profile：
+- `标准模式`是完整的 coding agent，带子代理、工作流和规划能力；
+- `极简模式`只保留文件操作和文本编辑，适合做模型测试；
+- `PTC`（programmatic tool calling）模式最值得展开 ——-- 把工作流里连续多步的工具操作直接编译成一段 TypeScript 程序，一次执行完成一长串操作，大幅减少模型和工具之间的往返开销。
+- 第四种「`创造`」模式则用于让 dsh 协助用户定义新的 profile，并在运行时验证它能否跑通。
 
 安装
 
