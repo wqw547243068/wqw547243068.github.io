@@ -1453,7 +1453,7 @@ CMTEB结果:
 
 gte-Qwen2-7b-instruct 
 
-#### Qwen3-Embedding
+#### 【2025-6-6】Qwen3-Embedding
 
 【2025-6-6】[阿里Qwen3 新模型 Embedding 及 Reranker霸榜（Top2）](https://mp.weixin.qq.com/s/SVF2bf1cdJtlNOK20iLtSA)
 
@@ -1589,7 +1589,7 @@ print(scores.tolist())
 ```
 
 
-### Embedding Gemma
+### 【2025-9-5】Embedding Gemma
 
 【2025-9-5】Google  发布嵌入模型 [Embedding Gemma](https://deepmind.google/models/gemma/embeddinggemma/), 闭源
 - [huggingface](https://huggingface.co/blog/embeddinggemma)
@@ -1630,6 +1630,27 @@ embeddings = outputs.last_hidden_state.mean(dim=1)  # 采用平均池化生成�
 
 print(f"Embedding维度: {embeddings.shape[-1]}")  # 输出: Embedding维度: 1024
 ```
+
+### 【2026-8-25】腾讯 WeMM-Embedding
+
+【2026-8-25】腾讯微信发布新embedding模型，多模态
+- 论文 [WeMM-Embedding: WeChat Multi-Modal Embedding Technical Report](https://arxiv.org/abs/2608.24053)
+
+通用多模态embedding 正成为现代 AI 系统核心组件，使异构内容能够在同一空间中表示，用于检索、推荐、分类和智能体（agentic）系统等应用。
+
+提出 `WeMM-Embedding`, 通用多模态嵌入模型家族，支持文本、图像、视频、视觉文档以及任意交错的多模态输入，并支持灵活的输出维度。
+- 该家族包含 2B、4B 和 9B 三个变体
+- 两阶段训练：大规模多模态对齐阶段，以及使用精选数据、细粒度相关性监督和跨尺度知识迁移的精炼阶段。
+
+效果
+- WeMM-Embedding 在多个公开基准上取得领先性能。
+- 2B 变体在 MMEB-v2 上已超越此前领先的 8B 开源基线，而 9B 变体进一步取得了 80.6 的全新最优总分。
+
+WeMM-Embedding 还在微信应用中展现了强大的实际性能，在包含 26 个任务的内部基准上取得了显著提升，并在 14 个在线 A/B 测试中表现出一致改进。已大规模部署于推荐和搜索应用中，包括微信视频号、公众号、朋友圈和电商服务。
+
+开源模型权重和代码以促进后续研究。
+- Huggingface [wemm-embedding](https://huggingface.co/collections/tencent/wemm-embedding), GitHub [WeMM-Embedding](https://github.com/Tencent/WeMM-Embedding) 
+
 
 ## 向量评估
 
