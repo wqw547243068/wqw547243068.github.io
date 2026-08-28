@@ -449,7 +449,7 @@ print(new_output)
 
 ### 榜单
 
-Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
+Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)，[中文榜单](https://huggingface.co/spaces/mteb/leaderboard)
 - 英语: `NV-Embed-v2` > `bge-en-icl` > `stella-en_1.5b_v5` > `SFR-Embedding-2_R` > `gte-Qwen2-7b-instruct`
 - 中文: `Conan-embedding-v1` > `xiaobu-embedding-v2` > `gte-Qwen2-7b-instruct`
 - ![](https://picx.zhimg.com/80/v2-abfd4f5f382c016569924092857c9275_1440w.webp)
@@ -458,6 +458,8 @@ Embedding 榜单 [MTEB](https://huggingface.co/spaces/mteb/leaderboard)
 【2025-6-7】METB最新排名：
 - Qwen3-Embedding全家挤占了2-4名
 - 第一名还是Gemini，与自家测试结果有些差异
+
+
 
 ### 方案选型
 
