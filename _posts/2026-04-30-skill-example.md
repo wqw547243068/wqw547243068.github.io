@@ -193,9 +193,15 @@ https://anysearch.com/install/skill-install.md
 - 基准测试中，AnySearch在准确性和响应延迟两个维度，均优于同类AI搜索产品Parallel和Brave。
 - 与同类Brave Search测试对比，结果显示，AnySearch数据更完整、分析更深入、回答更全面
 
-#### 公众号文章抓取
+#### 公众号
+
+文章抓取
 
 [wechat_articles_spider](https://github.com/klin-h/wechat_articles_spider)
+
+文章撰写
+
+【2026-8-28】公众号 Skill 开源地址：[gzh-Skills](http://github.com/SpaceZephyr/creator-buddy/tree/main/gzh-Skills)
 
 
 ## 浏览器操控
