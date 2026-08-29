@@ -90,6 +90,21 @@ LLM inference 优化两个基本事实：
 
 因此，如何优化KV cache，节省显存，提高推理吞吐量，就成了LLM推理框架需要解决的重点问题。
 
+### 问题
+
+| 问题 (Problem) | 解决方案 (Solution) |
+|---|---|
+| LLMs 推理很慢 | **KV Cache**：避免重复计算之前的 token |
+| KV Cache 占用巨大内存 | **PagedAttention**：高效管理 KV 内存 |
+| GPU 利用率低 | **Continuous Batching**：动态添加/移除请求 |
+| Token 生成是串行的 | **Speculative Decoding**：同时生成并验证多个 token |
+| Attention 需要大量内存且内存搬运昂贵 | **FlashAttention**：降低 attention 期间的内存占用与搬运 |
+| KV Cache 仍然很大 | **MQA / GQA**：多个 query head 共享 K/V |
+| 多种优化需协同工作 | **vLLM**：构建高效推理引擎 |
+| 应用反复处理相同前缀 | **RadixAttention / Prefix Caching**：复用已计算的工作 |
+| 模型过大 | **Quantization**：降低模型内存与计算量 |
+| 大模型成本高 | **Distillation / SLMs / MoE**：降低推理本身的成本 |
+
 
 ### 缓存 cache
 
