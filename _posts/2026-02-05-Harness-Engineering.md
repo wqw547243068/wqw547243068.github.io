@@ -33,6 +33,10 @@ Mitchell Hashimoto（Terraform 之父）将这一现象命名为 `Harness Engine
 
 
 
+harness六层结构手册
+- [帖子](https://x.com/shao__meng/status/2093228362965651665 )
+
+
 ### Harness 终将消亡
 
 【2026-5-7】Claude Code之父：未来不靠 Harness，终将消亡
