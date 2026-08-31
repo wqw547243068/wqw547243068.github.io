@@ -3,7 +3,7 @@ layout: post
 title:   优质 Skills 汇总
 date:   2026-04-30 21:20:00
 categories: 大模型
-tags:  skill mcp 龙虾 markdown html
+tags:  skill mcp 龙虾 markdown html 专利
 excerpt: 总结各类实用 Skills 
 mathjax: true
 permalink: /skill_set
@@ -271,6 +271,23 @@ opencli twitter trending
 ```
 
 ## 垂类知识
+
+
+### 专利
+
+
+#### 挖掘
+
+问题
+- 有设计文档和代码，但专利点还没梳？交底书要框图 + 可改 Word？
+- 定稿后还要多轮补材料、纠错并留下修改追溯？
+- 公开专利晦涩难懂，想快速看懂权要与落地语境？
+
+【2026-8-31】专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。
+
+[patent-disclosure-skill](https://skillhub.cn/skills/patent-disclosure-skill)
+- 中国专利.skill：专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。
+- GitHub [patent-disclosure-skill](https://github.com/handsomestWei/patent-disclosure-skill)
 
 
 ### 金融
