@@ -53,7 +53,6 @@ permalink: /robot_control
 ### Microduck
 
 
-
 <img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/7a41a23b-c347-4d25-9e33-39612066525f" />
 
 
@@ -77,6 +76,18 @@ Microduck 这种小机器人，可能决定有多少开发者真正开始参与 
 Physical AI 真正普及的标志，可能不是街上出现多少台人形机器人，而是越来越多开发者的桌面上，开始出现一台可以随便训练、随便摔、随便改的机器人。
 
 PS：Microduck 实际使用的是 RK3566 芯片
+
+
+#### Open Duck Mini
+
+【2026-8-31】买不到 Microduck？考虑 [Open Duck Mini](https://tnkr.ai/open-duck-mini/open-duck-mini-v2) 平替。
+
+Microduck 的优势很明显：
+- 体积小、完成度高，买回来就能直接跑强化学习，比较适合想快速进入具身智能的人。
+
+但问题也很现实：Microduck 并不是所有地区都方便购买。
+
+这时候 Open Duck Mini 反而值得看。一台参考 Disney BDX Droid
 
 
 ### AnyCar 
