@@ -286,7 +286,7 @@ opencli twitter trending
 【2026-8-31】专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。
 
 [patent-disclosure-skill](https://skillhub.cn/skills/patent-disclosure-skill)
-- 中国专利.skill：专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。
+- [中国专利.skill](https://skillhub.cn/skills/patent-disclosure-skill)：专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。
 - GitHub [patent-disclosure-skill](https://github.com/handsomestWei/patent-disclosure-skill)
 
 
