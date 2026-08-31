@@ -3,7 +3,7 @@ layout: post
 title:  "机器人控制"
 date:   2025-05-04 19:02:00
 categories: 人工智能
-tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill
+tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill huggingface
 excerpt: 机器人控制专题，ROS、感知、规划、行动
 author: 鹤啸九天
 mathjax: true
@@ -15,6 +15,7 @@ permalink: /robot_control
 
 
 # 机器人控制
+
 
 
 ## 学习教程
@@ -47,6 +48,36 @@ permalink: /robot_control
 
 
 ## 行动控制
+
+
+### Microduck
+
+
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/7a41a23b-c347-4d25-9e33-39612066525f" />
+
+
+【2026-8-30】真正普及 Physical AI 的，可能不是人形机器人，而是一只机器鸭：Microduck。
+
+Microduck 和大型人形机器人，代表的其实是 Physical AI 的两条路线。
+
+大型人形机器人负责探索能力上限，Microduck 这种小型机器人，更适合把 Physical AI 带进开发者的日常实验环境。我反而很看好后者。
+- ① 更适合高频试错： Physical AI 最大的问题之一，就是算法最终要落到真实世界。行走、转向、摔倒起身、姿态切换，都需要在真机上不断训练、测试和调整。小型机器人天然更适合这种反复折腾。
+- ② 仿真之后，可以快速上真机：强化学习不是只在模拟器里跑 Demo，而是可以把策略真正部署到实体机器人上。对普通开发者来说，这一步非常重要。
+- ③ 桌面级设备更容易形成开发者生态：真正推动一项技术扩散的，未必是能力最强的设备，而是能进入实验室、学校、开发者桌面，被大量人持续使用和改造的平台。
+
+Raspberry Pi、Arduino 当年真正重要的，也不是性能有多强，而是它们把硬件开发的门槛降到了足够多人可以参与。
+
+Microduck 给我的感觉也有点类似。
+
+百万人形机器人决定 Physical AI 最终能走多远，
+
+Microduck 这种小机器人，可能决定有多少开发者真正开始参与 Physical AI。
+
+Physical AI 真正普及的标志，可能不是街上出现多少台人形机器人，而是越来越多开发者的桌面上，开始出现一台可以随便训练、随便摔、随便改的机器人。
+
+PS：Microduck 实际使用的是 RK3566 芯片
+
 
 ### AnyCar 
 
