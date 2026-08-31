@@ -37,6 +37,38 @@ Transformer 已成为大语言模型上的架构，因为它有效地克服了�
 
 【2026-8-30】注意力家族地图，更多见[飞书笔记](https://my.feishu.cn/docx/MzIxdnjOPoHw3uxpypQc1MiOnkh?from=from_copylink)
 
+从『尽量装下所有信息』走向『选择值得处理的信息』
+- 1 固定 Context 瓶颈——所有信息压进一个固定向量（图标：固定向量内含多个小圆点）
+  - 早期 seq2seq（Cho 2014 / Sutskever 2014）将整个源序列编码进单个固定向量（瓶颈）
+  - Bahdanau 2014 的加性注意力引入动态上下文向量
+- 2 Attention——需要什么就动态取什么（图标：中心点连外围点）
+  - Bahdanau 注意力是跨序列（decoder 查询 encoder）
+- 3 Self-Attention——所有 Token 可以直接交流（图标：节点连线网络）
+  - Transformer 2017 的 self-attention 是同序列内两两交互且可并行
+- 4 MQA / GQA / MLA——不要重复保存全部历史（图标：三个竖条）
+  - MQA（Shazeer 2019）/ GQA（Ainslie 2023）/ MLA（DeepSeek-V2）确实都是 KV cache 压缩手段；
+- 5 Sparse / Deformable——不要计算或查看所有位置（图标：稀疏方块矩阵）
+  - Sparse Attention（Sparse Transformer / Longformer / BigBird）和 Deformable Attention（Deformable DETR）确实都是降低 O(N²) 计算的手段。
+
+4、5 步是并行方向，不是顺序演进 → 应理解为「存储压缩」与「计算稀疏化」两条正交支线，而非线性递进
+- 第 4 步优化的是存储（KV cache 内存）
+- 第 5 步优化的是计算（注意力 FLOPs）
+
+注意力家族地图
+- 1 相关性怎么计算？ → Bahdanau/Additive、Dot-Product、Scaled Dot-Product
+- 2 谁允许看谁？ → Self、Causal/Masked、Cross Attention
+- 3 一种关系够不够？ → Multi-Head Attention
+- 4 KV Cache 太大怎么办？ → MHA、MQA、GQA、MLA
+  - MHA：每头独立存 K/V
+  - MQA（Shazeer 2019）：所有 Query 头共享一份 K/V
+  - GQA（Ainslie 2023）：分组共享，介于 MHA 与 MQA 之间
+  - MLA（DeepSeek-V2）：KV 低秩压缩缓存
+- 5 Token 太多，算不起怎么办？ → Sliding Window / Sparse Attention 优化链接数量
+- 6 公式不变，怎么跑快？ → FlashAttention
+- 7 图像位置太多怎么办？ → Deformable Attention
+
+把变体按「解决什么问题」拆成 7 个正交维度，比按名字线性罗列（Self→Cross→Multi-Head→...）准确得多。证据：这 7 个维度确实对应不同的技术资源/目标——计算相似度（1）、拓扑结构（2）、表达力（3）、内存（4）、计算量（5）、硬件效率（6）、模态适配（7），彼此正交，可组合。
+
 <img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/87699600-5a97-4a71-96bf-4fdcb2d99edd" />
 
 
