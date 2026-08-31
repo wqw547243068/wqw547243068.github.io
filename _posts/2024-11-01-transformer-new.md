@@ -35,6 +35,11 @@ Transformer 已成为大语言模型上的架构，因为它有效地克服了�
 【2025-8-13】Sun, Weigao, Jiaxi Hu, Yucheng Zhou, et al. 2025. 上海AI Lab等，Transformer计算量大导致LLM训练受限， 架构的优化综述，moe、稀疏序列模型、高效全注意力、混合架构、扩散语言模型、多模态
 - 论文 [Speed Always Wins: A Survey on Efficient Architectures for Large Language Models](https://arxiv.org/pdf/2508.09834), 
 
+【2026-8-30】注意力家族地图，更多见[飞书笔记](https://my.feishu.cn/docx/MzIxdnjOPoHw3uxpypQc1MiOnkh?from=from_copylink)
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/87699600-5a97-4a71-96bf-4fdcb2d99edd" />
+
+
 ### Transformer 进化史
 
 【2026-8-1】Transformer 进化史总结
