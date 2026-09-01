@@ -1,0 +1,83 @@
+---
+layout: post
+title:  Minimax 大模型
+date:   2026-09-01 11:30:00
+categories: 大模型
+tags: Agent m3 视频生成 minimax
+excerpt: Minimax 大模型系列
+mathjax: true
+permalink: /minimax
+---
+
+* content
+{:toc}
+
+# Minimax 大模型
+
+[Minimax](https://www.minimax.io/) 上海稀宇科技有限公司，总部位于上海市徐汇区模速空间的大模型人工智能公司。 
+
+
+## 总结
+
+公司推出的产品 有MiniMaxM2.1、Hailuo2.3、Speech2.6和Music2.0等
+
+全系列大模型
+- （1）LLM
+  - MiniMax M3
+  - MiniMax M2.7
+  - MiniMax M2.5
+- （2）VIDEO
+  - MiniMax H3
+- （3）SPEECH & MUSICSPEECH & MUSIC
+  - MiniMax Speech 2.8
+  - MiniMax Music 3.0
+
+
+我先搜索 MiniMax 各模型的发布时间，确保时间线准确。按发布时间整理如下：
+
+| 时间 | 模型 | 类别 | 核心特点 |
+|---|---|---|---|
+| 2022 | abab 1–4 | 文本 | 早期多代语言模型，支撑 Glow 产品上线 |
+| 2023-08 | abab 5 | 文本 | 基础对话模型 |
+| 2023 | abab 5.5 | 文本 | 16,384 token 上下文 |
+| 2023-11 | Speech-01 | 语音 | 首款语音合成模型 |
+| 2024-01 | abab 6 | 文本（MoE） | 万亿参数，对标 GPT-4 |
+| 2024-04 | abab 6.5 | 文本（MoE） | 万亿参数，200K 上下文 |
+| 2024-08-31 | Hailuo-01（Video-01） | 视频 | 首个视频生成模型 |
+| 2024 | Music-01 | 音乐 | 首款音乐生成模型 |
+| 2025-01-15 | MiniMax-01（Text-01 / VL-01） | 文本/多模态 | 开源，线性注意力，4560亿参数/459亿激活，400万 Token 上下文 |
+| 2025-02-11 | Image-01 | 图像 | 文生图，支持多种尺寸 |
+| 2025-02 | T2V-01-Director / I2V-01-Director | 视频 | 导演版视频生成 |
+| 2025-04 | Speech-02 | 语音 | 超拟人、个性化、多情感 |
+| 2025-06-16 | MiniMax-M1 | 文本（推理） | 80K 思维链 × 1M 输入，开源 MoE，主打推理深度 |
+| 2025-06 | Hailuo 02 | 视频 | 第二代视频模型 |
+| 2025-09-11 | Music-1.5 | 音乐 | 音乐生成升级 |
+| 2025-10-27 | MiniMax-M2 | 文本（MoE） | 230B 总参/10B 激活，编码与 Agent，MIT 协议，效果/价格/速度平衡 |
+| 2025-10 | Hailuo 2.3 | 视频 | 视频模型迭代 |
+| 2025-Q4 | M2.1 / M2-her | 文本 | M2 系列迭代（108 天完成 M2→M2.5 三代演进） |
+| 2026-02 | M2.5 | 文本 | 生产力场景全球领先 |
+| 2026-02 | Music2.5+ | 音乐 | 乐器解锁，突破风格边界 |
+| 2026-03-18 | M2.7 | 文本/Agent | Agent 旗舰，首次实现模型自我进化，可承担 30%–50% 研发工作量 |
+| 2026-04 | Music-2.6 | 音乐 | 封面重生、低音重定义 |
+| 2026-06-01 | M3 | 文本/多模态 | 最新 M 系列，agentic reasoning、tool use、coding、多模态聊天、长上下文 |
+| 2026-07-16 | Music-3.0 | 音乐 | 新一代音乐生成能力 |
+| 2026-07-31 | MiniMax H3 | 视频/多模态 | 新一代多模态生成模型，开源，全球下载 2400 万+，衍生 300+ 模型 |
+
+
+
+## 团队
+
+
+### 闫俊杰
+
+
+
+## M3 
+
+
+## H3
+
+【2026-7-31】[H3](https://www.minimax.io/blog/minimax-h3) 实时视频生成模型
+
+
+# 结束
