@@ -4,7 +4,7 @@ title:  "机器人控制"
 date:   2025-05-04 19:02:00
 categories: 人工智能
 tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill huggingface
-excerpt: 机器人控制专题，ROS、感知、规划、行动
+excerpt: 机器人控制专题，ROS、感知、规划、行动 模拟器
 author: 鹤啸九天
 mathjax: true
 permalink: /robot_control
@@ -52,6 +52,9 @@ permalink: /robot_control
 
 ### Microduck
 
+
+2026年8月27日，美东时间的一个普通上午，AI开源社区 Hugging Face 联合其收购的法国机器人公司 [Pollen Robotics]()，发布了一只售价399美元、高25厘米、不足800克的双足机器鸭——Microduck。开订6小时，订单额突破100万美元；24小时，累计超过260万美元，折合超过5000台，高峰期平均每4秒卖出一一台。官方随后发布公告，原话是“社区订了太多鸭子”，新订单发货排期4到6个月。
+- 模拟器环境：[microduck-simulator](https://huggingface.co/spaces/pollen-robotics/microduck-simulator)
 
 <img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/7a41a23b-c347-4d25-9e33-39612066525f" />
 
