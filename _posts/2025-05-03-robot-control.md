@@ -59,6 +59,22 @@ permalink: /robot_control
 <img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/7a41a23b-c347-4d25-9e33-39612066525f" />
 
 
+研发团队为：`Pollen Robotics` (法国），AI与软件生态：`Hugging Face` 
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/f55f9282-fb30-4c0e-9d48-6d05cac1a188" />
+
+
+制造商: `矽递科技` Seeed Studio（中国深圳）。
+
+Microduck 搭载
+- 瑞芯微的RK3566（已经确认），芯片负责控制回路驱动全身的电机跟传感器。
+- 伺服电机: ROBOTIS XL330（售价23.9美金一个）*15PCS（根据供应链的消息），大概的材料清单贴图表格所示（没有实物拆解分析，根据现有的信息评估的清单）。
+
+15个伺服电机要是按照官网报价，目前成本已经来到了358.5美金，整机卖399，仅电机零售成本就占整机的售价的90%，剩下10%要覆盖主控，传感器，电池，结构件，PCB，组装费用.....。还能卖399美金不亏钱。
+
+批量采购成本+深圳制造把结构件跟组装成本都压到了极致，才能把一台能走，能蹲，有15个自由度的机器人，做到了中端家电的价钱。这种极致资源整合能力很难复制。
+
+
 【2026-8-30】真正普及 Physical AI 的，可能不是人形机器人，而是一只机器鸭：Microduck。
 
 Microduck 和大型人形机器人，代表的其实是 Physical AI 的两条路线。
