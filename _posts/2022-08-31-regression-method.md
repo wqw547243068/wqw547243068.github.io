@@ -1419,6 +1419,77 @@ iTransformer 是建模多变量时序数据的通用框架。
 - 受益于变长观测：以往Transformer模型的效果不一定随着输入的历史观测的变长而提升，在使用倒置框架后，模型随着历史观测长度的增加，呈现明显的预测误差降低趋势。
 - 泛化到未知变量：通过倒置，模型在推理时可以输入不同于训练时的变量数，结果表明该框架在仅使用部分变量训练时能够取得较低的误差，证明证明倒置结构在变量特征学习上的泛化性。 
 
+## 谷歌 TimesFM
+
+【2026-9-1】选型总结
+1. **单变量、长历史上下文、优先推理速度、开箱点预测** → TimesFM 2.5 非常好
+2. **需要联合多变量、节假日/促销等未来已知协变量** → Chronos-2 / Moirai-2 / TimesFM v3
+3. **重点要概率分布、采样轨迹、不确定性校准** → Chronos、LagLlama
+4. **监控/可观测性海量metric** → Toto 2
+5. **有充足标注数据、只做单一领域、追求极致精度**：还是可以优先监督式PatchTST / TiDE / iTransformer，微调后通常超过零样本FM
+
+2023年10月14日，**ICML 2024**
+- 论文：[A decoder-only foundation model for time-series forecasting](https://arxiv.org/abs/2310.10688)
+- 官方代码：[timesfm](https://github.com/google-research/timesfm)
+
+**TimesFM** —— 面向时间序列预测的**单一基础模型**。将其应用于来自不同领域、各类未曾见过的预测数据集时，可取得接近当前最优的零样本预测精度（对比针对各个数据集单独训练的最优监督学习模型）。推理阶段，该模型在不同历史序列长度、预测步长以及时间粒度下均能取得良好效果。
+
+模型核心设计：
+- 1）大规模时间序列数据集，融合真实数据（主要来自网页搜索查询、维基百科页面访问量）与合成数据，满足训练基础模型所需的数据规模与多样性；
+- 2）**带输入分块（patching）的解码器风格注意力架构**，能够在该时间序列数据集上完成高效预训练。
+
+这款基础模型规模要小得多：参数量仅2亿，预训练数据量级约千亿时间点。即便在这样的规模下，依然可以训练出实用的预测基础模型，在各类时间序列数据上，其零样本性能能够逼近全监督方法的精度。
+
+现有部分研究[GFQW23]提出直接把GPT‑3、Llama‑2这类大语言模型拿来做开箱即用的零样本预测。而本文工作表明：**完全基于时间序列从零训练的基础模型，仅需极小成本，就可以获得远优于大语言模型的零样本预测效果**。
+
+
+版本时间线：
+- v1.0：ICML论文原版，单变量、200M参数
+- v2.0：500M参数
+- v2.5：2025年发布，200M、上下文扩到**16384**、分位数概率预测、CPU友好，仍是单变量
+- v3.0：2026年8月31日，**原生多变量+过去/未来协变量**，330M，非商用许可
+  - 【2026-9-1】[TimesFM-3: A zero-shot foundation model for multivariate forecasting](https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/)
+
+效果
+
+核心定位：**Patch + Decoder-only 的零样本时序预测**，不是在目标数据集监督训练，开箱预测。
+1. **Monash Forecasting Archive（多领域时序基准）**
+  - 零样本下整体精度 > ARIMA/ETS/Prophet，**和专门监督训练的PatchTST、N-BEATS、DeepAR基本打平**，显著优于LLMTime（把序列转文本喂GPT）
+  - 跨频率：分钟、小时、日、周、月、季度、年通用，不用按频率分模型
+2. **Long horizon 长预测（ETT等）**
+  - 96/192步：零样本接近PatchTST，优于Informer/Autoformer
+  - Patch分块生成 >> 逐点自回归，长horizon累积误差更小
+3. **v2.5 能力补充**
+  - 支持分位数输出，做概率预测/区间估计
+  - 超长上下文16k，适合多年长周期时序
+4. **v3.0 新基准结果**
+  - Google在三个主流Foundation Model榜单（FEV-Bench、TIME、GIFT-Eval）上**零样本综合排名第一**，超过Chronos-2、Moirai等，原生多变量+协变量是核心升级。
+
+效果边界（很重要）
+
+✅ 优势场景：周期/趋势明确、跨领域批量预测、冷启动零样本、长历史上下文
+
+⚠️ 短板：
+- v1~v2.5 **没有原生多变量**，只能逐序列单变量跑，不会建模变量间相关性
+- 对完全无规律随机序列、分布剧烈漂移、罕见黑天鹅事件效果一般
+- 同域足量数据专门监督训练的PatchTST/TiDE/TimesNet，很多时候还是可以微调超过零样本TimesFM
+
+最新时序基础模型横向对比（Chronos / Moirai / LagLlama / TimeGPT）
+
+都是2024之后的**时序预训练基础模型（TSFM）**，主打零样本预测，和TimesFM属于同一赛道，和TimesNet/PatchTST这类传统监督训练模型不是一类。
+
+|模型|出品|架构|核心范式|原生多变量/协变量|最擅长|相对TimesFM差异|
+|---|---|---|---|---|---|---|
+|**TimesFM (v2.5)**|Google|Decoder-only + Patch连续值|Patch因果生成|❌ v2.5无原生多变量；仅简单外生regressor|长上下文、点预测速度、通用单变量|连续patch、推理快、16k长窗口；v2.5单变量最强档|
+|**TimesFM v3.0**|Google|Decoder-only + 时空分离注意力|Patch生成|✅ 原生多变量+未来协变量|多变量+协变量、通用榜单SOTA|2026新升级，补上最大短板|
+|**Chronos / Chronos-2**|Amazon|Encoder-Decoder(T5)|数值离散分箱token化|✅ Chronos-2支持|概率采样、校准不确定性、生产落地|离散化、采样式概率预测好；长上下文弱于TimesFM|
+|**Moirai / Moirai-2**|Salesforce|Encoder/Decoder → 新版Decoder-only|Any-variate任意变量注意力|✅ 原生多变量、多频率|异构多传感器、任意通道数、多频率|LOTSA大数据集预训练，变量灵活性最好|
+|**Lag-Llama**|CMU|Decoder-only|显式滞后特征建模|❌ 单变量|概率预测、少样本微调、分布建模|针对likelihood优化，点精度一般、few-shot微调友好|
+|**TimeGPT**|Nixtla|Encoder-Decoder|闭源商用|✅ 强协变量支持|企业SaaS、完整生产API|闭源、不能本地权重部署|
+|**Toto 2.0**|Datadog|Patch based|针对观测性指标优化|✅|监控/metrics高频多变量|运维指标专项，参数效率极高|
+
+
+
 ## 应用
 
 
