@@ -3,7 +3,7 @@ layout: post
 title:  "消息队列-Message Queue"
 date:   2013-08-01 23:02:00
 categories: 工具
-tags:  kafka 消息队列 mq zookeeper
+tags:  kafka 消息队列 mq zookeeper 中间件
 excerpt: 消息队列知识点、经验总结
 author: 鹤啸九天
 mathjax: true
@@ -17,11 +17,22 @@ permalink: /massage_queue
 # 消息队列
 
 
+
 ## 介绍
 
-消息队列是分布式系统中重要的中间件，在高性能、高可用、低耦合等系统架构中扮演着重要作用。
+消息队列是存放消息的容器，需要使用消息时，直接从容器中取出消息供自己使用即可
+
+![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/message-queue-small.png)
+
+参与消息传递的双方称为 `生产者` 和 `消费者` ，生产者负责发送消息，消费者负责处理消息
+
+![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/message-queue-pub-sub-model.png)
+
+消息队列是分布式系统中重要的**中间件**，在高性能、高可用、低耦合等系统架构中扮演着重要作用。
 
 `消息队列`（Message Queue，简称 MQ）是一种应用间**异步通信**的中间件技术。
+
+操作系统, 进程通信很重要的方式就是消息队列。工程架构中的消息队列有点区别，各个服务以及系统内部各个组件/模块之前的通信，属于一种 中间件 。
 
 允许应用把消息放入队列中，<span style='color:red'>不需要立即等待回复</span>，从而实现系统的**解耦、异步处理和流量削峰**。
 
