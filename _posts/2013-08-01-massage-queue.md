@@ -226,7 +226,7 @@ while True:
 | **空间** | `vm_memory_high_watermark` 默认 **RAM 的 40%**；到此水线触发**流控**阻塞 publisher；到 `paging_ratio`（0.5，即 20% RAM）开始**换页到磁盘**；队列长度可配 `x-max-length` |
 | **过期时间** | TTL 最完整，三档可配：① 单条 `message.expiration`（ms）② 队列级 `x-message-ttl`（ms）③ 队列自身 `x-expires`（空闲多久自动删）；过期消息走 `x-dead-letter-exchange` 进死信队列 |
 
-### Pulsar
+## Pulsar
 
 | 维度 | 说明 |
 |------|------|
