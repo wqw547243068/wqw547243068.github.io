@@ -3,7 +3,7 @@ layout: post
 title:  "自由职业之路-How to work for yourself"
 date:   2020-01-13 10:29:00
 categories: 读书笔记 人生规划
-tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费 币圈 硅谷 牛马 独立开发 凯文凯利 副业 opc
+tags: 工作 996 斜杠青年 咸鱼 创业 自由职业 财务自由 远程 跨境电商 抖音 TikTok 众包 创业 平安科技 在线教育 新加坡 谷歌 待遇 aigc icu 自媒体 知识付费 币圈 硅谷 牛马 独立开发 凯文凯利 副业 opc 劳动法
 excerpt: “只上班、不工作”还是“只工作、不上班”？
 author: 鹤啸九天
 mathjax: true
@@ -137,6 +137,7 @@ permalink: /work
 - 【2021-10-11】猎头组织的各公司工作强度汇总，[协同文档](https://docs.qq.com/sheet/DVmhnRG15TG1Tb2Js)，[github备份](https://github.com/ZhangNanBei/WokerLifeMatters)，覆盖互联网、金融、地产等行业
 - 2019年，[996.ICU](https://996.icu/#/zh_CN)异军突起，短时间内冲上了github第一名，可见国内上班族对工作强度的怨念有多深
 - 【2024-5-31】新的ICU主题站点: [ISeeU](https://byted.icu), 包含企业名单、爆料（耻辱柱/照妖镜）、内推、求职、出路、GPT访问, 有配套小程序 观望空间
+- 【2026-9-4】企业劳动情况与事件记录 [牛马.ICU](https://xn--11xs86f.icu/companies)
 
 【2024-10-12】 [为什么中国老板都喜欢让员工无偿加班？](https://www.zhihu.com/question/631951902)
 - （1）中国企业家喜欢压榨是因为中国人多，你不干有的是人干
