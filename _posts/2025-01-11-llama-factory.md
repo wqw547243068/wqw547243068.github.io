@@ -211,6 +211,36 @@ llamafactory-cli web --model_name_or_path path_to_model --share
 其中
 - 模型候选集合在源码 LlamaFactory/src/llamafactory/extras/constants.py 中
 
+### 问题
+
+【2026-9-5】win11 上启动 webui，出错
+
+
+```sh
+llamafactory_cli webui # 未识别到命令，Python scripts 目录下没有 llamafactory_cli.exe 文件
+# 改用
+python -m llamafactory.cli webui
+# 新问题：transformers 与 huggingface_hub 版本不匹配，导致某些 API 在当前版本中不存在， transformers>=5.0.0 时建议 huggingface_hub>=0.23.0
+# ImportError: cannot import name 'is_offline_mode' from 'huggingface_hub' (E:\program_file\python\Lib\site-packages\huggingface_hub\__init__.py)
+# 升级版本 —— 未解决
+pip install -U transformers
+pip install -U huggingface_hub
+# 测试版本
+from huggingface_hub import is_offline_mode # ✅ 成功导入
+print(is_offline_mode())
+```
+
+设置 huggingface 国内镜像
+
+```sh
+# Linux/macOS
+export HF_ENDPOINT=https://hf-mirror.com
+# Windows PowerShell
+$env:HF_ENDPOINT = "https://hf-mirror.com"
+# 离线模式
+export HF_HUB_OFFLINE=1
+```
+
 
 ## CLI 模式
 
