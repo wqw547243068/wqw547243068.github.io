@@ -109,6 +109,20 @@ Microduck 的优势很明显：
 这时候 Open Duck Mini 反而值得看。一台参考 Disney BDX Droid
 
 
+### 桌面机器狗 OpenCat
+
+【2026-9-3】[X帖子](https://x.com/Alacritic_Super/status/2095207217117184047)
+
+OpenCat
+- [OpenCatEsp32-Quadruped-Robot](https://github.com/PetoiCamp/OpenCatEsp32-Quadruped-Robot)
+
+跑在 ESP32 上的开源机器人框架，手搓类似宇树机器狗的桌面机器人。
+
+配套的 Petoi BiBoard 是一块基于 ESP32 的开发板，面向多关节机器人，板载 12 路舵机输出；支持无线连接、扩展接口和音频功能；还增加了语音指令模块以及对树莓派的支持。
+
+这块板子搭配开源框架 OpenCat，很适合作为四足机器人的起点，以及面向编程与机器人教学和物联网机器人应用以及 AI 机器人服务和科研项目
+
+
 ### AnyCar 
 
 【2024-9-24】CMU 推出 [AnyCar](https://lecar-lab.github.io/anycar/) 是一种基于 Transformer 的**通用动力学模型**，专为各种`轮式机器人`的敏捷控制设计
