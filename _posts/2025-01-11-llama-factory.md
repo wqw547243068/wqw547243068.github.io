@@ -883,6 +883,7 @@ Web UI 使用
 ```sh
 # Web UI 使用
 llamafactory-cli webui    # 启动网页端
+# python -m llamafactory.cli webui # 或通过python包方式启动
 CUDA_VISIBLE_DEVICES=0 llamafactory-cli webui
 CUDA_VISIBLE_DEVICES=4 llamafactory-cli webui    # 指定第4张显卡使用
 # 如果开启 gradio share功能，或者修改端口号
