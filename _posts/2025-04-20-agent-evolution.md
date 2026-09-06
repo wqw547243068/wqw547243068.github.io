@@ -256,6 +256,8 @@ Agent 自进化（Self-Evolving Agent）：
 不只是更会回答，而是让AI自己变得更好
 > 从辅助人类，到不断超越起自己，但这不是魔法，而是一条充满挑战的工程之路。
 
+更多见[飞书笔记](https://my.feishu.cn/docx/VVvNdnMPmoisSYxbgyLczn0Nn3b)
+
 ### 01 RSI核心能力
 - ✅ 自己产生经验
 - ✅ 自己生成数据
