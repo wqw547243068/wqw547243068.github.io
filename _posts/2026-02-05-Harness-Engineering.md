@@ -547,6 +547,103 @@ Java 版 AgentScope 2.0 引入核心抽象：HarnessAgent。
 
 更多内容详见飞书笔记：[Agent Scope Java](https://my.feishu.cn/wiki/DIDbwYeh6iUdC7kxbaech115nGe#share-J1FndNLZUoz2ORxmrYMcZrWfnke)
 
+### 【2025-8-*】Pi Agent
+
+Pi 不是一个模型，而是 Agent Harness —— 和 Claude Code、Codex 同一类产品，社区叫它「Agent 界的 VIM」
+
+Pi Agent 是**开源极简编码智能体框架（Agent Harness）**，面向开发者的终端AI编程Agent，不是大模型本身，是Agent运行调度底座。
+- Agent Harness——连接用户、模型和执行环境的运行层。负责组装上下文、注册工具、执行模型发起的调用。
+- Pi Agent 官网：https://pi.dev/
+- Github 地址： https://github.com/earendil-works/pi
+- 官方文档： https://pi.dev/docs/latest
+
+社区口碑是 「Agent 领域的 VIM 编辑器」：别人做加法，它拼命做减法。同样任务、同样模型，Pi 消耗的 Token 只有 Claude Code 的一半。
+
+核心思路：默认能力尽量少，其余需求交给 Skill 和 Extension。
+
+极简从三个地方省出真金白银：
+- 1 提示词极小基础系统提示词约 1000 token
+- 2 工具极简默认只有 4 个工具，包袱小
+- 3 默认不接 MCP几十个工具定义占 Token，做成 CLI / Skill 按需调
+
+时间
+- 2025年8月，由 libGDX游戏引擎作者 `Mario Zechner` 发起开发。
+- 2026年4月, 项目归属 Flask 框架作者 `Armin Ronacher` 联合创立的公益公司 Earendil Inc.（公益企业）接管维护，持续迭代更新。
+- 开源协议：**MIT协议**，TypeScript编写。
+- Github：earendil‑works/pi，官网：pi.dev。
+
+> 注意区分：不要和Inflection AI的消费级聊天机器人Pi混淆，二者完全无关。
+
+同一个模型（DeepSeek V4 Flash），分别跑在 8 种 Agent Harness 里，完成 30 项高难度任务。Pi 通过 20 个（66.7%）排第一。
+
+| 模型 | 得分 |
+| ------- | ---- |
+| Pi Agent | 66.7% |
+| Oh My Pi | 56.7% |
+| Claude Code / Codex | 53.3% |
+| OpenCode | 46.7% |
+
+Composio 横向测试，Pi 亮点：
+- 成功率第一 20/30 · 66.7%，比 Claude Code / Codex 高 13 个点
+- 成本最低成功任务平均 $0.028；Claude Code $0.195，接近 7 倍
+- 开箱即用，测试用的是全新未调优的默认安装，没做任何优化
+
+对比反例：
+- 功能最庞杂的 Prime Agent，被自身运行负担拖慢——单会话消耗多达 350 万 Token，评分器都因此超时。
+- 功能越多、会话越大，不等于效果越好。
+
+Harness 乘数效应：围绕 AI 搭建的工具会放大或削弱模型的实际表现。一份 Agent 排行榜只写模型名、不交代用了哪套 Harness，分数就是不完整的。
+
+
+核心特点
+
+1. 极简内核设计（核心理念）
+
+Agent本质公式：`Agent` = `LLM` + `Tools` + Loop`
+- 核心运行时代码仅约**1500行TypeScript**，系统提示词+工具定义合计**小于1000 token**。
+- 默认仅提供4个基础工具：`read`读文件、`write`写文件、`edit`编辑文件、`bash`执行shell命令，无多余内置能力。
+- 设计哲学：**让Agent适配你的工作流，而不是你适配Agent**。
+
+2. 模型完全无关，多模型兼容
+- 支持20+大模型服务商：OpenAI、Anthropic、Gemini、DeepSeek、Kimi、本地llama.cpp等，可随时切换模型，无厂商锁定。
+- 分层架构：`pi‑ai`层统一封装各家模型API；`pi‑agent‑core`负责Agent循环、工具调用、状态管理，两层解耦，可单独复用其中模块。
+
+3. 扩展优先架构（核心能力来自插件）
+
+核心只保留最小底座，高级能力全部靠扩展按需加载：
+- 扩展形式：Skills、扩展脚本、Prompt模板、Pi Packages包管理器，可自定义工具、子代理、MCP、搜索等能力。
+- 支持pi install命令安装社区扩展包，能力按需装配，不做臃肿内置。
+
+4. 终端优先、可嵌入
+- 默认是CLI/TUI终端界面，也可作为SDK嵌入自有程序，不仅是命令行工具，也是可二次开发的Agent底座。
+- 会话支持分支、快照、回放调试，方便复现与调试Agent行为。
+
+优缺点总结
+- ✅ 优点：透明可控、黑盒少、轻量、模型自由切换、易于二次开发、MIT开源。
+- ⚠️ 不足：开箱不如Claude Code完备，高级功能需要装扩展；原生无GUI；沙箱安全能力需要外部容器实现，默认复用操作系统权限。
+
+同类对比简要
+
+|项目|定位|思路|
+|---|---|---|
+|Pi Agent|Agent Harness底座|最小核心+插件扩展|
+|Claude Code|成品Coding Agent|大而全，能力内置开箱即用|
+|LangChain|通用应用开发框架|组件丰富，较重|
+
+适合场景：
+- 算成本账轻量 = 省钱，任务越多越明显
+- 要嵌进产品pi-agent-core 是底层引擎
+
+不适合 Pi：
+- 要开箱即用、带 GUI普通用户先看 Codex 这类产品
+
+安装
+
+```sh
+curl -fsSL https://pi.dev/install.sh | sh
+```
+
+
 ### 【2026-2-10】DeepMind AutoHarness
 
 【2026-2-10】DeepMind 新论文解决了大语言模型做智能体的核心痛点，甚至让小模型直接吊打了大模型，思路简单又惊艳，非技术也能轻松看懂 AutoHarness。
@@ -825,6 +922,8 @@ Codex Harness 开源释放的信号十分清晰：Agent 的瓶颈，很多时候
 涉及四个领域的五个基准上，EnvHarness 的性能优于原始环境和特定领域的环境生成流水线，在留出任务上最高提升 9.0 个百分点，且平均执行步数也减少 9.8%。
 
 此外，EnvHarness 还能为强化学习（RL）提供更优的优化信号，从而实现策略与环境的持续、有针对性的协同进化。
+
+
 
 
 ## 评测
