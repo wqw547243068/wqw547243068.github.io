@@ -56,7 +56,6 @@ Karpathy：
 |L4|研发飞轮，自我迭代进化闭环（目标终点）|
 
 
-
 <!-- draw.io diagram -->
 <div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;dark-mode&quot;:&quot;auto&quot;,&quot;toolbar&quot;:&quot;zoom layers tags lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;xml&quot;:&quot;&lt;mxfile host=\&quot;app.diagrams.net\&quot;&gt;\n  &lt;diagram name=\&quot;Agent能力进阶阶梯\&quot; id=\&quot;a3GhD3Q0ttFbz3U0i_h8\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;357\&quot; dy=\&quot;776\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;827\&quot; pageHeight=\&quot;1169\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;1\&quot; parent=\&quot;0\&quot; /&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-1\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=18;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;fontStyle=1\&quot; value=\&quot;L0&amp;lt;br&amp;gt;当场改答案\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;100\&quot; width=\&quot;102\&quot; x=\&quot;890\&quot; y=\&quot;900\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-2\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=18;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;fontStyle=1\&quot; value=\&quot;L1&amp;lt;br&amp;gt;攒记忆技能\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;230\&quot; width=\&quot;110\&quot; x=\&quot;1000\&quot; y=\&quot;770\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-4\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=18;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;fontStyle=1\&quot; value=\&quot;L2&amp;lt;br&amp;gt;改工具代码\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;340\&quot; width=\&quot;133\&quot; x=\&quot;1120\&quot; y=\&quot;660\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-5\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;fontSize=18;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;fontStyle=1\&quot; value=\&quot;L3&amp;lt;br&amp;gt;改「怎么改」\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;400\&quot; width=\&quot;133\&quot; x=\&quot;1260\&quot; y=\&quot;600\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-6\&quot; parent=\&quot;1\&quot; style=\&quot;rounded=0;whiteSpace=wrap;html=1;dashed=1;strokeColor=#B20000;fontSize=18;fillColor=#e51400;fontColor=#ffffff;fontStyle=1\&quot; value=\&quot;L4&amp;lt;br&amp;gt;研发飞轮\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;530\&quot; width=\&quot;122\&quot; x=\&quot;1400\&quot; y=\&quot;470\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-8\&quot; parent=\&quot;1\&quot; style=\&quot;shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/icon-cache1/Octicons-2649/person-1338.svg\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;71\&quot; width=\&quot;35.5\&quot; x=\&quot;1020\&quot; y=\&quot;679\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-9\&quot; parent=\&quot;1\&quot; style=\&quot;shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#008a00;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/material-symbols/1/Personal_Places.svg;fontColor=#ffffff;labelBorderColor=#005700;\&quot; value=\&quot;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;71\&quot; width=\&quot;71\&quot; x=\&quot;1425.5\&quot; y=\&quot;399\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-10\&quot; parent=\&quot;1\&quot; style=\&quot;text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=27;fontStyle=1\&quot; value=\&quot;自进化五级阶梯\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;60\&quot; width=\&quot;250\&quot; x=\&quot;1020\&quot; y=\&quot;450\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;mVUDBbDkvRNPmjWmhFGY-11\&quot; parent=\&quot;1\&quot; style=\&quot;text;whiteSpace=wrap;html=1;strokeColor=none;fillColor=default;fontColor=default;labelBackgroundColor=none;labelBorderColor=none;textShadow=1;fontSize=20;\&quot; value=\&quot;&amp;lt;strong style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; font-family: &amp;amp;quot;PingFang SC&amp;amp;quot;, -apple-system, BlinkMacSystemFont, &amp;amp;quot;Helvetica Neue&amp;amp;quot;, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: 0.544px; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; line-height: 1.85; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;OpenClaw/&amp;lt;/span&amp;gt;&amp;lt;/strong&amp;gt;&amp;lt;strong style=&amp;quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; font-family: &amp;amp;quot;PingFang SC&amp;amp;quot;, -apple-system, BlinkMacSystemFont, &amp;amp;quot;Helvetica Neue&amp;amp;quot;, &amp;amp;quot;Microsoft YaHei&amp;amp;quot;, sans-serif; letter-spacing: 0.544px; text-align: center; line-height: 1.85; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;&amp;lt;span style=&amp;quot;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0px; padding: 0px; outline: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;&amp;quot;&amp;gt;Hermes&amp;lt;/span&amp;gt;&amp;lt;/strong&amp;gt;\&quot; vertex=\&quot;1\&quot;&gt;\n          &lt;mxGeometry height=\&quot;40\&quot; width=\&quot;211\&quot; x=\&quot;970\&quot; y=\&quot;1010\&quot; as=\&quot;geometry\&quot; /&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;\n&quot;}"></div>
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
@@ -249,8 +248,169 @@ Agent 自进化（Self-Evolving Agent）：
 - 不等于反思（reflection）。 单次任务内的 self-critique 是临时，任务结束就丢。自进化要求改进跨任务持久化。这是最硬的分界线：判断系统算不算自进化，先问这次学到的东西下次还在不在。
 - 不等于 RAG。 准确的切分是：RAG 是检索机制，负责读；自进化是更新机制，负责写。一个自进化系统完全可以用 RAG 去读自己沉淀的经验库，但只读静态知识库、从不基于运行经验写回的系统，和自进化无关。
 
-## 自进化系统
 
+## RSI 总结
+
+【2026-9-6】**RSI AI自我进化的下一站 Recursive Self‑Improvement**
+
+不只是更会回答，而是让AI自己变得更好
+> 从辅助人类，到不断超越起自己，但这不是魔法，而是一条充满挑战的工程之路。
+
+### 01 RSI核心能力
+- ✅ 自己产生经验
+- ✅ 自己生成数据
+- ✅ 自己验证结果
+- ✅ 自己改进方法
+- ✅ 持续迭代进化
+
+进化阶梯：回答任务 → 积累经验 → 自我改进 → 更强的AI和更大的可能性
+
+
+### 02 核心概念区分：不是所有“自我”都叫RSI
+
+|概念|改进了什么|能保留多久|是否改变自身改进能力|是否属于严格意义的RSI|一句话理解|
+|---|---|---|---|---|---|
+|Self‑refine（自我修正）|当前答案/产物|仅当前回答|否|否|把这道题做对|
+|Self‑improvement（自我改进）|可复用的知识/技能/策略|跨任务/会话|有限|部分|下次遇到类似问题更容易做对|
+|Recursive Self‑improvement（递归自我改进）|不仅改进任务能力，还改进改进自身的方法|可持续积累|是|是|不仅更会做题，也更会变得更好|
+
+> Iteration：重复执行改进流程。Recursion：改进后的系统，进一步增强下一轮改进能力。
+> ⚠️ 不能仅凭“自动跑了很多轮”或“生成数据后又训练了一遍”，就认为实现了强意义上的RSI。
+
+
+### 03 RSI的总体框架：从人在环路到闭环
+
+三种环路演进：
+1. **Human‑in‑the‑loop（人在环路）**: AI提出改进，但每次修改都需要人确认。
+2. **Human‑on‑the‑loop（人在环上）**: 数据/reward/verifier等自动产生，人主要负责监督结果和控制部署。
+3. **Closed loop（闭环）**: 系统自己产生、验证并启用改进，不再需要人工审核。
+
+自我改进发生的两个阶段
+- **Test‑Time RSI（部署时进化）**：在解决当前任务的过程中进化，改进发生在推理过程。典型方法：self‑refine、TTT、harness evolution。
+- **Training‑Time RSI（训练时进化）**：把自己产生的数据、reward或反馈重新用于训练自身。典型方法：self‑rewarding RL、self‑distill、self‑play、auto‑research。
+
+
+### 04 Test‑Time RSI：从回答到整个Agent
+
+改进对象不同，保留范围也不同，并不一定是线性升级，是不同组合。
+
+1. **Self‑critique & Self‑refine**：只改当前回答
+
+流程：Generate → Critique → Refine
+- 模型权重不变
+- 需要可靠的verification信号
+- 只提升单次回答，经验通常会消失
+
+2. **Test‑Time Training(TTT)**：在当前任务中更新参数
+
+流程：Experience → Update（更新参数）
+- 让测试时的经验写入权重
+- 标准TTT：只在当前样本有效；可结合TTRL等方法传递到下个样本
+
+3. **Agent: Harness Evolution**：改进整个Agent
+
+改进对象：Prompt、Skill、Tool、Workflow、Memory、Agent Code
+- 从真实interaction和失败中学习工具/策略
+- 自动生成/修改自己的技能和工作流
+- 改进可以临时存在，也可能在推理阶段持久保存（如DGM）
+
+> 💡看RSI，不只问“改了哪里”，还要问“下次启动时，这个改进还在不在”。
+
+
+### 05 Training‑Time RSI：从数据到研究策略
+
+(1) Zero‑label 零标签
+
+- 自己生成监督（仍需人提供问题）
+- Fine‑tuning / RL / Distillation
+
+示例：StaR、自我奖励、OPO、on‑policy自蒸馏
+
+(2) Zero‑data 零数据
+
+自己生成问题/课程（连下一轮学什么也自己决定）
+
+Proposer/Challenger生成问题 ↔ Solver解决问题
+
+示例：Absolute Zero、R‑Zero、Agent0，从预测模型里提出任务，并通过执行获得新的学习范式
+
+(3) Auto Research 自动研究策略
+自己生成改进策略
+- 分析失败原因
+- 提出hypothesis
+- 选取数据与训练方法
+- 运行实验
+- 根据结果调整完整的research process
+> 优化的不只是问题，而是完整的研究流程；人类只提供数据集与提问，进一步退出research decision。
+
+⚠️ 警示：
+**零输入人工训练样本 ≠ 零预训练知识 ≠ 零环境反馈 ≠ 零人为设计**。
+任务可以自己生成，但可靠反馈仍需要明确来源；并不是所有信号都来自模型的主观判断。
+
+
+### 06 Verifier：RSI的核心瓶颈
+
+无论是test‑time还是training‑time RSI，每一次进化都需要一个可靠的标准，来判断这次更新是否真的带来了改进。
+
+|任务难度|形式化可验证（相对容易）|开放任务（更困难）|
+|---|---|---|
+|例子|Math、proof checker、Code、unit test、工具执行结果、机器人模拟环境|开放Agent任务、创意任务、研究品味与方向、需要价值观、subjective、user preference等主观形式|
+
+Verifier 进化方向
+1. Self‑Trained Verification：把verifier本身作为训练对象
+2. Self‑developing Deep Research Agent：持续更新评价rubric/verifier
+3. Meta‑evaluation：评价verifier本身
+4. Red Queen Gödel Machine：让agent和verifier共同进化
+
+> 关键区分：允许系统改进“怎么测”，但不能仅凭它自己的判断，改写最终的验收目标。
+> ✅ 合理进化：增加更多测试用例、覆盖更多边界情况
+> ❌ 有问题的标准漂移：删除难的测试条件，得分更容易
+
+
+### 07 如何判断“真的变强了？”验收清单
+> 分数上涨 ≠ 能力增长；能力增长 ≠ 递归改进能力增长。
+
+✅ **必须追问的问题（真变强）**
+- 新任务上也提升了吗？
+- 重启后仍然提升吗？
+- 旧任务有没有退步？
+- 预算相同时仍有优势吗？
+- 换独立验证仍然成立吗？
+- 改进后的系统会产生下一轮改进吗？
+
+❌ **排除的误判（伪变强）**
+- 只记住旧题、旧轨迹或评测案例
+- 只是当前上下文临时表现更好，学会新能力，却丢掉原有能力
+- 只是多采样、多调用工具、多消耗算力
+- 只迎合了自己的judge或训练奖励
+- 只证明任务能力提升，没有证明递归增强
+
+> 验证“能力增强”时，应控制每个任务的推理预算；讨论“是否值得落地”时，还要计入生成数据、训练、评测和维护的总成本。
+
+### 08 工程落地闭环：从候选改进进到安全发布
+真正可持续的RSI，需要工程化的准入、评估和回滚机制。
+流程：收集失败与经验 → 提出候选改进 → 在隔离环境中测试 → 独立评估、旧能力回归测试 → 通过准入条件 → 小范围发布 → 监控真实表现 → 保留改进或回滚
+
+必要的安全边界
+
+- ✅ 沙箱环境 / 受限权限（如DGM）
+- ✅ 人类对目标、权限和发布的控制
+- ✅ 保留修改历史，可回滚
+- ✅ 监控异常行为，防止奖励黑客
+
+常见风险
+1. Self‑confirming loop（自我强化偏差）
+2. Training collapse（训练崩溃）
+3. Diversity collapse（数据/模型多样性下降）
+4. Reward grounding failure（奖励锚定失败）
+5. Policy and verifier drift（策略/验证器偏移）
+
+> RSI不是终点，而是一种新的学习范式。
+> 更好的AI，不是被设计出来的，而是学会自我进化的。
+> 底部标语：Humanity × AI A Better Tomorrow
+
+
+## 自进化系统
 
 2025 年，系统综述《[A Survey of Self-Evolving Agents]()》用三个维度组织这个领域：
 - 进化什么（模型、记忆、工具、架构）
