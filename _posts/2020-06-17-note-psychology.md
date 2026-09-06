@@ -829,7 +829,12 @@ MBTI 人格介绍，各种类型描述：[16personalities](https://www.16persona
 3. 财富分布与类型相关性：
   - 大部分高财富富豪都是NT（直觉+思考）型人格，这类人格注重长远规划和逻辑分析。
 
-<img width="1178" height="1854" alt="image" src="https://github.com/user-attachments/assets/80b4b8b8-e203-42dc-ab4d-8d70af1cac84" />
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/80b4b8b8-e203-42dc-ab4d-8d70af1cac84" />
+
+HR眼里的MBTI职业适配
+
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/51d91748-7b46-42ca-ab2e-e0e5552d97a7" />
+
 
 
 #### 一、什么是MBTI？
