@@ -2971,7 +2971,7 @@ os.environ.update(local_env)
   - 其中，`ZeRO Offload` 是 `ZeRO` 技术的一种变体，可以通过将模型参数存储在 CPU 上，从而减少模型训练时对GPU显存的占用，并加速模型参数的梯度累积、梯度压缩和通信等操作。 ZeRO 3 是在大模型进行模型参数并行时使用。
 
 
-### ZeRO‑1/2/3 是模型并行吗
+#### ZeRO‑1/2/3 是模型并行吗
 
 【2026-9-4】ZeRO本质是改造「数据并行(DP)」，不是传统意义的模型并行（TP张量并行 / PP流水线并行）
 
@@ -3206,6 +3206,31 @@ args = parser.parse_args()
 deepspeed   0.12.6
 torch       2.1.0+cu121
 ```
+
+#### FORCE_TORCHRUN=1 to launch DeepSpeed
+
+【2026-9-7】[Github issue:qwen全量微调的时候报错](https://github.com/hiyouga/LlamaFactory/issues/6268)
+
+启动命令
+
+```sh
+llamafactory-cli train path/to/your/config.yaml
+```
+
+```sh
+ValueError: Please use FORCE_TORCHRUN=1 to launch DeepSpeed training.
+```
+
+更正
+- 加 全局变量 FORCE_TORCHRUN=1
+- 增加卡数
+
+```sh
+FORCE_TORCHRUN=1 llamafactory-cli train path/to/your/config.yaml
+```
+
+原因：单卡不能用 DeepSpeed
+
 
 
 
