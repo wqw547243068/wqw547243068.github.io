@@ -900,8 +900,22 @@ torchrun \
 
 【2026-9-7】[Github issue:qwen全量微调的时候报错](https://github.com/hiyouga/LlamaFactory/issues/6268)
 
+启动命令
+
+```sh
+llamafactory-cli train path/to/your/config.yaml
+```
+
 ```sh
 ValueError: Please use FORCE_TORCHRUN=1 to launch DeepSpeed training.
+```
+
+更正
+- 加 全局变量 FORCE_TORCHRUN=1
+- 增加卡数
+
+```sh
+FORCE_TORCHRUN=1 llamafactory-cli train path/to/your/config.yaml
 ```
 
 原因：单卡不能用 DeepSpeed
