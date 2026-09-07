@@ -896,6 +896,15 @@ torchrun \
 - 必须添加 --fsdp_use_orig_params true（LoRA 必须）
 - PyTorch ≥ 2.0
 
+### FORCE_TORCHRUN=1 to launch DeepSpeed
+
+【2026-9-7】[Github issue:qwen全量微调的时候报错](https://github.com/hiyouga/LlamaFactory/issues/6268)
+
+```sh
+ValueError: Please use FORCE_TORCHRUN=1 to launch DeepSpeed training.
+```
+
+原因：单卡不能用 DeepSpeed
 
 
 ## LLaMA-Factory 可视化
