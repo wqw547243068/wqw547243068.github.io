@@ -920,6 +920,48 @@ FORCE_TORCHRUN=1 llamafactory-cli train path/to/your/config.yaml
 
 原因：单卡不能用 DeepSpeed
 
+### 已启动任务关不掉
+
+【2026-9-8】启动 分布式训练任务后，按 ctrl+c 关闭任务，无效，屏幕依然弹出 NCCL 通讯信息
+
+报错
+
+```sh
+[rank0]:[W908 16:25:29.328994038 ProcessGroupNCCL.cpp:1802] [PG ID 0 PG GUID 0(default_pg) Rank 0] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Broken pipe
+```
+
+分析
+- NCCL_TIMEOUT 默认超时 10min，GLOO 是 30min
+- 主程序退出，但 分布式通信还在继续
+
+解决
+- 方法 1: 设环境变量(推荐,秒为单位)
+- 方法 2: PyTorch 专用环境变量
+- 方法 3: 代码里设(必须在 init_process_group 之前)
+
+```sh
+# 方法 1:设环境变量(推荐,秒为单位)
+export NCCL_TIMEOUT=30          # 注意:这个是 NCCL 库本身的超时,不一定被 PyTorch 采纳
+
+# 方法 2:PyTorch 专用环境变量
+export TORCH_NCCL_BLOCKING_WAIT=1        # 启用阻塞等待,配合 timeout 生效
+export NCCL_ASYNC_ERROR_HANDLING=1       # 异步错误处理
+```
+
+方法 3: 代码里设(必须在 init_process_group 之前)
+
+```py
+import os
+
+os.environ["NCCL_BLOCKING_WAIT"] = "1"
+os.environ["TORCH_NCCL_BLOCKING_WAIT"] = "1"
+
+from datetime import timedelta
+import torch.distributed as dist
+
+dist.init_process_group(backend="nccl", timeout=timedelta(seconds=30))
+```
+
 
 ## LLaMA-Factory 可视化
 
