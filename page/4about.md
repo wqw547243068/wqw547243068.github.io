@@ -86,6 +86,13 @@ type: page
 
 [![](https://static.mooc.ai/files/course/2018/05-08/17590372d80d143595.jpg)](http://www.mooc.ai/course/489)
 
+AI系列课程
+- [AI学园-聊天机器人实现之RNN](http://bilibili.com/video/BV1Li4y1b7XN/)
+- [AI学园-（2）NLP为什么难&NLP简介](https://www.bilibili.com/video/BV1fa4y1v7oS/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+- [AI学园-（3）文本挖掘实战：微信朋友圈&生活大爆炸&任正非讲稿](https://www.bilibili.com/video/BV12e411p7Yb/?vd_source=ec1c777505e146eb20d947449d6bba6e)
+- [AI学园-（4）聊天机器人实战之Demo对抗赛](https://www.bilibili.com/video/BV1oA411472A/)
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=328018410&bvid=BV1oA411472A&cid=187496652&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width='750' height='100%'></iframe>
 
 
 ## 联系我
@@ -154,7 +161,7 @@ type: page
 - [我的confluence主页](https://wangqiwen.atlassian.net/wiki/spaces/WQW)
 
 ```html
-<iframe src='https://trello.com/b/ZmU6ki20/%E6%AF%8F%E6%97%A5%E4%BB%BB%E5%8A%A1' width='750' height='540' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
+<iframe src='https://trello.com/b/ZmU6ki20/%E6%AF%8F%E6%97%A5%E4%BB%BB%E5%8A%A1' width='750' height='100%' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
 ```
 
 以上语句已失效
