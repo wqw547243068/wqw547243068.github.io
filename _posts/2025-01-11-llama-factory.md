@@ -935,6 +935,16 @@ FORCE_TORCHRUN=1 llamafactory-cli train path/to/your/config.yaml
 - 主程序退出，但 分布式通信还在继续
 
 解决
+
+短期
+- 杀死进程 【实测有效】
+
+```sh
+ps aux | grep llama | awk '{print $2}' | xargs kill
+```
+
+
+长期
 - 方法 1: 设环境变量(推荐,秒为单位)
 - 方法 2: PyTorch 专用环境变量
 - 方法 3: 代码里设(必须在 init_process_group 之前)
