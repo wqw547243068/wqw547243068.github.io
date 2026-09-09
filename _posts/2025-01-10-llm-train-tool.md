@@ -1391,7 +1391,7 @@ Axolotl
 - 需要定制化训练策略的研究团队
 - 企业级多GPU/多节点训练场景
 
-## ROOL
+## ROLL
 
 [ROLL：生产级大规模强化学习框架](https://developer.aliyun.com/article/1672107)
 
