@@ -1058,14 +1058,14 @@ XTuner 序列并行设计思路参考了 DeepSpeed 的工作 DeepSpeed Ulysses�
 | zephyr	| ✅ |
 
 
-## Swift
+## ms-SWIFT
 
 【2024-7-4】 阿里推出训练框架  (Scalable lightWeight Infrastructure for Fine-Tuning)
-- [Modelscope Swift](https://docs.swanlab.cn/guide_cloud/integration/integration-swift.html)
+- [Modelscope SWIFT](https://docs.swanlab.cn/guide_cloud/integration/integration-swift.html)
 - [SWIFT Github](https://github.com/modelscope/ms-swift/blob/main/README_CN.md)
 - ![](https://docs.swanlab.cn/assets/logo.vW4ukSLF.png)
 
-详见站内专题：[ms-Swift框架使用笔记](swfit)
+详见站内专题：[ms-SWIFT框架使用笔记](swfit)
 
 
 ## Unsloth
