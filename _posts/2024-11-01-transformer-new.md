@@ -187,6 +187,41 @@ YOCO 实现了“**模型越大，内存越省**”，为自然语言处理领�
 - 在处理 512K 上下文长度时，标准 Transformer 内存使用是 YOCO 的6.4倍，预填充延迟是 YOCO 的30.3倍，而 YOCO 的吞吐量提升到标准 Transformer 的9.6倍。
 
 
+### Loop Transformer
+
+
+Loop Transformer（循环 Transformer，也称 Looped Transformer 或 LoopLM）是一种高效的神经网络架构，在多个计算步骤中重复循环使用同一组 Transformer 层权重来处理数据，从而实现以较少参数量达到更大模型深度的计算效果。 [1](https://zhuanlan.zhihu.com/p/1981400326230807222), [2](https://www.zhihu.com/question/2009195411697591301), [3](https://juejin.cn/post/7630719477184020520)
+
+#### 发展历史
+
+（1）萌芽期：2018年（源头）
+- 2018年7月：谷歌大脑团队（Google Brain）发布了著名的 Universal Transformers（通用 Transformer）论文。这是“同一层参数在深度（时间步）上反复循环复用”这一核心思想的行业鼻头与技术起源。当时它还引入了“自适应计算时间（ACT）”，Loop 架构的 1.0 雏形。 [1](https://magazine.sebastianraschka.com/p/gpt-6-astra-looped-transformers-and), [2](https://zhuanlan.zhihu.com/p/2080769988202325742)
+
+（2）学术爆发与定名期：
+- 2024年 ～ 2025年在这个阶段，学术界开始将其与大模型的“潜空间隐式推理（Latent Reasoning）”紧密结合，并频繁以 “Looped Transformer” 或 “Recurrent Depth（循环深度）” 为名发表重磅成果。
+
+（3）Loop Transformer 从小众的“魔改架构”一跃成为全行业最瞩目的绝对主角。
+- 2026年7月：学术界发布 Loopie 等模型，攻克了循环结构在大规模训练时的扩展性魔咒（Layer-loop 逐层循环）。 [1](https://zhuanlan.zhihu.com/p/2080769988202325742)
+- 2026年9月初：OpenAI 正式发布 GPT-6 Astra 模型。科技媒体（如 The Information）和行业专家立刻爆料并证实，GPT-6 Astra 的核心秘密武器就是 Recurrent Depth / Loop Transformer 技术。 [1](https://www.qbitai.com/2026/09/484726.html), [2](https://zhuanlan.zhihu.com/p/2080769988202325742)
+
+当前现状：OpenAI 的 Astra 发布后直接带火了整个赛道，包含智谱 AI（在 2026 年中报中将其列为重点方向）、阿里等各大国内外一线大厂纷纷公开此前在 Loop 架构上的研发布局，标志着大模型正式从“比拼思维链 Token 长度”走向了“隐空间循环深度”的全新技术迭代。
+
+#### 原理
+
+核心原理与工作机制
+- 权重共享：传统 Transformer 顺序堆叠不同层且每层有独立的参数，而 Loop Transformer 类似于循环神经网络（RNN），让输入数据在同一组共享权重的层中反复运行多圈。 [1](https://www.zhihu.com/question/2009195411697591301)
+- 解耦深度与参数：传统模型的深度和参数量绑定，堆叠越深参数越多。循环架构将二者解开：真实参数量由物理层数决定，而有效计算深度等于物理层数乘以循环次数。 [1](https://www.zhihu.com/question/2009195411697591301)
+- 推理时按需分配（Test-Time Compute）：循环次数在推理阶段可以动态调整。简单任务少循环几次，复杂推理多循环几圈，实现算力的按需分配。 [1](https://www.zhihu.com/question/2009195411697591301)
+
+主要特点与优势
+- 高效参数比：能以较小的参数量（如 2.6B）在多项评测中逼近甚至达到更大传统模型（如 8B）的性能。
+- 潜空间隐式推理（Latent Reasoning）：多轮循环的中间隐状态（Hidden States）相当于在内部进行无声的、多步的“隐式思维链（CoT）”演化，特别擅长逻辑推理、数学计算和算法模拟。
+- 擅长操作不长于记忆：实验表明，循环架构并没有大幅增加模型的静态知识存储容量，但极大地增强了对知识的动态加工和逻辑操作能力。
+
+
+![](https://pic2.zhimg.com/v2-7000773fdd56cb8bffffe76f0868a0f1_1440w.jpg)
+
+
 ## 位置编码方式
 
 
