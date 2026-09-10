@@ -440,6 +440,48 @@ Agent 和大语言模型最大的不同: Agent 能够在环境中不断进行自
 -   **[FAISS](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/faiss)**（Facebook AI Similarity Search）:它基于这样的假设，在高维空间中，节点之间的距离遵循高斯分布，因此应该存在数据点的聚类。FAISS通过将向量空间划分为聚类，并在聚类内部进行量化的方式来应用向量量化。搜索首先使用粗糙的量化方法寻找聚类候选项，然后再使用更精细的量化方法进一步查找每个聚类内的数据。
 -   **[ScaNN](https://link.zhihu.com/?target=https%3A//github.com/google-research/google-research/tree/master/scann)**（Scalable Nearest Neighbors）:ScaNN的主要创新在于各向异性向量量化。它将数据点 $x_i$ 量化为 $\tilde{x}_i$ ，使得内积 $\langle q, x_i \rangle$ 尽可能与原始距离 $\angle q, \tilde{x}_i$ 相似，而不是选择最接近的量化质心点。
 
+### 经验
+
+【2026-9-10】Agent 记忆不是仓库，是治理链
+
+[5道治理关](https://www.xiaohongshu.com/explore/6aa21c4a000000000b03645f)：长期记忆治理链条
+- **写入有门**（不乱写）：有审核机制，LLM 只能提议，经过审核后才能写入长期记忆
+  - 不要把错误写入记忆，如 客户考虑签约→客户已经同意
+- **存证有证**（可复查）：每个memory都关联源头，召回结果才能待引用、版本标识
+  - 没有出处的记忆，不该成为事实
+- **取用有预算**（不塞爆）：不能把全部信息塞进去！预算内够用，比全塞更重要
+  - powerContext 合并 FTS与向量结果后，再受 max_bytes 约束，超长条目会被截断
+- **知识分层**（能沉淀）：越往后，沉淀成本越高，skill还需显式export
+  - Source 原始证据：原始材料、记录、来源与链接。
+  - Memory 长期事实：稳定结论、共识、关键事实。
+  - Experience 方法与教训：实践经验、成败复盘、模式与教训。
+  - Skill 可执行步骤：可复用的流程、清单、操作步骤。
+- **工作可交接**（不断档）：换session，也要把工作交接清楚
+  - 新session不直接信任交接内容，而是evidence独立验证
+  - 普通记忆：已发生的事实
+  - handoff：目标、已验证进度、阻塞项、下一步、证据 
+
+系统设计得多重，取决于错误成本
+
+对比了 mem0、LangMem、Letta和Holographic。真正特别的不是更快，而是记忆治理。
+- 1️⃣ AI只能提议 LLM只能生成待审核的Candidate，人工批准后才能成为长期记忆。Holographic允许LLM直接写入；mem0虽有类似机制，但PowerContext把“AI提议、人类批准”设成强制边界。
+- 2️⃣ 每条记忆都有出处 Memory必须关联原始Source，召回时带citation，可以反查来自哪次对话、哪份文档。相比把记忆作为普通字符串保存的方案，它更重视证据链；LangMem集成方便，但来源引用并非同等强制。
+- 3️⃣ 召回有字节预算 多数产品只限制top-k，不限制内容长度。PowerContext可以设置max_bytes，避免上下文膨胀和token超支。Letta擅长多Agent协作，但没有把字节预算作为核心能力。
+- 4️⃣ 知识分四层 Source是原始证据，Memory是事实，Experience是经验，Skill是可执行流程。不同知识不会混在一起，Skill还必须显式导出，安全边界更清楚。
+- 5️⃣ 跨会话能接着干 Handoff会保存目标、进展、阻塞、下一步和证据，像医院交接班。新session不必重新了解背景，适合持续数天的研究项目。
+  - mem0：轻量、易用、生产友好
+  - LangMem：LangChain 集成方便
+  - Letta：多Agent协作能力强
+  - Holographic：本地化、比较轻量
+  - PowerContext：更适合重视审核、溯源和跨会话工作的场景
+
+选型
+- 如果只是让AI随手记点东西，mem0 或 Holographic可能更省事；
+- 如果每条长期事实都要能审核、能拒绝、能追溯，PowerContext会更合适。
+	
+AI记忆真正的竞争力，可能不是“记得更多”，而是“记得可信”。
+
+
 ## 评测
 
 核心指标：
