@@ -1412,4 +1412,34 @@ Axolotl
 - GitHub 项目主页：[Relax](https://github.com/redai-infra/Relax)
 - 论文地址：[paper](https://arxiv.org/abs/2604.11554)
 
+
+## 【2026-8-28】slime
+
+【2026-8-28】[slime](https://thudm.github.io/slime/) 是智谱为 RL scaling 设计的 LLM post‑training 框架
+- GitHub [slime](https://github.com/THUDM/slime/tree/main)
+
+提供两大核心能力：
+- 高性能训练：通过连接 Megatron 与 SGLang，支持各种模式的高效训练；
+- 灵活的数据生成：通过自定义数据生成接口以及 server-based engine，实现任意训练数据生成流程。
+
+slime 设计目标：让这两大能力彼此强化，同时避免把系统变成一组割裂的 trainer、rollout service 和 agent framework。Megatron training、SGLang rollout、custom data generation、reward computation、verifier feedback 和 environment interaction 都流经同一条 training / rollout / Data Buffer 路径。
+
+这让 slime 成为最经受实战验证的开源 RL post-training 框架之一：它足够轻量、清晰、易扩展，同时也经过了 SOTA 级模型发布背后的完整训练闭环验证。
+
+已覆盖发布级模型 post-training 所需要的完整工作流：大规模训练、高吞吐 rollout、权重同步、reward/verifier 数据、checkpoint、debugging 以及长时间运行稳定性。
+
+除 GLM 系列之外，slime 还支持：
+- Qwen 系列：Qwen3.6、Qwen3.5、Qwen3Next、Qwen3MoE、Qwen3、Qwen2.5；
+- DeepSeek V3 系列：DeepSeek V3、V3.1、DeepSeek R1；
+- Llama 3。
+
+
+Slime 采用 Ray 作为单控制器（Single Controller）进行调度，Megatron-LM 作为训练后端，SGLang 作为推理后端，构建了一个简洁且支持大规模 RL 的框架。
+- 兼容资源训推一体化和分离两种部署模式。
+- 设计目标：减少训练与推理之间数据传递的开销，并使所有环节尽可能对齐真实生产环境中的组件，从而实现灵活的大规模 RL 训练。
+
+智谱 GLM-5 的 Slime 框架中，训练侧基于 Megatron，Rollout 采样侧基于 SGLang
+
+
+
 # 结束
