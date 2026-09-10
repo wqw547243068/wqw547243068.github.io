@@ -848,6 +848,23 @@ LingBot-World 2.0 敢拿"连续跑一个多小时、画质无明显可见衰减"
   - 部署很克制： 主模型 14B，另配 1.3B 轻量实时版，支持单 GPU 部署；稳定输出 720p / 60fps。
   - 世界模型卷了这么久画质，下一关也许不是"生成得多真"，而是"这个世界能不能自己活着、活得够久"——权重和代码都开源了，感兴趣的可以去 Reactor、灵光上手测试跑一局。
 
+### 【2026-9-2】港中文 SolarWM
+
+SolarWM（2609.02886）可能是2026年交互式世界模型方向最完整的开源栈。
+
+【2026-9-2】港中深+NUS+NVIDIA+MSRA等九家机构联合，一次放出数据、管线、配方、权重、框架五件套。
+- [SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models](https://arxiv.org/pdf/2609.02886)
+- Website (Dataset & Code & Model): [SolarWM-Web](https://junchao-cs.github.io/SolarWM-Web)
+
+看点：
+- 1️⃣ 数据引擎：143万条canonical clips、超25TB，统一成逐帧对齐契约；被筛掉的样本保留机器可读拒绝原因，筛选变成可重配置工程；
+- 2️⃣ 底座原生适配：同一接口实例化Wan2.2-5B/14B、LTX-2.5、MiniMax-H3四条5B–33B路线，相机条件用fused-PRoPE直接注入注意力计算；
+- 3️⃣ 三阶段配方：双向FM→TF-AnyFlow→DMD(SGF)，省掉额外的Causal ODE与一致性蒸馏初始化。
+	
+结果：只用5秒序列训练，因果模型16fps、4步采样、无attention sink，即可实时交互并展开分钟到小时级rollout。长时域能力的来源可能不是超长训练序列，而是配方。
+	
+GitHub建库不到三周约485 stars，代码Apache-2.0
+
 
 
 # 结束
