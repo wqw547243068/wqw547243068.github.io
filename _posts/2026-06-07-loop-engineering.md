@@ -126,8 +126,6 @@ Loop Engineering 似乎已经不够性感了。现在 AI Agent 圈子里最火�
 详见站内专题：[Graph Engineering](graph)
 
 
-
-
 ### 架构
 
 一个 loop 要五样东西和一个记住状态的地方。
