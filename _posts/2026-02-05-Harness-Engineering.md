@@ -194,6 +194,41 @@ Agent 开发框架 与 AI Harness 运行框架
 
 ## 演变
 
+### 三大范式
+
+【2026-9-11】AI工程领域密集出现三个新概念：[Harness Engineering](harness)、[Loop Engineering](loop)、[Graph Engineering](graph)。
+
+不是同义词，也不是竞争关系，而是AI Agent系统的三个不同层次。
+
+① Harness Engineering = 给AI装操作系统
+- 模型=CPU，上下文窗口=RAM，而Harness=操作系统，决定AI看到什么、什么时候看到。
+- 核心制品：项目文档(CLAUDE.md)、进度追踪器(JSON)、记忆文件、工具定义、反馈循环。
+
+一个反直觉发现：Vercel移除了80%的工具定义后，Agent性能反而提升。工具越少，选错概率越低。
+
+② Loop Engineering = 设计自我运转的循环
+- 核心转变：从"写一条好提示"到"设计循环什么时候停"。
+- 判断法则：客观+二进制判断=Loop是礼物；主观+开放式=Loop是老虎机。
+- 成本警告：一个Loop可能跑10-50轮，月预算20-200美元的个人开发者需严格控制。
+
+③ Graph Engineering = 编排多Agent协作拓扑
+
+三种拓扑：
+- 链式(Chain)：流水线，简单可预测，单点故障影响全局
+- 星型(Hub-Spoke)：编排Agent分发任务，并行执行，故障隔离
+- 网状(Mesh)：多对多通信，高度动态，但调试困难
+
+三层叠加关系：Harness 是地基，Loop 是节奏，Graph 是组织。不是替代，是叠加。
+
+实践优先级：
+- 80% 问题靠 Harness 解决
+- 15% 自动化靠 Loop 解决
+- 5% 规模化才需要 Graph
+
+好的AI系统不是"提示"出来的，是"设计"出来的。
+
+### harness 演进
+
 2026年2月，这个词几乎同时从三个地方冒了出来。
 - 2025-11-26，Anthropic 发布《Effective harnesses for long-running agents》，首次在官方技术博客把外部运行系统命名为 Harness，将 Claude Agent SDK 定义为通用 Harness 载体，社区开始零散使用 Agent Harness 词汇，但无统一工程方法论。
 - 2026年2月5日，Mitchell Hashimoto，HashiCorp创始人、Terraform作者，在博客里定义了 harness engineering 完整工程方法论，统一术语、三层架构 、迭代哲学，瞬间席卷硅谷与国内 AI 工程圈。
