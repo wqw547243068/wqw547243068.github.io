@@ -845,6 +845,12 @@ SFT 优点是相对简单直接，只需要高质量的标注数据即可。
 - 幻觉。微调通常会加大模型的幻觉。并不是只有微调之后才会造成幻觉，正常的大模型也会存在幻觉，而微调有可能加大幻觉。
 - 过拟合。在专业领域效果提升明显，但泛化能力显著降低。过拟合学习到的是死记硬背，而不是方法论。
 
+
+【2026-8-9】[用 SFT 的心法，打出接近 RL 的效果](https://mp.weixin.qq.com/s/25H2hfHa-f3XYFVV3S4oKw)
+
+SFT 用高质量离线数据快速注入知识，效率高，但受限于静态数据分布，容易触达泛化天花板，还容易带来灾难性遗忘；
+
+
 #### RFT
 
 `RFT`（Rejection sampling Fine-Tuning）和 `SFT`（Supervised Fine-Tuning）是两种用于微调机器学习模型的方法
@@ -939,6 +945,34 @@ RFT具有以下几点优势：
 另外，在生成数据集时，也注重多样性和覆盖率，以避免过拟合，并通过GPT-4对生成的问题和答案进行二元评估来确定其正确性。
 
 基于事实的数据集进行SFT，模型在问答任务中的表现有**显著**提升。这验证了SFT方法在提高模型处理超出领域、超出知识截止日期的知识方面的有效性。尽管SFT模型在所有情况下都没有超过RAG模型的性能，但在缩小与RAG性能差距方面取得了进展，尤其是在10x数据集规模下。
+
+#### 【2026-3-14】微软 DDT
+
+【2026-8-9】[用 SFT 的心法，打出接近 RL 的效果](https://mp.weixin.qq.com/s/25H2hfHa-f3XYFVV3S4oKw)
+
+分析
+- SFT 用高质量离线数据快速注入知识，效率高，但受限于静态数据分布，容易触达泛化天花板，还容易带来灾难性遗忘；
+- RL 则通过模型生成的 on-policy 数据不断迭代，上限更高，却伴随训练不稳定、算力消耗巨大的问题。
+
+能不能直接产生 on-policy 数据，再用高效的 SFT 训练，从而达到接近甚至超越 offline RL 的效果？避免RL训练需要的大量算力资源
+
+【2026-3-14】微软亚洲研究院论文提出 Distribution Discriminant Theory（DDT），从理论上量化数据与模型当前分布之间的对齐程度。
+- [Towards On-Policy SFT: Distribution Discriminant Theory and its Applications in LLM Training](https://arxiv.org/pdf/2602.12222)
+- 项目链接：[Towards-On-Policy-SFT](https://github.com/zhangmiaosen2000/Towards-On-Policy-SFT)
+
+传统困惑度会把“题目本身的难度”和“分布偏移”混在一起，难以准确区分 on-policy 与 off-policy 数据。
+
+为此，引入了 Centered Log-Likelihood（CLL），尝试用 token 的对数概率加上当前上下文的预测熵，得到一个信噪比意义上更优的判别指标。
+
+实验表明，CLL 能更清晰地把模型自身生成的数据与外部数据区分开来。
+
+基于这套理论，进一步提出了两个互补技术：
+1. In-Distribution Fine-Tuning（`IDFT`）。
+  - 传统 SFT 会把每个 token 都当成绝对真理，对低概率 token 施加极强惩罚，容易导致模型“死记硬背”分布外数据，破坏预训练形成的通用能力。
+  - IDFT 根据 CLL 对 loss 做**自适应重加权**，让模型更专注于符合自身分布的 token，从而缓解灾难性遗忘，提升泛化能力。
+2. Hinted Decoding。
+  - 在数据层面把离线语料尽量拉回模型自己的分布。通过同时维护两条解码流（一条带答案提示的 teacher 流、一条保持模型原风格的 student 流），并根据熵动态切换权重，既保留正确答案所需的关键信息，又尽量维持模型原生语感。最终生成的数据更接近 on-policy，训练起来也更稳。
+
 
 
 #### SFT VS RLHF
