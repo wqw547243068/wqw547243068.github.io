@@ -790,4 +790,81 @@ MoveIt! 通过插件机制（plugin interface）与运动规划器（motion plan
 
 仿真里能走 ≠ 真机能走。Sim2Real是端到端RL落地的关键一步——先在仿真A里练，再到仿真B里验，通过才上真机。
 
+
+## 仿真
+
+
+### MuJoCo
+
+[MuJoCo](https://mujoco.org/) 表示 Multi-Joint dynamics和Contact，通用的物理引擎， 促进机器人、生物力学、图形和动画、机器学习和其他需要快速准确地模拟与其环境相互作用的铰接结构的领域。 
+- 最初由 Roboti LLC 开发，于 2021 年 2022 月被 DeepMind 收购并免费提供，并于2022 年 5 月开源。 
+- MuJoCo代码库可在GitHub上的deepmind/mujoco存储库中找到。
+
+MuJoCo 是带有C API的C / C++库，面向研究人员和开发人员。运行时模拟模块被调整为以最大限度地提高性能，并对由内置 XML 解析器和编译器预先分配的低级数据结构进行操作。
+
+用户可使用本地 MJCF 场景描述语言（一种方便人们读写的XML 文件格式的语言）定义模型，也可以加载 URDF 模型文件。该库包括用 OpenGL 呈现的带有本地 GUI 的交互式可视化界面。同时MuJoCo 进一步公开了大量用于计算物理相关量的高效函数。
+
+MujoCo 可用于实现基于模型的计算，例如控制合成、状态估计、系统辨识、机制设计、通过逆动力学进行数据分析，以及机器学习应用的并行采样。它还可以用作更传统的模拟器，包括用于游戏和交互式虚拟环境。
+
+核心概念
+- MjModel：静态模型结构，包含质量、几何体、关节等只读配置（通常由 XML/MJCF 文件加载）。
+- MjData：动态状态量，包含关节位置 qpos、速度 qvel、控制输入 ctrl 及仿真时间等变量。
+- mj_step：核心函数，用于计算并推进下一个时间步长的物理状态
+
+使用方法
+- [基本用法](https://zhuanlan.zhihu.com/p/27160920326)
+
+安装
+
+```sh
+pip install mujoco
+# import mujoco
+```
+
+启动环境
+
+```py
+import mujoco
+import mujoco.viewer
+
+# 加载官方测试模型或本地 XML 路径
+xml = """
+<mujoco>
+  <worldbody>
+    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+    <geom type="plane" size="1 1 0.1"/>
+    <body pos="0 0 1">
+      <joint type="free"/>
+      <geom type="box" size=".1 .1 .1" rgba="1 0 0 1"/>
+    </body>
+  </worldbody>
+</mujoco>
+"""
+model = mujoco.MjModel.from_xml_string(xml)
+data = mujoco.MjData(model)
+
+# 启动图形预览界面
+with mujoco.viewer.launch_passive(model, data) as viewer:
+    while viewer.is_running():
+        mujoco.mj_step(model, data)
+        viewer.sync()
+```
+
+
+#### Text2MuJoCo
+
+【2026-9-15】一句话直接创建仿真环境
+
+GitHub 上的 [Text2MuJoCo](https://github.com/ShawnJoeng/Text2Mujoco/tree/main)，装进 Claude Code 的 skill 包：一句话描述场景，就能生成一整套可运行、可验证的 MuJoCo 仿真环境
+
+```sh
+$ text2mujoco
+Generate a desktop tool cabinet, unlock it, pull the drawer open by 22 cm, and inspect it with a camera.
+
+# claudec code
+/text2mujoco Generate a warehouse navigation task with visible checkpoints and a top-view camera.
+
+```
+
+
 # 结束
