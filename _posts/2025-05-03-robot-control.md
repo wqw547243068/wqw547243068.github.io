@@ -3,7 +3,7 @@ layout: post
 title:  "机器人控制"
 date:   2025-05-04 19:02:00
 categories: 人工智能
-tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill huggingface
+tags: 具身智能 机器人 机械臂 ros 四元数 欧拉角 openclaw skill huggingface 模拟环境 mujoco skill
 excerpt: 机器人控制专题，ROS、感知、规划、行动 模拟器
 author: 鹤啸九天
 mathjax: true
@@ -855,7 +855,12 @@ with mujoco.viewer.launch_passive(model, data) as viewer:
 
 【2026-9-15】一句话直接创建仿真环境
 
+Text2MuJoCo 是跑在现有编码 Agent 里的 Agent 技能包。
+
+与 Codex 或 Claude Code 配合，把一段场景或任务描述转成可加载的 MuJoCo 3 包：解析物体、物理、传感器、动作顺序、成功条件和可见的交互点，然后用机器可读的报告来支撑结果。[示例请求](https://github.com/ShawnJoeng/Text2Mujoco/blob/main/showcase/sample_queries.json) 展示了预期的输入格式。
+
 GitHub 上的 [Text2MuJoCo](https://github.com/ShawnJoeng/Text2Mujoco/tree/main)，装进 Claude Code 的 skill 包：一句话描述场景，就能生成一整套可运行、可验证的 MuJoCo 仿真环境
+- [文档](https://github.com/ShawnJoeng/Text2Mujoco/blob/main/README.zh-CN.md)
 
 ```sh
 $ text2mujoco
