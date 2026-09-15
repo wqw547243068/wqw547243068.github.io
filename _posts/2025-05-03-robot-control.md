@@ -97,6 +97,21 @@ Physical AI 真正普及的标志，可能不是街上出现多少台人形机�
 PS：Microduck 实际使用的是 RK3566 芯片
 
 
+#### 实现方法
+
+【2026-9-10】[MicroDuck：一只开源机器鸭，带你玩转双足机器人仿真开发（有教程）](https://mp.weixin.qq.com/s/IhXbTIT_BJbP3B-ceheDjQ)
+
+技术路线
+1. ROS2 + RViz 路线（**轻量**方案）
+  - 系统环境：Ubuntu 24.04 + ROS 2 Jazzy
+  - 不需要 NVIDIA 独立显卡，无需安装 Isaac Sim
+  - 适合：入门预览机器人 URDF 模型，查看完整机体结构，手动操控 14 个关节转动，熟悉机器人本体，零基础快速上手。
+2. Isaac Sim + Isaac Lab 路线（完整仿真训练方案）
+  - 系统环境：Ubuntu 24.04 + NVIDIA 显卡
+  - 推荐版本组合：Isaac Sim 6.0.1 搭配 Isaac Lab 3.0.0 beta2
+  - 适合：物理仿真环境下完整模拟鸭子运动，训练强化学习运动策略，实现行走、翻滚、踢球等复杂动作，完成 “仿真训练→策略调试” 完整闭环。
+
+
 #### Open Duck Mini
 
 【2026-8-31】买不到 Microduck？考虑 [Open Duck Mini](https://tnkr.ai/open-duck-mini/open-duck-mini-v2) 平替。
@@ -870,6 +885,15 @@ Generate a desktop tool cabinet, unlock it, pull the drawer open by 22 cm, and i
 /text2mujoco Generate a warehouse navigation task with visible checkpoints and a top-view camera.
 
 ```
+
+### Issac
+
+
+
+NVIDIA [Issac](https://developer.nvidia.cn/isaac) 机器人仿真环境
+
+开放式机器人开发平台由仿真和机器人学习框架、基于 NVIDIA® CUDA® 加速的库、AI 模型以及参考工作流组成，可用于创建自主移动机器人 (AMR)、机械臂、操作机器人以及类人机器人。
+
 
 
 # 结束
