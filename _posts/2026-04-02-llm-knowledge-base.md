@@ -73,6 +73,39 @@ Agent用得越久，反而越乱，始终停留在“一次性工具”的阶段
 - 完整的企业级知识管理解决方案
 
 
+## 【2025-9-8】腾讯 WeKnora
+
+【2025-9-8】微信团队开源的企业知识Agent框架 [WeKnora](https://weknora.weixin.qq.com/)
+- 把散落文档变成会思考的知识资产
+- 腾讯开源企业级知识框架，RAG 问答 · Agent 推理 · Wiki 图谱三大模式一体化。
+- 官方文档 [中文](https://github.com/Tencent/WeKnora/blob/main/README_CN.md)
+
+开源企业级知识框架，三大核心模式融合：RAG 快速问答、ReAct Agent 自主推理、AI 自动 Wiki，让每份文档可被检索、可被推理、可自动整编。
+
+
+给文档“装上大脑”的AI工具。
+- 读懂PDF、Word和图片（含OCR），把零散内容整理成可搜索的知识。
+- 只需上传资料，像聊天一样提问，会从原文中找到相关片段，给出准确、可追溯的答案，并支持多轮追问。
+- 系统速度快、可本地或私有云部署，数据自己掌控；
+- 提供易用的网页和标准API，便于接入现有系统。
+- 还能连接微信对话开放平台，零代码把问答能力放进公众号和小程序
+
+![](https://pica.zhimg.com/v2-1893209ea574c70dd1d862dcd8187904_r.jpg)
+
+安装
+
+```sh
+git clone https://github.com/Tencent/WeKnora.git
+cd WeKnora
+```
+
+基本用法：
+- 1、从GitHub克隆项目（Tencent/WeKnora），按README部署；
+- 2、导入企业文档，Auto-Wiki会自动整理知识库；
+- 3、通过ReAct Agent提问，自主检索、调用工具甚至跑代码产出文件；
+- 4、可选长期记忆，让助手在多轮对话中保持上下文。
+
+
 ## 【2026-4-2】LLM Wiki
 
 2026年4月2日，著名AI研究员、前 OpenAI/Tesla 科学家 Andrej Karpathy 发布关于"/raw文件夹"的文章，末尾留下了一句意味深长的话：
