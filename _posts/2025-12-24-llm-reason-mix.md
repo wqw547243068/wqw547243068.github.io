@@ -90,6 +90,20 @@ Sebastian Raschka 文章 把推理档位讲清楚了，从下拉菜单，讲到�
   - 近期推理档位仍会是一个显式输入，多半通过 system prompt 传进去。但 Agent 外面那层 harness、或者一个内部 router，会越来越多地根据任务状态和剩余预算自动推断该用哪一档，同时保留你手动覆盖的权利。想压延迟、想省成本、或想榨干性能，手动覆盖就派得上用场
 
 
+![](https://substackcdn.com/image/fetch/$s_!pHf9!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffe3daa10-2327-4fa4-a71e-c318298e8b85_1999x1395.png)
+
+![](https://substackcdn.com/image/fetch/$s_!U4Fk!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5556b75b-3029-4134-8fad-3a243d7e36d7_1999x1514.png)
+
+总结对比
+
+|模型|推理算力控制（Effort control）|公开训练机制（Disclosed training mechanism）|推理阶段控制（Inference control）| 图解 |
+| ---- | ---- | ---- | ---- | ---------- |
+|DeepSeek V4|无思考模式 / 高算力 / 最大算力|独立专家模型，搭配面向不同模式的SFT、GRPO、上下文窗口、长度惩罚；后续执行在线策略蒸馏|输出格式 + Max（最大算力）系统指令|![](https://substackcdn.com/image/fetch/$s_!gbyP!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fabdfb97b-7fa7-4a99-9d8d-0d62f038ceaf_1999x1161.png)|
+|Nemotron 3 Ultra|关闭、中等、常规|教师生成的中等长度轨迹、随机预算截断、长度自适应RLVR|模型自主学习模式，外加可选硬性算力预算|![](https://substackcdn.com/image/fetch/$s_!cGrQ!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fefb9a0f0-fbbf-4bfb-b45a-36eebdb39200_1999x1264.png)|
+|Kimi K2.5|隐式词元高效推理|Toggle（切换）机制：使用面向特定问题的算力预算，在带约束强化学习与无约束强化学习之间交替切换|存在思考模式与即时输出模式，但Toggle切换开关不对外暴露为独立选择器|![](https://substackcdn.com/image/fetch/$s_!DGwq!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1b1ecf39-b55e-44fb-a756-8b6a8875ba87_1999x714.png)|
+|GLM-5|每轮可开启/关闭思考；支持穿插式、保留式思考|多任务SFT，搭配更新对话模板、序列推理、智能体任务、通用强化学习；后续执行跨阶段在线策略蒸馏|每轮二元开关；调用工具前自动推理；可选择保留前面的推理块|![](https://substackcdn.com/image/fetch/$s_!jtN8!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffd03d911-1f68-4ac5-9a07-5a576e377ddf_1999x742.png)|
+|Qwen3|无思考、思考、词元预算|思考模式融合SFT，之后进行通用强化学习|`/no_think`、`/think`指令，推理阶段截断|![](https://substackcdn.com/image/fetch/$s_!U8qX!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd170e1f6-0838-487e-b3a6-7d501eb38962_1999x914.png)|
+|Inkling|连续标量（0.0 ~ 1.0）|基于算力条件的强化学习，采用随算力变化的词元代价|在系统提示词中设置算力数值||
 
 
 
