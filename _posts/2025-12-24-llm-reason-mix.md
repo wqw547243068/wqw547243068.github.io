@@ -1,10 +1,10 @@
 ---
 layout: post
-title:   大模型混合推理
+title:   大模型推理模式
 date:   2025-12-24 20:47:00
 categories: 大模型
 tags: 推理 think 帕累托
-excerpt: 大模型混合推理，兼容快思考+慢思考
+excerpt: 大模型混合推理，兼容快思考+慢思考，多档位推理原理及实现方案
 mathjax: true
 permalink: /reason_mix
 ---
