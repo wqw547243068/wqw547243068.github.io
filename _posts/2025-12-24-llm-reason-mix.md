@@ -33,6 +33,67 @@ OpenAI O 系列发布之后，Inference Time Scaling 的模型一直备受关注
 `快慢思考`（fast-slow-thinking）或`混合思考`（thinking-nonthinking mixed）】方式减少不必要的推理消耗而不损害模型的最终效果, 成了业界新方向。
 
 
+## 推理档位
+
+
+### 【2026-7-18】Sebastian Raschka LLM推理档位控制方法
+
+【2026-7-18】[Codex、Claude Code的推理档位，其实就是一句提示词。]([https://mp.weixin.qq.com/s/Rf32OCWDM-mf1ocfKKQbUw](https://zhuanlan.zhihu.com/p/2063410683757311023))
+
+Codex、Kimi Code、Claude Code 里任何一个，选完模型，旁边往往还有一个推理档位的选择器。
+
+大部分人凭手感拨一个，简单问题拨低、难题拨高，但很少有人说得清：拨动的那一刻，模型到底变了什么。
+
+Sebastian Raschka 文章 把推理档位讲清楚了，从下拉菜单，讲到训练管线里那行 reward。
+- ![](https://pic4.zhimg.com/v2-3f987fe7784afadeee36c9daa0bd3a5b_r.jpg)
+- 原文：[Controlling Reasoning Effort in LLMs](https://magazine.sebastianraschka.com/p/controlling-reasoning-effort-in-llms)
+
+总结
+- 一、**「推理模型」不是真在推理，只是答题前先把过程写出来**
+- 二、**只给答案打对错分，就学会了推理**
+  - 反直觉：训练时不评判那段草稿本身写得好不好，只看最终答案对不对、格式合不合规。
+  - DeepSeek 团队把草稿也纳入训练信号，发现帮助不大，就去掉了。
+  - 只靠「奖励结果」，模型学会写中间步骤、回头检查、发现错了再改。
+  - 这种「等一下，这里好像不对」的瞬间，被叫做 `Aha moment`。
+- 三、**`<think>`标签是装饰性的，对推理能力本身没有贡献**
+  - 标签让模型「开始思考」? 不是。只是标记草稿的起止，不是思考本身
+  - 训练时在奖励里加格式奖励，鼓励模型把草稿放进这对标签里。DeepSeek-R1 总奖励就是 R_accuracy + R_format 两部分相加，后者是一条简单的规则检查。
+- 四、**第一代推理模型只有一种个性：全程啰嗦，还关不掉**
+  - 第一代是「专职」推理模型。DeepSeek-V3 是基座，DeepSeek-R1 是另一个独立训练的推理模型。R1 的毛病是不管问什么，都长篇大论，哪怕问题极其简单，而且没有关闭推理的开关。
+  - Qwen3 模型开始做**混合**：同一个模型既能当普通指令助手，也能按需切成推理模式。Qwen3 用`enable_thinking=True/False`控制，关掉的实现在回答开头塞一个空的`<think></think>`，让模型直接跳到答案。这套开关是在 `Thinking Mode Fusion` 训练阶段里学出来的。
+- 五、**推理档位，本质上是往 system prompt 里塞了一句话**
+  - GPT-5、GPT-5.6 这一代，开关从「开/关」变成了 low / medium / high / max 多档。
+  - GPT-5.6 暴露出从 Light 到 Ultra 的六档推理档位
+  - OpenAI 没公开闭源模型的实现，但从去年开源的 gpt-oss 能看出：档位通过 system prompt 控制，往每个请求前面加一句 Reasoning effort: low/medium/high。ChatGPT 界面上那个选择器，大概率只是把选择映射成这句话。
+- 六、**模型能「听懂」这句话，靠训练时的两种配方**
+  - 路线一 RLVR 阶段动手脚: 不同 system prompt 配不同的长度惩罚。说「low」时对 token 数罚得重，逼它写短；说「high」时几乎不罚，放它写长。
+  - 路线二 RLVR 后再补一轮 SFT: 喂进「这个 prompt 对应这么长的推理」的样本，让模型把档位标签和目标长度对应起来。
+  - 两条路也能组合。推测 gpt-oss 和 GPT-5.6 组合
+- 七、**换模型和调档位，是两个互不干涉的动作**
+  - GPT-5.6 界面把这两件事分得很清楚。
+  - 左边选 Luna / Terra / Sol，是在换模型本身，粗略对应「训练时投入的算力」；
+  - 右边调推理档位，模型不变，只是让它多花或少花 token，对应「推理时投入的算力」
+  - 选模型和调档位对应两个不同的 scaling 轴：前者换的是权重本身，后者只改推理时花掉的算力。
+  - 这两条曲线会重叠：一个小模型开高档，有时能追平一个大模型开低档的分数
+  - 更大的模型、还是把档位调高、还是两个一起上，取决于精度、成本和延迟。
+- 八、**档位不是越高越好，边际递减很明显**
+  - 档位直接影响输出长度，长度又和精度正相关。
+  - gpt-oss 在不同推理档位下的响应长度与质量。档位越高，token 花得越多，精度也越高。但到某个点会饱和。GPT-5.6 Sol 的曲线尤其明显：推理档位越高，API 成本和 coding 表现一起涨，可涨到最高那几档，收益明显变小，继续加预算就不划算了
+  - 推理档位同时抬高 API 成本和 coding 表现，但在 GPT-5.6 最高档出现明显的收益递减。
+  - 总结：「拨到max」不等于「答得更对」。多数任务里，中间档才是精度、成本、延迟三者的甜点区。
+- 九、**国产旗舰，各有各的真实做法**
+  - DeepSeek V4 训了三个「专家」：Non-think、Think High、Think Max，每个用不同的上下文窗口和长度惩罚，最后蒸馏进同一个 checkpoint。Think Max 那句 system 指令「Reasoning Effort: 绝对最大，不允许走捷径」看着像 prompt 技巧，其实背后有专门训练撑着，换个模型照抄这句话是没用的。
+  - DeepSeek V4 的三种推理模式：Non-think、Think High、Think Max，背后是不同的训练配置而不只是提示词差异。
+  - Kimi K2.5 Toggle 方法在训练时交替「限预算」和「不限预算」两个 RL 阶段，能把生成 token 砍掉约 25% 到 30%，benchmark 几乎不掉。更新的 K3 提供了 low / high / max 三档、max 为默认，但训练细节尚未公开，等它的技术报告。
+- 未来：**档位还会是显式输入，但会有人替你选**
+  - GPT-5 曾经做过 Auto 模式，想自动选档，结果败多胜少，后来从界面上撤了。
+  - 近期推理档位仍会是一个显式输入，多半通过 system prompt 传进去。但 Agent 外面那层 harness、或者一个内部 router，会越来越多地根据任务状态和剩余预算自动推断该用哪一档，同时保留你手动覆盖的权利。想压延迟、想省成本、或想榨干性能，手动覆盖就派得上用场
+
+
+
+
+
+
 ## 实现方法
 
 
