@@ -84,17 +84,17 @@ Karpathy 的 autoresearch：让 agent 对着 630 行训练代码无限循环。�
 
 ![](https://pic2.zhimg.com/v2-5b6c27d106be81ab16e446e9828960f7_1440w.jpg)
 
-（1）系统改进对象
+（1）系统改进**对象**
 
 - Deployment-time self-evolution：部署阶段改进。包括冻结权重的输出修正（output refinement）、test-time training、harness、skill、memory 的积累。
 - Training-time self-iteration：训练阶段改进。系统生成数据、奖励或教师信号（teacher signal），再更新自己的权重。
 - Self-evaluation：evaluator 本身成为改进对象。系统设计、增强或共同进化 judge、verifier、奖励模型、rubric。
 - Auto Research：系统参与 AI 研究本身。提出假设、运行实验、发现算法。极限情况下，它会优化产生下一代 AI 系统的方法。
 
-（2）如何验证改进
+（2）如何**验证**改进
 
-- Human-in-the-loop：人类逐次审查改动。
-- Human-on-the-loop：自动信号生成改进，人类审计结果或设置部署门槛。
+- Human-`in`-the-loop：人类逐次审查改动。
+- Human-`on`-the-loop：自动信号生成改进，人类审计结果或设置部署门槛。
 - Closed loop：系统自己生成、验证并应用改进，没有人类审查。
 
 现在, 绝大多数文献仍然落在 bounded self-refinement。
@@ -209,8 +209,36 @@ Agent 自进化（Self-Evolving Agent）：
 
 ### 分类
 
+
+
 【2026-8-2】[什么是 Self-evolving / self-improving / RSI ？一篇文章搞懂自进化](https://mp.weixin.qq.com/s/iWh5x-SPxa-MhMq4OLLqpw)
 - 周星星 [自进化（Self-evolving／RSI），一篇就够了](https://zhuanlan.zhihu.com/p/2065227313973825752)
+
+【2026-9-3】[万字长文带你读懂 RSI（自进化，Self-Evolving）](https://prism-shadow.github.io/awesome-rsi/#blog/understanding-rsi)
+- [递归自我改进研究精选图谱](https://prism-shadow.github.io/awesome-rsi/#blog/understanding-rsi), 包含[自进化论文图谱](https://prism-shadow.github.io/awesome-rsi/#resources)
+
+RSI定义：
+> Agent 在与环境交互后，利用任务轨迹与反馈，通过更新机制修改自身状态，并让更新后的状态参与后续任务，以提升未来表现。
+
+Agent 抽象
+> `Agent` = `Model` + `Harness`。
+> - `Model` 提供基础的理解、推理与生成能力；
+> - `Harness` 则组织模型如何接收信息、积累经验、调用工具并完成任务，具体包括**上下文**、**记忆**、**Skill**、**工具**和 **Harness 代码**。
+
+不同的 RSI 方法可能修改其中不同的部分：
+- 参数进化修改 Model；
+- 上下文、记忆和 Skill 进化修改 Harness 中可持续积累的状态；
+- 工具与 Harness 代码进化则改变 Agent 的动作空间和控制流程。
+
+![](https://prism-shadow.github.io/awesome-rsi/blog/rsi-guide/codex-agent-anatomy-v3.png)
+
+概览
+
+![](https://prism-shadow.github.io/awesome-rsi/blog/rsi-guide/codex-rsi-taxonomy-overview-gpt-preview-v1.png)
+
+方法分类
+
+![](https://prism-shadow.github.io/awesome-rsi/blog/rsi-guide/codex-rsi-artifact-mode-matrix-v1.png)
 
 热词: self-evolving、self-improving、recursive self-improvement（RSI）
 
