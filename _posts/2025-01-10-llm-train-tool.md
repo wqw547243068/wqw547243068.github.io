@@ -23,6 +23,9 @@ permalink: /train_tool
 - 第二类：基于现有深度学习框架（如：PyTorch、Flax）进行**扩展和优化**，从而进行分布式训练。
   - 如：`Megatron-LM`（张量并行）、`DeepSpeed`（Zero-DP）、`Colossal-AI`（高维模型并行，如2D、2.5D、3D）、`Alpa`（自动并行）等
 
+【2026-9-21】RL 训练框架变更历史：
+> 同步单控制器 → 异步单控制器 → 异步混合控制器（VeRL） → 全异步（9月8日出来的Meshy）
+
 
 ### 框架依赖关系
 
