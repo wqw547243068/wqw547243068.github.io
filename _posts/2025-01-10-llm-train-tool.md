@@ -1481,10 +1481,15 @@ Advantage Estimation ──> Actor & Critic Update ──> Next Iteration
 系统在任意时刻都处于某个确定的阶段 —— 系统的状态变化遵循一条 全局统一的执行时序。
 
 训练和推理引擎内部通常遵循 SPMD 范式：各个进程运行同一份程序，进程间通过集合通信进行协作。
+- SPMD 是**单份代码 + 张量分片 + 全局集合同步**的分布式编程范式
+
+SPMD vs MPMD（对比理解）
+- **SPMD**：Same program，不同分片数据；大模型训练主流。例：FSDP、DTensor、Megatron。
+- **MPMD Multiple Program Multiple Data**：不同进程跑不同代码。verl 里 rollout worker /reward worker /train worker 各自执行不同逻辑，属于 MPMD 的思想；verl 整体是**MPMD 编排多个 SPMD 子集群**。
+
+SPMD 适合模型训练 / 推理分片；但 SPMD 天然是锁步同构集群，RL 场景里 rollout、reward、train 任务异构分离，所以 verl 在 SPMD 之上额外引入 HybridFlow，编排多组独立 SPMD 进程组做异步数据流。
 
 SPMD 很适合表达**单个模型的前向传播、反向传播**，却难以表达顶层的 RL 流程 ——Rollout, Inference, Trainer 分属不同引擎、不同并行布局，SPMD 程序难以描述复杂的数据流向和执行顺序。
-
-因此，RL 框架通常需要在引擎内部的 SPMD 执行之上，再增加一层负责跨角色编排的控制面。
 
 ### Single-Controller：以顺序程序表达多机同步 RL
 
