@@ -771,7 +771,7 @@ $$
 【2023-6-23】[幂级数、傅里叶级数（notes）](https://zhuanlan.zhihu.com/p/266415766)
 
 
-【2026-10-10】任何**闭合**曲线（比如骑士/马的轮廓）都可以通过对 x(t) 和 y(t) 进行傅里叶级数展开，由圆周运动叠加而成。
+【2026-10-10】任何**闭合**曲线（比如骑士/马的轮廓）都可以通过对 x(t) 和 y(t) 进行傅里叶级数展开，由圆周运动叠加而成。[图解](https://www.xiaohongshu.com/explore/6ac8971d0000000014001972?app_platform=android&ignoreEngage=true&app_version=9.49.1&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBpxtB9nqAiuDBBcppuIfYXpZpX14g5BhxatkaW1AV5h4=&author_share=1&xhsshare=&shareRedId=OD06NUlINT42NzUyOTgwNjY7OTpIOT5B&apptime=1791590405&share_id=75aaab9f82f942238b8a45209cb5a145&share_channel=wechat&wechatWid=88f974ec430949de59a84f6c63cd1dbd&wechatOrigin=menu)
 
 当 N=1 时，曲线是一个简单的椭圆。谐波次数越多，曲线就越接近马的形状。
 	
