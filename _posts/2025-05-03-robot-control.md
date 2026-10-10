@@ -193,7 +193,7 @@ AnyCar 系统包括: 数据收集、模型训练、微调部署。
 仓库是各子模块的快照聚合，硬件、训练、部署、固件分在不同子仓库里，可以按方向挑着看。
 
 
-### 跳跳
+### 螃蟹机器人：跳跳
 
 2026年7月17日-20日，2026世界人工智能大会（WAIC）在上海，[金刚科技](https://kingkong.tech/about/news-waic-crab-20260721)带来红色的小螃蟹机器人，名字叫“跳跳”。体型小巧，六足行走，会随着节奏跳起“螃蟹舞”
 
@@ -205,9 +205,14 @@ AnyCar 系统包括: 数据收集、模型训练、微调部署。
 - [Jumper](https://kingkong.tech/jumper)
 - 模拟器环境：[simulator](https://beunlimited.me/zh/simulator)
 
+
 [螃蟹机器人开源动作大赛](https://beunlimited.me/events/crab-robot-challenge-2026)，爆火螃蟹机器人开源啦，免费送 100 台！
 
 用金钢科技开源工具包开玩，改外观、编动作、做智能。从仿真开始，用你的作品争取一台「跳跳」。
+
+第三方作品
+- [dance-crab](https://dance-crab.tanosix.com/) 根据音乐节奏跳舞
+- [jumper-lab](https://21nemus.github.io/jumper-lab/) 交互式讲解站点，展示螃蟹组件、集体跳舞、关节讲解
 
 
 ## 机器人操控
