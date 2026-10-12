@@ -214,6 +214,11 @@ AnyCar 系统包括: 数据收集、模型训练、微调部署。
 - [dance-crab](https://dance-crab.tanosix.com/) 根据音乐节奏跳舞
 - [jumper-lab](https://21nemus.github.io/jumper-lab/) 交互式讲解站点，展示螃蟹组件、集体跳舞、关节讲解
 
+### 蜘蛛机器人
+
+
+【2026-10-12】蜘蛛机器人制作[资料包](https://zhizhu.gicp.fun/)
+
 
 ## 机器人操控
 
