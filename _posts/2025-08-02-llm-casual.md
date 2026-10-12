@@ -3,7 +3,7 @@ layout: post
 title:  "大模型与因果推断"
 date:   2025-08-02 10:55:00
 categories: 大模型
-tags: 大模型 因果推理 uplift
+tags: 大模型 因果推理 uplift harness
 excerpt: 大模型推理能力如何提升？引入因果推理。大模型+因果推断=？
 author: 鹤啸九天
 mathjax: true
@@ -429,6 +429,21 @@ UPLIFT 模型的两大核心问题——混杂因质偏置和归纳偏置，学�
 - 首先,最基本 Meta-Learner，代表建模方案有 S-Learner 和 T-Learner
 - 随后, 进入深度学习后就演化出来以解决混杂偏置为代表的 DragonNet、DESCN、S-Net、CFRNet 等，和以解决归纳偏置为代表的 FlexTENet、S-Net、EUEN、DESCN、GANITE、CFRNet 等。
 
+
+### 应用
+
+【2026-10-12】因果估计用于用户增长
+
+项目三：GrowthEvo-Harness 用户增长Agent Runtime  GitHub源码
+
+技术栈：Causal POMDP·Cross-Fitted DR·Hierarchical RL·Safe PI·IPS/DR OPE·GrowthPRM·Harness Evolution
+
+项目链路：增长目标→Belief→CATE估计→分层决策→SafePI→OPE验证→Harness演进
+- Runtime设计：面向优惠触达、渠道选择、预算分配、召回与留存等增长决策，构建Causal RL Runtime，将预算、ROI、频控、疲劳与延迟反馈建模为Causal POMDP，以事件流维护Goal、Belief、behavior support与决策轨迹，并将NO_TREATMENT作为一级动作。
+- 因果估计与策略决策：实现Cross-Fitted DR-Learner估计多渠道CATE，将effect、uncertainty、support写入Belief；HierarchicalPolicy分层选择渠道、权益与预算，Safe PI限制低support外推。
+- 离线验证与风险控制：实现IPS / DR OPE，结合ESS与support coverage判断证据质量；Conformal Gate校准value、ROI与风险边界，并以Risk-Sensitive MPC / CVaR筛选策略。
+- 信用分配与安全演进：实现GrowthPRM + Dynamics-Aware GAE分配过程奖励，并在rollback与延迟归因边界截断错误信用；Evolver从失败轨迹生成Planner / Memory / Routing patch，经Verifier与replay gate验证后合并，形成可回滚闭环。
+- 离线评测：在GrowthAgentBench、Criteo Uplift v2、Open Bandit Dataset上评测；CATE RMSE0.026、oracle regret0.013，CriteoUplift@10%+6.8%，OBD OPE error-8.4%
 
 
 
