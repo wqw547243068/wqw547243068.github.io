@@ -7,7 +7,7 @@ tags: 拖延症 软素质 工作效率 心理学 认知 自律 沟通 塔勒布 
 excerpt: 人性认知，自我修炼，如何提升自己？
 author: 鹤啸九天
 mathjax: true
-permalink: /skill
+permalink: /personal_skill
 ---
 
 * content
