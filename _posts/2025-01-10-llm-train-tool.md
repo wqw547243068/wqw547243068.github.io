@@ -1577,8 +1577,26 @@ Meshy recipe 中由开发者定义的配置由两部分组成：
 - ServiceGroup 描述一组相同角色的服务实例，包括稳定的 id、类型化 config、副本数以及每个副本使用的 GPU 数；
 - ColocationRing 描述共置的 ServiceGroup，以及它们在共置 GPU 上的调度模式与顺序。
 
+## 【202610-16】阿里 QwenGyre
 
+10月16日，阿里开源 QwenGyre 长程Agent的弹性训练框架
+- 开源代码仓：https://github.com/QwenLM/QwenGyre
+- 官方博客 qwenlm.github.io/blog/qwengyre/
+- 【2026-09-27】论文 [QwenGyre: An Elastic Reinforcement Learning Framework for Training xLong-Horizon Agents](http://arxiv.org/abs/2609.33848)
 
+LLM Agent 正越来越多地承担**超长程（XLong）任务**：单次执行可长达数小时、包含上百次"模型–环境"交互，每次 rollout（轨迹采样）消耗近 100 万 token。
+
+将**在线强化学习（RL）**应用于这类执行，面临两个根本性挑战：
+1. **执行方差极大、rollout 延迟极长**，导致 GPU 大量空转；
+2. **复杂的非线性分支**产生海量轨迹冗余，严重拖垮训练效率。
+
+**QWENGYRE** 面向超长程在线 RL 的端到端框架。
+
+QWENGYRE 在不中断正在执行任务的前提下，在 rollout 与训练之间**弹性**调度 GPU；
+
+其轨迹处理器则负责重构分支历史、对部分进展打分，并对冗余路径去重，从而把训练成本控制在可接受范围内。
+
+旗舰模型 **Qwen 3.8 2.4T** 上（每次 rollout 70 万 token），QWENGYRE 仅用 48 步就在 **NL2RepoBench** 上取得 **6.0% 的绝对提升（52.5% → 58.5%）**。在跨多个训练数据集领域的评测中，QWENGYRE 相比 Colocate 和 Async 两种基线分别带来最高 **1.85×** 和 **1.78×** 的加速。
 
 
 # 结束
