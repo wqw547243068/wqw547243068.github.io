@@ -164,13 +164,13 @@ LLM Judges 涵盖三大功能：
 
 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 是 EleutherAI（开源 AI 研究组织）开发的大模型统一评测框架。"体检中心"
 - 把模型送进来，自动跑完 200 多项检查，输出一份详细的"体检报告"。
+- [官方文档](https://slyracoon23.github.io/lm-evaluation-harness/)
 
 核心特点：
 - 任务最全：支持 200+ 评测任务，覆盖知识、推理、数学、代码、安全等多个维度
 - 模型兼容广：HuggingFace 模型、OpenAI API、Claude、Gemini、本地 Ollama 部署的模型，都能接
 - 社区标准：HuggingFace Open LLM Leaderboard 的官方评测工具，跑出来的分数可以直接上排行榜对比
 - 安装简单：一条 pip 命令搞定
-
 
 
 ```sh
@@ -184,6 +184,21 @@ pip install transformers torch accelerate
 ```
 
 启动评测
+
+python代码
+
+```py
+import lm_eval
+
+results = lm_eval.simple_evaluate(
+    model="gpt2",
+    tasks=["hellaswag", "mmlu"],
+    num_fewshot=0
+)
+```
+
+
+shell
 
 ```sh
 export OPENAI_API_KEY="你的API密钥"
