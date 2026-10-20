@@ -160,6 +160,8 @@ LLM Judges 涵盖三大功能：
 
 ### lm-evaluation-harness
 
+[Eleuther AI](http://www.eleuther.ai) 推出 [lm-evaluation-harness](https://github.com/eleutherai/lm-evaluation-harness)
+
 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 是 EleutherAI（开源 AI 研究组织）开发的大模型统一评测框架。"体检中心"
 - 把模型送进来，自动跑完 200 多项检查，输出一份详细的"体检报告"。
 
@@ -168,6 +170,8 @@ LLM Judges 涵盖三大功能：
 - 模型兼容广：HuggingFace 模型、OpenAI API、Claude、Gemini、本地 Ollama 部署的模型，都能接
 - 社区标准：HuggingFace Open LLM Leaderboard 的官方评测工具，跑出来的分数可以直接上排行榜对比
 - 安装简单：一条 pip 命令搞定
+
+
 
 ```sh
 # 创建虚拟环境
@@ -220,6 +224,156 @@ lm_eval \
 │ mmlu_anatomy    │ acc,none: 0.7000 │
 └─────────────────┴──────────────────┘
 ```
+
+
+```sh
+git clone https://github.com/EleutherAI/lm-evaluation-harness
+cd lm-evaluation-harness
+pip install -e .
+
+# Basic installation
+pip install lm-eval
+
+# With additional dependencies
+pip install "lm-eval[gptq,vllm]"
+
+# For development
+pip install -e ".[dev]"
+```
+
+使用
+
+```sh
+# 设置下最大并行数量的环境变量
+export NUMEXPR_MAX_THREADS=64
+# 如果不能连接huggingface，需要配置镜像
+export HF_ENDPOINT=https://hf-mirror.com
+# 查看支持的任务数据集
+lm-eval --tasks list
+```
+
+
+参数含义
+- --model：模型启动模式，可选hf代表huggingface，或者可选vllm,openai
+- --model_args：代表模型地址，可用huggingface仓库名（不是地址），例如EleutherAI/pythia-160m，或者本地地址例如./xxxxx
+  - 注意 model_args可以附带很多参数，用逗号分隔
+- --model_args pretrained=EleutherAI/gpt-j-6b,parallelize=True,load_in_4bit=True,peft=nomic-ai/gpt4all-j-lora \
+- --model_args pretrained={model_name},tensor_parallel_size={number of GPUs to use},dtype=auto,gpu_memory_utilization=0.8 \
+  - 这里说明model_args可以有很多模型加载的参数，例如并行，量化，微调模型的peft位置等
+- --tasks：代表测试任务，指定具体任务 openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq
+- --device：使用的GPU机器标号，注意这个参数只能写一个，如果想用多gpu请使用tensor_parallel_size参数或者accelerate启动器
+- --batch_size：auto代表自动选择batch大小，:4代表在测试过程中共自动重选4次batch大小
+- --output_path：保存评估结果 
+- --use_cache：来缓存先前运行的结果。这样可以避免重复执行相同的（模型、任务）对进行重新评分。
+
+```sh
+# 加载huggingface远程模型
+lm_eval --model hf \
+    --model_args pretrained=baichuan-inc/Baichuan-13B-Chat,trust_remote_code=true \
+    --tasks mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq \
+    --device cuda:0 \
+    --batch_size auto:1 \
+    --output_path ./eval_out/baichuan13b \
+    --use_cache ./eval_cache
+
+# 加载本地模型
+lm_eval --model hf \
+    --model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
+    --tasks toxigen,mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,winogrande,arc_easy,arc_challenge \
+    --batch_size auto \
+    --output_path ./eval_out/openbuddy13b \
+    --use_cache ./eval_cache
+
+# 使用accelerate启动器，这支持多GPU
+accelerate launch -m lm_eval --model hf \
+    --model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
+    --tasks mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq \
+    --batch_size auto:4
+
+accelerate launch -m lm_eval --model hf \
+    --model_args pretrained=/data/save_model/Qwen_pt/,trust_remote_code=true,dtype=bfloat16 \
+    --tasks glue,cmmlu,gsm8k,mmlu,boolq \
+    --batch_size 2
+    --output_path ./eval_out/pretrain_Qwen_14B_chat \
+
+lm_eval --model hf \
+    --model_args pretrained=./data/gpt2-large \
+    --tasks glue \
+    --batch_size auto \
+    --num_fewshot 5 \
+    --output_path ./eval_out/gpt2-large 
+
+lm_eval --model hf \
+    --model_args pretrained=./data/gpt2-xl \
+    --tasks mmlu,glue,squadv2 \
+    --batch_size auto \
+    --output_path ./eval_out/gpt2-xl \
+    --use_cache ./eval_cache/gpt2-xl
+
+CUDA_VISIBLE_DEVICES=4 lm_eval --model hf \
+--model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
+--tasks mmlu,super-glue-lm-eval-v1\
+--batch_size auto \
+--output_path ./eval_out/openbuddy13b \
+--use_cache ./eval_cache/openbuddy13b
+
+CUDA_VISIBLE_DEVICES=0 lm_eval --model hf \
+--model_args pretrained=/mnt/weijie/openbuddy-llama2-13b-v11.1-bf16 \
+--tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
+--batch_size auto \
+--output_path /mnt/weijie/eval_out/openbuddy13b \
+--use_cache /mnt/weijie/eval_cache/openbuddy13b
+
+CUDA_VISIBLE_DEVICES=1 lm_eval --model hf \
+--model_args pretrained=gpt2-large \
+--tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
+--batch_size auto \
+--output_path /mnt/weijie/eval_out/gpt2-large \
+--use_cache /mnt/weijie/eval_cache/gpt2-large
+
+CUDA_VISIBLE_DEVICES=2 lm_eval --model hf \
+--model_args pretrained=OpenBuddy/openbuddy-llama2-70b-v14.3,trust_remote_code=true,load_in_4bit=True \
+--tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
+--batch_size auto \
+--output_path /mnt/weijie/eval_out/openbuddy70b \
+--use_cache /mnt/weijie/eval_cache/openbuddy70b
+
+CUDA_VISIBLE_DEVICES=3 lm_eval --model hf \
+--model_args pretrained=gpt2-xl,trust_remote_code=true \
+--tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
+--batch_size auto \
+--output_path /mnt/weijie/eval_out/gpt2-xl \
+--use_cache /mnt/weijie/eval_cache/gpt2-xl
+
+CUDA_VISIBLE_DEVICES=4 lm_eval --model hf \
+--model_args pretrained=NousResearch/Llama-2-13b-chat-hf,trust_remote_code=true \
+--tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
+--batch_size auto \
+--output_path /mnt/weijie/eval_out/llama13b \
+--use_cache /mnt/weijie/eval_cache/llama13b
+```
+
+常用数据集：
+
+混合BenchMark:
+- glue(通用自然语言理解评估，包含一系列子数据集：single-sentence tasks CoLA and SST-2, similarity and paraphrasing tasks MRPC, STS-B and QQP, and natural language inference tasks MNLI, QNLI, RTE and WNLI.)
+- mmlu(多任务自然语言理解，包含57 subjects across STEM, the humanities, the social sciences, and more.)
+- lambada(BooksCorpus的大约10,000段落组成，在每个段落的最后一句话中都预测了一个缺失的目标词。丢失的单词始终是最后一句话的最后一句话，没有候选单词可供选择)
+- persona(闲聊数据)
+- pile(The Pile is a 825 GiB diverse, open source language modelling data set that consists of 22 smaller, high-quality datasets combined together.)
+- scrolls(长文本推理，The SCROLLS benchmark contains the datasets GovReport, SummScreenFD, QMSum, QASPER, NarrativeQA, QuALITY and ContractNLI.)
+
+子领域数据：
+- 道德: ethics_virtue,ethics_deontology,ethics_justice,ethics_utilitarianism(美德), crows_pairs(刻板印象), toxigen(毒性)
+- 真实性: truthfulqa
+- 翻译: wmt14,wmt16,translation,xcopa
+- 中文评测集: ceval-valid,cmmlu
+- QA: coqa(对话QA), csatqa(知识图谱QA), nq_open(ODQA领域), openbookqa (ODQA领域),triviaqa(ODQA领域), webqs(ODQA领域)
+- 数学推理: gsm8k,mathqa
+- 自然语言理解: race(机器阅读理解),squadv2
+- 自然语言推断: xnli,xwinograd
+
+
 
 ### ChatEval
 
@@ -418,148 +572,6 @@ ORI（O Routing‑Intelligence，路由智能），可调度多组大模型的�
 
 上述结果验证了多模型调度方案的优势；同时证明 ORI 自适应架构可以更好地处理多样化任务，为多‑大模型集群提供一套可扩展、高性能的解决方案。
 
-
-### lm-evaluation-harness
-
-[Eleuther AI](http://www.eleuther.ai) 推出 [lm-evaluation-harness](https://github.com/eleutherai/lm-evaluation-harness)
-
-```sh
-git clone https://github.com/EleutherAI/lm-evaluation-harness
-cd lm-evaluation-harness
-pip install -e .
-```
-
-使用
-
-```sh
-# 设置下最大并行数量的环境变量
-export NUMEXPR_MAX_THREADS=64
-# 如果不能连接huggingface，需要配置镜像
-export HF_ENDPOINT=https://hf-mirror.com
-# 查看支持的任务数据集
-lm-eval --tasks list
-```
-
-
-参数含义
-- --model：模型启动模式，可选hf代表huggingface，或者可选vllm,openai
-- --model_args：代表模型地址，可用huggingface仓库名（不是地址），例如EleutherAI/pythia-160m，或者本地地址例如./xxxxx
-  - 注意 model_args可以附带很多参数，用逗号分隔
-- --model_args pretrained=EleutherAI/gpt-j-6b,parallelize=True,load_in_4bit=True,peft=nomic-ai/gpt4all-j-lora \
-- --model_args pretrained={model_name},tensor_parallel_size={number of GPUs to use},dtype=auto,gpu_memory_utilization=0.8 \
-  - 这里说明model_args可以有很多模型加载的参数，例如并行，量化，微调模型的peft位置等
-- --tasks：代表测试任务，指定具体任务 openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq
-- --device：使用的GPU机器标号，注意这个参数只能写一个，如果想用多gpu请使用tensor_parallel_size参数或者accelerate启动器
-- --batch_size：auto代表自动选择batch大小，:4代表在测试过程中共自动重选4次batch大小
-- --output_path：保存评估结果 
-- --use_cache：来缓存先前运行的结果。这样可以避免重复执行相同的（模型、任务）对进行重新评分。
-
-```sh
-# 加载huggingface远程模型
-lm_eval --model hf \
-    --model_args pretrained=baichuan-inc/Baichuan-13B-Chat,trust_remote_code=true \
-    --tasks mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq \
-    --device cuda:0 \
-    --batch_size auto:1 \
-    --output_path ./eval_out/baichuan13b \
-    --use_cache ./eval_cache
-
-# 加载本地模型
-lm_eval --model hf \
-    --model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
-    --tasks toxigen,mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,winogrande,arc_easy,arc_challenge \
-    --batch_size auto \
-    --output_path ./eval_out/openbuddy13b \
-    --use_cache ./eval_cache
-
-# 使用accelerate启动器，这支持多GPU
-accelerate launch -m lm_eval --model hf \
-    --model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
-    --tasks mmlu,nq_open,triviaqa,truthfulqa,gsm8k,openbookqa,arc_easy,winogrande,hellaswag,arc_challenge,piqa,boolq \
-    --batch_size auto:4
-
-accelerate launch -m lm_eval --model hf \
-    --model_args pretrained=/data/save_model/Qwen_pt/,trust_remote_code=true,dtype=bfloat16 \
-    --tasks glue,cmmlu,gsm8k,mmlu,boolq \
-    --batch_size 2
-    --output_path ./eval_out/pretrain_Qwen_14B_chat \
-
-lm_eval --model hf \
-    --model_args pretrained=./data/gpt2-large \
-    --tasks glue \
-    --batch_size auto \
-    --num_fewshot 5 \
-    --output_path ./eval_out/gpt2-large 
-
-lm_eval --model hf \
-    --model_args pretrained=./data/gpt2-xl \
-    --tasks mmlu,glue,squadv2 \
-    --batch_size auto \
-    --output_path ./eval_out/gpt2-xl \
-    --use_cache ./eval_cache/gpt2-xl
-
-CUDA_VISIBLE_DEVICES=4 lm_eval --model hf \
---model_args pretrained=./openbuddy-llama2-13b-v11.1-bf16 \
---tasks mmlu,super-glue-lm-eval-v1\
---batch_size auto \
---output_path ./eval_out/openbuddy13b \
---use_cache ./eval_cache/openbuddy13b
-
-CUDA_VISIBLE_DEVICES=0 lm_eval --model hf \
---model_args pretrained=/mnt/weijie/openbuddy-llama2-13b-v11.1-bf16 \
---tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
---batch_size auto \
---output_path /mnt/weijie/eval_out/openbuddy13b \
---use_cache /mnt/weijie/eval_cache/openbuddy13b
-
-CUDA_VISIBLE_DEVICES=1 lm_eval --model hf \
---model_args pretrained=gpt2-large \
---tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
---batch_size auto \
---output_path /mnt/weijie/eval_out/gpt2-large \
---use_cache /mnt/weijie/eval_cache/gpt2-large
-
-CUDA_VISIBLE_DEVICES=2 lm_eval --model hf \
---model_args pretrained=OpenBuddy/openbuddy-llama2-70b-v14.3,trust_remote_code=true,load_in_4bit=True \
---tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
---batch_size auto \
---output_path /mnt/weijie/eval_out/openbuddy70b \
---use_cache /mnt/weijie/eval_cache/openbuddy70b
-
-CUDA_VISIBLE_DEVICES=3 lm_eval --model hf \
---model_args pretrained=gpt2-xl,trust_remote_code=true \
---tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
---batch_size auto \
---output_path /mnt/weijie/eval_out/gpt2-xl \
---use_cache /mnt/weijie/eval_cache/gpt2-xl
-
-CUDA_VISIBLE_DEVICES=4 lm_eval --model hf \
---model_args pretrained=NousResearch/Llama-2-13b-chat-hf,trust_remote_code=true \
---tasks cola,wnli,rte,sst2,mnli,mnli_mismatch,qnli,mrpc \
---batch_size auto \
---output_path /mnt/weijie/eval_out/llama13b \
---use_cache /mnt/weijie/eval_cache/llama13b
-```
-
-常用数据集：
-
-混合BenchMark:
-- glue(通用自然语言理解评估，包含一系列子数据集：single-sentence tasks CoLA and SST-2, similarity and paraphrasing tasks MRPC, STS-B and QQP, and natural language inference tasks MNLI, QNLI, RTE and WNLI.)
-- mmlu(多任务自然语言理解，包含57 subjects across STEM, the humanities, the social sciences, and more.)
-- lambada(BooksCorpus的大约10,000段落组成，在每个段落的最后一句话中都预测了一个缺失的目标词。丢失的单词始终是最后一句话的最后一句话，没有候选单词可供选择)
-- persona(闲聊数据)
-- pile(The Pile is a 825 GiB diverse, open source language modelling data set that consists of 22 smaller, high-quality datasets combined together.)
-- scrolls(长文本推理，The SCROLLS benchmark contains the datasets GovReport, SummScreenFD, QMSum, QASPER, NarrativeQA, QuALITY and ContractNLI.)
-
-子领域数据：
-- 道德: ethics_virtue,ethics_deontology,ethics_justice,ethics_utilitarianism(美德), crows_pairs(刻板印象), toxigen(毒性)
-- 真实性: truthfulqa
-- 翻译: wmt14,wmt16,translation,xcopa
-- 中文评测集: ceval-valid,cmmlu
-- QA: coqa(对话QA), csatqa(知识图谱QA), nq_open(ODQA领域), openbookqa (ODQA领域),triviaqa(ODQA领域), webqs(ODQA领域)
-- 数学推理: gsm8k,mathqa
-- 自然语言理解: race(机器阅读理解),squadv2
-- 自然语言推断: xnli,xwinograd
 
 
 ## Agent-as-a-Judge
