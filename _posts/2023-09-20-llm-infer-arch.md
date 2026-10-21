@@ -3,7 +3,7 @@ layout: post
 title:  大模型推理框架 LLM Inference Tool
 date:   2023-09-20 22:46:00
 categories: 大模型
-tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎 bert
+tags: gpt 量化 vllm deepspeed 推理 推测解码 sglang 多模态 投机采样 美杜莎 bert deepseek
 excerpt: 如何提升LLM推理效率？
 mathjax: true
 permalink: /llm_infer
@@ -892,6 +892,23 @@ LMDeploy是由上海人工智能实验室模型压缩和部署团队开发的部
 - 国内企业、政府机构部署，视觉语言混合任务。
 
 ### MLC-LLM
+
+
+### 【2026-10-20】DeepInfer
+
+开源推理框架：走向真正普惠的未来，https://mp.weixin.qq.com/s/5MEu2eeqNfBWXlkCKTd6sg
+
+DeepSeek 开源推理框架 DeepInfer
+- 已实现 DeepSeek V4.1 Flash 高吞吐、低延迟的大规模推理服务。
+
+DeepInfer 推理框架：集成高性能算子与深度优化的推理引擎，支持分布式推理、推测解码、SWA Bounded Replay、结构化输出等能力，兼容英伟达与华为昇腾平台。
+
+Deepseek-recipe 编解码组件：同步开源的生产级 Token 编解码组件，与 DeepSeek 官方 API 处理逻辑完整对齐，确保社区获得与官方部署一致的 API 体验。
+
+开源仓库
+- DeepInfer: https://github.com/deepseek-ai/DeepInfer
+- deepseek-recipe: https://github.com/
+- deepseek-ai/deepseek-recipe
 
 
 ## LLM 推理框架
