@@ -342,6 +342,8 @@ maigret user --ai --ai-model gpt-4o-mini
 
 <img width="900" height="100%" alt="78bed06a752c78feee8486ead504a01e" src="https://github.com/user-attachments/assets/393d463c-1801-4d18-8dbd-8d0d5b65effe" />
 
+【2026-10-23】部署实践：[OpenAI Privacy Filter 本地部署实测：772MB量化模型，8类隐私一键脱敏，公众人物自动跳过](https://zhchxiao123.github.io/posts/openai-privacy-filter-deployment/)
+
 
 特性：
 - 快速高效：所有 Token 均在单次前向传播中完成标注。
