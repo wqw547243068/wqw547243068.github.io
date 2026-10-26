@@ -3,7 +3,7 @@ layout: post
 title:  "数学历史与知识-Maths History and Konwledge"
 date:   2019-09-06 10:29:00
 categories: 数学基础
-tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方 可视化 菲尔兹
+tags: 丘成桐 数学 人文 陶哲轩 危机 软件 mathematica matlab 魔方 可视化 菲尔兹 π e
 excerpt: 人文与数学的前后关系；数学软件
 mathjax: true
 permalink: /math
@@ -11,6 +11,10 @@ permalink: /math
 
 * content
 {:toc}
+
+【2026-10-26】《大系统观》：数学的哲学
+- 凡是与**重复或循环**相关的事，都与`π`有关；
+- 凡是与**涨落**相关的事，都与`e`相关。​​
 
 - 【2021-3-9】[130张炫酷动图, 让你秒懂高中理科所有原理——物理篇](https://mp.weixin.qq.com/s/CD2GtHreMsq6G6lQoX8qLw)
 - 【2022-9-28】数学与机器学习，牛津大学Elizaveta Semenova [ppt总结](https://github.com/elizavetasemenova/DeepLearningIndaba2022/blob/main/Deep_Learning_Indaba.pdf), 基本数学工具包括线性代数、解析几何、矩阵分解、向量微积分、优化、概率和统计。本报告包括线性代数、微积分、概率和统计学。
