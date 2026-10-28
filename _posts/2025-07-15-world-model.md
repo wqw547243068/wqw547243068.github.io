@@ -3,7 +3,7 @@ layout: post
 title:  世界模型 World Model
 date:   2025-07-15 12:00:00
 categories: 大模型
-tags: LLM AGI 世界模型 系统 快思考 慢思考 因果 模拟器 具身智能
+tags: LLM AGI 世界模型 系统 快思考 慢思考 因果 模拟器 具身智能 自进化 icl
 excerpt: 世界模型专题笔记
 mathjax: true
 permalink: /world_model
@@ -848,6 +848,45 @@ LingBot-World 2.0 敢拿"连续跑一个多小时、画质无明显可见衰减"
   - 部署很克制： 主模型 14B，另配 1.3B 轻量实时版，支持单 GPU 部署；稳定输出 720p / 60fps。
   - 世界模型卷了这么久画质，下一关也许不是"生成得多真"，而是"这个世界能不能自己活着、活得够久"——权重和代码都开源了，感兴趣的可以去 Reactor、灵光上手测试跑一局。
 
+### 【2026-8-31】清华 Zeva 自进化
+
+[自进化WAM来了！清华AIR联手域变换提出具身In-Context Causal Learning](https://mp.weixin.qq.com/s/OMrRnOtlDyjFXlZDPF-n4Q)
+
+【2026-8-31】`清华`AIR与`域变换`联手给出的新答案：Zeva，最反直觉的地方：模型不更新，能力却持续增长。
+
+效果
+- 多个典型具身基准任务上，将冻结模型的累计成功率从26%提升到73%；
+- 真实化学实验室，机械臂在多次尝试中越用越稳。
+一次人类演示就能让模型“学会”一个新操作。
+
+Zeva 是首个实现 In-Context Causal Learning（ICCL）的具身WAM。不更新权重的情况下，从自己的交互经验中持续学习。当这种能力逐步成熟，具身智能将迎来属于自己的“GPT时刻”。
+- 论文：[Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation](https://arxiv.org/abs/2608.30880)
+- 项目主页：[Zeva](https://air-embodied-brain.github.io/Zeva/)
+
+具身智能的真正瓶颈是“模型到了现场能不能越做越好”。
+- 传统思路:想让机器人适应新环境，通常要重新采集数据、微调模型或做test-time training。但这些方法依赖梯度更新，速度慢、成本高，还可能在适应新任务时破坏已有能力。
+- 另一类 in-context learning: 让模型根据演示或任务描述调整行为，但主要解决“任务理解”，并没有让模型从自己的动作后果中学习物理因果。
+
+从“任务泛化”到“因果迁移”
+
+过去跨域更多是 sim-to-real、跨本体迁移、跨任务泛化。
+
+这些方法大多依赖数据对齐或表征对齐，本质是在不同域之间搬运“任务经验”。
+
+Zeva更进一步：迁移“动作与状态变化之间的因果关系”。同一个模型在仿真里学到的物理因果，可以被带到真实机械臂；在一次尝试里积累的失败经验，可以指导另一个相似物理过程的尝试；人类的一次演示，也可以直接变成机器人的因果上下文。这种跨域迁移通过上下文完成。模型在上下文中推断环境因果结构，并把因果知识用于下一次动作生成。
+
+这就是 Zeva 所定义 `In-Context Causal Learning`。
+
+示例一：从放置称量纸的误操作中提取因果关系，完成上下文内学习，提升任务精度。
+
+Zeva 是一个模型。Causal Transition Encoder、Dual-timescale Causal Memory、In-Context Policy Injection，都属于模型推理链路的一部分。在每个环境步，Zeva提取三类信号：视觉状态、动作编码、观察到的状态变化。被递归编码为Causal Interaction State，并进一步投影为Phase Token和Causal Interaction Signal。这些因果信号被组织成双时标上下文：Brief Interaction Trace负责当前尝试内的连贯执行，Persistent Interaction Memory跨尝试累积可复用经验。决策时，Zeva检索与当前任务阶段匹配的交互证据，构造Causal Prompt，注入冻结的Cosmos3动作生成模型。整个过程零梯度更新。
+
+Zeva如何“以小博大”
+- 亮点一：Causal Transition Encoder，让模型看见“动作→结果”。模型显式学习动作引起的状态变化。训练目标包括因果效果预测、任务聚类和阶段进度，让Causal Interaction Signal真正携带物理因果信息。
+- 亮点二：双时标因果记忆，让模型可以跨尝试自我进化。BIT保证当前执行的连贯性，PIM把一次失败、一次修正、一次成功沉淀为后续可检索的上下文。同一个模型在repeated attempts中越用越强。
+- 亮点三：In-Context Policy Injection，让冻结模型直接消费因果上下文。通过Causal Prompt把任务、阶段和交互证据注入生成模型，不加额外噪声、不参与flow loss，只作为条件影响后续动作。这是“不调权重也能进化”的关键设计
+
+
 ### 【2026-9-2】港中文 SolarWM
 
 SolarWM（2609.02886）可能是2026年交互式世界模型方向最完整的开源栈。
@@ -895,6 +934,7 @@ Odyssey 成立于2023年，专门研究**通用世界模型**的AI实验室。
 - Odyssey-3 则负责分析动作，再把下一秒的世界继续“想象”出来，继续翱翔。
 
 研究团队曾以 Odyssey-3 作为骨干模型，加上针对具体任务训练的小型策略，让它在印度道路上飙车、在《荒野大镖客2》里骑马、操纵机械臂和人形机器人等等。
+
 
 
 # 结束
