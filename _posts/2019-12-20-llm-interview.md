@@ -17,6 +17,13 @@ permalink: /llm_interview
 
 详见站内专题：[面试](interview)
 
+LeetCode 代码题过时
+- 2026年10月28日 Anthropic 招聘负责人 Felix Rieseberg 宣布取消团队编程面试
+  - Anthropic 工程经理：AI 时代新人拼的是创业式思维而非编码面试
+- 2026年10月28日 07:13 · 1 篇报道
+  - Yuchen Jin 谈 LeetCode 式编程面试正被 AI 淘汰
+
+
 ## 总结
 
 【2026-1-4】[大模型面试100问：从基础到实战](https://www.80aj.com/2026/01/04/llm-interview-guide/)
