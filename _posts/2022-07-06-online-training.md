@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "在线教育系列-Online Training"
+title:  "在线教育系列-Online Education"
 date:   2022-07-06 21:45:00
 categories: 深度学习
 tags: 对话系统 教育 培训 机器人 用户画像
@@ -203,6 +203,13 @@ AI陪练是新一代基于大模型技术的陪练产品，智能萃取销冠策
 样例
 - ![](https://image.woshipm.com/wp-files/2025/06/n6RKYvsnEuoRLRgbVqwX.jpg)
 - ![](https://www.beisen.com/public/mobile/ai4/ai3-1-2.jpg)
+
+
+### 3d互动教育
+
+【2026-10-29】3d互动教育课程开源。AI Saas是北美版，陆续改成国内的版本，目前已经可以开源55门。
+- 🔗 在线用：[3d互动教育](https://lab.tongjiang.app)
+- 🔗 GitHub：[tongjiang-lab](https://github.com/smithjohn78390/tongjiang-lab)
 
 
 
