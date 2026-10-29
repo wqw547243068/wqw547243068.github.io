@@ -28,8 +28,6 @@ diffusion 对整个答案的token都进行修改。准确预测下一个词太�
 - 主要原因： diffusion 可以一并修改多个timestep的内容，而不是逐个timestep采样，结果也是diffusion的效果更好。
 
 
-
-
 ## 观点
 
 【2026-6-13】`田渊栋`扩散模型观点 
@@ -56,6 +54,11 @@ diffusion 对整个答案的token都进行修改。准确预测下一个词太�
 3. AR与Diffusion的回归与统一 · Latent Space Reasoning
   - AR、Diffusion还有更为关键的对于模型内Latent Space Reasoning的完备建模，而AR和Diffusion是对其Latent Space的下游联合概率计算（AR），还是以时间步数为核心的的扩散或流匹配升降噪表征（Diffusion&Flow）也罢的流形分布计算到呈现的不同路径或方式。
   - 而transformer或其他诸如Titan或TTT等架构，亦对部分核心Latent Space的未来持续探索起着核心的作用。
+
+【2026-10-29】图解： [dllm动图讲解](wqw/demo/llm_dllm.html)
+
+<iframe src="https://wqw547243068.github.io/wqw/demo/llm_dllm.html" width='100%' height='100%' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
+
 
 
 ## ARM 问题
