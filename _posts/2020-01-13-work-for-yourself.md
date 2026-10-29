@@ -1752,6 +1752,25 @@ Looking for overseas remote work opportunities
 
 国外远程工作平台 Using remote work platforms: Here are some foreign remote work platforms where you can find remote work opportunities．
 
+【2026-10-29】远程平台汇总
+
+| 序号 | 网站名称 | 简介 |
+| ---- | ---- | ---- |
+| 1 | [FlexJobs]([https://www.flexjobs.com](https://www.flexjobs.com)) | 远程岗位质量较高，人工筛选岗位，适合担心踩坑的求职者 |
+| 2 | [We Work Remotely]([https://weworkremotely.com](https://weworkremotely.com)) | 老牌远程招聘站，开发、设计、营销、客服类岗位资源丰富 |
+| 3 | [Remote.co]([https://remote.co](https://remote.co)) | 专注远程岗位招聘，覆盖全职、兼职、自由职业 |
+| 4 | [Upwork]([https://www.upwork.com](https://www.upwork.com)) | 海外主流接单平台，覆盖设计、开发、写作、翻译、运营等品类 |
+| 5 | [Freelancer]([https://www.freelancer.com](https://www.freelancer.com)) | 全球自由职业竞标平台，项目多，支持投标接单 |
+| 6 | [Toptal]([https://www.toptal.com](https://www.toptal.com)) | 准入门槛高，面向资深开发、设计、产品、商业人才 |
+| 7 | [Wellfound]([https://wellfound.com](https://wellfound.com)) | 原 AngelList Talent，海外初创公司岗位聚集地 |
+| 8 | [Working Nomads]([https://www.workingnomads.com](https://www.workingnomads.com)) | 面向数字游民的职位库，全职、兼职、合同工齐全 |
+| 9 | [Remote OK]([https://remoteok.com](https://remoteok.com)) | 经典远程岗位看板，开发、设计、文案、客服岗位更新量大 |
+| 10 | [Jobspresso]([https://jobspresso.co](https://jobspresso.co)) | 偏向科技、营销、客服方向，岗位经过筛选，页面简洁 |
+| 11 | [Hubstaff Talent]([https://talent.hubstaff.com](https://talent.hubstaff.com)) | 免费远程人才对接平台，直连企业与自由职业者 |
+| 12 | [Virtual Vocations]([https://www.virtualvocations.com](https://www.virtualvocations.com)) | 岗位分类细致，覆盖50+远程方向，新手友好 |
+| 13 | [SkipTheDrive]([https://www.skipthedrive.com](https://www.skipthedrive.com)) | 客服、会计、营销、开发、HR岗位多，含不少入门岗位 |
+| 14 | [SimplyHired]([https://www.simplyhired.com](https://www.simplyhired.com)) | 综合职位搜索引擎，支持按岗位、公司、地区筛选 |
+
 
 国外接私活因为有**英文门槛**，而且结算用的是**美元**，工资相较于国内会高一些；但是想在这些网站上找到兼职得有比较好的网速，因为稍有不慎这些单子就会被**东南亚**和**印度**那边的程序员以价格优势给拿下。
 1. `Upwork`：Upwork, The World’s Work Marketplace
