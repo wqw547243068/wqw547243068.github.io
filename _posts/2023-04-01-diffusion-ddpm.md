@@ -117,6 +117,23 @@ Sony AI、OpenAI 和斯坦福大学，专著《The Principles of Diffusion Model
            id="review" style="width:100%;  height:800px; margin-top:0px;  margin-left:0px" >
 </object>
 
+### 历史
+
+【2026-10-29】扩散模型发展历史
+- 2014 年，Ian Godfellow 在蒙特利尔的酒吧里想出 GAN：让两个网络打一架，一个画，一个挑假图，当晚写代码，第一次运行就成功了。但 GAN 要一步画出整张图，训练也经常崩。
+- 2015年，斯坦福的`索尔-迪克斯坦`从**墨水扩散**里借力：正着学画不行，就反着来。
+  - 先把真照片一点点加噪点，变成一片雪花；
+  - 模型只学倒着走的每一小步，认出这一步加了什么噪点。
+  - 这个想法被冷落了五年
+- 2020 年，伯克利的乔纳森把训练方法简化，DDPM 效果追上 GAN， 让扩散翻身
+- 2021 年， OpenAI 论文说扩散模型在画图上赢过了 GAN。
+
+<img width="800" height="100%" alt="image" src="https://github.com/user-attachments/assets/79d62490-5bb8-4014-bc82-73b6f12a8644" />
+
+小红书[帖子](https://www.xiaohongshu.com/explore/6ae1fca50000000036012461?xsec_token=CBkZES9diu6-3C0BrqOxozJlRW0xu0jE4XoThlVTHbA2c=&xsec_source=app_share)
+
+
+
 ### 论文
 
 - 【2022-9-20】[扩散模型大全](https://github.com/heejkoo/Awesome-Diffusion-Models)
