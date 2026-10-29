@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>扩散语言模型（dLLM）原理 · 动态讲解</title>
+<style>
+:root{
+  --bg:#080a0f; --bg2:#101520; --bg3:#161d2b; --bg4:#1c2536;
+  --fg:#eaf0f8; --fg2:#93a1b5; --fg3:#5d6b80;
+  --bd:#252f42; --bd2:#1a2231;
+  --ar:#ff8c42; --dl:#4dabff; --accent:#a678ff; --ok:#3fd97f; --warn:#ffc44d;
+  --grad:linear-gradient(115deg,#4dabff 0%,#a678ff 50%,#ff6ec7 100%);
+  --glow-dl:0 0 24px rgba(77,171,255,.35);
+  --glow-ok:0 0 22px rgba(63,217,127,.3);
+  --glow-warn:0 0 22px rgba(255,196,77,.4);
+  --glow-acc:0 0 26px rgba(166,120,255,.4);
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#fbfcfe; --bg2:#ffffff; --bg3:#f2f5fa; --bg4:#e8edf6;
+    --fg:#111826; --fg2:#5a6779; --fg3:#8b97a8;
+    --bd:#dbe3ef; --bd2:#eaf0f7;
+    --ar:#c2570a; --dl:#0a6ed1; --accent:#6f3fd1; --ok:#0f8a45; --warn:#8a5600;
+    --grad:linear-gradient(115deg,#0a6ed1 0%,#6f3fd1 50%,#c72b8f 100%);
+    --glow-dl:0 0 20px rgba(10,110,209,.22);
+    --glow-ok:0 0 18px rgba(15,138,69,.2);
+    --glow-warn:0 0 18px rgba(168,106,0,.25);
+    --glow-acc:0 0 20px rgba(111,63,209,.25);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--fg);line-height:1.7;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+section{padding:64px 0;border-bottom:1px solid var(--bd2);position:relative}
+section:last-of-type{border-bottom:none}
+
+/* ===== scroll reveal ===== */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ===== HERO ===== */
+.hero{position:relative;padding:96px 0 72px;overflow:hidden;border-bottom:1px solid var(--bd2)}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
+@media (prefers-color-scheme: light){#hero-canvas{opacity:.34}}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 55% at 50% 40%,transparent 20%,var(--bg) 78%);
+}
+.hero-blob{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.34;pointer-events:none;
+  animation:float 18s ease-in-out infinite;
+}
+.blob-a{width:440px;height:440px;background:#4dabff;top:-160px;left:-90px}
+.blob-b{width:380px;height:380px;background:#a678ff;top:-60px;right:-80px;animation-delay:-6s}
+.blob-c{width:300px;height:300px;background:#ff6ec7;bottom:-140px;left:42%;animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(28px,-24px) scale(1.07)}66%{transform:translate(-22px,18px) scale(.95)}}
+.hero .wrap{position:relative;z-index:2}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dl);
+  padding:6px 14px;border-radius:999px;border:1px solid rgba(77,171,255,.3);
+  background:rgba(77,171,255,.08);margin-bottom:22px;
+}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:var(--glow-ok);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+.hero h1{font-size:clamp(30px,6vw,54px);line-height:1.14;font-weight:850;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 .grad{
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;background-size:220% auto;
+  animation:shine 7s linear infinite;
+}
+@keyframes shine{to{background-position:220% center}}
+.hero .lead{font-size:clamp(14.5px,2.7vw,18px);color:var(--fg2);max-width:700px;margin-bottom:30px}
+.hero .lead b{color:var(--fg);font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:9px}
+.badge{
+  font-size:12.5px;padding:6px 14px;border-radius:999px;
+  background:var(--bg2);border:1px solid var(--bd);color:var(--fg2);
+  transition:all .28s;cursor:default;
+}
+.badge:hover{border-color:var(--dl);color:var(--fg);box-shadow:var(--glow-dl);transform:translateY(-2px)}
+
+/* ===== headings ===== */
+h2{font-size:clamp(22px,4vw,32px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px;display:flex;align-items:baseline;gap:13px;flex-wrap:wrap}
+h2 .num{
+  font-size:12.5px;font-weight:800;color:var(--dl);
+  background:rgba(77,171,255,.1);padding:4px 10px;border-radius:7px;
+  border:1px solid rgba(77,171,255,.28);letter-spacing:.08em;
+}
+h3{font-size:clamp(15px,2.7vw,18px);font-weight:750;margin-bottom:10px;margin-top:26px}
+.sub{color:var(--fg2);font-size:clamp(13.5px,2.5vw,16px);margin-bottom:30px;max-width:780px}
+.sub b{color:var(--fg)}
+p{margin-bottom:14px}
+code{
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  font-size:.89em;background:var(--bg4);padding:2.5px 7px;border-radius:6px;
+  border:1px solid var(--bd);color:var(--accent);
+}
+
+/* ===== panels ===== */
+.panel{
+  background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);
+  padding:22px;margin-bottom:18px;position:relative;overflow:hidden;
+}
+.panel.glow::before{
+  content:"";position:absolute;inset:0;border-radius:var(--r);padding:1px;
+  background:var(--grad);opacity:.5;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+}
+.panel.tight{padding:17px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.lift{transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s}
+.lift:hover{transform:translateY(-4px);border-color:var(--dl);box-shadow:var(--glow-dl)}
+
+/* ===== tokens ===== */
+.tokens{display:flex;flex-wrap:wrap;gap:7px;min-height:46px;align-items:flex-start;perspective:600px}
+.tok{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:clamp(11px,2.2vw,13.5px);padding:6px 10px;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--bd);
+  transition:all .38s cubic-bezier(.2,.7,.3,1);
+  white-space:nowrap;position:relative;will-change:transform;
+}
+.tok.masked{color:var(--fg3);background:transparent;border:1px dashed var(--bd)}
+.tok.filled{
+  color:var(--fg);background:rgba(63,217,127,.14);border:1px solid rgba(63,217,127,.45);
+  animation:reveal .46s cubic-bezier(.34,1.56,.64,1);
+}
+.tok.revised{
+  color:var(--fg);background:rgba(166,120,255,.2);border:1px solid rgba(166,120,255,.6);
+  box-shadow:var(--glow-acc);animation:correct .62s cubic-bezier(.34,1.4,.5,1);
+}
+.tok.remasking{
+  background:rgba(255,196,77,.24);border:1px solid rgba(255,196,77,.75);
+  color:var(--warn);box-shadow:var(--glow-warn);animation:shake .46s ease-in-out;
+}
+.tok.newest{box-shadow:0 0 0 2.5px rgba(77,171,255,.6),var(--glow-dl)}
+.tok.struck{text-decoration:line-through;opacity:.55}
+@keyframes reveal{0%{transform:scale(.7) rotateX(-40deg);opacity:0}60%{transform:scale(1.09) rotateX(6deg)}100%{transform:scale(1) rotateX(0);opacity:1}}
+@keyframes correct{0%{transform:scale(1)}25%{transform:scale(1.24) rotate(-5deg)}55%{transform:scale(.94) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+/* ===== vs columns ===== */
+.vs{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.vs{grid-template-columns:1fr 1fr}}
+.vs-col{border:1px solid var(--bd);border-radius:var(--r);padding:18px;background:var(--bg2);position:relative;overflow:hidden}
+.vs-col.ar{border-top:3px solid var(--ar)}
+.vs-col.dl{border-top:3px solid var(--dl)}
+.vs-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.vs-title{font-weight:750;font-size:15px}
+.vs-col.ar .vs-title{color:var(--ar)}
+.vs-col.dl .vs-title{color:var(--dl)}
+.step-ind{font-size:12px;color:var(--fg2);font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace}
+.pbar{height:5px;border-radius:3px;background:var(--bd2);overflow:hidden;margin-top:14px}
+.pbar i{display:block;height:100%;width:0;border-radius:3px;transition:width .3s linear}
+.vs-col.ar .pbar i{background:var(--ar)}
+.vs-col.dl .pbar i{background:var(--dl)}
+
+/* ===== controls ===== */
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+button{
+  font-family:inherit;font-size:13.5px;font-weight:700;
+  padding:9px 17px;border-radius:9px;cursor:pointer;
+  background:var(--bg3);color:var(--fg);border:1px solid var(--bd);
+  transition:all .2s cubic-bezier(.2,.7,.3,1);min-height:38px;
+}
+button:hover:not(:disabled){background:var(--bg4);border-color:var(--dl);transform:translateY(-2px);box-shadow:var(--glow-dl)}
+button:active:not(:disabled){transform:translateY(0)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.primary{background:var(--dl);color:#fff;border-color:var(--dl)}
+button.primary:hover:not(:disabled){filter:brightness(1.13)}
+button.ghost{background:transparent}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;height:6px;border-radius:4px;
+  background:var(--bd);outline:none;flex:1;min-width:130px;max-width:340px;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:19px;height:19px;border-radius:50%;
+  background:var(--dl);cursor:pointer;border:3px solid var(--bg2);box-shadow:var(--glow-dl);
+}
+input[type=range]::-moz-range-thumb{
+  width:19px;height:19px;border-radius:50%;background:var(--dl);
+  cursor:pointer;border:3px solid var(--bg2);box-shadow:var(--glow-dl);
+}
+label.ctl{font-size:13px;color:var(--fg2);display:flex;align-items:center;gap:9px;flex:1;min-width:210px}
+.val{font-variant-numeric:tabular-nums;font-weight:800;color:var(--fg);min-width:46px;font-family:ui-monospace,Menlo,monospace}
+
+/* ===== step rail ===== */
+.rail{display:flex;gap:5px;margin:16px 0 14px;flex-wrap:wrap}
+.rail-dot{
+  flex:1;min-width:26px;height:5px;border-radius:3px;background:var(--bd2);
+  transition:all .35s;cursor:pointer;position:relative;
+}
+.rail-dot.done{background:var(--dl);box-shadow:var(--glow-dl)}
+.rail-dot.cur{background:var(--accent);box-shadow:var(--glow-acc);height:7px}
+.rail-dot.correct{background:var(--warn);box-shadow:var(--glow-warn)}
+.rail-dot:hover{transform:scaleY(1.8)}
+
+/* ===== step note ===== */
+.note{
+  display:flex;align-items:flex-start;gap:10px;font-size:13.5px;
+  padding:12px 15px;border-radius:10px;background:var(--bg3);
+  border-left:3px solid var(--dl);margin:14px 0;min-height:46px;
+  transition:all .3s;color:var(--fg2);
+}
+.note.correct{border-left-color:var(--warn);background:rgba(255,196,77,.08);color:var(--fg)}
+.note .ico{font-size:15px;line-height:1.4;flex:0 0 auto}
+.note b{color:var(--fg)}
+
+/* ===== confidence ===== */
+.conf{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.conf-row{display:flex;align-items:center;gap:9px;font-size:12px;font-family:ui-monospace,Menlo,monospace;
+  opacity:0;animation:fadeR .4s forwards}
+@keyframes fadeR{to{opacity:1}}
+.conf-pos{color:var(--fg3);min-width:28px;text-align:right}
+.conf-track{flex:1;height:8px;background:var(--bd2);border-radius:4px;overflow:hidden}
+.conf-fill{height:100%;width:0;border-radius:4px;background:var(--dl);transition:width .55s cubic-bezier(.2,.7,.3,1)}
+.conf-fill.high{background:var(--ok);box-shadow:var(--glow-ok)}
+.conf-fill.low{background:var(--warn);box-shadow:var(--glow-warn)}
+.conf-pct{min-width:42px;font-variant-numeric:tabular-nums;color:var(--fg2)}
+
+/* ===== formula ===== */
+.formula{
+  background:var(--bg3);border:1px solid var(--bd);border-radius:12px;
+  padding:20px;overflow-x:auto;margin:16px 0;
+  font-family:ui-monospace,Menlo,monospace;font-size:clamp(12px,2.2vw,14.5px);
+  line-height:2.1;position:relative;
+}
+.formula .hl{color:var(--dl);font-weight:800}
+.formula .hl2{color:var(--warn);font-weight:800}
+
+/* ===== timeline ===== */
+.tl{position:relative;padding-left:30px;margin-top:12px}
+.tl::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;
+  background:linear-gradient(180deg,var(--dl),var(--accent),var(--ar))}
+.tl-item{position:relative;margin-bottom:26px}
+.tl-item::before{
+  content:"";position:absolute;left:-27px;top:7px;width:11px;height:11px;
+  border-radius:50%;background:var(--dl);border:2.5px solid var(--bg);box-shadow:var(--glow-dl);
+  transition:transform .3s;
+}
+.tl-item:hover::before{transform:scale(1.35)}
+.tl-item.ar::before{background:var(--ar);box-shadow:0 0 20px rgba(255,140,66,.4)}
+.tl-date{font-size:12px;color:var(--dl);font-weight:800;letter-spacing:.05em;margin-bottom:4px}
+.tl-item.ar .tl-date{color:var(--ar)}
+.tl-name{font-weight:800;font-size:15.5px;margin-bottom:5px}
+.tl-desc{font-size:13.5px;color:var(--fg2)}
+
+/* ===== table ===== */
+.tbl{width:100%;border-collapse:collapse;font-size:clamp(12.5px,2.3vw,14px);margin-top:10px}
+.tbl th,.tbl td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--bd2);vertical-align:top}
+.tbl th{color:var(--fg2);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.tbl tbody tr{transition:background .2s}
+.tbl tbody tr:hover{background:var(--bg3)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td:first-child{font-weight:700}
+.tbl .g{color:var(--ok);font-weight:700}
+.tbl .b{color:var(--ar);font-weight:700}
+
+/* ===== callout ===== */
+.callout{
+  border-left:3px solid var(--dl);background:rgba(77,171,255,.08);
+  padding:14px 18px;border-radius:0 10px 10px 0;margin:18px 0;font-size:14px;
+}
+.callout.warn{border-left-color:var(--warn);background:rgba(255,196,77,.09)}
+.callout.ok{border-left-color:var(--ok);background:rgba(63,217,127,.09)}
+.callout b{color:var(--fg)}
+
+/* ===== legend ===== */
+.legend{display:flex;flex-wrap:wrap;gap:15px;font-size:12.5px;color:var(--fg2);margin-bottom:15px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:4px;display:inline-block;flex:0 0 auto}
+
+/* ===== stat ===== */
+.stat{font-size:clamp(26px,5vw,38px);font-weight:850;letter-spacing:-.03em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.stat-lbl{font-size:12.5px;color:var(--fg2);margin-top:4px}
+
+/* ===== tabs ===== */
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.tab{
+  font-family:inherit;font-size:13px;font-weight:700;padding:9px 16px;border-radius:9px;
+  cursor:pointer;background:var(--bg3);border:1px solid var(--bd);color:var(--fg2);
+  transition:all .25s cubic-bezier(.2,.7,.3,1);
+}
+.tab:hover{border-color:var(--dl);color:var(--fg);transform:translateY(-2px)}
+.tab.active{background:var(--dl);border-color:var(--dl);color:#fff;box-shadow:var(--glow-dl)}
+.tab.active:hover{transform:translateY(-2px)}
+.tab-win{border-color:var(--ok)}
+.tab-win.active{background:var(--ok);border-color:var(--ok);box-shadow:var(--glow-ok)}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeR .4s}
+
+/* ===== pixel grid ===== */
+.pixel-wrap{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.pixel-canvas{
+  border:1px solid var(--bd);border-radius:10px;background:var(--bg3);
+  display:block;flex:0 0 auto;max-width:100%;height:auto;
+}
+.pixel-side{flex:1;min-width:230px}
+
+/* ===== TOC dock ===== */
+.toc{
+  position:fixed;top:50%;transform:translateY(-50%);right:18px;z-index:40;
+  display:flex;flex-direction:column;gap:2px;padding:10px 8px;
+  background:color-mix(in srgb,var(--bg2) 88%,transparent);
+  border:1px solid var(--bd);border-radius:13px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 8px 28px rgba(0,0,0,.16);
+}
+@supports not (background: color-mix(in srgb, red 50%, blue)){
+  .toc{background:var(--bg2)}
+}
+.toc a{
+  display:flex;align-items:center;gap:8px;font-size:12px;font-weight:650;
+  color:var(--fg3);text-decoration:none;padding:5px 9px;border-radius:7px;
+  transition:all .22s cubic-bezier(.2,.7,.3,1);white-space:nowrap;
+}
+.toc a .tn{
+  font-family:ui-monospace,Menlo,monospace;font-size:10.5px;font-weight:800;
+  opacity:.8;min-width:15px;
+}
+.toc a:hover{color:var(--fg);background:var(--bg4);transform:translateX(-3px)}
+.toc a.active{color:var(--fg);background:rgba(77,171,255,.16)}
+.toc a.active .tn{color:var(--dl)}
+.toc-grp{
+  font-size:9.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--fg3);opacity:.75;padding:7px 9px 3px;
+}
+.toc-grp:first-child{padding-top:2px}
+/* 窄屏折叠为底部横条 */
+@media (max-width:1120px){
+  .toc{
+    top:auto;bottom:0;left:0;right:0;transform:none;
+    flex-direction:row;overflow-x:auto;gap:4px;padding:8px 10px;
+    border-radius:14px 14px 0 0;border-bottom:none;
+    scrollbar-width:none;
+  }
+  .toc::-webkit-scrollbar{display:none}
+  .toc a .tlabel{display:none}
+  .toc a{padding:6px 8px;min-height:34px}
+  .toc-grp{display:none}
+  body{padding-bottom:52px}
+}
+
+/* ===== math ===== */
+.math{
+  background:var(--bg3);border:1px solid var(--bd);border-radius:12px;
+  padding:18px 20px;margin:16px 0;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:clamp(12.5px,2.25vw,14.5px);line-height:1.95;color:var(--fg);
+}
+.math .mrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:5px 0}
+.math .tag{
+  flex:0 0 58px;font-size:11px;font-weight:800;letter-spacing:.06em;
+  color:var(--fg3);text-transform:uppercase;
+}
+.math .eq{flex:1;min-width:210px;font-variant-numeric:tabular-nums}
+.math .note{
+  font-size:12px;color:var(--fg3);margin-top:10px;padding-top:10px;
+  border-top:1px dashed var(--bd);line-height:1.75;
+}
+.math .hl{color:var(--dl);font-weight:800}
+.math .hl2{color:var(--warn);font-weight:800}
+.math .hl3{color:var(--ok);font-weight:800}
+.math var{font-style:italic;font-family:"Times New Roman",Georgia,serif;font-size:1.06em}
+.math sub,.math sup{font-size:.72em}
+
+/* ===== symbol table ===== */
+.sym{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+.sym td{padding:6px 10px 6px 0;vertical-align:top;border-bottom:1px solid var(--bd2)}
+.sym tr:last-child td{border-bottom:none}
+.sym td:first-child{
+  white-space:nowrap;font-family:ui-monospace,Menlo,monospace;
+  font-weight:750;color:var(--dl);width:1%;
+}
+.sym td:last-child{color:var(--fg2)}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:13px;
+  padding:7px 0;border-bottom:1px solid var(--bd2);font-variant-numeric:tabular-nums}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--fg2)}
+.kv .v{font-weight:750;font-family:ui-monospace,Menlo,monospace}
+
+/* ===== path card ===== */
+.path{border:1px solid var(--bd);border-radius:var(--r);padding:18px;background:var(--bg2)}
+.path.win{border-color:var(--ok);box-shadow:var(--glow-ok)}
+.path .tagline{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:10px}
+.path.bad .tagline{background:rgba(255,140,66,.15);color:var(--ar);border:1px solid rgba(255,140,66,.35)}
+.path.mid .tagline{background:rgba(255,196,77,.15);color:var(--warn);border:1px solid rgba(255,196,77,.35)}
+.path.win .tagline{background:rgba(63,217,127,.15);color:var(--ok);border:1px solid rgba(63,217,127,.4)}
+.path h4{font-size:15.5px;font-weight:800;margin-bottom:8px}
+.path p{font-size:13.5px;color:var(--fg2);margin-bottom:10px}
+.path p:last-child{margin-bottom:0}
+
+/* ===== svg chart ===== */
+.chart-box{background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.chart-box svg{display:block;width:100%;height:auto}
+.chart-lbl{font-size:12px;color:var(--fg2);text-align:center;margin-top:8px}
+
+footer{padding:40px 0;text-align:center;color:var(--fg3);font-size:12.5px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-blob blob-a"></div>
+  <div class="hero-blob blob-b"></div>
+  <div class="hero-blob blob-c"></div>
+  <div class="wrap">
+    <div class="eyebrow"><span class="pulse-dot"></span>Diffusion Language Models</div>
+    <h1>扩散语言模型（dLLM）<br><span class="grad">不是逐字打字，而是整句「显影」</span></h1>
+    <p class="lead">
+      自回归模型一个字一个字往外蹦；<br>扩散语言模型把整句话<b>同时涂黑</b>，
+      再分几十步一起擦亮，甚至<b>擦亮后,还能反悔重写</b>。
+    </p>
+    <div class="badges">
+      <span class="badge">LLaDA 8B</span>
+      <span class="badge">Mercury 2</span>
+      <span class="badge">Gemini Diffusion</span>
+      <span class="badge">Block Diffusion</span>
+      <span class="badge">掩码扩散</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TOC ================= -->
+<nav class="toc" id="toc" aria-label="目录">
+  <div class="toc-grp">基础</div>
+  <a href="#c2"><span class="tn">01</span><span class="tlabel">图片生成原理</span></a>
+  <a href="#c7"><span class="tn">02</span><span class="tlabel">扩散 vs GAN</span></a>
+  <div class="toc-grp">语言化</div>
+  <a href="#c3"><span class="tn">03</span><span class="tlabel">DLM 发展史</span></a>
+  <a href="#c1"><span class="tn">04</span><span class="tlabel">AR vs DLM</span></a>
+  <a href="#c5"><span class="tn">05</span><span class="tlabel">前向与反向</span></a>
+  <a href="#c6"><span class="tn">06</span><span class="tlabel">训练目标</span></a>
+  <div class="toc-grp">进阶</div>
+  <a href="#c10"><span class="tn">07</span><span class="tlabel">最新技术</span></a>
+  <a href="#c9"><span class="tn">08</span><span class="tlabel">选型指南</span></a>
+</nav>
+
+<!-- ================= 1 ================= -->
+<section id="c2">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">01</span>扩散模型原理：以图片生成为例</h2>
+    <p class="sub rv">
+      先说清楚扩散模型<b>到底在学什么</b>。初期用于图片生成：
+      <br>拿一张真实照片，逐步往上面撒噪声直到它变成纯雪花；再训练一个网络学会<b>把这团雪花一步步还原回照片</b>。
+      学会之后，从随机噪声出发就能「画出」新图。
+    </p>
+
+    <div class="panel glow rv">
+      <div class="controls" style="margin-bottom:16px">
+        <button class="primary" id="btn-pipe">▶ 播放扩散全过程</button>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:linear-gradient(90deg,#4dabff,#a678ff)"></i>图片：像素值被逐步加噪</span>
+        <span><i class="sw" style="background:var(--bg3);border:1px dashed var(--bd)"></i>纯噪声态</span>
+      </div>
+
+      <div class="pixel-wrap" style="justify-content:center">
+        <div style="text-align:center">
+          <canvas class="pixel-canvas" id="pipe-canvas" width="200" height="130"></canvas>
+          <div class="chart-lbl" id="pipe-stage">t = 0 · 原始图片</div>
+        </div>
+      </div>
+
+      <div class="note" id="pipe-note" style="border-left-color:var(--dl);margin-top:16px">
+        <span class="ico">💡</span>
+        <span id="pipe-note-text">点击播放：先看图片如何被噪声吞没（前向），再看它如何被逐步还原（反向）。</span>
+      </div>
+    </div>
+
+    <div class="grid2 rv">
+      <div class="panel">
+        <h3 style="margin-top:0">训练：只做一件事——预测噪声</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          取一份真实数据 <var>x</var><sub>0</sub>，随机抽一个时刻 <var>t</var>，按调度表一次性加噪得到 <var>x</var><sub>t</sub>；
+          让网络看着 <var>x</var><sub>t</sub> 和 <var>t</var>，去猜<b>这一步注入的噪声 ε 是什么</b>。
+        </p>
+        <div class="math" style="margin:14px 0 0">
+          <div class="mrow"><span class="tag">目标</span>
+            <span class="eq"><span class="hl">L</span><sub>simple</sub>(θ) =
+              𝔼<sub><var>t</var>,<var>x</var><sub>0</sub>,ε</sub> ‖
+              <span class="hl2">ε − ε<sub>θ</sub></span>(<var>x</var><sub><var>t</var></sub>, <var>t</var>)‖²</span>
+          </div>
+          <div class="note">
+            下标 <var>t</var>∼U{1,…,T}，<var>x</var><sub>0</sub>∼真实数据，ε∼𝒩(0,<b>I</b>)。
+            这就是一个 L2 回归——<b>每步都有标准答案</b>。
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">生成：从纯噪声走到样本</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          前向是一步到位的闭式表达，反向没有闭式解，只能用学好的网络<b>逐步近似</b>：
+        </p>
+        <div class="math" style="margin:14px 0 0">
+          <div class="mrow"><span class="tag">前向</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub> =
+              √<span style="text-decoration:overline">α</span><sub><var>t</var></sub> <var>x</var><sub>0</sub> +
+              √(1−<span style="text-decoration:overline">α</span><sub><var>t</var></sub>) · ε</span>
+          </div>
+          <div class="mrow"><span class="tag">反向</span>
+            <span class="eq"><var>x</var><sub><var>t</var>−1</sub> ∼
+              <span class="hl">p<sub>θ</sub></span>(<var>x</var><sub><var>t</var>−1</sub> | <var>x</var><sub><var>t</var></sub>)</span>
+          </div>
+          <div class="note">
+            生成时<b>没有真实 ε 可参照</b>，网络只能用自己估的 <span class="hl2">ε<sub>θ</sub></span> 反推
+            <!-- keep inline -->
+            <var>x</var><sub>0</sub> 的估计，再前进一步。T 次迭代后噪声沉降，数据浮现。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout rv">
+      <b>一句话抓住本质：</b>扩散不是在「画图」，而是在<b>学习一个从噪声指向数据的向量场</b>。
+      训练时用真实数据监督「这一步该去掉多少噪声」，生成时沿着这个方向反复走回数据分布。
+    </div>
+
+    <div class="grid3 rv">
+      <div class="panel tight lift">
+        <h3 style="margin-top:0;font-size:14.5px">三种主流形态</h3>
+        <table class="tbl" style="font-size:13px">
+          <tr><td>DDPM</td><td style="color:var(--fg2)">随机采样，T 步，经典基线</td></tr>
+          <tr><td>DDIM</td><td style="color:var(--fg2)">确定式，步数可大幅压缩</td></tr>
+          <tr><td>Flow Matching</td><td style="color:var(--fg2)">学直线路径，训练更稳</td></tr>
+        </table>
+      </div>
+      <div class="panel tight lift">
+        <h3 style="margin-top:0;font-size:14.5px">为什么需要 T 步</h3>
+        <p style="font-size:13px;color:var(--fg2);margin-bottom:0">
+          单步从纯噪声直接跳到数据太难。拆成 T 个小步，每步只需做「微小修正」，
+          学习任务变简单。代价就是推理慢——这也是后面 dLLM 只取几十步的原因。
+        </p>
+      </div>
+      <div class="panel tight lift">
+        <h3 style="margin-top:0;font-size:14.5px">文本的特殊性</h3>
+        <p style="font-size:13px;color:var(--fg2);margin-bottom:0">
+          图像像素是连续值，能直接加高斯噪声。文本 token 是离散的——
+          <b>「猫」加一点噪声还是「猫」吗？</b> 这正是第 05 节要解决的问题。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="c7">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">02</span>扩散模型 vs GAN</h2>
+    <p class="sub rv">
+      同样是从随机数造出内容，GAN 靠<b>对抗骗过裁判</b>，扩散靠<b>反复修掉噪声</b>。
+      这个差别决定了它们各自失败在哪里、强在哪里。切换下面的标签页逐项看。
+    </p>
+
+    <div class="tabs rv" id="gan-tabs">
+      <button class="tab active" data-tab="t1">训练机制</button>
+      <button class="tab tab-win" data-tab="t2">稳定性</button>
+      <button class="tab" data-tab="t3">质量与多样性</button>
+      <button class="tab" data-tab="t4">推理成本</button>
+      <button class="tab" data-tab="t5">2026 现状</button>
+    </div>
+
+    <!-- t1 -->
+    <div class="tab-panel active rv" id="t1">
+      <div class="grid2">
+        <div class="panel">
+          <h3 style="margin-top:0;color:var(--ar)">GAN：一个模仿者 vs 一个鉴定师</h3>
+          <p style="font-size:13.5px;color:var(--fg2)">
+            <b>生成器 G</b> 把噪声变成样本，试图骗过判别器；<b>判别器 D</b> 努力分辨真假。
+            两者在<b>极小极大博弈</b>中同时更新：
+          </p>
+          <div class="math" style="margin:14px 0">
+            <div class="mrow"><span class="tag">博弈</span>
+              <span class="eq">min<sub><var>G</var></sub> max<sub><var>D</var></sub>
+                𝔼<sub><var>x</var>∼<var>p</var><sub>data</sub></sub>[log <var>D</var>(<var>x</var>)]
+                + 𝔼<sub><var>z</var>∼<var>p</var><sub><var>z</var></sub></sub>[log(1−<var>D</var>(<var>G</var>(<var>z</var>)))]</span>
+            </div>
+            <div class="note">
+              <var>G</var> 与 <var>D</var> <b>同时更新、互相拉扯</b>，损失随对手变化——
+              这就是<b>非单调、无稳定信号</b>的根源。
+            </div>
+          </div>
+          <p style="font-size:13.5px;color:var(--fg2);margin-bottom:0">
+            模型<b>一次前向直接出结果</b>。判据是「像不像真的」——一个<b>相对的、动态的目标</b>。
+          </p>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0;color:var(--dl)">扩散：一个去噪匠</h3>
+          <p style="font-size:13.5px;color:var(--fg2)">
+            训练目标是<b>预测这一步的噪声</b>，是一个固定不变的<b>回归任务</b>：
+          </p>
+          <div class="math" style="margin:14px 0">
+            <div class="mrow"><span class="tag">回归</span>
+              <span class="eq"><span class="hl">L</span><sub>simple</sub>(θ) =
+                𝔼<sub><var>t</var>,<var>x</var><sub>0</sub>,ε</sub> ‖
+                ε − <span class="hl2">ε<sub>θ</sub></span>(<var>x</var><sub><var>t</var></sub>, <var>t</var>)‖²</span>
+            </div>
+            <div class="note">
+              目标固定、每步都有真实噪声作<b>标准答案</b>，所以损失曲线单调下降——
+              <b>绝对的、静态的目标</b>。
+            </div>
+          </div>
+          <p style="font-size:13.5px;color:var(--fg2);margin-bottom:0">
+            生成时迭代 T 步逐步还原，判据是「离真实数据还有多少噪声」——与对手无关。
+          </p>
+        </div>
+      </div>
+      <div class="callout">
+        <b>关键分野：</b>GAN 的目标<b>随对手变化而变化</b>；扩散的目标<b>始终固定</b>。
+        这一条几乎解释了后面所有的差异——包括为什么扩散稳、为什么 GAN 快。
+      </div>
+    </div>
+
+    <!-- t2 -->
+    <div class="tab-panel rv" id="t2">
+      <div class="grid2">
+        <div class="panel">
+          <h3 style="margin-top:0">训练是否稳定</h3>
+          <table class="tbl">
+            <thead><tr><th>维度</th><th>GAN</th><th>扩散</th></tr></thead>
+            <tbody>
+              <tr><td>损失曲线</td><td class="b">非单调，震荡</td><td class="g">单调下降</td></tr>
+              <tr><td>有无稳定信号</td><td class="b">无可靠训练信号</td><td class="g">每步都有监督</td></tr>
+              <tr><td>调试难度</td><td class="b">高，失败常无迹可循</td><td class="g">低，损失能反映进展</td></tr>
+              <tr><td>主要失败模式</td><td class="b">模式崩塌、判别器压倒</td><td class="g">收敛慢、引导病态</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0">模式崩塌 vs 覆盖不足</h3>
+          <div class="grid2" style="gap:12px">
+            <div>
+              <div class="chart-box">
+                <svg viewBox="0 0 180 150" role="img" aria-label="GAN 模式崩塌示意：只覆盖少数真实簇">
+                  <line x1="18" y1="132" x2="172" y2="132" stroke="var(--bd)" stroke-width="1.5"/>
+                  <line x1="18" y1="132" x2="18" y2="14" stroke="var(--bd)" stroke-width="1.5"/>
+                  <circle cx="42" cy="105" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="88" cy="88" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="134" cy="112" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="42" cy="105" r="5.5" fill="var(--ar)"/>
+                  <circle cx="43" cy="103" r="3" fill="var(--ar)" opacity=".7"/>
+                  <circle cx="41" cy="107" r="3" fill="var(--ar)" opacity=".7"/>
+                  <text x="42" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇1</text>
+                  <text x="88" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇2</text>
+                  <text x="134" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇3</text>
+                </svg>
+              </div>
+              <div class="chart-lbl" style="color:var(--ar)">GAN：塌到少数模式，簇 2/3 丢失</div>
+            </div>
+            <div>
+              <div class="chart-box">
+                <svg viewBox="0 0 180 150" role="img" aria-label="扩散覆盖全部真实簇">
+                  <line x1="18" y1="132" x2="172" y2="132" stroke="var(--bd)" stroke-width="1.5"/>
+                  <line x1="18" y1="132" x2="18" y2="14" stroke="var(--bd)" stroke-width="1.5"/>
+                  <circle cx="42" cy="105" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="88" cy="88" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="134" cy="112" r="13" fill="var(--fg3)" opacity=".2"/>
+                  <circle cx="42" cy="105" r="4.5" fill="var(--ok)"/>
+                  <circle cx="88" cy="88" r="4.5" fill="var(--ok)"/>
+                  <circle cx="134" cy="112" r="4.5" fill="var(--ok)"/>
+                  <circle cx="46" cy="101" r="3" fill="var(--ok)" opacity=".7"/>
+                  <circle cx="84" cy="92" r="3" fill="var(--ok)" opacity=".7"/>
+                  <circle cx="130" cy="108" r="3" fill="var(--ok)" opacity=".7"/>
+                  <text x="42" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇1</text>
+                  <text x="88" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇2</text>
+                  <text x="134" y="145" font-size="9" fill="var(--fg3)" text-anchor="middle">簇3</text>
+                </svg>
+              </div>
+              <div class="chart-lbl" style="color:var(--ok)">扩散：每个簇都采到，覆盖完整</div>
+            </div>
+          </div>
+          <p style="font-size:13px;color:var(--fg2);margin-top:12px;margin-bottom:0">
+            灰圈是真实数据分布，彩点生成样本。GAN 的对抗压力容易让生成器<b>只抓住最能骗过判别器的一小撮模式</b>，
+            其余模式被丢弃——这就是模式崩塌。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- t3 -->
+    <div class="tab-panel rv" id="t3">
+      <div class="panel">
+        <table class="tbl">
+          <thead>
+            <tr><th>维度</th><th>GAN</th><th>扩散</th><th>更优</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>单样本锐度</td><td>极高，边缘锐利</td><td>高，但风格更均衡</td><td class="b">GAN</td></tr>
+            <tr><td>分布覆盖度</td><td>易丢模式</td><td>覆盖更完整</td><td class="g">扩散</td></tr>
+            <tr><td>多样性可控性</td><td>难调，常需牺牲多样性换质量</td><td>可用引导强度、步数调节</td><td class="g">扩散</td></tr>
+            <tr><td>可控生成（条件）</td><td>需专门设计条件机制</td><td>Classifier-free guidance 等方案成熟</td><td class="g">扩散</td></tr>
+            <tr><td>训练数据量需求</td><td>相对更省数据</td><td>通常需要更大数据与算力</td><td class="b">GAN</td></tr>
+            <tr><td>局部编辑一致性</td><td>改动一处常引起全图变化</td><td>局部编辑更稳定可控</td><td class="g">扩散</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <b>为什么编辑稳定性差这么多：</b>GAN 一次性生成，所有像素<b>在一次前向里同时被决定</b>，扰动量会全局扩散；
+        扩散的迭代过程让每一小步只做局部修正，改动更「听话」。
+      </div>
+    </div>
+
+    <!-- t4 -->
+    <div class="tab-panel rv" id="t4">
+      <div class="grid2">
+        <div class="panel">
+          <h3 style="margin-top:0">推理成本对比</h3>
+          <div class="chart-box">
+            <svg viewBox="0 0 320 140" role="img" aria-label="GAN 单次前向与扩散多步去噪的耗时对比">
+              <text x="0" y="16" font-size="10" fill="var(--fg3)">GAN</text>
+              <rect x="0" y="22" width="42" height="20" rx="4" fill="var(--ar)"/>
+              <text x="50" y="36" font-size="10" fill="var(--ar)">1 次前向</text>
+              <text x="0" y="72" font-size="10" fill="var(--fg3)">扩散</text>
+              <rect x="0" y="78" width="36" height="20" rx="4" fill="var(--dl)"/>
+              <rect x="41" y="78" width="36" height="20" rx="4" fill="var(--dl)" opacity=".85"/>
+              <rect x="82" y="78" width="36" height="20" rx="4" fill="var(--dl)" opacity=".72"/>
+              <rect x="123" y="78" width="36" height="20" rx="4" fill="var(--dl)" opacity=".6"/>
+              <rect x="164" y="78" width="36" height="20" rx="4" fill="var(--dl)" opacity=".5"/>
+              <text x="208" y="92" font-size="10" fill="var(--dl)">… T 步</text>
+              <line x1="0" y1="118" x2="320" y2="118" stroke="var(--bd)" stroke-width="1"/>
+              <text x="0" y="132" font-size="9.5" fill="var(--fg3)">采样耗时 →</text>
+            </svg>
+          </div>
+          <div class="chart-lbl">GAN 一次出图；扩散需要 T 次串行去噪</div>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0">快慢与取舍</h3>
+          <table class="tbl">
+            <tr><td>GAN 推理</td><td style="color:var(--fg2)">1 次前向，极快，适合实时</td></tr>
+            <tr><td>扩散推理</td><td style="color:var(--fg2)">T 次串行，慢</td></tr>
+            <tr><td>缓解手段</td><td style="color:var(--fg2)">DDIM / 蒸馏 / 一致性模型</td></tr>
+            <tr><td>当前差距</td><td style="color:var(--fg2)">蒸馏后已明显缩小，但通常仍慢于 GAN</td></tr>
+          </table>
+          <p style="font-size:13px;color:var(--fg2);margin-top:12px;margin-bottom:0">
+            与 dLLM 呼应：文本扩散也把「步数」作为可调旋钮，
+            用更少步换更低延迟——但不可能降到 GAN 的 1 步。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- t5 -->
+    <div class="tab-panel rv" id="t5">
+      <div class="grid2">
+        <div class="panel">
+          <h3 style="margin-top:0;color:var(--dl)">扩散占主导的场景</h3>
+          <table class="tbl">
+            <tr><td>文生图</td><td style="color:var(--fg2)">Stable Diffusion、Midjourney 等主流系统</td></tr>
+            <tr><td>视频生成</td><td style="color:var(--fg2)">Sora 等，把扩散扩到时间维</td></tr>
+            <tr><td>语音合成</td><td style="color:var(--fg2)">高保真 TTS 的主流路线之一</td></tr>
+            <tr><td>文本生成</td><td style="color:var(--fg2)">LLaDA、Mercury 等 dLLM</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0;color:var(--ar)">GAN 仍在守住的场景</h3>
+          <table class="tbl">
+            <tr><td>实时人脸 / 风格化</td><td style="color:var(--fg2)">直播滤镜、实时换脸</td></tr>
+            <tr><td>实时视频特效</td><td style="color:var(--fg2)">需要毫秒级响应</td></tr>
+            <tr><td>超分辨率加速</td><td style="color:var(--fg2)">单步出结果即可满足</td></tr>
+            <tr><td>算力受限端侧</td><td style="color:var(--fg2)">T 步串行成本难以承受</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="callout ok">
+        <b>2026 的默认选择：</b>新项目做生成，<b>默认选扩散</b>——训练稳、覆盖好、可控性强。
+        只有在<b>延迟硬约束</b>（实时交互、端侧）时，GAN 或蒸馏后的少步扩散才是更合适的选择。
+        两者也在融合：用 GAN 做蒸馏、把对抗损失加进扩散训练，都是成熟做法。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="c3">
+
+  <div class="wrap">
+    <h2 class="rv"><span class="num">03</span>扩散语言模型发展史</h2>
+    <p class="sub rv">文本扩散长期被认为「做不过自回归」。转折在 2024—2025，工程化集中在 2026。</p>
+
+    <div class="tl rv">
+      <div class="tl-item">
+        <div class="tl-date">2019 — 2023 · 铺垫</div>
+        <div class="tl-name">离散扩散 & 掩码扩散理论成型</div>
+        <div class="tl-desc">D3PM、MaskGIT 把连续扩散骨架搬到离散空间。文本上能跑，质量明显落后自回归。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2024 · 转折</div>
+        <div class="tl-name">质量追平</div>
+        <div class="tl-desc">扩散在生成质量上首次与自回归可比，学界开始认真对待这条路线。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2025 · 规模化</div>
+        <div class="tl-name">LLaDA 8B — 从零训练到 8B 参数</div>
+        <div class="tl-desc">
+          掩码扩散目标从零预训练（2.3T tokens），在通用、数学、代码、中文等 15 个基准上与同规模自回归基线可比。
+          开源权重，证明扩散路线能 scale。
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2025 — 2026 · 工程化</div>
+        <div class="tl-name">Mercury 2 · Gemini Diffusion — 商业可用</div>
+        <div class="tl-desc">
+          Inception Labs 与 Google 把 dLLM 推到生产环境，以吞吐和延迟为主要卖点。闭源，但证明范式站得住。
+        </div>
+      </div>
+      <div class="tl-item ar">
+        <div class="tl-date">2026 · 主流做法</div>
+        <div class="tl-name">不再从零训练，而是「改造」自回归模型</div>
+        <div class="tl-desc">
+          更省算力的路径成为共识：用预训练好的自回归模型初始化，再用扩散目标继续训练。
+          Dream 7B 是代表之一；LLaDA 2.0 展示了百 B 级多阶段转换的可行性。
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026 · 落地架构</div>
+        <div class="tl-name">Block Diffusion 成为部署标配</div>
+        <div class="tl-desc">
+          序列切成固定大小的块（典型 32 token），块内并行去噪、块间顺序推进，
+          在并行度与质量之间取得平衡。
+        </div>
+      </div>
+    </div>
+
+    <div class="callout rv">
+      <b>一句话演进：</b>LLaDA 证明「能训练」，Dream 证明「能改造」，Mercury / Gemini Diffusion 证明「能上线」。
+    </div>
+  <
+
+    p">
+    <h3 class="rv" style="font-size:clamp(19px,3.4vw,24px);margin-top:34px"><span style="color:var(--dl)">专题</span> 四条迁移路线：从连续到离散</h3>
+    <p class="sub rv">
+      扩散在图像上大获成功，但直接把高斯噪声搬到文本上<b>行不通</b>。
+      这一节讲清障碍在哪、四条路线分别怎么解，以及为什么最后是「掩码」赢了。
+    </p>
+
+    <div class="panel rv">
+      <h3 style="margin-top:0">障碍：连续 vs 离散</h3>
+      <div class="grid2">
+        <div class="panel tight" style="background:var(--bg3)">
+          <h3 style="margin-top:0;font-size:14px;color:var(--ok)">图像的像素：连续</h3>
+          <p style="font-size:13px;color:var(--fg2);margin-bottom:0">
+            像素值是 <code>[0,255]</code> 的实数。<code>128 + 0.1×ε</code> 仍是合法像素，
+            <b>「加一点噪声」天然有意义</b>——邻域即相似。
+          </p>
+        </div>
+        <div class="panel tight" style="background:var(--bg3)">
+          <h3 style="margin-top:0;font-size:14px;color:var(--ar)">文本的 token：离散</h3>
+          <p style="font-size:13px;color:var(--fg2);margin-bottom:0">
+            token 是从词表里<b>挑一个</b>。「猫」加 0.1 的噪声得到什么？
+            <code>「猫」+ε</code> 在词表里<b>没有对应项</b>——这不是优化问题，是定义问题。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="rv">四条迁移路线</h3>
+    <div class="grid2 rv" style="margin-bottom:18px">
+      <div class="path bad">
+        <span class="tagline">路线 A · 首试</span>
+        <h4>嵌入空间做高斯扩散</h4>
+        <p>把 token 映射成连续词向量，在嵌入空间跑标准高斯扩散，最后<b>四舍五入</b>回 token。代表：Diffusion-LM（2022）。</p>
+        <p><b style="color:var(--ar)">瓶颈：</b>训练时处理连续值、生成时却要离散化，
+        <b>「取整」这一步把训练与生成的连续性打断了</b>。更麻烦的是，嵌入空间不是为扩散设计的——
+        空间中相邻的点，未必是语义相近的词。</p>
+      </div>
+
+      <div class="path mid">
+        <span class="tagline">路线 B · 换编码</span>
+        <h4>类比比特 Analog Bits</h4>
+        <p>不直接用词向量，而把每个 token 编码成<b>一串二进制位</b>，把每个位当成 ±1 的连续值来扩散，采样后取符号恢复。</p>
+        <p><b style="color:var(--warn)">改进：</b>避免了「任意词向量」的问题，配合自条件（self-conditioning）提升稳定性。
+        但仍要求「连续表示 → 离散」的最后一步转换。</p>
+      </div>
+
+      <div class="path mid">
+        <span class="tagline">路线 C · 换噪声</span>
+        <h4>离散扩散 / 转移矩阵</h4>
+        <p>不嵌入，直接在离散状态上定义马尔可夫破坏过程——用<b>转移矩阵 Q<sub>t</sub></b> 规定「每个 token 以多大概率变成别的 token」。代表：D3PM（2021）。</p>
+        <p><b style="color:var(--warn)">关键实验结论：</b>让 Q 基于<b>词向量最近邻</b>（相似词互变）的版本，
+        效果<b>反而比「均匀随机变成词表里任意词」更差</b>。结论很反直觉——
+        <b>词向量的相似度，并不构成扩散过程里有意义的「局部性」。</b></p>
+      </div>
+
+      <div class="path win">
+        <span class="tagline">路线 D · 胜出</span>
+        <h4>掩码扩散 Masked Diffusion</h4>
+        <p>把「加噪」的离散对应物定义为<b>替换成 <code>[MASK]</code></b>。
+        噪声越强 = 掩码率越高；全掩码 = 纯噪声。代表：LLaDA、MDLM。</p>
+        <p><b style="color:var(--ok)">为什么赢：</b>① 无需嵌入空间，无取整断层；
+        ② 目标与 BERT 的掩码语言建模同源，训练极其成熟；
+        ③ 吸收态天然定义了「完全破坏」的终点，反向过程有明确的收敛目标。</p>
+      </div>
+    </div>
+
+    <div class="panel glow rv">
+      <h3 style="margin-top:0">把两种「加噪」并排看</h3>
+      <p style="font-size:13.5px;color:var(--fg2)">
+        拖动滑块看同一份数据在两种范式下怎么被破坏。注意<b>本质差别</b>：
+      </p>
+      <div class="controls" style="margin-bottom:14px">
+        <label class="ctl">
+          噪声强度
+          <input type="range" id="cv-slider" min="0" max="100" value="45">
+          <span class="val" id="cv-val">0.45</span>
+        </label>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="legend"><span><i class="sw" style="background:linear-gradient(90deg,#4dabff,#a678ff)"></i>连续扩散：数值被平滑扰动</span></div>
+          <div class="pixel-wrap">
+            <canvas class="pixel-canvas" id="cv-canvas" width="240" height="150"></canvas>
+          </div>
+          <div class="kv" style="margin-top:10px"><span class="k">性质</span><span class="v" style="color:var(--dl)">渐变 · 可逆 · 加性</span></div>
+        </div>
+        <div>
+          <div class="legend"><span><i class="sw" style="background:var(--bg3);border:1px dashed var(--bd)"></i>掩码扩散：token 被整块替换</span></div>
+          <div class="tokens" id="cv-tokens" style="min-height:150px;align-content:flex-start"></div>
+          <div class="kv" style="margin-top:10px"><span class="k">性质</span><span class="v" style="color:var(--ok)">跳变 · 吸收态 · 替换</span></div>
+        </div>
+      </div>
+      <div class="chart-lbl">左边每个像素都还在，只是变模糊；右边 token 要么完好、要么整个变成 [MASK]，没有中间态。</div>
+    </div>
+
+    <h3 class="rv">把「掩码」写成数学</h3>
+    <p class="sub rv" style="margin-bottom:16px">
+      迁移的关键动作只有一个：<b>替换掉前向过程的定义</b>。对比下面两组式子，注意「加噪」是怎么变的。
+    </p>
+
+    <div class="grid2 rv" style="margin-bottom:18px">
+      <div class="panel">
+        <h3 style="margin-top:0;font-size:14.5px;color:var(--dl)">连续扩散（图像）</h3>
+        <div class="math" style="margin:12px 0 0">
+          <div class="mrow"><span class="tag">前向</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub> =
+              √<span style="text-decoration:overline">α</span><sub><var>t</var></sub><var>x</var><sub>0</sub> +
+              √(1−<span style="text-decoration:overline">α</span><sub><var>t</var></sub>) ε</span>
+          </div>
+          <div class="mrow"><span class="tag">状态</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub> ∈ ℝ<sup><var>d</var></sup>（连续）</span>
+          </div>
+          <div class="mrow"><span class="tag">噪声</span>
+            <span class="eq">ε ∼ 𝒩(0, <b>I</b>)　<span class="hl">加性的</span></span>
+          </div>
+          <div class="note">
+            每一步都在原值上<b>叠加</b>一个小扰动，因此任意两步之间是平滑过渡，<b>可逆且可微</b>。
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;font-size:14.5px;color:var(--ok)">掩码扩散（文本）</h3>
+        <div class="math" style="margin:12px 0 0">
+          <div class="mrow"><span class="tag">前向</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub>[<var>i</var>] =
+              <span class="hl3">M</span>　以概率 <var>t</var></span>
+          </div>
+          <div class="mrow"></div>
+          <div class="mrow"><span class="tag">否则</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub>[<var>i</var>] =
+              <var>x</var><sub>0</sub>[<var>i</var>]　以概率 1−<var>t</var></span>
+          </div>
+          <div class="mrow"><span class="tag">状态</span>
+            <span class="eq"><var>x</var><sub><var>t</var></sub> ∈ 𝒱<sup><var>L</var></sup>（离散）</span>
+          </div>
+          <div class="note">
+            每个位置<b>独立地</b>要么保持原文，要么整个变成吸收态 <span class="hl3">M</span>。
+            没有中间态，<b>不可微但无需可微</b>——损失直接建在分类分布上。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout rv">
+      <b>两个定义的差别只有一处：</b>图像用「加上高斯噪声」，文本用「以概率 t 替换成吸收态」。
+      其余全部保留——都要一个调度表、都要前向闭式、都要学一个反向去噪器、都要迭代采样。
+      <b>架构骨架没动，动的是噪声的定义。</b>
+    </div>
+
+    <div class="callout ok rv">
+      <b>迁移的实质：</b>不是「把图像扩散模型改小一点用来处理文字」，
+      而是<b>重新定义什么叫噪声</b>。图像里噪声是「高斯扰动」，文本里噪声是「掩码替换」。
+      框架（前向破坏 + 反向重建 + 迭代去噪）<b>原封不动保留</b>，只有噪声的定义换了。
+      这也是为什么 LLaDA 的损失函数长得像填空——它确实就是填空，只不过被放进了扩散的框架里。
+    </div>
+
+    <div class="callout rv">
+      <b>一个观察：</b>按这个定义，<b>BERT 其实早就是一个「单步的扩散模型」</b>——
+      它用掩码破坏、预测被掩位置，只是没有把「多步迭代去噪」这件事做起来。
+      从 BERT 到 LLaDA，补上的正是「迭代」这一步。
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="c1">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">04</span>自回归语言模型 vs 扩散语言模型</h2>
+    <p class="sub rv">同一个补全任务。左边逐字生成，右边并行去噪——看清它们「信息增长的方式」有多不一样。</p>
+
+    <div class="controls rv">
+      <button class="primary" id="btn-vs-play">▶ 播放对比</button>
+      <button id="btn-vs-reset">↺ 重置</button>
+    </div>
+
+    <div class="vs rv">
+      <div class="vs-col ar">
+        <div class="vs-head">
+          <div class="vs-title">自回归 · Autoregressive</div>
+          <div class="step-ind" id="ar-step">0 / 12 步</div>
+        </div>
+        <div class="tokens" id="ar-tokens"></div>
+        <div class="pbar"><i id="ar-bar"></i></div>
+        <p style="font-size:12.5px;color:var(--fg2);margin-top:14px;margin-bottom:0">
+          每步只产出 1 个 token，<b>写出即定稿</b>。串行、因果注意力。
+        </p>
+      </div>
+
+      <div class="vs-col dl">
+        <div class="vs-head">
+          <div class="vs-title">扩散 · Diffusion</div>
+          <div class="step-ind" id="dl-step">0 / 6 步</div>
+        </div>
+        <div class="tokens" id="dl-tokens"></div>
+        <div class="pbar"><i id="dl-bar"></i></div>
+        <p style="font-size:12.5px;color:var(--fg2);margin-top:14px;margin-bottom:0">
+          每步<b>同时</b>预测所有位置，挑最自信的一批揭晓。双向注意力、可回改。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout rv">
+      <b>关键差异：</b>自回归的「步数 = token 数」；扩散的「步数」是超参数，与长度解耦。
+      12 个 token 的句子，自回归必须跑 12 步，扩散 6 步就够——这是低延迟的来源。
+    </div>
+  </div>
+</section>
+
+<section id="c5">
+
+  <div class="wrap">
+    <h2 class="rv"><span class="num">05</span>DLM 原理：前向与反向</h2>
+    <p class="sub rv">
+      上一节确立了一件事：文本的「噪声」就是<b>掩码替换</b>。这一节把这个定义展开成完整的双向过程。
+    </p>
+
+    <h3 class="rv" style="margin-top:22px">
+      <span style="color:var(--ar)">Part A</span> 前向过程：把句子「打码」
+    </h3>
+    <p style="font-size:13.5px;color:var(--fg2)">
+      训练前先定义怎么破坏数据。对文本的破坏方式极简——<b>按比例把 token 换成 <code>[MASK]</code></b>。
+    </p>
+
+    <div class="panel glow rv">
+      <div class="controls" style="margin-bottom:16px">
+        <label class="ctl">
+          掩码率 t
+          <input type="range" id="mask-slider" min="0" max="100" value="45">
+          <span class="val" id="mask-val">0.45</span>
+        </label>
+        <button class="ghost" id="btn-mask-roll">🎲 重新采样</button>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:rgba(63,217,127,.5)"></i>保留的原始 token</span>
+        <span><i class="sw" style="background:transparent;border:1px dashed var(--bd)"></i>被替换成 [MASK]</span>
+      </div>
+      <div class="tokens" id="fwd-tokens"></div>
+      <div style="margin-top:16px;font-size:13px;color:var(--fg2)">
+        <b style="color:var(--fg)">训练目标：</b>模型看到打码后的句子，要还原<b>所有</b> <code>[MASK]</code> 位置的原文。
+        每个位置被遮住的概率独立，且都等于 <code>t</code>。
+      </div>
+    </div>
+
+    <div class="callout warn rv">
+      <b>与 BERT 的区别在这里：</b>BERT 用固定掩码率（如 15%），且不做生成。
+      LLaDA 用<b>随机掩码率</b> <code>t ~ U[0,1]</code>，让同一目标覆盖从「几乎没遮」到「全遮」的全部难度，
+      于是模型学会从纯噪声起步生成——这才是「扩散」而非「填空」。
+    </div>
+
+    <h3 class="rv" style="font-size:clamp(19px,3.4vw,24px);margin-top:36px"><span style="color:var(--dl)">Part B</span> 反向过程：迭代显影 · 且能反悔</h3>
+    <p class="sub rv">
+      这是整套机制的核心。从<b>全掩码</b>起步，反复「预测 → 挑最自信的揭晓」。
+      下面这个案例会走到第 5 步时<b>主动推翻自己</b>：把已经写出的字重新涂黑，再改掉。
+    </p>
+
+    <div class="controls rv">
+      <button class="primary" id="btn-d-play">▶ 播放全程</button>
+      <button id="btn-d-step">→ 单步</button>
+      <button id="btn-d-replay">↻ 回放</button>
+      <button id="btn-d-reset">↺ 重置</button>
+      <label class="ctl" style="flex:0 0 auto">
+        速度
+        <input type="range" id="speed-slider" min="1" max="10" value="6" style="max-width:120px">
+      </label>
+    </div>
+
+    <div class="panel glow rv">
+      <div class="vs-head">
+        <div class="vs-title" style="color:var(--dl)">目标序列</div>
+        <div class="step-ind" id="d-step">第 0 / — 步 · 已揭晓 0 / 8</div>
+      </div>
+
+      <div class="rail" id="d-rail"></div>
+
+      <div class="tokens" id="d-tokens"></div>
+
+      <div class="note" id="d-note">
+        <span class="ico">💡</span>
+        <span id="d-note-text">点击「单步」或「播放全程」，看模型如何从全掩码一步步显影——并在中途推翻自己。</span>
+      </div>
+
+      <div style="margin-top:16px">
+        <div style="font-size:12.5px;color:var(--fg2);font-weight:800;margin-bottom:10px;letter-spacing:.04em">
+          本步模型对每个 [MASK] 位置的置信度
+        </div>
+        <div class="conf" id="d-conf"></div>
+      </div>
+    </div>
+
+    <div class="grid3 rv">
+      <div class="panel tight lift">
+        <h3 style="margin-top:0;font-size:14.5px;color:var(--dl)">① 并行预测</h3>
+        <p style="font-size:13px;margin-bottom:0;color:var(--fg2)">
+          一次前向，<b>所有</b>掩码位置同时得到词表分布。这是与自回归最本质的分野。
+        </p>
+      </div>
+      <div class="panel tight lift">
+        <h3 style="margin-top:0;font-size:14.5px;color:var(--dl)">② 置信度排序</h3>
+        <p style="font-size:13px;margin-bottom:0;color:var(--fg2)">
+          按最高概率排序，<b>只揭晓最靠前的一小批</b>。低置信位置留到后续步再定。
+        </p>
+      </div>
+      <div class="panel tight lift" style="border-color:var(--warn)">
+        <h3 style="margin-top:0;font-size:14.5px;color:var(--warn)">③ 可回改 Remasking</h3>
+        <p style="font-size:13px;margin-bottom:0;color:var(--fg2)">
+          已揭晓的位置可以<b>重新涂黑</b>，让模型带着更充足的上下文重判。自回归做不到这一点。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout ok rv">
+      <b>为什么能低延迟：</b>自回归 8 个 token 要 8 次前向；这里 8 个 token 只需 6 次前向。
+      在 batch size 1~4 的场景下，实测可带来 <b>2~10×</b> 的生成延迟下降。
+    </div>
+
+    <div class="callout rv">
+      <b>可回改意味着什么：</b>自回归一旦写出 token，后面的 token 只能在这个前提下续写，错误会沿链条放大。
+      扩散允许「全局重审」——这也是它在<b>长链推理、代码生成</b>这类需要回溯的任务上被看好的原因。
+    </div>
+  </div>
+  </div>
+</section>
+
+<section id="c6">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">06</span>训练目标</h2>
+    <p class="sub rv">LLaDA 到底在优化什么？并不神秘——就是掩码语言建模损失，加了一个 <code>1/t</code> 权重。</p>
+
+    <div class="math rv">
+      <div class="mrow"><span class="tag">损失</span>
+        <span class="eq"><span class="hl">L</span>(θ) = − 𝔼<sub><var>t</var>∼U[0,1],<br><var>x</var><sub>0</sub>,<var>x</var><sub><var>t</var></sub></sub>
+          <span style="color:var(--fg3)">[</span>
+          <span class="hl2">1/<var>t</var></span> ·
+          Σ<sub><var>i</var> : <var>x</var><sub><var>t</var></sub>[<var>i</var>]=M</sub>
+          log <span class="hl">p<sub>θ</sub></span>( <var>x</var><sub>0</sub>[<var>i</var>] | <var>x</var><sub><var>t</var></sub> )
+          <span style="color:var(--fg3)">]</span></span>
+      </div>
+      <div class="mrow"></div>
+      <div class="mrow"><span class="tag">等价</span>
+        <span class="eq">= − (1/<var>t</var>) · Σ<sub><var>i</var>∈掩码位</sub>
+          log <span class="hl">p<sub>θ</sub></span>(<var>x</var><sub>0</sub>[<var>i</var>] | 未掩码的上下文)</span>
+      </div>
+      <div class="note">
+        读法：<b>把「带权重的交叉熵」在自己造的打码数据上求期望</b>。
+        它同时是负对数似然的变分上界，因此 LLaDA 是有原则的生成模型，不只是「借用了填词技巧」。
+      </div>
+    </div>
+
+    <div class="grid2 rv">
+      <div class="panel">
+        <h3 style="margin-top:0">符号表</h3>
+        <table class="sym">
+          <tr><td>θ</td><td>模型参数</td></tr>
+          <tr><td>t</td><td>掩码率，每步从 U[0,1] 重新采样</td></tr>
+          <tr><td>x<sub>0</sub></td><td>干净的真实序列，长度 L</td></tr>
+          <tr><td>x<sub>t</sub></td><td>x₀ 的加噪版本：每位独立以概率 t 变 M</td></tr>
+          <tr><td>M</td><td>吸收态 <code>[MASK]</code>；一旦变 M 就不再变</td></tr>
+          <tr><td>Σ<sub>i∈掩码位</sub></td><td>只对被打码的位置求和</td></tr>
+          <tr><td>1/t</td><td>权重：低掩码率下把单点损失放大</td></tr>
+          <tr><td>p<sub>θ</sub>(·|·)</td><td>模型在每个掩码位给出的词表分布</td></tr>
+        </table>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">为什么权重是 1/t</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          掩码率 t 越小，被遮的位置越少，参与求和的项也越少。若不加权，
+          <b>「几乎没被遮」这类简单样本的梯度会被淹没</b>，模型学不到低噪声区间的还原能力。
+        </p>
+        <div class="math" style="margin:12px 0">
+          <div class="mrow"><span class="tag">直觉</span>
+            <span class="eq">掩码位数量 ≈ <var>t</var>·<var>L</var>，
+              乘以 <span class="hl2">1/<var>t</var></span> 后 ≈ <var>L</var>（与 <var>t</var> 无关）</span>
+          </div>
+        </div>
+        <p style="font-size:13.5px;color:var(--fg2);margin-bottom:0">
+          归一化之后，<b>每个噪声等级获得同等权重</b>——而低噪声正是反向生成最后几步的战场。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout rv">
+      <b>同一目标贯穿始终：</b>预训练和 SFT 用同一个损失。SFT 时只把 response 段打码、prompt 保持可见，
+      模型就自然学会「给定指令生成回复」，无需换目标函数。
+    </div>
+  </div>
+</section>
+
+<!-- ================= 7 · 最新技术 ================= -->
+<section id="c10">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">07</span>最新技术：2026 年的四条主线</h2>
+    <p class="sub rv">
+      机制讲完了，看它现在进化到哪。dLLM 这一年从研究走进了工程，四条主线最值得关注。
+    </p>
+
+    <div class="grid2 rv" style="margin-bottom:18px">
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--dl)">① 块扩散成为部署标配</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          不整句并行，而是把序列切成<b>固定大小的块</b>（典型 32 token）：块内并行去噪、块间按序推进。
+          这样既保留了并行的速度，又拿回了自回归的<b>长序列稳定性</b>。
+        </p>
+        <div class="math" style="margin:12px 0 0">
+          <div class="mrow"><span class="tag">结构</span>
+            <span class="eq">[ 块1 ] → [ 块2 ] → [ 块3 ] → ⋯　<span class="hl">块内并行</span>，<span class="hl2">块间串行</span></span>
+          </div>
+          <div class="note">块一旦去噪完成就提交进 KV cache，下一块在此基础上初始化。</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--dl)">② 从零训练 → 改造自回归模型</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          从零预训练成本太高。<b>2026 的主流做法</b>是拿已训练好的自回归模型做初始化，
+          再用扩散目标继续训练——复用同一套 transformer 主干，成本大幅下降。
+        </p>
+        <table class="tbl" style="font-size:13px">
+          <tr><td>DiffuLLaMA</td><td style="color:var(--fg2)">证明 AR 模型可转换</td></tr>
+          <tr><td>Dream 7B</td><td style="color:var(--fg2)">AR 初始化 + 针对性训练，开源最强</td></tr>
+          <tr><td>LLaDA 2.0</td><td style="color:var(--fg2)">多阶段转换，验证百 B 级可行</td></tr>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--dl)">③ MoE 化与规模化</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          <b>LLaDA MoE v2</b> 系统刻画了 MoE 版 dLLM 的 scaling 行为，
+          发现它的最优超参与自回归<b>并不相同</b>：
+        </p>
+        <table class="tbl" style="font-size:13px">
+          <tr><td>批大小</td><td style="color:var(--fg2)">最优值随算力增长<b>更快</b></td></tr>
+          <tr><td>学习率</td><td style="color:var(--fg2)">随算力衰减<b>更迅速</b></td></tr>
+          <tr><td>配比</td><td style="color:var(--fg2)">略偏向数据侧（token 预算增长更快）</td></tr>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;color:var(--dl)">④ 后训练与推理加速</h3>
+        <p style="font-size:13.5px;color:var(--fg2)">
+          采样轨迹本身成了优化对象——把每一步去噪当作<b>决策</b>来强化学习：
+        </p>
+        <table class="tbl" style="font-size:13px">
+          <tr><td>轨迹感知 RL</td><td style="color:var(--fg2)">对整个去噪轨迹做奖励优化</td></tr>
+          <tr><td>揭晓顺序</td><td style="color:var(--fg2)">把「先揭哪个」作为 RL 动作空间</td></tr>
+          <tr><td>Fast-dLLM</td><td style="color:var(--fg2)">免训练加速：KV cache + 并行解码</td></tr>
+          <tr><td>块级 KV cache</td><td style="color:var(--fg2)">为双向注意力设计近似缓存（ICLR 2026）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel glow rv">
+      <h3 style="margin-top:0">标志性产品：DiffusionGemma（2026-06）</h3>
+      <div class="grid2" style="margin-top:14px">
+        <div>
+          <table class="tbl">
+            <tr><td>规模</td><td style="color:var(--fg2)">26B MoE（4B 激活）</td></tr>
+            <tr><td>基座</td><td style="color:var(--fg2)">Gemma 4 26B A4B</td></tr>
+            <tr><td>块大小</td><td style="color:var(--fg2)">256 token 一次性并行生成</td></tr>
+            <tr><td>推理栈</td><td style="color:var(--fg2)"><b>首个被 vLLM 原生支持的 dLLM</b></td></tr>
+            <tr><td>速度</td><td style="color:var(--fg2)">GPU 上最高约 <b>4×</b> 提速</td></tr>
+            <tr><td>许可</td><td style="color:var(--fg2)">Apache 2.0，开放权重</td></tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:13.5px;color:var(--fg2)">
+            <b>定位很明确：不是替代自回归。</b>Google 自己的说法是
+            「自回归 Gemma 4 仍是高质量生产输出的标准」，DiffusionGemma 面向
+            <b>延迟敏感的本地交互场景</b>——行内编辑、快速迭代、非线性文本。
+          </p>
+          <p style="font-size:13.5px;color:var(--fg2);margin-bottom:0">
+            技术上它采用<b>块自回归扩散</b>：256 token 块内并行去噪，块完成后提交 KV cache，
+            再以新画布处理下一块——把「并行的速度」和「串行的稳定」缝在一起。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn rv">
+      <b>一个反方观点，值得记录：</b>2026 年的讨论中也有明确唱反调的声音——有人主张
+      <b>「离散扩散语言模型还不是自回归语言的替代品」</b>。同年 ICML 的杰出论文
+      《The Flexibility Trap》更进一步质疑：dLLM 引以为傲的<b>「任意顺序生成」到底有多少真实价值</b>。
+      这一节列的是技术进展，<b>不等于已经取得全面优势</b>——机制上能不能赢，和当下有没有赢，是两件事。
+    </div>
+  </div>
+</section>
+
+<section id="c9">
+  <div class="wrap">
+    <h2 class="rv"><span class="num">08</span>DLM 选型指南：一份诚实的权衡表</h2>
+    <p class="sub rv">扩散不是全面替代。优势很具体，短板同样具体。</p>
+
+    <div class="panel rv" style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr><th>维度</th><th>自回归 AR</th><th>扩散 dLLM</th><th>谁更优</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>生成延迟<br><span style="font-weight:400;color:var(--fg2);font-size:12px">batch 1~4</span></td>
+            <td>步数 = token 数，串行</td>
+            <td>步数与长度解耦，并行揭晓</td>
+            <td class="g">扩散 2~10×</td>
+          </tr>
+          <tr>
+            <td>高并发吞吐</td>
+            <td>KV cache 复用成熟，批次堆叠效率高</td>
+            <td>并行去噪的多步特性在高 batch 下优势收窄</td>
+            <td class="b">自回归更稳</td>
+          </tr>
+          <tr>
+            <td>注意力</td>
+            <td>因果掩码，只能看左侧</td>
+            <td>双向，每个位置可看全局</td>
+            <td class="g">扩散</td>
+          </tr>
+          <tr>
+            <td>纠错能力</td>
+            <td>写出即定稿，错误沿链条放大</td>
+            <td>Remasking 允许回改已揭晓位置</td>
+            <td class="g">扩散</td>
+          </tr>
+          <tr>
+            <td>训练成熟度</td>
+            <td>数年工程积累，配方极稳定</td>
+            <td>仍在演进，超参与调度技巧影响大</td>
+            <td class="b">自回归</td>
+          </tr>
+          <tr>
+            <td>流式输出</td>
+            <td>天然逐字流式，体验好</td>
+            <td>整块揭晓，增量流式需额外设计</td>
+            <td class="b">自回归</td>
+          </tr>
+          <tr>
+            <td>生态与工具链</td>
+            <td>vLLM 等推理栈高度优化</td>
+            <td>专用推理栈仍在补齐</td>
+            <td class="b">自回归</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok rv" style="margin-top:24px">
+      <b>选型直觉：</b>对<b>延迟敏感、batch 小</b>的场景（实时对话、语音、搜索改写、代码补全），
+      扩散收益最直接。对<b>吞吐优先、成本优先</b>的大批量离线任务，成熟的自回归栈通常更稳妥。
+      分野的本质是「优化首字延迟」还是「优化每 token 成本」。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">基于 LLaDA 论文与 2026 年公开技术报告的整理 · 动画为原理示意，非真实模型输出</div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+const $ = id => document.getElementById(id);
+
+/* ============================================================
+   0. 滚动揭示
+   ============================================================ */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach((el,i)=>{
+  el.style.transitionDelay = (i%4)*55 + 'ms';
+  io.observe(el);
+});
+
+/* ============================================================
+   1. HERO Canvas — 环境粒子：token 在掩码与显影间循环
+   ============================================================ */
+(function heroCanvas(){
+  const cv = $('hero-canvas'); if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const CHARS = '扩散模型迭代显影回改并行去噪掩码生成'.split('');
+  let W=0,H=0,DPR=1, cells=[], raf=null, running=true;
+  const isDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    const r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(devicePixelRatio||1, 2);
+    W = r.width; H = r.height;
+    cv.width = W*DPR; cv.height = H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function build(){
+    const cols = Math.max(6, Math.floor(W/86));
+    const rows = Math.max(3, Math.floor(H/58));
+    cells = [];
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      cells.push({
+        x:(c+0.5)*(W/cols) + (Math.random()-.5)*14,
+        y:(r+0.5)*(H/rows) + (Math.random()-.5)*10,
+        ch: CHARS[Math.floor(Math.random()*CHARS.length)],
+        p: Math.random(),        // 显影进度 0..1
+        dir: Math.random()<.5?1:-1,
+        sp: 0.0022 + Math.random()*0.0055,
+        hold: Math.random()*260
+      });
+    }
+  }
+  function draw(){
+    if(!running){ raf=null; return; }
+    ctx.clearRect(0,0,W,H);
+    const dark = isDark();
+    cells.forEach(o=>{
+      if(o.hold>0){ o.hold--; }
+      else{
+        o.p += o.dir*o.sp;
+        if(o.p>=1){ o.p=1; o.dir=-1; o.hold=90+Math.random()*210; }
+        if(o.p<=0){ o.p=0; o.dir=1; o.hold=90+Math.random()*210;
+          o.ch = CHARS[Math.floor(Math.random()*CHARS.length)]; }
+      }
+      const a = 0.06 + o.p*0.34;
+      if(o.p < 0.16){
+        // 掩码态：仅一个方块轮廓
+        ctx.globalAlpha = 0.14;
+        ctx.strokeStyle = dark ? '#4dabff' : '#0a6ed1';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(o.x-7, o.y-8, 26, 20);
+      }else{
+        ctx.globalAlpha = a;
+        const prog = Math.min(1, (o.p-0.16)/0.3);
+        ctx.fillStyle = dark
+          ? `rgba(${Math.round(77+89*prog)},${Math.round(171-51*prog)},255,1)`
+          : `rgba(${Math.round(10+101*prog)},${Math.round(110-47*prog)},${Math.round(209+0*prog)},1)`;
+        ctx.font = '600 13px ui-monospace, Menlo, monospace';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(o.ch, o.x, o.y);
+      }
+      ctx.globalAlpha = 1;
+    });
+    raf = requestAnimationFrame(draw);
+  }
+  function start(){ if(!raf && running) raf = requestAnimationFrame(draw); }
+  function stop(){ running=false; if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  resize();
+  addEventListener('resize', ()=>{ resize(); }, {passive:true});
+
+  if(reduce){
+    // 减弱动效：只画一帧静态结果
+    running=true; draw(); running=false;
+    return;
+  }
+
+  // 仅在 hero 可见时运行以省性能。
+  // 注意：首次必须无条件启动一次，避免 IntersectionObserver 未回调时画布空着。
+  let heroVisible = true;
+  const hio = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      heroVisible = e.isIntersecting;
+      if(heroVisible){ start(); } else { stop(); }
+    });
+  },{threshold:0.01});
+  hio.observe(document.querySelector('.hero'));
+
+  // 立即画一帧作为兜底，并启动
+  running = true;
+  draw();
+
+  // 页面不可见时暂停，回来再续
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden){ stop(); }
+    else if(heroVisible){ running=true; start(); }
+  });
+})();
+
+/* ============================================================
+   2. AR vs Diffusion 对比
+   ============================================================ */
+(function vsDemo(){
+  const SENT = ['扩散','语言','模型','把','整句','同时','涂黑','再','一起','擦亮','出来','吧'];
+  const DL_STEPS = 6;
+  const PLAN = [[1,4],[0,7],[8,2],[5,10],[3,11],[6,9]];
+  const INTERVAL = 330;
+
+  const arBox=$('ar-tokens'), dlBox=$('dl-tokens');
+  const arStep=$('ar-step'), dlStep=$('dl-step');
+  const arBar=$('ar-bar'), dlBar=$('dl-bar');
+  const play=$('btn-vs-play'), reset=$('btn-vs-reset');
+  let arT=null, dlT=null;
+
+  function mk(box,n){
+    box.innerHTML='';
+    for(let i=0;i<n;i++){
+      const s=document.createElement('span');
+      s.className='tok masked'; s.textContent='[MASK]';
+      box.appendChild(s);
+    }
+  }
+  function resetAll(){
+    clearInterval(arT); clearInterval(dlT); arT=dlT=null;
+    mk(arBox,SENT.length); mk(dlBox,SENT.length);
+    arStep.textContent=`0 / ${SENT.length} 步`;
+    dlStep.textContent=`0 / ${DL_STEPS} 步`;
+    arBar.style.width='0%'; dlBar.style.width='0%';
+    play.disabled=false; play.textContent='▶ 播放对比';
+  }
+  function run(){
+    resetAll(); play.disabled=true; play.textContent='播放中…';
+    let ai=0;
+    arT=setInterval(()=>{
+      if(ai>=SENT.length){ clearInterval(arT); arT=null; done(); return; }
+      const el=arBox.children[ai];
+      el.classList.remove('masked'); el.classList.add('filled','newest');
+      el.textContent=SENT[ai];
+      setTimeout(()=>el.classList.remove('newest'),620);
+      arStep.textContent=`${ai+1} / ${SENT.length} 步`;
+      arBar.style.width=((ai+1)/SENT.length*100)+'%';
+      ai++;
+    },INTERVAL);
+
+    let di=0;
+    dlT=setInterval(()=>{
+      if(di>=DL_STEPS){ clearInterval(dlT); dlT=null; done(); return; }
+      PLAN[di].forEach(k=>{
+        const el=dlBox.children[k];
+        el.classList.remove('masked'); el.classList.add('filled','newest');
+        el.textContent=SENT[k];
+        setTimeout(()=>el.classList.remove('newest'),620);
+      });
+      dlStep.textContent=`${di+1} / ${DL_STEPS} 步`;
+      dlBar.style.width=((di+1)/DL_STEPS*100)+'%';
+      di++;
+    },INTERVAL*1.05);
+
+    function done(){
+      if(!arT && !dlT){ play.disabled=false; play.textContent='▶ 重新播放'; }
+    }
+  }
+  play.addEventListener('click',run);
+  reset.addEventListener('click',resetAll);
+  resetAll();
+})();
+
+/* ============================================================
+   3. 前向加噪
+   ============================================================ */
+(function forwardMask(){
+  const FWD=['扩散','语言','模型','不','逐字','写','而是','整句','一起','显影'];
+  const box=$('fwd-tokens'), sl=$('mask-slider'), val=$('mask-val');
+  function render(t){
+    box.innerHTML='';
+    FWD.forEach(w=>{
+      const el=document.createElement('span');
+      if(Math.random()<t){ el.className='tok masked'; el.textContent='[MASK]'; }
+      else{ el.className='tok'; el.textContent=w; }
+      box.appendChild(el);
+    });
+  }
+  sl.addEventListener('input',()=>{
+    const t=sl.value/100; val.textContent=t.toFixed(2); render(t);
+  });
+  $('btn-mask-roll').addEventListener('click',()=>render(sl.value/100));
+  render(0.45);
+})();
+
+/* ============================================================
+   4. 去噪 + 回改（核心演示）
+   ============================================================ */
+(function denoiseDemo(){
+  // 目标："扩散模型在生成中会自我修正"
+  // 模型先猜错 #5（猜成「的」），第 5 步重审时回改，改成「会」
+  const TARGET = ['扩散','模型','在','生成','中','会','自我','修正'];
+
+  const STEPS = [
+    { kind:'reveal',
+      items:[{i:0,w:'扩散',p:0.96},{i:1,w:'模型',p:0.94}],
+      note:'高置信位优先揭晓。所有掩码位置在本步同时算出概率，这里只取最靠前的两个。',
+      ico:'💡' },
+    { kind:'reveal',
+      items:[{i:3,w:'生成',p:0.89},{i:7,w:'修正',p:0.88}],
+      note:'继续并行揭晓。注意 #3 与 #7 一次性写入，不需要等左边写完。',
+      ico:'💡' },
+    { kind:'reveal',
+      items:[{i:5,w:'的',p:0.52}],
+      note:'#5 置信度只有 0.52——模型并不确定，但按排序规则它仍被勉强写入。记住这个位置。',
+      ico:'🤔' },
+    { kind:'reveal',
+      items:[{i:2,w:'在',p:0.87},{i:4,w:'中',p:0.86},{i:6,w:'自我',p:0.91}],
+      note:'上下文补齐，「在 … 中 … 自我修正」的骨架已经清晰。',
+      ico:'💡' },
+    { kind:'remask',
+      items:[{i:5}],
+      note:'⚠️ 重审：骨架完整后回看 #5，「在生成【的】自我修正」读不通 → 把已写出的字重新涂黑。',
+      ico:'⚠️' },
+    { kind:'revise',
+      items:[{i:5,w:'会',p:0.93}],
+      note:'带着充足上下文重新预测，#5 修正为「会」，置信度从 0.52 跃升到 0.93。最终句：「扩散模型在生成中会自我修正」。',
+      ico:'✅' }
+  ];
+
+  const box=$('d-tokens'), rail=$('d-rail'), note=$('d-note'),
+        noteTxt=$('d-note-text'), stepLbl=$('d-step'), confBox=$('d-conf'),
+        btnPlay=$('btn-d-play'), btnStep=$('btn-d-step'),
+        btnReplay=$('btn-d-replay'), btnReset=$('btn-d-reset'),
+        speed=$('speed-slider');
+
+  let cur=0, timer=null, remaskCount=0;
+
+  function buildTokens(){
+    box.innerHTML='';
+    TARGET.forEach(()=>{
+      const el=document.createElement('span');
+      el.className='tok masked'; el.textContent='[MASK]';
+      box.appendChild(el);
+    });
+  }
+  function buildRail(){
+    rail.innerHTML='';
+    STEPS.forEach((s,i)=>{
+      const d=document.createElement('i');
+      d.className='rail-dot'; d.dataset.i=i;
+      d.title=`第 ${i+1} 步：${s.kind==='remask'?'回改':s.kind==='revise'?'修正':'揭晓'}`;
+      d.addEventListener('click',()=>{ stop(); cur=0; apply(0); for(let k=1;k<=i+1;k++) stepOnce(true); });
+      rail.appendChild(d);
+    });
+  }
+
+  // 按步骤重演状态
+  function apply(n){
+    const state = TARGET.map(()=>({w:null,st:'mask'}));
+    remaskCount=0;
+    for(let s=0;s<n;s++){
+      const st=STEPS[s];
+      if(st.kind==='reveal'){
+        st.items.forEach(it=>{ state[it.i]={w:it.w, st:'filled'}; });
+      }else if(st.kind==='remask'){
+        st.items.forEach(it=>{ state[it.i]={w:null, st:'mask'}; });
+        remaskCount++;
+      }else if(st.kind==='revise'){
+        st.items.forEach(it=>{ state[it.i]={w:it.w, st:'revised'}; });
+      }
+    }
+    // 渲染
+    state.forEach((s,i)=>{
+      const el=box.children[i];
+      el.className='tok '+(s.st==='mask'?'masked':s.st==='revised'?'revised':'filled');
+      el.textContent = s.st==='mask' ? '[MASK]' : s.w;
+      el.classList.remove('newest','remasking','struck');
+    });
+    // 本步高亮
+    if(n>0){
+      const st=STEPS[n-1];
+      st.items.forEach(it=>{
+        const el=box.children[it.i];
+        if(st.kind==='remask'){ el.classList.add('remasking'); }
+        else if(st.kind==='reveal'){ el.classList.add('newest'); }
+      });
+    }
+    // 已揭晓计数
+    const filled = state.filter(s=>s.st!=='mask').length;
+    stepLbl.textContent = `第 ${n} / ${STEPS.length} 步 · 已揭晓 ${filled} / ${TARGET.length}`
+      + (remaskCount?` · 回改 ${remaskCount} 次`:'');
+    // rail
+    Array.from(rail.children).forEach((d,i)=>{
+      d.className='rail-dot';
+      if(i<n-1) d.classList.add(STEPS[i].kind==='remask'?'correct':'done');
+      if(i===n-1) d.classList.add(STEPS[i].kind==='remask'?'correct':'cur');
+    });
+    // note
+    if(n===0){
+      note.className='note';
+      noteTxt.innerHTML='点击「单步」或「播放全程」，看模型如何从全掩码一步步显影——并在中途推翻自己。';
+    }else{
+      const st=STEPS[n-1];
+      note.className='note'+(st.kind==='remask'?' correct':'');
+      noteTxt.innerHTML = `<b>第 ${n} 步 · ${
+        st.kind==='remask'?'回改 Remasking':st.kind==='revise'?'修正':'揭晓'
+      }</b> — ${st.note}`;
+      note.querySelector('.ico').textContent = st.ico;
+    }
+    renderConf(n);
+  }
+
+  function renderConf(n){
+    confBox.innerHTML='';
+    if(n<1 || n>STEPS.length){
+      const d=document.createElement('div');
+      d.style.cssText='font-size:12.5px;color:var(--fg3)';
+      d.textContent='尚未开始';
+      confBox.appendChild(d); return;
+    }
+    const st=STEPS[n-1];
+    const items = st.items.filter(it=>it.p!==undefined);
+    if(!items.length){
+      const d=document.createElement('div');
+      d.style.cssText='font-size:12.5px;color:var(--warn)';
+      d.textContent='本步不产出预测——只是把位置 #5 重新涂黑，等待下一轮重新评估。';
+      confBox.appendChild(d); return;
+    }
+    items.forEach(it=>{
+      const row=document.createElement('div');
+      row.className='conf-row';
+      const pct=Math.round(it.p*100);
+      const cls = it.p>0.85?'high':(it.p<0.6?'low':'');
+      row.innerHTML =
+        `<span class="conf-pos">#${it.i}</span>`+
+        `<span class="conf-track"><i class="conf-fill ${cls}" style="width:0%"></i></span>`+
+        `<span class="conf-pct">${it.p.toFixed(2)}</span>`;
+      confBox.appendChild(row);
+      requestAnimationFrame(()=>{ row.querySelector('.conf-fill').style.width=pct+'%'; });
+    });
+  }
+
+  function stepOnce(silent){
+    if(cur>=STEPS.length) return false;
+    cur++;
+    apply(cur);
+    if(cur>=STEPS.length){ stop(); if(!silent){ btnPlay.disabled=false; btnPlay.textContent='▶ 重新播放'; } }
+    return true;
+  }
+  function stop(){
+    clearInterval(timer); timer=null;
+    btnPlay.disabled=false; btnPlay.textContent='▶ 播放全程';
+  }
+  function resetAll(){
+    stop(); cur=0; apply(0);
+    btnPlay.textContent='▶ 播放全程';
+  }
+
+  btnStep.addEventListener('click',()=>{
+    stop();
+    if(cur>=STEPS.length){ cur=0; apply(0); return; }
+    stepOnce();
+  });
+  btnPlay.addEventListener('click',()=>{
+    stop(); cur=0; apply(0);
+    btnPlay.disabled=true; btnPlay.textContent='播放中…';
+    const iv = 1500 - (speed.value*110);
+    timer=setInterval(()=>{ if(!stepOnce()) stop(); }, Math.max(420,iv));
+  });
+  btnReplay.addEventListener('click',()=>{
+    stop(); cur=0; apply(0);
+    btnPlay.disabled=true; btnPlay.textContent='回放中…';
+    const iv = Math.max(320, 1000 - (speed.value*70));
+    timer=setInterval(()=>{ if(!stepOnce()) { stop(); btnPlay.textContent='▶ 重新播放'; } }, iv);
+  });
+  btnReset.addEventListener('click',resetAll);
+
+  buildTokens(); buildRail(); apply(0);
+})();
+
+/* ============================================================
+   5. 扩散全过程：图片加噪 / 去噪
+   ============================================================ */
+(function pipelineDemo(){
+  const cv=$('pipe-canvas'); if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height, SEG=16, ROWS=10;
+  const cw=W/SEG, ch=H/ROWS;
+  const stage=$('pipe-stage'), noteTxt=$('pipe-note-text'), btn=$('btn-pipe');
+  let timer=null;
+
+  // 目标图片：高对比图案，便于肉眼看清「结构被噪声吞没」
+  // 上半：暖色天空渐变；下半：山形剪影；中上：一轮亮日
+  const base=[];
+  for(let r=0;r<ROWS;r++)for(let c=0;c<SEG;c++){
+    const u=c/(SEG-1), v=r/(ROWS-1);
+    const dx=u-0.72, dy=v-0.22;
+    const isSun = Math.sqrt(dx*dx+dy*dy*1.6) < 0.13;
+    // 山脊线：两条正弦叠加
+    const ridge = 0.52 + 0.13*Math.sin(u*7.0) + 0.07*Math.sin(u*3.1+1.2);
+    const isMountain = v > ridge;
+    let R,G,B;
+    if(isSun){ R=255; G=246; B=180; }                       // 太阳
+    else if(isMountain){ R=34; G=44; B=70; }                 // 山体（深色）
+    else {                                                   // 天空渐变
+      R=Math.round(94 + 140*v);
+      G=Math.round(150 + 60*v);
+      B=Math.round(235 - 10*v);
+    }
+    base.push({r:R,g:G,b:B});
+  }
+  const noise = base.map(()=>[Math.random(),Math.random(),Math.random()]);
+
+  function draw(sigma){
+    ctx.clearRect(0,0,W,H);
+    base.forEach((p,i)=>{
+      const [nr,ng,nb]=noise[i];
+      const amp=sigma*255*1.25;
+      // 完全加噪时趋向灰白雪花
+      const gray=170;
+      const w=sigma;
+      let r=p.r*(1-w)+gray*w + (nr-0.5)*amp;
+      let g=p.g*(1-w)+gray*w + (ng-0.5)*amp;
+      let b=p.b*(1-w)+gray*w + (nb-0.5)*amp;
+      ctx.fillStyle=`rgb(${Math.max(0,Math.min(255,r|0))},${Math.max(0,Math.min(255,g|0))},${Math.max(0,Math.min(255,b|0))})`;
+      ctx.fillRect((i%SEG)*cw, Math.floor(i/SEG)*ch, cw+1, ch+1);
+    });
+  }
+
+  const N=10;
+  function setStage(fwdT, revT){
+    // fwdT: 0..N 加噪；revT: 0..N 去噪
+    const sigma = revT>0 ? (N-revT)/N : fwdT/N;
+    draw(sigma);
+    if(revT>0){
+      stage.textContent=`反向 t = ${N-revT} / ${N} · 正在还原`;
+    }else{
+      stage.textContent=`前向 t = ${fwdT} / ${N} · ` + (fwdT===0?'原始图片':fwdT>=N?'纯噪声':'加噪中');
+    }
+  }
+
+  function reset(){
+    clearInterval(timer); timer=null;
+    setStage(0,0);
+    btn.disabled=false; btn.textContent='▶ 播放扩散全过程';
+    noteTxt.textContent='点击播放：先看图片如何被噪声吞没（前向），再看它如何被逐步还原（反向）。';
+  }
+  function play(){
+    reset(); btn.disabled=true; btn.textContent='播放中…';
+    let n=0;
+    timer=setInterval(()=>{
+      n++;
+      if(n<=N){
+        setStage(n,0);
+        noteTxt.innerHTML=`<b>前向过程</b>（固定规则，不需学习）：t = ${n}/${N}，噪声强度按调度表上升，图片结构逐渐消失。`;
+      }else if(n<=N*2){
+        const r=n-N;
+        setStage(N,r);
+        noteTxt.innerHTML=`<b>反向过程</b>（<b>需要训练</b>）：t = ${N-r}/${N}，网络逐步预测并移除噪声，图像结构重新浮现。`;
+      }else{
+        clearInterval(timer); timer=null;
+        setStage(0,0);
+        btn.disabled=false; btn.textContent='▶ 重新播放';
+        noteTxt.innerHTML='<b>关键：</b>前向加噪是<b>固定规则</b>，反向去噪才是模型<b>学到的内容</b>。学会去噪之后，从任意随机噪声出发都能生成新图——这就是扩散模型。';
+      }
+    }, 380);
+  }
+  btn.addEventListener('click', play);
+  reset();
+})();
+
+/* ============================================================
+   6. 连续扩散像素画布（与掩码扩散并排对比）
+   ============================================================ */
+(function pixelDemo(){
+  const cv=$('cv-canvas'), sl=$('cv-slider'), val=$('cv-val'), tokBox=$('cv-tokens');
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  const SEG=18;                       // 18 x 12 格
+  const cellW=W/SEG, cellH=H/12;
+  const TOKENS=['扩散','模型','的','噪声','是','高斯','扰动','文本','用','掩码','替换','表示'];
+
+  // 固定的"图案"：一条渐变带 + 几个亮点，便于看清加噪时的结构保持
+  const base=[];
+  for(let r=0;r<12;r++)for(let c=0;c<SEG;c++){
+    const t=(c/(SEG-1));
+    base.push({
+      r: Math.round(60 + 150*t),
+      g: Math.round(150 - 60*t),
+      b: Math.round(210 - 40*t),
+      boost: (r>=4&&r<=6) ? 1.5 : 1
+    });
+  }
+  // 预生成固定噪声场，保证拖动时平滑连贯
+  const noise = base.map(()=>[Math.random(),Math.random(),Math.random(),Math.random()]);
+  let seed = 0;
+
+  function draw(sigma){
+    ctx.clearRect(0,0,W,H);
+    base.forEach((p,i)=>{
+      const [nr,ng,nb,ngr] = noise[i];
+      const amp = sigma*255*1.15;
+      let r = p.r + (nr-0.5)*amp*1.0;
+      let g = p.g*Math.min(p.boost,1.3) + (ng-0.5)*amp;
+      let b = p.b + (nb-0.5)*amp;
+      // 掩码扩散对照：同一位置若被"吸收"则整体变灰
+      const gray = 138 + (ngr-0.5)*amp*0.9;
+      const w = sigma;                      // 越高越像纯灰噪声
+      r = r*(1-w) + gray*1.0*w*0.95 + (nr-0.5)*amp*0.15;
+      g = g*(1-w) + gray*1.0*w*0.95 + (ng-0.5)*amp*0.15;
+      b = b*(1-w) + gray*1.0*w*0.95 + (nb-0.5)*amp*0.15;
+      const cx=(i%SEG)*cellW, cy=Math.floor(i/SEG)*cellH;
+      ctx.fillStyle=`rgb(${Math.max(0,Math.min(255,r|0))},${Math.max(0,Math.min(255,g|0))},${Math.max(0,Math.min(255,b|0))})`;
+      ctx.fillRect(cx,cy,cellW+1,cellH+1);
+    });
+  }
+
+  function renderTokens(sigma){
+    tokBox.innerHTML='';
+    TOKENS.forEach(w=>{
+      const el=document.createElement('span');
+      if(Math.random() < sigma){ el.className='tok masked'; el.textContent='[MASK]'; }
+      else { el.className='tok'; el.textContent=w; }
+      tokBox.appendChild(el);
+    });
+  }
+
+  function sync(){
+    const v = sl.value/100;
+    val.textContent = v.toFixed(2);
+    draw(v);
+    renderTokens(v);
+  }
+  sl.addEventListener('input', sync);
+  draw(0.45); renderTokens(0.45);
+})();
+
+/* ============================================================
+   7. GAN 标签页
+   ============================================================ */
+(function tabs(){
+  const bar=$('gan-tabs'); if(!bar) return;
+  bar.addEventListener('click', e=>{
+    const btn=e.target.closest('.tab'); if(!btn) return;
+    const id=btn.dataset.tab;
+    bar.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+    document.querySelectorAll('.tab-panel').forEach(p=>{
+      p.classList.toggle('active', p.id===id);
+    });
+  });
+})();
+
+/* ============================================================
+   8. 目录滚动高亮
+   ============================================================ */
+(function tocHighlight(){
+  const toc=$('toc'); if(!toc) return;
+  const links=[...toc.querySelectorAll('a')];
+  const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if(!sections.length) return;
+
+  // 点击后短暂锁定，避免平滑滚动途中被 observer 覆盖
+  let lockUntil=0;
+  links.forEach(a=>a.addEventListener('click',()=>{ lockUntil=Date.now()+900; }));
+
+  function setActive(id){
+    links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+id));
+  }
+
+  const io2=new IntersectionObserver(es=>{
+    if(Date.now()<lockUntil) return;
+    // 取视口内最靠上的可见 section
+    const vis=es.filter(e=>e.isIntersecting)
+      .sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+    if(vis.length) setActive(vis[0].target.id);
+  },{rootMargin:'-12% 0px -62% 0px',threshold:0});
+
+  sections.forEach(s=>io2.observe(s));
+
+  // 兜底：滚动时用几何位置精确判定
+  let raf=null;
+  addEventListener('scroll',()=>{
+    if(raf) return;
+    raf=requestAnimationFrame(()=>{
+      raf=null;
+      if(Date.now()<lockUntil) return;
+
+      // 触底时直接高亮最后一节，避免末尾几节因高度不足而抢不到高亮
+      const atBottom = scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
+      if(atBottom){ setActive(sections[sections.length-1].id); return; }
+
+      const mid=innerHeight*0.22;
+      let best=sections[0];
+      for(const s of sections){
+        if(s.getBoundingClientRect().top<=mid) best=s;
+      }
+      setActive(best.id);
+    });
+  },{passive:true});
+
+  setActive(sections[0].id);
+})();
+
+})();
+</script>
+</body>
+</html>
