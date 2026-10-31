@@ -29,13 +29,6 @@ Mitchell Hashimoto（Terraform 之父）将这一现象命名为 `Harness Engine
 - 传统 AI "一次性对话" —— 每次从零开始，用完即走。
 - Hermes "自我进化" —— 记住你，学习你，越用越懂你。
 
-<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/1655ed80-3ce8-4d83-b585-ec2f706ce5c2" />
-
-
-harness六层结构手册
-- [帖子](https://x.com/shao__meng/status/2093228362965651665 )
-
-
 
 ## 定义
 
@@ -110,6 +103,33 @@ Agent 开发框架 与 AI Harness 运行框架
 |多智能体模式|仅提供通信与调度抽象，协作规则自己写|内置分布式集群、A2A协议、任务委派、批量协同调度能力|
 |迭代评估|无内置自动评估体系，需额外集成第三方工具|自带评估打分、错误回放、策略对比实验能力|
 |典型产出|可二次改造的Agent代码片段、业务逻辑模块|可直接部署运行的独立Agent服务实例|
+
+
+## 组成
+
+LLM 是大脑，Agent Harness 就是 Agent 的「操作系统」
+负责把会话、编排、提示词、记忆、路由、安全、运行时、可观测全部串起来
+拆解这张架构图核心模块👇
+- 1️⃣会话上下文管理器：维护用户对话 session
+- 2️⃣任务编排器：拆解、串联多步骤任务流
+- 3️⃣提示词 & 策略层：统一管控 prompt、业务规则
+- 4️⃣模型 & 工具路由器：分发请求到 LLM/API/ 知识库
+- 5️⃣记忆与状态存储：持久化 Agent 长时记忆、任务状态
+- 6️⃣安全 Guardrails：风控、内容护栏，防止越权
+- 7️⃣Agent 执行运行时：真正跑工具调用、任务执行
+- 8️⃣可观测链路：日志、指标、trace，线上排障必备
+
+下游还打通评测、监控、密钥配置、CI/CD
+
+解决痛点：模型本身不可控，Harness 给 Agent 装上护栏、记忆、调度、审计能力，才能上生产
+
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/9ed7b116-5825-4524-a5e0-d229c83ea972" />
+
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/1655ed80-3ce8-4d83-b585-ec2f706ce5c2" />
+
+harness六层结构手册
+- [帖子](https://x.com/shao__meng/status/2093228362965651665 )
 
 
 
