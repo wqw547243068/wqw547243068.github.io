@@ -57,7 +57,7 @@ diffusion 对整个答案的token都进行修改。准确预测下一个词太�
 
 【2026-10-29】图解： [dllm动图讲解](wqw/demo/llm_dllm.html)
 
-<iframe src="https://wqw547243068.github.io/wqw/demo/llm_dllm.html" width='100%' height='100%' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
+<iframe src="https://wqw547243068.github.io/wqw/demo/llm_dllm.html" width='800' height='100%' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
 
 
 
