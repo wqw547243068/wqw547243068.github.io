@@ -589,6 +589,8 @@ macOS上可选的虚拟机软件主要有三款：`VirtualBox`、`VMWare Fusion`
 [操作系统初识](https://www.jianshu.com/p/d46d82238518)
 - ![](https://upload-images.jianshu.io/upload_images/2111160-98608484cd10d510.jpg)
 
+【2026-11-04】操作系统知识讲解：[交互式demo](https://kejun.github.io/cs-systems-design/#cache)
+
 
 ## 进程、线程、协程
 
