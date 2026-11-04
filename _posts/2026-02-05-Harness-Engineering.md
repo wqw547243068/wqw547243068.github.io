@@ -591,6 +591,17 @@ dsh 和 Pi 的信息已确认，我再核对一下 OpenCode 和 Pi 的发布时�
 |Harbor Framework|学术社区（Terminal-Bench配套）|评测专用标准化Harness运行时|Python|Agent批量基准评测驾驭平台|统一执行管道、变量约束控制、批量打分回放、策略对比实验环境、无业务侵入沙箱|通用LLM接口标准化接入|仅评测场景轻量化多Agent|MIT|Agent性能对比实验、Harness调参对照、学术基准测试|
 
 
+### Harness 路由
+
+【2026-11-04】[harnessrouter](http://harnessrouter.ai/), agent harnesses 统一接口
+- [harnessrouter 代码](https://github.com/HarnessRouter/harnessrouter)
+
+Build agent products without handling harness engineering. 
+
+HarnessRouter is the infrastructure layer that turns existing harnesses like `Codex` and `Claude Code` into plug-and-play agent backends, letting your product run tasks, retrieve results, and switch harnesses through one API.
+
+![](https://github.com/HarnessRouter/harnessrouter/raw/main/docs/images/2026-09-13-harnessrouter-integration-comparison-cropped-v5.gif)
+
 ### AgentScope
 
 #### AgentScope 2.0
