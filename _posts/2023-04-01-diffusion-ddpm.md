@@ -3,7 +3,7 @@ layout: post
 title:  "扩散模型-DDPM"
 date:   2023-04-01 08:01:00
 categories: 计算机视觉 大模型
-tags: sd 扩散 lora vae unet 多模态 视频生成
+tags: sd 扩散 lora vae unet 多模态 视频生成 gan vae flow
 excerpt: 扩散生成模型原理
 mathjax: true
 permalink: /ddpm
@@ -132,6 +132,16 @@ Sony AI、OpenAI 和斯坦福大学，专著《The Principles of Diffusion Model
 
 小红书[帖子](https://www.xiaohongshu.com/explore/6ae1fca50000000036012461?xsec_token=CBkZES9diu6-3C0BrqOxozJlRW0xu0jE4XoThlVTHbA2c=&xsec_source=app_share)
 
+
+【2026-11-05】[知乎专题](https://zhuanlan.zhihu.com/p/1990919156451796931)
+- GAN 或 VAE 这类模型尝试一次性把橡皮泥捏成目标雕塑，动作幅度大、容易失误；
+- 扩散模型则是沿着一条极其细致、连续的变形路径，一点一点地调整橡皮泥的形状，直到最终得到目标分布。
+
+扩散模型的近亲「流模型」（Flow Matching）的视角非常相近，都在学一条「从简单到复杂」的连续变换轨迹，区别在于：
+- 流模型要求轨迹可逆、无噪声、可精确计密度；
+- 扩散模型允许噪声与不可逆性，用逐步去噪换取更强的表达能力与稳定性。
+
+不过，近年来的研究指出，扩散模型与流模型并不是对立的，而是同一连续概率流的两种参数化方式。
 
 
 ### 论文
