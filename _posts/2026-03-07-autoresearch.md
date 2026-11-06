@@ -222,7 +222,6 @@ Autoresearch 专题详见飞书文档：[autoresearch](https://my.feishu.cn/wiki
 
 ## 介绍
 
-
 【2026-3-15】[Autoresearch 深度解读：Karpathy 的"AI 自主科研"到底有没有戏？](https://zhuanlan.zhihu.com/p/2016489903790236699)
 
 Karpathy 用 630 行代码搭"AI 研究员"的最小可行原型——让 Agent 在你睡觉时自动改代码、跑实验、筛结果，一晚上干完人类一周的活
@@ -785,6 +784,37 @@ Atria Dawn Preview 并不是围绕某个固定 Agent Workflow 构建的模型，
 
 无论是快速进入一个陌生领域、梳理技术演进与研究脉络，还是围绕一个新假设寻找支持与反例，Atria Dawn Preview 都能够将分散的信息组织成结构化、可引用、可继续验证的研究结论，帮助研究者从“找到信息”进一步走向建立可信的证据链与研究判断。
 
+
+## 自训练
+
+### 【2026-10-15】清华 AutoSFT 训模型
+
+【2026-10-15】清华+北邮 AutoSFT 用多 Agent 接管 SFT 的全流程训练
+- 论文题目：AutoSFT: An Agentic System for Automated Data Research in Supervised Fine-Tuning
+- Github: Thinking-Space/AutoSFT
+  
+把 SFT 数据研究的全部操作交给一个 agent，跑上几十轮，会发生什么？跑了 11.5 小时、33 轮
+- 按常理，拿到完整工具箱的 agent 会尝试不同种类的数据操作：<span style='color:blue'>调配比、修样本、写新数据</span>。有经验的数据工程师。
+- 实际是另一回事：agent 每轮都只调配比。没改过一行数据，没换过一个 response，没写过新样本。词云几乎全是 weights 和 proportions，几十轮没有什么提升。
+- SFT 数据研究构建了多 agent 系统，让 agent 自主决定每轮该做什么数据操作、从 base model 重新训练、读取评测结果，判断下一轮 data action，然后进入下一轮。在这个过程中，单 agent 基线只用了六种 data action 中的一种，而多 agent 版本用上了全部六种，并且在指令跟随任务上领先单 agent 基线 6.5 分（IFEval，同轮数对比）。
+  
+RSI Service，未来 AI for AI 的「操作系统」：用自然语言表达目标，系统负责设计实验、执行、分析和迭代，人不再需要直接跟代码框架打交道。
+
+RSI loop 要有 intelligent 大脑来控制整个过程，改权重、改 harness 还是改算法改数据，都是实现目标的手段，对人来说可以不透明。
+
+在 PostTrainBench 中，当让 agent 接管整条后训练流程，最终都会收敛到 SFT，并把大部分精力花在改数据上。
+
+因此作为 RSI Service 第一个模块，AutoSFT 将 action space 落在 SFT 数据上。数据研究也足够像研究：提假设、做干预、看结果、再修正。
+
+核心要点：
+- AutoSFT 解决了自动化 SFT 数据研究容易“只会反复调采样比例”的问题 —— 把执行、四路分析与数据合成拆给不同 Agent，让系统覆盖 6 类数据动作；
+  - 调配比（Mixture）、调顺序（Ordering）、删样本（Pruning）、修样本（Repair）、换 response（Resupervision）、写新样本（Synthesis）。
+- 分析模块带来 +6.5pp IFEval，合成模块再带来 +3.4pp IFEval、+2.9pp IFBench，并在代码任务上提升 +3.7pp MBPP+。
+  
+关键结论
+- 1、执行与分析解耦，能直接减少“工作记忆失血”：同等 11.5 小时内，上下文压缩从 10 次降到 5 次，Meta Agent 轨迹中的 shell 命令占比从 58% 降到 29%。
+- 2、互补分析不只是多提几个建议，而是把搜索从 1 类动作扩展到 4 类：加入分析子智能体后，IFEval 在第 30 轮达到 67.10，较同轮数 Base 的最佳 60.60 高 6.50pp；Repair 与 Resupervision 合计占动作的 55%。
+- 3、合成只在“缺数据且学得会”的能力上有效：最佳 IFEval 从 78.15 升至 81.58，IFBench 从 49.02 升至 51.95；代码域中，完整结构第 6 轮即达 65.78 MBPP+，但某些超出小模型能力边界的约束即使补数据仍是 0 分。
 
 
 # 结束
