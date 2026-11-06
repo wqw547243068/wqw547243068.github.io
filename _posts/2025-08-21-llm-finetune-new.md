@@ -2,7 +2,7 @@
 layout: post
 title:  大模型微调新范式
 date:   2025-08-21 11:47:00
-categories: 大模型 微调 强化学习 自进化
+categories: 大模型 微调 强化学习 自进化 autoresearch
 excerpt : 大模型微调新方法
 tags: 多轮
 permalink: /llm_finetune_new
@@ -771,7 +771,7 @@ OSFT 作为预训练 LLMs 的“自助”学习策略运行
 
 ## 自我优化
 
-详见：[自进化专题](agent_evolution)
+详见：[自动研究专题](autoresearch)
 
 
 
