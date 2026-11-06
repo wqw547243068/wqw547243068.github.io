@@ -2,7 +2,7 @@
 layout: post
 title:  大模型微调新范式
 date:   2025-08-21 11:47:00
-categories: 大模型 微调 强化学习 
+categories: 大模型 微调 强化学习 自进化
 excerpt : 大模型微调新方法
 tags: 多轮
 permalink: /llm_finetune_new
@@ -769,7 +769,9 @@ OSFT 作为预训练 LLMs 的“自助”学习策略运行
 - 与标准 SFT 对比：传统 SFT 固定训练目标（例如，人工标注或蒸馏数据）；OSFT 在其能力变化时不断进化自己的训练信号。
 - 与 RLVR/RLHF 的对比：基于 RL 的方法，如 RLVR（包括 GRPO、PPO），采样多条轨迹，并使用外部正确性或人类偏好信号作为奖励。OSFT 除了初始预训练外，没有外部监督
 
+## 自我优化
 
+详见：[自进化专题](agent_evolution)
 
 
 
