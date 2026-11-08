@@ -3,7 +3,7 @@ layout: post
 title:  大模型自动评估
 date:   2025-08-05 16:52:00
 categories: 大模型
-tags: 评估 评测 agent 阿里 skill
+tags: 评估 评测 agent 阿里 skill rubric
 excerpt: 大模型如何自动评估？LLM-as-a-judge 和 Agent-as-a-judge 是什么？
 mathjax: true
 permalink: /llm_judge
@@ -20,7 +20,26 @@ permalink: /llm_judge
 - 可复现：任何人用同样的模型、评测集、参数，跑出来的分数应该一样。科学研究的底线。
 - 可对比：A 模型在 MMLU 上 65%，B 模型 58%，这个差距更客观，而不是"我觉得 A 更好"。
 
+
 大模型评估见站内专题: [大模型评测](llm_eva)
+
+## Rubric 评测
+
+【2026-11-08】Rubric 评测
+- **评分维度**和**分级标准**怎么拆
+  - 为什么每个分数等级都要有可落地的标准？
+  - 0~3 分还是 1~5 分？
+- 只看结果够吗:面向**过程**的评测
+  - 过程要评什么：参数提取、工具流程、SOP、多轮目标追踪
+  - 用到后训练时，结果和过程怎么配合？
+- 怎么保证 Rubric 靠谱？
+  - 人人一致率、人机一致率
+  - 人人一致率低怎么办？用什么指标衡量？
+- Rubric 怎么用到 SFT 拒绝采样
+  - 阈值怎么定？有什么风险？
+- Rubric 有多个维度，RL 的 Reward 怎么算？
+  - 取 min、取 max、取平均，还是各维先做组内归一化？
+	
 
 ## LLM-as-a-Judge
 
