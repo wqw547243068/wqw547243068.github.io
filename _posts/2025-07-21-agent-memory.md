@@ -1400,6 +1400,33 @@ Anthropic 发布 13 页的 PDF 文档，阐述Agent五层记忆机制——token
 - Mem0：单次查询token用量从26000降至1800， 延迟降低91%。 
 - Snowflake：增加一层本体论，准确率提升20%，工具调用次数减少39%。
 
+### 【2026-11-02】Anthropic 动态工作流
+
+Anthropic 让 Claude 开始“做梦”了，让 Agent 从过去的经历中持续进化。
+
+【2026-11-02】Anthropic 发布Cookbook，让 Agent 在后台复盘历史任务、提炼经验、更新长期记忆。
+- 《Dreaming with a Dynamic Workflow》https://platform.claude.com/cookbook/managed-agents-cma-dreaming-with-a-dynamic-workflow
+
+AI Agent 长期问题：
+> 今天花几十轮解决的问题，明天开启新 Session，可能又要重新探索一遍。
+
+核心是三个 Agent，已开源，可直接复用。
+1. Lead Agent：负责编排 动态生成工作流，将历史 Session 分配给多个 Analyzer 并行处理。
+2. Transcript Analyzer：负责提炼 阅读历史对话、工具调用和执行结果，识别成功经验、失败原因、遗漏信息，并更新 Memory。
+3. Memory Organizer：负责整理 合并重复知识，处理新旧经验冲突，维护索引和知识关联。
+
+Anthropic 没有采用复杂的知识库方案，而是用 Markdown Wiki 保存长期记忆。通过文件、索引和相互引用，让 Agent 能够持续读取和更新自己的经验。
+
+这套机制关键动作：
+- Verify：验证历史记忆是否准确。
+- Enrich：补充新的事实和经验。
+- Organize：合并重复信息，修正过时知识。
+
+Agent Memory 正在从简单的聊天摘要，走向持续维护的经验系统。再结合 LLM Wiki 及开源 Prompt，对目前的 Agent Memory 系统做一次深度重构
+
+记住发生过什么，只是第一步；理解为什么成功或失败，提炼可复用的方法，并在下一次任务中验证效果，才是更重要的能力。
+
+未来的 Agent 不仅要有更长的上下文，还需要学会如何从过去的经历中成长。
 
 
 
