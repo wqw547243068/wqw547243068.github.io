@@ -157,6 +157,11 @@ AI 驱动的求职工具, 见站内专题 [大模型在求职上应用](chatgpt_
 - **影视**
 - **广告**
 
+【2026-11-08】高薪行业
+
+<img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/145fb97a-5e1a-49a8-aa0c-f373a0953daa" />
+
+
 
 ## 面试流程
 
