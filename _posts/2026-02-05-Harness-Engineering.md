@@ -68,8 +68,47 @@ Harness 原义: **挽具**, 套在马身上的那套皮带、缰绳和金属件�
 
 ### 教程
 
+
 Harness 学习指南：
 - [Learn Harness Engineering](https://walkinglabs.github.io/learn-harness-engineering/zh/)
+
+
+【2026-10-22】谷歌免费的 2 小时课程，完整的harness工程设计，从 0%到 100%的完整讲解。
+- [视频](https://www.youtube.com/watch?v=2C_CefSQEAQ)
+- Google Cloud 工程师 Annie Wang 主讲（约1.5–2小时）。
+
+重点不是单纯调 Prompt，而是构建 Harness——围绕大模型全部确定性组件，真正可靠、可测试、可自我改进。
+
+
+大纲
+- 0:29 - 从零开始进行安全装备设计
+- 11:08 – 你的第一个代理，配置得当的话会非常有用。
+- 28:08 - 由主管代理负责的评估工程工作
+- 1:00:13 - 循环工程
+- 1:23:19 - 一个不断自我提升的图系统，永不停歇地进步着
+
+核心公式与定义
+- 基本公式： $$\text{Agent\ (智能体)}=\text{Model\ (模型)}+\text{Harness\ (驾驭层/控制系统)}$$
+- 本质：模型决定智能体的天花板（智商和推理能力），而 Harness 决定智能体的底线（安全、可靠性、持续运转能力）。原始大模型只是“罐子里的天才大脑”，Harness 则是双手、眼睛、记忆和规则系统。 
+- 职责分工：
+  - Inner Harness（内层驾驭）：由模型厂商构建，封装在模型底层。
+  - Outer Harness（外层驾驭）：由开发者或用户根据具体业务场景配置，把模型变成可治理的生产组件。
+
+---
+
+AI Harness 核心构成
+1. Context & Memory（上下文与记忆）：
+  - 管理长任务中的信息状态，避免上下文过载（如通过 AGENTS.md、垃圾回收和状态持久化）。
+  - 核心原则：地图而非手册，保持上下文的高效利用率。
+2. Tools & Flow（工具与工作流）：
+  - 为模型提供与外界交互的接口（API、终端、文件操作、测试运行器等）。
+  - 将验证过的标准流程沉淀为可复用的 Skill（技能） 或 Playbook。 
+3. Runtime & Security / Controls（运行环境与安全控制）：
+  - 约束与沙箱（Constrain）：权限隔离、操作沙箱化（如自定义 Linter、架构约束）。
+  - 升级与干预（Escalate）：设置人类审批关卡（Human-in-the-loop Gate）。 
+4. Evaluation & Verification（评估与校验）：
+  - 校验（Verify）：使用钩子（Hooks）和结构化/类型化输出（Typed Output）强制检查。
+  - 纠偏与反馈（Correct）：错误恢复机制、自动重试与状态回滚（Ratchet）。
 
 
 ### PE vs CE vs HE
