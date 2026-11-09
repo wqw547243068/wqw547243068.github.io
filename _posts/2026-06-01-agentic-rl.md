@@ -3,7 +3,7 @@ layout: post
 title:  Agentic RL 专题
 date:   2026-06-01 22:46:00
 categories: 大模型
-tags: langchain claude deepagents rl grpo 智谱 ppo
+tags: langchain claude deepagents rl grpo 智谱 ppo 评测
 excerpt: RL新兴方向，Agentic RL
 mathjax: true
 permalink: /agentic_rl
@@ -299,6 +299,105 @@ Agentic RL 方法最棘手的问题: **稀疏奖励**, 只有最终结果的成�
 多轨迹奖励分配和传统的Reward Shaping比有什么区别?
 - 传统 Reward Shaping 本质上是人工定义中间奖励函数，高度依赖领域知识。
 - 而多轨迹奖励分配从真实采样的轨迹中自动推断步重要性，不需要人工定义中间奖励，泛化能力更强
+
+
+## 评测
+
+Agentic RL（面向智能体的强化学习）的评测与传统单轮大模型对齐（如 RLHF / DPO / 单轮 RLVR）有本质区别。
+- 传统评测关注的是**单次生成的文本质量**
+- 而 Agentic RL 评测的是 **动态多步交互**中，智能体使用工具、规划路径、纠错和达成长期目标的能力。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://developer.volcengine.com/articles/7560645235202588699)
+
+Agentic RL 评测核心维度
+
+与单轮模型评测不同，Agentic RL 评测通常需要评估以下六大核心能力： [1] (https://hub.baai.ac.cn/view/49404), [2] (https://developer.volcengine.com/articles/7560645235202588699)
+1. **多步规划与推理**（Planning & Reasoning）：能否在长程任务中拆解子目标、动态调整策略（如 DeepSeek-R1、Qwen3 或 RAP 等思路）。 [1] (https://developer.volcengine.com/articles/7560645235202588699)
+2. **工具调用与与环境交互**（Tool Use & Grounding）：能否正确构造 API 参数、解析工具返回结果、决定何时调用或停止调用工具。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://developer.volcengine.com/articles/7560645235202588699)
+3. **长期记忆与状态管理**（Memory）：在跨步数、长上下文交互中，是否会遗忘关键信息或陷入循环。 [1] (https://developer.volcengine.com/articles/7560645235202588699)
+4. **自我纠错与恢复**（Self-Improvement / Recovery）：当工具报错、代码测试不通过、或搜索结果矛盾时，能否自主重试或切换方向。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://developer.volcengine.com/articles/7560645235202588699)
+5. **多模态与环境感知**（Perception）：在 GUI、视觉或具身智能（Embodied AI）环境中对视觉或状态变化的理解。 [1] (https://developer.volcengine.com/articles/7560645235202588699)
+6. **信用分配与轨迹效率**（Trajectory & Credit Assignment）：不仅看“最终结果对不对”，还要看路径是否冗余、步数是否过长、是否存在奖励 hacking。 [1] (https://walkinglabs.github.io/hands-on-modern-rl/chapter22_agentic/overview), [2] (https://zhuanlan.zhihu.com/p/2074080364407084708), [3] (https://zhuanlan.zhihu.com/p/1985054130469888615)
+
+Agentic RL 评测基准（Benchmarks）
+
+根据任务类型的不同，业界常用的 Agentic 评测集主要涵盖以下几个领域：
+- 代码与软件工程（Code & SWE）：
+  - SWE-bench（及其多轮动态环境变体 SWE-ReX 等）：评估智能体在真实代码库中定位 Bug、修改代码并跑通单元测试的能力。
+  - InterCode：交互式编码与命令行操作环境评测。 [1] (https://www.cnblogs.com/rossiXYZ/p/20407294)
+- 数学与推理（Math & Logic）：
+  - GSM8K / MATH 的 Agent 版：引入计算器、Python 解释器等工具的多步推理评测。
+- 通用 Web 与数字环境（Web / GUI Agents）：
+  - WebArena / OSWorld / Mind2Web：在真实网页、操作系统 GUI 中根据指令完成复杂操作（如查资料、订票、表格处理等）。
+- 通用工具链与搜索（Tool Learning & Search）：
+  - ToolBench / API-Bank：评估海量 API 场景下的工具检索、组合与容错调用。
+
+评测与训练的底层架构特点
+
+1. **环境即裁判**（Environment as Verifier / RLVR）：
+  - 在 Agentic RL 中，静态的 Reward Model 容易被欺骗（Reward Hacking），主流评测与训练越来越倾向于可验证奖励（RLVR, Reinforcement Learning via Verifiable Rewards）——让真实的模拟器、编译器、API 结果或交互式裁判（Interactive Verifier）作为环境反馈。 [1] (https://qingkeai.online/blog/GLM-Qwen-AgenticRL), [2] (https://zhuanlan.zhihu.com/p/1985054130469888615), [3] (https://walkinglabs.github.io/hands-on-modern-rl/chapter22_agentic/overview)
+2. **轨迹级**（Trajectory-level）评估 vs **单步**评估：
+  - 记录完整的交互轨迹 \(\tau = (s_0, a_0, o_1, a_1, \dots, a_T)\)。评测指标不仅看最终的成功率（Task Success Rate, SR），还会统计平均步数（Steps-to-Success）、API 报错率和动作有效率。 [1] (https://walkinglabs.github.io/hands-on-modern-rl/chapter22_agentic/overview)
+3. 高性能评测/训练框架：
+  - 为了支撑高吞吐的 Agent Rollout 和评测闭环，业界专门的框架，将推、训、评测环境统一在异步或共享的交互循环中。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://www.cnblogs.com/rossiXYZ/p/20407294), [3] (https://walkinglabs.github.io/hands-on-modern-rl/chapter22_agentic/overview)
+  - 字节跳动/开源的 verl
+  - 蚂蚁/清华的 AReaL
+  - 阿里淘天的 ROLL
+  - UC Berkeley 的 SkyRL
+  - Uni-Agent 等
+
+2026 年最新大模型演进浪潮，Agentic RL 评测与工具链发生颠覆性变化。
+- 以 DeepSeek-R1、OpenAI o1/o3 为代表的 **推理强化学习** 和 **原生大模型强化学习** 框架革新
+
+现在，业界正从单纯“大模型调用 API 工具”进化到“超长思维链（CoT）推理与多步智能体行动深度融合”的新阶段。
+1. 测试时计算（Test-Time Compute）与动态探索评测
+  - 特点：新一代智能体不只是生成代码或调用工具，而是在生成前在内部进行成千上万步的 MCTS（蒙特卡洛树搜索）、ReST（自对齐进化）或 PRM（过程奖励模型）自我博弈。
+  - 评测改变：评测不再只看最终成功率（Pass@1），还要看在给予不同“推理计算预算”（Compute Budget）或 Token 长度限制下，智能体成功率的标度律（Scaling Laws），即 Compute-Optimal Evaluation。
+2. 过程奖励模型（PRM）引导的自动化轨迹评测
+  - 特点：传统的终局奖励（Outcome-based Reward, ORM）由于稀疏性，很难对多步智能体进行有效评测和打分。
+  - 评测改变：最新技术普遍引入 PRM（Process Reward Model），对智能体交互轨迹中的每一个步骤（Step-level）以及每一步的思维推理过程（Reasoning Token）进行细粒度打分，实现高精度的轨迹纠错和信用分配。
+3. 可验证环境（RLVR）全面取代静态评测
+  - 特点：由于大模型能力激增，静态评测集（如多选题）已经被彻底刷爆。
+  - 评测改变：RLVR（Reinforcement Learning via Verifiable Rewards，可验证反馈强化学习） 成为绝对主流。评测平台必须内置代码编译器（Compiler）、数学符号验证器（Lean4/Z3）、操作系统沙盒（Sandbox）或模拟器，以物理世界客观运行的结果（如单测是否通过、网页是否成功跳转）作为唯一的评测标准，彻底杜绝幻觉和模型欺骗。
+
+
+🛠️ 2025-2026 最新主流评测基准 (Benchmarks)
+
+评测集已经从简单的单步工具调用，全面转向考验极长任务、极高复杂度的真实工程与探索场景：
+- 尖端软件工程与全栈开发（Swe-bench 进化版）：
+  - SWE-bench Verified / SWE-bench Multimodal：去除了早期评测集中模糊、有歧义的黄金标准（Gold Standard），引入了多模态界面排查，成为检验大模型 Agent 工业级修复 Bug 能力的金标准。
+  - AppWorld / OSWorld：测试智能体在包含几十个常用手机、电脑 App 及真实操作系统环境中的长程任务执行能力（如“帮我登录邮箱下载账单并报销”）。
+- AI 科学家与长程科学探索（AI Scientist & Long-Horizon）：
+  - GAIA (General AI Assistants)：公认最难的通用大模型助手评测，极度考验智能体的多模态、工具调用及长程规划能力。
+  - SWE-bench 2.0 / AI Scientist 环境：直接评测智能体自主阅读文献、修改代码、跑实验、写论文的全流程 RL 闭环能力。
+- 复杂 Web 自动化与高难度交互：
+  - VisualWebArena：将纯文本网页进化为视觉网页评测，智能体必须在复杂的电商、协作软件（如 GitLab, Jira）的图形界面中，通过视觉定位并模拟鼠标点击、拖拽完成任务。
+
+
+为了支撑大规模 Agent 推理、数据采样（Rollout）和强化学习训练、评测，业界最新的高吞吐工具链已经形成了“训-推-评”一体化的架构：
+
+核心分布式强化学习与评测框架（训评一体）
+- verl (VLLM Evaluation and Reinforcement Learning)：
+  - 字节跳动开源，目前在开源界极度火爆。它完美融合了 vLLM 的高性能推理和分布式 RL 训练，专为大模型 Reasoning / Agentic RL 设计。
+  - 优势：它支持在单轮/多轮长序列中，将 RLVR 评测无缝接入到 PPO、GRPO（DeepSeek 所采用的无评论员算法）等算法的训练和在线评估闭环中。
+- SkyRL (by UC Berkeley)：
+  - 专为大语言模型（LLM）的测试时计算（Test-Time Compute）与推理强化学习量身定制的轻量、高速分布式框架。非常适合评测和训练 Agent 内部的 MCTS 或搜索树。
+- AReaL (Ant Research Agentic RL)：
+  - 蚂蚁金服与清华大学等团队最新推出的专有 Agentic RL 框架。该框架专为工具调用、交互多步场景设计，极大地优化了多步状态转移下的样本吞吐量和轨迹打分效率。
+
+Agent 运行与标准评测沙盒环境
+- OpenHands (原 OpenDevin) / Devika：
+  - 目前最顶尖的、生产级的开源自主软件工程 Agent 评测与执行环境。内置完备的 Docker 沙盒安全运行机制，能够直接部署最新模型并全自动跑完 SWE-bench 评测。
+- BrowserGym：
+  - ServiceNow 推出的全新 Web Agent 评测基准和运行环境。它将所有主流的网页评测集（WebArena、MiniWoB 等）标准化为统一的 Gym 接口（类似 OpenAI 经典的强化学习接口），极大地便利了 Agentic RL 的环境接入。
+
+2026 年如何评测一个 Agentic RL 模型？
+
+评测一个面向Agent任务的强化学习模型，标准化工作流：
+
+评测步骤	核心做法	推荐最新工具/基准
+1. 环境构建	放弃纯文本模拟，使用真实的、具备客观正确性的沙盒环境	Docker 隔离沙盒, BrowserGym
+2. 推理配置	测试不同推理预算（Test-Time Compute Budget）下的表现	结合 vLLM / verl 限制 Token 上限或启用 MCTS 搜索
+3. 奖励反馈	使用物理真值（RLVR）判断终局，配合过程奖励（PRM）评估轨迹	接入 Compiler / Math Verifier, 引入轨迹打分模型
+4. 性能指标	放弃传统的 Accuracy，转向统计成功率、运行成本与步数效率	评估 Success Rate (SR), Compute-Optimal Curve, Steps-to-Success
 
 
 
