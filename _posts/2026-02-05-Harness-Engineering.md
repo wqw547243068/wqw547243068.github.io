@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  驾驭工程（Harness Engineering）指南
+title:  Harness Engineering 指南
 date:   2026-02-05 16:52:00
 categories: 大模型
 tags: prompt 大模型 hermes context claude 评测 翁荔 自进化 deepseek openai 郑耀威 自进化
-excerpt: 驾驭工程、挽具工程
+excerpt: Agent 设计范式
 mathjax: true
 permalink: /harness
 ---
