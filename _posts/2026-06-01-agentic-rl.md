@@ -95,6 +95,29 @@ rollout 才是成本中心GRPO在单轮上确实成熟，但真用到长思维�
 
 问题核心不再是”哪个答案更好”，而是”轨迹中每一步的贡献各是多少“ —— 即 credit assignment（信用分配） 问题。
 
+### 教程
+
+【2026-11-09】UC Berkeley RDI 的 CS294/194-196《Agentic AI》（2025 Fall）"全明星公开课"
+- 课程主页：[Agentic AI](rdi.berkeley.edu/agentic-ai/f25)
+
+🎓 课程阵容有多豪华？
+- 主讲是 Dawn Song 教授（伯克利 CS 教授、RDI 联合主任，MacArthur "天才奖"得主），guest speaker 基本是 Agentic AI 一线的定义者：
+  - Yann Dubois（OpenAI）：LLM Agents 全景
+  - Yangqing Jia（NVIDIA VP）：AI 系统设计的演进
+  - Noam Brown（OpenAI）：Multi-Agent AI
+  - Weizhu Chen（Microsoft Technical Fellow）：训练 Agentic 模型的挑战与教训
+  - Oriol Vinyals（Google DeepMind VP）：LLM 时代的多智能体系统
+  - James Zou（Stanford）：用 AI Agent 自动化科学发现 ← 学术党重点关注
+  - Peter Stone（UT Austin / Sony AI）：具身智能与强化学习
+- 📚 内容框架
+  - 课程从 LLM 基础、推理与规划、agentic 框架与基础设施讲起，再落到代表性应用：代码生成、机器人、web 自动化、科学发现，最后收尾于当前 agent 的局限与风险、安全与治理
+
+这不是工具教学，而是"从第一性原理理解 agent"的学术型课程。
+
+适合谁： 想做 agent 方向研究、需要理解前沿技术边界与风险的人。先修建议：机器学习/深度学习基础（官方推荐 CS182/188/189 水平）
+
+
+
 
 ### 应用场景
 
