@@ -307,6 +307,67 @@ Agentic RL（面向智能体的强化学习）的评测与传统单轮大模型�
 - 传统评测关注的是**单次生成的文本质量**
 - 而 Agentic RL 评测的是 **动态多步交互**中，智能体使用工具、规划路径、纠错和达成长期目标的能力。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://developer.volcengine.com/articles/7560645235202588699)
 
+Agentic RL 评测核心：
+> **不只看训练奖励，要在独立可复现环境里测闭环轨迹、任务成功率、泛化、对齐、成本与不发生 Reward Hack**。
+
+Agentic RL（面向智能体的强化学习，比如GRPO、RL用于LLM Agent闭环决策）评测核心：**不只看训练奖励，要在独立可复现环境里测闭环轨迹、任务成功率、泛化、对齐、成本与不发生Reward Hack**。
+
+
+评测范式
+1. **离线回放评估**：固定一批离线轨迹，不在线交互，快速筛版本；缺点：无法发现**分布偏移**
+2. **在线闭环评估（gold standard）**：Agent和环境实时交互，每一步动作→环境反馈→下一个动作；固定seed、固定环境快照保证可复现，多seed统计均值±方差
+3. **分离训练奖励和评测奖励**：**严禁用训练时的reward函数当评测指标**，Agentic RL最常见坑；评测用独立verifier（规则/单元测试/独立judge）
+4. **基线对照**：SFT基线、CoT/ReAct、普通RL（PPO）、GRPO、随机策略、oracle上界
+5. **消融**：有没有RL闭环、有没有轨迹反思、奖励函数设计、是否用组内相对奖励
+
+论文汇报模板
+- 主指标：Pass@1 / 归一化回报，多seed均值±std
+- 能力保留：原始非目标能力保留百分比（和Cortex那套一致）
+- 效率：平均交互步数、token开销
+- 泛化：分布外任务成功率衰减
+- 诊断：轨迹长度分布、无效动作比例、Reward Hack案例
+- 帕累托图：成功率 vs 交互成本 / 能力保留（类似你Cortex的consolidation–retention Pareto frontier）
+
+常见坑
+1. 只看训练奖励上涨，不做独立环境验证 → reward hack
+2. 评测没有固定seed、环境不可复现，结果不可信
+3. 忽略能力遗忘，RL把基座模型通用能力毁掉
+4. LLM-as-judge没有rubric、没有ensemble，打分噪声极大
+5. 把SFT就能搞定的任务，当成Agentic RL的闭环收益
+
+### 评测维度
+
+1）结果指标（主指标）
+- **Success Rate / Pass@k**：任务是否达成；Pass@1（一次成功）、Pass@k（k次尝试内成功），长视界任务更看重稳定成功率而非单次运气
+- **Episode Return / Normalized Score**：回合总回报；常用ONS（Oracle-Normalized Score），把分数归一到随机基线～最优oracle之间，方便跨任务对比
+- **EM/F1/Test Pass Rate**：确定性校验：问答精确匹配、代码patch通过单元测试（SWE-bench）、环境状态断言（WebArena、OSWorld）
+- **Win Rate（LLM-as-judge）**：开放类无标准答案任务，用结构化rubric打分、成对偏好比较；必须做ensemble judge降低方差
+
+2）过程/轨迹诊断指标（Agentic RL重点）
+
+> 同样成功，低效、乱调用、瞎试错的策略是差策略
+- 轨迹长度、工具调用次数、无效动作占比、重复重试次数
+- 恢复能力：失败/工具报错后能否回溯、重规划（recovery rate）
+- 规划一致性：是否符合任务约束、有没有越权、幻觉参数
+- 策略熵、探索度：判断是真学会决策，还是过拟合到固定轨迹
+
+3）泛化与遗忘（和你前面Cortex记忆巩固强相关）
+- 分布外泛化：新任务、新工具、新环境参数
+- 能力保留：**非目标能力衰退率**（和MC论文指标一致：保留原有基础能力百分比）
+- 序列编辑/持续学习：连续更新后，旧知识会不会被覆盖（sequential editing retention）
+- 抗分布漂移：环境动态变化时性能衰减曲线
+
+4）成本与效率
+- 平均token消耗、推理时延、环境交互步数
+- 样本效率：达到目标成功率所需的交互轨迹数量
+- 收敛稳定性：多随机种子下性能方差，避免单种子刷分
+
+5）安全与对齐（Reward Hack重点排查）
+- 奖励劫持检查：是否找到“骗奖励”但不满足真实目标的捷径
+- 约束违规率、越权调用、有害动作、幻觉
+- KL散度/基座模型偏移：RL之后和原始模型基础能力偏离程度
+
+
 Agentic RL 评测核心维度
 
 与单轮模型评测不同，Agentic RL 评测通常需要评估以下六大核心能力： [1] (https://hub.baai.ac.cn/view/49404), [2] (https://developer.volcengine.com/articles/7560645235202588699)
@@ -316,6 +377,9 @@ Agentic RL 评测核心维度
 4. **自我纠错与恢复**（Self-Improvement / Recovery）：当工具报错、代码测试不通过、或搜索结果矛盾时，能否自主重试或切换方向。 [1] (https://zhuanlan.zhihu.com/p/1985054130469888615), [2] (https://developer.volcengine.com/articles/7560645235202588699)
 5. **多模态与环境感知**（Perception）：在 GUI、视觉或具身智能（Embodied AI）环境中对视觉或状态变化的理解。 [1] (https://developer.volcengine.com/articles/7560645235202588699)
 6. **信用分配与轨迹效率**（Trajectory & Credit Assignment）：不仅看“最终结果对不对”，还要看路径是否冗余、步数是否过长、是否存在奖励 hacking。 [1] (https://walkinglabs.github.io/hands-on-modern-rl/chapter22_agentic/overview), [2] (https://zhuanlan.zhihu.com/p/2074080364407084708), [3] (https://zhuanlan.zhihu.com/p/1985054130469888615)
+
+
+### 评测集
 
 Agentic RL 评测基准（Benchmarks）
 
@@ -329,6 +393,16 @@ Agentic RL 评测基准（Benchmarks）
   - WebArena / OSWorld / Mind2Web：在真实网页、操作系统 GUI 中根据指令完成复杂操作（如查资料、订票、表格处理等）。
 - 通用工具链与搜索（Tool Learning & Search）：
   - ToolBench / API-Bank：评估海量 API 场景下的工具检索、组合与容错调用。
+
+评测环境与常用Benchmark
+> Agentic RL必须有可重置、可回放、状态可校验的沙箱环境，不能只用静态问答数据集
+- WebArena / WebShop：网页交互、电商浏览
+- SWE-bench Verified：代码修复，以仓库测试用例作为ground truth
+- GAIA / Tau-Bench：通用工具调用、多轮业务流程
+- ALFWorld：文本世界环境，经典长视界规划
+- BALROG：游戏环境（NetHack等），评估时序决策
+- Agent² RL-Bench：专门评测“Agent自主做RL后训练”，区分SFT和真正闭环RL收益
+- Agentick：通用序贯决策基准，内置ONS归一化打分
 
 评测与训练的底层架构特点
 
