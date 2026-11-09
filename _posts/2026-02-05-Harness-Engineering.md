@@ -76,6 +76,7 @@ Harness 学习指南：
 【2026-10-22】谷歌免费的 2 小时课程，完整的harness工程设计，从 0%到 100%的完整讲解。
 - [视频](https://www.youtube.com/watch?v=2C_CefSQEAQ)
 - Google Cloud 工程师 Annie Wang 主讲（约1.5–2小时）。
+- 【2026-11-08】CodeLab 地址：[Practical Harness Engineering with Google Antigravity](https://codelabs.developers.google.com/harness-engineering-antigravity#0)
 
 重点不是单纯调 Prompt，而是构建 Harness——围绕大模型全部确定性组件，真正可靠、可测试、可自我改进。
 
