@@ -68,10 +68,8 @@ Harness 原义: **挽具**, 套在马身上的那套皮带、缰绳和金属件�
 
 ### 教程
 
-
 Harness 学习指南：
 - [Learn Harness Engineering](https://walkinglabs.github.io/learn-harness-engineering/zh/)
-
 
 【2026-10-22】谷歌免费的 2 小时课程，完整的harness工程设计，从 0%到 100%的完整讲解。
 - [视频](https://www.youtube.com/watch?v=2C_CefSQEAQ)
@@ -232,6 +230,9 @@ harness六层结构手册
 | `Prompt Engineering`  | 2023–2024 | 优化输入措辞，怎么"说"得好     | 精心设计指令、少样本示例           | 单次调用质量           | 多步骤任务的一致性       |
 | `Context Engineering` | 2025 | 优化信息输入，"知道"什么       | RAG、MCP、Memory、AGENTS.md         | 信息检索与注入         | 架构级的行为约束         |
 | `Harness Engineering` | 2026 | 优化运行环境，在什么"环境"里做事 | 约束、验证、反馈回路、状态管理     | 系统可靠性与长期维护性 | ——（当前最前沿）         |
+
+
+<img width="1080" height="640" alt="image" src="https://github.com/user-attachments/assets/1821cd8a-0724-4efb-8717-a4915246027f" />
 
 上下文工程见站内专题：[上下文工程](context)
 
