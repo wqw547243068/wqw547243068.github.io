@@ -15,8 +15,11 @@ permalink: /no_rag
 
 # RAG 消失之路
 
-
 RAG 终会消失
+
+## 总结
+
+详见站内文章：[RAG](rag#图解)
 
 
 ## （1）RAG 有什么问题
