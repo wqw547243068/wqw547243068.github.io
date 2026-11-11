@@ -155,6 +155,12 @@ LLM Judges 涵盖三大功能：
 
 ### 总结
 
+框架包括:
+- Inspect AI、lm-evaluation-harness、promptfoo、DeepEval、RAGAS、Langfuse、Phoenix 等。
+
+选择时优先考虑：
+> 可复现性、与 CI 集成、成本、是否支持你的系统类型（RAG/智能体），以及评分器可检验性。
+
 【2026-7-6】评测工具
 
 | 工具名称 | 开发者 | 开源协议 | 任务数量 | 中文支持 | 安装复杂度 | 可视化能力 | 社区活跃度 | 适配场景 |
