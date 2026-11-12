@@ -311,7 +311,6 @@ SGLang 等主流框架采用 FCFS（先来先服务）策略：正在处理的�
 
 SGLang 在 burst 负载下，P99 TTFT 轻松突破 30 秒，而生成速度却远超用户阅读需求——两头都没做好。
 
-
 核心洞察：
 > LLM 的生成速度远远快于用户的阅读速度。
 
@@ -828,6 +827,25 @@ Lepton AI 联合创始人兼 CEO 贾扬清都评价说：
 
 
 参考：[参考](https://blog.csdn.net/QingKeLab/article/details/141688674)
+
+
+#### 盛颖
+
+盛颖（Ying Sheng）是AI基础架构（AI Infra）领域的知名研究者与创业者
+- 江西九江人
+- 开源大模型推理引擎 SGLang 发起人
+- AI初创公司 RadixArk 的联合创始人兼CEO。 [1] (https://sites.google.com/view/yingsheng/home), [2] (https://podcasts.apple.com/us/podcast/e247-%E5%AF%B9%E8%AF%9D%E7%9B%9B%E9%A2%96-xai-infra%E7%9A%84%E6%B5%AA%E6%BC%AB-sglang-%E5%BC%80%E6%BA%90-%E5%B9%B3%E6%9D%83%E4%B8%8E-%E7%94%84%E5%AC%9B%E4%BC%A0/id1498541229?i=1000779989507)
+
+背景与教育经历
+- 本科：毕业于上海交通大学 ACM 班（2016年）。高中时期曾在全国青少年信息学奥林匹克竞赛（NOI）中获得银牌。
+- 硕士：哥伦比亚大学计算机科学硕士（2017年）。
+- 博士：斯坦福大学计算机科学博士，师从 Clark Barrett，研究方向主要为形式化验证、自动推理、大模型系统等，其论文曾获 IJCAR 最佳论文提名。 [1] (https://finance.biggo.com.tw/podcast/a1b4a2b35cfd8330), [2] (https://siliconvalleyinvestclub.com/companies/radixark/team/ying-sheng/), [3] (https://www.sohu.com/a/1092404028_122645693), [4] (https://sites.google.com/view/yingsheng/home)
+
+职业与核心贡献
+- SGLang 发起人：在 LMSYS 组织等背景下发起并主导了开源大模型推理与结构化生成引擎 SGLang，该框架在大规模生产级 Serving（支持高并发与 RadixAttention 技术）中获得了广泛应用。 [1] (https://podcasts.apple.com/us/podcast/e247-%E5%AF%B9%E8%AF%9D%E7%9B%9B%E9%A2%96-xai-infra%E7%9A%84%E6%B5%AA%E6%BC%AB-sglang-%E5%BC%80%E6%BA%90-%E5%B9%B3%E6%9D%83%E4%B8%8E-%E7%94%84%E5%AC%9B%E4%BC%A0/id1498541229?i=1000779989507), [2] (https://finance.biggo.com.tw/podcast/a1b4a2b35cfd8330)
+- xAI 前推理团队负责人：于 2024 年 10 月加入 xAI 共同领导 Grok 的推理团队，后于 2025 年离职。 [1] (https://finance.biggo.com.tw/podcast/a1b4a2b35cfd8330), [2] (https://siliconvalleyinvestclub.com/companies/radixark/team/ying-sheng/)
+- RadixArk 联合创始人兼 CEO：创立了 AI 基础架构公司 RadixArk，专注于推理与强化学习（RL）等下一代 AI 平台化基础设施，并获得高额种子轮融资。 [1] (https://finance.biggo.com.tw/podcast/a1b4a2b35cfd8330), [2] (https://siliconvalleyinvestclub.com/companies/radixark/team/ying-sheng/)
+
 
 ### TensorRT-LLM
 
