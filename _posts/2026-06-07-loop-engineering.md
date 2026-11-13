@@ -45,6 +45,12 @@ permalink: /loop
 
 <img width="1000" height="100%" alt="image" src="https://github.com/user-attachments/assets/2f08c05b-9aad-4b76-9ca5-b854fca6170e" />
 
+
+【2026-11-13】
+
+<img width="900" height="100%" alt="image" src="https://github.com/user-attachments/assets/ef9cd7e1-7b5d-4931-aac8-fe78c92088ed" />
+
+
 ### 起源
 
 loop 不是新词，真实血脉：
