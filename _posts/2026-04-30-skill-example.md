@@ -673,6 +673,21 @@ npx skills add tt-a1i/archify -g
 
 ## 视频制作
 
+### OpenFilm
+
+
+【2026-11-13】OpenFilm 是开源 AI 视频编辑框架
+- 核心思路：把视频的每个镜头都变成网页（HTML/CSS/SVG/Canvas/WebGL），让 Claude Code、Cursor 等编程智能体直接"写"出画面、动画和转场，再在时间轴上组合成完整视频。
+- 项目地址：[OpenFilm](http://github.com/openfilm/openfilm)
+
+主要特点： 
+- 1、每个镜头是一个网页，复用智能体已有的 Web 知识
+- 2、配套 Studio 本地编辑器，可像剪映一样拖时间轴、改文字、调镜头，也能继续用 AI 修改
+- 3、支持并行渲染，最高 4K 导出 MP4
+- 4、本地优先，影片就是硬盘上的文件夹，配音、音乐、图片由你选择的服务提供
+- 5、MIT 协议，支持 Windows、macOS，目前 5800+ Star
+
+
 ### video-use
 
 【2026-5-2】video-use 用"文本优先"思路革新视频剪辑：
