@@ -961,6 +961,20 @@ OTC Pink 主要服务于那些无法满足大型交易所上市要求的中小�
 
 ### 路演
 
+#### 如何讲故事
+
+【2026-11-08】[硅谷顶尖科技公司如何进行storytelling？（2）公关大神Lulu Cheng播客学习](https://mp.weixin.qq.com/s/mrV9mZvreawdIB2PNAb3fw)
+
+概述：
+1. Go Direct：不要把自己的故事外包；**先有观点**而非纯事实，再有传播
+  - 传统传播链路：公司→ PR → 记者→ 媒体→ 用户
+  - 现在Founder 完全可以通过Twitter / LinkedIn /YouTube / Podcast 直接面对受众
+1. Narrative Arc：不要堆事实，**要有故事**，真正让人愿意继续看的叙事，通常要有：**起点→ 阻力→ 冲突→ 转折→ Progress**
+1. Underdog Narrative：**困难本身就是内容**，经典的弱传播观。
+1. Message-Market Fit（信息与市场匹配）在对的地方说对的话-为什么要建立-依靠怎么样的内容来建立联系-关系如何支持业务
+1. **科技作为背景，服务于人**这个主角，阐述使用产品后“人”的变化而不是一味吹嘘产品本身
+
+
 
 #### 如何制作路演ppt
 
