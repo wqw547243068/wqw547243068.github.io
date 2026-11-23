@@ -389,6 +389,85 @@ Harvard 和 Stanford 团队 NeurIPS 2025 发表的EvoLM 论文，从零训练了
 ### 模型阶段
 
 
+#### 评测
+
+【2026-11-23】PT / SFT / RL 各阶段评测指标汇总
+> - PT：Pre-training 预训练；
+> - SFT：Supervised Fine-Tuning 监督微调；
+> - RL：强化后对齐（PPO/GRPO/DPO/RLVR）
+
+|阶段|核心目标|训练监控指标|离线评测重点|风险|
+|---|---|---|---|---|
+|PT|通用语言建模|PPL、CE Loss|MMLU、HellaSwag 等基础benchmark|训练不稳定、数据污染|
+|SFT|指令模仿、格式对齐|Val CE、PPL|指令遵循率、EM/Pass@k、格式通过率|过拟合、分布固化|
+|RL|偏好对齐、序列优化|Reward、KL、熵、clip frac|Win rate、能力保留、安全、人工偏好|reward hacking、能力坍塌、KL爆炸|
+
+
+（1）PT 预训练阶段（基础语言建模）
+
+**核心目标**：学习通用语言、知识、句法；拟合下一个token分布
+
+训练监控指标
+- **验证集 PPL（Perplexity，困惑度）**：最核心，越低越好，衡量文本预测不确定性
+- **验证集 Cross-Entropy Loss（交叉熵损失）**
+- 训练loss、token吞吐、学习率、显存占用
+
+能力评测（下游基准）
+- 通用知识：MMLU、C-Eval、GSM8K、MATH、TruthfulQA
+- 代码：HumanEval、MBPP
+- 语言理解：PIQA、HellaSwag、Winogrande
+> ⚠️ PPL**不直接等于推理/对话质量**，只代表语言建模流畅度
+
+（2）SFT 监督微调阶段（指令跟随、模仿示范）
+
+**核心目标**：学会遵循指令、输出格式、对齐示范回答；是RL的初始化底座
+
+训练监控指标
+- 验证集 CE Loss
+- 验证集 PPL（观察是否遗忘、分布偏移）
+
+自动评测指标
+1. **指令遵循率（IF rate）**：是否满足prompt全部约束
+2. **格式合规率**：JSON/代码块/列表等格式通过率
+3. 精确匹配 EM、F1、Pass@k（代码、数学）
+4. 生成质量：ROUGE、BLEU、METEOR、BERTScore（和标准答案对比）
+5. 基准：MMLU、GSM8K、HumanEval等（看能力是否保持/上涨）
+
+人工评测
+- 有用性、事实正确性、简洁度、格式规范
+> 停止SFT判断：验证loss收敛、指令遵循稳定、过拟合不明显；不要等刷到顶再上RL
+
+（3）RL 强化对齐阶段（PPO / GRPO / DPO / RLVR）
+
+**核心目标**：序列级优化，最大化奖励，对齐人类偏好；**重点监控稳定性+能力不坍塌**
+> 分为【训练过程监控指标】和【离线最终评测指标】
+
+（1）训练过程实时监控（训练时必看）
+- **平均Reward**：batch reward均值，主信号
+- **KL散度 D_KL(π_new || π_ref)**：当前策略相对SFT参考模型的偏离，防止reward hacking、模型崩坏；一般控制0.01~0.05区间
+- **Policy Entropy（策略熵）**：衡量探索度，前期高、缓慢下降，不要快速归零
+- Clip fraction（PPO）：被clip的比例，反映更新幅度，过高代表不稳定
+- 回答长度分布、长度方差（警惕长度hack：靠长回答刷高分）
+- Advantage、Value loss（PPO带critic）
+
+（2）自动离线评测
+- **偏好胜率（Win Rate）**：同prompt下，RL模型 vs SFT基线，RM/LLM判分赢率（RLHF最核心）
+- 验证集平均Reward、Reward margin（RM打分差）
+- 基准能力保留：MMLU/GSM8K/HumanEval，**重点看遗忘（forgetting）**
+- 安全指标：Harmbench、RealToxicityPrompts、拒答率
+- 可验证奖励场景（RLVR/GRPO数学代码）：EM、Pass@1、Pass@k、单元测试通过率
+
+人工评测（黄金标准）
+- 成对偏好标注：Chosen/Rejected，人类胜率
+- 维度：帮助性、诚实性、事实准确、无害、拒绝越界请求、逻辑性
+
+奖励模型RM（RLHF中间子阶段）
+- Pairwise Accuracy（偏好对排序准确率）
+- Reward Margin：chosen与rejected回答的分数差
+- 长度偏差、位置偏差检测（RM常见bug）
+
+
+
 #### 基础概念
 
 各个阶段产出的模型区别
