@@ -491,8 +491,6 @@ AI 模型是否真正理解人类的指令与意图？
 ## LLM 训练模式
 
 
-
-
 ### 什么是微调
 
 【2024-3-8】[LLM-SFT-trick](https://zhuanlan.zhihu.com/p/682604566)
@@ -1062,6 +1060,33 @@ RLHF 负反馈是基于reward模型动态得到的，模型能够在训练过程
 如果在 SFT 过程中添加 rejected answer 相关的loss是否可以替代RLHF？
 - 应该可以，DPO其实就是类似这样的思想
 
+### PT 预训练
+
+
+#### 衡量指标
+
+【2026-11-23】OpenAI经验
+- 解读 [OpenAI首次公开预训练核心指标](https://mp.weixin.qq.com/s/naPnZnOTCEMixOAsHG4OWQ)
+
+2026年11月22日，OpenAI 首席科学家 `Jakub Pachocki` 突然发布长文《[Perplexity and Intelligence](地址：https://openai.com/index/perplexity-and-intelligence/)》，首次公开内部预训练指标，并提出颇具争议的建议：
+> 全球顶尖 AI 公司应该共同约定模型研发上限。在 AI 安全监控能力达到特定标准之前，各家都不应越过这条线。
+
+追踪压缩器训练能力的进步速度是理解 AI 发展轨迹的关键。主张将困惑度（Perplexity），或者等价的交叉熵损失（Cross-Entropy Loss），作为比较不同模型开发者技术水平的指标，并以此推动建立共同的安全标准。
+
+Pachocki 选择的指标叫 `Perplexity`，困惑度。衡量模型预测下一个 Token 的能力，数值越低，预测越准确。
+
+在 OpenAI 披露的数据中，GPT-3.5 的对数困惑度约为 0.99，GPT-4 约为 0.91。
+- 当这一数字降至 0.8 以下，模型开始在网络安全和数学领域展现突破性能力；
+- 达到约 0.76 时，模型已经能够接连解决一些长期悬而未决的数学问题。
+
+
+更值得警惕的是，Pachocki 认为，AI 很快可能开始加速 AI 自身的研发。最早到 2027 年，预训练算法研究就可能迎来一波基础性突破，而安全监控技术未必能以同样的速度跟上。
+
+
+<img width="1000" height="100%" alt="28a80bbab230b1e92f321c5397ced580" src="https://github.com/user-attachments/assets/dca584c4-d716-4016-b1f2-cfac49848529" />
+
+
+
 ### CPT
 
 行业观点
@@ -1072,6 +1097,7 @@ RLHF 负反馈是基于reward模型动态得到的，模型能够在训练过程
   - 以对话为核心的“chat”范式已告终结，AI 竞争转向“能办事”的智能体时代。 
 - DeepMind强化学习研究员Ronak Malde：2024是agent之年，2025是RL之年，2026将是持续学习的一年。
 - OpenAI O1 erry Tworek 创业，剑指「持续学习」。
+
 
 
 #### CPT 定义
