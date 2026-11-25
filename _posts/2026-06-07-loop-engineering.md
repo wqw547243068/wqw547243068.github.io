@@ -149,6 +149,53 @@ Loop Engineering 似乎已经不够性感了。现在 AI Agent 圈子里最火�
 - 插件与连接器（Plugins and Connectors）：把 Agent 接入你已有的工具链——GitHub、Linear、Slack、数据库。循环需要读取现实，也需要把结果写回现实，连接器是这个双向通道。
 - 制作者与验证者分离的子 Agent（Sub-agents）：一个Agent 负责提出方案，另一个负责检验——制造者与审查者天然分离。这是循环里内置的质量门禁，防止单个 Agent 的错误在无人知晓的情况下蔓延。
 
+### 主流 Agent Loop
+
+【2026-11-25】主流 Coding Agent Loop 循环
+- 循环中，大模型只需要做出决策；脏活、累活则由外层的 Harness（工程底座）来完成 —— Harness 要负责拼装上下文、调用本地工具，并把结果塞进模型。
+- 任务里面，这套动作可以来回做十多次。
+> - 组装上下文 → 请求模型 → 执行工具 → 结果回填 → 再次请求 
+
+四家能力有重叠。按照这三条线来比较的话就很容易：
+- ① 上下文如何进入模型呢？
+- ② 工具调用是如何执行的？
+- ③ 循环怎样才能继续下去，并且又该如何停止呢？
+
+<img width="1086" height="100%" alt="image" src="https://github.com/user-attachments/assets/f0fce95b-dcd5-4475-89d8-218531523624" />
+
+|Agent|总结|图解|
+|---|---|---|
+|共性||<img width="500" height="100%" alt="image" src="https://github.com/user-attachments/assets/f0fce95b-dcd5-4475-89d8-218531523624" />|
+|Claude Code||<img width="500" height="100%" alt="image" src="https://github.com/user-attachments/assets/7a444a06-39b0-4b91-a082-492571cc1a54" />|
+|Codex||<img width="500" height="100%"  alt="image" src="https://github.com/user-attachments/assets/98092de5-2fcd-4980-8a33-d4c6e9bde702" />|
+|OpenCode|| <img width="500" height="100%"  alt="image" src="https://github.com/user-attachments/assets/26ba41bb-66be-4baf-b9db-76f22aafccf8" />|
+|Pi||<img width="500" height="100%" alt="image" src="https://github.com/user-attachments/assets/73f95d91-7b92-450c-ab98-979b62676f34" />|
+
+
+详解
+1. Claude Code：结果如何继续前进
+  - 主要特点是“边做边验”。读文件是为了补充信息，跑测试来检验修改的地方是否正确，工具输出的结果决定了下一步该怎么做。
+  - 重点拆三个护栏：
+    - 上下文管理：在内容过长的时候会自动进行压缩 
+    - 执行权限：拦截高危命令 
+    - 文件检查点：代码修改失败可以恢复
+2. Pi：循环中哪些地方可以自行修改
+  - Pi 把循环中的关键节点全部都开放出来了，根据自己的工作流程进行修改：
+    - 输入之前：消息经过自定义转换之后再被送入到模型中去 
+    - 执行过程中：工具在执行前和执行后都可以挂载上自己的处理逻辑（Hooks） 
+    - 下一步：如何继续，由工具的结果、输入队列以及结束策略三者共同决定
+3. Codex：工具请求和执行结果如何关联
+  - 特点就是严丝合缝的协议对齐：
+    - 精确匹配：模型输出结构化的调用结果，底座执行之后通过 function_call_output 返回，整个过程依靠 call_id 进行一一对应。一次对话中可以有多个来回。 
+    - 双重安全机制：系统级沙箱限制可以访问的目录和网络；审批策略控制何时停止等人工干预。
+4. OpenCode：如何修改执行的过程：把重心放到角色拆分和上下文分离上：
+  - 多角色设置：包含 Build、Plan 等模式，可以单独对模型、提示词以及权限进行设置。 
+  - 子会话隔离：复杂的分支用 Task 派生出子 Agent，在子会话中完成工作后只传递简化的结果给主线程，不会影响主线程上下文。 
+  - 步数熔断：用 steps 来限制最大的迭代次数。如果超过上限没有修理好的话，就停止工作并且总结出还没有解决的问题。
+
+
+
+
 Codex vs Claude Code 对比表（中文版本）：
 
 | 基础能力 | 循环中的工作 | Codex 应用 | Claude Code |
