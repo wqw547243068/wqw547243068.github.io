@@ -2,7 +2,7 @@
 layout: post
 title:  "基础算法总结-Classical Algorithm"
 categories: 计算机基础
-tags:  数据结构 算法 KMP Morris 二叉树 字符串 leetcode 面试 图 匹配 匈牙利 牛顿法 二分法 字节 排序
+tags:  数据结构 算法 KMP Morris 二叉树 字符串 leetcode 面试 图 匹配 匈牙利 牛顿法 二分法 字节 排序 竞赛
 author: 风之筝
 excerpt: 有哪些经典算法让人拍手称快、赞叹不已？
 mathjax: true
@@ -17,6 +17,14 @@ permalink: /algorithm
 
 # 总结
 
+
+- 【2026-11-25】[OI Wiki](https://oi-wiki.org/)
+  - OI（Olympiad in Informatics，信息学奥林匹克竞赛）在中国起源于 1984 年，是五大高中学科竞赛之一．
+  - ICPC（International Collegiate Programming Contest，国际大学生程序设计竞赛）由 ICPC 基金会（ICPC Foundation）举办，是最具影响力的大学生计算机竞赛．由于以前 ACM 赞助这个竞赛，也有很多人习惯叫它 ACM 竞赛．
+  - OI Wiki 致力于成为一个免费开放且持续更新的 编程竞赛（competitive programming） 知识整合站点，大家可以在这里获取与竞赛相关的、有趣又实用的知识．我们为大家准备了竞赛中的基础知识、常见题型、解题思路以及常用工具等内容，帮助大家更快速深入地学习编程竞赛中涉及到的知识．
+- 【2026-11-25】
+  - [Hello 算法](https://www.hello-algo.com/) 首页动图展示各种基础算法；
+  - [CS自学指南](https://csdiy.wiki/)
 - 【2022-5-24】[脉脉帖子](https://maimai.cn/web/gossip_detail/30456623): 近期面试了100多人，大部分人能力都比较差。
   - 凸包算法，经提示能写出来的2个。
   - 二叉树的 morris 遍历，能写出来的5个。
