@@ -167,7 +167,7 @@ P值：某个小于或者等于拒绝域方向上的一个样本数值的概率�
 
 【2026-11-26】假设检验网页：chatgpt 生成
 
-<iframe src="https://wqw547243068.github.io/wqw/demo/hypothesis_guide_interactive.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="1000"> </iframe>
+<iframe src="https://wqw547243068.github.io/wqw/demo/hypothesis_guide_interactive.html" scrolling="yes" border="0" frameborder="no" framespacing="0" allowfullscreen="true" height="100%" width="800"> </iframe>
 
 
 
